@@ -1,0 +1,140 @@
+[
+  {
+    "id": "mantel-oq01-ann-import",
+    "proofId": "mantel-theorem-oq-01",
+    "range": { "startLine": 1, "endLine": 5 },
+    "type": "concept",
+    "title": "A Single `import Mathlib`: Standing on Brandt's Theorem",
+    "content": "The file imports all of Mathlib for one reason: it needs SimpleGraph.colorable_of_cliqueFree_lt_minDegree, which lives in Mathlib.Combinatorics.SimpleGraph.FiveWheelLike and encodes Stephan Brandt's proof of the general Andrásfai–Erdős–Sós colorability theorem. Because the heavy structural work is already upstream, the entry's own contribution is deliberately thin — a numeral specialization and its contrapositive — and carries no new axioms or sorries.",
+    "mathContext": "Brandt (general AES): a $K_{r+1}$-free graph with $\\frac{(3r-4)n}{3r-1} < \\delta(G)$ is $r$-colorable.",
+    "significance": "supporting",
+    "relatedConcepts": ["Mathlib", "FiveWheelLike", "Andrásfai–Erdős–Sós theorem", "graph colorability"],
+    "prerequisites": ["simple graphs", "clique-free graphs"]
+  },
+  {
+    "id": "mantel-oq01-ann-setup",
+    "proofId": "mantel-theorem-oq-01",
+    "range": { "startLine": 44, "endLine": 48 },
+    "type": "concept",
+    "title": "Ambient Setup: Finite Graphs with Decidable Adjacency",
+    "content": "The variable block fixes a finite vertex type V with a graph G whose adjacency relation is decidable: [Fintype V] (G : SimpleGraph V) [DecidableRel G.Adj]. These are exactly the typeclass assumptions under which G.minDegree is well-defined (a minimum over the finite set of vertex degrees) and G.CliqueFree 3 is a meaningful finite condition. Stating the lemmas at this generality — rather than over a concrete Fin n — keeps them drop-in usable for whatever survivor subgraph the degree-cleaning step produces.",
+    "mathContext": "$\\delta(G) = \\min_{v \\in V} \\deg(v)$, defined for finite $V$ with decidable $\\mathrm{Adj}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["minimum degree", "Fintype", "DecidableRel", "finite graphs"],
+    "prerequisites": ["typeclasses", "SimpleGraph.minDegree"]
+  },
+  {
+    "id": "mantel-oq01-ann-docstring",
+    "proofId": "mantel-theorem-oq-01",
+    "range": {
+      "startLine": 7,
+      "endLine": 42
+    },
+    "type": "concept",
+    "title": "Where This Sits: Min-Degree vs. Edge-Count Stability",
+    "content": "The module docstring locates the result precisely. Mantel's exact extremal theorem (the ⌊n²/4⌋ bound and its uniqueness) is already formalized; the open question asks for Erdős–Simonovits edge-count stability, which is not in Mathlib. This file packages only the min-degree ingredient of the standard degree-cleaning proof — the r = 2 case of the Andrásfai–Erdős–Sós theorem — and is explicit that min-degree stability (high δ forces exact bipartiteness) is distinct from, and a tool inside, the still-open edge-count stability.",
+    "mathContext": "AES (triangle-free case): a $K_3$-free graph with $\\delta(G) > 2n/5$ is bipartite.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "extremal graph theory",
+      "Erdős–Simonovits stability",
+      "Andrásfai–Erdős–Sós theorem",
+      "triangle-free graphs"
+    ],
+    "prerequisites": [
+      "simple graphs",
+      "graph coloring",
+      "minimum degree"
+    ]
+  },
+  {
+    "id": "mantel-oq01-ann-aes",
+    "proofId": "mantel-theorem-oq-01",
+    "range": {
+      "startLine": 50,
+      "endLine": 58
+    },
+    "type": "insight",
+    "title": "Specializing Andrásfai–Erdős–Sós to r = 2",
+    "content": "triangleFree_colorable_two_of_lt_minDegree is the load-bearing lemma: it instantiates Mathlib's general colorable_of_cliqueFree_lt_minDegree (Brandt's proof) at r = 2. The generic min-degree threshold (3r−4)·n/(3r−1) becomes exactly 2n/5 when r is the numeral 2, so after refine the only side goal is an arithmetic comparison that omega evaluates and closes. The whole structural content — that exceeding the 2n/5 threshold forces a triangle-free graph to be bipartite — is inherited from Mathlib for free.",
+    "mathContext": "$G$ $K_3$-free $\\wedge\\ 2|V|/5 < \\delta(G) \\Rightarrow G$ is $2$-colorable.",
+    "significance": "key",
+    "relatedConcepts": [
+      "clique-free graphs",
+      "graph colorability",
+      "minimum degree threshold"
+    ],
+    "prerequisites": [
+      "SimpleGraph.colorable_of_cliqueFree_lt_minDegree",
+      "omega tactic"
+    ]
+  },
+  {
+    "id": "mantel-oq01-ann-contrapositive",
+    "proofId": "mantel-theorem-oq-01",
+    "range": {
+      "startLine": 60,
+      "endLine": 67
+    },
+    "type": "insight",
+    "title": "The Sparse-Vertex Form for Degree Cleaning",
+    "content": "minDegree_le_of_triangleFree_not_colorable_two is the AES specialization read contrapositively: if a triangle-free graph fails to be bipartite, its minimum degree is at most 2n/5. The proof is by_contra + push_neg, reducing to the forward lemma. This 'sparse-at-some-vertex' shape is exactly what the degree-cleaning step of the edge-count stability proof consumes — it justifies deleting low-degree vertices until the survivor clears the AES threshold.",
+    "mathContext": "$G$ $K_3$-free $\\wedge\\ \\neg(G \\text{ bipartite}) \\Rightarrow \\delta(G) \\le 2|V|/5$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "contrapositive",
+      "degree cleaning",
+      "stability method"
+    ],
+    "prerequisites": [
+      "by_contra",
+      "push_neg"
+    ]
+  },
+  {
+    "id": "mantel-oq01-ann-setup",
+    "proofId": "mantel-theorem-oq-01",
+    "range": {
+      "startLine": 44,
+      "endLine": 48
+    },
+    "type": "concept",
+    "title": "The Finiteness Scaffolding Both Theorems Need",
+    "content": "The `variable` block fixes a vertex type `V` with `[Fintype V]` and a graph `G` with `[DecidableRel G.Adj]`. These two instances are not incidental: `minDegree` is defined as a minimum over the (finite) vertex set, so it only makes sense once `V` is a `Fintype`, and the colorability/clique-counting API that the AES theorem lives in requires the adjacency relation to be decidable so that degrees and cliques are computable. Both load-bearing lemmas inherit exactly this hypothesis set, keeping the entry's interface identical to Mathlib's `colorable_of_cliqueFree_lt_minDegree`.",
+    "mathContext": "$\\delta(G) = \\min_{v \\in V} \\deg(v)$ is well-defined only for finite $V$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "finite simple graphs",
+      "decidable adjacency",
+      "minimum degree"
+    ],
+    "prerequisites": [
+      "Fintype",
+      "DecidableRel",
+      "typeclass instances"
+    ]
+  },
+  {
+    "id": "mantel-oq01-ann-refine",
+    "proofId": "mantel-theorem-oq-01",
+    "range": {
+      "startLine": 56,
+      "endLine": 58
+    },
+    "type": "insight",
+    "title": "Why the Specialization Collapses to Two Lines",
+    "content": "The forward proof is `refine colorable_of_cliqueFree_lt_minDegree (r := 2) (show G.CliqueFree (2 + 1) from h3) ?_` followed by `omega`. Two small reconciliations make it work. First, Mathlib states the theorem for `Kᵣ₊₁`-free graphs, so the `K₃`-free hypothesis must be presented as `CliqueFree (2 + 1)`; the `show ... from h3` cast is definitional because `2 + 1` and `3` are the same numeral. Second, after fixing `r = 2` the abstract threshold `(3r−4)·n/(3r−1)` becomes the closed Nat expression `2·n/5`, an arithmetic side goal with no graph content — so `omega` discharges it outright. All genuine combinatorial work stays inside the imported Brandt theorem.",
+    "mathContext": "$(3 \\cdot 2 - 4)\\,n / (3 \\cdot 2 - 1) = 2n/5$, closed by `omega`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "refine tactic",
+      "numeral normalization",
+      "omega arithmetic"
+    ],
+    "prerequisites": [
+      "refine",
+      "definitional equality",
+      "omega tactic"
+    ]
+  }
+]

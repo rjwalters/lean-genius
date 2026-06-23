@@ -1,0 +1,180 @@
+{
+  "id": "fermat-two-squares-oq-05",
+  "title": "Sum-of-Two-Squares Obstruction: n ≡ 3 (mod 4) Is Never x² + y²",
+  "slug": "fermat-two-squares-oq-05",
+  "description": "The congruence obstruction complementing Fermat's two-squares theorem: every square is 0 or 1 mod 4, so a sum of two squares is never 3 mod 4. Combined with Mathlib's sufficient direction, this sharpens Fermat's classification to a biconditional for primes.",
+  "meta": {
+    "author": "Fermat (1640) (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Fermat%27s_theorem_on_sums_of_two_squares",
+    "date": "1640",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "sum-of-two-squares",
+      "modular-arithmetic",
+      "fermat",
+      "local-obstruction",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/FermatTwoSquaresOQ05.lean",
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime.sq_add_sq",
+        "description": "Sufficient direction: a prime p with p % 4 ≠ 3 is a sum of two squares",
+        "module": "Mathlib.NumberTheory.SumTwoSquares"
+      },
+      {
+        "theorem": "ZMod.intCast_eq_intCast_iff",
+        "description": "Integer congruence mod n is equivalent to equality of images in ZMod n",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "ZMod.natCast_eq_natCast_iff'",
+        "description": "Natural-number casts into ZMod n agree iff the arguments agree mod n",
+        "module": "Mathlib.Data.ZMod.Basic"
+      }
+    ],
+    "originalContributions": [
+      "zmod_four_sq_add_sq_ne_three: the core local obstruction, a² + b² ≠ 3 in ZMod 4 (exhaustive decide over 16 pairs)",
+      "int_sq_add_sq_not_three_mod_four: for all integers, a² + b² ≢ 3 (mod 4) — the obstruction as a property of the equation itself",
+      "not_sq_add_sq_of_mod_four_eq_three: no natural number ≡ 3 (mod 4) is a sum of two squares",
+      "prime_not_sq_add_sq_of_mod_four: the prime specialization Mathlib does not ship",
+      "prime_sq_add_sq_iff_mod_four_ne_three: biconditional capstone combining the obstruction with Mathlib's Nat.Prime.sq_add_sq",
+      "odd_prime_sq_add_sq_iff_mod_four_eq_one: Fermat's classical iff form, p = x²+y² ↔ p ≡ 1 (mod 4) for odd primes",
+      "Concrete witnesses: 3, 7, 11 are not sums of two squares; 5 = 1²+2², 13 = 2²+3² are"
+    ],
+    "dateAdded": "2026-06-19",
+    "lineCount": 152,
+    "assumptions": "0 axioms, 0 sorries. Only the foundational axioms propext, Classical.choice, Quot.sound are used (verified via #print axioms). The sufficient direction (Nat.Prime.sq_add_sq) is from Mathlib; the obstruction and the biconditional assembly are original.",
+    "theoremCount": 13,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Fermat announced in a 1640 letter to Mersenne that an odd prime p is expressible as a sum of two squares if and only if p ≡ 1 (mod 4). The first published proof is due to Euler (1749), who established the hard sufficient direction by infinite descent after years of effort. The necessary direction — that no prime (indeed no integer) ≡ 3 (mod 4) can be a sum of two squares — is by contrast an elementary one-modulus argument that Fermat would have regarded as immediate.\n\nThis necessary direction is the archetypal example of a *local obstruction*: a global Diophantine equation killed by passing to a single residue ring. The same idea recurs throughout number theory, from the three-squares theorem (obstruction mod 8: 4ᵃ(8b+7) is never a sum of three squares) to the Hasse–Minkowski local–global principle for quadratic forms. Mathlib ships the deep half of Fermat's theorem (Nat.Prime.sq_add_sq, via the theory of Gaussian integers and the existence of √(-1) mod p); the obstruction half is the easy but essential other side that turns the classification into a genuine biconditional.",
+    "problemStatement": "**Open question (fermat-two-squares-oq-05)**: Supply the necessary direction of Fermat's two-squares theorem — the congruence obstruction — and combine it with Mathlib's sufficient direction to obtain a biconditional.\n\n**Result**: A fully verified (0 sorries, 0 axioms) development. The core fact is that in ZMod 4 a sum of two squares is one of {0, 1, 2} and never 3. This is transported to ℤ (Int.ModEq form) and to ℕ (% form), specialized to primes, and assembled with Nat.Prime.sq_add_sq into:\n\n  ∃ a b, a² + b² = p  ↔  p % 4 ≠ 3\n\nand, for odd primes, the classical p = x² + y² ↔ p ≡ 1 (mod 4).",
+    "text": "The congruence obstruction complementing Fermat's two-squares theorem: every square is 0 or 1 mod 4, so a sum of two squares is never 3 mod 4. Combined with Mathlib's sufficient direction this gives a biconditional for primes.",
+    "proofStrategy": "**Proof Strategy:**\n\n1. **Core obstruction (ZMod 4)**: Every square in ZMod 4 is 0 or 1, so a² + b² ∈ {0,1,2}. The statement `∀ a b : ZMod 4, a² + b² ≠ 3` is decided by exhaustive kernel computation over the 16 pairs (`revert a b; decide`).\n\n2. **Transport to ℤ**: A congruence a² + b² ≡ 3 [ZMOD 4] is equivalent, via `ZMod.intCast_eq_intCast_iff`, to the equation a² + b² = 3 in ZMod 4 (after `push_cast`), which the core lemma refutes.\n\n3. **Transport to ℕ**: From n % 4 = 3 and a hypothetical n = x² + y², `ZMod.natCast_eq_natCast_iff'` yields x² + y² = 3 in ZMod 4, again refuted.\n\n4. **Biconditional**: The obstruction gives (⇐) of `∃ a b, a²+b² = p ↔ p % 4 ≠ 3`; Mathlib's `Nat.Prime.sq_add_sq` gives (⇒). For odd primes, p % 4 ∈ {1,3}, so `p % 4 ≠ 3 ↔ p % 4 = 1` (closed by `omega`).",
+    "keyInsights": [
+      "**One modulus settles infinitely many cases**: The entire necessary direction reduces to a 16-case finite check in ZMod 4. There is no descent, no Gaussian integers, no quadratic reciprocity — just the fact that the only squares mod 4 are 0 and 1. This is the cleanest possible illustration of a local (congruence) obstruction to a global Diophantine equation.",
+      "**The obstruction is a property of the equation, not the target**: Phrasing it as `∀ a b : ℤ, a² + b² ≢ 3 (mod 4)` (int_sq_add_sq_not_three_mod_four) makes clear that nothing about n is used beyond its residue. Every statement about specific n (or primes p) is a corollary of this single congruence fact.",
+      "**Mathlib ships the hard half, not the easy half**: `Nat.Prime.sq_add_sq` encodes the sufficient direction (the descent / Gaussian-integer content), but Mathlib does not package the elementary obstruction as a named lemma. Supplying it is exactly what upgrades the library's one-directional result to the biconditional that students recognize as 'Fermat's theorem'.",
+      "**ZMod is the right bridge for both ℤ and ℕ**: `intCast_eq_intCast_iff` and `natCast_eq_natCast_iff'` turn congruences in ℤ and ℕ into equalities in the finite ring ZMod 4, where `decide` finishes. The only friction is the Nat-vs-Int numeral cast on the modulus, handled by `exact_mod_cast`.",
+      "**Generalization beyond primes is free**: Because the obstruction is about residues, it applies verbatim to *every* integer ≡ 3 (mod 4), not just primes. The prime statement is a one-line specialization, and the four-squares theorem (no obstruction at all) shows why dropping to two squares is exactly where congruence conditions appear."
+    ],
+    "prerequisites": [
+      "Modular arithmetic (residues mod 4, the ring ZMod n)",
+      "Quadratic residues (squares modulo small moduli)",
+      "Basic number theory (primes, the two-squares theorem statement)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "File header motivating the obstruction as the necessary direction complementing Mathlib's Nat.Prime.sq_add_sq. Imports SumTwoSquares, ZMod.Basic, and Tactic; opens the FermatTwoSquaresOQ05 namespace.",
+      "mathContext": "Fermat's two-squares theorem: an odd prime p is a sum of two squares iff p ≡ 1 (mod 4). Mathlib ships the sufficient direction; this file supplies the congruence obstruction (necessary direction)."
+    },
+    {
+      "id": "core-obstruction",
+      "title": "The Core Local Obstruction over ZMod 4",
+      "startLine": 31,
+      "endLine": 46,
+      "summary": "Proves every square in ZMod 4 is 0 or 1, and the core lemma a² + b² ≠ 3 in ZMod 4, by exhaustive kernel decide.",
+      "mathContext": "Squares mod 4 lie in {0,1}, so a² + b² ∈ {0,1,2} and is never 3. This 16-case finite check is the entire arithmetic content of the obstruction."
+    },
+    {
+      "id": "int-obstruction",
+      "title": "The Obstruction over ℤ",
+      "startLine": 47,
+      "endLine": 70,
+      "summary": "Transports the core lemma to ℤ: a² + b² ≢ 3 (mod 4) for all integers, and the corollary that no integer ≡ 3 (mod 4) is a sum of two squares.",
+      "mathContext": "Int.ModEq congruences become equalities in ZMod 4 via ZMod.intCast_eq_intCast_iff; push_cast distributes the cast over + and ^, reducing to the finite check."
+    },
+    {
+      "id": "nat-obstruction",
+      "title": "The Obstruction over ℕ",
+      "startLine": 71,
+      "endLine": 90,
+      "summary": "States the natural-number form: n % 4 = 3 implies n is not a sum of two natural-number squares.",
+      "mathContext": "ZMod.natCast_eq_natCast_iff' turns n % 4 = 3 into the cast equality in ZMod 4. This is the form most directly comparable to Fermat's two-squares theorem."
+    },
+    {
+      "id": "biconditional",
+      "title": "Prime Case and the Biconditional Sharpening",
+      "startLine": 91,
+      "endLine": 132,
+      "summary": "Specializes to primes and assembles the biconditional ∃ a b, a²+b² = p ↔ p % 4 ≠ 3 using Mathlib's Nat.Prime.sq_add_sq, plus the classical odd-prime form p = x²+y² ↔ p ≡ 1 (mod 4).",
+      "mathContext": "Combining the obstruction (necessary) with Nat.Prime.sq_add_sq (sufficient) yields Fermat's classification as a genuine iff. For odd primes p % 4 ∈ {1,3}, so ≠ 3 collapses to = 1."
+    },
+    {
+      "id": "witnesses",
+      "title": "Concrete Witnesses",
+      "startLine": 133,
+      "endLine": 152,
+      "summary": "Verifies 3, 7, 11 are not sums of two squares, and exhibits 5 = 1²+2², 13 = 2²+3² for the sufficient side.",
+      "mathContext": "3 is the smallest obstruction; 7 and 11 are further ≡ 3 (mod 4) examples (11 prime). 5 and 13 are ≡ 1 (mod 4) and decompose, illustrating both directions."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "extends",
+      "description": "Supplies the necessary (obstruction) direction of Fermat's two-squares theorem, upgrading the parent's sufficient-direction characterization to a biconditional for primes."
+    },
+    {
+      "targetId": "fermat-two-squares-oq-01",
+      "relationship": "related",
+      "description": "The Lagrange four-squares extension shows that allowing four squares removes all congruence obstructions; this entry isolates exactly the mod-4 obstruction that two squares cannot overcome."
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "foundational",
+      "description": "The hard (sufficient) direction of Fermat's theorem rests on -1 being a quadratic residue mod p iff p ≡ 1 (mod 4), a consequence of quadratic reciprocity. The obstruction here is the elementary complement requiring no such machinery."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms) formalization of the congruence obstruction half of Fermat's two-squares theorem. The single arithmetic fact that squares are 0 or 1 mod 4 — checked exhaustively in ZMod 4 — is transported to ℤ and ℕ, specialized to primes, and combined with Mathlib's sufficient direction (Nat.Prime.sq_add_sq) to produce the biconditional ∃ a b, a²+b² = p ↔ p % 4 ≠ 3, and the classical odd-prime form p = x²+y² ↔ p ≡ 1 (mod 4).",
+    "implications": "**Theoretical Significance**: The obstruction is the prototypical local-global obstruction in number theory. Its structure — reduce a global equation to a finite check in a residue ring — recurs in the three-squares theorem (mod 8), in the Hasse–Minkowski principle for quadratic forms, and in the general theory of which integers a quadratic form represents. By packaging the elementary half that Mathlib omits, this entry turns the library's one-directional Nat.Prime.sq_add_sq into the biconditional that is the recognizable statement of Fermat's theorem.",
+    "openQuestions": [
+      "Can the analogous obstruction for the three-squares theorem (no integer of the form 4ᵃ(8b+7) is a sum of three squares) be assembled with a Mathlib sufficient direction into a biconditional, mirroring this entry?",
+      "Is there a uniform Lean framework that, given a quadratic form and a modulus, automatically derives the congruence obstruction by a ZMod decide, parameterized over the modulus?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.SumTwoSquares",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "FermatTwoSquaresOQ05",
+    "lineCount": 152,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 0,
+    "path": "Proofs/FermatTwoSquaresOQ05.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "P. de Fermat",
+      "title": "Letter to Mersenne (1640)",
+      "year": "1640",
+      "venue": "",
+      "note": "Announcement of the two-squares characterization for odd primes"
+    },
+    {
+      "authors": "L. Euler",
+      "title": "De numeris qui sunt aggregata duorum quadratorum",
+      "year": "1749",
+      "venue": "Novi Commentarii Academiae Scientiarum Petropolitanae",
+      "note": "First published proof of the sufficient direction (infinite descent)"
+    }
+  ],
+  "sorries": 0
+}

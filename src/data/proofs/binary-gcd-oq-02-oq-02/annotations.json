@@ -1,0 +1,212 @@
+[
+  {
+    "id": "ann-lehmer-int-header",
+    "proofId": "binary-gcd-oq-02-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 42
+    },
+    "type": "concept",
+    "title": "Module Header and Imports",
+    "content": "The module docstring frames the file as the integer half of the OQ-02-OQ-02 question: extend D. H. Lehmer's 1938 GCD algorithm from `ℕ` to `ℤ`. Two design choices are spelled out:\n\n- The natAbs reduction inherits ℕ-level correctness with no new mathematical content — it's the same trick `Int.gcd` itself uses.\n- The leading-digit quotient-estimate accelerator (the substantive content of Lehmer's paper) is *orthogonal* and lives in `BinaryGcdOQ03OQ02*`. This file is about the ℤ extension, not the speedup.\n\nThe imports bring in Mathlib's integer-GCD theory, the standard tactic library, and crucially `Proofs.BinaryGcdOQ03OQ01`, which carries the ℕ-level Lehmer correctness theorem `lehmerGcd_correct`.",
+    "mathContext": "Every production multi-precision arithmetic library (GMP, OpenSSL, JDK BigInteger) runs Lehmer-style descent on the absolute values of integer inputs. This file is the verified Lean analogue of `BigInteger.gcd`: take `natAbs`, delegate to the ℕ-level Lehmer routine, return the unsigned result.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lehmer GCD",
+      "natAbs reduction",
+      "Int.gcd",
+      "modular proof design"
+    ],
+    "prerequisites": [
+      "Lean 4 imports",
+      "Mathlib.Data.Int.GCD",
+      "Proofs.BinaryGcdOQ03OQ01.lehmerGcd_correct"
+    ]
+  },
+  {
+    "id": "ann-lehmer-int-definition",
+    "proofId": "binary-gcd-oq-02-oq-02",
+    "range": {
+      "startLine": 44,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "lehmerGcdInt: The Core Definition",
+    "content": "The one-line definition `lehmerGcdInt a b := lehmerGcd a.natAbs b.natAbs` is the entire mathematical content of the integer extension. The return type is `ℕ` — not `ℤ` — because the GCD is always non-negative and Mathlib follows the same convention (`Int.gcd : ℤ → ℤ → ℕ`).\n\nKey observation: this definition is *definitionally aligned* with Mathlib's `Int.gcd m n := m.natAbs.gcd n.natAbs`. The two differ only in which ℕ-level GCD they delegate to (`lehmerGcd` vs `Nat.gcd`), and those are already proved equal. As a result, all of `Int.gcd`'s API will transport across with a single rewrite.",
+    "mathContext": "For $a, b \\in \\mathbb{Z}$, the function is $\\text{lehmerGcdInt}(a, b) := \\text{lehmerGcd}(|a|, |b|) \\in \\mathbb{N}$. Since $\\gcd(a,b) = \\gcd(|a|,|b|)$ for all $a, b \\in \\mathbb{Z}$, this definition is mathematically correct by construction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Int.natAbs",
+      "LehmerGcdOQ01.lehmerGcd",
+      "Int.gcd"
+    ],
+    "prerequisites": [
+      "Int.natAbs definition",
+      "lehmerGcd on ℕ"
+    ]
+  },
+  {
+    "id": "ann-lehmer-int-natabs-reduction",
+    "proofId": "binary-gcd-oq-02-oq-02",
+    "range": {
+      "startLine": 52,
+      "endLine": 62
+    },
+    "type": "concept",
+    "title": "natAbs Reduction Bridge",
+    "content": "Two lemmas establish the reduction bridge to the ℕ-level algorithm:\n\n- `lehmerGcdInt_natAbs` is `@[simp]` tagged and proved by `rfl` — `simp` will rewrite the integer call back to the natural-number call in either direction. This is the API hook that makes the entire downstream theorem family one-liners.\n- `lehmerGcdInt_natCast` handles the common case where integer inputs come from casting natural numbers: `(↑a : ℤ).natAbs = a`, so `simp` closes the equality immediately.\n\n**API design insight**: marking `lehmerGcdInt_natAbs` as `@[simp]` means all subsequent proofs can forget about the definition and work purely through `simp`. This is the same pattern `BinaryGcdOQ02` uses for binary GCD on ℤ.",
+    "mathContext": "The reduction relies on the identity $(\\uparrow n : \\mathbb{Z}).\\text{natAbs} = n$ for $n : \\mathbb{N}$ (`Int.natAbs_natCast`). Combined with the `rfl`-grade reduction, this means `lehmerGcdInt (↑a) (↑b) = lehmerGcd a b` follows by `simp` alone.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "@[simp] attribute",
+      "definitional equality",
+      "Int.natAbs_natCast",
+      "rfl-grade reductions"
+    ],
+    "prerequisites": [
+      "Lean simp lemmas",
+      "Int.natAbs",
+      "Int.natAbs_natCast"
+    ]
+  },
+  {
+    "id": "ann-lehmer-int-correctness",
+    "proofId": "binary-gcd-oq-02-oq-02",
+    "range": {
+      "startLine": 64,
+      "endLine": 70
+    },
+    "type": "insight",
+    "title": "Correctness: lehmerGcdInt Equals Int.gcd",
+    "content": "The heart of the file. `lehmerGcdInt_eq_intGcd` proves that `lehmerGcdInt` computes the same value as Mathlib's canonical `Int.gcd`. The proof is two lines:\n\n1. `unfold lehmerGcdInt Int.gcd` — both sides reduce to ℕ-level expressions on `a.natAbs` and `b.natAbs`.\n2. `exact lehmerGcd_correct a.natAbs b.natAbs` — apply the already-proved ℕ-level correctness theorem from `BinaryGcdOQ03OQ01`.\n\nThis is the textbook example of modular proof reuse: every line of algorithmic complexity was discharged once at the ℕ level, and the ℤ extension is purely bookkeeping. The same two-line shape works for binary GCD (`BinaryGcdOQ02.binaryGcdInt_eq_intGcd`) and for any future ℕ-level GCD algorithm someone formalizes.",
+    "mathContext": "Mathlib defines $\\text{Int.gcd}(m, n) := \\text{Nat.gcd}(|m|, |n|)$. We need $\\text{lehmerGcdInt}(a, b) = \\text{Int.gcd}(a, b)$, i.e., $\\text{lehmerGcd}(|a|, |b|) = \\text{Nat.gcd}(|a|, |b|)$ — exactly $\\text{lehmerGcd\\_correct}$ applied to $|a|$ and $|b|$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lehmerGcd_correct",
+      "Int.gcd",
+      "proof composition",
+      "modular proof reuse"
+    ],
+    "prerequisites": [
+      "LehmerGcdOQ01.lehmerGcd_correct",
+      "Int.gcd definition"
+    ]
+  },
+  {
+    "id": "ann-lehmer-int-sign-invariance",
+    "proofId": "binary-gcd-oq-02-oq-02",
+    "range": {
+      "startLine": 72,
+      "endLine": 87
+    },
+    "type": "concept",
+    "title": "Sign Invariance: @[simp] for Free Normalization",
+    "content": "Three lemmas establish that negating either or both arguments does not change `lehmerGcdInt`. All three are one-liners via `simp` because `(-a).natAbs = a.natAbs` (`Int.natAbs_neg`) is itself `@[simp]`.\n\nThe first two (`neg_left`, `neg_right`) are marked `@[simp]`, so downstream proofs working with `lehmerGcdInt (-a) b` never need to invoke sign-invariance manually — `simp` handles it silently. The third (`neg_neg`) follows from composing the first two and does not need its own simp tag.\n\nThis matches the API conventions of `Int.gcd` and `BinaryGcdOQ02.binaryGcdInt` exactly, ensuring `lehmerGcdInt` is a drop-in replacement.",
+    "mathContext": "The mathematical fact is $\\gcd(-a, b) = \\gcd(a, b)$ for all $a, b \\in \\mathbb{Z}$, which follows from $|-a| = |a|$. In Lean, this is `Int.natAbs_neg`, already in Mathlib's simp set, so each proof reduces to a single `simp` call.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Int.natAbs_neg",
+      "@[simp] design",
+      "sign invariance of GCD"
+    ],
+    "prerequisites": [
+      "Int.natAbs_neg",
+      "Lean simp set architecture"
+    ]
+  },
+  {
+    "id": "ann-lehmer-int-edges",
+    "proofId": "binary-gcd-oq-02-oq-02",
+    "range": {
+      "startLine": 89,
+      "endLine": 112
+    },
+    "type": "concept",
+    "title": "Edge Cases and Algebraic Properties",
+    "content": "Five lemmas establish that `lehmerGcdInt` satisfies the standard GCD identities on ℤ:\n\n- `lehmerGcdInt_zero_left b = b.natAbs` and `_zero_right a = a.natAbs` (identity elements, `@[simp]`)\n- `lehmerGcdInt_comm a b = lehmerGcdInt b a` (commutativity)\n- `lehmerGcdInt_self a = a.natAbs` (idempotence, `@[simp]`)\n- `lehmerGcdInt_nonneg : 0 ≤ lehmerGcdInt a b` (trivially, since the output is `ℕ`)\n\nEach proof follows the same pattern: rewrite via `lehmerGcdInt_eq_intGcd` to reduce to `Int.gcd`, then apply the matching `Int.gcd_*` Mathlib lemma. The bridge theorem from the previous section does all the heavy lifting.",
+    "mathContext": "These are the ℤ-level mirror of the standard ℕ-level GCD lemmas. Each reduces in one rewrite to the corresponding `Int.gcd_*` Mathlib lemma, illustrating how a single definitional bridge inherits an entire theorem family without re-derivation.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Int.gcd_comm",
+      "Int.gcd_self",
+      "Int.gcd_zero_left",
+      "Int.gcd_zero_right"
+    ],
+    "prerequisites": [
+      "Int.gcd Mathlib API",
+      "lehmerGcdInt_eq_intGcd"
+    ]
+  },
+  {
+    "id": "ann-lehmer-int-universal-property",
+    "proofId": "binary-gcd-oq-02-oq-02",
+    "range": {
+      "startLine": 114,
+      "endLine": 160
+    },
+    "type": "insight",
+    "title": "Universal Property of lehmerGcdInt (Mathlib-Version-Stable)",
+    "content": "Three lemmas characterize `lehmerGcdInt` as a greatest common divisor in the ℤ-divisibility lattice:\n\n- `lehmerGcdInt_dvd_left : (lehmerGcdInt a b : ℤ) ∣ a`\n- `lehmerGcdInt_dvd_right : (lehmerGcdInt a b : ℤ) ∣ b`\n- `dvd_lehmerGcdInt : c ∣ a → c ∣ b → c ∣ (lehmerGcdInt a b : ℤ)`\n\n**Design choice**: the proofs do *not* go through Mathlib's `Int.gcd_dvd_*` lemmas. Instead they route via:\n1. `lehmerGcd_correct` — reduce to `Nat.gcd` on natAbs.\n2. `Nat.gcd_dvd_left`/`Nat.gcd_dvd_right`/`Nat.dvd_gcd` — apply the ℕ-level universal property.\n3. `Int.natCast_dvd_natCast` — lift ℕ-divisibility to ℤ.\n4. `Int.natAbs_dvd` / `Int.dvd_natAbs` — bridge between `a` and `↑a.natAbs`.\n\nThis routing is **deliberately Mathlib-version-stable**: the typing convention of `Int.gcd_dvd_*` (ℕ-typed divisor vs ℤ-typed divisor) shifted in recent Mathlib versions, but the natAbs route is invariant under that shift. The result: the file compiles cleanly across Mathlib 4.25 and 4.26 without conditional imports.\n\nThe universal property is the *defining* characterization of GCD: it pins down `lehmerGcdInt` as a greatest lower bound in the divisibility lattice on ℤ.",
+    "mathContext": "For any $c \\in \\mathbb{Z}$ with $c \\mid a$ and $c \\mid b$, we conclude $c \\mid \\gcd(a, b)$. The proof factors through natAbs-respecting divisibility: $c \\mid a \\Rightarrow |c| \\mid |a|$ (`Int.natAbs_dvd_natAbs`), then the ℕ universal property $|c| \\mid \\gcd(|a|, |b|)$, then cast back via `Int.natCast_dvd_natCast` composed with `Int.dvd_natAbs`. Each step is a one-liner.",
+    "significance": "key",
+    "relatedConcepts": [
+      "GCD universal property",
+      "Int.natAbs_dvd",
+      "Int.natCast_dvd_natCast",
+      "Nat.dvd_gcd",
+      "API-stable proof design"
+    ],
+    "prerequisites": [
+      "GCD universal property",
+      "Int.natAbs_dvd",
+      "Int.natAbs_dvd_natAbs",
+      "Nat.dvd_gcd"
+    ]
+  },
+  {
+    "id": "ann-lehmer-int-cross-algorithm",
+    "proofId": "binary-gcd-oq-02-oq-02",
+    "range": {
+      "startLine": 162,
+      "endLine": 176
+    },
+    "type": "insight",
+    "title": "Cross-Algorithm Agreement (No Import Cycle)",
+    "content": "`lehmerGcdInt_eq_natAbs_gcd : lehmerGcdInt a b = a.natAbs.gcd b.natAbs` states agreement with the *shape* of `BinaryGcdOQ02.binaryGcdInt`'s result without importing the binary-GCD file. The proof is two lines: rewrite to `Int.gcd`, then `rfl` (since `Int.gcd` is *defined* as `a.natAbs.gcd b.natAbs`).\n\n**Why this matters**: `BinaryGcdOQ02.lean` imports `Proofs.GcdAlgorithmOQ02` (for the ℕ-level binary GCD), and this file imports `Proofs.BinaryGcdOQ03OQ01` (for the ℕ-level Lehmer GCD). A direct cross-import in either direction would create a dependency cycle. Phrasing the agreement through the shared `Nat.gcd` form sidesteps this entirely.\n\nAny downstream proof can compose `lehmerGcdInt_eq_natAbs_gcd` with `BinaryGcdOQ02.binaryGcdInt_eq_natAbs_gcd` (or with `binaryGcdInt_eq_intGcd`) to conclude `lehmerGcdInt a b = binaryGcdInt a b` — both algorithms compute the same value on every ℤ input, as required.",
+    "mathContext": "Two algorithms that both compute $\\gcd$ on $\\mathbb{Z}$ must produce equal values on every input. The shortest formal route to that equality is to show each equals a common reference (here, $|a|.\\text{gcd}(|b|)$, or equivalently $\\text{Int.gcd}$) and compose. This is the standard technique for inter-algorithm equivalence proofs.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "BinaryGcdOQ02.binaryGcdInt",
+      "import cycle avoidance",
+      "definitional unfolding"
+    ],
+    "prerequisites": [
+      "Int.gcd unfolding",
+      "lehmerGcdInt_eq_intGcd"
+    ]
+  },
+  {
+    "id": "ann-lehmer-int-decide-examples",
+    "proofId": "binary-gcd-oq-02-oq-02",
+    "range": {
+      "startLine": 178,
+      "endLine": 201
+    },
+    "type": "insight",
+    "title": "Kernel-Level Verification via decide",
+    "content": "Eight concrete examples cover every combination of sign (positive/negative) and special case (zero, self-application) and verify that `lehmerGcdInt` computes the expected value. Each uses the two-step incantation:\n\n```lean\nby rw [lehmerGcdInt_eq_intGcd]; decide\n```\n\nThe `rw` rewrites to `Int.gcd`, then `decide` — Lean's kernel-level decision procedure — fully reduces the call to a concrete numeral and confirms it matches the right-hand side. Since `Int.gcd` reduces to `Nat.gcd` on `natAbs`, both decidable on concrete numerals, the entire computation happens inside the kernel.\n\nThese are not unit tests — they are proof certificates. The Lean type-checker itself runs the computation and records the equality in the kernel's verification stream.\n\nThe closing summary in the file delineates the scope: the integer extension is complete and verified; the bignum *bit-sequence* extension (formal limb-level equivalence) is orthogonal and lives in `BinaryGcdOQ03OQ02*`. The Lehmer accelerator's leading-digit content is also out of scope here.",
+    "mathContext": "Examples include $\\gcd(-12, 18) = 6$, $\\gcd(0, \\pm 7) = 7$, and $\\gcd(\\pm 17, 17) = 17$, covering each sign combination and the zero/self edges. Each is closed by `decide` after the rewrite, exhibiting kernel-level reduction of the algorithm on concrete numerals.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lean decide tactic",
+      "kernel evaluation",
+      "definitional reduction",
+      "proof certificates"
+    ],
+    "prerequisites": [
+      "Lean 4 decide tactic",
+      "kernel computation",
+      "computability of lehmerGcd"
+    ]
+  }
+]

@@ -1,0 +1,270 @@
+[
+  {
+    "id": "erdos-503-ann-imports",
+    "proofId": "erdos-503",
+    "type": "concept",
+    "range": {
+      "startLine": 26,
+      "endLine": 31
+    },
+    "title": "Imports and Namespace",
+    "content": "Imports $\\texttt{Nat.Basic}$, $\\texttt{Nat.Choose.Basic}$ for binomial coefficients $\\binom{n}{k}$, $\\texttt{Finset.Basic}$ for finite sets of points, and $\\texttt{Tactic}$ for $\\texttt{norm\\_num}$ verification. The namespace $\\texttt{Erdos503}$ scopes all definitions.",
+    "mathContext": "The bounds involve $\\binom{n+2}{2}$ and $\\binom{n+1}{2}$, requiring $\\texttt{Nat.choose}$. The abstract metric space uses $\\texttt{Dist}$ for pairwise distance computation.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.choose",
+      "Finset",
+      "Dist",
+      "namespace"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib combinatorics"
+    ]
+  },
+  {
+    "id": "erdos-503-ann-isosceles-def",
+    "proofId": "erdos-503",
+    "type": "definition",
+    "range": {
+      "startLine": 40,
+      "endLine": 43
+    },
+    "title": "Isosceles Set Definition",
+    "content": "A finite set $A$ in a metric space is an isosceles set if every triple of distinct points $\\{x, y, z\\} \\subset A$ satisfies $d(x,y) = d(y,z)$ or $d(y,z) = d(x,z)$ or $d(x,y) = d(x,z)$—at least two of the three pairwise distances are equal. Equivalently, no triple forms a scalene triangle. The formalization uses an abstract $\\texttt{Dist}$ typeclass rather than fixing $\\mathbb{R}^n$.",
+    "mathContext": "$\\texttt{IsIsoscelesSet}(A) \\iff \\forall x,y,z \\in A,\\; x \\neq y \\neq z \\neq x \\Rightarrow d(x,y) = d(y,z) \\lor d(y,z) = d(x,z) \\lor d(x,y) = d(x,z)$. Three cases correspond to the three possible pairs of equal distances.",
+    "significance": "key",
+    "relatedConcepts": [
+      "isosceles triangle",
+      "metric space",
+      "Dist typeclass",
+      "scalene avoidance"
+    ],
+    "prerequisites": [
+      "Dist",
+      "Finset membership",
+      "distinctness"
+    ]
+  },
+  {
+    "id": "erdos-503-ann-max-size",
+    "proofId": "erdos-503",
+    "type": "concept",
+    "range": {
+      "startLine": 48,
+      "endLine": 48
+    },
+    "title": "Maximum Isosceles Set Size $f(n)$",
+    "content": "The extremal function $f(n) = \\texttt{maxIsoscelesSize}(n)$: the largest cardinality of an isosceles set in $\\mathbb{R}^n$. Axiomatized as a function $\\mathbb{N} \\to \\mathbb{N}$ since the supremum exists (finite upper bound from Blokhuis). The problem: determine $f(n)$ for each $n$.",
+    "mathContext": "$f(n) = \\max\\{|A| : A \\subset \\mathbb{R}^n,\\; A \\text{ is isosceles}\\}$. Known: $f(1) = 3$ (trivial), $f(2) = 6$ (Kelly), $f(3) = 8$ (Croft). Unknown for $n \\geq 4$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal function",
+      "Ramsey-type problem",
+      "finite point configurations"
+    ],
+    "prerequisites": [
+      "IsIsoscelesSet",
+      "Euclidean space"
+    ]
+  },
+  {
+    "id": "erdos-503-ann-kelly",
+    "proofId": "erdos-503",
+    "type": "concept",
+    "range": {
+      "startLine": 57,
+      "endLine": 57
+    },
+    "title": "Kelly's Theorem: $f(2) = 6$",
+    "content": "L. M. Kelly proved (with Erdős, 1947) that the maximum isosceles set in the plane has exactly 6 points. The extremal configuration is the vertex set of a regular hexagon: every triple of vertices of a regular hexagon forms an isosceles triangle. An alternative proof was given by Kovács [Ko24c] using a case analysis on distance graphs.",
+    "mathContext": "$f(2) = 6 = \\binom{4}{2}$. The regular hexagon vertices $\\{e^{2\\pi i k/6} : k = 0, \\ldots, 5\\}$ achieve this. Note $\\binom{3}{2} + 1 = 4 \\leq 6 = \\binom{4}{2}$, so the Blokhuis bound is tight for $n = 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "regular hexagon",
+      "planar distance problems",
+      "Erdős-Kelly"
+    ],
+    "prerequisites": [
+      "maxIsoscelesSize",
+      "planar geometry"
+    ]
+  },
+  {
+    "id": "erdos-503-ann-croft",
+    "proofId": "erdos-503",
+    "type": "concept",
+    "range": {
+      "startLine": 63,
+      "endLine": 63
+    },
+    "title": "Croft's Theorem: $f(3) = 8$",
+    "content": "H. T. Croft proved in 1962 that the maximum isosceles set in $\\mathbb{R}^3$ has exactly 8 points. The extremal configuration uses vertices of specific polyhedra. The answer $f(3) = 8$ lies strictly between the general bounds: $\\binom{4}{2}+1 = 7 \\leq 8 \\leq \\binom{5}{2} = 10$.",
+    "mathContext": "$f(3) = 8$. Compare: $\\binom{4}{2}+1 = 7 < 8 < 10 = \\binom{5}{2}$. Neither the Weisenberg lower bound nor the Blokhuis upper bound is tight for $n = 3$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "three-dimensional geometry",
+      "extremal configurations",
+      "polyhedra"
+    ],
+    "prerequisites": [
+      "maxIsoscelesSize",
+      "3D Euclidean geometry"
+    ]
+  },
+  {
+    "id": "erdos-503-ann-blokhuis",
+    "proofId": "erdos-503",
+    "type": "concept",
+    "range": {
+      "startLine": 71,
+      "endLine": 72
+    },
+    "title": "Blokhuis Upper Bound: $f(n) \\leq \\binom{n+2}{2}$",
+    "content": "Aart Blokhuis proved in 1984 that any isosceles set in $\\mathbb{R}^n$ has at most $\\binom{n+2}{2} = \\frac{(n+2)(n+1)}{2}$ points. The proof uses the dimension of the space of symmetric bilinear forms: associating to each point a distance profile in the $\\binom{|A|}{2}$-dimensional space of pairwise distances, the isosceles condition forces linear dependencies.",
+    "mathContext": "$f(n) \\leq \\binom{n+2}{2}$ [Blokhuis 1984]. For $n = 2$: $\\binom{4}{2} = 6$; $n = 3$: $\\binom{5}{2} = 10$; $n = 4$: $\\binom{6}{2} = 15$. Growth: $\\Theta(n^2/2)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "linear algebra bound",
+      "distance profiles",
+      "symmetric forms",
+      "polynomial method"
+    ],
+    "prerequisites": [
+      "maxIsoscelesSize",
+      "linear algebra"
+    ]
+  },
+  {
+    "id": "erdos-503-ann-alweiss",
+    "proofId": "erdos-503",
+    "type": "concept",
+    "range": {
+      "startLine": 79,
+      "endLine": 80
+    },
+    "title": "Alweiss Lower Bound: $f(n) \\geq \\binom{n+1}{2}$",
+    "content": "Ryan Alweiss constructed isosceles sets of size $\\binom{n+1}{2}$ in $\\mathbb{R}^n$ using the set of vectors $\\{e_i + e_j : 1 \\leq i < j \\leq n+1\\}$ in $\\mathbb{R}^{n+1}$, projected to $\\mathbb{R}^n$. For any triple of these vectors, the symmetry of the coordinate structure forces at least two equal distances.",
+    "mathContext": "$f(n) \\geq \\binom{n+1}{2}$ [Alweiss]. Construction: $\\{e_i + e_j : i < j\\} \\subset \\mathbb{R}^{n+1}$, projected to an $n$-dimensional subspace. For $n = 4$: $\\binom{5}{2} = 10$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "coordinate vectors",
+      "projection",
+      "symmetric construction"
+    ],
+    "prerequisites": [
+      "maxIsoscelesSize",
+      "standard basis vectors"
+    ]
+  },
+  {
+    "id": "erdos-503-ann-weisenberg",
+    "proofId": "erdos-503",
+    "type": "concept",
+    "range": {
+      "startLine": 87,
+      "endLine": 88
+    },
+    "title": "Weisenberg Improvement: $f(n) \\geq \\binom{n+1}{2} + 1$",
+    "content": "Weisenberg showed that one additional point can always be added to Alweiss's $\\{e_i + e_j\\}$ construction while preserving the isosceles property, improving the lower bound by 1. The added point exploits the symmetry of the construction to maintain equal distances with all existing triples.",
+    "mathContext": "$f(n) \\geq \\binom{n+1}{2} + 1$ [Weisenberg]. For $n = 4$: $\\binom{5}{2} + 1 = 11$. Combined with Blokhuis: $11 \\leq f(4) \\leq 15$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "augmented construction",
+      "greedy extension",
+      "isosceles preservation"
+    ],
+    "prerequisites": [
+      "alweiss_lower_bound",
+      "isosceles set extension"
+    ]
+  },
+  {
+    "id": "erdos-503-ann-bounds",
+    "proofId": "erdos-503",
+    "type": "concept",
+    "range": {
+      "startLine": 97,
+      "endLine": 101
+    },
+    "title": "Combined Bounds: $\\binom{n+1}{2}+1 \\leq f(n) \\leq \\binom{n+2}{2}$",
+    "content": "The theorem $\\texttt{erdos\\_503\\_bounds}$ combines the Weisenberg lower bound and Blokhuis upper bound: for $n \\geq 2$, $\\binom{n+1}{2}+1 \\leq f(n) \\leq \\binom{n+2}{2}$. The gap is $\\binom{n+2}{2} - \\binom{n+1}{2} - 1 = n$, growing linearly in $n$. This is the only proved theorem in the file (not axiomatized), following directly from the two axioms.",
+    "mathContext": "$\\binom{n+1}{2}+1 \\leq f(n) \\leq \\binom{n+2}{2}$. Gap: $\\binom{n+2}{2} - \\binom{n+1}{2} = n+1$, so after the $+1$, the gap is $n$. For $n = 10$: $56 \\leq f(10) \\leq 66$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sandwich theorem",
+      "extremal bounds",
+      "linear gap"
+    ],
+    "prerequisites": [
+      "weisenberg_improvement",
+      "blokhuis_upper_bound"
+    ]
+  },
+  {
+    "id": "erdos-503-ann-consistency-2",
+    "proofId": "erdos-503",
+    "type": "concept",
+    "range": {
+      "startLine": 107,
+      "endLine": 107
+    },
+    "title": "Consistency Check: $n = 2$",
+    "content": "Verifies $\\binom{3}{2}+1 = 4 \\leq 6 \\leq \\binom{4}{2} = 6$ by $\\texttt{norm\\_num}$. The Blokhuis upper bound is tight for $n = 2$: $f(2) = 6 = \\binom{4}{2}$.",
+    "mathContext": "$4 \\leq 6 \\leq 6$. Since $f(2) = \\binom{4}{2}$, the upper bound is achieved. The lower bound $4 < 6$ shows Weisenberg is not tight for $n = 2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "norm_num",
+      "consistency verification",
+      "tightness"
+    ],
+    "prerequisites": [
+      "Nat.choose",
+      "norm_num tactic"
+    ]
+  },
+  {
+    "id": "erdos-503-ann-consistency-3",
+    "proofId": "erdos-503",
+    "type": "concept",
+    "range": {
+      "startLine": 113,
+      "endLine": 113
+    },
+    "title": "Consistency Check: $n = 3$",
+    "content": "Verifies $\\binom{4}{2}+1 = 7 \\leq 8 \\leq \\binom{5}{2} = 10$ by $\\texttt{norm\\_num}$. Neither bound is tight for $n = 3$: $f(3) = 8$ with lower bound 7 and upper bound 10.",
+    "mathContext": "$7 \\leq 8 \\leq 10$. Since $f(3) = 8 \\neq 7 \\neq 10$, both bounds are strict for $n = 3$. The Blokhuis bound has slack 2 and Weisenberg has slack 1.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "norm_num",
+      "bound tightness",
+      "slack analysis"
+    ],
+    "prerequisites": [
+      "Nat.choose",
+      "norm_num tactic"
+    ]
+  },
+  {
+    "id": "erdos-503-ann-summary",
+    "proofId": "erdos-503",
+    "type": "concept",
+    "range": {
+      "startLine": 123,
+      "endLine": 125
+    },
+    "title": "Summary: Exact Values $f(2) = 6$, $f(3) = 8$",
+    "content": "The summary theorem $\\texttt{erdos\\_503\\_summary}$ records the two known exact values: $f(2) = 6$ (Kelly) and $f(3) = 8$ (Croft). These follow directly from the axioms $\\texttt{kelly\\_R2}$ and $\\texttt{croft\\_R3}$. The exact value of $f(n)$ for any $n \\geq 4$ remains an open problem.",
+    "mathContext": "$f(2) = 6 \\wedge f(3) = 8$. Open: $f(4) \\in [11, 15]$, $f(5) \\in [16, 21]$, $f(6) \\in [22, 28]$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "exact values",
+      "open problems",
+      "extremal combinatorics"
+    ],
+    "prerequisites": [
+      "kelly_R2",
+      "croft_R3"
+    ]
+  }
+]

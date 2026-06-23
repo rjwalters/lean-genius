@@ -1,0 +1,182 @@
+[
+  {
+    "id": "ann-e125-header",
+    "proofId": "erdos-125",
+    "range": {
+      "startLine": 1,
+      "endLine": 15
+    },
+    "type": "concept",
+    "title": "Problem Overview and Known Results",
+    "content": "Header documenting Erdős Problem #125 on digit-restricted sumsets. The problem asks whether the sumset of numbers with only 0,1 digits in base 3 and base 4 has positive density. Burr, Erdős, Graham, and Li posed this in 1996. Melfi (2001) proved the counting function grows as $x^{0.965}$; Hasler and Melfi (2024) improved this to $x^{0.9777}$ and showed the upper density is at most 0.696.",
+    "mathContext": "Let $A = \\{\\sum \\varepsilon_k 3^k : \\varepsilon_k \\in \\{0,1\\}\\}$ and $B = \\{\\sum \\varepsilon_k 4^k : \\varepsilon_k \\in \\{0,1\\}\\}$. Does $C = A + B$ satisfy $\\underline{d}(C) = \\liminf_{x \\to \\infty} |C \\cap [1,x]|/x > 0$? Known: $|C \\cap [1,x]| \\gg x^{0.9777}$ and $\\overline{d}(C) \\leq 0.696$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "natural density",
+      "Cantor set integers",
+      "digit restrictions",
+      "additive combinatorics"
+    ],
+    "prerequisites": [
+      "asymptotic density",
+      "base representations",
+      "sumsets"
+    ]
+  },
+  {
+    "id": "ann-e125-imports",
+    "proofId": "erdos-125",
+    "range": {
+      "startLine": 17,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Imports",
+    "content": "Imports Mathlib's digit representation (`Nat.digits`), basic natural number and real number infrastructure, `Finset` for counting, and `Filter` for asymptotic statements.",
+    "mathContext": "Uses `Nat.digits b n` which returns the list of base-$b$ digits of $n$, enabling the definition of digit-restricted sets via list membership conditions.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.digits",
+      "Finset.filter"
+    ],
+    "prerequisites": [
+      "Mathlib.Data.Nat.Digits"
+    ]
+  },
+  {
+    "id": "erdos-125-digits",
+    "proofId": "erdos-125",
+    "range": {
+      "startLine": 24,
+      "endLine": 38
+    },
+    "type": "definition",
+    "title": "Digit-Restricted Sets (Cantor Set Integers)",
+    "content": "Defines `digitSet b` as the set of natural numbers whose base-$b$ representation uses only the digits 0 and 1. These are exactly the sums of distinct powers of $b$, forming the integer analogue of the Cantor set. `setA = digitSet 3` (Cantor set integers in base 3) and `setB = digitSet 4` (Cantor set integers in base 4) are the specific sets in the problem.",
+    "mathContext": "$\\text{digitSet}(b) = \\{n \\in \\mathbb{N} : \\text{every digit of } n \\text{ in base } b \\text{ is 0 or 1}\\} = \\{\\sum_{k} \\varepsilon_k b^k : \\varepsilon_k \\in \\{0,1\\}\\}$. The set $A = \\text{digitSet}(3)$ has counting function $|A \\cap [0,x]| \\sim x^{\\log_3 2} \\approx x^{0.631}$, and $|B \\cap [0,x]| \\sim x^{\\log_4 2} = x^{0.5}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cantor set",
+      "base representations",
+      "sums of distinct powers",
+      "fractal dimension"
+    ],
+    "prerequisites": [
+      "Nat.digits",
+      "base-b representation"
+    ]
+  },
+  {
+    "id": "erdos-125-sumset",
+    "proofId": "erdos-125",
+    "range": {
+      "startLine": 40,
+      "endLine": 49
+    },
+    "type": "definition",
+    "title": "The Sumset $C = A + B$",
+    "content": "Defines $C = A + B = \\{a + b : a \\in A,\\, b \\in B\\}$ as the Minkowski sum of the two digit-restricted sets. The counting function `countingC x` gives $|C \\cap [0, x]|$ using `Finset.filter`. Despite both $A$ and $B$ having density 0, their sumset $C$ could potentially have positive density because the two sets are 'independent' in a number-theoretic sense.",
+    "mathContext": "$C = A + B = \\{a + b : a \\in A,\\, b \\in B\\}$. Although $|A| \\sim x^{0.631}$ and $|B| \\sim x^{0.5}$, the number of distinct sums could be as large as $|A| \\cdot |B| \\sim x^{1.131}$, far exceeding $x$ — suggesting positive density is plausible.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Minkowski sum",
+      "sumset growth",
+      "additive combinatorics",
+      "counting function"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "set membership"
+    ]
+  },
+  {
+    "id": "erdos-125-conjecture",
+    "proofId": "erdos-125",
+    "range": {
+      "startLine": 51,
+      "endLine": 60
+    },
+    "type": "concept",
+    "title": "Erdős Problem 125: Positive Lower Density",
+    "content": "The formal conjecture: there exists $\\delta > 0$ such that $\\liminf_{x \\to \\infty} |C \\cap [1,x]|/x \\geq \\delta$. The formalization uses an $\\varepsilon$-$\\delta$ characterization of $\\liminf > 0$: for every $\\varepsilon > 0$, the ratio $|C \\cap [1,x]|/x$ eventually exceeds $\\delta - \\varepsilon$.",
+    "mathContext": "$\\text{ErdosProblem125} \\iff \\exists \\delta > 0,\\, \\forall \\varepsilon > 0,\\, \\exists N_0,\\, \\forall x \\geq N_0,\\, |C \\cap [0,x]|/x \\geq \\delta - \\varepsilon$. This is equivalent to $\\underline{d}(C) > 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lower asymptotic density",
+      "liminf",
+      "epsilon-delta characterization"
+    ],
+    "prerequisites": [
+      "asymptotic density",
+      "real analysis"
+    ]
+  },
+  {
+    "id": "erdos-125-lower",
+    "proofId": "erdos-125",
+    "range": {
+      "startLine": 62,
+      "endLine": 74
+    },
+    "type": "concept",
+    "title": "Counting Lower Bounds (Melfi, Hasler-Melfi)",
+    "content": "Two progressively stronger lower bounds on $|C \\cap [1,x]|$. Melfi (2001) proved $|C \\cap [1,x]| \\geq cx^{0.965}$ for large $x$. Hasler and Melfi (2024) improved this to $cx^{0.9777}$. Both bounds are sub-linear (exponent $< 1$) so they do not directly prove positive density, but the exponent is tantalizingly close to 1.",
+    "mathContext": "Melfi: $\\exists c > 0,\\, |C \\cap [1,x]| \\geq c x^{0.965}$ for $x \\geq N_0$. Hasler-Melfi: $\\exists c > 0,\\, |C \\cap [1,x]| \\geq c x^{0.9777}$ for $x \\geq N_0$. Positive density requires exponent $= 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counting functions",
+      "sub-linear growth",
+      "power-law bounds"
+    ],
+    "prerequisites": [
+      "asymptotic notation",
+      "Melfi 2001"
+    ]
+  },
+  {
+    "id": "erdos-125-upper",
+    "proofId": "erdos-125",
+    "range": {
+      "startLine": 76,
+      "endLine": 84
+    },
+    "type": "concept",
+    "title": "Upper Density Bound (Hasler-Melfi 2024)",
+    "content": "Hasler and Melfi (2024) showed the upper density of $C$ is at most approximately 0.696. This means $C$ must miss at least 30% of the natural numbers, even if it has positive lower density. The bound comes from analyzing the measure-theoretic properties of the digit-restricted sets.",
+    "mathContext": "$\\overline{d}(C) = \\limsup_{x \\to \\infty} |C \\cap [0,x]|/x \\leq 0.696 + \\varepsilon$ for any $\\varepsilon > 0$ and large enough $x$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "upper density",
+      "limsup density",
+      "density gap"
+    ],
+    "prerequisites": [
+      "upper asymptotic density",
+      "Hasler-Melfi 2024"
+    ]
+  },
+  {
+    "id": "erdos-125-general",
+    "proofId": "erdos-125",
+    "range": {
+      "startLine": 86,
+      "endLine": 92
+    },
+    "type": "concept",
+    "title": "Generalization to Multiple Bases",
+    "content": "The general question: for bases $n_1 < \\cdots < n_k$ with $\\sum_{i=1}^k \\log_{n_i}(2) > 1$, does $\\text{digitSet}(n_1) + \\cdots + \\text{digitSet}(n_k)$ have positive density? The log-sum condition ensures the combined 'fractal dimensions' exceed 1, making positive density plausible. For bases 3 and 4, $\\log_3(2) + \\log_4(2) \\approx 0.631 + 0.5 = 1.131 > 1$.",
+    "mathContext": "The condition $\\sum \\log_{n_i}(2) > 1$ means $\\sum \\dim_H(\\text{digitSet}(n_i)) > 1$, where $\\dim_H$ is the Hausdorff dimension of the corresponding Cantor set. For bases 3, 4: $\\frac{\\ln 2}{\\ln 3} + \\frac{\\ln 2}{\\ln 4} \\approx 1.131 > 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hausdorff dimension",
+      "Cantor sets",
+      "fractal dimension condition",
+      "Marstrand's theorem"
+    ],
+    "prerequisites": [
+      "Hausdorff dimension",
+      "Real.log",
+      "logarithm change of base"
+    ]
+  }
+]

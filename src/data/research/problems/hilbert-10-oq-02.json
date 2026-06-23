@@ -1,0 +1,107 @@
+{
+  "slug": "hilbert-10-oq-02",
+  "title": "Hilbert 10th: decidability extensions and DPRM connections",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "IN-PROGRESS: [Explain what we're trying to prove in accessible terms] | Focus: Initial problem understanding.",
+    "whyMatters": [
+      "Research value"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-05-29T19:14:08.995Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "computability",
+    "hilbert-problems",
+    "decidability"
+  ],
+  "relatedProofs": [
+    "hilbert-10",
+    "hilbert-10-oq-01",
+    "hilbert-10-oq-01-oq-02",
+    "hilbert-10-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-29T19:14:08.993Z",
+  "lastUpdate": "2026-05-29T19:14:08.993Z",
+  "significance": 8,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Hilbert10.lean",
+      "filename": "Hilbert10.lean",
+      "lineCount": 239,
+      "theoremCount": 7,
+      "axiomCount": 4,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert10.lean"
+    },
+    {
+      "path": "Proofs/Hilbert10OQ01.lean",
+      "filename": "Hilbert10OQ01.lean",
+      "lineCount": 187,
+      "theoremCount": 0,
+      "axiomCount": 2,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert10OQ01.lean"
+    },
+    {
+      "path": "Proofs/Hilbert10OQ01OQ02.lean",
+      "filename": "Hilbert10OQ01OQ02.lean",
+      "lineCount": 3083,
+      "theoremCount": 85,
+      "axiomCount": 1,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert10OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/Hilbert10OQ04.lean",
+      "filename": "Hilbert10OQ04.lean",
+      "lineCount": 251,
+      "theoremCount": 10,
+      "axiomCount": 5,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert10OQ04.lean"
+    }
+  ]
+}

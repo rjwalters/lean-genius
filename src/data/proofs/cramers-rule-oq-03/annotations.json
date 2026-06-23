@@ -1,0 +1,202 @@
+[
+  {
+    "id": "ann-nc-cramer-header",
+    "proofId": "cramers-rule-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Non-Commutative Cramer's Rule: Setup and Motivation",
+    "content": "Imports `Mathlib.LinearAlgebra.Matrix.Adjugate` for the matrix API and `Mathlib.Tactic` for automation. The header describes the Gelfand-Retakh quasideterminant approach to solving $Ax = b$ over division rings $D$ where multiplication is not commutative. The key insight: classical determinants fail when $ad - bc \\neq ad - cb$, but the Schur complement $a_{00} - a_{01} a_{11}^{-1} a_{10}$ still makes sense and yields a solvability criterion.",
+    "mathContext": "Over a division ring $D$, the classical determinant $\\det(A) = a_{00}a_{11} - a_{01}a_{10}$ is not well-defined because $a_{01}a_{10} \\neq a_{10}a_{01}$ in general. The quasideterminant $|A|_{00} = a_{00} - a_{01}a_{11}^{-1}a_{10}$ replaces $\\det$ as the solvability criterion.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Schur complement",
+      "division ring",
+      "non-commutative algebra",
+      "Gelfand-Retakh theory"
+    ],
+    "prerequisites": [
+      "DivisionRing typeclass in Lean",
+      "Matrix API in Mathlib"
+    ]
+  },
+  {
+    "id": "ann-nc-cramer-quasidet",
+    "proofId": "cramers-rule-oq-03",
+    "range": {
+      "startLine": 37,
+      "endLine": 42
+    },
+    "type": "definition",
+    "title": "Quasideterminants: (0,0) and (1,1) Cases",
+    "content": "Defines the two diagonal quasideterminants for a $2 \\times 2$ matrix. `quasidet₀₀ A = A 0 0 - A 0 1 * (A 1 1)⁻¹ * A 1 0` is the Schur complement of the $(1,1)$-entry: it measures what remains of $a_{00}$ after eliminating the contribution from the second row. Similarly `quasidet₁₁` eliminates via the first row. Unlike the classical determinant, these two quasideterminants are generally different because multiplication order matters.",
+    "mathContext": "$|A|_{00} = a_{00} - a_{01}a_{11}^{-1}a_{10}$, $|A|_{11} = a_{11} - a_{10}a_{00}^{-1}a_{01}$. In a commutative ring: $|A|_{00} \\cdot a_{11} = a_{00}a_{11} - a_{01}a_{10} = \\det(A)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Schur complement",
+      "block matrix inversion",
+      "quasideterminant"
+    ],
+    "prerequisites": [
+      "DivisionRing",
+      "inverse element"
+    ]
+  },
+  {
+    "id": "ann-nc-cramer-solve",
+    "proofId": "cramers-rule-oq-03",
+    "range": {
+      "startLine": 51,
+      "endLine": 66
+    },
+    "type": "definition",
+    "title": "Solution Formula: ncSolve",
+    "content": "Defines the explicit solution to $Ax = b$ over a division ring. The formula comes from back-substitution: first solve row 1 for $x_1$ as $a_{11}^{-1}(b_1 - a_{10}x_0)$, then substitute into row 0 and solve for $x_0$ using the quasideterminant. The simp lemmas `ncSolve_zero` and `ncSolve_one` extract the two components, making downstream proofs cleaner.",
+    "mathContext": "$x_0 = |A|_{00}^{-1}(b_0 - a_{01}a_{11}^{-1}b_1)$, $x_1 = a_{11}^{-1}(b_1 - a_{10}x_0)$. Note the left-multiplication by inverses throughout — this matches the row structure $\\sum_j a_{ij} x_j = b_i$ where $a_{ij}$ multiplies $x_j$ on the left.",
+    "significance": "key",
+    "relatedConcepts": [
+      "back-substitution",
+      "Gaussian elimination",
+      "left vs right inverse"
+    ],
+    "prerequisites": [
+      "quasidet₀₀",
+      "DivisionRing inverse"
+    ]
+  },
+  {
+    "id": "ann-nc-cramer-row1",
+    "proofId": "cramers-rule-oq-03",
+    "range": {
+      "startLine": 74,
+      "endLine": 78
+    },
+    "type": "concept",
+    "title": "Row 1 Correctness: Left Cancellation",
+    "content": "Proves $a_{10}x_0 + a_{11}x_1 = b_1$ using the key identity $a_{11} \\cdot a_{11}^{-1} \\cdot z = z$ (left cancellation via `mul_inv_cancel₀`). The proof is just two steps: rewrite $x_1 = a_{11}^{-1}(b_1 - a_{10}x_0)$, cancel $a_{11} \\cdot a_{11}^{-1}$, then use `abel` for ring rearrangement.",
+    "mathContext": "$a_{10}x_0 + a_{11}(a_{11}^{-1}(b_1 - a_{10}x_0)) = a_{10}x_0 + (b_1 - a_{10}x_0) = b_1$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "left cancellation",
+      "mul_inv_cancel₀",
+      "abel tactic"
+    ],
+    "prerequisites": [
+      "DivisionRing.mul_inv_cancel₀"
+    ]
+  },
+  {
+    "id": "ann-nc-cramer-row0",
+    "proofId": "cramers-rule-oq-03",
+    "range": {
+      "startLine": 83,
+      "endLine": 93
+    },
+    "type": "concept",
+    "title": "Row 0 Correctness: Quasideterminant Factoring",
+    "content": "The harder direction: verifying $a_{00}x_0 + a_{01}x_1 = b_0$. After substituting $x_1$, the proof distributes $a_{01}a_{11}^{-1}$ over the subtraction, then factors out the quasideterminant: $a_{00}x_0 - a_{01}a_{11}^{-1}a_{10}x_0 = (a_{00} - a_{01}a_{11}^{-1}a_{10})x_0 = |A|_{00} \\cdot x_0$. Finally, cancelling $|A|_{00} \\cdot |A|_{00}^{-1}$ gives the result. The `sub_mul` and `abel` lemmas handle the non-commutative ring arithmetic.",
+    "mathContext": "$a_{00}x_0 + a_{01}a_{11}^{-1}(b_1 - a_{10}x_0) = |A|_{00} \\cdot x_0 + a_{01}a_{11}^{-1}b_1 = |A|_{00} \\cdot |A|_{00}^{-1}(b_0 - a_{01}a_{11}^{-1}b_1) + a_{01}a_{11}^{-1}b_1 = b_0$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Schur complement factoring",
+      "sub_mul",
+      "non-commutative ring arithmetic"
+    ],
+    "prerequisites": [
+      "quasidet₀₀",
+      "mul_inv_cancel₀"
+    ]
+  },
+  {
+    "id": "ann-nc-cramer-main",
+    "proofId": "cramers-rule-oq-03",
+    "range": {
+      "startLine": 104,
+      "endLine": 111
+    },
+    "type": "concept",
+    "title": "Main Theorem: nc_cramers_rule",
+    "content": "The main result: $A \\cdot \\text{ncSolve}(A, b) = b$ over any division ring $D$, proved as `A.mulVec (ncSolve A b) = b`. The proof uses `ext` to reduce to componentwise equality over `Fin 2`, then `fin_cases` dispatches each row to `ncSolve_row0` and `ncSolve_row1`. The hypotheses require $a_{11} \\neq 0$ and $|A|_{00} \\neq 0$ — these are the non-commutative analogues of $\\det(A) \\neq 0$.",
+    "mathContext": "If $a_{11} \\neq 0$ and $|A|_{00} \\neq 0$, then $A \\cdot \\text{ncSolve}(A, b) = b$. The two invertibility conditions are necessary and sufficient for existence.",
+    "significance": "key",
+    "relatedConcepts": [
+      "mulVec",
+      "Fin.sum_univ_two",
+      "fin_cases tactic"
+    ],
+    "prerequisites": [
+      "ncSolve_row0",
+      "ncSolve_row1"
+    ]
+  },
+  {
+    "id": "ann-nc-cramer-kernel",
+    "proofId": "cramers-rule-oq-03",
+    "range": {
+      "startLine": 119,
+      "endLine": 141
+    },
+    "type": "concept",
+    "title": "Kernel Triviality: The Non-Commutative Injectivity Proof",
+    "content": "Proves that $Ax = 0$ implies $x = 0$ when both $a_{11} \\neq 0$ and $|A|_{00} \\neq 0$. The proof mirrors Gaussian elimination: extract $x_1 = -(a_{11}^{-1}a_{10}x_0)$ from row 1, substitute into row 0 to get $|A|_{00} \\cdot x_0 = 0$. Since $|A|_{00} \\neq 0$ in a division ring (no zero divisors), $x_0 = 0$, whence $x_1 = 0$. The key step uses `mul_eq_zero.mp` and `.resolve_left` to exploit the division ring's property that $ab = 0 \\implies a = 0 \\lor b = 0$.",
+    "mathContext": "In a division ring: $|A|_{00} \\cdot x_0 = 0$ and $|A|_{00} \\neq 0$ $\\implies$ $x_0 = 0$ (no zero divisors). This is the non-commutative analogue of the fact that $\\det(A) \\neq 0$ implies $\\ker(A) = \\{0\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "kernel",
+      "zero divisors",
+      "injectivity",
+      "division ring structure"
+    ],
+    "prerequisites": [
+      "mul_eq_zero",
+      "DivisionRing (no zero divisors)"
+    ]
+  },
+  {
+    "id": "ann-nc-cramer-unique",
+    "proofId": "cramers-rule-oq-03",
+    "range": {
+      "startLine": 144,
+      "endLine": 159
+    },
+    "type": "concept",
+    "title": "Solution Uniqueness via Kernel Triviality",
+    "content": "Proves that if $Ax = b$ then $x = \\text{ncSolve}(A, b)$. The standard linear algebra argument: if $x$ and $y = \\text{ncSolve}(A, b)$ both solve $Ax = b$, then $A(x - y) = 0$, so $x - y \\in \\ker(A) = \\{0\\}$ by `nc_kernel_trivial`, hence $x = y$. The proof constructs the difference, shows it's in the kernel, then uses `sub_eq_zero.mp`.",
+    "mathContext": "$Ax = b$ and $Ay = b$ $\\implies$ $A(x-y) = 0$ $\\implies$ $x - y = 0$ $\\implies$ $x = y$. Uniqueness follows from existence + kernel triviality.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "uniqueness via kernel",
+      "linear map injectivity",
+      "sub_eq_zero"
+    ],
+    "prerequisites": [
+      "nc_kernel_trivial",
+      "nc_cramers_rule"
+    ]
+  },
+  {
+    "id": "ann-nc-cramer-commutative",
+    "proofId": "cramers-rule-oq-03",
+    "range": {
+      "startLine": 167,
+      "endLine": 171
+    },
+    "type": "insight",
+    "title": "Commutative Reduction: Quasideterminant Recovers det(A)",
+    "content": "The bridge between non-commutative and classical: over a field $F$, the quasideterminant times $a_{11}$ equals the classical determinant: $|A|_{00} \\cdot a_{11} = \\det(A)$. This is because $(a_{00} - a_{01}a_{11}^{-1}a_{10}) \\cdot a_{11} = a_{00}a_{11} - a_{01}a_{10} = \\det(A)$ when multiplication commutes. The Lean proof is just `field_simp` after unfolding definitions.",
+    "mathContext": "$|A|_{00} \\cdot a_{11} = (a_{00} - a_{01}a_{11}^{-1}a_{10}) \\cdot a_{11} = a_{00}a_{11} - a_{01}a_{10} = \\det(A)$ in a commutative field.",
+    "significance": "key",
+    "relatedConcepts": [
+      "determinant",
+      "field_simp",
+      "Schur complement identity",
+      "backward compatibility"
+    ],
+    "prerequisites": [
+      "det_fin_two",
+      "Field typeclass"
+    ]
+  }
+]

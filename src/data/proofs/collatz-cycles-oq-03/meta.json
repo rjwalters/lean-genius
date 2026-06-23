@@ -1,0 +1,131 @@
+{
+  "id": "collatz-cycles-oq-03",
+  "title": "Collatz Cycles OQ-03: No All-Odd Cycle",
+  "slug": "collatz-cycles-oq-03",
+  "description": "Every Collatz cycle of length ≥ 1 must visit at least one even number. The parity intersection corollary: if `collatz^[k] n = n` with `k ≥ 1`, then some iterate `(collatz^[i] n) % 2 = 0`. A 5-line omega proof from the parent's `collatz_odd` lemma (Proofs/CollatzCycles.lean).",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-05-12",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CollatzCyclesOQ03.lean",
+    "tags": [
+      "number-theory",
+      "collatz-conjecture",
+      "cycles",
+      "dynamical-systems",
+      "parity"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-05-12",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified.",
+    "lineCount": 80,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "originalContributions": [
+      "three_n_plus_one_even: for odd n, 3n+1 is even (1-line omega).",
+      "collatz_of_odd_is_even: for odd n, collatz n is even (rewrite via parent's collatz_odd, then three_n_plus_one_even).",
+      "no_all_odd_cycle: if every iterate of n up to step k is odd and collatz^[k] n = n, then False (parity at step 0 forces parity 0 at step 1, contradicting odd-everywhere assumption).",
+      "cycle_contains_even: positive form — every Collatz cycle visits an even iterate (by_contra + push_neg + no_all_odd_cycle).",
+      "isPeriodic_contains_even: same, repackaged with the parent's IsPeriodic predicate."
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Collatz conjecture (1937) — attributed to Lothar Collatz and also known as the 3n+1 problem, Syracuse problem, Ulam conjecture, or Kakutani problem — asks whether iterating `n ↦ n/2` (even) or `n ↦ 3n+1` (odd) always reaches 1. A trivial-but-rarely-stated structural fact about hypothetical cycles is that no cycle can be entirely odd: if every iterate is odd, then by the parent's `collatz_odd` lemma the next iterate is `3n+1 > n` (for n ≥ 1), so the orbit is strictly increasing and cannot return to its start. The parent file `Proofs/CollatzCycles.lean` proves the much stronger halving constraint 2^M > 3^j (Part VI) for j = 1,2,3,4, and the OQ-04 companion generalizes that to all j ≥ 1. Quantitative cycle exclusion has a long history: Eliahou (1993) proved that any nontrivial Collatz cycle must have length ≥ 17,087,915 by combining the halving constraint with continued-fraction convergents of log_2(3); Simons & de Weger (2005) refined this to ≥ 68 cycles of certain shapes excluded; Tao (2019) proved that almost all Collatz orbits attain almost bounded values (logarithmic-density-1 result). The `cycle_contains_even` lemma of this file is the most elementary entry-point into the cycle-exclusion landscape — the M = 0 corner case — plugging an obvious-statement gap that downstream proofs can quote directly.",
+    "problemStatement": "Given the parent's `collatz` and `collatzIter` (= `collatz^[k]`), prove the explicit corollary `cycle_contains_even`: for all n, k with k ≥ 1 and `collatz^[k] n = n`, there exists some i < k with `(collatz^[i] n) % 2 = 0`.",
+    "proofStrategy": "Three steps:\n\n1. **Parity flip** (`three_n_plus_one_even`): show `3n+1` is even when `n` is odd; `omega` closes it.\n\n2. **Single-step parity** (`collatz_of_odd_is_even`): rewrite `collatz n = 3n+1` via the parent's `collatz_odd`, then apply step 1.\n\n3. **Cycle contradiction** (`no_all_odd_cycle`, `cycle_contains_even`): if every iterate is odd, then the iterate at step 0 (= n) is odd, so step 2 says step-1 iterate is even, contradicting the all-odd assumption (for k ≥ 2) or directly contradicting `collatz^[1] n = n` (for k = 1, since n is odd by hypothesis but `collatz n` is even). The positive form `cycle_contains_even` is `by_contra + push_neg + no_all_odd_cycle`.",
+    "keyInsights": [
+      "The parity-flip corollary `collatz_of_odd_is_even` is implicit throughout the parent file's halving-constraint proofs but never stated explicitly. Stating it as a lemma exposes the elementary parity argument behind the deeper `2^M > 3^j` machinery of Part VI.",
+      "The `interval_cases k` branch (for k = 1) bottoms out cleanly because `Nat.lt_or_ge 1 k` plus `hk : k ≥ 1` gives `k = 1` in the `≥` branch; we then read `hper : collatzIter 1 n = n` directly, combine with the step-1 parity, and derive the contradiction via omega.",
+      "No new Mathlib API is needed: the entire proof reuses `Function.iterate_zero`/`iterate_one`, `omega`, `interval_cases`, `by_contra`, `push_neg`. This is a 5-line lemma masquerading as a 5-theorem corollary chain because we expose each intermediate step for downstream pedagogical use.",
+      "The OQ phrasing `prove that there are no odd cycles ... equivalent to the cycle constraint` is the M = 0 case of the parent's halving constraint `2^M > 3^j`: an all-odd cycle would need M = 0 halvings, forcing j = 0, an empty cycle. The current file proves this directly via parity instead of via the halving constraint, giving a self-contained elementary argument.",
+      "Parity-based cycle exclusion is orthogonal to the density approach of Tao (2019), which shows that the *iterated* orbits of almost every n shrink below any threshold but says nothing about whether *cycles* can exist for sufficiently large minimum element. The OQ-03 lemma and parent's Part VI halving-constraint chain are structural cycle-exclusion results that complement (do not compete with) Tao's density bound, and a complete resolution of the conjecture must combine both flavors."
+    ],
+    "prerequisites": [
+      "Elementary parity (3·odd + 1 = even)",
+      "Iterated function composition (collatz^[k] = k-fold collatz)",
+      "The Collatz function definition (parent file Part I)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module header and imports",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Module docstring (5-line architecture summary, parent file references, Lagarias 1985 citation) and imports: `Mathlib.Tactic` for `omega`/`interval_cases`/`push_neg`, plus `Proofs.CollatzCycles` for the parent's `collatz`/`collatzIter`/`collatz_odd`/`IsPeriodic` API. Opens the `CollatzCycles` namespace at line 25 so all theorems live alongside the parent's."
+    },
+    {
+      "id": "parity-flip",
+      "title": "Part I: Parity Flip (three_n_plus_one_even)",
+      "startLine": 27,
+      "endLine": 29,
+      "summary": "`three_n_plus_one_even {n : ℕ} (h : n % 2 = 1) : (3 * n + 1) % 2 = 0`. One-line `omega` proof: pure Presburger arithmetic. This is the parity flip that drives every subsequent contradiction."
+    },
+    {
+      "id": "single-step-parity",
+      "title": "Part II: Single-Step Parity (collatz_of_odd_is_even)",
+      "startLine": 31,
+      "endLine": 35,
+      "summary": "`collatz_of_odd_is_even {n : ℕ} (h : n % 2 = 1) : (collatz n) % 2 = 0`. Bridges the function's definitional case-split to the parity flip: `rw [collatz_odd h]` (parent lemma) reduces `collatz n` to `3 * n + 1`, then `three_n_plus_one_even` closes."
+    },
+    {
+      "id": "no-all-odd-cycle",
+      "title": "Part III(a): No all-odd cycle contradiction",
+      "startLine": 37,
+      "endLine": 60,
+      "summary": "`no_all_odd_cycle {n k : ℕ} (hk : k ≥ 1) (hper : collatzIter k n = n) (hodd_all : ∀ i, i < k → (collatzIter i n) % 2 = 1) : False`. Derives `n % 2 = 1` from `hodd_all 0 hk` + `Function.iterate_zero`, then `(collatz^[1] n) % 2 = 0` from `collatz_of_odd_is_even`. Case-splits `1 < k` vs `k = 1`: the `≥ 2` branch contradicts `hodd_all 1 _`; the `k = 1` branch uses `hper : collatzIter 1 n = n` to deduce `n` is both even (from step 1) and odd (from step 0), `omega`-closed."
+    },
+    {
+      "id": "cycle-contains-even-positive",
+      "title": "Part III(b): Positive form (cycle_contains_even)",
+      "startLine": 62,
+      "endLine": 73,
+      "summary": "`cycle_contains_even {n k : ℕ} (hk : k ≥ 1) (hper : collatzIter k n = n) : ∃ i, i < k ∧ (collatzIter i n) % 2 = 0`. Contrapositive of `no_all_odd_cycle` via `by_contra + push_neg`; `omega` converts the resulting `¬ (… = 0)` to `= 1` and `no_all_odd_cycle` finishes."
+    },
+    {
+      "id": "isperiodic-form",
+      "title": "Part III(c): Repackaged with IsPeriodic",
+      "startLine": 75,
+      "endLine": 78,
+      "summary": "`isPeriodic_contains_even {n k : ℕ} (hper : IsPeriodic n k) : ∃ i, i < k ∧ (collatzIter i n) % 2 = 0`. One-line theorem unpacking `IsPeriodic n k := k ≥ 1 ∧ collatzIter k n = n` and feeding both halves into `cycle_contains_even`. Provides API parity with the parent's `IsPeriodic`-using theorems (`collatz_no_fixpoint`, `collatz_no_two_cycle`)."
+    }
+  ],
+  "conclusion": {
+    "summary": "All 5 theorems (1 lemma + 4 theorems) are fully machine-verified, with 0 sorries and 0 axioms. The proof is an 80-line companion file that adds zero new mathematical content beyond what's implicit in the parent, but makes the parity-intersection corollary explicit for downstream use.",
+    "implications": "Every Collatz cycle (other than the empty / k = 0 case) is forced to be a 'mixed-parity' orbit: it visits both even and odd numbers. This rules out the simplest pathological cycle shape, complementing the much stronger Part VI halving constraint 2^M > 3^j (which quantitatively bounds the *number* of even iterates). Pedagogically, this is the gentlest entry-point lemma into Collatz cycle theory: it requires only modular arithmetic (`omega`) and the parent's `collatz_odd` lemma, with no exponential machinery, continued fractions, or density estimates. For practical Lean development, it provides a reusable parity-witness extractor `cycle_contains_even hk hper : ∃ i, i < k ∧ (collatzIter i n) % 2 = 0` that downstream cycle-theory proofs can pattern-match on.",
+    "openQuestions": [
+      "Can a similar elementary argument bound the minimum even-iterate count M in a cycle of length k? The parent's halving constraint 2^M > 3^j combined with M + j = k gives M > k · log₂(3) / (1 + log₂(3)) ≈ 0.613k, but the present file gives only M ≥ 1. Is there a parity-only proof (without 2^M > 3^j) yielding a nontrivial lower bound, perhaps via run-length statistics of the parity sequence?",
+      "Does the dual statement 'every cycle visits at least one odd iterate' admit an equally short proof? (Yes for k ≥ 2, since `collatz` of a positive even is smaller, so an all-even cycle is strictly decreasing; trivially false for k = 0.) Lean-formalizing this dual lemma `cycle_contains_odd` would give symmetric parity-intersection API.",
+      "Can the `no_all_odd_cycle` proof be strengthened to give a *quantitative* obstruction — e.g., 'any cycle with at most ε·k odd iterates has length k bounded by an explicit f(ε)'? This would interpolate between the qualitative parity argument here and Eliahou's (1993) quantitative cycle-length lower bound."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "collatz-cycles",
+      "relationship": "extends",
+      "description": "Builds on the parent's `collatz_odd` lemma (line 40) to derive the parity-intersection corollary."
+    },
+    {
+      "targetId": "collatz-cycles-oq-04",
+      "relationship": "related",
+      "description": "OQ-04 proves the general halving constraint 2^M > 3^j for all j ≥ 1 via product equation; OQ-03 is the M = 0 / j = 0 corner case via direct parity argument."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Proofs.CollatzCycles"
+    ],
+    "opens": [],
+    "namespace": "CollatzCycles",
+    "lineCount": 80,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/CollatzCyclesOQ03.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

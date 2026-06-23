@@ -1,0 +1,141 @@
+{
+  "slug": "greens-theorem-oq-01",
+  "title": "Green's Theorem for Rectangles via Interval Integrals",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For a rectangle [a,b] x [c,d], formalize Green's theorem in interval-integral form: the boundary integral of P dx + Q dy is equal to the double integral of partial_x Q - partial_y P, using the fundamental theorem of calculus, a Fubini hypothesis, linearity of integration, and ring arithmetic.",
+    "plain": "Green's theorem for rectangles formalized using Mathlib's intervalIntegral machinery, replacing the abstract stub definitions with genuine FTC-based computations. The proof uses only FTC, Fubini (as hypothesis), linearity of integration, and ring arithmetic, demonstrating that Mathlib's analysis library is powerful enough for multivariable calculus.",
+    "whyMatters": [
+      "Connects a standard multivariable calculus theorem to Mathlib's intervalIntegral machinery.",
+      "Demonstrates that rectangle-level Green's theorem can be reduced to FTC-based computations plus a Fubini hypothesis, linearity of integration, and ring arithmetic."
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-02-24T13:38:06-08:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "The existing metadata marks this problem as completed and graduated. The local research state remains at OBSERVE with zero recorded attempts, and the knowledge file contains no substantive accumulated research beyond the initial template.",
+    "builtItems": [],
+    "insights": [
+      "The intended proof scope is Green's theorem for rectangles using Mathlib interval integrals rather than abstract stub definitions.",
+      "The stated proof ingredients are FTC, Fubini as a hypothesis, linearity of integration, and ring arithmetic."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Reconcile the completed/graduated top-level metadata with the OBSERVE research-state file if this record is refreshed from source materials.",
+      "Add concrete Mathlib references only after they are documented in the local problem or literature notes."
+    ],
+    "markdown": "# Knowledge Base: greens-theorem-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nGreen's theorem for rectangles is being treated as an interval-integral formalization task. The problem statement says the intended proof replaces abstract stub definitions with genuine computations using the fundamental theorem of calculus, a Fubini hypothesis, linearity of integration, and ring arithmetic.\n\n---\n\n## Insights\n\n- The available local notes describe the theorem scope and proof ingredients, but do not record detailed research attempts.\n- The research state is still OBSERVE with zero attempts, while the existing JSON marks the problem completed and graduated.\n\n---\n\n## Dead Ends\n\nNo dead ends are recorded in the local knowledge file.\n"
+  },
+  "tags": [
+    "analysis",
+    "calculus",
+    "green-theorem",
+    "interval-integral",
+    "mathlib"
+  ],
+  "relatedProofs": [
+    "greens-theorem",
+    "greens-theorem-oq-01",
+    "greens-theorem-oq-01-oq-01",
+    "greens-theorem-oq-02",
+    "greens-theorem-oq-03",
+    "greens-theorem-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-25T19:36:59.227Z",
+  "lastUpdate": "2026-02-25T19:36:59.227Z",
+  "completed": "2026-02-25T19:36:59.227Z",
+  "significance": 8,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/GreensTheorem.lean",
+      "filename": "GreensTheorem.lean",
+      "lineCount": 359,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheorem.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01.lean",
+      "filename": "GreensTheoremOQ01.lean",
+      "lineCount": 339,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01OQ01.lean",
+      "filename": "GreensTheoremOQ01OQ01.lean",
+      "lineCount": 150,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ02.lean",
+      "filename": "GreensTheoremOQ02.lean",
+      "lineCount": 508,
+      "theoremCount": 21,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ03.lean",
+      "filename": "GreensTheoremOQ03.lean",
+      "lineCount": 558,
+      "theoremCount": 31,
+      "axiomCount": 3,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ04.lean",
+      "filename": "GreensTheoremOQ04.lean",
+      "lineCount": 588,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ04.lean"
+    }
+  ]
+}

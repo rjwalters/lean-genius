@@ -1,0 +1,208 @@
+{
+  "id": "erdos-1167",
+  "title": "Erdős Problem #1167: Stepping-Down Partition Relations",
+  "slug": "erdos-1167",
+  "description": "For finite r ≥ 2, infinite cardinal λ, and cardinals κ_α (for all α < γ), does 2^λ → (κ_α + 1)^{r+1}_{α < γ} imply λ → (κ_α)^r_{α < γ}? A fundamental open question in infinitary combinatorics about transferring partition properties from higher to lower exponents.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1167",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1167Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "set-theory",
+      "ramsey-theory",
+      "partition-calculus",
+      "cardinal-arithmetic",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1167,
+    "erdosUrl": "https://erdosproblems.com/1167",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Cardinal.Basic",
+        "description": "Cardinal arithmetic including ℵ₀, cardinal addition, and Order.succ for successor cardinals",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Cardinal.Ordinal",
+        "description": "Connection between cardinals and ordinals, Ordinal.card for the cardinality of ordinals",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      },
+      {
+        "theorem": "Tactic",
+        "description": "Core tactic library including omega, push_cast, ring, and norm_num",
+        "module": "Mathlib.Tactic"
+      }
+    ],
+    "originalContributions": [
+      "RSubset",
+      "Coloring",
+      "IsMonochromatic",
+      "PartitionRelation",
+      "IndexedPartitionRelation",
+      "partition_one_color",
+      "partition_monotone_target",
+      "partition_zero_target",
+      "indexed_partition_monotone_targets",
+      "isMonochromatic_subset",
+      "infinite_card_add_one",
+      "finite_card_add_one",
+      "conjecture_simplifies_infinite_targets",
+      "two_pow_infinite",
+      "erdos_1167_conjecture",
+      "ramsey_step",
+      "infinite_ramsey",
+      "erdos_rado_theorem",
+      "erdos_1167_r2_case",
+      "erdos_1167_general_case",
+      "conjecture_consistent_aleph0",
+      "ramsey_pairs",
+      "ramsey_triples_two_colors",
+      "erdos_rado_weakened",
+      "infinite_ramsey_zero",
+      "infinite_ramsey_one"
+    ],
+    "axiomCount": 2,
+    "lineCount": 594,
+    "assumptions": "2 axiom(s): erdos_1167_conjecture (OPEN), erdos_rado_theorem. The infinite Ramsey theorem (previously axiomatized) is now FULLY PROVED by induction on r using Ramsey's diagonal argument.",
+    "theoremCount": 19,
+    "definitionCount": 5
+  },
+  "overview": {
+    "historicalContext": "The partition calculus was founded by Erdős and Rado in their landmark 1956 paper 'A partition calculus in set theory', which systematized the study of Ramsey-type properties for infinite sets. The central achievement was the Erdős-Rado theorem: (2^κ)⁺ → (κ⁺)²_κ for infinite κ, establishing that exponentially larger cardinals satisfy partition relations at the next level. This 'stepping-up' lemma — going from exponent r to r+1 — became a core technique.\n\nProblem #1167 asks the reverse question: can partition properties be 'stepped down' from exponent r+1 to r? Specifically, if 2^λ → (κ_α + 1)^{r+1}_{α<γ} holds, does λ → (κ_α)^r_{α<γ} follow? The '+1' in the hypothesis accounts for the possibility of finite targets, where κ+1 > κ (for infinite κ, κ+1 = κ by cardinal absorption). This question was posed by Erdős, Hajnal, and Rado in their foundational work, reflecting their deep interest in understanding the exact relationship between partition relations at different exponents.\n\nThe problem remains open nearly 70 years later. While the stepping-up direction is well understood, stepping down is fundamentally harder because it requires extracting structure from colorings of smaller subsets — a process that generally loses information. The problem is catalogued as [Va99, 7.79] in Vaughan's survey and connects to the broader program of understanding the partition calculus hierarchy, including problems #1169 and #1171 on ordinal partition relations.",
+    "problemStatement": "**Erdős Problem #1167** (Erdős-Hajnal-Rado):\n\nFor finite $r \\geq 2$, infinite cardinal $\\lambda$, and cardinals $\\kappa_\\alpha$ (for all $\\alpha < \\gamma$), does\n$$2^\\lambda \\to (\\kappa_\\alpha + 1)^{r+1}_{\\alpha < \\gamma}$$\nimply\n$$\\lambda \\to (\\kappa_\\alpha)^r_{\\alpha < \\gamma}?$$\n\nThe notation $\\kappa \\to (\\lambda_\\alpha)^r_{\\alpha < \\gamma}$ means: for every $\\gamma$-coloring of $r$-element subsets of $\\kappa$, there exist $\\alpha < \\gamma$ and $H \\subseteq \\kappa$ with $|H| \\geq \\lambda_\\alpha$ such that all $r$-element subsets of $H$ receive color $\\alpha$.\n\n**Status**: Open.",
+    "text": "For finite r ≥ 2, infinite cardinal λ, and cardinals κ_α (for all α < γ), does 2^λ → (κ_α + 1)^{r+1}_{α < γ} imply λ → (κ_α)^r_{α < γ}? A fundamental open question in infinitary combinatorics about transferring partition properties from higher to lower exponents.",
+    "proofStrategy": "The formalization builds partition relation infrastructure from scratch in 594 lines of Lean 4 code. It defines RSubset, Coloring, IsMonochromatic, PartitionRelation, and IndexedPartitionRelation using Lean's dependent types and Mathlib's cardinal/ordinal API. Five structural lemmas are fully proved. Cardinal arithmetic lemmas clarify the role of '+1'. The infinite Ramsey theorem (ℵ₀ → (ℵ₀)^r_k for all finite r, k) is FULLY PROVED by induction on r: base cases r=0 (unique 0-subset) and r=1 (infinite pigeonhole) are established first, then the inductive step uses Ramsey's diagonal argument — fixing a vertex, applying the IH to a reduced coloring on an infinite subset, iterating to build a sequence, and extracting an infinite monochromatic subsequence via pigeonhole. The key technical challenge is lifting between subtypes and the ambient type when applying the IH to subsets. The conjecture and Erdős-Rado theorem remain as the only 2 axioms.",
+    "keyInsights": [
+      "**Stepping up vs stepping down**: The Erdős-Rado theorem steps UP from exponent r to r+1, gaining a factor of 2^κ in the source. The conjecture asks whether the reverse direction holds — stepping DOWN from r+1 to r while shrinking the source from 2^λ to λ. Stepping up is constructive (transfinite recursion builds the monochromatic set); stepping down requires showing that structure in (r+1)-colorings implies structure in r-colorings.",
+      "**The +1 dichotomy**: For infinite κ_α, the '+1' is absorbed (κ + 1 = κ), so the conjecture reduces to whether 2^λ → (κ_α)^{r+1} implies λ → (κ_α)^r. For finite targets, κ_α + 1 > κ_α genuinely strengthens the hypothesis. The formalization explicitly proves this dichotomy with infinite_card_add_one and finite_card_add_one.",
+      "**Building partition calculus in Lean 4**: The formalization constructs the full partition relation machinery from Finset and Cardinal, using dependent subtypes for r-element subsets and universal quantification over types to handle cardinal arithmetic in a universe-polymorphic way.",
+      "**Full proof of the infinite Ramsey theorem**: The infinite Ramsey theorem is proved from first principles by induction on r, using Ramsey's diagonal argument in the inductive step. The proof constructs a sequence of vertices and colors by iteratively fixing a vertex, reducing the coloring, and applying the IH. Pigeonhole on the color sequence extracts an infinite monochromatic subsequence. The key challenge is the subtype lifting: applying the IH to infinite subsets requires embedding the reduced coloring on a subtype, applying the IH, and then transferring the monochromatic set back to the ambient type.",
+      "**70 years unsolved**: Posed in 1956, this is among the longest-standing open problems in infinite combinatorics. The difficulty reflects the fundamental asymmetry between stepping up (constructive) and stepping down (requires information-theoretic arguments about colorings)."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)",
+      "Set theory and cardinality",
+      "Ramsey theory (partition regularity)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-imports",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Documentation header describing the stepping-down conjecture 2^λ → (κ_α + 1)^{r+1} ⟹ λ → (κ_α)^r, its background in partition calculus, known partial results (Erdős-Rado, infinite Ramsey), and the formalization plan. Imports Mathlib cardinal/ordinal theory and tactics, sets linter options, opens namespace Erdos1167 and the Cardinal/Set namespaces.",
+      "mathContext": "Partition arrow: $\\kappa \\to (\\lambda_\\alpha)^r_{\\alpha<\\gamma}$ means every $\\gamma$-coloring of $[\\kappa]^r$ admits $\\alpha<\\gamma$ and $H\\subseteq\\kappa$ with $|H|\\ge\\lambda_\\alpha$ monochromatic in color $\\alpha$."
+    },
+    {
+      "id": "core-defs",
+      "title": "Core Definitions",
+      "startLine": 57,
+      "endLine": 91,
+      "summary": "Defines RSubset (r-element subsets as a Finset subtype), Coloring (functions from r-subsets to colors), IsMonochromatic (uniformity of color over a set), PartitionRelation (uniform κ → (λ)^r_γ), and IndexedPartitionRelation (indexed κ → (κ_i)^r_{i<γ} with per-color targets).",
+      "mathContext": "$[\\alpha]^r = \\{s \\subseteq \\alpha : |s| = r\\}$; a coloring is $f : [\\alpha]^r \\to \\gamma$; $H$ is monochromatic of color $c$ iff $f(s)=c$ for all $s\\in[H]^r$."
+    },
+    {
+      "id": "structural-props",
+      "title": "Section 1 — Structural Properties of Partition Relations",
+      "startLine": 92,
+      "endLine": 161,
+      "summary": "Five fully-proved lemmas: partition_one_color (1-color triviality, whole set monochromatic), partition_monotone_target (weakening the target size), partition_zero_target (the empty set is vacuously monochromatic for r>0), indexed_partition_monotone_targets (weakening indexed targets), and isMonochromatic_subset (monochromaticity is hereditary under subsets).",
+      "mathContext": "If $\\kappa \\to (\\lambda)^r_\\gamma$ and $\\lambda' \\le \\lambda$ then $\\kappa \\to (\\lambda')^r_\\gamma$; subsets of monochromatic sets remain monochromatic."
+    },
+    {
+      "id": "cardinal-arithmetic",
+      "title": "Section 2 — Cardinal Arithmetic for Partition Relations",
+      "startLine": 162,
+      "endLine": 209,
+      "summary": "Proves infinite_card_add_one (κ+1=κ for infinite κ, via Cardinal.add_eq_self), finite_card_add_one (n+1 genuinely larger for naturals), conjecture_simplifies_infinite_targets (the '+1' is absorbed when all targets are infinite), and two_pow_infinite (2^λ ≥ ℵ₀ via Cantor). These pin down exactly when the '+1' in the conjecture's hypothesis is meaningful.",
+      "mathContext": "For infinite $\\kappa$: $\\kappa + 1 = \\kappa$; for finite $n$: $n+1 > n$; and $\\aleph_0 \\le \\lambda \\Rightarrow \\aleph_0 \\le 2^\\lambda$."
+    },
+    {
+      "id": "conjecture-and-results",
+      "title": "Section 3 — The Conjecture and Remaining Axioms",
+      "startLine": 210,
+      "endLine": 231,
+      "summary": "Declares the two remaining axioms: erdos_1167_conjecture (the OPEN stepping-down implication 2^λ → (κ_α+1)^{r+1} ⟹ λ → (κ_α)^r) and erdos_rado_theorem (the classical 1956 stepping-up result (2^κ)⁺ → (κ⁺)²_κ). These are the only assumptions in the file; the infinite Ramsey theorem is NOT axiomatized here — it is proved in Section 4.",
+      "mathContext": "Open conjecture: $2^\\lambda \\to (\\kappa_\\alpha+1)^{r+1}_{\\alpha<\\gamma} \\implies \\lambda \\to (\\kappa_\\alpha)^r_{\\alpha<\\gamma}$. Erdős–Rado: $(2^\\kappa)^+ \\to (\\kappa^+)^2_\\kappa$."
+    },
+    {
+      "id": "infinite-ramsey",
+      "title": "Section 4 — The Infinite Ramsey Theorem (Proved)",
+      "startLine": 232,
+      "endLine": 549,
+      "summary": "Fully proves (0 sorries) the infinite Ramsey theorem ℵ₀ → (ℵ₀)^r_k for all finite r, k, eliminating the former axiom. Base cases: infinite_ramsey_zero (r=0, unique empty subset) and infinite_ramsey_one (r=1, infinite pigeonhole via Finite.exists_infinite_fiber). The private lemma ramsey_step performs one diagonal extraction: fix a vertex v of the infinite set, build the reduced r-coloring g(T)=f({v}∪T) on a subtype of S∖{v}, apply the IH, and transfer the monochromatic subset back to the ambient type (the delicate subtype-lifting argument). The main theorem infinite_ramsey then iterates ramsey_step via Nat.rec to build a sequence of (vertex, color) pairs, proves the vertex map injective, applies pigeonhole on the finitely many colors to get an infinite fiber, and assembles the monochromatic set H = vertex '' {n | color n = c*}.",
+      "mathContext": "$\\aleph_0 \\to (\\aleph_0)^r_k$ by induction on $r$: the diagonal argument reduces an $(r{+}1)$-coloring on an infinite set to an $r$-coloring on a subtype, iterating to a vertex/color sequence, then pigeonholes the colors into an infinite monochromatic subsequence."
+    },
+    {
+      "id": "consequences",
+      "title": "Section 5 — Consequences and Consistency Checks",
+      "startLine": 550,
+      "endLine": 594,
+      "summary": "Derives corollaries of the conjecture and Ramsey theorem: erdos_1167_r2_case (the r=2 instantiation), erdos_1167_general_case (any r≥2), conjecture_consistent_aleph0 and ramsey_pairs/ramsey_triples_two_colors (consistency: ℵ₀ → (ℵ₀)²_k and ℵ₀ → (ℵ₀)³_2 hold by the proved infinite Ramsey theorem), and erdos_rado_weakened (weakening the Erdős-Rado target via partition_monotone_target). Closes the namespace.",
+      "mathContext": "Concrete instances: $\\aleph_0 \\to (\\aleph_0)^2_k$ and $\\aleph_0 \\to (\\aleph_0)^3_2$ from infinite Ramsey; $(2^\\kappa)^+ \\to (\\kappa)^2_\\kappa$ by target monotonicity from Erdős–Rado."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #1167 — the stepping-down conjecture for partition relations — in 594 lines of Lean 4 code with only 2 axioms (the OPEN conjecture and the Erdős-Rado theorem) and 19 theorems. The infinite Ramsey theorem (ℵ₀ → (ℵ₀)^r_k for all finite r, k) is FULLY PROVED by induction on r using Ramsey's diagonal argument, eliminating the previous axiom. This is a significant advancement: the formalization now proves a major classical result of infinite combinatorics from first principles.",
+    "implications": "Resolving this conjecture would establish a fundamental duality in partition calculus: the stepping-up lemma and a stepping-down lemma would together give a complete picture of how partition properties transfer between consecutive exponents. A positive resolution would provide a powerful tool for deriving partition relations at lower exponents from known results at higher exponents, potentially simplifying many arguments in infinite combinatorics.",
+    "openQuestions": [
+      "Does the stepping-down implication hold in ZFC, or is it independent of the standard axioms?",
+      "Can the conjecture be proved for the special case r=2, γ=2 (two colors, pairs-to-triples)?",
+      "What is the relationship between this conjecture and the stepping-up lemma — is there a formal duality?",
+      "Can the Erdős-Rado theorem ((2^κ)⁺ → (κ⁺)²_κ) be proved in Lean 4? This is the only remaining axiomatized known result, requiring a formalization of transfinite recursion on ordinals.",
+      "Does a counterexample exist for specific choices of λ, r, γ, and targets?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Cardinal",
+      "Set"
+    ],
+    "namespace": "Erdos1167",
+    "lineCount": 594,
+    "axiomCount": 2,
+    "theoremCount": 19,
+    "definitionCount": 5,
+    "path": "Proofs/Erdos1167Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    "Erdős, Hajnal, Rado (1956): A partition calculus in set theory — original problem formulation",
+    "Ramsey (1929): On a problem of formal logic — finite Ramsey theorem",
+    "Erdős, Rado (1956): (2^κ)⁺ → (κ⁺)²_κ — the classical stepping-up result",
+    "[Va99, 7.79]: Vaughan's survey cataloguing the problem",
+    "https://erdosproblems.com/1167"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1169",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, open, ramsey-theory, set-theory"
+    },
+    {
+      "targetId": "erdos-1171",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, open, ramsey-theory, set-theory"
+    },
+    {
+      "targetId": "erdos-1172",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, open, ramsey-theory, set-theory"
+    }
+  ],
+  "sorries": 0
+}

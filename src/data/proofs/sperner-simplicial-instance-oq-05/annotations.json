@@ -1,0 +1,153 @@
+[
+  {
+    "id": "oq05-header-scope",
+    "proofId": "sperner-simplicial-instance-oq-05",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 85
+    },
+    "title": "Scope: Brute-Force Candidate C1, Not Scarf's Algorithm",
+    "content": "The header sets the honest scope of this file. It is Candidate C1 of the `sperner-simplicial-instance-oq-05` dossier: a `Decidable`-driven brute-force witness extractor for a panchromatic cell. Two caveats are essential for a reader: (1) this is **not** Scarf's algorithm — it enumerates all cells in $O(|T.\\text{Cell}|)$ rather than walking door-paths in $O(\\text{path length})$; the Scarf pivot is the separate Candidate C2; (2) it does **not** yet replace the `axiom scarf_approx_fixed_point` in `BrouwerFixedPointOQ04OQ04.lean`. The mathematical content is deliberately shallow: every step is forced by pre-existing `Triangulation.cellFintype` and `CellComplex.decidableIsPanchromatic` instances. The value is naming a computable witness `def` plus a totality theorem grounded in `Triangulation.sperner`. Imports `Proofs.SpernerSimplicialInstance`; opens `CellComplex Triangulation Finset`.",
+    "mathContext": "Sperner's lemma guarantees a panchromatic (fully-coloured) cell exists for any Sperner colouring; this file *extracts* one computably. Brute force $O(|T.\\text{Cell}|)$ vs. Scarf pivot $O(\\text{door-path length})$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Sperner's lemma",
+      "Scarf's algorithm",
+      "panchromatic cell",
+      "computable witness extraction",
+      "Brouwer fixed point"
+    ],
+    "prerequisites": [
+      "simplicial complexes",
+      "Sperner colouring",
+      "decidability in Lean"
+    ]
+  },
+  {
+    "id": "oq05-def-finder",
+    "proofId": "sperner-simplicial-instance-oq-05",
+    "type": "definition",
+    "range": {
+      "startLine": 86,
+      "endLine": 90
+    },
+    "title": "findPanchromaticBrute: Decidable-Driven Witness Extractor",
+    "content": "`def findPanchromaticBrute (T : Triangulation V n) (c : V → Fin (n+1)) : Option T.Cell := (Finset.univ.filter (fun s : T.Cell => IsPanchromatic c T.toCellComplex s)).toList.head?`\n\nFully computable; uses no `Classical.choose`. Returns `some s` if any panchromatic cell exists in `T.cellFintype.elems.toList` order, `none` otherwise. The order is implementation-specific; downstream consumers should use the `_isSome_iff` characterisation rather than rely on a specific order.",
+    "mathContext": "The Option-valued brute-force finder. Domain: a pseudomanifold triangulation `T` with `[DecidableEq V]` (so `T.Cell` inherits a `Fintype` instance from `Triangulation.cellFintype` in `SpernerSimplicialInstance.lean`). Codomain: `Option T.Cell` — the `Option` wrapper is necessary because non-Sperner colourings may not produce a panchromatic cell. The `Finset.filter` is decidable via `CellComplex.decidableIsPanchromatic` (from `SpernerMathlib4.lean`), which inspects the colour-of-vertex map for surjectivity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.filter",
+      "Triangulation.cellFintype",
+      "CellComplex.decidableIsPanchromatic",
+      "Option.isSome",
+      "List.head?",
+      "computable function"
+    ],
+    "prerequisites": [
+      "Triangulation V n structure (SpernerSimplicialInstance.lean)",
+      "CellComplex.IsPanchromatic + Decidable instance (SpernerMathlib4.lean)",
+      "Finset.univ.filter on a Fintype"
+    ]
+  },
+  {
+    "id": "oq05-iff-characterisation",
+    "proofId": "sperner-simplicial-instance-oq-05",
+    "type": "theorem",
+    "range": {
+      "startLine": 97,
+      "endLine": 131
+    },
+    "title": "findPanchromaticBrute_isSome_iff: Membership Characterisation",
+    "content": "`theorem findPanchromaticBrute_isSome_iff (T : Triangulation V n) (c : V → Fin (n + 1)) : (findPanchromaticBrute T c).isSome ↔ ∃ s : T.Cell, IsPanchromatic c T.toCellComplex s`\n\nForward direction: `head? = some _` ⇒ `toList ≠ []` ⇒ Finset non-empty (`Finset.nonempty_iff_ne_empty`) ⇒ ∃ filter-member ⇒ ∃ panchromatic (`Finset.mem_filter`).\n\nBackward direction: witness `s` ⇒ `s ∈ filter` (`Finset.mem_filter.2`) ⇒ Finset non-empty ⇒ `toList ≠ []` (`Finset.Nonempty.toList_ne_nil`) ⇒ `head? = some _` by case analysis on the `toList`.",
+    "mathContext": "The characterisation lemma is the API entry point. The iff form means downstream consumers can pass `findPanchromaticBrute T c` through `Option.isSome` to test existence both ways. The proof uses verified Mathlib names from the lockfile-pinned v4.26.0 SHA `2df2f015...`: `Finset.toList_eq_nil` (Mathlib/Data/Finset/Basic.lean:512), `Finset.Nonempty.toList_ne_nil` (Mathlib/Data/Finset/Basic.lean:521), `Finset.nonempty_iff_ne_empty` (Mathlib/Data/Finset/Empty.lean:148).",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Option.isSome",
+      "List.head?",
+      "Finset.Nonempty",
+      "Finset.toList_eq_nil",
+      "membership characterisation"
+    ],
+    "prerequisites": [
+      "findPanchromaticBrute definition",
+      "Finset.mem_filter",
+      "Mathlib v4.26.0 Finset.toList API"
+    ]
+  },
+  {
+    "id": "oq05-witness-extraction",
+    "proofId": "sperner-simplicial-instance-oq-05",
+    "type": "theorem",
+    "range": {
+      "startLine": 139,
+      "endLine": 148
+    },
+    "title": "findPanchromaticBrute_eq_some_imp_panchromatic: Witness Extraction",
+    "content": "`theorem findPanchromaticBrute_eq_some_imp_panchromatic (T : Triangulation V n) (c : V → Fin (n + 1)) (s : T.Cell) (heq : findPanchromaticBrute T c = some s) : IsPanchromatic c T.toCellComplex s`\n\nFrom `findPanchromaticBrute T c = some s`, conclude that `s` is in fact panchromatic. The returned `s` is `List.head?` of the filtered Finset's `toList`, so by `List.mem_of_head?` it is a list-member, hence (by `Finset.mem_toList`) a filter-member, hence (by `Finset.mem_filter.2`) panchromatic.",
+    "mathContext": "The strong-form witness lemma: `some s` carries a *proof* that `s` is panchromatic, not just an existence claim. Downstream consumers can `Option.get`-then-prove without re-running the filter. Combined with the `_isSome_iff` characterisation, the API is: `(findPanchromaticBrute T c).get : T.Cell` gives a witness, and `_eq_some_imp_panchromatic` gives its proof property.",
+    "significance": "key",
+    "relatedConcepts": [
+      "List.mem_of_head?",
+      "Finset.mem_toList",
+      "Finset.mem_filter",
+      "witness extraction",
+      "Option.get"
+    ],
+    "prerequisites": [
+      "findPanchromaticBrute definition",
+      "List.head? membership API",
+      "CellComplex.IsPanchromatic"
+    ]
+  },
+  {
+    "id": "oq05-totality",
+    "proofId": "sperner-simplicial-instance-oq-05",
+    "type": "theorem",
+    "range": {
+      "startLine": 155,
+      "endLine": 163
+    },
+    "title": "findPanchromaticBrute_isSome_of_boundary_odd: Totality under Sperner Hypothesis",
+    "content": "`theorem findPanchromaticBrute_isSome_of_boundary_odd (T : Triangulation V n) (c : V → Fin (n + 1)) (hbdry : Odd (Finset.univ.filter (fun p : T.Cell × Fin (n + 1) => IsDoor c T.toCellComplex p.1 p.2 ∧ T.adj p.1 p.2 = none)).card) : (findPanchromaticBrute T c).isSome`\n\nOne-line proof: `by rw [findPanchromaticBrute_isSome_iff]; exact Triangulation.sperner T c hbdry`. The characterisation iff converts the goal to ∃ panchromatic, which is exactly the statement of `Triangulation.sperner`.",
+    "mathContext": "Totality under the standard Sperner hypothesis: this is the use-case for `findPanchromaticBrute` — given a Sperner-coloured triangulation (boundary doors odd, which is the standard Sperner hypothesis), the finder is guaranteed to return a cell. The full pipeline is: SpernerColoring → boundary_doors_odd (from parent file) → findPanchromaticBrute_isSome_of_boundary_odd → `some s`. The classical Sperner-lemma statement says \"a panchromatic cell exists\"; this theorem upgrades that to \"the brute-force finder finds one\".",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Triangulation.sperner",
+      "Sperner's lemma",
+      "boundary doors",
+      "Odd parity",
+      "totality"
+    ],
+    "prerequisites": [
+      "findPanchromaticBrute_isSome_iff",
+      "Triangulation.sperner (from SpernerSimplicialInstance.lean)",
+      "CellComplex.IsDoor + boundary-door parity"
+    ]
+  },
+  {
+    "id": "oq05-demo",
+    "proofId": "sperner-simplicial-instance-oq-05",
+    "type": "concept",
+    "range": {
+      "startLine": 181,
+      "endLine": 185
+    },
+    "title": "1-D Demo: Panchromatic Cell on intervalTriangulation 3",
+    "content": "`example : ∃ s : Fin 3, CellComplex.IsPanchromatic (fun n : ℕ => if n ≤ 1 then (0 : Fin 2) else 1) (Triangulation.intervalTriangulation 3 (by norm_num)).toCellComplex s := by refine ⟨1, ?_⟩; decide`\n\nOn `intervalTriangulation 3` with the colouring `c(n) = if n ≤ 1 then 0 else 1`:\n- Cell 0 has vertices {0, 1} → both colour 0 → NOT panchromatic\n- Cell 1 has vertices {1, 2} → colours {0, 1} → **panchromatic** ✓\n- Cell 2 has vertices {2, 3} → both colour 1 → NOT panchromatic\n\nWitness: cell index 1. `decide` evaluates the `IsPanchromatic` predicate to `True` via the `CellComplex.decidableIsPanchromatic` instance — a kernel-level proof object, not just runtime evaluation.",
+    "mathContext": "The demo verifies the entire C1 pipeline end-to-end on a concrete computable instance. The interval triangulation subdivides [0, 3] into 3 unit segments; the colouring puts vertices {0, 1} at colour 0 and {2, 3} at colour 1. The middle segment {1, 2} crosses the colour boundary and is therefore panchromatic — exactly what Sperner's lemma predicts for the 1-d standard simplex with a boundary-condition colouring. `decide` (kernel-level) is preferred over `#eval` (runtime-only) because it provides a proof obligation, not just a printed value.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "intervalTriangulation",
+      "decide tactic",
+      "kernel computation",
+      "concrete Sperner instance",
+      "1-d standard simplex"
+    ],
+    "prerequisites": [
+      "Triangulation.intervalTriangulation (from SpernerSimplicialInstance.lean)",
+      "CellComplex.IsPanchromatic decidability",
+      "decide tactic"
+    ]
+  }
+]

@@ -1,0 +1,167 @@
+[
+  {
+    "id": "ann-e469-header",
+    "proofId": "erdos-469",
+    "range": {
+      "startLine": 1,
+      "endLine": 16
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #469** (OPEN):\n\nDoes the sum Σ_{n∈A} 1/n converge, where A is the set of primitive pseudoperfect (semiperfect) numbers?\n\nA primitive pseudoperfect number n is one that equals a sum of distinct proper divisors, but no proper divisor of n has this property.\n\n**Known members of A:** 6, 20, 28, 88, 104, 272, 304, 350, ... (OEIS A006036)",
+    "mathContext": "Convergence of Σ 1/n over a set A measures its 'thickness' — it converges iff A is sufficiently sparse. The primes have divergent reciprocal sum, so convergence would show A is much sparser than the primes.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pseudoperfect numbers",
+      "primitive sets",
+      "reciprocal sums",
+      "divisor sums"
+    ],
+    "prerequisites": [
+      "convergence of infinite series of reciprocals",
+      "pseudoperfect (semiperfect) numbers",
+      "proper divisors of an integer"
+    ]
+  },
+  {
+    "id": "ann-e469-definitions",
+    "proofId": "erdos-469",
+    "range": {
+      "startLine": 18,
+      "endLine": 37
+    },
+    "type": "definition",
+    "title": "Pseudoperfect and Primitive Definitions",
+    "content": "**IsPseudoperfect n:** n equals the sum of a subset S of its proper divisors. Uses Mathlib's `n.properDivisors`.\n\n**Example:** 12 is pseudoperfect: 12 = 1 + 2 + 3 + 6.\n\n**IsPrimitivePseudoperfect n:** n is pseudoperfect, positive, and no proper divisor m | n (m < n) is pseudoperfect.\n\n**primitivePseudoperfectSet:** the set A of all primitive pseudoperfect numbers.\n\nPrimitivity means A forms an antichain in the divisibility order: no element divides another.",
+    "mathContext": "Pseudoperfect numbers generalise perfect numbers (where ALL proper divisors sum to n). The primitive ones are the 'minimal' representatives under divisibility.",
+    "significance": "key",
+    "relatedConcepts": [
+      "proper divisors",
+      "subset sum",
+      "perfect numbers",
+      "antichain"
+    ],
+    "prerequisites": [
+      "proper divisors and divisor sums",
+      "subset-sum representations of integers",
+      "antichains in the divisibility partial order"
+    ]
+  },
+  {
+    "id": "ann-e469-perfect",
+    "proofId": "erdos-469",
+    "range": {
+      "startLine": 39,
+      "endLine": 59
+    },
+    "type": "concept",
+    "title": "Perfect Numbers and Verified Examples",
+    "content": "**perfect_is_pseudoperfect:** Every perfect number is pseudoperfect (trivially: use all proper divisors).\n\n**Verified pseudoperfect numbers** (via `by decide`):\n- 6 = 1 + 2 + 3\n- 12 = 1 + 2 + 3 + 6\n- 20 = 1 + 4 + 5 + 10\n\nThese are constructive proofs: Lean verifies the explicit divisor subsets.",
+    "mathContext": "Perfect numbers (6, 28, 496, 8128, ...) are automatically pseudoperfect. Whether they are primitive depends on their divisors' pseudoperfectness.",
+    "significance": "key",
+    "relatedConcepts": [
+      "perfect numbers",
+      "constructive proof",
+      "by decide"
+    ],
+    "prerequisites": [
+      "perfect numbers and the sum-of-divisors function",
+      "constructive existence proofs",
+      "decidable arithmetic via Lean's by decide tactic"
+    ]
+  },
+  {
+    "id": "ann-e469-non-pseudo",
+    "proofId": "erdos-469",
+    "range": {
+      "startLine": 61,
+      "endLine": 118
+    },
+    "type": "concept",
+    "title": "Non-Pseudoperfect Numbers and Lower Bound",
+    "content": "**Deficiency argument:** For n ≤ 5, the sum of ALL proper divisors is < n, so no subset can reach n.\n\nProved individually for 0, 1, 2, 3, 4, 5 using `subset_sum_le_total` (any subset sum ≤ total sum of proper divisors) and explicit computation of σ₀(n).\n\n**pseudoperfect_ge_six:** The smallest pseudoperfect number is 6. Proved by exhaustive case analysis on n ∈ {0,...,5}.\n\nThis is a clean structural result: small numbers are too 'deficient' to be pseudoperfect.",
+    "mathContext": "The proper divisor sum σ₀(n) = σ(n) − n determines whether pseudoperfection is possible. For deficient numbers (σ₀(n) < n), it's impossible.",
+    "significance": "key",
+    "relatedConcepts": [
+      "deficient numbers",
+      "divisor sum",
+      "case analysis"
+    ],
+    "prerequisites": [
+      "deficient numbers and the proper divisor sum",
+      "bounding a subset sum by the total sum",
+      "exhaustive case analysis over small integers"
+    ]
+  },
+  {
+    "id": "ann-e469-primitive-6",
+    "proofId": "erdos-469",
+    "range": {
+      "startLine": 120,
+      "endLine": 154
+    },
+    "type": "concept",
+    "title": "6 is Primitive Pseudoperfect",
+    "content": "**primitive_pseudoperfect_6:** 6 is the smallest primitive pseudoperfect number.\n\n**Proof:** 6 = 1 + 2 + 3 (pseudoperfect), and its proper divisors {1, 2, 3} are all < 6, hence all pseudoperfect numbers are ≥ 6, so no divisor of 6 is pseudoperfect.\n\n**Structural theorems:** primitive_pos, primitive_is_pseudoperfect, primitive_no_divisor_pseudoperfect, primitive_pseudoperfect_ge_six — extracting the components of primitivity.",
+    "mathContext": "6 is both the smallest perfect number and the smallest primitive pseudoperfect number. This is because all perfect numbers ≤ 6 have divisors that are too small to be pseudoperfect.",
+    "significance": "key",
+    "relatedConcepts": [
+      "6",
+      "smallest example",
+      "primitivity"
+    ],
+    "prerequisites": [
+      "primitivity as minimality under divisibility",
+      "proper divisors of 6",
+      "smallest-example lower bound arguments"
+    ]
+  },
+  {
+    "id": "ann-e469-abundance",
+    "proofId": "erdos-469",
+    "range": {
+      "startLine": 156,
+      "endLine": 188
+    },
+    "type": "definition",
+    "title": "Abundance, Deficiency, and Weird Numbers",
+    "content": "**sigma0 n:** sum of proper divisors (σ₀(n) = σ(n) − n).\n\n**IsAbundant n:** σ₀(n) > n (proper divisors sum to more than n).\n**IsDeficient n:** σ₀(n) < n.\n**IsPerfect' n:** σ₀(n) = n.\n\n**deficient_not_pseudoperfect:** If σ₀(n) < n, then n is not pseudoperfect (no subset can reach n).\n\n**IsWeird n:** abundant but NOT pseudoperfect. The smallest weird number is 70.\n\nWeird numbers show that having enough divisor sum (abundance) doesn't guarantee pseudoperfection — the subset-sum problem can still fail.",
+    "mathContext": "The classification abundant/deficient/perfect partitions the positive integers. Weird numbers are the 'pathological' cases: abundant yet not pseudoperfect.",
+    "significance": "key",
+    "relatedConcepts": [
+      "abundant numbers",
+      "deficient numbers",
+      "weird numbers",
+      "70"
+    ],
+    "prerequisites": [
+      "abundant, deficient, and perfect number classification",
+      "the sum-of-divisors function sigma",
+      "weird numbers and the subset-sum obstruction"
+    ]
+  },
+  {
+    "id": "ann-e469-conjecture",
+    "proofId": "erdos-469",
+    "range": {
+      "startLine": 190,
+      "endLine": 210
+    },
+    "type": "concept",
+    "title": "Erdős Problem #469 (OPEN)",
+    "content": "**infinitely_many_primitive:** There are infinitely many primitive pseudoperfect numbers.\n\n**erdos_469_convergence:** The reciprocal sum Σ_{n∈A} 1/n converges.\n\nFormalised as: there exists B > 0 such that every finite subset S ⊆ A has Σ_{n∈S} 1/n ≤ B.\n\n**multiple_of_pseudoperfect:** Every multiple of a pseudoperfect number is pseudoperfect.\n\nThis closure under multiplication means the primitive pseudoperfect numbers form a divisibility antichain, analogous to primes but for pseudoperfection.",
+    "mathContext": "The multiplicative closure is key: since n pseudoperfect ⟹ kn pseudoperfect, the primitives are exactly the 'atoms' — every pseudoperfect number is a multiple of a primitive one.",
+    "significance": "key",
+    "relatedConcepts": [
+      "reciprocal sum",
+      "convergence",
+      "antichain",
+      "open problem"
+    ],
+    "prerequisites": [
+      "boundedness of partial sums and series convergence",
+      "closure of pseudoperfect numbers under multiplication",
+      "divisibility antichains analogous to primes"
+    ]
+  }
+]

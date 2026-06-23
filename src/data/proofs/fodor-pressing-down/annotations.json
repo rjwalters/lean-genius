@@ -1,0 +1,166 @@
+[
+  {
+    "id": "ann-club",
+    "proofId": "fodor-pressing-down",
+    "range": { "startLine": 43, "endLine": 80 },
+    "type": "definition",
+    "title": "Club and Stationary Sets: Set-Theoretic Infrastructure",
+    "content": "IsUnboundedBelow S o says S is cofinal below o. IsClubBelow S o is a `structure` with three fields — `subset_Iio : S ⊆ Iio o`, `closed : IsClosedBelow S o`, and `unbounded : IsUnboundedBelow S o` — i.e. a club is bounded below o, closed under accumulation points, and cofinal. The helper theorems IsClubBelow.mem_lt (membership ⟹ < o, derived from subset_Iio) and IsClubBelow.mem_of_isAcc (an accumulation point in Iio o is in S, derived from closed) reproduce the conventional 'closed unbounded' API. IsStationaryBelow S o says S meets every club below o. The standalone lemma isClubBelow_Iio_of_isSuccLimit witnesses that `Iio o` is itself a club whenever o is a successor-limit (used by IsStationaryBelow.nonempty in Part VI).",
+    "mathContext": "$S$ is a **club** (closed unbounded set) below $o$ if: (1) $S \\subseteq \\{\\alpha < o\\}$, (2) every limit ordinal $\\gamma < o$ with $\\sup(S \\cap \\gamma) = \\gamma$ satisfies $\\gamma \\in S$, (3) $S$ is cofinal in $o$. $S$ is **stationary** below $o$ if $S \\cap C \\neq \\emptyset$ for every club $C$ below $o$.",
+    "significance": "key",
+    "relatedConcepts": ["club filter", "stationary set", "closed unbounded", "ordinal accumulation point"],
+    "prerequisites": ["Ordinal.IsAcc", "Set.Iio", "Ordinal.IsSuccLimit"]
+  },
+  {
+    "id": "ann-diag-inter",
+    "proofId": "fodor-pressing-down",
+    "range": { "startLine": 82, "endLine": 96 },
+    "type": "theorem",
+    "title": "Diagonal Intersection: The Key Tool",
+    "content": "diagInter f o = {γ ∈ Iio o | ∀ α < γ, γ ∈ f α}. Unlike ordinary intersection which requires γ ∈ f(α) for ALL α, the diagonal intersection only requires γ ∈ f(α) for those α BELOW γ — this respects the ordinal order. Intuitively, γ 'knows' about f(α) only for α that came before it. The iff characterization mem_diagInter and the subset lemma diagInter_subset_Iio are proved first.",
+    "mathContext": "$\\Delta_{\\alpha < o}(f(\\alpha)) = \\{\\gamma < o \\mid \\forall \\alpha < \\gamma,\\ \\gamma \\in f(\\alpha)\\}$. Compare: $\\bigcap_{\\alpha < o} f(\\alpha) = \\{\\gamma \\mid \\forall \\alpha,\\ \\gamma \\in f(\\alpha)\\}$ (ordinary intersection, stronger).",
+    "significance": "key",
+    "relatedConcepts": ["diagonal intersection", "normal filter", "ordinal membership", "set comprehension"],
+    "prerequisites": ["Set.sep_def", "Ordinal.lt_iff_le_and_ne"]
+  },
+  {
+    "id": "ann-diag-club",
+    "proofId": "fodor-pressing-down",
+    "range": { "startLine": 98, "endLine": 247 },
+    "type": "insight",
+    "title": "Diagonal Intersection of Clubs Is a Club: Zipper Construction",
+    "content": "diagInter_isClubBelow proves the key set-theoretic fact: if f(α) is a club below κ for every α < κ (κ regular uncountable), then diagInter f κ is a club. Two-part proof: (1) diagInter_isClosedBelow: if γ is an accumulation point of Δ(f) below κ, then for each α < γ, γ is also an accumulation point of f(α), so γ ∈ f(α) by closedness of f(α). (2) diagInter_isUnboundedBelow: the 'zipper' argument — given any δ < κ, build an increasing sequence δ < γ_0 < γ_1 < ... where γ_{n+1} is the least element of f(γ_n) above γ_n. By regularity of κ, this sequence is bounded, and the supremum γ_ω lies in every f(α) for α < γ_ω.",
+    "mathContext": "Zipper: $\\delta < \\gamma_0 \\in f(\\delta)$, $\\gamma_n < \\gamma_{n+1} \\in f(\\gamma_n)$. By regularity: $\\gamma_\\omega = \\sup_n \\gamma_n < \\kappa$. For $\\alpha < \\gamma_\\omega$: $\\alpha < \\gamma_n$ for some $n$, so $\\gamma_\\omega$ is an acc. pt. of $f(\\alpha) \\ni \\gamma_n$, hence $\\gamma_\\omega \\in f(\\alpha)$.",
+    "significance": "key",
+    "relatedConcepts": ["club filter normality", "diagonal intersection", "zipper construction", "regular cardinals"],
+    "prerequisites": ["Cardinal.IsRegular", "diagInter_isClosedBelow", "diagInter_isUnboundedBelow", "Ordinal.iSup"]
+  },
+  {
+    "id": "ann-fodor",
+    "proofId": "fodor-pressing-down",
+    "range": { "startLine": 249, "endLine": 313 },
+    "type": "insight",
+    "title": "Fodor's Lemma: Proof by Diagonal Intersection",
+    "content": "fodor proves: for regular uncountable κ, stationary S ⊆ κ.ord, and regressive f (f(α) < α for α ∈ S): ∃ β, f⁻¹(β) ∩ S is stationary. By contradiction: if no f⁻¹(β) ∩ S is stationary, choose clubs C_β with C_β ∩ f⁻¹(β) ∩ S = ∅. Form D = Δ_{β<κ}(C_β) (a club by diagInter_isClubBelow). Take γ ∈ S ∩ D (nonempty since S is stationary and D is a club). Since f is regressive, β = f(γ) < γ, so γ ∈ C_β (because γ ∈ D = Δ C and β < γ). But then f(γ) = β ∈ C_β ∩ f⁻¹(β) ∩ S — contradiction.",
+    "mathContext": "Proof structure: assume $\\forall \\beta,\\ f^{-1}(\\beta) \\cap S$ non-stationary. Choose clubs $C_\\beta$ with $C_\\beta \\cap S \\cap f^{-1}(\\beta) = \\emptyset$. Form $D = \\Delta_{\\beta<\\kappa}(C_\\beta)$ (club). Take $\\gamma \\in S \\cap D$. Then $f(\\gamma) = \\beta < \\gamma$, so $\\gamma \\in C_\\beta$. But $C_\\beta \\cap S \\cap f^{-1}(\\beta) = \\emptyset$. Contradiction.",
+    "significance": "key",
+    "relatedConcepts": ["Fodor's lemma", "regressive function", "diagonal intersection", "proof by contradiction"],
+    "prerequisites": ["diagInter_isClubBelow", "IsStationaryBelow", "IsRegular", "fodor_aleph1"]
+  },
+  {
+    "id": "ann-aleph1",
+    "proofId": "fodor-pressing-down",
+    "range": { "startLine": 316, "endLine": 327 },
+    "type": "concept",
+    "title": "Fodor's Lemma for ℵ₁: The Canonical Application",
+    "content": "fodor_aleph1 specializes to κ = ℵ₁: any regressive function on a stationary subset of ω₁ is constant on some stationary subset. This is the most commonly used instance in descriptive set theory, forcing arguments, and the study of ω₁-trees. The ℵ₁ corollary is what most textbooks call 'Fodor's Lemma' without qualification.",
+    "mathContext": "Specialization of `fodor` to $\\kappa = \\aleph_1$ (the first uncountable cardinal). $\\aleph_1$ is regular (every countable union of countable sets is countable), and $|\\aleph_1|$ is uncountable by definition.",
+    "significance": "supporting",
+    "relatedConcepts": ["ℵ₁", "ω₁", "Aronszajn trees", "regressive function", "countable cofinality"],
+    "prerequisites": ["Cardinal.aleph_regularCard", "Cardinal.aleph_pos", "fodor"]
+  },
+  {
+    "id": "ann-fodor-solovay-step1-limit-club",
+    "proofId": "fodor-pressing-down",
+    "range": {
+      "startLine": 280,
+      "endLine": 340
+    },
+    "type": "insight",
+    "title": "Solovay Step 1: Limit Ordinals Below κ Form a Club",
+    "content": "`isLimitOrdinals_isClubBelow` proves the first preparatory step toward Solovay's splitting theorem: the set of limit ordinals below κ.ord is closed and unbounded (a club). **Closure** holds because an accumulation point of limit ordinals cannot be a successor — `IsAcc` forces an element strictly between any q < p and p, which a successor b+1 cannot accommodate (`IsSuccPrelimit`). **Unboundedness** uses that for any α < κ.ord, the ordinal α + ω₀ is again a limit (sum with a limit is a limit) and stays below κ.ord by regularity (`Cardinal.add_lt_of_lt` with ℵ₀ ≤ κ). The immediate corollary `nonLimitOrdinals_not_isStationaryBelow` states that the non-limit ordinals are NOT stationary: they miss this club, and the defining property of a stationary set is to meet every club. The payoff is the standard WLOG move — any stationary S may be intersected with this club to assume its members are all limit ordinals, which the cofinality machinery in Part IX requires.",
+    "mathContext": "A club $C \\subseteq \\kappa$ is closed (contains its sups below $\\kappa$) and unbounded. Regularity of $\\kappa$ is what keeps $\\alpha + \\omega_0 < \\kappa$, so an uncountable regular $\\kappa$ has the limit ordinals as a club. Since a stationary set meets every club, its complement-in-a-club (here the successor/non-limit ordinals) is automatically non-stationary.",
+    "significance": "key",
+    "relatedConcepts": [
+      "club set",
+      "stationary set",
+      "limit ordinal",
+      "regular cardinal",
+      "Solovay splitting",
+      "IsSuccLimit"
+    ],
+    "prerequisites": [
+      "IsClubBelow",
+      "Cardinal.add_lt_of_lt",
+      "Ordinal.isSuccLimit_add",
+      "IsAcc"
+    ]
+  },
+  {
+    "id": "ann-fodor-solovay-step2-club-intersection",
+    "proofId": "fodor-pressing-down",
+    "range": {
+      "startLine": 346,
+      "endLine": 452
+    },
+    "type": "insight",
+    "title": "Solovay Step 2 Companions: Club Intersection and the WLOG-Limits Reduction",
+    "content": "Three companion lemmas that make the Fodor application in Part IX usable on an arbitrary stationary set. `IsClubBelow.inter` shows the **binary intersection of two clubs is a club**: closure lifts because an accumulation point of C ∩ D is an accumulation point of each factor, and unboundedness is obtained by feeding the 2-element family {C, D} into the already-proved `diagInter_isUnboundedBelow` (the diagonal-intersection zipper) started above max α 1. From this, `IsStationaryBelow.inter_isClubBelow` proves **stationary ∩ club is stationary**: for any test club D, C ∩ D is a club that the stationary S must meet, and rearranging the membership gives a point of (S ∩ C) ∩ D. Specializing C to the limit-ordinals club of Step 1 yields `IsStationaryBelow.inter_isLimitOrdinals` — the packaged WLOG reduction that turns any stationary S into a stationary set of limit ordinals.",
+    "mathContext": "Two facts drive the whole Solovay reduction: (1) finite (here binary) intersections of clubs are clubs — the club filter is closed under finite intersection; (2) intersecting a stationary set with a club preserves stationarity. Together they justify replacing a stationary $S$ by $S \\cap \\{\\text{limits}\\}$ without loss, which is needed because the regressive map `cofHead` is only well-behaved on limit ordinals.",
+    "significance": "key",
+    "relatedConcepts": [
+      "club filter",
+      "finite intersection of clubs",
+      "stationary preservation",
+      "diagonal intersection",
+      "WLOG reduction"
+    ],
+    "prerequisites": [
+      "IsClubBelow.inter",
+      "diagInter_isUnboundedBelow",
+      "isLimitOrdinals_isClubBelow"
+    ]
+  },
+  {
+    "id": "ann-fodor-solovay-cofhead-regressive",
+    "proofId": "fodor-pressing-down",
+    "range": {
+      "startLine": 458,
+      "endLine": 534
+    },
+    "type": "insight",
+    "title": "Solovay Step 2 (S2-β): A Regressive Map from Cofinal Sequences, and Fodor's First Application",
+    "content": "This part builds the concrete regressive function Fodor is applied to. `cofHead α` picks (via `Classical.choose` on `Ordinal.exists_fundamental_sequence`) a fundamental sequence for α and returns its 0-th term, falling back to 0 when cofinality gating fails. `cofHead_lt` proves it is genuinely **regressive on limit ordinals**: every IsSuccLimit α has ℵ₀ ≤ cof α, hence 0 < cof α.ord, so a fundamental sequence exists and its 0-th term is < α (`IsFundamentalSequence.lt`). Then `exists_cofHead_constant_stationary` is **Fodor's first application**: on a stationary set of positive limit ordinals, the regressive cofHead must be constant on a stationary subset — exactly the pressing-down conclusion. `exists_cofHead_constant_stationary_of_stationary` composes this with the Part VIII WLOG-limits reduction into a one-shot statement that takes any stationary S and returns a stationary sub-subset on which cofHead is constant.",
+    "mathContext": "A fundamental sequence for a limit ordinal $\\alpha$ is a strictly increasing cofinal map $\\mathrm{cof}(\\alpha) \\to \\alpha$; its 0-th term is $< \\alpha$, making $\\mathrm{cofHead}$ regressive ($f(\\alpha) < \\alpha$). Fodor's lemma then forces $\\mathrm{cofHead}$ to be constant on a stationary set — the engine of Solovay's theorem, which iterates such constancy to split a stationary set into $\\kappa$-many disjoint stationary pieces.",
+    "significance": "key",
+    "relatedConcepts": [
+      "regressive function",
+      "fundamental sequence",
+      "cofinality",
+      "pressing-down lemma",
+      "Classical.choose",
+      "Solovay splitting"
+    ],
+    "prerequisites": [
+      "fodor",
+      "Ordinal.exists_fundamental_sequence",
+      "Ordinal.aleph0_le_cof",
+      "IsStationaryBelow.inter_isLimitOrdinals"
+    ]
+  },
+  {
+    "id": "ann-fodor-solovay-binary-split-packaging",
+    "proofId": "fodor-pressing-down",
+    "range": {
+      "startLine": 540,
+      "endLine": 599
+    },
+    "type": "concept",
+    "title": "Binary Split Packaging — and an Honest Statement of What Remains Open",
+    "content": "Two packaging lemmas that turn complementary stationary pieces into a disjoint binary split of S. `stationary_splits_of_fiber_compl` takes a predicate P whose fiber {α ∈ S | P α} and co-fiber {α ∈ S | ¬P α} are both stationary and returns two disjoint stationary subsets (disjointness is immediate: no α satisfies both P and ¬P). `stationary_splits_of_two_fibers` does the same from a single function constant with two DISTINCT values c₁ ≠ c₂ on two stationary fibers. **Scope honesty (relevant to the verified/original status):** the file is genuinely 0-sorry and 0-axiom, but these lemmas only *package* a split once the two complementary stationary pieces are in hand — they do not *produce* them. The full `stationary_splits_binary` (every stationary set on a regular uncountable κ splits into two disjoint stationary sets) needs the index-of-first-disagreement counting argument, which is unavailable at the pinned Mathlib SHA and is recorded as the standing open next step. This is exactly why the entry carries genuine open questions despite being fully verified.",
+    "mathContext": "Solovay's theorem ($\\kappa$ regular uncountable $\\Rightarrow$ every stationary set splits into $\\kappa$ disjoint stationary sets) is approached here through its binary base case. The two fibers $S \\cap f^{-1}\\{c_1\\}$ and $S \\cap f^{-1}\\{c_2\\}$ are disjoint for $c_1 \\ne c_2$; the unresolved part is exhibiting a regressive $f$ with two stationary fibers, not assembling the split from them.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Solovay splitting theorem",
+      "disjoint stationary sets",
+      "scope honesty",
+      "open problem",
+      "proof architecture"
+    ],
+    "prerequisites": [
+      "IsStationaryBelow",
+      "Disjoint",
+      "exists_cofHead_constant_stationary"
+    ]
+  }
+]

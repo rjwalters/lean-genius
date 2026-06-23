@@ -1,0 +1,155 @@
+[
+  {
+    "id": "ann-oq03-oq01-bridge",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 50,
+      "endLine": 56
+    },
+    "type": "concept",
+    "title": "Bridge Lemma: eLpNorm ↔ lintegral",
+    "content": "The private lemma `eLpNorm_ofReal_eq` is the key that unlocks this entire file. For `p > 0` (as a real number), it converts `eLpNorm f (ENNReal.ofReal p) μ` — the abstract Lp seminorm — into `(∫⁻ ‖f‖₊^p)^(1/p)` — the explicit lintegral form. The proof uses `eLpNorm_eq_lintegral_rpow_nnnorm` (which handles the ENNReal.ofReal conversion) followed by `ENNReal.toReal_ofReal hp.le` to simplify the exponent, and `one_div` to match the convention in `ENNReal.lintegral_mul_le_Lp_mul_Lq`.",
+    "mathContext": "$$\\text{eLpNorm}(f, p, \\mu) = \\left(\\int_\\alpha^- \\|f(a)\\|_+^p \\, d\\mu(a)\\right)^{1/p}$$ for $p > 0$ as a real number. The `ENNReal.ofReal p` converts $p \\in \\mathbb{R}$ to an extended non-negative real for the eLpNorm API.",
+    "significance": "key",
+    "relatedConcepts": [
+      "eLpNorm",
+      "lintegral",
+      "ENNReal.ofReal",
+      "nnnorm",
+      "Lp spaces"
+    ],
+    "prerequisites": [
+      "Lp spaces in Mathlib",
+      "extended reals (ENNReal)",
+      "lintegral"
+    ]
+  },
+  {
+    "id": "ann-oq03-oq01-main-theorem",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 61,
+      "endLine": 84
+    },
+    "type": "insight",
+    "title": "Hölder in eLpNorm Form — the Main Theorem",
+    "content": "The theorem `holder_normedField_eLpNorm` proves Hölder's inequality at the eLpNorm level for functions valued in any NormedField 𝕜. The proof strategy is: (1) rewrite `eLpNorm (f·g) 1` using `eLpNorm_one_eq_lintegral_nnnorm`; (2) rewrite `eLpNorm f p` and `eLpNorm g q` using the bridge `eLpNorm_ofReal_eq`; (3) factor the nnnorm product via `nnnorm_mul + ENNReal.coe_mul` using `simp_rw`; (4) apply `ENNReal.lintegral_mul_le_Lp_mul_Lq` from Mathlib. The full proof is 5 lines — essentially a translation exercise from eLpNorm language to lintegral language and then back.",
+    "mathContext": "$$\\text{eLpNorm}(f \\cdot g, 1, \\mu) \\leq \\text{eLpNorm}(f, p, \\mu) \\cdot \\text{eLpNorm}(g, q, \\mu)$$ for Hölder conjugate $(p, q)$ and $f, g : \\alpha \\to \\mathbb{k}$ (any NormedField).",
+    "significance": "key",
+    "relatedConcepts": [
+      "eLpNorm",
+      "Hölder's inequality",
+      "NormedField",
+      "lintegral",
+      "nnnorm_mul"
+    ],
+    "prerequisites": [
+      "Hölder's inequality",
+      "Lp spaces",
+      "NormedField",
+      "ENNReal measure theory"
+    ]
+  },
+  {
+    "id": "ann-oq03-oq01-product-membership",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 90,
+      "endLine": 106
+    },
+    "type": "concept",
+    "title": "Product Membership: fg ∈ L¹ when f ∈ Lp, g ∈ Lq",
+    "content": "The theorem `memLp_mul_of_memLp_ofReal` is arguably the most practically useful output of this entire file. It answers the everyday integration question: if I know $f \\in L^p(\\mu)$ and $g \\in L^q(\\mu)$ for conjugate exponents, is the product $fg$ integrable (i.e., $fg \\in L^1(\\mu)$)? Yes. The proof has two parts: (1) measurability of the product (`hf.1.mul hg.1`, since AEStronglyMeasurable is closed under pointwise products); (2) finiteness of `eLpNorm (fg) 1`, chained through the Hölder bound and `ENNReal.mul_lt_top` (product of two finite extended reals is finite).",
+    "mathContext": "`Memℒp f p μ` is defined as `AEStronglyMeasurable f μ ∧ eLpNorm f p μ < ∞`. The theorem shows: $$f \\in L^p(\\mu), g \\in L^q(\\mu), \\frac{1}{p} + \\frac{1}{q} = 1 \\implies f \\cdot g \\in L^1(\\mu)$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Memℒp",
+      "Lp spaces",
+      "product measurability",
+      "AEStronglyMeasurable",
+      "integrability"
+    ],
+    "prerequisites": [
+      "Lp spaces",
+      "Hölder's inequality",
+      "AEStronglyMeasurable",
+      "ENNReal arithmetic"
+    ]
+  },
+  {
+    "id": "ann-oq03-oq01-specializations",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 112,
+      "endLine": 134
+    },
+    "type": "insight",
+    "title": "One-Line Specializations: Real, Complex, and Cauchy-Schwarz",
+    "content": "The three specialization theorems are one-liners that delegate directly to `holder_normedField_eLpNorm`. `holder_real_eLpNorm` specifies 𝕜 = ℝ; `holder_complex_eLpNorm` specifies 𝕜 = ℂ; `cauchy_schwarz_complex_eLpNorm` applies the complex version with the explicit witness `⟨by norm_num, by norm_num⟩ : Real.HolderConjugate 2 2` (checking $1/2 + 1/2 = 1$ and $1 < 2$ numerically). This demonstrates the power of abstract parameterization: once the NormedField result is proved, all classical specializations are immediate.",
+    "mathContext": "Cauchy-Schwarz ($p = q = 2$): $$\\text{eLpNorm}(fg, 1, \\mu) \\leq \\text{eLpNorm}(f, 2, \\mu) \\cdot \\text{eLpNorm}(g, 2, \\mu)$$ The `HolderConjugate 2 2` witness verifies $\\frac{1}{2} + \\frac{1}{2} = 1$ and $1 < 2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Cauchy-Schwarz inequality",
+      "real analysis",
+      "complex analysis",
+      "Hölder conjugate"
+    ],
+    "prerequisites": [
+      "Hölder's inequality",
+      "NormedField typeclass",
+      "norm_num tactic"
+    ]
+  },
+  {
+    "id": "ann-oq03-oq01-two-levels",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 33
+    },
+    "type": "concept",
+    "title": "Two-Level Architecture of Mathlib's Lp Theory",
+    "content": "Mathlib organizes Lp space theory at two levels. The *lower level* uses the extended Lebesgue integral directly: `∫⁻ a, ‖f a‖₊^p ∂μ`. The *upper level* abstracts this into the `eLpNorm` API: `eLpNorm f p μ`. The predicate `Memℒp f p μ` — 'f belongs to Lp' — is stated in terms of eLpNorm. All Lp space theorems in Mathlib (Banach completeness, duality, Riesz representation, Hölder) that are stated for general Lp membership use eLpNorm. This file bridges OQ-03 (which worked at the lower level) to the upper level, making Hölder immediately applicable to Memℒp arguments.",
+    "mathContext": "Lower level: $\\int_\\alpha^- \\|f(a)\\|_+^p \\, d\\mu(a)$. Upper level: $\\text{eLpNorm}(f, p, \\mu)$. Bridge: `eLpNorm_eq_lintegral_rpow_nnnorm`. Membership: `Memℒp f p μ ↔ AEStronglyMeasurable f μ ∧ eLpNorm f p μ < ∞`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "eLpNorm",
+      "Memℒp",
+      "lintegral",
+      "Lp spaces",
+      "Mathlib architecture"
+    ],
+    "prerequisites": [
+      "measure theory",
+      "Lp spaces",
+      "Mathlib Lp API"
+    ]
+  },
+  {
+    "id": "ann-oq03-oq01-duality",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 86,
+      "endLine": 145
+    },
+    "type": "insight",
+    "title": "Lp Duality: Hölder as the Key Step in Riesz Representation",
+    "content": "The eLpNorm form of Hölder's inequality is the analytical engine behind **Lp duality** — the identification $(L^p)^* \\cong L^q$ for conjugate exponents.\n\n**The duality argument**:\n1. For $g \\in L^q(\\mu)$, define $T_g : L^p(\\mu) \\to \\mathbb{k}$ by $T_g(f) = \\int fg \\, d\\mu$\n2. By `memLp_mul_of_memLp_ofReal`, the product $fg \\in L^1(\\mu)$, so the integral is finite\n3. By `holder_normedField_eLpNorm`, $|T_g(f)| = |\\int fg| \\leq \\text{eLpNorm}(fg,1) \\leq \\text{eLpNorm}(f,p) \\cdot \\text{eLpNorm}(g,q)$\n4. So $\\|T_g\\|_{(L^p)^*} \\leq \\|g\\|_{L^q}$ — $T_g$ is a bounded linear functional\n5. The Riesz representation theorem (not in this file, but relying on this infrastructure) shows the map $g \\mapsto T_g$ is an isometric isomorphism $L^q \\to (L^p)^*$\n\n**Why eLpNorm matters**: The Riesz representation theorem is stated in terms of `Memℒp` (Lp membership) and `eLpNorm` (Lp norm). The lintegral form of Hölder (OQ-03) is not directly applicable to Riesz representation proofs — the eLpNorm form (this file) is.",
+    "mathContext": "Riesz representation: $(L^p(\\mu))^* \\cong L^q(\\mu)$ for $1 \\le p < \\infty$, $1/p + 1/q = 1$. The isometric embedding $\\iota : L^q \\hookrightarrow (L^p)^*$ is $\\iota(g)(f) = \\int f \\cdot g \\, d\\mu$. By Hölder: $|\\iota(g)(f)| \\le \\|f\\|_p \\cdot \\|g\\|_q$, so $\\|\\iota(g)\\|_{(L^p)^*} \\le \\|g\\|_q$. The reverse inequality (isometry) requires the Hahn-Banach theorem or an explicit maximizer construction. In Mathlib: `MeasureTheory.Lp.inner_le_eLpNorm` and the `inner_product_space` instance on $L^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lp duality",
+      "Riesz representation theorem",
+      "bounded linear functionals",
+      "dual space",
+      "Banach space duality",
+      "Hahn-Banach theorem"
+    ],
+    "prerequisites": [
+      "Hölder inequality (this file)",
+      "Memℒp and eLpNorm",
+      "functional analysis",
+      "dual Banach spaces"
+    ]
+  }
+]

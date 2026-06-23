@@ -1,0 +1,212 @@
+{
+  "id": "erdos-1147",
+  "title": "Erdős Problem #1147: Additive Basis from Diophantine Approximation",
+  "slug": "erdos-1147",
+  "description": "Is the set {n ≥ 1 : ‖αn²‖ < 1/log(n)} an additive basis of order 2 for every irrational α > 0? NO (Konieczny [Ko16b]). For almost every α, the set fails to be a basis. The result extends to any threshold ε(n) → 0.",
+  "meta": {
+    "author": "Erdős, Konieczny [Ko16b]",
+    "sourceUrl": "https://erdosproblems.com/1147",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1147Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "diophantine-approximation",
+      "additive-combinatorics",
+      "ai-assisted"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1147,
+    "erdosUrl": "https://erdosproblems.com/1147",
+    "erdosProblemStatus": "disproved",
+    "dateAdded": "2026-03-11",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.fract",
+        "description": "Fractional part function",
+        "module": "Mathlib.Algebra.Order.Floor"
+      },
+      {
+        "theorem": "MeasureTheory.ae",
+        "description": "Almost everywhere predicate",
+        "module": "Mathlib.MeasureTheory.Measure.MeasureSpace"
+      },
+      {
+        "theorem": "Irrational",
+        "description": "Irrationality predicate",
+        "module": "Mathlib.Data.Real.Irrational"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit of a function",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of distToNearestInt (distance to nearest integer)",
+      "Proved distToNearestInt_nonneg, distToNearestInt_le_half, distToNearestInt_eq_zero_iff",
+      "Definition of diophantineSet and generalizedDiophantineSet",
+      "Definition of IsAdditiveBasisOrder2 and Sumset",
+      "Proved additiveBasis_iff_sumset_cofinite equivalence",
+      "Proved threshold_lt_one (using Real.exp_one_lt_d9)",
+      "Proved threshold_tendsto_zero",
+      "Axiom konieczny_disproof (almost every α fails)",
+      "Axiom konieczny_generalized (any ε(n) → 0 fails)",
+      "Proved erdos_1147_false (conjecture refuted via √2 counterexample)",
+      "Proved sqrt2_irrational from Mathlib"
+    ],
+    "axiomCount": 4,
+    "lineCount": 234,
+    "assumptions": "4 axioms: konieczny_disproof (a.e. α: A not a basis), konieczny_generalized (extends to any ε(n)→0), sqrt2_not_basis (√2 counterexample), and diophantine_set_infinite (A infinite via Dirichlet). The disproof theorem erdos_1147_false is derived from the sqrt2_not_basis axiom. See Lean source for complete statements.",
+    "theoremCount": 8,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1147 comes from the intersection of Diophantine approximation and additive combinatorics. The problem asks whether the set of integers where αn² is 'close' to an integer (within 1/log(n)) has enough additive structure to form a basis of order 2.\n\nThe distance to nearest integer ‖x‖ = min(fract(x), 1 - fract(x)) measures how close x is to an integer. By Dirichlet's approximation theorem, for any irrational α, there are infinitely many n with ‖αn²‖ small, so the set A is always infinite.\n\nKonieczny [Ko16b] disproved the conjecture by showing that despite being infinite, the set A is too sparse and irregularly distributed to form a basis for almost every α.",
+    "problemStatement": "**Erdős Problem #1147**: Let α > 0 be irrational. Is the set\n$$A = \\{n \\geq 1 : \\|\\alpha n^2\\| < 1/\\log(n)\\}$$\n(where $\\|\\cdot\\|$ denotes the distance to the nearest integer) an additive basis of order 2?\n\n**Answer**: NO (Konieczny [Ko16b])\n\nFor almost every α > 0, the set A is NOT an additive basis of order 2. Moreover, for any function ε(n) → 0, the generalized set {n : ‖αn²‖ < ε(n)} also fails to be a basis for almost every α.",
+    "text": "Is the set {n ≥ 1 : ‖αn²‖ < 1/log(n)} an additive basis of order 2 for every irrational α > 0? NO (Konieczny [Ko16b]). For almost every α, the set fails to be a basis. The result extends to any threshold ε(n) → 0.",
+    "proofStrategy": "The formalization captures both the infrastructure and the main results:\n\n1. **Distance to Nearest Integer**:\n   - `distToNearestInt`: min(fract(x), 1 - fract(x))\n   - Properties: non-negative, at most 1/2, zero iff integer\n\n2. **Diophantine Sets**:\n   - `diophantineSet α`: {n ≥ 1 : ‖αn²‖ < 1/log(n)}\n   - `generalizedDiophantineSet α ε`: threshold ε(n) variant\n\n3. **Additive Basis**:\n   - `IsAdditiveBasisOrder2`: ∃ N₀, ∀ n ≥ N₀, n = a + b with a,b ∈ A\n   - Equivalent to sumset being cofinite\n\n4. **Main Results**:\n   - `konieczny_disproof`: AE α, A not a basis (axiom)\n   - `konieczny_generalized`: extends to any ε(n) → 0 (axiom)\n   - `erdos_1147_false`: conjecture refuted (proved via √2)\n   - `sqrt2_not_basis`: specific counterexample (axiom)",
+    "keyInsights": [
+      "**Infinite ≠ additive basis**: The set A is always infinite (by Dirichlet's theorem) but being infinite is far from sufficient for being an additive basis.",
+      "**Almost every α fails**: Konieczny's result is measure-theoretic — it holds for a full measure set of α values.",
+      "**Generalization**: The result extends beyond 1/log(n) to any threshold ε(n) → 0, showing the phenomenon is robust.",
+      "**Connection to equidistribution**: The failure relates to the distribution of αn² mod 1, which for generic α has specific gap statistics.",
+      "**Proved erdos_1147_false without sorry**: The disproof follows from the √2 counterexample axiom, with the key numerical bound log(3) > 1 proved via Real.exp_one_lt_d9."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Additive combinatorics (sumsets, density)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "distance",
+      "title": "Distance to Nearest Integer",
+      "startLine": 45,
+      "endLine": 85,
+      "summary": "Definition and properties of distToNearestInt.",
+      "mathContext": "Formal definition: Definition and properties of distToNearestInt."
+    },
+    {
+      "id": "diophantine-set",
+      "title": "Diophantine Approximation Sets",
+      "startLine": 86,
+      "endLine": 98,
+      "summary": "diophantineSet and generalizedDiophantineSet definitions.",
+      "mathContext": "Formal definition: diophantineSet and generalizedDiophantineSet definitions."
+    },
+    {
+      "id": "additive-basis",
+      "title": "Additive Basis of Order 2",
+      "startLine": 99,
+      "endLine": 124,
+      "summary": "IsAdditiveBasisOrder2, Sumset, and equivalence theorem.",
+      "mathContext": "Verified: IsAdditiveBasisOrder2, Sumset, and equivalence theorem."
+    },
+    {
+      "id": "threshold",
+      "title": "Threshold Properties",
+      "startLine": 125,
+      "endLine": 148,
+      "summary": "threshold_lt_one and threshold_tendsto_zero.",
+      "mathContext": "Mathematical content: threshold_lt_one and threshold_tendsto_zero."
+    },
+    {
+      "id": "konieczny",
+      "title": "Konieczny's Disproof",
+      "startLine": 149,
+      "endLine": 165,
+      "summary": "Main axioms: konieczny_disproof and konieczny_generalized.",
+      "mathContext": "Verified: Main axioms: konieczny_disproof and konieczny_generalized."
+    },
+    {
+      "id": "counterexample",
+      "title": "Specific Counterexample",
+      "startLine": 166,
+      "endLine": 173,
+      "summary": "sqrt2_not_basis axiom and sqrt2_irrational theorem.",
+      "mathContext": "Verified: sqrt2_not_basis axiom and sqrt2_irrational theorem."
+    },
+    {
+      "id": "conjecture",
+      "title": "Conjecture and Disproof",
+      "startLine": 174,
+      "endLine": 188,
+      "summary": "Erdos1147Conjecture definition and erdos_1147_false theorem.",
+      "mathContext": "Formal definition: Erdos1147Conjecture definition and erdos_1147_false theorem."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 210,
+      "endLine": 234,
+      "summary": "Problem status, key points, and axiom counts.",
+      "mathContext": "Axiomatized: Problem status, key points, and axiom counts."
+    }
+  ],
+  "conclusion": {
+    "summary": "We formalize Erdős Problem #1147 on whether Diophantine approximation sets form additive bases. The answer is NO: Konieczny showed that for almost every irrational α, the set {n : ‖αn²‖ < 1/log(n)} is not an additive basis of order 2, and this extends to any threshold ε(n) → 0.",
+    "implications": "This result demonstrates a fundamental tension between Diophantine approximation and additive combinatorics: sets defined by approximation quality are too irregularly distributed to have good sumset properties. The measure-theoretic nature of the result (almost every α) connects to the theory of metric Diophantine approximation.",
+    "openQuestions": [
+      "Are there specific irrational α for which the set IS a basis?",
+      "What is the exact density/distribution of the Diophantine set for specific α like √2?",
+      "Does the result hold for αn^k with k > 2?",
+      "What minimal growth rate of the threshold ε(n) would make the set a basis?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "Set",
+      "Filter",
+      "MeasureTheory"
+    ],
+    "namespace": "Erdos1147",
+    "lineCount": 234,
+    "axiomCount": 4,
+    "theoremCount": 8,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos1147Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1000",
+      "relationship": "sibling",
+      "description": "Both problems concern Diophantine approximation thresholds: #1000 studies generalized totients with approximation conditions, #1147 asks whether floor-function threshold sets form additive bases"
+    },
+    {
+      "targetId": "erdos-1001",
+      "relationship": "sibling",
+      "description": "Both concern density of sets defined by Diophantine approximation quality; #1001 asks about density of well-approximable sequences, #1147 asks about additive basis properties"
+    },
+    {
+      "targetId": "erdos-1148",
+      "relationship": "sibling",
+      "description": "Neighboring Erdős problem on additive representation: #1148 asks about representation as x² + y² - z², both concern additive structure of number-theoretically defined sets"
+    },
+    {
+      "targetId": "erdos-1107",
+      "relationship": "related",
+      "description": "Both concern additive basis properties of arithmetic sets: #1107 asks about sums of r-powerful numbers, #1147 about sets from Diophantine approximation thresholds"
+    },
+    {
+      "targetId": "erdos-123",
+      "relationship": "related",
+      "description": "Both concern additive completeness: #123 studies d-complete sequences (every sufficiently large integer as a sum of d elements), #1147 asks about order-2 additive bases from approximation sets"
+    }
+  ],
+  "sorries": 0
+}

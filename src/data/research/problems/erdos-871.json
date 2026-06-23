@@ -1,0 +1,90 @@
+{
+  "slug": "erdos-871",
+  "title": "Erdős #871: Partitioning Additive Bases of Order 2",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\exists A \\subseteq \\mathbb{N},\\; \\mathrm{IsAdditiveBasis2}(A) \\land \\mathrm{RepTendsToInfty}(A) \\land \\neg\\mathrm{CanPartitionIntoBases}(A)",
+    "plain": "Formalize the additive-bases counterexample target: an order-2 additive basis A with representation counts r_A(n) tending to infinity that still cannot be partitioned into two disjoint order-2 additive bases.",
+    "whyMatters": [
+      "Larsen's recent disproof settles a concrete Erdős additive-bases partition question.",
+      "The remaining axioms are named published construction results, making the next formalization targets explicit.",
+      "The blocking construction may be decomposable into reusable additive-combinatorics and representation-function lemmas."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Larsen (2026) disproves the original Erdős partition question using an extension of the Erdős-Nathanson (1989) blocking construction.",
+      "Erdős-Nathanson (1989) proves a positive partition result under sufficiently strong logarithmic representation growth."
+    ],
+    "open": [
+      "Reduce or formalize the Lean axioms currently standing for the Erdős-Nathanson and Larsen construction results, especially larsen_construction_blocking."
+    ],
+    "goal": "Survey and formalize additive-combinatorics ingredients needed to reduce the current 3-axiom Lean development."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-04",
+    "iteration": 1,
+    "focus": "Axiom reduction for the additive-bases partition counterexample, starting with the Larsen 2026 blocking construction.",
+    "blockers": [],
+    "nextAction": "Read Erdos871Problem.lean in full, then survey Mathlib additive-combinatorics, set-cardinality, density, and sumset APIs for blocking-property infrastructure.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "OBSERVE-phase Lean target: the gallery file has 3 remaining axioms for published additive-bases results, and the current work is to reduce those axioms rather than treat the target as fully formalized.",
+    "builtItems": [],
+    "insights": [
+      "The target asks for an order-2 additive basis A with r_A(n) -> infinity that cannot be partitioned into two order-2 additive bases.",
+      "Local notes identify three active axioms: erdos_nathanson_1989, erdos_nathanson_positive, and larsen_construction_blocking.",
+      "The primary reduction target is larsen_construction_blocking because the Larsen 2026 construction is described as constructive and block-based.",
+      "Mathlib survey targets include Combinatorics.Additive, Set/Card infrastructure, density lemmas, and sumset APIs."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Survey Mathlib.Combinatorics.Additive and related Salem/Behrend files for reusable sumset or density infrastructure.",
+      "Map the explicit Larsen blocking construction into smaller formal lemmas before attempting to discharge larsen_construction_blocking."
+    ]
+  },
+  "tags": [
+    "erdos",
+    "disproved",
+    "additive-combinatorics",
+    "additive-bases",
+    "partitions",
+    "representation-function"
+  ],
+  "relatedProofs": [
+    "erdos-8",
+    "erdos-87",
+    "erdos-871"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-23T08:04:56.547Z",
+  "lastUpdate": "2026-01-23T08:04:56.547Z",
+  "significance": 7,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos871Problem.lean",
+      "filename": "Erdos871Problem.lean",
+      "lineCount": 426,
+      "theoremCount": 25,
+      "axiomCount": 3,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos871Problem.lean"
+    }
+  ]
+}

@@ -1,0 +1,164 @@
+[
+  {
+    "id": "ann-e584-header",
+    "proofId": "erdos-584",
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #584** asks about the relationship between edge density and cycle connectivity in graphs. Given a graph G with n vertices and δn² edges, must there exist subgraphs with many edges where every pair of edges lies on a short common cycle? The problem has two parts: H₁ requires 6-cycle connectivity with ≫ δ³n² edges, and H₂ requires 8-cycle connectivity with ≫ δ²n² edges. The problem was posed by Duke, Erdős, and Rödl and remains open.",
+    "mathContext": "This is a problem in extremal graph theory connecting edge density to local cycle structure. The cycle connectivity requirement is much stronger than ordinary connectivity: it demands that any two edges (not just vertices) share a short cycle. The exponents δ³ and δ² reflect the expected density loss when extracting cycle-connected subgraphs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal graph theory",
+      "cycle connectivity",
+      "graph density"
+    ],
+    "prerequisites": [
+      "extremal graph theory",
+      "combinatorics",
+      "asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-e584-graph-defs",
+    "proofId": "erdos-584",
+    "range": {
+      "startLine": 40,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Graph Structure and Density",
+    "content": "**Graph, edgeCount, density, HasDensity** define the basic framework. A Graph on n vertices stores an edge set (as pairs of Fin n) with symmetry and no-loop constraints. The edgeCount divides the set cardinality by 2 (since each undirected edge appears as two ordered pairs). The density δ measures how many edges exist relative to the maximum n². HasDensity G δ states that G has at least δn² edges.",
+    "mathContext": "The formalization uses a custom graph type rather than Mathlib's SimpleGraph to have direct control over the edge set as a Finset, which is needed for cardinality arguments. The density parameter δ is central to the problem: when δ is constant the problem is easier, but when δ depends on n (e.g., δ = n^{-c}) it becomes much harder.",
+    "significance": "key",
+    "relatedConcepts": [
+      "graph density",
+      "edge counting",
+      "simple graphs"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "finite set cardinality",
+      "Lean 4 syntax",
+      "Mathlib library structure"
+    ]
+  },
+  {
+    "id": "ann-e584-cycle-defs",
+    "proofId": "erdos-584",
+    "range": {
+      "startLine": 65,
+      "endLine": 94
+    },
+    "type": "definition",
+    "title": "Cycle Connectivity Framework",
+    "content": "**Path, IsCycle, OnCommonCycle, IsCycleConnected, AdjacentEdgesOn4Cycle** build up the cycle connectivity machinery. A Path is a list of vertices with consecutive edges in G. IsCycle requires k distinct vertices forming a closed walk. OnCommonCycle says two edges both have their endpoints in some cycle of length k. IsCycleConnected requires every pair of edges to share a common cycle of length ≤ k. AdjacentEdgesOn4Cycle strengthens this: edges sharing a vertex must lie on a 4-cycle.",
+    "mathContext": "The distinction between IsCycleConnected and AdjacentEdgesOn4Cycle is crucial. General cycle connectivity with bound 6 is the baseline for H₁, but adjacent edges must satisfy the stronger bound of 4. This two-tier requirement makes H₁ harder to satisfy than H₂, which only requires 8-cycle connectivity without the adjacency constraint.",
+    "significance": "key",
+    "relatedConcepts": [
+      "graph paths",
+      "cycle length",
+      "edge connectivity"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "walks and paths",
+      "Lean 4 inductive definitions"
+    ]
+  },
+  {
+    "id": "ann-e584-conjecture",
+    "proofId": "erdos-584",
+    "range": {
+      "startLine": 96,
+      "endLine": 124
+    },
+    "type": "concept",
+    "title": "The Main Conjecture",
+    "content": "**HasH1Property, HasH2Property, ErdosConjecture584** package the conjecture. HasH1Property combines 6-cycle connectivity with the 4-cycle condition for adjacent edges. HasH2Property is just 8-cycle connectivity. The conjecture states that for any dense graph (δn² edges), both H₁ (with ≫ δ³n² edges) and H₂ (with ≫ δ²n² edges) can be found as subgraphs. The existential constant C > 0 makes the ≫ precise.",
+    "mathContext": "The exponents δ³ and δ² are conjectured to be tight. Extracting H₁ costs a factor of δ³ in the edge count (from δn² to δ³n²), reflecting the density loss from imposing short-cycle constraints. The factor of δ² for H₂ is less severe because 8-cycle connectivity is a weaker requirement than 6-cycle connectivity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "dense subgraphs",
+      "cycle-connected subgraphs",
+      "extremal bounds"
+    ],
+    "prerequisites": [
+      "extremal graph theory",
+      "asymptotic notation",
+      "existential quantification in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-e584-known-results",
+    "proofId": "erdos-584",
+    "range": {
+      "startLine": 126,
+      "endLine": 152
+    },
+    "type": "concept",
+    "title": "Known Partial Results",
+    "content": "**Three known results** are axiomatized. Duke-Erdős (1982) proved H₁ exists for fixed density δ when n is large enough — but this dependence on n for each δ is the key limitation. Duke-Erdős-Rödl (1984) removed the n-dependence but weakened the exponent from δ³ to δ⁵, the best known uniform bound. Fox-Sudakov (2008) proved H₂ but only for δ > n^{-1/5}, leaving the sparse regime open.",
+    "mathContext": "The gap between δ⁵ (known) and δ³ (conjectured) for H₁ is significant. Duke-Erdős-Rödl used a variant of the regularity lemma, which inherently loses polynomial factors. Closing this gap likely requires going beyond regularity-based techniques. Fox-Sudakov's threshold n^{-1/5} arises from their counting argument and may not be optimal.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Szemerédi regularity lemma",
+      "Duke-Erdős-Rödl theorem",
+      "Fox-Sudakov theorem"
+    ],
+    "prerequisites": [
+      "extremal graph theory",
+      "Szemerédi regularity method",
+      "history of combinatorics"
+    ]
+  },
+  {
+    "id": "ann-e584-sparse-regime",
+    "proofId": "erdos-584",
+    "range": {
+      "startLine": 154,
+      "endLine": 170
+    },
+    "type": "concept",
+    "title": "The Sparse Regime Challenge",
+    "content": "**IsSparseRegime and SparseRegimeConjecture** formalize the main open challenge. When δ = n^{-c} for 0 < c < 1/2, the density depends on n and decreases as n grows. The conjecture asks whether H₁ with ≫ δ³n² = n^{2-3c} edges still exists. For c < 1/3, this would give a superlinear number of edges; for 1/3 < c < 1/2, only a sublinear number. The constraint c < 1/2 ensures the graph has at least n edges.",
+    "mathContext": "The sparse regime is where regularity-based approaches fail most severely. The Szemerédi regularity lemma produces approximations with error ε that is bounded away from 0 independently of n, which is too coarse when δ → 0. New ideas from probabilistic combinatorics, dependent random choice, or algebraic methods may be needed to make progress in this regime.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sparse graphs",
+      "regularity lemma limitations",
+      "dependent random choice"
+    ],
+    "prerequisites": [
+      "extremal graph theory",
+      "probabilistic combinatorics",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-e584-summary",
+    "proofId": "erdos-584",
+    "range": {
+      "startLine": 186,
+      "endLine": 205
+    },
+    "type": "concept",
+    "title": "Summary Theorem",
+    "content": "**erdos_584_summary** combines the two H₁ partial results into a single theorem: both Duke-Erdős 1982 (for fixed δ, n large) and Duke-Erdős-Rödl 1984 (uniform δ⁵ bound) hold. The proof is by exact ⟨duke_erdos_1982, duke_erdos_rodl_1984⟩, packaging both axioms as a conjunction. This demonstrates that while the full conjecture is open, substantial progress has been made on the H₁ side.",
+    "mathContext": "The summary theorem type-checks that the axiom signatures are compatible with the conjunction. The two results represent different trade-offs: the 1982 result has the optimal δ³ exponent but requires n to be large relative to δ, while the 1984 result is uniform in n but pays a δ⁵ penalty. A resolution of the full conjecture would combine the best of both.",
+    "significance": "key",
+    "relatedConcepts": [
+      "partial results",
+      "conjecture formalization",
+      "axiom combination"
+    ],
+    "prerequisites": [
+      "mathematical logic",
+      "Lean 4 tactic mode",
+      "axiomatized assumptions"
+    ]
+  }
+]

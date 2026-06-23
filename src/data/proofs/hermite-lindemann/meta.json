@@ -1,0 +1,250 @@
+{
+  "id": "hermite-lindemann",
+  "title": "The Hermite-Lindemann Theorem",
+  "slug": "hermite-lindemann",
+  "description": "For any non-zero algebraic number alpha, e^alpha is transcendental. This implies the transcendence of both e and pi.",
+  "meta": {
+    "wiedijkNumber": 56,
+    "author": "Hermite (1873) and Lindemann (1882)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Lindemann%E2%80%93Weierstrass_theorem",
+    "date": "1882",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/HermiteLindemann.lean",
+    "tags": [
+      "number-theory",
+      "transcendental",
+      "exponential",
+      "algebraic",
+      "wiedijk-100",
+      "classic"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Transcendental",
+        "description": "Transcendental number definition",
+        "module": "Mathlib.RingTheory.Algebraic"
+      },
+      {
+        "theorem": "Real.exp",
+        "description": "Exponential function",
+        "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+      }
+    ],
+    "originalContributions": [
+      "Framework for Hermite-Lindemann theorem",
+      "Corollaries: e is transcendental, pi is transcendental",
+      "Connection to Lindemann-Weierstrass generalization"
+    ],
+    "dateAdded": "2025-12-29",
+    "axiomCount": 1,
+    "lineCount": 390,
+    "assumptions": "1 axiom: hermite_lindemann (deep analytic number theory, not in Mathlib). All corollaries (e transcendence, π transcendence) are now proved from this single axiom via Euler's identity and algebraic closure properties.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Charles Hermite's 1873 paper \"Sur la fonction exponentielle\" proved $e$ is transcendental, introducing the **auxiliary polynomial method** that became the foundation of transcendence theory. Hermite's key innovation was constructing a polynomial $f(x) = x^{p-1}(x-1)^p \\cdots (x-n)^p / (p-1)!$ whose integral against $e^x$ yields simultaneously a nonzero integer and a quantity less than 1 — a contradiction. Ferdinand von Lindemann generalized this in his 1882 paper \"Über die Zahl $\\pi$\" to show $e^\\alpha$ is transcendental for any nonzero algebraic $\\alpha$, immediately proving $\\pi$ transcendental via Euler's identity and settling the ancient circle-squaring problem. Karl Weierstrass published the definitive generalization in 1885: if $\\alpha_1, \\ldots, \\alpha_n$ are $\\mathbb{Q}$-linearly independent algebraic numbers, then $e^{\\alpha_1}, \\ldots, e^{\\alpha_n}$ are algebraically independent. This hierarchy — Hermite to Lindemann to Weierstrass — established the template that Gelfond, Schneider, and Baker would later extend.",
+    "problemStatement": "**Hermite-Lindemann Theorem**: If $\\alpha \\neq 0$ is algebraic over $\\mathbb{Q}$, then $e^\\alpha$ is transcendental over $\\mathbb{Z}$.\n\n$$\\alpha \\in \\overline{\\mathbb{Q}} \\setminus \\{0\\} \\implies e^\\alpha \\notin \\overline{\\mathbb{Q}}$$\n\n**Key Corollaries**:\n- $e = e^1$ is transcendental (Wiedijk #67, Hermite 1873)\n- $\\pi$ is transcendental (Wiedijk #53, Lindemann 1882) — via $e^{i\\pi} = -1$",
+    "text": "For any non-zero algebraic number alpha, e^alpha is transcendental. This implies the transcendence of both e and pi.",
+    "proofStrategy": "The Lean file axiomatizes the Hermite-Lindemann theorem and the Lindemann-Weierstrass theorem (both classical and strong forms), then derives corollaries. The **proof technique** (documented pedagogically) uses Hermite's auxiliary polynomial method: (1) assume $\\sum a_k e^k = 0$ for integers $a_k$; (2) for large prime $p$, construct $f(x) = x^{p-1}(x-1)^p \\cdots (x-n)^p / (p-1)!$; (3) define $F(x) = \\sum_{k \\geq 0} f^{(k)}(x)$ and compute $I_k = \\int_0^k f(t) e^t dt = e^k F(0) - F(k)$; (4) show $S = \\sum a_k I_k$ is simultaneously a nonzero integer and less than 1 in absolute value — contradiction.",
+    "keyInsights": [
+      "**Hermite's auxiliary polynomial method**: The polynomial $f(x) = x^{p-1}\\prod(x-k)^p / (p-1)!$ is engineered so that $f^{(j)}(0)$ and $f^{(j)}(k)$ have specific divisibility properties modulo $p$, creating an integer that can be bounded below 1",
+      "**Three-level hierarchy**: Hermite-Lindemann (single exponent) $\\subset$ Lindemann-Weierstrass classical (linear independence) $\\subset$ Lindemann-Weierstrass strong (algebraic independence) — each strictly more powerful",
+      "**Two corollaries settle two Wiedijk problems**: $e$ transcendental (#67) follows from $\\alpha = 1$; $\\pi$ transcendental (#53) follows from $e^{i\\pi} = -1$ via contraposition",
+      "**Contrapositive form**: If $e^\\alpha$ is algebraic for $\\alpha \\neq 0$, then $\\alpha$ must be transcendental — this is the form used to prove $\\ln 2$ is transcendental ($e^{\\ln 2} = 2$ is algebraic)",
+      "**Template for modern transcendence theory**: The proof technique of constructing auxiliary functions and deriving integer/analytic contradictions was extended by Gelfond-Schneider (1934, Hilbert's 7th) and Baker (1966, linear forms in logarithms)"
+    ],
+    "prerequisites": [
+      "Complex analysis (entire functions, exponential function)",
+      "Algebraic number theory (algebraic integers, minimal polynomials)",
+      "Transcendence theory (Liouville's theorem, auxiliary functions)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-documentation",
+      "title": "Imports and Module Documentation",
+      "startLine": 1,
+      "endLine": 108,
+      "summary": "Imports Mathlib algebraic, exponential, and linear algebra modules. Extensive documentation covers the theorem statements, historical context (Hermite 1873, Lindemann 1882, Weierstrass 1885), proof outline, and connections to Wiedijk #53, #56, #67.",
+      "mathContext": "Imports Mathlib algebraic, exponential, and linear algebra modules. Extensive documentation covers the theorem statements, historical context (Hermite 1873, Lindemann 1882, Weierstrass 1885), proof outline, and connections to Wiedijk #53, #56, #67."
+    },
+    {
+      "id": "definitions-background",
+      "title": "Part I: Basic Definitions and Background",
+      "startLine": 109,
+      "endLine": 126,
+      "summary": "Documents key Mathlib definitions: `IsAlgebraic R x`, `Transcendental R x`, `LinearIndependent R v`. Notes that `Transcendental ℤ x ⟺ Transcendental ℚ x` by clearing denominators.",
+      "mathContext": "Documents key Mathlib definitions: `IsAlgebraic R x`, `Transcendental R x`, `LinearIndependent R v`. Notes that `Transcendental $\\mathbb{Z}$ x ⟺ Transcendental $\\mathbb{Q}$ x` by clearing denominators."
+    },
+    {
+      "id": "hermite-lindemann-theorem",
+      "title": "Part II: The Hermite-Lindemann Theorem",
+      "startLine": 127,
+      "endLine": 156,
+      "summary": "Axiomatizes the main theorem: $\\alpha \\neq 0$ algebraic $\\Rightarrow e^\\alpha$ transcendental. Also states the contrapositive: $e^\\alpha$ algebraic $\\Rightarrow \\alpha$ transcendental.",
+      "mathContext": "Axiomatizes the main theorem: $\\$\\alpha$ \\neq 0$ algebraic $\\Rightarrow e^\\$\\alpha$$ transcendental. Also states the contrapositive: $e^\\$\\alpha$$ algebraic $\\Rightarrow \\$\\alpha$$ transcendental."
+    },
+    {
+      "id": "lindemann-weierstrass",
+      "title": "Part III: The Lindemann-Weierstrass Theorem",
+      "startLine": 157,
+      "endLine": 186,
+      "summary": "Defines `AlgebraicallyIndependent` using `MvPolynomial` and axiomatizes two forms: classical (distinct algebraics $\\Rightarrow$ linearly independent exponentials) and strong ($\\mathbb{Q}$-linearly independent algebraics $\\Rightarrow$ algebraically independent exponentials).",
+      "mathContext": "Defines `AlgebraicallyIndependent` using `MvPolynomial` and axiomatizes two forms: classical (distinct algebraics $\\Rightarrow$ linearly independent exponentials) and strong ($\\mathbb{Q}$-linearly independent algebraics $\\Rightarrow$ algebraically independent exponentials)."
+    },
+    {
+      "id": "fundamental-corollaries",
+      "title": "Part IV: Fundamental Corollaries",
+      "startLine": 187,
+      "endLine": 271,
+      "summary": "Derives transcendence of $e$ (Wiedijk #67), $\\pi$ (Wiedijk #53), $e^n$ for nonzero $n \\in \\mathbb{Z}$ (proved via `hermite_lindemann` + `isAlgebraic_int`), and $e^{n\\alpha}$ for algebraic $\\alpha$.",
+      "mathContext": "Derives transcendence of $e$ (Wiedijk #67), $\\$\\pi$$ (Wiedijk #53), $e^n$ for nonzero $n \\in \\mathbb{Z}$ (proved via `hermite_lindemann` + `isAlgebraic_int`), and $e^{n\\$\\alpha$}$ for algebraic $\\$\\alpha$$."
+    },
+    {
+      "id": "applications",
+      "title": "Part V: Applications",
+      "startLine": 272,
+      "endLine": 295,
+      "summary": "Axiomatizes $\\sqrt{\\pi}$ transcendental (impossibility of squaring the circle) and $e$ irrational (non-periodic decimal expansion). Both follow from transcendence via algebraic closure properties.",
+      "mathContext": "Axiomatizes $\\sqrt{\\$\\pi$}$ transcendental (impossibility of squaring the circle) and $e$ irrational (non-periodic decimal expansion). Both follow from transcendence via algebraic closure properties."
+    },
+    {
+      "id": "connections",
+      "title": "Part VI: Connections to Other Results",
+      "startLine": 296,
+      "endLine": 330,
+      "summary": "Documents generalizations: Gelfond-Schneider (1934, $\\alpha^\\beta$ transcendental, Hilbert #7), Baker's theorem (1966, linear forms in logarithms). Lists open problems: is $e + \\pi$ transcendental? Describes Schanuel's conjecture.",
+      "mathContext": "Documents generalizations: Gelfond-Schneider (1934, $\\alpha^\\beta$ transcendental, Hilbert #7), Baker's theorem (1966, linear forms in logarithms). Lists open problems: is $e + \\pi$ transcendental?"
+    },
+    {
+      "id": "proof-techniques",
+      "title": "Part VII: Proof Techniques (Pedagogical)",
+      "startLine": 331,
+      "endLine": 373,
+      "summary": "Detailed pedagogical exposition of Hermite's auxiliary polynomial method: construction of $f(x) = x^{p-1}\\prod(x-k)^p / (p-1)!$, the sum $F(x) = \\sum f^{(k)}(x)$, integration by parts yielding $I_k = e^k F(0) - F(k)$, and the integer-vs-small contradiction.",
+      "mathContext": "Detailed pedagogical exposition of Hermite's auxiliary polynomial method: construction of $f(x) = x^{p-1}\\prod(x-k)^p / (p-1)!$, the sum $F(x) = \\sum f^{(k)}(x)$, integration by parts yielding $I_k = e^k F(0) - F(k)$, and the integer-vs-small contradiction."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization axiomatizes the Hermite-Lindemann theorem ($\\alpha \\neq 0$ algebraic $\\Rightarrow e^\\alpha$ transcendental) and the Lindemann-Weierstrass theorem (both classical and strong forms). It derives the transcendence of $e$ (Wiedijk #67) and $\\pi$ (Wiedijk #53) as corollaries, proves $e^n$ transcendental for nonzero integers $n$, and documents the impossibility of squaring the circle. The proof technique is documented pedagogically.",
+    "implications": "**Theoretical Significance**: The Hermite-Lindemann theorem established transcendence theory as a major branch of mathematics.\n\nIt solved the 2,000-year-old circle-squaring problem, proved two of the most important mathematical constants transcendental, and introduced the auxiliary polynomial method that Gelfond and Schneider extended to prove Hilbert's 7th problem (1934) and Baker generalized to effective linear forms in logarithms (1966, Fields Medal). The Lindemann-Weierstrass strong form remains the most powerful unconditional result on algebraic independence of exponentials.",
+    "openQuestions": [
+      "Can the Hermite-Lindemann/Lindemann-Weierstrass theorems be fully formalized in Lean/Mathlib? This would eliminate all axioms in this file and provide a verified proof",
+      "Is $e^e$ transcendental? Hermite-Lindemann doesn't apply since $e$ is transcendental (not algebraic), so we can't take $\\alpha = e$. Schanuel's conjecture would imply yes",
+      "Does Schanuel's conjecture ($\\text{tr.deg}_{\\mathbb{Q}} \\mathbb{Q}(z_i, e^{z_i}) \\geq n$ for $\\mathbb{Q}$-linearly independent $z_i$) hold? It would resolve whether $e + \\pi$, $e \\cdot \\pi$, and $e^e$ are transcendental",
+      "Can Baker-type effective bounds be formalized? Baker's theorem gives computable lower bounds on $|\\beta_0 + \\beta_1 \\ln \\alpha_1 + \\cdots + \\beta_n \\ln \\alpha_n|$ with applications to Diophantine equations"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "e-transcendental",
+      "relationship": "specializes",
+      "description": "The transcendence of $e$ (Wiedijk #67) is the $\\alpha = 1$ special case of Hermite-Lindemann; Hermite's 1873 proof was the first application"
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "specializes",
+      "description": "The transcendence of $\\pi$ (Wiedijk #53) follows from Hermite-Lindemann via Euler's identity: $e^{i\\pi} = -1$ is algebraic, so $i\\pi$ must be transcendental"
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "uses",
+      "description": "Euler's identity $e^{i\\pi} = -1$ is the bridge that connects Hermite-Lindemann to $\\pi$'s transcendence"
+    },
+    {
+      "targetId": "gelfond-schneider",
+      "relationship": "generalized-by",
+      "description": "The Gelfond-Schneider theorem (1934) extends transcendence theory from exponentials to $\\alpha^\\beta$, using techniques inspired by Hermite-Lindemann"
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "related",
+      "description": "Both resolve classical impossibility problems via algebraic number theory; squaring the circle fails because $\\pi$ is transcendental (Hermite-Lindemann), angle trisection because some angles need degree-3 extensions"
+    },
+    {
+      "targetId": "liouville-theorem",
+      "relationship": "extends",
+      "description": "Liouville (1844) gave the first transcendental numbers via approximation bounds; Hermite-Lindemann (1873-1882) proved specific important constants (e, π) transcendental using the more powerful auxiliary polynomial method"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Both are impossibility results about expressibility: Abel-Ruffini shows some roots aren't expressible by radicals, Hermite-Lindemann shows e and π aren't even algebraic — a hierarchy from radical to algebraic to transcendental"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "foundational",
+      "description": "Irrationality of √2 is the simplest expressibility barrier. The hierarchy is: √2 ∉ ℚ (irrational) → quintic roots ∉ radical extensions (Abel-Ruffini) → e,π ∉ algebraic numbers (Hermite-Lindemann)"
+    },
+    {
+      "targetId": "algebraic-numbers-countable-oq-04",
+      "relationship": "extended-by",
+      "description": "Baker's theorem (1966) is the multi-logarithm generalization of Hermite-Lindemann: if log α₁, ..., log αₙ are Q-linearly independent, they are Q̄-linearly independent. Hermite-Lindemann is the n=1 case: a single non-zero log α (for algebraic α≠1) is Q̄-linearly independent of 1, i.e., it is transcendental. Baker's proof builds on Hermite's auxiliary polynomial technique but must handle simultaneous approximation of multiple logarithms, requiring a much more delicate zero-counting argument via Siegel's lemma."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.Algebraic.Basic",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "Mathlib.Analysis.SpecialFunctions.Complex.Analytic",
+      "Mathlib.Data.Real.Pi.Bounds",
+      "Mathlib.Data.Complex.Exponential",
+      "Mathlib.LinearAlgebra.LinearIndependent.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Complex",
+      "Polynomial",
+      "ComplexConjugate"
+    ],
+    "namespace": "HermiteLindemann",
+    "lineCount": 373,
+    "axiomCount": 1,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "path": "Proofs/HermiteLindemann.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Hermite, Charles",
+      "title": "Sur la fonction exponentielle",
+      "year": "1873",
+      "venue": "Comptes rendus de l'Académie des Sciences 77",
+      "note": "Proved e is transcendental — the first of the Hermite-Lindemann results"
+    },
+    {
+      "authors": "Lindemann, Ferdinand von",
+      "title": "Über die Zahl π",
+      "year": "1882",
+      "venue": "Mathematische Annalen 20, pp. 213-225",
+      "note": "Extended Hermite's method to prove π transcendental, settling the ancient problem of squaring the circle"
+    },
+    {
+      "authors": "Weierstrass, Karl",
+      "title": "Zu Lindemann's Abhandlung: Über die Ludolph'sche Zahl",
+      "year": "1885",
+      "venue": "Sitzungsberichte der Königlich Preußischen Akademie der Wissenschaften",
+      "note": "Generalized Lindemann's result to the full Lindemann-Weierstrass theorem on algebraic independence"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "hermite_lindemann",
+      "type": "core",
+      "description": "If a is a nonzero algebraic number, then e^a is transcendental",
+      "leanType": "IsAlgebraic Q a -> a != 0 -> Transcendental Q (Real.exp a)"
+    },
+    {
+      "name": "pi_transcendental",
+      "type": "key",
+      "description": "Pi is transcendental (corollary: e^(i*pi) = -1 with i*pi algebraic would contradict HL)",
+      "leanType": "Transcendental Q Real.pi"
+    }
+  ],
+  "sorries": 0
+}

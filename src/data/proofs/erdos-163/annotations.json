@@ -1,0 +1,257 @@
+[
+  {
+    "id": "ann-163-header",
+    "proofId": "erdos-163",
+    "range": {
+      "startLine": 1,
+      "endLine": 38
+    },
+    "type": "concept",
+    "title": "Problem Overview and Background",
+    "content": "Header documentation for Erdős Problem #163, the Burr-Erdős Conjecture. The problem asks whether $d$-degenerate graphs on $n$ vertices have Ramsey numbers $R(H) = O(n)$, with the constant depending only on $d$. Solved by Choongbum Lee in 2017 with the bound $R(H) \\le 2^{2^{O(d)}} \\cdot n$. The file documents equivalent formulations (forest unions, average degree) and related special cases (trees, paths, cycles, planar graphs).",
+    "mathContext": "The Burr-Erdős Conjecture (1975) connects graph degeneracy to Ramsey theory. A graph $H$ is $d$-degenerate if every subgraph has a vertex of degree $\\le d$. The conjecture asserts $R(H) \\le C_d \\cdot n$ where $C_d$ depends only on $d$. This contrasts sharply with cliques: $R(K_n) \\ge 2^{n/2}$ (Erdős, 1947). Lee's proof gives $C_d = 2^{2^{O(d)}}$; the conjectured optimal is $C_d = 2^{O(d)}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey numbers",
+      "graph degeneracy",
+      "Szemerédi regularity lemma",
+      "dependent random choice"
+    ],
+    "prerequisites": [
+      "Ramsey theory basics",
+      "graph theory fundamentals",
+      "extremal combinatorics"
+    ]
+  },
+  {
+    "id": "ann-163-degenerate",
+    "proofId": "erdos-163",
+    "range": {
+      "startLine": 55,
+      "endLine": 59
+    },
+    "type": "definition",
+    "title": "d-Degeneracy (Subgraph Characterization)",
+    "content": "Defines $d$-degeneracy: a graph $G$ is $d$-degenerate if for every non-empty subset $S \\subseteq V$, there exists a vertex $v \\in S$ with at most $d$ neighbors in $S$. The degree within $S$ is computed as `(S.filter (G.Adj v)).card`. This 'local sparseness' condition ensures that greedy algorithms (like coloring or embedding) can always find a low-degree vertex to process.",
+    "mathContext": "$\\text{IsDDegenerate}(G, d) :\\Leftrightarrow \\forall S \\subseteq V, S \\ne \\emptyset \\implies \\exists v \\in S: \\deg_S(v) \\le d$. The degeneracy of $G$ is $\\min\\{d : G \\text{ is } d\\text{-degenerate}\\}$. This equals $\\max_{H \\subseteq G} \\delta(H)$ where $\\delta(H)$ is the minimum degree of $H$. The degeneracy is always at most $\\Delta(G)$ (maximum degree) and at most $\\text{tw}(G)$ (treewidth).",
+    "significance": "key",
+    "relatedConcepts": [
+      "minimum degree",
+      "treewidth",
+      "greedy coloring",
+      "subgraph density"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Adj",
+      "Finset.filter",
+      "subgraph notion"
+    ]
+  },
+  {
+    "id": "ann-163-ordering",
+    "proofId": "erdos-163",
+    "range": {
+      "startLine": 61,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "Degeneracy Ordering",
+    "content": "Defines the equivalent characterization: $G$ is $d$-degenerate iff vertices can be ordered (via an injective function $f: V \\to \\mathbb{N}$) so that each vertex has at most $d$ neighbors later in the ordering. This 'deletion ordering' is obtained by repeatedly removing minimum-degree vertices and is central to Lee's embedding argument.",
+    "mathContext": "$\\text{HasDegeneracyOrdering}(G, d) :\\Leftrightarrow \\exists f: V \\hookrightarrow \\mathbb{N}, \\forall v: |\\{u : G.\\text{Adj}(v,u) \\land f(u) > f(v)\\}| \\le d$. This ordering can be computed in $O(|V| + |E|)$ time using a bucket queue. It implies $\\chi(G) \\le d + 1$ (greedy coloring in reverse order).",
+    "significance": "key",
+    "relatedConcepts": [
+      "deletion ordering",
+      "greedy algorithm",
+      "chromatic number bound",
+      "Function.Injective"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Adj",
+      "injective functions",
+      "Finset.filter with compound predicates"
+    ]
+  },
+  {
+    "id": "ann-163-equiv",
+    "proofId": "erdos-163",
+    "range": {
+      "startLine": 68,
+      "endLine": 70
+    },
+    "type": "concept",
+    "title": "Equivalence of Degeneracy Definitions",
+    "content": "States that the two definitions of $d$-degeneracy are equivalent: every subgraph having a vertex of degree $\\le d$ is the same as admitting a vertex ordering with $\\le d$ backward neighbors. The proof proceeds by induction: given the subgraph condition, repeatedly remove a minimum-degree vertex from the remaining subgraph to build the ordering.",
+    "mathContext": "$\\text{IsDDegenerate}(G, d) \\leftrightarrow \\text{HasDegeneracyOrdering}(G, d)$. The forward direction uses strong induction on $|V|$: pick $v$ with $\\deg_S(v) \\le d$, place $v$ first, and recurse on $S \\setminus \\{v\\}$. The backward direction uses the ordering directly: any subgraph inherits the ordering, so the last vertex in the ordering restricted to $S$ has $\\le d$ neighbors in $S$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "structural induction",
+      "matroid theory",
+      "graph decomposition"
+    ],
+    "prerequisites": [
+      "IsDDegenerate",
+      "HasDegeneracyOrdering"
+    ]
+  },
+  {
+    "id": "ann-163-examples",
+    "proofId": "erdos-163",
+    "range": {
+      "startLine": 72,
+      "endLine": 82
+    },
+    "type": "concept",
+    "title": "Examples of Degenerate Graph Classes",
+    "content": "Enumerates key examples of degenerate graph families. Trees and forests are 1-degenerate (every subtree has a leaf). Planar graphs are 5-degenerate by Euler's formula ($|E| \\le 3|V| - 6$ implies minimum degree $\\le 5$). Graphs of bounded treewidth $k$ are $k$-degenerate. These examples show that degeneracy captures a wide range of structurally sparse graph classes.",
+    "mathContext": "Degeneracy values: trees ($d=1$), outerplanar ($d=2$), series-parallel ($d=2$), planar ($d=5$), bounded treewidth $k$ ($d=k$). For cliques, $K_n$ is $(n-1)$-degenerate, so the Burr-Erdős bound gives $R(K_n) \\le C_{n-1} \\cdot n$ — vacuously true but with a constant that grows with $n$. The theorem is interesting precisely for families where $d$ is fixed.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "planar graph theory",
+      "treewidth",
+      "Euler's formula",
+      "graph minor theory"
+    ],
+    "prerequisites": [
+      "basic graph theory",
+      "tree structure"
+    ]
+  },
+  {
+    "id": "ann-163-ramsey",
+    "proofId": "erdos-163",
+    "range": {
+      "startLine": 88,
+      "endLine": 103
+    },
+    "type": "definition",
+    "title": "Ramsey Number and Clique Bounds",
+    "content": "Defines the Ramsey number $R(H)$ as the minimum $n$ such that any 2-coloring of $K_n$ contains a monochromatic copy of $H$. The definition here is idealized (using `Classical.choose`). States the classical Erdős–Szekeres bounds for cliques: $2^{n/2} \\le R(K_n) \\le 4^n$. The lower bound uses the probabilistic method (Erdős, 1947); the upper bound uses the recursive inequality $R(s,t) \\le R(s-1,t) + R(s,t-1)$.",
+    "mathContext": "$R(H) = \\min\\{n : \\forall c: E(K_n) \\to \\{0,1\\}, \\exists \\text{monochromatic copy of } H\\}$. For the complete graph: $R(K_n) \\ge (1+o(1)) \\cdot \\frac{\\sqrt{2}}{e} \\cdot n \\cdot 2^{n/2}$ (Erdős, 1947, probabilistic method) and $R(K_n) \\le \\binom{2n-2}{n-1} \\le 4^n / \\sqrt{\\pi n}$ (Erdős–Szekeres, 1935). The exponential growth for cliques is what makes the linear bound for degenerate graphs so striking.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős–Szekeres theorem",
+      "probabilistic method",
+      "diagonal Ramsey numbers",
+      "completeGraph in Lean"
+    ],
+    "prerequisites": [
+      "graph coloring",
+      "complete graphs",
+      "Classical.choose"
+    ]
+  },
+  {
+    "id": "ann-163-conjecture",
+    "proofId": "erdos-163",
+    "range": {
+      "startLine": 111,
+      "endLine": 115
+    },
+    "type": "definition",
+    "title": "The Burr-Erdős Conjecture (Formal Statement)",
+    "content": "Formalizes the Burr-Erdős Conjecture: for every $d \\ge 1$, there exists $C > 0$ such that for all finite graphs $H$, if $H$ is $d$-degenerate, then $R(H) \\le C \\cdot |V(H)|$. The statement universally quantifies over the vertex type $W$ and the graph $H$, making it applicable to any finite graph. The constant $C$ depends only on $d$, not on the specific graph or its size.",
+    "mathContext": "$\\text{BurrErdosConjecture} :\\Leftrightarrow \\forall d \\ge 1, \\exists C > 0, \\forall H \\text{ finite}: \\text{IsDDegenerate}(H, d) \\implies R(H) \\le C \\cdot |V(H)|$. The use of `Fintype.card W` for $|V(H)|$ handles the abstract vertex type correctly.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey linearity",
+      "graph parameter bounds",
+      "universal quantification over types"
+    ],
+    "prerequisites": [
+      "ramseyNumber",
+      "IsDDegenerate",
+      "Fintype.card"
+    ]
+  },
+  {
+    "id": "ann-163-equivalences",
+    "proofId": "erdos-163",
+    "range": {
+      "startLine": 117,
+      "endLine": 137
+    },
+    "type": "axiom",
+    "title": "Equivalent Formulations",
+    "content": "Presents two equivalent formulations of the Burr-Erdős Conjecture. `BurrErdosForests`: if $H$ is a union of $c$ forests, then $R(H) \\le C_c \\cdot n$ (since unions of $c$ forests are $c$-degenerate). `BurrErdosAverageDegree`: if every subgraph of $H$ has average degree $\\le 2d$, then $R(H) \\le C_d \\cdot n$. The equivalence follows from the Nash-Williams forest decomposition theorem.",
+    "mathContext": "The equivalence uses: (1) $d$-degenerate $\\Leftrightarrow$ arboricity $\\le d$ (Nash-Williams, 1964), where arboricity is the minimum number of forests covering all edges; (2) average degree $\\le 2d$ in all subgraphs $\\Leftrightarrow$ $d$-degenerate. Thus: $d$-degenerate $\\Leftrightarrow$ union of $d$ forests $\\Leftrightarrow$ max average subgraph degree $\\le 2d$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nash-Williams theorem",
+      "arboricity",
+      "forest decomposition",
+      "average degree"
+    ],
+    "prerequisites": [
+      "BurrErdosConjecture",
+      "forest union characterization"
+    ]
+  },
+  {
+    "id": "ann-163-lee",
+    "proofId": "erdos-163",
+    "range": {
+      "startLine": 143,
+      "endLine": 163
+    },
+    "type": "concept",
+    "title": "Lee's Theorem (2017)",
+    "content": "States Lee's main result as axioms: (1) `lee_theorem`: for every $d \\ge 1$, there exists $C > 0$ such that all $d$-degenerate $H$ on $n$ vertices satisfy $R(H) \\le Cn$; (2) `lee_constant_bound`: the constant is $C = 2^{2^{cd}}$ for some absolute constant $c$; (3) `lee_chromatic_refinement`: a tighter bound $R(H) \\le 2^{d \\cdot 2^{c\\chi}} \\cdot n$ using the chromatic number $\\chi(H)$. The chromatic refinement is significant: for bipartite degenerate graphs ($\\chi = 2$), it gives the conjectured optimal $R(H) \\le 2^{O(d)} \\cdot n$.",
+    "mathContext": "Lee's paper 'Ramsey numbers of degenerate graphs' (Annals of Mathematics, 2017) established: $R(H) \\le 2^{2^{c_1 d}} \\cdot n$ for $d$-degenerate $H$, and the refined $R(H) \\le 2^{c_2 d \\cdot 2^{c_3 \\chi(H)}} \\cdot n$. The doubly exponential dependence on $d$ arises from the tower-type bounds in the Szemerédi regularity lemma. The chromatic refinement avoids one level of the tower when $\\chi$ is bounded.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Szemerédi regularity lemma",
+      "dependent random choice",
+      "tower functions",
+      "chromatic number"
+    ],
+    "prerequisites": [
+      "IsDDegenerate",
+      "ramseyNumber",
+      "Fintype.card"
+    ]
+  },
+  {
+    "id": "ann-163-solved",
+    "proofId": "erdos-163",
+    "range": {
+      "startLine": 170,
+      "endLine": 176
+    },
+    "type": "concept",
+    "title": "Burr-Erdős Conjecture is TRUE",
+    "content": "Proves `burr_erdos_solved : BurrErdosConjecture` by directly applying `lee_theorem`. The proof is a one-step application: Lee's theorem provides exactly the constant $C$ and bound needed by the conjecture. The alias `erdos_163` makes the connection to the Erdős problem numbering explicit.",
+    "mathContext": "The proof is: given $d \\ge 1$, obtain $\\langle C, C > 0, \\text{bound}\\rangle$ from `lee_theorem d hd`, and return $\\langle C, C > 0, \\text{bound}\\rangle$. This is essentially the identity, demonstrating that Lee's theorem is the exact content of the Burr-Erdős Conjecture.",
+    "significance": "key",
+    "relatedConcepts": [
+      "theorem application",
+      "existential witness extraction",
+      "obtain tactic"
+    ],
+    "prerequisites": [
+      "lee_theorem",
+      "BurrErdosConjecture"
+    ]
+  },
+  {
+    "id": "ann-163-optimal",
+    "proofId": "erdos-163",
+    "range": {
+      "startLine": 183,
+      "endLine": 198
+    },
+    "type": "theorem",
+    "title": "Conjectured Optimal Bound (Open)",
+    "content": "Defines `OptimalBurrErdos`: the conjecture that $R(H) \\le 2^{O(d)} \\cdot n$ (singly exponential in $d$). Lee's proven bound is $2^{2^{O(d)}} \\cdot n$ (doubly exponential). The gap is enormous — for $d = 10$, the difference is between $2^{10} = 1024$ and $2^{1024} \\approx 10^{308}$. This remains the main open problem following Lee's work.",
+    "mathContext": "$\\text{OptimalBurrErdos}: \\forall d \\ge 1, \\exists c, C > 0: C = 2^{cd} \\land \\forall H \\text{ $d$-degenerate on $n$ vertices}: R(H) \\le C \\cdot n$. Evidence for the singly exponential bound includes: Lee's chromatic refinement achieves it for bounded $\\chi$; specific classes (trees, bounded pathwidth) have even better constants; and the lower bound $R(H) \\ge 2^{\\Omega(d)} \\cdot n$ for some families shows the exponential dependence on $d$ is necessary.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tower functions",
+      "regularity lemma limitations",
+      "lower bounds for Ramsey numbers"
+    ],
+    "prerequisites": [
+      "BurrErdosConjecture",
+      "exponential functions"
+    ]
+  }
+]

@@ -1,0 +1,94 @@
+{
+  "slug": "isoperimetric-theorem-oq-03",
+  "title": "Isoperimetric Theorem: Best Constants in Non-Euclidean Spaces",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in geometry: Isoperimetric Theorem: Best Constants in Non-Euclidean Spaces.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-22T13:03:46.382Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "geometry",
+    "analysis",
+    "isoperimetric",
+    "non-euclidean",
+    "constants"
+  ],
+  "relatedProofs": [
+    "isoperimetric-theorem",
+    "isoperimetric-theorem-oq-01",
+    "isoperimetric-theorem-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-22T13:03:46.382Z",
+  "lastUpdate": "2026-04-22T13:03:46.382Z",
+  "significance": 8,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/IsoperimetricTheorem.lean",
+      "filename": "IsoperimetricTheorem.lean",
+      "lineCount": 448,
+      "theoremCount": 14,
+      "axiomCount": 1,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IsoperimetricTheorem.lean"
+    },
+    {
+      "path": "Proofs/IsoperimetricTheoremOQ01.lean",
+      "filename": "IsoperimetricTheoremOQ01.lean",
+      "lineCount": 385,
+      "theoremCount": 15,
+      "axiomCount": 2,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IsoperimetricTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/IsoperimetricTheoremOQ02.lean",
+      "filename": "IsoperimetricTheoremOQ02.lean",
+      "lineCount": 137,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IsoperimetricTheoremOQ02.lean"
+    }
+  ]
+}

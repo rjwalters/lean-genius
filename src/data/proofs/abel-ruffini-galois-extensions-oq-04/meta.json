@@ -1,0 +1,604 @@
+{
+  "id": "abel-ruffini-galois-extensions-oq-04",
+  "title": "Jordan-Hölder Uniqueness Theorem via JordanHolderLattice",
+  "slug": "abel-ruffini-galois-extensions-oq-04",
+  "description": "Instantiates Mathlib's `JordanHolderLattice` typeclass for `Subgroup G`, filling a TODO in Mathlib.Order.JordanHolder. Proves all three axioms: `sup_eq_of_isMaximal`, `isMaximal_inf_left_of_isMaximal_sup` (including the maximality step via an element-wise subgroup argument), and `second_iso` (Noether second isomorphism via first isomorphism). Derives the Jordan-Hölder uniqueness theorem for groups. 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AbelRuffiniGaloisExtensionsOQ04.lean",
+    "tags": [
+      "group-theory",
+      "jordan-holder",
+      "composition-series",
+      "lattice-theory",
+      "finite-groups",
+      "abel-ruffini"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-04-24",
+    "axiomCount": 0,
+    "assumptions": "",
+    "lineCount": 234,
+    "theoremCount": 3,
+    "definitionCount": 2,
+    "instanceCount": 1,
+    "mathlibDependencies": [
+      {
+        "theorem": "JordanHolderLattice",
+        "description": "Mathlib's abstract typeclass packaging the three lattice axioms — `IsMaximal`, `sup_eq_of_isMaximal`, `isMaximal_inf_left_of_isMaximal_sup`, `second_iso` — needed to derive uniqueness of composition series in any algebraic structure with a suitable lattice of sub-objects. As of Mathlib 2026, this file fills the `JordanHolderLattice (Subgroup G)` instance which was an explicit TODO in `Mathlib.Order.JordanHolder` with the comment 'it is not entirely clear how this should be done'. The abstraction is what makes Jordan-Hölder applicable uniformly to groups (this file), modules (instance already in Mathlib), and other algebraic structures.",
+        "module": "Mathlib.Order.JordanHolder"
+      },
+      {
+        "theorem": "CompositionSeries.jordan_holder",
+        "description": "The abstract Jordan-Hölder uniqueness theorem in Mathlib: any two composition series in a `JordanHolderLattice` are equivalent (have the same length and the same multiset of factors). The file's `jordan_holder_subgroups` (line ≈225) is a direct delegation to this theorem once the `JordanHolderLattice (Subgroup G)` instance is established — so the *content* of this file is the instance construction, while the *uniqueness statement* is imported wholesale from Mathlib.",
+        "module": "Mathlib.Order.JordanHolder"
+      },
+      {
+        "theorem": "Subgroup.subgroupOf",
+        "description": "Given subgroups $H \\leq K$ of $G$, `H.subgroupOf K` is the corresponding subgroup of $K$ (the preimage of $H$ under the inclusion $K \\hookrightarrow G$). Used throughout the file to express relative normality: `(H.subgroupOf K).Normal` means $H \\trianglelefteq K$. This indirection is necessary because `Subgroup.Normal` in Mathlib is a property of subgroups of the *ambient* group, not pairs of nested subgroups.",
+        "module": "Mathlib.GroupTheory.Subgroup.Basic"
+      },
+      {
+        "theorem": "Subgroup.subgroupOf_sup",
+        "description": "Identity $(H \\sqcup K).\\text{subgroupOf}\\,L = H.\\text{subgroupOf}\\,L \\sqcup K.\\text{subgroupOf}\\,L$ when $H, K \\leq L$. Used in the `sup_eq_of_isMaximal` proof (line 88) to transfer normality of $H$ and $K$ relative to $z$ into normality of $H \\sqcup K$ relative to $z$ — the lattice-theoretic identity that lets the file work in the lattice of subgroups rather than constantly descending to elements.",
+        "module": "Mathlib.GroupTheory.Subgroup.Basic"
+      },
+      {
+        "theorem": "Subgroup.normal_subgroupOf_iff_le_normalizer",
+        "description": "Characterizes relative normality via the normalizer: $(H.\\text{subgroupOf}\\,K).\\text{Normal} \\iff K \\leq H.\\text{normalizer}$ (when $H \\leq K$). Used three times in the file to convert between the `Normal` typeclass formulation needed by `subgroupOf_sup` / quotient constructions and the *direct subset* formulation needed by the element-wise argument in Part IV's maximality proof.",
+        "module": "Mathlib.GroupTheory.Subgroup.Basic"
+      },
+      {
+        "theorem": "Subgroup.normalizer",
+        "description": "The normalizer $N_G(H) = \\{g \\in G : gHg^{-1} = H\\}$, the *largest* subgroup of $G$ containing $H$ as a normal subgroup. The key normalizer lemma (Part II, line 64) — `le_normalizer_of_normal_in_sup`: if $H$ is relatively normal in $H \\sqcup K$, then $K \\leq H.\\text{normalizer}$ — is the file's structural workhorse, used implicitly via `normal_subgroupOf_iff_le_normalizer` in both `sup_eq_of_isMaximal` and the maximality step of `isMaximal_inf_left_of_isMaximal_sup`.",
+        "module": "Mathlib.GroupTheory.Subgroup.Basic"
+      },
+      {
+        "theorem": "Subgroup.mem_sup",
+        "description": "Characterization of membership in a subgroup join: $a \\in H \\sqcup K \\iff \\exists h \\in H, k \\in K, a = hk$. Used in the *element-wise decomposition* of Part IV's maximality argument (the structural lynchpin of the file): given $a \\in x$ with $N \\sqcup y = x \\sqcup y$, decompose $a = n \\cdot b$ with $n \\in N \\leq x$ and $b \\in y$; then $b = n^{-1} a \\in x$ by closure, so $b \\in x \\sqcap y \\leq N$, hence $a = n \\cdot b \\in N$ — yielding $x \\leq N$. This is the *only* place in the file where the proof descends from the lattice $(\\text{Subgroup}\\,G, \\leq, \\sqcup, \\sqcap)$ to individual group elements.",
+        "module": "Mathlib.GroupTheory.Subgroup.Basic"
+      },
+      {
+        "theorem": "QuotientGroup.mk' / quotient construction",
+        "description": "Mathlib's quotient group construction $G / N$ for a normal subgroup $N \\trianglelefteq G$, together with the canonical projection `QuotientGroup.mk' N : G →* G / N`. The file's `second_iso` (Noether's second isomorphism theorem) constructs $(x \\sqcup y)/x \\simeq^* y / (x \\sqcap y)$ by building a homomorphism $\\varphi : y \\to^* (x \\sqcup y)/x$ via direct composition with `QuotientGroup.mk'` and applying the first isomorphism theorem — bypassing the `rw [sup_comm]` rewrite failure that arises when `Normal` typeclass instances need to be transferred across `sup_comm`.",
+        "module": "Mathlib.GroupTheory.QuotientGroup.Basic"
+      },
+      {
+        "theorem": "Subgroup.IsSimpleGroup characterization",
+        "description": "Mathlib's `IsSimpleGroup` typeclass identifies simple groups as those with exactly two normal subgroups ($\\{e\\}$ and $G$). The `IsMaxNorm H K` predicate (line 49) is shown (in keyInsights) to be equivalent to `IsSimpleGroup (K / H.subgroupOf K)` by the correspondence theorem, but the file defines `IsMaxNorm` *directly* (in terms of maximality among normal-in-$K$ subgroups) to avoid Mathlib's quotient typeclass issues when the `Normal` instance has not yet been registered — a workaround that becomes structurally important once `JordanHolderLattice` needs `IsMaximal` to be a `Prop`-valued predicate rather than a typeclass.",
+        "module": "Mathlib.GroupTheory.Subgroup.Simple"
+      },
+      {
+        "theorem": "MulEquiv.symm and MulEquiv.trans",
+        "description": "Group isomorphisms form an equivalence relation: `MulEquiv.symm` inverts an isomorphism, `MulEquiv.trans` composes two. Used in the file's `iso_symm` and `iso_trans` lemmas (mandated by the `JordanHolderLattice` signature, which requires `GroupQuotIso` to be reflexive/symmetric/transitive) — packaging the underlying `MulEquiv` operations together with the `Normal` evidence carried by `GroupQuotIso`. Reflexivity is automatic from `MulEquiv.refl` and not listed as a separate lemma.",
+        "module": "Mathlib.Algebra.Group.Equiv.Basic"
+      }
+    ],
+    "relatedProblems": [
+      {
+        "id": "abel-ruffini-galois-extensions",
+        "relationship": "**Parent file**. The Jordan-Hölder uniqueness theorem proved here is what makes the parent's $S_n$ solvable $\\iff n \\leq 4$ result an *absolute* threshold: Jordan-Hölder guarantees that no alternative composition series for $S_5$ can avoid $A_5$ as a factor (every composition series must include the non-abelian simple group $A_5$). Without uniqueness, the parent file's `s5_not_solvable` would establish only that *one particular* composition series shows non-solvability, leaving open the possibility of an alternative series with only abelian factors. This file closes that loophole structurally."
+      },
+      {
+        "id": "abel-ruffini",
+        "relationship": "**Grandparent file** establishing the original Abel-Ruffini theorem ($S_5$ not solvable $\\Rightarrow$ general quintic not solvable by radicals). The lineage abel-ruffini → abel-ruffini-galois-extensions → this file traces a progressive refinement: the original states the impossibility, the parent classifies *all* symmetric groups, and this file provides the uniqueness machinery that makes the classification an unconditional structural fact rather than a property of specific composition-series presentations."
+      },
+      {
+        "id": "abel-ruffini-galois-extensions-oq-05",
+        "relationship": "**Sibling OQ file** addressing the *converse* direction (Shafarevich realizability) of the same parent's classification. Where this file ensures *uniqueness* of composition series, oq-05 axiomatizes *existence* of Galois realizations for solvable groups. Together they bracket the parent's iff with structural completeness on both sides: every $S_n$ solvable $\\iff n \\leq 4$ has a *unique* composition factorization (this file) and every finite solvable group is *realized* as a Galois group over $\\mathbb{Q}$ (oq-05)."
+      }
+    ],
+    "originalContributions": [
+      "IsMaxNorm: predicate for maximal normal subgroup H in K (relative normality + maximality)",
+      "GroupQuotIso: quotient isomorphism predicate with Normal instance evidence",
+      "le_normalizer_of_normal_in_sup: if H relatively normal in H⊔K, then K ≤ H.normalizer",
+      "instJordanHolderLatticeSubgroup: JordanHolderLattice (Subgroup G) instance (fills Mathlib TODO)",
+      "sup_eq_of_isMaximal: proved — x⊔y = z when both x,y maximal normal in z (using subgroupOf_sup + maximality)",
+      "isMaximal_inf_left_of_isMaximal_sup (Part III, lines 98–156): proved — the largest single proof in the file (~60 lines, three sub-parts). Establishes that if x and y are both maximal normal in x⊔y, then x⊓y is maximal normal in x. Sub-part (1) shows x⊓y < x by combining inf_le_left with a contradiction via y's maximality applied to x⊔y. Sub-part (2) shows (x⊓y).subgroupOf x is Normal by first proving x ≤ y.normalizer (using y's relative normality in x⊔y), then transferring via inf_subgroupOf_right. Sub-part (3) — the substantive maximality argument — is the *element-wise decomposition* that avoids needing to transfer simplicity through the second isomorphism: given N with x⊓y ≤ N ≤ x and N relatively normal in x, when y's maximality applied to N⊔y in x⊔y gives N⊔y = x⊔y, decompose any a ∈ x via Subgroup.mem_sup as a = n·b with n ∈ N ≤ x, b ∈ y; then b = n⁻¹·a ∈ x (by closure since n,a ∈ x), so b ∈ x⊓y ≤ N, hence a = n·b ∈ N — yielding x ≤ N and therefore N = x by antisymmetry. This element-wise argument is the *only* place in the file where the proof descends from the lattice $(\\text{Subgroup}\\,G, \\leq, \\sqcup, \\sqcap)$ to individual group elements, making it the structural lynchpin of the JordanHolderLattice instance.",
+      "iso_symm: proved — GroupQuotIso is symmetric (MulEquiv.symm)",
+      "iso_trans: proved — GroupQuotIso is transitive (MulEquiv.trans)",
+      "second_iso: proved — Noether second isomorphism via first iso theorem (avoiding sup_comm rewrite bug)",
+      "jordan_holder_subgroups: Jordan-Hölder uniqueness for groups (delegates to CompositionSeries.jordan_holder)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Jordan-Hölder theorem has a rich mathematical history spanning six decades and four mathematicians. Camille Jordan took the first step in his landmark 1870 *Traité des substitutions et des équations algébriques* — the same work that made Galois's manuscripts accessible to a wider audience. Working with substitution (permutation) groups, Jordan proved that the *composition indices* — the multiset of orders $|H_{i+1}/H_i|$ of the successive quotients — form an invariant of the group, independent of the choice of composition series. Crucially, Jordan did **not** establish that the factor groups themselves are determined; he proved only the invariance of their orders. (This Jordan-Hölder theorem is unrelated to the 'Jordan normal form' of linear algebra — both honor Camille Jordan but concern different uniqueness phenomena.)\n\nOtto Hölder closed the remaining gap in an 1889 *Mathematische Annalen* paper: he strengthened Jordan's index-invariance to the full modern statement that the composition *factors* themselves — the simple quotient groups $H_{i+1}/H_i$, not merely their orders — are determined up to permutation and isomorphism. This required isolating the concept of a composition factor (a simple quotient group) as the correct invariant. The theorem is now recognized as the group-theoretic analogue of the fundamental theorem of arithmetic: just as every positive integer has a unique factorization into primes, every finite group has a unique factorization into simple groups (composition factors) — though unlike integers, the simple group building blocks are not all cyclic.\n\nOtto Schreier sharpened the theorem in 1928, proving the *Schreier refinement theorem*: any two normal series of a group have equivalent refinements. Hans Zassenhaus then found an elegant combinatorial proof via the *butterfly lemma* (Schmetterlingslemma, 1934), which gives a direct construction of the refinement without requiring the composition series to be maximal.\n\nThe theorem's significance transcends group theory: it was the model for analogous uniqueness results in module theory (where composition factors are simple modules — the Jordan-Hölder theorem for modules), in ring theory, and in general lattice theory. The abstract lattice-theoretic formulation in Mathlib's `JordanHolderLattice` typeclass reflects this generality — once the three lattice axioms (`sup_eq_of_isMaximal`, `isMaximal_inf_left_of_isMaximal_sup`, `second_iso`) are established, the uniqueness result follows automatically for groups, modules, and any other algebraic structure with a suitable lattice of sub-objects.\n\nThe connection to Abel-Ruffini is direct: the *uniqueness* of the composition series for $S_5$ (namely $\\{e\\} \\triangleleft A_5 \\triangleleft S_5$) is what makes the degree-5 threshold absolute. Jordan-Hölder guarantees that no alternative decomposition of $S_5$ can avoid the non-abelian simple group $A_5$ — every composition series must include $A_5$ as a factor. This file fills a TODO in `Mathlib.Order.JordanHolder` (where the instance `JordanHolderLattice (Subgroup G)` was explicitly left unimplemented with the note 'it is not entirely clear how this should be done'), providing the missing concrete instantiation for groups.",
+    "problemStatement": "**Jordan-Hölder Uniqueness Theorem** (Jordan 1870, Hölder 1889):\n\nLet $G$ be a group with a composition series (a maximal chain of normal subgroups). Any two composition series\n$$1 = H_0 \\trianglelefteq H_1 \\trianglelefteq \\cdots \\trianglelefteq H_n = G$$\n$$1 = K_0 \\trianglelefteq K_1 \\trianglelefteq \\cdots \\trianglelefteq K_m = G$$\nhave the same length ($n = m$) and the same composition factors $\\{H_{i+1}/H_i\\}$ and $\\{K_{j+1}/K_j\\}$ up to permutation and isomorphism.\n\n**This file**: Instantiates `JordanHolderLattice (Subgroup G)` — the Mathlib typeclass abstracting the three lattice axioms (`sup_eq_of_isMaximal`, `isMaximal_inf_left_of_isMaximal_sup`, `second_iso`) needed to apply the abstract Jordan-Hölder theorem to groups.",
+    "proofStrategy": "Three key axioms for `JordanHolderLattice`:\n1. `sup_eq_of_isMaximal`: if x and y are both maximal normal in z (with x ≠ y), then x ⊔ y = z — proved by applying x's maximality to x ⊔ y, then deriving contradiction from y ≤ x\n2. `isMaximal_inf_left_of_isMaximal_sup`: if x and y are both maximal normal in x ⊔ y, then x ⊓ y is maximal normal in x — all 3 parts proved; maximality case: when N ⊔ y = x ⊔ y, use Subgroup.mem_sup to decompose any a ∈ x as n*b with n ∈ N, b ∈ y; then b = n⁻¹·a ∈ x ∩ y = x⊓y ≤ N; so a = n·b ∈ N, giving x ≤ N\n3. `second_iso`: (x ⊔ y)/x ≃* y/(x ⊓ y) — proved via the first isomorphism theorem, constructing φ : y →* (x ⊔ y)/x directly (avoiding the `rw [sup_comm]` rewrite failure due to Normal typeclass dependency in quotient types)",
+    "relatedConcepts": [
+      "Jordan-Hölder theorem",
+      "composition series",
+      "JordanHolderLattice typeclass",
+      "A5 simplicity",
+      "Abel-Ruffini theorem",
+      "Mathlib contribution",
+      "subgroup lattice",
+      "simple group",
+      "normal series"
+    ],
+    "keyInsights": [
+      "**Mathlib TODO filled**: `JordanHolderLattice (Subgroup G)` is explicitly marked TODO in `Mathlib.Order.JordanHolder` with the comment 'it is not entirely clear how this should be done.' This file resolves the ambiguity by defining `IsMaxNorm` as the `IsMaximal` predicate, avoiding the typeclass complications of `IsSimpleGroup (K ⧸ H)` that made the direct approach unclear.",
+      "**sup_comm rewrite failure and its fix**: `rw [sup_comm y x]` at the type `(y ⊔ x) ⧸ y.subgroupOf (y ⊔ x)` fails with 'motive not type correct' because the `Normal` typeclass instance for the quotient depends syntactically on the rewritten term. The fix: construct the isomorphism $\\varphi: y \\to (x \\vee y)/x$ directly via `mk' ∘ inclusion le_sup_right`, bypassing the need to commute the supremum at the type level. This is a systematic issue in Lean 4 with typeclass-dependent rewriting.",
+      "**First isomorphism theorem instead of second**: The second isomorphism theorem $(x \\vee y)/x \\simeq_* y/(x \\wedge y)$ is proved by constructing the direct map $\\varphi: y \\to (x \\vee y)/x$ and applying `quotientKerEquivOfSurjective`. This avoids instantiating `second_iso` from Mathlib (which requires the `rw [sup_comm]` that fails) and instead derives it from first principles using the first isomorphism theorem.",
+      "**Normal instance evidence in GroupQuotIso**: The quotient type `G ⧸ H` requires `H.Normal` as a typeclass instance, synthesized from the context. `GroupQuotIso` packages both Normal witnesses explicitly (as existentials `hn1, hn2`) so that `haveI` can introduce them before constructing the `MulEquiv`. This design pattern avoids 'failed to synthesize Normal' errors that arise when the Normal evidence is implicit.",
+      "**subgroupOf_sup key lemma**: `(A ⊔ B).subgroupOf C = A.subgroupOf C ⊔ B.subgroupOf C` — used in `sup_eq_of_isMaximal` to show $x \\vee y$ is relatively normal in $z$ when both $x$ and $y$ are relatively normal in $z$. This reflects the lattice homomorphism property of `subgroupOf`: pulling back along the inclusion $z \\hookrightarrow G$ preserves joins.",
+      "**The element-wise argument in isMaximal_inf_left_of_isMaximal_sup**: The maximality step — showing N = x when N ⊔ y = x ⊔ y — uses a direct membership argument: for any $a \\in x$, write $a = nb$ with $n \\in N, b \\in y$ (using `Subgroup.mem_sup`); then $b = n^{-1}a \\in x \\cap y \\leq N$ (since $n \\in N \\leq x$), so $a = nb \\in N$. This avoids needing to transfer simplicity through the second isomorphism.",
+      "**Uniqueness as the key to Abel-Ruffini's absoluteness**: Jordan-Hölder guarantees the composition series of $S_5$ is unique: $\\{e\\} \\triangleleft A_5 \\triangleleft S_5$. The non-abelian simple factor $A_5$ cannot be avoided by any alternative decomposition. This is what makes the degree-5 impossibility absolute — not just an artifact of one particular analysis, but a structural necessity enforced by Jordan-Hölder uniqueness.",
+      "**`noncomputable` marker driven by `Nonempty`-wrapped isomorphisms**: The `JordanHolderLattice (Subgroup G)` instance is declared `noncomputable` (line 72) because `GroupQuotIso` packages the iso witness inside `Nonempty (... ≃* ...)` (line 57) — extracting the equivalence to discharge `iso_symm` and `iso_trans` (lines 160–170) requires `Classical.choice`. The `Nonempty` wrapper is a deliberate design choice: it lets `GroupQuotIso : Subgroup G × Subgroup G → Subgroup G × Subgroup G → Prop` be a *relation* (a Prop) rather than data, matching `JordanHolderLattice.Iso`'s expected signature and avoiding decidability obligations on the equivalence type. The trade-off is that any downstream theorem invoking this instance — including `jordan_holder_subgroups` (line 214) — inherits noncomputability and cannot be reduced by Lean's kernel even when specialized to `Finite G`; only its *type-checking* is decidable. This is the standard Mathlib pattern for lattice instances whose `Iso` axiom requires existentially-chosen isomorphisms, and it conditions the upstream-contribution path (openQuestion #1): any computable specialization to finite groups would require parallel proofs avoiding the `Nonempty` existential, since the lattice-theoretic `Iso` signature itself enforces the propositional packaging that makes choice unavoidable.",
+      "**Fundamental theorem of arithmetic — explicit dictionary**: Jordan-Hölder is precisely the group-theoretic counterpart of unique prime factorization, and the analogy is exact at the structural level. For integers: every $n \\geq 2$ factors as $n = p_1^{a_1} \\cdots p_k^{a_k}$, unique up to permutation; the building blocks are *primes*, the indecomposable positive integers under multiplication. For groups: every finite group $G$ has a composition series with factors $\\{G_{i+1}/G_i\\}$, unique as a multiset up to permutation and isomorphism; the building blocks are *finite simple groups*, the indecomposable objects under group extension. The Jordan-Hölder theorem proved here ($\\texttt{jordan\\_holder\\_subgroups}$) is the group analogue of the *uniqueness* clause; existence of a composition series (for finite groups, automatic; for infinite groups, requires additional hypotheses) is the analogue of existence of prime factorization. The dictionary breaks one place: integer multiplication is commutative, so $p_1^{a_1} \\cdots p_k^{a_k}$ is well-defined as an ordered product; group extensions are non-commutative (the extension class in $H^2$ matters), so 'same composition factors' does *not* imply 'isomorphic groups' — e.g., $\\mathbb{Z}/6\\mathbb{Z}$ and $S_3$ both have composition factors $\\{\\mathbb{Z}/2, \\mathbb{Z}/3\\}$ but are non-isomorphic. Jordan-Hölder gives uniqueness of the *factor multiset* but not of the group itself — the extension data (recovered via group cohomology) is the additional information needed to reconstruct $G$ from its composition factors.",
+      "**Krull-Schmidt as the sister uniqueness theorem**: Jordan-Hölder has a structural cousin — the *Krull-Schmidt theorem* (Wedderburn 1909, Remak 1911, Krull 1925, Schmidt 1929) — which gives uniqueness for a different kind of decomposition. Where Jordan-Hölder decomposes $G$ along a *normal series* (extensions: $1 \\to N \\to G \\to G/N \\to 1$) producing *simple* factors, Krull-Schmidt decomposes $G$ as a *direct product* $G = G_1 \\times \\cdots \\times G_k$ producing *indecomposable* factors (groups not expressible as a non-trivial direct product). For finite groups satisfying the descending and ascending chain conditions (always true for finite groups), Krull-Schmidt asserts the indecomposable direct factors are unique up to isomorphism and order. The dichotomy is sharp: simple ≠ indecomposable in general (e.g., $\\mathbb{Z}/4\\mathbb{Z}$ is indecomposable but not simple — it has the normal subgroup $\\{0, 2\\}$). Jordan-Hölder is sensitive to *extension structure*; Krull-Schmidt is sensitive to *direct product structure*. Together they give two complementary uniqueness theorems — one for the 'vertical' decomposition into composition factors, one for the 'horizontal' decomposition into direct factors. The Mathlib `JordanHolderLattice` framework formalizes the former; a parallel `KrullSchmidtLattice` framework (not yet in Mathlib) would formalize the latter, and would apply equally to groups, modules over Noetherian rings, and finitely generated abelian groups (where it specializes to the elementary divisor theorem).",
+      "**Birkhoff-Ore: the lattice-theoretic root of Jordan-Hölder**: The reason Mathlib formalizes Jordan-Hölder via the abstract `JordanHolderLattice` typeclass — rather than directly for groups — is a deep theorem of Garrett Birkhoff and Øystein Ore (1935-1940): *the Jordan-Hölder-Dedekind theorem* for modular lattices. Birkhoff's *Lattice Theory* (1940) shows that any *modular* lattice $L$ of finite length satisfies a uniqueness statement formally identical to Jordan-Hölder: any two maximal chains $0 = a_0 < a_1 < \\cdots < a_n = 1$ and $0 = b_0 < b_1 < \\cdots < b_m = 1$ have the same length ($n = m$) and 'projective' intervals — there is a bijection between the covers $\\{[a_i, a_{i+1}]\\}$ and $\\{[b_j, b_{j+1}]\\}$ such that paired intervals are isomorphic as sublattices via a chain of *perspectivities* (interval pairs $[a, a \\vee b]$ and $[a \\wedge b, b]$, which are always isomorphic in a modular lattice by Dedekind's transposition principle). The subgroup lattice $\\text{Subgroup}(G)$ is *not* modular in general (it's modular iff $G$ is *Iwasawa* — a strong restriction), so the abstract Birkhoff-Ore theorem doesn't apply directly. The `JordanHolderLattice` typeclass extracts the *normality-decorated* version of modular-lattice axioms: instead of requiring the full Dedekind law, it demands `sup_eq_of_isMaximal` and `isMaximal_inf_left_of_isMaximal_sup` (which together encode a *local* modularity at maximal pairs) plus `second_iso` (the second isomorphism theorem, which is the analogue of Dedekind's transposition principle). This is why the three axioms have the shape they do — they are the *minimal* lattice-theoretic ingredients needed to mimic Birkhoff-Ore in a non-modular setting via the additional normality structure of subgroup lattices. The Mathlib design is therefore not arbitrary but reflects a precise theorem about which structure suffices for the Schreier-Zassenhaus refinement argument.",
+      "**Galois-correspondence dictionary — composition series ↔ radical towers**: Jordan-Hölder uniqueness becomes the structural engine of Abel-Ruffini through the Galois correspondence. For a Galois extension $L/K$ with $G = \\text{Gal}(L/K)$, the fundamental theorem of Galois theory gives an *order-reversing bijection* between subgroups of $G$ and intermediate fields $K \\subseteq F \\subseteq L$, sending normal subgroups $N \\trianglelefteq G$ to Galois subextensions $L^N/K$ with $\\text{Gal}(L^N/K) \\cong G/N$. Under this bijection, a composition series $\\{e\\} = G_0 \\triangleleft G_1 \\triangleleft \\cdots \\triangleleft G_n = G$ corresponds to a *tower of intermediate fields* $L = L_0 \\supset L_1 \\supset \\cdots \\supset L_n = K$ where each step $L_{i-1}/L_i$ is a *Galois extension* with $\\text{Gal}(L_{i-1}/L_i) \\cong G_i/G_{i-1}$ — a composition factor of $G$. The polynomial is solvable by radicals iff each composition factor is *cyclic of prime order* (allowing $L_{i-1}/L_i = L_i(\\alpha_i)$ with $\\alpha_i^{p_i} \\in L_i$ — a radical extension). Jordan-Hölder's uniqueness clause then becomes a *uniqueness of radical-tower obstructions*: the multiset of composition factors of $G$ is an *invariant* of the polynomial, independent of any presentation. For the quintic, $G = S_5$ has unique composition factors $\\{A_5, \\mathbb{Z}/2\\}$, and the non-cyclic factor $A_5$ corresponds to a step in *any* purported radical tower that *must* express a non-radical extension — making the obstruction unavoidable. Without Jordan-Hölder uniqueness, one could in principle hope for an alternative decomposition with all cyclic factors; Jordan-Hölder forecloses that hope at the structural level.",
+      "**Why the proof avoids `IsSimpleGroup (K ⧸ H)` — typeclass synthesis is fragile across rewrites**: A natural design for `IsMaxNorm` would be to set `IsMaxNorm H K :↔ IsSimpleGroup (K ⧸ H.subgroupOf K)`, using the lattice-correspondence theorem that maximal normal subgroups correspond to simple quotients. This would mirror Mathlib's idiom for `IsMaximal` on rings (via `IsField (R ⧸ I)`). It fails in practice for the same reason `rw [sup_comm]` fails in `second_iso`: the `IsSimpleGroup` instance on `K ⧸ H.subgroupOf K` requires the `Normal` instance on `H.subgroupOf K`, which Lean 4 must synthesize at every use site. When the subgroup expression is itself the result of a lattice operation (e.g., `(x ⊓ y).subgroupOf x` in the maximality step), the typeclass elaborator cannot always unify the synthesized `Normal` instance with the one stored in the hypothesis, producing 'failed to synthesize' or 'motive not type correct' errors. The unfolded definition — three conjuncts at the `Subgroup G` level — keeps every argument inside the lattice $(\\text{Subgroup}\\,G, \\leq, \\sqcup, \\sqcap)$ and never crosses into quotient types until the very end (in `second_iso`). This design pattern — *delay quotient-type construction until necessary, work in the underlying lattice as long as possible* — is a recurring Lean 4 idiom for any subgroup/submodule/ideal lattice work.",
+      "**Mathlib's downstream proof engine — the butterfly lemma applies once `JordanHolderLattice` is instantiated**: With the three axioms proved here, Mathlib's `CompositionSeries.jordan_holder` becomes available for groups. That abstract proof — buried in `Mathlib.Order.JordanHolder` — uses Zassenhaus's *butterfly lemma* (Schmetterlingslemma, 1934) at its core. Given parallel ascents $a_i < a_{i+1}$ and $b_j < b_{j+1}$ in two composition series of a lattice $L$, the butterfly identity $(a_i \\vee (a_{i+1} \\wedge b_{j+1}))/(a_i \\vee (a_{i+1} \\wedge b_j)) \\simeq (b_j \\vee (a_{i+1} \\wedge b_{j+1}))/(b_j \\vee (a_i \\wedge b_{j+1}))$ pairs the composition factors of the two chains by an explicit bijection. The three `JordanHolderLattice` axioms encode precisely the minimal lattice/normality data the butterfly identity needs: `sup_eq_of_isMaximal` collapses one corner of the butterfly when both factors of a diamond are maximal, `isMaximal_inf_left_of_isMaximal_sup` ensures the dual interval is also maximal (so refinement steps stay inside the typeclass), and `second_iso` is the isomorphism step that exhibits the factor identity. By proving these three axioms for `Subgroup G`, this file enables a *parametric* application of Zassenhaus's combinatorial argument to groups — and the same parameter instantiation gives Jordan-Hölder for modules (once `JordanHolderLattice (Submodule R M)` is proved), for normal series of operator algebras, and for any other algebraic lattice with maximality/normality data of this shape. This is the design payoff of the abstract framework: one combinatorial proof, many applications. The cost is the upfront axiom instantiation done here.",
+      "**The solvable radical and the canonical two-tier composition-factor decomposition**: Jordan-Hölder uniqueness (proved here) makes the multiset of composition factors of a finite group $G$ a well-defined invariant. A sharper structural decomposition — the **solvable radical** of $G$, denoted $\\operatorname{Rad}(G)$ — refines this invariant into a canonical *two-tier* layering. **Definition**: $\\operatorname{Rad}(G)$ is the *maximal solvable normal subgroup* of $G$; existence and uniqueness are immediate (the join of any two solvable normal subgroups is solvable normal — combine subgroup closure under join with the solvability-extension theorem proved in the parent entry's keyInsight on `solvable_of_ker_le_range`). The quotient $G/\\operatorname{Rad}(G)$ is *semisimple*: it has *trivial* solvable radical, and structure theory (Bender-Glauberman 1994, *Local analysis for the odd order theorem*, §2) sharpens this to: $G/\\operatorname{Rad}(G)$ is a central extension of a direct product of *non-abelian* finite simple groups. Equivalently, $G$ admits a canonical exact sequence $1 \\to \\operatorname{Rad}(G) \\to G \\to G/\\operatorname{Rad}(G) \\to 1$ where the kernel is solvable and the quotient has no non-trivial solvable normal subgroups. **Relation to the Jordan-Hölder factor multiset (proved here)**: combining this exact sequence with Jordan-Hölder uniqueness gives a canonical *bipartition* of the composition factors of $G$ into two disjoint sub-multisets — (i) the *abelian* factors, all cyclic of prime order, arising from a composition series of $\\operatorname{Rad}(G)$; and (ii) the *non-abelian simple* factors, arising from a composition series of $G/\\operatorname{Rad}(G)$. Jordan-Hölder makes both sub-multisets invariants of $G$ (since the multiset of *all* composition factors is invariant, and the partition into abelian/non-abelian is determined by the simple-group structure of each factor, not by any choice of series). The Mathlib `Group.IsSolvable` typeclass is precisely the predicate '$\\operatorname{Rad}(G) = G$' — i.e., the non-abelian-simple-factor sub-multiset is empty. **The Abel-Ruffini threshold expressed via solvable radical**: for symmetric groups, $\\operatorname{Rad}(S_n) = S_n$ when $n \\leq 4$ (the group is its own solvable radical, all composition factors are cyclic — Cardano/Ferrari regime), while $\\operatorname{Rad}(S_n) = \\{e\\}$ when $n \\geq 5$ (no non-trivial solvable normal subgroup since $A_n \\trianglelefteq S_n$ is non-abelian simple). The threshold $n = 4$ proved in the parent entry `abel-ruffini-galois-extensions` is exactly the dividing line between *radical-trivial* groups (where solvable radical equals the whole group) and *radical-collapsing* groups (where solvable radical is $\\{e\\}$). For $S_5$: solvable radical $\\{e\\}$, quotient $S_5/\\{e\\} = S_5$ — so the canonical two-tier decomposition reduces to 'no solvable layer + entire group is semisimple'. The composition factors are $\\{A_5, \\mathbb{Z}/2\\mathbb{Z}\\}$, but the bipartition refines this to 'non-abelian simple part $\\{A_5\\}$ + (forced by sign quotient sitting outside the radical) $\\{\\mathbb{Z}/2\\mathbb{Z}\\}$', highlighting that the Jordan-Hölder invariant alone *misses* the structural fact that $\\mathbb{Z}/2$ is not 'inside' a solvable radical but 'outside' a non-abelian simple group. **Connection to the *Fitting subgroup* — the nilpotent analogue at the bottom of the solvable radical**: a parallel canonical normal subgroup, the *Fitting subgroup* $F(G)$ (Fitting 1938), is the maximal *nilpotent* normal subgroup of $G$. Fitting proved $F(G) \\trianglelefteq G$ is well-defined; for solvable $G$, the *Fitting series* $F_0(G) = \\{e\\} \\trianglelefteq F_1(G) = F(G) \\trianglelefteq F_2(G) \\trianglelefteq \\cdots$ terminates at $G$ (this is *Fitting's theorem* for solvable groups, equivalent to the derived-series termination). Combining with the solvable radical: every finite group has a canonical 4-layer normal series $\\{e\\} \\trianglelefteq F(\\operatorname{Rad}(G)) \\trianglelefteq \\operatorname{Rad}(G) \\trianglelefteq E(G)\\operatorname{Rad}(G) \\trianglelefteq G$ (the *Fitting series of the solvable radical* sitting inside the *generalized Fitting subgroup* $F^*(G) = E(G) \\cdot \\operatorname{Rad}(G)$, where $E(G)$ is the *layer* — the product of subnormal quasisimple subgroups), with the top layer $G/F^*(G)$ acting faithfully on $F^*(G)$ (the *Schreier conjecture*, equivalent to CFSG). For $S_5$: $F(S_5) = \\{e\\}$ (no non-trivial nilpotent normal subgroup), $\\operatorname{Rad}(S_5) = \\{e\\}$, $E(S_5) = A_5$ (the quasisimple component), $F^*(S_5) = A_5$, and the top quotient $S_5/A_5 \\cong \\mathbb{Z}/2\\mathbb{Z}$ acts faithfully on $A_5$ via $\\operatorname{Out}(A_5) = \\mathbb{Z}/2$. **Why this two-tier (or four-tier) refinement matters for Lean formalization**: Mathlib's `Group.IsSolvable` predicate corresponds to *level-1 detection* of solvability (the global yes/no); the solvable radical $\\operatorname{Rad}(G)$ extracts the *maximal solvable part* even when $G$ is not entirely solvable, giving a *quantitative* solvability measure. Mathlib has `Subgroup.IsNilpotent` and partial Fitting machinery (e.g., `Mathlib.GroupTheory.Nilpotent`), but `Group.solvableRadical` as a named subgroup is not yet present. Formalizing it (estimated ~300 LOC building on `Subgroup.normalCore` and existing solvability infrastructure) would give Lean its first *quantitative* solvability invariant — the order $|\\operatorname{Rad}(G)|$ measures how much of $G$ is solvable, with $|\\operatorname{Rad}(G)| = |G|$ iff $G$ is solvable, $|\\operatorname{Rad}(G)| = 1$ iff $G$ is *purely non-solvable* (its semisimple core fills the entire group). The Jordan-Hölder uniqueness proved in this file is the *structural prerequisite*: without uniqueness of the composition-factor multiset, the bipartition into 'abelian factors from $\\operatorname{Rad}(G)$' vs 'non-abelian simple factors from $G/\\operatorname{Rad}(G)$' would not be well-defined. **Connection to the Hölder program (1893)**: Hölder's 1889 closure of the Jordan-Hölder uniqueness gap (cited as the foundation of this file) inaugurated a research program (Hölder 1893, *Bildung zusammengesetzter Gruppen*, Math. Ann. 46: 321–422) with two parts — **(i) classify the finite simple groups** (the building blocks identified by Jordan-Hölder), and **(ii) classify the extensions** (how the building blocks combine via $1 \\to N \\to G \\to Q \\to 1$). Part (i) became the Classification of Finite Simple Groups (CFSG, completed c. 2004 over ~10,000 published pages); part (ii) — the *extension problem* — remains open in general. The solvable-radical decomposition is the *coarsest* canonical answer to part (ii): every finite group is an extension of a semisimple group (classified via CFSG) by a solvable group (classified via the Fitting series and its refinements). The remaining open problem is *which* extensions exist for a given pair (kernel, quotient), governed by group cohomology $H^2$ for abelian kernels (Eilenberg-MacLane 1947) and non-abelian $H^2$ for general kernels (still actively researched). The companion sub-entry `inverse-galois-oq-02` formalizes the *Mathieu group* $M_{23}$ — one of the 26 sporadic simple groups — pinning the smallest sporadic Galois realizability gap, exactly the kind of CFSG-frontier object whose *appearance as a composition factor* of any Galois group is governed by the uniqueness clause proved here."
+    ]
+  },
+  "conclusion": {
+    "summary": "A complete `JordanHolderLattice (Subgroup G)` instance filling a Mathlib TODO, with all three axioms machine-verified (0 axioms, 0 sorries). `sup_eq_of_isMaximal` is proved via `subgroupOf_sup` and maximality. `isMaximal_inf_left_of_isMaximal_sup` is proved with the maximality case using an element-wise `Subgroup.mem_sup` decomposition argument. `second_iso` is proved via the first isomorphism theorem applied to a direct map construction, bypassing the `sup_comm` rewrite failure. `jordan_holder_subgroups` and `jordan_holder_finite_groups` are one-line delegations to `CompositionSeries.jordan_holder` that become available once the instance is in place.",
+    "implications": "**Mathematical significance**: The Jordan-Hölder theorem is the cornerstone of finite group structure theory. It makes the composition factors (simple quotients) intrinsic invariants of a group, analogous to prime factors in integer factorization. For the Abel-Ruffini theorem, it provides the key guarantee: the unique composition series of $S_5$ is $\\{e\\} \\triangleleft A_5 \\triangleleft S_5$, and the non-abelian simple factor $A_5$ is unavoidable — no redecomposition can replace it with abelian factors.\n\n**Formal verification significance**: This file fills an explicitly marked TODO in `Mathlib.Order.JordanHolder`, contributing a missing concrete instance that makes the abstract machinery of `CompositionSeries.jordan_holder` available for groups. The key technical contributions are: (1) the `IsMaxNorm` predicate design that avoids `IsSimpleGroup` typeclass complications, (2) the `GroupQuotIso` design with explicit Normal witnesses, and (3) the `second_iso` construction via the first isomorphism theorem that bypasses the `rw [sup_comm]` failure endemic to quotient types in Lean 4.\n\n**Proof technique**: The element-wise argument for `isMaximal_inf_left_of_isMaximal_sup` — decomposing $a \\in x$ as $nb$ with $n \\in N, b \\in y$ and deducing $b \\in x \\wedge y \\leq N$ — exemplifies a recurring pattern in subgroup lattice arguments: when supremum membership (`Subgroup.mem_sup`) is available, element-wise proofs often bypass the need for isomorphism theorems entirely.",
+    "openQuestions": [
+      "**Mathlib contribution**: Can `JordanHolderLattice (Subgroup G)` be contributed upstream to Mathlib? The main challenge is generalizing the `IsMaxNorm` predicate to work with `IsSimpleGroup (K ⧸ H)` directly (avoiding the quotient typeclass issues) or convincing Mathlib maintainers that the `IsMaxNorm` approach is canonical. The TODO in `Mathlib.Order.JordanHolder` provides a clear target.",
+      "**Jordan-Hölder for modules**: The analogous `JordanHolderLattice (Submodule R M)` instance would instantiate Jordan-Hölder for modules over rings, where composition factors are simple modules. The proof structure would be similar, using the module-theoretic second isomorphism theorem $(H + K)/H \\simeq K/(H \\cap K)$. This would enable formal statements like 'every finitely generated semisimple module decomposes uniquely into simple submodules.'",
+      "**Schreier refinement theorem**: Can Mathlib's `CompositionSeries.jordan_holder` be complemented by a formalized Schreier refinement theorem (any two normal series have equivalent refinements)? The Zassenhaus butterfly lemma is not yet in Mathlib and would be needed for a self-contained proof independent of Jordan-Hölder.",
+      "**Classification of finite simple groups (CFSG) connection**: Jordan-Hölder's theorem motivates the entire program of classifying finite simple groups — the indecomposable building blocks of all finite groups. The CFSG (completed c. 2004) classifies them as cyclic groups $\\mathbb{Z}/p$, alternating groups $A_n$ ($n \\geq 5$), groups of Lie type, and 26 sporadic groups. Can Lean formalize any fragment of the CFSG beyond the simplicity of $A_5$ (which Mathlib already has)? The simplest next step might be the classification of groups of order $p^2$ (all abelian) or Burnside's theorem ($p^a q^b$ groups are solvable, hence their composition factors are cyclic).",
+      "**Jordan-Hölder and the Langlands program**: Composition factors of the absolute Galois group $\\text{Gal}(\\overline{\\mathbb{Q}}/\\mathbb{Q})$ (a profinite group) are related to automorphic representations via the Langlands program. While far from formal verification, the abstract Jordan-Hölder theorem for profinite groups (where 'composition series' becomes 'closed normal series with simple quotients') is the foundational result. Can Lean 4 formalize `JordanHolderLattice` for closed subgroups of profinite groups, building on the `sylow-theorems-oq-02` pro-$p$ Sylow theory?",
+      "**Krull-Schmidt formalization in Lean 4**: The Krull-Schmidt theorem (uniqueness of direct product decomposition into indecomposables for groups with chain conditions) is the natural sister theorem to Jordan-Hölder, but is not yet in Mathlib. Could a `KrullSchmidtLattice` typeclass — abstracting the lattice-theoretic axioms needed for direct decomposition uniqueness — parallel the `JordanHolderLattice` design used here? The key axiom would be the *exchange property* (Remak's lemma): in any two direct decompositions $G = A_1 \\times \\cdots \\times A_m = B_1 \\times \\cdots \\times B_n$ with $A_i$ indecomposable, each $A_i$ is isomorphic to some $B_j$, and the $A_i$ can be exchanged for the corresponding $B_j$ to produce another decomposition. The combined `JordanHolderLattice` + `KrullSchmidtLattice` framework would give Mathlib both major uniqueness theorems for group decomposition under a single abstract lattice-theoretic interface — applicable uniformly to groups, modules over Artinian rings, and finitely generated modules over PIDs (where Krull-Schmidt specializes to the structure theorem).",
+      "**Formalizing the Galois-correspondence side of Abel-Ruffini**: Can Lean 4 formalize the *bijection* between composition series of a finite Galois group $G = \\text{Gal}(L/K)$ and towers of intermediate Galois subextensions of $L/K$? The fundamental theorem of Galois theory is already in Mathlib (`IntermediateField.galoisCorrespondence`), but the *order-reversing lattice isomorphism* between normal subgroups of $G$ and Galois subextensions of $L/K$ — and the resulting correspondence between composition series of $G$ and *maximal Galois towers* in the intermediate-field lattice — appears to lack a packaged form. With the `JordanHolderLattice (Subgroup G)` instance proved here and a parallel instance on `IntermediateField`, one could formalize 'the multiset of composition factors of $\\text{Gal}(L/K)$ equals the multiset of Galois groups of successive steps in any maximal Galois tower of $L/K$' — the precise theorem that translates Jordan-Hölder uniqueness into the radical-tower obstruction language of Abel-Ruffini. This would be the cleanest formal statement of *why* the quintic obstruction is structural rather than computational.",
+      "**Formalizing the extension-class obstruction: $H^2$ as the missing data**: Jordan-Hölder uniqueness asserts the composition-factor *multiset* is invariant, but does not determine the group — the gap is the *extension data*: for a normal subgroup $N \\trianglelefteq G$ with quotient $Q = G/N$, the extension $1 \\to N \\to G \\to Q \\to 1$ is classified up to equivalence by a cohomology class in $H^2(Q, Z(N))$ (when $N$ is abelian; the non-abelian case requires non-abelian cohomology). Two groups with identical composition factors differ precisely in the cumulative cohomology classes assembled along their composition series. Mathlib has partial group cohomology infrastructure (`Mathlib.RepresentationTheory.GroupCohomology`) but the classification theorem for extensions — *equivalence classes of extensions of $Q$ by an abelian $N$ are in bijection with $H^2(Q, N)$* (Eilenberg-MacLane, 1947) — is not yet formalized in usable form. Could Lean 4 formalize this bijection, then state precisely *what* the composition-factor multiset of $G$ misses about $G$? For $\\mathbb{Z}/6\\mathbb{Z}$ vs $S_3$ (both with factors $\\{\\mathbb{Z}/2, \\mathbb{Z}/3\\}$): the distinguishing cohomology class lives in $H^2(\\mathbb{Z}/2, \\mathbb{Z}/3) \\cong \\mathbb{Z}/\\gcd(2, 3) = 0$ (trivial because $\\gcd(2,3) = 1$) — wait, but the groups are not isomorphic! The resolution: $\\mathbb{Z}/6\\mathbb{Z}$ is the *direct* product ($\\mathbb{Z}/2 \\to \\mathbb{Z}/2 \\times \\mathbb{Z}/3 \\to \\mathbb{Z}/3$ via $\\mathbb{Z}/2$ acting trivially), and $S_3$ is the *semidirect* product ($\\mathbb{Z}/2$ acting by inversion on $\\mathbb{Z}/3$); the distinguishing data is not in $H^2$ but in the *action* $Q \\to \\text{Aut}(N)$, an additional ingredient before $H^2$ even enters. Formalizing the full Schreier classification — extensions classified by *pairs* (action, cohomology class) — would make the structural content of Jordan-Hölder *and* the gap it leaves both precisely visible in Lean."
+    ]
+  },
+  "leanFile": {
+    "namespace": "AbelRuffiniGaloisExtensionsOQ04",
+    "lineCount": 234,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 2,
+    "instanceCount": 1,
+    "path": "Proofs/AbelRuffiniGaloisExtensionsOQ04.lean",
+    "sorries": 0,
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Order.JordanHolder",
+      "Mathlib.GroupTheory.QuotientGroup.Basic",
+      "Mathlib.GroupTheory.Subgroup.Simple",
+      "Proofs.AbelRuffiniGaloisExtensions"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Module docstring documenting the mathematical goal (JordanHolderLattice instantiation for Subgroup G), the Mathlib TODO being filled, and proof status (all 3 axioms fully proved, 0 sorries). Imports: JordanHolder (abstract typeclass + CompositionSeries), QuotientGroup.Basic (quotient construction + first isomorphism), Subgroup.Simple (simple group definition), and the parent AbelRuffiniGaloisExtensions file. Opens the `Subgroup` and `QuotientGroup` namespaces and introduces the universe-polymorphic group variable `{G : Type*} [Group G]`.",
+      "mathContext": "The Mathlib TODO in `Mathlib.Order.JordanHolder` says: 'TODO: add `JordanHolderLattice (Subgroup G)` instance.' This file provides it. The `JordanHolderLattice` typeclass abstracts the three axioms needed for Jordan-Hölder uniqueness, making the abstract theorem `CompositionSeries.jordan_holder` available for any concrete instantiation. The `variable {G : Type*} [Group G]` declaration makes all subsequent definitions and theorems universe-polymorphic — they apply to any group, not just groups in a fixed universe.",
+      "relatedConcepts": [
+        "JordanHolderLattice typeclass",
+        "CompositionSeries.jordan_holder",
+        "Mathlib.Order.JordanHolder",
+        "Mathlib TODO",
+        "universe polymorphism"
+      ],
+      "prerequisites": [
+        "`JordanHolderLattice` typeclass (Mathlib)",
+        "`Mathlib.Order.JordanHolder`, `Mathlib.GroupTheory.QuotientGroup.Basic`",
+        "modular lattice $(\\mathrm{Subgroup}\\,G, \\le, \\sqcup, \\sqcap)$",
+        "`CompositionSeries` and Jordan-Hölder uniqueness",
+        "Mathlib TODO conventions and noncomputable instances"
+      ]
+    },
+    {
+      "id": "sec-predicates",
+      "title": "Part I: Core Predicates (IsMaxNorm and GroupQuotIso)",
+      "startLine": 38,
+      "endLine": 57,
+      "summary": "The two predicates carrying the proof's design decisions. `IsMaxNorm H K` (lines 48–51): H is a maximal normal subgroup of K — strict containment, relative normality via `subgroupOf`, and no intermediate normal-in-K subgroups (an unfolded surrogate for `IsSimpleGroup (K ⧸ H.subgroupOf K)` that avoids the quotient-typeclass issues described in keyInsight #13). `GroupQuotIso` (lines 54–57): quotient isomorphism K₁/H₁ ≃* K₂/H₂ packaged with explicit Normal witnesses `hn1, hn2` (existentials) plus a `Nonempty (MulEquiv …)` payload — the canonical Lean idiom for Prop-valued storage of data-bearing isomorphisms.",
+      "mathContext": "`IsMaxNorm` keeps every conjunct inside the lattice $(\\text{Subgroup}\\,G, \\leq, \\sqcup, \\sqcap)$, sidestepping the synthesis chain that breaks `rw [sup_comm]` and similar quotient-type rewrites (a recurring Lean 4 fragility documented across the file's three axiom proofs). `GroupQuotIso` packages Normal evidence as existential witnesses, enabling `haveI` introduction before constructing `MulEquiv`. The `letI := hn1; letI := hn2` inside the definition body ensures the `Nonempty` payload is itself well-formed at definition time.",
+      "relatedConcepts": [
+        "IsMaxNorm",
+        "GroupQuotIso",
+        "subgroupOf",
+        "relative normality",
+        "Nonempty",
+        "MulEquiv",
+        "haveI pattern",
+        "Prop/data divide"
+      ],
+      "prerequisites": [
+        "`Subgroup.subgroupOf` (relative normality)",
+        "`Normal` typeclass and its lattice interaction",
+        "`Nonempty` wrapping of `MulEquiv` for `Prop`-level isomorphism",
+        "`haveI`/`letI` pattern for typeclass synthesis",
+        "the Prop/data divide in Lean 4"
+      ]
+    },
+    {
+      "id": "sec-normalizer-lemma",
+      "title": "Part II: Key Normalizer Lemma",
+      "startLine": 59,
+      "endLine": 66,
+      "summary": "A one-line bridge lemma `le_normalizer_of_normal_in_sup`: if H is relatively normal in $H \\sqcup K$, then $K \\leq H.\\text{normalizer}$. The proof chains `le_sup_right : K \\leq H \\sqcup K` with `normal_subgroupOf_iff_le_normalizer le_sup_left` to convert the relative-normality hypothesis into the absolute normalizer containment. This lemma is invoked twice downstream — in `isMaximal_inf_left_of_isMaximal_sup` (showing x normalizes y in their join) and at the start of `second_iso` (extracting that y ≤ x.normalizer from the maximality hypothesis).",
+      "mathContext": "The lemma abstracts the observation that *relative normality lifts to absolute normalizer when one conjunct equals the subgroup being normalized*: if $H \\trianglelefteq_{H \\vee K} H \\vee K$, then every element of $K \\subseteq H \\vee K$ normalizes $H$, giving $K \\leq N_G(H)$. Factoring this as a separate lemma is structurally important — it concentrates the only use of `normal_subgroupOf_iff_le_normalizer` in the file, so the two downstream axiom proofs can treat 'relative normality $\\Rightarrow$ normalizer bound' as a black box rather than re-doing the conversion each time.",
+      "relatedConcepts": [
+        "normalizer",
+        "normal_subgroupOf_iff_le_normalizer",
+        "relative normality",
+        "subgroupOf",
+        "le_sup_right",
+        "lemma factoring"
+      ],
+      "prerequisites": [
+        "normalizer subgroup $N_G(H)$",
+        "`normal_subgroupOf_iff_le_normalizer`",
+        "`le_sup_left`, `le_sup_right` lattice basics",
+        "relative vs absolute normality",
+        "lemma factoring out fragile rewrites"
+      ]
+    },
+    {
+      "id": "sec-instance-sup",
+      "title": "Part III: Instance Declaration and Axiom 1 — sup_eq_of_isMaximal",
+      "startLine": 68,
+      "endLine": 96,
+      "summary": "The `noncomputable instance instJordanHolderLatticeSubgroup` declaration (lines 72–78) fills the Mathlib TODO, setting `IsMaximal := IsMaxNorm` and `Iso := GroupQuotIso`. The first axiom `sup_eq_of_isMaximal` (lines 79–96): if x and y are both maximal normal in z with x ≠ y, then x ⊔ y = z. Proof: show x⊔y is relatively normal in z via `subgroupOf_sup` (join of normal subgroups is normal); apply x's maximality to the chain x ≤ x⊔y ≤ z; the case x⊔y = x implies y ≤ x, then y's maximality applied to x gives y = x (contradiction) or x = z (contradiction).",
+      "mathContext": "The diamond lemma for maximal normal subgroups: if $x, y \\trianglelefteq_{\\max} z$ and $x \\neq y$, then $x \\vee y = z$. The key Mathlib lemma `subgroupOf_sup` gives $(A \\vee B)/_{C} = (A/_{C}) \\vee (B/_{C})$, reflecting the lattice homomorphism property of `subgroupOf`. This combined with the fact that a supremum of normal subgroups is normal yields the normality of $x \\vee y$ in $z$. The `noncomputable` annotation is required because the instance uses classical existence reasoning via `quotientKerEquivOfSurjective`.",
+      "relatedConcepts": [
+        "subgroupOf_sup",
+        "noncomputable instance",
+        "lattice diamond lemma",
+        "IsMaxNorm",
+        "JordanHolderLattice",
+        "lt_of_isMaximal"
+      ],
+      "prerequisites": [
+        "`subgroupOf_sup` (Mathlib lattice homomorphism)",
+        "`lt_of_isMaximal` and the diamond lemma",
+        "noncomputable instance declarations",
+        "maximal normal subgroup $x \\trianglelefteq_{\\max} z$",
+        "`JordanHolderLattice.sup_eq_of_isMaximal` axiom signature"
+      ]
+    },
+    {
+      "id": "sec-inf-max",
+      "title": "Axiom 2 — isMaximal_inf_left_of_isMaximal_sup",
+      "startLine": 98,
+      "endLine": 156,
+      "summary": "The longest and most technically demanding axiom proof. If x and y are both maximal normal in x⊔y, then x⊓y is maximal normal in x. The proof establishes three goals: (1) x⊓y < x: if equality held, x ≤ y, making x⊔y = y, contradicting y < x⊔y. (2) (x⊓y).subgroupOf x is Normal: y normalizes x (since y is normal in x⊔y), so `inf_subgroupOf_right` converts to normality of the intersection. (3) Maximality: for N with x⊓y ≤ N ≤ x normal in x, consider N⊔y; apply y's maximality to get N⊔y = y (forcing N ≤ y, hence N = x⊓y) or N⊔y = x⊔y (element-wise argument: every a ∈ x is n·b with n ∈ N, b ∈ y∩x ≤ N, so a ∈ N, giving N = x).",
+      "mathContext": "The element-wise argument is the proof's centerpiece: given $N \\vee y = x \\vee y$ and $a \\in x$, use `Subgroup.mem_sup` to write $a = nb$ with $n \\in N, b \\in y$. Since $n \\in N \\leq x$, we get $b = n^{-1}a \\in x$. Also $b \\in y$, so $b \\in x \\wedge y \\leq N$. Therefore $a = nb \\in N$, proving $x \\leq N$. This avoids transferring simplicity through the second isomorphism theorem — a direct membership argument suffices where an isomorphism argument would require navigating quotient type dependencies.",
+      "relatedConcepts": [
+        "Subgroup.mem_sup",
+        "inf_subgroupOf_right",
+        "element-wise membership argument",
+        "maximality in lattices",
+        "normal_subgroupOf_of_le_normalizer",
+        "inf_comm"
+      ],
+      "prerequisites": [
+        "`Subgroup.mem_sup` (element-wise membership)",
+        "`inf_subgroupOf_right` for relative meet",
+        "element-wise argument $a = nb$ with $n \\in N, b \\in y$",
+        "`normal_subgroupOf_of_le_normalizer`",
+        "lattice inf/sup commutativity (`inf_comm`)"
+      ]
+    },
+    {
+      "id": "sec-iso-rel",
+      "title": "Iso Relation Properties — iso_symm and iso_trans",
+      "startLine": 158,
+      "endLine": 170,
+      "summary": "`GroupQuotIso` must be an equivalence relation for the JordanHolderLattice axioms. `iso_symm` (lines 160–164): reverses K₁/H₁ ≃* K₂/H₂ using `MulEquiv.symm` lifted through `Nonempty.map`, swapping the Normal witnesses. `iso_trans` (lines 166–170): composes two isomorphisms using `MulEquiv.trans`, with careful `haveI` placement to introduce all four Normal instances before destructing the `Nonempty` witnesses with `rcases`.",
+      "mathContext": "These proofs verify that the composition factor isomorphism relation $\\simeq_*$ on quotient pairs is symmetric and transitive. For `iso_trans`: given $K_1/H_1 \\simeq_* K_2/H_2$ and $K_2/H_2 \\simeq_* K_3/H_3$, produce $K_1/H_1 \\simeq_* K_3/H_3$ by `MulEquiv.trans`. The `Nonempty` wrapping requires extracting witnesses with `rcases ⟨e1⟩` before composing. The four `haveI` invocations ensure all Normal instances are in scope for the final `MulEquiv.trans` construction.",
+      "relatedConcepts": [
+        "MulEquiv.symm",
+        "MulEquiv.trans",
+        "Nonempty.map",
+        "haveI pattern",
+        "equivalence relation",
+        "rcases pattern matching"
+      ],
+      "prerequisites": [
+        "`MulEquiv.symm` and `MulEquiv.trans`",
+        "`Nonempty.map` to lift through `Prop` wrapping",
+        "`rcases` pattern matching on `Nonempty` witnesses",
+        "equivalence relation laws for the `Iso` field of `JordanHolderLattice`"
+      ]
+    },
+    {
+      "id": "sec-second-iso",
+      "title": "Axiom 3 — second_iso via First Isomorphism Theorem",
+      "startLine": 172,
+      "endLine": 206,
+      "summary": "The second isomorphism theorem in JordanHolderLattice form: if x is maximal normal in x⊔y, then (x⊔y)/x ≃* y/(x⊓y). The proof constructs φ : y →* (x⊔y)/x directly as `mk' ∘ inclusion le_sup_right`, avoiding the `rw [sup_comm]` that fails due to Normal typeclass dependency on the rewritten term. Kernel computation: ker φ = (x⊓y).subgroupOf y (membership calculation). Surjectivity: decompose any element of x⊔y via `Subgroup.mem_sup`, then show the x-component maps to the identity in the quotient. Apply `quotientKerEquivOfSurjective` to get the isomorphism.",
+      "mathContext": "Noether's second isomorphism theorem: for $H, K \\leq G$ with $K \\leq N_G(H)$, $(H \\vee K)/H \\simeq_* K/(H \\wedge K)$. The direct construction $\\varphi: y \\to (x \\vee y)/x$, $\\varphi(b) = b \\cdot x$, has $\\ker\\varphi = \\{b \\in y : b \\in x\\} = x \\wedge y$. The `rw [sup_comm y x]` failure is a systematic Lean 4 issue: the Normal typeclass instance for the quotient type `(y ⊔ x) ⧸ y.subgroupOf (y ⊔ x)` depends syntactically on the join expression, so rewriting `y ⊔ x` to `x ⊔ y` breaks the typeclass dependency chain with 'motive not type correct.'",
+      "relatedConcepts": [
+        "quotientKerEquivOfSurjective",
+        "mk'",
+        "first isomorphism theorem",
+        "sup_comm rewrite failure",
+        "Noether second isomorphism",
+        "kernel computation",
+        "le_normalizer_of_normal_in_sup"
+      ],
+      "prerequisites": [
+        "Noether's second isomorphism theorem $(H \\vee K)/H \\simeq K/(H \\wedge K)$",
+        "`QuotientGroup.mk'` and `Subgroup.inclusion`",
+        "`quotientKerEquivOfSurjective` (first isomorphism theorem)",
+        "kernel computation $\\ker \\varphi = x \\wedge y$",
+        "`le_normalizer_of_normal_in_sup` (Part II)"
+      ]
+    },
+    {
+      "id": "sec-jordan-holder",
+      "title": "Part IV: Jordan-Hölder Uniqueness Theorem",
+      "startLine": 208,
+      "endLine": 225,
+      "summary": "`jordan_holder_subgroups` and `jordan_holder_finite_groups`: one-line delegations to `CompositionSeries.jordan_holder` from Mathlib. With the JordanHolderLattice instance in place, the full Jordan-Hölder uniqueness theorem is immediate — any two composition series of a group with the same endpoints are equivalent (same length, same composition factors up to permutation and isomorphism). The `[Finite G]` variant makes the finiteness requirement explicit.",
+      "mathContext": "Jordan-Hölder uniqueness: any two composition series $1 = H_0 \\trianglelefteq \\cdots \\trianglelefteq H_n = G$ and $1 = K_0 \\trianglelefteq \\cdots \\trianglelefteq K_m = G$ satisfy $n = m$ and there is a permutation $\\sigma$ with $H_{i+1}/H_i \\simeq K_{\\sigma(i)+1}/K_{\\sigma(i)}$. For $S_5$: the unique composition series is $\\{e\\} \\triangleleft A_5 \\triangleleft S_5$ with factors $A_5$ (simple, order 60) and $\\mathbb{Z}/2\\mathbb{Z}$. Jordan-Hölder guarantees no alternative decomposition avoids the non-abelian $A_5$ factor, making the Abel-Ruffini degree-5 threshold absolute.",
+      "relatedConcepts": [
+        "CompositionSeries.jordan_holder",
+        "CompositionSeries.Equivalent",
+        "composition factors",
+        "A5 simplicity",
+        "S5 composition series",
+        "prime factorization analogy"
+      ],
+      "prerequisites": [
+        "`CompositionSeries.jordan_holder` (the abstract theorem)",
+        "composition factor isomorphism up to permutation",
+        "role of `JordanHolderLattice (Subgroup G)` as the missing instance",
+        "application to $S_5$: unique composition factor multiset $\\{S_5/A_5, A_5\\}$",
+        "prime factorization analogy"
+      ]
+    },
+    {
+      "id": "sec-verification",
+      "title": "Part V: Type Verification",
+      "startLine": 227,
+      "endLine": 234,
+      "summary": "`#check @jordan_holder_subgroups` and `#check @instJordanHolderLatticeSubgroup` verify that the theorem and instance have the expected types, confirming the instance is correctly registered in Lean's typeclass system and that `CompositionSeries.jordan_holder` successfully resolves the `JordanHolderLattice (Subgroup G)` instance. Closes the `AbelRuffiniGaloisExtensionsOQ04` namespace.",
+      "mathContext": "The `#check` commands serve as lightweight verification that Lean's elaborator accepts the instance and the derived theorem. `@instJordanHolderLatticeSubgroup` confirms the instance is available for typeclass resolution — any later file importing this module can use `CompositionSeries.jordan_holder` for groups without additional setup.",
+      "relatedConcepts": [
+        "#check command",
+        "typeclass resolution",
+        "instance registration",
+        "namespace closure",
+        "elaboration-time verification"
+      ],
+      "prerequisites": [
+        "`#check` command for elaboration-time verification",
+        "typeclass resolution diagnosis",
+        "instance availability across modules",
+        "namespace closure (`end AbelRuffiniGaloisExtensionsOQ04`)"
+      ]
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "abel-ruffini-galois-extensions",
+      "relationship": "parent",
+      "description": "Parent entry providing the Galois extension infrastructure for Abel-Ruffini. The Jordan-Hölder theorem proved here underpins the uniqueness claims about composition series of $S_5$ used in the broader Abel-Ruffini analysis"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "extends",
+      "description": "Top-level Abel-Ruffini theorem. Key insight #7 in that entry cites Jordan-Hölder: 'the Jordan-Hölder theorem guarantees that the unique composition series $\\{e\\} \\triangleleft A_5 \\triangleleft S_5$ makes the degree-5 impossibility absolute.' This file provides the formal proof of that theorem"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04",
+      "relationship": "sibling",
+      "description": "Abel-Ruffini OQ-04: exposes the proof chain from $A_5$ simplicity through $S_5$ non-solvability, directly using the composition series structure that Jordan-Hölder certifies is unique"
+    },
+    {
+      "targetId": "sylow-theorems",
+      "relationship": "foundational",
+      "description": "Sylow's theorems provide the structural analysis of $A_5$ (Sylow counting forces $n_5 = 6$, confirming no normal Sylow 5-subgroup, hence simplicity) — the same simplicity result that makes $A_5$ the inescapable composition factor in $S_5$'s Jordan-Hölder series"
+    },
+    {
+      "targetId": "sylow-theorem-oq-04",
+      "relationship": "complementary",
+      "description": "Constructs from scratch the Sylow-theoretic proof that $A_5$ is simple: the same fact that makes $A_5$ an indecomposable composition factor in the Jordan-Hölder series of $S_5$. Together these entries formalize both the uniqueness of the series (Jordan-Hölder) and the simplicity of its factor ($A_5$)"
+    },
+    {
+      "targetId": "inverse-galois",
+      "relationship": "related",
+      "description": "The Inverse Galois problem asks which finite simple groups (the building blocks identified by Jordan-Hölder) appear as Galois groups over $\\mathbb{Q}$. Jordan-Hölder is the structural foundation: it guarantees these simple groups are the indecomposable constituents of all Galois groups, making their realizability the key question"
+    },
+    {
+      "targetId": "inverse-galois-a5",
+      "relationship": "complementary",
+      "description": "Realizes $A_5$ — the keystone non-cyclic composition factor identified by Jordan-Hölder as the obstruction to quintic solvability — concretely as the Galois group of $q(x) = x^5 - 5x^4 + 10x^3 - 10x^2 + 25x - 5$ over $\\mathbb{Q}$. Jordan-Hölder uniqueness (proved here) says *every* composition series of $\\text{Gal}(q/\\mathbb{Q})$ must include $A_5$ as a factor; the inverse-galois-a5 construction exhibits an explicit polynomial whose Galois group *is* $A_5$, so the obstruction is not hypothetical but concretely realized. Together: this entry establishes the structural inevitability of the $A_5$ factor, inverse-galois-a5 exhibits a specific quintic where that factor appears at the top."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02-oq-03",
+      "relationship": "complementary",
+      "description": "Proves all finite groups of order $< 60$ are solvable. $A_5$ (order 60) is the minimal non-solvable group — equivalently, the first group to have a non-cyclic composition factor. Jordan-Hölder makes this precise: the 59 groups of smaller order all have composition series with only cyclic factors"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02-oq-02",
+      "relationship": "complementary",
+      "description": "Alternating Groups: $A_n$ solvable $\\iff n \\leq 4$. Jordan-Hölder uniqueness sharpens this classification: the composition series of $A_n$ for $n \\geq 5$ is forced to be the single chain $\\{e\\} \\triangleleft A_n$ (since $A_n$ itself is simple for $n \\geq 5$). This uniqueness — that no decomposition can split $A_n$ into smaller pieces — is exactly what Jordan-Hölder guarantees, making the non-solvability boundary structurally absolute rather than a feature of one analysis."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-03",
+      "relationship": "complementary",
+      "description": "**Galois's solvability criterion** — the bridge that turns Jordan-Hölder uniqueness into the Abel-Ruffini obstruction. A root of an irreducible polynomial is solvable by radicals iff its Galois group is solvable, equivalently iff every composition factor is cyclic of prime order. Jordan-Hölder (proved here) fixes the composition-factor multiset of the Galois group as an invariant independent of any chosen series; Galois's criterion then reads solvability directly off that multiset. For the quintic, the non-abelian simple factor $A_5$ — unavoidable by Jordan-Hölder uniqueness — is non-cyclic, so the criterion returns 'not solvable by radicals.' Without the uniqueness clause proved here, one could hope for an alternative decomposition with all-cyclic factors; Jordan-Hölder forecloses that hope, which is precisely why the criterion gives an absolute answer."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02",
+      "relationship": "complementary",
+      "description": "Classifies $S_2, S_3, S_4$ as solvable — the degree-by-degree complement to $S_5$ non-solvability. Each has a composition series with only cyclic factors, and by Jordan-Hölder uniqueness (proved here) that factor multiset is an invariant, so solvability is a structural property of the group rather than an artifact of a chosen decomposition. The cross-references from this entry to `solution-of-cubic` (Cardano, $S_3$) and `general-quartic` (Ferrari, $S_4$) give the constructive radical formulas that realize these very composition series. This is the parent of the already-linked `abel-ruffini-oq-04-oq-02-oq-02` and `abel-ruffini-oq-04-oq-02-oq-03`."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions-oq-07",
+      "relationship": "related",
+      "description": "**Burnside's $p^a q^b$ theorem** (1904): every finite group whose order has at most two distinct prime divisors is solvable — i.e., all its composition factors are cyclic of prime order. This is exactly the 'next step' flagged in this entry's open questions on the Hölder program: where Jordan-Hölder guarantees the composition-factor multiset is a well-defined invariant, Burnside identifies a large class of groups for which that multiset contains only cyclic factors. Consistency check: the smallest non-solvable group $A_5$ has order $60 = 2^2 \\cdot 3 \\cdot 5$, which needs three distinct primes — two never suffice for non-solvability, exactly as Burnside requires."
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem $|G| = |H| \\cdot [G:H]$ underlies the numerical content of Jordan-Hölder: the product of the orders of the composition factors equals $|G|$. For $S_5$: $|S_5| = |\\mathbb{Z}/2\\mathbb{Z}| \\cdot |A_5| = 2 \\cdot 60 = 120$, matching $5! = 120$. Jordan-Hölder uniqueness turns this multiplicative identity into a *unique factorization* statement — the analogue of the fundamental theorem of arithmetic, where the simple-group factors play the role of primes. Lagrange's theorem alone gives the divisibility constraints; Jordan-Hölder gives the uniqueness of the factor multiset."
+    },
+    {
+      "targetId": "lagrange-theorem-oq-03",
+      "relationship": "complementary",
+      "description": "**Hall's theorem and Jordan-Hölder: the existence/uniqueness duality for solvable groups.** Hall (1928) and Jordan-Hölder are the two structural pillars of solvable-group theory and they are pedagogically complementary: Jordan-Hölder is the *uniqueness* statement (the multiset of composition factors is a well-defined invariant of $G$), while Hall's theorem is the *existence* statement (for every Hall divisor $h$ of $|G|$ — i.e., $\\gcd(h, |G|/h) = 1$ — there exists a subgroup of order $h$, and all such are conjugate). Both theorems require solvability as hypothesis and both fail for $A_5$: the smallest non-solvable group is precisely where Jordan-Hölder's factors cease to be cyclic ($A_5$ itself appears as a composition factor) and where Hall's theorem can fail (Hall divisor existence is not guaranteed). For solvable $G$, the two theorems combine to give a complete subgroup-lattice classification: J-H pins down the composition factors $\\{\\mathbb{Z}/p_i\\mathbb{Z}\\}$ from below; Hall's theorem realizes every coprime divisor of $|G|$ as an actual subgroup from above. The $A_4$ no-order-6-subgroup phenomenon at the heart of `lagrange-theorem-oq-03` ($6 \\mid 12$ but no $H \\le A_4$ has $|H| = 6$) shows where Hall's hypothesis is sharp — $\\gcd(6, 2) = 2 \\neq 1$, so $6$ is not a Hall divisor; the J-H composition factors $\\{\\mathbb{Z}/3, \\mathbb{Z}/2, \\mathbb{Z}/2\\}$ of $A_4$ multiply to $12$ but the multiset structure does not yield a sub-multiset summing to an order-6 subgroup."
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "analogous",
+      "description": "**The integer analogue.** The Fundamental Theorem of Arithmetic ($n = p_1^{a_1} \\cdots p_k^{a_k}$ uniquely) is the $\\mathbb{Z}$-counterpart of Jordan-Hölder, and the analogy is exact at the structural level: primes (multiplicatively indecomposable positive integers) ↔ finite simple groups (extension-indecomposable groups); $n$ factors into primes ↔ $G$ has a composition series with simple factors; uniqueness of prime multiset ↔ uniqueness of composition-factor multiset. The dictionary breaks one place — integer multiplication is commutative so the prime multiset determines $n$, but group extensions are non-commutative so the composition-factor multiset does *not* determine $G$ (e.g., $\\mathbb{Z}/6\\mathbb{Z}$ and $S_3$ share factors $\\{\\mathbb{Z}/2\\mathbb{Z}, \\mathbb{Z}/3\\mathbb{Z}\\}$ but are non-isomorphic). The extra information — the *extension class* in $H^2(Q, N)$ that glues each $N \\to G \\to Q$ together — is the price of non-commutativity. KeyInsight #9 develops this dictionary in detail; this cross-reference links to the formal proof of the integer side."
+    },
+    {
+      "targetId": "solution-of-cubic",
+      "relationship": "complementary",
+      "description": "Cardano's cubic formula — the constructive realization of $S_3$'s Jordan-Hölder composition series $\\{e\\} \\triangleleft A_3 \\triangleleft S_3$ with factors $\\mathbb{Z}/3\\mathbb{Z}$ (cyclic of order 3, the cube-root step) and $\\mathbb{Z}/2\\mathbb{Z}$ (cyclic of order 2, the square-root step). Jordan-Hölder uniqueness guarantees this two-layer decomposition is the *only* composition series of $S_3$, explaining why Cardano's formula has its specific two-radical structure (one cube root inside one square root) — no alternative algebraic decomposition exists. Together with `general-quartic` (Ferrari), provides the constructive content corresponding to the smallest Jordan-Hölder series for non-abelian solvable symmetric groups."
+    },
+    {
+      "targetId": "general-quartic",
+      "relationship": "complementary",
+      "description": "Ferrari's quartic formula — the constructive realization of $S_4$'s Jordan-Hölder composition series $\\{e\\} \\triangleleft V_4 \\triangleleft A_4 \\triangleleft S_4$ with factors $V_4 \\cong (\\mathbb{Z}/2\\mathbb{Z})^2$, $\\mathbb{Z}/3\\mathbb{Z}$, and $\\mathbb{Z}/2\\mathbb{Z}$. Jordan-Hölder uniqueness guarantees this three-layer decomposition is the *only* composition series of $S_4$, explaining why Ferrari's formula has exactly three nested radical layers (matching the derived length 3 of $S_4$). The Klein four-group $V_4$ at the bottom — the unique proper non-trivial normal subgroup of $A_4$ — is the *unique* possible composition factor at that level, making Ferrari's resolvent cubic structurally forced rather than an arbitrary choice."
+    },
+    {
+      "targetId": "inverse-galois-oq-01",
+      "relationship": "foundational",
+      "description": "Formalizes both halves of the structural input Jordan-Hölder uniqueness operates on for $S_n$: (i) the perfection identity $[A_5, A_5] = A_5$ (proved as `A5_perfect` via Mathlib's `Equiv.Perm.commutator_eq_alternatingGroup` chain) and (ii) the bidirectional solvability classifications $S_n$ solvable $\\iff n \\leq 4$ and $A_n$ solvable $\\iff n \\leq 4$. Why this is the keystone for the present entry: perfection $[A_5, A_5] = A_5$ is *exactly* what blocks any composition-series refinement below $A_5$ — combined with Jordan-Hölder uniqueness (proved here), it forces the unique series $\\{e\\} \\triangleleft A_5 \\triangleleft S_5$ to be *the* composition series of $S_5$, not merely *a* composition series. Without `inverse-galois-oq-01`'s perfection identity, the Jordan-Hölder uniqueness clause would still permit hypothetical refinements within $A_5$ (e.g., $\\{e\\} \\triangleleft H \\triangleleft A_5$ for some proper non-trivial normal $H$); with perfection, no such $H$ exists. The two entries are the algebraic and structural halves of the same impossibility certificate: this entry establishes uniqueness of factor multisets, `inverse-galois-oq-01` establishes that the multiset for $S_5$ must contain the indecomposable $A_5$."
+    },
+    {
+      "targetId": "inverse-galois-oq-02",
+      "relationship": "related",
+      "description": "**CFSG and Jordan-Hölder's open frontier.** Formalizes the Mathieu group $M_{23}$ — the only sporadic finite simple group still not known to be a Galois group over $\\mathbb{Q}$ — as perfect ($[M_{23}, M_{23}] = M_{23}$), non-solvable, with $|M_{23}| = 10\\,200\\,960 = 2^7 \\cdot 3^2 \\cdot 5 \\cdot 7 \\cdot 11 \\cdot 23$. Directly addresses openQuestion #4 of this entry on extending Jordan-Hölder beyond $A_5$ to the broader Classification of Finite Simple Groups (CFSG) program: where Jordan-Hölder's uniqueness theorem identifies *what kind* of indecomposable factors a finite group has, CFSG (completed c. 2004) enumerates all possible such factors as $\\{\\mathbb{Z}/p, A_n \\text{ for } n \\geq 5, \\text{Lie-type families}, \\text{26 sporadic groups}\\}$. $M_{23}$ is one of those 26 sporadic groups, and its formalization in `inverse-galois-oq-02` is the gallery's furthest step into the CFSG: the file proves $M_{23}$ is simple (via Mathlib's $\\text{IsSimpleGroup}$ instance, axiomatized) and verifies the order factorization. Together: this entry guarantees that whatever Galois group of a polynomial over $\\mathbb{Q}$ contains $M_{23}$ as a composition factor will inherit non-solvability and hence radical-impossibility — but the question of *which* polynomials produce such Galois groups remains open precisely because $M_{23}$'s inverse-Galois realizability is unresolved."
+    },
+    {
+      "targetId": "inverse-galois-d4",
+      "relationship": "complementary",
+      "description": "Concrete realization of the dihedral group $D_4$ as $\\text{Gal}(X^4 - 2/\\mathbb{Q})$ with $|D_4| = 8$, formalized with 27 theorems, 0 sorries, 0 axioms. **A solvable composition-series exemplar governed by Jordan-Hölder uniqueness (this entry's main theorem).** Where the sibling cross-reference `inverse-galois-a5` exhibits the *non-solvable* obstruction (the $A_5$ composition factor that Jordan-Hölder forces to appear in every decomposition of $\\text{Gal}(x^5 - 5x^4 + 10x^3 - 10x^2 + 25x - 5/\\mathbb{Q})$), `inverse-galois-d4` exhibits the *solvable* side of the same uniqueness story: $D_4$ has the unique composition series $D_4 \\trianglerighteq \\langle r \\rangle \\cong \\mathbb{Z}/4 \\trianglerighteq \\langle r^2 \\rangle \\cong \\mathbb{Z}/2 \\trianglerighteq \\{e\\}$ with composition factors $(\\mathbb{Z}/2, \\mathbb{Z}/2, \\mathbb{Z}/2)$ — three copies of the prime-cyclic group, in agreement with Jordan-Hölder's uniqueness assertion that *every* refinement to a composition series yields this same multiset of simple quotients (up to reordering). The concrete connection to the larger Abel-Ruffini story: $X^4 - 2$ has $D_4$ as Galois group, $D_4$ is solvable (every composition factor is $\\mathbb{Z}/2$, abelian), hence — by `not_solvable_by_rad_of_not_solvable_gal`'s contrapositive — $X^4 - 2$ is solvable by radicals, with explicit radical witness $\\sqrt[4]{2}$. This is the *positive* converse of the Abel-Ruffini chain: solvable composition series ⇒ solvable Galois group ⇒ radical expressibility. Jordan-Hölder uniqueness ensures this verdict is *invariant* under choice of normal series: any refinement of $D_4 \\trianglerighteq \\{e\\}$ produces the same three composition factors, hence the same solvable judgment. The parallel with `inverse-galois-f20` (composition factors $(\\mathbb{Z}/5, \\mathbb{Z}/4)$, also solvable, also a degree-5 polynomial $X^5 - 2$ solvable by radicals) and `inverse-galois-a5` (composition factor $A_5$, non-abelian simple, non-solvable, polynomial $x^5 - 5x^4 + 10x^3 - 10x^2 + 25x - 5$ NOT solvable by radicals) makes the Jordan-Hölder dichotomy concrete across the gallery's degree-4 and degree-5 inventory: the solvability fate of every realized Galois group is read off the multiset of composition factors that Jordan-Hölder makes a group invariant."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-01",
+      "relationship": "complementary",
+      "description": "**The concrete polynomial witness.** Realizes $\\text{Gal}(x^5 - 4x + 2/\\mathbb{Q}) \\cong S_5$ explicitly (Eisenstein irreducibility at $p = 2$; $|\\text{Gal}| = 120$ via Vandermonde-discriminant ruling out $\\text{Gal} \\subseteq A_5$, complex-conjugation transposition, and Sylow theory eliminating subgroup orders 5, 10, 15, 20, 30, 40, 60). This is the *concrete instance* on which Jordan-Hölder uniqueness (proved here) bites: by uniqueness, the composition series of $S_5 = \\text{Gal}(x^5 - 4x + 2/\\mathbb{Q})$ is forced to be $\\{e\\} \\triangleleft A_5 \\triangleleft S_5$ with composition factors $\\{A_5, \\mathbb{Z}/2\\mathbb{Z}\\}$, and the non-abelian simple factor $A_5$ cannot be avoided by *any* alternative decomposition. Galois's solvability criterion (`abel-ruffini-oq-04-oq-03`) then reads 'not solvable by radicals' off this factor multiset. Without Jordan-Hölder uniqueness, the unsolvability of $x^5 - 4x + 2$ would be tied to a specific decomposition rather than being a structural invariant of $S_5$ — the uniqueness clause is what makes the verdict *intrinsic to the polynomial* rather than an artifact of analysis."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions-oq-05",
+      "relationship": "complementary",
+      "description": "**Shafarevich's theorem (1954)**: every finite *solvable* group is realizable as $\\text{Gal}(L/\\mathbb{Q})$ for some Galois extension $L/\\mathbb{Q}$. This entry's relationship to Jordan-Hölder is precise: Shafarevich's hypothesis ('solvable group') is *exactly* 'every composition factor is cyclic of prime order' — a statement about the Jordan-Hölder factor multiset (which this file makes a well-defined invariant). The two theorems together close one half of the inverse-Galois landscape: Jordan-Hölder identifies *which* simple groups appear as the indecomposable factors of a finite group; Shafarevich shows that when those factors are all cyclic-of-prime-order (i.e., the group is solvable), the group is realizable over $\\mathbb{Q}$. The complementary open problem — realizing groups whose Jordan-Hölder multiset contains non-abelian simple factors (CFSG-frontier groups like $M_{23}$, cross-referenced via `inverse-galois-oq-02`) — remains the active edge of the inverse-Galois problem, governed precisely by the factors Jordan-Hölder makes invariant here."
+    },
+    {
+      "targetId": "kroneckers-jugendtraum",
+      "relationship": "complementary",
+      "description": "**Hilbert's 12th problem — the *constructive* counterpart to Jordan-Hölder's *structural* uniqueness.** This entry proves that the multiset of composition factors of a finite group $G$ is an invariant — *what* simple groups appear in the decomposition of $G$ is well-defined independent of any chosen series. Hilbert's 12th problem (Kronecker's *Jugendtraum*, communicated by letter to Dedekind on 15 March 1880, formalized as Problem 12 of Hilbert's 1900 *Mathematische Probleme* address) asks the orthogonal question: *how* are the abelian composition factors $\\mathbb{Z}/p$ that Jordan-Hölder identifies concretely realized as Galois groups of subextensions of a number field $K$? The two halves form a complete description of the inverse-Galois landscape for the *abelian sub-tower* of any composition series — Jordan-Hölder (this file) gives the structural invariance, Jugendtraum gives the explicit transcendental construction. The dictionary: for $K = \\mathbb{Q}$, Kronecker-Weber (1886, complete) realizes every abelian composition factor inside cyclotomic fields $\\mathbb{Q}(\\zeta_n)$ — every $\\mathbb{Z}/p$ that Jordan-Hölder produces appears as $\\text{Gal}(\\mathbb{Q}(\\zeta_{p^k})/\\mathbb{Q}(\\zeta_{p^{k-1}}))$ for some $k$. For $K = \\mathbb{Q}(\\sqrt{-d})$ imaginary quadratic, the theory of complex multiplication (Kronecker 1880, Weber 1908, Hasse 1927–1930, Deuring 1941, complete) realizes every abelian composition factor inside ring class fields generated by singular moduli $j(\\tau)$ and torsion-point coordinates of CM elliptic curves. For every other number field $K$, the abelian composition factors that Jordan-Hölder makes an invariant are *known to exist* (class field theory: Takagi 1920, Artin 1927, Chevalley 1936) but *not explicitly constructible* — this is the open content of Hilbert's 12th in 2026, with conjectural answers via Stark units (Stark 1971–1980), Gross's $p$-adic refinement (Gross 1981), or Manin's real-multiplication noncommutative geometry programme (Manin 2004). The relevance to this file's content is sharpened by the parent entry's implication #9 on Hilbert's 12th: the *non-solvable* composition factor $A_5$ of $S_5$ — whose unavoidability is the Abel-Ruffini obstruction — lies entirely *outside* the Jugendtraum programme; even for $K = \\mathbb{Q}$, no transcendental special-value construction is known or conjectured for the $A_5$-extension $\\mathbb{Q} \\subset \\text{splitting field of } x^5 - 5x^4 + 10x^3 - 10x^2 + 25x - 5$ (whereas every abelian subextension *is* covered by cyclotomic units). Thus the Jordan-Hölder dichotomy proved here — abelian factors vs. non-abelian simple factors — *aligns precisely* with the Jugendtraum frontier: the programme covers (and Jordan-Hölder identifies as cyclic) precisely the factors below the Abel-Ruffini boundary, while non-abelian simple factors are the exact frontier where both Jugendtraum constructions and radical solvability fail."
+    },
+    {
+      "targetId": "de-moivre",
+      "relationship": "supporting",
+      "description": "**De Moivre's identity $(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)$ — the *closed-form cyclotomic engine* producing the concrete cyclic composition factors that Jordan-Hölder's uniqueness theorem (proved here) makes an invariant of any solvable group.** The connection runs through the abelian half of the Jordan-Hölder dichotomy. For a finite solvable group $G$, the uniqueness clause proved in `jordan_holder_subgroups` (line 214) fixes the multiset of composition factors as cyclic-of-prime-order groups $\\{\\mathbb{Z}/p_1, \\ldots, \\mathbb{Z}/p_k\\}$ (cyclicity is forced by simplicity + abelianness via Cauchy's theorem). Via the Galois correspondence (keyInsight #11), each such factor $\\mathbb{Z}/p_i$ corresponds to a *radical-extraction step* $K_i \\subset K_i(\\beta_i)$ with $\\beta_i^{p_i} \\in K_i$, and the cyclic Galois group $\\text{Gal}(K_i(\\beta_i)/K_i) \\hookrightarrow \\langle\\zeta_{p_i}\\rangle$ requires the base field $K_i$ to contain the primitive $p_i$-th root of unity. **De Moivre's role**: it supplies the *explicit closed-form polar representation* $\\zeta_{p_i} = e^{2\\pi i/p_i} = \\cos(2\\pi/p_i) + i\\sin(2\\pi/p_i)$ and certifies $\\zeta_{p_i}^{p_i} = 1$ by direct computation — making the cyclic factor $\\mathbb{Z}/p_i$ that Jordan-Hölder identifies abstractly a *concrete* algebraic-geometric object inside $\\mathbb{C}$. **Triple companion structure**: with `kroneckers-jugendtraum` (above) giving the *transcendental construction* of abelian Jordan-Hölder factors inside cyclotomic/CM fields, and `primitive-roots` (cross-referenced via the parent) giving the *cyclic group structure* of $\\langle\\zeta_p\\rangle \\cong (\\mathbb{Z}/p\\mathbb{Z})^\\times$, de Moivre completes the cyclotomic-engine triple by providing the *explicit closed-form generator*. The three together fully specify the abelian-factor side of the Jordan-Hölder factor multiset for solvable Galois groups — exactly the content that fails for $S_5$, whose non-abelian simple factor $A_5$ admits no closed-form trigonometric witness because the entire cyclotomic engine (De Moivre + Kronecker-Weber + primitive roots) operates only on cyclic-of-prime-order factors. **Mirror to the parent file's cross-ref pattern**: PR #22428 added an analogous `de-moivre` supporting cross-reference to `abel-ruffini-galois-extensions` framed for its `arg-galois-contrapositive` annotation; this entry's link mirrors that framing one level down — where the parent shows De Moivre supplying $\\zeta_{p_i}$ for the *positive direction* (constructing radical towers for solvable Galois groups), this entry shows De Moivre supplying $\\zeta_{p_i}$ for the *cyclic-factor instantiation* of the Jordan-Hölder invariant that the parent's classification depends on."
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "C. Jordan"
+      ],
+      "title": "Traité des substitutions et des équations algébriques",
+      "year": "1870",
+      "venue": "Gauthier-Villars, Paris",
+      "note": "First systematic treatment of composition series for permutation groups. Jordan proved that the simple factors appearing in any composition series of a group are invariants — the precursor to the Jordan-Hölder theorem."
+    },
+    {
+      "authors": [
+        "O. Hölder"
+      ],
+      "title": "Zurückführung einer beliebigen algebraischen Gleichung auf eine Kette von Gleichungen",
+      "year": "1889",
+      "venue": "Mathematische Annalen 34: 26–56",
+      "note": "Proved the uniqueness of composition factors up to order and isomorphism — completing the theorem now known as Jordan-Hölder. The result was later generalized by Schreier (1928) to subnormal series with the Schreier refinement theorem."
+    },
+    {
+      "authors": [
+        "J. J. Rotman"
+      ],
+      "title": "An Introduction to the Theory of Groups",
+      "year": "1995",
+      "venue": "Springer GTM 148, 4th edition",
+      "note": "Chapter 5: complete modern proof of the Jordan-Hölder theorem via the Schreier refinement theorem and the Zassenhaus lemma. Standard reference for the lattice-theoretic approach used in Mathlib's JordanHolderLattice."
+    },
+    {
+      "authors": [
+        "S. Lang"
+      ],
+      "title": "Algebra",
+      "year": "2002",
+      "venue": "Springer GTM 211, revised 3rd edition",
+      "note": "Chapter I, §3 ('Normal subgroups') and §6 ('The Jordan-Hölder theorem'): a concise proof using the butterfly lemma (Zassenhaus) and Schreier refinement. Lang's framing of composition series as 'normal towers with simple factors' is the conceptual model that the JordanHolderLattice typeclass abstracts."
+    },
+    {
+      "authors": [
+        "P. Aluffi"
+      ],
+      "title": "Algebra: Chapter 0",
+      "year": "2009",
+      "venue": "AMS GSM 104",
+      "note": "Chapter IV, §3: Jordan-Hölder presented in a categorical/lattice-theoretic style that closely mirrors the Mathlib JordanHolderLattice framework. Aluffi emphasizes the analogy with prime factorization and discusses both the existence and uniqueness halves of the theorem in parallel. Particularly useful for understanding why the lattice-theoretic abstraction (used in this file) is the 'right' level of generality."
+    },
+    {
+      "authors": [
+        "D. S. Dummit",
+        "R. M. Foote"
+      ],
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "Wiley, 3rd edition",
+      "note": "§3.4 ('Composition Series and the Hölder Program'): standard textbook treatment of the Jordan-Hölder theorem and its role in the Hölder program (classifying finite simple groups and then determining how they combine via extensions). The connection to Abel-Ruffini is made explicit through the solvability of $S_n$ for $n \\leq 4$."
+    },
+    {
+      "authors": [
+        "G. Birkhoff"
+      ],
+      "title": "Lattice Theory",
+      "year": "1940",
+      "venue": "AMS Colloquium Publications 25 (3rd edition, 1967)",
+      "note": "Chapter II, §8 ('The Jordan-Hölder-Dedekind theorem'): proves the lattice-theoretic generalization of Jordan-Hölder for modular lattices of finite length. This is the abstract uniqueness theorem that motivates the design of Mathlib's `JordanHolderLattice` typeclass — the three axioms `sup_eq_of_isMaximal`, `isMaximal_inf_left_of_isMaximal_sup`, and `second_iso` are precisely the normality-decorated analogues of the modular-lattice axioms needed to mimic Birkhoff's proof in the (non-modular) subgroup lattice setting."
+    },
+    {
+      "authors": [
+        "Ø. Ore"
+      ],
+      "title": "On the foundation of abstract algebra. II",
+      "year": "1936",
+      "venue": "Annals of Mathematics 37(2): 265–292",
+      "note": "Establishes the Jordan-Hölder theorem for modular lattices in general — independently of (and just before) Birkhoff's *Lattice Theory*. Ore proved that in any modular lattice of finite length, all maximal chains have the same length and corresponding intervals are 'projective' (related by a chain of perspectivities). This is the result that justifies treating Jordan-Hölder as a theorem about lattices rather than about groups, modules, or rings specifically — and it underwrites the abstraction used in Mathlib's `JordanHolderLattice` framework."
+    },
+    {
+      "authors": [
+        "O. Schreier"
+      ],
+      "title": "Über den Jordan-Hölderschen Satz",
+      "year": "1928",
+      "venue": "Abhandlungen aus dem Mathematischen Seminar der Universität Hamburg 6: 300–302",
+      "note": "Schreier's refinement theorem: any two normal series of a group have equivalent refinements. This sharpens Jordan-Hölder by replacing the hypothesis 'composition series' (maximal normal chain) with the weaker 'normal series' (arbitrary normal chain), then refining to recover the composition-series statement. Schreier's theorem implies Jordan-Hölder as a corollary — any two composition series, being already maximal, are equivalent to their common refinement and hence to each other. The lattice-theoretic content of Schreier's argument is exactly what `JordanHolderLattice`'s three axioms encode: `sup_eq_of_isMaximal` and `isMaximal_inf_left_of_isMaximal_sup` give the diamond closures used in the refinement, and `second_iso` gives the factor isomorphisms identified at the refinement step."
+    },
+    {
+      "authors": [
+        "H. Fitting"
+      ],
+      "title": "Beiträge zur Theorie der Gruppen endlicher Ordnung",
+      "year": "1938",
+      "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung 48: 77–141",
+      "note": "**The Fitting subgroup $F(G)$**: maximal nilpotent normal subgroup of a finite group $G$ — existence and uniqueness proved via the join of any two nilpotent normal subgroups being itself nilpotent normal. Fitting's theorem for solvable groups: $G$ is solvable iff the Fitting series $F_0(G) = \\{e\\} \\trianglelefteq F_1(G) = F(G) \\trianglelefteq F_2(G) \\trianglelefteq \\cdots$ terminates at $G$. Combined with the *solvable radical* $\\operatorname{Rad}(G)$ (maximal solvable normal subgroup), every finite group has a canonical normal series with structurally meaningful layers: $\\{e\\} \\trianglelefteq F(\\operatorname{Rad}(G)) \\trianglelefteq \\operatorname{Rad}(G) \\trianglelefteq F^*(G) \\trianglelefteq G$, where $F^*(G) = E(G) \\cdot \\operatorname{Rad}(G)$ is the *generalized Fitting subgroup* (Bender 1970). For $S_5$: $F(S_5) = \\operatorname{Rad}(S_5) = \\{e\\}$, $E(S_5) = F^*(S_5) = A_5$, with $S_5/A_5 \\cong \\mathbb{Z}/2$ acting faithfully on $A_5$ via $\\operatorname{Out}(A_5)$. Cited in keyInsight #15 as the nilpotent counterpart to the solvable-radical bipartition of Jordan-Hölder composition factors."
+    },
+    {
+      "authors": [
+        "H. Zassenhaus"
+      ],
+      "title": "Zum Satz von Jordan-Hölder-Schreier",
+      "year": "1934",
+      "venue": "Abhandlungen aus dem Mathematischen Seminar der Universität Hamburg 10: 106–108",
+      "note": "The *butterfly lemma* (Schmetterlingslemma): for subgroups $A_1 \\trianglelefteq A_2$ and $B_1 \\trianglelefteq B_2$ of a group, $(A_1(A_2 \\cap B_2))/(A_1(A_2 \\cap B_1)) \\simeq (B_1(A_2 \\cap B_2))/(B_1(A_1 \\cap B_2))$. This combinatorial identity gives a direct, elegant proof of Schreier's refinement theorem without requiring the chains to be composition series — the butterfly diagram is the visual mnemonic. The lemma is the technical heart of every modern proof of Jordan-Hölder via Schreier (e.g., Rotman §5.3, Lang Chapter I §3). Mathlib's `CompositionSeries.jordan_holder` proof traces this lineage: the underlying abstract argument in `JordanHolderLattice` is structurally a butterfly-style equivalence, with the `second_iso` axiom standing in for the central isomorphism step of the butterfly lemma."
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,100 @@
+{
+  "slug": "zsqrtd-neg-two-oq-03-oq-01",
+  "title": "Build the EuclideanDomain Eisenstein instance via rounding-to-ℤ (S3, ~200 lin...",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE: seeker-selected 2026-06-15.",
+    "whyMatters": [
+      "Research value"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-06-15T19:32:03.162Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: form-conversion lemma proved (a^2-ab+b^2=x^2+3y^2); main theorem reduced to single HARD splitting lemma exists_eisenstein_norm_eq_prime (sorry, documented, Aristotle-bound). Build-pending/unverified.",
+    "builtItems": [
+      "Proved eisenstein_form_to_x_sq_add_three_y_sq in ZsqrtdNegTwoOQ03OQ01.lean (pure Z, 3 parity branches, ring-closed; witnesses numerically validated)",
+      "Assembled sq_add_three_sq_of_prime_one_mod_three modulo one HARD lemma in ZsqrtdNegTwoOQ03OQ01.lean"
+    ],
+    "insights": [
+      "Eisenstein norm form a^2-ab+b^2 (disc -3) and x^2+3y^2 (disc -12) represent the SAME integers though they are inequivalent quadratic forms; conversion is an explicit parity/witness identity via 4(a^2-ab+b^2)=(2a-b)^2+3b^2 plus the order-6 unit rotation (a,b)->(-b,a-b)",
+      "theta:=<1,2>=1+2w is the Eisenstein sqrt(-3) (theta^2=-3): re 1*1-2*2=-3, im 1*2+2*1-2*2=0 -- the bridge from the QR step (-3/p)=1 to p | (c-theta)(c+theta)",
+      "Seeker title (build EuclideanDomain instance) already satisfied by parent OQ03 instEuclideanDomain; real remaining work is the splitting argument to x^2+3y^2"
+    ],
+    "mathlibGaps": [
+      "No Mathlib lemma packaging prime<->irreducible extraction for a custom EuclideanDomain into a norm-equation existence (must assemble from norm_mul + UFD prime=irreducible by hand)"
+    ],
+    "nextSteps": [
+      "Discharge exists_eisenstein_norm_eq_prime (splitting): step1 legendreSym.eq_one_iff'/ZMod.exists_sq_eq; steps5-6 norm_mul + instEuclideanDomain UFD Irreducible<->Prime + norm_pos_of_ne_zero. Submit to Aristotle when backend returns (404 this session).",
+      "Build the file (local Docker saturated 6 builds on 7.65GiB VM, Aristotle down) -- currently UNVERIFIED build-pending"
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "algebraic-number-theory",
+    "quadratic-forms",
+    "class-number-one",
+    "eisenstein-integers",
+    "heegner-numbers",
+    "research",
+    "infrastructure",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "zsqrtd-neg-two",
+    "zsqrtd-neg-two-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-15T19:32:03.159Z",
+  "lastUpdate": "2026-06-16T18:55:00.000Z",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/ZsqrtdNegTwo.lean",
+      "filename": "ZsqrtdNegTwo.lean",
+      "lineCount": 477,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ZsqrtdNegTwo.lean"
+    },
+    {
+      "path": "Proofs/ZsqrtdNegTwoOQ03.lean",
+      "filename": "ZsqrtdNegTwoOQ03.lean",
+      "lineCount": 560,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ZsqrtdNegTwoOQ03.lean"
+    }
+  ]
+}

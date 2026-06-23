@@ -1,0 +1,196 @@
+{
+  "id": "erdos-796",
+  "title": "Erdős Problem #796: Second-Order Terms for g_k(n)",
+  "slug": "erdos-796",
+  "description": "For g_k(n) = max |A| with A ⊆ {1,...,n} having < k representations per integer, is g₃(n) = (log log n / log n)n + (c+o(1))n/(log n)² for some c? First-order known, second-order OPEN.",
+  "meta": {
+    "author": "Erdős (1964, 1969)",
+    "sourceUrl": "https://erdosproblems.com/796",
+    "date": "1964",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos796Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "multiplicative-representation",
+      "asymptotics",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 796,
+    "erdosUrl": "https://erdosproblems.com/796",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset",
+        "description": "Finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Asymptotic statements",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsProductRep: a₁ < a₂ and a₁·a₂ = m",
+      "repCount: Count of representations from A",
+      "IsBoundedRep: Every m has < k representations",
+      "g: The function g_k(n)",
+      "omega_count: Integers with r distinct primes",
+      "erdos_1964_main axiom: First-order asymptotics",
+      "g3_first_order theorem: Derived from erdos_1964_main",
+      "E3: Second-order error term",
+      "erdosConjecture796: Main conjecture (OPEN)",
+      "IsNearOptimal3: Near-optimal sets",
+      "erdos_796_summary theorem: Combines first-order and second-order bounds"
+    ],
+    "dateAdded": "2026-01-19",
+    "axiomCount": 2,
+    "lineCount": 221,
+    "assumptions": "2 axioms: erdos_1964_main, E3_bounded. 0 sorries.",
+    "theoremCount": 2,
+    "definitionCount": 9
+  },
+  "overview": {
+    "historicalContext": "Erdős introduced the function $g_k(n)$ in his 1964 paper 'On the multiplicative representation of integers,' measuring the maximum size of a subset $A$ of $\\{1,\\ldots,n\\}$ such that every integer has fewer than $k$ multiplicative representations from $A$. This grew from his long-standing interest in the interplay between additive and multiplicative number theory, and specifically from questions about how the multiplicative structure of integers constrains extremal set sizes.\n\nThe key breakthrough was connecting $g_k(n)$ to the distribution of integers by their number of prime factors. Using the Sathe-Selberg formula (established independently by Sathe in 1953 and refined by Selberg in 1954), which gives the count of integers up to $n$ with exactly $r$ prime factors as $\\sim (\\log\\log n)^{r-1}/((r-1)!) \\cdot n/\\log n$, Erdős showed that $g_k(n)$ has the same asymptotic for the appropriate value of $r$ determined by $k$.\n\nFor the important case $k = 3$ (where $r = 2$), this gives $g_3(n) \\sim (\\log\\log n / \\log n) \\cdot n$. By 1969, Erdős had investigated the second-order behavior more deeply, establishing that the error $E_3(n) = g_3(n) - (\\log\\log n / \\log n) \\cdot n$ satisfies $c_1 \\cdot n/(\\log n)^2 \\le E_3(n) \\le c_2 \\cdot n/(\\log n)^2$ for positive constants $c_1 \\le c_2$, pinning the error to exact order $\\Theta(n/(\\log n)^2)$.\n\nThe central open question is whether $E_3(n)/(n/(\\log n)^2)$ converges to a constant $c$. This exemplifies a recurring theme in Erdős's work: once the leading asymptotic term is determined, the next-order correction often encodes much deeper structural information and is dramatically harder to pin down. The problem remains open and connects to subtle questions about the fine distribution of semiprimes (products of exactly two primes).",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet $g_k(n) = \\max\\{|A| : A \\subseteq \\{1,\\ldots,n\\},\\; \\forall m,\\; r_A(m) < k\\}$ where $r_A(m)$ counts representations $m = a_1 a_2$ with $a_1 < a_2 \\in A$.\n\n**Question:** Is $g_3(n) = \\frac{\\log\\log n}{\\log n} \\cdot n + (c + o(1)) \\cdot \\frac{n}{(\\log n)^2}$ for some constant $c > 0$?\n\n**Known:**\n- First-order: $g_3(n) \\sim \\frac{\\log\\log n}{\\log n} \\cdot n$ (Erdős 1964)\n- Bounds: $c_1 \\cdot \\frac{n}{(\\log n)^2} \\le E_3(n) \\le c_2 \\cdot \\frac{n}{(\\log n)^2}$ (Erdős 1969)\n\n**Open:** Existence and exact value of $c$",
+    "text": "For g_k(n) = max |A| with A ⊆ {1,...,n} having < k representations per integer, is g₃(n) = (log log n / log n)n + (c+o(1))n/(log n)² for some c? First-order known, second-order OPEN.",
+    "proofStrategy": "The formalization proceeds in a layered approach. First, the core combinatorial definitions are established: product representations, representation counts, bounded-representation sets, and valid subsets. The optimization problem $g_k(n)$ is defined as a supremum over the finite powerset.\n\nThe first-order result from Erdős (1964) is axiomatized as `erdos_1964_main`, giving the general formula for all $k$. The $k = 3$ specialization `g3_first_order` is the sole fully-proved theorem, using `norm_num` to verify the arithmetic conditions $2 < 3 \\le 4$ and `simp` to simplify factorials and powers.\n\nThe second-order analysis introduces the error term $E_3(n)$, axiomatizes the known bounds (E3_bounded), and formally states the open conjecture. Optimal set structure and the divisor function connection appear as definitions and docstrings only; they are not axiomatized. The summary theorem cleanly packages the two established results as a conjunction.",
+    "keyInsights": [
+      "**Multiplicative-to-additive bridge:** The function $g_k(n)$ transforms a multiplicative constraint (bounded factorization representations) into a counting problem that is governed by the additive prime factorization structure of integers, via the divisor function $\\tau(m) = \\prod(a_i + 1)$.",
+      "**Threshold phenomenon at powers of 2:** The parameter $r$ in the asymptotic formula jumps at powers of 2 in $k$, because an integer with $r$ distinct prime factors has $\\tau(m) = 2^r$ divisors, giving exactly $2^{r-1}$ ordered factorizations. This creates a discrete staircase in the growth rate of $g_k(n)$.",
+      "**Semiprime concentration:** Near-optimal sets for $g_3$ consist primarily of semiprimes ($\\Omega(m) = 2$), confirming that the extremal problem is governed by the fine distribution of integers with exactly 2 prime factors.",
+      "**Second-order hardness:** Pinning the error to $\\Theta(n/(\\log n)^2)$ requires only upper and lower bound arguments, but determining whether the ratio $E_3(n) \\cdot (\\log n)^2 / n$ converges requires understanding oscillatory behavior in the distribution of semiprimes -- a fundamentally harder analytic question.",
+      "**Parallel with the PNT:** The $k = 2$ case gives $g_2(n) \\sim n/\\log n$, mirroring the Prime Number Theorem. Problem #425 asks the analogous second-order question for $g_2$, where the error relates to the prime-counting error $\\pi(n) - \\mathrm{li}(n)$ and ultimately to the Riemann Hypothesis."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 39,
+      "endLine": 70,
+      "summary": "Defines IsProductRep (ordered factorization), repCount (representation count from a set), IsBoundedRep (the <k constraint), and IsValidSubset (feasible solutions for the optimization).",
+      "mathContext": "Defines IsProductRep (ordered factorization), repCount (representation count from a set), IsBoundedRep (the <k constraint), and IsValidSubset (feasible solutions for the optimization)."
+    },
+    {
+      "id": "g-function",
+      "title": "The g_k(n) Function",
+      "startLine": 71,
+      "endLine": 88,
+      "summary": "Defines g_k(n) as the supremum of |A| over valid subsets A of {1,...,n}.",
+      "mathContext": "Defines g_k(n) as the supremum of |A| over valid subsets A of {1,...,n}."
+    },
+    {
+      "id": "first-order",
+      "title": "First-Order Asymptotics",
+      "startLine": 89,
+      "endLine": 122,
+      "summary": "Defines omega_count (integers with r prime factors) and axiomatizes Erdős's 1964 theorem (erdos_1964_main) connecting g_k(n) to the count of r-almost primes. The Sathe-Selberg formula appears only as a docstring, not an axiom.",
+      "mathContext": "Defines omega_count (integers with r prime factors) and axiomatizes Erdős's 1964 theorem (erdos_1964_main) connecting g_k(n) to the count of r-almost primes. The Sathe-Selberg formula appears only as a docstring, not an axiom."
+    },
+    {
+      "id": "k3-case",
+      "title": "The k = 3 Case",
+      "startLine": 123,
+      "endLine": 141,
+      "summary": "The sole proved theorem: g₃(n) ~ (log log n / log n)·n, derived by specializing erdos_1964_main with k=3, r=2 using norm_num and simp.",
+      "mathContext": "The sole proved theorem: g₃(n) ~ (log log n / log n)·n, derived by specializing erdos_1964_main with k=3, r=2 using norm_num and simp."
+    },
+    {
+      "id": "second-order",
+      "title": "Second-Order Terms",
+      "startLine": 142,
+      "endLine": 171,
+      "summary": "Defines the error E₃(n), axiomatizes the Θ(n/(log n)²) bounds, and formally states the open conjecture on convergence to a constant.",
+      "mathContext": "Defines the error E₃(n), axiomatizes the Θ(n/(log n)²) bounds, and formally states the open conjecture on convergence to a constant."
+    },
+    {
+      "id": "k2-case",
+      "title": "The k = 2 Case (Problem #425)",
+      "startLine": 172,
+      "endLine": 184,
+      "summary": "Contains a docstring connecting the k=2 case to the prime counting function and noting the companion Problem #425; no axiom is present in this section.",
+      "mathContext": "Contains a docstring connecting the k=2 case to the prime counting function and noting the companion Problem #425; no axiom is present in this section."
+    },
+    {
+      "id": "optimal-sets",
+      "title": "Optimal Sets and Semiprime Structure",
+      "startLine": 185,
+      "endLine": 205,
+      "summary": "Defines IsNearOptimal3 (sets achieving near-optimal size for g₃) and includes a docstring noting that optimal sets resemble integers with Ω(m)=2; no axiom is present.",
+      "mathContext": "Defines IsNearOptimal3 (sets achieving near-optimal size for g₃) and includes a docstring noting that optimal sets resemble integers with Ω(m)=2; no axiom is present."
+    },
+    {
+      "id": "multiplicative",
+      "title": "Divisor Function Connection",
+      "startLine": 206,
+      "endLine": 208,
+      "summary": "Docstring discussion of the divisor function connection: numbers with τ(m) ≤ 2k-1 are automatically safe for g_k; no axiom is present.",
+      "mathContext": "Docstring discussion of the divisor function connection: numbers with τ(m) ≤ 2k-1 are automatically safe for g_k; no axiom is present."
+    },
+    {
+      "id": "summary",
+      "title": "Summary Theorem",
+      "startLine": 209,
+      "endLine": 221,
+      "summary": "Packages the first-order asymptotics and second-order bounds into a single conjunction, proved by pairing g3_first_order and E3_bounded.",
+      "mathContext": "Packages the first-order asymptotics and second-order bounds into a single conjunction, proved by pairing g3_first_order and E3_bounded."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #796 remains OPEN. The formalization establishes the complete first-order picture: $g_3(n) \\sim (\\log\\log n / \\log n) \\cdot n$, proved by specializing Erdős's general 1964 result. The second-order error is bounded as $\\Theta(n/(\\log n)^2)$, but whether the normalized error converges to a specific constant $c$ is unknown. The summary theorem cleanly bundles the two established results, while the open conjecture is formally stated as a convergence condition using Lean's filter framework.",
+    "implications": "**Theoretical Significance**: Resolving this problem would reveal the fine structure of how semiprimes distribute among integers, analogous to how the prime-counting error $\\pi(n) - \\mathrm{li}(n)$ encodes information about zeta zeros.\n\nA positive answer (convergence to $c$) would suggest a rigid regularity in the extremal sets, while a negative answer (oscillation) would indicate subtle number-theoretic irregularities at the second-order level. The techniques needed would likely advance the Selberg-Delange method or introduce new sieve-theoretic ideas applicable to multiplicative representation problems.",
+    "openQuestions": [
+      "Does the normalized error $E_3(n) \\cdot (\\log n)^2 / n$ converge as $n \\to \\infty$?",
+      "If convergence holds, what is the exact value of $c$? Can it be expressed in terms of known constants?",
+      "Does the analogous second-order question for $g_2(n)$ (Problem #425) have a simpler or harder answer?",
+      "For general $k$, what is the second-order term in the asymptotic expansion of $g_k(n)$?",
+      "Can the bounds $c_1 \\le c_2$ be tightened computationally for moderate values of $n$?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-425",
+      "relationship": "companion",
+      "description": "Problem #425 asks the analogous second-order question for g₂(n), the k=2 case related to primes and the Prime Number Theorem."
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "Both connect to the distribution of primes — the Prime Number Theorem provides the asymptotic framework underlying the number-theoretic estimates relevant to this problem"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "Finset"
+    ],
+    "namespace": "Erdos796",
+    "lineCount": 221,
+    "axiomCount": 2,
+    "theoremCount": 2,
+    "definitionCount": 9,
+    "path": "Proofs/Erdos796Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

@@ -1,0 +1,170 @@
+[
+  {
+    "id": "erdos-958-header",
+    "proofId": "erdos-958",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "title": "Problem Overview",
+    "content": "Erdős Problem #958: For n points in ℝ² with k = n-1 distinct distances and multiplicities {n-1,...,1}, must the points be equidistant on a line or circle? Answer: NO. Clemen-Dumitrescu-Liu (2025) found arc+center counterexamples. SOLVED.",
+    "mathContext": "k = n-1 distances, multiplicities {n-1,...,1} ⟹ line/circle? FALSE.",
+    "significance": "key",
+    "relatedConcepts": [
+      "distance geometry",
+      "point configurations",
+      "distance multiplicities",
+      "Erdős problems"
+    ],
+    "prerequisites": [
+      "Euclidean distance",
+      "finite point sets",
+      "multisets"
+    ]
+  },
+  {
+    "id": "erdos-958-distances",
+    "proofId": "erdos-958",
+    "type": "definition",
+    "range": {
+      "startLine": 34,
+      "endLine": 72
+    },
+    "title": "Distance Framework",
+    "content": "Point := EuclideanSpace ℝ (Fin 2). distanceSet(A) = set of distinct pairwise distances. multiplicity(A, d) = |{(p,q) : dist(p,q) = d}|. multiplicityMultiset(A) = multiset of all multiplicities. These definitions use Finset.product and Finset.image from Mathlib.",
+    "mathContext": "distanceSet A = {‖p-q‖ : p,q ∈ A}. multiplicity A d = |{(p,q) ∈ A² : ‖p-q‖ = d}|.",
+    "significance": "key",
+    "relatedConcepts": [
+      "EuclideanSpace",
+      "Finset.product",
+      "Finset.image",
+      "noncomputable definitions"
+    ],
+    "prerequisites": [
+      "EuclideanSpace ℝ (Fin 2)",
+      "Finset operations",
+      "norm and inner product"
+    ]
+  },
+  {
+    "id": "erdos-958-configs",
+    "proofId": "erdos-958",
+    "type": "definition",
+    "range": {
+      "startLine": 74,
+      "endLine": 103
+    },
+    "title": "Standard Configurations",
+    "content": "isEquidistantLine(A, n): n points on a line with a common direction vector. isEquidistantCircle(A, n): n points on a circle of radius r > 0. isStandardConfig(A): line or circle configuration. These are the two classical configurations that satisfy the special multiplicity pattern.",
+    "mathContext": "isStandardConfig A ≡ ∃ n, isEquidistantLine A n ∨ isEquidistantCircle A n.",
+    "significance": "key",
+    "relatedConcepts": [
+      "collinearity",
+      "concyclic points",
+      "regular polygons",
+      "standard configurations"
+    ],
+    "prerequisites": [
+      "line parameterization",
+      "circle definition",
+      "Euclidean geometry"
+    ]
+  },
+  {
+    "id": "erdos-958-pattern",
+    "proofId": "erdos-958",
+    "type": "definition",
+    "range": {
+      "startLine": 105,
+      "endLine": 127
+    },
+    "title": "Special Pattern and Conjecture",
+    "content": "hasSpecialPattern(A): k = n-1 distinct distances and multiplicities form {1, 2, ..., n-1}. OriginalConjecture: hasSpecialPattern ↔ isStandardConfig for |A| ≥ 3. This conjecture turned out to be FALSE — there exist non-standard configurations with the special pattern.",
+    "mathContext": "hasSpecialPattern A ≡ |distanceSet A| = n-1 ∧ multiplicityMultiset A = Multiset.range(n-1) + 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "multiplicity patterns",
+      "characterization theorems",
+      "uniqueness conjectures",
+      "Multiset.range"
+    ],
+    "prerequisites": [
+      "distanceSet definition",
+      "multiplicity definition",
+      "Multiset operations"
+    ]
+  },
+  {
+    "id": "erdos-958-arc-center",
+    "proofId": "erdos-958",
+    "type": "definition",
+    "range": {
+      "startLine": 129,
+      "endLine": 153
+    },
+    "title": "Arc Plus Center Configuration",
+    "content": "isArcPlusCenter(A, n): n-1 equidistant points on a short arc of a unit circle plus the center. The arc must be short enough that all arc-to-arc distances are distinct and less than the diameter. The center has distance exactly 1 to every arc point, producing multiplicity n-1 for that distance.",
+    "mathContext": "The key geometric insight: with n-1 arc points and 1 center, the center-to-arc distance d=1 has multiplicity n-1, and the arc-to-arc distances are all distinct with decreasing multiplicities.",
+    "significance": "key",
+    "relatedConcepts": [
+      "unit circle",
+      "arc length",
+      "counterexample construction",
+      "chord distances"
+    ],
+    "prerequisites": [
+      "unit circle geometry",
+      "trigonometric distances",
+      "Finset subset"
+    ]
+  },
+  {
+    "id": "erdos-958-cdl",
+    "proofId": "erdos-958",
+    "type": "concept",
+    "range": {
+      "startLine": 155,
+      "endLine": 171
+    },
+    "title": "Clemen-Dumitrescu-Liu Theorem and Disproof",
+    "content": "clemen_dumitrescu_liu (axiom): For all n ≥ 4, there exists an arc+center configuration of n points that satisfies hasSpecialPattern but is NOT isStandardConfig. conjecture_disproved (axiom): ¬OriginalConjecture. Together these establish that the characterization fails for every n ≥ 4.",
+    "mathContext": "∀ n ≥ 4, ∃ A, isArcPlusCenter A n ∧ hasSpecialPattern A ∧ ¬isStandardConfig A.",
+    "significance": "key",
+    "relatedConcepts": [
+      "axiom declarations",
+      "disproof by counterexample",
+      "Clemen-Dumitrescu-Liu 2025",
+      "universal counterexample family"
+    ],
+    "prerequisites": [
+      "isArcPlusCenter definition",
+      "hasSpecialPattern definition",
+      "isStandardConfig definition"
+    ]
+  },
+  {
+    "id": "erdos-958-summary",
+    "proofId": "erdos-958",
+    "type": "insight",
+    "range": {
+      "startLine": 173,
+      "endLine": 200
+    },
+    "title": "Summary: SOLVED",
+    "content": "erdos_958_summary: ¬OriginalConjecture ∧ (∀ n ≥ 4, ∃ counterexample). Proved from conjecture_disproved and clemen_dumitrescu_liu axioms using exact ⟨conjecture_disproved, clemen_dumitrescu_liu⟩. The characterization conjecture is FALSE — arc+center configurations provide a new infinite family of solutions.",
+    "mathContext": "erdos_958_summary : ¬OriginalConjecture ∧ (∀ n ≥ 4, ∃ A, isArcPlusCenter A n ∧ hasSpecialPattern A ∧ ¬isStandardConfig A) := ⟨conjecture_disproved, clemen_dumitrescu_liu⟩.",
+    "significance": "key",
+    "relatedConcepts": [
+      "solved Erdős problems",
+      "conjunction construction",
+      "anonymous constructor",
+      "Erdős's combinatorial intuition"
+    ],
+    "prerequisites": [
+      "conjecture_disproved axiom",
+      "clemen_dumitrescu_liu axiom",
+      "anonymous constructor syntax"
+    ]
+  }
+]

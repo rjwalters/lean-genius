@@ -1,0 +1,139 @@
+[
+  {
+    "id": "ann-rr1oq01-import",
+    "proofId": "partition-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 22,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Dependency on Parent Formalization",
+    "content": "Imports the parent file `PartitionTheoremOQ01`, which defines the decidable partition predicates `rr1GapPartitions`, `rr1Mod5Partitions`, `rr2GapPartitions`, and `rr2Mod5Partitions`. These use pairwise separation on multisets (not `Multiset.sort`) to achieve decidability, which is essential for `native_decide` to work.",
+    "mathContext": "The parent file defines, e.g., $\\text{rr1GapPartitions}(n) = \\{\\lambda \\vdash n : \\text{consecutive parts differ by} \\geq 2\\}$ as a `Finset` with a `DecidablePred` instance.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "decidable predicates",
+      "Finset.filter",
+      "Nat.Partition"
+    ],
+    "prerequisites": [
+      "partition theory",
+      "decidability in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-rr1oq01-namespace",
+    "proofId": "partition-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 25,
+      "endLine": 28
+    },
+    "type": "concept",
+    "title": "Namespace and Scope",
+    "content": "Opens the `RogersRamanujan` namespace from the parent file to bring all partition set definitions into scope. The companion file uses its own namespace `PartitionTheoremOQ01OQ01` for the verification theorems.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lean namespaces",
+      "module organization"
+    ],
+    "mathContext": "The `RogersRamanujan` namespace (from parent) contains: `PartitionSetA` (parts \u2261 1,4 mod 5), `PartitionSetB` (parts differ by \u2265 2, no consecutive parts). `PartitionTheoremOQ01OQ01` provides helper lemmas verifying the combinatorial constraints for small values.",
+    "prerequisites": [
+      "Rogers-Ramanujan parent file namespace",
+      "Lean 4 `open` and `namespace` scoping",
+      "PartitionSetA and PartitionSetB definitions"
+    ]
+  },
+  {
+    "id": "ann-rr1oq01-rr1-block",
+    "proofId": "partition-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 29,
+      "endLine": 39
+    },
+    "type": "concept",
+    "title": "RR1 Computational Verification via native_decide",
+    "content": "Nine individual theorems verify the first Rogers-Ramanujan identity for each $n = 0, 1, \\ldots, 8$. Each theorem states that the cardinality of the gap-side partition set equals the cardinality of the mod-5-side partition set, and is proved by `native_decide` \u2014 Lean compiles the decidable computation to native code and evaluates it. For $n = 8$, this involves checking all $p(8) = 22$ partitions against both predicates.",
+    "mathContext": "For each $n$: $|\\{\\lambda \\vdash n : \\lambda_i - \\lambda_{i+1} \\geq 2\\}| = |\\{\\lambda \\vdash n : \\text{all parts} \\equiv 1, 4 \\pmod{5}\\}|$. The values are: $n=0$: 1=1, $n=1$: 1=1, $n=2$: 1=1, $n=3$: 1=1, $n=4$: 2=2, $n=5$: 2=2, $n=6$: 3=3, $n=7$: 3=3, $n=8$: 4=4.",
+    "significance": "key",
+    "relatedConcepts": [
+      "native_decide",
+      "Rogers-Ramanujan first identity",
+      "integer partitions",
+      "decidable equality"
+    ],
+    "prerequisites": [
+      "partition theory",
+      "modular arithmetic",
+      "Lean decidability"
+    ]
+  },
+  {
+    "id": "ann-rr1oq01-rr2-block",
+    "proofId": "partition-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 41,
+      "endLine": 51
+    },
+    "type": "concept",
+    "title": "RR2 Computational Verification via native_decide",
+    "content": "Nine theorems verify the second Rogers-Ramanujan identity for $n = 0, \\ldots, 8$. The second identity adds the constraint that the smallest part is $\\geq 2$ on the gap side, and restricts to parts $\\equiv 2, 3 \\pmod{5}$ on the modular side. The RR2 counts are generally smaller than RR1 counts for the same $n$.",
+    "mathContext": "For each $n$: $|\\{\\lambda \\vdash n : \\lambda_i - \\lambda_{i+1} \\geq 2, \\, \\lambda_k \\geq 2\\}| = |\\{\\lambda \\vdash n : \\text{all parts} \\equiv 2, 3 \\pmod{5}\\}|$. The values are: $n=0$: 1=1, $n=1$: 0=0, $n=2$: 1=1, $n=3$: 1=1, $n=4$: 1=1, $n=5$: 1=1, $n=6$: 2=2, $n=7$: 2=2, $n=8$: 3=3.",
+    "significance": "key",
+    "relatedConcepts": [
+      "native_decide",
+      "Rogers-Ramanujan second identity",
+      "gap conditions",
+      "smallest part constraint"
+    ],
+    "prerequisites": [
+      "partition theory",
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-rr1oq01-combined",
+    "proofId": "partition-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 53,
+      "endLine": 61
+    },
+    "type": "insight",
+    "title": "Unified Verification Theorem",
+    "content": "The main theorem `rr_both_verified_through_8` combines all 18 checks into a single universally quantified statement: for all $n \\leq 8$, both RR1 and RR2 hold. The proof uses `interval_cases n` to case-split $n \\in \\{0, \\ldots, 8\\}$, then closes each case with `\u27e8by native_decide, by native_decide\u27e9` \u2014 a conjunction of two decidable checks. This is cleaner than relying on the 18 individual theorems and gives a single reusable result.",
+    "mathContext": "$\\forall n \\leq 8, \\; |\\text{rr1Gap}(n)| = |\\text{rr1Mod5}(n)| \\;\\wedge\\; |\\text{rr2Gap}(n)| = |\\text{rr2Mod5}(n)|$",
+    "significance": "key",
+    "relatedConcepts": [
+      "interval_cases",
+      "universal quantification",
+      "conjunction",
+      "native_decide"
+    ],
+    "prerequisites": [
+      "Lean tactics",
+      "partition theory"
+    ]
+  },
+  {
+    "id": "ann-rr1oq01-consistency",
+    "proofId": "partition-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 63,
+      "endLine": 71
+    },
+    "type": "insight",
+    "title": "Axiom Consistency Argument",
+    "content": "The closing section discusses the epistemological role of computational verification for axiomatized results. The axioms `rogers_ramanujan_first` and `rogers_ramanujan_second` in the parent file assert the identities for all $n$. This file cannot prove those axioms, but it confirms that the definitions are consistent with the expected combinatorial behavior at small values \u2014 if the definitions were wrong, the `native_decide` checks would fail. The general proofs require $q$-series machinery (the Rogers-Ramanujan continued fraction or the Jacobi triple product identity) not yet available in Lean/Mathlib.",
+    "mathContext": "The $q$-series form of RR1 is: $\\sum_{k=0}^{\\infty} \\frac{q^{k^2}}{(q;q)_k} = \\prod_{n=0}^{\\infty} \\frac{1}{(1-q^{5n+1})(1-q^{5n+4})}$, where $(q;q)_k = \\prod_{i=1}^{k}(1-q^i)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "q-series",
+      "axiom consistency",
+      "Jacobi triple product",
+      "generating functions"
+    ],
+    "prerequisites": [
+      "formal power series",
+      "q-series identities"
+    ]
+  }
+]

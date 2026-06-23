@@ -1,0 +1,89 @@
+{
+  "slug": "erdos-687",
+  "title": "Erdős #687",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Let $Y(x)$ be the maximal $y$ such that there exists a choice of congruence classes $a_p$ for all primes $p\\leq x$ such that every integer in $[1,y]$ is congruent to at least one of the $a_p\\pmod{p}$.\n\nGive good estimates for $Y(x)$. In particular, can one prove that $Y(x)=o(x^2)$ or even $Y(x)\\ll x^{1+o(1)}$?\n\n\n\nThis function (associated with Jacobsthal) is closely related to the problem of gaps between primes (see [4]). The best known upper bound is due to Iwaniec \\cite{Iw78},\\[Y(x) \\ll x^2.\\]The best lower bound is due to Ford, Green, Konyagin, Maynard, and Tao \\cite{FGKMT18},\\[Y(x) \\gg x\\frac{\\log x\\log\\log\\log x}{\\log\\log x},\\]improving on a previous bound of Rankin \\cite{Ra38}.\n\nMaier and Pomerance have conjectured that $Y(x)\\ll x(\\log x)^{2+o(1)}$.\n\nIn \\cite{Er80} he writes 'It is not clear who first formulated this problem - probably many of us did it independently. I offer the maximum of \\$1000 dollars and $1/2$ my total savings for clearing up of this problem.'\n\nIn \\cite{Er80} Erd\\H{o}s also asks about a weaker variant in which all except $o(y/\\log y)$ of the integers in $[1,y]$ are congruent to at least one of the $a_p\\pmod{p}$, and in particular asks if the answer is very different.\n\nSee also [688] and [689]. A more general Jacobsthal function is the focus of [970].",
+    "plain": "Let $Y(x)$ be the maximal $y$ such that there exists a choice of congruence classes $a_p$ for all primes $p\\leq x$ such that every integer in $[1,y]$ is congruent to at least one of the $a_p\\pmod{p}$.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-28T05:30:00Z",
+    "iteration": 4,
+    "focus": "Proved Y(2)=1, the first nontrivial concrete value. Fixed duplicate definitions.",
+    "blockers": [],
+    "nextAction": "Prove jacobsthalSet_bddAbove via CRT induction or prove Y(3)=3",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: 14T (was 9T), 6A, 0S. Proved Y(2)=1 with parity contradiction argument. Fixed duplicate defs from merge. First nontrivial concrete Y value.",
+    "builtItems": [
+      "Assessment: 6A all appropriate (deep results + conjectures)",
+      "jacobsthalSet_downward: Jacobsthal set is downward closed",
+      "jacobsthalSet_eq_zero_of_no_primes: general lemma for x with no primes ≤ x",
+      "jacobsthalSet_zero/one: base cases",
+      "jacobsthalY_zero/one: Y(0)=Y(1)=0",
+      "not_mem_jacobsthalSet_two: parity contradiction for y ≥ 2",
+      "one_mem_jacobsthalSet_two: constructive witness a₂=1",
+      "jacobsthalY_two: Y(2) = 1 (with local BddAbove, independent of axiom)"
+    ],
+    "insights": [
+      "6 axioms: bddAbove (CRT-based), eq_jacobsthal (definitional equiv), conjecture, iwaniec_upper, fgkmt_lower, maier_pomerance. All deep.",
+      "jacobsthalSet_bddAbove: CRT proof approach — use Finset.induction on primes ≤ x, at each step pick n₀ or n₀+P avoiding new prime's class",
+      "Key CRT step: if q prime, q ∤ P, then n₀ and n₀+P have different residues mod q (one avoids a(q))",
+      "Y(2)=1 proof technique: parity contradiction. Only prime ≤ 2 is 2. 1%2≠2%2 but both must equal a₂%2.",
+      "Local BddAbove for specific x avoids dependency on the general axiom",
+      "Downward closure of jacobsthalSet means: finding ANY uncovered integer shows all larger y are also out"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Attempt proving jacobsthalSet_bddAbove via Finset.induction CRT (~100 lines, eliminates 1 axiom)",
+      "Prove Y(3) = 3 (6-case analysis on a₂ mod 2, a₃ mod 3)",
+      "Connect to Mertens' theorem: uncovered fraction = ∏(1-1/p) gives asymptotic bounds"
+    ],
+    "markdown": "# Erdős #687 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $Y(x)$ be the maximal $y$ such that there exists a choice of congruence classes $a_p$ for all primes $p\\leq x$ such that every integer in $[1,y]$ is congruent to at least one of the $a_p\\pmod{p}$.\n\nGive good estimates for $Y(x)$. In particular, can one prove that $Y(x)=o(x^2)$ or even $Y(x)\\ll x^{1+o(1)}$?\n\n\n\nThis function (associated with Jacobsthal) is closely related to the problem of gaps between primes (see [4]). The best known upper bound is due to Iwaniec \\cite{Iw78},\\[Y(x) \\ll x^2.\\]The best lower bound is due to Ford, Green, Konyagin, Maynard, and Tao \\cite{FGKMT18},\\[Y(x) \\gg x\\frac{\\log x\\log\\log\\log x}{\\log\\log x},\\]improving on a previous bound of Rankin \\cite{Ra38}.\n\nMaier and Pomerance have conjectured that $Y(x)\\ll x(\\log x)^{2+o(1)}$.\n\nIn \\cite{Er80} he writes 'It is not clear who first formulated this problem - probably many of us did it independently. I offer the maximum of \\$1000 dollars and $1/2$ my total savings for clearing up of this problem.'\n\nIn \\cite{Er80} Erd\\H{o}s also asks about a weaker variant in which all except $o(y/\\log y)$ of the integers in $[1,y]$ are congruent to at least one of the $a_p\\pmod{p}$, and in particular asks if the answer is very different.\n\nSee also [688] and [689]. A more general Jacobsthal function is the focus of [970].\n\n\n\n\nReferences\n\n\n[Er80] Erd\\H{o}s, Paul, A survey of problems in combinatorial number theory. Ann. Discrete Math. (1980), 89-115.\n\n[FGKMT18] Ford, Kevin and Green, Ben and Konyagin, Sergei and Maynard, James and Tao, Terence, Long gaps between primes. J. Amer. Math. Soc. (2018), 65-105.\n\n[Iw78] Iwaniec, Henryk, On the problem of {J}acobsthal. Demonstratio Math. (1978), 225--231.\n\n[Ra38] Rankin, R. A., The Difference between Consecutive Prime Numbers. J. London Math. Soc. (1938), 242-247.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Prize**: $1000\n**Tractability Score**: 1/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #4\n- Problem #2\n- Problem #688\n- Problem #689\n- Problem #970\n- Problem #686\n- Problem #39\n- Problem #1\n\n## References\n\n- Er96b\n- Iw78\n- FGKMT18\n- Ra38\n- Er80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-6",
+    "erdos-68",
+    "erdos-687"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-14T19:46:33.202Z",
+  "lastUpdate": "2026-03-28T05:15:00Z",
+  "significance": 4,
+  "tractability": 1,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos687Problem.lean",
+      "filename": "Erdos687Problem.lean",
+      "lineCount": 548,
+      "theoremCount": 21,
+      "axiomCount": 4,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos687Problem.lean"
+    }
+  ]
+}

@@ -1,0 +1,530 @@
+[
+  {
+    "id": "ann-e1099-header",
+    "proofId": "erdos-1099",
+    "range": {
+      "startLine": 1,
+      "endLine": 25
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1099: Divisor Ratio Sum Boundedness**\n\nThe problem studies how \"smooth\" the divisor structure of integers can be. Given divisors 1 = d₁ < d₂ < ⋯ < d_τ(n) = n, the function h_α(n) measures the total \"gap\" between consecutive divisors:\n$$h_\\alpha(n) = \\sum_i \\left(\\frac{d_{i+1}}{d_i} - 1\\right)^\\alpha$$\n\n**Question:** Is liminf h_α(n) bounded for α > 1?\n\n**Answer:** YES (Vose, 1984). There exist integers with remarkably evenly-spaced divisors.",
+    "mathContext": "This function penalizes large gaps between consecutive divisors. For α > 1, larger ratios contribute disproportionately more, so small h_α requires ALL ratios to be close to 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Divisor structure",
+      "Consecutive ratios",
+      "Liminf"
+    ],
+    "prerequisites": [
+      "the divisor function τ(n)",
+      "consecutive divisor ratios",
+      "boundedness of a sum"
+    ]
+  },
+  {
+    "id": "ann-e1099-tau",
+    "proofId": "erdos-1099",
+    "range": {
+      "startLine": 40,
+      "endLine": 44
+    },
+    "type": "definition",
+    "title": "Divisor Count τ(n)",
+    "content": "**tau (n):**\n\nτ(n) = |divisors(n)| is the number of positive divisors of n.\n\n**Examples:**\n- τ(1) = 1 (only divisor is 1)\n- τ(p) = 2 for prime p (divisors: 1, p)\n- τ(12) = 6 (divisors: 1, 2, 3, 4, 6, 12)\n- τ(2^k) = k+1 (divisors: 1, 2, 4, ..., 2^k)",
+    "significance": "key",
+    "relatedConcepts": [
+      "Divisor function",
+      "Highly composite numbers"
+    ],
+    "mathContext": "$\\tau(n) = \\sum_{d \\mid n} 1$. Defined here as `n.divisors.card`, where `Nat.divisors n` is the finset of positive divisors of n (empty for n = 0).",
+    "prerequisites": [
+      "divisors of an integer",
+      "counting divisors"
+    ]
+  },
+  {
+    "id": "ann-e1099-sorted-divisors",
+    "proofId": "erdos-1099",
+    "range": {
+      "startLine": 46,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "Sorted Divisors",
+    "content": "**sortedDivisors (n):**\n\nThe divisors of n listed in increasing order: 1 = d₁ < d₂ < ⋯ < d_τ(n) = n.\n\n**Example for n = 12:**\n[1, 2, 3, 4, 6, 12]\n\nThe first divisor is always 1, and the last is always n itself.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Divisors",
+      "Ordering"
+    ],
+    "mathContext": "`(n.divisors).sort (· ≤ ·)` materializes the finset of divisors as a sorted `List ℕ`, enabling positional access to $d_i$ and the consecutive-pair structure that the ratios need.",
+    "prerequisites": [
+      "divisors of n",
+      "ordering divisors increasingly (1 = d₁ < … < d_τ = n)"
+    ]
+  },
+  {
+    "id": "ann-e1099-sorted-infra",
+    "proofId": "erdos-1099",
+    "range": {
+      "startLine": 57,
+      "endLine": 177
+    },
+    "type": "theorem",
+    "title": "Sorted-Divisor Infrastructure: head = 1, last = n",
+    "content": "This block discharges the boundary facts about the sorted divisor list that the rest of the file relies on: 1 and n are members, the list is nonempty, pairwise ≤-sorted, has no duplicates, and every entry lies in [1, n]. The two payoff theorems are first_divisor_is_one (head? = some 1) and last_divisor_is_n (getLast? = some n), proved via the private list lemmas getLast?_eq_some_getLast and le_getLast_of_mem_pairwise_le. These pin down d₁ = 1 and d_{τ(n)} = n, the endpoints of every divisor list.",
+    "mathContext": "$d_1 = \\min\\{d : d \\mid n\\} = 1$ and $d_{\\tau(n)} = \\max\\{d : d \\mid n\\} = n$. Sortedness comes from `Finset.sort`; the head/last identities follow by combining membership of 1 and n with the pairwise order.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.sort",
+      "List.Pairwise",
+      "theorem first_divisor_is_one",
+      "theorem last_divisor_is_n",
+      "List.getLast"
+    ],
+    "prerequisites": [
+      "List induction",
+      "Finset.sort properties",
+      "Nat.mem_divisors"
+    ]
+  },
+  {
+    "id": "ann-e1099-divisor-ratios",
+    "proofId": "erdos-1099",
+    "range": {
+      "startLine": 185,
+      "endLine": 190
+    },
+    "type": "definition",
+    "title": "Consecutive Divisor Ratios",
+    "content": "**divisorRatios (n):**\n\nThe list of ratios d_{i+1}/dᵢ for consecutive divisors.\n\n**Example for n = 12:**\nDivisors: [1, 2, 3, 4, 6, 12]\nRatios: [2/1, 3/2, 4/3, 6/4, 12/6] = [2, 1.5, 1.33, 1.5, 2]\n\n**Key observation:** The product of all ratios equals n (telescoping product).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Divisor gaps",
+      "Telescoping products"
+    ],
+    "mathContext": "`List.zipWith (a b => a/b) divs.tail divs` pairs each divisor with its successor, yielding the τ(n)−1 ratios $r_i = d_{i+1}/d_i$ over ℚ. Telescoping: $\\prod_i r_i = d_{\\tau}/d_1 = n$.",
+    "prerequisites": [
+      "sorted divisors",
+      "consecutive ratios d_{i+1}/dᵢ"
+    ]
+  },
+  {
+    "id": "ann-e1099-h-alpha",
+    "proofId": "erdos-1099",
+    "range": {
+      "startLine": 194,
+      "endLine": 201
+    },
+    "type": "definition",
+    "title": "The h_α Function",
+    "content": "**h_alpha (α) (n):**\n\n$$h_\\alpha(n) = \\sum_i \\left(\\frac{d_{i+1}}{d_i} - 1\\right)^\\alpha$$\n\nThis measures the total \"gap irregularity\" of divisors:\n- Each term (ratio - 1)^α is 0 when ratio = 1 (adjacent divisors)\n- Larger ratios contribute more, especially for large α\n- Small h_α means ALL ratios are close to 1\n\n**Key:** The α > 1 constraint makes this non-linear, penalizing large gaps.",
+    "mathContext": "Implemented as `(divisorRatios n).map (r => ((r:ℝ) - 1) ^ α) |>.sum`, using `Real.rpow` for the real exponent α. For α = 2, this is a sum of squared gaps; for larger α, individual large gaps dominate even more.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gap functions",
+      "Power sums",
+      "Real.rpow"
+    ],
+    "prerequisites": [
+      "consecutive divisor ratios",
+      "the power sum Σᵢ (d_{i+1}/dᵢ − 1)^α"
+    ]
+  },
+  {
+    "id": "ann-e1099-unfold",
+    "proofId": "erdos-1099",
+    "range": {
+      "startLine": 204,
+      "endLine": 215
+    },
+    "type": "tactic",
+    "title": "Normalizing h_α Past do-Notation",
+    "content": "h_alpha_unfold is a workhorse rewrite lemma: it restates h_alpha as an explicit `List.map (fun r : ℚ => ((r:ℝ) - 1)^α)` sum, eliminating the monadic do/pure desugaring that `List.map` over ℚ→ℝ casts introduces. Nearly every later proof (the lower bound, the prime bound) opens with `rw [h_alpha_unfold]` so it can reason about individual list terms. The proof is a one-step list induction matching the desugared bind against the clean map.",
+    "mathContext": "Lean elaborates `List.map` composed with rational casts through a `do`/`pure` monadic form; this lemma proves it equals the direct `map (fun r => ((r:ℝ)-1)^α)`, so `List.single_le_sum` and `List.mem_map` apply termwise.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "List.map",
+      "monadic do-notation",
+      "List induction",
+      "private theorem h_alpha_unfold"
+    ],
+    "prerequisites": [
+      "Lean do-notation desugaring",
+      "List.map / List.sum"
+    ]
+  },
+  {
+    "id": "ann-e1099-first-ratio",
+    "proofId": "erdos-1099",
+    "range": {
+      "startLine": 223,
+      "endLine": 267
+    },
+    "type": "theorem",
+    "title": "Length ≥ 2 and the First Ratio ≥ 2",
+    "content": "For n ≥ 2 the divisor list has at least the two members 1 and n, so sortedDivisors_length_ge_2 gives length ≥ 2 and sortedDivisors_cons2 exposes the structure 1 :: d₂ :: rest with d₂ ≥ 2 (the second-smallest divisor is the least prime factor). first_ratio_ge_two then extracts the concrete witness d₂/1 = d₂ ≥ 2 from divisorRatios n. This is the single ratio that forces the trivial lower bound h_α(n) ≥ 1.",
+    "mathContext": "$d_2 \\ge 2$ because $d_1 = 1$ and $d_2$ is the smallest divisor exceeding 1 (a prime). Hence the first ratio $r_1 = d_2/d_1 = d_2 \\ge 2$, and $(r_1 - 1)^\\alpha \\ge 1^\\alpha = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "theorem sortedDivisors_cons2",
+      "theorem first_ratio_ge_two",
+      "Finset.card_pair",
+      "least prime factor"
+    ],
+    "prerequisites": [
+      "divisor list structure",
+      "List.Nodup",
+      "cardinality of {1, n}"
+    ]
+  },
+  {
+    "id": "ann-e1099-lower-proof",
+    "proofId": "erdos-1099",
+    "range": {
+      "startLine": 269,
+      "endLine": 293
+    },
+    "type": "lemma",
+    "title": "All Ratios ≥ 1: Nonnegativity of Every Term",
+    "content": "zipWith_div_ge_one (and its specialization divisorRatios_ge_one) proves that every consecutive ratio satisfies r ≥ 1, since the list is sorted and all divisors are positive: a ≤ b with a > 0 gives b/a ≥ 1. This guarantees each summand (r − 1)^α is the rpow of a nonnegative base, hence ≥ 0 — the fact that lets the single first-term bound propagate to the whole sum via List.single_le_sum.",
+    "mathContext": "Sorted positives $d_i \\le d_{i+1}$ give $r_i = d_{i+1}/d_i \\ge 1$, so $r_i - 1 \\ge 0$ and $(r_i - 1)^\\alpha \\ge 0$ by `Real.rpow_nonneg`. Nonnegativity of all terms means a single term lower-bounds the sum.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "theorem divisorRatios_ge_one",
+      "le_div_iff₀",
+      "Real.rpow_nonneg",
+      "List.single_le_sum"
+    ],
+    "prerequisites": [
+      "ordered division in ℚ",
+      "rpow nonnegativity"
+    ]
+  },
+  {
+    "id": "ann-e1099-lower-bound",
+    "proofId": "erdos-1099",
+    "range": {
+      "startLine": 295,
+      "endLine": 301
+    },
+    "type": "concept",
+    "title": "Trivial Lower Bound",
+    "content": "**h_alpha_ge_one:**\n\n```lean\ntheorem h_alpha_ge_one (α : ℝ) (hα : α > 1) (n : ℕ) (hn : n ≥ 2) :\n    h_alpha α n ≥ 1\n```\n\n**Why?** For any n ≥ 2:\n- The first divisor is 1\n- The second divisor d₂ ≥ 2 (smallest prime factor)\n- So the first ratio d₂/1 ≥ 2\n- Therefore (d₂ - 1)^α ≥ (2-1)^α = 1\n\nThis shows liminf h_α(n) ≥ 1 trivially.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lower bounds",
+      "First term",
+      "theorem first_ratio_ge_two",
+      "Real.one_le_rpow"
+    ],
+    "mathContext": "Combines first_ratio_ge_two (a term ≥ 1 exists) with divisorRatios_ge_one (all terms ≥ 0): $h_\\alpha(n) \\ge (r_1 - 1)^\\alpha \\ge 1$. So liminf $h_\\alpha \\ge 1$ unconditionally for $\\alpha > 1$.",
+    "prerequisites": [
+      "the h_α function",
+      "the exponent α > 1",
+      "a trivial lower bound h_α ≥ 1"
+    ]
+  },
+  {
+    "id": "ann-e1099-factorial",
+    "proofId": "erdos-1099",
+    "range": {
+      "startLine": 331,
+      "endLine": 335
+    },
+    "type": "definition",
+    "title": "Factorial Divisors",
+    "content": "**factorialDivisors (n):**\n\nThe divisors of n!. Factorials have MANY divisors because they contain every prime up to n.\n\n**Example:** 5! = 120 = 2³ · 3 · 5\nτ(120) = 4 · 2 · 2 = 16 divisors\n\n**Erdős's Question:** Does h_α(n!) remain bounded? STILL OPEN!",
+    "mathContext": "Intuitively, n! has so many divisors that consecutive ratios should be small. But proving uniform bounds is surprisingly hard. The formal open statement is erdos_1099_factorial_open (Part XI).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Factorials",
+      "Erdős's candidates",
+      "def erdos_1099_factorial_open"
+    ],
+    "prerequisites": [
+      "divisors of n!",
+      "the prime factorization of factorials"
+    ]
+  },
+  {
+    "id": "ann-e1099-lcm",
+    "proofId": "erdos-1099",
+    "range": {
+      "startLine": 337,
+      "endLine": 341
+    },
+    "type": "definition",
+    "title": "LCM Divisors",
+    "content": "**lcmDivisors (n):**\n\nThe divisors of lcm{1, 2, ..., n}. This number has each prime p ≤ n appearing exactly once with maximal power p^⌊log_p(n)⌋.\n\n**Example:** lcm{1,...,6} = 60 = 2² · 3 · 5\n\n**Erdős's Question:** Does h_α(lcm{1,...,n}) remain bounded? STILL OPEN!",
+    "mathContext": "Like n!, this has many divisors, but the structure is different. Note: this def folds over `List.range (n+1)` (which contains 0) and so collapses to 0; Part XI's erdos_1099_lcm_open uses the correct `List.range' 1 n` fold.",
+    "significance": "key",
+    "relatedConcepts": [
+      "LCM",
+      "Primorial",
+      "Erdős's candidates",
+      "def erdos_1099_lcm_open"
+    ],
+    "prerequisites": [
+      "the lcm{1,…,n}",
+      "prime powers p^⌊log_p n⌋ dividing the lcm"
+    ]
+  },
+  {
+    "id": "ann-e1099-vose-witness",
+    "proofId": "erdos-1099",
+    "range": {
+      "startLine": 357,
+      "endLine": 391
+    },
+    "type": "warning",
+    "title": "The Witness Is Trivial (n = 2) and Uses native_decide",
+    "content": "Crucial honesty note. What is actually FORMALIZED here is far weaker than Vose's theorem. vose_bounded_sequence and vose_liminf_bounded are discharged by the constant witness nₖ = 2: since divisors of 2 are {1,2} with sole ratio 2, h_α(2) = (2−1)^α = 1 ≤ bound. The base fact divisorRatios_two is proved by `native_decide`, which is why #print axioms erdos_1099 reports Lean.ofReduceBool (the proof is NOT axiom-free — this is the file's single axiom, matching axiomCount: 1). The genuine Vose construction (arbitrarily large n with bounded h_α) is captured only as the unproved def erdos_1099_strong_liminf in Part XI.",
+    "mathContext": "Trivial witness: $h_\\alpha(2) = (2-1)^\\alpha = 1$. The proved statements omit the $\\forall N$ quantifier, so a single small n suffices — they do NOT establish $\\liminf_{n\\to\\infty} h_\\alpha(n) \\ll_\\alpha 1$. `native_decide` on divisorRatios_two trusts compiler kernel reduction, introducing `Lean.ofReduceBool`.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "native_decide",
+      "Lean.ofReduceBool",
+      "theorem vose_bounded_sequence",
+      "def erdos_1099_strong_liminf",
+      "private theorem divisorRatios_two"
+    ],
+    "prerequisites": [
+      "native_decide and the ofReduceBool axiom",
+      "quantifier strength of liminf statements"
+    ]
+  },
+  {
+    "id": "ann-e1099-vose-sequence",
+    "proofId": "erdos-1099",
+    "range": {
+      "startLine": 373,
+      "endLine": 383
+    },
+    "type": "concept",
+    "title": "Vose's Bounded Sequence",
+    "content": "**vose_bounded_sequence:**\n\nFor any α > 1, there exists a bound C and a sequence (nₖ) such that h_α(nₖ) ≤ C for all k.\n\n**Key insight:** Vose constructed numbers whose divisors are very evenly spaced:\n- If all τ ratios are approximately 1 + c/τ\n- Then h_α ≈ τ · (c/τ)^α = c^α · τ^(1-α) → 0\n\nThe construction is specific and doesn't use n! or lcm.",
+    "mathContext": "Heuristic for the genuine Vose construction: τ ratios each ≈ 1 + c/τ give $h_\\alpha \\approx \\tau (c/\\tau)^\\alpha = c^\\alpha \\tau^{1-\\alpha} \\to 0$ for α > 1. NOTE: the Lean witness here is the trivial nₖ = 2 (see the warning annotation), not this construction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Vose 1984",
+      "Bounded sequences"
+    ],
+    "prerequisites": [
+      "the h_α function",
+      "a uniformly bounded subsequence h_α(nₖ) ≤ C"
+    ]
+  },
+  {
+    "id": "ann-e1099-vose-theorem",
+    "proofId": "erdos-1099",
+    "range": {
+      "startLine": 379,
+      "endLine": 385
+    },
+    "type": "concept",
+    "title": "Vose's Theorem (1984)",
+    "content": "**vose_liminf_bounded:**\n\nFor any α > 1, liminf_{n→∞} h_α(n) is finite.\n\n**This resolves Erdős Problem #1099!**\n\nThe answer is YES: there exist integers with arbitrarily small h_α values (approaching some finite limit inferior).",
+    "mathContext": "Published in Journal of Number Theory (1984): 'Integers with consecutive divisors in small ratio.' The Lean theorem of this name proves only the ∃-bound form (no ∀N), which the trivial n=2 witness satisfies.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Main theorem",
+      "Problem resolution"
+    ],
+    "prerequisites": [
+      "the h_α function",
+      "liminf as n → ∞",
+      "Vose's 1984 theorem",
+      "axioms as stated assumptions in the formalization"
+    ]
+  },
+  {
+    "id": "ann-e1099-main-theorem",
+    "proofId": "erdos-1099",
+    "range": {
+      "startLine": 393,
+      "endLine": 396
+    },
+    "type": "concept",
+    "title": "Main Theorem",
+    "content": "**erdos_1099:**\n\n```lean\ntheorem erdos_1099 (α : ℝ) (hα : α > 1) :\n    ∃ C : ℝ, C > 0 ∧ ∀ ε > 0, ∃ n : ℕ, n > 0 ∧ h_alpha α n < C + ε\n```\n\nThis formalizes the answer to Erdős's question: YES, the liminf is bounded.\n\nThe proof extracts a bound from Vose's sequence (via the trivial witness).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős Problem #1099",
+      "Existence theorem",
+      "theorem vose_liminf_bounded"
+    ],
+    "mathContext": "$\\exists C > 0, \\forall \\varepsilon > 0, \\exists n > 0, h_\\alpha(n) < C + \\varepsilon$. Proved from vose_liminf_bounded by taking $C = |\\text{bound}| + 1$.",
+    "prerequisites": [
+      "the h_α function",
+      "boundedness of the liminf",
+      "the exponent α > 1"
+    ]
+  },
+  {
+    "id": "ann-e1099-sum-ratio-def",
+    "proofId": "erdos-1099",
+    "range": {
+      "startLine": 410,
+      "endLine": 423
+    },
+    "type": "definition",
+    "title": "Sum of Divisor Ratios — and a Removed FALSE Axiom",
+    "content": "**sumDivisorRatios (n):** the unweighted sum S(n) = Σᵢ (d_{i+1}/dᵢ), an Erdős-studied companion to h_α.\n\n**Important correction:** an earlier version of this file carried an axiom Σ(d_{i+1}/dᵢ) > τ(n) + log(n). That axiom is FALSE — for n = 2 the sum is 2 but τ(2) + log(2) ≈ 2.69. The correct inequality is Σ ≥ τ(n) − 1 + log(n) (off by one in the τ count, since there are τ(n) − 1 ratios, not τ(n)). The false axiom and any theorem named `sum_divisor_ratios_lower_bound` have been removed; only the definition remains here.",
+    "mathContext": "$S(n) = \\sum_i d_{i+1}/d_i$ over the $\\tau(n)-1$ ratios. By AM–GM on a telescoping product equal to n, $S(n) \\ge (\\tau(n)-1) + \\log n$ heuristically — but the strict, τ(n)-counted form is false at small n, hence its removal.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "AM-GM",
+      "telescoping product",
+      "noncomputable def sumDivisorRatios",
+      "axiom integrity"
+    ],
+    "prerequisites": [
+      "consecutive divisor ratios",
+      "the unweighted sum S(n) = Σᵢ d_{i+1}/dᵢ",
+      "a corrected formalization (removed false axiom)"
+    ]
+  },
+  {
+    "id": "ann-e1099-prime-proof",
+    "proofId": "erdos-1099",
+    "range": {
+      "startLine": 459,
+      "endLine": 516
+    },
+    "type": "theorem",
+    "title": "Primes Give Unbounded h_α: Why liminf (not limsup) Is the Right Question",
+    "content": "prime_ratio_mem shows that for prime p the sole ratio p appears in divisorRatios p, and prime_h_alpha_unbounded then proves that for every M there is a prime p with h_α(p) > M for all α ≥ 1: choosing p ≥ ⌈max(M,0)⌉ + 2 gives p − 1 > M, and h_α(p) ≥ (p−1)^α ≥ (p−1)^1 = p−1 (via Real.rpow_le_rpow_of_exponent_le). So the limsup of h_α is +∞ — the boundedness in Erdős's problem can only ever hold for the liminf, which is exactly what makes the question non-trivial.",
+    "mathContext": "For prime p: divisors {1, p}, single ratio p, so $h_\\alpha(p) = (p-1)^\\alpha \\to \\infty$. With infinitely many primes, $\\limsup_n h_\\alpha(n) = \\infty$; the problem's content is entirely in the liminf.",
+    "significance": "key",
+    "relatedConcepts": [
+      "theorem prime_h_alpha_unbounded",
+      "Nat.exists_infinite_primes",
+      "Real.rpow_le_rpow_of_exponent_le",
+      "limsup vs liminf"
+    ],
+    "prerequisites": [
+      "infinitude of primes",
+      "monotonicity of rpow in the exponent"
+    ]
+  },
+  {
+    "id": "ann-e1099-prime-example",
+    "proofId": "erdos-1099",
+    "range": {
+      "startLine": 476,
+      "endLine": 480
+    },
+    "type": "concept",
+    "title": "Example: Primes",
+    "content": "**prime_h_alpha_unbounded:**\n\nFor a prime p, divisors are just {1, p}, with single ratio p.\n\nh_α(p) = (p - 1)^α → ∞ as p → ∞\n\n**Lesson:** Primes are the WORST case for divisor regularity. They have only one gap, and it's maximal.\n\nThis shows we need composite numbers with many divisors to achieve bounded h_α.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Primes",
+      "Worst case",
+      "Unbounded examples"
+    ],
+    "mathContext": "$h_\\alpha(p) = (p-1)^\\alpha$. As $p \\to \\infty$ this diverges for every $\\alpha \\ge 1$, so primes can never be the bounded witnesses.",
+    "prerequisites": [
+      "divisors of a prime {1, p}",
+      "the single ratio p",
+      "h_α unbounded along primes"
+    ]
+  },
+  {
+    "id": "ann-e1099-power-two-proof",
+    "proofId": "erdos-1099",
+    "range": {
+      "startLine": 517,
+      "endLine": 617
+    },
+    "type": "theorem",
+    "title": "Powers of Two: Building h_α(2^k) = k From the Ground Up",
+    "content": "A fully proved (axiom-free) example computing h_α(2^k) exactly. sortedDivisors_two_pow identifies the divisor list of 2^k as [2^0, …, 2^k] by a sorted-nodup-same-elements uniqueness argument (List.perm_ext + eq_of_pairwise). divisorRatios_two_pow then shows the ratios are k copies of 2 (List.replicate k 2), via getElem-wise equality. Finally power_of_two_h_alpha computes h_α(2^k) = k · (2−1)^α = k (all ratios equal 2, and (2−1)^α = 1^α = 1). The bind_pure_natCast / list_bind_pure_ratCast helpers convert monadic casts to explicit maps so the replicate sum collapses.",
+    "mathContext": "Divisors of $2^k$: $\\{2^0, \\dots, 2^k\\}$; ratios all $= 2$; $h_\\alpha(2^k) = k \\cdot (2-1)^\\alpha = k \\cdot 1 = k$. Linear growth — better than primes' $(p-1)^\\alpha$ but still unbounded, illustrating that uniform-but-not-near-1 ratios do not suffice.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "theorem power_of_two_h_alpha",
+      "theorem sortedDivisors_two_pow",
+      "List.perm_ext_iff_of_nodup",
+      "List.replicate",
+      "Nat.divisors_prime_pow"
+    ],
+    "prerequisites": [
+      "uniqueness of sorted nodup lists",
+      "List.getElem extensionality",
+      "List.sum_replicate"
+    ]
+  },
+  {
+    "id": "ann-e1099-power-two",
+    "proofId": "erdos-1099",
+    "range": {
+      "startLine": 608,
+      "endLine": 609
+    },
+    "type": "concept",
+    "title": "Example: Powers of 2",
+    "content": "**power_of_two_h_alpha:**\n\nFor n = 2^k, divisors are {1, 2, 4, ..., 2^k}, with k ratios all equal to 2.\n\nh_α(2^k) = k · (2-1)^α = k · 1 = k\n\n**Lesson:** Even with many divisors, if ratios are uniform but not close to 1, h_α still grows.\n\nPowers of 2 grow linearly in h_α, which is better than primes but still unbounded.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Powers of primes",
+      "Uniform ratios",
+      "Linear growth"
+    ],
+    "mathContext": "$h_\\alpha(2^k) = k$. The `set_option maxHeartbeats 1600000` on this theorem reflects the cost of fusing the monadic casts and computing on the replicate list.",
+    "prerequisites": [
+      "divisors of 2^k",
+      "the k ratios all equal to 2",
+      "h_α(2^k) = k"
+    ]
+  },
+  {
+    "id": "ann-e1099-summary",
+    "proofId": "erdos-1099",
+    "range": {
+      "startLine": 639,
+      "endLine": 644
+    },
+    "type": "concept",
+    "title": "Summary",
+    "content": "**erdos_1099_summary:**\n\n**Q:** For α > 1, is liminf h_α(n) bounded?\n\n**A:** YES (Vose, 1984)\n\n**Key points:**\n1. Trivial lower bound: liminf ≥ 1\n2. Primes are terrible: h_α(p) = (p-1)^α → ∞\n3. Powers of 2 grow linearly: h_α(2^k) = k\n4. Vose constructed good examples with bounded h_α\n5. Whether n! or lcm{1,...,n} work remains OPEN\n\nThis resolves a question about divisor structure from 1981.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Main result",
+      "Open questions",
+      "theorem erdos_1099_summary"
+    ],
+    "mathContext": "erdos_1099_summary bundles the existence result (erdos_1099) with the trivial lower bound (h_alpha_ge_one) into one statement: $1 \\le \\liminf h_\\alpha$ and a finite bound exists.",
+    "prerequisites": [
+      "the h_α function",
+      "Vose's 1984 boundedness result",
+      "the trivial lower bound and worked examples"
+    ]
+  },
+  {
+    "id": "ann-e1099-open-subq",
+    "proofId": "erdos-1099",
+    "range": {
+      "startLine": 654,
+      "endLine": 721
+    },
+    "type": "definition",
+    "title": "Erdős's Open Sub-Questions and the Honest Strong-Form Statement",
+    "content": "Part XI records what remains genuinely OPEN as three Lean `Prop` definitions (stated, not proved). erdos_1099_factorial_open and erdos_1099_lcm_open ask whether h_α(n!) and h_α(lcm{1..n}) stay uniformly bounded — Erdős's original candidate sequences, which Vose's construction does not settle. erdos_1099_strong_liminf is the honest, full-strength Vose statement with the ∀N quantifier (arbitrarily large n with h_α(n) < C + ε) — strictly stronger than the proved erdos_1099, and explicitly flagged as substantial future work requiring Vose's actual construction.",
+    "mathContext": "Strong liminf: $\\exists C > 0, \\forall N, \\forall \\varepsilon > 0, \\exists n \\ge N, h_\\alpha(n) < C + \\varepsilon$ — the real meaning of $\\liminf_{n\\to\\infty} h_\\alpha(n) \\ll_\\alpha 1$. The lcm def uses `(List.range' 1 n).foldr Nat.lcm 1` to avoid the range-contains-0 collapse of lcmDivisors.",
+    "significance": "key",
+    "relatedConcepts": [
+      "def erdos_1099_factorial_open",
+      "def erdos_1099_lcm_open",
+      "def erdos_1099_strong_liminf",
+      "open problems",
+      "quantifier strength"
+    ],
+    "prerequisites": [
+      "liminf with ∀N quantifier",
+      "Erdős's candidate sequences"
+    ]
+  }
+]

@@ -1,0 +1,213 @@
+{
+  "id": "erdos-844",
+  "title": "Erdős Problem #844: Maximum Set with Non-Squarefree Products",
+  "slug": "erdos-844",
+  "description": "Let A ⊆ {1,...,N} such that for all a,b ∈ A, ab is not squarefree. Is the maximum achieved by A = even numbers ∪ odd non-squarefree? Answer: YES (Weisenberg; Alexeev-Mixon-Sawin).",
+  "meta": {
+    "author": "Erdős-Sárközy (1992), Weisenberg (proof), Alexeev-Mixon-Sawin (alternative proof)",
+    "sourceUrl": "https://erdosproblems.com/844",
+    "date": "1992",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos844Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "squarefree",
+      "intersecting-families",
+      "extremal-combinatorics",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 844,
+    "erdosUrl": "https://erdosproblems.com/844",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Squarefree",
+        "description": "Squarefree number predicate",
+        "module": "Mathlib.Data.Nat.Squarefree"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime numbers",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.primeFactors",
+        "description": "Prime factorization",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "HasNonSquarefreeProducts: the non-squarefree product property",
+      "optimalSet: even numbers ∪ odd non-squarefree numbers",
+      "even_product_not_squarefree lemma: 2|a ∧ 2|b ⟹ ¬Squarefree(ab)",
+      "nonsquarefree_product lemma: ¬Squarefree(a) ⟹ ¬Squarefree(ab)",
+      "IsIntersectingFamily: squarefree subsets where pairs share primes",
+      "chvatal_intersecting_families: maximum is even squarefree",
+      "weisenberg_proof axiom: optimal set achieves maximum",
+      "erdos_844_characterization theorem: complete characterization"
+    ],
+    "axiomCount": 2,
+    "lineCount": 175,
+    "assumptions": "2 axioms: optimal_set_has_property (optimal set has non-squarefree products for all N≥1), weisenberg_proof (Weisenberg's bound: optimal set is maximum among sets with non-squarefree products). 0 sorries.",
+    "theoremCount": 4,
+    "definitionCount": 9
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #844: Non-Squarefree Products**\n\nThis problem appears in Erdős-Sárközy [Er92b, p.239] and concerns extremal sets with multiplicative constraints.\n\n**Key History:**\n- **Erdős-Sárközy (1992):** Posed the original problem\n- **Weisenberg:** First proof using Chvátal's intersecting families result\n- **Alexeev-Mixon-Sawin [AMS25]:** Independent alternative proof\n\n**The Connection:**\nThe problem reduces to finding the largest 'intersecting family' of squarefree numbers - subsets where any two elements share a prime factor. Chvátal's 1974 result on intersecting hypergraph families provides the answer.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet A ⊆ {1,...,N} such that for all a, b ∈ A, the product ab is not squarefree.\n\nIs the maximum size of A achieved by taking:\n- All even numbers (2, 4, 6, ...)\n- All odd non-squarefree numbers (9, 25, 27, ...)\n\n**Answer: YES**\n\nEquivalently: the optimal A consists of all numbers EXCEPT odd squarefree numbers.",
+    "text": "Let A ⊆ {1,...,N} such that for all a,b ∈ A, ab is not squarefree. Is the maximum achieved by A = even numbers ∪ odd non-squarefree? Answer: YES (Weisenberg; Alexeev-Mixon-Sawin).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:**\n   - HasNonSquarefreeProducts: ∀ a,b ∈ A, ¬Squarefree(ab)\n   - optimalSet = evenNumbers ∪ oddNonSquarefreeNumbers\n\n2. **Key Lemmas:**\n   - even_product_not_squarefree: product of two even numbers is divisible by 4\n   - nonsquarefree_product: product with a non-squarefree factor is non-squarefree\n\n3. **Reduction:**\n   - Maximal A must contain all non-squarefree numbers\n   - Among squarefree numbers, need 'intersecting family'\n\n4. **Chvátal's Result:**\n   - Maximum intersecting family of squarefree numbers = even squarefree numbers\n\n5. **Conclusion:**\n   - Optimal = non-squarefree ∪ even squarefree = all except odd squarefree",
+    "keyInsights": [
+      "**Product Property:** If a is not squarefree, ab inherits non-squarefreeness for any b > 0",
+      "**Even Products:** Product of two even numbers is divisible by 4, hence not squarefree",
+      "**Squarefree Reduction:** Among squarefree numbers, ab is non-squarefree iff a and b share a prime",
+      "**Intersecting Family:** Squarefree numbers where any two share a prime form an 'intersecting family'",
+      "**Chvátal's Result:** Maximum intersecting family = all multiples of a fixed prime (optimally: 2)",
+      "**Density:** The optimal set has density 1 - 4/π² ≈ 0.595 (complement of odd squarefree)"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "summary": "Module docstring stating Erdős Problem #844 (largest $A\\subseteq\\{1,\\dots,N\\}$ with $ab$ non-squarefree for all $a,b\\in A$) and its status SOLVED (Weisenberg; Alexeev-Mixon-Sawin), answer YES — the optimum is the even numbers together with the odd non-squarefree numbers. Imports Nat squarefree/prime/factorization and Finset basics; `open Nat Finset`; `namespace Erdos844`.",
+      "startLine": 1,
+      "endLine": 39,
+      "mathContext": "Key insight recorded in the header: any maximal $A$ must contain all non-squarefree numbers, reducing the problem to the largest intersecting family of squarefree numbers, which by Chvátal's result is the even squarefree numbers."
+    },
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "Defines `interval N` $=\\{1,\\dots,N\\}$, the property `HasNonSquarefreeProducts A` ($\\forall a,b\\in A,\\ \\neg\\,\\mathrm{Squarefree}(ab)$), the families `evenNumbers`, `nonSquarefreeNumbers`, `oddNonSquarefreeNumbers`, and the conjectured `optimalSet N` $=$ even $\\cup$ odd-non-squarefree.",
+      "startLine": 40,
+      "endLine": 66,
+      "mathContext": "Six definitions; no theorems or axioms in this part."
+    },
+    {
+      "id": "optimal-has-property",
+      "title": "The Optimal Set Has the Property",
+      "summary": "Proves `even_product_not_squarefree` (a product of two even numbers is divisible by 4, hence non-squarefree) and `nonsquarefree_product` (if $a$ is non-squarefree then so is $ab$), then axiomatizes `optimal_set_has_property`: the optimal set satisfies `HasNonSquarefreeProducts` for all $N\\ge1$.",
+      "startLine": 67,
+      "endLine": 98,
+      "mathContext": "Two proved lemmas plus one `axiom` (`optimal_set_has_property`)."
+    },
+    {
+      "id": "maximal-contains",
+      "title": "Any Maximal Set Must Contain All Non-Squarefree Numbers",
+      "summary": "Section banner for the structural step: any maximal $A$ must contain every non-squarefree number (otherwise it could be enlarged). Exposition placeholder; declares no Lean content.",
+      "startLine": 99,
+      "endLine": 102,
+      "mathContext": "Empty docstring banner (no definitions, theorems, or axioms)."
+    },
+    {
+      "id": "reduction",
+      "title": "Reduction to Squarefree Numbers",
+      "summary": "Defines `squarefreeNumbers N` and `IsIntersectingFamily A` — a set of squarefree numbers in which every pair shares a common prime factor — capturing the reduced problem after removing the forced non-squarefree numbers.",
+      "startLine": 103,
+      "endLine": 115,
+      "mathContext": "Two definitions; the reduction to an intersecting-family problem on squarefree numbers."
+    },
+    {
+      "id": "chvatal",
+      "title": "Chvátal's Result on Intersecting Families",
+      "summary": "Defines `evenSquarefreeNumbers N`, the family achieving the maximum among intersecting families of squarefree numbers (all divisible by 2), per Chvátal's theorem on intersecting set systems.",
+      "startLine": 116,
+      "endLine": 123,
+      "mathContext": "One definition; Chvátal's bound itself is cited in prose, not formalized here."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "summary": "Axiomatizes `weisenberg_proof`: for $N\\ge1$, any $A\\subseteq\\{1,\\dots,N\\}$ with the non-squarefree-product property satisfies $|A|\\le|\\text{optimalSet }N|$ — the extremal upper bound completing the solution.",
+      "startLine": 124,
+      "endLine": 133,
+      "mathContext": "One `axiom` (`weisenberg_proof`), the maximality half of the result."
+    },
+    {
+      "id": "characterization",
+      "title": "Characterization of the Optimal Set",
+      "summary": "Section banner for the explicit characterization of the optimal set as even $\\cup$ odd-non-squarefree. Exposition placeholder; declares no Lean content.",
+      "startLine": 134,
+      "endLine": 137,
+      "mathContext": "Empty docstring banner."
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "Section banner for worked examples of the optimal set at small $N$. Exposition placeholder; declares no Lean content.",
+      "startLine": 138,
+      "endLine": 141,
+      "mathContext": "Empty docstring banner."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Concluding part: `erdos_844_characterization` bundles the three facts (optimal set has the property; no larger set does; the optimal set equals even $\\cup$ odd-non-squarefree, closed by `rfl`), and `erdos_844` packages the existence + maximality conclusion, each assembled from the two axioms.",
+      "startLine": 142,
+      "endLine": 175,
+      "mathContext": "Two theorems built from `optimal_set_has_property` and `weisenberg_proof`. Net file axioms: `optimal_set_has_property`, `weisenberg_proof`."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #844 asked whether the maximum subset A ⊆ {1,...,N} with non-squarefree products ab for all a,b ∈ A is achieved by taking even numbers and odd non-squarefree numbers. Weisenberg proved YES by reducing to Chvátal's result on intersecting families. The key insight: among squarefree numbers, pairs must share a prime, which is maximized by even squarefree numbers.",
+    "implications": "**Theoretical Significance**: **Connections and Applications**\n\n1. **Intersecting Family Theory:** Shows power of Chvátal's hypergraph result in number theory\n\n**2. Squarefree Density:** The odd squarefree numbers have density 4/π² ≈ 0.405\n\n3. **Multiplicative Structure:** Illustrates how multiplicative constraints determine extremal sets\n\n4. **Related Problems:** Problem 848 asks a related squarefree product question.",
+    "openQuestions": [
+      "What is the exact structure of extremal sets for small N?",
+      "Are there other natural characterizations of the optimal set?",
+      "How does the problem generalize to k-th power free numbers?",
+      "What is the computational complexity of finding the optimal set?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Squarefree",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos844",
+    "lineCount": 175,
+    "axiomCount": 2,
+    "theoremCount": 4,
+    "definitionCount": 9,
+    "path": "Proofs/Erdos844Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-534",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, intersecting-families, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-848",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, number-theory, solved, squarefree"
+    },
+    {
+      "targetId": "erdos-378",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, solved, squarefree"
+    }
+  ],
+  "sorries": 0
+}

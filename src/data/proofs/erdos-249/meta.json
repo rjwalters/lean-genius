@@ -1,0 +1,214 @@
+{
+  "id": "erdos-249",
+  "title": "Erdős Problem #249: Irrationality of Totient Power Sum",
+  "slug": "erdos-249",
+  "description": "Is the sum ∑ φ(n)/2^n irrational, where φ is Euler's totient function? Status: OPEN. Formalization proves convergence, positivity, and upper bound (0 axioms).",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/249",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos249Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "irrationality",
+      "totient",
+      "series",
+      "open"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 249,
+    "erdosUrl": "https://erdosproblems.com/249",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-02-06",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient",
+        "description": "Euler's totient function",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Irrational",
+        "description": "Irrationality predicate",
+        "module": "Mathlib.NumberTheory.Real.Irrational"
+      },
+      {
+        "theorem": "tsum",
+        "description": "Infinite series (topological sum)",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      },
+      {
+        "theorem": "summable_pow_mul_geometric_of_norm_lt_one",
+        "description": "Summability of n^k * r^n for |r| < 1 (used for comparison)",
+        "module": "Mathlib.Analysis.SpecificLimits.Basic"
+      },
+      {
+        "theorem": "Nat.totient_le",
+        "description": "φ(n) ≤ n for all n",
+        "module": "Mathlib.Data.Nat.Totient"
+      }
+    ],
+    "originalContributions": [
+      "termFn and totientPowerSum definitions for ∑ φ(n)/2^n",
+      "totient_le_self: φ(n) ≤ n (proved from Nat.totient_le)",
+      "termFn_nonneg: each term ≥ 0 (proved via positivity)",
+      "totientPowerSum_summable: convergence by comparison with ∑ n·(1/2)^n (proved)",
+      "totientPowerSum_pos: sum > 0 since termFn(1) = 1/2 (proved)",
+      "totientPowerSum_le_two: sum ≤ 2 since ∑ n·(1/2)^n = 2 (proved)",
+      "erdos_249_iff_not_rational: equivalence with ¬isRational (proved by rfl)",
+      "partial_sum_2: first two nonzero terms sum to 3/4 (proved)"
+    ],
+    "axiomCount": 0,
+    "prerequisites": [
+      "Euler's totient function and its basic properties (φ(n) ≤ n)",
+      "Infinite series and convergence (comparison test)",
+      "Irrationality: definition and equivalent characterizations",
+      "Real analysis: summability and tsum in Mathlib"
+    ],
+    "lineCount": 192,
+    "assumptions": "None. Open conjecture; supporting lemmas fully verified.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 13,
+    "definitionCount": 4
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem with Graham [ErGr80, p.61] and revisited it in [Er88c, p.102]. It belongs to a rich family of open irrationality problems about arithmetic sums. Euler's totient function φ(n), which counts integers coprime to n, has been studied since Euler (1763). The series ∑ φ(n)/2^n converges rapidly since φ(n) ≤ n and ∑ n/2^n = 2.\n\nThe decimal expansion is OEIS A256936, approximately 1.3240. Despite substantial progress on irrationality of specific constants (e^π: Nesterenko 1996, ζ(3): Apéry 1979), series involving multiplicative arithmetic functions like φ remain largely intractable. The problem is related to questions about ∑ f(n)/b^n for various arithmetic functions f and bases b.",
+    "problemStatement": "Is the sum $\\sum_{n=1}^{\\infty} \\frac{\\phi(n)}{2^n}$ irrational, where $\\phi$ is Euler's totient function?",
+    "text": "Is the sum ∑ φ(n)/2^n irrational, where φ is Euler's totient function? Status: OPEN. Formalization proves convergence, positivity, and upper bound (0 axioms).",
+    "proofStrategy": "The formalization defines termFn(n) = φ(n)/2^n and totientPowerSum = ∑ termFn(n). All key properties are PROVED (0 axioms): convergence via comparison with ∑ n·(1/2)^n, positivity from termFn(1) = 1/2, and the upper bound 2 from the exact value ∑ n·(1/2)^n = 2. The open conjecture erdos_249 := Irrational totientPowerSum is stated but not assumed.",
+    "keyInsights": [
+      "Convergence is proved by comparison: φ(n)/2^n ≤ n/2^n and ∑ n·(1/2)^n converges (geometric series derivative)",
+      "The first terms φ(1)/2 + φ(2)/4 = 1/2 + 1/4 = 3/4 are verified; the full sum ≈ 1.3240 (OEIS A256936)",
+      "The formalization has 0 axioms — all convergence and bound results are fully proved from Mathlib",
+      "The irrationality question connects to deep open problems about the arithmetic nature of sums involving multiplicative functions",
+      "Known irrationality techniques (Apéry-style, continued fractions, Padé approximations) have not yet been adapted to totient sums"
+    ],
+    "prerequisites": [
+      "Euler's totient function and its basic properties (φ(n) ≤ n)",
+      "Infinite series and convergence (comparison test)",
+      "Irrationality: definition and equivalent characterizations",
+      "Real analysis: summability and tsum in Mathlib"
+    ]
+  },
+  "sections": [
+    {
+      "id": "series-def",
+      "title": "Part I: Series Definition",
+      "summary": "termFn(n) = φ(n)/2^n and totientPowerSum = ∑' n, termFn(n) using Mathlib's tsum.",
+      "startLine": 35,
+      "endLine": 46
+    },
+    {
+      "id": "basic-props",
+      "title": "Part II: Basic Properties",
+      "summary": "totient_le_self (φ(n) ≤ n), termFn_nonneg (≥ 0), termFn_zero/one/two (small values). All proved.",
+      "startLine": 47,
+      "endLine": 72
+    },
+    {
+      "id": "convergence",
+      "title": "Part III: Convergence and Bounds",
+      "summary": "summable_n_mul_half_pow (comparison sequence), termFn_le_n_mul_half_pow (comparison bound), totientPowerSum_summable (convergence), totientPowerSum_pos (> 0), totientPowerSum_le_two (≤ 2). All proved.",
+      "startLine": 73,
+      "endLine": 127
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Part IV: The Main Conjecture",
+      "summary": "erdos_249 := Irrational totientPowerSum. The open problem stated as a Prop definition.",
+      "startLine": 128,
+      "endLine": 136
+    },
+    {
+      "id": "alternative",
+      "title": "Part V: Alternative Characterization",
+      "summary": "isRational definition and erdos_249_iff_not_rational equivalence (proved by rfl).",
+      "startLine": 137,
+      "endLine": 148
+    },
+    {
+      "id": "numerical",
+      "title": "Part VI: Numerical Information",
+      "summary": "OEIS A256936 reference, first terms computation, partial_sum_2: termFn(1) + termFn(2) = 3/4 (proved).",
+      "startLine": 149,
+      "endLine": 164
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Status: OPEN. All convergence/bound results proved (0 axioms). Irrationality remains unknown.",
+      "startLine": 165,
+      "endLine": 192
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #249 asks whether ∑ φ(n)/2^n is irrational. The formalization proves convergence, positivity (> 0), and an upper bound (≤ 2) with 0 axioms — all results follow from Mathlib. The irrationality question remains open.",
+    "implications": "Resolving this problem would advance understanding of the arithmetic nature of sums involving multiplicative functions. The totient function's deep connection to prime distribution makes this a fundamental question at the intersection of number theory and transcendence theory.",
+    "openQuestions": [
+      "Is ∑ φ(n)/2^n irrational?",
+      "If irrational, what is its irrationality measure?",
+      "Are similar sums ∑ φ(n)/b^n irrational for other bases b ≥ 2?",
+      "Can Apéry-style techniques be adapted to prove irrationality of totient sums?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "related",
+      "description": "Euler's totient function is defined via primes; φ(n) = n·∏(1-1/p) over p|n"
+    },
+    {
+      "targetId": "erdos-23",
+      "relationship": "related",
+      "description": "Both are Erdős problems involving deep number-theoretic structure and open conjectures"
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "Both concern exact values of infinite series with number-theoretic significance (∑ 1/n² = π²/6 vs ∑ φ(n)/2^n ≈ 1.324)"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.NumberTheory.Real.Irrational",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+      "Mathlib.Topology.Algebra.InfiniteSum.Order",
+      "Mathlib.Analysis.SpecificLimits.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Erdos249",
+    "lineCount": 192,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 4,
+    "path": "Proofs/Erdos249Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "note": "[ErGr80, p.61] where Problem 249 appears"
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "Some problems and results on combinatorial number theory",
+      "year": "1988",
+      "venue": "Graph Theory and its Applications, pp. 1-12",
+      "note": "[Er88c, p.102] revisiting the irrationality question"
+    },
+    {
+      "authors": "OEIS Foundation",
+      "title": "A256936: Decimal expansion of Sum_{n>=1} phi(n)/2^n",
+      "year": "2015",
+      "venue": "OEIS (Online Encyclopedia of Integer Sequences)",
+      "note": "Numerical value ≈ 1.3240..."
+    }
+  ],
+  "sorries": 0
+}

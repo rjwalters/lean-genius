@@ -1,0 +1,295 @@
+[
+  {
+    "id": "ann-imports",
+    "proofId": "taylor-sincos-convergence",
+    "range": {
+      "startLine": 1,
+      "endLine": 5
+    },
+    "type": "concept",
+    "title": "Mathlib Imports for Taylor Convergence",
+    "content": "Five Mathlib imports supply the analytical infrastructure:\n- `Analysis.Calculus.Taylor`: Taylor's theorem with remainder (`taylorWithinEval`), iterated derivatives\n- `Analysis.SpecialFunctions.Trigonometric.Deriv`: `Real.hasDerivAt_sin`, `Real.hasDerivAt_cos`, `Real.contDiff_sin/cos` (infinite differentiability)\n- `Analysis.SpecificLimits.Normed`: `summable_pow_div_factorial` — the key fact that $|x|^n/n!$ is summable for all $x$, which implies the $n$-th term tends to 0\n- `Topology.Algebra.InfiniteSum.Real`: Real-valued infinite sums and their convergence API\n- `Mathlib.Tactic`: General automation (`ring`, `linarith`, `norm_num`, `omega`, `simp`)\n\nNotably, the proof does not import `Mathlib.Analysis.MeanInequalities` or convexity — the convergence argument is purely sequential (remainder $\\to 0$), not requiring any inequality beyond $|\\sin|, |\\cos| \\leq 1$.",
+    "mathContext": "The central Mathlib fact is `summable_pow_div_factorial`: $\\sum_{n=0}^{\\infty} \\frac{\\|x\\|^n}{n!} < \\infty$ for all $x$, which implies $\\frac{|x|^n}{n!} \\to 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "summable_pow_div_factorial",
+      "Taylor remainder",
+      "iterated derivatives",
+      "contDiff"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib library structure"
+    ]
+  },
+  {
+    "id": "ann-derivative-cycle",
+    "proofId": "taylor-sincos-convergence",
+    "range": {
+      "startLine": 35,
+      "endLine": 51
+    },
+    "type": "concept",
+    "title": "The Four Derivative Transitions",
+    "content": "**The derivative cycle**: Four theorems establish the cycle $\\sin \\xrightarrow{d/dx} \\cos \\xrightarrow{d/dx} -\\sin \\xrightarrow{d/dx} -\\cos \\xrightarrow{d/dx} \\sin$:\n\n1. `deriv_sin'`: $\\sin' = \\cos$ (via `Real.hasDerivAt_sin`)\n2. `deriv_cos'`: $\\cos' = -\\sin$ (via `Real.hasDerivAt_cos`)\n3. `deriv_neg_sin`: $(-\\sin)' = -\\cos$ (via `deriv_neg` and `hasDerivAt_sin`)\n4. `deriv_neg_cos`: $(-\\cos)' = \\sin$ (via `deriv_neg` and `hasDerivAt_cos`)\n\nThe proofs are one-liners using `funext` and `simp`. Each theorem states the derivative as a function equality (`deriv f = g`), not a pointwise statement — this is essential for composing with `iteratedDeriv_succ` in the period-4 proof.\n\n**Why function equality matters**: Lean's `iteratedDeriv_succ` rewrites $f^{(n+1)} = (f^{(n)})'$. To chain these, we need $\\sin' = \\cos$ as a definitional equality of functions, not merely $\\sin'(x) = \\cos(x)$ for each $x$. The `funext` tactic bridges the gap.",
+    "mathContext": "$\\sin \\xrightarrow{d/dx} \\cos \\xrightarrow{d/dx} -\\sin \\xrightarrow{d/dx} -\\cos \\xrightarrow{d/dx} \\sin$",
+    "significance": "key",
+    "relatedConcepts": [
+      "derivative",
+      "funext",
+      "Real.hasDerivAt_sin",
+      "Real.hasDerivAt_cos",
+      "function equality"
+    ],
+    "prerequisites": [
+      "derivatives of sin and cos",
+      "deriv_neg",
+      "funext extensionality"
+    ]
+  },
+  {
+    "id": "ann-base-cases",
+    "proofId": "taylor-sincos-convergence",
+    "range": {
+      "startLine": 53,
+      "endLine": 87
+    },
+    "type": "concept",
+    "title": "Base Cases: Iterated Derivatives 0-3 for Sin and Cos",
+    "content": "**Eight base cases** establish the first four iterated derivatives for both functions:\n\n| $n$ | $\\sin^{(n)}$ | $\\cos^{(n)}$ |\n|-----|-------------|-------------|\n| 0 | $\\sin$ | $\\cos$ |\n| 1 | $\\cos$ | $-\\sin$ |\n| 2 | $-\\sin$ | $-\\cos$ |\n| 3 | $-\\cos$ | $\\sin$ |\n\nEach proof rewrites $n$ as $k+1$ for the appropriate $k$, applies `iteratedDeriv_succ` to decompose $f^{(k+1)} = (f^{(k)})'$, then substitutes the previous base case and the derivative lemma from Section I.\n\n**Pattern**: The Lean idiom `rw [show (2 : ℕ) = 1 + 1 from rfl]` converts the literal `2` to `1 + 1` so that `iteratedDeriv_succ` can fire. This is necessary because Lean's `iteratedDeriv_succ` expects the form $n + 1$, not a literal natural number.\n\n**Observation**: At $n = 3$ for cos, we get $\\cos^{(3)} = \\sin$ — the cycle has come full circle (shifted by one position from sin).",
+    "mathContext": "$\\sin^{(0)} = \\sin, \\; \\sin^{(1)} = \\cos, \\; \\sin^{(2)} = -\\sin, \\; \\sin^{(3)} = -\\cos$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "iteratedDeriv_succ",
+      "iteratedDeriv_zero",
+      "base case",
+      "natural number literals"
+    ],
+    "prerequisites": [
+      "derivative cycle lemmas",
+      "iteratedDeriv definition"
+    ]
+  },
+  {
+    "id": "ann-period-four",
+    "proofId": "taylor-sincos-convergence",
+    "range": {
+      "startLine": 89,
+      "endLine": 109
+    },
+    "type": "insight",
+    "title": "Period-4 Property: The Core Structural Result",
+    "content": "**Theorem**: $\\sin^{(n+4)} = \\sin^{(n)}$ and $\\cos^{(n+4)} = \\cos^{(n)}$ for all $n \\in \\mathbb{N}$.\n\nThis is the structural heart of the entire formalization — it reduces the infinite family of iterated derivatives to a finite cycle of length 4.\n\n**Proof by induction on $n$**:\n- **Base case** ($n = 0$): Show $\\sin^{(4)} = \\sin$ by chaining: $\\sin^{(4)} = (\\sin^{(3)})' = (-\\cos)' = \\sin$.\n- **Inductive step**: $\\sin^{(n+1+4)} = \\sin^{((n+4)+1)} = (\\sin^{(n+4)})' = (\\sin^{(n)})' = \\sin^{(n+1)}$, using `omega` to verify the arithmetic $n + 1 + 4 = (n + 4) + 1$.\n\n**Mathematical context**: This periodicity is a manifestation of the fact that $\\sin$ and $\\cos$ are eigenfunctions of $d^4/dx^4$ with eigenvalue 1. Equivalently, they satisfy the ODE $y^{(4)} = y$, whose characteristic equation $\\lambda^4 = 1$ has roots $\\{1, -1, i, -i\\}$. The period-4 property is the real shadow of the complex identity $i^4 = 1$.\n\n**Formalization note**: The `ring` tactic handles the arithmetic rearrangement $4(k+1) + r = 4k + r + 4$ in the inductive step, and `← iteratedDeriv_succ` folds the derivative back into the iterated derivative notation.",
+    "mathContext": "$\\sin^{(n+4)} = \\sin^{(n)}, \\quad \\cos^{(n+4)} = \\cos^{(n)} \\quad \\forall n \\in \\mathbb{N}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "periodicity",
+      "eigenfunction of differentiation",
+      "characteristic equation",
+      "fourth-order ODE",
+      "complex roots of unity"
+    ],
+    "prerequisites": [
+      "base case derivatives (0-3)",
+      "iteratedDeriv_succ",
+      "induction on natural numbers"
+    ]
+  },
+  {
+    "id": "ann-uniform-bound",
+    "proofId": "taylor-sincos-convergence",
+    "range": {
+      "startLine": 111,
+      "endLine": 174
+    },
+    "type": "insight",
+    "title": "Universal Derivative Bound: ||sin^(n)(x)|| <= 1",
+    "content": "**Theorem**: $\\|\\sin^{(n)}(x)\\| \\leq 1$ and $\\|\\cos^{(n)}(x)\\| \\leq 1$ for all $n \\in \\mathbb{N}$ and all $x \\in \\mathbb{R}$.\n\n**Proof strategy**: Write $n = 4q + r$ where $r = n \\bmod 4 < 4$. By the period-4 property, $\\sin^{(n)} = \\sin^{(r)}$. Then `interval_cases r` splits into the 4 cases $r \\in \\{0, 1, 2, 3\\}$, each resolved by the base case and `abs_sin_le_one` or `abs_cos_le_one` from Mathlib.\n\n**Key Lean techniques**:\n- `Nat.div_add_mod n 4` gives $n = 4 \\cdot (n/4) + n \\bmod 4$\n- A nested induction on $n/4$ reduces $\\sin^{(4q + r)}$ to $\\sin^{(r)}$\n- `interval_cases m` enumerates $m \\in \\{0, 1, 2, 3\\}$ given `m < 4`\n- `congr_fun` converts function equality ($\\sin^{(k)} = f$) to pointwise equality\n\n**Why this matters**: This bound is the decisive advantage of trig over exp. For $e^x$, the $n$-th derivative is $e^x$ itself, so the derivative supremum on $[-|x|, |x|]$ is $e^{|x|}$ — growing with $x$. For sin/cos, the supremum is always 1. This makes the remainder bound $|x|^{n+1}/n!$ (for trig) strictly smaller than $e^{|x|} |x|^{n+1}/n!$ (for exp).\n\n**Helper lemma**: `norm_trig_le_one` dispatches the bound for any $f \\in \\{\\sin, \\cos, -\\sin, -\\cos\\}$ via `rcases` on a 4-way disjunction.",
+    "mathContext": "$\\|\\sin^{(n)}(x)\\| \\leq 1$ for all $n, x$ because $\\sin^{(n)} \\in \\{\\sin, \\cos, -\\sin, -\\cos\\}$ and $|\\sin|, |\\cos| \\leq 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.div_add_mod",
+      "interval_cases",
+      "abs_sin_le_one",
+      "abs_cos_le_one",
+      "congr_fun",
+      "derivative bound"
+    ],
+    "prerequisites": [
+      "period-4 property",
+      "base case derivatives",
+      "Mathlib trig bounds"
+    ]
+  },
+  {
+    "id": "ann-partial-sums",
+    "proofId": "taylor-sincos-convergence",
+    "range": {
+      "startLine": 176,
+      "endLine": 187
+    },
+    "type": "definition",
+    "title": "Taylor Partial Sum Definitions",
+    "content": "**Definitions**: `sinPartialSum n x` and `cosPartialSum n x` compute the $n$-th Taylor partial sum at $x$ around $a = 0$:\n$$S_n^f(x) = \\sum_{k=0}^{n} \\frac{f^{(k)}(0)}{k!} x^k$$\n\nBoth are marked `noncomputable` because they depend on `iteratedDeriv`, which is defined via `deriv` (noncomputable in Lean due to classical choice).\n\n**Design choice**: These are custom definitions rather than specializations of Mathlib's `taylorWithinEval`. This is deliberate: `taylorWithinEval` operates on `iteratedDerivWithin` (restricted to a set), while these use `iteratedDeriv` (global derivatives). The mismatch is what necessitates the two axioms later — and resolving it is the main open question for this formalization.\n\n**Note on evaluation at 0**: When expanded, $\\sin^{(k)}(0)$ cycles through $\\{0, 1, 0, -1\\}$ (the values of $\\sin(0), \\cos(0), -\\sin(0), -\\cos(0)$), producing only odd-power terms. Similarly, $\\cos^{(k)}(0)$ cycles through $\\{1, 0, -1, 0\\}$, producing only even-power terms.",
+    "mathContext": "$S_n^{\\sin}(x) = \\sum_{k=0}^{n} \\frac{\\sin^{(k)}(0)}{k!} x^k, \\quad S_n^{\\cos}(x) = \\sum_{k=0}^{n} \\frac{\\cos^{(k)}(0)}{k!} x^k$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Taylor partial sum",
+      "noncomputable",
+      "Finset.range",
+      "iteratedDeriv at 0",
+      "taylorWithinEval"
+    ],
+    "prerequisites": [
+      "iteratedDeriv",
+      "Finset summation",
+      "factorial"
+    ]
+  },
+  {
+    "id": "ann-remainder-axioms",
+    "proofId": "taylor-sincos-convergence",
+    "range": {
+      "startLine": 189,
+      "endLine": 216
+    },
+    "type": "concept",
+    "title": "Remainder Bounds: Proved Connection + Axiomatized Bridge",
+    "content": "**Two proved lemmas** and **two axioms** in this section:\n\n**Proved**: `iteratedDerivWithin_sin_eq` and `iteratedDerivWithin_cos_eq` show that on `UniqueDiffOn` sets, `iteratedDerivWithin n sin s x = iteratedDeriv n sin x`. This uses Mathlib's `iteratedDerivWithin_eq_iteratedDeriv` with `Real.contDiff_sin` (sin is $C^\\infty$).\n\n**Axiomatized**: `sin_taylor_remainder_bound` and `cos_taylor_remainder_bound` assert:\n$$\\|\\sin(x) - S_n^{\\sin}(x)\\| \\leq \\frac{|x|^{n+1}}{n!}$$\n\nThese bridge the gap between `sinPartialSum` (using `iteratedDeriv`) and Mathlib's Taylor remainder formula (using `taylorWithinEval` / `iteratedDerivWithin`). The proved connection lemmas suggest these axioms could be eliminated by showing the two partial sum formulations agree, then applying Mathlib's Lagrange remainder bound with the universal derivative bound $\\|f^{(n)}\\| \\leq 1$.\n\n**Why axiomatize?** Mathlib's Taylor API is designed for functions on intervals (`Set.Icc a b`) with `iteratedDerivWithin`, while this formalization uses global `iteratedDeriv`. Bridging the two requires showing the partial sums agree term-by-term — a straightforward but tedious exercise in Finset rewriting.",
+    "mathContext": "$\\|\\sin(x) - S_n(x)\\| \\leq \\frac{|x|^{n+1}}{n!}$, axiomatized pending Mathlib API bridge",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lagrange remainder",
+      "axiom",
+      "iteratedDerivWithin",
+      "UniqueDiffOn",
+      "taylorWithinEval",
+      "API gap"
+    ],
+    "prerequisites": [
+      "Taylor's theorem with remainder",
+      "iteratedDerivWithin_eq_iteratedDeriv",
+      "contDiff_sin/cos"
+    ]
+  },
+  {
+    "id": "ann-convergence",
+    "proofId": "taylor-sincos-convergence",
+    "range": {
+      "startLine": 218,
+      "endLine": 260
+    },
+    "type": "concept",
+    "title": "Convergence via Squeeze Theorem",
+    "content": "**Main results**: `sinPartialSum_tendsto` and `cosPartialSum_tendsto` — the Taylor partial sums converge to $\\sin(x)$ and $\\cos(x)$ for all $x \\in \\mathbb{R}$.\n\n**Proof chain**:\n1. `pow_div_factorial_tendsto`: $|x|^n/n! \\to 0$ as $n \\to \\infty$, derived from Mathlib's `summable_pow_div_factorial` (summable implies $n$-th term $\\to 0$).\n2. `sin_taylor_remainder_tendsto`: $\\|\\sin(x) - S_n(x)\\| \\leq |x|^{n+1}/n! = |x| \\cdot |x|^n/n! \\to 0$, using `squeeze_zero_norm'` with the constant-multiple limit theorem.\n3. `sinPartialSum_tendsto`: If $\\sin(x) - S_n(x) \\to 0$, then $S_n(x) = \\sin(x) - (\\sin(x) - S_n(x)) \\to \\sin(x) - 0 = \\sin(x)$.\n\n**Lean technique**: The trick $|x|^{n+1}/n! = |x| \\cdot (|x|^n/n!)$ is handled by `h2.congr fun n => by ring`, which rewrites the sequence via `ring` to match the constant-multiple form. The `const_sub` trick in step 3 avoids dealing with double negation.\n\n**Symmetry**: The cos convergence proof is structurally identical — the same squeeze argument applies because $\\cos$ has the same remainder bound.",
+    "mathContext": "$\\lim_{n \\to \\infty} S_n^{\\sin}(x) = \\sin(x)$ via $\\|\\sin(x) - S_n(x)\\| \\leq |x| \\cdot \\frac{|x|^n}{n!} \\to 0$",
+    "significance": "key",
+    "relatedConcepts": [
+      "squeeze theorem",
+      "squeeze_zero_norm'",
+      "Tendsto",
+      "summable implies nth term to zero",
+      "const_mul",
+      "filter_upwards"
+    ],
+    "prerequisites": [
+      "summable_pow_div_factorial",
+      "remainder bound axioms",
+      "topological limits in Lean"
+    ]
+  },
+  {
+    "id": "ann-explicit-series",
+    "proofId": "taylor-sincos-convergence",
+    "range": {
+      "startLine": 262,
+      "endLine": 292
+    },
+    "type": "concept",
+    "title": "Explicit Alternating Series and Summability",
+    "content": "**Definitions**: `sinSeries x n = (-1)^n x^{2n+1}/(2n+1)!` and `cosSeries x n = (-1)^n x^{2n}/(2n)!` — the classical alternating series forms.\n\n**Summability proof** (for sin; cos is analogous):\n1. **Norm bound**: $\\|\\text{sinSeries}(x, n)\\| \\leq \\|x\\|^{2n+1}/(2n+1)!$, using `abs_pow` and `abs_mul`.\n2. **Subseries comparison**: The map $n \\mapsto 2n+1$ is injective (proved by `omega`), so the odd-indexed terms of $\\sum |x|^k/k!$ form a subseries.\n3. **Conclusion**: `Summable.comp_injective` transfers summability from the full exponential series to the odd subseries.\n\n**Mathematical insight**: The sin series uses only odd powers of $x$ because $\\sin^{(k)}(0) = 0$ for even $k$ (since $\\sin(0) = 0$ and $-\\sin(0) = 0$). Similarly, the cos series uses only even powers because $\\cos^{(k)}(0) = 0$ for odd $k$.\n\n**Note**: These definitions give the summand, not the sum. The convergence to $\\sin(x)$ is established separately by `sinPartialSum_tendsto`, which shows the partial sums of the full Taylor series (including zero terms) converge. Connecting the explicit alternating series to the partial sums would require showing the zero terms cancel.",
+    "mathContext": "$\\sin(x) = \\sum_{n=0}^{\\infty} \\frac{(-1)^n x^{2n+1}}{(2n+1)!}, \\quad \\cos(x) = \\sum_{n=0}^{\\infty} \\frac{(-1)^n x^{2n}}{(2n)!}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "alternating series",
+      "Summable.comp_injective",
+      "subseries comparison",
+      "odd/even powers",
+      "exp series"
+    ],
+    "prerequisites": [
+      "summable_pow_div_factorial",
+      "Summable",
+      "injection n -> 2n+1"
+    ]
+  },
+  {
+    "id": "ann-approximation",
+    "proofId": "taylor-sincos-convergence",
+    "range": {
+      "startLine": 294,
+      "endLine": 319
+    },
+    "type": "insight",
+    "title": "Concrete Approximation Error Bounds",
+    "content": "**Four results** connecting the abstract convergence to concrete numerics:\n\n1. `sinPartialSum_at_zero`: $S_n^{\\sin}(0) = 0$ for all $n$, confirming $\\sin(0) = 0$. Proof: for $k = 0$, the term is $\\sin(0) = 0$; for $k > 0$, the factor $0^k = 0$.\n2. `cosPartialSum_zero_at_zero`: $S_0^{\\cos}(0) = 1$, confirming $\\cos(0) = 1$.\n3. **$\\sin$ linear approximation**: $|\\sin(x) - S_1(x)| \\leq |x|^2$. Since $S_1^{\\sin}(x) = x$ (as $\\sin(0) = 0$, $\\sin'(0) = \\cos(0) = 1$), this gives $|\\sin x - x| \\leq x^2$.\n4. **$\\cos$ quadratic approximation**: $|\\cos(x) - S_2(x)| \\leq |x|^3/2$. Since $S_2^{\\cos}(x) = 1 - x^2/2$, this gives $|\\cos x - (1 - x^2/2)| \\leq |x|^3/2$.\n\n**Practical significance**: The bound $|\\sin x - x| \\leq x^2$ is the basis of the small-angle approximation used in pendulum physics, optics (paraxial approximation), and signal processing. The quadratic cosine approximation is used in CORDIC algorithms in hardware floating-point units.\n\n**Proof technique**: Both follow from the remainder bound at $n=1$ and $n=2$ respectively, with `simp only [Nat.factorial]` to reduce $1! = 1$ and $2! = 2$, then `linarith`.",
+    "mathContext": "$|\\sin x - x| \\leq x^2$ and $|\\cos x - (1 - x^2/2)| \\leq |x|^3/2$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "small-angle approximation",
+      "CORDIC",
+      "numerical analysis",
+      "Taylor polynomial error"
+    ],
+    "prerequisites": [
+      "sin/cos_taylor_remainder_bound",
+      "Nat.factorial evaluation"
+    ]
+  },
+  {
+    "id": "ann-tighter-than-exp",
+    "proofId": "taylor-sincos-convergence",
+    "range": {
+      "startLine": 321,
+      "endLine": 334
+    },
+    "type": "insight",
+    "title": "Strictly Tighter Remainder Than Exponential",
+    "content": "**Theorem**: For $x \\neq 0$:\n$$\\frac{|x|^{n+1}}{n!} < \\frac{e^{|x|} |x|^{n+1}}{n!}$$\n\n**Proof**: The key is $e^{|x|} > 1$ for $x \\neq 0$, which follows from $e^0 = 1$ and strict monotonicity of $\\exp$. Then:\n- $|x|^{n+1} > 0$ (since $|x| > 0$)\n- `mul_lt_mul_of_pos_right` gives $1 \\cdot |x|^{n+1} < e^{|x|} \\cdot |x|^{n+1}$\n- `div_lt_div_of_pos_right` divides by $n! > 0$\n\n**Why this comparison matters**: For the $\\exp$ Taylor series, the Lagrange remainder is bounded by $e^{|x|} \\cdot |x|^{n+1}/(n+1)!$, where the factor $e^{|x|}$ comes from $\\sup_{t \\in [0,x]} |e^t| = e^{|x|}$. For $\\sin$ and $\\cos$, the analogous factor is 1 (the derivative supremum). This means that for any fixed $x$ and $n$, the trig remainder bound is exponentially smaller than the $\\exp$ remainder bound — making polynomial approximations of $\\sin$ and $\\cos$ converge faster in practice.\n\n**Caveat**: This compares the *bounds*, not the actual remainders. The true $\\exp$ remainder may be smaller than its bound. But the bounds themselves determine the guaranteed accuracy of truncated series in verified computation.",
+    "mathContext": "$\\frac{|x|^{n+1}}{n!} < e^{|x|} \\cdot \\frac{|x|^{n+1}}{n!}$ for $x \\neq 0$, since $e^{|x|} > 1$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "remainder comparison",
+      "exp_strictMono",
+      "verified computation",
+      "convergence rate"
+    ],
+    "prerequisites": [
+      "Real.exp_zero",
+      "Real.exp_strictMono",
+      "pow_pos",
+      "factorial_pos"
+    ]
+  },
+  {
+    "id": "ann-verification",
+    "proofId": "taylor-sincos-convergence",
+    "range": {
+      "startLine": 336,
+      "endLine": 348
+    },
+    "type": "concept",
+    "title": "API Summary and Namespace Close",
+    "content": "Nine `#check` commands verify the signatures of the main exported theorems:\n- **Period-4**: `iteratedDeriv_sin_add_four`, `iteratedDeriv_cos_add_four`\n- **Uniform bound**: `norm_iteratedDeriv_sin_le`, `norm_iteratedDeriv_cos_le`\n- **Convergence**: `sinPartialSum_tendsto`, `cosPartialSum_tendsto`\n- **Summability**: `summable_sinSeries`, `summable_cosSeries`\n- **Comparison**: `sincos_remainder_tighter_than_exp`\n\nThe namespace `TaylorSinCosConvergence` closes on line 348, scoping all 29 theorems, 4 definitions, and 2 axioms.",
+    "mathContext": "The 9 checked theorems span the full argument: structural property (period-4) $\\to$ quantitative bound ($\\|f^{(n)}\\| \\leq 1$) $\\to$ convergence ($S_n \\to f$) $\\to$ summability $\\to$ comparison with exp.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "#check command",
+      "API surface",
+      "namespace scoping"
+    ],
+    "prerequisites": [
+      "all preceding theorems"
+    ]
+  }
+]

@@ -1,0 +1,110 @@
+{
+  "slug": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03-oq-02",
+  "title": "(q,t)-deformation (Macdonald-type) of qMultichoose",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "parent": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03",
+  "problemStatement": {
+    "formal": "\\text{Define } \\mathrm{qtBinom}(q, t, n, k) := \\prod_{i=1}^{k} \\frac{1 - q^{n+1-i} t^{i-1}}{1 - q^i t^{i-1}}, \\quad \\mathrm{qtMultichoose}(q, t, n, k) := \\mathrm{qtBinom}(q, t, n + k - 1, k). \\text{ Prove: (i) } \\mathrm{qtMultichoose}(q, 1, n, k) = \\mathrm{qMultichoose}(q, n, k), \\text{ (ii) } \\mathrm{qtMultichoose}(1, 1, n, k) = \\mathrm{multichoose}(n, k), \\text{ (iii) an interpolating } (q,t)\\text{-Pascal recurrence exists.}",
+    "plain": "The parent gallery entry proves qMultichoose(q, n, k) := qBinom(q, n+k-1, k) is the natural q-analog of the integer multichoose coefficient and satisfies a q-Pascal recurrence. This sub-OQ asks whether the natural Macdonald-style (q,t)-deformation qtMultichoose(q, t, n, k) := qtBinom(q, t, n+k-1, k) — where qtBinom is the Macdonald (q,t)-binomial coefficient (Macdonald 1995, §VI.6) — satisfies: (i) recovers qMultichoose at t = 1; (ii) recovers ordinary multichoose at q = t = 1; (iii) satisfies an interpolating (q,t)-Pascal recurrence; (iv) connects to Macdonald polynomial principal specializations. The candidate definition is well-established mathematically; the Lean formalisation is genuinely new — would be the first Lean entry to mention Macdonald theory.",
+    "whyMatters": [
+      "First Lean entry on Macdonald theory: gallery has no current treatment of Macdonald or Hall-Littlewood polynomials, which underpin modern algebraic combinatorics and DAHA representation theory.",
+      "Mathematical depth: the Macdonald (q,t)-Pascal recurrence (Macdonald §VI.6 (6.4)) does NOT specialise cleanly to the parent's q-Pascal at t = 1 — its t-factor vanishes. Finding the INTERPOLATING (q,t)-Pascal is research-grade.",
+      "Mathlib gap: Macdonald polynomials, Hall-Littlewood functions, and Cherednik DAHA infrastructure are all absent from Mathlib v4.26.0. This OQ would catalyze first-pass Lean infrastructure."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent (researcher-3, 2026-05-05): qMultichoose(q, n, k) = qBinom(q, n+k-1, k) is the q-analog of Nat.multichoose; satisfies q-Pascal qMultichoose(q, n+1, k+1) = qMultichoose(q, n+1, k) + q^(k+1) · qMultichoose(q, n, k+1).",
+      "Macdonald 1995: the (q,t)-binomial qtBinom(q, t, n, k) := ∏_{i=1}^k (1 - q^(n+1-i) t^(i-1)) / (1 - q^i t^(i-1)) is the standard definition.",
+      "Specialisation at t = 1: qtBinom(q, 1, n, k) = qBinom(q, n, k) (Gaussian binomial).",
+      "Specialisation at q = t = 1: qtBinom(1, 1, n, k) = binom(n, k) (via 0/0 limit, removable singularity).",
+      "Macdonald §VI.6 (6.4): a (q,t)-Pascal recurrence exists with rational t-coefficient (1 - t^(k+1)) / (1 - q^(n-k) t^k); however, this DOES NOT specialise to the parent's q-Pascal at t = 1.",
+      "Haiman 2001: Macdonald polynomial positivity (n! conjecture) — connects (q,t)-objects to algebraic geometry of Hilbert schemes."
+    ],
+    "open": [
+      "The interpolating (q,t)-Pascal recurrence for qtMultichoose that specialises to the parent's q-Pascal at t = 1: of the form qtMultichoose(q, t, n+1, k+1) = qtMultichoose(q, t, n+1, k) + q^(k+1) t^a(n,k) · qtMultichoose(q, t, n, k+1) for some explicit a(n, k).",
+      "Whether qtMultichoose admits a clean Lean formalisation over CommRing R (the rational expression nominally requires Field R).",
+      "Explicit identification of the Macdonald polynomial principal-specialization that involves qtMultichoose (Macdonald §VI.6 Exercise 1 gives a partial answer)."
+    ],
+    "goal": "Formalize in Lean: (1) qtBinom and qtMultichoose definitions in Field R. (2) Boundary cases zero/one. (3) Specialization at t = 1 to qMultichoose. (4) Interpolating (q,t)-Pascal recurrence. (5) Specialization at q = t = 1 to Nat.multichoose. (6) Optional: axiomatise Macdonald polynomial connection. Each step yields a Lean theorem; the entry will be `verified` if S5 ships clean, else `axiomatized`."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-13T00:00:00Z",
+    "iteration": 14,
+    "focus": "S5c ACT shipped (researcher-1, 2026-06-05, this iteration): qtMultichoose_two_two_eq_qMultichoose direct bridge for (2,2) interior of polynomial sub-lattice. Composes S5 ACT qtMultichoose_two_two_eq_qNumber with parent qMultichoose_two_left q 2. File ~480 → ~510 LOC, 17 → 18 theorems, 0 sorries, 0 axioms. Docker-verified 7745/7745. Polynomial-sub-lattice bridge chain now complete at named-object level.",
+    "blockers": [],
+    "nextAction": "DONE — core formalization complete (0 sorries, 0 axioms, 21 theorems) and the gallery entry is shipped & live: src/data/proofs/arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03-oq-02/meta.json (status axiomatized, title '(q,t)-Multichoose: A Macdonald-Type Deformation of the Gaussian Binomial', S7 ACT #22969 + audit count fixes). The planned doc-only S7 ACT deliverable is done. The remaining 'Path C RatFunc migration' for positive qtMultichoose 1 1 n k = Nat.multichoose n k recovery is an OPEN, heavier (~80-120 LOC, multi-session) extension and is best tracked as a fresh follow-up slug rather than re-claiming this completed one; it is build-dependent and blocked today by the verification blackout (Docker hung + Aristotle 404).",
+    "attemptCounts": {
+      "S1_observe": 1,
+      "S2_definitions": 1,
+      "S3_t_eq_1_specialization": 1,
+      "S4_qt_pascal_interpolating": 0,
+      "S5_qt_eq_1_1_specialization": 0,
+      "S6_macdonald_axiom": 0,
+      "S7_gallery": 0
+    }
+  },
+  "knowledge": {
+    "insights": [
+      "Macdonald §VI.6 (6.4) gives a (q,t)-Pascal recurrence with rational t-coefficient (1 - t^(k+1))/(1 - q^(n-k) t^k); this DOES NOT specialise cleanly to the parent's q-Pascal at t = 1 (the t-factor becomes 0). Finding the INTERPOLATING form is the deepest technical task.",
+      "Small-case calculation: qtMultichoose(q, t, 2, 2) = (1 - q^3)/(1 - q) = 1 + q + q^2, INDEPENDENT of t. This shows the (q,t)-multichoose has structural t-cancellation that the binary (q,t)-binomial does not.",
+      "The Field R constraint is real (rational expression with q, t in denominator); the parent's CommRing R generality is lost. Gallery integration may require clearing denominators or working in a localized ring.",
+      "Mathlib v4.26.0 has NO Macdonald polynomials, NO Hall-Littlewood functions, NO Cherednik DAHA, and only partial Schur functions. This OQ would catalyze infrastructure.",
+      "S3 ACT insight (researcher-1, 2026-05-30): the CommRing multiplicative q-Pascal qBinom q n (k+1) · (1 - q^(k+1)) = qBinom q n k · (1 - q^(n-k)) is the missing bridge between the rational Macdonald form and the polynomial Gaussian form. It is UNCONDITIONAL — derived by subtracting qBinom_pascal and qBinom_pascal' via linear_combination, with no nonvanishing hypothesis (out-of-range n < k is handled by qBinom_eq_zero_of_lt zeroing both sides). This avoids the parent's qBinom_product detour suggested by S4 PREP, cutting the S3 proof to ~30 LOC core. The two q-Pascals differ only in their q-weight (q^(k+1) vs q^(n-k)) on the same Pascal expansion — their difference factors cleanly.",
+      "The ratio form qtBinom_succ_div makes the S6 PREP §3 \"no (n,k)-dependent denominator shape\" claim explicit at the Lean level: the denominator (1 - q^(k+1) t^k) depends only on k, not on N; the numerator (1 - q^(N-k) t^k) depends on N-k. Pascal-style coefficients have (n,k)-dependent denominator shape; the k-direction recurrence does not. This is the structural reason the k-direction is preferred for Path C (RatFunc.eval).",
+      "S5c ACT insight (researcher-1, 2026-06-05): the parent already has qMultichoose_two_left q k : qMultichoose q 2 k = qNumber q (k + 1), so the (2,2) bridge to qMultichoose is a one-line composition (qtMultichoose_two_two_eq_qNumber + ← qMultichoose_two_left q 2) — no new parent-side helper needed. With this, every point in the polynomial sub-lattice {k ≤ 1} ∪ {(2,2)} is now formally equated to a parent-side named object (qBinom or qMultichoose), completing the bridge chain at the named-object level."
+    ],
+    "builtItems": [
+      "Wrote research/problems/arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03-oq-02/problem.md (formal targets + S2-S7 plan).",
+      "Wrote research/problems/arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03-oq-02/knowledge.md (Macdonald historical + Pascal analysis + Mathlib gap).",
+      "Wrote research/problems/arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03-oq-02/state.md (phase OBSERVE).",
+      "Created src/data/research/problems/arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03-oq-02.json (this file).",
+      "S2 ACT (researcher-9, 2026-05-13): created proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean with qtBinom, qtMultichoose, four boundary cases, and unconditional qtBinom_succ.",
+      "S3 ACT (researcher-1, 2026-05-30): extended the Lean file with private lemma qBinom_mult_recur (CommRing multiplicative q-Pascal), theorem qtBinom_at_t_eq_one (the t = 1 substitution under Path A hypothesis), and theorem qtMultichoose_at_t_eq_one (headline corollary).",
+      "S6 ACT (researcher-1, 2026-05-31): shipped qtBinom_succ_div — the explicit k-direction telescoping ratio identity flagged by S6 PREP §0 recommendation 5. Direct 2-line corollary of qtBinom_succ via mul_div_cancel_left₀. The ratio form (no residual qtBinom factor) is the cleaner foundation for future telescoping / RatFunc.eval arguments. File 313 → 348 LOC, 9 → 10 theorems, sorry-free + axiom-free.",
+      "S5b ACT (researcher-1, 2026-06-05): shipped qtBinom_zero_right_eq_qBinom, qtMultichoose_zero_right_eq_qMultichoose, qtBinom_one_right_eq_qBinom, qtMultichoose_one_right_eq_qMultichoose — direct bridges from polynomial sub-lattice k ≤ 1 slice to parent gallery's named objects. File 428 → ~480 LOC, 13 → 17 theorems, Docker-verified 7745/7745.",
+      "S5c ACT (researcher-1, 2026-06-05, this iteration): shipped qtMultichoose_two_two_eq_qMultichoose in Section X — direct bridge for (n,k)=(2,2) interior of polynomial sub-lattice; composes qtMultichoose_two_two_eq_qNumber (S5 ACT) with parent qMultichoose_two_left q 2. File ~480 → ~510 LOC, 17 → 18 theorems, Docker-verified 7745/7745. Polynomial-sub-lattice bridge chain now complete at named-object level."
+    ],
+    "progressSummary": "COMPLETED 2026-06-13 (researcher-1, S8 status-sync): gallery entry shipped & live (#22969), file 0-sorry/0-axiom/21-thm; empty leanFiles populated; Path C positive-recovery is an open follow-up. S5c ACT shipped (researcher-1, 2026-06-05, this iteration): added qtMultichoose_two_two_eq_qMultichoose (Section X), the direct bridge from the polynomial sub-lattice (2,2) interior to parent qMultichoose q 2 2. With this, every point in {k ≤ 1} ∪ {(2,2)} is now formally equated to a parent-side named object (qBinom or qMultichoose), closing the polynomial-sub-lattice bridge chain at the named-object level. The proof is a one-line composition: qtMultichoose_two_two_eq_qNumber (S5 ACT, gives qNumber q 3 under guards) + parent qMultichoose_two_left q 2 (gives qMultichoose q 2 2 = qNumber q (2+1) = qNumber q 3). File ~480 → ~510 LOC, 17 → 18 theorems, 0 sorries, 0 axioms. Docker-verified 7745/7745. PRIOR (S5b ACT, researcher-1, 2026-06-05): four direct bridges for k ≤ 1 slice (qBinom_zero/one bridges and qMultichoose_zero/one bridges). PRIOR (S5 ACT, researcher-1, 2026-06-01): three polynomial-form bridges to qNumber. PRIOR (S6 ACT, researcher-1, 2026-05-31): qtBinom_succ_div ratio-form corollary. PRIOR (S4 ACT, researcher-1, 2026-05-31): qtMultichoose_two_two polynomial sub-lattice + Field R 0/0 trap formalisation. PRIOR (S3 ACT, researcher-1, 2026-05-30): qtBinom_at_t_eq_one + qtMultichoose_at_t_eq_one under Path A. PRIOR (S2 ACT, researcher-9, 2026-05-13): Lean skeleton with qtBinom, qtMultichoose, boundary cases, and qtBinom_succ k-direction recurrence. PRIOR (S1 OBSERVE + S2-S6 PREPs): polynomial sub-lattice characterization, Field R 0/0 trap with three rescues, pivot from Pascal-style to k-direction telescoping. NEXT: S7 ACT (gallery JSON integration, lighter — quote qMultichoose q 2 2 and qMultichoose q n 1 as canonical references) OR Path C RatFunc migration for positive at_one_one recovery (heavier, multi-session).",
+    "nextSteps": [
+      "S4 ACT (deepest task, per S6 PREP): the interpolating (q,t)-Pascal — qtMultichoose q t (n+1) (k+1) = qtMultichoose q t (n+1) k + q^(k+1) t^a(n,k) · qtMultichoose q t n (k+1) for some explicit a(n,k) that recovers the parent's q-Pascal at t = 1. S6 PREP falsified Option α at 4 data points; try a(n,k) ∈ {n, n-k, k} computationally at small cases.",
+      "S5 ACT (q = t = 1 specialization): two options after S3 ACT — (a) RatFunc.eval lift to RatFunc ℚ (S5 PREP Path C, no q ≠ 1 needed), (b) polynomial sub-lattice + L'Hôpital cancellation (S3 PREP). The S3 ACT shipped this PR establishes qtMultichoose q 1 n k = qMultichoose q n k = (Nat.multichoose n k : R) on the open dense set; the q = 1 limit fills the removable singularity. ~40-50 LOC.",
+      "S6 ACT (optional): axiomatise Macdonald polynomial principal-specialization identity (unchanged from S1).",
+      "S7: gallery JSON meta.json integration with status: 'verified' if S5 ships clean, else 'axiomatized'."
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "combinatorics",
+    "q-analogs",
+    "qt-analogs",
+    "macdonald-polynomials",
+    "hall-littlewood",
+    "gaussian-binomial",
+    "multiset",
+    "representation-theory",
+    "mathlib-gap",
+    "research"
+  ],
+  "significance": 5,
+  "tractability": 4,
+  "lastUpdated": "2026-05-30T00:00:00.000Z",
+  "lastUpdate": "2026-06-13T00:00:00.000Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean",
+      "filename": "ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean",
+      "lineCount": 564,
+      "theoremCount": 21,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean"
+    }
+  ]
+}

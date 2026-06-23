@@ -1,0 +1,177 @@
+[
+  {
+    "id": "ann-cantors-oq01-01-header",
+    "proofId": "cantors-theorem-oq-01",
+    "range": {
+      "startLine": 9,
+      "endLine": 41
+    },
+    "type": "concept",
+    "title": "What Is |𝒫(ℝ)|? The Beth Tower and Its ZFC Limits",
+    "content": "The header frames the open question: what is the cardinality of the power set of ℝ? The ZFC answer is definitive in the beth hierarchy: |𝒫(ℝ)| = 2^|ℝ| = 2^𝔠 = 2^(2^ℵ₀) = ℶ₂. But the aleph-index of ℶ₂ is undetermined — under GCH+CH it equals ℵ₂, without GCH it can be many regular cardinals (Easton 1970). The file proves 6 ZFC results and notes 2 independence results. Imports include Cardinal.Continuum (𝔠), Cardinal.Cofinality (König constraint), and Order.SuccPred (successor cardinals). The beth hierarchy ℶ₀=ℵ₀, ℶ₁=𝔠, ℶ₂=|𝒫(ℝ)| is the organizing structure.",
+    "mathContext": "The **beth hierarchy**: $\\beth_0 = \\aleph_0 = |\\mathbb{N}|$, $\\beth_1 = 2^{\\aleph_0} = \\mathfrak{c} = |\\mathbb{R}|$, $\\beth_2 = 2^{\\mathfrak{c}} = |\\mathcal{P}(\\mathbb{R})|$. Under GCH: $\\beth_n = \\aleph_n$ for all $n$. Without GCH: $\\beth_n$ and $\\aleph_n$ can diverge arbitrarily. **Easton's theorem (1970)**: for regular cardinals $\\kappa$, $2^\\kappa$ can be set to almost any regular cardinal $> \\kappa$ independently. So $|\\mathcal{P}(\\mathbb{R})| = \\aleph_{100}$ is consistent with ZFC!",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "beth hierarchy",
+      "Cardinal.Continuum",
+      "Easton's theorem",
+      "GCH",
+      "aleph hierarchy"
+    ],
+    "prerequisites": [
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Cardinal.Continuum",
+      "Cardinal.beth",
+      "Cardinal.aleph"
+    ]
+  },
+  {
+    "id": "ann-cantors-oq01-02-card-real",
+    "proofId": "cantors-theorem-oq-01",
+    "range": {
+      "startLine": 54,
+      "endLine": 62
+    },
+    "type": "insight",
+    "title": "Cardinality of ℝ: |ℝ| = 𝔠 via Cardinal.mk_real",
+    "content": "card_real_eq_continuum proves #ℝ = 𝔠 in one line via Cardinal.mk_real — Mathlib's direct statement that the cardinality of ℝ equals the continuum 𝔠 = 2^ℵ₀. card_real_gt_aleph_zero proves ℵ₀ < #ℝ by rewriting to ℵ₀ < 𝔠 and applying Cardinal.aleph0_lt_continuum. These two results establish ℝ as strictly between the countable and uncountable, and set up all further calculations involving #ℝ. The one-line proof of card_real_eq_continuum is possible because Mathlib has already formalized the Cantor-Bernstein proof that |ℝ| = |𝒫(ℕ)| = 2^ℵ₀.",
+    "mathContext": "**Cardinal.mk_real**: $\\#\\mathbb{R} = \\mathfrak{c} = 2^{\\aleph_0}$. This is proved in Mathlib via the bijection $\\mathbb{R} \\leftrightarrow \\{0,1\\}^\\mathbb{N}$ (binary expansion modulo countable ambiguity) combined with Cantor-Bernstein. **Cardinal.aleph0_lt_continuum**: $\\aleph_0 < 2^{\\aleph_0}$ (Cantor's original 1874 theorem). The continuum $\\mathfrak{c}$ is defined in Mathlib as `Cardinal.continuum = 2 ^ ℵ₀`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cardinal.mk_real",
+      "Cardinal.aleph0_lt_continuum",
+      "Cardinal.continuum",
+      "Cantor-Bernstein"
+    ],
+    "prerequisites": [
+      "Mathlib.SetTheory.Cardinal.Continuum",
+      "Cardinal.mk_real lemma"
+    ]
+  },
+  {
+    "id": "ann-cantors-oq01-03-cantor",
+    "proofId": "cantors-theorem-oq-01",
+    "range": {
+      "startLine": 68,
+      "endLine": 94
+    },
+    "type": "insight",
+    "title": "Power Set Formula and Cantor's Theorem: |ℝ| < |𝒫(ℝ)|",
+    "content": "card_set_formula: #(Set α) = 2^#α via Cardinal.mk_set — the power set has cardinality 2 raised to the cardinality of the base type. card_powerSet_real_formula: #(Set ℝ) = 2^𝔠 by rewriting via mk_set and card_real_eq_continuum. card_real_lt_card_powerSet_real: #ℝ < #(Set ℝ), proved by rw mk_set then Cardinal.cantor #ℝ (the general κ < 2^κ result). Two corollaries follow: ℵ₀ < #(Set ℝ) (by transitivity) and 𝔠 < #(Set ℝ) (by substituting card_real_eq_continuum). These establish the strict hierarchy ℕ < ℝ < 𝒫(ℝ) by cardinality.",
+    "mathContext": "**Cantor's theorem (general)**: for any set $\\alpha$, $|\\alpha| < |\\mathcal{P}(\\alpha)|$, i.e., $\\kappa < 2^\\kappa$ for all cardinals $\\kappa$. In Mathlib: `Cardinal.cantor : ∀ a, a < 2 ^ a`. The proof uses the diagonal argument: assume $f: \\alpha \\to \\mathcal{P}(\\alpha)$ surjective; define $D = \\{x \\in \\alpha \\mid x \\notin f(x)\\}$; then $D \\neq f(y)$ for all $y$ (since $y \\in D \\iff y \\notin f(y)$). Contradiction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cardinal.mk_set",
+      "Cardinal.cantor",
+      "Cardinal.cantor #ℝ",
+      "diagonal argument"
+    ],
+    "prerequisites": [
+      "Cardinal.cantor",
+      "Cardinal.mk_set",
+      "card_real_eq_continuum"
+    ]
+  },
+  {
+    "id": "ann-cantors-oq01-04-beth",
+    "proofId": "cantors-theorem-oq-01",
+    "range": {
+      "startLine": 100,
+      "endLine": 125
+    },
+    "type": "insight",
+    "title": "Beth Numbers: |𝒫(ℝ)| = ℶ₂ via the Beth Succ Formula",
+    "content": "beth_one_eq_continuum proves ℶ₁ = 𝔠 by rewriting ordinal 1 = Order.succ 0, then Cardinal.beth_succ and Cardinal.beth_zero, then Cardinal.two_power_aleph0 (2^ℵ₀ = 𝔠). card_powerSet_real_eq_beth_two proves #(Set ℝ) = ℶ₂ by: (1) computing ℶ₂ = 2^ℶ₁ via beth_succ; (2) substituting ℶ₁ = 𝔠; (3) matching card_powerSet_real_formula = 2^𝔠. beth_two_gt_beth_one proves ℶ₁ < ℶ₂ via Cardinal.beth_strictMono with 1 < 2. These results place |𝒫(ℝ)| precisely in the beth tower, independent of any cardinal axioms.",
+    "mathContext": "**Beth numbers**: $\\beth_0 = \\aleph_0$, $\\beth_{\\alpha+1} = 2^{\\beth_\\alpha}$, $\\beth_\\lambda = \\sup_{\\alpha < \\lambda} \\beth_\\alpha$ (limit). In Mathlib: `Cardinal.beth_zero : beth 0 = ℵ₀`, `Cardinal.beth_succ : beth (succ α) = 2 ^ beth α`. **beth_strictMono**: $\\alpha < \\beta \\Rightarrow \\beth_\\alpha < \\beth_\\beta$ (by induction using Cantor $\\kappa < 2^\\kappa$). The beth tower is strictly increasing regardless of CH or GCH.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cardinal.beth",
+      "Cardinal.beth_succ",
+      "Cardinal.beth_zero",
+      "Cardinal.beth_strictMono",
+      "beth_one_eq_continuum"
+    ],
+    "prerequisites": [
+      "Cardinal.beth API",
+      "Order.succ_eq_add_one",
+      "Cardinal.two_power_aleph0"
+    ]
+  },
+  {
+    "id": "ann-cantors-oq01-05-aleph",
+    "proofId": "cantors-theorem-oq-01",
+    "range": {
+      "startLine": 131,
+      "endLine": 160
+    },
+    "type": "insight",
+    "title": "Aleph Bounds: ℵ₁ ≤ 𝔠 and Under ¬CH, ℵ₂ ≤ |𝒫(ℝ)|",
+    "content": "aleph_one_le_continuum_zfc: ℵ₁ ≤ 𝔠 via Cardinal.aleph_one_le_continuum (one line). aleph_one_lt_card_powerSet_real: ℵ₁ < #(Set ℝ) by transitivity with continuum_lt_card_powerSet_real. CH : Prop := (𝔠 : Cardinal.{0}) = Cardinal.aleph 1 — the local CH definition. not_ch_continuum_gt_aleph_one: ¬CH → ℵ₁ < 𝔠, via rcases on lt_or_eq_of_le and contradiction from hnch applied to h.symm. aleph_two_le_card_powerSet_real_of_not_CH: ¬CH → ℵ₂ ≤ #(Set ℝ), proved by showing ℵ₂ = Order.succ ℵ₁ via aleph_succ, then Order.succ_le_of_lt on h1 (ℵ₁ < 𝔠), then le_trans with continuum_lt_card_powerSet_real.",
+    "mathContext": "**ZFC-provable**: $\\aleph_0 < \\aleph_1 \\leq \\mathfrak{c}$ (since $\\aleph_1 = \\text{succ}(\\aleph_0)$ is minimal uncountable). **Under ¬CH**: $\\aleph_1 < \\mathfrak{c}$, so $\\aleph_2 = \\text{succ}(\\aleph_1) \\leq \\mathfrak{c} \\leq 2^\\mathfrak{c} = |\\mathcal{P}(\\mathbb{R})|$. These give the ZFC-provable lower bound chain: $\\aleph_0 < \\aleph_1 \\leq \\mathfrak{c} < 2^\\mathfrak{c} = \\beth_2 = |\\mathcal{P}(\\mathbb{R})|$. Under ¬CH: $\\aleph_0 < \\aleph_1 < \\aleph_2 \\leq |\\mathcal{P}(\\mathbb{R})|$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cardinal.aleph_one_le_continuum",
+      "Order.succ_le_of_lt",
+      "lt_or_eq_of_le",
+      "Cardinal.aleph_succ"
+    ],
+    "prerequisites": [
+      "aleph_one_le_continuum_zfc",
+      "continuum_lt_card_powerSet_real",
+      "Cardinal.aleph_succ"
+    ]
+  },
+  {
+    "id": "ann-cantors-oq01-06-gch-konig",
+    "proofId": "cantors-theorem-oq-01",
+    "range": {
+      "startLine": 166,
+      "endLine": 227
+    },
+    "type": "insight",
+    "title": "GCH Analysis and König's Constraint: What ZFC Can and Cannot Say",
+    "content": "GCH_at_continuum : Prop := 2^𝔠 = Order.succ 𝔠. gch_and_ch_implies_powerSet_real_eq_aleph_two: assuming CH and GCH_at_continuum, #(Set ℝ) = ℵ₂. Proof: ℵ₂ = Order.succ ℵ₁ = Order.succ 𝔠 (by CH), and 2^𝔠 = Order.succ 𝔠 (GCH) — so both are equal. not_gch_at_continuum_implies_gt_aleph_two: if ¬GCH and CH, then ℵ₂ < #(Set ℝ). Proof: Cantor gives succ 𝔠 ≤ 2^𝔠; ¬GCH gives strict lt via Ne.symm. konig_constraint_powerSet_real (axiom): cf(|𝒫(ℝ)|) > 𝔠 — König's theorem rules out |𝒫(ℝ)| being any cardinal with cofinality ≤ 𝔠 (in particular, ℵ_ω is excluded since cf(ℵ_ω) = ℵ₀ < 𝔠).",
+    "mathContext": "**GCH at 𝔠**: $2^\\mathfrak{c} = \\mathfrak{c}^+$ (successor of the continuum). Under CH + GCH: $\\mathfrak{c} = \\aleph_1$, $\\mathfrak{c}^+ = \\aleph_2$, so $|\\mathcal{P}(\\mathbb{R})| = \\aleph_2$. **König's theorem**: $\\text{cf}(2^\\mathfrak{c}) > \\mathfrak{c}$. Rules out: $|\\mathcal{P}(\\mathbb{R})| \\neq \\aleph_\\omega$ (since $\\text{cf}(\\aleph_\\omega) = \\aleph_0 < \\mathfrak{c}$), $\\neq \\aleph_{\\omega_1}$ (cf $= \\aleph_1 \\leq \\mathfrak{c}$). **Easton's theorem**: all regular cardinals $> \\mathfrak{c}$ are consistent values for $2^\\mathfrak{c}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "GCH_at_continuum",
+      "konig_constraint_powerSet_real",
+      "Order.succ_le_of_lt",
+      "ne_of_lt",
+      "Easton's theorem"
+    ],
+    "prerequisites": [
+      "GCH_at_continuum definition",
+      "CH definition",
+      "Cardinal.cantor",
+      "König's theorem",
+      "cofinality"
+    ]
+  },
+  {
+    "id": "ann-cantors-oq01-07-summary",
+    "proofId": "cantors-theorem-oq-01",
+    "range": {
+      "startLine": 233,
+      "endLine": 272
+    },
+    "type": "insight",
+    "title": "Summary Theorem: Four ZFC-Provable Facts About |𝒫(ℝ)|",
+    "content": "cantors_theorem_oq01_summary packages four results as a conjunction: (1) #(Set ℝ) = 2^𝔠 (power set formula), (2) #ℝ < #(Set ℝ) (Cantor strict inequality), (3) #(Set ℝ) = ℶ₂ (beth₂ representation), (4) ℵ₁ < #(Set ℝ) (aleph lower bound). The proof is ⟨card_powerSet_real_formula, card_real_lt_card_powerSet_real, card_powerSet_real_eq_beth_two, aleph_one_lt_card_powerSet_real⟩ — a 4-witness conjunction. The conclusion block summarizes: the residual open question is the aleph-index of ℶ₂; König rules out singular cofinality candidates; Easton shows almost any regular cardinal is consistent.",
+    "mathContext": "**Complete ZFC answer**: $|\\mathcal{P}(\\mathbb{R})| = \\beth_2 = 2^{2^{\\aleph_0}}$. **Constraints on the aleph-index**: must be $\\geq \\aleph_2$ (ZFC), must have cofinality $> \\mathfrak{c}$ (König). **Consistent values** (Easton): $\\aleph_2, \\aleph_3, \\aleph_{\\omega_1+1}, \\aleph_{\\omega_2}$, etc. — any regular cardinal with cofinality $> \\mathfrak{c}$. The beth hierarchy gives the canonical answer independent of alephs; the aleph question is the genuinely open part.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "cantors_theorem_oq01_summary",
+      "beth_two representation",
+      "König constraint",
+      "Easton's theorem",
+      "ZFC independence"
+    ],
+    "prerequisites": [
+      "card_powerSet_real_formula",
+      "card_real_lt_card_powerSet_real",
+      "card_powerSet_real_eq_beth_two",
+      "aleph_one_lt_card_powerSet_real"
+    ]
+  }
+]

@@ -1,0 +1,192 @@
+{
+  "id": "erdos-617",
+  "title": "Erdős Problem #617: Balanced Colourings of Complete Graphs",
+  "slug": "erdos-617",
+  "description": "For r ≥ 3, does every r-colouring of K_{r²+1} have an induced K_{r+1} missing a colour? Proved for r=3,4 by Erdős-Gyárfás (1999), open for r ≥ 5.",
+  "meta": {
+    "author": "Erdős-Gyárfás (1999 partial proof)",
+    "sourceUrl": "https://erdosproblems.com/617",
+    "date": "1999",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos617Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "graph-theory",
+      "ramsey-theory",
+      "edge-colouring"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 617,
+    "erdosUrl": "https://erdosproblems.com/617",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Clique",
+        "description": "Graph cliques",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "CompleteGraph definition on Fin n",
+      "Edge and EdgeColouring definitions",
+      "InducedClique definition",
+      "coloursUsed axiom for colour coverage",
+      "IsBalanced and IsNotBalanced definitions",
+      "ErdosGyarfasConjecture formalization",
+      "r_3_solved axiom (Erdős-Gyárfás 1999)",
+      "r_4_solved axiom (Erdős-Gyárfás 1999)",
+      "r_2_false axiom (counterexample)",
+      "r_squared_balanced axiom (tightness)",
+      "erdos_617_summary theorem"
+    ],
+    "axiomCount": 4,
+    "lineCount": 202,
+    "assumptions": "4 axioms: coloursUsed, r_3_solved, r_4_solved, r_2_false. See Lean source for complete statements.",
+    "theoremCount": 2,
+    "definitionCount": 10
+  },
+  "overview": {
+    "historicalContext": "Erdős and Gyárfás posed this conjecture in their 1999 paper 'Split and balanced colorings of complete graphs'. A balanced r-colouring of a complete graph means every induced K_{r+1} uses all r colours on its edges. The conjecture asserts that no such balanced colouring exists for K_{r²+1} when r ≥ 3.\n\nErdős and Gyárfás proved the conjecture for the cases r = 3 (K₁₀) and r = 4 (K₁₇) using counting arguments on the edge-colour distribution. They also showed the result fails for r = 2, where the Petersen graph complement provides a balanced 2-colouring of K₅. The general conjecture for r ≥ 5 remains open.\n\nThe threshold r²+1 is known to be tight: for infinitely many values of r, balanced r-colourings of K_{r²} exist. This means that the single extra vertex is precisely what forces the non-existence of balanced colourings, revealing a sharp combinatorial threshold.",
+    "problemStatement": "**Conjecture (Erdős-Gyárfás, 1999):** For $r \\geq 3$, if the edges of $K_{r^2+1}$ are $r$-coloured, then there exist $r+1$ vertices with at least one colour missing from the edges of the induced $K_{r+1}$.\n\n**Equivalently:** No balanced $r$-colouring of $K_{r^2+1}$ exists for $r \\geq 3$.\n\n**Known Results:**\n- $r = 3$: TRUE (Erdős-Gyárfás 1999)\n- $r = 4$: TRUE (Erdős-Gyárfás 1999)\n- $r \\geq 5$: OPEN\n- $r = 2$: FALSE (K₅ can be 2-balanced)\n- $K_{r^2}$: Can be balanced for infinitely many $r$",
+    "text": "For r ≥ 3, does every r-colouring of K_{r²+1} have an induced K_{r+1} missing a colour? Proved for r=3,4 by Erdős-Gyárfás (1999), open for r ≥ 5.",
+    "proofStrategy": "The formalization defines edge colourings of complete graphs on Fin n, with InducedClique capturing subsets of k vertices. The coloursUsed function (axiomatized due to the finset infrastructure required) determines which colours appear on edges within a clique. IsBalanced then asks that every induced K_{r+1} uses all r colours. The known results for r=3,4 and the counterexamples for r=2 and K_{r²} are axiomatized based on published results.",
+    "keyInsights": [
+      "**Balanced colouring:** Every induced K_{r+1} uses all r colours on its edges — a very strong uniformity condition",
+      "**Sharp threshold:** K_{r²} can be balanced, but K_{r²+1} cannot (for r ≥ 3) — one extra vertex is the critical difference",
+      "**Counting argument:** For r=3,4, counting pairs (clique, edge) by colour yields contradictions with the balance hypothesis",
+      "**Petersen complement:** The Petersen graph complement gives a balanced 2-colouring of K₅, showing r ≥ 3 is necessary",
+      "**Ramsey-type structure:** Unlike classical Ramsey (monochromatic cliques), this seeks cliques that AVOID a colour"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)",
+      "Graph theory (vertices, edges, colorings)",
+      "Ramsey theory (partition regularity)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 39,
+      "endLine": 61,
+      "summary": "CompleteGraph, Edge, EdgeColouring definitions",
+      "mathContext": "Formal definition: CompleteGraph, Edge, EdgeColouring definitions"
+    },
+    {
+      "id": "induced",
+      "title": "Induced Subgraphs and Colour Coverage",
+      "startLine": 62,
+      "endLine": 94,
+      "summary": "InducedClique, coloursUsed axiom, usesAllColours, missesColour",
+      "mathContext": "Axiomatized: InducedClique, coloursUsed axiom, usesAllColours, missesColour"
+    },
+    {
+      "id": "balanced",
+      "title": "Balanced Colourings",
+      "startLine": 95,
+      "endLine": 110,
+      "summary": "IsBalanced and IsNotBalanced definitions",
+      "mathContext": "Formal definition: IsBalanced and IsNotBalanced definitions"
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős-Gyárfás Conjecture",
+      "startLine": 111,
+      "endLine": 128,
+      "summary": "ErdosGyarfasConjecture and equivalent formulation",
+      "mathContext": "Mathematical content: ErdosGyarfasConjecture and equivalent formulation"
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 129,
+      "endLine": 144,
+      "summary": "r=3 and r=4 solved by Erdős-Gyárfás (1999)",
+      "mathContext": "Mathematical content: r=3 and r=4 solved by Erdős-Gyárfás (1999)"
+    },
+    {
+      "id": "counterexamples",
+      "title": "Counterexamples and Boundaries",
+      "startLine": 145,
+      "endLine": 163,
+      "summary": "r=2 counterexample, K_{r²} balanced colourings",
+      "mathContext": "Mathematical content: r=2 counterexample, K_{r²} balanced colourings"
+    },
+    {
+      "id": "verification",
+      "title": "Concrete Verification",
+      "startLine": 164,
+      "endLine": 179,
+      "summary": "Computational verification: 3²+1=10, 4²+1=17, edge counts",
+      "mathContext": "Mathematical content: Computational verification: 3²+1=10, 4²+1=17, edge counts"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 180,
+      "endLine": 202,
+      "summary": "erdos_617_summary theorem combining known results",
+      "mathContext": "Verified: erdos_617_summary theorem combining known results"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #617 is an open conjecture (proved for r=3,4). The Erdős-Gyárfás conjecture states that for r ≥ 3, no balanced r-colouring of K_{r²+1} exists. The threshold is sharp: K_{r²} can be balanced but K_{r²+1} cannot. The formalization captures the known results and boundary cases.",
+    "implications": "**Theoretical Significance**: This problem reveals a sharp threshold phenomenon in edge colourings of complete graphs.\n\nThe single extra vertex beyond r² fundamentally changes the combinatorial landscape, forcing the existence of cliques that avoid at least one colour. The counting-based proof technique for small r connects to broader questions in Ramsey theory about how uniformity constraints interact with graph size.",
+    "openQuestions": [
+      "Is the conjecture true for r ≥ 5?",
+      "What is the structure of balanced colourings of K_{r²}?",
+      "Are there algebraic constructions for all balanced cases?",
+      "Can probabilistic methods resolve the general conjecture?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Data.Fin.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos617",
+    "lineCount": 202,
+    "axiomCount": 4,
+    "theoremCount": 2,
+    "definitionCount": 10,
+    "path": "Proofs/Erdos617Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1030",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1105",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, ramsey-theory"
+    }
+  ],
+  "sorries": 0
+}

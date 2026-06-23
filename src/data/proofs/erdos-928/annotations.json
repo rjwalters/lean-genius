@@ -1,0 +1,450 @@
+[
+  {
+    "id": "ann-e928-header",
+    "proofId": "erdos-928",
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #928 concerns the distribution of consecutive smooth numbers. A number $n$ is $\\alpha$-smooth if its largest prime factor $P(n) < n^\\alpha$. The question asks whether the natural density of $n$ with both $P(n) < n^\\alpha$ and $P(n+1) < (n+1)^\\beta$ exists. The logarithmic density is known (Teräväinen 2018) and equals the product $\\rho(1/\\alpha)\\rho(1/\\beta)$, suggesting independence. The natural density is known conditionally (Wang 2021, assuming Elliott-Halberstam) but remains open unconditionally.",
+    "mathContext": "$\\lim_{N \\to \\infty} \\frac{|\\{n \\le N : P(n) < n^\\alpha \\wedge P(n+1) < (n+1)^\\beta\\}|}{N} \\stackrel{?}{=} \\rho(1/\\alpha) \\cdot \\rho(1/\\beta)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "smooth numbers",
+      "Dickman function",
+      "prime factors",
+      "natural density",
+      "logarithmic density"
+    ],
+    "prerequisites": [
+      "prime factorization",
+      "asymptotic density",
+      "analytic number theory"
+    ]
+  },
+  {
+    "id": "ann-e928-lpf",
+    "proofId": "erdos-928",
+    "range": {
+      "startLine": 44,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "Largest Prime Factor",
+    "content": "The largest prime factor $P(n) = P^+(n)$ is defined as the maximum element of the prime factorization multiset. When $n \\le 1$, we set $P(n) = 1$ by convention. The implementation uses Mathlib's `primeFactors` converted to a list, then takes `maximum?` with default 1. This is the central quantity in smooth number theory.",
+    "mathContext": "$P(n) = \\max\\{p \\text{ prime} : p \\mid n\\}$ for $n > 1$, $P(1) = 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime factorization",
+      "arithmetic functions",
+      "smooth number bound"
+    ],
+    "prerequisites": [
+      "Nat.primeFactors",
+      "List.maximum?"
+    ]
+  },
+  {
+    "id": "ann-e928-lpf-props",
+    "proofId": "erdos-928",
+    "range": {
+      "startLine": 53,
+      "endLine": 69
+    },
+    "type": "concept",
+    "title": "P(n) Properties",
+    "content": "Three fundamental properties of the largest prime factor, axiomatized since they require working with Mathlib's multiset maximum API: (1) $P(n) \\mid n$ — the largest prime factor divides $n$; (2) $P(n)$ is prime for $n > 1$; (3) $P(p) = p$ for prime $p$. These are used implicitly throughout smooth number arguments.",
+    "mathContext": "$P(n) \\mid n$, $P(n) \\in \\text{Primes}$ for $n > 1$, $P(p) = p$ for $p$ prime",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "divisibility",
+      "prime number properties",
+      "axiomatization"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "divisibility"
+    ]
+  },
+  {
+    "id": "ann-e928-smooth",
+    "proofId": "erdos-928",
+    "range": {
+      "startLine": 73,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "α-Smooth Number",
+    "content": "A positive integer $n$ is $\\alpha$-smooth if $P(n) < n^\\alpha$. The exponent $\\alpha \\in (0,1)$ measures how 'small' the prime factors must be relative to $n$. For $\\alpha = 1/2$, this means $P(n) < \\sqrt{n}$, and Dickman's theorem gives density $\\rho(2) \\approx 0.307$. Powers of 2 are $\\alpha$-smooth for any $\\alpha > 0$, as $P(2^k) = 2$. The formalization uses `Real.rpow` for the exponentiation $n^\\alpha$.",
+    "mathContext": "$\\text{isSmooth}(\\alpha, n) \\iff n > 0 \\wedge P(n) < n^\\alpha$. Density: $\\rho(1/\\alpha)$ by Dickman's theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "friable numbers",
+      "Dickman function",
+      "real exponentiation"
+    ],
+    "prerequisites": [
+      "Real.rpow",
+      "largestPrimeFactor"
+    ]
+  },
+  {
+    "id": "ann-e928-friable",
+    "proofId": "erdos-928",
+    "range": {
+      "startLine": 81,
+      "endLine": 87
+    },
+    "type": "definition",
+    "title": "y-Friable Number",
+    "content": "A number $n$ is $y$-friable if $P(n) \\le y$. Unlike the $\\alpha$-smooth condition (which is relative to $n$), friability uses an absolute bound $y$. The counting function $\\Psi(x, y) = |\\{n \\le x : P(n) \\le y\\}|$ is the central object in the Hildebrand-Tenenbaum theory. The terms 'smooth' and 'friable' are often used interchangeably; the French school (Tenenbaum, de la Bretèche) prefers 'friable'.",
+    "mathContext": "$\\text{isFriable}(y, n) \\iff n > 0 \\wedge P(n) \\le y$. $\\Psi(x, y) = \\#\\{n \\le x : P(n) \\le y\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "smooth numbers",
+      "counting function Ψ",
+      "Hildebrand-Tenenbaum theory"
+    ],
+    "prerequisites": [
+      "largestPrimeFactor",
+      "natural number inequality"
+    ]
+  },
+  {
+    "id": "ann-e928-dickman",
+    "proofId": "erdos-928",
+    "range": {
+      "startLine": 91,
+      "endLine": 99
+    },
+    "type": "definition",
+    "title": "The Dickman Function",
+    "content": "The Dickman-de Bruijn function $\\rho(u)$ is axiomatized as a function $\\mathbb{R} \\to \\mathbb{R}$ satisfying the delay differential equation $u\\rho'(u) = -\\rho(u-1)$ for $u > 1$, with $\\rho(u) = 1$ for $u \\in [0,1]$. Karl Dickman introduced it in 1930; Nicolaas de Bruijn later gave rigorous asymptotic analysis. The function is entire when extended to the complex plane and decays as $\\rho(u) \\sim u^{-u(1+o(1))}$ for large $u$.",
+    "mathContext": "$\\rho(u) = 1$ for $u \\le 1$; $u\\rho'(u) = -\\rho(u-1)$ for $u > 1$. $\\rho(2) = 1 - \\ln 2 \\approx 0.307$, $\\rho(3) \\approx 0.049$, $\\rho(10) \\approx 2.77 \\times 10^{-11}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "delay differential equations",
+      "Buchstab function",
+      "de Bruijn's refinements",
+      "smooth number asymptotics"
+    ],
+    "prerequisites": [
+      "differential equations",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-e928-dickman-props",
+    "proofId": "erdos-928",
+    "range": {
+      "startLine": 101,
+      "endLine": 112
+    },
+    "type": "definition",
+    "title": "Dickman Function Properties",
+    "content": "Four key properties are axiomatized: (1) $\\rho(1) = 1$ — every positive integer is 1-smooth; (2) $\\rho(2) \\approx 1 - \\ln 2$ — about 30.7% of integers have $P(n) < \\sqrt{n}$; (3) $\\rho(u) > 0$ for $u > 0$ — the density is always positive; (4) $\\rho$ is strictly decreasing for $u > 1$. The approximate equality for $\\rho(2)$ uses an absolute error bound $< 0.001$.",
+    "mathContext": "$\\rho(1) = 1$, $|\\rho(2) - (1-\\ln 2)| < 0.001$, $\\rho(u) > 0$ for $u > 0$, $u < v \\implies \\rho(v) < \\rho(u)$ for $u > 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "monotone functions",
+      "positivity",
+      "approximate computation"
+    ],
+    "prerequisites": [
+      "Real.log",
+      "absolute value"
+    ]
+  },
+  {
+    "id": "ann-e928-psi",
+    "proofId": "erdos-928",
+    "range": {
+      "startLine": 116,
+      "endLine": 121
+    },
+    "type": "definition",
+    "title": "Counting Function Ψ(x, y)",
+    "content": "The smooth number counting function $\\Psi(x, y) = |\\{n \\le x : P(n) \\le y\\}|$ is defined concretely by filtering the range $\\{1, \\ldots, \\lfloor x \\rfloor\\}$ and counting those with $P(n) \\le \\lfloor y \\rfloor$. This function is the central object connecting smooth numbers to the Dickman function via the asymptotic $\\Psi(x, x^\\alpha) / x \\to \\rho(1/\\alpha)$.",
+    "mathContext": "$\\Psi(x, y) = |\\{n \\le x : n > 0 \\wedge P(n) \\le y\\}|$. Defined using `Finset.range` and `Finset.filter`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "counting functions",
+      "Finset.filter",
+      "smooth number distribution"
+    ],
+    "prerequisites": [
+      "Finset.range",
+      "Nat.floor"
+    ]
+  },
+  {
+    "id": "ann-e928-dickman-thm",
+    "proofId": "erdos-928",
+    "range": {
+      "startLine": 123,
+      "endLine": 133
+    },
+    "type": "concept",
+    "title": "Dickman's Theorem (1930)",
+    "content": "The foundational theorem of smooth number theory: the proportion of integers up to $x$ that are $x^\\alpha$-smooth converges to $\\rho(1/\\alpha)$. Formalized as an $\\varepsilon$-$X$ limit statement. Dickman proved this in 1930 using what is now called the 'Dickman method'; Ramaswami (1949) and de Bruijn (1951) gave modern proofs. The formalization axiomatizes this since the proof requires detailed sieve-theoretic estimates.",
+    "mathContext": "$\\forall \\varepsilon > 0,\\, \\exists X,\\, \\forall x > X:\\, \\left|\\frac{\\Psi(x, x^\\alpha)}{x} - \\rho(1/\\alpha)\\right| < \\varepsilon$",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic density",
+      "limit definition",
+      "sieve methods"
+    ],
+    "prerequisites": [
+      "epsilon-delta limits",
+      "Dickman function",
+      "psi counting function"
+    ]
+  },
+  {
+    "id": "ann-e928-consec",
+    "proofId": "erdos-928",
+    "range": {
+      "startLine": 137,
+      "endLine": 143
+    },
+    "type": "definition",
+    "title": "Consecutive Smooth Numbers",
+    "content": "The counting set for Erdős's problem: all $n \\le N$ where $n$ is $\\alpha$-smooth AND $n+1$ is $\\beta$-smooth. The key subtlety is that $\\alpha$ and $\\beta$ can differ — the smoothness parameters for $n$ and $n+1$ are independent. Since $\\gcd(n, n+1) = 1$, the prime factorizations of $n$ and $n+1$ share no common factors, which is the heuristic basis for the independence conjecture.",
+    "mathContext": "$C(\\alpha, \\beta, N) = \\{n \\le N : n > 0 \\wedge P(n) < n^\\alpha \\wedge P(n+1) < (n+1)^\\beta\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "coprimality of consecutive integers",
+      "bivariate density",
+      "independence heuristic"
+    ],
+    "prerequisites": [
+      "isSmooth",
+      "Finset.filter"
+    ]
+  },
+  {
+    "id": "ann-e928-density",
+    "proofId": "erdos-928",
+    "range": {
+      "startLine": 145,
+      "endLine": 152
+    },
+    "type": "definition",
+    "title": "Density Existence",
+    "content": "The natural density is defined via the standard $\\varepsilon$-$N_0$ formulation: there exists a limit $d$ such that $|C(\\alpha, \\beta, N)|/N$ is within $\\varepsilon$ of $d$ for all sufficiently large $N$. This is stronger than logarithmic density (which weights by $1/n$) and corresponds to the Cesàro average. The gap between logarithmic and natural density is precisely what makes Erdős #928 difficult.",
+    "mathContext": "$\\exists d \\in \\mathbb{R},\\, \\forall \\varepsilon > 0,\\, \\exists N_0,\\, \\forall N \\ge N_0:\\, \\left|\\frac{|C(\\alpha,\\beta,N)|}{N} - d\\right| < \\varepsilon$",
+    "significance": "key",
+    "relatedConcepts": [
+      "natural density",
+      "Cesàro mean",
+      "logarithmic density",
+      "asymptotic analysis"
+    ],
+    "prerequisites": [
+      "limit definition",
+      "consecutiveSmooth"
+    ]
+  },
+  {
+    "id": "ann-e928-question",
+    "proofId": "erdos-928",
+    "range": {
+      "startLine": 154,
+      "endLine": 160
+    },
+    "type": "definition",
+    "title": "The Main Question",
+    "content": "Erdős Problem #928 formally: for ALL $\\alpha, \\beta \\in (0,1)$, does the natural density exist? The universal quantification over both parameters is essential — the problem asks for a uniform result, not just specific values. The hypothesis $0 < \\alpha < 1$ and $0 < \\beta < 1$ excludes the trivial cases: $\\alpha \\ge 1$ makes every number smooth, and $\\alpha \\le 0$ makes no number smooth.",
+    "mathContext": "$\\text{erdos928Question} \\iff \\forall \\alpha, \\beta \\in (0,1),\\, \\text{densityExists}(\\alpha, \\beta)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "universal quantification",
+      "parameter ranges",
+      "open problems"
+    ],
+    "prerequisites": [
+      "densityExists"
+    ]
+  },
+  {
+    "id": "ann-e928-indep",
+    "proofId": "erdos-928",
+    "range": {
+      "startLine": 164,
+      "endLine": 172
+    },
+    "type": "definition",
+    "title": "Independence Conjecture",
+    "content": "The conjectured value of the density: $\\rho(1/\\alpha) \\cdot \\rho(1/\\beta)$. This product form reflects probabilistic independence — the event '$n$ is $\\alpha$-smooth' should be independent of '$n+1$ is $\\beta$-smooth'. The heuristic justification is that $\\gcd(n, n+1) = 1$, so the prime factorizations of consecutive integers are 'unrelated'. The formalization combines the density value with the limit existence in a single statement.",
+    "mathContext": "$d = \\rho(1/\\alpha) \\cdot \\rho(1/\\beta)$ and $|C(\\alpha,\\beta,N)|/N \\to d$. Independence: $\\Pr[A \\cap B] = \\Pr[A] \\cdot \\Pr[B]$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "probabilistic independence",
+      "coprimality",
+      "multiplicative functions",
+      "product densities"
+    ],
+    "prerequisites": [
+      "Dickman function",
+      "probability independence"
+    ]
+  },
+  {
+    "id": "ann-e928-inf-many",
+    "proofId": "erdos-928",
+    "range": {
+      "startLine": 176,
+      "endLine": 186
+    },
+    "type": "concept",
+    "title": "Infinitely Many Exist (Schinzel/Meza)",
+    "content": "For any $\\alpha, \\beta \\in (0,1)$, infinitely many $n$ exist with both $P(n) < n^\\alpha$ and $P(n+1) < (n+1)^\\beta$. This is the weakest positive result — it says the set is infinite but says nothing about its density. It follows from Schinzel's 1967 result that $P(n(n+1)) \\le n^{O(1/\\log\\log n)}$ for infinitely many $n$. Formalized as: for every $N$, there exists $n > N$ satisfying both smoothness conditions.",
+    "mathContext": "$\\forall N \\in \\mathbb{N},\\, \\exists n > N:\\, P(n) < n^\\alpha \\wedge P(n+1) < (n+1)^\\beta$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Schinzel's sieve results",
+      "infinitude arguments",
+      "P(n(n+1))"
+    ],
+    "prerequisites": [
+      "isSmooth",
+      "Schinzel's theorem"
+    ]
+  },
+  {
+    "id": "ann-e928-terav",
+    "proofId": "erdos-928",
+    "range": {
+      "startLine": 188,
+      "endLine": 197
+    },
+    "type": "concept",
+    "title": "Teräväinen (2018): Logarithmic Density",
+    "content": "Joni Teräväinen proved that the logarithmic density exists and equals $\\rho(1/\\alpha) \\cdot \\rho(1/\\beta)$. The logarithmic density $\\delta_L(A) = \\lim_{N\\to\\infty} \\frac{1}{\\log N} \\sum_{n \\le N, n \\in A} \\frac{1}{n}$ is weaker than natural density but easier to establish because the $1/n$ weighting smooths out fluctuations. This appeared in 'On binary correlations of multiplicative functions' (2018). The technique uses the pretentious approach to multiplicative functions developed by Granville-Soundararajan.",
+    "mathContext": "$\\delta_L = \\lim_{N\\to\\infty} \\frac{1}{\\log N} \\sum_{\\substack{n \\le N \\\\ P(n) < n^\\alpha \\\\ P(n+1) < (n+1)^\\beta}} \\frac{1}{n} = \\rho(1/\\alpha) \\cdot \\rho(1/\\beta)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "logarithmic density",
+      "binary correlations",
+      "pretentious multiplicative functions",
+      "Granville-Soundararajan"
+    ],
+    "prerequisites": [
+      "logarithmic density",
+      "multiplicative function theory"
+    ]
+  },
+  {
+    "id": "ann-e928-wang",
+    "proofId": "erdos-928",
+    "range": {
+      "startLine": 199,
+      "endLine": 206
+    },
+    "type": "concept",
+    "title": "Wang (2021): Conditional Natural Density",
+    "content": "Zhiwei Wang proved that assuming the Elliott-Halberstam conjecture for friable integers, the natural density exists and equals $\\rho(1/\\alpha) \\cdot \\rho(1/\\beta)$. This appeared in 'Three conjectures on $P^+(n)$ and $P^+(n+1)$' (2021). The Elliott-Halberstam hypothesis provides the needed uniformity in the distribution of smooth numbers across arithmetic progressions. The formalization states this as an unconditional Lean theorem that directly invokes `independenceConjecture`.",
+    "mathContext": "Assuming EH for friable integers: $\\lim_{N\\to\\infty} |C(\\alpha,\\beta,N)|/N = \\rho(1/\\alpha)\\rho(1/\\beta)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Elliott-Halberstam conjecture",
+      "conditional results",
+      "distribution in progressions"
+    ],
+    "prerequisites": [
+      "Elliott-Halberstam conjecture",
+      "independenceConjecture"
+    ]
+  },
+  {
+    "id": "ann-e928-eh",
+    "proofId": "erdos-928",
+    "range": {
+      "startLine": 210,
+      "endLine": 219
+    },
+    "type": "concept",
+    "title": "Elliott-Halberstam Conjecture",
+    "content": "The Elliott-Halberstam conjecture (1968) asserts that the primes are well-distributed in arithmetic progressions for moduli up to $x^{1-\\varepsilon}$, strengthening the Bombieri-Vinogradov theorem (which handles moduli up to $x^{1/2}$). The 'friable version' replaces primes with smooth numbers. This conjecture was used by Goldston-Pintz-Yıldırım in their work on small prime gaps and is a key input for Wang's result. The axiomatized form `axiom elliott_halberstam_conjecture : Prop` simply asserts its existence as a proposition.",
+    "mathContext": "$\\text{EH}: \\sum_{q \\le x^{1-\\varepsilon}} \\max_{\\gcd(a,q)=1} \\left|\\pi(x;q,a) - \\frac{\\text{li}(x)}{\\varphi(q)}\\right| \\ll \\frac{x}{(\\log x)^A}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bombieri-Vinogradov theorem",
+      "sieve theory",
+      "primes in arithmetic progressions",
+      "Goldston-Pintz-Yıldırım"
+    ],
+    "prerequisites": [
+      "prime counting function",
+      "arithmetic progressions",
+      "Euler's totient"
+    ]
+  },
+  {
+    "id": "ann-e928-pplus",
+    "proofId": "erdos-928",
+    "range": {
+      "startLine": 223,
+      "endLine": 228
+    },
+    "type": "definition",
+    "title": "Alternative Notation P⁺(n)",
+    "content": "The abbreviation `Pplus := largestPrimeFactor` provides the standard notation $P^+(n)$ used in the analytic number theory literature, particularly by the French school (Tenenbaum, de la Bretèche, Drappeau). This notation distinguishes from $P^-(n)$ (smallest prime factor) and $\\Omega(n)$ (total prime factor count).",
+    "mathContext": "$P^+(n) \\equiv P(n) = \\max\\{p : p \\mid n,\\, p \\text{ prime}\\}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "notation conventions",
+      "P⁻(n)",
+      "Ω(n)"
+    ],
+    "prerequisites": [
+      "largestPrimeFactor"
+    ]
+  },
+  {
+    "id": "ann-e928-schinzel",
+    "proofId": "erdos-928",
+    "range": {
+      "startLine": 230,
+      "endLine": 237
+    },
+    "type": "concept",
+    "title": "Schinzel's Product Result",
+    "content": "Andrzej Schinzel proved that for infinitely many $n$, the product $n(n+1)$ has its largest prime factor bounded by $n$. More precisely, his 1967 result shows $P(n(n+1)) \\le n^{O(1/\\log\\log n)}$ infinitely often. This is the key input for the `infinitely_many_exist` axiom. The axiomatized form states the simpler bound $P(n(n+1)) \\le n$ for infinitely many $n$.",
+    "mathContext": "$\\forall N,\\, \\exists n > N:\\, P(n \\cdot (n+1)) \\le n$. Schinzel's stronger result: $P(n(n+1)) \\le n^{O(1/\\log\\log n)}$ i.o.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Schinzel",
+      "products of consecutive integers",
+      "sieve methods"
+    ],
+    "prerequisites": [
+      "largestPrimeFactor",
+      "sieve theory"
+    ]
+  },
+  {
+    "id": "ann-e928-summary",
+    "proofId": "erdos-928",
+    "range": {
+      "startLine": 241,
+      "endLine": 258
+    },
+    "type": "concept",
+    "title": "Summary Theorem",
+    "content": "The summary theorem assembles all three known results into a single conjunction: (1) infinitely many consecutive smooth pairs exist; (2) logarithmic density $= \\rho(1/\\alpha)\\rho(1/\\beta)$; (3) natural density $= \\rho(1/\\alpha)\\rho(1/\\beta)$ under EH. The proof is simply the triple of the three axioms applied to the given parameters. This is the strongest known combined statement about consecutive smooth numbers.",
+    "mathContext": "$(\\text{infinitely many}) \\wedge (\\delta_L = \\rho(1/\\alpha)\\rho(1/\\beta)) \\wedge (\\text{EH} \\implies d = \\rho(1/\\alpha)\\rho(1/\\beta))$",
+    "significance": "key",
+    "relatedConcepts": [
+      "theorem aggregation",
+      "known results compilation"
+    ],
+    "prerequisites": [
+      "infinitely_many_exist",
+      "teravainen_log_density",
+      "wang_conditional"
+    ]
+  }
+]

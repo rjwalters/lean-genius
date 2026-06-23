@@ -1,0 +1,318 @@
+{
+  "slug": "central-limit-theorem-oq-02-oq-04",
+  "title": "Mixing CLT with Ibragimov 1962 Polynomial Mixing Rates",
+  "phase": "ACT",
+  "status": "blocked",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "S_n/\\sqrt{n} \\Rightarrow \\mathcal N(0,\\sigma^2) \\text{ for strictly stationary mean-zero } \\{X_n\\} \\text{ with } \\mathbb E|X_1|^{2+\\delta}<\\infty \\text{ and } \\alpha(n) \\le C n^{-r}, \\; r > (2+\\delta)/\\delta, \\; \\sigma^2 = \\operatorname{Var}(X_1) + 2\\sum_{k\\ge 1}\\operatorname{Cov}(X_1, X_{1+k}) > 0.",
+    "plain": "Mixing CLT with explicit Ibragimov 1962 assumptions and polynomial mixing rate alpha(n) <= C n^-r, where r > (2+delta)/delta is the sharp threshold making the long-run variance series absolutely convergent via Davydov's covariance inequality.",
+    "whyMatters": [
+      "Quantitative dependent-variable CLT — practitioners need explicit polynomial rates, not just abstract decay assumptions.",
+      "Bridge to Mathlib: Mathlib has no alpha-mixing API at all (2026-05-11 check); this is the smallest concrete extension that forces the right primitives.",
+      "Closes parent OQ-02 gap: parent file axiomatizes Ibragimov's CLT in a docstring; OQ-02-OQ-04 produces a theorem-shaped statement that can later be discharged."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Davydov 1968 covariance inequality |Cov(X,Y)| <= 8 alpha^{1-1/p-1/q} ||X||_p ||Y||_q (classical, not in Mathlib).",
+      "Polynomial rate alpha(n) <= C n^{-r} gives sum_k alpha(k)^{delta/(2+delta)} < infty iff r > (2+delta)/delta (classical real-analysis arithmetic).",
+      "Ibragimov 1962 mixing CLT under abstract summability ||X||_{2+delta} < infty and sum alpha^{delta/(2+delta)} < infty (Theorem 1.7 in Bradley 2005 survey)."
+    ],
+    "open": [
+      "OQ-A: Is r > (2+delta)/delta necessary, or do slowly-varying logs push the threshold to r = (2+delta)/delta + epsilon? Bradley 1981 has saturating examples.",
+      "OQ-B: Quantitative Berry-Esseen rate sup_x |F_n - Phi| <= C n^{-gamma(delta, r)} (Rio 1996, Tikhomirov 1980).",
+      "OQ-C: HAC-style long-run variance estimation under polynomial mixing (Newey-West 1987, Andrews 1991)."
+    ],
+    "goal": "Formalize Ibragimov 1962 mixing CLT with explicit polynomial mixing rate alpha(n) <= C n^-r, sharp threshold r > (2+delta)/delta, and positive long-run variance, building on the AlphaMixingSequence / alphaMixingCoeff / longRunVariance definitions in parent CentralLimitTheoremOQ02.lean."
+  },
+  "currentState": {
+    "phase": "ACT (BLOCKED — Docker down)",
+    "since": "2026-06-01T00:00:00.000Z",
+    "iteration": 10,
+    "focus": "S6 ACT FINDING-E APPLIED (researcher-1, 2026-06-01, this PR — IbragimovHypotheses extended, build verified). Ships Step 2 of the S5c+1 ACT 7-step checklist documented in 2026-05-16 S5d STATE-SYNC: extends IbragimovHypotheses with the two sub-σ ≤ ambient relations required by indicator_covariance_le_alpha's call site in the level-set decomposition step of davydov_covariance_inequality. Two new fields inserted at lines 181–192 (between previous future_measurable and alpha_bound): past_le : ∀ k, pastSigma k ≤ (inferInstance : MeasurableSpace Ω) + future_le : ∀ k, futureSigma k ≤ (inferInstance : MeasurableSpace Ω). Note: explicit (inferInstance : MeasurableSpace Ω) ascription required — bare inferInstance fails to elaborate inside the structure body with 'type class instance expected ?m.42'. Diff: 719 → 733 LOC (+14 net: 2 statement lines + ~12 docstring lines); 14 → 16 fields; theoremCount/defCount/sorryCount unchanged. Build verified Docker 3131 jobs clean. Leaf-only PR (no parent CentralLimitTheoremOQ02.lean changes); AlphaMixingSequence in parent file has same gap, queued for S7+ or sibling mechanic. No callers of IbragimovHypotheses construct it (grep shows only theorem-parameter use at lines 536, 549, 615, 708) → adding fields breaks no downstream code. Unblocks Steps 3–7 of the S5c+1 plan: with H.past_le and H.future_le available, the level-set decomp can thread ambient MeasurableSet through indicator_covariance_le_alpha; the remaining ~85 LOC measure-theory work is the S7 ACT target. Mathlib SHA 2df2f0150c... unchanged. Session memo: sessions/2026-06-01-s6-act-finding-e-applied.md.",
+    "blockers": [
+      "Docker daemon down on host (2026-06-13, `docker info` exit 124) → cannot run ./proofs/scripts/docker-build.sh to verify any proof attempt; direct `lake build` is forbidden (CLAUDE.md).",
+      "Both remaining sorries are heavy build-dependent ACT: davydov_covariance_inequality (CentralLimitTheoremOQ02OQ04.lean:613, S7 Steps 3-7 ~85 LOC level-set decomp + bilinear expansion + Hölder/Markov) and mixing_clt_ibragimov (line 805, S8+ Bernstein blocks + Lindeberg). Neither is verifiable without a build.",
+      "No build-free win remains: meta.json counts (sorries 2, axiomCount 0, theoremCount 14, definitionCount 4, lineCount 808) confirmed in sync with source via AUDIT PR #23030 this same day; structure/scaffolding infrastructure (S16 scaled_indicator_covariance_le_alpha) already landed.",
+      "Aristotle backend still 404s during the 2026-06-13 verification blackout."
+    ],
+    "nextAction": "S7 ACT (when Docker stays healthy, ~60-90 min): with the Finding E gap now closed by S6's IbragimovHypotheses extension, execute Steps 3–7 of the S5c+1 ACT 7-step checklist: (3) Apply level-set decomposition X = ∫₀^∞ (𝟙_{X>t} − 𝟙_{X<-t}) dt for both X and Y (~15 LOC). (4) Bilinear expansion of Cov(X, Y) into double integral (~10 LOC). (5) Pointwise application of indicator_covariance_le_alpha at each (t, s) threading H.past_le 0 _ h_sub + H.future_le 0 _ h_sub for the ambient measurability arguments (~20 LOC); h_sub from @measurableSet_lt Ω ℝ _ _ (H.pastSigma 0) X (fun _ => t) (H.past_measurable 0) measurable_const. (6) Hölder amplification with exponents (p, p/(p-1)) (~25 LOC) + Markov tail bound for truncated piece (~15 LOC). (7) Docker-verify via ./proofs/scripts/docker-build.sh Proofs.CentralLimitTheoremOQ02OQ04. Target sorry count 2 → 1 (close davydov_covariance_inequality at the new line 522, was 475 pre-S6 shift; preserve mixing_clt_ibragimov at new line 718 as S8+ target). Parent file follow-up: AlphaMixingSequence in CentralLimitTheoremOQ02.lean:427-442 has same Finding-E-style gap; +5 LOC parent file edit, non-leaf with multiple importers → cascade risk requires Docker verification; queued for S8 or sibling mechanic.",
+    "attemptCounts": {
+      "total": 7,
+      "currentApproach": 1,
+      "approachesTried": 4
+    },
+    "lastUpdate": "2026-06-13T00:00:00.000Z"
+  },
+  "knowledge": {
+    "progressSummary": "S5d STATE-SYNC (researcher-6, 2026-05-16T15:46Z, doc-only): Post-double-PREP catchup absorbing PR #19050 (S5c-prep ACT indicator_covariance_le_alpha bridge, build-verified) + PR #19289 (S5c-prep sibling audit). Sibling audit's Finding E surfaces a STRUCTURAL GAP in IbragimovHypotheses blocking S5c proper: the bridge lemma requires both sub-σ and ambient MeasurableSet, but the structure currently exposes only sub-σ measurability (past_measurable / future_measurable). Fix: +2 fields past_le / future_le (sub-σ ≤ ambient le-relations); +5 LOC w/ docstrings. Parent file AlphaMixingSequence (CentralLimitTheoremOQ02.lean:427-442) has same gap — queued for S5c+2 or sibling mechanic. state.md head was 2 sessions behind sessions/ + JSON 1 iter ahead; this STATE-SYNC catches both to iter 9. leanFiles[i] drift (lineCount 553→719, theoremCount 9→13) handed off to mechanic per MEMORY pattern. 3 files (NEW memo ~370 LOC + state.md head replace preserving Sessions 1-S5b BV + this JSON delta). 0 Lean / 0 meta / 0 problem / 0 knowledge edits. Docker still hung this cycle (B1, ~7.5 h cumulative; same condition as cramers-rule S15 PREP 30 min before). Disk 5.4 Gi avail AMBER. Mathlib SHA 2df2f0150c... unchanged (8+ successive cycles).\n\nS5c-prep sibling audit (researcher-12, 2026-05-15, PR #19289 — doc-only ~406 LOC): Audit of PR #19050 with 4 findings (A-F). Finding A: bridge proof composes ingredients soundly. Finding B: docstring could cite both parent contributions. Finding C: interesting non-defect (Bochner-integral form sharper bound). Finding D: pre-shipped /- docstring parser trap fix. Finding E (HEADLINE, ⚠ STRUCTURAL GAP for S5c): IbragimovHypotheses lacks past_le + future_le. Finding F: no α-mixing primitive in Mathlib (re-pinned at SHA 2df2f015...).\n\nS5c-prep ACT (researcher-12, 2026-05-15, PR #19050 — build verified): Shipped one fully-proven theorem indicator_covariance_le_alpha at lines 443-485 (35 LOC incl. docstring), bridging S4 algebraic identity indicator_pair_covariance_eq (PR #17939) and S5b indicator α-bound davydov_indicator_bound (PR #18728) into covariance-form indicator α-bound. theoremCount 12 → 13. File 553 → 684 LOC (+131; includes line-419 unused-simp-arg cleanup). Build verified Docker 3131 jobs. 2 sorries unchanged. state.md NOT updated by #19050 (recurring researcher-12 pattern of JSON-without-state.md sync; S5d STATE-SYNC absorbs).\n\nS5b build-verify (researcher-9, 2026-05-14, PR #19030 — doc-only): Retired `(build pending)` qualifier on PR #18728 (S5b ACT, davydov_indicator_bound). Build re-run from fresh worktree off origin/main confirmed 3131 jobs clean, 2 expected sorries (lines 475 + 671). Linter note: cosmetic unused simp arg at line 419 (S4 contribution, not in scope). state.md flipped [BUILD PENDING] → [BUILD VERIFIED] in S5b section; top-level Phase/Since/Iteration/Last Updated refreshed.\n\nS5b (researcher-3, 2026-05-13, PR #18728 — ingredient (3) davydov_indicator_bound): Proved third and final order-theory ingredient via 4-fold ⨆ peeling (le_ciSup_of_le for Set Ω layers w/ BddAbove witnesses from indicator_cov_le_one; ciSup_pos for Prop layers). Closes the three-ingredient structural decomposition of davydov_covariance_inequality documented since S4. PR shipped under (build pending) qualifier subsequently retired by S5b BV.\n\nS5a mechanic (researcher-?, 2026-05-12, PR #18202): Closed polynomial_summable_of_exponent_gt_one Mathlib-drift sorry via Real.summable_nat_rpow.\n\nS5 (researcher-3, 2026-05-12, PR #18227): ACT — proved ingredients (1) alphaMixingCoeff_le_one and (2) alphaMixingCoeff_nonneg via reflective use of Real.iSup_le and Real.iSup_nonneg (build-verified).\n\nS4 (researcher-6, 2026-05-12, PRs #17939/#17974/#18173): ACT — discovered S3 was broken, fixed 3 build-blockers, added proven indicator_cov_le_one helper, documented the structural decomposition into 3 named order-theory ingredients + L^p density step.\n\nS3 (researcher-1, 2026-05-12, PR #17820): ACT — Davydov-modulo proof of long-run variance absolute convergence + extension of IbragimovHypotheses + 3 new proven theorems (PR merged \"build pending\" without actually building; cleaned up in S4).\n\nS2 (researcher-?, 2026-05-11, PR #17792): ORIENT — 4 def stubs + 2 thm statements + 2 proven helpers.\n\nS1 (researcher-12, 2026-05-11, PR #17778): OBSERVE — scaffold md + json.",
+    "builtItems": [
+      "S5c-prep (this session): indicator_covariance_le_alpha PROVEN — 3-line proof composing indicator_pair_covariance_eq + Measure.real_def + davydov_indicator_bound; 35 LOC incl. docstring at lines 423-455. The covariance-form indicator α-bound consumed by S5c's bilinear-expansion step. Also pre-shipped: line-419 unused-simp-arg linter fix (Set.indicator_apply removed from simp set in indicator_pair_covariance_eq; cosmetic, flagged but not bundled in #19030).",
+      "research/problems/central-limit-theorem-oq-02-oq-04/problem.md — full problem statement, threshold derivation, Bernstein-block proof outline",
+      "research/problems/central-limit-theorem-oq-02-oq-04/knowledge.md — parent-file inventory, Mathlib gap analysis, 6-session decomposition plan",
+      "research/problems/central-limit-theorem-oq-02-oq-04/state.md — OBSERVE phase, S2 next-action sketch",
+      "Created proofs/Proofs/CentralLimitTheoremOQ02OQ04.lean (S2): 4 defs + IbragimovHypotheses struct + 2 thm stmts (sorries) + 2 proven helpers (polynomial_summable_of_exponent_gt_one + ibragimov_threshold_summable).",
+      "Created src/data/proofs/central-limit-theorem-oq-02-oq-04/ (S2): meta.json status axiomatized, sorries 2, axioms 0; annotations.json empty; index.ts.",
+      "S4 (this session): proven indicator_cov_le_one (private), alphaMixingCoeff_inner_le_one (private), alphaMixingCoeff_le_one (in [0,1]), davydov_indicator_bound (the defining inequality of alphaMixingCoeff, packaged), alphaMixingCoeff_nonneg (discharges parent line 444 omission via A=B=∅ witness).",
+      "Refactored Davydov L^p sorry to reference the proven indicator base case as its structural foundation; S5 scope reduced from ~150 to ~100 lines.",
+      "S4 (this session): indicator_cov_le_one — PROVEN private helper, [0,1] envelope for the indicator-covariance term using prob_le_one chain.",
+      "S4: alphaMixingCoeff_le_one — STATED + SORRY (mechanic target). Pure order theory; documented strategy uses chained ciSup_le + iSup_pos/iSup_neg at Prop-indexed levels.",
+      "S4: davydov_indicator_bound — STATED + SORRY (mechanic target). Indicator base case of Davydov; reduces L^p version structurally; documented strategy uses le_ciSup_of_le chained 4 times.",
+      "S4: alphaMixingCoeff_nonneg — STATED + SORRY. Discharges parent line 444 omission; trivial corollary of davydov_indicator_bound at A=B=∅.",
+      "S4 (this session): indicator_cov_le_one — PROVEN [0,1] envelope helper for the indicator-cov term, BddAbove witness for nested suprema in alphaMixingCoeff.",
+      "S4: Build-fix — removed stale Mathlib.Probability.Variance import (Mathlib drift), refactored davydov_covariance_inequality signature to (σPair : Fin 2 → MS Ω) wrap, renamed σ² → σsq in mixing_clt_ibragimov. File now builds cleanly.",
+      "S4: Documented 3-ingredient structural decomposition in davydov_covariance_inequality docstring: alphaMixingCoeff_le_one, alphaMixingCoeff_nonneg, davydov_indicator_bound (= indicator base case) + L^p density step.",
+      "research/problems/central-limit-theorem-oq-02-oq-04/sessions/2026-05-16-s5d-state-sync-postdoubleprep-finding-e.md (S5d STATE-SYNC session memo, ~370 LOC; researcher-6) — Post-double-PREP catchup absorbing PR #19050 (S5c-prep ACT indicator_covariance_le_alpha bridge, build-verified) + PR #19289 (S5c-prep sibling audit Finding E structural gap). 8 sections: §1 drift inventory table (state.md vs JSON vs origin/main); §2 PR #19050 absorption (35 LOC theorem at lines 443-485, theoremCount 12→13, build verified 3131 jobs); §3 PR #19289 absorption (4 findings A-F overview); §4 Finding E condensed re-cite (structural gap, paste-ready 2-LOC IbragimovHypotheses extension); §5 refreshed S5c+1 ACT picker checklist (7 steps supersedes 6-step; budget ~100-130 LOC w/ Finding E extension); §6 leanFiles[i] drift handoff to mechanic (lineCount 553→719, theoremCount 9→13; informational ready-to-paste diff only, NOT touched); §7 not-done/out-of-scope (no Lean, no parent-file co-extension AlphaMixingSequence, no meta.json, no mechanic territory); §8 race-safety verification + acceptance criteria + iteration math + host context + references + bearer pin notes (SHA-stability skip per MEMORY pattern)."
+    ],
+    "insights": [
+      "S5d STATE-SYNC + Finding E surface (researcher-6, 2026-05-16T15:46:00Z): sibling-audit PR #19289 surfaced a STRUCTURAL GAP in IbragimovHypotheses blocking S5c proper. The S5c-prep ACT bridge lemma indicator_covariance_le_alpha (PR #19050, build-verified) requires BOTH sub-σ MeasurableSet AND ambient MeasurableSet at every call site; natural S5c level-set decomposition X = ∫₀^∞ (𝟙_{X>t} − 𝟙_{X<-t}) dt produces sub-σ measurable level sets via @measurableSet_lt but cannot produce ambient MeasurableSet without a pastSigma k ≤ inferInstance field. Fix: +2 fields past_le + future_le to IbragimovHypotheses (currently 14 fields; insertion after line 180 future_measurable, before line 182 alpha_bound; +5 LOC with docstrings). Pattern: when a bridge lemma's hypothesis surface requires both flavors of measurability AND the carrier structure exposes only the sub-σ flavor, the carrier needs explicit sub-σ≤ambient le-fields. Parent file AlphaMixingSequence (CentralLimitTheoremOQ02.lean:427-442) has same gap; parallel extension is upstream-portable cleanup target. Without these fields, the S5c proof would need NullMeasurableSet detour (Path A per Finding E) adding ~30 extra LOC. Path B (+2 fields) is the recommended and cleaner approach. State.md head was 2 sessions behind sessions/ at S5d cycle start (S5c-prep ACT memo + sibling audit memo both present but unreferenced) AND JSON 1 iter ahead of state.md (iter 8 vs 7); this STATE-SYNC catches both to iter 9. leanFiles[i] drift handed off to mechanic (lineCount 553 → 719, theoremCount 9 → 13; sorryCount 2 confirmed correct).",
+      "Sharp threshold: r > (2+delta)/delta comes directly from sum_n n^{-r delta/(2+delta)} < infty, which requires r delta/(2+delta) > 1. This is exact, not a rough bound.",
+      "Parent file already defines alphaMixingCoeff and AlphaMixingSequence — OQ-02-OQ-04 should import and extend, not redefine.",
+      "longRunVariance is already defined in parent (line 462) using tsum of covariances; under polynomial mixing the tsum is absolutely convergent (Davydov ⇒ |Cov| summable).",
+      "Bernstein block sizing p_n = floor(n^{1-1/r}), q_n = floor(n^{1-1/r-epsilon}) satisfies all four asymptotic constraints (p_n + q_n << n, q_n/p_n -> 0, n alpha(q_n) -> 0, large-block Lindeberg) precisely under r > (2+delta)/delta.",
+      "The most tractable standalone sub-result for S3 ACT is longrun_variance_absolutely_convergent — it isolates the Davydov inequality and avoids the full block decomposition.",
+      "The 4-fold nested ciSup in alphaMixingCoeff yields cleanly to: iSup_pos / iSup_neg + by_cases on measurability at each Prop layer, then ciSup_le for the outer Set-indexed levels with the uniform [0,1] envelope (indicator_cov_le_one) as BddAbove witness.",
+      "The indicator base case |μ(A∩B).toReal - μ(A).toReal · μ(B).toReal| ≤ alphaMixingCoeff is essentially le_ciSup_of_le applied 4 times with the BddAbove witness from the [0,1] envelope; this is the *definition* of α-mixing as a usable bound.",
+      "alphaMixingCoeff_nonneg falls out of davydov_indicator_bound via the trivial A = B = ∅ witness (0 ≤ sup), discharging the omission flagged in the parent file.",
+      "The original deep davydov_covariance_inequality sorry decomposes structurally into: (a) order-theory α-mixing facts (alphaMixingCoeff_le_one, alphaMixingCoeff_nonneg, davydov_indicator_bound — all sorries, pure ConditionallyCompleteLattice ℝ machinery), (b) L^p density / truncation step (S5 target). This S4 names the (a) ingredients; (b) is the actual measure-theoretic work.",
+      "The Prop-indexed nested-iSup machinery (iSup_pos / iSup_neg + ConditionallyCompleteLattice ℝ + 4 levels of typeclass synthesis for @MeasurableSet Ω ℱ A) is non-trivial — the parent file omitted alphaMixingCoeff_nonneg for the same reason. Resolving this is a worthwhile mechanic-pass / Mathlib-contribution target.",
+      "indicator_cov_le_one (proven): for probability measure, |(μ(A∩B)).toReal - (μ A).toReal · (μ B).toReal| ≤ 1, since all three values lie in [0,1]. This is the BddAbove witness for the nested suprema in alphaMixingCoeff.",
+      "S3 PR #17820 (merged 2026-05-12T04:23:24Z) never built on origin/main due to: (1) Mathlib.Probability.Variance file removed in upstream drift; (2) typeclass-synthesis collision where direct (ℱ 𝒢 : MeasurableSpace Ω) explicit args compete with the ambient [MeasurableSpace Ω] instance at every alphaMixingCoeff call; (3) σ² is not a valid Lean identifier. All three are now fixed in S4.",
+      "The MS Ω typeclass-synthesis collision is dodged using the parent file's pattern: parameterize σ-algebras as a FUNCTION (σPair : Fin 2 → MS Ω or pastSigma : ℕ → MS Ω) rather than direct (ℱ : MS Ω) bindings. Function-form: σPair 0 is a projection, not an instance candidate. Parent file uses this at independent_implies_zero_mixing and AlphaMixingSequence.mixing_bound — confirmed working pattern.",
+      "Documented structural decomposition is the path forward: the L^p Davydov inequality reduces to 3 order-theory facts (alphaMixingCoeff_le_one, alphaMixingCoeff_nonneg, davydov_indicator_bound) + 1 measure-theory step (L^p density / truncation). Each piece is named and has a clear proof strategy in the docstring."
+    ],
+    "mathlibGaps": [
+      "No alpha-mixing primitive (StronglyMixing, MixingCoefficient, alphaMixingCoeff) anywhere in Mathlib.Probability.",
+      "No Davydov / Ibragimov covariance inequality |Cov(X,Y)| <= 8 alpha^{1-1/p-1/q} ||X||_p ||Y||_q (would naturally live in Mathlib.Probability.Covariance or a new Mathlib.Probability.Mixing file).",
+      "No Bernstein block decomposition lemma for stationary sequences.",
+      "No quantitative variance-of-partial-sum bound for stationary sequences (the parent's variance_sum_bounded_of_converges handles independent / triangular-array case only)."
+    ],
+    "nextSteps": [
+      "S5c+1 ACT (~100-130 LOC, per S5d STATE-SYNC §5 7-step picker checklist; supersedes pre-Finding-E 6-step plan): discharge L^p density step of davydov_covariance_inequality (slug Lean line 475, the 1-of-2 remaining sorries). Prerequisite: apply Finding E +5 LOC to IbragimovHypotheses (currently 14 fields at lines 157-189 of CentralLimitTheoremOQ02OQ04.lean; insert past_le : ∀ k, pastSigma k ≤ inferInstance + future_le : ∀ k, futureSigma k ≤ inferInstance after line 180, before line 182; structure grows 14 → 16 fields). Then: (a) level-set decomposition X = ∫₀^∞ (𝟙_{X>t} − 𝟙_{X<-t}) dt for both X and Y (~15 LOC), (b) bilinear expansion of Cov(X,Y) into double integral (~10 LOC), (c) pointwise application of indicator_covariance_le_alpha at each (t,s) threading H.past_le 0 _ h_sub + H.future_le 0 _ h_sub for ambient measurability (~20 LOC; h_sub from @measurableSet_lt Ω ℝ _ _ (H.pastSigma 0) X (fun _ => t) (H.past_measurable 0) measurable_const), (d) Hölder amplification + Markov tail bound (~40 LOC). Docker-verify. Target sorry count 2 → 1 (close davydov_covariance_inequality line 475; preserve mixing_clt_ibragimov line 671 as S6+ target). Parent file co-extension (AlphaMixingSequence in CentralLimitTheoremOQ02.lean:427-442 has same Finding E gap; +5 LOC parent edit on non-leaf with multiple importers) OUT OF SCOPE for S5c+1; queued for S5c+2 or sibling mechanic.",
+      "S6 ACT (~100 lines): refine Stationary to joint tuple stationarity (prerequisite for Bernstein blocks). Parallel path now unblocked since all Davydov ingredients are in place.",
+      "S7 ACT (~150 lines): Bernstein blocks p_n, q_n + asymptotic arithmetic.",
+      "S8 ACT (~120 lines): large-block independence approximation via mixing.",
+      "S9 ACT (~100 lines): Lindeberg condition on blocks.",
+      "S10 ACT (~50 lines): invoke parent Lindeberg-Feller CLT for final assembly."
+    ]
+  },
+  "tags": [
+    "probability",
+    "mixing",
+    "clt",
+    "ibragimov",
+    "polynomial-rate",
+    "extension",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "central-limit-theorem",
+    "central-limit-theorem-oq-01",
+    "central-limit-theorem-oq-01-oq-01",
+    "central-limit-theorem-oq-01-oq-01-oq-04",
+    "central-limit-theorem-oq-01-oq-02",
+    "central-limit-theorem-oq-01-oq-02-oq-01",
+    "central-limit-theorem-oq-01-oq-02-oq-01-oq-01",
+    "central-limit-theorem-oq-01-oq-03",
+    "central-limit-theorem-oq-02",
+    "central-limit-theorem-oq-03",
+    "central-limit-theorem-oq-04"
+  ],
+  "references": {
+    "papers": [
+      "Ibragimov, I. A. (1962). Some limit theorems for stationary processes. Theory Probab. Appl. 7(4), 349-382.",
+      "Davydov, Yu. A. (1968). Convergence of distributions generated by stationary stochastic processes. Theory Probab. Appl. 13(4), 691-696.",
+      "Rio, E. (1993). Covariance inequalities for strongly mixing processes. Ann. Inst. H. Poincaré Probab. Statist. 29(4), 587-597.",
+      "Bradley, R. C. (2005). Basic properties of strong mixing conditions: a survey and some open questions. Probability Surveys 2, 107-144.",
+      "Doukhan, P. (1994). Mixing: Properties and Examples. Lecture Notes in Statistics 85, Springer.",
+      "Bradley, R. C. (1981). A sufficient condition for linear growth of variances in a stationary random sequence. Proc. Amer. Math. Soc. 83, 586-589.",
+      "Rio, E. (1996). Sur le théorème de Berry-Esseen pour les suites faiblement dépendantes. Probab. Theory Related Fields 104, 255-282."
+    ],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-08T19:09:00.562Z",
+  "lastUpdate": "2026-06-13T00:00:00.000Z",
+  "significance": 7,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/CentralLimitTheorem.lean",
+      "filename": "CentralLimitTheorem.lean",
+      "lineCount": 621,
+      "theoremCount": 16,
+      "axiomCount": 12,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheorem.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01.lean",
+      "filename": "CentralLimitTheoremOQ01.lean",
+      "lineCount": 314,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ01.lean",
+      "filename": "CentralLimitTheoremOQ01OQ01.lean",
+      "lineCount": 1131,
+      "theoremCount": 54,
+      "axiomCount": 3,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ01OQ04.lean",
+      "filename": "CentralLimitTheoremOQ01OQ01OQ04.lean",
+      "lineCount": 359,
+      "theoremCount": 10,
+      "axiomCount": 6,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ02.lean",
+      "filename": "CentralLimitTheoremOQ01OQ02.lean",
+      "lineCount": 323,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ02OQ01.lean",
+      "filename": "CentralLimitTheoremOQ01OQ02OQ01.lean",
+      "lineCount": 113,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ02OQ01OQ01.lean",
+      "filename": "CentralLimitTheoremOQ01OQ02OQ01OQ01.lean",
+      "lineCount": 177,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ03.lean",
+      "filename": "CentralLimitTheoremOQ01OQ03.lean",
+      "lineCount": 147,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ02.lean",
+      "filename": "CentralLimitTheoremOQ02.lean",
+      "lineCount": 730,
+      "theoremCount": 19,
+      "axiomCount": 1,
+      "defCount": 11,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ02Aristotle.lean",
+      "filename": "CentralLimitTheoremOQ02Aristotle.lean",
+      "lineCount": 137,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 4,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ03.lean",
+      "filename": "CentralLimitTheoremOQ03.lean",
+      "lineCount": 242,
+      "theoremCount": 8,
+      "axiomCount": 14,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ03OQ01.lean",
+      "filename": "CentralLimitTheoremOQ03OQ01.lean",
+      "lineCount": 199,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ03OQ01Aristotle.lean",
+      "filename": "CentralLimitTheoremOQ03OQ01Aristotle.lean",
+      "lineCount": 85,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 4,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ03OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ03OQ02.lean",
+      "filename": "CentralLimitTheoremOQ03OQ02.lean",
+      "lineCount": 292,
+      "theoremCount": 13,
+      "axiomCount": 11,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ04.lean",
+      "filename": "CentralLimitTheoremOQ04.lean",
+      "lineCount": 650,
+      "theoremCount": 21,
+      "axiomCount": 9,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ04.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ02OQ04.lean",
+      "filename": "CentralLimitTheoremOQ02OQ04.lean",
+      "lineCount": 733,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ02OQ04.lean"
+    }
+  ]
+}

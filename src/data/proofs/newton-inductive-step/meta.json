@@ -1,0 +1,214 @@
+{
+  "id": "newton-inductive-step",
+  "title": "Newton's Log-Concavity Inductive Step",
+  "slug": "newton-inductive-step",
+  "description": "Proves the key binomial coefficient inequality for Newton's log-concavity theorem: bc^3 + adc^2 + ac^3 >= 2b^2cd + b^3d where a, b, c, d are consecutive binomial coefficients. Uses absorption identities to reduce to a polynomial identity verified by linear_combination. Imported by AmgmInequalityOQ02OQ02 and NewtonIndStep2.",
+  "meta": {
+    "author": "Formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Newton%27s_inequalities",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/NewtonInductiveStep.lean",
+    "additionalFiles": [
+      "Proofs/NewtonIndStep2.lean"
+    ],
+    "tags": [
+      "combinatorics",
+      "binomial-coefficients",
+      "inequalities",
+      "log-concavity",
+      "newton",
+      "infrastructure"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients C(m, k)",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.choose_succ_right_eq",
+        "description": "Absorption identity: (m-k+1) * C(m,k) = (k+1) * C(m,k+1)",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
+    ],
+    "originalContributions": [
+      "quadratic_nonneg: a quadratic alpha*t^2 + beta*t + gamma >= 0 for t >= 0 when alpha, gamma >= 0 and 4*alpha*gamma >= beta^2",
+      "binom_ineq: bc^3 + adc^2 + ac^3 >= 2b^2cd + b^3d for consecutive binomial coefficients C(m, k-2), C(m, k-1), C(m, k), C(m, k+1)",
+      "Key technique: absorption identities k*c = r*b, (k+1)*d = (r-1)*c, (k-1)*b = (r+1)*a reduce the inequality to D*(target) = r*(k+r)^2*b^4 >= 0 where D = k^3*(k+1)*(r+1) > 0"
+    ],
+    "dateAdded": "2026-03-22",
+    "axiomCount": 0,
+    "lineCount": 152,
+    "prerequisites": [
+      "Binomial coefficients and their properties (absorption identities)",
+      "Real arithmetic and polynomial inequalities",
+      "The linear_combination tactic for polynomial identity verification"
+    ],
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 2,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Newton's inequalities, discovered by Isaac Newton in the late 17th century, state that the elementary symmetric polynomials $e_k$ of $n$ real numbers satisfy the log-concavity condition $e_k^2 \\geq e_{k-1} \\cdot e_{k+1}$ (with appropriate normalizations). Newton proved this in the context of his work on the roots of polynomials, establishing a deep connection between the coefficients of a polynomial and the distribution of its roots. The inequalities were later generalized and studied by Maclaurin, who established the related Maclaurin inequalities.\n\nThe log-concavity of binomial coefficients — the fact that $\\binom{m}{k}^2 \\geq \\binom{m}{k-1} \\cdot \\binom{m}{k+1}$ — is a special case, corresponding to the elementary symmetric polynomials of the all-ones sequence $(1, 1, \\ldots, 1)$. The classical proof proceeds by induction on the number of variables, with the inductive step requiring a specific quartic inequality involving four consecutive binomial coefficients.\n\nThis module isolates and proves that key inequality using a technique based on the absorption identity $k \\cdot \\binom{m}{k} = (m-k+1) \\cdot \\binom{m}{k-1}$. By chaining three such identities (for the three consecutive pairs among $a, b, c, d$), the quartic inequality reduces to showing $r(k+r)^2 b^4 \\geq 0$ — a manifestly non-negative expression. This 'clear the denominators and verify a polynomial identity' paradigm is a powerful technique for formal verification of combinatorial inequalities, as it replaces factorial manipulations with polynomial arithmetic that can be handled by the `linear_combination` tactic.",
+    "problemStatement": "Prove the binomial coefficient inequality for Newton's log-concavity:\n\nFor integers m, k with 2 <= k and k+1 <= m, let a = C(m, k-2), b = C(m, k-1), c = C(m, k), d = C(m, k+1). Then:\n\n$$bc^3 + adc^2 + ac^3 \\geq 2b^2cd + b^3d$$\n\nAlso provide a helper lemma: a quadratic alpha*t^2 + beta*t + gamma >= 0 for t >= 0 when alpha, gamma >= 0 and 4*alpha*gamma >= beta^2.",
+    "text": "Proves the key binomial coefficient inequality for Newton's log-concavity theorem: bc^3 + adc^2 + ac^3 >= 2b^2cd + b^3d where a, b, c, d are consecutive binomial coefficients. Uses absorption identities to reduce to a polynomial identity verified by linear_combination. Imported by AmgmInequalityOQ02OQ02 and NewtonIndStep2.",
+    "proofStrategy": "The proof uses **absorption identities** to eliminate the binomial coefficients in favor of two parameters k and r = m - k + 1:\n\n1. **Absorption identities**: From Nat.choose_succ_right_eq, derive:\n   - k * c = r * b (relating C(m,k) and C(m,k-1))\n   - (k+1) * d = (r-1) * c (relating C(m,k+1) and C(m,k))\n   - (k-1) * b = (r+1) * a (relating C(m,k-1) and C(m,k-2))\n\n2. **Derive power identities**: Square and cube the first identity to get k^2*c^2 = r^2*b^2 and k^3*c^3 = r^3*b^3.\n\n3. **Multiply by D = k^3*(k+1)*(r+1) > 0**: Rewrite each term of D*(LHS - RHS) using the absorption identities and power identities.\n\n4. **Polynomial identity**: Show D*(LHS - RHS) = r*(k+r)^2*b^4 >= 0. This is verified by linear_combination using all the derived identities as hints.\n\n5. **Conclude**: Since D > 0 and D*(LHS - RHS) >= 0, we have LHS - RHS >= 0.",
+    "keyInsights": [
+      "Absorption identities convert binomial coefficient inequalities into polynomial identities in k and r = m-k+1, completely avoiding factorial manipulations — this is a general paradigm for formal verification of combinatorial inequalities",
+      "The key algebraic identity D*(LHS - RHS) = r*(k+r)^2*b^4 reveals that the inequality is not just true but manifestly non-negative: r > 0, (k+r)^2 >= 0, b^4 >= 0, with equality impossible for valid parameters",
+      "The proof strategy (multiply by D > 0, then verify a polynomial identity) reduces the problem to a single linear_combination call that combines six derived equations — Lean's tactic handles the resulting degree-8 polynomial verification automatically",
+      "The multiplier D = k^3(k+1)(r+1) is the minimal positive clearing factor: k^3 eliminates c^3 via h1_cube, (k+1) eliminates d via h2', and (r+1) eliminates a via h3'",
+      "This technique extends to any inequality involving a fixed number of consecutive binomial coefficients: the absorption identity always introduces one new parameter per adjacent pair, and the resulting polynomial identity is algorithmically verifiable"
+    ],
+    "prerequisites": [
+      "Binomial coefficients and their properties (absorption identities)",
+      "Real arithmetic and polynomial inequalities",
+      "The linear_combination tactic for polynomial identity verification"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 9,
+      "summary": "Docstring and Mathlib import. The header documents the key identity k^3(k+1)(m-k+2)*(LHS-RHS) = (m-k+1)(m+1)^2*b^4 and imports all of Mathlib for access to Nat.choose_succ_right_eq.",
+      "mathContext": "The module proves $bc^3 + adc^2 + ac^3 \\geq 2b^2cd + b^3d$ for consecutive binomial coefficients via the identity $D \\cdot (\\text{LHS} - \\text{RHS}) = r(k+r)^2 b^4$."
+    },
+    {
+      "id": "quadratic-helper",
+      "title": "Quadratic Non-Negativity Helper",
+      "startLine": 10,
+      "endLine": 19,
+      "summary": "Proves quadratic_nonneg: alpha*t^2 + beta*t + gamma >= 0 for t >= 0 when alpha, gamma >= 0 and 4*alpha*gamma >= beta^2. Two cases: alpha = 0 forces beta = 0 leaving gamma >= 0; alpha > 0 uses completing the square with the hint sq_nonneg(2*alpha*t + beta).",
+      "mathContext": "If $\\alpha, \\gamma \\geq 0$ and $4\\alpha\\gamma \\geq \\beta^2$, then $\\alpha t^2 + \\beta t + \\gamma \\geq 0$ for all $t \\geq 0$. Proof: $\\alpha(\\alpha t^2 + \\beta t + \\gamma) = (\\alpha t + \\beta/2)^2 + (\\alpha\\gamma - \\beta^2/4) \\geq 0$."
+    },
+    {
+      "id": "theorem-statement-absorption",
+      "title": "Theorem Statement and Absorption Identities",
+      "startLine": 20,
+      "endLine": 46,
+      "summary": "States binom_ineq for consecutive binomial coefficients a, b, c, d = C(m, k-2..k+1) and derives three absorption identities from Nat.choose_succ_right_eq: k*c = (m-k+1)*b, (k+1)*d = (m-k)*c, (k-1)*b = (m-k+2)*a. Each derivation involves index arithmetic via omega, Nat.cast for N-to-R conversion, and push_cast for simplification.",
+      "mathContext": "Absorption identity: $k \\cdot \\binom{m}{k} = (m-k+1) \\cdot \\binom{m}{k-1}$. Three instances relate the four consecutive coefficients pairwise."
+    },
+    {
+      "id": "positivity-derived-identities",
+      "title": "Positivity Setup and Derived Power Identities",
+      "startLine": 47,
+      "endLine": 66,
+      "summary": "Introduces r = m - k + 1 and establishes positivity of k and r (both > 0 for valid parameters). Derives five algebraic identities: h1' (kc = rb), h1_sq (k^2*c^2 = r^2*b^2), h1_cube (k^3*c^3 = r^3*b^3), h12 (k(k+1)d = r(r-1)b combining h1 and h2), and h3' ((r+1)a = (k-1)b). Each is proved by linear_combination with polynomial hints.",
+      "mathContext": "Setting $r = m - k + 1$: from $kc = rb$, derive $k^2c^2 = r^2b^2$ and $k^3c^3 = r^3b^3$. From $h_1$ and $h_2$: $k(k+1)d = r(r-1)b$. From $h_3$: $(r+1)a = (k-1)b$."
+    },
+    {
+      "id": "sufficiency-reduction",
+      "title": "Reduction to D * (LHS - RHS) >= 0",
+      "startLine": 67,
+      "endLine": 94,
+      "summary": "Multiplies by the positive clearing factor D = k^3*(k+1)*(r+1). Positivity of D is established by the positivity tactic. Uses suffices to reduce the goal: if D > 0 and D*(LHS-RHS) >= 0 then LHS >= RHS. The contrapositive is proved via mul_neg_of_pos_of_neg.",
+      "mathContext": "Multiplier $D = k^3(k+1)(r+1) > 0$ since $k \\geq 2$ and $r \\geq 1$. If $D > 0$ and $D \\cdot x \\geq 0$ then $x \\geq 0$."
+    },
+    {
+      "id": "key-substitution-identities",
+      "title": "Key Substitution Identities (key1-key5)",
+      "startLine": 95,
+      "endLine": 129,
+      "summary": "Derives five identities expressing each term of D*(LHS-RHS) in terms of b^4: key1 (k^3*b*c^3 = r^3*b^4), key2 (k(k+1)*b^3*d = r(r-1)*b^4), key3 (k^2*b^2*c^2 = r^2*b^4), key4 (D*a*d*c^2 = (k-1)(r-1)*r^3*b^4), key5 (D*a*c^3 = (k^2-1)*r^3*b^4). key4 is the most intricate, requiring an intermediate step combining two absorption identities before multiplying by k^3*c^2.",
+      "mathContext": "Each product involving $a, c, d$ is rewritten as a polynomial in $k, r$ times $b^4$. The five identities convert the 5-term inequality into a single polynomial expression."
+    },
+    {
+      "id": "final-identity-completion",
+      "title": "Final Identity and Proof Completion",
+      "startLine": 130,
+      "endLine": 152,
+      "summary": "Combines all five key identities via a single linear_combination call with six terms to prove D*(LHS-RHS) = r*(k+r)^2*b^4. The positivity tactic closes the goal since r > 0, (k+r)^2 >= 0, b^4 >= 0. The inequality is strict for valid parameters since b = C(m,k-1) > 0 and r >= 1.",
+      "mathContext": "$k^3(k+1)(r+1)(\\text{LHS} - \\text{RHS}) = r(k+r)^2 b^4 \\geq 0$. Verified by `linear_combination` combining six derived identities, then `positivity`."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "related",
+      "description": "Newton's inequalities generalize the AM-GM inequality: for the all-ones sequence, the log-concavity condition reduces to the AM-GM of appropriate means. This module provides the inductive step that enables the connection"
+    },
+    {
+      "targetId": "amgm-inequality-oq-02",
+      "relationship": "foundational",
+      "description": "Provides the key binomial inequality used in the AM-GM extension, which leverages Newton's log-concavity of symmetric polynomials"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "The binomial theorem generates the coefficients C(m,k) that this module proves are log-concave. The absorption identity k*C(m,k) = (m-k+1)*C(m,k-1) is a fundamental recurrence for binomial coefficients, closely related to Pascal's rule"
+    },
+    {
+      "targetId": "binomial-theorem-oq-02",
+      "relationship": "related",
+      "description": "Further binomial coefficient identities and inequalities that complement this module's log-concavity result"
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "foundational",
+      "description": "The combinations formula C(n,k) = n!/(k!(n-k)!) underlies the absorption identity used throughout this proof: k*C(m,k) = (m-k+1)*C(m,k-1) follows directly from the factorial definition"
+    }
+  ],
+  "conclusion": {
+    "summary": "This module provides a fully verified proof (152 lines, 2 theorems, 0 axioms, 0 sorries) of the key binomial inequality for Newton's log-concavity. The absorption identity technique converts the problem into a clean polynomial identity, verified by linear_combination. It serves as infrastructure for 2 downstream proofs.",
+    "implications": "Newton's inequalities and log-concavity of binomial coefficients have deep connections to combinatorics, algebra, and probability. The technique of using absorption identities to reduce binomial coefficient inequalities to polynomial identities is broadly applicable: any inequality involving a fixed number of consecutive binomial coefficients can be handled this way, making it a powerful paradigm for formal verification.",
+    "openQuestions": [
+      "Formalize the full Newton's inequality e_k^2 >= e_{k-1} * e_{k+1} for elementary symmetric polynomials",
+      "Prove ultra-log-concavity of binomial coefficients: C(m,k)^2 / C(m,0)^2 is log-concave in k",
+      "Extend to q-binomial coefficients and their log-concavity properties"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 152,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "path": "Proofs/NewtonInductiveStep.lean",
+    "additionalFiles": [
+      "Proofs/NewtonIndStep2.lean"
+    ],
+    "sorries": 0
+  },
+  "references": [
+    {
+      "key": "Ne07",
+      "citation": "Niculescu, C. P. (2007). A new look at Newton's inequalities. Journal of Inequalities in Pure and Applied Mathematics, 1(2).",
+      "type": "paper"
+    },
+    {
+      "key": "HLP52",
+      "citation": "Hardy, G. H., Littlewood, J. E., and Polya, G. (1952). Inequalities. Cambridge University Press, Chapter 2.",
+      "type": "book"
+    },
+    {
+      "key": "Ma29",
+      "citation": "Maclaurin, C. (1729). A second letter to Martin Folkes, Esq., concerning the roots of equations. Philosophical Transactions, 36, 59-96.",
+      "type": "paper"
+    },
+    {
+      "key": "St89",
+      "citation": "Stanley, R. P. (1989). Log-concave and unimodal sequences in algebra, combinatorics, and geometry. Annals of the New York Academy of Sciences, 576, 500-535.",
+      "type": "paper"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "newton_identity",
+      "type": "core",
+      "description": "Newton's identities relating power sums to elementary symmetric polynomials",
+      "leanType": "k * e_k = sum_{i=1}^k (-1)^{i-1} * p_i * e_{k-i}"
+    }
+  ],
+  "sorries": 0
+}

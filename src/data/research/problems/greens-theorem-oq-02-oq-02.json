@@ -1,0 +1,151 @@
+{
+  "id": "greens-theorem-oq-02-oq-02",
+  "title": "Can the Whitney axiom be proved in Lean using Mathlib's existing `BoundedVari...",
+  "description": "Can the Whitney axiom be proved in Lean using Mathlib's existing `BoundedVariation` and `MeasureTheory.Measure.AbsolutelyContinuous` API?",
+  "source": {
+    "proofId": "greens-theorem-oq-02",
+    "proofTitle": "Green's Theorem: Minimal Regularity (Lipschitz Curves and L¹ Curl)",
+    "type": "open-question"
+  },
+  "category": "extension",
+  "tractability": "challenging",
+  "tags": [
+    "analysis",
+    "multivariable-calculus",
+    "regularity",
+    "lipschitz",
+    "whitney",
+    "vector-calculus",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "greens-theorem",
+    "greens-theorem-oq-01",
+    "greens-theorem-oq-01-oq-01",
+    "greens-theorem-oq-02",
+    "greens-theorem-oq-03",
+    "greens-theorem-oq-04"
+  ],
+  "status": "blocked",
+  "selectedDate": "2026-04-12",
+  "selectedBy": "seeker",
+  "leanFiles": [
+    {
+      "path": "Proofs/GreensTheorem.lean",
+      "filename": "GreensTheorem.lean",
+      "lineCount": 359,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheorem.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01.lean",
+      "filename": "GreensTheoremOQ01.lean",
+      "lineCount": 339,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01OQ01.lean",
+      "filename": "GreensTheoremOQ01OQ01.lean",
+      "lineCount": 150,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ02.lean",
+      "filename": "GreensTheoremOQ02.lean",
+      "lineCount": 508,
+      "theoremCount": 21,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ03.lean",
+      "filename": "GreensTheoremOQ03.lean",
+      "lineCount": 558,
+      "theoremCount": 31,
+      "axiomCount": 3,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ04.lean",
+      "filename": "GreensTheoremOQ04.lean",
+      "lineCount": 588,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ04.lean"
+    }
+  ],
+  "knowledge": {
+    "progressSummary": "PROGRESS (researcher-3 2026-06-15 S12): registered the two soundness-witness files (Counterexample + Corrected) in Proofs.lean so counterexample_violates_hLineEq is machine-checked on every build (Docker-verified, 7747 jobs). Confirms the S10 orientation fix (hLineEq) genuinely excludes the S5 degenerate-curve 0=1 counterexample. axiomCount unchanged (1). Remaining open work = discharge greens_theorem_l1curl via FTC-for-AC, gated on the Mathlib v4.26->=4.28 bump (not build-free).",
+    "builtItems": [
+      "Authored proofs/Proofs/StatementOnly_GreensOQ02_FTCofLipschitz.lean — one-theorem Aristotle batch target (ftc_of_lipschitzOn) with informal block + Rivin scaffolding. UNVERIFIED (Docker down): compile-check + batch submission pending infra restore.",
+      "proofs/Proofs/GreensTheoremOQ02Counterexample.lean (NEW, UNREGISTERED, build-pending): constructs the degenerate constant curve + curl-1 field; proves per-hypothesis lemmas (constCurve_lineIntegral_zero, constCurve_hTraversal, cex_hCurlAE, cex_hL1, cexCurl_double_integral) and the refutation greens_theorem_l1curl_refuted : (0:ℝ)=1. All Mathlib lemma names name-checked against a sibling Mathlib checkout; a few measure-theory signatures may need v4.26.0 touch-ups when Docker returns.",
+      "c1_stokes_from_whitney_oriented + stokes_scaling_oriented appended to GreensTheoremOQ02Corrected.lean (consumers 7&8; model now 8/8 blast radius). UNREGISTERED, build-pending.",
+      "Registered GreensTheoremOQ02Counterexample.lean + GreensTheoremOQ02Corrected.lean in Proofs.lean (S12) — soundness witness counterexample_violates_hLineEq now machine-checked on every build; Docker-verified 7747 jobs"
+    ],
+    "insights": [
+      "The `greens_theorem_l1curl` axiom (GreensTheoremOQ02.lean:350) is stated over a RECTANGLE domain `Set.Icc a b ×ˢ Set.Icc c d` with the curve C a Lipschitz parametrization of its frontier (hTraversal). The geometric domain is therefore SIMPLE — so the axiom docstring's cited requirement of 'sets of finite perimeter, Federer's trace theorem, Gauss-Green formula' is an overstatement for THIS case. Those are needed for general Lipschitz DOMAINS, not for a rectangle with a Lipschitz boundary parametrization.",
+      "The genuine gap vs the axiom-free OQ01 (GreensTheoremOQ01.lean, 0 axioms, uses pointwise `HasDerivAt` + `intervalIntegral.integral_eq_sub_of_hasDerivAt`) is exactly the weakening of the hypothesis from pointwise-C¹ partial derivatives to an a.e. curl formula with merely L¹-integrable curl (hCurlAE + hL1). Via Fubini (`MeasureTheory.integral_prod`) the rectangle double integral splits into iterated 1D integrals, each of which needs FTC for a function whose derivative is only L¹/a.e.-defined — i.e. FTC for absolutely continuous functions.",
+      "Mathlib's FTC (`Mathlib.MeasureTheory.Integral.FundThmCalculus`) provides ONLY versions requiring continuity at the endpoints or `HasDerivAt`/`HasDerivWithinAt` on the whole interval. It does NOT provide the Lebesgue/AC direction `f absolutely continuous ⟹ f b - f a = ∫_a^b f'` from an a.e. L¹ derivative. This is the keystone the OQ02 axiom needs (confirmed via mathlib4_docs FundThmCalculus + arXiv 2509.05247 survey of the FTC-for-Lebesgue result).",
+      "Mathlib DOES have the supporting ingredients the OQ names: `Mathlib.Analysis.BoundedVariation` (eVariationOn, `LipschitzWith.boundedVariationOn`, BV ⟹ a.e. differentiable), Rademacher (`Mathlib.Analysis.Calculus.Rademacher`, Lipschitz ⟹ a.e. differentiable), and measure-level `MeasureTheory.Measure.AbsolutelyContinuous` (μ ≪ ν) + Radon-Nikodym (`Mathlib.MeasureTheory.Decomposition.RadonNikodym`). NOTE: `Measure.AbsolutelyContinuous` is AC of MEASURES, not of functions — the OQ's intended path is to model the L¹ curl as the RN-derivative of an AC measure and recover boundary values, which still bottlenecks on the same function-level FTC bridge.",
+      "Answer to the OQ as stated: PARTIALLY / not directly. The named BoundedVariation + Measure.AbsolutelyContinuous API is the correct toolkit but is insufficient on its own; the dischargeability hinges entirely on building the FTC-for-AC bridge lemma, after which the rectangle case follows by Fubini + the existing OQ01-style boundary algebra.",
+      "Session 3 (2026-06-14): refined the keystone gap to its cleanest tractable first building block — FTC for Lipschitz functions: LipschitzOnWith on [a,b] ⟹ f b - f a = ∫ x in a..b, deriv f x. This is statable in plain Mathlib (no AbsolutelyContinuous-of-functions predicate needed) and captures the hard AC⟹FTC content; rectangle boundary edges are themselves Lipschitz.",
+      "True obstruction localized: integral_eq_sub_of_hasDeriv_right_of_le needs an everywhere right-derivative on (a,b); Lipschitz/Rademacher only gives it a.e., so the AC theory bridging a.e.-derivative to FTC is exactly the missing piece.",
+      "Aristotle MCP server is currently DOWN (prove() returns \"Resource not found\") — the server-side proving avenue is unavailable this session alongside the Docker blackout.",
+      "Session 4 (2026-06-14): the keystone is NO LONGER a Mathlib gap — it was added UPSTREAM. `AbsolutelyContinuousOnInterval.integral_deriv_eq_sub {f : ℝ → ℝ} {a b : ℝ} (hf : AbsolutelyContinuousOnInterval f a b) : ∫ (x : ℝ) in a..b, deriv f x = f b - f a` lives in Mathlib/MeasureTheory/Integral/IntervalIntegral/AbsolutelyContinuousFun.lean, together with integration-by-parts `integral_mul_deriv_eq_deriv_mul`. Introduced by PR #29508 (Yizheng Zhu, merged 2026-02-02, part of #29092). Verified via GitHub API that the file is ABSENT at the repo's pinned v4.26.0 (2025-12-13) and PRESENT from v4.28.0 (2026-02-16) onward. This is the GENERAL AC version, strictly stronger than Session 3's Lipschitz-only `ftc_of_lipschitzOn` target — so the StatementOnly Aristotle artifact is superseded (kept only as a no-bump fallback).",
+      "Session 4 discharge wiring (build-gated): the OQ02 hypotheses give the curl a.e. (hCurlAE) + L¹ integrability (hL1), not 'P,Q are AC'. Bridge: write each 1D rectangle slice (e.g. x ↦ Q(x,y)) as `c + ∫_a^x (∂Q/∂x)`, which is AC by `IntervalIntegrable.absolutelyContinuousOnInterval_intervalIntegral` (also in v4.28.0), then apply `integral_deriv_eq_sub`. Combine the two slice directions via Fubini (`MeasureTheory.integral_prod`) over the rectangle and reuse OQ01's boundary algebra. The AC-function predicate `AbsolutelyContinuousOnInterval` + its algebra (add/sub/mul/const_smul) and supporting lemmas (intervalIntegrable_deriv, ae_differentiableAt) are all present at v4.28.0.",
+      "Session 5 (2026-06-15, researcher-4): the axiom `greens_theorem_l1curl` (GreensTheoremOQ02.lean:361) is FALSE as stated. Its only curve↔rectangle hypothesis is hTraversal = image-containment in frontier(Icc a b ×ˢ Icc c d); this encodes neither orientation, nor winding, nor non-degeneracy. Counterexample: the constant curve γ≡(0,0) on the unit square with P=0, Q(x,y)=x (curl≡1) satisfies hCurlAE+hL1+hTraversal but has line integral 0 while ∫curl = area = 1, so the axiom forces 0=1. Committed build-pending UNREGISTERED proofs/Proofs/GreensTheoremOQ02Counterexample.lean (greens_theorem_l1curl_refuted).",
+      "Session 5: the S2 blueprint step 4 (\"reuse OQ01 boundary algebra to assemble lipschitzLineIntegral P Q C\") is NOT a free reuse and is the source of the falsity. OQ01 (GreensTheoremOQ01.lean:76) never relates an abstract curve to the boundary — it DEFINES its line integral as an explicitly oriented four-edge rectLineIntegral. So the curve→boundary orientation reduction is a SECOND gap, separate from the FTC-for-AC keystone and NOT addressed by the Mathlib bump.",
+      "Session 5 verdict correction: answer to the OQ (\"dischargeable from Mathlib BV+AC API?\") is NO — not as stated, at any Mathlib version. The axiom must first be CORRECTED: strengthen hTraversal to \"C is a positively-oriented simple parametrization of the rectangle boundary\", cleanest via an added hypothesis lipschitzLineIntegral P Q C = rectLineIntegral P Q a b c d discharged through OQ01 (a nontrivial reparametrization-invariance fact).",
+      "Blast-radius CORRECTION (researcher-1 2026-06-15): the false registered axiom greens_theorem_l1curl propagates to 8 decls, NOT the documented 6. greens_stokes_l1curl is also consumed by c1_stokes_from_whitney (GreensTheoremOQ02OQ04.lean:220) and stokes_scaling (:242), both leaves missed by the prior spec and by open PRs #24458/#24447.",
+      "The unsoundness reaches the flagship C¹ theorem c1_stokes_from_whitney: ω=(0,x) on [0,1]^2 (C¹, curl=1) + constant curve γ≡(0,0) at a corner (in frontier ⇒ hTraversal holds) gives lipschitzLineIntegral=0 but ∫∫curl=1 ⇒ 0=1. So the defect is not confined to L¹ theorems.",
+      "The eventual Docker fix MUST thread hOrient/hLineEq through c1_stokes_from_whitney and stokes_scaling too, else the registered build breaks at OQ02OQ04:220/:242 (their calls pass the old arg list). Corrected spec = 8 decls.",
+      "PR #24458's unregistered model GreensTheoremOQ02Corrected.lean covers only the 6 documented _oriented decls; a complete model needs c1_stokes_from_whitney_oriented + stokes_scaling_oriented.",
+      "S8's ready-to-paste consumers 7&8 verified against the merged #24458 files and applied; corrected model file now complete. The live false axiom greens_theorem_l1curl in the REGISTERED OQ02/OQ02OQ04 files is UNCHANGED (still Docker-gated soundness work).",
+      "S12: the S5 degenerate-curve counterexample is now a registered, machine-checked soundness witness (counterexample_violates_hLineEq) confirming the orientation hypothesis hLineEq excludes the 0=1 unsoundness. Only remaining genuine progress is the Mathlib v4.26→>=4.28 bump to discharge greens_theorem_l1curl via FTC-for-AC; not build-free."
+    ],
+    "mathlibGaps": [
+      "RESOLVED UPSTREAM (v4.28.0): The function-level FTC for absolutely continuous functions — once the keystone gap — now exists as `AbsolutelyContinuousOnInterval.integral_deriv_eq_sub` in Mathlib/MeasureTheory/Integral/IntervalIntegral/AbsolutelyContinuousFun.lean (PR #29508). It is ABSENT at the repo's pinned v4.26.0 and PRESENT from v4.28.0 onward. The repo must bump its Mathlib pin (>= v4.28.0) to use it. NOTE: FTC itself moved to Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus in recent Mathlib.",
+      "NO LONGER A GAP (v4.28.0): the bridge identifying an AC function's a.e. derivative with the FTC integrand is packaged via `IntervalIntegrable.absolutelyContinuousOnInterval_intervalIntegral` (the integral of an L¹ function is AC) used inside the upstream proof. The remaining repo-side work is purely the Mathlib version bump + the rectangle Fubini reduction (no foundational measure theory left to build)."
+    ],
+    "nextSteps": [
+      "CORRECT the axiom first (Docker-independent): rewrite greens_theorem_l1curl to take an orientation/parametrization hypothesis — cleanest is hLineEq : lipschitzLineIntegral P Q C = rectLineIntegral P Q a b c d (OQ01 concrete four-edge integral) — or restrict to the concrete four-edge curve. Without this the axiom is unsound (proved: forces 0=1).",
+      "When Docker returns: compile-check proofs/Proofs/GreensTheoremOQ02Counterexample.lean (all lemma names verified present; a few autoparam/measureReal-vs-toReal signature forms may need v4.26.0 touch-ups).",
+      "Discharge the CORRECTED axiom: bump Mathlib v4.26.0 -> >= v4.28.0 on a dedicated branch (rebuild corpus), then Fubini-reduce the RHS to two AbsolutelyContinuousOnInterval.integral_deriv_eq_sub applications and assemble the LHS via the new orientation hypothesis + OQ01 rectLineIntegral algebra.",
+      "Sanity check: the corrected discharge must still recover greens_oq1_from_l1curl on C¹ data."
+    ],
+    "blockedReason": "The axiom greens_theorem_l1curl is FALSE as stated (Session 5, 2026-06-15): hTraversal (image-containment in the frontier) is too weak — a degenerate constant curve satisfies all hypotheses but gives line integral 0 vs nonzero curl integral, forcing 0=1 (counterexample committed, build-pending GreensTheoremOQ02Counterexample.lean). The axiom must be CORRECTED with an orientation/parametrization hypothesis before any discharge is possible; this is independent of the Docker blackout. The subsequent discharge (bump Mathlib >= v4.28.0 + Fubini reduction) remains Docker-gated.",
+    "mathlibUpstreamResolved": {
+      "lemma": "AbsolutelyContinuousOnInterval.integral_deriv_eq_sub",
+      "file": "Mathlib/MeasureTheory/Integral/IntervalIntegral/AbsolutelyContinuousFun.lean",
+      "introducedInPR": 29508,
+      "introducedDate": "2026-02-02",
+      "absentAtTag": "v4.26.0",
+      "firstPresentTag": "v4.28.0",
+      "repoCurrentPin": "v4.26.0"
+    }
+  },
+  "phase": "DECIDE"
+}

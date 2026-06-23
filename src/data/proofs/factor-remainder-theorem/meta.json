@@ -1,0 +1,289 @@
+{
+  "id": "factor-remainder-theorem",
+  "title": "Factor and Remainder Theorems",
+  "slug": "factor-remainder-theorem",
+  "description": "Two fundamental theorems connecting polynomial division, roots, and evaluation: (x - a) divides p(x) iff p(a) = 0 (Factor Theorem), and the remainder when dividing p(x) by (x - a) equals p(a) (Remainder Theorem).",
+  "meta": {
+    "author": "Descartes / Algebraists (formalized via Mathlib)",
+    "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Polynomial/Div.html",
+    "date": "17th-18th Century",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FactorRemainderTheorem.lean",
+    "tags": [
+      "algebra",
+      "polynomials",
+      "division",
+      "wiedijk-100",
+      "classic"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.dvd_iff_isRoot",
+        "description": "(X - C a) divides p iff p.IsRoot a",
+        "module": "Mathlib.Algebra.Polynomial.Div"
+      },
+      {
+        "theorem": "Polynomial.modByMonic_X_sub_C_eq_C_eval",
+        "description": "p mod (X - C a) = C(p.eval a)",
+        "module": "Mathlib.Algebra.Polynomial.FieldDivision"
+      },
+      {
+        "theorem": "Polynomial.monic_X_sub_C",
+        "description": "(X - C a) is monic",
+        "module": "Mathlib.Algebra.Polynomial.Div"
+      }
+    ],
+    "originalContributions": [
+      "Unified presentation of Factor and Remainder theorems",
+      "Connection between the two theorems via zero remainder",
+      "Division algorithm form with explicit quotient",
+      "Practical verification examples over integers and rationals"
+    ],
+    "dateAdded": "2025-12-26",
+    "wiedijkNumber": 89,
+    "axiomCount": 0,
+    "lineCount": 258,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 14,
+    "definitionCount": 0,
+    "additionalFiles": [
+      "Proofs/FactorRemainderTheoremOQ02.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The connection between polynomial roots and factors has ancient origins. Chinese mathematicians of the Song dynasty (960–1279), notably Qin Jiushao in his *Shùshū Jiǔzhāng* (1247), used a method equivalent to Horner's scheme to evaluate polynomials — effectively computing remainders upon division by linear factors, though without the modern algebraic framework.\n\nIn Europe, the explicit relationship between roots and divisibility emerged with the development of symbolic algebra. François Viète's *In Artem Analyticem Isagoge* (1591) established that knowing a root allows factoring out a linear term, though his notation was still verbal. René Descartes' *La Géométrie* (1637), published as an appendix to his *Discours de la méthode*, gave the first clear statement of what we now call the Factor Theorem: if $a$ is a root of $p(x)$, then $(x - a)$ divides $p(x)$. Descartes used this to argue that a degree-$n$ polynomial has at most $n$ roots.\n\nThe Remainder Theorem in its modern form was articulated by Étienne Bézout in his *Théorie générale des équations algébriques* (1779), as part of his systematic treatment of polynomial division and resultants. Bézout's theorem on the number of intersections of algebraic curves also relies on this polynomial division framework.\n\nThe Factor Theorem gained renewed importance with the development of Galois theory in the 19th century: the factorization of a polynomial's splitting field into a tower of extensions — each obtained by adjoining a root and factoring out the corresponding linear term — is the fundamental mechanism underlying the connection between polynomial solvability and group theory. Today the Factor and Remainder Theorems are entry points to the Euclidean algorithm for polynomial GCD, Hensel's lemma in $p$-adic analysis, and the Chinese Remainder Theorem for polynomial rings.\n\nThis formalization is #89 on Freek Wiedijk's list of 100 theorems formalized in proof assistants.",
+    "problemStatement": "**Factor Theorem (Wiedijk #89)**: A polynomial p(x) has (x - a) as a factor if and only if p(a) = 0.\n\n$$(X - a) \\mid p(X) \\iff p(a) = 0$$\n\n**Remainder Theorem**: When a polynomial p(x) is divided by (x - a), the remainder is p(a).\n\n$$p(X) = (X - a) \\cdot q(X) + p(a)$$\n\nEquivalently: p(X) mod (X - a) = p(a) as a constant polynomial.",
+    "text": "Two fundamental theorems connecting polynomial division, roots, and evaluation: (x - a) divides p(x) iff p(a) = 0 (Factor Theorem), and the remainder when dividing p(x) by (x - a) equals p(a) (Remainder Theorem).",
+    "proofStrategy": "**Factor Theorem:**\nThe forward direction follows from the division algorithm: if (X - a) divides p, then p = (X - a) * q for some q. Evaluating at a gives p(a) = 0 * q(a) = 0.\n\nThe reverse direction: if p(a) = 0, the remainder theorem says p mod (X - a) = p(a) = 0, so (X - a) divides p exactly.\n\n**Remainder Theorem:**\nBy the division algorithm for polynomials, p = (X - a) * q + r where r has degree less than 1, so r is a constant. Evaluating at a: p(a) = 0 * q(a) + r = r.",
+    "keyInsights": [
+      "**Factor = Zero Remainder:** The Factor Theorem is logically equivalent to the special case of the Remainder Theorem where the remainder vanishes: $(x-a) \\mid p \\iff p \\bmod (x-a) = 0 \\iff p(a) = 0$. The formalization makes this chain of equivalences explicit in `factor_iff_zero_remainder`.",
+      "**Generality over Commutative Rings:** The formalization works over any `CommRing R`, not just $\\mathbb{R}$ or $\\mathbb{Q}$. This generality is mathematically significant: the Factor Theorem holds over $\\mathbb{Z}$, finite fields $\\mathbb{F}_p$, and polynomial rings $R[x]$ (enabling multivariate factorization). The key requirement is that $(x - a)$ is monic (leading coefficient 1), which holds universally.",
+      "**Root-Finding as Degree Reduction:** Each application of the Factor Theorem reduces the polynomial's degree by 1: if $p(a) = 0$ then $p = (x-a) \\cdot q$ where $\\deg(q) = \\deg(p) - 1$. Iterating gives $p = c \\prod_{i} (x - a_i)$ over algebraically closed fields — the Fundamental Theorem of Algebra. The formalization's `exact_division` theorem captures this single deflation step.",
+      "**Monicity is Essential for Uniqueness:** The division algorithm for polynomials requires the divisor to be monic (or a unit). Since $(x - a)$ is always monic (`monic_X_sub_C`), division is well-defined over any commutative ring, not just fields. Without monicity, the quotient and remainder may not exist in general rings (e.g., dividing $2x$ by $2x - 1$ over $\\mathbb{Z}$ fails).",
+      "**Synthetic Division as the Remainder Theorem:** The practical technique of synthetic division (Horner's method) is exactly the Remainder Theorem in algorithmic form: evaluating $p(a)$ by Horner's rule simultaneously computes the quotient $q(x) = p(x) \\div (x-a)$ and the remainder $p(a)$. This makes root-testing $O(n)$ rather than $O(n^2)$ for full polynomial long division.",
+      "**Foundation for Polynomial GCD:** The Factor and Remainder Theorems underpin the Euclidean algorithm for polynomials: $\\gcd(p, q)$ is computed by repeated division, and common roots correspond to common factors. This extends to resultants, Bézout's theorem on curve intersections, and the Chinese Remainder Theorem for $R[x]/(f_1) \\times \\cdots \\times R[x]/(f_k)$."
+    ],
+    "prerequisites": [
+      "Polynomial algebra (division algorithm, roots)",
+      "Ring theory (ideals, quotient rings, evaluation homomorphisms)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-setup",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 58,
+      "summary": "Three Mathlib imports (`Polynomial.Div` for division and factor theorem, `Polynomial.FieldDivision` for remainder theorem over fields, `Tactic` for proof automation), module docstring with historical context, namespace and `open Polynomial` for convenient notation.",
+      "mathContext": "The imports provide `dvd_iff_isRoot` (Factor Theorem), `modByMonic_X_sub_C_eq_C_eval` (Remainder Theorem), and `monic_X_sub_C` (monicity of linear factors). Opening the `Polynomial` namespace allows writing `X`, `C`, `eval` without prefix."
+    },
+    {
+      "id": "factor-theorem",
+      "title": "The Factor Theorem",
+      "startLine": 59,
+      "endLine": 91,
+      "summary": "Four theorems establishing the Factor Theorem: the biconditional `factor_theorem` ($p(a) = 0 \\iff (x-a) \\mid p$), an alternative via `IsRoot`, and the two directions separately (`factor_of_root`, `root_of_factor`).",
+      "mathContext": "$(X - C\\,a) \\mid p \\iff p.\\text{eval}\\,a = 0$. The biconditional delegates to Mathlib's `dvd_iff_isRoot`. The two directions are split out as `factor_of_root` (root $\\Rightarrow$ factor, uses `.mpr`) and `root_of_factor` (factor $\\Rightarrow$ root, uses `.mp`)."
+    },
+    {
+      "id": "remainder-theorem",
+      "title": "The Remainder Theorem",
+      "startLine": 92,
+      "endLine": 125,
+      "summary": "Three theorems: `remainder_theorem` (p mod (X - a) = C(p(a))), `remainder_divides` ((X - a) divides p - C(p(a))), and `division_algorithm` expressing the full division form p = (X - a) * q + C(p(a)).",
+      "mathContext": "$p \\bmod_m (X - C\\,a) = C(p(a))$. The division algorithm form is $p = (X - C\\,a) \\cdot (p /_{m} (X - C\\,a)) + C(p(a))$, where $/_{m}$ and $\\bmod_m$ denote division and remainder by a monic polynomial. Proof reconstructs $p$ from `modByMonic_add_div`."
+    },
+    {
+      "id": "connection",
+      "title": "Connection Between Theorems",
+      "startLine": 126,
+      "endLine": 151,
+      "summary": "Two theorems connecting Factor and Remainder: `factor_iff_zero_remainder` ($p(a) = 0 \\iff$ remainder is zero) and `exact_division` (when $p(a) = 0$, the remainder term vanishes giving exact factorization).",
+      "mathContext": "$(X - C\\,a) \\mid p \\iff p \\bmod_m (X - C\\,a) = 0 \\iff p(a) = 0$. The three-way equivalence unifies the Factor and Remainder Theorems: the Factor Theorem is the special case where the remainder (which equals $p(a)$) is zero."
+    },
+    {
+      "id": "applications",
+      "title": "Practical Applications",
+      "startLine": 152,
+      "endLine": 166,
+      "summary": "Two application theorems: `verify_root` (from $p(a) = 0$, extract an existential witness $q$ with $p = (x-a) \\cdot q$) and `not_factor_of_nonzero_eval` (contrapositive: $p(a) \\neq 0 \\Rightarrow (x-a) \\nmid p$).",
+      "mathContext": "Root verification as degree reduction: $p(a) = 0 \\Rightarrow \\exists q,\\; p = (X - C\\,a) \\cdot q$ with $\\deg(q) = \\deg(p) - 1$. The contrapositive provides a simple non-divisibility test."
+    },
+    {
+      "id": "monic-properties",
+      "title": "Properties of Monic Linear Polynomials",
+      "startLine": 167,
+      "endLine": 185,
+      "summary": "Three structural facts: `linear_factor_monic` ($(X - C\\,a)$ is monic), `linear_factor_degree` (degree 1), and `remainder_is_constant` (remainder has degree $< 1$, i.e., is a constant).",
+      "mathContext": "$(X - C\\,a)$ is monic with $\\deg(X - C\\,a) = 1$. By the division algorithm, $\\deg(p \\bmod_m (X - C\\,a)) < \\deg(X - C\\,a) = 1$, so the remainder is a constant polynomial $C(r)$ for some $r \\in R$."
+    },
+    {
+      "id": "examples",
+      "title": "Examples over Integers and Rationals",
+      "startLine": 186,
+      "endLine": 258,
+      "summary": "Concrete verification examples: $x^2 - 1$ has roots $\\pm 1$ (factors $(x-1)(x+1)$); $x^3 - 8$ has root 2; $x^2 + 1$ has no root at 1 over $\\mathbb{Z}$; remainder calculations; and rational examples including $2x^2 - 5x + 2$ with roots $2$ and $1/2$.",
+      "mathContext": "Examples demonstrate both directions: root-finding ($1^2 - 1 = 0$, so $(x-1) \\mid (x^2-1)$) and non-factor detection ($1^2 + 1 = 2 \\neq 0$, so $(x-1) \\nmid (x^2+1)$). The rational examples illustrate that fractional roots work identically: $2(1/2)^2 - 5(1/2) + 2 = 1/2 - 5/2 + 2 = 0$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization presents both the Factor and Remainder Theorems as a unified package, with the Factor Theorem emerging as the zero-remainder special case. The 14 theorems cover the core results, their interconnection, and practical applications with concrete examples over $\\mathbb{Z}$ and $\\mathbb{Q}$, all building on Mathlib's polynomial division infrastructure.",
+    "implications": "**Theoretical Significance**: 1. **Fundamental Theorem of Algebra:** The Factor Theorem is the induction step for the FTA: each root yields a linear factor, and iterating gives $p = c \\prod_i (x - \\alpha_i)$ over $\\mathbb{C}$. Without the Factor Theorem, the connection between roots and factorization would be purely existential.\n\n2. **Galois Theory and Abel-Ruffini:** The splitting field of a polynomial is constructed by repeatedly adjoining roots and factoring out linear terms — each step uses the Factor Theorem. The resulting tower of field extensions determines the Galois group, which controls solvability by radicals.\n\n**3. Polynomial GCD and Resultants:** The Euclidean algorithm for $\\gcd(p, q)$ in $F[x]$ relies on repeated polynomial division. Common roots correspond to common factors, and the resultant $\\text{Res}(p, q) = 0$ iff $p$ and $q$ share a root — a direct consequence of the Factor Theorem.\n\n4. **Error-Correcting Codes:** Reed-Solomon codes encode data as polynomial evaluations and detect errors via the Factor Theorem: a codeword $p(a_1), \\ldots, p(a_n)$ with more than $\\deg(p)$ zero entries implies $p = 0$ (too many roots for its degree).\n\n5. **$p$-adic Analysis and Hensel's Lemma:** Hensel's lemma lifts approximate roots modulo $p$ to exact roots modulo $p^n$ by iterating factorizations — a $p$-adic analog of the Factor Theorem. This is foundational for number theory and algebraic geometry.",
+    "openQuestions": [
+      "Can we formalize the *multiplicity* version: $(x-a)^k \\mid p$ iff $p(a) = p'(a) = \\cdots = p^{(k-1)}(a) = 0$? This connects the Factor Theorem to Taylor expansion and requires formalizing polynomial derivatives in Lean.",
+      "The Factor Theorem over $\\mathbb{Z}$ combined with the Rational Root Theorem ($p/q$ is a root of $a_n x^n + \\cdots + a_0$ only if $p \\mid a_0$ and $q \\mid a_n$) gives a complete root-finding algorithm for rational polynomials. Can this algorithmic content be formalized as a decidable procedure in Lean?",
+      "How does the Factor Theorem extend to the multivariate Nullstellensatz? Hilbert's theorem says $f(a_1, \\ldots, a_n) = 0$ for all common zeros of $I$ iff $f^k \\in I$ for some $k$ — a radical generalization. Formalizing even the weak Nullstellensatz in Lean would be a significant contribution.",
+      "The Berlekamp-Zassenhaus algorithm factors polynomials over $\\mathbb{Z}$ by first factoring modulo a prime $p$ (using the Factor Theorem over $\\mathbb{F}_p$) and then lifting via Hensel's lemma. Can this computational pipeline be verified in Lean?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.Polynomial.Div",
+      "Mathlib.Algebra.Polynomial.FieldDivision",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Polynomial"
+    ],
+    "namespace": "FactorRemainderTheorem",
+    "lineCount": 258,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 0,
+    "path": "Proofs/FactorRemainderTheorem.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      {
+        "path": "Proofs/FactorRemainderTheoremOQ02.lean",
+        "lineCount": 102,
+        "theorems": 6,
+        "definitions": 0,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "OQ-02 extension: Rational Root Theorem for ℤ[X]/ℚ. Proves numerator divides constant term, denominator divides leading coefficient, Integral Root Theorem for monic polynomials, and connection to the Factor Theorem via factor_of_rational_root. Built on Mathlib's num_dvd_of_is_root / den_dvd_of_is_root (Mathlib.RingTheory.Polynomial.RationalRoot)."
+      }
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "extends",
+      "description": "The Factor Theorem is the key induction step for FTA: each root produces a linear factor, and iterating over all roots (guaranteed by FTA) gives complete factorization $p = c \\prod_i (x - \\alpha_i)$ over $\\mathbb{C}$"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "foundational",
+      "description": "The Factor Theorem underlies Galois theory: splitting fields are built by repeatedly adjoining roots and factoring out linear terms. Each such step uses the Factor Theorem to reduce the polynomial's degree, creating the tower of field extensions whose automorphism group is the Galois group"
+    },
+    {
+      "targetId": "vietas-formulas",
+      "relationship": "complementary",
+      "description": "Vieta's formulas express coefficients as elementary symmetric functions of roots — a consequence of the Factor Theorem's complete factorization. If $p = \\prod (x - \\alpha_i)$, expanding gives Vieta's relations directly"
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "related",
+      "description": "Bézout's identity for polynomial GCD ($\\gcd(p,q) = ap + bq$) relies on the Euclidean algorithm for polynomials, which uses repeated polynomial division — the same division algorithm that underpins the Remainder Theorem"
+    },
+    {
+      "targetId": "gcd-algorithm",
+      "relationship": "related",
+      "description": "The Euclidean algorithm for polynomial GCD computes $\\gcd(p,q)$ by repeated division with remainder — each step applies the division algorithm formalized in the Remainder Theorem. Common roots of $p$ and $q$ correspond exactly to the roots of $\\gcd(p,q)$"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "The binomial theorem expands $(x-a)^n$ and provides the standard form for polynomial powers. Combined with the Factor Theorem, it connects root multiplicity to polynomial derivatives: $(x-a)^k \\mid p$ iff $p(a) = p'(a) = \\cdots = p^{(k-1)}(a) = 0$"
+    },
+    {
+      "targetId": "solution-of-cubic",
+      "relationship": "extends",
+      "description": "Cardano's cubic formula finds one root; the Factor Theorem then reduces the cubic to a quadratic by dividing out $(x - \\alpha_1)$. This deflation technique — find a root, factor it out, repeat — is the practical application of the Factor Theorem to equation-solving"
+    },
+    {
+      "targetId": "general-quartic",
+      "relationship": "extends",
+      "description": "Ferrari's quartic solution, like Cardano's cubic, uses root-finding followed by factoring out linear terms via the Factor Theorem. The quartic resolvent cubic is itself solved by Cardano's method, with each step using the Factor Theorem for degree reduction"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "analogous",
+      "description": "Unique factorization of polynomials into irreducible factors over a field ($F[x]$ is a UFD) parallels unique prime factorization of integers. The Factor Theorem provides the base case: linear factors $(x - a)$ are the polynomial analogue of prime numbers"
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "related",
+      "description": "The Chinese Remainder Theorem for polynomials says $R[x]/(f_1 \\cdots f_k) \\cong \\prod R[x]/(f_i)$ when the $f_i$ are pairwise coprime. When $f_i = (x - a_i)$, this reduces to polynomial interpolation — reconstructing $p$ from its values $p(a_i)$ — which is the Remainder Theorem applied at multiple points"
+    },
+    {
+      "targetId": "mathematical-induction",
+      "relationship": "related",
+      "description": "The proof that a degree-$n$ polynomial has at most $n$ roots uses strong induction on degree, with the Factor Theorem as the induction step: if $p(a) = 0$, write $p = (x-a) \\cdot q$ where $\\deg(q) = n-1$, then apply the inductive hypothesis to $q$"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "related",
+      "description": "Lagrange's theorem on subgroup orders and the Factor Theorem both concern divisibility structures. More directly, Lagrange interpolation reconstructs a polynomial from its values at $n+1$ points — the existence and uniqueness of the interpolant follows from the Factor Theorem's degree-counting argument"
+    },
+    {
+      "targetId": "descartes-rule-of-signs",
+      "relationship": "extends",
+      "description": "Descartes' Rule of Signs bounds the number of positive real roots by the number of sign changes in coefficients — a refinement of the Factor Theorem's corollary that a degree-$n$ polynomial has at most $n$ roots. Both results originate from Descartes' *La Géométrie* (1637), where the Factor Theorem was first clearly stated"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Descartes, René",
+      "title": "La Géométrie",
+      "year": "1637",
+      "venue": "Appendix to Discours de la méthode, Leiden",
+      "note": "First clear statement of the Factor Theorem: if a is a root of p(x), then (x - a) divides p(x). Used this to argue that a degree-n polynomial has at most n roots"
+    },
+    {
+      "authors": "Bézout, Étienne",
+      "title": "Théorie générale des équations algébriques",
+      "year": "1779",
+      "venue": "Paris: Pierres",
+      "note": "Systematic treatment of polynomial division, remainder, and resultants — the Remainder Theorem in its modern form as part of the theory of polynomial GCD and elimination"
+    },
+    {
+      "authors": "Viète, François",
+      "title": "In Artem Analyticem Isagoge",
+      "year": "1591",
+      "venue": "Tours",
+      "note": "Established the relationship between polynomial roots and coefficients (Vieta's formulas), implicitly using the Factor Theorem to relate roots to linear factors"
+    },
+    {
+      "authors": "Lang, Serge",
+      "title": "Algebra",
+      "year": "2002",
+      "venue": "Springer GTM 211, 3rd edition",
+      "note": "Standard graduate reference presenting the Factor and Remainder Theorems in the context of polynomial rings over commutative rings, with applications to field extensions and Galois theory"
+    },
+    {
+      "authors": "Cox, David; Little, John; O'Shea, Donal",
+      "title": "Ideals, Varieties, and Algorithms",
+      "year": "2015",
+      "venue": "Springer UTM, 4th edition",
+      "note": "Extends the Factor Theorem to the multivariate setting via Hilbert's Nullstellensatz and Gröbner bases — the computational algebra perspective on polynomial root-finding and factorization"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "factor_theorem",
+      "type": "core",
+      "description": "(x - a) divides p(x) iff p(a) = 0",
+      "leanType": "{R : Type*} → [CommRing R] → (p : R[X]) → (a : R) → (X - C a) ∣ p ↔ p.eval a = 0"
+    },
+    {
+      "name": "remainder_theorem",
+      "type": "key",
+      "description": "The remainder of p(x) / (x - a) is p(a)",
+      "leanType": "{R : Type*} → [CommRing R] → (p : R[X]) → (a : R) → p %ₘ (X - C a) = C (p.eval a)"
+    }
+  ],
+  "sorries": 0
+}

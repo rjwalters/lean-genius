@@ -1,0 +1,79 @@
+{
+  "slug": "niven-theorem-oq-01",
+  "title": "Niven's Theorem: the only rational cosines at rational multiples of π are 0, ±1/2, ±1",
+  "phase": "DONE",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "significance": 6,
+  "tractability": 5,
+  "started": "2026-06-16T00:00:00Z",
+  "lastUpdate": "2026-06-18T06:45:00Z",
+  "tags": [
+    "seeker-selected",
+    "analysis",
+    "number-theory",
+    "trigonometry",
+    "algebraic-number-theory",
+    "research"
+  ],
+  "problemStatement": {
+    "formal": "\\forall \\theta = (m/n)\\pi \\ (m,n\\in\\mathbb{Z}, n\\neq 0),\\ \\cos\\theta\\in\\mathbb{Q} \\implies \\cos\\theta\\in\\{0,\\pm 1/2,\\pm 1\\}",
+    "plain": "Niven's theorem (1956): if θ is a rational multiple of π and cos θ is rational, then cos θ ∈ {0, ±1/2, ±1}. Equivalently, the only rational multiples of π whose cosine is rational are the multiples of 90° and 60°.",
+    "whyMatters": [
+      "Classical, well-known number-theory result with a clean algebraic-integer proof; no prior gallery entry.",
+      "Mathlib has the ingredients (Chebyshev polynomials, roots of unity, ℤ integrally closed in ℚ) but not the assembled theorem — a genuine gap.",
+      "Demonstrates the algebraic-integer technique (rational algebraic integer ⇒ rational integer) on a concrete trigonometric statement."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Classical theorem (Niven, 'Irrational Numbers', 1956). Standard proof: 2cos θ is an algebraic integer via the monic Chebyshev recurrence; rational ⇒ integer; bounded in [-2,2] ⇒ finitely many cases.",
+      "In this repo: precise Lean statement (niven) plus the enumeration tail fully proved; the algebraic-integer core isolated as one lemma (two_cos_int_of_rational)."
+    ],
+    "open": [
+      "two_cos_int_of_rational — 'θ rational multiple of π ∧ cos θ ∈ ℚ ⇒ 2 cos θ ∈ ℤ'. KNOWN mathematics (algebraic-integer argument), HARD to formalize, not an open conjecture."
+    ],
+    "goal": "Discharge two_cos_int_of_rational to obtain a sorry-free Niven's theorem; then build, register in Proofs.lean, and add a gallery entry."
+  },
+  "currentState": {
+    "phase": "DONE",
+    "since": "2026-06-16T00:00:00Z",
+    "iteration": 1,
+    "focus": "researcher-11 (2026-06-16) wrote proofs/Proofs/NivenTheorem.lean: the main theorem `niven` and the core lemma `two_cos_int_of_rational`. The enumeration tail (|cos θ| ≤ 1 ∧ 2 cos θ ∈ ℤ ⇒ cos θ ∈ {0,±1/2,±1}) is fully proved via Real.cos_le_one / Real.neg_one_le_cos / interval_cases / linarith. The algebraic-integer core is a single isolated sorry. Docker build started to verify the tail + statement typecheck; file not yet registered in Proofs.lean.",
+    "blockers": [],
+    "nextAction": "COMPLETE. PR #25163 (feature/researcher-8-niven-mathlib) MERGED 2026-06-16. proofs/Proofs/NivenTheorem.lean is registered (Proofs.lean:2702), 0 sorry / 0 axiom, and live in the gallery (src/data/proofs/niven-theorem-oq-01/, status=verified, badge=mathlib). No further action — the fleet build on main confirms it compiles. Stale 'Docker blackout / build-pending' blocker text below is from the 2026-06-16 attempt and no longer applies.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE & MERGED (PR #25163, 2026-06-16). Niven's theorem presented in Lean by delegating the algebraic-integer core to Mathlib's Real.isIntegral_two_mul_cos_rat_mul_pi (Meiburg-Broshi 2025) + IsIntegral.exists_int_iff_exists_rat, keeping the interval_cases enumeration tail for pedagogy. 0 sorry / 0 axiom, registered in Proofs.lean, gallery entry verified/mathlib. Build-blackout blocker from the original attempt was resolved by the fleet build that merged the PR.",
+    "builtItems": [
+      "proofs/Proofs/NivenTheorem.lean — statement of niven + two_cos_int_of_rational; enumeration tail proved (interval_cases over 2cos θ ∈ {-2..2}); core isolated as one sorry. Build-pending, not yet registered in Proofs.lean."
+    ],
+    "insights": [
+      "The whole theorem reduces to ONE lemma: 2·cos θ ∈ ℤ. Given that, the bound |cos θ| ≤ 1 forces 2cos θ ∈ {-2,-1,0,1,2}, so cos θ ∈ {-1,-1/2,0,1/2,1} — no further number theory needed for the tail.",
+      "Rejected lucas-theorem-oq-01: Mathlib already has the full Lucas theorem (Mathlib.Data.Nat.Choose.Lucas), so a from-scratch gallery proof would be a trivial wrapper, not research.",
+      "Rejected cube-root-2-irrational-oq-04: the Delian (cube-doubling) non-constructibility is already proved as AngleTrisection.cube_doubling_impossible.",
+      "Two viable formalization routes: (A) roots of unity ζ+ζ⁻¹ (strong Mathlib support for IsIntegral of roots of unity + IsIntegrallyClosed ℤ), (B) monic Chebyshev/Vieta–Lucas (matches pool note, but needs the monic normalization Cₙ(x)=2Tₙ(x/2) which Mathlib may not provide directly)."
+    ],
+    "mathlibGaps": [
+      "No assembled Niven's theorem in Mathlib.",
+      "No monic Chebyshev (Vieta–Lucas) polynomial Cₙ with Cₙ(2cos θ)=2cos(nθ); Mathlib's Polynomial.Chebyshev.T has leading coefficient 2^(n-1), not monic (Route B would need this ~50–100 line normalization)."
+    ],
+    "nextSteps": [
+      "Submit two_cos_int_of_rational to Aristotle prove_file once the backend returns (not 404).",
+      "Manual fallback (Route A): confirm Complex.exp_mul_I, isIntegral_algHom_iff, IsIntegrallyClosed.isIntegral_iff, and a roots-of-unity IsIntegral lemma; then assemble ~150–250 lines.",
+      "After 0-sorry build: register in Proofs.lean, flip status to verified, add gallery entry src/data/proofs/niven-theorem-oq-01/."
+    ]
+  },
+  "approaches": [],
+  "relatedProofs": [],
+  "references": [
+    "Ivan Niven, Irrational Numbers, Carus Mathematical Monographs 11 (1956), Corollary 3.12.",
+    "Mathlib: Polynomial.Chebyshev.T, Mathlib.RingTheory.IntegralClosure.IntegrallyClosed, Mathlib.RingTheory.RootsOfUnity.Basic"
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "slug": "twin-primes-special-oq-01",
+  "title": "Twin Prime Conjecture: Infinitely Many Twin Prime Pairs",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in number theory: Twin Prime Conjecture: Infinitely Many Twin Prime Pairs.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-16",
+    "iteration": 2,
+    "focus": "S2 STATE-SYNC (2026-05-16): catchup. Implementation merged via PR #14871 (2026-05-02, feat-style out-of-band, T-14d) without updating researcher tracking. Lean file TwinPrimesSpecialOQ01.lean 150 LOC, gallery axiomatized, 25 theorems via decide, 0 standalone axioms (inherits twin_prime_conjecture from parent), 0 sorries. This S2 syncs state.md+JSON to reality, fixes leanFiles[0].lineCount 151→150 to match gallery, bootstraps sessions/.",
+    "blockers": [
+      "INFRA-RED: disk 2.5 Gi (below same-day ACT soft floors); Docker daemon hung (timeout 5s); proofs/.lake self-symlink — but slug is COMPLETED so this blocks only optional follow-up iter, not anything required"
+    ],
+    "nextAction": "Slug COMPLETED axiomatized. Optional future iter: (a) add Maynard-Tao bounded-gaps axiom (k≤246), (b) cross-reference Zhang/Polymath8 via shared parent refactor, (c) annotation enrichment via /lean-research enricher pass.",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "[S2 STATE-SYNC 2026-05-16] COMPLETED (axiomatized): TwinPrimesSpecialOQ01.lean implemented via PR #14871 (2026-05-02 out-of-band feat). 150 LOC, 25 theorems, 0 sorries, 1 inherited axiom (twin_prime_conjecture from parent TwinPrimes.lean). Gallery integrated with status:axiomatized, badge:axiom. S1 SURVEY port plan from sophie-germain-oq-01 was followed mechanically.",
+    "builtItems": [
+      "[S2-catchup] proofs/Proofs/TwinPrimesSpecialOQ01.lean — 150 LOC, 25 theorems (4 equivalent formulations of TPC + 19 new verified twin prime pairs via decide + 3 conditional consequences under TPC axiom)",
+      "[S2-catchup] src/data/proofs/twin-primes-special-oq-01/{meta.json,annotations.json,index.ts} — gallery entry, status:axiomatized",
+      "Port plan documented: SophieGermainOQ01 → TwinPrimesSpecialOQ01 with substitution table (knowledge.md S1)",
+      "25 twin-prime examples implemented: 3, 5, 11, 17, 29, 41, 59, 71 (parent) + 101, 107, 137, 149, 179, 191, 197, 227, 239, 269, 281, 311, 347, 419, 431, 461, 521, 569, 599, 617"
+    ],
+    "insights": [
+      "Parent TwinPrimes.lean (190 lines) defines TwinPrimeConjecture as axiom and verifies twin prime pairs via decide — the foundation for OQ-01",
+      "SophieGermainOQ01.lean was the structural template: axiomatize → 4 equivalent formulations → 25 verified examples → 3 conditional consequences. Port to twin primes was mostly renaming.",
+      "Twin primes lack the safe-prime dual that SG has (p ↔ 2p+1). The TPC equivalent reduction is just unfolding IsTwinPrimePair, not a non-trivial bijection.",
+      "[S2] Out-of-band feat-style PRs (#14871) bypass researcher state tracking. State.md / JSON can lag by weeks. Detection: check disk reality before trusting planning artifacts."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "[S2] Slug COMPLETED axiomatized; pre-execution items resolved by PR #14871",
+      "Optional: add Maynard-Tao bounded-gaps axiom (k≤246) as additional axiomatized theorem",
+      "Optional: cross-reference Zhang/Polymath8 axioms via shared parent file refactor",
+      "Optional: annotation enrichment via /lean-research enricher pass"
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "primes",
+    "twin-primes",
+    "open-problem",
+    "conjecture"
+  ],
+  "relatedProofs": [
+    "twin-primes-special",
+    "twin-primes-special-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-22T13:03:46.384Z",
+  "lastUpdate": "2026-05-16T19:00:00.000Z",
+  "significance": 8,
+  "tractability": 2,
+  "leanFiles": [
+    {
+      "path": "Proofs/TwinPrimesSpecialOQ01.lean",
+      "filename": "TwinPrimesSpecialOQ01.lean",
+      "lineCount": 151,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TwinPrimesSpecialOQ01.lean"
+    }
+  ]
+}

@@ -1,0 +1,396 @@
+[
+  {
+    "id": "furst-oq01-shift",
+    "proofId": "furstenberg-correspondence-oq-01",
+    "range": {
+      "startLine": 55,
+      "endLine": 73
+    },
+    "type": "definition",
+    "title": "Shift Map on Cantor Space: Continuous and Measurable",
+    "content": "Defines the shift T(x)(n) = x(n+1) on Cantor space ℕ → Bool, proves it continuous (via continuous_pi/continuous_apply) and measurable (from continuity), and derives the iteration formula shift^[n](x)(k) = x(k+n) by induction. The continuity proof is a one-liner: each coordinate of shift(x) is (continuous_apply (n+1)) composed with the identity on CantorSpace. Measurability follows immediately from shift_continuous.measurable. The shift_iterate lemma is proved by induction on n, using ring_nf to handle the arithmetic n+k = k+n.",
+    "significance": "key",
+    "relatedConcepts": [
+      "symbolic dynamics",
+      "product topology",
+      "continuous maps",
+      "measurable functions"
+    ],
+    "mathContext": "The shift on $\\Omega = \\{0,1\\}^{\\mathbb{N}}$ (full shift space) is the fundamental example of a symbolic dynamical system. Continuity follows from the product topology: $T(x)_n = x_{n+1}$ depends on only one coordinate of $x$. Iteration: $(T^n(x))_k = x_{k+n}$.",
+    "prerequisites": [
+      "continuous_pi",
+      "continuous_apply",
+      "Continuous.measurable",
+      "Function.iterate_succ'"
+    ]
+  },
+  {
+    "id": "furst-oq01-cylinder",
+    "proofId": "furstenberg-correspondence-oq-01",
+    "range": {
+      "startLine": 88,
+      "endLine": 122
+    },
+    "type": "definition",
+    "title": "Cylinder Sets: Clopen, Measurable, and Shift-Equivariant",
+    "content": "Defines cylinder i b = {x : x(i) = b} and the distinguished cylinder B₀ = cylinder 0 true. Proves cylinder sets are IsClopen: closed because they are the preimage of {b} under the continuous projection (isClosed_eq), open because Bool has the discrete topology (isOpen_discrete). Measurability follows from openness. The key computational lemma shift_preimage_cylinder gives T⁻¹(cylinder i b) = cylinder (i+1) b (proved by simp), and iterate_preimage_cylinderZero gives T^{-n}(B₀) = cylinder n true. These preimage formulas make the combinatorial-dynamical bridge explicit.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cylinder sets",
+      "Borel σ-algebra",
+      "product topology generators",
+      "IsClopen"
+    ],
+    "mathContext": "Cylinder sets $C_{i,b} = \\{x : x_i = b\\}$ are the standard generators of the product $\\sigma$-algebra on $\\{0,1\\}^{\\mathbb{N}}$. They are clopen: preimages of open sets under continuous coordinate projections. Preimage: $T^{-1}(C_{i,b}) = C_{i+1,b}$ and $T^{-n}(B_0) = C_{n, \\text{true}}$.",
+    "prerequisites": [
+      "isClosed_eq",
+      "continuous_apply",
+      "isOpen_discrete",
+      "IsClopen.measurableSet"
+    ]
+  },
+  {
+    "id": "furst-oq01-indicator",
+    "proofId": "furstenberg-correspondence-oq-01",
+    "range": {
+      "startLine": 138,
+      "endLine": 158
+    },
+    "type": "definition",
+    "title": "setIndicator: Encoding Subsets of ℕ as Cantor Space Points",
+    "content": "setIndicator A : CantorSpace = fun n => if n ∈ A then true else false encodes any A ⊆ ℕ as a point in Cantor space. The fundamental theorem shift_indicator_zero says: shift^[n](setIndicator A)(0) = true ↔ n ∈ A. This is the precise form of 'reading position 0 of the n-th iterate recovers membership'. indicator_mem_cylinder states the same as setIndicator A ∈ cylinder n true ↔ n ∈ A — the preimage-set form that is used in the return property proofs. These three lemmas together make setIndicator the bridge between the combinatorial world (sets A ⊆ ℕ) and the dynamical world (points in Cantor space and their orbit).",
+    "significance": "key",
+    "relatedConcepts": [
+      "indicator function",
+      "setIndicator",
+      "shift_indicator_zero",
+      "indicator_mem_cylinder"
+    ],
+    "mathContext": "$\\mathbf{1}_A \\in \\Omega = \\{0,1\\}^{\\mathbb{N}}$ is the characteristic function of $A \\subseteq \\mathbb{N}$. Key: $(T^n(\\mathbf{1}_A))_0 = \\mathbf{1}_A(n) = \\mathbf{1}_{n \\in A}$. So $T^n(\\mathbf{1}_A) \\in B_0 \\iff n \\in A$.",
+    "prerequisites": [
+      "setIndicator",
+      "shift_iterate",
+      "indicator_mem_cylinder",
+      "cylinderZero"
+    ]
+  },
+  {
+    "id": "furst-oq01-return",
+    "proofId": "furstenberg-correspondence-oq-01",
+    "range": {
+      "startLine": 179,
+      "endLine": 190
+    },
+    "type": "insight",
+    "title": "k-fold Return Property: Dynamical Intersections ↔ Arithmetic Progressions",
+    "content": "indicator_in_kfold_return is the mathematical heart of the Furstenberg correspondence: setIndicator A ∈ ⋂_{i<k} T^{-i·d}(B₀) iff ∀ i < k, i·d ∈ A. The proof is a single simp using iterate_preimage_cylinderZero and indicator_mem_cylinder — the whole correspondence is packed into two lemmas about preimages and indicators. The consequence: if a T-invariant probability measure μ satisfies μ(B₀) > 0 and some recurrence property (Poincaré recurrence or Van der Waerden-style), then μ(B₀ ∩ T^{-d}(B₀) ∩ ... ∩ T^{-(k-1)d}(B₀)) > 0, which by this lemma means ∃ a with a, a+d, ..., a+(k-1)d ∈ A. Also proves the binary version indicator_in_binary_return for the case k=2.",
+    "significance": "key",
+    "relatedConcepts": [
+      "arithmetic progressions",
+      "dynamical correspondence",
+      "return times",
+      "Furstenberg correspondence"
+    ],
+    "mathContext": "$\\mathbf{1}_A \\in \\bigcap_{i < k} T^{-id}(B_0) \\iff \\forall i < k,\\ id \\in A$. If $\\mu(\\bigcap_{i<k} T^{-id}(B_0)) > 0$, then $\\exists a$ s.t. $a, a+d, \\ldots, a+(k-1)d \\in A$ — a $k$-AP in $A$ with common difference $d$.",
+    "prerequisites": [
+      "indicator_mem_cylinder",
+      "iterate_preimage_cylinderZero",
+      "Set.mem_iInter",
+      "setIndicator"
+    ]
+  },
+  {
+    "id": "furst-oq01-orbit",
+    "proofId": "furstenberg-correspondence-oq-01",
+    "range": {
+      "startLine": 205,
+      "endLine": 224
+    },
+    "type": "definition",
+    "title": "orbitFinset and orbit_indicator_hits: Orbit Dynamics Count Set Membership",
+    "content": "orbitFinset x N = (Finset.range N).image (fun n => shift^[n] x) is the finite orbit of x up to time N. The theorem orbit_indicator_hits proves that the number of n < N with shift^[n](setIndicator A) ∈ B₀ equals the number of n < N with n ∈ A. In other words, orbit hitting frequency = density of A! This gives the Cesàro average of the indicator function on B₀: (1/N)·|{n < N : T^n(1_A) ∈ B₀}| = |{n < N : n ∈ A}|/N → d*(A). So the orbit of 1_A precisely realizes the upper density of A as the Cesàro limit of indicator values — the dynamical translation of density.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cesàro averages",
+      "upper density",
+      "orbit",
+      "hitting frequency"
+    ],
+    "mathContext": "$|\\{n < N : T^n(\\mathbf{1}_A) \\in B_0\\}| = |A \\cap [0, N)|$, so the Cesàro average is $(1/N)|A \\cap [0,N)| \\to d^*(A)$. This connects orbit-time averages to combinatorial density.",
+    "prerequisites": [
+      "orbit_hits_cylinderZero",
+      "setIndicator",
+      "shift_iterate",
+      "cylinderZero"
+    ]
+  },
+  {
+    "id": "furst-oq01-compact",
+    "proofId": "furstenberg-correspondence-oq-01",
+    "range": {
+      "startLine": 218,
+      "endLine": 224
+    },
+    "type": "insight",
+    "title": "orbit_indicator_hits and the Weak-* Convergence Gap",
+    "content": "orbit_indicator_hits proves that orbit hitting frequency on B₀ exactly equals A-membership count: |{n < N : T^n(1_A) ∈ B₀}| = |A ∩ [0,N)|. This makes the Cesàro measure μ_N(B₀) = |A ∩ [0,N)|/N exact. Together with the Tychonoff compactness of Cantor space (Pi.compactSpace) and metrizability (inferInstance), this is the last proved step before the remaining formal gap: weak-* sequential compactness of {μ_N} needs Prokhorov's theorem, then T-invariance of the limit measure, then density lower bound μ(B₀) ≥ d*(A). These remaining steps require ~300-500 lines and depend on Dirac measure and weak-* topology infrastructure not yet in Mathlib as of 2026.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Tychonoff theorem",
+      "Pi.compactSpace",
+      "Prokhorov theorem",
+      "weak-* topology",
+      "Cesàro averages"
+    ],
+    "mathContext": "$|\\{n < N : T^n(\\mathbf{1}_A) \\in B_0\\}| = |A \\cap [0,N)|$. The Cantor space is compact metrizable (Tychonoff), so $\\{\\mu_N\\}$ lie in a compact space and have weak-* cluster points — the T-invariant measures needed for the full correspondence.",
+    "prerequisites": [
+      "orbit_hits_cylinderZero",
+      "setIndicator",
+      "shift_iterate",
+      "Pi.compactSpace"
+    ]
+  },
+  {
+    "id": "furst-oq01-compactness-gap",
+    "proofId": "furstenberg-correspondence-oq-01",
+    "range": {
+      "startLine": 231,
+      "endLine": 276
+    },
+    "type": "concept",
+    "title": "Compactness of Cantor Space and Gap Analysis",
+    "content": "Records that Cantor space $\\Omega = \\{0,1\\}^{\\mathbb N}$ is a `CompactSpace` and `MetrizableSpace` (from Tychonoff in Mathlib), the topological prerequisites for the measure-theoretic construction. The accompanying gap analysis enumerates exactly what is already proved (shift, cylinders, indicators, return property, orbit-density, compactness — all axiom-free) versus what the full Furstenberg correspondence still needs: Dirac/Cesàro measures, weak-* sequential compactness (Prokhorov), T-invariance of the limit, and the density lower bound. This honest scoping frames the rest of the file.",
+    "significance": "supporting",
+    "relatedConcepts": "Cantor space $\\Omega = \\{0,1\\}^{\\mathbb N}$ is compact (Tychonoff) and metrizable, hence a Polish space — the setting in which probability measures form a weak-* sequentially compact (Prokhorov) family.",
+    "mathContext": [
+      "Cantor space",
+      "Tychonoff theorem",
+      "compact metrizable space",
+      "Prokhorov theorem"
+    ],
+    "prerequisites": [
+      "point-set topology: compactness",
+      "product topology",
+      "Tychonoff theorem"
+    ]
+  },
+  {
+    "id": "furst-oq01-cesaro-def",
+    "proofId": "furstenberg-correspondence-oq-01",
+    "range": {
+      "startLine": 278,
+      "endLine": 354
+    },
+    "type": "definition",
+    "title": "Cesàro Probability Measures: the Furstenberg Construction",
+    "content": "Defines the central object: the $N$-step Cesàro average $\\mu_N(x) = \\frac1N\\sum_{n=0}^{N-1}\\delta_{T^n x}$ of Dirac masses along an orbit, with the convention $\\mu_0(x)=\\delta_x$. The key evaluation lemma `finsetDirac_apply` shows a finite sum of Diracs measures a set $t$ by counting how many orbit points land in $t$ (distribute over the sum, apply `Measure.dirac_apply`, then `Finset.sum_boole`). `cesaroMeasure_isProbability` confirms $\\mu_N$ is a genuine probability measure for $N\\ge 1$. This Cesàro averaging is the bridge that turns combinatorial density into an invariant measure.",
+    "significance": "key",
+    "relatedConcepts": "Empirical/Cesàro measure: $\\mu_N(x) = \\dfrac1N\\sum_{n=0}^{N-1}\\delta_{T^n x}$. Evaluated on a set $t$, $\\big(\\sum_{i\\in s}\\delta_{f(i)}\\big)(t) = |\\{i\\in s : f(i)\\in t\\}|$, so $\\mu_N(x)(t)$ is the orbit-occupation frequency of $t$.",
+    "mathContext": [
+      "Cesàro average",
+      "Dirac measure",
+      "empirical measure",
+      "orbit average",
+      "probability measure"
+    ],
+    "prerequisites": [
+      "measure theory: Dirac measures",
+      "probability measures",
+      "Finset summation"
+    ]
+  },
+  {
+    "id": "furst-oq01-orbit-density",
+    "proofId": "furstenberg-correspondence-oq-01",
+    "range": {
+      "startLine": 356,
+      "endLine": 389
+    },
+    "type": "insight",
+    "title": "The Orbit–Density Formula",
+    "content": "The quantitative heart of the correspondence: `mem_cylinderZero_shifted` shows the $a$-shifted orbit at time $n$ lands in the base cylinder $B_0$ iff $n+a\\in A$, and `cesaroMeasure_cylinderZero` then computes the Cesàro measure of $B_0$ exactly as the density of $A$ in the window $[a,a+N)$. This identity, $\\mu_N(B_0) = |A\\cap[a,a+N)|/N$, is what transports the combinatorial notion of density into the measure of a fixed clopen set.",
+    "significance": "key",
+    "relatedConcepts": "Orbit-density identity: $\\mu_N\\big(T^a 1_A\\big)(B_0) = \\dfrac{|A\\cap[a,a+N)|}{N}$, because $T^n(T^a 1_A)\\in B_0 \\iff (n+a)\\in A$. The measure of the base cylinder equals the windowed density of $A$.",
+    "mathContext": [
+      "orbit-density correspondence",
+      "cylinder set",
+      "upper Banach density",
+      "symbolic dynamics"
+    ],
+    "prerequisites": [
+      "symbolic dynamics",
+      "measure theory",
+      "density of subsets of ℕ"
+    ]
+  },
+  {
+    "id": "furst-oq01-density-lower",
+    "proofId": "furstenberg-correspondence-oq-01",
+    "range": {
+      "startLine": 390,
+      "endLine": 445
+    },
+    "type": "insight",
+    "title": "Density Lower Bound — the Elementary (Fully Proved) Half",
+    "content": "The completely axiom-free half of the correspondence: if $A$ has upper Banach density $\\ge\\delta$, then for every threshold $N_0$ there exist $a$ and $N\\ge N_0$ with $\\mu_N(T^a 1_A)(B_0)\\ge\\delta$. The proof simply feeds the density hypothesis into the orbit-density formula above — no compactness, no Prokhorov. It isolates precisely the part of Furstenberg’s correspondence that is genuinely elementary, leaving only the extraction of a T-invariant limit to deeper analysis.",
+    "significance": "key",
+    "relatedConcepts": "Density lower bound: $\\overline{d}(A)\\ge\\delta \\Rightarrow \\forall N_0\\,\\exists a, N\\ge N_0,\\ \\mu_N(T^a 1_A)(B_0)\\ge\\delta$. Direct from $\\mu_N(B_0)=|A\\cap[a,a+N)|/N\\ge\\delta$.",
+    "mathContext": [
+      "upper Banach density",
+      "lower bound",
+      "Cesàro measure",
+      "correspondence principle"
+    ],
+    "prerequisites": [
+      "upper Banach density",
+      "measure theory",
+      "Furstenberg correspondence"
+    ]
+  },
+  {
+    "id": "furst-oq01-approx-tinvariance",
+    "proofId": "furstenberg-correspondence-oq-01",
+    "range": {
+      "startLine": 447,
+      "endLine": 564
+    },
+    "type": "insight",
+    "title": "Approximate T-Invariance via Telescoping",
+    "content": "Establishes that Cesàro measures are nearly shift-invariant, with error $O(1/N)$. The combinatorial core (`filter_shift_card_le`, `filter_orig_card_le`) shows the orbit-occupation counts of $S$ and $T^{-1}S$ differ by at most one term (the boundary terms $n=0$ and $n=N$). Dividing by $N$, `cesaroMeasure_preimage_le`/`_ge` give $|\\mu_{N}(T^{-1}S) - \\mu_N(S)| \\le \\tfrac1{N}$. Letting $N\\to\\infty$, any weak-* limit is exactly T-invariant — this is why the limiting measure becomes shift-invariant.",
+    "significance": "key",
+    "relatedConcepts": "Approximate invariance: for measurable $S$, $\\big|\\mu_{N+1}(T^{-1}S) - \\mu_{N+1}(S)\\big| \\le \\dfrac{1}{N+1}$, since the orbit counts of $S$ over $T^n$ and $T^{n+1}$ differ by at most one boundary term. Hence every weak-* limit is T-invariant.",
+    "mathContext": [
+      "shift invariance",
+      "telescoping sum",
+      "invariant measure",
+      "Cesàro averaging"
+    ],
+    "prerequisites": [
+      "ergodic theory: invariant measures",
+      "telescoping arguments",
+      "measure theory"
+    ]
+  },
+  {
+    "id": "furst-oq01-prokhorov-axiom",
+    "proofId": "furstenberg-correspondence-oq-01",
+    "range": {
+      "startLine": 566,
+      "endLine": 637
+    },
+    "type": "concept",
+    "title": "The Minimal Remaining Axiom: Prokhorov Sequential Compactness",
+    "content": "Isolates the single classical analysis fact not yet assembled in Mathlib: every sequence of probability measures on Cantor space has a weak-* convergent subsequence (`seqCompact_probabilityMeasure_cantor`). Mathematically this is immediate from Prokhorov’s theorem — Cantor space is compact metrizable, so all probability-measure families are tight (`IsTightMeasureSet.of_compactSpace`) and tightness + Polish gives sequential compactness. The file documents that Mathlib v4.26 has the ingredients (`LevyProkhorov`, sequential Banach–Alaoglu) but not the ~150–200-line assembly, and so states it as a clearly-labelled local axiom rather than claiming it.",
+    "significance": "key",
+    "relatedConcepts": "Prokhorov (axiomatized here): every sequence $(\\mu_n)$ in $\\mathcal P(\\Omega)$ on compact metrizable $\\Omega$ has a subsequence $\\mu_{\\varphi(k)} \\rightharpoonup \\mu$ weakly. Tightness is automatic on compact spaces.",
+    "mathContext": [
+      "Prokhorov theorem",
+      "tightness",
+      "weak-* sequential compactness",
+      "Banach–Alaoglu",
+      "ProbabilityMeasure"
+    ],
+    "prerequisites": [
+      "measure theory: weak convergence",
+      "Prokhorov / Banach–Alaoglu",
+      "tight families of measures"
+    ]
+  },
+  {
+    "id": "furst-oq01-density-preservation",
+    "proofId": "furstenberg-correspondence-oq-01",
+    "range": {
+      "startLine": 638,
+      "endLine": 686
+    },
+    "type": "concept",
+    "title": "Density Preservation at Weak-* Limits (Portmanteau)",
+    "content": "Shows the density lower bound survives passing to the limit. Because $B_0$ is clopen, the Portmanteau theorem (`ProbabilityMeasure.tendsto_measure_of_isClopen_of_tendsto`) gives $\\mu_k(B_0)\\to\\mu(B_0)$ whenever $\\mu_k\\rightharpoonup\\mu$; `density_preserved_at_limit` then passes the uniform bound $\\mu_k(B_0)\\ge c$ to $\\mu(B_0)\\ge c$ via `ge_of_tendsto`. Combined with the density lower bound, the limit measure assigns $\\ge\\delta$ to $B_0$.",
+    "significance": "supporting",
+    "relatedConcepts": "Portmanteau on clopen sets: $\\mu_k\\rightharpoonup\\mu$ and $B_0$ clopen $\\Rightarrow \\mu_k(B_0)\\to\\mu(B_0)$. So $\\mu_k(B_0)\\ge c\\ \\forall k \\Rightarrow \\mu(B_0)\\ge c$.",
+    "mathContext": [
+      "Portmanteau theorem",
+      "weak convergence",
+      "clopen sets",
+      "lower semicontinuity"
+    ],
+    "prerequisites": [
+      "measure theory: weak convergence",
+      "Portmanteau theorem",
+      "clopen sets in Cantor space"
+    ]
+  },
+  {
+    "id": "furst-oq01-wrapping-shiftinv",
+    "proofId": "furstenberg-correspondence-oq-01",
+    "range": {
+      "startLine": 688,
+      "endLine": 781
+    },
+    "type": "concept",
+    "title": "Wrapping as ProbabilityMeasure and Exact Limit Invariance (1 sorry)",
+    "content": "Packages the Cesàro measures as `ProbabilityMeasure CantorSpace` (`cesaroProbabilityMeasure`) so Prokhorov and Portmanteau apply, and works toward exact T-invariance of the limit on cylinders (`limit_invariant_on_cylinder`). The latter is the file’s sole `sorry`: the intended proof combines the $O(1/N)$ approximate invariance with the ENNReal Portmanteau limit algebra and `le_antisymm`, but is deliberately left open pending repair of surrounding Mathlib-API drift — the author notes that filling ~60 unvalidated lines would mask the real blocker. The `sorry` is disclosed honestly rather than papered over.",
+    "significance": "supporting",
+    "relatedConcepts": "Goal: $\\mu(T^{-1}S) = \\mu(S)$ for clopen $S$, obtained from $|\\mu_k(T^{-1}S)-\\mu_k(S)|\\le 1/N_k\\to 0$ plus Portmanteau convergence. Currently a disclosed `sorry`.",
+    "mathContext": [
+      "ProbabilityMeasure",
+      "shift invariance",
+      "measure-preserving map",
+      "incomplete proof / sorry"
+    ],
+    "prerequisites": [
+      "measure theory: invariant measures",
+      "weak convergence",
+      "honest formalization scope"
+    ]
+  },
+  {
+    "id": "furst-oq01-return-ap",
+    "proofId": "furstenberg-correspondence-oq-01",
+    "range": {
+      "startLine": 783,
+      "endLine": 860
+    },
+    "type": "insight",
+    "title": "Return Property: Positive Measure ⟹ Arithmetic Progressions",
+    "content": "The dynamical-to-combinatorial direction. The $k$-fold intersection $\\bigcap_{i<k} T^{-id}(B_0)$ is clopen (`kfold_intersection_isClopen`); if a Cesàro measure assigns it positive mass then some orbit point lands inside (`cesaro_positive_implies_orbit_member`, since a vanishing average forces an empty occupation count); and unwinding the cylinder membership through `shift_indicator_zero` yields an actual $k$-term arithmetic progression $b, b+d, \\dots, b+(k-1)d \\subseteq A$ (`positive_measure_gives_ap`). This is the Furstenberg recurrence ⟺ Szemerédi-pattern half of the correspondence, fully proved.",
+    "significance": "key",
+    "relatedConcepts": "Recurrence ⟹ pattern: if $\\mu_N\\!\\big(\\bigcap_{i<k}T^{-id}B_0\\big) > 0$ then some $T^n(T^a 1_A)$ lies in the intersection, giving $b=n+a$ with $b+jd\\in A$ for all $j<k$ — a $k$-term AP in $A$.",
+    "mathContext": [
+      "multiple recurrence",
+      "arithmetic progressions",
+      "Szemerédi theorem",
+      "Furstenberg recurrence",
+      "clopen intersections"
+    ],
+    "prerequisites": [
+      "ergodic theory: multiple recurrence",
+      "Szemerédi’s theorem",
+      "arithmetic progressions"
+    ]
+  },
+  {
+    "id": "furst-oq01-assembly",
+    "proofId": "furstenberg-correspondence-oq-01",
+    "range": {
+      "startLine": 862,
+      "endLine": 928
+    },
+    "type": "concept",
+    "title": "Assembling the Correspondence and Honest Status",
+    "content": "The final assembly plan: build a `Furstenberg.System` on $(\\Omega, T, B_0)$ with $\\mu$ the weak-* limit of Cesàro measures, deriving T-invariance from the limit-invariance result and $\\mu(B_0)\\ge\\delta$ from density preservation. The progress summary is candid: the combinatorial–dynamical bridge (orbit-density, telescoping invariance, return property) is fully proved and axiom-free, and the whole correspondence reduces to just two standard analysis facts — the Prokhorov axiom and the one T-invariance `sorry` — neither of which is deep mathematics. This transparent accounting is the entry’s \"open question\" framing toward eliminating the correspondence axiom.",
+    "significance": "supporting",
+    "relatedConcepts": "Target: a measure-preserving system $(\\Omega, \\mu, T)$ with $\\mu(B_0)\\ge\\overline d(A)$, recovering multiple recurrence ⟹ Szemerédi. Remaining dependencies: Prokhorov (axiom) + one T-invariance sorry.",
+    "mathContext": [
+      "Furstenberg correspondence principle",
+      "ergodic Szemerédi",
+      "proof architecture",
+      "axiom elimination"
+    ],
+    "prerequisites": [
+      "ergodic theory: Furstenberg correspondence",
+      "Szemerédi’s theorem",
+      "formal proof architecture"
+    ]
+  }
+]

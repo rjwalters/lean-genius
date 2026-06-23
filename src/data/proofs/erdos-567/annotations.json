@@ -1,0 +1,250 @@
+[
+  {
+    "id": "imports",
+    "proofId": "erdos-567",
+    "range": {
+      "startLine": 20,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "Imports and Dependencies",
+    "content": "Imports Mathlib tactics, natural number basics, and finite set operations. These provide the decision procedures and combinatorial infrastructure for defining concrete finite graphs ($Q_3$, $K_{3,3}$, $H_5$) and reasoning about their structural properties.",
+    "mathContext": "Uses $\\text{Fin}\\;n$ for fixed-size vertex sets, $\\text{Finset}$ for edge counting, and $\\text{decide}$ for decidable adjacency in concrete graphs.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Fintype",
+      "DecidableEq",
+      "Mathlib.Tactic"
+    ],
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library"
+    ]
+  },
+  {
+    "id": "graph-prime",
+    "proofId": "erdos-567",
+    "range": {
+      "startLine": 27,
+      "endLine": 30
+    },
+    "type": "definition",
+    "title": "Simple Graph Structure",
+    "content": "Defines a simple graph on an arbitrary vertex type $V$ as a symmetric, irreflexive adjacency relation. This polymorphic formulation allows $Q_3$, $K_{3,3}$, and $H_5$ to use different vertex types ($\\text{Fin}\\;2 \\times \\text{Fin}\\;2 \\times \\text{Fin}\\;2$, $\\text{Fin}\\;3 \\oplus \\text{Fin}\\;3$, $\\text{Fin}\\;5$ respectively).",
+    "mathContext": "A simple graph $G = (V, E)$ satisfies $\\text{adj}(u,v) \\Leftrightarrow \\text{adj}(v,u)$ and $\\lnot\\text{adj}(v,v)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "simple graph",
+      "adjacency predicate",
+      "type-polymorphic graph"
+    ],
+    "prerequisites": [
+      "graph theory basics",
+      "Lean type system"
+    ]
+  },
+  {
+    "id": "edge-count",
+    "proofId": "erdos-567",
+    "range": {
+      "startLine": 33,
+      "endLine": 36
+    },
+    "type": "definition",
+    "title": "Edge Count via Decidable Adjacency",
+    "content": "Computes $|E(G)|$ by filtering the product $V \\times V$ for adjacent pairs and dividing by 2 (since each undirected edge appears as both $(u,v)$ and $(v,u)$). Requires $V$ to be a $\\text{Fintype}$ with $\\text{DecidableEq}$, which all three concrete graphs satisfy.",
+    "mathContext": "$|E(G)| = \\frac{1}{2}|\\{(u,v) \\in V \\times V : \\text{adj}(u,v)\\}|$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "edge counting",
+      "decidable adjacency",
+      "Fintype"
+    ],
+    "prerequisites": [
+      "finite combinatorics",
+      "decidability"
+    ]
+  },
+  {
+    "id": "q3-def",
+    "proofId": "erdos-567",
+    "range": {
+      "startLine": 40,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "3-Dimensional Hypercube Q₃",
+    "content": "The 3-cube $Q_3$ has vertex set $\\{0,1\\}^3$ (represented as $\\text{Fin}\\;2 \\times \\text{Fin}\\;2 \\times \\text{Fin}\\;2$) with adjacency defined by Hamming distance 1: vertices are connected iff they differ in exactly one coordinate. This yields 8 vertices and 12 edges. $Q_3$ is the **smallest hypercube** exceeding the EFRS threshold of $n+1 = 9$ edges, making it a natural test case for size Ramsey linearity beyond known results.",
+    "mathContext": "$Q_3 = (\\{0,1\\}^3, E)$ where $uv \\in E \\iff d_H(u,v) = 1$. We have $|V(Q_3)| = 8$, $|E(Q_3)| = 12 > 8 + 1 = 9$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "hypercube graph",
+      "Hamming distance",
+      "Boolean lattice",
+      "vertex-transitive graph"
+    ],
+    "prerequisites": [
+      "hypercube structure",
+      "Hamming distance",
+      "coordinate representation"
+    ]
+  },
+  {
+    "id": "k33-def",
+    "proofId": "erdos-567",
+    "range": {
+      "startLine": 51,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Complete Bipartite Graph K₃,₃",
+    "content": "The complete bipartite graph $K_{3,3}$ has vertex set $\\text{Fin}\\;3 \\oplus \\text{Fin}\\;3$ (disjoint union of two copies of $\\{0,1,2\\}$), with edges connecting every vertex in the left part to every vertex in the right part. This gives 6 vertices and 9 edges. $K_{3,3}$ is the **smallest non-planar complete bipartite graph** (by Kuratowski's theorem) and Erdős specifically highlighted it as a test case because bipartite Ramsey properties often differ from general ones.",
+    "mathContext": "$K_{3,3} = (A \\sqcup B, A \\times B)$ where $|A| = |B| = 3$. We have $|E(K_{3,3})| = 9 > 6 + 1 = 7$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complete bipartite graph",
+      "Kuratowski's theorem",
+      "bipartite Ramsey theory",
+      "graph planarity"
+    ],
+    "prerequisites": [
+      "bipartite graphs",
+      "sum types",
+      "graph planarity"
+    ]
+  },
+  {
+    "id": "h5-def",
+    "proofId": "erdos-567",
+    "range": {
+      "startLine": 60,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "H₅ = K₄* (C₅ with Two Chords)",
+    "content": "The graph $H_5$ on $\\text{Fin}\\;5$ consists of the 5-cycle $C_5$ (adjacency via modular arithmetic) plus two vertex-disjoint chords connecting vertices $0$-$2$ and $1$-$3$. This is also denoted $K_4^*$, the graph obtained by subdividing one edge of $K_4$. It has 5 vertices and 7 edges. The $K_4$-subdivision structure is key: Bradač, Gishboliner, and Sudakov proved that all $K_4$-subdivisions with $\\ge 6$ vertices are Ramsey size linear, which may extend to the 5-vertex case.",
+    "mathContext": "$H_5 = (\\mathbb{Z}/5\\mathbb{Z}, E_{C_5} \\cup \\{02, 13\\})$ with $|E(H_5)| = 7$. As a $K_4$-subdivision: subdivide one edge of $K_4$ to get 5 vertices.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cycle with chords",
+      "K₄ subdivision",
+      "topological minor",
+      "graph subdivision"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "graph subdivision",
+      "K₄ structure"
+    ]
+  },
+  {
+    "id": "size-ramsey-axiom",
+    "proofId": "erdos-567",
+    "range": {
+      "startLine": 72,
+      "endLine": 72
+    },
+    "type": "concept",
+    "title": "Size Ramsey Number (Axiomatized)",
+    "content": "The size Ramsey number $\\hat{r}(G,H)$ is axiomatized as a function from pairs of graphs to natural numbers. Unlike Problem #566 which gives a constructive definition, here it is taken as a primitive, reflecting that the problem concerns the *growth rate* rather than exact computation.",
+    "mathContext": "$\\hat{r}(G,H) = \\min\\{|E(F)| : F \\to (G,H)\\}$ where $F \\to (G,H)$ means every 2-edge-coloring of $F$ contains a monochromatic $G$ or $H$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "size Ramsey number",
+      "Ramsey arrow notation",
+      "edge coloring"
+    ],
+    "prerequisites": [
+      "Ramsey theory",
+      "size Ramsey numbers"
+    ]
+  },
+  {
+    "id": "ramsey-linear-def",
+    "proofId": "erdos-567",
+    "range": {
+      "startLine": 76,
+      "endLine": 78
+    },
+    "type": "definition",
+    "title": "Ramsey Size Linearity",
+    "content": "A graph $G$ is Ramsey size linear if there exists a constant $C > 0$ such that $\\hat{r}(G,H) \\le C \\cdot m$ for every graph $H$ with $m$ edges and no isolated vertices. The constant $C$ depends only on $G$, so the size Ramsey number grows **at most linearly** in the opponent's edge count. This is the strongest possible asymptotic growth rate, since $\\hat{r}(G,H) \\ge |E(H)|$ trivially.",
+    "mathContext": "$G$ is Ramsey size linear $\\iff$ $\\exists C > 0,\\;\\forall H,\\;\\hat{r}(G,H) \\le C \\cdot |E(H)|$. The trivial lower bound $\\hat{r}(G,H) \\ge |E(H)|$ shows linearity is optimal.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey size linearity",
+      "linear growth",
+      "size Ramsey asymptotics"
+    ],
+    "prerequisites": [
+      "size Ramsey numbers",
+      "asymptotic notation"
+    ]
+  },
+  {
+    "id": "question-q3",
+    "proofId": "erdos-567",
+    "range": {
+      "startLine": 83,
+      "endLine": 83
+    },
+    "type": "concept",
+    "title": "Question 1: Is Q₃ Ramsey Size Linear?",
+    "content": "The first of Erdős's three specific questions. The 3-cube $Q_3$ has $|E| = 12$ and is vertex-transitive, edge-transitive, and bipartite. Its high symmetry makes it a natural candidate for linearity, but the edge count exceeds the EFRS threshold. No proof or disproof is known.",
+    "mathContext": "Is $\\hat{r}(Q_3, H) = O(|E(H)|)$ for all $H$ with no isolated vertices?",
+    "significance": "key",
+    "relatedConcepts": [
+      "hypercube Ramsey theory",
+      "vertex-transitive graphs",
+      "open conjecture"
+    ],
+    "prerequisites": [
+      "Q₃ structure",
+      "Ramsey size linearity"
+    ]
+  },
+  {
+    "id": "question-k33",
+    "proofId": "erdos-567",
+    "range": {
+      "startLine": 86,
+      "endLine": 86
+    },
+    "type": "concept",
+    "title": "Question 2: Is K₃,₃ Ramsey Size Linear?",
+    "content": "The second question targets the complete bipartite graph $K_{3,3}$. Bipartite graphs often exhibit different Ramsey behavior: for example, the bipartite Ramsey number $R(K_{s,t}, K_{s,t})$ has been studied extensively by Conlon, Fox, and Sudakov. The bipartite structure makes this case particularly interesting.",
+    "mathContext": "Is $\\hat{r}(K_{3,3}, H) = O(|E(H)|)$ for all $H$ with no isolated vertices?",
+    "significance": "key",
+    "relatedConcepts": [
+      "bipartite Ramsey numbers",
+      "Zarankiewicz problem",
+      "Kővári-Sós-Turán"
+    ],
+    "prerequisites": [
+      "K₃,₃ structure",
+      "Ramsey size linearity"
+    ]
+  },
+  {
+    "id": "question-h5",
+    "proofId": "erdos-567",
+    "range": {
+      "startLine": 89,
+      "endLine": 89
+    },
+    "type": "concept",
+    "title": "Question 3: Is H₅ Ramsey Size Linear?",
+    "content": "The third question asks about $H_5 = K_4^*$. This is the most promising case due to the Bradač-Gishboliner-Sudakov result on $K_4$-subdivisions with $\\ge 6$ vertices. However, $H_5$ has only 5 vertices, so it falls just below their threshold, leaving this specific case unresolved.",
+    "mathContext": "Is $\\hat{r}(H_5, H) = O(|E(H)|)$? BGS proved this for $K_4$-subdivisions with $\\ge 6$ vertices; $H_5$ has 5.",
+    "significance": "key",
+    "relatedConcepts": [
+      "K₄ subdivision",
+      "Bradač-Gishboliner-Sudakov theorem",
+      "subdivision Ramsey theory"
+    ],
+    "prerequisites": [
+      "H₅ structure",
+      "K₄ subdivision theory"
+    ]
+  }
+]

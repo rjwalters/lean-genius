@@ -1,0 +1,76 @@
+{
+  "slug": "erdos-1053",
+  "title": "Erdős #1053",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Call a number $k$-perfect if $\\sigma(n)=kn$, where $\\sigma(n)$ is the sum of the divisors of $n$. Must $k=o(\\log\\log n)$?\n\n\n\nA question of Erd\\H{o}s, as reported in problem B2 of Guy's collection \\cite{Gu04}. Guy further writes 'It has even been suggested that there may be only finitely many $k$-perfect numbers with $k\\geq 3$.' The largest $k$ for which a $k$-perfect number has been found is $k=11$ - see this page for more information.\n\nThese are known as multiply perfect numbers. When $k=2$ this is the definition of a perfect number.",
+    "plain": "Call a number $k$-perfect if $\\sigma(n)=kn$, where $\\sigma(n)$ is the sum of the divisors of $n$. Must $k=o(\\log\\log n)$?",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-15T14:31:40.057Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: 6 axioms all justified (Euler even perfect, largest k, main conjecture, Gronwall, Robin conditional, Guy finiteness). 0 sorries.",
+    "builtItems": [
+      "Survey: confirmed all axioms are justified"
+    ],
+    "insights": [
+      "All 6 axioms are either deep published results or open conjectures — none eliminable",
+      "robin_inequality_conditional assumes RH — properly noted as conditional",
+      "Good constructive work: sigma, IsKPerfect are decidable, native_decide verifies examples"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #1053 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCall a number $k$-perfect if $\\sigma(n)=kn$, where $\\sigma(n)$ is the sum of the divisors of $n$. Must $k=o(\\log\\log n)$?\n\n\n\nA question of Erd\\H{o}s, as reported in problem B2 of Guy's collection \\cite{Gu04}. Guy further writes 'It has even been suggested that there may be only finitely many $k$-perfect numbers with $k\\geq 3$.' The largest $k$ for which a $k$-perfect number has been found is $k=11$ - see this page for more information.\n\nThese are known as multiply perfect numbers. When $k=2$ this is the definition of a perfect number.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1052\n- Problem #1054\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-105",
+    "erdos-1053"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T14:31:40.057Z",
+  "lastUpdate": "2026-03-13T07:52:17.056Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1053Problem.lean",
+      "filename": "Erdos1053Problem.lean",
+      "lineCount": 163,
+      "theoremCount": 10,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1053Problem.lean"
+    }
+  ]
+}

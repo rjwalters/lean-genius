@@ -1,0 +1,184 @@
+[
+  {
+    "id": "ann-clt-oq01-01-header",
+    "proofId": "central-limit-theorem-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 51
+    },
+    "type": "concept",
+    "title": "Infinite-Variance CLT: When Gaussians Fail, Stable Laws Take Over",
+    "content": "The header establishes the open question: what replaces the Gaussian when variance is infinite? The answer is the α-stable distribution with characteristic function exp(-|t|^α), proven stable under normalization by n^(1/α). The block comment provides a roadmap of 5 results: stability property, Cauchy as 1-stable, Gaussian as 2-stable, generalized CLT statement, and infinite variance mechanics. Imports are: Real.rpow (|t|^α), Complex.Circle (characteristic function), Log.Basic (log-injectivity for distinctness), ExpDeriv (exp properties). The key insight noted in the header: stability is PURELY ALGEBRAIC in characteristic functions — no probability theory required.",
+    "mathContext": "The classical CLT: if $X_i$ i.i.d. with $\\text{Var}(X) < \\infty$, then $(X_1+\\cdots+X_n)/\\sqrt{n} \\to N(0,1)$. The generalized CLT: if $X_i$ have power-law tails $P(|X|>x) \\sim x^{-\\alpha}$, then $(X_1+\\cdots+X_n)/n^{1/\\alpha} \\to S_\\alpha$, the $\\alpha$-stable law. The $\\alpha$-stable characteristic function $\\varphi_\\alpha(t) = e^{-|t|^\\alpha}$ unifies: $\\alpha=2$ (Gaussian), $\\alpha=1$ (Cauchy), $\\alpha=1/2$ (Lévy).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "α-stable distributions",
+      "characteristic functions",
+      "Lévy-Gnedenko theorem",
+      "power-law tails",
+      "Fourier transform"
+    ],
+    "prerequisites": [
+      "Real.rpow",
+      "Complex.exp",
+      "central limit theorem",
+      "characteristic functions"
+    ]
+  },
+  {
+    "id": "ann-clt-oq01-02-charfun-def",
+    "proofId": "central-limit-theorem-oq-01",
+    "range": {
+      "startLine": 53,
+      "endLine": 82
+    },
+    "type": "definition",
+    "title": "stableCharFun: The α-Stable Characteristic Function exp(-|t|^α)",
+    "content": "stableCharFun α t = Complex.exp(↑(-(|t|^α))) computes |t|^α in ℝ using Real.rpow, then casts to ℂ. The ℝ→ℂ cast workaround is required because HPow ℂ ℝ ℂ is not available in Mathlib 4.26.0. Two basic properties follow: stableCharFun_zero proves φ(0) = 1 via abs_zero and zero_rpow (since |0|^α = 0^α = 0 for α > 0, so exp(-0) = 1). stableCharFun_norm_le_one proves ‖φ(t)‖ ≤ 1 using Real.exp_le_one_iff and rpow_nonneg (since |t|^α ≥ 0, so -|t|^α ≤ 0, so exp(-|t|^α) ≤ 1). These two properties (φ(0)=1 and ‖φ‖≤1) are necessary conditions for a valid characteristic function.",
+    "mathContext": "The **characteristic function** of a probability distribution $\\mu$ is $\\varphi(t) = E[e^{itX}] = \\int e^{itx} d\\mu(x)$. The $\\alpha$-stable char. fn. $\\varphi_\\alpha(t) = e^{-|t|^\\alpha}$ is real-valued and even. It satisfies: (a) $\\varphi_\\alpha(0) = 1$ (unit mass), (b) $|\\varphi_\\alpha(t)| \\leq 1$ (Bochner's theorem), (c) $\\varphi_\\alpha$ is positive definite (not proved here). The parameter $\\alpha \\in (0, 2]$ is the **stability index**.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Real.rpow",
+      "Complex.ofReal_exp",
+      "abs_zero",
+      "zero_rpow",
+      "Real.exp_le_one_iff",
+      "Real.rpow_nonneg"
+    ],
+    "prerequisites": [
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Complex.exp",
+      "characteristic function"
+    ]
+  },
+  {
+    "id": "ann-clt-oq01-03-stability",
+    "proofId": "central-limit-theorem-oq-01",
+    "range": {
+      "startLine": 83,
+      "endLine": 124
+    },
+    "type": "insight",
+    "title": "Core Stability Theorem: Algebraic Identity Makes CLT Work",
+    "content": "Two theorems form the algebraic core. normalization_identity proves |t/n^(1/α)|^α = |t|^α/n via abs_div, div_rpow, and rpow_mul with inv_mul_cancel₀. This is the crucial fact that n^(1/α) is the correct normalization: dividing by n^(1/α) before taking the α-th power is exactly what divides by n. stable_property then proves [φ_α(t/n^(1/α))]^n = φ_α(t) using Complex.exp_nat_mul: the product of exponents (n times exp(-|t|^α/n)) equals exp(-|t|^α). The proof is 4 lines: simp stableCharFun, rw exp_nat_mul, congr 1, field_simp. This is the defining property of stable distributions — preserved under n-fold convolution + rescaling.",
+    "mathContext": "**Proof of normalization identity**: $|t/n^{1/\\alpha}|^\\alpha = (|t|/n^{1/\\alpha})^\\alpha = |t|^\\alpha / (n^{1/\\alpha})^\\alpha = |t|^\\alpha / n^{1/\\alpha \\cdot \\alpha} = |t|^\\alpha/n$. **Proof of stability**: $[e^{-|t/n^{1/\\alpha}|^\\alpha}]^n = [e^{-|t|^\\alpha/n}]^n = e^{n \\cdot (-|t|^\\alpha/n)} = e^{-|t|^\\alpha}$. Key lemma: `Complex.exp_nat_mul : exp(n · z) = exp(z)^n`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "normalization_identity",
+      "Complex.exp_nat_mul",
+      "Real.rpow_mul",
+      "inv_mul_cancel₀",
+      "div_rpow"
+    ],
+    "prerequisites": [
+      "Real.rpow API",
+      "Complex.exp_nat_mul",
+      "abs_div lemma",
+      "Nat.cast_pos"
+    ]
+  },
+  {
+    "id": "ann-clt-oq01-04-special-cases",
+    "proofId": "central-limit-theorem-oq-01",
+    "range": {
+      "startLine": 125,
+      "endLine": 171
+    },
+    "type": "insight",
+    "title": "Gaussian (α=2) and Cauchy (α=1): The Two Archetypal Stable Laws",
+    "content": "Four theorems cover the two main special cases. gaussian_is_2stable: (φ_2(t/√n))^n = φ_2(t), proved by converting Real.sqrt n to n^(1/2) via sqrt_eq_rpow, then applying stable_property 2. cauchy_is_1stable: (φ_1(t/n))^n = φ_1(t), proved by rewriting n = n^(1/1) via simp, then stable_property 1. cauchy_charFun_formula: stableCharFun 1 t = exp(↑(-|t|)), proved by rpow_one. gaussian_charFun_formula: stableCharFun 2 t = exp(↑(-t²)), proved via rpow_two and sq_abs. The Cauchy normalization is n (linear), not √n — the fundamental difference: infinite variance forces linear rather than square-root growth in the normalization constant.",
+    "mathContext": "**Gaussian** ($\\alpha=2$): $\\varphi_2(t) = e^{-t^2}$ (unscaled Gaussian; standard form has $e^{-t^2/2}$). Normalization $\\sqrt{n}$. Finite variance $\\sigma^2 < \\infty$. **Cauchy** ($\\alpha=1$): $\\varphi_1(t) = e^{-|t|}$ (standard Cauchy). Normalization $n$ (linear!). Infinite variance — in fact $E[X^2] = \\infty$ and $E[|X|] = \\infty$. **Key contrast**: Gaussian CLT uses $\\sqrt{n}$ because $\\text{Var}(\\bar{X}) = \\sigma^2/n$; Cauchy CLT uses $n$ because the Cauchy distribution has no variance at all.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Real.sqrt_eq_rpow",
+      "Real.rpow_one",
+      "Real.rpow_two",
+      "sq_abs",
+      "gaussian_is_2stable",
+      "cauchy_is_1stable"
+    ],
+    "prerequisites": [
+      "stable_property",
+      "Real.sqrt API",
+      "rpow_natCast"
+    ]
+  },
+  {
+    "id": "ann-clt-oq01-05-infinite-variance",
+    "proofId": "central-limit-theorem-oq-01",
+    "range": {
+      "startLine": 173,
+      "endLine": 228
+    },
+    "type": "insight",
+    "title": "stable_infinite_variance: Log-Injectivity Separates α-Stable from Gaussian",
+    "content": "stable_infinite_variance proves φ_α(t) ≠ φ_2(t) for α < 2, t ≠ 0, |t| ≠ 1. The proof proceeds: (1) extract real equality from Complex.exp equality via congr_arg Complex.re and Complex.exp_ofReal_re; (2) apply Real.exp_injective to get |t|^α = |t|^2; (3) take log of both sides via Real.log_rpow to get α·log|t| = 2·log|t|; (4) show log|t| ≠ 0: Real.log_eq_zero implies |t| ∈ {0, 1, ∞}, but t ≠ 0 excludes |t|=0 and |t|=-1, and ht1 excludes |t|=1; (5) cancel log|t| to get α = 2, contradicting hα_lt. The condition |t| ≠ 1 is necessary: all stable laws give exp(-1) at |t|=1 since 1^α = 1 for all α.",
+    "mathContext": "Why α-stable (α<2) has infinite variance: $E[X^2] = -\\varphi''(0)$. For $\\varphi(t) = e^{-|t|^\\alpha}$, the second derivative at 0 diverges when $\\alpha < 2$ (the function has a cusp at 0 for $\\alpha < 2$). The log-injectivity proof: if $|t|^\\alpha = |t|^2$ for all $t \\neq 0, |t| \\neq 1$, then $\\alpha \\log|t| = 2\\log|t|$, so $\\alpha = 2$ (since $\\log|t| \\neq 0$). The exception at $|t|=1$: $1^\\alpha = 1 = 1^2$ for all $\\alpha$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Real.exp_injective",
+      "Real.log_rpow",
+      "Real.log_eq_zero",
+      "Complex.exp_ofReal_re",
+      "mul_eq_zero"
+    ],
+    "prerequisites": [
+      "Complex.re extraction",
+      "Real.log API",
+      "Real.exp_injective",
+      "abs_pos"
+    ]
+  },
+  {
+    "id": "ann-clt-oq01-06-axioms",
+    "proofId": "central-limit-theorem-oq-01",
+    "range": {
+      "startLine": 230,
+      "endLine": 272
+    },
+    "type": "insight",
+    "title": "Lévy-Khintchine and Gnedenko-Kolmogorov: Axiomatized Deep Results",
+    "content": "Two deep theorems are axiomatized because their full proofs require measure theory and convergence in distribution not yet formalized in Lean 4 Mathlib. levy_khintchine_representation: every infinitely divisible characteristic function has the form exp(ibt - σ²t²/2 + ∫(e^{itx} - 1 - itx·1_{|x|≤1}) ν(dx)) where ν is the Lévy measure. generalized_clt (Gnedenko-Kolmogorov domain of attraction theorem): X is in the domain of attraction of an α-stable law iff its tails satisfy P(X>x) ~ C₊·L(x)·x^(-α) where L is slowly varying. Both axioms have body `True`, following the pattern of axiomatizing propositions that require measure theory beyond current Mathlib formalization.",
+    "mathContext": "The **Lévy-Khintchine representation** (1936): completely characterizes infinitely divisible distributions by a triplet $(b, \\sigma^2, \\nu)$. The **Gnedenko-Kolmogorov theorem** (1954): $X$ is in the domain of attraction of $S_\\alpha$ iff $P(|X|>x) = x^{-\\alpha} L(x)$ for slowly varying $L$ (satisfying $L(cx)/L(x) \\to 1$ for all $c>0$). **Why axiomatized**: requires (1) weak convergence theory, (2) Bochner's theorem (positive definite → char. fn. of measure), (3) the theory of slowly varying functions — all beyond current Mathlib.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lévy-Khintchine representation",
+      "infinitely divisible distributions",
+      "domain of attraction",
+      "slowly varying functions",
+      "Lévy measure"
+    ],
+    "prerequisites": [
+      "measure theory",
+      "weak convergence",
+      "Bochner theorem",
+      "probability in Mathlib"
+    ]
+  },
+  {
+    "id": "ann-clt-oq01-07-summary",
+    "proofId": "central-limit-theorem-oq-01",
+    "range": {
+      "startLine": 274,
+      "endLine": 313
+    },
+    "type": "insight",
+    "title": "Summary: Lévy 1/2-Stable, Non-Gaussian Distinctness, and Unified CLT",
+    "content": "Three final results. nongaussian_stable_infinite_variance packages stable_infinite_variance as a function inequality: stableCharFun α ≠ stableCharFun 2, proved by applying the pointwise result at t=2 (which has |2|≠1 and 2≠0). levy_is_half_stable proves (φ_{1/2}(t/n²))^n = φ_{1/2}(t) — the Lévy distribution requires quadratic normalization n² = n^(1/(1/2)) = n². The proof rewrites n^2 using rpow_natCast, then applies stable_property. infinite_variance_clt_summary is the master theorem: for any α ∈ (0,2], for all n,t, (φ_α(t/n^(1/α)))^n = φ_α(t). This is a single-line proof via stable_property, packaging all special cases into one statement.",
+    "mathContext": "The **Lévy distribution** ($\\alpha=1/2$): arises as the first passage time of standard Brownian motion. Its c.d.f. is $F(x) = \\text{erfc}(\\sqrt{1/(2x)})$. The normalization $n^{1/(1/2)} = n^2$ means that the sum of $n$ Lévy r.v.s must be divided by $n^2$ (quadratic scaling). **Summary of normalizations**: $\\alpha=2 \\to \\sqrt{n}$; $\\alpha=1 \\to n$; $\\alpha=1/2 \\to n^2$; general $\\alpha \\to n^{1/\\alpha}$. The Gaussian is the UNIQUE stable law with finite variance (since $\\alpha=2$ is the only case where $\\int x^2 d\\mu < \\infty$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "levy_is_half_stable",
+      "nongaussian_stable_infinite_variance",
+      "infinite_variance_clt_summary",
+      "Lévy distribution",
+      "first passage time"
+    ],
+    "prerequisites": [
+      "stable_property",
+      "stable_infinite_variance",
+      "Real.rpow_natCast",
+      "norm_num"
+    ]
+  }
+]

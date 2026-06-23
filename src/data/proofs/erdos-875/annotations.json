@@ -1,0 +1,321 @@
+[
+  {
+    "id": "ann-e875-imports",
+    "proofId": "erdos-875",
+    "type": "concept",
+    "title": "Combinatorics and Bitwise Imports",
+    "content": "Imports tactics, Finset.Basic, Finset.Powerset for subset enumeration, and Nat.Bitwise for popcount.",
+    "mathContext": "The formalization uses `Finset.powersetCard r` to enumerate all $r$-element subsets (for the $r$-fold sumset), `Finset.image` and `Finset.sum` for computing sumset elements, and `Nat.popcount` (from `Nat.Bitwise`) for the binary argument that powers of 2 are admissible. The `Filter.atTop` filter is used implicitly through `HasPolynomialGaps` and `HasRatioOne`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.powersetCard",
+      "Nat.popcount",
+      "Filter.atTop"
+    ],
+    "prerequisites": [
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Data.Nat.Bitwise"
+    ],
+    "range": {
+      "startLine": 20,
+      "endLine": 25
+    }
+  },
+  {
+    "id": "ann-e875-rFoldSumset",
+    "proofId": "erdos-875",
+    "type": "definition",
+    "title": "r-Fold Sumset",
+    "content": "The r-fold sumset of A: all sums of r distinct elements. Computed as the image of r-element subsets under summation.",
+    "mathContext": "The **$r$-fold sumset** $S_r(A) = \\{a_{i_1} + \\cdots + a_{i_r} : i_1 < \\cdots < i_r, a_i \\in A\\}$ consists of all sums of $r$ distinct elements from $A$. The formalization computes this as `(A.powersetCard r).image (fun S => S.sum id)`, leveraging `powersetCard` to enumerate all $r$-element subsets and `sum id` to compute their element sums. This is computationally expensive (exponential in $r$) but provides a clean specification.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sumset",
+      "powerset",
+      "subset sum"
+    ],
+    "prerequisites": [
+      "Finset.powersetCard",
+      "Finset.image"
+    ],
+    "range": {
+      "startLine": 30,
+      "endLine": 31
+    }
+  },
+  {
+    "id": "ann-e875-strictlyIncreasing",
+    "proofId": "erdos-875",
+    "type": "definition",
+    "title": "Strictly Increasing Sequence",
+    "content": "A sequence a : ℕ → ℕ with a(n) < a(n+1) for all n.",
+    "mathContext": "The **strictly increasing** condition $a(n) < a(n+1)$ is separate from Mathlib's `StrictMono` for clarity. It implies $a(n) \\geq a(0) + n$, so the sequence grows at least linearly. Combined with the disjoint sumsets condition, much faster growth is forced.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "StrictMono",
+      "monotone sequence",
+      "growth rate"
+    ],
+    "prerequisites": [],
+    "range": {
+      "startLine": 34,
+      "endLine": 35
+    }
+  },
+  {
+    "id": "ann-e875-seqRSumset",
+    "proofId": "erdos-875",
+    "type": "definition",
+    "title": "Sequence r-Fold Sumset",
+    "content": "The r-fold sumset of the first N elements of a sequence: rFoldSumset applied to {a(0), ..., a(N-1)}.",
+    "mathContext": "For an infinite sequence $a$, the $r$-fold sumset is defined relative to the first $N$ terms: $S_r^{(N)}(a) = S_r(\\{a(0), \\ldots, a(N-1)\\})$. This finitization is necessary because `Finset` operations require finite sets. The disjointness condition then quantifies over all $N$, ensuring the property holds for every finite initial segment.",
+    "significance": "key",
+    "relatedConcepts": [
+      "initial segment",
+      "finitization",
+      "sequence indexing"
+    ],
+    "prerequisites": [
+      "rFoldSumset"
+    ],
+    "range": {
+      "startLine": 39,
+      "endLine": 40
+    }
+  },
+  {
+    "id": "ann-e875-disjointSumsets",
+    "proofId": "erdos-875",
+    "type": "definition",
+    "title": "Disjoint Sumsets Property",
+    "content": "For any N, the r-fold and s-fold sumsets (r ≠ s, both ≥ 1, both ≤ N) of the first N terms are disjoint.",
+    "mathContext": "The **disjoint sumsets** condition states that for all $N$ and all $1 \\leq r \\neq s \\leq N$, the $r$-fold and $s$-fold sumsets $S_r^{(N)}(a)$ and $S_s^{(N)}(a)$ are disjoint as `Finset`s. This is a strong condition: knowing that $a_{i_1} + \\cdots + a_{i_r} = a_{j_1} + \\cdots + a_{j_s}$ forces $r = s$. For the powers-of-2 sequence, this follows from binary representation (popcount determines $r$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Disjoint",
+      "Finset.Disjoint",
+      "subset sum uniqueness"
+    ],
+    "prerequisites": [
+      "seqRSumset"
+    ],
+    "range": {
+      "startLine": 44,
+      "endLine": 46
+    }
+  },
+  {
+    "id": "ann-e875-isAdmissible",
+    "proofId": "erdos-875",
+    "type": "definition",
+    "title": "Admissible Sequence",
+    "content": "Strictly increasing with pairwise disjoint r-fold sumsets for all r ≥ 1.",
+    "mathContext": "An **admissible sequence** combines strict increase with the disjoint sumsets property. The term comes from Deshouillers and Erdős, who studied the finite version (Problem #874) and the infinite variant here. Admissibility is a strong structural condition: it forces rapid growth because slow growth would create sumset collisions. The simplest example is $a(n) = 2^n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "admissible set",
+      "Deshouillers-Erdős",
+      "sumset disjointness"
+    ],
+    "prerequisites": [
+      "StrictlyIncreasing",
+      "DisjointSumsets"
+    ],
+    "range": {
+      "startLine": 50,
+      "endLine": 51
+    }
+  },
+  {
+    "id": "ann-e875-hasPolynomialGaps",
+    "proofId": "erdos-875",
+    "type": "definition",
+    "title": "Polynomial Gaps Property",
+    "content": "a(n+1) − a(n) ≤ n^c for all sufficiently large n, using Filter.atTop.",
+    "mathContext": "The **polynomial gaps** condition $a(n+1) - a(n) \\leq n^c$ (eventually) asks whether the consecutive differences can be bounded by a polynomial in $n$. Since $a(n) \\leq a(0) + \\sum_{k=0}^{n-1} k^c \\sim n^{c+1}/(c+1)$, this bounds the overall growth rate. The critical exponent $c_0$ marks the transition: for $c < c_0$ no admissible sequence achieves polynomial gaps $n^c$, and for $c > c_0$ one does. The formalization uses `Filter.atTop` for the 'eventually' quantifier.",
+    "significance": "key",
+    "relatedConcepts": [
+      "polynomial growth",
+      "Filter.atTop",
+      "eventually"
+    ],
+    "prerequisites": [
+      "Filter.atTop"
+    ],
+    "range": {
+      "startLine": 57,
+      "endLine": 59
+    }
+  },
+  {
+    "id": "ann-e875-gapThreshold",
+    "proofId": "erdos-875",
+    "type": "concept",
+    "title": "Gap Threshold Conjecture (OPEN)",
+    "content": "There exists a critical exponent c₀ such that polynomial gaps n^c are achievable for c > c₀ but not for c < c₀.",
+    "mathContext": "The **gap threshold** axiom asserts the existence of a critical exponent $c_0 > 0$ with a sharp transition: no admissible sequence has gaps $\\leq n^c$ for $c < c_0$, but admissible sequences with gaps $\\leq n^c$ exist for $c > c_0$. This is the central quantitative question of Problem 875. The axiom's form—existential over $c_0$ with both impossibility below and existence above—encodes a sharp phase transition in the space of admissible sequences.",
+    "significance": "key",
+    "relatedConcepts": [
+      "phase transition",
+      "critical exponent",
+      "gap growth"
+    ],
+    "prerequisites": [
+      "IsAdmissible",
+      "HasPolynomialGaps"
+    ],
+    "range": {
+      "startLine": 64,
+      "endLine": 67
+    }
+  },
+  {
+    "id": "ann-e875-hasRatioOne",
+    "proofId": "erdos-875",
+    "type": "theorem",
+    "title": "Ratio-One Property",
+    "content": "a(n+1)/a(n) → 1 as n → ∞, meaning the sequence grows subexponentially.",
+    "mathContext": "The **ratio-one** property $a(n+1)/a(n) \\to 1$ means the sequence grows subexponentially: for any $\\varepsilon > 0$, eventually $a(n+1) < (1+\\varepsilon) \\cdot a(n)$. This is formalized using `Filter.Tendsto ... Filter.atTop (nhds 1)`. Powers of 2 have ratio 2 (not ratio 1), so the question asks whether a much more slowly growing admissible sequence exists. Erdős noted this is 'not completely trivial.'",
+    "significance": "key",
+    "relatedConcepts": [
+      "subexponential growth",
+      "Filter.Tendsto",
+      "nhds"
+    ],
+    "prerequisites": [
+      "Filter.Tendsto",
+      "Filter.atTop"
+    ],
+    "range": {
+      "startLine": 71,
+      "endLine": 72
+    }
+  },
+  {
+    "id": "ann-e875-ratioOneAxiom",
+    "proofId": "erdos-875",
+    "type": "concept",
+    "title": "Ratio-One Existence (Erdős Claim)",
+    "content": "There exists an admissible sequence with a(n+1)/a(n) → 1.",
+    "mathContext": "Erdős claimed that an admissible sequence with $a(n+1)/a(n) \\to 1$ exists, describing this as 'not completely trivial.' This is axiomatized rather than proved. A construction might use highly lacunary sequences that are 'almost' geometric with ratio tending to 1, carefully avoiding sumset collisions. The axiom is $\\exists a, \\text{IsAdmissible}(a) \\wedge \\text{HasRatioOne}(a)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "existence claim",
+      "constructive vs non-constructive",
+      "Erdős quotation"
+    ],
+    "prerequisites": [
+      "IsAdmissible",
+      "HasRatioOne"
+    ],
+    "range": {
+      "startLine": 74,
+      "endLine": 75
+    }
+  },
+  {
+    "id": "ann-e875-pow2Increasing",
+    "proofId": "erdos-875",
+    "type": "concept",
+    "title": "Powers of 2 Strictly Increasing (Fully Proved)",
+    "content": "2^n < 2^(n+1) for all n, proved by Nat.pow_lt_pow_right.",
+    "mathContext": "The **fully proved** lemma that $2^n < 2^{n+1}$ establishes `StrictlyIncreasing (fun n => 2^n)`. The proof uses `Nat.pow_lt_pow_right` with base $\\geq 2$ and exponent increase. This is the first half of showing powers of 2 are admissible.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.pow_lt_pow_right",
+      "exponential growth"
+    ],
+    "prerequisites": [],
+    "range": {
+      "startLine": 80,
+      "endLine": 82
+    }
+  },
+  {
+    "id": "ann-e875-popcountAxiom",
+    "proofId": "erdos-875",
+    "type": "concept",
+    "title": "Popcount of Sum of Distinct Powers of 2",
+    "content": "The popcount (number of 1-bits) of a sum of distinct powers of 2 equals the number of terms.",
+    "mathContext": "The **popcount lemma** states that if $S$ is a set of distinct natural numbers, then $\\text{popcount}(\\sum_{i \\in S} 2^i) = |S|$. This is because distinct powers of 2 have disjoint binary representations, so their sum has exactly $|S|$ bits set. This is the key technical fact for proving powers of 2 are admissible: if $\\sum_{i \\in S} 2^i = \\sum_{j \\in T} 2^j$, then $|S| = |T|$ by popcount, establishing sumset disjointness across different $r$-values.",
+    "significance": "key",
+    "relatedConcepts": [
+      "popcount",
+      "binary representation",
+      "disjoint bit patterns"
+    ],
+    "prerequisites": [
+      "Nat.popcount"
+    ],
+    "range": {
+      "startLine": 90,
+      "endLine": 91
+    }
+  },
+  {
+    "id": "ann-e875-pow2Admissible",
+    "proofId": "erdos-875",
+    "type": "concept",
+    "title": "Powers of 2 Admissible (Partially Proved)",
+    "content": "a(n) = 2^n is admissible. Strict increase is proved; disjoint sumsets part uses sorry (relies on popcount argument).",
+    "mathContext": "The theorem that $a(n) = 2^n$ is admissible is **partially proved**: the `StrictlyIncreasing` half is established via `pow2_strictly_increasing`, but the `DisjointSumsets` half is left as `sorry`. The full proof would use the popcount axiom: if a sum $\\sum 2^{i_j}$ with $r$ terms equals a sum $\\sum 2^{i'_j}$ with $s$ terms, then popcount gives $r = s$, so sumsets of different sizes are disjoint.",
+    "significance": "key",
+    "relatedConcepts": [
+      "admissible example",
+      "binary encoding",
+      "partial proof"
+    ],
+    "prerequisites": [
+      "pow2_strictly_increasing",
+      "popcount_sum_distinct_pow2"
+    ],
+    "range": {
+      "startLine": 99,
+      "endLine": 103
+    }
+  },
+  {
+    "id": "ann-e875-growthLower",
+    "proofId": "erdos-875",
+    "type": "concept",
+    "title": "Growth Lower Bound a(n) ≥ n+1 (Fully Proved)",
+    "content": "Every admissible sequence with a(0) ≥ 1 satisfies a(n) ≥ n+1, proved by induction using strict increase.",
+    "mathContext": "A **fully proved** growth lower bound: if $a(0) \\geq 1$ and $a$ is admissible (hence strictly increasing), then $a(n) \\geq n+1$ for all $n$. The proof is by induction: base case $a(0) \\geq 1$, and if $a(n) \\geq n+1$ then $a(n+1) > a(n) \\geq n+1$ so $a(n+1) \\geq n+2$. The `omega` tactic handles the final inequality. This is a crude bound; the disjoint sumsets condition forces much faster growth.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "induction",
+      "omega tactic",
+      "linear lower bound"
+    ],
+    "prerequisites": [
+      "IsAdmissible",
+      "StrictlyIncreasing"
+    ],
+    "range": {
+      "startLine": 109,
+      "endLine": 115
+    }
+  },
+  {
+    "id": "ann-e875-finiteConnection",
+    "proofId": "erdos-875",
+    "type": "concept",
+    "title": "Connection to Problem #874 (Finite Version)",
+    "content": "For any n, there is a maximum size f(n) for a subset of {1,...,n} with pairwise disjoint r-fold sumsets.",
+    "mathContext": "Problem #874 (Deshouillers-Erdős) is the **finite version**: what is the maximum size of $A \\subseteq \\{1, \\ldots, n\\}$ with pairwise disjoint $r$-fold sumsets? The axiom asserts this maximum $f(n)$ exists. The infinite Problem 875 asks about the growth rate of infinite admissible sequences, which corresponds to understanding how $f(n)$ grows. If $f(n) \\sim n^\\alpha$, then admissible sequences can grow like $n^{1/\\alpha}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "finite version",
+      "Problem 874",
+      "extremal combinatorics"
+    ],
+    "prerequisites": [
+      "rFoldSumset",
+      "Disjoint"
+    ],
+    "range": {
+      "startLine": 130,
+      "endLine": 135
+    }
+  }
+]

@@ -1,0 +1,247 @@
+{
+  "id": "erdos-47",
+  "title": "Erdős Problem #47: Unit Fractions from Dense Sets",
+  "slug": "erdos-47",
+  "description": "If A ⊆ {1,…,N} has ∑ 1/a > δ log N, must some S ⊆ A have ∑ 1/n = 1? Yes — proved by Bloom (2021). Liu–Sawhney improved the quantitative bound. SOLVED.",
+  "meta": {
+    "author": "Erdős (conjecture); Bloom (2021, proof); Liu–Sawhney (2024, improvement); Pomerance (lower bound)",
+    "sourceUrl": "https://erdosproblems.com/47",
+    "date": "1960s",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos47Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "density",
+      "combinatorial-number-theory",
+      "Egyptian-fractions",
+      "circle-method"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 47,
+    "erdosUrl": "https://erdosproblems.com/47",
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum",
+        "description": "Finite summation over sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.range",
+        "description": "Finite range {0,...,n-1}",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm on ℝ",
+        "module": "Mathlib.Analysis.SpecificLimits.Basic"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter for asymptotic reasoning",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "reciprocalSum: ∑ 1/a over ℚ for finite sets",
+      "HasUnitFractionSum: ∑ 1/n = 1 property",
+      "ContainsUnitFraction: existence of unit fraction subset",
+      "Icc1: interval {1,…,N} as Finset",
+      "IsDenseSubset: δ-density via reciprocal sum",
+      "ErdosConjecture47: formal statement of the conjecture",
+      "bloom_theorem: Bloom's proof (axiomatized, line 100)",
+      "Documented in docstrings only (not axiomatized): bloom_quantitative bound (triple-log threshold), Liu-Sawhney threshold improvement ((log N)^{4/5+ε}), Pomerance lower-bound construction ((log log N)²)",
+      "erdos_47_summary: summary theorem equating conjecture to Bloom's theorem (proved, line 130)"
+    ],
+    "dateAdded": "2026-01-19",
+    "axiomCount": 1,
+    "assumptions": "1 axiom: bloom_theorem. 0 sorries.",
+    "lineCount": 132,
+    "theoremCount": 1,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "Erdős posed Problem #47 in the 1960s, asking whether sets of positive integers with large reciprocal sums must contain subsets whose reciprocals sum to exactly 1—an Egyptian fraction representation. The problem connects to a rich tradition going back to the Rhind Papyrus (c. 1650 BCE), where ancient Egyptians expressed fractions as sums of unit fractions. Erdős and Graham conjectured that the threshold should be around $(\\log \\log N)^2$. Thomas Bloom resolved the conjecture affirmatively in his landmark 2021 paper [Bl21], using the Hardy–Littlewood circle method combined with structural results on additive energy. Mehtaab Liu and Ashwin Sawhney [LiSa24] subsequently improved Bloom's quantitative bound from $(\\log N)^{1-o(1)}$ down to $(\\log N)^{4/5+o(1)}$, a dramatic polynomial improvement. Carl Pomerance showed that sets with $\\sum 1/a \\approx (\\log \\log N)^2$ can avoid unit fraction subsets, establishing that Erdős's conjectured threshold is essentially tight. The gap between $(\\log \\log N)^2$ and $(\\log N)^{4/5}$ remains one of the central open quantitative questions in combinatorial number theory.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nIf $\\delta > 0$ and $N$ is sufficiently large, and $A \\subseteq \\{1, \\ldots, N\\}$ satisfies $\\sum_{a \\in A} \\frac{1}{a} > \\delta \\log N$, must there exist $S \\subseteq A$ with $\\sum_{n \\in S} \\frac{1}{n} = 1$?\n\n**Answer:** YES (Bloom 2021).\n\n**Quantitative bounds:** $(\\log \\log N)^2 \\leq \\text{threshold} \\leq (\\log N)^{4/5+o(1)}$.",
+    "text": "If A ⊆ {1,…,N} has ∑ 1/a > δ log N, must some S ⊆ A have ∑ 1/n = 1? Yes — proved by Bloom (2021). Liu–Sawhney improved the quantitative bound. SOLVED.",
+    "proofStrategy": "The formalization defines reciprocal sums over $\\mathbb{Q}$ for exact arithmetic, the unit fraction sum property ($\\sum 1/n = 1$), and the density condition ($\\sum 1/a > \\delta \\log N$). Bloom's theorem is axiomatized as the sole axiom; the quantitative refinements (bloom_quantitative bound, Liu–Sawhney improvement, Pomerance lower bound) are described in docstrings only — not declared as axioms or theorems in this file. The summary theorem equates the conjecture with Bloom's result.",
+    "keyInsights": [
+      "**Bloom's resolution (2021):** Proved Erdős's conjecture using the Hardy–Littlewood circle method and structural additive energy bounds—the first proof that harmonic density forces unit fraction subsets",
+      "**Quantitative gap:** Best upper bound is $(\\log N)^{4/5+o(1)}$ (Liu–Sawhney), best lower bound is $(\\log \\log N)^2$ (Pomerance)—a vast gap between polynomial and double-logarithmic",
+      "**Egyptian fraction connection:** The problem asks when dense sets must contain Egyptian fraction representations of 1, connecting modern combinatorics to ancient mathematics",
+      "**Harmonic density:** The condition $\\sum 1/a > \\delta \\log N$ captures 'harmonic density'—a set keeping a constant fraction of $H_N \\sim \\log N$ must be arithmetically rich",
+      "**Circle method application:** Bloom's proof adapts the Hardy–Littlewood method to detect subset sums in $\\mathbb{Q}$, a novel application to the exact-sum-equals-1 problem"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Asymptotic density and counting"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Namespace",
+      "startLine": 25,
+      "endLine": 35,
+      "summary": "Imports $\\texttt{Finset}$, $\\texttt{Rat}$, $\\texttt{Real.log}$, and $\\texttt{Filter}$ from Mathlib. Opens $\\texttt{Finset}$ and $\\texttt{Filter}$ namespaces for convenient access to summation and asymptotic reasoning.",
+      "mathContext": "Imports $\\texttt{Finset}$, $\\texttt{Rat}$, $\\texttt{Real.log}$, and $\\texttt{Filter}$ from Mathlib. Opens $\\texttt{Finset}$ and $\\texttt{Filter}$ namespaces for convenient access to summation and asymptotic reasoning."
+    },
+    {
+      "id": "unit-fractions",
+      "title": "Unit Fraction Definitions",
+      "startLine": 36,
+      "endLine": 57,
+      "summary": "Defines $\\texttt{reciprocalSum}(A) = \\sum_{a \\in A} \\frac{1}{a}$ over $\\mathbb{Q}$, $\\texttt{HasUnitFractionSum}(S)$ requiring $\\sum \\frac{1}{n} = 1$ with all $n \\geq 1$, and $\\texttt{ContainsUnitFraction}(A)$ asserting $\\exists S \\subseteq A$ with unit fraction sum.",
+      "mathContext": "Defines $\\texttt{reciprocalSum}(A) = \\sum_{a \\in A} \\frac{1}{a}$ over $\\mathbb{Q}$, $\\texttt{HasUnitFractionSum}(S)$ requiring $\\sum \\frac{1}{n} = 1$ with all $n \\geq 1$, and $\\texttt{ContainsUnitFraction}(A)$ asserting $\\exists S \\subseteq A$ with unit fraction sum."
+    },
+    {
+      "id": "dense-subsets",
+      "title": "Dense Subsets of $\\{1, \\ldots, N\\}$",
+      "startLine": 58,
+      "endLine": 73,
+      "summary": "Defines $\\texttt{Icc1}(N) = \\{1, \\ldots, N\\}$ via $\\texttt{Finset.range}$ and $\\texttt{IsDenseSubset}(A, N, \\delta)$ requiring $A \\subseteq \\{1,\\ldots,N\\}$ with $\\sum \\frac{1}{a} > \\delta \\log N$.",
+      "mathContext": "Defines $\\texttt{Icc1}(N) = \\{1, \\ldots, N\\}$ via $\\texttt{Finset.range}$ and $\\texttt{IsDenseSubset}(A, N, \\$\\delta$)$ requiring $A \\subseteq \\{1,\\ldots,N\\}$ with $\\sum \\frac{1}{a} > \\$\\delta$ \\log N$."
+    },
+    {
+      "id": "conjecture",
+      "title": "Erdős's Conjecture (Formal Statement)",
+      "startLine": 74,
+      "endLine": 89,
+      "summary": "Defines $\\texttt{ErdosConjecture47}$: $\\forall \\delta > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0$, every $\\delta$-dense subset contains a unit fraction subset. This is the Prop that Bloom's theorem proves.",
+      "mathContext": "Defines $\\texttt{ErdosConjecture47}$: $\\forall \\delta > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0$, every $\\delta$-dense subset contains a unit fraction subset. This is the Prop that Bloom's theorem proves."
+    },
+    {
+      "id": "bloom",
+      "title": "Bloom's Theorem (2021)",
+      "startLine": 90,
+      "endLine": 107,
+      "summary": "axiom bloom_theorem (line 100): Bloom's qualitative result ($\\texttt{bloom\\_theorem} : \\texttt{ErdosConjecture47}$). Lines 102–107 document the quantitative threshold in a docstring (no axiom or theorem declared).",
+      "mathContext": "Axiomatized: bloom_theorem (line 100). Docstring only: quantitative bound $\\sum \\frac{1}{a} \\geq C \\cdot \\frac{\\log \\log \\log N}{\\log \\log N} \\cdot \\log N$ suffices (lines 102–107)."
+    },
+    {
+      "id": "liu-sawhney",
+      "title": "Liu–Sawhney Improvement (2024)",
+      "startLine": 108,
+      "endLine": 114,
+      "summary": "Documents the Liu–Sawhney improved threshold $(\\log N)^{4/5+\\varepsilon}$ in a docstring only — no axiom or theorem declared in this range.",
+      "mathContext": "Docstring only (lines 108–114): improved threshold $\\forall \\varepsilon > 0$, $\\sum \\frac{1}{a} \\geq (\\log N)^{4/5+\\varepsilon}$ suffices."
+    },
+    {
+      "id": "pomerance",
+      "title": "Pomerance's Lower Bound",
+      "startLine": 115,
+      "endLine": 122,
+      "summary": "Documents Pomerance's lower-bound construction (sets with $\\sum \\frac{1}{a} \\approx (\\log \\log N)^2$ avoiding unit fraction subsets) in a docstring only — no axiom or theorem declared.",
+      "mathContext": "Docstring only (lines 115–122): sets with $\\sum \\frac{1}{a} \\geq (\\log \\log N)^2$ avoiding unit fraction subsets for arbitrarily large $N$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary Theorem",
+      "startLine": 123,
+      "endLine": 132,
+      "summary": "theorem erdos_47_summary (line 130): proves ErdosConjecture47 by direct application of bloom_theorem.",
+      "mathContext": "Proved: erdos_47_summary : ErdosConjecture47 := bloom_theorem."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #47 is SOLVED. Bloom (2021) proved that dense subsets of {1,…,N} (with ∑ 1/a > δ log N) always contain unit fraction subsets. Liu–Sawhney (2024) improved the quantitative bound to (log N)^{4/5+o(1)}. Pomerance showed (log log N)² is a lower bound for the threshold. The formalization axiomatizes all three results and provides exact definitions over ℚ.",
+    "implications": "The result establishes a fundamental threshold phenomenon in combinatorial number theory: harmonic density forces Egyptian fraction representations. The quantitative gap between (log log N)² and (log N)^{4/5} connects to deep questions about the structure of sets avoiding fixed-sum subsets.",
+    "openQuestions": [
+      "What is the exact threshold T(N) such that ∑ 1/a ≥ T(N) guarantees a unit fraction subset?",
+      "Can the Liu–Sawhney exponent 4/5 be improved toward 0 (i.e., toward (log log N)^{2+o(1)})?",
+      "Is (log log N)² the true threshold, as Erdős conjectured?",
+      "What structural properties characterize maximal sets avoiding unit fraction subsets?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "Problem #1 (distinct subset sums) and Problem #47 (unit fraction subsets) are companion questions about what arithmetic structure is forced on dense sets. Both ask: given a density condition on a set A, must a specific subset-sum pattern appear? Problem #1 demands all subset sums be distinct (an avoidance property), while Problem #47 demands a specific target value of 1 (an achievement property). Both are resolved using the interplay between combinatorial density and additive structure."
+    },
+    {
+      "targetId": "erdos-40",
+      "relationship": "related",
+      "description": "Problem #40 (representation function and dense sets) asks how density of A ⊆ {1,…,N} forces arithmetic richness in the additive structure of A. Problem #47 likewise connects harmonic density (∑ 1/a > δ log N) to forced subset-sum structure. Both probe the general theme of density thresholds above which arithmetic patterns must appear, and both remain quantitatively open at the optimal threshold."
+    },
+    {
+      "targetId": "erdos-41",
+      "relationship": "related",
+      "description": "Problem #41 (B_h sequences and density bounds) studies sets in {1,…,N} with constraints on how sums of h-element subsets can coincide — the density of such sets is bounded by N^{1/h}. Problem #47 uses a harmonic density condition (∑ 1/a > δ log N) to force a specific subset sum equal to 1. Both problems belong to the broader study of density-vs-additive-structure tradeoffs in combinatorial number theory."
+    },
+    {
+      "targetId": "erdos-43",
+      "relationship": "related",
+      "description": "Problem #43 (Sidon sets with disjoint difference sets) studies extremal additive combinatorics: how large can Sidon sets be while maintaining difference-set disjointness? Problem #47 studies a different extremal question: what harmonic density threshold forces a specific additive equation (∑ 1/n = 1)? Both problems arise from Erdős's systematic exploration of the boundaries between additive structure and combinatorial freedom."
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "technique",
+      "description": "The Szemerédi Regularity Lemma is a fundamental tool for analyzing dense subsets: it decomposes any graph (or subset of integers) into pseudo-random parts. Bloom's 2021 proof of Problem #47 employs structural results about dense sets—related in spirit to regularity methods—to find unit fraction subsets. The regularity machinery formalised here provides the theoretical backdrop for understanding how density forces structure in combinatorial arguments."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Bloom, Thomas F.",
+      "title": "On a result of Konyagin and the Erdős unit fraction problem",
+      "year": "2021",
+      "venue": "Bulletin of the London Mathematical Society, 54(2), pp. 421–434",
+      "note": "Resolves Erdős Problem #47 affirmatively, proving that sets with ∑ 1/a > δ log N must contain a subset whose reciprocals sum to 1, using the Hardy–Littlewood circle method and additive energy bounds"
+    },
+    {
+      "authors": "Liu, Mehtaab; Sawhney, Ashwin",
+      "title": "A proof of the Erdős–Ginzburg–Ziv conjecture and quantitative improvements on Bloom's theorem",
+      "year": "2024",
+      "venue": "Preprint, arXiv:2404.04414",
+      "note": "Improves Bloom's quantitative threshold from (log N)^{1−o(1)} to (log N)^{4/5+o(1)}, a polynomial improvement that dramatically narrows the gap to Pomerance's lower bound"
+    },
+    {
+      "authors": "Pomerance, Carl",
+      "title": "Unit fractions and the Erdős–Straus conjecture",
+      "year": "1994",
+      "venue": "Proceedings of Symposia in Applied Mathematics, vol. 48, pp. 371–374",
+      "note": "Constructs sets with ∑ 1/a ≈ (log log N)² that avoid unit fraction subsets, establishing the lower bound on the density threshold and showing Erdős's conjectured threshold is essentially optimal"
+    },
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and new problems and results in combinatorial number theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique, vol. 28, Université de Genève",
+      "note": "Surveys Erdős's conjectures on unit fractions, subset sums, and Egyptian fraction representations, including the conjecture resolved by Bloom; the conjectured threshold of (log log N)² originates here"
+    },
+    {
+      "authors": "Croot, Ernest S.",
+      "title": "On a coloring conjecture about unit fractions",
+      "year": "2003",
+      "venue": "Annals of Mathematics, 157(2), pp. 545–556",
+      "note": "Proves the Erdős–Graham conjecture that {1/2, 1/3, …} can be finitely colored so that no color class sums to 1, an important precursor result that isolated the combinatorial difficulty exploited by Bloom"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Analysis.SpecificLimits.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Filter"
+    ],
+    "namespace": "Erdos47",
+    "lineCount": 132,
+    "axiomCount": 1,
+    "theoremCount": 1,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos47Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

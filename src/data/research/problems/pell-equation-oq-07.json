@@ -1,0 +1,59 @@
+{
+  "slug": "pell-equation-oq-07",
+  "title": "Cayley–Hamilton Linear Recurrence of Pell Solutions",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "tier": "MODERATE",
+  "started": "2026-06-22",
+  "path": "src/data/proofs/pell-equation-oq-07",
+  "leanFiles": [
+    "proofs/Proofs/PellEquationOQ07.lean"
+  ],
+  "relatedProofs": [
+    "pell-equation",
+    "pell-equation-oq-06-oq-03",
+    "pell-equation-oq-06-oq-02"
+  ],
+  "tags": [
+    "number-theory",
+    "pell-equation",
+    "quadratic-integers",
+    "zsqrtd",
+    "linear-recurrence",
+    "cayley-hamilton"
+  ],
+  "problemStatement": "The root pell-equation entry classifies solutions of x² − Dy² = 1 multiplicatively (powers of the fundamental solution in ℤ[√D]). Does this force an additive second-order linear recurrence on the coordinate sequences, and is its coefficient determined by the generator alone — explaining the D = 2 coefficient 6 of pell-equation-oq-06-oq-03?",
+  "currentState": "COMPLETED, 0-axiom verified (no native_decide). Shipped as gallery entry pell-equation-oq-07 (PR #27637).",
+  "knownResults": [
+    "Pell coordinate sequences are Lucas-type sequences with characteristic polynomial t² − (2x₁)t + 1 (classical).",
+    "Mathlib's Pell.Solution₁ records the multiplicative/group structure but not the coordinate recurrence."
+  ],
+  "knowledge": {
+    "insights": [
+      "Every a ∈ ℤ[√d] satisfies its own characteristic relation a² = (2·re a)·a − N(a) with NO hypothesis: trace = 2·re a = a + ā, determinant = N(a) = a·ā. This single Cayley–Hamilton fact drives the whole recurrence.",
+      "Multiplying the characteristic relation by aⁿ propagates it to the power sequence (aⁿ⁺² = (2·re a)·aⁿ⁺¹ − N(a)·aⁿ); both ℤ-linear coordinate functionals re, im inherit the SAME recurrence.",
+      "For a Pell solution N(a) = 1 the recurrence collapses to uₙ₊₂ = (2·x₁)·uₙ₊₁ − uₙ — the coefficient is twice the first coordinate of the generator, the general-D source of the D = 2 coefficient 6 = 2·re⟨3,2⟩.",
+      "Slug discipline: the top-level numbered oq-NN slots of pell-equation map to specific registered open questions (oq-03 = polynomial-time, oq-05 = degree>2 norm equations). A self-generated follow-up must use a FREE slot (oq-07) to avoid mislabeling an unsolved problem as solved."
+    ],
+    "builtItems": [
+      "Zsqrtd.sq_eq_trace_mul_sub_norm — a² = (2·re a)·a − N(a) (PellEquationOQ07.lean:81)",
+      "Zsqrtd.pow_recurrence — aⁿ⁺² = (2·re a)·aⁿ⁺¹ − N(a)·aⁿ (PellEquationOQ07.lean:98)",
+      "Zsqrtd.re_recurrence / Zsqrtd.im_recurrence — coordinate recurrences (PellEquationOQ07.lean:106,114)",
+      "re_recurrence_pell / im_recurrence_pell — norm-1 collapse (PellEquationOQ07.lean:131,137)",
+      "seq_unique / re_pell_unique — recurrence + 2 initial values determine the sequence (PellEquationOQ07.lean:152,170)",
+      "pell_two_recurrence — D=2 instance uₙ₊₂ = 6uₙ₊₁ − uₙ (PellEquationOQ07.lean:196)"
+    ],
+    "mathlibGaps": [
+      "Mathlib has Zsqrtd norm/multiplication and Pell.Solution₁ (group structure) but NO general statement that the coordinate power sequences satisfy the trace recurrence; this entry supplies it for arbitrary d."
+    ],
+    "nextSteps": [
+      "Derive Binet/matrix-power closed forms from the recurrence, making the eigenvalue picture (roots of t² − 2x₁t + 1 = conjugate units) explicit.",
+      "Prove a general-D Cassini/Catalan identity xₙ₋₁xₙ₊₁ − xₙ² = const, generalizing the D = 2 determinant identity of pell-equation-oq-06-oq-05.",
+      "Connect re_pell_unique to Mathlib's Pell.Solution₁: the coordinate maps of a fundamental generator are the unique solutions of the trace recurrence with standard initial data."
+    ],
+    "progressSummary": "COMPLETE: general-D Cayley–Hamilton recurrence aⁿ⁺² = (2·re a)·aⁿ⁺¹ − N(a)·aⁿ for ℤ[√d] power sequences; Pell collapse uₙ₊₂ = 2x₁·uₙ₊₁ − uₙ; recovers D=2 coefficient 6. 0-axiom verified.",
+    "markdown": "",
+    "archivedSessions": []
+  },
+  "references": []
+}

@@ -1,0 +1,287 @@
+[
+  {
+    "id": "ann-admissible-def",
+    "proofId": "bounded-prime-gaps",
+    "range": {
+      "startLine": 57,
+      "endLine": 60
+    },
+    "type": "definition",
+    "title": "IsAdmissible: The Core Combinatorial Object",
+    "content": "The `IsAdmissible` predicate is the heart of the GPY/Zhang/Maynard-Tao approach to bounded prime gaps. A finite set H ⊆ ℕ is admissible if for every prime p, the residues {h mod p : h ∈ H} do not cover all of ℤ/pℤ. In Lean: `(H.image (· % p)).card < p`. This condition ensures there is no 'local obstruction' to n + H containing many primes: if H covered all residues mod p, then for every n, one element of n + H would always be divisible by p, preventing simultaneous primality. The admissibility condition is a Decidable property for any specific finite set, making it amenable to `decide` and `native_decide` verification.",
+    "mathContext": "A set $H$ is admissible $\\iff$ $\\forall p$ prime, $|\\{h \\bmod p : h \\in H\\}| < p$. Equivalently, $H$ is not a covering congruence system. The set $\\{0, 1, 2\\}$ is NOT admissible (mod 3: covers $\\{0, 1, 2\\}$). The twin prime tuple $\\{0, 2\\}$ IS admissible: mod 2 gives $\\{0\\}$ (card 1 < 2), mod $p \\geq 3$ gives at most 2 residues (card $\\leq 2 < 3 \\leq p$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "covering congruences",
+      "admissible k-tuples",
+      "Dickson conjecture",
+      "GPY sieve"
+    ],
+    "prerequisites": [
+      "Finset.image in Mathlib",
+      "ZMod arithmetic",
+      "prime residue classes"
+    ]
+  },
+  {
+    "id": "ann-admissible-basic",
+    "proofId": "bounded-prime-gaps",
+    "range": {
+      "startLine": 66,
+      "endLine": 94
+    },
+    "type": "concept",
+    "title": "Basic Admissibility: Empty, Singleton, Subset Properties",
+    "content": "Three foundational lemmas establish the structural properties of admissibility. `admissible_empty` is trivial: the empty set has no residues, so the image always has card 0 < p. `admissible_singleton` proves a single element is always admissible: it has exactly one residue mod any prime, and all primes are ≥ 2 > 1. `admissible_subset` uses `Finset.card_le_card (Finset.image_subset_image h)` to show that a subset's image is contained in the full image, hence has smaller cardinality. `admissible_of_card_lt_two` handles the case |H| < 2 via the chain |image(H)| ≤ |H| < 2 ≤ p.",
+    "mathContext": "The subset property is key: if $H_1 \\subseteq H_2$ and $H_2$ is admissible, then $H_1$ is admissible. Admissibility is 'anti-monotone' in set inclusion — smaller sets satisfy it more easily. Contrapositive: if $H_1$ is NOT admissible (covers all residues mod some prime), then any superset $H_2 \\supseteq H_1$ is also NOT admissible.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.card_image_le",
+      "Finset.image_subset_image",
+      "Nat.Prime.two_le"
+    ],
+    "prerequisites": [
+      "Lean 4 Finset.image",
+      "Finset.card_le_card",
+      "prime.two_le"
+    ]
+  },
+  {
+    "id": "ann-twin-prime-admissible",
+    "proofId": "bounded-prime-gaps",
+    "range": {
+      "startLine": 103,
+      "endLine": 130
+    },
+    "type": "insight",
+    "title": "Admissibility of {0,2}: The Twin Prime Tuple",
+    "content": "The proof that {0,2} is admissible uses a three-way case split on the prime p. For p=2, the image {0 mod 2, 2 mod 2} = {0} has card 1 < 2, verified by `decide`. For p=3, the image {0, 2} has card 2 < 3, verified by `decide`. For p ≥ 5, the image has card at most 2 (since |H| = 2), which is < 5 ≤ p. The proof that p ≥ 5 from 'prime, not 2, not 3' uses `hp.eq_two_or_odd`. This pattern — handle small primes by `decide`, large primes by cardinality — is the standard technique for verifying admissibility of specific tuples throughout the file.",
+    "mathContext": "The twin prime tuple $\\{0, 2\\}$ is admissible because: mod 2, both 0 and 2 are even (only residue 0 hit). For all odd primes $p \\geq 3$, only 2 elements means at most 2 distinct residues, always fewer than $p \\geq 3$. Dickson conjecture for $\\{0, 2\\}$ would imply the twin prime conjecture: infinitely many $n$ with both $n$ and $n+2$ prime.",
+    "significance": "key",
+    "relatedConcepts": [
+      "twin prime conjecture",
+      "Dickson conjecture",
+      "prime.eq_two_or_odd",
+      "decide tactic"
+    ],
+    "prerequisites": [
+      "Nat.Prime.two_le",
+      "Nat.Prime.eq_two_or_odd",
+      "Finset.card_image_le"
+    ]
+  },
+  {
+    "id": "ann-main-axioms",
+    "proofId": "bounded-prime-gaps",
+    "range": {
+      "startLine": 210,
+      "endLine": 218
+    },
+    "type": "definition",
+    "title": "Three Sieve-Theoretic Axioms: Polymath 8b, Maynard-Tao, EH",
+    "content": "Three axioms encode the deep sieve-theoretic results beyond current Mathlib scope. `polymath_bounded_gaps_246` (Polymath 8b, 2014): for every N, there exists a prime index n ≥ N with gap ≤ 246. `maynard_tao_m_tuples` (2015): for any m ≥ 2, there exists a constant C such that infinitely many intervals of length C contain m primes. `bounded_gaps_conditional_EH`: assuming the Elliott-Halberstam conjecture, the gap drops to 12. The proof of `polymath_bounded_gaps_246` from first principles would require: (1) existence of an admissible 50-tuple of diameter ≤ 246 (proved constructively), plus (2) the Maynard-Tao sieve showing such a tuple produces 2 primes in infinitely many translates — this step is the axiom.",
+    "mathContext": "The Polymath 8b proof strategy: find an admissible 50-tuple $H$ with $\\text{diam}(H) \\leq 246$. The Maynard-Tao sieve guarantees: for any admissible $k$-tuple with $k \\geq k_0$ (where $k_0 \\leq 50$ by Polymath optimization), infinitely many translates $n+H$ contain $\\geq 2$ primes. Two primes $n + h_i, n + h_j \\in n + H$ with $h_i < h_j$ are consecutive primes only if $h_j - h_i \\leq 246$, giving the bounded gap.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Maynard-Tao sieve",
+      "Polymath 8b",
+      "Elliott-Halberstam conjecture",
+      "Lean 4 axiom keyword"
+    ],
+    "prerequisites": [
+      "nthPrime and primeGap definitions",
+      "GPY sieve theory",
+      "Lean 4 axiom vs theorem"
+    ]
+  },
+  {
+    "id": "ann-zhang-consequences",
+    "proofId": "bounded-prime-gaps",
+    "range": {
+      "startLine": 219,
+      "endLine": 255
+    },
+    "type": "insight",
+    "title": "Zhang's 70M and Liminf: Consequences from Polymath Axiom",
+    "content": "Several consequences are derived from the Polymath axiom. `zhang_bounded_gaps_70M` follows in three lines: extract a gap ≤ 246 from the axiom, then note 246 ≤ 70000000 by `omega`. `infinitely_many_small_gaps` is just a renaming. `liminf_prime_gaps_finite` packages the result: there EXISTS H = 246 such that for every N, some n ≥ N has gap ≤ H. `bounded_intervals_k_primes` delegates directly to `maynard_tao_m_tuples`. These derivations illustrate the logical cleanness of the axiomatic approach: all consequences are purely elementary arithmetic once the sieve theory is packaged as an axiom.",
+    "mathContext": "Bound hierarchy: $12 \\leq 246 \\leq 600 \\leq 4680 \\leq 70000000$. EH $\\Rightarrow$ gap $\\leq 12$. Polymath 8b (unconditional) $\\Rightarrow$ gap $\\leq 246$. Maynard (unconditional, simpler proof) $\\Rightarrow$ gap $\\leq 600$. Polymath 8a $\\Rightarrow$ gap $\\leq 4680$. Zhang (original) $\\Rightarrow$ gap $\\leq 70000000$. In $\\liminf$ language: $\\liminf_{n \\to \\infty}(p_{n+1}-p_n) \\leq 246$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "omega tactic",
+      "liminf of prime gaps",
+      "proof by weakening"
+    ],
+    "prerequisites": [
+      "omega arithmetic in Lean",
+      "Filter.liminf",
+      "existential introduction"
+    ]
+  },
+  {
+    "id": "ann-dickson-conjecture",
+    "proofId": "bounded-prime-gaps",
+    "range": {
+      "startLine": 261,
+      "endLine": 289
+    },
+    "type": "concept",
+    "title": "Dickson Conjecture: The Strong Form of Prime Constellations",
+    "content": "The `DicksonConjecture H` formalizes the strong statement: if H is admissible, then infinitely many translates n have ALL elements of n + H simultaneously prime. This is much stronger than the bounded gaps theorem (which only requires ≥ 2 primes in n + H). The theorem `maynard_tao_implies_twin_primes` shows that `MaynardTaoDensity {0,2} 2` implies the twin prime conjecture: if infinitely many n have both n and n+2 prime (which is what density 2 over a 2-element set means), that IS the twin prime conjecture. The proof uses `Finset.eq_of_subset_of_card_le` to show the prime filter equals all of {0,2}.",
+    "mathContext": "Logical hierarchy: Dickson (all of $n+H$ prime) $\\Rightarrow$ Maynard density (most of $n+H$ prime) $\\Rightarrow$ bounded gaps ($\\exists$ 2 primes in $n+H$). What IS proved: bounded gaps $\\leq 246$. What is open: Dickson for any $|H| \\geq 2$ (twin prime conjecture is the $H = \\{0,2\\}$ case). Gap: the Maynard-Tao sieve proves density but not full Dickson.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Dickson conjecture",
+      "MaynardTaoDensity",
+      "Finset.eq_of_subset_of_card_le",
+      "twin prime conjecture"
+    ],
+    "prerequisites": [
+      "Finset.filter in Lean",
+      "Finset.card_le_card",
+      "prime density arguments"
+    ]
+  },
+  {
+    "id": "ann-polymath-50-tuple",
+    "proofId": "bounded-prime-gaps",
+    "range": {
+      "startLine": 297,
+      "endLine": 372
+    },
+    "type": "concept",
+    "title": "Polymath 50-Tuple: Constructive Admissibility via native_decide",
+    "content": "The `polymath50Tuple` is the explicit Engelsma/Polymath narrowest admissible 50-tuple {0, 4, 6, 16, 30, ..., 244, 246}. Its admissibility proof uses a 16-deep nested case split on small primes (2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47), each checked by `native_decide`. For primes p ≥ 53, the image card ≤ 50 < 53 ≤ p suffices. The proof that p ≥ 53 from 'prime, not in {2,...,47}' uses `interval_cases p` to enumerate all candidates in [2, 52] and rules out each by primality or equality. The `exists_admissible_50_tuple_246` theorem wraps this into the existential statement needed for the main theorem.",
+    "mathContext": "The Engelsma 50-tuple achieves the minimum diameter for a 50-admissible tuple: diameter 246. This is a result of computational optimization. The Maynard-Tao sieve guarantees 2 simultaneous primes in translates of any admissible $k$-tuple with $k \\geq 50$, which is why the Polymath bound equals $\\text{diam}(\\text{Engelsma-50}) = 246$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide for large computations",
+      "interval_cases tactic",
+      "Engelsma tuple optimization"
+    ],
+    "prerequisites": [
+      "native_decide in Lean 4",
+      "interval_cases tactic",
+      "Nat.Prime for specific numbers"
+    ]
+  },
+  {
+    "id": "ann-nth-prime-infrastructure",
+    "proofId": "bounded-prime-gaps",
+    "range": {
+      "startLine": 378,
+      "endLine": 400
+    },
+    "type": "definition",
+    "title": "nthPrime Infrastructure: Mathlib's Nat.nth for Primes",
+    "content": "The `nthPrime n` definition uses Mathlib's `Nat.nth Nat.Prime n` — the n-th natural number satisfying a predicate P, well-defined when P holds for infinitely many naturals. `nthPrime_prime` uses `Nat.nth_mem_of_infinite Nat.infinite_setOf_prime` (primes form an infinite set). `nthPrime_strictMono` follows from `Nat.nth_strictMono` (nth of an infinite set is strictly increasing). The `primeGap n = nthPrime (n+1) - nthPrime n` uses natural number subtraction, which is safe because primes are strictly increasing. The `primeGap_pos` theorem proves gaps are positive via strict monotonicity.",
+    "mathContext": "Mathlib's `Nat.nth P n` for an infinite set $\\{n : P(n)\\}$ satisfies: (1) $P(\\text{nth}(P,n))$ — membership; (2) $\\text{nth}(P,m) < \\text{nth}(P,n)$ when $m < n$ — strict monotonicity. For primes: $p_0 = 2$, $p_1 = 3$, $p_2 = 5$, etc. Prime gap: $g(n) = p_{n+1} - p_n \\geq 1$, with $g(n) \\geq 2$ for $n \\geq 1$ (since $p_n$ and $p_{n+1}$ are both odd).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.nth in Mathlib",
+      "Nat.infinite_setOf_prime",
+      "StrictMono",
+      "primeGap"
+    ],
+    "prerequisites": [
+      "Nat.nth Mathlib API",
+      "Nat.infinite_setOf_prime",
+      "StrictMono API"
+    ]
+  },
+  {
+    "id": "ann-gap-oscillation",
+    "proofId": "bounded-prime-gaps",
+    "range": {
+      "startLine": 641,
+      "endLine": 660
+    },
+    "type": "insight",
+    "title": "Oscillation: Bounded Liminf AND Unbounded Limsup",
+    "content": "The `prime_gaps_unbounded` theorem proves that for every N, there exists a prime index n with gap ≥ N. The proof uses the classical factorial construction: N! + k is composite for 2 ≤ k ≤ N (since k divides both k and N!), giving N-1 consecutive composites. Combined with `liminf_prime_gaps_finite` (gap ≤ 246 infinitely often), the `prime_gaps_oscillate` theorem shows the prime gap function oscillates: it achieves both small (≤ 246) and arbitrarily large values infinitely often. This is a non-trivial result: $\\liminf = 2$ (conjectured) or $\\leq 246$ (proved), while $\\limsup = \\infty$ (elementary).",
+    "mathContext": "Factorial construction: for $2 \\leq k \\leq N$, $k \\mid N!$ and $k \\mid k$, so $k \\mid (N! + k)$ and $N! + k$ is composite. The run $N!+2, N!+3, \\ldots, N!+N$ has length $N-1$. In general $g(n) = O(p_n \\log p_n)$ (Cramér's conjecture: $g(n) = O((\\log p_n)^2)$). The oscillation: $\\liminf_{n \\to \\infty} g(n) \\leq 246$ (Polymath) and $\\limsup_{n \\to \\infty} g(n) = \\infty$ (elementary).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "factorial construction",
+      "prime_gaps_oscillate",
+      "liminf vs limsup",
+      "Cramér's conjecture"
+    ],
+    "prerequisites": [
+      "Nat.factorial in Mathlib",
+      "divisibility in ℕ",
+      "composites in factorial gaps"
+    ]
+  },
+  {
+    "id": "ann-prime-gap-properties",
+    "proofId": "bounded-prime-gaps",
+    "range": {
+      "startLine": 417,
+      "endLine": 500
+    },
+    "type": "concept",
+    "title": "Prime Gap Arithmetic Properties",
+    "content": "This section establishes fundamental arithmetic properties of the prime gap function $g(n) = p_{n+1} - p_n$:\n\n- `primeGap_pos`: $g(n) > 0$ for all $n$ (consecutive primes are distinct)\n- `primeGap_even`: $g(n)$ is even for $n \\geq 1$ (consecutive primes $\\geq 3$ are both odd, so their difference is even)\n- `primeGap_ge_two`: $g(n) \\geq 2$ for $n \\geq 1$ (combines positivity and evenness)\n- `not_admissible_range`: $\\text{Fin}(p)$ is not admissible for prime $p$ (the full residue system covers all classes)\n- `admissible_card_lt_of_prime`: Any admissible set has fewer than $p$ elements mod $p$, bounding the size of admissible tuples\n\nThese properties connect the abstract definition of prime gaps to concrete arithmetic constraints that guide the sieve theory approach.",
+    "mathContext": "$g(n) = p_{n+1} - p_n > 0$. For $n \\geq 1$: $g(n)$ is even (both $p_n, p_{n+1} \\geq 3$ are odd). The twin prime conjecture is $\\liminf g(n) = 2$; Zhang proved $\\liminf g(n) < 7 \\times 10^7$; Polymath proved $\\leq 246$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "prime gap",
+      "parity of primes",
+      "admissibility constraint",
+      "sieve theory"
+    ],
+    "prerequisites": [
+      "nthPrime",
+      "primeGap definition"
+    ]
+  },
+  {
+    "id": "ann-related-conjectures",
+    "proofId": "bounded-prime-gaps",
+    "range": {
+      "startLine": 1458,
+      "endLine": 1700
+    },
+    "type": "concept",
+    "title": "Constellation of Related Conjectures",
+    "content": "This substantial section formalizes the network of conjectures surrounding bounded prime gaps:\n\n**Polignac's Conjecture** ($k \\geq 1$): For every even $2k$, there are infinitely many prime pairs $(p, p+2k)$. Twin primes ($k=1$) is the most famous case. `polignac_implies_bounded_gaps` shows Polignac for any single $k$ implies bounded gaps.\n\n**Legendre's Conjecture**: Between $n^2$ and $(n+1)^2$ there is always a prime. This implies prime gaps $g(n) \\leq 2\\sqrt{p_n} + 1$, a much stronger bound than bounded gaps.\n\n**Hardy-Littlewood Conjecture A**: For admissible $H = \\{h_1, \\ldots, h_k\\}$, the number of $n \\leq x$ with all $n+h_i$ prime is $\\sim C_H \\cdot x/(\\log x)^k$ where $C_H = \\prod_p \\frac{1-\\nu_H(p)/p}{(1-1/p)^k}$. This quantitative refinement of Dickson's conjecture predicts not just existence but density of prime constellations.\n\n**Firoozbakht's Conjecture** (1982): $p_n^{1/n}$ is strictly decreasing. This implies $g(n) < (\\log p_n)^2 - \\log p_n$, stronger than Cramér's conjecture $g(n) = O((\\log p_n)^2)$.",
+    "mathContext": "Polignac ($k=1$): $\\liminf g(n) = 2$ (twin primes). Hardy-Littlewood A: $\\pi_H(x) \\sim C_H \\cdot \\text{li}_k(x)$ with singular series $C_H$. Firoozbakht: $p_{n+1}^{1/(n+1)} < p_n^{1/n}$, implying $g(n) < (\\log p_n)^2 - \\log p_n$ for all $n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Polignac conjecture",
+      "Legendre conjecture",
+      "Hardy-Littlewood conjecture",
+      "Firoozbakht conjecture",
+      "Cramér conjecture",
+      "singular series"
+    ],
+    "prerequisites": [
+      "bounded prime gaps main theorem",
+      "admissibility"
+    ]
+  },
+  {
+    "id": "ann-brun-constant",
+    "proofId": "bounded-prime-gaps",
+    "range": {
+      "startLine": 1836,
+      "endLine": 1910
+    },
+    "type": "definition",
+    "title": "Brun's Constant and the Twin Prime Constant",
+    "content": "The file concludes with two fundamental constants from analytic number theory:\n\n**Brun's Constant** $B \\approx 1.9022$: The sum of reciprocals of twin primes $\\sum (1/p + 1/(p+2))$ over twin prime pairs converges to $B$. Viggo Brun proved this in 1919, establishing that twin primes are 'sparse' even if infinite. This contrasts with $\\sum 1/p = \\infty$ (primes are dense enough for the reciprocal sum to diverge).\n\n**The Twin Prime Constant** $C_2 \\approx 1.3203$: The product $C_2 = 2\\prod_{p \\geq 3} \\frac{p(p-2)}{(p-1)^2}$ appears in Hardy-Littlewood's predicted density of twin primes: $\\pi_2(x) \\sim 2C_2 \\cdot x/(\\log x)^2$.\n\nThe `twin_prime_factor_lt_one` theorem verifies that each factor $p(p-2)/(p-1)^2 < 1$ for $p \\geq 3$, ensuring the product converges. The `brun_sieve_exponent` connects to Brun's sieve: the number of integers $n \\leq x$ with both $n$ and $n+2$ having no small prime factor is $O(x/(\\log x)^2)$.",
+    "mathContext": "Brun's constant: $B = \\sum_{p, p+2 \\text{ prime}} \\left(\\frac{1}{p} + \\frac{1}{p+2}\\right) \\approx 1.9022$. Twin prime constant: $C_2 = 2\\prod_{p \\geq 3} \\frac{p(p-2)}{(p-1)^2} \\approx 1.3203$. Hardy-Littlewood: $\\pi_2(x) \\sim 2C_2 \\cdot x/(\\log x)^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Brun's constant",
+      "twin prime constant",
+      "Brun sieve",
+      "Hardy-Littlewood conjecture",
+      "analytic number theory"
+    ],
+    "prerequisites": [
+      "twin prime conjecture",
+      "Euler product convergence"
+    ]
+  }
+]

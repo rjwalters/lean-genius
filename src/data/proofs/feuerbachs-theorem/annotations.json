@@ -1,0 +1,162 @@
+[
+  {
+    "id": "ann-feuer-assembly",
+    "proofId": "feuerbachs-theorem",
+    "range": {
+      "startLine": 1,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Assembly Module: Importing the Computational Core",
+    "content": "This file imports `FeuerbachsTheoremOQ01`, which contains the heavy coordinate computations. The assembly module re-exports the distance relations as clean theorem statements and combines them into the full Feuerbach theorem. This separation is a common Lean pattern: keep the computational proofs (with `field_simp`, `ring`, `nlinarith`) in one file and the clean mathematical statements in another. The `noncomputable section` is needed because the triangle center computations involve real number division.",
+    "mathContext": "The proof architecture splits into: (1) FeuerbachsTheoremDefs.lean (definitions), (2) FeuerbachsTheoremOQ01.lean (coordinate computation proofs), (3) FeuerbachsTheorem.lean (assembly and statement of the complete theorem).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "modular proof architecture",
+      "noncomputable section",
+      "proof delegation"
+    ],
+    "prerequisites": [
+      "Lean 4 imports",
+      "noncomputable keyword"
+    ]
+  },
+  {
+    "id": "ann-feuer-intro",
+    "proofId": "feuerbachs-theorem",
+    "range": {
+      "startLine": 3,
+      "endLine": 15
+    },
+    "type": "concept",
+    "title": "Feuerbach's Theorem: Wiedijk #29",
+    "content": "Feuerbach's Theorem (1822): the nine-point circle of any triangle is internally tangent to the incircle and externally tangent to all three excircles. The nine-point circle passes through 9 special points: midpoints of the three sides, feet of the three altitudes, and midpoints of segments from vertices to the orthocenter. Its radius is $R/2$ (half the circumradius) and its center $N$ is the midpoint of the orthocenter $H$ and circumcenter $O$.",
+    "mathContext": "The nine-point circle $(N, R/2)$ satisfies $d(N, I) = |R/2 - r|$ (internal tangency with incircle) and $d(N, I_k) = R/2 + r_k$ (external tangency with each excircle $k \\in \\{a,b,c\\}$). The tangent point with the incircle is the Feuerbach point $F$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "nine-point circle",
+      "incircle",
+      "excircle",
+      "tangency",
+      "Wiedijk 100"
+    ],
+    "prerequisites": [
+      "Euclidean geometry",
+      "circle tangency",
+      "triangle centers"
+    ]
+  },
+  {
+    "id": "ann-feuer-triangle",
+    "proofId": "feuerbachs-theorem",
+    "range": {
+      "startLine": 36,
+      "endLine": 56
+    },
+    "type": "concept",
+    "title": "Feuerbach Distance Relations (Proved)",
+    "content": "Four theorems establishing the key distance relations for Feuerbach's theorem. The distance from the nine-point center $N$ to the incenter $I$ equals $|R/2 - r|$ (internal tangency with the incircle), and the distance from $N$ to each excenter $I_k$ equals $R/2 + r_k$ (external tangency with each excircle). All four are proved by direct coordinate computation delegated to FeuerbachsTheoremOQ01.",
+    "mathContext": "The core relations: $d(N, I) = |R/2 - r|$ establishes internal tangency with the incircle, and $d(N, I_k) = R/2 + r_k$ for $k \\in \\{a,b,c\\}$ establishes external tangency with each excircle. These follow from Euler's identity $OI^2 = R^2 - 2Rr$ and the relation $N = (O+H)/2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler's formula OI^2 = R^2 - 2Rr",
+      "Feuerbach's distance",
+      "coordinate computation"
+    ],
+    "prerequisites": [
+      "ninePointCenter",
+      "incenter",
+      "excenter",
+      "dist2"
+    ]
+  },
+  {
+    "id": "ann-feuer-special-points",
+    "proofId": "feuerbachs-theorem",
+    "range": {
+      "startLine": 73,
+      "endLine": 96
+    },
+    "type": "concept",
+    "title": "Feuerbach Tangency Theorems",
+    "content": "Four theorems restating the distance relations as tangency conditions. The nine-point circle is internally tangent to the incircle ($d(N,I) = |R/2 - r|$) and externally tangent to each of the three excircles ($d(N,I_k) = R/2 + r_k$). The tangent point with the incircle is the Feuerbach point.",
+    "mathContext": "Internal tangency: $d(c_1, c_2) = |r_1 - r_2|$ means the circles touch at exactly one point, with the smaller circle inside the larger. External tangency: $d(c_1, c_2) = r_1 + r_2$ means the circles touch at exactly one point, each outside the other.",
+    "significance": "key",
+    "relatedConcepts": [
+      "circle tangency",
+      "Feuerbach point",
+      "incircle",
+      "excircle"
+    ],
+    "prerequisites": [
+      "feuerbach_incircle_distance",
+      "circlesExternallyTangent"
+    ]
+  },
+  {
+    "id": "ann-feuer-nine-point",
+    "proofId": "feuerbachs-theorem",
+    "range": {
+      "startLine": 112,
+      "endLine": 120
+    },
+    "type": "concept",
+    "title": "Feuerbach's Theorem: Complete Statement",
+    "content": "The complete theorem combining all four tangency results into a single conjunction: the nine-point circle is (1) internally tangent to the incircle ($d(N,I) = |R/2 - r|$) and (2-4) externally tangent to each excircle ($d(N,I_k) = R/2 + r_k$). Each part follows directly from the corresponding proved distance relation. This is Wiedijk's Theorem #29.",
+    "mathContext": "The full statement: $d(N,I) = |R_9 - r| \\wedge \\bigwedge_{k \\in \\{a,b,c\\}} d(N, I_k) = R_9 + r_k$. The proof is a 4-tuple of the distance theorems. The tangent point with the incircle is the Feuerbach point $X(11)$ in Kimberling's notation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Feuerbach point",
+      "Wiedijk 100 theorems",
+      "tangent circles"
+    ],
+    "prerequisites": [
+      "feuerbach_incircle_tangent",
+      "feuerbach_excircle_tangent"
+    ]
+  },
+  {
+    "id": "ann-feuer-equilateral",
+    "proofId": "feuerbachs-theorem",
+    "range": {
+      "startLine": 128,
+      "endLine": 153
+    },
+    "type": "concept",
+    "title": "Equilateral Triangle Special Case",
+    "content": "For an equilateral triangle with side $s$: $R = 2r$ (circumradius equals twice the inradius). This means $R/2 = r$, so the nine-point circle has the same radius as the incircle and they coincide. The internal tangency degenerates to coincidence: $d(N,I) = |R/2 - r| = 0$. Proved by coordinate computation via FeuerbachsTheoremOQ01.",
+    "mathContext": "For an equilateral triangle: $R = 2r$, $R_9 = R/2 = r$, and $N = I$ (all centers coincide). The Feuerbach tangency becomes $d(N,I) = |r - r| = 0$, confirming coincidence. The equilateral triangle is the unique triangle where all excircles have equal radii: $r_a = r_b = r_c$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "equilateral triangle",
+      "coincident circles",
+      "R = 2r",
+      "degenerate tangency"
+    ],
+    "prerequisites": [
+      "Real.sqrt",
+      "positivity tactic"
+    ]
+  },
+  {
+    "id": "ann-feuer-exports",
+    "proofId": "feuerbachs-theorem",
+    "range": {
+      "startLine": 155,
+      "endLine": 164
+    },
+    "type": "concept",
+    "title": "Export Summary and Verification",
+    "content": "The `#check` block verifies the key exports: `feuerbachs_theorem` (the complete 4-part conjunction), `feuerbach_incircle_tangent` (incircle tangency), `feuerbach_excircle_a_tangent` (excircle A tangency), `ninePointRadius_eq_half_circumradius` ($R_9 = R/2$), and `euler_line_relation` (the Euler line $N = (O+H)/2$). Together these provide a complete API for triangle geometry work downstream.",
+    "mathContext": "Exports: $d(N,I) = |R/2 - r|$, $d(N, I_k) = R/2 + r_k$, $R_9 = R/2$, $N = (O+H)/2$. All fully proved with 0 axioms.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "#check command",
+      "proof inventory",
+      "API surface"
+    ],
+    "prerequisites": [
+      "feuerbachs_theorem"
+    ]
+  }
+]

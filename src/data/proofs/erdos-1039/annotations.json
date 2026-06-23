@@ -1,0 +1,715 @@
+[
+  {
+    "id": "ann-1039-imports",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 1,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Imports and Problem Overview",
+    "content": "Module documentation for Erdős Problem #1039 on polynomial lemniscate disc radii. Imports Mathlib for complex analysis, topology, and measure theory. The problem asks: for f(z) = ∏(z - zᵢ) with |zᵢ| ≤ 1, what is the largest disc inscribed in {z : |f(z)| < 1}? Known bounds range from 1/(2en²) (Pommerenke 1961) to c/(n√log n) (KLR 2025), with the conjecture ρ(f) ≫ 1/n still open.",
+    "mathContext": "The sublevel set $\\{z : |f(z)| < 1\\}$ for a monic polynomial $f(z) = \\prod_{i=1}^n (z - z_i)$ with $|z_i| \\leq 1$ is an open subset of $\\mathbb{C}$ bounded by the lemniscate $\\{z : |f(z)| = 1\\}$. The inscribed disc radius $\\rho(f)$ measures the geometric regularity of this sublevel set.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "polynomial lemniscates",
+      "sublevel sets",
+      "inscribed disc radius",
+      "complex analysis"
+    ],
+    "prerequisites": [
+      "complex polynomials",
+      "unit disc",
+      "open sets in C"
+    ]
+  },
+  {
+    "id": "ann-1039-unitdisc",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 29,
+      "endLine": 36
+    },
+    "type": "definition",
+    "title": "UnitDiscPolynomial",
+    "content": "A monic polynomial f(z) = ∏(z - zᵢ) where all roots zᵢ lie in the closed unit disc |zᵢ| ≤ 1. This is the fundamental structure: degree n, roots as Fin n → ℂ, with the constraint roots_in_disc ensuring all roots satisfy Complex.abs (roots i) ≤ 1.",
+    "mathContext": "A monic polynomial with roots in $\\overline{\\mathbb{D}} = \\{z \\in \\mathbb{C} : |z| \\leq 1\\}$. The monicity condition $f(z) = \\prod_{i=1}^n (z - z_i)$ ensures the leading coefficient is 1, which normalizes the problem: the sublevel set $\\{z : |f(z)| < 1\\}$ depends only on the root configuration.",
+    "significance": "key",
+    "relatedConcepts": [
+      "monic polynomial",
+      "unit disc",
+      "root configuration"
+    ],
+    "prerequisites": [
+      "complex numbers",
+      "polynomial roots"
+    ]
+  },
+  {
+    "id": "ann-1039-eval",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 40,
+      "endLine": 42
+    },
+    "type": "definition",
+    "title": "UnitDiscPolynomial.eval",
+    "content": "Evaluates the polynomial at z ∈ ℂ as the product ∏ᵢ (z - zᵢ). This is the explicit product form, which directly relates to the root configuration and makes the sublevel set condition |∏(z - zᵢ)| < 1 transparent.",
+    "mathContext": "$f(z) = \\prod_{i=1}^n (z - z_i)$, so $|f(z)| = \\prod_{i=1}^n |z - z_i|$. The sublevel condition $|f(z)| < 1$ becomes $\\prod |z - z_i| < 1$, a constraint on distances from $z$ to the roots.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "polynomial evaluation",
+      "product formula",
+      "distance to roots"
+    ],
+    "prerequisites": [
+      "complex arithmetic",
+      "Finset product"
+    ]
+  },
+  {
+    "id": "ann-1039-sublevel",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 44,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "sublevelSet",
+    "content": "The sublevel set {z ∈ ℂ : |f(z)| < 1}, the region where the polynomial's modulus is strictly below 1. This open set contains all roots of f (since f vanishes there) and its geometry — particularly its inscribed disc radius — is the central object of study.",
+    "mathContext": "$\\Omega_f = \\{z \\in \\mathbb{C} : |f(z)| < 1\\}$. By the maximum modulus principle, $\\Omega_f$ is a bounded open set. Its boundary is the lemniscate $\\{z : |f(z)| = 1\\}$, an algebraic curve of degree $n$ in the real coordinates.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lemniscate",
+      "sublevel set",
+      "maximum modulus principle"
+    ],
+    "prerequisites": [
+      "complex modulus",
+      "open sets",
+      "polynomial continuity"
+    ]
+  },
+  {
+    "id": "ann-1039-inscribed",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 52,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "isInscribedDisc",
+    "content": "A disc of radius r centered at c is inscribed in S if r > 0 and the open disc B(c, r) is entirely contained in S. This captures the geometric notion of fitting a round disc inside the sublevel set.",
+    "mathContext": "$B(c, r) = \\{z : |z - c| < r\\} \\subseteq S$. The inscribed disc radius $\\rho(f) = \\sup\\{r : \\exists c, B(c, r) \\subseteq \\Omega_f\\}$ measures how 'round' the sublevel set can be locally. A small $\\rho(f)$ means $\\Omega_f$ is geometrically thin or fractal-like.",
+    "significance": "key",
+    "relatedConcepts": [
+      "inscribed disc",
+      "inradius",
+      "geometric measure"
+    ],
+    "prerequisites": [
+      "open disc",
+      "set containment"
+    ]
+  },
+  {
+    "id": "ann-1039-inscribedradius",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 56,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "inscribedDiscRadius",
+    "content": "The supremum of all radii of inscribed discs in a set S. Defined as sSup {r : ∃ c, isInscribedDisc S c r}. This is the inradius of S with respect to Euclidean discs.",
+    "mathContext": "$\\text{inrad}(S) = \\sup\\{r > 0 : \\exists c \\in \\mathbb{C}, B(c, r) \\subseteq S\\}$. For the sublevel set $\\Omega_f$, this supremum is always attained (by compactness arguments) when $S$ is bounded and open.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "supremum",
+      "inradius",
+      "bounded open sets"
+    ],
+    "prerequisites": [
+      "sSup",
+      "set of real numbers"
+    ]
+  },
+  {
+    "id": "ann-1039-rho",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 60,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "rho",
+    "content": "ρ(f) = inscribedDiscRadius(sublevelSet f), the central quantity of Erdős Problem #1039. This single real number captures how large a disc can be inscribed in the sublevel set {z : |f(z)| < 1}. The problem asks: how small can ρ(f) be as a function of degree n?",
+    "mathContext": "$\\rho(f) = \\sup\\{r > 0 : \\exists c, B(c,r) \\subseteq \\{z : |f(z)| < 1\\}\\}$. The conjecture is $\\rho(f) \\geq c/n$ for all $f$ of degree $n$ with roots in $\\overline{\\mathbb{D}}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "inscribed disc radius",
+      "extremal problem",
+      "polynomial geometry"
+    ],
+    "prerequisites": [
+      "inscribedDiscRadius",
+      "sublevelSet"
+    ]
+  },
+  {
+    "id": "ann-1039-rootsofunity",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 67,
+      "endLine": 74
+    },
+    "type": "definition",
+    "title": "rootsOfUnity",
+    "content": "The polynomial zⁿ - 1 with roots at the n-th roots of unity e^{2πik/n}. This serves as the benchmark for the problem: its roots are maximally spread on the unit circle, and it gives the best known upper bound on ρ. Contains a sorry for proving |e^{iθ}| ≤ 1.",
+    "mathContext": "$f(z) = z^n - 1 = \\prod_{k=0}^{n-1}(z - e^{2\\pi i k/n})$. The roots are the $n$-th roots of unity, equally spaced on the unit circle $|z| = 1$. The sublevel set $\\{z : |z^n - 1| < 1\\}$ consists of $n$ thin petals near the roots.",
+    "significance": "key",
+    "relatedConcepts": [
+      "roots of unity",
+      "cyclotomic polynomial",
+      "unit circle"
+    ],
+    "prerequisites": [
+      "complex exponential",
+      "Fin type"
+    ]
+  },
+  {
+    "id": "ann-1039-benchmark",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 76,
+      "endLine": 78
+    },
+    "type": "concept",
+    "title": "benchmark_upper",
+    "content": "The upper bound ρ(zⁿ - 1) ≤ π/(2n), establishing that the inscribed disc radius for roots of unity is at most π/(2n). This shows that ρ(f) cannot always be better than O(1/n), providing the target for the conjecture.",
+    "mathContext": "$\\rho(z^n - 1) \\leq \\frac{\\pi}{2n}$. Near each root of unity $\\omega_k = e^{2\\pi ik/n}$, the sublevel set has width approximately $\\pi/n$ (the arc length between adjacent roots divided by $n$). The inscribed disc fits within a single petal of width $\\sim 2\\pi/n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "upper bound",
+      "roots of unity",
+      "petal geometry"
+    ],
+    "prerequisites": [
+      "rho",
+      "rootsOfUnity"
+    ]
+  },
+  {
+    "id": "ann-1039-pommerenke",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 84,
+      "endLine": 86
+    },
+    "type": "concept",
+    "title": "pommerenke_lower",
+    "content": "Pommerenke's 1961 lower bound: ρ(f) ≥ 1/(2en²) for any unit disc polynomial of degree n > 0. This was the first general lower bound, proving that the inscribed disc radius cannot shrink faster than quadratically in n.",
+    "mathContext": "$\\rho(f) \\geq \\frac{1}{2en^2}$ for all monic polynomials $f$ of degree $n$ with roots in $\\overline{\\mathbb{D}}$. Pommerenke's proof uses potential theory: the Green's function of $\\Omega_f$ controls the conformal radius, which in turn bounds the inscribed disc radius via Koebe's theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pommerenke",
+      "potential theory",
+      "Green's function",
+      "Koebe theorem"
+    ],
+    "prerequisites": [
+      "rho",
+      "UnitDiscPolynomial"
+    ]
+  },
+  {
+    "id": "ann-1039-pomexp",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 88,
+      "endLine": 89
+    },
+    "type": "definition",
+    "title": "pommerenkeExponent",
+    "content": "The exponent 2 in Pommerenke's bound 1/(2en²), recording that this bound is quadratic in n. The gap between this O(1/n²) lower bound and the conjectured O(1/n) lower bound was the main challenge for decades.",
+    "mathContext": "Pommerenke's bound gives $\\rho(f) = \\Omega(1/n^2)$, while the conjecture asserts $\\rho(f) = \\Omega(1/n)$. The exponent gap from 2 to 1 was partially closed by KLR to $1 + o(1)$ (the $\\sqrt{\\log n}$ factor).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "polynomial exponent",
+      "asymptotic gap"
+    ],
+    "prerequisites": [
+      "pommerenke_lower"
+    ]
+  },
+  {
+    "id": "ann-1039-klr",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 95,
+      "endLine": 98
+    },
+    "type": "concept",
+    "title": "klr_lower",
+    "content": "The Krishnapur-Lundberg-Ramachandran (2025) bound: there exists c > 0 such that ρ(f) ≥ c/(n√(log n)) for all unit disc polynomials of degree n ≥ 3. This is the best known lower bound, nearly achieving the conjectured 1/n rate up to a √(log n) factor.",
+    "mathContext": "$\\rho(f) \\geq \\frac{c}{n\\sqrt{\\log n}}$ for universal constant $c > 0$. The KLR approach establishes area bounds for $\\Omega_f$ using potential-theoretic estimates, then converts area to inscribed disc radius via isoperimetric reasoning: $\\text{area}(\\Omega_f) \\geq \\pi \\rho(f)^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "KLR bound",
+      "area method",
+      "isoperimetric inequality"
+    ],
+    "prerequisites": [
+      "rho",
+      "UnitDiscPolynomial"
+    ]
+  },
+  {
+    "id": "ann-1039-klrbetter",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 107,
+      "endLine": 109
+    },
+    "type": "concept",
+    "title": "klr_better_than_pommerenke",
+    "content": "For sufficiently large n, the KLR bound 1/(n√(log n)) strictly exceeds Pommerenke's 1/(2en²). This is shown via Filter.atTop, establishing that the KLR bound is eventually better. Contains a sorry.",
+    "mathContext": "$\\frac{1}{n\\sqrt{\\log n}} > \\frac{1}{2en^2}$ for large $n$, equivalently $2en > \\sqrt{\\log n}$, which holds for all $n \\geq 2$. The improvement from $O(1/n^2)$ to $O(1/(n\\sqrt{\\log n}))$ represents decades of progress.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "asymptotic comparison",
+      "Filter.atTop",
+      "eventually"
+    ],
+    "prerequisites": [
+      "klr_lower",
+      "pommerenke_lower"
+    ]
+  },
+  {
+    "id": "ann-1039-conjecture",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 143,
+      "endLine": 154
+    },
+    "type": "definition",
+    "title": "ehpConjecture",
+    "content": "The Erdős-Herzog-Piranian conjecture: there exists c > 0 such that ρ(f) ≥ c/n for all unit disc polynomials of degree n > 0. This asserts that the benchmark upper bound π/(2n) from roots of unity is asymptotically tight.",
+    "mathContext": "$\\exists c > 0, \\forall f \\text{ monic with roots in } \\overline{\\mathbb{D}}, \\deg f = n > 0 \\implies \\rho(f) \\geq c/n$. Combined with the benchmark $\\rho(z^n-1) \\leq \\pi/(2n)$, this would establish $\\rho(f) = \\Theta(1/n)$ for all such polynomials.",
+    "significance": "key",
+    "relatedConcepts": [
+      "EHP conjecture",
+      "extremal polynomial",
+      "optimal bound"
+    ],
+    "prerequisites": [
+      "rho",
+      "UnitDiscPolynomial"
+    ]
+  },
+  {
+    "id": "ann-1039-open",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 115,
+      "endLine": 117
+    },
+    "type": "concept",
+    "title": "ehp_open",
+    "content": "Placeholder axiom indicating the conjecture remains open. Stated as ¬(ehpConjecture ∨ ¬ehpConjecture), which is logically false but serves as a formal marker that the problem's status is unresolved.",
+    "mathContext": "The EHP conjecture is open as of 2025. The remaining gap is the $\\sqrt{\\log n}$ factor between the KLR lower bound $c/(n\\sqrt{\\log n})$ and the conjectured $c/n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "open problem",
+      "conjecture status"
+    ],
+    "prerequisites": [
+      "ehpConjecture"
+    ]
+  },
+  {
+    "id": "ann-1039-pombound",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 155,
+      "endLine": 158
+    },
+    "type": "definition",
+    "title": "pommerenkeBound",
+    "content": "The explicit Pommerenke bound function 1/(2en²), giving the lower bound on ρ(f) as a function of degree n. Uses Real.exp 1 for the constant e ≈ 2.718.",
+    "mathContext": "$B_P(n) = \\frac{1}{2en^2}$. For $n = 10$: $B_P(10) = \\frac{1}{200e} \\approx 0.00184$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Pommerenke bound",
+      "explicit constant"
+    ],
+    "prerequisites": [
+      "Real.exp"
+    ]
+  },
+  {
+    "id": "ann-1039-klrbound",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 159,
+      "endLine": 162
+    },
+    "type": "definition",
+    "title": "klrBound",
+    "content": "The KLR bound function c/(n√(log n)), parameterized by the constant c > 0. This is the best known lower bound on ρ(f) as a function of degree.",
+    "mathContext": "$B_{KLR}(c, n) = \\frac{c}{n\\sqrt{\\log n}}$. For $n = 10$: $B_{KLR}(c, 10) = \\frac{c}{10\\sqrt{\\log 10}} \\approx 0.066c$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "KLR bound",
+      "logarithmic factor"
+    ],
+    "prerequisites": [
+      "Real.sqrt",
+      "Real.log"
+    ]
+  },
+  {
+    "id": "ann-1039-conjbound",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 163,
+      "endLine": 166
+    },
+    "type": "definition",
+    "title": "conjecturedBound",
+    "content": "The conjectured bound c/n, the target lower bound for the EHP conjecture. If proven, this would show ρ(f) = Θ(1/n) for all unit disc polynomials.",
+    "mathContext": "$B_C(c, n) = c/n$. The conjecture asserts $\\rho(f) \\geq B_C(c, n)$ for some universal $c > 0$ and all monic polynomials with roots in $\\overline{\\mathbb{D}}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "conjectured bound",
+      "linear rate"
+    ],
+    "prerequisites": [
+      "Inscribed Disc Radius",
+      "Asymptotic Lower Bound",
+      "EHP Conjecture"
+    ]
+  },
+  {
+    "id": "ann-1039-benchbound",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 167,
+      "endLine": 170
+    },
+    "type": "definition",
+    "title": "benchmarkBound",
+    "content": "The benchmark upper bound π/(2n) from the roots of unity polynomial zⁿ - 1. This is the best known upper bound on the minimum of ρ(f) over all degree-n unit disc polynomials.",
+    "mathContext": "$B_U(n) = \\frac{\\pi}{2n}$. The hierarchy of bounds: $\\frac{1}{2en^2} \\leq \\frac{c}{n\\sqrt{\\log n}} \\leq \\frac{c}{n} \\stackrel{?}{\\leq} \\rho(f) \\leq \\frac{\\pi}{2n}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "upper bound",
+      "roots of unity benchmark"
+    ],
+    "prerequisites": [
+      "Real.pi"
+    ]
+  },
+  {
+    "id": "ann-1039-gap",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 139,
+      "endLine": 142
+    },
+    "type": "concept",
+    "title": "bounds_gap",
+    "content": "The KLR lower bound is strictly below the benchmark upper bound: klrBound c n < benchmarkBound n for n ≥ 3 and c > 0. This confirms a genuine gap remains between the best known lower and upper bounds. Contains a sorry.",
+    "mathContext": "$\\frac{c}{n\\sqrt{\\log n}} < \\frac{\\pi}{2n}$ for $n \\geq 3$, equivalently $c < \\frac{\\pi\\sqrt{\\log n}}{2}$. The gap factor $\\sqrt{\\log n}$ is the remaining obstacle to resolving the conjecture.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "bounds comparison",
+      "remaining gap"
+    ],
+    "prerequisites": [
+      "klrBound",
+      "benchmarkBound"
+    ]
+  },
+  {
+    "id": "ann-1039-lemniscate",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 148,
+      "endLine": 150
+    },
+    "type": "definition",
+    "title": "lemniscate",
+    "content": "The lemniscate {z ∈ ℂ : |f(z)| = 1}, the level curve of |f| at height 1. This algebraic curve bounds the sublevel set and determines its topology. The lemniscate can have up to n connected components (petals).",
+    "mathContext": "$L_f = \\{z \\in \\mathbb{C} : |f(z)| = 1\\} = \\partial\\Omega_f$. Lemniscates are classical objects in potential theory: $\\log|f(z)|$ is the Green's function of $\\mathbb{C} \\setminus \\Omega_f$ with pole at infinity. The lemniscate is a real algebraic curve of degree $2n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lemniscate",
+      "level curve",
+      "Green's function",
+      "algebraic curve"
+    ],
+    "prerequisites": [
+      "sublevelSet",
+      "complex modulus"
+    ]
+  },
+  {
+    "id": "ann-1039-isopen",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 152,
+      "endLine": 154
+    },
+    "type": "concept",
+    "title": "sublevelSet_isOpen",
+    "content": "The sublevel set {z : |f(z)| < 1} is open in ℂ. Follows from the continuity of f and the openness of {x ∈ ℝ : x < 1}. Contains a sorry.",
+    "mathContext": "$\\Omega_f = |f|^{-1}((-\\infty, 1))$ is open as the preimage of an open set under the continuous function $|f| : \\mathbb{C} \\to \\mathbb{R}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "open set",
+      "continuity",
+      "preimage"
+    ],
+    "prerequisites": [
+      "sublevelSet",
+      "continuous polynomial"
+    ]
+  },
+  {
+    "id": "ann-1039-nonempty",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 156,
+      "endLine": 159
+    },
+    "type": "concept",
+    "title": "sublevelSet_nonempty",
+    "content": "The sublevel set is non-empty for any polynomial of degree > 0, since every root zᵢ satisfies f(zᵢ) = 0, so |f(zᵢ)| = 0 < 1. Contains a sorry.",
+    "mathContext": "For any root $z_i$, $f(z_i) = 0$ so $|f(z_i)| = 0 < 1$, hence $z_i \\in \\Omega_f$. Since $f$ has degree $n \\geq 1$, the sublevel set contains at least one point.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "nonempty set",
+      "polynomial roots"
+    ],
+    "prerequisites": [
+      "sublevelSet",
+      "UnitDiscPolynomial"
+    ]
+  },
+  {
+    "id": "ann-1039-rootin",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 208,
+      "endLine": 215
+    },
+    "type": "concept",
+    "title": "root_in_sublevelSet",
+    "content": "Each root zᵢ of f lies in the sublevel set, since f(zᵢ) = 0. This is the basic observation that roots are 'deep' inside the sublevel set. Contains a sorry.",
+    "mathContext": "$f(z_i) = \\prod_{j}(z_i - z_j) = 0$ (the $i$-th factor vanishes), so $|f(z_i)| = 0 < 1$. Near each root, the sublevel set contains a neighborhood of radius depending on the root separation.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "root membership",
+      "local geometry"
+    ],
+    "prerequisites": [
+      "sublevelSet",
+      "UnitDiscPolynomial.eval"
+    ]
+  },
+  {
+    "id": "ann-1039-area",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 170,
+      "endLine": 171
+    },
+    "type": "definition",
+    "title": "sublevelArea",
+    "content": "The Lebesgue measure (area) of the sublevel set, computed as MeasureTheory.volume(sublevelSet f). The area of the sublevel set is a key intermediate quantity in the KLR approach.",
+    "mathContext": "$A(f) = \\text{area}(\\Omega_f) = \\int\\int_{\\Omega_f} dx\\, dy$. By a classical result, $A(f) = \\pi$ for all monic polynomials of degree $n$ with roots in $\\mathbb{C}$ (the area is independent of root placement!). For roots in $\\overline{\\mathbb{D}}$, the sublevel set is contained in the disc of radius $1 + 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lebesgue measure",
+      "area",
+      "sublevel set geometry"
+    ],
+    "prerequisites": [
+      "MeasureTheory.volume",
+      "sublevelSet"
+    ]
+  },
+  {
+    "id": "ann-1039-areaimplies",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 173,
+      "endLine": 176
+    },
+    "type": "concept",
+    "title": "area_implies_disc_bound",
+    "content": "The sublevel set area is at least π·ρ(f)², since it contains a disc of radius ρ(f). This isoperimetric bound converts area estimates to inscribed disc radius estimates. Contains a sorry.",
+    "mathContext": "If $B(c, \\rho) \\subseteq \\Omega_f$, then $A(f) \\geq \\pi\\rho^2$, giving $\\rho \\leq \\sqrt{A(f)/\\pi}$. Conversely, lower bounds on $A(f)$ give lower bounds on $\\rho(f)$. This is the bridge between the area approach of KLR and the disc radius question.",
+    "significance": "key",
+    "relatedConcepts": [
+      "isoperimetric inequality",
+      "area-radius bound"
+    ],
+    "prerequisites": [
+      "sublevelArea",
+      "rho"
+    ]
+  },
+  {
+    "id": "ann-1039-klrarea",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 178,
+      "endLine": 180
+    },
+    "type": "concept",
+    "title": "klr_area_bound",
+    "content": "The KLR area bound: sublevelArea f ≥ π/(n² log n) for degree n ≥ 3. Combined with area_implies_disc_bound, this yields ρ(f) ≥ 1/(n√(log n)), the KLR lower bound.",
+    "mathContext": "$A(f) \\geq \\frac{\\pi}{n^2 \\log n}$. Then $\\pi\\rho^2 \\leq A(f)$ gives $\\rho \\geq \\frac{1}{n\\sqrt{\\log n}}$. The area bound is proven in the KLR paper using potential-theoretic estimates on the logarithmic capacity of $\\Omega_f$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "KLR area bound",
+      "logarithmic capacity",
+      "potential theory"
+    ],
+    "prerequisites": [
+      "sublevelArea",
+      "UnitDiscPolynomial"
+    ]
+  },
+  {
+    "id": "ann-1039-degone",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 186,
+      "endLine": 189
+    },
+    "type": "concept",
+    "title": "degree_one_optimal",
+    "content": "For n = 1, ρ(f) = 1. A degree-1 polynomial f(z) = z - z₁ with |z₁| ≤ 1 has sublevel set {z : |z - z₁| < 1}, which is a disc of radius 1 centered at z₁. Contains a sorry.",
+    "mathContext": "For $f(z) = z - z_1$, $\\Omega_f = \\{z : |z - z_1| < 1\\} = B(z_1, 1)$, an open disc of radius 1. Thus $\\rho(f) = 1$, achieving the trivial upper bound.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "base case",
+      "degree 1"
+    ],
+    "prerequisites": [
+      "rho",
+      "UnitDiscPolynomial"
+    ]
+  },
+  {
+    "id": "ann-1039-clustered",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 191,
+      "endLine": 193
+    },
+    "type": "definition",
+    "title": "hasClusteredRoots",
+    "content": "A polynomial has clustered roots if all roots lie within ε of some center c ∈ ℂ. When roots are clustered, the polynomial behaves approximately like (z - c)ⁿ, whose sublevel set is a single large disc.",
+    "mathContext": "$\\exists c \\in \\mathbb{C}, \\forall i, |z_i - c| < \\varepsilon$. When $\\varepsilon \\to 0$, $f(z) \\to (z-c)^n$ and $\\Omega_f \\to B(c, 1)$, so $\\rho(f) \\to 1$. Clustered roots give large inscribed discs.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "root clustering",
+      "perturbation",
+      "limiting behavior"
+    ],
+    "prerequisites": [
+      "UnitDiscPolynomial",
+      "complex distance"
+    ]
+  },
+  {
+    "id": "ann-1039-clusterimplies",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 195,
+      "endLine": 199
+    },
+    "type": "concept",
+    "title": "clustered_implies_large_disc",
+    "content": "If all roots are within ε < 1 of a center, then ρ(f) ≥ 1 - ε. This quantifies the intuition that clustered roots give large sublevel sets. Contains a sorry.",
+    "mathContext": "If $|z_i - c| < \\varepsilon$ for all $i$, then for $|z - c| < 1 - \\varepsilon$, $|f(z)| = \\prod|z - z_i| \\leq \\prod(|z-c| + |c-z_i|) < \\prod((1-\\varepsilon) + \\varepsilon) = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "clustered roots",
+      "lower bound on rho"
+    ],
+    "prerequisites": [
+      "hasClusteredRoots",
+      "rho"
+    ]
+  },
+  {
+    "id": "ann-1039-random",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 205,
+      "endLine": 209
+    },
+    "type": "concept",
+    "title": "random_polynomial_expected",
+    "content": "For random polynomials with roots uniformly distributed in the unit disc, the expected ρ is of order 1/√n — much larger than the worst-case bounds. This shows the extremal configurations (small ρ) are atypical.",
+    "mathContext": "$c_1/\\sqrt{n} \\leq \\mathbb{E}[\\rho(f_{\\text{random}})] \\leq c_2/\\sqrt{n}$. Random root configurations give $\\rho = \\Theta(1/\\sqrt{n})$, far from the worst-case $\\Theta(1/n)$. The extremal configurations (roots of unity, etc.) are measure-zero events.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "random polynomials",
+      "expected value",
+      "typical vs worst case"
+    ],
+    "prerequisites": [
+      "rho"
+    ]
+  },
+  {
+    "id": "ann-1039-question",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 215,
+      "endLine": 217
+    },
+    "type": "definition",
+    "title": "erdos_1039_question",
+    "content": "The main open question restated as erdos_1039_question := ehpConjecture. This is a definitional alias linking the Erdős problem number to the formal conjecture statement.",
+    "mathContext": "Is $\\rho(f) \\geq c/n$ for all monic polynomials of degree $n$ with roots in $\\overline{\\mathbb{D}}$?",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "open problem",
+      "EHP conjecture"
+    ],
+    "prerequisites": [
+      "ehpConjecture"
+    ]
+  },
+  {
+    "id": "ann-1039-state",
+    "proofId": "erdos-1039",
+    "range": {
+      "startLine": 274,
+      "endLine": 285
+    },
+    "type": "concept",
+    "title": "erdos_1039_current_state",
+    "content": "The current state of knowledge: (1) the KLR lower bound c/(n√(log n)) holds for all unit disc polynomials of degree ≥ 3, and (2) for every n > 0, the roots of unity polynomial achieves ρ ≤ π/(2n). This is the only non-sorry theorem, proved by combining klr_lower and benchmark_upper.",
+    "mathContext": "$(\\exists c > 0, \\forall f, \\deg f \\geq 3 \\implies \\rho(f) \\geq c/(n\\sqrt{\\log n})) \\wedge (\\forall n > 0, \\exists f, \\deg f = n \\wedge \\rho(f) \\leq \\pi/(2n))$. This captures the gap: the lower bound is $\\Omega(1/(n\\sqrt{\\log n}))$ and the upper bound is $O(1/n)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "current bounds",
+      "state of the art"
+    ],
+    "prerequisites": [
+      "klr_lower",
+      "benchmark_upper",
+      "rootsOfUnity"
+    ]
+  }
+]

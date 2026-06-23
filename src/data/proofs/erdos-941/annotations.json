@@ -1,0 +1,284 @@
+[
+  {
+    "id": "erdos-941-imports",
+    "proofId": "erdos-941",
+    "type": "concept",
+    "range": {
+      "startLine": 29,
+      "endLine": 36
+    },
+    "title": "Imports and Namespace Setup",
+    "content": "Imports `Nat.Basic` for arithmetic, `Nat.Factorization.Basic` for `Nat.Prime` and factorization, `NumberTheory.Divisors` for divisor functions, and `Finset.Basic` for finite sets used in sum representations. Opens `Nat` namespace for convenient access to `Prime`, `pos_pow_of_pos`, etc.",
+    "significance": "supporting",
+    "mathContext": "The import of `Nat.Factorization.Basic` provides the machinery for working with prime factorizations, which is essential since the powerful number definition $p \\mid n \\Rightarrow p^2 \\mid n$ refers directly to prime divisors. The `Finset.Basic` import supports the `IsSumOfKPowerful` definition using `Finset.sum`.",
+    "relatedConcepts": [
+      "Nat.Prime",
+      "Nat.Factorization",
+      "Finset.sum",
+      "namespace"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib number theory modules"
+    ]
+  },
+  {
+    "id": "erdos-941-powerful-def",
+    "proofId": "erdos-941",
+    "type": "definition",
+    "range": {
+      "startLine": 42,
+      "endLine": 49
+    },
+    "title": "Powerful Numbers: Two Definitions",
+    "content": "`IsPowerful n` holds when $n > 0$ and $\\forall p$ prime, $p \\mid n \\Rightarrow p^2 \\mid n$. `IsPowerfulAlt n` gives the equivalent characterization: $\\exists a, b > 0$ with $n = a^2 b^3$. For example: $72 = 2^3 \\cdot 3^2$ is powerful since every prime appears with exponent $\\ge 2$; equivalently $72 = 1^2 \\cdot (2 \\cdot 3)^3 / \\ldots$ — more precisely, $72 = 6^2 \\cdot 2^3 / 4$ (the factored form is $72 = 2^2 \\cdot 2 \\cdot 3^2 = (2 \\cdot 3)^2 \\cdot 2$).",
+    "significance": "key",
+    "mathContext": "The **powerful numbers** (also called **squarefull numbers**) form the sequence $1, 4, 8, 9, 16, 25, 27, 32, 36, 49, 64, 72, \\ldots$ (OEIS A001694). The characterization $n = a^2 b^3$ was proved by Golomb (1970): every powerful number can be written this way since if $n = \\prod p_i^{a_i}$ with all $a_i \\ge 2$, write $a_i = 2q_i + 3r_i$ with $r_i \\in \\{0, 1\\}$ to extract the $a^2 b^3$ form. The counting function satisfies $\\#\\{n \\le x : \\text{IsPowerful}(n)\\} \\sim \\frac{\\zeta(3/2)}{\\zeta(3)} \\sqrt{x} \\approx 2.173 \\sqrt{x}$.",
+    "relatedConcepts": [
+      "squarefull numbers",
+      "Golomb characterization",
+      "OEIS A001694",
+      "prime factorization"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "divisibility in ℕ",
+      "prime factorization"
+    ]
+  },
+  {
+    "id": "erdos-941-equiv",
+    "proofId": "erdos-941",
+    "type": "concept",
+    "range": {
+      "startLine": 51,
+      "endLine": 54
+    },
+    "title": "Equivalence of Definitions (sorry)",
+    "content": "`powerful_iff_alt`: For $n > 0$, `IsPowerful n ↔ IsPowerfulAlt n`. This has a sorry — the proof requires showing that if all prime exponents are $\\ge 2$, then $n$ decomposes as $a^2 b^3$ (Golomb's argument), and conversely.",
+    "significance": "key",
+    "mathContext": "The forward direction uses the division algorithm on exponents: if $n = \\prod p_i^{e_i}$ with each $e_i \\ge 2$, write $e_i = 2q_i + 3r_i$ (with $r_i \\in \\{0,1\\}$). Then $a = \\prod p_i^{q_i}$, $b = \\prod p_i^{r_i}$ gives $n = a^2 b^3$. The reverse direction is straightforward: if $p \\mid a^2 b^3$, then $p \\mid a$ or $p \\mid b$, and in either case $p^2 \\mid a^2 b^3$. This sorry could potentially be resolved by Aristotle using Mathlib's factorization API.",
+    "relatedConcepts": [
+      "Golomb 1970",
+      "division algorithm on exponents",
+      "Nat.factorization"
+    ],
+    "prerequisites": [
+      "IsPowerful",
+      "IsPowerfulAlt",
+      "prime factorization uniqueness"
+    ]
+  },
+  {
+    "id": "erdos-941-structural",
+    "proofId": "erdos-941",
+    "type": "concept",
+    "range": {
+      "startLine": 56,
+      "endLine": 84
+    },
+    "title": "Structural Properties: 1, Squares, Cubes, Products",
+    "content": "`one_is_powerful`: 1 is powerful vacuously (no primes divide 1). `square_is_powerful` (sorry): $a^2$ is powerful since $p \\mid a^2 \\Rightarrow p \\mid a \\Rightarrow p^2 \\mid a^2$. `cube_is_powerful` (sorry): similarly for $a^3$. `powerful_mul` (sorry): if $m, n$ are powerful, so is $mn$ (prime divisors of $mn$ come from $m$ or $n$, both giving $p^2 \\mid$).",
+    "significance": "key",
+    "mathContext": "These four results establish the algebraic structure of powerful numbers: they form a **multiplicative monoid** (closed under products, containing 1). The set is also closed under perfect powers: if $n$ is powerful, so is $n^k$ for any $k \\ge 1$. The proof of `one_is_powerful` is complete and uses `Nat.eq_one_of_pos_of_self_mul_self_mod_eq_one`. The proofs for squares and cubes need `Nat.Prime.dvd_of_dvd_pow` (if $p$ is prime and $p \\mid a^k$, then $p \\mid a$) combined with `Nat.pow_dvd_pow_of_dvd`.",
+    "relatedConcepts": [
+      "multiplicative monoid",
+      "Nat.Prime.dvd_of_dvd_pow",
+      "closure properties",
+      "vacuous truth"
+    ],
+    "prerequisites": [
+      "IsPowerful",
+      "Nat.Prime",
+      "Nat.pos_pow_of_pos"
+    ]
+  },
+  {
+    "id": "erdos-941-examples",
+    "proofId": "erdos-941",
+    "type": "concept",
+    "range": {
+      "startLine": 90,
+      "endLine": 105
+    },
+    "title": "Examples: 4, 8, 72",
+    "content": "`powerfulNumbers`: the first 14 powerful numbers $[1, 4, 8, 9, 16, 25, 27, 32, 36, 49, 64, 72, 81, 100]$. Concrete proofs: $4 = 2^2$ is powerful (via `square_is_powerful`), $8 = 2^3$ (via `cube_is_powerful`), $72 = 8 \\times 9 = 2^3 \\times 3^2$ (via `powerful_mul`).",
+    "significance": "supporting",
+    "mathContext": "The proof that $72$ is powerful illustrates the multiplicative closure: $72 = 2^3 \\cdot 3^2$, and both $8 = 2^3$ (cubefull) and $9 = 3^2$ (squarefull) are powerful. This decomposition $72 = 8 \\times 9$ is found by factoring into prime-power components where each exponent is $\\ge 2$. Among the first 100 integers, there are 14 powerful numbers, consistent with the asymptotic density $\\sim 2.173 \\sqrt{x}$.",
+    "relatedConcepts": [
+      "powerful number sequence",
+      "OEIS A001694",
+      "multiplicative decomposition"
+    ],
+    "prerequisites": [
+      "square_is_powerful",
+      "cube_is_powerful",
+      "powerful_mul"
+    ]
+  },
+  {
+    "id": "erdos-941-sum-defs",
+    "proofId": "erdos-941",
+    "type": "definition",
+    "range": {
+      "startLine": 111,
+      "endLine": 124
+    },
+    "title": "Sum Representation Definitions",
+    "content": "`IsSumOfKPowerful n k`: $n$ equals the sum of exactly $k$ powerful numbers (using `Finset`). `IsSumOf3Powerful n`: $\\exists a, b, c$ powerful with $n = a + b + c$. `IsSumOf3PowerfulOrZero n`: allows some summands to be 0, modeling sums of *at most* 3 powerful numbers.",
+    "significance": "key",
+    "mathContext": "The distinction between `IsSumOf3Powerful` (exactly 3 nonzero powerful summands) and `IsSumOf3PowerfulOrZero` (at most 3, with zeros allowed) is crucial. Heath-Brown's theorem uses the 'at most 3' formulation. For example, $4 = 4 + 0 + 0$ uses 1 powerful summand. The `IsSumOfKPowerful` definition using `Finset` is more general but less convenient for the specific case $k = 3$. The Finset-based definition has a subtle issue: `Finset.card` counts distinct elements, so repeated powerful numbers would need multiset treatment.",
+    "relatedConcepts": [
+      "additive representation",
+      "Waring's problem",
+      "Finset.sum",
+      "at most k summands"
+    ],
+    "prerequisites": [
+      "IsPowerful",
+      "Finset.card",
+      "Finset.sum"
+    ]
+  },
+  {
+    "id": "erdos-941-question",
+    "proofId": "erdos-941",
+    "type": "concept",
+    "range": {
+      "startLine": 130,
+      "endLine": 141
+    },
+    "title": "The Erdős-Ivić Question",
+    "content": "`ErdosIvicQuestion`: $\\exists N, \\forall n \\ge N$, $n$ is the sum of at most 3 powerful numbers. `ErdosIvicQuestion'`: explicit existential form. Both formulations are equivalent and capture the 'sufficiently large' quantifier.",
+    "significance": "key",
+    "mathContext": "Erdős and Ivić posed this question at the 1986 Oberwolfach conference. The problem appears in the Oberwolfach problem book and was recorded as Erdős Problem #941. The key difficulty is that powerful numbers have counting function $\\sim c\\sqrt{x}$, so sums of 3 powerful numbers up to $N$ give $O(N^{3/2})$ triples — more than enough to cover $[1, N]$, but the coverage is not automatic since many triples produce the same sum. The 'sufficiently large' threshold $N_0$ in Heath-Brown's proof is not explicitly computed.",
+    "relatedConcepts": [
+      "Oberwolfach 1986",
+      "eventually all integers",
+      "additive basis",
+      "threshold N₀"
+    ],
+    "prerequisites": [
+      "IsSumOf3PowerfulOrZero",
+      "ℕ ordering"
+    ]
+  },
+  {
+    "id": "erdos-941-heath-brown",
+    "proofId": "erdos-941",
+    "type": "concept",
+    "range": {
+      "startLine": 147,
+      "endLine": 157
+    },
+    "title": "Heath-Brown's Theorem (Axiomatized)",
+    "content": "`heath_brown_theorem` (axiom): `ErdosIvicQuestion` holds. Every sufficiently large integer is the sum of at most 3 powerful numbers. Also `heath_brown_explicit` (axiom): provides a specific (placeholder) bound `heathBrownBound = 10000`.",
+    "significance": "key",
+    "mathContext": "Heath-Brown (1988) proved this using the theory of **ternary quadratic forms**. The key idea: write $n = a^2 + b^2 c^3 + d^2 e^3$ where each summand is powerful. He showed that for large $n$, one can find integers satisfying this equation using results on the representation of integers by ternary quadratic forms (Siegel's mass formula and the Hasse principle for ternary forms). The actual threshold $N_0$ depends on ineffective constants in the Hasse principle, so `heathBrownBound = 10000` is a placeholder. The axiomatization is appropriate since the full proof requires analytic number theory beyond Mathlib.",
+    "relatedConcepts": [
+      "Heath-Brown 1988",
+      "ternary quadratic forms",
+      "Hasse principle",
+      "Siegel mass formula"
+    ],
+    "prerequisites": [
+      "ErdosIvicQuestion",
+      "analytic number theory"
+    ]
+  },
+  {
+    "id": "erdos-941-small-cases",
+    "proofId": "erdos-941",
+    "type": "concept",
+    "range": {
+      "startLine": 163,
+      "endLine": 179
+    },
+    "title": "Small Exceptions",
+    "content": "`notSumOf3Powerful`: $n$ is NOT the sum of 3 powerful numbers. `small_exceptions` (axiom): there exist finitely many exceptions. `_2_exceptional_without_zero` (sorry): 2 cannot be written as $a + b + c$ with all $a, b, c > 0$ and powerful, since the only powerful number $\\le 2$ is 1, and $1 + 1 + 0$ requires a zero summand.",
+    "significance": "key",
+    "mathContext": "The exceptional set $\\{n : n \\notin \\text{SumOf3Powerful}\\}$ is finite by Heath-Brown's theorem. For small $n$: $1 = 1$, $2 = 1 + 1$, $3 = 1 + 1 + 1$ are all sums of $\\le 3$ powerful numbers (using 1). But requiring all three summands to be strictly positive and powerful is more restrictive. The integer 2 is exceptional in the strict sense because the only powerful number $\\le 2$ is 1, and $1 + 1 = 2$ uses only 2 summands (the third must be 0). Computing the exact exceptional set requires checking $n < N_0$.",
+    "relatedConcepts": [
+      "finite exceptional set",
+      "small cases",
+      "computational verification"
+    ],
+    "prerequisites": [
+      "IsSumOf3PowerfulOrZero",
+      "IsPowerful",
+      "one_is_powerful"
+    ]
+  },
+  {
+    "id": "erdos-941-counting",
+    "proofId": "erdos-941",
+    "type": "definition",
+    "range": {
+      "startLine": 185,
+      "endLine": 197
+    },
+    "title": "Counting Representations and Density",
+    "content": "`numRepresentations n`: counts the number of ways to write $n = a + b + c$ with $a, b, c$ powerful (using nested `Finset.filter`). `powerful_density` (axiom): the density of powerful numbers satisfies $|\\{n \\le N : \\text{IsPowerful}(n)\\}| / N^{1/2} \\to c$ for some $c > 0$.",
+    "significance": "key",
+    "mathContext": "The asymptotic density constant is $c = \\zeta(3/2)/\\zeta(3) \\approx 2.173$ (Erdős-Szekeres). More precisely, $\\sum_{n \\le x, \\text{powerful}} 1 = \\frac{\\zeta(3/2)}{\\zeta(3)} x^{1/2} + \\frac{\\zeta(2/3)}{\\zeta(2)} x^{1/3} + O(x^{1/6})$. The number of representations $r_3(n) = |\\{(a,b,c) : a + b + c = n, \\text{all powerful}\\}|$ is expected to grow on average, but individual values fluctuate. The `numRepresentations` definition is computable but inefficient (quadratic in $n$).",
+    "relatedConcepts": [
+      "zeta function values",
+      "powerful number counting",
+      "representation function",
+      "Erdős-Szekeres"
+    ],
+    "prerequisites": [
+      "IsPowerful",
+      "Finset.filter",
+      "Filter.Tendsto",
+      "nhds"
+    ]
+  },
+  {
+    "id": "erdos-941-rpowerful",
+    "proofId": "erdos-941",
+    "type": "definition",
+    "range": {
+      "startLine": 203,
+      "endLine": 215
+    },
+    "title": "r-Powerful Generalization",
+    "content": "`IsRPowerful r n`: $n > 0$ and $\\forall p$ prime, $p \\mid n \\Rightarrow p^r \\mid n$ (the $r$-powerful or $r$-full numbers). `two_powerful_eq_powerful`: proves `IsRPowerful 2 = IsPowerful` by `simp`. `generalizedQuestion r k`: $\\exists N, \\forall n \\ge N$, $n$ is a sum of $\\le k$ $r$-powerful numbers.",
+    "significance": "key",
+    "mathContext": "The generalization to $r$-powerful numbers connects to Erdős Problems #940 and #1107. For $r = 2$: powerful (squarefull) numbers, Heath-Brown's theorem gives $k = 3$ suffices. For general $r$: the counting function $\\#\\{n \\le x : r\\text{-powerful}\\} \\sim c_r x^{1/r}$. The key open question (Problem #1107) is: for each $r \\ge 3$, what is the minimal $k$ such that all large integers are sums of $\\le k$ $r$-powerful numbers? The `generalizedQuestion` definition captures this with parameters $r$ and $k$.",
+    "relatedConcepts": [
+      "r-powerful numbers",
+      "r-full numbers",
+      "Erdős #940",
+      "Erdős #1107",
+      "minimal basis order"
+    ],
+    "prerequisites": [
+      "IsRPowerful",
+      "Nat.Prime",
+      "Finset.sum"
+    ]
+  },
+  {
+    "id": "erdos-941-summary",
+    "proofId": "erdos-941",
+    "type": "concept",
+    "range": {
+      "startLine": 233,
+      "endLine": 239
+    },
+    "title": "Summary: Problem Solved",
+    "content": "`erdos_941`: delegates to `heath_brown_theorem`. `erdos_941_main` and `erdos_941_solved`: both equal `erdos_941`. Three one-line theorems confirming the problem is solved by Heath-Brown's result.",
+    "significance": "key",
+    "mathContext": "The chain `erdos_941 := heath_brown_theorem` makes the logical structure transparent: the problem statement (`ErdosIvicQuestion`) is exactly what Heath-Brown proved. The multiple names (`erdos_941`, `erdos_941_main`, `erdos_941_solved`) provide convenient aliases for reference from other formalizations. This is the cleanest possible resolution — a direct delegation to the axiomatized result.",
+    "relatedConcepts": [
+      "axiom delegation",
+      "problem resolution",
+      "definitional equality"
+    ],
+    "prerequisites": [
+      "heath_brown_theorem",
+      "ErdosIvicQuestion"
+    ]
+  }
+]

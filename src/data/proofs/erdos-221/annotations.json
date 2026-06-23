@@ -1,0 +1,455 @@
+[
+  {
+    "id": "ann-e221-header",
+    "proofId": "erdos-221",
+    "range": {
+      "startLine": 1,
+      "endLine": 42
+    },
+    "type": "concept",
+    "title": "Problem Overview and Imports",
+    "content": "**Erdős Problem #221: Additive Complements with Powers of 2**\n\nIs there a sparse set $A$ such that $A + \\{2^k\\}$ covers all large integers? More precisely: $|A \\cap \\{1,\\ldots,N\\}| \\ll N/\\log N$ and every large $n = 2^k + a$.\n\n**Status:** SOLVED (Ruzsa, 1972). The construction uses powers of 5 and primitive roots modulo $5^n$.\n\nImports `Mathlib.Analysis.SpecialFunctions.Log.Basic` for $\\log$, `Mathlib.NumberTheory.ZetaFunction` for `ZMod`, and basic set/finset libraries.",
+    "mathContext": "The problem asks for $A \\subseteq \\mathbb{N}$ with $|A \\cap [N]| = O(N/\\log N)$ such that $\\forall n \\gg 1,\\; \\exists k \\geq 0,\\; \\exists a \\in A,\\; n = 2^k + a$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "additive complements",
+      "powers of 2",
+      "primitive roots",
+      "lacunary sequences"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "Real.log",
+      "ZMod",
+      "Filter.Tendsto"
+    ]
+  },
+  {
+    "id": "ann-e221-powers-of-two",
+    "proofId": "erdos-221",
+    "range": {
+      "startLine": 48,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "Powers of Two",
+    "content": "**PowersOfTwo:** $\\{n \\mid \\exists k,\\; n = 2^k\\} = \\{1, 2, 4, 8, 16, \\ldots\\}$\n\nThis exponentially sparse set grows like $\\lfloor \\log_2 N \\rfloor + 1$ elements up to $N$. The sparsity is what makes the complement problem interesting.",
+    "mathContext": "$\\text{PowersOfTwo} = \\{2^k : k \\in \\mathbb{N}\\}$, with $|\\text{PowersOfTwo} \\cap [N]| = \\lfloor \\log_2 N \\rfloor + 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "exponential growth",
+      "lacunary sequences",
+      "binary representation"
+    ],
+    "prerequisites": [
+      "Nat.pow"
+    ]
+  },
+  {
+    "id": "ann-e221-additive-complement",
+    "proofId": "erdos-221",
+    "range": {
+      "startLine": 52,
+      "endLine": 59
+    },
+    "type": "definition",
+    "title": "Additive Complement for Large Integers",
+    "content": "**IsAdditiveComplementForLarge:** $A$ complements $B$ if $\\exists N_0,\\; \\forall n \\geq N_0,\\; \\exists a \\in A,\\; \\exists b \\in B,\\; n = a + b$.\n\n**IsComplementToPowersOfTwo:** Specializes $B$ to $\\{2^k\\}$. This is a 'sumset covering' condition: $A + B \\supseteq [N_0, \\infty)$.",
+    "mathContext": "$\\text{IsComplementToPowersOfTwo}(A) \\Leftrightarrow \\exists N_0,\\; \\forall n \\geq N_0,\\; n \\in A + \\{2^k : k \\geq 0\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sumset",
+      "additive basis",
+      "covering condition",
+      "asymptotic completeness"
+    ],
+    "prerequisites": [
+      "Set",
+      "existential quantifier"
+    ]
+  },
+  {
+    "id": "ann-e221-counting",
+    "proofId": "erdos-221",
+    "range": {
+      "startLine": 65,
+      "endLine": 72
+    },
+    "type": "definition",
+    "title": "Counting Function and $N/\\log N$ Density",
+    "content": "**countingFunction $A$ $N$:** $|A \\cap \\{1,\\ldots,N\\}|$ computed via `Finset.filter`.\n\n**HasDensityNOverLogN:** $\\exists C > 0,\\; \\forall N \\geq 2,\\; |A \\cap [N]| \\leq C \\cdot N/\\log N$.\n\nThe density $N/\\log N$ is the target: sparser than linear but denser than polylogarithmic.",
+    "mathContext": "$|A \\cap [N]| = O(N/\\log N)$ means the counting function grows like the prime counting function $\\pi(N)$, which is $\\Theta(N/\\log N)$ by the Prime Number Theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counting function",
+      "asymptotic density",
+      "prime counting function",
+      "O-notation"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "Finset.card",
+      "Real.log"
+    ]
+  },
+  {
+    "id": "ann-e221-lorentz-density",
+    "proofId": "erdos-221",
+    "range": {
+      "startLine": 74,
+      "endLine": 83
+    },
+    "type": "definition",
+    "title": "Lorentz and Optimal Densities",
+    "content": "**HasLorentzDensity:** $|A \\cap [N]| \\leq C \\cdot N \\log\\log N / \\log N$ — the weaker bound achieved by Lorentz (1954).\n\n**HasAsymptoticOptimalDensity:** $|A \\cap [N]| \\cdot \\log 2 \\cdot \\log N / N \\to 1$ — the exact asymptotic achieved by Ruzsa (2001), equivalent to $|A \\cap [N]| \\sim N/\\log_2 N$.",
+    "mathContext": "Lorentz's bound has the extra $\\log\\log N$ factor: $O(N \\log\\log N / \\log N)$. Ruzsa removed this factor entirely, achieving the sharp $O(N/\\log N)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "iterated logarithm",
+      "asymptotic analysis",
+      "Filter.Tendsto"
+    ],
+    "prerequisites": [
+      "Real.log",
+      "Filter.Tendsto",
+      "nhds"
+    ]
+  },
+  {
+    "id": "ann-e221-conjecture",
+    "proofId": "erdos-221",
+    "range": {
+      "startLine": 89,
+      "endLine": 91
+    },
+    "type": "definition",
+    "title": "Erdős Problem #221 Statement",
+    "content": "**Erdos221Conjecture:** $\\exists A,\\; \\text{IsComplementToPowersOfTwo}(A) \\wedge \\text{HasDensityNOverLogN}(A)$.\n\nCan we find a complement to $\\{2^k\\}$ with the optimal density $O(N/\\log N)$?",
+    "mathContext": "$\\text{Erdos221Conjecture} := \\exists A \\subseteq \\mathbb{N},\\; A + \\{2^k\\} \\supseteq [N_0, \\infty) \\text{ and } |A \\cap [N]| \\leq CN/\\log N$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős problems",
+      "existential construction",
+      "additive complement"
+    ],
+    "prerequisites": [
+      "IsComplementToPowersOfTwo",
+      "HasDensityNOverLogN"
+    ]
+  },
+  {
+    "id": "ann-e221-lorentz",
+    "proofId": "erdos-221",
+    "range": {
+      "startLine": 97,
+      "endLine": 99
+    },
+    "type": "concept",
+    "title": "Lorentz's Result (1954)",
+    "content": "**lorentz_1954:** $\\exists A$ with $\\text{IsComplementToPowersOfTwo}(A) \\wedge \\text{HasLorentzDensity}(A)$.\n\nThe first positive answer to the complement question, published in 'On a problem of additive number theory' (*Acta Math. Acad. Sci. Hungar.* 5, 1954). The density $O(N \\log\\log N / \\log N)$ was not yet optimal.",
+    "mathContext": "Lorentz used a greedy-type construction. The extra $\\log\\log N$ factor arises from less efficient residue coverage compared to Ruzsa's primitive root approach.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lorentz",
+      "first positive result",
+      "suboptimal density",
+      "greedy algorithms"
+    ],
+    "prerequisites": [
+      "IsComplementToPowersOfTwo",
+      "HasLorentzDensity"
+    ]
+  },
+  {
+    "id": "ann-e221-ruzsa-constant",
+    "proofId": "erdos-221",
+    "range": {
+      "startLine": 105,
+      "endLine": 106
+    },
+    "type": "definition",
+    "title": "Ruzsa's Constant",
+    "content": "**ruzsaConstant:** $C = 1/(5 \\log 2) \\approx 0.2885$.\n\nThis specific constant is chosen so that $5^n \\geq C \\log m$ balances sparsity against coverage. The factor of 5 comes from the base of the powers, and $\\log 2$ connects the binary structure of $2^k$ to the natural logarithm.",
+    "mathContext": "$C = \\frac{1}{5 \\ln 2}$. The constraint $5^n \\geq C \\ln m$ ensures each 'shell' at level $n$ contributes $O(N/5^n)$ elements, summing to $O(N/\\log N)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "explicit constants",
+      "logarithmic bounds",
+      "construction parameters"
+    ],
+    "prerequisites": [
+      "Real.log"
+    ]
+  },
+  {
+    "id": "ann-e221-ruzsa-set",
+    "proofId": "erdos-221",
+    "range": {
+      "startLine": 108,
+      "endLine": 114
+    },
+    "type": "definition",
+    "title": "Ruzsa's Set Construction",
+    "content": "**RuzsaCoreSet:** $\\{5^n \\cdot m : m \\geq 1 \\text{ and } 5^n \\geq C \\log m\\}$\n\n**RuzsaSet:** $\\text{RuzsaCoreSet} + \\{0, 1\\}$\n\nThe core set consists of multiples of $5^n$ where $n$ grows logarithmically with $m$. Adding $\\{0, 1\\}$ handles parity: since $5^n \\cdot m$ and $5^n \\cdot m + 1$ cover both parities, every residue class is reached.",
+    "mathContext": "$A = \\{5^n m : m \\geq 1,\\; 5^n \\geq \\frac{\\ln m}{5 \\ln 2}\\} + \\{0, 1\\}$. The key: for a given $n$, elements $5^n m$ with $m \\leq N/5^n$ contribute $\\leq N/5^n$ to the counting function.",
+    "significance": "key",
+    "relatedConcepts": [
+      "explicit construction",
+      "multiples of prime powers",
+      "parity correction",
+      "sieve-like structure"
+    ],
+    "prerequisites": [
+      "ruzsaConstant",
+      "Set operations"
+    ]
+  },
+  {
+    "id": "ann-e221-primitive-root",
+    "proofId": "erdos-221",
+    "range": {
+      "startLine": 116,
+      "endLine": 119
+    },
+    "type": "concept",
+    "title": "2 is a Primitive Root mod $5^n$",
+    "content": "**two_primitive_root_mod_five_power:** For all $n \\geq 1$, 2 is a primitive root modulo $5^n$: $\\text{ord}_{5^n}(2) = \\varphi(5^n) = 4 \\cdot 5^{n-1}$.\n\nThis means the powers $\\{2^0, 2^1, \\ldots, 2^{4 \\cdot 5^{n-1} - 1}\\}$ cycle through ALL residues coprime to $5^n$ modulo $5^n$. This is the algebraic miracle enabling Ruzsa's construction.",
+    "mathContext": "$2^{4 \\cdot 5^{n-1}} \\equiv 1 \\pmod{5^n}$ and $2^j \\not\\equiv 1 \\pmod{5^n}$ for $0 < j < 4 \\cdot 5^{n-1}$. Equivalently, $(\\mathbb{Z}/5^n\\mathbb{Z})^\\times = \\langle 2 \\rangle$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "primitive roots",
+      "multiplicative order",
+      "Euler's totient",
+      "cyclic groups",
+      "Artin's conjecture"
+    ],
+    "prerequisites": [
+      "ZMod",
+      "multiplicative order",
+      "Euler's totient function"
+    ]
+  },
+  {
+    "id": "ann-e221-ruzsa-theorem",
+    "proofId": "erdos-221",
+    "range": {
+      "startLine": 127,
+      "endLine": 130
+    },
+    "type": "concept",
+    "title": "Ruzsa's Theorem (1972)",
+    "content": "**ruzsa_1972:** `Erdos221Conjecture`\n\nProved from axioms: `⟨ruzsa_is_complement, ruzsa_density⟩`. Ruzsa's set is a complement to powers of 2 with density $O(N/\\log N)$, solving Problem #221 affirmatively.",
+    "mathContext": "$\\text{RuzsaSet}$ satisfies both $\\text{IsComplementToPowersOfTwo}$ and $\\text{HasDensityNOverLogN}$. The proof is a simple pairing of the two axiomatized properties.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ruzsa",
+      "solution verification",
+      "axiom combination"
+    ],
+    "prerequisites": [
+      "ruzsa_is_complement",
+      "ruzsa_density",
+      "Erdos221Conjecture"
+    ]
+  },
+  {
+    "id": "ann-e221-answer",
+    "proofId": "erdos-221",
+    "range": {
+      "startLine": 136,
+      "endLine": 137
+    },
+    "type": "concept",
+    "title": "Problem #221 — Answer: YES",
+    "content": "**erdos_221_answer:** `Erdos221Conjecture := ruzsa_1972`\n\nThe answer to Erdős Problem #221 is YES. Sparse additive complements to $\\{2^k\\}$ exist with the optimal density $O(N/\\log N)$.",
+    "mathContext": "Direct application of `ruzsa_1972`. The Lean term is definitionally `ruzsa_1972`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "solved problem",
+      "definitional equality"
+    ],
+    "prerequisites": [
+      "ruzsa_1972"
+    ]
+  },
+  {
+    "id": "ann-e221-exact-complement",
+    "proofId": "erdos-221",
+    "range": {
+      "startLine": 143,
+      "endLine": 148
+    },
+    "type": "concept",
+    "title": "Ruzsa's Exact Complement (2001)",
+    "content": "**ExactComplementExists** and **ruzsa_2001_exact_complement:** There exists a complement with asymptotically exact density $|A \\cap [N]| \\sim N/\\log_2 N$.\n\nPublished in 'Additive completion of lacunary sequences' (*Combinatorica* 21, 2001). This refines the $O(N/\\log N)$ bound to the precise asymptotic.",
+    "mathContext": "$\\text{HasAsymptoticOptimalDensity}(A)$: $\\lim_{N \\to \\infty} |A \\cap [N]| \\cdot \\frac{\\ln 2 \\cdot \\ln N}{N} = 1$, i.e., $|A \\cap [N]| \\sim \\frac{N}{\\log_2 N}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "exact asymptotics",
+      "Ruzsa 2001",
+      "lacunary completion",
+      "Filter.Tendsto"
+    ],
+    "prerequisites": [
+      "ExactComplementExists",
+      "HasAsymptoticOptimalDensity"
+    ]
+  },
+  {
+    "id": "ann-e221-lower-bound",
+    "proofId": "erdos-221",
+    "range": {
+      "startLine": 154,
+      "endLine": 158
+    },
+    "type": "concept",
+    "title": "Density Lower Bound",
+    "content": "**density_lower_bound:** Any complement to $\\{2^k\\}$ must satisfy $|A \\cap [N]| \\geq c \\cdot N/\\log N$ for some $c > 0$ and all large $N$.\n\nThis shows $N/\\log N$ is not just achievable but necessary — no sparser complement exists.",
+    "mathContext": "The lower bound follows from a counting argument: since $|\\{2^k : 2^k \\leq N\\}| = \\lfloor \\log_2 N \\rfloor + 1 \\sim \\log_2 N$, each element of $A$ can 'cover' at most $\\sim \\log_2 N$ integers, so $|A| \\geq N/\\log_2 N$ is forced.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lower bounds",
+      "counting argument",
+      "optimality",
+      "information-theoretic bounds"
+    ],
+    "prerequisites": [
+      "IsComplementToPowersOfTwo",
+      "countingFunction"
+    ]
+  },
+  {
+    "id": "ann-e221-optimality",
+    "proofId": "erdos-221",
+    "range": {
+      "startLine": 160,
+      "endLine": 168
+    },
+    "type": "concept",
+    "title": "Optimality of $N/\\log N$",
+    "content": "**optimal_density:** The density $N/\\log N$ is tight from both sides.\n\n1. **Upper bound** (Ruzsa): $\\exists A$ with $|A \\cap [N]| \\leq C \\cdot N/\\log N$\n2. **Lower bound**: $\\forall A$ complement, $|A \\cap [N]| \\geq c \\cdot N/\\log N$\n\nProved by pairing `erdos_221_answer` with `density_lower_bound`.",
+    "mathContext": "$\\Theta(N/\\log N)$: the density is determined up to a multiplicative constant. The exact constant ratio $C/c$ is not known.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tight bounds",
+      "Theta notation",
+      "extremal combinatorics"
+    ],
+    "prerequisites": [
+      "erdos_221_answer",
+      "density_lower_bound"
+    ]
+  },
+  {
+    "id": "ann-e221-primitive-order",
+    "proofId": "erdos-221",
+    "range": {
+      "startLine": 177,
+      "endLine": 183
+    },
+    "type": "concept",
+    "title": "Multiplicative Order of 2 mod $5^n$",
+    "content": "**primitive_root_order:** For $n \\geq 1$, $\\text{ord}_{5^n}(2) = \\varphi(5^n) = 4 \\cdot 5^{n-1}$, and $2^j \\not\\equiv 1 \\pmod{5^n}$ for $0 < j < 4 \\cdot 5^{n-1}$.\n\nThis quantitative statement confirms 2 generates the full multiplicative group $(\\mathbb{Z}/5^n\\mathbb{Z})^\\times$.",
+    "mathContext": "The fact that 2 is a primitive root mod 5 (order 4) lifts to all $5^n$ by Hensel's lemma-type arguments. Specifically, if $g$ is a primitive root mod $p$ and $g^{p-1} \\not\\equiv 1 \\pmod{p^2}$, then $g$ is a primitive root mod $p^n$ for all $n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lifting primitive roots",
+      "Hensel's lemma",
+      "multiplicative group structure"
+    ],
+    "prerequisites": [
+      "ZMod",
+      "Nat.Coprime"
+    ]
+  },
+  {
+    "id": "ann-e221-residue-coverage",
+    "proofId": "erdos-221",
+    "range": {
+      "startLine": 184,
+      "endLine": 188
+    },
+    "type": "concept",
+    "title": "Powers of 2 Cover Coprime Residues",
+    "content": "**powers_cover_residues:** For $n \\geq 1$ and $r$ coprime to $5^n$, $\\exists k$ with $2^k \\equiv r \\pmod{5^n}$.\n\nThis is the direct consequence of 2 being a primitive root: the powers $\\{2^0, 2^1, \\ldots\\}$ hit every coprime residue class.",
+    "mathContext": "Since $\\langle 2 \\rangle = (\\mathbb{Z}/5^n\\mathbb{Z})^\\times$, every $r$ with $\\gcd(r, 5^n) = 1$ satisfies $r = 2^k \\bmod 5^n$ for some $k$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "residue classes",
+      "cyclic group generators",
+      "complete residue systems"
+    ],
+    "prerequisites": [
+      "primitive_root_order",
+      "Nat.Coprime"
+    ]
+  },
+  {
+    "id": "ann-e221-generalization",
+    "proofId": "erdos-221",
+    "range": {
+      "startLine": 194,
+      "endLine": 204
+    },
+    "type": "concept",
+    "title": "Generalization to Arbitrary Bases",
+    "content": "**GeneralizedComplement** and **generalization_to_any_base:** For any base $g \\geq 2$, sparse complements to $\\{g^k\\}$ exist with density $O(N/\\log N)$.\n\nThe construction adapts by finding a prime $p$ where $g$ is a primitive root mod $p^n$, then using multiples of $p^n$. By Artin's conjecture (proven conditionally under GRH), such primes exist for most $g$.",
+    "mathContext": "$\\forall g \\geq 2,\\; \\exists A \\subseteq \\mathbb{N},\\; \\text{GeneralizedComplement}(g, A) \\wedge |A \\cap [N]| = O(N/\\log N)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Artin's conjecture",
+      "generalized primitive roots",
+      "base-independent results"
+    ],
+    "prerequisites": [
+      "GeneralizedComplement",
+      "primitive roots for general bases"
+    ]
+  },
+  {
+    "id": "ann-e221-sumset",
+    "proofId": "erdos-221",
+    "range": {
+      "startLine": 210,
+      "endLine": 225
+    },
+    "type": "concept",
+    "title": "Sumset and Additive Basis Connections",
+    "content": "**sumset_covering:** $A + \\{2^k\\}$ covers all large integers.\n\n**additive_basis_order_two:** $A \\cup \\text{PowersOfTwo}$ forms a thin additive basis of order 2.\n\nThese rephrase the complement property in sumset language, connecting to the broader Erdős–Ginzburg–Ziv and additive basis theory.",
+    "mathContext": "$A + B \\supseteq [N_0, \\infty)$ is equivalent to saying $A \\cup B$ is an asymptotic additive basis of order 2. The 'thinness' condition $|A \\cap [N]| = O(N/\\log N)$ makes this a thin basis result.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sumsets",
+      "additive bases",
+      "Schnirelmann density",
+      "order of a basis"
+    ],
+    "prerequisites": [
+      "IsComplementToPowersOfTwo",
+      "additive basis theory"
+    ]
+  },
+  {
+    "id": "ann-e221-summary",
+    "proofId": "erdos-221",
+    "range": {
+      "startLine": 232,
+      "endLine": 239
+    },
+    "type": "concept",
+    "title": "Summary and Main Theorems",
+    "content": "**erdos_221_summary:** Conjecture holds ∧ Ruzsa's construction works ∧ exact complement exists.\n\n**erdos_221_main:** Explicit representation: $\\exists A,\\; (\\forall n \\gg 1,\\; \\exists k, a \\in A,\\; n = 2^k + a) \\wedge |A \\cap [N]| = O(N/\\log N)$.\n\n**erdos_221:** Conjecture holds ∧ density is optimal ($\\Omega(N/\\log N)$ lower bound).\n\nThe problem is fully resolved with tight bounds.",
+    "mathContext": "The final theorem `erdos_221` is the conjunction $\\text{Erdos221Conjecture} \\wedge \\text{density\\_lower\\_bound}$, establishing both existence and optimality.",
+    "significance": "key",
+    "relatedConcepts": [
+      "problem resolution",
+      "tight bounds",
+      "theorem assembly"
+    ],
+    "prerequisites": [
+      "erdos_221_answer",
+      "density_lower_bound",
+      "ruzsa_2001_exact_complement"
+    ]
+  }
+]

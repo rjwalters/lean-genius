@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-e395inc01-header",
+    "proofId": "erdos-395-oq-01-incomplete-01",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "concept",
+    "title": "The Carnielli-Carolino Counterexample: Background",
+    "content": "This file provides the axiom-free proof that the Carnielli-Carolino configuration always achieves |sum| ≥ √2. The parent file erdos-395-oq-01 axiomatized this fact; here it is proved from first principles using only integer parity and complex arithmetic from Mathlib.",
+    "mathContext": "The configuration is $z_1 = 1$, $z_k = i$ for $k \\geq 2$, with $n$ even. For any sign vector $\\varepsilon \\in \\{-1,1\\}^n$, the signed sum is $S = \\varepsilon_1 \\cdot 1 + (\\varepsilon_2 + \\cdots + \\varepsilon_n) \\cdot i$. Since $|S|^2 = \\varepsilon_1^2 + T^2$ where $T = \\varepsilon_2 + \\cdots + \\varepsilon_n$, and $T \\neq 0$ by parity, we get $|S|^2 \\geq 2$, so $|S| \\geq \\sqrt{2}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Littlewood-Offord problem", "reverse Littlewood-Offord", "Gaussian integers", "complex norm"],
+    "prerequisites": ["complex numbers", "ZMod arithmetic", "Finset summation in Lean 4"]
+  },
+  {
+    "id": "ann-e395inc01-negone-zmod2",
+    "proofId": "erdos-395-oq-01-incomplete-01",
+    "range": { "startLine": 34, "endLine": 34 },
+    "type": "insight",
+    "title": "(-1 : ZMod 2) = 1 by decide",
+    "content": "The one-line lemma `neg_one_zmod2` proves that -1 equals 1 in ZMod 2, verified by the `decide` tactic which exhaustively checks all elements of ZMod 2 = {0, 1}.",
+    "mathContext": "In $\\mathbb{Z}/2\\mathbb{Z}$, $-1 \\equiv 1 \\pmod{2}$ since $-1 + 2 = 1$. Both $+1$ and $-1$ reduce to $1 \\bmod 2$, which is the key to showing that each sign value $\\varepsilon_k \\in \\{-1,1\\}$ contributes the same amount modulo 2.",
+    "significance": "supporting",
+    "relatedConcepts": ["ZMod 2", "modular arithmetic", "decide tactic", "characteristic 2"],
+    "prerequisites": ["ZMod in Lean 4", "decidable propositions"]
+  },
+  {
+    "id": "ann-e395inc01-cc-re",
+    "proofId": "erdos-395-oq-01-incomplete-01",
+    "range": { "startLine": 36, "endLine": 48 },
+    "type": "insight",
+    "title": "Real part of signed sum equals ε₀",
+    "content": "The `cc_re` lemma computes the real part of the signed sum for the Carnielli-Carolino counterexample. It uses `Finset.sum_eq_single` to isolate index 0 (which has z₀=1, contributing ε₀·Re(1) = ε₀) and shows all other terms contribute 0 (since Re(i) = 0).",
+    "mathContext": "For $z_0 = 1$ and $z_k = i$ ($k > 0$): $\\operatorname{Re}(\\varepsilon_k z_k) = \\varepsilon_k \\operatorname{Re}(z_k)$. Since $\\operatorname{Re}(1) = 1$ and $\\operatorname{Re}(i) = 0$, only the $k=0$ term survives: $\\operatorname{Re}(S) = \\varepsilon_0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["complex real part", "Finset.sum_eq_single", "reAddGroupHom"],
+    "prerequisites": ["complex arithmetic in Lean 4", "Finset.sum API"]
+  },
+  {
+    "id": "ann-e395inc01-cc-im",
+    "proofId": "erdos-395-oq-01-incomplete-01",
+    "range": { "startLine": 50, "endLine": 70 },
+    "type": "insight",
+    "title": "Imaginary part is the tail sum T",
+    "content": "The `cc_im` lemma computes the imaginary part as T = ε₁+...+εₙ₋₁. It uses `imAddGroupHom` to commute the imaginary-part map through the Finset sum, then strips the zero term at index 0 (Im(1) = 0) via `Finset.add_sum_erase`.",
+    "mathContext": "For $z_0 = 1$ and $z_k = i$ ($k > 0$): $\\operatorname{Im}(\\varepsilon_k z_k) = \\varepsilon_k \\operatorname{Im}(z_k)$. Since $\\operatorname{Im}(1) = 0$ and $\\operatorname{Im}(i) = 1$, we get $\\operatorname{Im}(S) = \\sum_{k=1}^{n-1} \\varepsilon_k = T$. This reduces a complex norm bound to an integer nonzero claim.",
+    "significance": "supporting",
+    "relatedConcepts": ["complex imaginary part", "Finset.add_sum_erase", "imAddGroupHom"],
+    "prerequisites": ["complex arithmetic in Lean 4", "Finset.erase API"]
+  },
+  {
+    "id": "ann-e395inc01-tail-nonzero",
+    "proofId": "erdos-395-oq-01-incomplete-01",
+    "range": { "startLine": 72, "endLine": 90 },
+    "type": "insight",
+    "title": "Parity argument: tail sum is odd, hence nonzero",
+    "content": "This is the mathematical core of the proof. The lemma `tail_nonzero` proves T ≠ 0 by contradiction: if T = 0, then (T : ZMod 2) = 0. But each εₖ ∈ {-1,1} maps to 1 in ZMod 2, so (T : ZMod 2) = (n-1)·1. Since n is even, n-1 is odd, giving (n-1)·1 ≡ 1 (mod 2). This contradicts 0 = 1 in ZMod 2.",
+    "mathContext": "Key steps: (1) $\\varepsilon_k \\in \\{-1, 1\\} \\Rightarrow \\varepsilon_k \\equiv 1 \\pmod 2$. (2) There are $n-1$ tail terms. (3) $n$ even $\\Rightarrow n-1 = 2(k-1)+1$ for some $k \\geq 1$ $\\Rightarrow n-1 \\equiv 1 \\pmod 2$. (4) So $T \\equiv (n-1) \\cdot 1 \\equiv 1 \\pmod 2$. An odd integer is nonzero. In Lean: `smul_eq_mul` converts the scalar sum in ZMod 2, and `show (2 : ZMod 2) = 0 from by decide` eliminates the even part.",
+    "significance": "key",
+    "relatedConcepts": ["ZMod 2", "parity argument", "proof by contradiction", "integer parity"],
+    "prerequisites": ["modular arithmetic", "ZMod API in Lean 4", "Finset.sum_congr", "smul in ZMod"]
+  },
+  {
+    "id": "ann-e395inc01-main-thm",
+    "proofId": "erdos-395-oq-01-incomplete-01",
+    "range": { "startLine": 96, "endLine": 116 },
+    "type": "insight",
+    "title": "Main theorem: |sum| ≥ √2 for all sign vectors",
+    "content": "The theorem `counterexample_always_large_proved` assembles the four lemmas: (1) unfold normSq = Re² + Im² = ε₀² + T², (2) ε₀² = 1 since ε₀ ∈ {-1,1}, (3) T ≠ 0 (by tail_nonzero) implies T² ≥ 1 (nonzero integer), (4) normSq ≥ 1+1 = 2, (5) Real.sqrt_le_sqrt gives |sum| = √normSq ≥ √2.",
+    "mathContext": "The bound $T^2 \\geq 1$ for $T \\in \\mathbb{Z} \\setminus \\{0\\}$ uses $|T| \\geq 1$: $T^2 = |T|^2 \\geq 1$. In Lean, `Int.natAbs_pos.mpr hT` gives `natAbs T ≥ 1`, then `exact_mod_cast` lifts to $\\mathbb{R}$, and `nlinarith [sq_abs (T : ℝ)]` concludes $T^2 \\geq 1$. The final step is `Real.sqrt_le_sqrt`: $\\sqrt{2} \\leq \\sqrt{\\operatorname{normSq}(S)}$ given $2 \\leq \\operatorname{normSq}(S)$.",
+    "significance": "key",
+    "relatedConcepts": ["normSq", "Real.sqrt monotonicity", "Int.natAbs", "complex absolute value"],
+    "prerequisites": ["complex norm in Lean 4", "Real.sqrt API", "integer casting to ℝ"]
+  }
+]

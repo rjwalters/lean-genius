@@ -1,0 +1,164 @@
+[
+  {
+    "id": "ann-e300-header",
+    "proofId": "erdos-300",
+    "range": {
+      "startLine": 1,
+      "endLine": 30
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #300** asks for the maximum size A(N) of a subset A ⊆ {1,...,N} such that no subset of A has reciprocals summing to exactly 1. Erdős and Graham conjectured A(N) ≈ N, but this was disproved. The answer is A(N) = (1 - 1/e + o(1))N, meaning roughly 63.2% of integers can be included.",
+    "mathContext": "The problem connects combinatorial number theory with Egyptian fractions. A 'unit sum-free' set avoids all representations of 1 as Σ_{n∈S} 1/n. The asymptotic answer involves the exponential constant e through the harmonic series approximation Σ_{n≤N} 1/n ≈ ln(N).",
+    "significance": "key",
+    "relatedConcepts": [
+      "unit-fractions",
+      "egyptian-fractions",
+      "subset-sums",
+      "harmonic-series"
+    ],
+    "prerequisites": [
+      "unit fractions",
+      "Egyptian fractions",
+      "harmonic series"
+    ]
+  },
+  {
+    "id": "ann-e300-definitions",
+    "proofId": "erdos-300",
+    "range": {
+      "startLine": 48,
+      "endLine": 76
+    },
+    "type": "definition",
+    "title": "Core Definitions: Unit Fraction Sum and A(N)",
+    "content": "**unitFractionSum** computes Σ_{n∈S} 1/n for a finite set S. **IsUnitSumFree** captures the key property: no nonempty subset has reciprocals summing to exactly 1. **A(N)** is the maximum cardinality over all unit sum-free subsets of {1,...,N}. These three definitions precisely encode the objects in Erdős's question.",
+    "mathContext": "The function A(N) is well-defined because the powerset of {1,...,N} is finite, so the supremum exists. The definition uses Finset.sup' which requires a nonempty filter — the empty set is always unit sum-free, guaranteeing non-emptiness.",
+    "significance": "key",
+    "relatedConcepts": [
+      "finset",
+      "supremum",
+      "unit-fractions"
+    ],
+    "prerequisites": [
+      "Finset operations",
+      "rational arithmetic",
+      "supremum"
+    ]
+  },
+  {
+    "id": "ann-e300-conjecture",
+    "proofId": "erdos-300",
+    "range": {
+      "startLine": 82,
+      "endLine": 97
+    },
+    "type": "concept",
+    "title": "Erdős-Graham Conjecture and Croot's Disproof",
+    "content": "**Erdős and Graham (1980)** conjectured that A(N) = (1 + o(1))N — almost all integers could be included in a unit sum-free set. **Croot (2003)** disproved this by showing A(N) < cN for some c < 1. This was a major surprise: it means a positive fraction of integers must always be excluded to avoid any subset summing to 1.",
+    "mathContext": "The conjecture is formalized using the Filter.atTop framework for asymptotic statements. Croot's theorem provides an existential constant c < 1 with A(N)/N < c eventually. The proof used coloring arguments and density methods related to the structure of Egyptian fraction decompositions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic-analysis",
+      "density-arguments",
+      "filter-eventually"
+    ],
+    "prerequisites": [
+      "asymptotic analysis",
+      "Filter.atTop",
+      "density arguments"
+    ]
+  },
+  {
+    "id": "ann-e300-lower-bound",
+    "proofId": "erdos-300",
+    "range": {
+      "startLine": 110,
+      "endLine": 135
+    },
+    "type": "concept",
+    "title": "Trivial Lower Bound via Small Fractions",
+    "content": "**The trivial lower bound** comes from a simple observation: if we only include integers n > e ≈ 2.718, then every unit fraction 1/n < 1/e. It can be shown that no subset of such small fractions sums to exactly 1. Since about (1 - 1/e) ≈ 63.2% of integers in {1,...,N} exceed e, this immediately gives A(N) ≥ (1 - 1/e + o(1))N.",
+    "mathContext": "The construction smallUnitFractionSet(N) filters {1,...,N} to include only n with n > exp(1). The axiom small_fractions_safe asserts this set is unit sum-free. The density (1 - 1/e) follows from counting: approximately N/e integers lie in {1,2} = {n : n ≤ e}.",
+    "significance": "key",
+    "relatedConcepts": [
+      "exponential-function",
+      "density",
+      "greedy-algorithm"
+    ],
+    "prerequisites": [
+      "exponential function",
+      "density estimation",
+      "harmonic series"
+    ]
+  },
+  {
+    "id": "ann-e300-liu-sawhney",
+    "proofId": "erdos-300",
+    "range": {
+      "startLine": 141,
+      "endLine": 185
+    },
+    "type": "concept",
+    "title": "Liu-Sawhney Theorem: Exact Asymptotic",
+    "content": "**Liu and Sawhney (2024)** proved A(N)/N → 1 - 1/e, showing the trivial lower bound is asymptotically optimal. The theorem asymptotic_formula combines the lower bound (erdos_300_lower_bound) and upper bound (liu_sawhney_upper) into a sandwich: (1 - 1/e - ε)N ≤ A(N) ≤ (1 - 1/e + ε)N for all large N. This is the definitive resolution after 44 years.",
+    "mathContext": "The combined theorem uses Filter.Eventually.and via filter_upwards to merge two asymptotic bounds. The optimal density 1 - 1/e ≈ 0.6321 is defined as a noncomputable real. The proof of asymptotic_formula is fully constructive from the axioms — it's one of the few proved (non-axiom) results in this formalization.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic-density",
+      "filter-upwards",
+      "sandwich-theorem"
+    ],
+    "prerequisites": [
+      "Filter.atTop",
+      "filter_upwards",
+      "sandwich inequalities"
+    ]
+  },
+  {
+    "id": "ann-e300-egyptian",
+    "proofId": "erdos-300",
+    "range": {
+      "startLine": 191,
+      "endLine": 209
+    },
+    "type": "concept",
+    "title": "Egyptian Fraction Connection",
+    "content": "**Egyptian fractions** are sums of distinct unit fractions 1/n₁ + 1/n₂ + ... = r. Every positive rational has such a representation (a classical result). The key point for Problem #300 is that 1 has many such representations: 1 = 1/2 + 1/3 + 1/6, or 1 = 1/2 + 1/4 + 1/5 + 1/20, etc. This abundance of decompositions is what makes the avoidance problem hard.",
+    "mathContext": "HasEgyptianRepresentation defines when a rational r equals a sum of distinct unit fractions. The axiom one_egyptian_representations asserts at least two distinct such decompositions of 1. The proliferation of these decompositions is ultimately why A(N)/N < 1 — large sets inevitably contain a subset summing to 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "egyptian-fractions",
+      "rational-numbers",
+      "unit-fractions"
+    ],
+    "prerequisites": [
+      "rational arithmetic",
+      "Egyptian fractions",
+      "greedy algorithms"
+    ]
+  },
+  {
+    "id": "ann-e300-summary",
+    "proofId": "erdos-300",
+    "range": {
+      "startLine": 246,
+      "endLine": 265
+    },
+    "type": "concept",
+    "title": "Main Result: erdos_300",
+    "content": "**The main theorem erdos_300** directly states A(N)/N → 1 - 1/e, resolving the problem completely. The summary theorem erdos_300_summary packages both the Liu-Sawhney asymptotic and Croot's disproof of the original conjecture. Together they tell the full story: the conjecture was wrong, and the answer is 1 - 1/e.",
+    "mathContext": "erdos_300_summary is proved by exact ⟨liu_sawhney_theorem, croot_theorem⟩, directly combining the two key axioms. erdos_300 is simply liu_sawhney_theorem itself. This clean structure shows how the formalization captures the complete resolution of the 44-year-old problem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "anonymous-constructor",
+      "axiom-composition",
+      "problem-resolution"
+    ],
+    "prerequisites": [
+      "liu_sawhney_theorem",
+      "croot_theorem",
+      "logical conjunction"
+    ]
+  }
+]

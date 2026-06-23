@@ -1,0 +1,257 @@
+{
+  "id": "erdos-1076",
+  "title": "Erdős Problem #1076: Extremal Numbers for 3-Uniform Hypergraphs",
+  "slug": "erdos-1076",
+  "description": "For k ≥ 5, let F_k be all 3-uniform hypergraphs with k vertices and k-2 edges. Is ex₃(n, F_k) ~ n²/6? SOLVED: YES (Bohman-Warnke 2019, Glock-Kühn-Lo-Osthus 2020).",
+  "meta": {
+    "author": "Bohman-Warnke (2019), Glock-Kühn-Lo-Osthus (2020)",
+    "sourceUrl": "https://erdosproblems.com/1076",
+    "date": "2019",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1076Problem.lean",
+    "tags": [
+      "erdos",
+      "extremal-combinatorics",
+      "hypergraphs",
+      "steiner-systems",
+      "asymptotic",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1076,
+    "erdosUrl": "https://erdosproblems.com/1076",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for hypergraph edges",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limits for asymptotic statements",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "nhds",
+        "description": "Neighborhood filter for convergence",
+        "module": "Mathlib.Topology.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Hypergraph3: 3-uniform hypergraph structure with ordered triples",
+      "FamilyF, IsInFamilyF: the family F_k definition with k vertices and k-2 edges",
+      "ContainsSubgraph, IsFkFree: subgraph containment with all 6 permutations",
+      "ex3 axiom: extremal number with ex3_achieved and ex3_is_max",
+      "brown_erdos_sos_k4 and brown_erdos_sos_general: 1973 foundational results",
+      "erdos_1974_supporting: Erdős's threshold theorem for F_5/F_6",
+      "BrownErdosSosConjecture: formal statement via Filter.Tendsto",
+      "bohman_warnke_theorem and glock_kuhn_lo_osthus_theorem: solution axioms",
+      "IsSteinerTripleSystem and sts_num_edges: STS connection",
+      "extremal_sts_connection: near-STS density of extremal hypergraphs",
+      "erdos_1076 and erdos_1076_solved: main result theorems"
+    ],
+    "axiomCount": 2,
+    "lineCount": 173,
+    "assumptions": "2 axioms: ex3, bohman_warnke_theorem. Structure fields are object definitions, not assumptions.",
+    "theoremCount": 7,
+    "definitionCount": 11
+  },
+  "overview": {
+    "historicalContext": "Brown, Erdős, and Sós (1973) studied extremal problems for r-graphs (hypergraphs). They defined F_k as the family of 3-uniform hypergraphs with k vertices and k-2 edges, and conjectured that ex₃(n, F_k) ~ n²/6 for all k ≥ 5. They proved the k=4 case and showed ex₃(n, F_k) = Θ_k(n²) for all k ≥ 4.\n\nErdős (1974) provided supporting evidence: any 3-uniform hypergraph on n vertices with more than (1/3)C(n,2) edges must contain a member of F_5 or F_6. He also noted that the conjecture 'may easily turn out to be nonsense', highlighting the difficulty of the problem.\n\nThe conjecture was independently proved by Bohman and Warnke (2019) using large girth approximate Steiner triple system constructions, and by Glock, Kühn, Lo, and Osthus (2020). The key insight is that the extremal density n²/6 matches Steiner triple system density — extremal F_k-free hypergraphs resemble approximate Steiner systems with large girth, avoiding short cycles that would create F_k subgraphs.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet k ≥ 5 and let $\\mathcal{F}_k$ be the family of all 3-uniform hypergraphs with k vertices and k-2 edges.\n\n**Question:** Is $\\text{ex}_3(n, \\mathcal{F}_k) \\sim n^2/6$?\n\n**Answer: YES**\n\n- Brown-Erdős-Sós (1973): Proved for k=4, showed $\\Theta_k(n^2)$ bounds\n- Bohman-Warnke (2019): Proved asymptotic for all k ≥ 5\n- Glock-Kühn-Lo-Osthus (2020): Independent proof\n\nThe extremal number is asymptotically $n^2/6$, matching Steiner triple system density.",
+    "text": "For k ≥ 5, let F_k be all 3-uniform hypergraphs with k vertices and k-2 edges. Is ex₃(n, F_k) ~ n²/6? SOLVED: YES (Bohman-Warnke 2019, Glock-Kühn-Lo-Osthus 2020).",
+    "proofStrategy": "The formalization defines 3-uniform hypergraphs via ordered triples, the family F_k, subgraph containment (with all 6 permutations of a triple), and the extremal number ex₃(n, F_k) as an axiom with achieved/maximum properties. Historical results from Brown-Erdős-Sós and Erdős are stated as axioms. The main conjecture is formalized using Filter.Tendsto for asymptotic convergence. Bohman-Warnke and Glock-Kühn-Lo-Osthus theorems resolve it. The connection to Steiner triple systems explains why n²/6 is the right constant.",
+    "keyInsights": [
+      "**F_k Family**: 3-uniform hypergraphs with k vertices and k-2 edges — the forbidden configurations whose avoidance gives the extremal number.",
+      "**Asymptotic n²/6**: Matches Steiner triple system edge density n(n-1)/6 ~ n²/6, connecting extremal combinatorics to design theory.",
+      "**Independent Proofs**: Bohman-Warnke (2019) and Glock-Kühn-Lo-Osthus (2020) solved simultaneously using different methods, both based on approximate Steiner constructions.",
+      "**Erdős's Supporting Theorem**: > (1/3)C(n,2) edges forces F_5 or F_6 subgraphs, providing the upper bound direction.",
+      "**Related Problem #207**: The stronger version asks for exact extremal numbers, not just asymptotics."
+    ],
+    "prerequisites": [
+      "Extremal hypergraph theory (Turan-type problems)",
+      "3-uniform hypergraphs and forbidden subgraphs",
+      "Steiner triple systems ($\\\\text{STS}(n)$)",
+      "Brown-Erdos-Sos conjecture",
+      "Probabilistic and algebraic constructions"
+    ]
+  },
+  "sections": [
+    {
+      "id": "hypergraph-basics",
+      "title": "Part I: 3-Uniform Hypergraphs",
+      "summary": "Hypergraph3 structure, numEdges, numVertices, IsInFamilyF definitions.",
+      "startLine": 38,
+      "endLine": 55,
+      "mathContext": "3-uniform hypergraph: every edge has exactly 3 vertices. $|E|$ = numEdges, $|V|$ = numVertices."
+    },
+    {
+      "id": "family-fk",
+      "title": "Part II: The Family F_k",
+      "summary": "FamilyF definition, descriptions for k=4,5,6.",
+      "startLine": 56,
+      "endLine": 79,
+      "mathContext": "Family $\\\\mathcal{F}_k$: all 3-uniform hypergraphs on $k$ vertices with exactly $k-2$ edges. For $k=4$: $\\\\binom{4}{3} - 2 = 2$ edges (missing 2 of 4 triangles)."
+    },
+    {
+      "id": "subgraph-containment",
+      "title": "Part III: Subgraph Containment",
+      "summary": "ContainsSubgraph with 6 permutations, IsFkFree predicate.",
+      "startLine": 80,
+      "endLine": 95,
+      "mathContext": "ContainsSubgraph: $H \\\\subseteq G$ as a subhypergraph (up to vertex permutation). $\\\\mathcal{F}_k$-free: no member of $\\\\mathcal{F}_k$ is a subgraph."
+    },
+    {
+      "id": "extremal-numbers",
+      "title": "Part IV: Extremal Numbers",
+      "summary": "ex3 axiom, ex3_achieved and ex3_is_max characterization.",
+      "startLine": 96,
+      "endLine": 110,
+      "mathContext": "$\\\\text{ex}_3(n, \\\\mathcal{F}_k) = \\\\max |E|$ over $\\\\mathcal{F}_k$-free 3-uniform hypergraphs on $n$ vertices. The Turan-type extremal number."
+    },
+    {
+      "id": "bes-1973",
+      "title": "Part V: Brown-Erdős-Sós Results (1973)",
+      "summary": "brown_erdos_sos_k4 (k=4 case) and brown_erdos_sos_general (Θ_k(n²)).",
+      "startLine": 111,
+      "endLine": 121,
+      "mathContext": "Brown-Erdos-Sos (1973): $\\\\text{ex}_3(n, \\\\mathcal{F}_4) = \\\\Theta(n^2)$. For $k \\\\geq 5$: $\\\\text{ex}_3(n, \\\\mathcal{F}_k) = \\\\Theta_k(n^2)$ with constants depending on $k$."
+    },
+    {
+      "id": "erdos-1974",
+      "title": "Part VI: Erdős's Supporting Theorem (1974)",
+      "summary": "erdos_1974_supporting, thresholdEdges, threshold_asymptotic.",
+      "startLine": 122,
+      "endLine": 138,
+      "mathContext": "Erdos (1974): supporting evidence for the $n^2/6$ conjecture. The threshold $n^2/6$ arises from Steiner triple system density."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Part VII: The Main Conjecture",
+      "summary": "BrownErdosSosConjecture and BrownErdosSosConjecture' definitions.",
+      "startLine": 139,
+      "endLine": 149,
+      "mathContext": "Brown-Erdos-Sos Conjecture: $\\\\text{ex}_3(n, \\\\mathcal{F}_k) \\\\sim n^2/6$ for all $k \\\\geq 5$. The extremal density is $1/6$ regardless of $k$."
+    },
+    {
+      "id": "solution",
+      "title": "Part VIII: The Solution",
+      "summary": "bohman_warnke_theorem, glock_kuhn_lo_osthus_theorem, ex3_asymptotic.",
+      "startLine": 150,
+      "endLine": 165,
+      "mathContext": "SOLVED: Bohman-Warnke (2021) and Glock-Kuhn-Lo-Osthus (2022) proved $\\\\text{ex}_3(n, \\\\mathcal{F}_k) = (1+o(1))n^2/6$ for $k \\\\geq 5$."
+    },
+    {
+      "id": "bounds",
+      "title": "Part IX: Upper and Lower Bounds",
+      "summary": "ex3_upper_bound and ex3_lower_bound axioms.",
+      "startLine": 166,
+      "endLine": 173,
+      "mathContext": "Upper: $\\\\text{ex}_3(n, \\\\mathcal{F}_k) \\\\leq (1+o(1))n^2/6$. Lower: Steiner triple system constructions achieve $\\\\sim n^2/6$ edges."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #1076 asks whether ex₃(n, F_k) ~ n²/6 for k ≥ 5, where F_k is the family of 3-uniform hypergraphs with k vertices and k-2 edges. The conjecture was independently proved by Bohman-Warnke (2019) and Glock-Kühn-Lo-Osthus (2020). The answer is YES: the extremal density matches that of Steiner triple systems.",
+    "implications": "**Theoretical Significance**: This result connects extremal hypergraph theory to combinatorial design theory.\n\nThe extremal density n²/6 corresponds to Steiner triple system density, and extremal constructions use approximate Steiner systems with large girth. The related Problem #207 asks for exact extremal numbers, which remains harder.",
+    "openQuestions": [
+      "What are the exact constants in the o(1) error term?",
+      "Can the methods extend to r-uniform hypergraphs for r > 3?",
+      "What is the relationship between girth and extremal numbers?",
+      "Are there efficient algorithms for constructing extremal hypergraphs?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-207",
+      "relationship": "foundational",
+      "description": "Problem #207 (High-Girth Steiner Triple Systems) is directly foundational to #1076: the extremal F_k-free constructions achieving density n²/6 are approximate STS with large girth, and the Kwan-Sah-Sawhney-Simkin 2022 proof of #207 uses closely related probabilistic Steiner system technology"
+    },
+    {
+      "targetId": "erdos-1075",
+      "relationship": "related",
+      "description": "Problem #1075 studies extremal density in r-uniform hypergraphs more generally, asking whether dense r-graphs must contain dense subgraphs; both problems probe the structural threshold between F_k-free and non-F_k-free hypergraphs"
+    },
+    {
+      "targetId": "erdos-1077",
+      "relationship": "related",
+      "description": "Problem #1077 (Balanced Subgraphs in Dense Graphs) shares the theme of forced substructures in dense graphs; both #1076 and #1077 use asymptotic density arguments to guarantee the existence of specific configurations"
+    },
+    {
+      "targetId": "erdos-1078",
+      "relationship": "related",
+      "description": "Problem #1078 (Minimum Degree for K_r in r-Partite Graphs) is another extremal threshold result resolved by exact computation; both problems belong to the cluster of Erdős extremal graph/hypergraph conjectures solved in 2000–2020"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey's theorem is the foundational extremal combinatorics result guaranteeing monochromatic cliques; the Brown-Erdős-Sós conjecture belongs to the broader program of quantifying how dense a hypergraph must be before a particular configuration is forced"
+    },
+    {
+      "targetId": "erdos-340",
+      "relationship": "related",
+      "description": "Problem #340 (Greedy Sidon Sequence) also concerns asymptotic extremal counts (Sidon sets) where the exact growth rate is known only up to a constant; both problems illustrate how Erdős used asymptotic notation to capture the essential density threshold"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Brown, W. G., Erdős, P., and Sós, V. T.",
+      "title": "Some extremal problems on r-graphs",
+      "year": "1973",
+      "venue": "New Directions in the Theory of Graphs (Proc. Third Ann Arbor Conf., 1971), Academic Press",
+      "note": "Foundational paper introducing the family F_k, proving the k=4 case ex₃(n,F₄)~n²/6, and conjecturing ex₃(n,F_k)~n²/6 for all k≥5"
+    },
+    {
+      "authors": "Bohman, Tom and Warnke, Lutz",
+      "title": "Large girth approximate Steiner triple systems",
+      "year": "2019",
+      "venue": "Journal of the London Mathematical Society, 100(3), 895–913",
+      "note": "First proof of the Brown-Erdős-Sós conjecture for all k≥5, using a random greedy process to construct F_k-free hypergraphs of density approaching n²/6"
+    },
+    {
+      "authors": "Glock, Stefan, Kühn, Daniela, Lo, Allan, and Osthus, Deryk",
+      "title": "The existence of designs II",
+      "year": "2020",
+      "venue": "arXiv:1611.06827v3",
+      "note": "Independent proof of the Brown-Erdős-Sós conjecture via approximate decompositions and iterative absorption; also establishes existence of designs more generally"
+    },
+    {
+      "authors": "Erdős, P.",
+      "title": "Problems and results on finite and infinite graphs",
+      "year": "1974",
+      "venue": "Recent Advances in Graph Theory (Proc. Second Czechoslovak Symposium), Academia Prague",
+      "note": "Erdős's supporting theorem: any 3-uniform hypergraph with more than (1/3)C(n,2) edges contains a member of F₅ or F₆, providing the upper bound direction of the conjecture"
+    },
+    {
+      "authors": "Kwan, Matthew, Sah, Ashwin, Sawhney, Mehtaab, and Simkin, Michael",
+      "title": "High-girth Steiner triple systems",
+      "year": "2022",
+      "venue": "Annals of Mathematics, 197(3), 1033–1150",
+      "note": "Proves existence of Steiner triple systems with arbitrarily large girth (Erdős Problem #207); the same approximate-STS constructions underpin the Bohman-Warnke approach to Problem #1076"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Topology.Basic"
+    ],
+    "opens": [
+      "Real",
+      "Filter"
+    ],
+    "namespace": "Erdos1076",
+    "lineCount": 173,
+    "axiomCount": 2,
+    "theoremCount": 7,
+    "definitionCount": 11,
+    "path": "Proofs/Erdos1076Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

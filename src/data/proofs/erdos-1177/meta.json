@@ -1,0 +1,147 @@
+{
+  "id": "erdos-1177",
+  "title": "Erdos Problem #1177: Chromatic Numbers of Hypergraph Families with Forbidden Subgraphs",
+  "slug": "erdos-1177",
+  "description": "Three conjectures about F_G(kappa) = {3-uniform hypergraphs with chi = kappa avoiding G}: bounded witness size, intersection of families, and cardinal transfer of nonemptiness. All open.",
+  "meta": {
+    "author": "Erdos, Galvin, Hajnal",
+    "sourceUrl": "https://erdosproblems.com/1177",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1177Problem.lean",
+    "tags": [
+      "erdos",
+      "graph theory",
+      "hypergraph",
+      "Ramsey theory",
+      "set theory",
+      "open problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1177,
+    "erdosUrl": "https://erdosproblems.com/1177",
+    "erdosProblemStatus": "open",
+    "axiomCount": 5,
+    "lineCount": 206,
+    "assumptions": "5 axioms. See Lean source for complete statements.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 7,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "Erdos, Galvin, and Hajnal posed three interrelated conjectures about 3-uniform hypergraph families F_G(kappa) = {H : chi(H) = kappa, G not a subhypergraph of H}. These generalize the classical question 'can high chromatic number force the presence of specific substructures?' to the setting of forbidden subhypergraphs. For ordinary graphs (2-uniform), Erdos (1959) showed that high chromatic number does not force short cycles (high-chromatic-number high-girth graphs exist). The 3-uniform case with uncountable chromatic numbers is much harder. Conjecture 1 asks for a beth_2 = 2^(2^aleph_0) bound on witness size. Conjecture 2 asks for joint avoidance. Conjecture 3 asks for cardinal transfer. Referenced in Vaughan (1999) Problem 7.94.",
+    "problemStatement": "Let G be a finite 3-uniform hypergraph. Three conjectures: (1) If F_G(aleph_1) is nonempty, it has a member with <= 2^(2^aleph_0) vertices. (2) If F_G(aleph_1) and F_H(aleph_1) are both nonempty, their intersection is nonempty. (3) Nonemptiness of F_G(kappa) transfers between uncountable cardinals.",
+    "text": "Three conjectures about F_G(kappa) = {3-uniform hypergraphs with chi = kappa avoiding G}: bounded witness size, intersection of families, and cardinal transfer of nonemptiness. All open.",
+    "proofStrategy": "Derives cardinal theorems (ℵ₀ < ℵ₁, ℵ₁ uncountable, ℵ₁ ≤ 2^(2^ℵ₀)) from Mathlib's `Cardinal` type (the original 10 cardinal axioms are eliminated). Axiomatizes the abstract `Hypergraph3` type with 5 structure axioms (vertexCard, ContainsSubgraph, IsFinite, chromaticNumber) to avoid heavy SetTheory imports. Defines `forbiddenFamily` and the three conjectures formally. Proves relations between conjectures (Conjecture 3 implies simultaneous nonemptiness) and anti-monotonicity of forbidden families. States the combined problem as a conjunction.",
+    "keyInsights": [
+      "The three conjectures form a hierarchy: Conjecture 3 (cardinal transfer) implies a weak form of Conjecture 2 (simultaneous nonemptiness), but not the full intersection property",
+      "The beth_2 bound in Conjecture 1 is the natural set-theoretic bound: the power set of the power set of a countable set, which governs constructions from countable building blocks",
+      "Anti-monotonicity: a smaller forbidden graph G (in the subgraph order) gives a smaller family F_G, making avoidance harder",
+      "The 2-uniform analogue is well-understood via Erdos 1959 (probabilistic method), but the 3-uniform case at uncountable chromatic numbers is open",
+      "Cardinal transfer (Conjecture 3) would say that 'high chromatic number without G' is a property independent of which uncountable cardinal we target"
+    ],
+    "prerequisites": [
+      "Combinatorics (extremal graph theory, Ramsey theory)",
+      "Graph theory (chromatic number, cliques, matchings)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "cardinals",
+      "title": "Abstract Cardinal Framework",
+      "startLine": 27,
+      "endLine": 58,
+      "summary": "Derives ℵ₀ < ℵ₁, ℵ₁ uncountable, and ℵ₁ ≤ 2^(2^ℵ₀) from Mathlib's `Cardinal` type. No axioms are declared in this section; the original 10 cardinal axioms were eliminated by using Mathlib.",
+      "mathContext": "Three proved theorems using `Mathlib.Cardinal`: `aleph0_lt_aleph1` ($\\aleph_0 < \\aleph_1$), `aleph1_uncountable` ($\\aleph_0 < \\aleph_1$), `aleph1_le_beth2` ($\\aleph_1 \\leq 2^{2^{\\aleph_0}}$). The original formalization used 10 axioms for an abstract `Card` type; these are now proved from Mathlib."
+    },
+    {
+      "id": "hypergraph",
+      "title": "3-Uniform Hypergraphs",
+      "startLine": 60,
+      "endLine": 83,
+      "summary": "Axiomatizes Hypergraph3 with vertexCard, ContainsSubgraph, IsFinite, chromaticNumber.",
+      "mathContext": "Axiomatized: Axiomatizes Hypergraph3 with vertexCard, ContainsSubgraph, IsFinite, chromaticNumber."
+    },
+    {
+      "id": "forbidden-family",
+      "title": "Forbidden Subgraph Family",
+      "startLine": 85,
+      "endLine": 100,
+      "summary": "Defines forbiddenFamily G kappa and its nonemptiness predicate.",
+      "mathContext": "Formal definition: Defines forbiddenFamily G kappa and its nonemptiness predicate."
+    },
+    {
+      "id": "conjectures",
+      "title": "The Three Conjectures",
+      "startLine": 102,
+      "endLine": 135,
+      "summary": "Formalizes Conjectures 1 (bounded witness), 2 (intersection), 3 (cardinal transfer).",
+      "mathContext": "Bound: Formalizes Conjectures 1 (bounded witness), 2 (intersection), 3 (cardinal transfer)."
+    },
+    {
+      "id": "relations",
+      "title": "Relations Between Conjectures",
+      "startLine": 137,
+      "endLine": 162,
+      "summary": "Conjecture 3 implies simultaneous nonemptiness; trivial G=H case of Conjecture 2.",
+      "mathContext": "Mathematical content: Conjecture 3 implies simultaneous nonemptiness; trivial G=H case of Conjecture 2."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Observations",
+      "startLine": 164,
+      "endLine": 183,
+      "summary": "Anti-monotonicity of forbidden families in the subgraph ordering.",
+      "mathContext": "Mathematical content: Anti-monotonicity of forbidden families in the subgraph ordering."
+    },
+    {
+      "id": "main-statement",
+      "title": "Combined Problem Statement",
+      "startLine": 185,
+      "endLine": 204,
+      "summary": "erdos_1177 = Conjecture1 AND Conjecture2 AND Conjecture3 (all open).",
+      "mathContext": "Mathematical content: erdos_1177 = Conjecture1 AND Conjecture2 AND Conjecture3 (all open)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1176",
+      "relationship": "Both are open problems about chromatic number at aleph_1 level involving set-theoretic considerations."
+    },
+    {
+      "targetId": "erdos-1171",
+      "relationship": "Both involve partition/coloring problems where the answer may depend on set-theoretic axioms."
+    },
+    {
+      "targetId": "erdos-1104",
+      "relationship": "Problem #1104 studies the analogous finite question: max chromatic number of triangle-free graphs on n vertices."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdos Problem #1177 formalizes three open conjectures of Erdos, Galvin, and Hajnal about forbidden subgraph families of 3-uniform hypergraphs at uncountable chromatic numbers. The formalization uses an abstract axiomatic framework, proves structural results (anti-monotonicity, conjecture implications), and connects to the classical Erdos 1959 result.",
+    "implications": "Resolving these conjectures would advance our understanding of how chromatic number interacts with local structure (forbidden subgraphs) in the infinite setting, connecting hypergraph Turan theory to infinite combinatorics.",
+    "openQuestions": [
+      "Does F_G(aleph_1) always have a member with at most 2^(2^aleph_0) vertices?",
+      "Can two finite forbidden hypergraphs be simultaneously avoided at chromatic number aleph_1?",
+      "Does nonemptiness of F_G transfer between all uncountable cardinals?",
+      "Are these conjectures provable in ZFC or do they depend on set-theoretic axioms?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Order.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Erdos1177",
+    "lineCount": 206,
+    "axiomCount": 5,
+    "theoremCount": 7,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos1177Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

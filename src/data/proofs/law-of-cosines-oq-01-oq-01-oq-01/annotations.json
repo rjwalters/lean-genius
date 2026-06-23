@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-000",
+    "proofId": "law-of-cosines-oq-01-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "concept",
+    "title": "Module Docstring: Question and Answer",
+    "content": "The module docstring is structured as the literal posing and resolution of an open question raised in the parent entry law-of-cosines-oq-01-oq-01. The grandparent question — whether the Gram determinant framework that yields the dual cosine law also yields the full sine rule — is answered affirmatively. Both forms (angle-over-side and side-over-angle) are stated, and the proof strategy (Gram-determinant identity sin²(X)sin²(y)sin²(z) = G in the parent file, algebraic inversion here) is summarized. The axiom and sorry counts are recorded inline to make verification independent of any external tracker.",
+    "mathContext": "The Gram determinant for three unit vectors $u, v, w$ on $S^2$ is $G(u,v,w) = \\det\\begin{pmatrix} 1 & u\\cdot v & u\\cdot w \\\\ u\\cdot v & 1 & v\\cdot w \\\\ u\\cdot w & v\\cdot w & 1 \\end{pmatrix} = 1 - \\cos^2 a - \\cos^2 b - \\cos^2 c + 2\\cos a\\cos b\\cos c$, where $a, b, c$ are the spherical sides $\\arccos(v\\cdot w), \\arccos(u\\cdot w), \\arccos(u\\cdot v)$ respectively. The identity $\\sin^2(X)\\sin^2(y)\\sin^2(z) = G$ for each cyclic triple $(X, y, z)$ is what makes the sine rule fall out: dividing two such identities gives $\\sin^2(A)\\sin^2(b)\\sin^2(c) / \\sin^2(B)\\sin^2(a)\\sin^2(c) = 1$, hence $\\sin(A)/\\sin(a) = \\sin(B)/\\sin(b)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Gram determinant", "spherical sine rule", "open question resolution", "research lineage"],
+    "prerequisites": ["spherical trigonometry"]
+  },
+  {
+    "id": "ann-001",
+    "proofId": "law-of-cosines-oq-01-oq-01-oq-01",
+    "range": { "startLine": 27, "endLine": 29 },
+    "type": "insight",
+    "title": "Import the Side-over-Angle Form; Open Required Namespaces",
+    "content": "The single import `Proofs.LawOfCosinesOQ01OQ02` brings in `spherical_law_of_sines_all`, which is the conjunction sin(a)/sin(A) = sin(b)/sin(B) ∧ sin(a)/sin(A) = sin(c)/sin(C) for nondegenerate spherical triangles. The proof obligation in this file is the symmetric statement with sides and angles exchanged. The accompanying `open SphericalLawOfCosines Real` (line 29) is required for two reasons: (1) `SphericalLawOfCosines` is the namespace where `SphericalTriangle` and its `sideA`/`sideB`/`sideC` projections live, so unqualified `SphericalTriangle` in the theorem signature resolves to the right structure; (2) `Real` exposes `Real.sin` for the `sin` calls in the goal — without it the expressions would need fully-qualified `Real.sin` everywhere. Note that this `open` does NOT import a namespace's *contents*; it only adds those names to the resolver's search path for the remainder of the file.",
+    "mathContext": "The side-over-angle form $\\frac{\\sin a}{\\sin A} = \\frac{\\sin b}{\\sin B} = \\frac{\\sin c}{\\sin C}$ is proved in the parent file via the Gram-determinant identity $\\sin^2(X)\\sin^2(y)\\sin^2(z) = G$ (where $G = 1 - \\cos^2 a - \\cos^2 b - \\cos^2 c + 2\\cos a\\cos b\\cos c$ is the Gram determinant of perpendicular projections on the unit sphere). Once the side-over-angle form is in hand, the angle-over-side form is purely formal — no further geometric content is needed.",
+    "significance": "supporting",
+    "relatedConcepts": ["spherical law of sines", "Gram determinant", "perpendicular projection", "open namespace"],
+    "prerequisites": ["spherical law of sines (side-over-angle form)", "Lean 4 imports", "Lean 4 namespace resolution"]
+  },
+  {
+    "id": "ann-002",
+    "proofId": "law-of-cosines-oq-01-oq-01-oq-01",
+    "range": { "startLine": 32, "endLine": 32 },
+    "type": "insight",
+    "title": "Extend the Parent Namespace for Dot Notation",
+    "content": "Reopening `namespace LawOfCosinesOQ01OQ02` in this file is required so that the dot notation `t.angleA`, `t.angleB`, `t.angleC` resolves to the parent file's `SphericalTriangle.angleA` etc. Without the namespace match the dot-notation desugaring would fail to find these projections (since `SphericalTriangle` itself is defined further upstream in `SphericalLawOfCosines.lean`, but the `angleA`/`angleB` definitions live inside `LawOfCosinesOQ01OQ02`).",
+    "mathContext": "Lean's dot notation `x.foo` desugars to `<Namespace>.foo x` where `<Namespace>` is the head of the type of `x`. For `t : SphericalTriangle`, dot notation searches `SphericalTriangle.foo` first; if not found it falls back to the `open` namespace stack. Reopening the namespace places the definitions of angleA/angleB into the lookup path used during elaboration.",
+    "significance": "supporting",
+    "relatedConcepts": ["Lean 4 namespaces", "dot notation", "name resolution"],
+    "prerequisites": ["Lean 4 namespace mechanics"]
+  },
+  {
+    "id": "ann-002b",
+    "proofId": "law-of-cosines-oq-01-oq-01-oq-01",
+    "range": { "startLine": 33, "endLine": 37 },
+    "type": "concept",
+    "title": "Theorem Docstring: Statement of the Inverted Form",
+    "content": "The theorem docstring states the sine rule in its angle-over-side form — the form that natively appears in spherical astronomy when angles are observed and side-arc-lengths are solved for. The phrase `Derived by algebraic inversion from the Gram determinant form proved in this file` is a slight misnomer: the inversion is not happening in this file — `spherical_law_of_sines_all` is proved in the imported sibling Proofs/LawOfCosinesOQ01OQ02.lean. The docstring's `this file` phrasing is a historical artifact from when the side-over-angle and angle-over-side proofs were sketched in the same file before being split.",
+    "mathContext": "Both forms of the sine rule encode the same mathematical content: the symmetric expression $\\sin^2 X \\cdot \\sin^2 y \\cdot \\sin^2 z = G$ (Gram determinant of perpendicular projections), which is symmetric under the involution swapping each side $x \\leftrightarrow$ its opposite angle $X$. The choice of which fraction goes on top is a notational convention; the underlying invariant is the projective ratio $[\\sin A : \\sin a]_{\\mathrm{P}^1} = [\\sin B : \\sin b] = [\\sin C : \\sin c]$.",
+    "significance": "supporting",
+    "relatedConcepts": ["docstring conventions", "angle-over-side form", "projective ratio", "spherical astronomy"],
+    "prerequisites": ["spherical trigonometry"]
+  },
+  {
+    "id": "ann-003a",
+    "proofId": "law-of-cosines-oq-01-oq-01-oq-01",
+    "range": { "startLine": 38, "endLine": 46 },
+    "type": "insight",
+    "title": "Theorem Statement and Hypothesis Pattern",
+    "content": "The theorem takes six positivity hypotheses: 0 < sin(side) for all three sides and 0 < sin(angle) for all three angles. These are the nondegeneracy conditions that make every denominator nonzero — without them the divisions sin(A)/sin(a) etc. are undefined or trivial. The conjunctive statement (A/a = B/b ∧ A/a = C/c) is sufficient to recover the third equality B/b = C/c by transitivity (handled by spherical_law_of_sines_BC_angle_over_side below). Lean's `obtain ⟨h1, h2⟩ := spherical_law_of_sines_all ...` destructures the parent's conjunction in one step, exposing both pieces simultaneously.",
+    "mathContext": "Nondegeneracy: a spherical triangle is *nondegenerate* iff all three vertices are distinct, all three sides are strictly between 0 and π, and all three angles are strictly between 0 and π. Equivalent (under the standard parametrization) to $0 < \\sin(\\cdot)$ on all sides and angles. The Gram-determinant approach requires this because $G = 0$ exactly on the degenerate locus (three coplanar unit vectors), and we are dividing by sines extracted from $\\sqrt{G}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["nondegenerate spherical triangle", "destructuring", "obtain pattern", "conjunction elimination"],
+    "prerequisites": ["Lean 4 destructuring syntax", "spherical triangle nondegeneracy"]
+  },
+  {
+    "id": "ann-003",
+    "proofId": "law-of-cosines-oq-01-oq-01-oq-01",
+    "range": { "startLine": 47, "endLine": 50 },
+    "type": "insight",
+    "title": "Algebraic Inversion via div_eq_div_iff (First Conjunct)",
+    "content": "The core of the proof for sin(A)/sin(a) = sin(B)/sin(b): `div_eq_div_iff (ne_of_gt hA) (ne_of_gt hB)` rewrites the goal into the cross-multiplied form sin(A)·sin(b) = sin(B)·sin(a). Applied symmetrically to the parent hypothesis h1 : sin(a)/sin(A) = sin(b)/sin(B), it yields sin(a)·sin(B) = sin(b)·sin(A). The two cross-multiplied forms agree up to a sign once factors are commuted: goal − (−1)·h1 = (sin A · sin b − sin B · sin a) + (sin a · sin B − sin b · sin A) = 0 as a polynomial identity over commutative reals. `linear_combination -h1` instructs Lean to verify this with `ring` as the residual checker, closing the goal in one tactic step. The `-1` coefficient is essential — `linear_combination h1` (without negation) would leave a non-zero residual and fail.",
+    "mathContext": "$\\texttt{div\\_eq\\_div\\_iff}$: for nonzero $b, d$, the equation $\\frac{a}{b} = \\frac{c}{d}$ is equivalent to $a \\cdot d = c \\cdot b$. Applying it on both the goal and the hypothesis transforms a division-form equality into a polynomial identity that Lean's `linear_combination` tactic can verify by reducing to $0 = 0$ after a single linear combination of the hypothesis. The hypothesis 0 < sin(angle) provides the `ne_of_gt` nonzero requirement.",
+    "significance": "key",
+    "relatedConcepts": ["div_eq_div_iff", "linear_combination", "cross-multiplication", "polynomial identities"],
+    "prerequisites": ["division on Real", "linear_combination tactic", "ne_of_gt"]
+  },
+  {
+    "id": "ann-003b",
+    "proofId": "law-of-cosines-oq-01-oq-01-oq-01",
+    "range": { "startLine": 51, "endLine": 54 },
+    "type": "insight",
+    "title": "Same Pattern for Second Conjunct (A/a = C/c)",
+    "content": "The proof of the second conjunct sin(A)/sin(a) = sin(C)/sin(c) is structurally identical to the first: clear denominators in both the goal (via div_eq_div_iff with hA, hC nonzero) and the parent hypothesis h2 : sin(a)/sin(A) = sin(c)/sin(C) (via div_eq_div_iff with ha, hc nonzero), then close with `linear_combination -h2`. This duplication is intrinsic to the conjunctive form of the parent theorem — each direction requires its own application of div_eq_div_iff because the cross-multiplied forms involve different pairs of nonzero hypotheses (hA, hC for the goal vs ha, hc for the hypothesis).",
+    "mathContext": "The two cross-multiplications produce $\\sin A \\cdot \\sin c = \\sin C \\cdot \\sin a$ (goal) and $\\sin a \\cdot \\sin C = \\sin c \\cdot \\sin A$ (from h2). These are negatives of each other after the standard sign convention, so `linear_combination -h2` (multiply h2 by -1 and check that the difference is zero) closes the goal in a single tactic step. The same technique would work for any two-variable analogue of the sine rule.",
+    "significance": "supporting",
+    "relatedConcepts": ["div_eq_div_iff", "linear_combination", "cross-multiplication", "structural symmetry"],
+    "prerequisites": ["division on Real", "linear_combination tactic", "ne_of_gt"]
+  },
+  {
+    "id": "ann-004",
+    "proofId": "law-of-cosines-oq-01-oq-01-oq-01",
+    "range": { "startLine": 56, "endLine": 64 },
+    "type": "insight",
+    "title": "Transitivity Closes the Third Equality",
+    "content": "Once sin(A)/sin(a) = sin(B)/sin(b) and sin(A)/sin(a) = sin(C)/sin(c) are established, the third equality sin(B)/sin(b) = sin(C)/sin(c) follows by symmetry and transitivity: from h1.symm we get sin(B)/sin(b) = sin(A)/sin(a), then trans h2 gives sin(B)/sin(b) = sin(C)/sin(c). No further algebraic manipulation is required.",
+    "mathContext": "Eq.symm : a = b → b = a; Eq.trans : a = b → b = c → a = c. These are the basic equality combinators. The pattern h1.symm.trans h2 with h1 : x = y, h2 : x = z yields y = z. Applied here with x = sin(A)/sin(a), y = sin(B)/sin(b), z = sin(C)/sin(c), it gives the missing third equality of the sine rule.",
+    "significance": "supporting",
+    "relatedConcepts": ["Eq.symm", "Eq.trans", "transitivity"],
+    "prerequisites": ["Lean 4 equality calculus"]
+  }
+]

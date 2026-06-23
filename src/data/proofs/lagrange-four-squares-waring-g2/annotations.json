@@ -1,0 +1,214 @@
+[
+  {
+    "id": "ann-lagrange-upper-bound",
+    "proofId": "lagrange-four-squares-waring-g2",
+    "range": {
+      "startLine": 39,
+      "endLine": 46
+    },
+    "type": "concept",
+    "title": "Upper Bound: Mathlib Delegation via Nat.sum_four_squares",
+    "content": "The upper bound g(2) ≤ 4 is obtained in a single line: `Nat.sum_four_squares n`. This illustrates Mathlib's power — Lagrange's celebrated 1770 theorem reduces to a single function call. The Mathlib proof uses Hurwitz quaternions: every natural number is a norm of a Hurwitz quaternion, and the norm decomposes into four integer squares via Euler's four-square identity. The gallery's contribution is the Waring framework built on top of this foundation, not a re-proof of Lagrange's theorem itself.",
+    "mathContext": "$\\forall n \\in \\mathbb{N},\\ \\exists\\, a,b,c,d \\in \\mathbb{N}: a^2+b^2+c^2+d^2 = n$. (Lagrange, 1770.) Lean: `Nat.sum_four_squares n` from `Mathlib.NumberTheory.SumFourSquares`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lagrange's four-square theorem",
+      "Hurwitz quaternions",
+      "Euler four-square identity",
+      "Mathlib.NumberTheory.SumFourSquares"
+    ],
+    "prerequisites": [
+      "Mathlib.NumberTheory.SumFourSquares",
+      "Waring's problem definition"
+    ]
+  },
+  {
+    "id": "ann-mod8-lower-bound",
+    "proofId": "lagrange-four-squares-waring-g2",
+    "range": {
+      "startLine": 52,
+      "endLine": 84
+    },
+    "type": "insight",
+    "title": "Mod 8 Obstruction: Squares Are Never ≡ 7 (mod 8)",
+    "content": "The lower bound uses an elegant modular arithmetic argument. `sq_mod_eight` proves x² % 8 ∈ {0,1,4} for all x via `interval_cases r` over r = 0,...,7 (8 cases, all decided by `decide`). The private lemma `sum_three_from_014_ne_7` verifies exhaustively via `rcases + decide` that none of the 27 = 3³ triples from {0,1,4} sums to 7 mod 8. The chain: `sum_three_sq_mod_eight_ne_seven` assembles these into the mod-8 congruence, and `seven_not_sum_three_sq` applies it to n=7 (since 7 ≡ 7 mod 8). This entire argument is self-contained — no Mathlib number theory needed.",
+    "mathContext": "$x^2 \\bmod 8 \\in \\{0,1,4\\}$ for all $x$. The 27 sums from $\\{0,1,4\\}^3 \\bmod 8$ avoid 7 (max is $12 \\equiv 4$). Hence $x^2+y^2+z^2 \\not\\equiv 7 \\pmod{8}$, so $7 \\neq x^2+y^2+z^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "squares mod 8",
+      "modular arithmetic obstruction",
+      "interval_cases tactic",
+      "decide tactic for finite verification"
+    ],
+    "prerequisites": [
+      "Nat.pow_mod for (x%8)^2 % 8 = x^2 % 8",
+      "interval_cases for exhaustive case split",
+      "omega for mod arithmetic",
+      "decide for decidable propositions"
+    ]
+  },
+  {
+    "id": "ann-descent-excluded-form",
+    "proofId": "lagrange-four-squares-waring-g2",
+    "range": {
+      "startLine": 153,
+      "endLine": 230
+    },
+    "type": "concept",
+    "title": "Descent: 4^a(8b+7) Is Never a Sum of 3 Squares",
+    "content": "The general exclusion theorem `excluded_form_needs_four` uses a descent on powers of 4. The key step is `four_mul_not_sum_three_sq`: if n is not a sum of 3 squares, neither is 4n. Proof: if 4n = x²+y²+z², then 4 | x²+y²+z². Since squares are 0 or 1 mod 4 (proved by `sq_mod_four`), the only way three terms summing to 0 mod 4 can occur is if all three are 0 mod 4 — proved by omega. Then `sq_mod_four_zero_imp_even` concludes each root is even. Writing x=2x', y=2y', z=2z' gives n=x'²+y'²+z'², contradiction. The induction in `excluded_form_needs_four` chains this descent: base case 8b+7 fails by mod 8; inductive step applies `four_mul_not_sum_three_sq`.",
+    "mathContext": "Descent step: $4n = x^2+y^2+z^2 \\Rightarrow x^2+y^2+z^2 \\equiv 0 \\pmod{4} \\Rightarrow$ all $x,y,z$ even $\\Rightarrow n = (x/2)^2+(y/2)^2+(z/2)^2$. By induction: $4^a(8b+7)$ is never a sum of 3 squares. (Necessity direction of Legendre's three-square theorem, 1798.)",
+    "significance": "key",
+    "relatedConcepts": [
+      "infinite descent",
+      "Legendre's three-square theorem",
+      "mod 4 parity argument",
+      "Nat.dvd_of_mod_eq_zero"
+    ],
+    "prerequisites": [
+      "sq_mod_four lemma",
+      "omega for mod 4 arithmetic",
+      "Nat.dvd_of_mod_eq_zero",
+      "pow_succ for induction on 4^a"
+    ]
+  },
+  {
+    "id": "ann-computable-classification",
+    "proofId": "lagrange-four-squares-waring-g2",
+    "range": {
+      "startLine": 239,
+      "endLine": 323
+    },
+    "type": "concept",
+    "title": "Computable Verification: numSquaresNeeded and Batch Checks",
+    "content": "The computational section adds independent verification. `numSquaresNeeded n` searches for the minimum k ∈ {0,1,2,3,4} by checking: 0 (n=0), 1 (n is a perfect square), 2 (n-x² is a perfect square for some x ≤ √n), 3 (n-x²-y² is a perfect square), else 4. Individual cases are verified: numSq_7 = 4, numSq_15 = 4, numSq_23 = 4, numSq_28 = 4. The batch theorem `max_four_200` confirms all n ≤ 200 need at most 4 squares via `native_decide`. `checkExcludedMatchesFour 100` verifies that `isExcludedForm` exactly characterizes the 4-square numbers up to 100. `needingFour_list_50` confirms {7,15,23,28,31,39,47} are the only such numbers up to 50.",
+    "mathContext": "$\\text{numSquaresNeeded}(n) = \\min\\{k \\in \\{0,1,2,3,4\\}: \\exists\\ a_1^2+\\cdots+a_k^2 = n\\}$. Batch: $\\forall n \\leq 200: \\text{numSquaresNeeded}(n) \\leq 4$. Excluded form up to 50: $\\{7,15,23,28,31,39,47\\} = \\{4^a(8b+7): 4^a(8b+7) \\leq 50\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide tactic",
+      "computable mathematics",
+      "Nat.sqrt",
+      "isExcludedForm characterization"
+    ],
+    "prerequisites": [
+      "Nat.sqrt from Mathlib.Data.Nat.Sqrt",
+      "native_decide for kernel-level evaluation",
+      "List.range and List.any for bounded search"
+    ]
+  },
+  {
+    "id": "ann-infinity-big-g",
+    "proofId": "lagrange-four-squares-waring-g2",
+    "range": {
+      "startLine": 232,
+      "endLine": 237
+    },
+    "type": "concept",
+    "title": "G(2) = 4: Infinitely Many Numbers Need Exactly 4 Squares",
+    "content": "The theorem `infinitely_many_need_four` establishes that for any N, the number 8(N+1)+7 exceeds N and cannot be a sum of 3 squares. This is stronger than just g(2) ≥ 4: it shows 4 squares are needed for infinitely many numbers, not just a finite exceptional set. Combined with Lagrange (every number needs at most 4), this gives G(2) = 4 where G(k) is the asymptotic Waring constant. The contrast with cubes is instructive: G(3) = 7 < g(3) = 9, because only finitely many numbers (like 23) need 9 cubes, while all large numbers are sums of 7. For squares, there is no such anomaly at small n: the excluded form 4^a(8b+7) keeps appearing at all scales.",
+    "mathContext": "For any $N$: take $n = 8(N+1)+7 > N$. Then $n \\equiv 7 \\pmod{8}$, so $n$ is not a sum of 3 squares. Hence infinitely many $n$ require 4 squares. $G(2) = g(2) = 4$. Contrast: $g(3)=9$ but $G(3)=7$ (Davenport 1939 for $G(2)=4$; Linnik 1943 for $G(3)=7$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Waring G(k) vs g(k)",
+      "Davenport's result G(2)=4",
+      "infinitely many exceptions",
+      "cube sum anomalies"
+    ],
+    "prerequisites": [
+      "eight_b_plus_seven_needs_four",
+      "omega for 8(N+1)+7 > N"
+    ]
+  },
+  {
+    "id": "ann-seven-needs-four-cascade",
+    "proofId": "lagrange-four-squares-waring-g2",
+    "range": {
+      "startLine": 85,
+      "endLine": 100
+    },
+    "type": "insight",
+    "title": "Witness 7: Ruling Out 1, 2, and 3 Squares",
+    "content": "To certify that 7 needs exactly four squares, the file rules out every smaller count. `seven_not_sum_three_sq` (the mod-8 obstruction) immediately implies `seven_not_sum_two_sq` and the single-square case, because a representation with fewer squares is a special case of a three-square representation with the extra slots set to 0: `⟨x, y, 0, _⟩`. The single-square impossibility `seven_not_sq` is closed by the bound x ≤ 2 (`nlinarith`) followed by `interval_cases`. `seven_needs_four_squares` then bundles the positive witness 7 = 1²+1²+1²+2² with the three-square impossibility — an exact lower-bound certificate, not just an upper bound on the count.",
+    "mathContext": "$7 = 1^2+1^2+1^2+2^2$ but $7 \\neq x^2+y^2+z^2$. Padding with zeros gives the monotone chain: not a sum of 3 squares $\\Rightarrow$ not a sum of $\\le 2$ $\\Rightarrow$ not a single square. Hence $\\min\\{s : 7 = \\sum_{i<s} a_i^2\\} = 4$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "exact representation count",
+      "padding with zero squares",
+      "interval_cases tactic",
+      "lower-bound certificate"
+    ],
+    "prerequisites": [
+      "seven_not_sum_three_sq",
+      "nlinarith and interval_cases"
+    ]
+  },
+  {
+    "id": "ann-main-theorem-g2-eq-four",
+    "proofId": "lagrange-four-squares-waring-g2",
+    "range": {
+      "startLine": 106,
+      "endLine": 120
+    },
+    "type": "concept",
+    "title": "The Main Theorem: g(2) = 4 as a Conjunction of Two Bounds",
+    "content": "The headline result `waring_g2_eq_four` is stated as a conjunction rather than an equation, because g(2) = 4 is genuinely two inequalities glued together. `waring_g2_upper` (g(2) ≤ 4) is Lagrange's universally-quantified existence statement; `waring_g2_lower` (g(2) ≥ 4) is the single counterexample n = 7 for which no three-square representation exists. This is the canonical shape of a Waring-number proof: an upper bound that holds for all n, and a lower bound witnessed by one stubborn integer. Tightness — that 4 cannot be lowered to 3 — is exactly the content of the lower half.",
+    "mathContext": "$g(2) = 4 \\iff \\big(\\forall n\\, \\exists a,b,c,d:\\ n = a^2+b^2+c^2+d^2\\big) \\wedge \\big(\\exists n\\, \\forall x,y,z:\\ n \\neq x^2+y^2+z^2\\big)$. The witness for the second conjunct is $n = 7$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Waring number g(k)",
+      "upper bound vs lower bound",
+      "tightness of a bound",
+      "existential and universal quantifier interplay"
+    ],
+    "prerequisites": [
+      "waring_g2_upper",
+      "waring_g2_lower"
+    ]
+  },
+  {
+    "id": "ann-eight-b-plus-seven-family",
+    "proofId": "lagrange-four-squares-waring-g2",
+    "range": {
+      "startLine": 126,
+      "endLine": 151
+    },
+    "type": "insight",
+    "title": "From One Witness to an Arithmetic Progression: 8b + 7",
+    "content": "Rather than stopping at n = 7, `seven_mod_eight_needs_four` generalizes the mod-8 obstruction to every n ≡ 7 (mod 8): the residue argument never used the actual value 7, only its residue class. The concrete cases 15, 23, 31 are then one-liners delegating to this lemma with `norm_num`, and `eight_b_plus_seven_needs_four` closes the general arithmetic progression {8b+7 : b ∈ ℕ} with `omega`. This already exhibits an infinite, explicitly parameterized family of integers needing four squares — the seed for both the descent argument (Part 5) and the asymptotic G(2) = 4 statement (Part 8).",
+    "mathContext": "$n \\equiv 7 \\pmod 8 \\Rightarrow n \\neq x^2+y^2+z^2$, since $x^2+y^2+z^2 \\not\\equiv 7 \\pmod 8$. The family $\\{8b+7\\}_{b\\ge 0} = \\{7,15,23,31,39,\\ldots\\}$ all need four squares.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "arithmetic progression",
+      "residue class invariance",
+      "norm_num and omega",
+      "infinite exceptional family"
+    ],
+    "prerequisites": [
+      "sum_three_sq_mod_eight_ne_seven",
+      "congruence mod 8"
+    ]
+  },
+  {
+    "id": "ann-scaling-structural",
+    "proofId": "lagrange-four-squares-waring-g2",
+    "range": {
+      "startLine": 362,
+      "endLine": 401
+    },
+    "type": "insight",
+    "title": "Multiplicative Structure: Scaling and the Essential Fourth Square",
+    "content": "The descent lemma has a forward companion: `four_mul_sum_three_sq` shows that if n is a sum of three squares then so is 4n (scale each root by 2), and `sq_mul_sum_three_sq` generalizes to k²n (scale by k). Together with the descent direction, these establish that being a sum of three squares is invariant under multiplication by perfect squares — the structural reason the excluded set is closed under the 4^a factor. `fourth_square_essential` packages the dichotomy for excluded numbers: a four-square representation always exists (Lagrange) yet no three-square one does, so the fourth square is genuinely indispensable, not merely convenient.",
+    "mathContext": "If $n = x^2+y^2+z^2$ then $k^2 n = (kx)^2+(ky)^2+(kz)^2$. Conversely the descent removes a factor of 4. Hence three-square representability is stable under multiplication by squares, and for $n = 4^a(8b+7)$ the fourth square cannot be dropped.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "multiplicative scaling of representations",
+      "square-factor invariance",
+      "infinite descent (converse)",
+      "necessity of the fourth square"
+    ],
+    "prerequisites": [
+      "four_mul_not_sum_three_sq",
+      "Nat.sum_four_squares"
+    ]
+  }
+]

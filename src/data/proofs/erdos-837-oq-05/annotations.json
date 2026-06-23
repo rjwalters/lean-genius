@@ -1,0 +1,126 @@
+[
+  {
+    "id": "ann-density-jump-liminf-def",
+    "proofId": "erdos-837-oq-05",
+    "range": {
+      "startLine": 44,
+      "endLine": 70
+    },
+    "type": "definition",
+    "title": "IsDensityJumpLiminf: The Filter.liminf Formulation",
+    "content": "The definition `IsDensityJumpLiminf k α` uses `Filter.liminf` to encode the full quantitative content of the density jump property: α is a jump value if there exists β > α such that for every sequence of k-uniform hypergraphs with diverging vertex count and liminf density exceeding α, there exist subhypergraphs with diverging vertex count and liminf density ≥ β. This replaces the trivial parent placeholder with the actual combinatorics definition. The `densityJumpSetLiminf k` collects all jump values in [0,1).",
+    "mathContext": "The key objects: `edgeDensity G = G.edges / C(G.vertices, G.uniformity)` (edge count over total possible hyperedges). A value $\\alpha$ is a density jump for $k$-uniform hypergraphs if: $\\exists \\beta > \\alpha, \\beta \\le 1, \\forall$ sequence $(G_n)$ with $|V(G_n)| \\to \\infty$ and $\\liminf_n d(G_n) > \\alpha$, $\\exists$ subhypergraph sequence $(H_n)$ with $|V(H_n)| \\to \\infty$ and $\\liminf_n d(H_n) \\ge \\beta$. The liminf (rather than lim) allows for oscillating density sequences — a sequence need not converge, but its eventual lower bound must exceed α.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Filter.liminf",
+      "Filter.Tendsto",
+      "atTop filter",
+      "KUniformHypergraph",
+      "edgeDensity"
+    ],
+    "prerequisites": [
+      "Lean Filter library",
+      "liminf of sequences",
+      "k-uniform hypergraph density",
+      "Mathlib.Order.LiminfLimsup"
+    ]
+  },
+  {
+    "id": "ann-liminf-implies-original",
+    "proofId": "erdos-837-oq-05",
+    "range": {
+      "startLine": 76,
+      "endLine": 82
+    },
+    "type": "concept",
+    "title": "Bridge to Parent: Liminf Definition Implies the Placeholder",
+    "content": "The theorem `liminf_implies_original` establishes that the strengthened definition implies the original `IsDensityJump` from the parent file `Erdos837Problem`. The parent used a placeholder `IsDensityJump k α := ∃ β, β > α ∧ β ≤ 1 ∧ True` — the `True` was a stub for the complex hypergraph condition. Since the liminf version witnesses β > α and β ≤ 1, the implication is trivial: we just extract the β witnesses and fill `True` with `trivial`. This bridge proves that OQ-05's strengthened definition is a conservative extension.",
+    "mathContext": "Parent definition (from Erdos837Problem): `def IsDensityJump (k : ℕ) (α : ℝ) : Prop := ∃ β : ℝ, β > α ∧ β ≤ 1 ∧ True`. This is weaker — it asserts the existence of a larger β without any consequence. The liminf version adds the actual combinatorial content. The proof by `intro ⟨β, hβ_gt, hβ_le, _⟩; exact ⟨β, hβ_gt, hβ_le, trivial⟩` works because we destructure the liminf witness and discard the hypergraph condition (which is stronger than True).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "IsDensityJump (parent)",
+      "conservative extension",
+      "Lean intro/exact tactics",
+      "trivial tactic"
+    ],
+    "prerequisites": [
+      "Erdos837Problem parent file",
+      "Lean destructuring intro pattern",
+      "definition comparison"
+    ]
+  },
+  {
+    "id": "ann-turan-density",
+    "proofId": "erdos-837-oq-05",
+    "range": {
+      "startLine": 88,
+      "endLine": 104
+    },
+    "type": "concept",
+    "title": "Turán Densities and the Erdős-Stone-Simonovits Theorem",
+    "content": "The Turán density `turanDensity m = 1 - 1/m` corresponds to the extremal density of graphs with chromatic number > m+1: no graph F with χ(F) = m+1 can appear as a subgraph in a graph of edge density > 1-1/m. The `turanDensity_mem_Ico` lemma proves these densities lie in [0,1). The axiom `erdos_stone_simonovits` states the complete characterization: A_2 (jump values for graphs) equals exactly {1-1/m : m ≥ 1} = {0, 1/2, 2/3, 3/4, ...}.",
+    "mathContext": "Turán's theorem (1941): The densest K_{m+1}-free graph on $n$ vertices is the complete $m$-partite graph $T(n,m)$ with $\\approx (1-1/m)\\binom{n}{2}$ edges. So $\\text{ex}(n, K_{m+1}) = (1-1/m+o(1))\\binom{n}{2}$, giving Turán density $\\pi(K_{m+1}) = 1-1/m$. The Erdős-Stone theorem (1946): for any graph $F$ with $\\chi(F) = r \\ge 2$, $\\pi(F) = 1-1/(r-1)$. Since $r \\ge 2 \\Rightarrow \\pi(F) \\in \\{1-1/m : m \\ge 1\\}$, every nonzero graph density is a density jump for graphs. The set $A_2 = \\{0, 1/2, 2/3, 3/4, \\ldots\\}$ is a countable dense subset of $[0,1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán's theorem",
+      "Erdős-Stone theorem 1946",
+      "chromatic number",
+      "extremal graph density",
+      "Turán graph T(n,m)"
+    ],
+    "prerequisites": [
+      "Turán's theorem",
+      "chromatic number and extremal density",
+      "Erdős-Stone-Simonovits theorem 1966"
+    ]
+  },
+  {
+    "id": "ann-zero-is-jump",
+    "proofId": "erdos-837-oq-05",
+    "range": {
+      "startLine": 110,
+      "endLine": 121
+    },
+    "type": "concept",
+    "title": "Zero is a Density Jump: The Supersaturation Phenomenon (Sorry)",
+    "content": "The theorem `zero_is_jump` claims that 0 ∈ A_k for all k ≥ 2: any k-uniform hypergraph with positive edge density contains dense subhypergraphs. This is proved with `sorry` because the full argument requires the Kruskal-Katona supersaturation theorem. The density jump set satisfies `densityJumpSet_subset_Ico`: A_k ⊆ [0,1), proved trivially by destructuring the set definition.",
+    "mathContext": "Supersaturation (Erdős-Simonovits, 1984): If a $k$-uniform hypergraph $H$ on $n$ vertices has at least $\\epsilon\\binom{n}{k}$ edges, then $H$ contains at least $c(\\epsilon)\\binom{n}{k}^t$ copies of any fixed $k$-uniform hypergraph $F$ on $t$ vertices. In particular, any positive density forces subhypergraphs with density bounded away from 0. For the density jump framework, this shows every $\\alpha \\in [0, \\pi(F))$ (below the Turán density of some $F$) is a density jump. Formalizing this requires full hypergraph theory not yet available in Mathlib.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "supersaturation theorem",
+      "Kruskal-Katona theorem",
+      "sorry placeholder",
+      "A_k density jump set"
+    ],
+    "prerequisites": [
+      "Erdős-Simonovits supersaturation 1984",
+      "Kruskal-Katona theorem",
+      "Lean sorry as incomplete proof"
+    ]
+  },
+  {
+    "id": "ann-open-problem",
+    "proofId": "erdos-837-oq-05",
+    "range": {
+      "startLine": 127,
+      "endLine": 149
+    },
+    "type": "insight",
+    "title": "The Open Problem: What is A_3?",
+    "content": "The theorem `erdos_837_open` is a `True := trivial` stub marking where the characterization of A_3 would go. Erdős #837 asks: what is the set A_k of density jumps for k-uniform hypergraphs for k ≥ 3? The gap structure of A_2 = {1-1/m} is completely understood (countable, dense in [0,1)). For k=3, even whether 0 ∈ A_3 requires the sorry'd supersaturation argument. The key open question is whether A_3 contains any values in (0, 1) other than those that are also in A_2.",
+    "mathContext": "For graphs ($k=2$): $A_2 = \\{1-1/m : m \\ge 1\\} = \\{0, 1/2, 2/3, 3/4, \\ldots\\}$ is countable and dense in $[0,1)$. For $k=3$: The Frankl-Füredi theorem (1984) shows some values are not in $A_3$ — specifically, every value in $(0, 2/9)$ is a non-jump (no density jumps in this range). The tetrahedron density $5/9$ is conjectured to be in $A_3$. The Razborov flag algebra method (2007) has resolved some specific density questions for hypergraphs but $A_3$ remains unknown. It is not even known if $A_3$ is countable or has measure zero.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Erdős #837",
+      "A_3 characterization",
+      "Frankl-Füredi 1984",
+      "Razborov flag algebras",
+      "hypergraph Turán density"
+    ],
+    "prerequisites": [
+      "Erdős-Simonovits density jumps for k≥3",
+      "Turán density for hypergraphs",
+      "flag algebra method"
+    ]
+  }
+]

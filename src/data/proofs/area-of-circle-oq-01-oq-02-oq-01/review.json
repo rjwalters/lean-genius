@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "proofId": "area-of-circle-oq-01-oq-02-oq-01",
+  "reviewDate": "2026-03-23T12:00:00Z",
+  "reviewer": "peer-reviewer",
+  "overallAssessment": {
+    "grade": "B+",
+    "oneLiner": "Well-structured n-dimensional generalization of A = integral of C via FTC, with clean Gamma computations and honest framing, though padded by trivial instantiations.",
+    "tier": "B",
+    "tierJustification": "Core mathematical reasoning (FTC application, Gamma function evaluations) assembles Mathlib building blocks with clean definitions. The proof adds real value through its definitions, assembly, and explicit computations, but the FTC and differentiation machinery comes directly from Mathlib."
+  },
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "unitBallVolume_one (line 66-76) and unitBallVolume_three (line 87-104)",
+      "finding": "The Gamma function computations for omega_1 = 2 and omega_3 = 4pi/3 are the most technically demanding proofs in the file. They require chaining Gamma_add_one, Gamma_one_half_eq, and careful field_simp/ring reasoning with square roots and divisions. These are genuine Lean proof work, not trivial Mathlib calls.",
+      "recommendation": "Preserve these as exemplars of Gamma function reasoning in Lean."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "Overall file structure and meta.json overview",
+      "finding": "The open question chain narrative (Wiedijk #9 -> OQ01 -> OQ02 -> this file) provides excellent pedagogical continuity. Each entry builds naturally on the previous, and this file's role as the n-dimensional capstone is well-motivated. The meta.json and annotations tell a coherent, accurate story.",
+      "recommendation": "Preserve the OQ chain narrative as a model for how related proof entries should reference each other."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "Entire Lean file",
+      "finding": "Zero sorries, zero axioms. Every claimed result is fully machine-checked. The status 'verified' and badge 'mathlib' are accurate and appropriately calibrated -- no overclaiming of 'original' badge.",
+      "recommendation": "No action needed."
+    },
+    {
+      "severity": "minor",
+      "category": "filler",
+      "location": "hasDerivAt_rpow_nat, line 110-112",
+      "finding": "This theorem is literally hasDerivAt_pow n r -- a one-line wrapper around a Mathlib lemma that adds nothing. It is never used elsewhere in the file except as an intermediate step for hasDerivAt_nBallVol, which itself directly calls hasDerivAt_pow (line 119). The wrapper is redundant.",
+      "recommendation": "Consider removing hasDerivAt_rpow_nat and having hasDerivAt_nBallVol call hasDerivAt_pow directly (which it already does). This would reduce the theorem count from 26 to 25 and remove a misleading 'formalization' that is pure re-export."
+    },
+    {
+      "severity": "minor",
+      "category": "filler",
+      "location": "nBallVol_two, line 192",
+      "finding": "This theorem's proof is rfl -- it is true by definitional unfolding, not by any reasoning. While harmless, it inflates the theorem count. The companion nBallVol_two_explicit (line 199-200) which substitutes omega_2 = pi is the meaningful version.",
+      "recommendation": "Could be demoted to a remark or merged with nBallVol_two_explicit. Low priority."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "volume_from_surface_1d/2d/3d, lines 170-184",
+      "finding": "These three theorems are trivial instantiations of the general volume_from_surface_integral -- each is a single function application with a by norm_num or le_refl argument. They serve pedagogy (showing the classical cases) but count as 3 of the 26 theorems. Combined with hasDerivAt_rpow_nat and the rfl proof, roughly 8-10 of 26 theorems are trivial.",
+      "recommendation": "Not a problem per se, but the leanFile.theoremCount of 26 could be misleading to someone expecting 26 substantive results. Consider adding a note like 'including N supporting lemmas and special case instantiations' to the meta.json description or sections."
+    },
+    {
+      "severity": "minor",
+      "category": "overclaim",
+      "location": "meta.json conclusion.summary",
+      "finding": "The conclusion describes shell volumes, scaling laws, and the surface-to-volume ratio as 'Rich consequences.' These are algebraically straightforward once V_n(r) = omega_n * r^n is defined -- the scaling laws are just (cr)^n = c^n * r^n and the ratio is elementary algebra. 'Rich' overstates their depth.",
+      "recommendation": "Change 'Rich consequences include' to 'Natural consequences include' or 'Immediate consequences include' for more honest framing."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json leanFile section",
+      "finding": "The leanFile metadata reports theoremCount: 26. While technically correct (26 theorem/lemma declarations), the count mixes substantive results (volume_from_surface_integral, surface_to_volume_ratio) with trivial instantiations and Mathlib wrappers. A reader might expect 26 non-trivial theorems.",
+      "recommendation": "Consider splitting the count or adding a note: e.g., '26 theorems (8 core, 18 supporting/instantiation)'. Low priority."
+    }
+  ],
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "low",
+      "target": "researcher",
+      "description": "Remove hasDerivAt_rpow_nat (line 110-112) which is a pure Mathlib re-export of hasDerivAt_pow. The only caller (hasDerivAt_nBallVol, line 119) already calls hasDerivAt_pow directly, making the wrapper dead code.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-2",
+      "priority": "low",
+      "target": "enricher",
+      "description": "In conclusion.summary, replace 'Rich consequences include' with 'Natural consequences include' or 'Immediate consequences include' to more accurately characterize the algebraic corollaries.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-3",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Consider adding a brief note to the meta.json description or leanFile section indicating the theorem count breakdown (e.g., '26 theorems including supporting lemmas and special case instantiations') to set accurate expectations.",
+      "status": "resolved"
+    }
+  ],
+  "qualityScores": {
+    "mathematicalSubstance": 7,
+    "originalityAccuracy": 7,
+    "completeness": 9,
+    "framingPrecision": 8,
+    "pedagogicalQuality": 8,
+    "internalConsistency": 9,
+    "overall": 8.0
+  },
+  "suggestedBestFraming": "A clean n-dimensional generalization of A = integral of C, exploiting the polynomial structure V_n(r) = omega_n * r^n to derive the volume-surface duality via FTC, with explicit Gamma function computations for small dimensions and fully verified scaling laws."
+}

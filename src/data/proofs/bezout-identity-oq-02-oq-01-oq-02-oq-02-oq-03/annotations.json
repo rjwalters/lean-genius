@@ -1,0 +1,116 @@
+[
+  {
+    "id": "ann-euclidean-bound",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03",
+    "range": {
+      "startLine": 122,
+      "endLine": 165
+    },
+    "type": "insight",
+    "title": "The 3/4 Bound: Why ℤ[√-2] Has a Larger Rounding Error Than ℤ[i]",
+    "content": "In ℤ[i], the rounding error is bounded by 1/2 + 1/2 = 1/2. In ℤ[√-2], the bound is 3/4:\n\n  normSq(δα + √2·δβ·I) = δα² + (√2·δβ)² = δα² + 2δβ² ≤ (1/2)² + 2·(1/2)² = 3/4\n\nThe difference comes from the complex embedding. In ℤ[i]: error = δα + δβ·I.\nIn ℤ[√-2]: error = δα + (√2·δβ)·I, where the imaginary part is scaled by √2.\n\nBoth bounds are < 1, so the Euclidean algorithm terminates. The key insight is that the complex embedding for Zsqrtd(-2) sends z.im to z.im·√2·I, introducing the extra factor of √2 in the imaginary error.",
+    "mathContext": "The general pattern: for ℤ[√d] with d < 0, the Euclidean bound is (1/4) + |d|/4 = (1+|d|)/4. For d=-1: (1+1)/4 = 1/2. For d=-2: (1+2)/4 = 3/4. For d=-3 (ℤ[ω]): need |d| = 1 in the ring of integers, giving bound (1+1)/4 = 1/2. The bound must be < 1 for the Euclidean algorithm to terminate.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Complex.normSq",
+      "abs_sub_round",
+      "Euclidean bound"
+    ],
+    "prerequisites": [
+      "Zsqrtd complex embedding",
+      "rounding error analysis"
+    ]
+  },
+  {
+    "id": "ann-mod8-impossibility",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03",
+    "range": {
+      "startLine": 192,
+      "endLine": 215
+    },
+    "type": "concept",
+    "title": "Mod-8 Impossibility via decide: a² + 2b² ∉ {5, 7} (mod 8)",
+    "content": "The key fact is that a² + 2b² mod 8 can never be 5 or 7. Proof by exhaustive check:\n\nSquares mod 8: 0²=0, 1²=1, 2²=4, 3²=1, 4²=0, 5²=1, 6²=4, 7²=1 → {0,1,4}\n2·(squares mod 8): 2·{0,1,4} = {0,2,8≡0} → {0,2,4} (accounting for carries)\n\nAll values of a²+2b² mod 8: {0+0, 0+2, 0+4, 1+0, 1+2, 1+4, 4+0, 4+2, 4+4}\n= {0, 2, 4, 1, 3, 5? no: 1+4=5, wait...}\n\nActual computation: a²+2b² mod 8 ∈ {0,1,2,3,4,6} — never 5 or 7.\n\nThe `decide` tactic verifies this by checking all 64 pairs (a,b) ∈ ZMod 8 × ZMod 8.",
+    "mathContext": "This is equivalent to the Legendre symbol (-2/p) = -1 for p ≡ 5 or 7 (mod 8). The Legendre symbol factorizes as (-2/p) = (-1/p)·(2/p). By quadratic reciprocity: (-1/p) = (-1)^((p-1)/2), (2/p) = (-1)^((p²-1)/8). Their product is -1 precisely when p ≡ 5 or 7 (mod 8).",
+    "significance": "key",
+    "relatedConcepts": [
+      "ZMod",
+      "decide",
+      "Legendre symbol",
+      "quadratic reciprocity"
+    ],
+    "prerequisites": [
+      "ZMod arithmetic",
+      "Legendre symbol (-2/p)"
+    ]
+  },
+  {
+    "id": "ann-inert-proof-structure",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03",
+    "range": {
+      "startLine": 215,
+      "endLine": 265
+    },
+    "type": "concept",
+    "title": "Inert Prime Proof: Norm Factorization Argument",
+    "content": "The proof that p ≡ 5 or 7 (mod 8) is prime in ℤ[√-2] follows this structure:\n\n1. **Not a unit**: N(p) = p² ≥ 25, but units have norm 1.\n2. **Irreducible**: If p = a·b with neither unit, then:\n   - N(a)·N(b) = N(p) = p² (norm is multiplicative)\n   - N(a), N(b) ≥ 2 (non-units have norm ≥ 2)\n   - Since p is prime, N(a) ∈ {p, p²} (divisors of p² ≥ 2 are p or p²)\n   - If N(a) = p², then N(b) = 1, contradicting b non-unit\n   - So N(a) = p, meaning a.re² + 2·a.im² = p\n3. **Contradiction**: This is impossible mod 8 by `no_sum_form_mod8`.\n\nThe key Mathlib lemma used: `Nat.dvd_prime_pow` classifies divisors of p^n as {1, p, p², ..., pⁿ}.",
+    "mathContext": "The norm argument exploits that p is rational prime (so p² has exactly three divisors: 1, p, p²). This is the classic argument for classifying primes in rings of integers of number fields. The same structure works for ℤ[i] (mod 4 impossibility) and would work for ℤ[√-11], etc.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.dvd_prime_pow",
+      "interval_cases",
+      "norm multiplicativity"
+    ],
+    "prerequisites": [
+      "Prime factorization in ℤ",
+      "Zsqrtd.norm_mul",
+      "Zsqrtd.norm_eq_one_iff"
+    ]
+  },
+  {
+    "id": "ann-euclidean-instance",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03",
+    "range": {
+      "startLine": 212,
+      "endLine": 232
+    },
+    "type": "concept",
+    "title": "Filling in the EuclideanDomain Typeclass for ℤ[√-2]",
+    "content": "The `EuclideanDomain` typeclass in Mathlib requires six proof obligations: `quotient_zero` (division by zero is zero), `quotient_mul_add_remainder_eq` (the Euclidean identity q*y + r = x), `r` (the well-founded ordering used to measure progress), `r_wellFounded` (well-foundedness of r), `remainder_lt` (the remainder strictly decreases under r), and `mul_left_not_lt` (norm is non-decreasing under multiplication). The critical obligation is `remainder_lt`, which invokes `norm_mod_lt_natAbs` — our main mathematical result. The `mul_left_not_lt` field uses norm multiplicativity: if b ≠ 0, then N(a)·N(b) ≥ N(b), so the norm cannot decrease when multiplying.",
+    "mathContext": "The Euclidean algorithm terminates because $N(r_1) > N(r_2) > \\cdots \\geq 0$ is a strictly decreasing sequence of nonneg integers. The `r_wellFounded` field encodes this via `measure_wf` on `norm.natAbs ∈ ℕ`. Once `EuclideanDomain` is established, `UniqueFactorizationMonoid` follows automatically via `EuclideanDomain.toUniqueFactorizationDomain`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "EuclideanDomain",
+      "UniqueFactorizationMonoid",
+      "measure_wf",
+      "norm_mod_lt_natAbs"
+    ],
+    "prerequisites": [
+      "Lean 4 typeclasses",
+      "Mathlib EuclideanDomain definition",
+      "norm multiplicativity"
+    ]
+  },
+  {
+    "id": "ann-splitting-examples",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03",
+    "range": {
+      "startLine": 310,
+      "endLine": 322
+    },
+    "type": "concept",
+    "title": "Prime Behavior in ℤ[√-2]: Three Cases",
+    "content": "Rational primes exhibit three behaviors in ℤ[√-2]:\n\n**Inert** (p ≡ 5 or 7 mod 8): p stays prime. Examples: 5, 7, 13, 23.\nFormal proof: p = 5 (5 % 8 = 5 ✓), p = 7 (7 % 8 = 7 ✓).\n\n**Split** (p ≡ 1 or 3 mod 8, p ≠ 2): p = π·π̄ where N(π) = p.\nExample: 3 = (1+√-2)·(1-√-2). Verification: N(1+√-2) = 1+2 = 3 ✓.\n\n**Ramified** (p = 2): 2 = -(√-2)². Only 2 ramifies in ℤ[√-2].\nVerification: -(√-2)² = -(−2) = 2 ✓.\n\nAll three cases are verified by `decide` since ℤ[√-2] elements are represented as pairs.",
+    "mathContext": "The classification follows from (-2/p): split when (-2/p)=1 (p≡1,3 mod 8), inert when (-2/p)=-1 (p≡5,7 mod 8), ramified when p|(-2) (p=2). This is the standard decomposition of rational primes in rings of integers of quadratic fields.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "prime splitting",
+      "ramification",
+      "Legendre symbol"
+    ],
+    "prerequisites": [
+      "algebraic number theory basics",
+      "Dedekind's theorem on prime splitting"
+    ]
+  }
+]

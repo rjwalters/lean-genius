@@ -1,0 +1,233 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "erdos-768",
+    "range": {
+      "startLine": 1,
+      "endLine": 20
+    },
+    "type": "concept",
+    "title": "Module Header and Problem Overview",
+    "content": "The module docstring introduces Erdős Problem #768: given the set $A$ of positive integers where every prime divisor $p$ has a witness divisor $d > 1$ with $d \\equiv 1 \\pmod{p}$, determine the exact asymptotic density. Erdős proved two-sided bounds involving $\\exp(-c\\sqrt{\\log N} \\cdot \\log \\log N)$ and noted that $A$ bounds the count of non-cyclic simple group orders.",
+    "mathContext": "$A = \\{n \\in \\mathbb{N} : \\forall p \\mid n,\\; p \\text{ prime} \\implies \\exists d > 1,\\; d \\mid n,\\; d \\equiv 1 \\pmod{p}\\}$. Erdős: $\\exp(-c_2 f(N)) \\leq |A \\cap [1,N]|/N \\leq \\exp(-c_1 f(N))$ where $f(N) = \\sqrt{\\log N} \\cdot \\log \\log N$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős problems",
+      "asymptotic density",
+      "witness divisors",
+      "simple group orders"
+    ],
+    "prerequisites": [
+      "prime factorization",
+      "divisibility",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-set-a",
+    "proofId": "erdos-768",
+    "range": {
+      "startLine": 22,
+      "endLine": 42
+    },
+    "type": "definition",
+    "title": "The Witness Divisor Property and Set A",
+    "content": "Three equivalent formulations of the set $A$:\n\n1. **hasWitnessDivisor**: For a specific prime $p \\mid n$, $\\exists d > 1$ with $d \\mid n$ and $d \\% p = 1$. Uses implication: $p$ prime $\\to$ $p \\mid n$ $\\to$ witness exists.\n2. **inSetA**: $n > 0$ and every prime divisor has a witness. The $n > 0$ excludes 0.\n3. **inSetA'**: Alternative using `Nat.primeFactors` and `Nat.divisors` for a more computational flavor.\n\nThe `setA` is defined as the set comprehension $\\{n \\mid \\text{inSetA}\\;n\\}$.",
+    "mathContext": "$\\text{hasWitnessDivisor}(n, p) \\iff p \\text{ prime} \\implies p \\mid n \\implies \\exists d > 1,\\; d \\mid n \\land d \\equiv 1 \\pmod{p}$. The alternative: $\\text{inSetA'}(n) \\iff n > 0 \\land \\forall p \\in \\text{primeFactors}(n),\\; \\exists d \\in \\text{divisors}(n),\\; d > 1 \\land d \\% p = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.primeFactors",
+      "Nat.divisors",
+      "modular arithmetic",
+      "set comprehension"
+    ],
+    "prerequisites": [
+      "prime divisors",
+      "divisor theory",
+      "Lean propositions"
+    ]
+  },
+  {
+    "id": "ann-one-in-a",
+    "proofId": "erdos-768",
+    "range": {
+      "startLine": 44,
+      "endLine": 56
+    },
+    "type": "concept",
+    "title": "1 is in A (Vacuous Truth)",
+    "content": "Proves `one_in_setA`: $1 \\in A$ because 1 has no prime divisors, so the universal condition is vacuously true. The proof handles the positivity condition with `norm_num` and the universal condition by showing any prime $p$ dividing 1 leads to $p = 1$, contradicting primality via `Nat.Prime.ne_one`.",
+    "mathContext": "$1 \\in A$ since $\\{p : p \\text{ prime}, p \\mid 1\\} = \\emptyset$. The universal quantifier over an empty set is vacuously true.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "vacuous truth",
+      "Nat.Prime.ne_one",
+      "norm_num"
+    ],
+    "prerequisites": [
+      "divisibility of 1",
+      "prime number definition"
+    ]
+  },
+  {
+    "id": "ann-prime-power",
+    "proofId": "erdos-768",
+    "range": {
+      "startLine": 58,
+      "endLine": 67
+    },
+    "type": "concept",
+    "title": "Prime Powers are Not in A",
+    "content": "States `prime_power_not_in_setA`: $p^k \\notin A$ for any prime $p$ and $k \\geq 1$. The key insight is that every divisor of $p^k$ has the form $p^j$, and $p^j \\equiv 0 \\pmod{p}$ for $j \\geq 1$. So no $d > 1$ with $d \\mid p^k$ can satisfy $d \\equiv 1 \\pmod{p}$. The proof extracts the witness from the $A$-membership hypothesis but the final step (showing divisors of $p^k$ are all $p$-powers) has a sorry.",
+    "mathContext": "For $n = p^k$: $\\text{divisors}(p^k) = \\{1, p, p^2, \\ldots, p^k\\}$. For $j \\geq 1$: $p^j \\equiv 0 \\pmod{p} \\neq 1$. Only $d = 1$ satisfies $d \\equiv 1 \\pmod{p}$, but $d > 1$ is required. So $p^k \\notin A$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime power divisors",
+      "dvd_pow_self",
+      "modular arithmetic"
+    ],
+    "prerequisites": [
+      "prime powers",
+      "divisor structure"
+    ]
+  },
+  {
+    "id": "ann-counting",
+    "proofId": "erdos-768",
+    "range": {
+      "startLine": 77,
+      "endLine": 100
+    },
+    "type": "concept",
+    "title": "Counting Function and Exponent Scale",
+    "content": "Defines the key analytic objects:\n\n- **countA**: $A(N) = |\\{n \\leq N : n \\in A\\}|$ via `Finset.filter inSetA (Finset.range (N+1))`\n- **densityA**: $d(N) = A(N)/N$, the proportion of integers up to $N$ in $A$\n- **exponentFunc**: $f(N) = \\sqrt{\\log N} \\cdot \\log \\log N$, the natural scale for this problem\n\nAll three are `noncomputable` since they involve real-valued operations or undecidable predicates.",
+    "mathContext": "$A(N) = |A \\cap [1, N]|$. The density $d(N) = A(N)/N$ decays as $\\exp(-\\Theta(\\sqrt{\\log N} \\cdot \\log \\log N))$. The scale $f(N) = \\sqrt{\\log N} \\cdot \\log \\log N$ grows slower than $\\log N$ but faster than $\\log \\log N$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.filter",
+      "asymptotic density",
+      "Real.sqrt",
+      "Real.log"
+    ],
+    "prerequisites": [
+      "Finset operations",
+      "real analysis"
+    ]
+  },
+  {
+    "id": "ann-erdos-bounds",
+    "proofId": "erdos-768",
+    "range": {
+      "startLine": 102,
+      "endLine": 127
+    },
+    "type": "concept",
+    "title": "Erdős's Two-Sided Bounds and Main Conjecture",
+    "content": "Three axioms encode Erdős's results and the open question:\n\n1. **erdos_768_lower_bound**: $\\exists c > 0,\\; \\forall N \\geq 10,\\; d(N) \\geq \\exp(-c \\cdot f(N))$\n2. **erdos_768_upper_bound**: $\\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0,\\; d(N) \\leq \\exp(-(1-\\varepsilon)\\sqrt{\\log N \\cdot \\log \\log N})$\n3. **erdos_768_conjecture**: Either $-\\log(d(N))/f(N) \\to c$ for some $c > 0$ (the constant exists), or no such limit exists\n\nNote the subtle difference: the lower bound uses $\\sqrt{\\log N} \\cdot \\log \\log N$ while the upper uses $\\sqrt{\\log N \\cdot \\log \\log N}$. These are asymptotically different!",
+    "mathContext": "Lower: $d(N) \\geq \\exp(-c \\sqrt{\\log N} \\cdot \\log \\log N)$. Upper: $d(N) \\leq \\exp(-(1-\\varepsilon)\\sqrt{\\log N \\cdot \\log \\log N})$. The ratio $\\sqrt{\\log N} \\cdot \\log \\log N / \\sqrt{\\log N \\cdot \\log \\log N} = \\sqrt{\\log \\log N} \\to \\infty$, so the gap is unbounded.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Filter.Tendsto",
+      "nhds",
+      "Real.exp",
+      "asymptotic bounds"
+    ],
+    "prerequisites": [
+      "filter limits",
+      "real exponential",
+      "asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-simple-groups",
+    "proofId": "erdos-768",
+    "range": {
+      "startLine": 128,
+      "endLine": 147
+    },
+    "type": "concept",
+    "title": "Connection to Non-Cyclic Simple Groups",
+    "content": "Formalizes the group-theoretic motivation. `isSimpleGroupOrder n` states $\\exists G$ with $|G| = n$ and $G$ simple. `isNonCyclicSimpleGroupOrder` additionally requires $G$ is not cyclic. The axiom `nonCyclic_simple_in_setA` states all non-cyclic simple group orders lie in $A$.\n\nThe proof idea: by Sylow's theorem, for each prime $p \\mid |G|$, the number $n_p$ of Sylow $p$-subgroups satisfies $n_p \\equiv 1 \\pmod{p}$ and $n_p \\mid |G|$. If $G$ is non-cyclic and simple, $n_p > 1$ for each $p$, providing the required witness.",
+    "mathContext": "Sylow theory: $n_p \\equiv 1 \\pmod{p}$ and $n_p \\mid |G|$. For non-cyclic simple $G$: $n_p > 1$ (otherwise the unique Sylow $p$-subgroup would be normal, contradicting simplicity). So $n_p$ is a witness divisor $> 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsSimpleGroup",
+      "IsCyclic",
+      "Sylow theorems",
+      "Fintype.card",
+      "Classification of Finite Simple Groups"
+    ],
+    "prerequisites": [
+      "Sylow theory",
+      "simple groups",
+      "group theory basics"
+    ]
+  },
+  {
+    "id": "ann-structural",
+    "proofId": "erdos-768",
+    "range": {
+      "startLine": 149,
+      "endLine": 165
+    },
+    "type": "definition",
+    "title": "Structural Properties and Smallest Element",
+    "content": "Two results about the structure of $A$:\n\n1. **squarefree_part_structure** (sorry): If $n \\in A$, $p \\mid n$, and $p^2 \\nmid n$, then $\\exists q$ prime with $q \\mid n$, $q \\neq p$, and $q \\equiv 1 \\pmod{p}$. The witness $d \\equiv 1 \\pmod{p}$ must have a prime factor $\\equiv 1 \\pmod{p}$ dividing $n$.\n\n2. **smallest_nontrivial_in_setA** (axiom): There exists a smallest $n > 1$ in $A$, and all integers between 2 and $n-1$ are outside $A$. (This is $n = 6$.)",
+    "mathContext": "For squarefree $n \\in A$: each prime $p \\mid n$ needs another prime $q \\mid n$ with $q \\equiv 1 \\pmod{p}$. This creates a 'witness graph' on the prime factors where each vertex has an incoming edge. The smallest non-trivial element is $6 = 2 \\times 3$ since $3 \\equiv 1 \\pmod{2}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "squarefree integers",
+      "witness graphs",
+      "prime congruence conditions"
+    ],
+    "prerequisites": [
+      "prime factorization",
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-six-in-a",
+    "proofId": "erdos-768",
+    "range": {
+      "startLine": 196,
+      "endLine": 205
+    },
+    "type": "concept",
+    "title": "6 is in A (Explicit Witness Construction)",
+    "content": "Proves `six_in_setA`: $6 \\in A$ by explicit construction. The proof verifies positivity with `norm_num`, then for each prime $p$ dividing 6, uses `interval_cases p` to enumerate the cases $p = 2$ and $p = 3$. In both cases, $d = 3$ is provided as the witness: $3 > 1$, $3 \\mid 6$, and the modular conditions are verified by `norm_num`.",
+    "mathContext": "$6 = 2 \\times 3 \\in A$. For $p = 2$: witness $d = 3$ ($3 > 1$, $3 \\mid 6$, $3 \\equiv 1 \\pmod{2}$). The `interval_cases` tactic enumerates all primes dividing 6, and `norm_num` verifies the arithmetic conditions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "interval_cases",
+      "norm_num",
+      "explicit witness construction"
+    ],
+    "prerequisites": [
+      "divisibility of 6",
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-main-problem",
+    "proofId": "erdos-768",
+    "range": {
+      "startLine": 207,
+      "endLine": 231
+    },
+    "type": "concept",
+    "title": "Main Open Problem Statement",
+    "content": "The combined axiom `erdos_768_main` states: $\\exists c_1, c_2$ with $0 < c_1 \\leq c_2$ such that for all $N \\geq 10$:\n\n$$\\exp(-c_2 \\cdot f(N)) \\leq d(N) \\leq \\exp(-c_1 \\cdot f(N))$$\n\nwhere $f(N) = \\sqrt{\\log N} \\cdot \\log \\log N$. The docstring above provides a self-contained summary of the entire problem: the definition of $A$, Erdős's bounds, the connection to simple groups, and the open question about the exact constant.",
+    "mathContext": "The formal statement asks for constants sandwiching the density: $\\exp(-c_2 f(N)) \\leq |A \\cap [1,N]|/N \\leq \\exp(-c_1 f(N))$. The open question is whether $c_1 = c_2$ can be achieved (i.e., whether the limit $\\lim -\\log(d(N))/f(N)$ exists).",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic density",
+      "open problems",
+      "Real.exp",
+      "exponentFunc"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "asymptotic bounds"
+    ]
+  }
+]

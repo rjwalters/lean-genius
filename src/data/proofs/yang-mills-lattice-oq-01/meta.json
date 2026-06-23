@@ -1,0 +1,268 @@
+{
+  "id": "yang-mills-lattice-oq-01",
+  "title": "Yang-Mills Lattice: OS Reconstruction and Continuum Limit",
+  "slug": "yang-mills-lattice-oq-01",
+  "description": "Formalizes the Osterwalder-Schrader (OS) reconstruction route from lattice Yang-Mills to a Wightman QFT: lattice OS axioms, transfer matrix positivity, the GNS construction (axiomatized), the mass gap transfer theorem, and the 2D exact solution via Migdal's formula with string tension σ = g²C₂/(2 dim R).",
+  "meta": {
+    "proofRepoPath": "Proofs/YangMillsLatticeOQ01.lean",
+    "author": "Osterwalder-Schrader (1973, 1975), Wilson (1974), Migdal (1975)",
+    "date": "2026",
+    "status": "axiomatized",
+    "tags": [
+      "mathematical-physics",
+      "yang-mills",
+      "osterwalder-schrader",
+      "reflection-positivity",
+      "wightman-qft",
+      "mass-gap",
+      "lattice-gauge-theory",
+      "millennium-prize"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 2,
+    "assumptions": "2 axioms: (1) os_reconstruction — the GNS construction from reflection-positive lattice OS data producing a WightmanQFT; this is mathematically proven (Osterwalder-Schrader 1973, Osterwalder-Seiler 1978) but requires functional analysis (Bochner's theorem, GNS construction) beyond current Mathlib. (2) os_mass_gap_transfer — that exponential decay of Schwinger functions implies a spectral gap in the reconstructed Hilbert space via the Kallen-Lehmann representation; similarly proven but requires the full OS machinery. The 2D results (Migdal formula, string tension, SU(2) computation) are fully proved with 0 axioms.",
+    "lineCount": 579,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.log_neg",
+        "description": "log r < 0 when 0 < r < 1",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.exp_le_exp",
+        "description": "Monotonicity of exponential function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Exp"
+      },
+      {
+        "theorem": "mul_le_mul_of_nonpos_left",
+        "description": "Multiplication by negative reverses inequality",
+        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+      }
+    ],
+    "originalContributions": [
+      "Formal LatticeOSData structure encoding all five OS axioms in the lattice context",
+      "OSTransferMatrix structure connecting OS2 (reflection positivity) to transfer matrix positivity",
+      "The key conditional theorem: lattice OS data with exponential decay → Wightman QFT with mass gap",
+      "MigdalData structure with explicit exponential decay proof for 2D Yang-Mills",
+      "SU(2) string tension computed exactly: σ = 3g²/16",
+      "SU(N) fundamental string tension formula: σ = g²(N²-1)/(4N²) for all N ≥ 2",
+      "SU(2) adjoint string tension: σ = g²/3 (gluon channel)",
+      "Migdal correlation length ξ = 1/σ with reciprocity σ·ξ = 1",
+      "YangMillsContinuumLimitProblem: precise Lean formulation of the 4D Millennium Prize problem",
+      "Proof that the 4D Millennium Problem implies existence of a finite-lattice Wightman QFT with mass gap"
+    ],
+    "dateAdded": "2026-04-21",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 28,
+    "definitionCount": 16
+  },
+  "overview": {
+    "historicalContext": "The Osterwalder-Schrader (OS) reconstruction theorem (1973, 1975) is the rigorous mathematical bridge between Euclidean field theory and physical quantum field theory. It states: a system of Schwinger functions (Euclidean correlators) satisfying five axioms — Euclidean covariance (OS1), reflection positivity (OS2), regularity (OS3), symmetry (OS4), and cluster decomposition (OS5) — can be analytically continued via Wick rotation $\\tau \\mapsto it$ to produce a system of Wightman distributions satisfying all Wightman axioms. The Hilbert space is constructed by the GNS (Gelfand-Naimark-Segal) procedure from the reflection-positive bilinear form. The key axiom is OS2: without reflection positivity, the inner product on the GNS Hilbert space might not be positive definite, and unitarity would be lost. In the lattice context, Osterwalder and Seiler (1978) showed that reflection positivity of the lattice action is equivalent to the transfer matrix $T$ being a positive semi-definite operator on the gauge-invariant Hilbert space. The Clay Millennium Prize ($1M) asks whether 4D lattice Yang-Mills theory satisfies all five OS axioms in the continuum limit $a \\to 0$, and whether the resulting Wightman QFT has a positive mass gap.",
+    "problemStatement": "Given a compact simple gauge group $G$ (e.g., $SU(2)$ or $SU(3)$) with Lie algebra $\\mathfrak{g}$, do there exist finite-lattice Osterwalder-Schrader data $\\{S_n\\}$ for 4D Yang-Mills theory with Wilson action that satisfy OS1-OS5, and does the Schwinger 2-point function $S_2(x)$ decay exponentially as $|S_2(x)| \\leq C e^{-\\Delta|x|}$ with a mass gap $\\Delta > 0$ that survives the continuum limit $L \\to \\infty, a \\to 0$?",
+    "text": "The continuum limit problem for 4D lattice Yang-Mills is formalized via the Osterwalder-Schrader axioms. The file defines \\texttt{LatticeOSData} — a structure encoding all five OS axioms for a finite hypercubic 4D lattice with $L^4$ sites — and proves that if this data has an exponentially decaying 2-point Schwinger function, the OS reconstruction (axiomatized) produces a Wightman QFT with a mass gap of the same rate. The transfer matrix connection is made precise: reflection positivity (OS2) is equivalent to the transfer matrix being positive semi-definite, and the spectral gap $\\Delta = -\\ln(\\lambda_1/\\lambda_0)/a > 0$ gives the physical mass gap. The 2D case is completely worked out: Migdal's formula gives the explicit Schwinger function $S_2(t) = d_R e^{-\\sigma_R t}$ with $\\sigma_R = g^2 C_2/(2 d_R) > 0$, providing a concrete example of OS data satisfying all conditions. For SU(2), $\\sigma = 3g^2/16$. The 4D case remains the Millennium Prize problem.",
+    "proofStrategy": "The proof is organized in five stages. Stage 1 (LatticeOSData): define the finite-lattice OS data package, encoding each of OS1-OS5 as a field in the structure. Stage 2 (Transfer Matrix): define OSTransferMatrix (positive eigenvalues from OS2) and prove that the spectral gap $\\lambda_1 < \\lambda_0$ implies a positive mass gap $\\Delta > 0$. Stage 3 (Reconstruction): axiomatize the GNS construction (os_reconstruction) and the Kallen-Lehmann mass gap transfer (os_mass_gap_transfer), then prove the key theorem: lattice OS data with exponential decay implies a Wightman QFT with mass gap. Stage 4 (2D case): prove the Migdal Schwinger function has exponential decay with rate $\\sigma > 0$, compute SU(2) string tension, and show the 2D theory satisfies the mass gap condition. Stage 5 (Problem statement): state YangMillsContinuumLimitProblem precisely as a Lean Prop and prove it implies a finite-lattice Wightman QFT with mass gap.",
+    "keyInsights": [
+      "Reflection positivity (OS2) is the key axiom: it guarantees the GNS inner product is positive definite, giving a genuine Hilbert space with unitary time evolution — without it, the reconstructed 'QFT' might have negative-norm states (ghosts)",
+      "The transfer matrix encodes OS2 exactly: the lattice theory satisfies reflection positivity if and only if T is a positive semi-definite operator, connecting the abstract OS axiom to a concrete spectral condition on a finite-dimensional matrix",
+      "The mass gap has two equivalent characterizations: (a) Euclidean: $S_2(x) \\sim e^{-\\Delta|x|}$ (exponential decay of Schwinger function); (b) Minkowski: spectrum of H in the vacuum-orthogonal subspace is bounded below by $\\Delta > 0$ — the OS reconstruction shows these are the same",
+      "The 2D case is exactly solvable because the partition function factorizes: $Z = \\prod_P Z_P$ where each plaquette contributes independently. This factorization makes the transfer matrix explicitly diagonal, proving OS2 trivially. The 4D case has non-trivial plaquette interactions that prevent factorization",
+      "The continuum limit is a second-order phase transition: the correlation length $\\xi = 1/(a\\Delta)$ must diverge in lattice units as $a \\to 0$, while $\\Delta$ (in physical units) stays finite. Asymptotic freedom governs the running: $g^2(a) \\sim 1/(b_0 \\ln(1/a\\Lambda))$",
+      "The GNS construction axiom encodes an enormous amount of mathematics: Bochner's theorem, the spectral theorem for unbounded operators, Sobolev space control, and the reconstruction of relativistic symmetries from Euclidean symmetries. The OSforGFF project (Douglas et al. 2026) achieves this for the free scalar field in 32K lines"
+    ],
+    "prerequisites": [
+      "Lattice gauge theory (yang-mills-lattice entry) — defines the Wilson action and transfer matrix",
+      "Yang-Mills quantum structure (Quantum.lean) — WightmanQFT, hasMassGap, CompactSimpleGaugeGroup",
+      "Functional analysis (GNS construction, spectral theory) — for understanding the axioms",
+      "Complex analysis (Wick rotation, analytic continuation) — for Euclidean-Minkowski connection"
+    ]
+  },
+  "sections": [
+    {
+      "id": "lattice-os-data",
+      "title": "Lattice OS Data — The Reconstruction Input",
+      "summary": "Defines LatticeSite4D, LatticeSchwingerFunction (symmetric, diagonal-nonneg), and LatticeOSData encoding all five OS axioms: reflection positivity (OS2), clustering (OS5), and growth bounds (OS3). Each axiom is a named field with its mathematical content.",
+      "startLine": 54,
+      "endLine": 114,
+      "mathContext": "LatticeOSData(L) packages the Euclidean data needed for OS reconstruction. OS2 (reflection_positive): $\\sum_{x,y} f(x) S_2(x,y) f(y) \\geq 0$ for $f$ supported in positive time half-space. OS5 (clustering): $S_2(x,y) \\to 0$ as $|x-y|_{\\text{time}} \\to \\infty$. OS3 (growth_bound): $|S_2(x,y)| \\leq C e^{\\mu|x-y|}$."
+    },
+    {
+      "id": "transfer-matrix",
+      "title": "Transfer Matrix and Reflection Positivity",
+      "summary": "OSTransferMatrix extends TransferMatrix with positive eigenvalues (from OS2) and vacuum normalization. Proves: Hamiltonian H = -ln(T)/a ≥ 0, vacuum energy = 0 when λ₀ = 1, spectral mass gap Δ = -ln(λ₁/λ₀)/a > 0 when λ₁ < λ₀, and that the correlation length ξ = 1/Δlog is positive.",
+      "startLine": 115,
+      "endLine": 200,
+      "mathContext": "OS2 ↔ T positive semi-definite. Mass gap: $\\Delta = -\\ln(\\lambda_1/\\lambda_0)/a > 0$ when $\\lambda_1 < \\lambda_0$. Correlation length $\\xi = 1/(-\\ln(\\lambda_1/\\lambda_0))$. Reciprocal relation: $\\Delta \\cdot \\xi \\cdot a = 1$."
+    },
+    {
+      "id": "os-reconstruction",
+      "title": "OS Reconstruction Theorem",
+      "summary": "Axiomatizes the GNS construction (os_reconstruction) and mass gap transfer (os_mass_gap_transfer). Proves: lattice_mass_gap_to_wightman (lattice OS data + exponential decay → hasSomeMassGap) and lattice_mass_gap_le (downward closure of the mass gap set).",
+      "startLine": 201,
+      "endLine": 264,
+      "mathContext": "os_reconstruction: LatticeOSData L → WightmanQFT (GNS construction, requires functional analysis). Key theorem: $\\forall$ LatticeOSData with Schwinger decay $|S_2| \\leq S_2(0) e^{-\\Delta t}$, the reconstructed QFT has hasMassGap $\\Delta$."
+    },
+    {
+      "id": "2d-case",
+      "title": "2D Yang-Mills — Reflection Positivity Proved",
+      "summary": "MigdalData structure with positive coupling, Casimir, representation dimension. Defines stringTension = g²C₂/(2 dim R) > 0. Proves migdalS2 is positive, antitone, and satisfies exponential decay. Computes string tensions for SU(2) fundamental (3g²/16), SU(2) adjoint, and general SU(N) fundamental representations, plus the Migdal correlation length. Shows 2D Euclidean mass gap condition holds with Δ = σ.",
+      "startLine": 265,
+      "endLine": 442,
+      "mathContext": "$S_2(t) = d_R e^{-\\sigma_R t}$ with $\\sigma_R = g^2 C_2/(2 d_R) > 0$. SU(2): $d_R = 2$, $C_2 = 3/4$, $\\sigma = 3g^2/16$. All proofs use only Mathlib (no axioms): positivity from exp_pos, decay from mul_le_mul_of_nonpos_left."
+    },
+    {
+      "id": "millennium-problem",
+      "title": "The Millennium Problem — Precise Lean Statement",
+      "summary": "LatticeEuclideanMassGap structure (OS data + exponential decay certificate). euclidean_mass_gap_to_wightman: Euclidean mass gap → Wightman mass gap. YangMillsContinuumLimitProblem: precise Lean Prop for the Clay problem. millennium_implies_os_formulation: the 4D problem implies a finite-lattice Wightman QFT exists.",
+      "startLine": 443,
+      "endLine": 503,
+      "mathContext": "YangMillsContinuumLimitProblem G 𝔤 = ∃ Δ∞ > 0, ∀ L ≥ 2, ∃ data : LatticeOSData L, ∃ mg : LatticeEuclideanMassGap L data, Δ∞ ≤ mg.gap. This captures uniform existence of mass gap in large-volume lattice limit."
+    },
+    {
+      "id": "continuum-infrastructure",
+      "title": "Continuum Limit Infrastructure",
+      "summary": "continuum_limit_eigenvalue_ratio: as a→0 with fixed Δ, the eigenvalue ratio exp(-Δa) < 1 approaches 1. larger_gap_larger_mass: larger spectral separation → larger mass gap. coarser_lattice_gap_bound: monotonicity of mass gap with respect to OS data refinement.",
+      "startLine": 504,
+      "endLine": 552,
+      "mathContext": "Continuum limit condition: $a \\cdot \\Delta < 1$ implies $e^{-\\Delta a} \\in (0,1)$. As $a \\to 0$: eigenvalue ratio $\\to 1$ (gapless lattice), but physical mass gap $\\Delta = -\\ln(\\lambda_1/\\lambda_0)/a$ remains finite (renormalization group running)."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "A narrative recap of the proof chain: OS transfer matrix positivity → Hamiltonian H ≥ 0, spectral gap → mass gap, lattice OS data with exponential decay → Wightman QFT with mass gap, the 2D Yang-Mills exponential decay and SU(2) string tension, the Millennium Problem as a Lean Prop, and the continuum-limit monotonicity results.",
+      "startLine": 553,
+      "endLine": 579,
+      "mathContext": "Proof chain: reflection positivity ⇒ $H \\ge 0$; spectral gap ⇒ $\\Delta > 0$; OS reconstruction ⇒ Wightman QFT; 2D case fully proven; 4D remains the Clay problem."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization establishes the precise mathematical framework for the OS reconstruction route from 4D lattice Yang-Mills to a Wightman QFT with mass gap. The key results are: (1) the lattice OS axioms package exactly the data needed for GNS reconstruction; (2) reflection positivity is equivalent to the transfer matrix being positive; (3) the OS reconstruction conditional is precisely stated — IF the lattice theory satisfies OS1-OS5 with exponential Schwinger decay, THEN a Wightman QFT with mass gap exists; (4) the 2D Yang-Mills theory fully satisfies all conditions with explicit mass gap σ = g²C₂/(2 dim R). The 4D case remains the Clay Millennium Prize problem.",
+    "implications": "The formalization makes precise what mathematical content is needed to solve the Yang-Mills mass gap problem: it reduces to showing that 4D lattice Yang-Mills produces LatticeOSData satisfying OS1-OS5 with a mass gap that is uniform as L → ∞ and a → 0. The OSforGFF project (Douglas et al. arXiv:2603.15770) achieves the analogous result for the free Gaussian field in 32K lines — a proof of concept that the OS reconstruction can be fully formalized in Lean 4. The main missing ingredient for Yang-Mills is control of the non-linear interaction terms in the Wilson action, which prevents the partition function from factorizing as in 2D.",
+    "openQuestions": [
+      "Does the 4D lattice Yang-Mills theory (with Wilson action) satisfy the five OS axioms for all L and a, with a mass gap Δ(L,a) → Δ∞ > 0 as L → ∞, a → 0?",
+      "Can the os_reconstruction axiom be replaced by a proved theorem? The Douglas et al. OSforGFF project proves this for the free scalar field — can their methods be extended to the non-linear Yang-Mills case?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "yang-mills-lattice",
+      "relationship": "extends",
+      "description": "This file formalizes the open question from yang-mills-lattice: does the continuum limit exist as a Wightman QFT? It builds on the LatticeGaugeTransform, WilsonLatticeAction, and TransferMatrix infrastructure defined there"
+    },
+    {
+      "targetId": "yang-mills",
+      "relationship": "part-of",
+      "description": "Sub-problem of the Yang-Mills Millennium Prize: the Euclidean route to proving mass gap via OS reconstruction"
+    },
+    {
+      "targetId": "yang-mills-2d",
+      "relationship": "specializes",
+      "description": "The 2D Yang-Mills theory (MigdalData section) is the only case where OS reconstruction can be carried out explicitly — the factorization of the 2D partition function makes all OS axioms tractable"
+    }
+  ],
+  "leanFile": {
+    "lineCount": 579,
+    "structureCount": 7,
+    "axiomCount": 2,
+    "theoremCount": 28,
+    "lemmaCount": 0,
+    "imports": [
+      "Proofs.YangMills.Quantum"
+    ],
+    "opens": [
+      "Real",
+      "Set",
+      "Filter",
+      "Topology",
+      "BigOperators"
+    ],
+    "path": "Proofs/YangMillsLatticeOQ01.lean",
+    "sorries": 0,
+    "definitionCount": 16
+  },
+  "references": [
+    {
+      "key": "OS73",
+      "authors": [
+        "K. Osterwalder",
+        "R. Schrader"
+      ],
+      "title": "Axioms for Euclidean Green's Functions I",
+      "venue": "Communications in Mathematical Physics",
+      "year": "1973",
+      "volume": "31",
+      "pages": "83-112",
+      "note": "Foundational paper introducing the OS axioms and reconstruction theorem"
+    },
+    {
+      "key": "OS75",
+      "authors": [
+        "K. Osterwalder",
+        "R. Schrader"
+      ],
+      "title": "Axioms for Euclidean Green's Functions II",
+      "venue": "Communications in Mathematical Physics",
+      "year": "1975",
+      "volume": "42",
+      "pages": "281-305",
+      "note": "Completion of the OS reconstruction, including the cluster property"
+    },
+    {
+      "key": "OSeiler78",
+      "authors": [
+        "K. Osterwalder",
+        "E. Seiler"
+      ],
+      "title": "Gauge Field Theories on the Lattice",
+      "venue": "Annals of Physics",
+      "year": "1978",
+      "volume": "110",
+      "pages": "440-471",
+      "note": "OS axioms for lattice gauge theories, reflection positivity via transfer matrix"
+    },
+    {
+      "key": "JW00",
+      "authors": [
+        "A. Jaffe",
+        "E. Witten"
+      ],
+      "title": "Quantum Yang-Mills Theory",
+      "venue": "Clay Mathematics Institute Millennium Problems",
+      "year": "2000",
+      "note": "Official problem statement for the Yang-Mills Millennium Prize"
+    },
+    {
+      "key": "Mi75",
+      "authors": [
+        "A. Migdal"
+      ],
+      "title": "Recursion Equations in Gauge Theories",
+      "venue": "Soviet Physics JETP",
+      "year": "1975",
+      "volume": "42",
+      "pages": "413-418",
+      "note": "Exact solution of 2D lattice Yang-Mills via recursion on plaquettes"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "lattice_mass_gap_to_wightman",
+      "type": "core",
+      "description": "Lattice OS data with exponential Schwinger decay → Wightman QFT with mass gap",
+      "leanType": "LatticeOSData L → Δ > 0 → decay_condition → hasSomeMassGap (os_reconstruction data)"
+    },
+    {
+      "name": "yangMills2D_euclidean_mass_gap",
+      "type": "supporting",
+      "description": "2D Yang-Mills Schwinger function satisfies exponential decay with σ > 0",
+      "leanType": "MigdalData → 0 < stringTension f ∧ |S₂(t)| ≤ S₂(0) · exp(-σt)"
+    },
+    {
+      "name": "su2_string_tension",
+      "type": "computation",
+      "description": "SU(2) fundamental representation string tension = 3g²/16",
+      "leanType": "stringTension (su2FundamentalMigdalData g_sq hg) = 3 * g_sq / 16"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,160 @@
+[
+  {
+    "id": "ann-e1137-primegap",
+    "proofId": "erdos-1137",
+    "range": {
+      "startLine": 35,
+      "endLine": 37
+    },
+    "type": "definition",
+    "title": "Prime Gap Definition",
+    "content": "The $n$-th prime gap $d_n = p_{n+1} - p_n$ where $p_n$ is the $n$-th prime (0-indexed, using Mathlib's `Nat.nth`). The sequence begins $d_0 = 1, d_1 = 2, d_2 = 2, d_3 = 4, \\ldots$ This is the fundamental object of study in the conjecture.",
+    "mathContext": "$d_n = p_{n+1} - p_n$ where $p_n = \\text{nth}(\\mathbb{P}, n)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime gap",
+      "prime enumeration",
+      "Nat.nth"
+    ],
+    "prerequisites": [
+      "prime numbers",
+      "natural number subtraction"
+    ]
+  },
+  {
+    "id": "ann-e1137-maxgap",
+    "proofId": "erdos-1137",
+    "range": {
+      "startLine": 40,
+      "endLine": 42
+    },
+    "type": "definition",
+    "title": "Maximum Gap Function",
+    "content": "The maximum prime gap among the first $x$ gaps: $\\max_{n < x} d_n$. Uses `Finset.sup` which returns $\\bot = 0$ on an empty range. This function is monotonically non-decreasing and tends to $\\infty$ by Bertrand's postulate.",
+    "mathContext": "$g(x) = \\max_{0 \\leq n < x} d_n = \\sup\\{d_0, d_1, \\ldots, d_{x-1}\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "maximal prime gap",
+      "Finset.sup",
+      "Cramér's conjecture"
+    ],
+    "prerequisites": [
+      "supremum over finite sets",
+      "prime gap"
+    ]
+  },
+  {
+    "id": "ann-e1137-ratio",
+    "proofId": "erdos-1137",
+    "range": {
+      "startLine": 47,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "Erdős Ratio",
+    "content": "The ratio $r(x) = \\frac{\\max_{n<x} d_n \\cdot d_{n-1}}{(\\max_{n<x} d_n)^2}$ whose limiting behavior is the subject of the conjecture. Uses ℕ subtraction at $n = 0$ (yielding $d_0 \\cdot d_0 = 1$), which doesn't affect the limit. The numerator measures how large consecutive gap products can get; the denominator normalizes by the square of the maximum gap.",
+    "mathContext": "$r(x) = \\frac{\\max_{n < x} d_n d_{n-1}}{\\left(\\max_{n < x} d_n\\right)^2} \\in [0, 1]$",
+    "significance": "key",
+    "relatedConcepts": [
+      "correlation of prime gaps",
+      "normalization",
+      "Filter.Tendsto"
+    ],
+    "prerequisites": [
+      "real division",
+      "prime gap",
+      "maximum gap"
+    ]
+  },
+  {
+    "id": "ann-e1137-pos",
+    "proofId": "erdos-1137",
+    "range": {
+      "startLine": 70,
+      "endLine": 74
+    },
+    "type": "concept",
+    "title": "Gap Positivity",
+    "content": "**Verified**: Every prime gap $d_n \\geq 1$. The proof unfolds the definition and applies `omega` to the strict inequality $p_n < p_{n+1}$ (from `StrictMono`). This is the weakest useful lower bound — the parity argument later improves it to $d_n \\geq 2$ for $n \\geq 1$.",
+    "mathContext": "$p_{n+1} > p_n \\Rightarrow p_{n+1} - p_n \\geq 1$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "strict monotonicity",
+      "natural number arithmetic"
+    ],
+    "prerequisites": [
+      "Nat.nth_strictMono",
+      "omega tactic"
+    ]
+  },
+  {
+    "id": "ann-e1137-parity",
+    "proofId": "erdos-1137",
+    "range": {
+      "startLine": 119,
+      "endLine": 123
+    },
+    "type": "concept",
+    "title": "Prime Gap Parity",
+    "content": "**Verified**: For $n \\geq 1$, the prime gap $d_n$ is even. The proof uses `Nat.even_sub` to reduce to showing both $p_n$ and $p_{n+1}$ have the same parity, then shows both are odd (not even) via `iff_of_false`. A prime $p \\geq 3$ cannot be even: if $2 \\mid p$ then $p = 1$ or $p = 2$ by `eq_one_or_self_of_dvd`, contradicting $p \\geq 3$.",
+    "mathContext": "$n \\geq 1 \\Rightarrow p_n, p_{n+1} \\geq 3$ are both odd, so $d_n = p_{n+1} - p_n$ is even",
+    "significance": "key",
+    "relatedConcepts": [
+      "parity",
+      "even subtraction",
+      "prime divisibility"
+    ],
+    "prerequisites": [
+      "Nat.even_sub",
+      "Nat.Prime.eq_one_or_self_of_dvd",
+      "iff_of_false"
+    ]
+  },
+  {
+    "id": "ann-e1137-ge-two",
+    "proofId": "erdos-1137",
+    "range": {
+      "startLine": 131,
+      "endLine": 136
+    },
+    "type": "concept",
+    "title": "Gap ≥ 2 for n ≥ 1",
+    "content": "**Verified**: For $n \\geq 1$, the prime gap $d_n \\geq 2$. Combines the parity result ($d_n$ is even, so $d_n = 2k$ for some $k$) with positivity ($d_n \\geq 1$, so $k \\geq 1$), yielding $d_n \\geq 2$. This is tight: $d_1 = d_2 = 2$ (twin prime gaps).",
+    "mathContext": "$d_n \\text{ even} \\wedge d_n \\geq 1 \\Rightarrow d_n \\geq 2$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "twin primes",
+      "minimum gap",
+      "even positive integers"
+    ],
+    "prerequisites": [
+      "primeGap_even",
+      "primeGap_pos",
+      "omega tactic"
+    ]
+  },
+  {
+    "id": "ann-e1137-conjecture",
+    "proofId": "erdos-1137",
+    "range": {
+      "startLine": 172,
+      "endLine": 190
+    },
+    "type": "concept",
+    "title": "Main Conjecture (Axiom)",
+    "content": "**Axiom (OPEN)**: The ratio $\\max_{n<x} d_n d_{n-1} / (\\max_{n<x} d_n)^2 \\to 0$ as $x \\to \\infty$. Stated using `Filter.Tendsto` with target `𝓝 0`. This is the central claim of the problem: record-breaking prime gaps should not appear in consecutive pairs. The conjecture is consistent with the Cramér–Granville probabilistic model of prime distribution and supported by extensive computation.",
+    "mathContext": "$\\text{Tendsto}\\left(x \\mapsto \\frac{\\sup_{n<x} d_n d_{n-1}}{(\\sup_{n<x} d_n)^2}\\right)\\; \\text{atTop}\\; (\\mathcal{N}(0))$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cramér's conjecture",
+      "Granville's model",
+      "prime gap distribution",
+      "Filter.Tendsto"
+    ],
+    "prerequisites": [
+      "topology (nhds)",
+      "filters (atTop)",
+      "real analysis (limits)"
+    ]
+  }
+]

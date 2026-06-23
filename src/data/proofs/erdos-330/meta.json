@@ -1,0 +1,167 @@
+{
+  "id": "erdos-330",
+  "title": "Erdős Problem #330: Minimal Bases with Positive Density",
+  "slug": "erdos-330",
+  "description": "Does there exist a minimal asymptotic additive basis A with positive density such that for every n ∈ A, the integers unrepresentable without n also have positive upper density? Open (Erdős–Nathanson).",
+  "meta": {
+    "erdosNumber": 330,
+    "status": "axiomatized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "additive-bases",
+      "density",
+      "open"
+    ],
+    "sorries": 0,
+    "sourceUrl": "https://erdosproblems.com/330",
+    "erdosUrl": "https://erdosproblems.com/330",
+    "axiomCount": 1,
+    "badge": "axiom",
+    "assumptions": "1 axiom: upperDensity. 0 sorries.",
+    "proofRepoPath": "Proofs/Erdos330Problem.lean",
+    "mathlib_version": "4.26.0",
+    "lineCount": 65,
+    "theoremCount": 0,
+    "definitionCount": 5
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 22,
+      "summary": "Module imports and problem overview for Erdős Problem #330 on minimal bases with positive density.",
+      "mathContext": "Mathematical content: Module imports and problem overview for Erdős Problem #330 on minimal bases with positive density."
+    },
+    {
+      "id": "basis-definitions",
+      "title": "Basis Definitions: Representability and Asymptotic Bases",
+      "startLine": 23,
+      "endLine": 41,
+      "summary": "Four definitions: IsRepresentable (m is a sum of ≤h elements of A), IsAsympBasis (every sufficiently large m is representable), upperDensity (axiomatized, noncomputable limsup count), HasPosDensity (upperDensity > 0).",
+      "mathContext": "$\\text{IsRepresentable}(A,h,m) :\\iff \\exists k \\leq h, f : \\text{Fin}\\,k \\to \\mathbb{N},\\; \\forall i,\\, f(i) \\in A \\wedge \\sum f = m$. $\\text{IsAsympBasis}(A,h) :\\iff \\exists N_0, \\forall m \\geq N_0, \\text{IsRepresentable}(A,h,m)$. Upper density $\\bar{d}(S) = \\limsup_{n} |S \\cap [1,n]|/n$ is axiomatized (computing limsup of counting functions is noncomputable in Lean)."
+    },
+    {
+      "id": "minimality-definitions",
+      "title": "Minimality Definitions: IsMinimalBasis and unrepresentableWithout",
+      "startLine": 42,
+      "endLine": 52,
+      "summary": "Two definitions: IsMinimalBasis (A is an asymptotic basis and removing any element of A destroys the basis property), unrepresentableWithout (the set of integers not representable from A \\ {n} with ≤h summands).",
+      "mathContext": "$\\text{IsMinimalBasis}(A,h) :\\iff \\text{IsAsympBasis}(A,h) \\wedge \\forall n \\in A, \\neg\\text{IsAsympBasis}(A \\setminus \\{n\\}, h)$. By definition, removing any element leaves infinitely many integers unrepresentable. $\\text{unrepresentableWithout}(A,n,h) = \\{m : \\neg\\text{IsRepresentable}(A \\setminus \\{n\\}, h, m)\\}$."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results: Stöhr-Härtter and Minimality Hierarchy",
+      "startLine": 53,
+      "endLine": 59,
+      "summary": "Comments on the known hierarchy: (1) minimal bases exist for all h ≥ 2 (elementary via greedy construction), (2) minimal bases with positive upper density exist (Härtter 1956, Stöhr 1955 for h=2). These results form the backdrop against which Problem #330 is posed.",
+      "mathContext": "Stöhr (1955): for $h = 2$, there exists a minimal additive basis $A$ with $\\bar{d}(A) > 0$. Härtter (1956): generalized to all $h \\geq 2$. These show that density and minimality are compatible. Problem #330 asks whether the stronger quantitative minimality (positive density of unrepresentable integers upon removal) is also achievable."
+    },
+    {
+      "id": "open-question",
+      "title": "The Formal Open Question: Problem #330",
+      "startLine": 60,
+      "endLine": 65,
+      "summary": "Docstring statement of the open question (no `def`/`axiom`/`theorem` — the proposition `IsMinimalBasis A h ∧ HasPosDensity A ∧ ∀ n ∈ A, HasPosDensity (unrepresentableWithout A n h)` is described in prose only). The file ends at line 65 with the closing `-/` of this docstring; no Lean formalization of this proposition exists.",
+      "mathContext": "$\\exists A \\subseteq \\mathbb{N},\\, h \\geq 2,\\; \\text{IsMinimalBasis}(A,h) \\wedge \\bar{d}(A) > 0 \\wedge \\forall n \\in A,\\, \\bar{d}(\\text{unrepresentableWithout}(A,n,h)) > 0$. Prose statement only; no Lean formalization of this proposition exists in this file. The gap from known (2) to this (3) is replacing '$\\text{infinitely many}$' with '$\\bar{d} > 0$' for unrepresentable integers after removal."
+    }
+  ],
+  "overview": {
+    "historicalContext": "**Erdős Problem #330** was posed by Erdős and Nathanson in their study of minimal additive bases. A set $A \\subseteq \\mathbb{N}$ is an **asymptotic basis of order $h$** if every sufficiently large integer is representable as a sum of at most $h$ elements from $A$. A basis is **minimal** if removing any single element destroys this property — every element is qualitatively essential.\n\nThe foundational existence results come from Stöhr (1955) and Härtter (1956), who showed that minimal asymptotic bases with **positive upper density** exist for every order $h \\geq 2$. Problem #330 asks for a stronger quantitative property: not just that each removal destroys the basis, but that it leaves a **positive-density set** of integers unrepresentable. This remains an **open problem** as of 2025.",
+    "problemStatement": "Does there exist a minimal asymptotic additive basis A ⊂ ℕ of order h with positive upper density such that for every n ∈ A, the set of integers not representable without n also has positive upper density?",
+    "text": "Does there exist a minimal asymptotic additive basis A with positive density such that for every n ∈ A, the integers unrepresentable without n also have positive upper density? Open (Erdős–Nathanson).",
+    "proofStrategy": "We define representability, asymptotic basis, upper density (axiomatized), minimality, and the unrepresentable set constructively. Known existence results (Stöhr, Härtter) are noted in docstring comments only — no Lean axioms or theorems formalize them. The open question is recorded as a docstring; it is not yet formalized as a Lean proposition.",
+    "keyInsights": [
+      "A minimal basis requires every element to be essential: removal leaves infinitely many unrep. integers",
+      "Minimal bases with positive density exist (Härtter 1956, Stöhr 1955)",
+      "The question strengthens 'infinitely many' to 'positive density' of unrepresentable integers",
+      "This connects the structure of individual elements to the global density of the basis",
+      "A positive answer would show each element of the basis is quantitatively critical",
+      "**Axiomatized density**: Upper density is axiomatized (not computed) because computing $\\limsup$ of counting functions is noncomputable. The single axiom declares `upperDensity` as an abstract real-valued function $\\bar{d} : \\mathrm{Set}\\,\\mathbb{N} \\to \\mathbb{R}$; the natural bounds $0 \\leq \\bar{d}(S) \\leq 1$ are noted in source comments but not enforced as axioms (no theorem in this file requires them).",
+      "**Order matters**: For $h = 1$, the only basis is $A = \\mathbb{N}$ (trivially minimal and dense). The problem is interesting for $h \\geq 2$, where bases can be sparse yet minimal"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Additive combinatorics (sumsets, density)",
+      "Asymptotic density and counting"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #330 asks whether a minimal additive basis can simultaneously have positive density and the property that each element's removal leaves a positive-density set of unrepresentable integers. The basic existence of minimal bases with positive density is known, but the strengthened condition is open.",
+    "implications": "**Additive Basis Theory**: A positive resolution would establish that dense minimal bases can have 'uniformly strong' minimality — every element accounts for a positive proportion of representable integers. This would be a structural result about the density-minimality interaction.\n\n**Quantitative Combinatorics**: The problem exemplifies the transition from qualitative to quantitative in combinatorial number theory: knowing that 'infinitely many' integers become unrepresentable is weaker than knowing 'a positive density' does. This gap between infinite and dense is central to modern additive combinatorics.\n\n**Connection to Schnirelmann-Goldbach Theory**: Schnirelmann's theorem shows that sets with positive Schnirelmann density are additive bases. Problem #330 asks about the reverse direction: can a positive-density basis be constructed so that each element is quantitatively critical for maintaining the basis property?",
+    "openQuestions": [
+      "Does such a minimal basis exist for any order h ≥ 2?",
+      "If it exists, what is the smallest possible order h?",
+      "Can the unrepresentable sets have density bounded below by a function of the basis density?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-38",
+      "relationship": "related",
+      "description": "Both concern additive bases and density: #38 studies essential components and density boosting via Schnirelmann's method, while #330 asks about minimal bases where each element's removal creates positive-density gaps"
+    },
+    {
+      "targetId": "erdos-469",
+      "relationship": "related",
+      "description": "Both ask about density/convergence properties of number-theoretic sets defined by divisor/representability conditions"
+    },
+    {
+      "targetId": "lagrange-four-squares",
+      "relationship": "foundational",
+      "description": "Lagrange's four-square theorem proves that the squares form an additive basis of order 4. This is the classical example motivating additive basis theory — Problem #330 asks about the minimality structure of general bases, not just classical ones like squares"
+    }
+  ],
+  "leanFile": {
+    "imports": [],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 65,
+    "axiomCount": 1,
+    "theoremCount": 0,
+    "definitionCount": 5,
+    "path": "Proofs/Erdos330Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "L'Enseignement Mathématique, Monographie 28",
+      "note": "Problem #330 appears on p. 50 in the context of additive basis theory and minimal representations"
+    },
+    {
+      "authors": "Erdős, Paul; Nathanson, Melvyn B.",
+      "title": "Minimal asymptotic bases with prescribed densities",
+      "year": "1988",
+      "venue": "Illinois Journal of Mathematics, vol. 32, no. 3",
+      "note": "Original formulation of the problem asking for strong quantitative minimality in additive bases"
+    },
+    {
+      "authors": "Härtter, Ernst",
+      "title": "Ein Beitrag zur Theorie der Minimalbasen",
+      "year": "1956",
+      "venue": "Journal für die reine und angewandte Mathematik, vol. 196",
+      "note": "Proved existence of minimal asymptotic bases with positive density for all orders h ≥ 2"
+    },
+    {
+      "authors": "Stöhr, Alfred",
+      "title": "Gelöste und ungelöste Fragen über Basen der natürlichen Zahlenreihe",
+      "year": "1955",
+      "venue": "Journal für die reine und angewandte Mathematik, vol. 194",
+      "note": "Foundational work on minimal bases of order 2, establishing existence and basic properties"
+    },
+    {
+      "authors": "Nathanson, Melvyn B.",
+      "title": "Additive Number Theory: The Classical Bases",
+      "year": "1996",
+      "venue": "Springer GTM 164",
+      "note": "Standard reference for additive basis theory including Waring's problem, minimal bases, and the Erdős-Nathanson program"
+    }
+  ],
+  "sorries": 0
+}

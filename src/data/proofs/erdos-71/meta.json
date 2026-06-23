@@ -1,0 +1,197 @@
+{
+  "id": "erdos-71",
+  "title": "Erdős Problem #71: Cycle Lengths in Arithmetic Progressions",
+  "slug": "erdos-71",
+  "description": "For every arithmetic progression P containing even numbers, does there exist c(P) such that graphs with average degree ≥ c contain a cycle of length in P? SOLVED by Bollobás (1977): YES.",
+  "meta": {
+    "author": "Erdős-Burr (conjecture), Bollobás (1977, proof)",
+    "sourceUrl": "https://erdosproblems.com/71",
+    "date": "1977",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos71Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "cycle-lengths",
+      "average-degree",
+      "arithmetic-progressions"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 71,
+    "erdosUrl": "https://erdosproblems.com/71",
+    "erdosProblemStatus": "solved",
+    "axiomCount": 1,
+    "prerequisites": [
+      "Graph theory fundamentals (vertices, edges, adjacency)",
+      "Average and minimum degree in graphs",
+      "Cycle detection and cycle lengths",
+      "Arithmetic progressions and modular arithmetic",
+      "Bipartite graphs and parity of cycles",
+      "Extremal graph theory (Bondy-Simonovits theorem)"
+    ],
+    "lineCount": 258,
+    "assumptions": "1 axiom: bollobas_theorem. 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 8
+  },
+  "overview": {
+    "historicalContext": "Erdős and Stefan Burr conjectured in the early 1970s that high average degree forces cycles whose lengths come from any arithmetic progression containing even numbers. Béla Bollobás proved this in 1977, establishing one of the early landmarks of extremal graph theory. The result fits into a broader program initiated by Erdős studying which subgraphs are forced by graph density — a question whose definitive answer is the Erdős-Stone theorem (1946). The necessity of the 'contains even numbers' condition follows from a classical observation: complete bipartite graphs $K_{n,n}$ have average degree $n$ (arbitrarily large) but contain only even-length cycles — so odd-only progressions like $\\{3, 7, 11, \\ldots\\}$ cannot be forced by density alone. The Bondy-Simonovits theorem (1974) proved a related result: high minimum degree forces cycles of all sufficiently large even lengths. Bollobás's theorem is stronger in covering arbitrary progressions but requires average rather than minimum degree, connected via the subgraph extraction lemma ($\\bar{d}(G) \\geq 2k \\implies \\exists$ subgraph with $\\delta \\geq k$). The optimal dependence $c(P)$ on the progression parameters $a, d$ remains an open quantitative question.",
+    "problemStatement": "Let P = {a, a+d, a+2d, ...} be an arithmetic progression containing even numbers. Does there exist c(P) > 0 such that every graph with average degree ≥ c contains a cycle whose length is in P? Answer: YES (Bollobás 1977).",
+    "text": "For every arithmetic progression P containing even numbers, does there exist c(P) such that graphs with average degree ≥ c contain a cycle of length in P? SOLVED by Bollobás (1977): YES.",
+    "proofStrategy": "The formalization defines arithmetic progressions, the containsEven condition, cycle containment, and average degree. Two corollaries are verified: (1) high degree implies an even cycle, (2) high degree implies a cycle of length divisible by 4. The necessity of the even condition is shown via bipartite graphs.",
+    "keyInsights": [
+      "P contains even numbers iff (a is even) OR (d is odd)",
+      "Bollobás (1977): c(P) exists for all valid progressions",
+      "Even condition is NECESSARY: bipartite K_{n,n} has high degree but only even cycles",
+      "Two verified corollaries: even cycles, multiples of 4",
+      "OPEN: optimal dependence of c(P) on parameters a, d",
+      "Related: Bondy-Simonovits theorem on cycle lengths"
+    ],
+    "prerequisites": [
+      "Graph theory fundamentals (vertices, edges, adjacency)",
+      "Average and minimum degree in graphs",
+      "Cycle detection and cycle lengths",
+      "Arithmetic progressions and modular arithmetic",
+      "Bipartite graphs and parity of cycles",
+      "Extremal graph theory (Bondy-Simonovits theorem)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-setup",
+      "title": "Problem Overview and Setup",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Module docstring stating the problem, status (SOLVED by Bollobás 1977), and background on why the 'contains even numbers' condition is necessary. Imports Mathlib and opens Finset/BigOperators.",
+      "mathContext": "For arithmetic progression $P = \\{a, a+d, a+2d, \\ldots\\}$, the problem asks: $\\exists c(P) > 0$ such that $\\bar{d}(G) \\geq c \\implies \\exists k \\in P$ with $G$ containing a $k$-cycle."
+    },
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 48,
+      "endLine": 79,
+      "summary": "Defines ArithProg a d, the containsEven predicate (Even a ∨ Odd d), membership lemma (mem_arithProg_iff), first_mem_arithProg (a ∈ P), and proves arithProg_infinite (theorem, not axiom).",
+      "mathContext": "$P = \\{a + kd : k \\in \\mathbb{N}\\}$ contains even numbers iff $2 \\mid a$ or $d$ is odd (alternating parity). If $d > 0$, $P$ is infinite."
+    },
+    {
+      "id": "graph-definitions",
+      "title": "Graph Definitions",
+      "startLine": 80,
+      "endLine": 105,
+      "summary": "Defines Fin.succMod (cyclic successor), ContainsCycleLength (injective vertex sequence with cyclic adjacency), CycleLengths, edgeCount, and avgDegree = 2|E|/|V|.",
+      "mathContext": "A $k$-cycle is an injective map $v : \\text{Fin}\\,k \\to V$ with $v(i) \\sim v((i+1) \\bmod k)$ for all $i$. Average degree $\\bar{d}(G) = 2|E|/|V|$."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem (Bollobás 1977)",
+      "startLine": 106,
+      "endLine": 150,
+      "summary": "Axiomatizes bollobas_theorem: for valid progressions, ∃ c(P) forcing cycles. Proves even_cycles_from_high_degree corollary by applying Bollobás with P = {4, 6, 8, ...}.",
+      "mathContext": "Bollobás's theorem: $\\forall P = \\{a + kd\\}$ with $a \\geq 3, d > 0$, containsEven: $\\exists c > 0, \\bar{d}(G) \\geq c \\implies \\exists k \\in P, G \\supseteq C_k$. Corollary instantiates with $(a,d) = (4,2)$."
+    },
+    {
+      "id": "optimal-constants",
+      "title": "The Open Question: Optimal Constants",
+      "startLine": 151,
+      "endLine": 176,
+      "summary": "Defines optimalConstantQuestion: existence of optimal f(a,d) giving the best constant c(P). Known: c exists; unknown: tight bounds as function of a, d.",
+      "mathContext": "The quantitative question: what is $c^*(a,d) = \\inf\\{c : \\bar{d}(G) \\geq c \\implies \\exists k \\in P, C_k \\subseteq G\\}$? For $P = \\{\\text{even} \\geq 4\\}$, Bondy-Simonovits gives polynomial bounds."
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results",
+      "startLine": 177,
+      "endLine": 182,
+      "summary": "Docstring discussion of related results: Bondy-Simonovits (high min degree → consecutive even cycle lengths) and subgraph extraction (average-to-min degree). Neither is declared as an axiom; both are described in docstring prose for context.",
+      "mathContext": "Bondy-Simonovits: $\\delta(G) \\geq d \\implies G$ contains $C_k$ for all even $k \\in [4, 2d]$. Subgraph extraction: $\\bar{d}(G) \\geq 2d \\implies \\exists H \\subseteq G$ with $\\delta(H) \\geq d$. Described in prose only — not formally declared in this file."
+    },
+    {
+      "id": "even-necessity",
+      "title": "Why Even Numbers Matter",
+      "startLine": 183,
+      "endLine": 216,
+      "summary": "Docstring explanation of why even numbers are necessary: K_{n,n} has arbitrarily high average degree but only even cycles. Names bipartite_no_odd_cycles and even_condition_necessary appear in docstrings only — not declared as axioms in this file.",
+      "mathContext": "Bipartite graphs have only even cycles (vertices alternate between parts). $K_{n,n}$ has $\\bar{d} = n$ but $C_{2k+1} \\not\\subseteq K_{n,n}$. So for $P = \\{3, 7, 11, \\ldots\\}$ (all odd), no $c$ works."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 217,
+      "endLine": 236,
+      "summary": "Proves multiples_of_four: applying Bollobás with P = {4, 8, 12, ...} (a=4, d=4) forces cycles divisible by 4.",
+      "mathContext": "Application with $(a,d) = (4,4)$: any $k \\in P$ has form $4 + 4m = 4(1+m)$, hence $4 \\mid k$ and $k \\geq 4$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 237,
+      "endLine": 258,
+      "summary": "Summarizes the resolution: SOLVED by Bollobás 1977, even condition necessary, optimal constants open. Lists references.",
+      "mathContext": "The formalization proves 2 corollaries (even cycles, multiples of 4) and demonstrates necessity of the even condition. 1 axiom (`bollobas_theorem`) encodes the main result. The Bondy-Simonovits, bipartite-graph, and subgraph-extraction results are referenced in docstring prose only — not declared as axioms in this file."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #71 is SOLVED (Bollobás 1977). High average degree forces cycles from any arithmetic progression containing even numbers. The formalization includes two verified corollaries and proves the even condition is necessary via bipartite counterexamples.",
+    "implications": "This connects graph density to cycle structure in a precise way. The result is fundamental in extremal graph theory and relates to Turán-type problems about cycles.",
+    "openQuestions": [
+      "What is the optimal dependence c(P) = f(a, d)?",
+      "Can Bollobás's proof be made constructive?",
+      "What about weighted or directed versions?",
+      "How does the constant change for specific families of graphs?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Bollobás, Béla",
+      "title": "Cycles modulo k",
+      "year": "1977",
+      "venue": "Bulletin of the London Mathematical Society",
+      "note": "Original proof resolving the Erdős-Burr conjecture on cycle lengths in arithmetic progressions"
+    },
+    {
+      "authors": "Bondy, J. A.; Simonovits, M.",
+      "title": "Cycles of even length in graphs",
+      "year": "1974",
+      "venue": "Journal of Combinatorial Theory, Series B",
+      "note": "Related result: high minimum degree forces consecutive even cycle lengths"
+    },
+    {
+      "authors": "Verstraëte, Jacques",
+      "title": "Extremal problems for cycles in graphs",
+      "year": "2016",
+      "venue": "Recent Trends in Combinatorics, IMA Vol.",
+      "note": "Survey including cycle length problems in dense graphs"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-219",
+      "description": "Both concern arithmetic progressions in combinatorial structures: #219 studies APs of primes, #71 studies cycle lengths from APs",
+      "relationship": "related"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both are extremal combinatorics problems. Ramsey theory guarantees monochromatic subgraphs, while Problem #71 concerns cycle length distribution in graphs — both study how large graphs inevitably contain specific substructures"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos71",
+    "lineCount": 258,
+    "axiomCount": 1,
+    "theoremCount": 5,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos71Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

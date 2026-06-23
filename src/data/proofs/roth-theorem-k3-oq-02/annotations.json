@@ -1,0 +1,392 @@
+[
+  {
+    "id": "rs-vertex-type",
+    "proofId": "roth-theorem-k3-oq-02",
+    "type": "definition",
+    "startLine": 33,
+    "endLine": 40,
+    "title": "Vertex Type: Three Copies of Z/NZ",
+    "content": "RSVertex N is defined as Fin 3 × ZMod N — three labeled copies of the cyclic group Z/NZ, called parts X (0), Y (1), and Z (2). The helper abbreviations xVert, yVert, zVert construct vertices in each part, forming the tripartite structure that will encode arithmetic progressions as triangles.",
+    "mathContext": "$\\text{RSVertex}(N) = \\{0,1,2\\} \\times \\mathbb{Z}/N\\mathbb{Z}$, partitioned into $X = \\{0\\} \\times \\mathbb{Z}/N\\mathbb{Z}$, $Y = \\{1\\} \\times \\mathbb{Z}/N\\mathbb{Z}$, $Z = \\{2\\} \\times \\mathbb{Z}/N\\mathbb{Z}$, each of size $N$, total $3N$ vertices.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "tripartite graph",
+      "ZMod",
+      "cyclic group",
+      "Fin 3"
+    ],
+    "prerequisites": [
+      "finite groups",
+      "Lean 4 type aliases"
+    ],
+    "range": {
+      "startLine": 33,
+      "endLine": 40
+    }
+  },
+  {
+    "id": "rs-graph-def",
+    "proofId": "roth-theorem-k3-oq-02",
+    "type": "definition",
+    "startLine": 42,
+    "endLine": 60,
+    "title": "Ruzsa-Szemerédi Adjacency",
+    "content": "The adjacency relation for the RS graph: edges between parts X-Y and Y-Z test membership of the forward difference in A, while X-Z edges test the doubling condition z - x = 2a for some a ∈ A. The definition covers both orientations of each edge type (since Lean's Prop is not directed), encoding symmetry explicitly in six disjuncts.",
+    "mathContext": "$(0,x) \\sim (1,y) \\iff y - x \\in A$; \\quad $(1,y) \\sim (2,z) \\iff z - y \\in A$; \\quad $(0,x) \\sim (2,z) \\iff \\exists\\, a \\in A,\\; z - x = 2a$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "bipartite graph",
+      "forward difference",
+      "arithmetic progression",
+      "difference sets"
+    ],
+    "prerequisites": [
+      "ZMod arithmetic",
+      "Lean 4 inductive propositions",
+      "Finset membership"
+    ],
+    "range": {
+      "startLine": 42,
+      "endLine": 60
+    }
+  },
+  {
+    "id": "rs-graph-props",
+    "proofId": "roth-theorem-k3-oq-02",
+    "type": "concept",
+    "startLine": 62,
+    "endLine": 90,
+    "title": "Graph Properties: Symmetry, Looplessness, SimpleGraph Construction",
+    "content": "rsAdj_symm proves symmetry by case analysis on the six disjuncts — swapping the two orientations. rsAdj_loopless proves irreflexivity by showing a self-loop would require two distinct Fin 3 values to be equal (decided by `decide`). Together these discharge the SimpleGraph instance obligations, bundling rsAdj as the noncomputable SimpleGraph ruzsaSzemerediGraph.",
+    "mathContext": "$G(A)$ is a well-defined undirected simple graph: $|V| = 3N$, adjacency $\\sim$ is symmetric and irreflexive. The tripartite structure guarantees no self-loops since $\\{0,1\\}, \\{1,2\\}, \\{0,2\\}$ are all distinct pairs in $\\text{Fin}\\, 3$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "SimpleGraph",
+      "symmetric relation",
+      "irreflexive relation",
+      "decide tactic"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "Lean 4 structure instances",
+      "Fin arithmetic"
+    ],
+    "range": {
+      "startLine": 62,
+      "endLine": 90
+    }
+  },
+  {
+    "id": "rs-edge-extraction",
+    "proofId": "roth-theorem-k3-oq-02",
+    "type": "lemma",
+    "startLine": 96,
+    "endLine": 126,
+    "title": "Edge-Extraction Helpers: Recovering Differences from Adjacency",
+    "content": "The three private lemmas rsAdj_xy_mem, rsAdj_yz_mem, and rsAdj_xz_exists invert the adjacency relation. Given an edge between specific part vertices, they recover the membership witness: an XY-edge (xVert x ~ yVert y) yields y - x ∈ A; a YZ-edge yields z - y ∈ A; an XZ-edge yields ∃ a ∈ A, z - x = 2a. Each proof does rcases on the six symmetric disjuncts of rsAdj and discharges the impossible orientations by `simp [xVert, yVert, zVert]` (the part-label mismatches collapse), keeping only the matching case. These extractors are the workhorses that let the triangle ↔ 3-AP correspondence read off a, b, c from a triangle's three edges.",
+    "mathContext": "Inverting $\\sim$ on directed part-pairs: $(0,x) \\sim (1,y) \\Rightarrow y - x \\in A$; $(1,y) \\sim (2,z) \\Rightarrow z - y \\in A$; $(0,x) \\sim (2,z) \\Rightarrow \\exists a \\in A,\\; z - x = 2a$. The disjunctive definition of $\\sim$ forces a unique surviving case once the source/target part labels are fixed.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "adjacency relation",
+      "case analysis (rcases)",
+      "simp normalization",
+      "graph edges"
+    ],
+    "prerequisites": [
+      "ZMod arithmetic",
+      "Lean 4 rcases on disjunctions",
+      "Fin label arithmetic"
+    ],
+    "range": {
+      "startLine": 96,
+      "endLine": 126
+    }
+  },
+  {
+    "id": "ap-triple-struct",
+    "proofId": "roth-theorem-k3-oq-02",
+    "type": "definition",
+    "startLine": 127,
+    "endLine": 136,
+    "title": "Generalized 3-AP Triple",
+    "content": "APTriple A packages a triple (a, b, c) with membership proofs ha : a ∈ A, hb : b ∈ A, hc : c ∈ A, and the arithmetic constraint sum_eq : a + b = 2c. This is equivalent to saying a, c, b is a 3-term AP with common difference d = c - a: the sequence is a, a+d, a+2d. Note that the 'generalized' triple allows a ≠ b; proper 3-APs are the special case a = b = c forced by AP-freeness.",
+    "mathContext": "$\\text{APTriple}(A) = \\{(a,b,c) \\in A^3 \\mid a + b = 2c\\}$. Equivalently: $a, c, b$ is a 3-AP with $d = c - a$. The degenerate case $a = b = c$ ($d = 0$) is trivially an AP (constant sequence).",
+    "significance": "key",
+    "relatedConcepts": [
+      "3-AP",
+      "arithmetic progression",
+      "degenerate AP",
+      "Roth's theorem"
+    ],
+    "prerequisites": [
+      "ZMod arithmetic",
+      "Lean 4 structures with fields"
+    ],
+    "range": {
+      "startLine": 127,
+      "endLine": 136
+    }
+  },
+  {
+    "id": "triangle-forward",
+    "proofId": "roth-theorem-k3-oq-02",
+    "type": "insight",
+    "startLine": 138,
+    "endLine": 156,
+    "title": "Triangle → AP Triple (Forward Direction)",
+    "content": "Given a triangle {(0,x), (1,y), (2,z)} in G(A), the XY edge gives a = y-x ∈ A, the YZ edge gives b = z-y ∈ A, and the XZ edge supplies a witness c ∈ A with z-x = 2c. Since a + b = (y-x) + (z-y) = z-x = 2c, the triple (a, b, c) is an APTriple. The proof extracts these pieces via the private helper lemmas rsAdj_xy_mem, rsAdj_yz_mem, rsAdj_xz_exists.",
+    "mathContext": "Triangle $\\{(0,x),(1,y),(2,z)\\}$ in $G(A)$ $\\Rightarrow$ $(a,b,c) \\in \\text{APTriple}(A)$ where $a = y-x$, $b = z-y$, $a+b = z-x = 2c$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "triangle in graph",
+      "APTriple",
+      "rsAdj helper lemmas"
+    ],
+    "prerequisites": [
+      "RS graph adjacency",
+      "rsAdj_xy_mem",
+      "rsAdj_yz_mem",
+      "rsAdj_xz_exists"
+    ],
+    "range": {
+      "startLine": 138,
+      "endLine": 156
+    }
+  },
+  {
+    "id": "triangle-reverse",
+    "proofId": "roth-theorem-k3-oq-02",
+    "type": "insight",
+    "startLine": 158,
+    "endLine": 184,
+    "title": "AP Triple → Triangle (Reverse Direction)",
+    "content": "For any AP triple t = (a,b,c) and base x, the three vertices (0,x), (1,x+a), (2,x+a+b) form a triangle in G(A). The XY and YZ edges use a ∈ A and b ∈ A respectively (with 'convert' to handle ZMod ring arithmetic). The XZ edge uses witness c since (x+a+b)-x = a+b = 2c, closed by `linear_combination t.sum_eq`. This reverse direction completes the triangle ↔ AP bijection.",
+    "mathContext": "For any $x \\in \\mathbb{Z}/N\\mathbb{Z}$: $(0,x) \\sim (1,x+a)$, $(1,x+a) \\sim (2,x+a+b)$, $(0,x) \\sim (2,x+a+b)$. The bijection sends $(a,b,c,x) \\mapsto \\{(0,x),(1,x+a),(2,x+a+b)\\}$, with $N$ triangles per AP triple.",
+    "significance": "key",
+    "relatedConcepts": [
+      "linear_combination tactic",
+      "AP-triangle bijection",
+      "base point",
+      "convert tactic"
+    ],
+    "prerequisites": [
+      "APTriple structure",
+      "RS graph adjacency",
+      "Lean 4 ring tactics"
+    ],
+    "range": {
+      "startLine": 158,
+      "endLine": 184
+    }
+  },
+  {
+    "id": "ap-free-key",
+    "proofId": "roth-theorem-k3-oq-02",
+    "type": "insight",
+    "startLine": 190,
+    "endLine": 222,
+    "title": "AP-Free Forces Trivial Triples (Core Lemma)",
+    "content": "The heart of the construction: if A is AP-free, any AP triple (a,b,c) with a+b = 2c must satisfy a = b = c. The proof sets d = c - a, then rewrites c = a+d and b = a+2d (using linear_combination). If d ≠ 0, then a, a+d = c, a+2d = b form a genuine 3-AP in A, contradicting AP-freeness. So d = 0, giving a = b = c.",
+    "mathContext": "Let $d = c - a$. Then $c = a+d$, $b = a+2d$ (from $a+b=2c$). $A$ AP-free: $d \\neq 0 \\Rightarrow \\{a, a+d, a+2d\\}$ is a 3-AP in $A$ — contradiction. Hence $d=0$, so $a = b = c$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "AP-free set",
+      "proof by contradiction",
+      "by_contra",
+      "linear_combination"
+    ],
+    "prerequisites": [
+      "APFree definition",
+      "ZMod arithmetic",
+      "Lean 4 proof by contradiction"
+    ],
+    "range": {
+      "startLine": 190,
+      "endLine": 222
+    }
+  },
+  {
+    "id": "edge-disjoint",
+    "proofId": "roth-theorem-k3-oq-02",
+    "type": "insight",
+    "startLine": 224,
+    "endLine": 249,
+    "title": "Edge Uniqueness: XY-Edges (Edge-Disjointness)",
+    "content": "Each XY-edge (0,x)-(1,y) determines a unique triangle when A is AP-free. Any triangle on this edge gives an AP triple with a = y-x; AP-freeness forces b = a, so the third vertex z satisfies z-y = b = a = y-x, giving z = 2y-x uniquely. Two distinct triangles z₁ ≠ z₂ sharing the same XY-edge are therefore impossible: the proof applies ap_free_forces_equal to both, deriving z₁ = 2y-x = z₂.",
+    "mathContext": "AP-free $A$ $\\Rightarrow$ for each XY-edge $(0,x)$-$(1,y)$, the unique completing vertex is $z = 2y - x$. This is the seed of edge-disjointness: no two triangles in $G(A)$ share an XY-edge.",
+    "significance": "key",
+    "relatedConcepts": [
+      "edge-disjoint triangles",
+      "ap_free_forces_equal",
+      "triangle uniqueness",
+      "linear_combination"
+    ],
+    "prerequisites": [
+      "ap_free_forces_equal",
+      "triangle_yields_ap_triple",
+      "ZMod arithmetic"
+    ],
+    "range": {
+      "startLine": 224,
+      "endLine": 249
+    }
+  },
+  {
+    "id": "yz-xz-edge-uniqueness",
+    "proofId": "roth-theorem-k3-oq-02",
+    "type": "insight",
+    "startLine": 251,
+    "endLine": 318,
+    "title": "Edge Uniqueness: YZ- and XZ-Edges (the Odd N Hypothesis)",
+    "content": "yz_edge_unique_triangle handles the YZ-edge (1,y)-(2,z): AP-freeness forces a = b, so the unique completing X-vertex is x = 2y - z — and crucially this needs no parity hypothesis. xz_edge_unique_triangle handles the XZ-edge (0,x)-(2,z): AP-freeness forces a = b = c, giving 2y = x + z, so the middle Y-vertex y = (x+z)/2 is unique only when 2 is invertible in ZMod N. This is exactly why the whole construction requires N odd: the proof splits N = 1 (subsingleton) from N ≥ 2, where Odd N ⇒ gcd(2,N) = 1 ⇒ IsUnit (2 : ZMod N), licensing mul_left_cancel₀. The three edge-uniqueness lemmas together establish that every edge of G(A) lies in exactly one triangle.",
+    "mathContext": "YZ: $x = 2y - z$ (no parity needed). XZ: $2y = x + z$, solvable for $y$ iff $2 \\in (\\mathbb{Z}/N\\mathbb{Z})^\\times$, i.e. $\\gcd(2,N)=1$, i.e. $N$ odd. For $N$ even the midpoint of a 2-AP may be ambiguous, so the RS encoding is stated for odd $N$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "edge-disjoint triangles",
+      "IsUnit",
+      "coprimality",
+      "mul_left_cancel₀",
+      "midpoint invertibility"
+    ],
+    "prerequisites": [
+      "ap_free_forces_equal",
+      "ZMod.isUnit_iff_coprime",
+      "Odd.coprime_two_left"
+    ],
+    "range": {
+      "startLine": 251,
+      "endLine": 318
+    }
+  },
+  {
+    "id": "ap-free-triangle-exists",
+    "proofId": "roth-theorem-k3-oq-02",
+    "type": "insight",
+    "startLine": 320,
+    "endLine": 339,
+    "title": "Explicit Triangle Witnesses",
+    "content": "ap_free_triangle_exists supplies, for each a ∈ A and base x ∈ Z/NZ, the concrete triangle (0,x), (1,x+a), (2,x+2a). Each edge is discharged by selecting the matching disjunct of rsAdj and closing the difference condition by `ring` (the XZ edge uses witness c = a since (x+2a)-x = 2a). These |A|·N explicit triangles are the witnesses fed into the edge-removal lower bound: because they are edge-disjoint (by the uniqueness lemmas), destroying all of them requires at least |A|·N edge removals.",
+    "mathContext": "For $(a,x) \\in A \\times \\mathbb{Z}/N\\mathbb{Z}$: $(x, x+a, x+2a)$ is a triangle. This is the diagonal $a=b=c$ family; there are exactly $|A| \\cdot N$ of them, and AP-freeness makes them pairwise edge-disjoint.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "edge-disjoint triangles",
+      "triangle count lower bound",
+      "ring tactic",
+      "constructive witness"
+    ],
+    "prerequisites": [
+      "rsAdj definition",
+      "ZMod arithmetic"
+    ],
+    "range": {
+      "startLine": 320,
+      "endLine": 339
+    }
+  },
+  {
+    "id": "remaining-sorries",
+    "proofId": "roth-theorem-k3-oq-02",
+    "type": "warning",
+    "startLine": 350,
+    "endLine": 378,
+    "title": "The Two Remaining Sorries: Counting and Removal Bounds",
+    "content": "Two private helper lemmas carry the formalization's only sorries. rs_tc_ap_free_le claims triangleCount G ≤ 6·|A|·N: when A is AP-free every triangle is one of the |A|·N diagonal triangles, and triangleCount counts ordered triples (6 orderings each). rs_removal_lb claims |R| ≥ |A|·N for any edge set R making G triangle-free, packaging the edge-disjointness bound at the Finset level. Both are mathematically routine given ap_free_forces_equal and the uniqueness lemmas, but the Finset bookkeeping (transferring the qualitative ap_free_min_removal into a cardinality inequality, and counting ordered triangles) has not been mechanized. rsVertex_card (|RSVertex N| = 3N, no sorry) sits just above them as supporting infrastructure.",
+    "mathContext": "$\\text{triangleCount}(G) \\le 6|A|N$ (ordered triples) and $|R| \\ge |A|N$ for triangle-killing $R$. The status badge is `wip` with `sorries: 2`; the surrounding theorems (roth_via_triangle_removal, roth_proofs_agree) are complete modulo these two lemmas.",
+    "significance": "key",
+    "relatedConcepts": [
+      "triangleCount",
+      "sorry",
+      "edge-disjointness",
+      "Finset cardinality",
+      "removeEdges"
+    ],
+    "prerequisites": [
+      "ap_free_forces_equal",
+      "xy_edge_unique_triangle",
+      "Finset.card"
+    ],
+    "range": {
+      "startLine": 350,
+      "endLine": 378
+    }
+  },
+  {
+    "id": "min-removal",
+    "proofId": "roth-theorem-k3-oq-02",
+    "type": "insight",
+    "startLine": 380,
+    "endLine": 413,
+    "title": "Edge Removal Lower Bound (Qualitative)",
+    "content": "ap_free_min_removal is the fully proved (0-sorry) qualitative core of the lower bound: when A is AP-free, for each pair (a ∈ A, x ∈ Z/NZ) the triangle {(0,x),(1,x+a),(2,x+2a)} forces at least one of its six directed edge-pairs into any removal set R that makes G triangle-free. The proof is by contradiction: if R misses all six edge-orientations for some (a,x), then ap_free_triangle_exists rebuilds the triangle inside removeEdges G R, contradicting the triangle-free hypothesis. This is the per-triangle statement that rs_removal_lb aggregates (over the edge-disjoint family) into |R| ≥ |A|·N.",
+    "mathContext": "For each $(a,x) \\in A \\times \\mathbb{Z}/N\\mathbb{Z}$, the triangle $\\{(0,x),(1,x+a),(2,x+2a)\\}$ contributes an edge to $R$. Edge-disjointness then gives $|R| \\geq |A| \\cdot N$ removed (directed) edge pairs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "triangle removal",
+      "edge-disjoint triangles",
+      "removeEdges",
+      "lower bound"
+    ],
+    "prerequisites": [
+      "ap_free_triangle_exists",
+      "removeEdges definition",
+      "proof by contradiction"
+    ],
+    "range": {
+      "startLine": 380,
+      "endLine": 413
+    }
+  },
+  {
+    "id": "roth-trl-statement",
+    "proofId": "roth-theorem-k3-oq-02",
+    "type": "insight",
+    "startLine": 415,
+    "endLine": 512,
+    "title": "Roth's Theorem via Triangle Removal (Main Theorem)",
+    "content": "roth_via_triangle_removal proves the full qualitative Roth theorem for odd N: for every δ > 0 there is an N₀ such that any A ⊆ Z/NZ with |A| ≥ δN is not AP-free. The 12-step proof chooses a rational ε = 1/n₀ with 9ε < δ, feeds it to the quantitative triangle removal lemma (triangle_removal_quantitative) to obtain γ and a removal set R with |R| ≤ ε·(3N)², bounds the triangle count above by 6|A|N ≤ γ·(3N)³ (via rs_tc_ap_free_le), and bounds |R| below by |A|N ≥ δN² (via rs_removal_lb). The chain δN² ≤ |A|N ≤ |R| ≤ 9εN² < δN² is the contradiction. This is where graph regularity (the source of the removal lemma) is converted into an additive-combinatorics conclusion.",
+    "mathContext": "$|A| \\geq \\delta N$, AP-free $\\Rightarrow |R| \\geq \\delta N^2$ (edge-disjointness); TRL $\\Rightarrow |R| \\leq 9\\varepsilon N^2$ with $9\\varepsilon < \\delta$. Contradiction $\\delta N^2 \\le |R| < \\delta N^2$. The Fourier proof gives $r_3(N) = O(N/\\log\\log N)$; TRL yields only tower-type bounds but is conceptually cleaner.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "triangle removal lemma",
+      "Roth's theorem",
+      "quantitative bounds",
+      "triangle_removal_quantitative",
+      "Szemerédi regularity"
+    ],
+    "prerequisites": [
+      "triangle_removal_quantitative",
+      "rs_tc_ap_free_le",
+      "rs_removal_lb",
+      "APFree"
+    ],
+    "range": {
+      "startLine": 415,
+      "endLine": 512
+    }
+  },
+  {
+    "id": "roth-proofs-agree",
+    "proofId": "roth-theorem-k3-oq-02",
+    "type": "concept",
+    "startLine": 514,
+    "endLine": 532,
+    "title": "The Two Proofs Agree",
+    "content": "roth_proofs_agree shows the Fourier-analytic proof (RothTheorem.lean, valid for all N) implies the triangle-removal statement (valid for odd N). The reduction restricts the universally quantified N to odd N and handles the δ ≤ 1 side condition of the Fourier statement: for δ ≤ 1 it applies directly, and for δ > 1 it specializes the Fourier hypothesis at δ = 1 and uses |A| ≥ δN ≥ N to recover the conclusion. This makes explicit that the two proof routes are logically consistent within the same formal development — the same theorem, reached by harmonic analysis on one side and graph regularity on the other.",
+    "mathContext": "Fourier statement (all $N$, $0<\\delta\\le 1$) $\\Rightarrow$ TRL statement (odd $N$, $\\delta>0$). The $\\delta>1$ case specializes at $\\delta=1$ since $|A|\\ge\\delta N \\ge N$ already forces a 3-AP.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "proof equivalence",
+      "Fourier analysis",
+      "Roth's theorem",
+      "logical reduction"
+    ],
+    "prerequisites": [
+      "roth_via_triangle_removal",
+      "RothTheorem.lean"
+    ],
+    "range": {
+      "startLine": 514,
+      "endLine": 532
+    }
+  }
+]

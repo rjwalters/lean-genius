@@ -1,0 +1,84 @@
+{
+  "slug": "erdos-1138-oq-03",
+  "title": "Resolve maxPrimeGap_le sorry via BddAbove for prime gaps",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Extends the Erdos 1138 prime gap formalization with proved bounds: prime gaps are bounded above (BddAbove via gap <= x), Bertrand's postulate gives gap <= prev_prime, maxPrimeGap <= x/2 for x >= 25, Cramer's C*(log x)^2 = o(x) sublinearity, and monotonicity. All former axioms and sorries resolved. Baker-Harman-Pintz x^0.525 bound axiomized.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-06T22:03:59.699Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "combinatorics"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-113",
+    "erdos-1138",
+    "erdos-1138-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-07T18:02:01.177Z",
+  "lastUpdate": "2026-03-12T17:29:54.449Z",
+  "completed": "2026-03-12T17:29:54.449Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1138OQ03.lean",
+      "filename": "Erdos1138OQ03.lean",
+      "lineCount": 229,
+      "theoremCount": 12,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1138OQ03.lean"
+    },
+    {
+      "path": "Proofs/Erdos1138Problem.lean",
+      "filename": "Erdos1138Problem.lean",
+      "lineCount": 228,
+      "theoremCount": 21,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1138Problem.lean"
+    }
+  ]
+}

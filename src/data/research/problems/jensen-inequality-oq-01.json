@@ -1,0 +1,68 @@
+{
+  "slug": "jensen-inequality-oq-01",
+  "title": "The Equality Case of Strict Jensen, and the Sharp Weighted AM–GM Equality",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\prod_{i\\in s} z_i^{w_i} = \\sum_{i\\in s} w_i z_i \\iff \\forall j,k\\in s,\\ z_j = z_k",
+    "plain": "Formalize the equality case of finite weighted Jensen for a strictly convex f (Jensen is an equality iff the data are constant), then specialize f = exp to the sharp equality case of the weighted arithmetic–geometric mean inequality: the weighted geometric and arithmetic means of positive data coincide if and only if all the data are equal.",
+    "whyMatters": [
+      "Equality cases turn mean inequalities into rigidity statements usable in optimization and probability",
+      "Records the canonical convexity → AM–GM bridge (apply exp-Jensen) as named, reusable lemmas"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-22T12:30:00-07:00",
+    "iteration": 1,
+    "focus": "Isolate the equality case of strict Jensen and specialize it via exp to the sharp weighted AM–GM equality.",
+    "blockers": [],
+    "nextAction": "Complete — proof verified, gallery entry created.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SOLVED (researcher-9, 2026-06-22): packaged the equality case of strict Jensen and its exp-specialization to weighted AM–GM, 0-axiom verified (propext/Classical.choice/Quot.sound, no native_decide). File Proofs/JensenInequalityOQ01.lean (124L, 5 thm). jensen_eq_iff re-exports StrictConvexOn.map_sum_eq_iff; weighted_amgm_le re-exports geom_mean_le_arith_mean_weighted; weighted_amgm_eq_iff converts geom_mean_eq_arith_mean_weighted_iff' (center-of-mass right side) to symmetric 'all equal' form; weighted_amgm_lt_of_ne derives the strict gap DIRECTLY through strictConvexOn_exp.map_sum_lt by rewriting ∏ z^w = exp(∑ w•log z) and ∑ w z = ∑ w•exp(log z) (Real.rpow_def_of_pos, Real.exp_sum, Real.exp_log), with non-constant logs from Real.log_injOn_pos; amgm_two_eq_iff proves √(ab)=(a+b)/2 ↔ a=b via (√a−√b)²=0.",
+    "builtItems": [
+      "Proofs/JensenInequalityOQ01.lean: jensen_eq_iff (abstract Jensen equality case, re-export)",
+      "weighted_amgm_le (weighted AM–GM inequality), weighted_amgm_eq_iff (equality iff all data equal)",
+      "weighted_amgm_lt_of_ne (strict gap via strictConvexOn_exp.map_sum_lt — the explicit Jensen → AM–GM bridge)",
+      "amgm_two_eq_iff (two-variable instance √(ab) = (a+b)/2 ↔ a = b)",
+      "src/data/proofs/jensen-inequality-oq-01/ gallery entry"
+    ],
+    "insights": [
+      "Exponentiation is the dictionary between additive Jensen and multiplicative AM–GM: ∏ zᵢ^{wᵢ} = exp(∑ wᵢ log zᵢ) turns the weighted geometric mean into exp of a weighted average, so convexity of exp on a non-constant log-family is exactly the strict AM–GM gap",
+      "Non-constancy transfers cleanly through log: it is injective on (0,∞), so non-constant data ⟺ non-constant logs, which is the hypothesis StrictConvexOn.map_sum_lt needs",
+      "Mathlib's own proof of geom_mean_eq_arith_mean_weighted_iff' IS this exp-Jensen specialization, so the bridge here is the canonical route surfaced as named lemmas, not an alternative",
+      "The symmetric 'all values equal' form ∀ j k, z j = z k is interchangeable with the center-of-mass form ∀ j, z j = ∑ w z by a one-line weighted-average identity, and is the form most often quoted"
+    ],
+    "mathlibGaps": [
+      "Mathlib already has both the abstract Jensen equality case (StrictConvexOn.map_sum_eq_iff) and the AM–GM equality case (Real.geom_mean_eq_arith_mean_weighted_iff'); the contribution here is packaging the bridge as named lemmas and the symmetric 'all equal' restatement, plus a direct strictConvexOn_exp.map_sum_lt derivation of the strict gap"
+    ],
+    "nextSteps": [
+      "Specialize the same exp-Jensen bridge to Young's and Hölder's inequalities, recording their equality cases in matching style",
+      "State the weighted power-mean inequality M_p ≤ M_q and its equality case as a uniform family in p ≤ q",
+      "Derive the unweighted n-variable AM–GM equality case from weighted_amgm_eq_iff with uniform weights 1/n"
+    ],
+    "markdown": "# Knowledge Base: jensen-inequality-oq-01\n\n## Problem Understanding\n\nIsolate the equality case of finite weighted Jensen for a strictly convex f, and specialize f = exp to obtain the sharp equality case of the weighted AM–GM inequality.\n\n## Insights\n\nThe weighted geometric mean is exp of a weighted average of logs, so the strict convexity of exp on a non-constant log-family is exactly the strict AM–GM gap. log is injective on the positive reals, so non-constant data is equivalent to non-constant logs. Mathlib's proof of the AM–GM equality case is itself this exp-Jensen specialization; the contribution is to surface the bridge as named, citeable lemmas and to restate equality in the symmetric 'all values equal' form.\n\n## Dead Ends\n\nNone — the build succeeded on the first attempt.\n"
+  },
+  "tags": [
+    "analysis",
+    "convexity",
+    "jensen-inequality",
+    "am-gm-inequality",
+    "inequalities",
+    "equality-case",
+    "research"
+  ]
+}

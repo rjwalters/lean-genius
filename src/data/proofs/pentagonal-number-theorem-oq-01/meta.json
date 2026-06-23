@@ -1,0 +1,227 @@
+{
+  "id": "pentagonal-number-theorem-oq-01",
+  "title": "Pentagonal Number Theorem: Generalized Pentagonal Numbers and the Square-Discriminant Criterion",
+  "slug": "pentagonal-number-theorem-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Classical",
+      "PowerSeries",
+      "Finset",
+      "PowerSeries.WithPiTopology"
+    ],
+    "namespace": "PentagonalNumberTheoremOQ01",
+    "lineCount": 564,
+    "axiomCount": 0,
+    "theoremCount": 43,
+    "definitionCount": 6,
+    "path": "Proofs/PentagonalNumberTheoremOQ01.lean",
+    "sorries": 0
+  },
+  "description": "Builds the number-theoretic foundation of Euler's pentagonal number theorem: a self-contained theory of the generalized pentagonal numbers g(k)=k(3k-1)/2 (the exponents of the lacunary series ∏(1-xⁿ)=∑(-1)ᵏx^{g(k)}). The headline is the classical recognition criterion — m is a generalized pentagonal number iff 24m+1 is a perfect square — together with injectivity of the index map, nonnegativity, and the concrete values matching OEIS A001318. Building on Mathlib's 2025 Partition.GenFun, the entry now also machine-checks BOTH ends of Euler's identity for the Euler character: the product side genFun pentChar = ∏(1-Xᵐ) and the coefficient side [Xⁿ] = ∑_{distinct partitions}(-1)^{#parts} = p_even(n)-p_odd(n), narrowing the open core to the single Franklin-involution identity ∑(-1)^{#parts} = pentSeriesCoeff(n).",
+  "meta": {
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "partitions",
+      "pentagonal-numbers",
+      "integer-arithmetic",
+      "research"
+    ],
+    "mathlib_version": "4.26.0",
+    "proofRepoPath": "Proofs/PentagonalNumberTheoremOQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.even_or_odd",
+        "description": "Every integer is even or odd — used to show k(3k-1) is always even",
+        "module": "Mathlib.Algebra.Parity"
+      },
+      {
+        "theorem": "Int.mul_ediv_cancel'",
+        "description": "a ∣ b → a * (b / a) = b — certifies the half k(3k-1)/2 is exact",
+        "module": "Mathlib.Data.Int.Order"
+      },
+      {
+        "theorem": "ZMod.intCast_zmod_eq_zero_iff_dvd",
+        "description": "(↑a : ZMod n) = 0 ↔ (n : ℤ) ∣ a — bridges the mod-6 residue argument to divisibility over ℤ",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "mul_left_cancel₀",
+        "description": "a ≠ 0 → a*b = a*c → b = c — cancels the factor 12 to read off the pentagonal index from 12·(2m)=12·k(3k-1)",
+        "module": "Mathlib.Algebra.GroupWithZero.Basic"
+      },
+      {
+        "theorem": "Even.neg_one_pow / Odd.neg_one_pow",
+        "description": "(-1)^n = 1 for even n, -1 for odd n — gives the ±1-valuedness of the pentagonal sign pentSign k = (-1)^|k|",
+        "module": "Mathlib.Algebra.GroupPower.Basic"
+      },
+      {
+        "theorem": "Nat.Partition.genFun_eq_tprod",
+        "description": "genFun f = ∏' i, (1 + ∑' j, f(i+1)(j+1) • X^((i+1)(j+1))) — the proved product form of the partition generating function; with the Euler character pentChar each inner factor collapses to 1 - X^{i+1}, yielding the product side genFun_pent_eq_tprod = ∏(1-Xᵐ)",
+        "module": "Mathlib.Combinatorics.Enumerative.Partition.GenFun"
+      },
+      {
+        "theorem": "Nat.Partition.coeff_genFun",
+        "description": "(genFun f).coeff n = ∑ p : n.Partition, p.parts.toFinsupp.prod f — the coefficient formula; with pentChar the weight is 0 on partitions with a repeated part and (-1)^{#parts} on distinct-part partitions, yielding the coefficient side coeff_genFun_pent = ∑_{p ∈ distincts n}(-1)^{p.parts.card}",
+        "module": "Mathlib.Combinatorics.Enumerative.Partition.GenFun"
+      }
+    ],
+    "originalContributions": [
+      "isGenPent_iff_isSquare: the recognition criterion 'm is a generalized pentagonal number ⟺ 24m+1 is a perfect square', the practical test for pentagonal exponents in Euler's partition recurrence",
+      "A division-free formalization of generalized pentagonal numbers via the doubling predicate 2m = k(3k-1), with two_mul_genPent certifying exactness",
+      "genPent_injective: distinctness of pentagonal numbers across indices, via the factorization (a-b)(3(a+b)-1)=0 and impossibility of 3(a+b)=1 over ℤ",
+      "A ZMod-6 decision argument turning 's² = 24m+1' into 's ≡ ±1 (mod 6)', recovering the index from each residue class",
+      "Concrete values g(0..±4) = 0,1,2,5,7,12,15,22,26 matching OEIS A001318, with a sanity check that 12 = g(3) and 24·12+1 = 17²",
+      "Index-bound theory making Euler partition recurrence a finite sum: genPent_sq_le_self (k^2 <= g(k), quadratic growth), abs_index_le_genPent (|k| <= g(k)), and indexSet_finite ({k | g(k) <= n} is finite, contained in [-n,n])",
+      "A computable enumerator pentIndices (def): the explicit Finset of indices k with g(k) <= n, filtered from [-n,n], with mem_pentIndices (membership iff g(k) <= n) and coe_pentIndices (realizing the abstract set {k | g(k) <= n}), so the finite sum in Euler's recurrence can be evaluated",
+      "genPent_neg: the +/-k pairing g(-k) = g(k) + k of Euler's recurrence, relating the two pentagonal shifts g(k) and g(-k) that occur together at each level",
+      "pentSeriesCoeff: an explicit construction of the right-hand side of Euler's identity — the coefficient [Xⁿ] of the lacunary series ∑_{k∈ℤ}(-1)ᵏ X^{g(k)}, made well-defined by genPent_injective (each exponent is hit by at most one index). pentSeriesCoeff_genPent gives the value (-1)ᵏ at g(k); pentSeriesCoeff_ne_zero_iff shows the support is exactly the generalized pentagonal numbers; pentSeriesCoeff_eq_zero_or bounds every coefficient to 0/±1; concrete [X⁰]=+1, [X¹]=-1 match the leading 1 and -X of ∏(1-Xⁿ). The pentagonal sign pentSign k = (-1)^|k| is recorded with its ±1-valuedness, nonvanishing, and pairing invariance pentSign(-k)=pentSign k.",
+      "Both ends of Euler's identity machine-checked through Mathlib's 2025 Partition.GenFun (Weiyi Wang) under the Euler character pentChar i c = (if c = 1 then -1 else 0): genFun_pent_eq_tprod proves the PRODUCT side genFun pentChar = ∏_{i}(1 - X^{i+1}) (each inner tsum collapses to -(X^{i+1}) since the character is supported on multiplicity 1, via tsum_eq_single), and coeff_genFun_pent proves the COEFFICIENT side [Xⁿ] genFun pentChar = ∑_{p ∈ Nat.Partition.distincts n}(-1)^{p.parts.card} = p_even(n)-p_odd(n) (a partition with a repeated part contributes a 0 factor and drops out; a distinct-part partition contributes (-1)^{#parts}, via a Nodup/¬Nodup split over n.Partition and Finset.sum_filter_add_sum_filter_not). Together these reduce the entire remaining open core to the single Franklin-involution identity ∑_{p ∈ distincts n}(-1)^{p.parts.card} = pentSeriesCoeff(n).",
+      "The two ends joined with no genFun intermediary visible: coeff_tprod_pent composes the product side genFun_pent_eq_tprod with the coefficient side coeff_genFun_pent to state Euler's identity directly on Mathlib's power-series product — [Xⁿ] ∏'_{i}(1 - X^{i+1}) = ∑_{p ∈ Nat.Partition.distincts n}(-1)^{p.parts.card}. coeff_tprod_pent_eq_evenOdd_diff then splits that signed sum by the parity of the number of parts to read the coefficient as the literal difference p_even(n) - p_odd(n): [Xⁿ]∏(1-Xᵐ) = #{distinct-part partitions of n with an even number of parts} - #{those with an odd number}. This is the directly-citable form of Euler's product/partition identity, leaving only the Franklin involution ∑_{p∈distincts n}(-1)^{p.parts.card} = pentSeriesCoeff(n) as the open core.",
+      "disc_genPent / disc_genPent_neg: explicit discriminant roots 24·g(±k)+1 = (6k∓1)², naming the concrete square in the recognition criterion (where isGenPent_iff_isSquare only asserts existence); the two roots 6k∓1 of the ±k pair straddle 6k symmetrically",
+      "genPent_add_neg: the ±-pairing sum g(k)+g(-k) = 3k² (complementing genPent_neg's difference g(-k)-g(k)=k), so the two pentagonal shifts in Euler's recurrence have sum 3k² and difference k"
+    ],
+    "dateAdded": "2026-06-18",
+    "axiomCount": 0,
+    "lineCount": 530,
+    "assumptions": "None counted: 0 axiom declarations, 0 sorries, no structure-encoded hypotheses. pentSeriesCoeff is a noncomputable def using Classical.choice (a foundational axiom that the project's axiom policy does not count toward axiomCount). The genFun bridges genFun_pent_eq_tprod, coeff_genFun_pent and the two composed tprod headlines coeff_tprod_pent, coeff_tprod_pent_eq_evenOdd_diff each #print axioms to [propext, Classical.choice, Quot.sound] — only the standard foundational axioms, none counted. Machine-verified — the file compiles cleanly under the docker Lean build against Mathlib (Built Proofs.PentagonalNumberTheoremOQ01, 7743 jobs, exit 0).",
+    "theoremCount": 39,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "Euler discovered the pentagonal number theorem in 1740s correspondence with Goldbach and proved it in 1750: the infinite product ∏_{n≥1}(1-xⁿ) equals the lacunary series ∑_{k∈ℤ}(-1)ᵏ x^{k(3k-1)/2}. The exponents are the generalized pentagonal numbers (OEIS A001318), and the theorem yields Euler's celebrated recurrence for the partition function p(n). Franklin (1881) gave the bijective proof via a sign-reversing involution on partitions into distinct parts. Mathlib's 2025 Partition.GenFun (Weiyi Wang) now supplies the partition generating function with its proved product (genFun_eq_tprod) and coefficient (coeff_genFun) forms; this entry instantiates it at the Euler character to machine-check BOTH ends of Euler's identity (Part 6), leaving only Franklin's involution — the identity ∑(-1)^{#parts} = pentSeriesCoeff(n) — unformalized. The entry also supplies the index-set theory that any such formalization consumes.",
+    "problemStatement": "Establish the number-theoretic foundation of the pentagonal exponents g(k) = k(3k-1)/2: a robust formalization of the index set together with the recognition criterion\n\n$$ m \\text{ is a generalized pentagonal number} \\iff 24m+1 \\text{ is a perfect square}, $$\n\nthe identity underlying it being $24\\,g(k)+1 = (6k-1)^2$.",
+    "text": "A self-contained theory of generalized pentagonal numbers with the square-discriminant recognition criterion, the foundation that any formalization of Euler's pentagonal number theorem must rest on.",
+    "proofStrategy": "1. **Division-free setup**: define membership IsGenPent m := ∃ k, 2m = k(3k-1); prove k(3k-1) is even (even/odd split) so g(k)=k(3k-1)/2 is exact (two_mul_genPent).\n\n2. **Forward criterion**: from 2m = k(3k-1), the identity 24m+1 = (6k-1)² is a single linear_combination, exhibiting the square.\n\n3. **Converse**: from 24m+1 = s², reduce mod 6 in ZMod 6 — s² = 1 forces s ∈ {1,5}, i.e. s ≡ ±1 (mod 6) (a finite decide). Each class gives 6 ∣ (s∓1), hence s = 6k±1; substituting and cancelling the common factor 12 (mul_left_cancel₀) yields 2m = k'(3k'-1) for the recovered index k'.\n\n4. **Structural facts**: injectivity of the index map ((a-b)(3(a+b)-1)=0, with 3(a+b)=1 impossible over ℤ), nonnegativity, and the concrete A001318 values.",
+    "keyInsights": [
+      "The recognition criterion is exact because 24·g(k)+1 = (6k-1)² is a polynomial identity — pentagonality is detected by a single perfect-square test on 24m+1, with no search over indices.",
+      "Phrasing membership through the doubling relation 2m = k(3k-1) avoids integer division throughout; exactness of the half is a one-line even/odd argument.",
+      "The converse's only non-algebraic ingredient is the modular fact that a square ≡ 1 (mod 6) forces its root ≡ ±1 (mod 6) — a six-element decide in ZMod 6 — after which the index is recovered by divisibility.",
+      "Cancelling the factor 12 in 12·(2m) = 12·k(3k-1) (rather than dividing) keeps the recovered-index step inside ℤ with mul_left_cancel₀.",
+      "The deep content of the pentagonal number theorem (the generating-function identity) is orthogonal to this index theory: it needs Franklin's involution, which Mathlib does not yet support."
+    ],
+    "prerequisites": [
+      "Elementary number theory (parity, divisibility, modular arithmetic in ZMod n)",
+      "Generating functions and integer partitions (for context on the open core)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Part 1 — Setup: Generalized Pentagonal Numbers",
+      "startLine": 51,
+      "endLine": 79,
+      "summary": "The value genPent and the division-free membership predicate IsGenPent, evenness of k(3k-1) (two_dvd_index_mul), the exact doubling relation two_mul_genPent, and genPent_isGenPent.",
+      "mathContext": "g(k) = k(3k-1)/2 with 2·g(k) = k(3k-1). Since one of k, 3k-1 is even, the half is exact; membership is carried by the relation 2m = k(3k-1) to keep proofs over ℤ without integer division."
+    },
+    {
+      "id": "criterion",
+      "title": "Part 2 — The Square-Discriminant Criterion (Headline)",
+      "startLine": 80,
+      "endLine": 129,
+      "summary": "isGenPent_iff_isSquare: m is a generalized pentagonal number iff 24m+1 is a perfect square. Forward via 24·g(k)+1 = (6k-1)²; converse via a ZMod-6 residue argument recovering the index.",
+      "mathContext": "Forward: linear_combination on 2m=k(3k-1). Converse: s²=24m+1 ⟹ (s mod 6)²=1 ⟹ s≡±1 (mod 6); 6∣(s∓1) gives s=6k±1, and cancelling 12 yields 2m=k'(3k'-1)."
+    },
+    {
+      "id": "structural",
+      "title": "Part 3 — Structural Facts: Nonnegativity, Injectivity, ±k Pairing",
+      "startLine": 130,
+      "endLine": 163,
+      "summary": "isGenPent_nonneg (k(3k-1) ≥ 0), genPent_injective (distinct indices give distinct pentagonal numbers), and genPent_neg (g(-k) = g(k)+k, the ±k pairing of Euler's recurrence).",
+      "mathContext": "Injectivity reduces to (a-b)(3(a+b)-1)=0; since 3(a+b)=1 has no integer solution, a=b. Nonnegativity is a sign analysis of the two factors of k(3k-1)."
+    },
+    {
+      "id": "index-bounds",
+      "title": "Part 3b — Index Bounds: Euler's Recurrence is a Finite Sum",
+      "startLine": 164,
+      "endLine": 221,
+      "summary": "Quadratic growth k² ≤ g(k) (genPent_sq_le_self), the resulting index bound |k| ≤ g(k) (abs_index_le_genPent), and indexSet_finite: {k | g(k) ≤ n} ⊆ [-n, n] is finite, so the pentagonal sum in Euler's partition recurrence at level n ranges over a finite set.",
+      "mathContext": "From the doubling relation, 2g(k) − 2k² = k(k−1) ≥ 0 gives k² ≤ g(k); combining k ≤ g(k) and −k ≤ g(k) yields |k| ≤ g(k). Hence g(k) ≤ n forces |k| ≤ n, bounding the recurrence's support inside [-n, n]."
+    },
+    {
+      "id": "enumerator",
+      "title": "Part 3c — A Computable Enumerator of Contributing Indices",
+      "startLine": 222,
+      "endLine": 254,
+      "summary": "pentIndices n: the explicit Finset of indices k with g(k) ≤ n, filtered from [-n, n], with mem_pentIndices (membership iff g(k) ≤ n) and coe_pentIndices realizing the abstract set {k | g(k) ≤ n}.",
+      "mathContext": "Made finite by the |k| ≤ g(k) bound: every contributing index lies in [-n, n], so the finite sum in Euler's recurrence can be evaluated by filtering that interval."
+    },
+    {
+      "id": "values",
+      "title": "Part 4 — Concrete Values (OEIS A001318)",
+      "startLine": 255,
+      "endLine": 273,
+      "summary": "The first generalized pentagonal numbers g(0..±4) = 0,1,2,5,7,12,15,22,26, and a sanity check that 12 = g(3) is recognized via 24·12+1 = 289 = 17².",
+      "mathContext": "Indexing k = 0,1,-1,2,-2,… enumerates the pentagonal numbers in increasing order, matching OEIS A001318."
+    },
+    {
+      "id": "series-coefficient",
+      "title": "Part 5 — The Series-Side Coefficient (RHS of Euler's Identity)",
+      "startLine": 274,
+      "endLine": 369,
+      "summary": "pentSign k = (-1)^|k| (±1-valued, nonvanishing, pairing-invariant) and pentSeriesCoeff: the coefficient [Xⁿ] of ∑_{k∈ℤ}(-1)ᵏX^{g(k)}, well-defined by genPent_injective. pentSeriesCoeff_genPent gives (-1)ᵏ at g(k); pentSeriesCoeff_ne_zero_iff fixes the support as the pentagonal numbers; pentSeriesCoeff_eq_zero_or bounds every coefficient to 0/±1; [X⁰]=+1, [X¹]=-1.",
+      "mathContext": "This is the explicit right-hand side of Euler's identity; pentSeriesCoeff is the target of the remaining Franklin-involution identity."
+    },
+    {
+      "id": "bridges",
+      "title": "Part 6 — Mathlib Power-Series Bridges (Both Ends of Euler's Identity)",
+      "startLine": 370,
+      "endLine": 479,
+      "summary": "Instantiating Mathlib's 2025 Partition.genFun at the Euler character pentChar i c = (if c = 1 then -1 else 0): genFun_pent_eq_tprod proves the PRODUCT side genFun pentChar = ∏_i(1 - X^{i+1}), and coeff_genFun_pent proves the COEFFICIENT side [Xⁿ] genFun pentChar = ∑_{p ∈ distincts n}(-1)^{p.parts.card} = p_even(n)-p_odd(n). coeff_tprod_pent then composes the two into the directly-citable headline [Xⁿ] ∏'(1 - X^{i+1}) = ∑_{p ∈ distincts n}(-1)^{p.parts.card} (no genFun intermediary visible), and coeff_tprod_pent_eq_evenOdd_diff splits that sum by parity of the number of parts to read it as the literal p_even(n) - p_odd(n). All #print axioms to only [propext, Classical.choice, Quot.sound].",
+      "mathContext": "Product side: each inner tsum collapses to -(X^{i+1}) via tsum_eq_single (the character is supported on multiplicity 1). Coefficient side: a Nodup/¬Nodup split over n.Partition — repeated-part partitions carry a 0 factor and drop out, distinct-part partitions contribute (-1)^{#parts}. Joining side: rewriting ← genFun_pent_eq_tprod then coeff_genFun_pent puts the identity on Mathlib's tprod product directly; the parity split uses Finset.sum_filter_add_sum_filter_not with Even.neg_one_pow / Odd.neg_one_pow on each block. With both ends verified and joined, the open core reduces to the single Franklin-involution identity ∑_{p ∈ distincts n}(-1)^{p.parts.card} = pentSeriesCoeff(n)."
+    },
+    {
+      "id": "open-core",
+      "title": "Open Core: Franklin's Involution (Not Formalized)",
+      "startLine": 450,
+      "endLine": 497,
+      "summary": "Documents the single remaining identity ∑_{p ∈ distincts n}(-1)^{p.parts.card} = pentSeriesCoeff(n) (Franklin's sign-reversing involution on partitions into distinct parts), now that both ends of Euler's identity are machine-checked in Part 6. Mathlib supplies the generating function and distincts/odds but not Franklin's involution itself.",
+      "mathContext": "Equivalently p_even(n)-p_odd(n) = [n=g(k)]·(-1)ᵏ, where p_even/p_odd count partitions into an even/odd number of distinct parts; Franklin's involution's only fixed points are the staircase partitions of the generalized pentagonal numbers g(k)."
+    }
+  ],
+  "openQuestions": [
+    "Close the open core: prove the single Franklin-involution identity ∑_{p ∈ distincts n}(-1)^{p.parts.card} = pentSeriesCoeff(n). Both ends of Euler's identity (the product ∏(1-Xᵐ) and the coefficient ∑(-1)^{#parts}) are now machine-checked here via Mathlib's genFun (Part 6), so this sign-reversing involution on partitions into distinct parts is all that remains.",
+    "Derive Euler's partition recurrence p(n) = ∑_{k≥1}(-1)^{k-1}(p(n-g_k)+p(n-g_{-k})) as a corollary, using this entry's recognition criterion to index the pentagonal shifts."
+  ],
+  "conclusion": {
+    "summary": "This entry establishes the number-theoretic backbone of Euler's pentagonal number theorem: a division-free theory of the generalized pentagonal numbers g(k)=k(3k-1)/2, anchored by the recognition criterion that m is a generalized pentagonal number iff 24m+1 is a perfect square. Alongside the criterion it proves the exact doubling relation, injectivity of the index map, nonnegativity, and the first concrete values matching OEIS A001318 — all machine-verified with 0 axioms and 0 sorries.",
+    "implications": "The square-discriminant test 24m+1=□ is exactly how the pentagonal exponents are enumerated in practice when running Euler's partition recurrence p(n)=∑_{k≥1}(-1)^{k-1}(p(n-g_k)+p(n-g_{-k})), so this index theory is the reusable substrate beneath any algorithmic or formal treatment of partition counting. By routing every argument through the doubling relation 2m=k(3k-1) rather than integer division, the development stays entirely inside ℤ and exposes the clean polynomial identity 24g(k)+1=(6k-1)² that makes the criterion exact. The injectivity result genPent_injective is precisely what a future formalization of Franklin's involution needs to assert that each surviving exponent is hit by a unique index.",
+    "openQuestions": [
+      "Close the open core via Franklin's sign-reversing involution: the single identity ∑_{p ∈ distincts n}(-1)^{p.parts.card} = pentSeriesCoeff(n). Both ends of Euler's identity are now machine-checked here through Mathlib's 2025 Partition.genFun (Part 6: genFun_pent_eq_tprod and coeff_genFun_pent), so the involution is the only remaining gap.",
+      "Derive Euler's partition recurrence for p(n) as a corollary, using this entry's recognition criterion to index the pentagonal shifts.",
+      "Extend the square-discriminant viewpoint to the higher Gauss/Jacobi-triple-product exponents (e.g. the heptagonal and general figurate analogues), characterizing each family by an analogous perfect-square test."
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "partition-theorem",
+      "relationship": "related",
+      "description": "Euler's theorem that partitions into odd parts equinumerate partitions into distinct parts. The pentagonal number theorem refines the distinct-parts side by signing each partition with the parity of its number of parts — the precise setting of Franklin's sign-reversing involution documented in this entry's open core."
+    },
+    {
+      "proofId": "partition-theorem-oq-01",
+      "relationship": "related",
+      "description": "Rogers-Ramanujan and Schur partition identities, proved via gap conditions and modular arithmetic. Like the pentagonal exponents characterized here, they identify partition families by residue/square criteria and inhabit the same generating-function landscape."
+    },
+    {
+      "proofId": "partition-theorem-oq-03",
+      "relationship": "related",
+      "description": "Euler partition identities for overpartitions. Overpartition generating functions are built from the same ∏(1-Xⁿ)-type Euler products whose expansion the pentagonal number theorem governs; both sit in the generating-function calculus of integer partitions that this entry's index theory underpins."
+    },
+    {
+      "proofId": "fermat-two-squares",
+      "relationship": "related",
+      "description": "Fermat's theorem that an odd prime is a sum of two squares iff p ≡ 1 (mod 4) is the archetypal recognition criterion of the same shape as the headline here: membership in a number-theoretic set is decided by a single congruence/perfect-square test, with the modular reduction (mod 4 there, mod 6 in ZMod 6 here) supplying the only non-algebraic ingredient."
+    },
+    {
+      "proofId": "triangular-reciprocals",
+      "relationship": "related",
+      "description": "The triangular numbers T(n)=n(n+1)/2 are the figurate-number neighbours of the pentagonal numbers g(k)=k(3k-1)/2, both quadratic-in-index half-integers. This connects to the open question of extending the square-discriminant viewpoint to the general figurate analogues (24m+1=□ for pentagonals, 8m+1=□ for triangulars)."
+    }
+  ]
+}

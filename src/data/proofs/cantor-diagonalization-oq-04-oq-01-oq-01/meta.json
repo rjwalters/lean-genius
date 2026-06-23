@@ -1,0 +1,166 @@
+{
+  "id": "cantor-diagonalization-oq-04-oq-01-oq-01",
+  "slug": "cantor-diagonalization-oq-04-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib.CategoryTheory.Monoidal.Closed.Cartesian",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "CategoryTheory",
+      "CategoryTheory.Category",
+      "CategoryTheory.Limits",
+      "CategoryTheory.MonoidalCategory",
+      "CategoryTheory.CartesianMonoidalCategory",
+      "CategoryTheory.CartesianClosed"
+    ],
+    "namespace": "LawvereCCC",
+    "lineCount": 120,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 3,
+    "path": "Proofs/CantorDiagonalizationOQ04OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "title": "Lawvere's Fixed-Point Theorem in a Cartesian Closed Category",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CantorDiagonalizationOQ04OQ01OQ01.lean",
+    "tags": [
+      "category-theory",
+      "cartesian-closed-category",
+      "lawvere",
+      "cantor",
+      "diagonal-argument",
+      "fixed-point",
+      "monoidal-closed",
+      "topos",
+      "generalization",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 120,
+    "theoremCount": 3,
+    "definitionCount": 3,
+    "badge": "original",
+    "originalContributions": [
+      "lawvere_fixedPoint: Lawvere's fixed-point theorem stated and proved in any cartesian closed category using Mathlib's CartesianClosed typeclass — a genuine Mathlib gap (Mathlib has no Lawvere FPT)",
+      "Fully point-free diagonal argument: the global point 𝟙_C ⟶ X replaces set elements; the diagonal Δ = lift (𝟙 A) (𝟙 A), evaluation via uncurry, and the exponential transpose `name` carry the whole proof",
+      "name: the exponential transpose 𝟙_C ⟶ (A ⟹ B) of a morphism f : A ⟶ B as curry ((ρ_ A).hom ≫ f)",
+      "PointSurjective: a morphism-level (point-surjective) hypothesis, the categorical replacement for surjectivity of a coding map",
+      "lawvere_cantor: the abstract Cantor/diagonal contrapositive — a fixed-point-free endomorphism of B forbids any point-surjective φ : A ⟶ (A ⟹ B)",
+      "Resolves the headline open question of the parent (CantorDiagonalizationOQ04OQ01), which conjectured the CCC reformulation was beyond Lean's term language"
+    ],
+    "prerequisites": [
+      "Cartesian closed categories (Mathlib.CategoryTheory.Monoidal.Closed.Cartesian)",
+      "Curry/uncurry adjunction tensorLeft A ⊣ exp A and the evaluation morphism",
+      "Cartesian monoidal structure: lift, fst, the terminal unit 𝟙_C, right unitor",
+      "Parent: CantorDiagonalizationOQ04OQ01 (setoid generalization)",
+      "Lawvere's fixed-point theorem (1969)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "CartesianClosed.uncurry_natural_left",
+        "description": "uncurry (f ≫ g) = _ ◁ f ≫ uncurry g — naturality of the transpose in the domain, the engine of the β-reduction step",
+        "module": "Mathlib.CategoryTheory.Monoidal.Closed.Cartesian"
+      },
+      {
+        "theorem": "CartesianClosed.uncurry_curry",
+        "description": "uncurry (curry f) = f — the round-trip that turns the named diagonal back into a morphism",
+        "module": "Mathlib.CategoryTheory.Monoidal.Closed.Cartesian"
+      },
+      {
+        "theorem": "CartesianMonoidalCategory.comp_lift",
+        "description": "f ≫ lift g h = lift (f ≫ g) (f ≫ h) — pushes the global point a through the diagonal Δ",
+        "module": "Mathlib.CategoryTheory.Monoidal.Cartesian.Basic"
+      },
+      {
+        "theorem": "CartesianMonoidalCategory.lift_whiskerLeft",
+        "description": "lift f g ≫ (Y ◁ h) = lift f (g ≫ h) — factors lift a a through the whiskering A ◁ a",
+        "module": "Mathlib.CategoryTheory.Monoidal.Cartesian.Basic"
+      },
+      {
+        "theorem": "CartesianMonoidalCategory.rightUnitor_hom",
+        "description": "(ρ_ X).hom = fst _ _ — the unit coherence that collapses the transpose's right unitor to a projection, giving lift a (𝟙 _) ≫ (ρ_ A).hom = a",
+        "module": "Mathlib.CategoryTheory.Monoidal.Cartesian.Basic"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "cantor-diagonalization-oq-04-oq-01-oq-01-oq-01",
+      "question": "Instantiate this CCC theorem in concrete categories: derive Cantor's theorem in Type (no surjection A → (A → Bool)) and the fixed-point form in a presheaf topos as corollaries of lawvere_fixedPoint, by exhibiting the CartesianClosed instances and a fixed-point-free t.",
+      "significance": "high"
+    },
+    {
+      "id": "cantor-diagonalization-oq-04-oq-01-oq-01-oq-02",
+      "question": "Prove the converse direction in CCC form: if every endomorphism of B has a fixed point then a weakly-point-surjective φ : A ⟶ (A ⟹ B) exists for suitable A — characterizing the 'rich' objects A in terms of B.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cantor-diagonalization-oq-04-oq-01",
+      "relationship": "extends",
+      "description": "Direct parent: the setoid generalization. This file answers the parent's headline open question by proving Lawvere's FPT in a genuine cartesian closed category via Mathlib's CartesianClosed typeclass, rather than in Lean's term language with setoids. The parent conjectured this was the unachievable maximal goal; it is achieved here."
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-04",
+      "relationship": "extends",
+      "description": "Grandparent: the Type-level retraction version. The point-free argument here recovers it when C = Type, points are elements, and `name` is the curry isomorphism (Type → (Type → Type))."
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "specializes-to",
+      "description": "Cantor's diagonal argument is lawvere_cantor applied with a fixed-point-free endomorphism (e.g. negation on a two-element object): no point-surjective coding of A ⟹ B inside A exists."
+    },
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "related",
+      "description": "Lawvere's FPT in a CCC is the categorical kernel of the Gödel–Tarski–Turing diagonal phenomena: incompleteness, undefinability of truth, and the halting problem are all instances of lawvere_cantor in suitable categories (Lawvere 1969)."
+    }
+  ],
+  "references": [
+    {
+      "title": "Diagonal arguments and cartesian closed categories",
+      "author": "F. William Lawvere",
+      "year": "1969",
+      "venue": "Lecture Notes in Mathematics, Vol. 92, Springer, pp. 134–145",
+      "description": "Original publication. Theorem: in a cartesian closed category, if some A weakly parametrizes the morphisms A ⟶ B (point-surjective A ⟶ B^A), then every endomorphism of B has a fixed point. Unifies Cantor, Russell, Gödel, Tarski, and Turing."
+    },
+    {
+      "title": "A universal approach to self-referential paradoxes, incompleteness and fixed points",
+      "author": "Noson S. Yanofsky",
+      "year": "2003",
+      "venue": "Bulletin of Symbolic Logic 9(3), 362–386",
+      "description": "Accessible exposition of Lawvere's theorem and its corollaries; the point-surjectivity formulation used in this formalization follows Yanofsky's presentation."
+    },
+    {
+      "title": "Topoi: The Categorial Analysis of Logic",
+      "author": "Robert Goldblatt",
+      "year": "1984",
+      "venue": "North-Holland (Dover reprint 2006)",
+      "description": "Standard reference for cartesian closed categories, the internal hom, currying-as-morphisms, and Lawvere's theorem in elementary toposes."
+    },
+    {
+      "title": "Über eine elementare Frage der Mannigfaltigkeitslehre",
+      "author": "Georg Cantor",
+      "year": "1891",
+      "venue": "Jahresbericht der DMV 1, 75–78",
+      "description": "Cantor's original diagonal argument, |Y| < |2^Y|; the simplest corollary of lawvere_cantor."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "Lawvere's fixed-point theorem is proved at full categorical generality in any cartesian closed category, using Mathlib's CartesianClosed typeclass. Given a point-surjective φ : A ⟶ (A ⟹ B) — every f : A ⟶ B is the name of some global point of A — every endomorphism t : B ⟶ B has a fixed point s : 𝟙_C ⟶ B with s ≫ t = s. The proof is entirely point-free: the diagonal Δ = lift (𝟙 A) (𝟙 A), the uncurried evaluation uncurry φ, and the exponential transpose `name` carry the argument. The fixed point s = a ≫ f is closed by two equational lemmas — a β-reduction (lift a a ≫ uncurry φ = a ≫ f) from naturality of uncurry plus the unit coherence (ρ_ A).hom = fst, and a diagonal unfolding (a ≫ f = (lift a a ≫ uncurry φ) ≫ t) from comp_lift. 120 lines, 3 theorems, 3 definitions, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "This resolves the headline open question of the parent setoid entry, which had conjectured that 'the setoid layer is the maximal Lawvere FPT achievable purely in Lean' and that a CartesianClosed reformulation would require an internal-language layer Mathlib lacks. In fact Mathlib's existing curry/uncurry adjunction and cartesian-monoidal lemmas suffice: the only non-formal ingredient is choosing point-surjectivity (rather than a Lean-level surjection) as the categorical hypothesis, and global points 𝟙_C ⟶ X as the stand-in for elements. Mathlib itself has no Lawvere fixed-point theorem, so this fills a genuine gap and is a candidate for upstreaming. The contrapositive lawvere_cantor packages the Cantor/Russell/Gödel/Tarski/Turing diagonal as a single categorical statement, instantiable in any CCC.",
+    "openQuestions": [
+      "Instantiate lawvere_fixedPoint in Type to recover Cantor (no surjection A → (A → Bool), via the fixed-point-free `not`), and in a presheaf topos for a genuinely non-Type example.",
+      "Prove a CCC-level converse: characterize when fixed points for all endomorphisms of B force the existence of a (weakly) point-surjective parametrization A ⟶ (A ⟹ B).",
+      "Upstream candidate: package `name`, `PointSurjective`, and `lawvere_fixedPoint` for Mathlib's CategoryTheory.Closed namespace; Mathlib currently has no Lawvere FPT.",
+      "Lift the sibling surjection-version (cantor-diagonalization-oq-03) into the same CCC framework, mirroring this proof."
+    ]
+  }
+}

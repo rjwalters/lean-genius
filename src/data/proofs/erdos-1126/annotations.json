@@ -1,0 +1,366 @@
+[
+  {
+    "id": "ann-e1126-overview",
+    "proofId": "erdos-1126",
+    "range": {
+      "startLine": 1,
+      "endLine": 25
+    },
+    "type": "concept",
+    "title": "Problem Overview: Almost Additive Functions",
+    "content": "**Erdős Problem #1126: Almost Additive Functions**\n\nIf $f(x+y) = f(x) + f(y)$ for almost all pairs $(x,y) \\in \\mathbb{R}^2$, can $f$ be 'repaired' to satisfy the equation for ALL pairs?\n\n**Answer: YES** — proved by de Bruijn (1966) and Jurkat (1965) independently.\n\nThe repaired function $g$ agrees with $f$ almost everywhere and is unique among additive functions. This is a stability theorem for Cauchy's equation: approximate solutions (in the measure-theoretic sense) are near exact solutions.",
+    "mathContext": "The theorem states: $\\text{IsAlmostAdditive}(f) \\Rightarrow \\exists g,\\, \\text{IsAdditive}(g) \\wedge f =_{\\text{a.e.}} g$. It connects Cauchy's functional equation with Lebesgue measure theory and fits into the Hyers-Ulam stability framework.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cauchy functional equation",
+      "Lebesgue measure",
+      "Hyers-Ulam stability",
+      "automatic regularity"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "Lebesgue measure in R²",
+      "null sets"
+    ]
+  },
+  {
+    "id": "ann-e1126-imports",
+    "proofId": "erdos-1126",
+    "range": {
+      "startLine": 27,
+      "endLine": 33
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "Imports `Mathlib.Data.Real.Basic` for $\\mathbb{R}$, `Mathlib.MeasureTheory.Measure.Lebesgue.Basic` for Lebesgue measure, and `Mathlib.Topology.Basic` for continuity. Opens the `MeasureTheory` namespace for direct access to `volume` (Lebesgue measure).",
+    "mathContext": "The formalization works with Lebesgue measure $\\lambda$ on $\\mathbb{R}$ and $\\mathbb{R}^2$ via `MeasureTheory.volume`. The product measure on $\\mathbb{R}^2$ is used for `ae_pairs`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lebesgue measure",
+      "product measure",
+      "MeasureTheory namespace"
+    ],
+    "prerequisites": [
+      "Mathlib basics"
+    ]
+  },
+  {
+    "id": "ann-e1126-additive",
+    "proofId": "erdos-1126",
+    "range": {
+      "startLine": 37,
+      "endLine": 41
+    },
+    "type": "definition",
+    "title": "IsAdditive: Cauchy's Functional Equation",
+    "content": "**Definition**: `IsAdditive f` iff $f(x+y) = f(x) + f(y)$ for all $x, y \\in \\mathbb{R}$.\n\nCauchy (1821) studied this equation and showed that continuous solutions must be linear: $f(x) = cx$. The simplest examples are $f = \\text{id}$ and $f(x) = cx$. Without continuity, Hamel (1905) showed that wild (non-measurable, everywhere discontinuous) solutions exist using the Axiom of Choice.\n\nAdditive functions are exactly the $\\mathbb{Q}$-linear maps $\\mathbb{R} \\to \\mathbb{R}$. Choosing values freely on a Hamel basis (a $\\mathbb{Q}$-basis for $\\mathbb{R}$) gives any $\\mathbb{Q}$-linear function.",
+    "mathContext": "The set of additive functions $\\text{Hom}_{\\mathbb{Q}}(\\mathbb{R}, \\mathbb{R})$ is a $\\mathbb{Q}$-vector space of dimension $|\\mathbb{R}| = 2^{\\aleph_0}$. Only a 1-dimensional subspace consists of continuous (linear) functions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cauchy equation",
+      "Q-linearity",
+      "Hamel basis",
+      "additive functions"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "vector spaces over Q"
+    ]
+  },
+  {
+    "id": "ann-e1126-id-additive",
+    "proofId": "erdos-1126",
+    "range": {
+      "startLine": 43,
+      "endLine": 46
+    },
+    "type": "concept",
+    "title": "Identity is Additive",
+    "content": "**Theorem** (`id_is_additive`): The identity function $f(x) = x$ satisfies $f(x+y) = x + y = f(x) + f(y)$.\n\nProved by `simp [id]`. This is the simplest non-zero additive function, corresponding to $c = 1$ in $f(x) = cx$.",
+    "mathContext": "The identity $\\text{id}: \\mathbb{R} \\to \\mathbb{R}$ is both $\\mathbb{Q}$-linear and $\\mathbb{R}$-linear. It generates the continuous additive functions under scalar multiplication.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "identity function",
+      "base case",
+      "linear function"
+    ],
+    "prerequisites": [
+      "IsAdditive definition"
+    ]
+  },
+  {
+    "id": "ann-e1126-scalar-additive",
+    "proofId": "erdos-1126",
+    "range": {
+      "startLine": 48,
+      "endLine": 51
+    },
+    "type": "concept",
+    "title": "Scalar Multiples are Additive",
+    "content": "**Theorem** (`scalar_is_additive`): For any $c \\in \\mathbb{R}$, $f(x) = cx$ is additive: $c(x+y) = cx + cy$.\n\nProved by `ring`. These are all the continuous additive functions (Cauchy's theorem). The proof that no others exist requires continuity or some regularity condition.",
+    "mathContext": "The map $c \\mapsto (x \\mapsto cx)$ embeds $\\mathbb{R}$ into $\\text{Hom}_{\\mathbb{Q}}(\\mathbb{R}, \\mathbb{R})$. Its image is exactly the continuous additive functions.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "linear functions",
+      "distributivity",
+      "continuous additive"
+    ],
+    "prerequisites": [
+      "ring axioms",
+      "IsAdditive definition"
+    ]
+  },
+  {
+    "id": "ann-e1126-continuous-linear",
+    "proofId": "erdos-1126",
+    "range": {
+      "startLine": 53,
+      "endLine": 57
+    },
+    "type": "concept",
+    "title": "Continuous Additive Functions are Linear",
+    "content": "**Axiom** (`continuous_additive_is_linear`): If $f$ is additive and continuous, then $f(x) = cx$ for some $c \\in \\mathbb{R}$.\n\nThis is Cauchy's classical theorem (1821). The proof: additivity gives $f(q) = qf(1)$ for $q \\in \\mathbb{Q}$ by induction. Continuity extends to $f(x) = xf(1)$ for all $x \\in \\mathbb{R}$ by density of $\\mathbb{Q}$. So $c = f(1)$.\n\nAxiomatized because the full proof requires careful handling of rational approximation in Lean.",
+    "mathContext": "Cauchy's theorem: $f \\in C(\\mathbb{R}) \\cap \\text{Hom}_{\\mathbb{Q}}(\\mathbb{R}, \\mathbb{R}) \\Rightarrow f(x) = f(1) \\cdot x$. The key step is $f(q) = q \\cdot f(1)$ for $q \\in \\mathbb{Q}$, then continuity + density of $\\mathbb{Q}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cauchy's theorem",
+      "density of Q in R",
+      "rational induction"
+    ],
+    "prerequisites": [
+      "continuity",
+      "density of rationals",
+      "additive functions"
+    ]
+  },
+  {
+    "id": "ann-e1126-ae-holds",
+    "proofId": "erdos-1126",
+    "range": {
+      "startLine": 61,
+      "endLine": 63
+    },
+    "type": "definition",
+    "title": "ae_holds: Almost Everywhere (1D)",
+    "content": "**Definition**: `ae_holds P` iff there exists a null set $N \\subseteq \\mathbb{R}$ with $\\lambda(N) = 0$ such that $P(x)$ holds for all $x \\notin N$.\n\nThis is a pedagogical version of Mathlib's `∀ᵐ x ∂μ, P x` using `Filter.Eventually`. The explicit null set makes the definition more transparent for this problem.",
+    "mathContext": "In Mathlib, `∀ᵐ x ∂μ, P x` means $P$ holds $\\mu$-a.e. This definition is equivalent when $\\mu$ is Lebesgue measure. The explicit $N$ makes Fubini-type arguments more visible.",
+    "significance": "key",
+    "relatedConcepts": [
+      "almost everywhere",
+      "null set",
+      "Lebesgue measure",
+      "Filter.Eventually"
+    ],
+    "prerequisites": [
+      "Lebesgue measure",
+      "null sets"
+    ]
+  },
+  {
+    "id": "ann-e1126-ae-pairs",
+    "proofId": "erdos-1126",
+    "range": {
+      "startLine": 65,
+      "endLine": 68
+    },
+    "type": "definition",
+    "title": "ae_pairs: Almost All Pairs (2D)",
+    "content": "**Definition**: `ae_pairs P` iff there exists a null set $N \\subseteq \\mathbb{R}^2$ with $\\lambda_2(N) = 0$ such that $P(x,y)$ holds for all $(x,y) \\notin N$.\n\nThe 2D measure here is the product Lebesgue measure on $\\mathbb{R}^2$. By Fubini's theorem, $\\lambda_2(N) = 0$ implies that for a.e. $x$, the section $\\{y : (x,y) \\in N\\}$ has 1D measure zero. This Fubini connection is central to the de Bruijn-Jurkat proof.",
+    "mathContext": "Fubini's theorem: $\\lambda_2(N) = 0 \\iff$ for $\\lambda$-a.e. $x \\in \\mathbb{R}$, the section $N_x = \\{y : (x,y) \\in N\\}$ satisfies $\\lambda(N_x) = 0$. This relates 2D null sets to 1D null sets.",
+    "significance": "key",
+    "relatedConcepts": [
+      "product measure",
+      "Fubini's theorem",
+      "null sections",
+      "2D Lebesgue measure"
+    ],
+    "prerequisites": [
+      "Lebesgue measure on R²",
+      "Fubini's theorem"
+    ]
+  },
+  {
+    "id": "ann-e1126-almost-additive",
+    "proofId": "erdos-1126",
+    "range": {
+      "startLine": 70,
+      "endLine": 73
+    },
+    "type": "definition",
+    "title": "IsAlmostAdditive: The Central Definition",
+    "content": "**Definition**: `IsAlmostAdditive f` iff $f(x+y) = f(x) + f(y)$ for almost all $(x,y) \\in \\mathbb{R}^2$.\n\nThis is `ae_pairs (fun x y => f (x + y) = f x + f y)`. The exceptional set where additivity fails has 2D Lebesgue measure zero. Note that this is much weaker than pointwise additivity: the exceptional set can be uncountable (just measure zero).\n\nEvery truly additive function is almost additive (take $N = \\emptyset$). The theorem says the converse holds up to a.e. modification.",
+    "mathContext": "The space of almost-additive functions modulo a.e. equivalence is isomorphic to the space of additive functions. This is the content of the de Bruijn-Jurkat theorem plus uniqueness.",
+    "significance": "key",
+    "relatedConcepts": [
+      "almost additivity",
+      "a.e. equivalence class",
+      "functional equation"
+    ],
+    "prerequisites": [
+      "ae_pairs definition",
+      "Lebesgue measure"
+    ]
+  },
+  {
+    "id": "ann-e1126-ae-eq",
+    "proofId": "erdos-1126",
+    "range": {
+      "startLine": 75,
+      "endLine": 77
+    },
+    "type": "definition",
+    "title": "ae_eq: Almost Everywhere Equality",
+    "content": "**Definition**: `ae_eq f g` iff $f(x) = g(x)$ for almost all $x \\in \\mathbb{R}$.\n\nThis defines an equivalence relation on functions $\\mathbb{R} \\to \\mathbb{R}$. Two functions are a.e. equal if they differ only on a null set. This is the standard identification used in $L^p$ spaces.",
+    "mathContext": "The quotient $L^0(\\mathbb{R}) = \\{\\text{measurable } f\\}/\\sim_{\\text{a.e.}}$ identifies functions differing on null sets. The de Bruijn-Jurkat theorem works in this quotient.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "equivalence relation",
+      "L^p spaces",
+      "null set modification"
+    ],
+    "prerequisites": [
+      "ae_holds definition"
+    ]
+  },
+  {
+    "id": "ann-e1126-main",
+    "proofId": "erdos-1126",
+    "range": {
+      "startLine": 81,
+      "endLine": 96
+    },
+    "type": "concept",
+    "title": "de Bruijn-Jurkat Theorem (Main Result)",
+    "content": "**Axiom** (`de_bruijn_jurkat_theorem`): If $f$ is almost additive, there exists a truly additive $g$ with $f = g$ a.e.\n\n**Proof sketch** (not formalized): For a.e. $x$, define $g(x) = \\lim_{n \\to \\infty} f(nx)/n$. By almost-additivity, $f(nx) \\approx nf(x)$ for a.e. $x$, so the limit exists a.e. One shows $g$ is additive everywhere (using Fubini to handle the null sets) and $g = f$ a.e.\n\nThe key difficulty is showing $g$ is additive for ALL pairs, not just a.e. pairs. This requires careful Fubini arguments: for each fixed $x$, additivity holds for a.e. $y$; then for each fixed $y$, it holds for a.e. $x$; iterating pins down the value everywhere.\n\nWrapped as `erdos_1126_main` for clarity.",
+    "mathContext": "The construction $g(x) = \\lim_{n} f(nx)/n$ uses the ergodic-theoretic idea that $f(nx)/n \\to g(x)$ by the 'law of large numbers' for the additive cocycle $f$. Alternatively, one can use Steinhaus's theorem: if $A$ has positive measure, then $A - A$ contains an interval.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fubini's theorem",
+      "Steinhaus theorem",
+      "ergodic averages",
+      "cocycle"
+    ],
+    "prerequisites": [
+      "IsAlmostAdditive",
+      "ae_eq",
+      "Fubini's theorem",
+      "Lebesgue density"
+    ]
+  },
+  {
+    "id": "ann-e1126-uniqueness",
+    "proofId": "erdos-1126",
+    "range": {
+      "startLine": 100,
+      "endLine": 104
+    },
+    "type": "concept",
+    "title": "Uniqueness: Additive + a.e. Equal implies Equal",
+    "content": "**Axiom** (`additive_ae_unique`): If $g_1$ and $g_2$ are both additive and $g_1 = g_2$ a.e., then $g_1 = g_2$ everywhere.\n\nThe proof reduces to showing that an additive function zero a.e. is identically zero. If $g = g_1 - g_2$ is additive and zero a.e., then $\\{x : g(x) = 0\\}$ has full measure. Since this set is a subgroup of $(\\mathbb{R}, +)$, and a measurable subgroup of positive measure must be all of $\\mathbb{R}$ (by Steinhaus), $g = 0$.",
+    "mathContext": "Steinhaus's theorem: if $A \\subseteq \\mathbb{R}$ is measurable with $\\lambda(A) > 0$, then $A - A$ contains an open interval around 0. Applied to $A = g^{-1}(0)$: since $A$ is an additive subgroup with $\\lambda(A) > 0$, $A - A = A$ contains an interval, so $A$ is dense and closed (as kernel of additive $g$), hence $A = \\mathbb{R}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Steinhaus theorem",
+      "measurable subgroups",
+      "kernel of additive function"
+    ],
+    "prerequisites": [
+      "additive functions",
+      "Steinhaus theorem",
+      "measurable sets"
+    ]
+  },
+  {
+    "id": "ann-e1126-zero-ae",
+    "proofId": "erdos-1126",
+    "range": {
+      "startLine": 106,
+      "endLine": 108
+    },
+    "type": "concept",
+    "title": "Additive and Zero a.e. implies Zero",
+    "content": "**Axiom** (`additive_zero_ae`): If $g$ is additive and $g = 0$ a.e., then $g = 0$ identically.\n\nThis is the key lemma for uniqueness. The set $\\{x : g(x) = 0\\} = \\ker(g)$ is an additive subgroup of $\\mathbb{R}$. If it has positive measure (in fact, full measure since $g = 0$ a.e.), Steinhaus's theorem forces it to contain an interval, making the subgroup dense and closed, hence all of $\\mathbb{R}$.",
+    "mathContext": "An additive subgroup $H \\leq (\\mathbb{R}, +)$ with $\\lambda(H) > 0$ must equal $\\mathbb{R}$. Proof: by Steinhaus, $H - H \\supseteq (-\\varepsilon, \\varepsilon)$ for some $\\varepsilon > 0$. Since $H$ is a subgroup, $H - H = H$, so $H$ contains an interval and is therefore dense. Being the preimage of $\\{0\\}$ under continuous $g$ (if $g$ were continuous) — but actually $H$ is measurable, which suffices.",
+    "significance": "key",
+    "relatedConcepts": [
+      "additive subgroup",
+      "Steinhaus theorem",
+      "kernel",
+      "density"
+    ],
+    "prerequisites": [
+      "additive functions",
+      "Steinhaus theorem"
+    ]
+  },
+  {
+    "id": "ann-e1126-wild",
+    "proofId": "erdos-1126",
+    "range": {
+      "startLine": 112,
+      "endLine": 116
+    },
+    "type": "concept",
+    "title": "Wild Additive Functions Exist (AC)",
+    "content": "**Axiom** (`wild_additive_exist`): There exist additive functions that are discontinuous everywhere.\n\nUsing the Axiom of Choice, fix a Hamel basis $B$ for $\\mathbb{R}$ over $\\mathbb{Q}$. Define $f$ to be 1 on one basis element and 0 on all others, then extend $\\mathbb{Q}$-linearly. This $f$ is additive but discontinuous, non-measurable, and its graph is dense in $\\mathbb{R}^2$.\n\nHamel (1905) first constructed such functions. Their existence depends on AC; in Solovay's model, every set is Lebesgue measurable and every additive function is linear.",
+    "mathContext": "A Hamel basis $B$ has $|B| = |\\mathbb{R}| = 2^{\\aleph_0}$. Any function $\\phi: B \\to \\mathbb{R}$ extends uniquely to an additive $f: \\mathbb{R} \\to \\mathbb{R}$. If $\\phi$ is not the restriction of a linear function, then $f$ is wild.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Axiom of Choice",
+      "Hamel basis",
+      "non-measurable functions",
+      "Solovay model"
+    ],
+    "prerequisites": [
+      "AC",
+      "Hamel basis",
+      "Q-vector space structure of R"
+    ]
+  },
+  {
+    "id": "ann-e1126-measurable-linear",
+    "proofId": "erdos-1126",
+    "range": {
+      "startLine": 118,
+      "endLine": 123
+    },
+    "type": "concept",
+    "title": "Measurable Additive Functions are Linear",
+    "content": "**Axiom** (`measurable_additive_is_linear`): If $f$ is additive and Lebesgue measurable, then $f(x) = cx$ for some $c$.\n\nThis strengthens Cauchy's theorem: measurability suffices instead of continuity. In fact, even weaker conditions work: boundedness on a set of positive measure (Ostrowski, 1929), or Baire measurability, or local boundedness at a single point.\n\nThe proof uses Steinhaus/Lusin: if $f$ is measurable, then $f$ is approximately continuous a.e., which forces the standard $f(q) = qf(1)$ argument to extend from $\\mathbb{Q}$ to $\\mathbb{R}$.",
+    "mathContext": "Ostrowski's theorem (1929): If $f$ is additive and bounded above on a set of positive measure (or on an interval), then $f(x) = f(1) \\cdot x$. Measurability $\\Rightarrow$ Lusin's theorem $\\Rightarrow$ approximate continuity $\\Rightarrow$ local boundedness $\\Rightarrow$ linearity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ostrowski's theorem",
+      "Lusin's theorem",
+      "approximate continuity",
+      "Baire measurability"
+    ],
+    "prerequisites": [
+      "Lebesgue measurability",
+      "Lusin's theorem",
+      "additive functions"
+    ]
+  },
+  {
+    "id": "ann-e1126-summary",
+    "proofId": "erdos-1126",
+    "range": {
+      "startLine": 127,
+      "endLine": 141
+    },
+    "type": "concept",
+    "title": "Summary Theorem: Main Result + Uniqueness",
+    "content": "**Theorem** (`erdos_1126_summary`): Combines the de Bruijn-Jurkat theorem with uniqueness into a single statement:\n\n1. $\\forall f,\\, \\text{IsAlmostAdditive}(f) \\Rightarrow \\exists g,\\, \\text{IsAdditive}(g) \\wedge f =_{\\text{a.e.}} g$\n2. $\\forall g_1\\, g_2,\\, \\text{IsAdditive}(g_1) \\wedge \\text{IsAdditive}(g_2) \\wedge g_1 =_{\\text{a.e.}} g_2 \\Rightarrow g_1 = g_2$\n\nProved by pairing `de_bruijn_jurkat_theorem` and `additive_ae_unique` as `⟨..., ...⟩`.\n\nThis is the complete answer to Erdős Problem #1126: **SOLVED**.",
+    "mathContext": "Together, (1) and (2) show that the map $\\text{Additive} \\to \\text{AlmostAdditive}/\\sim_{\\text{a.e.}}$ is a bijection. Every a.e. equivalence class of almost-additive functions contains exactly one additive function.",
+    "significance": "key",
+    "relatedConcepts": [
+      "existence and uniqueness",
+      "bijection",
+      "equivalence classes"
+    ],
+    "prerequisites": [
+      "de Bruijn-Jurkat theorem",
+      "uniqueness"
+    ]
+  }
+]

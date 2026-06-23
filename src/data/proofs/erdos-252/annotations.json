@@ -1,0 +1,348 @@
+[
+  {
+    "id": "ann-252-1",
+    "proofId": "erdos-252",
+    "range": {
+      "startLine": 25,
+      "endLine": 33
+    },
+    "type": "concept",
+    "title": "Imports and Namespace Setup",
+    "content": "**Mathlib imports**: Brings in the arithmetic function library (providing $\\sigma_k$), the irrationality definition (`Irrational`), and infinite sum infrastructure (`tsum`). The `open scoped` command makes notations for `Nat` and `ArithmeticFunction` available without qualification.",
+    "mathContext": "The key import is `ArithmeticFunction.sigma`, which provides $\\sigma_k(n) = \\sum_{d \\mid n} d^k$ as a computable function on natural numbers, along with `Irrational : \\mathbb{R} \\to \\text{Prop}$ and `tsum` for $\\sum'$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "arithmetic functions",
+      "Mathlib imports",
+      "infinite sums"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib library structure"
+    ]
+  },
+  {
+    "id": "ann-252-2",
+    "proofId": "erdos-252",
+    "range": {
+      "startLine": 36,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "The Divisor Power Sum",
+    "content": "**divisorPowerSum(k)**: The infinite series $\\sum_{n=1}^{\\infty} \\sigma_k(n)/n!$ where $\\sigma_k(n) = \\sum_{d \\mid n} d^k$ is the sum of $k$-th powers of all divisors of $n$. Special cases: $\\sigma_0(n) = d(n)$ counts divisors; $\\sigma_1(n) = \\sigma(n)$ is the classical sum of divisors. Defined as `noncomputable` since it involves real-valued infinite series.",
+    "mathContext": "$$\\text{divisorPowerSum}(k) = \\sum_{n=1}^{\\infty} \\frac{\\sigma_k(n)}{n!} = \\sum_{n=1}^{\\infty} \\frac{\\sum_{d \\mid n} d^k}{n!}$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "divisor function",
+      "infinite series",
+      "factorial",
+      "noncomputable definition"
+    ],
+    "prerequisites": [
+      "divisor sum function",
+      "real-valued infinite series",
+      "Mathlib tsum"
+    ]
+  },
+  {
+    "id": "ann-252-3",
+    "proofId": "erdos-252",
+    "range": {
+      "startLine": 57,
+      "endLine": 59
+    },
+    "type": "concept",
+    "title": "Case k = 0: Erdős-Straus (1971)",
+    "content": "**erdos_252_k0** (axiom): $\\sum \\sigma_0(n)/n! = \\sum d(n)/n!$ is irrational. Here $d(n) = \\sigma_0(n)$ is the number-of-divisors function. Proved by Erdős and Ernst Straus in 1971 using properties of the divisor counting function and factorial denominators.",
+    "mathContext": "$\\text{Irrational}\\left(\\sum_{n=1}^{\\infty} \\frac{d(n)}{n!}\\right)$ where $d(n) = |\\{d : d \\mid n\\}|$",
+    "significance": "key",
+    "relatedConcepts": [
+      "divisor counting function",
+      "irrationality",
+      "Erdős-Straus"
+    ],
+    "prerequisites": [
+      "divisor function d(n)",
+      "irrationality criteria"
+    ]
+  },
+  {
+    "id": "ann-252-4",
+    "proofId": "erdos-252",
+    "range": {
+      "startLine": 61,
+      "endLine": 63
+    },
+    "type": "concept",
+    "title": "Case k = 1: Erdős (1952)",
+    "content": "**erdos_252_k1** (axiom): $\\sum \\sigma_1(n)/n! = \\sum \\sigma(n)/n!$ is irrational. Noted as 'reasonably straightforward' by Erdős in 1952. The function $\\sigma_1(n) = \\sigma(n)$ is the classical sum-of-divisors function, central to the theory of perfect numbers ($\\sigma(n) = 2n$ iff $n$ is perfect).",
+    "mathContext": "$\\text{Irrational}\\left(\\sum_{n=1}^{\\infty} \\frac{\\sigma(n)}{n!}\\right)$ where $\\sigma(n) = \\sum_{d \\mid n} d$",
+    "significance": "key",
+    "relatedConcepts": [
+      "sum of divisors",
+      "irrationality",
+      "perfect numbers"
+    ],
+    "prerequisites": [
+      "sum of divisors function",
+      "elementary irrationality criteria"
+    ]
+  },
+  {
+    "id": "ann-252-5",
+    "proofId": "erdos-252",
+    "range": {
+      "startLine": 65,
+      "endLine": 67
+    },
+    "type": "concept",
+    "title": "Case k = 2: Erdős (1952)",
+    "content": "**erdos_252_k2** (axiom): $\\sum \\sigma_2(n)/n!$ is irrational. Also noted by Erdős in 1952. The function $\\sigma_2(n) = \\sum_{d \\mid n} d^2$ sums the squares of all divisors. This connects to Ramanujan's work on the Eisenstein series $E_4(\\tau) = 1 + 240\\sum_{n=1}^{\\infty} \\sigma_3(n)q^n$.",
+    "mathContext": "$\\text{Irrational}\\left(\\sum_{n=1}^{\\infty} \\frac{\\sigma_2(n)}{n!}\\right)$ where $\\sigma_2(n) = \\sum_{d \\mid n} d^2$",
+    "significance": "key",
+    "relatedConcepts": [
+      "sum of squares of divisors",
+      "irrationality",
+      "Eisenstein series"
+    ],
+    "prerequisites": [
+      "divisor power sum",
+      "irrationality criteria"
+    ]
+  },
+  {
+    "id": "ann-252-6",
+    "proofId": "erdos-252",
+    "range": {
+      "startLine": 69,
+      "endLine": 71
+    },
+    "type": "concept",
+    "title": "Case k = 3: Schlage-Puchta / Friedlander-Luca-Stoiciu (2006-2007)",
+    "content": "**erdos_252_k3** (axiom): $\\sum \\sigma_3(n)/n!$ is irrational. This case required a qualitative leap beyond the 'straightforward' $k \\leq 2$. Jan-Christoph Schlage-Puchta (2006) proved it using sieve methods and prime factor distribution. Independently, John Friedlander, Florian Luca, and Igor Stoiciu (2007) used a different approach based on the Euler totient function.",
+    "mathContext": "$\\text{Irrational}\\left(\\sum_{n=1}^{\\infty} \\frac{\\sigma_3(n)}{n!}\\right)$ where $\\sigma_3(n) = \\sum_{d \\mid n} d^3$",
+    "significance": "key",
+    "relatedConcepts": [
+      "irrationality",
+      "sieve methods",
+      "Euler totient function",
+      "Schlage-Puchta",
+      "Friedlander-Luca-Stoiciu"
+    ],
+    "prerequisites": [
+      "sieve theory",
+      "analytic number theory",
+      "divisor bounds"
+    ]
+  },
+  {
+    "id": "ann-252-7",
+    "proofId": "erdos-252",
+    "range": {
+      "startLine": 73,
+      "endLine": 75
+    },
+    "type": "concept",
+    "title": "Case k = 4: Pratt (2022)",
+    "content": "**erdos_252_k4** (axiom): $\\sum \\sigma_4(n)/n!$ is irrational. The most recent breakthrough, proved by Kyle Pratt in 2022 using arithmetic density arguments and careful analysis of $p$-adic valuations of partial sums. This pushed the frontier from 2007 to 2022, a 15-year gap reflecting the increasing difficulty.",
+    "mathContext": "$\\text{Irrational}\\left(\\sum_{n=1}^{\\infty} \\frac{\\sigma_4(n)}{n!}\\right)$ where $\\sigma_4(n) = \\sum_{d \\mid n} d^4$",
+    "significance": "key",
+    "relatedConcepts": [
+      "irrationality",
+      "arithmetic density",
+      "p-adic valuation",
+      "Pratt"
+    ],
+    "prerequisites": [
+      "arithmetic density methods",
+      "p-adic analysis",
+      "analytic number theory"
+    ]
+  },
+  {
+    "id": "ann-252-8",
+    "proofId": "erdos-252",
+    "range": {
+      "startLine": 77,
+      "endLine": 84
+    },
+    "type": "concept",
+    "title": "Consolidation: All k ≤ 4",
+    "content": "**erdos_252_le_4**: Consolidation theorem proving irrationality for all $k \\leq 4$. Uses `interval_cases k` to enumerate $k \\in \\{0,1,2,3,4\\}$ and dispatches each to the corresponding axiom. This is the main proved result of the formalization.",
+    "mathContext": "$\\forall k \\leq 4, \\; \\text{Irrational}\\left(\\sum_{n=1}^{\\infty} \\frac{\\sigma_k(n)}{n!}\\right)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "case analysis",
+      "interval_cases tactic",
+      "consolidation theorem"
+    ],
+    "prerequisites": [
+      "individual irrationality axioms k=0..4",
+      "Lean interval_cases tactic"
+    ]
+  },
+  {
+    "id": "ann-252-9",
+    "proofId": "erdos-252",
+    "range": {
+      "startLine": 92,
+      "endLine": 101
+    },
+    "type": "definition",
+    "title": "The Open Conjecture",
+    "content": "**Erdos252Conjecture** and **Erdos252Open**: The full conjecture asserts irrationality for all $k \\geq 1$; `Erdos252Open` isolates the unresolved case $k \\geq 5$. Despite 70 years of progress through $k = 4$, no unconditional proof exists for $k = 5$ or beyond.",
+    "mathContext": "$\\text{Erdos252Conjecture} \\equiv \\forall k \\geq 1, \\; \\text{Irrational}(\\text{divisorPowerSum}\\, k)$; $\\text{Erdos252Open} \\equiv \\forall k \\geq 5, \\; \\text{Irrational}(\\text{divisorPowerSum}\\, k)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "open problem",
+      "conjecture",
+      "frontier of knowledge"
+    ],
+    "prerequisites": [
+      "divisorPowerSum definition",
+      "irrationality for k ≤ 4"
+    ]
+  },
+  {
+    "id": "ann-252-10",
+    "proofId": "erdos-252",
+    "range": {
+      "startLine": 110,
+      "endLine": 122
+    },
+    "type": "definition",
+    "title": "Schinzel's Hypothesis H",
+    "content": "**SchinzelHypothesisH**: A central conjecture in analytic number theory, proposed by Andrzej Schinzel and Wacław Sierpiński in 1958. It states that any finite collection of irreducible integer polynomials with no fixed prime divisor for their product simultaneously takes prime values infinitely often. This vastly generalizes the twin prime conjecture, Bunyakovsky's conjecture, and Landau's fourth problem.",
+    "mathContext": "For irreducible $f_1, \\ldots, f_s \\in \\mathbb{Z}[x]$ with $\\deg f_i \\geq 1$ and $\\forall p \\text{ prime}, \\exists n : \\neg p \\mid \\prod f_i(n)$: the set $\\{n \\in \\mathbb{N} : f_1(n), \\ldots, f_s(n) \\text{ all prime}\\}$ is infinite.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Schinzel-Sierpiński",
+      "twin prime conjecture",
+      "Bunyakovsky conjecture",
+      "irreducible polynomials"
+    ],
+    "prerequisites": [
+      "irreducibility of polynomials over Z",
+      "prime distribution",
+      "fixed prime divisor condition"
+    ]
+  },
+  {
+    "id": "ann-252-11",
+    "proofId": "erdos-252",
+    "range": {
+      "startLine": 124,
+      "endLine": 126
+    },
+    "type": "concept",
+    "title": "Schinzel Implies All k",
+    "content": "**schinzel_implies_all_k** (axiom): Schlage-Puchta (2006) proved that Schinzel's Hypothesis H implies irrationality of $\\sum \\sigma_k(n)/n!$ for all $k \\geq 1$. The key idea: Hypothesis H provides sufficiently many primes $p$ with specific residue properties to control the $p$-adic structure of the partial sums.",
+    "mathContext": "$\\text{SchinzelHypothesisH} \\Rightarrow \\forall k \\geq 1, \\; \\text{Irrational}\\left(\\sum \\frac{\\sigma_k(n)}{n!}\\right)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "conditional result",
+      "Schinzel's hypothesis",
+      "Schlage-Puchta",
+      "p-adic structure"
+    ],
+    "prerequisites": [
+      "Schinzel's Hypothesis H",
+      "sieve methods",
+      "p-adic valuation analysis"
+    ]
+  },
+  {
+    "id": "ann-252-12",
+    "proofId": "erdos-252",
+    "range": {
+      "startLine": 128,
+      "endLine": 137
+    },
+    "type": "definition",
+    "title": "Prime k-tuples Conjecture",
+    "content": "**PrimeKTuplesConjecture**: The Hardy-Littlewood prime $k$-tuples conjecture (1923), a special case of Hypothesis H for linear polynomials. It asserts that any admissible $k$-tuple of linear forms $a_i n + b_i$ takes simultaneous prime values infinitely often. 'Admissible' means no prime $p$ divides the product $\\prod(a_i n + b_i)$ for all $n$.",
+    "mathContext": "For admissible $(a_1 n + b_1, \\ldots, a_k n + b_k)$ with $a_i > 0$: $|\\{n : a_1 n + b_1, \\ldots, a_k n + b_k \\text{ all prime}\\}| = \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hardy-Littlewood",
+      "admissible tuples",
+      "prime distribution",
+      "Goldbach-type problems"
+    ],
+    "prerequisites": [
+      "prime number theory",
+      "admissibility condition",
+      "Hardy-Littlewood conjectures"
+    ]
+  },
+  {
+    "id": "ann-252-13",
+    "proofId": "erdos-252",
+    "range": {
+      "startLine": 144,
+      "endLine": 154
+    },
+    "type": "concept",
+    "title": "Computational Verifications",
+    "content": "**sigma_0_one**, **sigma_1_six**, **sigma_0_six**, **sigma_2_two**: Verified computations using `decide` and `native_decide`. Notable: $\\sigma_1(6) = 12 = 2 \\times 6$, confirming that 6 is a perfect number (the smallest). $\\sigma_0(6) = 4$ since $6 = 2 \\times 3$ has divisors $\\{1, 2, 3, 6\\}$.",
+    "mathContext": "$\\sigma_0(1) = 1$, $\\sigma_1(6) = 1 + 2 + 3 + 6 = 12$, $\\sigma_0(6) = 4$, $\\sigma_2(2) = 1^2 + 2^2 = 5$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "computational verification",
+      "native_decide",
+      "perfect numbers",
+      "divisor examples"
+    ],
+    "prerequisites": [
+      "sigma function computation",
+      "Lean decide/native_decide tactics"
+    ]
+  },
+  {
+    "id": "ann-252-14",
+    "proofId": "erdos-252",
+    "range": {
+      "startLine": 156,
+      "endLine": 161
+    },
+    "type": "concept",
+    "title": "Divisor Sum at Primes",
+    "content": "**sigma_prime** (axiom): For prime $p$, $\\sigma_k(p) = 1 + p^k$. Since the only divisors of a prime $p$ are $1$ and $p$ itself, the sum of $k$-th powers is $1^k + p^k = 1 + p^k$. This formula is fundamental for understanding how $\\sigma_k$ behaves on prime inputs, which controls the series' arithmetic.",
+    "mathContext": "$p \\text{ prime} \\Rightarrow \\sigma_k(p) = 1^k + p^k = 1 + p^k$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "prime factorization",
+      "multiplicative functions",
+      "sigma at primes"
+    ],
+    "prerequisites": [
+      "prime numbers",
+      "divisor function definition"
+    ]
+  },
+  {
+    "id": "ann-252-15",
+    "proofId": "erdos-252",
+    "range": {
+      "startLine": 169,
+      "endLine": 181
+    },
+    "type": "concept",
+    "title": "Convergence of the Series",
+    "content": "**sigma_le_pow** and **divisorPowerSum_summable** (axioms): The series $\\sum \\sigma_k(n)/n!$ converges absolutely. The bound $\\sigma_k(n) \\leq n^{k+1}$ follows from the fact that $n$ has at most $n$ divisors, each at most $n^k$. Then $\\sum n^{k+1}/n!$ converges since factorials dominate any polynomial: $n^{k+1}/n! \\to 0$ exponentially fast.",
+    "mathContext": "$\\sigma_k(n) \\leq n \\cdot n^k = n^{k+1}$ and $\\sum_{n=1}^{\\infty} \\frac{n^{k+1}}{n!} < \\infty$ by the ratio test, so $\\sum \\frac{\\sigma_k(n)}{n!}$ converges.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "absolute convergence",
+      "comparison test",
+      "factorial growth",
+      "ratio test"
+    ],
+    "prerequisites": [
+      "convergence tests for series",
+      "factorial growth rate",
+      "divisor count bound"
+    ]
+  }
+]

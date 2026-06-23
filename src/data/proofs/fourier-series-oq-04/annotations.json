@@ -1,0 +1,229 @@
+[
+  {
+    "id": "ann-fourier-nd-background",
+    "proofId": "fourier-series-oq-04",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "type": "concept",
+    "title": "Higher-Dimensional Fourier Series: Key Differences from 1D",
+    "content": "The module header identifies four key ways the n≥2 theory diverges from 1D: (1) pointwise convergence fails for L¹ functions under rectangular summation (Fefferman 1971); (2) rectangular partial sums can diverge even for smooth functions; (3) spherical summation requires separate analysis (Bochner-Riesz theory); (4) L² convergence still holds via Parseval. The critical open question is whether Carleson's 1D theorem (every L² function has a.e. convergent Fourier series) extends to n=2 under spherical summation.",
+    "mathContext": "On the n-torus $\\mathbb{T}^n = (\\mathbb{R}/\\mathbb{Z})^n$, the Fourier series of $f \\in L^1(\\mathbb{T}^n)$ is $f \\sim \\sum_{k \\in \\mathbb{Z}^n} \\hat{f}(k) e^{2\\pi i k \\cdot x}$. Convergence depends critically on the summation method. In 1D: $S_N f(x) \\to f(x)$ a.e. for $f \\in L^2$ (Carleson 1966). In n≥2: this fails for rectangular sums (Fefferman 1971) and is open for spherical sums.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Fourier series",
+      "n-torus",
+      "Carleson's theorem",
+      "Fefferman's theorem",
+      "Bochner-Riesz means"
+    ],
+    "prerequisites": [
+      "harmonic analysis",
+      "measure theory",
+      "L^p spaces",
+      "Fourier analysis"
+    ]
+  },
+  {
+    "id": "ann-multiindex-setup",
+    "proofId": "fourier-series-oq-04",
+    "range": {
+      "startLine": 32,
+      "endLine": 45
+    },
+    "type": "definition",
+    "title": "n-Torus, Multi-Index, and Fourier Coefficients",
+    "content": "The formalization models the n-torus as `Fin n → ℝ` (a simplification—the actual torus is (ℝ/ℤ)ⁿ with periodic identification). Multi-indices are `Fin n → ℤ`. The `fourierCoeff` definition is a placeholder (returns 0) since the actual n-fold integral requires a Haar measure on the torus. The `dotProduct k x = ∑ᵢ kᵢ · xᵢ` is fully implemented as the inner product of the multi-index and the torus point, which appears in the exponential e^{2πi k·x} of each Fourier mode.",
+    "mathContext": "The Fourier coefficient $\\hat{f}(k) = \\int_{\\mathbb{T}^n} f(x) e^{-2\\pi i k \\cdot x}\\, dx$ for $k \\in \\mathbb{Z}^n$, $x \\in \\mathbb{T}^n$, $k \\cdot x = \\sum_{j=1}^n k_j x_j$. The Fourier series converges in $L^2$ to $f$ by Parseval: $\\|f\\|_{L^2}^2 = \\sum_{k \\in \\mathbb{Z}^n} |\\hat{f}(k)|^2$.\n\nThe `Torus n = Fin n → ℝ` modeling: the actual $n$-torus is $(\\mathbb{R}/\\mathbb{Z})^n$ with periodic identification. Using `Fin n → ℝ` is a simplification that works for stating the formulas but requires careful treatment of periodicity in any actual computation. In Lean 4, the canonical way to handle the torus would be `AddCircle (1 : ℝ)` (from Mathlib), which is $\\mathbb{R}/\\mathbb{Z}$ as an additive group with Haar measure. For the n-torus, one would use `Fin n → AddCircle 1` with the product Haar measure from `MeasureTheory.Measure.Haar.Basic`.\n\nThe placeholder `fourierCoeff k f := 0` is necessary because the actual integral $\\int_{\\mathbb{T}^n} f(x) e^{-2\\pi i k \\cdot x}\\,dx$ requires: (1) Haar measure on `Fin n → AddCircle 1`; (2) complex exponential `Complex.exp (2πi * dotProduct k x)`; (3) `MeasureTheory.integral` of an $L^1$ function. None of these were available when the file was authored.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Haar measure on torus",
+      "multi-index notation",
+      "Fourier coefficients",
+      "inner product on Z^n"
+    ],
+    "prerequisites": [
+      "measure theory on compact groups",
+      "Lebesgue integration",
+      "Pontryagin duality"
+    ]
+  },
+  {
+    "id": "ann-dot-product",
+    "proofId": "fourier-series-oq-04",
+    "range": {
+      "startLine": 43,
+      "endLine": 45
+    },
+    "type": "definition",
+    "title": "The Inner Product k · x on the n-Torus",
+    "content": "Unlike the placeholder `fourierCoeff`, the `dotProduct` is fully implemented: it computes $k \\cdot x = \\sum_i k_i x_i$ as a finite sum over `Fin n`. This is the only computational ingredient available without Haar measure, and it is the phase term inside every Fourier mode $e^{2\\pi i k \\cdot x}$. The fact that `k_i : ℤ` is coerced to `ℝ` via `(k i : ℝ)` is essential: the multi-index lives in $\\mathbb{Z}^n$ (so the modes are periodic on $\\mathbb{T}^n$), but the inner product is real-valued so the phase is well-defined modulo $2\\pi$.",
+    "mathContext": "On the n-torus $\\mathbb{T}^n = (\\mathbb{R}/\\mathbb{Z})^n$, characters of the group are exactly $\\chi_k(x) = e^{2\\pi i k \\cdot x}$ for $k \\in \\widehat{\\mathbb{T}^n} = \\mathbb{Z}^n$ (Pontryagin dual). The inner product $k \\cdot x$ is well-defined modulo $1$ — i.e. $\\chi_k(x + e_j) = \\chi_k(x)$ for any standard basis vector $e_j$ — because $k_j \\in \\mathbb{Z}$. This is the integrality condition that distinguishes the discrete dual lattice $\\mathbb{Z}^n$ from a continuous frequency variable $\\xi \\in \\mathbb{R}^n$ (used for the Fourier transform on $\\mathbb{R}^n$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Pontryagin duality",
+      "characters of compact groups",
+      "dual lattice",
+      "Fourier modes"
+    ],
+    "prerequisites": [
+      "abelian groups",
+      "characters",
+      "complex exponentials"
+    ]
+  },
+  {
+    "id": "ann-placeholder-pattern",
+    "proofId": "fourier-series-oq-04",
+    "range": {
+      "startLine": 39,
+      "endLine": 69
+    },
+    "type": "insight",
+    "title": "The Scaffold-File Placeholder Pattern (`returning 0`)",
+    "content": "Three `noncomputable def`s in this file — `fourierCoeff` (L39), `rectPartialSum` (L62), and `spherPartialSum` (L67) — all return the literal `0 : ℂ` rather than a meaningful sum or integral. This is a deliberate **scaffold-file pattern** used to (i) lock the *type signature* of each notion into the gallery so downstream theorems and docstring claims can reference well-typed names, while (ii) deferring the implementation until the requisite Mathlib infrastructure (Haar measure on `Fin n → AddCircle 1`, complex-valued `MeasureTheory.integral`, and the L¹/L²-extension API) is in place.\n\nWhy is `0` the chosen placeholder rather than `sorry`? Because `sorry` is *axiomatic* (it produces a non-terminating term, and Lean records its use in `axiomCount`), whereas `def f := 0` is a *trivial but verified* definition. Every theorem about `fourierCoeff` would still be true if `fourierCoeff = 0`, but it would be vacuous or wrong; the scaffold is honest about this — it carries `0` theorems, `0` axioms, `0` sorries, and the meta.json `status: \"formalized\"` correctly flags that no mathematical content has been *proved*. PR #17223 (2026-05-08) explicitly removed prose claiming any of the docstring-only declarations at L75-85 were theorems, since attaching `:= by sorry` or `:= sorry`-style bodies would have turned the file into a misleading axiom dump.\n\nThe scaffold-file pattern is the gallery's mechanism for documenting *forthcoming* formalizations: the structure and naming are committed so contributors can reason about the future API, while the mathematical content awaits Mathlib growth.",
+    "mathContext": "From a typing perspective, `fourierCoeff : (Torus n → ℂ) → MultiIndex n → ℂ` is the type of the actual Fourier coefficient $\\hat{f}(k) = \\int_{\\mathbb{T}^n} f(x) e^{-2\\pi i k\\cdot x}\\,dx$. The Lean placeholder `:= 0` has the *correct type* and lets downstream code state things like `‖fourierCoeff f k‖ ≤ ‖f‖_{L^1}` (Riemann-Lebesgue) even before the actual integral is implementable — though of course such statements would be vacuous at the placeholder.\n\nWhen the Mathlib API matures, the upgrade path is: replace each `0` with `∫ x, f x * Complex.exp (-2*π*Complex.I * dotProduct k x) ∂(Measure.haar)`. The signature stays the same, the body becomes nontrivial, and every existing claim about `fourierCoeff` automatically becomes a real theorem to prove. This is the same idiom used in other gallery scaffolds (e.g., `fourier-series-oq-03`).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "noncomputable def in Lean 4",
+      "scaffold file pattern",
+      "placeholder vs sorry",
+      "axiomCount discipline",
+      "MeasureTheory.integral",
+      "Mathlib AddCircle"
+    ],
+    "prerequisites": [
+      "Lean 4 def syntax",
+      "noncomputable marker",
+      "Mathlib MeasureTheory namespace"
+    ]
+  },
+  {
+    "id": "ann-summation-methods",
+    "proofId": "fourier-series-oq-04",
+    "range": {
+      "startLine": 62,
+      "endLine": 69
+    },
+    "type": "insight",
+    "title": "Rectangular vs. Spherical Summation: Four Methods",
+    "content": "The central mathematical difficulty in n-dimensional Fourier series is that there is no canonical summation order for the multi-index k ∈ ℤⁿ. Four methods are described: (1) Rectangular: sum over |kⱼ| ≤ Nⱼ independently per coordinate—behaves badly, fails even for smooth functions in n≥2. (2) Square: sum over max|kⱼ| ≤ N—equivalent to tensor products of 1D Dirichlet kernels; L¹ norm grows as (log N)^n. (3) Spherical: sum over |k|₂ ≤ R—better behavior but requires entirely different kernel analysis. (4) Bochner-Riesz: weighted spherical sums with weight (1 - |k|²/R²)^δ₊ for δ > 0—partially solves convergence via regularization.",
+    "mathContext": "Rectangular partial sum: $S_N f = \\sum_{|k_j| \\leq N} \\hat{f}(k) e_k$. The n-D Dirichlet kernel $D_N^{(n)}(x) = \\prod_{j=1}^n D_N(x_j)$ has $L^1$ norm $\\|D_N^{(n)}\\|_{L^1} \\asymp (\\log N)^n \\to \\infty$, causing divergence. Spherical sum: $S_R^{\\text{sph}} f = \\sum_{|k|_2 \\leq R} \\hat{f}(k) e_k$. Bochner-Riesz: $S_R^\\delta f = \\sum_{|k| \\leq R} (1-|k|^2/R^2)_+^\\delta \\hat{f}(k) e_k$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Dirichlet kernel",
+      "Bochner-Riesz means",
+      "summability methods",
+      "L^1 norm of kernels"
+    ],
+    "prerequisites": [
+      "Fourier analysis",
+      "functional analysis",
+      "L^p boundedness",
+      "kernel estimates"
+    ]
+  },
+  {
+    "id": "ann-fefferman-divergence",
+    "proofId": "fourier-series-oq-04",
+    "range": {
+      "startLine": 75,
+      "endLine": 85
+    },
+    "type": "insight",
+    "title": "Convergence Statements: Fefferman, Bochner-Riesz, Carleson-2D",
+    "content": "Lines 75–85 are docstring commentary ONLY — there are no actual theorem declarations attached to these lines. The five `/--`-prefixed strings document the convergence landscape that *would* be theorems in a complete formalization: (i) L² convergence in all n (Parseval); (ii) Fefferman's negative result on rectangular sums for L¹ functions on T² (1971); (iii) uniform convergence of square sums for Lipschitz functions (all n); (iv) the partial Bochner-Riesz result for δ > (n-1)/2; (v) Parseval's identity. Each docstring describes a target theorem; PR #17223 (2026-05-08) explicitly stripped any prose claiming these were axioms or theorems, since no declaration body exists.",
+    "mathContext": "Fefferman's theorem (1971): $\\exists f \\in L^1(\\mathbb{T}^2)$ such that $\\limsup_{N\\to\\infty} |S_N^{\\text{rect}} f(x)| = \\infty$ for a.e. $x$. Bochner-Riesz (above critical index, classical): for $\\delta > (n-1)/2$, $S_R^\\delta f \\to f$ in $L^p$ for $1 \\leq p \\leq \\infty$. The full Bochner-Riesz conjecture: $S_R^\\delta f \\to f$ in $L^p$ for $\\delta > n|1/p - 1/2| - 1/2$, $1 \\leq p \\leq \\infty$ — proved for $n=2$ by Carleson-Sjölin (1972) but open for $n \\geq 3$ in the full range.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fefferman 1971",
+      "Bochner-Riesz conjecture",
+      "Carleson-Sjölin theorem",
+      "a.e. convergence",
+      "Parseval's identity"
+    ],
+    "prerequisites": [
+      "Carleson's theorem (1D)",
+      "maximal functions",
+      "Calderón-Zygmund theory",
+      "oscillatory integrals"
+    ]
+  },
+  {
+    "id": "ann-convergence-table",
+    "proofId": "fourier-series-oq-04",
+    "range": {
+      "startLine": 86,
+      "endLine": 97
+    },
+    "type": "concept",
+    "title": "Convergence Landscape Table: 1D vs n=2 vs n≥3",
+    "content": "The 5×3 table inside this comment block is the heart of the file's mathematical content: it is the only place where the 1D-vs-higher-D dichotomy is laid out by mode (rectangular vs square vs spherical vs Bochner-Riesz) and by function class (L^p, Lipschitz). Three cells deserve emphasis: (1) `Pointwise a.e. (L²)` is OPEN for n≥2 — this is the cell where the 2D Carleson conjecture lives; (2) `Rectangular a.e. (L¹)` is the only cell with a definitive negative answer in n≥2 (Fefferman 1971); (3) `Bochner-Riesz (L^p)` is `Partial` in n≥2 — Carleson-Sjölin (1972) settled n=2 in the full conjectured range but n≥3 remains open above the Stein-Tomas threshold.",
+    "mathContext": "2D Carleson conjecture: for $f \\in L^2(\\mathbb{T}^2)$, does $S_R^{\\text{sph}} f(x) \\to f(x)$ for a.e. $x$ as $R \\to \\infty$? Status: unknown. Best partial result: Lacey-Thiele's bilinear-Hilbert-transform machinery (2000s) extends Carleson-Hunt to multilinear settings, but does not yet resolve the spherical maximal a.e. convergence problem in n=2.",
+    "significance": "key",
+    "relatedConcepts": [
+      "2D Carleson conjecture",
+      "Carleson-Sjölin theorem",
+      "Stein-Tomas restriction theorem",
+      "spherical maximal function"
+    ],
+    "prerequisites": [
+      "harmonic analysis",
+      "restriction theory",
+      "maximal inequalities"
+    ]
+  },
+  {
+    "id": "ann-bochner-riesz-triangle",
+    "proofId": "fourier-series-oq-04",
+    "range": {
+      "startLine": 81,
+      "endLine": 85
+    },
+    "type": "insight",
+    "title": "The Bochner-Riesz / Restriction / Kakeya Triangle (n ≥ 2)",
+    "content": "The 4-line docstring at L81-83 describing the Bochner-Riesz conjecture is the gateway to the deepest structural result in higher-dimensional harmonic analysis: the **three-way equivalence** between (a) Bochner-Riesz $L^p$ boundedness, (b) Stein-Tomas / Fourier-extension restriction estimates, and (c) Kakeya / Nikodým maximal-function bounds.\n\nFefferman's 1973 work and Bourgain's 1991 paper (cited in `references`) demonstrate that each of these three problems implies the others in a precise quantitative sense:\n\n1. **Bochner-Riesz $\\to$ Restriction**: the multiplier $(1 - |\\xi|^2/R^2)_+^\\delta$ is morally a smooth cutoff of the sphere $S^{n-1}$, so $L^p$-boundedness of $S_R^\\delta$ controls the extension $L^p(S^{n-1}) \\to L^{p'}(\\mathbb{R}^n)$.\n2. **Restriction $\\to$ Kakeya**: dyadic decomposition of the sphere into $\\sim R^{(n-1)/2}$ caps yields $\\sim R^{(n-1)/2}$ tubes, and the $L^p$ behavior of their union is the Kakeya maximal function.\n3. **Kakeya $\\to$ Bochner-Riesz**: tube combinatorics directly bounds the kernel of $S_R^\\delta$.\n\nThis is why n ≥ 3 is *qualitatively* harder than n = 2: Carleson-Sjölin (1972) closed the n=2 triangle entirely via a stationary-phase argument, but in n ≥ 3 each vertex of the triangle remains open in the conjectured sharp range. Modern progress (Tao, Guth, Bourgain-Demeter via decoupling) chips away at restriction estimates above the Stein-Tomas threshold, and each restriction improvement propagates to a Bochner-Riesz improvement. The 2D Carleson conjecture (spherical pointwise convergence on $L^2(\\mathbb{T}^2)$) sits adjacent to this triangle — a positive resolution would require a maximal-function analogue of the Carleson-Sjölin disc multiplier estimate, which is currently out of reach.",
+    "mathContext": "The Bochner-Riesz conjecture in $\\mathbb{R}^n$: $\\|S_R^\\delta f\\|_{L^p} \\leq C \\|f\\|_{L^p}$ for $\\delta > \\delta_c(p) = \\max(0, n|1/p - 1/2| - 1/2)$. The Kakeya maximal conjecture: $\\|\\sup_{T \\ni x} \\frac{|T|^{-1}}{1} \\int_T f\\|_{L^n} \\leq C\\|f\\|_{L^n}$ where the sup is over $1 \\times \\delta$-tubes of arbitrary direction. The Stein-Tomas threshold: $E$ bounded $L^2(S^{n-1}) \\to L^{2(n+1)/(n-1)}(\\mathbb{R}^n)$. The Tomas-Stein restriction theorem (1975) is sharp at this threshold; everything beyond is conjectural for $n \\geq 3$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bochner-Riesz conjecture",
+      "Kakeya maximal function",
+      "Stein-Tomas restriction theorem",
+      "polynomial partitioning",
+      "decoupling estimates (Bourgain-Demeter)",
+      "Carleson-Sjölin theorem"
+    ],
+    "prerequisites": [
+      "oscillatory integrals",
+      "stationary phase",
+      "Fourier multipliers",
+      "interpolation theorems"
+    ]
+  },
+  {
+    "id": "ann-parseval-l2",
+    "proofId": "fourier-series-oq-04",
+    "range": {
+      "startLine": 98,
+      "endLine": 102
+    },
+    "type": "insight",
+    "title": "L² Convergence Holds Universally — and What That Hides",
+    "content": "Lines 98–100 are commentary noting that the 1D Carleson result is the only 'easy' case and the 2D analogue is open. Stepping back: $L^2$ convergence in norm is automatic in every dimension and every summation method indexed by an exhaustive family of finite sets — it follows immediately from $\\{e^{2\\pi i k \\cdot x}\\}_{k \\in \\mathbb{Z}^n}$ being an orthonormal basis. The hard problem is the GAP between norm and pointwise convergence: in 1D, Carleson (1966) closed it for L²; in n≥2, Fefferman closed it negatively for rectangular sums on L¹ but the spherical-summation/L² question remains open. Norm convergence is an existence-of-limit-in-Hilbert-space statement; pointwise a.e. convergence is a maximal-function statement, and the latter is qualitatively harder because it requires uniform-in-the-truncation control.",
+    "mathContext": "Parseval: $\\|f\\|_{L^2(T^n)}^2 = \\sum_{k \\in \\mathbb{Z}^n} |\\hat{f}(k)|^2$. This is the orthonormal-basis identity for the system $\\{\\chi_k\\}$. Norm convergence: $\\|f - S_R^{\\text{sph}} f\\|_{L^2} \\to 0$ trivially since the tail $\\sum_{|k| > R} |\\hat{f}(k)|^2 \\to 0$. Pointwise convergence requires the maximal inequality $\\|S^* f\\|_{L^2} \\leq C \\|f\\|_{L^2}$ where $S^* f = \\sup_R |S_R^{\\text{sph}} f|$ — Carleson-Hunt for n=1, OPEN for n≥2.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Parseval identity",
+      "orthonormal basis",
+      "maximal inequality",
+      "norm vs pointwise convergence",
+      "Carleson-Hunt theorem"
+    ],
+    "prerequisites": [
+      "Hilbert space theory",
+      "L² function spaces",
+      "maximal functions"
+    ]
+  }
+]

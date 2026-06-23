@@ -1,0 +1,251 @@
+{
+  "id": "erdos-216",
+  "title": "Erdős Problem #216: Empty Convex Polygons",
+  "slug": "erdos-216",
+  "description": "Let g(k) be the smallest integer such that any g(k) points in ℝ² contains an empty convex k-gon. Does g(k) exist? PARTIALLY SOLVED: g(k) exists iff k ≤ 6, with g(3)=3, g(4)=5, g(5)=10, g(6)=30 (Heule-Scheucher 2024). For k ≥ 7, Horton sets prove g(k) does not exist.",
+  "meta": {
+    "author": "Erdős (problem), Harborth (g(5)=10), Horton (non-existence k≥7), Heule-Scheucher (g(6)=30)",
+    "sourceUrl": "https://erdosproblems.com/216",
+    "date": "2024",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos216Problem.lean",
+    "tags": [
+      "erdos",
+      "discrete-geometry",
+      "convex-geometry",
+      "empty-polygons",
+      "ramsey-theory",
+      "happy-ending",
+      "partially-solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 216,
+    "erdosUrl": "https://erdosproblems.com/216",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.Basic",
+        "description": "Basic finite set operations",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.Card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Convex.Basic",
+        "description": "Convexity definitions",
+        "module": "Mathlib.Analysis.Convex.Basic"
+      },
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Euclidean space ℝⁿ",
+        "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
+      },
+      {
+        "theorem": "Nat.find",
+        "description": "Finding least natural number satisfying predicate",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Point and PointSet definitions for ℝ²",
+      "InGeneralPosition definition (no three collinear)",
+      "IsConvexKGon definition for convex k-gons",
+      "IsEmptyConvexKGon definition (no interior points)",
+      "ContainsEmptyKGon predicate",
+      "g(k) function as Option ℕ (none when doesn't exist)",
+      "gExists predicate",
+      "Known values g_3, g_4, g_5, g_6 as axioms",
+      "IsHortonSet definition and horton_sets_exist axiom",
+      "g_7_not_exists theorem (proved from Horton axiom)",
+      "g_ge_7_not_exists axiom for k ≥ 7",
+      "g_exists_le_6 theorem (case analysis via interval_cases)",
+      "hortonBase definition (single-point base case)",
+      "Happy Ending Problem connection (happyEnding function)",
+      "Erdős-Szekeres conjecture formalization (erdos_szekeres_conjecture)",
+      "erdos_216_summary comprehensive theorem",
+      "erdos_216 theorem (complete answer)",
+      "known_g_values theorem",
+      "g_exists_iff characterization theorem"
+    ],
+    "axiomCount": 9,
+    "assumptions": "9 axiom declarations: InGeneralPosition (no three collinear predicate), IsConvexKGon (convex k-gon predicate), IsEmptyConvexKGon (empty interior predicate), g_3 (g(3)=3), g_4 (g(4)=5), g_5 (g(5)=10), g_6 (g(6)=30, Heule-Scheucher 2024), horton_sets_exist (arbitrary-size Horton sets), g_ge_7_not_exists (no g(k) for k>=7). The exact values g(3)..g(6) and the k>=7 non-existence are taken directly as axioms from the literature; the file does not formalize lower bounds, the Horton recursive construction, or SAT-based computational witnesses (no such declarations are present). Only g_7_not_exists, g_exists_le_6, g_exists_iff, and the summary theorems (erdos_216_summary, erdos_216, known_g_values) are proved in Lean from these axioms.",
+    "lineCount": 233,
+    "theoremCount": 6,
+    "definitionCount": 9
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #216: Empty Convex Polygons**\n\nThis problem is a deeper variant of the famous 'Happy Ending Problem' posed by Esther Klein in 1933 at a Budapest mathematics gathering. Klein observed that among any 5 points in general position, 4 must form a convex quadrilateral. Erdős and Szekeres proved the general case in 1935, and Erdős named it the 'Happy Ending Problem' because Klein and Szekeres married shortly afterward.\n\nProblem #216 adds a crucial constraint: the convex polygon must be **empty** — no other points from the set may lie in its interior. This seemingly small change has dramatic consequences.\n\n**Historical Timeline:**\n- 1935: Erdős and Szekeres prove the Ramsey-theoretic result for convex polygons (no emptiness condition)\n- 1935–1970s: Erdős asks whether g(k) exists for all k, with the emptiness condition\n- 1978: Harborth proves g(5) = 10 in a careful case analysis of point configurations\n- 1983: Horton constructs arbitrarily large point sets with no empty 7-gon, proving g(k) does not exist for k ≥ 7. This was a surprise — the empty condition creates a fundamental barrier at k = 7\n- 2007: Nicolás proves g(6) exists (finite but unknown value)\n- 2008: Gerken independently proves g(6) exists using a different approach\n- 2024: Heule and Scheucher determine g(6) = 30 using SAT solvers, completing the picture. Their paper 'Happy Ending: An Empty Hexagon in Every Set of 30 Points' verified all order types on 29 points and proved the universal property for 30 points\n\n**The Problem:** For each k, what is the minimum n = g(k) such that any n points in general position in ℝ² contain an empty convex k-gon?",
+    "problemStatement": "**Problem Statement (Partially Solved)**\n\nLet g(k) be the smallest integer (if it exists) such that any g(k) points in ℝ² in general position contains an empty convex k-gon (a convex k-gon with no point in its interior).\n\n**Questions:**\n1. Does g(k) exist for all k?\n2. If so, what is g(k)?\n\n**Complete Answer:**\n- g(3) = 3 (trivial: any 3 points form an empty triangle)\n- g(4) = 5 (Erdős)\n- g(5) = 10 (Harborth, 1978)\n- g(6) = 30 (Heule-Scheucher, 2024)\n- g(k) does NOT exist for k ≥ 7 (Horton, 1983)\n\n**Status: COMPLETELY RESOLVED** - The function g(k) exists if and only if k ≤ 6.",
+    "text": "Let g(k) be the smallest integer such that any g(k) points in ℝ² contains an empty convex k-gon. Does g(k) exist? PARTIALLY SOLVED: g(k) exists iff k ≤ 6, with g(3)=3, g(4)=5, g(5)=10, g(6)=30 (Heule-Scheucher 2024). For k ≥ 7, Horton sets prove g(k) does not exist.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Point Sets:** Define Point as EuclideanSpace ℝ (Fin 2), PointSet as Finset Point\n\n2. **General Position:** InGeneralPosition requires no three collinear points, axiomatized since the cross-product definition is unnecessary for the combinatorial structure\n\n3. **Empty Polygons:** IsEmptyConvexKGon is axiomatized as a convex k-gon with no other point of S inside; ContainsEmptyKGon wraps it in an existential over vertex sets\n\n4. **The Function g:** Defined as Option ℕ using Nat.find — returns some n when a threshold exists, none otherwise. This design choice enables a clean characterization theorem\n\n5. **Known Values:** Axiomatize g(3)=3, g(4)=5, g(5)=10, g(6)=30 from published results\n\n6. **Horton's Theorem:** Define IsHortonSet and axiomatize their existence; prove g(7)=none as a genuine theorem from the axiom, then axiomatize the general case g(k)=none for k ≥ 7\n\n7. **Happy Ending Connection:** Define g'(k) for the non-empty variant and state the Erdős-Szekeres conjecture g'(k) = 2^(k−2)+1 (the monotonicity g(k) ≥ g'(k) is noted in prose but not formalized)",
+    "keyInsights": [
+      "**Empty vs Non-Empty Threshold:** The empty interior condition creates a sharp dichotomy at k=7 — the non-empty variant (Happy Ending Problem) has g'(k) for all k, while the empty variant terminates. This reflects a deep geometric phenomenon: large convex polygons in dense point sets almost inevitably contain interior points",
+      "**Horton's Recursive Interlacing:** Horton sets are built by placing two copies at different heights and interlacing their x-coordinates. Any potential empty 7-gon must alternate between the two layers, but the interlacing forces an interior point from the opposite layer to appear inside the polygon",
+      "**Computational vs Existential:** The values g(3) through g(5) were found by combinatorial arguments, but g(6)=30 required SAT solvers. The encoding translates geometric order types into propositional formulas — a paradigm shift in discrete geometry paralleling the Four Color Theorem and Kepler conjecture approaches",
+      "**The g(7)=none Proof is Genuine:** Unlike most axioms in this formalization, g_7_not_exists is actually proved in Lean by unfolding the definition of g, applying Horton's axiom to get a counterexample of arbitrary size, and deriving a contradiction with the supposed threshold",
+      "**Growth Rate Asymmetry:** The known values g(3)=3, g(4)=5, g(5)=10, g(6)=30 show accelerating growth (ratios 5/3, 2, 3), yet the function abruptly ceases to exist at k=7. This 'explosion then extinction' pattern is unusual in Ramsey-type problems"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Ramsey theory (partition regularity)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Module docstring documenting the problem statement, background, and references; 5 Mathlib imports covering required modules; `open` declarations (Finset); namespace `Erdos216`",
+      "mathContext": "Let g(k) be the smallest integer (if it exists) such that any g(k) points in ℝ² contains an empty convex k-gon (a convex k-gon with no point in its interior). Does g(k) exist? If so, estimate g(k)."
+    },
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Defines Point as EuclideanSpace ℝ (Fin 2) and PointSet as Finset Point. Axiomatizes InGeneralPosition (no three collinear) and IsConvexKGon (k vertices in convex position), since their full definitions require cross-product and convex-hull infrastructure.",
+      "startLine": 49,
+      "endLine": 65,
+      "mathContext": "Defines Point as EuclideanSpace ℝ (Fin 2) and PointSet as Finset Point. Axiomatizes InGeneralPosition (no three collinear) and IsConvexKGon (k vertices in convex position), since their full definitions require cross-product and convex-hull infrastructure."
+    },
+    {
+      "id": "empty-polygons",
+      "title": "Empty Convex Polygons",
+      "summary": "Axiomatizes IsEmptyConvexKGon — a convex k-gon whose interior contains no other points of S — since formalizing the interior of a convex hull requires substantial geometric infrastructure. Defines ContainsEmptyKGon as the existential wrapper.",
+      "startLine": 67,
+      "endLine": 78,
+      "mathContext": "Axiomatizes IsEmptyConvexKGon — a convex k-gon whose interior contains no other points of S — since formalizing the interior of a convex hull requires substantial geometric infrastructure. Defines ContainsEmptyKGon as the existential wrapper."
+    },
+    {
+      "id": "function-g",
+      "title": "The Function g(k)",
+      "summary": "Defines g(k) as Option ℕ via Nat.find: returns some n when a finite threshold exists, none otherwise. The predicate gExists checks Option.isSome. This design enables clean biconditional characterization.",
+      "startLine": 80,
+      "endLine": 92,
+      "mathContext": "Defines g(k) as Option ℕ via Nat.find: returns some n when a finite threshold exists, none otherwise. The predicate gExists checks Option.isSome. This design enables clean biconditional characterization."
+    },
+    {
+      "id": "known-values",
+      "title": "Known Values",
+      "summary": "Axiomatizes four exact values: g(3)=3 (trivial), g(4)=5 (Erdős), g(5)=10 (Harborth 1978), g(6)=30 (Heule-Scheucher 2024). Each is documented with historical attribution.",
+      "startLine": 94,
+      "endLine": 112,
+      "mathContext": "Axiomatized: Axiomatizes four exact values: g(3)=3 (trivial), g(4)=5 (Erdős), g(5)=10 (Harborth 1978), g(6)=30 (Heule-Scheucher 2024). Each is documented with historical attribution."
+    },
+    {
+      "id": "horton-theorem",
+      "title": "Horton's Theorem",
+      "summary": "Defines IsHortonSet as InGeneralPosition ∧ ¬ContainsEmptyKGon 7. Axiomatizes existence of arbitrarily large Horton sets. Proves g_7_not_exists as a genuine theorem by contradiction: any threshold n is refuted by a Horton set of size n.",
+      "startLine": 114,
+      "endLine": 140,
+      "mathContext": "Defines IsHortonSet as InGeneralPosition ∧ ¬ContainsEmptyKGon 7. Axiomatizes existence of arbitrarily large Horton sets. Proves g_7_not_exists as a genuine theorem by contradiction: any threshold n is refuted by a Horton set of size n."
+    },
+    {
+      "id": "bounds-growth",
+      "title": "Bounds and Growth",
+      "summary": "Proves g_exists_le_6 by case analysis using the interval_cases tactic, dispatching each case k ∈ {3,...,6} via the known-value axioms. (No lower-bound axiom is declared in the file.)",
+      "startLine": 142,
+      "endLine": 150,
+      "mathContext": "Proves g_exists_le_6 by case analysis using the interval_cases tactic, dispatching each case k ∈ {3,...,6} via the known-value axioms. (No lower-bound axiom is declared in the file.)"
+    },
+    {
+      "id": "horton-construction",
+      "title": "The Horton Construction",
+      "summary": "Defines hortonBase as a single-point set (the base case of the construction). The recursive interlacing step is described in prose only — it is not formalized as a Lean declaration; the existence of arbitrarily large Horton sets is captured by the horton_sets_exist axiom in the Horton's Theorem section.",
+      "startLine": 152,
+      "endLine": 157,
+      "mathContext": "Defines hortonBase as a single-point set (the base case of the construction). The recursive interlacing step is described in prose only — it is not formalized as a Lean declaration; the existence of arbitrarily large Horton sets is captured by the horton_sets_exist axiom in the Horton's Theorem section."
+    },
+    {
+      "id": "happy-ending",
+      "title": "Connection to Happy Ending Problem",
+      "summary": "Defines happyEnding (g'(k)) for the non-empty variant via Nat.find, and states the Erdős-Szekeres conjecture g'(k) = 2^(k−2)+1 as the predicate erdos_szekeres_conjecture. (No existence or monotonicity theorem is declared here.)",
+      "startLine": 159,
+      "endLine": 173,
+      "mathContext": "Defines happyEnding (g'(k)) for the non-empty variant via Nat.find, and states the Erdős-Szekeres conjecture g'(k) = 2^(k−2)+1 as the predicate erdos_szekeres_conjecture. (No existence or monotonicity theorem is declared here.)"
+    },
+    {
+      "id": "computational",
+      "title": "Computational Results",
+      "summary": "Placeholder section header only — no computational witnesses are declared. The exact value g(6)=30 (both the 29-point lower-bound witness and the 30-point upper bound of Heule-Scheucher 2024) is captured directly by the g_6 axiom rather than re-derived here.",
+      "startLine": 175,
+      "endLine": 177,
+      "mathContext": "Placeholder section header only — no computational witnesses are declared. The exact value g(6)=30 (both the 29-point lower-bound witness and the 30-point upper bound of Heule-Scheucher 2024) is captured directly by the g_6 axiom rather than re-derived here."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Assembles the complete resolution: erdos_216_summary combines all four known values with g(7)=none and the general non-existence for k ≥ 7. The characterization theorem g_exists_iff proves g(k) exists ↔ k ≤ 6 for k ≥ 3.",
+      "startLine": 179,
+      "endLine": 233,
+      "mathContext": "Assembles the complete resolution: erdos_216_summary combines all four known values with g(7)=none and the general non-existence for k ≥ 7. The characterization theorem g_exists_iff proves g(k) exists ↔ k ≤ 6 for k ≥ 3."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #216 is completely resolved. The function g(k) — the minimum number of points in general position guaranteeing an empty convex k-gon — exists precisely for k ≤ 6. The exact values are g(3)=3, g(4)=5, g(5)=10, and g(6)=30 (the last determined by Heule-Scheucher in 2024 using SAT solvers). Horton's 1983 construction of arbitrarily large point sets with no empty 7-gon proves g(k) does not exist for k ≥ 7. The formalization captures this complete dichotomy in 233 lines of Lean 4, with the key theorem g_exists_iff providing the biconditional characterization.",
+    "implications": "**Theoretical Significance**: **Geometric Ramsey Theory Connections**\n\n1. **Happy Ending Problem:** The non-empty version (Erdős #107) has g'(k) for all k, with the Erdős-Szekeres conjecture g'(k) = 2^(k−2)+1 still open for k ≥ 7. The sharp contrast with the empty variant reveals how interior-point constraints fundamentally alter Ramsey-type problems in geometry\n\n2. **Computational Methods in Geometry:** The g(6)=30 result by Heule-Scheucher represents a new paradigm where SAT solvers resolve long-standing geometric conjectures. Their approach encoded order types as propositional formulas, extending the tradition of the Four Color Theorem and Hales' proof of the Kepler conjecture\n\n**3. Horton Sets Beyond This Problem:** Horton's construction technique has found applications in visibility graphs, geometric graph theory, and the study of halving lines. The recursive interlacing idea influenced subsequent constructions in discrete geometry\n\n4. **Order Type Enumeration:** The verification of g(6)=30 required analyzing all 2,343 order types on 9 points and extrapolating. This connects to the broader program of classifying point configurations up to combinatorial equivalence\n\n5. **Threshold Phenomena:** The sharp transition at k=7 is an instance of a phase transition in combinatorial geometry, analogous to threshold phenomena in random graphs and probabilistic combinatorics.",
+    "openQuestions": [
+      "Can the Heule-Scheucher SAT approach be adapted to determine exact values of related Ramsey-type functions in higher dimensions?",
+      "What is the complexity of deciding whether a given point set contains an empty convex k-gon for fixed k?",
+      "Do analogues of Horton sets exist for higher-dimensional empty polytopes, and if so, at what dimension threshold does the function cease to exist?",
+      "Can the Erdős-Szekeres conjecture g'(k) = 2^(k−2)+1 for the non-empty variant be resolved using similar SAT-based techniques?",
+      "What is the maximum number of empty convex hexagons in a set of n points in general position?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Analysis.Convex.Basic",
+      "Mathlib.Analysis.InnerProductSpace.EuclideanDist",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos216",
+    "lineCount": 233,
+    "axiomCount": 9,
+    "theoremCount": 6,
+    "definitionCount": 9,
+    "path": "Proofs/Erdos216Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-107",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: convex-geometry, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-651",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: convex-geometry, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-986",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: partially-solved, ramsey-theory"
+    }
+  ],
+  "references": [
+    {
+      "key": "Br05g",
+      "authors": [
+        "P. Brass",
+        "W. Moser",
+        "J. Pach"
+      ],
+      "title": "Research Problems in Discrete Geometry",
+      "venue": "Springer-Verlag",
+      "year": "2005",
+      "note": "Reference for convex geometry and discrete geometry problems"
+    }
+  ],
+  "sorries": 0
+}

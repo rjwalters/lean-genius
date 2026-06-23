@@ -1,0 +1,264 @@
+{
+  "id": "bezout-identity-oq-03",
+  "title": "CRT via Bézout's Identity for Integers",
+  "slug": "bezout-identity-oq-03",
+  "description": "A clean formalization of the Chinese Remainder Theorem building directly on bezout_int: the explicit CRT solution x = a·n·v + b·m·u follows immediately from Bézout coefficients.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Chinese_remainder_theorem",
+    "date": "~3rd century CE (formalized 2026)",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "algorithms",
+      "classic",
+      "beginner",
+      "crt",
+      "bezout"
+    ],
+    "proofRepoPath": "Proofs/BezoutIdentityOQ03.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.gcd_eq_gcd_ab",
+        "description": "Bézout's identity for integers: gcd(a,b) = a * gcdA + b * gcdB",
+        "module": "Mathlib.Data.Int.GCD"
+      },
+      {
+        "theorem": "Int.gcdA",
+        "description": "First Bézout coefficient for integers",
+        "module": "Mathlib.Data.Int.GCD"
+      },
+      {
+        "theorem": "Int.gcdB",
+        "description": "Second Bézout coefficient for integers",
+        "module": "Mathlib.Data.Int.GCD"
+      },
+      {
+        "theorem": "Int.modEq_iff_dvd",
+        "description": "Integer modular congruence iff divisibility: a ≡ b [ZMOD n] ↔ n ∣ b - a",
+        "module": "Mathlib.Data.Int.ModEq"
+      },
+      {
+        "theorem": "IsCoprime.mul_dvd",
+        "description": "Coprime divisors multiply: if gcd(m,n) = 1 and m | k and n | k then m*n | k",
+        "module": "Mathlib.RingTheory.Coprime.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Explicit CRT existence proof via Bézout formula (x = a*n*v + b*m*u) with both congruences proved by linear_combination",
+      "CRT uniqueness and combined existence-uniqueness theorem via IsCoprime.mul_dvd",
+      "Computable crtInt function with correctness proofs (crtInt_mod_left, crtInt_mod_right)",
+      "Bridge between Int.gcd-coprimality and IsCoprime (isCoprime_of_gcd_eq_one)"
+    ],
+    "dateAdded": "2026-02-21",
+    "axiomCount": 0,
+    "lineCount": 276,
+    "assumptions": "0 axioms, 0 sorries. CRT construction derived from Mathlib's Int.gcd_eq_gcd_ab (Bézout's identity) and IsCoprime.mul_dvd.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "The **Chinese Remainder Theorem** (CRT) is one of the oldest results in number theory, originating in the **Sunzi Suanjing** (孫子算經, 'The Mathematical Classic of Sun Zi'), a Chinese mathematical treatise from the 3rd–5th century CE. The classic problem: *'Find a number that leaves remainder 2 when divided by 3, remainder 3 when divided by 5, and remainder 2 when divided by 7.'* The answer is 23 (unique mod 105 = 3 × 5 × 7).\n\nThe deep connection to **Bézout's identity** was understood much later. When gcd(m, n) = 1, Bézout's identity gives integers u, v with mu + nv = 1. This is precisely what's needed to 'switch on' one residue while 'switching off' the other: the term a·nv has nv ≡ 1 (mod m) so it contributes a (mod m) while vanishing (mod n), and symmetrically for b·mu.\n\nIn Lean 4, this connection is crystallized beautifully: **IsCoprime** is literally the type `∃ u v, u * m + v * n = 1`, which is Bézout's identity with gcd = 1. The CRT proof becomes a direct application of this algebraic witness.",
+    "problemStatement": "**Chinese Remainder Theorem (Integer Form)**:\n\nFor coprime integers m, n (i.e., gcd(m, n) = 1) and any integers a, b, there exists x : ℤ with:\n$$x \\equiv a \\pmod{m} \\quad \\text{and} \\quad x \\equiv b \\pmod{n}$$\n\n**Explicit Solution Formula** (from Bézout): If mu + nv = 1, then:\n$$x = a \\cdot nv + b \\cdot mu$$\n\n**Uniqueness**: Any two solutions differ by a multiple of m · n.",
+    "text": "A clean formalization of the Chinese Remainder Theorem building directly on bezout_int: the explicit CRT solution x = a·n·v + b·m·u follows immediately from Bézout coefficients.",
+    "proofStrategy": "The proof strategy is direct and elegant:\n\n1. **Get Bézout coefficients**: Apply `bezout_int` to obtain u, v with m*u + n*v = 1 (via `coprime_bezout`)\n\n2. **Construct the solution**: x = a*n*v + b*m*u\n\n3. **Verify x ≡ a (mod m)**: Compute a - x = a*(1 - n*v) - b*m*u = a*(m*u) - b*m*u = m*u*(a-b). So m | (a - x). Proved by `linear_combination -a * hbez`.\n\n4. **Verify x ≡ b (mod n)**: Compute b - x = b*(1 - m*u) - a*n*v = b*(n*v) - a*n*v = n*v*(b-a). So n | (b - x). Proved by `linear_combination -b * hbez`.\n\n5. **Uniqueness**: From m | (y-x) and n | (y-x) with IsCoprime, apply `IsCoprime.mul_dvd` to get m*n | (y-x).",
+    "keyInsights": [
+      "**IsCoprime IS Bézout's identity**: In Lean 4, `IsCoprime m n` is *defined* as `∃ u v, u * m + v * n = 1`. This is exactly Bézout's identity specialized to gcd = 1. The CRT proof directly unpacks this definition.",
+      "**The solution formula is symmetric**: x = a*n*v + b*m*u. Each term 'selects' one residue: n*v ≡ 1 (mod m) makes the first term contribute a (mod m), while m*u ≡ 0 (mod m) makes the second term vanish. Symmetrically for mod n.",
+      "**linear_combination is key**: The heart of both congruence proofs is a one-line `linear_combination` tactic. This shows that the CRT solution formula is essentially a linear algebraic consequence of the Bézout identity — the proof is as clean as the mathematics.",
+      "**Integer CRT vs Natural Number CRT**: Working over ℤ avoids the need to reduce modulo m*n for existence (unlike the natural number version which uses Nat.chineseRemainder). The integer formulation is cleaner and more general.",
+      "**Divisibility-based proof**: Using `Int.modEq_iff_dvd` converts congruences to divisibility, which is the natural language for the algebraic argument from Bézout's identity."
+    ],
+    "prerequisites": [
+      "Number theory (extended Euclidean algorithm, GCD properties)",
+      "Ring theory (principal ideal domains)",
+      "Modular arithmetic (linear congruences, inverses)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports",
+      "startLine": 1,
+      "endLine": 4,
+      "summary": "Imports Int.GCD (Bézout coefficients), RingTheory.Coprime.Basic (IsCoprime.mul_dvd), and Tactic (linear_combination, linarith, push_cast).",
+      "mathContext": "Mathlib imports: `Int.GCD` provides Bézout coefficients $\\gcd(m,n) = mu + nv$; `RingTheory.Coprime.Basic` provides `IsCoprime` and `IsCoprime.mul_dvd` for uniqueness modulo $mn$."
+    },
+    {
+      "id": "module-docstring",
+      "title": "Module Documentation",
+      "startLine": 5,
+      "endLine": 34,
+      "summary": "Documents the open question, the answer (yes!), the explicit formula, why it works (Bézout coefficients act as selectors), and proof status (0 sorries).",
+      "mathContext": "**CRT via Bézout**: Given $\\gcd(m,n) = 1$ with $mu + nv = 1$, the solution $x = anv + bmu$ satisfies $x \\equiv a \\pmod{m}$ and $x \\equiv b \\pmod{n}$, unique modulo $mn$."
+    },
+    {
+      "id": "bezout-int",
+      "title": "bezout_int: The Foundation",
+      "startLine": 35,
+      "endLine": 67,
+      "summary": "Two theorems: bezout_int (restates the fundamental Bézout identity for integers) and coprime_bezout (specializes to gcd = 1 case, giving m*u + n*v = 1 via push_cast and linarith).",
+      "mathContext": "**Bézout's identity**: $\\forall m, n \\in \\mathbb{Z},\\, \\exists u, v,\\, m \\cdot u + n \\cdot v = \\gcd(m, n)$. When $\\gcd(m,n) = 1$: $mu + nv = 1$, so $nv \\equiv 1 \\pmod{m}$ and $mu \\equiv 1 \\pmod{n}$."
+    },
+    {
+      "id": "existence",
+      "title": "CRT Existence via bezout_int",
+      "startLine": 68,
+      "endLine": 96,
+      "summary": "The main existence theorem crt_exists_via_bezout. Gets Bézout coefficients from coprime_bezout, constructs x = a*n*v + b*m*u, proves both congruences using linear_combination -a * hbez and -b * hbez respectively.",
+      "mathContext": "**CRT Existence**: Given $\\gcd(m,n) = 1$ with $mu + nv = 1$, the solution $x = anv + bmu$ satisfies $x \\equiv a \\pmod{m}$ (since $a - x = mu(a-b)$, so $m \\mid (a-x)$) and $x \\equiv b \\pmod{n}$ (since $b - x = nv(b-a)$, so $n \\mid (b-x)$). Both congruences proved by `linear_combination` with the Bézout equation."
+    },
+    {
+      "id": "uniqueness",
+      "title": "CRT Uniqueness",
+      "startLine": 97,
+      "endLine": 126,
+      "summary": "Two theorems: isCoprime_of_gcd_eq_one (bridges Int.gcd = 1 and IsCoprime via linear_combination) and crt_unique_via_bezout (uniqueness mod m*n via IsCoprime.mul_dvd after rewriting congruences as divisibility).",
+      "mathContext": "**CRT Uniqueness**: If $m \\mid (y - x)$ and $n \\mid (y - x)$ with $\\gcd(m,n) = 1$, then $mn \\mid (y - x)$ by `IsCoprime.mul_dvd`. The bridge `isCoprime_of_gcd_eq_one` converts `Int.gcd m n = 1` to `IsCoprime m n` via `linear_combination` on Bézout coefficients."
+    },
+    {
+      "id": "iscop-version",
+      "title": "CRT via IsCoprime",
+      "startLine": 127,
+      "endLine": 139,
+      "summary": "crt_iscop and crt_unique_iscop: alternative formulations using IsCoprime directly. Cleaner algebraically since IsCoprime unpacks to exactly the Bézout coefficients needed.",
+      "mathContext": "Alternative via `IsCoprime`: $\\text{IsCoprime}(m, n) \\iff \\exists u,v,\\, mu + nv = 1$. CRT stated as: $m \\mid (x-a) \\wedge n \\mid (x-b)$ with uniqueness via `IsCoprime.mul_dvd`: $m \\mid z \\wedge n \\mid z \\Rightarrow mn \\mid z$."
+    },
+    {
+      "id": "combined",
+      "title": "Combined Existence-Uniqueness",
+      "startLine": 141,
+      "endLine": 155,
+      "summary": "crt_via_bezout: packages existence and uniqueness into a single theorem using transitivity of congruences.",
+      "mathContext": "Combined theorem: $\\exists x,\\, m \\mid (x - a) \\wedge n \\mid (x - b) \\wedge \\forall y,\\, (m \\mid (y-a) \\wedge n \\mid (y-b)) \\to mn \\mid (y - x)$. Packages existence + uniqueness via `⟨x, hx_mod_m, hx_mod_n, uniqueness⟩`."
+    },
+    {
+      "id": "examples",
+      "title": "Worked Examples",
+      "startLine": 156,
+      "endLine": 222,
+      "summary": "Four examples showing explicit Bézout coefficients and CRT solutions: (3,5)→8, (7,11)→58, (4,9)→28, (6,7)→23. Each example shows the Bézout equation, the formula computation, and verification of both congruences.",
+      "mathContext": "Four worked examples with explicit Bézout coefficients and CRT solutions: $(3,5) \\to 8$, $(7,11) \\to 58$, $(4,9) \\to 28$, $(6,7) \\to 23$. Each example shows the Bézout equation, formula computation, and verification of both congruences via `norm_num` and `decide`."
+    },
+    {
+      "id": "crt-function",
+      "title": "Explicit CRT Function",
+      "startLine": 224,
+      "endLine": 258,
+      "summary": "crtInt: a computable function returning x = a*n*gcdB + b*m*gcdA. Proved correct via crtInt_mod_left and crtInt_mod_right using linear_combination with the Bézout identity.",
+      "mathContext": "Computable function $\\text{crtInt}(a, b, m, n) = a \\cdot n \\cdot v + b \\cdot m \\cdot u$ where $(u, v) = \\text{Int.gcdA/gcdB}(m, n)$. Returns the explicit CRT witness without existential quantification."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 259,
+      "endLine": 276,
+      "summary": "Documents the 5-step proof strategy and the key insight that bezout_int and IsCoprime are two faces of the same coin.",
+      "mathContext": "Five-step proof: (1) Bézout gives $mu + nv = 1$, (2) construct $x = anv + bmu$, (3) verify $x \\equiv a \\pmod{m}$ and $x \\equiv b \\pmod{n}$, (4) uniqueness mod $mn$ via `IsCoprime.mul_dvd`, (5) package into combined theorem."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization answers the open question affirmatively: YES, there is a clean formalization of CRT building on bezout_int. The proof is 2 lines per congruence (rw [Int.modEq_iff_dvd]; exact ⟨witness, by linear_combination ...⟩), making the connection between Bézout's identity and CRT completely explicit. The file provides: bezout_int restated, coprime_bezout specialization, existence with explicit formula, uniqueness via IsCoprime.mul_dvd, a computable crtInt function, and 4 worked examples.",
+    "implications": "1. **Algebraic naturality of the Bézout approach**: The integer formulation is algebraically cleaner than the natural number version: `IsCoprime m n` in Lean is literally Bézout's identity ($\\exists u, v: mu + nv = 1$), making the CRT proof a direct symbolic manipulation. The explicit formula $x = a \\cdot n \\cdot v + b \\cdot m \\cdot u$ is immediately derivable from the Bézout coefficients without modular arithmetic infrastructure.\n\n2. **Ring isomorphism $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/m\\mathbb{Z}$**: The CRT solution `crtInt` is the constructive witness for the ring isomorphism: the map $x \\mapsto (x \\bmod m, x \\bmod n)$ is a ring isomorphism with inverse given by the Bézout formula. Formalizing this isomorphism (using `ZMod.chineseRemainder`) is the natural next step after `crt_via_bezout`.\n\n3. **Cryptographic applications — RSA and CRT speedup**: RSA decryption uses the CRT for a ~4x speedup: instead of computing $m^d \\bmod n$, compute $m^{d_p} \\bmod p$ and $m^{d_q} \\bmod q$ separately (where $d_p = d \\bmod (p-1)$, $d_q = d \\bmod (q-1)$), then combine via Bézout/CRT. The Lean formalization of `crtInt` provides the verified building block for a formally correct RSA decryption implementation.\n\n4. **Multi-precision arithmetic**: CRT is used in computer algebra systems to avoid coefficient explosion: compute $f(x) \\cdot g(x) \\bmod p_i$ for several small primes $p_i$, then reconstruct the exact integer product via CRT. The Bézout-based `crtInt` is the exact reconstruction step. This 'modular arithmetic lifting' technique is used in Berlekamp-Hensel polynomial factorization.\n\n5. **Number field sieve and cryptographic attacks**: The Number Field Sieve (NFS, fastest known integer factorization algorithm) uses CRT throughout: in the sieving phase, residues are computed mod many small primes and combined via CRT to check divisibility over $\\mathbb{Z}$. The formalization of `crtInt` is a foundational step toward formally verifying the NFS algorithm.\n\n6. **Garner's algorithm for multi-modular CRT**: Garner's algorithm generalizes `crtInt` to multiple moduli: given residues $a_i \\bmod m_i$ for pairwise coprime $m_i$, reconstruct the integer in mixed-radix form $x = x_0 + x_1 m_0 + x_2 m_0 m_1 + \\cdots$. This is more numerically stable than the direct Bézout formula and is used in efficient CAS implementations. `crtInt` is the base case $k=2$.\n\n7. **Algebraic number theory and Dedekind rings**: In algebraic number theory, the CRT generalizes to Dedekind rings: for coprime ideals $\\mathfrak{a}, \\mathfrak{b}$ in a Dedekind domain $R$, there exists $x \\in R$ with $x \\equiv a \\pmod{\\mathfrak{a}}$ and $x \\equiv b \\pmod{\\mathfrak{b}}$. The Bézout-based proof extends directly via the ideal coprimality criterion ($\\mathfrak{a} + \\mathfrak{b} = R$), establishing `crtInt` as a special case of a theorem valid in all Dedekind rings.",
+    "openQuestions": [
+      "Can the ring isomorphism ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ be formalized building on crt_via_bezout?",
+      "Can the CRT be extended to finitely many pairwise coprime moduli using this Bézout-based approach?",
+      "Can the Diophantine criterion (bezout_int) be generalized to multi-variable systems using the CRT structure?",
+      "Is there an efficient verified computation of crtInt that avoids modular reduction?",
+      "Can Garner's algorithm (mixed-radix CRT reconstruction for k pairwise coprime moduli) be formalized as an extension of crtInt? Garner's algorithm is used in computer algebra systems for efficient multi-modular arithmetic — the Lean formalization would provide a verified building block for polynomial multiplication via FFT-based CRT lifting."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "bezout-identity",
+      "relationship": "extends",
+      "description": "Parent entry proving gcd(a,b) = ax + by — this file uses Bézout coefficients to construct explicit CRT solutions"
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "complementary",
+      "description": "The natural-number CRT formalization using Nat.chineseRemainder — this file provides the integer-level alternative using Bézout coefficients directly"
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime",
+      "relationship": "related",
+      "description": "Extends CRT to the non-coprime case gcd(m,n) > 1 — where the coprimality assumption of this file fails, requiring a different approach"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "related",
+      "description": "CRT and FTA are both consequences of Bézout's identity: FTA uses Euclid's lemma (from Bézout), while CRT uses Bézout coefficients as selectors"
+    },
+    {
+      "targetId": "bezout-identity-oq-03-oq-01",
+      "relationship": "extended-by",
+      "description": "Sub-entry: CRT Ring Isomorphism ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ"
+    },
+    {
+      "targetId": "bezout-identity-oq-03-oq-01-oq-01",
+      "relationship": "extended-by",
+      "description": "Sub-entry: k-fold Chinese Remainder Theorem: ℤ/(n₁···nₖ)ℤ ≅ ∏ᵢ ℤ/nᵢℤ"
+    },
+    {
+      "targetId": "bezout-identity-oq-03-oq-01-oq-01-oq-01",
+      "relationship": "extended-by",
+      "description": "Sub-entry: Ideal-theoretic CRT: R/∏Iᵢ ≅ ∏ R/Iᵢ"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Sun Zi",
+      "title": "Sunzi Suanjing (The Mathematical Classic of Sun Zi)",
+      "year": "~400 CE",
+      "venue": "Chinese mathematical treatise",
+      "note": "Original source of the Chinese Remainder Theorem problem"
+    },
+    {
+      "authors": "Étienne Bézout",
+      "title": "Théorie générale des équations algébriques",
+      "year": "1779",
+      "venue": "Paris",
+      "note": "Classical source for Bézout's identity relating gcd to linear combinations"
+    },
+    {
+      "authors": "Gauss, C. F.",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Leipzig: Gerh. Fleischer Jun.",
+      "note": "Section III contains the systematic treatment of congruences, modular arithmetic, and the Chinese Remainder Theorem"
+    },
+    {
+      "authors": "Ireland, K. and Rosen, M.",
+      "title": "A Classical Introduction to Modern Number Theory",
+      "year": "1990",
+      "venue": "Springer Graduate Texts in Mathematics, 2nd ed.",
+      "note": "Chapter 1 covers the Bézout identity, gcd, and CRT over the integers in the style formalized here"
+    },
+    {
+      "authors": "Knuth, D. E.",
+      "title": "The Art of Computer Programming, Vol. 2: Seminumerical Algorithms",
+      "year": "1998",
+      "venue": "Addison-Wesley, 3rd ed.",
+      "note": "Section 4.5.2 presents the extended Euclidean algorithm that computes Bézout coefficients and derives the CRT solution formula"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Int.GCD",
+      "Mathlib.RingTheory.Coprime.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "BezoutIdentityOQ03",
+    "lineCount": 276,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 1,
+    "path": "Proofs/BezoutIdentityOQ03.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

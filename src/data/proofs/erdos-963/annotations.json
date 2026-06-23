@@ -1,0 +1,502 @@
+[
+  {
+    "id": "erdos-963-ann-imports",
+    "proofId": "erdos-963",
+    "range": {
+      "startLine": 26,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Imports for Dissociated Sets over ℝ",
+    "content": "The formalization works directly over $\\mathbb{R}$ with `Finset` and real-valued subset sums, so it imports the concrete combinatorial machinery rather than Mathlib's abstract additive-combinatorics framework: `Finset.Card` and `Finset.Powerset` for power-set cardinality and the $2^{|B|}$ counting, `Data.Real.Basic` for the real ambient set, `Nat.Log` and `Analysis.SpecialFunctions.Log.Basic` for the $\\lfloor\\log_2 n\\rfloor$/$\\lfloor\\log_3 n\\rfloor$ bounds, and `Mathlib.Tactic` for the general tactic toolbox. Notably it does **not** depend on `Combinatorics.Additive.Dissociated`: the dissociated predicate is defined from scratch via subset-sum injectivity.",
+    "mathContext": "Mathlib's abstract `AddDissociated s` (for $s$ in an additive group: $\\sum_{x \\in f} x = 0$ with $f \\subseteq s$ forces $f = \\emptyset$) coincides with distinct subset sums in the torsion-free group $\\mathbb{R}$, but this file re-derives the concrete $\\mathbb{R}$-valued version self-contained from `Finset` primitives.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset power-set cardinality",
+      "Nat.log bounds",
+      "real-valued subset sums"
+    ],
+    "prerequisites": [
+      "Lean 4 module system",
+      "Mathlib Finset API"
+    ]
+  },
+  {
+    "id": "erdos-963-ann-dissociated",
+    "proofId": "erdos-963",
+    "range": {
+      "startLine": 35,
+      "endLine": 38
+    },
+    "type": "definition",
+    "title": "Dissociated Subset",
+    "content": "A subset $B \\subseteq A$ is dissociated if the subset-sum map is injective: $\\sum_{b \\in S} b = \\sum_{b \\in T} b$ implies $S = T$ for all $S, T \\subseteq B$. This is strictly stronger than the Sidon ($B_2$) condition, which only requires distinct pairwise sums. The definition uses `Finset.sum id` to compute real-valued subset sums.",
+    "mathContext": "$B$ is dissociated $\\iff$ the map $\\sigma: \\mathcal{P}(B) \\to \\mathbb{R}$ defined by $\\sigma(S) = \\sum_{b \\in S} b$ is injective. Equivalently, $|\\{\\sigma(S) : S \\subseteq B\\}| = 2^{|B|}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sidon sets",
+      "B_h sequences",
+      "subset-sum injectivity",
+      "additive combinatorics"
+    ],
+    "prerequisites": [
+      "Finset subset operations",
+      "real-valued sums",
+      "injectivity"
+    ]
+  },
+  {
+    "id": "erdos-963-ann-fn",
+    "proofId": "erdos-963",
+    "range": {
+      "startLine": 40,
+      "endLine": 44
+    },
+    "type": "definition",
+    "title": "f(n) — Maximum Guaranteed Dissociated Subset Size",
+    "content": "Defines $f(n) = \\sup\\{k : \\forall A \\text{ with } |A|=n,\\, \\exists B \\subseteq A \\text{ dissociated}, |B| \\ge k\\}$ as `maxDissociatedSize n` using `sSup`. This is the extremal function: the largest $k$ guaranteed in the worst case over all $n$-element subsets of $\\mathbb{R}$. The use of `noncomputable` reflects that the supremum over all real subsets is not constructively computable.",
+    "mathContext": "$f(n) = \\max\\{k \\in \\mathbb{N} : \\text{every } n\\text{-element } A \\subseteq \\mathbb{R} \\text{ contains a dissociated } B \\subseteq A \\text{ with } |B| \\ge k\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal combinatorics",
+      "Ramsey-type functions",
+      "supremum in ℕ"
+    ],
+    "prerequisites": [
+      "sSup for natural numbers",
+      "universal quantification over Finset ℝ"
+    ]
+  },
+  {
+    "id": "erdos-963-ann-counting",
+    "proofId": "erdos-963",
+    "range": {
+      "startLine": 48,
+      "endLine": 57
+    },
+    "type": "theorem",
+    "title": "2^k Distinct Subset Sums",
+    "content": "`dissociated_subset_sum_count` (formerly an axiom, now fully proved) establishes that a dissociated set of size $k$ has exactly $2^k$ distinct subset sums. The proof rewrites with `Finset.card_image_of_injOn` and `Finset.card_powerset`: the dissociated hypothesis is precisely injectivity of $S \\mapsto \\sum S$ on the power set, so the image of `B.powerset` under the sum map has cardinality $|\\mathcal{P}(B)| = 2^{|B|}$.",
+    "mathContext": "$|\\{\\sum_{b \\in S} b : S \\subseteq B\\}| = |\\mathcal{P}(B)| = 2^{|B|}$ when $B$ is dissociated. This is the key identity: injectivity of $\\sigma$ on a set of size $2^k$ produces $2^k$ distinct images.",
+    "significance": "key",
+    "relatedConcepts": [
+      "power set cardinality",
+      "injective function image size",
+      "Finset.image"
+    ],
+    "prerequisites": [
+      "Finset.powerset",
+      "Finset.card_image_of_injOn",
+      "injectivity implies equal cardinality"
+    ]
+  },
+  {
+    "id": "erdos-963-ann-conjecture",
+    "proofId": "erdos-963",
+    "range": {
+      "startLine": 61,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "Main Conjecture: f(n) ≥ ⌊log₂ n⌋",
+    "content": "The central open problem of Erdős #963 is encoded as the `Prop` definition `ErdosProblem963`: every $n$-element set of reals contains a dissociated subset of size at least $\\lfloor\\log_2 n\\rfloor$. It is *stated*, not asserted — the file proves partial bounds toward it. Combined with an upper bound of order $\\log_2 n$, this would pin down $f(n)$ to within a small additive constant. The conjecture remains open as of 2026.",
+    "mathContext": "$\\mathrm{ErdosProblem963} :\\Leftrightarrow \\forall n \\ge 1,\\; f(n) \\ge \\lfloor\\log_2 n\\rfloor$. Uses `Nat.log 2 n` which computes $\\lfloor\\log_2 n\\rfloor$ for natural numbers.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open problems in additive combinatorics",
+      "logarithmic density",
+      "extremal set theory"
+    ],
+    "prerequisites": [
+      "Nat.log definition",
+      "maxDissociatedSize definition"
+    ]
+  },
+  {
+    "id": "erdos-963-ann-greedy",
+    "proofId": "erdos-963",
+    "range": {
+      "startLine": 92,
+      "endLine": 118
+    },
+    "type": "theorem",
+    "title": "Greedy Lower Bound: f(n) ≥ ⌊log₃ n⌋",
+    "content": "`greedy_lower_bound` (formerly an axiom, now fully proved) formalizes Erdős's greedy argument: $f(n) \\ge \\lfloor\\log_3 n\\rfloor$. The proof shows $\\lfloor\\log_3 n\\rfloor$ lies in the set whose `sSup` is $f(n)$ via `le_csSup`, with boundedness witnessed by $n$ and membership supplied by `greedy_dissociated` together with the arithmetic lemma `gt_add_pow3_of_lt_log` (which gives $n > j + 3^j$ for $j < \\log_3 n$). At each step, a new element is forbidden only if it equals a difference of two existing subset sums, limiting exclusions to fewer than $3^k$ values after $k$ choices.",
+    "mathContext": "At step $k$: each element of $B$ contributes a coefficient in $\\{-1,0,1\\}$ to a difference-sum, so at most $3^k$ values are forbidden; the greedy succeeds while $3^k \\le n$, giving $f(n) \\ge \\lfloor\\log_3 n\\rfloor$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "greedy algorithms",
+      "exclusion counting",
+      "forbidden value analysis"
+    ],
+    "prerequisites": [
+      "le_csSup",
+      "Nat.log monotonicity",
+      "subset-sum difference structure"
+    ]
+  },
+  {
+    "id": "erdos-963-ann-empty",
+    "proofId": "erdos-963",
+    "range": {
+      "startLine": 124,
+      "endLine": 130
+    },
+    "type": "theorem",
+    "title": "Empty Set is Dissociated",
+    "content": "`empty_dissociated`: the empty set is trivially dissociated in any ambient set $A$. We have $\\emptyset \\subseteq A$, and the only subsets $S, T \\subseteq \\emptyset$ are both empty, so subset-sum equality holds trivially. This is the base case for the inductive greedy construction `greedy_dissociated`.",
+    "mathContext": "$\\emptyset$ is dissociated: $\\forall S,T \\subseteq \\emptyset,\\, \\sigma(S) = \\sigma(T) \\Rightarrow S = T$ holds vacuously since $S = T = \\emptyset$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "vacuous truth",
+      "inductive base case",
+      "empty Finset"
+    ],
+    "prerequisites": [
+      "Finset.empty_subset",
+      "Finset.subset_empty"
+    ]
+  },
+  {
+    "id": "erdos-963-ann-singleton",
+    "proofId": "erdos-963",
+    "range": {
+      "startLine": 132,
+      "endLine": 144
+    },
+    "type": "theorem",
+    "title": "Nonzero Singletons are Dissociated",
+    "content": "`singleton_dissociated`: any singleton $\\{a\\} \\subseteq A$ with $a \\ne 0$ is dissociated. The only subsets of $\\{a\\}$ are $\\emptyset$ and $\\{a\\}$ with sums $0$ and $a$; since $a \\ne 0$ these are distinct. The proof is detailed because Lean's `Finset.subset_singleton_iff` produces a four-way case split, with the off-diagonal cases discharged by deriving a contradiction from $a = 0$.",
+    "mathContext": "For $B = \\{a\\}$: $\\mathcal{P}(B) = \\{\\emptyset, \\{a\\}\\}$ with $\\sigma(\\emptyset) = 0$ and $\\sigma(\\{a\\}) = a$. The hypothesis $a \\ne 0$ makes $\\sigma$ injective.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "singleton Finset properties",
+      "case analysis",
+      "extensionality"
+    ],
+    "prerequisites": [
+      "Finset.singleton_subset_iff",
+      "Finset.sum_singleton",
+      "Finset.subset_singleton_iff"
+    ]
+  },
+  {
+    "id": "erdos-963-ann-closure",
+    "proofId": "erdos-963",
+    "range": {
+      "startLine": 146,
+      "endLine": 156
+    },
+    "type": "theorem",
+    "title": "Dissociation is Inherited by Subsets",
+    "content": "`dissociated_subset`: if $B$ is dissociated in $A$ and $C \\subseteq B$, then $C$ is dissociated in $A$ — dissociation is a hereditary (downward-closed) property, since every subset-sum constraint on $C$ is already a constraint on $B$. The companion `dissociated_card_le` records that a dissociated subset never exceeds the ambient set in size. These closure facts let the greedy construction freely restrict to smaller dissociated sets.",
+    "mathContext": "$C \\subseteq B \\subseteq A$ and $B$ dissociated $\\Rightarrow C$ dissociated: $S, T \\subseteq C$ implies $S, T \\subseteq B$, so $\\sigma(S) = \\sigma(T) \\Rightarrow S = T$ by dissociation of $B$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "hereditary properties",
+      "downward closure",
+      "subset monotonicity"
+    ],
+    "prerequisites": [
+      "Finset subset transitivity",
+      "Finset.card_le_card"
+    ]
+  },
+  {
+    "id": "erdos-963-ann-zero-not-in",
+    "proofId": "erdos-963",
+    "range": {
+      "startLine": 158,
+      "endLine": 164
+    },
+    "type": "theorem",
+    "title": "Zero Cannot Belong to a Dissociated Set",
+    "content": "`zero_not_in_dissociated`: if $B$ is dissociated then $0 \\notin B$. If $0 \\in B$ then $\\emptyset$ and $\\{0\\}$ are distinct subsets of $B$ with the same sum $0$, contradicting injectivity of the subset-sum map. This lemma is the linchpin of the upper bound `trivial_upper_bound`: it forces any dissociated subset of $\\{0,\\ldots,n-1\\}$ to avoid the element $0$.",
+    "mathContext": "$0 \\in B \\Rightarrow \\sigma(\\emptyset) = 0 = \\sigma(\\{0\\})$ but $\\emptyset \\ne \\{0\\}$, contradicting dissociation. Hence $0 \\notin B$ for every dissociated $B$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "subset-sum collisions",
+      "additive identity",
+      "upper-bound witness"
+    ],
+    "prerequisites": [
+      "Finset.empty_subset",
+      "Finset.singleton_subset_iff"
+    ]
+  },
+  {
+    "id": "erdos-963-ann-upper",
+    "proofId": "erdos-963",
+    "range": {
+      "startLine": 168,
+      "endLine": 209
+    },
+    "type": "theorem",
+    "title": "Trivial Upper Bound: f(n) ≤ n − 1",
+    "content": "`trivial_upper_bound` (formerly an axiom, now fully proved) shows $f(n) \\le n - 1$ for $n \\ge 1$. The proof uses the worst-case witness $A = \\{0, 1, \\ldots, n-1\\}$ (cast to $\\mathbb{R}$): since $0 \\in A$ and `zero_not_in_dissociated` forbids $0$ from any dissociated $B$, every dissociated $B \\subseteq A$ lives in $A.\\mathrm{erase}\\,0$, so $|B| \\le n - 1$; thus the supremum is $\\le n - 1$. **This is the crude, axiom-free bound.** The conjectured sharp bound $f(n) \\le \\lfloor\\log_2 n\\rfloor + 1$ (from $2^{|B|} \\le |B|\\cdot n + 1$) is discussed in the docstring but its tight form is *not* formalized here — it needs a subset-sum collision argument over integer intervals.",
+    "mathContext": "Witness $A = \\{0,\\ldots,n-1\\}$: $B$ dissociated $\\Rightarrow 0 \\notin B \\Rightarrow B \\subseteq A \\setminus \\{0\\} \\Rightarrow |B| \\le n-1$. The much sharper $f(n) \\le \\lfloor\\log_2 n\\rfloor + 1$ remains open in the formalization.",
+    "significance": "key",
+    "relatedConcepts": [
+      "worst-case witness",
+      "csSup_le",
+      "Finset.card_erase_of_mem"
+    ],
+    "prerequisites": [
+      "zero_not_in_dissociated",
+      "csSup_le",
+      "Finset.card_image_of_injOn"
+    ]
+  },
+  {
+    "id": "erdos-963-ann-diffsum",
+    "proofId": "erdos-963",
+    "range": {
+      "startLine": 213,
+      "endLine": 220
+    },
+    "type": "definition",
+    "title": "Difference-Sum Finset",
+    "content": "`diffSumFinset B` is the set of all values $\\sum T - \\sum S$ as $S, T$ range over subsets of $B$. It always contains $0$ (take $S = T$), and its nonzero elements are exactly the *forbidden* values that block extending $B$: an external $a$ keeps $B$ dissociated precisely when $a \\notin \\mathrm{diffSumFinset}(B)$. Its size controls how many candidates the greedy step can rule out.",
+    "mathContext": "$\\mathrm{diffSumFinset}(B) = \\{\\,\\sum_{t\\in T} t - \\sum_{s\\in S} s : S, T \\subseteq B\\,\\}$, the image of $\\mathcal{P}(B) \\times \\mathcal{P}(B)$ under the signed-difference map.",
+    "significance": "key",
+    "relatedConcepts": [
+      "difference sets",
+      "forbidden extension values",
+      "Finset product image"
+    ],
+    "prerequisites": [
+      "Finset.product",
+      "Finset.image",
+      "subset-sum differences"
+    ]
+  },
+  {
+    "id": "erdos-963-ann-insert",
+    "proofId": "erdos-963",
+    "range": {
+      "startLine": 222,
+      "endLine": 269
+    },
+    "type": "theorem",
+    "title": "Extension Lemma: Inserting a Safe Element",
+    "content": "`dissociated_insert`: if $B$ is dissociated in $A$ and $a \\in A \\setminus B$ avoids every difference $\\sum T - \\sum S$ ($S, T \\subseteq B$), then $\\mathrm{insert}\\,a\\,B$ is dissociated. The proof case-splits on whether $a$ lies in each of two competing subsets $S, T$: when both contain $a$, erase it and reduce to dissociation of $B$; when exactly one contains $a$, the equal-sum hypothesis would express $a$ as a forbidden difference, contradicting `hforbid`; when neither contains $a$, apply dissociation of $B$ directly. This is the single inductive step powering the greedy algorithm.",
+    "mathContext": "If $a \\ne \\sum T - \\sum S$ for all $S, T \\subseteq B$ (including $a \\ne 0$ from $S = T = \\emptyset$), then $B \\cup \\{a\\}$ remains subset-sum-injective.",
+    "significance": "key",
+    "relatedConcepts": [
+      "greedy extension step",
+      "case analysis on membership",
+      "Finset.sum_erase_add"
+    ],
+    "prerequisites": [
+      "Finset.insert_erase",
+      "subset-sum difference structure",
+      "IsDissociatedSubset"
+    ]
+  },
+  {
+    "id": "erdos-963-ann-extend",
+    "proofId": "erdos-963",
+    "range": {
+      "startLine": 271,
+      "endLine": 294
+    },
+    "type": "theorem",
+    "title": "Greedy Extendability via Counting",
+    "content": "`dissociated_extend`: if $|\\mathrm{diffSumFinset}(B)| < |A \\setminus B|$ then some $a \\in A \\setminus B$ extends $B$. Pigeonhole: $A \\setminus B$ cannot be contained in the smaller forbidden set `diffSumFinset B`, so an unforbidden $a$ exists; `dissociated_insert` finishes. This converts the cardinality bound $|\\mathrm{diffSumFinset}(B)| \\le 3^{|B|}$ into a concrete existence guarantee whenever the ambient set is large enough.",
+    "mathContext": "$|\\mathrm{diffSumFinset}(B)| < |A \\setminus B| \\Rightarrow \\exists a \\in A \\setminus B,\\ \\mathrm{insert}\\,a\\,B$ dissociated. The hypothesis is met when $|A| - |B| > 3^{|B|}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "Finset.not_subset",
+      "existence from counting"
+    ],
+    "prerequisites": [
+      "dissociated_insert",
+      "Finset.card_le_card",
+      "diffSumFinset_card_le"
+    ]
+  },
+  {
+    "id": "erdos-963-ann-disjoint-pairs",
+    "proofId": "erdos-963",
+    "range": {
+      "startLine": 317,
+      "endLine": 484
+    },
+    "type": "lemma",
+    "title": "Counting Ordered Disjoint Pairs: 3^|B|",
+    "content": "`disjoint_pairs_card`: the number of ordered pairs $(S, T)$ with $S, T \\subseteq B$ and $S \\cap T = \\emptyset$ is exactly $3^{|B|}$. The proof is a careful `Finset.induction`: inserting a new element $a$ triples the count because $a$ may go into $S$, into $T$, or neither (the disjointness forbids it being in both). This is realized by three injective maps $f_1, f_2, f_3$ from the pairs on $B$ to the pairs on $\\mathrm{insert}\\,a\\,B$, whose images are shown pairwise disjoint (distinguished by $a$'s membership) and jointly covering, so the cardinality multiplies by $3$.",
+    "mathContext": "$|\\{(S,T) : S, T \\subseteq B,\\ S \\cap T = \\emptyset\\}| = 3^{|B|}$: each $b \\in B$ independently chooses one of three roles ($b \\in S$, $b \\in T$, or $b \\in$ neither).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.induction_on",
+      "three-coloring of elements",
+      "injective image partition"
+    ],
+    "prerequisites": [
+      "Finset.card_union_of_disjoint",
+      "Finset.card_image_of_injOn",
+      "disjoint pair enumeration"
+    ]
+  },
+  {
+    "id": "erdos-963-ann-diffsum-bound",
+    "proofId": "erdos-963",
+    "range": {
+      "startLine": 486,
+      "endLine": 509
+    },
+    "type": "theorem",
+    "title": "Cardinality Bound: |diffSumFinset B| ≤ 3^|B|",
+    "content": "`diffSumFinset_card_le`: the difference-sum set has at most $3^{|B|}$ elements. The key reduction is `sum_factor_disjoint`: $\\sum T - \\sum S = \\sum (T \\setminus S) - \\sum (S \\setminus T)$, since the intersection $S \\cap T$ cancels. Thus every difference factors through an *ordered disjoint pair* $(S \\setminus T, T \\setminus S)$, so `diffSumFinset B` is the image of the $3^{|B|}$ disjoint pairs counted by `disjoint_pairs_card`, and `Finset.card_image_le` gives the bound. This $3^{|B|}$ is exactly the exclusion count driving the $\\log_3$ greedy bound.",
+    "mathContext": "$|\\mathrm{diffSumFinset}(B)| \\le 3^{|B|}$ because $\\sum T - \\sum S$ depends only on the signed partition $(T\\setminus S,\\ S\\setminus T)$, and there are $3^{|B|}$ such ordered disjoint pairs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "intersection cancellation",
+      "factoring through disjoint pairs",
+      "Finset.card_image_le"
+    ],
+    "prerequisites": [
+      "disjoint_pairs_card",
+      "Finset.sdiff",
+      "Finset.disjoint_sdiff_sdiff"
+    ]
+  },
+  {
+    "id": "erdos-963-ann-greedy-construction",
+    "proofId": "erdos-963",
+    "range": {
+      "startLine": 513,
+      "endLine": 534
+    },
+    "type": "theorem",
+    "title": "Greedy Construction of a Dissociated Subset",
+    "content": "`greedy_dissociated`: if $|A| > j + 3^j$ for all $j < k$, then $A$ contains a dissociated subset of size exactly $k$. The proof inducts on $k$: the empty set handles $k = 0$, and the inductive step takes a size-$k$ dissociated $B$, verifies $|\\mathrm{diffSumFinset}(B)| \\le 3^k < |A \\setminus B|$ using `diffSumFinset_card_le` and the size hypothesis, then applies `dissociated_extend` to add one element. This is the constructive heart of the greedy lower bound, turning the $3^{|B|}$ counting bound into an explicit subset.",
+    "mathContext": "$(\\forall j < k,\\ |A| > j + 3^j) \\Rightarrow \\exists B \\subseteq A$ dissociated with $|B| = k$. The condition $|A| > k + 3^k$ ensures $|A \\setminus B| > 3^k \\ge |\\mathrm{diffSumFinset}(B)|$ at each step.",
+    "significance": "key",
+    "relatedConcepts": [
+      "induction on subset size",
+      "greedy algorithm correctness",
+      "extension lemma chaining"
+    ],
+    "prerequisites": [
+      "dissociated_extend",
+      "diffSumFinset_card_le",
+      "Finset.card_sdiff"
+    ]
+  },
+  {
+    "id": "erdos-963-ann-binary-uniqueness",
+    "proofId": "erdos-963",
+    "range": {
+      "startLine": 554,
+      "endLine": 625
+    },
+    "type": "lemma",
+    "title": "Binary Representation Uniqueness",
+    "content": "`binary_uniqueness_nat`: if $S, T \\subseteq \\{0, \\ldots, k-1\\}$ and $\\sum_{i \\in S} 2^i = \\sum_{i \\in T} 2^i$ then $S = T$. The proof inducts on $k$, case-splitting on whether the top index $n$ lies in each set: if in both, erase it and recurse; if in exactly one, the auxiliary bound `subset_sum_lt_pow_two` (any subset of $\\{2^i : i < n\\}$ sums to $< 2^n$) contradicts the other set's sum being $\\ge 2^n$. This is the integer engine behind `powers_of_two_dissociated`, formalizing uniqueness of base-2 expansion.",
+    "mathContext": "$\\sum_{i\\in S} 2^i = \\sum_{i\\in T} 2^i \\Rightarrow S = T$ for $S, T \\subseteq \\{0,\\ldots,k-1\\}$ — equivalently, the binary expansion of an integer is unique, since $\\sum_{i<n} 2^i = 2^n - 1 < 2^n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "uniqueness of binary expansion",
+      "geometric series 2^k − 1",
+      "induction on the top bit"
+    ],
+    "prerequisites": [
+      "subset_sum_lt_pow_two",
+      "Finset.sum_erase_add",
+      "Finset.erase_injOn_of_mem"
+    ]
+  },
+  {
+    "id": "erdos-963-ann-powers",
+    "proofId": "erdos-963",
+    "range": {
+      "startLine": 627,
+      "endLine": 641
+    },
+    "type": "theorem",
+    "title": "Powers of 2 are Dissociated",
+    "content": "`powers_of_two_dissociated` (formerly an axiom, now fully proved) lifts `binary_uniqueness_nat` from $\\mathbb{N}$ to $\\mathbb{R}$ by a casting argument: an equality of real sums $\\sum_{i\\in S} 2^i = \\sum_{i\\in T} 2^i$ reduces, via `push_cast` and `exact_mod_cast`, to the corresponding $\\mathbb{N}$ equality, where binary uniqueness forces $S = T$. So $\\{2^0, 2^1, \\ldots, 2^{k-1}\\}$ is the canonical dissociated set of size $k$ — the extremal example showing the conjectured $\\log_2$ rate is attainable.",
+    "mathContext": "$\\sum_{i \\in S} 2^i = \\sum_{i \\in T} 2^i \\Rightarrow S = T$ over $\\mathbb{R}$, by reducing to $\\mathbb{N}$. The set $\\{1, 2, 4, \\ldots, 2^{k-1}\\}$ is dissociated of size $k$ with $2^k$ distinct subset sums.",
+    "significance": "key",
+    "relatedConcepts": [
+      "binary representation",
+      "Nat-to-Real cast",
+      "extremal examples in additive combinatorics"
+    ],
+    "prerequisites": [
+      "binary_uniqueness_nat",
+      "push_cast / exact_mod_cast",
+      "Finset.range"
+    ]
+  },
+  {
+    "id": "erdos-963-ann-mono",
+    "proofId": "erdos-963",
+    "range": {
+      "startLine": 643,
+      "endLine": 673
+    },
+    "type": "theorem",
+    "title": "Monotonicity of f",
+    "content": "`maxDissociatedSize_mono` (formerly an axiom, now fully proved): $f$ is non-decreasing, $m \\le n \\Rightarrow f(m) \\le f(n)$. The proof uses `csSup_le_csSup`, reducing to the set inclusion: a guarantee for all $n$-element sets implies one for all $m$-element sets, since any $m$-element set embeds (via `Finset.exists_smaller_set`) into an $n$-element superset and dissociation depends only on the chosen subset. Monotonicity validates treating $f$ as a genuine extremal function.",
+    "mathContext": "$m \\le n \\Rightarrow f(m) \\le f(n)$: extract an $m$-subset $A' \\subseteq A$ from any $n$-set $A$; a dissociated $B \\subseteq A'$ of size $\\ge k$ is also dissociated in $A$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotone functions",
+      "csSup_le_csSup",
+      "Finset.exists_smaller_set"
+    ],
+    "prerequisites": [
+      "Finset cardinality ordering",
+      "subset containment",
+      "dissociated_subset"
+    ]
+  },
+  {
+    "id": "erdos-963-ann-gap",
+    "proofId": "erdos-963",
+    "range": {
+      "startLine": 675,
+      "endLine": 680
+    },
+    "type": "theorem",
+    "title": "Log-Base Gap: ⌊log₃ n⌋ ≤ ⌊log₂ n⌋",
+    "content": "`log_base_gap` (formerly an axiom, now proved in one line via `Nat.log_anti_left`): for $n \\ge 2$, $\\lfloor\\log_3 n\\rfloor \\le \\lfloor\\log_2 n\\rfloor$, quantifying the gap between the proven lower bound and the conjectured one. Since $\\log_3 n = \\log_2 n / \\log_2 3 \\approx 0.631 \\cdot \\log_2 n$, the greedy bound captures about 63% of the conjectured value; closing this gap is the essence of Problem #963.",
+    "mathContext": "$\\lfloor\\log_3 n\\rfloor \\le \\lfloor\\log_2 n\\rfloor$ since $\\log_3 n = \\frac{\\log_2 n}{\\log_2 3}$ and $\\log_2 3 \\approx 1.585 > 1$. The ratio $1/\\log_2 3 \\approx 0.631$ measures how far the greedy bound is from the conjecture.",
+    "significance": "key",
+    "relatedConcepts": [
+      "change of base formula",
+      "Nat.log_anti_left",
+      "approximation ratios"
+    ],
+    "prerequisites": [
+      "Nat.log antitonicity in the base",
+      "logarithm base conversion"
+    ]
+  },
+  {
+    "id": "erdos-963-ann-max-pigeonhole",
+    "proofId": "erdos-963",
+    "range": {
+      "startLine": 684,
+      "endLine": 694
+    },
+    "type": "theorem",
+    "title": "Pigeonhole: max'(S) ≥ |S| − 1",
+    "content": "`Finset.max'_ge_card_sub_one`: a nonempty finset $S$ of naturals has maximum at least $|S| - 1$. Since $S \\subseteq \\{0, 1, \\ldots, \\max'(S)\\}$, comparing cardinalities gives $|S| \\le \\max'(S) + 1$. This is upper-bound infrastructure: combined with the $2^{|B|} - 1$ lower bound on the total sum of an integer dissociated set, it points toward the sharper (still unformalized) $f(n) \\le \\log_2 n + O(1)$ bound discussed at the end of the file.",
+    "mathContext": "$S \\subseteq \\{0,\\ldots,\\max'(S)\\}$ has $|S| \\le \\max'(S)+1$, i.e. $\\max'(S) \\ge |S|-1$: $k$ distinct naturals span at least $\\{0,\\ldots,k-1\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "Finset.le_max'",
+      "integer interval spanning"
+    ],
+    "prerequisites": [
+      "Finset.max'",
+      "Finset.card_le_card",
+      "Finset.card_range"
+    ]
+  }
+]

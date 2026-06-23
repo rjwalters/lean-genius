@@ -1,0 +1,189 @@
+{
+  "id": "erdos-51",
+  "title": "Erdős #51: Totient Preimage Growth",
+  "slug": "erdos-51",
+  "description": "Is there an infinite set A ⊂ ℕ of totient values such that the smallest preimage n_a of each a ∈ A satisfies n_a/a → ∞? That is, can the minimal solution to φ(n) = a grow much faster than a? OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/51",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos51Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "euler-totient",
+      "inverse-totient",
+      "preimage-growth",
+      "carmichael-conjecture",
+      "open"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 51,
+    "erdosUrl": "https://erdosproblems.com/51",
+    "erdosProblemStatus": "open",
+    "date": "1995",
+    "dateAdded": "2026-01-23",
+    "relatedProblems": [
+      {
+        "id": "erdos-50",
+        "relation": "Companion totient problem: #50 studies the distribution function of φ(n)/n (singularity of Schoenberg's function), while #51 studies the inverse totient"
+      },
+      {
+        "id": "erdos-414",
+        "relation": "Distribution of totient values: both study the range and structure of Euler's totient function from different angles"
+      },
+      {
+        "id": "erdos-4",
+        "relation": "Bounds on totient sums: complementary perspective on the growth behavior of Euler's totient function"
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 69,
+    "prerequisites": [
+      "Euler's totient function φ(n)",
+      "Preimage counting in arithmetic functions",
+      "Multiplicative number theory",
+      "Distribution of totient values"
+    ],
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Open conjecture; supporting lemmas fully verified.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 1,
+    "definitionCount": 4
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Module Docstring, Imports, and Opens",
+      "startLine": 1,
+      "endLine": 17,
+      "summary": "Module block comment (lines 1-23): problem statement, key context, references (Erdős 1995/1998, Guy B36/B39, OEIS A002202/A014197). Lines 25-29: 5 imports (Nat.Totient, Filter.Basic, Filter.AtTopBot, Topology.Order.Basic, Tactic). Lines 31-32: `open Filter` and `open scoped Nat Topology`.",
+      "mathContext": "`open Filter` makes `Tendsto`, `atTop`, `liminf`, `limsup` available unqualified. `open scoped Nat` enables `n.totient` dot notation for `Nat.totient n`. The docstring cites Carmichael's conjecture (1907, open): no totient value has exactly one preimage."
+    },
+    {
+      "id": "section-18",
+      "title": "Module Docstring, Imports, and Opens (continued)",
+      "startLine": 18,
+      "endLine": 33,
+      "summary": "Continuation: remaining proofs and definitions in this section."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions: Preimage, Range, Minimum",
+      "startLine": 34,
+      "endLine": 51,
+      "summary": "Three definitions: `totientPreimage a = {n | n.totient = a}` (lines 36-38), `IsTotientValue a = ∃ n, n.totient = a` (lines 40-42), `smallestTotientPreimage a` via Classical.choice + Nat.find with by_cases sentinel (lines 44-51).",
+      "mathContext": "$\\phi^{-1}(a) = \\{n : \\phi(n) = a\\}$ (finite, may be empty). `smallestTotientPreimage` is `noncomputable` (uses `Classical.choice`). The `by_cases h : IsTotientValue a` produces a `Nonempty` witness for `Nat.find`; non-totient case uses sentinel $n = 0$."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture and Basic Properties",
+      "startLine": 52,
+      "endLine": 64,
+      "summary": "Line 53: `/-## Main Conjecture -/` header. Lines 55-57: orphaned docstring for the conjecture (no actual axiom body follows — the conjecture is stated only in the docstring). Line 58: `/-## Basic Properties of Totient -/` header. Lines 60-61: only proved theorem, `totient_one : Nat.totient 1 = 1` by simp. Line 63: `/-## Preimage Structure -/` section stub.",
+      "mathContext": "The conjecture docstring (lines 55-57) is an orphaned `/-- ... -/` comment with no following declaration — the formalization of $\\exists A$ infinite with $n_a/a \\to \\infty$ is not present as a Lean `axiom` or `def`. The proved `totient_one` is the only non-definition Lean declaration in the file."
+    },
+    {
+      "id": "stubs-and-count",
+      "title": "Growth Bounds Stub and Inverse Totient Count",
+      "startLine": 65,
+      "endLine": 69,
+      "summary": "Line 65: `/-## Growth Bounds -/` section stub (no theorems). Lines 67-69: `noncomputable def inverseTotientCount a = (totientPreimage a).ncard` — counts solutions to φ(n) = a (OEIS A014197).",
+      "mathContext": "$|\\phi^{-1}(a)|$: the inverse totient counting function. Ford (1998): for every $k \\geq 1$, infinitely many $a$ satisfy $|\\phi^{-1}(a)| = k$. `Set.ncard` counts elements of a (potentially infinite) set, returning 0 for infinite sets — appropriate here since $\\phi^{-1}(a)$ is always finite."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős posed Problem #51 in 1995, asking whether the inverse totient function can be arbitrarily inefficient. The Euler totient φ(n) counts integers ≤ n coprime to n, and the **inverse totient problem** asks: given a, find the smallest n with φ(n) = a. For prime-generated values a = p−1, the answer is n = p (ratio ≈ 1), but for other totient values, the smallest preimage may be much larger. The problem connects to **Carmichael's conjecture** (1907, still open) that no totient value has exactly one preimage, which Erdős addressed in 1935 with the conditional result that a single counterexample implies infinitely many. Ford's 1998 work on the distribution of totients provides the broader framework. The problem is listed as B36/B39 in Guy's 'Unsolved Problems in Number Theory'.",
+    "problemStatement": "Is there an infinite set A ⊂ ℕ such that each a ∈ A satisfies φ(n) = a for some n, yet the smallest such n satisfies n_a/a → ∞ as a → ∞ through A?",
+    "text": "Is there an infinite set A ⊂ ℕ of totient values such that the smallest preimage n_a of each a ∈ A satisfies n_a/a → ∞? That is, can the minimal solution to φ(n) = a grow much faster than a? OPEN.",
+    "proofStrategy": "The formalization defines the totient preimage set, the IsTotientValue predicate, and the smallest preimage function via Nat.find. The main conjecture is axiomatized as an existential over infinite sets with divergent ratios. Supporting results establish that prime-generated totient values have bounded ratios (the 'easy' case the conjecture must avoid), and that preimage sizes are unbounded (highly totient numbers exist). Erdős's 1935 Carmichael result is included as context. The file has 0 sorries.",
+    "keyInsights": [
+      "**Prime obstruction**: For a = p−1 with p prime, n_a ≤ p so ratio → 1 — the conjecture must find totient values *not* of this form",
+      "**Carmichael connection**: Erdős's 1935 result (unique preimage ⇒ infinitely many) uses the same multiplicative structure that governs preimage growth",
+      "**Inverse totient difficulty**: The smallest preimage depends on whether ka+1 is prime for small k — a Diophantine condition on arithmetic progressions",
+      "**Ford's distribution theorem**: The counting function |φ⁻¹(a)| takes every positive integer value infinitely often — but this says nothing about min(φ⁻¹(a))",
+      "**Structural tension**: Most totient values have small preimage ratios (close to 1), but the conjecture asks whether rare exceptions with large ratios exist infinitely often",
+      "**Classical.choice + Nat.find as sentinel pattern**: `smallestTotientPreimage` uses a `by_cases` split on `IsTotientValue a` to construct a `Nonempty {n | n.totient = a}` witness for `Nat.find`. For non-totient values ($a$ not in range of $\\phi$), it constructs `⟨0, ...⟩` where `simp [IsTotientValue] at h; omega` derives that `Nat.totient 0 = 0` serves as the witness — but the branch is unreachable since the conjecture only applies to `IsTotientValue a` elements. This sentinel-zero pattern is the standard Lean way to define partial functions on all of $\\mathbb{N}$ while keeping the type total (`noncomputable def ... : ℕ`)."
+    ],
+    "prerequisites": [
+      "Euler's totient function φ(n)",
+      "Preimage counting in arithmetic functions",
+      "Multiplicative number theory",
+      "Distribution of totient values"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #51 is OPEN. It asks whether there is an infinite set of totient values where the smallest preimage grows arbitrarily faster than the value itself. The formalization captures the conjecture, supporting structural results (prime ratio bounds, Carmichael's conditional, highly totient existence), and the key definitions.",
+    "implications": "A positive answer would demonstrate deep irregularity in the inverse totient function — that the multiplicative structure of φ allows 'gaps' where the smallest solution to φ(n) = a is far from a. This would connect to broader questions about the distribution of smooth numbers and the Diophantine properties of shifted primes.",
+    "openQuestions": [
+      "Does such an infinite set A exist? This is the main open problem.",
+      "What growth rate can n_a/a achieve along an infinite subsequence? Is n_a/a = Ω(log a) possible?",
+      "Can techniques from sieve theory or the distribution of smooth numbers resolve the problem?",
+      "How does the preimage ratio behave for highly composite totient values versus prime-adjacent values?",
+      "Is there a connection between large preimage ratios and the Bunyakovsky conjecture on primes in polynomials?"
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/Erdos51Problem.lean",
+    "imports": [
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Order.Filter.AtTopBot",
+      "Mathlib.Topology.Order.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Filter",
+      "scoped"
+    ],
+    "namespace": null,
+    "lineCount": 69,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 4,
+    "theoremCount": 1
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-48",
+      "relationship": "related",
+      "description": "Problem #48 also concerns Euler's totient function. Both study the fine properties of φ(n) — Problem #48 asks about φ(n) = σ(m), while Problem #51 asks about the growth of |φ⁻¹(n)|"
+    },
+    {
+      "targetId": "erdos-49",
+      "relationship": "related",
+      "description": "Problem #49 on sets with increasing totient values is another problem in the φ(n) family. All three (#48, #49, #51) concern the distribution and structure of Euler's totient"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "foundational",
+      "description": "Euler's totient function and its properties are the foundational object for Problem #51"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Ford, Kevin",
+      "title": "The distribution of totients",
+      "year": "1998",
+      "venue": "Ramanujan Journal, vol. 2, no. 1–2, pp. 67–151",
+      "note": "Comprehensive study of the distribution and preimage sizes of Euler's totient function"
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "Some remarks on Euler's φ function",
+      "year": "1945",
+      "venue": "Acta Arithmetica, vol. 1, pp. 3–19",
+      "note": "Early study of the range and preimage properties of φ(n)"
+    },
+    "Erdős, P. (1995): Problem #51 — posed the question of divergent totient preimage ratios",
+    "Erdős, P. (1935): Proved that if any totient value has a unique preimage, infinitely many do — partial result toward Carmichael's conjecture",
+    "Carmichael, R.D. (1907): Conjectured that no totient value has a unique preimage (|φ⁻¹(a)| ≠ 1 for all a)",
+    "Ford, K. (1998): 'The distribution of totients' — proved for any k, infinitely many a have |φ⁻¹(a)| = k",
+    "Guy, R.K. (2004): Unsolved Problems in Number Theory, B36 (Euler's totient), B39 (Carmichael's conjecture)",
+    "OEIS A002202: Totient values (range of Euler's totient function)",
+    "OEIS A014197: Inverse totient counting function |{n : φ(n) = a}|",
+    "OEIS A058277: Smallest n with φ(n) = a for totient values a",
+    "https://erdosproblems.com/51"
+  ],
+  "sorries": 0
+}

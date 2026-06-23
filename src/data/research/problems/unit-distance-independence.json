@@ -1,0 +1,73 @@
+{
+  "slug": "unit-distance-independence",
+  "title": "Unit Distance Graph Independence Number Bounds",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formalization extending an existing formalization in graph theory: Unit Distance Graph Independence Number Bounds.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-27T22:18:02.334Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: unit-distance-independence\n\n## Problem Summary\n\nFormalize bounds on the independence number of unit distance graphs in the plane, connecting to the Hadwiger-Nelson problem on the chromatic number of the plane.\n\n## Current State\n\n**Status**: PROGRESS\n\n### What Was Built\n\n**File**: `proofs/Proofs/UnitDistanceIndependence.lean` (~290 lines)\n\n#### Definitions\n- `IsIndepSet`: Independent set in a simple graph (set version)\n- `IsIndepFinset`: Independent set in a simple graph (finset version)\n- `IsProperColoring`: Proper graph coloring definition\n- `independenceNumber`: Formal definition as sup over independent sets\n- `unitDistGraph`: Unit distance graph on finite plane subsets\n- `Plane`: The Euclidean plane R^2\n\n#### Proved Theorems (20, 0 sorries)\n1. `isIndepFinset_empty`: Empty set is independent\n2. `isIndepFinset_singleton`: Singleton sets are independent\n3. `isIndepFinset_subset`: Subsets of independent sets are independent\n4. `isIndepFinset_iff`: Characterization of independence\n5. `independenceNumber_nonneg`: α(G) ≥ 0\n6. `indep_card_le_alpha`: |S| ≤ α(G) for independent S\n7. `color_class_independent`: Color classes in proper colorings are independent\n8. `hadwiger_nelson_bounds`: Combined Hadwiger-Nelson bounds (5 ≤ χ ≤ 7)\n9. `isIndepFinset_insert`: Growing independent sets by adding non-adjacent vertex\n10. `edge_leaves_indep`: Edges force at least one endpoint out of independent sets\n11. `exists_nonempty_indep`: Nonempty graphs have nonempty independent sets\n12. `indep_card_le_univ`: Independent set cardinality bounded by |V|\n13. `unit_indep_iff_no_unit_dist`: Independence in unit graph ↔ no unit distances\n14. `indep_iff_compl_clique`: Independence characterization\n15. `isIndepFinset_of_bot`: Empty graph has all sets independent\n16. `indep_top_singleton`: Complete graph has independence number 1\n17. `color_class_partition`: Each vertex in exactly one color class\n18. `proper_coloring_gives_independent_partition`: Proper colorings give independent partitions\n19. `exists_large_color_class`: Pigeonhole: some color class has ≥ |V|/k elements\n20. `indep_from_coloring`: k-coloring ⟹ ∃ independent set of size ≥ |V|/k\n\n#### Axioms (2)\n1. `hadwiger_nelson_lower_bound`: De Grey's 5-chromatic lower bound (2018)\n2. `hadwiger_nelson_upper_bound`: 7-coloring upper bound\n\n### Key Insights\n- Independent sets can be developed abstractly for SimpleGraph, then specialized to unit distance\n- The Hadwiger-Nelson bounds are naturally axioms since the lower bound requires constructing a specific 1581-vertex graph\n- Color class → independence is a clean formal argument\n- Independence number defined as Finset.sup over powerset filtered by IsIndepFinset\n- Pigeonhole bound: k-coloring ⟹ ∃ independent set of size ≥ |V|/k (key structural result)\n- Unit distance graph on finite sets defined as SimpleGraph on Finset.Elem type\n- The Finset.card_biUnion argument for disjoint color classes requires careful handling\n\n### What Would Be Needed Next\n1. Greedy bound: α(G) ≥ |V|/(Δ+1) where Δ is max degree\n2. Connect independence number to Hadwiger-Nelson: α ≥ n/7 for unit distance graphs\n3. Constructive Lovász theta bound\n4. Fractional chromatic number (requires LP duality)\n\n### Related Work\n- `Erdos668Problem.lean` - Unit distance configurations (defines `isUnitPair`, `unitDistanceEdges`)\n- `Erdos90Problem.lean` - Maximum unit distances among n points\n- `Erdos922Problem.lean` - Uses SimpleGraph.Coloring\n\n## Session Log\n\n### Session 1 (2026-02-04, researcher-1)\n**Mode**: FRESH\n**Decision**: BUILD - Create formalization from scratch\n**Outcome**: Created comprehensive file with 17 proved theorems, 2 axioms, 0 sorries\n**Status**: NEW -> SURVEYED\n\n### Session 2 (2026-02-04, researcher-1)\n**Mode**: REVISIT\n**Decision**: DEEP DIVE - Add independence number theory and pigeonhole bound\n**Outcome**: Added 3 new theorems, replaced 2 trivial theorems, added unitDistGraph definition\n- Added `independenceNumber` definition and `indep_card_le_alpha`\n- Added `unitDistGraph` and `unit_indep_iff_no_unit_dist` (replaced trivial theorems)\n- Proved pigeonhole bound: `exists_large_color_class` and `indep_from_coloring`\n**Status**: SURVEYED -> PROGRESS\n"
+  },
+  "tags": [
+    "seeker-selected",
+    "combinatorial-geometry",
+    "graph-theory",
+    "independence-number",
+    "unit-distance",
+    "extension"
+  ],
+  "relatedProofs": [
+    "unit-distance-independence"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-27T22:18:02.334Z",
+  "lastUpdate": "2026-02-08T06:11:43.709Z",
+  "completed": "2026-02-08T06:11:43.709Z",
+  "significance": 7,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/UnitDistanceIndependence.lean",
+      "filename": "UnitDistanceIndependence.lean",
+      "lineCount": 949,
+      "theoremCount": 65,
+      "axiomCount": 2,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/UnitDistanceIndependence.lean"
+    }
+  ]
+}

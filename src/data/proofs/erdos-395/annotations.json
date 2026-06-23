@@ -1,0 +1,164 @@
+[
+  {
+    "id": "ann-395-header",
+    "proofId": "erdos-395",
+    "range": {
+      "startLine": 1,
+      "endLine": 37
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #395 is the 'reverse Littlewood-Offord problem.' For unit complex vectors z₁, ..., zₙ, is the probability that |ε₁z₁ + ... + εₙzₙ| ≤ √2 (with random signs) at least c/n? Erdős originally asked with threshold 1, but Carnielli-Carolino (2011) showed this fails. The revised question with threshold √2 was proved by He-Juškevičius-Narayanan-Spiro (2024).",
+    "mathContext": "The 'reverse' direction of Littlewood-Offord: a lower bound on concentration near zero, complementing the classical upper bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Littlewood-Offord",
+      "Random signs",
+      "Unit vectors",
+      "Anticoncentration"
+    ],
+    "prerequisites": [
+      "the Littlewood-Offord problem on anticoncentration of signed sums",
+      "random sign vectors and probability of small magnitude sums",
+      "unit complex vectors"
+    ]
+  },
+  {
+    "id": "ann-395-definitions",
+    "proofId": "erdos-395",
+    "range": {
+      "startLine": 48,
+      "endLine": 68
+    },
+    "type": "definition",
+    "title": "Core Definitions: Unit Vectors, Signs, and Sums",
+    "content": "isUnitVector z: all components lie on the complex unit circle (|zᵢ| = 1). isSignVector ε: each εᵢ ∈ {-1, 1}, representing random Rademacher variables. signedSum z ε = Σ εᵢzᵢ: the random signed combination. signedSumAbs: the magnitude |Σ εᵢzᵢ|, measuring distance from the origin.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Unit circle",
+      "Rademacher distribution",
+      "Random walk"
+    ],
+    "mathContext": "See annotation content for formal details of core definitions: unit vectors, signs, and sums",
+    "prerequisites": [
+      "complex numbers on the unit circle",
+      "Rademacher random signs in {-1, 1}",
+      "absolute value (magnitude) of a complex sum"
+    ]
+  },
+  {
+    "id": "ann-395-probability",
+    "proofId": "erdos-395",
+    "range": {
+      "startLine": 70,
+      "endLine": 82
+    },
+    "type": "definition",
+    "title": "Probability of Small Sums",
+    "content": "countSmallSums z: the number of sign vectors ε with |Σ εᵢzᵢ| ≤ √2, out of 2ⁿ total. probSmallSum z = countSmallSums / 2ⁿ: the probability under uniform random signs. The central question is whether this probability is always at least c/n for unit vectors.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Probability",
+      "Uniform distribution",
+      "Counting"
+    ],
+    "mathContext": "See annotation content for formal details of probability of small sums",
+    "prerequisites": [
+      "counting sign vectors among 2ⁿ possibilities",
+      "uniform probability over random signs",
+      "the threshold √2 for small signed sums"
+    ]
+  },
+  {
+    "id": "ann-395-counterexample",
+    "proofId": "erdos-395",
+    "range": {
+      "startLine": 84,
+      "endLine": 111
+    },
+    "type": "concept",
+    "title": "Original Question is FALSE (Carnielli-Carolino 2011)",
+    "content": "erdos_original_question: Erdős's original formulation with threshold 1 instead of √2. carnielli_carolino_counterexample: z₁ = 1, zₖ = i for k ≥ 2 (n even). counterexample_always_large: for this configuration, |sum| ≥ √2 always — the real and imaginary parts each contribute at least 1, so the total magnitude is at least √2. erdos_original_is_false: the original threshold-1 question has a negative answer.",
+    "mathContext": "The counterexample splits into independent real and imaginary parts: the real part is ±1 (from z₁) and the imaginary part sums n-1 copies of ±i, but the total is always at least √(1² + 1²) = √2.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Counterexample",
+      "Complex geometry",
+      "Threshold"
+    ],
+    "prerequisites": [
+      "splitting a complex sum into real and imaginary parts",
+      "the lower bound √(1² + 1²) = √2 for the example z₁=1, zₖ=i",
+      "disproving a claim by an explicit counterexample"
+    ]
+  },
+  {
+    "id": "ann-395-hjns",
+    "proofId": "erdos-395",
+    "range": {
+      "startLine": 113,
+      "endLine": 141
+    },
+    "type": "concept",
+    "title": "HJNS 2024: Revised Question is TRUE",
+    "content": "erdos_395_question: the revised formulation with threshold √2. hjns_2024 (axiom): ∃ c > 0 such that for all n > 0 and all unit vectors z, probSmallSum z ≥ c/n. This is the main result of He-Juškevičius-Narayanan-Spiro (2024), axiomatized because the proof requires Fourier analysis on the Boolean hypercube and concentration inequalities. erdos_395_solved: derives the answer for each fixed n from the universal axiom.",
+    "mathContext": "arXiv:2408.11034. The proof technique uses Fourier analysis on {-1,1}ⁿ to analyze the distribution of signed sums.",
+    "significance": "key",
+    "relatedConcepts": [
+      "HJNS 2024",
+      "Fourier analysis",
+      "Concentration inequalities"
+    ],
+    "prerequisites": [
+      "Fourier analysis on the Boolean hypercube {-1,1}ⁿ",
+      "concentration inequalities for signed sums",
+      "axiomatizing the He-Juškevičius-Narayanan-Spiro 2024 result as a lower bound c/n"
+    ]
+  },
+  {
+    "id": "ann-395-optimality",
+    "proofId": "erdos-395",
+    "range": {
+      "startLine": 143,
+      "endLine": 156
+    },
+    "type": "concept",
+    "title": "Optimality: 1/n Rate is Tight",
+    "content": "extremal_example: zₖ = 1 for k ≤ n/2, zₖ = i for k > n/2. This splits the sum into independent real and imaginary parts, each a sum of ±1 with ~n/2 terms. extremal_example_tight (axiom): ∃ c, C > 0 with c/n ≤ probSmallSum ≤ C/n. By CLT, each part is approximately Gaussian with standard deviation ~√(n/2), and landing in a √2-ball requires both parts to be O(1), giving probability Θ(1/n).",
+    "mathContext": "The CLT gives each coordinate as approximately N(0, n/2), so the joint probability of both being O(1) is Θ(1/√n · 1/√n) = Θ(1/n).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Extremal example",
+      "Central Limit Theorem",
+      "Tight bound"
+    ],
+    "prerequisites": [
+      "the central limit theorem giving each coordinate approximately N(0, n/2)",
+      "Gaussian probability of landing in an O(1) ball scaling as 1/√n per part",
+      "matching c/n and C/n bounds establishing a tight rate"
+    ]
+  },
+  {
+    "id": "ann-395-summary",
+    "proofId": "erdos-395",
+    "range": {
+      "startLine": 158,
+      "endLine": 184
+    },
+    "type": "concept",
+    "title": "Complete Resolution of Erdős #395",
+    "content": "erdos_395_summary: restates hjns_2024 directly. erdos_395 (main theorem): combines both directions — erdos_original_is_false (threshold 1 fails) and hjns_2024 (threshold √2 works) — into a single conjunction. This gives the complete picture: the original formulation is false, but the natural revised formulation with the sharp threshold √2 is true with optimal rate 1/n.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Summary",
+      "Complete resolution",
+      "Sharp threshold"
+    ],
+    "mathContext": "See annotation content for formal details of complete resolution of erdős #395",
+    "prerequisites": [
+      "combining the false threshold-1 direction with the true threshold-√2 direction",
+      "conjunction of both results into the main theorem",
+      "the sharp threshold √2 with optimal rate 1/n"
+    ]
+  }
+]

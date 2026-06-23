@@ -1,0 +1,556 @@
+[
+  {
+    "id": "ann-989-1",
+    "proofId": "erdos-989",
+    "range": {
+      "startLine": 1,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #989 asks about the circle discrepancy function f(r) = max_C |#(A∩C) - πr²| for an infinite sequence A ⊂ ℝ². Two questions: (1) Is f(r) unbounded for every A? (2) How fast does f(r) grow? Beck (1987) completely solved this: f(r) ≫ √r universally, and ∃A with f(r) ≪ √(r log r). STATUS: SOLVED.",
+    "mathContext": "For a sequence $A = \\{z_1, z_2, \\ldots\\} \\subset \\mathbb{R}^2$, define $f(r) = \\sup_C |\\#(A \\cap \\mathrm{disk}(C)) - \\pi r^2|$ where $C$ ranges over circles of radius $r$. Beck proved: (1) $f(r) \\geq c\\sqrt{r}$ for all $A$, and (2) $\\exists A$ with $f(r) \\leq C\\sqrt{r \\log r}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "geometric discrepancy",
+      "uniform distribution",
+      "circle packing",
+      "equidistribution"
+    ],
+    "prerequisites": [
+      "metric spaces",
+      "measure theory",
+      "real analysis"
+    ]
+  },
+  {
+    "id": "ann-989-2",
+    "proofId": "erdos-989",
+    "range": {
+      "startLine": 46,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "Points in the Plane",
+    "content": "Points are represented as elements of EuclideanSpace ℝ (Fin 2), Mathlib's standard type for ℝ². This provides the full machinery of metric spaces, inner products, and affine geometry needed for circle geometry.",
+    "mathContext": "A point $p \\in \\mathbb{R}^2$ is formalized as an element of $\\texttt{EuclideanSpace}\\;\\mathbb{R}\\;(\\texttt{Fin}\\;2)$, which is isometric to $\\mathbb{R}^2$ with the standard Euclidean norm $\\|p\\| = \\sqrt{p_0^2 + p_1^2}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Euclidean space",
+      "inner product space",
+      "metric space"
+    ],
+    "prerequisites": [
+      "linear algebra",
+      "topology"
+    ]
+  },
+  {
+    "id": "ann-989-3",
+    "proofId": "erdos-989",
+    "range": {
+      "startLine": 50,
+      "endLine": 53
+    },
+    "type": "definition",
+    "title": "Circle Structure",
+    "content": "A circle is defined by its center point and positive radius. The positivity requirement (radius > 0) ensures we have genuine geometric objects, not degenerate points.",
+    "mathContext": "A circle $C = (c, r)$ consists of a center $c \\in \\mathbb{R}^2$ and radius $r > 0$. The positivity constraint $r > 0$ is carried as a proof term, ensuring well-definedness of the discrepancy function $f(r)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "closed ball",
+      "metric geometry",
+      "positive reals"
+    ],
+    "prerequisites": [
+      "metric spaces",
+      "basic geometry"
+    ]
+  },
+  {
+    "id": "ann-989-4",
+    "proofId": "erdos-989",
+    "range": {
+      "startLine": 55,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Circle Disk",
+    "content": "The disk of a circle is the closed ball: all points within distance ≤ radius from the center. This is what we count points inside - the filled-in region, not just the boundary.",
+    "mathContext": "The closed disk $\\overline{B}(c, r) = \\{p \\in \\mathbb{R}^2 : d(p, c) \\leq r\\}$ is used for point counting. The choice of closed (vs. open) ball is immaterial for discrepancy since the boundary has measure zero, but closed balls are more natural in Lean's metric space library.",
+    "significance": "key",
+    "relatedConcepts": [
+      "closed ball",
+      "metric ball",
+      "Lebesgue measure zero sets"
+    ],
+    "prerequisites": [
+      "metric spaces",
+      "topology"
+    ]
+  },
+  {
+    "id": "ann-989-5",
+    "proofId": "erdos-989",
+    "range": {
+      "startLine": 59,
+      "endLine": 60
+    },
+    "type": "definition",
+    "title": "Circle Area",
+    "content": "The area of a circle with radius r is πr². This is the 'expected' count of points in a circle if the sequence had uniform density 1. Discrepancy measures deviation from this expectation.",
+    "mathContext": "The expected count is $\\pi r^2$, the Lebesgue measure of a disk of radius $r$. The discrepancy $f(r) = \\sup_C |\\#(A \\cap C) - \\pi r^2|$ measures deviation from the idealized density-1 distribution. The factor $\\pi$ enters through the area formula $\\mu(\\overline{B}(c,r)) = \\pi r^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lebesgue measure",
+      "area formula",
+      "density",
+      "equidistribution"
+    ],
+    "prerequisites": [
+      "measure theory",
+      "real analysis"
+    ]
+  },
+  {
+    "id": "ann-989-6",
+    "proofId": "erdos-989",
+    "range": {
+      "startLine": 64,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "Point Sequence",
+    "content": "A PointSequence is a function ℕ → Point, representing an infinite sequence of points z₁, z₂, z₃, ... in the plane. We study how uniformly such sequences can be distributed.",
+    "mathContext": "A point sequence $A : \\mathbb{N} \\to \\mathbb{R}^2$ represents an enumeration $z_1, z_2, z_3, \\ldots$ of points. Unlike finite point sets, the ordering matters: we study the counting function for initial segments $\\{z_1, \\ldots, z_n\\}$ and take the supremum over $n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sequence",
+      "enumeration",
+      "equidistribution",
+      "low-discrepancy sequence"
+    ],
+    "prerequisites": [
+      "sequences",
+      "function types"
+    ]
+  },
+  {
+    "id": "ann-989-7",
+    "proofId": "erdos-989",
+    "range": {
+      "startLine": 71,
+      "endLine": 74
+    },
+    "type": "definition",
+    "title": "Point Count in Circle",
+    "content": "countInCircle A C n counts how many of the first n points of sequence A lie inside circle C's disk. This is the finite approximation to the infinite count we're interested in.",
+    "mathContext": "The counting function $\\#(A_n \\cap \\overline{B}(c,r)) = |\\{i < n : z_i \\in \\overline{B}(c,r)\\}|$ is computed by filtering $\\texttt{Finset.range}(n)$ on the membership predicate. This yields a natural number cast to $\\mathbb{R}$ for comparison with $\\pi r^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counting function",
+      "Finset.filter",
+      "cardinality"
+    ],
+    "prerequisites": [
+      "finite sets",
+      "decidable predicates"
+    ]
+  },
+  {
+    "id": "ann-989-8",
+    "proofId": "erdos-989",
+    "range": {
+      "startLine": 76,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "Local Discrepancy",
+    "content": "The local discrepancy D(A, C, n) = |count - πr²| measures how far the actual count in circle C deviates from the expected count. The global discrepancy maximizes this over all circles.",
+    "mathContext": "The local discrepancy $D(A, C, n) = |\\#(A_n \\cap C) - \\pi r^2|$ measures the absolute deviation for a single circle $C$ and prefix length $n$. The use of absolute value $|\\cdot|$ ensures discrepancy is nonneg, capturing both over- and under-counting.",
+    "significance": "key",
+    "relatedConcepts": [
+      "absolute deviation",
+      "discrepancy",
+      "star-discrepancy"
+    ],
+    "prerequisites": [
+      "absolute value",
+      "real arithmetic"
+    ]
+  },
+  {
+    "id": "ann-989-9",
+    "proofId": "erdos-989",
+    "range": {
+      "startLine": 81,
+      "endLine": 86
+    },
+    "type": "definition",
+    "title": "Circle Discrepancy Function",
+    "content": "The main object of study: f(r) = sup over all circles of radius r and all prefix lengths n of the local discrepancy. This captures the worst-case deviation for circles of a fixed radius.",
+    "mathContext": "The circle discrepancy function $f_A(r) = \\sup_{C : \\text{radius}=r} \\sup_{n \\in \\mathbb{N}} D(A, C, n)$ is formalized using $\\bigsqcup$ (iSup). The double supremum ranges over all circles of radius $r$ and all finite prefix lengths, capturing the worst-case behavior. This is the quantity Beck bounded as $\\Theta(\\sqrt{r})$ up to logarithmic factors.",
+    "significance": "key",
+    "relatedConcepts": [
+      "supremum",
+      "worst-case analysis",
+      "discrepancy function",
+      "iSup"
+    ],
+    "prerequisites": [
+      "conditionally complete lattice",
+      "supremum",
+      "real analysis"
+    ]
+  },
+  {
+    "id": "ann-989-10",
+    "proofId": "erdos-989",
+    "range": {
+      "startLine": 90,
+      "endLine": 101
+    },
+    "type": "concept",
+    "title": "Beck's Lower Bound",
+    "content": "The central lower bound: for EVERY sequence A, f(r) ≥ c√r for some universal c > 0 and large r. No matter how cleverly you place points, discrepancy grows at least like √r. This uses Fourier analysis and Bessel function asymptotics.",
+    "mathContext": "Beck proved $\\exists c > 0, \\forall A, \\exists r_0, \\forall r > r_0: f_A(r) \\geq c\\sqrt{r}$. The proof expresses disk indicators via Fourier transforms $\\hat{\\mathbf{1}}_B(\\xi) = r \\cdot J_1(2\\pi r|\\xi|)/(|\\xi|)$ where $J_1$ is the Bessel function of the first kind. The asymptotics $|J_1(x)| \\sim \\sqrt{2/(\\pi x)}$ force $\\Omega(\\sqrt{r})$ growth via Parseval's identity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fourier transform",
+      "Bessel function",
+      "Parseval identity",
+      "asymptotic analysis"
+    ],
+    "prerequisites": [
+      "harmonic analysis",
+      "Bessel functions",
+      "Fourier analysis on ℝ²"
+    ]
+  },
+  {
+    "id": "ann-989-11",
+    "proofId": "erdos-989",
+    "range": {
+      "startLine": 103,
+      "endLine": 128
+    },
+    "type": "concept",
+    "title": "Discrepancy is Unbounded",
+    "content": "Corollary of Beck's lower bound: f(r) → ∞ for every sequence. This answers Erdős's first question: YES, discrepancy is always unbounded. The proof chooses r large enough that c√r exceeds any given M.",
+    "mathContext": "Given any $M > 0$, choose $r = \\max(r_0 + 1, (M/c + 1)^2)$ so that $c\\sqrt{r} \\geq c \\cdot (M/c + 1) = M + c > M$. The formal proof uses `calc` chains and `mul_le_mul_of_nonneg_left` with `Real.sqrt_le_sqrt` to establish the chain of inequalities. This is one of the rare fully-proved theorems in this file.",
+    "significance": "key",
+    "relatedConcepts": [
+      "unboundedness",
+      "Archimedean property",
+      "calc proof",
+      "corollary"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "square root properties",
+      "order theory"
+    ]
+  },
+  {
+    "id": "ann-989-12",
+    "proofId": "erdos-989",
+    "range": {
+      "startLine": 132,
+      "endLine": 144
+    },
+    "type": "concept",
+    "title": "Beck's Upper Bound",
+    "content": "The existence result: there EXISTS a sequence A achieving f(r) ≤ C√(r log r). Beck's probabilistic construction (perturbed lattice) achieves near-optimal discrepancy. The log factor comes from union bounds.",
+    "mathContext": "Beck proved $\\exists A, \\exists C > 0, \\exists r_0, \\forall r > r_0: f_A(r) \\leq C\\sqrt{r \\log r}$. The construction perturbs each lattice point $z \\in \\mathbb{Z}^2$ by a random displacement $\\delta_z$ uniform in $[-\\epsilon, \\epsilon]^2$. The expectation $\\mathbb{E}[D(A,C,n)^2]$ is bounded using independence, and a union bound over $O(r^2)$ circle centers introduces the $\\log r$ factor.",
+    "significance": "key",
+    "relatedConcepts": [
+      "probabilistic method",
+      "perturbed lattice",
+      "union bound",
+      "second moment method"
+    ],
+    "prerequisites": [
+      "probability theory",
+      "concentration inequalities",
+      "lattice theory"
+    ]
+  },
+  {
+    "id": "ann-989-13",
+    "proofId": "erdos-989",
+    "range": {
+      "startLine": 146,
+      "endLine": 149
+    },
+    "type": "definition",
+    "title": "Beck's Optimal Sequence",
+    "content": "Using Classical.choose, we extract the witness sequence from Beck's existence theorem. This is the sequence achieving near-optimal √(r log r) discrepancy, constructed via probabilistic methods.",
+    "mathContext": "The term $\\texttt{Classical.choose}\\;\\texttt{beck\\_upper\\_bound}$ invokes the axiom of choice to extract a witness $A$ from the existential $\\exists A, \\ldots$. The original construction is probabilistic, so this extracted sequence is non-constructive—its specific values cannot be computed.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "axiom of choice",
+      "Classical.choose",
+      "non-constructive existence",
+      "witness extraction"
+    ],
+    "prerequisites": [
+      "classical logic",
+      "choice axiom"
+    ]
+  },
+  {
+    "id": "ann-989-14",
+    "proofId": "erdos-989",
+    "range": {
+      "startLine": 153,
+      "endLine": 182
+    },
+    "type": "concept",
+    "title": "Complete Solution",
+    "content": "The main theorem combining all results: (1) discrepancy is unbounded for all A, (2) universal lower bound √r, (3) existence of near-optimal sequence with √(r log r). This completely answers Erdős's questions.",
+    "mathContext": "The conjunction $P_1 \\wedge P_2 \\wedge P_3$ packages three results: (1) $\\forall A, \\forall M, \\exists r > 0: f_A(r) > M$, (2) $\\exists c > 0, \\forall A, \\ldots: f_A(r) \\geq c\\sqrt{r}$, (3) $\\exists A, \\exists C > 0, \\ldots: f_A(r) \\leq C\\sqrt{r \\log r}$. Together these establish $f_A(r) = \\tilde{\\Theta}(\\sqrt{r})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "conjunction",
+      "tight bounds",
+      "soft-Theta notation",
+      "completeness"
+    ],
+    "prerequisites": [
+      "propositional logic",
+      "asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-989-15",
+    "proofId": "erdos-989",
+    "range": {
+      "startLine": 186,
+      "endLine": 200
+    },
+    "type": "concept",
+    "title": "Discrepancy Theory Context",
+    "content": "Circle discrepancy fits into the broader theory of measuring uniform distribution. Different test set families (boxes, half-planes, circles, convex sets) give different discrepancy problems. Beck's work is foundational here.",
+    "mathContext": "For a family $\\mathcal{F}$ of measurable sets and sequence $A$, the discrepancy is $D_{\\mathcal{F}}(A, N) = \\sup_{S \\in \\mathcal{F}} |\\#(A_N \\cap S) - N \\cdot \\mu(S)|$. Key families: boxes give $D \\geq c(\\log N)^{d/2}$ (Schmidt), half-planes give $D \\geq cN^{1/4}$ (Alexander), circles give $D \\geq c\\sqrt{r}$ (Beck). The circle case is intermediate in difficulty.",
+    "significance": "key",
+    "relatedConcepts": [
+      "discrepancy theory",
+      "test set families",
+      "equidistribution",
+      "geometric measure theory"
+    ],
+    "prerequisites": [
+      "measure theory",
+      "combinatorial geometry"
+    ]
+  },
+  {
+    "id": "ann-989-16",
+    "proofId": "erdos-989",
+    "range": {
+      "startLine": 202,
+      "endLine": 207
+    },
+    "type": "definition",
+    "title": "General Circle Discrepancy",
+    "content": "The discrepancy over ALL circles (not just fixed radius) gives a stronger measure of non-uniformity. This connects to the full family of geometric discrepancy problems.",
+    "mathContext": "The general discrepancy $D(A, n) = \\sup_{C \\in \\mathcal{C}} D(A, C, n)$ takes the supremum over circles of all radii, giving a single-parameter function of $n$ rather than a two-parameter function of $(r, n)$. This is a strictly stronger measure than $f(r)$ for any fixed $r$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "supremum over families",
+      "star-discrepancy",
+      "VC dimension"
+    ],
+    "prerequisites": [
+      "supremum",
+      "set families"
+    ]
+  },
+  {
+    "id": "ann-989-17",
+    "proofId": "erdos-989",
+    "range": {
+      "startLine": 211,
+      "endLine": 225
+    },
+    "type": "concept",
+    "title": "Fourier Analysis Technique",
+    "content": "Beck's lower bound proof uses: (1) Fourier transforms of disk indicators, (2) Bessel function J₁ in the transform, (3) Parseval's identity relating discrepancy to Fourier coefficients, (4) J₁(x) ~ 1/√x asymptotics giving √r growth.",
+    "mathContext": "The Fourier transform of $\\mathbf{1}_{\\overline{B}(0,r)}$ is $\\hat{f}(\\xi) = r J_1(2\\pi r|\\xi|)/|\\xi|$ where $J_1$ is the Bessel function of first kind. By Parseval, $\\sum |\\hat{\\mu}_A(\\xi)|^2 |\\hat{f}(\\xi)|^2$ controls the $L^2$ discrepancy. Since $J_1(x) \\sim \\sqrt{2/(\\pi x)} \\cos(x - 3\\pi/4)$, the Fourier coefficients decay as $O(1/\\sqrt{r|\\xi|})$, forcing $\\Omega(\\sqrt{r})$ total discrepancy.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fourier transform",
+      "Bessel function J₁",
+      "Parseval identity",
+      "L² discrepancy",
+      "spectral methods"
+    ],
+    "prerequisites": [
+      "Fourier analysis on ℝ²",
+      "Bessel functions",
+      "spectral theory"
+    ]
+  },
+  {
+    "id": "ann-989-18",
+    "proofId": "erdos-989",
+    "range": {
+      "startLine": 227,
+      "endLine": 238
+    },
+    "type": "concept",
+    "title": "Probabilistic Construction",
+    "content": "Beck's upper bound construction: (1) Start with ℤ² lattice, (2) Add small random perturbations, (3) Expected discrepancy is √(r log r), (4) The log comes from union bound over O(r²) circle positions.",
+    "mathContext": "The construction sets $A_z = z + \\delta_z$ for $z \\in \\mathbb{Z}^2$ where $\\delta_z$ are i.i.d. uniform on $[-\\epsilon, \\epsilon]^2$. For a single circle, $\\mathrm{Var}[\\#(A \\cap C)] = O(r)$ (boundary contribution). The union bound over $O(r^2)$ relevant circle positions multiplies by $\\log(r^2) = 2\\log r$, giving $\\mathbb{E}[\\sup_C D] = O(\\sqrt{r \\log r})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lattice perturbation",
+      "second moment method",
+      "variance bound",
+      "union bound",
+      "boundary effects"
+    ],
+    "prerequisites": [
+      "probability theory",
+      "concentration inequalities",
+      "lattice geometry"
+    ]
+  },
+  {
+    "id": "ann-989-19",
+    "proofId": "erdos-989",
+    "range": {
+      "startLine": 242,
+      "endLine": 254
+    },
+    "type": "concept",
+    "title": "The Logarithmic Gap",
+    "content": "Major open problem: Beck's bounds give c√r ≤ f(r) ≤ C√(r log r). Is the log factor necessary? This gap is one of the central unsolved questions in geometric discrepancy theory.",
+    "mathContext": "The gap between $\\Omega(\\sqrt{r})$ and $O(\\sqrt{r \\log r})$ is a multiplicative $\\sqrt{\\log r}$ factor. Closing this gap requires either: (a) improving the lower bound to $\\Omega(\\sqrt{r \\log r})$ by a more refined Fourier argument, or (b) improving the upper bound to $O(\\sqrt{r})$ by a more careful probabilistic construction or deterministic approach. Neither has been achieved since 1987.",
+    "significance": "key",
+    "relatedConcepts": [
+      "logarithmic gap",
+      "open problem",
+      "optimal discrepancy",
+      "lower bound improvement"
+    ],
+    "prerequisites": [
+      "asymptotic analysis",
+      "discrepancy theory"
+    ]
+  },
+  {
+    "id": "ann-989-20",
+    "proofId": "erdos-989",
+    "range": {
+      "startLine": 256,
+      "endLine": 268
+    },
+    "type": "concept",
+    "title": "Explicit Constructions",
+    "content": "Open problem: Beck's optimal sequence is probabilistic. Can we give an explicit deterministic construction achieving √(r log r)? Lattice constructions give worse bounds; no explicit optimal construction is known.",
+    "mathContext": "Deterministic low-discrepancy sequences like Halton or Niederreiter sequences are well-known for box discrepancy but do not directly apply to circle discrepancy. The integer lattice $\\mathbb{Z}^2$ itself has $f(r) = \\Theta(r^{1/2 + \\epsilon})$ for circles, which is suboptimal. Constructing an explicit sequence matching $O(\\sqrt{r \\log r})$ remains open.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "derandomization",
+      "explicit construction",
+      "low-discrepancy sequences",
+      "Halton sequence"
+    ],
+    "prerequisites": [
+      "combinatorial constructions",
+      "number theory"
+    ]
+  },
+  {
+    "id": "ann-989-21",
+    "proofId": "erdos-989",
+    "range": {
+      "startLine": 270,
+      "endLine": 282
+    },
+    "type": "concept",
+    "title": "Higher Dimensions",
+    "content": "Open problem: For balls in ℝ^d, expect f(r) ~ r^{(d-1)/2} from surface area considerations. The dimension dependence is understood but logarithmic factors remain open in all dimensions.",
+    "mathContext": "For balls in $\\mathbb{R}^d$, the surface area of $\\partial B(0,r)$ is $\\omega_d r^{d-1}$ where $\\omega_d = 2\\pi^{d/2}/\\Gamma(d/2)$. Boundary fluctuations of order $\\sqrt{\\text{surface area}} = O(r^{(d-1)/2})$ heuristically predict $f(r) = \\Theta(r^{(d-1)/2})$. The formal lower bound $f(r) \\geq c_d r^{(d-1)/2}$ holds, but the upper bound again has a $\\sqrt{\\log r}$ gap.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "high-dimensional geometry",
+      "surface area",
+      "volume of spheres",
+      "Gamma function"
+    ],
+    "prerequisites": [
+      "measure theory in ℝ^d",
+      "special functions"
+    ]
+  },
+  {
+    "id": "ann-989-22",
+    "proofId": "erdos-989",
+    "range": {
+      "startLine": 286,
+      "endLine": 304
+    },
+    "type": "concept",
+    "title": "Schmidt's Classical Discrepancy",
+    "content": "Related result: For axis-aligned boxes in [0,1]^d, Schmidt generalized Roth's lower bound to D(N) ≥ c(log N)^{d/2}. Circles behave differently due to curved boundaries - √r vs polylog.",
+    "mathContext": "Schmidt (1972) proved $D(N) \\geq c_d (\\log N)^{d/2}$ for axis-aligned box discrepancy, generalizing Roth's (1954) bound $D(N) \\geq c \\sqrt{\\log N}$ for $d=2$. The circle discrepancy $\\Omega(\\sqrt{r})$ is much larger because circles have curvature: the number of lattice points near a circle of radius $r$ fluctuates by $\\Omega(\\sqrt{r})$ (Gauss circle problem), while box boundaries are aligned with the lattice.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Roth's theorem on discrepancy",
+      "Schmidt's theorem",
+      "box discrepancy",
+      "Gauss circle problem"
+    ],
+    "prerequisites": [
+      "number theory",
+      "discrepancy theory",
+      "lattice point counting"
+    ]
+  },
+  {
+    "id": "ann-989-23",
+    "proofId": "erdos-989",
+    "range": {
+      "startLine": 306,
+      "endLine": 319
+    },
+    "type": "concept",
+    "title": "Alexander's Half-Plane Discrepancy",
+    "content": "Comparison: Half-planes have discrepancy r^{1/4}, much smaller than circles (√r). The curved boundary of circles can 'trap' points more effectively, leading to higher unavoidable discrepancy.",
+    "mathContext": "Alexander (1990) proved the half-plane discrepancy satisfies $D(N) \\geq cN^{1/4}$ for $N$ points. Since half-plane boundaries are lines (zero curvature), the discrepancy is much lower: $N^{1/4} \\ll \\sqrt{N} = N^{1/2}$. For circles, the curvature $\\kappa = 1/r$ creates $\\Theta(\\sqrt{r})$ lattice point fluctuation along the boundary, which is the mechanism behind the larger discrepancy.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "half-plane discrepancy",
+      "curvature",
+      "boundary effects",
+      "Alexander's theorem"
+    ],
+    "prerequisites": [
+      "geometric discrepancy",
+      "differential geometry"
+    ]
+  },
+  {
+    "id": "ann-989-24",
+    "proofId": "erdos-989",
+    "range": {
+      "startLine": 321,
+      "endLine": 341
+    },
+    "type": "concept",
+    "title": "Summary",
+    "content": "Complete summary of Erdős Problem #989: (1) f(r) unbounded for all A - YES, (2) optimal growth Θ̃(√r), (3) lower bound via Fourier/Bessel, (4) upper bound via probabilistic perturbation. Foundational result in geometric discrepancy.",
+    "mathContext": "The final theorem $\\texttt{erdos\\_989\\_answers\\_both\\_questions}$ packages the two key results as a conjunction: unboundedness ($\\forall A, \\forall M, \\exists r > 0: f_A(r) > M$) and the sharp lower bound ($\\exists c > 0, \\forall A: f_A(r) \\geq c\\sqrt{r}$ eventually). It is proved by pairing $\\texttt{discrepancy\\_unbounded}$ with $\\texttt{beck\\_lower\\_bound}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "problem resolution",
+      "conjunction of results",
+      "sharp bounds"
+    ],
+    "prerequisites": [
+      "all preceding definitions and axioms"
+    ]
+  }
+]

@@ -1,0 +1,256 @@
+{
+  "id": "taylor-theorem",
+  "title": "Taylor's Theorem",
+  "slug": "taylor-theorem",
+  "description": "A smooth function can be approximated by its Taylor polynomial, with explicit remainder terms (Lagrange and Cauchy forms).",
+  "meta": {
+    "author": "Taylor, Lagrange (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Taylor%27s_theorem",
+    "date": "1715",
+    "status": "verified",
+    "tags": [
+      "calculus",
+      "analysis",
+      "approximation",
+      "classic",
+      "intermediate",
+      "wiedijk-100"
+    ],
+    "proofRepoPath": "Proofs/TaylorTheorem.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "taylor_mean_remainder_lagrange",
+        "description": "Lagrange form of remainder",
+        "module": "Mathlib.Analysis.Calculus.Taylor"
+      },
+      {
+        "theorem": "taylor_mean_remainder_cauchy",
+        "description": "Cauchy form of remainder",
+        "module": "Mathlib.Analysis.Calculus.Taylor"
+      },
+      {
+        "theorem": "taylor_mean_remainder_bound",
+        "description": "Uniform bound on remainder",
+        "module": "Mathlib.Analysis.Calculus.Taylor"
+      },
+      {
+        "theorem": "exists_taylor_mean_remainder_bound",
+        "description": "Existence of remainder bound on compact intervals",
+        "module": "Mathlib.Analysis.Calculus.Taylor"
+      }
+    ],
+    "originalContributions": [
+      "Pedagogical exposition of Lagrange and Cauchy remainder forms",
+      "First-order specialization recovering the Mean Value Theorem",
+      "Second-order specialization for quadratic approximation",
+      "Existence of uniform remainder bounds on compact intervals"
+    ],
+    "dateAdded": "2025-12-26",
+    "wiedijkNumber": 35,
+    "axiomCount": 0,
+    "lineCount": 202,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Taylor's theorem has a rich history spanning several centuries. James Gregory discovered the general idea of power series expansion around 1671, and Brook Taylor published his systematic treatment in *Methodus Incrementorum Directa et Inversa* in 1715, giving the result its name. Colin Maclaurin popularized the special case $a = 0$ (Maclaurin series) in his 1742 *Treatise of Fluxions*, though this was already implicit in Taylor's work.\n\nThe rigorous formulation with explicit remainder terms came much later. Joseph-Louis Lagrange introduced the remainder $R_n(x) = \\frac{f^{(n+1)}(\\xi)}{(n+1)!}(x-a)^{n+1}$ in his 1797 *Théorie des fonctions analytiques*, providing the first tool for bounding approximation error. Augustin-Louis Cauchy developed an alternative remainder form $R_n(x) = \\frac{f^{(n+1)}(\\xi)}{n!}(x-\\xi)^n(x-a)$ that is sometimes more convenient for analysis. Both forms rely on the Mean Value Theorem applied to a carefully constructed auxiliary function.\n\nTaylor's theorem is entry #35 on Freek Wiedijk's list of 100 greatest theorems. It is arguably the most widely applied theorem in all of mathematics: it underlies numerical computation (floating-point arithmetic, quadrature, ODE solvers), optimization (Newton's method uses the second-order Taylor expansion), physics (perturbation theory, linearization of nonlinear systems), and machine learning (gradient descent is first-order Taylor). The formal verification in Lean establishes both remainder forms with full generality.",
+    "problemStatement": "**Taylor's Theorem**:\n\nFor $f$ that is $(n+1)$-times continuously differentiable on $[a, x]$:\n\n$$f(x) = \\sum_{k=0}^{n} \\frac{f^{(k)}(a)}{k!}(x-a)^k + R_n(x)$$\n\n**Lagrange remainder**: $R_n(x) = \\frac{f^{(n+1)}(\\xi)}{(n+1)!}(x-a)^{n+1}$ for some $\\xi \\in (a, x)$\n\n**Cauchy remainder**: $R_n(x) = \\frac{f^{(n+1)}(\\xi)}{n!}(x-\\xi)^n(x-a)$ for some $\\xi \\in (a, x)$",
+    "text": "A 202-line formalization of Taylor's theorem (Wiedijk #35) in Lean 4, providing both the Lagrange and Cauchy remainder forms for $(n+1)$-times continuously differentiable functions. The development wraps Mathlib's `Analysis.Calculus.Taylor` module: `taylorPoly` evaluates the degree-$n$ Taylor polynomial via `taylorWithinEval`; `taylor_lagrange` proves $\\exists \\xi \\in (x_0, x),\\, f(x) - T_n(x) = f^{(n+1)}(\\xi)(x - x_0)^{n+1}/(n+1)!$; `taylor_cauchy` gives the alternative form with $(x - \\xi)^n(x - x_0)/n!$. Error bounds are established both pointwise (given a derivative bound $C$) and existentially (on compact intervals via compactness). Two specializations demonstrate the theorem's unifying power: the $n = 0$ case recovers the Mean Value Theorem $f(x) - f(a) = f'(\\xi)(x - a)$, and the $n = 1$ case gives the quadratic approximation used in Newton's method. 6 theorems, 1 definition, 0 sorries, 0 axioms.",
+    "proofStrategy": "The formalization builds on Mathlib's `Analysis.Calculus.Taylor` module, which provides the core remainder theorems.\n\n**Lagrange remainder**: The proof establishes that $f$ is $n$-times differentiable (via `ContDiffOn.of_succ`) and that the $n$-th iterated derivative is differentiable on the open interval (via `differentiableOn_iteratedDerivWithin`). These hypotheses feed into `taylor_mean_remainder_lagrange`, which applies an extended Mean Value Theorem to an auxiliary function that captures the remainder.\n\n**Cauchy remainder**: Uses the same setup but applies `taylor_mean_remainder_cauchy`, which constructs a different auxiliary function yielding the Cauchy form.\n\n**Special cases**: The first-order case ($n = 0$) is shown to recover the Mean Value Theorem by simplifying the factorial and power terms. The second-order case ($n = 1$) gives the quadratic approximation used in optimization. Both require careful simplification with `simp` and `norm_cast`.\n\n**Error bounds**: The `taylor_remainder_bound` theorem provides a uniform bound when the $(n+1)$-th derivative is bounded, and `exists_taylor_remainder_bound` proves that such a bound always exists on compact intervals.",
+    "keyInsights": [
+      "**Taylor polynomial as optimal local approximation**: The Taylor polynomial $T_n(x)$ is the unique polynomial of degree $\\leq n$ that matches $f$ and its first $n$ derivatives at $a$. No other polynomial of the same degree can approximate $f$ better in an infinitesimal neighborhood of $a$",
+      "**Two remainder forms for different purposes**: The Lagrange remainder $\\frac{f^{(n+1)}(\\xi)}{(n+1)!}(x-a)^{n+1}$ is simpler and resembles the next Taylor term, making it ideal for convergence analysis. The Cauchy remainder $\\frac{f^{(n+1)}(\\xi)}{n!}(x-\\xi)^n(x-a)$ is better for integral estimates and complex analysis applications",
+      "**The Mean Value Theorem as $n = 0$ Taylor**: Setting $n = 0$ in the Lagrange form gives $f(x) - f(a) = f'(\\xi)(x - a)$, which is exactly the MVT. Taylor's theorem is thus a higher-order generalization of the MVT",
+      "**Compactness gives uniform bounds**: On a closed interval $[a, b]$, the continuous function $\\|f^{(n+1)}\\|$ achieves its maximum (by the Extreme Value Theorem), giving a uniform bound $C$ on the remainder. This is how we prove convergence of Taylor series",
+      "**Foundation of numerical computing**: Every time a computer evaluates $\\sin(x)$, $e^x$, or $\\log(x)$, it uses a Taylor-like polynomial approximation with a bound on the remainder to guarantee accuracy to machine precision"
+    ],
+    "prerequisites": [
+      "Calculus and real analysis",
+      "Mathematical analysis"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-header",
+      "title": "Imports and Documentation",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Imports Mathlib.Analysis.Calculus.Taylor and Mathlib.Tactic. Extensive docstring covers the Taylor expansion formula, Lagrange and Cauchy remainder forms, Wiedijk #35 designation, and historical notes on Taylor, Gregory, Maclaurin, and Lagrange.",
+      "mathContext": "Imports Mathlib's Taylor calculus module providing $f(x) = \\sum_{k=0}^{n} \\frac{f^{(k)}(a)}{k!}(x-a)^k + R_n(x)$ with Lagrange and Cauchy remainder forms."
+    },
+    {
+      "id": "setup",
+      "title": "Namespace and Setup",
+      "startLine": 53,
+      "endLine": 57,
+      "summary": "Opens Set, Filter, Topology, and Finset namespaces. Opens the Nat scope for natural number notation.",
+      "mathContext": "Opens the Lean namespaces for sets, filters, topology, and finite sums needed for stating Taylor approximation over $\\mathbb{R}$."
+    },
+    {
+      "id": "taylor-poly",
+      "title": "Taylor Polynomial Definition",
+      "startLine": 58,
+      "endLine": 71,
+      "summary": "Defines taylorPoly as a wrapper around Mathlib's taylorWithinEval, computing the degree-n Taylor polynomial of f at x₀ evaluated at x on the interval [x₀, x].",
+      "mathContext": "Defines $T_n(f, x_0, x) = \\sum_{k=0}^{n} \\frac{f^{(k)}(x_0)}{k!}(x - x_0)^k$ as a wrapper around Mathlib's `taylorWithinEval` on the interval $[x_0, x]$."
+    },
+    {
+      "id": "lagrange",
+      "title": "Lagrange Remainder Form",
+      "startLine": 72,
+      "endLine": 97,
+      "summary": "The main theorem: for (n+1)-times continuously differentiable f, there exists ξ ∈ (x₀, x) such that the remainder equals f^(n+1)(ξ) · (x-x₀)^(n+1) / (n+1)!. Proof establishes differentiability hypotheses for taylor_mean_remainder_lagrange.",
+      "mathContext": "Lagrange remainder: $\\exists\\,\\xi \\in (x_0, x),\\; f(x) - T_n(x) = \\frac{f^{(n+1)}(\\xi)}{(n+1)!}(x - x_0)^{n+1}$, for $f \\in C^{n+1}([x_0, x])$."
+    },
+    {
+      "id": "cauchy",
+      "title": "Cauchy Remainder Form",
+      "startLine": 98,
+      "endLine": 122,
+      "summary": "Alternative remainder form: f^(n+1)(ξ) · (x-ξ)^n · (x-x₀) / n! for some ξ ∈ (x₀, x). Uses the same differentiability setup with taylor_mean_remainder_cauchy.",
+      "mathContext": "Cauchy remainder: $\\exists\\,\\xi \\in (x_0, x),\\; f(x) - T_n(x) = \\frac{f^{(n+1)}(\\xi)}{n!}(x - \\xi)^n(x - x_0)$."
+    },
+    {
+      "id": "bounds",
+      "title": "Remainder Bounds",
+      "startLine": 123,
+      "endLine": 139,
+      "summary": "If the (n+1)-th derivative is bounded by C on [a,b], the remainder satisfies |f(x) - T_n(x)| ≤ C · (x-a)^(n+1) / n!. Direct application of taylor_mean_remainder_bound.",
+      "mathContext": "Uniform bound: $\\|f^{(n+1)}\\|_{[a,b]} \\leq C \\implies |f(x) - T_n(x)| \\leq C \\cdot \\frac{(x-a)^{n+1}}{n!}$ for $x \\in [a,b]$."
+    },
+    {
+      "id": "first-order",
+      "title": "First-Order Taylor (Mean Value Theorem)",
+      "startLine": 140,
+      "endLine": 160,
+      "summary": "The n=0 specialization recovers the Mean Value Theorem: f(x) - f(x₀) = f'(ξ)(x - x₀). Proof simplifies factorial and power terms via simp.",
+      "mathContext": "Setting $n = 0$ in the Lagrange form recovers the Mean Value Theorem: $f(x) - f(x_0) = f'(\\xi)(x - x_0)$ for some $\\xi \\in (x_0, x)$."
+    },
+    {
+      "id": "second-order",
+      "title": "Second-Order Taylor (Quadratic Approximation)",
+      "startLine": 161,
+      "endLine": 179,
+      "summary": "The n=1 specialization gives the quadratic approximation used in optimization: remainder equals f''(ξ)(x-x₀)²/2.",
+      "mathContext": "Setting $n = 1$: $f(x) = f(x_0) + f'(x_0)(x - x_0) + \\frac{f''(\\xi)}{2}(x - x_0)^2$ for some $\\xi \\in (x_0, x)$. This quadratic approximation underlies Newton's method in optimization."
+    },
+    {
+      "id": "existence-summary",
+      "title": "Existence of Bounds and Verification",
+      "startLine": 180,
+      "endLine": 202,
+      "summary": "Proves that a uniform remainder bound always exists on compact intervals (via compactness), and verifies all main theorems with #check.",
+      "mathContext": "On compact $[a,b]$, the continuous function $|f^{(n+1)}|$ attains its maximum $C$ (Extreme Value Theorem), so $|R_n(x)| \\leq C \\cdot \\frac{(x-a)^{n+1}}{n!}$ uniformly."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization establishes Taylor's theorem (Wiedijk #35) with both the Lagrange and Cauchy remainder forms, plus explicit and existential error bounds. The special cases n=0 (Mean Value Theorem) and n=1 (quadratic approximation) demonstrate how Taylor's theorem unifies several fundamental results in calculus. All proofs leverage Mathlib's Analysis.Calculus.Taylor module with careful management of differentiability and regularity hypotheses.",
+    "implications": "**Theoretical Significance**: Taylor's theorem is the theoretical foundation for virtually all of numerical analysis. Polynomial interpolation, numerical integration (Simpson's rule, Gaussian quadrature), and ODE solvers (Runge-Kutta methods) all derive their error bounds from Taylor remainder estimates.\n\nIn optimization, the second-order Taylor expansion justifies Newton's method and provides the basis for convergence analysis. The formal verification in Lean ensures that these foundational error bounds are mathematically rigorous.",
+    "openQuestions": [
+      "Can Lean formalize the multivariate Taylor theorem with remainder, which requires working with symmetric multilinear maps and multi-index notation?",
+      "How does the Taylor remainder interact with Lean's formalization of analytic functions — can we prove that the Taylor series of an analytic function converges to the function?",
+      "Can the Cauchy remainder form be used to formalize the proof that the Taylor series of $e^x$ converges everywhere, providing a fully verified computation of $e$?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "mean-value-theorem",
+      "relationship": "foundational",
+      "description": "The Mean Value Theorem is the $n=0$ case of Taylor's theorem (Lagrange remainder). Taylor's theorem generalizes MVT from linear to polynomial approximation: MVT gives $f(b) = f(a) + f'(c)(b-a)$, Taylor gives $f(b) = \\sum f^{(k)}(a)(b-a)^k/k! + R_n$."
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "FTC provides the integral form of the Taylor remainder: $R_n = \\frac{1}{n!}\\int_a^x (x-t)^n f^{(n+1)}(t)\\,dt$. Repeated integration by parts of FTC yields the Taylor expansion."
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "Newton's generalized binomial theorem $(1+x)^\\alpha = \\sum \\binom{\\alpha}{k} x^k$ is the Taylor series of $(1+x)^\\alpha$ at $x=0$ — the case where Taylor's theorem provides an exact infinite series for non-integer exponents."
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "The Taylor series $e^x = \\sum x^n/n!$ converging everywhere is a key application of Taylor's theorem. Hermite's proof that $e$ is transcendental uses the rapid convergence of this series."
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "Euler's evaluation $\\zeta(2) = \\pi^2/6$ can be proved via the Taylor series $\\sin(x)/x = \\prod(1 - x^2/(n\\pi)^2)$ — comparing Taylor coefficients yields the Basel sum."
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "related",
+      "description": "Taylor series expand functions in powers of $(x-a)$ (local, polynomial basis), while Fourier series expand in $e^{inx}$ (global, trigonometric basis). Both are instances of expanding functions in orthogonal bases — Taylor in the monomial basis for analytic functions, Fourier in the exponential basis for $L^2$ functions. The Taylor coefficients $f^{(n)}(a)/n!$ are local (depend on derivatives at $a$), while Fourier coefficients $c_n = \\int f e^{-inx}\\,dx$ are global (depend on the entire function)"
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "related",
+      "description": "The Taylor series $\\arctan(x) = x - x^3/3 + x^5/5 - \\cdots$ evaluated at $x = 1$ gives Leibniz's formula $\\pi/4 = 1 - 1/3 + 1/5 - \\cdots$. Lindemann's proof that $\\pi$ is transcendental (1882) uses the convergence properties of Taylor series for $e^x$ and the Lindemann-Weierstrass theorem"
+    },
+    {
+      "targetId": "intermediate-value-theorem",
+      "relationship": "foundational",
+      "description": "IVT guarantees the existence of the intermediate point $c$ in the Lagrange remainder: $R_n = f^{(n+1)}(c)(x-a)^{n+1}/(n+1)!$ for some $c$ between $a$ and $x$. Without IVT (or the completeness of $\\mathbb{R}$), this intermediate value might not exist"
+    },
+    {
+      "targetId": "taylor-theorem-oq-02",
+      "relationship": "extended-by",
+      "description": "Extends the convergence result to all analytic functions: the Taylor remainder Rₙ(x)→0 whenever f has a convergent power series at x₀, giving a structural generalization of the ad hoc exponential case."
+    },
+    {
+      "targetId": "taylor-theorem-oq-03",
+      "relationship": "extended-by",
+      "description": "Proves the Taylor series of exp converges to exp(x) for all real x via the Lagrange remainder, with explicit error bound |e − Sₙ(1)| ≤ 3/n!."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Calculus.Taylor",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Set",
+      "Filter",
+      "Topology",
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "TaylorTheorem",
+    "lineCount": 202,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "path": "Proofs/TaylorTheorem.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Taylor, Brook",
+      "title": "Methodus Incrementorum Directa et Inversa",
+      "year": "1715",
+      "venue": "London: Innys",
+      "note": "Original statement of the Taylor series expansion for smooth functions around a point"
+    },
+    {
+      "authors": "Rudin, Walter",
+      "title": "Principles of Mathematical Analysis",
+      "year": "1976",
+      "venue": "McGraw-Hill, 3rd edition",
+      "note": "Standard textbook proof of Taylor's theorem with remainder in various forms (Lagrange, Cauchy, integral)"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "taylor_lagrange",
+      "type": "core",
+      "description": "Taylor's theorem with Lagrange remainder: f(x) = T_n(x) + f⁽ⁿ⁺¹⁾(c)/(n+1)! · (x-x₀)ⁿ⁺¹",
+      "leanType": "{f : ℝ → ℝ} → {x₀ x : ℝ} → {n : ℕ} → x₀ < x → ContDiffOn ℝ (n + 1) f (Icc x₀ x) → ∃ x' ∈ Ioo x₀ x, f x - taylorWithinEval f n (Icc x₀ x) x₀ x = iteratedDerivWithin (n + 1) f (Icc x₀ x) x' * (x - x₀) ^ (n + 1) / (n + 1).factorial"
+    }
+  ],
+  "sorries": 0
+}

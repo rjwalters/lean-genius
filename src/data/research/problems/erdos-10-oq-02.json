@@ -1,0 +1,71 @@
+{
+  "slug": "erdos-10-oq-02",
+  "title": "Granville–Soundararajan conjecture (k = 3 for odd integers)",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "tier": "B",
+  "significance": 6,
+  "tractability": 4,
+  "started": "2026-06-15T06:02:35Z",
+  "lastUpdate": "2026-06-15T14:05:00Z",
+  "path": "research/problems/erdos-10-oq-02",
+  "tags": [
+    "number-theory",
+    "additive-combinatorics",
+    "primes",
+    "powers-of-2",
+    "open-conjecture",
+    "gallery-extracted",
+    "seeker-selected"
+  ],
+  "problemStatement": "Is the Granville–Soundararajan conjecture true: is every odd integer n > 1 a sum of a prime and at most 3 powers of 2 (n = p + 2^{a_1} + ... + 2^{a_j}, p prime, j ≤ 3)? The companion even part conjectures at most 4 powers suffice for even n. Both open (Granville–Soundararajan 1998).",
+  "knownResults": {
+    "proven": [
+      "Reduction lemma: m is a sum of at most k powers of 2 (multiset of exponents, size ≤ k) iff popcount(m) ≤ k; hence n ∈ S_k ⟺ ∃ m, popcount(m) ≤ k ∧ n−m ≥ 2 ∧ (n−m) prime.",
+      "Gallagher (1975): for any ε>0 there is k(ε) with lowerDensity(S_k) ≥ 1−ε (best unconditional result).",
+      "Crocker (1971): infinitely many odd n are NOT in S_2 — the reason k=3 (not 2) is needed on the odd side; witnesses are very large (covering systems).",
+      "Grechuk: 1117175146 (even) ∉ S_3 — k=3 cannot extend to all integers."
+    ],
+    "open": [
+      "GS-odd: every odd n > 1 is in S_3 (this question).",
+      "GS-even: every even n ≥ 2 is in S_4.",
+      "Erdős–Graham: no finite k makes {n>1} ⊆ S_k."
+    ],
+    "goal": "Decide GS-odd. Near-term realistic target: formalize the popcount reduction lemma and a Decidable membership for sumPrimeAndTwoPows in Lean, enabling decide/native_decide on concrete witnesses."
+  },
+  "knowledge": {
+    "progressSummary": "VERIFIED (researcher-5, 2026-06-15): 3-file decidability stack Docker-GREEN (3066 jobs). Two Mathlib-drift tactic fixes: stray omega after self-closing simp (Erdos10OQ02:133) + rfl for a no-longer-auto-closing rw (Popcount:83). native_decide witnesses (906 ∉ S_3) machine-confirmed. Gallery meta → verified/original. GS-odd k=3 conjecture remains OPEN (Prop, not assumed).",
+    "builtItems": [
+      "proofs/Proofs/Erdos10OQ02Popcount.lean (S5, build-pending/UNREGISTERED) — popcount characterization repWithAtMost_iff_bitIndices_length (RepWithAtMost k n <-> (Nat.bitIndices n).length <= k) via Mathlib's binary-rep uniqueness; efficient Decidable instances for RepWithAtMost and IsPrimePlusKPowers; native_decide witnesses incl. not IsPrimePlusKPowers 2 906 and IsPrimePlusKPowers 3 906.",
+      "research/problems/erdos-10-oq-02/verify_popcount_decision.py (S5) — cert: (bitIndices n).length==popcount n; RepWithAtMost k n <-> popcount<=k; the five exact Lean witnesses. PASS.",
+      "proofs/Proofs/Erdos10OQ02Decidable.lean (S4, build-pending/UNREGISTERED) — exponent bound a<2^a, bounded reduction lemma RepWithAtMost<->RepBoundedDistinct (exponents<=n), prime-side bound; the finiteness/decidability keystone on top of the S3 reduction lemma.",
+      "research/problems/erdos-10-oq-02/verify_decidable_membership.py (S4) — exact-arithmetic cert: RepWithAtMost==bounded-distinct==popcount<=k; bounded prime form==naive; 905/906 caps; Grechuk 1117175146 not-in-S_3.",
+      "research/problems/erdos-10-oq-02/verify_min_powers_parity.py (S2) — exact stdlib sieve, minPowers over both parities to 10^6; pins smallest n by minPowers value, confirms 905/906 consecutive caps and the approximate +1 distribution shift.",
+      "research/problems/erdos-10-oq-02/verify_granville_soundararajan_odd.py (S1) — stdlib+sympy experiment (odd/even sweeps, distributions, Grechuk check)."
+    ],
+    "insights": [
+      "S5: the S4 bounded/powerset form is decidable only in principle (2^(n+1) candidates). The FEASIBLE route is the popcount identity: minimal distinct powers of two = (Nat.bitIndices n).length = binary popcount. The forward direction is exactly uniqueness of the binary representation, available in Mathlib v4.26 as Finset.toFinset_bitIndices_twoPowSum (inverse leg of Finset.equivBitIndices : N ≃ Finset N). This gives O(log n) decidability for RepWithAtMost and a range(n+1) prime search for IsPrimePlusKPowers; 906 closes by native_decide, Grechuk does not.",
+      "S4: the S3 reduction lemma alone does NOT bound exponents; the finiteness ingredient is a<2^a, giving exp<n for any exponent in a rep of n. With distinct exponents all <=n and at most k of them, membership is a finite search (decidable). Prime side bounds as p<=n. This is the exact shape native_decide needs.",
+      "S_k membership reduces to popcount(m) ≤ k offsets: n ∈ S_k ⟺ ∃ m with popcount(m) ≤ k and (n−m) prime, n−m ≥ 2.",
+      "S2: the odd cap of 2 is NECESSARY, not trivial — smallest odd needing exactly 2 powers is 905 = 5·181 (a de Polignac number: odd composite, not 2^a+prime). So odd n ∉ S_1 exist.",
+      "S2: 905 (smallest odd needing 2) and 906 (smallest even needing 3) are CONSECUTIVE — the +1 parity offset realized back-to-back at the forcing extremes.",
+      "S2: the even minPowers distribution ≈ the odd one shifted +1 (even[k]≈odd[k-1], match to ~0.02%): minPowers(2j) ≤ 1 + minPowers(2j-1) (spend 2^0 to fix parity, then the odd subproblem); equality usually but not always — even n can reach prime 2 via m=n-2, causing small deviations.",
+      "GS caps 3 (odd) / 4 (even) = in-range caps 2 / 3, plus one safety power; the forcing cases live beyond brute force.",
+      "Grechuk's 1117175146 confirmed ∉ S_3 and ∈ S_4 (popcount 16).",
+      "S5 (2026-06-15, researcher-3, build-free blackout): de-risked the S4 decidability keystone and DOCUMENTED the exact Decidable-instance recipe (Part VIII comment in Erdos10OQ02Decidable.lean) with v4.26-verified bridge lemma names: target RepWithAtMost k n ↔ ∃ F ∈ (Finset.range(n+1)).powerset, F.card≤k ∧ (∑ a∈F, 2^a)=n; instance via decidable_of_iff. Bridge: Multiset.toFinset_eq (Finset/Dedup.lean:57, F.val=s for Nodup s), Multiset.toFinset_card_of_nodup (Finset/Card.lean:188), Finset.sum_eq_multiset_sum, Multiset.mem_toFinset, Finset.mem_powerset/mem_range. Re-ran verify_decidable_membership.py: ALL CERTS PASS (a<2^a; RepWithAtMost==bounded-distinct==popcount≤k n≤200; 905/906 consecutive caps; Grechuk 1117175146 ∉S₃ ∈S₄). Reduces the remaining step from 'design the bridge' to 'type these verified-name lemmas + decide'. Still build-pending (docker info exit124, Aristotle prove 404); file unregistered.",
+      "REGISTRATION (researcher-6): the OQ-02 decidability chain Erdos10OQ02 ← Erdos10OQ02Decidable ← Erdos10OQ02Popcount (Decidable instance + native_decide examples) sat on main fully unimported. native_decide only verifies when built ⇒ the 906∉S_2 / Grechuk 1117175146∉S_3 examples were inspection-only until this import. Popcount route (#24488) makes the decision cheap (bitIndices.length ≤ k), so native_decide is fast even for the billion-scale Grechuk witness."
+    ],
+    "mathlibGaps": [
+      "Decidable instances for RepWithAtMost / IsPrimePlusKPowers now PROVIDED (S5, build-pending in Erdos10OQ02Popcount.lean) via the popcount characterization; pending registration + native_decide confirmation.",
+      "Crocker (1971) and Gallagher (1975) results are documented in source comments only, not formalized."
+    ],
+    "nextSteps": [
+      "On green deployer build: the decidability stack is machine-checked; consider gallery meta.json for the OQ-02 entry (status verified iff 0 sorry/0 axiom confirmed by build). #24448 can then be closed (its deferred Decidable instance is now built).",
+      "Docker-up: type the Part VIII Decidable-instance recipe into Erdos10OQ02Decidable.lean (verified-name bridge lemmas listed there), derive Decidable (IsPrimePlusKPowers) via isPrimePlusKPowers_iff_bounded_distinct + Nat.decidablePrime, then close 906/Grechuk witnesses by native_decide. Register Erdos10OQ02.lean + Erdos10OQ02Decidable.lean in proofs/Proofs.lean.",
+      "ACT (Docker-gated): formalize the popcount≤k reduction lemma and a Decidable membership for sumPrimeAndTwoPows; discharge the 906 / Grechuk witnesses by decide/native_decide.",
+      "Add Crocker (1971) citation to the gallery as the precise reason k=3 (not 2) is required on the odd side.",
+      "GS-odd itself needs sieve/large-sieve machinery (Gallagher line) — out of brute-force and near-term Lean reach."
+    ],
+    "markdown": "See research/problems/erdos-10-oq-02/knowledge.md for the full write-up (reduction lemma, experiment results, parity structure, references)."
+  }
+}

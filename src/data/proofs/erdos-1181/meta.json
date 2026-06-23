@@ -1,0 +1,214 @@
+{
+  "id": "erdos-1181",
+  "title": "Erdős Problem #1181: Upper Bound on q(n, log n)",
+  "slug": "erdos-1181",
+  "description": "Let q(n,k) be the least prime not dividing ∏_{1≤i≤k}(n+i). Is there c > 0 such that q(n, ⌊log n⌋) < (1-c)(log n)² for all large n? The trivial bound gives (1+o(1))(log n)² via the primorial argument. Open.",
+  "meta": {
+    "author": "Erdős (1979)",
+    "sourceUrl": "https://erdosproblems.com/1181",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1181Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "prime-divisors",
+      "consecutive-products",
+      "primorial",
+      "PNT",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "lineCount": 292,
+    "erdosNumber": 1181,
+    "erdosUrl": "https://erdosproblems.com/1181",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-03-29",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Finset.Icc",
+        "description": "Closed intervals as finite sets",
+        "module": "Mathlib.Data.Finset.Interval"
+      },
+      {
+        "theorem": "Finset.prod",
+        "description": "Product over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Real logarithm function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter for eventually statements",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Nat.find",
+        "description": "Constructive minimum of a decidable predicate",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Nat.exists_infinite_primes",
+        "description": "Infinitely many primes (for q existence)",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "originalContributions": [
+      "consecutiveProduct definition: ∏(n+i) for i in [1,k]",
+      "consecutiveProduct_pos theorem: positivity proved from Finset.prod_pos",
+      "q definition: smallest prime not dividing consecutive product (constructive via Nat.find)",
+      "q_prime, q_not_dvd theorems: properties proved from Nat.find_spec",
+      "q_minimal theorem: minimality proved from Nat.find_min",
+      "erdos1181_conjecture definition: main conjecture with Filter.atTop",
+      "tao_heuristic_bound definition: q ≪ (log log n / log log log n) · log n",
+      "chebyshev_theta definition: Chebyshev function θ(x)",
+      "erdos457_conjecture definition: related lower bound conjecture",
+      "iterated_log_sublinear theorem: C·(loglog n / logloglog n) < (1/2)·log n eventually (fully proved via Real.tendsto_log_div_rpow_atTop and Filter composition, no sorry, no axiom)",
+      "conjectures_compatible theorem: compatibility of #457 and #1181 (fully proved, no sorry)",
+      "tao_implies_erdos1181 theorem: tao_heuristic_bound implies erdos1181_conjecture (fully proved, no sorry)"
+    ],
+    "axiomCount": 1,
+    "assumptions": "1 axiom: erdos_1181 (main open conjecture, Erdős 1979, remains open). 0 sorries. Properties of q(n,k) proved constructively from Mathlib.",
+    "theoremCount": 8,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #1181** appears in Erdős [Er79d, p.78] and asks for an upper bound on q(n, log n), the least prime not dividing a product of consecutive integers. The trivial upper bound q(n, log n) ≤ (1+o(1))(log n)² follows from the primorial argument combined with the Prime Number Theorem. The conjecture asks whether the constant can be improved from (1+o(1)) to (1-c) for some fixed c > 0.\n\nThis is the companion upper bound question to Erdős Problem #457, which asks about lower bounds. Together they aim to pin down the growth rate of q(n, log n) between Ω(log n) and O((log n)²). Probabilistic heuristics described by Tao in the context of Problem #457 suggest a much stronger bound of q(n, log n) ≪ (log log n / log log log n) · log n.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet $q(n,k)$ denote the least prime which does not divide $\\prod_{1 \\leq i \\leq k}(n+i)$. Is it true that there exists some $c > 0$ such that, for all large $n$,\n$$q(n, \\lfloor\\log n\\rfloor) < (1-c)(\\log n)^2?$$\n\n**Known:** The upper bound $q(n, \\log n) \\leq (1+o(1))(\\log n)^2$ follows from the primorial bound: all primes below $q$ divide the product, so their primorial is $\\leq n^{\\log n}$. By PNT, this gives $q \\lesssim (\\log n)^2$.",
+    "text": "Let q(n,k) be the least prime not dividing ∏(n+i). Is there c > 0 such that q(n, log n) < (1-c)(log n)² for all large n? The trivial bound gives (1+o(1))(log n)² via primorials/PNT.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** Define consecutiveProduct and q(n,k) constructively using Finset.prod and Nat.find, sharing infrastructure with Problem #457.\n\n2. **Properties of q:** Prove q_prime, q_not_dvd, and q_minimal directly from Nat.find_spec/Nat.find_min (no axioms needed for these).\n\n3. **Trivial Upper Bound:** Discuss the (1+o(1))(log n)² bound from the primorial/PNT argument in comments (no axiom declared); reference the Chebyshev function θ(x) and PNT.\n\n4. **Main Conjecture:** State the (1-c)(log n)² bound using Filter.atTop for 'eventually.'\n\n5. **Connections:** Relate to Tao's heuristic and Problem #457's lower bound.",
+    "keyInsights": [
+      "**The (1+o(1)) vs (1-c) gap:** The trivial bound approaches (log n)² from above; the conjecture asks if the true bound is strictly below (log n)² by a constant factor",
+      "**Primorial argument:** All primes < q(n,k) divide the consecutive product, so primorial(q) ≤ product ≤ (n+k)^k. By PNT, θ(q) ~ q, giving q ≤ (1+o(1))k·log(n+k)",
+      "**Constructive q definition:** Using Nat.find with the existence proof from Nat.exists_infinite_primes avoids unnecessary axioms",
+      "**Tao's heuristic:** The probabilistic prediction q ≪ (log log n / log log log n) · log n would vastly exceed what the conjecture asks for",
+      "**Compatibility with #457:** Both conjectures holding would sandwich q between (2+ε)log n and (1-c)(log n)² infinitely often"
+    ],
+    "prerequisites": [
+      "Number theory (primes, divisibility, PNT)",
+      "Analytic number theory (Chebyshev function, primorials)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Part I: Core Definitions",
+      "startLine": 31,
+      "endLine": 55,
+      "summary": "Defines consecutiveProduct and proves positivity. Shared infrastructure with Problem #457.",
+      "mathContext": "Defines ∏_{i=1}^k (n+i) using Finset.Icc and proves consecutiveProduct_pos."
+    },
+    {
+      "id": "q-definition",
+      "title": "Part II: Properties of q(n, k)",
+      "startLine": 59,
+      "endLine": 79,
+      "summary": "Defines q(n,k) constructively via Nat.find. Proves q_prime, q_not_dvd, q_minimal.",
+      "mathContext": "q(n,k) is the smallest prime not dividing the consecutive product. Properties proved from Nat.find."
+    },
+    {
+      "id": "trivial-bound",
+      "title": "Part III: Trivial Upper Bound",
+      "startLine": 80,
+      "endLine": 99,
+      "summary": "Discusses q(n, log n) ≤ (1+o(1))(log n)² from the primorial/PNT argument in comments; no axiom is declared in this section.",
+      "mathContext": "The primorial of q divides the product, giving θ(q) ≤ k·log(n+k). By PNT: q ≤ (1+o(1))(log n)²."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Part IV: The Main Conjecture (OPEN)",
+      "startLine": 100,
+      "endLine": 109,
+      "summary": "erdos1181_conjecture: ∃ c > 0, q(n, log n) < (1-c)(log n)² eventually. Axiom erdos_1181.",
+      "mathContext": "The open conjecture asks whether the constant in the upper bound can be improved from (1+o(1)) to (1-c) for fixed c > 0."
+    },
+    {
+      "id": "tao-heuristic",
+      "title": "Part V: Tao's Heuristic Bound",
+      "startLine": 110,
+      "endLine": 199,
+      "summary": "Tao's heuristic: q ≪ (log log n / log log log n) · log n. tao_implies_erdos1181: fully proved implication (no sorry, no axiom).",
+      "mathContext": "Probabilistic heuristics predict a bound dramatically stronger than the conjecture."
+    },
+    {
+      "id": "chebyshev-pnt",
+      "title": "Part VI: Connection to Primorials and PNT",
+      "startLine": 201,
+      "endLine": 230,
+      "summary": "Chebyshev theta function definition. PNT and primorial bound discussed in comments (no separate axioms declared).",
+      "mathContext": "θ(x) = ∑_{p≤x} log p ~ x by PNT. Used to derive the trivial upper bound on q."
+    },
+    {
+      "id": "connection-457",
+      "title": "Part VII: Connection to Problem #457",
+      "startLine": 232,
+      "endLine": 262,
+      "summary": "erdos457_conjecture definition. conjectures_compatible theorem (fully proved, no sorry).",
+      "mathContext": "Problem #457 (lower bound) and #1181 (upper bound) together sandwich q(n, log n) between Ω(log n) and O((log n)²)."
+    },
+    {
+      "id": "summary",
+      "title": "Part VIII: Summary",
+      "startLine": 264,
+      "endLine": 290,
+      "summary": "erdos_1181_main theorem. The (1+o(1)) vs (1-c) gap is the central open question.",
+      "mathContext": "The gap between the trivial (1+o(1)) and conjectured (1-c) represents genuine content about prime distribution."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #1181 asks whether q(n, ⌊log n⌋) — the least prime not dividing a product of consecutive integers — is bounded above by (1-c)(log n)² for some fixed c > 0. The trivial bound of (1+o(1))(log n)² follows from the primorial argument and PNT. This is the companion upper bound question to Erdős #457, and together they aim to pin down the growth rate of q(n, log n).",
+    "implications": "**Theoretical Significance**\n\n1. **Primorial-PNT Connection:** The trivial bound connects consecutive products to the Prime Number Theorem via the Chebyshev function, demonstrating deep links between additive and multiplicative number theory.\n\n2. **Companion to #457:** Resolution of both #457 and #1181 would provide tight bounds on q(n, log n), revealing the precise interplay between prime distribution and consecutive product divisibility.\n\n3. **Tao's Heuristic:** If the probabilistic prediction holds, q grows much slower than (log n)², suggesting the conjecture should be true with substantial room.",
+    "openQuestions": [
+      "Is q(n, ⌊log n⌋) < (1-c)(log n)² for all sufficiently large n?",
+      "What is the true growth rate of q(n, ⌊log n⌋)?",
+      "Does Tao's heuristic bound q ≪ (log log n / log log log n) · log n hold?",
+      "Can the primorial argument be refined to prove the (1-c) improvement?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Finset"
+    ],
+    "namespace": "Erdos1181",
+    "lineCount": 292,
+    "axiomCount": 1,
+    "theoremCount": 8,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos1181Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-457",
+      "relationship": "parent",
+      "description": "Problem #1181 is the upper bound sub-question of #457, which concerns lower bounds for the same function q(n,k)"
+    },
+    {
+      "targetId": "erdos-383",
+      "relationship": "related",
+      "description": "Related Erdős problem on prime divisors and smooth numbers"
+    },
+    {
+      "targetId": "erdos-841",
+      "relationship": "related",
+      "description": "Related Erdős problem on prime divisors"
+    }
+  ],
+  "sorries": 0
+}

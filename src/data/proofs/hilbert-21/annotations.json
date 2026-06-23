@@ -1,0 +1,245 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "hilbert-21",
+    "range": {
+      "startLine": 7,
+      "endLine": 68
+    },
+    "type": "concept",
+    "title": "Hilbert's 21st Problem: Riemann-Hilbert",
+    "content": "**Hilbert's 21st Problem (1900)**:\n\n> Given singular points z₁,...,zₘ and a monodromy representation ρ, does there exist a Fuchsian differential equation with this monodromy?\n\n**Status: SOLVED (with subtleties)**\n\n- **Irreducible case**: YES (Plemelj 1908)\n- **General case**: NO! (Bolibrukh 1989 counterexamples)\n\nThe problem connects complex analysis, ODEs, algebraic geometry, and representation theory.",
+    "mathContext": "$\\rho : \\pi_1(\\mathbb{C} \\setminus \\{z_1, \\ldots, z_m\\}) \\to GL(n, \\mathbb{C})$; Fuchsian: $dY/dz = A(z)Y$ with simple poles",
+    "significance": "key",
+    "relatedConcepts": [
+      "monodromy",
+      "Fuchsian equation",
+      "ODE",
+      "Riemann-Hilbert problem"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "fundamental group",
+      "linear ODEs"
+    ]
+  },
+  {
+    "id": "ann-singular-points",
+    "proofId": "hilbert-21",
+    "range": {
+      "startLine": 78,
+      "endLine": 94
+    },
+    "type": "definition",
+    "title": "Singular Points and Punctured Plane",
+    "content": "**Singular Points**:\n\nThe configuration space is ℂ with finitely many punctures {z₁, ..., zₘ}.\n\n**Punctured Plane**:\n$$X = \\mathbb{C} \\setminus \\{z_1, \\ldots, z_m\\}$$\n\n**Fundamental Group**:\n$$\\pi_1(X) \\cong \\text{Free group on } m-1 \\text{ generators}$$\n\nLoops around singular points generate the monodromy.",
+    "mathContext": "$X = \\mathbb{C} \\setminus \\{z_1, \\ldots, z_m\\}$; $\\pi_1(X) \\cong$ free group on $m$ generators",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "fundamental group",
+      "punctured plane",
+      "topology",
+      "SingularPoints structure"
+    ],
+    "prerequisites": [
+      "complex topology",
+      "fundamental group",
+      "Lean 4 structures"
+    ]
+  },
+  {
+    "id": "ann-monodromy",
+    "proofId": "hilbert-21",
+    "range": {
+      "startLine": 100,
+      "endLine": 131
+    },
+    "type": "definition",
+    "title": "Monodromy Representations",
+    "content": "**Monodromy Representation**:\n\nA group homomorphism:\n$$\\rho : \\pi_1(\\mathbb{C} \\setminus \\{z_1, \\ldots, z_m\\}) \\to GL(n, \\mathbb{C})$$\n\n**Physical meaning**: How solutions transform when analytically continued around singular points.\n\n**Irreducibility**: A representation is **irreducible** if it has no proper invariant subspaces.\n\n**Key fact**: The Riemann-Hilbert problem has different answers for irreducible vs reducible representations!",
+    "mathContext": "$\\rho : \\pi_1(\\mathbb{C} \\setminus \\{z_1, \\ldots, z_m\\}) \\to GL(n, \\mathbb{C})$; irreducible: no proper invariant subspace $W \\neq \\{0\\}, \\mathbb{C}^n$",
+    "significance": "key",
+    "relatedConcepts": [
+      "analytic continuation",
+      "GL(n)",
+      "invariant subspace",
+      "MonodromyRep",
+      "isIrreducible"
+    ],
+    "prerequisites": [
+      "representation theory",
+      "fundamental group",
+      "GL(n,ℂ)"
+    ]
+  },
+  {
+    "id": "ann-fuchsian",
+    "proofId": "hilbert-21",
+    "range": {
+      "startLine": 137,
+      "endLine": 164
+    },
+    "type": "definition",
+    "title": "Fuchsian Systems",
+    "content": "**Fuchsian System**:\n\nA linear ODE system:\n$$\\frac{dY}{dz} = A(z) \\cdot Y$$\n\nwhere $A(z)$ has **simple poles** at singular points:\n$$A(z) = \\sum_i \\frac{A_i}{z - z_i}$$\n\n**Key properties**:\n- Residue matrices Aᵢ at each singularity\n- $\\sum_i A_i = 0$ (from the point at infinity)\n- Solutions have at most polynomial growth",
+    "mathContext": "$\\frac{dY}{dz} = A(z) Y$ where $A(z) = \\sum_i \\frac{A_i}{z - z_i}$; residue sum: $\\sum_i A_i = 0$",
+    "significance": "key",
+    "relatedConcepts": [
+      "simple pole",
+      "residue matrix",
+      "regular singular",
+      "FuchsianSystem structure",
+      "residue_sum_zero"
+    ],
+    "prerequisites": [
+      "linear ODEs",
+      "complex analysis",
+      "matrix algebra"
+    ]
+  },
+  {
+    "id": "ann-plemelj",
+    "proofId": "hilbert-21",
+    "range": {
+      "startLine": 193,
+      "endLine": 219
+    },
+    "type": "concept",
+    "title": "Plemelj's Theorem (Irreducible Case)",
+    "content": "**Plemelj's Theorem (1908)**:\n\nIf the monodromy representation ρ is **irreducible**, then there EXISTS a Fuchsian system realizing it.\n\n**Statement**:\n$$\\forall \\rho \\text{ irreducible}: \\exists \\text{ Fuchsian } F \\text{ with monodromy } \\rho$$\n\n**This is the positive answer to Hilbert 21** for the irreducible case.\n\nPlemelj originally claimed this for ALL representations, but that was incorrect...",
+    "mathContext": "$\\rho$ irreducible $\\Rightarrow \\exists$ Fuchsian system $F$ with monodromy $\\rho$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Plemelj theorem",
+      "irreducible representation",
+      "riemann_hilbert_irreducible",
+      "plemelj_theorem_irreducible"
+    ],
+    "prerequisites": [
+      "MonodromyRep",
+      "FuchsianSystem",
+      "isIrreducible"
+    ]
+  },
+  {
+    "id": "ann-bolibrukh",
+    "proofId": "hilbert-21",
+    "range": {
+      "startLine": 225,
+      "endLine": 254
+    },
+    "type": "concept",
+    "title": "Bolibrukh's Counterexamples (1989)",
+    "content": "**Bolibrukh's Discovery (1989)**:\n\nThere exist monodromy representations that CANNOT be realized by ANY Fuchsian system!\n\n**First counterexample**:\n- 4 singular points\n- Dimension n = 3\n- Reducible representation\n\n**Theorem**: The general Riemann-Hilbert problem has a **negative answer**.\n\n$$\\exists \\rho: \\neg\\exists \\text{ Fuchsian } F \\text{ with monodromy } \\rho$$\n\nThis disproved Hilbert's original conjecture after 89 years!",
+    "mathContext": "$\\exists \\rho$ reducible: $\\neg\\exists$ Fuchsian $F$ with monodromy $\\rho$ (first example: 4 singular points, $n=3$)",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bolibrukh counterexample",
+      "reducible representation",
+      "bolibrukh_counterexample",
+      "hilbert21_negative_in_general"
+    ],
+    "prerequisites": [
+      "MonodromyRep",
+      "FuchsianSystem",
+      "isIrreducible"
+    ]
+  },
+  {
+    "id": "ann-birkhoff",
+    "proofId": "hilbert-21",
+    "range": {
+      "startLine": 260,
+      "endLine": 284
+    },
+    "type": "concept",
+    "title": "Birkhoff's Theorem (Regular Singular)",
+    "content": "**Birkhoff's Theorem**:\n\nIf we allow **regular singular** systems (not just Fuchsian), then EVERY monodromy can be realized!\n\n**Regular singular** = higher-order poles allowed, but solutions have at most polynomial growth.\n\n**Fuchsian** ⊂ **Regular Singular**\n\n$$\\forall \\rho: \\exists \\text{ regular singular system with monodromy } \\rho$$\n\nThis shows the obstruction is specifically the **simple pole** (Fuchsian) constraint.",
+    "mathContext": "Regular singular (higher-order poles, polynomial growth): $\\forall \\rho, \\exists$ regular singular system realizing $\\rho$; Fuchsian $\\subsetneq$ regular singular",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Birkhoff theorem",
+      "regular singular point",
+      "pole order",
+      "polynomial growth"
+    ],
+    "prerequisites": [
+      "FuchsianSystem",
+      "regular singular systems",
+      "ODE theory"
+    ]
+  },
+  {
+    "id": "ann-characterization",
+    "proofId": "hilbert-21",
+    "range": {
+      "startLine": 290,
+      "endLine": 317
+    },
+    "type": "concept",
+    "title": "Complete Characterization",
+    "content": "**Characterization Theorem (Deligne-Bolibrukh)**:\n\nA monodromy representation is Fuchsian-realizable if and only if certain **cohomological conditions** are satisfied.\n\n**Obstruction lives in**:\n- The splitting type of an associated vector bundle\n- The Fuchs indices satisfy arithmetic conditions\n- The Deligne-Malgrange category\n\n**Formula**: Realizability ↔ vector bundle is trivial + Fuchs relations satisfied.",
+    "mathContext": "Realizability $\\iff$ associated holomorphic vector bundle over $\\mathbb{CP}^1$ is trivial + Fuchs relations satisfied",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Deligne-Malgrange category",
+      "vector bundle splitting",
+      "Fuchs relations",
+      "cohomological obstruction"
+    ],
+    "prerequisites": [
+      "holomorphic vector bundles",
+      "Fuchs relation",
+      "algebraic geometry"
+    ]
+  },
+  {
+    "id": "ann-rh-correspondence",
+    "proofId": "hilbert-21",
+    "range": {
+      "startLine": 323,
+      "endLine": 342
+    },
+    "type": "concept",
+    "title": "Riemann-Hilbert Correspondence",
+    "content": "**The Riemann-Hilbert Correspondence**:\n\nEquivalence of derived categories:\n$$D^b(\\text{RegSingDMod}) \\simeq D^b(\\text{Perv})$$\n\n**Connects**:\n- Local systems (representations of π₁)\n- Regular singular D-modules\n- Regular singular connections on vector bundles\n- Perverse sheaves\n\n**Established by**: Kashiwara, Mebkhout, and others.\n\n**Impact**: Cornerstone of the geometric Langlands program!",
+    "mathContext": "$D^b(\\text{RegSing-DModules}) \\simeq D^b(\\text{Perv})$ (Kashiwara-Mebkhout equivalence)",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "D-modules",
+      "perverse sheaves",
+      "geometric Langlands",
+      "local systems",
+      "Kashiwara-Mebkhout"
+    ],
+    "prerequisites": [
+      "derived categories",
+      "D-modules",
+      "perverse sheaves"
+    ]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "hilbert-21",
+    "range": {
+      "startLine": 348,
+      "endLine": 386
+    },
+    "type": "concept",
+    "title": "Problem Status: SOLVED (with subtleties)",
+    "content": "**Hilbert 21: SOLVED (nuanced answer)**\n\n**Summary**:\n| Case | Answer | Source |\n|------|--------|--------|\n| Irreducible ρ | **YES** | Plemelj 1908 |\n| General ρ | **NO** | Bolibrukh 1989 |\n| Regular singular | **YES** | Birkhoff |\n| Complete criterion | **Known** | Deligne-Bolibrukh |\n\n**The problem sparked**:\n- Theory of linear ODEs with singularities\n- Algebraic geometry (D-modules)\n- Riemann-Hilbert correspondence\n- Geometric Langlands program",
+    "mathContext": "Irreducible $\\rho$: YES (Plemelj 1908); General $\\rho$: NO (Bolibrukh 1989); Regular singular: YES (Birkhoff)",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Hilbert's 21st problem status",
+      "Plemelj",
+      "Bolibrukh",
+      "geometric Langlands program"
+    ],
+    "prerequisites": [
+      "FuchsianSystem",
+      "MonodromyRep",
+      "Riemann-Hilbert correspondence"
+    ]
+  }
+]

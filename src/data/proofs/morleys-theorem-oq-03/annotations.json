@@ -1,0 +1,62 @@
+[
+  {
+    "id": "morley-oq03-ann-overview",
+    "proofId": "morleys-theorem-oq-03",
+    "range": { "startLine": 3, "endLine": 44 },
+    "type": "concept",
+    "title": "An Extremal Question About Morley Triangles",
+    "content": "The header frames OQ-03: the parent Morley theorem gives the Morley side length s(α,β,γ) = 8R·sin(α/3)·sin(β/3)·sin(γ/3); this file asks which triangle of fixed circumradius R has the largest Morley triangle. The answer is the equilateral, uniquely, with maximal side 8R·sin³(π/9) ≈ 0.32008·R (π/9 = 20°). The strategy is deliberately calculus-free: substitute aᵢ = αᵢ/3 (so Σaᵢ = π/3, mean π/9) and bound the product of sines by its value at the mean via AM–GM and Jensen, then chain with monotonicity of t↦t³.",
+    "mathContext": "$s(\\alpha,\\beta,\\gamma) = 8R\\sin\\tfrac{\\alpha}{3}\\sin\\tfrac{\\beta}{3}\\sin\\tfrac{\\gamma}{3} \\le 8R\\sin^3\\tfrac{\\pi}{9}$, equality iff $\\alpha=\\beta=\\gamma=\\tfrac{\\pi}{3}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Morley's trisector theorem", "extremal geometry", "circumradius", "symmetric optimization"],
+    "prerequisites": ["Morley's theorem", "triangle geometry", "trigonometry"]
+  },
+  {
+    "id": "morley-oq03-ann-amgm",
+    "proofId": "morleys-theorem-oq-03",
+    "range": { "startLine": 50, "endLine": 108 },
+    "type": "insight",
+    "title": "AM–GM (SOS Certificate) and Three-Point Jensen for sin",
+    "content": "Part I proves the two analytic inequalities. amgm_three establishes u·v·w ≤ ((u+v+w)/3)³ for nonnegative reals via the explicit sum-of-squares decomposition (u+v+w)³ − 27uvw = 3·Σ u(v−w)² + ½(u+v+w)·Σ(u−v)², which nlinarith closes — no rpow or weighted-mean machinery. The Jensen inequality sin a₁ + sin a₂ + sin a₃ ≤ 3·sin((a₁+a₂+a₃)/3) for aᵢ ∈ [0,π] is built by treating the mean as a fourth point and chaining the two-point (midpoint) concavity inequality, avoiding Finset/Matrix-indexed Jensen entirely.",
+    "mathContext": "$uvw \\le \\left(\\tfrac{u+v+w}{3}\\right)^3$ and $\\sum \\sin a_i \\le 3\\sin\\!\\left(\\tfrac{\\sum a_i}{3}\\right)$.",
+    "significance": "key",
+    "relatedConcepts": ["AM–GM inequality", "sum-of-squares certificate", "Jensen's inequality", "concavity of sine", "nlinarith"],
+    "prerequisites": ["AM–GM", "Jensen's inequality", "concave functions"]
+  },
+  {
+    "id": "morley-oq03-ann-equality-cases",
+    "proofId": "morleys-theorem-oq-03",
+    "range": { "startLine": 109, "endLine": 168 },
+    "type": "insight",
+    "title": "Equality Cases from Strict Concavity",
+    "content": "sin_two_eq and sin_jensen_three_eq isolate the equality cases of the two- and three-point Jensen inequalities for sin. Because sin is strictly concave on [0,π] (Real.strictConcaveOn_sin_Icc), tightness in the midpoint inequality forces the two points to coincide; chaining this gives that equality in the three-point Jensen forces a₁ = a₂ = a₃. These equality-case lemmas are exactly what upgrades the bound to a strict uniqueness statement later.",
+    "mathContext": "If $\\sum \\sin a_i = 3\\sin\\!\\left(\\tfrac{\\sum a_i}{3}\\right)$ and $a_i \\in [0,\\pi]$ then $a_1=a_2=a_3$ (strict concavity).",
+    "significance": "supporting",
+    "relatedConcepts": ["strict concavity", "equality case", "Real.strictConcaveOn_sin_Icc", "uniqueness"],
+    "prerequisites": ["strict concavity", "equality conditions in inequalities"]
+  },
+  {
+    "id": "morley-oq03-ann-side-and-max",
+    "proofId": "morleys-theorem-oq-03",
+    "range": { "startLine": 169, "endLine": 262 },
+    "type": "concept",
+    "title": "Morley Side Length and Its Sharp Maximum",
+    "content": "Defines morleySide (the product form 8R·sin(α/3)·sin(β/3)·sin(γ/3)) and proves the sharp bound morley_side_le_equilateral: s ≤ 8R·sin³(π/9). The product of sines is bounded by sin³(π/9) by chaining AM–GM (applied to the three sines), the trisected-mean constraint a₁+a₂+a₃ = π/3, the three-point Jensen, and monotonicity of t↦t³ on [0,∞) (pow_le_pow_left₀); nonnegativity of each sin on [0,π] keeps every factor in range. morley_side_equilateral shows the equilateral attains the bound.",
+    "mathContext": "$\\prod \\sin a_i \\le \\sin^3\\!\\left(\\tfrac{a_1+a_2+a_3}{3}\\right) = \\sin^3\\tfrac{\\pi}{9}$, attained at $a_i = \\tfrac{\\pi}{9}$.",
+    "significance": "key",
+    "relatedConcepts": ["sharp inequality", "monotonicity of powers", "attainment", "circumradius"],
+    "prerequisites": ["AM–GM", "Jensen's inequality", "monotonicity of t↦tⁿ"]
+  },
+  {
+    "id": "morley-oq03-ann-strict-uniqueness",
+    "proofId": "morleys-theorem-oq-03",
+    "range": { "startLine": 263, "endLine": 331 },
+    "type": "insight",
+    "title": "Strict Uniqueness of the Equilateral Maximizer",
+    "content": "morley_side_eq_iff proves that for R > 0, s = 8R·sin³(π/9) holds iff α = β = γ = π/3. Equality in the maximum forces tightness in both the AM–GM step and the Jensen step: the product equaling the cube of the average sandwiches the three sines to a common value (via the equality case of pow/AM–GM), and the strict-Jensen equality case (sin_jensen_three_eq) then forces the trisected angles to coincide. The hypothesis R > 0 is essential — at R = 0 every triangle yields Morley side 0, so uniqueness fails.",
+    "mathContext": "For $R>0$: $s = 8R\\sin^3\\tfrac{\\pi}{9} \\iff \\alpha=\\beta=\\gamma=\\tfrac{\\pi}{3}$.",
+    "significance": "key",
+    "relatedConcepts": ["uniqueness of extremizer", "equality cases", "strict Jensen", "degenerate limit"],
+    "prerequisites": ["equality cases of AM–GM and Jensen", "strict concavity"]
+  }
+]

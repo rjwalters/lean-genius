@@ -1,0 +1,152 @@
+{
+  "version": 2,
+  "proofId": "ballot-problem",
+  "reviewDate": "2026-03-23T19:00:00Z",
+  "reviewer": "peer-reviewer",
+  "overallAssessment": {
+    "grade": "C+",
+    "oneLiner": "Excellent pedagogical commentary around zero original formal content — every theorem is a one-line Mathlib rename, but the exposition is genuinely helpful; marred by phantom theorem references and annotation inaccuracies.",
+    "tier": "B",
+    "tierJustification": "Tier B: Formalized using Mathlib. The file imports Archive.Wiedijk100Theorems.BallotProblem and wraps every theorem with a renamed identifier. All mathematical substance lives in Mathlib; the file contributes pedagogical infrastructure (commentary, examples, named aliases) and necessary boilerplate (MeasurableSpace instances)."
+  },
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "meta.json badge field and overview.text",
+      "finding": "The badge is honestly set to 'mathlib' and overview.text describes the file as 'a 255-line pedagogical wrapper around Mathlib'. This transparent self-description sets correct expectations. Many Mathlib wrapper entries overclaim; this one does not at the top level.",
+      "recommendation": "Preserve this honesty. It sets the right expectations for readers."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "BallotProblem.lean lines 4-78, 191-249",
+      "finding": "The commentary is genuinely excellent. The reflection principle explanation (lines 50-69 and 216-249) is detailed, correct, and educational. The historical context correctly attributes the problem to Bertrand (1887), André's proof (1887), and notes subsequent work by Barbier, Aeppli, Takács, and Feller. The concrete enumeration of all 3 sequences for (p,q)=(2,1) at line 174 aids understanding. The annotation for the MeasurableSpace boilerplate (ann-namespace-setup) explains a real Lean subtlety clearly.",
+      "recommendation": "Preserve. This is the file's primary value."
+    },
+    {
+      "severity": "major",
+      "category": "inconsistency",
+      "location": "meta.json overview.text",
+      "finding": "The overview text references two non-existent theorems: 'ballot_probability_formula connecting to Rat for exact computation' and 'ballot_example_3_1 verifying P = 1/2 for p=3, q=1'. Neither exists in the Lean file. The actual real-valued theorem is ballot_theorem_real (line 150), and the examples are unnamed `example` declarations. This is a factual error that actively misleads readers about the file's contents.",
+      "recommendation": "Rewrite: replace 'ballot_probability_formula' with 'ballot_theorem_real' and replace 'ballot_example_3_1' with 'unnamed norm_num examples' or give the examples actual names in the Lean file."
+    },
+    {
+      "severity": "major",
+      "category": "overclaim",
+      "location": "All public theorems (lines 119-166)",
+      "finding": "All 7 public theorems are single-call Mathlib re-exports with zero added reasoning: count_vote_sequences := count_countedSequence, vote_sequences_finite := countedSequence_finite, vote_sequences_nonempty := countedSequence_nonempty, ballot_theorem := ballot_problem q p h, ballot_theorem_real := ballot_problem' q p h, ballot_unanimous := ballot_edge p, ballot_tie := ballot_same p. The meta.json reports theoremCount: 8 which is technically correct but may suggest substantive content to a reader unfamiliar with the file.",
+      "recommendation": "Add a note to the description or overview.text clarifying that all theorems are re-exports. The badge 'mathlib' partially addresses this, but the theoremCount statistic alone is misleading."
+    },
+    {
+      "severity": "moderate",
+      "category": "inconsistency",
+      "location": "annotations.json ann-model line 34 vs BallotProblem.lean line 109",
+      "finding": "The Lean docstring says staysPositive checks 'every nonempty suffix has positive sum', but annotation ann-model says '∀i≥1, Σⱼ₌₁ⁱ vⱼ > 0' which describes prefix sums. These are mathematically distinct conditions. Mathlib's Ballot module defines staysPositive via suffix sums. The annotation gives the wrong formula.",
+      "recommendation": "Fix ann-model to say 'every nonempty suffix has positive sum' with the correct suffix-sum formula, or explain the prefix/suffix equivalence if intended."
+    },
+    {
+      "severity": "moderate",
+      "category": "gap",
+      "location": "meta.json mathlibDependencies",
+      "finding": "Only 2 of 7+ Mathlib lemmas used are listed (ballot_problem, countedSequence). Missing: ballot_problem', ballot_edge, ballot_same, count_countedSequence, countedSequence_finite, countedSequence_nonempty, staysPositive. Since every theorem IS a direct Mathlib call, the dependency list should be comprehensive — it's the entire mathematical content of the file.",
+      "recommendation": "List all Mathlib lemmas used, or note that the file is a complete re-export of the Ballot module."
+    },
+    {
+      "severity": "moderate",
+      "category": "overclaim",
+      "location": "meta.json originalContributions",
+      "finding": "All three listed 'original contributions' are editorial/prose work (pedagogical wrapper, lattice path interpretation, historical context), not formal mathematical contributions. While individually accurate descriptions of the commentary, the framing as 'contributions' alongside other gallery entries with genuine theorem proofs creates a misleading comparison.",
+      "recommendation": "Reframe as 'pedagogicalContributions' or prefix each with 'Commentary:' to distinguish prose from formal contributions."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json overview.proofStrategy",
+      "finding": "The proofStrategy describes the reflection principle in active voice ('Model vote counting...', 'Count bad paths...') as if this file implements it. The reflection principle is implemented entirely in Mathlib's Archive.Wiedijk100Theorems.BallotProblem; this file only calls the result.",
+      "recommendation": "Add a note: 'The reflection principle proof is implemented in Mathlib; this file provides a pedagogical re-exposition and named wrappers.'"
+    },
+    {
+      "severity": "minor",
+      "category": "filler",
+      "location": "meta.json crossReferences — infinitude-primes",
+      "finding": "The cross-reference to infinitude-primes says 'Both appear in Wiedijk's 100 Theorems list'. This is true of all ~30+ Wiedijk entries in the gallery and provides no mathematical insight. It is padding.",
+      "recommendation": "Remove, or replace with a genuinely related theorem."
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "meta.json sections",
+      "finding": "Sections cover 5 of 7 parts. Missing: Part V 'Concrete Probability Values' (lines 168-189) and Part VI 'Lattice Paths and Catalan Numbers' (lines 191-214) — a 48-line gap between the last two indexed sections.",
+      "recommendation": "Add sections for these two parts."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "BallotProblem.lean lines 251-253",
+      "finding": "Three #check debug commands left in production code.",
+      "recommendation": "Remove."
+    }
+  ],
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "high",
+      "target": "enricher",
+      "description": "Fix overview.text: replace references to non-existent 'ballot_probability_formula' and 'ballot_example_3_1' with actual identifiers (ballot_theorem_real and unnamed norm_num examples). Describe the actual file contents accurately.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-2",
+      "priority": "high",
+      "target": "enricher",
+      "description": "Reframe originalContributions to clearly distinguish prose/pedagogical contributions from formal Lean contributions. Current items are all commentary, not formalized content.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-3",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Fix prefix/suffix inconsistency in annotations.json ann-model: change to 'every nonempty suffix has positive sum' to match Mathlib's staysPositive definition.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-4",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Complete mathlibDependencies to list all Mathlib functions called: count_countedSequence, countedSequence_finite, countedSequence_nonempty, ballot_problem, ballot_problem', ballot_edge, ballot_same, staysPositive, countedSequence.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-5",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Add missing sections for Part V (Concrete Probability Values, lines 168-189) and Part VI (Lattice Paths and Catalan Numbers, lines 191-214).",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-6",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Add clarifying note to proofStrategy that the reflection principle implementation lives in Mathlib, not this file.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-7",
+      "priority": "low",
+      "target": "researcher",
+      "description": "Remove #check debug lines at end of file (lines 251-253).",
+      "status": "resolved"
+    }
+  ],
+  "qualityScores": {
+    "mathematicalSubstance": 3,
+    "originalityAccuracy": 5,
+    "completeness": 9,
+    "framingPrecision": 5,
+    "pedagogicalQuality": 9,
+    "internalConsistency": 6,
+    "overall": 6.2
+  },
+  "suggestedBestFraming": "A pedagogical guided tour of Mathlib's ballot problem formalization (Wiedijk #30), providing clear exposition of the reflection principle, lattice path interpretation, and historical context around Bertrand's 1887 result, with all formal theorems re-exported from Archive.Wiedijk100Theorems.BallotProblem."
+}

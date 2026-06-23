@@ -1,0 +1,306 @@
+[
+  {
+    "id": "ann-e1138-header",
+    "proofId": "erdos-1138",
+    "range": {
+      "startLine": 1,
+      "endLine": 17
+    },
+    "type": "concept",
+    "title": "Problem Statement and Context",
+    "content": "Header documentation for Erdős Problem #1138, stating the conjecture on primes in short intervals near maximal gaps. The problem asks whether the prime counting function obeys its expected asymptotic $\\pi(y + Cd) - \\pi(y) \\sim Cd / \\log y$ when $d$ is the maximal prime gap below $x$ and $y \\in (x/2, x)$. The header notes that even under the Riemann Hypothesis, the conjectured gap size $(\\log x)^2$ is far below the threshold for known short-interval prime number theorems.",
+    "mathContext": "The conjecture connects two central quantities: the maximal prime gap $d(x) = \\max_{p_n < x}(p_{n+1} - p_n)$ and the short-interval prime counting function $\\pi(y+h) - \\pi(y)$. By the PNT, we expect $\\pi(y+h) - \\pi(y) \\approx h/\\log y$ for 'reasonable' $h$. If Cramér's conjecture holds ($d(x) \\sim (\\log x)^2$), then the interval length $Cd$ is approximately $C(\\log x)^2$, which is enormously shorter than any interval for which the short-interval PNT is known to hold.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime number theorem",
+      "short interval prime counting",
+      "Cramér's conjecture",
+      "maximal prime gaps"
+    ],
+    "prerequisites": [
+      "prime counting function",
+      "asymptotic equivalence",
+      "Riemann Hypothesis implications"
+    ]
+  },
+  {
+    "id": "ann-e1138-imports",
+    "proofId": "erdos-1138",
+    "range": {
+      "startLine": 19,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "Imports the necessary Mathlib modules: `Nat.Prime.Basic` for the `Nat.Prime` predicate, `Finset.Basic` and `Finset.Card` for the finite set operations used to define the prime counting function, `Data.Real.Basic` for real number arithmetic in the asymptotic bounds, and `Order.Filter.AtTopBot` for the eventual behavior formulation.",
+    "mathContext": "The `Finset.filter` operation is central: $\\pi(n)$ is defined as the cardinality of $\\{k \\in \\{0, \\ldots, n\\} : k \\text{ is prime}\\}$. Real arithmetic is needed because the asymptotic bound $Cd / \\log y$ involves real division and logarithms.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.filter",
+      "Nat.Prime predicate",
+      "real arithmetic"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib library structure"
+    ]
+  },
+  {
+    "id": "ann-e1138-primeCounting",
+    "proofId": "erdos-1138",
+    "range": {
+      "startLine": 33,
+      "endLine": 35
+    },
+    "type": "definition",
+    "title": "Prime Counting Function",
+    "content": "Defines $\\pi(n)$ as the number of primes at most $n$, computed by filtering `Finset.range(n+1)` for primes and taking the cardinality. This is noncomputable because `Nat.Prime` uses `Decidable` instances that may not reduce efficiently, though the definition is mathematically transparent.",
+    "mathContext": "$\\pi(n) = |\\{p \\le n : p \\text{ is prime}\\}| = (\\texttt{Finset.range}(n+1)).\\texttt{filter}(\\texttt{Nat.Prime}).\\texttt{card}$. The prime counting function is one of the most studied objects in number theory, with the PNT establishing $\\pi(x) \\sim x / \\log x$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime number theorem",
+      "Chebyshev's estimates",
+      "Mertens' theorems",
+      "Finset.filter"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "Finset.range",
+      "cardinality of finite sets"
+    ]
+  },
+  {
+    "id": "ann-e1138-primesInInterval",
+    "proofId": "erdos-1138",
+    "range": {
+      "startLine": 37,
+      "endLine": 39
+    },
+    "type": "definition",
+    "title": "Primes in an Interval",
+    "content": "Defines the count of primes in the half-open interval $(a, b]$ as $\\pi(b) - \\pi(a)$. This is the key quantity in the Erdős conjecture: the formalization asks whether $\\pi(y + Cd) - \\pi(y) \\sim Cd / \\log y$ for appropriate $y$ and $d$.",
+    "mathContext": "$\\texttt{primesInInterval}(a, b) = \\pi(b) - \\pi(a) = |\\{p : a < p \\le b, \\, p \\text{ prime}\\}|$. Note that since $\\pi$ is defined on $\\mathbb{N}$, this subtraction is natural number subtraction (truncated at 0), which is correct because $\\pi$ is monotone.",
+    "significance": "key",
+    "relatedConcepts": [
+      "short interval prime number theorem",
+      "Selberg sieve",
+      "prime counting function"
+    ],
+    "prerequisites": [
+      "primeCounting",
+      "monotonicity of π"
+    ]
+  },
+  {
+    "id": "ann-e1138-primeGapBelow",
+    "proofId": "erdos-1138",
+    "range": {
+      "startLine": 43,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "Set of Prime Gaps Below x",
+    "content": "Defines the set of consecutive prime gaps below $x$: $\\{q - p : p, q \\text{ consecutive primes}, q \\le x\\}$. The consecutiveness condition is formalized as: $p$ and $q$ are both prime, $p < q$, and there is no prime $r$ with $p < r < q$ (encoded as $\\forall r, \\text{Prime}(r) \\to p < r \\to q \\le r$).",
+    "mathContext": "$\\texttt{primeGapBelow}(x) = \\{d \\in \\mathbb{N} : \\exists p, q \\text{ with } p, q \\text{ prime}, p < q \\le x, \\text{consecutive}, d = q - p\\}$. The consecutiveness condition $\\forall r, \\text{Prime}(r) \\to p < r \\to q \\le r$ elegantly encodes that no prime lies strictly between $p$ and $q$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "consecutive primes",
+      "prime gap function",
+      "Cramér's conjecture",
+      "Bertrand's postulate"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "set-builder notation in Lean"
+    ]
+  },
+  {
+    "id": "ann-e1138-maxPrimeGap",
+    "proofId": "erdos-1138",
+    "range": {
+      "startLine": 48,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "Maximal Prime Gap",
+    "content": "Defines $d(x) = \\sup\\{q - p : p, q \\text{ consecutive primes}, q \\le x\\}$ using `sSup` (the supremum in $\\mathbb{N}$ with its conditionally complete lattice structure). This is noncomputable because computing the supremum requires deciding primality across all pairs.",
+    "mathContext": "$d(x) = \\text{sSup}(\\texttt{primeGapBelow}(x))$. Known values include $d(10) = 4$ (gap between 7 and 11), $d(100) = 8$ (gap between 89 and 97), and $d(10^{18}) = 1476$ (discovered computationally). Cramér conjectured $d(x) \\sim (\\log x)^2$; the best proven upper bound is $d(x) \\ll x^{0.525}$ (Baker–Harman–Pintz, 2001).",
+    "significance": "key",
+    "relatedConcepts": [
+      "supremum in conditionally complete lattice",
+      "Cramér's conjecture",
+      "Baker–Harman–Pintz theorem",
+      "prime gap records"
+    ],
+    "prerequisites": [
+      "sSup",
+      "BddAbove",
+      "primeGapBelow"
+    ]
+  },
+  {
+    "id": "ann-e1138-primeCounting_mono",
+    "proofId": "erdos-1138",
+    "range": {
+      "startLine": 55,
+      "endLine": 60
+    },
+    "type": "concept",
+    "title": "Monotonicity of π",
+    "content": "Proves that $\\pi$ is monotone: $a \\le b \\Rightarrow \\pi(a) \\le \\pi(b)$. The proof chains `Finset.card_le_card` with `Finset.filter_subset_filter` and `Finset.range_mono`. This is essential for ensuring that `primesInInterval` (defined as $\\pi(b) - \\pi(a)$) is non-negative in the natural number sense.",
+    "mathContext": "$a \\le b \\implies \\pi(a) \\le \\pi(b)$. The proof is: $\\{p \\le a : \\text{prime}\\} \\subseteq \\{p \\le b : \\text{prime}\\}$ since $\\{0, \\ldots, a\\} \\subseteq \\{0, \\ldots, b\\}$, and subset implies $\\le$ on cardinalities.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.card_le_card",
+      "monotone functions",
+      "natural number subtraction"
+    ],
+    "prerequisites": [
+      "primeCounting",
+      "Finset.range_mono",
+      "Finset.filter_subset_filter"
+    ]
+  },
+  {
+    "id": "ann-e1138-small-values",
+    "proofId": "erdos-1138",
+    "range": {
+      "startLine": 62,
+      "endLine": 75
+    },
+    "type": "concept",
+    "title": "Small Values of π",
+    "content": "Establishes $\\pi(0) = 0$, $\\pi(1) = 0$, and $\\pi(2) = 1$ by computation. These are proved using `simp` followed by `decide`, which unfolds the definitions and checks the finite computation. The fact $\\pi(2) = 1$ confirms that 2 is the smallest (and only even) prime.",
+    "mathContext": "$\\pi(0) = 0$ (no primes $\\le 0$), $\\pi(1) = 0$ (1 is not prime), $\\pi(2) = 1$ (2 is the unique even prime). These base cases anchor the prime counting function and are used for sanity-checking the definition.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "smallest prime",
+      "decidability of finite computations",
+      "Nat.not_prime_zero",
+      "Nat.not_prime_one"
+    ],
+    "prerequisites": [
+      "primeCounting",
+      "decide tactic"
+    ]
+  },
+  {
+    "id": "ann-e1138-primeCounting_le",
+    "proofId": "erdos-1138",
+    "range": {
+      "startLine": 77,
+      "endLine": 80
+    },
+    "type": "concept",
+    "title": "Trivial Upper Bound on π",
+    "content": "Proves $\\pi(n) \\le n + 1$: the number of primes up to $n$ is at most the total number of natural numbers up to $n$. Uses `Finset.card_filter_le` which states that filtering a finite set can only reduce cardinality.",
+    "mathContext": "$\\pi(n) = |\\{p \\le n : \\text{prime}\\}| \\le |\\{0, \\ldots, n\\}| = n + 1$. This is far from the PNT bound $\\pi(n) \\sim n/\\log n$, but it is the tightest bound provable from the definition alone without analytic methods.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.card_filter_le",
+      "prime number theorem",
+      "Chebyshev bounds"
+    ],
+    "prerequisites": [
+      "primeCounting",
+      "Finset.card_filter_le"
+    ]
+  },
+  {
+    "id": "ann-e1138-maxPrimeGap_le",
+    "proofId": "erdos-1138",
+    "range": {
+      "startLine": 82,
+      "endLine": 88
+    },
+    "type": "concept",
+    "title": "Trivial Bound on Maximal Prime Gap",
+    "content": "Attempts to prove $d(x) \\le x$: the maximal gap between consecutive primes below $x$ cannot exceed $x$ itself. The proof handles the empty case (no gaps when there are fewer than 2 primes below $x$) but leaves the non-empty case as sorry, requiring a `BddAbove` proof for the gap set and a bound on its `sSup`.",
+    "mathContext": "$d(x) = \\sup\\{q - p : p, q \\text{ consecutive primes}, q \\le x\\} \\le x$ because each gap satisfies $q - p < q \\le x$. The sorry arises from the need to show the set is bounded above (for `sSup` to be meaningful in $\\mathbb{N}$) and then that the supremum respects the pointwise bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sSup and BddAbove",
+      "csSup_le",
+      "conditional completeness"
+    ],
+    "prerequisites": [
+      "maxPrimeGap",
+      "sSup properties",
+      "BddAbove for finite subsets of ℕ"
+    ]
+  },
+  {
+    "id": "ann-e1138-erdos_1138",
+    "proofId": "erdos-1138",
+    "range": {
+      "startLine": 90,
+      "endLine": 117
+    },
+    "type": "concept",
+    "title": "Erdős Problem 1138 (Main Conjecture)",
+    "content": "The central conjecture, stated as an axiom: for any constant $C > 1$ and tolerance $\\varepsilon > 0$, there exists $N$ such that for all $x \\ge N$ and all $y$ with $x/2 < y < x$, the number of primes in $(y, y + \\lfloor Cd \\rfloor]$ satisfies $(1 - \\varepsilon) \\cdot Cd/\\log y \\le \\pi(y + \\lfloor Cd \\rfloor) - \\pi(y) \\le (1 + \\varepsilon) \\cdot Cd/\\log y$. The extensive docstring documents the problem's status (OPEN) and why it is out of reach: even under RH, short-interval PNT needs $h > x^{1/2+\\varepsilon}$, while $Cd \\sim C(\\log x)^2$ is far shorter.",
+    "mathContext": "The $\\varepsilon$-sandwich formulation avoids division: $f(x) \\sim g(x)$ is equivalent to $(1-\\varepsilon)g(x) \\le f(x) \\le (1+\\varepsilon)g(x)$ for all $\\varepsilon > 0$ eventually. The use of `Nat.floor (C * d)` converts the real-valued interval length to a natural number endpoint. The universality over $y \\in (x/2, x)$ is the strongest form, implying both average and worst-case control.",
+    "significance": "key",
+    "relatedConcepts": [
+      "short interval prime number theorem",
+      "asymptotic equivalence",
+      "Cramér's conjecture",
+      "Huxley's theorem",
+      "Maier's theorem"
+    ],
+    "prerequisites": [
+      "primesInInterval",
+      "maxPrimeGap",
+      "Real.log",
+      "Nat.floor",
+      "filter-based limits"
+    ]
+  },
+  {
+    "id": "ann-e1138-bertrand",
+    "proofId": "erdos-1138",
+    "range": {
+      "startLine": 121,
+      "endLine": 124
+    },
+    "type": "concept",
+    "title": "Bertrand's Postulate",
+    "content": "States Bertrand's postulate as an axiom: for every $n \\ge 1$, there exists a prime $p$ with $n < p \\le 2n$. This was conjectured by Bertrand in 1845 and proved by Chebyshev in 1852. Erdős gave an elegant elementary proof in 1932 at age 19 — his first published paper. The result implies that $d(n) < n$ for all $n$, but this is vastly weaker than Cramér's conjecture $d(x) \\sim (\\log x)^2$.",
+    "mathContext": "$\\forall n \\ge 1, \\, \\exists p \\text{ prime}: n < p \\le 2n$. Equivalently, the prime gap after any prime $p$ is at most $p$: $p_{n+1} - p_n < p_n$. Bertrand's postulate is available in Mathlib as `Nat.bertrand`, but is stated here as an axiom for self-containedness.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Chebyshev's theorem",
+      "Erdős's first paper",
+      "prime gap upper bounds",
+      "Nat.bertrand in Mathlib"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "basic arithmetic inequalities"
+    ]
+  },
+  {
+    "id": "ann-e1138-cramer",
+    "proofId": "erdos-1138",
+    "range": {
+      "startLine": 126,
+      "endLine": 132
+    },
+    "type": "concept",
+    "title": "Cramér's Conjecture",
+    "content": "States Cramér's conjecture as an axiom: for every $\\varepsilon > 0$, eventually $d(x) \\le (1 + \\varepsilon)(\\log x)^2$. Harald Cramér proposed this in 1936 based on his probabilistic model of primes, where each integer $n$ is independently 'prime' with probability $1/\\log n$. Under this model, the maximal gap below $x$ is $(\\log x)^2$ with probability 1. The conjecture is OPEN and far stronger than any proven result. If true, Erdős's conjecture would ask for the PNT in intervals of length $\\sim C(\\log x)^2$.",
+    "mathContext": "$\\forall \\varepsilon > 0, \\, \\exists N, \\, \\forall x \\ge N: d(x) \\le (1 + \\varepsilon)(\\log x)^2$. The best unconditional bound is $d(x) \\ll x^{0.525}$ (Baker–Harman–Pintz, 2001). Under RH, one gets $d(x) \\ll \\sqrt{x} \\log x$ (Cramér, 1920). Granville (1995) suggested the constant may be $2e^{-\\gamma} \\approx 1.1229$ rather than 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cramér's probabilistic model",
+      "Baker–Harman–Pintz theorem",
+      "Granville's refinement",
+      "Euler–Mascheroni constant"
+    ],
+    "prerequisites": [
+      "maxPrimeGap",
+      "Real.log",
+      "asymptotic notation"
+    ]
+  }
+]

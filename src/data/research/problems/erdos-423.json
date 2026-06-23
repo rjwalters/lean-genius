@@ -1,0 +1,123 @@
+{
+  "slug": "erdos-423",
+  "title": "Erdős #423",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Let $a_1=1$ and $a_2=2$ and for $k\\geq 3$ we choose $a_k$ to be the least integer $>a_{k-1}$ which is the sum of at least two consecutive terms of the sequence. What is the asymptotic behaviour of this sequence?\n\n\n\nAsked by Hofstadter (although in \\cite{Er77c} Erd\\H{o}s says this question was originally due to Ulam). The sequence begins $1,2,3,5,6,8,10,11,\\ldots$ and is A005243 in the OEIS.",
+    "plain": "Study the asymptotic behavior of the greedy sequence starting 1,2 where each later term is the least larger integer that is a sum of at least two consecutive previous terms.",
+    "whyMatters": [
+      "This Hofstadter/Ulam sequence is a concrete computable object with subtle density and growth behavior.",
+      "The Lean file verifies initial terms, missing values, strict monotonicity, and superlinear consequences from named Bolan-Tang axioms.",
+      "The convergence/asymptotic-density question remains open."
+    ],
+    "plainEnglish": "Study the asymptotic behavior of the greedy sequence starting 1,2 where each later term is the least larger integer that is a sum of at least two consecutive previous terms."
+  },
+  "knownResults": {
+    "proven": [
+      "`isConsecSum`, `findNextElem`, `buildSeq`, and `consSeq` give a computable definition of the sequence.",
+      "The first values through `consSeq_seven`, plus consecutive-sum checks for 3,5,6,8,10,11, are proved by computation.",
+      "`findNextElem_ge`, `consSeq_succ_gt`, `consSeq_strictMono`, and `consSeq_lower_bound` prove structural monotonicity and linear lower growth.",
+      "`four_is_missing`, `seven_is_missing`, and `nine_is_missing` prove specific missing numbers.",
+      "From the Bolan-Tang axioms, the file derives refined excess bounds, superlinear growth, eventual exceedance, injectivity, and preimage finiteness."
+    ],
+    "open": [
+      "`ErdosQuestion423_convergence` asks whether consSeq(n)/n tends to a constant greater than 1 and remains open.",
+      "`excess_nondecreasing`, `excess_unbounded`, and `infinitely_many_missing` are axioms.",
+      "`buildSeq` uses a fixed fuel value of 500, so the computable sequence definition needs care before treating it as an unbounded greedy construction.",
+      "The defining consecutive-sum and minimality properties are still comments around the computable construction rather than active proof statements."
+    ],
+    "goal": "Summarize the computable and structural Lean development while clearly marking the three growth/missing-number axioms and the open convergence question."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-18T00:00:00Z",
+    "iteration": 2,
+    "focus": "The file has 42 theorem declarations, 9 definitions, 3 axioms, and 0 sorries; many structural consequences are proved, but asymptotic convergence remains open.",
+    "blockers": [
+      "Three Bolan-Tang style growth/missing-number facts are axiomatized.",
+      "`buildSeq` is fuel-bounded, and no theorem yet proves the fuel never runs out for all indices.",
+      "The ratio convergence question is only a Prop definition.",
+      "Full minimality and consecutive-sum properties of the computable construction are not active theorem statements."
+    ],
+    "nextAction": "Turn the defining consecutive-sum/minimality comments into theorem statements or prove more initial/missing values computationally.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "CURRENT: 42 theorem declarations, 9 definitions, 3 axioms, 0 sorries. The computable sequence, initial values, monotonicity, missing examples, and several consequences of excess axioms are formalized; ratio convergence is open.",
+    "builtItems": [
+      "`isConsecSum`, `findNextElem`, `buildSeq`, and `consSeq`",
+      "Initial-value and consecutive-sum verification theorems",
+      "`findNextElem_ge`, `consSeq_succ_gt`, `consSeq_strictMono`, and `consSeq_lower_bound`",
+      "`missingNumbers`, `four_is_missing`, `seven_is_missing`, and `nine_is_missing`",
+      "`excessInt`, `consSeq_eventually_exceeds`, injectivity, and preimage-finiteness results"
+    ],
+    "insights": [
+      "The source is sorry-free and has three remaining axioms.",
+      "`buildSeq` calls `findNextElem` with fuel 500, so global leastness of the mathematical sequence is not fully established by the current theorems.",
+      "Strict monotonicity is now proved from the extracted `findNextElem` helper.",
+      "Superlinear growth comes from `excess_unbounded`, not from the computable construction alone.",
+      "The convergence target is weaker/different from superlinear growth and remains unresolved."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Add active theorems for the defining consecutive-sum and minimality properties.",
+      "Prove a fuel-sufficiency theorem or refactor the greedy construction away from a fixed search bound.",
+      "Verify more initial terms or missing numbers by computation.",
+      "Separate Bolan-Tang consequences from facts proved directly from the computable definition."
+    ],
+    "markdown": "# Erdős #423 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $a_1=1$ and $a_2=2$ and for $k\\geq 3$ we choose $a_k$ to be the least integer $>a_{k-1}$ which is the sum of at least two consecutive terms of the sequence. What is the asymptotic behaviour of this sequence?\n\n\n\nAsked by Hofstadter (although in \\cite{Er77c} Erd\\H{o}s says this question was originally due to Ulam). The sequence begins $1,2,3,5,6,8,10,11,\\ldots$ and is A005243 in the OEIS.\n\n\n\n\nReferences\n\n\n[Er77c] Erd\\H{o}s, Paul, Problems and results on combinatorial number theory. III. Number theory day (Proc. Conf., Rockefeller Univ.,\nNew York, 1976) (1977), 43-72.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #422\n- Problem #424\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77c\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "integer-sequences",
+    "greedy-sequences",
+    "oeis",
+    "open-problem"
+  ],
+  "relatedProofs": [
+    "erdos-4",
+    "erdos-42",
+    "erdos-423"
+  ],
+  "references": {
+    "papers": [
+      "Hofstadter/Ulam sequence context",
+      "Bolan and Tang 2024-2025 results"
+    ],
+    "urls": [
+      "https://erdosproblems.com/423",
+      "https://oeis.org/A005243"
+    ],
+    "mathlib": [
+      "List.range",
+      "Finset",
+      "Filter.Tendsto",
+      "StrictMono"
+    ]
+  },
+  "started": "2026-01-13T02:41:06.676Z",
+  "lastUpdate": "2026-05-18T00:00:00Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos423Problem.lean",
+      "filename": "Erdos423Problem.lean",
+      "lineCount": 409,
+      "theoremCount": 42,
+      "axiomCount": 3,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos423Problem.lean"
+    }
+  ]
+}

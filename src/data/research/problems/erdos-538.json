@@ -1,0 +1,122 @@
+{
+  "slug": "erdos-538",
+  "title": "Erdős #538",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Let $r\\geq 2$ and suppose that $A\\subseteq\\{1,\\ldots,N\\}$ is such that, for any $m$, there are at most $r$ solutions to $m=pa$ where $p$ is prime and $a\\in A$. Give the best possible upper bound for\\[\\sum_{n\\in A}\\frac{1}{n}.\\]\n\n\n\nErd\\H{o}s observed that\\[\\sum_{n\\in A}\\frac{1}{n}\\sum_{p\\leq N}\\frac{1}{p}\\leq r\\sum_{m\\leq N^2}\\frac{1}{m}\\ll r\\log N,\\]and hence\\[\\sum_{n\\in A}\\frac{1}{n} \\ll r\\frac{\\log N}{\\log\\log N}.\\]See also [536] and [537].",
+    "plain": "For A inside {1,...,N} with at most r representations of each m as p*a with p prime and a in A, seek the best possible upper bound on the reciprocal sum of A.",
+    "whyMatters": [
+      "Uses multiplicative representation counts and prime reciprocal sums to bound sparse reciprocal sums.",
+      "The Lean file proves the double-counting bound and an Erdos upper bound modulo a single Mertens-theorem axiom.",
+      "The best-possible bound remains open beyond the proved big-O style upper bound."
+    ],
+    "plainEnglish": "For A inside {1,...,N} with at most r representations of each m as p*a with p prime and a in A, seek the best possible upper bound on the reciprocal sum of A."
+  },
+  "knownResults": {
+    "proven": [
+      "`primeReprSet`, `reprCount`, and `HasBoundedRepr` formalize the representation-count condition.",
+      "`reciprocalSum` and its empty/nonnegative/monotone/insert lemmas formalize reciprocal sums.",
+      "`harmonic_upper_bound`, `harmonic_sq_bound`, and `double_counting_bound` prove the core harmonic and double-counting estimates.",
+      "`erdos_upper_bound` derives an O(r log N / log log N) upper bound from the Mertens prime-reciprocal axiom.",
+      "`sum_reprCount_bound`, `multiplicative_energy_trivial_bound`, `r_eq_1_card_bound`, and `singleton_hasBoundedRepr` prove auxiliary structural facts."
+    ],
+    "open": [
+      "`ErdosProblem538` asks for the best possible bound and is not solved by the current upper bound.",
+      "`mertens_prime_reciprocal_lower` is the single remaining axiom.",
+      "The formal subset condition uses `range (N+1)` and `reciprocalSum` makes 0 contribute 0, a convention shift from the source set {1,...,N}.",
+      "Optimal constants or lower-bound constructions are not formalized."
+    ],
+    "goal": "Highlight the proved double-counting upper-bound infrastructure while keeping the optimal-bound problem open."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-18T00:00:00Z",
+    "iteration": 2,
+    "focus": "The file has 22 theorem/lemma declarations, 6 definitions, 1 axiom, and 0 sorries; it proves the Erdos upper bound from Mertens but not optimality.",
+    "blockers": [
+      "`mertens_prime_reciprocal_lower` remains axiomatized.",
+      "The formal model allows 0 in A, with zero contributing 0 to `reciprocalSum`; positivity hypotheses are needed in some auxiliary lemmas.",
+      "The best possible upper bound in `ErdosProblem538` is not characterized.",
+      "No matching lower-bound construction is formalized."
+    ],
+    "nextAction": "Either replace the Mertens lower-bound axiom with a Mathlib theorem if available, or add explicit examples showing sharpness limits for small r,N.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "CURRENT: 22 theorem/lemma declarations, 6 definitions, 1 axiom (`mertens_prime_reciprocal_lower`), 0 sorries. The double-counting and Erdos upper-bound arguments are proved from the Mertens input; optimality remains open.",
+    "builtItems": [
+      "`primeReprSet`, `reprCount`, and `HasBoundedRepr`",
+      "`reciprocalSum` and basic monotonicity/nonnegativity lemmas",
+      "`primeReciprocalSum` and `mertens_prime_reciprocal_lower`",
+      "`harmonic_upper_bound`, `double_counting_bound`, and `erdos_upper_bound`",
+      "`sum_reprCount_bound`, `multiplicative_energy_trivial_bound`, `r_eq_1_card_bound`, and `singleton_hasBoundedRepr`"
+    ],
+    "insights": [
+      "The current source is sorry-free with one analytic-number-theory axiom.",
+      "The double-counting proof groups pairs (a,p) by m=a*p and uses the r-bounded fiber size.",
+      "The model uses A subset range(N+1), so 0 can appear even though the source problem is phrased for {1,...,N}.",
+      "The reciprocal sum treats 0 as contributing 0, while positive hypotheses are needed for some counting lemmas.",
+      "The theorem proves an upper bound, not the best possible bound requested by the original problem."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Investigate whether Mathlib has a usable prime-reciprocal lower bound.",
+      "Consider adding a positive-set wrapper matching A subset {1,...,N}.",
+      "Add small finite examples testing tightness for r=1 or r=2.",
+      "Formalize a separate lower-bound construction if known."
+    ],
+    "markdown": "# Erdős #538 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r\\geq 2$ and suppose that $A\\subseteq\\{1,\\ldots,N\\}$ is such that, for any $m$, there are at most $r$ solutions to $m=pa$ where $p$ is prime and $a\\in A$. Give the best possible upper bound for\\[\\sum_{n\\in A}\\frac{1}{n}.\\]\n\n\n\nErd\\H{o}s observed that\\[\\sum_{n\\in A}\\frac{1}{n}\\sum_{p\\leq N}\\frac{1}{p}\\leq r\\sum_{m\\leq N^2}\\frac{1}{m}\\ll r\\log N,\\]and hence\\[\\sum_{n\\in A}\\frac{1}{n} \\ll r\\frac{\\log N}{\\log\\log N}.\\]See also [536] and [537].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #536\n- Problem #537\n- Problem #539\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er73\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "prime-representations",
+    "reciprocal-sums",
+    "double-counting",
+    "open-problem"
+  ],
+  "relatedProofs": [
+    "erdos-5",
+    "erdos-53",
+    "erdos-538"
+  ],
+  "references": {
+    "papers": [
+      "Erdos observation on prime representation bounds",
+      "Mertens second theorem"
+    ],
+    "urls": [
+      "https://erdosproblems.com/538"
+    ],
+    "mathlib": [
+      "Nat.Prime",
+      "Finset.product",
+      "Real.log",
+      "Finset.sum_fiberwise_of_maps_to"
+    ]
+  },
+  "started": "2026-01-13T04:39:49.623Z",
+  "lastUpdate": "2026-05-18T00:00:00Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos538Problem.lean",
+      "filename": "Erdos538Problem.lean",
+      "lineCount": 504,
+      "theoremCount": 22,
+      "axiomCount": 1,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos538Problem.lean"
+    }
+  ]
+}

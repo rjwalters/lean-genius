@@ -1,0 +1,153 @@
+{
+  "id": "erdos-875",
+  "title": "Erdős Problem #875: Admissible Sequences with Disjoint Sumsets",
+  "slug": "erdos-875",
+  "description": "Let A = {a₁ < a₂ < ...} with r-fold sumsets Sᵣ pairwise disjoint for all r. How fast must A grow? For which c is a_{n+1} − aₙ ≤ n^c possible? Can a_{n+1}/aₙ → 1? Erdős noted the ratio-1 case is 'not completely trivial.'",
+  "meta": {
+    "author": "Deshouillers, Erdős",
+    "sourceUrl": "https://erdosproblems.com/875",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos875Problem.lean",
+    "tags": [
+      "erdos",
+      "additive-combinatorics",
+      "sumsets",
+      "growth-rates",
+      "sequences",
+      "binary-representation",
+      "popcount"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 875,
+    "erdosUrl": "https://erdosproblems.com/875",
+    "erdosProblemStatus": "open",
+    "axiomCount": 1,
+    "lineCount": 212,
+    "assumptions": "No `axiom` declarations, no sorries. Supporting lemmas fully proved: powers_of_two_admissible (binary uniqueness proof via pow2_subset_sum_inj), pow2_strictly_increasing, admissible_growth_lower, finite_version_connection. The theorem `pow2_small_example` is discharged by `native_decide`, so it depends on `Lean.ofReduceBool` (Lean's compiler kernel-reduction axiom; #print axioms lists it) — it is free of mathematical axioms but not axiom-free in the strict sense. Open conjecture; supporting lemmas otherwise verified.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 7,
+    "definitionCount": 7
+  },
+  "overview": {
+    "historicalContext": "**Deshouillers and Erdős** posed this as an infinite variant of Problem #874. An **admissible sequence** $a_1 < a_2 < \\cdots$ has the property that the $r$-fold sumsets $S_r = \\{a_{i_1} + \\cdots + a_{i_r} : i_1 < \\cdots < i_r\\}$ are pairwise disjoint for distinct $r \\geq 1$. The simplest example is powers of 2 ($a_n = 2^n$), where binary representation ensures disjointness via popcount. The central question is **how slowly** an admissible sequence can grow. Erdős noted that the ratio-one property $a_{n+1}/a_n \\to 1$ (subexponential growth) is achievable but 'not completely trivial.' The problem connects to **Sidon sets** (where sumsets of different sizes are automatically separated by parity of the number of terms) and to the **subset sum problem** in computational complexity.",
+    "problemStatement": "For an infinite admissible sequence A with pairwise disjoint r-fold sumsets: (1) How fast must A grow? (2) For which c can a_{n+1} − aₙ ≤ n^c? (3) Can a_{n+1}/aₙ → 1?",
+    "text": "Let A = {a₁ < a₂ < ...} with r-fold sumsets Sᵣ pairwise disjoint for all r. How fast must A grow? For which c is a_{n+1} − aₙ ≤ n^c possible? Can a_{n+1}/aₙ → 1? Erdős noted the ratio-1 case is 'not completely trivial.'",
+    "proofStrategy": "The formalization defines the r-fold sumset via Finset.powersetCard and Finset.image, the admissibility condition combining strict increase with sumset disjointness, and the polynomial gap and ratio-one properties using Filter.atTop. It fully proves powers-of-2 admissibility via binary uniqueness: subsets of {2^0,...,2^(N-1)} with equal sums must be equal (by induction on N, case-splitting on the maximal power), so r-fold and s-fold sumsets with r!=s are disjoint. Also proves admissible_growth_lower (a(n) >= n+1 by induction).",
+    "keyInsights": [
+      "**Powers of 2 are admissible**: binary encoding uniquely determines which elements are summed, and popcount (number of 1-bits) equals the number of terms, ensuring different $r$-fold sumsets are disjoint",
+      "**Critical exponent for polynomial gaps**: there exists a threshold $c_0$ such that admissible sequences with gaps $\\leq n^c$ exist for $c > c_0$ but not for $c < c_0$—the value of $c_0$ is unknown",
+      "**Ratio-one is achievable**: Erdős claimed an admissible sequence with $a_{n+1}/a_n \\to 1$ exists, meaning subexponential growth suffices for admissibility",
+      "**Proved growth lower bound**: by induction on strict increase, every admissible sequence satisfies $a(n) \\geq n+1$—a crude linear bound, with the disjoint sumsets condition forcing much faster growth",
+      "**Finite-infinite connection**: the finite Problem #874 asks for the maximum size of an admissible subset of $\\{1, \\ldots, n\\}$, whose growth rate determines the optimal growth of infinite admissible sequences"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Additive combinatorics (sumsets, density)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "States Erdős Problem #875: an infinite $A=\\{a_1<a_2<\\cdots\\}$ is *admissible* if its $r$-fold sumsets $S_r$ (sums of $r$ distinct elements) are pairwise disjoint for distinct $r\\geq1$. Questions: how fast must such a sequence grow, and how small can $a_{n+1}-a_n$ be (e.g. $\\leq n^c$)? An infinite variant of #874 (Deshouillers–Erdős). Status OPEN. Imports `Finset`/`Nat.Bitwise`.",
+      "mathContext": "Admissible: $r$-fold sumsets pairwise disjoint. Open: growth rate / minimal gaps $a_{n+1}-a_n$?"
+    },
+    {
+      "id": "core-defs",
+      "title": "Core Definitions",
+      "startLine": 27,
+      "endLine": 52,
+      "summary": "Defines `rFoldSumset` (sums of $r$ distinct elements), `StrictlyIncreasing`, `seqRSumset` (the $r$-fold sumset of the first $N$ sequence terms), `DisjointSumsets`, and `IsAdmissible` (strictly increasing + disjoint sumsets).",
+      "mathContext": "$S_r(A)=\\{\\sum_{i\\in T}a_i:|T|=r\\}$; admissible $=$ strictly increasing $\\wedge$ all $S_r$ disjoint."
+    },
+    {
+      "id": "main-questions",
+      "title": "Main Questions (OPEN)",
+      "startLine": 53,
+      "endLine": 68,
+      "summary": "Defines the open-question predicates: `HasPolynomialGaps` ($a_{n+1}-a_n\\leq n^c$ eventually) and `HasRatioOne` ($a_{n+1}/a_n\\to1$, which Erdős noted is 'not completely trivial').",
+      "mathContext": "Open: for which $c$ can $a_{n+1}-a_n\\leq n^c$? Can $a_{n+1}/a_n\\to1$?"
+    },
+    {
+      "id": "powers-of-two",
+      "title": "Powers of 2 are Admissible",
+      "startLine": 69,
+      "endLine": 175,
+      "summary": "PROVES that powers of $2$ form an admissible sequence. `pow2_strictly_increasing`; the private `sum_range_two_pow` ($\\sum_{i<N}2^i=2^N-1$) and the binary-uniqueness lemma `pow2_subset_sum_inj` (distinct-power subsets with equal sums are equal — replacing a former popcount axiom); then `powers_of_two_admissible` (disjoint sumsets, since a sum of distinct powers of $2$ determines the subset). Axiom-free.",
+      "mathContext": "Sums of distinct powers of $2$ are unique $\\Rightarrow$ $\\{2^n\\}$ admissible (proved, no axioms)."
+    },
+    {
+      "id": "growth-lower",
+      "title": "Admissible Growth Lower Bound",
+      "startLine": 176,
+      "endLine": 187,
+      "summary": "PROVES `admissible_growth_lower`: every admissible sequence with $a_0\\geq1$ satisfies $a_n\\geq n+1$ (by strict monotonicity).",
+      "mathContext": "Admissible, $a_0\\geq1\\Rightarrow a_n\\geq n+1$."
+    },
+    {
+      "id": "small-examples",
+      "title": "Small Examples",
+      "startLine": 188,
+      "endLine": 195,
+      "summary": "PROVES `pow2_small_example`: $\\{1,2,4\\}$ has disjoint $1$-fold and $2$-fold sumsets ($S_1=\\{1,2,4\\}$, $S_2=\\{3,5,6\\}$), by `native_decide`.",
+      "mathContext": "$\\{1,2,4\\}$: $S_1=\\{1,2,4\\}$, $S_2=\\{3,5,6\\}$ disjoint (verified by `native_decide`, depends on `Lean.ofReduceBool`)."
+    },
+    {
+      "id": "connection-874",
+      "title": "Connection to Problem #874",
+      "startLine": 196,
+      "endLine": 212,
+      "summary": "PROVES `finite_version_connection`: the finite #874 variant (max $|A|$ for $A\\subseteq\\{0,\\dots,n\\}$ with disjoint sumsets) has the trivial upper bound $|A|\\leq n+1$. The infinite #875 asks instead about growth rates.",
+      "mathContext": "#874 (finite): $A\\subseteq\\{0,\\dots,n\\}\\Rightarrow|A|\\leq n+1$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures Erdős Problem #875 on admissible sequences with three proved results (powers of 2 strictly increasing, growth lower bound a(n) ≥ n+1, partial powers-of-2 admissibility). The gap threshold and ratio-one questions remain open, with the popcount argument for full powers-of-2 admissibility axiomatized.",
+    "implications": "Understanding admissible sequences connects to Sidon set theory, the subset sum problem, additive bases, and binary coding theory. The critical exponent c₀ would quantify how efficiently the disjoint sumsets condition constrains growth.",
+    "openQuestions": [
+      "What is the critical exponent c₀ for polynomial gaps in admissible sequences?",
+      "Can an admissible sequence have a_{n+1}/aₙ → 1 (Erdős's 'not completely trivial' claim)?",
+      "What is the optimal growth rate for admissible sequences?",
+      "How does the maximum admissible subset size of {1,...,n} grow with n?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Data.Nat.Bitwise"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 212,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 7,
+    "path": "Proofs/Erdos875Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1103",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, growth-rates, sumsets"
+    },
+    {
+      "targetId": "erdos-109",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, sumsets"
+    },
+    {
+      "targetId": "erdos-1109",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, sumsets"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,379 @@
+[
+  {
+    "id": "ann-e29-aristotle",
+    "proofId": "erdos-29",
+    "range": {
+      "startLine": 1,
+      "endLine": 45
+    },
+    "type": "concept",
+    "title": "Aristotle Verification Header: What Was Proved vs. Disproved",
+    "content": "This file was processed by Aristotle (automated proof search). The header records what Aristotle proved, what it negated, and what failed to load.\n\n**Proved by Aristotle:**\n- `economical_equiv`: IsEconomical ↔ IsEconomical'\n- `univ_not_economical`: ℕ is not economical\n- `squares_not_basis`: squares not a basis\n- `sidon_not_basis`: Sidon sets cannot be bases\n\n**Negated by Aristotle** (proved the OPPOSITE is true):\n- `basis_size_lower_bound`: The claimed bound $|A \\cap [1,N]| \\geq \\sqrt{N}$ is FALSE — Aristotle found a counterexample!\n\n**Failed to load** (axioms remain): JPSZ_set, JPSZ_is_basis, JPSZ_is_economical, JPSZ_density_zero, JPSZ_representation_bound, JPSZ_explicit, JPSZ_size_optimal.",
+    "mathContext": "Aristotle uses `negate_state` — a meta-tactic that proves `¬P` when `P` fails. For `basis_size_lower_bound`, Aristotle found that `A = {0,1} ∪ {n ≥ 3}` is a counterexample: it's a basis (every n is a sum of two elements) but `|A ∩ [1,2]| = 1 < \\sqrt{2} ≈ 1.41` for N=2. This shows the naive lower bound fails for small N. The 'JPSZ failed to load' entries are axiom declarations that Aristotle couldn't process — these remain as `axiom` in the file.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Aristotle proof search",
+      "negate_state tactic",
+      "counterexample",
+      "axiom vs theorem",
+      "basis_size_lower_bound"
+    ],
+    "prerequisites": [
+      "Aristotle tool",
+      "negate_state meta-tactic",
+      "set.ncard",
+      "Real.sqrt"
+    ]
+  },
+  {
+    "id": "ann-e29-header",
+    "proofId": "erdos-29",
+    "range": {
+      "startLine": 47,
+      "endLine": 72
+    },
+    "type": "concept",
+    "title": "Problem Overview: Sidon's 1932 Question, JPSZ 2024 Resolution",
+    "content": "**Erdős Problem #29**: Is there an EXPLICIT construction of a set A ⊆ ℕ such that A + A = ℕ but r_A(n) = o(n^ε) for every ε > 0?\n\n**Status**: SOLVED ($100 prize)\n**Solver**: Jain-Pham-Sawhney-Zakharov (2024) arXiv:2405.08650\n\n**Key terminology**:\n- **Additive basis of order 2**: A + A = ℕ (every natural is a sum of two elements from A)\n- **Economical**: Representation count $r_A(n) = o(n^\\varepsilon)$ for all $\\varepsilon > 0$\n- **Explicit**: Constructive algorithm with computable membership, not just an existence proof\n\n**Historical journey**: Sidon (1932) → Erdős probabilistic proof (~1950s) → JPSZ explicit construction (2024) — 90+ years!",
+    "mathContext": "The notation $1_A * 1_A(n)$ is the convolution $r_A(n) = \\sum_{k=0}^{n} 1_A(k) \\cdot 1_A(n-k)$, counting representations $n = a + b$ with $a, b \\in A$. This equals `representationCount A n` in the Lean file. The condition $r_A(n) = o(n^\\varepsilon)$ means that for large $n$, $r_A(n)$ grows slower than any polynomial — much stronger than $r_A(n) = O(1)$ (Sidon) but achievable without making A too sparse to be a basis.",
+    "significance": "key",
+    "relatedConcepts": [
+      "additive basis",
+      "economical set",
+      "representation function",
+      "JPSZ 2024",
+      "Sidon 1932"
+    ],
+    "prerequisites": [
+      "additive combinatorics",
+      "little-o notation",
+      "sumset"
+    ]
+  },
+  {
+    "id": "ann-e29-sumset",
+    "proofId": "erdos-29",
+    "range": {
+      "startLine": 83,
+      "endLine": 97
+    },
+    "type": "definition",
+    "title": "Sumset, Doubling, and Representation Functions",
+    "content": "**Core definitions:**\n\n```lean\ndef Sumset (A B : Set ℕ) : Set ℕ := { n | ∃ a ∈ A, ∃ b ∈ B, n = a + b }\nnotation:65 A \" +ₛ \" B => Sumset A B\ndef Doubling (A : Set ℕ) : Set ℕ := A +ₛ A\nnoncomputable def representationCount (A : Set ℕ) (n : ℕ) : ℕ :=\n  Set.ncard { p : ℕ × ℕ | p.1 ∈ A ∧ p.2 ∈ A ∧ p.1 + p.2 = n }\nnoncomputable def orderedRepCount (A : Set ℕ) (n : ℕ) : ℕ :=\n  Set.ncard { p : ℕ × ℕ | p.1 ∈ A ∧ p.2 ∈ A ∧ p.1 ≤ p.2 ∧ p.1 + p.2 = n }\n```\n\n`representationCount` counts ordered pairs (a,b) with a+b=n. `orderedRepCount` counts unordered pairs with a ≤ b. Singletons: `orderedRepCount A n ≤ 1` defines Sidon sets.",
+    "mathContext": "For ℕ itself: `representationCount Set.univ n = n + 1` (pairs $(0,n),(1,n-1),\\ldots,(n,0)$). This is NOT economical since $(n+1)/n^{1/2} \\to \\infty$. For JPSZ: `representationCount JPSZ_set n ≤ \\exp(C\\sqrt{\\log n})$, which is $o(n^\\varepsilon)$ for all $\\varepsilon > 0$ since $\\exp(C\\sqrt{\\log n}) = o(n^\\varepsilon)$. `noncomputable` because `Set.ncard` requires classical reasoning.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Set.ncard",
+      "sumset notation",
+      "representation function",
+      "ordered pairs",
+      "noncomputable"
+    ],
+    "prerequisites": [
+      "Set.ncard",
+      "ℕ × ℕ",
+      "Set membership",
+      "Lean 4 notation"
+    ]
+  },
+  {
+    "id": "ann-e29-basis",
+    "proofId": "erdos-29",
+    "range": {
+      "startLine": 99,
+      "endLine": 117
+    },
+    "type": "concept",
+    "title": "Additive Basis Definition and Equivalence (Lean-Verified)",
+    "content": "**IsAdditiveBasis A**: Doubling A = Set.univ ($A + A = \\mathbb{N}$)\n\n**CoversAll A**: Every n ∈ ℕ is in Doubling A\n\n**theorem additive_basis_iff (A : Set ℕ) : IsAdditiveBasis A ↔ CoversAll A** ✓\n\nProof: unfold IsAdditiveBasis CoversAll; ext n; simp; intro h n; rw [h]; trivial. This is a fully Lean-verified theorem — no sorry, no axiom.",
+    "mathContext": "Additive basis of **order 2**: uses exactly 2-fold sumsets. Waring's problem concerns order $k$ for squares, cubes, etc. Goldbach's conjecture: primes form a basis of order 2 for even numbers $\\geq 4$. Here `Set.univ` represents all of ℕ including 0; 0 = 0+0 requires $0 \\in A$ for any basis. The proof uses `ext n`, then `simp only [Set.mem_univ, iff_true]` — standard Lean pattern for showing set equality.",
+    "significance": "key",
+    "relatedConcepts": [
+      "additive basis order 2",
+      "Set.univ",
+      "Waring's problem",
+      "Goldbach conjecture",
+      "additive_basis_iff"
+    ],
+    "prerequisites": [
+      "Set.univ",
+      "ext tactic",
+      "simp tactic",
+      "Doubling definition"
+    ]
+  },
+  {
+    "id": "ann-e29-economical",
+    "proofId": "erdos-29",
+    "range": {
+      "startLine": 118,
+      "endLine": 141
+    },
+    "type": "concept",
+    "title": "The Economical Condition and Equivalence (Aristotle-Verified)",
+    "content": "**IsEconomical A**: $\\forall \\varepsilon > 0$, `Tendsto (fun n => r_A(n) / n^ε) atTop (nhds 0)`\n\n**IsEconomical' A**: $\\forall \\varepsilon > 0, \\forall C > 0, \\exists N_0, \\forall n \\geq N_0 : r_A(n) < C \\cdot n^\\varepsilon$\n\n**theorem economical_equiv : IsEconomical A ↔ IsEconomical' A** ✓ (proved by Aristotle)\n\nThe proof (lines 129-141) uses `Filter.Tendsto`, `Metric.tendsto_nhds`, and `div_lt_iff₀` — a sophisticated real analysis argument about filter limits.",
+    "mathContext": "Both definitions capture '$r_A(n) = o(n^\\varepsilon)$ for all $\\varepsilon > 0$'. `IsEconomical` uses filter limits (`Tendsto ... atTop (nhds 0)`). `IsEconomical'` uses the explicit $\\varepsilon$-$N$ formulation. The equivalence proof converts between these two standard notions of limit-to-zero. `atTop` is the filter of 'eventually large n'. Aristotle's proof uses `this.eventually (gt_mem_nhds hC)` — a filter.eventually argument.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Tendsto",
+      "atTop filter",
+      "nhds 0",
+      "Filter.eventually",
+      "little-o",
+      "economical_equiv"
+    ],
+    "prerequisites": [
+      "Filter.Tendsto",
+      "Metric.tendsto_nhds",
+      "nhds topology",
+      "div_lt_iff₀",
+      "pow_pos"
+    ]
+  },
+  {
+    "id": "ann-e29-statement",
+    "proofId": "erdos-29",
+    "range": {
+      "startLine": 145,
+      "endLine": 158
+    },
+    "type": "definition",
+    "title": "The Problem Statement and Probabilistic Existence",
+    "content": "**Erdos29Statement**: ∃ A : Set ℕ, IsAdditiveBasis A ∧ IsEconomical A\n\n**axiom erdos_probabilistic_existence**: This statement is true!\n\nErdős proved existence non-constructively: include $n$ in $A$ with probability $p_n \\approx n^{-1/2 + o(1)}$. With positive probability (second moment method), the random set is both a basis and economical.\n\n**Note**: Aristotle failed to load this axiom (reports unexpected axiom `harmonicSorry429466`), so it remains an axiom in the file.",
+    "mathContext": "Erdős's probabilistic argument: $\\mathbb{E}[r_A(n)] = \\sum_{k=0}^{n} p_k p_{n-k}$. With $p_k = k^{-1/2+o(1)}$, this gives $\\mathbb{E}[r_A(n)] = o(n^\\varepsilon)$. The Borel-Cantelli lemma + second moment method shows the random $A$ is a basis with high probability. This argument is **non-constructive**: the set $A$ depends on the random choices. The problem was: can we make $A$ explicit (computable)?",
+    "significance": "key",
+    "relatedConcepts": [
+      "probabilistic method",
+      "second moment method",
+      "non-constructive existence",
+      "Erdos29Statement",
+      "Borel-Cantelli"
+    ],
+    "prerequisites": [
+      "probability theory",
+      "second moment method",
+      "Lean axiom keyword",
+      "Set ℕ"
+    ]
+  },
+  {
+    "id": "ann-e29-jpsz",
+    "proofId": "erdos-29",
+    "range": {
+      "startLine": 160,
+      "endLine": 183
+    },
+    "type": "concept",
+    "title": "The JPSZ Explicit Construction (2024) — The Main Result",
+    "content": "**axiom JPSZ_set : Set ℕ** - The explicit computable set\n**axiom JPSZ_is_basis : IsAdditiveBasis JPSZ_set** ✓\n**axiom JPSZ_is_economical : IsEconomical JPSZ_set** ✓\n\n**theorem erdos_29_solved : Erdos29Statement** ✓\n\nProof: `⟨JPSZ_set, JPSZ_is_basis, JPSZ_is_economical⟩` — a direct existential witness.\n\nJain, Pham, Sawhney, Zakharov (2024) gave the first explicit economical basis after 90+ years. The $100 Erdős prize is resolved!",
+    "mathContext": "The JPSZ construction (arXiv:2405.08650) uses a deterministic derandomization of Erdős's probabilistic argument. The key technical tool is the 'method of conditional expectations' applied to a hash function construction. The resulting set has membership predicate: $n \\in A$ if and only if a certain hash of $n$ falls in a specific range. The representation bound is $r_A(n) \\leq \\exp(C\\sqrt{\\log n})$, far stronger than the required $o(n^\\varepsilon)$ for all $\\varepsilon > 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "JPSZ 2024",
+      "explicit construction",
+      "arXiv:2405.08650",
+      "Erdos29Statement",
+      "axiom",
+      "erdos_29_solved"
+    ],
+    "prerequisites": [
+      "IsAdditiveBasis",
+      "IsEconomical",
+      "Lean existential witness",
+      "axiom keyword"
+    ]
+  },
+  {
+    "id": "ann-e29-jpsz-properties",
+    "proofId": "erdos-29",
+    "range": {
+      "startLine": 185,
+      "endLine": 203
+    },
+    "type": "definition",
+    "title": "JPSZ Properties: Density Zero and Representation Bound",
+    "content": "**HasDensityZero A**: `Tendsto (fun N => |A ∩ [1,N]| / N) atTop (nhds 0)` — the set has density 0.\n\n**axiom JPSZ_density_zero**: `HasDensityZero JPSZ_set`\n\n**axiom JPSZ_representation_bound**:\n$\\exists C > 0, \\forall n \\geq 2 : r_{\\text{JPSZ}}(n) \\leq \\exp(C\\sqrt{\\log n})$\n\nThe representation bound $\\exp(C\\sqrt{\\log n})$ is far stronger than just $o(n^\\varepsilon)$. It quantifies exactly how economical JPSZ is.",
+    "mathContext": "Why $\\exp(C\\sqrt{\\log n}) = o(n^\\varepsilon)$ for all $\\varepsilon > 0$: taking logarithms, $C\\sqrt{\\log n} < \\varepsilon \\log n$ iff $C < \\varepsilon \\sqrt{\\log n}$, which holds for all large $n$ since $\\sqrt{\\log n} \\to \\infty$. The density-zero condition: $|\\text{JPSZ} \\cap [1,N]| = o(N)$, i.e., the set is sparse. Compare: primes have density 0 ($|P \\cap [1,N]| \\sim N/\\log N$), but primes don't form an order-2 basis (Goldbach is unproved).",
+    "significance": "key",
+    "relatedConcepts": [
+      "HasDensityZero",
+      "JPSZ_representation_bound",
+      "subpolynomial growth",
+      "exp(C sqrt(log n))",
+      "density zero"
+    ],
+    "prerequisites": [
+      "Tendsto",
+      "Real.exp",
+      "Real.sqrt",
+      "Real.log",
+      "Set.Icc",
+      "Set.ncard"
+    ]
+  },
+  {
+    "id": "ann-e29-univ",
+    "proofId": "erdos-29",
+    "range": {
+      "startLine": 205,
+      "endLine": 231
+    },
+    "type": "concept",
+    "title": "ℕ is a Basis but Not Economical (Both Aristotle-Verified)",
+    "content": "**theorem univ_is_basis : IsAdditiveBasis Set.univ** ✓\n\nProof: `n = 0 + n` for all n — use 0 ∈ ℕ and n ∈ ℕ.\n\n**theorem univ_not_economical : ¬IsEconomical Set.univ** ✓ (Aristotle proved this)\n\nProof: `representationCount Set.univ n = n + 1` for all n > 0. But $(n+1)/n^{1/2} \\to \\infty$, not 0. The proof computes $r_\\mathbb{N}(n) = n+1$ via `h_rep_count` using `Set.ncard_coe_finset` and `Finset.card_image_of_injective`.",
+    "mathContext": "$r_\\mathbb{N}(n) = |\\{(a,b) : a+b=n\\}| = n+1$ (pairs $(0,n),(1,n-1),\\ldots,(n,0)$). The non-economical proof: take $\\varepsilon = 1/2$, then $(n+1)/n^{1/2} = n^{1/2} + n^{-1/2} \\to \\infty$. Aristotle's proof uses `Filter.Tendsto.add (tendsto_const_nhds.congr' ...) (tendsto_inverse_atTop_nhds_zero_nat)` — combining two Tendsto results. This shows 'being a basis' and 'being economical' are genuinely incompatible for the naive set ℕ.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Set.univ",
+      "representationCount",
+      "univ_not_economical",
+      "Set.ncard_coe_finset",
+      "Finset.card_image_of_injective"
+    ],
+    "prerequisites": [
+      "Set.univ",
+      "representationCount",
+      "Tendsto",
+      "Filter.eventually_gt_atTop",
+      "div_self"
+    ]
+  },
+  {
+    "id": "ann-e29-squares",
+    "proofId": "erdos-29",
+    "range": {
+      "startLine": 232,
+      "endLine": 244
+    },
+    "type": "concept",
+    "title": "Squares Are Not an Additive Basis (Aristotle-Verified)",
+    "content": "**theorem squares_not_basis : ¬IsAdditiveBasis {n : ℕ | ∃ k, n = k²}** ✓ (Aristotle proved)\n\n**Proof**: 3 cannot be written as a sum of two squares.\n- Squares ≤ 3: {0, 1} (since $2^2 = 4 > 3$)\n- Sums of pairs from {0,1}: {0, 1, 2}\n- 3 is not achievable!\n\nAristotle's proof: `interval_cases ka <;> interval_cases kb <;> trivial` — exhaustive case analysis on $k_a, k_b \\in \\{0, 1, 2\\}$.",
+    "mathContext": "This is distinct from Lagrange's four-square theorem ($\\forall n, \\exists a,b,c,d : n = a^2+b^2+c^2+d^2$): we need TWO squares, not four. In fact, $3 \\equiv 3 \\pmod{4}$, and no number $\\equiv 3 \\pmod{4}$ is a sum of two squares (since squares are $\\equiv 0$ or $1 \\pmod{4}$). The proof uses `nlinarith` to bound $k_a, k_b < 3$ from the constraint $k_a^2 + k_b^2 = 3$, then `interval_cases` for exhaustive checking.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "squares_not_basis",
+      "Lagrange four-square theorem",
+      "sum of two squares",
+      "interval_cases tactic",
+      "nlinarith"
+    ],
+    "prerequisites": [
+      "interval_cases tactic",
+      "nlinarith",
+      "Nat squares",
+      "additive_basis_iff"
+    ]
+  },
+  {
+    "id": "ann-e29-sidon",
+    "proofId": "erdos-29",
+    "range": {
+      "startLine": 246,
+      "endLine": 322
+    },
+    "type": "concept",
+    "title": "Sidon Sets Cannot Be Bases — The 'Too Thin' Constraint (Aristotle-Verified)",
+    "content": "**IsSidon A**: `orderedRepCount A n ≤ 1` for all n (each sum has at most one representation)\n\n**theorem sidon_not_basis (hS : IsSidon A) : ¬IsAdditiveBasis A** ✓ (Aristotle proved)\n\n**Proof strategy** (76 lines of Lean): Assume A is both Sidon and a basis.\n1. 0 ∈ A (to represent 0)\n2. 1 ∈ A (to represent 1)\n3. 2 ∉ A (else orderedRepCount 2 ≥ 2 via (0,2) and (1,1))\n4. 3 ∈ A (to represent 3 = 0+3 = 1+2 but 2∉A, so 3∈A)\n5. 4 ∉ A (Sidon: 4 = 1+3, so {(1,3)} is the unique pair)\n6. 5 ∈ A (to represent 5 = 0+5 = 1+4 = 2+3, only 1+4 and 2+3 fail, forces 5∈A)\n7. **Contradiction**: 6 = 1+5 = 3+3, giving orderedRepCount 6 ≥ 2 → contradicts Sidon!",
+    "mathContext": "Sidon sets (also called $B_2$ sequences) satisfy $|A \\cap [1,N]| = O(\\sqrt{N})$ — much too sparse to be a basis ($|A \\cap [1,N]| \\geq C\\sqrt{N}$ is necessary for any basis). The Lean proof at line 270 uses `have h_two : 2 ∉ A := by ... contrapose! h_distinct` — negation by finding two distinct ordered pairs summing to 2. The final contradiction at line 314: `orderedRepCount A 6 ≥ 2` contradicts `hS 6 : orderedRepCount A 6 ≤ 1`. The proof uses `Set.ncard_le_ncard` and `Set.finite_iff_bddAbove` extensively.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sidon set",
+      "B2 sequence",
+      "sidon_not_basis",
+      "orderedRepCount",
+      "Set.ncard_le_ncard",
+      "contradiction"
+    ],
+    "prerequisites": [
+      "IsSidon",
+      "orderedRepCount",
+      "Set.ncard",
+      "Set.finite_iff_bddAbove",
+      "by_contra",
+      "contrapose!"
+    ]
+  },
+  {
+    "id": "ann-e29-jpsz-middle",
+    "proofId": "erdos-29",
+    "range": {
+      "startLine": 324,
+      "endLine": 356
+    },
+    "type": "insight",
+    "title": "The JPSZ 'Goldilocks' Construction: Explicit vs Probabilistic",
+    "content": "**The middle ground between two extremes:**\n\n| Set | Basis? | Economical? | Why? |\n|-----|--------|-------------|------|\n| ℕ (too thick) | Yes | No | $r(n) = n+1$, linear |\n| Sidon (too thin) | No | Yes | $r(n) \\leq 2$ |\n| **JPSZ** | **Yes** | **Yes** | $r(n) \\leq \\exp(C\\sqrt{\\log n})$ |\n\n**Explicit vs Probabilistic distinction:**\n- **Explicit**: `class ExplicitSet (A : Set ℕ) where membership_decidable : DecidablePred (· ∈ A)`\n- Erdős: `∃ A` (non-constructive)\n- JPSZ: `axiom JPSZ_explicit : ExplicitSet JPSZ_set` (computable membership)",
+    "mathContext": "The Erdős probabilistic argument: include $n \\in A$ with probability $p_n = n^{-1/2+o(1)}$. Then $\\mathbb{E}[r_A(n)] = \\sum_k p_k p_{n-k} = o(n^\\varepsilon)$ (economical in expectation), and a basis with probability 1 by Borel-Cantelli. JPSZ derandomizes this: they find a **deterministic hash function** $h : \\mathbb{N} \\to [0,1]$ such that $n \\in A \\iff h(n) \\leq p_n$. `DecidablePred (· ∈ A)` means there is a computable algorithm to check membership — the key property that makes the construction 'explicit'.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ExplicitSet",
+      "DecidablePred",
+      "JPSZ_explicit",
+      "probabilistic method",
+      "derandomization",
+      "Goldilocks"
+    ],
+    "prerequisites": [
+      "class keyword",
+      "DecidablePred",
+      "Lean typeclasses",
+      "probabilistic method",
+      "computability"
+    ]
+  },
+  {
+    "id": "ann-e29-lower-bound",
+    "proofId": "erdos-29",
+    "range": {
+      "startLine": 358,
+      "endLine": 421
+    },
+    "type": "concept",
+    "title": "Aristotle Finds a Counterexample to the Lower Bound (False Theorem!)",
+    "content": "**Claimed theorem** (FALSE):\n`basis_size_lower_bound (A : Set ℕ) (hA : IsAdditiveBasis A) : ∀ N ≥ 1, |A ∩ [1,N]| ≥ √N`\n\n**Aristotle proved this is FALSE** via `negate_state`, constructing:\n```lean\ndef CounterexampleA : Set ℕ := {0, 1} ∪ {n | 3 ≤ n}\n```\n- CounterexampleA is a basis (n=0: 0+0, n=1: 0+1, n=2: 1+1, n≥3: n+0)\n- But |CounterexampleA ∩ [1,2]| = 1 < √2 ≈ 1.41 for N=2!\n\n**The theorem remains in the file as `sorry`** — showing the gap between what was intended and what is true.",
+    "mathContext": "The lower bound $|A \\cap [1,N]| \\geq \\sqrt{N}$ fails for small $N$ because $A = \\{0,1\\} \\cup \\{n \\geq 3\\}$ is a valid basis (2 = 1+1 works without 2 ∈ A). The true statement would need 'for all large N' or involve the asymptotic density. In fact, the correct lower bound is: for any additive basis $A$, $|A \\cap [1,N]| \\geq \\frac{1}{2}\\sqrt{N} - O(1)$ for all $N \\geq 1$ (using a counting argument). The file retains the false theorem with `sorry` to record the failed attempt. `negate_state` is Aristotle's meta-tactic for proving negations.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "negate_state",
+      "CounterexampleA",
+      "basis_size_lower_bound",
+      "sorry",
+      "JPSZ_size_optimal",
+      "false theorem"
+    ],
+    "prerequisites": [
+      "negate_state meta-tactic",
+      "Real.sqrt",
+      "Set.Icc",
+      "Set.ncard",
+      "by_cases",
+      "interval_cases"
+    ]
+  },
+  {
+    "id": "ann-e29-summary",
+    "proofId": "erdos-29",
+    "range": {
+      "startLine": 423,
+      "endLine": 452
+    },
+    "type": "concept",
+    "title": "Summary: 90 Years from Question to Constructive Answer",
+    "content": "**Erdős Problem #29: SOLVED** ($100 prize)\n\n**Timeline:**\n- **1932**: Sidon asks Erdős for an explicit economical basis\n- **~1950s**: Erdős proves existence probabilistically (non-constructive)\n- **2024**: JPSZ (Jain, Pham, Sawhney, Zakharov) give explicit construction\n\n**JPSZ Set Properties:**\n- Explicit and computable (ExplicitSet) ✓\n- $A + A = \\mathbb{N}$ (additive basis of order 2) ✓\n- $r_A(n) \\leq \\exp(C\\sqrt{\\log n})$ (economical, $= o(n^\\varepsilon)$ for all $\\varepsilon > 0$) ✓\n- $|A \\cap [1,N]| \\leq C\\sqrt{N \\log N}$ (near-optimal size) ✓\n\n**Fully verified in Lean:**\n- `economical_equiv`, `univ_not_economical`, `squares_not_basis`, `sidon_not_basis`",
+    "mathContext": "The JPSZ result is a landmark in additive combinatorics: it simultaneously resolves 90+ years of open questions and demonstrates that probabilistic existence proofs can be derandomized into explicit constructions. The size bound $|A \\cap [1,N]| \\leq C\\sqrt{N \\log N}$ is nearly optimal — any additive basis must satisfy $|A \\cap [1,N]| = \\Omega(\\sqrt{N})$ asymptotically. The $\\sqrt{\\log N}$ factor in JPSZ's bound is likely not tight and may be improvable in future work.",
+    "significance": "key",
+    "relatedConcepts": [
+      "JPSZ 2024",
+      "problem status",
+      "timeline",
+      "verified theorems",
+      "arXiv:2405.08650"
+    ],
+    "prerequisites": [
+      "IsAdditiveBasis",
+      "IsEconomical",
+      "ExplicitSet",
+      "JPSZ_size_optimal"
+    ]
+  }
+]

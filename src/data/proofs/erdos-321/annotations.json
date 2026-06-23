@@ -1,0 +1,169 @@
+[
+  {
+    "id": "erdos-321-header",
+    "proofId": "erdos-321",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 23
+    },
+    "title": "Module Header and Imports",
+    "content": "Module docstring stating the Bleicher-Erdos bounds with iterated logarithm notation, followed by Mathlib imports. Imports provide natural numbers, rationals $\\mathbb{Q}$ (for exact reciprocal sums), reals $\\mathbb{R}$ (for asymptotic bounds involving logarithms), and general tactics. Reciprocal sums are computed over $\\mathbb{Q}$ to avoid rounding - the distinctness of $\\sum 1/n$ over subsets requires exact rational arithmetic. The problem connects to Egyptian fraction theory (dating to the Rhind Papyrus, c. 1650 BCE): every positive rational can be written as a sum of distinct unit fractions $1/n$, and $R(N)$ measures how many denominators from $\\{1, \\ldots, N\\}$ can coexist while keeping all partial sums distinguishable.",
+    "mathContext": "Subset sums $\\sum_{n \\in S} \\frac{1}{n} \\in \\mathbb{Q}$ are rational for finite $S \\subseteq \\mathbb{N}$. The asymptotic bounds use $\\mathbb{R}$-valued functions: $\\log N$, iterated logarithms $\\log_i N$, and the prime counting function $\\pi(N) \\sim N/\\log N$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Egyptian fractions",
+      "rational arithmetic",
+      "iterated logarithm",
+      "asymptotic analysis"
+    ],
+    "prerequisites": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ]
+  },
+  {
+    "id": "erdos-321-definitions",
+    "proofId": "erdos-321",
+    "type": "definition",
+    "range": {
+      "startLine": 25,
+      "endLine": 43
+    },
+    "title": "Core Definitions: Distinct Reciprocal Sums",
+    "content": "Two equivalent formulations of the distinct reciprocal subset sums property. **HasDistinctReciprocalSums**: for any two distinct subsets $S \\neq T \\subseteq A$, the sums $\\sum_{n \\in S} 1/n \\neq \\sum_{n \\in T} 1/n$ (all $2^{|A|}$ subset sums are unique rationals). **HasDistinctReciprocalSums'**: the injective formulation, where equal sums imply equal subsets. The Classical DecidablePred instance is opened to handle subset membership decidability uniformly. The condition is equivalent to requiring that no non-empty subset $U \\subseteq A$ has $\\sum_{n \\in U} 1/n = 0$ (after sign adjustment), connecting to the theory of zero-sum problems.",
+    "mathContext": "$\\text{HasDistinctReciprocalSums}(A) \\iff |\\{\\sum_{n \\in S} 1/n : S \\subseteq A\\}| = 2^{|A|}$. For ordinary subset sums (not reciprocals), the analogous problem was studied by Erdos and Moser; for unit fractions, the denominators create arithmetic structure constraining which sets can have this property.",
+    "significance": "key",
+    "relatedConcepts": [
+      "zero-sum theory",
+      "distinct subset sums",
+      "Erdos-Moser conjecture",
+      "B-sequences",
+      "Sidon sets"
+    ],
+    "prerequisites": [
+      "Finset.sum",
+      "Finset.powerset",
+      "rational equality"
+    ]
+  },
+  {
+    "id": "erdos-321-equivalence",
+    "proofId": "erdos-321",
+    "type": "concept",
+    "range": {
+      "startLine": 45,
+      "endLine": 53
+    },
+    "title": "Equivalence of Distinct Sums Formulations",
+    "content": "Proves that the two formulations are logically equivalent: `HasDistinctReciprocalSums A <-> HasDistinctReciprocalSums' A`. The forward direction uses `by_contra` (if $S = T$ then the inequality hypothesis is contradicted); the backward direction is the contrapositive. This is a simple propositional equivalence but useful for choosing the most convenient formulation in downstream proofs.",
+    "mathContext": "$(\\forall S \\neq T, \\sum 1/S \\neq \\sum 1/T) \\iff (\\sum 1/S = \\sum 1/T \\Rightarrow S = T)$: the distinction-based and injection-based formulations are equivalent by contrapositive.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "logical equivalence",
+      "contrapositive",
+      "injective function"
+    ],
+    "prerequisites": [
+      "propositional logic",
+      "HasDistinctReciprocalSums"
+    ]
+  },
+  {
+    "id": "erdos-321-structural",
+    "proofId": "erdos-321",
+    "type": "concept",
+    "range": {
+      "startLine": 55,
+      "endLine": 83
+    },
+    "title": "Structural Properties: Empty, Subset, Singleton",
+    "content": "Three structural properties of the distinct reciprocal sums predicate, demonstrating it behaves like a hereditary set system property:\n\n1. **Empty set** (lines 58-62): $\\emptyset$ has distinct sums vacuously, since both subsets must be empty, contradicting $S \\neq T$.\n\n2. **Hereditary** (lines 66-70): If $A$ has distinct sums and $B \\subseteq A$, then $B$ has distinct sums. Proof: subsets of $B$ are also subsets of $A$, so the distinctness of $A$'s sums implies distinctness for $B$'s. This makes the collection of sets with distinct sums a **downward-closed family** (or **ideal**) in the powerset lattice.\n\n3. **Singleton** (lines 74-83): $\\{n\\}$ for $n \\geq 1$ has distinct sums, since its only subsets are $\\emptyset$ (sum 0) and $\\{n\\}$ (sum $1/n > 0$). Uses `Finset.subset_singleton_iff` for case analysis and `positivity` for $1/n > 0$.\n\nThese are the building blocks for proving $R(N) \\geq 1$ and for the hereditary structure underlying greedy constructions.",
+    "mathContext": "The family $\\mathcal{F}_N = \\{A \\subseteq [N] : \\text{HasDistinctReciprocalSums}(A)\\}$ is a downward-closed family (hereditary set system). This means $R(N) = \\max_{A \\in \\mathcal{F}_N} |A|$ is the **independence number** of the associated matroid-like structure.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "hereditary family",
+      "downward-closed set system",
+      "matroid independence",
+      "greedy algorithm"
+    ],
+    "prerequisites": [
+      "Finset.subset_singleton_iff",
+      "positivity tactic"
+    ]
+  },
+  {
+    "id": "erdos-321-pair-theorem",
+    "proofId": "erdos-321",
+    "type": "concept",
+    "range": {
+      "startLine": 85,
+      "endLine": 124
+    },
+    "title": "Subset Classification and Pair Distinctness (Proved)",
+    "content": "Two theorems: `subset_pair_cases` classifies all subsets of $\\{a,b\\}$ as $\\emptyset, \\{a\\}, \\{b\\}$, or $\\{a,b\\}$ (via case analysis on $a \\in S$ and $b \\in S$). Then `pair_hasDistinctReciprocalSums` proves that for $1 \\leq m < n$, $\\{m,n\\}$ has all 4 subset sums distinct. The proof establishes the strict chain $0 < 1/n < 1/m < 1/m + 1/n$ using `positivity` and `div_lt_div_of_pos_left`, then applies `subset_pair_cases` to both $S$ and $T$, yielding $4 \\times 4 = 16$ cases. Each case is discharged by `simp` (evaluating sums) followed by either `exact hne rfl` (if $S = T$, contradicting the distinctness hypothesis) or `linarith` (if the sums differ by the chain of inequalities). This is a clean, complete proof with no sorries.",
+    "mathContext": "For $1 \\leq m < n$: the 4 subset sums are $0 < \\frac{1}{n} < \\frac{1}{m} < \\frac{1}{m} + \\frac{1}{n}$, all distinct. The 16-case analysis on $(S, T)$ is reduced to $\\leq 12$ non-trivial cases (4 diagonal cases where $S = T$ are immediate contradictions). Gives $R(N) \\geq 2$ for $N \\geq 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "subset classification",
+      "rational chain of inequalities",
+      "div_lt_div_of_pos_left",
+      "linarith tactic",
+      "16-case exhaustion"
+    ],
+    "prerequisites": [
+      "Finset.sum_pair",
+      "Finset.Subset.antisymm",
+      "positivity",
+      "HasDistinctReciprocalSums"
+    ]
+  },
+  {
+    "id": "erdos-321-r-function",
+    "proofId": "erdos-321",
+    "type": "definition",
+    "range": {
+      "startLine": 126,
+      "endLine": 134
+    },
+    "title": "R(N) - Maximum Set Size",
+    "content": "Defines $R(N) = \\text{maxDistinctReciprocal}(N)$ as the maximum cardinality of a subset $A \\subseteq \\{1, \\ldots, N\\}$ with distinct reciprocal subset sums, via `Finset.sup` over the powerset of $\\{0, \\ldots, N\\}$ filtered by the conjunction of `HasDistinctReciprocalSums` and the range constraint $1 \\leq n \\leq N$ for all elements. The definition is `noncomputable` due to the existential quantification in `HasDistinctReciprocalSums`. Small values: $R(1) = 1$ ($\\{1\\}$), $R(2) = 2$ ($\\{1, 2\\}$), $R(3) = 3$ ($\\{1, 2, 3\\}$).",
+    "mathContext": "$R(N) = \\max\\{|A| : A \\subseteq [N], \\text{ all } 2^{|A|} \\text{ reciprocal subset sums distinct}\\}$. The function $R$ is non-decreasing: $R(N) \\leq R(N+1)$ since any valid subset of $[N]$ is also valid in $[N+1]$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal set theory",
+      "Finset.sup",
+      "noncomputable definition"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "Finset.powerset",
+      "HasDistinctReciprocalSums"
+    ]
+  },
+  {
+    "id": "erdos-321-axioms",
+    "proofId": "erdos-321",
+    "type": "concept",
+    "range": {
+      "startLine": 136,
+      "endLine": 160
+    },
+    "title": "Known Bounds — Bleicher–Erdős Axioms and Theta Theorem",
+    "content": "Three axioms encoding the known bounds on $R(N)$:\n\n1. **Lower bound** (1975): $R(N) \\geq N/\\log N$ for sufficiently large $N$. The full result by Bleicher-Erdos gives $R(N) \\geq (N/\\log N) \\cdot \\prod_{i=3}^{k} \\log_i N$. The construction selects integers $n \\leq N$ whose prime factorizations have specific properties ensuring reciprocal subset sums separate, using the unique factorization of $\\text{lcm}(1, \\ldots, N)$ into prime powers.\n\n2. **Upper bound** (1976): $R(N) \\leq C \\cdot (N/\\log N) \\cdot \\log\\log N$ for some constant $C > 0$. Uses a counting argument: $2^{|A|}$ distinct sums must fit within the range of rationals with denominator $\\text{lcm}(1, \\ldots, N) \\approx e^N$ (by the prime number theorem), giving $|A| \\leq \\log_2(\\text{lcm}) \\approx N/\\log 2$.\n\n3. **Main term**: $c_1 \\cdot N/\\log N \\leq R(N) \\leq c_2 \\cdot (N/\\log N) \\cdot \\log\\log N$, combining both bounds. The gap is exactly one iterated logarithm factor.\n\nThese are axiomatized (not proved in Lean) since the proofs require deep analytic number theory including the prime number theorem and careful prime factorization estimates.",
+    "mathContext": "Two axioms formalize the best known bounds on $R(N)$:\n\n**Lower**: $\\exists C > 0, \\exists N_0, \\forall N \\geq N_0: C \\cdot N / \\log N \\leq R(N)$\nMore precisely: $R(N) \\geq (N/\\log N) \\cdot \\prod_{i=3}^{k} \\log_i N$ [Bleicher–Erdős 1975]\n\n**Upper**: $\\exists C > 0, \\exists N_0, \\forall N \\geq N_0: R(N) \\leq C \\cdot (N/\\log N) \\cdot \\log(\\log N)$\nMore precisely: $R(N) \\leq \\frac{1}{\\log 2} \\cdot \\log_r N \\cdot (N/\\log N) \\cdot \\prod_{i=3}^{r} \\log_i N$ [Bleicher–Erdős 1976]\n\n**Theta theorem** (proved): $\\exists c_1, c_2 > 0, \\exists N_0, \\forall N \\geq N_0:$\n$c_1 \\cdot N/\\log N \\leq R(N) \\leq c_2 \\cdot (N/\\log N) \\cdot \\log(\\log N)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "unit fractions",
+      "N/log N",
+      "iterated logarithm",
+      "Bleicher-Erdős theorem",
+      "theta bound"
+    ],
+    "prerequisites": [
+      "maxDistinctReciprocal",
+      "Real.log",
+      "analytic number theory"
+    ]
+  }
+]

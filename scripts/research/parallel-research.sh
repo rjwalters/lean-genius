@@ -1,0 +1,551 @@
+#!/bin/bash
+#
+# parallel-research.sh - Launch parallel research agents
+#
+# Usage:
+#   ./parallel-research.sh [count]           Launch N agents (default: 2, max: 16)
+#   ./parallel-research.sh --slot N          Launch a single agent at slot N
+#   ./parallel-research.sh --status          Show running agents and claims
+#   ./parallel-research.sh --graceful-stop   Signal agents to stop after current work
+#   ./parallel-research.sh --stop            Force stop all agents immediately
+#   ./parallel-research.sh --cleanup         Stop agents and remove worktrees
+#   ./parallel-research.sh --attach N        Attach to agent N's tmux session
+#
+# Each agent works in its own git worktree with a dedicated branch.
+
+set -euo pipefail
+
+# Find repo root
+find_repo_root() {
+    local dir="$PWD"
+    while [[ "$dir" != "/" ]]; do
+        if [[ -d "$dir/.git" ]] || [[ -f "$dir/.git" ]]; then
+            echo "$dir"
+            return 0
+        fi
+        dir="$(dirname "$dir")"
+    done
+    echo "Error: Not in a git repository" >&2
+    return 1
+}
+
+REPO_ROOT="$(find_repo_root)"
+WORKTREES_DIR="$REPO_ROOT/.loom/worktrees"
+LOGS_DIR="$REPO_ROOT/.loom/logs"
+SIGNALS_DIR="$REPO_ROOT/.loom/signals"
+CLAIM_SCRIPT="$REPO_ROOT/scripts/research/claim-problem.sh"
+
+# Shared worktree reclaim helper (remove_own_worktree, guards 1-5).
+# shellcheck source=lib/worktree-cleanup.sh
+source "$REPO_ROOT/scripts/lib/worktree-cleanup.sh"
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+print_error() { echo -e "${RED}✗ $1${NC}"; }
+print_success() { echo -e "${GREEN}✓ $1${NC}"; }
+print_info() { echo -e "${BLUE}ℹ $1${NC}"; }
+print_warning() { echo -e "${YELLOW}⚠ $1${NC}"; }
+
+# Check dependencies
+check_deps() {
+    local missing=()
+    command -v tmux >/dev/null 2>&1 || missing+=("tmux")
+    command -v claude >/dev/null 2>&1 || missing+=("claude")
+    command -v gh >/dev/null 2>&1 || missing+=("gh")
+    command -v jq >/dev/null 2>&1 || missing+=("jq")
+
+    if [[ ${#missing[@]} -gt 0 ]]; then
+        print_error "Missing dependencies: ${missing[*]}"
+        exit 1
+    fi
+}
+
+# Create worktree for an agent
+create_worktree() {
+    local agent_num="$1"
+    local worktree_path="$WORKTREES_DIR/researcher-$agent_num"
+    local branch_name="feature/researcher-$agent_num"
+
+    if [[ -d "$worktree_path" ]]; then
+        print_info "Worktree already exists: $worktree_path"
+        # Rebase on main to keep branch up to date and prevent divergence
+        print_info "Rebasing on main to sync with latest changes..."
+        (
+            cd "$worktree_path"
+            git fetch origin main 2>/dev/null || true
+            git stash 2>/dev/null || true
+
+            if git rebase origin/main 2>/dev/null; then
+                print_success "Rebased successfully"
+            else
+                # Abort rebase to keep worktree clean (no conflict markers)
+                git rebase --abort 2>/dev/null || true
+                print_warning "Rebase conflicts detected - continuing with current branch state (slightly stale)"
+                print_warning "    Worktree: $worktree_path"
+                print_warning "    Manual sync: cd $worktree_path && git reset --hard origin/main"
+            fi
+
+            git stash pop 2>/dev/null || true
+        )
+        return 0
+    fi
+
+    # Try to create worktree
+    git worktree add "$worktree_path" -b "$branch_name" main 2>/dev/null || {
+        # Branch might exist, try to use it
+        git worktree add "$worktree_path" "$branch_name" 2>/dev/null || {
+            # Remove and recreate branch
+            git branch -D "$branch_name" 2>/dev/null || true
+            git worktree add "$worktree_path" -b "$branch_name" main
+        }
+    }
+
+    # Symlink .lake for fast Lean builds
+    if [[ -d "$REPO_ROOT/proofs/.lake" ]] && [[ -d "$worktree_path/proofs" ]]; then
+        rm -rf "$worktree_path/proofs/.lake" 2>/dev/null || true
+        ln -s "$REPO_ROOT/proofs/.lake" "$worktree_path/proofs/.lake"
+    fi
+}
+
+# Create prompt file for agent
+create_prompt_file() {
+    local agent_num="$1"
+    local worktree_path="$WORKTREES_DIR/researcher-$agent_num"
+    local prompt_file="$LOGS_DIR/researcher-$agent_num-prompt.md"
+    local wait_interval="${RESEARCHER_WAIT_INTERVAL:-15}"
+
+    cat > "$prompt_file" << EOF
+# Research Agent Instructions
+
+You are **researcher-$agent_num**. Your mission is to make meaningful progress on Lean theorem proving problems.
+
+## Environment
+
+- RESEARCHER_ID: researcher-$agent_num
+- REPO_ROOT: $REPO_ROOT
+- WORKTREE: $worktree_path
+- CLAIM_TTL: 90 (minutes)
+- WAIT_INTERVAL: $wait_interval (minutes, when no work available)
+
+## Your Workflow (Continuous Loop)
+
+Run this loop continuously until stopped:
+
+### Step 1: Check for stop signal
+\`\`\`bash
+if [[ -f "$REPO_ROOT/.loom/signals/stop-all" ]] || \\
+   [[ -f "$REPO_ROOT/.loom/signals/stop-researcher-$agent_num" ]]; then
+    echo "Stop signal received. Exiting gracefully."
+    exit 0
+fi
+\`\`\`
+
+### Step 2: Try to claim a problem
+\`\`\`bash
+cd $worktree_path
+CLAIM_OUTPUT=\$($REPO_ROOT/scripts/research/claim-problem.sh claim-random 2>&1)
+echo "\$CLAIM_OUTPUT"
+\`\`\`
+
+### Step 3: If no problem available, WAIT and RETRY
+If the claim output says "No pending problems" or fails:
+\`\`\`bash
+echo "No problems available. Waiting $wait_interval minutes before retry..."
+sleep ${wait_interval}m
+# Then go back to Step 1
+\`\`\`
+
+**IMPORTANT**: Do NOT exit when no work is available. Wait and retry!
+
+### Step 4: If claim succeeded, do research
+1. Run one research iteration following the research methodology
+2. Commit and push your progress
+3. Create/update a PR with your findings
+4. Update problem status and release claim (stats signal is created automatically when status is set to "completed")
+
+### Step 5: Repeat from Step 1
+
+## Working Directory
+
+Always work in your worktree:
+\`\`\`bash
+cd $worktree_path
+\`\`\`
+
+## Commands Reference
+
+\`\`\`bash
+# Claim a problem (knowledge-prioritized)
+$REPO_ROOT/scripts/research/claim-problem.sh claim-random
+
+# Check status
+$REPO_ROOT/scripts/research/claim-problem.sh status
+
+# Update problem status
+$REPO_ROOT/scripts/research/claim-problem.sh update <problem-id> <status>
+
+# Release claim
+$REPO_ROOT/scripts/research/claim-problem.sh release <problem-id>
+\`\`\`
+
+## Error Recovery
+
+If you encounter errors (API limits, network issues, etc.):
+1. Log the error
+2. Wait $wait_interval minutes
+3. Resume from Step 1
+
+Do NOT exit on transient errors. Only exit on stop signals.
+
+## Start Now
+
+Begin by:
+1. Reading the researcher role: \`cat $REPO_ROOT/.lean/roles/researcher.md\`
+2. Checking current status: \`$REPO_ROOT/scripts/research/claim-problem.sh status\`
+3. Starting your continuous research loop
+
+Good luck, researcher-$agent_num!
+EOF
+
+    echo "$prompt_file"
+}
+
+# Launch a single agent
+launch_agent() {
+    local agent_num="$1"
+    local worktree_path="$WORKTREES_DIR/researcher-$agent_num"
+    local log_file="$LOGS_DIR/researcher-$agent_num.log"
+    local session_name="researcher-$agent_num"
+
+    # Create worktree
+    print_info "Creating worktree for agent $agent_num..."
+    create_worktree "$agent_num"
+
+    # Create prompt file
+    local prompt_file
+    prompt_file=$(create_prompt_file "$agent_num")
+
+    # Kill existing session if any
+    tmux kill-session -t "$session_name" 2>/dev/null || true
+
+    # Launch in tmux with resilient wrapper for error handling.
+    # Model resolution chain (first set wins):
+    #   1. RESEARCHER_${slot}_CLAUDE_MODEL  — per-slot pin (e.g. RESEARCHER_1_CLAUDE_MODEL=claude-fable-5)
+    #   2. RESEARCHER_CLAUDE_MODEL          — per-role override (whole pool)
+    #   3. CLAUDE_MODEL                      — global override
+    #   4. claude-opus-4-8                   — wrapper default
+    # Per-slot lets one researcher A/B a different model while peers stay on
+    # the pool default. The daemon's respawn path in scripts/lean/launch.sh
+    # honours the same chain so respawns preserve the pin.
+    local wrapper_script="$REPO_ROOT/scripts/agents/claude-wrapper.sh"
+    local slot_model_var="RESEARCHER_${agent_num}_CLAUDE_MODEL"
+    local researcher_model="${!slot_model_var:-${RESEARCHER_CLAUDE_MODEL:-${CLAUDE_MODEL:-claude-opus-4-8}}}"
+    tmux new-session -d -s "$session_name" -c "$worktree_path" \
+        "ENHANCER_ID=researcher-$agent_num REPO_ROOT=$REPO_ROOT CLAUDE_TIMEOUT=14400 CLAUDE_MODEL=$researcher_model $wrapper_script --daemon --prompt 'You are researcher-$agent_num. Read $prompt_file for your instructions, then start the research workflow.' --log '$log_file'"
+
+    print_success "Launched $session_name (worktree: $worktree_path)"
+}
+
+# Launch multiple agents
+launch_agents() {
+    local count="${1:-2}"
+    local wait_interval="${RESEARCHER_WAIT_INTERVAL:-15}"
+
+    # Validate count
+    if [[ $count -lt 1 || $count -gt 16 ]]; then
+        print_error "Agent count must be between 1 and 16 (got: $count)"
+        exit 1
+    fi
+
+    check_deps
+    mkdir -p "$WORKTREES_DIR" "$LOGS_DIR" "$SIGNALS_DIR"
+
+    # Update main branch first
+    print_info "Updating main branch..."
+    git fetch origin main 2>/dev/null || true
+    git checkout main 2>/dev/null || true
+    git pull origin main 2>/dev/null || true
+
+    print_info "Launching $count research agents with isolated worktrees..."
+    print_info "Wait interval when no work: $wait_interval minutes"
+    echo ""
+
+    for i in $(seq 1 "$count"); do
+        launch_agent "$i"
+    done
+
+    echo ""
+    print_success "All agents launched in isolated worktrees!"
+    echo ""
+    echo "Each agent has:"
+    echo "  - Its own worktree in .loom/worktrees/researcher-N"
+    echo "  - Its own branch: feature/researcher-N"
+    echo "  - Creates PRs for research progress"
+    echo "  - Waits $wait_interval min when no work available (loops, doesn't exit)"
+    echo ""
+    echo "Commands:"
+    echo "  ./scripts/research/parallel-research.sh --status        Show agent status"
+    echo "  ./scripts/research/parallel-research.sh --attach N      Attach to agent N"
+    echo "  ./scripts/research/parallel-research.sh --graceful-stop Stop gracefully"
+    echo "  ./scripts/research/parallel-research.sh --stop          Force stop all"
+}
+
+# Show status
+show_status() {
+    echo "=== Research Agents ==="
+    echo ""
+
+    # List running agents
+    local running=0
+    for session in $(tmux list-sessions -F '#{session_name}' 2>/dev/null | grep '^researcher-' || true); do
+        local agent_num="${session#researcher-}"
+        local worktree="$WORKTREES_DIR/researcher-$agent_num"
+        local branch="feature/researcher-$agent_num"
+        echo "  $session: worktree=$worktree branch=$branch"
+        ((++running))
+    done
+
+    if [[ $running -eq 0 ]]; then
+        echo "  (no agents running)"
+    fi
+
+    echo ""
+    echo "=== Problem Claims ==="
+    "$CLAIM_SCRIPT" status 2>/dev/null || echo "  (unable to get claim status)"
+
+    echo ""
+    echo "=== Worktrees ==="
+    git worktree list | grep researcher || echo "  (no researcher worktrees)"
+
+    echo ""
+    echo "=== Stop Signals ==="
+    if [[ -f "$SIGNALS_DIR/stop-all" ]]; then
+        print_warning "STOP-ALL signal pending - agents will stop after current work"
+    else
+        local has_signal=false
+        for signal in "$SIGNALS_DIR"/stop-researcher-*; do
+            if [[ -f "$signal" ]]; then
+                local agent_name
+                agent_name=$(basename "$signal" | sed 's/stop-//')
+                print_warning "Stop signal pending for $agent_name"
+                has_signal=true
+            fi
+        done
+        if [[ "$has_signal" == "false" ]]; then
+            echo "  (no stop signals pending)"
+        fi
+    fi
+}
+
+# Signal agents to stop gracefully
+signal_graceful_stop() {
+    local agent_num="${1:-all}"
+    mkdir -p "$SIGNALS_DIR"
+
+    if [[ "$agent_num" == "all" ]]; then
+        touch "$SIGNALS_DIR/stop-all"
+        print_success "Signaled all agents to stop after completing current work"
+        echo "Agents will finish their current research session before exiting."
+    else
+        touch "$SIGNALS_DIR/stop-researcher-$agent_num"
+        print_success "Signaled researcher-$agent_num to stop after completing current work"
+    fi
+}
+
+# Reclaim each researcher-N worktree using the shared safety guards. A dirty,
+# unpushed/unbacked, locked, busy, or current-checkout worktree is preserved.
+# Idempotent and quiet when there is nothing to remove.
+reclaim_worktrees() {
+    for worktree in "$WORKTREES_DIR"/researcher-*; do
+        [[ -d "$worktree" ]] || continue
+        remove_own_worktree "$worktree"
+    done
+    git worktree prune 2>/dev/null || true
+}
+
+# Force stop all agents
+force_stop() {
+    print_info "Force stopping all research agents..."
+
+    for session in $(tmux list-sessions -F '#{session_name}' 2>/dev/null | grep '^researcher-' || true); do
+        tmux kill-session -t "$session" 2>/dev/null && \
+            print_success "Stopped $session" || \
+            print_warning "Could not stop $session"
+    done
+
+    # Clean up signals
+    rm -f "$SIGNALS_DIR"/stop-all "$SIGNALS_DIR"/stop-researcher-* 2>/dev/null || true
+
+    # Clean up stale claims
+    "$CLAIM_SCRIPT" cleanup 2>/dev/null || true
+
+    # Reclaim the now-idle worktrees. The sessions are killed above, so each
+    # researcher-N worktree is idle; the shared guards preserve any that are
+    # dirty / unpushed-or-unbacked / locked / current-checkout. Previously only
+    # the explicit --cleanup path removed worktrees, leaking them on --stop.
+    reclaim_worktrees
+}
+
+# Cleanup everything
+cleanup_all() {
+    force_stop
+
+    print_info "Reclaiming researcher worktrees..."
+    reclaim_worktrees
+    print_success "Cleanup complete"
+}
+
+# Attach to agent session
+attach_to_agent() {
+    local agent_num="$1"
+    local session_name="researcher-$agent_num"
+
+    if ! tmux has-session -t "$session_name" 2>/dev/null; then
+        print_error "No session found: $session_name"
+        exit 1
+    fi
+
+    tmux attach-session -t "$session_name"
+}
+
+# Send continue signal to agents (resumes after API limits)
+send_continue() {
+    local agent_num="${1:-all}"
+    local sent=0
+
+    if [[ "$agent_num" == "all" ]]; then
+        for session in $(tmux list-sessions -F '#{session_name}' 2>/dev/null | grep '^researcher-' || true); do
+            tmux send-keys -t "$session" "continue" Enter 2>/dev/null && \
+                print_success "Sent continue to $session" && ((++sent)) || \
+                print_warning "Could not send to $session"
+        done
+    else
+        local session_name="researcher-$agent_num"
+        if tmux has-session -t "$session_name" 2>/dev/null; then
+            tmux send-keys -t "$session_name" "continue" Enter 2>/dev/null && \
+                print_success "Sent continue to $session_name" && ((++sent)) || \
+                print_warning "Could not send to $session_name"
+        else
+            print_error "No session found: $session_name"
+            exit 1
+        fi
+    fi
+
+    if [[ $sent -eq 0 ]]; then
+        print_warning "No agents to send continue signal to"
+    else
+        echo "Sent continue to $sent agent(s). They should resume work shortly."
+    fi
+}
+
+# Main command dispatch
+case "${1:-}" in
+    --status|-s)
+        show_status
+        ;;
+    --continue|-c)
+        send_continue "${2:-all}"
+        ;;
+    --graceful-stop)
+        signal_graceful_stop "${2:-all}"
+        ;;
+    --stop)
+        force_stop
+        ;;
+    --cleanup)
+        cleanup_all
+        ;;
+    --attach|-a)
+        if [[ -z "${2:-}" ]]; then
+            print_error "Usage: $0 --attach <agent-number>"
+            exit 1
+        fi
+        attach_to_agent "$2"
+        ;;
+    --slot)
+        if [[ -z "${2:-}" ]]; then
+            print_error "Usage: $0 --slot <agent-number>"
+            exit 1
+        fi
+        slot_num="$2"
+        if [[ $slot_num -lt 1 || $slot_num -gt 16 ]]; then
+            print_error "Slot must be between 1 and 16 (got: $slot_num)"
+            exit 1
+        fi
+        check_deps
+        mkdir -p "$WORKTREES_DIR" "$LOGS_DIR" "$SIGNALS_DIR"
+        print_info "Updating main branch..."
+        git fetch origin main 2>/dev/null || true
+        git checkout main 2>/dev/null || true
+        git pull origin main 2>/dev/null || true
+        launch_agent "$slot_num"
+        ;;
+    --help|-h)
+        cat << EOF
+Parallel Research Agents (with Worktree Isolation)
+
+Launch multiple Claude Code agents to work on research problems concurrently.
+Each agent works in its own git worktree with a dedicated branch.
+
+Usage:
+  ./parallel-research.sh [count]            Launch N agents (default: 2, max: 16)
+  ./parallel-research.sh --slot N           Launch a single agent at slot N
+  ./parallel-research.sh --status           Show running agents and claims
+  ./parallel-research.sh --continue         Resume all agents after API limits reset
+  ./parallel-research.sh --continue N       Resume agent N specifically
+  ./parallel-research.sh --graceful-stop    Signal agents to stop after current work
+  ./parallel-research.sh --graceful-stop N  Signal agent N to stop
+  ./parallel-research.sh --stop             Force stop all agents immediately
+  ./parallel-research.sh --cleanup          Stop agents and remove worktrees
+  ./parallel-research.sh --attach N         Attach to agent N's tmux session
+  ./parallel-research.sh --help             Show this help
+
+Environment Variables:
+  RESEARCHER_WAIT_INTERVAL  Minutes to wait when no work available (default: 15)
+
+How it works:
+  1. Each agent gets its own worktree: .loom/worktrees/researcher-N
+  2. Each agent works on its own branch: feature/researcher-N
+  3. Agents claim problems atomically (knowledge-prioritized)
+  4. Each agent: claim → research → commit → push → create PR → repeat
+  5. When no work available, agents WAIT and RETRY (don't exit)
+  6. Agents use daemon mode: infinite retry with exponential backoff for transient errors
+  7. Stop via graceful signal files (.loom/signals/stop-all or stop-researcher-N)
+  8. PRs can be reviewed and merged independently
+
+Examples:
+  ./parallel-research.sh              # Launch 2 agents (default)
+  ./parallel-research.sh 3            # Launch 3 agents
+  ./parallel-research.sh --status     # Check progress
+  ./parallel-research.sh --attach 1   # Watch agent 1 work
+  ./parallel-research.sh --graceful-stop  # Stop after current work
+  RESEARCHER_WAIT_INTERVAL=30 ./parallel-research.sh 2  # Custom wait interval
+
+Monitoring:
+  # Check claim status
+  ./scripts/research/claim-problem.sh status
+
+  # List PRs from researchers
+  gh pr list --label research
+
+  # View agent logs
+  tail -f .loom/logs/researcher-1.log
+EOF
+        ;;
+    [0-9]*)
+        launch_agents "$1"
+        ;;
+    "")
+        launch_agents 2
+        ;;
+    *)
+        print_error "Unknown command: $1"
+        echo "Run '$0 --help' for usage"
+        exit 1
+        ;;
+esac

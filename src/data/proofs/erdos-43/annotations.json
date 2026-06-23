@@ -1,0 +1,209 @@
+[
+  {
+    "id": "ann-43-imports",
+    "proofId": "erdos-43",
+    "type": "concept",
+    "range": {
+      "startLine": 14,
+      "endLine": 21
+    },
+    "title": "Imports and Dependencies",
+    "content": "Imports Mathlib's `SimpleGraph.Basic`, `Finset` for finite set operations, `Int.Basic` for integer arithmetic (difference sets live in Z), `Real.Basic` and `Real.Sqrt` for the asymptotic bound $f(N) \\sim \\sqrt{N}$, and `Tactic` for proof automation.",
+    "significance": "supporting",
+    "mathContext": "The formalization works over $\\mathbb{Z}$ rather than $\\mathbb{N}$ because difference sets $A - A = \\{a - b : a, b \\in A\\}$ naturally produce negative integers. The `Finset.image` operation computes difference sets, while `Real.sqrt` is needed for the classical asymptotic $f(N) \\sim \\sqrt{N}$.",
+    "relatedConcepts": [
+      "integer arithmetic",
+      "Finset.image",
+      "Real.sqrt",
+      "difference sets over Z"
+    ],
+    "prerequisites": [
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Sqrt"
+    ]
+  },
+  {
+    "id": "ann-43-sidon",
+    "proofId": "erdos-43",
+    "type": "definition",
+    "range": {
+      "startLine": 26,
+      "endLine": 32
+    },
+    "title": "Sidon Sets and Difference Sets",
+    "content": "`IsSidonSet A` requires all pairwise sums to be distinct: $a_1 + b_1 = a_2 + b_2 \\Rightarrow \\{a_1, b_1\\} = \\{a_2, b_2\\}$. `diffSet A` computes the difference set $A - A = \\{a - b : a, b \\in A\\}$ via `Finset.image`.",
+    "significance": "key",
+    "mathContext": "A **Sidon set** (also called a $B_2$ set) has the property that all pairwise sums $a + b$ ($a \\le b$) are distinct. Equivalently, all nonzero pairwise differences are distinct: if $a_1 - b_1 = a_2 - b_2$ with $a_1 \\ne b_1$, then $\\{a_1, b_1\\} = \\{a_2, b_2\\}$. The difference set $A - A$ has exactly $|A|^2 - |A| + 1$ elements (including 0) for a Sidon set, since all $|A|(|A|-1)$ nonzero differences are distinct.",
+    "relatedConcepts": [
+      "B2 sequences",
+      "additive combinatorics",
+      "difference sets",
+      "distinct pairwise sums"
+    ],
+    "prerequisites": [
+      "Finset over Z",
+      "Finset.image",
+      "multiset equality"
+    ]
+  },
+  {
+    "id": "ann-43-disjoint",
+    "proofId": "erdos-43",
+    "type": "definition",
+    "range": {
+      "startLine": 37,
+      "endLine": 38
+    },
+    "title": "Disjoint Differences",
+    "content": "`DisjointDifferences A B` holds when $(A - A) \\cap (B - B) = \\{0\\}$: every $d$ in both difference sets must be zero. This forces the nonzero differences to be completely disjoint.",
+    "significance": "key",
+    "mathContext": "The disjoint difference condition is the key constraint of Erdős Problem #43. Since a Sidon set $A$ in $\\{1,\\ldots,N\\}$ has $|A|(|A|-1)$ nonzero differences in $\\{-(N-1),\\ldots,-1,1,\\ldots,N-1\\}$ (which has $2(N-1)$ elements), two Sidon sets with disjoint nonzero differences must satisfy $|A|(|A|-1) + |B|(|B|-1) \\le 2(N-1)$.",
+    "relatedConcepts": [
+      "difference set intersection",
+      "disjoint families",
+      "packing constraint"
+    ],
+    "prerequisites": [
+      "diffSet",
+      "IsSidonSet"
+    ]
+  },
+  {
+    "id": "ann-43-maxsidon",
+    "proofId": "erdos-43",
+    "type": "concept",
+    "range": {
+      "startLine": 43,
+      "endLine": 49
+    },
+    "title": "Maximum Sidon Set Size f(N) ~ sqrt(N)",
+    "content": "`maxSidonSize` (axiom): the maximum cardinality of a Sidon set in $\\{1,\\ldots,N\\}$. `sidon_size_asymptotic` (axiom): $f(N) = (1 + o(1))\\sqrt{N}$, formalized via $\\varepsilon$-$N_0$ convergence.",
+    "significance": "key",
+    "mathContext": "Erdős and Turán (1941) proved $f(N) \\le \\sqrt{N} + O(N^{1/4})$ and showed constructions from finite geometry (Singer difference sets) achieving $f(N) \\ge \\sqrt{N} - O(N^{1/4})$. Whether $f(N) = \\sqrt{N} + O(N^\\varepsilon)$ is Erdős Problem #30 (\\$1000 prize). The quantity $\\binom{f(N)}{2} \\approx N/2$ appears in the main conjecture as the benchmark for the combined pair count.",
+    "relatedConcepts": [
+      "Erdős-Turán bound",
+      "Singer difference sets",
+      "prime power constructions"
+    ],
+    "prerequisites": [
+      "Real.sqrt",
+      "asymptotic notation",
+      "Sidon set constructions"
+    ]
+  },
+  {
+    "id": "ann-43-conjecture",
+    "proofId": "erdos-43",
+    "type": "definition",
+    "range": {
+      "startLine": 55,
+      "endLine": 60
+    },
+    "title": "Erdős Problem #43 ($100 Prize)",
+    "content": "`ErdosProblem43`: $\\exists C,\\, \\forall N, A, B$, if $A, B$ are Sidon sets in $\\{1,\\ldots,N\\}$ with disjoint nonzero differences, then $\\binom{|A|}{2} + \\binom{|B|}{2} \\le \\binom{f(N)}{2} + C$.",
+    "significance": "key",
+    "mathContext": "The conjecture asks whether disjoint Sidon sets are **complementary**: their combined pair count cannot exceed what a single optimal Sidon set achieves (up to a constant). Note $\\binom{m}{2} = m(m-1)/2$, so the bound is equivalent to $|A|(|A|-1) + |B|(|B|-1) \\le f(N)(f(N)-1) + 2C$. Since $f(N) \\sim \\sqrt{N}$, this would give $|A|^2 + |B|^2 \\lesssim N$. The \\$100 bounty makes this one of Erdős's celebrated prize problems.",
+    "relatedConcepts": [
+      "binomial coefficient",
+      "Erdős prize problems",
+      "complementary Sidon sets"
+    ],
+    "prerequisites": [
+      "IsSidonSet",
+      "DisjointDifferences",
+      "maxSidonSize",
+      "Nat.choose"
+    ]
+  },
+  {
+    "id": "ann-43-equal-variant",
+    "proofId": "erdos-43",
+    "type": "definition",
+    "range": {
+      "startLine": 67,
+      "endLine": 75
+    },
+    "title": "Equal Size Variant and Barreto's Counterexample",
+    "content": "`EqualSizeVariant`: when $|A| = |B|$, can we get the stronger bound $\\binom{|A|}{2} + \\binom{|B|}{2} \\le (1-c) \\binom{f(N)}{2}$? `barreto_counterexample` (axiom): NO, this is FALSE for infinitely many $N$.",
+    "significance": "key",
+    "mathContext": "Barreto showed that the equal-size strengthening with a multiplicative savings factor $(1-c)$ fails. This means that for infinitely many $N$, there exist equal-sized Sidon pairs with disjoint differences whose combined pair count comes arbitrarily close to $\\binom{f(N)}{2}$. The original conjecture (without the $(1-c)$ factor, with just additive $O(1)$) remains open.",
+    "relatedConcepts": [
+      "counterexample construction",
+      "multiplicative vs additive error",
+      "equal-size constraint"
+    ],
+    "prerequisites": [
+      "ErdosProblem43",
+      "maxSidonSize"
+    ]
+  },
+  {
+    "id": "ann-43-bounds",
+    "proofId": "erdos-43",
+    "type": "concept",
+    "range": {
+      "startLine": 84,
+      "endLine": 96
+    },
+    "title": "Structural Pair Bounds",
+    "content": "`sidon_pair_bound` (sorry): $\\binom{|A|}{2} \\le N$ for a single Sidon set. `disjoint_diff_combined_bound` (sorry): $\\binom{|A|}{2} + \\binom{|B|}{2} \\le N$ under disjoint differences.",
+    "significance": "key",
+    "mathContext": "The single bound follows from counting: $|A|(|A|-1)$ distinct nonzero differences lie in $\\{-(N-1),\\ldots,-1,1,\\ldots,N-1\\}$, giving $|A|(|A|-1) \\le 2(N-1)$, so $\\binom{|A|}{2} \\le N - 1 \\le N$. The combined bound uses disjointness: $|A|(|A|-1) + |B|(|B|-1) \\le 2(N-1)$. Both contain `sorry`.",
+    "relatedConcepts": [
+      "difference counting",
+      "pigeonhole principle",
+      "Finset.card bounds"
+    ],
+    "prerequisites": [
+      "IsSidonSet",
+      "diffSet",
+      "Nat.choose"
+    ]
+  },
+  {
+    "id": "ann-43-tao",
+    "proofId": "erdos-43",
+    "type": "concept",
+    "range": {
+      "startLine": 111,
+      "endLine": 115
+    },
+    "title": "Tao's Equal-Size Bound",
+    "content": "`tao_equal_size_bound` (sorry): when $|A| = |B| = m$ with disjoint differences, $m^2 \\le 2N + 1$, giving $m \\le (1/\\sqrt{2} + o(1))\\sqrt{N}$.",
+    "significance": "key",
+    "mathContext": "From the combined bound $2\\binom{m}{2} \\le N$, we get $m(m-1) \\le N$, so $m^2 \\le N + m \\le N + \\sqrt{2N}$ for large $N$. This gives $m \\le (1/\\sqrt{2} + o(1))\\sqrt{N} \\approx 0.707\\sqrt{N}$, compared to $f(N) \\sim \\sqrt{N}$ for a single Sidon set. The factor $1/\\sqrt{2}$ is the natural consequence of splitting the difference space equally between two sets.",
+    "relatedConcepts": [
+      "Tao's partial results",
+      "equal-size Sidon pairs",
+      "square root barrier"
+    ],
+    "prerequisites": [
+      "disjoint_diff_combined_bound",
+      "Real arithmetic"
+    ]
+  },
+  {
+    "id": "ann-43-counting",
+    "proofId": "erdos-43",
+    "type": "concept",
+    "range": {
+      "startLine": 121,
+      "endLine": 129
+    },
+    "title": "Counting Arguments",
+    "content": "`sidon_diff_count` (sorry): $|A - A| = |A|^2 - |A| + 1$ for Sidon sets. `disjoint_diff_total` (sorry): under disjoint differences, $|A - A \\cup B - B| \\ge |A|^2 - |A| + |B|^2 - |B| + 1$.",
+    "significance": "supporting",
+    "mathContext": "For a Sidon set $A$, the $|A|(|A|-1)$ nonzero differences are all distinct (by the Sidon property), plus 0 is always in $A - A$, giving $|A - A| = |A|^2 - |A| + 1$. Under disjoint nonzero differences, the union satisfies inclusion-exclusion with overlap only at 0, giving the combined count. These are the fundamental counting lemmas underlying all bounds in this formalization.",
+    "relatedConcepts": [
+      "inclusion-exclusion",
+      "Sidon difference counting",
+      "cardinality of unions"
+    ],
+    "prerequisites": [
+      "IsSidonSet",
+      "diffSet",
+      "DisjointDifferences"
+    ]
+  }
+]

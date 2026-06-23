@@ -1,0 +1,216 @@
+[
+  {
+    "id": "ann-multinom-overview",
+    "proofId": "binomial-theorem-oq-02-oq-01",
+    "range": {
+      "startLine": 6,
+      "endLine": 46
+    },
+    "type": "concept",
+    "title": "Open Question: Formalizing the Multinomial Distribution from the Multinomial Theorem",
+    "content": "The header poses the open question inherited from `binomial-theorem-oq-02`: can the multinomial distribution and its moment-generating function be formalized purely from the multinomial theorem? The file answers YES by exhibiting the PMF, its normalization, and the MGF as three readings of the single Mathlib lemma `Finset.sum_pow_eq_sum_piAntidiag`. The four imports are deliberately minimal — only the multinomial-coefficient and big-operators machinery — underscoring that no measure-theoretic apparatus is needed for the algebraic core.",
+    "mathContext": "The multinomial distribution models $n$ independent trials each landing in one of the categories $i \\in s$ with probability $p_i$ (where $\\sum_{i \\in s} p_i = 1$). The joint law of the category counts $(X_i)_{i \\in s}$ is $P(X = k) = \\binom{n}{k}\\prod_{i \\in s} p_i^{k_i}$ supported on $\\{k : \\sum_i k_i = n\\}$. Its MGF is $M(t) = \\bigl(\\sum_{i\\in s} p_i e^{t_i}\\bigr)^n$. Both are specializations of $(\\sum_i x_i)^n = \\sum_{k} \\binom{n}{k}\\prod_i x_i^{k_i}$, the identity Mathlib packages as `sum_pow_eq_sum_piAntidiag`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "multinomial distribution",
+      "moment-generating function",
+      "Finset.sum_pow_eq_sum_piAntidiag",
+      "open question resolution"
+    ],
+    "prerequisites": [
+      "Multinomial theorem",
+      "Basic probability (joint PMF, MGF)"
+    ]
+  },
+  {
+    "id": "ann-multinom-def",
+    "proofId": "binomial-theorem-oq-02-oq-01",
+    "range": {
+      "startLine": 42,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "multinomialProb: PMF Definition and Nonnegativity",
+    "content": "`multinomialProb s p n k` defines the probability mass function of the multinomial distribution: $\\binom{n}{k} \\prod_{i \\in s} p(i)^{k(i)}$ where $\\binom{n}{k} = \\text{Nat.multinomial}\\, s\\, k$ is the multinomial coefficient. The function is parameterized by a finite set $s$, probability function $p : \\alpha \\to \\mathbb{R}$, number of trials $n$, and outcome function $k : \\alpha \\to \\mathbb{N}$. `multinomialProb_nonneg` proves nonnegativity when all $p(i) \\geq 0$ via `mul_nonneg`: the multinomial coefficient casts to $\\geq 0$, and the product of powers of nonneg numbers is nonneg.",
+    "mathContext": "The multinomial coefficient $\\binom{n}{k_1,\\ldots,k_m} = \\frac{n!}{k_1! \\cdots k_m!}$ counts the number of ways to assign $n$ distinguishable trials to $m$ outcome categories with $k_i$ trials in category $i$. In Lean, `Nat.multinomial s k` with `∑ i ∈ s, k i = n` gives this coefficient. The `piAntidiag s n` finset contains exactly the functions $k : \\alpha \\to \\mathbb{N}$ with support in $s$ and $\\sum k(i) = n$ — the valid outcome distributions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.multinomial",
+      "Finset.piAntidiag",
+      "multinomial coefficient",
+      "PMF (probability mass function)"
+    ],
+    "prerequisites": [
+      "Mathlib.Data.Nat.Choose.Multinomial",
+      "Finset.prod_nonneg",
+      "Nat.cast_nonneg"
+    ]
+  },
+  {
+    "id": "ann-multinom-normalization",
+    "proofId": "binomial-theorem-oq-02-oq-01",
+    "range": {
+      "startLine": 67,
+      "endLine": 83
+    },
+    "type": "insight",
+    "title": "multinomialProb_sum_eq_one: Normalization IS the Multinomial Theorem",
+    "content": "`multinomialProb_sum_eq_one` proves $\\sum_{k : \\sum k = n} P(k) = 1$ in 3 lines: unfold the definition, apply `Finset.sum_pow_eq_sum_piAntidiag` (the multinomial theorem), then rewrite using $\\sum p(i) = 1$ to get $1^n = 1$. The proof is: `rw [hp, one_pow] at h; exact h.symm`. The multinomial theorem literally *is* the normalization proof — no further work needed.",
+    "mathContext": "The multinomial theorem states $(\\sum_{i \\in s} x_i)^n = \\sum_{k \\in \\text{piAntidiag}\\, s\\, n} \\binom{n}{k} \\prod_{i \\in s} x_i^{k(i)}$. Setting $x_i = p(i)$ and using $\\sum p(i) = 1$: the left side becomes $1^n = 1$. The right side is $\\sum_{k} \\text{multinomialProb}\\, s\\, p\\, n\\, k$. This identifies probability normalization with the multinomial theorem, showing probability theory and combinatorics are two faces of the same algebraic identity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sum_pow_eq_sum_piAntidiag",
+      "multinomial theorem",
+      "probability normalization"
+    ],
+    "prerequisites": [
+      "Finset.sum_pow_eq_sum_piAntidiag in Mathlib",
+      "one_pow",
+      "ring lemmas"
+    ]
+  },
+  {
+    "id": "ann-multinom-mgf",
+    "proofId": "binomial-theorem-oq-02-oq-01",
+    "range": {
+      "startLine": 85,
+      "endLine": 130
+    },
+    "type": "concept",
+    "title": "MGF Derivation: multinomial_weighted_sum and multinomial_mgf_factored",
+    "content": "`multinomial_weighted_sum` proves $(\\sum p(i) \\cdot g(i))^n = \\sum_{k} \\binom{n}{k} \\prod (p(i) g(i))^{k(i)}$ — again a direct application of `sum_pow_eq_sum_piAntidiag` with $f(i) = p(i) \\cdot g(i)$. `multinomial_mgf_factored` then factors $(p(i) g(i))^{k(i)} = p(i)^{k(i)} \\cdot g(i)^{k(i)}$ using `Finset.prod_mul_distrib` and `mul_pow`, separating probability weights from the $g$-terms. This works over *any commutative semiring* — not just $\\mathbb{R}$.",
+    "mathContext": "The generality is key: the MGF derivation holds in any `CommSemiring`, so it applies to formal power series (generating functions), polynomial rings, and more. The factorization $\\prod (p \\cdot g)^k = (\\prod p^k)(\\prod g^k)$ is the multiplicativity of the product over independent factors, proved by `Finset.prod_mul_distrib`. When $g(i) = \\exp(t_i)$: $\\sum P(k) \\prod g(i)^{k(i)} = \\mathbb{E}[\\exp(\\sum t_i X_i)] = (\\sum p(i) e^{t_i})^n$, the classical MGF formula.",
+    "significance": "key",
+    "relatedConcepts": [
+      "CommSemiring generality",
+      "Finset.prod_mul_distrib",
+      "mul_pow",
+      "moment-generating function"
+    ],
+    "prerequisites": [
+      "Finset.sum_pow_eq_sum_piAntidiag",
+      "Finset.prod_mul_distrib",
+      "CommSemiring typeclass"
+    ]
+  },
+  {
+    "id": "ann-multinom-uniform",
+    "proofId": "binomial-theorem-oq-02-oq-01",
+    "range": {
+      "startLine": 123,
+      "endLine": 141
+    },
+    "type": "insight",
+    "title": "Specialization to ℝ and the Uniform Distribution",
+    "content": "`multinomial_mgf_real` (lines 126–131) re-expresses the `CommSemiring` MGF identity over $\\mathbb{R}$ so that the coefficient $\\binom{n}{k}\\prod p_i^{k_i}$ is literally `multinomialProb s p n k` — the proof closes with `rfl`, confirming the abstract and probabilistic forms are definitionally equal. `multinomialProb_uniform_sum` (lines 136–141) then instantiates normalization at the uniform law $p_i = 1/k$ over `Fin k`: the hypothesis $\\sum_i p_i = 1$ reduces to $k \\cdot \\tfrac1k = 1$, discharged by `field_simp` after `Finset.card_fin`.",
+    "mathContext": "The uniform multinomial corresponds to rolling a fair $k$-sided die $n$ times: every category has probability $1/k$, so $\\sum_{i \\in \\mathrm{Fin}\\,k} \\tfrac1k = k\\cdot\\tfrac1k = 1$ and normalization follows from `multinomialProb_sum_eq_one`. The positivity hypothesis $0 < k$ is needed so that $1/k$ is well defined and the cardinality cancels. This is the discrete-uniform base case from which entropy and typical-set arguments in information theory are built.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "uniform distribution",
+      "Finset.card_fin",
+      "field_simp",
+      "definitional equality (rfl)"
+    ],
+    "prerequisites": [
+      "multinomialProb_sum_eq_one",
+      "Finset.sum_div",
+      "division in a field"
+    ]
+  },
+  {
+    "id": "ann-multinom-binomial",
+    "proofId": "binomial-theorem-oq-02-oq-01",
+    "range": {
+      "startLine": 140,
+      "endLine": 170
+    },
+    "type": "concept",
+    "title": "Binomial as 2-Outcome Multinomial: Bool-Indexed Distribution",
+    "content": "`multinomial_is_binomial` proves that the multinomial distribution over `{false, true}` with $p(\\text{true}) = p$, $p(\\text{false}) = 1-p$ normalizes to 1. The proof calls `multinomialProb_sum_eq_one` after reducing $\\sum_{b \\in \\{F,T\\}} p(b) = (1-p) + p = 1$ via `ring`. `binomial_normalization` proves the same result directly: $((1-p) + p)^n = 1^n = 1$ by `simp`.",
+    "mathContext": "For $s = \\{F, T\\}$, `piAntidiag {F,T} n` contains functions $k : \\text{Bool} \\to \\mathbb{N}$ with $k(F) + k(T) = n$, corresponding to $(n-j, j)$ for $j = 0, \\ldots, n$. The multinomial coefficient $\\binom{n}{n-j, j} = \\binom{n}{j}$ is the standard binomial coefficient. So $P(k) = \\binom{n}{j} p^j (1-p)^{n-j}$ — exactly the binomial PMF. This shows `binomial-theorem-oq-03` (binomial distribution) is a special case derivable from this more general formalization.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "piAntidiag Bool n",
+      "binomial coefficient as multinomial",
+      "Finset.sum_pair"
+    ],
+    "prerequisites": [
+      "Bool.false_ne_true",
+      "Finset.sum_pair",
+      "ring normalization"
+    ]
+  },
+  {
+    "id": "ann-multinom-examples",
+    "proofId": "binomial-theorem-oq-02-oq-01",
+    "range": {
+      "startLine": 164,
+      "endLine": 258
+    },
+    "type": "concept",
+    "title": "Concrete Sanity Check and the Coordinate Mean",
+    "content": "`fair_coin_three_flips` is a closed numerical instance: three flips of a $1/2$-coin sum to $1$ over the four outcomes $(3,0),(2,1),(1,2),(0,3)$ with probabilities $\\tfrac18,\\tfrac38,\\tfrac38,\\tfrac18$, closed by `norm_num` after expanding the pair sum. The former `rfl` placeholder `multinomial_expectation` (which restated the tautology $\\sum_k P(k)\\,w(k) = \\sum_k P(k)\\,w(k)$) has been replaced by `multinomial_mean`, a genuine moment formula: $\\sum_k P(k)\\,k_i = n\\,p_i$, i.e. $E[X_i] = n p_i$.",
+    "mathContext": "`multinomial_mean` is proved by differentiating the MGF. Specializing the weight $g_j = e^t$ for $j=i$ and $g_j = 1$ otherwise reduces `multinomial_mgf_real` to the one-variable identity $(p_i e^t + (1-p_i))^n = \\sum_k P(k)\\,e^{t k_i}$ for all $t$; differentiating both sides at $t=0$ and applying uniqueness of the derivative ($\\partial_t\\,\\text{LHS}|_0 = n p_i$, $\\partial_t\\,\\text{RHS}|_0 = \\sum_k P(k)\\,k_i$) yields $E[X_i] = n p_i$. Differentiating the same identity a *second* time at $t=0$ now also yields the variance $\\mathrm{Var}(X_i) = n p_i(1-p_i)$ (`multinomial_variance`, via `multinomial_second_moment`); the covariance $\\mathrm{Cov}(X_i,X_j) = -n p_i p_j$ for $i\\neq j$ remains a follow-up.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "norm_num",
+      "expected value",
+      "moment-generating function",
+      "HasDerivAt.unique"
+    ],
+    "prerequisites": [
+      "multinomialProb_sum_eq_one",
+      "Finset.sum_pair"
+    ]
+  },
+  {
+    "id": "ann-multinom-variance",
+    "proofId": "binomial-theorem-oq-02-oq-01",
+    "range": {
+      "startLine": 261,
+      "endLine": 447
+    },
+    "type": "concept",
+    "title": "Second Moment and Variance via the Second MGF Derivative",
+    "content": "Differentiating the single-coordinate MGF identity $(p_i e^t + (1-p_i))^n = \\sum_k P(k)\\,e^{t k_i}$ a *second* time at $t=0$ produces the raw second moment. The right-hand side, a finite sum, differentiates termwise to $\\sum_k P(k)\\,k_i^2\\,e^{t k_i}$, which at $t=0$ is $E[X_i^2] = \\sum_k P(k)\\,k_i^2$. The left-hand side, by the product rule applied to $n\\,(p_i e^t+(1-p_i))^{n-1}(p_i e^t)$, evaluates at $t=0$ (where the base is $1$) to $n(n-1)p_i^2 + n p_i = n^2 p_i^2 + n p_i(1-p_i)$. Uniqueness of the derivative equates them (`multinomial_second_moment`). The variance then follows by expanding $\\sum_k P(k)(k_i - n p_i)^2$ and substituting the three closed-form sums — normalization, mean, and second moment — giving $\\mathrm{Var}(X_i) = n p_i(1-p_i)$ (`multinomial_variance`).",
+    "mathContext": "`multinomial_mgf_exp` packages the shared exponential MGF identity (formerly inlined in `multinomial_mean`). Both derivative computations reuse `HasDerivAt.pow`, `HasDerivAt.mul` (product rule), `HasDerivAt.const_mul`, `HasDerivAt.sum`, `Real.hasDerivAt_exp`, and `HasDerivAt.unique`; the second-derivative coefficient $\\uparrow(n-1)$ is reconciled with the real $n-1$ by a case split on $n$. This is the multinomial generalization of the binomial variance $np(1-p)$, exhibiting each coordinate $X_i$ as marginally $\\mathrm{Binomial}(n,p_i)$ at the level of its first two moments.",
+    "significance": "key",
+    "relatedConcepts": [
+      "variance",
+      "second moment",
+      "moment-generating function",
+      "HasDerivAt.mul",
+      "HasDerivAt.unique"
+    ],
+    "prerequisites": [
+      "multinomial_mean",
+      "multinomialProb_sum_eq_one",
+      "multinomial_mgf_real"
+    ]
+  },
+  {
+    "id": "ann-multinom-count",
+    "proofId": "binomial-theorem-oq-02-oq-01",
+    "range": {
+      "startLine": 448,
+      "endLine": 462
+    },
+    "type": "concept",
+    "title": "multinomial_count: |s|^n = ∑ Multinomial Coefficients",
+    "content": "`multinomial_count` proves $|s|^n = \\sum_{k \\in \\text{piAntidiag}\\, s\\, n} \\binom{n}{k}$ by applying `sum_pow_eq_sum_piAntidiag` with $f \\equiv 1$: $(\\sum_{i \\in s} 1)^n = (|s|)^n$ and $\\prod_{i \\in s} 1^{k(i)} = 1$. This is the multinomial analog of $\\sum_{j=0}^n \\binom{n}{j} = 2^n$. For $|s| = 2$: the identity says $2^n = \\sum_{j=0}^n \\binom{n}{j}$ (sum of binomial coefficients). The proof uses `simp` with `one_pow`, `prod_const_one`, `sum_const`, and cast lemmas.",
+    "mathContext": "The identity $|s|^n = \\sum_{k} \\binom{n}{k}$ counts two things: $|s|^n$ is the number of functions $\\text{Fin}\\, n \\to s$ (all sequences of $n$ choices from $s$); $\\sum_k \\binom{n}{k}$ counts by distributing $n$ trials into outcome categories. The bijection is: any function $f : \\text{Fin}\\, n \\to s$ induces an outcome count $k(i) = |f^{-1}(\\{i\\})|$, and $\\binom{n}{k}$ counts the functions with that distribution. This is the counting argument underlying both the multinomial theorem and the multinomial distribution.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sum_pow_eq_sum_piAntidiag",
+      "sum_const",
+      "prod_const_one",
+      "counting functions"
+    ],
+    "prerequisites": [
+      "Finset.sum_const",
+      "Finset.prod_const_one",
+      "Nat.cast lemmas",
+      "smul_eq_mul"
+    ]
+  }
+]

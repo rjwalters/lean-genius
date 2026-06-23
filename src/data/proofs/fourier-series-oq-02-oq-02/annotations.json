@@ -1,0 +1,225 @@
+[
+  {
+    "id": "ann-fsoq02oq02-header",
+    "proofId": "fourier-series-oq-02-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 43
+    },
+    "type": "concept",
+    "title": "Elementary Alternative to Parseval's Theorem",
+    "content": "This file answers the question: is there a proof of Fourier coefficient square-summability that avoids L² theory entirely? The answer is yes — for $\\alpha$-Hölder functions with $\\alpha > 1/2$, the decay bound $\\|\\hat{c}_n\\| = O(|n|^{-\\alpha})$ squared gives $O(|n|^{-2\\alpha})$, and since $2\\alpha > 1$, this is dominated by a convergent p-series.\n\nThe proof uses only three ingredients: the quantitative Hölder decay bound (from `FourierSeriesOQ02`), the p-series criterion $\\sum 1/n^{\\beta} < \\infty$ for $\\beta > 1$, and the comparison test. No measure theory, no $L^2$ spaces, no Parseval's identity required.\n\nThe `set_option maxHeartbeats 800000` reflects the cost of the algebraic manipulations involving real-power arithmetic (`Real.rpow`).",
+    "mathContext": "Main theorem: if $f : \\text{AddCircle}\\, T \\to \\mathbb{C}$ is $\\alpha$-Hölder ($\\alpha > 1/2$), then $\\sum_{n:\\mathbb{Z}} \\|\\hat{c}_n(f)\\|^2 < \\infty$. Proof path: Hölder decay $\\Rightarrow$ squared bound $O(|n|^{-2\\alpha})$ $\\Rightarrow$ p-series comparison ($2\\alpha > 1$) $\\Rightarrow$ summability.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fourier series",
+      "Hölder continuity",
+      "p-series",
+      "comparison test",
+      "Parseval's theorem"
+    ],
+    "prerequisites": [
+      "Fourier coefficients",
+      "Hölder continuity",
+      "p-series convergence",
+      "FourierSeriesOQ02 decay bound"
+    ]
+  },
+  {
+    "id": "ann-fsoq02oq02-pseries-nat",
+    "proofId": "fourier-series-oq-02-oq-02",
+    "range": {
+      "startLine": 52,
+      "endLine": 56
+    },
+    "type": "concept",
+    "title": "p-Series over ℕ via Real.summable_nat_rpow_inv",
+    "content": "`summable_const_div_nat_rpow` packages the Mathlib p-series result for direct use. The proof `simp_rw [div_eq_mul_inv]` converts `K/n^β` to `K * (n^β)⁻¹`, then `(Real.summable_nat_rpow_inv.2 hβ).mul_left K` applies the Mathlib p-series theorem and scales by the constant $K$.\n\nThis is a clean adapter pattern: `Real.summable_nat_rpow_inv` states $\\sum 1/n^\\beta < \\infty$ iff $\\beta > 1$, and we need the `K`-scaled version with $K \\geq 0$.",
+    "mathContext": "`Real.summable_nat_rpow_inv : Summable (fun n : ℕ => (n : ℝ)⁻¹ ^ β) ↔ 1 < β`. We use the direction `.2 hβ` then scale: $(\\text{Summable}\\, g) \\Rightarrow (\\text{Summable}\\, (K \\cdot g))$ via `.mul_left K`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "p-series",
+      "Real.summable_nat_rpow_inv",
+      "Mathlib analysis",
+      "summability scaling"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "p-series convergence",
+      "Mathlib PSeries module"
+    ]
+  },
+  {
+    "id": "ann-fsoq02oq02-pseries-int",
+    "proofId": "fourier-series-oq-02-oq-02",
+    "range": {
+      "startLine": 58,
+      "endLine": 69
+    },
+    "type": "concept",
+    "title": "p-Series over ℤ by Splitting into ℕ Halves",
+    "content": "`summable_const_div_int_rpow` extends the p-series to the integer index set. The Mathlib lemma `summable_int_iff_summable_nat_and_neg` reduces $\\mathbb{Z}$-summability to two $\\mathbb{N}$-summability questions: the positive half $\\sum_{n:\\mathbb{N}} K/|n|^{\\beta}$ and the negative half $\\sum_{n:\\mathbb{N}} K/|-(n:\\mathbb{Z})|^{\\beta}$.\n\nBoth halves reduce to the same $\\mathbb{N}$ p-series after simplifying the absolute values: `abs_of_nonneg (Nat.cast_nonneg' n)` for the positive half, and `abs_neg` + `abs_of_nonneg` for the negative half. The `convert ... using 1` tactic handles the coercion bookkeeping.",
+    "mathContext": "$\\sum_{n:\\mathbb{Z}} K/|n|^\\beta < \\infty$ via `summable_int_iff_summable_nat_and_neg`: splits to $\\sum_{n:\\mathbb{N}} K/n^\\beta$ (positive) and $\\sum_{n:\\mathbb{N}} K/n^\\beta$ (negative), both convergent for $\\beta > 1$. Key: $|{-(n:\\mathbb{Z})}| = |(n:\\mathbb{Z})| = n$ for $n : \\mathbb{N}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "integer summability",
+      "summable_int_iff_summable_nat_and_neg",
+      "absolute value over ℤ",
+      "Lean convert tactic"
+    ],
+    "prerequisites": [
+      "p-series over ℕ",
+      "Mathlib integer summability",
+      "absolute value arithmetic"
+    ]
+  },
+  {
+    "id": "ann-fsoq02oq02-decay-helper",
+    "proofId": "fourier-series-oq-02-oq-02",
+    "range": {
+      "startLine": 78,
+      "endLine": 83
+    },
+    "type": "concept",
+    "title": "Helper: (a·b^α)² = a²·b^{2α} via rpow_mul_natCast",
+    "content": "`mul_rpow_sq` is a private helper that performs the key algebraic step: squaring a product of the form $a \\cdot b^\\alpha$. The proof rewrites using `Real.rpow_mul_natCast hb α 2` to get $b^{\\alpha \\cdot 2} = (b^\\alpha)^2$, then uses `push_cast` and `ring` to complete the algebra.\n\nThe `rpow_mul_natCast` bridge is necessary because $b^\\alpha$ is a real power (`Real.rpow`) while squaring produces a natural number power. Without this bridge, `norm_cast` would fail since the exponents live in different types.",
+    "mathContext": "Identity: $(a \\cdot b^\\alpha)^2 = a^2 \\cdot b^{2\\alpha}$. Key step: `Real.rpow_mul_natCast hb α 2 : b ^ (α * 2) = (b ^ α) ^ 2` bridges `Real.rpow` and `HPow.hPow ℝ ℕ ℝ`. Then `push_cast` makes $2\\alpha = \\alpha \\cdot 2$ visible, `ring` closes.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Real.rpow",
+      "rpow_mul_natCast",
+      "real power arithmetic",
+      "Lean norm_cast"
+    ],
+    "prerequisites": [
+      "real powers in Lean 4",
+      "Mathlib rpow theorems",
+      "push_cast tactic"
+    ]
+  },
+  {
+    "id": "ann-fsoq02oq02-sq-bound",
+    "proofId": "fourier-series-oq-02-oq-02",
+    "range": {
+      "startLine": 87,
+      "endLine": 131
+    },
+    "type": "insight",
+    "title": "Squared Decay Bound: ‖ĉ_n‖² ≤ K/|n|^{2α}",
+    "content": "`fourierCoeff_sq_le_pseries_term` is the bridge between the Hölder decay bound and the p-series comparison. For $n \\neq 0$:\n1. Get Hölder decay from the parent proof: $\\|\\hat{c}_n(f)\\| \\leq (C/2) \\cdot (T/(2|n|))^\\alpha$\n2. Square via `pow_le_pow_left₀`: $\\|\\hat{c}_n(f)\\|^2 \\leq [(C/2)(T/(2|n|))^\\alpha]^2$  \n3. Expand the square using `mul_rpow_sq` and `Real.div_rpow` to factor out $|n|^{2\\alpha}$: $= (C/2)^2 (T/2)^{2\\alpha} / |n|^{2\\alpha}$\n\nThe field_simp step in `h_split : T/(2|n|) = (T/2)/|n|` is the key algebraic reduction that allows `Real.div_rpow` to factor the absolute value out of the exponent.",
+    "mathContext": "Final bound: $\\|\\hat{c}_n(f)\\|^2 \\leq K/|n|^{2\\alpha}$ where $K = (C/2)^2 \\cdot (T/2)^{2\\alpha}$. This converts the Hölder bound $O(|n|^{-\\alpha})$ into the p-series term $O(|n|^{-2\\alpha})$ suitable for the comparison test with $\\beta = 2\\alpha > 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hölder decay",
+      "squaring inequalities",
+      "pow_le_pow_left₀",
+      "Real.div_rpow",
+      "comparison test setup"
+    ],
+    "prerequisites": [
+      "fourierCoeff_holder_decay from FourierSeriesOQ02",
+      "mul_rpow_sq helper",
+      "Real.div_rpow"
+    ]
+  },
+  {
+    "id": "ann-fsoq02oq02-main-theorem",
+    "proofId": "fourier-series-oq-02-oq-02",
+    "range": {
+      "startLine": 132,
+      "endLine": 164
+    },
+    "type": "insight",
+    "title": "Main Theorem: Square-Summability via Comparison Test",
+    "content": "`fourierCoeff_sq_summable_of_holder_pseries` is the main result. The proof structure:\n1. Derive $2\\alpha > 1$ from $\\alpha > 1/2$ via `linarith`\n2. Set $K = (C/2)^2 (T/2)^{2\\alpha}$ as a local definition\n3. Get convergence of the dominating series $\\sum K/|n|^{2\\alpha}$ from `summable_const_div_int_rpow`\n4. Apply `Summable.of_norm_bounded_eventually` (the comparison test with cofinite exceptions)\n5. Handle the $n=0$ exception: `Filter.eventually_cofinite.mpr` with `Set.finite_singleton (0:ℤ)` shows $\\{0\\}$ is the only exception\n6. For $n \\neq 0$: use `fourierCoeff_sq_le_pseries_term` by contradiction\n\nThe cofinite filter approach is elegant: `Summable.of_norm_bounded_eventually` allows the bound to fail on finitely many terms (here just $n=0$ where $|n|=0$ makes $K/|n|^{2\\alpha}$ ill-defined).",
+    "mathContext": "Applied theorem: `Summable.of_norm_bounded_eventually`: if $\\sum g_n < \\infty$ and $|f_n| \\leq g_n$ for all but finitely many $n$, then $\\sum f_n < \\infty$. Here $f_n = \\|\\hat{c}_n\\|^2$, $g_n = K/|n|^{2\\alpha}$, exceptions $= \\{0\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "comparison test",
+      "Summable.of_norm_bounded_eventually",
+      "cofinite filter",
+      "square-summability"
+    ],
+    "prerequisites": [
+      "summable_const_div_int_rpow",
+      "fourierCoeff_sq_le_pseries_term",
+      "cofinite filter in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-fsoq02oq02-sharpness",
+    "proofId": "fourier-series-oq-02-oq-02",
+    "range": {
+      "startLine": 189,
+      "endLine": 224
+    },
+    "type": "insight",
+    "title": "Sharpness: α = 1/2 is the Critical Threshold",
+    "content": "`holder_half_is_critical_for_pseries` proves that the p-series argument fails at exactly $\\alpha = 1/2$: the squared bound becomes $O(|n|^{-1})$ and the harmonic series $\\sum 1/|n|$ diverges.\n\nThe proof is fully machine-checked. The key technique avoids direct ℤ-harmonic series divergence. Instead:\n1. Assume the universal summability statement for all Hölder functions at $\\alpha = 1/2$\n2. Instantiate with the zero function $f = 0$ (trivially Hölder with constant 1, exponent $1/2$) and $T = 2\\pi$, $C = 1$\n3. Apply `summable_int_iff_summable_nat_and_neg` to extract ℕ summability of the positive half\n4. Rescale by $4/\\pi$ via `.mul_left (4 / Real.pi)` and algebraic simplification to recover `Summable (fun n : ℕ => 1 / n)`\n5. Derive contradiction: `Real.summable_nat_rpow_inv.not.mpr (by norm_num)` shows the harmonic series over ℕ diverges (p=1 fails p > 1)\n\nThis routing through ℕ elegantly sidesteps the need to prove ℤ-harmonic divergence directly.",
+    "mathContext": "The theorem negates: $\\forall C, \\alpha, f$, if $(\\alpha : \\mathbb{R}) = 1/2$ and $f$ is $\\alpha$-Hölder, then $\\sum_{n:\\mathbb{Z}} (C/2)^2 \\pi^{2\\alpha} / |n|^{2\\alpha}$ converges. Taking $f=0$, $C=1$, $\\alpha=1/2$: the summability hypothesis reduces to $\\sum_{n:\\mathbb{N}} (1/4)\\pi / |n|$ being summable. Rescaling by $4/\\pi$ gives $\\sum_{n:\\mathbb{N}} 1/n$ summable — contradicting `Real.summable_nat_rpow_inv.not.mpr (by norm_num : ¬ 1 < 1)`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "harmonic series divergence",
+      "sharp threshold",
+      "critical Hölder exponent",
+      "Real.summable_nat_rpow_inv"
+    ],
+    "prerequisites": [
+      "Real.summable_nat_rpow_inv divergence direction",
+      "summable_int_iff_summable_nat_and_neg"
+    ]
+  },
+  {
+    "id": "ann-fsoq02oq02-comparison",
+    "proofId": "fourier-series-oq-02-oq-02",
+    "range": {
+      "startLine": 165,
+      "endLine": 188
+    },
+    "type": "insight",
+    "title": "Two Routes to the Same Conclusion: p-Series vs Parseval",
+    "content": "`sq_summable_matches_parseval` makes explicit that this p-series proof gives the same conclusion as the Parseval-based proof in `FourierSeriesOQ02OQ01.lean`. The two routes differ in what they require:\n\n- **Parseval route** (sibling proof OQ02OQ01): Continuity → bounded → $L^2$ → Parseval identity $\\sum \\|\\hat{c}_n\\|^2 = \\|f\\|_{L^2}^2$. Shorter (~15 lines) but requires $L^2$ theory and measure theory.\n\n- **p-Series route** (this file): Hölder decay → squared bound → comparison. Longer (~50 lines) but elementary — no $L^2$, no measure theory beyond the definition of Fourier coefficients.\n\n`fourier_coeff_l2` re-expresses the result as an existential `HasSum` statement, giving the concrete sum value $S$ such that the Fourier coefficients sum to $S$ in the $L^2(\\mathbb{Z})$ sense.",
+    "mathContext": "Both prove: $\\sum_{n:\\mathbb{Z}} \\|\\hat{c}_n(f)\\|^2 < \\infty$. Parseval also gives the exact value $= \\|f\\|_{L^2}^2$. The p-series route gives only convergence but with explicit dominating rate $K \\cdot \\zeta(2\\alpha)$ where $\\zeta$ is the Riemann zeta function.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Parseval's theorem",
+      "proof comparison",
+      "elementary vs measure-theoretic proof",
+      "Bessel's inequality",
+      "fourier-series-oq-02-oq-01"
+    ],
+    "prerequisites": [
+      "FourierSeriesOQ02OQ01 sibling proof",
+      "Parseval's theorem",
+      "L² Fourier theory"
+    ]
+  },
+  {
+    "id": "ann-fsoq02oq02-bernstein",
+    "proofId": "fourier-series-oq-02-oq-02",
+    "range": {
+      "startLine": 132,
+      "endLine": 226
+    },
+    "type": "concept",
+    "title": "Bernstein's Theorem and the Cauchy-Schwarz Bridge",
+    "content": "Square-summability of Fourier coefficients (`fourierCoeff_sq_summable_of_holder_pseries`) is the stepping stone to Bernstein's 1914 theorem: $\\alpha > 1/2$ Hölder implies *absolute* convergence $\\sum_{n:\\mathbb{Z}} |\\hat{c}_n(f)| < \\infty$. The derivation is a Cauchy-Schwarz argument:\n\n$$\\sum_{0<|n|\\leq N} |\\hat{c}_n| \\leq \\sqrt{\\sum_{0<|n|\\leq N} n^{2\\alpha} |\\hat{c}_n|^2} \\cdot \\sqrt{\\sum_{0<|n|\\leq N} n^{-2\\alpha}}$$\n\nThe second factor is $\\leq \\sqrt{2\\zeta(2\\alpha)} < \\infty$ since $2\\alpha > 1$. The first factor is bounded by the Hölder energy — the $\\alpha$-weighted $\\ell^2$ norm of coefficients, which is finite by Hölder regularity. Taking $N \\to \\infty$ gives absolute convergence.\n\nThe explicit p-series bound from this entry is the quantitative version: $\\sum \\|\\hat{c}_n\\|^2 \\leq |\\hat{c}_0|^2 + 2K \\cdot \\zeta(2\\alpha)$ where $K = (C/2)^2 (T/2)^{2\\alpha}$. At $\\alpha = 1$ (Lipschitz), $\\zeta(2) = \\pi^2/6$ gives the concrete bound $|\\hat{c}_0|^2 + K\\pi^2/3$.",
+    "mathContext": "Bernstein's theorem (1914): $f \\in \\text{Lip}^\\alpha(\\mathbb{T})$ with $\\alpha > 1/2$ $\\Rightarrow$ $\\sum_{n:\\mathbb{Z}} |\\hat{c}_n(f)| < \\infty$. Proof via Cauchy-Schwarz: $\\ell^2(\\text{weights}) \\hookrightarrow \\ell^1$ when the weight sequence is square-summable. The intermediate step is square-summability (`fourierCoeff_sq_summable_of_holder_pseries`), which is this entry's main theorem. The open question in this file asks whether Lean 4 can formalize the Cauchy-Schwarz step using `Finset.inner_mul_le_norm_sq_mul_norm_sq` or `NNNorm.inner_le_nnorm_mul_nnorm`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bernstein's theorem",
+      "Cauchy-Schwarz inequality",
+      "absolute convergence of Fourier series",
+      "Riemann zeta function",
+      "Basel problem",
+      "cauchy-schwarz",
+      "basel-problem",
+      "harmonic-divergence"
+    ],
+    "prerequisites": [
+      "fourierCoeff_sq_summable_of_holder_pseries (this entry)",
+      "Cauchy-Schwarz for series",
+      "Riemann zeta function ζ(2α) for 2α > 1"
+    ]
+  }
+]

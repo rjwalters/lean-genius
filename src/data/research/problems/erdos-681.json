@@ -1,0 +1,81 @@
+{
+  "slug": "erdos-681",
+  "title": "Erdős #681",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Is it true that for all large $n$ there exists $k$ such that $n+k$ is composite and\\[p(n+k)>k^2,\\]where $p(m)$ is the least prime factor of $m$?\n\n\n\nRelated to questions of Erd\\H{o}s, Eggleton, and Selfridge. This may be true with $k^2$ replaced by $k^d$ for any $d$.\n\nSee also [680] and [682].",
+    "plain": "Is it true that for all large $n$ there exists $k$ such that $n+k$ is composite and\\[p(n+k)>k^2,\\]where $p(m)$ is the least prime factor of $m$?",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-18T11:20:09Z",
+    "iteration": 3,
+    "focus": "Surveyed least-prime-factor offset formalization and source-declaration risks.",
+    "blockers": [],
+    "nextAction": "Compile-check and repair general_constraint before using the source as proof-complete evidence.",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 2
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEYED: 28 theorem declarations, 0 axioms, 0 sorries. The source contains least-prime-factor infrastructure and conditional reductions for composite successors, parity, and residue classes, but the original Erdos problem remains open and one theorem body needs compile-checking.",
+    "builtItems": [
+      "Confirmed leastPrimeFactor and IsLeastPrimeFactor infrastructure is declared around minFac.",
+      "Confirmed the source declares conditional cases: k=1 for composite successors, d=0 triviality, parity exclusions, and d1_at_2_mod_3.",
+      "Confirmed current declaration counters are 28T/0A/0S, replacing stale 21/27-theorem prose."
+    ],
+    "insights": [
+      "The remaining mathematical difficulty is concentrated at n+1 prime; composite successors are already handled by k=1.",
+      "ErdosProblem681 and ErdosProblem681General are definitions, not proved theorem declarations.",
+      "The remaining mathematical difficulty is concentrated at n+1 prime; composite successors are handled conditionally by k=1.",
+      "general_constraint appears to reference an undefined hkd_pos name in source, so compile-check before treating the theorem body as accepted."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Compile-check Erdos681Problem.lean and repair general_constraint if hkd_pos is indeed unresolved.",
+      "Connect the prime-successor hard case to explicit prime-gap or rough-number hypotheses."
+    ],
+    "markdown": "# Erdős #681 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for all large $n$ there exists $k$ such that $n+k$ is composite and\\[p(n+k)>k^2,\\]where $p(m)$ is the least prime factor of $m$?\n\n\n\nRelated to questions of Erd\\H{o}s, Eggleton, and Selfridge. This may be true with $k^2$ replaced by $k^d$ for any $d$.\n\nSee also [680] and [682].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #680\n- Problem #682\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er7d\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-6",
+    "erdos-68",
+    "erdos-681"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-14T19:46:33.194Z",
+  "lastUpdate": "2026-05-18T11:20:09Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos681Problem.lean",
+      "filename": "Erdos681Problem.lean",
+      "lineCount": 362,
+      "theoremCount": 28,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos681Problem.lean"
+    }
+  ]
+}

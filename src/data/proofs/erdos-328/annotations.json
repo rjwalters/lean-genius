@@ -1,0 +1,417 @@
+[
+  {
+    "id": "ann-328-header",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 1,
+      "endLine": 25
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #328: Partitioning Sets with Bounded Representation Function**\n\nCan sets with bounded convolution $r_A \\leq C$ be partitioned so each piece has $r < C$?\n\n**DISPROVED** by Nešetřil-Rödl (1985): NO for all $C$, even with arbitrarily many pieces.\n\nOriginally posed by Erdős and Donald J. Newman [ErGr80, p.48].",
+    "mathContext": "The problem connects the convolution $\\mathbf{1}_A * \\mathbf{1}_A$ to Ramsey-type partition questions. The representation function $r_A(n) = |\\{(a,b) \\in A^2 : a+b=n\\}|$ is the self-convolution evaluated at $n$. Erdős and Newman asked whether this quantity can always be reduced by partitioning—the answer is fundamentally no.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Additive combinatorics",
+      "Representation functions",
+      "Ramsey theory",
+      "Sidon sets",
+      "Partition regularity"
+    ],
+    "prerequisites": [
+      "Basic set theory",
+      "Convolutions",
+      "Natural number arithmetic"
+    ]
+  },
+  {
+    "id": "ann-328-imports",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 27,
+      "endLine": 32
+    },
+    "type": "concept",
+    "title": "Imports and Namespace",
+    "content": "Imports `Nat.Basic`, `Set.Basic`, `Finset.Basic`, and `BigOperators` from Mathlib. The `Erdos328` namespace encapsulates all definitions and results.",
+    "mathContext": "The formalization uses both `Set ℕ` (for infinite sets in the theoretical statements) and `Finset ℕ` (for computational definitions like `rA`). BigOperators provides summation notation over finite sets.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "Finset",
+      "Set",
+      "BigOperators"
+    ],
+    "prerequisites": [
+      "Lean namespaces",
+      "Mathlib Finset and Set types",
+      "BigOperators summation notation"
+    ]
+  },
+  {
+    "id": "ann-328-repr-func",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 41,
+      "endLine": 43
+    },
+    "type": "definition",
+    "title": "representationFunction",
+    "content": "**representationFunction A n** counts ordered pairs $(a,b) \\in A \\times A$ with $a+b=n$:\n$$r_A(n) = |\\{(a,b) \\in A^2 : a+b = n\\}|$$\n\nImplemented by filtering `Finset.range(n+1) × Finset.range(n+1)` for pairs in $A$ summing to $n$.",
+    "mathContext": "This is the self-convolution $\\mathbf{1}_A * \\mathbf{1}_A(n)$. For Sidon sets, $r_A(n) \\leq 2$ for all $n$. The function counts ordered pairs, so $r_A(2a) \\geq 1$ whenever $a \\in A$ (from the pair $(a,a)$). The additive energy $E(A) = \\sum_n r_A(n)^2$ is a related quantity central to additive combinatorics.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Self-convolution",
+      "Additive energy",
+      "Sumset",
+      "Sidon sets"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "Finset.product",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "ann-328-rA",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 50,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "rA (Finset version)",
+    "content": "**rA A n** provides an alternative computation of the representation count on `Finset ℕ`. Filters elements $a \\in A$ with $a \\leq n$ and $n-a \\in A$.",
+    "mathContext": "This definition counts the number of elements $a \\in A$ such that $n-a$ also belongs to $A$, which equals the number of representations $n = a + b$ with $a,b \\in A$ (where $b = n-a$). This is computationally simpler than the product-based definition.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Representation function",
+      "Finset.filter"
+    ],
+    "prerequisites": [
+      "Finset.card",
+      "Finset.filter"
+    ]
+  },
+  {
+    "id": "ann-328-bounded",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 57,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "hasBoundedConvolution",
+    "content": "**hasBoundedConvolution A C**: the set $A$ satisfies $r_A(n) \\leq C$ for all $n \\in \\mathbb{N}$. This captures the notion of an 'additively thin' set—one where no integer has too many representations as a sum from $A$.",
+    "mathContext": "Sets with bounded convolution form a natural hierarchy indexed by $C$. At $C=0$: only the empty set. At $C=1$: unique-sum sets (very sparse). At $C=2$: Sidon sets. The Erdős-Turán conjecture asks whether $r_A$ can be bounded if $A$ is an asymptotic basis of order 2.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Representation function",
+      "Sidon sets",
+      "Erdős-Turán conjecture",
+      "Asymptotic basis"
+    ],
+    "prerequisites": [
+      "representationFunction"
+    ]
+  },
+  {
+    "id": "ann-328-sidon",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 67,
+      "endLine": 68
+    },
+    "type": "definition",
+    "title": "isSidonSet",
+    "content": "**isSidonSet A**: all pairwise sums are distinct—if $a+b = c+d$ with $a,b,c,d \\in A$, then $\\{a,b\\} = \\{c,d\\}$. Equivalently, $r_A(n) \\leq 2$ for all $n$.\n\nNamed after Simon Sidon, who studied these sets in connection with Fourier analysis on groups (1932).",
+    "mathContext": "Sidon sets (also called $B_2$ sets) are fundamental in additive combinatorics. Erdős and Turán (1941) proved $|A \\cap [1,N]| \\leq \\sqrt{N} + O(N^{1/4})$. The current best construction (Ruzsa 1998, building on Singer 1938) gives $|A \\cap [1,N]| \\geq \\sqrt{N} - O(N^{5/16})$. The exact maximum size remains a major open problem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "$B_2$ sets",
+      "Sidon's problem",
+      "Erdős-Turán bound",
+      "Singer difference sets"
+    ],
+    "prerequisites": [
+      "hasBoundedConvolution"
+    ]
+  },
+  {
+    "id": "ann-328-bh",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 75,
+      "endLine": 76
+    },
+    "type": "definition",
+    "title": "isBhSet",
+    "content": "**isBhSet A h**: $A$ is a $B_h$ set, meaning all $h$-wise sums are distinct (up to permutation). Defined here as `hasBoundedConvolution A (h!)`, which is a sufficient but not equivalent condition.",
+    "mathContext": "$B_h$ sets generalize Sidon sets to $h$-fold sums. For $B_h$ sets, $|A \\cap [1,N]| = O(N^{1/h})$. The Erdős-Turán conjecture for $B_h$ sets remains open for all $h \\geq 2$. Note: the formalization uses $h!$ as bound, which is conservative; the true bound for $B_h$ is $h!$ for ordered representations.",
+    "significance": "key",
+    "relatedConcepts": [
+      "$B_h$ sets",
+      "Sidon sets",
+      "Additive number theory"
+    ],
+    "prerequisites": [
+      "hasBoundedConvolution",
+      "Nat.factorial"
+    ]
+  },
+  {
+    "id": "ann-328-sidon-bounded",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 82,
+      "endLine": 83
+    },
+    "type": "concept",
+    "title": "sidon_bounded_convolution",
+    "content": "**sidon_bounded_convolution**: If $A$ is a Sidon set, then $r_A(n) \\leq 2$ for all $n$.\n\nThis follows directly from the definition: in a Sidon set, each $n$ has at most one unordered pair $\\{a,b\\}$ with $a+b=n$, giving at most 2 ordered pairs.",
+    "mathContext": "The bound $r_A \\leq 2$ is tight: $r_A(2a) = 1$ for $a \\in A$ (the pair $(a,a)$), and $r_A(a+b) = 2$ for distinct $a,b \\in A$. The axiom bridges the 'all sums distinct' definition with the convolution bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sidon sets",
+      "Bounded convolution"
+    ],
+    "prerequisites": [
+      "isSidonSet",
+      "hasBoundedConvolution"
+    ]
+  },
+  {
+    "id": "ann-328-partition-def",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 92,
+      "endLine": 94
+    },
+    "type": "definition",
+    "title": "isPartition",
+    "content": "**isPartition A parts**: a formal partition of set $A$ into pieces $A_1, \\ldots, A_t$. Requires: (1) every $x \\in A$ belongs to exactly one piece, (2) every piece is a subset of $A$.",
+    "mathContext": "The partition is represented as `List (Set ℕ)` rather than a function from an index type. The uniqueness condition (exactly one piece) ensures disjointness: $A_i \\cap A_j = \\emptyset$ for $i \\neq j$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Set partition",
+      "List indexing"
+    ],
+    "prerequisites": [
+      "Set.Basic",
+      "List"
+    ]
+  },
+  {
+    "id": "ann-328-strictly-smaller",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 100,
+      "endLine": 101
+    },
+    "type": "definition",
+    "title": "hasStrictlySmaller",
+    "content": "**hasStrictlySmaller parts C**: each partition piece $A_i$ satisfies $r_{A_i}(n) < C$ for all $n$. This is the 'improvement' condition: partitioning should reduce the maximum representation from $\\leq C$ to $< C$.",
+    "mathContext": "The strict inequality $< C$ (rather than $\\leq C-1$) is key: even reducing by 1 is impossible. For $C=2$ (Sidon sets), this asks whether we can partition into unique-sum sets ($r \\leq 1$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Representation function",
+      "Partition improvement"
+    ],
+    "prerequisites": [
+      "representationFunction",
+      "isPartition"
+    ]
+  },
+  {
+    "id": "ann-328-en-question",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 108,
+      "endLine": 114
+    },
+    "type": "definition",
+    "title": "erdos_newman_question",
+    "content": "**erdos_newman_question**: the formal statement of the Erdős-Newman conjecture.\n$$\\forall C, \\exists t(C), \\forall A \\text{ with } r_A \\leq C, \\exists \\text{partition into } \\leq t \\text{ pieces with } r_{A_i} < C$$\n\nThe key feature: $t$ depends only on $C$, not on $A$.",
+    "mathContext": "This is a 'uniform' partition question: the number of pieces $t$ must work for ALL sets with the same bound $C$. Even the weaker question where $t$ depends on $A$ (formalized as `nesetril_rodl_strong`) has a negative answer.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Partition regularity",
+      "Uniform bounds",
+      "Ramsey theory"
+    ],
+    "prerequisites": [
+      "hasBoundedConvolution",
+      "isPartition",
+      "hasStrictlySmaller"
+    ]
+  },
+  {
+    "id": "ann-328-erdos-c3",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 123,
+      "endLine": 128
+    },
+    "type": "concept",
+    "title": "erdos_C3_counterexample",
+    "content": "**erdos_C3_counterexample** (Erdős 1980): There exists a set $A$ with $r_A \\leq 3$ that cannot be partitioned into pieces with $r < 3$, no matter how many pieces are used.\n\nThis was Erdős's first partial result toward Problem #328.",
+    "mathContext": "Erdős [Er80e] constructed explicit examples for $C=3$ and $C=4$, and showed the answer is NO for infinitely many values of $C$. The constructions use combinatorial arguments about the structure of the sumset.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős's partial results",
+      "Counterexample constructions"
+    ],
+    "prerequisites": [
+      "hasBoundedConvolution",
+      "isPartition"
+    ]
+  },
+  {
+    "id": "ann-328-erdos-c4",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 134,
+      "endLine": 139
+    },
+    "type": "concept",
+    "title": "erdos_C4_counterexample",
+    "content": "**erdos_C4_counterexample** (Erdős 1980): Similarly, there exists a set $A$ with $r_A \\leq 4$ that cannot be partitioned into pieces with $r < 4$.",
+    "mathContext": "The case $C=4$ was proved alongside $C=3$ in [Er80e]. Erdős noted that his method extends to infinitely many $C$ but could not settle the question for all $C$, leaving that to Nešetřil and Rödl.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős's partial results"
+    ],
+    "prerequisites": [
+      "hasBoundedConvolution",
+      "isPartition"
+    ]
+  },
+  {
+    "id": "ann-328-nesetril-rodl",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 148,
+      "endLine": 154
+    },
+    "type": "concept",
+    "title": "Nešetřil-Rödl Theorem (1985)",
+    "content": "**nesetril_rodl_theorem**: For ALL $C \\geq 1$, there exists a 'bad' set $A$ with $r_A \\leq C$ that cannot be partitioned into ANY number of pieces with $r_{A_i} < C$.\n\nThis is the complete negative answer to Problem #328.",
+    "mathContext": "The proof [NeRo85] uses Ramsey-theoretic methods: interpret pairs summing to the same value as hyperedges in a hypergraph. A partition of $A$ is a vertex coloring; Ramsey theory guarantees a monochromatic subhypergraph with full convolution bound. The quantitative Ramsey bounds determine the minimum size of the counterexample.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey theory",
+      "Hypergraph coloring",
+      "Partition regularity"
+    ],
+    "prerequisites": [
+      "hasBoundedConvolution",
+      "isPartition",
+      "hasStrictlySmaller"
+    ]
+  },
+  {
+    "id": "ann-328-disproved",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 160,
+      "endLine": 161
+    },
+    "type": "concept",
+    "title": "erdos_newman_disproved",
+    "content": "**erdos_newman_disproved**: $\\neg$ `erdos_newman_question`\n\nThe Erdős-Newman conjecture is FALSE. This follows from `nesetril_rodl_theorem` applied to any $C \\geq 1$.",
+    "mathContext": "The negation means: for some $C$, no uniform bound $t(C)$ suffices. In fact, the Nešetřil-Rödl theorem shows this for EVERY $C \\geq 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős-Newman conjecture",
+      "Disproof"
+    ],
+    "prerequisites": [
+      "erdos_newman_question",
+      "nesetril_rodl_theorem"
+    ]
+  },
+  {
+    "id": "ann-328-strong",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 167,
+      "endLine": 174
+    },
+    "type": "concept",
+    "title": "nesetril_rodl_strong",
+    "content": "**nesetril_rodl_strong**: Even allowing $t$ to depend on $A$ itself (not just $C$), the answer is still NO. For every $C \\geq 1$, there exist sets that resist partition into ANY finite number of pieces with smaller convolution.",
+    "mathContext": "This strengthening rules out all partition strategies: not only uniform ones ($t$ depending on $C$) but also non-uniform ones ($t$ depending on $A$). The 'bad' sets produced by Ramsey theory have the property that every partition, no matter how fine, preserves the convolution bound in at least one piece.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Strong Ramsey results",
+      "Non-uniform bounds"
+    ],
+    "prerequisites": [
+      "nesetril_rodl_theorem"
+    ]
+  },
+  {
+    "id": "ann-328-sidon-case",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 183,
+      "endLine": 187
+    },
+    "type": "concept",
+    "title": "sidon_case",
+    "content": "**sidon_case**: Even Sidon sets ($C=2$) cannot always be partitioned into unique-sum sets ($r \\leq 1$). This is the base case of the Nešetřil-Rödl theorem and the most concrete instance of the obstruction.",
+    "mathContext": "Since $C=2$ is the smallest nontrivial case, this illustrates the phenomenon most vividly: a set where all pairwise sums are distinct still cannot be split into pieces where all sums are unique. The counterexample Sidon set must be constructed via Ramsey theory.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sidon sets",
+      "Unique-sum sets",
+      "Base case"
+    ],
+    "prerequisites": [
+      "isSidonSet",
+      "hasUniqueSums"
+    ]
+  },
+  {
+    "id": "ann-328-unique-sums",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 194,
+      "endLine": 195
+    },
+    "type": "definition",
+    "title": "hasUniqueSums",
+    "content": "**hasUniqueSums A**: $r_A(n) \\leq 1$ for all $n$. Every integer has at most one representation as a sum of two elements from $A$. These sets are extremely sparse.",
+    "mathContext": "Unique-sum sets satisfy $|A \\cap [1,N]| = O(N^{1/3})$, much sparser than Sidon sets ($O(\\sqrt{N})$). The property is hereditary (preserved by subsets), unlike bounded convolution for $C \\geq 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Representation function",
+      "Sparse sets",
+      "Hereditary properties"
+    ],
+    "prerequisites": [
+      "representationFunction"
+    ]
+  },
+  {
+    "id": "ann-328-hereditary",
+    "proofId": "erdos-328",
+    "range": {
+      "startLine": 201,
+      "endLine": 202
+    },
+    "type": "concept",
+    "title": "unique_sums_hereditary",
+    "content": "**unique_sums_hereditary**: If $A$ has unique sums and $B \\subseteq A$, then $B$ also has unique sums.\n\nThis contrasts sharply with $C \\geq 2$: Sidon is NOT hereditary in the partition sense (you can't always partition into unique-sum subsets).",
+    "mathContext": "Heredity for $r_A \\leq 1$ is immediate: if $B \\subseteq A$, then any pair in $B$ summing to $n$ is also a pair in $A$ summing to $n$, so $r_B(n) \\leq r_A(n) \\leq 1$. This monotonicity fails for the partition question because partition pieces are not arbitrary subsets—they must cover all of $A$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hereditary properties",
+      "Monotonicity",
+      "Subset closure"
+    ],
+    "prerequisites": [
+      "hasUniqueSums"
+    ]
+  }
+]

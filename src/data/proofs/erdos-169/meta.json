@@ -1,0 +1,230 @@
+{
+  "id": "erdos-169",
+  "title": "Erdős Problem #169: Harmonic Sum of AP-Free Sets",
+  "slug": "erdos-169",
+  "description": "For k ≥ 3, estimate f(k), the supremum of ∑ 1/n over sets lacking k-term arithmetic progressions. Is lim f(k)/log W(k) = ∞?",
+  "meta": {
+    "author": "Open Problem",
+    "sourceUrl": "https://erdosproblems.com/169",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos169Problem.lean",
+    "tags": [
+      "erdos",
+      "additive-combinatorics",
+      "arithmetic-progressions",
+      "harmonic-sums",
+      "van-der-waerden"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 169,
+    "erdosUrl": "https://erdosproblems.com/169",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat",
+        "description": "Natural number basics",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Real",
+        "description": "Real number type for harmonic sums",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for AP-free subsets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "BigOperators",
+        "description": "Summation notation for harmonic sums",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      }
+    ],
+    "originalContributions": [],
+    "axiomCount": 2,
+    "lineCount": 279,
+    "assumptions": "2 axioms: berlekamp_lower_bound (Berlekamp lower bound for van der Waerden numbers), trivial_ratio_bound (trivial upper bound on W(k)/k ratio). 0 sorries.",
+    "theoremCount": 2,
+    "definitionCount": 7
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #169 connects two fundamental areas of combinatorics: the study of arithmetic-progression-free sets and the analysis of harmonic sums. The problem asks: how large can the sum of reciprocals be for a set of integers that avoids k-term arithmetic progressions?\n\nThe study of AP-free sets began with van der Waerden's theorem (1927), which guarantees that any finite coloring of integers contains arbitrarily long monochromatic APs. This led to the definition of van der Waerden numbers W(k), which grow extremely fast. Erdős's problem asks whether the harmonic sum function f(k) can grow faster than log W(k).\n\nBerlekamp (1968) gave the first lower bound f(k) ≥ (log 2 / 2)k using digit-based constructions. Gerver (1977) improved this to f(k) ≥ (1-o(1))k log k, showing superlinear growth. Recent work by Walker (2025) connected optimal AP-free sets to Kempner sets—integers defined by digit restrictions.",
+    "problemStatement": "Let $k \\geq 3$. Define $f(k) = \\sup \\left\\{ \\sum_{n \\in A} \\frac{1}{n} : A \\text{ lacks } k\\text{-term APs} \\right\\}$.\n\n**Questions:**\n1. Estimate $f(k)$.\n2. Is $\\lim_{k \\to \\infty} \\frac{f(k)}{\\log W(k)} = \\infty$, where $W(k)$ is the van der Waerden number?\n\n**Status:** OPEN\n\n**Known bounds:**\n- Berlekamp (1968): $f(k) \\geq \\frac{\\log 2}{2} \\cdot k$\n- Gerver (1977): $f(k) \\geq (1-o(1)) k \\log k$\n- Trivially: $\\frac{f(k)}{\\log W(k)} \\geq \\frac{1}{2}$\n- Computational: $f(3) \\geq 3.00849$, $f(4) \\geq 4.43975$",
+    "text": "For k ≥ 3, estimate f(k), the supremum of ∑ 1/n over sets lacking k-term arithmetic progressions. Is lim f(k)/log W(k) = ∞?",
+    "proofStrategy": "The Lean formalization defines arithmetic progressions, AP-free sets, and the function f(k) as a supremum of harmonic sums. Key results are axiomatized including Berlekamp's and Gerver's lower bounds, the trivial ratio bound, and Walker's recent characterization using Kempner sets. The problem remains open—the main question of whether f(k)/log W(k) → ∞ is unresolved.",
+    "keyInsights": [
+      "**Harmonic sum function:** f(k) measures the maximum 'weight' of integers avoiding k-term APs, where weight is the reciprocal sum",
+      "**Van der Waerden connection:** The ratio f(k)/log W(k) compares harmonic growth to the extremely fast-growing W(k)",
+      "**Berlekamp construction:** Digit-restricted integers (limited ones in binary) give AP-free sets with linear harmonic sum",
+      "**Gerver improvement:** Refined constructions show f(k) grows at least as k log k, faster than linear",
+      "**Walker's Kempner sufficiency:** Optimal AP-free sets can be approximated by integers with restricted base-b digits"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Additive combinatorics (sumsets, density)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview, Imports and Namespace",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "File header: states Erdős #169 (f(k) = sup harmonic sum over k-AP-free sets; the ratio question f(k)/log W(k) → ∞?), background, key results (Berlekamp, Gerver, Walker), imports, and the `Erdos169` namespace.",
+      "mathContext": "File header and imports for the Erdős #169 formalization, opening `Finset` and `BigOperators`."
+    },
+    {
+      "id": "arithmetic-progressions",
+      "title": "Part I: Arithmetic Progressions",
+      "startLine": 44,
+      "endLine": 61,
+      "summary": "Definitions of k-term arithmetic progressions (IsArithmeticProgression) and AP-free sets (IsAPFree).",
+      "mathContext": "Formal definition: k-term arithmetic progressions and AP-free sets."
+    },
+    {
+      "id": "harmonic-sum",
+      "title": "Part II: Harmonic Sum of a Set",
+      "startLine": 62,
+      "endLine": 79,
+      "summary": "Defines harmonicSum (sum of reciprocals) and f(k) as the supremum of harmonic sums over AP-free sets.",
+      "mathContext": "Formal definition: harmonicSum and f(k) as supremum of harmonic sums over AP-free sets."
+    },
+    {
+      "id": "van-der-waerden",
+      "title": "Part III: Van der Waerden Numbers",
+      "startLine": 80,
+      "endLine": 98,
+      "summary": "Definition of W(k) and statement of van der Waerden's theorem (W(k) finite for k ≥ 3).",
+      "mathContext": "Formal definition: Definition of W(k) and van der Waerden's theorem."
+    },
+    {
+      "id": "berlekamp",
+      "title": "Part IV: Berlekamp's Lower Bound (1968)",
+      "startLine": 99,
+      "endLine": 118,
+      "summary": "Axiomatizes Berlekamp (1968): f(k) ≥ (log 2 / 2) · k, with its binary-representation construction.",
+      "mathContext": "f(k) $\\geq$ (log 2 / 2) · k from 1968 (axiomatized)."
+    },
+    {
+      "id": "gerver",
+      "title": "Part V: Gerver's Improvement (1977)",
+      "startLine": 119,
+      "endLine": 136,
+      "summary": "Documents Gerver (1977): f(k) ≥ (1-o(1)) k log k, and his equivalence linking Problem #3 to finiteness of f(k).",
+      "mathContext": "f(k) $\\geq$ (1-o(1)) k log k from 1977."
+    },
+    {
+      "id": "ratio-question",
+      "title": "Part VI: The Ratio Question",
+      "startLine": 137,
+      "endLine": 159,
+      "summary": "Axiomatizes the trivial bound f(k)/log W(k) ≥ 1/2 and states RatioQuestion (whether f(k)/log W(k) → ∞), which remains open.",
+      "mathContext": "Whether f(k)/log W(k) $\\to$ ∞ remains open; trivial bound ≥ 1/2 axiomatized."
+    },
+    {
+      "id": "computational-records",
+      "title": "Part VII: Computational Records",
+      "startLine": 160,
+      "endLine": 173,
+      "summary": "Best known computational values: f(3) ≥ 3.00849 (Wróblewski 1984) and f(4) ≥ 4.43975 (Walker 2025).",
+      "mathContext": "Mathematical content: Best known values for f(3) and f(4)."
+    },
+    {
+      "id": "walker-results",
+      "title": "Part VIII: Walker's Results (2025)",
+      "startLine": 174,
+      "endLine": 193,
+      "summary": "Defines Kempner sets (digit-restricted integers) and documents Walker (2025): optimal AP-free sets for harmonic sum can be approximated by Kempner sets.",
+      "mathContext": "Mathematical content: Kempner sets suffice for optimal AP-free harmonic sums."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Part IX: Basic Properties",
+      "startLine": 194,
+      "endLine": 211,
+      "summary": "Documents basic properties of f: monotonic decrease in k, positivity f(k) > 0, and that the singleton {1} is k-AP-free for all k ≥ 2.",
+      "mathContext": "Mathematical content: monotonicity, positivity, and singleton AP-freeness of f."
+    },
+    {
+      "id": "related-problems",
+      "title": "Part X: Related Problems",
+      "startLine": 212,
+      "endLine": 232,
+      "summary": "Connections to related questions: Problem #3 (finiteness of f(k)), Problem #170, and OEIS A005346 (subsets of {1,...,n} with no 3-term AP).",
+      "mathContext": "Mathematical content: links to Problem #3, Problem #170, and OEIS A005346."
+    },
+    {
+      "id": "summary",
+      "title": "Part XI: Summary",
+      "startLine": 233,
+      "endLine": 279,
+      "summary": "Complete status summary of what is known and open, plus the proved theorems erdos_169_summary and erdos_169_open combining the Berlekamp and trivial-ratio bounds.",
+      "mathContext": "Mathematical content: Complete summary of what's known and what's open; proves erdos_169_summary / erdos_169_open."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #169 remains open. We know f(k) ≥ (1-o(1))k log k (Gerver) and f(k)/log W(k) ≥ 1/2, but whether this ratio tends to infinity is unknown.",
+    "implications": "Resolving this problem would reveal deep connections between additive combinatorics and harmonic analysis, potentially impacting our understanding of Szemerédi-type theorems.",
+    "openQuestions": [
+      "Is lim f(k)/log W(k) = ∞?",
+      "Can the constant 1/2 in the ratio bound be improved?",
+      "What is the exact growth rate of f(k)?",
+      "Is there a closed-form expression or better asymptotic for f(k)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos169",
+    "lineCount": 279,
+    "axiomCount": 2,
+    "theoremCount": 2,
+    "definitionCount": 7,
+    "path": "Proofs/Erdos169Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-160",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, van-der-waerden"
+    },
+    {
+      "targetId": "erdos-187",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, van-der-waerden"
+    },
+    {
+      "targetId": "erdos-721",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, van-der-waerden"
+    }
+  ],
+  "references": [
+    {
+      "key": "Sz75b",
+      "authors": [
+        "E. Szemerédi"
+      ],
+      "title": "On sets of integers containing no k elements in arithmetic progression",
+      "venue": "Acta Arithmetica",
+      "year": "1975",
+      "volume": "27",
+      "pages": "199-245",
+      "note": "Szemerédi's theorem: positive-density sets contain arbitrarily long APs"
+    }
+  ],
+  "sorries": 0
+}

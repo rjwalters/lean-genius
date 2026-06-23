@@ -1,0 +1,46 @@
+[
+  {
+    "id": "ann-soc-oq0101-shift",
+    "proofId": "solution-of-cubic-oq-01-oq-01",
+    "range": {
+      "startLine": 85,
+      "endLine": 90
+    },
+    "type": "insight",
+    "title": "The Discriminant under the Tschirnhaus Shift",
+    "body": "general_discriminant_eq_shift is the central identity: Δ(a,b,c,d) = a⁴·(−4p³ − 27q²). It packages two facts true in any degree. First, translation invariance: the depressed cubic t³ + pt + q has exactly the same root differences as the original (the shift x = t − b/(3a) adds the same constant to every root), so its monic discriminant −4p³ − 27q² already captures the root-difference data. Second, the leading-coefficient scaling a^(2n−2) = a⁴ for n = 3. The proof unfolds p, q (with their denominators 3a² and 27a³), clears them with field_simp under a ≠ 0, and closes with ring."
+  },
+  {
+    "id": "ann-soc-oq0101-cardano-bridge",
+    "proofId": "solution-of-cubic-oq-01-oq-01",
+    "range": {
+      "startLine": 100,
+      "endLine": 113
+    },
+    "type": "insight",
+    "title": "Two Discriminants Differ by −108",
+    "body": "The parent uses Δ_C = q²/4 + p³/27, the quantity under the square root in Cardano's formula. The standard polynomial discriminant is −4p³ − 27q² = −108·Δ_C. The factor −108 is nonzero, so the two notions vanish together and carry the same repeated-root information; depressedDisc_eq_cardano makes this precise and general_discriminant_eq_cardano lifts it to Δ = −108·a⁴·Δ_C — the explicit bridge the parent's open question asked for."
+  },
+  {
+    "id": "ann-soc-oq0101-zero-iff",
+    "proofId": "solution-of-cubic-oq-01-oq-01",
+    "range": {
+      "startLine": 122,
+      "endLine": 132
+    },
+    "type": "technique",
+    "title": "a⁴ ≠ 0 Transfers the Vanishing Condition",
+    "body": "general_discriminant_eq_zero_iff shows Δ = 0 ⟺ −4p³ − 27q² = 0. From Δ = a⁴·depressedDisc, mul_eq_zero splits a product into a⁴ = 0 ∨ depressedDisc = 0; pow_ne_zero 4 ha kills the first disjunct because a ≠ 0 in the field ℂ, leaving depressedDisc = 0. The shift moves the roots but preserves the condition that two of them collide."
+  },
+  {
+    "id": "ann-soc-oq0101-root-form",
+    "proofId": "solution-of-cubic-oq-01-oq-01",
+    "range": {
+      "startLine": 146,
+      "endLine": 176
+    },
+    "type": "insight",
+    "title": "Symmetric Root Form and the Repeated-Root Criterion",
+    "body": "generalDiscriminant_eq_root_form substitutes the Vieta expressions b = −a·σ₁, c = a·σ₂, d = −a·σ₃ and lets ring verify Δ = a⁴·((x₁−x₂)(x₁−x₃)(x₂−x₃))². Exposing Δ as a square (up to a⁴) makes repeated_root_iff immediate: over ℂ a product of differences squared is zero iff one difference is zero, i.e. two roots coincide — proved by chaining sq_eq_zero_iff, mul_eq_zero, and sub_eq_zero."
+  }
+]

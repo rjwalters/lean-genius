@@ -1,0 +1,292 @@
+[
+  {
+    "id": "erdos-477-imports",
+    "proofId": "erdos-477",
+    "type": "concept",
+    "range": {
+      "startLine": 18,
+      "endLine": 20
+    },
+    "title": "Mathlib Imports and Namespace",
+    "content": "A single `import Mathlib` pulls in the entire library, then `open Set Function` brings set-theoretic and function notations into scope. The file works inside the `Erdos477` namespace to avoid name collisions.",
+    "mathContext": "Uses $\\text{Set}$, $\\text{Function}$, $\\text{range}$, $\\text{Injective}$ from Mathlib.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "namespaces",
+      "Set theory in Lean"
+    ],
+    "prerequisites": [
+      "Lean 4 basics",
+      "Mathlib library"
+    ]
+  },
+  {
+    "id": "erdos-477-polyimage",
+    "proofId": "erdos-477",
+    "type": "definition",
+    "range": {
+      "startLine": 26,
+      "endLine": 27
+    },
+    "title": "Polynomial Image",
+    "content": "polyImage f is simply the range of $f : \\mathbb{Z} \\to \\mathbb{Z}$. For a polynomial $f$ of degree $d \\geq 2$, this is a sparse subset of $\\mathbb{Z}$: only $O(N^{1/d})$ elements lie in $[-N, N]$.",
+    "mathContext": "$f(\\mathbb{Z}) = \\{f(n) : n \\in \\mathbb{Z}\\}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "function range",
+      "image of polynomial",
+      "sparse sets"
+    ],
+    "prerequisites": [
+      "Function.range",
+      "polynomial growth"
+    ]
+  },
+  {
+    "id": "erdos-477-complement",
+    "proofId": "erdos-477",
+    "type": "definition",
+    "range": {
+      "startLine": 29,
+      "endLine": 35
+    },
+    "title": "Perfect Complement",
+    "content": "IsPerfectComplement A B holds when every integer $z$ has a *unique* representation $z = a + b$ with $a \\in A$, $b \\in B$. This is equivalent to saying $\\mathbb{Z} = A \\oplus B$ as a direct sum of sets under addition. The uniqueness condition is what makes this a tiling rather than just a covering.",
+    "mathContext": "$\\mathbb{Z} = A \\oplus B \\iff \\forall z \\in \\mathbb{Z},\\; \\exists! (a,b) \\in A \\times B:\\; a + b = z$",
+    "significance": "key",
+    "relatedConcepts": [
+      "direct sum of sets",
+      "integer tilings",
+      "complementing pairs",
+      "Minkowski's theorem"
+    ],
+    "prerequisites": [
+      "set membership",
+      "existential quantification",
+      "uniqueness"
+    ]
+  },
+  {
+    "id": "erdos-477-nonempty",
+    "proofId": "erdos-477",
+    "type": "concept",
+    "range": {
+      "startLine": 39,
+      "endLine": 49
+    },
+    "title": "Non-emptiness of Complements",
+    "content": "Two short proofs that both $A$ and $B$ must be non-empty in any perfect complement pair. If either were empty, no integer $z$ could be represented as $a + b$. These are proved by extracting witnesses from the representation of $z = 0$.",
+    "mathContext": "$A \\oplus B = \\mathbb{Z} \\implies A \\neq \\emptyset \\wedge B \\neq \\emptyset$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "non-emptiness",
+      "witness extraction"
+    ],
+    "prerequisites": [
+      "obtain tactic",
+      "Nonempty"
+    ]
+  },
+  {
+    "id": "erdos-477-singleton",
+    "proofId": "erdos-477",
+    "type": "concept",
+    "range": {
+      "startLine": 51,
+      "endLine": 69
+    },
+    "title": "Singleton Complement Characterization",
+    "content": "If $A = \\{0\\}$, then $A \\oplus B = \\mathbb{Z}$ iff $B = \\mathbb{Z}$. This is the trivial case: shifting by 0 doesn't help. The proof uses extensionality in both directions.",
+    "mathContext": "$\\{0\\} \\oplus B = \\mathbb{Z} \\iff B = \\mathbb{Z}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "singleton sets",
+      "identity element",
+      "set extensionality"
+    ],
+    "prerequisites": [
+      "mem_singleton_iff",
+      "ext tactic"
+    ]
+  },
+  {
+    "id": "erdos-477-linear",
+    "proofId": "erdos-477",
+    "type": "insight",
+    "range": {
+      "startLine": 71,
+      "endLine": 77
+    },
+    "title": "Linear Case is Trivial",
+    "content": "For $f(x) = x$ (degree 1), $A = \\{0\\}$ is a perfect complement since $f(\\mathbb{Z}) = \\mathbb{Z}$. This demonstrates why Erdős requires degree $\\geq 2$: the problem is trivial for linear polynomials.",
+    "mathContext": "$\\{0\\} \\oplus \\text{id}(\\mathbb{Z}) = \\{0\\} \\oplus \\mathbb{Z} = \\mathbb{Z}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "trivial tiling",
+      "degree condition",
+      "identity function"
+    ],
+    "prerequisites": [
+      "singleton_zero_complement_iff",
+      "polyImage"
+    ]
+  },
+  {
+    "id": "erdos-477-covers-unique",
+    "proofId": "erdos-477",
+    "type": "concept",
+    "range": {
+      "startLine": 79,
+      "endLine": 94
+    },
+    "title": "Covering and Uniqueness Properties",
+    "content": "Two structural lemmas: (1) every $z$ is covered by some $a + b$, and (2) representations are unique. These factor the perfect complement definition into its two components and are used as building blocks throughout.",
+    "mathContext": "$A \\oplus B = \\mathbb{Z} \\implies (\\text{surjectivity}) \\wedge (\\text{unique representations})$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "surjection",
+      "injection",
+      "unique representation"
+    ],
+    "prerequisites": [
+      "obtain tactic",
+      "linarith"
+    ]
+  },
+  {
+    "id": "erdos-477-comm-shift",
+    "proofId": "erdos-477",
+    "type": "concept",
+    "range": {
+      "startLine": 96,
+      "endLine": 119
+    },
+    "title": "Commutativity and Shift Invariance",
+    "content": "Perfect complements are commutative ($A \\oplus B = \\mathbb{Z} \\implies B \\oplus A = \\mathbb{Z}$) and invariant under opposite shifts ($A + c$ and $B - c$ remain a perfect complement). These symmetries show the problem is about the 'shape' of the sets, not their position.",
+    "mathContext": "$A \\oplus B = \\mathbb{Z} \\iff B \\oplus A = \\mathbb{Z}$; also $(A + c) \\oplus (B - c) = \\mathbb{Z}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "commutativity of addition",
+      "translation invariance",
+      "tiling symmetries"
+    ],
+    "prerequisites": [
+      "ring_nf",
+      "mem_image_of_mem"
+    ]
+  },
+  {
+    "id": "erdos-477-polyimage-props",
+    "proofId": "erdos-477",
+    "type": "concept",
+    "range": {
+      "startLine": 121,
+      "endLine": 144
+    },
+    "title": "Properties of Polynomial Images",
+    "content": "Basic properties: $f(0) \\in f(\\mathbb{Z})$, injective polynomials have infinite images, the image of $x^2$ is non-negative, and negative integers are not squares. These establish the structural constraints on $B = f(\\mathbb{Z})$ that make complementation difficult.",
+    "mathContext": "$f(\\mathbb{Z}) \\ni f(0)$; $f$ injective $\\implies |f(\\mathbb{Z})| = \\infty$; $n^2 \\geq 0$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "range properties",
+      "injectivity",
+      "non-negative integers"
+    ],
+    "prerequisites": [
+      "sq_nonneg",
+      "infinite_range_of_injective"
+    ]
+  },
+  {
+    "id": "erdos-477-difference-set",
+    "proofId": "erdos-477",
+    "type": "insight",
+    "range": {
+      "startLine": 161,
+      "endLine": 172
+    },
+    "title": "Difference Set Constraint",
+    "content": "The key structural theorem: if $A \\oplus B = \\mathbb{Z}$, then $(A - A) \\cap (B - B) = \\{0\\}$. The only difference appearing in both $A$ and $B$ is zero. This follows because $a_1 - a_2 = b_2 - b_1$ implies $a_1 + b_1 = a_2 + b_2$, contradicting uniqueness unless $a_1 = a_2$. This constraint severely restricts which sets can tile.",
+    "mathContext": "$A \\oplus B = \\mathbb{Z} \\implies (A - A) \\cap (B - B) = \\{0\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "difference sets",
+      "B2 sets",
+      "Sidon sets",
+      "tiling constraints"
+    ],
+    "prerequisites": [
+      "complement_unique_repr",
+      "linarith"
+    ]
+  },
+  {
+    "id": "erdos-477-no-finite-B",
+    "proofId": "erdos-477",
+    "type": "insight",
+    "range": {
+      "startLine": 176,
+      "endLine": 198
+    },
+    "title": "No Complement with Finite B",
+    "content": "If $B$ is finite and non-empty, then $A$ must be infinite in any perfect complement pair. The proof: if both are finite, $A + B$ is finite, but $\\mathbb{Z}$ is infinite. This is why polynomial images (infinite but sparse) are the interesting case.",
+    "mathContext": "$B$ finite $\\wedge$ $A \\oplus B = \\mathbb{Z} \\implies A$ infinite",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "finiteness arguments",
+      "infinite sets",
+      "cardinality"
+    ],
+    "prerequisites": [
+      "Set.Finite.prod",
+      "Set.infinite_univ"
+    ]
+  },
+  {
+    "id": "erdos-477-sq-structure",
+    "proofId": "erdos-477",
+    "type": "concept",
+    "range": {
+      "startLine": 200,
+      "endLine": 240
+    },
+    "title": "Structural Analysis for Squares",
+    "content": "Several lemmas analyzing $f(x) = x^2$: the complement must contain elements representing all negative integers (since squares are non-negative), $0, 1, 4 \\in f(\\mathbb{Z})$ explicitly, and between consecutive squares $n^2$ and $(n+1)^2$ there are $2n+1$ gaps that $A$ must fill. This gap-filling becomes increasingly constrained.",
+    "mathContext": "$(n+1)^2 - n^2 = 2n+1$; all $z < 0$ need $a \\in A$ with $a + n^2 = z$",
+    "significance": "key",
+    "relatedConcepts": [
+      "perfect squares",
+      "gap analysis",
+      "Sekanina's argument"
+    ],
+    "prerequisites": [
+      "ring tactic",
+      "sq_nonneg"
+    ]
+  },
+  {
+    "id": "erdos-477-main-conjecture",
+    "proofId": "erdos-477",
+    "type": "concept",
+    "range": {
+      "startLine": 244,
+      "endLine": 261
+    },
+    "title": "Erdős Problem 477 (Open)",
+    "content": "The main conjecture in three forms: (1) no degree $\\geq 2$ polynomial has a perfect complement, (2) no monomial $x^k$ with $k \\geq 2$ has a perfect complement, and (3) the combined statement. The formalization also notes connections to the Coven-Meyerowitz conjecture on integer tilings.",
+    "mathContext": "$\\nexists f : \\mathbb{Z} \\to \\mathbb{Z},\\; \\deg f \\geq 2,\\; \\exists A \\subseteq \\mathbb{Z}:\\; A \\oplus f(\\mathbb{Z}) = \\mathbb{Z}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdos-Graham conjecture",
+      "integer tilings",
+      "Coven-Meyerowitz conjecture",
+      "polynomial image tiling"
+    ],
+    "prerequisites": [
+      "IsPerfectComplement",
+      "polyImage",
+      "polynomial degree"
+    ]
+  }
+]

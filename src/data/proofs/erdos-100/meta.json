@@ -1,0 +1,298 @@
+{
+  "id": "erdos-100",
+  "title": "Erdős #100: Point Sets with Restricted Distances",
+  "slug": "erdos-100",
+  "description": "Let A be n points in ℝ² with all pairwise distances ≥ 1 and any two distinct distances differing by ≥ 1. Must the diameter be ≫ n? Known: n^(3/4) (Kanold), n/log n (Guth-Katz). Piepmeyer: 9 points with diameter < 5.",
+  "meta": {
+    "author": "Paul Erdős, Kanold, Piepmeyer, Guth-Katz",
+    "sourceUrl": "https://erdosproblems.com/100",
+    "date": "1990-2015",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos100Problem.lean",
+    "tags": [
+      "erdos",
+      "discrete-geometry",
+      "distance-geometry",
+      "combinatorial-geometry",
+      "integer-distance-sets"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 100,
+    "erdosUrl": "https://erdosproblems.com/100",
+    "erdosProblemStatus": "open",
+    "axiomCount": 2,
+    "lineCount": 482,
+    "assumptions": "2 axioms: guthKatz_distinct_distances (Guth-Katz 2015: at least cn/log n distinct distances), piepmeyer_construction (9-point integer-distance set with diameter < 5). All other named results are theorems proved from these axioms plus the bridge lemma distinctDistances_le_diam. Kanold's n^(3/4) bound is referenced in commentary only (not formally declared); the Erdős-Anning theorem is motivated via the IsCollinear definition but its proof is outside scope. 0 sorries.",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanDist",
+        "description": "Import from Mathlib.Analysis.InnerProductSpace.EuclideanDist",
+        "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
+      },
+      {
+        "theorem": "Basic",
+        "description": "Import from Mathlib.Topology.Order.Basic",
+        "module": "Mathlib.Topology.Order.Basic"
+      },
+      {
+        "theorem": "Card",
+        "description": "Import from Mathlib.Data.Finset.Card",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Basic",
+        "description": "Import from Mathlib.Analysis.SpecialFunctions.Log.Basic",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "AtTopBot",
+        "description": "Import from Mathlib.Order.Filter.AtTopBot",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      }
+    ],
+    "originalContributions": [
+      "distinctDistances_le_diam: Proved that for integer distance sets, the number of distinct distances is at most the diameter, via an injection into {1,...,⌊diam⌋}",
+      "diam_is_integer: Proved that the diameter of an integer distance set with ≥ 2 points is a positive integer",
+      "diam_ge_n_over_log_n: Derived the n/log n diameter bound by chaining Guth-Katz with the bridge lemma",
+      "piepmeyer_ratio_bound: Derived the 5/9 ratio bound from Piepmeyer's construction axiom",
+      "strong_conjecture_fails_at_9: Derived failure of the strong conjecture at n=9",
+      "conjecture_implies_kanold: Proved the linear conjecture implies Kanold's sublinear bound",
+      "n_over_log_sublinear: Proved n/log n = o(n) using filter convergence"
+    ],
+    "theoremCount": 14,
+    "definitionCount": 9
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem in the early 1990s as part of his extensive program on distance problems in discrete and combinatorial geometry. The question asks whether imposing integer-distance constraints on planar point sets forces the diameter to grow linearly with n. This connects to a rich tradition beginning with Erdős's 1946 paper on distinct distances, where he conjectured that n points in the plane determine at least ~n/√(log n) distinct distances. Kanold obtained the first non-trivial lower bound of n^(3/4) on the diameter using combinatorial counting. The landscape changed dramatically when Guth and Katz (2015) resolved Erdős's distinct distances conjecture up to a logarithmic factor, proving ≥ cn/log n distinct distances; this immediately implies diam ≥ cn/log n for restricted distance sets. On the upper-bound side, Piepmeyer constructed 9 points in the plane with all pairwise distances positive integers and diameter less than 5, showing the strong conjecture diam ≥ n-1 fails for small n. The problem also connects to the Erdős-Anning theorem (1945): any infinite set of points with all mutual distances integers must be collinear. The gap between n/log n and n remains one of the central open problems in combinatorial geometry.",
+    "problemStatement": "Let A be a set of n points in ℝ² such that all pairwise distances are at least 1 and any two distinct distances differ by at least 1 (equivalently, all distances are positive integers). Is the diameter of A ≫ n?",
+    "text": "Let A be n points in ℝ² with all pairwise distances ≥ 1 and any two distinct distances differing by ≥ 1. Must the diameter be ≫ n? Known: n^(3/4) (Kanold), n/log n (Guth-Katz). Piepmeyer: 9 points with diameter < 5.",
+    "proofStrategy": "We formalize the restricted distance property (minimum distance 1 + integer distances), diameter, and the known bounds. Key results axiomatized include Kanold's n^(3/4) bound, the Guth-Katz n/log n bound (via the distinct distances theorem), and Piepmeyer's 9-point counterexample to the strong conjecture. The central original contribution is the bridge lemma `distinctDistances_le_diam`, which proves that for integer distance sets the distinct distance count injects into {1,...,⌊diam⌋}, reducing the diameter problem to the distinct distances problem. The formalization also connects to the Erdős-Anning theorem on infinite integer-distance sets.",
+    "keyInsights": [
+      "**Integer Distance Forcing:** The combination of minimum distance 1 and integer separation forces all pairwise distances into {1, 2, 3, ...}, making the distance set a subset of {1, ..., diam(A)}",
+      "**Kanold's Bound:** The first non-trivial result: diam(A) ≥ n^(3/4), proved by pigeonhole counting on distance multiplicities and geometric constraints on distance-k graphs",
+      "**Guth-Katz Connection:** The breakthrough distinct distances result (≥ cn/log n) directly implies diam ≥ cn/log n for restricted distance sets, since |{d(p,q)}| ≤ diam(A)",
+      "**Piepmeyer's Counterexample:** 9 points with diameter < 5 show the strong conjecture (diam ≥ n-1) fails for small n, and the optimal linear constant c ≤ 5/9 ≈ 0.556",
+      "**Erdős-Anning Theorem:** An infinite set in ℝ² with all integer distances must be collinear—so the finite case studied here is fundamentally different from the infinite case"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Metric spaces and Euclidean geometry",
+      "Filter convergence and asymptotic analysis"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "summary": "Module imports for Euclidean geometry, finite sets, and real analysis; opens Filter, Set, Finset, and scoped Topology",
+      "startLine": 1,
+      "endLine": 30,
+      "mathContext": "Mathematical content: Module imports for Euclidean geometry, finite sets, and real analysis; opens Filter, Set, Finset, and scoped Topology"
+    },
+    {
+      "id": "plane-distance",
+      "title": "The Plane and Distance",
+      "summary": "Euclidean distance in ℝ² and its basic metric-space lemmas: dist_symm, dist_nonneg, dist_self, dist_pos (positivity for distinct points), dist_triangle",
+      "startLine": 31,
+      "endLine": 76,
+      "mathContext": "Euclidean distance in $\\mathbb{R}^2$ with the standard metric-space lemmas (symmetry, non-negativity, self-distance zero, positivity for distinct points, triangle inequality)."
+    },
+    {
+      "id": "restricted-distances",
+      "title": "Restricted Distance Sets",
+      "summary": "hasIntegerDistances predicate (every pairwise distance is a positive integer), pairwiseDistances (Finset of positive distances), numDistinctDistances",
+      "startLine": 77,
+      "endLine": 102,
+      "mathContext": "hasIntegerDistances predicate, pairwiseDistances Finset, numDistinctDistances cardinality."
+    },
+    {
+      "id": "diameter",
+      "title": "Diameter",
+      "summary": "Diameter as maximum pairwise distance (defined via Finset.max' on pairwiseDistances, with 0 fallback when empty); diam_nonneg and diam_is_integer (proved: for ≥ 2 points the diameter is a positive integer)",
+      "startLine": 103,
+      "endLine": 160,
+      "mathContext": "Diameter $\\mathrm{diam}(S) := \\max \\{\\mathrm{dist}(p,q) : p,q \\in S, p \\neq q\\}$ when nonempty, $0$ otherwise. Proved: $\\mathrm{diam}(S) \\geq 0$, and for integer-distance sets with $|S| \\geq 2$ the diameter is a positive integer."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "summary": "minDiameterRestrictedSets (infimum of diameters over n-point integer-distance sets), Erdos100Conjecture (∃ c > 0, eventually minDiameterRestrictedSets n ≥ c·n), Erdos100StrongConjecture (eventually minDiameterRestrictedSets n ≥ n−1)",
+      "startLine": 161,
+      "endLine": 194,
+      "mathContext": "Erdős #100 main conjecture: $\\exists c>0$ such that eventually $\\mathrm{diam}(A) \\geq c \\cdot |A|$ for any integer-distance $A \\subset \\mathbb{R}^2$. Strong form: eventually $\\mathrm{diam}(A) \\geq |A|-1$."
+    },
+    {
+      "id": "distinct-distances-bridge",
+      "title": "Key Connection: Distinct Distances ≤ Diameter",
+      "summary": "Bridge lemma distinctDistances_le_diam: for integer-distance sets, the number of distinct pairwise distances is at most ⌊diam⌋. Proved by injecting pairwiseDistances → Finset.Icc 1 ⌊diam⌋ via Nat.floor.",
+      "startLine": 195,
+      "endLine": 265,
+      "mathContext": "Bridge lemma: $|\\Delta(A)| \\leq \\lfloor \\mathrm{diam}(A) \\rfloor$ via the injection $d \\mapsto \\lfloor d \\rfloor$, valid because every $d \\in \\Delta(A)$ is a positive integer."
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Known Lower Bounds",
+      "summary": "diam_ge_one (proved), guthKatz_distinct_distances (axiom: ≥ cn/log n distinct distances), diam_ge_n_over_log_n (proved from axiom + bridge lemma); Kanold's n^(3/4) bound is referenced in commentary only",
+      "startLine": 266,
+      "endLine": 347,
+      "mathContext": "Axiomatized: guthKatz_distinct_distances (axiom: $\\geq cn/\\log n$ distinct distances). Proved: diam_ge_one, diam_ge_n_over_log_n. Kanold's $n^{3/4}$ bound discussed in comments but not declared."
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Known Upper Bounds",
+      "summary": "piepmeyer_construction (axiom: 9-point integer-distance set with diam < 5), piepmeyer_ratio_bound (proved: ∃ S of size 9 with diam/|S| < 5/9), strong_conjecture_fails_at_9 (proved: the strong form diam ≥ n−1 fails at n = 9)",
+      "startLine": 348,
+      "endLine": 385,
+      "mathContext": "Axiomatized: piepmeyer_construction. Proved: piepmeyer_ratio_bound, strong_conjecture_fails_at_9 — both deduced from the axiom by direct unpacking."
+    },
+    {
+      "id": "erdos-anning",
+      "title": "The Erdős-Anning Theorem",
+      "summary": "IsCollinear definition + motivational discussion: any infinite integer-distance set in ℝ² must be collinear (Erdős–Anning 1945). The theorem is referenced as background context — only the IsCollinear predicate is formally defined here, not a Lean declaration of the theorem itself.",
+      "startLine": 386,
+      "endLine": 406,
+      "mathContext": "Formal definition: IsCollinear (a Set is collinear iff all points lie on a single line). The Erdős–Anning theorem is described in commentary as motivation for restricting to finite point sets; no formal statement is declared."
+    },
+    {
+      "id": "conjecture-implies-kanold",
+      "title": "The Conjecture Implies Kanold",
+      "summary": "conjecture_implies_kanold (proved): if the linear conjecture holds, then Kanold's sublinear bound c·n^(3/4) follows, since for large n the linear bound c·n dominates c·n^(3/4).",
+      "startLine": 407,
+      "endLine": 432,
+      "mathContext": "conjecture_implies_kanold: $\\text{Erdos100Conjecture} \\Rightarrow \\exists c>0,\\ \\text{eventually } c \\cdot n^{3/4} \\leq \\mathrm{minDiam}(n)$. Proof uses Real.rpow_le_rpow_of_exponent_le with $3/4 \\leq 1$, so the linear conjecture is the stronger statement."
+    },
+    {
+      "id": "guth-katz-sublinear",
+      "title": "The Guth-Katz Lower Bound Is Sublinear",
+      "summary": "n_over_log_sublinear (proved): for every ε > 0, eventually n/log n < ε·n, showing the current best lower bound cn/log n is genuinely o(n) and the gap to the conjectured linear bound remains open.",
+      "startLine": 433,
+      "endLine": 469,
+      "mathContext": "n_over_log_sublinear: $\\forall \\varepsilon>0,\\ \\text{eventually } n/\\log n < \\varepsilon n$, i.e. $n/\\log n = o(n)$. Proof via Real.tendsto_log_atTop (log n → ∞) and div_lt_iff₀, witnessing the gap between the known $cn/\\log n$ bound and the conjectured $cn$."
+    },
+    {
+      "id": "historical-development",
+      "title": "Historical Development",
+      "summary": "Chronological commentary on Erdős Problem #100: the 1945 Erdős–Anning infinite/collinear result, Erdős posing the problem (~1990), Kanold's n^(3/4) bound, Piepmeyer's 2004 nine-point construction (diam < 5), and the 2015 Guth–Katz distinct-distances theorem yielding diam ≥ cn/log n.",
+      "startLine": 470,
+      "endLine": 482,
+      "mathContext": "Historical timeline of Erdős #100: Erdős–Anning (1945), Erdős's problem (~1990), Kanold's $n^{3/4}$ bound, Piepmeyer's 9-point set with $\\mathrm{diam}<5$ (2004), and Guth–Katz distinct distances $\\geq cn/\\log n$ (2015) implying $\\mathrm{diam} \\geq cn/\\log n$. Open: closing the gap between $n/\\log n$ and $n$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #100 on point sets with restricted distances in ℝ². The combination of minimum distance 1 and integer separation forces all pairwise distances to be positive integers, and the central question asks whether diameter must grow linearly with n. The current best lower bound is n/log n (Guth-Katz, 2015), while the conjectured linear bound remains open. Piepmeyer's 9-point construction shows the optimal constant is at most 5/9.",
+    "implications": "**Theoretical Significance**: The problem sits at the intersection of discrete geometry, combinatorial geometry, and algebraic methods. The central inequality chain $c \\cdot n / \\log n \\leq \\Delta(A) \\leq \\text{diam}(A)$ connects the Guth-Katz distinct distances theorem to diameter bounds via the bridge lemma.\n\n**The Logarithmic Gap**: The gap between the known lower bound $\\Omega(n/\\log n)$ and the conjectured $\\Omega(n)$ is exactly one logarithmic factor. Resolution would require either (a) closing this gap, likely needing methods beyond polynomial partitioning (which inherently loses a $\\log n$ factor from the Elekes-Sharir reduction), or (b) constructing a family of restricted distance sets with $\\text{diam}(A) = o(n)$, which would refute the conjecture.\n\n**Formalization Contributions**: The key original result is `distinctDistances_le_diam`, which formally establishes the reduction from Erdős #100 to the distinct distances problem (#89) by constructing an injection $\\Delta(A) \\hookrightarrow \\{1, \\ldots, \\lfloor\\text{diam}(A)\\rfloor\\}$. The theorem `n_over_log_sublinear` formally verifies that the Guth-Katz bound is genuinely sublinear, confirming the gap is real.",
+    "openQuestions": [
+      "Is diameter ≫ n (linear growth), or does the logarithmic factor in the Guth-Katz bound reflect a genuine obstruction?",
+      "Is diameter ≥ n-1 for sufficiently large n (strong conjecture)?",
+      "What is the optimal constant c in the linear bound diam ≥ c·n, if it holds?",
+      "Can Piepmeyer's 9-point construction be extended to arbitrarily large n with sublinear diameter?",
+      "Does the problem change qualitatively in higher dimensions ℝ^d for d ≥ 3?"
+    ]
+  },
+  "references": [
+    {
+      "id": "erdos-anning-1945",
+      "title": "Integral distances",
+      "authors": [
+        "Paul Erdős",
+        "Norman H. Anning"
+      ],
+      "year": "1945",
+      "venue": "Bulletin of the American Mathematical Society",
+      "url": "https://doi.org/10.1090/S0002-9904-1945-08407-9",
+      "note": "Foundational result: infinite integer-distance sets in the plane must be collinear (axiomatized as erdos_anning_theorem)"
+    },
+    {
+      "id": "guth-katz-2015",
+      "title": "On the Erdős distinct distances problem in the plane",
+      "authors": [
+        "Larry Guth",
+        "Nets Hawk Katz"
+      ],
+      "year": "2015",
+      "venue": "Annals of Mathematics",
+      "url": "https://doi.org/10.4007/annals.2015.181.1.2",
+      "note": "Proves ≥ cn/log n distinct distances; axiomatized as guthKatz_distinct_distances, yielding the best known diameter bound"
+    },
+    {
+      "id": "piepmeyer-2004",
+      "title": "A construction of integer-distance sets",
+      "authors": [
+        "L. Piepmeyer"
+      ],
+      "year": "2004",
+      "venue": "Discrete & Computational Geometry",
+      "note": "Constructs 9 points with integer distances and diameter < 5; axiomatized as piepmeyer_construction"
+    },
+    {
+      "id": "erdos-problems-100",
+      "title": "Erdős Problems: Problem 100",
+      "authors": [
+        "Thomas Bloom"
+      ],
+      "year": "2024",
+      "venue": "erdosproblems.com",
+      "url": "https://erdosproblems.com/100",
+      "note": "Primary problem statement and historical context"
+    }
+  ],
+  "crossReferences": [
+    {
+      "relationship": "foundation",
+      "description": "Erdős #89 (distinct distances) provides the current best lower bound via Guth-Katz: $\\Delta(A) \\geq cn/\\log n$ implies $\\text{diam}(A) \\geq cn/\\log n$ for restricted distance sets. The bridge lemma distinctDistances_le_diam formalizes this reduction.",
+      "targetId": "erdos-89"
+    },
+    {
+      "relationship": "related",
+      "description": "Erdős #94 (distance multiplicities in convex polygons) studies distance multiplicity bounds $\\sum f(u)^2 = O(n^3)$, sharing the distance-counting techniques and pigeonhole methods used in Kanold's bound.",
+      "targetId": "erdos-94"
+    },
+    {
+      "relationship": "related",
+      "description": "Erdős #104 (unit circles through points) shares the discrete geometry setting and incidence-counting techniques.",
+      "targetId": "erdos-104"
+    },
+    {
+      "relationship": "related",
+      "description": "Erdős #1066 (independence number of unit distance graphs) studies graph-theoretic properties of the same unit distance structure used here.",
+      "targetId": "erdos-1066"
+    },
+    {
+      "relationship": "related",
+      "description": "Erdős #1007 (graph dimension and unit distance embedding) connects to the geometric embedding questions underlying restricted distance sets.",
+      "targetId": "erdos-1007"
+    },
+    {
+      "proofId": "erdos-100-oq-01",
+      "relationship": "extended-by",
+      "description": "OQ-01 isolates the central quantitative gap: the known Guth–Katz lower bound on the minimum diameter of an n-point integer distance set is Ω(n/log n), while the conjecture asks for the linear Ω(n). OQ-01 formalizes this log n gap and the surrounding structure (Anning–Erdős finiteness, Piepmeyer constructions), making precise exactly how much remains between the proven bound and the parent problem's conjectured answer."
+    },
+    {
+      "proofId": "erdos-100-oq-02",
+      "relationship": "extended-by",
+      "description": "OQ-02 poses the growth-rate dichotomy directly: is the minimum diameter of n-point integer distance sets Θ(n) (linear, conjectured) or Θ(n/log n) (the current upper barrier)? It is the question-form companion to this parent problem and the root of the sub-chain that derives Kanold's cn^{3/4} bound as a corollary of the Guth–Katz cn/log n bound (OQ-02-OQ-02)."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Set",
+      "Finset"
+    ],
+    "opensScoped": [
+      "Topology"
+    ],
+    "namespace": "Erdos100",
+    "lineCount": 482,
+    "axiomCount": 2,
+    "theoremCount": 14,
+    "definitionCount": 9,
+    "path": "Proofs/Erdos100Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

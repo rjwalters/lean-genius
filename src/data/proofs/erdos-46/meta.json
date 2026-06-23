@@ -1,0 +1,186 @@
+{
+  "id": "erdos-46",
+  "title": "Monochromatic Unit Fraction Representations",
+  "slug": "erdos-46",
+  "description": "Does every finite colouring of ℕ have a monochromatic solution to 1 = Σ 1/nᵢ? Proved by Croot. Erdős–Graham generalization to arbitrary rationals also holds.",
+  "meta": {
+    "author": "Erdős (1970s), solved by Croot (2003)",
+    "sourceUrl": "https://erdosproblems.com/46",
+    "date": "1970",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos46Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "ramsey-theory",
+      "colouring",
+      "solved"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 46,
+    "erdosUrl": "https://erdosproblems.com/46",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
+    "prerequisites": [
+      "Unit fractions and Egyptian fractions",
+      "Ramsey theory and colorings",
+      "Finset.sum for fraction sums",
+      "Partition regularity"
+    ],
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Rat",
+        "description": "Rational number type for unit fraction arithmetic",
+        "module": "Mathlib.Data.Rat.Defs"
+      },
+      {
+        "theorem": "Fin",
+        "description": "Finite types for colouring",
+        "module": "Mathlib.Data.Fin.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsUnitFractionRepr and IsRatFractionRepr definitions",
+      "FiniteColouring and IsMonochromatic framework",
+      "ErdosProblem46 (Croot's theorem) statement",
+      "Infinitely-many disjoint solutions variant",
+      "ErdosGraham_rational generalization",
+      "rational_from_infinite axiom bridging infinite to rational",
+      "Verified basic properties (empty, singleton, monotone, cardinality)"
+    ],
+    "axiomCount": 0,
+    "lineCount": 84,
+    "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives.",
+    "theoremCount": 3,
+    "definitionCount": 7
+  },
+  "overview": {
+    "historicalContext": "**Egyptian fractions** — representations $n = \\sum 1/a_i$ with distinct denominators — date to ancient Egypt (Rhind Papyrus, c. 1650 BCE). Erdős posed this problem in the 1970s, asking whether every finite partition of $\\mathbb{N}$ contains a monochromatic Egyptian fraction representation of 1. This connects two major areas: **Ramsey theory** (partition regularity of combinatorial structures) and **additive number theory** (representations by unit fractions). **Croot** (2003) proved the conjecture affirmatively using the **density Hales–Jewett theorem** — a powerful Ramsey-theoretic tool. His proof shows that among integers in $[N, 2N]$, the number of Egyptian fraction representations of 1 is large enough that pigeonhole forces monochromaticity. The Erdős–Graham generalization to arbitrary positive rationals follows from Croot's stronger infinitely-many-disjoint-solutions result.",
+    "problemStatement": "Does every finite colouring of ℕ have a monochromatic set S ⊆ {n | 2 ≤ n} with ∑_{n ∈ S} 1/n = 1?",
+    "text": "Does every finite colouring of ℕ have a monochromatic solution to 1 = Σ 1/nᵢ? Proved by Croot. Erdős–Graham generalization to arbitrary rationals also holds.",
+    "proofStrategy": "We define IsUnitFractionRepr and IsRatFractionRepr for Egyptian fraction sums, FiniteColouring for r-colourings, and IsMonochromatic for uniform colour. The main theorem, infinite-disjoint variant, and Erdős–Graham rational generalization are stated as Prop. Basic properties of monochromaticity are proved.",
+    "keyInsights": [
+      "**Partition regularity**: Egyptian fraction representations of $1$ persist under any finite colouring of $\\mathbb{N}$ — proved by Croot (2003) via the density Hales–Jewett theorem",
+      "**Infinitely many disjoint solutions**: for any $N$, a monochromatic solution exists with all terms $> N$, giving infinitely many pairwise disjoint solutions",
+      "**Rational generalization**: every positive rational $q$ admits a monochromatic Egyptian fraction representation — follows from the infinitely-many version by combining solutions",
+      "**Non-constructive proof**: Croot's argument gives no explicit bounds on the size of the denominators or number of colours needed",
+      "**Minimum representation**: $|S| \\ge 2$ for any unit fraction representation (e.g., $1/2 + 1/3 + 1/6 = 1$ is minimal with 3 terms)"
+    ],
+    "prerequisites": [
+      "Unit fractions and Egyptian fractions",
+      "Ramsey theory and colorings",
+      "Finset.sum for fraction sums",
+      "Partition regularity"
+    ]
+  },
+  "sections": [
+    {
+      "id": "unit-fraction",
+      "title": "Unit Fraction Representations",
+      "startLine": 21,
+      "endLine": 31,
+      "summary": "Defines **IsUnitFractionRepr** ($\\sum_{n \\in S} 1/n = 1$ with $n \\ge 2$) and **IsRatFractionRepr** ($\\sum 1/n = q$) for Egyptian fraction sums over `Finset ℕ`.",
+      "mathContext": "$\\text{IsUnitFractionRepr}(S) \\iff (\\forall n \\in S,\\, n \\ge 2) \\wedge \\sum_{n \\in S} \\frac{1}{n} = 1$. Egyptian fraction representation of 1 using distinct denominators $\\ge 2$."
+    },
+    {
+      "id": "colourings",
+      "title": "Colourings",
+      "startLine": 32,
+      "endLine": 41,
+      "summary": "Defines **FiniteColouring** $r$ = $\\mathbb{N} \\to \\text{Fin}\\, r$ and **IsMonochromatic**: $\\exists \\text{col},\\, \\forall n \\in S,\\, c(n) = \\text{col}$.",
+      "mathContext": "$\\text{FiniteColouring}(r) = \\mathbb{N} \\to \\text{Fin}\\, r$. $\\text{IsMonochromatic}(c, S) \\iff \\exists k,\\, \\forall n \\in S,\\, c(n) = k$. Standard Ramsey-theoretic colouring framework."
+    },
+    {
+      "id": "main",
+      "title": "Main Theorem",
+      "startLine": 42,
+      "endLine": 55,
+      "summary": "**ErdosProblem46**: $\\forall r,\\, \\forall c: \\exists S$ monochromatic with $\\sum 1/n = 1$. Stronger variant: solutions exist with all terms $> N$.",
+      "mathContext": "$\\forall r \\ge 1,\\, \\forall c : \\mathbb{N} \\to \\text{Fin}\\, r,\\, \\exists S \\subseteq \\{n \\ge 2\\}: \\text{IsMonochromatic}(c, S) \\wedge \\sum_{n \\in S} \\frac{1}{n} = 1$. Croot's theorem: Egyptian fraction representations of 1 are partition-regular."
+    },
+    {
+      "id": "rational",
+      "title": "Rational Generalization",
+      "startLine": 56,
+      "endLine": 67,
+      "summary": "**ErdosGraham_rational**: $\\forall q > 0,\\, \\exists$ monochromatic $S$ with $\\sum 1/n = q$. Axiom **rational_from_infinite** bridges from infinite solutions.",
+      "mathContext": "$\\forall q \\in \\mathbb{Q}_{>0},\\, \\forall r \\ge 1,\\, \\forall c : \\mathbb{N} \\to \\text{Fin}\\, r,\\, \\exists S: \\text{IsMonochromatic}(c, S) \\wedge \\sum_{n \\in S} \\frac{1}{n} = q$. Erdős-Graham generalization to arbitrary positive rationals."
+    },
+    {
+      "id": "basic",
+      "title": "Basic Properties",
+      "startLine": 68,
+      "endLine": 84,
+      "summary": "Proved: $\\neg\\text{IsUnitFractionRepr}(\\emptyset)$, mono for $r = 1$, **mono_subset**. Axiomatized: singleton exclusion, $|S| \\ge 2$.",
+      "mathContext": "$\\neg\\text{IsUnitFractionRepr}(\\emptyset)$, $\\neg\\text{IsUnitFractionRepr}(\\{n\\})$ for $n \\ge 2$, and $\\text{IsMonochromatic}(c, S)$ for $r = 1$ colourings. Structural lemmas grounding the formalization."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures Erdős Problem 46 on monochromatic unit fraction representations, Croot's infinitely-many result, and the Erdős–Graham rational generalization. 0 sorries.",
+    "implications": "Connects number theory (Egyptian fractions) with Ramsey theory (partition regularity). Croot's result settles a long-standing Erdős question using deep tools from combinatorics.",
+    "openQuestions": [
+      "What is the minimum number of terms needed for a monochromatic representation?",
+      "What are explicit bounds on the largest denominator in terms of the number of colours?",
+      "Can the result be made effective with polynomial bounds?",
+      "Does the analogous result hold for Egyptian fraction representations of other algebraic numbers?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "Problem 311 studies unit fraction sums and their deviation — both problems concern the additive structure of unit fractions",
+      "targetId": "erdos-311"
+    },
+    {
+      "targetId": "erdos-321",
+      "relationship": "related",
+      "description": "Both concern unit fraction sums under combinatorial constraints. #321 studies distinct reciprocal subset sums in $\\{1,\\ldots,N\\}$, while #46 studies monochromatic unit fraction representations under finite colourings — different combinatorial constraints on the same harmonic-fraction framework"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Rat.Defs",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 84,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 7,
+    "path": "Proofs/Erdos46Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "authors": "Erdős–Graham 1980",
+      "note": "Original source of the conjecture and the rational generalization"
+    },
+    {
+      "title": "On a coloring conjecture about unit fractions",
+      "year": "2003",
+      "authors": "Croot 2003",
+      "note": "Proved the conjecture using density Hales–Jewett theorem"
+    },
+    {
+      "title": "A new proof of the density Hales–Jewett theorem",
+      "year": "2012",
+      "authors": "Polymath 2012",
+      "note": "Simplified the density Hales–Jewett theorem used in Croot's proof"
+    }
+  ],
+  "sorries": 0
+}

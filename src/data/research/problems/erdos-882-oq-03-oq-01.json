@@ -1,0 +1,31 @@
+{
+  "id": "erdos-882-oq-03-oq-01",
+  "name": "A valid subset-sum set is an antichain, and no element divides its total",
+  "parentId": "erdos-882-oq-03",
+  "status": "completed",
+  "knowledge": {
+    "score": 9,
+    "insights": [
+      "Erdős #882: largest A ⊆ {1,…,n} whose non-empty subset sums are pairwise non-dividing (answer (1+o(1))log₂ n). The sibling oq-03 shows ValidSubset is downward closed (subset-lattice direction). This child works the orthogonal direction: it extracts structure of A itself from the constraint on its subset sums.",
+      "Pivot = the singleton embedding A ⊆ subsetSums A: every a ∈ A appears verbatim as the subset sum of {a} (self_mem_subsetSums). The hypothesis constrains only subset sums, yet via singletons it descends to A.",
+      "Headline validSubset_antichain: a valid set is ITSELF divisibility-free. The elements of an admissible (in particular extremal) set already form an antichain under divisibility — a 'free' necessary condition, immediate from DivisibilityFree(subsetSums A) restricted along A ⊆ subsetSums A.",
+      "Headline validSubset_elem_not_dvd_sum: when |A| ≥ 2, no element a ∈ A divides the grand total ∑A. Proof: a is a singleton subset sum, ∑A is the full subset sum, and a < ∑A strictly (the remaining ≥1 elements are positive, elem_lt_sum via Finset.add_sum_erase + single_le_sum), so the two are distinct subset sums and the divisibility-free condition forbids a ∣ ∑A.",
+      "Both results are genuine necessary conditions the optimization imposes on its feasible sets, complementing the downward-closure monotonicity (oq-03) used by the upper bound."
+    ],
+    "builtItems": [
+      "Erdos882ProblemOQ03OQ01.lean: 4 defs + 6 theorems, 0 axioms, 0 sorries, self-contained.",
+      "self_mem_subsetSums (a ∈ A ⟹ a ∈ subsetSums A via singleton), subset_subsetSums (A ⊆ subsetSums A), total_mem_subsetSums (∑A is a subset sum).",
+      "validSubset_antichain (ValidSubset n A ⟹ DivisibilityFree A), validSubset_not_dvd (distinct elements never divide), elem_lt_sum (a < ∑A for |A| ≥ 2), validSubset_elem_not_dvd_sum (no element divides the total)."
+    ],
+    "progressSummary": "COMPLETE. Child of erdos-882-oq-03 (structural theory). Where oq-03 proves the downward closure of ValidSubset, this entry extracts structure of A itself: via the singleton embedding A ⊆ subsetSums A, a valid set is forced to be an antichain under divisibility (validSubset_antichain), and — for |A| ≥ 2 — no element divides the grand total ∑A (validSubset_elem_not_dvd_sum). All 0-axiom verified (#print axioms = propext/Classical.choice/Quot.sound only), no native_decide. Self-contained re-declaration of the four predicates (parent Erdos882Problem.lean no longer builds on the current Mathlib).",
+    "nextSteps": [
+      "Generalize elem_not_dvd: for disjoint nonempty S,T ⊆ A with ∑S < ∑T, the divisibility-free condition forbids ∑S ∣ ∑T — the antichain/total results are the singleton/full special cases.",
+      "Combine with downward closure: a valid set is a divisibility-free antichain all of whose subset sums are pairwise non-dividing, a layered structural picture of the feasible region.",
+      "Quantify: bound how large an antichain in {1,…,n} can have the stronger subset-sum property, connecting back to the (1+o(1))log₂ n answer."
+    ]
+  },
+  "relatedProofs": [
+    "erdos-882",
+    "erdos-882-oq-03"
+  ]
+}

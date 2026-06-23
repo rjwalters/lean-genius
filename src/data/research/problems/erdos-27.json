@@ -1,0 +1,240 @@
+{
+  "slug": "erdos-27",
+  "title": "Erdős #27: Almost Covering Systems",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Does there exist C > 1 s.t. ∀ ε > 0, N ≥ 1, ∃ ε-almost covering system with all moduli in [N, CN]? Answer: NO (FFKPY). For C ≤ N^{α(N)}, α(N) = logloglog N / 4loglog N, uncovered density ≥ (1-o(1))·∏(1-1/nᵢ).",
+    "plain": "Can we cover almost all integers using congruences whose moduli are all close together (within factor C)? No: for any fixed C, the coverage cannot approach 100% when moduli are restricted to [N, CN].",
+    "whyMatters": [
+      "Covers the theory of dense covering systems and their limitations — disproved by FFKPY",
+      "Connects to sieve theory (Brun, Selberg) and natural density of arithmetic progressions",
+      "12 sorries in existing Lean file represent the FFKPY disproof, including 5 Aristotle-ready targets"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Erdos27Problem.lean: complete formalization with structural definitions and main theorems",
+      "naturalDensity_eq_inv: telescoping product (1-1/n) = 1/k",
+      "naturalDensity_vanishes: density tends to 0 as k grows",
+      "perfect_is_zero_almost: perfect covering implies 0-almost covering",
+      "conjecture_dichotomy: ErdosConjecture iff not ErdosConjectureNegation",
+      "erdos_27_disproved (via axiom erdos_27_ffkpy)",
+      "growing_C_works (via axiom growing_C_achieves)",
+      "bbmst_bound, perfect_covering_min_modulus (via axiom bbmst_2024)",
+      "erdos_27_conjecture_false: not ErdosConjecture (this session)",
+      "ffkpy_C_eq_2: concrete disproof instance for C=2 (this session)"
+    ],
+    "open": [
+      "The 4 axioms cite published proofs that are too long to formalize directly: FFKPY 2007 (~22 pages), BBMST 2024 minimum modulus bound. These are appropriate axioms."
+    ],
+    "goal": "File is complete (0 sorries). Status: axiomatized — appropriate given problem is solved by FFKPY 2007 ($100 prize claimed)."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-21T07:22:44-07:00",
+    "iteration": 2,
+    "focus": "File fully formalized: 0 sorries, 4 axioms (all citing published literature). No further sorry-elimination possible without proving FFKPY/BBMST main theorems.",
+    "blockers": [],
+    "nextAction": "Maintenance only. Future work could add concrete consequences of the axioms.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Synced stale candidate-pool metadata (was claiming 12 sorries, but file actually has 0). Added 2 derived corollaries: erdos_27_conjecture_false and ffkpy_C_eq_2.",
+    "builtItems": [
+      "erdos_27_conjecture_false: not ErdosConjecture from dichotomy + FFKPY axiom",
+      "ffkpy_C_eq_2: concrete disproof instance for C=2"
+    ],
+    "insights": [
+      "STALE METADATA FINDING: candidate-pool entry claimed 12 sorries but file actually has 0 sorries (work completed in earlier sessions, gallery meta.json reflects this correctly)",
+      "All 4 axioms are appropriately deep results: FFKPY 2007 main theorem (~22-page paper), FFKPY 2007 positive direction, averaging argument (probabilistic existence), BBMST 2024 minimum modulus bound",
+      "The averaging_bound_exists axiom could potentially be proved from a probabilistic/measure-theoretic argument in Mathlib, but would require building substantial infrastructure for random congruence systems",
+      "The conjecture_dichotomy theorem combined with erdos_27_ffkpy gives not ErdosConjecture as a clean corollary"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "File is at a natural stopping point — no further sorry-elimination possible without proving the literature axioms",
+      "Future work: concrete instances for specific small C values (e.g., C=3, C=10)",
+      "Future work: investigate whether averaging_bound_exists can be reduced to a Mathlib probabilistic argument"
+    ],
+    "markdown": "# Knowledge Base: erdos-27\n\nInsights accumulated during research on Erdős #27: Almost Covering Systems.\n\n---\n\n## Problem Understanding\n\nProblem SOLVED (NO) by FFKPY. Lean formalization has 12 sorries in Erdos27Problem.lean.\nAristo companion (Erdos27Aristotle.lean) has 5 routine targets.\n\n---\n\n## Insights\n\n[To be filled during OBSERVE/ORIENT phases]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "number-theory",
+    "covering-systems",
+    "density",
+    "erdos-problems",
+    "sorry-reduction"
+  ],
+  "relatedProofs": [
+    "bertrands-postulate",
+    "chebyshev-bounds",
+    "erdos-2",
+    "erdos-27",
+    "erdos-270",
+    "erdos-271",
+    "erdos-272",
+    "erdos-273",
+    "erdos-274",
+    "erdos-275",
+    "erdos-276",
+    "erdos-277",
+    "erdos-278",
+    "erdos-279"
+  ],
+  "references": {
+    "papers": [
+      "Filaseta-Ford-Konyagin-Pomerance-Yu (2007) — Sieving by large integers — core FFKPY result"
+    ],
+    "urls": [
+      "https://erdosproblems.com/27"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Int.ModEq — congruences",
+      "Mathlib.Analysis.Asymptotics.Asymptotics — asymptotic bounds",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic — logarithm estimates"
+    ]
+  },
+  "started": "2026-04-21T07:22:44-07:00",
+  "lastUpdate": "2026-04-21T07:22:44-07:00",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos270Problem.lean",
+      "filename": "Erdos270Problem.lean",
+      "lineCount": 255,
+      "theoremCount": 3,
+      "axiomCount": 2,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos270Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos271Problem.lean",
+      "filename": "Erdos271Problem.lean",
+      "lineCount": 337,
+      "theoremCount": 3,
+      "axiomCount": 3,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos271Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos272Problem.lean",
+      "filename": "Erdos272Problem.lean",
+      "lineCount": 136,
+      "theoremCount": 3,
+      "axiomCount": 3,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos272Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos273Problem.lean",
+      "filename": "Erdos273Problem.lean",
+      "lineCount": 304,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos273Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos274Problem.lean",
+      "filename": "Erdos274Problem.lean",
+      "lineCount": 128,
+      "theoremCount": 3,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos274Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos275Problem.lean",
+      "filename": "Erdos275Problem.lean",
+      "lineCount": 172,
+      "theoremCount": 1,
+      "axiomCount": 2,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos275Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos276Problem.lean",
+      "filename": "Erdos276Problem.lean",
+      "lineCount": 79,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos276Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos277Problem.lean",
+      "filename": "Erdos277Problem.lean",
+      "lineCount": 276,
+      "theoremCount": 12,
+      "axiomCount": 1,
+      "defCount": 17,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos277Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos278Problem.lean",
+      "filename": "Erdos278Problem.lean",
+      "lineCount": 645,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos278Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos279OQ04.lean",
+      "filename": "Erdos279OQ04.lean",
+      "lineCount": 141,
+      "theoremCount": 7,
+      "axiomCount": 2,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos279OQ04.lean"
+    },
+    {
+      "path": "Proofs/Erdos279Problem.lean",
+      "filename": "Erdos279Problem.lean",
+      "lineCount": 80,
+      "theoremCount": 1,
+      "axiomCount": 2,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos279Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos27Problem.lean",
+      "filename": "Erdos27Problem.lean",
+      "lineCount": 341,
+      "theoremCount": 10,
+      "axiomCount": 4,
+      "defCount": 16,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos27Problem.lean"
+    }
+  ]
+}

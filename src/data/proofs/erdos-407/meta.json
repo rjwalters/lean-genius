@@ -1,0 +1,165 @@
+{
+  "id": "erdos-407",
+  "title": "Erdős Problem #407: Newman's Conjecture on 2^a + 3^b + 2^c·3^d",
+  "slug": "erdos-407",
+  "description": "Is w(n) bounded, where w(n) counts representations n = 2^a + 3^b + 2^c·3^d? Solved: w(n) ≤ 9 always, w(n) ≤ 4 for large n (EGST 1988, Bajpai-Bennett 2024).",
+  "meta": {
+    "author": "Newman (conjecture), EGST 1988 (proof), Bajpai-Bennett 2024 (effective)",
+    "sourceUrl": "https://erdosproblems.com/407",
+    "date": "1988",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos407Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "s-unit-equations",
+      "exponential-diophantine",
+      "powers-of-primes",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 407,
+    "erdosUrl": "https://erdosproblems.com/407",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.one_le_pow",
+        "description": "Powers of positive integers are positive",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of sets",
+        "module": "Mathlib.Data.Set.Card"
+      }
+    ],
+    "originalContributions": [
+      "PowerOf2, PowerOf3 definitions: powers of single primes",
+      "Is23Smooth definition: {2,3}-smooth numbers",
+      "IsValidRep definition: n = 2^a + 3^b + 2^c·3^d",
+      "w definition: counting function for representations",
+      "DistinctReps definition: counting distinct term-sets",
+      "egst_1988 axiom: w(n) is bounded",
+      "tijdeman_wang_1988 axiom: w(n) ≤ 4 for large n",
+      "bajpai_bennett_2024_all axiom: w(n) ≤ 9 for all n. The ≤ 4 for n ≥ 131082 result and the maximum w(299) = 9 are documented in the axiom's docstring but not formalized as separate axioms.",
+      "FourRepFamily definition: candidate family for n with multiple representations (algebraic identities and infinitude documented in docstrings only — no theorem)."
+    ],
+    "axiomCount": 3,
+    "lineCount": 219,
+    "assumptions": "3 axioms: egst_1988, tijdeman_wang_1988, bajpai_bennett_2024_all. 0 sorries.",
+    "theoremCount": 7,
+    "definitionCount": 7
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #407** asks whether the function w(n), counting representations of n as 2^a + 3^b + 2^c·3^d, is uniformly bounded.\n\n**Historical Development:**\n- **Newman (original):** Conjectured w(n) is bounded.\n- **Evertse-Győry-Stewart-Tijdeman (1988):** Proved the conjecture using S-unit equation theory.\n- **Tijdeman-Wang (1988):** Showed w(n) ≤ 4 for sufficiently large n.\n- **Bajpai-Bennett (2024):** Made bounds fully effective: w(n) ≤ 4 for n ≥ 131082, and w(n) ≤ 9 for all n.\n\nThe maximum w(n) = 9 occurs at n = 299.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet $w(n)$ count solutions to $n = 2^a + 3^b + 2^c \\cdot 3^d$ with $a, b, c, d \\geq 0$.\n\n**Question:** Is $w(n)$ bounded by some absolute constant?\n\n**Answer:** YES.\n- $w(n) \\leq 9$ for all $n$\n- $w(n) \\leq 4$ for $n \\geq 131082$\n- $\\max_n w(n) = w(299) = 9$",
+    "text": "Is w(n) bounded, where w(n) counts representations n = 2^a + 3^b + 2^c·3^d? Solved: w(n) ≤ 9 always, w(n) ≤ 4 for large n (EGST 1988, Bajpai-Bennett 2024).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** Define powers of 2, powers of 3, {2,3}-smooth numbers, and valid representations.\n\n2. **Counting Function:** Define w(n) and the alternative counting by distinct term-sets.\n\n3. **Examples:** Prove specific representations exist (e.g., for n = 5).\n\n4. **Main Results:** Axiomatize EGST 1988, Tijdeman-Wang 1988, and Bajpai-Bennett 2024.\n\n5. **Infinite Family:** Define `FourRepFamily` as a candidate family. The claim that infinitely many n achieve w(n) = 4 via algebraic identities is documented in docstrings but not formalized.",
+    "keyInsights": [
+      "**S-Unit Equations:** The equation n = 2^a + 3^b + 2^c·3^d is a three-term S-unit equation for S = {2, 3}.",
+      "**Baker's Method:** The proof uses linear forms in logarithms to bound solutions.",
+      "**Threshold 131082:** Below this, w(n) can exceed 4; above it, w(n) ≤ 4.",
+      "**Maximum w(299) = 9:** The number 299 has the most representations.",
+      "**Infinite Family:** Algebraic identities produce infinitely many n with w(n) = 4.",
+      "**{2,3}-Smooth Numbers:** Products 2^c·3^d play a key role in the third term."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "s-units",
+      "title": "S-Units and Powers",
+      "summary": "Powers of 2, powers of 3, and {2,3}-smooth numbers",
+      "startLine": 39,
+      "endLine": 69
+    },
+    {
+      "id": "counting",
+      "title": "The Counting Function w(n)",
+      "summary": "Definition of w(n) and distinct representations",
+      "startLine": 70,
+      "endLine": 99
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "Specific values and representations",
+      "startLine": 100,
+      "endLine": 136
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "EGST 1988, Tijdeman-Wang 1988, Bajpai-Bennett 2024",
+      "startLine": 137,
+      "endLine": 165
+    },
+    {
+      "id": "infinite-family",
+      "title": "Infinitely Many with w(n) = 4",
+      "summary": "Definition of `FourRepFamily`; algebraic-identity claims and infinitude documented in docstrings but no Lean declarations follow them.",
+      "startLine": 166,
+      "endLine": 189
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_407_summary combining all main results",
+      "startLine": 190,
+      "endLine": 219
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #407, Newman's conjecture, asked whether representations n = 2^a + 3^b + 2^c·3^d are uniformly bounded. The answer is YES: w(n) ≤ 9 for all n, with equality at n = 299. For large n (≥ 131082), w(n) ≤ 4. This was proved using S-unit equation theory and made effective in 2024.",
+    "implications": "**Theoretical Significance**: **Implications for Number Theory**\n\n1. **S-Unit Theory:** Demonstrates power of Baker's method for exponential Diophantine equations.\n\n**2. Effectivity:** The 2024 bounds show computational approaches can make transcendence results effective.\n\n3. **Three-Term Equations:** Special case of broader theory for sums of S-units.\n\n4. **Arithmetic Structure:** Reveals structure of integers representable as sums of powers.",
+    "openQuestions": [
+      "What is w(n) for specific n near 299?",
+      "Are there other n with w(n) = 9?",
+      "What happens for other prime bases (e.g., 2^a + 5^b + 2^c·5^d)?",
+      "Can the threshold 131082 be lowered?",
+      "What is the density of n with w(n) = 4?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos407",
+    "lineCount": 219,
+    "axiomCount": 3,
+    "theoremCount": 7,
+    "definitionCount": 7,
+    "path": "Proofs/Erdos407Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1050",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, solved"
+    },
+    {
+      "targetId": "erdos-1099",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, solved"
+    },
+    {
+      "targetId": "erdos-1136",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, solved"
+    }
+  ],
+  "sorries": 0
+}

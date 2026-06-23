@@ -1,0 +1,107 @@
+{
+  "slug": "taylor-theorem-oq-03-oq-01",
+  "title": "Bridge taylorWithinEval to expPartialSum for Remainder Axiom Elimination",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{taylorWithinEval}(\\exp, n, [0,x], 0, x) = \\sum_{k=0}^{n} \\frac{x^k}{k!}",
+    "plain": "Bridge Mathlib's `taylorWithinEval` formulation of Taylor polynomials to the explicit exponential partial sums used in the remainder estimates.",
+    "whyMatters": [
+      "A clean bridge would remove an interface gap between Mathlib's general Taylor machinery and the concrete exponential-series proof.",
+      "The surrounding verified exponential estimates are useful regression tests for future axiom-elimination work."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`exp_series_summable`, `exp_tsum`, and `exp_hasSum` establish the exponential power-series facts.",
+      "`exp_partial_sum_tendsto` and `exp_remainder_tendsto_zero` prove convergence of partial sums and vanishing remainders.",
+      "`iteratedDeriv_exp` records the derivative identity needed by Taylor arguments.",
+      "`exp_lagrange_remainder` proves a Lagrange-remainder bound for positive inputs.",
+      "`euler_number_series`, `euler_tsum`, and `euler_partial_sum_tendsto` specialize the series to e.",
+      "`euler_approx_error`, `exp_infinite_radius`, `exp_one_gt_two`, and `exp_five_term` provide concrete estimates and corollaries."
+    ],
+    "open": [
+      "The direct equality between `taylorWithinEval` and the explicit exponential partial sum remains the named bridge target."
+    ],
+    "goal": "Close the Taylor API bridge so the exponential remainder proof can rely on Mathlib's Taylor polynomial interface without extra translation."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-05T04:46:25-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: taylor-theorem-oq-03-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "analysis",
+    "calculus",
+    "taylor-series",
+    "mathlib-api",
+    "axiom-elimination"
+  ],
+  "relatedProofs": [
+    "taylor-theorem",
+    "taylor-theorem-oq-02",
+    "taylor-theorem-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-05T12:05:44.541Z",
+  "lastUpdate": "2026-04-05T12:05:44.564Z",
+  "significance": 7,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/TaylorTheorem.lean",
+      "filename": "TaylorTheorem.lean",
+      "lineCount": 203,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TaylorTheorem.lean"
+    },
+    {
+      "path": "Proofs/TaylorTheoremOQ02.lean",
+      "filename": "TaylorTheoremOQ02.lean",
+      "lineCount": 219,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TaylorTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/TaylorTheoremOQ03.lean",
+      "filename": "TaylorTheoremOQ03.lean",
+      "lineCount": 269,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TaylorTheoremOQ03.lean"
+    }
+  ]
+}

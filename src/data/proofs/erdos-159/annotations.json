@@ -1,0 +1,143 @@
+[
+  {
+    "id": "ann-e159-overview",
+    "proofId": "erdos-159",
+    "range": {
+      "startLine": 1,
+      "endLine": 19
+    },
+    "type": "concept",
+    "title": "Problem Overview: Power Saving in R(C₄, Kₙ)",
+    "content": "Erdős Problem #159 asks whether the off-diagonal Ramsey number $R(C_4, K_n)$ admits a genuine **power saving** over the trivial $n^2$ bound: does there exist $c > 0$ such that $R(C_4, K_n) \\leq C \\cdot n^{2-c}$? The known bounds are $\\Omega(n^{3/2}/(\\log n)^{3/2})$ (Spencer, probabilistic) and $O(n^2/(\\log n)^2)$ (Szemerédi, regularity lemma). Both only achieve logarithmic improvements over the exponent, leaving the true polynomial exponent unknown. The formalization imports `SimpleGraph.Basic`, `Fin.Basic`, `Real.Basic`, and `Tactic`.",
+    "mathContext": "$R(C_4, K_n)$ = smallest $N$ such that every graph on $N$ vertices contains $C_4$ or has independence number $\\geq n$. Known: $c_1 \\cdot n^{3/2}/(\\log n)^{3/2} \\leq R(C_4, K_n) \\leq C_2 \\cdot n^2/(\\log n)^2$. Question: $\\exists c > 0$, $R(C_4, K_n) \\leq C \\cdot n^{2-c}$?",
+    "significance": "key",
+    "relatedConcepts": [
+      "off-diagonal Ramsey numbers",
+      "C₄-free graphs",
+      "independence number",
+      "Zarankiewicz problem"
+    ],
+    "prerequisites": [
+      "Ramsey theory basics",
+      "graph coloring",
+      "probabilistic method"
+    ]
+  },
+  {
+    "id": "ann-e159-graph-predicates",
+    "proofId": "erdos-159",
+    "range": {
+      "startLine": 21,
+      "endLine": 34
+    },
+    "type": "definition",
+    "title": "Graph Predicates: HasC4 and HasClique",
+    "content": "Two core predicates: (1) `HasC4 G` asserts the existence of four distinct vertices $a, b, c, d$ forming a 4-cycle $a \\sim b \\sim c \\sim d \\sim a$ with all six distinctness conditions and four adjacency conditions. The 4-cycle $C_4$ is the simplest even cycle and plays a central role in extremal graph theory (Zarankiewicz problem). (2) `HasClique G n` asserts the existence of a `Finset` $S$ with $|S| = n$ and pairwise adjacency. Note: the Ramsey condition uses `HasClique Gᶜ n`, where $G^c$ is the complement graph, so cliques in $G^c$ correspond to independent sets in $G$.",
+    "mathContext": "$\\text{HasC4}(G) \\iff \\exists a, b, c, d \\in V(G)$ distinct with $ab, bc, cd, da \\in E(G)$. $\\text{HasClique}(G, n) \\iff \\exists S \\subseteq V(G),\\, |S| = n,\\, S$ is a clique.",
+    "significance": "key",
+    "relatedConcepts": [
+      "4-cycle",
+      "complete subgraph",
+      "graph complement",
+      "independent set"
+    ],
+    "prerequisites": [
+      "SimpleGraph adjacency",
+      "Finset",
+      "distinctness conditions"
+    ]
+  },
+  {
+    "id": "ann-e159-ramsey",
+    "proofId": "erdos-159",
+    "range": {
+      "startLine": 36,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "Ramsey Number R(C₄, Kₙ) and Threshold Specification",
+    "content": "The Ramsey number `ramseyC4Kn : ℕ → ℕ` is axiomatized as a function. Its threshold specification `ramseyC4Kn_spec` asserts two conditions: (1) **Above threshold:** every graph on $R(C_4, K_n)$ vertices satisfies `HasC4 G ∨ HasClique Gᶜ n` — it either contains a 4-cycle or its complement contains $K_n$ (equivalently, $G$ has independence number $\\geq n$). (2) **Below threshold:** for any $N < R(C_4, K_n)$, there exists a graph on $N$ vertices that is both $C_4$-free and has no independent set of size $n$. This is the standard min-max characterization of Ramsey numbers.",
+    "mathContext": "$R(C_4, K_n) = \\min\\{N : \\forall G \\text{ on } N \\text{ vertices},\\, C_4 \\subseteq G \\text{ or } \\alpha(G) \\geq n\\}$. Equivalently, $R(C_4, K_n) - 1$ is the max vertices of a $C_4$-free graph with $\\alpha < n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey number",
+      "threshold property",
+      "graph complement",
+      "independence number"
+    ],
+    "prerequisites": [
+      "Ramsey theory",
+      "graph on Fin N",
+      "complement graph Gᶜ"
+    ]
+  },
+  {
+    "id": "ann-e159-bounds",
+    "proofId": "erdos-159",
+    "range": {
+      "startLine": 52,
+      "endLine": 66
+    },
+    "type": "concept",
+    "title": "Known Bounds: Szemerédi Upper and Spencer Lower",
+    "content": "Two foundational bounds are axiomatized: (1) **Szemerédi's upper bound:** $R(C_4, K_n) \\leq C \\cdot n^2/(\\log n)^2$ for a constant $C > 0$ and large $n$. This follows from the Szemerédi regularity lemma applied to $C_4$-free graphs: such graphs have low density in regular pairs, forcing large independent sets. The improvement over $n^2$ is only $(\\log n)^2$, not a power saving. (2) **Spencer's lower bound:** $R(C_4, K_n) \\geq c \\cdot n^{3/2}/(\\log n)^{3/2}$ for a constant $c > 0$ and large $n$. This uses the probabilistic method (random $C_4$-free graphs) combined with the Kővári-Sós-Turán theorem for bounding the independence number. The exponent gap between $3/2$ and $2$ (modulo logs) is the central mystery.",
+    "mathContext": "Upper: $R(C_4, K_n) \\leq C \\cdot n^2/(\\log n)^2$ (Szemerédi). Lower: $R(C_4, K_n) \\geq c \\cdot n^{3/2}/(\\log n)^{3/2}$ (Spencer). Gap: exponent between $3/2$ and $2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Szemerédi regularity lemma",
+      "probabilistic method",
+      "Kővári-Sós-Turán theorem",
+      "logarithmic factors"
+    ],
+    "prerequisites": [
+      "regularity lemma",
+      "random graph methods",
+      "asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-e159-conjecture",
+    "proofId": "erdos-159",
+    "range": {
+      "startLine": 68,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "Main Conjecture: Power Saving in the Exponent",
+    "content": "The formal statement `ErdosProblem159` asks: $\\exists c > 0,\\, \\exists C > 0,\\, \\exists n_0,\\, \\forall n \\geq n_0$: $R(C_4, K_n) \\leq C \\cdot n^{2-c}$. This is a **power saving** over $n^2$, strictly stronger than the known $(\\log n)^2$ improvement. The nested existential quantifiers $c, C, n_0$ follow the standard format for asymptotic bounds in combinatorics. Note that Spencer's lower bound $n^{3/2-o(1)}$ implies any $c > 0$ must satisfy $c \\leq 1/2$ (since the exponent cannot go below $3/2$).",
+    "mathContext": "$\\text{ErdosProblem159}: \\exists c > 0,\\, \\exists C > 0,\\, \\exists n_0,\\, \\forall n \\geq n_0: R(C_4, K_n) \\leq C \\cdot n^{2-c}$. If true, $c \\leq 1/2$ by Spencer's lower bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "power saving",
+      "polynomial improvement",
+      "asymptotic bounds",
+      "open problem"
+    ],
+    "prerequisites": [
+      "real exponentiation",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-e159-properties",
+    "proofId": "erdos-159",
+    "range": {
+      "startLine": 81,
+      "endLine": 91
+    },
+    "type": "concept",
+    "title": "Basic Properties: Monotonicity and Trivial Lower Bound",
+    "content": "Two elementary properties: (1) `ramseyC4Kn_mono` — $R(C_4, K_m) \\leq R(C_4, K_n)$ when $m \\leq n$, since requiring a larger independent set can only increase the threshold. (2) `ramseyC4Kn_ge` — $R(C_4, K_n) \\geq n$ for $n \\geq 1$, a trivial lower bound since $K_{n-1}$ (the complete graph on $n-1$ vertices) is $C_4$-free for $n \\leq 4$ and has no independent set of size $n$. These are axiomatized for simplicity though both are provable from the specification.",
+    "mathContext": "Monotonicity: $m \\leq n \\implies R(C_4, K_m) \\leq R(C_4, K_n)$. Trivial bound: $R(C_4, K_n) \\geq n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotonicity of Ramsey numbers",
+      "trivial bounds",
+      "complete graphs"
+    ],
+    "prerequisites": [
+      "Ramsey number definition",
+      "basic inequalities"
+    ]
+  }
+]

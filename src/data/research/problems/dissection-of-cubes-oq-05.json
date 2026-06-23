@@ -1,0 +1,199 @@
+{
+  "slug": "dissection-of-cubes-oq-05",
+  "title": "Electrical network method for higher-dim dissections",
+  "phase": "ORIENT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Electrical network method for higher-dim dissections.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-03-30T16:34:54.971Z",
+    "iteration": 4,
+    "focus": "S4: ERRATUM-APPLY — global_min_not_reaching_top FALSE-AS-STATED, propagated audit-trail to OQ03 docstrings",
+    "blockers": [],
+    "nextAction": "Rewrite descent_chains_from_coverage + dissection_of_cubes_from_coverage to use bottom-floor descent (OQ03OQ02 lemmas)",
+    "attemptCounts": {
+      "total": 4,
+      "currentApproach": 1,
+      "approachesTried": 2
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS (S4 2026-05-13): identified `global_min_not_reaching_top` as structurally FALSE-AS-STATED in two regimes (not just the 1-cube edge case). Propagated the audit-trail into OQ03s docstring + sorry-classification table (doc-only). The corrected formulation (`bottom_floor_min_not_reaching_top`) is already proved sorry-free in OQ03OQ02. Net sorry count unchanged (still 2: `smallest_above_is_smaller` HARD + `global_min_not_reaching_top` SUPERSEDED-but-retained-for-interface-stability). Next session: rewrite the two downstream consumers to descend from the bottom floor.",
+    "builtItems": [
+      "Assessment: 2 actual sorries at lines 390, 422 of DissectionOfCubesOQ03.lean",
+      "Architecture: proves all_different_implies_long_chains from coverage (replacing parent axiom)",
+      "Proved exists_smaller_cube lemma (~line 398)",
+      "Proved descent_chains_from_coverage from exfalso + global_min contradiction (~line 478)",
+      "Proved dissection_of_cubes_from_coverage via direct proof (~line 525)",
+      "Added global_min_not_reaching_top sorry (~line 464)"
+    ],
+    "insights": [
+      "Only 2 actual sorries (metadata claimed 8 — 6 are in comments)",
+      "smallest_above_is_smaller: if c is smallest on floor, cube above interior of top face is smaller",
+      "Key geometric argument: taller neighbors confine what can sit above the smallest cube",
+      "descent_chains_from_coverage follows by induction once smallest_above_is_smaller is proved",
+      "This eliminates the all_different_implies_long_chains_axiom from the parent file",
+      "The problem title (electrical network method) refers to OQ05 but sorries are in OQ03",
+      "exists_smaller_cube derives base axiom from smallest_above_is_smaller via floor minimum + midpoint witness",
+      "descent_chains_from_coverage proved by deriving contradiction from global min + exists_smaller_cube (exfalso)",
+      "dissection_of_cubes_from_coverage now has direct proof: global min + exists_smaller_cube, no chains needed",
+      "global_min_not_reaching_top is the new well-scoped sorry: global minimum cube has z + side < 1",
+      "1-cube dissection edge case: allDifferentSizes is vacuously true, theorem statement is technically false for card=1",
+      "S4 (2026-05-13): structural-error finding — `global_min_not_reaching_top` is FALSE-AS-STATED in two regimes (1-cube dissection AND multi-cube with global min at the top with z>0). Confirmed by reading OQ03OQ02 sibling file, which proves a formal counterexample (`global_min_false_for_unit_cube`) and a corrected `bottom_floor_min_not_reaching_top`. The prior nextSteps proposing a card-guard FIX address only the 1-cube counterexample, not the multi-cube regime — they were necessary but not sufficient.",
+      "S5 (2026-05-17): doc-only STATE-SYNC closes 4 JSON top-level drifts since S4 (T-3d68h ago). Cross-slug leanFiles drift (10 shared files, incl. OQ03 lineCount 600→623 and sorryCount 6→9 raw-regex) deferred to mechanic batch — slug-local fix would diverge from sibling JSONs. Registry.json graduated/COMPLETED-since-2026-04-03 left untouched per S4 precedent (same pattern in 11/13 dissection-of-cubes-* siblings). INFRA: G7 disk 4.6 GiB RED (below 5 GiB soft-floor), G9 .lake self-loop RED forecloses Docker — Lean ACT (bottom-floor rewrite per S4 nextSteps) blocked until host recovers."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Rewrite `descent_chains_from_coverage` and `dissection_of_cubes_from_coverage` in OQ03 to descend from the bottom-floor minimum (via OQ03OQ02s `bottom_floor_min_is_descent_ready`) instead of the global minimum. This eliminates the `global_min_not_reaching_top` sorry entirely. Build risk: low — bottom-floor lemmas are already proved sorry-free in OQ03OQ02. Architecture risk: medium — OQ03OQ02 imports OQ03, so the bottom-floor lemmas may need to be moved into OQ03 (or into the base file) to avoid a circular import.",
+      "Prove `smallest_above_is_smaller` (line 390) — this is the remaining genuinely HARD sorry. Needs a 2D tiling argument on the top face of c: all floor neighbors of c are taller, so coverage forces a cube above c whose footprint fits inside cs footprint, hence smaller side by `allDifferentSizes`.",
+      "Consider extracting OQ03OQ02s bottom-floor lemmas (`no_unit_cube_in_multi_dissection`, `all_cubes_side_lt_one`, `bottom_floor_min_side_lt_one`, `bottom_floor_min_not_reaching_top`, `bottom_floor_min_is_descent_ready`) into either OQ03 itself or a new OQ03-base helper file, so OQ03 can use them without the import cycle."
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "generalization"
+  ],
+  "relatedProofs": [
+    "dissection-of-cubes",
+    "dissection-of-cubes-oq-01",
+    "dissection-of-cubes-oq-01-oq-01",
+    "dissection-of-cubes-oq-01-oq-03",
+    "dissection-of-cubes-oq-02",
+    "dissection-of-cubes-oq-02-oq-02",
+    "dissection-of-cubes-oq-02-wip-01",
+    "dissection-of-cubes-oq-03",
+    "dissection-of-cubes-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T16:34:54.971Z",
+  "lastUpdate": "2026-05-17T03:55:00Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/DissectionOfCubes.lean",
+      "filename": "DissectionOfCubes.lean",
+      "lineCount": 367,
+      "theoremCount": 7,
+      "axiomCount": 2,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubes.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ01.lean",
+      "filename": "DissectionOfCubesOQ01.lean",
+      "lineCount": 275,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ01.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ01OQ01.lean",
+      "filename": "DissectionOfCubesOQ01OQ01.lean",
+      "lineCount": 329,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ01OQ03.lean",
+      "filename": "DissectionOfCubesOQ01OQ03.lean",
+      "lineCount": 257,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ02.lean",
+      "filename": "DissectionOfCubesOQ02.lean",
+      "lineCount": 380,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ02.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ02OQ02.lean",
+      "filename": "DissectionOfCubesOQ02OQ02.lean",
+      "lineCount": 455,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ02WIP01.lean",
+      "filename": "DissectionOfCubesOQ02WIP01.lean",
+      "lineCount": 104,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ02WIP01.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ03.lean",
+      "filename": "DissectionOfCubesOQ03.lean",
+      "lineCount": 600,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 11,
+      "sorryCount": 6,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ03.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ04.lean",
+      "filename": "DissectionOfCubesOQ04.lean",
+      "lineCount": 562,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ04.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ04Aristotle.lean",
+      "filename": "DissectionOfCubesOQ04Aristotle.lean",
+      "lineCount": 90,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ04Aristotle.lean"
+    }
+  ]
+}

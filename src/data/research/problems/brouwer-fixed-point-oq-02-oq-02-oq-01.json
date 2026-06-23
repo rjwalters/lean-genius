@@ -1,0 +1,63 @@
+{
+  "slug": "brouwer-fixed-point-oq-02-oq-02-oq-01",
+  "title": "A priori and a posteriori error estimates for contraction iteration",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For an L-contraction f on ℝ (0 ≤ L < 1) with fixed point x* and iteration xₙ₊₁ = f xₙ: |xₙ − x*| ≤ Lⁿ/(1−L)·|x₁ − x₀| (a priori) and |xₙ₊₁ − x*| ≤ L/(1−L)·|xₙ₊₁ − xₙ| (a posteriori).",
+    "plain": "The two classical Banach error estimates that make contraction iteration practically computable: bound the distance to the fixed point using either the first step (a priori) or the latest step (a posteriori).",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-22T00:00:00-07:00",
+    "iteration": 1,
+    "focus": "Formalized the a priori / a posteriori Banach error estimates for contraction iteration, plus Lipschitz composition.",
+    "blockers": [],
+    "nextAction": "None — complete.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE. Child of brouwer-fixed-point-oq-02-oq-02 (query complexity for function classes). The parent proves |xₙ − x*| ≤ Lⁿ·|x₀ − x*|, which presupposes the unknown distance |x₀ − x*|. This entry supplies the two computable Banach estimates: apriori_estimate |xₙ − x*| ≤ Lⁿ/(1−L)·|x₁ − x₀| (uses only the first increment) and aposteriori_estimate |xₙ₊₁ − x*| ≤ L/(1−L)·|xₙ₊₁ − xₙ| (uses only the latest increment, a stopping criterion). Plus the Lipschitz composition law and the contraction-composition corollary. BrouwerFixedPointOQ02OQ02OQ01.lean, 6 theorems, 0 axioms, 0 sorries, self-contained, no native_decide.",
+    "builtItems": [
+      "BrouwerFixedPointOQ02OQ02OQ01.lean: 6 theorems, 0 axioms (propext/Classical.choice/Quot.sound only), 0 sorries. Self-contained: contraction given as ∀ x y, |f x − f y| ≤ L·|x − y| with f x* = x* and xₙ₊₁ = f xₙ.",
+      "iterate_dist: |xₙ − x*| ≤ Lⁿ·|x₀ − x*| (geometric decay, induction; reproves parent's bound self-containedly).",
+      "initial_dist: (1−L)·|x₀ − x*| ≤ |x₁ − x₀| — one-step distance estimate via triangle inequality + contraction on the first step.",
+      "apriori_estimate: |xₙ − x*| ≤ Lⁿ/(1−L)·|x₁ − x₀| (combine iterate_dist + initial_dist).",
+      "aposteriori_estimate: |xₙ₊₁ − x*| ≤ L/(1−L)·|xₙ₊₁ − xₙ| (triangle + contraction, clear denominator via le_div_iff₀ + nlinarith).",
+      "lipschitz_comp: |g(f x) − g(f y)| ≤ L₂L₁·|x − y|; contraction_comp: L₂L₁ < 1 ∧ composite is a contraction."
+    ],
+    "insights": [
+      "Parent oq-02-oq-02 proves the bound |xₙ − x*| ≤ Lⁿ·|x₀ − x*| which is not directly usable (|x₀ − x*| unknown). The classical fix is the a priori estimate, expressing the bound via the computable first increment |x₁ − x₀|.",
+      "Key lemma initial_dist: |x₀ − x*| ≤ |x₀ − x₁| + |x₁ − x*| (triangle) and |x₁ − x*| = |f x₀ − f x*| ≤ L|x₀ − x*| give (1−L)|x₀ − x*| ≤ |x₁ − x₀|.",
+      "A posteriori uses the same idea one step later: |xₙ₊₁ − x*| ≤ L|xₙ − x*| ≤ L(|xₙ − xₙ₊₁| + |xₙ₊₁ − x*|), so (1−L)|xₙ₊₁ − x*| ≤ L|xₙ₊₁ − xₙ|.",
+      "Lean: rw [hfp, ← hx n] at h turns |f xₙ − f x*| ≤ L|xₙ − x*| into |xₙ₊₁ − x*| ≤ L|xₙ − x*| (hfp : f x* = x*; ← hx n : f xₙ → xₙ₊₁). Clear divisions with le_div_iff₀ + div_mul_eq_mul_div then nlinarith. Multiply a hypothesis by L≥0 via mul_le_mul_of_nonneg_left before nlinarith so it sees the product.",
+      "Composition: |g(f x) − g(f y)| ≤ L₂|f x − f y| ≤ L₂L₁|x − y|; L₂L₁ < 1 from 0 ≤ Lᵢ < 1 by nlinarith. Self-contained, no domain restriction needed (contraction stated on all of ℝ)."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Convergence/existence: the iterates are Cauchy (|xₘ − xₙ| ≤ Lⁿ/(1−L)|x₁ − x₀|) so converge in ℝ to a fixed point — formalize existence from the a priori bound (currently x* is a hypothesis).",
+      "Turn the a priori estimate into an explicit query count: solve Lⁿ/(1−L)|x₁ − x₀| ≤ ε for n to recover the parent's O(log 1/ε) iteration bound with explicit constants.",
+      "Iterating m maps: chain contraction_comp to bound a composite of m contractions by the product of their constants."
+    ]
+  },
+  "tags": [
+    "extension"
+  ],
+  "relatedProofs": [
+    "brouwer-fixed-point",
+    "brouwer-fixed-point-oq-02",
+    "brouwer-fixed-point-oq-02-oq-02"
+  ]
+}

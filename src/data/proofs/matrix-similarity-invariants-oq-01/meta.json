@@ -1,0 +1,141 @@
+{
+  "id": "matrix-similarity-invariants-oq-01",
+  "title": "Similarity Invariants of Square Matrices: Determinant, Trace, Characteristic Polynomial",
+  "slug": "matrix-similarity-invariants-oq-01",
+  "description": "Two square matrices A, B over a commutative ring are similar if B = P·A·P⁻¹ for some invertible P. This entry packages similarity as a named relation, proves it is an equivalence relation, and collects the three classical similarity invariants — determinant, trace, and characteristic polynomial — into one statement, with the corollary that similar matrices share their eigenvalues (the multiset of characteristic-polynomial roots, over an integral domain). Mathlib proves each invariance separately (det_units_conj, trace_units_conj, charpoly_units_conj) but states neither the similarity relation nor a unified invariants theorem.",
+  "meta": {
+    "author": "classical linear algebra; formalized for lean-genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/MatrixSimilarityInvariantsOQ01.lean",
+    "tags": [
+      "linear-algebra",
+      "matrices",
+      "similarity",
+      "determinant",
+      "trace",
+      "characteristic-polynomial",
+      "equivalence-relation",
+      "classic"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-20",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.det_units_conj",
+        "description": "det (P·N·P⁻¹) = det N for a unit P — the determinant invariance under conjugation",
+        "module": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic"
+      },
+      {
+        "theorem": "Matrix.trace_units_conj",
+        "description": "trace (P·N·P⁻¹) = trace N for a unit P — the trace invariance under conjugation",
+        "module": "Mathlib.LinearAlgebra.Matrix.Trace"
+      },
+      {
+        "theorem": "Matrix.charpoly_units_conj",
+        "description": "(P·N·P⁻¹).charpoly = N.charpoly for a unit P — characteristic-polynomial invariance under conjugation",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
+      },
+      {
+        "theorem": "Polynomial.roots",
+        "description": "The multiset of roots of a polynomial over an integral domain — used for the eigenvalue corollary",
+        "module": "Mathlib.Algebra.Polynomial.Roots"
+      }
+    ],
+    "originalContributions": [
+      "Similar: the named similarity relation B = P·A·P⁻¹ for an invertible P : (Matrix n n R)ˣ",
+      "Similar.refl / Similar.symm / Similar.trans / similar_equivalence / similarSetoid: similarity is an equivalence relation, packaged as a Setoid on square matrices",
+      "Similar.det_eq, Similar.trace_eq, Similar.charpoly_eq: determinant, trace, and characteristic polynomial are similarity invariants",
+      "Similar.charpoly_roots_eq: similar matrices have the same eigenvalues (equal multisets of characteristic-polynomial roots over an integral domain)",
+      "Similar.invariants: the three invariants collected into a single statement"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. Depends only on the standard foundational axioms propext, Classical.choice, Quot.sound.",
+    "lineCount": 84,
+    "theoremCount": 9,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "Similarity of matrices, B = P⁻¹AP, is the matrix-level expression of two matrices representing the same linear operator in different bases. The invariants of similarity — quantities that depend only on the underlying operator and not on the chosen basis — are foundational to linear algebra: the determinant, the trace, and most completely the characteristic polynomial, whose coefficients package all of the elementary symmetric functions of the eigenvalues. The classification of matrices up to similarity (rational and Jordan canonical forms) is built on exactly these invariants.",
+    "problemStatement": "Which scalar quantities of a square matrix are preserved under a change of basis B = P·A·P⁻¹?\n\n**Answer:** the determinant, the trace, and the characteristic polynomial are all similarity invariants, and (over an integral domain) so are the eigenvalues. Similarity is moreover an equivalence relation, so these invariants are well-defined on the resulting equivalence classes.",
+    "text": "Similar matrices share their determinant, trace, characteristic polynomial, and eigenvalues; similarity is an equivalence relation.",
+    "proofStrategy": "Define Similar A B := ∃ P : (Matrix n n R)ˣ, B = P·A·P⁻¹. Reflexivity uses P = 1; symmetry uses P⁻¹ and cancellation of P⁻¹·P; transitivity composes the conjugators as Q·P, with (Q·P)⁻¹ = P⁻¹·Q⁻¹. The three invariance statements destructure the witness P and apply Mathlib's per-invariant conjugation lemmas (det_units_conj, trace_units_conj, charpoly_units_conj). The eigenvalue corollary is congrArg Polynomial.roots applied to the characteristic-polynomial equality.",
+    "keyInsights": [
+      "Phrasing similarity through the units group (Matrix n n R)ˣ makes the invariance proofs immediate applications of Mathlib's conjugation lemmas, with no manual inverse bookkeeping",
+      "The same units structure makes the equivalence-relation proof a short calculation: composition of conjugators and the unit inverse laws",
+      "The characteristic polynomial subsumes determinant and trace (they are, up to sign, its extreme coefficients), and over a domain its roots are the eigenvalues — so charpoly invariance is the master invariant",
+      "Packaging the relation as a Setoid makes 'invariant of similarity' a precise, reusable notion for downstream canonical-form developments"
+    ],
+    "prerequisites": [
+      "Matrices over a commutative ring; the unit (invertible-matrix) group",
+      "Determinant, trace, and characteristic polynomial of a matrix",
+      "Equivalence relations and Setoids"
+    ]
+  },
+  "sections": [
+    {
+      "id": "relation",
+      "title": "The Similarity Relation",
+      "startLine": 28,
+      "endLine": 55,
+      "summary": "Similar A B := ∃ P : (Matrix n n R)ˣ, B = P·A·P⁻¹, shown reflexive, symmetric, and transitive (an equivalence relation / Setoid).",
+      "mathContext": "$A \\sim B \\iff \\exists P,\\ B = P A P^{-1}$, an equivalence relation."
+    },
+    {
+      "id": "invariants",
+      "title": "Determinant, Trace, Characteristic Polynomial",
+      "startLine": 57,
+      "endLine": 78,
+      "summary": "Destructuring the conjugator and applying det_units_conj / trace_units_conj / charpoly_units_conj shows each is a similarity invariant.",
+      "mathContext": "$A \\sim B \\Rightarrow \\det B = \\det A,\\ \\operatorname{tr}B = \\operatorname{tr}A,\\ \\chi_B = \\chi_A$."
+    },
+    {
+      "id": "eigenvalues",
+      "title": "Eigenvalues and the Packaged Statement",
+      "startLine": 79,
+      "endLine": 84,
+      "summary": "Equal characteristic polynomials give equal root multisets (eigenvalues over a domain); the three invariants are collected into one theorem.",
+      "mathContext": "$A \\sim B \\Rightarrow \\operatorname{roots}\\chi_B = \\operatorname{roots}\\chi_A$."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Hoffman, K.; Kunze, R.",
+      "title": "Linear Algebra",
+      "year": "1971",
+      "note": "Similarity, invariant factors, and canonical forms"
+    },
+    {
+      "authors": "Horn, R. A.; Johnson, C. R.",
+      "title": "Matrix Analysis",
+      "year": "1985",
+      "note": "Similarity invariants: determinant, trace, characteristic polynomial, eigenvalues"
+    }
+  ],
+  "crossReferences": [],
+  "conclusion": {
+    "summary": "Matrix similarity B = P·A·P⁻¹ is packaged as a named equivalence relation, and its determinant, trace, and characteristic-polynomial invariance — together with eigenvalue invariance over a domain — are collected into a single verified statement (0 axioms), using Mathlib's per-invariant conjugation lemmas.",
+    "implications": "Provides the unified 'similarity invariants' interface Mathlib leaves implicit, as a Setoid with proven invariants, a natural foundation for formalizing rational/Jordan canonical forms and invariant-factor theory.",
+    "openQuestions": [
+      "Can the converse be formalized for fields — that equal invariant factors (not merely equal characteristic polynomial) characterise similarity?",
+      "Does packaging similarity as a Setoid enable a clean statement of the rational canonical form as a section of the quotient?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Matrix"
+    ],
+    "namespace": "MatrixSimilarityInvariantsOQ01",
+    "lineCount": 84,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 2,
+    "path": "Proofs/MatrixSimilarityInvariantsOQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

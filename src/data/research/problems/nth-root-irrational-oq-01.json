@@ -1,0 +1,97 @@
+{
+  "slug": "nth-root-irrational-oq-01",
+  "title": "Extend nth-root irrationality to algebraic irrationality via irreducible polynomials",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "Prove that irreducible polynomials over Q of degree at least two have no rational roots, derive irrationality of real algebraic roots from irreducibility or minimal-polynomial degree, and use Eisenstein to prove irrationality of nth roots of primes.",
+    "plain": "Upgrade nth-root irrationality from ad hoc arithmetic arguments to a structural algebraic proof: irreducibility over Q rules out rational roots, and Eisenstein proves X^n - p is irreducible for prime p.",
+    "whyMatters": [
+      "The proof connects elementary irrationality examples to the general irreducible-polynomial method.",
+      "Eisenstein criterion provides a compact way to prove infinitely many nth-root irrationality statements at once.",
+      "This structural result is reusable by later Galois and constructibility formalizations."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "The base file proves a counting-style nth-root irrationality theorem for non-perfect powers, with concrete square, cube, fourth-root, and fifth-root examples (Lean: irrational_nthRoot, irrational_sqrt2, irrational_cbrt2, irrational_cbrt3).",
+      "Irreducible polynomials over Q with degree at least two have no rational roots (Lean: irreducible_no_rational_root).",
+      "A real root of such an irreducible polynomial is irrational, and minpoly degree at least two implies irrationality (Lean: irrational_root_of_irreducible, irrational_of_minpoly_degree_ge_two).",
+      "For prime p and n >= 2, X^n - p is irreducible over Q by Eisenstein plus Gauss transfer (Lean: eisenstein_X_pow_sub_prime).",
+      "Prime nth roots p^(1/n) are irrational for n >= 2, with concrete square, cube, and fifth-root examples (Lean: irrational_nthRoot_of_prime, irrational_sqrt2, irrational_cbrt2, irrational_cbrt3, irrational_fifthrt7).",
+      "The structural prime-radicand theorem subsumes the earlier counting-style approach in that case (Lean: structural_subsumes_counting)."
+    ],
+    "open": [],
+    "goal": "Document the verified irreducibility-based nth-root irrationality theorem and its concrete prime-root instances."
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-12T05:32:38.519Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE (0 axioms, 0 sorries)",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# nth-root-irrational-oq-01: Knowledge\n\n## Problem Summary\n\nExtend nth-root irrationality to algebraic irrationality via irreducible polynomials.\nThe base `NthRootIrrational.lean` uses a counting argument; OQ-01 provides a structural\napproach via Eisenstein's criterion and the Gauss lemma.\n\n**Status**: COMPLETE (0 axioms, 0 sorries)\n\n## Session 2026-03-12 (Session 1) - Eisenstein + Gauss Proof\n\n**Mode**: FRESH\n**Outcome**: completed\n\n### What I Did\n- Identified the single axiom `eisenstein_X_pow_sub_prime` as the target\n- Found Mathlib APIs: `Polynomial.irreducible_of_eisenstein_criterion` and `IsPrimitive.Int.irreducible_iff_irreducible_map_cast`\n- Proved irreducibility over ℤ via Eisenstein at prime ideal (p) with 6 subgoals\n- Transferred to ℚ via Gauss lemma using `convert` + `ext` + `simp`\n- Fixed multiple API issues through 4 build iterations\n- Final result: 10 theorems, 0 axioms, 0 sorries\n\n### Key Findings\n- Eisenstein criterion requires 6 goals: prime ideal, leading coeff ∉ P, lower coeffs ∈ P, positive degree, constant coeff ∉ P², isPrimitive\n- Gauss lemma: `IsPrimitive` is a `def` not a `structure` — dot notation fails; use fully qualified function call\n- `coeff_X_pow` gives `if k = n` (index first), not `if n = k`\n- `leadingCoeff_X_pow_sub_C` and `degree_X_pow_sub_C` take `(0 < n)`, `monic_X_pow_sub_C` takes `(n ≠ 0)`\n- p² ∤ p proof: `Int.le_of_dvd` + `nlinarith [sq_nonneg ((p:ℤ) - 1)]`\n\n### Files Modified\n- `proofs/Proofs/NthRootIrrationalOQ01.lean` — eliminated axiom, all theorems proved\n\n### Next Steps\n- None — problem complete\n"
+  },
+  "tags": [
+    "algebra",
+    "irrationality",
+    "irreducible-polynomials",
+    "eisenstein-criterion",
+    "minimal-polynomials",
+    "nth-roots",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "nth-root-irrational",
+    "nth-root-irrational-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-12T05:34:54.574Z",
+  "lastUpdate": "2026-03-13T06:21:52.608Z",
+  "completed": "2026-03-13T06:21:52.608Z",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/NthRootIrrational.lean",
+      "filename": "NthRootIrrational.lean",
+      "lineCount": 313,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/NthRootIrrational.lean"
+    },
+    {
+      "path": "Proofs/NthRootIrrationalOQ01.lean",
+      "filename": "NthRootIrrationalOQ01.lean",
+      "lineCount": 210,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/NthRootIrrationalOQ01.lean"
+    }
+  ]
+}

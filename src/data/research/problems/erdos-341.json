@@ -1,0 +1,113 @@
+{
+  "slug": "erdos-341",
+  "title": "Erdős #341",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Given a finite nonempty starting set A0, the Lean model repeatedly chooses the smallest natural number above the current value that is not representable as a sum of two accumulated previous elements. The Dickson conjecture asks whether the resulting gap sequence is eventually periodic.",
+    "plain": "Does this greedy sum-avoiding sequence eventually settle into a periodic pattern of differences?",
+    "plainEnglish": "Does this greedy sum-avoiding sequence eventually settle into a periodic pattern of differences?",
+    "whyMatters": [
+      "Models Dickson-style greedy sum-avoidance and eventual periodicity.",
+      "The current source proves structural properties and the singleton start case.",
+      "A modeling caveat remains for non-singleton starts because the Lean accumulator initially keeps only max A0."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Existence of a next valid value is built into `dicksonStep`.",
+      "Strict increase, positive gaps, sum avoidance, greedy minimality, and linear lower growth are proved.",
+      "For starting set {1}, the modeled sequence is 2n+1 and the gaps are constantly 2, so eventual periodicity holds with period 1."
+    ],
+    "open": [
+      "The general Dickson eventual-periodicity conjecture remains open as `erdos_341_conjecture`.",
+      "The current Lean model does not faithfully encode all non-singleton starting sets because its initial accumulated set is effectively `{max A0}`."
+    ],
+    "goal": "Record the proved structural framework while flagging the non-singleton modeling caveat."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-18T00:00:00Z",
+    "iteration": 2,
+    "focus": "No axioms or sorries remain; structural lemmas and the singleton {1} case are proved, but non-singleton starts need a modeling repair before stronger metadata claims.",
+    "blockers": [
+      "Current `dicksonStep A0 0` keeps only the maximum starting value in the accumulated set, so non-singleton starting sets are not faithfully represented."
+    ],
+    "nextAction": "Repair the initial-state model for non-singleton A0 before pursuing examples such as {1,4,9,16,25}.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "CURRENT: 11 theorem/lemma declarations, 7 definitions, 0 axioms, 0 sorries. Structural properties and the singleton {1} periodic case are proved, but the non-singleton starting-set model needs repair.",
+    "builtItems": [
+      "`pairwiseSums` and `IsSumRepresentable`",
+      "`dicksonStep`, `dicksonSeq`, and `dicksonDiff`",
+      "`IsEventuallyPeriodic` and `erdos_341_conjecture`",
+      "`dickson_strictly_increasing`, `dickson_avoids_sums`, `dickson_minimal`, `dickson_linear_growth`",
+      "`dicksonSeq_singleton` and `erdos_341_singleton`"
+    ],
+    "insights": [
+      "There are no active definition sorries in the source.",
+      "`erdos_341_conjecture` is a Prop definition, not an axiom.",
+      "The singleton {1} case gives odd numbers 1,3,5,... with constant gap 2; it should not be described as the Mian-Chowla sequence.",
+      "For non-singleton starts, the current accumulator starts from `{max A0}` rather than all of A0.",
+      "The next useful work is model correction, not more metadata about examples."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Repair the non-singleton initial-state semantics.",
+      "After the model is fixed, revisit large examples such as {1,4,9,16,25}.",
+      "Keep the singleton odd-number case distinct from Mian-Chowla/Problem #340."
+    ],
+    "markdown": "# Erdős #341 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{a_1<\\cdots<a_k\\}$ be a finite set of integers and extend it to an infinite sequence $\\overline{A}=\\{a_1<a_2<\\cdots \\}$ by defining $a_{n+1}$ for $n\\geq k$ to be the least integer exceeding $a_n$ which is not of the form $a_i+a_j$ with $i,j\\leq n$. Is it true that the sequence of differences $a_{m+1}-a_m$ is eventually periodic?\n\n\n\nAn old problem of Dickson. Even a starting set as small as $\\{1,4,9,16,25\\}$ requires thousands of terms before periodicity occurs.\n\nThis problem is discussed under Problem 7 on Green's open problems list.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #340\n- Problem #342\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "greedy-sequences",
+    "sum-free-sets",
+    "eventual-periodicity",
+    "open"
+  ],
+  "relatedProofs": [
+    "erdos-3",
+    "erdos-34",
+    "erdos-341"
+  ],
+  "references": {
+    "papers": [
+      "Dickson problem as discussed by Erdos-Graham"
+    ],
+    "urls": [
+      "https://erdosproblems.com/341"
+    ],
+    "mathlib": [
+      "Finset.sup",
+      "Nat.find",
+      "Finset.image",
+      "Function.Periodic"
+    ]
+  },
+  "started": "2026-01-13T00:04:50.019Z",
+  "lastUpdate": "2026-05-18T00:00:00Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos341Problem.lean",
+      "filename": "Erdos341Problem.lean",
+      "lineCount": 252,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos341Problem.lean"
+    }
+  ]
+}

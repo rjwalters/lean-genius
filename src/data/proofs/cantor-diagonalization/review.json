@@ -1,0 +1,143 @@
+{
+  "version": 1,
+  "proofId": "cantor-diagonalization",
+  "reviewDate": "2026-03-23T12:00:00Z",
+  "reviewer": "peer-reviewer",
+
+  "overallAssessment": {
+    "grade": "B+",
+    "oneLiner": "A genuinely original diagonal argument formalization with solid multi-step proofs, undermined by metadata errors (phantom theorems, wrong counts) and the unfounded claim that reals_uncountable concerns the reals.",
+    "tier": "A",
+    "tierJustification": "All 6 theorems are fully proved with 0 sorries and 0 axioms. The diagonal construction, main theorem, and power set generalization are written from scratch rather than wrapping Mathlib. This is a Tier A formalization: complete proofs with original reasoning."
+  },
+
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "cantor_diagonalization, lines 71-86; cantor_powerset, lines 116-133",
+      "finding": "The core proofs are genuinely original multi-step formalizations. cantor_diagonalization constructs the diagonal witness, introduces the contradiction assumption, applies congrFun to extract pointwise equality, invokes diagonal_differs, and closes the contradiction -- all without calling any non-trivial Mathlib theorem. cantor_powerset independently re-proves the power set version using a diagonal set construction with by_cases. These are real proofs, not Mathlib wrappers, and the 'original' badge is justified.",
+      "recommendation": "Preserve this. The proof is a good example of from-scratch formalization."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "overview.historicalContext, meta.json; alternativeInterpretation, meta.json",
+      "finding": "The historical narrative is accurate, well-sourced, and proportionate. Cantor's 1891 paper, Kronecker's opposition, Hilbert's defense, and the lineage through Goedel-Turing-Cohen are all correctly presented. The constructivist alternative interpretation is a genuinely valuable pedagogical addition, rarely seen in proof galleries, and handles the philosophical nuance responsibly.",
+      "recommendation": "Preserve both sections. The alternativeInterpretation is a distinguishing feature of this entry."
+    },
+    {
+      "severity": "major",
+      "category": "inconsistency",
+      "location": "overview.text, meta.json",
+      "finding": "The overview text claims the file 'Includes rationals_countable (contrast: Q is countable), and power_set_strictly_larger (|P(S)| > |S| for all sets).' Neither rationals_countable nor power_set_strictly_larger exists anywhere in the Lean file. These are phantom theorems -- the overview describes theorems that were never written.",
+      "recommendation": "Remove claims about rationals_countable and power_set_strictly_larger from the overview text. Alternatively, if these are desired, a researcher should implement them and update the metadata afterward."
+    },
+    {
+      "severity": "major",
+      "category": "inconsistency",
+      "location": "overview.text, meta.json",
+      "finding": "The overview states the proof 'Generalizes to cantor_theorem (|S| < |S -> Bool| = |P(S)|) via Function.cantor_surjective'. The Lean file never calls Function.cantor_surjective (confirmed by grep). The cantor_powerset theorem is an independent proof from scratch, not a call to any Mathlib function. This misattributes the proof strategy.",
+      "recommendation": "Rewrite to: 'Independently proves cantor_powerset (no surjection S -> Set S) using a diagonal set construction.' Remove the reference to Function.cantor_surjective."
+    },
+    {
+      "severity": "moderate",
+      "category": "precision",
+      "location": "reals_uncountable, line 105-107; overview.text",
+      "finding": "reals_uncountable is presented as proving the uncountability of the reals, but its formal statement is exactly no_surjection_nat_to_binary (non-surjectivity of N -> BinarySeq). The bridge from BinarySeq to the reals (via binary expansion, showing |[0,1]| = |N -> Bool|, and |[0,1]| = |R|) is asserted only in prose comments (lines 103-104), never formalized. This is an equivocation between what is informally discussed and what is formally proved.",
+      "recommendation": "Either (a) rename to binary_sequences_uncountable and add a comment noting the informal bridge to R, or (b) have a researcher formalize the bijection between BinarySeq and a subset of R. Option (a) is simpler and more honest."
+    },
+    {
+      "severity": "moderate",
+      "category": "inconsistency",
+      "location": "leanFile.theoremCount, meta.json line ~266; leanFile.definitionCount, meta.json line ~267",
+      "finding": "leanFile.theoremCount is 8, but the file contains exactly 6 theorems (diagonal_differs, cantor_diagonalization, no_surjection_nat_to_binary, reals_uncountable, cantor_powerset, diagonal_set_paradox). leanFile.definitionCount is 0, but the file contains 2 definitions (BinarySeq at line 45, diagonal at line 52). The overview.text also claims '14 declarations' but the actual count is 8 (2 defs + 6 theorems).",
+      "recommendation": "Update leanFile to: theoremCount: 6, definitionCount: 2. Update overview.text to say '8 declarations'."
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "annotations.json, multiple entries",
+      "finding": "Six of the eleven annotations (ann-binary-seq through ann-proof-differ) all share the same line range {startLine: 5, endLine: 37}, which is the module docstring. These annotations describe distinct code elements (the BinarySeq definition, the diagonal function, diagonal_differs lemma, the main theorem, witness construction, and contradiction derivation) that span lines 45-86, but their ranges all point to the docstring instead. This makes the annotations useless for code-to-annotation mapping.",
+      "recommendation": "Update annotation ranges to match actual code locations: ann-binary-seq should be ~45-45, ann-diagonal-def ~52-53, ann-diagonal-differs ~57-62, ann-main-theorem ~71-86, ann-proof-construct ~76-76, ann-proof-differ ~80-86."
+    },
+    {
+      "severity": "minor",
+      "category": "gap",
+      "location": "annotations.json coverage",
+      "finding": "The no_surjection_nat_to_binary theorem (lines 89-98) and reals_uncountable (lines 105-107) have no dedicated annotations. The ann-corollary annotation (lines 47-47) appears to describe one of these but points to line 47, which is a section comment. The surjection reformulation is a useful pedagogical step that deserves its own accurately-located annotation.",
+      "recommendation": "Add annotations for no_surjection_nat_to_binary (lines 89-98) and reals_uncountable (lines 105-107), or merge their coverage into an existing annotation with correct line ranges."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json mathlibDependencies",
+      "finding": "mathlibDependencies lists only Logic.Function.Basic, but the file imports three Mathlib modules: Logic.Function.Basic, Data.Set.Function, and Tactic. The Set type and membership used in cantor_powerset come from Data.Set.Function. While Tactic is a utility import, Data.Set.Function provides substantive definitions used in the power set theorems.",
+      "recommendation": "Add Data.Set.Function to mathlibDependencies with description 'Set type and membership predicates used in power set version'."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "overview.keyInsights[4]",
+      "finding": "The key insight claims 'funext reduces function inequality to pointwise disagreement', but the actual proof uses congrFun (line 82), not funext. congrFun extracts pointwise equality from function equality (the reverse direction). This is a small but meaningful technical inaccuracy -- the proof goes from f n = diagonal f to f n n = diagonal f n, which is congruence, not extensionality.",
+      "recommendation": "Change 'funext' to 'congrFun' in the key insight, and clarify that congrFun extracts pointwise equality from function equality."
+    }
+  ],
+
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "high",
+      "target": "enricher",
+      "description": "Remove phantom theorem claims from overview.text: delete references to rationals_countable, power_set_strictly_larger, and Function.cantor_surjective. Update declaration count from 14 to 8. Update theoremCount from 8 to 6 and definitionCount from 0 to 2.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-2",
+      "priority": "high",
+      "target": "enricher",
+      "description": "Fix annotation line ranges: six annotations currently point to lines 5-37 (the docstring) instead of their actual code locations (lines 45-86). Remap each to its correct startLine/endLine per the Lean source.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-3",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Address the reals_uncountable framing: either rename the description to acknowledge it proves non-surjectivity of N -> BinarySeq (not literally about R), or add a note that the bridge to R is informal. Fix overview.text reference to 'the R version via binary representation'.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-4",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Add Data.Set.Function to mathlibDependencies. Fix keyInsights[4] to reference congrFun instead of funext.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-5",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Add annotations covering no_surjection_nat_to_binary (lines 89-98) and reals_uncountable (lines 105-107) to improve code-annotation coverage.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-6",
+      "priority": "low",
+      "target": "researcher",
+      "description": "Optional enhancement: formalize rationals_countable and power_set_strictly_larger if desired, or implement the BinarySeq-to-R bijection to make reals_uncountable genuinely about the reals. These would upgrade the entry but are not required for correctness.",
+      "status": "resolved"
+    }
+  ],
+
+  "qualityScores": {
+    "mathematicalSubstance": 8,
+    "originalityAccuracy": 7,
+    "completeness": 7,
+    "framingPrecision": 6,
+    "pedagogicalQuality": 9,
+    "internalConsistency": 5,
+    "overall": 7.0
+  },
+
+  "suggestedBestFraming": "A from-scratch Lean 4 formalization of Cantor's 1891 diagonal argument, proving that no function from the naturals to infinite binary sequences is surjective, with an independent proof of the power set generalization and a connection to Russell's paradox -- all without relying on Mathlib's built-in Cantor theorem."
+}

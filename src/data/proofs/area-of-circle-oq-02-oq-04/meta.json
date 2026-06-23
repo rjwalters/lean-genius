@@ -1,0 +1,134 @@
+{
+  "id": "area-of-circle-oq-02-oq-04",
+  "title": "Bishop-Gromov Volume Comparison: Ball Volumes on Riemannian Manifolds",
+  "slug": "area-of-circle-oq-02-oq-04",
+  "description": "Extends the n-ball volume formula to Riemannian manifolds via Bishop-Gromov volume comparison. Axiomatizes geodesic ball volumes for manifolds with non-negative Ricci curvature and proves volume doubling, polynomial growth bounds, and the Euclidean case as a special instance.",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Bishop%E2%80%93Gromov_inequality",
+    "date": "2026-04-12",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/AreaOfCircleOQ02OQ04.lean",
+    "tags": [
+      "riemannian-geometry",
+      "measure-theory",
+      "volume-comparison",
+      "bishop-gromov",
+      "ricci-curvature"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-04-12",
+    "axiomCount": 3,
+    "assumptions": "3 structure-encoded assumptions in RiemannianVolumeData: vol_pos (geodesic ball volumes are positive), vol_mono (monotonicity), bishop_gromov (Bishop-Gromov volume ratio monotonicity). These encode the properties of a complete Riemannian manifold with Ric >= 0, which cannot be defined in Mathlib (no Riemannian metric or curvature yet).",
+    "lineCount": 272,
+    "theoremCount": 18,
+    "definitionCount": 4,
+    "originalContributions": [
+      "omegaN: definition of volume coefficient omega_n = pi^(n/2) / Gamma(n/2+1)",
+      "euclideanModelVolume: V_0^n(r) = omega_n * r^n",
+      "RiemannianVolumeData: structure axiomatizing geodesic ball volumes with Bishop-Gromov",
+      "volume_ratio_bound: Vol(B(p,s)) <= Vol(B(p,r)) * (s/r)^n",
+      "polynomial_volume_growth: Vol(B(p,r)) <= Vol(B(p,1)) * r^n for r >= 1",
+      "volume_doubling: Vol(B(p,2r)) <= 2^n * Vol(B(p,r))",
+      "euclideanManifold: Euclidean space as a RiemannianVolumeData instance",
+      "surface_volume_doubling: 2D doubling factor is 4",
+      "euclidean_2d_volume: Vol(B(p,r)) = pi * r^2 in Euclidean R^2"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Bishop-Gromov volume comparison theorem, proved by Richard Bishop and Mikhael Gromov in the 1960s-80s, is one of the foundational results in Riemannian geometry. It states that in a complete $n$-dimensional Riemannian manifold with Ricci curvature bounded below by $(n-1)K$, the ratio $\\text{Vol}(B(p,r))/V_K(r)$ is non-increasing in $r$, where $V_K(r)$ is the volume of a radius-$r$ geodesic ball in the simply connected space form of constant curvature $K$.\n\nFor the case $K=0$ (non-negative Ricci curvature), the comparison space is Euclidean $\\mathbb{R}^n$, and $V_0(r) = \\omega_n r^n$ with $\\omega_n = \\pi^{n/2}/\\Gamma(n/2+1)$. The theorem implies that geodesic ball volumes grow at most polynomially: $\\text{Vol}(B(p,r)) \\leq C r^n$ for some constant $C$.\n\nThis result underpins Gromov's compactness theorem, the Cheeger-Colding theory of Ricci limit spaces, and modern geometric analysis. The volume doubling property it implies is the foundation for harmonic analysis on manifolds (Poincare inequalities, heat kernel estimates).",
+    "problemStatement": "Can the ball-volume formula be generalized to geodesic balls in curved spaces? Formalize the Bishop-Gromov volume comparison for manifolds with non-negative Ricci curvature, prove the volume doubling property, polynomial growth bounds, and verify that the Euclidean case recovers the flat n-ball volume formula.",
+    "proofStrategy": "**Part I** (lines 37-111): Defines the Euclidean model volume $V_0^n(r) = \\omega_n r^n$ where $\\omega_n = \\pi^{n/2}/\\Gamma(n/2+1)$. Proves positivity, monotonicity, and the scaling law $V_0^n(\\lambda r) = \\lambda^n V_0^n(r)$. Specific values $\\omega_0 = 1$, $\\omega_1 = 2$, $\\omega_2 = \\pi$ are proved from Gamma function computations.\n\n**Part II** (lines 113-137): Introduces `RiemannianVolumeData n`, a structure packaging geodesic ball volumes with positivity, monotonicity, and the Bishop-Gromov axiom. This axiomatization is necessary because Mathlib lacks Riemannian metrics, curvature tensors, and geodesics.\n\n**Part III** (lines 139-215): Proves consequences of Bishop-Gromov. The key theorem `volume_ratio_bound` derives $\\text{Vol}(B(p,s)) \\leq \\text{Vol}(B(p,r)) \\cdot (s/r)^n$ by cross-multiplying the ratio inequality and using $V_0^n(s)/V_0^n(r) = (s/r)^n$. From this: polynomial growth ($r \\geq 1$), volume doubling (factor $2^n$), and volume halving.\n\n**Part IV** (lines 217-262): Constructs `euclideanManifold n`, showing Euclidean space satisfies the axioms with equality. Proves the volume ratio bound is tight and doubling is exactly $2^n$ in the flat case.\n\n**Part V** (lines 264-273): Dimension-specific corollaries for $n=2$ (factor 4) and $n=3$ (factor 8), and the explicit formula $\\pi r^2$ for Euclidean 2D.",
+    "keyInsights": [
+      "**Structure-based axiomatization**: Riemannian geometry infrastructure (metrics, curvature, geodesics) does not exist in Mathlib, so we axiomatize via a structure `RiemannianVolumeData` encoding the essential properties. The Bishop-Gromov inequality becomes a structure field rather than an axiom declaration.",
+      "**Cross-multiplication technique**: The volume ratio bound is proved by cross-multiplying the Bishop-Gromov inequality $\\text{Vol}(s)/V(s) \\leq \\text{Vol}(r)/V(r)$ using `div_le_div_iff`, then identifying $V(s)/V(r) = (s/r)^n$ via the homogeneity of the model volume.",
+      "**Euclidean case as witness**: The `euclideanManifold` construction demonstrates the axioms are satisfiable: flat space has volume ratio identically 1, so Bishop-Gromov holds with equality. This serves both as a sanity check and as a way to recover the parent proof's results.",
+      "**Volume doubling implies analysis**: The doubling property $\\text{Vol}(B(p,2r)) \\leq 2^n \\text{Vol}(B(p,r))$ is the foundation for harmonic analysis on manifolds: Poincare inequalities, heat kernel bounds, and Sobolev embeddings all follow from doubling alone.",
+      "**Axiomatization over formalization**: Since Mathlib lacks full Riemannian geometry, encoding Bishop-Gromov as a structure field (rather than proving it from scratch) is the correct Lean design choice — it separates the geometric hypothesis from the algebraic consequences, matching how mathematicians use the theorem in practice"
+    ]
+  },
+  "sections": [
+    {
+      "id": "model-volume",
+      "title": "Part I: Euclidean Model Volume",
+      "startLine": 37,
+      "endLine": 111,
+      "summary": "Defines omegaN (volume coefficient) and euclideanModelVolume. Proves positivity, zero-at-origin, monotonicity, and scaling properties. Computes omega_0=1, omega_1=2, omega_2=pi.",
+      "mathContext": "$\\omega_n = \\pi^{n/2}/\\Gamma(n/2+1)$, $V_0^n(r) = \\omega_n r^n$."
+    },
+    {
+      "id": "bishop-gromov-axiom",
+      "title": "Part II: Bishop-Gromov Axiomatization",
+      "startLine": 113,
+      "endLine": 137,
+      "summary": "Introduces RiemannianVolumeData structure with three axioms: positivity, monotonicity, and Bishop-Gromov ratio monotonicity for the K=0 (Ric >= 0) case.",
+      "mathContext": "For Ric $\\geq 0$: $\\text{Vol}(B(p,s))/V_0(s) \\leq \\text{Vol}(B(p,r))/V_0(r)$ for $0 < r \\leq s$."
+    },
+    {
+      "id": "consequences",
+      "title": "Part III: Volume Growth Consequences",
+      "startLine": 139,
+      "endLine": 215,
+      "summary": "Derives volume_ratio_bound (s/r)^n, polynomial_volume_growth, volume_doubling (2^n), bishop_gromov_euclidean_upper_bound, and volume_halving from the axioms.",
+      "mathContext": "$\\text{Vol}(B(p,s)) \\leq \\text{Vol}(B(p,r)) \\cdot (s/r)^n$, hence $\\text{Vol}(B(p,r)) \\leq C r^n$ and $\\text{Vol}(B(p,2r)) \\leq 2^n \\text{Vol}(B(p,r))$."
+    },
+    {
+      "id": "euclidean-case",
+      "title": "Part IV: Euclidean Space as Special Case",
+      "startLine": 217,
+      "endLine": 262,
+      "summary": "Constructs euclideanManifold instance with equality throughout. Proves tight volume ratio and exact 2^n doubling in flat space.",
+      "mathContext": "In $\\mathbb{R}^n$: $\\text{Vol}(B(0,r))/V_0(r) \\equiv 1$, so all inequalities become equalities."
+    },
+    {
+      "id": "dimension-specific",
+      "title": "Part V: Dimension-Specific Corollaries",
+      "startLine": 264,
+      "endLine": 272,
+      "summary": "Surface (n=2) doubling factor 4, 3-manifold (n=3) factor 8, and Euclidean 2D formula pi*r^2.",
+      "mathContext": "For surfaces with non-negative Gauss curvature: $\\text{Vol}(B(p,2r)) \\leq 4 \\cdot \\text{Vol}(B(p,r))$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Bishop-Gromov volume comparison theorem is axiomatized for complete Riemannian manifolds with non-negative Ricci curvature. The formalization proves the three main consequences (volume ratio bound, polynomial growth, volume doubling) and verifies that the Euclidean case recovers the flat n-ball volume formula from the parent proof.",
+    "implications": "This formalization bridges Euclidean measure theory (where Mathlib has strong support) and Riemannian geometry (where Mathlib has no curvature theory). The structure-based approach cleanly separates the axioms from the consequences, and the Euclidean witness shows the axioms are consistent. Volume doubling is the entry point for a vast body of analysis on metric measure spaces.",
+    "openQuestions": [
+      "Extend to general curvature K: the model volume V_K(r) for K != 0 involves trigonometric/hyperbolic functions (sinh, sin), enabling comparison with spheres (K>0) and hyperbolic spaces (K<0).",
+      "Formalize the Gromov-Bishop volume comparison for K < 0 (hyperbolic comparison), where geodesic balls grow exponentially.",
+      "Connect to Gromov's compactness theorem: if a sequence of manifolds has Ric >= (n-1)K and diameter <= D, it has a convergent subsequence."
+    ]
+  },
+  "leanFile": {
+    "namespace": "BishopGromov",
+    "lineCount": 272,
+    "axiomCount": 0,
+    "theoremCount": 18,
+    "definitionCount": 4,
+    "path": "Proofs/AreaOfCircleOQ02OQ04.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-02",
+      "relationship": "extends",
+      "description": "Extends the Euclidean n-ball volume formula to curved Riemannian manifolds"
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "related",
+      "description": "The original area-of-circle formula A=pi*r^2 is the n=2 Euclidean special case"
+    },
+    {
+      "targetId": "area-of-circle-oq-01",
+      "relationship": "related",
+      "description": "Circumference Formula via Area Differentiation: the 2D relationship between area and circumference that motivates the n-dimensional volume/surface area relationship underlying the Bishop-Gromov comparison"
+    },
+    {
+      "targetId": "minkowski-fundamental-theorem-oq-02",
+      "relationship": "related",
+      "description": "Minkowski Class Number Bound: uses n-ball volume formulas (the Minkowski bound involves (4/π)^{r₂}·(n!/n^n)) and Geometry of Numbers — both Bishop-Gromov and Minkowski's theorem quantify how volume and lattice structure interact in Euclidean and Riemannian contexts"
+    }
+  ],
+  "sorries": 0
+}

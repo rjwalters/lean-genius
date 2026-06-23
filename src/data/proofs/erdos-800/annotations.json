@@ -1,0 +1,213 @@
+[
+  {
+    "id": "ann-800-overview",
+    "proofId": "erdos-800",
+    "range": {
+      "startLine": 1,
+      "endLine": 34
+    },
+    "type": "concept",
+    "title": "Problem Overview and References",
+    "content": "Erdős Problem #800 asks whether graphs with no two adjacent vertices of degree $\\geq 3$ have linear Ramsey numbers $R(G) \\ll n$. Alon (1994) proved $R(G) \\leq 12n$ using the probabilistic method. The header documents the connection to the broader Burr-Erdős conjecture (Problem #163), which was fully resolved by Choongbum Lee in 2016 for all $p$-degenerate graphs.",
+    "mathContext": "$R(G) \\leq 12n$ for graphs $G$ on $n$ vertices with no adjacent vertices of degree $\\geq 3$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Ramsey number",
+      "subdivided graph",
+      "Burr-Erdős conjecture",
+      "probabilistic method"
+    ],
+    "prerequisites": [
+      "Ramsey theory basics",
+      "graph degree",
+      "edge 2-coloring"
+    ]
+  },
+  {
+    "id": "ann-800-imports",
+    "proofId": "erdos-800",
+    "range": {
+      "startLine": 36,
+      "endLine": 45
+    },
+    "type": "concept",
+    "title": "Imports and Namespace",
+    "content": "Imports Mathlib's simple graph infrastructure (`SimpleGraph.Basic`, `SimpleGraph.Subgraph`, `SimpleGraph.Clique`, `SimpleGraph.Coloring`), finite type machinery, and real number arithmetic for Ramsey bounds. The `open SimpleGraph` brings graph notation into scope. All definitions live in `Erdos800`.",
+    "mathContext": "Uses `SimpleGraph V` for graphs, `neighborFinset` for degree computation, and $\\mathbb{R}$ for Ramsey bound arithmetic",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib SimpleGraph",
+      "neighbor sets",
+      "Fintype"
+    ],
+    "prerequisites": [
+      "Lean 4 imports",
+      "Mathlib graph theory modules"
+    ]
+  },
+  {
+    "id": "ann-800-structural",
+    "proofId": "erdos-800",
+    "range": {
+      "startLine": 47,
+      "endLine": 73
+    },
+    "type": "definition",
+    "title": "Structural Condition: No Adjacent High-Degree Vertices",
+    "content": "Three definitions build up the key structural condition. `vertexDegree G v` counts $|N(v)|$ using `neighborFinset`. `isHighDegree G v` means $\\deg(v) \\geq 3$. The central predicate `noAdjacentHighDegree G` states that no edge $uv$ has both $\\deg(u) \\geq 3$ and $\\deg(v) \\geq 3$. Equivalently, the set of high-degree vertices forms an independent set. The threshold 3 is natural: degree-2 vertices are exactly the subdivision vertices that separate high-degree vertices in subdivided graphs.",
+    "mathContext": "$\\text{noAdjacentHighDegree}(G) \\iff \\forall u \\sim v,\\; \\neg(\\deg(u) \\geq 3 \\wedge \\deg(v) \\geq 3)$; equivalently, the high-degree vertices form an independent set",
+    "significance": "key",
+    "relatedConcepts": [
+      "independent set",
+      "vertex degree",
+      "subdivision vertex",
+      "sparse graph structure"
+    ],
+    "prerequisites": [
+      "graph adjacency",
+      "neighbor set cardinality",
+      "independent set"
+    ]
+  },
+  {
+    "id": "ann-800-subdivision",
+    "proofId": "erdos-800",
+    "range": {
+      "startLine": 75,
+      "endLine": 103
+    },
+    "type": "concept",
+    "title": "Subdivision Implies No Adjacent High-Degree Vertices (Proved)",
+    "content": "Defines `isSubdivisionVertex` ($\\deg(v) = 2$) and `isOriginalVertex` ($\\deg(v) \\neq 2$), then proves `subdivision_implies_no_adjacent_high_degree`: if every high-degree vertex's neighbors all have degree $\\leq 2$, then no two high-degree vertices are adjacent. The proof is by contradiction with `omega`: if $u \\sim v$ and both have degree $\\geq 3$, then the hypothesis gives $\\deg(v) \\leq 2$, contradicting $\\deg(v) \\geq 3$. This is one of the few fully verified results in the file.",
+    "mathContext": "$(\\forall v,\\, \\deg(v) \\geq 3 \\Rightarrow \\forall u \\sim v,\\, \\deg(u) \\leq 2) \\Rightarrow \\text{noAdjacentHighDegree}(G)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "graph subdivision",
+      "1-subdivision",
+      "topological minor",
+      "proof by contradiction"
+    ],
+    "prerequisites": [
+      "vertex degree",
+      "adjacency",
+      "omega tactic"
+    ]
+  },
+  {
+    "id": "ann-800-ramsey",
+    "proofId": "erdos-800",
+    "range": {
+      "startLine": 105,
+      "endLine": 159
+    },
+    "type": "definition",
+    "title": "Ramsey Number Infrastructure",
+    "content": "Builds the Ramsey theory framework from scratch. `completeGraph N` defines $K_N$ on `Fin N` with adjacency $u \\neq v$. `edgeColoring N` assigns a Boolean (red/blue) to each ordered pair. `isMonochromatic` checks that all edges of an embedded copy of $G$ have the same color. `containsMonochromaticCopy` requires an injective embedding with monochromaticity. The Ramsey number $R(G)$ and its specification are axiomatized — formalizing the finite Ramsey theorem would require substantial combinatorial infrastructure. `hasLinearRamseyNumber G C` means $R(G) \\leq C \\cdot n$.",
+    "mathContext": "$R(G) = \\min\\{N : \\forall c\\colon E(K_N) \\to \\{\\text{red}, \\text{blue}\\},\\; K_N \\text{ contains a monochromatic copy of } G\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey's theorem",
+      "complete graph",
+      "edge coloring",
+      "monochromatic subgraph",
+      "graph embedding"
+    ],
+    "prerequisites": [
+      "finite Ramsey theorem",
+      "injective function",
+      "2-coloring"
+    ]
+  },
+  {
+    "id": "ann-800-alon",
+    "proofId": "erdos-800",
+    "range": {
+      "startLine": 161,
+      "endLine": 183
+    },
+    "type": "concept",
+    "title": "Alon's Theorem (1994): R(G) ≤ 12n",
+    "content": "The main result, axiomatized as `alon_theorem`: if $G$ on $n$ vertices has no adjacent high-degree vertices, then $R(G) \\leq 12n$. Alon's proof uses the probabilistic method. Since the high-degree vertices $H$ form an independent set, they can be randomly embedded into $K_N$. For each high-degree vertex $v$, the paths of degree-2 vertices connecting it to other high-degree vertices can be extended deterministically. The constant $12 = 2 \\times 6$ arises from: factor 2 for the two colors in the Ramsey setting, and factor 6 from probabilistic counting of embedding extensions. The corollary `subdivided_graphs_linear_ramsey` chains this with the subdivision theorem.",
+    "mathContext": "$\\text{noAdjacentHighDegree}(G) \\Rightarrow R(G) \\leq 12|V(G)|$; constant $12 = 2 \\times 6$ from color doubling and probabilistic argument",
+    "significance": "key",
+    "relatedConcepts": [
+      "probabilistic method",
+      "random embedding",
+      "deterministic extension",
+      "linear Ramsey bound"
+    ],
+    "prerequisites": [
+      "Ramsey number",
+      "no adjacent high-degree vertices",
+      "probabilistic method in combinatorics"
+    ]
+  },
+  {
+    "id": "ann-800-degeneracy",
+    "proofId": "erdos-800",
+    "range": {
+      "startLine": 185,
+      "endLine": 227
+    },
+    "type": "concept",
+    "title": "Degeneracy and the Burr-Erdős Conjecture",
+    "content": "Connects Problem #800 to the broader Burr-Erdős conjecture (Problem #163). `isDegenerateAt G p` means every subgraph has a vertex of degree $\\leq p$; this is $p$-degeneracy. The axiom `no_adjacent_high_degree_is_2_degenerate` states that graphs with no adjacent high-degree vertices are 2-degenerate. The `burr_erdos_theorem` (Lee 2016) axiomatizes the full conjecture: every $p$-degenerate $n$-vertex graph has $R(G) \\leq c_p \\cdot n$. The theorem `erdos_800_special_case_of_163` derives Problem #800 as the $p = 2$ case, providing an alternative proof path via the general theorem.",
+    "mathContext": "$G$ $p$-degenerate $\\Rightarrow R(G) \\leq c_p n$; graphs with no adjacent high-degree vertices are 2-degenerate, so Problem #800 is the $p = 2$ case",
+    "significance": "key",
+    "relatedConcepts": [
+      "graph degeneracy",
+      "Burr-Erdős conjecture",
+      "Choongbum Lee's theorem",
+      "degenerate graph Ramsey theory"
+    ],
+    "prerequisites": [
+      "subgraph",
+      "degeneracy ordering",
+      "Ramsey number",
+      "Problem #163"
+    ]
+  },
+  {
+    "id": "ann-800-solution",
+    "proofId": "erdos-800",
+    "range": {
+      "startLine": 229,
+      "endLine": 250
+    },
+    "type": "concept",
+    "title": "Problem Statement and Solution",
+    "content": "The formal problem statement `erdos800Problem` quantifies over all graphs $G$ with `noAdjacentHighDegree` and asserts existence of a constant $C$ with $R(G) \\leq Cn$. The solution `erdos_800` proves this by instantiating $C = 12$ and invoking `alon_theorem`. This is a clean modular proof: unfold `hasLinearRamseyNumber`, then apply the axiomatized bound.",
+    "mathContext": "$\\forall G \\text{ with no adjacent high-degree vertices},\\; \\exists C,\\; R(G) \\leq C \\cdot |V(G)|$; solved with $C = 12$",
+    "significance": "key",
+    "relatedConcepts": [
+      "existential instantiation",
+      "linear Ramsey bound",
+      "explicit constant"
+    ],
+    "prerequisites": [
+      "Alon's theorem",
+      "hasLinearRamseyNumber definition"
+    ]
+  },
+  {
+    "id": "ann-800-summary",
+    "proofId": "erdos-800",
+    "range": {
+      "startLine": 252,
+      "endLine": 267
+    },
+    "type": "concept",
+    "title": "Summary Theorem: Combining Results",
+    "content": "The `erdos_800_summary` theorem packages two facts as a conjunction: (1) Alon's explicit bound $R(G) \\leq 12n$ for all graphs with no adjacent high-degree vertices, and (2) the existential statement `erdos800Problem`. The proof constructs the pair `\\langle\\lambda\\ldots \\Rightarrow \\text{alon\\_theorem},\\, \\text{erdos\\_800}\\rangle`. This dual presentation gives both the quantitative bound (constant 12) and the qualitative answer (linear growth exists).",
+    "mathContext": "$(\\forall G,\\; R(G) \\leq 12n) \\wedge (\\forall G,\\; \\exists C,\\; R(G) \\leq Cn)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "conjunction introduction",
+      "quantitative vs qualitative bounds"
+    ],
+    "prerequisites": [
+      "alon_theorem",
+      "erdos_800"
+    ]
+  }
+]

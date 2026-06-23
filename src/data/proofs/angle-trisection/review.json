@@ -1,0 +1,203 @@
+{
+  "version": 2,
+  "proofId": "angle-trisection",
+  "reviewer": "peer-reviewer-1",
+  "model": "claude-opus-4-6[1m]",
+  "date": "2026-03-24T05:30:00Z",
+  "overallGrade": "B",
+  "qualityScore": 6.8,
+  "tierClassification": "B",
+  "tierJustification": "Angle trisection and cube doubling are genuinely proved (0 axioms transitively) when including the companion AngleTrisectionCos20Gal.lean, which contains substantial Eisenstein-criterion and Galois-group computations. However, (1) Wantzel's theorem is encoded as a definition rather than proved, (2) circle squaring depends transitively on axiomatized pi transcendence, and (3) the circle_squaring_impossible theorem does not actually use pi transcendence--it reuses the degree-3 argument. This places the entry solidly at Tier B: real formalization work backed by Mathlib, with meaningful original bridge infrastructure in the companion file.",
+  "dimensions": {
+    "mathematicalSubstance": {
+      "score": 7,
+      "notes": "The main file (383 lines) contains the proof architecture: polynomial definition, triple-angle formula application, rational root check, number-theoretic lemmas (3 not dividing 2^n), and three impossibility theorems. Most proofs are multi-step and non-trivial. The companion AngleTrisectionCos20Gal.lean (474 lines) contains the genuinely hard mathematics: Eisenstein criterion application via shifted polynomial, invertible linear substitution argument, and a complete Galois group computation showing |Gal(8X^3-6X-1/Q)| = 3. Together, 857 lines of substantive formalization. Deductions: wantzel_theorem is a tautological unfolding of the IsConstructible definition (not a real theorem), cos_20_degree_over_Q is a trivial alias, and degree_five/seven_not_constructible are mechanical specializations."
+    },
+    "originalityAccuracy": {
+      "score": 6,
+      "notes": "The original contributions listed in meta.json are reasonable but somewhat inflated. 'Proof that 3 does not divide any power of 2' is a standard exercise, not a meaningful original contribution. 'Educational demonstration of the algebraic characterization of constructible numbers' is accurate but the IsConstructible definition encodes the characterization as a definition rather than proving it. The genuinely original work--the Eisenstein criterion proof via polynomial shift and the Galois group computation--lives in the companion file, not in this file. The annotations still reference 'Axiom 1', 'Axiom 2' labels that are stale."
+    },
+    "completeness": {
+      "score": 7,
+      "notes": "Covers all three classical Greek impossibility problems. The file has 0 sorries and 0 axioms locally. The irreducibility proof is fully mechanized in the companion file. Main gaps: (1) circle_squaring_impossible only proves the case where 3 divides the degree, not the full transcendence argument--the stronger statement (sqrt(pi) is not constructible for ANY degree) is not formalized here, (2) the IsConstructible definition sidesteps proving Wantzel's actual geometric theorem, and (3) the link between 'cos(20 degrees) satisfies this polynomial' and 'this is the MINIMAL polynomial' is assumed rather than proved."
+    },
+    "framingPrecision": {
+      "score": 6,
+      "notes": "Several framing issues: (A) The description says '0 axioms' which is true for this file but misleading given the transitive dependency on 8 axioms in PiTranscendental.lean for the circle-squaring result. (B) The description says 'pi_transcendental imported from PiTranscendental.lean (no longer an axiom)' but PiTranscendental.lean still uses axiom declarations. (C) meta.json claims 'Fully verified (0 axioms, 0 sorries)' in the assumptions field, which should clarify that circle squaring depends transitively on axiomatized pi transcendence. (D) The theorem counts in meta.json (18 theorems, 4 definitions) are inaccurate--actual count is 23 theorems and 6 definitions. (E) The overview text mentions '37 declarations' which does not match either count."
+    },
+    "pedagogicalQuality": {
+      "score": 8,
+      "notes": "Excellent pedagogical structure. The proof is organized into clearly labeled parts (I-VIII) with informative docstrings explaining the strategy before each section. The historical context is rich and accurate. The progression from polynomial derivation through irreducibility to the final contradiction is logically clean. The generalization to odd primes in Part VIII extends the framework naturally. The annotations provide good mathematical context linking to Chebyshev polynomials, Fermat primes, and regular polygon constructibility."
+    },
+    "internalConsistency": {
+      "score": 7,
+      "notes": "Mostly consistent but with notable issues: (1) The annotations still reference 'Axiom 1' (Wantzel) and 'Axiom 2' (irreducibility) and describe them as axioms, but the code now derives both from definitions/imports. This is stale documentation from a previous version. (2) The meta.json assumptions field says 'Fully verified (0 axioms, 0 sorries)' and 'All three impossibility results proved' but the circle squaring proof only handles the degree-3 case, not the full transcendence argument. (3) theorem/definition counts in leanFile section of meta.json are inaccurate."
+    }
+  },
+  "findings": [
+    {
+      "id": "pos-companion-file-substance",
+      "type": "positive",
+      "category": "strength",
+      "severity": "positive",
+      "title": "Substantial companion file with genuine Galois theory",
+      "description": "AngleTrisectionCos20Gal.lean (474 lines, 0 sorries, 0 axioms) contains genuinely impressive formalization work: proving irreducibility of 8X^3-6X-1 via Eisenstein criterion on the shifted polynomial X^3-6X^2+9X-3, with a careful invertible-substitution argument transferring irreducibility. It then computes |Gal| = 3 by showing all roots lie in Q(alpha). This is multi-step Galois theory formalized in Lean 4, well beyond a Mathlib wrapper.",
+      "location": {
+        "file": "proofs/Proofs/AngleTrisectionCos20Gal.lean",
+        "lines": "1-474"
+      },
+      "recommendation": null,
+      "targetAgent": null
+    },
+    {
+      "id": "pos-pedagogical-structure",
+      "type": "positive",
+      "category": "strength",
+      "severity": "positive",
+      "title": "Excellent pedagogical organization",
+      "description": "The proof is organized into 8 clearly labeled parts with informative docstrings. The historical context is rich (covering Wantzel, Lindemann, and the Greek background). The progression from triple-angle formula through polynomial derivation, irreducibility, and degree obstruction to the final impossibility is logically clean and easy to follow. The generalization to arbitrary odd primes in Part VIII extends the framework naturally.",
+      "location": {
+        "file": "proofs/Proofs/AngleTrisection.lean",
+        "lines": "9-64"
+      },
+      "recommendation": null,
+      "targetAgent": null
+    },
+    {
+      "id": "mod-wantzel-definitional",
+      "type": "negative",
+      "category": "overclaim",
+      "severity": "moderate",
+      "title": "Wantzel's theorem is a tautological definition-unfolding",
+      "description": "wantzel_theorem (line 193-195) is presented as 'Wantzel's Theorem (1837)' but the proof is `fun h _ => h.2` -- it simply extracts the second component of the IsConstructible definition. The definition IsConstructible (line 181-182) encodes Wantzel's criterion directly as `d > 0 AND exists n, d | 2^n`. This means the 'theorem' is trivially true by construction. The real content of Wantzel's theorem -- that compass-and-straightedge constructions correspond to towers of quadratic extensions -- is assumed, not proved.",
+      "location": {
+        "file": "proofs/Proofs/AngleTrisection.lean",
+        "lines": "181-195"
+      },
+      "recommendation": "Either (a) rename wantzel_theorem to something like wantzel_criterion_extract to clarify it is a definition unwrapping, or (b) add a note in the docstring acknowledging that the geometric content of Wantzel's theorem is encoded in the definition of IsConstructible rather than proved. The current framing implies it is a non-trivial theorem.",
+      "targetAgent": "enricher"
+    },
+    {
+      "id": "mod-circle-squaring-weak",
+      "type": "negative",
+      "category": "overclaim",
+      "severity": "moderate",
+      "title": "circle_squaring_impossible does not use pi transcendence",
+      "description": "circle_squaring_impossible (line 316-319) requires the hypothesis (h3 : 3 | d), reducing it to the same degree-3 divisibility argument used for trisection. It does NOT use lindemann_pi_transcendental at all. The stronger claim -- that sqrt(pi) is not constructible for ANY degree -- would require showing pi is transcendental, hence has no minimal polynomial. The meta.json and overview text present this as 'the third classical impossibility resolved via Lindemann's transcendence' but the Lean formalization only proves the degree-3 special case.",
+      "location": {
+        "file": "proofs/Proofs/AngleTrisection.lean",
+        "lines": "316-324"
+      },
+      "recommendation": "Add a theorem circle_squaring_impossible_full that shows: for ALL d > 0, not IsConstructible (sqrt pi) d. This would require connecting lindemann_pi_transcendental to show sqrt(pi) is transcendental (hence has no finite minimal polynomial degree). Alternatively, update the description to accurately state that only the degree-3 case of circle squaring is formalized.",
+      "targetAgent": "researcher"
+    },
+    {
+      "id": "min-stale-axiom-annotations",
+      "type": "negative",
+      "category": "inconsistency",
+      "severity": "minor",
+      "title": "Annotations reference stale axiom numbering",
+      "description": "Several annotations (ann-wantzel-axiom, ann-axiom2-lindemann, ann-historical-context, ann-summary-close) reference 'Axiom 1', 'Axiom 2', 'Axiom 3', and '3 axioms' that date from a previous version when these results were axiomatized. The current code derives wantzel_theorem from its definition and trisectionPolynomial_irreducible from the companion file import. The annotations should reflect the current proved status.",
+      "location": {
+        "file": "src/data/proofs/angle-trisection/annotations.json",
+        "lines": null
+      },
+      "recommendation": "Update annotations to reflect current code: wantzel_theorem is a definition extract, trisectionPolynomial_irreducible is proved via Eisenstein criterion (imported), and lindemann_pi_transcendental is derived from PiTranscendental import (which itself uses axioms).",
+      "targetAgent": "enricher"
+    },
+    {
+      "id": "min-inaccurate-counts",
+      "type": "negative",
+      "category": "precision",
+      "severity": "minor",
+      "title": "meta.json theorem and definition counts are wrong",
+      "description": "meta.json leanFile section claims theoremCount: 18 and defCount: 4. Actual count: 23 theorems (trisectionPolynomial_degree, angle60_eq_three_mul_angle20, cos_60_eq_half, triple_angle_formula, cos_20_satisfies_equation, no_rational_roots, wantzel_theorem, trisectionPolynomial_irreducible, lindemann_pi_transcendental, three_not_power_of_two, three_not_dvd_power_of_two, three_dvd_not_dvd_power_of_two, degree_three_not_constructible, cos_20_degree_over_Q, angle_trisection_impossible, cubeDoublingPolynomial_degree, cube_doubling_impossible, circle_squaring_impossible, circle_squaring_impossible_deg3, odd_prime_not_dvd_power_of_two, odd_prime_degree_not_constructible, degree_five_not_constructible, degree_seven_not_constructible) and 6 definitions (trisectionPolynomial, angle20, angle60, evalTrisectionPoly, IsConstructible, cubeDoublingPolynomial). The overview also mentions '37 declarations' which does not match.",
+      "location": {
+        "file": "src/data/proofs/angle-trisection/meta.json",
+        "lines": null
+      },
+      "recommendation": "Update theoremCount to 23, defCount to 6, definitionCount to 6. Verify the '37 declarations' number in the overview text or update it.",
+      "targetAgent": "enricher"
+    },
+    {
+      "id": "min-transitive-axiom-clarity",
+      "type": "negative",
+      "category": "precision",
+      "severity": "minor",
+      "title": "Transitive axiom dependency should be clearer",
+      "description": "The assumptions field says 'Fully verified (0 axioms, 0 sorries)' and 'pi_transcendental imported from PiTranscendental.lean (no longer an axiom)'. However, PiTranscendental.lean contains 8 axiom declarations, including pi_transcendental itself. The phrase 'no longer an axiom' is misleading -- it was moved from this file to an import, not actually proved. For the circle squaring result specifically, the proof chain is: circle_squaring_impossible_deg3 -> degree_three_not_constructible (axiom-free), but lindemann_pi_transcendental (line 207) does depend on an axiom.",
+      "location": {
+        "file": "src/data/proofs/angle-trisection/meta.json",
+        "lines": null
+      },
+      "recommendation": "Update the assumptions field to: 'Angle trisection and cube doubling: fully verified (0 axioms transitively). Circle squaring: depends on axiomatized pi_transcendental from PiTranscendental.lean. This file has 0 local axioms and 0 sorries.'",
+      "targetAgent": "enricher"
+    },
+    {
+      "id": "min-filler-specializations",
+      "type": "negative",
+      "category": "filler",
+      "severity": "minor",
+      "title": "Degree-5 and degree-7 specializations are mechanical filler",
+      "description": "degree_five_not_constructible (line 356-358) and degree_seven_not_constructible (line 361-363) are trivial one-line specializations of odd_prime_degree_not_constructible with (by decide) for primality and oddness. They add no mathematical content and pad the theorem count. Similarly, cos_20_degree_over_Q (line 261-262) is a trivial alias of trisectionPolynomial_degree.",
+      "location": {
+        "file": "proofs/Proofs/AngleTrisection.lean",
+        "lines": "261-263, 355-363"
+      },
+      "recommendation": "These are acceptable for pedagogical completeness but should not be counted among the file's substantive contributions. Consider noting them as examples/corollaries rather than standalone theorems in the overview.",
+      "targetAgent": "enricher"
+    },
+    {
+      "id": "min-mathlibdeps-incomplete",
+      "type": "negative",
+      "category": "gap",
+      "severity": "minor",
+      "title": "mathlibDependencies list is incomplete",
+      "description": "meta.json lists 4 Mathlib dependencies but the file imports 5 Mathlib modules. Missing: Mathlib.Tactic and Mathlib.RingTheory.Polynomial.IrreducibleRing. The listed entries also don't include the project-local imports (Proofs.PiTranscendental, Proofs.AngleTrisectionCos20Gal) which are significant dependencies.",
+      "location": {
+        "file": "src/data/proofs/angle-trisection/meta.json",
+        "lines": null
+      },
+      "recommendation": "Add Mathlib.Tactic and Mathlib.RingTheory.Polynomial.IrreducibleRing to the mathlibDependencies. Consider adding a separate 'projectDependencies' field for the local imports.",
+      "targetAgent": "enricher"
+    }
+  ],
+  "suggestedBestFraming": "A Lean 4 formalization of the impossibility of angle trisection and cube doubling (Wiedijk #8), with a partial formalization of circle squaring. The core proof architecture: the trisection polynomial 8x^3-6x-1 is shown irreducible over Q via Eisenstein criterion (proved in companion file AngleTrisectionCos20Gal.lean, 474 lines), cos(20 degrees) is connected to this polynomial via the triple-angle formula, and a number-theoretic argument shows degree 3 is incompatible with constructibility. Wantzel's constructibility criterion is encoded as a definition (not proved from geometric axioms). Circle squaring is only proved for the degree-3 case; the full transcendence argument is not formalized. Angle trisection and cube doubling are fully verified with 0 axioms transitively; circle squaring depends on axiomatized pi transcendence from PiTranscendental.lean.",
+  "actionItems": [
+    {
+      "id": "action-1",
+      "description": "Update annotations to remove stale 'Axiom 1/2/3' references and reflect current code where wantzel_theorem is derived from definition and irreducibility is imported from companion file",
+      "target": "enricher",
+      "priority": "medium",
+      "status": "resolved"
+    },
+    {
+      "id": "action-2",
+      "description": "Correct meta.json counts: theoremCount should be 23, defCount/definitionCount should be 6. Verify or remove '37 declarations' claim in overview text.",
+      "target": "enricher",
+      "priority": "medium",
+      "status": "resolved"
+    },
+    {
+      "id": "action-3",
+      "description": "Clarify transitive axiom dependency in assumptions field: angle trisection and cube doubling are fully axiom-free, but lindemann_pi_transcendental depends on axiomatized pi_transcendental in PiTranscendental.lean",
+      "target": "enricher",
+      "priority": "medium",
+      "status": "resolved"
+    },
+    {
+      "id": "action-4",
+      "description": "Formalize the full circle squaring impossibility: prove that for all d > 0, sqrt(pi) is not constructible, using pi transcendence to show sqrt(pi) has no finite minimal polynomial degree over Q",
+      "target": "researcher",
+      "priority": "low",
+      "status": "open"
+    },
+    {
+      "id": "action-5",
+      "description": "Add Mathlib.Tactic and Mathlib.RingTheory.Polynomial.IrreducibleRing to mathlibDependencies list in meta.json",
+      "target": "enricher",
+      "priority": "low",
+      "status": "resolved"
+    }
+  ]
+}

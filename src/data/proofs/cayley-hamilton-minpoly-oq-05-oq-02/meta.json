@@ -1,0 +1,211 @@
+{
+  "id": "cayley-hamilton-minpoly-oq-05-oq-02",
+  "title": "Minimal Polynomial Degree and Field Extension Degree",
+  "slug": "cayley-hamilton-minpoly-oq-05-oq-02",
+  "description": "Formalizes the relationship between [L:K] and the minimal polynomial degree: deg(minpoly K x) = finrank K K(x), deg(minpoly K x) | [L:K], tower decomposition, degree drop bounds, and characterization of when the degree is preserved.",
+  "category": "abstract-algebra",
+  "status": "verified",
+  "badge": "original",
+  "difficulty": "intermediate",
+  "leanFile": {
+    "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ02.lean",
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial"
+    ],
+    "namespace": "MinpolyDegreeRelations",
+    "lineCount": 262,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 16,
+    "definitionCount": 0
+  },
+  "lineCount": 262,
+  "theoremCount": 16,
+  "axiomCount": 0,
+  "assumptions": [],
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Minimal_polynomial_(field_theory)",
+    "date": "2026",
+    "status": "verified",
+    "tags": [
+      "abstract-algebra",
+      "linear-algebra",
+      "minimal-polynomial",
+      "field-extensions",
+      "scalar-tower",
+      "intermediate"
+    ],
+    "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ05OQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "IntermediateField.adjoin.finrank",
+        "description": "finrank K K(x) = natDegree(minpoly K x)",
+        "module": "Mathlib.FieldTheory.Adjoin"
+      },
+      {
+        "theorem": "Module.finrank_mul_finrank",
+        "description": "Tower law: finrank K E = finrank K L * finrank L E",
+        "module": "Mathlib.LinearAlgebra.Dimension"
+      },
+      {
+        "theorem": "minpoly.dvd",
+        "description": "minpoly divides any annihilating polynomial",
+        "module": "Mathlib.RingTheory.Polynomial.Minpoly"
+      },
+      {
+        "theorem": "minpoly.eq_of_irreducible_of_monic",
+        "description": "Characterizes minpoly as unique monic irreducible annihilator",
+        "module": "Mathlib.RingTheory.Polynomial.Minpoly"
+      }
+    ],
+    "originalContributions": [
+      "Divisibility: deg(minpoly K x) | [L:K] via tower law through K(x)",
+      "Tower decomposition: [L:K] = deg(minpoly K x) * [L:K(x)]",
+      "Degree drop in towers: deg(minpoly L x) <= deg(minpoly K x)",
+      "Irreducibility criterion: equality when base-changed minpoly stays irreducible",
+      "Quadratic extension: deg(minpoly K x) in {1, 2} forces classification",
+      "Splitting field bound: deg(irred p) | finrank K (SplittingField p)"
+    ],
+    "prerequisites": [
+      "IntermediateField.adjoin.finrank: deg(minpoly K x) = finrank K K(x)",
+      "Module.finrank_mul_finrank: tower law for finrank",
+      "minpoly.dvd: minimal polynomial divides any annihilating polynomial",
+      "minpoly.eq_of_irreducible_of_monic: characterization of minimal polynomial"
+    ],
+    "dateAdded": "2026-03-28",
+    "axiomCount": 0,
+    "lineCount": 262,
+    "mathlib_version": "4.26.0",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "theoremCount": 16,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The connection between minimal polynomial degree and field extension degree traces back to the foundational period of abstract algebra in the early 20th century, building on 19th-century work by Galois, Dedekind, and Kronecker.\n\nKronecker (1882) showed that for an irreducible polynomial $p(x)$ of degree $d$ over a field $K$, the quotient ring $K[x]/(p(x))$ is a field extension of dimension $d$ over $K$ — effectively proving $[K(x):K] = \\deg(\\text{minpoly}_K(x))$ in modern language, though without the tower law formalism. The tower law itself, $[E:K] = [E:L] \\cdot [L:K]$, was systematized by Emmy Noether and her school in the 1920s-30s as part of the abstract algebraic approach to field theory.\n\nThe divisibility consequence $\\deg(\\text{minpoly}_K(x)) \\mid [L:K]$ has profound implications: it immediately proves that $\\sqrt{2} \\notin \\mathbb{Q}(\\sqrt[3]{2})$ (degree 2 does not divide degree 3), and more generally constrains which algebraic numbers can live in which extensions. The degree drop in towers — the fact that the minimal polynomial degree can only decrease when the base field is enlarged — is the algebraic manifestation of the fact that more roots become available in larger fields. Galois's original insight was that the structure of these degree drops encodes the symmetry group of the extension.\n\nThe splitting field connection formalized here relates to the fundamental theorem of Galois theory: $\\deg(p) \\mid [\\text{SF}(p):K]$, with equality precisely for cyclic extensions. Lang's *Algebra* (Ch. V) and Dummit-Foote (Ch. 13) are standard references.",
+    "problemStatement": "**What is the relationship between [L:K] and the degree drop of the minimal polynomial?**\n\nFor x in L with [L:K] finite:\n1. deg(minpoly K x) = finrank K K(x)\n2. deg(minpoly K x) | [L:K]\n3. [L:K] = deg(minpoly K x) * [L:K(x)]\n\nIn towers K -> L -> E:\n4. deg(minpoly L x) <= deg(minpoly K x)\n5. Equality iff minpoly K x stays irreducible over L",
+    "text": "Formalizes the relationship between [L:K] and the minimal polynomial degree: deg(minpoly K x) = finrank K K(x), deg(minpoly K x) | [L:K], tower decomposition, degree drop bounds, and characterization of when the degree is preserved.",
+    "proofStrategy": "The formalization proceeds in five parts:\n\n1. **Simple Extension** (Part I): Connect minimal polynomial degree to finrank via IntermediateField.adjoin.finrank.\n\n2. **Divisibility** (Part II): Prove deg(minpoly K x) | [L:K] using the tower law [L:K] = [K(x):K] * [L:K(x)].\n\n3. **Tower Properties** (Part III): Prove degree only decreases in towers, with equality when base-changed minpoly stays irreducible.\n\n4. **Splitting Fields** (Part IV): Connect to splitting field dimension via Galois theory.\n\n5. **Special Cases** (Part V): Quadratic extensions force deg in {1, 2}.",
+    "keyInsights": [
+      "deg(minpoly K x) = finrank K K(x): the minimal polynomial degree IS the dimension of the simple extension, connecting algebra to linear algebra.",
+      "deg(minpoly K x) | [L:K]: the tower law [L:K] = [K(x):K] * [L:K(x)] gives divisibility immediately.",
+      "Degree only decreases in towers because the L-minpoly divides the base-changed K-minpoly, and divisor degree <= dividend degree.",
+      "The degree drop occurs exactly when minpoly_K(x) factors nontrivially over L. No drop means the polynomial stays irreducible.",
+      "For quadratic extensions, the divisibility constraint forces deg(minpoly) in {1, 2}, completely classifying elements."
+    ],
+    "prerequisites": [
+      "Field theory (field extensions, minimal polynomials, splitting fields)",
+      "Linear algebra (dimension, tower law)",
+      "Ring theory (polynomial divisibility, irreducibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Imports Mathlib, module docstring explaining the five main results relating minimal polynomial degree to field extension degree. Opens Polynomial namespace, sets up variable declarations for fields K, L, E and algebraic elements.",
+      "mathContext": "Key question: for $x \\in L$ algebraic over $K$ with $[L:K]$ finite, what is the relationship between $\\deg(\\text{minpoly}_K(x))$ and $[L:K]$?"
+    },
+    {
+      "id": "simple-extension",
+      "title": "Part I: Simple Extension Dimension",
+      "startLine": 26,
+      "endLine": 46,
+      "summary": "Connects minimal polynomial degree to finrank: deg(minpoly K x) = finrank K K(x).",
+      "mathContext": "The fundamental bridge: $[K(x):K] = \\deg(\\text{minpoly}_K(x))$."
+    },
+    {
+      "id": "divisibility",
+      "title": "Part II: Degree Divides Extension Degree",
+      "startLine": 48,
+      "endLine": 91,
+      "summary": "Proves deg(minpoly K x) | [L:K] via tower law, derives bounds and generator characterization.",
+      "mathContext": "$\\deg(\\text{minpoly}_K(x)) \\mid [L:K]$ via $[L:K] = [K(x):K] \\cdot [L:K(x)]$."
+    },
+    {
+      "id": "tower",
+      "title": "Part III: Degree Drop in Towers",
+      "startLine": 93,
+      "endLine": 160,
+      "summary": "Proves degree only decreases in towers, with equality criterion via irreducibility.",
+      "mathContext": "In K -> L -> E: $\\deg(\\text{minpoly}_L(x)) \\leq \\deg(\\text{minpoly}_K(x))$, with equality iff $\\text{minpoly}_K(x)$ stays irreducible over L."
+    },
+    {
+      "id": "splitting",
+      "title": "Part IV: Splitting Field Connection",
+      "startLine": 162,
+      "endLine": 190,
+      "summary": "Proves deg(irred p) | finrank K (SplittingField p) via Galois theory.",
+      "mathContext": "For irreducible monic $p$: $\\deg(p) \\mid [\\text{SF}(p):K]$."
+    },
+    {
+      "id": "special-cases",
+      "title": "Part V: Special Cases and Corollaries",
+      "startLine": 192,
+      "endLine": 230,
+      "summary": "Quadratic extension classification and generator characterization.",
+      "mathContext": "For $[L:K] = 2$: $\\deg(\\text{minpoly}_K(x)) \\in \\{1, 2\\}$ for all $x \\in L$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary and Verification",
+      "startLine": 231,
+      "endLine": 262,
+      "summary": "Summary section recapping the five main results and their Mathlib dependencies. Closes the MinpolyDegreeRelations namespace.",
+      "mathContext": "Summary of the five results: (1) dimension-degree bridge, (2) divisibility, (3) tower decomposition, (4) degree drop, (5) irreducibility criterion."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05",
+      "relationship": "extends",
+      "description": "Parent proof on minimal polynomial reduction in K-algebras. This OQ-02 specializes to field extensions and connects to finrank."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01",
+      "relationship": "related",
+      "description": "Sibling OQ on nonderogatory matrices and cyclic vectors, a different specialization of the minpoly reduction framework."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Lang, Serge",
+      "title": "Algebra",
+      "year": "2002",
+      "venue": "Springer GTM 211, 3rd edition",
+      "note": "Chapter V develops the theory of field extensions, minimal polynomials, and the tower law"
+    },
+    {
+      "authors": "Dummit, David S.; Foote, Richard M.",
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "Wiley, 3rd edition",
+      "note": "Chapter 13 covers field extensions and the degree formula [L:K] = deg(minpoly)"
+    }
+  ],
+  "parentProof": "cayley-hamilton-minpoly-oq-05",
+  "openQuestion": "What is the relationship between [L:K] and the degree drop of the minimal polynomial?",
+  "tags": [
+    "abstract-algebra",
+    "linear-algebra",
+    "minimal-polynomial",
+    "field-extensions"
+  ],
+  "conclusion": {
+    "summary": "Complete formalization of the relationship between field extension degree and minimal polynomial degree in Lean 4 with 16 theorems, 0 sorries, 0 axioms. The key result is deg(minpoly K x) | [L:K], proved via the tower decomposition [L:K] = deg(minpoly K x) * [L:K(x)]. In towers, degree can only decrease, with equality when the minimal polynomial stays irreducible.",
+    "implications": "**Algebraic number theory**: The divisibility $\\deg(\\text{minpoly}_K(x)) \\mid [L:K]$ is the foundation of dimension theory for number fields. It controls which algebraic numbers can live in extensions of a given degree and immediately gives classical impossibility results (e.g., $\\sqrt{2} \\notin \\mathbb{Q}(\\sqrt[3]{2})$).\n\n**Galois theory**: The degree drop criterion — equality iff the minimal polynomial stays irreducible — is the algebraic core of the Galois correspondence. When $K \\subseteq L \\subseteq E$ is a Galois extension, the degree drop from $K$ to $L$ reflects the quotient structure of the Galois group.\n\n**Formalization methodology**: The tower law approach demonstrates a productive Lean 4 pattern for field theory: derive divisibility from the multiplicativity of `finrank` rather than from polynomial arithmetic directly. This avoids the complexity of working with polynomial factorization in Lean and instead leverages Mathlib's well-developed linear algebra API.",
+    "openQuestions": [
+      "Can the exact degree drop be characterized in terms of the factorization type of minpoly_K(x) over L?",
+      "How does the degree relationship extend to inseparable extensions in positive characteristic?",
+      "Can we formalize the primitive element theorem: every finite separable extension has an element with deg(minpoly K x) = [L:K]?"
+    ]
+  },
+  "sorries": 0
+}

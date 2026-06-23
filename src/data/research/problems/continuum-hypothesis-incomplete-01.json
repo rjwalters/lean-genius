@@ -1,0 +1,96 @@
+{
+  "slug": "continuum-hypothesis-incomplete-01",
+  "title": "Reduce axioms in the CH independence gallery proof",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\operatorname{Con}(\\mathrm{ZFC}) \\to \\operatorname{Con}(\\mathrm{ZFC}+\\mathrm{CH}) \\quad\\text{and}\\quad \\operatorname{Con}(\\mathrm{ZFC}) \\to \\operatorname{Con}(\\mathrm{ZFC}+\\neg\\mathrm{CH});\\ \\text{reduce the four Lean assumptions currently used for this gallery proof.}",
+    "plain": "The gallery proof `ContinuumHypothesis.lean` already presents CH independence by axiomatizing Godel's constructible-universe side and Cohen's forcing side. This research problem asks whether any of its four remaining assumptions can be derived from Mathlib set-theory infrastructure, or whether the abstract model structures can be tightened without pretending to re-prove independence from scratch.",
+    "whyMatters": [
+      "CH independence is a central result of modern set theory, and reducing the gallery axiom surface would make the formalization more honest and useful.",
+      "The task clarifies exactly which constructible-universe and forcing ingredients are missing from the current Lean development.",
+      "Even a partial reduction would improve the surrounding cardinal, ordinal, and model-theory infrastructure for later foundations work."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`ContinuumHypothesis.lean` is recorded locally as 396 lines with 0 sorries and 4 axioms.",
+      "The parent proof already uses Mathlib cardinal/ordinal infrastructure, including Cardinal, Ordinal, Aleph, and Cardinal.continuum.",
+      "Related open-question work reduced the CH-independence axiom surface before this task; this slug starts from the remaining four assumptions."
+    ],
+    "open": [
+      "Whether `L_exists` can be derived from the available Mathlib set-theory axioms.",
+      "Whether `L_satisfies_CH` can be proved using existing ordinal/cardinal machinery.",
+      "Whether a usable forcing or generic-extension framework already exists locally or in Mathlib.",
+      "Whether `ConstructibleUniverse` and `ForcingExtension` can be made more concrete without adding a full forcing development."
+    ],
+    "goal": "Reduce the four current gallery assumptions toward zero where Mathlib supports it, or document the precise constructible-universe and forcing infrastructure gaps that block further discharge."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-04T18:43:45-07:00",
+    "iteration": 1,
+    "focus": "Understand the existing CH independence gallery proof and its four remaining assumptions before choosing an axiom-reduction route.",
+    "blockers": [
+      "Full forcing is not present in the local notes as available Mathlib infrastructure.",
+      "A constructible-universe hierarchy for L would require ordinal-indexed model machinery beyond what the local notes identify as available."
+    ],
+    "nextAction": "Read the parent Lean proof and related OQ files, then survey Mathlib cardinal/ordinal APIs for any direct discharge of the L-side or forcing-side assumptions.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "OBSERVE: local notes frame this as a gallery axiom-reduction problem for the existing CH independence proof, not a from-scratch independence formalization. The parent proof currently relies on four assumptions: existence of L, CH in L, existence of a forcing extension, and not-CH in that extension.",
+    "builtItems": [
+      "`ContinuumHypothesis.lean`: parent gallery proof, 0 sorries, 4 axioms, recorded locally as 396 lines.",
+      "`ContinuumHypothesisOQ01.lean` and `ContinuumHypothesisOQ02.lean`: related CH open-question formalizations.",
+      "Local research files under `research/problems/continuum-hypothesis-incomplete-01/` with problem statement and OBSERVE-state tracking."
+    ],
+    "insights": [
+      "The relevant Lean surface is the four named assumptions `L_exists`, `L_satisfies_CH`, `forcing_extension_exists`, and `forcing_violates_CH`.",
+      "Mathlib cardinal and ordinal APIs may help with cardinal-arithmetic consequences, but the local notes do not identify a full constructible-universe or forcing implementation.",
+      "Useful progress can be partial: eliminate one or two assumptions, strengthen the abstract structures, or produce a precise gap report."
+    ],
+    "mathlibGaps": [
+      "No forcing monad, generic filter machinery, or concrete Cohen extension framework is identified in the local notes.",
+      "The constructible universe L would need an ordinal-indexed hierarchy and model-of-ZFC infrastructure not shown as already available."
+    ],
+    "nextSteps": [
+      "Inspect `ContinuumHypothesis.lean` to map each assumption to the structures it inhabits.",
+      "Search Mathlib for constructible-universe, model-theory, forcing, cardinal, and ordinal lemmas relevant to each assumption.",
+      "Attempt the easiest partial discharge first; if none is available, write a gap report tied to the four current assumptions."
+    ]
+  },
+  "tags": [
+    "set-theory",
+    "foundations",
+    "logic",
+    "independence",
+    "wiedijk-100",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "continuum-hypothesis"
+  ],
+  "references": {
+    "papers": [
+      "Godel, The Consistency of the Axiom of Choice and of the Generalized Continuum Hypothesis (1940)",
+      "Cohen, The Independence of the Continuum Hypothesis (1963)"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.SetTheory.Ordinal.Basic"
+    ]
+  },
+  "started": "2026-03-24T00:48:59.817Z",
+  "lastUpdate": "2026-03-24T00:48:59.817Z",
+  "significance": 8,
+  "tractability": 6
+}

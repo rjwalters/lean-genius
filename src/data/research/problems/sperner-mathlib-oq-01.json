@@ -1,0 +1,128 @@
+{
+  "slug": "sperner-mathlib-oq-01",
+  "title": "Weakened CellComplex axioms: hypergraphs and non-pure complexes (axioms audit of SpernerMathlib.lean)",
+  "phase": "PREP",
+  "status": "in-progress",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Identify the minimal axiomatic surface on which the door-counting parity argument in }\\texttt{SpernerMathlib.lean}\\text{ goes through, and ship a hypergraph-generalised variant }\\texttt{SpernerMathlibHyper.lean}\\text{ replacing the fixed index type }\\mathrm{Fin}(d+1)\\text{ with a cell-dependent }\\iota: \\mathrm{Cell}\\to\\mathrm{Type}^*.",
+    "plain": "Audit the abstract cell-complex axioms in proofs/Proofs/SpernerMathlib.lean (897 lines, 0 sorries) and identify the minimal hypotheses on `vertex` and `adj` that support the door-counting parity argument. Two generalisations are proposed: (A) hypergraph — replace the uniform `Fin (d+1)` face index with a cell-dependent index type `ι s`; (B) non-pure complex — allow cells of varying dimensions. S1 OBSERVE locks the formal scope for both, supplies a Lean skeleton for the hypergraph version (~120 LOC, 0–1 sorries), and conjectures that non-pure generalisation reduces to the pure case via restriction.",
+    "whyMatters": [
+      "Reusability: Sperner.even_card_fpf_invol is already abstracted for Tucker / Borsuk-Ulam; OQ-01 lifts the same reusability to the door-counting pipeline.",
+      "Hypergraph Sperner enables future formalisations of colorful KKM-type theorems and Kalai's conjecture variants.",
+      "The file is named SpernerMathlib.lean — a clean axiomatic surface is a prerequisite for upstream Mathlib review."
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [
+      "OQ-01-A (hypergraph): replace Fin (d+1) with ι : Cell → Type*; conjecture proof goes through with ~120 LOC mechanical adaptation.",
+      "OQ-01-B (non-pure): mixed-dimension cells break the parity statement at the type level; salvage via restriction to the pure top-dimensional sub-complex — yields no new content.",
+      "OQ-01-C (boundary-axioms minimality): hadj_ne is load-bearing under hadj_symm + hadj_vertex alone because adj s k = some ⟨s, k⟩ (self-face-loop) is otherwise admitted."
+    ],
+    "goal": "Ship proofs/Proofs/SpernerMathlibHyper.lean with the hypergraph-generalised IsDoorHyper, IsPanchromaticHyper, even_card_interior_doors_hyper, sperner_parity_hyper, exists_panchromatic_hyper (~120 Lean LOC, 0–1 sorries); preserve the original SpernerMathlib.lean unchanged."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-05T00:00:00Z",
+    "iteration": 14,
+    "focus": "S5 ACT (researcher-1, 2026-06-05): door_count_parity_hyper equality case closed via Fintype.equivFinOfCardEq + Equiv.swap (eP top) (Fin.last n) transport, then SpernerMathlib.door_count_parity n f' invocation. LHS bridge: Finset.card_equiv eι + bidirectional predicate iff (~50 LOC). RHS bridge: surjectivity iff via Equiv.apply_symm_apply / Equiv.symm_apply_apply (~10 LOC). Final combine: rw [hlhs_card, hparent]; (if_congr hsurj_iff rfl rfl).symm. File 382 -> 472 LOC. Sorries 2 -> 1. Docker build pending. Remaining sorry: sperner_parity_hyper (~80 LOC of Σ-type sum bookkeeping). Deviation from S2d PREP: Fin.eq_castSucc_of_ne_last replaced with explicit (eP p).val < n extraction (the worktree .lake is a recursive symlink; the explicit form is +5 LOC but avoids dependency uncertainty).",
+    "blockers": [],
+    "nextAction": "S5 — close the equality case |ι_one| = |P| of door_count_parity_hyper via Fintype.equivOfCardEq + top↔Fin.last d permutation transport to parent SpernerMathlib.door_count_parity (~25 LOC). Then S6 — close sperner_parity_hyper via Σ-versions of card_doors_eq_sum (Fintype.sum_sigma) and doors_partition (~80 LOC). After both, file reaches 0 sorries and unlocks exists_panchromatic_hyper as a fully-verified hypergraph Sperner theorem. S7 specialization bridge after that.",
+    "attemptCounts": {
+      "total": 14,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S5 ACT shipped 2026-06-05 (researcher-1): door_count_parity_hyper equality case |ι_one|=|P| closed via Fintype.equivFinOfCardEq + Equiv.swap top-normalisation, then SpernerMathlib.door_count_parity n f' invocation. File 382 -> 472 LOC, sorries 2 -> 1. Predecessors merged: S4 ACT (even_card_interior_doors_hyper, 2026-06-04, sorries 3->2), S3 ACT (strict case of door_count_parity_hyper, 2026-06-01, ~38 LOC pigeonhole), S2 ACT (skeleton, 2026-05-31, 3 sorries). One sorry remains: sperner_parity_hyper Σ-sum chain (mechanical given §3/§4 bearers per S2c PREP §4).",
+    "builtItems": [
+      "research/problems/sperner-mathlib-oq-01/problem.md (formal signature targets, three sub-OQs, acceptance criteria)",
+      "research/problems/sperner-mathlib-oq-01/knowledge.md (axioms inventory, per-step weakening map, Mathlib alignment, S2 Lean skeleton, non-pure counter-example sketch, risk register)",
+      "research/problems/sperner-mathlib-oq-01/state.md (phase OBSERVE, S2 scope lock, race awareness)",
+      "proofs/Proofs/SpernerMathlibHyper.lean (472 LOC, 1 sorry — only sperner_parity_hyper Σ-sum chain remains): hypergraph generalisation of Sperner door-counting parity (S2 ACT 2026-05-31 + S3 ACT 2026-06-01 + S4 ACT 2026-06-04 + S5 ACT 2026-06-05, researcher-1; Docker-verified at S3/S4)",
+      "Decidable instances for IsPanchromaticHyper and IsDoorHyper (auto-derived via Fintype.decidableForallFintype + decidableEq chain)",
+      "Σ-type adjacency involution adjMapHyper (private) with adjHyper_some_of_ne_none extractor",
+      "Door-transfer-through-shared-face proven for the palette-relative form (isDoorHyper_of_shared_face + isDoorHyper_iff_of_adj)"
+    ],
+    "insights": [
+      "The current file deliberately uses hypotheses-as-parameters rather than a structure CellComplex — this design choice already pre-empts most of the hypergraph generalisation cost.",
+      "Replacing Fin (d+1) with ι : Cell → Type* requires also abstracting the coloring codomain to a palette P of fixed cardinality, so that 'panchromatic' has a dimension-independent meaning.",
+      "Sperner's parity fails ill-formedly on non-pure complexes — not because the parity statement is false, but because mixed-dimensional cells cannot share a common notion of 'doors'.",
+      "hadj_ne (adjacent cells distinct) is load-bearing because hadj_vertex + hadj_symm alone admit the self-face-loop corner adj s k = some ⟨s, k⟩.",
+      "Sibling sperner-simplicial-bridge-oq-01 (concrete simplicial bridge, PR #18234 merged 2026-05-12) is complementary, not competing: the hypergraph API here is abstract; the simplicial bridge there is concrete.",
+      "S1b OBSERVE (#18344): the proposed IsDoorHyper from knowledge.md § 4.1 lacked a top-color asymmetry needed for the parity argument. Fix: parameterise on a fixed top : P. This is structural — without it, the hypergraph parity claim is ill-typed.",
+      "S1e OBSERVE (#18411): introduces the h-iota-size : forall s, card (iota s) ≤ card P constraint. This is necessary for the per-cell door-parity step to make sense (a door has card (iota s) − 1 colors used; without h-iota-size, the count is unsigned). Refines knowledge.md § 4.1 adjacency abstraction.",
+      "S2c PREP (#18688) + S2d PREP (#18727): door_count_parity_hyper has a clean two-case architecture under h-iota-size. Case card-equality: Equiv-transport to the pure case via Fintype.card_eq.mp. Case card-strict: per-cell zero-or-even count via at-least-one-missing-color argument. S2d ships paste-ready Mathlib bearer chains for both cases.",
+      "S2e PREP (#18788): even_card_interior_doors_hyper uses Sigma-pair involution on the (s, k) Sigma type. New Sigma-bearers cited: Sigma.instFintype, Sigma.instDecidableEq (for the involution well-definedness).",
+      "S2 ACT (2026-05-31, researcher-1): the Σ-type involution architecture transfers verbatim from the parent Cell × Fin (d+1) version; the structural lifting cost is concentrated in (a) the cardinality-dichotomy step for door_count_parity_hyper and (b) the Σ-type analogues of card_doors_eq_sum / doors_partition for sperner_parity_hyper. The shared-face door-transfer lemma generalises without any extra hypothesis beyond hadj_vertex.",
+      "Variable section structure: keeping V, Cell, ι, P in separate sections per architectural block (Setup, Definitions, PerCellParity, GlobalParity, MainTheorem) avoids carrying decidability instances across irrelevant theorems. PerCellParity uses a non-dependent ι_one : Type* because the per-cell statement does not need the Cell-indexed family.",
+      "S3 ACT (2026-06-01, researcher-1): strict case |ι_one| < |P| of door_count_parity_hyper is a clean pigeonhole — for each candidate door k, the hypothesis ∀ p ≠ top, ∃ i ≠ k, f i = p exhibits an inclusion `univ.erase top ⊆ (univ.erase k).image f`, which via card_le_card + card_image_le forces card P ≤ card ι_one, contradicting strict<. omega cannot close the ℕ-truncated subtraction directly through opaque image-cards; an explicit `calc` adding 1 to both sides (using Fintype.card_pos_iff to exhibit positivity from `k` and `top`) is required. Closing this branch leaves only the equality case |ι_one|=|P| as the remaining sorry inside door_count_parity_hyper.",
+      "S3 ACT confirms the G9 lake self-loop qualifier (memory feedback_g9_qualifier_masks_real_bugs) is OBSOLETE for this slug: ./proofs/scripts/docker-build.sh Proofs.SpernerMathlibHyper builds clean (7744 jobs) on both the pre-S3 file and the post-S3 file. Prior 'build pending' from S2 ACT is now verified.",
+      "S4 ACT (2026-06-04, researcher-1): even_card_interior_doors_hyper closes via Sperner.even_card_fpf_invol applied to adjMapHyper adj on the Σ-type filter, exactly mirroring the parent's even_card_interior_doors. Two Lean-elaboration quirks vs. the S2e PREP recipe: (a) `simp only [adjMapHyper, hadj_eq, hadj_back]` does NOT reduce the inner match — `simp only` substitutes adj p.1 p.2 with `some sk` via hadj_eq but the resulting `match some sk with | some sk' => sk' | none => p` is left unreduced. The workaround is a local lemma `hMap : ∀ q sk, adj q.1 q.2 = some sk → adjMapHyper adj q = sk` proven by `unfold adjMapHyper; rw [hq]` (unfold reduces the match at the kernel level). (b) Lean's structure-eta machinery closes `⟨p.1, p.2⟩ = p` as definitional rfl after the `rw [h1, h2]` chain — so the involution step needs no explicit Sigma.eta. The fixed-point-free step still uses `(Sigma.eta p).trans heq.symm` because there the goal shape is `⟨s', k'⟩ ≠ p`, not the eta-reducible `⟨p.1, p.2⟩ ≠ p`.",
+      "S5 ACT (2026-06-05, researcher-1): door_count_parity_hyper equality case closes via the S2d PREP recipe with three small deviations. (a) Fin.eq_castSucc_of_ne_last (cited in S2d PREP §2.3.1) replaced with explicit (eP p).val < n extraction using rcases lt_or_eq_of_le + Fin.ext — the .lake symlink in the worktree is recursive, so the named bearer could not be locally verified; the explicit form is +5 LOC vs. the named-lemma route. (b) hp_ne_top derivation expanded: S2d closes with a one-line omega chain, but the elaboration needed the j.val = (Fin.last n).val step to be made explicit via congr_arg Fin.val + simp [Fin.last] + Nat.ne_of_lt. (c) Final combine: rw [hlhs_card, hparent] leaves Function.Surjective f' on LHS and Function.Surjective f on RHS — closed by (if_congr hsurj_iff rfl rfl).symm. The 90-LOC block is consistent with S2d PREP's 22-28 LOC estimate when accounting for auxiliary setup (set n, hcardP_succ, let-bindings, hparent invocation)."
+    ],
+    "mathlibGaps": [
+      "Mathlib.Combinatorics.AbstractSimplicialComplex represents cells as Finset V, not as indexed Fin n → V — incompatible with the door-counting parity.",
+      "Mathlib.AlgebraicTopology.SimplicialSet is category-theoretic and heavier than needed.",
+      "No Mathlib API for cell-dependent dependent-index face complexes."
+    ],
+    "nextSteps": [
+      "S6 (next): close sperner_parity_hyper sorry via Σ-versions of card_doors_eq_sum (using Finset.sum_sigma or Fintype.sum_sigma) and doors_partition (mechanical Finset.disjoint_filter). After S6 the file reaches 0 sorries and unlocks exists_panchromatic_hyper as a fully-verified hypergraph Sperner theorem. ~80 LOC mechanical adaptation of parent SpernerMathlib.sperner_parity.",
+      "S7 (after S6): specialization bridge SpernerMathlib.IsDoor ↔ IsDoorHyper (ι := fun _ => Fin (d+1)) (top := Fin.last d) — ~25 LOC per S2 PREP §4 explicit version.",
+      "S8 (deferred): OQ-01-B non-pure complex restriction lemma (cosmetically heavy).",
+      "S9 (deferred): OQ-01-C boundary-axioms minimality formal demonstration."
+    ]
+  },
+  "tags": [
+    "set-theory",
+    "combinatorics",
+    "topology",
+    "sperner",
+    "cell-complex",
+    "hypergraphs",
+    "axioms-audit",
+    "mathlib",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "sperner-mathlib",
+    "sperner-simplicial-bridge-oq-01",
+    "sperner-simplicial-instance-oq-05",
+    "sperner-ndim-mathlib-oq-01"
+  ],
+  "references": {
+    "papers": [
+      {
+        "author": "Sperner, E.",
+        "year": 1928,
+        "title": "Neuer Beweis für die Invarianz der Dimensionszahl und des Gebietes",
+        "venue": "Abh. Math. Sem. Univ. Hamburg 6: 265–272"
+      },
+      {
+        "author": "De Longueville, M.",
+        "year": 2013,
+        "title": "A Course in Topological Combinatorics, §2 (Sperner / KKM family)",
+        "venue": "Springer"
+      },
+      {
+        "author": "Bárány, I.",
+        "year": 2010,
+        "title": "Sperner's lemma and discrete fixed-point theory",
+        "venue": "Handbook of Discrete and Computational Geometry"
+      }
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Combinatorics.AbstractSimplicialComplex (not subsumed; uses Finset V, not indexed faces)",
+      "Mathlib.AlgebraicTopology.SimplicialSet (heavier; not relevant)"
+    ]
+  },
+  "started": "2026-05-12T20:45:00Z",
+  "lastUpdate": "2026-06-04T07:30:00.000Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": []
+}

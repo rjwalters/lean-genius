@@ -1,0 +1,233 @@
+[
+  {
+    "id": "ann-leibniz-alt-harmonic",
+    "proofId": "leibniz-pi-oq-02",
+    "range": {
+      "startLine": 53,
+      "endLine": 70
+    },
+    "type": "concept",
+    "title": "Alternating Harmonic Series: $\\eta(1) = \\ln 2$",
+    "content": "Defines the alternating harmonic partial sum $\\sum_{k=1}^n (-1)^{k-1}/k$ and states that it converges to $\\ln 2$. This is the Dirichlet eta function at $s = 1$: $\\eta(1) = 1 - 1/2 + 1/3 - 1/4 + \\cdots = \\ln 2$. It is also the Taylor series of $\\ln(1+x)$ at $x = 1$ (conditionally convergent). The convergence statement is left as a `sorry`, to be discharged by connecting to Mathlib's $\\ln(1+x)$ series extended to the boundary $x = 1$ via Abel's theorem.",
+    "mathContext": "$\\eta(1) = \\sum_{k=1}^{\\infty} \\frac{(-1)^{k-1}}{k} = \\ln 2 \\approx 0.6931$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Dirichlet eta function",
+      "Taylor series of ln(1+x)",
+      "alternating series test",
+      "Abel's theorem"
+    ],
+    "prerequisites": [
+      "Tendsto",
+      "nhds",
+      "Real.log"
+    ]
+  },
+  {
+    "id": "ann-leibniz-beta-function",
+    "proofId": "leibniz-pi-oq-02",
+    "range": {
+      "startLine": 76,
+      "endLine": 90
+    },
+    "type": "definition",
+    "title": "Dirichlet Beta Function Partial Sums",
+    "content": "Defines the partial sum of the Dirichlet beta function $\\beta_n(s) = \\sum_{k=0}^{n-1} (-1)^k/(2k+1)^s$ and restates the Leibniz formula $\\beta(1) = \\pi/4$ in this framework (the `dirichlet_beta_one` theorem, left as a `sorry`). The beta function partial sum is the workhorse definition of the file: all subsequent results for $\\beta(2)$ (Catalan) and $\\beta(3)$ ($\\pi^3/32$) are stated as limits of this same function at different values of $s$.",
+    "mathContext": "$\\beta_n(s) = \\sum_{k=0}^{n-1} \\frac{(-1)^k}{(2k+1)^s}$, with $\\lim_{n \\to \\infty} \\beta_n(1) = \\pi/4$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Dirichlet beta function",
+      "Leibniz formula",
+      "partial sums"
+    ],
+    "prerequisites": [
+      "Finset.range",
+      "BigOperators",
+      "rpow"
+    ]
+  },
+  {
+    "id": "ann-leibniz-catalan",
+    "proofId": "leibniz-pi-oq-02",
+    "range": {
+      "startLine": 96,
+      "endLine": 119
+    },
+    "type": "concept",
+    "title": "Catalan's Constant: $G = \\beta(2)$",
+    "content": "Defines Catalan's constant $G = \\sum_{n=0}^{\\infty} (-1)^n/(2n+1)^2 \\approx 0.9159$ as $\\beta(2)$, the Dirichlet beta function at $s = 2$. States convergence (`catalan_series_convergent`), positivity ($G > 0$, `catalan_pos`), and the tautological identity $G = \\beta(2)$ — all left as `sorry`. Catalan's constant appears in combinatorics (counting staircase polygons), statistical mechanics, and evaluation of definite integrals like $\\int_0^1 \\arctan(x)/x\\, dx$. Its irrationality is a major open problem — Zudilin (2001) proved at least one of $\\beta(2)$ and $\\beta(4)$ is irrational, but which one remains unknown.",
+    "mathContext": "$G = \\beta(2) = \\sum_{n=0}^{\\infty} \\frac{(-1)^n}{(2n+1)^2} = 1 - \\frac{1}{9} + \\frac{1}{25} - \\cdots \\approx 0.9159$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Catalan's constant",
+      "Dirichlet beta function",
+      "irrationality conjecture",
+      "Zudilin's theorem"
+    ],
+    "prerequisites": [
+      "tsum",
+      "dirichletBetaPartialSum",
+      "Tendsto"
+    ]
+  },
+  {
+    "id": "ann-leibniz-beta-three",
+    "proofId": "leibniz-pi-oq-02",
+    "range": {
+      "startLine": 125,
+      "endLine": 133
+    },
+    "type": "concept",
+    "title": "$\\beta(3) = \\pi^3/32$: Higher-Order Formula",
+    "content": "States that $\\beta(3) = \\pi^3/32 = 1 - 1/27 + 1/125 - 1/343 + \\cdots$. Unlike $\\beta(1) = \\pi/4$ (which follows from the arctangent Taylor series), this result requires deeper analytic methods: either Fourier analysis (expanding $x^2$ on $[-\\pi,\\pi]$) or Euler's original approach via partial fractions of $\\sec(x)$. The `sorry` marks this as a genuinely difficult result.",
+    "mathContext": "$\\beta(3) = \\sum_{n=0}^{\\infty} \\frac{(-1)^n}{(2n+1)^3} = \\frac{\\pi^3}{32}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Fourier series",
+      "Euler's evaluation methods",
+      "higher beta values"
+    ],
+    "prerequisites": [
+      "Fourier analysis",
+      "dirichletBetaPartialSum"
+    ]
+  },
+  {
+    "id": "ann-leibniz-eta-values",
+    "proofId": "leibniz-pi-oq-02",
+    "range": {
+      "startLine": 139,
+      "endLine": 162
+    },
+    "type": "concept",
+    "title": "Dirichlet Eta Values: $\\eta(1) = \\ln 2$, $\\eta(2) = \\pi^2/12$",
+    "content": "Defines the eta partial sum $\\eta_n(s) = \\sum_{k=1}^{n} (-1)^{k-1}/k^s$ and states $\\eta(1) = \\ln 2$ (`dirichlet_eta_one`, repackaging the alternating harmonic series) and $\\eta(2) = \\pi^2/12$ (`dirichlet_eta_two`, the alternating Basel series). Both are left as `sorry`; $\\eta(2)$ follows from the eta-zeta relation applied to $\\zeta(2) = \\pi^2/6$.",
+    "mathContext": "$\\eta_n(s) = \\sum_{k=1}^{n} \\frac{(-1)^{k-1}}{k^s}$; $\\eta(1) = \\ln 2$, $\\eta(2) = \\frac{\\pi^2}{12}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Dirichlet eta function",
+      "Basel problem",
+      "alternating series"
+    ],
+    "prerequisites": [
+      "Finset.range",
+      "rpow",
+      "tsum"
+    ]
+  },
+  {
+    "id": "ann-leibniz-eta-zeta",
+    "proofId": "leibniz-pi-oq-02",
+    "range": {
+      "startLine": 168,
+      "endLine": 176
+    },
+    "type": "insight",
+    "title": "The Eta-Zeta Relation (Axiom)",
+    "content": "Axiomatizes the fundamental identity $\\eta(s) = (1 - 2^{1-s})\\zeta(s)$ for $s > 1$. This converts between alternating and non-alternating Dirichlet series: group the terms of $\\zeta(s)$ into even and odd indices, and use $\\sum_{\\text{even}} 1/n^s = 2^{-s}\\zeta(s)$. The axiom `eta_zeta_relation` is the file's sole assumption and is used to derive $\\eta(2) = \\pi^2/12$ from the Basel problem $\\zeta(2) = \\pi^2/6$. The identity also reveals that $\\eta(s) = 0$ when $2^{1-s} = 1$, giving non-trivial zeros at $s = 1 + 2\\pi ik/\\ln 2$.",
+    "mathContext": "$\\eta(s) = (1 - 2^{1-s})\\zeta(s)$ for $s > 1$. At $s = 2$: $\\eta(2) = (1 - 1/2) \\cdot \\pi^2/6 = \\pi^2/12$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Riemann zeta function",
+      "Dirichlet eta function",
+      "Basel problem",
+      "alternating series"
+    ],
+    "prerequisites": [
+      "tsum",
+      "rpow",
+      "analytic number theory"
+    ]
+  },
+  {
+    "id": "ann-leibniz-beta-eta-pattern",
+    "proofId": "leibniz-pi-oq-02",
+    "range": {
+      "startLine": 182,
+      "endLine": 200
+    },
+    "type": "insight",
+    "title": "The Unifying Pattern: $\\beta(s)$ and $\\eta(s)$ Table",
+    "content": "Presents the complete classification of Leibniz-type formulas in a unified table. The Dirichlet beta function $\\beta(s) = \\sum (-1)^n/(2n+1)^s$ captures odd-denominator alternating series, while the eta function $\\eta(s) = \\sum (-1)^{n-1}/n^s$ captures all-denominator alternating series. The pattern reveals a dichotomy: beta values at odd integers yield rational multiples of $\\pi^s$ (via Fourier analysis), while beta at even integers yield mysterious constants like Catalan's $G$. Eta values are always expressible via $\\zeta$ through the eta-zeta relation.",
+    "mathContext": "$\\beta(s) = L(s, \\chi_4)$: odd denominators $\\to$ $\\pi$-related. $\\eta(s) = (1-2^{1-s})\\zeta(s)$: all denominators $\\to$ $\\zeta$-related.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Dirichlet L-function",
+      "Riemann zeta function",
+      "character mod 4",
+      "Basel problem"
+    ],
+    "prerequisites": [
+      "Dirichlet characters",
+      "analytic continuation"
+    ]
+  },
+  {
+    "id": "ann-leibniz-partial-sum-recurrence",
+    "proofId": "leibniz-pi-oq-02",
+    "range": {
+      "startLine": 206,
+      "endLine": 218
+    },
+    "type": "concept",
+    "title": "Partial Sum Recurrences (Proved)",
+    "content": "Proves the alternating recurrence for both beta and eta partial sums: each new term adds $(-1)^n/(2n+1)^s$ or $(-1)^n/(n+1)^s$ respectively. These are direct applications of `Finset.sum_range_succ` — Mathlib's lemma that $\\sum_{k<n+1} f(k) = \\sum_{k<n} f(k) + f(n)$. These are among the few fully proved (sorry-free) results in the file, serving as building blocks for alternating series test arguments.",
+    "mathContext": "$\\beta_{n+1}(s) = \\beta_n(s) + (-1)^n/(2n+1)^s$ and $\\eta_{n+1}(s) = \\eta_n(s) + (-1)^n/(n+1)^s$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.sum_range_succ",
+      "telescoping",
+      "alternating series"
+    ],
+    "prerequisites": [
+      "Finset.sum_range_succ",
+      "BigOperators"
+    ]
+  },
+  {
+    "id": "ann-leibniz-character",
+    "proofId": "leibniz-pi-oq-02",
+    "range": {
+      "startLine": 220,
+      "endLine": 240
+    },
+    "type": "concept",
+    "title": "Dirichlet Character $\\chi_4$ and L-Function Structure",
+    "content": "Defines the non-principal Dirichlet character modulo 4: $\\chi_4(n) = 0$ if $2 \\mid n$, $1$ if $n \\equiv 1 \\pmod{4}$, $-1$ if $n \\equiv 3 \\pmod{4}$. Proves periodicity ($\\chi_4(n+4) = \\chi_4(n)$) via `Nat.add_mod` and verifies the first four values (both proved, sorry-free). The beta function is $\\beta(s) = L(s, \\chi_4) = \\sum \\chi_4(n)/n^s$, revealing that Leibniz's formula is the $s = 1$ evaluation of a Dirichlet L-function — the same objects whose non-vanishing on $\\text{Re}(s) = 1$ yields Dirichlet's theorem on primes in arithmetic progressions.",
+    "mathContext": "$\\chi_4(n) = \\begin{cases} 0 & 2 \\mid n \\\\ 1 & n \\equiv 1 \\pmod{4} \\\\ -1 & n \\equiv 3 \\pmod{4} \\end{cases}$, $\\beta(s) = L(s, \\chi_4)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Dirichlet character",
+      "L-function",
+      "multiplicativity",
+      "Dirichlet's theorem on primes"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "Nat.add_mod"
+    ]
+  },
+  {
+    "id": "ann-leibniz-irrationality",
+    "proofId": "leibniz-pi-oq-02",
+    "range": {
+      "startLine": 246,
+      "endLine": 275
+    },
+    "type": "concept",
+    "title": "Irrationality Status and Numerical Bounds",
+    "content": "Documents the irrationality landscape of Leibniz-type constants: $\\pi/4$, $\\ln 2$, $\\pi^2/12$, and $\\pi^3/32$ are all transcendental, but Catalan's constant $G$ has unknown irrationality — making it one of the most tantalizing open problems in transcendental number theory. Zudilin (2001) showed at least one of $\\beta(2), \\beta(4)$ is irrational, and Rivoal and Zudilin have produced further partial results. Also states numerical bounds $0.91 < G < 0.92$ (`catalan_bounds`) and the error bound $|\\beta_n(1) - \\pi/4| \\leq 1/(2n+1)$ (`leibniz_error_bound`), the standard alternating series estimation — both left as `sorry`.",
+    "mathContext": "Irrationality: $\\pi$, $\\ln 2$, $\\pi^2/6$ — known transcendental. $G = \\beta(2)$ — unknown. Error: $|\\beta_n(1) - \\pi/4| \\leq 1/(2n+1)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "transcendental number theory",
+      "Lindemann-Weierstrass theorem",
+      "Zudilin's theorem",
+      "alternating series estimation"
+    ],
+    "prerequisites": [
+      "irrationality proofs",
+      "error bounds"
+    ]
+  }
+]

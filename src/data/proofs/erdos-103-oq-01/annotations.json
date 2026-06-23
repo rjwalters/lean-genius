@@ -1,0 +1,283 @@
+[
+  {
+    "id": "ann-erdos103oq01-header",
+    "proofId": "erdos-103-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 48
+    },
+    "type": "concept",
+    "title": "Problem Overview and Imports",
+    "content": "Documents Erdős Problem #103 (1994): does $h(n) \\to \\infty$, where $h(n)$ counts incongruent optimal point configurations with minimum separation 1 and minimal diameter? The file proves metric properties, isometry group structure, congruence symmetry (eliminating a sorry from the parent file), and a counterexample showing that 'unbounded' does not imply 'tends to infinity' without monotonicity. Imports Mathlib for real analysis, square roots, and function inverse machinery.",
+    "mathContext": "Erdős Problem #103: Let $h(n)$ count the number of incongruent sets of $n$ points in $\\mathbb{R}^2$ that minimize diameter subject to pairwise distances $\\geq 1$. Does $h(n) \\to \\infty$?",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Erdős problems",
+      "optimal packing",
+      "point configurations",
+      "diameter minimization"
+    ],
+    "prerequisites": [
+      "metric geometry",
+      "real analysis",
+      "Lean 4 / Mathlib"
+    ]
+  },
+  {
+    "id": "ann-erdos103oq01-definitions",
+    "proofId": "erdos-103-oq-01",
+    "range": {
+      "startLine": 54,
+      "endLine": 72
+    },
+    "type": "definition",
+    "title": "Core Definitions: Points, Distance, Isometry, Congruence",
+    "content": "`PointConfig n` is a finite configuration $\\text{Fin}\\,n \\to \\mathbb{R}^2$. The Euclidean distance `pointDist` computes $\\sqrt{(p_1 - q_1)^2 + (p_2 - q_2)^2}$. `HasMinSeparation` requires all distinct pairs to have distance $\\geq 1$. `Isometry2D` is a structure wrapping a distance-preserving map with a proof that $d(\\sigma(p), \\sigma(q)) = d(p, q)$. `AreCongruent` relates two configurations that differ by an isometry: $\\exists \\sigma,\\, \\forall i,\\, Q_i = \\sigma(P_i)$.",
+    "mathContext": "$d(p,q) = \\sqrt{(p_1-q_1)^2 + (p_2-q_2)^2}$. Configuration $P \\cong Q$ iff $\\exists \\sigma : \\mathbb{R}^2 \\to \\mathbb{R}^2$ distance-preserving with $Q = \\sigma \\circ P$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euclidean distance",
+      "isometry",
+      "congruence",
+      "minimum separation",
+      "packing density"
+    ],
+    "prerequisites": [
+      "metric spaces",
+      "Prod type in Lean",
+      "function types"
+    ]
+  },
+  {
+    "id": "ann-erdos103oq01-metric-basics",
+    "proofId": "erdos-103-oq-01",
+    "range": {
+      "startLine": 79,
+      "endLine": 98
+    },
+    "type": "concept",
+    "title": "Foundational Metric Properties: Nonnegativity, Reflexivity, Symmetry",
+    "content": "Establishes the basic metric space axioms for `pointDist`. Nonnegativity follows directly from `Real.sqrt_nonneg`. Reflexivity ($d(p,p)=0$) reduces to $\\sqrt{0^2+0^2}=0$ via `sub_self`. The squared distance formula $d(p,q)^2 = (p_1-q_1)^2 + (p_2-q_2)^2$ uses `Real.sq_sqrt` (valid since the sum of squares is nonneg). Symmetry uses `ring` to show $(p_1-q_1)^2+(p_2-q_2)^2 = (q_1-p_1)^2+(q_2-p_2)^2$. These properties are standard but essential scaffolding for the definiteness proof that follows.",
+    "mathContext": "Nonnegativity: $d(p,q) = \\sqrt{(\\cdot)} \\geq 0$. Reflexivity: $d(p,p) = \\sqrt{0} = 0$. Symmetry: $(a-b)^2 = (b-a)^2$ by ring identity. Squared form: $d(p,q)^2 = (p_1-q_1)^2 + (p_2-q_2)^2$ by $\\sqrt{x}^2 = x$ for $x \\geq 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "metric space axioms",
+      "Real.sqrt_nonneg",
+      "Real.sq_sqrt",
+      "ring tactic"
+    ],
+    "prerequisites": [
+      "square root properties",
+      "basic real arithmetic"
+    ]
+  },
+  {
+    "id": "ann-erdos103oq01-definiteness",
+    "proofId": "erdos-103-oq-01",
+    "range": {
+      "startLine": 100,
+      "endLine": 115
+    },
+    "type": "concept",
+    "title": "Metric Definiteness: d(p,q) = 0 iff p = q",
+    "content": "The crucial metric property: $d(p,q) = 0 \\iff p = q$. The forward direction squares both sides ($d^2 = (p_1-q_1)^2 + (p_2-q_2)^2 = 0$), then uses `nlinarith` with `sq_nonneg` to show each squared term is zero individually, and `sq_eq_zero_iff` to extract coordinate equality. Finally `Prod.ext` combines the two coordinate equalities. This is the key lemma enabling isometry injectivity.",
+    "mathContext": "$d(p,q) = 0 \\iff (p_1-q_1)^2 + (p_2-q_2)^2 = 0 \\iff p_1 = q_1 \\land p_2 = q_2 \\iff p = q$. Uses: sum of nonneg terms = 0 $\\Rightarrow$ each term = 0.",
+    "significance": "key",
+    "relatedConcepts": [
+      "metric definiteness",
+      "positive definite",
+      "nlinarith",
+      "sq_eq_zero_iff",
+      "Prod.ext"
+    ],
+    "prerequisites": [
+      "real number arithmetic",
+      "square root properties",
+      "Prod extensionality"
+    ]
+  },
+  {
+    "id": "ann-erdos103oq01-injectivity",
+    "proofId": "erdos-103-oq-01",
+    "range": {
+      "startLine": 121,
+      "endLine": 127
+    },
+    "type": "insight",
+    "title": "Isometry Injectivity from Metric Definiteness",
+    "content": "A clean 3-step proof: $\\sigma(p) = \\sigma(q) \\Rightarrow d(\\sigma(p), \\sigma(q)) = 0$ (by `pointDist_self`) $\\Rightarrow d(p,q) = 0$ (by distance preservation) $\\Rightarrow p = q$ (by definiteness). This demonstrates the bridge from distance preservation to injectivity without any axioms — purely from the metric structure.",
+    "mathContext": "$\\sigma(p) = \\sigma(q) \\Rightarrow d(\\sigma(p), \\sigma(q)) = 0 \\Rightarrow d(p,q) = 0 \\Rightarrow p = q$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "injective function",
+      "distance-preserving map",
+      "metric definiteness"
+    ],
+    "prerequisites": [
+      "pointDist_eq_zero_iff",
+      "distance preservation property"
+    ]
+  },
+  {
+    "id": "ann-erdos103oq01-surjectivity-axiom",
+    "proofId": "erdos-103-oq-01",
+    "range": {
+      "startLine": 129,
+      "endLine": 139
+    },
+    "type": "concept",
+    "title": "Surjectivity Axiom (Mazur-Ulam)",
+    "content": "The single geometric axiom: distance-preserving maps $\\mathbb{R}^2 \\to \\mathbb{R}^2$ are surjective. This follows from the Mazur-Ulam theorem (1932): every surjective isometry of normed spaces is affine. For finite-dimensional $\\mathbb{R}^n$, isometries decompose as orthogonal transformation + translation, both surjective. Proving this formally would require either classifying $\\mathbb{R}^2$ isometries or the full Mazur-Ulam theorem (neither in current Mathlib).",
+    "mathContext": "Axiom: $\\sigma : \\mathbb{R}^2 \\to \\mathbb{R}^2$ distance-preserving $\\Rightarrow \\sigma$ surjective. Consequence of Mazur-Ulam: isometries of $\\mathbb{R}^n$ are affine (rotation/reflection + translation).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Mazur-Ulam theorem",
+      "affine isometry",
+      "surjective function",
+      "orthogonal group"
+    ],
+    "prerequisites": [
+      "normed space isometries",
+      "function surjectivity"
+    ]
+  },
+  {
+    "id": "ann-erdos103oq01-identity-comp",
+    "proofId": "erdos-103-oq-01",
+    "range": {
+      "startLine": 142,
+      "endLine": 151
+    },
+    "type": "definition",
+    "title": "Identity and Composition Isometries",
+    "content": "Constructs the identity isometry (trivially distance-preserving) and the composition $\\sigma \\circ \\tau$ of two isometries. Composition preserves distances by chaining: $d((\\sigma \\circ \\tau)(p), (\\sigma \\circ \\tau)(q)) = d(\\tau(p), \\tau(q)) = d(p,q)$. These are the first two ingredients for showing that isometries of $\\mathbb{R}^2$ form a group — the inverse (constructed next using `Function.surjInv`) completes the picture. In the classification of isometries of $\\mathbb{R}^n$, the group structure is $E(n) = O(n) \\ltimes \\mathbb{R}^n$ (the Euclidean group), a semidirect product of orthogonal transformations and translations.",
+    "mathContext": "Identity: $\\text{id}(p) = p$, trivially $d(p,q) = d(p,q)$. Composition: $d((\\sigma \\circ \\tau)(p), (\\sigma \\circ \\tau)(q)) = d(\\tau(p), \\tau(q)) = d(p,q)$. Group: $(E(2), \\circ)$ with $\\text{id}$, composition, and inverse.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Euclidean group",
+      "group structure",
+      "isometry composition",
+      "Function.comp"
+    ],
+    "prerequisites": [
+      "Isometry2D structure",
+      "function composition"
+    ]
+  },
+  {
+    "id": "ann-erdos103oq01-inverse",
+    "proofId": "erdos-103-oq-01",
+    "range": {
+      "startLine": 153,
+      "endLine": 181
+    },
+    "type": "concept",
+    "title": "Isometry Inverse Construction and Two-Sided Inverse Proofs",
+    "content": "Constructs $\\sigma^{-1}$ via `Function.surjInv` (which picks a preimage for each point). The inverse preserves distances: $d(\\sigma^{-1}(p), \\sigma^{-1}(q)) = d(\\sigma(\\sigma^{-1}(p)), \\sigma(\\sigma^{-1}(q))) = d(p, q)$, using the fact that $\\sigma(\\sigma^{-1}(x)) = x$ (surjective inverse property). Two-sided inverse: left inverse ($\\sigma^{-1} \\circ \\sigma = \\text{id}$) uses injectivity applied to $\\sigma(\\sigma^{-1}(\\sigma(p))) = \\sigma(p)$; right inverse ($\\sigma \\circ \\sigma^{-1} = \\text{id}$) is immediate from surjective inverse definition.",
+    "mathContext": "$\\sigma^{-1} = \\text{surjInv}(\\sigma)$. Distance preservation: $d(\\sigma^{-1}(p), \\sigma^{-1}(q)) = d(\\sigma(\\sigma^{-1}(p)), \\sigma(\\sigma^{-1}(q))) = d(p,q)$. Left inverse: $\\sigma^{-1}(\\sigma(p)) = p$ by injectivity from $\\sigma(\\sigma^{-1}(\\sigma(p))) = \\sigma(p)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Function.surjInv",
+      "two-sided inverse",
+      "bijective function",
+      "group inverse"
+    ],
+    "prerequisites": [
+      "injective + surjective = bijective",
+      "surjective inverse construction"
+    ]
+  },
+  {
+    "id": "ann-erdos103oq01-congruence-symm",
+    "proofId": "erdos-103-oq-01",
+    "range": {
+      "startLine": 191,
+      "endLine": 213
+    },
+    "type": "insight",
+    "title": "Congruence Symmetry: Eliminating the Parent's Sorry",
+    "content": "The key contribution fixing the parent formalization: if $P \\cong Q$ via $\\sigma$, then $Q \\cong P$ via $\\sigma^{-1}$, because $\\sigma^{-1}(Q_i) = \\sigma^{-1}(\\sigma(P_i)) = P_i$ by the left-inverse property. The parent file had `sorry` here because it lacked the inverse construction. Transitivity follows similarly: $P \\cong Q$ via $\\sigma_1$ and $Q \\cong R$ via $\\sigma_2$ give $P \\cong R$ via $\\sigma_2 \\circ \\sigma_1$. Geometric invariance (`congruent_preserves_separation`) shows isometries preserve the minimum separation constraint.",
+    "mathContext": "Symmetry: $P \\cong Q$ via $\\sigma \\Rightarrow Q \\cong P$ via $\\sigma^{-1}$, since $\\sigma^{-1}(Q_i) = \\sigma^{-1}(\\sigma(P_i)) = P_i$. Transitivity: $(\\sigma_2 \\circ \\sigma_1)(P_i) = \\sigma_2(\\sigma_1(P_i)) = \\sigma_2(Q_i) = R_i$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "equivalence relation",
+      "congruence",
+      "isometry inverse",
+      "sorry elimination"
+    ],
+    "prerequisites": [
+      "Isometry2D.inv",
+      "Isometry2D.inv_comp"
+    ]
+  },
+  {
+    "id": "ann-erdos103oq01-counterexample",
+    "proofId": "erdos-103-oq-01",
+    "range": {
+      "startLine": 219,
+      "endLine": 252
+    },
+    "type": "insight",
+    "title": "Counterexample: Unbounded Does Not Imply Tends to Infinity",
+    "content": "Defines the oscillating function $f(n) = n$ if $n$ is even, $0$ if odd. **Unbounded**: for any $C$, take $n = 2(C+1)$ (even), so $f(n) = 2(C+1) > C$. **Not tending to infinity**: for any $N$, the odd number $2N+1 \\geq N$ satisfies $f(2N+1) = 0 \\leq 0$, contradicting $f(n) > 0$ for all $n \\geq N$. The master theorem `unbounded_not_implies_tendsto` refutes the universal statement $\\forall f, (\\text{unbounded} \\Rightarrow \\text{tends to } \\infty)$ by instantiating with this counterexample.",
+    "mathContext": "$f(n) = \\begin{cases} n & n \\text{ even} \\\\ 0 & n \\text{ odd} \\end{cases}$. Unbounded: $f(2(C+1)) = 2(C+1) > C$. Not $\\to \\infty$: $f(2N+1) = 0$ for all $N$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "oscillating sequence",
+      "unbounded vs divergent",
+      "counterexample construction",
+      "omega tactic"
+    ],
+    "prerequisites": [
+      "natural number parity",
+      "quantifier negation"
+    ]
+  },
+  {
+    "id": "ann-erdos103oq01-monotone-equiv",
+    "proofId": "erdos-103-oq-01",
+    "range": {
+      "startLine": 258,
+      "endLine": 317
+    },
+    "type": "concept",
+    "title": "Correct Equivalence with Monotonicity Hypothesis",
+    "content": "Proves the corrected equivalence: for monotone $f$, unbounded $\\iff$ tends to infinity. The key step: if $f$ is monotone and $f(N_0) > C$, then for all $n \\geq N_0$, $f(n) \\geq f(N_0) > C$. This is the 'propagation' that fails without monotonicity. Applied to $h(n)$: the corrected conjecture is $h \\to \\infty$ (requiring monotonicity for the backward direction of the equivalence). Whether $h$ is actually monotone is itself an open question about optimal packing geometry.",
+    "mathContext": "For monotone $f$: $f(N_0) > C$ and $n \\geq N_0 \\Rightarrow f(n) \\geq f(N_0) > C$. Corrected: $h \\to \\infty \\iff h$ unbounded, assuming $h$ monotone.",
+    "significance": "key",
+    "relatedConcepts": [
+      "monotone function",
+      "Filter.Tendsto",
+      "eventually",
+      "Erdős conjecture formulation"
+    ],
+    "prerequisites": [
+      "monotonicity",
+      "order theory",
+      "oscillating_unbounded counterexample"
+    ]
+  },
+  {
+    "id": "ann-erdos103oq01-conjecture-chain",
+    "proofId": "erdos-103-oq-01",
+    "range": {
+      "startLine": 323,
+      "endLine": 353
+    },
+    "type": "concept",
+    "title": "Conjecture Hierarchy: Strong → Weak → Very Weak",
+    "content": "Defines three progressively weaker versions of the Erdős 103 conjecture: **Strong** ($h(n) \\to \\infty$), **Weak** ($h(n) \\geq 2$ for all large $n$), **Very Weak** ($h(n) \\geq 2$ for infinitely many $n$). Proves the implication chain: Strong $\\Rightarrow$ Weak $\\Rightarrow$ Very Weak. Even the very weak conjecture — that there exist infinitely many $n$ with at least two distinct optimal configurations — is currently open. The `hMonotoneQuestion` definition highlights monotonicity as an independent structural question.",
+    "mathContext": "Strong: $\\forall C,\\, \\exists N,\\, \\forall n \\geq N,\\, h(n) > C$. Weak: $\\exists N,\\, \\forall n \\geq N,\\, h(n) \\geq 2$. Very weak: $\\forall N,\\, \\exists n \\geq N,\\, h(n) \\geq 2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "conjecture hierarchy",
+      "infinitely often",
+      "eventually",
+      "optimal configuration counting"
+    ],
+    "prerequisites": [
+      "ErdosConjecture103 definition",
+      "quantifier nesting"
+    ]
+  }
+]

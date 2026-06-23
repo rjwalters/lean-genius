@@ -1,0 +1,56 @@
+{
+  "slug": "erdos-1195",
+  "title": "Erd\u0151s #1195",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "(LaTeX not available)",
+    "plain": "Let $S\\subset \\mathbb{R}$ be a set of infinite measure such that $x/y$ is never an integer for all distinct $x,y\\in S$.\n\nHow fast can $\\lvert S\\cap (0,x)\\rvert$ tend to infinity?",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-01-16T08:44:15.250Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erd\u0151s #1195 - Knowledge Base\n\n## Problem Statement\n\nLet $S\\subset \\mathbb{R}$ be a set of infinite measure such that $x/y$ is never an integer for all distinct $x,y\\in S$.\n\nHow fast can $\\lvert S\\cap (0,x)\\rvert$ tend to infinity?\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-16*\n"
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-119"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-16T08:44:15.250Z",
+  "lastUpdate": "2026-03-13T07:52:17.060Z",
+  "significance": 7,
+  "tractability": 6
+}

@@ -1,0 +1,111 @@
+{
+  "id": "brouwer-fixed-point-oq-01-oq-02-oq-02",
+  "title": "The Algebraic Obstruction Behind No-Retraction: ℤ is not a retract of any finite or torsion group",
+  "slug": "brouwer-fixed-point-oq-01-oq-02-oq-02",
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.Torsion",
+      "Mathlib.GroupTheory.OrderOfElement",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "BrouwerFixedPointOQ01OQ02OQ02",
+    "lineCount": 142,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "path": "Proofs/BrouwerFixedPointOQ01OQ02OQ02.lean",
+    "sorries": 0
+  },
+  "description": "Generalizes the algebraic core of the parent's homological No-Retraction proof. The parent (OQ-01-OQ-02, No-Retraction via Singular Homology) reduces the theorem to 'the identity id : Z -> Z cannot factor through the trivial group' and proves the trivial case by the computation 1 = psi(()) = 2. This entry isolates the GENERAL obstruction: say Z is a retract of G if there are additive homs phi : Z -> G, psi : G -> Z with psi . phi = id. Then phi is injective and psi surjective (the splitting), G must be INFINITE (phi embeds Z), so Z is not a retract of any FINITE group (the trivial-group core is the G = PUnit instance), and moreover the generator's image phi 1 has INFINITE additive order, so Z is not a retract of any TORSION group either. These pin down what the homology computation actually needs: not that the disc's homology is trivial, only that it is torsion (in particular finite). 9 theorems, 0 sorries, 0 axioms; self-contained over Mathlib.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "date": "formalized 2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BrouwerFixedPointOQ01OQ02OQ02.lean",
+    "tags": [
+      "topology",
+      "algebraic-topology",
+      "fixed-point",
+      "brouwer",
+      "no-retraction",
+      "singular-homology",
+      "group-theory"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-22",
+    "axiomCount": 0,
+    "assumptions": "Machine-checked: `./proofs/scripts/docker-build.sh Proofs.BrouwerFixedPointOQ01OQ02OQ02` builds green (Lean v4.26.0, Mathlib pin, 3060 jobs, first build). 0 sorries, 0 axiom declarations, no native_decide; only the standard foundational axioms via Mathlib. Self-contained over Mathlib (group theory only); does not import the parent's axiomatized homology file. Pure algebra: an honest, fully verified generalization of the parent's hand-computed trivial-group case, with no topological assumptions.",
+    "lineCount": 142,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "originalContributions": [
+      "retract_apply / injective_of_retract / surjective_of_retract: the splitting of a retract psi . phi = id — phi injective (left inverse psi), psi surjective (right inverse phi)",
+      "infinite_of_retract: Z retracts only onto INFINITE groups, since phi embeds the infinite group Z into G",
+      "not_retract_of_finite: Z is not a retract of any FINITE group — the general form of the parent's algebraic core",
+      "not_retract_of_subsingleton: the trivial-group core recovered as the G = PUnit / subsingleton instance, exactly the parent's 'id_Z cannot factor through Unit'",
+      "gen_not_isOfFinAddOrder: the generator's image phi 1 has INFINITE additive order (n . phi 1 = 0 would force n = psi(n . phi 1) = 0)",
+      "not_isTorsion_of_retract / not_retract_of_isTorsion: Z is not a retract of any TORSION group — a retract must contain an element of infinite order; strictly generalizes the finite case"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The No-Retraction Theorem — there is no continuous retraction of the disc B^n onto its boundary sphere S^{n-1} — is the engine of Brouwer's fixed-point theorem. Its standard proof is homological: applying the homology functor to a retraction r . i = id gives a splitting of the identity of H_{n-1}(S^{n-1}) = Z through H_{n-1}(B^n) = 0, which is impossible. The impossibility is a purely algebraic fact about abelian groups, and identifying exactly which groups it concerns clarifies what topological input the homology computation must supply.",
+    "problemStatement": "OQ-01-OQ-02 proves No-Retraction via singular homology, reducing it to 'id : Z -> Z cannot factor through the trivial group' and proving the trivial case by hand. The sharp question: through exactly which groups can id_Z fail to factor? This entry answers: not just the trivial group, but any finite group, indeed any torsion group.",
+    "proofStrategy": "Define Z is a retract of G via phi : Z -> G, psi : G -> Z with psi . phi = id. From psi(phi n) = n: phi has left inverse psi (injective) and psi has right inverse phi (surjective). Injectivity of phi embeds Z, so G is infinite (Infinite.of_injective), giving not_retract_of_finite, with the trivial group as the subsingleton instance. For torsion: n . phi 1 = 0 implies n = psi(n . phi 1) = psi(0) = 0, so phi 1 has infinite additive order; a torsion group has no such element, giving not_retract_of_isTorsion.",
+    "keyInsights": [
+      "A retract of Z splits the identity, forcing the section phi injective and the retraction psi surjective.",
+      "Injectivity of phi embeds the infinite group Z, so any group receiving Z as a retract is infinite — the trivial group was only the smallest obstruction.",
+      "The image of the generator phi 1 has infinite additive order, because psi sends n . phi 1 to n.",
+      "Therefore the obstruction is torsion, not merely triviality: the homological proof never needed H_{n-1}(B^n) to be zero, only torsion (in particular finite).",
+      "This separates the algebraic content (a retract of Z needs an infinite-order element) from the topological content (the disc's homology is torsion)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "splitting",
+      "title": "The Splitting of a Retract",
+      "summary": "retract_apply (psi(phi n) = n), injective_of_retract, surjective_of_retract — the section/retraction splitting of Z as a retract of G.",
+      "startLine": 1,
+      "endLine": 75,
+      "mathContext": "psi . phi = id gives phi a left inverse (injective) and psi a right inverse (surjective)."
+    },
+    {
+      "id": "infinite-finite",
+      "title": "Z Retracts Only onto Infinite Groups",
+      "summary": "infinite_of_retract (G is infinite), not_retract_of_finite (no finite group), not_retract_of_subsingleton (the parent's trivial-group core).",
+      "startLine": 76,
+      "endLine": 107,
+      "mathContext": "phi embeds the infinite group Z into G, so G is infinite; finite and subsingleton groups are excluded."
+    },
+    {
+      "id": "torsion",
+      "title": "Z Is Not a Retract of Any Torsion Group",
+      "summary": "gen_not_isOfFinAddOrder (phi 1 has infinite order), not_isTorsion_of_retract, not_retract_of_isTorsion — strictly generalizing the finite case.",
+      "startLine": 108,
+      "endLine": 142,
+      "mathContext": "n . phi 1 = 0 forces n = psi(n . phi 1) = 0, so phi 1 has infinite additive order; a torsion group has none."
+    }
+  ],
+  "conclusion": {
+    "summary": "The parent proves No-Retraction homologically and reduces it to 'id_Z cannot factor through the trivial group', proved by hand. This entry generalizes that algebraic core: Z is not a retract of any finite group, indeed any torsion group, because a retract of Z splits the identity (section injective, retraction surjective), embeds the infinite group Z (so the receiving group is infinite), and contains an element of infinite order (the image of the generator). The trivial-group case is recovered as the subsingleton instance.",
+    "implications": "The result clarifies the exact topological input the homological proof needs: not that the disc's homology is zero, only that it is torsion (in particular finite). Any contractible-enough computation giving torsion disc-homology already drives the contradiction. The splitting lemmas and the infinite-order obstruction are self-contained, reusable facts about retracts of Z in abelian groups, independent of the topological setting — a clean separation of the algebraic obstruction from the geometry.",
+    "openQuestions": [
+      "Connect not_retract_of_isTorsion back to the parent's homology functor to weaken its disc-homology axiom from 'trivial' to 'torsion'.",
+      "Generalize from Z to an arbitrary non-torsion abelian group A as the sphere-homology model, characterizing when A is not a retract of G.",
+      "Formalize the homology functoriality (currently axiomatized in the parent) so the algebraic obstruction here discharges No-Retraction with fewer axioms."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "brouwer-fixed-point-oq-01-oq-02",
+      "relationship": "parent",
+      "description": "The No-Retraction-via-singular-homology entry, whose algebraic core ('id_Z cannot factor through the trivial group', proved by the computation 1 = psi(()) = 2) this entry generalizes to 'Z is not a retract of any finite or torsion group', recovering the trivial group as the subsingleton instance."
+    },
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "foundational",
+      "description": "The base Brouwer fixed-point / no-retraction development. This entry supplies the purely algebraic obstruction that the homological proof of no-retraction ultimately rests on."
+    }
+  ]
+}

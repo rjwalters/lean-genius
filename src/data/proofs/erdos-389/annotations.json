@@ -1,0 +1,265 @@
+[
+  {
+    "id": "erdos-389-ann-imports",
+    "proofId": "erdos-389",
+    "range": {
+      "startLine": 30,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Imports and Dependencies",
+    "content": "Imports Mathlib tactics and the locally finite Finset module. The latter provides $\\texttt{Finset.range}$ for constructing finite products over consecutive indices, essential for defining the product of $k$ consecutive integers.",
+    "mathContext": "Requires $\\texttt{Finset.range}$ for $\\prod_{i=0}^{k-1}$ and general-purpose tactics ($\\texttt{simp}$, $\\texttt{norm\\_num}$, $\\texttt{decide}$) for small-case verification.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.range",
+      "Mathlib tactics",
+      "finite products"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib library structure"
+    ]
+  },
+  {
+    "id": "erdos-389-ann-consecutiveProd",
+    "proofId": "erdos-389",
+    "range": {
+      "startLine": 39,
+      "endLine": 40
+    },
+    "type": "definition",
+    "title": "Consecutive Product (Rising Factorial)",
+    "content": "The product $n(n+1)(n+2)\\cdots(n+k-1) = \\prod_{i=0}^{k-1}(n+i)$, also known as the Pochhammer symbol or rising factorial $(n)_k$. This is the fundamental quantity in the problem. When $n = 1$, it equals $k!$. The empty product ($k = 0$) gives 1.",
+    "mathContext": "$\\texttt{consecutiveProd}(n, k) = (n)_k = \\frac{(n+k-1)!}{(n-1)!} = k! \\binom{n+k-1}{k}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pochhammer symbol",
+      "rising factorial",
+      "falling factorial",
+      "binomial coefficient"
+    ],
+    "prerequisites": [
+      "finite products",
+      "factorial function"
+    ]
+  },
+  {
+    "id": "erdos-389-ann-divides",
+    "proofId": "erdos-389",
+    "range": {
+      "startLine": 44,
+      "endLine": 45
+    },
+    "type": "definition",
+    "title": "Divisibility Condition",
+    "content": "The core divisibility: the 'lower block' $n(n+1)\\cdots(n+k-1)$ divides the 'upper block' $(n+k)(n+k+1)\\cdots(n+2k-1)$. Equivalently, $\\binom{n+2k-1}{k} / \\binom{n+k-1}{k}$ must be an integer, or the product $\\prod_{i=0}^{k-1} \\frac{n+k+i}{n+i}$ must be integral.",
+    "mathContext": "$(n)_k \\mid (n+k)_k$, i.e., $\\prod_{i=0}^{k-1}(n+i) \\mid \\prod_{i=0}^{k-1}(n+k+i)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "divisibility",
+      "integer ratios",
+      "falling factorial quotients"
+    ],
+    "prerequisites": [
+      "divisibility in natural numbers",
+      "consecutive products"
+    ]
+  },
+  {
+    "id": "erdos-389-ann-minimalk",
+    "proofId": "erdos-389",
+    "range": {
+      "startLine": 48,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "Minimal k Function",
+    "content": "Uses Lean's $\\texttt{Nat.find}$ to define the smallest $k \\geq 1$ satisfying the divisibility for a given $n$. This is well-defined assuming the Erdős-Straus conjecture holds. The function is noncomputable because $\\texttt{Nat.find}$ requires classical logic.",
+    "mathContext": "$\\texttt{minimalK}(n) = \\min\\{k \\geq 1 : (n)_k \\mid (n+k)_k\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.find",
+      "well-ordering principle",
+      "extremal combinatorics"
+    ],
+    "prerequisites": [
+      "well-ordering of naturals",
+      "classical logic"
+    ]
+  },
+  {
+    "id": "erdos-389-ann-main",
+    "proofId": "erdos-389",
+    "range": {
+      "startLine": 57,
+      "endLine": 58
+    },
+    "type": "concept",
+    "title": "Erdős-Straus Conjecture (Main Statement)",
+    "content": "The central open question: for every $n \\geq 1$, there exists $k \\geq 1$ such that $n(n+1)\\cdots(n+k-1) \\mid (n+k)\\cdots(n+2k-1)$. Declared as an axiom since the problem is OPEN. This is equivalent to asking whether the product ratio $\\prod (n+k+i)/(n+i)$ can always be made an integer.",
+    "mathContext": "$\\forall n \\geq 1,\\; \\exists k \\geq 1,\\; (n)_k \\mid (n+k)_k$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős problems",
+      "open conjectures",
+      "consecutive integer products"
+    ],
+    "prerequisites": [
+      "divisibility condition",
+      "consecutive products"
+    ]
+  },
+  {
+    "id": "erdos-389-ann-n1",
+    "proofId": "erdos-389",
+    "range": {
+      "startLine": 63,
+      "endLine": 64
+    },
+    "type": "concept",
+    "title": "Case n = 1 (Proved)",
+    "content": "The trivial base case: with $k = 1$, the lower block is $1$ and the upper block is $2$, so $1 \\mid 2$. This is the only case where Lean's $\\texttt{simp}$ suffices. For $n = 1$ and arbitrary $k$, we have $(1)_k = k!$ and $(1+k)_k = (2k)!/k!$, so the condition becomes $k! \\mid (2k)!/k!$, i.e., $\\binom{2k}{k}$ is an integer (which is always true).",
+    "mathContext": "$(1)_1 = 1$, $(2)_1 = 2$, and $1 \\mid 2$. More generally, for $n = 1$: $(1)_k = k!$ and $\\binom{2k}{k} \\in \\mathbb{Z}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "base case",
+      "central binomial coefficients",
+      "Catalan numbers"
+    ],
+    "prerequisites": [
+      "arithmetic",
+      "divisibility"
+    ]
+  },
+  {
+    "id": "erdos-389-ann-n2",
+    "proofId": "erdos-389",
+    "range": {
+      "startLine": 67,
+      "endLine": 67
+    },
+    "type": "concept",
+    "title": "Case n = 2",
+    "content": "For $n = 2$, the minimal $k$ is 5. The lower block is $2 \\cdot 3 \\cdot 4 \\cdot 5 \\cdot 6 = 720$ and the upper block is $7 \\cdot 8 \\cdot 9 \\cdot 10 \\cdot 11 = 55440 = 77 \\times 720$. One can verify that $k = 1, 2, 3, 4$ all fail: e.g., $k = 4$ gives $2 \\cdot 3 \\cdot 4 \\cdot 5 = 120$ vs $6 \\cdot 7 \\cdot 8 \\cdot 9 = 3024 = 25.2 \\times 120$.",
+    "mathContext": "$2 \\cdot 3 \\cdot 4 \\cdot 5 \\cdot 6 = 720$ and $7 \\cdot 8 \\cdot 9 \\cdot 10 \\cdot 11 = 55440$. Ratio: $55440/720 = 77$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "numerical verification",
+      "divisibility testing"
+    ],
+    "prerequisites": [
+      "arithmetic computation"
+    ]
+  },
+  {
+    "id": "erdos-389-ann-n3",
+    "proofId": "erdos-389",
+    "range": {
+      "startLine": 70,
+      "endLine": 70
+    },
+    "type": "concept",
+    "title": "Case n = 3",
+    "content": "For $n = 3$, the minimal $k$ is 4. The lower block is $3 \\cdot 4 \\cdot 5 \\cdot 6 = 360$ and the upper block is $7 \\cdot 8 \\cdot 9 \\cdot 10 = 5040 = 14 \\times 360$. The minimal $k$ decreases from 5 (for $n=2$) to 4 (for $n=3$), then jumps dramatically to 207 for $n=4$.",
+    "mathContext": "$(3)_4 = 360$, $(7)_4 = 5040$, $5040/360 = 14$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "numerical verification",
+      "small cases"
+    ],
+    "prerequisites": [
+      "arithmetic computation"
+    ]
+  },
+  {
+    "id": "erdos-389-ann-mehta",
+    "proofId": "erdos-389",
+    "range": {
+      "startLine": 77,
+      "endLine": 78
+    },
+    "type": "concept",
+    "title": "Mehta's Computation: k = 207 for n = 4",
+    "content": "Bhavik Mehta computed that the minimal $k$ for $n = 4$ is 207 — a dramatic and unexpected jump from the small values $k = 1, 5, 4$ for $n = 1, 2, 3$. This means $4 \\cdot 5 \\cdots 210 \\mid 211 \\cdot 212 \\cdots 414$, involving products of 207 consecutive integers each. The enormous size of these numbers (each product has hundreds of digits) shows why exhaustive search is computationally demanding. The sequence of minimal $k$ values was registered as OEIS A375071.",
+    "mathContext": "$\\texttt{minimalK}(4) = 207$. The products: $(4)_{207} = 210!/3!$ and $(211)_{207} = 417!/210!$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "OEIS A375071",
+      "computational number theory",
+      "extremal values"
+    ],
+    "prerequisites": [
+      "consecutive products",
+      "exhaustive computation"
+    ]
+  },
+  {
+    "id": "erdos-389-ann-minimality",
+    "proofId": "erdos-389",
+    "range": {
+      "startLine": 81,
+      "endLine": 82
+    },
+    "type": "concept",
+    "title": "Minimality for n = 4",
+    "content": "Confirms that no $k$ in $\\{1, 2, \\ldots, 206\\}$ satisfies the divisibility for $n = 4$, proving 207 is genuinely minimal. This required checking 206 divisibility conditions, each involving products of hundreds of terms. The minimality result demonstrates the erratic behavior of the minimal $k$ function.",
+    "mathContext": "$\\forall k \\in [1, 206],\\; (4)_k \\nmid (4+k)_k$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "minimality proofs",
+      "exhaustive verification",
+      "lower bounds"
+    ],
+    "prerequisites": [
+      "divisibility testing",
+      "Mehta's computation"
+    ]
+  },
+  {
+    "id": "erdos-389-ann-ratio",
+    "proofId": "erdos-389",
+    "range": {
+      "startLine": 90,
+      "endLine": 93
+    },
+    "type": "concept",
+    "title": "Ratio Identity",
+    "content": "The ratio of upper to lower block equals $\\prod_{i=0}^{k-1} \\frac{n+k+i}{n+i}$. Each factor $(n+k+i)/(n+i) = 1 + k/(n+i)$ is greater than 1, so the product grows with $k$. The question is when this product of rationals happens to be an integer. The formalization handles the case where integer division may not be exact by providing a disjunction.",
+    "mathContext": "$\\frac{(n+k)_k}{(n)_k} = \\prod_{i=0}^{k-1} \\frac{n+k+i}{n+i} = \\prod_{i=0}^{k-1}\\left(1 + \\frac{k}{n+i}\\right)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "product telescoping",
+      "ratio test",
+      "multiplicative functions"
+    ],
+    "prerequisites": [
+      "products of ratios",
+      "telescoping"
+    ]
+  },
+  {
+    "id": "erdos-389-ann-binomial",
+    "proofId": "erdos-389",
+    "range": {
+      "startLine": 97,
+      "endLine": 98
+    },
+    "type": "concept",
+    "title": "Binomial Coefficient Connection",
+    "content": "The identity $(n)_k = k! \\binom{n+k-1}{k}$ connects consecutive products to binomial coefficients. The divisibility condition $(n)_k \\mid (n+k)_k$ becomes $\\binom{n+k-1}{k} \\mid \\binom{n+2k-1}{k}$, since $k!$ cancels. This places the problem in the study of divisibility of binomial coefficients — connected to Kummer's theorem ($v_p\\binom{m}{j}$ counts carries in base-$p$ addition) and Lucas' theorem.",
+    "mathContext": "$(n)_k = k! \\binom{n+k-1}{k}$. The divisibility becomes $\\binom{n+k-1}{k} \\mid \\binom{n+2k-1}{k}$. By Kummer's theorem, $v_p\\binom{m}{j}$ equals the number of carries in the base-$p$ addition $j + (m-j)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "binomial coefficients",
+      "Kummer's theorem",
+      "p-adic valuation",
+      "Lucas' theorem"
+    ],
+    "prerequisites": [
+      "binomial coefficient identity",
+      "factorial arithmetic",
+      "p-adic methods"
+    ]
+  }
+]

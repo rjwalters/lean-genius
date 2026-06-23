@@ -1,0 +1,146 @@
+{
+  "slug": "divisibility-by-3-oq-01",
+  "title": "Formal Divisibility Rules for Various Bases and Moduli",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\forall b\\ d\\ n,\\ 2\\le b\\land 0<d\\land b\\equiv 1\\pmod d\\Rightarrow (d\\mid n\\leftrightarrow d\\mid \\operatorname{digitSum}_b(n)), with base-10 divisibility by 3/9 and digital-root corollaries.",
+    "plain": "Backfill the divisibility-rule metadata around digit-sum tests in arbitrary bases, concrete base-10 rules for 3 and 9, hex/octal specializations, and digital-root arithmetic.",
+    "whyMatters": [
+      "Digit-sum divisibility rules are elementary number-theory facts with reusable modular-arithmetic structure.",
+      "The generalized base/modulus theorem explains why the familiar tests for 3 and 9 work.",
+      "The digital-root files package the same congruence idea into computable arithmetic checks."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`divisibility_by_3` and `divisibility_by_9` prove the base-10 digit-sum rules.",
+      "`modEq_digits_sum_general` and `dvd_iff_dvd_digits_sum_general` give the general theorem when `b % d = 1`.",
+      "`hex_div_15`, `hex_div_3`, `hex_div_5`, and `oct_div_7` instantiate the rule for hexadecimal and octal bases.",
+      "`digitalRootFormula`, `digitalRoot_mod9`, `digitalRoot_div3`, `digitalRoot_add`, and `digitalRoot_mul` formalize digital-root behavior."
+    ],
+    "open": [
+      "The linked `DivisibilityBy3*.lean` files record zero axioms and zero sorries; the remaining caveat is stale metadata elsewhere that names an old `DivisibilityByThreeOQ01.lean` path."
+    ],
+    "goal": "Expose the completed digit-sum and digital-root formalization without relying on the stale proof-meta path."
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-02-15T03:30:00Z",
+    "iteration": 1,
+    "focus": "Extended DivisibilityByThreeOQ01.lean with truncation methods for primes 7, 11, 17, and 19.",
+    "activeApproach": "Truncation (osculator) method: for p coprime to 10, find c such that 10c ≡ ±1 (mod p), then p | n iff p | (n/10 ± c·(n%10)).",
+    "blockers": [],
+    "nextAction": "Problem complete. Could extend to primes 23, 29, 31, 37, 41, 43 in a future iteration.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "modular-arithmetic",
+    "extension",
+    "divisibility-rules",
+    "digital-root",
+    "formalization"
+  ],
+  "relatedProofs": [
+    "divisibility-by-3",
+    "divisibility-by-3-oq-01",
+    "divisibility-by-3-oq-02",
+    "divisibility-by-3-oq-03",
+    "divisibility-by-3-oq-03-oq-02",
+    "divisibility-by-3-oq-04",
+    "divisibility-by-3-oq-04-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-08T06:11:43.710Z",
+  "lastUpdate": "2026-02-11T05:41:00.788Z",
+  "completed": "2026-02-11T05:41:00.788Z",
+  "significance": 6,
+  "tractability": 8,
+  "leanFiles": [
+    {
+      "path": "Proofs/DivisibilityBy3.lean",
+      "filename": "DivisibilityBy3.lean",
+      "lineCount": 236,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ02.lean",
+      "filename": "DivisibilityBy3OQ02.lean",
+      "lineCount": 163,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ02.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ03.lean",
+      "filename": "DivisibilityBy3OQ03.lean",
+      "lineCount": 271,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ03.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ03OQ02.lean",
+      "filename": "DivisibilityBy3OQ03OQ02.lean",
+      "lineCount": 212,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ04.lean",
+      "filename": "DivisibilityBy3OQ04.lean",
+      "lineCount": 230,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ04.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ04OQ02.lean",
+      "filename": "DivisibilityBy3OQ04OQ02.lean",
+      "lineCount": 229,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ04OQ02.lean"
+    }
+  ]
+}

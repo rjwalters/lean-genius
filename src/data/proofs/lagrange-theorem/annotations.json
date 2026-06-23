@@ -1,0 +1,219 @@
+[
+  {
+    "id": "ann-imports",
+    "proofId": "lagrange-theorem",
+    "range": {
+      "startLine": 1,
+      "endLine": 6
+    },
+    "type": "concept",
+    "title": "Mathlib Group Theory Imports",
+    "content": "Six Mathlib imports provide the group theory infrastructure: `Coset.Basic` supplies left/right cosets and the quotient $G/H$; `Index` provides $[G:H]$ and `Subgroup.index_mul_card`; `OrderOfElement` gives `orderOf` and its properties; `SpecificGroups.Cyclic` provides `IsCyclic` and the classification of cyclic groups; `Data.Nat.Totient` provides Euler's $\\phi$ function for the Euler's theorem application; `Tactic` provides `omega`, `norm_num`, and other automation.\n\nThe imports reflect the theorem's reach: Lagrange's theorem connects subgroup structure (cosets, index) to element order and number theory (Fermat, Euler).",
+    "mathContext": "The import chain: `Coset.Basic` ($G/H$, coset partition) $\\to$ `Index` ($[G:H]$, $|G| = |H| \\cdot [G:H]$) $\\to$ `OrderOfElement` ($\\text{ord}(g) \\mid |G|$) $\\to$ `Cyclic` (cyclic group classification) $\\to$ `Totient` ($\\phi(n)$, Euler's theorem).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "cosets",
+      "subgroup index",
+      "element order"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib group theory"
+    ]
+  },
+  {
+    "id": "ann-intro",
+    "proofId": "lagrange-theorem",
+    "range": {
+      "startLine": 8,
+      "endLine": 55
+    },
+    "type": "concept",
+    "title": "Lagrange's Theorem: Wiedijk #71",
+    "content": "**Lagrange's Theorem**:\n\nFor a finite group $G$ and subgroup $H \\leq G$:\n$$|H| \\mid |G|$$\n\nEquivalently: $|G| = |H| \\cdot [G : H]$ where $[G : H]$ is the **index** (number of cosets).\n\n**Historical**: Lagrange proved this in 1771 while studying permutation groups and the solvability of polynomial equations. He observed that the number of distinct values of a rational function of polynomial roots divides $n!$. The abstract group-theoretic statement emerged through Galois, Cayley, and Jordan in the 19th century. The coset-partition proof is due to Dedekind.\n\n**Significance**: Perhaps the most important single theorem in finite group theory. It constrains subgroup structure, implies Fermat's and Euler's theorems in number theory, and leads to the Sylow theorems, orbit-stabilizer theorem, and class equation.",
+    "mathContext": "$|H| \\mid |G|$; equivalently $|G| = |H| \\cdot [G:H]$",
+    "significance": "key",
+    "relatedConcepts": [
+      "subgroup",
+      "index",
+      "cosets",
+      "finite groups",
+      "Galois"
+    ],
+    "prerequisites": [
+      "group theory basics",
+      "finite sets",
+      "divisibility"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "lagrange-theorem",
+    "range": {
+      "startLine": 59,
+      "endLine": 80
+    },
+    "type": "concept",
+    "title": "Main Theorem",
+    "content": "**Lagrange's Theorem (Wiedijk #71)**:\n\n$$|H| \\mid |G|$$\n\n```lean\ntheorem card_subgroup_dvd_card (G : Type*) [Group G] [Fintype G]\n    (H : Subgroup G) [Fintype H] : Fintype.card H ∣ Fintype.card G\n```\n\n**Proof**: Delegates to Mathlib's `Subgroup.card_subgroup_dvd_card` after converting between `Fintype.card` and `Nat.card`. The underlying Mathlib proof partitions $G$ into left cosets of $H$:\n- Each coset $gH$ has size $|H|$ (via the bijection $h \\mapsto gh$)\n- Cosets are disjoint (if $g_1H \\cap g_2H \\neq \\emptyset$ then $g_1H = g_2H$)\n- $G = \\bigsqcup gH$ (every element belongs to some coset)\n\nSo $|G| = (\\text{\\# cosets}) \\times |H|$, proving $|H| \\mid |G|$.\n\nTwo formulations are provided: `card_subgroup_dvd_card` with explicit `G` parameter and `lagrange` as an alias.",
+    "mathContext": "$|H| \\mid |G|$ via coset partition $G = \\bigsqcup gH$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Subgroup.card_subgroup_dvd_card",
+      "coset partition",
+      "Nat.card_eq_fintype_card"
+    ],
+    "prerequisites": [
+      "group theory",
+      "finite type cardinality",
+      "divisibility"
+    ]
+  },
+  {
+    "id": "ann-index-formula",
+    "proofId": "lagrange-theorem",
+    "range": {
+      "startLine": 81,
+      "endLine": 106
+    },
+    "type": "concept",
+    "title": "Product Formula and Cosets",
+    "content": "**Quantitative Lagrange**:\n\n$$|G| = |H| \\times [G : H]$$\n\n```lean\ntheorem card_eq_card_mul_index (G : Type*) [Group G] [Fintype G]\n    (H : Subgroup G) [Fintype H] : Fintype.card G = Fintype.card H * H.index\n```\n\nThis is the 'with witnesses' version: not just that $|H|$ divides $|G|$, but the explicit quotient $[G:H]$ is the number of left cosets.\n\n**Coset partition table**: The documentation includes a table showing four key properties — every element is in some coset, cosets are equal or disjoint, each has size $|H|$, and $G$ is their disjoint union. These are proved as separate lemmas in Mathlib's `GroupTheory.Coset`.\n\n**Boundary cases**: $[G : \\{1\\}] = |G|$ (trivial subgroup splits into singletons) and $[G : G] = 1$ (the whole group is one coset).",
+    "mathContext": "$|G| = |H| \\cdot [G:H]$; index = number of left cosets",
+    "significance": "key",
+    "relatedConcepts": [
+      "index",
+      "Subgroup.card_mul_index",
+      "quotient",
+      "coset partition"
+    ],
+    "prerequisites": [
+      "coset definition",
+      "bijection between cosets",
+      "finite cardinality"
+    ]
+  },
+  {
+    "id": "ann-element-order",
+    "proofId": "lagrange-theorem",
+    "range": {
+      "startLine": 108,
+      "endLine": 129
+    },
+    "type": "concept",
+    "title": "Element Order Corollaries",
+    "content": "**Order of Element Divides Group Order**:\n\nFor any $g \\in G$: $\\text{ord}(g) \\mid |G|$\n\n**Proof**: Apply Lagrange to the cyclic subgroup $\\langle g \\rangle$, which has order $\\text{ord}(g)$.\n\n**Power by Group Order**: $g^{|G|} = 1$\n\nSince $\\text{ord}(g) \\mid |G|$, write $|G| = \\text{ord}(g) \\cdot k$, then $g^{|G|} = (g^{\\text{ord}(g)})^k = 1^k = 1$.\n\nThree formulations:\n- `orderOf_dvd_card'` — ord(g) | card G\n- `order_divides_card` — same statement, alternative name\n- `pow_card_eq_one'` — g^(card G) = 1\n\nAll delegate to Mathlib's `orderOf_dvd_card` and `pow_card_eq_one`.",
+    "mathContext": "$\\text{ord}(g) \\mid |G|$, hence $g^{|G|} = 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "orderOf",
+      "cyclic subgroup",
+      "pow_card_eq_one",
+      "orderOf_dvd_card"
+    ],
+    "prerequisites": [
+      "element order",
+      "cyclic subgroups",
+      "exponentiation in groups"
+    ]
+  },
+  {
+    "id": "ann-fermat",
+    "proofId": "lagrange-theorem",
+    "range": {
+      "startLine": 130,
+      "endLine": 153
+    },
+    "type": "concept",
+    "title": "Fermat's Little Theorem from Lagrange",
+    "content": "**Fermat from Lagrange**:\n\nApply Lagrange to $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ (units of $\\mathbb{Z}/p\\mathbb{Z}$):\n\n1. $|(\\mathbb{Z}/p\\mathbb{Z})^\\times| = \\phi(p) = p - 1$ for prime $p$\n2. By Lagrange: $\\text{ord}(a) \\mid p - 1$\n3. By power corollary: $a^{p-1} = 1$ in $(\\mathbb{Z}/p\\mathbb{Z})^\\times$\n\n```lean\ntheorem fermat_little_from_lagrange {p : ℕ} [hp : Fact (Nat.Prime p)]\n    (a : (ZMod p)ˣ) : a ^ (p - 1) = 1\n```\n\nThe proof chains: $a^{p-1} = a^{\\phi(p)} = a^{|\\text{units}|} = 1$, using `Nat.totient_prime` and `ZMod.card_units_eq_totient` to connect the exponents, then `pow_card_eq_one` for the final step.\n\n**This is the group-theoretic proof of Fermat's little theorem** — arguably the 'right' proof, as it reveals why Fermat's theorem is true: it's a special case of the general fact that element orders divide group orders.",
+    "mathContext": "$a^{p-1} \\equiv 1 \\pmod{p}$ as a corollary of Lagrange applied to $(\\mathbb{Z}/p\\mathbb{Z})^\\times$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fermat's little theorem",
+      "ZMod",
+      "units group",
+      "totient",
+      "pow_card_eq_one"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "units of Z/pZ",
+      "Euler's totient function"
+    ]
+  },
+  {
+    "id": "ann-index-properties",
+    "proofId": "lagrange-theorem",
+    "range": {
+      "startLine": 154,
+      "endLine": 181
+    },
+    "type": "concept",
+    "title": "Index Properties",
+    "content": "**Index = Coset Count**:\n\n$$[G : H] = |G/H| = \\text{\\# of left cosets}$$\n\n```lean\ntheorem index_eq_card_quotient : H.index = Fintype.card (G ⧸ H)\n```\n\n**Index Divides Group Order**: $[G : H] \\mid |G|$, proved by rewriting via the product formula.\n\n**Boundary Cases**:\n- $[G : \\{1\\}] = |G|$ — the trivial subgroup has $|G|$ singleton cosets\n- $[G : G] = 1$ — the whole group is a single coset\n\nThese boundary cases verify the formula at its extremes. The quotient notation $G ⧸ H$ denotes the set of left cosets (which is a group iff $H$ is normal).",
+    "mathContext": "$[G:H] = |G/H|$; $[G:\\{1\\}] = |G|$; $[G:G] = 1$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "index",
+      "quotient",
+      "Subgroup.index_bot",
+      "Subgroup.index_top"
+    ],
+    "prerequisites": [
+      "quotient types",
+      "left cosets",
+      "boundary analysis"
+    ]
+  },
+  {
+    "id": "ann-prime-order",
+    "proofId": "lagrange-theorem",
+    "range": {
+      "startLine": 182,
+      "endLine": 198
+    },
+    "type": "concept",
+    "title": "Prime Order Groups",
+    "content": "**Consequence for Prime Order**:\n\nIf $|G| = p$ (prime), then $G$ has **no non-trivial proper subgroups**.\n\n```lean\ntheorem prime_order_simple (H : Subgroup G) [Fintype H]\n    (hp : Nat.Prime (Fintype.card G)) :\n    Fintype.card H = 1 ∨ Fintype.card H = Fintype.card G\n```\n\n**Proof**: By Lagrange, $|H| \\mid p$. Since $p$ is prime, $|H| \\in \\{1, p\\}$ — the subgroup is trivial or the whole group. Uses `Nat.Prime.eq_one_or_self_of_dvd`.\n\n**Groups of Prime Order are Cyclic**: Any non-identity element $g$ has $\\text{ord}(g) | p$ and $\\text{ord}(g) > 1$, so $\\text{ord}(g) = p$ and $\\langle g \\rangle = G$. Formalized via `isCyclic_of_prime_card`.\n\n**Converse is FALSE**: Having $n \\mid |G|$ does NOT guarantee a subgroup of order $n$. The alternating group $A_4$ has order 12 but NO subgroup of order 6. This motivates the Sylow theorems (partial converse for prime powers).",
+    "mathContext": "$|G| = p$ prime $\\Rightarrow$ $G$ cyclic; converse of Lagrange fails ($A_4$)",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime order",
+      "cyclic groups",
+      "Sylow theorems",
+      "A₄ counterexample",
+      "isCyclic_of_prime_card"
+    ],
+    "prerequisites": [
+      "prime numbers",
+      "cyclic group definition",
+      "divisor properties"
+    ]
+  },
+  {
+    "id": "ann-significance",
+    "proofId": "lagrange-theorem",
+    "range": {
+      "startLine": 200,
+      "endLine": 222
+    },
+    "type": "concept",
+    "title": "Significance and Verification",
+    "content": "**Why Lagrange's Theorem Matters**:\n\n1. **Structure constraints**: Limits possible subgroup orders to divisors of $|G|$\n2. **Element orders**: Via cyclic subgroups, constrains orders of individual elements\n3. **Counting arguments**: Enables group counting and classification (e.g., groups of order $\\leq 15$)\n4. **Number theory**: Implies Fermat's little theorem and Euler's theorem\n5. **Extensions**: Generalizes to orbit-stabilizer ($|G| = |\\text{Orb}(x)| \\cdot |\\text{Stab}(x)|$) and the class equation\n\n**The false converse**: $n | |G|$ does NOT imply existence of a subgroup of order $n$. The alternating group $A_4$ (order 12) has no subgroup of order 6, despite $6 | 12$. This is because a subgroup of order 6 would be normal (index 2) and isomorphic to $S_3$, but $A_4$'s structure (Klein four-group plus 3-cycles) doesn't permit this.\n\nThe `#check` statements verify all seven exported theorems are well-typed.",
+    "mathContext": "Five applications: structure, elements, counting, number theory, orbit-stabilizer",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "orbit-stabilizer",
+      "class equation",
+      "Sylow theorems",
+      "group classification"
+    ],
+    "prerequisites": [
+      "group theory overview",
+      "alternating groups",
+      "normal subgroups"
+    ]
+  }
+]

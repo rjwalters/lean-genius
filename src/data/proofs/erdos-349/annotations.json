@@ -1,0 +1,231 @@
+[
+  {
+    "id": "imports-setup",
+    "proofId": "erdos-349",
+    "range": {
+      "startLine": 17,
+      "endLine": 20
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "Imports the core Mathlib libraries for natural numbers, integers, real numbers, and general tactics. These provide the floor function $\\lfloor \\cdot \\rfloor$, the real exponentiation $\\alpha^n$, and the Finset API needed to formalize sums of distinct elements.",
+    "mathContext": "The floor function $\\lfloor x \\rfloor : \\mathbb{R} \\to \\mathbb{Z}$ and Finset summation $\\sum_{s \\in T} s$ are the key primitives from Mathlib used throughout this formalization.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "floor function",
+      "Finset",
+      "real exponentiation"
+    ],
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library structure"
+    ]
+  },
+  {
+    "id": "completeness-def",
+    "proofId": "erdos-349",
+    "range": {
+      "startLine": 24,
+      "endLine": 28
+    },
+    "type": "definition",
+    "title": "Additive Completeness",
+    "content": "A set $S \\subset \\mathbb{Z}$ is additively complete if all sufficiently large integers can be represented as sums of distinct elements from $S$. This generalizes the classical notion of a complete sequence from additive number theory, where the representation must use distinct terms.",
+    "mathContext": "$S$ is **additively complete** if $\\exists N \\in \\mathbb{Z}$ such that $\\forall m \\geq N$, there exists a finite subset $T \\subseteq S$ with all elements distinct and $\\sum_{t \\in T} t = m$. The key distinction from bases of finite order (as in Waring's problem) is that elements may not be repeated.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complete sequence",
+      "additive basis",
+      "Waring's problem",
+      "distinct element sums"
+    ],
+    "prerequisites": [
+      "additive number theory",
+      "Finset summation"
+    ]
+  },
+  {
+    "id": "exp-floor-seq",
+    "proofId": "erdos-349",
+    "range": {
+      "startLine": 30,
+      "endLine": 31
+    },
+    "type": "definition",
+    "title": "Exponential Floor Sequence",
+    "content": "Defines the exponential floor sequence $a_n = \\lfloor t\\alpha^n \\rfloor$ for parameters $t, \\alpha \\in \\mathbb{R}$ and $n \\in \\mathbb{N}$. This sequence grows exponentially when $\\alpha > 1$, and its completeness properties depend delicately on both $t$ and $\\alpha$.",
+    "mathContext": "The sequence $\\{\\lfloor t\\alpha^n \\rfloor\\}_{n=0}^{\\infty}$ interpolates between polynomial-like behavior (when $\\alpha$ is close to 1) and extremely lacunary behavior (when $\\alpha$ is large). The growth rate $\\alpha$ controls whether consecutive terms leave gaps too large to fill by sums of earlier terms.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lacunary sequence",
+      "exponential growth",
+      "floor function",
+      "Beatty sequence"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "floor function properties"
+    ]
+  },
+  {
+    "id": "good-pair-def",
+    "proofId": "erdos-349",
+    "range": {
+      "startLine": 33,
+      "endLine": 35
+    },
+    "type": "definition",
+    "title": "Good Pair (t, α)",
+    "content": "A pair $(t, \\alpha)$ is 'good' if the exponential floor sequence $\\lfloor t\\alpha^n \\rfloor$ is additively complete. The central problem is to characterize the set of all good pairs in the positive quadrant $(0,\\infty) \\times (0,\\infty)$.",
+    "mathContext": "Define $\\mathcal{G} = \\{(t,\\alpha) \\in (0,\\infty)^2 : \\{\\lfloor t\\alpha^n \\rfloor\\}_{n \\geq 0} \\text{ is complete}\\}$. Problem #349 asks for a description of $\\mathcal{G}$. Graham's work shows $\\mathcal{G}$ has a surprisingly intricate structure even for fixed $t$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "parameter space",
+      "completeness region",
+      "Graham's disjoint segments"
+    ],
+    "prerequisites": [
+      "additive completeness",
+      "exponential floor sequence"
+    ]
+  },
+  {
+    "id": "main-characterization",
+    "proofId": "erdos-349",
+    "range": {
+      "startLine": 39,
+      "endLine": 44
+    },
+    "type": "concept",
+    "title": "Erdős Problem #349: Characterization",
+    "content": "The main open problem: characterize all pairs $(t, \\alpha)$ with $t > 0, \\alpha > 0$ for which $\\lfloor t\\alpha^n \\rfloor$ is a complete sequence. This is stated as an axiom since the problem remains open — the characterization set $S$ exists but its exact description is unknown.",
+    "mathContext": "The axiom asserts $\\exists S \\subseteq \\mathbb{R}^2$ such that $\\forall t, \\alpha > 0$: $(t,\\alpha) \\in S \\iff \\lfloor t\\alpha^n \\rfloor$ is complete. The deep question is **what $S$ looks like** — whether it has a clean characterization or is inherently complex (as Graham's result suggests).",
+    "significance": "key",
+    "relatedConcepts": [
+      "completeness characterization",
+      "parameter space topology",
+      "decidability"
+    ],
+    "prerequisites": [
+      "good pair definition",
+      "additive completeness"
+    ]
+  },
+  {
+    "id": "golden-ratio-conj",
+    "proofId": "erdos-349",
+    "range": {
+      "startLine": 48,
+      "endLine": 52
+    },
+    "type": "concept",
+    "title": "Golden Ratio Conjecture",
+    "content": "The central conjecture: $\\lfloor t\\alpha^n \\rfloor$ is complete for all $t > 0$ and $1 < \\alpha < \\varphi$, where $\\varphi = (1+\\sqrt{5})/2 \\approx 1.618$ is the golden ratio. The golden ratio threshold arises because it is the growth rate of the Fibonacci sequence, which is the prototypical complete sequence with exponential growth.",
+    "mathContext": "The **Fibonacci sequence** $F_n$ satisfies $F_{n+1}/F_n \\to \\varphi = (1+\\sqrt{5})/2$, and Zeckendorf's theorem guarantees every positive integer has a unique representation as a sum of non-consecutive Fibonacci numbers. The conjecture posits that completeness persists for all sequences growing at rate $< \\varphi$, regardless of the multiplicative constant $t$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "golden ratio",
+      "Fibonacci sequence",
+      "Zeckendorf's theorem",
+      "lacunary completeness"
+    ],
+    "prerequisites": [
+      "Fibonacci completeness",
+      "exponential growth rates",
+      "Zeckendorf representation"
+    ]
+  },
+  {
+    "id": "graham-segments",
+    "proofId": "erdos-349",
+    "range": {
+      "startLine": 56,
+      "endLine": 64
+    },
+    "type": "concept",
+    "title": "Graham's Disjoint Segments Theorem",
+    "content": "For any $k \\in \\mathbb{N}$, there exists $t_k \\in (0,1)$ such that the set $\\{\\alpha : \\lfloor t_k \\alpha^n \\rfloor \\text{ is complete}\\}$ consists of at least $k$ disjoint open intervals. This 1964 result of Ronald Graham reveals the completeness region has a fractal-like complexity even for a single parameter value $t$.",
+    "mathContext": "Graham proved: $\\forall k \\in \\mathbb{N}, \\exists t_k \\in (0,1)$ and disjoint intervals $(a_1, b_1), \\ldots, (a_k, b_k)$ such that $\\alpha \\in (a_i, b_i) \\implies \\lfloor t_k \\alpha^n \\rfloor$ is complete. The formalization captures this as a function from $\\mathrm{Fin}\\, k$ to sets of reals satisfying disjointness and the completeness property.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fractal structure",
+      "parameter sensitivity",
+      "interval analysis",
+      "Cantor-like sets"
+    ],
+    "prerequisites": [
+      "completeness",
+      "interval topology",
+      "good pair definition"
+    ]
+  },
+  {
+    "id": "parity-odd",
+    "proofId": "erdos-349",
+    "range": {
+      "startLine": 68,
+      "endLine": 72
+    },
+    "type": "concept",
+    "title": "Parity: ⌊(3/2)^n⌋ Odd Infinitely Often",
+    "content": "The open sub-problem: is $\\lfloor (3/2)^n \\rfloor$ odd for infinitely many $n$? This deceptively simple question about the parity of a specific exponential floor sequence is intimately connected to the Waring problem for powers of $3/2$ and the distribution of the fractional parts $\\{(3/2)^n\\}$.",
+    "mathContext": "The parity of $\\lfloor (3/2)^n \\rfloor$ is determined by the fractional part: $\\lfloor (3/2)^n \\rfloor$ is odd $\\iff \\{(3/2)^n\\} < 1/2$ (when $\\lfloor (3/2)^n \\rfloor$ is odd). The equidistribution of $\\{(3/2)^n\\}$ modulo 1 is unresolved — it is not even known whether this sequence is dense in $[0,1]$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fractional parts",
+      "equidistribution",
+      "Waring's problem",
+      "3x+1 problem"
+    ],
+    "prerequisites": [
+      "floor function parity",
+      "fractional part distribution",
+      "exponential sequences mod 1"
+    ]
+  },
+  {
+    "id": "parity-even",
+    "proofId": "erdos-349",
+    "range": {
+      "startLine": 74,
+      "endLine": 77
+    },
+    "type": "concept",
+    "title": "Parity: ⌊(3/2)^n⌋ Even Infinitely Often",
+    "content": "The companion open problem: is $\\lfloor (3/2)^n \\rfloor$ even for infinitely many $n$? Together with the odd case, these parity questions represent one of the most basic unsolved problems about exponential sequences. A negative answer to either would have dramatic consequences for our understanding of $\\{(3/2)^n\\}$ distribution.",
+    "mathContext": "If $\\lfloor (3/2)^n \\rfloor$ were eventually always odd (or always even), it would imply the fractional parts $\\{(3/2)^n\\}$ eventually avoid either $[0, 1/2)$ or $[1/2, 1)$, contradicting the expected equidistribution. This connects to Vijayaraghavan's work on the distribution of $(3/2)^n \\pmod{1}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "equidistribution conjecture",
+      "Vijayaraghavan's theorem",
+      "Pisot-Vijayaraghavan numbers"
+    ],
+    "prerequisites": [
+      "fractional part distribution",
+      "parity analysis"
+    ]
+  },
+  {
+    "id": "waring-connection",
+    "proofId": "erdos-349",
+    "range": {
+      "startLine": 81,
+      "endLine": 83
+    },
+    "type": "concept",
+    "title": "Waring-Type Connection",
+    "content": "The completeness problem for $\\lfloor t\\alpha^n \\rfloor$ connects to representation problems in additive number theory. Just as Waring's problem asks about representing integers as sums of $k$-th powers, Problem #349 asks about representation using exponentially growing sequences — but with the additional constraint that terms must be distinct.",
+    "mathContext": "In Waring's problem, $g(k) = \\min\\{s : \\forall n, n = x_1^k + \\cdots + x_s^k\\}$ depends critically on $\\lfloor (3/2)^k \\rfloor$. Specifically, $g(k) = 2^k + \\lfloor (3/2)^k \\rfloor - 2$ when $2^k \\{(3/2)^k\\} + \\lfloor (3/2)^k \\rfloor \\leq 2^k$. This is the **Ideal Waring formula**, verified for $k \\leq 471{,}600{,}000$ by Kubina–Wunderlich.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Waring's problem",
+      "g(k) formula",
+      "Kubina-Wunderlich computation",
+      "additive bases"
+    ],
+    "prerequisites": [
+      "Waring's problem basics",
+      "additive number theory"
+    ]
+  }
+]

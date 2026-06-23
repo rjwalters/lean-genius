@@ -1,0 +1,342 @@
+[
+  {
+    "id": "ann-1070-1",
+    "proofId": "erdos-1070",
+    "range": {
+      "startLine": 39,
+      "endLine": 41
+    },
+    "type": "definition",
+    "title": "Euclidean Distance Function",
+    "content": "The standard Euclidean distance function in $\\mathbb{R}^2$, defined as `euclideanDist p q = dist p q` using Mathlib's metric space structure on `EuclideanSpace \\mathbb{R} (\\text{Fin}\\, 2)`. This is the foundation for all unit distance concepts — the metric space axioms (non-negativity, symmetry, triangle inequality) are inherited from Mathlib's `PseudoMetricSpace` instance.",
+    "mathContext": "$d(p, q) = \\|p - q\\|_2 = \\sqrt{\\sum_{i \\in \\text{Fin}\\, 2} (p_i - q_i)^2}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Euclidean metric",
+      "inner product space",
+      "metric space"
+    ],
+    "prerequisites": [
+      "EuclideanSpace",
+      "dist",
+      "PseudoMetricSpace"
+    ]
+  },
+  {
+    "id": "ann-1070-2",
+    "proofId": "erdos-1070",
+    "range": {
+      "startLine": 43,
+      "endLine": 45
+    },
+    "type": "definition",
+    "title": "Unit Distance Relation",
+    "content": "Two points $p, q \\in \\mathbb{R}^2$ form a unit distance pair if $d(p, q) = 1$. This is the edge relation in unit distance graphs — it is symmetric (since $d$ is a metric) and irreflexive (since $d(p, p) = 0 \\neq 1$). The unit distance graph of the entire plane (with this edge relation) is the object of the Hadwiger-Nelson problem.",
+    "mathContext": "$\\text{isUnitDistance}(p, q) :\\equiv d(p, q) = 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "unit distance graph",
+      "Hadwiger-Nelson problem",
+      "distance graph"
+    ],
+    "prerequisites": [
+      "euclideanDist"
+    ]
+  },
+  {
+    "id": "ann-1070-3",
+    "proofId": "erdos-1070",
+    "range": {
+      "startLine": 47,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "Unit Distance Graph Structure",
+    "content": "A `UnitDistanceGraph n` consists of a `Finset` of $n$ points in $\\mathbb{R}^2$, with unit distance as the implicit edge relation. The structure stores only the point set (with a cardinality proof `card_eq : points.card = n`); edges are determined by the metric. This is the natural formalization since the graph structure is uniquely determined by the point placement.",
+    "mathContext": "$G = (V, E)$ where $V \\subseteq \\mathbb{R}^2$, $|V| = n$, $E = \\{\\{p, q\\} : d(p, q) = 1\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "geometric graph",
+      "distance graph",
+      "Finset structure"
+    ],
+    "prerequisites": [
+      "Finset",
+      "EuclideanSpace",
+      "isUnitDistance"
+    ]
+  },
+  {
+    "id": "ann-1070-4",
+    "proofId": "erdos-1070",
+    "range": {
+      "startLine": 54,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "Independent Set Definition",
+    "content": "An independent set $S$ in a unit distance graph $G$ is a subset $S \\subseteq G.\\text{points}$ with no two distinct points at unit distance: $\\forall p, q \\in S,\\, p \\neq q \\implies d(p, q) \\neq 1$. Equivalently, $S$ is a *unit-distance-free* set. The independence number $\\alpha(G) = \\max_{S \\subseteq V} |S|$ subject to this constraint is the central quantity of interest.",
+    "mathContext": "$\\text{IsIndependentSet}(G, S) :\\equiv S \\subseteq V(G) \\land \\forall p \\neq q \\in S,\\, d(p, q) \\neq 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "independence number",
+      "unit-distance-free set",
+      "Ramsey theory"
+    ],
+    "prerequisites": [
+      "UnitDistanceGraph",
+      "isUnitDistance",
+      "Finset.Subset"
+    ]
+  },
+  {
+    "id": "ann-1070-5",
+    "proofId": "erdos-1070",
+    "range": {
+      "startLine": 70,
+      "endLine": 71
+    },
+    "type": "definition",
+    "title": "The Function f(n)",
+    "content": "The extremal function $f(n) = \\min_G \\alpha(G)$ over all $n$-point unit distance graphs $G$ in $\\mathbb{R}^2$. This is axiomatized (not computed) because the minimum is over an uncountable family of geometric configurations. Two companion axioms ensure correctness: `f_is_minimum` ($\\forall G,\\, \\alpha(G) \\geq f(n)$) and `f_is_achieved` ($\\exists G,\\, \\alpha(G) = f(n)$). Erdős asks: what is the asymptotic behavior of $f(n)/n$?",
+    "mathContext": "$f(n) = \\min\\{\\alpha(G) : G \\text{ is an } n\\text{-point unit distance graph in } \\mathbb{R}^2\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal function",
+      "Turán-type problem",
+      "minimax"
+    ],
+    "prerequisites": [
+      "UnitDistanceGraph",
+      "independenceNumber"
+    ]
+  },
+  {
+    "id": "ann-1070-6",
+    "proofId": "erdos-1070",
+    "range": {
+      "startLine": 87,
+      "endLine": 88
+    },
+    "type": "definition",
+    "title": "Density Constant m₁",
+    "content": "The *upper density* $m_1 = \\sup\\{\\overline{d}(S) : S \\subseteq \\mathbb{R}^2 \\text{ measurable, unit-distance-free}\\}$ where $\\overline{d}(S) = \\limsup_{R \\to \\infty} \\text{area}(S \\cap B_R) / \\text{area}(B_R)$. This continuous quantity controls the discrete function $f(n)$ via the Larman-Rogers connection. Axiomatized with `m1_pos` ($m_1 > 0$) and `m1_le_one` ($m_1 \\leq 1$). The exact value of $m_1$ is unknown; best bounds are $0.22936 \\leq m_1 \\leq 0.247$.",
+    "mathContext": "$m_1 = \\sup\\{\\overline{d}(S) : S \\subseteq \\mathbb{R}^2,\\, \\forall p, q \\in S,\\, d(p,q) \\neq 1\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "upper density",
+      "measurable sets",
+      "packing density",
+      "Lebesgue measure"
+    ],
+    "prerequisites": [
+      "EuclideanSpace",
+      "Lebesgue measure"
+    ]
+  },
+  {
+    "id": "ann-1070-7",
+    "proofId": "erdos-1070",
+    "range": {
+      "startLine": 101,
+      "endLine": 103
+    },
+    "type": "concept",
+    "title": "Larman-Rogers Theorem",
+    "content": "The fundamental bridge between discrete and continuous: $f(n) \\geq m_1 \\cdot n$ for all $n$. The proof idea: given $n$ points, consider a random translate of a high-density unit-distance-free set $S$; by linearity of expectation, $\\mathbb{E}[|\\text{points} \\cap S|] \\geq m_1 \\cdot n$, so some translate contains $\\geq m_1 n$ points forming an independent set. Axiomatized because the measure-theoretic argument is beyond current Lean formalization.",
+    "mathContext": "$\\forall n \\in \\mathbb{N} : f(n) \\geq m_1 \\cdot n$",
+    "significance": "key",
+    "relatedConcepts": [
+      "probabilistic method",
+      "density argument",
+      "random translation",
+      "Larman-Rogers"
+    ],
+    "prerequisites": [
+      "f",
+      "m1",
+      "Lebesgue measure"
+    ]
+  },
+  {
+    "id": "ann-1070-8",
+    "proofId": "erdos-1070",
+    "range": {
+      "startLine": 110,
+      "endLine": 111
+    },
+    "type": "concept",
+    "title": "Croft's Lower Bound",
+    "content": "Croft (1967) constructed an explicit unit-distance-free set of density $\\geq 0.22936$. The construction uses a regular hexagonal lattice: remove disks of radius $r$ around each lattice point, where $r$ is chosen so no two remaining points are at unit distance. The optimal $r$ gives density $\\approx 0.22936$. This has stood as the best lower bound on $m_1$ for over 55 years.",
+    "mathContext": "$m_1 \\geq 0.22936$ (Croft 1967, hexagonal lattice construction)",
+    "significance": "key",
+    "relatedConcepts": [
+      "hexagonal lattice",
+      "packing construction",
+      "Croft's set"
+    ],
+    "prerequisites": [
+      "m1"
+    ]
+  },
+  {
+    "id": "ann-1070-9",
+    "proofId": "erdos-1070",
+    "range": {
+      "startLine": 125,
+      "endLine": 129
+    },
+    "type": "axiom",
+    "title": "Moser Spindle",
+    "content": "The Moser spindle is a specific 7-vertex unit distance graph with independence number exactly 2. It was discovered by Leo Moser and William Moser (1961) as the smallest known unit distance graph with chromatic number 4. The 7 vertices can be placed in $\\mathbb{R}^2$ with 11 edges, all at unit distance, such that any subset of 3 or more vertices contains a unit distance pair. The constants `moserSpindleVertices = 7` and `moserSpindleIndependence = 2` are defined, with existence axiomatized.",
+    "mathContext": "$\\exists G \\in \\text{UDG}(7) : \\alpha(G) = 2$, giving $f(n) \\leq \\lfloor 2n/7 \\rfloor$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Moser spindle",
+      "chromatic number 4",
+      "Moser brothers",
+      "unit distance graph"
+    ],
+    "prerequisites": [
+      "UnitDistanceGraph",
+      "independenceNumber"
+    ]
+  },
+  {
+    "id": "ann-1070-10",
+    "proofId": "erdos-1070",
+    "range": {
+      "startLine": 135,
+      "endLine": 137
+    },
+    "type": "concept",
+    "title": "Moser Spindle Upper Bound",
+    "content": "By placing $\\lfloor n/7 \\rfloor$ disjoint copies of the Moser spindle (with $\\leq 6$ extra points), any independent set can include at most 2 vertices from each copy, giving $f(n) \\leq 2\\lfloor n/7 \\rfloor + 6 \\leq (2/7)n + O(1)$. Asymptotically, $\\limsup f(n)/n \\leq 2/7 \\approx 0.2857$. Axiomatized as `moser_spindle_upper_bound`: $f(n) \\leq (2/7)n$ for all $n$.",
+    "mathContext": "$f(n) \\leq (2/7)n$ via $\\lfloor n/7 \\rfloor$ copies of the Moser spindle",
+    "significance": "key",
+    "relatedConcepts": [
+      "graph tiling",
+      "blow-up construction",
+      "asymptotic upper bound"
+    ],
+    "prerequisites": [
+      "moser_spindle_exists",
+      "f"
+    ]
+  },
+  {
+    "id": "ann-1070-11",
+    "proofId": "erdos-1070",
+    "range": {
+      "startLine": 144,
+      "endLine": 148
+    },
+    "type": "concept",
+    "title": "Best Known Bounds Theorem",
+    "content": "Combines the Croft lower bound and Moser spindle upper bound: $0.22936n \\leq f(n) \\leq (2/7)n$ for all $n$. The proof is `exact ⟨f_lower_bound n, moser_spindle_upper_bound n⟩`, packaging both inequalities. The gap between $0.22936 \\approx 0.229$ and $2/7 \\approx 0.286$ is about $0.057n$ — closing this gap is the main open challenge.",
+    "mathContext": "$\\forall n : 0.22936n \\leq f(n) \\leq (2/7)n$",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal bounds",
+      "gap problem",
+      "sandwich theorem"
+    ],
+    "prerequisites": [
+      "f_lower_bound",
+      "moser_spindle_upper_bound"
+    ]
+  },
+  {
+    "id": "ann-1070-12",
+    "proofId": "erdos-1070",
+    "range": {
+      "startLine": 156,
+      "endLine": 157
+    },
+    "type": "concept",
+    "title": "ACMVZ Upper Bound on m₁",
+    "content": "Ambrus, Csiszárik, Matolcsi, Varga, and Zsámboki (ACMVZ, 2023) proved $m_1 \\leq 0.247$ using a computer-assisted optimization over harmonic analysis techniques. The bound exploits the Fourier transform of the indicator function of a unit-distance-free set — the constraint $d(p,q) \\neq 1$ translates into conditions on the Fourier transform's behavior at the Bessel function zeros.",
+    "mathContext": "$m_1 \\leq 0.247$ (ACMVZ 2023, Fourier-analytic method)",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fourier analysis",
+      "harmonic analysis",
+      "Bessel functions",
+      "computer-assisted proof"
+    ],
+    "prerequisites": [
+      "m1"
+    ]
+  },
+  {
+    "id": "ann-1070-13",
+    "proofId": "erdos-1070",
+    "range": {
+      "startLine": 162,
+      "endLine": 165
+    },
+    "type": "concept",
+    "title": "Density Insufficient for n/4",
+    "content": "A proved theorem establishing that the density method cannot resolve Erdős's $n/4$ question: since $m_1 \\leq 0.247 < 0.25 = 1/4$, the Larman-Rogers inequality $f(n) \\geq m_1 n$ gives at most $f(n) \\geq 0.247n < n/4$. The proof chains `acmvz_upper_bound` with `quarter_threshold` (verified by `norm_num`). This is a genuine impossibility result — any proof of $f(n) \\geq n/4$ must use techniques beyond density.",
+    "mathContext": "$m_1 < 1/4$: density methods give $f(n) \\geq m_1 n < n/4$",
+    "significance": "key",
+    "relatedConcepts": [
+      "impossibility result",
+      "barrier theorem",
+      "method limitations"
+    ],
+    "prerequisites": [
+      "acmvz_upper_bound",
+      "quarter_threshold",
+      "larman_rogers_theorem"
+    ]
+  },
+  {
+    "id": "ann-1070-14",
+    "proofId": "erdos-1070",
+    "range": {
+      "startLine": 177,
+      "endLine": 188
+    },
+    "type": "concept",
+    "title": "Chromatic Number Connection",
+    "content": "The Hadwiger-Nelson problem asks for the chromatic number $\\chi$ of the unit distance graph of $\\mathbb{R}^2$. Since $\\alpha(G) \\cdot \\chi(G) \\geq |V(G)|$ for any graph (each color class is an independent set), we get $f(n) \\geq n/\\chi$. De Grey (2018) showed $\\chi \\geq 5$ (improving the 1961 lower bound of 4), so $f(n) \\geq n/7$ from the upper bound $\\chi \\leq 7$. The theorem `f_from_chromatic` has a `sorry` because the division monotonicity argument requires careful casting between $\\mathbb{N}$ and $\\mathbb{R}$.",
+    "mathContext": "$5 \\leq \\chi \\leq 7 \\implies f(n) \\geq n/\\chi \\geq n/7$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hadwiger-Nelson problem",
+      "chromatic number",
+      "de Grey",
+      "graph coloring"
+    ],
+    "prerequisites": [
+      "chromaticNumberPlane",
+      "de_grey_lower_bound",
+      "chromatic_upper_bound",
+      "independence_chromatic_relation"
+    ]
+  },
+  {
+    "id": "ann-1070-15",
+    "proofId": "erdos-1070",
+    "range": {
+      "startLine": 214,
+      "endLine": 219
+    },
+    "type": "insight",
+    "title": "Complete Summary Theorem",
+    "content": "`erdos_1070_summary` packages the three main results: (1) $f(n) \\geq 0.22936n$ (Croft via Larman-Rogers), (2) $f(n) \\leq (2/7)n$ (Moser spindle), and (3) $m_1 < 1/4$ (density barrier). The proof is `exact ⟨f_lower_bound, moser_spindle_upper_bound, density_insufficient_for_quarter⟩`. Together these establish the state of knowledge: $f(n)$ is $\\Theta(n)$ with ratio in $[0.229, 0.286]$, and Erdős's $n/4$ question requires new methods.",
+    "mathContext": "$(\\forall n,\\, 0.22936n \\leq f(n)) \\land (\\forall n,\\, f(n) \\leq (2/7)n) \\land (m_1 < 1/4)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "theorem packaging",
+      "state of knowledge",
+      "summary result"
+    ],
+    "prerequisites": [
+      "f_lower_bound",
+      "moser_spindle_upper_bound",
+      "density_insufficient_for_quarter"
+    ]
+  }
+]

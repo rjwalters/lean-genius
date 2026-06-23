@@ -1,0 +1,197 @@
+[
+  {
+    "id": "ann-e540-header",
+    "proofId": "erdos-540",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 14
+    },
+    "title": "Problem Overview: Zero-Sum Subsets",
+    "content": "**Erdős Problem #540** (the Erdős-Heilbronn Conjecture) asks: if A ⊆ ℤ/Nℤ has size much larger than √N, must A contain a non-empty subset summing to 0?\n\nThe answer is **YES**, proved by Szemerédi in 1970. Olson (1968) had earlier resolved the prime case with the sharp constant √2. Balandraud (2012) proved √(2p) is the exact threshold for primes — both necessary and sufficient. This is a foundational result in additive combinatorics.",
+    "mathContext": "The problem connects the combinatorial structure of subsets (2^|A| possibilities) to the algebraic structure of ℤ/Nℤ (N elements). The √N threshold arises from balancing these two quantities via refined pigeonhole arguments.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Additive combinatorics",
+      "Zero-sum theory",
+      "Cyclic groups",
+      "Subset sums"
+    ],
+    "prerequisites": [
+      "additive combinatorics",
+      "number theory",
+      "modular arithmetic",
+      "pigeonhole principle"
+    ]
+  },
+  {
+    "id": "ann-e540-definitions",
+    "proofId": "erdos-540",
+    "type": "definition",
+    "range": {
+      "startLine": 32,
+      "endLine": 42
+    },
+    "title": "Subset Sums and Zero-Sum Predicates",
+    "content": "**subsetSum S** computes the sum of elements of S in ℤ/Nℤ using `Finset.sum id`. **IsZeroSumSubset A S** requires S ⊆ A, S non-empty, and subsetSum S = 0. **HasZeroSumSubset A** is the existential: some S satisfies all three conditions.\n\nThe definitions are clean and compositional: the zero-sum property decomposes into containment, non-emptiness, and the algebraic condition. Working over ZMod N ensures all arithmetic is modular.",
+    "mathContext": "In ℤ/Nℤ, the sum of any subset is well-defined modulo N. The problem asks when the existence of a zero-sum subset is guaranteed by the size of A alone, independent of which elements are chosen.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ZMod",
+      "Finset.sum",
+      "Modular arithmetic",
+      "Subset predicates"
+    ],
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library structure",
+      "finite set operations",
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-e540-conjecture",
+    "proofId": "erdos-540",
+    "type": "definition",
+    "range": {
+      "startLine": 48,
+      "endLine": 58
+    },
+    "title": "The Erdős-Heilbronn Conjecture",
+    "content": "**ErdosHeilbronnConjecture c** states that for all N ≥ 1 and all A ⊆ ℤ/Nℤ with |A| > c·√N, A has a zero-sum subset. The conjecture is parameterized by the constant c.\n\n**OriginalConjecture** is the existential form: ∃ c > 0, ErdosHeilbronnConjecture c. The key question was whether any constant c works at all; the refinement is pinning down the optimal c = √2.",
+    "mathContext": "The quantifier structure matters: the constant c is universal across all N and all subsets A. This makes it a uniform threshold, not depending on the specific group or subset.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Threshold problems",
+      "Universal constants",
+      "Additive combinatorics"
+    ],
+    "prerequisites": [
+      "first-order logic and quantifiers",
+      "asymptotic notation",
+      "modular arithmetic",
+      "real analysis"
+    ]
+  },
+  {
+    "id": "ann-e540-olson",
+    "proofId": "erdos-540",
+    "type": "concept",
+    "range": {
+      "startLine": 69,
+      "endLine": 78
+    },
+    "title": "Olson's Theorem (1968): Primes",
+    "content": "**olson_prime_case** axiomatizes Olson's 1968 result: for prime p, any A ⊆ ℤ/pℤ with |A| > √(2p) has a zero-sum subset. This was the first major progress on the conjecture.\n\nThe constant √2 (encoded as √(2p) = √2 · √p) turns out to be optimal for primes, as Balandraud later proved. **olsonConstant** = √2 is defined explicitly, and the identity `olson_constant_value` confirms this by `rfl`.",
+    "mathContext": "Olson's proof used the Chevalley–Warning theorem and polynomial methods over finite fields. For primes, ℤ/pℤ is a field, which enables algebraic techniques unavailable for composite N.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Polynomial method",
+      "Chevalley–Warning",
+      "Finite fields",
+      "Prime moduli"
+    ],
+    "prerequisites": [
+      "finite field theory",
+      "polynomial algebra",
+      "number theory",
+      "combinatorics"
+    ]
+  },
+  {
+    "id": "ann-e540-szemeredi",
+    "proofId": "erdos-540",
+    "type": "concept",
+    "range": {
+      "startLine": 88,
+      "endLine": 93
+    },
+    "title": "Szemerédi's Resolution (1970)",
+    "content": "**szemeredi_general_case** axiomatizes the complete resolution: there exists c > 0 such that ErdosHeilbronnConjecture(c) holds for all N. This settled Problem #540.\n\n**erdos_540_solved** is proved directly from this axiom: `OriginalConjecture := szemeredi_general_case`. The theorem chain is clean — the main result follows immediately from the axiom.",
+    "mathContext": "Szemerédi's proof extended beyond primes using combinatorial methods rather than the algebraic techniques of Olson. The proof works for arbitrary cyclic groups and was later generalized to all finite abelian groups.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Szemerédi",
+      "General cyclic groups",
+      "Combinatorial proofs"
+    ],
+    "prerequisites": [
+      "combinatorics",
+      "group theory",
+      "additive combinatorics",
+      "number theory"
+    ]
+  },
+  {
+    "id": "ann-e540-balandraud",
+    "proofId": "erdos-540",
+    "type": "concept",
+    "range": {
+      "startLine": 105,
+      "endLine": 112
+    },
+    "title": "Balandraud's Tight Bounds (2012)",
+    "content": "**balandraud_prime_optimal** captures the definitive result for primes: √(2p) is the exact threshold. The axiom has two parts: (1) any A with |A| ≥ √(2p) has a zero-sum subset, and (2) there exist A with |A| < √(2p) that avoid zero-sums.\n\nThis tightness result is remarkable: it pins down the exact boundary between 'must have zero-sum' and 'can avoid zero-sum' for the prime case.",
+    "mathContext": "The counterexamples below √(2p) come from choosing elements that form a 'sum-free-like' configuration in ℤ/pℤ — subsets where no non-empty subset sums to 0. These exist but are constrained to size < √(2p).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Tight bounds",
+      "Extremal configurations",
+      "Sum-free sets"
+    ],
+    "prerequisites": [
+      "combinatorics",
+      "group theory",
+      "real analysis",
+      "extremal set theory"
+    ]
+  },
+  {
+    "id": "ann-e540-hamidoune",
+    "proofId": "erdos-540",
+    "type": "concept",
+    "range": {
+      "startLine": 123,
+      "endLine": 128
+    },
+    "title": "Hamidoune–Zémor Asymptotic (1996)",
+    "content": "**hamidoune_zemor_bound** states that for any ε > 0, sufficiently large N satisfies: |A| ≥ (1+ε)√(2N) implies A has a zero-sum subset. This shows the optimal constant is asymptotically √2 for all N, not just primes.\n\nThe o(1) term vanishes as N → ∞, so for large N the threshold is essentially √(2N) regardless of whether N is prime.",
+    "mathContext": "This result bridges the gap between Olson's prime result and the general case, showing that the √2 constant is universal asymptotically. The proof uses additive combinatorics in abelian groups.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Asymptotic bounds",
+      "Abelian groups",
+      "Additive combinatorics"
+    ],
+    "prerequisites": [
+      "asymptotic analysis",
+      "abelian group theory",
+      "additive combinatorics",
+      "real analysis"
+    ]
+  },
+  {
+    "id": "ann-e540-davenport",
+    "proofId": "erdos-540",
+    "type": "concept",
+    "range": {
+      "startLine": 148,
+      "endLine": 152
+    },
+    "title": "Davenport Constant Comparison",
+    "content": "**davenport_for_cyclic** states that any A ⊆ ℤ/Nℤ with |A| ≥ N has a zero-sum subset. The Davenport constant D(ℤ/Nℤ) = N gives this linear bound for sequences.\n\nThe Erdős-Heilbronn result is much sharper: only √N elements suffice for subsets. The difference arises because subsets cannot repeat elements — the 2^|A| non-empty subsets provide exponentially many sum candidates, while sequences of length N provide only linearly many distinct subsequences.",
+    "mathContext": "The Davenport constant D(G) is the smallest d such that every sequence of length d over G has a zero-sum subsequence. For ℤ/Nℤ, D = N. The zero-sum problem for subsets (without repetition) has the fundamentally different threshold √N.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Davenport constant",
+      "Sequences vs subsets",
+      "Zero-sum sequences"
+    ],
+    "prerequisites": [
+      "combinatorics",
+      "group theory",
+      "asymptotic counting",
+      "additive combinatorics"
+    ]
+  }
+]

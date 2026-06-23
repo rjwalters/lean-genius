@@ -1,0 +1,160 @@
+[
+  {
+    "id": "ann-cnull-header",
+    "proofId": "factor-remainder-nullstellensatz-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 45
+    },
+    "type": "concept",
+    "title": "The Polynomial Method and Alon's Theorem",
+    "content": "Introduces Alon's Combinatorial Nullstellensatz (1999), a cornerstone of the polynomial method in combinatorics. The theorem states: if a multivariate polynomial $f$ over a field $F$ has a nonzero coefficient at a maximal-degree monomial $\\prod x_i^{t_i}$ with $\\deg f = \\sum t_i$, then $f$ cannot vanish on any product grid $S_1 \\times \\cdots \\times S_n$ where $|S_i| > t_i$. Applications include the Cauchy-Davenport theorem, Chevalley-Warning, permanent bounds, and the Alon-Tarsi theorem on list colorings.",
+    "mathContext": "The Combinatorial Nullstellensatz works over arbitrary fields (not just algebraically closed), unlike Hilbert's Nullstellensatz from algebraic geometry. The name is an analogy: both concern when polynomials must have common zeros, but the combinatorial version gives explicit non-vanishing on product sets.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "polynomial method",
+      "Hilbert's Nullstellensatz",
+      "Cauchy-Davenport theorem"
+    ],
+    "prerequisites": [
+      "field theory",
+      "multivariate polynomials",
+      "Finsupp"
+    ]
+  },
+  {
+    "id": "ann-cnull-single-var",
+    "proofId": "factor-remainder-nullstellensatz-oq-02",
+    "range": {
+      "startLine": 47,
+      "endLine": 78
+    },
+    "type": "concept",
+    "title": "Single-Variable Non-Vanishing (Fully Proved)",
+    "content": "Proves `exists_eval_ne_zero`: if $f \\in F[x]$ is nonzero and $|S| > \\deg(f)$, then some $s \\in S$ satisfies $f(s) \\ne 0$. The proof uses `Polynomial.card_roots_le_degree` from Mathlib: $f$ has at most $\\deg(f)$ roots, so with $|S| > \\deg(f)$ elements, at least one is not a root. The proof is by contradiction: assuming all $s \\in S$ are roots gives $|S| \\le |\\text{roots}(f)| \\le \\deg(f)$, contradicting the hypothesis.",
+    "mathContext": "This is the base case for the full Nullstellensatz. Over a field, a nonzero polynomial $f \\in F[x]$ of degree $d$ has at most $d$ roots (by the factor theorem and degree counting). So if $|S| > d$, the pigeonhole principle gives $\\exists s \\in S: f(s) \\ne 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "polynomial root bound",
+      "factor theorem",
+      "pigeonhole principle"
+    ],
+    "prerequisites": [
+      "Polynomial.card_roots_le_degree",
+      "Multiset.toFinset",
+      "Field"
+    ]
+  },
+  {
+    "id": "ann-cnull-grid",
+    "proofId": "factor-remainder-nullstellensatz-oq-02",
+    "range": {
+      "startLine": 80,
+      "endLine": 109
+    },
+    "type": "concept",
+    "title": "Grid Non-Vanishing Lemma (Axiomatized)",
+    "content": "Axiomatizes the grid non-vanishing lemma: if $f \\in F[x_1, \\ldots, x_n]$ is nonzero with $\\deg_{x_i}(f) < |S_i|$ for each $i$, then $f$ does not vanish on $S_1 \\times \\cdots \\times S_n$. The docstring outlines the inductive proof: viewing $f$ as a polynomial in $x_1$ with coefficients in $F[x_2, \\ldots, x_n]$, if $f$ vanished on the grid, the single-variable case forces all coefficients to vanish on $S_2 \\times \\cdots \\times S_n$, contradicting the induction hypothesis.",
+    "mathContext": "Write $f = \\sum_{j=0}^{d_1} c_j(x_2, \\ldots, x_n) \\cdot x_1^j$ with $d_1 = \\deg_{x_1}(f) < |S_1|$. For each $(a_2, \\ldots, a_n) \\in S_2 \\times \\cdots \\times S_n$, $g(x_1) = f(x_1, a_2, \\ldots, a_n)$ has degree $\\le d_1 < |S_1|$. If $g$ vanishes on $S_1$, then $g = 0$, so $c_j(a_2, \\ldots, a_n) = 0$ for all $j$. Since this holds for all grid points, each $c_j$ vanishes on $S_2 \\times \\cdots \\times S_n$, and by induction $c_j = 0$, so $f = 0$, contradiction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "structural induction",
+      "partial degree",
+      "multivariate polynomial"
+    ],
+    "prerequisites": [
+      "exists_eval_ne_zero",
+      "MvPolynomial.degreeOf",
+      "induction on variable count"
+    ]
+  },
+  {
+    "id": "ann-cnull-main",
+    "proofId": "factor-remainder-nullstellensatz-oq-02",
+    "range": {
+      "startLine": 111,
+      "endLine": 140
+    },
+    "type": "concept",
+    "title": "Alon's Combinatorial Nullstellensatz (Axiomatized)",
+    "content": "The main theorem: given $f$ with $\\deg(f) = \\sum t_i$ and nonzero coefficient at $\\prod x_i^{t_i}$, and sets $S_i$ with $|S_i| > t_i$, there exists a point in $\\prod S_i$ where $f$ does not vanish. The proof reduces to grid non-vanishing via polynomial division: reduce $f$ modulo $g_i(x_i) = \\prod_{s \\in S_i}(x_i - s)$ to get remainder $r$ with $\\deg_{x_i}(r) < |S_i|$. The key insight: the target monomial $\\prod x_i^{t_i}$ has degree $t_i < |S_i|$ in each variable, so it survives the reduction unchanged.",
+    "mathContext": "The polynomial division step: $f \\equiv r \\pmod{g_1, \\ldots, g_n}$ where $g_i = \\prod_{s \\in S_i}(x_i - s)$. Since $g_i$ vanishes on $S_i$, $f$ and $r$ agree on the grid. The monomial $\\prod x_i^{t_i}$ has $\\deg_{x_i} = t_i < |S_i| = \\deg(g_i)$, so it is not reduced, preserving the nonzero coefficient. Thus $r \\ne 0$ and grid non-vanishing applies.",
+    "significance": "key",
+    "relatedConcepts": [
+      "polynomial reduction",
+      "grid polynomials",
+      "coefficient preservation"
+    ],
+    "prerequisites": [
+      "grid_nonvanishing",
+      "MvPolynomial.totalDegree",
+      "MvPolynomial.coeff",
+      "Finsupp.equivFunOnFinite"
+    ]
+  },
+  {
+    "id": "ann-cnull-variant",
+    "proofId": "factor-remainder-nullstellensatz-oq-02",
+    "range": {
+      "startLine": 142,
+      "endLine": 161
+    },
+    "type": "concept",
+    "title": "≥ t_i + 1 Variant (Proved from Axiom)",
+    "content": "Restates the Combinatorial Nullstellensatz with $|S_i| \\ge t_i + 1$ instead of $|S_i| > t_i$. The proof is a one-line reduction via `omega` converting $\\ge t_i + 1$ to $> t_i$. This variant is sometimes more convenient in applications where set sizes are given as equalities.",
+    "mathContext": "$|S_i| \\ge t_i + 1 \\Leftrightarrow |S_i| > t_i$ for natural numbers. The variant exists because applications sometimes express the condition as $|S_i| \\ge t_i + 1$ (e.g., when $|S_i| = t_i + 1$ exactly, which is the tight case).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "omega tactic",
+      "natural number arithmetic"
+    ],
+    "prerequisites": [
+      "combinatorial_nullstellensatz"
+    ]
+  },
+  {
+    "id": "ann-cnull-uniform",
+    "proofId": "factor-remainder-nullstellensatz-oq-02",
+    "range": {
+      "startLine": 169,
+      "endLine": 178
+    },
+    "type": "concept",
+    "title": "Uniform Grid Specialization (Proved from Axiom)",
+    "content": "Specializes the Nullstellensatz to the case where all sets $S_i$ are the same set $S \\subseteq F$: if $f \\in F[x_1, \\ldots, x_n]$ has total degree $\\sum t_i$ with nonzero leading monomial coefficient and $|S| > t_i$ for all $i$, then $f$ does not vanish on $S^n$. Proved by setting all $S_i = S$ in the main axiom.",
+    "mathContext": "The uniform grid case is common in applications: e.g., in the Cauchy-Davenport theorem, one works with subsets of $\\mathbb{Z}/p\\mathbb{Z}$, evaluating polynomials on $A^k$ for some $A \\subseteq \\mathbb{Z}/p\\mathbb{Z}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "uniform grid",
+      "Cauchy-Davenport theorem",
+      "finite field evaluation"
+    ],
+    "prerequisites": [
+      "combinatorial_nullstellensatz",
+      "Fin n"
+    ]
+  },
+  {
+    "id": "ann-cnull-framework",
+    "proofId": "factor-remainder-nullstellensatz-oq-02",
+    "range": {
+      "startLine": 180,
+      "endLine": 229
+    },
+    "type": "concept",
+    "title": "Polynomial Method Framework and Proof Roadmap",
+    "content": "Documents the polynomial method paradigm: to prove a combinatorial statement about a set $A$, construct a polynomial $f$ encoding the structure, then use algebraic properties (degree bounds, coefficient non-vanishing) to derive combinatorial conclusions. Lists four key applications: Cauchy-Davenport on sumsets, Chevalley-Warning on low-degree systems, permanent bounds, and the Alon-Tarsi theorem. The summary identifies the main gap for full formalization: multivariate polynomial division in Mathlib.",
+    "mathContext": "The path to removing the `combinatorial_nullstellensatz` axiom requires: (1) MvPolynomial division modulo $g_i(x_i) = \\prod_{s \\in S_i}(x_i-s)$ one variable at a time, (2) degree bound preservation $\\deg_{x_i}(r) < |S_i|$, and (3) coefficient preservation for monomials with $\\deg_{x_i} < \\deg(g_i)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "polynomial method",
+      "MvPolynomial division",
+      "Mathlib infrastructure"
+    ],
+    "prerequisites": [
+      "Polynomial Method",
+      "MvPolynomial Division",
+      "Combinatorial Nullstellensatz"
+    ]
+  }
+]

@@ -1,0 +1,17 @@
+{
+  "problem_number": 665,
+  "title": "Pairwise Balanced Designs with Large Blocks",
+  "status": "open",
+  "solvers": [],
+  "source_url": "https://erdosproblems.com/665",
+  "overview": "A pairwise balanced design for {1,...,n} is a collection of blocks where every pair of elements appears in exactly one block. The question asks: Does there exist a constant C such that for all large n, a design exists with all block sizes > √n - C?",
+  "sections": [],
+  "conclusion": "OPEN - The function h(n) measuring the minimum gap from √n satisfies h(n) ≪ n^{1/2-c} unconditionally, and h(n) ≪ (log n)² under Cramér's conjecture. The answer is 'no' if projective planes exist only for prime power orders. Deep connections to projective plane existence and prime gaps.",
+  "references": [
+    "Erdős-Larson [ErLa82] - Original problem and bounds",
+    "Shrikhande-Singhi [ShSi85] - Connection to projective planes",
+    "Erdős [Er97] - Further developments"
+  ],
+  "related_problems": [],
+  "tags": ["combinatorics", "design-theory", "block-designs", "projective-planes", "prime-gaps", "open"]
+}

@@ -1,0 +1,145 @@
+[
+  {
+    "id": "cb04oq01-roadmap",
+    "proofId": "chebyshev-bounds-oq-04-oq-01",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 66
+    },
+    "title": "Module Docstring: The Elementary-PNT Roadmap and Mathlib Gap Inventory",
+    "content": "The 66-line module docstring frames the open question, lays out the four-stage Selberg-Erdős strategy, and inventories the three Mathlib gaps that future iterations must fill.\n\n**Open question (L4–8)**: Discharge `chebyshevPsi_asymptotic` from the parent file `ChebyshevBoundsOQ04.lean` *elementarily* — i.e., without complex analysis of $\\zeta(s)$.\n\n**Four-stage strategy (L25–47)**:\n1. Selberg symmetry formula $S_2(N) = 2N \\log N + O(N)$, where $S_2(N) := \\sum_{n \\leq N} \\Lambda_2(n)$.\n2. Reduction to oscillation control: $V(x) := |\\psi(x) - x| / x$ satisfies a Tauberian inequality $V(x) \\log x \\leq (2/x) \\sum_{n \\leq x} V(x/n) \\Lambda(n) + O(1)$.\n3. Erdős's combinatorial lemma: any $V$ satisfying the Tauberian inequality must have $\\limsup V(x) = 0$.\n4. Conclusion: $\\psi(x)/x \\to 1$.\n\n**Mathlib gaps (L49–53)**: at Mathlib v4.26.0, the library lacks (i) Selberg's symmetry formula, (ii) the Möbius–log identity $\\sum_{d \\mid n} \\mu(d) \\log^2(n/d) = \\Lambda_2(n)$, and (iii) any partial-summation framework specialised to $\\Lambda_2$-type sums. This iteration is positioned to be the upstream contribution that fills gap (iii) and prepares (i)–(ii).\n\nThe references at L57–65 (Selberg PNAS 1949, Erdős PNAS 1949, Tenenbaum 2015, Iwaniec-Kowalski 2004) give the canonical literature trail.",
+    "significance": "supporting",
+    "mathContext": "Selberg's identity (the conjectured next-iteration deliverable) is\n$$\\sum_{d \\mid n} \\mu(d) \\log^2(n/d) = \\Lambda(n) \\log n + (\\Lambda * \\Lambda)(n) = \\Lambda_2(n), \\quad n \\geq 1.$$\nIt follows from $\\Lambda = \\mu * \\log$ (the standard expansion via Möbius inversion of $\\log = \\Lambda * 1$) combined with Dirichlet-convolution distributivity. The corresponding symmetry formula\n$$\\sum_{n \\leq N} \\Lambda_2(n) = 2N \\log N + O(N)$$\nis the dimensional-reduction step that bypasses complex analysis: it reduces PNT to oscillation control of $\\psi(x)/x - 1$ via Erdős's combinatorial finishing.",
+    "relatedConcepts": [
+      "Selberg's symmetry formula",
+      "Möbius inversion",
+      "Dirichlet convolution",
+      "Tauberian theorem",
+      "Erdős-Selberg priority dispute"
+    ],
+    "prerequisites": [
+      "von Mangoldt function Λ",
+      "Möbius function μ",
+      "asymptotic notation O(·)"
+    ]
+  },
+  {
+    "id": "cb04oq01-conv",
+    "proofId": "chebyshev-bounds-oq-04-oq-01",
+    "type": "definition",
+    "range": {
+      "startLine": 82,
+      "endLine": 86
+    },
+    "title": "vonMangoldtConv: Explicit Divisor-Sum Form of Λ ∗ Λ",
+    "content": "`noncomputable def vonMangoldtConv (n : ℕ) : ℝ := ∑ d ∈ n.divisors, vonMangoldt d * vonMangoldt (n / d)`\n\nThe Dirichlet convolution $(\\Lambda * \\Lambda)(n)$ defined as an *explicit* divisor-sum rather than via Mathlib's `ArithmeticFunction.mul`.\n\n**Why this choice matters** (per the docstring on L76–80): Selberg's downstream identities require rewriting sums of the form $\\sum_{d \\mid n} f(d) g(n/d) = \\sum_{ab = n} f(a) g(b)$ — these rewrites work as direct `Nat.divisors`-level manipulations but become harder when funneled through `ArithmeticFunction`'s `divisorsAntidiagonal` coercion. The cost is a small one (this file's lemmas re-prove what `(Λ * Λ).map_zero` and friends would give for free), but it unlocks ~1500 lines of clean downstream algebra.\n\nThe `n = 0` boundary case is handled by `Nat.divisors_zero = ∅`, giving `vonMangoldtConv 0 = 0` — the next-block `vonMangoldtConv_zero` lemma is then a one-line `simp`.",
+    "significance": "key",
+    "mathContext": "$(\\Lambda * \\Lambda)(n) = \\sum_{d \\mid n} \\Lambda(d) \\Lambda(n/d)$. At a prime $p$, the only contributing divisor is $d = 1$ or $d = p$, both giving $\\Lambda(1) \\cdot \\Lambda(p) = 0$ (since $\\Lambda(1) = 0$), so $(\\Lambda * \\Lambda)(p) = 0$. At a prime power $p^k$ ($k \\geq 2$), the divisors are $1, p, p^2, \\ldots, p^k$ — only $d = p^i$ for $1 \\leq i \\leq k-1$ contribute (with $\\Lambda(p^i) = \\Lambda(p^{k-i}) = \\log p$), giving $(\\Lambda * \\Lambda)(p^k) = (k-1) \\log^2 p$.",
+    "relatedConcepts": [
+      "Dirichlet convolution",
+      "Nat.divisors",
+      "ArithmeticFunction.mul",
+      "divisorsAntidiagonal"
+    ],
+    "prerequisites": [
+      "Mathlib.NumberTheory.ArithmeticFunction.vonMangoldt",
+      "Nat.divisors API"
+    ]
+  },
+  {
+    "id": "cb04oq01-lambda2-def",
+    "proofId": "chebyshev-bounds-oq-04-oq-01",
+    "type": "definition",
+    "range": {
+      "startLine": 88,
+      "endLine": 107
+    },
+    "title": "selbergLambda2 and selbergSum2: The Central Objects",
+    "content": "Two `noncomputable def`s that fix the central counting objects of the elementary proof.\n\n**`selbergLambda2 n := Λ(n) · log n + (Λ ∗ Λ)(n)`** (L102–103) — Selberg's auxiliary function $\\Lambda_2$. The decomposition into a \"first-order\" part $\\Lambda(n) \\log n$ and a \"second-order\" part $(\\Lambda * \\Lambda)(n)$ is *exactly* the structure that makes Möbius inversion of $\\log^2$ work cleanly: the Mathlib expansion $\\Lambda = \\mu * \\log$ feeds in via $\\mu * \\log^2 = \\mu * (\\log \\cdot \\log) = \\Lambda \\log + \\Lambda * \\Lambda$ (the Leibniz-style derivative of convolution).\n\n**`selbergSum2 N := ∑ n ∈ range (N + 1), selbergLambda2 n`** (L106–107) — the truncated Selberg sum $S_2(N) = \\sum_{n \\leq N} \\Lambda_2(n)$.\n\nBoth use `noncomputable` because $\\log$ on $\\mathbb{R}$ is non-computable in Lean's sense. The docstring at L88–98 records *what Selberg's symmetry formula will eventually claim* about this $S_2$: the central identity $S_2(N) = 2N \\log N + O(N)$, which this iteration sets up but does not yet prove.",
+    "significance": "key",
+    "mathContext": "$\\Lambda_2(n) = \\Lambda(n) \\log n + (\\Lambda * \\Lambda)(n)$. The conjectured Möbius–log identity is $\\Lambda_2(n) = \\sum_{d \\mid n} \\mu(d) \\log^2(n/d)$ for $n \\geq 1$, from which the symmetry formula follows by interchanging summation order and using the standard estimate $\\sum_{n \\leq N} \\log^2 n = N \\log^2 N - 2N \\log N + O(\\log^2 N)$ (a one-line consequence of integration by parts).",
+    "relatedConcepts": [
+      "von Mangoldt function",
+      "Möbius inversion",
+      "log² estimate via integration by parts",
+      "noncomputable definitions in Lean"
+    ],
+    "prerequisites": [
+      "vonMangoldtConv (preceding annotation)",
+      "Real.log",
+      "Finset.range / Finset.sum"
+    ]
+  },
+  {
+    "id": "cb04oq01-base-values",
+    "proofId": "chebyshev-bounds-oq-04-oq-01",
+    "type": "definition",
+    "range": {
+      "startLine": 109,
+      "endLine": 148
+    },
+    "title": "Base Values and Non-Negativity: vonMangoldtConv_{zero,one,nonneg}, selbergLambda2_{zero,one,nonneg}",
+    "content": "Six routine lemmas establishing $\\Lambda_2 \\geq 0$ everywhere and the boundary values at $n \\in \\{0, 1\\}$. The proofs are short — each is 1–4 lines — but they pin down the algebraic ground floor needed by every subsequent argument.\n\n**`vonMangoldtConv_zero / vonMangoldtConv_one`** (L112–119): boundary cases of the divisor-sum: `divisors 0 = ∅` (one-line `simp`), and `divisors 1 = {1}` with $\\Lambda(1) = 0$ (one-line `simp [vonMangoldt_apply_one]`).\n\n**`vonMangoldtConv_nonneg`** (L122–125): $(\\Lambda * \\Lambda)(n) \\geq 0$ because $\\Lambda \\geq 0$ everywhere — `Finset.sum_nonneg` + `mul_nonneg vonMangoldt_nonneg vonMangoldt_nonneg`.\n\n**`selbergLambda2_zero / selbergLambda2_one`** (L128–137): $\\Lambda_2(0) = 0$ via `ArithmeticFunction.map_zero` (forces $\\Lambda(0) = 0$), and $\\Lambda_2(1) = 0$ via $\\Lambda(1) = 0$ plus the previous-block boundary case.\n\n**`selbergLambda2_nonneg`** (L141–148): $\\Lambda_2(n) \\geq 0$ — the key non-trivial step is the case split at $n = 0$ (where $\\log 0 = 0$ by Mathlib convention, so the first summand vanishes); for $n \\geq 1$, $\\Lambda(n) \\geq 0$ and $\\log n \\geq 0$.\n\nThe non-negativity at $n = 0$ is *essential* for the Tauberian step downstream — it lets one apply $L^1$-type oscillation inequalities to $\\psi(x)/x - 1$.",
+    "significance": "supporting",
+    "mathContext": "The non-negativity $\\Lambda_2(n) \\geq 0$ is the property Selberg leverages to bound $|\\psi(x) - x|$ by averages of $\\Lambda_2$. The case split at $n = 0$ in `selbergLambda2_nonneg` reflects Lean's convention $\\log 0 := 0$ (Mathlib's `Real.log_zero`), which would otherwise make $\\Lambda(0) \\cdot \\log 0 = 0 \\cdot \\text{undefined}$ a definitional landmine.",
+    "relatedConcepts": [
+      "ArithmeticFunction.map_zero",
+      "vonMangoldt_apply_one",
+      "vonMangoldt_nonneg",
+      "Real.log_nonneg",
+      "Finset.sum_nonneg"
+    ],
+    "prerequisites": [
+      "selbergLambda2 definition",
+      "vonMangoldt API (apply_one, nonneg, map_zero)"
+    ]
+  },
+  {
+    "id": "cb04oq01-partial-sums",
+    "proofId": "chebyshev-bounds-oq-04-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 150,
+      "endLine": 177
+    },
+    "title": "Partial-Sum Properties: selbergSum2_{zero,succ,nonneg,mono}",
+    "content": "Four partial-sum lemmas that promote pointwise facts about $\\Lambda_2$ into facts about $S_2(N)$.\n\n**`selbergSum2_zero`** (L153–155): $S_2(0) = \\Lambda_2(0) = 0$ via `Finset.sum_range_one`.\n\n**`selbergSum2_succ`** (L158–161): the recurrence $S_2(N+1) = S_2(N) + \\Lambda_2(N+1)$ via `Finset.sum_range_succ`. This is the workhorse for induction on $N$ in any downstream telescoping argument.\n\n**`selbergSum2_nonneg`** (L164–166): $S_2(N) \\geq 0$ — direct `Finset.sum_nonneg` + `selbergLambda2_nonneg`.\n\n**`selbergSum2_mono`** (L169–177): the truncated sum is monotone in $N$. Proof: `Finset.sum_le_sum_of_subset_of_nonneg` with `range M ⊆ range N` for $M \\leq N$ (closed by `omega`).\n\nTogether these four lemmas mean $S_2$ behaves like a *measure*: it accumulates non-negatively under truncation, with a clean recurrence. The next iteration's task is to *quantify* this growth via Selberg's symmetry formula $S_2(N) = 2N \\log N + O(N)$.",
+    "significance": "supporting",
+    "mathContext": "The monotonicity + non-negativity ensures $S_2$ extends to a Borel measure on $\\mathbb{N}$. The eventual symmetry formula $S_2(N) \\sim 2N \\log N$ then identifies this measure with $2 \\cdot \\#\\{(\\text{prime powers}, \\log)\\}$ in an averaged sense — the dimensional reduction from PNT.",
+    "relatedConcepts": [
+      "Finset.sum_range_succ",
+      "Finset.sum_le_sum_of_subset_of_nonneg",
+      "Monotone",
+      "partial-summation framework"
+    ],
+    "prerequisites": [
+      "selbergLambda2_nonneg",
+      "Finset.range monotonicity"
+    ]
+  },
+  {
+    "id": "cb04oq01-future-work",
+    "proofId": "chebyshev-bounds-oq-04-oq-01",
+    "type": "concept",
+    "range": {
+      "startLine": 179,
+      "endLine": 204
+    },
+    "title": "Future-Work Block: Concrete Next-Iteration Targets",
+    "content": "A 25-line docstring sequencing the five concrete deliverables for subsequent iterations, in increasing difficulty.\n\n1. **`vonMangoldtConv_prime`** — at a prime $p$, the divisor set is $\\{1, p\\}$ and both terms involve $\\Lambda(1) = 0$, so $(\\Lambda * \\Lambda)(p) = 0$. Routine `Nat.Prime.divisors` calculation.\n2. **`selbergLambda2_prime`** — immediate from (1) and `vonMangoldt_apply_prime` ($\\Lambda(p) = \\log p$), giving $\\Lambda_2(p) = \\log^2 p$.\n3. **`selbergLambda2_eq_moebius_log_sq`** — the Möbius–log identity $\\Lambda_2(n) = \\sum_{d \\mid n} \\mu(d) \\log^2(n/d)$. The Mathlib path is `moebius_mul_coe_zeta` (giving $\\mu * 1 = \\delta_1$, the Kronecker delta at 1) plus the standard expansion $\\Lambda = \\mu * \\log$.\n4. **`selbergSum2_eq_two_n_log_n_plus_O`** — Selberg's symmetry formula $S_2(N) = 2N \\log N + O(N)$. Requires (3) plus the $\\log^2$ partial-sum estimate $\\sum_{n \\leq N} \\log^2 n = N \\log^2 N - 2N \\log N + O(\\log^2 N)$ and the bound $\\sum_{d \\leq x} \\mu(d) = O(x)$ (trivially $|\\mu| \\leq 1$).\n5. **Tauberian + Erdős finishing** — the longest piece, several hundred lines of combinatorial measure theory. Discharges `chebyshevPsi_asymptotic`.\n\nThe estimate \"several thousand lines\" in L203 is consistent with similar formalizations: the Tao-Polymath partial PNT formalization (in Isabelle) used ~5000 lines, and Eberl's Mathlib4 work on the prime-counting function suggests Mathlib's version would be roughly comparable.",
+    "significance": "supporting",
+    "mathContext": "Step 4's $\\sum_{d \\leq x} \\mu(d) = O(x)$ bound is *not* the strong Mertens-style $\\sum_{d \\leq x} \\mu(d) = o(x)$ (which is equivalent to PNT and thus circular); the elementary proof uses only the trivial $|\\mu| \\leq 1$ bound, illustrating how the symmetry formula extracts strong arithmetic content from weak inputs.",
+    "relatedConcepts": [
+      "Selberg's symmetry formula",
+      "moebius_mul_coe_zeta",
+      "Mertens-type bounds",
+      "Tauberian theorem",
+      "Erdős finishing"
+    ],
+    "prerequisites": [
+      "all previous sections",
+      "Mathlib ArithmeticFunction API"
+    ]
+  }
+]

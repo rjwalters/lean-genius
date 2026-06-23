@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-lll-sharp-threshold-def",
+    "proofId": "prob-method-lovasz-local-oq-02",
+    "range": {
+      "startLine": 60,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "The Real Avoidance Threshold T(d)",
+    "content": "```lean\nnoncomputable def lllThresholdReal (d : ℕ) : ℝ :=\n  (1 / ((d : ℝ) + 1)) * ((d : ℝ) / ((d : ℝ) + 1)) ^ d\n```\n\nThis is the symmetric Lovász Local Lemma threshold $T(d) = \\frac{1}{d+1}\\left(\\frac{d}{d+1}\\right)^d = \\frac{d^d}{(d+1)^{d+1}}$, written over ℝ so it can be compared directly with the irrational sharp threshold $1/(e(d+1))$. The sibling entry `lovasz-local-lemma-oq-02` proves the rational version of $T(d)$ is the algebraically optimal probability the symmetric LLL tolerates at maximum dependency degree $d$.",
+    "mathContext": "$T(d)$ is the maximum of $x \\mapsto x(1-x)^d$, attained at $x^\\star = 1/(d+1)$."
+  },
+  {
+    "id": "ann-lll-key-lemma",
+    "proofId": "prob-method-lovasz-local-oq-02",
+    "range": {
+      "startLine": 64,
+      "endLine": 83
+    },
+    "type": "insight",
+    "title": "Key Lemma: (1 + 1/d)^d ≤ e Without the Limit",
+    "content": "The parent entry conjectured that connecting the LLL to the sharp constant $e$ would 'require formalizing $e = \\lim (1+1/n)^n$'. It does not. The entire analytic content is one Mathlib inequality:\n\n```lean\ntheorem one_add_inv_pow_le_exp_one {d : ℕ} (hd : 1 ≤ d) :\n    (1 + 1 / (d : ℝ)) ^ d ≤ Real.exp 1 := by\n  ...\n  have h1 : (1 : ℝ) + 1 / d ≤ Real.exp (1 / d) := by\n    have := Real.add_one_le_exp (1 / d); linarith\n  have h2 : (1 + 1 / d) ^ d ≤ (Real.exp (1 / d)) ^ d := pow_le_pow_left₀ hb h1 d\n  have h3 : (Real.exp (1 / d)) ^ d = Real.exp 1 := by\n    rw [← Real.exp_nat_mul, mul_one_div, div_self hdne]\n  rwa [h3] at h2\n```\n\nApply $1 + x \\le e^x$ at $x = 1/d$, raise to the $d$-th power (monotone, base nonneg), and collapse $(e^{1/d})^d = e^{d \\cdot (1/d)} = e$. No sequences, no limits.",
+    "mathContext": "$(1+1/d)^d \\le (e^{1/d})^d = e^{d \\cdot 1/d} = e^1 = e$."
+  },
+  {
+    "id": "ann-lll-reciprocal",
+    "proofId": "prob-method-lovasz-local-oq-02",
+    "range": {
+      "startLine": 85,
+      "endLine": 96
+    },
+    "type": "step",
+    "title": "Reciprocal Form: 1/e ≤ (d/(d+1))^d",
+    "content": "Since $\\frac{d}{d+1} = \\frac{1}{1 + 1/d}$, the key lemma flips to a lower bound on the avoidance factor:\n\n```lean\ntheorem inv_exp_one_le {d : ℕ} (hd : 1 ≤ d) :\n    1 / Real.exp 1 ≤ ((d : ℝ) / ((d : ℝ) + 1)) ^ d\n```\n\nThe proof rewrites $(d/(d+1))^d = 1/(1+1/d)^d$ and applies `one_div_le_one_div_of_le` to the key lemma. This is the precise inequality that places the sharp threshold below the algebraic one.",
+    "mathContext": "$(1+1/d)^d \\le e \\iff 1/e \\le (d/(d+1))^d$."
+  },
+  {
+    "id": "ann-lll-headline-bridge",
+    "proofId": "prob-method-lovasz-local-oq-02",
+    "range": {
+      "startLine": 98,
+      "endLine": 130
+    },
+    "type": "insight",
+    "title": "Headline: The Sharp Criterion Implies the Avoidance Threshold",
+    "content": "Multiplying the reciprocal bound by $1/(d+1)$ gives $1/(e(d+1)) \\le T(d)$ (`sharp_le_lllThresholdReal`). Hence the sharp criterion reduces to the avoidance condition the gallery already discharges:\n\n```lean\ntheorem sharp_criterion_implies_threshold {d : ℕ} (hd : 1 ≤ d) {p : ℝ}\n    (_hp : 0 ≤ p) (hsharp : Real.exp 1 * p * ((d : ℝ) + 1) ≤ 1) :\n    p ≤ lllThresholdReal d\n```\n\nFrom $e \\cdot p \\cdot (d+1) \\le 1$ we get $p \\le 1/(e(d+1)) \\le T(d)$. So no new induction is needed: the sharp constant $e$ is justified purely by reduction to the optimal rational threshold.",
+    "mathContext": "$e p (d+1) \\le 1 \\Rightarrow p \\le \\tfrac{1}{e(d+1)} \\le T(d)$."
+  },
+  {
+    "id": "ann-lll-strict-improvement",
+    "proofId": "prob-method-lovasz-local-oq-02",
+    "range": {
+      "startLine": 132,
+      "endLine": 152
+    },
+    "type": "insight",
+    "title": "Strict Improvement: e < 3 Beats the 1/3 Criterion",
+    "content": "Because $e < 3$ (`exp_one_lt_three`, from `Real.exp_one_lt_d9`), the loose criterion $p(d+1) \\le 1/3$ implies the sharp $e p (d+1) \\le 1$ (`third_implies_sharp`) — replacing $1/3$ by $1/e$ only enlarges the admissible set. The improvement is strict:\n\n```lean\ntheorem exists_sharp_not_third {d : ℕ} (hd : 1 ≤ d) :\n    ∃ p : ℝ, 0 ≤ p ∧ Real.exp 1 * p * ((d : ℝ) + 1) ≤ 1\n      ∧ 1 / 3 < p * ((d : ℝ) + 1)\n```\n\nThe witness $p = 1/(e(d+1))$ saturates the sharp criterion ($e p (d+1) = 1$) yet has $p(d+1) = 1/e > 1/3$, so it is certified by the sharp criterion but rejected by the gallery's $1/3$ form. The improvement window is $\\tfrac{1}{3(d+1)} < p \\le \\tfrac{1}{e(d+1)}$.",
+    "mathContext": "$1/3 < 1/e$ since $e < 3$; the sharp threshold is the larger one."
+  },
+  {
+    "id": "ann-lll-capstone",
+    "proofId": "prob-method-lovasz-local-oq-02",
+    "range": {
+      "startLine": 154,
+      "endLine": 163
+    },
+    "type": "step",
+    "title": "Capstone: The Sharp Symmetric LLL",
+    "content": "```lean\ntheorem sharp_symmetric_lll {d : ℕ} (hd : 1 ≤ d) {p : ℝ} (hp : 0 ≤ p)\n    (hsharp : Real.exp 1 * p * ((d : ℝ) + 1) ≤ 1) (n : ℕ) :\n    p ≤ lllThresholdReal d ∧ 0 < ((d : ℝ) / ((d : ℝ) + 1)) ^ n\n```\n\nThe textbook statement, now formally tied to $e$: under the sharp criterion, $p$ meets the LLL threshold and the avoidance product $(d/(d+1))^n$ is strictly positive — the bad events can all be simultaneously avoided.",
+    "mathContext": "$e p (d+1) \\le 1 \\Rightarrow p \\le T(d) \\text{ and } \\Pr[\\text{avoid all}] \\ge (d/(d+1))^n > 0$."
+  }
+]

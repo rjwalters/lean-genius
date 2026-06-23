@@ -1,0 +1,309 @@
+{
+  "id": "quadratic-reciprocity",
+  "title": "Law of Quadratic Reciprocity",
+  "slug": "quadratic-reciprocity",
+  "description": "Quadratic Reciprocity (Wiedijk #7): Gauss's 'golden theorem' — for distinct odd primes $p, q$, $(p/q)(q/p) = (-1)^{(p-1)(q-1)/4}$, i.e., the Legendre symbols agree unless both $p \\equiv q \\equiv 3 \\pmod{4}$. Formalized in Lean 4 via Mathlib's `ZMod.quadraticReciprocity`. Includes the first and second supplements. 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Gauss (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Quadratic_reciprocity",
+    "date": "1796",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "primes",
+      "modular-arithmetic",
+      "classic",
+      "advanced",
+      "wiedijk-100"
+    ],
+    "proofRepoPath": "Proofs/QuadraticReciprocity.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "legendreSym.quadratic_reciprocity",
+        "description": "The law of quadratic reciprocity for Legendre symbols",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity"
+      },
+      {
+        "theorem": "ZMod.exists_sq_eq_neg_one_iff",
+        "description": "First supplementary law: -1 is a square mod p iff p % 4 != 3",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity"
+      },
+      {
+        "theorem": "ZMod.exists_sq_eq_two_iff",
+        "description": "Second supplementary law: 2 is a square mod p iff p % 8 in {1, 7}",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity"
+      }
+    ],
+    "originalContributions": [
+      "Pedagogical documentation of the product and quotient forms",
+      "Explicit formulations for 1 mod 4 and 3 mod 4 cases",
+      "First and second supplementary laws with examples",
+      "Connection to Euler's criterion and multiplicativity"
+    ],
+    "dateAdded": "2025-12-26",
+    "wiedijkNumber": 7,
+    "axiomCount": 0,
+    "lineCount": 231,
+    "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and 0 structure-encoded assumptions. The core reciprocity law delegates to Mathlib's `legendreSym.quadratic_reciprocity` (proved via Gauss sums and Eisenstein's lemma). The supplementary laws use `ZMod.exists_sq_eq_neg_one_iff` and `ZMod.exists_sq_eq_two_iff`. Original contributions are pedagogical wrappers providing four forms of the main law and explicit worked examples.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 11,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Quadratic reciprocity is one of the most celebrated theorems in number theory. Euler first observed the pattern numerically around 1744–1772, stating special cases (e.g., the first supplementary law and partial forms of reciprocity) without a complete proof. Legendre formulated the general statement clearly in 1785 and attempted a proof, but his argument was circular — it unknowingly assumed Dirichlet's theorem on primes in arithmetic progressions (not proved until 1837). Gauss (1796), age 19, gave the first complete and rigorous proof, calling it the *theorema aureum* (golden theorem). He ultimately published 6 proofs in his lifetime, with a 7th and 8th appearing posthumously. Eisenstein (1844) gave a particularly elegant proof using lattice-point counting in the plane, which generalizes via Gaussian integers to cubic and biquadratic reciprocity. Kummer (1850s) extended reciprocity to higher power residues in cyclotomic fields, and Hilbert (1897) posed the search for the most general reciprocity law as his 9th problem. Artin (1927) resolved it with his general reciprocity law for abelian extensions, and the complete theory of class field theory was developed throughout the 20th century. Over 300 distinct proofs of quadratic reciprocity are now known — more than for any other theorem — reflecting its centrality to number theory.",
+    "problemStatement": "**The Law of Quadratic Reciprocity**:\n\nFor distinct odd primes $p$ and $q$:\n\n$$\\left(\\frac{p}{q}\\right)\\left(\\frac{q}{p}\\right) = (-1)^{\\frac{p-1}{2}\\cdot\\frac{q-1}{2}}$$\n\nwhere $(p/q)$ is the Legendre symbol:\n- $1$ if $p$ is a quadratic residue mod $q$\n- $-1$ if $p$ is a quadratic nonresidue mod $q$\n\n**Restated**: The symbols $(p/q)$ and $(q/p)$ are equal unless both $p \\equiv 3$ and $q \\equiv 3$ (mod 4), in which case they are negatives.",
+    "text": "A 231-line formalization of Quadratic Reciprocity — Wiedijk #7, one of the most celebrated theorems in mathematics. The file provides 11 declarations with 0 sorries and 0 axioms, delegating the core law to Mathlib's `legendreSym.quadratic_reciprocity` and the supplementary laws to `ZMod.exists_sq_eq_neg_one_iff` and `ZMod.exists_sq_eq_two_iff`.\n\nFour forms of the main law are packaged: `quadratic_reciprocity_product` (the $(q/p)(p/q) = (-1)^{(p-1)/2 \\cdot (q-1)/2}$ product form), `quadratic_reciprocity_quotient` (the solved form $(q/p) = (-1)^{\\cdots}(p/q)$), `reciprocity_one_mod_four` (equality when $p \\equiv 1 \\pmod{4}$), and `reciprocity_three_mod_four` (negation when both $\\equiv 3 \\pmod{4}$). The two supplementary laws are `first_supplementary_law` ($-1$ is a QR mod $p$ iff $p \\equiv 1 \\pmod{4}$) and `second_supplementary_law` ($2$ is a QR mod $p$ iff $p \\equiv \\pm 1 \\pmod{8}$), plus the combined `neg_two_is_square_iff`. Euler's criterion (`euler_criterion`: $a^{(p-1)/2} \\equiv (a/p) \\pmod{p}$) and multiplicativity (`legendre_mul`) complete the toolkit. Concrete worked examples verify $(3/5)$, $(3/7)$, $(-1/5)$, $(-1/7)$, $(2/7)$, and $(2/5)$ in line-by-line comments.",
+    "proofStrategy": "The proof uses properties of the multiplicative group $(\\mathbb{Z}/p\\mathbb{Z})^*$:\n\n1. **Legendre symbol definition**: $(a/p) = a^{(p-1)/2} \\mod p$ by Euler's criterion\n\n2. **Counting lattice points**: Gauss's original proof counts lattice points in specific regions\n\n3. **Modern approach**: Uses the structure of finite fields and character theory\n\n4. **Supplementary laws**:\n   - First: $-1$ is a QR mod $p$ iff $p \\equiv 1 \\pmod{4}$\n   - Second: $2$ is a QR mod $p$ iff $p \\equiv \\pm 1 \\pmod{8}$",
+    "keyInsights": [
+      "**The Reciprocity Law (Product Form):** For odd primes $p \\neq q$: $(q/p)(p/q) = (-1)^{(p-1)/2 \\cdot (q-1)/2}$. The product is $-1$ (symbols flip sign) only when **both** $p \\equiv q \\equiv 3 \\pmod{4}$; otherwise it is $+1$ (symbols agree). This is `quadratic_reciprocity_product` in Lean, delegated to `legendreSym.quadratic_reciprocity`.",
+      "**Gauss's *Theorema Aureum* (1796):** Gauss discovered this at 19, called it his favorite theorem, and gave 6 proofs in his lifetime. Over 300 proofs are now known — far more than any other theorem. The statement's simplicity belies the depth: residuosity mod $p$ and mod $q$ are not independent; they are linked by the parities of $(p-1)/2$ and $(q-1)/2$.",
+      "**First Supplementary Law** (`first_supplementary_law`): $(-1/p) = (-1)^{(p-1)/2}$, so $-1$ is a QR mod $p$ iff $p \\equiv 1 \\pmod{4}$. This is the key step in Fermat's two-square theorem: $p = a^2 + b^2$ iff $p = 2$ or $p \\equiv 1 \\pmod{4}$.",
+      "**Second Supplementary Law** (`second_supplementary_law`): $(2/p) = (-1)^{(p^2-1)/8}$, so $2$ is a QR mod $p$ iff $p \\equiv \\pm 1 \\pmod{8}$. The mod-8 periodicity reflects the structure of $(\\mathbb{Z}/8\\mathbb{Z})^\\times \\cong \\mathbb{Z}/2 \\times \\mathbb{Z}/2$.",
+      "**Euler's Criterion** (`euler_criterion`): $(a/p) \\equiv a^{(p-1)/2} \\pmod{p}$. This converts the Legendre symbol into a computable quantity in $O(\\log p)$ multiplications via fast exponentiation. In Lean: `(legendreSym p a : ZMod p) = (a : ZMod p) ^ (p / 2)`.",
+      "**Multiplicativity** (`legendre_mul`): $(ab/p) = (a/p)(b/p)$. The Legendre symbol is a group homomorphism $(\\mathbb{Z}/p\\mathbb{Z})^\\times \\to \\{\\pm 1\\}$, whose kernel is the index-2 subgroup of QRs. Combined with reciprocity and the supplements, this gives an Euclidean-algorithm-like procedure for computing any Legendre symbol.",
+      "**Higher Reciprocity and the Langlands Program:** Quadratic reciprocity is the $n=2$ case of Artin reciprocity (1927), which characterizes splitting of primes in abelian extensions of $\\mathbb{Q}$. The non-abelian generalization — the Langlands program — seeks reciprocity laws for all reductive groups, making QR the historical seed of the deepest current program in mathematics.",
+      "**QR as a GCD-like Algorithm (Formalized):** The main law, multiplicativity, and the supplementary laws combine into an $O(\\log \\min(p,q))$ algorithm for computing Legendre symbols — entirely analogous to the Euclidean algorithm for GCD. The reduction procedure: factor out powers of 2 (using the second supplementary law), apply multiplicativity to reduce to prime-sized inputs, flip $p \\leftrightarrow q$ via the main law (picking up a sign when both $\\equiv 3 \\pmod{4}$), and recurse. The gallery entry `quadratic-reciprocity-algorithm` formalizes this complete computation; `quadratic-reciprocity-algorithm-oq-01` extends it to the Jacobi symbol $(a/n)$ for composite moduli $n$, enabling efficient computation without factoring $n$."
+    ],
+    "prerequisites": [
+      "Number theory (primes, divisibility, modular arithmetic)",
+      "Fermat's little theorem",
+      "Multiplicative group $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ and its cyclic structure",
+      "Basic Lean 4 / Mathlib syntax (Fact typeclass, ZMod, legendreSym)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 62,
+      "summary": "Overview of quadratic reciprocity, historical context, and significance.",
+      "mathContext": "Imports `Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity` which provides `legendreSym.quadratic_reciprocity` and the supplementary laws. The Legendre symbol $\\left(\\frac{a}{p}\\right) \\in \\{-1, 0, 1\\}$ measures whether $a$ is a quadratic residue mod $p$: it equals $1$ if $\\exists x,\\, x^2 \\equiv a \\pmod{p}$, and $-1$ otherwise. Wiedijk #7."
+    },
+    {
+      "id": "main-law",
+      "title": "The Main Law",
+      "startLine": 63,
+      "endLine": 115,
+      "summary": "Product form, quotient form, and special cases for 1 mod 4 and 3 mod 4.",
+      "mathContext": "The main law in product form: $\\left(\\frac{q}{p}\\right)\\left(\\frac{p}{q}\\right) = (-1)^{\\frac{p-1}{2} \\cdot \\frac{q-1}{2}}$ for distinct odd primes $p, q$. Equivalently: the symbols agree unless both $p \\equiv q \\equiv 3 \\pmod{4}$, in which case they differ by a sign. Four formulations: product form (`quadratic_reciprocity_product`), quotient form (`quadratic_reciprocity_quotient`), and the two case splits for $p \\equiv 1 \\pmod{4}$ and $p \\equiv q \\equiv 3 \\pmod{4}$."
+    },
+    {
+      "id": "first-supplementary",
+      "title": "First Supplementary Law",
+      "startLine": 116,
+      "endLine": 128,
+      "summary": "When -1 is a quadratic residue modulo a prime.",
+      "mathContext": "First supplementary law: $\\left(\\frac{-1}{p}\\right) = (-1)^{(p-1)/2}$, i.e., $-1$ is a quadratic residue mod $p$ iff $p \\equiv 1 \\pmod{4}$. Lean statement: `IsSquare (-1 : ZMod p) \\leftrightarrow p \\% 4 \\neq 3`. This determines when $x^2 \\equiv -1 \\pmod{p}$ has solutions — equivalently, when the Gaussian integers $\\mathbb{Z}[i]$ split the prime $p$."
+    },
+    {
+      "id": "second-supplementary",
+      "title": "Second Supplementary Law",
+      "startLine": 129,
+      "endLine": 147,
+      "summary": "When 2 is a quadratic residue modulo a prime, and the combined -2 law.",
+      "mathContext": "Second supplementary law: $\\left(\\frac{2}{p}\\right) = (-1)^{(p^2-1)/8}$, i.e., $2$ is a QR mod $p$ iff $p \\equiv \\pm 1 \\pmod{8}$. The combined $-2$ law (`neg_two_is_square_iff`): $-2$ is a QR mod $p$ iff $p \\equiv 1$ or $3 \\pmod{8}$. These determine when $\\mathbb{Z}[\\sqrt{2}]$ and $\\mathbb{Z}[\\sqrt{-2}]$ split the prime $p$."
+    },
+    {
+      "id": "square-roots-between-primes",
+      "title": "Square Roots Between Primes",
+      "startLine": 149,
+      "endLine": 161,
+      "summary": "IsSquare equivalences between two primes: p ≡ 1 (mod 4) case and p ≡ q ≡ 3 (mod 4) case.",
+      "mathContext": "Reformulations as `IsSquare` equivalences between two primes. For $p \\equiv 1 \\pmod{4}$: $q$ is a square mod $p$ $\\iff$ $p$ is a square mod $q$ (perfect symmetry). For $p \\equiv q \\equiv 3 \\pmod{4}$: $q$ is a square mod $p$ $\\iff$ $p$ is NOT a square mod $q$ (anti-symmetry). These are the `IsSquare` translations of the Legendre symbol formulations."
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 163,
+      "endLine": 199,
+      "summary": "Concrete calculations for primes 3, 5, and 7.",
+      "mathContext": "Concrete computations verifying the theorems at small primes. Reciprocity: $(3/5) = (5/3) = -1$ (since $5 \\equiv 1 \\pmod{4}$), and $(3/7) = -(7/3) = -1$ (since $3 \\equiv 7 \\equiv 3 \\pmod{4}$). First supplementary: $2^2 = 4 \\equiv -1 \\pmod{5}$ (since $5 \\equiv 1 \\pmod{4}$). Second supplementary: $3^2 = 9 \\equiv 2 \\pmod{7}$ (since $7 \\equiv 7 \\pmod{8}$)."
+    },
+    {
+      "id": "euler-criterion",
+      "title": "Euler's Criterion",
+      "startLine": 200,
+      "endLine": 231,
+      "summary": "The connection between Legendre symbols and powers.",
+      "mathContext": "Euler's criterion: $\\left(\\frac{a}{p}\\right) \\equiv a^{(p-1)/2} \\pmod{p}$. This is the computational engine for evaluating Legendre symbols — it reduces quadratic residuosity to modular exponentiation. The Legendre symbol is also completely multiplicative: $\\left(\\frac{ab}{p}\\right) = \\left(\\frac{a}{p}\\right)\\left(\\frac{b}{p}\\right)$. Together, Euler's criterion + multiplicativity + reciprocity give an efficient Euclidean-algorithm-like procedure for computing any Legendre symbol."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Law of Quadratic Reciprocity is fully machine-verified using Mathlib's comprehensive number theory infrastructure (Wiedijk #7, 0 sorries, 0 axioms, 0 additional assumptions). The formalization captures all three components of the classical theory: the main law in four equivalent forms, both supplementary laws (plus their combination), Euler's criterion, and the multiplicativity of the Legendre symbol. Concrete example calculations verify the theorems at specific small primes, making the abstract formalism tangible.",
+    "implications": "Quadratic reciprocity has far-reaching implications across mathematics:\n\n**1. Primality testing and cryptography**\nThe Solovay-Strassen and Miller-Rabin primality tests exploit Euler's criterion. Efficient Legendre/Jacobi symbol computation (via multiplicativity + reciprocity, an Euclidean-algorithm analogue) underlies many number-theoretic algorithms in cryptography.\n\n**2. Sums of squares and Diophantine equations**\nThe first supplementary law directly yields Fermat's two-square theorem: $p = a^2 + b^2$ iff $p = 2$ or $p \\equiv 1 \\pmod{4}$. More generally, QR determines which primes split in a given quadratic field $\\mathbb{Q}(\\sqrt{d})$.\n\n**3. Algebraic number theory and class field theory**\nArtin's general reciprocity law (1927) subsumes QR as its simplest non-trivial case. It characterizes the Frobenius element in abelian Galois groups and is the central theorem of class field theory. Hilbert's 9th problem asked for the most general reciprocity law — Artin answered it, and the non-abelian generalization is the Langlands program.\n\n**4. Structure of Galois groups**\nThe Legendre symbol $(\\cdot/p)$ is the unique non-trivial character of $\\text{Gal}(\\mathbb{Q}(\\sqrt{p^*})/\\mathbb{Q})$. Reciprocity expresses a symmetry of these Galois groups that is invisible from the definition.",
+    "openQuestions": [
+      "What is the most elementary proof of quadratic reciprocity — and can it be fully formalized in Lean without Gauss sums? The gallery entry `elementary-quadratic-reciprocity` provides an elementary approach; comparing its Lean proof with the Mathlib-based formalization here reveals what infrastructure the non-Gauss-sum proof requires.",
+      "The non-abelian Langlands program seeks to generalize reciprocity laws to all reductive groups over $\\mathbb{Q}$. Can Lean formalize the statement of the Langlands conjectures?",
+      "**[Addressed in `quadratic-reciprocity-algorithm` and `quadratic-reciprocity-oq-03`]** The Euclidean-algorithm-like computation of Legendre symbols (via multiplicativity + reciprocity) has been formalized: `quadratic-reciprocity-oq-03` packages the core reduction lemmas (multiplicativity, first supplementary law, reciprocity swap), and `quadratic-reciprocity-algorithm` demonstrates the complete GCD-like procedure with verified examples showing $O(\\log \\min(p,q))$ reduction steps.",
+      "**[Addressed in `quadratic-reciprocity-algorithm-oq-01`]** The Jacobi symbol $(a/n)$ — the multiplicative generalization of the Legendre symbol to odd composite moduli — has been formalized: `quadratic-reciprocity-algorithm-oq-01` implements the Jacobi symbol as a recursive Lean function using QR for reduction, with sign factor functions, the `strip2` decomposition of even parts, and concrete verification examples."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "quadratic-reciprocity-oq-03",
+      "relationship": "extended-by",
+      "description": "Packages the core reduction lemmas that turn QR into a GCD-like algorithm: multiplicativity (`legendre_mul`), the first supplementary law (sign of $-1/p$), and the reciprocity swap. These are the building blocks assembled into the complete Legendre symbol algorithm in `quadratic-reciprocity-algorithm`."
+    },
+    {
+      "targetId": "quadratic-reciprocity-algorithm",
+      "relationship": "extended-by",
+      "description": "Demonstrates the complete Euclidean-algorithm-like procedure for computing Legendre symbols using QR + multiplicativity + supplementary laws. Directly answers the open question in this entry's conclusion about formalizing the $O(\\log \\min(p,q))$ reduction algorithm as a verified Lean procedure."
+    },
+    {
+      "targetId": "quadratic-reciprocity-algorithm-oq-01",
+      "relationship": "extended-by",
+      "description": "Implements the Jacobi symbol $(a/n)$ — the multiplicative generalization of the Legendre symbol to odd composite moduli $n$ — as a recursive Lean function using QR for reduction. Includes `strip2` decomposition, sign factor computation, and concrete verification. Directly answers the open question in this entry's conclusion about Jacobi symbol formalization."
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity",
+      "relationship": "related",
+      "description": "An alternative formalization of quadratic reciprocity using elementary methods. Both establish the same law relating $(p/q)$ and $(q/p)$, but with different proof techniques and Mathlib dependencies."
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "foundational",
+      "description": "Euler's totient function $\\phi(n)$ counts units in $\\mathbb{Z}/n\\mathbb{Z}$. The Legendre symbol $(a/p) = a^{(p-1)/2} \\bmod p$ uses $\\phi(p) = p - 1$, and Euler's criterion connecting quadratic residues to this exponent is the starting point for reciprocity."
+    },
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ is closely related: both concern the multiplicative structure of $\\mathbb{Z}/p\\mathbb{Z}$. Gauss's first proof of quadratic reciprocity used Gauss sums, which generalize factorials in $\\mathbb{Z}/p\\mathbb{Z}$."
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "extends",
+      "description": "Quadratic reciprocity implies Dirichlet-style results on primes in arithmetic progressions: primes $p \\equiv 1 \\pmod{4}$ vs $p \\equiv 3 \\pmod{4}$ behave differently as quadratic residues, connecting to Dirichlet's theorem on primes in progressions."
+    },
+    {
+      "targetId": "fermats-last-theorem",
+      "relationship": "foundational",
+      "description": "Quadratic reciprocity is the $n = 2$ case of Artin reciprocity, which Wiles's modularity theorem generalizes to 2-dimensional Galois representations. The Langlands program, of which FLT is a consequence, seeks to extend reciprocity laws to all reductive groups — making QR the historical seed of the entire program"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization underpins the Legendre symbol: $(a/p)$ depends on $a$ only through its residue mod $p$, and the multiplicativity $(ab/p) = (a/p)(b/p)$ mirrors the multiplicativity of prime factorization. The Jacobi symbol extends this to composite moduli via the factorization of the modulus"
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "foundational",
+      "description": "The existence of primitive roots modulo $p$ proves $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ is cyclic of order $p-1$. Quadratic residues are exactly the even powers of any primitive root $g$: $a \\equiv g^{2k}$ is a QR, $a \\equiv g^{2k+1}$ is a QNR. This cyclic structure makes the Legendre symbol a group homomorphism"
+    },
+    {
+      "targetId": "kroneckers-jugendtraum",
+      "relationship": "extends",
+      "description": "Kronecker-Weber (every abelian extension of $\\mathbb{Q}$ is cyclotomic) generalizes quadratic reciprocity: QR determines the splitting of primes in quadratic fields $\\mathbb{Q}(\\sqrt{d})$, while Kronecker-Weber determines splitting in all abelian extensions. Hilbert's 12th problem seeks the analogous result for arbitrary number fields"
+    },
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "related",
+      "description": "Fermat's two-squares theorem ($p = a^2 + b^2$ iff $p \\equiv 1 \\pmod{4}$) is a direct application of quadratic reciprocity: $p \\equiv 1 \\pmod{4}$ means $-1$ is a quadratic residue mod $p$ (first supplementary law), so $x^2 \\equiv -1$ has a solution, which enables the descent argument producing $a^2 + b^2 = p$"
+    },
+    {
+      "targetId": "hilbert-9-reciprocity",
+      "relationship": "extends",
+      "description": "Hilbert's 9th problem asks for the most general reciprocity law in algebraic number fields. Quadratic reciprocity is the simplest non-trivial case; the full answer is Artin reciprocity (1927), which subsumes all abelian reciprocity laws. The non-abelian Langlands program seeks the ultimate generalization"
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Dirichlet's theorem on primes in arithmetic progressions is intimately connected: the Legendre symbol $(a/p)$ is a Dirichlet character mod $p$, and reciprocity controls how primes split in quadratic fields $\\mathbb{Q}(\\sqrt{d})$. The density of primes $p \\equiv 1 \\pmod{4}$ vs $p \\equiv 3 \\pmod{4}$ (equal by Dirichlet) underpins the uniformity behind reciprocity"
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "related",
+      "description": "The Chinese Remainder Theorem is a prerequisite for understanding the Jacobi symbol $(a/n)$, the multiplicative generalization of the Legendre symbol to composite moduli: $(a/n) = \\prod_i (a/p_i^{e_i})$ factors via CRT. The Jacobi symbol inherits a reciprocity law from QR, making CRT and QR the two pillars of efficient modular arithmetic algorithms"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "ZMod"
+    ],
+    "namespace": "QuadraticReciprocity",
+    "lineCount": 231,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "path": "Proofs/QuadraticReciprocity.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Gauss, Carl Friedrich",
+      "title": "Disquisitiones Arithmeticae, Articles 131–145",
+      "year": "1801",
+      "venue": "Leipzig: Gerhard Fleischer",
+      "note": "First published proof of quadratic reciprocity — Gauss's theorema aureum (golden theorem), which he proved six different ways"
+    },
+    {
+      "authors": "Lemmermeyer, Franz",
+      "title": "Reciprocity Laws: From Euler to Eisenstein",
+      "year": "2000",
+      "venue": "Springer Monographs in Mathematics",
+      "note": "Comprehensive history cataloging 240+ proofs of quadratic reciprocity, with detailed analysis of Euler's conjectural formulations and Legendre's first (flawed) attempt"
+    },
+    {
+      "authors": "Ireland, Kenneth; Rosen, Michael",
+      "title": "A Classical Introduction to Modern Number Theory, Chapter 5",
+      "year": "1990",
+      "venue": "Springer Graduate Texts in Mathematics, vol. 84",
+      "note": "Standard graduate reference covering Gauss sums, Jacobi sums, and the proof of quadratic reciprocity via character theory; Chapter 9 covers cubic and biquadratic reciprocity"
+    },
+    {
+      "authors": "Cox, David A.",
+      "title": "Primes of the Form x² + ny²: Fermat, Class Field Theory, and Complex Multiplication",
+      "year": "1989",
+      "venue": "Wiley-Interscience",
+      "note": "Traces the path from quadratic reciprocity and the two-squares theorem through class field theory; excellent motivation for why QR was the seed of 20th-century algebraic number theory"
+    },
+    {
+      "authors": "Neukirch, Jürgen",
+      "title": "Algebraic Number Theory, Chapter VI §8",
+      "year": "1999",
+      "venue": "Springer Grundlehren der mathematischen Wissenschaften, vol. 322",
+      "note": "Places quadratic reciprocity in the context of global class field theory and Artin's general reciprocity law; the definitive modern treatment of reciprocity in algebraic number fields"
+    },
+    {
+      "authors": "Eisenstein, Gotthold",
+      "title": "Geometrischer Beweis des Fundamentaltheorems für die quadratischen Reste",
+      "year": "1844",
+      "venue": "Journal für die reine und angewandte Mathematik (Crelle's Journal), vol. 28, pp. 246–248",
+      "note": "Eisenstein's elegant lattice-point proof using Gaussian integers and roots of unity, which is the conceptual basis for most modern textbook proofs including the Mathlib formalization via Gauss sums"
+    },
+    {
+      "authors": "Wiedijk, Freek",
+      "title": "Formalizing 100 Theorems",
+      "year": "2008",
+      "venue": "https://www.cs.ru.nl/~freek/100/",
+      "note": "Lists quadratic reciprocity as theorem #7 in the 100 most important mathematical theorems to formalize; this Lean proof fulfills that entry"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "quadratic_reciprocity_product",
+      "type": "core",
+      "description": "Main law: (p/q)(q/p) = (-1)^((p-1)/2 * (q-1)/2) for odd primes p != q",
+      "leanType": "[Fact p.Prime] -> [Fact q.Prime] -> p != 2 -> q != 2 -> p != q -> legendreSym q p * legendreSym p q = (-1)^(p/2 * q/2)"
+    },
+    {
+      "name": "first_supplementary_law",
+      "type": "key",
+      "description": "First supplement: -1 is a QR mod p iff p = 1 (mod 4)",
+      "leanType": "[Fact p.Prime] -> IsSquare (-1 : ZMod p) <-> p % 4 != 3"
+    },
+    {
+      "name": "second_supplementary_law",
+      "type": "key",
+      "description": "Second supplement: 2 is a QR mod p iff p = +/-1 (mod 8)",
+      "leanType": "[Fact p.Prime] -> p != 2 -> IsSquare (2 : ZMod p) <-> p % 8 = 1 or p % 8 = 7"
+    }
+  ],
+  "sorries": 0
+}

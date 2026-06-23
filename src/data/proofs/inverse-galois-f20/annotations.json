@@ -1,0 +1,194 @@
+[
+  {
+    "id": "ann-igf20-eisenstein",
+    "proofId": "inverse-galois-f20",
+    "range": {
+      "startLine": 41,
+      "endLine": 57
+    },
+    "type": "concept",
+    "title": "Eisenstein Criterion: X⁵−2 is Irreducible over ℚ",
+    "content": "The four basic properties of X⁵−2 are established via the Eisenstein criterion at p=2: a monic polynomial with leading coefficient not divisible by 2, all other coefficients divisible by 2, and constant term not divisible by 2² is irreducible over ℚ. Here the constant term is −2 (divisible by 2 but not 4), and the leading coefficient is 1. The proof delegates to `NthRootIrrationalOQ01.eisenstein_X_pow_sub_prime`, a general lemma in the gallery. Separability follows from irreducibility in characteristic 0.",
+    "mathContext": "X^5 - 2: \\text{ leading coeff } 1 \\nmid 2, \\text{ other coeffs } \\equiv 0 \\pmod{2}, \\text{ constant } -2 \\not\\equiv 0 \\pmod{4}. \\text{ Eisenstein} \\implies \\text{irreducible over } \\mathbb{Q}.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Eisenstein criterion",
+      "irreducibility",
+      "Nat.Prime",
+      "Polynomial.Separable"
+    ],
+    "prerequisites": [
+      "Eisenstein criterion",
+      "characteristic 0 separability",
+      "NthRootIrrationalOQ01"
+    ]
+  },
+  {
+    "id": "ann-igf20-five-divides",
+    "proofId": "inverse-galois-f20",
+    "range": {
+      "startLine": 63,
+      "endLine": 88
+    },
+    "type": "insight",
+    "title": "Lower Bound I: 5 | |Gal| from Prime Degree, and |Gal| | 120 from S₅",
+    "content": "Since X⁵−2 is irreducible of degree 5, any root α generates an extension ℚ(α)/ℚ of degree 5. By Galois theory, 5 divides [splitting field : ℚ] = |Gal|. The theorem `five_dvd_gal_card` uses `Polynomial.Gal.prime_degree_dvd_card`. The companion `gal_card_dvd_120` uses the Galois group's faithful action on the 5 roots (injection into S₅ = symmetric group of order 120), which is a fundamental bound: |Gal| divides the order of the symmetric group on the roots.",
+    "mathContext": "X^5 - 2 \\text{ irred.} \\implies [\\mathbb{Q}(\\alpha):\\mathbb{Q}] = 5 \\implies 5 \\mid |\\text{Gal}|. \\quad \\text{Gal} \\hookrightarrow S_5 \\implies |\\text{Gal}| \\mid 5! = 120.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Galois correspondence",
+      "degree of extension",
+      "symmetric group action on roots",
+      "Polynomial.Gal.prime_degree_dvd_card"
+    ],
+    "prerequisites": [
+      "field extensions",
+      "Galois theory",
+      "group action on roots"
+    ]
+  },
+  {
+    "id": "ann-igf20-cyclotomic-root",
+    "proofId": "inverse-galois-f20",
+    "range": {
+      "startLine": 94,
+      "endLine": 135
+    },
+    "type": "insight",
+    "title": "Key Trick: Ratio of Two Roots is a Primitive 5th Root of Unity",
+    "content": "The theorem `fifth_root_ratio_satisfies_cyclotomic5` proves the key observation: if a⁵ = b⁵ and a ≠ b, then c = a/b satisfies Φ₅(c) = 0. The proof factors X⁵−1 = (X−1)(X⁴+X³+X²+X+1) and notes c ≠ 1 (since a ≠ b). `cyclotomic_5_has_root_in_splitting_field` instantiates this with any two distinct roots α, β of X⁵−2 in the splitting field: both satisfy x⁵ = 2, so their ratio α/β is a primitive 5th root of unity ζ₅ in the splitting field.",
+    "mathContext": "\\alpha^5 = \\beta^5 = 2 \\text{ (two distinct roots)} \\implies c = \\alpha/\\beta \\text{ satisfies } c^5 = 1,\\; c \\neq 1 \\implies \\Phi_5(c) = 0 \\implies \\zeta_5 = c \\in \\text{SF}.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cyclotomic polynomial Φ₅",
+      "5th roots of unity",
+      "IsPrimitiveRoot",
+      "splitting field containment"
+    ],
+    "prerequisites": [
+      "cyclotomic polynomials",
+      "field automorphisms",
+      "factor theorem"
+    ]
+  },
+  {
+    "id": "ann-igf20-four-divides",
+    "proofId": "inverse-galois-f20",
+    "range": {
+      "startLine": 141,
+      "endLine": 208
+    },
+    "type": "insight",
+    "title": "Lower Bound II: 4 | finrank, then 20 | |Gal| by Coprimality",
+    "content": "Since ζ₅ ∈ SF satisfies Φ₅ and Φ₅ is irreducible of degree 4, the minimal polynomial of ζ₅ over ℚ has degree 4. By the tower law, 4 divides [SF:ℚ]. `twenty_dvd_gal_card` combines 5 | |Gal| and 4 | |Gal| with the crucial fact gcd(4,5) = 1 (so their product 20 also divides |Gal|) via `Nat.Coprime.mul_dvd_of_dvd_of_dvd`. The cyclotomic polynomial Φ₅ = X⁴+X³+X²+X+1 is identified with `Polynomial.cyclotomic 5 ℚ` and its irreducibility follows from `cyclotomic.irreducible_rat`.",
+    "mathContext": "\\Phi_5 \\text{ irred. of degree 4} \\implies 4 \\mid [\\text{SF}:\\mathbb{Q}]. \\quad \\gcd(4,5)=1,\\; 4 \\mid n,\\; 5 \\mid n \\implies 20 \\mid n \\implies 20 \\mid |\\text{Gal}|.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cyclotomic polynomial",
+      "coprimality",
+      "tower law",
+      "Nat.Coprime.mul_dvd_of_dvd_of_dvd"
+    ],
+    "prerequisites": [
+      "cyclotomic polynomials",
+      "tower law for field extensions",
+      "Nat.Coprime"
+    ]
+  },
+  {
+    "id": "ann-igf20-fifth-roots",
+    "proofId": "inverse-galois-f20",
+    "range": {
+      "startLine": 211,
+      "endLine": 303
+    },
+    "type": "concept",
+    "title": "Infrastructure: Every Root of Φ₅ is a Power of ζ",
+    "content": "Parts V-A builds the technical machinery showing that in any field K, if ζ satisfies Φ₅(ζ) = 0 and ζ⁵ = 1, then every other root c of Φ₅ is one of ζ, ζ², ζ³, ζ⁴. The key identity is the factorization Φ₅(c) = (c−ζ)(c−ζ²)(c−ζ³)(c−ζ⁴) (using ζ⁵=1 to reduce powers), proved by `linear_combination`. The auxiliary lemmas ζ≠1, ζ≠−1, ζ²≠1, ζ³≠1, ζ⁴≠1 confirm all powers are distinct, establishing that {ζ, ζ², ζ³, ζ⁴} are exactly the primitive 5th roots of unity.",
+    "mathContext": "\\Phi_5(c) = (c-\\zeta)(c-\\zeta^2)(c-\\zeta^3)(c-\\zeta^4) \\text{ (using } \\zeta^5=1\\text{)} \\implies c \\in \\{\\zeta, \\zeta^2, \\zeta^3, \\zeta^4\\}. \\text{ All distinct since ord}(\\zeta) = 5.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "primitive roots of unity",
+      "IsPrimitiveRoot",
+      "cyclotomic factorization",
+      "linear_combination tactic"
+    ],
+    "prerequisites": [
+      "roots of unity",
+      "cyclotomic polynomial factorization",
+      "Lean 4 linear_combination"
+    ]
+  },
+  {
+    "id": "ann-igf20-roots-in-adjoin",
+    "proofId": "inverse-galois-f20",
+    "range": {
+      "startLine": 309,
+      "endLine": 388
+    },
+    "type": "insight",
+    "title": "Upper Bound Step: All Roots of X⁵−2 Lie in ℚ(α, ζ₅)",
+    "content": "The theorem `roots_in_adjoin_f20` proves every root r of X⁵−2 is in ℚ(α, ζ₅). For any root r: c = r/α satisfies c⁵ = 1. Case c = 1: r = α ∈ ℚ(α, ζ₅). Case c ≠ 1: r ≠ α, so c = r/α is a primitive 5th root, and by `cyclotomic5_root_is_power`, c ∈ {ζ₅, ζ₅², ζ₅³, ζ₅⁴}. In each sub-case, r = c·α is a product of powers of ζ₅ and α, hence in ℚ(α, ζ₅). The follow-up `adjoin_alpha_zeta_eq_top_f20` promotes this to SF = ℚ(α, ζ₅) via `IsSplittingField.adjoin_rootSet'`.",
+    "mathContext": "r^5 = \\alpha^5 = 2 \\implies (r/\\alpha)^5 = 1 \\implies r/\\alpha \\in \\{1, \\zeta_5, \\zeta_5^2, \\zeta_5^3, \\zeta_5^4\\} \\implies r \\in \\mathbb{Q}(\\alpha, \\zeta_5).",
+    "significance": "key",
+    "relatedConcepts": [
+      "splitting field generation",
+      "IntermediateField.adjoin",
+      "IsSplittingField",
+      "Algebra.adjoin_le"
+    ],
+    "prerequisites": [
+      "intermediate field lattice",
+      "adjoin_rootSet'",
+      "tower law"
+    ]
+  },
+  {
+    "id": "ann-igf20-upper-bound",
+    "proofId": "inverse-galois-f20",
+    "range": {
+      "startLine": 394,
+      "endLine": 491
+    },
+    "type": "concept",
+    "title": "Upper Bound: Tower Law Gives |Gal| ≤ 20",
+    "content": "The proof of `gal_card_dvd_20` is the most complex in the file. It establishes: [ℚ(α):ℚ] = 5 (from degree of X⁵−2), [SF:ℚ(α)] ≤ 4 (from minpoly of ζ₅ over ℚ(α) dividing Φ₅ of degree 4), and [SF:ℚ] = [SF:ℚ(α)]·5 ≤ 20 via the tower law `Module.finrank_mul_finrank`. Combined with the lower bound 20 | |Gal|, it follows |Gal| = 20 by `Nat.dvd_antisymm`. The main technical challenge is working through Lean's tower law machinery with intermediate fields `Kα = ℚ(α)` and `Kαζ = Kα(ζ₅)`.",
+    "mathContext": "[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = 5,\\; [\\text{SF}:\\mathbb{Q}(\\alpha)] \\leq 4 \\implies [\\text{SF}:\\mathbb{Q}] \\leq 20 \\implies |\\text{Gal}| \\leq 20. \\text{ With } 20 \\mid |\\text{Gal}|: |\\text{Gal}| = 20.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tower law",
+      "Module.finrank_mul_finrank",
+      "IntermediateField.adjoin.finrank",
+      "minpoly"
+    ],
+    "prerequisites": [
+      "tower law for field extensions",
+      "minpoly degree",
+      "Lean 4 IntermediateField"
+    ]
+  },
+  {
+    "id": "ann-igf20-main-results",
+    "proofId": "inverse-galois-f20",
+    "range": {
+      "startLine": 498,
+      "endLine": 528
+    },
+    "type": "concept",
+    "title": "Main Results: |Gal| = 20 and F₂₀ is Realizable",
+    "content": "The file concludes with three corollaries assembling the full result. `x5_sub_2_gal_card` combines the lower and upper bounds via `Nat.dvd_antisymm`. `splitting_field_x5_sub_2_finrank` translates the Galois group cardinality to the field extension degree (equal by `Polynomial.Gal.card_of_separable`). `f20_realizable` witnesses the existential: the Frobenius group F₂₀ is realizable over ℚ, with witness K = splitting field of X⁵−2, using `IsGalois.mk` to assemble the normal, separable, and Galois hypotheses.",
+    "mathContext": "|\\text{Gal}(X^5-2/\\mathbb{Q})| = 20,\\quad [\\text{SF}:\\mathbb{Q}] = 20,\\quad \\exists K/\\mathbb{Q}\\text{ Galois}: |\\text{Gal}(K/\\mathbb{Q})| = 20.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Frobenius group F₂₀",
+      "ℤ/5ℤ ⋊ ℤ/4ℤ",
+      "IsGalois",
+      "inverse Galois problem"
+    ],
+    "prerequisites": [
+      "Galois group",
+      "IsGalois",
+      "Nat.dvd_antisymm"
+    ]
+  }
+]

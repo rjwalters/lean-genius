@@ -1,0 +1,187 @@
+[
+  {
+    "id": "erdos-1055-header",
+    "proofId": "erdos-1055",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
+    "title": "Module Documentation: Prime Classification by p+1 Factorization",
+    "content": "Erdős Problem #1055: classify primes by the factorization depth of $p+1$. Class 1 primes have 3-smooth $p+1$. Class $r$ primes: all prime factors of $p+1$ are in class $\\leq r-1$, with at least one in class $r-1$. Key questions: infinitely many in each class? Growth of $p_r^{1/r}$ (Erdős: $\\to \\infty$; Selfridge: bounded). Known: $p_1=2, p_2=13, p_3=37, p_4=73, p_5=1021$ (OEIS A005113).",
+    "mathContext": "$\\text{primeClass}(p) = 1 + \\max\\{\\text{primeClass}(q) : q \\mid (p+1),\\, q \\text{ prime}\\}$ with base case $\\text{primeClass}(2) = \\text{primeClass}(3) = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "smooth numbers",
+      "prime factorization depth",
+      "OEIS A005113"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "Nat.Factorization"
+    ]
+  },
+  {
+    "id": "erdos-1055-foldl-helpers",
+    "proofId": "erdos-1055",
+    "type": "concept",
+    "range": {
+      "startLine": 113,
+      "endLine": 130
+    },
+    "title": "Foldl Max Helper Lemmas",
+    "content": "Two private helpers for `List.foldl max`: `foldl_max_ge_init` (fold $\\geq$ init) and `foldl_max_ge_of_mem` ($x \\in l \\Rightarrow$ fold $\\geq f(x)$). Both use term-mode structural induction. These establish correctness of the prime class computation via `foldl max` over prime factors.",
+    "mathContext": "$\\text{foldl}(\\max, \\text{init}, l) \\geq \\text{init}$ and $x \\in l \\Rightarrow \\text{foldl}(\\max, \\text{init}, l) \\geq f(x)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "List.foldl",
+      "structural induction",
+      "maximum computation"
+    ],
+    "prerequisites": [
+      "List.Mem",
+      "le_max_left",
+      "le_trans"
+    ]
+  },
+  {
+    "id": "erdos-1055-termination",
+    "proofId": "erdos-1055",
+    "range": {
+      "startLine": 30,
+      "endLine": 62
+    },
+    "type": "concept",
+    "title": "Termination Lemma: nonSmooth_factor_lt",
+    "content": "The key lemma enabling well-founded recursion for `primeClass`: any prime factor $q$ of $p+1$ with $q \\notin \\{2,3\\}$ satisfies $q < p$. The proof proceeds by contradiction: $q \\leq p+1$ (since $q \\mid p+1$), and $q = p$ is impossible (since $p \\mid p+1$ implies $p \\mid 1$), and $q = p+1$ is impossible (since $p+1$ being prime and even — because $p$ is odd — forces $p+1 = 2$, contradiction). This strict decrease $q < p$ is the termination argument: recursive calls to `primeClass q` always use a smaller input.",
+    "mathContext": "If $p$ is prime and $q \\mid (p+1)$ with $q \\neq 2, 3$ and $q$ prime, then $q < p$. Proof: $q \\leq p+1$; if $q = p$ then $p \\mid (p+1)$ so $p \\mid 1$, impossible; if $q = p+1$ then $p+1$ is prime but $2 \\mid (p+1)$ (since $p$ is odd prime), so $p+1 = 2$, contradiction. Hence $q \\leq p-1 < p$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "well-founded recursion",
+      "termination proofs",
+      "prime divisor bounds",
+      "omega-decidability"
+    ],
+    "prerequisites": [
+      "prime factorization",
+      "well-founded induction"
+    ]
+  },
+  {
+    "id": "prime-class",
+    "proofId": "erdos-1055",
+    "range": {
+      "startLine": 63,
+      "endLine": 77
+    },
+    "type": "lemma",
+    "title": "Prime Class Definition",
+    "content": "The class of a prime p, defined recursively: class 1 means p+1 is 3-smooth; class r means all prime factors of p+1 have class ≤ r-1 with at least one at r-1. The `primeClass` function uses well-founded recursion on `q < p` (since prime factors of `p+1` are at most `p` for `p ≥ 2`). `IsInClass` is the combined predicate requiring both primality and matching class.",
+    "significance": "key",
+    "mathContext": "The **Erdős–Selfridge prime classification** assigns to each prime $p$ a class $c(p) \\in \\{1, 2, 3, \\ldots\\}$ by recursion on the prime factorization of $p+1$. Formally: $c(p) = 1$ if $p+1$ is $3$-smooth (only factors $2$ and $3$), and $c(p) = 1 + \\max\\{c(q) : q \\mid p+1, q \\text{ prime}\\}$ otherwise. The $+1$ shift means the classification probes the **multiplicative structure of shifted primes** $p + 1$, a central topic in analytic number theory.",
+    "relatedConcepts": [
+      "smooth numbers",
+      "shifted primes",
+      "recursive classification",
+      "well-founded recursion"
+    ],
+    "prerequisites": [
+      "prime factorization",
+      "smooth numbers",
+      "Nat.factors"
+    ]
+  },
+  {
+    "id": "class-values",
+    "proofId": "erdos-1055",
+    "range": {
+      "startLine": 81,
+      "endLine": 100
+    },
+    "type": "concept",
+    "title": "Verified Class Values via native_decide",
+    "content": "20 computationally verified class assignments using `native_decide`. Class 1 primes: 2, 3, 5, 7, 11, 17, 23, 31 (all have $p+1 = 2^a \\cdot 3^b$). Class 2: 13 ($14=2\\cdot7$), 19 ($20=2^2\\cdot5$), 29 ($30=2\\cdot3\\cdot5$), 41 ($42=2\\cdot3\\cdot7$), 43 ($44=2^2\\cdot11$). Class 3: 37 ($38=2\\cdot19$), 103 ($104=2^3\\cdot13$), 113 ($114=2\\cdot3\\cdot19$). Class 4: 73 ($74=2\\cdot37$). Class 5: 1021 ($1022=2\\cdot7\\cdot73$). Non-primes get class 0: verified for 4 and 6. All proofs are `by native_decide` — kernel computation of the recursive definition.",
+    "significance": "supporting",
+    "mathContext": "Class 1 primes are those $p$ where $p + 1 = 2^a \\cdot 3^b$: the **3-smooth shifted primes**. The chain structure: $13 \\to 14 = 2 \\cdot 7$ ($c(7) = 1$), $37 \\to 38 = 2 \\cdot 19$ ($c(19) = 2$), $73 \\to 74 = 2 \\cdot 37$ ($c(37) = 3$), $1021 \\to 1022 = 2 \\cdot 7 \\cdot 73$ ($c(73) = 4$).",
+    "relatedConcepts": [
+      "native_decide",
+      "OEIS A005113",
+      "factorization chains",
+      "3-smooth numbers"
+    ],
+    "prerequisites": [
+      "primeClass definition",
+      "kernel computation"
+    ]
+  },
+  {
+    "id": "least-primes",
+    "proofId": "erdos-1055",
+    "range": {
+      "startLine": 102,
+      "endLine": 111
+    },
+    "type": "concept",
+    "title": "Least Prime in Each Class (OEIS A005113)",
+    "content": "Defines `findLeastPrimeInClass` (bounded linear search) and verifies the first 5 values: $p_1=2$, $p_2=13$, $p_3=37$, $p_4=73$, $p_5=1021$. Each verified by `native_decide`. The values $p_r^{1/r}$: $2, 3.61, 3.33, 2.92, 4.01$ are tantalizingly inconclusive about the growth rate — they don't clearly trend upward (supporting Erdős) or stabilize (supporting Selfridge).",
+    "significance": "key",
+    "mathContext": "The sequence of **least primes in each class** (OEIS A005113): $p_1 = 2$, $p_2 = 13$, $p_3 = 37$, $p_4 = 73$, $p_5 = 1021$. The $r$th roots $p_r^{1/r}$: $2.00, 3.61, 3.33, 2.92, 4.01$ — inconclusive between the Erdős ($\\to \\infty$) and Selfridge (bounded) conjectures.",
+    "relatedConcepts": [
+      "OEIS A005113",
+      "bounded search",
+      "Cunningham chains"
+    ],
+    "prerequisites": [
+      "primeClass",
+      "native_decide"
+    ]
+  },
+  {
+    "id": "structural-properties",
+    "proofId": "erdos-1055",
+    "range": {
+      "startLine": 131,
+      "endLine": 200
+    },
+    "type": "concept",
+    "title": "Structural Properties and Concrete Evidence",
+    "content": "Proved structural theorems: `primeClass_pos_of_prime` (primes have class $\\geq 1$), `class_of_factor_lt` (if $q \\mid p+1$ and $q$ prime, then $c(q) < c(p)$), `class_one_iff_smooth` (class 1 $\\iff$ $p+1$ is 3-smooth). Also concrete evidence for infinitude: `many_class1_primes` ($\\geq 8$ class-1 primes below 50), `many_class2_primes` ($\\geq 8$ class-2 primes below 100), `many_class3_primes` ($\\geq 3$ class-3 primes below 200). These are verified by `native_decide`.",
+    "significance": "key",
+    "mathContext": "Key structural facts: $c(p) \\geq 1$ for all primes $p$, $q \\mid (p+1)$ prime $\\Rightarrow c(q) < c(p)$ (strict decrease along factorization chains), and $c(p) = 1 \\iff p + 1$ is 3-smooth. The concrete lists provide evidence for the infinitude conjecture.",
+    "relatedConcepts": [
+      "well-founded recursion",
+      "3-smooth characterization",
+      "factorization chains",
+      "decidable properties"
+    ],
+    "prerequisites": [
+      "primeClass",
+      "nonSmooth_factor_lt",
+      "Nat.factors"
+    ]
+  },
+  {
+    "id": "main-conjectures",
+    "proofId": "erdos-1055",
+    "range": {
+      "startLine": 202,
+      "endLine": 222
+    },
+    "type": "concept",
+    "title": "The Main Conjectures (OPEN)",
+    "content": "Four axiomatized conjectures: (1) `infinitely_many_in_each_class`: for each $r \\geq 1$, infinitely many primes have class $r$ — the primary question. (2) `erdos_growth_conjecture`: $p_r^{1/r} \\to \\infty$ (superexponential growth of least class-$r$ prime). (3) `selfridge_bounded_conjecture`: $\\exists C, \\forall r, p_r \\leq C^r$ (exponential growth). These are **mutually exclusive** — exactly one of Erdős and Selfridge is right. (4) `class_density_subpolynomial`: $|\\{p \\leq n : c(p) = r\\}| = n^{o(1)}$ (extreme sparsity of each class).",
+    "significance": "key",
+    "mathContext": "The central tension: Erdős predicted $p_r^{1/r} \\to \\infty$ (factorization chains force astronomical primes), while Selfridge predicted $p_r^{1/r}$ bounded (chains can be threaded efficiently). The density axiom $n^{o(1)}$ reflects the compounding sparsity of recursive smoothness constraints. All four conjectures remain OPEN.",
+    "relatedConcepts": [
+      "superexponential vs exponential growth",
+      "contradictory conjectures",
+      "sub-polynomial density",
+      "smooth number counting"
+    ],
+    "prerequisites": [
+      "primeClass",
+      "OEIS A005113",
+      "asymptotic notation"
+    ]
+  }
+]

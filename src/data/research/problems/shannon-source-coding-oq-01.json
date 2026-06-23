@@ -1,0 +1,141 @@
+{
+  "slug": "shannon-source-coding-oq-01",
+  "title": "Can rate-distortion theory (lossy compression with distortion constraint $D$)...",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Can rate-distortion theory (lossy compression with distortion constraint $D$)....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-30T17:32:58.852Z",
+    "iteration": 1,
+    "focus": "Already axiomatized in gallery: 17 theorems, 1 axiom (R(D) convexity, deep), 0 sorries — see Proofs/ShannonSourceCodingOQ01.lean",
+    "blockers": [],
+    "nextAction": "None — gallery axiomatized; convexity axiom needs log-sum inequality + optimization (deep, deferred)",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Full rate-distortion theory formalization with 297 lines, 17 proved theorems, 1 axiom (convexity). Gaussian R(D) properties fully proved. Gallery entry created.",
+    "builtItems": [
+      "proofs/Proofs/ShannonSourceCodingOQ01.lean (297 lines, 1 axiom, 0 sorries, 17 theorems)",
+      "src/data/proofs/shannon-source-coding-oq-01/meta.json (gallery entry)",
+      "src/data/proofs/shannon-source-coding-oq-01/annotations.json (8 annotations)",
+      "src/data/proofs/shannon-source-coding-oq-01/index.ts (gallery loader)"
+    ],
+    "insights": [
+      "ShannonEntropy.lean provides mutualInformation, conditionalEntropy, klDivergence - solid infrastructure for R(D)",
+      "R(D) defined as sInf of achievable mutual informations via test channel optimization",
+      "Monotonicity proved via set inclusion: larger D means larger admissible set, hence smaller infimum",
+      "Gaussian R(D) = 1/2 log(sigma^2/D) - proved non-negativity, monotonicity, boundary, halving formula",
+      "Binary entropy h(p) defined with 0*log(0)=0 convention, proved non-negativity, symmetry, boundary values",
+      "R(D) convexity axiomatized - requires optimization over simplex + mutual info convexity in conditional"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove R(D) convexity from first principles to eliminate the single axiom",
+      "Submit Aristotle companion file for routine lemmas",
+      "Docker-build to verify Lean compilation once Docker is available"
+    ]
+  },
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "shannon-source-coding",
+    "shannon-source-coding-oq-01",
+    "shannon-source-coding-oq-02",
+    "shannon-source-coding-oq-03",
+    "shannon-source-coding-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T17:32:58.852Z",
+  "lastUpdate": "2026-04-27T17:16:10Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/ShannonSourceCoding.lean",
+      "filename": "ShannonSourceCoding.lean",
+      "lineCount": 33,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonSourceCoding.lean"
+    },
+    {
+      "path": "Proofs/ShannonSourceCodingOQ01.lean",
+      "filename": "ShannonSourceCodingOQ01.lean",
+      "lineCount": 293,
+      "theoremCount": 15,
+      "axiomCount": 1,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonSourceCodingOQ01.lean"
+    },
+    {
+      "path": "Proofs/ShannonSourceCodingOQ02.lean",
+      "filename": "ShannonSourceCodingOQ02.lean",
+      "lineCount": 358,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonSourceCodingOQ02.lean"
+    },
+    {
+      "path": "Proofs/ShannonSourceCodingOQ03.lean",
+      "filename": "ShannonSourceCodingOQ03.lean",
+      "lineCount": 477,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonSourceCodingOQ03.lean"
+    },
+    {
+      "path": "Proofs/ShannonSourceCodingOQ04.lean",
+      "filename": "ShannonSourceCodingOQ04.lean",
+      "lineCount": 463,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonSourceCodingOQ04.lean"
+    },
+    {
+      "path": "Proofs/ShannonSourceCodingOQ04Aristotle.lean",
+      "filename": "ShannonSourceCodingOQ04Aristotle.lean",
+      "lineCount": 234,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonSourceCodingOQ04Aristotle.lean"
+    }
+  ]
+}

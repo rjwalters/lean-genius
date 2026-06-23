@@ -1,0 +1,161 @@
+{
+  "slug": "erdos-1006-oq-02-oq-03",
+  "title": "Direct Lean 4 proof of FFLLW chromatic number bound from Mathlib primitives",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For finite G, prove G.chromaticNumber < G.egirth -> admitsRobustAcyclicOrientation G; in the rank-based formulation this follows from the stronger coloring-orientation result.",
+    "plain": "A direct Lean 4 proof of the Fisher-Fraughnaugh-Langley-West (FFLLW) theorem from Mathlib primitives: if χ(G) < girth(G), then G admits a robustly acyclic orientation. The proof constructs the coloring orientation (orient u→v when col(u) < col(v)) and shows it is always robustly acyclic. Key insight: under the rank-based formulation, ANY properly colorable finite graph has a robust orientation, making the girth condition unnecessary.",
+    "whyMatters": [
+      "It explains why the rank-based Erdos1006 formalization makes FFLLW immediate from colorability."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`coloringOrientation_robustlyAcyclic` proves the coloring orientation is rank-based robustly acyclic.",
+      "`ffllw_direct` proves the FFLLW implication as a corollary.",
+      "`every_finite_graph_has_robust` proves every finite graph has a rank-based robust orientation."
+    ],
+    "open": [
+      "Classical path-based robustness remains a separate question from the rank-based result."
+    ],
+    "goal": "Keep the direct FFLLW/rank-based proof metadata aligned with the current Erdos1006 proof family."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-02-24T17:52:20.368Z",
+    "iteration": 1,
+    "focus": "Completed direct FFLLW/rank-based proof record refreshed against the current seven-file Erdos1006 proof family.",
+    "blockers": [],
+    "nextAction": "No immediate action; future work should focus on classical robustness if the goal is to match the original FFLLW statement more closely.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Metadata sync 2026-05-18: Erdos1006OQ03.lean script-counts as 248 lines, 7 theorems, 0 axioms, 5 definitions, and 1 raw sorry hit from comment text. The proof establishes the FFLLW implication via the stronger rank-based coloring orientation result.",
+    "builtItems": [
+      "coloringOrientation construction from a proper coloring.",
+      "coloringOrientation_robustlyAcyclic proof.",
+      "ffllw_direct and every_finite_graph_has_robust corollaries."
+    ],
+    "insights": [
+      "Under the rank-based formulation, the girth hypothesis is not needed once a proper coloring exists.",
+      "The classical path-based interpretation remains mathematically distinct and is handled separately in OQ02."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "erdos",
+    "graph-theory",
+    "chromatic-number",
+    "girth",
+    "grotzsch-graph",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-100",
+    "erdos-1006",
+    "erdos-1006-oq-01",
+    "erdos-1006-oq-01-oq-02",
+    "erdos-1006-oq-02",
+    "erdos-1006-oq-02-oq-03",
+    "erdos-1006-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-25T19:36:59.227Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
+  "completed": "2026-02-25T19:36:59.227Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1006OQ01.lean",
+      "filename": "Erdos1006OQ01.lean",
+      "lineCount": 278,
+      "theoremCount": 6,
+      "axiomCount": 3,
+      "defCount": 12,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1006OQ01OQ02.lean",
+      "filename": "Erdos1006OQ01OQ02.lean",
+      "lineCount": 257,
+      "theoremCount": 9,
+      "axiomCount": 2,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos1006OQ02.lean",
+      "filename": "Erdos1006OQ02.lean",
+      "lineCount": 470,
+      "theoremCount": 17,
+      "axiomCount": 1,
+      "defCount": 8,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos1006OQ03.lean",
+      "filename": "Erdos1006OQ03.lean",
+      "lineCount": 248,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ03.lean"
+    },
+    {
+      "path": "Proofs/Erdos1006OQ04.lean",
+      "filename": "Erdos1006OQ04.lean",
+      "lineCount": 194,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ04.lean"
+    },
+    {
+      "path": "Proofs/Erdos1006OQ04Decidability.lean",
+      "filename": "Erdos1006OQ04Decidability.lean",
+      "lineCount": 116,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ04Decidability.lean"
+    },
+    {
+      "path": "Proofs/Erdos1006Problem.lean",
+      "filename": "Erdos1006Problem.lean",
+      "lineCount": 142,
+      "theoremCount": 1,
+      "axiomCount": 3,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006Problem.lean"
+    }
+  ]
+}

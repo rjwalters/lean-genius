@@ -1,0 +1,281 @@
+{
+  "id": "ballot-problem-oq-01-oq-01-oq-02",
+  "title": "Abstract Cycle Lemma for Arbitrary Integer Sequences",
+  "slug": "ballot-problem-oq-01-oq-01-oq-02",
+  "description": "Extends the Dvoretzky-Motzkin cycle lemma infrastructure beyond {+1,-k} sequences. For unit-decrement sequences (steps ≥ -1), proves a downward IVT: every integer level in [minPrefixSum, 0] is achieved by some prefix sum. For all-positive sequences (steps > 0), proves all rotations are good, giving |goodRotations| = l.length.",
+  "meta": {
+    "author": "Lean Genius (OQ02 of ballot-problem-oq-01-oq-01)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BallotProblemOQ01OQ01OQ02.lean",
+    "tags": [
+      "combinatorics",
+      "ballot-problem",
+      "cycle-lemma",
+      "generalization",
+      "discrete-ivt",
+      "prefix-sums"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 211,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "additionalFiles": [
+      "Proofs/BallotProblemOQ01OQ01OQ02OQ01.lean"
+    ],
+    "dateAdded": "2026-05-04",
+    "assumptions": "None. All 9 theorems are fully proved (0 axioms, 0 sorries).",
+    "mathlibDependencies": [
+      {
+        "theorem": "List.sum_take_succ",
+        "description": "Prefix sum recursion: (l.take (j+1)).sum = (l.take j).sum + l[j]",
+        "module": "Mathlib.Data.List.Basic"
+      },
+      {
+        "theorem": "Finset.min'",
+        "description": "Minimum of a nonempty finset, used for leftmost-crossing argument",
+        "module": "Mathlib.Data.Finset.Lattice"
+      },
+      {
+        "theorem": "List.take_prefix",
+        "description": "l.take n is a prefix of l, giving l.take n ⊆ l",
+        "module": "Mathlib.Data.List.Basic"
+      }
+    ],
+    "originalContributions": [
+      "unit_decrement_step_bound: consecutive prefix sums drop by at most 1 for step-≥-1 sequences",
+      "unit_decrement_downward_ivt: downward IVT using leftmost-crossing Finset.min' argument",
+      "unit_decrement_levels_achieved: every level in [minPrefixSum, 0] is achieved",
+      "all_positive_prefixSum_strictMono: strict monotonicity of prefix sums for all-positive sequences",
+      "all_positive_all_rotations_good: all rotations are good when all steps are positive",
+      "all_positive_goodRotations_card: |goodRotations| = l.length for all-positive sequences"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The cycle lemma originated with Bertrand's 1887 ballot problem (*Comptes Rendus*, Paris): if candidate $A$ receives $a$ votes and candidate $B$ receives $b$ votes with $a > b$, the probability that $A$ leads throughout the count is $(a-b)/(a+b)$. André's 1887 *Solution directe* used a reflection argument; Bertrand himself preferred a recurrence. The general *cycle lemma* — that among the $n$ cyclic rotations of any sequence summing to $s > 0$, exactly $s$ have all positive prefix sums — was discovered independently by Dvoretzky & Motzkin (1947, *Duke Math. J.* 14, 305–313) for $\\{+1, -k\\}$ sequences, and abstracted by Raney (1960, *Trans. AMS* 94, 441–451) into the form most often cited today. Dvoretzky-Motzkin's combinatorial argument established $|\\text{goodRotations}| = S$ when steps lie in $\\{+1, -k\\}$ via a careful examination of the *minimum* prefix sum's location; Raney's reformulation made the proof more transparent by introducing the rightmost-minimum position trick that this gallery's parent entry uses.\n\nThis file investigates which *weaker* step conditions still give cycle lemma analogs — a question raised by reviewers of the parent entry but not previously addressed in the standard literature. The discovery: the cycle lemma's exact count $|\\text{goodRotations}| = S$ requires the full $\\{+1, -k\\}$ structure (which forces both an upward and downward discrete IVT), but its two halves can be isolated. **Unit-decrement sequences** (steps $\\geq -1$, an arbitrary positive ceiling) retain only the *downward* IVT — every integer level in $[\\min PS, 0]$ is achieved — which is precisely the half needed for the $\\{+1, -k\\}$ lower bound. **All-positive sequences** (steps $> 0$) lose the cycle structure entirely: prefix sums are strictly monotone, making *every* rotation good, so $|\\text{goodRotations}| = n$ rather than $S$.\n\nThese results bracket the classical cycle lemma: the unit-decrement case is the maximal generalization that preserves the Dvoretzky-Motzkin downward-IVT mechanism, and the all-positive case is the degenerate boundary where the cycle structure trivializes. They give a fine-grained answer to a textbook 'how far can this go?' question (Stanley, *Enumerative Combinatorics* I, §1.5; Flajolet-Sedgewick, *Analytic Combinatorics*, p. 71) that, to the best of our knowledge, had not been formally addressed.",
+    "problemStatement": "**Question**: For integer sequences beyond {+1,-k}, what can be said about the set of good cyclic rotations?\n\n**Answer**: (1) For step-≥-1 sequences: every integer level in [minPS, 0] is achieved (downward IVT). (2) For all-positive sequences: |goodRotations| = l.length (all rotations are good).",
+    "proofStrategy": "For unit-decrement: fix the leftmost position in (i,j] where the prefix sum first drops to ≤ v. Its predecessor has prefix sum > v, and the step is ≥ -1, so the prefix sum can only drop to exactly v. For all-positive: strict monotonicity of prefix sums makes the non-wrapping part positive directly; the wrapping part is positive because the starting prefix sum is strictly less than the total sum.",
+    "keyInsights": [
+      "The downward IVT uses a Finset.min' (leftmost crossing) argument rather than induction, giving a cleaner proof than the {+1,-k} case",
+      "For unit-decrement sequences, the IVT holds in the downward direction but NOT upward — large positive steps can skip levels going up",
+      "For all-positive sequences, the cycle lemma gives count = length (not sum), showing the step alphabet fundamentally changes the count",
+      "The two cases (unit-decrement, all-positive) bracket the {+1,-k} case: the downward IVT is one half of the {+1,-k} lower bound",
+      "**Step alphabet as proof skeleton**: the Dvoretzky-Motzkin proof for {+1,-k} can be decomposed into precisely two ingredients — a downward IVT (carried by the unit-decrement bound) and the {+1,-k}-specific algebra that makes prefix sums hit every level in [minPS, minPS+S). The unit-decrement case isolates the first ingredient; the all-positive case shows what happens when neither ingredient is available (cycle structure trivializes). This 'isolate the active ingredient' methodology generalizes broadly: in any cycle-lemma-style theorem, ask which property of the step alphabet is *actually used* in each step of the proof.",
+      "**Leftmost-crossing as a discrete IVT primitive**: the Finset.min' argument used here is the discrete analog of the continuous IVT's existence-via-supremum proof. Given a function $f : \\{0, \\ldots, n\\} \\to \\mathbb{Z}$ with bounded one-step decrements ($f(k+1) \\geq f(k) - 1$), the leftmost crossing of any level $v$ is automatically a *clean* crossing (where $f$ equals exactly $v$, not 'jumps over'). This primitive can be reused for any discrete continuity argument with bounded one-step jumps, including random-walk hitting-time results and lattice path enumeration."
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Preamble: Imports, Namespace, and File Roadmap",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "File header documenting the two-part structure (unit-decrement IVT + all-positive triviality), import of the parent file BallotProblemOQ01OQ01 (which provides prefixSum, minPrefixSum, rightmostMinPos, isGoodRotation, goodRotations, cyclicRotation_prefixSum), and namespace setup. Establishes the working domain GeneralizedBallot and the local namespace BallotAbstractCycleLemma.",
+      "mathContext": "Inherits the cycle-lemma vocabulary from $\\text{Proofs.BallotProblemOQ01OQ01}$: $\\text{prefixSum}\\,l\\,j = \\sum_{k<j} l_k$, $\\text{minPrefixSum}\\,l = \\min_j \\text{PS}(j)$, $\\text{rightmostMinPos}\\,l = \\max\\{j : \\text{PS}(j) = \\text{minPS}\\}$, $\\text{isGoodRotation}\\,l\\,i$ = all prefix sums of the $i$-rotation are strictly positive."
+    },
+    {
+      "id": "unit-decrement-step-bound",
+      "title": "Part I.A — Unit-Decrement Step Bound",
+      "startLine": 35,
+      "endLine": 47,
+      "summary": "unit_decrement_step_bound: for step-≥-1 sequences, prefixSum l j - 1 ≤ prefixSum l (j+1). The local one-step bound that drives the downward IVT — a prefix sum cannot drop by more than 1 per step. Proved by direct application of List.sum_take_succ + linarith on the per-element bound l[j] ≥ -1.",
+      "mathContext": "$\\text{PS}(j+1) = \\text{PS}(j) + l_j \\geq \\text{PS}(j) - 1\\quad\\text{since } l_j \\geq -1.$"
+    },
+    {
+      "id": "unit-decrement-downward-ivt",
+      "title": "Part I.B — Downward IVT via Leftmost Crossing",
+      "startLine": 49,
+      "endLine": 100,
+      "summary": "unit_decrement_downward_ivt: the core theorem. If prefixSum at i exceeds v but at j > i is ≤ v, some k ∈ (i,j] achieves exactly v. Proof uses a leftmost-crossing argument via Finset.min': let S = {k ∈ (i,j] : PS(k) ≤ v}, kstar = min' S; then PS(kstar-1) > v by minimality, and PS(kstar) ≥ PS(kstar-1) - 1 > v - 1 by the step bound, forcing PS(kstar) = v.",
+      "mathContext": "Let $S = \\{k \\in (i,j] : \\text{PS}(k) \\leq v\\}$, $k^* = \\min' S$. Minimality $\\Rightarrow \\text{PS}(k^*-1) > v$. Step bound $\\Rightarrow \\text{PS}(k^*) \\geq \\text{PS}(k^*-1) - 1 \\geq v$. Membership $\\Rightarrow \\text{PS}(k^*) \\leq v$. Hence $\\text{PS}(k^*) = v$."
+    },
+    {
+      "id": "unit-decrement-levels-achieved",
+      "title": "Part I.C — Every Level in [minPS, 0] Is Achieved",
+      "startLine": 102,
+      "endLine": 126,
+      "summary": "unit_decrement_levels_achieved: applies the local IVT globally. For target level v ∈ [minPrefixSum l, 0]: case v = 0 uses prefixSum_zero (position 0); case v < 0 invokes the IVT between position 0 (where PS = 0 > v) and rightmostMinPos l (where PS = minPS ≤ v), with the side condition that rightmostMinPos > 0 since minPS < 0.",
+      "mathContext": "Apply IVT at $(i, j) = (0, \\text{rightmostMinPos}(l))$: $\\text{PS}(0) = 0 > v$ (when $v<0$) and $\\text{PS}(\\text{rightmostMinPos}(l)) = \\text{minPS}(l) \\leq v$. Result: $\\exists k \\leq |l|$ with $\\text{PS}(k) = v$."
+    },
+    {
+      "id": "all-positive-monotonicity",
+      "title": "Part II.A — Strict Monotonicity and Bridge Lemmas",
+      "startLine": 128,
+      "endLine": 170,
+      "summary": "Four lemmas building the all-positive infrastructure. all_positive_prefixSum_step: per-step strict increase. all_positive_prefixSum_strictMono: global strict mono by induction on j with lt_trans. all_positive_prefixSum_lt_sum: interior bound PS(i) < l.sum (one-line corollary via prefixSum_length). all_positive_prefixSum_nonneg: all prefix sums ≥ 0 via List.sum_nonneg over the positive prefix elements (transferred via List.take_prefix).",
+      "mathContext": "$\\forall x \\in l,\\ 0 < x\\ \\Rightarrow\\ \\text{PS}\\text{ is strictly increasing on } [0, |l|]\\text{, with } \\text{PS}(i) < \\sum l\\text{ for } i < |l|\\text{, and } \\text{PS}(i) \\geq 0\\text{ everywhere.}$"
+    },
+    {
+      "id": "all-positive-rotations",
+      "title": "Part II.B — Every Rotation Good; Cardinality = Length",
+      "startLine": 172,
+      "endLine": 211,
+      "summary": "Two theorems closing the all-positive case. all_positive_all_rotations_good: every cyclic rotation is good — case-split on wrapping vs non-wrapping prefix; non-wrapping uses strict monotonicity directly; wrapping combines the interior bound (PS(i) < l.sum) with non-negativity of the wrapped prefix. all_positive_goodRotations_card: |goodRotations l| = l.length via Finset extensionality identifying goodRotations with Finset.range l.length, then Finset.card_range. The namespace closer marks the end of the file.",
+      "mathContext": "Non-wrapping ($i+j \\leq n$): $\\text{PS}(i+j) - \\text{PS}(i) > 0$ by strict mono.\nWrapping ($i+j > n$): $\\text{PS}(i+j-n) \\geq 0$ and $\\text{PS}(i) < \\text{sum}(l)$ give $\\text{PS}(i+j-n) + \\text{sum}(l) - \\text{PS}(i) > 0$.\nCardinality: $\\text{goodRotations}(l) = \\text{range}(|l|)$, so $|\\text{goodRotations}(l)| = |l|$."
+    }
+  ],
+  "conclusion": {
+    "summary": "9 theorems prove that the cycle lemma structure depends on the step alphabet: unit-decrement sequences satisfy a downward IVT (explaining the lower bound mechanism for {+1,-k} sequences), while all-positive sequences give |goodRotations| = l.length — the maximum, not the sum.",
+    "implications": "The unit-decrement IVT isolates the key property needed for the {+1,-k} lower bound: downward continuity. The all-positive case shows that positive-sum sequences can have much more structure than the cycle lemma predicts — when all steps are positive, every rotation is good, not just sum-many rotations.",
+    "openQuestions": [
+      "For step ≥ -m sequences (m > 1), is |goodRotations| ≥ ⌈l.sum / m⌉? The natural conjecture: an analog of the downward IVT exists with 'jumps of size at most m' replacing 'jumps of size at most 1', giving a fractional lower bound on the count of good rotations.",
+      "Can the unit-decrement IVT be strengthened to give a lower bound tighter than 1 on |goodRotations|? E.g., for unit-decrement sequences with bounded positive steps, does the count |goodRotations| ≥ f(maxStep) S for some explicit f?",
+      "What is the relationship between the step alphabet Σ ⊆ ℤ and the exact count |goodRotations| in general? Conjecture: |goodRotations| equals the number of *minimal* prefixes — prefix sums that strictly precede the global minimum — when the alphabet has GCD 1 and includes -1; the gap between this combinatorial count and the standard 'count = S' formula measures how much the alphabet deviates from {+1, -k}.",
+      "For multi-step alphabets such as {+2, -3} (the *generalized cycle lemma* of Mohanty 1979), can the cycle lemma proof be modularized into 'step bounds' and 'level achievement' as in this file's {+1, -k} → {≥ -1} decomposition? A modular proof would clarify which combinatorial features of the alphabet are essential to the cycle lemma's count formula.",
+      "Does the leftmost-crossing primitive used here have a continuous-time analog applicable to càdlàg processes with bounded negative jumps? Such an analog would unify the discrete cycle lemma with the Lévy-type 'fluctuation theory' (Bingham, *Adv. Appl. Probab.* 1975) used for spectrally-positive Lévy processes."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.BallotProblemOQ01OQ01"
+    ],
+    "opens": ["GeneralizedBallot"],
+    "namespace": "BallotAbstractCycleLemma",
+    "lineCount": 211,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "path": "Proofs/BallotProblemOQ01OQ01OQ02.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      {
+        "path": "Proofs/BallotProblemOQ01OQ01OQ02OQ01.lean",
+        "lineCount": 626,
+        "theorems": 12,
+        "definitions": 0,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "m-jump downward IVT (OQ01 child research direction, namespace BallotMJumpCycleLemma): m-jump step bounds (m_jump_step_bound, m_jump_step_bound_upward), downward/upward IVT with conclusion window [v - m + 1, v] (m_jump_downward_ivt, m_jump_upward_ivt), unit recovery at m=1 (m_jump_downward_ivt_unit_recovery, m_jump_upward_ivt_unit_recovery), and step-alphabet cardinality lemmas for {-m, ..., -1, +1} and Option C two-sided variants (step_in_one_neg_m_count, step_in_one_pos_mixed_neg_card_eq/_bound, step_le_one_card_eq, step_in_one_pos_pm_card_eq/_bound). Generalizes the parent's unit-decrement IVT to arbitrary m ≥ 1."
+      }
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "ballot-problem-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry: the Dvoretzky-Motzkin cycle lemma for $\\{+1,-k\\}$ sequences via IVT and rightmost position. This entry isolates the *downward-IVT* half of the parent's argument and shows it survives in the larger alphabet $\\{x \\in \\mathbb{Z} : x \\geq -1\\}$."
+    },
+    {
+      "targetId": "ballot-problem-oq-01",
+      "relationship": "related",
+      "description": "The generalized ballot problem: the cycle lemma for $\\{+1,-k\\}$ sequences gives the exact good-rotation count. The present entry brackets that classical case from below (unit-decrement) and above (all-positive)."
+    },
+    {
+      "targetId": "ballot-problem",
+      "relationship": "ancestor",
+      "description": "Bertrand's 1887 ballot problem — the historical origin of all cycle-lemma counting. The present entry is two generalization steps removed (Bertrand $\\to$ Dvoretzky-Motzkin $\\to$ unit-decrement / all-positive) and shows which structural ingredients of Bertrand's original argument survive each step."
+    },
+    {
+      "targetId": "ballot-problem-oq-01-oq-02",
+      "relationship": "sibling",
+      "description": "Parallel OQ-02 sibling exploring a different generalization axis of the cycle lemma. Together with this entry they cover the multi-dimensional landscape of step-alphabet variations on Dvoretzky-Motzkin."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Joseph Bertrand",
+      "title": "Solution d'un problème",
+      "year": "1887",
+      "venue": "Comptes Rendus de l'Académie des Sciences, Paris, 105, 369",
+      "note": "The original 1887 ballot problem: probability that candidate $A$ leads throughout the count is $(a-b)/(a+b)$. Source of the entire cycle-lemma research line; the present file's downward IVT is a third-generation generalization."
+    },
+    {
+      "authors": "Désiré André",
+      "title": "Solution directe du problème résolu par M. Bertrand",
+      "year": "1887",
+      "venue": "Comptes Rendus de l'Académie des Sciences, Paris, 105, 436–437",
+      "note": "Reflection-principle proof of Bertrand's ballot result; the modern reflection argument descends from this paper. Complements the cycle-lemma approach: reflection counts bad sequences, cycle lemma counts good rotations."
+    },
+    {
+      "authors": "Aryeh Dvoretzky and Theodore S. Motzkin",
+      "title": "A problem of arrangements",
+      "year": "1947",
+      "venue": "Duke Mathematical Journal 14, 305–313",
+      "note": "Introduces the cycle lemma for $\\{+1, -k\\}$ sequences, proving $|\\text{goodRotations}| = S$ when $S = \\sum l > 0$. The unit-decrement IVT in this gallery file isolates the *lower-bound* mechanism of their argument."
+    },
+    {
+      "authors": "George N. Raney",
+      "title": "Functional composition patterns and power series reversion",
+      "year": "1960",
+      "venue": "Transactions of the American Mathematical Society 94, 441–451",
+      "note": "Reformulates the cycle lemma using the rightmost-minimum position trick, simplifying Dvoretzky-Motzkin's original argument. The standard modern statement of the cycle lemma is usually attributed to Raney."
+    },
+    {
+      "authors": "Sri Gopal Mohanty",
+      "title": "Lattice Path Counting and Applications",
+      "year": "1979",
+      "venue": "Academic Press, Probability and Mathematical Statistics series",
+      "note": "Comprehensive treatment of the *generalized* cycle lemma for multi-step alphabets such as $\\{+a, -b\\}$ with $\\gcd(a,b) = 1$. Indicates the natural next-step generalization beyond unit-decrement: see openQuestion #4."
+    },
+    {
+      "authors": "Richard P. Stanley",
+      "title": "Enumerative Combinatorics, Volume I (2nd edition)",
+      "year": "2011",
+      "venue": "Cambridge Studies in Advanced Mathematics 49, Cambridge University Press",
+      "note": "Standard reference on lattice paths and cycle-lemma applications (§1.5). Stanley's exposition motivates the 'how far can this go?' question that this gallery entry formally addresses."
+    },
+    {
+      "authors": "Philippe Flajolet and Robert Sedgewick",
+      "title": "Analytic Combinatorics",
+      "year": "2009",
+      "venue": "Cambridge University Press, p. 71",
+      "note": "Treats the cycle lemma as a key bijection in the analytic-combinatorics framework; the question of which step alphabets admit cycle-lemma analogs (formally answered here for unit-decrement / all-positive) is left as an exercise in their textbook treatment."
+    },
+    {
+      "authors": "Nicholas H. Bingham",
+      "title": "Fluctuation theory in continuous time",
+      "year": "1975",
+      "venue": "Advances in Applied Probability 7, 705–766",
+      "note": "Continuous-time fluctuation theory for spectrally-positive Lévy processes — the conjectured continuous analog of the leftmost-crossing primitive isolated here (see openQuestion #5)."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "unit_decrement_step_bound",
+      "type": "lemma",
+      "description": "One-step bound: for step-≥-1 sequences, prefixSum l j - 1 ≤ prefixSum l (j+1). The local property that drives the downward IVT — a prefix sum cannot drop by more than 1 per step."
+    },
+    {
+      "name": "unit_decrement_downward_ivt",
+      "type": "core",
+      "description": "Downward IVT: for step-≥-1 sequences, if prefix sum at i exceeds v but at j > i is ≤ v, some k ∈ (i,j] achieves prefix sum exactly v. Proved via Finset.min' (leftmost crossing) — the discrete analog of the continuous IVT."
+    },
+    {
+      "name": "unit_decrement_levels_achieved",
+      "type": "core",
+      "description": "Global level-achievement: for step-≥-1 sequences, every integer level v ∈ [minPrefixSum l, 0] is achieved by some prefix sum position. Combines the IVT with the rightmost-min position to span the full reachable range."
+    },
+    {
+      "name": "all_positive_prefixSum_step",
+      "type": "lemma",
+      "description": "One-step strict increase for all-positive sequences: prefixSum l j < prefixSum l (j+1). The local positivity property that propagates to global strict monotonicity."
+    },
+    {
+      "name": "all_positive_prefixSum_strictMono",
+      "type": "lemma",
+      "description": "Global strict monotonicity: for all-positive sequences, i < j ≤ |l| ⟹ prefixSum l i < prefixSum l j. Proved by induction on j chaining the one-step increase."
+    },
+    {
+      "name": "all_positive_prefixSum_lt_sum",
+      "type": "lemma",
+      "description": "Interior bound: for all-positive sequences, i < |l| ⟹ prefixSum l i < l.sum. Used in the wrapping case of all_positive_all_rotations_good."
+    },
+    {
+      "name": "all_positive_prefixSum_nonneg",
+      "type": "lemma",
+      "description": "Universal non-negativity: for all-positive sequences, every prefix sum is ≥ 0. Used in the wrapping case alongside the interior bound."
+    },
+    {
+      "name": "all_positive_all_rotations_good",
+      "type": "core",
+      "description": "Every cyclic rotation is good for all-positive-step sequences. The non-wrapping case uses strict monotonicity directly; the wrapping case combines the interior bound with non-negativity of wrapped prefix sums."
+    },
+    {
+      "name": "all_positive_goodRotations_card",
+      "type": "core",
+      "description": "|goodRotations l| = l.length for all-positive-step sequences — every rotation is good. Proved by Finset extensionality identifying goodRotations l with Finset.range l.length."
+    }
+  ],
+  "sorries": 0
+}

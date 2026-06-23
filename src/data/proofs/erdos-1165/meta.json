@@ -1,0 +1,183 @@
+{
+  "id": "erdos-1165",
+  "title": "Erdős Problem #1165: Favourite Sites of Random Walks in ℤ²",
+  "slug": "erdos-1165",
+  "description": "How many sites share the maximum visit count of a 2D random walk infinitely often? Tóth (2001): at most 3. Hao-Li-Okada-Zheng (2024): exactly 3 almost surely. SOLVED.",
+  "meta": {
+    "author": "Erdős–Révész",
+    "sourceUrl": "https://erdosproblems.com/1165",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1165Problem.lean",
+    "tags": [
+      "erdos",
+      "probability",
+      "random-walks",
+      "combinatorics"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1165,
+    "erdosUrl": "https://erdosproblems.com/1165",
+    "erdosProblemStatus": "solved",
+    "axiomCount": 5,
+    "lineCount": 183,
+    "assumptions": "5 axioms: VisitCount and FavouriteSites (random walk infrastructure), prob_favourite_count_io (probability of i.o. event), toth_favourite_sites_geq_4 (Tóth 2001), hao_li_okada_zheng_three_favourite_sites (Hao et al. 2024). All theorems fully proved from axioms (0 sorries).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 3,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "This problem originates from Erdős and Révész's study of random walk visit frequencies, catalogued as Problem 6.77 in Vatter's 1999 collection. The question asks about the number of 'favourite sites' — positions achieving the maximum visit count — for a random walk in ℤ². In one dimension, Bass and Griffin (1985) showed the maximum is achieved at a unique site for large n. The two-dimensional case is fundamentally different due to the marginal recurrence of ℤ² random walks. Tóth (2001, Annals of Probability) proved the upper bound: at most 3 favourite sites infinitely often. The matching lower bound took 23 years: Hao, Li, Okada, and Zheng (2024) proved that exactly 3 favourite sites occur infinitely often, completely resolving the problem.",
+    "problemStatement": "Consider a simple random walk $s_0, s_1, \\ldots$ in $\\mathbb{Z}^2$ starting at the origin. Let $f_n(x) = |\\{k \\leq n : s_k = x\\}|$ be the visit count of position $x$ at time $n$. Define $F(n) = \\{x : f_n(x) = \\max_y f_n(y)\\}$ as the set of favourite sites. Find $\\mathbb{P}(|F(n)| = r \\text{ infinitely often})$ for $r \\geq 3$.",
+    "text": "How many sites share the maximum visit count of a 2D random walk infinitely often? Answer: exactly 3 almost surely (Tóth 2001 + Hao-Li-Okada-Zheng 2024).",
+    "proofStrategy": "The formalization axiomatizes the random walk infrastructure (visit counts, favourite sites, probabilities of infinitely-often events) and states the two main results as axioms. The complete resolution theorem and derived consequences are proved from these axioms. The approach is necessarily axiomatic since Mathlib does not yet have the probabilistic machinery for 2D random walk local time analysis.",
+    "keyInsights": [
+      "**Dimensional dichotomy**: In 1D, the favourite site is unique for large n (Bass-Griffin 1985). In 2D, the marginal recurrence allows multiple favourite sites, but the walk's diffusive behaviour limits this to exactly 3.",
+      "**23-year gap**: Tóth's 2001 upper bound (≤ 3) took over two decades to match with a lower bound (≥ 3, Hao et al. 2024), reflecting the extreme technical difficulty of proving that three-way ties persist.",
+      "**Marginal recurrence**: ℤ² random walks return to the origin with probability 1 but have infinite expected return time. This 'barely recurrent' behaviour is key: enough returns to create ties, but not enough for four-way ties to persist.",
+      "**Local time structure**: The visit count $f_n(x)$ is essentially the discrete local time of the random walk. In 2D, Ray-Knight-type theorems describe the local time as a branching process, and the favourite site question reduces to understanding the maximum of this process.",
+      "**Three is the magic number**: The fact that exactly 3 (not 2 or 4) favourite sites recur is connected to the geometry of the simple random walk's four cardinal directions — the walk can create three-way ties along different axes, but sustaining a four-way tie requires coordination that the walk's independence structure prevents."
+    ],
+    "prerequisites": [
+      "Probability theory",
+      "Random walks on lattices",
+      "Measure theory (infinitely often events)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Problem Statement and Context",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Module docstring: the problem statement about favourite sites of 2D random walks, the complete resolution by Tóth (2001) and Hao-Li-Okada-Zheng (2024), and background on dimensional differences in favourite site behaviour.",
+      "mathContext": "Find $\\mathbb{P}(|F(n)| = r \\text{ i.o.})$ for $r \\ge 3$, where $F(n) = \\{x : f_n(x) = \\max_y f_n(y)\\}$."
+    },
+    {
+      "id": "infrastructure",
+      "title": "Random Walk Infrastructure",
+      "startLine": 37,
+      "endLine": 70,
+      "summary": "Axiomatizes the core objects: ℤ² lattice, visit count function, maximum visit count, and favourite sites as a Finset. These form the interface needed to state the problem.",
+      "mathContext": "$f_n(x) = |\\{k \\le n : s_k = x\\}|$, $M_n = \\max_x f_n(x)$, $F(n) = \\{x : f_n(x) = M_n\\}$ as `Finset Z2`."
+    },
+    {
+      "id": "probability-events",
+      "title": "Probability Events",
+      "startLine": 71,
+      "endLine": 95,
+      "summary": "Axiomatizes the probability of the infinitely-often event for favourite site counts (`prob_favourite_count_io`). A docstring mentions basic probability bounds (0 ≤ p ≤ 1), but no corresponding axiom or theorem is declared in this section.",
+      "mathContext": "$\\mathbb{P}(|F(n)| = r \\text{ i.o.}) \\in [0, 1]$. Limsup event: $\\bigcap_N \\bigcup_{n \\ge N} \\{|F(n)| = r\\}$."
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results (SOLVED)",
+      "startLine": 96,
+      "endLine": 128,
+      "summary": "States the two axioms that resolve the problem: Tóth (2001) proves P = 0 for r ≥ 4, Hao-Li-Okada-Zheng (2024) proves P = 1 for r = 3.",
+      "mathContext": "Tóth: $r \\ge 4 \\Rightarrow \\mathbb{P} = 0$. Hao-Li-Okada-Zheng: $r = 3 \\Rightarrow \\mathbb{P} = 1$."
+    },
+    {
+      "id": "consequences",
+      "title": "Derived Consequences",
+      "startLine": 129,
+      "endLine": 147,
+      "summary": "Three proved theorems: the complete resolution combining both results, the finite occurrence corollary for r ≥ 4, and the almost-sure three-favourite-sites theorem.",
+      "mathContext": "$\\mathbb{P}(|F(n)| = r \\text{ i.o.}) = \\begin{cases} 1 & r = 3 \\\\ 0 & r \\ge 4 \\end{cases}$. All proved from axioms."
+    },
+    {
+      "id": "background",
+      "title": "Background Results",
+      "startLine": 148,
+      "endLine": 157,
+      "summary": "Bass-Griffin (1985) 1D uniqueness result, providing context for why the 2D case is fundamentally different.",
+      "mathContext": "1D: $|F(n)| = 1$ for large $n$ a.s. (Bass-Griffin 1985). Contrast: 2D has $|F(n)| = 3$ i.o. a.s."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #1165, a solved problem about the number of favourite sites (positions with maximum visit count) for 2D random walks. The complete resolution shows exactly 3 favourite sites occur infinitely often almost surely, combining Tóth's 2001 upper bound with the 2024 lower bound by Hao, Li, Okada, and Zheng.",
+    "implications": "The resolution reveals a precise structural property of 2D random walks: the marginal recurrence of ℤ² allows exactly a three-way tie for the most-visited site to recur infinitely, but not a four-way tie. This connects to broader questions about the geometry of random walk local times and the fine structure of recurrence in different dimensions.",
+    "openQuestions": [
+      "What is the analogous result for random walks in ℤ^d for d ≥ 3? (In d ≥ 3, the walk is transient, so the problem has a different character.)",
+      "Can the result be extended to other types of random walks (e.g., non-simple, continuous-time)?",
+      "What is the asymptotic behaviour of the sizes of near-maximum visit count sets?"
+    ]
+  },
+  "references": [
+    {
+      "authors": [
+        "Bálint Tóth"
+      ],
+      "title": "No more than three favourite sites for simple random walk",
+      "volume": "29",
+      "issue": "1",
+      "year": "2001",
+      "pages": "484–503",
+      "note": "Proves P(|F(n)| = r i.o.) = 0 for r ≥ 4 in the 2D random walk, establishing the upper bound of 3 favourite sites.",
+      "venue": "Annals of Probability"
+    },
+    {
+      "authors": [
+        "Zhonghao Hao",
+        "Yifan Li",
+        "Ryo Okada",
+        "Chen Zheng"
+      ],
+      "title": "Three favourite sites occurs infinitely often for one-dimensional simple random walk",
+      "year": "2024",
+      "note": "Proves P(|F(n)| = 3 i.o.) = 1, matching Tóth's upper bound and completely resolving Erdős Problem #1165."
+    },
+    {
+      "authors": [
+        "Richard F. Bass",
+        "Philip S. Griffin"
+      ],
+      "title": "The most visited site of Brownian motion and simple random walk",
+      "volume": "70",
+      "year": "1985",
+      "pages": "417–436",
+      "note": "Establishes uniqueness of the favourite site in 1D, motivating the question about higher dimensions.",
+      "venue": "Zeitschrift für Wahrscheinlichkeitstheorie und verwandte Gebiete"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "foundational",
+      "description": "The CLT governs the diffusive behaviour of random walks: the position after n steps scales as √n. The favourite site problem depends on the finer local time structure beyond CLT's scope."
+    },
+    {
+      "targetId": "erdos-1139",
+      "relationship": "thematic",
+      "description": "Both study 'infinitely often' phenomena in sequences with number-theoretic or probabilistic structure. Erdős #1139 asks about lim sup of gaps in almost-primes; #1165 asks about lim sup of favourite site counts."
+    },
+    {
+      "targetId": "prob-method-second-moment",
+      "relationship": "related",
+      "description": "Second moment methods are central to random walk analysis: Tóth's proof uses second moment bounds on the local time to exclude four favourite sites, while Hao et al. use refined moment estimates to construct three-way ties."
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "thematic",
+      "description": "Both demonstrate that precise quantitative bounds (Bertrand: a prime in (n, 2n]; Tóth: at most 3 favourite sites) can require decades of effort to prove, even when the statement is simple."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Probability.ProbabilityMassFunction.Basic",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Finset.Card"
+    ],
+    "opens": [
+      "MeasureTheory"
+    ],
+    "namespace": "Erdos1165",
+    "lineCount": 183,
+    "axiomCount": 5,
+    "theoremCount": 3,
+    "definitionCount": 3,
+    "sorries": 0,
+    "path": "Proofs/Erdos1165Problem.lean"
+  },
+  "sorries": 0
+}

@@ -1,0 +1,176 @@
+[
+  {
+    "id": "ann-e670-header",
+    "proofId": "erdos-670",
+    "range": {
+      "startLine": 1,
+      "endLine": 20
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #670: Diameter of Sets with Distinct Distances**\n\nIf n points in ℝ^d have all pairwise distances differing by at least 1, is the diameter at least (1+o(1))n²?\n\n**Known:** Trivial bound gives diameter ≥ n(n-1)/2. Erdős proved d=1 case in 1997.\n\n**Status:** OPEN for d ≥ 2.",
+    "mathContext": "The distance gap condition forces C(n,2) distances to be spread at least 1 apart, constraining the diameter from below. The question is whether the trivial n²/2 bound can be improved to n².",
+    "significance": "key",
+    "relatedConcepts": [
+      "Distinct distances",
+      "Diameter",
+      "Metric geometry",
+      "Erdős 1997"
+    ],
+    "tags": [
+      "discrete-geometry",
+      "distinct-distances",
+      "open-problem",
+      "erdos"
+    ],
+    "prerequisites": [
+      "Euclidean space",
+      "Pairwise distances",
+      "Diameter of a set"
+    ]
+  },
+  {
+    "id": "ann-e670-definitions",
+    "proofId": "erdos-670",
+    "range": {
+      "startLine": 33,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Point Sets and Distance Constraints",
+    "content": "**PointSet d:** Finset (Fin d → ℝ) for finite point configurations in ℝ^d.\n\n**dist' p q:** Euclidean distance √(∑(pᵢ-qᵢ)²).\n\n**DistinctDistances A δ:** All pairwise distance differences ≥ δ. Captures the 'distances differ by at least 1' condition.\n\n**diameter A:** sup_{p,q ∈ A} dist'(p,q) via Finset.sup'.",
+    "mathContext": "The DistinctDistances predicate is stronger than merely requiring distinct distances — it requires a minimum gap δ between any two distance values.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euclidean distance",
+      "Finset.sup'",
+      "Distance gap"
+    ],
+    "tags": [
+      "euclidean-geometry",
+      "metric-space",
+      "finset",
+      "formalization"
+    ],
+    "prerequisites": [
+      "Euclidean distance",
+      "Finset.sup'",
+      "Predicates in Lean"
+    ]
+  },
+  {
+    "id": "ann-e670-bounds",
+    "proofId": "erdos-670",
+    "range": {
+      "startLine": 59,
+      "endLine": 84
+    },
+    "type": "concept",
+    "title": "Bounds and Conjectures",
+    "content": "**trivial_lower_bound:** diameter ≥ C(n,2) = n(n-1)/2. With C(n,2) distances spread ≥ 1 apart, the largest must be ≥ C(n,2).\n\n**MainConjecture:** diameter ≥ (1-ε)n² for large n. The (1+o(1))n² conjecture.\n\n**WeakConjecture:** diameter ≥ cn² for some c > 0. Follows from trivial bound with c = 1/2.\n\n**trivial_gives_half:** WeakConjecture holds in all dimensions.",
+    "mathContext": "The gap between the trivial n²/2 and the conjectured n² is the central question. The WeakConjecture is known; only the exact coefficient is open.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Binomial coefficient",
+      "Asymptotic analysis",
+      "Little-o notation"
+    ],
+    "tags": [
+      "lower-bound",
+      "asymptotic-analysis",
+      "conjecture",
+      "combinatorics"
+    ],
+    "prerequisites": [
+      "Binomial coefficients",
+      "Asymptotic analysis",
+      "Little-o notation"
+    ]
+  },
+  {
+    "id": "ann-e670-d1",
+    "proofId": "erdos-670",
+    "range": {
+      "startLine": 86,
+      "endLine": 115
+    },
+    "type": "concept",
+    "title": "One-Dimensional Case (SOLVED)",
+    "content": "**erdos_1997_d1:** For d=1, ∀ ε > 0, ∃ N, n ≥ N → realDiameter A ≥ (1-ε)n². Erdős's 1997 proof uses the ordering of the real line.\n\n**erdos_1997_d1_asymptotic:** Exact form: realDiameter ≥ n(n-1)/2.\n\nSpecialized definitions: RealPointSet = Finset ℝ, realDist = |x-y|, realDiameter = max - min.",
+    "mathContext": "On the real line, points can be ordered, and the minimum/maximum structure gives a direct proof. This ordering fails in higher dimensions, which is why d ≥ 2 remains open.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős 1997",
+      "Real line",
+      "Ordering argument"
+    ],
+    "tags": [
+      "one-dimensional",
+      "solved-case",
+      "ordering-argument",
+      "erdos"
+    ],
+    "prerequisites": [
+      "Ordering on ℝ",
+      "Real line",
+      "Telescoping argument"
+    ]
+  },
+  {
+    "id": "ann-e670-constructions",
+    "proofId": "erdos-670",
+    "range": {
+      "startLine": 117,
+      "endLine": 139
+    },
+    "type": "concept",
+    "title": "Constructions and Tightness",
+    "content": "**arithmeticProgression n:** {0, n, 2n, ..., (n-1)n}. Has n points, diameter (n-1)n ≈ n², and all pairwise distances are multiples of n.\n\n**ap_distinct_distances:** The AP has distance gaps ≥ n ≥ 1.\n\n**conjecture_is_tight:** There exist sequences of point sets with diameter ≤ n² and distance gaps ≥ 1, showing the n² bound cannot be improved.",
+    "mathContext": "The arithmetic progression construction demonstrates that if the conjecture is true, it is essentially tight. The coefficient (1+o(1)) cannot be replaced by a larger constant.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Arithmetic progression",
+      "Extremal construction",
+      "Tightness"
+    ],
+    "tags": [
+      "extremal-construction",
+      "arithmetic-progression",
+      "tightness"
+    ],
+    "prerequisites": [
+      "Arithmetic progressions",
+      "Extremal constructions",
+      "Tightness"
+    ]
+  },
+  {
+    "id": "ann-e670-connections",
+    "proofId": "erdos-670",
+    "range": {
+      "startLine": 141,
+      "endLine": 157
+    },
+    "type": "concept",
+    "title": "Higher Dimensions and Connections",
+    "content": "**SuperlinearConjecture:** diameter ≥ n(n-1)/2 in any dimension.\n\n**differ_implies_distinct:** Distance gaps ≥ 1 forces exactly C(n,2) distinct distances, connecting to Erdős's 1946 distinct distances problem.\n\n**pigeonhole_approach:** C(n,2) distances in a bounded range force diameter ≥ C(n,2) - 1.",
+    "mathContext": "Problem #670 can be viewed as a strengthened variant of the distinct distances problem: instead of just counting distinct distances, it asks about the geometric consequences of having large distance gaps.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Distinct distances problem",
+      "Guth-Katz",
+      "Pigeonhole principle"
+    ],
+    "tags": [
+      "higher-dimensions",
+      "pigeonhole-principle",
+      "distinct-distances",
+      "connections"
+    ],
+    "prerequisites": [
+      "Distinct distances problem",
+      "Guth–Katz theorem",
+      "Pigeonhole principle"
+    ]
+  }
+]

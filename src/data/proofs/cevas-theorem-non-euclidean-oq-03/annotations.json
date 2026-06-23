@@ -1,0 +1,47 @@
+[
+  {
+    "id": "cevaoq03-ann-01",
+    "proofId": "cevas-theorem-non-euclidean-oq-03",
+    "range": { "startLine": 65, "endLine": 81 },
+    "type": "concept",
+    "title": "The hexagon closure relation: P·P' = 1",
+    "content": "The six measures of a GeneralizedCevianConfig are the six sides of the Pappus hexagon. The Ceva product P reads them in one alternating order; the dual product P' = (dc/ce)(ea/af)(fb/bd) reads the complementary order. Multiplying P·P' writes every measure once in a numerator and once in a denominator, so the whole thing telescopes to 1 (ceva_dual_reciprocal). Discharged by `field_simp` once the parent's positivity fields give the nonzero denominators — no `ring` needed, field_simp closes it. This single telescoping identity is the geometry-independent invariant of the hexagon.",
+    "mathContext": "$P\\cdot P' = \\frac{bd}{dc}\\frac{ce}{ea}\\frac{af}{fb}\\cdot\\frac{dc}{ce}\\frac{ea}{af}\\frac{fb}{bd}=1.$"
+  },
+  {
+    "id": "cevaoq03-ann-02",
+    "proofId": "cevas-theorem-non-euclidean-oq-03",
+    "range": { "startLine": 83, "endLine": 90 },
+    "type": "result",
+    "title": "Ceva–Brianchon duality at the abstract level",
+    "content": "From P·P' = 1 it is immediate that P = 1 ↔ P' = 1 (ceva_iff_dual): the Ceva concurrence condition and its hexagon dual are equivalent. This is the projective Ceva–Brianchon duality appearing already in the abstract ratio framework, before any incidence geometry — and, being a fact about the configuration, it holds in Euclidean, spherical, and hyperbolic geometry alike.",
+    "mathContext": "$P=1 \\iff P'=1$ (Ceva $\\iff$ its hexagon dual)."
+  },
+  {
+    "id": "cevaoq03-ann-03",
+    "proofId": "cevas-theorem-non-euclidean-oq-03",
+    "range": { "startLine": 104, "endLine": 152 },
+    "type": "technique",
+    "title": "Composition: the chaining engine of the Pappus proof",
+    "content": "`comp` multiplies two configurations measure-by-measure. Both alternating products are multiplicative under it (cevaProduct_comp, dualProduct_comp, each closed by field_simp), so if two configurations satisfy the Ceva condition so does their composite (ceva_comp_of_ceva). This is exactly the algebraic step in the classical proof of Pappus's theorem, which multiplies several Menelaus/transversal ratio relations and lets the shared factors cancel — here captured as a clean composition law inside the framework.",
+    "mathContext": "$P(c_1 \\ast c_2) = P(c_1)P(c_2)$; closure: $1\\cdot 1 = 1$."
+  },
+  {
+    "id": "cevaoq03-ann-04",
+    "proofId": "cevas-theorem-non-euclidean-oq-03",
+    "range": { "startLine": 154, "endLine": 174 },
+    "type": "result",
+    "title": "Non-Euclidean instances via sin and sinh",
+    "content": "Because the closure relation is a statement about the abstract configuration, it transfers verbatim to the sphere and the hyperbolic plane by feeding geodesic-arc measures through the parent's measure builders: spherical_ceva_dual_reciprocal uses `sin`, hyperbolic_ceva_dual_reciprocal uses `sinh`. These are the non-Euclidean Pappus–Brianchon hexagon closure relations — one abstract theorem, three geometries.",
+    "mathContext": "Closure for $\\rho=\\sin$ (sphere) and $\\rho=\\sinh$ (hyperbolic plane)."
+  },
+  {
+    "id": "cevaoq03-ann-05",
+    "proofId": "cevas-theorem-non-euclidean-oq-03",
+    "range": { "startLine": 45, "endLine": 53 },
+    "type": "caveat",
+    "title": "Scope: the hexagon invariant, not the full incidence theorem",
+    "content": "This entry formalizes the geometry-independent algebraic invariant of the Pappus hexagon — the closure reciprocity and the composition law — entirely inside GeneralizedCevianConfig. It does NOT derive the full projective incidence statement of Pappus/Brianchon (collinearity of the three diagonal points), which requires the combinatorics of lines and intersection points; that is future work that can build on the composition law here. #print axioms shows only propext / Classical.choice / Quot.sound — genuinely 0-axiom.",
+    "mathContext": "Proved: hexagon ratio invariant. Not proved: full projective incidence statement."
+  }
+]

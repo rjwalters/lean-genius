@@ -1,0 +1,342 @@
+[
+  {
+    "id": "ann-e296-imports",
+    "proofId": "erdos-296",
+    "range": {
+      "startLine": 41,
+      "endLine": 43
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "Imports the full **Mathlib** library and opens **Finset** and **BigOperators** for finite set operations and $\\sum$ notation.",
+    "significance": "supporting",
+    "mathContext": "The full Mathlib import provides access to `ℚ` (rationals), `Finset` (finite sets), `Filter.Tendsto` (limits), `nhds` (neighborhood filter), and `Real.log`/`Real.exp`/`Real.sqrt` for the asymptotic analysis. `BigOperators` enables the $\\sum_{n \\in A}$ notation.",
+    "relatedConcepts": [
+      "rational arithmetic",
+      "filters",
+      "real analysis",
+      "finite sets"
+    ],
+    "prerequisites": [
+      "Mathlib basics"
+    ]
+  },
+  {
+    "id": "ann-e296-recipsum",
+    "proofId": "erdos-296",
+    "range": {
+      "startLine": 51,
+      "endLine": 53
+    },
+    "type": "definition",
+    "title": "Reciprocal Sum",
+    "content": "**reciprocalSum A** $= \\sum_{n \\in A} 1/n$ over $\\mathbb{Q}$. Marked `noncomputable` since it uses rational division. This measures the 'unit fraction weight' of a set.",
+    "significance": "key",
+    "mathContext": "Computing $\\sum_{n \\in A} 1/n$ over $\\mathbb{Q}$ (not $\\mathbb{R}$) ensures exact arithmetic — no rounding or approximation. The function is `noncomputable` because Lean's rational division involves a decidable equality check. For the set $\\{2, 3, 6\\}$, this gives $1/2 + 1/3 + 1/6 = 1$ exactly.",
+    "relatedConcepts": [
+      "unit fractions",
+      "harmonic sums",
+      "exact arithmetic",
+      "noncomputable"
+    ],
+    "prerequisites": [
+      "Finset.sum",
+      "rational division"
+    ]
+  },
+  {
+    "id": "ann-e296-unitset",
+    "proofId": "erdos-296",
+    "range": {
+      "startLine": 55,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Unit Set",
+    "content": "**isUnitSet A** asserts that all elements of $A$ are $\\geq 1$ and $\\mathrm{reciprocalSum}(A) = 1$. These are the Egyptian fraction representations of $1$ using distinct positive integers.",
+    "significance": "key",
+    "mathContext": "A unit set is a finite set $A \\subseteq \\mathbb{N}$ with $\\sum_{n \\in A} 1/n = 1$ and all elements positive. The condition $n \\geq 1$ prevents division by zero. Classical examples: $\\{1\\}$, $\\{2, 3, 6\\}$, $\\{2, 4, 6, 12\\}$. The number of unit sets in $\\{1, \\ldots, N\\}$ grows rapidly with $N$.",
+    "relatedConcepts": [
+      "Egyptian fraction of 1",
+      "unit fraction decomposition",
+      "partition into unit fractions"
+    ],
+    "prerequisites": [
+      "reciprocalSum",
+      "Finset"
+    ]
+  },
+  {
+    "id": "ann-e296-example",
+    "proofId": "erdos-296",
+    "range": {
+      "startLine": 59,
+      "endLine": 62
+    },
+    "type": "concept",
+    "title": "Classic Example: {2, 3, 6}",
+    "content": "**Proved**: $\\mathrm{reciprocalSum}\\{2, 3, 6\\} = 1$, verifying that $1/2 + 1/3 + 1/6 = 1$. This is the smallest non-trivial unit set (excluding $\\{1\\}$).",
+    "significance": "supporting",
+    "mathContext": "The proof uses `simp` to unfold the finite sum and `norm_num` to verify the rational arithmetic $1/2 + 1/3 + 1/6 = 3/6 + 2/6 + 1/6 = 6/6 = 1$. This is one of only two fully proved results in the file (along with `k_not_sublogarithmic` and `k_infinitely_often_large`).",
+    "relatedConcepts": [
+      "norm_num tactic",
+      "finite sum evaluation",
+      "Egyptian fraction verification"
+    ],
+    "prerequisites": [
+      "reciprocalSum",
+      "Finset arithmetic"
+    ]
+  },
+  {
+    "id": "ann-e296-disjoint",
+    "proofId": "erdos-296",
+    "range": {
+      "startLine": 70,
+      "endLine": 73
+    },
+    "type": "definition",
+    "title": "Pairwise Disjoint",
+    "content": "**arePairwiseDisjoint sets** asserts that for all $i \\neq j$, the sets at positions $i$ and $j$ are disjoint. This ensures each integer is used in at most one unit set.",
+    "significance": "supporting",
+    "mathContext": "The definition uses Lean's `Disjoint` predicate on `Finset`: $A$ and $B$ are disjoint iff $A \\cap B = \\emptyset$. The pairwise condition on a list of $k$ sets ensures the $\\binom{k}{2}$ disjointness constraints all hold. This is the key structural constraint that makes packing hard — without it, we could reuse integers freely.",
+    "relatedConcepts": [
+      "Disjoint predicate",
+      "packing constraints",
+      "combinatorial optimization"
+    ],
+    "prerequisites": [
+      "Finset.Disjoint",
+      "List indexing"
+    ]
+  },
+  {
+    "id": "ann-e296-packing",
+    "proofId": "erdos-296",
+    "range": {
+      "startLine": 75,
+      "endLine": 83
+    },
+    "type": "definition",
+    "title": "Unit Set Packing",
+    "content": "**UnitSetPacking N** bundles a list of finite sets with proofs that each is a unit set, all elements are $\\leq N$, and the sets are pairwise disjoint. The **size** is the number of sets in the list.",
+    "significance": "key",
+    "mathContext": "The structure `UnitSetPacking N` has four fields: `sets` (the list of finite sets), `all_unit` (each is a unit set), `all_in_range` (elements $\\leq N$), and `disjoint` (pairwise disjoint). This is a dependent type: the proofs depend on the specific sets. The `size` function simply returns `sets.length`. The use of a `structure` rather than a bare existential gives clean access to components.",
+    "relatedConcepts": [
+      "dependent types",
+      "bundled structures",
+      "packing problems",
+      "combinatorial structures"
+    ],
+    "prerequisites": [
+      "isUnitSet",
+      "arePairwiseDisjoint"
+    ]
+  },
+  {
+    "id": "ann-e296-k",
+    "proofId": "erdos-296",
+    "range": {
+      "startLine": 91,
+      "endLine": 93
+    },
+    "type": "definition",
+    "title": "The Function k(N)",
+    "content": "**k N** $= \\sup\\{p.\\mathrm{size} : p \\text{ is a UnitSetPacking } N\\}$. The maximum number of disjoint unit sets fitting in $\\{1, \\ldots, N\\}$. This is the central quantity of Erdős Problem #296.",
+    "significance": "key",
+    "mathContext": "Defined as `sSup { p.size | p : UnitSetPacking N }` — the supremum of packing sizes. Since packing sizes are bounded above by $N$ (trivially), the supremum is finite and equals the maximum. The function is `noncomputable` because `sSup` on $\\mathbb{N}$ requires classical choice. Erdős asked whether $k(N) = o(\\log N)$.",
+    "relatedConcepts": [
+      "supremum",
+      "optimization",
+      "packing number",
+      "noncomputable definition"
+    ],
+    "prerequisites": [
+      "UnitSetPacking",
+      "sSup"
+    ]
+  },
+  {
+    "id": "ann-e296-lower",
+    "proofId": "erdos-296",
+    "range": {
+      "startLine": 99,
+      "endLine": 100
+    },
+    "type": "concept",
+    "title": "k(N) >= 1",
+    "content": "**k_ge_one**: For $N \\geq 6$, we have $k(N) \\geq 1$. The unit set $\\{2, 3, 6\\}$ fits in $\\{1, \\ldots, N\\}$ for $N \\geq 6$.",
+    "significance": "supporting",
+    "mathContext": "Since $\\{2, 3, 6\\} \\subseteq \\{1, \\ldots, 6\\}$ and $1/2 + 1/3 + 1/6 = 1$, this single-set packing witnesses $k(6) \\geq 1$. For $N < 6$, no unit set fits (except $\\{1\\}$, which requires $N \\geq 1$). This is the base case for the asymptotic analysis.",
+    "relatedConcepts": [
+      "base case",
+      "constructive bound",
+      "smallest unit set"
+    ],
+    "prerequisites": [
+      "k",
+      "isUnitSet"
+    ]
+  },
+  {
+    "id": "ann-e296-upper",
+    "proofId": "erdos-296",
+    "range": {
+      "startLine": 102,
+      "endLine": 103
+    },
+    "type": "concept",
+    "title": "Trivial Upper Bound",
+    "content": "**k_le_N**: $k(N) \\leq N$. Disjoint non-empty sets within $\\{1, \\ldots, N\\}$ can't collectively contain more than $N$ elements.",
+    "significance": "supporting",
+    "mathContext": "Each unit set must have at least one element (since $\\sum_{n \\in \\emptyset} 1/n = 0 \\neq 1$). With $k$ disjoint non-empty sets in $\\{1, \\ldots, N\\}$, we need $k \\leq N$. This is a very loose bound — the true answer $k(N) \\sim \\log N$ is much smaller.",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "trivial bound",
+      "linear vs logarithmic"
+    ],
+    "prerequisites": [
+      "k",
+      "disjointness"
+    ]
+  },
+  {
+    "id": "ann-e296-sunflower",
+    "proofId": "erdos-296",
+    "range": {
+      "startLine": 111,
+      "endLine": 117
+    },
+    "type": "concept",
+    "title": "Sunflower Lower Bound",
+    "content": "**sunflower_lower_bound**: There exist $\\geq N \\cdot \\exp(-c\\sqrt{\\log N})$ disjoint sets with equal reciprocal sums (not necessarily $1$). Uses the sunflower lemma from extremal set theory.",
+    "significance": "key",
+    "mathContext": "The sunflower (or $\\Delta$-system) lemma of Erdős and Rado states that a large enough collection of sets with bounded size must contain a sunflower — a subcollection where all pairwise intersections are the same 'core'. Applied to unit fraction representations, this yields many disjoint sets with equal sums. The bound $N \\cdot e^{-O(\\sqrt{\\log N})}$ is superpolylogarithmic but sublinear, giving a weaker result than the Hunter-Sawhney theorem.",
+    "relatedConcepts": [
+      "sunflower lemma",
+      "Erdős-Rado",
+      "delta-systems",
+      "extremal set theory"
+    ],
+    "prerequisites": [
+      "arePairwiseDisjoint",
+      "Real.exp",
+      "Real.sqrt"
+    ]
+  },
+  {
+    "id": "ann-e296-hunterlower",
+    "proofId": "erdos-296",
+    "range": {
+      "startLine": 125,
+      "endLine": 127
+    },
+    "type": "concept",
+    "title": "Hunter-Sawhney Lower Bound",
+    "content": "**hunter_sawhney_lower**: For any $\\varepsilon > 0$ and sufficiently large $N$, $k(N) \\geq (1 - \\varepsilon) \\log N$. The sharp lower bound, proved using Bloom's Theorem 3.",
+    "significance": "key",
+    "mathContext": "The axiom states $\\forall \\varepsilon > 0,\\, \\exists N_0,\\, \\forall N \\geq N_0,\\, k(N) \\geq (1 - \\varepsilon) \\log N$. Hunter and Sawhney observed that Bloom's density result on unit fractions implies: after removing one unit set from $\\{1, \\ldots, N\\}$, enough density remains to find another. Iterating this greedy removal yields $(1 - o(1)) \\log N$ disjoint unit sets.",
+    "relatedConcepts": [
+      "Bloom's Theorem 3",
+      "greedy removal",
+      "density argument",
+      "asymptotic lower bound"
+    ],
+    "prerequisites": [
+      "k",
+      "Real.log"
+    ]
+  },
+  {
+    "id": "ann-e296-upperlog",
+    "proofId": "erdos-296",
+    "range": {
+      "startLine": 129,
+      "endLine": 131
+    },
+    "type": "concept",
+    "title": "Logarithmic Upper Bound",
+    "content": "**k_upper_bound**: $k(N) \\leq \\log N + C$ for some constant $C$. Each unit set must 'use up' a fraction of the harmonic sum $H_N \\approx \\log N$, limiting the total to $\\sim \\log N$ sets.",
+    "significance": "key",
+    "mathContext": "The total harmonic sum $\\sum_{n=1}^N 1/n \\approx \\log N + \\gamma$ (where $\\gamma \\approx 0.577$ is the Euler-Mascheroni constant). Each unit set consumes exactly $1$ from this sum. Since the sets are disjoint, we can have at most $\\lfloor H_N \\rfloor \\leq \\log N + 1$ of them. This gives the matching upper bound.",
+    "relatedConcepts": [
+      "harmonic sum",
+      "Euler-Mascheroni constant",
+      "resource depletion argument"
+    ],
+    "prerequisites": [
+      "k",
+      "Real.log"
+    ]
+  },
+  {
+    "id": "ann-e296-main",
+    "proofId": "erdos-296",
+    "range": {
+      "startLine": 133,
+      "endLine": 136
+    },
+    "type": "concept",
+    "title": "Main Asymptotic Result",
+    "content": "**erdos_296_main**: $k(N)/\\log N \\to 1$ as $N \\to \\infty$. The definitive answer: $k(N) = (1 - o(1)) \\log N$, neither faster nor slower asymptotically.",
+    "significance": "key",
+    "mathContext": "Formalized as `Filter.Tendsto (fun N => (k N : ℝ) / Real.log N) Filter.atTop (nhds 1)`. This combines the lower bound ($\\geq (1-\\varepsilon)\\log N$) and upper bound ($\\leq \\log N + C$) into a single limit statement. The filter-based formulation is Mathlib's standard way to express limits at infinity.",
+    "relatedConcepts": [
+      "Filter.Tendsto",
+      "nhds",
+      "asymptotic equivalence",
+      "Landau notation"
+    ],
+    "prerequisites": [
+      "hunter_sawhney_lower",
+      "k_upper_bound",
+      "Filter.atTop"
+    ]
+  },
+  {
+    "id": "ann-e296-notsublog",
+    "proofId": "erdos-296",
+    "range": {
+      "startLine": 144,
+      "endLine": 152
+    },
+    "type": "concept",
+    "title": "Not Sublogarithmic (PROVED)",
+    "content": "**k_not_sublogarithmic** (PROVED): $k(N)$ is NOT $o(\\log N)$. Directly answers Erdős's question in the negative. Proof: if $k(N)/\\log N \\to 0$, this contradicts $k(N)/\\log N \\to 1$ (uniqueness of limits in Hausdorff spaces).",
+    "significance": "key",
+    "mathContext": "The proof is elegant: assume for contradiction that $k(N)/\\log N \\to 0$. But `erdos_296_main` gives $k(N)/\\log N \\to 1$. By `Filter.Tendsto.unique` (limits in Hausdorff spaces are unique), $0 = 1$, which `norm_num` refutes. This is one of only three fully proved results in the file.",
+    "relatedConcepts": [
+      "proof by contradiction",
+      "uniqueness of limits",
+      "Hausdorff spaces",
+      "Filter.Tendsto.unique"
+    ],
+    "prerequisites": [
+      "erdos_296_main",
+      "Filter.Tendsto"
+    ]
+  },
+  {
+    "id": "ann-e296-corollary",
+    "proofId": "erdos-296",
+    "range": {
+      "startLine": 154,
+      "endLine": 160
+    },
+    "type": "concept",
+    "title": "Infinitely Often Large (PROVED)",
+    "content": "**k_infinitely_often_large** (PROVED): For any $0 < \\varepsilon < 1$, there are infinitely many $N$ with $k(N) > \\varepsilon \\log N$. A constructive corollary showing $k(N)$ genuinely achieves near-logarithmic values.",
+    "significance": "key",
+    "mathContext": "The proof constructs, for any $N_0$, an explicit $N > N_0$ with $k(N) > \\varepsilon \\log N$. It uses `hunter_sawhney_lower` with parameter $(1-\\varepsilon)/2$ to get $k(N) \\geq (1 - (1-\\varepsilon)/2) \\log N = ((1+\\varepsilon)/2) \\log N > \\varepsilon \\log N$ (since $(1+\\varepsilon)/2 > \\varepsilon$ for $\\varepsilon < 1$). The `calc` block chains the inequalities, and `Real.log_pos` ensures $\\log N > 0$.",
+    "relatedConcepts": [
+      "constructive proof",
+      "infinitely often",
+      "calc block",
+      "Real.log_pos"
+    ],
+    "prerequisites": [
+      "hunter_sawhney_lower",
+      "Real.log"
+    ]
+  }
+]

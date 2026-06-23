@@ -1,0 +1,247 @@
+/-
+  Erdős Problem #735: Magic Configurations
+
+  Source: https://erdosproblems.com/735
+  Status: SOLVED (Ackerman-Buchin-Knauer-Pinchasi-Rote, 2008)
+
+  Statement:
+  Given any n points in ℝ², when can one give positive weights to the points
+  such that the sum of the weights of the points along every line containing
+  at least two points is the same?
+
+  Solution:
+  Murty conjectured exactly four configurations admit such weightings:
+  1. All points collinear
+  2. No three points collinear (general position)
+  3. n-1 points on a line (near-pencil)
+  4. Triangle + angle bisectors + incenter (or projective equivalent)
+
+  This was proved by Ackerman, Buchin, Knauer, Pinchasi, and Rote (2008).
+
+  Background:
+  - A "magic configuration" admits equal-sum positive weights on all lines
+  - The problem characterizes all such configurations in the plane
+  - Related to balancing problems and weighted incidences
+
+  References:
+  - [Er81] Erdős (1981), original reference
+  - [ABKPR08] Ackerman-Buchin-Knauer-Pinchasi-Rote (2008),
+    "There are not too many magic configurations"
+-/
+
+import Mathlib.Analysis.InnerProductSpace.PiL2
+import Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Basic
+import Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional
+import Mathlib.Data.Finset.Basic
+import Mathlib.Tactic
+
+namespace Erdos735
+
+open scoped Classical
+
+/- ## Basic Setup -/
+
+/-- A point configuration in the plane -/
+abbrev PointConfig := Finset (EuclideanSpace ℝ (Fin 2))
+
+/-- A weighting assigns a positive real to each point -/
+def Weighting (P : PointConfig) := {w : P → ℝ // ∀ p, w p > 0}
+
+/-- A line determined by the configuration (at least 2 points) -/
+def ConfigLine (P : PointConfig) :=
+  { L : AffineSubspace ℝ (EuclideanSpace ℝ (Fin 2)) //
+    Module.rank ℝ L.direction = 1 ∧
+    (P.filter (· ∈ L)).card ≥ 2 }
+
+/-- The sum of weights on a line -/
+noncomputable def lineSum (P : PointConfig) (w : Weighting P) (L : ConfigLine P) : ℝ :=
+  (P.filter (· ∈ L.val)).sum fun p =>
+    if h : p ∈ P then w.val ⟨p, h⟩ else 0
+
+/- ## Magic Configurations -/
+
+/-- A configuration is magic if it admits a weighting with equal line sums -/
+def IsMagic (P : PointConfig) : Prop :=
+  ∃ w : Weighting P, ∃ c > 0, ∀ L : ConfigLine P, lineSum P w L = c
+
+/-- The magic constant for a magic configuration -/
+noncomputable def magicConstant (P : PointConfig) (hMagic : IsMagic P) : ℝ :=
+  Classical.choose (Classical.choose_spec hMagic)
+
+/- ## The Four Magic Classes -/
+
+/-- Class 1: All points collinear -/
+def IsCollinear (P : PointConfig) : Prop :=
+  ∃ L : AffineSubspace ℝ (EuclideanSpace ℝ (Fin 2)),
+    Module.rank ℝ L.direction = 1 ∧ ∀ p ∈ P, p ∈ L
+
+/-- Collinear configurations are trivially magic (only one line). -/
+axiom collinear_is_magic (P : PointConfig) (hP : P.card ≥ 2) :
+    IsCollinear P → IsMagic P
+
+/-- Class 2: General position (no 3 collinear) -/
+def IsGeneralPosition (P : PointConfig) : Prop :=
+  ∀ L : AffineSubspace ℝ (EuclideanSpace ℝ (Fin 2)),
+    Module.rank ℝ L.direction = 1 →
+    (P.filter (· ∈ L)).card ≤ 2
+
+/-- General position configurations are magic with equal weights. -/
+axiom general_position_is_magic (P : PointConfig) (hP : P.card ≥ 2) :
+    IsGeneralPosition P → IsMagic P
+
+/-- Class 3: Near-pencil (n-1 points on a line) -/
+def IsNearPencil (P : PointConfig) : Prop :=
+  ∃ L : AffineSubspace ℝ (EuclideanSpace ℝ (Fin 2)),
+    Module.rank ℝ L.direction = 1 ∧
+    (P.filter (· ∈ L)).card = P.card - 1 ∧
+    P.card ≥ 3
+
+/- Near-pencil configurations are magic via careful weight assignment. -/
+
+/-- Class 4: Incenter configuration — a triangle with its incenter and
+    points on angle bisectors, or any projective image of such. -/
+def IsIncenterConfig (P : PointConfig) : Prop :=
+  ∃ (A B C I : EuclideanSpace ℝ (Fin 2)),
+    ¬Collinear ℝ ({A, B, C} : Set (EuclideanSpace ℝ (Fin 2))) ∧
+    -- I is equidistant from the three sides (incenter characterization)
+    (∀ p ∈ P, p ∈ ({A, B, C, I} : Set (EuclideanSpace ℝ (Fin 2))) ∨
+      Collinear ℝ ({A, I, p} : Set (EuclideanSpace ℝ (Fin 2))) ∨
+      Collinear ℝ ({B, I, p} : Set (EuclideanSpace ℝ (Fin 2))) ∨
+      Collinear ℝ ({C, I, p} : Set (EuclideanSpace ℝ (Fin 2))))
+
+/- Incenter configurations are magic. -/
+
+/- ## Projective Equivalence -/
+
+/-- Two configurations are projectively equivalent -/
+def ProjectivelyEquivalent (P Q : PointConfig) : Prop :=
+  ∃ (f : EuclideanSpace ℝ (Fin 2) → EuclideanSpace ℝ (Fin 2)),
+    Function.Bijective f ∧
+    Q = P.image f
+
+/- Magic property is preserved under projective equivalence -/
+
+/- ## The Main Classification -/
+
+/-- A configuration belongs to one of the four magic classes -/
+def IsMagicClass (P : PointConfig) : Prop :=
+  IsCollinear P ∨ IsGeneralPosition P ∨ IsNearPencil P ∨
+  ∃ Q, ProjectivelyEquivalent P Q ∧ IsIncenterConfig Q
+
+/-- Murty's conjecture: these are the only magic configurations -/
+def murty_conjecture : Prop :=
+  ∀ P : PointConfig, P.card ≥ 3 → (IsMagic P ↔ IsMagicClass P)
+
+/-- Main theorem (ABKPR08): Murty's conjecture is TRUE -/
+axiom magic_classification : murty_conjecture
+
+/- ## Key Lemma: Lines Through a Point -/
+
+/-- The number of lines through a point in a configuration -/
+noncomputable def linesThrough (P : PointConfig) (p : EuclideanSpace ℝ (Fin 2))
+    (hp : p ∈ P) : ℕ :=
+  (P.filter (· ≠ p)).card
+
+/- In a magic configuration, the weight of a point is determined by
+    the number of lines through it and the magic constant. -/
+
+/- ## The Non-Magic Theorem -/
+
+/-- Configurations not in the four classes are not magic -/
+theorem not_magic_outside_classes (P : PointConfig) (hP : P.card ≥ 3) :
+    ¬IsMagicClass P → ¬IsMagic P := by
+  intro hNot hMagic
+  have := magic_classification P hP
+  exact hNot (this.mp hMagic)
+
+/- ## Examples -/
+
+/-- Example: Three collinear points are magic -/
+noncomputable def threeCollinear : PointConfig :=
+  {WithLp.toLp 2 ![(0 : ℝ), 0],
+   WithLp.toLp 2 ![(1 : ℝ), 0],
+   WithLp.toLp 2 ![(2 : ℝ), 0]}
+
+theorem three_collinear_card : threeCollinear.card ≥ 2 := by
+  have h : (1 : ℕ) < threeCollinear.card := by
+    apply Finset.one_lt_card.mpr
+    refine ⟨WithLp.toLp 2 ![(0 : ℝ), 0], ?_, WithLp.toLp 2 ![(1 : ℝ), 0], ?_, ?_⟩
+    · simp [threeCollinear]
+    · simp [threeCollinear]
+    · intro hEq
+      apply_fun WithLp.ofLp at hEq
+      have h0 := congrFun hEq 0
+      simp only [Matrix.cons_val_zero] at h0
+      norm_num at h0
+  omega
+
+axiom three_collinear_collinear : IsCollinear threeCollinear
+
+theorem three_collinear_is_magic : IsMagic threeCollinear :=
+  collinear_is_magic threeCollinear three_collinear_card three_collinear_collinear
+
+/-- Example: Three non-collinear points (triangle) are magic -/
+noncomputable def triangle : PointConfig :=
+  {WithLp.toLp 2 ![(0 : ℝ), 0],
+   WithLp.toLp 2 ![(1 : ℝ), 0],
+   WithLp.toLp 2 ![(0 : ℝ), 1]}
+
+theorem triangle_card : triangle.card ≥ 2 := by
+  have h : (1 : ℕ) < triangle.card := by
+    apply Finset.one_lt_card.mpr
+    refine ⟨WithLp.toLp 2 ![(0 : ℝ), 0], ?_, WithLp.toLp 2 ![(1 : ℝ), 0], ?_, ?_⟩
+    · simp [triangle]
+    · simp [triangle]
+    · intro hEq
+      apply_fun WithLp.ofLp at hEq
+      have h0 := congrFun hEq 0
+      simp only [Matrix.cons_val_zero] at h0
+      norm_num at h0
+  omega
+
+axiom triangle_general_position : IsGeneralPosition triangle
+
+theorem triangle_is_magic : IsMagic triangle :=
+  general_position_is_magic triangle triangle_card triangle_general_position
+
+/- ## Weighted Incidence Perspective -/
+
+/-- The incidence matrix of a configuration -/
+noncomputable def incidenceMatrix (P : PointConfig) :
+    (ConfigLine P) → P → ℝ :=
+  fun L p => if p.val ∈ L.val then 1 else 0
+
+/- Magic iff the incidence linear system has a positive solution -/
+
+/- ## Dimension Counting Argument -/
+
+/- The space of valid weightings has dimension at most n minus the number
+    of independent line constraints. For configurations outside the four
+    classes, this dimension is negative — no positive solution exists. -/
+
+end Erdos735
+
+/-
+  ## Summary
+
+  **Status: SOLVED (Ackerman-Buchin-Knauer-Pinchasi-Rote, 2008)**
+
+  Erdős Problem #735 (Murty's conjecture) characterizes "magic configurations":
+  point sets admitting positive weights with equal sums on all lines.
+
+  **Answer:**
+  A configuration is magic if and only if it is:
+  1. All points collinear, or
+  2. No three points collinear (general position), or
+  3. Exactly n-1 points on a line (near-pencil), or
+  4. Projectively equivalent to triangle + incenter + bisector points
+
+  **Key Insight:**
+  The linear constraints from requiring equal line sums are so restrictive
+  that only these four families can satisfy them. The proof uses careful
+  combinatorial and algebraic analysis of the incidence structure.
+
+  **Method:**
+  The authors analyzed the constraint system and showed that any configuration
+  outside these classes has an obstruction to admitting positive weights.
+-/

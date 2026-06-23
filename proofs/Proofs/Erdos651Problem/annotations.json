@@ -1,0 +1,83 @@
+[
+  {
+    "id": "def-general-position",
+    "proofId": "erdos-651",
+    "range": { "startLine": 44, "endLine": 54 },
+    "type": "definition",
+    "title": "General Position",
+    "content": "Points in ℝ^k are in general position if no k+1 points lie on a hyperplane. In ℝ²: no 3 collinear. In ℝ³: no 4 coplanar.",
+    "significance": "major"
+  },
+  {
+    "id": "def-convex-polyhedron",
+    "proofId": "erdos-651",
+    "range": { "startLine": 60, "endLine": 81 },
+    "type": "definition",
+    "title": "Convex Polyhedron",
+    "content": "A set determines a convex polyhedron if all points are vertices of their convex hull (no point interior to hull of others).",
+    "significance": "major"
+  },
+  {
+    "id": "def-f-k",
+    "proofId": "erdos-651",
+    "range": { "startLine": 87, "endLine": 112 },
+    "type": "definition",
+    "title": "Function f_k(n)",
+    "content": "f_k(n) = smallest m such that any m points in general position in ℝ^k contain n points determining a convex polyhedron. Ramsey-type function.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-erdos-szekeres",
+    "proofId": "erdos-651",
+    "range": { "startLine": 118, "endLine": 132 },
+    "type": "theorem",
+    "title": "Erdős-Klein-Szekeres (k=2)",
+    "content": "In the plane: f_2(n) = 2^{n-2} + 1 (Erdős-Szekeres 1935, exact by Suk 2017). Exponential growth.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-monotone",
+    "proofId": "erdos-651",
+    "range": { "startLine": 138, "endLine": 146 },
+    "type": "theorem",
+    "title": "Dimension Monotonicity",
+    "content": "f_2(n) > f_3(n) > f_4(n) > ... Higher dimensions make it easier to find convex subsets.",
+    "significance": "minor"
+  },
+  {
+    "id": "conj-original",
+    "proofId": "erdos-651",
+    "range": { "startLine": 152, "endLine": 159 },
+    "type": "conjecture",
+    "title": "Erdős's Conjecture (Disproved)",
+    "content": "For each k, there exists c_k > 0 such that f_k(n) > (1+c_k)^n. Conjectured exponential lower bound.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-pohoata-zakharov",
+    "proofId": "erdos-651",
+    "range": { "startLine": 165, "endLine": 181 },
+    "type": "theorem",
+    "title": "Pohoata-Zakharov (2022)",
+    "content": "f_3(n) ≤ 2^{o(n)} - subexponential! For any c > 0, eventually f_3(n) < (1+c)^n. Disproves the conjecture for k=3.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-disproof",
+    "proofId": "erdos-651",
+    "range": { "startLine": 183, "endLine": 201 },
+    "type": "theorem",
+    "title": "Conjecture Disproved",
+    "content": "The full conjecture is FALSE: no constant c_3 > 0 gives f_3(n) > (1+c_3)^n uniformly.",
+    "significance": "major"
+  },
+  {
+    "id": "summary",
+    "proofId": "erdos-651",
+    "range": { "startLine": 253, "endLine": 275 },
+    "type": "summary",
+    "title": "Problem Summary",
+    "content": "DISPROVED: k=2 has exponential f_2(n) = 2^{n-2}+1, but k≥3 has subexponential f_k(n) ≤ 2^{o(n)}. Higher dimensions break the exponential barrier.",
+    "significance": "major"
+  }
+]

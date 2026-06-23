@@ -1,0 +1,189 @@
+[
+  {
+    "id": "ann-erdos1054-oq01-header",
+    "proofId": "erdos-1054-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 34
+    },
+    "type": "concept",
+    "title": "Erdős 1054 OQ-01: The Almost-All Density Question",
+    "content": "The module header explains the three-part structure of Erdős Problem #1054. Part I (unconditional f(n) = o(n)) was DISPROVED by Tao. Part II ('almost all') remains open: does {n : f(n)/n ≥ ε} have natural density 0? Part III (limsup f(n)/n = ∞) is also open.\n\nThe sigma bound strategy is introduced: since σ(m) is always the last partial divisor sum of m, we have f(σ(m)) ≤ m. When σ(m)/m → ∞ (via Gronwall's theorem using Mertens' estimate ∑_{p≤x} 1/p ~ log log x), the ratio f(σ(m))/σ(m) ≤ m/σ(m) → 0. This gives liminf f(n)/n = 0, consistent with density-0 conjecture.\n\nThe key missing Mathlib ingredient is Gronwall's theorem: lim sup_{n→∞} σ(n)/(n log log n) = e^γ (Euler-Mascheroni constant ≈ 0.5772). This implies σ(primorial_k)/primorial_k ~ e^γ · log log p_k → ∞, which would make the ratio argument rigorous for density.",
+    "mathContext": "The function $f(n)$ is the minimal $m \\geq 1$ such that $n \\in \\text{partialDivisorSums}(m)$. Part II: $\\forall \\varepsilon > 0$, $\\frac{|\\{n \\leq N : f(n)/n \\geq \\varepsilon\\}|}{N} \\to 0$. Sigma bound: $\\sigma(m) \\in \\text{partialDivisorSums}(m)$, so $f(\\sigma(m)) \\leq m$. Gronwall (1913): $\\limsup_{n \\to \\infty} \\frac{\\sigma(n)}{n \\log\\log n} = e^\\gamma$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Erdős 1054",
+      "partial divisor sums",
+      "sigma function",
+      "Gronwall theorem",
+      "Mertens theorem",
+      "almost all",
+      "natural density"
+    ],
+    "prerequisites": [
+      "analytic number theory",
+      "divisor functions",
+      "natural density",
+      "Lean 4 Filter"
+    ]
+  },
+  {
+    "id": "ann-erdos1054-oq01-definitions",
+    "proofId": "erdos-1054-oq-01",
+    "range": {
+      "startLine": 36,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Core Definitions: sortedDivisors, partialDivisorSums, IsRepresentable, sigma",
+    "content": "`sortedDivisors m` sorts the divisors of m in increasing order using `Finset.sort (· ≤ ·)`. This gives the canonical ordering for computing partial sums.\n\n`partialDivisorSums m` computes the running sums: if divisors are d₁ ≤ d₂ ≤ ... ≤ dₖ, the partial sums are [d₁, d₁+d₂, d₁+d₂+d₃, ..., σ(m)]. The last element is always σ(m). This uses `List.scanl (· + ·) 0` followed by `.tail` (removing the initial 0).\n\n`IsRepresentable n` is the existential: ∃ m ≥ 1, n ∈ partialDivisorSums(m). The function f(n) = min such m.\n\n`sigma m` is defined as `m.divisors.sum id` — the sum over the `Finset ℕ` of divisors, not sorted. This matches Mathlib's `Nat.sigma` but is spelled out explicitly here.",
+    "mathContext": "$\\texttt{sortedDivisors}(m) = \\text{sort}(\\{d : d \\mid m\\})$. $\\texttt{partialDivisorSums}(m) = [d_1, d_1+d_2, \\ldots, \\sigma(m)]$ where $d_1 \\leq d_2 \\leq \\cdots$. $\\texttt{IsRepresentable}(n) \\iff \\exists m \\geq 1,\\, n \\in \\texttt{partialDivisorSums}(m)$. $\\sigma(m) = \\sum_{d \\mid m} d$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.divisors",
+      "Finset.sort",
+      "List.scanl",
+      "sigma function",
+      "IsRepresentable",
+      "partial sums"
+    ],
+    "prerequisites": [
+      "number theory",
+      "divisors",
+      "Lean 4 List/Finset API",
+      "Nat.divisors"
+    ]
+  },
+  {
+    "id": "ann-erdos1054-oq01-conjecture",
+    "proofId": "erdos-1054-oq-01",
+    "range": {
+      "startLine": 58,
+      "endLine": 80
+    },
+    "type": "concept",
+    "title": "The Open Conjecture and Tao's Counterexample — Two Compatible Axioms",
+    "content": "`erdos_1054_almost_all` (axiom) formalizes the 'almost all' open conjecture: for each ε, δ > 0, there exists N₀ such that for all M ≥ N₀, the count of n < M where every witness w satisfies w ≥ εn is at most ⌊δM⌋₊. This captures density 0 via the ε-δ definition: the 'bad' set {n : f(n)/n ≥ ε} has natural density 0.\n\n`tao_counterexample_1054` (axiom) captures Tao's result: there exists ε > 0 such that for every N, there exists n ≥ N with f(n) ≥ εn. These are NOT contradictory: Tao's exceptional n-values form an infinite set, but the conjecture says they form a zero-density set.\n\nThe tension between the two axioms is mathematically rich: the exceptional set is infinite (Tao) but conjectured to be sparse (density 0). A zero-density infinite set has measure 0 in the natural density sense.",
+    "mathContext": "Axiom: $\\forall \\varepsilon, \\delta > 0,\\, \\exists N_0,\\, \\forall M \\geq N_0:\\, |\\{n < M : f(n)/n \\geq \\varepsilon\\}| \\leq \\lfloor \\delta M \\rfloor$.\nTao's theorem: $\\exists \\varepsilon > 0,\\, \\forall N,\\, \\exists n \\geq N:\\, f(n) \\geq \\varepsilon n$.\nCompatibility: Tao $\\not\\Rightarrow$ density $> 0$ — infinite sets can have density 0 (e.g., the primes).",
+    "significance": "key",
+    "relatedConcepts": [
+      "natural density",
+      "Tao 2023",
+      "exceptional set",
+      "zero-density",
+      "Set.ncard",
+      "Nat.floor"
+    ],
+    "prerequisites": [
+      "natural density",
+      "analytic number theory",
+      "Lean 4 axiom syntax",
+      "Set.ncard"
+    ]
+  },
+  {
+    "id": "ann-erdos1054-oq01-sigma-bound",
+    "proofId": "erdos-1054-oq-01",
+    "range": {
+      "startLine": 81,
+      "endLine": 96
+    },
+    "type": "concept",
+    "title": "The Sigma Bound: f(σ(m)) ≤ m — The Key Structural Result",
+    "content": "`sigma_in_partial_sums` (sorry) states: σ(m) ∈ partialDivisorSums(m). This is the key structural result — it says σ(m) (the full sum) is always the last element of the partial sums list. Proving this requires showing that `List.scanl` builds up to the total and the final element equals the `Finset.sum` definition of σ(m).\n\nThe sorry reflects a genuine formalization gap: connecting `List.scanl` on the sorted divisors list to the `Finset.sum` definition. The key lemma needed is: `List.last(partialDivisorSums m) = sigma(m)`, combined with `List.mem_last`.\n\n`f_sigma_witness` (fully proved from `sigma_in_partial_sums`) directly gives f(σ(m)) ≤ m: IsRepresentable(σ(m)) with witness w = m. The proof is a clean packaging of sigma_in_partial_sums into the IsRepresentable existential, establishing the bound f(σ(m))/σ(m) ≤ m/σ(m).",
+    "mathContext": "Key fact: $\\texttt{partialDivisorSums}(m)[-1] = \\sigma(m)$, so $\\sigma(m) \\in \\texttt{partialDivisorSums}(m)$.\nConsequence: $f(\\sigma(m)) \\leq m$, i.e., $f(\\sigma(m))/\\sigma(m) \\leq m/\\sigma(m) = 1/(\\sigma(m)/m)$.\nWhen $\\sigma(m)/m \\to \\infty$ (along superabundant numbers): $f(\\sigma(m))/\\sigma(m) \\to 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sigma_in_partial_sums",
+      "f_sigma_witness",
+      "List.scanl",
+      "Finset.sum",
+      "IsRepresentable",
+      "sorry"
+    ],
+    "prerequisites": [
+      "List API",
+      "Finset.sum",
+      "Lean 4 List.scanl",
+      "Nat.divisors"
+    ]
+  },
+  {
+    "id": "ann-erdos1054-oq01-computations",
+    "proofId": "erdos-1054-oq-01",
+    "range": {
+      "startLine": 98,
+      "endLine": 125
+    },
+    "type": "concept",
+    "title": "Computational Witnesses via native_decide: 6 Superabundant Numbers",
+    "content": "Six theorems verify σ-witnesses using `native_decide` — Lean's native code evaluator that compiles to efficient machine code for decidable propositions:\n\n- `f_12_le_6`: σ(6) = 12, 12 ∈ partialDivisorSums(6) → f(12)/12 ≤ 1/2\n- `f_28_le_12`: σ(12) = 28, 28 ∈ partialDivisorSums(12) → f(28)/28 ≤ 3/7 < 1/2\n- `f_60_le_24`: σ(24) = 60, 60 ∈ partialDivisorSums(24) → f(60)/60 ≤ 2/5 < 1/2\n- `f_360_le_120`: σ(120) = 360, 360 ∈ partialDivisorSums(120) → f(360)/360 = 1/3\n- `f_2418_le_720`: σ(720) = 2418 → f(2418)/2418 ≤ 720/2418 ≈ 0.298\n- `f_19344_le_5040`: σ(5040) = 19344 → f(19344)/19344 ≤ 5040/19344 ≈ 0.261\n\nThe numbers {6, 12, 24, 120, 720, 5040} are superabundant. Notably 5040 = 7! is Plato's 'Nuptial Number' and was shown by Hardy-Ramanujan to have exceptional σ(m)/m ratio among m ≤ 5040.",
+    "mathContext": "$\\sigma(6)/6 = 2$, $\\sigma(12)/12 \\approx 2.33$, $\\sigma(24)/24 = 2.5$, $\\sigma(120)/120 = 3$, $\\sigma(720)/720 \\approx 3.36$, $\\sigma(5040)/5040 \\approx 3.84$. These are superabundant records where $\\sigma(m)/m$ achieves its highest value for $m \\leq 5040$. The ratio $m/\\sigma(m)$ decreases: $1/2 > 3/7 > 2/5 > 1/3 > 0.298 > 0.261$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "superabundant numbers",
+      "sigma function",
+      "highly composite numbers",
+      "5040 = 7!",
+      "Hardy-Ramanujan"
+    ],
+    "prerequisites": [
+      "Lean 4 native_decide",
+      "divisor functions",
+      "computational number theory"
+    ]
+  },
+  {
+    "id": "ann-erdos1054-oq01-ratios",
+    "proofId": "erdos-1054-oq-01",
+    "range": {
+      "startLine": 127,
+      "endLine": 165
+    },
+    "type": "insight",
+    "title": "Decreasing Ratio Sequence and Infinitely Many n with f(n)/n ≤ 1/3",
+    "content": "`sigma_ratio_decreasing` proves the ratio m/σ(m) is strictly decreasing along the superabundant sequence: 1/2 > 3/7 > 2/5 > 1/3 > 720/2418 > 5040/19344. The proof uses `norm_num` — purely arithmetic after the native_decide σ-values are established.\n\n`abundant_ratio_le_half` strengthens this: all six values satisfy m/σ(m) ≤ 1/2, with 6/12 = 1/2 being the boundary and all others strictly below 1/2.\n\n`inf_many_small_ratio_one_third` provides a concrete witness: n = 360 (from σ(120) = 360) has f(360)/360 ≤ 1/3. This is the first explicit n with f(n)/n ≤ 1/3.\n\n`f_ratio_lt_third` confirms 5040/19344 < 1/3 by `norm_num` (5040 × 3 = 15120 < 19344), showing the sequence continues below 1/3 — consistent with the conjectured limit of 0.",
+    "mathContext": "Ratio sequence: $6/12 = 1/2 > 12/28 = 3/7 > 24/60 = 2/5 > 120/360 = 1/3 > 720/2418 \\approx 0.298 > 5040/19344 \\approx 0.261 \\to 0$.\nThe primorial sequence $p_1 \\cdots p_k$ gives $\\sigma(m_k)/m_k \\sim e^\\gamma \\log\\log p_k \\to \\infty$, so $m_k/\\sigma(m_k) \\to 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sigma_ratio_decreasing",
+      "abundant_ratio_le_half",
+      "inf_many_small_ratio_one_third",
+      "norm_num",
+      "superabundant numbers"
+    ],
+    "prerequisites": [
+      "real arithmetic",
+      "norm_num tactic",
+      "Lean 4 decidability"
+    ]
+  },
+  {
+    "id": "ann-erdos1054-oq01-sigma-props",
+    "proofId": "erdos-1054-oq-01",
+    "range": {
+      "startLine": 166,
+      "endLine": 234
+    },
+    "type": "concept",
+    "title": "Sigma Function Properties: Prime Formula, Lower Bound, and 2^a·3^b Formula",
+    "content": "`sigma_prime` proves σ(p) = p + 1 for prime p, using `Nat.Prime.divisors` (which gives divisors(p) = {1, p}) and `Finset.sum_pair` (sum over a two-element set). The hypothesis `hp.one_lt.ne : 1 ≠ p` is required by `sum_pair` to establish the elements are distinct.\n\n`sigma_ge_succ` shows σ(m) ≥ m + 1 for m ≥ 2 via `Finset.sum_le_sum_of_subset_of_nonneg`: the subset {1, m} ⊆ divisors(m) forces σ(m) ≥ 1 + m = m + 1.\n\n`sigma_ratio_2a_3b` (sorry) states: σ(2^a · 3^b) = (2^(a+1) - 1) · ((3^(b+1) - 1) / 2). This uses σ's multiplicativity on coprime factors and geometric series: σ(p^k) = (p^(k+1) - 1)/(p - 1).\n\n`sigma_ratio_2a_3b_bound` (sorry) gives σ(2^a · 3^b) ≤ 3 · 2^a · 3^b. Both sorries reflect the difficulty of Nat.divisors multiplication and Nat division in the multiplicativity formula.",
+    "mathContext": "$\\sigma(p) = 1 + p$ for prime $p$ (only divisors). $\\sigma(m) \\geq m + 1$ for $m \\geq 2$ (1 and $m$ both divide $m$). Multiplicativity: $\\sigma(2^a \\cdot 3^b) = \\sigma(2^a) \\cdot \\sigma(3^b) = (2^{a+1}-1) \\cdot \\frac{3^{b+1}-1}{2}$. Bound: $\\frac{\\sigma(2^a \\cdot 3^b)}{2^a \\cdot 3^b} < 2 \\cdot \\frac{3}{2} = 3$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sigma_prime",
+      "sigma_ge_succ",
+      "Nat.Prime.divisors",
+      "Finset.sum_pair",
+      "sigma multiplicativity",
+      "geometric series"
+    ],
+    "prerequisites": [
+      "number theory",
+      "divisor functions",
+      "Lean 4 Finset API",
+      "Nat.Prime.divisors"
+    ]
+  }
+]

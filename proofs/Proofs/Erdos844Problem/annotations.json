@@ -1,0 +1,92 @@
+[
+  {
+    "id": "def-nonsquarefree-products",
+    "proofId": "erdos-844",
+    "range": { "startLine": 47, "endLine": 49 },
+    "type": "definition",
+    "title": "Non-Squarefree Products Property",
+    "content": "A set A has this property if for all a,b ∈ A, the product ab is not squarefree. This means every product is divisible by some p² for a prime p.",
+    "significance": "major"
+  },
+  {
+    "id": "def-optimal-set",
+    "proofId": "erdos-844",
+    "range": { "startLine": 63, "endLine": 65 },
+    "type": "definition",
+    "title": "Optimal Set Construction",
+    "content": "The optimal set is: even numbers ∪ odd non-squarefree numbers. Equivalently: all numbers except odd squarefree numbers.",
+    "significance": "major"
+  },
+  {
+    "id": "lemma-even-product",
+    "proofId": "erdos-844",
+    "range": { "startLine": 71, "endLine": 82 },
+    "type": "lemma",
+    "title": "Even Products Not Squarefree",
+    "content": "The product of two even numbers is divisible by 4 = 2², hence not squarefree. This is why even numbers can all be included.",
+    "significance": "minor"
+  },
+  {
+    "id": "thm-maximal-contains-nonsquarefree",
+    "proofId": "erdos-844",
+    "range": { "startLine": 109, "endLine": 114 },
+    "type": "theorem",
+    "title": "Maximal Sets Contain Non-Squarefree Numbers",
+    "content": "Any maximal set with the property must contain all non-squarefree numbers, since their products with anything are automatically non-squarefree.",
+    "significance": "major"
+  },
+  {
+    "id": "def-intersecting-family",
+    "proofId": "erdos-844",
+    "range": { "startLine": 133, "endLine": 136 },
+    "type": "definition",
+    "title": "Intersecting Family",
+    "content": "A set of squarefree numbers where any two share a prime factor. The problem reduces to finding the maximum intersecting family among squarefree numbers.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-chvatal",
+    "proofId": "erdos-844",
+    "range": { "startLine": 146, "endLine": 151 },
+    "type": "theorem",
+    "title": "Chvátal's Result",
+    "content": "The maximum intersecting family of squarefree numbers up to N is achieved by taking all squarefree multiples of a fixed prime. The optimal choice is prime 2 (even squarefree numbers).",
+    "significance": "major"
+  },
+  {
+    "id": "thm-weisenberg",
+    "proofId": "erdos-844",
+    "range": { "startLine": 161, "endLine": 165 },
+    "type": "theorem",
+    "title": "Weisenberg's Proof",
+    "content": "Weisenberg proved that the optimal set (even ∪ odd non-squarefree) achieves the maximum among all sets with the non-squarefree product property.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-alexeev-mixon-sawin",
+    "proofId": "erdos-844",
+    "range": { "startLine": 167, "endLine": 171 },
+    "type": "theorem",
+    "title": "Alexeev-Mixon-Sawin Proof",
+    "content": "An independent alternative proof of the same result.",
+    "significance": "minor"
+  },
+  {
+    "id": "insight-density",
+    "proofId": "erdos-844",
+    "range": { "startLine": 192, "endLine": 196 },
+    "type": "insight",
+    "title": "Asymptotic Density",
+    "content": "The optimal set has density 1 - 4/π² ≈ 0.595 since odd squarefree numbers have density 4/π² ≈ 0.405.",
+    "significance": "minor"
+  },
+  {
+    "id": "thm-characterization",
+    "proofId": "erdos-844",
+    "range": { "startLine": 229, "endLine": 242 },
+    "type": "theorem",
+    "title": "Complete Characterization",
+    "content": "The complete solution: (1) The optimal set has the property, (2) No larger set has it, (3) The optimal set is exactly even numbers ∪ odd non-squarefree numbers.",
+    "significance": "major"
+  }
+]

@@ -1,0 +1,161 @@
+{
+  "id": "factor-remainder-theorem-oq-01",
+  "title": "The Multiplicity Factor Theorem: (X − a)ᵏ ∣ p via Vanishing Derivatives",
+  "slug": "factor-remainder-theorem-oq-01",
+  "description": "The parent (factor-remainder-theorem) proves the Factor Theorem (X − a) ∣ p ↔ p(a) = 0. Its OQ-01 asks for the multiplicity version: (X − a)ᵏ ∣ p iff p(a) = p′(a) = ⋯ = p^{(k−1)}(a) = 0, connecting the Factor Theorem to Taylor expansion via polynomial derivatives. Over a characteristic-zero field, Mathlib proves this through rootMultiplicity (le_rootMultiplicity_iff and lt_rootMultiplicity_iff_isRoot_iterate_derivative). This entry combines them into the multiplicity factor theorem, with the k = 1 (Factor Theorem) and k = 2 (double root) cases. 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Factor_theorem",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FactorRemainderTheoremOQ01.lean",
+    "tags": [
+      "algebra",
+      "polynomials",
+      "factor-theorem",
+      "root-multiplicity",
+      "derivatives",
+      "taylor-expansion",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.le_rootMultiplicity_iff",
+        "description": "k ≤ rootMultiplicity a p ↔ (X − C a)ᵏ ∣ p (for p ≠ 0)",
+        "module": "Mathlib.Algebra.Polynomial.Div"
+      },
+      {
+        "theorem": "Polynomial.lt_rootMultiplicity_iff_isRoot_iterate_derivative_of_mem_nonZeroDivisors",
+        "description": "n < rootMultiplicity a p ↔ all iterated derivatives up to order n vanish at a (over char 0)",
+        "module": "Mathlib.Algebra.Polynomial.FieldDivision"
+      },
+      {
+        "theorem": "Polynomial.dvd_iff_isRoot",
+        "description": "The Factor Theorem (X − C a) ∣ p ↔ p.IsRoot a",
+        "module": "Mathlib.Algebra.Polynomial.Div"
+      },
+      {
+        "theorem": "Nat.factorial_ne_zero / mem_nonZeroDivisors_iff_ne_zero",
+        "description": "Factorials are nonzero; in a field, nonzero elements are nonzerodivisors",
+        "module": "Mathlib.Algebra.Order.Ring / Mathlib.Algebra.GroupWithZero.NonZeroDivisors"
+      }
+    ],
+    "originalContributions": [
+      "pow_dvd_iff_iterate_derivative_eval_eq_zero: the multiplicity factor theorem (X − a)ᵏ ∣ p ↔ ∀ m < k, p^{(m)}(a) = 0 — the OQ's target, for p ≠ 0, k ≥ 1, over a characteristic-zero field, combining le_rootMultiplicity_iff with the derivative characterization",
+      "factorial_mem_nonZeroDivisors: in a characteristic-zero field every factorial is a nonzerodivisor (the hypothesis needed for the derivative characterization)",
+      "factor_theorem: the k = 1 base case (X − a) ∣ p ↔ p(a) = 0",
+      "double_root_iff: the k = 2 case (X − a)² ∣ p ↔ p(a) = 0 ∧ p′(a) = 0 (root of multiplicity ≥ 2)"
+    ],
+    "axiomCount": 0,
+    "lineCount": 71,
+    "assumptions": "None. All theorems fully proved with 0 axioms and 0 sorries (no native_decide). #print axioms reports only [propext, Classical.choice, Quot.sound]. The characteristic-zero hypothesis is essential: it makes factorials nonzerodivisors, which is required for the derivative characterization of multiplicity (over positive characteristic, derivatives can vanish without raising multiplicity).",
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "prerequisites": [
+      "The Factor Theorem and polynomial divisibility",
+      "Root multiplicity of a polynomial",
+      "Polynomial (formal) derivatives and iterated derivatives",
+      "Characteristic-zero fields and Taylor expansion"
+    ],
+    "relatedProblems": [
+      {
+        "id": "factor-remainder-theorem",
+        "relationship": "Parent: the Factor and Remainder theorems. This entry answers its OQ-01 (the multiplicity version via vanishing derivatives)."
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Factor Theorem states that a is a root of a polynomial p iff (X − a) divides p. Its refinement to higher multiplicity says that (X − a)ᵏ divides p iff a is a root of multiplicity at least k, which — over a field of characteristic zero — is equivalent to the vanishing of p together with its first k − 1 derivatives at a: p(a) = p′(a) = ⋯ = p^{(k−1)}(a) = 0. This is precisely the statement that the Taylor expansion of p at a begins at order k, tying the algebraic notion of multiplicity to the analytic/Taylor picture. The characteristic-zero hypothesis is essential: in positive characteristic p, the derivative of Xᵖ is zero, so derivatives can vanish without the multiplicity being large.\n\nMathlib formalizes root multiplicity and proves both halves of this equivalence: (X − a)ᵏ ∣ p iff k ≤ rootMultiplicity a p (le_rootMultiplicity_iff), and n < rootMultiplicity a p iff the iterated derivatives up to order n vanish at a (lt_rootMultiplicity_iff_isRoot_iterate_derivative, requiring factorials to be nonzerodivisors). This entry answers the parent's OQ-01 by combining these into the multiplicity factor theorem, with the k = 1 and k = 2 cases.",
+    "problemStatement": "Prove the multiplicity version of the Factor Theorem: over a characteristic-zero field, for a nonzero polynomial p and k ≥ 1, (X − a)ᵏ ∣ p iff p and its first k − 1 derivatives all vanish at a (∀ m < k, p^{(m)}(a) = 0). Record the k = 1 (Factor Theorem) and k = 2 (double root) cases.",
+    "proofStrategy": "Write k = n + 1. Then (X − a)^{n+1} ∣ p ↔ n + 1 ≤ rootMultiplicity a p (le_rootMultiplicity_iff) ↔ n < rootMultiplicity a p (Nat.add_one_le_iff) ↔ ∀ m ≤ n, (derivative^[m] p).IsRoot a (lt_rootMultiplicity_iff_isRoot_iterate_derivative, with (n!:K) a nonzerodivisor since K has characteristic zero). Rewriting IsRoot as eval = 0 and m ≤ n as m < n + 1 (Nat.lt_succ_iff) finishes. The k = 1 case is Mathlib's dvd_iff_isRoot; the k = 2 case instantiates the main theorem at k = 2 and unfolds the two derivatives.",
+    "keyInsights": [
+      "Multiplicity = order of vanishing of the Taylor expansion: (X − a)ᵏ ∣ p iff p^{(0)}(a) = ⋯ = p^{(k−1)}(a) = 0, the analytic reading of the algebraic multiplicity.",
+      "Characteristic zero is essential — it makes every factorial a nonzerodivisor, which the derivative characterization needs; in characteristic p the derivative of Xᵖ vanishes, breaking the equivalence.",
+      "The proof factors cleanly through rootMultiplicity: divisibility ↔ a multiplicity bound (le_rootMultiplicity_iff), and that bound ↔ vanishing derivatives (the iterate-derivative iff).",
+      "The double-root criterion (X − a)² ∣ p ↔ p(a) = p′(a) = 0 is the workhorse special case, used to detect repeated roots and discriminant vanishing.",
+      "This connects the Factor Theorem to Taylor expansion exactly as the OQ requested, using Mathlib's polynomial-derivative API."
+    ],
+    "prerequisites": [
+      "Root multiplicity and polynomial divisibility",
+      "Iterated formal derivatives of polynomials",
+      "Characteristic-zero fields",
+      "Taylor expansion of polynomials"
+    ]
+  },
+  "sections": [
+    {
+      "id": "nonzerodivisor",
+      "title": "Section I: Factorials Are Nonzerodivisors",
+      "startLine": 31,
+      "endLine": 38,
+      "summary": "factorial_mem_nonZeroDivisors: in a characteristic-zero field, (n! : K) is a nonzerodivisor — the hypothesis the derivative characterization requires.",
+      "mathContext": "Char 0 makes factorials invertible-up-to-nonzerodivisor, enabling the Taylor/derivative criterion."
+    },
+    {
+      "id": "main",
+      "title": "Section II: The Multiplicity Factor Theorem",
+      "startLine": 40,
+      "endLine": 55,
+      "summary": "pow_dvd_iff_iterate_derivative_eval_eq_zero: (X − a)ᵏ ∣ p ↔ ∀ m < k, p^{(m)}(a) = 0, by chaining le_rootMultiplicity_iff and lt_rootMultiplicity_iff_isRoot_iterate_derivative.",
+      "mathContext": "The OQ's target — multiplicity as order of vanishing of the Taylor expansion."
+    },
+    {
+      "id": "cases",
+      "title": "Section III: The k = 1 and k = 2 Cases",
+      "startLine": 57,
+      "endLine": 69,
+      "summary": "factor_theorem ((X − a) ∣ p ↔ p(a) = 0) and double_root_iff ((X − a)² ∣ p ↔ p(a) = 0 ∧ p′(a) = 0).",
+      "mathContext": "The classical Factor Theorem and the repeated-root criterion as special cases."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms, no native_decide) file of 71 lines and 4 theorems proving the multiplicity factor theorem: over a characteristic-zero field, (X − a)ᵏ ∣ p iff p and its first k − 1 derivatives vanish at a. It chains Mathlib's le_rootMultiplicity_iff and the iterate-derivative characterization of multiplicity, and records the k = 1 (Factor Theorem) and k = 2 (double root) cases.",
+    "implications": "This answers the parent's OQ-01, connecting the Factor Theorem to Taylor expansion exactly as requested: multiplicity is the order of vanishing of the polynomial's derivatives. The double-root criterion is a reusable tool for detecting repeated roots (e.g. when the discriminant vanishes, or a polynomial shares a root with its derivative). The characteristic-zero hypothesis is made explicit, clarifying where the derivative characterization holds.",
+    "openQuestions": [
+      "Formalize the explicit Taylor-coefficient form: the order-k Taylor coefficient of p at a is p^{(k)}(a)/k!, so (X − a)ᵏ ∣ p iff the first k Taylor coefficients vanish, via Polynomial.taylor.",
+      "Extend to positive characteristic using Hasse derivatives, where the divided-power derivatives correctly characterize multiplicity even when ordinary derivatives fail."
+    ]
+  },
+  "status": "verified",
+  "badge": "original",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.Polynomial.FieldDivision",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Polynomial"
+    ],
+    "namespace": "FactorRemainderTheoremOQ01",
+    "lineCount": 71,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/FactorRemainderTheoremOQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "factor-remainder-theorem",
+      "relationship": "extends",
+      "description": "Parent: the Factor and Remainder theorems. This entry answers its OQ-01 by proving the multiplicity version (X − a)ᵏ ∣ p ↔ vanishing of p and its first k − 1 derivatives, connecting the Factor Theorem to Taylor expansion."
+    }
+  ],
+  "references": [
+    {
+      "key": "DummitFoote",
+      "citation": "Dummit, D.S. and Foote, R.M., Abstract Algebra, 3rd ed., Wiley (2004), §9.5 (multiplicities of roots).",
+      "type": "book"
+    },
+    {
+      "key": "Lang",
+      "citation": "Lang, S., Algebra, 3rd ed., Springer GTM 211 (2002), Chapter IV.",
+      "type": "book"
+    }
+  ],
+  "sorries": 0
+}

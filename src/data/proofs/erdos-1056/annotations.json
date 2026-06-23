@@ -1,0 +1,344 @@
+[
+  {
+    "id": "ann-1056-imports",
+    "proofId": "erdos-1056",
+    "range": {
+      "startLine": 22,
+      "endLine": 29
+    },
+    "type": "concept",
+    "title": "Imports and Namespace",
+    "content": "Imports Mathlib's prime number basics, GCD, Finset operations, and general tactics. The Finset.Ico (interval, closed-open) is the key data structure for representing integer intervals [a, b). The namespace Erdos1056 isolates all definitions.",
+    "mathContext": "The formalization builds on $\\texttt{Finset.Ico}\\;a\\;b = \\{a, a+1, \\ldots, b-1\\}$, the discrete closed-open interval. Products over $\\texttt{Ico}$ give interval products $\\prod_{i=a}^{b-1} i$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.Ico",
+      "Nat.Prime",
+      "Finset.prod"
+    ],
+    "prerequisites": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ]
+  },
+  {
+    "id": "ann-1056-interval-prod",
+    "proofId": "erdos-1056",
+    "range": {
+      "startLine": 33,
+      "endLine": 35
+    },
+    "type": "definition",
+    "title": "Interval Product",
+    "content": "The product of all integers in the half-open interval [a, b), defined as the Finset product of the identity function over Finset.Ico a b. When a >= 1, this equals b!/a!. The condition intervalProd a b % p = 1 means the interval is 'multiplicatively trivial' modulo p.",
+    "mathContext": "$\\text{intervalProd}(a, b) = \\prod_{i \\in \\text{Ico}(a,b)} i = \\prod_{i=a}^{b-1} i$. For $a \\ge 1$: $\\text{intervalProd}(a,b) = b!/a!$. The congruence $\\text{intervalProd}(a,b) \\equiv 1 \\pmod{p}$ is equivalent to $a! \\equiv b! \\pmod{p}$, connecting interval products to factorial residues.",
+    "significance": "key",
+    "relatedConcepts": [
+      "factorial ratio",
+      "Finset.Ico",
+      "Finset.prod",
+      "multiplicative group mod p"
+    ],
+    "prerequisites": [
+      "Finset.Ico",
+      "Finset.prod",
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-1056-valid-boundary",
+    "proofId": "erdos-1056",
+    "range": {
+      "startLine": 39,
+      "endLine": 40
+    },
+    "type": "definition",
+    "title": "Valid Boundary Sequence",
+    "content": "A valid boundary for k intervals is a list of k+1 strictly increasing natural numbers. The strict monotonicity (via List.Chain') ensures each interval [a_i, a_{i+1}) is non-empty, so every interval has a well-defined non-trivial product.",
+    "mathContext": "$\\text{IsValidBoundary}(\\text{boundaries}, k) \\iff |\\text{boundaries}| = k+1 \\land a_0 < a_1 < \\cdots < a_k$. The strict ordering ensures each interval $[a_i, a_{i+1})$ contains at least one integer.",
+    "significance": "key",
+    "relatedConcepts": [
+      "List.Chain'",
+      "strictly increasing sequences",
+      "interval partitions"
+    ],
+    "prerequisites": [
+      "List.length",
+      "List.Chain'"
+    ]
+  },
+  {
+    "id": "ann-1056-all-products",
+    "proofId": "erdos-1056",
+    "range": {
+      "startLine": 43,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "All Products Congruent to One",
+    "content": "The combined condition: valid boundaries AND every interval product is congruent to 1 modulo p. Uses Fin k to index into the k intervals, accessing boundaries at positions i and i+1. This is the core predicate that verified examples must satisfy.",
+    "mathContext": "$\\text{AllProductsCongruentOne}(p, [a_0, \\ldots, a_k], k) \\iff \\text{valid boundaries} \\land \\forall j \\in \\{0, \\ldots, k-1\\},\\; \\prod_{i=a_j}^{a_{j+1}-1} i \\equiv 1 \\pmod{p}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "simultaneous congruences",
+      "Fin indexing",
+      "interval product"
+    ],
+    "prerequisites": [
+      "IsValidBoundary",
+      "intervalProd"
+    ]
+  },
+  {
+    "id": "ann-1056-has-solution",
+    "proofId": "erdos-1056",
+    "range": {
+      "startLine": 50,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "Solution Existence Predicate",
+    "content": "HasSolution k asserts: there exists a prime p and a list of boundaries such that all k interval products are congruent to 1 modulo p. This is the central predicate of the formalization. Proving HasSolution k for specific k values is the verified content; the open conjecture is that HasSolution k holds for ALL k >= 2.",
+    "mathContext": "$\\text{HasSolution}(k) \\iff \\exists p \\text{ prime},\\; \\exists a_0 < \\cdots < a_k,\\; \\forall j,\\; \\prod_{i=a_j}^{a_{j+1}-1} i \\equiv 1 \\pmod{p}$. Equivalently: $\\exists p$ prime with $k+1$ values whose factorials agree modulo $p$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "existential quantification",
+      "factorial congruences",
+      "Noll-Simmons conjecture"
+    ],
+    "prerequisites": [
+      "AllProductsCongruentOne",
+      "Nat.Prime"
+    ]
+  },
+  {
+    "id": "ann-1056-infra-lemmas",
+    "proofId": "erdos-1056",
+    "range": {
+      "startLine": 57,
+      "endLine": 93
+    },
+    "type": "concept",
+    "title": "Infrastructure Lemmas",
+    "content": "Five proved lemmas supporting the main theorems: (1) intervalProd_empty: empty intervals have product 1; (2-4) IsValidBoundary helpers extracting length, chain, and count properties; (5) intervalProd_pos: products are positive when starting at >= 1; (6) mod_mul_of_mod_eq_one: products of congruent-to-1 values remain congruent to 1. These establish the basic algebraic and structural properties needed for the verified examples.",
+    "mathContext": "Key results: $\\prod_{i=a}^{b-1} i = 1$ when $b \\le a$ (empty product), and $a \\equiv 1, b \\equiv 1 \\pmod{p} \\implies ab \\equiv 1 \\pmod{p}$ (closure of the trivial residue class under multiplication). The positivity lemma $\\text{intervalProd}(a,b) > 0$ for $a \\ge 1, a < b$ ensures interval products are meaningful natural numbers.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "empty product convention",
+      "Finset.Ico_eq_empty",
+      "Nat.mul_mod",
+      "List.Chain'"
+    ],
+    "prerequisites": [
+      "intervalProd",
+      "IsValidBoundary",
+      "Finset.prod_pos"
+    ]
+  },
+  {
+    "id": "ann-1056-erdos-k2",
+    "proofId": "erdos-1056",
+    "range": {
+      "startLine": 115,
+      "endLine": 119
+    },
+    "type": "concept",
+    "title": "Erdos k=2 Solution (p=11)",
+    "content": "Verified proof that HasSolution 2 holds, using p=11 with boundaries [3, 5, 8]. The two intervals are [3,5) = {3,4} with product 12 and [5,8) = {5,6,7} with product 210. Both 12 % 11 = 1 and 210 % 11 = 1. The proof unfolds all definitions and uses fin_cases with native_decide for computational verification.",
+    "mathContext": "Erdos (1979): $p = 11$, boundaries $[3, 5, 8]$. Interval $[3,5)$: $3 \\cdot 4 = 12 = 11 + 1 \\equiv 1 \\pmod{11}$. Interval $[5,8)$: $5 \\cdot 6 \\cdot 7 = 210 = 19 \\cdot 11 + 1 \\equiv 1 \\pmod{11}$. In factorial form: $2! = 2$, $4! = 24 \\equiv 2$, $7! = 5040 \\equiv 2 \\pmod{11}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "native_decide",
+      "fin_cases tactic",
+      "computational verification",
+      "Erdos 1979"
+    ],
+    "prerequisites": [
+      "HasSolution",
+      "AllProductsCongruentOne",
+      "intervalProd"
+    ]
+  },
+  {
+    "id": "ann-1056-makowski-k3",
+    "proofId": "erdos-1056",
+    "range": {
+      "startLine": 126,
+      "endLine": 130
+    },
+    "type": "concept",
+    "title": "Makowski k=3 Solution (p=17)",
+    "content": "Verified proof that HasSolution 3 holds, using p=17 with boundaries [2, 6, 12, 16]. Three intervals: [2,6) with product 120, [6,12) with product 332640, [12,16) with product 32760. All congruent to 1 modulo 17. The proof structure mirrors erdos_k2 with one additional fin_cases branch.",
+    "mathContext": "Makowski (1983): $p = 17$, boundaries $[2, 6, 12, 16]$. Products: $2 \\cdot 3 \\cdot 4 \\cdot 5 = 120 = 7 \\cdot 17 + 1$, $6 \\cdot 7 \\cdots 11 = 332640 = 19567 \\cdot 17 + 1$, $12 \\cdot 13 \\cdot 14 \\cdot 15 = 32760 = 1927 \\cdot 17 + 1$. Factorial form: $1! \\equiv 5! \\equiv 11! \\equiv 15! \\pmod{17}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "native_decide",
+      "Makowski 1983",
+      "factorial residues mod 17"
+    ],
+    "prerequisites": [
+      "HasSolution",
+      "erdos_k2 pattern"
+    ]
+  },
+  {
+    "id": "ann-1056-combined",
+    "proofId": "erdos-1056",
+    "range": {
+      "startLine": 132,
+      "endLine": 138
+    },
+    "type": "concept",
+    "title": "Combined Known Solutions",
+    "content": "Bundles the k=2 and k=3 results into a conjunction (known_small_solutions) and proves problem non-triviality by exhibiting a specific k >= 2 with a solution. These serve as the verified foundation for the open conjecture.",
+    "mathContext": "$\\text{HasSolution}(2) \\land \\text{HasSolution}(3)$, and $\\exists k \\ge 2,\\; \\text{HasSolution}(k)$. The conjunction confirms both known cases, while the existential witnesses that the conjecture is non-vacuously satisfiable.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "conjunction introduction",
+      "existential witness",
+      "problem non-triviality"
+    ],
+    "prerequisites": [
+      "erdos_k2",
+      "makowski_k3"
+    ]
+  },
+  {
+    "id": "ann-1056-odd-primes",
+    "proofId": "erdos-1056",
+    "range": {
+      "startLine": 141,
+      "endLine": 150
+    },
+    "type": "concept",
+    "title": "Known Solutions Use Odd Primes",
+    "content": "Both verified solutions use odd primes (11 and 17, both > 2). This is expected: for p=2, intervalProd a b % 2 = 1 requires an odd product, but consecutive integers alternate parity, making solutions impossible for even-length intervals. The odd prime constraint is likely necessary for all solutions.",
+    "mathContext": "For $p = 2$: $\\prod_{i=a}^{b-1} i \\equiv 1 \\pmod{2}$ requires all factors odd, impossible for consecutive integers when $b - a \\ge 2$. Thus solutions require $p > 2$, i.e., odd primes. Both known solutions ($p = 11, 17$) satisfy $p > 2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "parity constraint",
+      "odd primes",
+      "consecutive integers"
+    ],
+    "prerequisites": [
+      "erdos_k2",
+      "makowski_k3",
+      "Nat.Prime"
+    ]
+  },
+  {
+    "id": "ann-1056-wilson-specific",
+    "proofId": "erdos-1056",
+    "range": {
+      "startLine": 156,
+      "endLine": 162
+    },
+    "type": "concept",
+    "title": "Wilson's Theorem for p=11 and p=17",
+    "content": "Computationally verified instances of Wilson's theorem for the two primes used in known solutions: (10)! % 11 = 10 and (16)! % 17 = 16. These confirm that (p-1)! = p-1 (mod p), which equals -1 (mod p). Proved by native_decide.",
+    "mathContext": "$10! = 3628800 \\equiv 10 \\pmod{11}$ and $16! = 20922789888000 \\equiv 16 \\pmod{17}$. In both cases $(p-1)! \\equiv p-1 \\equiv -1 \\pmod{p}$, confirming Wilson's theorem for the specific primes in the known solutions.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Wilson's theorem",
+      "computational verification",
+      "native_decide"
+    ],
+    "prerequisites": [
+      "Finset.Ico",
+      "Finset.prod"
+    ]
+  },
+  {
+    "id": "ann-1056-wilson-general",
+    "proofId": "erdos-1056",
+    "range": {
+      "startLine": 170,
+      "endLine": 171
+    },
+    "type": "concept",
+    "title": "General Wilson's Theorem Constraint",
+    "content": "States Wilson's theorem in general: for any prime p, the product of [1, p) equals p-1 modulo p. Declared as an axiom since the general proof requires Mathlib's Wilson's theorem infrastructure. This is the key structural constraint: if k intervals with product 1 partitioned {1,...,p-1}, the total product would be 1^k = 1 != -1 (mod p), a contradiction.",
+    "mathContext": "**Wilson's theorem** (axiomatized): $\\forall p$ prime, $\\prod_{i=1}^{p-1} i \\equiv p - 1 \\pmod{p}$, i.e., $(p-1)! \\equiv -1 \\pmod{p}$. **Consequence**: if $k$ intervals partition $\\{1, \\ldots, p-1\\}$ with each product $\\equiv 1$, then $(p-1)! \\equiv 1^k = 1 \\pmod{p}$, contradicting $-1 \\ne 1$ for $p > 2$. So solutions must leave gaps.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Wilson's theorem",
+      "partition obstruction",
+      "multiplicative group structure"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "Finset.Ico",
+      "Finset.prod"
+    ]
+  },
+  {
+    "id": "ann-1056-conjecture",
+    "proofId": "erdos-1056",
+    "range": {
+      "startLine": 177,
+      "endLine": 178
+    },
+    "type": "concept",
+    "title": "Main Conjecture: All k >= 2",
+    "content": "The core open problem stated as an axiom: for every k >= 2, HasSolution k. This claims that arbitrarily many consecutive intervals with products congruent to 1 modulo some prime always exist. Only k=2 and k=3 are verified. No k=4 solution is known, and exhaustive searches for small primes have not found one.",
+    "mathContext": "**Erdos Problem #1056** (axiomatized): $\\forall k \\ge 2,\\; \\text{HasSolution}(k)$. Equivalently: for every $k \\ge 2$, there exists a prime $p$ with $k+1$ values $q_0 < q_1 < \\cdots < q_k < p$ satisfying $q_0! \\equiv q_1! \\equiv \\cdots \\equiv q_k! \\pmod{p}$. **Status: OPEN.**",
+    "significance": "key",
+    "relatedConcepts": [
+      "open conjecture",
+      "factorial residue collisions",
+      "Erdos problems"
+    ],
+    "prerequisites": [
+      "HasSolution",
+      "erdos_k2",
+      "makowski_k3"
+    ]
+  },
+  {
+    "id": "ann-1056-noll-simmons",
+    "proofId": "erdos-1056",
+    "range": {
+      "startLine": 189,
+      "endLine": 192
+    },
+    "type": "concept",
+    "title": "Noll-Simmons Factorial Generalization",
+    "content": "Generalizes the conjecture: for every k, there exist a prime p and k values q_1 < ... < q_k < p with q_1! = ... = q_k! (mod p). This drops the 'consecutive intervals' structure, asking only for factorial collisions. The interval product conjecture implies Noll-Simmons (take q_i = a_i), but Noll-Simmons could be easier since it removes the consecutiveness constraint.",
+    "mathContext": "**Noll-Simmons conjecture** (axiomatized): $\\forall k,\\; \\exists p$ prime, $\\exists Q : \\text{Fin}\\;k \\to \\mathbb{N}$, $(\\forall i,\\; Q(i) < p) \\land (\\forall i\\;j,\\; Q(i)! \\equiv Q(j)! \\pmod{p})$. This is weaker than Erdos #1056 since consecutive intervals give factorial collisions but not vice versa. The factorial function $n \\mapsto n! \\bmod p$ takes $p$ values in $\\{0, \\ldots, p-1\\}$; by pigeonhole, some collisions must occur, but the question is whether the maximum collision multiplicity grows without bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "factorial residues",
+      "pigeonhole principle",
+      "collision multiplicity",
+      "OEIS A060427"
+    ],
+    "prerequisites": [
+      "erdos_1056_conjecture",
+      "Nat.factorial"
+    ]
+  },
+  {
+    "id": "ann-1056-summary",
+    "proofId": "erdos-1056",
+    "range": {
+      "startLine": 198,
+      "endLine": 202
+    },
+    "type": "concept",
+    "title": "Comprehensive Summary Theorem",
+    "content": "Bundles all verified results into one conjunction: HasSolution 2, HasSolution 3, Wilson constraint for p=11, and Wilson constraint for p=17. This serves as the single 'deliverable' of the formalization, packaging the two verified examples alongside the Wilson's theorem confirmations that constrain the solution structure.",
+    "mathContext": "$\\text{HasSolution}(2) \\land \\text{HasSolution}(3) \\land (10! \\equiv 10 \\pmod{11}) \\land (16! \\equiv 16 \\pmod{17})$. The conjunction packages the complete verified content of the formalization.",
+    "significance": "key",
+    "relatedConcepts": [
+      "summary theorem",
+      "verified results",
+      "conjunction"
+    ],
+    "prerequisites": [
+      "erdos_k2",
+      "makowski_k3",
+      "wilson_constraint_11",
+      "wilson_constraint_17"
+    ]
+  }
+]

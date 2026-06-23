@@ -1,0 +1,192 @@
+{
+  "id": "erdos-650",
+  "title": "Erdős #650: Divisibility Covering in Intervals",
+  "slug": "erdos-650",
+  "description": "If A ⊆ {1,...,N} with |A| = m, every interval of length 2N contains ≥ f(m) integers divisible by distinct elements of A. Known: f(m) ≫ √m. Open: Is f(m) ≪ √m?",
+  "meta": {
+    "author": "Paul Erdős, György Sarányi",
+    "sourceUrl": "https://erdosproblems.com/650",
+    "date": "1959",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos650Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "divisibility",
+      "covering",
+      "multiplicative-number-theory",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 650,
+    "erdosUrl": "https://erdosproblems.com/650",
+    "erdosProblemStatus": "open",
+    "mathContext": {
+      "field": "Multiplicative Number Theory",
+      "subfield": "Divisibility covering and interval distribution",
+      "level": "research",
+      "centralObjects": [
+        "covering function f(m,N)",
+        "countDivisible",
+        "divisor multiples in intervals",
+        "extremal sets A ⊆ {1,...,N}"
+      ],
+      "keyTechniques": [
+        "pigeonhole principle",
+        "inclusion-exclusion",
+        "AM-HM inequality",
+        "harmonic sum estimates",
+        "double counting"
+      ],
+      "significance": "Determines the minimum guaranteed divisibility coverage in intervals. The Erdős-Sarányi lower bound f(m) ≥ c√m (1959) via counting arguments is established; the matching upper bound f(m) ≤ C√m remains open after 60+ years. Resolution would precisely characterize the covering efficiency of divisor sets."
+    },
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.Icc",
+        "description": "Closed interval as finite set, used for counting multiples",
+        "module": "Mathlib.Data.Finset.LocallyFinite"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering finsets by predicates, used for divisibility condition",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "sInf",
+        "description": "Infimum of natural number sets, used for minimum coverage",
+        "module": "Mathlib.Order.ConditionallyCompleteLattice"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root function for the √m bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "countDivisible: counting multiples of A-elements in an interval",
+      "minCoverage: worst-case interval coverage for a fixed set A",
+      "f(m,N): extremal covering function over all sets and intervals",
+      "erdos_saranyi_lower_bound: axiomatized f(m) ≥ c√m",
+      "erdos_upper_bound_conjecture: open conjecture f(m) ≤ C√m",
+      "erdos_650: main theorem restating the known lower bound"
+    ],
+    "axiomCount": 2,
+    "lineCount": 92,
+    "assumptions": "2 axioms: erdos_saranyi_lower_bound, erdos_upper_bound_conjecture. See Lean source for complete statements.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 1,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "Erdős and Sarányi posed this problem in 1959, establishing the lower bound f(m) ≥ c√m using a pigeonhole argument. The question asks: given a set A of m integers in {1,...,N}, how many integers in any interval of length 2N must be divisible by some element of A?\n\nThe lower bound proof counts the total number of (divisor, multiple) pairs and uses the constraint that each integer has a bounded number of divisors to extract √m distinct covered integers. The matching upper bound — that f(m) ≤ C√m for some constant C — remains open, making this one of the longer-standing open problems in multiplicative number theory.\n\nThe problem connects to several areas: sieve theory (counting integers with prescribed divisibility), extremal combinatorics (finding worst-case sets), and multiplicative number theory (distribution of multiples in intervals). The √m threshold appears naturally from the harmonic sum structure of divisor counts.",
+    "problemStatement": "Let f(m) be such that if A ⊆ {1,...,N} has |A| = m, then every interval in [1,∞) of length 2N contains ≥ f(m) distinct integers b₁,...,bᵣ where each bᵢ is divisible by some aᵢ ∈ A, with all aᵢ distinct. Estimate f(m). Is f(m) ≪ m^{1/2}?",
+    "text": "If A ⊆ {1,...,N} with |A| = m, every interval of length 2N contains ≥ f(m) integers divisible by distinct elements of A. Known: f(m) ≫ √m. Open: Is f(m) ≪ √m?",
+    "proofStrategy": "The formalization defines countDivisible (counting multiples in intervals via Finset.filter), minCoverage (worst-case over interval positions via sInf), and f(m,N) (extremal over all sets A). The Erdős-Sarányi lower bound is axiomatized, the open upper bound conjecture is stated, and the main theorem records the current state of knowledge.",
+    "keyInsights": [
+      "f(m) ≥ c√m for some c > 0 (Erdős-Sarányi 1959) via pigeonhole counting",
+      "Upper bound f(m) ≤ C√m is OPEN — the matching bound has resisted 60+ years of attack",
+      "Each element a ∈ A contributes ~2N/a multiples to any interval of length 2N",
+      "The √m threshold arises from the bounded number of divisors per integer",
+      "If both bounds hold, f(m) ≍ √m asymptotically"
+    ],
+    "prerequisites": [
+      "Elementary number theory: divisibility, multiples in intervals, divisor counting",
+      "Extremal combinatorics: covering problems, pigeonhole principle for counting arguments",
+      "Analytic number theory: average order of the divisor function $\\tau(n)$, distribution of multiples",
+      "Finite set operations in Lean: `Finset.filter`, `Finset.Icc`, `Finset.card`"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-setup",
+      "title": "Module Header and Problem Context",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "Documents Erdős Problem #650 (1959): divisibility covering in intervals. Given A ⊆ {1,...,N} with |A| = m, how many integers in any length-2N interval are divisible by distinct elements of A? Known: f(m) ≥ c√m (Erdős-Sarányi). Open: f(m) ≤ C√m? Imports Mathlib."
+    },
+    {
+      "id": "basic-defs",
+      "title": "Definitions",
+      "summary": "Defines `countDivisible` (count multiples of A-elements in [a, a+2N] via `Finset.filter`), `minCoverage` (worst-case over interval positions via `sInf`), and `f` (extremal over all sets A ⊆ {1,...,N} with |A| = m).",
+      "startLine": 24,
+      "endLine": 48
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lower Bound",
+      "summary": "Axiomatizes the Erdős-Sarányi result: ∃ c > 0 such that f(m, N) ≥ c√m for all m ≥ 1 and N ≥ m.",
+      "startLine": 49,
+      "endLine": 63
+    },
+    {
+      "id": "upper-conjecture",
+      "title": "Upper Bound Conjecture",
+      "summary": "States the open conjecture: ∃ C > 0 such that f(m, N) ≤ C√m for appropriate N. Combined with lower bound gives f(m) ≍ √m.",
+      "startLine": 64,
+      "endLine": 76
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "summary": "Restates the Erdős-Sarányi lower bound as the main theorem `erdos_650`, recording the current state of knowledge.",
+      "startLine": 77,
+      "endLine": 92
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #650 on divisibility covering in intervals. The function f(m) measures the minimum guaranteed number of integers in any interval of length 2N that are divisible by distinct elements of a set A of size m. The √m lower bound is axiomatized from the Erdős-Sarányi counting argument; the matching upper bound remains one of the oldest open problems in this area.",
+    "implications": "Resolution of the upper bound would precisely characterize divisibility covering at the √m threshold The problem connects multiplicative number theory to combinatorial covering optimization Understanding extremal sets (those achieving f(m)) would reveal deep structure in divisor distribution The √m barrier appears in many covering problems, suggesting a universal phenomenon",
+    "openQuestions": [
+      "Is f(m) ≪ √m?",
+      "What is the structure of extremal sets achieving f(m)?",
+      "Does lim f(m)/√m exist, and if so, what is its value?",
+      "What are the exact values of f(m) for small m?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card"
+    ],
+    "opens": [],
+    "namespace": "Erdos650",
+    "lineCount": 92,
+    "axiomCount": 2,
+    "theoremCount": 1,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos650Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "key": "ES59",
+      "citation": "Erdős, P. and Sarányi, Gy., On divisibility properties of integers (1959).",
+      "type": "paper"
+    },
+    {
+      "key": "erdos650",
+      "citation": "Erdős Problems, Problem #650, https://erdosproblems.com/650",
+      "type": "website"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1063",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, number-theory, open"
+    },
+    {
+      "targetId": "erdos-396",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, number-theory, open"
+    },
+    {
+      "targetId": "erdos-691",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: multiplicative-number-theory, number-theory, open"
+    }
+  ],
+  "sorries": 0
+}

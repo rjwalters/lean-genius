@@ -1,0 +1,131 @@
+{
+  "slug": "erdos-1167",
+  "title": "Erdős #1167",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For finite r >= 2 and infinite lambda, does 2^lambda -> (kappa_alpha + 1)^(r+1) for alpha < gamma imply lambda -> (kappa_alpha)^r for alpha < gamma?",
+    "plain": "Can a strong partition relation one exponent up be stepped down from (r+1)-subsets on 2^lambda to r-subsets on lambda?",
+    "whyMatters": [
+      "This is a central stepping-down question in Erdos-Hajnal-Rado partition calculus.",
+      "The Lean file separates elementary partition-relation infrastructure from the two deep set-theoretic inputs.",
+      "The proved infinite Ramsey theorem removes one former axiom while leaving the original conjecture open."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Lean defines cardinal and indexed partition relations through `PartitionRelation` and `IndexedPartitionRelation`.",
+      "Structural lemmas prove one-color relations, target monotonicity, zero targets, indexed monotonicity, subset inheritance, and cardinal arithmetic for infinite targets.",
+      "The infinite Ramsey theorem for aleph_0 is proved in Lean; the remaining active axioms are `erdos_1167_conjecture` and `erdos_rado_theorem`."
+    ],
+    "open": [
+      "The Erdos-Hajnal-Rado stepping-down conjecture remains open.",
+      "The Erdos-Rado theorem is used as an axiom rather than proved from Mathlib.",
+      "The formalization does not prove the conjecture from ZFC."
+    ],
+    "goal": "Keep the proved Ramsey/cardinal-arithmetic scaffolding distinct from the two active deep partition-calculus axioms."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-01-15T16:53:51.159Z",
+    "iteration": 3,
+    "focus": "Metadata now reflects the sorry-free infinite Ramsey proof and the live two-axiom boundary without claiming the Erdos-Hajnal-Rado conjecture is solved.",
+    "blockers": [
+      "`erdos_1167_conjecture` is an active axiom.",
+      "`erdos_rado_theorem` is an active axiom."
+    ],
+    "nextAction": "A useful proof slice would either formalize a narrower Erdos-Rado consequence or add references explaining the remaining stepping-down axiom.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Full sorry-free proof of infinite_ramsey theorem (thinning chain construction). Pending Docker compilation verification. Once verified, axiom count drops 3→2.",
+    "builtItems": [
+      "infinite_ramsey_zero: proved PartitionRelation aleph0 aleph0 0 k for all k",
+      "infinite_ramsey_one: proved PartitionRelation aleph0 aleph0 1 k for k >= 1 via pigeonhole",
+      "infinite_ramsey_proved: full proof by induction on r with thinning chain (~170 lines)",
+      "mk_infinite_subset_eq_aleph0: cardinality helper for infinite subsets",
+      "Chain construction: state/getElem/getColor sequences via Nat.rec + Classical.choice",
+      "Chain properties: hState_sub, hState_mono, hState_mono_le, hElem_in_later fully proved",
+      "hElem_not_in_next + hElem_inj: element injectivity fully proved",
+      "Pigeonhole extraction: Finite.exists_infinite_fiber on color sequence",
+      "thin_step monochromaticity: finset lifting via Finset.preimage + Subtype.val_injective (sorry resolved)",
+      "Final monochromaticity: minimum index extraction via Finset.min, cons decomposition, hStep_mono application (sorry resolved)"
+    ],
+    "insights": [
+      "All axioms are deep set-theoretic results not provable from current Mathlib",
+      "15 proved theorems make this a strong formalization already",
+      "r=0 case of infinite Ramsey is trivially provable (unique 0-subset)",
+      "r=1 case follows from infinite pigeonhole (Finite.exists_infinite_fiber)",
+      "The infinite_ramsey axiom is only needed for r >= 2 where Ramsey diagonal argument + transfinite recursion are required",
+      "infinite_ramsey IS buildable (~150-200 lines): Mathlib has Finite.exists_infinite_fiber (infinite pigeonhole), Set.Infinite lemmas, and Classical.choice — all needed for the proof",
+      "Proof strategy for infinite_ramsey: induction on r. Base r=0,1 proved in PR #7041. Inductive step: thinning chain construction using pigeonhole at each step, then pigeonhole on colors",
+      "Key formalization challenge: recursive chain construction carrying Set.Infinite proofs, converting between Set.Infinite and Infinite typeclass, and working with RSubset α 2 (2-element Finset subtypes)",
+      "erdos_rado_theorem is NOT buildable without major infrastructure (delta-system lemma, transfinite recursion)",
+      "partition_one_color already proves infinite_ramsey r 1 and infinite_ramsey r 0 is vacuously true, so axiom only needed for r >= 2 and k >= 2",
+      "PR #7041 (open, researcher-6) has r=0 and r=1 proofs — coordinate to avoid duplicate work",
+      "Thinning chain proof works cleanly: Nat.rec with {S : Set α // Set.Infinite S} state",
+      "Chain consistency guaranteed by Classical.choice determinism on same proof term",
+      "Key difficulty: finset lifting between subtypes (↥(S\\{x}) → α) to connect restricted coloring mono to original coloring",
+      "Set.Infinite.image Subtype.val_injective used for infinite image transfer",
+      "The k=0 case is handled by Infinite.natEmbedding giving Nonempty RSubset",
+      "Docker was not running - needs compilation verification"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "CRITICAL: Docker build verification — full proof is sorry-free but compilation not tested",
+      "If compilation succeeds: remove axiom infinite_ramsey, replace all uses with infinite_ramsey_proved, update axiomCount in meta.json from 3 to 2",
+      "Potential API name issues: Set.Infinite.image, Finset.preimage, Infinite.natEmbedding, Nat.exists_eq_add_of_le — verify these exist in current Mathlib",
+      "Consider whether erdos_rado_theorem axiom could be partially proved"
+    ],
+    "markdown": "# Erdős #1167 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "tags": [
+    "erdos",
+    "set-theory",
+    "partition-calculus",
+    "ramsey-theory",
+    "open-problem"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-116",
+    "erdos-1167"
+  ],
+  "references": {
+    "papers": [
+      "Erdos-Hajnal-Rado partition calculus background"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1167"
+    ],
+    "mathlib": [
+      "Cardinal.add_eq_self",
+      "Cardinal.cantor",
+      "Finite.exists_infinite_fiber"
+    ]
+  },
+  "started": "2026-01-15T16:53:51.159Z",
+  "lastUpdate": "2026-03-27T00:00:00Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1167Problem.lean",
+      "filename": "Erdos1167Problem.lean",
+      "lineCount": 594,
+      "theoremCount": 19,
+      "axiomCount": 2,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1167Problem.lean"
+    }
+  ]
+}

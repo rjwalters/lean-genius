@@ -1,0 +1,160 @@
+{
+  "id": "erdos-1205",
+  "title": "Erdős #1205: Maximum Multi-Covering by Congruence Classes",
+  "slug": "erdos-1205",
+  "description": "Erdős Problem #1205 (solved). Let $F(x)$ be the maximum such that there exist congruence classes $a_n \\pmod{n}$ (one for each $n \\le x$) such that every $m \\le x$ satisfies at least $F(x)$ of the congruences $m \\equiv a_n \\pmod{n}$. The answer is $F(x) = \\Theta(\\log x)$. Formalization pending.",
+  "meta": {
+    "author": "Erdős (problem), probabilistic method (solution)",
+    "sourceUrl": "https://erdosproblems.com/1205",
+    "date": "",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1205Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "covering-systems",
+      "congruences",
+      "probabilistic-method"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 2,
+    "lineCount": 87,
+    "assumptions": "2 axioms: fx_lower_bound (F(x) ≥ c·ln(x) via probabilistic method), fx_upper_bound (F(x) ≤ C·ln(x) via averaging). 0 sorries.",
+    "erdosNumber": 1205,
+    "erdosUrl": "https://erdosproblems.com/1205",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-04-12",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card",
+        "description": "Counting elements satisfying a predicate",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm for the Θ(log x) bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Harmonic sum ∑ 1/n",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "CoveringAssignment type: maps each modulus n to a residue class a_n ∈ Fin n",
+      "coverageCount function: counts how many n ≤ x cover a given m",
+      "harmonicSum definition: ∑_{n=1}^{x} 1/(n+1) ≈ ln(x)",
+      "fx_lower_bound axiom: F(x) ≥ c·ln(x) via probabilistic method",
+      "fx_upper_bound axiom: F(x) ≤ C·ln(x) via averaging argument",
+      "erdos_1205 theorem: F(x) = Θ(log x) as a conjunction of both bounds"
+    ],
+    "theoremCount": 1,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "Covering systems — sets of congruences $\\{a_i \\pmod{n_i}\\}$ such that every integer satisfies at least one — were introduced by Erdős in the early 1950s. His first major result was that such systems exist with all moduli distinct; the smallest-known example uses moduli $\\{2, 3, 4, 6, 12\\}$. Erdős asked in 1950 whether covering systems exist with all moduli odd and distinct — a conjecture resolved negatively only in 2015 by Hough, who showed no such infinite covering system can have a large enough minimum modulus.\n\nThe multi-covering generalization (Problem #1205) asks for the maximum simultaneous coverage F(x) achievable over all $m \\le x$ using congruences $a_n \\pmod{n}$ for all $n \\le x$. The key observation linking this to the harmonic series traces to the 19th-century work of Euler and Mertens: $\\sum_{n=1}^{x} 1/n \\sim \\ln x$ (Euler, 1737), and this sum controls the expected number of divisors of a random integer. For covering systems, each congruence $a_n \\pmod{n}$ covers exactly $1/n$ of all integers, so the expected total coverage is exactly $H(x) = \\sum_{n \\le x} 1/n$.\n\nThe probabilistic method — pioneered by Erdős and Rényi in the 1950s-60s — shows that a random assignment (each $a_n$ uniform mod $n$, independent) achieves the expected coverage simultaneously for all $m$, with high probability. The required concentration inequalities (Chernoff-Hoeffding bounds) show that coverage deviates from its mean $H(x)$ by at most $O(\\sqrt{\\ln x})$, so the minimum is still $\\Omega(\\ln x)$. The Lovász Local Lemma (1975) provides a cleaner alternative when dependencies are bounded. The tight $\\Theta(\\ln x)$ answer shows that the averaging bound is essentially sharp: the minimum achievable coverage matches the average to within a constant factor, a strong concentration phenomenon.",
+    "problemStatement": "Let $F(x)$ be maximal such that there exists, for all $n\\leq x$, a congruence class $a_n\\pmod{n}$ such that every $m\\leq x$ satisfies at least $F(x)$ of these congruences. Estimate $F(x)$.",
+    "proofStrategy": "The Lean formalization introduces `CoveringAssignment` (mapping each modulus $n \\leq x$ to a residue class in $\\{0,\\ldots,n-1\\}$) and `coverageCount` (counting how many moduli cover a given integer $m$). The two main bounds are axiomatized: `fx_upper_bound` encodes the averaging argument (total coverage $\\sum_n \\lfloor x/n \\rfloor \\approx x \\ln x$, averaged over $m \\leq x$ gives $\\ln x$ per integer, so the minimum cannot exceed the average); `fx_lower_bound` encodes the probabilistic method (random assignment gives $E[C(m)] = \\sum_{n \\leq x} 1/n \\approx \\ln x$, concentration inequality ensures the minimum over $m$ is also $\\Omega(\\ln x)$). The main theorem `erdos_1205` bundles both bounds as a conjunction, giving $F(x) = \\Theta(\\log x)$.",
+    "keyInsights": [
+      "The maximum possible total coverage is $\\sum_{n \\le x} 1/n \\approx \\ln x$, since a_n (mod n) covers exactly $\\lfloor x/n \\rfloor$ of the integers $m \\le x$, and each m is covered by exactly those n dividing $m - a_n$.",
+      "The probabilistic method: choose each $a_n$ uniformly at random from $\\{0, \\ldots, n-1\\}$. For fixed m, $E[\\text{coverage of m}] = \\sum_{n \\le x} 1/n \\approx \\ln x$. By concentration, there exists a choice achieving $F(x) \\ge c \\ln x$.",
+      "The covering congruences problem (every integer is covered) requires $\\sum 1/n_i \\ge 1$. The multi-covering problem scales this: achieving F-fold coverage requires $\\sum 1/n \\ge F$, which with moduli $1, 2, \\ldots, x$ gives $\\sum_{n \\le x} 1/n = \\Theta(\\log x)$.",
+      "This is connected to the Erdős-Turán conjecture and sieve theory: the 'covering density' of an arithmetic progression $a_n \\pmod{n}$ in $\\{1, \\ldots, x\\}$ is approximately $1/n$.",
+      "The Θ(log x) answer is a rare instance where the probabilistic method gives an exact-order result matching the averaging bound: the achievable minimum equals the mean to within constants. This tight concentration — gap between min and mean is O(√log x) — is characteristic of covering sums with independent Bernoulli contributions of widely varying sizes (1/n for n ≤ x).",
+      "The Lovász Local Lemma (LLL, 1975) provides a cleaner alternative to Chernoff + union bound for the lower bound. Label event B_m = {C(m) < c·ln x} as 'bad'. Each B_m has exponentially small probability (by Chernoff), and B_m depends only on the values of a_n for which n covers m — at most Σ_{n≤x} 1 = x events. But in the dependency graph, B_m and B_{m'} are independent when m and m' are not covered by any common n, i.e., when gcd(m-a_n, m'-a_n) has no small factors. The LLL applies when the degree of dependency is bounded, giving a cleaner existence proof that avoids the union bound threshold calculation."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Header: F(x) = Θ(log x)",
+      "startLine": 1,
+      "endLine": 17,
+      "summary": "Module docstring documenting Problem #1205, its answer F(x) = Θ(log x), and the two main tools: averaging (upper bound) and probabilistic method (lower bound).",
+      "mathContext": "Let $F(x) = \\max_a \\min_{m \\le x} C_a(m)$, where $C_a(m) = |\\{n \\le x : m \\equiv a_n \\pmod{n}\\}|$. The answer $F(x) = \\Theta(\\log x)$ follows because $\\sum_{n \\le x} 1/n \\sim \\ln x$: the harmonic series controls both the average coverage (upper bound) and achievable minimum coverage (lower bound by probabilistic existence)."
+    },
+    {
+      "id": "coverage-def",
+      "title": "Definitions: CoveringAssignment and coverageCount",
+      "startLine": 19,
+      "endLine": 42,
+      "summary": "Defines CoveringAssignment (Fin x → Fin n.succ, mapping each modulus to a residue class) and coverageCount (counts moduli n ≤ x covering m, via Finset.filter). Also contains the F(x) docstring explaining the maximum guaranteed multi-coverage concept.",
+      "mathContext": "`CoveringAssignment x` is the dependent product $\\prod_{n < x} (\\mathbb{Z}/n\\mathbb{Z})$, using `Fin n.val.succ` to represent $\\{0,\\ldots,n-1\\}$. The `coverageCount x m a` function counts the cardinality of $\\{n \\le x : m \\equiv a(n) \\pmod{n}\\}$ via `Finset.univ.filter`."
+    },
+    {
+      "id": "harmonic-sum",
+      "title": "Harmonic Sum: Theoretical Maximum Coverage",
+      "startLine": 44,
+      "endLine": 46,
+      "summary": "Defines harmonicSum(x) = ∑_{n<x} 1/(n+1) as a noncomputable real-valued function. This is the theoretical maximum average coverage per integer under any covering assignment.",
+      "mathContext": "The harmonic sum $H(x) = \\sum_{n=1}^{x} 1/n \\sim \\ln x + \\gamma$ (Euler–Mascheroni constant $\\gamma \\approx 0.5772$). For any covering assignment $a$, the expected coverage of a random $m$ equals $\\sum_{n \\le x} \\Pr[m \\equiv a_n \\pmod{n}] = \\sum_{n \\le x} 1/n = H(x)$, bounding $F(x) \\le H(x) \\approx \\ln x$."
+    },
+    {
+      "id": "axiom-upper",
+      "title": "Upper Bound Axiom: F(x) ≤ C·ln(x)",
+      "startLine": 47,
+      "endLine": 61,
+      "summary": "Axiomatizes fx_upper_bound: there exists C > 0 such that for all x ≥ 2 and all covering assignments, some m ≤ x has coverage ≤ C·log(x). The proof sketch invokes the averaging argument: total coverage ∑_m C_a(m) = ∑_n ⌊x/n⌋ ≈ x·ln(x), so the minimum cannot exceed the average ≈ ln(x).",
+      "mathContext": "For any assignment $a$: $\\sum_{m=1}^{x} C_a(m) = \\sum_{n=1}^{x} |\\{m \\le x : n \\mid m - a_n\\}| = \\sum_{n=1}^{x} \\lfloor x/n \\rfloor \\approx x \\ln x$. Dividing by $x$: the average coverage per $m$ is $\\approx \\ln x$. Hence $\\min_m C_a(m) \\le \\text{avg} \\le C \\ln x$."
+    },
+    {
+      "id": "axiom-lower",
+      "title": "Lower Bound Axiom: F(x) ≥ c·ln(x)",
+      "startLine": 62,
+      "endLine": 70,
+      "summary": "Axiomatizes fx_lower_bound: there exists c > 0 such that for all x ≥ 2, some covering assignment achieves coverage ≥ c·log(x) for every m ≤ x. The proof sketch uses the probabilistic method: random assignment gives E[C(m)] = H(x) ≈ ln(x), and Chernoff/LLL concentration ensures the minimum is also Ω(ln x).",
+      "mathContext": "Random assignment (each $a_n$ uniform on $\\{0,\\ldots,n-1\\}$): $E[C(m)] = \\sum_{n \\le x} 1/n = H(x) \\approx \\ln x$. The Lovász Local Lemma or Chernoff bound shows $\\Pr[\\min_m C(m) < c\\ln x] < 1$, proving existence of a good assignment. This requires concentration inequalities for sums of independent Bernoulli variables — not yet in Mathlib."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: erdos_1205",
+      "startLine": 72,
+      "endLine": 87,
+      "summary": "The main theorem erdos_1205 packages both bounds as a conjunction: (∃ c > 0, eventually F(x) ≥ c·log x) ∧ (∃ C > 0, eventually F(x) ≤ C·log x). The proof is just ⟨fx_lower_bound, fx_upper_bound⟩, delegating to the two axioms.",
+      "mathContext": "The theorem statement encodes $F(x) = \\Theta(\\log x)$ as a conjunction of existential bounds. The `#check` statements at the end confirm the types of `erdos_1205`, `harmonicSum`, and `coverageCount`, serving as a type-correctness sanity check."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #1205 asks for the maximum number F(x) of congruences $a_n \\pmod{n}$ (for all $n \\le x$) that can simultaneously be satisfied by every $m \\le x$. The answer is $F(x) = \\Theta(\\log x)$, matching the harmonic sum $\\sum_{n \\le x} 1/n$.",
+    "implications": "This result connects number theory (harmonic series), combinatorics (covering systems), and probability (concentration inequalities). The Θ(log x) answer is tight and reflects a fundamental principle: the harmonic series ∑ 1/n is both the average coverage per integer (upper bound) and achievable as a minimum (lower bound via probabilistic existence). A Lean formalization of the lower bound would require concentration inequalities for sums of independent Bernoulli variables — closely related to the Lovász Local Lemma and Chernoff bounds, which are being developed in Mathlib. The `CoveringAssignment` and `coverageCount` definitions introduced here are reusable for formalizing other covering-system problems.",
+    "openQuestions": [
+      "What is the exact leading constant in $F(x) \\sim c \\cdot \\ln x$? Is $c = 1$?",
+      "Can the probabilistic existence proof be made constructive (explicit construction of optimal $a_n$)?",
+      "How does $F(x)$ behave when restricted to prime moduli $n$ (i.e., $n \\le x$ and $n$ prime)?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "Erdős's covering system problem (Problem #1): does a finite covering system of distinct moduli exist? This multi-covering problem extends the question to maximizing simultaneous coverage."
+    },
+    {
+      "targetId": "bertrands-postulate-oq-03-oq-04-oq-03",
+      "relationship": "related",
+      "description": "Both entries use the harmonic series ∑ 1/n ≈ ln(x) as a key asymptotic; this entry uses it to bound F(x) while the PNT density entry uses it to control interval prime counts."
+    },
+    {
+      "targetId": "erdos-1202",
+      "relationship": "related",
+      "description": "Neighbor in the Erdős 1200s cluster: #1202 (prime set density threshold m²/(n log n)) uses similar probabilistic/sieve-theoretic methods for quantitative covering results; both are axiomatized due to analytic depth beyond current Mathlib."
+    },
+    {
+      "targetId": "prime-reciprocal-divergence",
+      "relationship": "foundational",
+      "description": "Divergence of ∑ 1/p is the prime-modulus analogue of the harmonic sum ∑ 1/n ≈ ln x that controls F(x); both results use the harmonic series as the natural density for modular covering."
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "axiomCount": 2,
+    "lineCount": 87,
+    "sorries": 0,
+    "path": "Proofs/Erdos1205Problem.lean",
+    "definitionCount": 3,
+    "theoremCount": 1
+  }
+}

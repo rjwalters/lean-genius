@@ -1,0 +1,506 @@
+[
+  {
+    "id": "ann-627-header",
+    "proofId": "erdos-627",
+    "range": {
+      "startLine": 1,
+      "endLine": 20
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős #627:** Chromatic number vs clique number ratio.\n\n**Definition:** $f(n) = \\max_{|V(G)|=n} \\chi(G)/\\omega(G)$.\n\n**Question:** Does $\\lim_{n\\to\\infty} f(n)/(n/(\\log n)^2)$ exist?\n\n**Status:** OPEN\n\n**Known:**\n- $f(n) \\asymp n/(\\log n)^2$ (Erdős)\n- If limit exists, it's in $(\\log 2)^2 \\cdot [1/4, 1] \\approx [0.12, 0.48]$",
+    "significance": "key",
+    "mathContext": "The function $f(n)$ captures the worst-case gap between clique number and chromatic number. While $\\omega(G) \\leq \\chi(G)$ always, the Tutte-Zykov theorem shows the ratio can be arbitrarily large. Erdős proved $f(n) = \\Theta(n/(\\log n)^2)$ using the probabilistic method for the lower bound and a greedy argument for the upper bound.",
+    "relatedConcepts": [
+      "chromatic number",
+      "clique number",
+      "Ramsey theory",
+      "perfect graphs",
+      "probabilistic method"
+    ],
+    "prerequisites": [
+      "graph coloring",
+      "asymptotic notation",
+      "limits"
+    ]
+  },
+  {
+    "id": "ann-627-imports",
+    "proofId": "erdos-627",
+    "range": {
+      "startLine": 22,
+      "endLine": 28
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "Imports the full Mathlib library for access to `SimpleGraph`, `Filter.Tendsto`, `Real.log`, and `Finset`. Opens `Finset`, `Function`, `SimpleGraph`, and `Nat` namespaces. Declares universe-polymorphic vertex type `V` with `Fintype` and `DecidableEq` instances.",
+    "significance": "supporting",
+    "mathContext": "The formalization uses `SimpleGraph V` for undirected graphs on vertex type $V$. The `Fintype V` instance ensures $|V|$ is computable, while `DecidableEq V` enables decidable adjacency and membership tests needed for clique and coloring definitions.",
+    "relatedConcepts": [
+      "SimpleGraph",
+      "Fintype",
+      "DecidableEq"
+    ],
+    "prerequisites": [
+      "Lean 4 type classes",
+      "Mathlib graph theory"
+    ]
+  },
+  {
+    "id": "ann-627-clique",
+    "proofId": "erdos-627",
+    "range": {
+      "startLine": 32,
+      "endLine": 34
+    },
+    "type": "definition",
+    "title": "Clique Number",
+    "content": "The **clique number** $\\omega(G)$ is the size of the largest complete subgraph in $G$.\n\n$\\omega(G) = k$ means $G$ contains $K_k$ but not $K_{k+1}$.\n\nThis measures local density: how many mutually adjacent vertices exist.",
+    "significance": "key",
+    "mathContext": "Defined as `noncomputable def cliqueNumber (G : SimpleGraph V) : ℕ` with a sorry body. The clique number $\\omega(G) = \\max\\{k : K_k \\hookrightarrow G\\}$ is NP-hard to compute in general (Karp 1972). For the ratio $\\chi/\\omega$, it serves as the denominator providing a lower bound on chromatic number.",
+    "relatedConcepts": [
+      "complete graph",
+      "NP-hardness",
+      "Ramsey number",
+      "independence number"
+    ],
+    "prerequisites": [
+      "graph theory basics",
+      "complete subgraph"
+    ]
+  },
+  {
+    "id": "ann-627-chromatic",
+    "proofId": "erdos-627",
+    "range": {
+      "startLine": 36,
+      "endLine": 38
+    },
+    "type": "definition",
+    "title": "Chromatic Number",
+    "content": "The **chromatic number** $\\chi(G)$ is the minimum number of colors needed for a proper vertex coloring.\n\n$\\chi(G)$ measures global coloring difficulty, which depends on the entire graph structure, not just local neighborhoods.",
+    "significance": "key",
+    "mathContext": "Defined as `noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ` with sorry. Computing $\\chi(G)$ is NP-hard (Karp 1972). The key relationship $\\omega(G) \\leq \\chi(G) \\leq \\Delta(G) + 1$ (Brooks' theorem gives $\\chi \\leq \\Delta$ except for complete graphs and odd cycles) bounds chromatic number between clique number and maximum degree.",
+    "relatedConcepts": [
+      "proper coloring",
+      "Brooks' theorem",
+      "greedy coloring",
+      "fractional chromatic number"
+    ],
+    "prerequisites": [
+      "graph coloring",
+      "proper vertex coloring"
+    ]
+  },
+  {
+    "id": "ann-627-colorable",
+    "proofId": "erdos-627",
+    "range": {
+      "startLine": 44,
+      "endLine": 46
+    },
+    "type": "concept",
+    "title": "k-Colorability",
+    "content": "A graph is $k$-colorable if there exists $f: V \\to \\{0,\\ldots,k-1\\}$ with $f(v) \\neq f(w)$ whenever $v \\sim w$. Formalized as `IsKColorable G k` using `Fin k` as the color set.",
+    "significance": "supporting",
+    "mathContext": "The definition `∃ f : V → Fin k, ∀ v w, G.Adj v w → f v ≠ f w` directly captures proper $k$-coloring. The chromatic number is then $\\chi(G) = \\min\\{k : \\text{IsKColorable } G\\, k\\}$. This existential formulation avoids constructing explicit colorings.",
+    "relatedConcepts": [
+      "proper coloring",
+      "chromatic polynomial",
+      "list coloring"
+    ],
+    "prerequisites": [
+      "function types",
+      "Fin type"
+    ]
+  },
+  {
+    "id": "ann-627-contains-clique",
+    "proofId": "erdos-627",
+    "range": {
+      "startLine": 55,
+      "endLine": 56
+    },
+    "type": "concept",
+    "title": "Contains k-Clique",
+    "content": "A graph contains a $k$-clique if there exists a subset $S \\subseteq V$ with $|S| = k$ where all distinct pairs are adjacent. Formalized via `Finset V` with pairwise adjacency.",
+    "significance": "supporting",
+    "mathContext": "The definition `∃ S : Finset V, S.card = k ∧ ∀ v w, v ∈ S → w ∈ S → v ≠ w → G.Adj v w` uses Finsets rather than graph homomorphisms from $K_k$. This is equivalent to requiring a clique embedding $K_k \\hookrightarrow G$.",
+    "relatedConcepts": [
+      "Ramsey theory",
+      "clique cover",
+      "Turán's theorem"
+    ],
+    "prerequisites": [
+      "Finset",
+      "graph adjacency"
+    ]
+  },
+  {
+    "id": "ann-627-ratio",
+    "proofId": "erdos-627",
+    "range": {
+      "startLine": 50,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "The Ratio χ/ω",
+    "content": "`chiOmegaRatio G = χ(G) / ω(G)`\n\nThis ratio measures how much harder coloring is than the clique lower bound suggests.\n\n- Ratio $= 1$: Graph is 'perfect' ($\\chi = \\omega$ for all induced subgraphs)\n- Ratio $> 1$: Global structure requires more colors than local density implies",
+    "significance": "key",
+    "mathContext": "Defined as $(\\chi(G) : \\mathbb{R}) / (\\omega(G) : \\mathbb{R})$ using real division. The ratio $\\chi/\\omega$ is sometimes called the **imperfection ratio**. For perfect graphs (Lovász 1972), this equals 1 for all induced subgraphs. The maximum over $n$-vertex graphs gives $f(n)$, the central object of Problem #627.",
+    "relatedConcepts": [
+      "imperfection ratio",
+      "perfect graphs",
+      "fractional chromatic number"
+    ],
+    "prerequisites": [
+      "real division",
+      "graph parameters"
+    ]
+  },
+  {
+    "id": "ann-627-chi-ge-omega",
+    "proofId": "erdos-627",
+    "range": {
+      "startLine": 54,
+      "endLine": 57
+    },
+    "type": "concept",
+    "title": "χ ≥ ω Always",
+    "content": "**Fundamental bound:** $\\chi(G) \\geq \\omega(G)$ for all graphs.\n\nA $k$-clique requires $k$ distinct colors (all vertices mutually adjacent), so $\\chi \\geq \\omega$.\n\nThis means the ratio $\\chi/\\omega \\geq 1$.",
+    "significance": "key",
+    "mathContext": "This is the trivial lower bound: any proper coloring of $G$ must use at least $\\omega(G)$ colors on any maximum clique. Combined with the ratio definition, it ensures $f(n) \\geq 1$ for all $n \\geq 1$. The interesting question is how much $\\chi$ can exceed $\\omega$.",
+    "relatedConcepts": [
+      "clique bound",
+      "fractional relaxation",
+      "Lovász theta function"
+    ],
+    "prerequisites": [
+      "proper coloring",
+      "clique"
+    ]
+  },
+  {
+    "id": "ann-627-f-function",
+    "proofId": "erdos-627",
+    "range": {
+      "startLine": 65,
+      "endLine": 67
+    },
+    "type": "concept",
+    "title": "The Function f(n)",
+    "content": "$f(n) = \\sup_{|V(G)|=n} \\chi(G)/\\omega(G)$, the maximum ratio over all $n$-vertex graphs.\n\nThis captures the worst-case gap between clique number and chromatic number for $n$-vertex graphs.\n\nThe question is: how does $f(n)$ grow with $n$?",
+    "significance": "key",
+    "mathContext": "Defined noncomputably as a sorry since computing the supremum over all $n$-vertex graphs requires enumerating all graphs. The function $f(n)$ is well-defined because the set of $n$-vertex graphs is finite (up to isomorphism). Erdős proved $f(n) = \\Theta(n/(\\log n)^2)$, so the supremum is finite and achieved.",
+    "relatedConcepts": [
+      "extremal graph theory",
+      "supremum",
+      "graph enumeration"
+    ],
+    "prerequisites": [
+      "supremum",
+      "graph isomorphism"
+    ]
+  },
+  {
+    "id": "ann-627-tutte-zykov",
+    "proofId": "erdos-627",
+    "range": {
+      "startLine": 70,
+      "endLine": 71
+    },
+    "type": "concept",
+    "title": "Tutte-Zykov Construction",
+    "content": "**Tutte (1947) and Zykov (1949) independently:**\n\nGraphs with $\\omega = 2$ (triangle-free) can have arbitrarily large $\\chi$!\n\nThis is surprising: triangle-free graphs seem 'sparse' but can still require many colors. The ratio $\\chi/\\omega$ can be arbitrarily large.",
+    "significance": "key",
+    "mathContext": "Axiomatized as `tutte_zykov_construction`. Tutte's construction uses a recursive Mycielski-type operation: starting from $K_2$, each step adds a 'shadow' vertex layer preserving triangle-freeness while increasing $\\chi$ by 1. Zykov's construction is similar but uses a different recursive scheme. Erdős (1959) later gave a non-constructive proof using the probabilistic method, showing random $G(n,p)$ graphs are triangle-free with high $\\chi$.",
+    "relatedConcepts": [
+      "Mycielski construction",
+      "probabilistic method",
+      "Erdős 1959 theorem",
+      "Shift graph"
+    ],
+    "prerequisites": [
+      "triangle-free graph",
+      "recursive construction"
+    ]
+  },
+  {
+    "id": "ann-627-triangle-free",
+    "proofId": "erdos-627",
+    "range": {
+      "startLine": 74,
+      "endLine": 82
+    },
+    "type": "concept",
+    "title": "Triangle-Free Large χ",
+    "content": "For any $k$, there exist triangle-free graphs with $\\chi \\geq k$.\n\nThis follows from Tutte-Zykov: $\\omega = 2$ means no triangles ($K_3$).\n\n**Intuition breaker:** Locally sparse (no triangles) doesn't mean globally easy to color!",
+    "significance": "key",
+    "mathContext": "Derived from `tutte_zykov_construction` by noting $\\omega = 2$ implies triangle-freeness (any triangle would give $\\omega \\geq 3$). The proof applies the axiom and extracts the triangle-free property. Erdős and Hajnal generalized this: for any $g$ and $k$, there exist graphs with girth $\\geq g$ and $\\chi \\geq k$ (no short cycles but high chromatic number).",
+    "relatedConcepts": [
+      "girth",
+      "Erdős-Hajnal girth-chromatic theorem",
+      "high-girth high-chromatic graphs"
+    ],
+    "prerequisites": [
+      "triangle-free",
+      "Tutte-Zykov theorem"
+    ]
+  },
+  {
+    "id": "ann-627-normalized",
+    "proofId": "erdos-627",
+    "range": {
+      "startLine": 87,
+      "endLine": 88
+    },
+    "type": "definition",
+    "title": "Normalized Function",
+    "content": "`fNormalized n = f(n) / (n / (log n)²)`\n\nSince $f(n) \\asymp n/(\\log n)^2$, this normalization should be bounded.\n\nThe main question: does $\\text{fNormalized}(n) \\to L$ as $n \\to \\infty$?",
+    "significance": "key",
+    "mathContext": "Defined as `f n / (n / (Real.log n)^2)`. The Erdős asymptotic $f(n) = \\Theta(n/(\\log n)^2)$ ensures this ratio stays in $[c_1, c_2]$ for positive constants. The open question is whether it converges rather than oscillating. This is analogous to asking whether $\\pi(x)/(x/\\log x) \\to 1$ (the prime number theorem), but here convergence itself is unknown.",
+    "relatedConcepts": [
+      "asymptotic analysis",
+      "limit existence",
+      "oscillation",
+      "prime number theorem analogy"
+    ],
+    "prerequisites": [
+      "real division",
+      "Real.log",
+      "asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-627-erdos-asymptotic",
+    "proofId": "erdos-627",
+    "range": {
+      "startLine": 97,
+      "endLine": 101
+    },
+    "type": "concept",
+    "title": "Erdős's Asymptotic",
+    "content": "**Erdős proved:** $f(n) \\asymp n/(\\log n)^2$\n\nMeaning: $c_1 \\cdot n/(\\log n)^2 \\leq f(n) \\leq c_2 \\cdot n/(\\log n)^2$ for constants $c_1, c_2 > 0$.\n\nSo $f(n)$ grows, but slower than linear. The $(\\log n)^2$ denominator makes growth sub-polynomial.",
+    "significance": "key",
+    "mathContext": "Axiomatized as `erdos_asymptotic`. The lower bound uses Erdős's probabilistic method (1959): a random graph $G(n, n^{-1/2})$ has $\\omega(G) = O(\\sqrt{n} \\log n)$ and $\\chi(G) = \\Omega(\\sqrt{n}/\\log n)$, giving ratio $\\Omega(n/(\\log n)^2)$. The upper bound uses Ramsey-type arguments: if $\\omega(G) \\geq c\\log n$, then $\\chi \\leq n/\\log n$ by a greedy argument, bounding the ratio by $O(n/(\\log n)^2)$.",
+    "relatedConcepts": [
+      "probabilistic method",
+      "random graphs",
+      "Ramsey bounds",
+      "greedy coloring"
+    ],
+    "prerequisites": [
+      "asymptotic analysis",
+      "probabilistic method",
+      "random graph model G(n,p)"
+    ]
+  },
+  {
+    "id": "ann-627-limit",
+    "proofId": "erdos-627",
+    "range": {
+      "startLine": 117,
+      "endLine": 118
+    },
+    "type": "definition",
+    "title": "Limit Existence",
+    "content": "`LimitExists` means $\\lim_{n\\to\\infty} f(n)/(n/(\\log n)^2)$ exists.\n\nWe know this ratio is bounded, but it might oscillate rather than converge.\n\nThis is the OPEN question of Problem #627.",
+    "significance": "key",
+    "mathContext": "Formalized using Mathlib's `Filter.Tendsto fNormalized Filter.atTop (nhds L)` for some $L \\in \\mathbb{R}$. The `atTop` filter captures $n \\to \\infty$. This asks whether $\\text{fNormalized}$ is a Cauchy sequence modulo null sets. The bounded oscillation scenario would mean $\\liminf < \\limsup$, which is consistent with current knowledge.",
+    "relatedConcepts": [
+      "Filter.Tendsto",
+      "nhds",
+      "liminf",
+      "limsup",
+      "Cauchy sequence"
+    ],
+    "prerequisites": [
+      "topological limits",
+      "filter convergence",
+      "Mathlib filter API"
+    ]
+  },
+  {
+    "id": "ann-627-limit-bounds",
+    "proofId": "erdos-627",
+    "range": {
+      "startLine": 136,
+      "endLine": 139
+    },
+    "type": "concept",
+    "title": "Limit Bounds",
+    "content": "**If the limit exists,** it lies in $(\\log 2)^2 \\cdot [1/4, 1]$.\n\nNumerically: $(\\log 2)^2 \\approx 0.48$, so the limit (if it exists) is in $[0.12, 0.48]$.\n\nThis $4\\times$ gap shows we don't know $f(n)$ precisely even asymptotically.",
+    "significance": "key",
+    "mathContext": "Axiomatized as `limit_if_exists_bounded`. The upper bound $(\\log 2)^2$ comes from the Ramsey bound $R(k,k) \\leq 4^k$: graphs on $n$ vertices have $\\omega \\geq \\frac{1}{2}\\log_2 n$, giving $\\chi/\\omega \\leq 2n/\\log_2 n \\cdot 1/(\\log n) = O(n/(\\log n)^2)$ with constant $(\\log 2)^2$. The lower bound $(\\log 2)^2/4$ uses explicit constructions.",
+    "relatedConcepts": [
+      "Ramsey upper bound",
+      "explicit construction bounds",
+      "logarithmic estimates"
+    ],
+    "prerequisites": [
+      "Ramsey numbers",
+      "logarithm properties"
+    ]
+  },
+  {
+    "id": "ann-627-perfect",
+    "proofId": "erdos-627",
+    "range": {
+      "startLine": 137,
+      "endLine": 138
+    },
+    "type": "definition",
+    "title": "Perfect Graphs",
+    "content": "A graph is **perfect** if $\\chi(H) = \\omega(H)$ for all induced subgraphs $H$.\n\nFor perfect graphs, the $\\chi/\\omega$ ratio is exactly 1 — no gap at all!\n\nExamples: bipartite graphs, chordal graphs, comparability graphs.",
+    "significance": "key",
+    "mathContext": "Defined as `IsPerfect G := ∀ S, chromaticNumber (G.induce S) = cliqueNumber (G.induce S)`. Lovász (1972) proved the Perfect Graph Theorem: $G$ is perfect iff $\\overline{G}$ is perfect. The Strong Perfect Graph Theorem (Chudnovsky et al. 2006) gives a forbidden subgraph characterization. Perfect graphs show that $f(n)$ is driven by imperfect graphs.",
+    "relatedConcepts": [
+      "Perfect Graph Theorem",
+      "Strong Perfect Graph Theorem",
+      "chordal graph",
+      "comparability graph"
+    ],
+    "prerequisites": [
+      "induced subgraph",
+      "graph complement"
+    ]
+  },
+  {
+    "id": "ann-627-spgt",
+    "proofId": "erdos-627",
+    "range": {
+      "startLine": 147,
+      "endLine": 152
+    },
+    "type": "concept",
+    "title": "Strong Perfect Graph Theorem",
+    "content": "**Chudnovsky, Robertson, Seymour, Thomas (2006):**\n\n$G$ is perfect $\\iff$ $G$ has no odd hole or odd antihole.\n\nAn odd hole is an induced odd cycle $C_{2k+1}$ for $k \\geq 2$.\nAn odd antihole is the complement of an odd hole.\n\nThis landmark theorem completely characterizes perfect graphs!",
+    "significance": "key",
+    "mathContext": "Axiomatized as `strong_perfect_graph_theorem`. This was conjectured by Berge (1961) and proved 45 years later. The proof is 150+ pages. The theorem implies polynomial-time recognition: checking for odd holes/antiholes. For Problem #627, it clarifies that extremal graphs achieving $f(n)$ must contain odd holes or antiholes.",
+    "relatedConcepts": [
+      "Berge conjecture",
+      "odd hole",
+      "odd antihole",
+      "polynomial-time recognition"
+    ],
+    "prerequisites": [
+      "induced cycle",
+      "graph complement",
+      "perfect graph definition"
+    ]
+  },
+  {
+    "id": "ann-627-ramsey",
+    "proofId": "erdos-627",
+    "range": {
+      "startLine": 157,
+      "endLine": 158
+    },
+    "type": "definition",
+    "title": "Ramsey Connection",
+    "content": "**Connection to Ramsey numbers:**\n\n$f(R(k,k)) \\geq k$, where $R(k,k)$ is the diagonal Ramsey number.\n\nRamsey graphs (those achieving Ramsey bounds) have large $\\chi/\\omega$ ratio because they avoid both large cliques and large independent sets.",
+    "significance": "key",
+    "mathContext": "The Ramsey number $R(k,k)$ ensures any graph on $R(k,k)$ vertices has $\\omega \\geq k$ or $\\alpha \\geq k$. A Ramsey graph $G$ on $R(k,k)-1$ vertices has $\\omega < k$ and $\\alpha < k$, giving $\\chi \\geq n/\\alpha > (R(k,k)-1)/k$ and ratio $\\chi/\\omega \\geq (R(k,k)-1)/(k \\cdot (k-1))$. The Erdős-Szekeres bound $R(k,k) \\leq \\binom{2k-2}{k-1}$ yields the connection to $f(n)$.",
+    "relatedConcepts": [
+      "Ramsey numbers",
+      "diagonal Ramsey",
+      "Erdős-Szekeres bound",
+      "independence number"
+    ],
+    "prerequisites": [
+      "Ramsey theory",
+      "independence number"
+    ]
+  },
+  {
+    "id": "ann-627-mycielski",
+    "proofId": "erdos-627",
+    "range": {
+      "startLine": 172,
+      "endLine": 173
+    },
+    "type": "definition",
+    "title": "Mycielski Construction",
+    "content": "**Mycielski (1955):** Explicit construction of triangle-free high-$\\chi$ graphs.\n\n$M_k$ has $\\omega = 2$ and $\\chi = k$. The construction recursively builds larger graphs.\n\n$M_1 = K_2$, and $M_{k+1}$ extends $M_k$ by adding 'shadow' vertices and a universal vertex.\n\nThis gives concrete examples of large $\\chi/\\omega$ ratio.",
+    "significance": "key",
+    "mathContext": "Defined noncomputably as `mycielskiGraph : ℕ → (Σ V, SimpleGraph V)`. The Mycielski construction takes $G$ with $n$ vertices, adds $n$ shadow vertices $u_1, \\ldots, u_n$ (each $u_i$ connected to neighbors of $v_i$) plus one universal vertex $w$ connected to all shadows. This preserves $\\omega = 2$ while increasing $\\chi$ by 1. The resulting $M_k$ has $3 \\cdot 2^{k-2} - 1$ vertices.",
+    "relatedConcepts": [
+      "Mycielskian",
+      "shadow vertices",
+      "universal vertex",
+      "recursive graph construction"
+    ],
+    "prerequisites": [
+      "triangle-free graphs",
+      "recursive construction"
+    ]
+  },
+  {
+    "id": "ann-627-kneser",
+    "proofId": "erdos-627",
+    "range": {
+      "startLine": 182,
+      "endLine": 183
+    },
+    "type": "definition",
+    "title": "Kneser Graphs",
+    "content": "**Kneser graph** $K(n,k)$: Vertices are $k$-subsets of $[n]$, edges connect disjoint subsets.\n\n**Lovász (1978):** $\\chi(K(n,k)) = n - 2k + 2$ (proved using the Borsuk-Ulam theorem!).\n\nKneser graphs provide another family achieving large $\\chi/\\omega$ ratio.\n\n$K(5,2)$ is the famous Petersen graph.",
+    "significance": "key",
+    "mathContext": "Defined as `kneserGraph (n k : ℕ) : SimpleGraph (Finset (Fin n))`. Lovász's 1978 proof was revolutionary: it applied algebraic topology (Borsuk-Ulam theorem) to combinatorics, founding **topological combinatorics**. The chromatic number $n - 2k + 2$ was conjectured by Kneser (1955). For large $n/k$, the ratio $\\chi/\\omega$ of $K(n,k)$ grows, contributing to lower bounds on $f(n)$.",
+    "relatedConcepts": [
+      "Borsuk-Ulam theorem",
+      "topological combinatorics",
+      "Petersen graph",
+      "Kneser conjecture"
+    ],
+    "prerequisites": [
+      "subset systems",
+      "Finset (Fin n)",
+      "topological methods"
+    ]
+  },
+  {
+    "id": "ann-627-growth",
+    "proofId": "erdos-627",
+    "range": {
+      "startLine": 208,
+      "endLine": 222
+    },
+    "type": "concept",
+    "title": "Growth Rate Analysis",
+    "content": "Restates and derives consequences of the Erdős asymptotic. `f_growth_rate` directly invokes `erdos_asymptotic`. `ratio_bounded` shows $f(n) \\cdot (\\log n)^2 / n$ is bounded away from 0 and $\\infty$.",
+    "significance": "supporting",
+    "mathContext": "The theorem `f_growth_rate` is proved by `exact erdos_asymptotic`, while `ratio_bounded` requires algebraic manipulation of the bounds $c_1 n/(\\log n)^2 \\leq f(n) \\leq c_2 n/(\\log n)^2$ to show $c_1 \\leq f(n)(\\log n)^2/n \\leq c_2$. This confirms the normalization is well-behaved.",
+    "relatedConcepts": [
+      "Θ-notation",
+      "bounded ratio",
+      "asymptotic equivalence"
+    ],
+    "prerequisites": [
+      "Erdős asymptotic",
+      "real arithmetic"
+    ]
+  },
+  {
+    "id": "ann-627-main",
+    "proofId": "erdos-627",
+    "range": {
+      "startLine": 222,
+      "endLine": 236
+    },
+    "type": "concept",
+    "title": "Main Status",
+    "content": "**Erdős Problem #627: OPEN**\n\n1. **$f(n) \\asymp n/(\\log n)^2$:** Erdős established the growth rate\n2. **Limit question:** Does $f(n)/(n/(\\log n)^2)$ converge? UNKNOWN\n3. **Limit bounds:** If exists, in $(\\log 2)^2 \\cdot [1/4, 1] \\approx [0.12, 0.48]$\n4. **Tutte-Zykov:** Triangle-free graphs can have arbitrarily large $\\chi$\n5. **Perfect graphs:** $\\chi = \\omega$ always (ratio exactly 1)\n6. **Constructions:** Mycielski, Kneser achieve high ratio",
+    "significance": "key",
+    "mathContext": "The status theorem `erdos_627_status` combines two key results into a conjunction: the Erdős asymptotic bound (from `erdos_asymptotic`) and the Tutte-Zykov construction (from `tutte_zykov_construction`). The proof is `exact ⟨erdos_asymptotic, tutte_zykov_construction⟩`, showing these are the two foundational results underlying Problem #627.",
+    "relatedConcepts": [
+      "conjunction proof",
+      "existential witness",
+      "problem status summary"
+    ],
+    "prerequisites": [
+      "Erdős asymptotic",
+      "Tutte-Zykov construction"
+    ]
+  }
+]

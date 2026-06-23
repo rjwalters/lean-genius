@@ -1,0 +1,83 @@
+[
+  {
+    "id": "def-pbd",
+    "proofId": "erdos-665",
+    "range": { "startLine": 47, "endLine": 53 },
+    "type": "definition",
+    "title": "Pairwise Balanced Design",
+    "content": "A collection of blocks A₁,...,Aₘ ⊆ {1,...,n} where each block has 2 ≤ |Aᵢ| < n, and every pair of distinct elements appears in exactly one block.",
+    "significance": "major"
+  },
+  {
+    "id": "def-main-question",
+    "proofId": "erdos-665",
+    "range": { "startLine": 67, "endLine": 71 },
+    "type": "definition",
+    "title": "The Main Question",
+    "content": "Does there exist a constant C such that for all large n, a pairwise balanced design exists with all block sizes > √n - C?",
+    "significance": "major"
+  },
+  {
+    "id": "def-h-function",
+    "proofId": "erdos-665",
+    "range": { "startLine": 73, "endLine": 76 },
+    "type": "definition",
+    "title": "The Function h(n)",
+    "content": "h(n) = inf{k : ∃ design with all blocks > √n - k}. The question is whether h(n) = O(1).",
+    "significance": "major"
+  },
+  {
+    "id": "thm-erdos-larson",
+    "proofId": "erdos-665",
+    "range": { "startLine": 86, "endLine": 89 },
+    "type": "theorem",
+    "title": "Erdős-Larson Bound",
+    "content": "h(n) ≪ n^{1/2-c} for some constant c > 0. This is the best unconditional upper bound.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-shrikhande-singhi",
+    "proofId": "erdos-665",
+    "range": { "startLine": 113, "endLine": 119 },
+    "type": "theorem",
+    "title": "Shrikhande-Singhi Embedding",
+    "content": "Every pairwise balanced design embeds in a projective plane. This connects block sizes to projective plane existence.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-prime-power-negative",
+    "proofId": "erdos-665",
+    "range": { "startLine": 121, "endLine": 124 },
+    "type": "theorem",
+    "title": "Prime Power Planes Implies Negative",
+    "content": "If projective planes exist only for prime power orders, then h(n) is unbounded and the answer is 'no'.",
+    "significance": "major"
+  },
+  {
+    "id": "insight-prime-gap",
+    "proofId": "erdos-665",
+    "range": { "startLine": 134, "endLine": 138 },
+    "type": "insight",
+    "title": "Prime Gap Correlation",
+    "content": "h(n) correlates with the largest prime gap H(n) up to n. Under Cramér's conjecture H(n) ≪ (log n)², this gives h(n) ≪ (log n)².",
+    "significance": "major"
+  },
+  {
+    "id": "construction-affine",
+    "proofId": "erdos-665",
+    "range": { "startLine": 154, "endLine": 159 },
+    "type": "construction",
+    "title": "Affine Plane Construction",
+    "content": "For prime q, the affine plane AG(2,q) gives a pairwise balanced design on q² points with all blocks of size exactly q.",
+    "significance": "minor"
+  },
+  {
+    "id": "thm-status",
+    "proofId": "erdos-665",
+    "range": { "startLine": 234, "endLine": 249 },
+    "type": "theorem",
+    "title": "Problem Status",
+    "content": "The problem is OPEN. Upper bound h(n) ≤ n^{1/2-c} is known, but whether h(n) = O(1) depends on projective plane existence and prime gaps.",
+    "significance": "major"
+  }
+]

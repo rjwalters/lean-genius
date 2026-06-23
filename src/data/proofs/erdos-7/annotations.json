@@ -1,0 +1,289 @@
+[
+  {
+    "id": "ann-e7-header",
+    "proofId": "erdos-7",
+    "range": {
+      "startLine": 1,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #7: Covering Systems with Odd Moduli**\n\nIs there a covering system all of whose moduli are odd?\n\n**Conjecture (Erdős-Selfridge)**: NO such system exists.\n\n**Prizes**: $25 (Erdős) + $2000 (Selfridge for explicit construction)\n\n**Partial Results**:\n- Hough-Nielsen (2019): Some modulus divisible by 2 or 3\n- Balister et al. (2022): No odd squarefree covering exists",
+    "mathContext": "A covering system covers all integers via congruence classes. This problem asks whether the prime 2 is essential for covering systems.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Covering systems",
+      "Modular arithmetic",
+      "Prime 2"
+    ],
+    "prerequisites": [
+      "modular arithmetic and congruence classes",
+      "covering systems of congruences",
+      "the special role of the prime 2"
+    ]
+  },
+  {
+    "id": "ann-e7-congclass",
+    "proofId": "erdos-7",
+    "range": {
+      "startLine": 33,
+      "endLine": 37
+    },
+    "type": "definition",
+    "title": "Congruence Class",
+    "content": "**CongruenceClass** represents an arithmetic progression {residue + k*modulus : k ∈ ℤ}.\n\nRequires modulus ≥ 2 to avoid trivial or empty progressions.",
+    "mathContext": "Congruence classes partition integers by residue modulo m. The Chinese Remainder Theorem relates overlaps.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Arithmetic progressions",
+      "Modular arithmetic"
+    ],
+    "prerequisites": [
+      "arithmetic progressions a mod n",
+      "congruences and residues",
+      "the modulus n"
+    ]
+  },
+  {
+    "id": "ann-e7-toset",
+    "proofId": "erdos-7",
+    "range": {
+      "startLine": 39,
+      "endLine": 41
+    },
+    "type": "definition",
+    "title": "Class to Set",
+    "content": "**toSet** maps a congruence class to the set of integers {x : x ≡ residue (mod modulus)}.\n\nUses Int.ModEq for modular equivalence.",
+    "mathContext": "This is the set-theoretic interpretation of a congruence class.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Int.ModEq",
+      "Set membership"
+    ],
+    "prerequisites": [
+      "the relation Int.ModEq (a ≡ b mod n)",
+      "the set {x : x ≡ a mod n}",
+      "set membership"
+    ]
+  },
+  {
+    "id": "ann-e7-covering",
+    "proofId": "erdos-7",
+    "range": {
+      "startLine": 43,
+      "endLine": 47
+    },
+    "type": "definition",
+    "title": "Covering System",
+    "content": "**CoveringSystem** is a list of congruence classes covering all integers.\n\nEvery integer belongs to at least one class: ∀ x, ∃ c ∈ classes, x ∈ c.toSet",
+    "mathContext": "Covering systems are fundamental in number theory. The simplest is {0 mod 2, 1 mod 2}.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Covering systems",
+      "Chinese Remainder Theorem"
+    ],
+    "prerequisites": [
+      "congruence classes covering all integers",
+      "the Chinese Remainder Theorem",
+      "distinct moduli"
+    ]
+  },
+  {
+    "id": "ann-e7-conjecture",
+    "proofId": "erdos-7",
+    "range": {
+      "startLine": 73,
+      "endLine": 80
+    },
+    "type": "definition",
+    "title": "Erdős-Selfridge Conjecture (OPEN)",
+    "content": "**erdos_selfridge_conjecture**: ¬∃ cs : CoveringSystem, cs.allOddModuli\n\nNo covering system has all moduli odd. This is the main OPEN question.",
+    "mathContext": "This would show the prime 2 is essential for covering all integers with congruence classes.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős-Selfridge",
+      "Open problems"
+    ],
+    "prerequisites": [
+      "covering systems with distinct odd moduli",
+      "the Erdős–Selfridge conjecture",
+      "open problems in number theory"
+    ]
+  },
+  {
+    "id": "ann-e7-equiv",
+    "proofId": "erdos-7",
+    "range": {
+      "startLine": 86,
+      "endLine": 100
+    },
+    "type": "concept",
+    "title": "Equivalence of Formulations",
+    "content": "**erdos_selfridge_equiv**: erdos_selfridge_conjecture ↔ erdos_selfridge_alt\n\nThe two formulations are logically equivalent via negation and odd/even duality.",
+    "mathContext": "Shows the conjecture can be stated positively (every covering has even modulus) or negatively (no all-odd covering exists).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Logical equivalence",
+      "Negation"
+    ],
+    "prerequisites": [
+      "covering vs non-covering formulations",
+      "logical negation and equivalence",
+      "restating an existence statement"
+    ]
+  },
+  {
+    "id": "ann-e7-sqfree",
+    "proofId": "erdos-7",
+    "range": {
+      "startLine": 104,
+      "endLine": 117
+    },
+    "type": "definition",
+    "title": "Squarefree Moduli",
+    "content": "**Squarefree n**: No prime squared divides n.\n\n**allOddSquarefreeModuli**: All moduli are both odd AND squarefree.\n\nThis is the case ruled out by Balister et al.",
+    "mathContext": "Squarefree numbers have no repeated prime factors. Products of distinct primes.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Squarefree",
+      "Prime factorization"
+    ],
+    "prerequisites": [
+      "squarefree integers",
+      "prime factorization",
+      "moduli with no repeated prime"
+    ]
+  },
+  {
+    "id": "ann-e7-balister",
+    "proofId": "erdos-7",
+    "range": {
+      "startLine": 121,
+      "endLine": 126
+    },
+    "type": "concept",
+    "title": "Balister et al. (2022)",
+    "content": "**balister_odd_squarefree**:\n\n¬∃ cs : CoveringSystem, cs.allOddSquarefreeModuli\n\nNo covering has all moduli both odd AND squarefree. Major breakthrough toward the conjecture.",
+    "mathContext": "Balister, Bollobás, Morris, Sahasrabudhe, Tiba (2022) used probabilistic and combinatorial methods.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Squarefree restriction",
+      "Partial result"
+    ],
+    "prerequisites": [
+      "odd covering systems",
+      "the squarefree restriction",
+      "the Balister et al. (2022) partial result"
+    ]
+  },
+  {
+    "id": "ann-e7-hough",
+    "proofId": "erdos-7",
+    "range": {
+      "startLine": 146,
+      "endLine": 151
+    },
+    "type": "concept",
+    "title": "Hough-Nielsen (2019)",
+    "content": "**hough_nielsen**:\n\n∀ cs : CoveringSystem, ∃ c ∈ cs.classes, DivisibleBy2Or3 c.modulus\n\nEvery covering has a modulus divisible by 2 or 3. Implies odd coverings need 3-divisible moduli.",
+    "mathContext": "Hough and Nielsen (2019) used sieve methods to prove this restriction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Divisibility",
+      "Sieve methods"
+    ],
+    "prerequisites": [
+      "divisibility and sieve methods",
+      "density of covered integers",
+      "the Hough–Nielsen (2019) bound"
+    ]
+  },
+  {
+    "id": "ann-e7-lcmconst",
+    "proofId": "erdos-7",
+    "range": {
+      "startLine": 166,
+      "endLine": 172
+    },
+    "type": "concept",
+    "title": "LCM Constraint",
+    "content": "**odd_covering_lcm_constraint**:\n\nIf an odd covering exists, its LCM must be divisible by 9 or by 15.\n\nThis constrains the prime factorization of any hypothetical odd covering.",
+    "mathContext": "The LCM encodes the period of the covering. Divisibility by 9 or 15 comes from density arguments.",
+    "significance": "key",
+    "relatedConcepts": [
+      "LCM",
+      "Density constraints"
+    ],
+    "prerequisites": [
+      "the least common multiple of the moduli",
+      "density constraints from the LCM",
+      "period of a covering system"
+    ]
+  },
+  {
+    "id": "ann-e7-constraints",
+    "proofId": "erdos-7",
+    "range": {
+      "startLine": 191,
+      "endLine": 206
+    },
+    "type": "definition",
+    "title": "Combined Constraints",
+    "content": "**odd_covering_constraints**: If an odd covering exists, it must have:\n\n1. Some modulus divisible by 3 (Hough-Nielsen)\n2. LCM divisible by 9 or 15\n3. Non-squarefree moduli (Balister et al.)\n\nThese severely restrict what an odd covering could look like.",
+    "mathContext": "Combining all known constraints shows any odd covering must have very specific structure.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Necessary conditions",
+      "Combined constraints"
+    ],
+    "prerequisites": [
+      "necessary conditions for a covering system",
+      "combining density and LCM constraints",
+      "obstructions to odd coverings"
+    ]
+  },
+  {
+    "id": "ann-e7-selfridge",
+    "proofId": "erdos-7",
+    "range": {
+      "startLine": 210,
+      "endLine": 218
+    },
+    "type": "definition",
+    "title": "Selfridge's $2000 Challenge",
+    "content": "**selfridge_challenge**: Construct an explicit covering system with all moduli odd AND distinct.\n\nNote: Non-constructive existence proofs would NOT collect this prize.",
+    "mathContext": "Selfridge offered $2000 specifically for explicit construction, separate from Erdős's $25 for any proof.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Constructive proof",
+      "Prize problem"
+    ],
+    "prerequisites": [
+      "constructive existence of a covering system",
+      "Selfridge's \\$2000 prize challenge",
+      "odd moduli > 1"
+    ]
+  },
+  {
+    "id": "ann-e7-summary",
+    "proofId": "erdos-7",
+    "range": {
+      "startLine": 249,
+      "endLine": 274
+    },
+    "type": "concept",
+    "title": "Problem Summary",
+    "content": "**Erdős Problem #7: OPEN**\n\n**Conjecture**: No odd covering system exists.\n\n**Known**:\n- Some modulus divisible by 2 or 3\n- No odd squarefree covering\n- LCM must have 9 or 15\n\n**Prizes**: $25 + $2000",
+    "mathContext": "The problem remains open despite significant partial progress. An odd covering would be highly structured if it exists.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Open problems",
+      "Partial results"
+    ],
+    "prerequisites": [
+      "the odd covering systems problem",
+      "known partial results",
+      "what remains open"
+    ]
+  }
+]

@@ -1,0 +1,196 @@
+{
+  "id": "erdos-1027-oq-01",
+  "title": "Erdős #1027 OQ-01: Union Bound Lower Bound on Good Sets",
+  "slug": "erdos-1027-oq-01",
+  "description": "For any n-uniform set family F over X = ∪F, the number of good subsets (intersecting every member but containing none) satisfies |goodSets F| ≥ 2^|X| − |F|·2^{|X|−n+1}. This union-bound lower bound gives an explicit quantitative version of the classical Erdős-Hajnal Property B result: if |F| < 2^{n-1}, then at least 2^|X|·(1 − |F|/2^{n-1}) good subsets exist.",
+  "meta": {
+    "erdosNumber": 1027,
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://erdosproblems.com/1027",
+    "date": "2026-04-13",
+    "status": "verified",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "set-families",
+      "property-b",
+      "probabilistic-method",
+      "intermediate"
+    ],
+    "proofRepoPath": "Proofs/Erdos1027OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.subset_sdiff",
+        "description": "B ⊆ X \\ A ↔ B ⊆ X ∧ Disjoint B A — core of the missing-subsets counting",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.card_union_le",
+        "description": "|A ∪ B| ≤ |A| + |B| — the union bound for finsets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.card_powerset",
+        "description": "|(X.powerset)| = 2^|X|",
+        "module": "Mathlib.Data.Finset.Powerset"
+      }
+    ],
+    "originalContributions": [
+      "card_subsets_missing: |{B ⊆ X : Disjoint B A}| = 2^{|X|−|A|} (proved via Finset.subset_sdiff bijection)",
+      "card_subsets_containing: |{B ⊆ X : A ⊆ B}| = 2^{|X|−|A|} (via involution B ↦ X \\ B)",
+      "good_set_lower_bound: 2^|X| ≤ |goodSets F| + |F| · 2^{|X|−n+1} (quantitative union bound)",
+      "property_b_from_union_bound: corollary — |F| < 2^{n-1} → Property B"
+    ],
+    "dateAdded": "2026-04-13",
+    "axiomCount": 0,
+    "lineCount": 183,
+    "assumptions": "0 axioms, 0 sorries. All theorems fully proved: card_subsets_missing, card_subsets_containing, card_bad_bound, good_set_lower_bound, property_b_from_union_bound.",
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Property B problem (2-colorability of hypergraphs) was introduced by Erdős and Hajnal in their 1961 paper 'On a property of families of sets', motivated by combinatorial topology and graph coloring. The classical threshold result — if F is n-uniform with |F| < 2^{n-1}, then F has Property B — follows from a probabilistic argument: a uniformly random 2-coloring fails to be good for a fixed A ∈ F with probability 2 · (1/2)^n = 2^{1-n}, so the expected number of 'bad' sets is |F| · 2^{1-n} < 1, guaranteeing a good coloring exists. The 2024 resolution of Erdős #1027 by Koishi Chan gave the quantitative strengthening that ≫_c 2^|X| good sets exist for |F| ≤ c·2^n. OQ-01 establishes an elementary lower bound — |goodSets F| ≥ 2^|X| − |F|·2^{|X|−n+1} — via a direct counting argument, providing a fully machine-verified version of the classical probabilistic bound.",
+    "problemStatement": "**Open Question from Erdős #1027**:\n\nThe main result (Koishi Chan) gives ≫_c 2^|X| good sets for |F| ≤ c·2^n. **OQ-01** asks: what is the explicit lower bound? The union bound gives:\n\n  `|goodSets F| ≥ 2^|X| - |F| · 2^{|X|-n+1}`\n\nThis is tight for the classical regime |F| < 2^{n-1}.",
+    "text": "A 183-line fully verified formalization of the quantitative union bound lower bound for Property B. For each A ∈ F (n-uniform), the bad subsets due to A — those missing A entirely (Disjoint B A) or containing A entirely (A ⊆ B) — number at most 2·2^{|X|−n}, since both {B ⊆ X : Disjoint B A} and {B ⊆ X : A ⊆ B} biject with the powerset of X \\ A. Summing over all |F| members gives total bad ≤ |F|·2^{|X|−n+1}. Since goodSets and badTotal partition X.powerset (proved via `Finset.card_union_of_disjoint`), the good count is 2^|X| minus the bad count. The corollary recovers the classical Erdős-Hajnal threshold: if |F|·2 < 2^n, then the lower bound is positive, giving a good subset via `Finset.card_pos`.",
+    "proofStrategy": "**Counting step**: For A ⊆ X with |A| = n:\n- `{B ⊆ X : Disjoint B A} = powerset(X \\setminus A)`, so |(·)| = 2^{|X|−n}\n- `{B ⊆ X : A ⊆ B}` bijects with `powerset(X \\setminus A)` via B ↦ X\\setminus B, so |(·)| = 2^{|X|−n}\n- Union: at most 2·2^{|X|−n} bad-due-to-A subsets\n\n**Union bound**: |total bad| ≤ ∑_{A∈F} |bad-due-to-A| ≤ |F| · 2·2^{|X|−n}\n\n**Conclusion**: |goodSets F| = 2^|X| − |bad| ≥ 2^|X| − |F|·2^{|X|−n+1}",
+    "keyInsights": [
+      "The missing-subsets count uses Finset.subset_sdiff: B ⊆ X \\ A ↔ B ⊆ X ∧ Disjoint B A, so the filter equals (X \\ A).powerset",
+      "The containing-subsets count uses the involution B ↦ X \\ B: this exchanges 'A ⊆ B' with 'Disjoint (X\\B) A'",
+      "The Finset.card_union_le lemma directly gives the union bound for a single set A",
+      "The corollary exactly recovers the classical Erdős-Hajnal bound: |F| < 2^{n-1} implies |F|·2 < 2^n implies the lower bound is positive",
+      "A non-obvious symmetry: the count of subsets missing A (disjoint from A) equals the count of subsets containing A, both being 2^{|X|-|A|}. This follows because the complement involution B ↦ X \\ B exchanges the two families, and its fixed-point-free nature (A ≠ ∅ is needed) ensures the bijection is strict."
+    ],
+    "prerequisites": [
+      "Erdős #1027 main problem (Erdos1027Problem.lean)",
+      "Finset.subset_sdiff from Mathlib",
+      "Finset.card_union_le from Mathlib"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-preamble",
+      "title": "File Header and Setup",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "File header documenting the union bound strategy and proof that all 3 sorries are resolved. Imports Mathlib and Erdos1027Problem; opens Finset and Erdos1027 namespaces; sets up DecidableEq and Fintype variables.",
+      "mathContext": "The module establishes: $|\\text{goodSets}(F)| \\geq 2^{|X|} - |F| \\cdot 2^{|X|-n+1}$. The three resolved sorries were: (1) card_subsets_containing via involution, (2) hbad_bound via biUnion bound, (3) hgood_bad via partition."
+    },
+    {
+      "id": "sec-missing",
+      "title": "Counting Subsets Missing A",
+      "startLine": 46,
+      "endLine": 52,
+      "summary": "card_subsets_missing: |{B ⊆ X : Disjoint B A}| = 2^{|X|-|A|}. Proved via Finset.subset_sdiff: the filter equals (X \\ A).powerset.",
+      "mathContext": "The bijection: $B \\subseteq X$ and $\\text{Disjoint}\\ B\\ A \\iff B \\subseteq X \\setminus A$. So the filtered powerset equals $(X \\setminus A)\\text{.powerset}$ with cardinality $2^{|X|-|A|}$."
+    },
+    {
+      "id": "sec-containing",
+      "title": "Counting Subsets Containing A",
+      "startLine": 54,
+      "endLine": 77,
+      "summary": "card_subsets_containing: |{A ⊆ B ⊆ X}| = 2^{|X|-|A|}. Proved via Finset.card_bij with the involution B ↦ X \\ B. Fully proved: well-definedness, injectivity, and surjectivity all established.",
+      "mathContext": "The involution $B \\mapsto X \\setminus B$ on $\\mathcal{P}(X)$ sends $\\{A \\subseteq B \\subseteq X\\}$ bijectively to $\\{C \\subseteq X : \\text{Disjoint}\\ C\\ A\\}$ since $A \\subseteq B \\iff A \\cap (X \\setminus B) = \\emptyset$ for $B \\subseteq X$."
+    },
+    {
+      "id": "sec-bad-bound",
+      "title": "Single-Set Union Bound",
+      "startLine": 79,
+      "endLine": 87,
+      "summary": "card_bad_bound: |bad-due-to-A| ≤ 2 · 2^{|X|-|A|}. Proved via card_union_le plus the two counting lemmas.",
+      "mathContext": "$|\\{B \\subseteq X : B \\cap A = \\emptyset\\} \\cup \\{B \\subseteq X : A \\subseteq B\\}| \\leq 2 \\cdot 2^{|X|-|A|}$ by the subadditivity of cardinality."
+    },
+    {
+      "id": "sec-main",
+      "title": "Main Union Bound Theorem",
+      "startLine": 89,
+      "endLine": 161,
+      "summary": "good_set_lower_bound: 2^|X| ≤ |goodSets F| + |F| · 2^{|X|-n+1}. Proved via biUnion covering (hbad_bound), partition of X.powerset (hgood_bad), and linarith with pow_succ.",
+      "mathContext": "By summing $\\text{card\\_bad\\_bound}$ over all $A \\in F$ via $\\text{Finset.card\\_biUnion\\_le}$, and using $|\\text{goodSets}| + |\\text{badTotal}| = 2^{|X|}$ from the partition of $X\\text{.powerset}$."
+    },
+    {
+      "id": "sec-corollary",
+      "title": "Classical Erdős-Hajnal Corollary",
+      "startLine": 163,
+      "endLine": 183,
+      "summary": "property_b_from_union_bound: |F|·2 < 2^n → HasPropertyB F. Derives |goodSets F| > 0 from good_set_lower_bound via nlinarith, then extracts the witness via Finset.card_pos.",
+      "mathContext": "If $|F| \\cdot 2 < 2^n$, multiplying by $2^{|X|-n}$ gives $|F| \\cdot 2^{|X|-n+1} < 2^{|X|}$, so $|\\text{goodSets}(F)| > 0$. The `pow_add` lemma relates $2^{|X|}$ and $2^n \\cdot 2^{|X|-n}$ for the nlinarith call."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1027",
+      "relationship": "extends",
+      "description": "Extends the main Erdős #1027 file with a quantitative lower bound, vs. just existence (axiom) in the main file."
+    },
+    {
+      "targetId": "erdos-1027-oq-03",
+      "relationship": "related",
+      "description": "OQ-03 proves constructive existence via Lovász Local Lemma. OQ-01 gives a direct counting lower bound via the elementary union bound."
+    }
+  ],
+  "conclusion": {
+    "summary": "OQ-01 fully formalizes the quantitative union bound lower bound on good sets. card_subsets_missing is proved via Finset.subset_sdiff. card_subsets_containing is proved via Finset.card_bij with involution B ↦ X \\ B. The main theorem combines these with a biUnion covering argument and partition of X.powerset.",
+    "implications": "Provides a complete, machine-verified, elementary lower bound on Property B good sets, recovering the classical Erdős-Hajnal threshold as a corollary.",
+    "openQuestions": [
+      "Can the bound |F| · 2^{|X|-n+1} be improved to |F| · 2^{|X|-n} · (1 + ε) using inclusion-exclusion?",
+      "What is the optimal constant c* for Property B threshold? Can the Lovász Local Lemma bound be formalized directly?",
+      "Can this approach be extended to give the supersaturation bound ≫_c 2^|X| good sets for |F| ≤ c·2^n (Koishi Chan's result), by replacing the union bound with a second-moment method?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.Erdos1027Problem"
+    ],
+    "opens": [
+      "Finset",
+      "Erdos1027"
+    ],
+    "namespace": "Erdos1027.UnionBound",
+    "lineCount": 183,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "substantiveTheoremCount": 4,
+    "duplicateTheorems": 0,
+    "definitionCount": 0,
+    "path": "Proofs/Erdos1027OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Erdős, Hajnal",
+      "title": "On chromatic number of graphs and set-systems",
+      "year": "1966",
+      "note": "Original Property B paper with the classical n-uniform bound"
+    },
+    {
+      "authors": "Koishi Chan",
+      "title": "Solution to Erdős Problem #1027",
+      "year": "2024",
+      "note": "Proves the quantitative supersaturation: ≫_c 2^|X| good sets for |F| ≤ c·2^n"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "card_subsets_missing",
+      "type": "core",
+      "description": "|{B ⊆ X : Disjoint B A}| = 2^{|X|-|A|} via Finset.subset_sdiff",
+      "leanType": "(X A : Finset α) → A ⊆ X → (filter (Disjoint · A) X.powerset).card = 2^(X.card - A.card)"
+    },
+    {
+      "name": "good_set_lower_bound",
+      "type": "core",
+      "description": "Quantitative union bound: 2^|X| ≤ |goodSets F| + |F| · 2^{|X|-n+1}",
+      "leanType": "(F : SetFamily α) → n-uniform → 2^X.card ≤ (goodSets F).card + F.card * 2^(X.card-n+1)"
+    },
+    {
+      "name": "property_b_from_union_bound",
+      "type": "corollary",
+      "description": "Classical Erdős-Hajnal: |F|·2 < 2^n implies Property B",
+      "leanType": "(F : SetFamily α) → n-uniform → F.card * 2 < 2^n → HasPropertyB F"
+    }
+  ],
+  "sorries": 0
+}

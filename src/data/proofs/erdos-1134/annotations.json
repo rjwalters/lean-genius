@@ -1,0 +1,367 @@
+[
+  {
+    "id": "erdos-1134-intro",
+    "proofId": "erdos-1134",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "title": "Problem Introduction",
+    "content": "Erdős Problem #1134 asks whether the smallest set A containing 1 and closed under x ↦ 2x+1, x ↦ 3x+1, x ↦ 6x+1 has positive lower density. The answer, proved by Crampin and Hilton, is NO: the counting function grows as $X^{\\tau}$ with $\\tau \\approx 0.9006 < 1$, so the density tends to zero.",
+    "mathContext": "Given $A = \\langle 1; \\, x \\mapsto 2x+1, \\, x \\mapsto 3x+1, \\, x \\mapsto 6x+1 \\rangle$, we ask whether $\\underline{d}(A) = \\liminf_{X \\to \\infty} |A \\cap [1,X]|/X > 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "natural density",
+      "affine semigroup",
+      "Klarner-Rado theorem",
+      "Crampin-Hilton exponent"
+    ],
+    "prerequisites": [
+      "asymptotic density",
+      "inductive set definitions",
+      "analytic number theory"
+    ]
+  },
+  {
+    "id": "erdos-1134-affine-ops",
+    "proofId": "erdos-1134",
+    "type": "definition",
+    "range": {
+      "startLine": 40,
+      "endLine": 43
+    },
+    "title": "Affine Operations",
+    "content": "The three generating operations: $f_1(x) = 2x+1$, $f_2(x) = 3x+1$, $f_3(x) = 6x+1$. These are affine maps of the form $mx+b$ with multipliers $m \\in \\{2,3,6\\}$. The critical arithmetic coincidence is that $\\frac{1}{2} + \\frac{1}{3} + \\frac{1}{6} = 1$, which makes the Klarner-Rado bound trivial ($\\sigma = 1$) and necessitates the deeper Crampin-Hilton analysis.",
+    "mathContext": "$f_i(x) = m_i x + 1$ where $(m_1, m_2, m_3) = (2, 3, 6)$ and $\\sum_{i=1}^{3} m_i^{-1} = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "affine map",
+      "multiplicative semigroup",
+      "linear recurrence"
+    ],
+    "prerequisites": [
+      "affine transformations",
+      "arithmetic of natural numbers"
+    ]
+  },
+  {
+    "id": "erdos-1134-inductive-set",
+    "proofId": "erdos-1134",
+    "type": "definition",
+    "range": {
+      "startLine": 45,
+      "endLine": 53
+    },
+    "title": "Inductive Definition of A",
+    "content": "A is defined inductively via `InA`: $1 \\in A$, and if $x \\in A$ then $f_1(x), f_2(x), f_3(x) \\in A$. This is the smallest set containing 1 and closed under the three operations. Every element can be written as a composition of these maps applied to 1, giving A a ternary tree structure.",
+    "mathContext": "$A = \\bigcup_{n=0}^{\\infty} A_n$ where $A_0 = \\{1\\}$ and $A_{n+1} = A_n \\cup f_1(A_n) \\cup f_2(A_n) \\cup f_3(A_n)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "inductive type",
+      "closure operator",
+      "orbit of a semigroup action",
+      "ternary tree"
+    ],
+    "prerequisites": [
+      "inductive definitions in Lean",
+      "set closure",
+      "well-founded recursion"
+    ]
+  },
+  {
+    "id": "erdos-1134-closure-thms",
+    "proofId": "erdos-1134",
+    "type": "concept",
+    "range": {
+      "startLine": 55,
+      "endLine": 65
+    },
+    "title": "Closure Theorems",
+    "content": "Three theorems (`A_closed_f₁`, `A_closed_f₂`, `A_closed_f₃`) establish that A is closed under each generating operation. These follow immediately from the inductive constructors, demonstrating how Lean's inductive types naturally encode closure properties.",
+    "mathContext": "$x \\in A \\implies 2x+1 \\in A$, $x \\in A \\implies 3x+1 \\in A$, $x \\in A \\implies 6x+1 \\in A$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "inductive constructor",
+      "closure under operations"
+    ],
+    "prerequisites": [
+      "Lean inductive types"
+    ]
+  },
+  {
+    "id": "erdos-1134-counting-function",
+    "proofId": "erdos-1134",
+    "type": "definition",
+    "range": {
+      "startLine": 73,
+      "endLine": 75
+    },
+    "title": "Counting Function",
+    "content": "The counting function $|S \\cap [1, X]|$ is formalized by filtering `Finset.range (X + 1)` for elements in S with $n \\geq 1$. This is the standard way to measure the size of a subset of $\\{1, \\ldots, X\\}$ for density computations.",
+    "mathContext": "$\\pi_S(X) = |S \\cap [1, X]| = \\#\\{n \\in S : 1 \\leq n \\leq X\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.filter",
+      "cardinality",
+      "prime counting function analogy"
+    ],
+    "prerequisites": [
+      "Finset operations",
+      "decidable membership"
+    ]
+  },
+  {
+    "id": "erdos-1134-density",
+    "proofId": "erdos-1134",
+    "type": "definition",
+    "range": {
+      "startLine": 77,
+      "endLine": 87
+    },
+    "title": "Asymptotic Density",
+    "content": "Lower density is formalized as $\\inf_{N > 0} |A \\cap [1,N]|/N$ using Lean's `⨅` (infimum) operator. Upper density uses `⨆` (supremum). A set has positive lower density when this infimum exceeds zero, meaning the set captures a positive fraction of all integers. This is the standard measure of 'thickness' for subsets of $\\mathbb{N}$.",
+    "mathContext": "$\\underline{d}(S) = \\liminf_{X \\to \\infty} \\frac{|S \\cap [1,X]|}{X}, \\quad \\overline{d}(S) = \\limsup_{X \\to \\infty} \\frac{|S \\cap [1,X]|}{X}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "natural density",
+      "Schnirelmann density",
+      "Banach density",
+      "liminf",
+      "limsup"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "infimum and supremum",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "erdos-1134-klarner-rado",
+    "proofId": "erdos-1134",
+    "type": "concept",
+    "range": {
+      "startLine": 95,
+      "endLine": 108
+    },
+    "title": "Klarner-Rado Theorem (1974)",
+    "content": "The Klarner-Rado theorem provides a general upper bound for sets generated by affine maps $x \\mapsto m_i x + b_i$. If $\\sigma > 0$ satisfies $\\sum m_i^{-\\sigma} = 1$, then $|S \\cap [1,X]| \\ll X^{\\sigma + o(1)}$. For this problem, $\\frac{1}{2} + \\frac{1}{3} + \\frac{1}{6} = 1$ yields $\\sigma = 1$, which is the trivial bound—it says only that $A$ grows at most linearly, offering no density information.",
+    "mathContext": "$\\sum_{i=1}^{k} m_i^{-\\sigma} = 1 \\implies |S \\cap [1,X]| \\leq C_{\\varepsilon} X^{\\sigma + \\varepsilon}$ for all $\\varepsilon > 0$. Here $2^{-1} + 3^{-1} + 6^{-1} = 1$ gives $\\sigma = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "generating function method",
+      "Dirichlet series",
+      "subadditive sequences",
+      "Klarner problem"
+    ],
+    "prerequisites": [
+      "analytic combinatorics",
+      "power series",
+      "Dirichlet series convergence"
+    ]
+  },
+  {
+    "id": "erdos-1134-tau",
+    "proofId": "erdos-1134",
+    "type": "definition",
+    "range": {
+      "startLine": 116,
+      "endLine": 125
+    },
+    "title": "Crampin-Hilton Exponent τ",
+    "content": "The exponent $\\tau \\approx 0.900626$ is defined as the unique positive root of a characteristic equation involving an infinite series. Unlike the Klarner-Rado approach which treats the three operations independently, Crampin and Hilton exploit the factorization $6 = 2 \\cdot 3$, recognizing that compositions of $f_1$ and $f_2$ overlap with $f_3$. This structural insight yields the sharper bound.",
+    "mathContext": "$\\tau$ is the unique positive root of $6^{-s} + \\sum_{k=0}^{\\infty} (3 \\cdot 2^k)^{-s} = 1$, equivalently $6^{-s} + \\frac{3^{-s}}{1 - 2^{-s}} = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "characteristic equation",
+      "geometric series",
+      "transcendental equation",
+      "Perron-Frobenius theory"
+    ],
+    "prerequisites": [
+      "infinite series",
+      "real analysis",
+      "implicit function theorem"
+    ]
+  },
+  {
+    "id": "erdos-1134-crampin-hilton",
+    "proofId": "erdos-1134",
+    "type": "concept",
+    "range": {
+      "startLine": 127,
+      "endLine": 131
+    },
+    "title": "Crampin-Hilton Theorem",
+    "content": "The main analytical result: $|A \\cap [1,X]| \\asymp X^{\\tau}$ where $\\tau \\approx 0.9006$. More precisely, for any $\\varepsilon > 0$ there exist constants $C_1, C_2 > 0$ such that $C_1 X^{\\tau - \\varepsilon} \\leq |A \\cap [1,X]| \\leq C_2 X^{\\tau + \\varepsilon}$ for all sufficiently large $X$. This is axiomatized because the proof requires deep analytic estimates on the generating function of A.",
+    "mathContext": "$\\forall \\varepsilon > 0, \\exists C_1, C_2 > 0: \\; C_1 X^{\\tau - \\varepsilon} \\leq |A \\cap [1,X]| \\leq C_2 X^{\\tau + \\varepsilon}$ for $X \\geq 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Tauberian theorem",
+      "asymptotic analysis",
+      "Dirichlet series",
+      "Mellin transform"
+    ],
+    "prerequisites": [
+      "analytic number theory",
+      "generating functions",
+      "complex analysis"
+    ]
+  },
+  {
+    "id": "erdos-1134-zero-density",
+    "proofId": "erdos-1134",
+    "type": "concept",
+    "range": {
+      "startLine": 139,
+      "endLine": 142
+    },
+    "title": "A Has Zero Density",
+    "content": "Since $\\tau < 1$, for small enough $\\varepsilon$ we have $\\tau + \\varepsilon < 1$, so $|A \\cap [1,X]|/X \\leq C_2 X^{\\tau + \\varepsilon - 1} \\to 0$ as $X \\to \\infty$. Therefore $\\underline{d}(A) = 0$. This is axiomatized as the gap between the asymptotic bound and the formal definition of density requires epsilon-delta reasoning about limits.",
+    "mathContext": "$\\tau < 1 \\implies \\frac{|A \\cap [1,X]|}{X} \\leq C_2 X^{\\tau + \\varepsilon - 1} \\to 0 \\implies \\underline{d}(A) = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "limit inferior",
+      "polynomial growth",
+      "sublinear growth"
+    ],
+    "prerequisites": [
+      "limits",
+      "real analysis",
+      "asymptotic notation"
+    ]
+  },
+  {
+    "id": "erdos-1134-answer",
+    "proofId": "erdos-1134",
+    "type": "concept",
+    "range": {
+      "startLine": 144,
+      "endLine": 148
+    },
+    "title": "Answer: NO",
+    "content": "The answer to Erdős Problem #1134 is NO—A does not have positive lower density. The proof unfolds `HasPositiveLowerDensity`, rewrites using `A_has_zero_density`, and closes with `norm_num` to show $0 \\not> 0$. This is one of the few Lean-verified steps that chains the axiomatized analytical result to the combinatorial question.",
+    "mathContext": "$\\neg(\\underline{d}(A) > 0)$ follows from $\\underline{d}(A) = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "norm_num tactic",
+      "proof by contradiction"
+    ],
+    "prerequisites": [
+      "Lean tactics",
+      "real number ordering"
+    ]
+  },
+  {
+    "id": "erdos-1134-elements",
+    "proofId": "erdos-1134",
+    "type": "concept",
+    "range": {
+      "startLine": 166,
+      "endLine": 179
+    },
+    "title": "First Elements of A",
+    "content": "Concrete verification that $1, 3, 4, 7 \\in A$: we have $f_1(1) = 3$, $f_2(1) = 4$, $f_3(1) = 7$. Each proof applies the closure theorem to `one_in_A` after establishing the arithmetic identity by `rfl`. The full sequence begins $1, 3, 4, 7, 9, 10, 13, 15, 19, 22, \\ldots$ and forms a ternary tree rooted at 1.",
+    "mathContext": "$A_0 = \\{1\\}, \\; A_1 = \\{1, 3, 4, 7\\}, \\; A_2 = \\{1, 3, 4, 7, 9, 10, 13, 15, 19, 22, 25, 43\\}, \\ldots$",
+    "significance": "key",
+    "relatedConcepts": [
+      "tree structure",
+      "orbit enumeration",
+      "rfl tactic"
+    ],
+    "prerequisites": [
+      "Lean definitional equality",
+      "inductive proof construction"
+    ]
+  },
+  {
+    "id": "erdos-1134-characteristic-eq",
+    "proofId": "erdos-1134",
+    "type": "theorem",
+    "range": {
+      "startLine": 187,
+      "endLine": 192
+    },
+    "title": "Characteristic Equation",
+    "content": "The characteristic equation $6^{-s} + (1 - 2^{-s})^{-1} \\cdot 3^{-s} = 1$ encodes the combinatorial structure of A. The infinite sum arises because applying $f_1$ repeatedly before $f_2$ produces a geometric series in powers of $2^{-s}$: composing $k$ copies of $f_1$ with one $f_2$ contributes $(3 \\cdot 2^k)^{-s}$ to the characteristic function. The exponent $\\tau$ is the unique positive root.",
+    "mathContext": "$\\Phi(s) = 6^{-s} + \\frac{3^{-s}}{1 - 2^{-s}} - 1 = 0$ determines $\\tau$. The term $\\frac{3^{-s}}{1 - 2^{-s}} = \\sum_{k=0}^{\\infty} (3 \\cdot 2^k)^{-s}$ encodes compositions $f_2 \\circ f_1^k$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "generating function",
+      "geometric series",
+      "functional equation",
+      "Perron-Frobenius eigenvalue"
+    ],
+    "prerequisites": [
+      "power series",
+      "complex analysis",
+      "root-finding"
+    ]
+  },
+  {
+    "id": "erdos-1134-open-variant",
+    "proofId": "erdos-1134",
+    "type": "definition",
+    "range": {
+      "startLine": 200,
+      "endLine": 214
+    },
+    "title": "Klarner's Open Variant",
+    "content": "The set $A'$ containing 0 and closed under $2x$, $3x+2$, $6x+3$ remains an open problem. Unlike the original, these operations satisfy $6x + 3 = 2(3x+2) - 1$ and $6x+3 = 3(2x) + 3$, creating more complex overlap patterns. Lagarias (2016) connected this to the Collatz problem, noting both involve iteration of piecewise affine maps on $\\mathbb{N}$. Guy (1983) listed this among unsolved problems in number theory.",
+    "mathContext": "$A' = \\langle 0; \\, x \\mapsto 2x, \\, x \\mapsto 3x+2, \\, x \\mapsto 6x+3 \\rangle$. Question: $\\underline{d}(A') > 0$?",
+    "significance": "key",
+    "relatedConcepts": [
+      "Collatz conjecture",
+      "3x+1 problem",
+      "piecewise affine dynamics",
+      "open problem"
+    ],
+    "prerequisites": [
+      "dynamical systems",
+      "ergodic theory"
+    ]
+  },
+  {
+    "id": "erdos-1134-main-statement",
+    "proofId": "erdos-1134",
+    "type": "concept",
+    "range": {
+      "startLine": 220,
+      "endLine": 237
+    },
+    "title": "Main Problem Statement",
+    "content": "Complete formalization packaging three results: (1) $\\neg\\text{HasPositiveLowerDensity}(A)$, (2) $|A \\cap [1,X]| \\leq C X^{\\tau + \\varepsilon}$ for any $\\varepsilon > 0$, and (3) $\\tau < 1$. The proof extracts (1) from `not_positive_lower_density`, (2) from the upper bound in `crampin_hilton_theorem`, and (3) from `crampin_hilton_tau_exists`.",
+    "mathContext": "$\\neg(\\underline{d}(A) > 0) \\;\\wedge\\; (\\forall \\varepsilon > 0, \\exists C > 0: |A \\cap [1,X]| \\leq C X^{\\tau+\\varepsilon}) \\;\\wedge\\; \\tau < 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "conjunction introduction",
+      "existential extraction",
+      "proof packaging"
+    ],
+    "prerequisites": [
+      "Lean proof tactics",
+      "structured proofs"
+    ]
+  },
+  {
+    "id": "erdos-1134-summary",
+    "proofId": "erdos-1134",
+    "type": "concept",
+    "range": {
+      "startLine": 239,
+      "endLine": 258
+    },
+    "title": "Summary Theorem",
+    "content": "Final summary establishing three facts: A has no positive lower density, $\\underline{d}(A) = 0$ exactly, and $\\tau \\in (0.900, 0.901)$. The `erdos_1134` theorem provides the minimal packaging: $\\neg\\text{HasPositiveLowerDensity}(A) \\wedge \\underline{d}(A) = 0$.",
+    "mathContext": "$\\neg(\\underline{d}(A) > 0) \\;\\wedge\\; \\underline{d}(A) = 0 \\;\\wedge\\; 0.900 < \\tau < 0.901$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "anonymous constructor",
+      "proof term",
+      "conjunction"
+    ],
+    "prerequisites": [
+      "Lean proof terms"
+    ]
+  }
+]

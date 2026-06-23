@@ -1,0 +1,92 @@
+{
+  "slug": "szemeredi-theorem",
+  "title": "Szemeredi's Theorem (k=3 via Mathlib)",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For every k >= 1 and density delta > 0, sufficiently dense subsets of {1,...,N} contain a k-term arithmetic progression; the Lean file proves the small cases and Roth connection, with k >= 4 supplied by an explicit axiom.",
+    "plain": "Records the formal Szemeredi-theorem statement, proves the k=1 and k=2 density cases, connects the k=3 case to Mathlib Roth infrastructure, and packages the full theorem using an explicit axiom for k >= 4.",
+    "whyMatters": [
+      "Separates the Mathlib-backed Roth-level content from the axiomatized full higher-order theorem.",
+      "Keeps the research record aligned with the actual SzemerediTheorem.lean source."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "HasAPOfLength, hasAPOfLengthFinset, IsAPFree, and SzemerediTheorem are defined.",
+      "szemeredi_k1 and szemeredi_k2 prove the trivial progression cases.",
+      "roth_theorem_via_mathlib connects the k=3 density result to Mathlib Roth infrastructure.",
+      "szemeredi_theorem packages the full theorem using the explicit szemeredi_k_ge_4 axiom."
+    ],
+    "open": [],
+    "goal": "Keep the catalog entry clear about which parts are proved directly and which rely on the k >= 4 axiom."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2025-12-31T16:00:00-08:00",
+    "iteration": 1,
+    "focus": "Source-backed metadata sync for Proofs/SzemerediTheorem.lean: 374 lines, 16 theorem declarations, 5 definitions, 1 axiom, and 0 sorries.",
+    "blockers": [],
+    "nextAction": "No Lean work is needed for the research record; the k >= 4 case remains explicitly axiomatized.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Proofs/SzemerediTheorem.lean defines arithmetic-progression predicates, proves k=1 and k=2 cases, connects the k=3/Roth direction to Mathlib, and states the full theorem using the explicit szemeredi_k_ge_4 axiom. Source audit: 374 lines, 16 theorems, 5 definitions, 1 axiom, 0 sorries.",
+    "builtItems": [
+      "Proofs/SzemerediTheorem.lean: 374 lines, 16 theorems, 5 definitions, 1 axiom, 0 sorries",
+      "HasAPOfLength, hasAPOfLengthFinset, IsAPFree, and SzemerediTheorem",
+      "szemeredi_k1 and szemeredi_k2",
+      "roth_theorem_via_mathlib",
+      "szemeredi_theorem and dense_set_has_long_ap"
+    ],
+    "insights": [
+      "The Lean source clearly distinguishes proved low-dimensional cases from the axiomatized k >= 4 component.",
+      "Mathlib supplies Roth-level additive-combinatorics infrastructure, but not the full higher-k Szemeredi theorem.",
+      "The catalog should avoid implying a direct proof of full Szemeredi without the explicit axiom."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Optional future work: add a dedicated non-axiomatized target for quantitative Roth or Behrend-style AP-free constructions."
+    ],
+    "markdown": "# Knowledge Base: Szemerédi's Theorem\n\n## Progress Summary\n\n**Date**: 2025-12-31\n**Phase**: SURVEY (completed)\n**Mode**: Feasibility-driven survey\n\n## What We've Built\n\n### Formal Definitions (in Lean)\n- `HasAPOfLength S k` - set S contains k-term arithmetic progression\n- `hasAPOfLengthFinset S k` - finset version\n- `IsAPFree S k` - set has no k-AP\n- `SzemerediTheorem` - formal statement of full theorem\n\n### Proven Cases\n- `szemeredi_k1` - any nonempty set has 1-AP (trivial)\n- `szemeredi_k2` - any set with ≥2 elements has 2-AP\n\n### Axiom Stated\n- `szemeredi_theorem` - full Szemerédi theorem as axiom\n\n## Key Finding: What's in Mathlib\n\n| Result | Status | Location |\n|--------|--------|----------|\n| Roth's Theorem (k=3) | **PROVEN** | `Combinatorics.Additive.Corner.Roth` |\n| Corners Theorem | **PROVEN** | same |\n| Triangle Removal Lemma | **PROVEN** | `Combinatorics.SimpleGraph.Triangle.Removal` |\n| Szemerédi Regularity Lemma | **PROVEN** | `Combinatorics.SimpleGraph.Regularity.Lemma` |\n| Hales-Jewett Theorem | **PROVEN** | `Combinatorics.HalesJewett` |\n| Van der Waerden (coloring) | **PROVEN** | via Hales-Jewett |\n| ThreeAPFree predicate | **DEFINED** | `Combinatorics.Additive.AP.Three.Defs` |\n| rothNumberNat | **DEFINED** | same |\n| Full Szemerédi (k≥4) | **NOT IN MATHLIB** | - |\n| Hypergraph regularity | **NOT IN MATHLIB** | - |\n\n## Critical Insight\n\n**Szemerédi ≠ Van der Waerden**:\n- Van der Waerden (in Mathlib): \"k-color [1,N] → monochromatic k-AP\"\n- Szemerédi (NOT in Mathlib): \"δN elements in [1,N] → k-AP\"\n\nThe density version is strictly harder. Van der Waerden follows from Szemerédi,\nbut not vice versa.\n\n## Why k≥4 is Hard\n\nThe proof of Roth (k=3) goes:\n```\nRoth ← Corners theorem ← Triangle removal ← Graph regularity\n```\n\nFor k≥4, we need:\n```\nk-AP ← (k-1)-corners ← Hypergraph removal ← Hypergraph regularity\n```\n\n**Hypergraph regularity** is the bottleneck:\n- Much more complex than graph regularity\n- Definitions alone are non-trivial\n- Counting lemmas harder to state/prove\n- Not in any proof assistant AFAIK\n\n## What Would Be Needed for Full Proof\n\n### Approach 1: Hypergraph Regularity (Combinatorial)\n1. Define k-uniform hypergraphs\n2. Define hypergraph regularity\n3. Prove hypergraph regularity lemma\n4. Prove hypergraph removal lemma\n5. Define (k-1)-dimensional corners\n6. Prove corners theorem for k-1 dimensions\n7. Deduce k-AP density theorem\n\nEstimated effort: Multi-month research project\n\n### Approach 2: Ergodic Theory (Furstenberg)\n1. Formalize measure-preserving systems\n2. Define ergodic recurrence\n3. Prove Furstenberg's correspondence principle\n4. Prove multiple recurrence theorem\n5. Deduce Szemerédi\n\nEstimated effort: Also multi-month, but more foundational\n\n### Approach 3: Fourier-Analytic (Gowers)\n1. Define Gowers uniformity norms\n2. Prove inverse theorems\n3. Use density increment strategy\n\nEstimated effort: Very technical, needs harmonic analysis\n\n## Value Assessment\n\nThis survey was valuable because:\n1. ✅ Clarified what's actually in Mathlib (Roth IS there, full Szemerédi is NOT)\n2. ✅ Documented the gap precisely\n3. ✅ Created formal statement for future work\n4. ✅ Proved trivial cases as sanity check\n5. ✅ Identified hypergraph regularity as the key missing piece\n\n## Recommendation for Future Work\n\n**Do NOT attempt full proof** - would require:\n- Building hypergraph theory from scratch\n- Multi-month effort with uncertain payoff\n\n**Better targets**:\n- Improve Roth bounds (quantitative Roth)\n- Formalize Behrend construction (AP-free sets)\n- Work on simpler additive combinatorics\n\n## File Location\n\n`proofs/Proofs/SzemerediTheorem.lean`\n"
+  },
+  "tags": [
+    "combinatorics",
+    "additive-combinatorics",
+    "arithmetic-progressions",
+    "regularity"
+  ],
+  "relatedProofs": [
+    "szemeredi-full",
+    "szemeredi-theorem"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2025-12-31T16:00:00-08:00",
+  "completed": "2025-12-31T17:00:00-08:00",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/SzemerediTheorem.lean",
+      "filename": "SzemerediTheorem.lean",
+      "lineCount": 374,
+      "theoremCount": 16,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediTheorem.lean"
+    }
+  ],
+  "lastUpdate": "2026-05-18T00:00:00.000Z"
+}

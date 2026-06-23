@@ -1,0 +1,203 @@
+[
+  {
+    "id": "erdos-423-header",
+    "proofId": "erdos-423",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 21
+    },
+    "title": "Problem Overview",
+    "content": "Erdős Problem #423: Let a₁=1, a₂=2, and for k≥3, aₖ is the least integer > a_{k-1} that is a sum of at least two consecutive terms. What is the asymptotic behaviour? OPEN. Sequence: 1, 2, 3, 5, 6, 8, 10, 11, ... (OEIS A005243).",
+    "mathContext": "A greedy sequence defined by consecutive-sum representability. Each $a_k = \\min\\{m > a_{k-1} : m = \\sum_{j=i}^{\\ell} a_j\\text{ for some }i \\leq \\ell < k\\}$. Related to Ulam-type constructions (Problem #342).",
+    "significance": "key",
+    "relatedConcepts": [
+      "greedy sequences",
+      "consecutive sums",
+      "Ulam sequences"
+    ],
+    "prerequisites": [
+      "Integer sequences and recurrence relations",
+      "Additive combinatorics",
+      "Asymptotic analysis"
+    ]
+  },
+  {
+    "id": "erdos-423-computable",
+    "proofId": "erdos-423",
+    "type": "definition",
+    "range": {
+      "startLine": 33,
+      "endLine": 75
+    },
+    "title": "Computable Sequence Construction",
+    "content": "**isConsecSum:** Checks if m equals a sum of at least 2 consecutive elements from a list using a sliding window. **buildSeq:** Constructs the sequence greedily up to n+1 terms. **consSeq:** Extracts the nth term. All three are computable (no noncomputable), enabling native_decide proofs.",
+    "mathContext": "The `isConsecSum` function iterates through all starting positions and extends sums rightward until matching $m$ or exceeding it. The `buildSeq` function uses 500 fuel for the search, sufficient for the first ~100 terms.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Computable definitions",
+      "Greedy algorithms",
+      "List operations"
+    ],
+    "prerequisites": [
+      "List processing in Lean (go, rec patterns)",
+      "Bool-valued decidable predicates",
+      "getLast! for List extraction"
+    ]
+  },
+  {
+    "id": "erdos-423-values",
+    "proofId": "erdos-423",
+    "type": "concept",
+    "range": {
+      "startLine": 77,
+      "endLine": 103
+    },
+    "title": "Verified Initial Values",
+    "content": "First 8 terms verified by native_decide: consSeq 0 = 1, consSeq 1 = 2, ..., consSeq 7 = 11. Combined in consSeq_values as a proved conjunction. Matches OEIS A005243.",
+    "mathContext": "The sequence $1, 2, 3, 5, 6, 8, 10, 11$ is verified computationally. Note the gaps: 4, 7, 9 are missing. Each proof reduces to `native_decide`, which evaluates the computable definition.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "OEIS A005243",
+      "Computational verification"
+    ],
+    "prerequisites": [
+      "native_decide for decidable propositions in Lean",
+      "Computable sequence definitions"
+    ]
+  },
+  {
+    "id": "erdos-423-verification",
+    "proofId": "erdos-423",
+    "type": "concept",
+    "range": {
+      "startLine": 105,
+      "endLine": 124
+    },
+    "title": "Consecutive Sum Verifications",
+    "content": "Proved computationally: 3 = a(0)+a(1), 5 = a(1)+a(2), 6 = a(0)+a(1)+a(2), 8 = a(2)+a(3), 10 = a(1)+a(2)+a(3), 11 = a(0)+...+a(3). Each shows the specific consecutive block that sums to the given term.",
+    "mathContext": "These verifications demonstrate the consecutive-sum property explicitly. For example, $6 = 1+2+3$ is a sum of 3 consecutive terms ($a_0$ through $a_2$), while $8 = 3+5$ is a sum of 2 consecutive terms ($a_2, a_3$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Computational verification",
+      "Consecutive sum representations"
+    ],
+    "prerequisites": [
+      "native_decide",
+      "Natural number addition"
+    ]
+  },
+  {
+    "id": "erdos-423-monotonicity",
+    "proofId": "erdos-423",
+    "type": "concept",
+    "range": {
+      "startLine": 126,
+      "endLine": 137
+    },
+    "title": "Strict Monotonicity",
+    "content": "Strict monotonicity verified computationally on the first 8 terms (native_decide) and axiomatized globally as consSeq_strictMono : StrictMono consSeq. This follows from the definition: each term is the least integer strictly greater than the previous.",
+    "mathContext": "StrictMono consSeq means $m < n \\Rightarrow a(m) < a(n)$. This is the foundation for all subsequent analysis — it implies the linear lower bound and enables the missing-number proofs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "StrictMono",
+      "Monotone sequences",
+      "Greedy minimality"
+    ],
+    "prerequisites": [
+      "StrictMono in Mathlib",
+      "Axiomatization of constructive properties"
+    ]
+  },
+  {
+    "id": "erdos-423-growth",
+    "proofId": "erdos-423",
+    "type": "concept",
+    "range": {
+      "startLine": 156,
+      "endLine": 174
+    },
+    "title": "Growth Properties (Bolan-Tang 2024-2025)",
+    "content": "**consSeq_lower_bound (PROVED):** a(n) ≥ n+1, by induction using strict monotonicity. **excess_nondecreasing (axiom):** a(m)-m ≤ a(n)-n for m ≤ n. **excess_unbounded (axiom):** a(n)-n → ∞ (Tendsto to atTop).",
+    "mathContext": "The lower bound $a(n) \\geq n+1$ is the only non-trivial proved growth result. The Bolan-Tang axioms establish $a(n) = n + \\omega(n)$ where $\\omega$ is nondecreasing and unbounded — the sequence outpaces the identity but the rate is unknown.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Superlinear growth",
+      "Excess function",
+      "Filter.Tendsto"
+    ],
+    "prerequisites": [
+      "Induction on natural numbers",
+      "StrictMono implies monotone",
+      "Filter.Tendsto for divergence to infinity"
+    ]
+  },
+  {
+    "id": "erdos-423-missing",
+    "proofId": "erdos-423",
+    "type": "concept",
+    "range": {
+      "startLine": 176,
+      "endLine": 226
+    },
+    "title": "Missing Numbers (4, 7, 9 proved)",
+    "content": "**seqRange** and **missingNumbers** defined. **infinitely_many_missing (axiom):** Set.Infinite missingNumbers. **four_is_missing, seven_is_missing, nine_is_missing (PROVED):** Hybrid proofs using native_decide for small indices and monotonicity for the tail.",
+    "mathContext": "The proof of $4 \\in \\text{missingNumbers}$ verifies $a_k \\neq 4$ for $k = 0,1,2$ by computation, then uses $a_3 = 5 > 4$ and strict monotonicity to conclude $a_k > 4$ for all $k \\geq 3$. This is a clean example of combining decidable checking with structural reasoning.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Set.Infinite",
+      "Hybrid proof techniques",
+      "Gaps in sequences"
+    ],
+    "prerequisites": [
+      "Set membership and complement",
+      "omega tactic for linear arithmetic",
+      "Pattern matching on natural numbers"
+    ]
+  },
+  {
+    "id": "erdos-423-question",
+    "proofId": "erdos-423",
+    "type": "definition",
+    "range": {
+      "startLine": 228,
+      "endLine": 241
+    },
+    "title": "The Main Question (OPEN)",
+    "content": "**ErdosQuestion423_convergence:** ∃ C > 1, a(n)/n → C. The central open question: does the sequence have a well-defined asymptotic density? If so, the proportion of integers in the sequence is 1/C.",
+    "mathContext": "Formalized as $\\exists C > 1,\\; \\text{Tendsto}(a(n)/n, \\text{atTop}, \\text{nhds}(C))$. The condition $C > 1$ follows from the superlinear growth (Bolan-Tang), but existence of the limit is unknown.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Asymptotic density",
+      "Limit existence",
+      "Filter.Tendsto"
+    ],
+    "prerequisites": [
+      "Real division and casting ℕ → ℝ",
+      "Filter.Tendsto and nhds for convergence",
+      "Asymptotic density of integer sequences"
+    ]
+  },
+  {
+    "id": "erdos-423-summary",
+    "proofId": "erdos-423",
+    "type": "concept",
+    "range": {
+      "startLine": 243,
+      "endLine": 267
+    },
+    "title": "Summary: OPEN",
+    "content": "**erdos_423_known (PROVED):** Combines excess nondecreasing and infinitely many missing into a single conjunction. Proof: ⟨excess_nondecreasing, infinitely_many_missing⟩. Problem remains OPEN.",
+    "mathContext": "The summary packages the two main Bolan-Tang results: nondecreasing excess and infinite gaps. The gap between these structural results and a precise asymptotic formula remains the central challenge.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Summary theorem",
+      "Open problem",
+      "Known partial results"
+    ],
+    "prerequisites": [
+      "Understanding of excess_nondecreasing and infinitely_many_missing axioms"
+    ]
+  }
+]

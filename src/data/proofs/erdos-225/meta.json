@@ -1,0 +1,166 @@
+{
+  "id": "erdos-225",
+  "title": "L¹ Norm of Trigonometric Polynomials with Real Roots",
+  "slug": "erdos-225",
+  "description": "If a trigonometric polynomial has all roots on the unit circle and supremum norm 1, then its L¹ norm is at most 4.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/225",
+    "date": "",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos225Problem.lean",
+    "tags": [
+      "erdos",
+      "analysis",
+      "trigonometric-polynomials",
+      "unit-circle",
+      "L1-norm",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 3,
+    "erdosNumber": 225,
+    "erdosUrl": "https://erdosproblems.com/225",
+    "erdosProblemStatus": "solved",
+    "axiomCount": 1,
+    "lineCount": 329,
+    "assumptions": "1 axiom: erdos_225. 3 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8,
+    "definitionCount": 8,
+    "additionalFiles": [
+      "Proofs/Erdos225Aristotle.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős studied $L^1$ norms of trigonometric polynomials from the 1940s onward, publishing related results in 1940, 1957, and 1961. The specific conjecture — that $\\|f\\|_1 \\leq 4$ when all roots lie on the unit circle and $\\|f\\|_\\infty = 1$ — was listed by W.K. Hayman as Problem 4.20 in his influential 1974 survey *Research Problems in Function Theory*. The problem was solved independently: Saff and Sheil-Small (1973) proved it for polynomials with complex coefficients, and Kristiansen (1974) for real coefficients. The bound 4 is sharp. Notably, the automated proof search tool Aristotle discovered a formalization bug in this entry: constant polynomials vacuously satisfy the 'all roots on the unit circle' condition (having no roots), but have $L^1$ norm $2\\pi > 4$, contradicting the formalized statement. The mathematical theorem implicitly requires degree $\\geq 1$.",
+    "problemStatement": "Let $f(\\theta) = \\sum_{k=0}^{n} c_k e^{ik\\theta}$ be a trigonometric polynomial all of whose roots are real (i.e., lie on the unit circle), such that $\\max|f(\\theta)| = 1$. Then $\\int_0^{2\\pi} |f(\\theta)| \\, d\\theta \\leq 4$.",
+    "text": "If a trigonometric polynomial has all roots on the unit circle and supremum norm 1, then its L¹ norm is at most 4.",
+    "proofStrategy": "The formalization defines trigonometric polynomials as `Fin (n+1) → ℂ`, with evaluation via `Complex.exp`. The unit-circle-roots condition requires all roots of $P(z) = \\sum c_k z^k$ to satisfy $\\|z\\| = 1$. A `Nonconstant` predicate (requiring at least one root) fixes the constant-polynomial bug found by Aristotle. The corrected theorem `erdos_225` adds this hypothesis. Key infrastructure: the integral identity $\\int_0^{2\\pi} |e^{i\\theta} - \\alpha| \\, d\\theta = 8$ for $|\\alpha| = 1$, and the degree-1 extremal case where $\\|f\\|_1 = 4$ exactly.",
+    "keyInsights": [
+      "**Terminological trap**: 'Real roots' means roots on the unit circle $|z| = 1$, not roots in $\\mathbb{R}$ — a common source of confusion in the literature",
+      "**Formalization bug found by Aristotle**: Constant polynomials vacuously satisfy `HasUnitCircleRoots` but have $L^1$ norm $= 2\\pi > 4$, requiring a degree $\\geq 1$ hypothesis",
+      "**Sharp bound**: The constant 4 cannot be improved to $4 - \\varepsilon$ for any $\\varepsilon > 0$, as demonstrated by explicit extremal sequences",
+      "**Contrasting results**: Erdős #225 gives an $L^1$ **upper** bound of 4 for unit-circle-root polynomials, while Littlewood's conjecture (proved 1981) gives an $L^1$ **lower** bound of $C \\log n$ for unimodular polynomials",
+      "**Fejér–Riesz connection**: Non-negative trigonometric polynomials factor as $|g|^2$, linking the problem to spectral factorization theory",
+      "**Degree-1 extremal**: The bound 4 is achieved exactly at degree 1, where $\\|f\\|_1 = 4$. For degree $\\geq 2$, the bound is strict ($< 4$). The identity $\\int_0^{2\\pi} |e^{i\\theta} - \\alpha| \\, d\\theta = 8$ for $|\\alpha| = 1$ is the key computation"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Mathematical analysis"
+    ]
+  },
+  "sections": [
+    {
+      "id": "aristotle-header",
+      "title": "Aristotle Contributions",
+      "startLine": 1,
+      "endLine": 11,
+      "summary": "Aristotle (Harmonic) proved `erdos_225_optimal` and `sup_on_circle_eq_trig_sup`, and discovered the formalization bug: constant polynomials are a counterexample.",
+      "mathContext": "Aristotle (Harmonic) proved `erdos_225_optimal` and `sup_on_circle_eq_trig_sup`, and discovered the formalization bug."
+    },
+    {
+      "id": "problem-statement",
+      "title": "Problem Statement and History",
+      "startLine": 13,
+      "endLine": 38,
+      "summary": "Erdős Problem #225: $\\|f\\|_1 \\leq 4$ when all roots on $|z| = 1$ and $\\|f\\|_\\infty = 1$. Solved by Kristiansen (1974), Saff–Sheil-Small (1973).",
+      "mathContext": "Erdős Problem #225: $\\|f\\|_1 \\leq 4$ when all roots on $|z| = 1$ and $\\|f\\|_\\infty = 1$."
+    },
+    {
+      "id": "definitions",
+      "title": "Definitions: TrigPoly, Roots, Nonconstant, Norms",
+      "startLine": 40,
+      "endLine": 97,
+      "summary": "Defines `TrigPoly n`, `HasUnitCircleRoots`, `Nonconstant` (at least one root exists), `supNorm`, and `l1Norm`. The `Nonconstant` predicate fixes the constant-polynomial bug.",
+      "mathContext": "Defines trigonometric polynomials, unit-circle-root condition, nonconstancy predicate, and $L^1$/$L^\\infty$ norms."
+    },
+    {
+      "id": "main-theorems",
+      "title": "Main Theorems (Original Bug + Corrected)",
+      "startLine": 99,
+      "endLine": 127,
+      "summary": "Original `erdos_225_main` (known false, retained for reference) and corrected `erdos_225` with `Nonconstant` hypothesis. Both have `sorry`.",
+      "mathContext": "Corrected theorem: $\\|f\\|_1 \\leq 4$ for nonconstant trigonometric polynomials with unit-circle roots and $\\|f\\|_\\infty = 1$."
+    },
+    {
+      "id": "optimality",
+      "title": "Optimality (Aristotle + Corrected)",
+      "startLine": 129,
+      "endLine": 233,
+      "summary": "Aristotle's original optimality proof (uses constant polynomial). New: `constant_not_nonconstant` (proved), `unit_circle_difference_integral`, `degree_one_l1_norm_eq_four`, `erdos_225_tight`.",
+      "mathContext": "Key identity: $\\int_0^{2\\pi} |e^{i\\theta} - \\alpha| \\, d\\theta = 8$ for $|\\alpha| = 1$. Degree-1 polynomials achieve $\\|f\\|_1 = 4$ exactly."
+    },
+    {
+      "id": "equivalences",
+      "title": "Equivalent Formulations and Supremum Equivalence",
+      "startLine": 235,
+      "endLine": 281,
+      "summary": "Defines `PolynomialHasUnitCircleRoots`. Aristotle proved `sup_on_circle_eq_trig_sup`: the $L^\\infty$ norm of $P(z)$ on $S^1$ equals $\\sup_{\\theta} |f(\\theta)|$.",
+      "mathContext": "Aristotle proved `sup_on_circle_eq_trig_sup`: the $L^\\infty$ norm of $P(z)$ on $S^1$ equals $\\sup_{\\theta} |f(\\theta)|$."
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results: Fejér–Riesz and Littlewood",
+      "startLine": 283,
+      "endLine": 326,
+      "summary": "Discusses the Fejér–Riesz theorem and Littlewood's lower bound as related context. Summary reviews the solved status and proof architecture. No axioms or theorems are formalized in this section — only docstrings and comments.",
+      "mathContext": "Discusses the Fejér–Riesz theorem ($f \\geq 0 \\Rightarrow f = |g|^2$) and Littlewood's lower bound ($\\|f\\|_1 \\geq C \\log n$ for unimodular coefficients) as related context (no axioms formalized here)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #225 is **solved**: the bound $\\|f\\|_1 \\leq 4$ holds for nonconstant trigonometric polynomials with all roots on the unit circle and $\\|f\\|_\\infty = 1$. The corrected theorem `erdos_225` adds a `Nonconstant` predicate (at least one root exists). Key infrastructure: the identity $\\int |e^{i\\theta} - \\alpha| = 8$ for $|\\alpha| = 1$, and the degree-1 extremal case. Aristotle proved optimality and the supremum equivalence.",
+    "implications": "**Theoretical Significance**: The result reveals a deep connection between **root geometry** (all roots on $S^1$) and **integral norm bounds** ($\\|f\\|_1 \\leq 4$).\n\nThe unit-circle constraint dramatically restricts the polynomial's behavior: without it, $\\|f\\|_1$ can be arbitrarily large even with $\\|f\\|_\\infty = 1$. The Fejér–Riesz theorem provides a structural explanation via spectral factorization.",
+    "openQuestions": [
+      "What are the degree-$n$ extremal polynomials that maximize $\\|f\\|_1$ under the unit-circle-roots and $\\|f\\|_\\infty = 1$ constraints?",
+      "Can the corrected main theorem `erdos_225` be proved in Lean using the factorization approach (P(z) = cₙ ∏(z − αⱼ) with |αⱼ| = 1)?",
+      "Does an analogous bound hold for polynomials whose roots lie on a curve other than $S^1$ (e.g., an ellipse)?",
+      "What is the precise rate at which the extremal $L^1$ norm approaches 4 as $n \\to \\infty$?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MeasureTheory"
+    ],
+    "namespace": "Erdos225",
+    "lineCount": 329,
+    "axiomCount": 1,
+    "theoremCount": 8,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos225Problem.lean",
+    "sorries": 3,
+    "additionalFiles": [
+      "Proofs/Erdos225Aristotle.lean"
+    ]
+  },
+  "references": [
+    "Erdős (1940, 1957, 1961): early work on trigonometric polynomial norms",
+    "Saff–Sheil-Small (1973): proved for complex coefficients",
+    "Kristiansen (1974): proved for real coefficients",
+    "Hayman (1974): Research Problems in Function Theory, Problem 4.20",
+    "McGehee–Pigno–Smith (1981): Littlewood's conjecture (related result)",
+    "Fejér–Riesz (1915): non-negative trig polynomials as |g|²",
+    "https://erdosproblems.com/225"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-256",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, solved, unit-circle"
+    },
+    {
+      "targetId": "erdos-1114",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, solved"
+    },
+    {
+      "targetId": "erdos-1125",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, solved"
+    }
+  ],
+  "sorries": 3
+}

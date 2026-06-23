@@ -1,0 +1,397 @@
+[
+  {
+    "id": "ann-e920-header",
+    "proofId": "erdos-920",
+    "range": {
+      "startLine": 1,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Problem Overview and References",
+    "content": "**Erdős Problem #920: Chromatic Numbers of K_k-Free Graphs**\n\nIs $g_k(n) \\gg n^{1-1/(k-1)} / (\\log n)^c$ for $k \\geq 4$?\n\n**Status: OPEN** ($k=3,4$ resolved; $k \\geq 5$ open)\n\nThe header documents the problem statement, its history from Erdős (1959) through Mattheus-Verstraete (2023), and the crucial Ramsey-chromatic connection. References include Er59b (Canadian J. Math.), GrYa68 (J. Combinatorial Theory), and MaVe23 (arXiv:2306.04007).",
+    "mathContext": "The function $g_k(n) = \\max\\{\\chi(G) : G \\text{ is } K_k\\text{-free with } n \\text{ vertices}\\}$ measures the extremal chromatic complexity of clique-free graphs. The key bridge to Ramsey theory: $R(k,m) \\geq c \\cdot m^\\alpha/(\\log m)^\\beta \\implies g_k(n) \\geq c' \\cdot n^{1-1/\\alpha}/(\\log n)^{\\beta/\\alpha}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Chromatic number",
+      "K_k-free graphs",
+      "Ramsey numbers",
+      "Probabilistic method",
+      "Extremal graph theory"
+    ],
+    "prerequisites": [
+      "Graph coloring basics",
+      "Ramsey theory",
+      "Asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-e920-imports",
+    "proofId": "erdos-920",
+    "range": {
+      "startLine": 33,
+      "endLine": 43
+    },
+    "type": "concept",
+    "title": "Mathlib Imports and Namespace",
+    "content": "Imports Mathlib modules for `SimpleGraph.Basic` (graph definitions), `SimpleGraph.Clique` (clique-freeness), `SimpleGraph.Coloring` (chromatic number), `Nat.Basic`, `Real.Basic`, `Log.Basic` (logarithmic functions), and `Fintype.Basic` (finite types). Opens `SimpleGraph` and `Real` namespaces within an `Erdos920` namespace to organize the formalization.",
+    "mathContext": "The formalization uses Mathlib's `SimpleGraph V` type where $V$ is a `Fintype` with `DecidableEq`, providing `CliqueFree` and `chromaticNumber` as built-in definitions.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib SimpleGraph",
+      "Fintype",
+      "DecidableEq"
+    ],
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib graph theory library"
+    ]
+  },
+  {
+    "id": "ann-e920-kfree",
+    "proofId": "erdos-920",
+    "range": {
+      "startLine": 51,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "K_k-Free Graph",
+    "content": "**IsKFree G k**: A graph $G$ is $K_k$-free if it contains no complete subgraph on $k$ vertices. Defined as `G.CliqueFree k` from Mathlib. For $k=3$ this means triangle-free; for $k=4$, no $K_4$ subgraph. The study of $K_k$-free graphs is central to Ramsey theory and Turán-type extremal problems.",
+    "mathContext": "A graph $G = (V,E)$ is $K_k$-free iff there is no set $S \\subseteq V$ with $|S| = k$ such that $G[S] \\cong K_k$. Equivalently, the clique number $\\omega(G) < k$. By Ramsey's theorem, every 2-coloring of $K_n$ edges produces a monochromatic $K_k$ or $K_m$, so $K_k$-free graphs on $R(k,m)-1$ vertices can have independence number at most $m-1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "CliqueFree",
+      "Turán's theorem",
+      "Ramsey number",
+      "Clique number"
+    ],
+    "prerequisites": [
+      "Complete graphs",
+      "Graph substructures",
+      "Ramsey's theorem"
+    ]
+  },
+  {
+    "id": "ann-e920-chromatic",
+    "proofId": "erdos-920",
+    "range": {
+      "startLine": 58,
+      "endLine": 64
+    },
+    "type": "definition",
+    "title": "Chromatic Number",
+    "content": "**chromaticNumber G**: The minimum number of colors needed to properly color the vertices of $G$ so that no two adjacent vertices share the same color. Defined as a `noncomputable def` wrapping Mathlib's `G.chromaticNumber`. The chromatic number $\\chi(G)$ is one of the most studied graph invariants, connected to perfect graph theory, the four color theorem, and NP-completeness.",
+    "mathContext": "$\\chi(G) = \\min\\{k : G \\text{ has a proper } k\\text{-coloring}\\}$. A proper coloring is a map $c: V \\to \\{1,\\ldots,k\\}$ with $c(u) \\neq c(v)$ whenever $uv \\in E$. By the greedy algorithm, $\\chi(G) \\leq \\Delta(G) + 1$ (Brooks's theorem improves this to $\\chi(G) \\leq \\Delta(G)$ for connected graphs that aren't complete or odd cycles).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Graph coloring",
+      "Brooks's theorem",
+      "Perfect graphs",
+      "Four color theorem"
+    ],
+    "prerequisites": [
+      "Graph theory basics",
+      "Proper coloring",
+      "Greedy coloring"
+    ]
+  },
+  {
+    "id": "ann-e920-gk",
+    "proofId": "erdos-920",
+    "range": {
+      "startLine": 66,
+      "endLine": 71
+    },
+    "type": "definition",
+    "title": "Maximum Chromatic Number g_k(n)",
+    "content": "**maxChromaticKFree k n**: The extremal function $g_k(n) = \\max\\{\\chi(G) : G \\text{ is } K_k\\text{-free}, |V(G)| = n\\}$. Axiomatized because defining the supremum over all $K_k$-free graphs on $n$ vertices requires quantifying over an exponentially large family. This function captures the central question: how chromatically complex can a graph be while avoiding large cliques?",
+    "mathContext": "$g_k(n) = \\max\\{\\chi(G) : \\omega(G) < k, |V(G)| = n\\}$. Since $\\chi(G) \\geq |V(G)|/\\alpha(G)$ where $\\alpha(G)$ is the independence number, and a $K_k$-free graph on $R(k,m)-1$ vertices has $\\alpha \\leq m-1$, we get $g_k(R(k,m)-1) \\geq (R(k,m)-1)/(m-1)$. This is the source of the Ramsey-chromatic connection.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Extremal function",
+      "Independence number",
+      "Turán number",
+      "Ramsey-chromatic duality"
+    ],
+    "prerequisites": [
+      "Chromatic number",
+      "Clique number",
+      "Independence number",
+      "Ramsey numbers"
+    ]
+  },
+  {
+    "id": "ann-e920-graver",
+    "proofId": "erdos-920",
+    "range": {
+      "startLine": 77,
+      "endLine": 87
+    },
+    "type": "concept",
+    "title": "Graver-Yackel Upper Bound (1968)",
+    "content": "**graver_yackel_1968**: $g_k(n) \\leq C(n \\cdot \\log\\log n / \\log n)^{1-1/(k-1)}$ for some constant $C > 0$. This is the best known upper bound, published by Graver and Yackel in the Journal of Combinatorial Theory (1968). The proof uses a counting argument relating the number of independent sets to the coloring structure. The exponent $1 - 1/(k-1)$ in the upper bound matches Erdős's conjectured lower bound exponent, suggesting this is the correct order of growth.",
+    "mathContext": "$g_k(n) \\leq C \\left(\\frac{n \\log\\log n}{\\log n}\\right)^{1-1/(k-1)}$. The $\\log\\log n$ factor in the numerator is a minor correction; the key feature is that the dominant term is $(n/\\log n)^{1-1/(k-1)}$. For $k=3$: exponent $1/2$, so $g_3(n) \\ll (n \\log\\log n / \\log n)^{1/2}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Extremal upper bounds",
+      "Independent set counting",
+      "Turán-type results"
+    ],
+    "prerequisites": [
+      "Asymptotic analysis",
+      "Logarithmic functions",
+      "Combinatorial counting"
+    ]
+  },
+  {
+    "id": "ann-e920-trivial",
+    "proofId": "erdos-920",
+    "range": {
+      "startLine": 88,
+      "endLine": 93
+    },
+    "type": "concept",
+    "title": "Trivial Upper Bound",
+    "content": "**trivial_upper**: $g_k(n) \\leq n$ since any graph on $n$ vertices can be properly colored with at most $n$ colors (assign each vertex a distinct color). This serves as a sanity check and base case for inductive arguments.",
+    "mathContext": "$\\chi(G) \\leq |V(G)|$ for all graphs $G$, with equality iff $G \\cong K_n$. Since $K_n$ is not $K_k$-free for $n \\geq k$, for $K_k$-free graphs we actually have $\\chi(G) \\leq n-1$ when $n \\geq k$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Greedy coloring",
+      "Complete graphs"
+    ],
+    "prerequisites": [
+      "Basic graph coloring"
+    ]
+  },
+  {
+    "id": "ann-e920-erdos-k3",
+    "proofId": "erdos-920",
+    "range": {
+      "startLine": 99,
+      "endLine": 107
+    },
+    "type": "concept",
+    "title": "Erdős Lower Bound for k=3 (1959)",
+    "content": "**erdos_1959_k3**: $g_3(n) \\geq c \\cdot n^{1/2} / \\log n$ for some $c > 0$. Derived from the Ramsey bound $R(3,m) \\gg (m/\\log m)^2$ proved by Erdős in 1959 using the probabilistic method. This was one of the earliest applications of probabilistic combinatorics: a random graph $G(n,p)$ with $p = n^{-1/2}$ is triangle-free with positive probability while having high chromatic number.",
+    "mathContext": "From $R(3,m) \\geq c(m/\\log m)^2$: taking $n = R(3,m)-1$, a $K_3$-free graph on $n$ vertices has $\\alpha \\leq m-1$, so $\\chi \\geq n/\\alpha \\geq c' \\cdot n^{1/2}/\\log n$. The exponent $1/2 = 1 - 1/(3-1)$ matches the conjecture for $k=3$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Probabilistic method",
+      "R(3,m) bounds",
+      "Triangle-free graphs",
+      "Random graphs"
+    ],
+    "prerequisites": [
+      "Ramsey numbers",
+      "Probabilistic method",
+      "Independence number"
+    ]
+  },
+  {
+    "id": "ann-e920-shearer",
+    "proofId": "erdos-920",
+    "range": {
+      "startLine": 109,
+      "endLine": 116
+    },
+    "type": "concept",
+    "title": "Shearer's Improved Bound for k=3",
+    "content": "**shearer_k3**: $g_3(n) \\geq c \\cdot (n/\\log n)^{1/2}$ for some $c > 0$. This improves the Erdős bound by moving the logarithmic factor inside the square root. Shearer achieved this by sharpening the Ramsey bound to $R(3,m) \\gg m^2/\\log m$ (removing one logarithmic factor from the denominator). Together with Graver-Yackel, this essentially determines $g_3(n) \\asymp (n/\\log n)^{1/2}$ up to lower-order corrections.",
+    "mathContext": "Shearer's improvement: $R(3,m) \\geq c \\cdot m^2/\\log m$. Via the Ramsey-chromatic bridge with $\\alpha = 2$, $\\beta = 1$: $g_3(n) \\geq c' \\cdot n^{1-1/2}/(\\log n)^{1/2} = c'(n/\\log n)^{1/2}$. This is stronger than Erdős's $n^{1/2}/\\log n$ by a factor of $(\\log n)^{1/2}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Shearer's bound",
+      "Entropy method",
+      "R(3,m) improvements"
+    ],
+    "prerequisites": [
+      "Erdős 1959 bound",
+      "Ramsey-chromatic connection"
+    ]
+  },
+  {
+    "id": "ann-e920-mattheus",
+    "proofId": "erdos-920",
+    "range": {
+      "startLine": 118,
+      "endLine": 126
+    },
+    "type": "concept",
+    "title": "Mattheus-Verstraete Breakthrough (2023)",
+    "content": "**mattheus_verstraete_2023**: $g_4(n) \\geq c \\cdot n^{2/3} / (\\log n)^{4/3}$ for some $c > 0$. This 2023 breakthrough by Sam Mattheus and Jacques Verstraete resolves the $k=4$ case with the optimal exponent $2/3 = 1 - 1/(4-1)$, matching the Erdős conjecture. They proved $R(4,t) \\gg t^3/(\\log t)^4$ using pseudorandom constructions based on norm graphs over finite fields $\\mathbb{F}_{q^3}$, improving the previous best bound of Ajtai-Komlós-Szemerédi.",
+    "mathContext": "$g_4(n) \\geq c \\cdot n^{2/3}/(\\log n)^{4/3}$. Via the Ramsey-chromatic bridge with $R(4,m) \\geq c \\cdot m^3/(\\log m)^4$: $\\alpha = 3$, $\\beta = 4$, giving $g_4(n) \\geq c' \\cdot n^{1-1/3}/(\\log n)^{4/3} = c' \\cdot n^{2/3}/(\\log n)^{4/3}$. The exponent $2/3$ matches the conjectured $1 - 1/(k-1) = 1 - 1/3$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Algebraic constructions",
+      "Norm graphs",
+      "Finite field geometry",
+      "R(4,t) bounds"
+    ],
+    "prerequisites": [
+      "Ramsey-chromatic connection",
+      "Algebraic geometry over finite fields",
+      "Pseudorandom graphs"
+    ]
+  },
+  {
+    "id": "ann-e920-general",
+    "proofId": "erdos-920",
+    "range": {
+      "startLine": 128,
+      "endLine": 138
+    },
+    "type": "concept",
+    "title": "General Lower Bound",
+    "content": "**general_lower_bound**: For all $k \\geq 3$, $g_k(n) \\geq c \\cdot n^{1-2/(k+1)} / (\\log n)^{c_k}$ for some constants $c, c_k > 0$. This follows from the best known general Ramsey bound $R(k,m) \\gg m^{(k+1)/2}$ (up to logarithmic factors). For $k \\geq 5$, the exponent $1 - 2/(k+1)$ is strictly less than the conjectured $1 - 1/(k-1)$, leaving a gap that narrows but never closes.",
+    "mathContext": "From $R(k,m) \\gg m^{(k+1)/2}/(\\log m)^c$ with $\\alpha = (k+1)/2$: $g_k(n) \\gg n^{1-2/(k+1)}/(\\log n)^{c'}$. The gap: $1 - 2/(k+1) < 1 - 1/(k-1) \\iff 2/(k+1) > 1/(k-1) \\iff 2(k-1) > k+1 \\iff k > 3$. So for $k \\geq 4$ there's always a gap (until resolved case-by-case).",
+    "significance": "key",
+    "relatedConcepts": [
+      "General Ramsey bounds",
+      "Probabilistic lower bounds",
+      "Stepping-up lemma"
+    ],
+    "prerequisites": [
+      "Ramsey-chromatic connection",
+      "General R(k,m) bounds"
+    ]
+  },
+  {
+    "id": "ann-e920-conjecture",
+    "proofId": "erdos-920",
+    "range": {
+      "startLine": 144,
+      "endLine": 152
+    },
+    "type": "definition",
+    "title": "The Erdős Conjecture",
+    "content": "**ErdosConjecture k**: Formalizes Erdős's conjecture as a Lean `Prop`: for $k \\geq 4$, there exist constants $c, C > 0$ such that $g_k(n) \\geq C \\cdot n^{1-1/(k-1)}/(\\log n)^c$ for all $n \\geq 2$. This is defined as a `def` (not a theorem or axiom) since it's an open problem — it can be stated but not yet proved. The $k=4$ case is now a theorem (Mattheus-Verstraete 2023).",
+    "mathContext": "$\\text{ErdosConjecture}(k) \\equiv k \\geq 4 \\to \\exists c, C > 0, \\forall n \\geq 2: g_k(n) \\geq C \\cdot n^{1-1/(k-1)}/(\\log n)^c$. Note the conjecture is equivalent to asserting $R(k,m) \\gg m^{k-1}/(\\log m)^c$ via the Ramsey-chromatic bridge, which for $k=5$ means $R(5,m) \\gg m^4/(\\log m)^c$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Open problems in combinatorics",
+      "Ramsey conjecture",
+      "Extremal graph theory conjectures"
+    ],
+    "prerequisites": [
+      "g_k(n) definition",
+      "Ramsey-chromatic connection",
+      "Known bounds"
+    ]
+  },
+  {
+    "id": "ann-e920-gap",
+    "proofId": "erdos-920",
+    "range": {
+      "startLine": 154,
+      "endLine": 164
+    },
+    "type": "concept",
+    "title": "The Exponent Gap",
+    "content": "**the_gap**: For $k \\geq 4$, the known exponent $1 - 2/(k+1)$ is strictly less than the conjectured exponent $1 - 1/(k-1)$. Axiomatized as a real inequality. Concrete values:\n- $k=4$: known $3/5 = 0.6$, conjectured $2/3 \\approx 0.667$ (**RESOLVED** by MV2023)\n- $k=5$: known $2/3 \\approx 0.667$, conjectured $3/4 = 0.75$\n- $k=6$: known $5/7 \\approx 0.714$, conjectured $4/5 = 0.8$",
+    "mathContext": "The gap $\\Delta(k) = (1 - 1/(k-1)) - (1 - 2/(k+1)) = 2/(k+1) - 1/(k-1) = (k-3)/((k+1)(k-1))$. For large $k$: $\\Delta(k) \\sim 1/k^2$, so the gap shrinks but never vanishes. Closing the gap for each $k$ requires improving $R(k,m)$ from $\\Omega(m^{(k+1)/2})$ to $\\Omega(m^{k-1})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Asymptotic gaps",
+      "Ramsey exponent improvement",
+      "Step-by-step resolution"
+    ],
+    "prerequisites": [
+      "Known and conjectured bounds",
+      "Real analysis inequalities"
+    ]
+  },
+  {
+    "id": "ann-e920-ramsey-def",
+    "proofId": "erdos-920",
+    "range": {
+      "startLine": 170,
+      "endLine": 175
+    },
+    "type": "definition",
+    "title": "Ramsey Number R(k,m)",
+    "content": "**RamseyNumber k m**: The Ramsey number $R(k,m)$ is the smallest $n$ such that every 2-coloring of the edges of $K_n$ contains either a red $K_k$ or a blue $K_m$. Axiomatized because the full definition requires quantifying over all edge 2-colorings. Ramsey numbers are notoriously difficult to compute: $R(3,3) = 6$, $R(4,4) = 18$, and $R(5,5)$ is still unknown (known to be between 43 and 48).",
+    "mathContext": "$R(k,m) = \\min\\{n : \\forall c: E(K_n) \\to \\{\\text{red, blue}\\}, \\exists \\text{red } K_k \\text{ or blue } K_m\\}$. Ramsey's theorem guarantees $R(k,m) < \\infty$. The Erdős-Szekeres bound gives $R(k,m) \\leq \\binom{k+m-2}{k-1}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey's theorem",
+      "Edge coloring",
+      "Erdős-Szekeres bound",
+      "Diagonal Ramsey numbers"
+    ],
+    "prerequisites": [
+      "Complete graphs",
+      "Graph edge colorings",
+      "Ramsey's theorem"
+    ]
+  },
+  {
+    "id": "ann-e920-ramsey-bridge",
+    "proofId": "erdos-920",
+    "range": {
+      "startLine": 177,
+      "endLine": 188
+    },
+    "type": "concept",
+    "title": "Ramsey-Chromatic Connection",
+    "content": "**ramsey_chromatic_connection**: The key structural bridge of the entire formalization. If $R(k,m) \\geq c \\cdot m^\\alpha / (\\log m)^\\beta$ for some $\\alpha > 1$, $\\beta \\geq 0$, then $g_k(n) \\geq c' \\cdot n^{1-1/\\alpha} / (\\log n)^{\\beta/\\alpha}$. The proof idea: take $n = R(k,m)-1$; a $K_k$-free graph on $n$ vertices has independence number $\\leq m-1$ (by definition of Ramsey number), so $\\chi \\geq n/(m-1)$. Inverting the Ramsey bound to express $m$ in terms of $n$ gives the chromatic lower bound.",
+    "mathContext": "Proof sketch: Given $R(k,m) \\geq c \\cdot m^\\alpha/(\\log m)^\\beta$, for $n < R(k,m)$, $\\exists$ a $K_k$-free graph $G$ on $n$ vertices with $\\alpha(G) < m$. Then $\\chi(G) \\geq n/\\alpha(G) > n/m$. Since $n \\geq c \\cdot m^\\alpha/(\\log m)^\\beta$, inverting: $m \\leq C \\cdot n^{1/\\alpha} \\cdot (\\log n)^{\\beta/\\alpha}$, so $\\chi(G) \\geq n/m \\geq c' \\cdot n^{1-1/\\alpha}/(\\log n)^{\\beta/\\alpha}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey-theoretic constructions",
+      "Independence number bounds",
+      "Extremal duality"
+    ],
+    "prerequisites": [
+      "Ramsey numbers",
+      "Independence number",
+      "Chromatic number lower bounds"
+    ]
+  },
+  {
+    "id": "ann-e920-erdos-ramsey",
+    "proofId": "erdos-920",
+    "range": {
+      "startLine": 190,
+      "endLine": 197
+    },
+    "type": "concept",
+    "title": "Erdős Ramsey Bound R(3,m)",
+    "content": "**erdos_ramsey_k3**: $R(3,m) \\geq c \\cdot (m/\\log m)^2$ for some $c > 0$. Proved by Erdős in 1959 using the probabilistic method — one of the foundational results in probabilistic combinatorics. The random graph $G(n, 1/\\sqrt{n})$ is triangle-free with positive probability and has independence number $O(\\sqrt{n \\log n})$, yielding the bound. This was later improved by Kim (1995) to $R(3,m) \\gg m^2/\\log m$ and further refined by Fiz Pontiveros, Griffiths, and Morris.",
+    "mathContext": "$R(3,m) \\geq c \\cdot (m/\\log m)^2 = c \\cdot m^2/(\\log m)^2$. With $\\alpha = 2$, $\\beta = 2$ in the Ramsey-chromatic bridge: $g_3(n) \\geq c' \\cdot n^{1-1/2}/(\\log n)^{2/2} = c' \\cdot n^{1/2}/\\log n$, reproducing the Erdős $k=3$ bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Probabilistic method",
+      "Random graphs",
+      "Triangle-free process",
+      "Kim's R(3,m) bound"
+    ],
+    "prerequisites": [
+      "Probabilistic method",
+      "Random graph G(n,p)",
+      "Lovász Local Lemma"
+    ]
+  },
+  {
+    "id": "ann-e920-ramsey-k4",
+    "proofId": "erdos-920",
+    "range": {
+      "startLine": 199,
+      "endLine": 203
+    },
+    "type": "concept",
+    "title": "Mattheus-Verstraete Ramsey Bound R(4,m)",
+    "content": "**mattheus_verstraete_ramsey**: $R(4,m) \\geq c \\cdot m^3 / (\\log m)^4$ for some $c > 0$. The 2023 breakthrough by Mattheus and Verstraete. They constructed $K_4$-free graphs using norm graphs over the finite field $\\mathbb{F}_{q^3}$: vertices are elements of $\\mathbb{F}_{q^3}^*$, edges connect $x,y$ when the norm $N(x+y) = 0$. These graphs are pseudorandom with controlled clique and independence numbers. Published in Annals of Mathematics, this resolved a problem open since the 1950s.",
+    "mathContext": "$R(4,m) \\geq c \\cdot m^3/(\\log m)^4$. With $\\alpha = 3$, $\\beta = 4$: $g_4(n) \\geq c' \\cdot n^{1-1/3}/(\\log n)^{4/3} = c' \\cdot n^{2/3}/(\\log n)^{4/3}$. The exponent $2/3 = 1 - 1/(4-1)$ matches the Erdős conjecture. The previous best was $R(4,m) \\gg m^{5/2}$ (Spencer, Ajtai-Komlós-Szemerédi).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Norm graphs",
+      "Algebraic graph constructions",
+      "Finite field geometry",
+      "Pseudorandom graphs"
+    ],
+    "prerequisites": [
+      "Finite fields",
+      "Algebraic geometry basics",
+      "Ramsey-chromatic connection"
+    ]
+  }
+]

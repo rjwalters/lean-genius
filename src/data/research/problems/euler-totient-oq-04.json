@@ -1,0 +1,149 @@
+{
+  "slug": "euler-totient-oq-04",
+  "title": "Divisor sum identity n = Σ φ(d) from Mathlib partition-of-unity",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "For every positive natural number n, prove sum_{d | n} phi(d) = n.",
+    "plain": "Prove the classical divisor-sum identity for Euler's totient function by partitioning residues according to their gcd with n.",
+    "whyMatters": [
+      "The identity sum_{d | n} phi(d) = n is one of the central structural facts about Euler's totient function.",
+      "The proof turns the identity into a counting partition of residue classes by gcd.",
+      "This connects number-theoretic divisor sums with finite-set partitions in Mathlib."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Residues below n are partitioned into gcd classes indexed by divisors (Lean: gcdClass, range_eq_biUnion_gcdClass).",
+      "Each gcd class has cardinality Nat.totient (n / d) for d dividing n (Lean: card_gcdClass_eq_totient).",
+      "The divisor-sum identity in quotient form is proved (Lean: divisor_sum_totient_div).",
+      "The classical identity sum_{d | n} Nat.totient d = n is proved for all natural n (Lean: divisor_sum_totient).",
+      "The file records partition-of-unity and gcd-class counting corollaries (Lean: partition_of_unity, totient_counts_gcd_class)."
+    ],
+    "open": [],
+    "goal": "Record the verified divisor-sum identity for Euler's totient function and the gcd-class partition proof."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-15T12:10:20.233Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Fully proved, 0 sorries. ? lines.",
+    "builtItems": [
+      "Lean formalization complete"
+    ],
+    "insights": [
+      "Proof verified: 0 sorries via grep",
+      "Lean file exists and compiles",
+      "Ready for gallery publication"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# euler-totient-oq-04: Divisor Sum Identity via GCD Partition\n\n## Problem Summary\n\n**Problem**: Prove n = Σ_{d|n} φ(n/d) constructively via GCD class partition.\n\n**Status**: COMPLETED - 231 lines, 0 sorries, 0 axioms.\n\n## Session 2026-03-18 - Verification and Metadata\n\n**Mode**: REVISIT (proof already existed from abel-ruffini-oq-01 work)\n**Outcome**: completed\n\n### Existing Proof\n\n`proofs/Proofs/EulerTotientOQ04.lean` (231 lines, 0 sorries) was already created\nand committed as part of abel-ruffini-oq-01 research. The proof:\n\n1. Defines GCD classes S_d(n) = {k ∈ {0,...,n-1} : gcd(k,n) = d}\n2. Shows they partition {0,...,n-1} (disjoint + cover)\n3. Proves |S_d| = φ(n/d) via explicit bijection k ↦ k/d using Finset.card_bij\n4. Derives n = Σ_{d|n} φ(n/d) by summing cardinalities\n5. Includes partition-of-unity formulation over ℚ\n6. Cross-validates with Mathlib's Nat.sum_totient\n7. Concrete verifications for n=6, 12, 30\n"
+  },
+  "approaches": [],
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "mathlib",
+    "euler-totient",
+    "divisor-sums",
+    "finite-counting"
+  ],
+  "relatedProofs": [
+    "euler-totient",
+    "euler-totient-oq-01",
+    "euler-totient-oq-02",
+    "euler-totient-oq-02-oq-01",
+    "euler-totient-oq-03",
+    "euler-totient-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-15T12:11:41.207Z",
+  "lastUpdate": "2026-03-20T09:30:00Z",
+  "significance": 7,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/EulerTotient.lean",
+      "filename": "EulerTotient.lean",
+      "lineCount": 136,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotient.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ01.lean",
+      "filename": "EulerTotientOQ01.lean",
+      "lineCount": 84,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ01.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ02.lean",
+      "filename": "EulerTotientOQ02.lean",
+      "lineCount": 173,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ02.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ02OQ01.lean",
+      "filename": "EulerTotientOQ02OQ01.lean",
+      "lineCount": 208,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ03.lean",
+      "filename": "EulerTotientOQ03.lean",
+      "lineCount": 209,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ03.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ04.lean",
+      "filename": "EulerTotientOQ04.lean",
+      "lineCount": 232,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ04.lean"
+    }
+  ]
+}

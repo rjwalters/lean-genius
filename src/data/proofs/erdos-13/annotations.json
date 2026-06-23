@@ -1,0 +1,291 @@
+[
+  {
+    "id": "ann-e13-bad-triple",
+    "proofId": "erdos-13",
+    "range": {
+      "startLine": 50,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "Bad Triple",
+    "content": "**IsBadTriple a b c**: A triple $(a,b,c)$ is 'bad' if $a \\mid (b+c)$ and $a < \\min(b,c)$.\n\nThe second condition ($a < b$ and $a < c$) prevents trivial cases like $a = b = c$. This captures the divisibility relationship that Erdős wanted to forbid: a smaller element divides the sum of two larger elements.",
+    "mathContext": "IsBadTriple a b c ↔ a ∣ (b + c) ∧ a < b ∧ a < c",
+    "significance": "key",
+    "prerequisites": [
+      "Dvd",
+      "Nat.lt"
+    ],
+    "relatedConcepts": [
+      "divisibility",
+      "sum constraints",
+      "forbidden configurations"
+    ]
+  },
+  {
+    "id": "ann-e13-div-free",
+    "proofId": "erdos-13",
+    "range": {
+      "startLine": 54,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "Divisibility-Free Set",
+    "content": "**DivisibilityFree A**: A finite set $A$ contains no bad triples — for all $a, b, c \\in A$, the condition $a \\mid (b+c)$ with $a < \\min(b,c)$ fails.\n\nThis is the central property of Erdős Problem #13. The question is: what is the maximum size of a divisibility-free subset of $\\{1, \\ldots, N\\}$?",
+    "mathContext": "DivisibilityFree A ↔ ∀ a b c ∈ A, ¬IsBadTriple a b c",
+    "significance": "key",
+    "prerequisites": [
+      "IsBadTriple",
+      "Finset"
+    ],
+    "relatedConcepts": [
+      "extremal set theory",
+      "forbidden substructures",
+      "Turán-type problems"
+    ]
+  },
+  {
+    "id": "ann-e13-div-free-iff",
+    "proofId": "erdos-13",
+    "range": {
+      "startLine": 59,
+      "endLine": 67
+    },
+    "type": "concept",
+    "title": "Alternative Characterization (Proved)",
+    "content": "**divisibilityFree_iff** (proved): Equivalently, $A$ is divisibility-free iff for all $a, b, c \\in A$ with $a < b$ and $a < c$, we have $a \\nmid (b + c)$.\n\nThis reformulation separates the ordering condition from the non-divisibility conclusion, making it easier to work with in proofs. The proof unfolds both definitions and matches the components.",
+    "mathContext": "DivisibilityFree A ↔ ∀ a b c ∈ A, a < b → a < c → ¬(a ∣ (b + c))",
+    "significance": "supporting",
+    "prerequisites": [
+      "DivisibilityFree",
+      "IsBadTriple"
+    ],
+    "relatedConcepts": [
+      "logical equivalence",
+      "definition unpacking"
+    ]
+  },
+  {
+    "id": "ann-e13-upper-third",
+    "proofId": "erdos-13",
+    "range": {
+      "startLine": 75,
+      "endLine": 77
+    },
+    "type": "definition",
+    "title": "Upper Third Construction",
+    "content": "**upperThird N**: The set $\\{k \\in \\{0, \\ldots, N\\} : 2N < 3k\\}$, i.e., the interval $(2N/3, N] \\cap \\mathbb{N}$.\n\nThis is the optimal divisibility-free construction observed by Erdős and Sárközy. It contains approximately $N/3$ elements, all concentrated in the upper third of $\\{1, \\ldots, N\\}$.",
+    "mathContext": "upperThird N = (Finset.range (N+1)).filter (fun k => 2*N < 3*k)",
+    "significance": "key",
+    "prerequisites": [
+      "Finset.range",
+      "Finset.filter"
+    ],
+    "relatedConcepts": [
+      "interval construction",
+      "extremal sets",
+      "sum-free sets"
+    ]
+  },
+  {
+    "id": "ann-e13-upper-properties",
+    "proofId": "erdos-13",
+    "range": {
+      "startLine": 89,
+      "endLine": 100
+    },
+    "type": "concept",
+    "title": "Upper Third Properties",
+    "content": "Three axiomatized properties of the upper third:\n\n1. **upperThird_divisibilityFree**: The upper third contains no bad triples. If $a, b, c \\in (2N/3, N]$ with $a < b, c$, then $b + c > 4N/3$ while any multiple of $a$ greater than $a$ is $\\geq 2a > 4N/3$. The constraint $b + c \\leq 2N < 3a$ forces $b + c = 2a$, but $b, c > a$ gives $b + c > 2a$, contradiction.\n\n2. **upperThird_card**: $|\\text{upperThird}(N)| = N - 2N/3$ (integer division).\n\n3. **upperThird_achieves_bound**: For $N \\geq 3$, $|\\text{upperThird}(N)| \\geq N/3$.",
+    "mathContext": "DivisibilityFree (upperThird N) ∧ (upperThird N).card = N - 2*N/3",
+    "significance": "key",
+    "prerequisites": [
+      "upperThird",
+      "DivisibilityFree"
+    ],
+    "relatedConcepts": [
+      "optimality",
+      "lower bound construction",
+      "interval arithmetic"
+    ]
+  },
+  {
+    "id": "ann-e13-bedert",
+    "proofId": "erdos-13",
+    "range": {
+      "startLine": 112,
+      "endLine": 116
+    },
+    "type": "concept",
+    "title": "Bedert's Theorem (2023)",
+    "content": "**bedert_theorem** (axiom): There exists an absolute constant $C$ such that for all $N$ and all divisibility-free $A \\subseteq \\{1, \\ldots, N\\}$, we have $|A| \\leq N/3 + C$.\n\nThis solved Erdős Problem #13 and earned the $\\$100$ prize. The $O(1)$ term is an absolute constant independent of $N$. Combined with the upper third achieving $\\geq N/3$, this shows the answer is exactly $N/3$ up to a bounded additive error.",
+    "mathContext": "∃ C, ∀ N A, (∀ a ∈ A, a ≤ N ∧ a ≥ 1) → DivisibilityFree A → A.card ≤ N/3 + C",
+    "significance": "key",
+    "prerequisites": [
+      "DivisibilityFree",
+      "Finset.card"
+    ],
+    "relatedConcepts": [
+      "extremal combinatorics",
+      "Erdős prizes",
+      "tight bounds"
+    ]
+  },
+  {
+    "id": "ann-e13-optimal",
+    "proofId": "erdos-13",
+    "range": {
+      "startLine": 122,
+      "endLine": 126
+    },
+    "type": "concept",
+    "title": "Upper Third is Optimal",
+    "content": "**upperThird_optimal** (axiom): There exists $C$ such that every divisibility-free $A \\subseteq \\{1, \\ldots, N\\}$ satisfies $|A| \\leq |\\text{upperThird}(N)| + C$.\n\nThis follows from Bedert's theorem: since $|\\text{upperThird}(N)| \\geq N/3 - 1$ and $|A| \\leq N/3 + C$, optimality holds with constant $C + 1$.",
+    "mathContext": "∃ C, ∀ N A, DivisibilityFree A → A.card ≤ (upperThird N).card + C",
+    "significance": "key",
+    "prerequisites": [
+      "bedert_theorem",
+      "upperThird_card"
+    ],
+    "relatedConcepts": [
+      "extremal graph theory",
+      "optimality",
+      "Turán's theorem analogy"
+    ]
+  },
+  {
+    "id": "ann-e13-r-div-free",
+    "proofId": "erdos-13",
+    "range": {
+      "startLine": 136,
+      "endLine": 139
+    },
+    "type": "definition",
+    "title": "r-Divisibility-Free",
+    "content": "**RDivisibilityFree r A**: A set is $r$-divisibility-free if for all $a \\in A$ and $b_1, \\ldots, b_r \\in A$ with $a < \\min(b_i)$, we have $a \\nmid (b_1 + \\cdots + b_r)$.\n\nThis generalizes DivisibilityFree (the $r = 2$ case) using `Fin r → ℕ` for the tuple of larger elements and `∑ i, bs i` for their sum.",
+    "mathContext": "RDivisibilityFree r A ↔ ∀ a ∈ A, ∀ bs : Fin r → ℕ, (∀ i, bs i ∈ A) → (∀ i, a < bs i) → ¬(a ∣ ∑ i, bs i)",
+    "significance": "key",
+    "prerequisites": [
+      "Fin",
+      "Finset.sum",
+      "Dvd"
+    ],
+    "relatedConcepts": [
+      "higher-order sum constraints",
+      "generalized Turán",
+      "Schur's theorem variants"
+    ]
+  },
+  {
+    "id": "ann-e13-r-two",
+    "proofId": "erdos-13",
+    "range": {
+      "startLine": 142,
+      "endLine": 154
+    },
+    "type": "concept",
+    "title": "r=2 Recovers Original (Proved)",
+    "content": "**rDivisibilityFree_two** (proved): $\\text{RDivisibilityFree}\\;2\\;A$ is equivalent to the original condition: for all $a, b, c \\in A$ with $a < b$ and $a < c$, $a \\nmid (b + c)$.\n\nThe proof uses `Fin.forall_fin_two` to convert between `Fin 2 → ℕ` tuples and explicit pairs, and `Fin.sum_univ_two` to reduce $\\sum_{i : \\text{Fin}\\;2} bs\\;i$ to $bs\\;0 + bs\\;1$.",
+    "mathContext": "RDivisibilityFree 2 A ↔ ∀ a b c ∈ A, a < b → a < c → ¬(a ∣ (b + c))",
+    "significance": "key",
+    "prerequisites": [
+      "RDivisibilityFree",
+      "Fin.forall_fin_two",
+      "Fin.sum_univ_two"
+    ],
+    "relatedConcepts": [
+      "specialization",
+      "Fin API",
+      "consistency check"
+    ]
+  },
+  {
+    "id": "ann-e13-r-conjecture",
+    "proofId": "erdos-13",
+    "range": {
+      "startLine": 161,
+      "endLine": 169
+    },
+    "type": "definition",
+    "title": "r-Sum Conjecture and Upper Fraction",
+    "content": "**upperFraction r N**: The set $\\{k \\leq N : rN < (r+1)k\\}$, generalizing the upper third ($r = 2$) to the upper $r/(r+1)$ fraction.\n\n**ErdosRSumConjecture r**: There exists $C$ such that every $r$-divisibility-free $A \\subseteq \\{1, \\ldots, N\\}$ has $|A| \\leq N/(r+1) + C$.\n\n**Status**: OPEN for $r \\geq 3$. The $r = 2$ case is Bedert's theorem.",
+    "mathContext": "ErdosRSumConjecture r ↔ ∃ C, ∀ N A, RDivisibilityFree r A → A.card ≤ N/(r+1) + C",
+    "significance": "key",
+    "prerequisites": [
+      "RDivisibilityFree",
+      "Finset.filter"
+    ],
+    "relatedConcepts": [
+      "open conjectures",
+      "parameter generalization",
+      "extremal bounds"
+    ]
+  },
+  {
+    "id": "ann-e13-rsum-two",
+    "proofId": "erdos-13",
+    "range": {
+      "startLine": 172,
+      "endLine": 179
+    },
+    "type": "concept",
+    "title": "r=2 Case is Bedert (Proved)",
+    "content": "**erdos_rsum_two** (proved): `ErdosRSumConjecture 2` holds.\n\nThe proof extracts the constant $C$ from `bedert_theorem`, then uses `rDivisibilityFree_two` to convert the $r$-divisibility-free condition to the original formulation, and applies Bedert's bound. Note that $N/(2+1) = N/3$, matching Bedert's result.",
+    "mathContext": "ErdosRSumConjecture 2 follows from bedert_theorem via rDivisibilityFree_two",
+    "significance": "key",
+    "prerequisites": [
+      "bedert_theorem",
+      "rDivisibilityFree_two",
+      "divisibilityFree_iff"
+    ],
+    "relatedConcepts": [
+      "theorem specialization",
+      "consistency",
+      "modular proof"
+    ]
+  },
+  {
+    "id": "ann-e13-mem-iff",
+    "proofId": "erdos-13",
+    "range": {
+      "startLine": 196,
+      "endLine": 204
+    },
+    "type": "concept",
+    "title": "Membership Characterization (Proved)",
+    "content": "**mem_upperThird_iff** (proved): $k \\in \\text{upperThird}(N)$ iff $k \\leq N$ and $2N < 3k$.\n\nThis characterization unfolds the filter definition and uses `omega` to handle the range condition. It provides an explicit criterion for membership in the optimal construction.",
+    "mathContext": "k ∈ upperThird N ↔ k ≤ N ∧ 2*N < 3*k",
+    "significance": "supporting",
+    "prerequisites": [
+      "upperThird",
+      "Finset.mem_filter",
+      "Finset.mem_range"
+    ],
+    "relatedConcepts": [
+      "set membership",
+      "interval characterization",
+      "omega tactic"
+    ]
+  },
+  {
+    "id": "ann-e13-sum-free",
+    "proofId": "erdos-13",
+    "range": {
+      "startLine": 219,
+      "endLine": 226
+    },
+    "type": "definition",
+    "title": "Sum-Free Sets and Upper Third",
+    "content": "**SumFree A**: For all $a, b, c \\in A$, $a + b \\neq c$. A different but related constraint to divisibility-free.\n\n**upperThird_sumFree** (axiom): The upper third is also sum-free. For $a, b, c \\in (2N/3, N]$: $a + b > 4N/3 > N \\geq c$, so $a + b > c$.\n\nThis is a bonus property — the same construction that optimizes the divisibility-free problem also optimizes the sum-free problem.",
+    "mathContext": "SumFree A ↔ ∀ a b c ∈ A, a + b ≠ c",
+    "significance": "key",
+    "prerequisites": [
+      "Finset",
+      "Ne"
+    ],
+    "relatedConcepts": [
+      "sum-free sets",
+      "Schur's theorem",
+      "Eberhard-Green-Manners"
+    ]
+  }
+]

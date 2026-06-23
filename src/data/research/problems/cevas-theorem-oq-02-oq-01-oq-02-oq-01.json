@@ -1,0 +1,75 @@
+{
+  "id": "cevas-theorem-oq-02-oq-01-oq-02-oq-01",
+  "name": "Projective Unification of Ceva's Theorem via the Klein Model",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "problemStatement": {
+    "formal": "Exhibit a single projective (Cayley-Klein) Ceva theorem from which the spherical (sin), Euclidean (identity), and hyperbolic (sinh) cevian side-ratio identities and the common concurrency criterion alphaD*alphaE*alphaF = betaD*betaE*betaF all follow as specializations of a curvature sign kappa in {+1,0,-1}.",
+    "plain": "The parent proof proves the three classical Ceva theorems (spherical, Euclidean, hyperbolic) share one algebraic concurrency criterion, but derives each metric side-ratio separately. This OQ asks for the genuine geometric unification: one projective Ceva theorem in the Beltrami-Klein / Cayley-Klein model whose three specializations ARE the three geometries. The survey resolves it on paper: all three are Cayley-Klein geometries selected by an absolute conic (curvature sign kappa); a cevian point is the projective point alpha*B + beta*C; and the metric side-ratio collapses to beta/alpha via one curvature-independent cancellation of the common factor sqrt|1-m^2|/n.",
+    "whyMatters": [
+      "Replaces three parallel per-geometry side-ratio derivations with a single projective statement, exposing the projective-incidence core of Ceva concurrency.",
+      "Demonstrates the Cayley-Klein model as the right ambient object unifying constant-curvature geometries in the gallery.",
+      "The unification reuses the parent's existing kappa-free universal_weight_balance, so concurrency needs no new proof."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent CevasTheoremOQ02OQ01OQ02.lean proves the hyperbolic sinh-ratio = beta/alpha and the concurrency criterion, plus the geometry-independent universal_weight_balance.",
+      "The norm n^2 = alpha^2 + 2*alpha*beta*m + beta^2 is identical in all three geometries (it is <alpha*B+beta*C, alpha*B+beta*C>_kappa)."
+    ],
+    "open": [
+      "No single Lean object yet derives all three cases; the parent proves them separately. The unified projective theorem (CKCevianConfig + ck_ratio_cancel + three kappa instantiations) is build-gated by the 2026-06-13 verification blackout (Docker down, Aristotle 404)."
+    ],
+    "goal": "Formalize one CKCevianConfig (curvature sentinel kappa, single hypothesis n^2 > 0) and a single cancellation lemma ck_ratio_cancel : (beta*g)/(alpha*g) = beta/alpha, then recover spherical/Euclidean/hyperbolic side-ratios as corollaries (g = sqrt(1-m^2)/n, 1, sqrt(m^2-1)/n) and close concurrency by reusing universal_weight_balance."
+  },
+  "tags": [
+    "geometry",
+    "cevas-theorem",
+    "projective-geometry",
+    "cayley-klein",
+    "non-euclidean-geometry",
+    "hyperbolic-geometry",
+    "triangle-geometry",
+    "survey"
+  ],
+  "knowledge": {
+    "insights": [
+      "All three constant-curvature geometries are Cayley-Klein geometries: projective plane RP^2 with an absolute conic Q selected by curvature sign kappa in {+1 (spherical/elliptic), 0 (Euclidean), -1 (hyperbolic)}.",
+      "A cevian point is the projective point D ~ alpha*B + beta*C; concurrency of cevians is a projective-incidence fact, invariant under the isometry group (= projective stabilizer of Q), hence geometry-independent.",
+      "The metric side-ratio t_kappa(BD)/t_kappa(DC) = (beta*g)/(alpha*g) = beta/alpha with common factor g = sqrt|1-m^2|/n cancelling for every kappa; this is the single identity replacing the parent's three derivations.",
+      "Euclidean is the degenerate kappa->0 limit where sqrt|1-m^2| -> 0 but the ratio survives (barycentric beta/alpha); encode it with g = 1, not a vanishing radical.",
+      "No common m-interval exists across geometries (spherical m in (-1,1), hyperbolic m>1); the right single hypothesis is n^2 > 0, which is exactly what both per-geometry m-bounds guaranteed.",
+      "Mathlib has no Cayley-Klein / projective-metric API, so the formalization is definitional (CKCevianConfig + three sqrt factors), not API-wiring; the hard algebra is already in the parent and reused.",
+      "The Beltrami-Klein model is the natural one: hyperbolic geodesics are Euclidean chords, so 'hyperbolic Ceva = projective Ceva of chords' is literal with no transcendental detour.",
+      "Unification lives entirely in (m,α,β,n) scalar algebra: the geometry-specific factor g=sqrt|1-m^2|/n is a common nonzero factor that cancels, so one projective_ceva_unification theorem yields spherical/euclidean/hyperbolic Ceva by plugging gSph/gEuc/gHyp.",
+      "Curvature sentinel kappa + single hypothesis hn:0<alpha^2+2*alpha*beta*m+beta^2 replaces the three incompatible per-geometry m-bounds.",
+      "The merged unification file was absent from the Proofs build target, so 0-sorry/0-axiom held only by inspection, not machine-check; registration converts it to a deployer-gated verification.",
+      "The unification abstracts g; the genuine bridge n²−(α+βm)²=β²(1−m²) is one ring identity covering all three κ, replacing the parent file two hyperbolic-only identities; gSph/gHyp ARE the geodesic side lengths √|1−m²| per unit weight"
+    ],
+    "builtItems": [
+      "CevasTheoremOQ02OQ01OQ02OQ01.lean — projective Cayley-Klein unification of Ceva (CKCevianConfig + projective_ceva_unification + 3 geometry specializations).",
+      "ck_ratio_cancel: the crux (β*g)/(α*g)=β/α via mul_div_mul_right (division-safe, no field_simp).",
+      "Registered Proofs/CevasTheoremOQ02OQ01OQ02OQ01.lean in proofs/Proofs.lean:496 (was unregistered ⇒ never compiled); deployer will machine-check on next Docker-up cycle.",
+      "S5: ck_metric_BD/DC κ-uniform key identities + gSph/gHyp_sqrt_BD/DC closed forms + spherical/hyperbolic_side_ratio_metric in CevasTheoremOQ02OQ01OQ02OQ01.lean (metric realization of the abstract factor)"
+    ],
+    "deadEnds": [
+      "Building genuine RP^2 + absolute-conic projective geometry in Mathlib: unnecessary, the scalar (m, alpha, beta) data captures the criterion and side-ratio.",
+      "Forcing one m-bound for all geometries: none exists; carry n^2 > 0 instead.",
+      "Treating Euclidean as a separate sqrt-bearing case: it is the sqrt|1-m^2| -> 0 limit; use g = 1."
+    ],
+    "progressSummary": "PROGRESS S5: added κ-uniform metric realization (8 thms) connecting abstract factor to genuine sin_κ side-ratio = β/α; 0 axioms/0 sorries, registered, build deployer-gated (Docker down)"
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/CevasTheoremOQ02OQ01OQ02OQ01.lean",
+      "filename": "CevasTheoremOQ02OQ01OQ02OQ01.lean",
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ02OQ01OQ02OQ01.lean"
+    }
+  ],
+  "relatedProofs": [
+    "cevas-theorem",
+    "cevas-theorem-oq-02-oq-01",
+    "cevas-theorem-oq-02-oq-01-oq-02"
+  ]
+}

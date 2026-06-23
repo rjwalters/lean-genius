@@ -1,0 +1,83 @@
+[
+  {
+    "id": "def-acyclic-coloring",
+    "proofId": "erdos-797",
+    "range": { "startLine": 56, "endLine": 58 },
+    "type": "definition",
+    "title": "Acyclic Coloring",
+    "content": "A proper vertex coloring where no cycle uses only two colors. This is stronger than ordinary proper coloring.",
+    "significance": "major"
+  },
+  {
+    "id": "def-f-function",
+    "proofId": "erdos-797",
+    "range": { "startLine": 69, "endLine": 72 },
+    "type": "definition",
+    "title": "Function f(d)",
+    "content": "f(d) = maximum acyclic chromatic number over all graphs with maximum degree at most d.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-greedy-upper",
+    "proofId": "erdos-797",
+    "range": { "startLine": 78, "endLine": 80 },
+    "type": "theorem",
+    "title": "Greedy Upper Bound",
+    "content": "f(d) ≤ d² + 1 by greedy coloring. This is the trivial bound that was improved.",
+    "significance": "minor"
+  },
+  {
+    "id": "thm-erdos-lower",
+    "proofId": "erdos-797",
+    "range": { "startLine": 92, "endLine": 95 },
+    "type": "theorem",
+    "title": "Erdős Lower Bound",
+    "content": "f(d) ≥ d^{4/3 - o(1)}. This established the correct order of magnitude from below.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-amr-upper",
+    "proofId": "erdos-797",
+    "range": { "startLine": 107, "endLine": 110 },
+    "type": "theorem",
+    "title": "Alon-McDiarmid-Reed Upper Bound",
+    "content": "f(d) ≤ O(d^{4/3}). This matching upper bound was the key breakthrough, using the Lovász Local Lemma.",
+    "significance": "major"
+  },
+  {
+    "id": "insight-exponent",
+    "proofId": "erdos-797",
+    "range": { "startLine": 118, "endLine": 123 },
+    "type": "insight",
+    "title": "Why Exponent 4/3",
+    "content": "With k colors, expected bichromatic 4-cycles ≈ n·d²/k². Balancing constraints gives k ≈ d^{4/3}.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-main-answer",
+    "proofId": "erdos-797",
+    "range": { "startLine": 145, "endLine": 153 },
+    "type": "theorem",
+    "title": "Main Answer: f(d) = o(d²)",
+    "content": "YES, f(d) = o(d²) since f(d) = Θ(d^{4/3}) and d^{4/3}/d² = d^{-2/3} → 0.",
+    "significance": "major"
+  },
+  {
+    "id": "insight-four-cycles",
+    "proofId": "erdos-797",
+    "range": { "startLine": 166, "endLine": 170 },
+    "type": "insight",
+    "title": "Four-Cycles are Critical",
+    "content": "The main obstacle is avoiding bichromatic 4-cycles. Longer cycles are easier to handle with careful coloring.",
+    "significance": "minor"
+  },
+  {
+    "id": "thm-characterization",
+    "proofId": "erdos-797",
+    "range": { "startLine": 212, "endLine": 224 },
+    "type": "theorem",
+    "title": "Complete Characterization",
+    "content": "f(d) = o(d²) and more precisely f(d) = Θ(d^{4/3}) with a (log d)^{1/3} gap between upper and lower bounds.",
+    "significance": "major"
+  }
+]

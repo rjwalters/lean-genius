@@ -1,0 +1,302 @@
+{
+  "slug": "arithmetic-series-oq-02-oq-04-oq-01-oq-03",
+  "title": "Vandermonde Identity in Falling Factorial Form",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "forall (m n r : Nat), Nat.descFactorial (m + n) r = sum_{j=0}^{r} Nat.choose r j * Nat.descFactorial m j * Nat.descFactorial n (r - j)",
+    "plain": "Prove that the falling factorial (m+n)^{(r)} = sum_{j=0}^r C(r,j) * m^{(j)} * n^{(r-j)}, generalizing Vandermonde's convolution to ordered selections.",
+    "whyMatters": [
+      "Connects ordered selection counts to unordered (binomial) via the falling factorial form",
+      "Enables counting arguments decomposing ordered tuples by origin",
+      "Generalizes to polynomial identity (x+y)^{(r)} = sum C(r,j)*x^{(j)}*y^{(r-j)}"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "term_eq: C(r,j)*j!*(r-j)! = r! enables term-by-term matching (ring + Nat.choose_mul_factorial_mul_factorial)",
+      "vandermonde_descFactorial: descFactorial(m+n,r) = sum_j C(r,j)*descFactorial(m,j)*descFactorial(n,r-j) (0 sorries, 0 axioms)"
+    ],
+    "open": [],
+    "goal": "COMPLETE: fully machine-verified proof, 0 sorries"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-05T00:00:00-07:00",
+    "iteration": 1,
+    "focus": "COMPLETE",
+    "blockers": [],
+    "nextAction": "None - proof complete",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Vandermonde in falling factorial form fully proved. 0 sorries, 0 axioms, 78 lines.",
+    "builtItems": [
+      "ArithmeticSeriesOQ02OQ04OQ01OQ03.lean: term_eq (proved, ring + Nat.choose_mul_factorial_mul_factorial)",
+      "ArithmeticSeriesOQ02OQ04OQ01OQ03.lean: vandermonde_descFactorial (proved, 0 sorries)",
+      "Gallery entry: src/data/proofs/arithmetic-series-oq-02-oq-04-oq-01-oq-03/"
+    ],
+    "insights": [
+      "Proof avoids broken parent (ArithmeticSeriesOQ02OQ04.lean has decimal notation bug) by using Mathlib directly",
+      "Key identity Nat.descFactorial_eq_factorial_mul_choose converts descFactorial = k!*C(n,k) cleanly",
+      "ring works on ℕ (CommSemiring) for multiplicative reorganization, enabling simp_rw + rw + ring pattern",
+      "Nat.choose_mul_factorial_mul_factorial closes the term_eq lemma in one rewrite step"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Fix ArithmeticSeriesOQ02OQ04.lean: replace 1.factorial with Nat.factorial 1, 2.factorial with Nat.factorial 2, and ∏ i in with ∏ i ∈ (syntax update)",
+      "Generalize to polynomial Vandermonde over CommRing: (x+y)^{(r)} = sum C(r,j)*x^{(j)}*y^{(r-j)}"
+    ],
+    "markdown": "# Knowledge Base: arithmetic-series-oq-02-oq-04-oq-01-oq-03\n\nCOMPLETE. Vandermonde in falling factorial form proved from standard Vandermonde + Nat.descFactorial_eq_factorial_mul_choose. 0 sorries.\n"
+  },
+  "tags": [
+    "combinatorics",
+    "falling-factorial",
+    "vandermonde",
+    "binomial-coefficients"
+  ],
+  "relatedProofs": [
+    "arithmetic-series",
+    "arithmetic-series-oq-00",
+    "arithmetic-series-oq-00-oq-02",
+    "arithmetic-series-oq-02",
+    "arithmetic-series-oq-02-oq-01",
+    "arithmetic-series-oq-02-oq-01-oq-01",
+    "arithmetic-series-oq-02-oq-02",
+    "arithmetic-series-oq-02-oq-02-oq-01",
+    "arithmetic-series-oq-02-oq-02-oq-03",
+    "arithmetic-series-oq-02-oq-02-oq-03-oq-01",
+    "arithmetic-series-oq-02-oq-03",
+    "arithmetic-series-oq-02-oq-04",
+    "arithmetic-series-oq-02-oq-04-oq-01",
+    "arithmetic-series-oq-02-oq-04-oq-01-oq-03",
+    "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02",
+    "arithmetic-series-oq-04",
+    "arithmetic-series-oq-04-oq-01",
+    "binomial-theorem-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-05T06:55:50.080Z",
+  "lastUpdate": "2026-04-05T06:55:50.103Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/ArithmeticSeries.lean",
+      "filename": "ArithmeticSeries.lean",
+      "lineCount": 180,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeries.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ00.lean",
+      "filename": "ArithmeticSeriesOQ00.lean",
+      "lineCount": 161,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ00.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ00OQ01.lean",
+      "filename": "ArithmeticSeriesOQ00OQ01.lean",
+      "lineCount": 282,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ00OQ01.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ00OQ02.lean",
+      "filename": "ArithmeticSeriesOQ00OQ02.lean",
+      "lineCount": 121,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ00OQ02.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02.lean",
+      "filename": "ArithmeticSeriesOQ02.lean",
+      "lineCount": 210,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ01.lean",
+      "filename": "ArithmeticSeriesOQ02OQ01.lean",
+      "lineCount": 174,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ01OQ01.lean",
+      "filename": "ArithmeticSeriesOQ02OQ01OQ01.lean",
+      "lineCount": 218,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ02.lean",
+      "filename": "ArithmeticSeriesOQ02OQ02.lean",
+      "lineCount": 155,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ02OQ01.lean",
+      "filename": "ArithmeticSeriesOQ02OQ02OQ01.lean",
+      "lineCount": 166,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ02OQ03.lean",
+      "filename": "ArithmeticSeriesOQ02OQ02OQ03.lean",
+      "lineCount": 208,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ02OQ03OQ01.lean",
+      "filename": "ArithmeticSeriesOQ02OQ02OQ03OQ01.lean",
+      "lineCount": 508,
+      "theoremCount": 27,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ02OQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ03.lean",
+      "filename": "ArithmeticSeriesOQ02OQ03.lean",
+      "lineCount": 164,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ03Aristotle.lean",
+      "filename": "ArithmeticSeriesOQ02OQ03Aristotle.lean",
+      "lineCount": 40,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ03Aristotle.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ04.lean",
+      "filename": "ArithmeticSeriesOQ02OQ04.lean",
+      "lineCount": 159,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ04.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ04OQ01.lean",
+      "filename": "ArithmeticSeriesOQ02OQ04OQ01.lean",
+      "lineCount": 170,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03.lean",
+      "filename": "ArithmeticSeriesOQ02OQ04OQ01OQ03.lean",
+      "lineCount": 79,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02.lean",
+      "filename": "ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02.lean",
+      "lineCount": 119,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ04.lean",
+      "filename": "ArithmeticSeriesOQ04.lean",
+      "lineCount": 198,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ04.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ04OQ01.lean",
+      "filename": "ArithmeticSeriesOQ04OQ01.lean",
+      "lineCount": 306,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ04OQ01.lean"
+    }
+  ]
+}

@@ -1,0 +1,305 @@
+[
+  {
+    "id": "ann-697-header",
+    "proofId": "erdos-697",
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #697** asks: let δ(m,α) be the density of integers divisible by some d ≡ 1 (mod m) with 1 < d < exp(m^α). Does a sharp threshold β exist?\n\n**Answer:** YES, β = 1/log 2 ≈ 1.443 (Hall 1992).\n\n- For α < β: density → 0\n- For α > β: density → 1",
+    "mathContext": "Let $\\delta(m, \\alpha) = \\lim_{N \\to \\infty} \\frac{|\\{n \\le N : \\exists d \\mid n,\\; d \\equiv 1 \\pmod{m},\\; 1 < d < e^{m^\\alpha}\\}|}{N}$. The question is whether there exists $\\beta$ such that $\\delta(m, \\alpha) \\to 0$ for $\\alpha < \\beta$ and $\\delta(m, \\alpha) \\to 1$ for $\\alpha > \\beta$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "natural density",
+      "modular arithmetic",
+      "threshold phenomena",
+      "sieve methods"
+    ],
+    "prerequisites": [
+      "asymptotic density",
+      "divisibility",
+      "congruence classes"
+    ]
+  },
+  {
+    "id": "ann-697-admissible",
+    "proofId": "erdos-697",
+    "range": {
+      "startLine": 46,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "IsAdmissibleDivisor",
+    "content": "A divisor d of n is admissible for (m, α) if:\n- d divides n\n- d > 1\n- d ≡ 1 (mod m)\n- d < exp(m^α)\n\nThe upper bound $e^{m^\\alpha}$ grows with $m$, and the congruence constraint $d \\equiv 1 \\pmod{m}$ restricts to a thin arithmetic progression.",
+    "mathContext": "$d \\mid n \\wedge d > 1 \\wedge d \\equiv 1 \\pmod{m} \\wedge d < e^{m^\\alpha}$. The admissible divisors lie in the arithmetic progression $\\{1 + km : k \\ge 1\\}$ truncated at $e^{m^\\alpha}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "divisibility",
+      "arithmetic progressions",
+      "exponential bounds"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "divisor function"
+    ]
+  },
+  {
+    "id": "ann-697-covered",
+    "proofId": "erdos-697",
+    "range": {
+      "startLine": 50,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "IsCovered",
+    "content": "An integer n is covered if it has at least one admissible divisor for the given (m, α). The density δ(m, α) measures the proportion of covered integers.",
+    "mathContext": "$\\text{IsCovered}(m, \\alpha, n) \\iff \\exists d : \\text{IsAdmissibleDivisor}(n, m, \\alpha, d)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "covering systems",
+      "divisor structure"
+    ],
+    "prerequisites": [
+      "IsAdmissibleDivisor"
+    ]
+  },
+  {
+    "id": "ann-697-delta",
+    "proofId": "erdos-697",
+    "range": {
+      "startLine": 58,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "delta - The Density Function",
+    "content": "δ(m, α) = lim_{N→∞} (covered integers ≤ N) / N.\n\nFormalized using `Filter.liminf` with `Filter.atTop`, which captures the asymptotic density as a limit inferior. Returns 0 for degenerate cases m ≤ 1.",
+    "mathContext": "$\\delta(m, \\alpha) = \\liminf_{N \\to \\infty} \\frac{|\\{n \\le N : \\text{IsCovered}(m, \\alpha, n)\\}|}{N}$. Uses Mathlib's `Filter.liminf` for the limit inferior along the cofinite filter.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic density",
+      "Filter.liminf",
+      "natural density"
+    ],
+    "prerequisites": [
+      "IsCovered",
+      "Filter.atTop",
+      "limit inferior"
+    ]
+  },
+  {
+    "id": "ann-697-threshold",
+    "proofId": "erdos-697",
+    "range": {
+      "startLine": 67,
+      "endLine": 71
+    },
+    "type": "definition",
+    "title": "HasSharpThreshold",
+    "content": "A sharp threshold β exists if:\n- For all α < β: δ(m, α) → 0 as m → ∞\n- For all α > β: δ(m, α) → 1 as m → ∞\n\nThis captures a **phase transition** in divisibility: below the threshold almost no integers have admissible divisors; above it, almost all do.",
+    "mathContext": "$\\exists \\beta > 1 : (\\alpha < \\beta \\Rightarrow \\delta(m, \\alpha) \\to 0) \\wedge (\\alpha > \\beta \\Rightarrow \\delta(m, \\alpha) \\to 1)$ as $m \\to \\infty$. Uses `Filter.Tendsto` with `nhds 0` and `nhds 1`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "phase transitions",
+      "sharp thresholds",
+      "Filter.Tendsto"
+    ],
+    "prerequisites": [
+      "delta definition",
+      "topological convergence"
+    ]
+  },
+  {
+    "id": "ann-697-hallthreshold",
+    "proofId": "erdos-697",
+    "range": {
+      "startLine": 73,
+      "endLine": 74
+    },
+    "type": "definition",
+    "title": "hallThreshold = 1/log 2",
+    "content": "The critical threshold β = 1/log 2 ≈ 1.443. The proof that β > 1 uses the fact that log 2 < 1 (since 2 < e), verified via Mathlib's `exp_one_gt_d9`.",
+    "mathContext": "$\\beta = \\frac{1}{\\ln 2} \\approx 1.4427$. Since $\\ln 2 < 1 < \\ln e$, we have $\\beta = 1/\\ln 2 > 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "natural logarithm",
+      "log 2",
+      "critical exponents"
+    ],
+    "prerequisites": [
+      "Real.log",
+      "exp_one_gt_d9"
+    ]
+  },
+  {
+    "id": "ann-697-trivial",
+    "proofId": "erdos-697",
+    "range": {
+      "startLine": 85,
+      "endLine": 93
+    },
+    "type": "concept",
+    "title": "Trivial Upper Bound",
+    "content": "For α < 1: δ(m, α) → 0 as m → ∞.\n\nThe count of d ≡ 1 (mod m) with d < exp(m^α) is about exp(m^α)/m. When α < 1, this is m^{α−1} → 0, so there aren't enough admissible divisors to cover a positive density.",
+    "mathContext": "$|\\{d \\equiv 1 \\pmod{m} : 1 < d < e^{m^\\alpha}\\}| \\approx \\frac{e^{m^\\alpha}}{m} \\approx m^{\\alpha - 1} \\to 0$ when $\\alpha < 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counting in arithmetic progressions",
+      "exponential vs polynomial growth"
+    ],
+    "prerequisites": [
+      "arithmetic progression counting",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-697-erdos1979",
+    "proofId": "erdos-697",
+    "range": {
+      "startLine": 107,
+      "endLine": 108
+    },
+    "type": "concept",
+    "title": "Erdős α = 1 Claim",
+    "content": "**Erdős (1979):** δ(m, 1) → 0 as m → ∞.\n\nErdős claimed this in \"Some unconventional problems in number theory\" (Astérisque, 1979) without a full proof. It was later confirmed by Hall's more general result. This is the boundary of the trivial range.",
+    "mathContext": "$\\delta(m, 1) \\to 0$ as $m \\to \\infty$. At $\\alpha = 1$, there are about $e^m / m$ admissible divisors, but their multiplicative structure doesn't cover enough integers.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős 1979 Astérisque paper",
+      "boundary behavior"
+    ],
+    "prerequisites": [
+      "trivial_upper_bound",
+      "delta definition"
+    ]
+  },
+  {
+    "id": "ann-697-hall",
+    "proofId": "erdos-697",
+    "range": {
+      "startLine": 110,
+      "endLine": 120
+    },
+    "type": "concept",
+    "title": "Hall's Theorem (1992)",
+    "content": "**Hall's Theorem:**\n\nThe sharp threshold exists and equals β = 1/log 2.\n\n- For α < 1/log 2: lim δ(m, α) = 0\n- For α > 1/log 2: lim δ(m, α) = 1\n\nPublished in J. Number Theory (1992): \"On some conjectures of P. Erdős in Astérisque I\".",
+    "mathContext": "Hall's analysis uses sieve methods to show that for $\\alpha > 1/\\ln 2$, the number of admissible divisors in $[1, e^{m^\\alpha}]$ grows fast enough that their multiples cover almost all integers. The value $1/\\ln 2$ is the critical exponent where the Brun sieve transitions from ineffective to effective.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Brun's sieve",
+      "sieve methods",
+      "J. Number Theory"
+    ],
+    "prerequisites": [
+      "HasSharpThreshold",
+      "hallThreshold",
+      "sieve theory"
+    ]
+  },
+  {
+    "id": "ann-697-threshold-proof",
+    "proofId": "erdos-697",
+    "range": {
+      "startLine": 129,
+      "endLine": 135
+    },
+    "type": "concept",
+    "title": "Threshold is 1/log 2",
+    "content": "Combines Hall's theorem to produce the full result: the threshold exists, equals 1/log 2, is greater than 1, and the density converges to 0 below and 1 above. This is the definitive answer to Erdős's question.",
+    "mathContext": "$\\text{HasSharpThreshold} \\wedge \\beta = 1/\\ln 2 \\wedge \\beta > 1 \\wedge (\\alpha < \\beta \\Rightarrow \\delta \\to 0) \\wedge (\\alpha > \\beta \\Rightarrow \\delta \\to 1)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "complete solution",
+      "threshold identification"
+    ],
+    "prerequisites": [
+      "hall_theorem",
+      "hallThreshold_in_range"
+    ]
+  },
+  {
+    "id": "ann-697-intuition",
+    "proofId": "erdos-697",
+    "range": {
+      "startLine": 135,
+      "endLine": 149
+    },
+    "type": "insight",
+    "title": "Why 1/log 2?",
+    "content": "**Intuition:**\n\nThe count of $d \\equiv 1 \\pmod{m}$ with $d < e^{m^\\alpha}$ is roughly $e^{m^\\alpha}/m$. For coverage, this must exceed a critical mass. The value $1/\\ln 2$ arises from the **multiplicative structure** of such divisors: Hall's sieve analysis shows that the critical density of admissible primes transitions at this exponent.",
+    "mathContext": "Heuristically, $|\\{d \\equiv 1 \\pmod{m} : d < x\\}| \\sim x/m$, so for $x = e^{m^\\alpha}$ this is $e^{m^\\alpha}/m$. The critical exponent $1/\\ln 2$ emerges from the probability that a random integer is divisible by at least one element of a random set of size $\\sim 2^k$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sieve heuristics",
+      "multiplicative structure",
+      "probabilistic method"
+    ],
+    "prerequisites": [
+      "counting in arithmetic progressions",
+      "probability heuristics"
+    ]
+  },
+  {
+    "id": "ann-697-example-m2",
+    "proofId": "erdos-697",
+    "range": {
+      "startLine": 181,
+      "endLine": 184
+    },
+    "type": "concept",
+    "title": "Example: m = 2",
+    "content": "For m = 2: d ≡ 1 (mod 2) means d is odd. Every integer > 1 is divisible by an odd d > 1 (itself if odd, or its odd part if even). So δ(2, α) = 1 for all α > 0.\n\nThis shows the threshold phenomenon is non-trivial only for large m.",
+    "mathContext": "$d \\equiv 1 \\pmod{2} \\iff d$ is odd. Every $n > 1$ has an odd divisor $> 1$ (its largest odd divisor), so $\\delta(2, \\alpha) = 1$ trivially.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "odd divisors",
+      "largest odd divisor",
+      "trivial cases"
+    ],
+    "prerequisites": [
+      "fundamental theorem of arithmetic"
+    ]
+  },
+  {
+    "id": "ann-697-answer",
+    "proofId": "erdos-697",
+    "range": {
+      "startLine": 209,
+      "endLine": 210
+    },
+    "type": "concept",
+    "title": "The Answer is YES",
+    "content": "`erdos_697_answer : HasSharpThreshold` — the headline result extracting the threshold existence from Hall's theorem.",
+    "mathContext": "Extracts the first component of `hall_theorem : HasSharpThreshold ∧ ...` to confirm $\\exists \\beta > 1$ with the sharp threshold property.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős problem resolution",
+      "existential witness"
+    ],
+    "prerequisites": [
+      "hall_theorem"
+    ]
+  },
+  {
+    "id": "ann-697-summary",
+    "proofId": "erdos-697",
+    "range": {
+      "startLine": 218,
+      "endLine": 226
+    },
+    "type": "concept",
+    "title": "Summary and Final Statement",
+    "content": "**Erdős Problem #697: SOLVED**\n\n- Question: Does sharp threshold β exist?\n- Answer: YES, β = 1/log 2 ≈ 1.443 (Hall 1992)\n- For α < β: density → 0\n- For α > β: density → 1\n\nThe `erdos_697_summary` combines both the existence and the β > 1 bound.",
+    "mathContext": "`HasSharpThreshold ∧ hallThreshold > 1` — packages the complete solution: the threshold exists and is strictly greater than 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complete solution",
+      "problem closure"
+    ],
+    "prerequisites": [
+      "erdos_697_answer",
+      "hallThreshold_in_range"
+    ]
+  }
+]

@@ -1,0 +1,324 @@
+[
+  {
+    "id": "ann-file-header",
+    "proofId": "hilbert-10-oq-01-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 60
+    },
+    "type": "concept",
+    "title": "Σ₁ vs Π₂: The Precise Refinement of OQ-01",
+    "content": "The header positions this file as the model-theoretic refinement of OQ-01. The OPEN question asks whether $\\mathbb{Z} \\subseteq \\mathbb{Q}$ admits a $\\Sigma_1$ (purely existential, Diophantine) definition. Koenigsmann (Annals 2016) settled the $\\Pi_2$ ($\\forall\\exists$) version by exhibiting an explicit polynomial built from Hilbert symbols and quaternion algebras over $\\mathbb{Q}$. The $\\Sigma_1$/$\\Pi_2$ gap is precisely the mathematical content separating the open problem from Koenigsmann's theorem — and it matters because only the $\\Sigma_1$ version implies H10/$\\mathbb{Q}$ undecidability via MRDP.",
+    "mathContext": "$\\Sigma_1$: $\\exists P \\in \\mathbb{Q}[t,x_1,\\ldots,x_k] : (t \\in \\mathbb{Z} \\iff \\exists x \\in \\mathbb{Q}^k, P(t,x) = 0)$ — OPEN.\n$\\Pi_2$: $\\exists P : (t \\in \\mathbb{Z} \\iff \\forall y \\in \\mathbb{Q}^n, \\exists z \\in \\mathbb{Q}^m, P(t,y,z) = 0)$ — PROVED (Koenigsmann 2016).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Hilbert's 10th problem",
+      "MRDP theorem",
+      "arithmetic hierarchy",
+      "Koenigsmann 2016",
+      "Mazur's conjecture"
+    ],
+    "prerequisites": [
+      "mathematical logic",
+      "computability theory",
+      "elementary number theory"
+    ]
+  },
+  {
+    "id": "ann-imports-namespace",
+    "proofId": "hilbert-10-oq-01-oq-02",
+    "range": {
+      "startLine": 89,
+      "endLine": 95
+    },
+    "type": "insight",
+    "title": "Import Companion + Namespace",
+    "content": "Imports `Proofs.Hilbert10OQ01` to reuse the OQ-01 infrastructure: `RatDiophantinePoly`, `hasRationalSolution`, `IntegersDiophantineOverQ`, `H10_Rational_Decidable`, and the existing reduction axiom `integers_diophantine_implies_undecidable`. The namespace `Hilbert10Rationals` is shared with the parent file — both files contribute to the same model-theoretic vocabulary.",
+    "mathContext": "The companion design avoids redefining shared concepts: the OQ-02 file is a refinement layer on top of OQ-01, not a fork.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lean module system",
+      "Hilbert10OQ01.lean"
+    ],
+    "prerequisites": [
+      "Lean 4 imports"
+    ]
+  },
+  {
+    "id": "ann-rat-subset",
+    "proofId": "hilbert-10-oq-01-oq-02",
+    "range": {
+      "startLine": 96,
+      "endLine": 100
+    },
+    "type": "definition",
+    "title": "Subsets of ℚ as Predicates",
+    "content": "Establishes the predicate-style encoding of subsets: `RatSubset := Rat → Prop`, and the canonical example `IntSubset q := ∃ z : Int, q = z` (the image of $\\mathbb{Z}$ under $\\mathbb{Z} \\hookrightarrow \\mathbb{Q}$). Using `Prop`-valued predicates rather than `Set`-typed objects makes the $\\Sigma_1$/$\\Pi_2$ definability statements unfold cleanly into first-order quantifier blocks.",
+    "mathContext": "$\\mathbb{Z} = \\{q \\in \\mathbb{Q} : \\exists z \\in \\mathbb{Z}, q = z\\}$ — the image of the canonical inclusion $\\mathbb{Z} \\hookrightarrow \\mathbb{Q}$. Encoded as a `Prop`-valued predicate `IntSubset` to make subsequent quantifier-class definitions transparent.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "predicate logic",
+      "Set.range Int.cast",
+      "first-order definability"
+    ],
+    "prerequisites": [
+      "Lean 4 type theory",
+      "predicate vs set encodings"
+    ]
+  },
+  {
+    "id": "ann-sigma1-def",
+    "proofId": "hilbert-10-oq-01-oq-02",
+    "range": {
+      "startLine": 112,
+      "endLine": 127
+    },
+    "type": "concept",
+    "title": "Σ₁ Definability: The OPEN Layer",
+    "content": "`IsDiophantineDefinition S` says there exists a parametric family $P : \\mathbb{Q} \\to \\text{RatDiophantinePoly}$ such that $S(q) \\iff $ the rational equation $P(q) = 0$ has a solution. `IntegersAreDiophantineOverQ := IsDiophantineDefinition IntSubset` is the open question. The lemma `integers_diophantine_iff` proves $\\Sigma_1$-definability $\\iff$ OQ-01's `IntegersDiophantineOverQ` by `Iff.rfl` — they are *definitionally* equal, not merely logically equivalent. This is the bridge that lets the file re-export OQ-01 conditionals without introducing new axioms.",
+    "mathContext": "$\\Sigma_1$ subset $S \\subseteq \\mathbb{Q}$: $\\exists P \\in \\mathbb{Q}[t, \\bar x] \\, \\forall q \\in \\mathbb{Q} : S(q) \\iff \\exists \\bar x \\in \\mathbb{Q}^k, P(q, \\bar x) = 0$. The open question is whether $\\mathbb{Z}$ is such a subset. By MRDP, a positive answer would yield H10/$\\mathbb{Q}$ undecidable.",
+    "significance": "key",
+    "relatedConcepts": [
+      "existential definability",
+      "Diophantine sets",
+      "MRDP",
+      "RatDiophantinePoly",
+      "Iff.rfl definitional equality"
+    ],
+    "prerequisites": [
+      "polynomial rings",
+      "model theory of arithmetic"
+    ]
+  },
+  {
+    "id": "ann-pi2-def",
+    "proofId": "hilbert-10-oq-01-oq-02",
+    "range": {
+      "startLine": 138,
+      "endLine": 151
+    },
+    "type": "concept",
+    "title": "Π₂ Definability + Koenigsmann's Axiom",
+    "content": "`IsUniversalExistentialDefinition S` adds a *universal* quantifier block: $S(q) \\iff \\forall y \\in \\mathbb{Q}^\\mathbb{N}, P(q, y) = 0$ has a rational solution. Koenigsmann 2016 is captured as the SINGLE axiom `koenigsmann_2016_universal : IsUniversalExistentialDefinition IntSubset`. The axiomatization is honest: the original proof is constructive (an explicit polynomial built from Hilbert symbols and quaternion algebras over $\\mathbb{Q}$), but Mathlib lacks the Hilbert-symbol/quaternion-form infrastructure to build the polynomial, so we record the conclusion as a black-box assumption pending future formalization.",
+    "mathContext": "$\\Pi_2$ subset: $\\exists P \\, \\forall q : S(q) \\iff \\forall y \\in \\mathbb{Q}^n, \\exists \\bar z \\in \\mathbb{Q}^m, P(q, y, \\bar z) = 0$. Koenigsmann's polynomial uses Hilbert symbols $(a, b)_p \\in \\{\\pm 1\\}$ at each prime $p$ — a deeply arithmetic construction, not a model-theoretic abstraction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hilbert symbols",
+      "quaternion algebras over ℚ",
+      "local-global principle",
+      "Brauer group of ℚ",
+      "Koenigsmann's polynomial"
+    ],
+    "prerequisites": [
+      "class field theory",
+      "quadratic forms over ℚ"
+    ]
+  },
+  {
+    "id": "ann-containment",
+    "proofId": "hilbert-10-oq-01-oq-02",
+    "range": {
+      "startLine": 164,
+      "endLine": 182
+    },
+    "type": "insight",
+    "title": "Σ₁ ⊆ Π₂: One-Direction Trivial, Other Direction Open",
+    "content": "Proves the easy direction: any $\\Sigma_1$ definition extends to $\\Pi_2$ by adding a dummy universal block (just ignore $y$ and use the constant $0$ as a witness for the existential `mpr` step). The two-line proof is `refine ⟨fun q _ => P q, ?_⟩` followed by trivial implications. This makes mathematically precise why the $\\Sigma_1$/$\\Pi_2$ refinement is one-sided: the open content is $\\Pi_2 \\subseteq \\Sigma_1$ for $\\mathbb{Z}$, not vice versa. The corollary `integers_diophantine_strengthens_koenigsmann` packages this: any positive answer to the open Σ₁ question is automatically stronger than Koenigsmann.",
+    "mathContext": "$\\Sigma_1 \\subseteq \\Pi_2$: trivially, $\\exists \\bar x P \\implies \\forall y \\exists \\bar x P$ (with $P$ not depending on $y$). The reverse $\\Pi_2 \\subseteq \\Sigma_1$ for $\\mathbb{Z} \\subseteq \\mathbb{Q}$ would *strengthen* Koenigsmann to a Diophantine definition — and would settle H10/$\\mathbb{Q}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "arithmetic hierarchy collapse",
+      "quantifier elimination",
+      "definability strength"
+    ],
+    "prerequisites": [
+      "first-order logic"
+    ]
+  },
+  {
+    "id": "ann-h10q-consequence",
+    "proofId": "hilbert-10-oq-01-oq-02",
+    "range": {
+      "startLine": 190,
+      "endLine": 206
+    },
+    "type": "insight",
+    "title": "Σ₁ ⟹ H10/ℚ Undecidable (Re-Export, NOT a New Axiom)",
+    "content": "Re-exports OQ-01's `integers_diophantine_implies_undecidable` against the new $\\Sigma_1$ predicate. The proof is `intro h; exact integers_diophantine_implies_undecidable (integers_diophantine_iff.mp h)` — pure logical bookkeeping using the definitional equivalence. The point is methodological: the Σ₁/Π₂ distinction lets us state the H10/ℚ-reduction *only* against Σ₁, making explicit that Koenigsmann's Π₂ result does NOT automatically yield H10/ℚ undecidable. This is the substantive content of the refinement, captured in a 3-line theorem.",
+    "mathContext": "MRDP gives H10/$\\mathbb{Z}$ undecidable. The reduction $\\mathbb{Z}$-Diophantine-in-$\\mathbb{Q}$ $\\implies$ H10/$\\mathbb{Q}$-undecidable requires the *Σ₁* form: a Π₂ definition does not immediately propagate undecidability across the rational/integer interface.",
+    "significance": "key",
+    "relatedConcepts": [
+      "MRDP theorem",
+      "many-one reduction",
+      "Davis-Putnam-Robinson-Matiyasevich"
+    ],
+    "prerequisites": [
+      "computability theory",
+      "Turing reductions"
+    ]
+  },
+  {
+    "id": "ann-mazur-consequence",
+    "proofId": "hilbert-10-oq-01-oq-02",
+    "range": {
+      "startLine": 207,
+      "endLine": 211
+    },
+    "type": "insight",
+    "title": "Mazur ⟹ ¬Σ₁ (Re-Export, NOT a New Axiom)",
+    "content": "Re-exports OQ-01's `mazur_implies_not_diophantine` against the new $\\Sigma_1$ predicate, again as a logical consequence (not an axiom). Mazur's conjecture (1992) places topological constraints on the closure of $\\mathbb{Q}$-solution sets of polynomial equations — constraints that an $\\mathbb{R}$-discrete set like $\\mathbb{Z}$ would violate. So Mazur $\\implies$ $\\mathbb{Z}$ is not $\\Sigma_1$-definable in $\\mathbb{Q}$. Crucially, Mazur is *consistent* with $\\Pi_2$-definability — clarifying why the conjecture does not contradict Koenigsmann.",
+    "mathContext": "Mazur's conjecture: for any $V \\subseteq \\mathbb{Q}^n$ that is the rational-solution set of a polynomial system, the closure $\\bar V \\subseteq \\mathbb{R}^n$ has only finitely many connected components. $\\mathbb{Z} \\subseteq \\mathbb{R}$ has infinitely many connected components, so $\\mathbb{Z}$ cannot be a $\\Sigma_1$-projection of such a $V$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Mazur's conjecture",
+      "topology of rational points",
+      "Brauer-Manin obstruction",
+      "Cornelissen-Zahidi"
+    ],
+    "prerequisites": [
+      "arithmetic geometry",
+      "real-analytic topology"
+    ]
+  },
+  {
+    "id": "ann-pi1-duality",
+    "proofId": "hilbert-10-oq-01-oq-02",
+    "range": {
+      "startLine": 225,
+      "endLine": 291
+    },
+    "type": "concept",
+    "title": "Π₁ Definability and the Σ₁/Π₁ Duality",
+    "content": "Adds the third quantifier class: $\\Pi_1$ — purely universal, $S(q) \\iff \\forall x, P(q, x) \\ne 0$. The duality theorem `diophantine_iff_codiophantine_complement` proves the textbook fact that $S$ is $\\Sigma_1$-definable iff its complement is $\\Pi_1$-definable: the easy direction is `refine ⟨P, fun q => ⟨fun hnSq hsol => hnSq ((hP q).mpr hsol), fun hnsol hSq => hnsol ((hP q).mp hSq)⟩⟩`; the reverse direction uses `Classical.byContradiction`. Specializing to $\\mathbb{Z}$ via `integers_diophantine_iff_complement_codiophantine` gives a useful equivalent reformulation: 'is $\\mathbb{Q} \\setminus \\mathbb{Z}$ $\\Pi_1$-definable in $\\mathbb{Q}$?' — sometimes more amenable to refutation arguments. Both H10/ℚ-undecidability and Mazur consequences are re-exported against the new $\\Pi_1(\\mathbb{Q} \\setminus \\mathbb{Z})$ predicate (no new axioms).",
+    "mathContext": "$\\Pi_1$/$\\Sigma_1$ duality (general): for any subset $S \\subseteq \\mathbb{Q}$, $S \\in \\Sigma_1 \\iff (\\mathbb{Q} \\setminus S) \\in \\Pi_1$. This is the standard logical fact that complementing turns existential definitions into universal ones (and vice versa, classically). The reverse direction $\\Pi_1(\\neg S) \\to \\Sigma_1(S)$ uses excluded middle.",
+    "significance": "key",
+    "relatedConcepts": [
+      "arithmetic-hierarchy duality",
+      "co-recursively enumerable sets",
+      "Classical.byContradiction"
+    ],
+    "prerequisites": [
+      "classical logic",
+      "first-order definability"
+    ]
+  },
+  {
+    "id": "ann-sigma2-pi1",
+    "proofId": "hilbert-10-oq-01-oq-02",
+    "range": {
+      "startLine": 309,
+      "endLine": 342
+    },
+    "type": "concept",
+    "title": "Σ₂ Definability and Π₁ ⊆ Σ₂",
+    "content": "Adds the fourth and final quantifier class: $\\Sigma_2$ — existential-universal ($\\exists \\forall$), defined as `∃ P : Rat → (Nat → Rat) → RatDiophantinePoly, ∀ q, S q ↔ ∃ y, ¬ hasRationalSolution (P q y)`. The trivial containment `codiophantine_implies_existentialUniversal` ($\\Pi_1 \\subseteq \\Sigma_2$) is the precise dual of the earlier $\\Sigma_1 \\subseteq \\Pi_2$: a Π₁ formula $\\forall x, P(q, x) \\ne 0$ is automatically a $\\Sigma_2$ formula $\\exists y, \\forall x, P(q, x) \\ne 0$ with a dummy existential block (witnessed here by `fun _ => 0`). Together, the four classes Σ₁/Π₁/Σ₂/Π₂ form a 'square' with two trivial containments and two dualities.",
+    "mathContext": "$\\Sigma_2$ subset $S \\subseteq \\mathbb{Q}$: $\\exists P : \\mathbb{Q} \\times \\mathbb{Q}^\\mathbb{N} \\to \\text{RatDiophantinePoly} \\, \\forall q : S(q) \\iff \\exists y \\in \\mathbb{Q}^\\mathbb{N}, \\forall x \\in \\mathbb{Q}^\\mathbb{N}, P(q, y, x) \\ne 0$. The standard arithmetic-hierarchy fact that $\\Pi_1 \\subseteq \\Sigma_2$ (trivially, by adding a vacuous existential block on the outside) is proved here in 6 lines.",
+    "significance": "key",
+    "relatedConcepts": [
+      "arithmetic hierarchy Σ₂",
+      "Π₁ ⊆ Σ₂ trivial containment",
+      "quantifier-block embedding"
+    ],
+    "prerequisites": [
+      "first-order logic",
+      "arithmetic hierarchy"
+    ]
+  },
+  {
+    "id": "ann-sigma2-pi2-duality",
+    "proofId": "hilbert-10-oq-01-oq-02",
+    "range": {
+      "startLine": 343,
+      "endLine": 467
+    },
+    "type": "insight",
+    "title": "Σ₂/Π₂ Duality and the Σ₂(ℚ\\ℤ) Corollary of Koenigsmann",
+    "content": "`existentialUniversal_iff_universalExistential_complement` proves the higher-level analog of the Σ₁/Π₁ duality: $S$ is $\\Sigma_2$-definable iff its complement is $\\Pi_2$-definable. Both directions use one classical `Classical.byContradiction` step (twice in total, once per direction) to convert `¬¬p` to `p`. The helper `universalExistentialDefinition_iff_of_pred_iff` shows the $\\Pi_2$ class is invariant under propositional equivalence of the predicate. Combining these with `koenigsmann_2016_universal` yields the unconditional corollary `koenigsmann_implies_complement_existentialUniversal`: $\\mathbb{Q} \\setminus \\mathbb{Z}$ is $\\Sigma_2$-definable in $\\mathbb{Q}$ — a non-trivial structural fact pulled out of Koenigsmann via the $\\Sigma_2$/$\\Pi_2$ duality, with no new axiom.",
+    "mathContext": "$\\Sigma_2$/$\\Pi_2$ duality: $S \\in \\Sigma_2 \\iff (\\mathbb{Q} \\setminus S) \\in \\Pi_2$. Bridging classically: $\\Pi_2(\\mathbb{Z}) \\implies \\Pi_2(\\neg\\neg \\mathbb{Z}) \\iff \\Pi_2(\\neg(\\mathbb{Q} \\setminus \\mathbb{Z})) \\iff \\Sigma_2(\\mathbb{Q} \\setminus \\mathbb{Z})$. Classical excluded middle is essential for both the duality and the predicate-equivalence bridge.",
+    "significance": "key",
+    "relatedConcepts": [
+      "arithmetic-hierarchy duality at level 2",
+      "complementation classical",
+      "Koenigsmann corollary",
+      "Π₂ class congruence"
+    ],
+    "prerequisites": [
+      "classical logic",
+      "double-negation elimination",
+      "Koenigsmann 2016"
+    ]
+  },
+  {
+    "id": "ann-sec9-sigma1-pi1-closure-grid",
+    "proofId": "hilbert-10-oq-01-oq-02",
+    "range": {
+      "startLine": 484,
+      "endLine": 1840
+    },
+    "type": "theorem",
+    "title": "Σ₁/Π₁ Boolean closure grid over ℚ (Parts VIII.5–VIII.20, iters 5–17)",
+    "content": "The level-1 Boolean-closure library: ~55 theorems building the full finite Boolean-combination grid for Σ₁ (Diophantine) and Π₁ (co-Diophantine) subsets of ℚ. Highlights: the symmetric Σ₁/Π₁ duality `codiophantine_iff_diophantine_complement` (Π₁ S ⟺ Σ₁ ¬S); trivial-set definability (∅, ℚ in all four classes); singleton `{a}` and complement `ℚ\\{a}` for arbitrary `a : ℚ` via the shift polynomial `P(q,x)=q-a` (generalizing the S6 case a=0); double-negation invariance `Class(¬¬S) ⟺ Class(S)`; Σ₁ closed under binary ∪ (product-polynomial witness `P₁·P₂` + `mul_eq_zero`); Σ₁ closed under binary ∩ (sum-of-squares witness `P₁²+P₂²` with even/odd variable-packing via `interleave`); Π₁ closed under ∪ (dual of Σ₁ ∩); and the list/Finset transports lifting all of these to arbitrary finite subsets. Net: Σ₁ and Π₁ are each closed under finite ∪ and ∩, but NOT (known to be) under complement — closure under complement would collapse Σ₁ = Π₁, which is exactly the OPEN question for ℤ ⊂ ℚ. The countable union `⋃_{n:ℤ}{n}` is the precise gap: every finite truncation is Σ₁, but a single uniform polynomial witness for the full union is the open content.",
+    "mathContext": "Closure grid (finite combinations): $\\Sigma_1, \\Pi_1$ each closed under $\\cup, \\cap$; not under complement. Singletons $\\{a\\}\\in\\Sigma_1$ via $P(q,x)=q-a$; $\\Sigma_1\\cap$ via $P_1^2+P_2^2$ over the ordered field $\\mathbb{Q}$. $\\mathbb{Z}\\subset\\mathbb{Q}$ Diophantine $\\iff \\bigcup_{n}\\{n\\}$ admits a uniform witness — OPEN.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Boolean closure grid",
+      "Σ₁/Π₁ duality",
+      "product and sum-of-squares polynomial witnesses",
+      "variable-packing via interleave",
+      "finite vs countable union (the open gap)",
+      "list/Finset transport"
+    ],
+    "prerequisites": [
+      "Diophantine (Σ₁) and co-Diophantine (Π₁) definability over ℚ",
+      "mul_eq_zero over a field; nonnegativity of squares in an ordered field"
+    ]
+  },
+  {
+    "id": "ann-sec10-sigma2-pi2-closure-level2-open",
+    "proofId": "hilbert-10-oq-01-oq-02",
+    "range": {
+      "startLine": 1841,
+      "endLine": 2865
+    },
+    "type": "theorem",
+    "title": "Σ₂/Π₂ Boolean closure + the named level-2 open question (Parts VIII.21–VIII.33, iters 20–27)",
+    "content": "The level-2 analog of the section above: ~19 theorems completing the binary Boolean-closure grid for Σ₂ (∃∀) and Π₂ (∀∃) subsets of ℚ, plus the level-2 open question. Σ₂ closed under binary ∩ (product polynomial `Q(q,y,x)=P₁(q,evenProj y,x)·P₂(q,oddProj y,x)`, existential y-block packed via `interleave`, universal x-block shared); Π₂ closed under binary ∪ as the symmetric dual; together with iter 16's Σ₂ ∪ / Π₂ ∩ this completes the second-level 2×2 grid, strictly stronger than the iter 12/13 Σ₁/Π₁⊆Π₂/Σ₂ transports. List versions and Finset transports lift these to finite families. The centerpiece is Part VIII.27 (iter 23): `IntegersAreExistentialUniversalOverQ` names the Σ₂-definability of ℤ ⊂ ℚ as a top-level `Prop` (mirroring level-1's `IntegersAreDiophantineOverQ`), and `integers_existentialUniversal_iff_complement_universalExistential` dualizes it — both sides OPEN. Part VIII.28 records the 'missing diagonal' at level 2; Part VIII.33 (iter 27a-δ) adds combined/contrapositive forms. Σ₂ is not known to be closed under complement; that would collapse Σ₂ = Π₂ — a level-2 analog of the open Σ₁ vs Π₁ question. Koenigsmann places ℤ in Π₂, but Σ₂(ℤ) is open.",
+    "mathContext": "Level-2 grid: $\\Sigma_2,\\Pi_2$ closed under $\\cup,\\cap$; not under complement. $\\Sigma_2\\cap$ via product polynomial with interleaved $\\exists$-block and shared $\\forall$-block. Koenigsmann: $\\mathbb{Z}\\in\\Pi_2$ over $\\mathbb{Q}$; $\\Sigma_2(\\mathbb{Z})$ OPEN.",
+    "significance": "key",
+    "relatedConcepts": [
+      "level-2 arithmetic hierarchy over ℚ",
+      "Σ₂/Π₂ duality",
+      "IntegersAreExistentialUniversalOverQ (named open question)",
+      "Koenigsmann 2016 (ℤ ∈ Π₂)",
+      "Finset transport of closure"
+    ],
+    "prerequisites": [
+      "Σ₂ (∃∀) and Π₂ (∀∃) definability over ℚ",
+      "the Σ₁/Π₁ closure grid (section above)"
+    ]
+  },
+  {
+    "id": "ann-sec11-sharpened-landscape",
+    "proofId": "hilbert-10-oq-01-oq-02",
+    "range": {
+      "startLine": 2866,
+      "endLine": 3174
+    },
+    "type": "concept",
+    "title": "Part IX: the sharpened Σ₁/Π₁/Σ₂/Π₂ landscape",
+    "content": "The closing narrative (Part IX, prose docstring) that synthesizes the whole file into the precise state of knowledge for ℤ ⊂ ℚ across the bottom of the arithmetic hierarchy: Σ₁ (ℤ Diophantine over ℚ) — OPEN, THIS PROBLEM; Π₁ (ℚ\\ℤ co-Diophantine) — OPEN, equivalent to Σ₁ via duality; Σ₂ (ℚ\\ℤ existential-universal) — PROVED as a corollary of Koenigsmann via duality (`koenigsmann_implies_complement_existentialUniversal`); Π₂ (ℤ universal-existential) — PROVED (Koenigsmann 2016). The non-trivial open gap is Σ₁ vs Π₂ (equivalently Π₁(complement) vs Σ₂(complement)). Why the distinction matters: the implication chain Σ₁ → ¬(H10/ℚ decidable) (from MRDP) is PRECISELY Σ₁ — Π₂ does not transfer H10/ℤ undecidability to H10/ℚ; Mazur's conjecture refutes Σ₁ but is consistent with Π₂; a positive Σ₁ answer would be a constructive polynomial witness, a negative one likely a structural theorem on the Brauer–Manin geometry of ℚ-points. This section carries no new theorems — it is the interpretive map tying the proved closure grid and the lone Koenigsmann axiom to the open frontier.",
+    "mathContext": "Status table on $\\mathbb{Z}\\subset\\mathbb{Q}$: $\\Sigma_1$ OPEN, $\\Pi_1$ OPEN (≡$\\Sigma_1$), $\\Sigma_2(\\mathbb{Q}\\setminus\\mathbb{Z})$ PROVED, $\\Pi_2(\\mathbb{Z})$ PROVED (Koenigsmann 2016). Open gap: $\\Sigma_1$ vs $\\Pi_2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "arithmetic hierarchy over ℚ",
+      "MRDP and H10/ℚ undecidability transfer",
+      "Mazur's conjecture",
+      "Koenigsmann 2016",
+      "Brauer–Manin obstruction"
+    ],
+    "prerequisites": [
+      "Hilbert's 10th problem over ℚ",
+      "Σ₁/Π₁/Σ₂/Π₂ definability classes"
+    ]
+  }
+]

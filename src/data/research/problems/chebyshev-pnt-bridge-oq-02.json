@@ -1,0 +1,66 @@
+{
+  "id": "chebyshev-pnt-bridge-oq-02",
+  "name": "Chebyshev Real-Valued Lower Bound on π(2n)",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "tier": "B",
+  "significance": 7,
+  "tractability": 7,
+  "tags": [
+    "number-theory",
+    "prime-counting",
+    "chebyshev",
+    "analytic-number-theory",
+    "logarithms",
+    "intermediate"
+  ],
+  "problemStatement": {
+    "formal": "For all n >= 1, prove (n * log 4 - log (2n + 1)) / log (2n) <= Nat.primeCounting (2n), and combine it with the matching Chebyshev upper estimate to obtain explicit pi(x) = Theta(x / log x) bounds.",
+    "plain": "Turn Chebyshev's integer power inequalities into an explicit real-valued lower bound for the prime-counting function at 2n.",
+    "whyMatters": [
+      "Completes the Chebyshev bridge from binomial coefficient estimates to prime-counting bounds.",
+      "Makes the lower constant explicit enough to pair with the existing upper-bound proof.",
+      "Documents a historically important route toward the prime number theorem without analytic machinery."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Proofs/ChebyshevPNTBridgeOQ02.lean proves chebyshev_lower_log, chebyshev_lower_real, chebyshev_lower_pos, and chebyshev_pi_interval.",
+      "Proof metadata records 174 lines, 5 theorems, 0 definitions, 0 axioms, and 0 sorries.",
+      "The lower bound plus the existing upper bound gives an explicit Chebyshev interval for pi(2n) with constants log 2 and 2 * log 4."
+    ],
+    "open": [
+      "Tightening the lower constant from log 2 toward Chebyshev's original 0.921 remains future work.",
+      "Improving the upper constant toward 1.106 would require finer binomial or sieve estimates."
+    ],
+    "goal": "Keep the verified real-valued Chebyshev prime-counting lower bound discoverable from the research index."
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Proved (n·log4 − log(2n+1))/log(2n) ≤ π(2n) for n ≥ 1. Four theorems, 0 sorries, 0 axioms.",
+    "insights": [
+      "The lower bound chains two sandwich inequalities via log: 4^n ≤ (2n+1)·C(2n,n) ≤ (2n+1)·(2n)^π(2n).",
+      "Taking log and rearranging gives n·log4 - log(2n+1) ≤ π(2n)·log(2n), then dividing by log(2n) > 0.",
+      "The bound is always non-vacuous: 4^n > 2n+1 for all n ≥ 1, proved by elementary induction (base 4>3; step 2k+3 < 4(2k+1) ≤ 4·4^k).",
+      "For large n, the lower bound grows as n·log(4)/log(2n) ~ log(2)·(n/log n), confirming π(x) ≳ log(2)·(x/log x).",
+      "The upper bound (from Erdos31PrimesDensity) and this lower bound together give the complete Chebyshev interval log(2) ≤ π(2n)·log(2n)/n ≤ 2·log(4) + o(1).",
+      "push_cast + linarith suffices for all real coercion and arithmetic goals after establishing the key log inequality.",
+      "div_le_iff₀ converts (a/b ≤ c) to (a ≤ c * b) when b > 0 — more reliable than div_le_iff here."
+    ],
+    "builtItems": [
+      "chebyshev_lower_log: n·log(4) − log(2n+1) ≤ π(2n)·log(2n) for n ≥ 1 in ChebyshevPNTBridgeOQ02.lean:59",
+      "chebyshev_lower_real: (n·log4 − log(2n+1)) / log(2n) ≤ π(2n) for n ≥ 1 in ChebyshevPNTBridgeOQ02.lean:87",
+      "chebyshev_lower_pos: 0 < n·log(4) − log(2n+1) for n ≥ 1 (proved by induction: 4^n > 2n+1) in ChebyshevPNTBridgeOQ02.lean:103",
+      "chebyshev_pi_interval: π(2n) in Chebyshev interval for n ≥ 2 in ChebyshevPNTBridgeOQ02.lean:141",
+      "Gallery entry: src/data/proofs/chebyshev-pnt-bridge-oq-02/meta.json"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Can the lower constant be tightened from log(2) ≈ 0.693 to Chebyshev's original 0.921 using a more refined analysis of C(2n,n)?",
+      "Can the upper constant be tightened from 2·log(4) ≈ 2.773 to 1.106 using a finer sieve?"
+    ]
+  },
+  "relatedProofs": [
+    "chebyshev-pnt-bridge",
+    "chebyshev-pnt-bridge-oq-02"
+  ]
+}

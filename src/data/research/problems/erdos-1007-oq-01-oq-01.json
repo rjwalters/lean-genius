@@ -1,0 +1,154 @@
+{
+  "slug": "erdos-1007-oq-01-oq-01",
+  "title": "Is minEdges monotone in d",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall d_1\\, d_2 \\in \\mathbb{N},\\; d_1 \\le d_2 \\implies \\mathrm{minEdges}(d_1) \\le \\mathrm{minEdges}(d_2)",
+    "plain": "Is the function minEdges(d), giving the minimum number of edges in a graph of dimension exactly d, monotone (non-decreasing) in d?",
+    "whyMatters": [
+      "Establishes basic structural property of the dimension-edge tradeoff",
+      "Would imply superlinear growth of minEdges for d >= 5",
+      "Connected to the complete graph optimality conjecture"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Monotonicity holds for d <= 5 (from known values)",
+      "Full monotonicity iff consecutive monotonicity for d >= 5",
+      "Deficiency bound d(d) <= d implies monotonicity",
+      "Complete graph optimality implies monotonicity",
+      "f(d) >= C(d,2) for d >= 2 implies monotonicity"
+    ],
+    "open": [
+      "Does minEdges(6) >= 15?",
+      "Does the deficiency bound d(d) <= d hold for all d?",
+      "Is there a graph-theoretic proof of edge-removal dimension reduction?"
+    ],
+    "goal": "Prove or disprove monotonicity of minEdges(d)"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-24T05:32:00.000Z",
+    "iteration": 1,
+    "focus": "Structural analysis of the monotonicity conjecture.",
+    "blockers": [],
+    "nextAction": "None - completed.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: 388 lines, 32 theorems, 0 axioms, 0 sorries. Created full structural analysis of monotonicity conjecture.",
+    "builtItems": [
+      "proofs/Proofs/Erdos1007OQ01OQ01.lean (388 lines, 32 theorems)",
+      "src/data/proofs/erdos-1007-oq-01-oq-01/ (gallery integration)"
+    ],
+    "insights": [
+      "The deficiency bound d(d) <= d is the simplest sufficient condition for monotonicity",
+      "Monotonicity reduces to consecutive monotonicity for d >= 5 only",
+      "The critical gap is f(5)->f(6): need f(6) >= 15 but only know 6 <= f(6) <= 21",
+      "Half-quadratic lower bound f(d) >= C(d,2) is weaker than optimality but also sufficient",
+      "Pascal rule C(d+1,2) - d = C(d,2) is the key algebraic identity in the deficiency proof"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "erdos",
+    "graph-dimension",
+    "unit-distance",
+    "combinatorics",
+    "graph-theory",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-100",
+    "erdos-1007",
+    "erdos-1007-oq-01",
+    "erdos-1007-oq-01-oq-01",
+    "erdos-1007-oq-05"
+  ],
+  "references": {
+    "papers": [
+      "Erdos-Harary-Tutte 1965: On the dimension of a graph",
+      "House 2013: Graphs of dimension 4",
+      "Chaffee-Noble 2016: The dimension of the unit distance graph"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1007"
+    ],
+    "mathlib": [
+      "Nat.choose_succ_succ",
+      "Nat.choose_le_choose",
+      "Nat.choose_two_right"
+    ]
+  },
+  "started": "2026-03-24T00:48:59.901Z",
+  "lastUpdate": "2026-03-24T05:32:00.000Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1007OQ01.lean",
+      "filename": "Erdos1007OQ01.lean",
+      "lineCount": 1337,
+      "theoremCount": 89,
+      "axiomCount": 0,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1007OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1007OQ01Aristotle.lean",
+      "filename": "Erdos1007OQ01Aristotle.lean",
+      "lineCount": 111,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1007OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos1007OQ01OQ01.lean",
+      "filename": "Erdos1007OQ01OQ01.lean",
+      "lineCount": 389,
+      "theoremCount": 32,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1007OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1007OQ05.lean",
+      "filename": "Erdos1007OQ05.lean",
+      "lineCount": 142,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1007OQ05.lean"
+    },
+    {
+      "path": "Proofs/Erdos1007Problem.lean",
+      "filename": "Erdos1007Problem.lean",
+      "lineCount": 130,
+      "theoremCount": 3,
+      "axiomCount": 4,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1007Problem.lean"
+    }
+  ]
+}

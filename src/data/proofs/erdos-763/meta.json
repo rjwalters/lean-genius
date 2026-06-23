@@ -1,0 +1,201 @@
+{
+  "id": "erdos-763",
+  "title": "Erdős Problem #763: The Erdős-Fuchs Theorem",
+  "slug": "erdos-763",
+  "description": "Can a set A ⊆ ℕ have representation count ∑_{n≤N} r_A(n) = cN + O(1)? NO - disproved by Erdős-Fuchs (1956).",
+  "meta": {
+    "author": "Erdős-Fuchs (1956 proof), Erdős-Turán (conjecture)",
+    "sourceUrl": "https://erdosproblems.com/763",
+    "date": "1956",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos763Problem.lean",
+    "tags": [
+      "erdos",
+      "additive-combinatorics",
+      "representation-functions",
+      "analytic-number-theory",
+      "disproved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 763,
+    "erdosUrl": "https://erdosproblems.com/763",
+    "erdosProblemStatus": "disproved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter at infinity for asymptotics",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      },
+      {
+        "theorem": "Asymptotics",
+        "description": "Asymptotic notation and analysis",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      }
+    ],
+    "originalContributions": [
+      "representationCount definition: r_A(n) = |{(a,b) ∈ A×A : a+b=n}|",
+      "cumulativeRepCount definition: R_A(N) = ∑_{n≤N} r_A(n)",
+      "HasLinearGrowthBounded definition: R_A(N) = cN + O(1)",
+      "truncate definition: finite restriction of infinite sets",
+      "erdos_fuchs_theorem axiom: impossibility of bounded error",
+      "erdos_763 theorem: the main negative result",
+      "errorTerm definition: difference between cumulative count and linear approximation",
+      "perfectSquares, arithmeticProgression, IsSidonSet examples",
+      "sidon_not_bounded theorem: application to Sidon sets"
+    ],
+    "axiomCount": 2,
+    "lineCount": 271,
+    "assumptions": "2 axioms: erdos_fuchs_theorem, squares_sublinear. 0 sorries.",
+    "theoremCount": 4,
+    "definitionCount": 9
+  },
+  "overview": {
+    "historicalContext": "**The Erdős-Turán Conjecture and the Erdős-Fuchs Theorem**\n\nThis problem originates from a 1941 conjecture of Erdős and Turán about the regularity of additive bases. Given a set A ⊆ ℕ, the representation function r_A(n) counts the number of ways to write n as a sum of two elements from A. The cumulative sum R_A(N) = ∑_{n≤N} r_A(n) measures how \"rich\" the set A is as an additive basis.\n\nErdős and Turán asked: can R_A(N) grow perfectly linearly with only bounded fluctuation? That is, can R_A(N) = cN + O(1) for some constant c > 0?\n\n**The Resolution (1956)**\n\nIn their landmark 1956 paper \"On a problem of additive number theory\" in the Journal of the London Mathematical Society, Erdős and Fuchs proved the surprising result that such perfect regularity is impossible. Even more remarkably, they showed that even R_A(N) = cN + o(N^{1/4}/(log N)^{1/2}) is impossible.\n\n**Subsequent Improvements**\n\nJurkat (unpublished) and Montgomery-Vaughan (1990) strengthened this to show the error term must infinitely often exceed N^{1/4}. This is essentially optimal: there exist sets achieving error O(N^{1/4+ε}) for any ε > 0.",
+    "problemStatement": "**Problem Statement (Disproved)**\n\nLet $A \\subseteq \\mathbb{N}$. Can there exist some constant $c > 0$ such that\n$$\\sum_{n \\leq N} r_A(n) = cN + O(1)$$\nwhere $r_A(n) = |\\{(a,b) \\in A \\times A : a + b = n\\}|$?\n\n**Answer: NO**\n\n**Erdős-Fuchs Theorem (1956):** For any infinite set $A$ and $c > 0$, it is impossible to have $\\sum_{n \\leq N} r_A(n) = cN + o(N^{1/4}/(\\log N)^{1/2})$.\n\n**Montgomery-Vaughan (1990):** The error term must exceed $N^{1/4}$ infinitely often.",
+    "text": "Can a set A ⊆ ℕ have representation count ∑_{n≤N} r_A(n) = cN + O(1)? NO - disproved by Erdős-Fuchs (1956).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Representation Functions:** Define r_A(n) counting pairs summing to n, and cumulative sum R_A(N).\n\n2. **Linear Growth Property:** Define HasLinearGrowthBounded capturing R_A(N) = cN + O(1).\n\n3. **Truncation:** Handle infinite sets via finite truncations to [0, N].\n\n4. **Main Axiom:** The Erdős-Fuchs theorem is axiomatized as it requires deep Fourier analysis beyond Mathlib.\n\n5. **Strong Forms:** Document the strengthened error bounds from the 1956 paper and Montgomery-Vaughan in prose; these are not formalized in Lean.\n\n6. **Examples:** Define perfect squares, arithmetic progressions, and Sidon sets to illustrate the theorem.\n\n**Why Axiomatization?** The proof uses Fourier analysis on the circle, Parseval's identity, and delicate estimates on trigonometric sums. These analytic techniques are not yet available in Mathlib.",
+    "keyInsights": [
+      "**Variance Cannot Be Eliminated:** The representation function r(n) has inherent variability that cannot average out to O(1) cumulative error.",
+      "**Fourier Analysis Key:** The proof uses generating functions (∑ z^{aᵢ})² and Parseval's identity to bound the error.",
+      "**N^{1/4} Barrier:** The best possible error term is Θ(N^{1/4}), achieved by carefully constructed sets.",
+      "**Sidon Sets Included:** Even Sidon sets (where r(n) ≤ 2) cannot achieve bounded error.",
+      "**Generalization to k-sums:** Problem #764 extends this to sums of k elements, with the same negative answer.",
+      "**Connection to Waring's Problem:** For squares, r(n) relates to sums of two squares and Jacobi's formula."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Additive combinatorics (sumsets, density)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "representation-function",
+      "title": "Representation Function",
+      "summary": "representationCount, representationCount', cumulativeRepCount definitions",
+      "startLine": 39,
+      "endLine": 70,
+      "mathContext": "Formal definition: representationCount, representationCount', cumulativeRepCount definitions"
+    },
+    {
+      "id": "linear-growth",
+      "title": "The Linear Growth Question",
+      "summary": "HasLinearGrowthBounded, truncate definitions",
+      "startLine": 71,
+      "endLine": 91,
+      "mathContext": "Formal definition: HasLinearGrowthBounded, truncate definitions"
+    },
+    {
+      "id": "erdos-fuchs",
+      "title": "The Erdős-Fuchs Theorem",
+      "summary": "erdos_fuchs_theorem axiom, erdos_763 main theorem",
+      "startLine": 92,
+      "endLine": 124,
+      "mathContext": "Verified: erdos_fuchs_theorem axiom, erdos_763 main theorem"
+    },
+    {
+      "id": "error-bounds",
+      "title": "Strengthened Error Bounds",
+      "summary": "errorTerm definition; strong forms documented in prose only",
+      "startLine": 125,
+      "endLine": 159,
+      "mathContext": "Formal definition: errorTerm only; erdos_fuchs_strong and montgomery_vaughan appear only as docstring prose"
+    },
+    {
+      "id": "intuition",
+      "title": "Why Linear Growth Fails",
+      "summary": "Variance accumulation, Fourier analysis mechanism",
+      "startLine": 160,
+      "endLine": 182,
+      "mathContext": "Mathematical content: Variance accumulation, Fourier analysis mechanism"
+    },
+    {
+      "id": "examples",
+      "title": "Examples and Non-Examples",
+      "summary": "perfectSquares, arithmeticProgression, IsSidonSet, sidon_not_bounded",
+      "startLine": 183,
+      "endLine": 226,
+      "mathContext": "Bound: perfectSquares, arithmeticProgression, IsSidonSet, sidon_not_bounded"
+    },
+    {
+      "id": "related-problems",
+      "title": "Related Problems",
+      "summary": "erdos_fuchs_k_fold for Problem #764, Waring's problem connection",
+      "startLine": 227,
+      "endLine": 253,
+      "mathContext": "Mathematical content: erdos_fuchs_k_fold for Problem #764, Waring's problem connection"
+    },
+    {
+      "id": "summary",
+      "title": "Main Results Summary",
+      "summary": "erdos_763_summary, erdos_763_answer theorems",
+      "startLine": 254,
+      "endLine": 271,
+      "mathContext": "Verified: erdos_763_summary, erdos_763_answer theorems"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #763 asked whether a set A can have its representation count grow perfectly linearly: R_A(N) = cN + O(1). The Erdős-Fuchs Theorem (1956) definitively answers NO - even o(N^{1/4}/(log N)^{1/2}) error is impossible. Montgomery and Vaughan (1990) showed the error must infinitely often exceed N^{1/4}, which is essentially optimal.",
+    "implications": "**Theoretical Significance**: **Implications in Additive Combinatorics**\n\n1. **Fundamental Limitation:** No additive basis can be \"perfectly regular\" - fluctuations in representation counts are unavoidable.\n\n2. **Optimal Error:** The N^{1/4} bound is tight up to logarithmic factors.\n\n**3. Fourier Methods:** The proof established powerful Fourier-analytic techniques now standard in additive combinatorics.\n\n4. **Generalization:** The result extends to k-fold sums and other additive structures.\n\n5. **Connection to Sidon Sets:** Even the most \"spread out\" sets (Sidon sets with r(n) ≤ 2) exhibit the same limitation.",
+    "openQuestions": [
+      "Exact constant in the N^{1/4} lower bound",
+      "Optimal constructions achieving error O(N^{1/4+ε})",
+      "Generalizations to non-integer settings",
+      "Connections to the Hardy-Littlewood circle method",
+      "Analogues in finite fields and other groups"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Analysis.Asymptotics.Asymptotics",
+      "Mathlib.Order.Filter.AtTopBot",
+      "Mathlib.Data.Set.Function"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Filter",
+      "Asymptotics"
+    ],
+    "namespace": "Erdos763",
+    "lineCount": 271,
+    "axiomCount": 2,
+    "theoremCount": 4,
+    "definitionCount": 9,
+    "path": "Proofs/Erdos763Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-764",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, analytic-number-theory, representation-functions"
+    },
+    {
+      "targetId": "erdos-198",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, disproved"
+    },
+    {
+      "targetId": "erdos-200",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, analytic-number-theory"
+    }
+  ],
+  "sorries": 0
+}

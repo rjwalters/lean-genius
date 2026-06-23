@@ -1,0 +1,136 @@
+[
+  {
+    "id": "ann-definition-structure",
+    "proofId": "central-limit-theorem-oq-01-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 26,
+      "endLine": 50
+    },
+    "type": "concept",
+    "title": "gaussianCharFn Definition: Splitting the Exponent into Real and Imaginary Parts",
+    "content": "The definition separates the Gaussian exponent into two auxiliary definitions:\n\n```lean\ndef gaussianCharFn (μ σ_sq : ℝ) (t : ℝ) : ℂ :=\n  Complex.exp (↑(μ * t) * Complex.I - ↑(σ_sq * t ^ 2 / 2))\n\ndef gaussianExponent (μ σ_sq t : ℝ) : ℂ :=\n  ↑(μ * t) * Complex.I - ↑(σ_sq * t ^ 2 / 2)\n```\n\nThe exponent has structure:\n- **Imaginary part**: `(μ * t) * I` — encodes the phase, shifts the distribution\n- **Real part**: `-(σ_sq * t^2 / 2)` — encodes the Gaussian envelope, controls decay\n\nThe theorems `gaussianExponent_re` and `gaussianExponent_im` prove these parts explicitly via `simp [gaussianExponent, Complex.sub_re, Complex.mul_re]`. The `ring` tactic closes the algebra. The theorem `gaussianCharFn_at_zero` follows immediately from `simp [gaussianCharFn]` since both parts vanish at t=0 and `exp(0) = 1`.",
+    "mathContext": "The Gaussian characteristic function $\\phi_{\\mu,\\sigma^2}(t) = E[e^{itX}] = e^{i\\mu t - \\sigma^2 t^2/2}$ for $X \\sim N(\\mu, \\sigma^2)$. In Lean: def gaussianCharFn (μ σ_sq : ℝ) (t : ℝ) : ℂ := Complex.exp (↑(μ * t) * Complex.I - ↑(σ_sq * t ^ 2 / 2)). gaussianExponent_re gives (gaussianExponent μ σ_sq t).re = -(σ_sq * t ^ 2 / 2); gaussianExponent_im gives .im = μ * t. At t = 0: gaussianCharFn_at_zero proves gaussianCharFn μ σ 0 = 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Complex.exp",
+      "Complex.I",
+      "gaussianExponent",
+      "Complex.abs_exp"
+    ],
+    "prerequisites": [
+      "Complex.exp_add"
+    ]
+  },
+  {
+    "id": "ann-product-formula",
+    "proofId": "central-limit-theorem-oq-01-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 86,
+      "endLine": 103
+    },
+    "type": "concept",
+    "title": "Product Formula: The Algebraic Heart of the CLT",
+    "content": "The product formula\n  φ_{μ₁,σ₁²}(t) · φ_{μ₂,σ₂²}(t) = φ_{μ₁+μ₂,σ₁²+σ₂²}(t)\nis a one-line consequence of exp(a)·exp(b) = exp(a+b):\n\n  exp(iμ₁t - σ₁²t²/2) · exp(iμ₂t - σ₂²t²/2)\n  = exp((iμ₁t - σ₁²t²/2) + (iμ₂t - σ₂²t²/2))\n  = exp(i(μ₁+μ₂)t - (σ₁²+σ₂²)t²/2)\n  = φ_{μ₁+μ₂,σ₁²+σ₂²}(t)\n\nThis encodes the fundamental fact: X₁ ~ N(μ₁,σ₁²) and X₂ ~ N(μ₂,σ₂²) independent implies X₁+X₂ ~ N(μ₁+μ₂,σ₁²+σ₂²). The power formula `gaussianCharFn_pow` follows by induction on this product.",
+    "mathContext": "The characteristic function φ_X(t) = E[e^{itX}] transforms convolution (sum of independent r.v.) into pointwise multiplication. The Gaussian distribution is a fixed point of this multiplication structure: the family {N(μ,σ²)} is closed under convolution, with parameters adding. This is the algebraic core of the CLT.",
+    "significance": "key",
+    "relatedConcepts": [
+      "characteristic function",
+      "convolution",
+      "Gaussian stability"
+    ],
+    "prerequisites": [
+      "Complex.exp_add",
+      "Gaussian definition"
+    ]
+  },
+  {
+    "id": "ann-modulus-decay",
+    "proofId": "central-limit-theorem-oq-01-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 58,
+      "endLine": 77
+    },
+    "type": "insight",
+    "title": "|φ(t)| = exp(-σ²t²/2): Mean Affects Phase Only",
+    "content": "The modulus computation reveals a key structural fact:\n  |φ_{μ,σ²}(t)| = |exp(iμt - σ²t²/2)|\n                = exp(Re(iμt - σ²t²/2))\n                = exp(-σ²t²/2)\n\nThe mean μ appears only in the imaginary part iμt of the exponent — it oscillates but doesn't decay. Only σ² controls the decay rate.\n\nConsequences:\n• |φ(t)| = 1 iff σ² = 0 (degenerate/point mass)\n• For σ² > 0: |φ(t)| < 1 for all t ≠ 0\n• The decay exp(-σ²t²/2) is integrable over ℝ → Lévy's inversion theorem applies",
+    "mathContext": "For any z ∈ ℂ: |e^z| = e^{Re(z)}. The real part of the Gaussian exponent is -σ²t²/2 regardless of μ. This Gaussian envelope in frequency space is dual to the Gaussian density in physical space — the Fourier transform of e^{-σ²x²/2} is e^{-t²/(2σ²)}.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Complex.abs_exp",
+      "Gaussian envelope",
+      "Lévy inversion"
+    ],
+    "prerequisites": [
+      "Complex.abs_exp",
+      "Real.exp_lt_exp_of_lt"
+    ]
+  },
+  {
+    "id": "ann-scaling-standardization",
+    "proofId": "central-limit-theorem-oq-01-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 126,
+      "endLine": 153
+    },
+    "type": "insight",
+    "title": "Scaling: φ_{0,σ²}(t) = φ_{0,1}(√σ · t) — The Key Standardization Identity",
+    "content": "The scaling theorem `gaussianCharFn_scaling` proves:\n```\nφ_{0,σ²}(t) = φ_{0,1}(√σ · t)\n```\nby expanding both sides as `Complex.exp` and checking the exponents agree: `σ² · t² / 2 = (√σ · t)² / 2` uses `Real.sq_sqrt hσ` to justify `(√σ)² = σ`.\n\nThis is the characteristic function form of the standardization $X \\sim N(0, \\sigma^2) \\Rightarrow X/\\sigma \\sim N(0,1)$. The standard Gaussian $N(0,1)$ is the reference distribution of the CLT.\n\nThe proof uses:\n- `ring_nf` to normalize the polynomial expression\n- `Real.sq_sqrt hσ` (requires `hσ : σ_sq ≥ 0`) to rewrite `Real.sqrt σ ^ 2 = σ`\n- `ring` to close the remaining algebraic goal\n\nNote: `Real.sq_sqrt` is the right lemma (not `Real.sqrt_sq`) — it states `(√x)² = x` when `x ≥ 0`, while `Real.sqrt_sq` states `√(x²) = |x|`.",
+    "mathContext": "theorem gaussianCharFn_scaling (σ_sq t : ℝ) (hσ : σ_sq ≥ 0) : gaussianCharFn 0 σ_sq t = gaussianCharFn 0 1 (Real.sqrt σ_sq * t). Standardization: $X \\sim N(0, \\sigma^2) \\Rightarrow X/\\sigma \\sim N(0,1)$, equivalently $\\phi_{0,\\sigma^2}(t) = \\phi_{0,1}(\\sqrt{\\sigma^2} \\cdot t)$. Uses Real.sq_sqrt hσ to justify (√σ_sq)² = σ_sq.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Real.sq_sqrt",
+      "standardGaussianCharFn",
+      "gaussianCharFn_scaling",
+      "standardization"
+    ],
+    "prerequisites": [
+      "gaussianCharFn_pow"
+    ]
+  },
+  {
+    "id": "ann-clt-stability",
+    "proofId": "central-limit-theorem-oq-01-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 165,
+      "endLine": 176
+    },
+    "type": "insight",
+    "title": "CLT Gaussian Stability: Sₙ/√n ~ N(0,1) from Char Fn Algebra",
+    "content": "The CLT stability theorem in 10 lines:\n\nIf X₁,...,Xₙ are iid N(0,1), then Sₙ = X₁+...+Xₙ ~ N(0,n) by the product formula.\nThe characteristic function of Sₙ/√n at t is the char fn of Sₙ at t/√n:\n  φ_{0,n}(t/√n) = exp(-n·(t/√n)²/2) = exp(-n·t²/(2n)) = exp(-t²/2) = φ_{0,1}(t)\n\nSo Sₙ/√n has the same characteristic function as N(0,1) — hence the same distribution.\n\nThe Lean proof uses `Real.sq_sqrt` to justify √n² = n for natural n, then `field_simp` and `nlinarith` for the algebraic simplification.",
+    "mathContext": "This is the Gaussian case of the CLT, where the limit distribution is Gaussian precisely because Gaussians are closed under convolution and scaling. The general CLT (non-Gaussian iid) requires Lévy's continuity theorem — pointwise convergence of char fns implies weak convergence. This theorem provides the base case and demonstrates the proof strategy.",
+    "significance": "key",
+    "relatedConcepts": [
+      "CLT",
+      "weak convergence",
+      "Gaussian stability",
+      "characteristic function"
+    ],
+    "prerequisites": [
+      "gaussianCharFn_pow",
+      "Real.sq_sqrt",
+      "Gaussian scaling"
+    ]
+  },
+  {
+    "id": "ann-conjugate-symmetry",
+    "proofId": "central-limit-theorem-oq-01-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 111,
+      "endLine": 123
+    },
+    "type": "concept",
+    "title": "Conjugate Symmetry: φ(-t) = conj(φ(t)) ↔ Real Distribution",
+    "content": "For any real-valued random variable X:\n  E[e^{-itX}] = E[conj(e^{itX})] = conj(E[e^{itX}])\n\nSo φ(-t) = conj(φ(t)) is equivalent to X being real-valued.\n\nFor the Gaussian: φ_{μ,σ²}(-t) = exp(-iμt - σ²t²/2) = conj(exp(iμt - σ²t²/2)) = conj(φ_{μ,σ²}(t)).\n\nSpecial case: for μ = 0 (centered), φ(t) = exp(-σ²t²/2) is real and positive — its imaginary part is 0. This is proved in `gaussianCharFn_real_of_centered`.",
+    "mathContext": "The conjugate symmetry condition is a necessary criterion for characteristic functions of real distributions. The Gaussian satisfies it because the density (2πσ²)^{-1/2} e^{-(x-μ)²/(2σ²)} is real-valued. In Lean, this is proved via `Complex.star_def` and coordinate computations.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "conjugate symmetry",
+      "real distribution",
+      "Fourier transform"
+    ],
+    "prerequisites": [
+      "Complex.star_def",
+      "characteristic function definition"
+    ]
+  }
+]

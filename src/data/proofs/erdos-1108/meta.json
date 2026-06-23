@@ -1,0 +1,262 @@
+{
+  "id": "erdos-1108",
+  "title": "Erdős Problem #1108: Factorial Sums and Perfect Powers",
+  "slug": "erdos-1108",
+  "description": "Does the set of finite sums of distinct factorials contain only finitely many k-th powers (for k >= 2)? Does it contain only finitely many powerful numbers?",
+  "meta": {
+    "author": "Erdős (1988), Brindza-Erdős (1991 partial result)",
+    "sourceUrl": "https://erdosproblems.com/1108",
+    "date": "1988-1991",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1108Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "factorials",
+      "perfect-powers",
+      "powerful-numbers",
+      "diophantine"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 1108,
+    "erdosUrl": "https://erdosproblems.com/1108",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.factorial",
+        "description": "The factorial function n!",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate",
+        "module": "Mathlib.Data.Nat.Prime.Defs"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Ring.Finset"
+      }
+    ],
+    "originalContributions": [
+      "Clean Lean 4 formalization of factorial sums set (FactorialSums)",
+      "Definition of IsPowerful predicate for powerful numbers",
+      "Connection to Mahler's related problem on power sums",
+      "Proved membership examples for factorial sums (0, 1, 2, 6, 24)",
+      "Proved 1 is both a square factorial sum and powerful"
+    ],
+    "axiomCount": 0,
+    "lineCount": 171,
+    "assumptions": "0 axioms. 0 sorries. All results formalized without axioms.",
+    "theoremCount": 13,
+    "definitionCount": 5
+  },
+  "overview": {
+    "historicalContext": "This problem was asked by Erdős at Oberwolfach in 1988, motivated by discussions with Mahler shortly before Mahler's death that same year. Mahler had posed a related question about finite sums of powers of a base k: for k >= 5, does A_k contain only finitely many squares?\n\nMahler showed that for k <= 4, there are infinitely many squares in A_k. For k >= 5, he found only one square: 1 + 7 + 7² + 7³ = 400 = 20².\n\nBrindza and Erdős (1991) proved a partial result: for any fixed number r of terms, if n₁! + ... + nᵣ! is powerful, then the largest term n₁ is bounded by a constant depending only on r. This doesn't resolve the main question because the number of terms is unbounded.",
+    "problemStatement": "**Erdős Problem #1108**: Let $A = \\left\\{ \\sum_{n \\in S} n! : S \\subset \\mathbb{N} \\text{ finite} \\right\\}$ be the set of all finite sums of distinct factorials.\n\n**Question 1 (OPEN)**: For each $k \\geq 2$, does $A$ contain only finitely many $k$-th powers?\n\n**Question 2 (OPEN)**: Does $A$ contain only finitely many powerful numbers?\n\n**Status**: OPEN\n\n**Known Result** (Brindza-Erdős 1991): For any fixed $r$, if $n_1! + \\cdots + n_r!$ is powerful with $n_1 \\geq \\cdots \\geq n_r$, then $n_1 \\leq C(r)$ for some constant depending only on $r$.",
+    "text": "Does the set of finite sums of distinct factorials contain only finitely many k-th powers (for k >= 2)? Does it contain only finitely many powerful numbers?",
+    "proofStrategy": "We formalize this open problem and its known partial results:\n\n1. **Define FactorialSums**: The set A of all finite sums of distinct factorials.\n\n2. **Define IsPowerful**: A number is powerful if every prime factor appears with exponent >= 2.\n\n3. **Axiomatize the open questions**: Since the answers are unknown, we axiomatize the questions as Props.\n\n4. **State Brindza-Erdős bound**: For fixed number of terms, the largest factorial index is bounded.\n\n5. **State Mahler's related results**: For bases k <= 4, infinitely many squares; for k >= 5, only one known square.\n\n6. **Prove small examples**: We verify that 1 is both a square factorial sum and powerful.",
+    "keyInsights": [
+      "**Factorial sums**: The set A = {0, 1, 2, 3, 6, 7, 8, 9, 24, 25, ...} consists of all numbers expressible as sums of distinct factorials. This is analogous to binary representation but with factorials.",
+      "**Powerful numbers**: Numbers like 1, 4, 8, 9, 16, 25, 27, 36 where every prime factor has exponent >= 2. They are products of squares and cubes.",
+      "**Why this is hard**: The rapid growth of factorials (n! >> n) makes the structure of A very different from polynomial sequences, yet hard to analyze.",
+      "**Brindza-Erdős insight**: For fixed number of terms, there's a finite check. But the unbounded case remains open.",
+      "**Mahler's dichotomy**: Small bases (k <= 4) give infinitely many squares, while large bases (k >= 5) seem to give very few. Factorials are 'in between'."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "Problem statement, status (OPEN), and references.",
+      "mathContext": "Mathematical content: Problem statement, status (OPEN), and references."
+    },
+    {
+      "id": "factorial-sums",
+      "title": "Factorial Sums Definition",
+      "startLine": 37,
+      "endLine": 69,
+      "summary": "Definition of FactorialSums set and membership examples.",
+      "mathContext": "Formal definition: Definition of FactorialSums set and membership examples."
+    },
+    {
+      "id": "powerful",
+      "title": "Powerful Numbers",
+      "startLine": 70,
+      "endLine": 93,
+      "summary": "Definition and examples of powerful numbers.",
+      "mathContext": "Formal definition: Definition and examples of powerful numbers."
+    },
+    {
+      "id": "main-sets",
+      "title": "Main Question Sets",
+      "startLine": 94,
+      "endLine": 103,
+      "summary": "Definitions of k-th powers and powerful numbers in factorial sums.",
+      "mathContext": "Formal definition: Definitions of k-th powers and powerful numbers in factorial sums."
+    },
+    {
+      "id": "open-questions",
+      "title": "The Open Questions",
+      "startLine": 104,
+      "endLine": 122,
+      "summary": "Axiomatization of both open questions.",
+      "mathContext": "Axiomatized: Axiomatization of both open questions."
+    },
+    {
+      "id": "partial-results",
+      "title": "Known Partial Results",
+      "startLine": 123,
+      "endLine": 139,
+      "summary": "Brindza-Erdős bound and related open problem #398.",
+      "mathContext": "Bound: Brindza-Erdős bound and related open problem #398."
+    },
+    {
+      "id": "mahler",
+      "title": "Mahler's Related Problem",
+      "startLine": 140,
+      "endLine": 159,
+      "summary": "Mahler's problem on power sums and his example.",
+      "mathContext": "Mathematical content: Mahler's problem on power sums and his example."
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases",
+      "startLine": 160,
+      "endLine": 171,
+      "summary": "Proofs that sets are nonempty (1 is in both).",
+      "mathContext": "Verified: Proofs that sets are nonempty (1 is in both)."
+    }
+  ],
+  "conclusion": {
+    "summary": "We formalize Erdős Problem #1108, two OPEN questions about finite sums of distinct factorials. Question 1 asks whether only finitely many k-th powers (k >= 2) can be expressed as such sums. Question 2 asks the same for powerful numbers. The Brindza-Erdős bound (1991) provides a partial result: for fixed number of terms, the largest factorial index is bounded. The problem connects to Mahler's similar questions about sums of powers.",
+    "implications": "**Theoretical Significance**: This problem connects several areas:\n\n1. **Diophantine equations**: Equations involving factorials and powers\n**2. Analytic number theory**: Growth rates of factorials vs powers\n3. **Computational number theory**: Searching for solutions\n4. **Transcendence theory**: Mahler's original motivations.",
+    "openQuestions": [
+      "Are there only finitely many perfect squares in factorial sums?",
+      "Are there only finitely many powerful numbers in factorial sums?",
+      "What is the largest known square in factorial sums?",
+      "Can the Brindza-Erdős bound be extended to unbounded terms?",
+      "Is the related question (Problem #398) about 1 + n! being a square also open?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "The Brocard-Ramanujan conjecture (n! + 1 = m²) is the most directly adjacent problem: both concern when factorial expressions yield perfect powers. Problem #398 asks about a single factorial plus one; Problem #1108 asks about arbitrary finite sums of distinct factorials.",
+      "targetId": "erdos-398"
+    },
+    {
+      "relationship": "Problem #399 asks whether n! = x^k ± y^k has solutions with xy > 1 and k > 2. Both #399 and #1108 investigate the intersection of factorials with the multiplicative structure of perfect powers, using Diophantine methods.",
+      "targetId": "erdos-399"
+    },
+    {
+      "relationship": "Problem #1107 asks whether every sufficiently large integer is a sum of at most r+1 many r-powerful numbers. Both problems study the additive and multiplicative structure of powerful numbers; #1108 asks whether factorial sums can produce them, #1107 asks how many are needed to represent all integers.",
+      "targetId": "erdos-1107"
+    },
+    {
+      "relationship": "Problem #390 studies factorizations of n! into large factors, revealing deep multiplicative structure in factorials. Understanding how prime powers distribute in n! informs why factorial sums are unlikely to be perfect powers.",
+      "targetId": "erdos-390"
+    },
+    {
+      "relationship": "Perfect numbers are a classical instance of numbers with highly constrained multiplicative structure (all prime factors to even powers for even perfects). The IsPowerful predicate generalizes this: powerful numbers require every prime factor to appear with exponent ≥ 2, placing them in the same circle of ideas.",
+      "targetId": "perfect-numbers"
+    },
+    {
+      "relationship": "Problem #728 concerns factorial divisibility conditions and logarithmic gap constraints. Both problems exploit the rapid growth of factorials and their prime factorization structure to establish finiteness or impossibility results.",
+      "targetId": "erdos-728"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "B. Brindza",
+        "P. Erdős"
+      ],
+      "title": "On some Diophantine problems involving powers and factorials",
+      "volume": "51",
+      "issue": "1",
+      "year": "1991",
+      "pages": "1–7",
+      "doi": "10.1017/S1446788700033036",
+      "note": "Proves the key partial result: for any fixed number of terms r, if n₁! + ⋯ + nᵣ! is powerful then n₁ ≤ C(r).",
+      "venue": "Journal of the Australian Mathematical Society"
+    },
+    {
+      "authors": [
+        "K. Mahler"
+      ],
+      "title": "Note on hypothesis K of Hardy and Littlewood",
+      "volume": "11",
+      "issue": "2",
+      "year": "1936",
+      "pages": "136–138",
+      "doi": "10.1112/jlms/s1-11.2.136",
+      "note": "Studies finite sums of powers of a base k and squares; Mahler's results on k ≤ 4 vs k ≥ 5 directly motivate the factorial analog in Problem #1108.",
+      "venue": "Journal of the London Mathematical Society"
+    },
+    {
+      "authors": [
+        "S. S. Pillai"
+      ],
+      "title": "On a^x - b^y = c",
+      "volume": "2",
+      "year": "1936",
+      "pages": "119–122",
+      "note": "Foundational result on exponential Diophantine equations; the finiteness techniques are prototypes for the methods applied to factorial-power intersections.",
+      "venue": "Journal of the Indian Mathematical Society"
+    },
+    {
+      "authors": [
+        "A. Granville"
+      ],
+      "title": "On the number of solutions to the generalized Fermat equation",
+      "booktitle": "Number Theory: Fourth Conference of the Canadian Number Theory Association",
+      "editors": [
+        "K. Dilcher"
+      ],
+      "series": "CMS Conference Proceedings",
+      "volume": "15",
+      "year": "1995",
+      "pages": "197–207",
+      "note": "Surveys the ABC conjecture's implications for Diophantine equations of the form x^p + y^q = z^r; the same circle of ideas governs why factorial sums are expected to avoid perfect powers."
+    },
+    {
+      "authors": [
+        "P. Erdős",
+        "R. Obláth"
+      ],
+      "title": "Über diophantische Gleichungen der Form n! = x^p ± y^p und n! ± m! = x^p",
+      "volume": "8",
+      "year": "1937",
+      "pages": "241–255",
+      "note": "Early systematic study of factorial Diophantine equations; establishes that n! = x^p ± y^p has only finitely many solutions for fixed p > 2 under mild conditions, directly anticipating the questions of Problem #1108.",
+      "venue": "Acta Szeged"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos1108",
+    "lineCount": 171,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 5,
+    "path": "Proofs/Erdos1108Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

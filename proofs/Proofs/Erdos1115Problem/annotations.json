@@ -1,0 +1,74 @@
+[
+  {
+    "id": "def-entire",
+    "proofId": "erdos-1115",
+    "range": { "startLine": 40, "endLine": 46 },
+    "type": "definition",
+    "title": "Entire Function",
+    "content": "A function f : ℂ → ℂ holomorphic on all of ℂ. Central object in complex analysis.",
+    "significance": "major"
+  },
+  {
+    "id": "def-max-modulus",
+    "proofId": "erdos-1115",
+    "range": { "startLine": 48, "endLine": 54 },
+    "type": "definition",
+    "title": "Maximum Modulus",
+    "content": "M(r) = max_{|z|=r} |f(z)|. The growth of M(r) characterizes the function's order.",
+    "significance": "major"
+  },
+  {
+    "id": "def-main-question",
+    "proofId": "erdos-1115",
+    "range": { "startLine": 92, "endLine": 101 },
+    "type": "conjecture",
+    "title": "Erdős Question (Disproved)",
+    "content": "Can every finite-order entire function have a path to infinity with ℓ(r) ≪ r?",
+    "significance": "major"
+  },
+  {
+    "id": "thm-hayman",
+    "proofId": "erdos-1115",
+    "range": { "startLine": 115, "endLine": 130 },
+    "type": "theorem",
+    "title": "Hayman's Theorem (1960)",
+    "content": "If log M(r) ≪ (log r)², then f → ∞ along a ray (ℓ(r) = r). The positive case.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-goldberg-eremenko",
+    "proofId": "erdos-1115",
+    "range": { "startLine": 136, "endLine": 165 },
+    "type": "theorem",
+    "title": "Gol'dberg-Eremenko (1979)",
+    "content": "For any φ(r) → ∞, ∃ entire f with log M(r) ≪ φ(r)(log r)² but no path has ℓ(r) ≪ r. Disproves general case.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-disproof",
+    "proofId": "erdos-1115",
+    "range": { "startLine": 167, "endLine": 174 },
+    "type": "theorem",
+    "title": "Question Disproved",
+    "content": "The answer to Erdős's question is NO. Counterexamples exist for any finite order.",
+    "significance": "major"
+  },
+  {
+    "id": "insight-threshold",
+    "proofId": "erdos-1115",
+    "range": { "startLine": 190, "endLine": 195 },
+    "type": "insight",
+    "title": "The Threshold",
+    "content": "log M(r) ≪ (log r)² is the precise threshold. Below: rays work. Above: may need winding paths.",
+    "significance": "minor"
+  },
+  {
+    "id": "summary",
+    "proofId": "erdos-1115",
+    "range": { "startLine": 209, "endLine": 244 },
+    "type": "summary",
+    "title": "Problem Summary",
+    "content": "DISPROVED: General question false (Gol'dberg-Eremenko). Positive under log M(r) ≪ (log r)² (Hayman). Threshold is (log r)².",
+    "significance": "major"
+  }
+]

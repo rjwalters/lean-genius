@@ -1,0 +1,298 @@
+[
+  {
+    "id": "ann-e779-header",
+    "proofId": "erdos-779",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "type": "concept",
+    "title": "Problem Statement and History",
+    "content": "**Erdős Problem #779** asks about primorials: given P = p₁·p₂·...·pₙ (product of first n primes), does there always exist a prime p with pₙ < p < P such that P + p is prime?\n\nThis is an **OPEN** problem, verified computationally for n ≤ 1000 by Deaconescu. The reference to Güth (1983) suggests the problem circulated in the early 1980s.",
+    "mathContext": "The primorial $n\\#$ grows extremely fast — roughly $e^{\\vartheta(p_n)}$ where $\\vartheta$ is the Chebyshev function, asymptotically $e^{n \\log n}$. This rapid growth ensures many primes exist in the interval $(p_n, P)$, making it heuristically 'almost certain' that one works.",
+    "significance": "key",
+    "relatedConcepts": [
+      "primorial",
+      "primes",
+      "additive-number-theory",
+      "open-problem"
+    ],
+    "prerequisites": [
+      "prime-numbers",
+      "primorial-definition",
+      "prime-number-theorem"
+    ]
+  },
+  {
+    "id": "ann-e779-imports",
+    "proofId": "erdos-779",
+    "range": {
+      "startLine": 26,
+      "endLine": 30
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "We import **Mathlib** for prime number theory (`Nat.Prime`, `Nat.nth`) and finite set products (`Finset.prod`). The `open Finset Nat` brings these into scope.",
+    "mathContext": "`Nat.nth Nat.Prime k` gives the $k$th prime (0-indexed), using Mathlib's general machinery for 'nth element satisfying a decidable predicate on an infinite set'.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "mathlib",
+      "finset",
+      "primes"
+    ],
+    "prerequisites": [
+      "lean4-syntax",
+      "mathlib-imports"
+    ]
+  },
+  {
+    "id": "ann-e779-primorial",
+    "proofId": "erdos-779",
+    "range": {
+      "startLine": 39,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "The Primorial Function",
+    "content": "**nthPrime(k)** returns the $k$th prime (0-indexed): nthPrime 0 = 2, nthPrime 1 = 3, etc.\n\n**primorial(n)** returns the product of the first $n$ primes:\n- primorial 0 = 1 (empty product)\n- primorial 1 = 2\n- primorial 2 = 6\n- primorial 3 = 30\n- primorial 4 = 210\n\nBoth definitions are `noncomputable` because `Nat.nth` uses classical choice to pick the $k$th element satisfying `Nat.Prime`.",
+    "mathContext": "The primorial is often denoted $n\\#$ or $p_n\\#$. It is the analog of the factorial for primes: $n! = \\prod_{k=1}^{n} k$ versus $p_n\\# = \\prod_{k=1}^{n} p_k$. Primorials appear in Euclid's proof of the infinitude of primes ($p_n\\# + 1$ has a prime factor $> p_n$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "primorial",
+      "nth-prime",
+      "product",
+      "noncomputable"
+    ],
+    "prerequisites": [
+      "finset-product",
+      "nat-prime",
+      "classical-logic"
+    ]
+  },
+  {
+    "id": "ann-e779-properties",
+    "proofId": "erdos-779",
+    "range": {
+      "startLine": 54,
+      "endLine": 69
+    },
+    "type": "concept",
+    "title": "Basic Properties of Primorials",
+    "content": "We prove fundamental facts:\n\n1. **primorial_zero**: primorial 0 = 1 (empty product)\n2. **primorial_pos**: primorial n > 0 for all n (product of positive primes)\n3. **nthPrime_dvd_primorial**: The $k$th prime divides primorial($n$) when $k < n$\n\nThe positivity proof uses `Finset.prod_pos` with each factor's primality. The divisibility proof uses `Finset.dvd_prod_of_mem`.",
+    "mathContext": "Positivity: $p_k \\geq 2 > 0$ for all $k$, so $\\prod p_k > 0$. Divisibility: $p_k$ is one of the factors in the product, so $p_k \\mid p_n\\#$ when $k < n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "positivity",
+      "divisibility",
+      "finset-prod-pos"
+    ],
+    "prerequisites": [
+      "finset-product-lemmas",
+      "nat-prime-pos"
+    ]
+  },
+  {
+    "id": "ann-e779-conjecture",
+    "proofId": "erdos-779",
+    "range": {
+      "startLine": 78,
+      "endLine": 96
+    },
+    "type": "definition",
+    "title": "The Main Conjecture (OPEN)",
+    "content": "**validPrimes(n)** = {p prime : pₙ < p < P and P + p is prime}\n\n**deaconescuConjecture**: For all n ≥ 1, validPrimes(n) is nonempty.\n\n**erdos779Conjecture**: Alternative formulation using 0-indexed primes and inline product, matching the formal-conjectures syntax. The two formulations are equivalent up to index shifts.",
+    "mathContext": "The set $\\text{validPrimes}(n) = \\{p \\in \\mathbb{P} : p_n < p < p_n\\# \\text{ and } p_n\\# + p \\in \\mathbb{P}\\}$. The conjecture asserts $\\text{validPrimes}(n) \\neq \\emptyset$ for $n \\geq 2$. For $n = 1$, the interval $(2, 2) = \\emptyset$, so the conjecture is vacuously false.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open-problem",
+      "conjecture",
+      "set-nonempty",
+      "goldbach-type"
+    ],
+    "prerequisites": [
+      "prime-definition",
+      "primorial",
+      "set-theory"
+    ]
+  },
+  {
+    "id": "ann-e779-stronger",
+    "proofId": "erdos-779",
+    "range": {
+      "startLine": 98,
+      "endLine": 108
+    },
+    "type": "definition",
+    "title": "Erdős's Polynomial Bound Conjecture",
+    "content": "**erdosPolynomialBound**: Not only does a valid prime exist, but the *smallest* one satisfies $p \\leq n^c$ for some universal constant $c$.\n\nThis is a quantitative strengthening: the witness prime is polynomially bounded, not just guaranteed to exist. Computationally, OEIS A005235 data suggests the smallest valid prime grows much slower than any polynomial in $n$.",
+    "mathContext": "If true, this gives an effective algorithm: enumerate primes up to $n^c$ and test each. The heuristic predicts the smallest valid prime is $O(n \\log n)$ — far below polynomial — since by the PNT, primes near $P$ have density $\\sim 1/\\log P \\sim 1/(n \\log n)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "polynomial-bound",
+      "quantitative-strengthening",
+      "erdos-conjecture",
+      "effective-algorithm"
+    ],
+    "prerequisites": [
+      "prime-counting",
+      "asymptotic-analysis"
+    ]
+  },
+  {
+    "id": "ann-e779-case2",
+    "proofId": "erdos-779",
+    "range": {
+      "startLine": 122,
+      "endLine": 133
+    },
+    "type": "concept",
+    "title": "Verified Case: n = 2",
+    "content": "For n = 2: P = primorial 2 = 6, pₙ = 3.\n\nWe need p with 3 < p < 6 such that 6 + p is prime.\nThe only prime in (3, 6) is **5**.\n6 + 5 = **11**, which is prime!\n\nSo p = 5 witnesses the conjecture for n = 2. The proof uses `Nat.prime_five` and `norm_num`.",
+    "mathContext": "This is the smallest non-trivial case. With only one candidate prime (5), it's fortunate that $6 + 5 = 11$ is prime. Note that $p = 5 > p_2 = 3$ as required.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "verification",
+      "witness",
+      "norm-num"
+    ],
+    "prerequisites": [
+      "nat-prime",
+      "norm-num-tactic"
+    ]
+  },
+  {
+    "id": "ann-e779-case3",
+    "proofId": "erdos-779",
+    "range": {
+      "startLine": 135,
+      "endLine": 146
+    },
+    "type": "concept",
+    "title": "Verified Case: n = 3",
+    "content": "For n = 3: P = 30, pₙ = 5.\n\nWe need p with 5 < p < 30 such that 30 + p is prime.\n**p = 7** works: 30 + 7 = **37**, which is prime.",
+    "mathContext": "Here we have several candidate primes: 7, 11, 13, 17, 19, 23, 29. The smallest one (7) already works. In fact, many work: $30 + 11 = 41$, $30 + 13 = 43$, $30 + 17 = 47$ are all prime — a consequence of 30 being highly composite.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "verification",
+      "witness",
+      "highly-composite"
+    ],
+    "prerequisites": [
+      "nat-prime",
+      "norm-num-tactic"
+    ]
+  },
+  {
+    "id": "ann-e779-case4",
+    "proofId": "erdos-779",
+    "range": {
+      "startLine": 148,
+      "endLine": 159
+    },
+    "type": "concept",
+    "title": "Verified Case: n = 4",
+    "content": "For n = 4: P = 210, pₙ = 7.\n\nWe need p with 7 < p < 210 such that 210 + p is prime.\n**p = 13** works: 210 + 13 = **223**, which is prime.\n\n(Note: p = 11 doesn't work since 210 + 11 = 221 = 13 × 17)",
+    "mathContext": "This case shows that the smallest candidate doesn't always work — we needed to skip $p = 11$ since $221 = 13 \\times 17$. The factorization $210 = 2 \\cdot 3 \\cdot 5 \\cdot 7$ means $210 + p \\equiv p \\pmod{q}$ for $q \\in \\{2,3,5,7\\}$, eliminating candidates divisible by small primes.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "verification",
+      "witness",
+      "divisibility-obstruction"
+    ],
+    "prerequisites": [
+      "nat-prime",
+      "norm-num-tactic"
+    ]
+  },
+  {
+    "id": "ann-e779-case5",
+    "proofId": "erdos-779",
+    "range": {
+      "startLine": 161,
+      "endLine": 172
+    },
+    "type": "concept",
+    "title": "Verified Case: n = 5",
+    "content": "For n = 5: P = 2310, pₙ = 11.\n\nWe need p with 11 < p < 2310 such that 2310 + p is prime.\n**p = 23** works: 2310 + 23 = **2333**, which is prime.\n\n(Smaller primes fail: 2310 + 13 = 2323 = 23×101, 2310 + 17 = 2327 = 13×179)",
+    "mathContext": "As $n$ grows, more trial primes may be needed before finding one that works. But the prime density in $(p_n, P)$ grows so fast that failure is exponentially unlikely. The factorization $2310 = 2 \\cdot 3 \\cdot 5 \\cdot 7 \\cdot 11$ forces $2310 + p \\equiv p \\pmod{q}$ for all $q \\leq 11$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "verification",
+      "witness",
+      "divisibility-obstruction"
+    ],
+    "prerequisites": [
+      "nat-prime",
+      "norm-num-tactic"
+    ]
+  },
+  {
+    "id": "ann-e779-heuristic",
+    "proofId": "erdos-779",
+    "range": {
+      "startLine": 174,
+      "endLine": 190
+    },
+    "type": "concept",
+    "title": "Heuristic Analysis and Growth Bound",
+    "content": "The probabilistic argument for the conjecture:\n\n1. $P + p$ is 'randomly' prime with probability $\\approx 1/\\log(P)$\n2. There are $\\sim P/\\log P$ primes to try in the interval (by PNT)\n3. The probability ALL fail is $\\approx (1 - 1/\\log P)^{P/\\log P} \\approx e^{-P/(\\log P)^2}$\n4. Since $P \\approx e^{n \\log n}$, this is super-exponentially small\n\nThe theorem `primorial_growth_heuristic` rigorously proves $p_n\\# \\geq 2^n$ using the fact that each prime factor is $\\geq 2$. This was proved by Aristotle (Harmonic).",
+    "mathContext": "The heuristic uses the Cramér random model for primes. The proved bound $p_n\\# \\geq 2^n$ follows from $\\prod_{i < n} p_i \\geq \\prod_{i < n} 2 = 2^n$ since each $p_i \\geq 2$. The true growth is much faster: $p_n\\# \\sim e^{p_n} \\sim e^{n \\log n}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "heuristic",
+      "probability",
+      "cramer-model",
+      "primorial-growth"
+    ],
+    "prerequisites": [
+      "prime-number-theorem",
+      "probability-heuristic",
+      "finset-product-bounds"
+    ]
+  },
+  {
+    "id": "ann-e779-primorial-prime",
+    "proofId": "erdos-779",
+    "range": {
+      "startLine": 196,
+      "endLine": 199
+    },
+    "type": "definition",
+    "title": "Primorial Primes",
+    "content": "**primorialPrime(n)** holds when $p_n\\# + 1$ or $p_n\\# - 1$ is prime. These are related to but much rarer than our conjecture: finding *any* $p$ with $P + p$ prime is far easier than requiring $p = 1$ (or $p = -1$).\n\nKnown primorial primes include $2\\# + 1 = 3$, $3\\# + 1 = 7$, $5\\# - 1 = 29$, $7\\# + 1 = 211$, and $11\\# + 1 = 2311$.",
+    "mathContext": "Primorial primes $p_n\\# \\pm 1$ are analogs of factorial primes $n! \\pm 1$. Only finitely many are known, and it is unknown whether infinitely many exist. By contrast, Problem #779 asks about $P + p$ for *some* prime $p$, a much weaker requirement.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "primorial-primes",
+      "factorial-primes",
+      "special-primes"
+    ],
+    "prerequisites": [
+      "primorial",
+      "prime-definition"
+    ]
+  },
+  {
+    "id": "ann-e779-oeis",
+    "proofId": "erdos-779",
+    "range": {
+      "startLine": 201,
+      "endLine": 214
+    },
+    "type": "concept",
+    "title": "OEIS Sequence A005235",
+    "content": "The sequence of smallest valid primes is **OEIS A005235**:\n- a(2) = 5 (smallest p > 3 with 6 + p prime)\n- a(3) = 7 (smallest p > 5 with 30 + p prime)\n- a(4) = 13 (smallest p > 7 with 210 + p prime)\n- a(5) = 23 (smallest p > 11 with 2310 + p prime)\n- a(6) = 17 (smallest p > 13 with 30030 + p prime)\n\nNotably a(6) = 17 < a(5) = 23, so the sequence is not monotone. These values and the sequence itself are axiomatized since computing them requires primality testing beyond `norm_num`'s practical range.",
+    "mathContext": "The function `oeis_A005235` and its values are declared as `axiom` because Lean cannot efficiently compute primality for numbers like $30030 + 17 = 30047$. The axioms faithfully record the OEIS database values.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "oeis",
+      "sequence",
+      "axiom",
+      "non-monotone"
+    ],
+    "prerequisites": [
+      "primorial",
+      "primality-testing"
+    ]
+  }
+]

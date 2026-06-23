@@ -1,0 +1,206 @@
+[
+  {
+    "id": "erdos-50-ann-imports",
+    "proofId": "erdos-50",
+    "type": "concept",
+    "range": {
+      "startLine": 28,
+      "endLine": 32
+    },
+    "title": "Imports and Setup",
+    "content": "Imports $\\texttt{Nat.Totient}$ for Euler's totient function $\\varphi(n)$, $\\texttt{MeasureTheory.Measure.Lebesgue.Basic}$ for the Lebesgue measure and almost-everywhere quantifiers ($\\forall^\\text{ae}$), and $\\texttt{Tactic}$ for proof automation. Opens $\\texttt{Filter}$ and $\\texttt{Finset}$ namespaces for asymptotic density definitions.",
+    "mathContext": "The formalization uses $\\texttt{Nat.totient}$ for $\\varphi(n)$, $\\texttt{HasDerivAt}$ for the derivative condition $f'(x) = 0$, and $\\forall^{\\text{ae}}$ for Lebesgue-a.e. statements. The $\\texttt{Filter.liminf}$ captures the natural density as an asymptotic limit.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.totient",
+      "MeasureTheory.MeasureSpace.volume",
+      "Filter.liminf"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib measure theory"
+    ]
+  },
+  {
+    "id": "erdos-50-ann-totientSet",
+    "proofId": "erdos-50",
+    "type": "definition",
+    "range": {
+      "startLine": 37,
+      "endLine": 38
+    },
+    "title": "Totient Ratio Sublevel Set",
+    "content": "The set $\\{n \\in \\mathbb{N} : n > 0,\\; \\varphi(n)/n < c\\}$ for $c \\in [0,1]$. The ratio $\\varphi(n)/n = \\prod_{p \\mid n}(1 - 1/p)$ measures how 'smooth' or 'highly composite' $n$ is: it is small when $n$ has many small prime factors (e.g., primorials $p_k\\# = 2 \\cdot 3 \\cdot 5 \\cdots p_k$) and close to 1 when $n$ is prime.",
+    "mathContext": "$\\texttt{totientRatioBelow}(c) = \\{n \\in \\mathbb{N}^+ : \\varphi(n)/n < c\\}$. For $c = 1/2$: includes all even $n > 2$ (since $\\varphi(2k)/(2k) \\leq 1/2$). For $c = 1$: equals $\\{n > 1\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler totient",
+      "prime factorization",
+      "smooth numbers",
+      "sublevel set"
+    ],
+    "prerequisites": [
+      "Nat.totient",
+      "prime divisors"
+    ]
+  },
+  {
+    "id": "erdos-50-ann-density",
+    "proofId": "erdos-50",
+    "type": "definition",
+    "range": {
+      "startLine": 41,
+      "endLine": 44
+    },
+    "title": "Natural Density via $\\liminf$",
+    "content": "The natural density $d(S) = \\lim_{N \\to \\infty} \\frac{|S \\cap \\{0,\\ldots,N\\}|}{N+1}$ formalized as $\\texttt{Filter.liminf}$ of the counting ratios. When the limit exists (as Schoenberg proved for $S = \\{n : \\varphi(n)/n < c\\}$), this equals the standard natural density.",
+    "mathContext": "$\\texttt{naturalDensity}(S) = \\liminf_{N \\to \\infty} \\frac{|S \\cap [0,N]|}{N+1}$. For well-behaved sets, $\\liminf = \\limsup$ and the density is the common limit. Schoenberg's theorem guarantees this for the totient sublevel sets.",
+    "significance": "key",
+    "relatedConcepts": [
+      "natural density",
+      "asymptotic density",
+      "Filter.liminf",
+      "Schnirelmann density"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "Finset.card",
+      "Filter.atTop"
+    ]
+  },
+  {
+    "id": "erdos-50-ann-schoenbergF",
+    "proofId": "erdos-50",
+    "type": "definition",
+    "range": {
+      "startLine": 49,
+      "endLine": 50
+    },
+    "title": "Schoenberg's Distribution Function $f$",
+    "content": "The distribution function $f(c) = d(\\{n : \\varphi(n)/n < c\\})$ gives the natural density of integers whose totient ratio falls below $c$. Isaac Schoenberg proved in 1928 that $f$ is well-defined, continuous, and monotone non-decreasing on $[0,1]$ with $f(0) = 0$ and $f(1) = 1$—making it a continuous CDF of a probability measure $\\mu_f$ on $[0,1]$.",
+    "mathContext": "$f(c) = \\lim_{N \\to \\infty} \\frac{|\\{n \\leq N : \\varphi(n)/n < c\\}|}{N}$. As a CDF: $\\mu_f([a,b)) = f(b) - f(a)$. Schoenberg (1928): $f$ is continuous and $f(0) = 0$, $f(1) = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "distribution function",
+      "CDF",
+      "probability measure",
+      "Stieltjes measure"
+    ],
+    "prerequisites": [
+      "naturalDensity",
+      "totientRatioBelow"
+    ]
+  },
+  {
+    "id": "erdos-50-ann-schoenberg-thm",
+    "proofId": "erdos-50",
+    "type": "concept",
+    "range": {
+      "startLine": 56,
+      "endLine": 57
+    },
+    "title": "Schoenberg's Density Theorem (1928)",
+    "content": "For every $c \\in [0,1]$, the natural density $d(\\{n : \\varphi(n)/n < c\\})$ exists and lies in $[0,1]$. Schoenberg's proof uses the multiplicative structure of $\\varphi(n)/n = \\prod_{p \\mid n}(1-1/p)$ and the independence of divisibility by distinct primes to establish convergence of the counting function.",
+    "mathContext": "$\\forall c \\in [0,1],\\; \\exists d \\in [0,1] : f(c) = d$. Schoenberg's argument: $\\varphi(n)/n$ is a multiplicative function of $n$'s prime factors, and the 'events' $p \\mid n$ are asymptotically independent by the Chinese Remainder Theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "density existence",
+      "multiplicative functions",
+      "Chinese Remainder Theorem"
+    ],
+    "prerequisites": [
+      "schoenbergF",
+      "natural density convergence"
+    ]
+  },
+  {
+    "id": "erdos-50-ann-mono",
+    "proofId": "erdos-50",
+    "type": "concept",
+    "range": {
+      "startLine": 60,
+      "endLine": 61
+    },
+    "title": "Monotonicity of $f$",
+    "content": "The distribution function $f$ is monotone non-decreasing: if $c_1 \\leq c_2$, then $f(c_1) \\leq f(c_2)$. This follows immediately from the set inclusion $\\{n : \\varphi(n)/n < c_1\\} \\subseteq \\{n : \\varphi(n)/n < c_2\\}$, so the density of the smaller set cannot exceed that of the larger.",
+    "mathContext": "$c_1 \\leq c_2 \\Rightarrow \\{n : \\varphi(n)/n < c_1\\} \\subseteq \\{n : \\varphi(n)/n < c_2\\} \\Rightarrow f(c_1) \\leq f(c_2)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotone function",
+      "set inclusion",
+      "density monotonicity"
+    ],
+    "prerequisites": [
+      "schoenbergF",
+      "sublevel set ordering"
+    ]
+  },
+  {
+    "id": "erdos-50-ann-boundary",
+    "proofId": "erdos-50",
+    "type": "concept",
+    "range": {
+      "startLine": 64,
+      "endLine": 64
+    },
+    "title": "Boundary Values $f(0) = 0$, $f(1) = 1$",
+    "content": "At the endpoints: $f(0) = 0$ because no positive integer satisfies $\\varphi(n)/n < 0$, and $f(1) = 1$ because $\\varphi(n)/n < 1$ for all $n > 1$ (with only $\\varphi(1)/1 = 1$ excluded, having density 0).",
+    "mathContext": "$f(0) = d(\\emptyset) = 0$; $f(1) = d(\\{n > 1\\}) = 1$. Only $n = 1$ satisfies $\\varphi(n)/n = 1$; all $n > 1$ have $\\varphi(n)/n < 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "boundary conditions",
+      "totient of 1",
+      "density of cofinite sets"
+    ],
+    "prerequisites": [
+      "schoenbergF",
+      "totient_ratio_lt_one"
+    ]
+  },
+  {
+    "id": "erdos-50-ann-continuous",
+    "proofId": "erdos-50",
+    "type": "concept",
+    "range": {
+      "startLine": 67,
+      "endLine": 67
+    },
+    "title": "Continuity of $f$",
+    "content": "Schoenberg's function $f$ is continuous on $[0,1]$, meaning the corresponding measure $\\mu_f$ is atomless—no single value $c$ has positive mass. This follows because $\\{n : \\varphi(n)/n = c\\}$ has density zero for each fixed $c$ (the set of $n$ with $\\varphi(n)/n$ equal to a specific value is thin).",
+    "mathContext": "$f \\in C([0,1])$. Continuity of $f$ at $c$ means $\\mu_f(\\{c\\}) = f(c^+) - f(c^-) = 0$: no atom at $c$. The measure $\\mu_f = df$ is atomless but singular.",
+    "significance": "key",
+    "relatedConcepts": [
+      "continuous distribution",
+      "atomless measure",
+      "Cantor function analogy"
+    ],
+    "prerequisites": [
+      "schoenbergF",
+      "Schoenberg's theorem"
+    ]
+  },
+  {
+    "id": "erdos-50-ann-singular",
+    "proofId": "erdos-50",
+    "type": "concept",
+    "range": {
+      "startLine": 74,
+      "endLine": 77
+    },
+    "title": "Erdős's Pure Singularity Theorem",
+    "content": "Erdős proved that $f'(x) = 0$ for Lebesgue-almost every $x \\in [0,1]$: the distribution function $f$ is purely singular. Like the Cantor function, $f$ is continuous and non-decreasing but manages to increase from 0 to 1 while having zero derivative almost everywhere. The increase is concentrated on a Lebesgue-null set—the 'singular support' of $\\mu_f$.",
+    "mathContext": "$f'(x) = 0$ for a.e. $x \\in [0,1]$ with respect to Lebesgue measure [Erdős]. Equivalently, $\\mu_f \\perp \\lambda$ where $\\lambda$ is Lebesgue measure. The measure $\\mu_f$ is supported on a set of Lebesgue measure zero, analogous to the Cantor measure on the Cantor set.",
+    "significance": "key",
+    "relatedConcepts": [
+      "purely singular function",
+      "Cantor function",
+      "singular measure",
+      "Lebesgue decomposition"
+    ],
+    "prerequisites": [
+      "schoenbergF_continuous",
+      "HasDerivAt",
+      "MeasureTheory.ae"
+    ]
+  }
+]

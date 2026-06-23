@@ -1,0 +1,222 @@
+{
+  "id": "erdos-433",
+  "title": "Erdős Problem #433: Maximum Frobenius Numbers",
+  "slug": "erdos-433",
+  "description": "For g(k,n) = max{G(A) : A ⊆ {1,...,n}, |A| = k, gcd(A) = 1}, prove that g(k,n) ~ n²/(k-1). SOLVED by Dixmier (1990) who gave precise bounds.",
+  "meta": {
+    "author": "Erdős-Graham (1972), Dixmier (1990)",
+    "sourceUrl": "https://erdosproblems.com/433",
+    "date": "1972",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos433Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "frobenius-number",
+      "numerical-semigroups",
+      "extremal-combinatorics",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 433,
+    "erdosUrl": "https://erdosproblems.com/433",
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Coprime",
+        "description": "Coprimality predicate",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Finset.gcd",
+        "description": "GCD of a finite set",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "sSup",
+        "description": "Supremum for defining Frobenius number",
+        "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+      }
+    ],
+    "originalContributions": [
+      "NumericalSemigroup definition: set of representable integers",
+      "frobeniusNumber (G) definition: largest non-representable integer",
+      "IsCoprime predicate for sets",
+      "g(k,n) definition: max Frobenius over k-subsets of {1,...,n}",
+      "Sylvester-Frobenius formula axiom: G({a,b}) = ab - a - b",
+      "Dixmier's lower and upper bound axioms",
+      "AsymptoticFormula definition: g(k,n) ~ n²/(k-1)",
+      "Extremal set structure theorem",
+      "Gap counting and symmetry properties"
+    ],
+    "axiomCount": 4,
+    "lineCount": 398,
+    "assumptions": "4 axioms, 0 sorries. Axioms: (1) sylvester_frobenius: G({a,b}) = ab - a - b for coprime a, b (Sylvester-Frobenius formula); (2) dixmier_lower_bound: g(k,n) ≥ ⌊(n-2)/(k-1)⌋·(n-k+1) - 1; (3) dixmier_upper_bound: g(k,n) ≤ (⌊(n-1)/(k-1)⌋ - 1)·n - 1 (Dixmier 1990 bounds); (4) erdos_433_solved: the asymptotic formula g(k,n) ~ n²/(k-1) holds. The g_two theorem (k=2 exact value n²-3n+1) has been proved.",
+    "theoremCount": 8,
+    "definitionCount": 5,
+    "additionalFiles": [
+      "Proofs/Erdos433Aristotle.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #433**\n\nThis problem connects extremal combinatorics to the classical Frobenius number problem (also called the coin problem or money changing problem).\n\n**Key History:**\n- Sylvester-Frobenius (1884): G({a,b}) = ab - a - b for coprime a, b\n- Erdős-Graham (1972): First bounds g(k,n) < 2n²/k\n- Dixmier (1990): Proved exact asymptotic g(k,n) ~ n²/(k-1)\n\n**The Frobenius Problem:**\nGiven positive integers with gcd = 1, find the largest integer that cannot be represented as their non-negative linear combination. The \"Chicken McNugget\" problem is a famous example.",
+    "problemStatement": "**Problem Statement**\n\nLet $G(A)$ denote the **Frobenius number** of a finite set $A \\subset \\mathbb{N}$ - the largest integer not expressible as a sum $\\sum_{a \\in A} c_a \\cdot a$ with $c_a \\geq 0$.\n\nDefine:\n$$g(k,n) = \\max\\{G(A) : A \\subseteq \\{1,\\ldots,n\\}, |A| = k, \\gcd(A) = 1\\}$$\n\n**Question:** Is it true that $g(k,n) \\sim \\frac{n^2}{k-1}$ as $n \\to \\infty$ with $k$ fixed?\n\n**Answer:** YES (Dixmier, 1990)\n\nDixmier proved:\n$$\\left\\lfloor\\frac{n-2}{k-1}\\right\\rfloor(n-k+1) - 1 \\leq g(k,n) \\leq \\left(\\left\\lfloor\\frac{n-1}{k-1}\\right\\rfloor - 1\\right)n - 1$$",
+    "text": "For g(k,n) = max{G(A) : A ⊆ {1,...,n}, |A| = k, gcd(A) = 1}, prove that g(k,n) ~ n²/(k-1). SOLVED by Dixmier (1990) who gave precise bounds.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Frobenius Number:** Define G(A) as the supremum of non-representable integers\n\n2. **Sylvester-Frobenius:** State the classical formula G({a,b}) = ab - a - b\n\n3. **The Function g(k,n):** Maximum G over coprime k-subsets of {1,...,n}\n\n4. **Dixmier's Bounds:** State the precise lower and upper bounds\n\n5. **Asymptotic:** Define and axiomatize g(k,n) ~ n²/(k-1)\n\n6. **Examples:** Chicken McNugget theorem, small cases",
+    "keyInsights": [
+      "**Extremal Sets:** The maximizing sets are concentrated near {n-k+1, ..., n}",
+      "**Large Elements:** Larger generators create more gaps, increasing G(A)",
+      "**Sylvester-Frobenius:** The k=2 case has exact formula G({a,b}) = ab - a - b",
+      "**Gap Symmetry:** Gaps are symmetric around (G(A)+1)/2",
+      "**NP-Hardness:** For 3+ generators, computing G is NP-hard (Ramirez Alfonsin)"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "States Erdős Problem #433 on the Frobenius number $g(k,n)$ — the largest integer not representable as a nonnegative combination of $k$ chosen elements from $\\{1,\\dots,n\\}$ — and the Erdős–Graham / Dixmier asymptotics. Imports and overview.",
+      "mathContext": "Frobenius $g(k,n)$ = max non-representable; Erdős–Graham/Dixmier asymptotics."
+    },
+    {
+      "id": "part1",
+      "title": "Part I: The Frobenius Number",
+      "startLine": 42,
+      "endLine": 65,
+      "summary": "Defines `NumericalSemigroup` (nonneg integer combinations of $A$) and `frobeniusNumber` $G(A)$ (largest non-representable, with `G(·)` notation).",
+      "mathContext": "$G(A)$ = largest integer not in the numerical semigroup generated by $A$."
+    },
+    {
+      "id": "part2",
+      "title": "Part II: Fundamental Properties",
+      "startLine": 66,
+      "endLine": 106,
+      "summary": "States the AXIOM `sylvester_frobenius` ($G(\\{a,b\\})=ab-a-b$ for coprime $a,b$) and PROVES examples `frobenius_3_5` ($G(\\{3,5\\})=7$) and `frobenius_2_3` ($G(\\{2,3\\})=1$).",
+      "mathContext": "Sylvester: $G(\\{a,b\\})=ab-a-b$ (coprime); $G(\\{3,5\\})=7$, $G(\\{2,3\\})=1$."
+    },
+    {
+      "id": "part3",
+      "title": "Part III: The Function g(k, n)",
+      "startLine": 107,
+      "endLine": 123,
+      "summary": "Defines `SetGCDOne` (the gcd-1 condition) and `g k n` (the max Frobenius number over $k$-subsets of $\\{1,\\dots,n\\}$).",
+      "mathContext": "$g(k,n)=\\max\\{G(A):A\\subseteq\\{1,\\dots,n\\},|A|=k,\\gcd=1\\}$."
+    },
+    {
+      "id": "part4",
+      "title": "Part IV: Erdős-Graham Bounds",
+      "startLine": 124,
+      "endLine": 142,
+      "summary": "Documents the Erdős–Graham bounds on $g(k,n)$ (the classical estimates motivating Dixmier's exact asymptotics).",
+      "mathContext": "Erdős–Graham bounds on $g(k,n)$."
+    },
+    {
+      "id": "part5",
+      "title": "Part V: Dixmier's Theorem (1990)",
+      "startLine": 143,
+      "endLine": 180,
+      "summary": "States Dixmier's bounds as AXIOMS `dixmier_lower_bound` and `dixmier_upper_bound`, defines the `AsymptoticFormula`, and states the AXIOM `erdos_433_solved` (Dixmier resolved the asymptotics).",
+      "mathContext": "Dixmier (1990) axioms: matching lower/upper bounds give the exact asymptotic of $g(k,n)$."
+    },
+    {
+      "id": "part6",
+      "title": "Part VI: Exact Values",
+      "startLine": 181,
+      "endLine": 291,
+      "summary": "PROVES exact values: private helpers `every_mem_num_sem_01` and `frobenius_zero_one` ($G(\\{0,1\\})=0$), and `g_two` ($g(2,n)=n^2-3n+1$ for $n\\geq3$).",
+      "mathContext": "$g(2,n)=n^2-3n+1$ ($n\\geq3$); $G(\\{0,1\\})=0$."
+    },
+    {
+      "id": "part7",
+      "title": "Part VII: Extremal Sets",
+      "startLine": 292,
+      "endLine": 308,
+      "summary": "Documents the extremal sets achieving the maximum Frobenius number $g(k,n)$.",
+      "mathContext": "Extremal $k$-subsets attaining $g(k,n)$."
+    },
+    {
+      "id": "part8",
+      "title": "Part VIII: Connection to Classical Frobenius Problem",
+      "startLine": 309,
+      "endLine": 334,
+      "summary": "PROVES `schur_bound` (Schur's bound on the Frobenius number for coprime $a,b$), connecting to the classical two-generator Frobenius problem.",
+      "mathContext": "Schur bound on $G(\\{a,b\\})$ (classical Frobenius problem)."
+    },
+    {
+      "id": "part9",
+      "title": "Part IX: Counting Gaps",
+      "startLine": 335,
+      "endLine": 352,
+      "summary": "Documents the gap-counting (genus) perspective on numerical semigroups associated with the Frobenius problem.",
+      "mathContext": "Counting the gaps (non-representable integers) of the numerical semigroup."
+    },
+    {
+      "id": "part10",
+      "title": "Part X: Summary",
+      "startLine": 353,
+      "endLine": 398,
+      "summary": "PROVES `erdos_433_summary` (packaging the known results) and `erdos_433_status`. Recaps the Sylvester formula, Dixmier asymptotics, and exact small values.",
+      "mathContext": "Summary: Sylvester $+$ Dixmier asymptotics $+$ $g(2,n)$ exact value."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #433 asks about maximizing the Frobenius number over k-element coprime subsets of {1,...,n}. Dixmier (1990) proved g(k,n) ~ n²/(k-1), confirming the Erdős-Graham conjecture with precise bounds.",
+    "implications": "**Theoretical Significance**: **Mathematical Connections**\n\n1. **Numerical Semigroups:** Foundation of commutative algebra\n\n2. **Coin Problem:** Practical applications in currency systems\n\n**3. Computational Complexity:** NP-hard for ≥3 generators\n\n4. **Algebraic Geometry:** Connection to Weierstrass semigroups\n\n5. **Related Problems:** See Erdős #434 for additional Frobenius questions.",
+    "openQuestions": [
+      "Exact formula for g(k,n) when (k-1) does not divide n, n-1, or n-2",
+      "Average value of G(A) over random k-subsets",
+      "Distribution of Frobenius numbers in random numerical semigroups",
+      "Efficient algorithms for computing G(A) with many generators"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos433",
+    "lineCount": 398,
+    "axiomCount": 4,
+    "theoremCount": 8,
+    "definitionCount": 5,
+    "path": "Proofs/Erdos433Problem.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/Erdos433Aristotle.lean"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-435",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: frobenius-number, number-theory, numerical-semigroups, solved"
+    },
+    {
+      "targetId": "erdos-434",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, number-theory, numerical-semigroups"
+    },
+    {
+      "targetId": "erdos-466",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, number-theory, solved"
+    }
+  ],
+  "sorries": 0
+}

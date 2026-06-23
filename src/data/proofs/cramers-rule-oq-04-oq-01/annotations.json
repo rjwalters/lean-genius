@@ -1,0 +1,35 @@
+[
+  {
+    "id": "ann-adjugate-identity",
+    "proofId": "cramers-rule-oq-04-oq-01",
+    "range": {
+      "startLine": 37,
+      "endLine": 45
+    },
+    "type": "insight",
+    "title": "The Identity That Powers Both Theorems",
+    "content": "adjugate_charmatrix_mul is the OQ's explicit target: adj(xI − A)·(xI − A) = χ_A(x)·I over the polynomial ring R[X]. It is nothing but the universal adjugate identity adj(B)·B = (det B)·I (Mathlib's adjugate_mul) applied to the characteristic matrix B = charmatrix M = xI − A, using that χ_A(x) = det(xI − A) by definition. The same identity, applied instead to a scalar matrix A, gives Cramer's rule — so determinants, matrix inverses, and the characteristic polynomial all flow from one cofactor identity."
+  },
+  {
+    "id": "ann-noncommutative",
+    "proofId": "cramers-rule-oq-04-oq-01",
+    "range": {
+      "startLine": 47,
+      "endLine": 58
+    },
+    "type": "concept",
+    "title": "Why Cayley–Hamilton Is Not Naive Substitution",
+    "content": "cayley_hamilton (χ_A(A) = 0) does NOT follow by substituting x = A into the identity χ_A(x)·I = adj(xI−A)·(xI−A): the coefficient ring Matrix n n R is non-commutative, so naive substitution is invalid (this is the classic fallacy). Mathlib's aeval_self_charpoly handles it correctly by lifting the adjugate identity to Polynomial (Matrix n n R) and evaluating at A, where the right factor (xI − A) telescopes to zero. Over a field this immediately gives minpoly_dvd_charpoly: the minimal polynomial divides the characteristic polynomial, so its degree is at most n."
+  },
+  {
+    "id": "ann-cramer",
+    "proofId": "cramers-rule-oq-04-oq-01",
+    "range": {
+      "startLine": 60,
+      "endLine": 69
+    },
+    "type": "insight",
+    "title": "Cramer's Rule as the Adjugate Applied to a Vector",
+    "content": "adjugate_mulVec_solve shows A·(adj A · b) = (det A)·b: the adjugate solves the linear system Ax = b up to the determinant. The proof is the adjugate identity again — A·(adj A · b) = (A·adj A)·b (mulVec associativity) = (det A · I)·b = det A · b (mul_adjugate, smul_mulVec_assoc, one_mulVec). Dividing by det A when it is invertible gives the classical Cramer solution x = (det A)⁻¹·adj A · b. This exhibits Cramer's rule and Cayley–Hamilton as two faces of the single identity adj(B)·B = (det B)·I."
+  }
+]

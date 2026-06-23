@@ -1,0 +1,73 @@
+{
+  "slug": "cayley-hamilton-oq-02-oq-02",
+  "title": "Sylvester Matrix Interpolation via Frobenius Covariants",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Z_j \\;=\\; \\prod_{i \\ne j} \\frac{A - \\lambda_i I}{\\lambda_j - \\lambda_i}.",
+    "plain": "For a diagonalizable matrix, any (matrix) function can be written as a weighted sum of fixed \"projection\" matrices $Z_j$ — one per eigenvalue — weighted by the scalar values $f(\\lambda_j)$. The $Z_j$ are Lagrange-interpolation polynomials in $A$ and act as projectors onto the eigenspaces. We want a formal proof of this representation.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-18T23:18:44-07:00",
+    "iteration": 2,
+    "focus": "Sylvester interpolation + Frobenius covariant identities formalized, build-verified GREEN (0 sorry/0 axiom; axioms = propext/Choice/Quot only), gallery-registered.",
+    "blockers": [],
+    "nextAction": "Merge PR; deployer graduates pool entry.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE (build-verified GREEN, 0 sorry/0 axiom): Sylvester formula f(A)=∑_μ p.eval μ • Z_μ for diagonalizable A=U·diagonal(d)·V, plus all four Frobenius-covariant identities (idempotent/orthogonal/complete/eigen), 0 sorry / 0 axiom.",
+    "builtItems": [
+      "Proofs/CayleyHamiltonOQ02OQ02.lean — 12 theorems, 2 defs, 239 lines, 0 sorry/0 axiom",
+      "conj_pow: (U·A·V)^k = U·A^k·V via induction cancelling V·U=1",
+      "aeval_conj: aeval (U·A·V) p = U·(aeval A p)·V (polynomial induction)",
+      "aeval_diagonal: aeval (diagonal d) p = diagonal (i ↦ p.eval (d i))",
+      "diagonal_eq_sum_coordProj: diagonal (i↦g(d i)) = ∑_μ g(μ)•E_μ (entrywise, Finset.sum_eq_single)",
+      "sylvester: aeval (U·diagonal(d)·V) p = ∑_μ p.eval μ • frobeniusCovariant U V d μ",
+      "frobenius_idem / frobenius_orthogonal / frobenius_complete / frobenius_eigen"
+    ],
+    "insights": [
+      "Encoding diagonalizability as explicit similarity data A=U·diagonal(d)·V with U·V=V·U=1 avoids all spectral-theorem/eigenspace machinery — everything reduces to diagonal-indicator algebra plus one cancellation V·U=1",
+      "Conjugation commutes with the whole polynomial functional calculus (aeval_conj); proved directly by Polynomial.induction_on rather than packaging an inner-automorphism AlgHom, minimizing dependencies",
+      "Every covariant identity collapses to a diagonal-indicator fact after cancelling V·U=1; completeness ∑_μ Z_μ=I is exactly the g=1 instance of the spectral decomposition lemma",
+      "The result holds over any CommRing with DecidableEq (not just an algebraically closed field) because diagonalizability is supplied as data",
+      "Mathlib API used: aeval_monomial, Algebra.smul_def, diagonal_pow, diagonal_smul, diagonal_mul_diagonal, Matrix.sum_apply, Finset.sum_eq_single, mul_smul_comm/smul_mul_assoc"
+    ],
+    "mathlibGaps": [
+      "Mathlib has no packaged inner-automorphism (conjugation) AlgEquiv for matrix/algebra elements convenient for aeval transport; worked around by direct polynomial induction (conj_pow + aeval_conj)",
+      "Matrix.diagonalAlgHom exists but its @[simps] apply lemma name was not reliably resolvable; used induction-based aeval_diagonal instead"
+    ],
+    "nextSteps": [
+      "Eigenvalue-quotient form Z_μ = ∏_{ν≠μ}(A−νI)/(μ−ν) and its agreement with U·E_μ·V (needs distinct eigenvalues + field)",
+      "Matrix exponential specialization e^{tA} = ∑_μ e^{tμ} Z_μ (Putzer closed form)",
+      "Non-diagonalizable/Jordan extension with confluent interpolation data"
+    ],
+    "markdown": "# Knowledge Base: cayley-hamilton-oq-02-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "linear-algebra",
+    "cayley-hamilton",
+    "matrix-functions",
+    "spectral-projection"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-18T23:18:44-07:00"
+}

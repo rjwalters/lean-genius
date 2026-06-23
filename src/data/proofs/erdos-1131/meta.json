@@ -1,0 +1,211 @@
+{
+  "id": "erdos-1131",
+  "title": "Minimizing Lagrange Interpolation Basis Polynomial Integrals",
+  "slug": "erdos-1131",
+  "description": "For points x₁,...,xₙ ∈ [-1,1], what is the minimum of ∫ Σ |l_k(x)|² dx over all Lagrange basis configurations? Conjecture: min I = 2 - (1+o(1))/n. OPEN problem.",
+  "meta": {
+    "author": "Erdős, Szabados, Varma, Vértesi",
+    "sourceUrl": "https://erdosproblems.com/1131",
+    "date": "1994",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1131Problem.lean",
+    "tags": [
+      "erdos",
+      "approximation-theory",
+      "interpolation",
+      "lagrange-polynomials",
+      "legendre-polynomials",
+      "optimization",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1131,
+    "erdosUrl": "https://erdosproblems.com/1131",
+    "erdosProblemStatus": "open",
+    "axiomCount": 1,
+    "theoremCount": 31,
+    "lineCount": 1076,
+    "assumptions": "1 axiom: erdos_1131_conjecture (OPEN). 0 sorries — all supporting lemmas fully proved: chebyshev_interp, chebyshev_sq_expansion, dct_offdiag, integral_cos_substitution, integral_chebyshev_sq, chebyshev_integral_trace.",
+    "mathlib_version": "4.26.0",
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "This problem has roots in Fejér's 1932 work on optimal interpolation. Fejér proved that the zeros of the Legendre polynomial P_n minimize the maximum of the Lebesgue function Λ_n(x) = Σ|l_k(x)| over [-1,1]. Erdős naturally asked whether Legendre nodes also minimize the L² integral I = ∫Σ|l_k(x)|² dx. Szabados (1966, Acta Math. Acad. Sci. Hungar.) disproved this for n > 3, showing that slightly perturbed nodes give a smaller integral. Erdős then conjectured min I = 2 - (1+o(1))/n. The best bounds are due to Erdős, Szabados, Varma, and Vértesi (1994, Studia Sci. Math. Hungar.): they proved 2 - O((log n)²/n) ≤ min I ≤ 2 - 2/(2n-1). The upper bound comes from Legendre nodes (I = 2 - 2/(2n-1) for P_n zeros), while the lower bound uses the partition of unity and Cauchy-Schwarz. Turetskii (1940) initiated the study of Lebesgue constants for specific node systems, and Kilgore-de Boor-Pinkus (1978) proved the existence of optimal L∞ interpolation nodes — the L² analog remains open.",
+    "problemStatement": "For x₁,...,xₙ ∈ [-1,1], the Lagrange basis polynomials l_k(x) satisfy l_k(x_k)=1 and l_k(x_j)=0 for j≠k. Find the minimum of I = ∫_{-1}^{1} Σ_k |l_k(x)|² dx. Is min I = 2 - (1+o(1))/n?",
+    "text": "A formalization of Erdős Problem #1131 on minimizing Lagrange interpolation basis polynomial integrals. Defines `NodeConfig n` (points in $[-1,1]$), Lagrange basis polynomials $l_k(x) = \\prod_{i \\neq k} (x - x_i)/(x_k - x_i)$, and the objective $I = \\int_{-1}^{1} \\sum_k l_k(x)^2\\,dx$. Proves $l_k(x_j) = \\delta_{kj}$ (interpolation), partition of unity $\\sum l_k = 1$, the Cauchy-Schwarz lower bound $I \\geq 2/n$, the identity $I = \\int \\sum l_k^2 = 2 - \\int \\sum_{j \\neq k} l_j l_k$, and the exact Chebyshev integral value $I_{\\text{Cheb}} = 2 - 2(n-1)/(n(2n-1)) < 2$ (fully proved via discrete-cosine-transform orthogonality and a telescoping partial-fraction sum). The only axiom is Erdős–Szabados's open conjecture $\\min I = 2 - (1+o(1))/n$.",
+    "proofStrategy": "The Lean formalization defines NodeConfig, AreDistinct, lagrangeBasis (as a finite product), and the objective functional I (concrete integral definition). The cardinal basis conditions l_k(x_k) = 1 and l_k(x_j) = 0 are proved theorems, as is the partition of unity via Mathlib's Lagrange.sum_basis. The Cauchy-Schwarz lower bound I ≥ 2/n is fully proved using the variance identity. Chebyshev nodes are defined and shown to be distinct; the exact Chebyshev integral I_Cheb = 2 - 2(n-1)/(n(2n-1)) is fully proved (chebyshev_integral_exact) via DCT orthogonality and a telescoping partial-fraction sum. The only axiom is the open conjecture min I = 2 - (1+o(1))/n.",
+    "keyInsights": [
+      "**Partition of unity** $\\sum_k l_k(x) = 1$ gives the Cauchy-Schwarz bound $I \\ge 2/n$, but the true minimum is $\\approx 2 - 1/n \\gg 2/n$",
+      "**Fejér vs Erdős**: Legendre nodes minimize the $L^\\infty$ Lebesgue function but NOT the $L^2$ integral — Szabados (1966) disproved this for $n > 3$",
+      "**Logarithmic gap**: ESVV94 proved $2 - O((\\log n)^2/n) \\le \\min I \\le 2 - 2/(2n-1)$, leaving a $(\\log n)^2$ factor unresolved",
+      "**Chebyshev vs Legendre nodes**: Both give $I \\approx 2 - c/n$ but with different constants — neither is optimal for the $L^2$ problem",
+      "**Gram matrix trace**: $I = \\operatorname{tr}(G)$ where $G_{jk} = \\int l_j l_k \\, dx$ connects the problem to spectral theory of interpolation operators"
+    ],
+    "prerequisites": [
+      "Combinatorics (counting, extremal problems)",
+      "Number theory (primes, divisibility, arithmetic functions)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Module docstring summarizing Erdős Problem #1131 on minimizing $\\int \\sum |l_k(x)|^2\\,dx$ over node configurations in $[-1,1]$. Lists all proved theorems (interpolation, orthogonality, partition of unity, Cauchy-Schwarz bound, Chebyshev node properties, exact integral formula). Imports Mathlib and opens `MeasureTheory` namespace.",
+      "mathContext": "Problem: minimize $I(x_1,\\ldots,x_n) = \\int_{-1}^{1} \\sum_k |l_k(x)|^2\\,dx$. Known: $2/n \\le \\min I \\le 2 - 2/(2n-1)$."
+    },
+    {
+      "id": "definitions",
+      "title": "Part I: Definitions",
+      "startLine": 52,
+      "endLine": 79,
+      "summary": "Defines `NodeConfig n` (nodes in $[-1,1]$), `AreDistinct` (pairwise distinct nodes), the Lagrange basis polynomial $l_k(x)$ as a finite product over `Finset.filter`, and the objective functional `lagrangeIntegral` as the interval integral $\\int_{-1}^{1} \\sum_k l_k(x)^2\\,dx$.",
+      "mathContext": "$l_k(x) = \\prod_{i \\ne k} \\frac{x - x_i}{x_k - x_i}$, $\\quad I = \\int_{-1}^{1} \\sum_{k=1}^{n} l_k(x)^2 \\, dx$."
+    },
+    {
+      "id": "basis-properties",
+      "title": "Part II: Basic Properties (All Proved)",
+      "startLine": 81,
+      "endLine": 141,
+      "summary": "Four fully proved theorems: `lagrangeBasis_self` ($l_k(x_k) = 1$ by cancellation of each factor), `lagrangeBasis_other` ($l_k(x_j) = 0$ for $j \\ne k$ via the zero factor), `lagrangeBasis_eq_eval_basis` (connects to Mathlib's `Lagrange.basis` by rewriting `Polynomial.eval_prod`), and `partition_of_unity` ($\\sum_k l_k(x) = 1$ via `Lagrange.sum_basis` with injectivity of distinct nodes).",
+      "mathContext": "$l_k(x_j) = \\delta_{kj}$ (Kronecker delta). Partition of unity: $\\sum_{k=1}^{n} l_k(x) = 1$ for all $x$."
+    },
+    {
+      "id": "lower-bound",
+      "title": "Cauchy-Schwarz Lower Bound (Proved)",
+      "startLine": 142,
+      "endLine": 213,
+      "summary": "Two proved theorems establishing the universal lower bound. `sum_sq_lagrangeBasis_ge`: pointwise $\\sum l_k(x)^2 \\ge 1/n$ proved via the variance identity $\\sum(l_k - 1/n)^2 = \\sum l_k^2 - 1/n \\ge 0$, expanding the square and using `partition_of_unity`. `lagrangeIntegral_lower_bound`: $I \\ge 2/n$ by integral monotonicity, rewriting $2/n = \\int_{-1}^{1}(1/n)\\,dx$ and applying `intervalIntegral.integral_nonneg`. Includes a note that no general upper bound exists (counterexample: $n=2$, nodes at $0$ and $\\delta$ give $I \\to \\infty$ as $\\delta \\to 0$).",
+      "mathContext": "Cauchy-Schwarz: $(\\sum l_k)^2 \\le n \\sum l_k^2$. Since $\\sum l_k = 1$: $\\sum l_k^2 \\ge 1/n$, hence $I \\ge 2/n$."
+    },
+    {
+      "id": "chebyshev-nodes",
+      "title": "Part III: Chebyshev Node Definitions and Distinctness",
+      "startLine": 215,
+      "endLine": 265,
+      "summary": "Defines `chebyshevNodes n` as $x_k = \\cos((2k+1)\\pi/(2n))$ (roots of $T_n$). `chebyshevNodes_in_range`: nodes lie in $[-1,1]$ since $\\cos$ maps to $[-1,1]$. `chebyshevNodes_distinct`: proved by showing arguments $\\theta_k \\in [0,\\pi]$ are strictly increasing and $\\cos$ is strictly decreasing on $[0,\\pi]$, using `Real.strictAntiOn_cos.injOn`.",
+      "mathContext": "Chebyshev nodes of the first kind: $x_k = \\cos\\frac{(2k+1)\\pi}{2n}$, $k = 0,\\ldots,n-1$. These are zeros of $T_n(x)$."
+    },
+    {
+      "id": "chebyshev-integral-plan",
+      "title": "Part III.5: Chebyshev Integral Exact Value (Plan)",
+      "startLine": 267,
+      "endLine": 282,
+      "summary": "Detailed proof plan for the exact Chebyshev integral $I_{\\text{Cheb}}(n) = 2 - 2(n-1)/(n(2n-1))$. Outlines five steps: (1) discrete cosine vanishing $\\sum_k \\cos(r\\theta_k) = 0$ for $0 < r < 2n$, (2) DCT orthogonality, (3) Chebyshev expansion of $\\sum l_k^2$, (4) integration $\\int_{-1}^{1} T_j(x)^2\\,dx = 1 - 1/(4j^2-1)$, and (5) telescoping partial fraction sum.",
+      "mathContext": "$I_{\\text{Cheb}}(n) = 2 - \\frac{2(n-1)}{n(2n-1)}$. Key identity: $\\int_{-1}^{1} T_j(x)^2\\,dx = 1 - \\frac{1}{4j^2-1}$."
+    },
+    {
+      "id": "trig-infrastructure",
+      "title": "Trigonometric Identities and Discrete Cosine Vanishing",
+      "startLine": 284,
+      "endLine": 344,
+      "summary": "Foundational trigonometric lemmas: `two_sin_mul_cos` (product-to-sum $2\\sin a\\cos b = \\sin(a+b)+\\sin(a-b)$), `sin_nat_mul_pi` ($\\sin(m\\pi)=0$ by induction), and the key `discrete_cosine_vanishing`: $\\sum_{k=0}^{n-1}\\cos(r\\theta_k)=0$ for $0<r<2n$, proved by Abel summation — multiplying by $2\\sin(r\\pi/(2n))$, applying product-to-sum to get a telescoping sum via `Finset.sum_range_sub`, evaluating to $\\sin(r\\pi)-\\sin(0)=0$.",
+      "mathContext": "Discrete cosine vanishing: $\\sum_{k=0}^{n-1} \\cos\\!\\left(\\frac{r(2k+1)\\pi}{2n}\\right) = 0$ for $0 < r < 2n$. Proof: Abel summation with $2\\sin\\alpha\\cos\\beta = \\sin(\\alpha+\\beta)+\\sin(\\alpha-\\beta)$."
+    },
+    {
+      "id": "partial-fractions",
+      "title": "Telescoping Partial Fraction Sum (Proved)",
+      "startLine": 346,
+      "endLine": 363,
+      "summary": "Fully proved `partial_fraction_sum`: $\\sum_{j=0}^{m-1} \\frac{1}{4(j+1)^2-1} = \\frac{m}{2m+1}$, by induction on $m$. The inductive step uses `Finset.sum_range_succ`, `field_simp`, and `ring` to close the algebraic identity. This telescoping sum arises from partial fractions $\\frac{1}{(2j+1)(2j+3)} = \\frac{1}{2}\\left(\\frac{1}{2j+1}-\\frac{1}{2j+3}\\right)$.",
+      "mathContext": "$\\sum_{j=1}^{m} \\frac{1}{4j^2-1} = \\frac{m}{2m+1}$. Partial fractions: $\\frac{1}{4j^2-1} = \\frac{1}{2}\\left(\\frac{1}{2j-1}-\\frac{1}{2j+1}\\right)$."
+    },
+    {
+      "id": "integration-lemmas",
+      "title": "Integration and Substitution Lemmas",
+      "startLine": 365,
+      "endLine": 506,
+      "summary": "Six fully proved lemmas for evaluating $\\int_{-1}^{1} T_j(x)^2\\,dx$: `two_cos_mul_sin` (product-to-sum), `integral_sin_mul` ($\\int_0^\\pi \\sin(k\\theta)\\,d\\theta$ by FTC with antiderivative $-\\cos(k\\theta)/k$), `cos_nat_mul_pi` ($\\cos(m\\pi)=(-1)^m$ by induction), `integral_cos_mul_sin` ($\\int_0^\\pi \\cos(2j\\theta)\\sin\\theta\\,d\\theta = -2/(4j^2-1)$ via product-to-sum decomposition), `integral_cos_substitution` (change of variables $x=\\cos\\theta$ via `integral_comp_mul_deriv`), and `integral_chebyshev_sq` ($\\int_{-1}^{1} T_j(x)^2\\,dx = 1-1/(4j^2-1)$ combining substitution with cos² identity).",
+      "mathContext": "$\\int_0^\\pi \\sin(k\\theta)\\,d\\theta = \\frac{1-\\cos(k\\pi)}{k}$. Change of variables: $\\int_{-1}^{1} f(x)\\,dx = \\int_0^\\pi f(\\cos\\theta)\\sin\\theta\\,d\\theta$. $\\int_{-1}^{1} T_j(x)^2\\,dx = 1 - \\frac{1}{4j^2-1}$."
+    },
+    {
+      "id": "dct-orthogonality",
+      "title": "Part V½: DCT Orthogonality Infrastructure",
+      "startLine": 507,
+      "endLine": 986,
+      "summary": "Discrete Cosine Transform orthogonality at Chebyshev angles, forming the backbone of the Chebyshev expansion. `two_cos_mul_cos` (product-to-sum for cosines, proved). `frequency_abel_sum`: Abel summation identity $2\\sin\\beta\\sum\\cos(2j\\beta)=(1-(-1)^s)\\sin\\beta$ using telescoping (proved). `frequency_cosine_sum_even`/`_odd`: frequency sums equal 0 (even $s$) or 1 (odd $s$), proved by factoring out $\\sin\\beta\\ne 0$. `dct_diagonal`: $1+2\\sum_{j=1}^{n-1}\\cos^2(j\\theta_k)=n$ (proved via `frequency_cosine_sum_odd`). `dct_offdiag`: $1+2\\sum\\cos(j\\theta_k)\\cos(j\\theta_m)=0$ for $k\\ne m$ (proved via product-to-sum + parity case split). `chebyshev_interp`: Lagrange interpolation exactness for Chebyshev polynomials (proved). `chebyshev_sq_expansion`: $\\sum l_k^2 = (1/n)(1+2\\sum T_j^2)$ (proved, via chebyshev_interp + bilinear expansion).",
+      "mathContext": "DCT orthogonality: $\\frac{1}{n}\\sum_{k=0}^{n-1}\\cos(j\\theta_k)\\cos(m\\theta_k)=\\frac{1}{2}\\delta_{jm}$ for $1\\le j,m\\le n-1$, where $\\theta_k=\\frac{(2k+1)\\pi}{2n}$. Chebyshev expansion: $\\sum_k l_k(x)^2=\\frac{1}{n}\\bigl(1+2\\sum_{j=1}^{n-1}T_j(x)^2\\bigr)$."
+    },
+    {
+      "id": "chebyshev-integral-results",
+      "title": "Chebyshev Integral: Exact Value and Estimates",
+      "startLine": 987,
+      "endLine": 1042,
+      "summary": "Four fully proved theorems on the Chebyshev integral. `chebyshev_integral_trace`: trace formula $I = (1/n)(2n - 2\\sum 1/(4j^2-1))$, proved by combining `chebyshev_sq_expansion` with `integral_chebyshev_sq`. `chebyshev_integral_exact`: $I = 2 - 2(n-1)/(n(2n-1))$, proved by combining the trace formula with `partial_fraction_sum`. `chebyshev_integral_lt_two`: $I < 2$ since the correction term is positive. `chebyshev_integral_estimate`: $\\exists c>0$ with $|I-(2-c/n)|\\le c/n^2$, proved by taking $c = n(2-I)$.",
+      "mathContext": "$I_{\\text{Cheb}}(n) = 2 - \\frac{2(n-1)}{n(2n-1)} < 2$. Asymptotically: $I_{\\text{Cheb}} = 2 - \\frac{1}{n} + O(1/n^2)$."
+    },
+    {
+      "id": "conjecture",
+      "title": "Part IV: The Conjecture (OPEN)",
+      "startLine": 1043,
+      "endLine": 1060,
+      "summary": "Defines `minLagrangeIntegral n` as $\\inf\\{I(\\mathbf{x}) : \\mathbf{x} \\in [-1,1]^n\\}$ using `sInf`. States the open conjecture as an axiom `erdos_1131_conjecture`: for every $\\varepsilon > 0$ there exists $N_0$ such that $|\\min I_n - (2 - 1/n)| \\le \\varepsilon/n$ for all $n \\ge N_0$, encoding $\\min I = 2 - (1+o(1))/n$.",
+      "mathContext": "Erdős conjecture: $\\min_{x_1,\\ldots,x_n \\in [-1,1]} I(x_1,\\ldots,x_n) = 2 - \\frac{1+o(1)}{n}$ as $n \\to \\infty$."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Part V: Main Theorem (Proved)",
+      "startLine": 1061,
+      "endLine": 1076,
+      "summary": "The main formalized result `erdos_1131`: for any $n \\ge 1$ and any distinct nodes in $[-1,1]$, $I \\ge 2/n$. Proved by direct application of `lagrangeIntegral_lower_bound`. This establishes the universal lower bound while the tighter asymptotic behavior remains open (axiomatized conjecture).",
+      "mathContext": "$I(x_1,\\ldots,x_n) \\ge \\frac{2}{n}$ for all distinct configurations in $[-1,1]$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #1131 asks for the minimum integral of squared Lagrange basis polynomials over [-1,1]. The problem connects interpolation theory, Lebesgue constants, and L² optimization. Known bounds: 2 - O((log n)²/n) ≤ min I ≤ 2 - 2/(2n-1), with the conjecture min I = 2 - (1+o(1))/n. Legendre nodes nearly achieve the minimum, but Szabados showed they are not optimal for n > 3. The logarithmic gap in the lower bound remains the key obstacle.",
+    "implications": "Resolving this conjecture would complete our understanding of optimal node placement in L² interpolation theory, with applications to numerical quadrature, spectral methods, and approximation theory. The distinction between L∞-optimal (Kilgore-de Boor-Pinkus) and L²-optimal nodes illuminates the geometry of polynomial spaces.",
+    "openQuestions": [
+      "Is min I = 2 - (1+o(1))/n? Can the (log n)² factor in the lower bound be removed?",
+      "What node configuration achieves the minimum for each n?",
+      "Is the optimal node system unique (up to reflection)?",
+      "Does the Gram matrix G_{jk} = ∫l_j l_k dx have spectral structure that explains the minimum?",
+      "What is the L² analog of the Kilgore-de Boor-Pinkus characterization of L∞-optimal nodes?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "The Cauchy-Schwarz inequality for integrals provides the key lower bound I >= 2/n via the partition of unity sum l_k = 1",
+      "targetId": "cauchy-schwarz-integral"
+    },
+    {
+      "relationship": "Fourier analysis connects to the spectral theory of the Gram matrix G_{jk} = int l_j l_k dx, whose trace equals I",
+      "targetId": "fourier-series"
+    },
+    {
+      "relationship": "Legendre polynomials provide the near-optimal node system for the L2 interpolation problem; their zeros achieve I = 2 - 2/(2n-1)",
+      "targetId": "legendre-partial"
+    }
+  ],
+  "references": [
+    {
+      "key": "Fe32",
+      "citation": "Fejér, L., Ann. Scuola Norm. Super. Pisa Cl. Sci. (2) (1932), 263-276."
+    },
+    {
+      "key": "Sz66",
+      "citation": "Szabados, J., On a problem of P. Erdős, Acta Math. Acad. Sci. Hungar. (1966), 155-157."
+    },
+    {
+      "key": "ESVV94",
+      "citation": "Erdős, P., Szabados, J., Varma, A. K., Vértesi, P., On an interpolation theoretical extremal problem, Studia Sci. Math. Hungar. (1994), 55-60."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MeasureTheory"
+    ],
+    "namespace": "Erdos1131",
+    "lineCount": 1076,
+    "axiomCount": 1,
+    "theoremCount": 31,
+    "definitionCount": 6,
+    "sorries": 0,
+    "path": "Proofs/Erdos1131Problem.lean"
+  },
+  "sorries": 0
+}

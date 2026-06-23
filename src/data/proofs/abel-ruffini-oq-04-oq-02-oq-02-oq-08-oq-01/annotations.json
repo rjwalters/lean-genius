@@ -1,0 +1,96 @@
+[
+  {
+    "id": "ann-card-intrinsic-overview",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01",
+    "range": { "startLine": 1, "endLine": 44 },
+    "type": "concept",
+    "title": "Lifting the n ≤ 4 thresholds off Fin n",
+    "content": "The classical theorems say '$S_n$ is solvable iff $n \\le 4$' and '$A_n$ is solvable iff $n \\le 4$', where $n$ implicitly means the index set $\\{1,\\dots,n\\}$ — `Fin n` in Lean. But solvability is a property of the abstract group, and the symmetric/alternating group of an $n$-element set does not depend on *which* $n$-element set you take. This entry proves the type-theoretically clean form:\n$$\\mathrm{IsSolvable}(S_\\alpha) \\iff |\\alpha| \\le 4, \\qquad \\mathrm{IsSolvable}(A_\\alpha) \\iff |\\alpha| \\le 4$$\nfor an **arbitrary** finite type $\\alpha$, with $|\\alpha| = \\texttt{Fintype.card}\\,\\alpha$. The only invariant that survives is the cardinality.\n\nThe whole file is powered by one map: a bijection $e : \\alpha \\simeq \\beta$ induces the conjugation isomorphism $\\texttt{permCongrHom}\\,e : S_\\alpha \\simeq^* S_\\beta$, $\\sigma \\mapsto e\\,\\sigma\\,e^{-1}$. Because conjugation preserves parity, this isomorphism also matches up the alternating subgroups, and solvability — being a group-isomorphism invariant — cannot tell $\\alpha$ from $\\beta$ once $|\\alpha| = |\\beta|$.",
+    "mathContext": "Choosing $\\beta = \\mathrm{Fin}(|\\alpha|)$ via `Fintype.equivFin` reduces every arbitrary-type statement to the corresponding `Fin n` statement proved by the ancestor entries.",
+    "significance": "foundational",
+    "relatedConcepts": [
+      "symmetric group",
+      "alternating group",
+      "solvable group",
+      "conjugation of permutations",
+      "cardinality as a complete invariant",
+      "Fintype.card"
+    ],
+    "prerequisites": [
+      "group theory",
+      "solvable groups",
+      "permutation groups",
+      "Mathlib IsSolvable and Fintype"
+    ]
+  },
+  {
+    "id": "ann-isSolvable-congr",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01",
+    "range": { "startLine": 45, "endLine": 63 },
+    "type": "technique",
+    "title": "Solvability is a group-isomorphism invariant",
+    "content": "Mathlib provides `solvable_of_surjective : Function.Surjective f → [IsSolvable G] → IsSolvable G'` — the derived series of $G$ surjects onto that of $G'$, so $G'$ inherits solvability. A `MulEquiv` $e : G \\simeq^* G'$ is surjective, and so is its inverse $e^{-1}$; feeding both into `solvable_of_surjective` yields the equivalence\n$$\\texttt{isSolvable\\_congr} : \\mathrm{IsSolvable}\\,G \\iff \\mathrm{IsSolvable}\\,G'.$$\nThe small implementation wrinkle is that `solvable_of_surjective` consumes `[IsSolvable G]` as an instance, while the two halves of the iff receive it as an ordinary hypothesis `h`; `haveI := h` promotes it back to an instance. The underlying function of $e$ as a `MonoidHom`, `(e : G →* G')`, has the same surjectivity as `e` itself (`EquivLike.surjective e`), definitionally.",
+    "mathContext": "This is the engine that makes every later transport free: once you have a MulEquiv between two groups, their solvability verdicts are identical.",
+    "significance": "important",
+    "relatedConcepts": [
+      "derived series",
+      "solvable_of_surjective",
+      "MulEquiv",
+      "EquivLike.surjective"
+    ],
+    "prerequisites": ["solvable groups", "group homomorphisms", "Lean typeclass resolution"]
+  },
+  {
+    "id": "ann-map-permCongrHom-alternating",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01",
+    "range": { "startLine": 78, "endLine": 112 },
+    "type": "key-step",
+    "title": "Conjugation preserves the alternating subgroup",
+    "content": "The crux of the transport for alternating groups: the conjugation isomorphism carries $A_\\alpha$ exactly onto $A_\\beta$,\n$$(\\texttt{alternatingGroup}\\,\\alpha).\\mathrm{map}\\,(\\texttt{permCongrHom}\\,e) = \\texttt{alternatingGroup}\\,\\beta.$$\nProof is a membership `ext g`. Since $A = \\ker(\\mathrm{sign})$ (`mem_alternatingGroup`: $f \\in A \\iff \\mathrm{sign}\\,f = 1$), and `sign_permCongr` gives $\\mathrm{sign}(e.\\texttt{permCongr}\\,p) = \\mathrm{sign}\\,p$:\n• ($\\subseteq$) an image $e.\\texttt{permCongr}\\,p$ has the same sign as $p$, so it is even when $p$ is.\n• ($\\supseteq$) given even $g \\in S_\\beta$, the preimage $e^{-1}.\\texttt{permCongr}\\,g$ is even and maps to $g$; the round-trip $e.\\texttt{permCongr}(e^{-1}.\\texttt{permCongr}\\,g) = g$ is `permCongr_symm` ($e.\\texttt{permCongr}^{-1} = e^{-1}.\\texttt{permCongr}$) followed by `apply_symm_apply`.\n\nA Lean detail worth noting: the goal displays the image as the `MonoidHom` coercion `↑e.permCongrHom p`, which is *definitionally* `e.permCongr p`; a `show e.permCongr p = …` step re-exposes it so `sign_permCongr` rewrites. `alternatingCongr` then packages this equality (`subgroupMap` + `subgroupCongr`) into the isomorphism $A_\\alpha \\simeq^* A_\\beta$.",
+    "mathContext": "Conjugation is an inner-ish automorphism of the ambient permutation group transported across a relabelling; parity is conjugation-invariant, so the even permutations are matched with the even permutations.",
+    "significance": "important",
+    "relatedConcepts": [
+      "alternatingGroup = ker(sign)",
+      "sign_permCongr",
+      "Subgroup.map",
+      "MulEquiv.subgroupMap",
+      "Equiv.permCongr_symm"
+    ],
+    "prerequisites": ["kernels and images of group homomorphisms", "sign of a permutation", "subgroup map"]
+  },
+  {
+    "id": "ann-classifications",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01",
+    "range": { "startLine": 113, "endLine": 129 },
+    "type": "key-step",
+    "title": "Reducing the arbitrary-type classification to Fin n",
+    "content": "With the transport in hand, the classifications are two-line rewrites. For the symmetric group:\n$$\\mathrm{IsSolvable}(S_\\alpha) \\overset{\\texttt{perm\\_solvable\\_congr}\\,(\\texttt{equivFin}\\,\\alpha)}{\\iff} \\mathrm{IsSolvable}(S_{\\mathrm{Fin}\\,|\\alpha|}) \\overset{\\texttt{sym\\_solvable\\_iff}}{\\iff} |\\alpha| \\le 4.$$\nThe alternating version is identical with `alternating_solvable_congr` and the grandparent's `alternating_solvable_iff`. `Fintype.equivFin α : α ≃ Fin (Fintype.card α)` is the bijection that turns the abstract type into the concrete index set the ancestor theorems were proved for. No new group theory is needed at this step — only the transport plus the already-formalized `Fin n` verdicts.",
+    "mathContext": "This is the moment the 'arbitrary finite type' generality is cashed out: every finite type is, up to a chosen bijection, a `Fin n`, and solvability cannot see the bijection.",
+    "significance": "foundational",
+    "relatedConcepts": [
+      "Fintype.equivFin",
+      "sym_solvable_iff",
+      "alternating_solvable_iff",
+      "classification by cardinality"
+    ],
+    "prerequisites": ["finite types", "the Fin n solvability classifications"]
+  },
+  {
+    "id": "ann-card-eq-and-sharp",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01",
+    "range": { "startLine": 130, "endLine": 174 },
+    "type": "observation",
+    "title": "Equinumerous types are indistinguishable; the jump at 5 is forced everywhere",
+    "content": "Once solvability is pinned to $|\\alpha|$, two consequences are immediate. First, equal cardinality forces equal solvability — `alternating_solvable_iff_of_card_eq` and `perm_solvable_iff_of_card_eq` rewrite both sides through the card classification and finish with `h`. Second, `nonempty_alternatingCongr_of_card_eq` records that equinumerous finite types actually have *isomorphic* alternating groups, with the explicit witness `alternatingCongr (Fintype.equivOfCardEq h)` — not merely 'both solvable or both not'.\n\nFinally `sharp_threshold_card` exhibits the dichotomy concretely: any 4-element type has solvable alternating group and any 5-element type does not, with the contradiction at the boundary discharged by `omega` on the cardinality hypotheses. This is the coordinate-free form of the $A_5$ obstruction underlying Abel-Ruffini: it is a property of *five-element sets*, not of the particular set $\\{1,2,3,4,5\\}$.",
+    "mathContext": "The existence of the isomorphism (not just the biconditional on solvability) is the strongest form of 'cardinality is the only invariant' at the level of the groups themselves.",
+    "significance": "important",
+    "relatedConcepts": [
+      "Fintype.equivOfCardEq",
+      "group isomorphism",
+      "A₅ obstruction",
+      "Abel-Ruffini theorem",
+      "sharp threshold"
+    ],
+    "prerequisites": ["finite cardinality", "group isomorphism", "omega tactic"]
+  }
+]

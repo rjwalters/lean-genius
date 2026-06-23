@@ -1,0 +1,190 @@
+[
+  {
+    "id": "ann-bezout-oq02-imports",
+    "proofId": "bezout-identity-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 5
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "**Five targeted imports provide everything needed:**\n\n- `Mathlib.Data.Nat.GCD.Basic`: `Nat.Coprime`, `Nat.gcd_eq_gcd_ab`, `Nat.gcdA/gcdB`, `Nat.eq_one_of_dvd_one`\n- `Mathlib.Data.Int.GCD`: Integer GCD, `Int.natCast_dvd_natCast` (divisibility across ℕ↔ℤ)\n- `Mathlib.RingTheory.Coprime.Basic`: `IsCoprime` (the Bézout condition in any commutative ring)\n- `Mathlib.Data.Nat.Prime.Basic`: `Nat.Prime`, `Nat.Prime.coprime_iff_not_dvd`\n- `Mathlib.Tactic`: `linear_combination`, `exact_mod_cast`, `push_cast`, `norm_num`",
+    "mathContext": "`IsCoprime a b` is defined in `Mathlib.RingTheory.Coprime.Basic` as $\\exists u v,\\ u \\cdot a + v \\cdot b = 1$ — this IS Bézout's identity. The import from `Mathlib.Data.Int.GCD` gives `Int.natCast_dvd_natCast : m \\mid n \\iff (\\uparrow m : \\mathbb{Z}) \\mid \\uparrow n$, the key for moving divisibility between $\\mathbb{N}$ and $\\mathbb{Z}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.Coprime",
+      "IsCoprime",
+      "Nat.gcdA",
+      "Int.natCast_dvd_natCast",
+      "linear_combination tactic"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib module structure",
+      "Nat.Coprime vs IsCoprime distinction"
+    ]
+  },
+  {
+    "id": "ann-bezout-oq02-overview",
+    "proofId": "bezout-identity-oq-02",
+    "range": {
+      "startLine": 7,
+      "endLine": 39
+    },
+    "type": "concept",
+    "title": "Open Question and Proof Strategy Overview",
+    "content": "**The Open Question (bezout-identity-oq-02):** Can Euclid's lemma be proved formally using `coprime_iff_linear_combination`?\n\n**Answer: YES.** The key proof idea:\n1. From `coprime_iff_linear_combination`: get $x, y \\in \\mathbb{Z}$ with $ax + by = 1$\n2. From divisibility hypothesis: get $k$ with $bc = ak$\n3. **Witness construction**: $c = (ax+by)c = a(xc) + (bc)y = a(xc) + (ak)y = a(xc + yk)$\n4. So $a \\mid c$ with explicit witness $xc + yk$\n\n**Tactic closure:** `linear_combination y * hk - c * hbez` verifies the ring identity automatically.\n\nThis file proves 4 related theorems and provides 6 worked examples with 0 sorries.",
+    "mathContext": "The proof reduces to the identity $c - a(xc + yk) = y(bc - ak) - c(ax + by - 1) = y \\cdot 0 - c \\cdot 0 = 0$. The `linear_combination` tactic verifies this by ring arithmetic, making the proof both human-readable and machine-checked.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bézout's identity",
+      "Euclid's lemma",
+      "coprimality",
+      "linear_combination tactic",
+      "constructive proof"
+    ],
+    "prerequisites": [
+      "Euclid's Elements Proposition VII.30",
+      "Bézout coefficients",
+      "p-adic/algebraic proof methods",
+      "Lean 4 module documentation syntax"
+    ]
+  },
+  {
+    "id": "ann-bezout-oq02-coprime",
+    "proofId": "bezout-identity-oq-02",
+    "range": {
+      "startLine": 41,
+      "endLine": 73
+    },
+    "type": "concept",
+    "title": "coprime_iff_linear_combination: Bridge Between Arithmetic and Algebra",
+    "content": "**Theorem:** `Nat.Coprime a b ↔ ∃ x y : ℤ, a*x + b*y = 1`\n\n**Forward direction (→):** From `Nat.Coprime a b` (i.e., `gcd a b = 1`):\n- Use `Nat.gcd_eq_gcd_ab a b : gcd a b = a * gcdA a b + b * gcdB a b`\n- Rewrite with `h : gcd a b = 1` to get `1 = a * gcdA + b * gcdB`\n- `push_cast` coerces to ℤ; `linarith` closes\n\n**Backward direction (←):** From `a*x + b*y = 1` over ℤ:\n- `gcd a b` divides both `a` and `b` (by `Nat.gcd_dvd_left/right`)\n- Hence `gcd a b | a*x + b*y = 1`\n- Cast to ℕ via `exact_mod_cast`, apply `Nat.eq_one_of_dvd_one`",
+    "mathContext": "This theorem bridges two notions of coprimality: **arithmetic** (`Nat.Coprime a b : gcd(a,b) = 1`) and **algebraic** (`∃ x y \\in \\mathbb{Z}: ax + by = 1`). The backward direction uses $\\gcd(a,b) \\mid a$ and $\\gcd(a,b) \\mid b$, hence $\\gcd(a,b) \\mid ax + by = 1$, giving $\\gcd(a,b) = 1$. The cast `Int.natCast_dvd_natCast` handles the ℕ↔ℤ transition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.gcdA",
+      "Nat.gcdB",
+      "Nat.gcd_eq_gcd_ab",
+      "Bézout's identity",
+      "IsCoprime",
+      "push_cast tactic",
+      "linarith tactic"
+    ],
+    "prerequisites": [
+      "Nat.Coprime definition",
+      "gcd (greatest common divisor)",
+      "Bézout's identity",
+      "exact_mod_cast",
+      "Nat.eq_one_of_dvd_one"
+    ],
+    "leanSymbol": "coprime_iff_linear_combination"
+  },
+  {
+    "id": "ann-bezout-oq02-int",
+    "proofId": "bezout-identity-oq-02",
+    "range": {
+      "startLine": 75,
+      "endLine": 94
+    },
+    "type": "concept",
+    "title": "Euclid's Lemma for Integers via IsCoprime",
+    "content": "**Theorem:** `IsCoprime a b → a ∣ b*c → a ∣ c` (over ℤ)\n\nSince `IsCoprime a b` IS defined as `∃ u v, u*a + v*b = 1`, the proof is direct:\n1. `obtain ⟨u, v, huv⟩ := hcop` — extracts u, v with `u*a + v*b = 1`\n2. `obtain ⟨k, hk⟩ := hdvd` — extracts k with `b*c = a*k`\n3. **Witness:** `u*c + v*k`\n4. **Proof:** `by linear_combination v * hk - c * huv`\n\n**Identity verified by ring:** `c - a*(u*c + v*k) = v*(b*c - a*k) - c*(u*a + v*b - 1) = 0`",
+    "mathContext": "Over $\\mathbb{Z}$, `IsCoprime a b` $\\equiv \\exists u, v: ua + vb = 1$. The witness for $a \\mid c$ is $u c + vk$ where $bc = ak$:\n$$c = 1 \\cdot c = (ua+vb)c = u(ac) + v(bc) = u(ac) + v(ak) = a(uc + vk)$$\nThe `linear_combination` check: $c - a(uc+vk) = v(bc-ak) - c(ua+vb-1) = v \\cdot 0 - c \\cdot 0 = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsCoprime",
+      "linear_combination tactic",
+      "existential elimination",
+      "ring identity"
+    ],
+    "prerequisites": [
+      "IsCoprime definition in Mathlib",
+      "dvd in ℤ",
+      "linear_combination tactic",
+      "obtain tactic"
+    ],
+    "leanSymbol": "euclids_lemma_int"
+  },
+  {
+    "id": "ann-bezout-oq02-nat",
+    "proofId": "bezout-identity-oq-02",
+    "range": {
+      "startLine": 96,
+      "endLine": 121
+    },
+    "type": "concept",
+    "title": "Euclid's Lemma for Naturals: The Main Result",
+    "content": "**Theorem (Main Answer to OQ):** `Nat.Coprime a b → a ∣ b*c → a ∣ c` (over ℕ)\n\n**Proof steps:**\n1. `rw [coprime_iff_linear_combination] at hcop` — rewrites coprimality as Bézout witness\n2. `obtain ⟨x, y, hbez⟩ := hcop` — extracts `(a:ℤ)*x + (b:ℤ)*y = 1`\n3. `rw [← Int.natCast_dvd_natCast]` — converts the goal `a ∣ c` in ℕ to `(a:ℤ) ∣ (c:ℤ)`\n4. `exact_mod_cast hdvd` — converts `a ∣ b*c` in ℕ to `(a:ℤ) ∣ (b:ℤ)*(c:ℤ)`\n5. `obtain ⟨k, hk⟩` — gets k with `(b:ℤ)*c = (a:ℤ)*k`\n6. Witness `x*c + y*k` with `by linear_combination y * hk - (c:ℤ) * hbez`\n\n**Why work in ℤ:** Natural numbers don't support negative Bézout coefficients. Cast to ℤ for the algebra, cast back for the result.",
+    "mathContext": "This theorem has a key architectural choice: the Bézout coefficients $x, y$ may be negative (e.g., for $\\gcd(3,7)=1$: $x=5, y=-2$, since $3 \\cdot 5 + 7 \\cdot(-2) = 1$). Natural number arithmetic can't represent $y=-2$. The cast pattern `rw [← Int.natCast_dvd_natCast]` followed by `exact_mod_cast` is the standard Lean idiom for \"do arithmetic in $\\mathbb{Z}$, recover result in $\\mathbb{N}$\".",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.Coprime",
+      "Int.natCast_dvd_natCast",
+      "exact_mod_cast",
+      "rw tactic",
+      "coercion ℕ → ℤ"
+    ],
+    "prerequisites": [
+      "Nat.Coprime",
+      "cast between ℕ and ℤ",
+      "Int.natCast_dvd_natCast",
+      "coprime_iff_linear_combination"
+    ],
+    "leanSymbol": "euclids_lemma_nat"
+  },
+  {
+    "id": "ann-bezout-oq02-prime",
+    "proofId": "bezout-identity-oq-02",
+    "range": {
+      "startLine": 123,
+      "endLine": 142
+    },
+    "type": "concept",
+    "title": "Euclid's Lemma: Prime Version",
+    "content": "**Theorem:** `Nat.Prime p → p ∣ a*b → p ∣ a ∨ p ∣ b`\n\n**Proof by case split on `p ∣ a`:**\n- **Case `p ∣ a`:** Direct — return `Or.inl ha`\n- **Case `p ∤ a`:** Use `Nat.Prime.coprime_iff_not_dvd`: a prime is coprime to $n$ iff it doesn't divide $n$. So `hp.coprime_iff_not_dvd.mpr ha : Nat.Coprime p a`. Then apply `euclids_lemma_nat p a b hcop hdvd` to get `p ∣ b`, return `Or.inr`\n\n**Key fact used:** For a prime $p$, the only possibilities are $\\gcd(p, a) = 1$ or $\\gcd(p, a) = p$ (i.e., $p \\mid a$).",
+    "mathContext": "The primality of $p$ is essential: if $p$ doesn't divide $a$, then since $p$'s only divisors are 1 and $p$, we get $\\gcd(p,a) = 1$. Formally: `Nat.Prime.coprime_iff_not_dvd : Nat.Prime p → (Nat.Coprime p n ↔ ¬p ∣ n)`. This reduces the prime version to the coprime version, making `euclids_lemma_nat` the workhorse.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.Prime",
+      "Nat.Prime.coprime_iff_not_dvd",
+      "by_cases tactic",
+      "Or.inl/Or.inr",
+      "Nat.Coprime"
+    ],
+    "prerequisites": [
+      "Nat.Prime definition",
+      "primality and coprimality relationship",
+      "by_cases in Lean 4",
+      "euclids_lemma_nat"
+    ],
+    "leanSymbol": "euclids_lemma_prime"
+  },
+  {
+    "id": "ann-bezout-oq02-examples",
+    "proofId": "bezout-identity-oq-02",
+    "range": {
+      "startLine": 144,
+      "endLine": 192
+    },
+    "type": "insight",
+    "title": "Worked Examples and the Algebraic Identity",
+    "content": "**Six concrete demonstrations:**\n\n1. `(3:ℕ) ∣ 6`: gcd(3,7)=1, 3∣42=7·6, by `euclids_lemma_nat 3 7 6 (by decide) (by norm_num)`\n2. `(5:ℕ) ∣ 15`: gcd(5,8)=1, 5∣120=8·15, by `euclids_lemma_nat 5 8 15`\n3. `7 ∣ 14 ∨ 7 ∣ 3`: 7 prime, 7∣42=14·3, by `euclids_lemma_prime 7 14 3`\n4. **Bézout witness for (3,7):** `3 * 5 + 7 * (-2) = 1`, verified by `norm_num`\n5. **coprime_iff_linear_combination at a=3, b=7:** `Nat.Coprime 3 7 ↔ ∃ x y : ℤ, 3*x + 7*y = 1`\n6. **Witness verification:** `x*c + y*k = 5*6 + (-2)*14 = 30-28 = 2`, and `3*2 = 6` ✓\n\n**Why linear_combination works:** The ring identity `c - a*(x*c + y*k) = y*(b*c - a*k) - c*(a*x + b*y - 1)` reduces to `y*0 - c*0 = 0` by substituting the hypotheses.",
+    "mathContext": "For example 1: Bézout coefficients for $\\gcd(3,7)=1$ are $x=5, y=-2$ (since $3 \\cdot 5 + 7 \\cdot (-2) = 15 - 14 = 1$). The witness for $3 \\mid 6$ given $3 \\mid 7 \\cdot 6 = 42$ (i.e., $42 = 3 \\cdot 14$, so $k=14$): $xc + yk = 5 \\cdot 6 + (-2) \\cdot 14 = 30 - 28 = 2$. Indeed $3 \\cdot 2 = 6$ ✓. The general identity: for `hbez : a*x + b*y = 1` and `hk : b*c = a*k`, the `linear_combination y * hk - c * hbez` tactic checks `c - a*(x*c + y*k) = y*(b*c - a*k) - c*(a*x + b*y - 1)` by ring.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bézout coefficients",
+      "decide tactic",
+      "norm_num tactic",
+      "linear_combination ring identity",
+      "explicit witness construction"
+    ],
+    "prerequisites": [
+      "euclids_lemma_nat",
+      "euclids_lemma_prime",
+      "coprime_iff_linear_combination",
+      "decide and norm_num tactics",
+      "ring arithmetic in ℤ"
+    ]
+  }
+]

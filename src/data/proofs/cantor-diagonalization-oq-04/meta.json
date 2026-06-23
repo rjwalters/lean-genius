@@ -1,0 +1,249 @@
+{
+  "id": "cantor-diagonalization-oq-04",
+  "title": "Lawvere Fixed-Point Theorem: Retraction Version",
+  "slug": "cantor-diagonalization-oq-04",
+  "description": "The retraction formulation of Lawvere's fixed-point theorem: if a type Y codes its own endomorphisms via an encode/decode pair with decode . encode = id, then every endomorphism f : Y -> Y has a fixed point. This complements the surjection version (OQ03) by making the section-retraction structure explicit. Derives impossibility results for Nat, Bool, Prop, Cantor's theorem for arbitrary codomains, and extracts the Y combinator constructively.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CantorDiagonalizationOQ04.lean",
+    "tags": [
+      "set-theory",
+      "logic",
+      "category-theory",
+      "lawvere",
+      "cantor",
+      "diagonal-argument",
+      "fixed-point",
+      "retraction",
+      "y-combinator"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 304,
+    "assumptions": "None. Fully verified with 0 axioms, 0 sorries. Uses only basic logic and function theory from Mathlib.",
+    "originalContributions": [
+      "Core: CodesEndomorphisms structure — encode/decode pair with retraction property formalizing Y^Y retracting onto Y",
+      "Core: lawvere_fixpoint — the retraction version via diagonal g(y) = f(decode(y)(y))",
+      "Core: no_coding_if_fixpoint_free — contrapositive impossibility direction",
+      "Bridge: codesOfSurjection — surjections induce retractions via choice, connecting OQ03 and OQ04",
+      "Applications: nat_cannot_code, bool_cannot_code, prop_cannot_code — three impossibility instances",
+      "Applications: cantor_no_surjection, cantor_prop, cantor_bool, cantor_nat — Cantor's theorem for four codomains",
+      "Construction: yCombinator + yCombinator_is_fixpoint — constructive fixed-point extraction",
+      "Construction: diag + diag_tracks — diagonal map tracks every endomorphism",
+      "Equivalence: codes_iff_right_inverse — CodesEndomorphisms iff decode has right inverse"
+    ],
+    "dateAdded": "2026-03-27",
+    "mathlibDependencies": [
+      {
+        "theorem": "Function.Surjective",
+        "description": "Definition of surjectivity for connecting surjection and retraction versions",
+        "module": "Mathlib.Logic.Function.Basic"
+      },
+      {
+        "theorem": "Function.HasRightInverse",
+        "description": "Right inverse characterization used in the equivalence theorem",
+        "module": "Mathlib.Logic.Function.Basic"
+      },
+      {
+        "theorem": "Nat.succ_ne_self",
+        "description": "Successor is never equal to its argument — used for Nat impossibility",
+        "module": "Mathlib.Tactic"
+      }
+    ],
+    "prerequisites": [
+      "Section-retraction pairs and right inverses",
+      "Surjectivity and function spaces",
+      "Propositional logic, negation, and type-theoretic cast",
+      "Diagonal arguments and self-application",
+      "Cartesian closed categories (for conceptual context)"
+    ],
+    "relatedProblems": [
+      {
+        "id": "cantor-diagonalization-oq-03",
+        "relationship": "The surjection version of Lawvere; this file shows surjections induce retractions, unifying both"
+      },
+      {
+        "id": "cantor-diagonalization",
+        "relationship": "The base Cantor diagonal proof; derived here as a corollary via cantor_prop/cantor_bool"
+      },
+      {
+        "id": "halting-problem",
+        "relationship": "The Y combinator extracted here connects to the fixed-point structure underlying undecidability"
+      }
+    ],
+    "theoremCount": 14,
+    "definitionCount": 4
+  },
+  "overview": {
+    "problemStatement": "Prove the retraction formulation of Lawvere's fixed-point theorem: if a type $Y$ codes its own endomorphisms (i.e., $Y \\to Y$ retracts into $Y$ via encode/decode with $\\text{decode} \\circ \\text{encode} = \\text{id}$), then every endomorphism $f : Y \\to Y$ has a fixed point.",
+    "historicalContext": "F. William Lawvere's 1969 paper proved the fixed-point theorem in cartesian closed categories: if $Y^Y$ retracts onto $Y$, every endomorphism has a fixed point. The retraction formulation makes the categorical content explicit -- a retraction is a section-retraction pair (encode, decode) with round-trip property. This is strictly stronger than mere surjectivity of decode, as it provides a canonical choice function. The retraction perspective connects directly to the untyped lambda calculus, where every type satisfies $Y \\cong Y \\to Y$, yielding the Y combinator as the constructive witness of the fixed-point theorem. Haskell Curry's fixed-point combinator (1930s) and Dana Scott's domain-theoretic semantics (1969) are both instances of this principle.",
+    "text": "A 304-line verified formalization of the Lawvere fixed-point theorem in retraction form with 0 sorries and 0 axioms. The CodesEndomorphisms structure packages encode : (Y -> Y) -> Y and decode : Y -> (Y -> Y) with retract : decode . encode = id. The main theorem constructs the diagonal g(y) = f(decode(y)(y)), encodes it to get y_0, and uses the retract property to show f(g(y_0)) = g(y_0). Nine parts develop the theory: impossibility results for Nat/Bool/Prop, Cantor's theorem for four codomains, the Y combinator extraction, diagonal tracking, and the equivalence with right inverses.",
+    "proofStrategy": "1. **Retraction framework**: Define CodesEndomorphisms Y as a structure with encode, decode, and retract fields. This replaces the surjectivity hypothesis of OQ03 with explicit section-retraction data.\n\n2. **Lawvere diagonal**: Given CodesEndomorphisms Y and f : Y -> Y, define g(y) = f(decode(y)(y)). Set y_0 = encode(g). By retract, decode(y_0) = g, so decode(y_0)(y_0) = g(y_0) = f(decode(y_0)(y_0)), yielding f(g(y_0)) = g(y_0).\n\n3. **Surjection bridge**: Show that a surjection e : Y -> (Y -> Y) induces CodesEndomorphisms via choice, unifying the two formulations.\n\n4. **Applications**: Exhibit fixed-point-free endomorphisms (succ, bnot, Not) to derive impossibility for Nat, Bool, Prop. Cantor's theorem follows for each codomain.",
+    "keyInsights": [
+      "**Retraction > Surjection**: The retraction formulation is more informative than the surjection version because it provides a canonical section (encode). While choice recovers encode from surjectivity, the retraction makes the algebraic structure explicit.",
+      "**The Y Combinator Falls Out**: The proof constructively builds Y(f) = g(encode(g)) where g(y) = f(decode(y)(y)). In the untyped lambda calculus (where Y = Y -> Y), this IS the Y combinator. The fixed-point theorem explains why recursive definitions work.",
+      "**Diagonal Tracking**: The diagonal map d(y) = decode(y)(y) has a universal tracking property: for every endomorphism g, there exists y_0 with d(y_0) = g(y_0). This is why diagonalization defeats every attempted enumeration -- no function can avoid being tracked.",
+      "**Three Flavors of Impossibility**: Nat (succ has no fixed point), Bool (negation has no fixed point by decide), Prop (negation has no fixed point by self-application) -- each demonstrates a different proof technique for the same categorical principle.",
+      "**Categorical Content Made Explicit**: The structure CodesEndomorphisms directly formalizes 'Y^Y retracts onto Y' in the category Type. The proof uses only composition, evaluation, and diagonal -- exactly what's available in any CCC."
+    ],
+    "prerequisites": [
+      "Section-retraction pairs (right inverses) and their properties",
+      "Function spaces and higher-order functions (A -> (A -> B))",
+      "The Y combinator and fixed-point theory in lambda calculus",
+      "Propositional logic, negation, and type-theoretic equality transport",
+      "Cartesian closed categories (conceptual background)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "retraction-framework",
+      "title": "Part I: The Retraction Framework",
+      "startLine": 38,
+      "endLine": 66,
+      "summary": "Defines CodesEndomorphisms structure: encode, decode, and retract fields packaging the retraction of Y -> Y into Y.",
+      "mathContext": "A type $Y$ codes its endomorphisms when $Y \\to Y$ retracts into $Y$: there exist encode $: (Y \\to Y) \\to Y$ and decode $: Y \\to (Y \\to Y)$ with $\\text{decode} \\circ \\text{encode} = \\text{id}$."
+    },
+    {
+      "id": "lawvere-fixpoint",
+      "title": "Part II: Lawvere's Fixed-Point Theorem",
+      "startLine": 68,
+      "endLine": 99,
+      "summary": "The main theorem: if Y codes its endomorphisms, every f : Y -> Y has a fixed point. Proved via the diagonal g(y) = f(decode(y)(y)).",
+      "mathContext": "Define $g(y) = f(\\text{decode}(y)(y))$, set $y_0 = \\text{encode}(g)$. By retract: $\\text{decode}(y_0) = g$, so $g(y_0) = f(g(y_0))$."
+    },
+    {
+      "id": "contrapositive",
+      "title": "Part III: Contrapositive",
+      "startLine": 101,
+      "endLine": 111,
+      "summary": "If f has no fixed point, Y cannot code its endomorphisms.",
+      "mathContext": "Direct contrapositive of the Lawvere theorem."
+    },
+    {
+      "id": "surjection-bridge",
+      "title": "Part IV: Surjections Induce Retractions",
+      "startLine": 113,
+      "endLine": 137,
+      "summary": "Shows surjective decode induces CodesEndomorphisms via choice, connecting to OQ03's surjection version.",
+      "mathContext": "If $e : Y \\to (Y \\to Y)$ is surjective, choice gives encode with $e(\\text{encode}(f)) = f$."
+    },
+    {
+      "id": "impossibility",
+      "title": "Part V: Impossibility Results",
+      "startLine": 139,
+      "endLine": 167,
+      "summary": "Nat, Bool, Prop cannot code their endomorphisms, via succ, bnot, Not respectively.",
+      "mathContext": "Each type admits a fixed-point-free endomorphism: $\\text{succ}(n) \\neq n$, $!b \\neq b$, $\\neg p \\neq p$."
+    },
+    {
+      "id": "cantor",
+      "title": "Part VI: Cantor's Theorem via Retractions",
+      "startLine": 169,
+      "endLine": 203,
+      "summary": "Cantor's theorem for arbitrary codomains: no surjection A -> (A -> B) when B has a fixed-point-free endomorphism. Instantiated for Prop, Bool, Nat.",
+      "mathContext": "If $f : B \\to B$ has no fixed point, $\\nexists$ surjection $A \\to (A \\to B)$."
+    },
+    {
+      "id": "y-combinator",
+      "title": "Part VII: The Y Combinator",
+      "startLine": 205,
+      "endLine": 227,
+      "summary": "Constructive fixed-point extraction: yCombinator c f = g(encode(g)) produces genuine fixed points.",
+      "mathContext": "The Y combinator $Y(f) = g(\\text{encode}(g))$ where $g(y) = f(\\text{decode}(y)(y))$ satisfies $f(Y(f)) = Y(f)$."
+    },
+    {
+      "id": "diagonal",
+      "title": "Part VIII: The Diagonal Map",
+      "startLine": 229,
+      "endLine": 248,
+      "summary": "The diagonal d(y) = decode(y)(y) tracks every endomorphism: for all g, exists y_0 with d(y_0) = g(y_0).",
+      "mathContext": "Universal tracking: $\\forall g : Y \\to Y,\\; \\exists y_0,\\; d(y_0) = g(y_0)$."
+    },
+    {
+      "id": "categorical",
+      "title": "Part IX: Categorical Interpretation",
+      "startLine": 250,
+      "endLine": 293,
+      "summary": "Discussion of the CCC interpretation and equivalence between CodesEndomorphisms and HasRightInverse.",
+      "mathContext": "CodesEndomorphisms $Y$ iff $\\exists d : Y \\to (Y \\to Y)$ with right inverse."
+    }
+  ],
+  "conclusion": {
+    "summary": "The retraction formulation of Lawvere's fixed-point theorem makes the categorical content explicit: Y^Y retracts onto Y iff every endomorphism has a fixed point. This complements the surjection version (OQ03) and constructively extracts the Y combinator.",
+    "implications": "The retraction perspective reveals that the Y combinator is not an ad hoc construction but the constructive witness of a categorical fixed-point theorem. The equivalence between surjection and retraction versions (via choice) shows these are two presentations of the same mathematical content. The diagonal tracking property explains universally why enumeration-based arguments (Cantor, Russell, Turing, Godel) must fail.",
+    "openQuestions": [
+      "Can the retraction version be formalized in a general topos or CCC in Lean, beyond the Type category?",
+      "What is the constructive status of the surjection-to-retraction bridge without choice?",
+      "Can the Y combinator extraction be connected to domain-theoretic fixed-point semantics in Lean?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cantor-diagonalization-oq-03",
+      "relationship": "complements",
+      "description": "The surjection version of Lawvere; this file shows surjections induce retractions and derives both from the retraction form"
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "generalizes",
+      "description": "The base Cantor diagonal proof is a special case of cantor_prop/cantor_no_surjection"
+    },
+    {
+      "targetId": "cantors-theorem",
+      "relationship": "generalizes",
+      "description": "Cantor's theorem (|S| < |P(S)|) follows from Lawvere by taking B = Prop and f = Not"
+    },
+    {
+      "targetId": "halting-problem",
+      "relationship": "related",
+      "description": "The Y combinator extracted here connects to the fixed-point structure underlying undecidability"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Logic.Function.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "CantorDiagonalizationOQ04",
+    "lineCount": 304,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 4,
+    "path": "Proofs/CantorDiagonalizationOQ04.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "F. W. Lawvere",
+      "title": "Diagonal arguments and cartesian closed categories",
+      "year": "1969",
+      "venue": "Reprints in Theory and Applications of Categories, No. 15, 1-13 (2006 reprint)",
+      "note": "The original categorical fixed-point theorem in cartesian closed categories."
+    },
+    {
+      "authors": "G. Cantor",
+      "title": "Uber eine elementare Frage der Mannigfaltigkeitslehre",
+      "year": "1891",
+      "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung, 1, 75-78",
+      "note": "The original diagonal argument."
+    },
+    {
+      "authors": "N. Yanofsky",
+      "title": "A universal approach to self-referential paradoxes, incompleteness and fixed points",
+      "year": "2003",
+      "venue": "Bulletin of Symbolic Logic, 9(3), 362-386",
+      "note": "Systematic catalogue of Lawvere instances across mathematics and computation."
+    },
+    {
+      "authors": "H. B. Curry",
+      "title": "Grundlagen der kombinatorischen Logik",
+      "year": "1930",
+      "venue": "American Journal of Mathematics, 52(3), 509-536",
+      "note": "Early work on combinatory logic containing the fixed-point combinator."
+    }
+  ],
+  "sorries": 0
+}

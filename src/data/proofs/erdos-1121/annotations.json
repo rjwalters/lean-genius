@@ -1,0 +1,141 @@
+[
+  {
+    "id": "ann-e1121-header",
+    "proofId": "erdos-1121",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Problem Overview: Circle Covering",
+    "content": "Erdős Problem #1121 asks: if circles C₁,...,Cₙ in ℝ² with radii r₁,...,rₙ have no separating line (no line disjoint from all circles that divides them into two non-empty groups), can they be covered by a single circle of radius Σrᵢ? Proved TRUE by Goodman and Goodman (1945). Generalizes to balls in ℝⁿ.",
+    "mathContext": "The 'no separating line' condition captures when circles form a 'connected' cluster that cannot be split.",
+    "significance": "key",
+    "relatedConcepts": [
+      "covering",
+      "circles",
+      "convexity",
+      "separating-hyperplane"
+    ],
+    "prerequisites": [
+      "Euclidean plane geometry",
+      "discrete geometry",
+      "history of mathematics"
+    ]
+  },
+  {
+    "id": "ann-e1121-geometry",
+    "proofId": "erdos-1121",
+    "range": {
+      "startLine": 38,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "Circle and Line Structures",
+    "content": "Circle: center (x,y) ∈ ℝ² and radius r > 0. Contains point p iff (p₁-x)² + (p₂-y)² ≤ r² (closed disk). Line: {(x,y) : ax + by = c} with (a,b) ≠ (0,0). A line is disjoint from a circle if it doesn't intersect the closed disk.",
+    "significance": "key",
+    "relatedConcepts": [
+      "disk",
+      "Euclidean-geometry",
+      "implicit-line"
+    ],
+    "mathContext": "See annotation content for formal details of circle and line structures",
+    "prerequisites": [
+      "analytic geometry",
+      "real coordinate spaces",
+      "Lean 4 structure definitions"
+    ]
+  },
+  {
+    "id": "ann-e1121-separating",
+    "proofId": "erdos-1121",
+    "range": {
+      "startLine": 81,
+      "endLine": 119
+    },
+    "type": "definition",
+    "title": "Separating Line and Connected Configuration",
+    "content": "HasSeparatingLine: a line exists that is disjoint from all circles AND divides them into two non-empty groups (on opposite sides by signed distance). IsConnectedConfiguration: negation — no such separating line exists. Uses signedDistance(l, p) = (ax + by - c)/√(a²+b²) to determine which side of the line a point is on.",
+    "mathContext": "$\\text{signedDist}(l, p) = (ap_x + bp_y - c)/\\sqrt{a^2+b^2}$; line $l$ separates iff $\\exists i,j: \\text{signedDist}(l, \\text{center}(C_i)) > 0$ and $\\text{signedDist}(l, \\text{center}(C_j)) < 0$, with $l$ disjoint from all circles.",
+    "significance": "key",
+    "relatedConcepts": [
+      "separation",
+      "signed-distance",
+      "half-planes"
+    ],
+    "prerequisites": [
+      "linear algebra",
+      "analytic geometry",
+      "real analysis"
+    ]
+  },
+  {
+    "id": "ann-e1121-covering",
+    "proofId": "erdos-1121",
+    "range": {
+      "startLine": 121,
+      "endLine": 141
+    },
+    "type": "definition",
+    "title": "Covering and Sum of Radii",
+    "content": "Circle.covers C₁ C₂: every point in C₂ is also in C₁. Circle.coversAll C circles: C covers every circle in the set. sumOfRadii: Σᵢ rᵢ computed via Finset.sum. The theorem says the covering radius is EXACTLY the sum — this bound is tight.",
+    "mathContext": "$C_1 \\text{ covers } C_2 \\Leftrightarrow \\forall p \\in C_2: d(\\text{center}(C_1), p) \\leq r_1$; the covering radius bound $\\sum_{i=1}^n r_i$ is tight by collinear examples.",
+    "significance": "key",
+    "relatedConcepts": [
+      "covering",
+      "containment",
+      "sum"
+    ],
+    "prerequisites": [
+      "Euclidean geometry",
+      "Finset sums in Mathlib",
+      "metric spaces"
+    ]
+  },
+  {
+    "id": "ann-e1121-goodman",
+    "proofId": "erdos-1121",
+    "range": {
+      "startLine": 143,
+      "endLine": 163
+    },
+    "type": "concept",
+    "title": "ErdosConjecture1121 and Goodman-Goodman Theorem",
+    "content": "ErdosConjecture1121: for any connected configuration of circles, there exists a covering circle of radius = sumOfRadii. goodman_goodman_theorem (axiom): this conjecture is TRUE. Proved in Amer. Math. Monthly (1945), 494-498, using convex hull arguments.",
+    "mathContext": "$\\forall \\text{ connected } \\{C_1,\\ldots,C_n\\}, \\exists C_*: r_{C_*} = \\sum_{i=1}^n r_i$ and $C_* \\supseteq C_i\\, \\forall i$; proved via convex hull containment and induction on $n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "conjecture",
+      "covering-theorem",
+      "convex-hull"
+    ],
+    "prerequisites": [
+      "convex geometry",
+      "mathematical induction",
+      "Lean 4 axioms"
+    ]
+  },
+  {
+    "id": "ann-e1121-special",
+    "proofId": "erdos-1121",
+    "range": {
+      "startLine": 165,
+      "endLine": 193
+    },
+    "type": "definition",
+    "title": "Special Cases: Two Circles and Overlapping",
+    "content": "two_circles_case (axiom): two inseparable circles can be covered by a circle of radius r₁+r₂. CirclesOverlap: distance between centers ≤ r₁+r₂. overlap_implies_connected (axiom): if all pairs overlap, no separating line exists — overlapping is a sufficient condition for connected configuration.",
+    "significance": "key",
+    "relatedConcepts": [
+      "overlap",
+      "triangle-inequality",
+      "sufficient-condition"
+    ],
+    "mathContext": "See annotation content for formal details of special cases: two circles and overlapping",
+    "prerequisites": [
+      "Euclidean geometry",
+      "the triangle inequality",
+      "Lean 4 axioms"
+    ]
+  }
+]

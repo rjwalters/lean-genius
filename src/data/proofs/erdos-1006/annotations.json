@@ -1,0 +1,149 @@
+[
+  {
+    "id": "ann-1006-overview",
+    "proofId": "erdos-1006",
+    "range": {
+      "startLine": 1,
+      "endLine": 42
+    },
+    "type": "concept",
+    "title": "Problem Overview: Robust Acyclic Orientations",
+    "content": "Erdős Problem #1006 (credited to Ore) asks whether high-girth graphs admit 'robustly acyclic' orientations — orientations that remain acyclic even after reversing any single edge. The answer is NO: Nešetřil and Rödl (1978) showed counterexamples exist for ALL girths g ≥ 3, not just small ones.",
+    "mathContext": "The problem connects graph girth (shortest cycle length) to orientation stability. Every graph admits an acyclic orientation (direct edges according to any total order on vertices), but some orientations are fragile: reversing one edge creates a directed cycle. The question is whether avoiding short undirected cycles (high girth) prevents this fragility. The surprising answer is that chromatic number, not girth, is the key obstruction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "graph-orientation",
+      "acyclic-orientation",
+      "girth",
+      "chromatic-number",
+      "probabilistic-method"
+    ],
+    "prerequisites": [
+      "simple graphs and adjacency",
+      "graph cycles and girth",
+      "graph coloring and chromatic number",
+      "directed graphs and acyclicity"
+    ]
+  },
+  {
+    "id": "ann-1006-girth",
+    "proofId": "erdos-1006",
+    "range": {
+      "startLine": 50,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "Graph Girth Definitions",
+    "content": "Two definitions formalize girth: hasGirthAtLeast G g says G contains no cycles of length < g, while hasGirth G g additionally requires a cycle of length exactly g to exist. Together they define girth as the length of the shortest cycle.",
+    "mathContext": "Girth measures local sparsity: graphs with high girth are 'locally tree-like' — every neighborhood of bounded radius is a tree. The Erdős theorem (1959) shows graphs can simultaneously have high girth AND high chromatic number, which is the key ingredient in the Nešetřil-Rödl proof. The IsCycle predicate from Mathlib captures the graph-theoretic notion of a cycle as a closed walk with no repeated vertices.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cycle",
+      "locally-tree-like",
+      "Erdos-girth-chromatic",
+      "IsCycle"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Walk and IsCycle from Mathlib",
+      "cycle length in graph theory",
+      "locally tree-like graphs"
+    ]
+  },
+  {
+    "id": "ann-1006-orientations",
+    "proofId": "erdos-1006",
+    "range": {
+      "startLine": 64,
+      "endLine": 84
+    },
+    "type": "definition",
+    "title": "Orientations, Directed Paths, and Acyclicity",
+    "content": "The Orientation structure captures a valid orientation of G: a directed relation satisfying three properties — covers (every edge gets a direction), exclusive (no edge gets both directions), and respects (directed edges come from G). Acyclicity is defined via the absence of directed cycles (closed directed paths of length ≥ 3).",
+    "mathContext": "The three-field structure ensures a bijection between orientations and total preorders on vertices restricted to edges. The covers + exclusive axioms give exactly one direction per edge, while respects prevents introducing edges not in G. Acyclicity of an orientation is equivalent to the existence of a topological ordering of vertices consistent with the edge directions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "orientation",
+      "directed-graph",
+      "topological-ordering",
+      "DAG"
+    ],
+    "prerequisites": [
+      "SimpleGraph from Mathlib",
+      "directed relations on vertex sets",
+      "topological sorting",
+      "structure syntax in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-1006-robust",
+    "proofId": "erdos-1006",
+    "range": {
+      "startLine": 86,
+      "endLine": 102
+    },
+    "type": "definition",
+    "title": "Robust Acyclicity and Edge Reversal",
+    "content": "The reverseEdge operation (axiomatized) swaps the direction of one edge while preserving the orientation structure. An orientation is robustly acyclic if it is acyclic AND remains acyclic after reversing any single directed edge. A graph admits a robustly acyclic orientation if such an orientation exists.",
+    "mathContext": "Robust acyclicity is a stability notion: the orientation must not have any 'critical' edge whose reversal would complete a directed cycle. Equivalently, for every directed edge u→v, there must be no directed path from v to u avoiding this edge. The reverseEdge operation is axiomatized because its construction (swapping one edge in the orientation structure) involves routine but verbose case analysis on the structure fields.",
+    "significance": "key",
+    "relatedConcepts": [
+      "edge-reversal",
+      "stability",
+      "critical-edge",
+      "directed-cycle"
+    ],
+    "prerequisites": [
+      "Orientation structure defined above",
+      "acyclicity of directed graphs",
+      "axiom keyword in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-1006-conjecture",
+    "proofId": "erdos-1006",
+    "range": {
+      "startLine": 104,
+      "endLine": 113
+    },
+    "type": "concept",
+    "title": "Ore's Conjecture (Disproved)",
+    "content": "Ore conjectured that every graph with girth > 4 (no triangles or 4-cycles) admits a robustly acyclic orientation. The conjecture is universally quantified over all vertex types V and all simple graphs G with hasGirthAtLeast G 5.",
+    "mathContext": "The girth > 4 threshold was motivated by known counterexamples at girth 4 (Ore's example, the Grötzsch graph). The hope was that eliminating 4-cycles would provide enough structural freedom. However, the Nešetřil-Rödl theorem shows the conjecture fails at every girth, making the specific threshold irrelevant.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ore-conjecture",
+      "girth-threshold",
+      "disproved-conjecture"
+    ],
+    "prerequisites": [
+      "hasGirthAtLeast definition",
+      "admitsRobustAcyclicOrientation definition",
+      "universal quantification in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-1006-counterexamples",
+    "proofId": "erdos-1006",
+    "range": {
+      "startLine": 115,
+      "endLine": 141
+    },
+    "type": "concept",
+    "title": "Counterexamples and Disproof",
+    "content": "Three key results: (1) the Grötzsch graph (girth 4, χ=4) has no robust orientation (axiom); (2) Nešetřil-Rödl theorem: for every g ≥ 3, counterexamples with girth g exist (axiom); (3) ores_conjecture_false is proved by applying Nešetřil-Rödl with g=5 to obtain a girth-5 graph contradicting the conjecture.",
+    "mathContext": "The proof of ores_conjecture_false is a clean application of the Nešetřil-Rödl axiom: instantiate with g=5 (so girth ≥ 5, satisfying girth > 4) to get a graph G with no robust orientation. The conjecture would give G a robust orientation, yielding a contradiction. The Nešetřil-Rödl proof itself relies on Erdős's 1959 theorem that graphs with arbitrarily high girth and chromatic number exist — high chromatic number forces fragile edges in any acyclic orientation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Grotzsch-graph",
+      "Nesetril-Rodl",
+      "proof-by-contradiction",
+      "high-girth-high-chromatic"
+    ],
+    "prerequisites": [
+      "nesetril_rodl_1978 axiom",
+      "grotzsch_counterexample axiom",
+      "proof by contradiction in Lean 4",
+      "omega tactic for natural number arithmetic"
+    ]
+  }
+]

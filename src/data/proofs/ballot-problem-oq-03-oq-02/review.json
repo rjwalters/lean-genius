@@ -1,0 +1,174 @@
+{
+  "version": 1,
+  "proofId": "ballot-problem-oq-03-oq-02",
+  "reviewDate": "2026-03-24T13:00:00Z",
+  "reviewer": "peer-reviewer",
+
+  "overallAssessment": {
+    "grade": "B+",
+    "oneLiner": "An exceptionally ambitious 2091-line formalization of the r x r LGV lemma with deeply original infrastructure, now complete and 0-sorry, 0-axiom (the 2 self-inverse sorries flagged at review time have since been closed).",
+    "tier": "B",
+    "tierJustification": "The file builds ~2000 lines of custom combinatorial infrastructure not found in Mathlib (lattice paths, column-based intersection, LGV configuration, GV involution). The main theorem lgv_lemma_rxr is declared as a theorem and compiles, but has transitive sorry dependency through gvCanon_self_inverse. This is Tier B: substantial original infrastructure with Mathlib foundation (Matrix.det, Finset.sum_involution), not quite Tier A due to the 2 remaining sorries.",
+    "stratification": {
+      "proved": [
+        "pathMN_card: C(m+n,m) via double induction + Pascal's rule (45 lines)",
+        "det_pathMatrix_eq_signed_sum: algebraic bridge det = signed perm sum",
+        "perm_ne_one_has_inversion: non-identity perms have inversions",
+        "lattice_paths_must_cross: discrete IVT for lattice paths (34 lines)",
+        "nonid_perm_paths_cross: non-identity sigma-tuples always cross",
+        "take_at_column_entry: East count at column boundary (40 lines)",
+        "take_east_count_within_column: East count within column (78 lines)",
+        "gvCanon_membership: tail-swapped paths share crossing point (118 lines, PROVED)",
+        "gvCanon_sign_reversal, gvCanon_no_fixed: involution properties",
+        "cancellable_sum_eq_zero: GV cancellation via Finset.sum_involution",
+        "gv_involution_cancellation: signed sum = NI count",
+        "lgv_lemma_rxr: niTupleCount = det pathMatrix (compiles, transitive sorry dep)"
+      ],
+      "axiomatized": [],
+      "elementary": [
+        "niTupleCount_nonneg: trivial natCast_nonneg",
+        "isNonIntersecting_of_r_one: vacuous truth (no pairs for r=1)",
+        "lgv_universality: trivial restatement of lgv_lemma_rxr as forall"
+      ],
+      "assessment": "The proved components represent genuine original formalization work at a level rarely seen in proof galleries. The 2 remaining sorries (canonCrossN_preserved, gvCanon_self_inverse) are in the technically hardest part of the involution — the self-inverse proof — but the overall proof architecture is sound and >95% complete."
+    }
+  },
+
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "BallotProblemOQ03OQ02.lean, overall (2091 lines)",
+      "finding": "This is one of the most ambitious formalizations in the gallery. Building the r x r LGV lemma from scratch required creating: (1) PathMN with Fintype instance and cardinality proof via double induction, (2) column-based non-intersection via northBeforeEast recursion, (3) full LGVConfig with strict monotonicity, (4) the algebraic bridge connecting Matrix.det to signed permutation sums, (5) a discrete intermediate value theorem for lattice paths, (6) the complete canonical GV involution with tail-swap construction. None of this infrastructure exists in Mathlib. The file demonstrates sustained, deep formalization work.",
+      "recommendation": "Preserve as a flagship entry. The infrastructure (PathMN, LGVConfig, crossing lemma) could eventually be contributed to Mathlib."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "lattice_paths_must_cross, lines 701-734",
+      "finding": "The crossing lemma is a clean discrete IVT: if two monotone lattice paths start on opposite sides and end on opposite sides, they must share a column entry. The proof via crossing_column_exists (taking max of the set where p < q) and then showing both NonIntersecting disjuncts fail using colEntry_mono is elegant and well-structured.",
+      "recommendation": "Preserve. This is the combinatorial heart of the GV involution and a reusable result."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "gvCanon_membership, lines 1839-1957",
+      "finding": "The 118-line proof that the canonical involution maps cancellable tuples to cancellable tuples is the most technically demanding component and it is FULLY PROVED. It handles both interior columns and the final column, using prefix East counts, northBeforeEast_prefix, and careful omega reasoning. This represents significant original formalization effort.",
+      "recommendation": "Preserve. Update meta.json assumptions field to reflect that this is proved (currently incorrectly listed as having a sorry)."
+    },
+    {
+      "severity": "major",
+      "category": "inconsistency",
+      "location": "meta.json assumptions field (line 75)",
+      "finding": "The assumptions field states: 'gvCanon_membership and gvCanon_self_inverse: GV involution canonical crossing membership and self-inverse properties (2 sorries)'. But gvCanon_membership (line 1839) is FULLY PROVED with no sorry. The 2 actual sorries are in canonCrossN_preserved (line 1982) and gvCanon_self_inverse (line 1989). This misattributes where the gaps are, understating the proof's completeness.",
+      "recommendation": "Fix assumptions to: 'canonCrossN_preserved and gvCanon_self_inverse (2 sorries): canonical crossing code preserved under involution, and double tail-swap recovers original paths. gvCanon_membership is fully proved.'"
+    },
+    {
+      "severity": "moderate",
+      "category": "precision",
+      "location": "meta.json conclusion.summary",
+      "finding": "The conclusion says 'The main LGV equality is axiomatized pending the full Gessel-Viennot involution proof.' This is misleading in two ways: (1) lgv_lemma_rxr is a theorem, not an axiom — it compiles with transitive sorry dependency but is not axiomatized; (2) the involution proof is ~95% complete with only 2 technical sorries remaining, not 'pending'. The word 'axiomatized' suggests the main result is declared as an axiom, which it is not.",
+      "recommendation": "Rewrite to: 'The main LGV equality lgv_lemma_rxr is proved as a theorem, with transitive dependency on 2 remaining sorries in the involution self-inverse proof (canonCrossN_preserved and gvCanon_self_inverse). The involution construction, sign reversal, membership, and no-fixed-points properties are all fully proved.'"
+    },
+    {
+      "severity": "moderate",
+      "category": "inconsistency",
+      "location": "annotations.json ann-lgv-main-theorem",
+      "finding": "The annotation states 'The axiom gv_involution_cancellation asserts that the signed sum collapses...' but gv_involution_cancellation (line 2004) is a theorem, not an axiom. It is proved using Finset.sum_involution applied to the canonical GV involution. The annotation's use of 'axiom' is incorrect Lean terminology and misrepresents the proof's status.",
+      "recommendation": "Change 'The axiom gv_involution_cancellation asserts' to 'The theorem gv_involution_cancellation proves'."
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "meta.json sections, overlapping ranges",
+      "finding": "Section 'gv-involution-construction' (736-1835) and 'lgv-lemma' (1798-1835) overlap by 37 lines. Lines 600-648 (TaggedPathTuple definitions) and 1886-2091 (prefix lemmas, self-inverse proofs, corollaries 9-10) are not covered by any section.",
+      "recommendation": "Adjust section boundaries: end 'gv-involution-construction' at 1797, and add coverage for lines 600-648 and 1886-2091."
+    },
+    {
+      "severity": "minor",
+      "category": "overclaim",
+      "location": "meta.json originalContributions, items 50 and 51",
+      "finding": "Items 'isNonIntersecting_of_r_one: every 1-tuple is vacuously non-intersecting' and 'pathMatrix_det_nonneg: non-negativity of path matrix determinant' are listed as original contributions. The former is a one-line vacuous truth (absurd hij (by omega)). The latter follows in one line from lgv_lemma_rxr + natCast_nonneg. These are not original contributions but routine corollaries.",
+      "recommendation": "Remove these from originalContributions. They are correctly covered in the corollaries section."
+    },
+    {
+      "severity": "minor",
+      "category": "gap",
+      "location": "annotations.json, coverage of lines 736-1797",
+      "finding": "The massive GV involution construction (lines 736-1797, ~1060 lines) representing the canonical crossing selection, tail-swap PathMN construction, prefix preservation lemmas, and wellFormedness infrastructure has no annotation coverage. This is the most technically complex part of the file and would benefit most from pedagogical annotation.",
+      "recommendation": "Add annotations for: (1) wellFormed and its role (lines 740-756), (2) northThenEast path construction (1079-1139), (3) canonical crossing selection via Nat.find (lines 1383-1460), (4) tailSwapPath construction (lines 1500-1700 approx), (5) prefix preservation lemma northBeforeEast_prefix (1272-1296)."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json mathlibDependencies",
+      "finding": "Only 3 Mathlib dependencies are listed (Matrix.det_apply, Equiv.Perm.sign_swap, Nat.choose) but the proof critically depends on at least 3 more: Finset.sum_involution (line 1997, the key combinatorial tool for cancellation), Fintype.card_pi (line 507, for product factorization), and Matrix.det_transpose (line 525, for Leibniz formula column form).",
+      "recommendation": "Add Finset.sum_involution, Fintype.card_pi, and Matrix.det_transpose to mathlibDependencies."
+    }
+  ],
+
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "high",
+      "target": "enricher",
+      "description": "Fix meta.json assumptions field: change from 'gvCanon_membership and gvCanon_self_inverse (2 sorries)' to accurately identify the 2 sorry locations as canonCrossN_preserved (line 1982) and gvCanon_self_inverse (line 1989). Note that gvCanon_membership is fully proved.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-2",
+      "priority": "high",
+      "target": "enricher",
+      "description": "Rewrite conclusion.summary to accurately describe lgv_lemma_rxr as a proved theorem with transitive sorry dependency, not 'axiomatized'. Describe the ~95% completion level.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-3",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Fix annotation ann-lgv-main-theorem: change 'The axiom gv_involution_cancellation asserts' to 'The theorem gv_involution_cancellation proves'. gv_involution_cancellation is a theorem, not an axiom.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-4",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Add annotations for the GV involution construction (lines 736-1797): wellFormed condition, northThenEast paths, canonical crossing selection, tailSwapPath, and prefix preservation lemmas.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-5",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Add missing mathlibDependencies: Finset.sum_involution (key cancellation tool), Fintype.card_pi (product factorization), Matrix.det_transpose (Leibniz formula column form).",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-6",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Fix section boundaries: remove overlap between gv-involution-construction and lgv-lemma, add coverage for lines 600-648 and 1886-2091.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-7",
+      "priority": "low",
+      "target": "researcher",
+      "description": "Close the 2 remaining sorries: canonCrossN_preserved (canonical crossing code preserved under involution) and gvCanon_self_inverse (double tail-swap = identity). The proof sketch is in the TODO comments at lines 1982 and 1989. RESOLVED: both theorems are now fully proved; the Lean file is 0-sorry, 0-axiom (verified 2026-06-16).",
+      "status": "resolved"
+    }
+  ],
+
+  "qualityScores": {
+    "mathematicalSubstance": 9,
+    "originalityAccuracy": 7,
+    "completeness": 7,
+    "framingPrecision": 7,
+    "pedagogicalQuality": 8,
+    "internalConsistency": 6,
+    "epistemicCoherence": 8,
+    "overall": 7.4
+  },
+
+  "suggestedBestFraming": "A near-complete (2 sorries) formalization of the general r x r Lindstrom-Gessel-Viennot determinant identity, building 2091 lines of original combinatorial infrastructure from scratch: lattice path types with Fintype, column-based non-intersection, the algebraic bridge connecting Matrix.det to signed permutation sums, a discrete IVT crossing lemma, and the canonical Gessel-Viennot sign-reversing involution with tail-swap construction. The main theorem lgv_lemma_rxr is proved modulo the involution's self-inverse property."
+}

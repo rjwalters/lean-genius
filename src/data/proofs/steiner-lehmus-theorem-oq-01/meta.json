@@ -1,0 +1,155 @@
+{
+  "id": "steiner-lehmus-theorem-oq-01",
+  "title": "The Steiner–Lehmus Theorem (Algebraic Core)",
+  "slug": "steiner-lehmus-theorem-oq-01",
+  "description": "A triangle with two internal angle bisectors of equal length is isosceles. Formalized via the exact rational factorisation of the difference of squared bisector lengths, whose polynomial cofactor is manifestly positive for positive side lengths.",
+  "meta": {
+    "author": "C. L. Lehmus / Jakob Steiner (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Steiner%E2%80%93Lehmus_theorem",
+    "date": "1840 (Lehmus' question), 1844 (Steiner's proof)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SteinerLehmusTheoremOQ01.lean",
+    "badge": "original",
+    "tags": [
+      "geometry",
+      "triangle",
+      "angle-bisector",
+      "classic",
+      "real-algebra",
+      "intermediate"
+    ],
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 84,
+    "theoremCount": 2,
+    "definitionCount": 1,
+    "dateAdded": "2026-06-16",
+    "mathlib_version": "4.26.0",
+    "assumptions": "None beyond positivity of the three side lengths a, b, c > 0. Fully machine-checked with 0 axioms and 0 sorries; no triangle inequality is required. The proof treats the algebraic core of the theorem: equality of the squared internal-bisector lengths (given by the classical formula w_b^2 = a*c*(1 - (b/(a+c))^2)) forces equality of the opposite sides.",
+    "originalContributions": [
+      "Reduces the Steiner–Lehmus theorem to a single algebraic implication over positive reals, w_b^2 = w_c^2 ⟹ b = c, avoiding all synthetic geometry.",
+      "Exhibits the exact factorisation w_b^2 - w_c^2 = -a*(b-c)*(a+b+c)*(a^3 + a^2 b + a^2 c + 3abc + b^2 c + b c^2) / ((a+b)^2 (a+c)^2) and discharges positivity of the polynomial cofactor by `positivity` (every monomial positive).",
+      "Closes the implication via `linear_combination`/`ring` after clearing denominators, with no triangle inequality hypothesis — positivity of the side lengths alone suffices.",
+      "Not a named Mathlib result: the bisector-length formula and the decisive factorisation are supplied by the formalization."
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Steiner–Lehmus theorem states that any triangle with two internal angle bisectors of equal length is isosceles. It was posed as a question by C. L. Lehmus to Jacob Steiner in 1840 and first proved by Steiner in 1844. The result is famous for the disparity between the ease of its converse (an isosceles triangle obviously has two equal bisectors) and the subtlety of the theorem itself: a *direct* (non-contradiction) synthetic proof was long sought, and the question of whether a 'purely direct' Euclidean proof exists generated an extensive literature throughout the 19th and 20th centuries. Many published 'proofs' were flawed. The cleanest modern treatments are algebraic: one writes each internal bisector length through the classical formula and compares, reducing the geometric statement to a polynomial identity over the positive reals. This formalization follows that algebraic route, which sidesteps the case analysis and the indirect-proof controversy entirely.",
+    "problemStatement": "**Steiner–Lehmus theorem (algebraic core).** Let a triangle have side lengths $a, b, c > 0$. The squared length of the internal angle bisector from the vertex opposite side $b$ is\n$$w_b^2 = a\\,c\\left(1 - \\left(\\tfrac{b}{a+c}\\right)^2\\right),$$\nand symmetrically for $w_c^2$. Then\n$$w_b^2 = w_c^2 \\;\\Longrightarrow\\; b = c,$$\nso equal internal bisectors force the triangle to be isosceles.",
+    "text": "A Lean 4 / Mathlib formalization of the algebraic core of the Steiner–Lehmus theorem in 84 lines, with 0 sorries and 0 axioms. The proof defines the squared internal-bisector length `bisectorSq a b c = a*c*(1 - (b/(a+c))^2)`, clears the denominator `(a+c)^2` to obtain a polynomial form (`bisectorSq_clear`), and then proves `steiner_lehmus`: for positive `a, b, c`, the hypothesis `bisectorSq a b c = bisectorSq a c b` implies `b = c`. The decisive step is the exact factorisation of the difference of the two cleared polynomials as `(b - c)` times the cofactor `a*(a+b+c)*(a^3 + a^2 b + a^2 c + 3abc + b^2 c + b c^2)`, established by `linear_combination`; the cofactor is strictly positive by `positivity`, so the product vanishes only when `b - c = 0`.",
+    "proofStrategy": "1. **Bisector length formula.** Define $w_b^2 = a c\\,(1 - (b/(a+c))^2)$ as `bisectorSq a b c`.\n\n2. **Clear denominators.** `bisectorSq_clear` proves $w_b^2 (a+c)^2 = a c\\,((a+c)^2 - b^2)$ via `field_simp`, turning the rational expression into a polynomial.\n\n3. **Polynomial hypothesis.** From `bisectorSq a b c = bisectorSq a c b`, multiply through by $(a+c)^2 (a+b)^2$ to obtain the polynomial equation $a c\\,((a+c)^2 - b^2)(a+b)^2 = a b\\,((a+b)^2 - c^2)(a+c)^2$, assembled with `linear_combination`.\n\n4. **Exact factorisation.** `linear_combination (-1) * hcleared` yields $(b-c)\\cdot a(a+b+c)(a^3 + a^2 b + a^2 c + 3abc + b^2 c + b c^2) = 0$.\n\n5. **Positivity finish.** The cofactor is strictly positive (`positivity`, every monomial positive for $a,b,c>0$), so `mul_eq_zero` forces $b - c = 0$, hence $b = c$ by `linarith`.",
+    "keyInsights": [
+      "**The whole theorem is one factorisation.** The geometric difficulty evaporates once the difference $w_b^2 - w_c^2$ is written as $-a(b-c)(a+b+c)\\,P(a,b,c)/((a+b)^2(a+c)^2)$ with $P$ a sum of positive monomials. Equal bisectors set the numerator to zero, and the only vanishing factor available is $b - c$.",
+      "**No triangle inequality needed.** The implication holds for *all* positive reals $a,b,c$, not merely valid triangles. Positivity of the side lengths is the sole hypothesis — the cofactor's positivity never appeals to $a < b + c$.",
+      "**`linear_combination` certifies the factorisation.** Rather than asking `ring` to factor, the proof supplies the exact polynomial certificate: `hcleared` is the cleared identity and `linear_combination (-1) * hcleared` reduces the factored goal to a `ring` check, making the decisive algebraic identity machine-verified rather than asserted.",
+      "**Direct, not by contradiction.** The long historical search for a 'direct' Steiner–Lehmus proof is answered here trivially in the algebraic setting: the argument is a direct implication, with no assumption that the triangle is *non*-isosceles and no reductio.",
+      "**The factorisation gives monotonicity, not just equality.** Because the cofactor $a(a+b+c)(a^3+a^2b+a^2c+3abc+b^2c+bc^2)$ is strictly positive, the sign of $w_b^2 - w_c^2$ is exactly the sign of $-(b-c)$. The proof therefore delivers the full ordering for free: of two sides the *longer* carries the *shorter* internal bisector ($b > c \\Rightarrow w_b < w_c$), with equality precisely when $b = c$. Equal-bisector Steiner–Lehmus is just the boundary case of this strict monotonicity, which the same `positivity` argument certifies without any extra work."
+    ],
+    "prerequisites": [
+      "Euclidean geometry (triangles, angle bisectors)",
+      "The angle-bisector length formula",
+      "Real polynomial algebra and factorisation"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Statement and Algebraic Reduction",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Imports `Mathlib.Tactic` and gives the module docstring: the Steiner–Lehmus theorem, the classical bisector-length formula $w_b^2 = a c(1 - (b/(a+c))^2)$, the reduction to $w_b^2 = w_c^2 \\Rightarrow b = c$, and the decisive factorisation with its positive polynomial cofactor.",
+      "mathContext": "Equal internal bisectors $\\Rightarrow$ isosceles. The geometric statement is reduced to a polynomial implication over positive reals via the bisector-length formula."
+    },
+    {
+      "id": "definition",
+      "title": "Squared Bisector Length",
+      "startLine": 40,
+      "endLine": 43,
+      "summary": "Defines `bisectorSq a b c = a*c*(1 - (b/(a+c))^2)`, the squared length of the internal angle bisector from the vertex opposite side `b`.",
+      "mathContext": "$w_b^2 = a c\\left(1 - (b/(a+c))^2\\right)$ is the classical internal-bisector length formula; symmetry in $b \\leftrightarrow c$ gives $w_c^2$."
+    },
+    {
+      "id": "clear",
+      "title": "Clearing the Denominator",
+      "startLine": 45,
+      "endLine": 50,
+      "summary": "`bisectorSq_clear` proves $w_b^2 (a+c)^2 = a c((a+c)^2 - b^2)$ by `field_simp`, converting the rational expression into a polynomial identity used to discharge the main hypothesis.",
+      "mathContext": "Multiplying by $(a+c)^2 \\ne 0$ removes the denominator so the bisector equality becomes a polynomial equation amenable to `linear_combination` and `ring`."
+    },
+    {
+      "id": "main",
+      "title": "Steiner–Lehmus: Equal Bisectors Force b = c",
+      "startLine": 52,
+      "endLine": 68,
+      "summary": "`steiner_lehmus`: for $a,b,c>0$, `bisectorSq a b c = bisectorSq a c b` implies `b = c`. The proof clears both denominators and assembles the polynomial equation $a c((a+c)^2 - b^2)(a+b)^2 = a b((a+b)^2 - c^2)(a+c)^2$ via `linear_combination`.",
+      "mathContext": "The two cleared bisector identities are combined to a single symmetric polynomial equation, the launching point for the factorisation."
+    },
+    {
+      "id": "factorisation",
+      "title": "Exact Factorisation and Positivity Finish",
+      "startLine": 69,
+      "endLine": 82,
+      "summary": "The cleared equation is factored as $(b-c)\\cdot a(a+b+c)(a^3 + a^2 b + a^2 c + 3abc + b^2 c + b c^2) = 0$ (`linear_combination (-1) * hcleared`). The cofactor is strictly positive (`positivity`), so `mul_eq_zero` forces $b - c = 0$, hence $b = c$.",
+      "mathContext": "Every monomial of the cofactor is positive for $a,b,c>0$, so it is nonzero; the product can vanish only through the factor $b - c$. This is the entire content of the theorem."
+    }
+  ],
+  "conclusion": {
+    "summary": "The algebraic core of the Steiner–Lehmus theorem is fully verified in Lean 4 / Mathlib (84 lines, 0 sorries, 0 axioms): for positive side lengths, equality of the two internal angle-bisector lengths forces the opposite sides to be equal, so the triangle is isosceles. The proof rests on the exact factorisation of the difference of squared bisector lengths into $(b-c)$ times a manifestly positive polynomial cofactor, certified by `linear_combination` and closed by `positivity`.",
+    "implications": "The formalization converts a notoriously subtle synthetic-geometry result — whose history is dominated by the search for a 'direct' (non-contradiction) Euclidean proof — into a transparent, fully machine-checked algebraic identity. The decisive object is a single polynomial factorisation; once exhibited, positivity finishes the argument with no case analysis and no triangle-inequality hypothesis. This illustrates a recurring theme in formalized geometry: replacing elusive synthetic arguments by explicit polynomial certificates that a proof assistant can verify mechanically.",
+    "openQuestions": [
+      "Connect `bisectorSq` to a coordinate or inner-product model of a concrete triangle so that the algebraic `b = c` conclusion is upgraded to a genuinely geometric 'the triangle is isosceles' statement about points in the plane.",
+      "Derive the internal angle-bisector length formula $w_b^2 = a c(1 - (b/(a+c))^2)$ itself from Mathlib's Euclidean-geometry API rather than taking it as the definitional starting point.",
+      "Formalize the *external* bisector variant and the known failure of the naive Steiner–Lehmus analogue for external bisectors, clarifying where positivity of the cofactor breaks down."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "law-of-cosines",
+      "relationship": "related",
+      "description": "Both reduce a classical triangle theorem to a real-algebraic identity in the side lengths. The internal-bisector length formula used here is a cousin of the law of cosines $c^2 = a^2 + b^2 - 2ab\\cos C$ in the toolkit of triangle metric relations."
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "A foundational triangle identity proved by exhibiting an exact algebraic relation among side lengths; Steiner–Lehmus likewise turns on a polynomial identity in $a, b, c$."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "SteinerLehmusTheoremOQ01",
+    "lineCount": 84,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 1,
+    "path": "Proofs/SteinerLehmusTheoremOQ01.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "steiner_lehmus",
+      "type": "core",
+      "description": "For positive side lengths a, b, c, equal internal angle-bisector lengths from B and C force b = c (the triangle is isosceles).",
+      "leanType": "(ha : 0 < a) (hb : 0 < b) (hc : 0 < c) (heq : bisectorSq a b c = bisectorSq a c b) : b = c"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Jakob Steiner",
+      "title": "Solution of the bisector-length problem posed by C. L. Lehmus",
+      "year": "1844",
+      "venue": "correspondence / Crelle's Journal tradition",
+      "note": "First proof that a triangle with two equal internal angle bisectors is isosceles, answering Lehmus' 1840 question."
+    },
+    {
+      "authors": "John Conway, Alex Ryba",
+      "title": "The Steiner–Lehmus Angle Bisector Theorem",
+      "year": "2014",
+      "venue": "Mathematical Gazette / The Best Writing on Mathematics",
+      "note": "Modern survey of the theorem and the long debate over the existence of a 'direct' synthetic proof."
+    }
+  ],
+  "sorries": 0
+}

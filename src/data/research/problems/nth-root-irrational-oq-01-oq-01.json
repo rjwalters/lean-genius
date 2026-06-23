@@ -1,0 +1,103 @@
+{
+  "slug": "nth-root-irrational-oq-01-oq-01",
+  "title": "Extend to algebraic irrationality of roots of cyclotomic polynomials and their subfields",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Extend to algebraic irrationality of roots of cyclotomic polynomials and their subfields",
+    "plain": "This open question arises from the gallery proof `nth-root-irrational-oq-01` (Nth Root Irrationality via Irreducible Polynomials). The Seeker selected it as a generalization suitable for the autonomous research pipeline.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-06-15T00:57:04-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "VERIFIED (researcher-5, S2, 2026-06-15): all 5 registered files Docker-GREEN. Cos/CosRational/Real/primary built with no edits; Degree.lean needed set_option synthInstance.maxHeartbeats 400000 to clear a 20000-budget typeclass timeout on Module (ℚ⟮α⟯)(ℚ⟮α⟯)[X]. Gallery meta promoted formalized/wip → verified/original. Niven + irrationality + exact real-subfield degree (2·[ℚ(ζ+ζ⁻¹):ℚ]=φ(n)) all machine-checked.",
+    "builtItems": [
+      "cyclotomic_no_rational_root (NthRootIrrationalOQ01OQ01.lean): Phi_n over Q has no rational root for n>=3",
+      "rational_root_of_unity_le_two: only rational roots of unity are +-1 (primitive n-th root in Q forces n<=2)",
+      "primitiveRoot_not_rational: complex primitive n-th root of unity (n>=3) is not in range(algebraMap Q C)",
+      "totient_ge_two: 3<=n implies 2<=Nat.totient n; primitiveCubeRoot_not_rational instance e^{2pi i/3}",
+      "cos_two_pi_div_{one,two,three,four,six}_rational + cos_two_pi_div_rational_of_mem in NthRootIrrationalOQ01OQ01CosRational.lean (build-pending, unregistered)",
+      "verify_real_subfield_degree.py — sympy verify-before-assert for exact degree phi(n)/2, the tower decomposition, and Niven values (asserts pass n=1..30)"
+    ],
+    "insights": [
+      "Cyclotomic extension of nth-root irrationality reduces to swapping X^n-p (Eisenstein) for Phi_n (cyclotomic.irreducible_rat) in the parent irreducibility-implies-irrational pipeline; only new lemma is degree bound phi(n)>=2 iff n>=3",
+      "Phi_n has NO real roots for n>=3, so honest content is complex not-rational + rational-roots-of-unity=+-1; an irrational-real-root statement is vacuous",
+      "S4 (R4): rational half of Niven shipped (NthRootIrrationalOQ01OQ01CosRational.lean) — cos(2pi/n) rational for n in {1,2,3,4,6} with values {1,-1,-1/2,0,1/2}; combined with merged irrational direction gives full classification cos(2pi/n) rational <=> n in {1,2,3,4,6}.",
+      "S6 (R1): exact degree [Q(2cos(2pi/n)):Q]=phi(n)/2 proved division-free as 2*finrank=phi(n). KEY machinery: IntermediateField.finrank_bot_mul_relfinrank (tower staying over base, avoids nested-IntermediateField Algebra instances) + extendScalars_adjoin (identifies relative extension with simple adjoin Q(a)(zeta)) + adjoin.finrank. Relative degree 2 = root of quadratic X^2-(zeta+zeta^-1)X+1 (deg<=2) plus zeta non-real for n>=3 (deg>1).",
+      "Exact real-subfield degree [Q(zeta+zeta^-1):Q] = phi(n)/2 (n>=3) certified symbolically; =1 (rational) iff n in {1,2,3,4,6} (Niven). Tower: phi(n)=2*deg(minpoly 2cos(2pi/n)), upper half from zeta^2-(zeta+1/zeta)zeta+1=0."
+    ],
+    "mathlibGaps": [
+      "No gap for rational/complex statements; the real subfield story (minpoly of 2cos(2pi/n), degree phi(n)/2) was NOT formalized and is the missing piece"
+    ],
+    "nextSteps": [
+      "Build+register NthRootIrrationalOQ01OQ01.lean once Docker/Aristotle backend available (left UNREGISTERED to protect auto-merge)",
+      "Register NthRootIrrationalOQ01OQ01Degree in proofs/Proofs.lean and docker-build once backend returns (left UNREGISTERED under blackout)."
+    ],
+    "markdown": "# Knowledge Base: nth-root-irrational-oq-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "algebra",
+    "eisenstein",
+    "gallery-extracted",
+    "galois-theory",
+    "infrastructure",
+    "irrationality",
+    "polynomials",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "nth-root-irrational",
+    "nth-root-irrational-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-15T00:57:04-07:00",
+  "significance": 5,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/NthRootIrrational.lean",
+      "filename": "NthRootIrrational.lean",
+      "lineCount": 313,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/NthRootIrrational.lean"
+    },
+    {
+      "path": "Proofs/NthRootIrrationalOQ01.lean",
+      "filename": "NthRootIrrationalOQ01.lean",
+      "lineCount": 210,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/NthRootIrrationalOQ01.lean"
+    }
+  ]
+}

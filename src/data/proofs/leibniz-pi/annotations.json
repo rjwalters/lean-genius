@@ -1,0 +1,169 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "leibniz-pi",
+    "range": {
+      "startLine": 6,
+      "endLine": 50
+    },
+    "type": "concept",
+    "title": "Leibniz's Series for Pi: Wiedijk #26",
+    "content": "The Leibniz formula expresses $\\pi/4$ as an alternating series of reciprocal odd numbers: $1 - 1/3 + 1/5 - 1/7 + \\cdots$. This is Wiedijk #26 in Freek Wiedijk's formalization of 100 famous theorems. The formula was independently discovered by Madhava (~1400 CE), Gregory (1671), and Leibniz (1676).",
+    "mathContext": "$$\\frac{\\pi}{4} = \\sum_{n=0}^{\\infty} \\frac{(-1)^n}{2n+1} = 1 - \\frac{1}{3} + \\frac{1}{5} - \\frac{1}{7} + \\cdots$$ Conditionally convergent: $\\sum |a_n| = \\infty$ but $\\sum a_n = \\pi/4$. Converges at rate $O(1/N)$ by the alternating series estimation theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "alternating series",
+      "pi",
+      "arctangent",
+      "Wiedijk 100 theorems"
+    ],
+    "prerequisites": [
+      "Real.tendsto_sum_pi_div_four",
+      "Filter.Tendsto",
+      "alternating series test"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "leibniz-pi",
+    "range": {
+      "startLine": 59,
+      "endLine": 79
+    },
+    "type": "concept",
+    "title": "The Leibniz Series: Main Theorem via Mathlib",
+    "content": "The main theorem states that the partial sums $S_k = \\sum_{i=0}^{k-1} (-1)^i/(2i+1)$ converge to $\\pi/4$ as $k \\to \\infty$. The proof uses Mathlib's `Real.tendsto_sum_pi_div_four`, which establishes the convergence via the Taylor series of arctan evaluated at $x = 1$. The key Lean formulation uses `Filter.Tendsto` with `nhds (Real.pi / 4)`.",
+    "mathContext": "$$\\lim_{k \\to \\infty} \\sum_{i=0}^{k-1} \\frac{(-1)^i}{2i+1} = \\frac{\\pi}{4}$$ Proof chain: $\\arctan(x) = \\sum_{n=0}^{\\infty} \\frac{(-1)^n x^{2n+1}}{2n+1}$ for $|x| \\leq 1$ (Abel's theorem for boundary convergence), then $\\arctan(1) = \\pi/4$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "convergence",
+      "Taylor series",
+      "Abel's theorem",
+      "Real.tendsto_sum_pi_div_four"
+    ],
+    "prerequisites": [
+      "Filter.Tendsto",
+      "nhds",
+      "Real.pi",
+      "Finset.sum"
+    ]
+  },
+  {
+    "id": "ann-arctan-connection",
+    "proofId": "leibniz-pi",
+    "range": {
+      "startLine": 81,
+      "endLine": 93
+    },
+    "type": "insight",
+    "title": "Connection to Arctangent: Why arctan(1) = π/4",
+    "content": "The Leibniz series is the Taylor series of $\\arctan(x)$ evaluated at $x = 1$. Since $\\tan(\\pi/4) = 1$, we get $\\arctan(1) = \\pi/4$. The Taylor series $\\arctan(x) = x - x^3/3 + x^5/5 - \\cdots$ converges for $|x| \\leq 1$ by Abel's theorem (the series converges at $x = 1$ despite the radius of convergence being exactly 1). Mathlib provides `Real.arctan_one` for the identity $\\arctan(1) = \\pi/4$.",
+    "mathContext": "$$\\arctan(x) = \\sum_{n=0}^{\\infty} \\frac{(-1)^n x^{2n+1}}{2n+1}, \\quad |x| \\leq 1$$ At $x = 1$: $\\arctan(1) = \\pi/4$ because $\\tan(\\pi/4) = 1$. **Geometric meaning**: in a right triangle with equal legs, the angle is $45° = \\pi/4$ radians.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Taylor series",
+      "arctangent",
+      "Abel's theorem",
+      "radius of convergence"
+    ],
+    "prerequisites": [
+      "Real.arctan_one",
+      "Real.hasSum_arctan",
+      "power series"
+    ]
+  },
+  {
+    "id": "ann-partial-sums",
+    "proofId": "leibniz-pi",
+    "range": {
+      "startLine": 95,
+      "endLine": 116
+    },
+    "type": "concept",
+    "title": "Partial Sum Calculations: Verified Approximations",
+    "content": "The first four partial sums are verified by computation: $S_1 = 1$, $S_2 = 2/3$, $S_3 = 13/15$, $S_4 = 76/105$. These alternate above and below $\\pi/4 \\approx 0.7854$, demonstrating the oscillating convergence characteristic of alternating series. Each partial sum is proved by `norm_num` or `simp + norm_num`, providing machine-checked rational arithmetic.",
+    "mathContext": "$S_1 = 1 \\approx 0.785 + 0.215$, $S_2 = 2/3 \\approx 0.785 - 0.118$, $S_3 = 13/15 \\approx 0.785 + 0.082$, $S_4 = 76/105 \\approx 0.785 - 0.062$. Error decreases as $\\sim 1/(2k+1)$ by the alternating series estimation theorem.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "partial sums",
+      "alternating series estimation",
+      "norm_num tactic"
+    ],
+    "prerequisites": [
+      "norm_num",
+      "Finset.sum",
+      "rational arithmetic"
+    ]
+  },
+  {
+    "id": "ann-term-properties",
+    "proofId": "leibniz-pi",
+    "range": {
+      "startLine": 122,
+      "endLine": 144
+    },
+    "type": "definition",
+    "title": "Properties of Individual Terms: Sign Pattern and Convergence",
+    "content": "The term function $a_n = (-1)^n/(2n+1)$ is defined and its properties verified: $a_0 = 1$, even-indexed terms are positive ($a_{2k} > 0$), odd-indexed terms are negative ($a_{2k+1} < 0$). The absolute values $|a_n| = 1/(2n+1)$ decrease monotonically to 0, satisfying the hypotheses of the alternating series test (Leibniz's test) for convergence.",
+    "mathContext": "$a_n = \\frac{(-1)^n}{2n+1}$. **Sign pattern**: $a_{2k} = \\frac{1}{4k+1} > 0$, $a_{2k+1} = \\frac{-1}{4k+3} < 0$. **Monotone decrease**: $|a_{n+1}| = \\frac{1}{2n+3} < \\frac{1}{2n+1} = |a_n|$. **Limit**: $|a_n| \\to 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "alternating series test",
+      "monotone decrease",
+      "sign pattern",
+      "Leibniz test"
+    ],
+    "prerequisites": [
+      "neg_one_pow",
+      "Nat.cast_pos",
+      "div_pos"
+    ]
+  },
+  {
+    "id": "ann-significance",
+    "proofId": "leibniz-pi",
+    "range": {
+      "startLine": 146,
+      "endLine": 163
+    },
+    "type": "concept",
+    "title": "Mathematical Significance: Pi from Pure Arithmetic",
+    "content": "The Leibniz formula is significant for five reasons: (1) Historical — one of the first infinite series for $\\pi$; (2) Theoretical — expresses $\\pi$ through rational operations and limits alone, showing the transcendental number $\\pi$ emerges from elementary arithmetic; (3) Analytic — reveals the deep connection between $\\pi$ and the arctangent function; (4) Conditional convergence — a classic example where $\\sum |a_n| = \\infty$ but $\\sum a_n < \\infty$; (5) Practical limitation — needs $\\sim 10^6$ terms for 6 digits of $\\pi$.",
+    "mathContext": "**Conditional convergence**: $\\sum_{n=0}^{\\infty} \\frac{1}{2n+1} = \\infty$ (diverges by comparison with harmonic series) but $\\sum_{n=0}^{\\infty} \\frac{(-1)^n}{2n+1} = \\frac{\\pi}{4}$ (converges). By the Riemann rearrangement theorem, the conditionally convergent series can be rearranged to converge to any real number.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "conditional convergence",
+      "Riemann rearrangement",
+      "history of pi",
+      "transcendental numbers"
+    ],
+    "prerequisites": [
+      "harmonic series divergence",
+      "comparison test",
+      "alternating series test"
+    ]
+  },
+  {
+    "id": "ann-faster-formulas",
+    "proofId": "leibniz-pi",
+    "range": {
+      "startLine": 165,
+      "endLine": 173
+    },
+    "type": "concept",
+    "title": "Faster Converging Alternatives: Machin to Chudnovsky",
+    "content": "Machin's formula (1706) $\\pi/4 = 4\\arctan(1/5) - \\arctan(1/239)$ converges much faster because the small arguments make the Taylor series converge exponentially. John Machin used this to compute 100 digits of $\\pi$. Modern algorithms include the Chudnovsky formula (14+ digits per term, used for world records) and the BBP formula (Bailey-Borwein-Plouffe 1995, extracts hexadecimal digits without computing preceding digits).",
+    "mathContext": "**Machin (1706)**: $\\frac{\\pi}{4} = 4\\arctan\\frac{1}{5} - \\arctan\\frac{1}{239}$. **Chudnovsky**: $\\frac{1}{\\pi} = 12 \\sum_{k=0}^{\\infty} \\frac{(-1)^k (6k)! (13591409 + 545140134k)}{(3k)!(k!)^3 640320^{3k+3/2}}$ (14 digits/term). **BBP**: $\\pi = \\sum_{k=0}^{\\infty} \\frac{1}{16^k}\\left(\\frac{4}{8k+1} - \\frac{2}{8k+4} - \\frac{1}{8k+5} - \\frac{1}{8k+6}\\right)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Machin formula",
+      "Chudnovsky algorithm",
+      "BBP formula",
+      "pi computation"
+    ],
+    "prerequisites": [
+      "arctan addition formula",
+      "Taylor series convergence rate"
+    ]
+  }
+]

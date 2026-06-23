@@ -1,0 +1,255 @@
+{
+  "id": "geometric-series-oq-02",
+  "title": "Neumann Series: Geometric Series for Operators",
+  "slug": "geometric-series-oq-02",
+  "description": "The Neumann series ∑ T^n = (1-T)⁻¹ for elements T with ‖T‖ < 1 in complete normed rings, generalizing geometric series to matrices and operators.",
+  "meta": {
+    "author": "Carl Neumann (1877), formalized via Mathlib",
+    "sourceUrl": "https://github.com/leanprover-community/mathlib4",
+    "date": "1877",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GeometricSeriesOQ02.lean",
+    "tags": [
+      "functional-analysis",
+      "operator-theory",
+      "neumann-series",
+      "normed-ring",
+      "invertibility",
+      "generalization"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "summable_geometric_of_norm_lt_one",
+        "description": "Power series ∑ T^n is summable when ‖T‖ < 1 in a complete normed ring",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      },
+      {
+        "theorem": "Units.oneSub",
+        "description": "Constructs the unit (1-T) with inverse ∑ T^n when ‖T‖ < 1",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      },
+      {
+        "theorem": "Ring.inverse_unit",
+        "description": "Ring.inverse of a unit equals its unit inverse",
+        "module": "Mathlib.Algebra.Ring.Regular"
+      },
+      {
+        "theorem": "Ring.mul_inverse_cancel",
+        "description": "x * Ring.inverse x = 1 for units",
+        "module": "Mathlib.Algebra.Ring.Regular"
+      },
+      {
+        "theorem": "mul_neg_geom_sum",
+        "description": "Finite identity: (1-T) * ∑ T^k = 1 - T^n",
+        "module": "Mathlib.Algebra.GeomSum"
+      }
+    ],
+    "originalContributions": [
+      "Complete Neumann series formalization for arbitrary complete normed rings",
+      "Operator-theoretic geometric series identity ∑ T^n = Ring.inverse (1-T)",
+      "Left and right inverse identities without commutativity assumption",
+      "Perturbation of identity: elements near 1 are invertible",
+      "Commutativity of T with ∑ T^n via algebraic argument",
+      "Norm bound ‖∑ T^n‖ ≤ (1-‖T‖)⁻¹ for NormOneClass rings"
+    ],
+    "dateAdded": "2026-02-09",
+    "axiomCount": 0,
+    "lineCount": 237,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "prerequisites": [
+      "Functional analysis (normed rings, complete spaces, summability)",
+      "Ring theory (units, inverses, non-commutativity)",
+      "Operator theory basics",
+      "Familiarity with Lean 4 and Mathlib"
+    ],
+    "mathlib_version": "4.26.0",
+    "theoremCount": 13,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "geometric-series",
+      "relationship": "extends",
+      "description": "The parent proof establishes the scalar geometric series ∑ r^n = 1/(1-r) for |r| < 1. This OQ generalizes from scalars to arbitrary complete normed rings, including matrices and bounded linear operators."
+    },
+    {
+      "targetId": "geometric-series-oq-01",
+      "relationship": "related",
+      "description": "Sibling OQ analyzing boundary behavior at |r| = 1 (divergence, Grandi's series, Cesàro summability). This file works in the interior (‖T‖ < 1) but in a much more general algebraic setting."
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "related",
+      "description": "Both involve matrix polynomial identities. Cayley-Hamilton says a matrix satisfies its own characteristic polynomial; the Neumann series provides an explicit power series for the inverse (I-T)⁻¹. Together they illustrate two ways polynomial identities interact with matrix algebra."
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "foundational",
+      "description": "The Cauchy-Schwarz inequality underpins the norm estimates used throughout: ‖T^n‖ ≤ ‖T‖^n relies on the submultiplicativity of the operator norm, which in turn derives from Cauchy-Schwarz in Hilbert space settings."
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "related",
+      "description": "Contrast in convergence behavior: the harmonic series diverges despite scalar terms tending to zero, while the Neumann series converges when ‖T‖ < 1 because the norm decay is geometric (exponential) rather than polynomial."
+    }
+  ],
+  "overview": {
+    "historicalContext": "The Neumann series is named after Carl Neumann (1832-1925), who introduced it in his 1877 work 'Untersuchungen über das logarithmische und Newton'sche Potential' to solve integral equations arising in potential theory. Neumann showed that the integral equation $u(x) = f(x) + \\lambda \\int K(x,y) u(y) dy$ can be solved by iterating: $u = f + \\lambda Kf + \\lambda^2 K^2 f + \\cdots$, converging when the operator norm $\\|\\lambda K\\| < 1$. This idea predates Banach's abstract framework (1932) by over 50 years.\n\nThe series was placed in its modern setting by Stefan Banach and his school in the 1930s, who recognized it as a consequence of completeness in normed spaces. The result that the set of invertible elements in a Banach algebra is open (a direct corollary of the Neumann series) became a cornerstone of the Gelfand-Naimark theory of commutative Banach algebras (1943), which characterizes them as algebras of continuous functions. In numerical analysis, the Neumann series underpins iterative methods: Jacobi and Gauss-Seidel iterations for solving Ax = b converge precisely when the iteration matrix has spectral radius < 1, which is the infinite-dimensional analogue of $\\|T\\| < 1$. The formalization works in any complete normed ring — including matrix algebras, bounded linear operators on Banach spaces, and formal power series rings — demonstrating the unifying power of abstract algebra.",
+    "problemStatement": "**Theorem (Neumann Series)**: Let R be a complete normed ring and T ∈ R with ‖T‖ < 1. Then:\n\n1. The series $\\sum_{n=0}^{\\infty} T^n$ converges\n2. $(1-T)$ is invertible (a unit in R)\n3. $\\sum_{n=0}^{\\infty} T^n = (1-T)^{-1}$\n4. $(1-T) \\cdot \\sum T^n = \\sum T^n \\cdot (1-T) = 1$\n5. $\\|\\sum T^n\\| \\leq (1 - \\|T\\|)^{-1}$\n\nNote: This works for non-commutative rings (like matrix algebras), where left and right inverses must be verified separately.",
+    "text": "The Neumann series ∑ T^n = (1-T)⁻¹ for elements T with ‖T‖ < 1 in complete normed rings, generalizing geometric series to matrices and operators.",
+    "proofStrategy": "The proof leverages Mathlib's `Units.oneSub` construction, which builds the unit structure for (1-T) when ‖T‖ < 1. By construction, the inverse of this unit is the tsum ∑ T^n.\n\nThe key steps are:\n1. **Summability**: Use `summable_geometric_of_norm_lt_one` (comparison with geometric series of norms)\n2. **Unit construction**: `Units.oneSub T hT` gives (1-T) as a unit with inverse ∑ T^n\n3. **Bridge to Ring.inverse**: Connect the unit inverse to `Ring.inverse` via `Ring.inverse_unit`\n4. **Inverse identities**: Follow from `Ring.mul_inverse_cancel` and `Ring.inverse_mul_cancel`\n5. **Commutativity**: From (1-T)·S = S·(1-T) = 1, deduce T·S = S·T by additive cancellation",
+    "keyInsights": [
+      "The Neumann series works in any complete normed ring — no commutativity required. This single generalization covers matrices, bounded linear operators, Banach algebras, and formal power series simultaneously",
+      "Mathlib's Units.oneSub constructs the inverse as ∑ T^n definitionally, making the bridge from the analytic (tsum) to algebraic (Ring.inverse) representation a matter of unfolding definitions",
+      "The norm bound ‖∑ T^n‖ ≤ (1-‖T‖)⁻¹ requires NormOneClass (‖1‖ = 1) for the n=0 term — a subtle typeclass condition that rules out degenerate norms where ‖1‖ ≠ 1",
+      "Commutativity of T with ∑ T^n follows purely algebraically from the two-sided inverse identities: (1-T)·S = S·(1-T) = 1 implies T·S = S-1 = S·T by cancellation. No analytic argument needed",
+      "The perturbation result — elements within distance 1 of the identity are invertible — implies the unit group of a Banach algebra is open, which is the starting point for spectral theory and the holomorphic functional calculus",
+      "The series converges whenever ‖T‖ < 1, but the optimal condition is spectral radius ρ(T) < 1, which can be strictly weaker. Gelfand's spectral radius formula ρ(T) = lim ‖T^n‖^{1/n} bridges the gap",
+      "Both left and right inverse identities must be verified separately in the non-commutative case — a left inverse need not be a right inverse in a general ring, and the Neumann series construction proves both directions"
+    ],
+    "prerequisites": [
+      "Functional analysis (normed rings, complete spaces, summability)",
+      "Ring theory (units, inverses, non-commutativity)",
+      "Operator theory basics",
+      "Familiarity with Lean 4 and Mathlib"
+    ]
+  },
+  "sections": [
+    {
+      "id": "summability",
+      "title": "Convergence and Summability",
+      "startLine": 48,
+      "endLine": 63,
+      "summary": "The power series ∑ T^n is summable when ‖T‖ < 1, using comparison with the scalar geometric series.",
+      "mathContext": "Summability: $\\|T^n\\| \\leq \\|T\\|^n$ by submultiplicativity, so $\\sum_{n=0}^{\\infty} \\|T^n\\| \\leq \\sum_{n=0}^{\\infty} \\|T\\|^n = \\frac{1}{1 - \\|T\\|}< \\infty$ when $\\|T\\| < 1$."
+    },
+    {
+      "id": "invertibility",
+      "title": "Invertibility",
+      "startLine": 64,
+      "endLine": 76,
+      "summary": "If ‖T‖ < 1, then (1-T) is a unit via Units.oneSub construction.",
+      "mathContext": "For $\\|T\\| < 1$, the element $(1 - T)$ is a unit in the normed ring $R$, with inverse $\\sum_{n=0}^{\\infty} T^n$. Constructed via `Units.oneSub`: $(1-T)^{-1} = \\sum T^n$ definitionally."
+    },
+    {
+      "id": "sum-formula",
+      "title": "The Sum Formula",
+      "startLine": 77,
+      "endLine": 101,
+      "summary": "The fundamental identity ∑ T^n = Ring.inverse(1-T), bridging the tsum to the ring-theoretic inverse.",
+      "mathContext": "Neumann series identity: $\\sum_{n=0}^{\\infty} T^n = (1 - T)^{-1}$ where $(1-T)^{-1}$ denotes `Ring.inverse(1 - T)`. Bridges the analytic object (`tsum`) to the algebraic inverse."
+    },
+    {
+      "id": "finite-sums",
+      "title": "Finite Partial Sums",
+      "startLine": 102,
+      "endLine": 120,
+      "summary": "The finite identities (1-T)·∑ T^k = 1-T^n and their right-multiply counterparts.",
+      "mathContext": "Finite telescoping: $(1 - T) \\cdot \\sum_{k=0}^{n-1} T^k = 1 - T^n$ and $\\sum_{k=0}^{n-1} T^k \\cdot (1 - T) = 1 - T^n$. As $n \\to \\infty$, $T^n \\to 0$ yields the infinite identity."
+    },
+    {
+      "id": "inverse-identities",
+      "title": "Left and Right Inverses",
+      "startLine": 121,
+      "endLine": 141,
+      "summary": "Both (1-T)·∑T^n = 1 and ∑T^n·(1-T) = 1, crucial for non-commutative settings.",
+      "mathContext": "Two-sided inverse: $(1 - T) \\cdot \\sum_{n=0}^{\\infty} T^n = 1$ (left) and $\\sum_{n=0}^{\\infty} T^n \\cdot (1 - T) = 1$ (right). Both must be verified separately since $R$ may be non-commutative."
+    },
+    {
+      "id": "norm-bounds",
+      "title": "Norm Bounds",
+      "startLine": 142,
+      "endLine": 165,
+      "summary": "Bounds on ‖T^n‖ and the full series norm ‖∑ T^n‖ ≤ (1-‖T‖)⁻¹.",
+      "mathContext": "Norm estimates: $\\|T^n\\| \\leq \\|T\\|^n$ and $\\left\\|\\sum_{n=0}^{\\infty} T^n\\right\\| \\leq \\sum_{n=0}^{\\infty} \\|T\\|^n = \\frac{1}{1 - \\|T\\|}$. Requires `NormOneClass` ($\\|1\\| = 1$) for the $n = 0$ term."
+    },
+    {
+      "id": "convergence",
+      "title": "Partial Sums Convergence",
+      "startLine": 166,
+      "endLine": 179,
+      "summary": "Finite partial sums converge to Ring.inverse(1-T) in the norm topology.",
+      "mathContext": "Convergence: $S_n = \\sum_{k=0}^{n-1} T^k \\xrightarrow{\\|\\cdot\\|} (1 - T)^{-1}$ as $n \\to \\infty$, since $\\|S_n - (1-T)^{-1}\\| \\leq \\sum_{k \\geq n} \\|T\\|^k = \\frac{\\|T\\|^n}{1 - \\|T\\|} \\to 0$."
+    },
+    {
+      "id": "perturbation",
+      "title": "Perturbation of Identity",
+      "startLine": 180,
+      "endLine": 203,
+      "summary": "Any element within distance 1 of the identity is invertible, with explicit inverse formula.",
+      "mathContext": "Perturbation of identity: if $\\|a - 1\\| < 1$, set $T = 1 - a$ so $\\|T\\| < 1$, then $a = 1 - T$ is invertible with $a^{-1} = \\sum_{n=0}^{\\infty} (1 - a)^n$. Corollary: the unit group of a Banach algebra is open."
+    },
+    {
+      "id": "commutativity",
+      "title": "Commutativity with Generator",
+      "startLine": 204,
+      "endLine": 237,
+      "summary": "T commutes with ∑ T^n, proved via the left/right inverse identities and additive cancellation.",
+      "mathContext": "Let $S = \\sum T^n$. From $(1-T) S = 1$: $S - TS = 1$, so $TS = S - 1$. From $S(1-T) = 1$: $S - ST = 1$, so $ST = S - 1$. Therefore $TS = ST$ by cancellation, without assuming commutativity of $R$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Neumann series formalization provides a complete treatment of the operator-theoretic geometric series in Lean 4, working at the level of complete normed rings. All 12 theorems compile with zero sorries, covering summability, invertibility, the sum formula, inverse identities, norm bounds, convergence, perturbation theory, and commutativity.\n\nThe generality of the NormedRing setting means these results apply immediately to matrices, bounded linear operators, and any other complete normed algebra.",
+    "implications": "**Theoretical Significance:**\n\n**1. Foundation of operator theory**: The Neumann series is the starting point for spectral theory—the resolvent (λI - T)⁻¹ is a Neumann series when |λ| > ‖T‖.\n\n**2. Perturbation theory**: The invertibility of elements near the identity underpins stability analysis in numerical methods.\n\n**3. Iterative methods**: Jacobi, Gauss-Seidel, and other iterative solvers for Ax = b converge precisely when the iteration matrix has spectral radius < 1.\n\n**Practical Applications:**\n\n- **Numerical linear algebra**: Convergence of iterative solvers\n- **Control theory**: Stability of feedback systems\n- **Quantum mechanics**: Perturbation expansions\n- **Economics**: Leontief input-output models",
+    "openQuestions": [
+      "Formalize the spectral radius criterion: the Neumann series converges iff ρ(T) = lim ‖T^n‖^{1/n} < 1, which is strictly weaker than ‖T‖ < 1 — connect to Gelfand's spectral radius formula",
+      "Formalize the resolvent identity: R(λ,T) = (λI - T)⁻¹ = λ⁻¹ ∑ (T/λ)^n for |λ| > ‖T‖, connecting the Neumann series to spectral theory",
+      "Prove that the unit group of a Banach algebra is open and the inversion map A ↦ A⁻¹ is continuous, as direct corollaries of the perturbation result",
+      "Formalize the connection to iterative linear solvers: Jacobi iteration for Ax = b converges iff the iteration matrix D⁻¹(L+U) has spectral radius < 1",
+      "Extend to the holomorphic functional calculus: for holomorphic f on a neighborhood of σ(T), define f(T) via the Cauchy integral formula f(T) = (2πi)⁻¹ ∮ f(λ)R(λ,T) dλ"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.Group.NatPowAssoc",
+      "Mathlib.Algebra.Ring.Regular",
+      "Mathlib.Tactic.Abel",
+      "Mathlib.Analysis.SpecificLimits.Normed",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+      "Mathlib.Topology.Algebra.InfiniteSum.Ring",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Topology"
+    ],
+    "namespace": "NeumannSeries",
+    "lineCount": 237,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 0,
+    "path": "Proofs/GeometricSeriesOQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "key": "Ne77",
+      "citation": "Neumann, C., Untersuchungen über das logarithmische und Newton'sche Potential, Teubner, Leipzig (1877).",
+      "type": "book"
+    },
+    {
+      "key": "Ba32",
+      "citation": "Banach, S., Théorie des opérations linéaires, Monografje Matematyczne, Warsaw (1932).",
+      "type": "book"
+    },
+    {
+      "key": "GN43",
+      "citation": "Gelfand, I.M. and Naimark, M.A., On the imbedding of normed rings into the ring of operators in Hilbert space, Matematicheskii Sbornik 12(54) (1943), 197–213.",
+      "type": "paper"
+    },
+    {
+      "key": "Co90",
+      "citation": "Conway, J.B., A Course in Functional Analysis, 2nd ed., Springer GTM 96 (1990), Chapter VII.",
+      "type": "book"
+    },
+    {
+      "key": "Ka95",
+      "citation": "Kato, T., Perturbation Theory for Linear Operators, Springer Classics in Mathematics (1995, reprint of 1980 2nd ed.).",
+      "type": "book"
+    }
+  ],
+  "sorries": 0
+}

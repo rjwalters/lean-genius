@@ -1,0 +1,83 @@
+[
+  {
+    "id": "def-three-ap",
+    "proofId": "erdos-271",
+    "range": { "startLine": 45, "endLine": 51 },
+    "type": "definition",
+    "title": "Three-term Arithmetic Progression",
+    "content": "Three distinct numbers a, b, c form a 3-AP if 2b = a + c (equally spaced).",
+    "significance": "major"
+  },
+  {
+    "id": "def-ap-free",
+    "proofId": "erdos-271",
+    "range": { "startLine": 54, "endLine": 58 },
+    "type": "definition",
+    "title": "AP-Free Set",
+    "content": "A set contains no three-term arithmetic progression. Central to Szemerédi-type problems.",
+    "significance": "major"
+  },
+  {
+    "id": "def-stanley-seq",
+    "proofId": "erdos-271",
+    "range": { "startLine": 85, "endLine": 93 },
+    "type": "definition",
+    "title": "Stanley Sequence",
+    "content": "A(n) is the greedy sequence: a₀ = 0, a₁ = n, and aₖ₊₁ = smallest integer preserving AP-freeness.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-a1-char",
+    "proofId": "erdos-271",
+    "range": { "startLine": 128, "endLine": 133 },
+    "type": "theorem",
+    "title": "A(1) Characterization",
+    "content": "A(1) = integers with no digit 2 in base-3 expansion. These are sums of distinct powers of 3.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-a1-growth",
+    "proofId": "erdos-271",
+    "range": { "startLine": 149, "endLine": 156 },
+    "type": "theorem",
+    "title": "A(1) Growth Rate",
+    "content": "The k-th element of A(1) is Θ(k^{log₂3}) ≈ Θ(k^{1.585}).",
+    "significance": "major"
+  },
+  {
+    "id": "conj-dichotomy",
+    "proofId": "erdos-271",
+    "range": { "startLine": 213, "endLine": 220 },
+    "type": "conjecture",
+    "title": "Odlyzko-Stanley Dichotomy (Open)",
+    "content": "Every Stanley sequence has either k^{log₂3} growth (like A(1)) or k²/log k growth (like A(4)?).",
+    "significance": "major"
+  },
+  {
+    "id": "thm-moy",
+    "proofId": "erdos-271",
+    "range": { "startLine": 235, "endLine": 242 },
+    "type": "theorem",
+    "title": "Moy's Upper Bound (2011)",
+    "content": "For all Stanley sequences: aₖ ≤ (1/2 + ε)k² for sufficiently large k.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-vd-explicit",
+    "proofId": "erdos-271",
+    "range": { "startLine": 244, "endLine": 249 },
+    "type": "theorem",
+    "title": "Explicit Upper Bound",
+    "content": "aₖ ≤ (k-1)(k+2)/2 + n for all k (van Doorn-Sothanaphan).",
+    "significance": "major"
+  },
+  {
+    "id": "summary",
+    "proofId": "erdos-271",
+    "range": { "startLine": 320, "endLine": 347 },
+    "type": "summary",
+    "title": "Problem Summary",
+    "content": "PARTIALLY SOLVED: A(1), A(3^k), A(2·3^k) characterized. Upper bounds proven. OPEN: Dichotomy conjecture, general explicit formulas.",
+    "significance": "major"
+  }
+]

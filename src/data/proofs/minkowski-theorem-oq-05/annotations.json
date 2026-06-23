@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "minkowski-theorem-oq-05",
+    "range": { "startLine": 1, "endLine": 47 },
+    "type": "concept",
+    "title": "Power-sum convexity bound and the optimal constant",
+    "content": "For p ≥ 1 and nonnegative reals a, b, (a+b)^p ≤ 2^(p−1)(a^p+b^p). Mathlib proves this only for ℝ≥0 and ℝ≥0∞; the real-valued nonnegative form and the optimality of the constant 2^(p−1) are both absent. This file transports the inequality to ℝ, proves equality on the diagonal a = b, shows any universally-valid constant C satisfies C ≥ 2^(p−1), and packages these as the statement that 2^(p−1) is the least admissible constant.",
+    "mathContext": "$(a+b)^p \\le 2^{p-1}(a^p+b^p)$ for $a,b \\ge 0,\\ p \\ge 1$, with $2^{p-1}$ optimal.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "power-mean inequality",
+      "convexity of x^p",
+      "Jensen inequality",
+      "optimal constants"
+    ],
+    "prerequisites": [
+      "real power function (rpow)",
+      "convexity / power means"
+    ]
+  },
+  {
+    "id": "ann-bound",
+    "proofId": "minkowski-theorem-oq-05",
+    "range": { "startLine": 56, "endLine": 74 },
+    "type": "technique",
+    "title": "Real-valued bound via ℝ≥0 transport",
+    "content": "The real-valued nonnegative form is obtained by lifting a, b to ℝ≥0 (using their nonnegativity), applying Mathlib's NNReal.rpow_add_le_mul_rpow_add_rpow, and carrying the inequality back to ℝ with exact_mod_cast. The norm_cast lemma NNReal.coe_rpow bridges (↑(x^p)) and (↑x)^p, so the whole inequality transports across the order-embedding coercion in one step.",
+    "mathContext": "$\\mathbb{R}_{\\ge 0} \\hookrightarrow \\mathbb{R}$ is an order embedding, so a $\\ge 0$ inequality lifts verbatim.",
+    "significance": "key",
+    "relatedConcepts": [
+      "NNReal coercion",
+      "norm_cast",
+      "order embedding"
+    ],
+    "prerequisites": [
+      "ℝ≥0 → ℝ coercion",
+      "rpow on nonnegative reals"
+    ]
+  },
+  {
+    "id": "ann-equality",
+    "proofId": "minkowski-theorem-oq-05",
+    "range": { "startLine": 76, "endLine": 89 },
+    "type": "insight",
+    "title": "Sharpness witness: equality on the diagonal",
+    "content": "At a = b the bound is an exact equality, because both (a+a)^p and 2^(p−1)(a^p+a^p) equal 2^p·a^p. The proof rewrites a+a = 2·a, splits (2a)^p = 2^p·a^p via Real.mul_rpow, and recombines 2^(p−1)·2^1 = 2^p via Real.rpow_add. Notably this needs no hypothesis on p — the diagonal equality is pure rpow arithmetic, valid for every real exponent.",
+    "mathContext": "$(2a)^p = 2^p a^p = 2^{p-1}(a^p+a^p)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sharp constants",
+      "equality case",
+      "rpow arithmetic"
+    ],
+    "prerequisites": [
+      "Real.mul_rpow",
+      "Real.rpow_add"
+    ]
+  },
+  {
+    "id": "ann-optimality",
+    "proofId": "minkowski-theorem-oq-05",
+    "range": { "startLine": 91, "endLine": 110 },
+    "type": "insight",
+    "title": "Optimality from a single test point",
+    "content": "Any constant C for which (a+b)^p ≤ C(a^p+b^p) holds for all nonnegative a, b must satisfy C ≥ 2^(p−1). Evaluating the hypothesis at a = b = 1 gives 2^p ≤ 2C; dividing by 2 (using 2^(p−1) = 2^p/2 from Real.rpow_sub) yields the bound. A single evaluation pins the optimal constant — no variational argument.",
+    "mathContext": "$a=b=1 \\Rightarrow 2^p \\le 2C \\Rightarrow C \\ge 2^{p-1}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "optimal constant",
+      "test point",
+      "lower bound"
+    ],
+    "prerequisites": [
+      "Real.rpow_sub",
+      "linarith"
+    ]
+  },
+  {
+    "id": "ann-isleast",
+    "proofId": "minkowski-theorem-oq-05",
+    "range": { "startLine": 112, "endLine": 120 },
+    "type": "concept",
+    "title": "The optimal constant is 2^(p−1)",
+    "content": "Combining admissibility (the bound holds with C = 2^(p−1)) and the lower bound (no smaller constant works), 2^(p−1) is the least element of the set { C | ∀ a b ≥ 0, (a+b)^p ≤ C(a^p+b^p) }. This IsLeast statement is the precise, single-theorem characterization of the sharp constant in the two-term power-sum convexity bound.",
+    "mathContext": "$2^{p-1} = \\operatorname{IsLeast}\\{ C \\mid \\forall a,b \\ge 0,\\ (a+b)^p \\le C(a^p+b^p) \\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsLeast",
+      "optimal constant",
+      "lower bounds"
+    ],
+    "prerequisites": [
+      "IsLeast / lowerBounds",
+      "the bound and optimality lemmas above"
+    ]
+  }
+]

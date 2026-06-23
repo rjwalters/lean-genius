@@ -1,0 +1,199 @@
+[
+  {
+    "id": "ann-749-overview",
+    "proofId": "erdos-749",
+    "range": {
+      "startLine": 1,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Problem Overview and Imports",
+    "content": "**Problem Overview.** Erdős Problem #749 asks: for every ε > 0, does there exist A ⊆ ℕ such that A + A has lower density ≥ 1 - ε, yet the representation function r(n) is bounded? This explores the tension between sumset density and representation count. Status: OPEN. Imports basic Nat, Finset, and Tactic infrastructure.",
+    "mathContext": "This problem sits at the heart of **additive combinatorics**, exploring the boundary between Sidon sets (bounded r(n), density-0 sumset) and additive bases (density-1 sumset, conjectured unbounded r(n) by Erdős-Turán). The question asks whether the Erdős-Turán obstruction — that full bases must have unbounded representation — kicks in sharply at density 1, or whether there is a gradual transition. A positive answer would show one can get arbitrarily close to density 1 while maintaining bounded r(n), revealing that the Erdős-Turán threshold is exactly density 1.",
+    "relatedConcepts": [
+      "additive combinatorics",
+      "sumset density",
+      "representation function",
+      "Erdős-Turán conjecture",
+      "near-basis"
+    ],
+    "prerequisites": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-749-rep-function",
+    "proofId": "erdos-749",
+    "range": {
+      "startLine": 29,
+      "endLine": 38
+    },
+    "type": "definition",
+    "title": "Representation Function and Sumset",
+    "content": "**repFunction and sumSet.** The representation function r_A(n) counts ordered pairs (a, b) with a + b = n, a ≤ b, both in A. The sumset A + A = {a + b : a, b ∈ A}. These are computed via Finset.filter on Finset.range.",
+    "mathContext": "The representation function r_A(n) = |{(a,b) ∈ A² : a + b = n, a ≤ b}| is the central object. It equals half the convolution (1_A * 1_A)(n) adjusted for the diagonal. For Sidon sets, r_A(n) ≤ 1 (at most one representation). For additive bases of order 2, r_A(n) > 0 for all large n. The implementation counts via `Finset.filter` on `Finset.range (n + 1)`, checking membership in A and the ordering constraint a ≤ n - a. The sumset is defined as the existential image of addition.",
+    "relatedConcepts": [
+      "convolution",
+      "Sidon set",
+      "additive basis",
+      "Finset.filter",
+      "ordered pairs"
+    ],
+    "prerequisites": [
+      "Finset.range",
+      "Finset.filter",
+      "Set"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "ann-749-density",
+    "proofId": "erdos-749",
+    "range": {
+      "startLine": 40,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "Lower and Upper Density",
+    "content": "**lowerDensity, upperDensity, bounds, ordering.** The lower density d(S) = lim inf |S ∩ [1,N]| / N and upper density d̄(S) = lim sup |S ∩ [1,N]| / N are axiomatized. Basic properties: 0 ≤ d ≤ 1, d ≤ d̄.",
+    "mathContext": "The **asymptotic density** of S ⊆ ℕ measures what fraction of integers belong to S. The lower density d(S) = lim inf_{N→∞} |S ∩ {1,...,N}|/N and upper density d̄(S) = lim sup_{N→∞} |S ∩ {1,...,N}|/N always satisfy 0 ≤ d(S) ≤ d̄(S) ≤ 1. When they agree, S has natural density. The axiomatization is necessary since Lean cannot compute these limits directly. The distinction between lower and upper density matters: Problem #749 asks about lower density, but the upper density variant is also open and potentially has a different answer.",
+    "relatedConcepts": [
+      "asymptotic density",
+      "lim inf",
+      "lim sup",
+      "natural density",
+      "Schnirelmann density"
+    ],
+    "prerequisites": [
+      "Real",
+      "Set ℕ"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "ann-749-bounded-dense",
+    "proofId": "erdos-749",
+    "range": {
+      "startLine": 52,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "Bounded Representation and Dense Sumset",
+    "content": "**HasBoundedRep and HasDenseSumset.** A set has bounded representation if ∃ C, ∀ n, r_A(n) ≤ C. A set has ε-dense sumset if d(A+A) ≥ 1-ε. The main question asks whether both can hold simultaneously.",
+    "mathContext": "The predicate `HasBoundedRep A` asserts ∃ C : ℕ, ∀ n, repFunction A n ≤ C — the representation function is uniformly bounded. Sidon sets satisfy this with C = 1. The predicate `HasDenseSumset A ε` asserts lowerDensity(A+A) ≥ 1 - ε — the sumset covers almost all of ℕ. The tension is fundamental: dense sumsets typically arise from sets with many additive structures, which tend to have large r(n). The question asks whether 'mild' additive structure (bounded r(n)) can still produce dense sumsets.",
+    "relatedConcepts": [
+      "uniformly bounded",
+      "Sidon property",
+      "near-basis",
+      "additive structure",
+      "sumset coverage"
+    ],
+    "prerequisites": [
+      "repFunction",
+      "lowerDensity",
+      "sumSet"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "ann-749-conjecture",
+    "proofId": "erdos-749",
+    "range": {
+      "startLine": 63,
+      "endLine": 72
+    },
+    "type": "concept",
+    "title": "The Main Conjecture (OPEN)",
+    "content": "**erdos_749_conjecture.** Stated as a disjunction: either for every ε > 0 such sets exist (dense sumset + bounded r(n)), or there exists ε > 0 below which this is impossible. This captures both possible answers.",
+    "mathContext": "The axiom `erdos_749_conjecture` is stated as a law of excluded middle applied to the main question: either the answer is YES for all ε (we can always find A with d(A+A) ≥ 1-ε and bounded r(n)), or there is a critical ε₀ > 0 below which no such A exists (meaning dense sumsets require unbounded r(n)). If the second disjunct holds, it would give a quantitative version of the Erdős-Turán conjecture: not only must full bases have unbounded r(n), but even (1-ε₀)-bases must. The first disjunct would show the Erdős-Turán threshold is exactly density 1.",
+    "relatedConcepts": [
+      "law of excluded middle",
+      "critical threshold",
+      "quantitative Erdős-Turán",
+      "dichotomy",
+      "density threshold"
+    ],
+    "prerequisites": [
+      "HasDenseSumset",
+      "HasBoundedRep"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "ann-749-sidon",
+    "proofId": "erdos-749",
+    "range": {
+      "startLine": 74,
+      "endLine": 87
+    },
+    "type": "concept",
+    "title": "Sidon Sets: Bounded but Sparse",
+    "content": "**sidon_bounded_rep and sidon_density_zero.** Sidon sets have r(n) ≤ 2 (bounded) but d(A+A) = 0 (density 0). This shows one extreme: bounded r(n) is compatible with sparse sumsets, but Sidon sets are far from the dense sumset goal.",
+    "mathContext": "A **Sidon set** (or B₂ set) is a set A where all pairwise sums a + b (a ≤ b) are distinct. This gives r_A(n) ≤ 1 for all n. The classical result of Erdős and Turán shows |A ∩ {1,...,N}| ≤ (1+o(1))√N for Sidon sets, giving |A+A| ≤ (1+o(1))N, so d(A+A) can be at most 1 — but the density is actually 0 since |A+A| ∼ N while we need |A+A ∩ [1,N]|/N → 0 from the sparsity of A. This establishes the 'lower left' of the density-representation landscape: bounded r(n) is achievable, but only with sparse sumsets.",
+    "relatedConcepts": [
+      "Sidon set",
+      "B₂ set",
+      "sum-free property",
+      "density zero",
+      "√N counting bound"
+    ],
+    "prerequisites": [
+      "HasBoundedRep",
+      "lowerDensity",
+      "sumSet"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "ann-749-erdos-turan",
+    "proofId": "erdos-749",
+    "range": {
+      "startLine": 89,
+      "endLine": 96
+    },
+    "type": "concept",
+    "title": "Erdős-Turán Connection (Problem #28)",
+    "content": "**erdos_turan_conjecture_28.** The Erdős-Turán conjecture: if d(A+A) = 1 (A is an additive basis), then r(n) must be unbounded. Problem #749 relaxes density = 1 to density ≥ 1-ε, asking whether the obstruction persists.",
+    "mathContext": "The **Erdős-Turán conjecture** (1941, Problem #28, $500 bounty) is one of the most important open problems in additive number theory. It asserts that if A is an asymptotic additive basis of order 2 (every sufficiently large integer is in A+A), then lim sup r_A(n) = ∞. Problem #749 probes the boundary: if we relax 'every large integer' to '(1-ε)-fraction of integers', does the obstruction survive? A negative answer to #749 (such sets exist) would show the Erdős-Turán obstruction is specific to density exactly 1. A positive answer would strengthen #28.",
+    "relatedConcepts": [
+      "Erdős-Turán conjecture 1941",
+      "additive basis of order 2",
+      "asymptotic basis",
+      "boundary behavior",
+      "lim sup r(n)"
+    ],
+    "prerequisites": [
+      "lowerDensity",
+      "HasBoundedRep",
+      "sumSet"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "ann-749-upper-variant",
+    "proofId": "erdos-749",
+    "range": {
+      "startLine": 98,
+      "endLine": 107
+    },
+    "type": "concept",
+    "title": "Upper Density Variant",
+    "content": "**erdos_749_upper_variant.** The same question with upper density instead of lower density: does A exist with d̄(A+A) ≥ 1-ε and bounded r(n)? This variant is also open and the answer may differ from the lower density version.",
+    "mathContext": "Since upper density d̄(S) ≥ lower density d(S), having d̄(A+A) ≥ 1-ε is a weaker condition than d(A+A) ≥ 1-ε. If the lower density version has a positive answer (such sets exist), then so does the upper density version. However, if the lower density version has a negative answer, the upper density version could still be positive. The distinction matters because lower density captures 'almost all integers eventually' while upper density only captures 'most integers along a subsequence'. The two variants could have genuinely different answers.",
+    "relatedConcepts": [
+      "upper density",
+      "lower density",
+      "lim sup vs lim inf",
+      "density distinction",
+      "subsequence behavior"
+    ],
+    "prerequisites": [
+      "upperDensity",
+      "HasBoundedRep",
+      "sumSet"
+    ],
+    "significance": "key"
+  }
+]

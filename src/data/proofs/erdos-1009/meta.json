@@ -1,0 +1,247 @@
+{
+  "id": "erdos-1009",
+  "title": "Erdős Problem #1009: Edge-Disjoint Triangles Beyond Turán",
+  "slug": "erdos-1009",
+  "description": "For every c > 0, does there exist f(c) such that every graph with ⌊n²/4⌋ + k edges (k < cn) contains at least k - f(c) edge-disjoint triangles? SOLVED: Györi (1988) proved this with f(c) ≪ c².",
+  "meta": {
+    "author": "Erdős (1971)",
+    "sourceUrl": "https://erdosproblems.com/1009",
+    "date": "1971",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1009Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "triangles",
+      "edge-disjoint",
+      "turan-numbers",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1009,
+    "erdosUrl": "https://erdosproblems.com/1009",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type and basic operations",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for edges and triangle families",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Sym2",
+        "description": "Unordered pairs for edges",
+        "module": "Mathlib.Data.Sym.Sym2"
+      }
+    ],
+    "originalContributions": [
+      "Triangle structure: formalized triangle with adjacency proofs",
+      "edgeDisjoint, pairwiseEdgeDisjoint: edge-disjointness for triangle families",
+      "maxEdgeDisjointTriangles: maximum packing size via sSup",
+      "excessEdges: excess above Turán threshold",
+      "gyori_theorem_statement: main theorem with f(c) function, stated as Prop (not asserted)",
+      "boundFunction axiom: opaque bound function f(c)",
+      "gyori_bound axiom: f(c) << c² bound",
+      "erdos_small_c_theorem: f(c)=0 for c < 1/2, stated as Prop",
+      "gyori_odd_n_theorem, gyori_even_n_theorem: refined parity-dependent bounds, stated as Props",
+      "completeTripartite: explicit K_{a,b,c} construction",
+      "sauer_counterexample_theorem: K_{1,m,m} shows f(2) >= 1, stated as Prop",
+      "turan_extremal: Turán bound proved from Mathlib's CliqueFree.card_edgeFinset_le",
+      "exceeds_turan_has_triangle: corollary of turan_extremal by contraposition"
+    ],
+    "axiomCount": 2,
+    "lineCount": 239,
+    "assumptions": "2 axioms: boundFunction (opaque function), gyori_bound (C²-bound on f(c)). turan_extremal now proved from Mathlib's CliqueFree.card_edgeFinset_le. 5 former axioms converted to Prop defs.",
+    "theoremCount": 7,
+    "definitionCount": 15
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem in 1971 [Er71], motivated by the classical Turán problem. The Turán number $\\text{ex}(n, K_3) = \\lfloor n^2/4 \\rfloor$ (proved by Turán in 1941) is the maximum edges in a triangle-free graph on $n$ vertices. When a graph exceeds this threshold by $k$ edges, triangles must exist by Turán's theorem. Erdős asked: can we find nearly $k$ edge-disjoint triangles? He originally conjectured $f(c) = 0$ for all $c$ (every excess edge 'belongs to' a unique triangle). Sauer disproved this with $K_{1,m,m}$: it has $2m$ excess edges but only $2m - 1$ edge-disjoint triangles, since the degree-1 vertex is a bottleneck. Erdős himself proved $f(c) = 0$ for $c < 1/2$ using chromatic number arguments. Györi (1988) [Gy88] resolved the problem completely, showing $f(c) \\leq Cc^2$ for an absolute constant $C$. The quadratic growth is essentially optimal. Györi also refined the small-$c$ range: $f(c) = 0$ for $c < 2$ (odd $n$) and $c < 3/2$ (even $n$), reflecting the parity-dependent structure of the Turán graph.",
+    "problemStatement": "For every c > 0, does there exist f(c) such that every graph on n vertices with at least ⌊n²/4⌋ + k edges (where k < cn) contains at least k - f(c) edge-disjoint triangles?",
+    "text": "For every c > 0, does there exist f(c) such that every graph with ⌊n²/4⌋ + k edges (k < cn) contains at least k - f(c) edge-disjoint triangles? SOLVED: Györi (1988) proved this with f(c) ≪ c².",
+    "proofStrategy": "Györi's proof shows that excess edges beyond Turán bound 'must' form triangles that are nearly disjoint. The key insight is that in dense graphs, the extra edges cannot all concentrate in shared triangles—they must spread out. For small c, the graphs are close enough to the Turán graph that f(c) = 0 works. For larger c, Sauer's complete tripartite construction shows some loss is unavoidable.",
+    "keyInsights": [
+      "**Turán baseline**: The threshold $\\lfloor n^2/4 \\rfloor$ is the exact boundary between triangle-free and triangle-containing graphs; every excess edge creates triangle structure",
+      "**Triangle packing vs excess edges**: Each excess edge 'should' contribute to a distinct triangle; the function $f(c)$ measures the unavoidable loss in this correspondence",
+      "**Sauer's bottleneck**: $K_{1,m,m}$ shows $f(c) > 0$ is necessary—the single vertex of degree $2m$ must participate in every triangle, creating a packing bottleneck",
+      "**Parity-dependent thresholds**: $f(c) = 0$ extends further for odd $n$ ($c < 2$) than even $n$ ($c < 3/2$) because the unbalanced Turán graph $K_{(n-1)/2,(n+1)/2}$ has different structural properties",
+      "**Gyori's quadratic bound**: $f(c) \\leq Cc^2$ is proved via dependent random choice and Kővári-Sós-Turán; the quadratic growth rate matches the $K_{1,m,m}$ lower bound up to constants"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-1009-imports",
+      "title": "Imports and Setup",
+      "summary": "Imports Mathlib, opens `Finset` and `SimpleGraph` namespaces, declares variables $V$ with `[Fintype V] [DecidableEq V]`.",
+      "startLine": 33,
+      "endLine": 44,
+      "mathContext": "Works with `SimpleGraph V` for finite type `V`. The namespace `Erdos1009` scopes the definitions. All graph-theoretic objects use Mathlib's `SimpleGraph` (symmetric irreflexive relation) and `edgeFinset` (edge set as `Finset (Sym2 V)`)."
+    },
+    {
+      "id": "sec-1009-graph-basics",
+      "title": "Graph Basics",
+      "summary": "Defines `numVertices G = |V|`, `numEdges G = |E(G)|`, and `turanThreshold n = \\lfloor n^2/4 \\rfloor$, the Turán number $\\text{ex}(n, K_3)$.",
+      "startLine": 45,
+      "endLine": 54,
+      "mathContext": "`numVertices G := Fintype.card V`, `numEdges G := G.edgeFinset.card`, `turanThreshold n := n^2 / 4` (Lean's natural number floor division). The Turán number $\\text{ex}(n, K_3) = \\lfloor n^2/4 \\rfloor$ is the maximum edges in a triangle-free graph on $n$ vertices."
+    },
+    {
+      "id": "sec-1009-triangles",
+      "title": "Triangles and Edge-Disjointness",
+      "summary": "Defines `Triangle G` (structure with adjacency proofs), `Triangle.edges` ($\\{\\{a,b\\},\\{b,c\\},\\{a,c\\}\\}$), `edgeDisjoint`, `pairwiseEdgeDisjoint`, and `maxEdgeDisjointTriangles` ($\\nu_3(G)$ via `sSup`).",
+      "startLine": 55,
+      "endLine": 86,
+      "mathContext": "A `Triangle G` is a structure $(a, b, c : V)$ with proofs $G.\\text{Adj}\\,a\\,b$, $G.\\text{Adj}\\,b\\,c$, $G.\\text{Adj}\\,a\\,c$. Two triangles are edge-disjoint if their edge sets (as `Finset (Sym2 V)`) are disjoint. $\\nu_3(G) = \\max\\{|\\mathcal{T}| : \\mathcal{T}$ is a pairwise edge-disjoint set of triangles$\\}$."
+    },
+    {
+      "id": "sec-1009-main",
+      "title": "Györi's Main Theorem",
+      "summary": "Defines `excessEdges G = |E(G)| - \\lfloor n^2/4 \\rfloor` and states Györi's result as a Prop (`gyori_theorem_statement`, not asserted): $\\nu_3(G) \\geq k - f(c)$ when $k < cn$, with $f(c) \\leq Cc^2$ (the $C$-bound is the `gyori_bound` axiom on the opaque `boundFunction`).",
+      "startLine": 87,
+      "endLine": 113,
+      "mathContext": "Györi (1988): if $|E(G)| = \\lfloor n^2/4 \\rfloor + k$ with $k < cn$, then $\\nu_3(G) \\geq k - f(c)$ where $f(c) = O(c^2)$. The 'excess edges' $k$ count edges beyond Turán; nearly all of them can be assigned to edge-disjoint triangles, with at most $f(c)$ 'wasted'."
+    },
+    {
+      "id": "sec-1009-partial",
+      "title": "Erdős's Partial Result and Refinements",
+      "summary": "States as Props $f(c) = 0$ for $c < 1/2$ (Erdős), $c < 2$ for odd $n$, and $c < 3/2$ for even $n$ (Györi) — `erdos_small_c_theorem`, `gyori_odd_n_theorem`, `gyori_even_n_theorem`, none asserted. The parity refinements reflect the structure of the Turán graph.",
+      "startLine": 114,
+      "endLine": 146,
+      "mathContext": "For small $c$: if $k < n/2$, every excess edge participates in a distinct edge-disjoint triangle ($f = 0$). The parity refinement: $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$ has parts of equal size iff $n$ is even, affecting how many excess edges can be packed into disjoint triangles before interference occurs."
+    },
+    {
+      "id": "sec-1009-sauer",
+      "title": "Sauer's Counterexample",
+      "summary": "Defines `completeTripartite a b c` on `Fin a ⊕ Fin b ⊕ Fin c`. States Sauer's result as a Prop (`sauer_counterexample_theorem`, not asserted): $K_{1,m,m}$ has $2m$ excess edges but $\\nu_3 = 2m - 1$, witnessing $f(2) \\geq 1$.",
+      "startLine": 147,
+      "endLine": 173,
+      "mathContext": "$K_{1,m,m}$ has $n = 2m+1$ vertices, $|E| = 2m^2 + m$ edges. The Turán threshold is $\\lfloor (2m+1)^2/4 \\rfloor = m^2 + m$, so excess = $m^2 = 2m \\cdot m / (2m) \\approx cn/2$ edges. But the $m$ triangles through the degree-1 part share edges, giving $\\nu_3 = 2m - 1$, one short of $k = 2m$."
+    },
+    {
+      "id": "sec-1009-corollaries",
+      "title": "Turán's Theorem and Corollaries",
+      "summary": "Proves `turan_extremal` ($G$ triangle-free $\\implies |E| \\leq \\lfloor n^2/4 \\rfloor$) from Mathlib's `CliqueFree.card_edgeFinset_le`, then derives `exceeds_turan_has_triangle` by contraposition. Both are fully proved (all 7 theorems in the file are proof-complete; the axiomatized content is the opaque `boundFunction` and `gyori_bound`).",
+      "startLine": 174,
+      "endLine": 194,
+      "mathContext": "`exceeds_turan_has_triangle`: $|E(G)| > \\lfloor n^2/4 \\rfloor \\Rightarrow \\exists$ triangle in $G$. Proved by contraposition: if no triangle exists, `turan_extremal` (a bridge to Mathlib's `CliqueFree.card_edgeFinset_le` Turán bound) gives $|E| \\leq \\lfloor n^2/4 \\rfloor$, contradicting the hypothesis."
+    }
+  ],
+  "conclusion": {
+    "summary": "Györi (1988) proved the conjecture with f(c) ≪ c². This bound is optimal up to constants, as shown by Sauer's construction. The result reveals the structure of dense graphs: excess edges beyond Turán threshold must organize into nearly edge-disjoint triangles.",
+    "implications": "**Extremal Graph Theory**: The problem of counting edge-disjoint triangles beyond the Turán threshold sits at the intersection of extremal graph theory and combinatorial optimization. The Turán number $\\text{ex}(n, K_3) = \\lfloor n^2/4 \\rfloor$ gives the maximum triangle-free edge count; this problem asks how many edge-disjoint triangles exist when we exceed this threshold, connecting packing theory to extremal density.\n\n**Triangle Removal and Regularity**: The triangle removal lemma (Ruzsa-Szemerédi 1978) shows graphs with $o(n^3)$ triangles can be made triangle-free by removing $o(n^2)$ edges. Edge-disjoint triangle packing provides the dual perspective: rather than destroying triangles, we seek to pack as many non-overlapping ones as possible. Szemerédi's regularity lemma provides the structural framework for both.\n\n**Algorithmic Implications**: Triangle packing is NP-hard in general, but the extremal structure above the Turán threshold provides structural guarantees. Understanding the maximum packing has applications to database join optimization, network coding, and distributed computing where triangle decompositions model local communication patterns.",
+    "openQuestions": [
+      "What is the exact optimal constant $C$ in $f(c) \\leq Cc^2$? Hunter's simplified proof may give better constants.",
+      "Can similar results be proved for edge-disjoint copies of $K_4$ or larger cliques beyond the Turán threshold $\\text{ex}(n, K_r)$?",
+      "What is the computational complexity of finding the maximum edge-disjoint triangle packing? The fractional relaxation is polynomial, but the integer version is NP-hard in general.",
+      "Is there a common generalization for edge-disjoint copies of arbitrary graphs $H$ beyond the Turán threshold $\\text{ex}(n, H)$?",
+      "Can the parity-dependent thresholds ($c < 2$ for odd $n$, $c < 3/2$ for even $n$) be unified into a single formula depending on $n \\bmod 2$?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "Ramsey theory provides the backdrop for extremal graph problems: just as Ramsey numbers bound unavoidable monochromatic cliques, Turán's theorem bounds unavoidable triangles. Györi's result extends this by quantifying how many edge-disjoint triangles are forced by edge density above the Turán threshold."
+    },
+    {
+      "targetId": "erdos-1008",
+      "relationship": "thematic",
+      "description": "Erdős #1008 studies C₄-free subgraphs with many edges in dense graphs; both problems ask how much of a forbidden-subgraph-free structure can be extracted from a graph that just exceeds the corresponding Turán threshold, and both rely on Kővári–Sós–Turán-type arguments."
+    },
+    {
+      "targetId": "erdos-1010",
+      "relationship": "thematic",
+      "description": "Erdős #1010 is a neighboring problem in the same cluster of Turán-type and packing questions. Both #1009 and #1010 concern the fine structure of graphs near the Turán threshold and were motivated by similar 1971–1975 Erdős problems on extremal graph theory."
+    },
+    {
+      "targetId": "erdos-1012",
+      "relationship": "thematic",
+      "description": "Erdős #1012 concerns another extremal problem on triangle-related structure in dense graphs. Together with #1009, it forms part of Erdős's systematic study of what happens just beyond Turán's theorem and how triangles pack in graphs of given density."
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "complementary",
+      "description": "Szemerédi's Regularity Lemma is the primary modern tool for analyzing triangle structure in dense graphs. Györi's proof of the edge-disjoint triangle packing bound relies on regularity-type ideas; the Regularity Lemma generalizes these to arbitrary dense subgraph patterns via the triangle removal lemma."
+    },
+    {
+      "targetId": "erdos-1",
+      "relationship": "thematic",
+      "description": "Erdős Problem #1 is a central problem in Erdős's extremal combinatorics program. Like #1009, it exemplifies Erdős's approach of asking precise quantitative questions about forced combinatorial structure in dense or large discrete systems."
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "E. Györi"
+      ],
+      "title": "On the number of edge disjoint triangles in graphs of given size",
+      "year": "1988",
+      "venue": "Combinatorics (Eger, 1987), Colloq. Math. Soc. János Bolyai, vol. 52, North-Holland",
+      "note": "The main reference: Györi proves f(c) ≤ Cc² and provides parity-dependent refinements f(c)=0 for c<2 (odd n) and c<3/2 (even n)."
+    },
+    {
+      "authors": [
+        "P. Erdős"
+      ],
+      "title": "Some unsolved problems in graph theory and combinatorics",
+      "year": "1971",
+      "venue": "Combinatorial Mathematics and its Applications, Academic Press",
+      "note": "Original problem statement. Erdős posed the question and proved f(c)=0 for c<1/2."
+    },
+    {
+      "authors": [
+        "P. Turán"
+      ],
+      "title": "On an extremal problem in graph theory",
+      "year": "1941",
+      "venue": "Matematikai és Fizikai Lapok, 48, 436–452",
+      "note": "Proves the Turán theorem: ex(n,K₃)=⌊n²/4⌋. This is the baseline whose excess is studied in Erdős #1009."
+    },
+    {
+      "authors": [
+        "N. Sauer"
+      ],
+      "title": "On the density of complete bipartite subgraphs in graphs with bounded independent sets",
+      "year": "1975",
+      "venue": "Proceedings of a conference on graph theory",
+      "note": "Sauer's counterexample: K_{1,m,m} has 2m excess edges but only 2m−1 edge-disjoint triangles, proving f(2) ≥ 1 and that f(c)=0 fails for all c."
+    },
+    {
+      "authors": [
+        "W. T. Gowers"
+      ],
+      "title": "Hypergraph regularity and the multidimensional Szemerédi theorem",
+      "year": "2007",
+      "venue": "Annals of Mathematics, 166(3), 897–946",
+      "note": "Develops the hypergraph regularity lemma used in modern proofs of triangle removal and packing theorems; provides the analytic machinery generalizing Györi's combinatorial approach."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "SimpleGraph"
+    ],
+    "namespace": null,
+    "lineCount": 239,
+    "axiomCount": 2,
+    "theoremCount": 7,
+    "definitionCount": 15,
+    "path": "Proofs/Erdos1009Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

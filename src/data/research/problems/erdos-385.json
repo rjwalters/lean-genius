@@ -1,0 +1,79 @@
+{
+  "slug": "erdos-385",
+  "title": "Erdős #385",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Let\\[F(n) = \\max_{\\substack{m<n\\\\ m\\textrm{ composite}}} m+p(m),\\]where $p(m)$ is the least prime divisor of $m$. Is it true that $F(n)>n$ for all sufficiently large $n$? Does $F(n)-n\\to \\infty$ as $n\\to\\infty$?\n\n\n\nA question of Erd\\H{o}s, Eggleton, and Selfridge, who write that 'plausible conjectures on primes' imply that $F(n)\\leq n$ for only finitely many $n$, and in fact it is possible that this quantity is always at least $n+(1-o(1))\\sqrt{n}$ (note that it is trivially $\\leq n+\\sqrt{n}$).\n\nTao has discussed this problem in a blog post.\n\nSarosh Adenwalla has observed that the first question is equivalent to [430]. Indeed, if $n$ is large and $a_i$ is the sequence defined in the latter problem, then [430] implies that there is a composite $a_j$ such that $a_j-p(a_j)>n$ and hence $F(n)>n$.\n\nSee also [463].",
+    "plain": "Let\\[F(n) = \\max_{\\substack{mn$ for all sufficiently large $n$? Does $F(n)-n\\to \\infty$ as $n\\to\\infty$?",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-18T11:20:09Z",
+    "iteration": 2,
+    "focus": "Surveyed least-prime-divisor formalization and open conjecture surface.",
+    "blockers": [],
+    "nextAction": "Prove a real F(n) upper-bound theorem or add checked small examples before attacking the open questions.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEYED: 5 theorems, 0 axioms, 0 sorries. The file formalizes F, least-prime-divisor infrastructure, both open questions, and proves Q2 implies Q1; the conjectured lower bound is only a definition/comment target.",
+    "builtItems": [
+      "Confirmed leastPrimeDivisor_prime, leastPrimeDivisor_dvd, and leastPrimeDivisor_le_sqrt are theorems.",
+      "Confirmed q2_implies_q1 and finitely_many_exceptions are theorem-backed consequences.",
+      "Confirmed no axioms remain in the current Lean file."
+    ],
+    "insights": [
+      "The problem remains open because erdos385Question1 and erdos385Question2 are definitions without proofs, not because Lean assumes them as axioms.",
+      "The advertised upper bound F(n) <= n + sqrt(n) appears only in comments; there is no Lean theorem for it yet.",
+      "conjecturedLowerBound records the n + (1 - eps)*sqrt(n) target as a Prop."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove a theorem for the trivial upper bound F(n) <= n + sqrt(n) over the Finset sup definition."
+    ],
+    "markdown": "# Erdős #385 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet\\[F(n) = \\max_{\\substack{m<n\\\\ m\\textrm{ composite}}} m+p(m),\\]where $p(m)$ is the least prime divisor of $m$. Is it true that $F(n)>n$ for all sufficiently large $n$? Does $F(n)-n\\to \\infty$ as $n\\to\\infty$?\n\n\n\nA question of Erd\\H{o}s, Eggleton, and Selfridge, who write that 'plausible conjectures on primes' imply that $F(n)\\leq n$ for only finitely many $n$, and in fact it is possible that this quantity is always at least $n+(1-o(1))\\sqrt{n}$ (note that it is trivially $\\leq n+\\sqrt{n}$).\n\nTao has discussed this problem in a blog post.\n\nSarosh Adenwalla has observed that the first question is equivalent to [430]. Indeed, if $n$ is large and $a_i$ is the sequence defined in the latter problem, then [430] implies that there is a composite $a_j$ such that $a_j-p(a_j)>n$ and hence $F(n)>n$.\n\nSee also [463].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #8\n- Problem #19\n- Problem #430\n- Problem #463\n- Problem #384\n- Problem #386\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-3",
+    "erdos-38",
+    "erdos-385"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T00:59:36.243Z",
+  "lastUpdate": "2026-05-18T11:20:09Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos385Problem.lean",
+      "filename": "Erdos385Problem.lean",
+      "lineCount": 196,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos385Problem.lean"
+    }
+  ]
+}

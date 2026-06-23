@@ -1,0 +1,142 @@
+{
+  "id": "sqrt2-plus-sqrt3-plus-sqrt5-irrational",
+  "title": "Irrationality of √2 + √3 + √5",
+  "slug": "sqrt2-plus-sqrt3-plus-sqrt5-irrational",
+  "description": "Proves that √2 + √3 + √5 is irrational by isolating √30 via two squarings. Letting α = √2+√3+√5: reuse the parent identity (√2+√3)² = 5+2√6 to get α² = 2α√5 + 2√6, then square again to derive α⁴ − 20α² − 24 = 8α·√30. Dividing by 8α (positive) gives √30 ∈ ℚ if α ∈ ℚ, contradicting irrationality of √30 (proved via Mathlib's irrational_sqrt_natCast_iff + native_decide on ¬IsSquare 30). 4 public theorems + 1 private cross-radical bridge (√5·√6 = √30), 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-05-12",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean",
+    "tags": [
+      "irrationality",
+      "real-analysis",
+      "square-roots",
+      "number-theory",
+      "research",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-05-12",
+    "axiomCount": 1,
+    "assumptions": "Depends on Lean.ofReduceBool: the main theorem irrational_sqrt2_plus_sqrt3_plus_sqrt5 applies irrational_sqrt_thirty, which discharges ¬IsSquare 30 with native_decide (kernel compiler reduction). Also uses Mathlib's irrational_sqrt_natCast_iff, Real.sq_sqrt, Real.sqrt_mul, sqrt_pos, sqrt_nonneg, plus the parent gallery proof's exported identity sqrt2_plus_sqrt3_sq : (√2 + √3)² = 5 + 2√6. No literal axiom declarations (leanFile.axiomCount = 0).",
+    "lineCount": 144,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "originalContributions": [
+      "irrational_sqrt2_plus_sqrt3_plus_sqrt5: √2 + √3 + √5 is irrational, proved via the isolate-√30-by-squaring-twice strategy (∼25-line proof body, parent-identity reuse + Real.sq_sqrt × 2)",
+      "alpha_quartic_identity: (√2+√3+√5)⁴ − 20·(√2+√3+√5)² − 24 = 8·(√2+√3+√5)·√30 — the key algebraic identity, proved by step-by-step substitution with linarith chains avoiding nlinarith on cross-radical products",
+      "sqrt5_mul_sqrt6: √5·√6 = √30 — private cross-radical bridge via ← Real.sqrt_mul + norm_num",
+      "alpha_pos: 0 < √2 + √3 + √5 — positivity established by sqrt_nonneg × 2 + sqrt_pos.mpr, needed to divide by 8α in the main theorem",
+      "irrational_sqrt_thirty: √30 is irrational — one-liner via irrational_sqrt_natCast_iff.mpr + native_decide on ¬IsSquare 30"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The irrationality of $\\sqrt{2}+\\sqrt{3}+\\sqrt{5}$ is the natural three-summand generalisation of the classical $\\sqrt{2}+\\sqrt{3} \\notin \\mathbb{Q}$ result (parent gallery entry). For two summands, one squaring reduces the problem to irrationality of $\\sqrt{6}$. For three squarefree summands, two squarings reduce it to irrationality of $\\sqrt{30}$. The general statement that $\\{\\sqrt{a_1}, \\ldots, \\sqrt{a_n}\\}$ are linearly independent over $\\mathbb{Q}$ when the $a_i$ are distinct squarefree positive integers was established by A. S. Besicovitch in 'On the linear independence of fractional powers of integers' (J. London Math. Soc., 1940) via an inductive argument on the number of distinct prime factors involved; the modern textbook treatment (e.g., I. Niven, *Irrational Numbers*, 1956, §4.5) frames the same induction Galois-theoretically as the statement that $[\\mathbb{Q}(\\sqrt{a_1},\\ldots,\\sqrt{a_n}) : \\mathbb{Q}] = 2^n$ when the prime supports are independent in $(\\mathbb{Z}/2\\mathbb{Z})^{\\infty}$. This gallery entry handles the unit case $n=3$, $\\{a_1,a_2,a_3\\} = \\{2,3,5\\}$, with explicit elementary algebra rather than the general induction — bypassing all Galois machinery and using only `Real.sq_sqrt` + `Real.sqrt_mul` + `linarith`. The proof composes the parent gallery proof as a black box (re-using its exported `sqrt2_plus_sqrt3_sq` identity verbatim), demonstrating compositional theorem reuse across the gallery.",
+    "problemStatement": "Prove that $\\sqrt{2} + \\sqrt{3} + \\sqrt{5} \\notin \\mathbb{Q}$ (the third open question of the parent `sqrt2-plus-sqrt3-irrational` gallery proof, listed as OQ-01).",
+    "text": "Set $\\alpha := \\sqrt{2}+\\sqrt{3}+\\sqrt{5}$. The proof shows $\\sqrt{30} \\in \\mathbb{Q}$ whenever $\\alpha \\in \\mathbb{Q}$, which contradicts the irrationality of $\\sqrt{30}$ (a one-line consequence of Mathlib's `irrational_sqrt_natCast_iff` + `native_decide` on $\\neg\\mathrm{IsSquare}\\, 30$). Step 1 subtracts $\\sqrt{5}$ and squares: $(\\alpha - \\sqrt{5})^2 = (\\sqrt{2}+\\sqrt{3})^2 = 5 + 2\\sqrt{6}$ (parent identity), so $\\alpha^2 - 2\\alpha\\sqrt{5} + 5 = 5 + 2\\sqrt{6}$, i.e. $\\alpha^2 = 2\\alpha\\sqrt{5} + 2\\sqrt{6}$. Step 2 squares this: $\\alpha^4 = (2\\alpha\\sqrt{5} + 2\\sqrt{6})^2 = 4\\alpha^2 \\cdot 5 + 8\\alpha\\cdot\\sqrt{5}\\sqrt{6} + 4 \\cdot 6 = 20\\alpha^2 + 8\\alpha\\sqrt{30} + 24$, giving the key quartic identity $\\alpha^4 - 20\\alpha^2 - 24 = 8\\alpha\\sqrt{30}$. Step 3 observes $\\alpha > 0$ and concludes $\\sqrt{30} = (\\alpha^4 - 20\\alpha^2 - 24)/(8\\alpha)$ is rational when $\\alpha$ is, contradiction.",
+    "proofStrategy": "Isolate $\\sqrt{30}$ by squaring twice. The first squaring re-uses the parent gallery proof's exported $\\mathrm{sqrt2\\_plus\\_sqrt3\\_sq}$ identity verbatim. The second squaring expands a binomial whose cross term contains $\\sqrt{5}\\cdot\\sqrt{6} = \\sqrt{30}$. The substantive proof component is `alpha_quartic_identity`, which avoids `nlinarith` (fails on cross-radical products) by establishing a two-step `linarith` chain using `Real.sq_sqrt` and a private cross-radical bridge lemma `sqrt5_mul_sqrt6 : sqrt 5 * sqrt 6 = sqrt 30` (proved by `← Real.sqrt_mul` + `norm_num`). The main theorem then exhibits the explicit rational witness $(r^4 - 20r^2 - 24)/(8r)$ for $\\sqrt{30}$ and contradicts `irrational_sqrt_thirty` via `push_cast`.",
+    "keyInsights": [
+      "Two squarings collapse three nested surds into one. With one squaring, the parent reduces $\\sqrt{2}+\\sqrt{3} \\in \\mathbb{Q}$ to $\\sqrt{6} \\in \\mathbb{Q}$; with two squarings, this proof reduces $\\sqrt{2}+\\sqrt{3}+\\sqrt{5} \\in \\mathbb{Q}$ to $\\sqrt{30} \\in \\mathbb{Q}$. The cross-radical bridge $\\sqrt{5}\\cdot\\sqrt{6} = \\sqrt{30}$ is what makes the second squaring collapse to a single surd.",
+      "Compositional theorem reuse: the proof re-imports the parent's `sqrt2_plus_sqrt3_sq` identity as a black-box lemma, rather than re-proving it. This is a deliberate gallery-architecture choice — the parent proof is the right unit of reuse, not the underlying squaring trick.",
+      "`nlinarith` does not handle cross-radical products (e.g., $\\sqrt{5}\\cdot\\sqrt{6}$ vs $\\sqrt{30}$). The S2 PREP iteration (merged PR #18353) established a two-substitution + `linarith` chain that sidesteps `nlinarith`: first rewrite $\\sqrt{5}^2 \\to 5$ and $\\sqrt{6}^2 \\to 6$, then apply the bridge lemma $\\sqrt{5}\\cdot\\sqrt{6} \\to \\sqrt{30}$ as a separate `rw`. This proof technique transfers to any irrationality result requiring isolated radical manipulation.",
+      "Generalisation horizon — Besicovitch (1940): for distinct squarefree positive integers $a_1, \\ldots, a_n$, the $\\sqrt{a_i}$ are $\\mathbb{Q}$-linearly independent. The case $n=3, \\{a_1,a_2,a_3\\}=\\{2,3,5\\}$ handled here is the unit case for any future Besicovitch formalisation, currently not in Mathlib v4.26.0.",
+      "Galois-theoretic structure (background, not used in the proof): the splitting field $K = \\mathbb{Q}(\\sqrt{2},\\sqrt{3},\\sqrt{5})$ has degree $2^3 = 8$ over $\\mathbb{Q}$, with Galois group $\\mathrm{Gal}(K/\\mathbb{Q}) \\cong (\\mathbb{Z}/2\\mathbb{Z})^3$ acting by independent sign-flips $\\sqrt{p} \\mapsto \\pm\\sqrt{p}$ on each prime. The $\\mathbb{Q}$-conjugates of $\\alpha = \\sqrt{2}+\\sqrt{3}+\\sqrt{5}$ are exactly the $8$ values $\\epsilon_1\\sqrt{2}+\\epsilon_2\\sqrt{3}+\\epsilon_3\\sqrt{5}$ for $\\epsilon \\in \\{\\pm 1\\}^3$, all distinct, so $\\alpha$ generates $K$ and its minimal polynomial $\\prod_\\epsilon (X - \\epsilon_1\\sqrt{2}-\\epsilon_2\\sqrt{3}-\\epsilon_3\\sqrt{5})$ has degree exactly $8$ — this is the conceptual reason the iterated-squaring proof requires two rounds (degree $4$ relation over $\\mathbb{Q}[\\sqrt{30}]$, then irrationality of $\\sqrt{30}$ to descend to $\\mathbb{Q}$)."
+    ],
+    "prerequisites": [
+      "Real.sq_sqrt : 0 ≤ r → sqrt r ^ 2 = r",
+      "Real.sqrt_mul : 0 ≤ a → sqrt (a * b) = sqrt a * sqrt b",
+      "Real.sqrt_pos / sqrt_nonneg (positivity of square root)",
+      "irrational_sqrt_natCast_iff : Irrational (sqrt n) ↔ ¬ IsSquare n",
+      "Parent gallery proof's exported sqrt2_plus_sqrt3_sq : (√2 + √3)² = 5 + 2√6"
+    ]
+  },
+  "conclusion": {
+    "summary": "Fully verified (0 sorries, 0 axioms): irrational_sqrt2_plus_sqrt3_plus_sqrt5 : Irrational (sqrt 2 + sqrt 3 + sqrt 5). The proof composes the parent gallery proof's sqrt2_plus_sqrt3_sq identity with a second squaring step and the cross-radical bridge √5·√6 = √30. Build verified at Mathlib v4.26.0 (PR #18369, 3060 jobs, ~4 min Docker). 4 public theorems + 1 private bridge, 144 lines.",
+    "implications": "Closes OQ-01 of the parent `sqrt2-plus-sqrt3-irrational` gallery entry. Provides the unit-case (n=3) instance for any future formalisation of Besicovitch's general theorem on linear independence of square roots of distinct squarefree positive integers. The two-squaring + cross-radical-bridge technique generalises by induction to n ≥ 4 summands at quadratic blow-up per added summand (n=4 would require three squarings yielding an octic identity).",
+    "openQuestions": [
+      "Generalise to four summands: prove √2 + √3 + √5 + √7 ∉ ℚ via three squarings, yielding an octic identity (degree 8 in α).",
+      "Formalise Besicovitch's (1940) general theorem: for distinct squarefree positive integers a_1,...,a_n the {√a_i} are ℚ-linearly independent. Not in Mathlib v4.26.0; would require structured induction on n.",
+      "Compute the minimal polynomial of √2+√3+√5 over ℚ: expected degree 8, polynomial coefficients via Galois-conjugate product ∏_{ε ∈ {±1}³}(X − ε₁√2 − ε₂√3 − ε₃√5). Generalises the sister entry sqrt2-plus-sqrt3-irrational-oq-03 (which handles the n=2 case with degree 4).",
+      "Formalise the Galois action of (ℤ/2ℤ)³ on K = ℚ(√2,√3,√5) and prove [K:ℚ] = 8 in Lean 4. Mathlib v4.26.0 has IsCyclotomicExtension and IsKummerExtension for cyclic cases but no direct multi-quadratic API; the formalisation would need a structured induction on prime supports (the algebraic-number-theory analogue of Besicovitch's argument) plus an explicit construction of the 8-element Galois group via independent sign-flip automorphisms."
+    ]
+  },
+  "leanFile": {
+    "namespace": "Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01",
+    "lineCount": 144,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "sqrt2-plus-sqrt3-irrational",
+      "relationship": "extends",
+      "description": "Parent gallery entry: irrationality of √2 + √3 via one squaring reducing to irrationality of √6. This proof extends to three summands via two squarings reducing to irrationality of √30, and composes the parent's exported sqrt2_plus_sqrt3_sq identity as a black-box lemma."
+    },
+    {
+      "targetId": "sqrt2-plus-sqrt3-irrational-oq-03",
+      "relationship": "related",
+      "description": "Sister open question on the same parent: minimal polynomial of √2+√3 is X⁴−10X²+1 (degree 4). The corresponding minimal polynomial for √2+√3+√5 has expected degree 8 — a natural follow-up open question (see this entry's openQuestions). Both entries combine parent-identity reuse with explicit polynomial-coefficient analysis."
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "related",
+      "description": "Two-step ancestor: irrationality of √2 alone (n=1 case). The proof family scales as (n=1 → no squaring → √2 base case; n=2 → one squaring → √6; n=3 → two squarings → √30), each step doubling the polynomial degree relating α to the residual surd."
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-strategy",
+      "title": "Strategy: Isolate √30 by Squaring Twice",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Module docstring sketches the three-step strategy: (Step 1) subtract √5 then square, re-using the parent identity (√2+√3)² = 5+2√6 to derive α² = 2α√5 + 2√6; (Step 2) square again, using (√5)² = 5, (√6)² = 6, and √5·√6 = √30 to derive α⁴ − 20α² − 24 = 8α·√30; (Step 3) divide by 8α (positive) and conclude √30 ∈ ℚ if α ∈ ℚ, contradiction. The Status checklist enumerates the four supporting lemmas that compose the proof."
+    },
+    {
+      "id": "sec-imports",
+      "title": "Imports and Namespace Setup",
+      "startLine": 44,
+      "endLine": 51,
+      "summary": "Imports Mathlib.Data.Real.Irrational (Irrational predicate, irrational_sqrt_natCast_iff), Mathlib.Data.Real.Sqrt (Real.sqrt, sq_sqrt, sqrt_mul, sqrt_pos, sqrt_nonneg), Mathlib.Tactic (linarith, ring, norm_num, push_cast, native_decide), and the parent gallery proof Proofs.Sqrt2PlusSqrt3Irrational (exposes sqrt2_plus_sqrt3_sq for the Step 1 substitution). open Real abbreviates Real.sqrt to sqrt; namespace Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01 scopes the four public theorems and one private bridge lemma."
+    },
+    {
+      "id": "sec-irrational-sqrt-thirty",
+      "title": "Auxiliary: √30 is Irrational",
+      "startLine": 53,
+      "endLine": 56,
+      "summary": "irrational_sqrt_thirty: Irrational (sqrt 30). One-liner via Mathlib's irrational_sqrt_natCast_iff.mpr applied to ¬IsSquare (30 : ℕ), which native_decide discharges in milliseconds. Sets up the final contradiction in the main theorem."
+    },
+    {
+      "id": "sec-alpha-pos",
+      "title": "Positivity: 0 < √2 + √3 + √5",
+      "startLine": 58,
+      "endLine": 64,
+      "summary": "alpha_pos: 0 < sqrt 2 + sqrt 3 + sqrt 5. Establishes positivity by combining two sqrt_nonneg facts (for √2, √3) with sqrt_pos.mpr (for √5) via linarith. Needed in the main theorem so that 8·α ≠ 0 and we can divide both sides of the quartic identity by 8α."
+    },
+    {
+      "id": "sec-cross-radical-bridge",
+      "title": "Cross-Radical Bridge: √5 · √6 = √30",
+      "startLine": 66,
+      "endLine": 69,
+      "summary": "sqrt5_mul_sqrt6 (private): sqrt 5 * sqrt 6 = sqrt 30. The proof rewrites via ← Real.sqrt_mul (using 0 ≤ 5) to obtain sqrt (5 * 6), then norm_num closes 5 * 6 = 30. This private bridge is the keystone of the alpha_quartic_identity proof — it lets the cross term 2·√5 · 2·√6 collapse to 8·√30 in the second squaring."
+    },
+    {
+      "id": "sec-quartic-identity",
+      "title": "Key Identity: α⁴ − 20·α² − 24 = 8·α·√30",
+      "startLine": 71,
+      "endLine": 113,
+      "summary": "alpha_quartic_identity: the algebraic backbone. Step 1 establishes (α − √5)² = 5 + 2√6 via the parent identity sqrt2_plus_sqrt3_sq, then expands (α − √5)² = α² − 2α√5 + 5 (using sq_sqrt for (√5)² = 5) and rearranges to α² = 2α√5 + 2√6. Step 2 squares this and expands the binomial: (2α√5 + 2√6)² = 4α²·5 + 8α·√5·√6 + 4·6 = 20α² + 8α·√30 + 24 (using sq_sqrt twice plus the cross-radical bridge). Linarith closes the final assembly. The two-substitution + linarith chain was locked in by the S2 PREP iteration (merged PR #18353) to sidestep nlinarith failure on cross-radical products."
+    },
+    {
+      "id": "sec-main",
+      "title": "Main Theorem: √2 + √3 + √5 is Irrational",
+      "startLine": 115,
+      "endLine": 142,
+      "summary": "irrational_sqrt2_plus_sqrt3_plus_sqrt5 (main). Assume α = (r : ℝ) for some r : ℚ. By alpha_pos we have α > 0, so r ≠ 0 and 8 · (r : ℝ) ≠ 0. Substituting r for α in the quartic identity and dividing by 8(r:ℝ) gives sqrt 30 = ((r:ℝ)⁴ − 20(r:ℝ)² − 24) / (8(r:ℝ)). The rational witness (r⁴ − 20r² − 24) / (8r) ∈ ℚ then contradicts irrational_sqrt_thirty via push_cast. Closely modelled on the parent's irrational_sqrt2_plus_sqrt3 proof structure."
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "slug": "sqrt2-minpoly",
+  "title": "Minimal Polynomial of √2 over ℚ",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{minpoly}(\\mathbb{Q}, \\sqrt{2}) = X^2 - 2",
+    "plain": "The minimal polynomial of an algebraic number α over a field K is the unique monic irreducible polynomial in K[X] that has α as a root.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-22T19:23:25+02:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: sqrt2-minpoly\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "algebraic-number-theory",
+    "minimal-polynomial",
+    "sqrt2",
+    "irrationality",
+    "irreducibility"
+  ],
+  "relatedProofs": [
+    "sqrt2-minpoly",
+    "sqrt2-minpoly-oq-01",
+    "sqrt2-minpoly-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-22T19:23:25+02:00",
+  "significance": 6,
+  "tractability": 8,
+  "leanFiles": [
+    {
+      "path": "Proofs/Sqrt2Minpoly.lean",
+      "filename": "Sqrt2Minpoly.lean",
+      "lineCount": 141,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2Minpoly.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2MinpolyOQ01.lean",
+      "filename": "Sqrt2MinpolyOQ01.lean",
+      "lineCount": 253,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ01.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2MinpolyOQ02.lean",
+      "filename": "Sqrt2MinpolyOQ02.lean",
+      "lineCount": 203,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ02.lean"
+    }
+  ]
+}

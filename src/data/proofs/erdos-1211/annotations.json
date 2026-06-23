@@ -1,0 +1,125 @@
+[
+  {
+    "id": "ann-1211-logarithmic-density",
+    "proofId": "erdos-1211",
+    "range": {
+      "startLine": 1,
+      "endLine": 14
+    },
+    "type": "concept",
+    "title": "Logarithmic Upper Density: A Harmonic Measure",
+    "content": "The logarithmic upper density δ̄(X) = limsup_{x→∞} (1/log x) ∑_{n∈X, n≤x} 1/n is a natural density measure for number-theoretic purposes. Unlike the natural (or Schnirelmann) density, it weights integers by 1/n, reflecting the harmonic series. Key properties: δ̄(ℕ) = 1 (since ∑_{n≤x} 1/n ~ log x); δ̄(primes) = 1 (Mertens' theorem: ∑_{p≤x} 1/p ~ log log x); δ̄({n² : n ≥ 1}) = 0 (since ∑_{n²≤x} 1/n² converges). The limsup rather than lim allows for sets where the density oscillates.",
+    "mathContext": "$\\overline{\\delta}(X) = \\limsup_{x \\to \\infty} \\frac{1}{\\log x} \\sum_{\\substack{n \\leq x \\\\ n \\in X}} \\frac{1}{n}$. For $X = \\mathbb{N}$: $\\frac{1}{\\log x} \\sum_{n \\leq x} 1/n \\to 1$ (harmonic series). For $X = $ primes: $\\frac{1}{\\log x} \\sum_{p \\leq x} 1/p \\sim \\frac{\\log \\log x}{\\log x} \\to 0$—so primes have logarithmic density 0.",
+    "significance": "key",
+    "relatedConcepts": [
+      "natural density",
+      "Schnirelmann density",
+      "Mertens' theorem",
+      "harmonic series",
+      "limsup"
+    ],
+    "prerequisites": [
+      "harmonic series divergence",
+      "Mertens' theorem on primes",
+      "limsup of real sequences"
+    ]
+  },
+  {
+    "id": "ann-1211-subset-sums",
+    "proofId": "erdos-1211",
+    "range": {
+      "startLine": 1,
+      "endLine": 14
+    },
+    "type": "concept",
+    "title": "S(A): Finite Subset Sums and Their Density",
+    "content": "S(A) = {∑_{a∈F} a : F ⊆ A, F finite and nonempty} is the set of all integers expressible as finite sums of distinct elements of A. Note S(A) ⊇ A (each element is its own sum), and S(A) can be far denser than A. Key example: if A = {1, 2, 4, 8, 16, ...} (all powers of 2), then S(A) = ℕ (every positive integer has a binary representation as a sum of distinct powers of 2). The density of S(A) depends on how 'spread out' A is: if A is too sparse, S(A) misses many integers; if A is dense, S(A) fills in.",
+    "mathContext": "Generating function: $\\sum_{n \\in S(A)} z^n = \\prod_{a \\in A}(1 + z^a) - 1$. The Dirichlet series analogue: $\\sum_{n \\in S(A)} n^{-s} = \\prod_{a \\in A}(1 + a^{-s}) - 1$. Near $s = 1$: $\\log \\prod(1 + a^{-1}) \\approx \\sum_{a \\in A} 1/a$, so if $\\sum_{a \\in A} 1/a$ diverges, $S(A)$ is very dense.",
+    "significance": "key",
+    "relatedConcepts": [
+      "subset sum problem",
+      "Euler product",
+      "Dirichlet series",
+      "binary representations",
+      "sum-free sets"
+    ],
+    "prerequisites": [
+      "finite subsets",
+      "generating functions",
+      "Dirichlet series basics",
+      "Euler product formula"
+    ]
+  },
+  {
+    "id": "ann-1211-ramsey-type",
+    "proofId": "erdos-1211",
+    "range": {
+      "startLine": 1,
+      "endLine": 14
+    },
+    "type": "insight",
+    "title": "Ramsey Theory for Density: An Unavoidable Density Threshold",
+    "content": "The core of Problem #1211 is a Ramsey-type statement: no matter how you partition ℕ into A and B, at least one of S(A) or S(B) must be dense (density > 1/2 in the logarithmic sense). This is analogous to Ramsey's theorem (any 2-coloring of sufficiently large complete graphs contains a monochromatic clique) but quantitative rather than existential: we don't just guarantee existence of a dense set, but give a specific density lower bound c. The proof likely uses a 'complementary density' argument: if both S(A) and S(B) had density ≤ 1/2, some subset of ℕ would be missed by both, contradicting properties of the partition.",
+    "mathContext": "If $\\overline{\\delta}(S(A)) \\leq 1/2$ and $\\overline{\\delta}(S(B)) \\leq 1/2$, can we derive a contradiction? Since $S(A) \\cup S(B) \\supseteq A \\cup B = \\mathbb{N}$ (not quite—$S(A) \\cup S(B)$ need not be $\\mathbb{N}$), the argument must be more subtle, likely involving the Dirichlet series products $\\prod(1+a^{-s}) \\cdot \\prod(1+b^{-s})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey theory",
+      "2-coloring of integers",
+      "complementary density argument",
+      "partition results"
+    ],
+    "prerequisites": [
+      "partition of natural numbers",
+      "Ramsey theory basics",
+      "density arguments"
+    ]
+  },
+  {
+    "id": "ann-1211-extremal-construction",
+    "proofId": "erdos-1211",
+    "range": {
+      "startLine": 1,
+      "endLine": 14
+    },
+    "type": "concept",
+    "title": "The Extremal Example: Showing c Cannot Be Larger",
+    "content": "The problem mentions 'an example which shows c < [something]'—there exists a partition A ∪ B = ℕ where max(δ̄(S(A)), δ̄(S(B))) = c exactly. This extremal example is the lower bound: it shows the constant c cannot be replaced by any larger constant. Finding such an extremal partition requires balancing A and B so that their sum sets have equal logarithmic density, with neither exceeding c. This is a delicate construction, likely involving a greedy or probabilistic assignment of elements to A or B based on their harmonic weight.",
+    "mathContext": "An extremal partition would satisfy: $\\overline{\\delta}(S(A)) = \\overline{\\delta}(S(B)) = c$ and $c$ is minimal. By symmetry, the extremal partition likely assigns elements alternately to $A$ and $B$ in a way that keeps $\\sum_{a \\leq x} 1/a \\approx \\sum_{b \\leq x} 1/b \\approx \\frac{1}{2} \\log x$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "extremal constructions",
+      "greedy algorithm for partition",
+      "density balancing",
+      "harmonic weight"
+    ],
+    "prerequisites": [
+      "harmonic series partial sums",
+      "extremal combinatorics",
+      "greedy algorithms"
+    ]
+  },
+  {
+    "id": "ann-1211-lean-stub",
+    "proofId": "erdos-1211",
+    "range": {
+      "startLine": 18,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Lean Formalization: Filter.limsup and Harmonic Density",
+    "content": "The current Lean content is `erdos_1211 : True := by sorry`. A formalization would need: (1) `Filter.limsup` for the lim sup in the logarithmic density definition; (2) a definition of S(A) as a set of ℕ values using Finset sums; (3) a proof that for all partitions A ∪ B = ℕ, the density inequality holds. Mathlib has `Filter.limsup`, `Finset.sum`, and `Nat.card` infrastructure. The main challenge is that logarithmic density involves an infinite product (Euler product) and analytic continuation arguments that may require significant new Mathlib infrastructure.",
+    "mathContext": "Lean 4 formalization sketch: `def logDensity (X : Set ℕ) : ℝ := Filter.limsup (fun x => (Real.log x)⁻¹ * ∑ n in (Finset.Icc 1 x).filter (· ∈ X), (n : ℝ)⁻¹) atTop`. Then `def subsetSums (A : Set ℕ) : Set ℕ := {n | ∃ F : Finset ℕ, F ⊆ A ∧ F.sum id = n}`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Filter.limsup in Mathlib",
+      "Finset.sum API",
+      "Nat.card",
+      "analytic number theory in Lean"
+    ],
+    "prerequisites": [
+      "Lean 4 Filter API",
+      "Mathlib Real.log",
+      "Finset.sum for harmonic sums"
+    ]
+  }
+]

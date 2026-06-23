@@ -1,0 +1,198 @@
+[
+  {
+    "id": "ann-borsuk-ulam-oq02-01-header",
+    "proofId": "borsuk-ulam-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 53
+    },
+    "type": "concept",
+    "title": "Equivariant Borsuk-Ulam: From Antipodal Pairs to Group Actions",
+    "content": "The classical Borsuk-Ulam theorem (1933) states every continuous f: Sⁿ → ℝⁿ sends some antipodal pair to the same point. The equivariant reformulation makes the structure transparent: the 'difference' g(x) = f(x) - f(-x) is an odd function (g(-x) = -g(x)), and oddness is precisely ℤ/2-equivariance when ℝⁿ carries the negation action. The theorem becomes: every ℤ/2-equivariant continuous map Sⁿ → ℝⁿ must vanish.\n\nThis reformulation opens equivariant generalizations: replace ℤ/2 with a group G, replace Sⁿ with a G-space X. Three milestones:\n- Yang (1954): ℤ/p prime acts freely on S^(2n-1) via coordinate rotation; equivariant maps to ℝ^(2n) must vanish.\n- Dold (1983): Cohomological index theory gives a universal obstruction for free G-space maps.\n- Open: For non-prime group orders, non-free actions, and compact Lie groups (SO(n), U(n)), optimal vanishing dimensions are unknown.\n\nThe file organizes this landscape into 7 parts: general equivariant framework, the ℤ/2 case, the ℤ/p case with explicit rotation action, Dold's obstruction, open cases, the summary theorem, and bonus equivariance lemmas.",
+    "mathContext": "Classical BU: $\\forall f: S^n \\to \\mathbb{R}^n$ continuous, $\\exists x \\in S^n: f(x) = f(-x)$. Equivariant form: $f$ odd ($f(-x) = -f(x)$) $\\Rightarrow \\exists x: f(x) = 0$. Yang-Borsuk: $G = \\mathbb{Z}/p$, $X = S^{2n-1}$, any $G$-equivariant continuous $f$ vanishes. Dold: $G$ finite, free action on $(n-1)$-connected $X$, $\\dim Y < n$ $\\Rightarrow$ no $G$-equivariant $f: X \\to Y$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Borsuk-Ulam theorem",
+      "equivariant map",
+      "group action",
+      "Z/2 action",
+      "Yang-Borsuk",
+      "Dold's theorem",
+      "free action"
+    ],
+    "prerequisites": [
+      "algebraic topology",
+      "group actions",
+      "spheres",
+      "continuous maps"
+    ]
+  },
+  {
+    "id": "ann-borsuk-ulam-oq02-02-framework",
+    "proofId": "borsuk-ulam-oq-02",
+    "range": {
+      "startLine": 55,
+      "endLine": 92
+    },
+    "type": "definition",
+    "title": "IsEquivariant: Abstract G-Equivariance via SMul Typeclass",
+    "content": "The core definition `IsEquivariant f` (line 64) states: for all g : G and x : X, f(g • x) = g • f(x). This uses Lean 4's `SMul G X` typeclass — any type with scalar multiplication can serve as the domain or codomain.\n\nFour structural lemmas follow:\n- `equivariant_comp` (line 68): composition of equivariant maps is equivariant. Proof: apply equivariance of f first, then h.\n- `equivariant_id` (line 77): identity map is always equivariant. Proof: rfl (definitionally true).\n- `equivariant_const` (line 81): a constant map at a G-fixed point c is equivariant. Requires hc : ∀ g, g • c = c.\n- `equivariant_maps_orbits` (line 87): equivariant maps send G-orbits to G-orbits. Uses `MulAction.mem_orbit_iff` and the equivariance hypothesis.\n\nLean design: using the abstract `SMul G X` typeclass makes these lemmas apply to ALL group actions uniformly — ℤ/2 negation, ℤ/p rotation, and any future action share the same interface.",
+    "mathContext": "Definition: $f: X \\to Y$ is $G$-equivariant iff $\\forall g \\in G, x \\in X: f(g \\cdot x) = g \\cdot f(x)$. Composition: $(h \\circ f)(g \\cdot x) = h(g \\cdot f(x)) = g \\cdot (h \\circ f)(x)$. Orbit property: $f(g \\cdot x) = g \\cdot f(x) \\in G \\cdot f(x)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsEquivariant",
+      "SMul typeclass",
+      "equivariant_comp",
+      "equivariant_id",
+      "equivariant_const",
+      "equivariant_maps_orbits",
+      "MulAction.orbit"
+    ],
+    "prerequisites": [
+      "Lean 4 typeclasses",
+      "SMul",
+      "group actions",
+      "MulAction"
+    ]
+  },
+  {
+    "id": "ann-borsuk-ulam-oq02-03-z2-case",
+    "proofId": "borsuk-ulam-oq-02",
+    "range": {
+      "startLine": 93,
+      "endLine": 149
+    },
+    "type": "concept",
+    "title": "Odd Functions = ℤ/2-Equivariant Maps: Deriving Classical Borsuk-Ulam",
+    "content": "`z2ActionEuclidean` (line 101): the explicit SMul instance where ZMod 2 acts on Euclidean space by 0 ↦ id and 1 ↦ negation.\n\n`odd_iff_z2_equivariant` (line 105): f(-x) = -f(x) for all x iff f is ℤ/2-equivariant. Proof uses `fin_cases g` to split on the two elements of ZMod 2; each case reduces to unfolding the SMul instance.\n\n`z2_equivariant_borsuk_ulam` (line 130, axiom): any odd continuous f: Sⁿ → ℝⁿ has a zero on Sⁿ. This is the equivariant form — its full proof requires covering space theory or homology.\n\n`classical_borsuk_ulam_from_equivariant` (line 136): derives the standard form from the axiom. Strategy: given continuous f, define g(x) := f(x) - f(-x). Then g is odd (g(-x) = f(-x) - f(x) = -(f(x) - f(-x)) = -g(x)) and continuous (hcont.sub (hcont.comp continuous_neg)). The axiom gives x₀ ∈ Sⁿ with g(x₀) = 0, i.e., f(x₀) - f(-x₀) = 0, so f(x₀) = f(-x₀).",
+    "mathContext": "$\\mathbb{Z}/2$ action: $0 \\cdot x = x$, $1 \\cdot x = -x$. Equivalence: $f(-x) = -f(x) \\Leftrightarrow f(1 \\cdot x) = 1 \\cdot f(x)$ for all $x$. Derivation: $g(x) := f(x) - f(-x)$ is odd, $\\exists x_0 \\in S^n: g(x_0) = 0$, i.e., $f(x_0) = f(-x_0)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "z2ActionEuclidean",
+      "odd_iff_z2_equivariant",
+      "z2_equivariant_borsuk_ulam",
+      "classical_borsuk_ulam_from_equivariant",
+      "antipode",
+      "ZMod 2",
+      "fin_cases"
+    ],
+    "prerequisites": [
+      "ZMod 2",
+      "SMul instance synthesis",
+      "odd functions",
+      "Borsuk-Ulam theorem"
+    ]
+  },
+  {
+    "id": "ann-borsuk-ulam-oq02-04-zp-rotation",
+    "proofId": "borsuk-ulam-oq-02",
+    "range": {
+      "startLine": 164,
+      "endLine": 215
+    },
+    "type": "concept",
+    "title": "ℤ/p Rotation: Isometry via Pythagorean Identity and Yang-Borsuk Axiom",
+    "content": "`zp_rotation` (line 165): rotation on ℝ² by angle θ = 2π/p defined coordinate-wise:\n  R_θ(x, y) = (x·cos θ - y·sin θ, x·sin θ + y·cos θ)\nMarked `noncomputable` because Real.cos/sin are noncomputable.\n\n`zp_rotation_isometry` (line 178): ‖R_θ v‖ = ‖v‖. The key algebraic identity:\n  (x·cos θ - y·sin θ)² + (x·sin θ + y·cos θ)² = (x² + y²)(cos²θ + sin²θ) = x² + y²\nIn Lean: `linear_combination (x² + y²) * Real.cos_sq_add_sin_sq θ` closes the arithmetic goal. Coordinates extracted via `h0`, `h1` (using `EuclideanSpace.equiv_symm_pi_lp_apply`), norms via `EuclideanSpace.norm_eq` and `Fin.sum_univ_two`.\n\n`yang_borsuk_theorem` (line 201, axiom): for prime p and free ℤ/p action on S^(2n-1), any equivariant continuous f must vanish. Actions are passed explicitly as functions to avoid SMul synthesis difficulties.",
+    "mathContext": "$R_\\theta = \\begin{pmatrix}\\cos\\theta & -\\sin\\theta \\\\ \\sin\\theta & \\cos\\theta\\end{pmatrix}$, $\\theta = 2\\pi/p$. Isometry: $\\|R_\\theta v\\|^2 = (x^2+y^2)(\\cos^2\\theta+\\sin^2\\theta) = \\|v\\|^2$. Yang-Borsuk: $\\mathbb{Z}/p$ prime acts freely on $S^{2n-1}$, $f: S^{2n-1} \\to \\mathbb{R}^{2n}$ equivariant continuous $\\Rightarrow \\exists x \\in S^{2n-1}: f(x) = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "zp_rotation",
+      "zp_rotation_isometry",
+      "yang_borsuk_theorem",
+      "Real.cos_sq_add_sin_sq",
+      "EuclideanSpace.norm_eq",
+      "linear_combination",
+      "noncomputable"
+    ],
+    "prerequisites": [
+      "rotation matrices",
+      "Pythagorean identity",
+      "EuclideanSpace norm",
+      "noncomputable Lean definitions"
+    ]
+  },
+  {
+    "id": "ann-borsuk-ulam-oq02-05-freeness",
+    "proofId": "borsuk-ulam-oq-02",
+    "range": {
+      "startLine": 218,
+      "endLine": 289
+    },
+    "type": "concept",
+    "title": "Freeness Proof: cos(2π/p) ≠ 1 Implies No Fixed Points on S¹",
+    "content": "`zp_rotation_free_statement` (line 218): the ℤ/p rotation has no fixed points on S¹ for prime p. The proof avoids all algebraic topology — it is pure real analysis.\n\nAssume R_θ(x₀, x₁) = (x₀, x₁). The coordinate equations give:\n  x₀·(cos θ - 1) = x₁·sin θ  and  x₀·sin θ = x₁·(1 - cos θ)\nMultiplying and adding: (x₀² + x₁²)·(1 - cos θ) = 0. Since x ∈ S¹, x₀² + x₁² = 1 (proved via `EuclideanSpace.norm_eq` + `Real.sq_sqrt`). So cos θ = 1.\n\nBut `Real.cos_eq_one_iff` says cos θ = 1 iff θ = 2πn for integer n. With θ = 2π/p this gives n·p = 1. For prime p ≥ 2, the Lean proof splits into three cases: n ≥ 1 (n·p ≥ 2 > 1), n ≤ -1 (n·p ≤ -2 < 1), n = 0 (0 ≠ 1). Each case uses `nlinarith` or `linarith`.",
+    "mathContext": "Fixed-point system: $x_0(\\cos\\theta - 1) = x_1\\sin\\theta$ and $x_0\\sin\\theta = x_1(1-\\cos\\theta)$. Dot-product trick: $(x_0^2+x_1^2)(1-\\cos\\theta) = 0$. On $S^1$: $\\cos\\theta = 1$. Key: $\\cos(2\\pi/p) = 1 \\Rightarrow n \\cdot p = 1$ for integer $n$, impossible for $p \\geq 2$. Uses `Real.cos_eq_one_iff` and `Nat.Prime.two_le`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "zp_rotation_free_statement",
+      "Real.cos_eq_one_iff",
+      "EuclideanSpace.norm_eq",
+      "Real.sq_sqrt",
+      "nlinarith",
+      "Nat.Prime.two_le"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "trigonometric identities",
+      "Lean 4 nlinarith",
+      "Nat.Prime API"
+    ]
+  },
+  {
+    "id": "ann-borsuk-ulam-oq02-06-dold-open",
+    "proofId": "borsuk-ulam-oq-02",
+    "range": {
+      "startLine": 290,
+      "endLine": 355
+    },
+    "type": "insight",
+    "title": "Dold's Theorem, Open Cases, and the Trivial Dimension Upper Bound",
+    "content": "`IsFreeAction G X` (line 309): no non-identity element has a fixed point.\n\n`dold_theorem` (line 316, axiom): the general cohomological obstruction — if G acts freely on a sufficiently connected X and Y has low dimension, there is no G-equivariant continuous map X → Y. The Lean formalization uses `Fact (True)` placeholders for the connectivity and dimension hypotheses (these require full topological dimension theory to formalize).\n\n`equivariant_borsuk_ulam_free_G` (line 331, axiom): general finite free G-action; equivariant continuous map on Sⁿ must vanish. Passes actions as explicit functions.\n\n`equivariant_dimension_bound_trivial` (line 348, proved): for any n, the identity map ℝⁿ⁺¹ → ℝⁿ⁺¹ is continuous and ℤ/2-equivariant (k • id(x) = k • x = id(k • x)). Proof: `refine ⟨n, le_refl n, id, continuous_id, ?_⟩` then `intro g x; rfl`. This gives the trivial upper bound: dimension-n equivariant maps always exist. The hard problem is the lower bound.\n\nThree main open problems: optimal bound for non-free Z/4 actions (Smith theory applies but does not give sharp bounds), compact Lie groups SO(n)/U(n) (controlled by representation rings), non-free Z/p actions (fixed-point Euler characteristic bounds, open in general).",
+    "mathContext": "Dold 1983: $G$ finite, free on $(n-1)$-connected $X$, $\\dim Y < n$ $\\Rightarrow$ no $G$-equivariant continuous $f: X \\to Y$. Trivial bound: $\\text{id}: \\mathbb{R}^{n+1} \\to \\mathbb{R}^{n+1}$ is equivariant for any action. Hard lower bound: what is the minimal $k$ such that no $G$-equivariant $f: S^n \\to \\mathbb{R}^k$ exists?",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsFreeAction",
+      "dold_theorem",
+      "equivariant_borsuk_ulam_free_G",
+      "equivariant_dimension_bound_trivial",
+      "cohomological index",
+      "Smith theory",
+      "Fact (True)"
+    ],
+    "prerequisites": [
+      "algebraic topology",
+      "cohomological index theory",
+      "topological dimension",
+      "Lean 4 axioms"
+    ]
+  },
+  {
+    "id": "ann-borsuk-ulam-oq02-07-extras",
+    "proofId": "borsuk-ulam-oq-02",
+    "range": {
+      "startLine": 371,
+      "endLine": 389
+    },
+    "type": "concept",
+    "title": "Part 7: Antipodal Involution, Fixed-Point Freeness, and Z/2 Action Completeness",
+    "content": "Seven structural lemmas completing the equivariance toolkit:\n\n`antipode_involutive` (line 376): -(-x) = x. One-liner via `simp [antipode]`.\n\n`antipode_fixed_point_free` (line 382): the antipodal map has no fixed points on Sⁿ. Proof: if -x = x then x + x = 0 (from neg_add_cancel after rewriting with h), so 2•x = 0 via `two_smul ℝ x`. Then `norm_smul` gives ‖2‖·‖x‖ = 0, i.e., 2·1 = 0, contradiction.\n\n`zp_rotation_maps_sphere` (line 398): R_θ(x) ∈ S¹ when x ∈ S¹. Immediate from `zp_rotation_isometry`: isometries preserve the unit sphere (rewrite dist_zero_right).\n\n`z2_smul_zero` and `z2_smul_one` (lines 406-414): the two halves of z2ActionEuclidean unfolded — 0 acts as id, 1 acts as -id.\n\n`z2_action_involutive` (line 417): k • (k • x) = x for k : ZMod 2. Proof: `fin_cases k` splits into cases 0 and 1.\n\n`equivariant_add_z2` (line 424): f₁ + f₂ is equivariant when f₁ and f₂ are. Proof: rewrite both using equivariance, then `fin_cases g` — for g = 1, `abel` closes the negation distribution goal.",
+    "mathContext": "Antipode involution: $a(a(x)) = -(-x) = x$. Fixed-point free: $-x = x \\Rightarrow 2x = 0 \\Rightarrow 2\\|x\\| = 0$, but $\\|x\\|=1$ on $S^n$. Equivariant addition: $(f_1+f_2)(g \\cdot x) = g \\cdot f_1(x) + g \\cdot f_2(x) = g \\cdot (f_1+f_2)(x)$ since $g \\cdot (a+b) = g \\cdot a + g \\cdot b$ for negation.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "antipode_involutive",
+      "antipode_fixed_point_free",
+      "zp_rotation_maps_sphere",
+      "z2_action_involutive",
+      "equivariant_add_z2",
+      "two_smul",
+      "norm_smul"
+    ],
+    "prerequisites": [
+      "norm properties",
+      "two_smul",
+      "fin_cases tactic",
+      "abel tactic",
+      "EuclideanSpace"
+    ]
+  }
+]

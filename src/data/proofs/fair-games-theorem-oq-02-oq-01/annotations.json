@@ -1,0 +1,145 @@
+[
+  {
+    "id": "ann-ost-bounded",
+    "proofId": "fair-games-theorem-oq-02-oq-01",
+    "range": {
+      "startLine": 68,
+      "endLine": 84
+    },
+    "type": "concept",
+    "title": "Bounded OST: The Clean Canonical Statement",
+    "content": "doob_optional_stopping_theorem gives the bounded Optional Stopping Theorem in its cleanest form: for martingale X and bounded stopping time τ ≤ N, E[X_τ] = E[X_0]. The proof delegates entirely to FairGamesOQ03.any_bounded_strategy_preserves_expectation, which in turn uses the submartingale/supermartingale sandwich argument: apply expected_stoppedValue_mono twice (for X and -X), get E[X_0] ≤ E[X_τ] and E[X_τ] ≤ E[X_0], conclude by antisymmetry.\n\nThe key hypothesis τ : Ω → ℕ∞ (not τ : Ω → ℕ) is the Mathlib 4.26 convention. The ℕ∞ type allows τ(ω) = ⊤ (never stop), which is mathematically natural and required for the characterization theorem.",
+    "mathContext": "The bounded OST is the foundation of all more advanced results. The bound τ ≤ N is necessary without additional integrability conditions. Doob (1953) also proved the L¹ version (τ < ∞ a.s., E[τ] < ∞, uniform integrability) and the L^p version (p > 1 gives better control). The bounded version is the safest and most general for finite-time applications.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Submartingale.expected_stoppedValue_mono",
+      "IsStoppingTime",
+      "stoppedValue",
+      "Martingale"
+    ],
+    "prerequisites": [
+      "Martingale in Lean 4",
+      "IsStoppingTime with ℕ∞",
+      "stoppedValue"
+    ]
+  },
+  {
+    "id": "ann-submartingale-inequality",
+    "proofId": "fair-games-theorem-oq-02-oq-01",
+    "range": {
+      "startLine": 86,
+      "endLine": 102
+    },
+    "type": "concept",
+    "title": "Submartingale OST: Expected Values Are Ordered",
+    "content": "doob_ost_submartingale gives the submartingale version: for a *submartingale* X (where E[X_{n+1} | ℱₙ] ≥ Xₙ, a process that tends to increase) and bounded τ ≤ σ ≤ N: E[X_τ] ≤ E[X_σ]. Stopping earlier gives a smaller or equal expected payoff.\n\nThis is a direct application of Mathlib's `Submartingale.expected_stoppedValue_mono`. The hypothesis τ ≤ σ (pointwise for all ω) is the essential condition — you must commit to stopping the earlier strategy before the later one.\n\nApplications: (1) Gambler with house edge (submartingale for the house) — the casino's expected profit is non-decreasing with time. (2) Asset prices under no-arbitrage measure — stopping earlier in a favorable process reduces the expected gain.",
+    "mathContext": "The submartingale OST is the 'half' of the full OST. For a martingale X, both X and -X are submartingales, giving E[X_τ] ≤ E[X_σ] and E[-X_τ] ≤ E[-X_σ] (i.e., E[X_σ] ≤ E[X_τ]), hence E[X_τ] = E[X_σ]. The submartingale version is important independently for one-sided stopping problems.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Submartingale",
+      "expected_stoppedValue_mono",
+      "pairwise bounded stopping times"
+    ],
+    "prerequisites": [
+      "Submartingale definition",
+      "conditional expectation",
+      "IsStoppingTime"
+    ]
+  },
+  {
+    "id": "ann-convergence",
+    "proofId": "fair-games-theorem-oq-02-oq-01",
+    "range": {
+      "startLine": 122,
+      "endLine": 148
+    },
+    "type": "insight",
+    "title": "Doob's Martingale Convergence: a.s. Limits via Mathlib",
+    "content": "doob_martingale_convergence uses `Martingale.ae_tendsto_limitProcess` from Mathlib. The hypothesis is UniformIntegrable X 1 μ (uniform integrability in L¹), which is stronger than just supₙ E|Xₙ| < ∞ but implied by, e.g., L∞-boundedness.\n\nThe conclusion is that Xₙ(ω) → ℱ.limitProcess X μ ω for almost every ω. The limit `limitProcess` is the Mathlib-defined limit of the martingale, which in nice cases equals E[X_∞ | ℱ_∞].\n\nThe upcrossing inequality (Doob's lemma): if a martingale makes many upcrossings of [a,b] before time N, then E[Xₙ⁺] is large. Formally: E[U_N([a,b])] ≤ (E[Xₙ⁺] + |a|)/(b-a). Since E[Xₙ⁺] is bounded (by L¹-boundedness), the expected upcrossings are bounded, and by Monotone Convergence, upcrossings are finite a.s., forcing convergence.",
+    "mathContext": "Doob's convergence theorem is equivalent to the upcrossing inequality via the following: a sequence of real numbers diverges iff it makes infinitely many upcrossings of some rational interval [a,b]. The upcrossing inequality bounds E[U_N([a,b])], and by MCT the total upcrossings are finite a.s., hence convergence holds a.s. Mathlib's proof follows this approach.",
+    "significance": "key",
+    "relatedConcepts": [
+      "UniformIntegrable",
+      "limitProcess",
+      "ae_tendsto_limitProcess",
+      "upcrossing inequality"
+    ],
+    "prerequisites": [
+      "uniform integrability",
+      "Filtration.limitProcess",
+      "almost sure convergence"
+    ]
+  },
+  {
+    "id": "ann-submartingale-iff",
+    "proofId": "fair-games-theorem-oq-02-oq-01",
+    "range": {
+      "startLine": 170,
+      "endLine": 202
+    },
+    "type": "insight",
+    "title": "Submartingale Characterization: Local ↔ Global OST Condition",
+    "content": "submartingale_iff_ost gives the fundamental equivalence: f is a submartingale iff for all bounded stopping times τ ≤ σ, E[f_τ] ≤ E[f_σ]. This is a deep theorem connecting:\n- **Local condition**: E[f_{n+1} | ℱₙ] ≥ fₙ (definition of submartingale)\n- **Global condition**: stopped expectations are monotone (optional stopping)\n\nThe iff uses Mathlib's `submartingale_iff_expected_stoppedValue_mono`. The (⇒) direction is the OST. The (⟸) direction: if stopped expectations are monotone, then in particular for τ = n and σ = n+1 (constant stopping times), E[f_n] ≤ E[f_{n+1}], which combined with adaptedness gives the submartingale condition.\n\nThis theorem shows OST is not just a consequence of the martingale property — it's an equivalent characterization.",
+    "mathContext": "The equivalence `Submartingale ↔ stopped expectations monotone` is Doob's characterization theorem. For martingales, both directions give equality: the martingale property ↔ all bounded stopping strategies give the same expected outcome. This is the 'optimal stopping theory' formulation of the martingale property, connecting it to decision theory.",
+    "significance": "key",
+    "relatedConcepts": [
+      "submartingale_iff_expected_stoppedValue_mono",
+      "Adapted",
+      "Integrable",
+      "conditional expectation"
+    ],
+    "prerequisites": [
+      "submartingale definition",
+      "Mathlib's submartingale_iff theorem",
+      "IsStoppingTime"
+    ]
+  },
+  {
+    "id": "ann-maximal-ineq",
+    "proofId": "fair-games-theorem-oq-02-oq-01",
+    "range": {
+      "startLine": 205,
+      "endLine": 225
+    },
+    "type": "concept",
+    "title": "Doob's Maximal Inequality: λP(max ≥ λ) ≤ E[X_N]",
+    "content": "doob_maximal_inequality bounds the probability of the running maximum exceeding a threshold: λ · P(∃ n ≤ N, Xₙ ≥ λ) ≤ E[X_N]. For a non-negative submartingale, the expected value at time N controls how often the process can be large before time N.\n\nProof idea: Let τ = min{n : Xₙ ≥ λ} (if no such n, τ = N). Then E[Xₙ] ≥ E[X_τ] ≥ λ · P(τ < N) = λ · P(∃ n < N, Xₙ ≥ λ). The inequality E[X_N] ≥ E[X_τ] uses the submartingale OST.\n\nApplications: (1) Azuma-Hoeffding (via exponential martingale trick); (2) L² convergence of martingales; (3) Doob's L^p inequality (E[max_n Xₙ^p] ≤ (p/(p-1))^p E[X_∞^p] for p > 1).",
+    "mathContext": "Doob's maximal inequality is fundamental to almost-sure convergence (via Borel-Cantelli on exceedance events), to L^p bounds on the maximal function, and to the theory of Hardy-Littlewood maximal functions. In Lean, the proof delegates to Mathlib's `maximal_ineq` (in ENNReal/NNReal), converted to the real-valued form.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "maximal_ineq",
+      "Submartingale",
+      "running maximum",
+      "Borel-Cantelli lemma"
+    ],
+    "prerequisites": [
+      "non-negative submartingale",
+      "Measure.toReal",
+      "ENNReal to real conversion"
+    ]
+  },
+  {
+    "id": "ann-no-strategy",
+    "proofId": "fair-games-theorem-oq-02-oq-01",
+    "range": {
+      "startLine": 152,
+      "endLine": 169
+    },
+    "type": "concept",
+    "title": "No Profitable Strategy: The Mathematical Basis of Market Efficiency",
+    "content": "no_profitable_stopping_strategy restates the bounded OST as an economic principle: in a fair game (martingale), no bounded stopping rule can increase your expected wealth above the initial value. This is the mathematical foundation of: (1) Efficient Market Hypothesis — if prices are a martingale, no trading strategy (stopping rule for when to buy/sell) can earn above-market expected returns; (2) Casino mathematics — fair games have zero expected profit regardless of betting strategy; (3) No-arbitrage in options theory — risk-neutral prices are martingales, so no portfolio strategy earns risk-free profit above the risk-free rate.\n\nThe theorem is trivially proved (it's just the OST) but its economic interpretation is profound: the mathematical structure of martingales exactly captures the 'no free lunch' principle.",
+    "mathContext": "The connection between martingales and 'no free lunch' was formalized by Harrison-Kreps (1979) and Delbaen-Schachermayer (1994) in the Fundamental Theorem of Asset Pricing: a market has no arbitrage if and only if there exists an equivalent martingale measure. Doob's OST is the main technical tool in proving this correspondence.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Efficient Market Hypothesis",
+      "no-arbitrage",
+      "Fair Games Theorem",
+      "risk-neutral pricing"
+    ],
+    "prerequisites": [
+      "Martingale interpretation as fair game",
+      "OST",
+      "economic interpretation of stochastic processes"
+    ]
+  }
+]

@@ -1,0 +1,191 @@
+[
+  {
+    "id": "ann-e365-header",
+    "proofId": "erdos-365",
+    "range": {
+      "startLine": 1,
+      "endLine": 38
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #365** concerns consecutive powerful numbers — pairs (n, n+1) where both have every prime factor appearing with exponent ≥ 2. Erdős asked Mahler if infinitely many exist; Mahler said yes via Pell equation x² - 8y² = 1. The deeper questions: must one of the pair be a perfect square (Q1)? And is the count up to x bounded by (log x)^O(1) (Q2)? Golomb (1970) answered Q1 negatively with counterexample (12167, 12168). Q2 remains open.",
+    "mathContext": "Powerful numbers (also called squarefull numbers) satisfy p² | n for all primes p | n, equivalently n = a²b³. They have density ~ c·√x up to x. Consecutive powerful pairs are much rarer, with their count conjectured to be polylogarithmic. The connection to Pell equations arises because x² - 1 = (x-1)(x+1) factors nicely when x² = Dy² + 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "powerful numbers",
+      "Pell equations",
+      "consecutive integers"
+    ],
+    "prerequisites": [
+      "prime factorization",
+      "divisibility"
+    ]
+  },
+  {
+    "id": "ann-e365-powerful-def",
+    "proofId": "erdos-365",
+    "range": {
+      "startLine": 40,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Powerful Numbers and Basic Properties",
+    "content": "**IsPowerful n** requires n ≥ 1 and p² | n for every prime p | n. **IsPowerfulAlt** gives the equivalent characterization n = a²b³. **square_is_powerful** and **cube_is_powerful** (axioms) state that perfect squares and cubes are powerful — since every prime in k^m has exponent ≥ m ≥ 2.",
+    "mathContext": "The two characterizations are equivalent: if every prime exponent is ≥ 2, write n = ∏ pᵉᵢ and split exponents as eᵢ = 2qᵢ + 3rᵢ with rᵢ ∈ {0,1}. Then n = (∏ p^qᵢ)² · (∏ p^rᵢ)³. The axiomatization of square/cube powerfulness avoids detailed factorization reasoning in Lean.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime factorization",
+      "squarefull numbers",
+      "Nat.Prime"
+    ],
+    "prerequisites": [
+      "Nat.Prime and prime divisibility in Lean",
+      "p^k | n notation and divisibility",
+      "basic number theory (squares, cubes)"
+    ]
+  },
+  {
+    "id": "ann-e365-example-8-9",
+    "proofId": "erdos-365",
+    "range": {
+      "startLine": 59,
+      "endLine": 77
+    },
+    "type": "concept",
+    "title": "Example: (8, 9) is a Consecutive Powerful Pair",
+    "content": "**example_8_9** (proved): 8 = 2³ and 9 = 3² are both powerful. The proof checks each prime divisor p via interval_cases: for 8, only p = 2 divides it and 4 | 8; for 9, only p = 3 divides it and 9 | 9. This is the smallest consecutive powerful pair and corresponds to the fundamental Pell solution (3, 1) since 3² = 8·1² + 1.",
+    "mathContext": "The proof uses interval_cases to enumerate small primes that could divide 8 or 9, then verifies the p² | n condition computationally with decide. This approach works for small numbers but would not scale to larger examples like Golomb's (12167, 12168), which is why that is axiomatized.",
+    "significance": "key",
+    "relatedConcepts": [
+      "interval_cases",
+      "decide",
+      "computational verification"
+    ],
+    "prerequisites": [
+      "IsPowerful definition (ann-e365-powerful-def)",
+      "interval_cases tactic for case splitting on bounded naturals",
+      "decide tactic for decidable propositions"
+    ]
+  },
+  {
+    "id": "ann-e365-pell",
+    "proofId": "erdos-365",
+    "range": {
+      "startLine": 79,
+      "endLine": 99
+    },
+    "type": "concept",
+    "title": "Pell Equation Connection",
+    "content": "**IsPellSolution x y D** formalizes x² = Dy² + 1. **mahler_pell_gives_powerful** (axiom): solutions to x² = 8y² + 1 give powerful pairs (8y², 8y²+1). **infinitely_many_pell** (axiom): infinitely many such solutions exist, with strictly increasing y-values. The fundamental solution (3, 1) generates all others via the recurrence (xₖ₊₁, yₖ₊₁) = (3xₖ + 8yₖ, xₖ + 3yₖ).",
+    "mathContext": "Pell equations x² - Dy² = 1 for non-square D > 0 always have infinitely many solutions, generated from the fundamental solution by the theory of continued fractions. For D = 8, the fundamental solution is (3, 1). The key insight: 8y² = x² - 1 = (x-1)(x+1), and since x is odd (as x² ≡ 1 mod 8), both x-1 and x+1 are even, giving enough prime power structure for powerfulness.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pell equation",
+      "continued fractions",
+      "recurrence relation"
+    ],
+    "prerequisites": [
+      "IsPowerful and IsConsecutivePowerfulPair definitions",
+      "Pell equation theory (existence and structure of solutions to x^2 - Dy^2 = 1)",
+      "continued fractions and fundamental solutions"
+    ]
+  },
+  {
+    "id": "ann-e365-golomb",
+    "proofId": "erdos-365",
+    "range": {
+      "startLine": 101,
+      "endLine": 125
+    },
+    "type": "concept",
+    "title": "Golomb's Counterexample and Q1 Resolution",
+    "content": "**Question1** asks whether all consecutive powerful pairs have one element being a square. **question1_false** (axiom): NO. **golomb_counterexample** (axiom): 12167 = 23³ and 12168 = 2³·3²·13² are both powerful, neither is a perfect square. The factorizations are verified by native_decide: 12167 = 23³ and 12168 = 2³·3²·13².",
+    "mathContext": "Golomb's 1970 paper in the American Mathematical Monthly introduced the term 'powerful number' and exhibited this counterexample. Note 12167 = 23³ is a perfect cube (powerful but not square), while 12168 = 8·1521 = 8·39² = 2³·(3·13)² has all prime exponents ≥ 2. Neither 12167 nor 12168 is a perfect square since √12167 ≈ 110.3 and √12168 ≈ 110.3.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counterexample",
+      "native_decide",
+      "perfect square test"
+    ],
+    "prerequisites": [
+      "IsConsecutivePowerfulPair definition",
+      "Question1 formulation (the square-requirement conjecture)",
+      "native_decide tactic for kernel-level computation"
+    ]
+  },
+  {
+    "id": "ann-e365-walker",
+    "proofId": "erdos-365",
+    "range": {
+      "startLine": 127,
+      "endLine": 146
+    },
+    "type": "concept",
+    "title": "Walker's Infinite Family",
+    "content": "**WalkerEquation x y** formalizes 7³x² = 3³y² + 1, i.e., 343x² = 27y² + 1. **walker_infinitely_many** (axiom): infinitely many solutions exist. **walker_gives_nonsquare** (axiom): each solution gives n = 27y² where (n, n+1) = (27y², 343x²) is a consecutive powerful pair with neither element a perfect square.",
+    "mathContext": "Walker's 1976 paper in the Fibonacci Quarterly showed that generalized Pell equations of the form a³x² - b³y² = 1 yield consecutive powerful pairs (b³y², a³x²) where both are powerful (being products of cubes and squares) but neither need be a perfect square. The equation 343x² = 27y² + 1 is equivalent to (7x√7)² - (3y√3)² = 1 in a suitable algebraic number field.",
+    "significance": "key",
+    "relatedConcepts": [
+      "generalized Pell equation",
+      "infinite family",
+      "non-square powerful numbers"
+    ],
+    "prerequisites": [
+      "IsConsecutivePowerfulPair and IsPowerful definitions",
+      "Pell equation connection (ann-e365-pell)",
+      "Golomb's counterexample establishing that non-Pell pairs exist (ann-e365-golomb)",
+      "generalized Pell equations in quadratic number fields"
+    ]
+  },
+  {
+    "id": "ann-e365-counting",
+    "proofId": "erdos-365",
+    "range": {
+      "startLine": 148,
+      "endLine": 164
+    },
+    "type": "concept",
+    "title": "Question 2: Counting Consecutive Powerful Pairs",
+    "content": "**countingFunction x** computes P(x) = |{n <= x : IsConsecutivePowerfulPair n}| using Finset.filter over Finset.range. **Question2** formalizes the conjecture that P(x) = O((log x)^C) for some constants C > 0 and K > 0 -- i.e., the number of consecutive powerful pairs up to x grows at most polylogarithmically. This remains OPEN.",
+    "mathContext": "Each Pell-type equation a^3 x^2 - b^3 y^2 = 1 has solutions growing exponentially, contributing O(log x) pairs up to x. If only finitely many such equation families produce consecutive powerful pairs, P(x) = O((log x)^C). The formalization uses Finset.card with Finset.filter, making P(x) computable in principle but intractable for large x. The Real.log function from Mathlib.Data.Real.Basic provides the logarithm for the asymptotic bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counting function",
+      "polylogarithmic bound",
+      "Finset.filter",
+      "Real.log",
+      "open problem"
+    ],
+    "prerequisites": [
+      "IsConsecutivePowerfulPair definition",
+      "Pell equation families and their solution counts (ann-e365-pell)",
+      "Finset.card and Finset.filter from Mathlib",
+      "Real.log from Mathlib.Data.Real.Basic",
+      "asymptotic notation (O-notation)"
+    ]
+  },
+  {
+    "id": "ann-e365-summary",
+    "proofId": "erdos-365",
+    "range": {
+      "startLine": 165,
+      "endLine": 181
+    },
+    "type": "concept",
+    "title": "Summary Theorem",
+    "content": "**erdos_365_summary** packages three results as a proved conjunction: (1) ¬Question1 — the square requirement fails, (2) Golomb's specific counterexample (12167, 12168) with neither being a square, (3) Walker's infinite family of non-square counterexamples. The proof is ⟨question1_false, golomb_counterexample, walker_infinitely_many⟩. Question 2 (polylogarithmic counting bound) remains open and is formalized as a definition only.",
+    "mathContext": "The three-part conjunction captures the complete state of Q1: qualitative (it's false), concrete (explicit counterexample), and structural (infinitely many counterexamples). Q2 is deliberately not included in the summary since it remains open. The formalization of Q2 as a Prop allows future work to state and potentially prove it.",
+    "significance": "key",
+    "relatedConcepts": [
+      "conjunction",
+      "partial resolution",
+      "open problem"
+    ],
+    "prerequisites": [
+      "question1_false axiom (ann-e365-golomb)",
+      "golomb_counterexample axiom (ann-e365-golomb)",
+      "walker_infinitely_many axiom (ann-e365-walker)",
+      "Question2 definition and countingFunction (counting section)"
+    ]
+  }
+]

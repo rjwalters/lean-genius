@@ -1,0 +1,375 @@
+[
+  {
+    "id": "ann-603-header",
+    "proofId": "erdos-603",
+    "range": {
+      "startLine": 1,
+      "endLine": 20
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #603: Find the smallest cardinal $C$ such that any family $(A_i)$ of countably infinite sets with $|A_i \\cap A_j| \\neq 2$ for all $i \\neq j$ can be $C$-colored so no $A_i$ is monochromatic. The problem is **OPEN** — known bounds are $2 \\leq C \\leq \\aleph_0$ but the exact value is unknown. Attributed to Komjáth, recorded in Erdős's [Er87] compilation.",
+    "mathContext": "The problem asks for $\\sup \\{ \\chi(\\mathcal{A}) : \\mathcal{A} \\text{ is a valid family} \\}$ where $\\chi(\\mathcal{A})$ is the minimum number of colors to break monochromaticity. The analogous problem with $|A_i \\cap A_j| \\neq 1$ was solved by Komjáth ($C = \\aleph_0$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hypergraph coloring",
+      "Weak chromatic number",
+      "Set family intersection properties",
+      "Cardinal arithmetic"
+    ],
+    "prerequisites": [
+      "Set.Countable",
+      "Set.Infinite",
+      "Set.ncard",
+      "Cardinal"
+    ],
+    "tags": [
+      "hypergraph-coloring",
+      "set-family",
+      "open-problem",
+      "erdos"
+    ]
+  },
+  {
+    "id": "ann-603-family",
+    "proofId": "erdos-603",
+    "range": {
+      "startLine": 35,
+      "endLine": 44
+    },
+    "type": "definition",
+    "title": "Set Family Definitions",
+    "content": "`IsCountablyInfiniteFamily A` requires each $A_i$ to be both `Set.Countable` and `Set.Infinite` — this is the natural class of 'small infinite' sets. `IntersectionNot2 A` formalizes $|A_i \\cap A_j| \\neq 2$ for $i \\neq j$ using `Set.ncard`, which returns a natural number (0 for infinite sets). The combined `IsValidFamily` bundles both constraints.",
+    "mathContext": "The constraint $|A_i \\cap A_j| \\neq 2$ is stated via `Set.ncard` rather than `Finset.card`, avoiding the need to prove intersections are finite. Since `ncard` returns 0 for infinite sets, the constraint automatically allows infinite intersections.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Countable sets",
+      "Set.ncard vs Finset.card",
+      "Infinite set intersection"
+    ],
+    "prerequisites": [
+      "Set.Countable",
+      "Set.Infinite",
+      "Set.ncard"
+    ],
+    "tags": [
+      "set-family",
+      "countable-sets",
+      "intersection-constraint",
+      "definition"
+    ]
+  },
+  {
+    "id": "ann-603-coloring",
+    "proofId": "erdos-603",
+    "range": {
+      "startLine": 51,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "Coloring Definitions",
+    "content": "`IsMonochromatic S c` holds when $\\exists$ color such that $c(x) = $ color for all $x \\in S$. `IsValidColoring A c` requires that no $A_i$ is monochromatic under $c$. This is the 'weak' coloring condition — contrast with 'strong' (rainbow) coloring where all elements of each set must have distinct colors.",
+    "mathContext": "A coloring $c : \\alpha \\to \\Gamma$ is valid iff $\\forall i, \\exists x, y \\in A_i$ with $c(x) \\neq c(y)$. For infinite sets, this is equivalent to: no $A_i$ is contained in a single color class $c^{-1}(\\gamma)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Monochromaticity",
+      "Proper coloring",
+      "Weak vs strong hypergraph coloring",
+      "Property B"
+    ],
+    "prerequisites": [
+      "Existential quantification",
+      "Set membership"
+    ],
+    "tags": [
+      "graph-coloring",
+      "monochromatic",
+      "proper-coloring"
+    ]
+  },
+  {
+    "id": "ann-603-chromatic",
+    "proofId": "erdos-603",
+    "range": {
+      "startLine": 65,
+      "endLine": 78
+    },
+    "type": "definition",
+    "title": "Chromatic Number",
+    "content": "`SufficientColors A C` asserts $\\exists \\Gamma$ with $|\\Gamma| \\leq C$ and a valid coloring $c : \\alpha \\to \\Gamma$. The `chromaticNumber` takes the infimum over all sufficient cardinals using `Cardinal.sInf`. Note the use of `Cardinal.mk` to convert types to their cardinality, and `Cardinal.le` for the comparison — cardinal arithmetic in Lean requires careful use of universe levels.",
+    "mathContext": "The chromatic number $\\chi(\\mathcal{A}) = \\inf\\{C : \\exists \\Gamma, |\\Gamma| \\leq C, \\exists c : \\alpha \\to \\Gamma \\text{ valid}\\}$. The problem asks for $C^* = \\sup_{\\mathcal{A} \\text{ valid}} \\chi(\\mathcal{A})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cardinal infimum",
+      "Chromatic number",
+      "Universe polymorphism",
+      "Noncomputable definitions"
+    ],
+    "prerequisites": [
+      "Cardinal",
+      "sInf",
+      "Cardinal.mk"
+    ],
+    "tags": [
+      "chromatic-number",
+      "cardinal-arithmetic",
+      "infimum",
+      "definition"
+    ]
+  },
+  {
+    "id": "ann-603-conjecture",
+    "proofId": "erdos-603",
+    "range": {
+      "startLine": 74,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "The Main Conjecture",
+    "content": "ErdosConjecture603(C): for all valid families, C colors suffice. minimalChromatic: the smallest such C.",
+    "mathContext": "The question is the value of minimalChromatic.",
+    "significance": "key",
+    "relatedConcepts": [
+      "universal-bound",
+      "minimal"
+    ],
+    "tags": [
+      "conjecture",
+      "universal-bound",
+      "chromatic-number",
+      "open-problem"
+    ],
+    "prerequisites": [
+      "Universal Quantification",
+      "Chromatic Number",
+      "Cardinal Bounds"
+    ]
+  },
+  {
+    "id": "ann-603-komjath",
+    "proofId": "erdos-603",
+    "range": {
+      "startLine": 88,
+      "endLine": 97
+    },
+    "type": "definition",
+    "title": "Komjath's Theorem",
+    "content": "`komjath_not1` axiomatizes Komjáth's theorem: for families with $|A_i \\cap A_j| \\neq 1$, $\\aleph_0$ colors suffice. This is declared as an `axiom` because the proof requires deep set-theoretic arguments beyond current Mathlib. The contrast with the $\\neq 2$ case (still open) is the central motivation for Problem #603.",
+    "mathContext": "Komjáth proved: if $(A_i)$ is a family of countably infinite sets with $|A_i \\cap A_j| \\neq 1$ for all $i \\neq j$, then $\\bigcup A_i$ can be $\\aleph_0$-colored so no $A_i$ is monochromatic. The proof uses a transfinite induction argument specific to the $\\neq 1$ constraint.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Komjáth's theorem",
+      "Aleph-zero",
+      "Axiomatized results",
+      "Transfinite induction"
+    ],
+    "prerequisites": [
+      "Cardinal.aleph0",
+      "Axiom declarations in Lean"
+    ],
+    "tags": [
+      "komjath",
+      "aleph-zero",
+      "axiom",
+      "solved-case"
+    ]
+  },
+  {
+    "id": "ann-603-bounds",
+    "proofId": "erdos-603",
+    "range": {
+      "startLine": 111,
+      "endLine": 134
+    },
+    "type": "concept",
+    "title": "Bounds",
+    "content": "`lower_bound_2` proves $C \\geq 2$ by contradiction: with $< 2$ colors, any infinite set is automatically monochromatic (has a `sorry` for the cardinal $< 2$ case analysis). `countable_suffices_trivial` axiomatizes the trivial upper bound: assign each element a distinct natural number color, so no infinite set can be monochromatic. Together these give $2 \\leq C \\leq \\aleph_0$.",
+    "mathContext": "Lower bound: with $|\\Gamma| < 2$, pigeonhole forces any infinite set to have all elements the same color. Upper bound: the identity coloring $c(x) = x$ (after injection into $\\mathbb{N}$) gives $\\aleph_0$ colors with no monochromatic infinite set.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pigeonhole principle",
+      "Cardinal arithmetic",
+      "Trivial upper bound",
+      "Identity coloring"
+    ],
+    "prerequisites": [
+      "Cardinal comparison",
+      "Set.Infinite",
+      "Pigeonhole principle"
+    ],
+    "tags": [
+      "bounds",
+      "lower-bound",
+      "upper-bound",
+      "cardinal-arithmetic"
+    ]
+  },
+  {
+    "id": "ann-603-finite",
+    "proofId": "erdos-603",
+    "range": {
+      "startLine": 165,
+      "endLine": 170
+    },
+    "type": "definition",
+    "title": "Finite vs Infinite",
+    "content": "CanDoBetterThanAleph0: some finite n suffices. Aleph0Necessary: no finite n works.",
+    "mathContext": "The key open question: is the answer finite or infinite?",
+    "significance": "key",
+    "relatedConcepts": [
+      "finite",
+      "infinite",
+      "dichotomy"
+    ],
+    "tags": [
+      "finite-vs-infinite",
+      "cardinality",
+      "open-question"
+    ],
+    "prerequisites": [
+      "Finite Cardinality",
+      "Aleph-Zero",
+      "Finite Versus Infinite Dichotomy"
+    ]
+  },
+  {
+    "id": "ann-603-hypergraph",
+    "proofId": "erdos-603",
+    "range": {
+      "startLine": 179,
+      "endLine": 191
+    },
+    "type": "definition",
+    "title": "Hypergraph Perspective",
+    "content": "`SetFamilyHypergraph` packages the set family as a hypergraph with vertices $V = \\bigcup A_i$ and hyperedges $\\mathcal{E} = \\{A_i\\}_{i \\in I}$. The `weakChromatic` number (= `hypergraphChromatic`) is the minimum colors to break monochromaticity. This reformulation connects Problem #603 to the classical theory of Property B (Bernstein, 1908; Erdős-Hajnal, 1966): a hypergraph has Property B if it admits a 2-coloring with no monochromatic edge.",
+    "mathContext": "The weak chromatic number $\\chi_w(H) = \\inf\\{k : H \\text{ has a proper } k\\text{-coloring}\\}$. For 2-uniform hypergraphs (= graphs), this is the ordinary chromatic number. For $\\omega$-uniform hypergraphs (all edges infinite), Property B always holds (i.e., $\\chi_w = 2$) for finite families, but not necessarily for infinite ones.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Hypergraph coloring",
+      "Property B",
+      "Weak chromatic number",
+      "Erdős-Hajnal"
+    ],
+    "prerequisites": [
+      "Structure definitions in Lean",
+      "Hypergraph theory basics"
+    ],
+    "tags": [
+      "hypergraph",
+      "weak-chromatic-number",
+      "graph-theory",
+      "reformulation"
+    ]
+  },
+  {
+    "id": "ann-603-disjoint",
+    "proofId": "erdos-603",
+    "range": {
+      "startLine": 201,
+      "endLine": 236
+    },
+    "type": "concept",
+    "title": "Disjoint Families",
+    "content": "`disjoint_2_colors` (has `sorry`): if $A_i \\cap A_j = \\emptyset$ for all $i \\neq j$, then 2 colors suffice. The proof idea: for disjoint infinite sets, color half of each set one color and half the other. This is the easiest special case — the difficulty in #603 comes from families where intersections exist but avoid size 2.",
+    "mathContext": "Disjoint families vacuously satisfy $|A_i \\cap A_j| \\neq 2$ (since $|\\emptyset| = 0 \\neq 2$). The 2-coloring uses the fact that each infinite set can be split into two infinite subsets.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Disjoint sets",
+      "2-colorability",
+      "Set splitting"
+    ],
+    "prerequisites": [
+      "Set.ncard_eq_zero",
+      "Infinite set splitting"
+    ],
+    "tags": [
+      "disjoint-family",
+      "special-case",
+      "two-coloring"
+    ]
+  },
+  {
+    "id": "ann-603-both",
+    "proofId": "erdos-603",
+    "range": {
+      "startLine": 240,
+      "endLine": 248
+    },
+    "type": "definition",
+    "title": "Satisfying Both Constraints",
+    "content": "SatisfiesBoth: intersection != 1 AND != 2. both_constraints: Komjath's bound applies.",
+    "mathContext": "Families avoiding both 1 and 2 are covered by Komjath's result.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "both-constraints",
+      "intersection"
+    ],
+    "tags": [
+      "combined-constraints",
+      "komjath",
+      "intersection-restriction"
+    ],
+    "prerequisites": [
+      "Set Intersection Cardinality",
+      "Komjath's Theorem",
+      "Constraint Restriction"
+    ]
+  },
+  {
+    "id": "ann-603-statement",
+    "proofId": "erdos-603",
+    "range": {
+      "startLine": 266,
+      "endLine": 271
+    },
+    "type": "concept",
+    "title": "Formal Statement",
+    "content": "`erdos_603_statement` proves the formal equivalence: $\\exists C, \\text{ErdosConjecture603}(C)$ iff $\\exists C, \\forall \\mathcal{A}$ valid, $C$ suffices for $\\mathcal{A}$. This is essentially unfolding the definition — the proof is a straightforward `constructor` with both directions wrapping/unwrapping the `IsValidFamily` conjunction. The theorem confirms the formalization correctly captures the intended mathematical statement.",
+    "mathContext": "The formal statement unfolds to: $\\exists C, \\forall \\alpha\\, I\\, (A : I \\to \\text{Set}\\,\\alpha), (\\text{countably infinite family} \\wedge |A_i \\cap A_j| \\neq 2) \\to \\exists \\Gamma\\, (|\\Gamma| \\leq C) \\, (c : \\alpha \\to \\Gamma)$ valid.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Definitional unfolding",
+      "Iff theorem",
+      "Formal statement verification"
+    ],
+    "prerequisites": [
+      "ErdosConjecture603",
+      "IsValidFamily",
+      "SufficientColors"
+    ],
+    "tags": [
+      "formal-statement",
+      "lean-formalization",
+      "equivalence",
+      "existential"
+    ]
+  },
+  {
+    "id": "ann-603-status",
+    "proofId": "erdos-603",
+    "range": {
+      "startLine": 257,
+      "endLine": 257
+    },
+    "type": "definition",
+    "title": "Problem Status",
+    "content": "The problem is OPEN. Known: 2 <= C <= aleph_0. For != 1: C = aleph_0 (Komjath). For != 2: unknown.",
+    "mathContext": "The contrast with the solved != 1 case is notable.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open-problem",
+      "status"
+    ],
+    "tags": [
+      "open-problem",
+      "problem-status",
+      "erdos",
+      "set-theory"
+    ],
+    "prerequisites": [
+      "Open Problems",
+      "Cardinal Bounds",
+      "Aleph-Zero"
+    ]
+  }
+]

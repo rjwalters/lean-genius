@@ -1,0 +1,190 @@
+{
+  "id": "erdos-970",
+  "title": "Erdős Problem #970: Jacobsthal's Function",
+  "slug": "erdos-970",
+  "description": "Is h(k) = O(k²) where h(k) is the minimal m such that any m consecutive integers contain one coprime to any n with at most k prime factors? OPEN: Best upper bound is (k log k)² by Iwaniec (1978).",
+  "meta": {
+    "author": "Paul Erdős",
+    "sourceUrl": "https://erdosproblems.com/970",
+    "date": "2018",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos970Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "primes",
+      "gaps",
+      "coprimality",
+      "open-problem",
+      "jacobsthal"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 970,
+    "erdosUrl": "https://erdosproblems.com/970",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Coprime",
+        "description": "Coprimality of natural numbers",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "primeFactors",
+        "description": "Set of prime factors",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "omega definition: number of distinct prime factors",
+      "hasAtMostKPrimes predicate: n has at most k prime factors",
+      "consecutiveInterval definition: interval [a, a+m)",
+      "hasCoprimeElement predicate: interval contains coprime element",
+      "h axiom: Jacobsthal's function with specification and minimality",
+      "jacobsthalConjecture definition: h(k) = O(k²)",
+      "iwaniec_upper_bound axiom: h(k) ≤ C(k log k)²",
+      "fgkmt_lower_bound axiom: best known lower bound",
+      "Small values h(1)=2 through h(5)=14",
+      "small_values_consistent theorem combining known values"
+    ],
+    "axiomCount": 8,
+    "assumptions": "8 axioms: h, iwaniec_upper_bound, fgkmt_lower_bound, h_one, h_two, h_three, h_four, h_five. 0 sorries.",
+    "lineCount": 157,
+    "theoremCount": 4,
+    "definitionCount": 5
+  },
+  "overview": {
+    "historicalContext": "Jacobsthal's function h(k) measures how long an interval of consecutive integers must be to guarantee an element coprime to any number with at most k prime factors. The function was introduced by Jacobsthal, who conjectured h(k) = O(k²). This remains one of the major open problems in multiplicative number theory.\n\nIwaniec (1978) proved the best known upper bound h(k) ≤ C(k log k)² using sieve methods. The lower bound was dramatically improved by Ford, Green, Konyagin, Maynard, and Tao (2018), who used their breakthrough results on prime gaps to show h(k) ≥ ck(log k)(log log log k)/(log log k)².\n\nThe gap between upper and lower bounds remains substantial, and closing it (or even reaching the conjectured k² bound) would be a major advance.",
+    "problemStatement": "Let $h(k)$ be Jacobsthal's function, defined as the minimal $m$ such that, if $n$ has at most $k$ prime factors, then in any set of $m$ consecutive integers there exists an integer coprime to $n$. Determine the order of magnitude of $h(k)$. In particular, is it true that $h(k) \\ll k^2$?\n\n**Answer: OPEN**",
+    "text": "Is h(k) = O(k²) where h(k) is the minimal m such that any m consecutive integers contain one coprime to any n with at most k prime factors? OPEN: Best upper bound is (k log k)² by Iwaniec (1978).",
+    "proofStrategy": "The formalization axiomatizes Jacobsthal's function h(k) with its defining property and minimality condition. Known upper and lower bounds are stated as axioms (Iwaniec 1978, FGKMT 2018). Small computed values h(1)=2 through h(5)=14 are recorded. The conjecture h(k) = O(k²) is formally defined but remains open.",
+    "keyInsights": [
+      "**Jacobsthal's function** measures coprimality in intervals: h(k) is the minimal m ensuring a coprime element exists",
+      "**Best upper bound:** h(k) ≤ C(k log k)² by Iwaniec (1978) using sieve methods",
+      "**Best lower bound:** h(k) ≥ ck log k log₃k/(log₂k)² by Ford-Green-Konyagin-Maynard-Tao (2018)",
+      "**Gap from k²** is roughly (log k)² — closing this is the main challenge",
+      "**Primorials maximize h(k):** the extremal numbers are products of the first k primes"
+    ],
+    "prerequisites": [
+      "Coprimality and GCD: the definition $\\gcd(a,n) = 1$, Euler's totient function, and coprime residues modulo $n$",
+      "Prime factorization: the number of distinct prime factors $\\omega(n)$, primorial numbers, and the distribution of primes",
+      "Sieve methods: the Selberg sieve, Brun's sieve, and their application to counting integers coprime to a given modulus",
+      "Gaps in sifted sequences: maximal gaps between integers not divisible by small primes, and connections to prime gap results"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Module docstring documenting the problem statement, background, and references; 5 Mathlib imports covering required modules; `open` declarations (Real Nat); namespace `Erdos970`",
+      "mathContext": "Module docstring documenting the problem statement, background, and references; 5 Mathlib imports covering required modules; `open` declarations (Real Nat); namespace `Erdos970`"
+    },
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 40,
+      "endLine": 55,
+      "summary": "omega, hasAtMostKPrimes, consecutiveInterval, hasCoprimeElement"
+    },
+    {
+      "id": "jacobsthal-function",
+      "title": "Jacobsthal's Function",
+      "startLine": 56,
+      "endLine": 76,
+      "summary": "h(k) axiomatized with specification and minimality"
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Jacobsthal's Conjecture",
+      "startLine": 77,
+      "endLine": 82,
+      "summary": "jacobsthalConjecture: h(k) = O(k²)"
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Known Upper Bounds",
+      "startLine": 83,
+      "endLine": 101,
+      "summary": "Iwaniec's theorem: h(k) ≤ C(k log k)²"
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Known Lower Bounds",
+      "startLine": 102,
+      "endLine": 116,
+      "summary": "FGKMT lower bound and Rankin-type bounds"
+    },
+    {
+      "id": "small-values",
+      "title": "Known Small Values",
+      "startLine": 117,
+      "endLine": 140,
+      "summary": "h(1)=2, h(2)=4, h(3)=6, h(4)=10, h(5)=14"
+    },
+    {
+      "id": "summary",
+      "title": "Summary and Main Results",
+      "startLine": 141,
+      "endLine": 157,
+      "summary": "Problem status OPEN, upper and lower bound theorems"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #970 remains OPEN. Jacobsthal's Conjecture asks whether h(k) = O(k²). The best known upper bound is h(k) ≤ C(k log k)² by Iwaniec (1978), which has a (log k)² gap from the conjectured quadratic bound. The best known lower bound is h(k) ≥ ck log k log₃k/(log₂k)² by Ford-Green-Konyagin-Maynard-Tao (2018).",
+    "implications": "Resolving Jacobsthal's Conjecture would have implications for understanding coprimality in intervals, which connects to prime distribution. The techniques involved (sieve methods, prime gaps) are fundamental in analytic number theory.",
+    "openQuestions": [
+      "Is h(k) = O(k²)? (The main conjecture)",
+      "Can Iwaniec's bound be improved to remove log factors?",
+      "What is the exact asymptotic of h(k)?",
+      "What is h(k) for specific small values beyond k=5?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Real",
+      "Nat"
+    ],
+    "namespace": "Erdos970",
+    "lineCount": 157,
+    "axiomCount": 8,
+    "theoremCount": 4,
+    "definitionCount": 5,
+    "path": "Proofs/Erdos970Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1059",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, primes"
+    },
+    {
+      "targetId": "erdos-1100",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: coprimality, number-theory"
+    },
+    {
+      "targetId": "erdos-1101",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: gaps, number-theory"
+    }
+  ],
+  "sorries": 0,
+  "definitionCount": 5
+}

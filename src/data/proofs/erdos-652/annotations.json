@@ -1,0 +1,362 @@
+[
+  {
+    "id": "ann-652-header",
+    "proofId": "erdos-652",
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #652: Distance Multiplicity Spectrum in Point Sets**\n\nFor a point set $\\{x_1, \\ldots, x_n\\} \\subset \\mathbb{R}^2$, define $R(x_i)$ as the number of distinct distances from $x_i$ to all other points. Order points so $R(x_1) \\leq \\cdots \\leq R(x_n)$. Let $\\alpha_k$ be the minimal constant such that $R(x_k) < \\alpha_k \\sqrt{n}$ is achievable for large $n$.\n\n**Question**: Does $\\alpha_k \\to \\infty$ as $k \\to \\infty$?\n\n**Answer**: YES (Mathialagan 2021). Moreover, $\\alpha_k \\geq C\\sqrt{k}$.",
+    "mathContext": "The problem asks about the **distance multiplicity spectrum**: how the sorted sequence $R(x_1) \\leq \\cdots \\leq R(x_n)$ behaves relative to $\\sqrt{n}$. Erdős originally conjectured the stronger statement $R(x_3)/\\sqrt{n} \\to \\infty$, which Elekes disproved. The actual answer — $\\alpha_k \\to \\infty$ but slowly — reveals a subtle threshold phenomenon.",
+    "significance": "key",
+    "relatedConcepts": [
+      "distinct distances",
+      "point configurations",
+      "polynomial partitioning",
+      "incidence geometry"
+    ],
+    "prerequisites": [
+      "combinatorial geometry basics",
+      "asymptotic notation",
+      "real analysis"
+    ]
+  },
+  {
+    "id": "ann-652-imports",
+    "proofId": "erdos-652",
+    "range": {
+      "startLine": 31,
+      "endLine": 39
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "Imports Mathlib modules for inner product spaces, real numbers, finite sets, and tactics. Opens the `Finset` namespace for convenient access to finite set operations used throughout the formalization.",
+    "mathContext": "The formalization works in $\\mathbb{R}^2$ represented as $\\mathbb{R} \\times \\mathbb{R}$, using `Real.sqrt` for Euclidean distances and `Finset` for finite point sets and distance multisets.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "inner product space",
+      "Finset",
+      "Real.sqrt"
+    ],
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib imports"
+    ]
+  },
+  {
+    "id": "ann-652-point",
+    "proofId": "erdos-652",
+    "range": {
+      "startLine": 47,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "Point Type",
+    "content": "**Point** = $\\mathbb{R} \\times \\mathbb{R}$\n\nA point in the Euclidean plane, represented as a pair of real coordinates $(x, y)$.",
+    "mathContext": "Points in $\\mathbb{R}^2$ are the basic objects of study. The distinct distances problem and its variants are specific to the Euclidean metric; analogues in other metrics (e.g., $\\ell^1$, $\\ell^\\infty$) have different answers.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Euclidean plane",
+      "coordinate geometry"
+    ],
+    "prerequisites": [
+      "real number pairs"
+    ]
+  },
+  {
+    "id": "ann-652-dist",
+    "proofId": "erdos-652",
+    "range": {
+      "startLine": 50,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "Euclidean Distance",
+    "content": "**dist(p, q)** = $\\sqrt{(p_1 - q_1)^2 + (p_2 - q_2)^2}$\n\nThe standard Euclidean distance between two points in the plane.",
+    "mathContext": "The Euclidean distance $d(p,q) = \\|p - q\\|_2$ is the metric underlying all distinct distance problems. The squared distance $(p_1 - q_1)^2 + (p_2 - q_2)^2$ is often more convenient for algebraic manipulations, as it avoids the square root.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euclidean metric",
+      "squared distance",
+      "norm"
+    ],
+    "prerequisites": [
+      "Real.sqrt",
+      "real arithmetic"
+    ]
+  },
+  {
+    "id": "ann-652-pointset",
+    "proofId": "erdos-652",
+    "range": {
+      "startLine": 54,
+      "endLine": 55
+    },
+    "type": "definition",
+    "title": "Point Set",
+    "content": "**PointSet n** = $\\text{Fin}\\, n \\to \\text{Point}$\n\nA finite set of $n$ points in the plane, indexed by $\\text{Fin}\\, n = \\{0, 1, \\ldots, n-1\\}$.",
+    "mathContext": "A point configuration $P = \\{p_0, \\ldots, p_{n-1}\\} \\subset \\mathbb{R}^2$. The indexing by $\\text{Fin}\\, n$ allows us to refer to individual points and track which distances emanate from which point, essential for the $R(x_i)$ function.",
+    "significance": "key",
+    "relatedConcepts": [
+      "finite configuration",
+      "point arrangement",
+      "Fin type"
+    ],
+    "prerequisites": [
+      "Fin type",
+      "function type"
+    ]
+  },
+  {
+    "id": "ann-652-distinctdist",
+    "proofId": "erdos-652",
+    "range": {
+      "startLine": 57,
+      "endLine": 60
+    },
+    "type": "definition",
+    "title": "Distinct Distances from a Point",
+    "content": "**distinctDistances(P, i)** = $\\{d(P_i, P_j) : j \\neq i\\}$ as a `Finset ℝ`\n\nThe set of distinct distance values from point $i$ to all other points. Computed by imaging the distance function over all $j \\neq i$, automatically deduplicating via `Finset.image`.",
+    "mathContext": "For a point $p_i$ in configuration $P$, the set $D(p_i) = \\{\\|p_i - p_j\\| : j \\neq i\\}$ captures the **distance spectrum** at $p_i$. Its cardinality $|D(p_i)| = R(p_i)$ is the central quantity of interest. The `Finset.image` operation handles deduplication automatically.",
+    "significance": "key",
+    "relatedConcepts": [
+      "distance spectrum",
+      "distance multiset",
+      "Finset.image"
+    ],
+    "prerequisites": [
+      "Finset.image",
+      "Finset.filter",
+      "dist"
+    ]
+  },
+  {
+    "id": "ann-652-R",
+    "proofId": "erdos-652",
+    "range": {
+      "startLine": 62,
+      "endLine": 64
+    },
+    "type": "definition",
+    "title": "R Function",
+    "content": "**R(P, i)** = $|\\text{distinctDistances}(P, i)|$\n\nThe number of distinct distances from point $i$ to all other points. This is the central measurement function for the problem.",
+    "mathContext": "$R(x_i) = |\\{\\|x_i - x_j\\| : j \\neq i\\}|$ counts distinct distances from $x_i$. By the Guth-Katz theorem (2015), the sum $\\sum_i R(x_i) \\gg n^2 / \\sqrt{\\log n}$ for any $n$-point set, which implies most points have $R(x_i) \\gg n / \\sqrt{\\log n}$. The question is about the **smallest** values of $R$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "distinct distance count",
+      "Guth-Katz theorem",
+      "distance complexity"
+    ],
+    "prerequisites": [
+      "distinctDistances",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "ann-652-Rk",
+    "proofId": "erdos-652",
+    "range": {
+      "startLine": 72,
+      "endLine": 76
+    },
+    "type": "definition",
+    "title": "k-th Smallest R Value",
+    "content": "**R_k(P, k)** = the $k$-th smallest value in $\\{R(P, i) : i \\in \\text{Fin}\\, n\\}$\n\nComputed by sorting the multiset of R values. This orders points by distance complexity: $R_1(P) \\leq R_2(P) \\leq \\cdots \\leq R_n(P)$.",
+    "mathContext": "The ordering $R(x_1) \\leq R(x_2) \\leq \\cdots \\leq R(x_n)$ is the **distance multiplicity spectrum** of $P$. The problem asks about the threshold behavior of the $k$-th element: how small can $R(x_k)$ be relative to $\\sqrt{n}$?",
+    "significance": "key",
+    "relatedConcepts": [
+      "order statistics",
+      "sorted sequence",
+      "threshold function"
+    ],
+    "prerequisites": [
+      "Finset.image",
+      "List.sort",
+      "List.getD"
+    ]
+  },
+  {
+    "id": "ann-652-alphak-def",
+    "proofId": "erdos-652",
+    "range": {
+      "startLine": 84,
+      "endLine": 95
+    },
+    "type": "definition",
+    "title": "The αₖ Constants",
+    "content": "**alpha_k_exists(k)**: The constant $\\alpha_k$ exists as the infimum over all configurations.\n\n**alpha_k(k)**: The actual constant, axiomatized with positivity and achievability.\n\n$\\alpha_k = \\inf\\{\\alpha > 0 : \\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall n \\geq N_0,\\; \\exists P,\\; R_k(P) < (\\alpha + \\varepsilon)\\sqrt{n}\\}$",
+    "mathContext": "The constant $\\alpha_k$ captures the **asymptotic threshold** for the $k$-th smallest $R$ value. If $\\alpha_k = 0$, then $R(x_k)$ can be $o(\\sqrt{n})$; if $\\alpha_k > 0$, then $R(x_k) \\geq \\alpha_k \\sqrt{n} - o(\\sqrt{n})$ for all large configurations. The question $\\alpha_k \\to \\infty$ asks whether these thresholds grow without bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "infimum",
+      "asymptotic threshold",
+      "extremal function"
+    ],
+    "prerequisites": [
+      "Real analysis",
+      "asymptotic notation",
+      "infimum"
+    ]
+  },
+  {
+    "id": "ann-652-alpha1",
+    "proofId": "erdos-652",
+    "range": {
+      "startLine": 103,
+      "endLine": 105
+    },
+    "type": "concept",
+    "title": "α₁ = 0: Trivial Base Case",
+    "content": "**alpha_1_zero**: $\\alpha_1 = 0$\n\n$R(x_1) = 1$ is achievable by placing all points on a circle centered at $x_1$: every other point is at the same distance from the center.",
+    "mathContext": "For a regular $n$-gon with center $x_1$, all $n-1$ other points are equidistant from $x_1$, so $R(x_1) = 1$. This is the extreme case where one point sees only one distinct distance. Since $1 < \\alpha \\sqrt{n}$ for any $\\alpha > 0$ and large $n$, we get $\\alpha_1 = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "regular polygon",
+      "equidistant points",
+      "base case"
+    ],
+    "prerequisites": [
+      "alpha_k",
+      "R function"
+    ]
+  },
+  {
+    "id": "ann-652-product",
+    "proofId": "erdos-652",
+    "range": {
+      "startLine": 107,
+      "endLine": 110
+    },
+    "type": "concept",
+    "title": "Product Lower Bound",
+    "content": "**product_lower_bound**: $R(x_1) \\cdot R(x_2) \\geq Cn$ for some constant $C > 0$.\n\nThe two smallest $R$ values cannot both be small. If $R(x_1)$ is very small (few distinct distances from $x_1$), then $R(x_2)$ must be large to account for all pairwise distances.",
+    "mathContext": "This is a **covering argument**: the $\\binom{n}{2}$ pairwise distances are partitioned among the points. If $R(x_1) = r_1$ and $R(x_2) = r_2$, then the number of distance classes involving $x_1$ or $x_2$ is at most $r_1 + r_2$. A double-counting argument shows $r_1 \\cdot r_2 \\gg n$. This immediately gives $\\alpha_2 > 0$ since $\\alpha_1 = 0$ forces $R(x_1) = O(1)$, hence $R(x_2) \\gg n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "covering argument",
+      "double counting",
+      "complementary bounds"
+    ],
+    "prerequisites": [
+      "R function",
+      "R_k",
+      "combinatorial counting"
+    ]
+  },
+  {
+    "id": "ann-652-min-distinct",
+    "proofId": "erdos-652",
+    "range": {
+      "startLine": 112,
+      "endLine": 115
+    },
+    "type": "concept",
+    "title": "Minimum R Value Achievable",
+    "content": "**min_distinct_distances**: For $n \\geq 2$, there exists a point set with $R_1(P) = 1$.\n\nAchieves the minimum by placing all points on a circle (regular polygon configuration).",
+    "mathContext": "The regular $n$-gon centered at the origin achieves $R(\\text{center}) = 1$: all vertices are equidistant. This shows the infimum $\\alpha_1 = 0$ is actually attained (not just approached). More sophisticated constructions by Elekes show $R(x_k) = O_k(\\sqrt{n})$ for any fixed $k$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "regular polygon",
+      "extremal configuration",
+      "achievability"
+    ],
+    "prerequisites": [
+      "PointSet",
+      "R_k"
+    ]
+  },
+  {
+    "id": "ann-652-elekes",
+    "proofId": "erdos-652",
+    "range": {
+      "startLine": 123,
+      "endLine": 131
+    },
+    "type": "concept",
+    "title": "Elekes' Disproof: αₖ Finite",
+    "content": "**elekes_disproof**: For any $k \\geq 1$, there exist point sets with $R_k(P) < C\\sqrt{n}$ for a constant $C = C(k)$.\n\n**alpha_k_finite**: Consequently, $\\alpha_k < \\infty$ for all $k$.\n\nElekes' construction disproved Erdős's original (stronger) conjecture that $R(x_3)/\\sqrt{n} \\to \\infty$.",
+    "mathContext": "György Elekes (c. 2000) used **algebraic curve constructions** to show that for any fixed $k$, one can arrange $n$ points so that $k$ of them each see only $O(\\sqrt{n})$ distinct distances. The key insight is that points on an algebraic curve of degree $d$ have $O(d\\sqrt{n})$ distinct distances to points on a related curve. By choosing appropriate curves, one can make $R(x_i) = O(\\sqrt{n})$ for the first $k$ points while the remaining $n - k$ points have $R \\gg n/\\sqrt{\\log n}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "algebraic curves",
+      "Elekes' construction",
+      "Schwartz-Zippel lemma",
+      "incidence bounds"
+    ],
+    "prerequisites": [
+      "alpha_k",
+      "R_k",
+      "algebraic geometry basics"
+    ]
+  },
+  {
+    "id": "ann-652-mathialagan",
+    "proofId": "erdos-652",
+    "range": {
+      "startLine": 139,
+      "endLine": 152
+    },
+    "type": "concept",
+    "title": "Mathialagan's Breakthrough (2021)",
+    "content": "**mathialagan_2021**: For $2 \\leq k \\leq n^{1/3}$, we have $R(x_k) \\gg \\sqrt{kn}$.\n\n**alpha_k_lower_bound**: $\\alpha_k \\geq C\\sqrt{k}$ for $k \\geq 2$.\n\n**alpha_k_unbounded**: $\\alpha_k \\to \\infty$ as $k \\to \\infty$.\n\nThis is the main positive result resolving Erdős Problem #652.",
+    "mathContext": "Sahana Mathialagan's 2021 proof uses **polynomial partitioning** (the technique from Guth-Katz 2015) combined with sophisticated **incidence geometry**. The key step: partition $\\mathbb{R}^2$ into $\\sim k$ cells using a polynomial of degree $O(\\sqrt{k})$. If $k$ points each have $R < C\\sqrt{kn}$, then by a pigeonhole argument, many point-distance pairs are concentrated in a single cell, contradicting the Guth-Katz incidence bounds. The constraint $k \\leq n^{1/3}$ is a technical limitation of the polynomial partitioning approach.",
+    "significance": "key",
+    "relatedConcepts": [
+      "polynomial partitioning",
+      "Guth-Katz technique",
+      "incidence geometry",
+      "cell decomposition"
+    ],
+    "prerequisites": [
+      "alpha_k",
+      "R_k",
+      "polynomial partitioning"
+    ]
+  },
+  {
+    "id": "ann-652-main",
+    "proofId": "erdos-652",
+    "range": {
+      "startLine": 158,
+      "endLine": 166
+    },
+    "type": "concept",
+    "title": "Main Result: Erdős #652 Solved",
+    "content": "**erdos_652_solved**: Two-part result:\n1. $\\alpha_k \\to \\infty$ as $k \\to \\infty$ (Mathialagan)\n2. $\\alpha_k < \\infty$ for each fixed $k$ (Elekes)\n\nThis fully resolves Erdős Problem #652: the threshold constants $\\alpha_k$ grow without bound, but each individual $\\alpha_k$ is finite.",
+    "mathContext": "The conjunction captures the complete picture: $\\alpha_k$ is a well-defined finite constant for each $k$ (Elekes), but $\\sup_k \\alpha_k = \\infty$ (Mathialagan). This is analogous to sequences like $a_k = \\sqrt{k}$: each term is finite but the sequence diverges. The proof in Lean combines `alpha_k_unbounded` and `alpha_k_finite` via `And.intro`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "divergent sequence",
+      "threshold phenomenon",
+      "complete resolution"
+    ],
+    "prerequisites": [
+      "alpha_k_unbounded",
+      "alpha_k_finite"
+    ]
+  },
+  {
+    "id": "ann-652-polygon",
+    "proofId": "erdos-652",
+    "range": {
+      "startLine": 174,
+      "endLine": 175
+    },
+    "type": "insight",
+    "title": "Regular Polygon Example",
+    "content": "**regular_polygon_example**: For $n \\geq 3$, there exists a point set where some point has $R = 1$.\n\nThe center of a regular $n$-gon achieves $R = 1$: all $n-1$ vertices are equidistant from the center. This is the extreme case of distance minimization.",
+    "mathContext": "The regular $n$-gon centered at the origin places vertices at $(\\cos(2\\pi j/n), \\sin(2\\pi j/n))$. Adding the center gives a configuration where $R(\\text{center}) = 1$. This construction is optimal: no point in a non-trivial configuration can have $R = 0$ (which would require all other points to coincide).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "regular polygon",
+      "equidistant configuration",
+      "optimal construction"
+    ],
+    "prerequisites": [
+      "PointSet",
+      "R function"
+    ]
+  }
+]

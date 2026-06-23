@@ -1,0 +1,108 @@
+{
+  "slug": "erdos-828",
+  "title": "Erdos #828",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Is it true that, for any $a\\in\\mathbb{Z}$, there are infinitely many $n$ such that\\[\\phi(n) \\mid n+a?\\]\n\n\n\nA conjecture of Graham. Lehmer has conjectured that $\\phi(n)\\mid n-1$ if and only if $n$ is prime. It is an easy exercise to show that $\\phi(n) \\mid n$ if and only if $n=2^a3^b$.\n\nThis is discussed in problem B37 of Guy's collection \\cite{Gu04}.",
+    "plain": "Is it true that, for any $a\\in\\mathbb{Z}$, there are infinitely many $n$ such that\\[\\phi(n) \\mid n+a?\\]",
+    "whyMatters": [
+      "Graham's totient divisibility conjecture links additive shifts n + a with the multiplicative structure of phi(n).",
+      "The a = 0 and a = -1 families are concrete infinite anchors for a conjecture that is otherwise broadly open.",
+      "The characterization of phi(n) dividing n connects the problem to prime-power factorization and classical totient identities."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "There are infinitely many n with phi(n) dividing n, via powers of 2.",
+      "There are infinitely many n with phi(n) dividing n - 1, via primes.",
+      "The characterization phi(n) | n iff n has only 2 and 3 as prime factors is formalized as totient_dvd_self_iff.",
+      "Supporting totient facts include evenness of phi(n) for n > 2, the prime-power formula, and divisibility of phi(n) by p - 1 when p divides n."
+    ],
+    "open": [
+      "Graham's conjecture remains open for arbitrary integer a: infinitely many n with phi(n) | n + a.",
+      "Lehmer's conjecture, that phi(n) | n - 1 only for primes, remains open beyond the prime-family direction recorded here.",
+      "A uniform construction for all shifts a is not formalized."
+    ],
+    "goal": "Record the completed totient-divisibility families and phi(n) | n characterization while leaving Graham and Lehmer conjectures open."
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-15T09:39:18.200Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 0 sorries, 0 axioms. totient_dvd_self_iff fully proved.",
+    "builtItems": [
+      "Proved totientDivisors_zero_infinite via Set.infinite_of_injective_forall_mem with f(k)=2^(k+1)",
+      "Proved totientDivisors_neg_one_infinite via Set.Infinite.mono from Nat.infinite_setOf_prime",
+      "Proved totient_even from Nat.totient_even",
+      "Proved totient_prime_pow_formula from Nat.totient_prime_pow",
+      "coprime_pow_factorization_div: coprimality of p-part and complement",
+      "pred_dvd_totient_of_prime_dvd: (p-1)|φ(n) when p|n",
+      "two_dvd_pred_of_odd_prime: 2|(p-1) for odd primes",
+      "odd_totient_dvd_two_mul: if m odd, m>1, φ(m)|2m then m=3^e",
+      "totient_dvd_self_iff forward direction: complete proof"
+    ],
+    "insights": [
+      "4 of 5 axioms proved from Mathlib: totient_even, totient_prime_pow_formula, totientDivisors_zero_infinite, totientDivisors_neg_one_infinite",
+      "totientDivisors_zero_infinite proved via powers-of-2 family: phi(2^(k+1))=2^k divides 2^(k+1)",
+      "totientDivisors_neg_one_infinite proved via Set.Infinite.mono with Nat.infinite_setOf_prime",
+      "Only totient_dvd_self_iff (characterization of phi(n)|n) remains axiomatized - deep result not in Mathlib",
+      "n/φ(n) = Π_{p|n} p/(p-1) regardless of exponents. Integer iff prime set ⊆ {2,3} with 2 present.",
+      "2-adic valuation proof: ν₂(Π(p-1)) ≥ |{odd primes}| but ν₂(Π p) = 1 (only from p=2), so ≤1 odd prime",
+      "If {2,q}: (q-1)|2q and gcd(q,q-1)=1 gives (q-1)|2, so q≤3",
+      "Proved forward direction of totient_dvd_self_iff: if φ(n)|n and n>1, then n=2^a*3^b using 2-adic decomposition and prime factor counting"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove forward direction of totient_dvd_self_iff via 2-adic valuation: n/φ(n) = Π_{p|n} p/(p-1), ν₂(denominator) forces ≤1 odd prime factor, gcd forces q=3",
+      "Key helper: Nat.factorization API + Nat.totient_mul for multiplicativity",
+      "Alternative: direct proof for each prime ≥ 5 showing φ(n) ∤ n when p|n"
+    ],
+    "markdown": "# Erdos #828 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for any $a\\in\\mathbb{Z}$, there are infinitely many $n$ such that\\[\\phi(n) \\mid n+a?\\]\n\n\n\nA conjecture of Graham. Lehmer has conjectured that $\\phi(n)\\mid n-1$ if and only if $n$ is prime. It is an easy exercise to show that $\\phi(n) \\mid n$ if and only if $n=2^a3^b$.\n\nThis is discussed in problem B37 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdos Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #827\n- Problem #829\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er83\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "totient",
+    "divisibility"
+  ],
+  "relatedProofs": [
+    "erdos-8",
+    "erdos-82",
+    "erdos-828"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T09:39:18.200Z",
+  "lastUpdate": "2026-03-13T07:52:17.053Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos828Problem.lean",
+      "filename": "Erdos828Problem.lean",
+      "lineCount": 347,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos828Problem.lean"
+    }
+  ]
+}

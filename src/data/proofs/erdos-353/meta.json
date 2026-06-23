@@ -1,0 +1,215 @@
+{
+  "id": "erdos-353",
+  "title": "Erdős Problem #353: Geometric Configurations in Sets of Infinite Measure",
+  "slug": "erdos-353",
+  "description": "Let A ⊆ ℝ² have infinite Lebesgue measure. Must A contain vertices of an isosceles trapezoid, triangle, or right triangle of area 1? SOLVED: YES for all three (Koizumi 2025). Parallelograms can fail (Kovač 2023).",
+  "meta": {
+    "author": "Erdős-Mauldin, Kovač (2023), Koizumi (2025)",
+    "sourceUrl": "https://erdosproblems.com/353",
+    "date": "",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos353Problem.lean",
+    "tags": [
+      "erdos",
+      "geometric-measure-theory",
+      "euclidean-geometry",
+      "configurations",
+      "infinite-measure",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 353,
+    "erdosUrl": "https://erdosproblems.com/353",
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "MeasureTheory.volume",
+        "description": "Lebesgue measure",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      },
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Euclidean n-space",
+        "module": "Mathlib.Geometry.Euclidean.Basic"
+      },
+      {
+        "theorem": "inner",
+        "description": "Inner product for right angle detection",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      }
+    ],
+    "originalContributions": [
+      "HasInfiniteMeasure predicate for plane sets",
+      "triangleArea and quadrilateralArea definitions",
+      "IsIsoscelesTriangle, IsRightTriangle, IsIsoscelesTrapezoid predicates",
+      "IsCyclicQuadrilateral and IsParallelogram definitions",
+      "HasCongruentSides for polygons",
+      "Configuration existence predicates (HasTriangleWithArea, etc.)",
+      "Koizumi's three main theorems as axioms",
+      "Kovač's parallelogram counterexample axiom",
+      "Kovač-Predojević cyclic quadrilateral theorem"
+    ],
+    "axiomCount": 4,
+    "lineCount": 445,
+    "assumptions": "4 axiom(s): Koizumi's three main theorems (isosceles trapezoid, isosceles triangle, right triangle) and Kovač-Predojević cyclic quadrilateral theorem are stated as axioms.",
+    "theoremCount": 8,
+    "definitionCount": 14,
+    "additionalFiles": [
+      "Proofs/Erdos353Aristotle.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #353**\n\nThis problem explores what geometric configurations must appear in sets of infinite measure in the plane.\n\n**Key History:**\n- Erdős-Mauldin (unpublished): Claimed true for trapezoids\n- Kovač (2023): Proved trapezoids work; showed parallelograms can fail\n- Kovač-Predojević (2024): Proved cyclic quadrilaterals; congruent sides counterexample\n- Koizumi (2025): Complete resolution for isosceles trapezoids, triangles, and right triangles\n\n**Mathematical Setting:**\nThe problem connects geometric measure theory with combinatorial geometry. Infinite measure ensures sufficient point density to guarantee configurations.",
+    "problemStatement": "**Problem Statement**\n\nLet $A \\subseteq \\mathbb{R}^2$ be a measurable set with infinite Lebesgue measure.\n\nMust $A$ contain the vertices of:\n1. An isosceles trapezoid of area 1?\n2. An isosceles triangle of area 1?\n3. A right-angled triangle of area 1?\n4. A cyclic quadrilateral of area 1?\n5. A polygon with congruent sides of area 1?\n\n**Answers:**\n- Isosceles trapezoid: **YES** (Koizumi 2025)\n- Isosceles triangle: **YES** (Koizumi 2025)\n- Right-angled triangle: **YES** (Koizumi 2025)\n- Cyclic quadrilateral: **YES** (Kovač-Predojević 2024)\n- Parallelogram: **NO** (Kovač 2023)\n- Congruent-sided polygon: **NOT ALWAYS** (Kovač-Predojević 2024)",
+    "text": "Let A ⊆ ℝ² have infinite Lebesgue measure. Must A contain vertices of an isosceles trapezoid, triangle, or right triangle of area 1? SOLVED: YES for all three (Koizumi 2025). Parallelograms can fail (Kovač 2023).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Measure Setup:** Define HasInfiniteMeasure using Lebesgue measure\n\n2. **Geometric Predicates:** Define triangleArea, quadrilateralArea, and shape predicates\n\n3. **Configuration Existence:** Predicates for shapes with vertices in A of given area\n\n4. **Main Theorems:** State Koizumi's results as axioms\n\n5. **Counterexamples:** Kovač's parallelogram and congruent sides results\n\n6. **Scaling:** Show area can be any positive value, not just 1",
+    "keyInsights": [
+      "**Infinite Measure is Key:** Ensures enough points exist to form configurations",
+      "**Parallelograms are Special:** Two parallel pairs give more constraints than one",
+      "**Trapezoids Work:** One parallel pair is weak enough to guarantee existence",
+      "**Density Argument:** Infinite measure implies positive density in many regions",
+      "**Recent Resolution:** All main questions answered in 2023-2025"
+    ],
+    "prerequisites": [
+      "Combinatorics (counting, extremal problems)",
+      "Number theory (primes, divisibility, arithmetic functions)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Problem statement (isosceles trapezoid/triangle/right-triangle/cyclic-quadrilateral/congruent-sides of area 1 in infinite-measure sets); HasInfiniteMeasure, triangleArea, quadrilateralArea",
+      "startLine": 1,
+      "endLine": 69,
+      "mathContext": "Mathematical content: Problem statement (isosceles trapezoid/triangle/right-triangle/cyclic-quadrilateral/congruent-sides of area 1 in infinite-measure sets); HasInfiniteMeasure, triangleArea, quadrilateralArea"
+    },
+    {
+      "id": "geometric-configurations",
+      "title": "Geometric Configurations",
+      "summary": "Predicates for the target shapes: IsIsoscelesTriangle, IsRightTriangle, IsIsoscelesTrapezoid, IsParallelogram, IsCyclicQuadrilateral, HasCongruentSides",
+      "startLine": 70,
+      "endLine": 131,
+      "mathContext": "Mathematical content: Predicates for the target shapes: IsIsoscelesTriangle, IsRightTriangle, IsIsoscelesTrapezoid, IsParallelogram, IsCyclicQuadrilateral, HasCongruentSides"
+    },
+    {
+      "id": "configuration-existence",
+      "title": "Configuration Existence in Sets",
+      "summary": "\"contains an area-t configuration with vertices in A\" predicates: HasTriangleWithArea, HasIsoscelesTriangleWithArea, HasRightTriangleWithArea, HasIsoscelesTrapezoidWithArea, HasCyclicQuadrilateralWithArea",
+      "startLine": 132,
+      "endLine": 186,
+      "mathContext": "Mathematical content: \"contains an area-t configuration with vertices in A\" predicates: HasTriangleWithArea, HasIsoscelesTriangleWithArea, HasRightTriangleWithArea, HasIsoscelesTrapezoidWithArea, HasCyclicQuadrilateralWithArea"
+    },
+    {
+      "id": "koizumi-main-results",
+      "title": "Main Results — Koizumi (2025)",
+      "summary": "Koizumi's 2025 resolution as axioms: every infinite-measure set contains an isosceles trapezoid, isosceles triangle, and right triangle of area 1",
+      "startLine": 187,
+      "endLine": 217,
+      "mathContext": "Mathematical content: Koizumi's 2025 resolution as axioms: every infinite-measure set contains an isosceles trapezoid, isosceles triangle, and right triangle of area 1"
+    },
+    {
+      "id": "kovac",
+      "title": "Kovač Results (2023-2024)",
+      "summary": "Kovač trapezoid theorem and parallelogram counterexample (prose); Kovač-Predojević cyclic quadrilateral axiom",
+      "startLine": 218,
+      "endLine": 242,
+      "mathContext": "Mathematical content: Kovač trapezoid theorem and parallelogram counterexample (prose); Kovač-Predojević cyclic quadrilateral axiom"
+    },
+    {
+      "id": "congruent-sides",
+      "title": "Congruent Sides Result",
+      "summary": "Kovač-Predojević congruent-sided polygon counterexample: an infinite-measure set in which every congruent-sided convex polygon has area < 1",
+      "startLine": 243,
+      "endLine": 251,
+      "mathContext": "Mathematical content: Kovač-Predojević congruent-sided polygon counterexample: an infinite-measure set in which every congruent-sided convex polygon has area < 1"
+    },
+    {
+      "id": "why-infinite-measure",
+      "title": "Why Infinite Measure Matters",
+      "summary": "Why infinite measure is essential: finite-measure sets may contain no area-1 triangle; density argument behind the existence proofs",
+      "startLine": 252,
+      "endLine": 266,
+      "mathContext": "Mathematical content: Why infinite measure is essential: finite-measure sets may contain no area-1 triangle; density argument behind the existence proofs"
+    },
+    {
+      "id": "scaling-infrastructure",
+      "title": "Scaling Properties — Infrastructure",
+      "summary": "Supporting lemmas: inv_smul_set_eq_preimage, hasInfiniteMeasure_inv_smul (Haar scaling preserves infinite measure), isIsoscelesTriangle_smul, triangleArea_smul_eq (area scales by c²)",
+      "startLine": 267,
+      "endLine": 325,
+      "mathContext": "Mathematical content: Supporting lemmas: inv_smul_set_eq_preimage, hasInfiniteMeasure_inv_smul (Haar scaling preserves infinite measure), isIsoscelesTriangle_smul, triangleArea_smul_eq (area scales by c²)"
+    },
+    {
+      "id": "scaling-main-result",
+      "title": "Scaling Properties — Main Result",
+      "summary": "scaling_property: infinite-measure sets contain isosceles triangles of every positive area t (scale by 1/√t, apply Koizumi, scale back); all_areas_isosceles corollary",
+      "startLine": 326,
+      "endLine": 373,
+      "mathContext": "Mathematical content: scaling_property: infinite-measure sets contain isosceles triangles of every positive area t (scale by 1/√t, apply Koizumi, scale back); all_areas_isosceles corollary"
+    },
+    {
+      "id": "connections",
+      "title": "Connections to Other Problems",
+      "summary": "Links to the Erdős distinct-distances / unit-distance problems and Ramsey-theoretic flavor of finding configurations in large sets",
+      "startLine": 374,
+      "endLine": 389,
+      "mathContext": "Mathematical content: Links to the Erdős distinct-distances / unit-distance problems and Ramsey-theoretic flavor of finding configurations in large sets"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_353_summary and erdos_353_status collecting the resolved answers (trapezoid/triangle/right-triangle/cyclic YES, parallelogram NO, congruent-sided not always)",
+      "startLine": 390,
+      "endLine": 445,
+      "mathContext": "Mathematical content: erdos_353_summary and erdos_353_status collecting the resolved answers (trapezoid/triangle/right-triangle/cyclic YES, parallelogram NO, congruent-sided not always)"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #353 asks about geometric configurations in sets of infinite measure. Koizumi (2025) proved that isosceles trapezoids, isosceles triangles, and right triangles of area 1 must exist. Kovač showed parallelograms can fail, revealing a fundamental distinction.",
+    "implications": "**Theoretical Significance**: **Mathematical Connections**\n\n1. **Geometric Measure Theory:** Lebesgue measure and density properties\n\n2. **Combinatorial Geometry:** Configuration existence in point sets\n\n**3. Erdős Distance Problem:** Related questions about point configurations\n\n4. **Ramsey Theory:** Large sets contain structured subsets\n\n5. **Discrete Geometry:** Unit area problems and geometric density.",
+    "openQuestions": [
+      "Characterize all shapes that must appear in infinite measure sets",
+      "What is the minimum measure needed to guarantee a given configuration?",
+      "Extension to higher dimensions",
+      "Quantitative bounds on configuration density"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Geometry.Euclidean.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Set"
+    ],
+    "namespace": "Erdos353",
+    "lineCount": 445,
+    "axiomCount": 4,
+    "theoremCount": 8,
+    "definitionCount": 14,
+    "path": "Proofs/Erdos353Problem.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/Erdos353Aristotle.lean"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-988",
+      "relationship": "related",
+      "description": "Problem #988 shares the geometric measure theory framework: both study how measure conditions on point sets force the existence of specific geometric configurations. #353 focuses on infinite Lebesgue measure sets in $\\mathbb{R}^2$ and similar triangles, while #988 studies a related configuration existence problem"
+    },
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "related",
+      "description": "Both are topological/geometric existence results: Borsuk-Ulam guarantees antipodal coincidence for continuous maps from spheres, while Problem #353 guarantees geometric configurations in sets of infinite measure. Both illustrate the principle that sufficient 'size' (topological dimension, measure) forces structure"
+    }
+  ],
+  "sorries": 0
+}

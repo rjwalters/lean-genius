@@ -1,0 +1,115 @@
+[
+  {
+    "id": "ann-header-setup",
+    "proofId": "area-of-circle-oq-03-oq-03-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 42
+    },
+    "type": "concept",
+    "title": "The Missing Geometric Fact in Archimedes' Parabolic Exhaustion",
+    "content": "The parent proof (AreaOfCircleOQ03OQ03) formalized Archimedes' geometric series 1 + 1/4 + 1/16 + ... = 4/3 but did not prove *why* the ratio is 1/4. This file supplies the missing geometric argument: for the parabola y = x², the signed area of a triangle with vertices at x-coordinates a, b, (a+b)/2 is exactly (b-a)³/8. The cubic dependence on interval length means halving the interval reduces area by factor 2³ = 8, and two sub-triangles contribute 2/8 = 1/4. The definition parabolicTriangleArea encodes the determinant formula for triangle area on the parabola.",
+    "mathContext": "The signed area of triangle with vertices $(x_i, x_i^2)$ on $y = x^2$ is $\\frac{1}{2}\\det\\begin{pmatrix} x_2-x_1 & x_3-x_1 \\\\ x_2^2-x_1^2 & x_3^2-x_1^2 \\end{pmatrix} = \\frac{(x_2-x_1)(x_3-x_1)(x_3-x_2)}{2}$. This factorization is specific to the parabola — the quadratic terms produce a single product of differences.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "signed area",
+      "determinant formula",
+      "parabola y = x²",
+      "Archimedes Quadrature of the Parabola"
+    ],
+    "prerequisites": [
+      "Real.ring",
+      "Mathlib.Tactic"
+    ]
+  },
+  {
+    "id": "ann-midpoint-area",
+    "proofId": "area-of-circle-oq-03-oq-03-oq-02",
+    "range": {
+      "startLine": 43,
+      "endLine": 70
+    },
+    "type": "insight",
+    "title": "Triangle Area = (b-a)³/8: The Cubic Formula",
+    "content": "parabolic_triangle_area_midpoint proves that for a, b on the parabola y = x², the triangle with midpoint vertex m = (a+b)/2 has signed area (b-a)³/8. The proof unfolds parabolicTriangleArea and applies ring. parabolic_triangle_area_pos shows the area is positive when a < b (by positivity). The cubic formula is the foundation: everything else follows from it.",
+    "mathContext": "With $m = (a+b)/2$: area $= (b-a) \\cdot (m-a) \\cdot (b-m)/2 = (b-a) \\cdot \\frac{b-a}{2} \\cdot \\frac{b-a}{2} / 2 = (b-a)^3/8$. The cube arises because one factor is the base $(b-a)$ and two factors are the half-intervals $(b-a)/2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "parabolic_triangle_area_midpoint",
+      "cubic dependence",
+      "ring tactic"
+    ],
+    "prerequisites": [
+      "parabolicTriangleArea definition"
+    ]
+  },
+  {
+    "id": "ann-subtriangle-ratio",
+    "proofId": "area-of-circle-oq-03-oq-03-oq-02",
+    "range": {
+      "startLine": 71,
+      "endLine": 118
+    },
+    "type": "insight",
+    "title": "The 1/8 and 1/4 Ratios: Why Archimedes' Series Has Ratio 1/4",
+    "content": "The central result: each sub-triangle has area (b-a)³/64 = 1/8 of the parent (b-a)³/8. With two sub-triangles (left and right), the total is 1/4 of the parent. subtriangle_sum_ratio is the key theorem — it directly justifies the common ratio r = 1/4 in Archimedes' geometric series. The 1/4 = 2 × (1/2)³ arises because: (1) halving the interval cubes the area reduction (factor 1/8), and (2) there are 2 sub-intervals. This decomposition 1/4 = 2 × 1/8 is specific to the parabola (degree 2).",
+    "mathContext": "For $y = x^p$: area $\\propto (b-a)^{p+1}$. Halving gives ratio $2 \\times (1/2)^{p+1} = 2^{-p}$. For $p=2$: $2^{-2} = 1/4$. For $p=3$: $2^{-3} = 1/8$ (different series). For $p=1$ (line): $2^{-1} = 1/2$ (trivial). The parabola's ratio 1/4 is special to degree 2.",
+    "significance": "key",
+    "relatedConcepts": [
+      "subtriangle_sum_ratio",
+      "Archimedes ratio 1/4",
+      "degree-area relationship"
+    ],
+    "prerequisites": [
+      "left_subtriangle_area",
+      "right_subtriangle_area",
+      "parabolic_triangle_area_midpoint"
+    ]
+  },
+  {
+    "id": "ann-iterated-exhaustion",
+    "proofId": "area-of-circle-oq-03-oq-03-oq-02",
+    "range": {
+      "startLine": 133,
+      "endLine": 157
+    },
+    "type": "concept",
+    "title": "From Geometry to Series: Connecting to Archimedes' 4/3 Result",
+    "content": "subdivision_level_area shows that 2^n sub-triangles at level n contribute total area (1/4)^n · T₀, combining the branching factor 2 with the individual ratio 1/8. cumulative_exhaustion_area proves the partial sum formula T₀ · (4/3)(1 - (1/4)^n) by induction using Finset.sum_range_succ and ring. The inductive step rewrites the sum to (1/4)^n, adds it to the accumulated formula, and closes by ring.",
+    "mathContext": "Level $n$ has $2^n$ sub-triangles, each of area $(1/8)^n \\cdot T_0$. Total: $2^n \\cdot (1/8)^n \\cdot T_0 = (1/4)^n \\cdot T_0$. Cumulative: $T_0 \\cdot \\sum_{k=0}^{n-1}(1/4)^k = T_0 \\cdot \\frac{4}{3}(1-(1/4)^n)$. Bridges this file's geometric fact with the parent proof's series computation.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "subdivision_level_area",
+      "cumulative_exhaustion_area",
+      "Finset.sum_range_succ"
+    ],
+    "prerequisites": [
+      "induction",
+      "ring",
+      "Finset.sum_range_succ"
+    ]
+  },
+  {
+    "id": "ann-exhaustion-rigor",
+    "proofId": "area-of-circle-oq-03-oq-03-oq-02",
+    "range": {
+      "startLine": 159,
+      "endLine": 189
+    },
+    "type": "insight",
+    "title": "Formalizing Archimedes' Rigor: The Exhaustion Gap Theorems",
+    "content": "exhaustion_gap and exhaustion_gap_pos formalize the precise sense in which Archimedes' method of exhaustion is rigorous. exhaustion_gap shows that the deficit between the limit 4T₀/3 and the n-level partial sum is exactly T₀·(4/3)·(1/4)^n — a computable, explicit quantity. exhaustion_gap_pos proves this is strictly positive when T₀ > 0.\n\nThis is the formal counterpart of Archimedes' method of double reductio ad absurdum: he would prove that the area could be neither more nor less than 4T₀/3, by showing the partial sums are always strictly less (undershooting). Here, `positivity` handles the gap positivity automatically, since T₀ > 0 and (1/4)^n > 0.\n\nThe `rw [cumulative_exhaustion_area]; ring` proof of exhaustion_gap is notably concise: the cumulative formula converts the sum into closed form, after which ring verifies the gap identity algebraically.",
+    "mathContext": "$\\frac{4}{3}T_0 - T_0 \\cdot \\frac{4}{3}(1-(1/4)^n) = \\frac{4}{3}T_0 \\cdot (1/4)^n$. For $T_0 > 0$: the gap is positive (both factors positive). As $n \\to \\infty$: $(1/4)^n \\to 0$, so the gap $\\to 0$. The parabolic segment area is exactly $\\frac{4}{3}T_0$ in the limit.",
+    "significance": "key",
+    "relatedConcepts": [
+      "exhaustion_gap",
+      "exhaustion_gap_pos",
+      "positivity tactic",
+      "method of exhaustion"
+    ],
+    "prerequisites": [
+      "cumulative_exhaustion_area",
+      "positivity"
+    ]
+  }
+]

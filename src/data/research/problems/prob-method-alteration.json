@@ -1,0 +1,93 @@
+{
+  "slug": "prob-method-alteration",
+  "title": "Alteration / Deletion Method (Probabilistic Method)",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{Construct a random object, then deterministically remove violations.}",
+    "plain": "The alteration (deletion) method improves on pure expectation arguments: instead of hoping a random object is already good, we start with a random object and then fix it by removing problematic parts. If few parts are problematic in expectation, the remaining object is still large/useful.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-21T21:57:07.468Z",
+    "iteration": 1,
+    "focus": "Source-backed metadata sync for Proofs/ProbMethodAlteration.lean: 59 lines, 2 theorem declarations, 0 definitions, 0 axioms, and 0 sorries.",
+    "blockers": [],
+    "nextAction": "No Lean work is needed for the research record; the triangle-free companion remains listed as an auxiliary file.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Proofs/ProbMethodAlteration.lean proves alteration_principle and independent_set_bound. The companion Proofs/ProbMethodAlterationOQ02.lean records the triangle-free improvement with two explicit axioms. Source audit: primary file has 59 lines, 2 theorems, 0 axioms, 0 sorries.",
+    "builtItems": [
+      "Proofs/ProbMethodAlteration.lean: 59 lines, 2 theorems, 0 axioms, 0 sorries",
+      "alteration_principle: positive total net value implies some positive net witness",
+      "independent_set_bound: simplified independent-set bound witness",
+      "Proofs/ProbMethodAlterationOQ02.lean: 212 lines, 7 theorems, 2 axioms, 0 sorries"
+    ],
+    "insights": [
+      "The verified core is a deterministic finite-sum principle that captures the alteration method at catalog scale.",
+      "The triangle-free companion depends on explicit Caro-Wei and AKS axioms, so those improvements should remain described as axiomatized.",
+      "The Property B discussion is comment-only in the primary Lean file and should not be described as a Lean theorem."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Optional future work: add a dedicated gallery entry for ProbMethodAlterationOQ02 if the companion should stand independently."
+    ]
+  },
+  "tags": [
+    "probabilistic-method",
+    "combinatorics",
+    "graph-theory",
+    "marquee-phase-1",
+    "intermediate"
+  ],
+  "relatedProofs": [
+    "prob-method-alteration"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-21T20:11:02.346Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
+  "completed": "2026-03-21T21:57:07.468Z",
+  "significance": 8,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/ProbMethodAlteration.lean",
+      "filename": "ProbMethodAlteration.lean",
+      "lineCount": 59,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProbMethodAlteration.lean"
+    },
+    {
+      "path": "Proofs/ProbMethodAlterationOQ02.lean",
+      "filename": "ProbMethodAlterationOQ02.lean",
+      "lineCount": 212,
+      "theoremCount": 7,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProbMethodAlterationOQ02.lean"
+    }
+  ]
+}

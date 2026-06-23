@@ -1,0 +1,350 @@
+[
+  {
+    "id": "ann-860-header",
+    "proofId": "erdos-860",
+    "range": {
+      "startLine": 1,
+      "endLine": 40
+    },
+    "type": "concept",
+    "title": "Problem Statement and References",
+    "content": "Erdős Problem #860 asks: given the first $\\pi(n)$ primes $p_1, p_2, \\ldots, p_{\\pi(n)}$, what is the minimum interval length $h(n)$ such that any interval $(m, m+h(n)]$ contains distinct integers $a_1, \\ldots, a_{\\pi(n)}$ with $p_i \\mid a_i$? This is a covering problem combining prime distribution with matching theory. The problem originates from Erdős and Pomerance (1980) and appears as Problem B32 in Guy's 'Unsolved Problems in Number Theory.'",
+    "mathContext": "$h(n) = \\min\\{L : \\forall\\, m \\geq 1,\\; \\exists\\, \\text{distinct } a_1, \\ldots, a_{\\pi(n)} \\in (m, m+L] \\text{ with } p_i \\mid a_i\\}$. Known: $(3-o(1))n < h(n) \\ll n^{3/2}/(\\log n)^{1/2}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime covering",
+      "bipartite matching",
+      "interval arithmetic",
+      "prime counting function"
+    ],
+    "prerequisites": [
+      "number theory",
+      "combinatorics"
+    ]
+  },
+  {
+    "id": "ann-860-nthprime",
+    "proofId": "erdos-860",
+    "range": {
+      "startLine": 46,
+      "endLine": 47
+    },
+    "type": "definition",
+    "title": "The $n$-th Prime $p_n$",
+    "content": "Defines the $n$-th prime number (1-indexed: $p_1 = 2, p_2 = 3, \\ldots$) using Mathlib's `Nat.nth Nat.Prime n`. This enumerates the primes in order, providing the specific primes that need to be 'covered' by multiples in an interval.",
+    "mathContext": "$p_n = n\\text{-th prime}$. $p_1 = 2, p_2 = 3, p_3 = 5, \\ldots$ In Lean: `nthPrime n := Nat.nth Nat.Prime n`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.nth",
+      "prime enumeration",
+      "Nat.Prime"
+    ],
+    "prerequisites": [
+      "number theory",
+      "Mathlib prime API"
+    ]
+  },
+  {
+    "id": "ann-860-primepi",
+    "proofId": "erdos-860",
+    "range": {
+      "startLine": 49,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "Prime Counting Function $\\pi(n)$",
+    "content": "The prime counting function $\\pi(n) = |\\{p \\leq n : p \\text{ prime}\\}|$ counts primes up to $n$. By the prime number theorem, $\\pi(n) \\sim n/\\log n$. This determines how many primes need to be covered: the first $\\pi(n)$ primes $p_1, \\ldots, p_{\\pi(n)}$ are all primes up to (approximately) $n$.",
+    "mathContext": "$\\pi(n) = |\\{p \\leq n : p \\text{ prime}\\}| \\sim n/\\log n$. The primes to cover are $p_1, p_2, \\ldots, p_{\\pi(n)}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime number theorem",
+      "Nat.primeCounting",
+      "prime distribution"
+    ],
+    "prerequisites": [
+      "analytic number theory"
+    ]
+  },
+  {
+    "id": "ann-860-covering",
+    "proofId": "erdos-860",
+    "range": {
+      "startLine": 52,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "Prime Covering Assignment",
+    "content": "A `PrimeCovering m L k` is a function assigning to each of the first $k$ primes a distinct multiple from the interval $(m, m+L]$. The structure requires: (1) all assignments lie in $(m, m+L]$, (2) all assignments are distinct (injectivity), and (3) $p_i \\mid a_i$ (divisibility). This is the key object — a valid matching between primes and interval elements.",
+    "mathContext": "A covering is $(a_1, \\ldots, a_k)$ with: $a_i \\in (m, m+L]$, $a_i \\neq a_j$ for $i \\neq j$, and $p_i \\mid a_i$ for all $i \\leq k$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "injective function",
+      "divisibility constraint",
+      "bipartite matching"
+    ],
+    "prerequisites": [
+      "number theory",
+      "combinatorics"
+    ]
+  },
+  {
+    "id": "ann-860-admits",
+    "proofId": "erdos-860",
+    "range": {
+      "startLine": 60,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "Admissible Intervals",
+    "content": "An interval $(m, m+L]$ admits a covering for $k$ primes if a `PrimeCovering m L k` exists (`Nonempty`). The function $h(n)$ is the minimum $L$ such that all intervals are admissible for $k = \\pi(n)$ primes.",
+    "mathContext": "$\\text{AdmitsCovering}(m, L, k) \\iff \\exists\\, (a_1, \\ldots, a_k) \\text{ valid covering in } (m, m+L]$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nonempty",
+      "existential quantifier",
+      "covering existence"
+    ],
+    "prerequisites": [
+      "logic",
+      "combinatorics"
+    ]
+  },
+  {
+    "id": "ann-860-h",
+    "proofId": "erdos-860",
+    "range": {
+      "startLine": 68,
+      "endLine": 74
+    },
+    "type": "definition",
+    "title": "The Function $h(n)$",
+    "content": "The central object of study: $h(n)$ is the minimum interval length $L$ such that every interval $(m, m+L]$ admits a prime covering for the first $\\pi(n)$ primes. Defined via `Nat.find`, which requires an existence proof (axiomatized with $n^2$ as a witness). The function captures the worst-case scenario over all starting points $m$.",
+    "mathContext": "$h(n) = \\min\\{L : \\forall\\, m,\\; \\text{AdmitsCovering}(m, L, \\pi(n))\\}$. Witness: $L = n^2$ suffices (by sorry).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.find",
+      "minimax",
+      "worst-case optimization"
+    ],
+    "prerequisites": [
+      "combinatorics",
+      "optimization"
+    ]
+  },
+  {
+    "id": "ann-860-universal",
+    "proofId": "erdos-860",
+    "range": {
+      "startLine": 76,
+      "endLine": 78
+    },
+    "type": "concept",
+    "title": "Universality of $h(n)$",
+    "content": "The axiom `h_universal` states the defining property: for any $n$ and any starting point $m$, the interval $(m, m+h(n)]$ admits a covering for the first $\\pi(n)$ primes. This is the 'sufficiency' direction of $h(n)$.",
+    "mathContext": "$\\forall\\, n, m: \\text{AdmitsCovering}(m, h(n), \\pi(n))$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "universality",
+      "defining property",
+      "sufficiency"
+    ],
+    "prerequisites": [
+      "combinatorics"
+    ]
+  },
+  {
+    "id": "ann-860-minimal",
+    "proofId": "erdos-860",
+    "range": {
+      "startLine": 80,
+      "endLine": 83
+    },
+    "type": "concept",
+    "title": "Minimality of $h(n)$",
+    "content": "The axiom `h_minimal` states that $h(n)$ is tight: any interval length $h(n) - 1$ fails for some starting point $m$. Together with universality, this characterizes $h(n)$ exactly as the minimax value.",
+    "mathContext": "$h(n) > 0 \\implies \\exists\\, m: \\neg\\text{AdmitsCovering}(m, h(n)-1, \\pi(n))$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "minimality",
+      "tightness",
+      "minimax characterization"
+    ],
+    "prerequisites": [
+      "combinatorics"
+    ]
+  },
+  {
+    "id": "ann-860-selfridge",
+    "proofId": "erdos-860",
+    "range": {
+      "startLine": 89,
+      "endLine": 94
+    },
+    "type": "concept",
+    "title": "Erdős-Selfridge Lower Bound: $h(n) > (3-o(1))n$",
+    "content": "Erdős and Selfridge proved that $h(n) > (3 - o(1))n$, formalized as: for every $\\varepsilon > 0$, eventually $h(n) > (3-\\varepsilon)n$. The constant $3$ arises from an analysis of the worst-case interval: there exist starting points $m$ where the multiples of the largest primes (near $n$) are sparse, and covering them requires a long interval. Specifically, primes near $n$ have consecutive multiples spaced $\\sim n$ apart, and covering $\\pi(n) \\sim n/\\log n$ of them requires at least $\\sim 3n$ room.",
+    "mathContext": "$\\forall\\, \\varepsilon > 0,\\; \\exists\\, N,\\; \\forall\\, n \\geq N: h(n) > (3-\\varepsilon)n$. The constant $3$ is sharp for the linear term.",
+    "significance": "key",
+    "relatedConcepts": [
+      "linear lower bound",
+      "prime spacing",
+      "worst-case analysis"
+    ],
+    "prerequisites": [
+      "analytic number theory",
+      "prime distribution"
+    ]
+  },
+  {
+    "id": "ann-860-ruzsa",
+    "proofId": "erdos-860",
+    "range": {
+      "startLine": 96,
+      "endLine": 101
+    },
+    "type": "concept",
+    "title": "Ruzsa's Superlinearity: $h(n)/n \\to \\infty$",
+    "content": "Ruzsa proved that $h(n)/n \\to \\infty$ as $n \\to \\infty$, formalized via `Tendsto ... atTop atTop`. This means the growth of $h(n)$ is strictly superlinear — no constant $c$ satisfies $h(n) \\leq cn$ for all $n$. The proof uses the Chinese Remainder Theorem and properties of smooth numbers to construct bad starting points where increasingly long intervals are needed.",
+    "mathContext": "$\\lim_{n \\to \\infty} h(n)/n = +\\infty$. Formalized: `Tendsto (fun n => h(n)/n) atTop atTop`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "superlinear growth",
+      "Chinese Remainder Theorem",
+      "smooth numbers",
+      "Filter.Tendsto"
+    ],
+    "prerequisites": [
+      "number theory",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-860-pomerance",
+    "proofId": "erdos-860",
+    "range": {
+      "startLine": 103,
+      "endLine": 109
+    },
+    "type": "concept",
+    "title": "Erdős-Pomerance Upper Bound: $h(n) \\ll n^{3/2}/(\\log n)^{1/2}$",
+    "content": "Erdős and Pomerance (1980) proved $h(n) \\leq C \\cdot n^{3/2}/(\\log n)^{1/2}$ for some constant $C > 0$. Formalized using Mathlib's `∀ᶠ n in atTop` (eventually). The proof constructs explicit coverings using the greedy algorithm: assign to each prime $p_i$ the smallest available multiple in the interval. The $n^{3/2}$ exponent arises from balancing the number of primes ($\\sim n/\\log n$) against the density of their multiples.",
+    "mathContext": "$\\exists\\, C > 0,\\; \\forall^* n: h(n) \\leq C \\cdot n^{3/2} / (\\log n)^{1/2}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "greedy algorithm",
+      "eventually filter",
+      "subquadratic bound"
+    ],
+    "prerequisites": [
+      "analytic number theory",
+      "combinatorics"
+    ]
+  },
+  {
+    "id": "ann-860-linear",
+    "proofId": "erdos-860",
+    "range": {
+      "startLine": 115,
+      "endLine": 124
+    },
+    "type": "concept",
+    "title": "Linear Lower Bound (Derived)",
+    "content": "Derives a quantitative linear lower bound $h(n) \\geq cn$ for $c = 2.9$ from the Erdős-Selfridge bound with $\\varepsilon = 0.1$. The proof is incomplete (sorry) but the approach is correct: take $\\varepsilon = 0.1$ in the Erdős-Selfridge bound to get $h(n) > 2.9n$ for large $n$.",
+    "mathContext": "$\\exists\\, c > 0,\\; \\forall^* n: h(n) \\geq cn$. Take $c = 2.9$ from $(3-0.1)n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "quantitative bound",
+      "Filter.Eventually"
+    ],
+    "prerequisites": [
+      "real analysis"
+    ]
+  },
+  {
+    "id": "ann-860-subquadratic",
+    "proofId": "erdos-860",
+    "range": {
+      "startLine": 126,
+      "endLine": 131
+    },
+    "type": "concept",
+    "title": "Subquadratic Growth: $h(n) = o(n^2)$",
+    "content": "The theorem states $h(n) = o(n^2)$ using Mathlib's `IsLittleO`. This follows from the Erdős-Pomerance upper bound since $n^{3/2}/(\\log n)^{1/2} = o(n^2)$. The proof is incomplete (sorry) but the mathematical argument is straightforward.",
+    "mathContext": "$h(n) = o(n^2)$. Proof: $h(n) \\ll n^{3/2}/(\\log n)^{1/2} = o(n^2)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "IsLittleO",
+      "growth rate comparison",
+      "asymptotic domination"
+    ],
+    "prerequisites": [
+      "asymptotic analysis",
+      "Mathlib Asymptotics"
+    ]
+  },
+  {
+    "id": "ann-860-gap",
+    "proofId": "erdos-860",
+    "range": {
+      "startLine": 133,
+      "endLine": 137
+    },
+    "type": "insight",
+    "title": "The Open Gap",
+    "content": "The exact growth rate of $h(n)$ is unknown. The known bounds leave a substantial gap: $h(n) \\geq n \\cdot \\omega(n)$ for some slowly growing $\\omega(n) \\to \\infty$ (from Ruzsa), while $h(n) \\leq C \\cdot n^{3/2-\\varepsilon'}$ (from Erdős-Pomerance, since $(\\log n)^{1/2}$ grows). Is $h(n) = \\Theta(n^\\alpha)$ for some $1 < \\alpha < 3/2$? Or does $h(n)$ grow like $n \\cdot (\\log n)^\\beta$ for some $\\beta > 0$?",
+    "mathContext": "Known: $n \\cdot \\omega(n) \\leq h(n) \\leq C n^{3/2}/(\\log n)^{1/2}$ where $\\omega(n) \\to \\infty$. Open: determine the exponent or exact growth.",
+    "significance": "key",
+    "relatedConcepts": [
+      "growth rate gap",
+      "open problem",
+      "asymptotic exponent"
+    ],
+    "prerequisites": [
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-860-matching",
+    "proofId": "erdos-860",
+    "range": {
+      "startLine": 158,
+      "endLine": 166
+    },
+    "type": "concept",
+    "title": "Bipartite Matching Reformulation",
+    "content": "The problem has an elegant graph-theoretic reformulation. Form a bipartite graph $G$ with primes $\\{p_1, \\ldots, p_{\\pi(n)}\\}$ on one side and interval elements $\\{m+1, \\ldots, m+L\\}$ on the other, with $p_i \\sim j$ iff $p_i \\mid j$. Then $h(n)$ is the minimum $L$ such that $G$ has a perfect matching on the prime side for all $m$. By Hall's marriage theorem, this holds iff for every subset $S$ of primes, $|N(S) \\cap (m, m+L]| \\geq |S|$.",
+    "mathContext": "$h(n) = \\min\\{L : \\forall\\, m,\\; G_{m,L} \\text{ has a perfect matching}\\}$ where $G_{m,L}$ has edges $p_i \\sim j$ for $p_i \\mid j$, $j \\in (m, m+L]$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hall's marriage theorem",
+      "bipartite graph",
+      "perfect matching",
+      "neighborhood condition"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "matching theory"
+    ]
+  },
+  {
+    "id": "ann-860-main",
+    "proofId": "erdos-860",
+    "range": {
+      "startLine": 185,
+      "endLine": 191
+    },
+    "type": "concept",
+    "title": "Main Result: Erdős Problem #860 (Proved)",
+    "content": "The theorem `erdos_860` combines the two key results into a single statement: (1) $h(n)/n \\to \\infty$ (superlinear growth, from Ruzsa) and (2) there exists $C > 0$ with $h(n) \\leq C n^{3/2}/(\\log n)^{1/2}$ eventually (from Erdős-Pomerance). This is fully proved by pairing the two axioms. The exact asymptotics remain open.",
+    "mathContext": "$h(n)/n \\to \\infty \\;\\wedge\\; \\exists\\, C > 0,\\; \\forall^* n: h(n) \\leq C n^{3/2}/(\\log n)^{1/2}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "conjunction of bounds",
+      "open problem summary"
+    ],
+    "prerequisites": [
+      "number theory",
+      "asymptotic analysis"
+    ]
+  }
+]

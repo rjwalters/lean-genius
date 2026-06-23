@@ -1,0 +1,85 @@
+{
+  "slug": "erdos-1135-oq-01",
+  "title": "Erdos Problem 1135: Collatz Conjecture",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall m \\ge 1,\\ \\exists k : \\mathbb{N},\\ f^{k}(m)=1",
+    "plain": "Formalize the Collatz iteration used in Erdos Problem 1135 and verify basic structural facts and small starting values that reach one.",
+    "whyMatters": [
+      "The Collatz conjecture is a famous elementary-looking dynamical problem with very little complete theory.",
+      "The Lean file provides a clean base API for the function, iteration, positivity, and small concrete orbits."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`collatz`, `collatzIter`, and `ReachesOne` define the function, its iteration, and the reachability predicate.",
+      "`collatz_one` and `collatz_two` verify the 1 -> 2 -> 1 cycle under the halved odd-step convention.",
+      "`one_reaches_one` and `two_reaches_one` through `seven_reaches_one` verify reachability for the first several positive inputs.",
+      "`collatzIter_collatz` relates iteration after one Collatz step to one additional iteration from the original input.",
+      "`collatz_pos`, `collatz_even_eq`, `collatz_odd_eq`, and `collatz_even_lt` prove the basic positivity and even/odd branch facts.",
+      "`reachesOne_of_collatz` lifts reachability of `collatz m` back to reachability of `m`."
+    ],
+    "open": [
+      "The universal Collatz conjecture is documented but not proved as a theorem here.",
+      "The Tao and Krasikov-Lagarias partial results are recorded as context comments, not formalized results."
+    ],
+    "goal": "Use the small zero-axiom API as a foundation for later formal Collatz-cycle and reachability work."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-28T06:54:32-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-1135-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "number-theory",
+    "dynamical-systems",
+    "collatz",
+    "erdos-problems",
+    "open-problem"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-113",
+    "erdos-1135"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T14:26:43.165Z",
+  "lastUpdate": "2026-03-28T14:26:43.173Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1135Problem.lean",
+      "filename": "Erdos1135Problem.lean",
+      "lineCount": 98,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1135Problem.lean"
+    }
+  ]
+}

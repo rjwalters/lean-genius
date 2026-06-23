@@ -1,0 +1,74 @@
+[
+  {
+    "id": "def-sumfree-erdos",
+    "proofId": "erdos-876",
+    "range": { "startLine": 49, "endLine": 59 },
+    "type": "definition",
+    "title": "Sum-Free Set (Erdős)",
+    "content": "No element a ∈ A is a sum b₁ + ... + bᵣ of distinct smaller elements from A. Stronger than classical x + y ≠ z.",
+    "significance": "major"
+  },
+  {
+    "id": "def-gap",
+    "proofId": "erdos-876",
+    "range": { "startLine": 92, "endLine": 95 },
+    "type": "definition",
+    "title": "Gap Sequence",
+    "content": "gap(n) = aₙ₊₁ - aₙ. The central quantity to minimize.",
+    "significance": "major"
+  },
+  {
+    "id": "conj-main",
+    "proofId": "erdos-876",
+    "range": { "startLine": 117, "endLine": 124 },
+    "type": "conjecture",
+    "title": "Main Question (Open)",
+    "content": "Does there exist an infinite sum-free set with aₙ₊₁ - aₙ < n for all n ≥ 1?",
+    "significance": "major"
+  },
+  {
+    "id": "thm-graham",
+    "proofId": "erdos-876",
+    "range": { "startLine": 126, "endLine": 136 },
+    "type": "theorem",
+    "title": "Graham's Result",
+    "content": "There exists sum-free A with gaps < n^{1+ε} for any ε > 0. Best known upper bound on gaps.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-density-zero",
+    "proofId": "erdos-876",
+    "range": { "startLine": 142, "endLine": 150 },
+    "type": "theorem",
+    "title": "Density Zero (Erdős 1962)",
+    "content": "Sum-free sets have asymptotic density zero.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-luczak-schoen",
+    "proofId": "erdos-876",
+    "range": { "startLine": 152, "endLine": 171 },
+    "type": "theorem",
+    "title": "Łuczak-Schoen (2000)",
+    "content": "|A ∩ [1,N]| = Θ((N log N)^{1/2}). Tight counting bounds.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-sullivan",
+    "proofId": "erdos-876",
+    "range": { "startLine": 214, "endLine": 225 },
+    "type": "theorem",
+    "title": "Sullivan's Bound",
+    "content": "Σ_{n∈A} 1/n < 4 for any sum-free A. Conjectured maximum is slightly > 2.",
+    "significance": "major"
+  },
+  {
+    "id": "summary",
+    "proofId": "erdos-876",
+    "range": { "startLine": 270, "endLine": 307 },
+    "type": "summary",
+    "title": "Problem Summary",
+    "content": "PARTIALLY SOLVED: Gaps < n^{1+o(1)} achievable (Graham). Whether gaps < n possible is OPEN. Density and counting well-understood.",
+    "significance": "major"
+  }
+]

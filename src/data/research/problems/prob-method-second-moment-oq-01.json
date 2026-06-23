@@ -1,0 +1,103 @@
+{
+  "slug": "prob-method-second-moment-oq-01",
+  "title": "Can the quantitative Paley-Zygmund inequality (with threshold parameter $\\the...",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For a nonnegative rational-valued function on a nonempty finite set and 0 <= theta < 1, prove the quantitative Paley-Zygmund lower bound in counting and probability form.",
+    "plain": "Strengthen the second moment method with a threshold parameter: many points must exceed a fixed fraction of the mean when the second moment is controlled.",
+    "whyMatters": [
+      "Paley-Zygmund is a standard quantitative upgrade of the second moment method.",
+      "The threshold form is useful in probabilistic combinatorics because it lower-bounds not just existence but prevalence.",
+      "The finite rational proof gives a concrete, Lean-checkable version of the common textbook inequality."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "A finite-sum Cauchy-Schwarz lemma is proved for rational-valued functions on a Finset.",
+      "The counting-form quantitative Paley-Zygmund inequality is proved for nonnegative f and 0 <= theta < 1 (Lean: paley_zygmund_quantitative).",
+      "A probability-form corollary divides by the second moment when the squared-sum term is positive (Lean: paley_zygmund_probability).",
+      "The theta = 0 specialization recovers the positive-support lower bound used by the qualitative second moment method (Lean: paley_zygmund_at_zero)."
+    ],
+    "open": [],
+    "goal": "Expose the verified finite quantitative Paley-Zygmund inequality and its second-moment-method corollaries."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-27T16:35:00-07:00",
+    "iteration": 1,
+    "focus": "Completed (researcher-7 stale-pool cleanup 2026-04-27). Both Lean files sorry-free with 0 axioms (parent: 4 thms; OQ01: 3 thms). Both gallery entries have status: verified.",
+    "blockers": [],
+    "nextAction": "Closed.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: ProbMethodSecondMomentOQ01.lean (3 theorems, 0 sorries, 0 axioms, 147 lines). Gallery entry created with meta.json, annotations, index.ts.",
+    "builtItems": [
+      "Created ProbMethodSecondMomentOQ01.lean (147 lines): quantitative Paley-Zygmund inequality",
+      "Proved paley_zygmund_quantitative: counting form with threshold θ",
+      "Proved paley_zygmund_probability: probability form as corollary",
+      "Proved paley_zygmund_at_zero: θ=0 specialization",
+      "Gallery entry: src/data/proofs/prob-method-second-moment-oq-01/ with meta.json, index.ts, annotations.json"
+    ],
+    "insights": [
+      "The quantitative Paley-Zygmund inequality with threshold θ follows from Cauchy-Schwarz on the above-threshold subset plus a sum decomposition argument",
+      "The proof uses sq_sum_le (Cauchy-Schwarz for finite sums), Finset.sum_filter_add_sum_filter_not, and Finset.sum_le_sum for the below-threshold bound",
+      "At θ=0, the quantitative PZ gives (∑f)² ≤ |{f>0}| · ∑f², strictly stronger than the qualitative P[X>0]>0"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "probabilistic-method",
+    "combinatorics",
+    "analysis",
+    "probability",
+    "seeker-selected",
+    "second-moment-method",
+    "paley-zygmund"
+  ],
+  "relatedProofs": [
+    "prob-method-second-moment",
+    "prob-method-second-moment-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T01:04:30.838Z",
+  "lastUpdate": "2026-04-27T23:33:52.641261Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/ProbMethodSecondMoment.lean",
+      "filename": "ProbMethodSecondMoment.lean",
+      "lineCount": 227,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProbMethodSecondMoment.lean"
+    },
+    {
+      "path": "Proofs/ProbMethodSecondMomentOQ01.lean",
+      "filename": "ProbMethodSecondMomentOQ01.lean",
+      "lineCount": 148,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProbMethodSecondMomentOQ01.lean"
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "id": "erdos-124-complete-sequences-oq-02",
+  "title": "Erdős 124 at the boundary: ∑ 1/(dᵢ−1) = 1 is exactly an Egyptian fraction",
+  "slug": "erdos-124-complete-sequences-oq-02",
+  "description": "A follow-up to the AI-solved Erdős 124 entry, answering OQ-02: what happens exactly at the boundary ∑ 1/(dᵢ−1) = 1 of the reciprocal condition? Substituting eᵢ = dᵢ − 1 shows the boundary configurations are precisely the Egyptian-fraction (unit-fraction) decompositions of 1. From this we prove: (1) the bridge reciSum d = egyptSum (d.map (·−1)); (2) the Sylvester splitting 1/e = 1/(e+1) + 1/(e(e+1)) and an explicit family of boundary configurations of every length k+1, hence boundary configs exist with any number of bases; (3) base-2 rigidity — any boundary configuration using d = 2 is the singleton [2] (plain binary); plus concrete witnesses [2], [3,3], [3,4,7], [3,4,8,43]. All elementary, 0 axioms, 0 sorries; the parent's deep ≥ 1 completeness theorem is not reproved.",
+  "meta": {
+    "author": "Lean formalization original (builds on the Burr–Erdős–Graham–Li / Aristotle Erdős 124 entry)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos124CompleteSequencesOQ02.lean",
+    "tags": [
+      "number-theory",
+      "combinatorics",
+      "erdos",
+      "complete-sequences",
+      "egyptian-fractions",
+      "unit-fractions",
+      "sylvester-sequence"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "List.sum / List.map",
+        "description": "Underlying definition of the unit-fraction sum egyptSum as a list-map-sum; cons/nil computation rules drive every induction",
+        "module": "Mathlib (Init.Data.List / Mathlib.Algebra.BigOperators)"
+      },
+      {
+        "theorem": "field_simp",
+        "description": "Clears denominators to verify the Sylvester splitting identity 1/(e+1) + 1/(e(e+1)) = 1/e for e ≥ 1",
+        "module": "Mathlib.Tactic.FieldSimp"
+      },
+      {
+        "theorem": "Nat.cast_sub",
+        "description": "((x − 1 : ℕ) : ℚ) = (x : ℚ) − 1 for x ≥ 1, the cast making the eᵢ = dᵢ − 1 bridge typecheck",
+        "module": "Mathlib.Data.Nat.Cast.Order.Basic"
+      },
+      {
+        "theorem": "List.cons_eq_cons / List.mem_cons",
+        "description": "Destructuring list equalities and memberships used in the base-2 rigidity argument",
+        "module": "Mathlib (Init.Data.List.Lemmas)"
+      }
+    ],
+    "originalContributions": [
+      "reciSum_eq_egyptSum: the bridge identity reciSum d = egyptSum (d.map (·−1)), establishing that the Erdős-124 boundary face ∑ 1/(dᵢ−1) = 1 is exactly an Egyptian-fraction decomposition ∑ 1/eᵢ = 1 with eᵢ = dᵢ − 1. This reframing is the structural answer to OQ-02: the 'technique at the boundary' is the arithmetic of Egyptian fractions, not new completeness machinery.",
+      "egyptSum_split + sylvester / sylvester_egyptSum / sylvester_length: the Sylvester splitting identity 1/e = 1/(e+1) + 1/(e(e+1)) and an explicit recursive construction producing, for every k, an Egyptian decomposition of 1 with exactly k+1 unit fractions (and ≥ 1 denominators).",
+      "exists_boundary_config: in base language, for every k ≥ 1 there is a list of k bases, each ≥ 2, lying exactly on the boundary reciSum = 1 — boundary configurations of Erdős 124 exist with an arbitrary number of bases.",
+      "egypt_one_forces_singleton / base_two_forces_singleton: the rigidity at the bottom — any boundary configuration that uses the base d = 2 (equivalently the unit fraction 1/1) must be the singleton [2], i.e. plain binary representation; no other base fits in the unit budget.",
+      "Concrete boundary witnesses [2], [3,3], [3,4,7], [3,4,8,43] (the last from Sylvester's sequence 2,3,7,43)."
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries, no native_decide (no Lean.ofReduceBool). Depends only on the foundational axioms propext, Classical.choice, Quot.sound via standard Mathlib lemmas. The deep ≥ 1 completeness theorem of Erdős 124 is the parent entry's contribution and is not reproved here.",
+    "lineCount": 316,
+    "theoremCount": 15,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #124 (the weak Burr–Erdős–Graham–Li version) asks whether bases d₁,…,d_k ≥ 2 with ∑ 1/(dᵢ−1) ≥ 1 make every natural number a sum of numbers each having only 0/1 digits in its base. It was solved and formally verified by Harmonic's AI 'Aristotle' in November 2025 via Brown's criterion (see the parent entry). The reciprocal condition is a closed half-line ∑ 1/(dᵢ−1) ≥ 1, and its extreme face is equality. This follow-up studies that boundary.",
+    "problemStatement": "**OQ-02:** what techniques are needed at the exact boundary ∑ 1/(dᵢ−1) = 1?\n\n**Answer:** none beyond the parent theorem — the boundary is contained in the closed region the parent already covers. The genuinely new content is structural: writing eᵢ = dᵢ − 1 ≥ 1, the boundary condition becomes\n$$\\sum 1/e_i = 1,$$\nso the Erdős-124 boundary configurations are *exactly the Egyptian-fraction decompositions of 1*. The relevant 'technique' is therefore the arithmetic of unit fractions / the Sylvester splitting.",
+    "text": "The boundary ∑ 1/(dᵢ−1) = 1 of Erdős 124 is exactly an Egyptian-fraction decomposition of 1 (set eᵢ = dᵢ − 1). Boundary configurations exist with any number of bases (Sylvester splitting), and any boundary configuration containing the base d = 2 is the singleton [2] (binary).",
+    "proofStrategy": "Work with egyptSum e = ∑ 1/eᵢ and reciSum d = ∑ 1/(dᵢ−1) as list-map-sums over ℚ.\n1. reciSum_eq_egyptSum: list induction; the cons step needs ((a−1:ℕ):ℚ) = (a:ℚ)−1 (Nat.cast_sub, a ≥ 1).\n2. egyptSum_split: field_simp clears denominators in 1/(e+1)+1/(e(e+1)) = 1/e for e ≥ 1.\n3. sylvester k: recursively split the head unit fraction (e ↦ e+1, e(e+1)); induction proves the sum stays 1, length is k+1, and denominators stay ≥ 1.\n4. exists_boundary_config: map the Sylvester denominators by (+1) to get k bases ≥ 2 with reciSum = 1.\n5. egypt_one_forces_singleton: if the unit 1 occurs, its term is 1/1 = 1, so egyptSum ≥ 1 (egyptSum_ge_one_of_mem_one) with all other terms positive forces the rest empty; base_two_forces_singleton transports this through the bridge.",
+    "keyInsights": [
+      "**The boundary is Egyptian fractions.** The single substitution eᵢ = dᵢ − 1 turns the opaque reciprocal-sum boundary ∑ 1/(dᵢ−1) = 1 into ∑ 1/eᵢ = 1, a classical unit-fraction decomposition of 1. This is the whole point: the 'hard technique at the boundary' is just the arithmetic of Egyptian fractions.",
+      "**Boundary configs exist for every k.** The Sylvester splitting 1/e = 1/(e+1) + 1/(e(e+1)) lets one trade a unit fraction for two, so a boundary configuration of length k can be grown to length k+1; the parameter k (number of bases) is completely unconstrained.",
+      "**Binary is rigid.** The base d = 2 contributes the full unit fraction 1/1 = 1, leaving zero budget for any other base — so the only boundary configuration using d = 2 is the singleton [2], which is ordinary base-2 representation. This isolates exactly when the boundary degenerates.",
+      "**No new completeness machinery is needed.** Equality is a face of the closed condition ∑ ≥ 1 the parent already proves complete, so the boundary inherits completeness for free; what the boundary adds is combinatorial structure, not a harder analytic theorem."
+    ],
+    "prerequisites": [
+      "Egyptian / unit fractions and decompositions of 1",
+      "The Sylvester sequence and the splitting identity 1/n = 1/(n+1) + 1/(n(n+1))",
+      "List induction and rational arithmetic in Lean (field_simp, Nat.cast_sub)",
+      "Erdős Problem 124 and Brown's criterion for complete sequences (parent entry)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Egyptian and reciprocal sums",
+      "startLine": 60,
+      "endLine": 110,
+      "summary": "egyptSum (∑ 1/eᵢ) and reciSum (∑ 1/(dᵢ−1)) as list-map-sums over ℚ, with cons/nil simp rules and the bridge reciSum_eq_egyptSum showing the Erdős-124 reciprocal sum is an Egyptian-fraction sum under eᵢ = dᵢ − 1.",
+      "mathContext": "Reframing the boundary face ∑ 1/(dᵢ−1) = 1 as a unit-fraction decomposition of 1."
+    },
+    {
+      "id": "sylvester",
+      "title": "Sylvester splitting and boundary configurations of every size",
+      "startLine": 111,
+      "endLine": 195,
+      "summary": "egyptSum_split (1/e = 1/(e+1) + 1/(e(e+1))) and the explicit construction sylvester k, with sylvester_egyptSum, sylvester_length and sylvester_pos, culminating in exists_boundary_config: for every k ≥ 1 a list of k bases ≥ 2 with reciSum = 1.",
+      "mathContext": "The number of bases at the boundary is unconstrained: Sylvester splitting produces decompositions of 1 of every length."
+    },
+    {
+      "id": "rigidity",
+      "title": "Base-2 rigidity",
+      "startLine": 196,
+      "endLine": 290,
+      "summary": "egyptSum_ge_one_of_mem_one, egypt_one_forces_singleton, and base_two_forces_singleton: the unit fraction 1/1 saturates the budget, so any boundary configuration containing the base d = 2 is exactly [2] (plain binary).",
+      "mathContext": "The boundary degenerates to ordinary binary representation precisely when the base 2 is used."
+    },
+    {
+      "id": "witnesses",
+      "title": "Concrete boundary witnesses",
+      "startLine": 291,
+      "endLine": 316,
+      "summary": "reciSum [2] = reciSum [3,3] = reciSum [3,4,7] = reciSum [3,4,8,43] = 1, the last realizing Sylvester's sequence 2,3,7,43, plus a sanity check of the recursion sylvester 3 = [4,12,6,2].",
+      "mathContext": "Explicit Egyptian decompositions of 1 in base language."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Burr, Stefan A.; Erdős, Paul; Graham, Ronald L.; Li, Wen-Ching Winnie",
+      "title": "Complete sequences of sets of integer powers",
+      "year": "1996",
+      "note": "Acta Arithmetica 77.2 — the origin of Problem 124"
+    },
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "note": "Background on complete sequences and the reciprocal-sum condition"
+    },
+    {
+      "authors": "Graham, Ronald L.",
+      "title": "On finite sums of unit fractions",
+      "year": "1964",
+      "note": "Proc. London Math. Soc. — Egyptian-fraction decompositions, the structure underlying the boundary"
+    }
+  ],
+  "crossReferences": [
+    {
+      "id": "erdos-124-complete-sequences",
+      "reason": "Direct parent: the AI-solved weak Erdős 124 entry whose reciprocal condition ∑ 1/(dᵢ−1) ≥ 1 this file analyzes at equality"
+    }
+  ],
+  "conclusion": {
+    "summary": "The exact boundary ∑ 1/(dᵢ−1) = 1 of Erdős 124 is shown to be precisely an Egyptian-fraction decomposition of 1 (eᵢ = dᵢ − 1), via the bridge reciSum_eq_egyptSum. The Sylvester splitting identity yields an explicit family of boundary configurations of every length (sylvester / exists_boundary_config), and the unit fraction 1/1 saturates the budget so that any boundary configuration using the base d = 2 is the singleton [2] (base_two_forces_singleton). 15 theorems, 3 definitions, 0 axioms, 0 sorries.",
+    "implications": "Gives a clean structural answer to OQ-02: the boundary needs no new completeness machinery (it is a face of the parent's closed condition), but it carries the full combinatorial richness of Egyptian fractions — arbitrarily many bases, with binary as the unique degenerate single-base case.",
+    "openQuestions": [
+      "Which boundary configurations (Egyptian decompositions of 1) give the strong, gcd-restricted version of Erdős 124, where the digit-1 power is excluded?",
+      "Among length-k boundary configurations, what is the minimal largest base d_max(k), and how does it compare with the doubly-exponential growth of the Sylvester sequence?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "BigOperators"
+    ],
+    "namespace": "Erdos124OQ02",
+    "lineCount": 316,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos124CompleteSequencesOQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

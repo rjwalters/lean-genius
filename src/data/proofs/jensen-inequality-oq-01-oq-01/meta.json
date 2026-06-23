@@ -1,0 +1,103 @@
+{
+  "id": "jensen-inequality-oq-01-oq-01",
+  "title": "Young's Inequality and its Equality Case, from Weighted AM–GM",
+  "slug": "jensen-inequality-oq-01-oq-01",
+  "description": "Supplies the equality case of Young's inequality, which Mathlib's library leaves open: for Hölder-conjugate exponents p, q (so 1/p + 1/q = 1) and nonnegative reals a, b, the bound a·b ≤ aᵖ/p + bᵍ/q holds with equality if and only if aᵖ = bᵍ. Young's inequality is the two-term weighted arithmetic–geometric mean inequality with weights 1/p, 1/q applied to the data aᵖ, bᵍ — the weighted geometric mean (aᵖ)^{1/p}·(bᵍ)^{1/q} collapses to a·b — so both the inequality and its equality case descend from the parent entry's weighted AM–GM equality characterization.",
+  "meta": {
+    "author": "Lean Genius (Young equality case via AM–GM bridge); W. H. Young (1912)",
+    "date": "2026-06-22",
+    "status": "verified",
+    "proofRepoPath": "Proofs/JensenInequalityOQ01OQ01.lean",
+    "tags": [
+      "analysis",
+      "convexity",
+      "young-inequality",
+      "am-gm-inequality",
+      "holder-conjugate",
+      "inequalities",
+      "equality-case",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "dateAdded": "2026-06-22",
+    "lineCount": 89,
+    "originalContributions": [
+      "young_eq_iff: the EQUALITY CASE of Young's inequality, absent from Mathlib — a·b = aᵖ/p + bᵍ/q ↔ aᵖ = bᵍ — obtained by applying the two-variable weighted AM–GM equality case with weights 1/p, 1/q and data aᵖ, bᵍ, using (aᵖ)^{1/p} = a (Real.rpow_mul with p·p⁻¹ = 1)",
+      "amgm_two_weighted_eq_iff: the two-variable weighted AM–GM equality case x^{wₓ}·y^{w_y} = wₓx + w_y y ↔ x = y, specialized from the parent's weighted_amgm_eq_iff over a two-element (Fin 2) index set",
+      "young_lt_of_ne: the strict form of Young's inequality when aᵖ ≠ bᵍ, as lt_of_le_of_ne against the equality case",
+      "young_le: Young's inequality itself, recorded as the companion re-export of Real.young_inequality_of_nonneg"
+    ],
+    "assumptions": "None. Fully machine-checked: 0 axioms, 0 sorries, no native_decide. Imports the parent file Proofs/JensenInequalityOQ01.lean to reuse weighted_amgm_eq_iff, plus Mathlib's Hölder-conjugate (Real.HolderConjugate) and Young-inequality machinery.",
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "jensen-inequality-oq-01",
+      "relationship": "extends",
+      "description": "The parent proves the sharp equality case of weighted AM–GM (geometric mean = arithmetic mean iff all data equal). This entry specializes it to two terms with weights 1/p, 1/q and data aᵖ, bᵍ, recovering Young's inequality and — the new content — its equality case aᵖ = bᵍ."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Young's inequality (W. H. Young, 1912) — a·b ≤ aᵖ/p + bᵍ/q for Hölder-conjugate exponents — is the pointwise engine behind Hölder's inequality and the duality of Lᵖ spaces. Its equality case, a·b = aᵖ/p + bᵍ/q exactly when aᵖ = bᵍ, is precisely what identifies the extremizers in Hölder's inequality. Mathlib formalizes Young's inequality (Real.young_inequality_of_nonneg) but not its equality case; this entry adds it by recognizing Young's inequality as a two-term instance of weighted AM–GM and inheriting the equality characterization from the parent.",
+    "problemStatement": "Mathlib provides Young's inequality a·b ≤ aᵖ/p + bᵍ/q for Hölder-conjugate p, q and nonnegative a, b, but not the equality case. Prove that equality holds if and only if aᵖ = bᵍ.",
+    "proofStrategy": "Young's inequality is weighted AM–GM in disguise. With weights wₓ = 1/p, w_y = 1/q (positive and summing to 1 by Hölder conjugacy) and data x = aᵖ, y = bᵍ, the two-variable weighted geometric mean x^{wₓ}·y^{w_y} = (aᵖ)^{1/p}·(bᵍ)^{1/q} equals a·b (since (aᵖ)^{1/p} = a^{p·p⁻¹} = a^1 = a by Real.rpow_mul and p·p⁻¹ = 1), and the weighted arithmetic mean wₓx + w_y y = aᵖ/p + bᵍ/q. The two-variable weighted AM–GM equality case amgm_two_weighted_eq_iff — itself the parent's weighted_amgm_eq_iff specialized to a Fin 2 index set — then gives equality iff x = y, i.e. aᵖ = bᵍ. The strict form follows as lt_of_le_of_ne.",
+    "keyInsights": [
+      "Young's inequality is not a separate phenomenon from AM–GM: it is exactly the two-term weighted AM–GM with weights 1/p, 1/q, so its equality case is forced by the AM–GM equality case rather than requiring a new argument.",
+      "The exponent bookkeeping is the whole trick: choosing data aᵖ, bᵍ makes the weighted geometric mean (aᵖ)^{1/p}·(bᵍ)^{1/q} telescope to a·b because raising to the conjugate-reciprocal power inverts the p-th power, (aᵖ)^{1/p} = a^{p·p⁻¹} = a.",
+      "Hölder conjugacy 1/p + 1/q = 1 is exactly the 'weights sum to 1' hypothesis of weighted AM–GM, so the two notions of 'conjugate exponents' and 'probability weights' coincide here.",
+      "Reducing a two-variable inequality to the general weighted statement over a Fin 2 index set (via Fin.prod_univ_two / Fin.sum_univ_two) keeps the equality case a one-line specialization rather than a fresh convexity computation.",
+      "The equality case is the useful part downstream: it pins the extremizers of Hölder's inequality (equality iff |f|ᵖ and |g|ᵍ are proportional), which the bare inequality cannot."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Overview",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Frames Young's inequality as two-term weighted AM–GM, notes Mathlib has the inequality but not the equality case, and lists the four results.",
+      "mathContext": "Young: $ab \\le a^p/p + b^q/q$ for $1/p+1/q=1$, $p,q>1$. With weights $1/p, 1/q$ and data $a^p, b^q$ this is weighted AM–GM; the geometric mean $(a^p)^{1/p}(b^q)^{1/q}=ab$."
+    },
+    {
+      "id": "amgm-two",
+      "title": "Two-variable weighted AM–GM equality case",
+      "startLine": 39,
+      "endLine": 65,
+      "summary": "amgm_two_weighted_eq_iff specializes the parent's weighted_amgm_eq_iff to a Fin 2 index set: x^{wₓ}y^{w_y} = wₓx + w_y y ↔ x = y.",
+      "mathContext": "For $w_x,w_y>0$ with $w_x+w_y=1$ and $x,y\\ge0$: $x^{w_x}y^{w_y}=w_xx+w_yy\\iff x=y$. Proved by evaluating the general statement on $\\mathrm{Fin}\\,2$ with $w=![w_x,w_y]$, $z=![x,y]$."
+    },
+    {
+      "id": "young",
+      "title": "Young's inequality and its equality case",
+      "startLine": 66,
+      "endLine": 89,
+      "summary": "young_le re-exports the inequality; young_eq_iff proves equality ↔ aᵖ = bᵍ by the two-variable AM–GM equality case with weights 1/p, 1/q; young_lt_of_ne gives the strict form.",
+      "mathContext": "$ab=a^p/p+b^q/q\\iff a^p=b^q$. Apply amgm_two_weighted_eq_iff with $w_x=p^{-1}$, $w_y=q^{-1}$, $x=a^p$, $y=b^q$; $(a^p)^{p^{-1}}=a$ via $a^{p\\cdot p^{-1}}=a^1$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This fully verified 89-line file (0 sorries, 0 axioms, no native_decide) adds the equality case of Young's inequality — a·b = aᵖ/p + bᵍ/q ↔ aᵖ = bᵍ — which Mathlib's library does not provide. It is obtained by recognizing Young's inequality as the two-term weighted AM–GM inequality (weights 1/p, 1/q on data aᵖ, bᵍ) and inheriting the equality characterization from the parent entry's weighted_amgm_eq_iff. The strict form young_lt_of_ne and a re-export young_le of the inequality itself round out the entry.",
+    "implications": "The equality case is what makes Young's inequality usable as a rigidity tool: it identifies exactly when the pointwise bound underlying Hölder's inequality is tight, hence the extremizers of Hölder (proportional |f|ᵖ and |g|ᵍ). Recording Young as a corollary of weighted AM–GM also shows the uniform mechanism — apply the AM–GM equality case in the right coordinates — that yields the equality cases of the whole Hölder–Minkowski family.",
+    "openQuestions": [
+      "Lift young_eq_iff to the equality case of Hölder's inequality for finite sums and for Lᵖ, characterizing equality by proportionality of |f|ᵖ and |g|ᵍ.",
+      "State the equality case of Young's inequality for products (the integral / convolution form) using the same AM–GM reduction.",
+      "Provide the n-fold generalized Young / weighted AM–GM equality case ∏ aᵢ^{wᵢ} = ∑ wᵢ aᵢ ↔ all aᵢ equal directly from weighted_amgm_eq_iff with general index set."
+    ]
+  },
+  "leanFile": {
+    "lineCount": 89,
+    "axiomCount": 0,
+    "path": "Proofs/JensenInequalityOQ01OQ01.lean",
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 4,
+    "imports": [
+      "Mathlib",
+      "Proofs.JensenInequalityOQ01"
+    ]
+  },
+  "sorries": 0
+}

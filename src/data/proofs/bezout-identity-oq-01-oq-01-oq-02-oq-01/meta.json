@@ -1,0 +1,223 @@
+{
+  "id": "bezout-identity-oq-01-oq-01-oq-02-oq-01",
+  "title": "Extended Binary GCD: Tracking Bézout Coefficients Through Stein's Algorithm",
+  "slug": "bezout-identity-oq-01-oq-01-oq-02-oq-01",
+  "description": "Answers the open question posed by the parent entry: can Stein's binary GCD be extended to compute Bézout coefficients directly, rather than borrowing them from the extended Euclidean algorithm? Defines a constructive extended binary GCD ebGcd that threads a Bézout pair (x, y) through every halving and subtraction step, and proves a * x + b * y = gcd a b with witnesses produced by the binary algorithm itself. Lifts to ℤ by folding the input signs onto the coefficients. 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Binary_GCD_algorithm#Extension_to_signed_integers_and_other_rings",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BezoutIdentityOQ01OQ01OQ02OQ01.lean",
+    "tags": [
+      "number-theory",
+      "algorithm",
+      "gcd",
+      "bezout",
+      "extended-binary-gcd",
+      "constructive",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 272,
+    "assumptions": "",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "ebGcd: a constructive extended binary GCD over ℕ returning (g, x, y), threading Bézout coefficients through each step of Stein's algorithm",
+      "The subtract-don't-rehalve design: replacing the both-odd step gcd a b = gcd a ((b-a)/2) by gcd a b = gcd a (b-a), so no coefficient is ever halved in a subtraction branch (the classic extended-binary-GCD pitfall)",
+      "ebGcd_fst: the first component equals Nat.gcd a b (mirrors the verified grandparent binaryGcd_eq_gcd)",
+      "ebGcd_bezout / ebGcd_bezout_gcd: the threaded coefficients are a genuine Bézout witness a*x + b*y = gcd a b, proved branch-by-branch by linear_combination of the inductive hypothesis",
+      "intExtBinaryGcd: signed extension folding the input signs onto the coefficients via a.sign * a.natAbs = a",
+      "intExtBinaryGcd_fst: agrees with the parent intBinaryGcd",
+      "intExtBinaryGcd_bezout: the signed Bézout identity a*x + b*y = g over ℤ"
+    ],
+    "prerequisites": [
+      "BezoutIdentityOQ01OQ01OQ02 (Proofs/BezoutIdentityOQ01OQ01OQ02.lean): intBinaryGcd over ℤ",
+      "BezoutIdentityOQ01OQ01 (Proofs/BezoutIdentityOQ01OQ01.lean): binaryGcd for ℕ and binaryGcd_eq_gcd (the recursion-shape template for ebGcd_fst)",
+      "Mathlib Nat.gcd_rec, Nat.gcd_mul_left, Nat.Coprime.gcd_mul_left_cancel",
+      "Mathlib Int.sign_mul_self_eq_natAbs (sign folding)",
+      "linear_combination and omega tactics"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.gcd_rec",
+        "description": "gcd m n = gcd (n % m) m, the Euclidean recurrence used in the subtraction branches",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Nat.gcd_mul_left",
+        "description": "gcd (k*m) (k*n) = k * gcd m n, used for the both-even branch",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Nat.Coprime.gcd_mul_left_cancel",
+        "description": "When k is coprime to n, gcd (k*m) n = gcd m n, used for the single-even branches",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Int.sign_mul_self_eq_natAbs",
+        "description": "sign a * a = ↑a.natAbs, the identity that folds the input sign onto the Bézout coefficient",
+        "module": "Mathlib.Data.Int.Init"
+      },
+      {
+        "theorem": "Nat.add_mod_right",
+        "description": "(n + k) % k = n % k, used to prove (b - a) % a = b % a in the subtraction branches",
+        "module": "Mathlib.Data.Nat.Defs"
+      }
+    ],
+    "theoremCount": 5,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "**Stein's binary GCD** (1967) computes $\\gcd(a,b)$ using only parity tests, right-shifts, and subtraction — no division. The **extended** Euclidean algorithm additionally returns Bézout coefficients $u, v$ with $ua + vb = \\gcd(a,b)$, by maintaining a $2\\times 2$ unimodular transform alongside the quotient-remainder recurrence. Doing the same for *Stein's* algorithm is subtler: the both-odd step replaces a pair by their difference, and the halving steps divide an even argument by two — and the naïve coefficient recurrence wants to halve a *coefficient*, which need not be even. Knuth sketches an extended binary GCD in TAOCP Vol. 2 (Ex. 4.5.2.39); the parent entry **OQ-01-OQ-01-OQ-02** left this as its headline open question, having borrowed its Bézout witnesses from Mathlib's extended Euclidean (`Int.gcdA`, `Int.gcdB`) rather than from the binary algorithm itself. This file answers that question constructively and proves the answer correct.",
+    "problemStatement": "Build an **extended binary GCD** `ebGcd a b = (g, x, y)` whose Bézout coefficients $x, y$ are produced *by Stein's iteration*, and prove:\n\n1. **gcd correctness**: $g = \\gcd(a, b)$ (`ebGcd_fst`).\n2. **Bézout identity**: $(a : \\mathbb{Z})\\,x + (b : \\mathbb{Z})\\,y = g$ (`ebGcd_bezout`, `ebGcd_bezout_gcd`).\n3. **integer extension**: a signed version `intExtBinaryGcd` agreeing with the parent `intBinaryGcd` (`intExtBinaryGcd_fst`) and satisfying $a\\,x + b\\,y = g$ over $\\mathbb{Z}$ (`intExtBinaryGcd_bezout`).\n\nAll with 0 axioms and 0 sorries.",
+    "text": "A constructive extended binary GCD that threads Bézout coefficients through Stein's halving/subtraction steps, with full machine-checked correctness — answering the parent's open question.",
+    "proofStrategy": "**Subtract-don't-rehalve, so every coefficient transform is an exact integer identity.** The key design choice is to use the both-odd step $\\gcd(a,b) = \\gcd(a, b-a)$ (for $a \\le b$) instead of the classic $\\gcd(a, (b-a)/2)$. This keeps the algorithm a genuine *binary* GCD — common factors of two are still stripped by halving even arguments — but ensures no coefficient is ever halved inside a subtraction branch, which is exactly where the naïve extended-binary-GCD recurrence breaks. Halving of coefficients occurs only in the two single-even branches, and there a parity case-split makes the carried coefficient even *before* the halve (when it is odd, adding the odd other-argument restores even parity). \n\n**gcd component** (`ebGcd_fst`): structural induction following the definition, mirroring the verified grandparent `binaryGcd_eq_gcd` (identical recursion shape). The both-even branch uses `Nat.gcd_mul_left`, the single-even branches use coprimality-cancellation `Nat.Coprime.gcd_mul_left_cancel`, and the subtraction branches use `Nat.gcd_rec` together with $(b - a) \\bmod a = b \\bmod a$ (proved from `Nat.add_mod_right`). \n\n**Bézout identity** (`ebGcd_bezout`): the same induction; each of the nine leaves closes by `linear_combination` of the inductive hypothesis with the relevant cast/parity facts, every one of which is `omega`-provable (omega handles division and modulo by the literal 2 over both ℕ and ℤ, including the ℕ→ℤ casts). The single-even branches additionally split on the carried coefficient's parity. \n\n**integer extension**: `intExtBinaryGcd a b := (↑g, a.sign · x, b.sign · y)` with $(g,x,y) = \\text{ebGcd}\\,|a|\\,|b|$. The gcd component agrees with the parent by `ebGcd_fst` + `binaryGcd_eq_gcd`; the Bézout identity uses `Int.sign_mul_self_eq_natAbs` ($a \\cdot \\operatorname{sign} a = |a|$) to fold the signs back, then `linear_combination` of the ℕ-level `ebGcd_bezout`.",
+    "keyInsights": [
+      "**Subtract-don't-rehalve is what makes the extension exact.** The classic Stein both-odd step $\\gcd(a,b) = \\gcd(a, (b-a)/2)$ would force the coefficient recurrence to halve a quantity that is not provably even, the standard obstruction to a clean extended binary GCD. Replacing it by $\\gcd(a,b) = \\gcd(a, b-a)$ makes every coefficient transform in the subtraction branches a plain integer identity $((x,y) \\mapsto (x-y, y))$, with no division at all. The algorithm still strips factors of two via the even-argument halving steps, so it remains a genuine binary GCD.",
+      "**Halving a coefficient is safe exactly when you first make it even.** The only divisions of *coefficients* happen in the single-even branches. There the recurrence wants $(x, y) \\mapsto (x/2, y)$, valid only when $x$ is even. When $x$ is odd, the algorithm instead uses $((x + b)/2, y - a/2)$: since $b$ is odd in that branch, $x + b$ is even, and the substitution preserves the Bézout invariant. This parity case-split is the entire subtlety of the construction — captured by a single `omega`-provable fact $x + b = 2\\big((x+b)/2\\big)$.",
+      "**The correctness proofs are a near-mechanical transcription of one verified template.** `ebGcd` has the same recursion shape as the grandparent `binaryGcd`, so `ebGcd_fst` follows `binaryGcd_eq_gcd` branch-for-branch. For the Bézout identity, each branch is a one-line `linear_combination` of the inductive hypothesis: the exact coefficients are dictated by the transform table, and every auxiliary cast/parity equation is discharged by `omega`. This is a reusable recipe for verifying *any* coefficient-threading variant of a recursive arithmetic algorithm.",
+      "**Signs are folded at the boundary, not handled in the loop.** As with the parent, the integer version reduces to `natAbs` and never reasons about signs inside the recursion. The one new ingredient is `a \\cdot \\operatorname{sign} a = |a|` (`Int.sign_mul_self_eq_natAbs`), which converts the ℕ-level identity $|a|\\,x + |b|\\,y = g$ into the signed identity $a\\,(\\operatorname{sign} a \\cdot x) + b\\,(\\operatorname{sign} b \\cdot y) = g$ in a single `linear_combination` step.",
+      "**This closes the parent's headline open question constructively.** Where `bezout_via_intBinaryGcd` *borrowed* its witnesses from Mathlib's extended Euclidean (`Int.gcdA`/`Int.gcdB`), `intExtBinaryGcd` *computes* them by Stein's iteration. The two agree on the gcd value (`intExtBinaryGcd_fst`), so this is a drop-in upgrade that makes the Bézout coefficients an output of the binary algorithm rather than an external import."
+    ],
+    "prerequisites": [
+      "Stein's binary GCD (1967) and its ℕ formalization binaryGcd (BezoutIdentityOQ01OQ01)",
+      "The parent integer extension intBinaryGcd (BezoutIdentityOQ01OQ01OQ02)",
+      "Bézout's identity and the extended Euclidean algorithm (for contrast)",
+      "Well-founded recursion with termination_by a + b",
+      "linear_combination for closing ring identities modulo hypotheses",
+      "omega for division/modulo-by-2 and ℕ→ℤ cast facts"
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header and Algorithm Description",
+      "startLine": 1,
+      "endLine": 72,
+      "summary": "Poses the open question (track Bézout coefficients through Stein's iteration), presents the subtract-don't-rehalve design and the coefficient-transform table, and records the verified (0 sorry / 0 extra axiom) status.",
+      "mathContext": "The transform table gives, for each branch, the recursive subproblem and the new coefficient pair — e.g. both-odd $a \\le b$ recurses on $(a, b-a)$ with $(x,y) \\mapsto (x-y, y)$."
+    },
+    {
+      "id": "definition-ebgcd",
+      "title": "Part I: The Extended Binary GCD (ebGcd)",
+      "startLine": 74,
+      "endLine": 115,
+      "summary": "Defines ebGcd : ℕ → ℕ → ℕ × ℤ × ℤ by well-founded recursion on a + b, threading the Bézout pair through both-even, single-even (with an inner parity split), and subtraction branches. The carried gcd r.1 is pulled out front of the inner parity if for clean projection.",
+      "mathContext": "Returns $(g, x, y)$ with $g = \\gcd(a,b)$ and $a x + b y = g$. Termination is by $a + b$, strictly decreasing in every branch (each halve or subtract shrinks the sum)."
+    },
+    {
+      "id": "gcd-correctness",
+      "title": "Part II: GCD Component is Correct (ebGcd_fst)",
+      "startLine": 117,
+      "endLine": 156,
+      "summary": "Proves (ebGcd a b).1 = Nat.gcd a b by induction following the definition: both-even via Nat.gcd_mul_left, single-even via coprimality cancellation, subtraction via Nat.gcd_rec and (b - a) % a = b % a.",
+      "mathContext": "Mirrors the verified grandparent binaryGcd_eq_gcd; the recursion shape is identical, so the proof is a branch-for-branch transcription."
+    },
+    {
+      "id": "bezout-identity",
+      "title": "Part III: Bézout Identity (ebGcd_bezout)",
+      "startLine": 158,
+      "endLine": 230,
+      "summary": "Proves (a:ℤ)*x + (b:ℤ)*y = g for the threaded coefficients, by induction with one linear_combination per branch; single-even branches split on coefficient parity. ebGcd_bezout_gcd repackages it against Nat.gcd a b.",
+      "mathContext": "Each branch is an exact integer identity dictated by the transform table; the only divisions (single-even branches) are justified by omega-provable parity facts that make the halved quantity even first."
+    },
+    {
+      "id": "integer-extension",
+      "title": "Part IV: Integer Extension (intExtBinaryGcd)",
+      "startLine": 232,
+      "endLine": 258,
+      "summary": "Defines intExtBinaryGcd a b = (↑g, a.sign * x, b.sign * y) over the natAbs reduction, proves it agrees with the parent intBinaryGcd (intExtBinaryGcd_fst) and satisfies the signed Bézout identity (intExtBinaryGcd_bezout) via Int.sign_mul_self_eq_natAbs.",
+      "mathContext": "Sign folding: $a (\\operatorname{sign} a \\cdot x) = (a \\cdot \\operatorname{sign} a) x = |a|\\,x$, turning the ℕ-level identity into the signed one with a single cast lemma."
+    },
+    {
+      "id": "computational-instances",
+      "title": "Part V: Computational Instances",
+      "startLine": 260,
+      "endLine": 272,
+      "summary": "Worked witnesses recorded as comments (e.g. ebGcd 12 8 = (4, 1, -1), so 12·1 + 8·(-1) = 4; intExtBinaryGcd (-12) 8 = (4, -1, -1)). Stated as comments rather than native_decide goals to keep the file's axiom footprint to the foundational three.",
+      "mathContext": "Each instance is a consequence of the universally-quantified theorems above; they illustrate that the coefficients are genuinely computed by the algorithm."
+    }
+  ],
+  "conclusion": {
+    "summary": "Defines a constructive extended binary GCD ebGcd that threads Bézout coefficients through Stein's halving and subtraction steps, and proves — with 0 axioms and 0 sorries — that its first component is Nat.gcd a b and that the threaded coefficients satisfy a*x + b*y = gcd a b. A signed extension intExtBinaryGcd folds the input signs onto the coefficients, agrees with the parent intBinaryGcd, and satisfies the Bézout identity over ℤ. The decisive design choice is subtract-don't-rehalve, which makes every coefficient transform an exact integer identity and confines all coefficient halving to two parity-guarded branches.",
+    "implications": "This entry closes the headline open question of its parent: the Bézout coefficients of Stein's binary GCD can be computed by the algorithm itself, not borrowed from the extended Euclidean algorithm. The proof recipe — match the recursion shape of a verified gcd lemma, then close each Bézout branch by a linear_combination of the inductive hypothesis with omega-discharged cast/parity facts — transfers to other coefficient-threading variants of recursive arithmetic algorithms (e.g. the half-GCD, continued-fraction expansions, or modular-inverse routines). The subtract-don't-rehalve insight is itself reusable: when extending a subtractive algorithm to carry linear-algebraic state, prefer the variant whose state recurrence avoids division.",
+    "openQuestions": [
+      "Can the subtract-don't-rehalve variant be tuned to keep the Bézout coefficients bounded (|x| ≤ b/2g, |y| ≤ a/2g, the reduced witnesses), matching the size guarantees of the extended Euclidean algorithm?",
+      "Does the construction extend to a *certified executable* extended binary GCD competitive with GMP's mpn_gcdext, via Lean's native compilation?",
+      "Can the same coefficient-threading discipline be carried through the half-GCD subroutine to obtain a verified quasi-linear-time extended GCD?",
+      "Does ebGcd generalize to Bézout domains with a suitable 2-adic valuation (e.g. ℤ[i]), where 'halving' becomes division by a fixed prime element?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "bezout-identity-oq-01-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "Direct parent. This entry answers the parent's open question (track Bézout coefficients through the binary algorithm) and provides intExtBinaryGcd, whose gcd value agrees with the parent's intBinaryGcd while computing the Bézout witnesses constructively rather than borrowing them from extended Euclidean."
+    },
+    {
+      "targetId": "bezout-identity-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Grandparent. ebGcd_fst mirrors the verified binaryGcd_eq_gcd (identical recursion shape), and ebGcd_bezout strengthens bezout_via_binaryGcd from an existence statement to a constructive coefficient-threading algorithm."
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "specializes-to",
+      "description": "Specializes the abstract Bézout identity to integers, with the witnesses produced by an extended binary GCD."
+    }
+  ],
+  "references": [
+    {
+      "title": "Computational problems associated with Racah algebra",
+      "author": "Josef Stein",
+      "year": "1967",
+      "venue": "Journal of Computational Physics 1, 397–405",
+      "description": "Original binary GCD algorithm."
+    },
+    {
+      "title": "The Art of Computer Programming, Volume 2: Seminumerical Algorithms",
+      "author": "Donald E. Knuth",
+      "year": "1997",
+      "venue": "Addison-Wesley, 3rd edition",
+      "description": "§4.5.2 and Exercise 4.5.2.39 sketch an extended binary GCD that tracks Bézout coefficients — the algorithmic gap this entry formalizes and proves correct."
+    },
+    {
+      "title": "A binary recursive gcd algorithm",
+      "author": "Damien Stehlé and Paul Zimmermann",
+      "year": "2004",
+      "venue": "ANTS-VI, LNCS 3076, 411–425",
+      "description": "Binary recursive (quasi-linear) GCD and its extended variant; context for the bounded-coefficient and half-GCD open questions."
+    },
+    {
+      "title": "GMP – The GNU Multiple Precision Arithmetic Library",
+      "author": "Torbjörn Granlund et al.",
+      "year": "ongoing",
+      "venue": "gmplib.org",
+      "description": "mpn_gcdext is the empirical reference for extended GCD; uses binary and half-GCD methods."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Int.GCD",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Tactic",
+      "Proofs.BezoutIdentityOQ01OQ01OQ02"
+    ],
+    "namespace": "BezoutIdentityOQ01OQ01OQ02OQ01",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 272,
+    "theoremCount": 5,
+    "definitionCount": 2,
+    "path": "Proofs/BezoutIdentityOQ01OQ01OQ02OQ01.lean"
+  },
+  "openQuestions": [
+    {
+      "id": "bezout-identity-oq-01-oq-01-oq-02-oq-01-oq-01",
+      "question": "Can the subtract-don't-rehalve extended binary GCD be tuned to return the size-reduced Bézout coefficients (|x| ≤ b/2g, |y| ≤ a/2g), matching the extended Euclidean algorithm's bounds?",
+      "significance": "medium"
+    }
+  ]
+}

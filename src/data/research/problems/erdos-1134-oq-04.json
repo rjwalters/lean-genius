@@ -1,0 +1,89 @@
+{
+  "slug": "erdos-1134-oq-04",
+  "title": "Analytic estimates for the density-zero Erdos 1134 affine set",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "Let A be the least subset of N containing 1 and closed under x->2x+1, x->3x+1, and x->6x+1. Show lowerDensity(A)=0, hence A has no positive lower density.",
+    "plain": "Erdos 1134 asks whether the recursively generated affine set has positive lower density. The formalization defines the set and its density, proves the basic closure and representation lemmas, and packages the negative answer using axiomatized Crampin-Hilton analytic estimates.",
+    "whyMatters": [
+      "Tracks the boundary between elementary generated-set reasoning and the deep analytic estimates behind the solved problem.",
+      "Keeps Klarner's related open density variant visible as a separate future target."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`A`, `InA`, `one_in_A`, and the closure lemmas define the generated affine set.",
+      "`elements_have_representation` proves every element of A is obtained by a finite composition of the three generators.",
+      "`not_positive_lower_density`, `erdos_1134_statement`, `erdos_1134_summary`, and `erdos_1134` package the negative answer from the density-zero assumption.",
+      "`OpenQuestion_A'_density` records Klarner's related variant for the set A'."
+    ],
+    "open": [
+      "The analytic heart is still axiomatized via `crampin_hilton_tau_exists`, `tau_approx`, `crampin_hilton_theorem`, and `A_has_zero_density`.",
+      "Formalizing the Crampin-Hilton/Klarner-Rado estimates would be the real next theorem-work step."
+    ],
+    "goal": "Replace the axiomatized analytic estimates with theorem-backed bounds, or isolate them behind a smaller theorem statement if full formalization is too large."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T00:13:04-07:00",
+    "iteration": 1,
+    "focus": "Eliminated 1 axiom. Remaining axioms are deep.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Eliminated elements_have_representation axiom (9→8) by induction on InA. Remaining 8 axioms are deep results (Klarner-Rado, Crampin-Hilton) or consequences that need non-trivial real analysis.",
+    "builtItems": [
+      "Proved elements_have_representation by induction on InA (base=[], step appends operation)"
+    ],
+    "insights": [
+      "elements_have_representation follows directly from InA inductive structure: base gives [], each step appends the operation to the list"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-1134-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "number-theory",
+    "density",
+    "affine-semigroups",
+    "erdos-problems",
+    "open-variants"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-113",
+    "erdos-1134"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T07:24:09.592Z",
+  "lastUpdate": "2026-03-30T07:24:09.603Z",
+  "significance": 7,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1134Problem.lean",
+      "filename": "Erdos1134Problem.lean",
+      "lineCount": 273,
+      "theoremCount": 10,
+      "axiomCount": 4,
+      "defCount": 15,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1134Problem.lean"
+    }
+  ]
+}

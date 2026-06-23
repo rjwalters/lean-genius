@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-mul-involution-helper",
+    "proofId": "wilsons-theorem-oq-02-ext-oq-01",
+    "range": { "startLine": 48, "endLine": 63 },
+    "type": "theorem",
+    "title": "mul_involution_on_sq_eq_one: The Multiplication Involution on 2-Torsion",
+    "content": "For c in the 2-torsion (c² = 1) with c ≠ 1, the map x ↦ c·x is a fixed-point-free involution on S = {x | x²=1} with constant pair product c. The four conjuncts establish: (1) c·x stays in S (mul_sq_eq_one), (2) it is an involution (c·(c·x) = c²·x = x), (3) it is fixed-point-free (c·x = x ⇒ c = 1, contradiction), and (4) each pair multiplies to c (x·(c·x) = c·x² = c). This is the CommGroup-general copy of the parent's (private) ZMod helper, supplying exactly the data prod_involution_const consumes.",
+    "mathContext": "For $c \\in S$ with $c \\neq 1$, $\\sigma(x) = c x$ is a fixed-point-free involution on $S = \\{x : x^2 = 1\\}$ satisfying $x \\cdot \\sigma(x) = c$ for all $x \\in S$.",
+    "significance": "key",
+    "relatedConcepts": ["fixed-point-free involution", "2-torsion subgroup", "constant pair product", "CommGroup"],
+    "prerequisites": ["mul_sq_eq_one", "involution definition", "Finset.filter"]
+  },
+  {
+    "id": "ann-prod-eq-one-card-ge-three",
+    "proofId": "wilsons-theorem-oq-02-ext-oq-01",
+    "range": { "startLine": 73, "endLine": 129 },
+    "type": "theorem",
+    "title": "prod_eq_one_of_two_torsion_card_ge_three: The Two-Involution Trick, Generalized",
+    "content": "If the 2-torsion S = {x | x²=1} of a finite abelian group has at least three elements, then ∏G = 1. After reducing ∏G to ∏S, pick distinct c, d ∈ S\\{1}. The involution x↦cx gives ∏S = c^(|S|/2); the involution x↦(cd)x gives ∏S = (cd)^(|S|/2) = c^(|S|/2)·d^(|S|/2). Cancelling c^(|S|/2) forces d^(|S|/2) = 1, and substituting back gives c^(|S|/2) = 1, hence ∏S = 1. This is the direct OQ-01 answer: a verbatim generalization of the parent's (ZMod n)×-specific lemma with the cardinality bound replaced by the hypothesis hcard.",
+    "mathContext": "If $|S| \\geq 3$ for $S = \\{x \\in G : x^2 = 1\\}$, then $\\prod_{x \\in G} x = 1$. Two FPF involutions yield $\\prod S = c^{|S|/2}$ and $\\prod S = (cd)^{|S|/2}$, forcing $d^{|S|/2} = c^{|S|/2} = 1$.",
+    "significance": "critical",
+    "relatedConcepts": ["two-involution trick", "prod_involution_const", "2-torsion", "cancellation"],
+    "prerequisites": ["prod_eq_prod_sq_eq_one", "prod_involution_const", "mul_involution_on_sq_eq_one", "Finset.card_le_card"]
+  },
+  {
+    "id": "ann-prod-eq-one-card-ne-two",
+    "proofId": "wilsons-theorem-oq-02-ext-oq-01",
+    "range": { "startLine": 133, "endLine": 148 },
+    "type": "theorem",
+    "title": "prod_eq_one_of_card_ne_two: Folding in the Trivial Cases",
+    "content": "If |S| ≠ 2 then ∏G = 1. Since 1 ∈ S always, |S| ≥ 1. The case |S| = 1 forces S = {1}, so ∏S = 1 directly; the case |S| ≥ 2 with |S| ≠ 2 gives |S| ≥ 3, handled by the two-involution trick. This packages the full 'non-unique-involution' branch of Miller's theorem into a single hypothesis on the 2-torsion cardinality.",
+    "mathContext": "If $|S| \\neq 2$ then $\\prod_{x \\in G} x = 1$, combining the trivial $|S| = 1$ case ($S = \\{1\\}$) with the $|S| \\geq 3$ trick.",
+    "significance": "key",
+    "relatedConcepts": ["case analysis", "2-torsion cardinality", "Finset.card_eq_one"],
+    "prerequisites": ["prod_eq_one_of_two_torsion_card_ge_three", "Finset.card_pos", "Finset.card_eq_one"]
+  },
+  {
+    "id": "ann-prod-eq-unique-involution",
+    "proofId": "wilsons-theorem-oq-02-ext-oq-01",
+    "range": { "startLine": 152, "endLine": 168 },
+    "type": "theorem",
+    "title": "prod_eq_unique_involution: The Unique-Involution Case",
+    "content": "If t is the unique element of order 2 (t ≠ 1, t² = 1, and every square root of unity is 1 or t), then ∏G = t. The hypotheses pin S = {1, t} exactly (antisymmetry of ⊆), and the product over the pair {1, t} is 1·t = t. This is the second branch of Miller's disjunction — the only way a finite abelian group's element product can fail to be the identity.",
+    "mathContext": "If $S = \\{1, t\\}$ with $t \\neq 1$ the unique involution, then $\\prod_{x \\in G} x = \\prod_{x \\in \\{1,t\\}} x = t$.",
+    "significance": "key",
+    "relatedConcepts": ["unique involution", "Finset.prod_pair", "Finset.Subset.antisymm", "2-torsion"],
+    "prerequisites": ["prod_eq_prod_sq_eq_one", "Finset.prod_pair", "Finset.Subset.antisymm"]
+  },
+  {
+    "id": "ann-miller-prod",
+    "proofId": "wilsons-theorem-oq-02-ext-oq-01",
+    "range": { "startLine": 173, "endLine": 198 },
+    "type": "theorem",
+    "title": "miller_prod: Miller's Theorem (1903)",
+    "content": "The headline result: in a finite abelian group, either ∏G = 1, or there exists a unique element t of order 2 with ∏G = t. The proof cases on whether |S| = 2. If |S| = 2, then S = {1, t}; extracting t (the non-identity element of the pair) gives the unique-involution branch via prod_eq_unique_involution. Otherwise |S| ≠ 2 and prod_eq_one_of_card_ne_two gives ∏G = 1. This is the full Miller disjunction unifying both cases.",
+    "mathContext": "$\\left(\\prod_{x} x = 1\\right) \\lor \\left(\\exists t,\\ t \\neq 1 \\land t^2 = 1 \\land (\\forall s,\\ s^2 = 1 \\to s = 1 \\lor s = t) \\land \\prod_{x} x = t\\right)$.",
+    "significance": "critical",
+    "relatedConcepts": ["Miller's theorem", "disjunction", "unique element of order 2", "Finset.card_eq_two"],
+    "prerequisites": ["prod_eq_one_of_card_ne_two", "prod_eq_unique_involution", "Finset.card_eq_two"]
+  },
+  {
+    "id": "ann-prod-ne-one-iff",
+    "proofId": "wilsons-theorem-oq-02-ext-oq-01",
+    "range": { "startLine": 204, "endLine": 214 },
+    "type": "theorem",
+    "title": "prod_ne_one_iff_unique_involution: Subsumption of the (ZMod n)× Law",
+    "content": "∏G ≠ 1 if and only if G has a unique involution. The forward direction uses miller_prod (if the product is not 1, the disjunction forces the unique-involution branch); the backward direction uses prod_eq_unique_involution (a unique involution t gives ∏G = t ≠ 1). This shows a non-identity ('-1-style') product can arise only through a unique element of order 2 — so the gallery's gaussWilson_abstract_ext is exactly the G = (ZMod n)× instance, whose unique involution is -1 precisely when the group is cyclic.",
+    "mathContext": "$\\prod_{x} x \\neq 1 \\iff \\exists t,\\ t \\neq 1 \\land t^2 = 1 \\land \\forall s,\\ s^2 = 1 \\to s = 1 \\lor s = t$.",
+    "significance": "key",
+    "relatedConcepts": ["converse characterization", "unique involution", "gaussWilson_abstract_ext", "cyclic groups"],
+    "prerequisites": ["miller_prod", "prod_eq_unique_involution"]
+  }
+]

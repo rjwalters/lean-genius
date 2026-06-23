@@ -1,0 +1,30 @@
+{
+  "id": "erdos-504-oq-01",
+  "title": "Erdős #504 OQ-01: higher-dimensional maximum-angle analogue",
+  "status": "in-progress",
+  "phase": "ACT",
+  "knowledge": {
+    "insights": [
+      "The higher-dimensional analogue of Erdős #504 (max guaranteed angle among n points in ℝ^d) is governed by the Danzer–Grünbaum theorem (1962): the max number of points in ℝ^d with all angles ≤ π/2 is exactly 2^d, realised by the hypercube vertices.",
+      "Non-obtuseness of an angle ∠abc is equivalent to ⟪a−b, c−b⟫ ≥ 0; working with the inner product keeps the argument purely algebraic and defers trigonometry to Real.arccos_le_pi_div_two.",
+      "For cube vertices a,b,c ∈ {0,1}^d, each coordinate term (a_i−b_i)(c_i−b_i) ≥ 0 because the two factors share a sign: both ≥0 when b_i=0, both ≤0 when b_i=1. Summing gives ⟪a−b,c−b⟫ ≥ 0 — the entire construction.",
+      "The construction is sharp/attained, not merely an example: indexing cube vertices by subsets of Fin d gives exactly 2^d distinct points (Fintype.card_finset)."
+    ],
+    "builtItems": [
+      "inner_edge_nonneg — 0 ≤ ⟪a−b, c−b⟫ for cube vertices (Proofs/Erdos504OQ01.lean)",
+      "angle_le_pi_div_two — every angle at a cube vertex is ≤ π/2 (Proofs/Erdos504OQ01.lean)",
+      "cubeVertices_card — the cube has exactly 2^d vertices (Proofs/Erdos504OQ01.lean)",
+      "cubeVertices_pairwise_nonobtuse — the 2^d-point non-obtuse configuration (Proofs/Erdos504OQ01.lean)",
+      "inner_eq_sum — real inner product on EuclideanSpace ℝ (Fin d) as ∑ x_i y_i"
+    ],
+    "mathlibGaps": [
+      "Mathlib has no direct 'angle ≤ π/2 ↔ inner ≥ 0' lemma; derived via EuclideanGeometry.angle/InnerProductGeometry.angle unfolding + Real.arccos_le_pi_div_two.",
+      "The deep half of Danzer–Grünbaum (2^d+1 points force an obtuse angle, via a volume/translation argument) is not in Mathlib and was not attempted."
+    ],
+    "nextSteps": [
+      "Formalise the matching upper bound: any 2^d+1 points in ℝ^d contain an obtuse angle (Danzer–Grünbaum volume argument on translated copies of conv(S) scaled by 1/2).",
+      "Quantify the largest angle actually attained by the cube configuration as a function of d, and investigate uniqueness of the extremal configuration up to affine equivalence."
+    ],
+    "progressSummary": "PROGRESS: shipped 0-axiom verified construction half of Danzer–Grünbaum (2^d cube vertices realise a non-obtuse configuration in ℝ^d), PR for erdos-504-oq-01. Upper bound remains open."
+  }
+}

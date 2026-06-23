@@ -1,0 +1,220 @@
+{
+  "id": "infinitude-primes-4k3-oq-01",
+  "title": "Infinitely Many Primes ≡ -1 (mod 12) and (mod 24) — Dirichlet Specialization",
+  "slug": "infinitude-primes-4k3-oq-01",
+  "description": "Answers OQ-01 from infinitude-primes-4k3 for the moduli q ∈ {12, 24}: there are infinitely many primes p with p ≡ -1 (mod q), i.e. p ≡ 11 (mod 12) and p ≡ 23 (mod 24). Both are obtained by specializing the repository's machine-checked Dirichlet theorem DirichletsTheorem.dirichlet_modEq (which delegates to Mathlib's Nat.infinite_setOf_prime_and_modEq) at the relevant residue. Each result is provided in two forms: the elementary % q = a statement and the analytic-matching (p : ZMod q) = a statement, bridged by two ZMod ↔ mod lemmas. 4 theorems, 2 bridge lemmas, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Dirichlet%27s_theorem_on_arithmetic_progressions",
+    "date": "formalized 2026",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "primes",
+      "modular-arithmetic",
+      "dirichlet",
+      "arithmetic-progressions"
+    ],
+    "proofRepoPath": "Proofs/InfinitudePrimes4k3OQ01Q12Q24.lean",
+    "parentProofId": "infinitude-primes-4k3",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "newAxiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.infinite_setOf_prime_and_modEq",
+        "description": "Dirichlet's theorem: for gcd(a, q) = 1, the set of primes p ≡ a (mod q) is infinite",
+        "module": "Mathlib.NumberTheory.Dirichlet"
+      },
+      {
+        "theorem": "ZMod.natCast_eq_natCast_iff",
+        "description": "(a : ZMod c) = (b : ZMod c) ↔ a ≡ b [MOD c] — the bridge between ZMod equality and modular congruence",
+        "module": "Mathlib.Data.ZMod.Basic"
+      }
+    ],
+    "originalContributions": [
+      "infinitely_many_primes_11_mod_12: Set.Infinite {p prime | p % 12 = 11} — the q = 12 case of OQ-01",
+      "infinitely_many_primes_23_mod_24: Set.Infinite {p prime | p % 24 = 23} — the q = 24 case of OQ-01",
+      "primes_11_mod_12_zmod_form / primes_23_mod_24_zmod_form: the same two results stated with (p : ZMod q) = a, the form needed for analytic / character-theoretic matching",
+      "zmod_12_eq_eleven_iff / zmod_24_eq_twentythree_iff: bridge lemmas (p : ZMod q) = a ↔ p % q = a connecting the elementary and ZMod statements"
+    ],
+    "dateAdded": "2026-06-16",
+    "lineCount": 141,
+    "assumptions": "0 axioms, 0 sorries. The infinitude content is supplied entirely by the repository's DirichletsTheorem.dirichlet_modEq, which is proved (no axioms, no sorries) by delegation to Mathlib's Nat.infinite_setOf_prime_and_modEq. The remaining work is purely the specialization at (a, q) = (11, 12) and (23, 24) plus the ZMod ↔ mod bridges, all discharged by decide/omega/simp/norm_cast.",
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Dirichlet's theorem (1837) states that every arithmetic progression {a, a+q, a+2q, ...} with gcd(a, q) = 1 contains infinitely many primes. Its general proof is analytic, resting on the non-vanishing of Dirichlet L-functions L(1, χ) for non-principal characters χ. For special residue classes, however, far more elementary Euclid-style arguments exist. The class p ≡ -1 (mod q) is the most accessible family: for q ∈ {3, 4, 6} a direct product construction (à la Euclid's N = 4·n! − 1 for q = 4) suffices, and these elementary cases are formalized in the sibling files of this slug. The moduli q = 12 and q = 24 sit at the boundary of the elementary method — their unit groups (Klein-4 for 12, (ℤ/2ℤ)³ for 24) make a clean single-construction Euclid argument awkward — so this file instead specializes the repository's machine-checked Dirichlet theorem, completing the slug's spectrum-coverage table for the p ≡ -1 (mod q) family.",
+    "problemStatement": "**Open Question (infinitude-primes-4k3-OQ-01)**: extend the infinitude-of-primes-in-residue-class results beyond the elementary moduli to the full p ≡ -1 (mod q) spectrum. **This file's contribution**: settle the moduli q = 12 and q = 24, i.e. prove that {p prime | p ≡ 11 (mod 12)} and {p prime | p ≡ 23 (mod 24)} are each infinite, in both the % q = a and (p : ZMod q) = a formulations.",
+    "proofStrategy": "**Route B (Dirichlet specialization)**. The repository file DirichletsTheorem.lean exposes `dirichlet_modEq {a q : ℕ} (hq : q ≠ 0) (ha : Nat.Coprime a q) : Set.Infinite {p | Nat.Prime p ∧ p ≡ a [MOD q]}`, itself a thin wrapper over Mathlib's `Nat.infinite_setOf_prime_and_modEq`.\n\nFor q = 12: prove `Nat.Coprime 11 12` by `decide`, instantiate `dirichlet_modEq` at (11, 12), then `convert` the `p ≡ 11 [MOD 12]` set to the `p % 12 = 11` set (the two differ only by unfolding `Nat.ModEq`, handled by `ext` + `simp [Nat.ModEq]`). The q = 24 case is identical at (23, 24).\n\nThe two ZMod-cast theorems rewrite the set `{p | (p : ZMod q) = a}` to `{p | p % q = a}` using the bridge lemmas `zmod_q_eq_a_iff`, then discharge to the elementary theorem. Each bridge is `ZMod.natCast_eq_natCast_iff` followed by `unfold Nat.ModEq; omega`.",
+    "keyInsights": [
+      "**-1 is the canonical 'easy' residue**: across all q, the class a ≡ -1 (mod q) is the one most amenable to elementary infinitude proofs, because -1 is the unique order-≤2 unit shared by every (ZMod q)ˣ. For q = 12 the unit group is Klein-4 {1, 5, 7, 11} and 11 ≡ -1 is its distinguished involution; for q = 24 the group is (ℤ/2ℤ)³ and 23 ≡ -1 is simultaneously -1 mod 8 and -1 mod 3 under the CRT splitting 24 = 8·3.",
+      "**Specialization, not re-proof**: the infinitude content is *not* re-derived here. It is imported wholesale from `dirichlet_modEq`, which delegates to Mathlib's full Dirichlet theorem. The file's own work is the boundary glue: coprimality (decide), the ModEq-vs-% set identity (convert/simp), and the ZMod cast bridges (omega).",
+      "**Two formulations on purpose**: the `% q = a` form is the elementary statement a number theorist writes; the `(p : ZMod q) = a` form is what character sums and L-function arguments consume. Providing both, joined by an explicit iff bridge, lets downstream work pick whichever is convenient without re-establishing the translation.",
+      "**Why a sub-file, not a parent edit**: DirichletsTheorem.lean already houses the q = 4 and q = 6 specializations; adding q = 12, 24 there would mix slug-specific deliverables into the parent gallery entry. Keeping them in a dedicated sub-file (mirroring the slug's Klein2 and Tower sub-files) preserves clean attribution.",
+      "**The elementary frontier**: q ∈ {3, 4, 6} admit genuinely elementary (no-L-function) proofs of the p ≡ -1 class, and q = 8 is conjectured to as well; q = 12 and q = 24 are where the single-construction Euclid trick becomes unwieldy, which is exactly why this file routes through Dirichlet rather than a bespoke construction."
+    ],
+    "prerequisites": [
+      "Dirichlet's theorem on primes in arithmetic progressions (statement and the coprimality hypothesis)",
+      "The repository wrapper DirichletsTheorem.dirichlet_modEq and Mathlib's Nat.infinite_setOf_prime_and_modEq",
+      "Modular arithmetic: the equivalence p ≡ a [MOD q] ↔ p % q = a (for a < q) and the ZMod ↔ mod cast ZMod.natCast_eq_natCast_iff",
+      "Unit groups (ZMod 12)ˣ ≅ Klein-4 and (ZMod 24)ˣ ≅ (ℤ/2ℤ)³, and the role of -1 as the distinguished involution",
+      "Sibling files of this slug: the q = 3, 4, 6 elementary cases (InfinitudePrimes4k3, Klein2) and the Tower sub-file"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "infinitely_many_primes_11_mod_12",
+      "type": "core",
+      "statement": "$\\mathrm{Set.Infinite}\\,\\{p : \\mathbb{N} \\mid \\mathrm{Nat.Prime}\\,p \\wedge p \\bmod 12 = 11\\}$",
+      "significance": "The q = 12 case of OQ-01: infinitely many primes ≡ -1 (mod 12). Proved by specializing dirichlet_modEq at (a, q) = (11, 12) — coprimality 11 ⊥ 12 by decide — and converting the resulting p ≡ 11 [MOD 12] set to the p % 12 = 11 set. 11 is the unique order-2 element of the Klein-4 unit group (ZMod 12)ˣ = {1, 5, 7, 11}.",
+      "description": "Infinitely many primes ≡ 11 (mod 12), via Dirichlet specialization."
+    },
+    {
+      "name": "infinitely_many_primes_23_mod_24",
+      "type": "core",
+      "statement": "$\\mathrm{Set.Infinite}\\,\\{p : \\mathbb{N} \\mid \\mathrm{Nat.Prime}\\,p \\wedge p \\bmod 24 = 23\\}$",
+      "significance": "The q = 24 case of OQ-01: infinitely many primes ≡ -1 (mod 24). Same proof shape as the q = 12 case, instantiated at (23, 24). Under the CRT splitting 24 = 8·3, the residue 23 is the unique element that is simultaneously -1 (mod 8) and -1 (mod 3) in the unit group (ZMod 24)ˣ ≅ (ℤ/2ℤ)³.",
+      "description": "Infinitely many primes ≡ 23 (mod 24), via Dirichlet specialization."
+    },
+    {
+      "name": "primes_11_mod_12_zmod_form",
+      "type": "supporting",
+      "statement": "$\\mathrm{Set.Infinite}\\,\\{p : \\mathbb{N} \\mid \\mathrm{Nat.Prime}\\,p \\wedge (p : \\mathbb{Z}/12\\mathbb{Z}) = 11\\}$",
+      "significance": "Restates the q = 12 result in ZMod-cast form, the formulation consumed by character-sum / L-function arguments. Proof rewrites the set via the bridge lemma zmod_12_eq_eleven_iff to the % 12 = 11 set, then applies infinitely_many_primes_11_mod_12.",
+      "description": "ZMod-cast form of the q = 12 result."
+    },
+    {
+      "name": "primes_23_mod_24_zmod_form",
+      "type": "supporting",
+      "statement": "$\\mathrm{Set.Infinite}\\,\\{p : \\mathbb{N} \\mid \\mathrm{Nat.Prime}\\,p \\wedge (p : \\mathbb{Z}/24\\mathbb{Z}) = 23\\}$",
+      "significance": "ZMod-cast form of the q = 24 result, by the same bridge-and-reduce pattern using zmod_24_eq_twentythree_iff.",
+      "description": "ZMod-cast form of the q = 24 result."
+    },
+    {
+      "name": "zmod_12_eq_eleven_iff",
+      "type": "supporting",
+      "statement": "$\\forall p, (p : \\mathbb{Z}/12\\mathbb{Z}) = 11 \\iff p \\bmod 12 = 11$",
+      "significance": "Bridge lemma connecting the ZMod equality and the elementary modular form for q = 12. Proof: rewrite 11 as a Nat-cast, apply ZMod.natCast_eq_natCast_iff to turn the goal into 11 ≡ p [MOD 12], unfold Nat.ModEq, finish by omega.",
+      "description": "ZMod ↔ mod bridge for q = 12."
+    },
+    {
+      "name": "zmod_24_eq_twentythree_iff",
+      "type": "supporting",
+      "statement": "$\\forall p, (p : \\mathbb{Z}/24\\mathbb{Z}) = 23 \\iff p \\bmod 24 = 23$",
+      "significance": "Bridge lemma for q = 24, identical in structure to the q = 12 bridge.",
+      "description": "ZMod ↔ mod bridge for q = 24."
+    }
+  ],
+  "references": [
+    {
+      "type": "research-paper",
+      "citation": "Dirichlet, P.G.L. (1837). \"Beweis des Satzes, dass jede unbegrenzte arithmetische Progression, deren erstes Glied und Differenz ganze Zahlen ohne gemeinschaftlichen Factor sind, unendlich viele Primzahlen enthält.\" Abhandlungen der Königlich Preussischen Akademie der Wissenschaften, 45-81.",
+      "relevance": "The original theorem: every AP {a + nq} with gcd(a, q) = 1 contains infinitely many primes. This file specializes it (via Mathlib's formalization) to (a, q) = (11, 12) and (23, 24), the p ≡ -1 (mod q) cases for q = 12 and 24."
+    },
+    {
+      "type": "textbook",
+      "citation": "Hardy, G.H., and Wright, E.M. (2008). \"An Introduction to the Theory of Numbers,\" 6th ed. Oxford University Press. §2.2 (Euclid's proof and arithmetic-progression variants), §16 (Quadratic residues).",
+      "relevance": "Standard reference for the Euclid-style elementary infinitude proofs in specific residue classes (covering the q = 3, 4, 6 cases handled in this slug's sibling files) and the context for why p ≡ -1 (mod q) is the canonical tractable class."
+    },
+    {
+      "type": "library",
+      "citation": "The Mathlib Community. \"Mathlib.NumberTheory.Dirichlet\" — `Nat.infinite_setOf_prime_and_modEq`. (accessed 2026)",
+      "relevance": "The machine-checked statement of Dirichlet's theorem in the modEq formulation. The repository wrapper DirichletsTheorem.dirichlet_modEq is a one-line delegation to this lemma, and this file specializes that wrapper at the two target residues."
+    },
+    {
+      "type": "library",
+      "citation": "The Mathlib Community. \"Mathlib.Data.ZMod.Basic\" — `ZMod.natCast_eq_natCast_iff`. (accessed 2026)",
+      "relevance": "The cast bridge (a : ZMod c) = (b : ZMod c) ↔ a ≡ b [MOD c] used to prove zmod_12_eq_eleven_iff and zmod_24_eq_twentythree_iff, which connect the elementary % q = a statements to the ZMod-cast statements."
+    },
+    {
+      "type": "library",
+      "citation": "The Mathlib Community / Lean Genius. \"Proofs.DirichletsTheorem\" — `dirichlet_modEq`, plus the q = 4 / q = 6 specializations. (this repository, accessed 2026)",
+      "relevance": "The parent gallery file providing the dirichlet_modEq wrapper and the precedent for specializing it at small moduli (q = 4, 6). This file extends that pattern to q = 12 and 24 in a dedicated sub-file."
+    }
+  ],
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header and Contributions",
+      "startLine": 5,
+      "endLine": 25,
+      "summary": "Imports DirichletsTheorem and ZMod.Basic. The docstring states the OQ-01 'S12 ACT R4 Route-B' deliverable — closing the PREP-gap rows q ∈ {12, 24} of the slug's spectrum table by specializing DirichletsTheorem.dirichlet_modEq at (a, q) ∈ {(11, 12), (23, 24)} — and enumerates the six contributions: two ZMod↔mod bridge lemmas plus four infinitude theorems (2 elementary % q = a form, 2 ZMod-cast form).",
+      "mathContext": "The p ≡ -1 (mod q) family. Unit groups: (ZMod 12)ˣ ≅ Klein-4, (ZMod 24)ˣ ≅ (ℤ/2ℤ)³; -1 is the distinguished involution in each, which is why a single residue class a ≡ -1 captures the construction."
+    },
+    {
+      "id": "spectrum-coverage-table",
+      "title": "Spectrum-Coverage Table and Provenance",
+      "startLine": 26,
+      "endLine": 70,
+      "summary": "The docstring's '## Why these specific q' table situates this file in the six-modulus family q ∈ {3, 4, 6, 8, 12, 24}, classifying each by unit-group structure (Klein-2 for q = 3, 4, 6; Klein-4 for q = 8, 12; abelian non-cyclic (ℤ/2ℤ)³ for q = 24) and Lean status: q ∈ {3, 4, 6} elementary-verified, q = 8 open (R3), q ∈ {12, 24} supplied here by Dirichlet specialization. The remaining '## Counts / ## Build / ## Why a sub-file' notes record 0 axioms / 0 sorries, the build-provenance of the DirichletsTheorem import, and the rationale for a slug-specific sub-file rather than polluting the parent gallery entry.",
+      "mathContext": "The two-route strategy: elementary Euclid-style arguments cover the Klein-2 moduli q ∈ {3, 4, 6, 8}, while q ∈ {12, 24} — whose unit groups are larger (Klein-4, (ℤ/2ℤ)³) — are reached by specializing Dirichlet's theorem on primes in arithmetic progressions. Both routes prove infinitely many primes p ≡ -1 (mod q)."
+    },
+    {
+      "id": "zmod-bridges",
+      "title": "ZMod ↔ mod Bridge Lemmas",
+      "startLine": 76,
+      "endLine": 91,
+      "summary": "zmod_12_eq_eleven_iff and zmod_24_eq_twentythree_iff: each proves (p : ZMod q) = a ↔ p % q = a by recasting the literal a as a Nat-cast, applying ZMod.natCast_eq_natCast_iff, unfolding Nat.ModEq, and finishing with omega.",
+      "mathContext": "$(p : \\mathbb{Z}/q\\mathbb{Z}) = a \\iff p \\bmod q = a$ for $(a, q) \\in \\{(11, 12), (23, 24)\\}$, via $\\mathrm{ZMod.natCast\\_eq\\_natCast\\_iff}$ and $\\mathrm{Nat.ModEq}$."
+    },
+    {
+      "id": "elementary-form",
+      "title": "Elementary Infinitude Theorems (% q = a form)",
+      "startLine": 93,
+      "endLine": 115,
+      "summary": "infinitely_many_primes_11_mod_12 and infinitely_many_primes_23_mod_24: each proves Nat.Coprime a q by decide, instantiates dirichlet_modEq at (a, q), and converts the p ≡ a [MOD q] set to the p % q = a set with ext + simp [Set.mem_setOf_eq, Nat.ModEq].",
+      "mathContext": "$\\mathrm{Set.Infinite}\\,\\{p \\mid \\mathrm{Prime}\\,p \\wedge p \\bmod q = a\\}$ from $\\mathrm{dirichlet\\_modEq}\\,(q \\neq 0)\\,(a \\perp q)$ for $(a, q) \\in \\{(11, 12), (23, 24)\\}$."
+    },
+    {
+      "id": "zmod-form",
+      "title": "ZMod-Cast Infinitude Theorems",
+      "startLine": 117,
+      "endLine": 139,
+      "summary": "primes_11_mod_12_zmod_form and primes_23_mod_24_zmod_form: rewrite the set {p | (p : ZMod q) = a} to {p | p % q = a} using the bridge lemmas, then apply the corresponding elementary theorem.",
+      "mathContext": "$\\mathrm{Set.Infinite}\\,\\{p \\mid \\mathrm{Prime}\\,p \\wedge (p : \\mathbb{Z}/q\\mathbb{Z}) = a\\}$, reduced to the elementary form via the bridge lemmas."
+    }
+  ],
+  "conclusion": {
+    "summary": "For q ∈ {12, 24} the p ≡ -1 (mod q) case of OQ-01 is settled: there are infinitely many primes ≡ 11 (mod 12) and infinitely many ≡ 23 (mod 24), each in both the elementary % q = a and the ZMod-cast (p : ZMod q) = a formulations, with 0 axioms and 0 sorries. The infinitude is inherited from the repository's machine-checked Dirichlet theorem; the file's own content is the coprimality, the ModEq-vs-% set identity, and the ZMod cast bridges.",
+    "implications": "Combined with this slug's elementary sibling files (q = 3, 4, 6), the result extends Lean coverage of the p ≡ -1 (mod q) family to the moduli where a clean single-construction Euclid argument is awkward. The two-formulation pattern (elementary form + ZMod-cast form joined by an explicit bridge lemma) is a reusable template for any future residue-class infinitude entry that needs to interface with both elementary and character-theoretic downstream work.",
+    "openQuestions": [
+      "Can q = 8 (and then the full {3,4,6,8,12,24} family) be given a genuinely elementary, L-function-free infinitude proof for p ≡ -1 (mod q), removing the dependence on the full Dirichlet theorem for q = 12 and 24?",
+      "Is there a uniform Lean meta-theorem that, given q and the residue -1, produces Set.Infinite {p prime | p ≡ -1 (mod q)} for all q at once — either by an elementary cyclotomic argument or by a single specialization schema over dirichlet_modEq — so the per-modulus boilerplate (decide coprimality, convert, ZMod bridge) is generated rather than written?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "infinitude-primes-4k3",
+      "relationship": "parent",
+      "description": "The parent gallery entry (infinitely many primes ≡ 3 (mod 4)) whose OQ-01 — extending to the full p ≡ -1 (mod q) spectrum — this file answers for q = 12 and q = 24."
+    },
+    {
+      "proofId": "dirichlets-theorem",
+      "relationship": "dependency",
+      "description": "Gallery entry for DirichletsTheorem.lean, which exposes the dirichlet_modEq wrapper over Mathlib's Dirichlet theorem that this file specializes at (11, 12) and (23, 24)."
+    },
+    {
+      "proofId": "infinitude-primes-4k3-oq-03",
+      "relationship": "sibling",
+      "description": "Companion OQ of the same parent, handling the elementary q = 4 (p ≡ 1 mod 4) case via Euler's criterion; this file complements it by covering the higher composite moduli 12 and 24 through Dirichlet specialization."
+    },
+    {
+      "proofId": "infinitude-primes",
+      "relationship": "ancestor",
+      "description": "Base Euclid infinitude of primes; every residue-class refinement in this family adapts or, as here, generalizes its statement to a fixed congruence class."
+    }
+  ],
+  "leanFile": {
+    "namespace": "InfinitudePrimes4k3OQ01.Q12Q24",
+    "lineCount": 141,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/InfinitudePrimes4k3OQ01Q12Q24.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

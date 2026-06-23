@@ -1,0 +1,97 @@
+{
+  "slug": "collatz-cycles-oq-02",
+  "title": "Collatz cycle infrastructure and small-cycle exclusions",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "C(n)=\\begin{cases}n/2,&2\\mid n\\\\3n+1,&2\\nmid n\\end{cases};\\ C(n)=n\\Rightarrow n=0,\\ C(C(n))=n\\Rightarrow n=0, and the orbit of 1 has period 3.",
+    "plain": "Backfill the Collatz-cycle metadata around the Lean results that are actually present: no fixed points except zero, no two-cycles except zero, the 1-4-2 cycle, contraction for `n % 4 = 1`, and small halving lower bounds.",
+    "whyMatters": [
+      "The Collatz cycle question is an accessible dynamical-systems test case for arithmetic iteration.",
+      "Small-cycle exclusions and contraction lemmas are useful infrastructure even though they are far below Eliahou's large lower bound.",
+      "Correcting the old title avoids advertising the 17,087,915 lower bound as formalized here."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`collatz`, `collatzIter`, and `IsPeriodic` define the iteration framework.",
+      "`collatz_no_fixpoint` and `collatz_no_two_cycle` exclude fixed points and two-cycles except zero.",
+      "`orbit_of_one`, `one_period_is_three`, and `orbit_one_elements` formalize the `1,4,2` cycle.",
+      "`three_quarter_contraction`, `min_cycle_length_j1` through `min_cycle_length_j4`, and `small_numbers_reach_one` provide basic cycle-constraint infrastructure."
+    ],
+    "open": [
+      "Eliahou's 17,087,915 lower bound is not proved by the linked Lean files; `CollatzCycles.lean` and `CollatzCyclesOQ04.lean` record zero axioms and zero sorries for the smaller infrastructure."
+    ],
+    "goal": "Align the metadata with the verified Collatz-cycle infrastructure and mark the original Eliahou target as still open."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-04T17:22:17-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: collatz-cycles-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "number-theory",
+    "collatz-conjecture",
+    "dynamical-systems",
+    "cycles",
+    "number-sequences",
+    "cycle-exclusion",
+    "formalization",
+    "open-target"
+  ],
+  "relatedProofs": [
+    "collatz-cycles",
+    "collatz-cycles-oq-04",
+    "collatz-structured-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-04T17:22:17-07:00",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/CollatzCycles.lean",
+      "filename": "CollatzCycles.lean",
+      "lineCount": 257,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CollatzCycles.lean"
+    },
+    {
+      "path": "Proofs/CollatzCyclesOQ04.lean",
+      "filename": "CollatzCyclesOQ04.lean",
+      "lineCount": 210,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CollatzCyclesOQ04.lean"
+    }
+  ]
+}

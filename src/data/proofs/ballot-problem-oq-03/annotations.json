@@ -1,0 +1,304 @@
+[
+  {
+    "id": "ann-ballot-oq03-path-defs",
+    "proofId": "ballot-problem-oq-03",
+    "range": {
+      "startLine": 66,
+      "endLine": 113
+    },
+    "type": "definition",
+    "title": "Lattice Path Representation",
+    "content": "Lattice paths are modeled as List Bool, where false encodes an East step (+x) and true encodes a North step (+y). The subtype pathType m n restricts to paths with exactly m East and n North steps (length m+n). A Fintype instance is derived via equivalence with List.Vector Bool, enabling finite cardinality computations throughout the file.",
+    "mathContext": "A lattice path from $(0, y_0)$ to $(m, y_0+n)$ is a sequence of $m$ East and $n$ North steps. The type $\\texttt{pathType}\\, m\\, n$ has $\\binom{m+n}{m}$ elements.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "lattice path",
+      "binomial coefficient",
+      "Fintype",
+      "List.Vector"
+    ],
+    "prerequisites": [
+      "Boolean lists",
+      "subtypes in Lean 4",
+      "Fintype instances"
+    ],
+    "tags": [
+      "lattice-path",
+      "definition",
+      "fintype",
+      "boolean-encoding"
+    ]
+  },
+  {
+    "id": "ann-ballot-oq03-north-before-east",
+    "proofId": "ballot-problem-oq-03",
+    "range": {
+      "startLine": 115,
+      "endLine": 206
+    },
+    "type": "concept",
+    "title": "northBeforeEast: Column Entry Analysis",
+    "content": "The function northBeforeEast l k counts North steps occurring before the k-th East step in a path. This captures the y-coordinate when the path enters column k+1. Key properties include monotonicity (later East steps see at least as many preceding North steps) and the bound northBeforeEast l k <= northSteps l. The companion function colEntry wraps this with colEntry l 0 = 0, making column-by-column analysis possible.",
+    "mathContext": "For a path $l$ with $m$ East steps, $\\texttt{northBeforeEast}(l, k)$ gives the $y$-offset at the $k$-th East step. The derived $\\texttt{colEntry}(l, k) \\leq \\texttt{colEntry}(l, k+1)$ encodes that paths move monotonically upward within each column.",
+    "significance": "key",
+    "relatedConcepts": [
+      "column entry",
+      "monotone function",
+      "lattice path geometry",
+      "y-coordinate tracking"
+    ],
+    "prerequisites": [
+      "recursive function definition",
+      "structural induction on lists"
+    ],
+    "tags": [
+      "column-entry",
+      "monotonicity",
+      "y-coordinate",
+      "key-function"
+    ]
+  },
+  {
+    "id": "ann-ballot-oq03-non-intersecting",
+    "proofId": "ballot-problem-oq-03",
+    "range": {
+      "startLine": 207,
+      "endLine": 221
+    },
+    "type": "definition",
+    "title": "Non-Intersecting Path Pairs",
+    "content": "Two paths starting at different y-coordinates are defined as NonIntersecting when their y-ranges at every column are disjoint. At column x, a path from (0, y0) occupies the y-interval [y0 + colEntry(l, x), y0 + colEntry(l, x+1)]. The final column uses the range up to y0 + northSteps(l). This column-wise definition enables the inductive proof strategy used in the Crossing Lemma.",
+    "mathContext": "Paths $P_1$ from $(0, y_1)$ and $P_2$ from $(0, y_2)$ are non-intersecting if for all columns $x < m$, the intervals $[y_1 + \\text{entry}_1(x),\\, y_1 + \\text{entry}_1(x+1)]$ and $[y_2 + \\text{entry}_2(x),\\, y_2 + \\text{entry}_2(x+1)]$ are disjoint, and similarly for the final column.",
+    "significance": "key",
+    "relatedConcepts": [
+      "disjoint intervals",
+      "column y-range",
+      "LGV lemma",
+      "Lindstrom involution"
+    ],
+    "prerequisites": [
+      "colEntry",
+      "lattice path geometry",
+      "set disjointness"
+    ],
+    "tags": [
+      "non-intersecting",
+      "disjoint-ranges",
+      "lgv-foundation"
+    ]
+  },
+  {
+    "id": "ann-ballot-oq03-crossing-lemma",
+    "proofId": "ballot-problem-oq-03",
+    "range": {
+      "startLine": 222,
+      "endLine": 297
+    },
+    "type": "concept",
+    "title": "The 2D Crossing Lemma (Fully Proved)",
+    "content": "The central theorem of the file: if path P1 starts strictly below P2 (y1 < y2) but ends strictly above (y1+n1 > y2+n2), the paths must share a lattice point. The proof proceeds by column induction. The helper lemma nonIntersecting_entry_order shows that if NI paths have P1 entering column k below P2, then P1 also enters column k+1 below P2 (by a disjoint-interval argument). Iterating from column 0 to column m forces P1 to always enter below P2, contradicting the endpoint condition.",
+    "mathContext": "If $y_1 < y_2$ and $y_2 + n_2 < y_1 + n_1$, then $\\neg\\text{NonIntersecting}(l_1, l_2, m, y_1, y_2)$. This is the 2D reflection principle: crossing path pairs always intersect, which is the foundation for the LGV determinant formula.",
+    "significance": "key",
+    "relatedConcepts": [
+      "reflection principle",
+      "LGV lemma",
+      "Lindstrom involution",
+      "path intersection"
+    ],
+    "prerequisites": [
+      "NonIntersecting definition",
+      "colEntry monotonicity",
+      "column induction"
+    ],
+    "tags": [
+      "crossing-lemma",
+      "reflection-principle",
+      "fully-proved",
+      "path-intersection"
+    ]
+  },
+  {
+    "id": "ann-ballot-oq03-path-count",
+    "proofId": "ballot-problem-oq-03",
+    "range": {
+      "startLine": 299,
+      "endLine": 401
+    },
+    "type": "concept",
+    "title": "Path Count Formula: |pathType m n| = C(m+n, m)",
+    "content": "Proves that the number of lattice paths with m East and n North steps equals the binomial coefficient C(m+n, m). The proof uses the pathSplitEquiv bijection: a nonempty path either starts with East (reducing to pathType(m-1, n)) or North (reducing to pathType(m, n-1)). This gives Pascal's recurrence, and the base cases (all-East or all-North paths are unique) complete the induction. The bijection is constructed as an explicit Equiv, giving a clean card equality via Fintype.card_congr.",
+    "mathContext": "$|\\texttt{pathType}\\, m\\, n| = \\binom{m+n}{m}$. The inductive step uses Pascal's identity: $\\binom{m+n+2}{m+1} = \\binom{m+n+1}{m} + \\binom{m+n+1}{m+1}$, corresponding to the first step being East or North.",
+    "significance": "key",
+    "relatedConcepts": [
+      "binomial coefficient",
+      "Pascal's identity",
+      "combinatorial bijection",
+      "Fintype.card_congr"
+    ],
+    "prerequisites": [
+      "pathType definition",
+      "Fintype instance",
+      "Nat.choose_succ_succ'"
+    ],
+    "tags": [
+      "path-count",
+      "binomial-coefficient",
+      "pascal-identity",
+      "fully-proved"
+    ]
+  },
+  {
+    "id": "ann-ballot-oq03-lgv-statement",
+    "proofId": "ballot-problem-oq-03",
+    "range": {
+      "startLine": 403,
+      "endLine": 567
+    },
+    "type": "concept",
+    "title": "The 2x2 LGV Lemma",
+    "content": "States and proves (modulo one axiomatized bijection) that the count of non-intersecting path pairs equals the LGV determinant: niPairCount = C(m+n1,m)*C(m+n2,m) - C(m+n1',m)*C(m+n2',m). The proof handles degenerate cases (same start or same end give 0) directly, then uses complement counting: NI = total - intersecting. The Lindstrom involution theorem (axiomatized as a sorry) provides the key equality |intersecting identity pairs| = |all crossing pairs|. The proof assembles these via natural number and integer arithmetic.",
+    "mathContext": "The 2x2 LGV determinant is $\\det \\begin{pmatrix} \\binom{m+b_1-a_1}{m} & \\binom{m+b_2-a_1}{m} \\\\ \\binom{m+b_1-a_2}{m} & \\binom{m+b_2-a_2}{m} \\end{pmatrix}$. Under proper ordering $a_1 \\leq a_2 \\leq b_1 \\leq b_2$, this equals the non-intersecting path pair count.",
+    "significance": "key",
+    "relatedConcepts": [
+      "LGV lemma",
+      "determinant formula",
+      "complement counting",
+      "Lindstrom involution"
+    ],
+    "prerequisites": [
+      "path_count_eq_choose",
+      "crossing_lemma",
+      "NonIntersecting",
+      "Fintype.card"
+    ],
+    "tags": [
+      "lgv-lemma",
+      "determinant",
+      "complement-counting",
+      "2x2"
+    ]
+  },
+  {
+    "id": "ann-ballot-oq03-catalan-ballot",
+    "proofId": "ballot-problem-oq-03",
+    "range": {
+      "startLine": 580,
+      "endLine": 712
+    },
+    "type": "concept",
+    "title": "Catalan Numbers and Ballot Theorem",
+    "content": "Defines Catalan numbers as Cn(n) = C(2n,n) - C(2n,n+1) and proves the fundamental formula Cn(n)*(n+1) = C(2n,n) via the absorption identity. The ballot theorem is proved similarly: ballotSeqCount(p,q)*(p+q) = (p-q)*C(p+q,p). Both proofs use the same algebraic technique: apply Nat.add_one_mul_choose_eq (the absorption identity) twice, use binomial coefficient symmetry to equate the intermediate terms, then do integer arithmetic via zify and linear_combination. Verified computationally for several small cases via native_decide.",
+    "mathContext": "The $n$-th Catalan number $C_n = \\binom{2n}{n} - \\binom{2n}{n+1} = \\frac{1}{n+1}\\binom{2n}{n}$. The ballot formula: for $q < p$, the number of ballot sequences where $A$ always leads is $\\frac{p-q}{p+q}\\binom{p+q}{p}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Catalan number",
+      "ballot problem",
+      "absorption identity",
+      "reflection principle"
+    ],
+    "prerequisites": [
+      "binomial coefficients",
+      "Nat.add_one_mul_choose_eq",
+      "Nat.choose_symm_of_eq_add"
+    ],
+    "tags": [
+      "catalan-number",
+      "ballot-theorem",
+      "absorption-identity",
+      "fully-proved"
+    ]
+  },
+  {
+    "id": "ann-ballot-oq03-path-flip",
+    "proofId": "ballot-problem-oq-03",
+    "range": {
+      "startLine": 1089,
+      "endLine": 1162
+    },
+    "type": "concept",
+    "title": "Path Transposition Bijection",
+    "content": "Defines pathFlip as Boolean negation (swapping East and North steps) and constructs pathFlipEquiv: pathType m n is equivalent to pathType n m. This gives a purely combinatorial proof that C(m+n,m) = C(m+n,n) without any algebraic manipulation of binomial coefficients. The involutivity proof (pathFlip_involutive) shows that flipping twice is the identity, which makes the Equiv construction clean. This is a textbook example of a bijective proof in combinatorics.",
+    "mathContext": "The map $l \\mapsto \\overline{l}$ (swap East $\\leftrightarrow$ North) gives $\\texttt{pathType}(m,n) \\simeq \\texttt{pathType}(n,m)$, proving $\\binom{m+n}{m} = \\binom{m+n}{n}$ combinatorially.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "bijective proof",
+      "binomial symmetry",
+      "involution",
+      "path transposition"
+    ],
+    "prerequisites": [
+      "pathType",
+      "Bool negation",
+      "Equiv construction"
+    ],
+    "tags": [
+      "path-flip",
+      "bijective-proof",
+      "binomial-symmetry",
+      "involution"
+    ]
+  },
+  {
+    "id": "ann-ballot-oq03-catalan-ballot-unification",
+    "proofId": "ballot-problem-oq-03",
+    "range": {
+      "startLine": 1190,
+      "endLine": 1218
+    },
+    "type": "insight",
+    "title": "Catalan-Ballot Unification",
+    "content": "Proves that Cn(n) = ballotSeqCount(n+1, n), unifying two seemingly different reflection-based formulas. The Catalan number C(2n,n) - C(2n,n+1) and the ballot count C(2n,n) - C(2n,n+1) (after simplifying indices) are algebraically identical. The combined result catalan_ballot_division shows ballotSeqCount(n+1,n)*(n+1) = C(2n,n), linking the ballot theorem's multiplicative formula to the Catalan division formula.",
+    "mathContext": "$C_n = \\text{ballotSeqCount}(n+1, n)$. This means the $n$-th Catalan number counts exactly the ballot sequences where candidate $A$ (with $n+1$ votes) always leads candidate $B$ (with $n$ votes). The identity $C_n \\cdot (n+1) = \\binom{2n}{n}$ follows from both formulations.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Catalan number",
+      "ballot problem",
+      "Dyck path",
+      "cycle lemma"
+    ],
+    "prerequisites": [
+      "Cn definition",
+      "ballotSeqCount definition",
+      "catalan_formula",
+      "ballot_formula"
+    ],
+    "tags": [
+      "catalan-ballot",
+      "unification",
+      "algebraic-identity"
+    ]
+  },
+  {
+    "id": "ann-ballot-oq03-involution-infrastructure",
+    "proofId": "ballot-problem-oq-03",
+    "range": {
+      "startLine": 1438,
+      "endLine": 2182
+    },
+    "type": "concept",
+    "title": "Lindstrom Involution Infrastructure",
+    "content": "Develops the machinery needed to eliminate the axiomatized Lindstrom involution. The approach tracks step-by-step lattice positions via posAfter, defines visitedPoints as the Finset of all lattice points a path visits, and proves that intersecting paths share a lattice point (sharedPoints_nonempty_of_not_ni). The computable swapAtPoint function splits two paths at a shared point and swaps their suffixes. Key preservation theorems (East step count, North step count, involutivity) are proved. Three lemmas remain as sorry: the swapped paths visit the shared point and are themselves intersecting.",
+    "mathContext": "The Lindstrom involution maps intersecting identity pairs $(P_1: A_1 \\to B_1,\\, P_2: A_2 \\to B_2)$ to crossing pairs $(P_1': A_1 \\to B_2,\\, P_2': A_2 \\to B_1)$ by swapping suffixes at the first shared lattice point. This bijection proves $|\\text{intersecting identity}| = |\\text{all crossing}|$, completing the LGV determinant formula.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lindstrom involution",
+      "lattice point",
+      "suffix swap",
+      "bijective proof",
+      "LGV lemma"
+    ],
+    "prerequisites": [
+      "visitedPoints",
+      "posAfter",
+      "splitAfterEast",
+      "crossing_lemma",
+      "NonIntersecting"
+    ],
+    "tags": [
+      "lindstrom-involution",
+      "suffix-swap",
+      "lattice-point",
+      "infrastructure"
+    ]
+  }
+]

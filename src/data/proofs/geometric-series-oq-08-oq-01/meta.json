@@ -1,0 +1,118 @@
+{
+  "id": "geometric-series-oq-08-oq-01",
+  "slug": "geometric-series-oq-08-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecificLimits.Normed",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "GeometricSeriesOQ08OQ01",
+    "lineCount": 147,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/GeometricSeriesOQ08OQ01.lean",
+    "sorries": 0
+  },
+  "title": "Finite Arithmetico-Geometric Sum: a Closed Form for ∑ k·xᵏ",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GeometricSeriesOQ08OQ01.lean",
+    "tags": [
+      "analysis",
+      "geometric-series",
+      "arithmetico-geometric",
+      "finite-sums",
+      "closed-form",
+      "weighted-series",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 147,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "badge": "original",
+    "originalContributions": [
+      "arith_geom_mul: the division-free closed form (1 − x)² · ∑_{k<n} k·xᵏ = x·(1 − xⁿ) − n·xⁿ·(1 − x), valid over ANY commutative ring. Proved by induction peeling the top term with Finset.sum_range_succ then push_cast; ring. Mathlib records the infinite weighted series and the unweighted finite geometric sum, but not this finite arithmetico-geometric identity.",
+      "arith_geom_div: the field closed form ∑_{k<n} k·xᵏ = (x·(1 − xⁿ) − n·xⁿ·(1 − x))/(1 − x)² for x ≠ 1, obtained by clearing the (1 − x)² ≠ 0 denominator.",
+      "arith_geom_two: the integer specialisation ∑_{k<n} k·2ᵏ = (n − 2)·2ⁿ + 2 (the denominator (1 − 2)² = 1 vanishes), with numerical witnesses at n = 4 (= 34) and the x = 3, n = 3 case (= 21).",
+      "tsum_arith_geom: consistency with Mathlib's infinite weighted series ∑' k, k·xᵏ = x/(1 − x)² for ‖x‖ < 1 — the finite numerator x·(1 − xⁿ) − n·xⁿ·(1 − x) tends to x as n → ∞ since xⁿ → 0 and n·xⁿ → 0.",
+      "geom_sum_closed: the unweighted finite geometric sum (1 − xⁿ)/(1 − x) recorded as the k⁰-weighted building block the arithmetico-geometric sum refines."
+    ],
+    "prerequisites": [
+      "Mathlib's geom_sum_eq (∑_{k<n} xᵏ = (xⁿ − 1)/(x − 1) for x ≠ 1)",
+      "Mathlib's tsum_coe_mul_geometric_of_norm_lt_one (∑' n, n·rⁿ = r/(1 − r)² for ‖r‖ < 1)",
+      "Finset.sum_range_succ for peeling the top term in the inductive step",
+      "eq_div_iff / pow_ne_zero / sub_ne_zero for the field-form denominator clearing",
+      "push_cast; ring for the Nat-cast polynomial identity in the inductive step",
+      "Parent: geometric-series-oq-08 (finite partial sums ∑_{k<n} rᵏ and their infinite limit)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "geom_sum_eq",
+        "description": "∑_{k<n} xᵏ = (xⁿ − 1)/(x − 1) for x ≠ 1. Rewritten into the (1 − xⁿ)/(1 − x) convention for the unweighted building block geom_sum_closed.",
+        "module": "Mathlib.Algebra.GeomSum"
+      },
+      {
+        "theorem": "tsum_coe_mul_geometric_of_norm_lt_one",
+        "description": "∑' n, n·rⁿ = r/(1 − r)² for ‖r‖ < 1. Supplies the infinite value that the finite arithmetico-geometric closed form recovers as n → ∞.",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "geometric-series-oq-08-oq-01-oq-01",
+      "question": "Give the next member of the family: a division-free closed form for the second-moment weighted sum ∑_{k<n} k²·xᵏ over any commutative ring, with field form over (1 − x)³ and the infinite limit x(1 + x)/(1 − x)³.",
+      "significance": "low"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "geometric-series-oq-08",
+      "relationship": "extends",
+      "description": "Parent. The parent quantifies the unweighted finite partial sums ∑_{k<n} rᵏ and their approach to 1/(1 − r). This entry inserts the linear weight k, giving the finite arithmetico-geometric closed form ∑_{k<n} k·xᵏ, its field specialisation, and consistency with Mathlib's infinite weighted series."
+    },
+    {
+      "targetId": "geometric-series-oq-07",
+      "relationship": "sibling",
+      "description": "A sibling weighted extension: oq-07 computes the second moment ∑ n²·rⁿ of the INFINITE series, while this entry gives the FINITE first-moment closed form ∑_{k<n} k·xᵏ and recovers the infinite first moment x/(1 − x)² in the limit."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Algebra.GeomSum",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of the unweighted finite geometric closed form geom_sum_eq."
+    },
+    {
+      "title": "Mathlib4: Analysis.SpecificLimits.Normed",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of the infinite weighted geometric series tsum_coe_mul_geometric_of_norm_lt_one that the finite closed form recovers in the limit."
+    },
+    {
+      "title": "Concrete Mathematics (sums of the form ∑ k·xᵏ)",
+      "author": "Graham, Knuth, Patashnik",
+      "year": "1994",
+      "venue": "Addison-Wesley",
+      "description": "Standard reference for arithmetico-geometric sums and the perturbation method that yields the closed form."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The finite arithmetico-geometric sum ∑_{k<n} k·xᵏ — each geometric term xᵏ weighted by its index k — has the division-free closed form (1 − x)²·∑_{k<n} k·xᵏ = x·(1 − xⁿ) − n·xⁿ·(1 − x) over any commutative ring, equivalently ∑_{k<n} k·xᵏ = (x·(1 − xⁿ) − n·xⁿ·(1 − x))/(1 − x)² for x ≠ 1. It specialises to ∑_{k<n} k·2ᵏ = (n − 2)·2ⁿ + 2 and is consistent with Mathlib's infinite weighted series ∑' k, k·xᵏ = x/(1 − x)² for ‖x‖ < 1, which it recovers as n → ∞. 147 lines, 8 theorems, 0 definitions, 0 axioms, 0 sorries; each result depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "Mathlib records the infinite weighted geometric series and the unweighted finite geometric sum, but not the finite arithmetico-geometric closed form — the companion needed whenever a weighted geometric series is truncated (annuity and present-value formulas, expected values of geometric distributions, generating-function coefficient extraction). The ring-level identity (1 − x)²·∑ = … holds with no analysis and over every commutative ring; the field form and the infinite limit follow as specialisations.",
+    "openQuestions": [
+      "Extend to the second-moment weighted sum ∑_{k<n} k²·xᵏ (field form over (1 − x)³, infinite limit x(1 + x)/(1 − x)³)."
+    ]
+  }
+}

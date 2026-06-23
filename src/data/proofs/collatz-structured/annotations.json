@@ -1,0 +1,216 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "collatz-structured",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Module Overview: Collatz for Structured Values",
+    "content": "The Collatz conjecture \u2014 proposed by Lothar Collatz in 1937 and still unsolved \u2014 asks whether every positive integer eventually reaches 1 under the map $f(n) = n/2$ (even) or $3n+1$ (odd). Despite its elementary statement, the problem has resisted all proof attempts. Conway (1972) showed that generalizations are undecidable, and Tao (2019) proved the strongest partial result: almost all orbits attain almost bounded values.\n\nThis formalization proves the conjecture for an important infinite family: all numbers of the form $2^m \\cdot n$ where $n$ has been computationally verified. The approach separates the problem into (1) the trivial case of powers of 2 (pure halving), (2) closure under multiplication by powers of 2, and (3) computational verification of specific odd starting values via `native_decide`. The full conjecture is stated as an axiom.",
+    "mathContext": "The Collatz conjecture: $\\forall n \\geq 1,\\, \\exists k \\in \\mathbb{N},\\, f^{(k)}(n) = 1$. Verified for all $n < 2^{68} \\approx 2.95 \\times 10^{20}$. The file proves $\\text{ReachesOne}(2^m \\cdot n)$ for each verified $n \\in \\{1, 3, 5, 6, 7, 9, 27\\}$ and all $m \\geq 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Collatz conjecture",
+      "3n+1 problem",
+      "dynamical systems",
+      "iterative maps",
+      "undecidability"
+    ],
+    "prerequisites": [
+      "natural number arithmetic",
+      "modular arithmetic",
+      "iteration and Function.iterate"
+    ]
+  },
+  {
+    "id": "ann-definition",
+    "proofId": "collatz-structured",
+    "range": {
+      "startLine": 32,
+      "endLine": 55
+    },
+    "type": "definition",
+    "title": "The Collatz Function and Basic Properties",
+    "content": "The Collatz function is defined as a piecewise map on $\\mathbb{N}$: $f(n) = n/2$ if $n$ is even, $3n+1$ if $n$ is odd. Five basic properties are proved: `collatz_zero` ($f(0) = 0$), `collatz_one` ($f(1) = 4$, since $1$ is odd), `collatz_even` and `collatz_odd` (case analysis), and the crucial `collatz_two_mul` ($f(2n) = n$).\n\nThe property $f(2n) = n$ is the engine of the closure theorem: since every even number immediately halves, even inputs are trivially reduced. The interesting dynamics occur at odd numbers, where $3n + 1$ is always even (producing at least one halving), giving the 'shortcut' map $g(n) = (3n+1)/2$ used in many analyses. Note that $f(0) = 0$ and $f(1) = 4 \\to 2 \\to 1$, so the fixed point is the cycle $1 \\to 4 \\to 2 \\to 1$, not $1$ alone.",
+    "mathContext": "$f(n) = \\begin{cases} n/2 & n \\equiv 0 \\pmod{2} \\\\ 3n+1 & n \\equiv 1 \\pmod{2} \\end{cases}$\n\nKey properties: $f(0) = 0$, $f(1) = 4$, $f(2n) = n$ for all $n$. The shortcut map: $g(n) = (3n+1)/2$ for odd $n$, combining the odd step and the guaranteed even step. The expected logarithmic change per two steps is $\\log_2(3/2) - 1 \\approx -0.415$, suggesting orbits should shrink on average.",
+    "significance": "key",
+    "relatedConcepts": [
+      "piecewise function",
+      "iteration",
+      "shortcut Collatz map",
+      "dynamical systems"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "Nat.div and Nat.mod",
+      "if-then-else in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-reaches-one",
+    "proofId": "collatz-structured",
+    "range": {
+      "startLine": 57,
+      "endLine": 76
+    },
+    "type": "definition",
+    "title": "Iteration and the ReachesOne Predicate",
+    "content": "`collatzIter k n` applies the Collatz function $k$ times to $n$, using Mathlib's `Function.iterate` ($f^{[k]}$). `ReachesOne n` is the existential predicate: $\\exists k,\\, f^{(k)}(n) = 1$.\n\nThe Collatz conjecture is: $\\forall n \\geq 1,\\, \\text{ReachesOne}(n)$. Note that `ReachesOne` does not specify the number of steps \u2014 it only asserts existence. The `stepsToOne` function uses `Nat.find` to extract the minimal such $k$ (marked `noncomputable` since `Nat.find` uses classical choice). The lemma `one_reaches_one` proves $\\text{ReachesOne}(1)$ with witness $k = 0$ (zero steps).\n\nIn complexity terms, the conjecture is $\\Pi^0_2$: $\\forall n\\, \\exists k\\, P(n, k)$ where $P$ is decidable. This logical form means it could be false (a counterexample exists) but not refutable by bounded computation alone \u2014 the stopping time could be astronomically large.",
+    "mathContext": "$\\text{collatzIter}(k, n) = f^{(k)}(n)$ where $f^{(0)}(n) = n$ and $f^{(k+1)}(n) = f(f^{(k)}(n))$. $\\text{ReachesOne}(n) := \\exists k \\in \\mathbb{N},\\, f^{(k)}(n) = 1$. The stopping time $\\sigma(n) = \\min\\{k : f^{(k)}(n) = 1\\}$ is well-defined when $\\text{ReachesOne}(n)$ holds.",
+    "significance": "key",
+    "relatedConcepts": [
+      "existential predicate",
+      "Function.iterate",
+      "Nat.find",
+      "stopping time",
+      "$\\Pi^0_2$ statement"
+    ],
+    "prerequisites": [
+      "collatz function",
+      "Function.iterate",
+      "existential quantifier",
+      "Nat.find"
+    ]
+  },
+  {
+    "id": "ann-pow-two-main",
+    "proofId": "collatz-structured",
+    "range": {
+      "startLine": 77,
+      "endLine": 110
+    },
+    "type": "concept",
+    "title": "Powers of 2 Reach 1",
+    "content": "The section proves that powers of 2 reach 1, starting with the base case `two_reaches_one` ($f(2) = 1$, proved by `simp`) and then the general `collatz_pow_two`: for $k \\geq 1$, $f^{(k)}(2^k) = 1$.\n\nThe proof of `collatz_pow_two` proceeds by induction on $k$:\n- **Base ($k = 1$)**: $f(2) = 1$ by `simp [collatz]`\n- **Step ($k = m + 2$)**: Write $2^{m+2} = 2 \\cdot 2^{m+1}$, so $f(2^{m+2}) = 2^{m+1}$ by `collatz_two_mul`. Then apply the induction hypothesis.\n\nThe corollary `pow_two_reaches_one` wraps this as a `ReachesOne` statement. The trajectory of any power of 2 is pure halving: $2^k \\to 2^{k-1} \\to \\cdots \\to 2 \\to 1$, making this the simplest infinite family for which the conjecture holds.",
+    "mathContext": "`collatz_pow_two : (k : \u2115) \u2192 k \u2265 1 \u2192 collatzIter k (2^k) = 1`. The trajectory: $2^k \\xrightarrow{f} 2^{k-1} \\xrightarrow{f} \\cdots \\xrightarrow{f} 2 \\xrightarrow{f} 1$. Each step halves because $2^j$ is always even. Every Collatz trajectory that hits a power of 2 converges to 1 \u2014 the powers of 2 are the 'backbone' or 'attractor' of the Collatz dynamics.",
+    "significance": "key",
+    "relatedConcepts": [
+      "induction",
+      "powers of 2",
+      "main theorem"
+    ],
+    "prerequisites": [
+      "mathematical induction",
+      "collatz_even",
+      "Nat.pow_succ"
+    ]
+  },
+  {
+    "id": "ann-closure",
+    "proofId": "collatz-structured",
+    "range": {
+      "startLine": 111,
+      "endLine": 134
+    },
+    "type": "concept",
+    "title": "Closure Under Doubling",
+    "content": "**Theorem**: If n reaches 1, then 2^m * n also reaches 1.\n\n**Proof**: If n reaches 1 in k steps, then:\n- 2n reaches 1 in k+1 steps (first step: 2n -> n)\n- 4n reaches 1 in k+2 steps\n- In general: 2^m * n reaches 1 in k+m steps\n\nThis means verifying odd numbers is sufficient!",
+    "mathContext": "reaches_one_pow_two_mul: ReachesOne n -> ReachesOne (2^m * n)",
+    "significance": "key",
+    "relatedConcepts": [
+      "closure",
+      "induction",
+      "reduction"
+    ],
+    "prerequisites": [
+      "collatz_pow_two",
+      "ReachesOne",
+      "mathematical induction"
+    ]
+  },
+  {
+    "id": "ann-computed-examples",
+    "proofId": "collatz-structured",
+    "range": {
+      "startLine": 135,
+      "endLine": 152
+    },
+    "type": "concept",
+    "title": "Computational Examples: Step-by-Step Verification",
+    "content": "Four `example` declarations verify individual Collatz steps by `native_decide`: $f(3) = 10$ (odd: $3 \\times 3 + 1$), $f(10) = 5$ (even: $10/2$), $f(5) = 16$ (odd: $3 \\times 5 + 1$), $f(16) = 8$ (even: $16/2$). These trace the first four steps of the trajectory of 3.\n\nThis illustrates the 'hailstone' pattern: odd numbers jump up ($n \\to 3n+1$), then the even result falls ($\\to (3n+1)/2$ or further). The trajectory of 3 rises to 16, then cascades down via pure halving: $16 \\to 8 \\to 4 \\to 2 \\to 1$. The fact that $f(5) = 16 = 2^4$ is lucky \u2014 it hits a power of 2 early, triggering rapid convergence.",
+    "mathContext": "$f(3) = 10,\\, f(10) = 5,\\, f(5) = 16,\\, f(16) = 8$. The trajectory of 3: $3 \\to 10 \\to 5 \\to 16 \\to 8 \\to 4 \\to 2 \\to 1$ (7 steps). The maximum value is 16 = $2^4$, reached at step 3.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "hailstone numbers",
+      "trajectory visualization"
+    ],
+    "prerequisites": [
+      "collatz function",
+      "native_decide tactic"
+    ]
+  },
+  {
+    "id": "ann-three",
+    "proofId": "collatz-structured",
+    "range": {
+      "startLine": 153,
+      "endLine": 176
+    },
+    "type": "insight",
+    "title": "Verified Odd Cases: 3, 5, 6, 7, 9",
+    "content": "Six theorems verify that specific small numbers reach 1, each proved by providing the stopping time as a witness and using `native_decide` to verify the computation. The stopping times vary dramatically: 3 takes 7 steps, 5 takes 5 steps, 6 takes 8 steps, 7 takes 16 steps, and 9 takes 19 steps.\n\nNotice the non-monotonicity: $\\sigma(5) = 5 < \\sigma(3) = 7$, and $\\sigma(7) = 16$ is much larger than $\\sigma(9) = 19$ despite $7 < 9$. This erratic behavior of the stopping time function $\\sigma$ is a key feature of the Collatz dynamics \u2014 there is no known formula predicting $\\sigma(n)$ from $n$.",
+    "mathContext": "Stopping times: $\\sigma(3) = 7$, $\\sigma(5) = 5$, $\\sigma(6) = 8$, $\\sigma(7) = 16$, $\\sigma(9) = 19$. Maximum trajectory values: $\\max(\\text{orbit}(3)) = 16$, $\\max(\\text{orbit}(7)) = 52$, $\\max(\\text{orbit}(9)) = 52$. The non-monotonicity of $\\sigma$ is one reason the conjecture resists analysis.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "stopping time",
+      "native_decide",
+      "non-monotonicity"
+    ],
+    "prerequisites": [
+      "ReachesOne",
+      "native_decide tactic",
+      "Decidable instances"
+    ]
+  },
+  {
+    "id": "ann-twentyseven",
+    "proofId": "collatz-structured",
+    "range": {
+      "startLine": 178,
+      "endLine": 181
+    },
+    "type": "concept",
+    "title": "27 Reaches 1 (111 Steps)",
+    "content": "27 is famous for its unexpectedly long trajectory.\n\nStarting from just 27, the sequence:\n- Grows to a maximum of 9232\n- Takes 111 steps to reach 1\n\nThis demonstrates how even small numbers can have dramatic orbits. Verified computationally in Lean.",
+    "mathContext": "twentyseven_reaches_one: ReachesOne 27 := use 111; native_decide",
+    "significance": "key",
+    "relatedConcepts": [
+      "27",
+      "long trajectory",
+      "maximum value",
+      "stopping time"
+    ],
+    "prerequisites": [
+      "ReachesOne",
+      "native_decide tactic"
+    ]
+  },
+  {
+    "id": "ann-conjecture",
+    "proofId": "collatz-structured",
+    "range": {
+      "startLine": 183,
+      "endLine": 207
+    },
+    "type": "insight",
+    "title": "The Full Conjecture and Summary",
+    "content": "The full Collatz conjecture \u2014 $\\forall n \\geq 1,\\, \\text{ReachesOne}(n)$ \u2014 is stated as an `axiom` since it remains unproven. In Lean 4, `axiom` introduces an unverified assumption; any theorem depending on `collatz_conjecture` carries this assumption and is not fully verified.\n\nThe summary documents what the file achieves: (1) powers of 2 reach 1, (2) closure under multiplication by powers of 2, (3) six specific values verified, and (4) the 27-step famous example. The file also notes what remains open: the full conjecture, proving $2^n - 1$ reaches 1 (a harder pattern since Mersenne-like numbers are always odd and produce long trajectories), and upper bounds on stopping time.\n\nThe `axiomCount: 1` in meta.json correctly reflects this single axiom. The file's status is `axiomatized` rather than `verified` because of this assumption.",
+    "mathContext": "`axiom collatz_conjecture : \u2200 n : \u2115, n \u2265 1 \u2192 ReachesOne n`. This is a $\\Pi^0_2$ statement: universally quantified with an existential body. If false, a counterexample $n_0$ would satisfy $\\forall k,\\, f^{(k)}(n_0) \\neq 1$, meaning the orbit of $n_0$ either diverges to infinity or enters a non-trivial cycle. Both possibilities remain open.",
+    "significance": "key",
+    "relatedConcepts": [
+      "axiom in Lean 4",
+      "open problem",
+      "$\\Pi^0_2$ statement",
+      "Mersenne numbers",
+      "stopping time bounds"
+    ],
+    "prerequisites": [
+      "ReachesOne",
+      "axiom keyword in Lean 4",
+      "logical complexity ($\\Pi^0_2$)"
+    ]
+  }
+]

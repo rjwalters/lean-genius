@@ -1,0 +1,172 @@
+{
+  "id": "feuerbachs-theorem-defs-oq-01-oq-01",
+  "title": "Feuerbach's Theorem: Concurrency of the Altitudes at the Orthocenter",
+  "slug": "feuerbachs-theorem-defs-oq-01-oq-01",
+  "description": "Proves the defining characterization of the orthocenter the parent only used as an opaque circumcenter-based formula: the orthocenter lies on all three altitudes (concurrency), it is collinear with each vertex and its altitude foot, and it is the unique common point of any two altitudes. 14 theorems/lemmas, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-21",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FeuerbachsTheoremDefsOQ01OQ01.lean",
+    "additionalFiles": [
+      "Proofs/FeuerbachsTheoremDefs.lean"
+    ],
+    "tags": [
+      "geometry",
+      "feuerbach",
+      "nine-point-circle",
+      "orthocenter",
+      "altitude",
+      "concurrency",
+      "circumcenter",
+      "mathlib"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-21",
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Inherits the coordinate API (circumcenter/orthocenter formulas, non-degeneracy lemmas) from FeuerbachsTheoremDefs.lean, which is itself 0-sorry, 0-axiom.",
+    "lineCount": 282,
+    "theoremCount": 14,
+    "definitionCount": 0,
+    "originalContributions": [
+      "orthocenter_perp_a / orthocenter_perp_b / orthocenter_perp_c: the orthocenter lies on each altitude — (H - vertex) is perpendicular to the opposite side — proved by substituting the circumcenter formula and clearing the (nonzero) nondegeneracy denominator",
+      "altitudes_concurrent: the three altitudes pass through the single point H (concurrency), the defining property of the orthocenter the parent never verified",
+      "orthocenter_collinear_a / _b / _c: the orthocenter is collinear with each vertex and the corresponding altitude foot, derived cleanly from the two perpendicularity facts via a reusable plane-geometry lemma (two vectors perpendicular to a common nonzero vector are parallel)",
+      "orthocenter_unique: the orthocenter is the unique common point of any two altitudes, so two altitudes already determine H and the third necessarily passes through it",
+      "cross_eq_zero_of_perp_perp: reusable lemma that two plane vectors perpendicular to a common nonzero vector are parallel (cross product vanishes)",
+      "altitude_det_ne_zero: the determinant of two altitude directions equals the nonzero nondegeneracy form, so distinct altitudes are never parallel",
+      "triangle_345_orthocenter_eq_A: worked example, the orthocenter of the 3-4-5 right triangle is the right-angle vertex A"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The three altitudes of a triangle are concurrent; their common point is the orthocenter H. The gallery's FeuerbachsTheoremDefs.lean instead *defines* H by the Euler-line formula H = A + B + C - 2O (O the circumcenter) and uses it throughout the nine-point circle proof. The sibling entry feuerbachs-theorem-defs-oq-01 characterized the three altitude feet. Neither file ever verifies what makes the formula-defined point H the orthocenter, namely that it lies on all three altitudes. This entry supplies that missing concurrency theorem and was the first open question raised by the altitude-feet entry.",
+    "problemStatement": "Given the coordinate definition of the orthocenter,\n$$H = A + B + C - 2O,\\qquad O = \\text{circumcenter},$$\nverify the properties that justify calling H the orthocenter:\n1. **On each altitude (concurrency)**: $(H - A)\\cdot(C - B) = 0$, $(H - B)\\cdot(A - C) = 0$, $(H - C)\\cdot(B - A) = 0$.\n2. **Collinearity with the feet**: $H$, $A$ and the altitude foot $H_a$ are collinear (and cyclically).\n3. **Uniqueness**: $H$ is the only point lying on two of the altitudes.",
+    "text": "A 282-line companion file with 9 public theorems and 5 supporting lemmas (0 definitions). It proves the orthocenter lies on each of the three altitudes, bundles this as the concurrency capstone, shows the orthocenter is collinear with each vertex and its altitude foot, and proves uniqueness via a 2x2 nonsingular linear system. Closes with the 3-4-5 worked example where the orthocenter is the right-angle vertex.",
+    "proofStrategy": "The core perpendicularity facts are each *linear* in the circumcenter O. Writing H - A = (B - O) + (C - O), the dot product with C - B = (C - O) - (B - O) telescopes to |C - O|^2 - |B - O|^2, which vanishes because O is equidistant from B and C; equivalently, the condition says O lies on the perpendicular bisector of BC. Because it is linear in O, after substituting the explicit circumcenter fraction and clearing the (nonzero) denominator d = 2((A-C) x (B-C)) it closes by field_simp; ring, exactly the pattern used for the parent's circumcenter perpendicular-bisector lemmas.\n\nCollinearity is then free: foot_a - A and H - A are both perpendicular to BC, hence parallel; the reusable lemma cross_eq_zero_of_perp_perp packages 'perpendicular to a common nonzero vector implies parallel' via a single linear_combination identity.\n\nUniqueness subtracts the orthocenter's own perpendicularity relations from the hypotheses to show P - H is perpendicular to two independent side directions, then applies Cramer's rule: the determinant of the two altitude directions equals the nondegeneracy form (proved by linear_combination), so P - H = 0.",
+    "keyInsights": [
+      "The statement 'the orthocenter lies on the altitude from A' is, after substituting H = A + B + C - 2O, exactly the statement that O lies on the perpendicular bisector of BC — concurrency of altitudes is dual to concurrency of perpendicular bisectors.",
+      "Each altitude membership is linear (degree one) in the circumcenter coordinates, so it needs only one denominator cleared and closes by field_simp; ring without any quadratic distance reasoning.",
+      "Collinearity of H with a vertex and its foot needs no fresh computation: both displacement vectors are perpendicular to the same side, and in the plane that forces them to be parallel.",
+      "Uniqueness is genuine 2x2 linear algebra: the determinant of the two altitude directions is precisely the triangle's nondegeneracy invariant, so two altitudes always meet in exactly one point.",
+      "The 3-4-5 example exhibits the degenerate-looking but correct fact that in a right triangle the orthocenter coincides with the right-angle vertex, because the two legs are themselves altitudes."
+    ],
+    "prerequisites": [
+      "FeuerbachsTheoremDefs.lean — coordinate API (Point, Triangle, circumcenter, orthocenter, foot_a/b/c) and the lemmas circumcenter_denom_ne_zero, bc/ca/ab_sq_ne_zero",
+      "The orthocenter as the intersection of the three altitudes; the Euler line relation H = A + B + C - 2O",
+      "Dot product, the cross-product test for collinearity, and Cramer's rule in R^2",
+      "field_simp / ring / linear_combination for polynomial identities over R"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports, Namespace, and Altitude-Foot Perpendicularity",
+      "startLine": 1,
+      "endLine": 104,
+      "summary": "Module docstring stating the open question (the parent never verifies concurrency), imports FeuerbachsTheoremDefs, and reproves the three altitude-foot perpendicularity lemmas locally so the file builds independently against the parent.",
+      "mathContext": "foot_a_perp etc. restate (foot - vertex) . (side direction) = 0, closed by field_simp [bc_sq_ne_zero]; ring. These feed the collinearity proofs in Part III."
+    },
+    {
+      "id": "perp",
+      "title": "Part I: The Orthocenter Lies on Each Altitude",
+      "startLine": 106,
+      "endLine": 168,
+      "summary": "Proves (H - A).(C - B) = 0 and the two cyclic analogues: the orthocenter lies on all three altitudes.",
+      "mathContext": "Substitute orthocenter = A + B + C - 2O and the explicit circumcenter fraction over d, then field_simp [hd_ne]; ring. The relation is linear in O and equals the perpendicular-bisector condition for the opposite side."
+    },
+    {
+      "id": "concurrent",
+      "title": "Part II: Concurrency Capstone",
+      "startLine": 170,
+      "endLine": 184,
+      "summary": "Bundles the three perpendicularity facts: all three altitudes pass through the single point H.",
+      "mathContext": "altitudes_concurrent is the conjunction of orthocenter_perp_a/b/c — the defining property of the orthocenter."
+    },
+    {
+      "id": "collinear",
+      "title": "Part III: The Orthocenter on the Altitude Line Through Each Foot",
+      "startLine": 186,
+      "endLine": 224,
+      "summary": "Proves H is collinear with each vertex and its altitude foot, via a reusable 'perpendicular to a common nonzero vector implies parallel' lemma.",
+      "mathContext": "cross_eq_zero_of_perp_perp: if u.w = 0 and v.w = 0 with w != 0 then u x v = 0; proved by linear_combination then mul_eq_zero. Applied with u = foot - vertex, v = H - vertex, w = side direction."
+    },
+    {
+      "id": "unique",
+      "title": "Part IV: Uniqueness — Two Altitudes Determine the Orthocenter",
+      "startLine": 226,
+      "endLine": 276,
+      "summary": "Proves any point on the altitudes from A and B equals the orthocenter, so two altitudes already determine H.",
+      "mathContext": "altitude_det_ne_zero shows the 2x2 direction determinant equals the nondegeneracy form (linear_combination). Subtracting the orthocenter's perpendicularity relations gives P - H perpendicular to two independent directions; Cramer's rule (two linear_combination eliminations) forces P = H."
+    },
+    {
+      "id": "example",
+      "title": "Part V: Worked Example",
+      "startLine": 278,
+      "endLine": 282,
+      "summary": "The orthocenter of the 3-4-5 right triangle is the right-angle vertex A = (0,0).",
+      "mathContext": "triangle_345_orthocenter_eq_A: rw [triangle_345_orthocenter]; rfl, using the parent's computation that the orthocenter is (0,0) = A."
+    }
+  ],
+  "conclusion": {
+    "summary": "Supplies the defining characterization of the orthocenter underlying the nine-point circle: it lies on all three altitudes (concurrency), is collinear with each vertex and its altitude foot, and is the unique common point of any two altitudes. 9 public theorems and 5 supporting lemmas, 0 axioms, 0 sorries.",
+    "implications": "**Foundational grounding**: the parent's formula-defined orthocenter is now verified to be the genuine concurrency point of the altitudes, completing the altitude-feet characterization of the sibling entry.\n\n**Reusable geometry**: cross_eq_zero_of_perp_perp (perpendicular-to-common-vector implies parallel) and the Cramer-rule uniqueness pattern are standard tools for downstream R^2 Euclidean-geometry proofs.",
+    "openQuestions": [
+      "Show the reflection of the orthocenter across each side lies on the circumcircle, a classical consequence of the altitude-foot and concurrency configuration.",
+      "Prove the Euler line collinearity O, G, H with the 2:1 ratio directly from the concurrency characterization rather than from the coordinate formula.",
+      "Reformulate concurrency of the altitudes in Mathlib's EuclideanGeometry API (orthocenter / affine subspaces) to enable an upstream contribution."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "feuerbachs-theorem-defs-oq-01",
+      "relationship": "extends",
+      "description": "answers the first open question of the altitude-feet entry: the orthocenter is the common intersection of the three altitudes, proved with perpendicularity facts mirroring that file"
+    },
+    {
+      "targetId": "feuerbachs-theorem-defs",
+      "relationship": "extends",
+      "description": "characterizes the orthocenter defined by the Euler formula H = A + B + C - 2O in FeuerbachsTheoremDefs.lean"
+    },
+    {
+      "targetId": "feuerbachs-theorem",
+      "relationship": "related",
+      "description": "the full Feuerbach theorem whose nine-point circle passes through the altitude feet on these altitudes"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Proofs.FeuerbachsTheoremDefs"],
+    "opens": ["FeuerbachsTheorem"],
+    "namespace": "FeuerbachsTheoremDefsOQ01OQ01",
+    "lineCount": 282,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 0,
+    "path": "Proofs/FeuerbachsTheoremDefsOQ01OQ01.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/FeuerbachsTheoremDefs.lean"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "altitudes_concurrent",
+      "type": "core",
+      "description": "The orthocenter lies on all three altitudes simultaneously — the three altitudes are concurrent at H.",
+      "leanType": "∀ T : Triangle, (H-A)·(C-B)=0 ∧ (H-B)·(A-C)=0 ∧ (H-C)·(B-A)=0"
+    },
+    {
+      "name": "orthocenter_unique",
+      "type": "core",
+      "description": "Any point lying on the altitudes from A and B equals the orthocenter; two altitudes already determine H.",
+      "leanType": "(P-A)·(C-B)=0 ∧ (P-B)·(A-C)=0 → P = orthocenter"
+    },
+    {
+      "name": "orthocenter_collinear_a",
+      "type": "lemma",
+      "description": "The orthocenter is collinear with vertex A and the altitude foot from A.",
+      "leanType": "(foot_a - A) × (H - A) = 0"
+    }
+  ],
+  "sorries": 0
+}

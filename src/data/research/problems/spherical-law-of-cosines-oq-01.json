@@ -1,0 +1,85 @@
+{
+  "slug": "spherical-law-of-cosines-oq-01",
+  "title": "Spherical Law of Cosines OQ-01: Vector Formalization on the Unit Sphere",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For unit vectors A, B, C on S^2, prove the spherical law of cosines through the identity cos(sideC) = cos(sideB) * cos(sideA) + <proj_perp(A,C), proj_perp(B,C)>.",
+    "plain": "Formalizes spherical arc length and the inner-product decomposition behind the spherical law of cosines. The Lean file proves the algebraic and trigonometric forms for unit-vector spherical triangles.",
+    "whyMatters": [
+      "Spherical trigonometry is the non-Euclidean analogue of the planar law of cosines.",
+      "The vector proof reduces the geometry to reusable inner-product and perpendicular-projection lemmas.",
+      "The metadata corrects a stale law-of-sines description and points search to the actual cosine-law theorem names."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`arcLength_nonneg`, `arcLength_le_pi`, and `cos_arcLength` establish the basic arc-length facts for unit vectors.",
+      "`norm_projectPerp_sq_eq_sin_sq` and `norm_projectPerp_eq_sin` connect perpendicular projections with sine of arc length.",
+      "`spherical_law_of_cosines_algebraic` proves the core inner-product decomposition form.",
+      "`spherical_law_of_cosines_trig` packages the result for `SphericalTriangle` data.",
+      "`degenerate_triangle_sideB_zero` records a degenerate-case check and `planar_law_of_cosines` documents the planar comparison.",
+      "`SphericalLawOfCosines.lean` is recorded with 0 axioms and 0 sorries."
+    ],
+    "open": [
+      "A fully normalized angle form replacing the projection inner product with sin(a)sin(b)cos(C) is not separated as the main theorem here.",
+      "The small-angle planar limit is documented rather than proved as an asymptotic theorem."
+    ],
+    "goal": "Expose the proved vector formalization of the spherical law of cosines with accurate searchable metadata."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-04T17:22:16-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: spherical-law-of-cosines-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "geometry",
+    "spherical-geometry",
+    "trigonometry",
+    "law-of-cosines",
+    "non-euclidean-geometry"
+  ],
+  "relatedProofs": [
+    "law-of-cosines-oq-01",
+    "spherical-law-of-cosines"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-04T17:22:16-07:00",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/SphericalLawOfCosines.lean",
+      "filename": "SphericalLawOfCosines.lean",
+      "lineCount": 342,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SphericalLawOfCosines.lean"
+    }
+  ]
+}

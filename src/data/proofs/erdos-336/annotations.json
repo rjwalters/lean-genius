@@ -1,0 +1,258 @@
+[
+  {
+    "id": "ann-336-header",
+    "proofId": "erdos-336",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #336** asks for the value of lim h(r)/r² where h(r) is the maximal exact order achievable by a basis of order r. A basis of order r represents every large integer as a sum of at most r elements. Exact order k means exactly k elements are needed and suffice. The problem originated in the Erdős-Graham 1980 paper and remains open with current bounds 1/3 ≤ lim ≤ 1/2.",
+    "mathContext": "h(r) = max{k : ∃ A ⊆ ℕ, A is basis of order r and has exact order k}. Original bounds (1980): 1/4 ≤ lim ≤ 5/4. Current best: 1/3 (Grekos 1988) ≤ lim ≤ 1/2 (Nash 1993).",
+    "significance": "key",
+    "relatedConcepts": [
+      "additive-bases",
+      "exact-order",
+      "representation-functions",
+      "number-theory"
+    ],
+    "prerequisites": [
+      "additive bases and order of a basis",
+      "exact order of a representing set",
+      "asymptotic limits of the form h(r)/r²"
+    ]
+  },
+  {
+    "id": "ann-336-isbasis",
+    "proofId": "erdos-336",
+    "range": {
+      "startLine": 37,
+      "endLine": 41
+    },
+    "type": "definition",
+    "title": "IsBasis: Order r",
+    "content": "A set A ⊆ ℕ is a basis of order r if every sufficiently large integer n can be written as a sum of at most r elements from A. The formalization uses Finset to represent the chosen summands: there exists a threshold N₀ such that for all n ≥ N₀, a Finset S exists with S.card ≤ r, all elements of S belonging to A, and S.sum id = n.",
+    "mathContext": "IsBasis A r := ∃ N₀, ∀ n ≥ N₀, ∃ S : Finset ℕ, S.card ≤ r ∧ (∀ a ∈ S, a ∈ A) ∧ S.sum id = n. Uses Finset (no repeated elements) for the 'at most r' version.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sum",
+      "additive basis",
+      "Waring's problem"
+    ],
+    "prerequisites": [
+      "sums of at most r elements from a set",
+      "Finset.sum and Finset.card",
+      "eventual representation above a threshold N₀"
+    ]
+  },
+  {
+    "id": "ann-336-exactorder",
+    "proofId": "erdos-336",
+    "range": {
+      "startLine": 43,
+      "endLine": 47
+    },
+    "type": "definition",
+    "title": "HasExactOrder: Exact Order k",
+    "content": "A set A has exact order k if every sufficiently large integer can be written as a sum of exactly k elements from A, with repetition allowed. The key difference from IsBasis is the equality S.card = k (not ≤), and the use of Multiset instead of Finset to allow repeated elements. This distinction is crucial: order and exact order can differ.",
+    "mathContext": "HasExactOrder A k := ∃ N₀, ∀ n ≥ N₀, ∃ S : Multiset ℕ, S.card = k ∧ (∀ a ∈ S, a ∈ A) ∧ S.sum = n. Uses Multiset to allow repeated summands.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Multiset",
+      "exact representation",
+      "additive number theory"
+    ],
+    "prerequisites": [
+      "Multiset sums with repeated summands",
+      "representation by exactly k elements",
+      "distinction between cardinality equality and inequality"
+    ]
+  },
+  {
+    "id": "ann-336-h",
+    "proofId": "erdos-336",
+    "range": {
+      "startLine": 53,
+      "endLine": 55
+    },
+    "type": "definition",
+    "title": "h(r): Maximum Exact Order",
+    "content": "h(r) = max{k : ∃ A with order r and exact order k}. This is the central function of Problem #336, defined using sSup (supremum) over all k such that some basis of order r achieves exact order k. The question asks for lim h(r)/r² as r → ∞.",
+    "mathContext": "h r := sSup {k : ℕ | ∃ A : Set ℕ, HasOrderAndExactOrder A r k}. Noncomputable: requires the axiom of choice to extract the supremum.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sSup",
+      "supremum",
+      "extremal function"
+    ],
+    "prerequisites": [
+      "supremum sSup over a set of naturals",
+      "noncomputable definitions and the axiom of choice",
+      "extremal functions over sets achieving order and exact order"
+    ]
+  },
+  {
+    "id": "ann-336-limit",
+    "proofId": "erdos-336",
+    "range": {
+      "startLine": 59,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "Limit Definition",
+    "content": "LimitExists formalizes lim_{r→∞} h(r)/r² using the ε-δ definition: for all ε > 0, there exists R such that for all r ≥ R, |h(r)/r² - L| < ε. The limitValue extracts L using Classical.choose if it exists, defaulting to 0 otherwise. The exact value of L is the open question.",
+    "mathContext": "LimitExists := ∃ L : ℝ, ∀ ε > 0, ∃ R : ℕ, ∀ r ≥ R, |h(r)/r² - L| < ε. Standard ε-δ formulation of convergence.",
+    "significance": "key",
+    "relatedConcepts": [
+      "limit",
+      "convergence",
+      "asymptotic analysis"
+    ],
+    "prerequisites": [
+      "ε-δ definition of a limit",
+      "Classical.choose for extracting an existential witness",
+      "convergence of a real-valued sequence in r"
+    ]
+  },
+  {
+    "id": "ann-336-bounds",
+    "proofId": "erdos-336",
+    "range": {
+      "startLine": 67,
+      "endLine": 89
+    },
+    "type": "concept",
+    "title": "Known Bounds (1980-1993)",
+    "content": "Four axioms capture the progressive improvement of bounds on lim h(r)/r². Erdős-Graham (1980) originally proved 1/4 ≤ lim ≤ 5/4. Grekos (1988) improved the lower bound to 1/3 using constructions based on Sidon-type sets. Nash (1993) improved the upper bound to 1/2 using combinatorial arguments about representation functions. The theorem current_bounds combines the best known bounds: ⟨grekos_lower_1988, nash_upper_1993⟩.",
+    "mathContext": "grekos_lower_1988: ∀ ε > 0, ∃ R, ∀ r ≥ R, h(r)/r² ≥ 1/3 - ε. nash_upper_1993: ∀ ε > 0, ∃ R, ∀ r ≥ R, h(r)/r² ≤ 1/2 + ε. current_bounds := ⟨grekos_lower_1988, nash_upper_1993⟩.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Grekos",
+      "Nash",
+      "asymptotic bounds",
+      "lim inf/sup"
+    ],
+    "prerequisites": [
+      "lim inf and lim sup bounds on h(r)/r²",
+      "Sidon-type set constructions",
+      "representation function arguments"
+    ]
+  },
+  {
+    "id": "ann-336-values",
+    "proofId": "erdos-336",
+    "range": {
+      "startLine": 91,
+      "endLine": 110
+    },
+    "type": "concept",
+    "title": "Specific Values of h(r)",
+    "content": "Exact and partial values of h(r) for small r: h(2) = 4 (Erdős-Graham 1980), h(3) = 7 (Nash 1993), 10 ≤ h(4) ≤ 11 (Plagne 2004). The ratios h(r)/r² = 1, 7/9, ~10-11/16 show a decreasing trend toward the limit. Two examples verify h(2)/4 = 1 and h(3)/9 = 7/9 using simp and norm_num tactics.",
+    "mathContext": "h_2 : h 2 = 4. h_3 : h 3 = 7. h_4_lower : h 4 ≥ 10. h_4_upper : h 4 ≤ 11. Ratio examples use ℚ arithmetic.",
+    "significance": "key",
+    "relatedConcepts": [
+      "specific values",
+      "ratio examples",
+      "norm_num"
+    ],
+    "prerequisites": [
+      "exact values h(2) = 4 and h(3) = 7",
+      "rational ratio arithmetic with norm_num",
+      "the simp tactic for verifying small cases"
+    ]
+  },
+  {
+    "id": "ann-336-example",
+    "proofId": "erdos-336",
+    "range": {
+      "startLine": 112,
+      "endLine": 130
+    },
+    "type": "concept",
+    "title": "Order ≠ Exact Order",
+    "content": "The Erdős-Graham example A = ∪_{k≥0}(2^{2k}, 2^{2k+1}] demonstrates that order and exact order can differ. This set contains integers in (1,2], (4,8], (16,32], etc. — doubling-length intervals at exponentially growing positions. It has order 2 (every large integer is a sum of ≤ 2 elements) but exact order 3 (every large integer needs exactly 3 elements). The theorem order_exact_order_differ constructs the witness ⟨A, 2, 3, ...⟩.",
+    "mathContext": "erdosGrahamExample = {n | ∃ k, 2^{2k} < n ∧ n ≤ 2^{2k+1}}. Axioms: IsBasis A 2, HasExactOrder A 3. Theorem: ∃ A r k, r ≠ k ∧ HasOrderAndExactOrder A r k.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counterexample",
+      "order gap",
+      "exponential intervals"
+    ],
+    "prerequisites": [
+      "dyadic intervals (2^{2k}, 2^{2k+1}]",
+      "a set with order 2 but exact order 3",
+      "witness construction via anonymous constructor"
+    ]
+  },
+  {
+    "id": "ann-336-characterization",
+    "proofId": "erdos-336",
+    "range": {
+      "startLine": 132,
+      "endLine": 146
+    },
+    "type": "concept",
+    "title": "Coprimality Characterization",
+    "content": "Erdős-Graham's characterization theorem: a basis A (enumerated as a₁ < a₂ < ...) has an exact order if and only if no integer d > 1 divides all consecutive differences a_{k+1} - a_k. Equivalently, the gcd of all consecutive differences is 1. This provides a clean criterion for exact order existence and is key to understanding when h(r) is finite.",
+    "mathContext": "erdos_graham_characterization: (∃ k, HasExactOrder A k) ↔ ∀ d > 1, ∃ k, ¬(d ∣ consecutiveDiffs a k). The forward direction: if all differences are divisible by d, then all sums ≡ 0 mod d, so only multiples of d are representable.",
+    "significance": "key",
+    "relatedConcepts": [
+      "gcd",
+      "coprimality",
+      "divisibility",
+      "necessary condition"
+    ],
+    "prerequisites": [
+      "gcd of consecutive differences of a basis",
+      "divisibility obstructions modulo d",
+      "if-and-only-if criterion for exact order existence"
+    ]
+  },
+  {
+    "id": "ann-336-plagne",
+    "proofId": "erdos-336",
+    "range": {
+      "startLine": 148,
+      "endLine": 158
+    },
+    "type": "concept",
+    "title": "Plagne's Refinement (2004)",
+    "content": "Plagne (2004) refined the lower-order terms in the growth of h(r), showing that h(r) ≥ r²/3 + cr - C for explicit positive constants c, C when r ≥ 4. This goes beyond the leading-term bound of Grekos by quantifying the linear correction term, tightening our understanding of h(r) for specific values of r.",
+    "mathContext": "plagne_lower_order_2004: ∃ c C : ℝ, c > 0 ∧ ∀ r ≥ 4, h(r) ≥ r²/3 + cr - C. Captures Plagne's improvement on the lower-order asymptotics.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lower-order terms",
+      "refined asymptotics",
+      "Plagne 2004"
+    ],
+    "prerequisites": [
+      "lower-order correction term cr - C",
+      "the leading bound h(r) ≥ r²/3",
+      "refined asymptotics for r ≥ 4"
+    ]
+  },
+  {
+    "id": "ann-336-main",
+    "proofId": "erdos-336",
+    "range": {
+      "startLine": 160,
+      "endLine": 161
+    },
+    "type": "concept",
+    "title": "Main Results",
+    "content": "Two summary theorems. erdos_336_main combines five key results: the Grekos lower bound (1/3), the Nash upper bound (1/2), the specific values h(2) = 4 and h(3) = 7, and the existence of bases where order ≠ exact order. erdos_336 is the clean summary: h(r)/r² converges to a value in [1/3, 1/2]. Both proofs are direct constructions from the axioms using anonymous constructors.",
+    "mathContext": "erdos_336_main: bounds ∧ values ∧ order_differ. erdos_336: ⟨grekos_lower_1988, nash_upper_1993⟩. The exact limit value remains an open problem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "combined result",
+      "open problem",
+      "anonymous constructor"
+    ],
+    "prerequisites": [
+      "combining bounds, specific values, and the order gap",
+      "anonymous constructor proofs from axioms",
+      "the open status of the limit in [1/3, 1/2]"
+    ]
+  }
+]

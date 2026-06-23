@@ -1,0 +1,125 @@
+[
+  {
+    "id": "ann-sqrt2oq010201-header",
+    "proofId": "sqrt2-minpoly-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 7,
+      "endLine": 57
+    },
+    "type": "concept",
+    "title": "Why Prime Degree: the Kummer Criterion and the Composite Counterexample",
+    "content": "The docstring frames the open question precisely. The parent file proves minpoly ℚ (√r) = X² − r (degree 2); the natural generalization minpoly ℚ (a^(1/k)) = X^k − a is **false for composite k**: X⁴ − 4 = (X² − 2)(X² + 2) is reducible, so minpoly ℚ (4^(1/4)) = minpoly ℚ (√2) = X² − 2, not X⁴ − 4. The clean statement survives exactly at **prime** degree, where Kummer theory supplies the sharp criterion: for an odd prime p, X^p − C a is irreducible over a field K iff a is not a p-th power in K (`X_pow_sub_C_irreducible_iff_of_prime_pow` at exponent n = 1). This file applies that criterion over ℚ; the remaining prime p = 2 is the parent's square-root theorem, proved there by an elementary irrationality argument because the Kummer lemma explicitly excludes p = 2. Together the two files cover every prime degree, and the hypothesis ∀ b : ℚ, bᵖ ≠ a is precisely 'a is not a p-th power in ℚ', the odd-prime analogue of the parent's ¬ IsSquare a.",
+    "mathContext": "$p$ odd prime, $a \\ge 0$ rational, $\\forall b\\in\\mathbb{Q}\\ b^p \\ne a \\Rightarrow \\mathrm{minpoly}_{\\mathbb{Q}}(a^{1/p}) = X^p - a$. Composite $k$ fails: $X^4-4=(X^2-2)(X^2+2)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Kummer theory",
+      "irreducibility of X^p − a",
+      "minimal polynomial",
+      "prime vs composite degree",
+      "radical extensions"
+    ],
+    "prerequisites": [
+      "minimal polynomial over ℚ",
+      "irreducibility criteria for binomials X^n − a",
+      "p-th power residues in ℚ"
+    ]
+  },
+  {
+    "id": "ann-sqrt2oq010201-root",
+    "proofId": "sqrt2-minpoly-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 64,
+      "endLine": 77
+    },
+    "type": "insight",
+    "title": "Part I: The Radical a^(1/p) is a Root of X^p − C a",
+    "content": "Two lemmas establish that the candidate minimal polynomial annihilates the radical. `rpow_inv_pow` proves `(a^(1/p))^p = a` for a nonnegative real `a`: rewrite the outer natural-number power as a real `rpow` (`Real.rpow_natCast`), collapse the nested powers with `Real.rpow_mul` (legal because `a ≥ 0`), and finish with `(1/p)·p = 1` via `inv_mul_cancel₀` and `Real.rpow_one`. `aeval_rpow` then evaluates `X^p − C a` (a polynomial over `ℚ`) at the real radical `(a : ℝ)^(1/p)`: after `simp` reduces `aeval` over the monomial structure, the coercion `algebraMap ℚ ℝ a = (a : ℝ)` (`eq_ratCast`) and the root identity from `rpow_inv_pow` give `a − a = 0`.\n\nThe nonnegativity hypothesis `0 ≤ a` is essential: `Real.rpow_mul` and the power collapse only hold for nonnegative base.",
+    "mathContext": "The root witness $(a^{1/p})^p = a$ for $a \\ge 0$ uses the real power law $a^{(1/p) \\cdot p} = a^1 = a$. Evaluating a $\\mathbb{Q}$-polynomial at a real number factors through $\\operatorname{algebraMap}_{\\mathbb{Q}\\to\\mathbb{R}}$, which `eq_ratCast` identifies with the literal cast — the bridge that lets the real computation discharge the rational polynomial's annihilation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Real.rpow_mul",
+      "Real.rpow_natCast",
+      "inv_mul_cancel₀",
+      "eq_ratCast",
+      "Polynomial.aeval"
+    ],
+    "prerequisites": [
+      "real rpow power laws",
+      "aeval over ℚ[X]",
+      "rational casts into ℝ"
+    ]
+  },
+  {
+    "id": "ann-sqrt2oq010201-main",
+    "proofId": "sqrt2-minpoly-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 86,
+      "endLine": 97
+    },
+    "type": "insight",
+    "title": "Part II: Main Theorem via the Kummer Irreducibility Criterion",
+    "content": "`minpoly_rpow_of_odd_prime` is the central result: for an odd prime `p` and a nonnegative rational `a` that is not a `p`-th power in `ℚ`, `minpoly ℚ (a^(1/p)) = X^p − C a`. The proof assembles three facts and invokes `minpoly.eq_of_irreducible_of_monic` (which states: a monic irreducible polynomial annihilating an element equals its minimal polynomial up to `symm`):\n\n1. **Monic.** `monic_X_pow_sub_C a hp0`, using `p ≠ 0` from primality.\n2. **Annihilates.** `aeval_rpow` from Part I.\n3. **Irreducible.** The sharp **Kummer criterion** `X_pow_sub_C_irreducible_iff_of_prime_pow` at exponent `n = 1`: over a field, `X^(p^n) − C a` is irreducible iff `a` is not a `p`-th power. The `.mpr` direction consumes exactly the hypothesis `hnp : ∀ b : ℚ, b^p ≠ a`, and `pow_one` rewrites `p^1` to `p`.\n\nThe hypothesis `p ≠ 2` is required by the criterion — odd primality is what makes `X^p − C a` irreducible from non-`p`-th-power-ness alone.",
+    "mathContext": "$\\operatorname{minpoly}_{\\mathbb{Q}}(a^{1/p}) = X^p - a$ when $p$ is an odd prime and $a \\in \\mathbb{Q}_{\\ge 0}$ is not a $p$-th power. The minimal polynomial is monic by definition, so this monic answer is canonical. Irreducibility is the only non-formal input, supplied by Kummer theory: $X^p - a$ is irreducible over $K$ iff $a \\notin K^p$ (for $p$ an odd prime). The remaining steps — monicity, the root, and 'monic + irreducible + root $\\Rightarrow$ minpoly' — are formal.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "X_pow_sub_C_irreducible_iff_of_prime_pow",
+      "minpoly.eq_of_irreducible_of_monic",
+      "monic_X_pow_sub_C",
+      "Kummer theory",
+      "pow_one"
+    ],
+    "prerequisites": [
+      "minimal polynomial API",
+      "Kummer irreducibility criterion",
+      "monic polynomials"
+    ]
+  },
+  {
+    "id": "ann-sqrt2oq010201-integral",
+    "proofId": "sqrt2-minpoly-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 99,
+      "endLine": 104
+    },
+    "type": "concept",
+    "title": "Part III(a): Integrality of the Radical over ℚ",
+    "content": "`rpow_isIntegral` proves `a^(1/p)` is integral over `ℚ` for any nonnegative rational `a` and `p ≠ 0`, witnessed directly by the monic `X^p − C a`: the `IsIntegral` structure `⟨X^p − C a, monic_X_pow_sub_C a hp, aeval_rpow a ha p hp⟩` packages the monic polynomial together with its monicity proof and the annihilation from Part I.\n\nCrucially this lemma does **not** require the not-a-`p`-th-power hypothesis or primality — any nonnegative rational radicand gives an integral element. Stating it separately lets the field-extension corollary (Part III(b)) reuse it without dragging in the irreducibility hypotheses.",
+    "mathContext": "An element $\\alpha$ is integral over $K$ if it is a root of a monic polynomial in $K[X]$. Here $\\alpha = a^{1/p}$ and the witness is the monic $X^p - a$; integrality holds for every nonnegative rational $a$, independent of whether $a$ is a $p$-th power. This is the hypothesis `IntermediateField.adjoin.finrank` needs.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "IsIntegral",
+      "monic_X_pow_sub_C",
+      "integral elements",
+      "minimal polynomial witness"
+    ],
+    "prerequisites": [
+      "integral elements over a field",
+      "monic polynomials",
+      "Part I annihilation lemma"
+    ]
+  },
+  {
+    "id": "ann-sqrt2oq010201-degree",
+    "proofId": "sqrt2-minpoly-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 106,
+      "endLine": 119
+    },
+    "type": "concept",
+    "title": "Part III(b): Algebraic Degree and Field-Extension Degree are p",
+    "content": "Two corollaries read off the degree. `minpoly_rpow_natDegree`: `natDegree (minpoly ℚ (a^(1/p))) = p`, by rewriting with the main theorem and `Polynomial.natDegree_X_pow_sub_C`. `adjoin_rpow_finrank`: `[ℚ(a^(1/p)) : ℚ] = p`, obtained from `IntermediateField.adjoin.finrank` applied to the integral element of Part III(a), whose value is the minimal-polynomial degree just computed.\n\nThese exhibit `a^(1/p)` as a primitive element of a degree-`p` extension of `ℚ` for every odd prime `p` and non-`p`-th-power rational `a` — the radical-extension building block.",
+    "mathContext": "For $\\alpha$ integral over $K$, $[K(\\alpha):K] = \\deg \\operatorname{minpoly}_K(\\alpha)$ (`IntermediateField.adjoin.finrank`). Here the degree is $p$, so $[\\mathbb{Q}(a^{1/p}):\\mathbb{Q}] = p$. The extension is not normal for $p > 2$ (the other $p$-th roots of $a$ are non-real), so $\\mathbb{Q}(a^{1/p})/\\mathbb{Q}$ is a degree-$p$ but non-Galois radical extension.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "IntermediateField.adjoin.finrank",
+      "Polynomial.natDegree_X_pow_sub_C",
+      "Module.finrank",
+      "radical extension"
+    ],
+    "prerequisites": [
+      "field extension degree",
+      "minimal polynomial degree = extension degree",
+      "Part II main theorem"
+    ]
+  }
+]

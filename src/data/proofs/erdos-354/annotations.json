@@ -1,0 +1,248 @@
+[
+  {
+    "id": "ann-e354-header",
+    "proofId": "erdos-354",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #354**: Completeness of Binary Floor Sequences\n\n**Question**: Given α, β > 0 with α/β irrational, can every large integer be written as a sum of terms from {⌊2ᵏα⌋} ∪ {⌊2ᵏβ⌋}?\n\n**Status**: OPEN in general. Known FALSE for some pairs.\n\n**Key results**:\n- Hegyvári (1989): Complete if α is dyadic, β is not\n- Hegyvári (1989): NOT complete if β = 2ᵏα\n- Van Doorn: Complete if α < 2 < β < 3",
+    "mathContext": "This connects representation theory to Diophantine approximation. The floor sequences grow exponentially, so representation questions become subtle.",
+    "significance": "key",
+    "relatedConcepts": [
+      "floor-function",
+      "representation",
+      "completeness"
+    ],
+    "prerequisites": [
+      "floor function ⌊2ᵏα⌋",
+      "additive completeness of integer sequences",
+      "irrationality of α/β"
+    ]
+  },
+  {
+    "id": "ann-e354-floorseq",
+    "proofId": "erdos-354",
+    "range": {
+      "startLine": 40,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "Floor Sequence Definitions",
+    "content": "**FloorSeq α** = {n | ∃ k, n = ⌊2ᵏα⌋.toNat}\n  The set of values achievable by the floor sequence.\n\n**floorSeqTerm α k** = ⌊2ᵏα⌋.toNat\n  The k-th term of the floor sequence.\n\n**Examples**:\n- floorSeqTerm 1.5 0 = ⌊1.5⌋ = 1\n- floorSeqTerm 1.5 1 = ⌊3.0⌋ = 3\n- floorSeqTerm 1.5 2 = ⌊6.0⌋ = 6",
+    "mathContext": "The sequence grows roughly like 2ᵏ · α, but the floor function creates subtle irregularities that matter for representation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Int.floor",
+      "exponential-growth"
+    ],
+    "prerequisites": [
+      "Int.floor and toNat coercion",
+      "exponential growth of 2ᵏα",
+      "indexed sequences over ℕ"
+    ]
+  },
+  {
+    "id": "ann-e354-representable",
+    "proofId": "erdos-354",
+    "range": {
+      "startLine": 48,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Representability and Completeness",
+    "content": "**IsRepresentable α β n**:\n  ∃ S T : Finset ℕ, n = (Σ s ∈ S, ⌊2ˢα⌋) + (Σ t ∈ T, ⌊2ᵗβ⌋)\n\n  Meaning: n can be written as a sum of terms from both sequences.\n\n**IsComplete α β**:\n  ∃ N, ∀ n ≥ N, IsRepresentable α β n\n\n  Meaning: All sufficiently large integers are representable.",
+    "mathContext": "Completeness is the key property. Unlike binary representation (α = β = 1), general pairs may miss some integers.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sum",
+      "representation"
+    ],
+    "prerequisites": [
+      "Finset.sum over subsets",
+      "representing integers as sums of sequence terms",
+      "eventual coverage for n ≥ N"
+    ]
+  },
+  {
+    "id": "ann-e354-dyadic",
+    "proofId": "erdos-354",
+    "range": {
+      "startLine": 59,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "Dyadic Rationals",
+    "content": "**IsDyadicRational x**: ∃ m : ℤ, n : ℕ, x = m / 2ⁿ\n\n  Dyadic rationals are fractions with power-of-2 denominators.\n\n**Examples**: 1/2, 3/4, 7/8, 5/16 are dyadic. 1/3, 1/5 are not.\n\n**HasIrrationalRatio α β**: Irrational(α/β)\n\n  The ratio is not a rational number.",
+    "mathContext": "Dyadic rationals have special properties in base-2: their binary expansions terminate. This creates periodicity in floor sequences.",
+    "significance": "key",
+    "relatedConcepts": [
+      "binary-representation",
+      "periodicity"
+    ],
+    "prerequisites": [
+      "dyadic rationals m/2ⁿ",
+      "terminating binary expansions",
+      "Irrational predicate on α/β"
+    ]
+  },
+  {
+    "id": "ann-e354-hegyvari-positive",
+    "proofId": "erdos-354",
+    "range": {
+      "startLine": 93,
+      "endLine": 101
+    },
+    "type": "concept",
+    "title": "Hegyvári's Positive Result (1989)",
+    "content": "**axiom hegyvari_dyadic_complete**:\n  If α is dyadic rational, β is NOT dyadic, and α/β is irrational,\n  then IsComplete α β.\n\n**Why it works**:\n- Dyadic α gives periodic behavior mod 2ᵏ\n- Non-dyadic β fills in the 'gaps'\n- The irrationality ensures enough variety",
+    "mathContext": "This is the strongest positive result. The key insight is that dyadic and non-dyadic numbers behave complementarily.",
+    "significance": "key",
+    "relatedConcepts": [
+      "hegyvari-1989",
+      "periodicity",
+      "coverage"
+    ],
+    "prerequisites": [
+      "periodicity of dyadic floor sequences mod 2ᵏ",
+      "irrational ratio ensuring variety",
+      "complementary roles of dyadic and non-dyadic reals"
+    ]
+  },
+  {
+    "id": "ann-e354-hegyvari-negative",
+    "proofId": "erdos-354",
+    "range": {
+      "startLine": 103,
+      "endLine": 108
+    },
+    "type": "concept",
+    "title": "Hegyvári's Negative Result (1989)",
+    "content": "**axiom hegyvari_not_complete**:\n  If α ≥ 2 and β = 2ᵏ · α for some k ≥ 1, then ¬IsComplete α β.\n\n**Why it fails**:\n- The sequences are 'aligned' (one is a power-of-2 multiple of the other)\n- They miss certain residue classes\n- No amount of summing can fill the gaps",
+    "mathContext": "This shows the original conjecture is FALSE. The alignment β = 2ᵏα creates systematic holes in coverage.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counterexample",
+      "alignment",
+      "residue-classes"
+    ],
+    "prerequisites": [
+      "alignment β = 2ᵏα",
+      "residue classes missed by aligned sequences",
+      "obstruction to completeness via gaps"
+    ]
+  },
+  {
+    "id": "ann-e354-vandoorn",
+    "proofId": "erdos-354",
+    "range": {
+      "startLine": 116,
+      "endLine": 121
+    },
+    "type": "concept",
+    "title": "Van Doorn's Result",
+    "content": "**axiom vanDoorn_complete**:\n  If 0 < α < 2 < β < 3 and α/β is irrational, then IsComplete α β.\n\n**Why it works**:\n- The separation 2 ∈ (α, β) ensures the sequences don't align\n- The constraint β < 3 prevents gaps from being too large\n- Interleaving properties guarantee coverage",
+    "mathContext": "This is a cleaner sufficient condition that doesn't require dyadic structure. The 'sandwich' around 2 is the key.",
+    "significance": "key",
+    "relatedConcepts": [
+      "separation",
+      "interleaving"
+    ],
+    "prerequisites": [
+      "separation condition α < 2 < β",
+      "interleaving of two floor sequences",
+      "upper bound β < 3 limiting gap size"
+    ]
+  },
+  {
+    "id": "ann-e354-recent",
+    "proofId": "erdos-354",
+    "range": {
+      "startLine": 129,
+      "endLine": 138
+    },
+    "type": "concept",
+    "title": "Recent Negative Results (2024-2025)",
+    "content": "**axiom jiangMa_not_complete** (2024):\n  For 1 < α < 2, there exists K such that for all k ≥ K,\n  ¬IsComplete α (2ᵏ · α).\n\n**axiom fangHe_not_complete** (2025):\n  For 1 < α < 2 and k ≥ 10, ¬IsComplete α (2ᵏ · α).\n\n**Significance**: Extends Hegyvári's α ≥ 2 result to α ∈ (1, 2).",
+    "mathContext": "These recent papers show the alignment phenomenon persists even for small α. The gap between positive and negative results narrows.",
+    "significance": "key",
+    "relatedConcepts": [
+      "jiang-ma-2024",
+      "fang-he-2025",
+      "extension"
+    ],
+    "prerequisites": [
+      "extension of non-completeness to α ∈ (1,2)",
+      "the alignment β = 2ᵏα phenomenon",
+      "threshold k ≥ K in Jiang–Ma and Fang–He"
+    ]
+  },
+  {
+    "id": "ann-e354-conjecture",
+    "proofId": "erdos-354",
+    "range": {
+      "startLine": 146,
+      "endLine": 153
+    },
+    "type": "concept",
+    "title": "Main Conjecture (OPEN)",
+    "content": "**axiom erdos_354_conjecture**:\n  (∀ α β, 0 < α → 0 < β → HasIrrationalRatio α β → IsComplete α β)\n  ∨\n  (∃ α β, 0 < α ∧ 0 < β ∧ HasIrrationalRatio α β ∧ ¬IsComplete α β)\n\n**Known**: The second disjunct is TRUE (counterexamples exist).\n\n**Open**: Precise characterization of when completeness holds.",
+    "mathContext": "The original conjecture (irrational ratio ⟹ complete) is false. The refined question asks for exact conditions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open-problem",
+      "characterization"
+    ],
+    "prerequisites": [
+      "disjunction of universal and existential statements",
+      "HasIrrationalRatio hypothesis",
+      "known existence of counterexamples"
+    ]
+  },
+  {
+    "id": "ann-e354-counterexample",
+    "proofId": "erdos-354",
+    "range": {
+      "startLine": 155,
+      "endLine": 167
+    },
+    "type": "concept",
+    "title": "Counterexamples Exist",
+    "content": "**axiom conjecture_is_false**:\n  ∃ α β, 0 < α ∧ 0 < β ∧ HasIrrationalRatio α β ∧ ¬IsComplete α β\n\n**Construction**: Take α > 2 and β such that:\n- α/β is irrational (for the ratio condition)\n- β = 2ᵏ · α for some k (for the non-completeness via Hegyvári)\n\nThis seems contradictory, but careful construction works.",
+    "mathContext": "The counterexample construction is technical. One can perturb to get irrational ratio while maintaining the 2ᵏ relationship asymptotically.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counterexample",
+      "construction"
+    ],
+    "prerequisites": [
+      "existential counterexample construction",
+      "perturbing β near 2ᵏα while keeping α/β irrational",
+      "Hegyvári non-completeness for aligned pairs"
+    ]
+  },
+  {
+    "id": "ann-e354-refined",
+    "proofId": "erdos-354",
+    "range": {
+      "startLine": 163,
+      "endLine": 168
+    },
+    "type": "concept",
+    "title": "Refined Conjecture",
+    "content": "**axiom refined_conjecture**:\n  If HasIrrationalRatio α β AND β ≠ 2ᵏ · α for all k ∈ ℤ,\n  then IsComplete α β ∨ ¬IsComplete α β.\n\n**Interpretation**: When we exclude the known counterexamples (β = 2ᵏα), is completeness always achieved?\n\n**Status**: UNKNOWN - This is the refined open question.",
+    "mathContext": "Hegyvári conjectured that excluding power-of-2 multiples should suffice. This remains open.",
+    "significance": "key",
+    "relatedConcepts": [
+      "refined-conjecture",
+      "power-exclusion"
+    ],
+    "prerequisites": [
+      "excluding β = 2ᵏα for all integers k",
+      "Hegyvári's refined completeness conjecture",
+      "open characterization of completeness"
+    ]
+  }
+]

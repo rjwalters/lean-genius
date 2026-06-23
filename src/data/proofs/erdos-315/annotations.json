@@ -1,0 +1,445 @@
+[
+  {
+    "id": "ann-e315-header",
+    "proofId": "erdos-315",
+    "range": {
+      "startLine": 1,
+      "endLine": 18
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #315: Sylvester's Sequence and the Vardi Constant**\n\nSylvester's sequence: u₁ = 2, u_{n+1} = u_n² - u_n + 1 satisfies Σ 1/u_n = 1.\n\n**Question:** For any other sequence (a_n) with Σ 1/a_n = 1, is liminf a_n^{1/2^n} < c₀ ≈ 1.264085?\n\n**Answer: YES** - Kamio (2025), Li-Tang (2025)\n\nSylvester's sequence achieves the maximum growth rate among all Egyptian sequences for 1.",
+    "mathContext": "Proved independently by Kamio (arXiv:2503.02317) and Li-Tang (arXiv:2503.12277) in 2025, solving a 45-year-old conjecture.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Egyptian fractions",
+      "Vardi constant",
+      "Greedy algorithms"
+    ],
+    "prerequisites": [
+      "Egyptian fractions",
+      "asymptotic analysis",
+      "extremal combinatorics"
+    ]
+  },
+  {
+    "id": "ann-e315-sylvester-def",
+    "proofId": "erdos-315",
+    "range": {
+      "startLine": 52,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "Sylvester's Sequence",
+    "content": "**sylvester:**\n\nThe recursive definition: sylvester 0 = 2, sylvester (n+1) = sylvester n² - sylvester n + 1.\n\n**OEIS A000058:** 2, 3, 7, 43, 1807, 3263443, ...\n\nGrows doubly exponentially: u_n ~ c₀^{2^n}.\n\nNamed after J.J. Sylvester who studied it in 1880.",
+    "mathContext": "Also called Euclid numbers minus 1 due to connection with Euclid's proof of infinitely many primes.",
+    "significance": "key",
+    "relatedConcepts": [
+      "OEIS A000058",
+      "Recurrence relations"
+    ],
+    "prerequisites": [
+      "recurrence relations",
+      "integer sequences"
+    ]
+  },
+  {
+    "id": "ann-e315-values",
+    "proofId": "erdos-315",
+    "range": {
+      "startLine": 58,
+      "endLine": 63
+    },
+    "type": "concept",
+    "title": "First Few Values",
+    "content": "**Concrete values:**\n\n- sylvester 0 = 2\n- sylvester 1 = 3 = 2² - 2 + 1\n- sylvester 2 = 7 = 3² - 3 + 1\n- sylvester 3 = 43 = 7² - 7 + 1\n- sylvester 4 = 1807 = 43² - 43 + 1\n\nAll proved by rfl (computation).",
+    "mathContext": "$u_0 = 2, u_1 = 3, u_2 = 7, u_3 = 43, u_4 = 1807$. The next term $u_5 = 3{,}263{,}443$ already exceeds 3 million, illustrating doubly exponential growth.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Reflexivity",
+      "Computation",
+      "Doubly exponential growth"
+    ],
+    "prerequisites": [
+      "Nat arithmetic",
+      "rfl tactic"
+    ]
+  },
+  {
+    "id": "ann-e315-recurrence",
+    "proofId": "erdos-315",
+    "range": {
+      "startLine": 65,
+      "endLine": 67
+    },
+    "type": "concept",
+    "title": "Recurrence Relation",
+    "content": "**sylvester_recurrence:**\n\nThe defining recurrence $u_{n+1} = u_n^2 - u_n + 1$ stated as a theorem, proved by `rfl` since it matches the definition.\n\nThis recurrence arises from the greedy algorithm: if the remainder after taking $1/u_0, \\ldots, 1/u_n$ is $r$, then $u_{n+1} = \\lceil 1/r \\rceil$, and the identity $u_{n+1} = u_n^2 - u_n + 1$ follows from $r = 1/(u_n(u_n-1))$.",
+    "mathContext": "$u_{n+1} = u_n^2 - u_n + 1 = u_n(u_n - 1) + 1$. Equivalently, $u_{n+1} - 1 = u_n(u_n - 1)$, which makes the telescoping structure transparent.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Recurrence relations",
+      "Greedy algorithms"
+    ],
+    "prerequisites": [
+      "Nat arithmetic",
+      "rfl tactic"
+    ]
+  },
+  {
+    "id": "ann-e315-strict-mono",
+    "proofId": "erdos-315",
+    "range": {
+      "startLine": 69,
+      "endLine": 91
+    },
+    "type": "concept",
+    "title": "Strict Monotonicity",
+    "content": "**sylvester_strictMono:**\n\nSylvester's sequence is strictly increasing: m < n → sylvester m < sylvester n.\n\n**Proof idea:** By strong induction. Since u_{n+1} = u_n² - u_n + 1 and u_n ≥ 2, we have u_{n+1} > u_n.\n\nThis is needed to ensure the EgyptianSequence structure is valid.",
+    "mathContext": "$m < n \\implies u_m < u_n$. Since $u_{n+1} = u_n^2 - u_n + 1 \\geq u_n^2 - u_n + 1 > u_n$ for $u_n \\geq 2$, the gap $u_{n+1} - u_n = u_n(u_n - 1) \\geq 2$ grows super-exponentially.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Strong induction",
+      "Monotonicity",
+      "StrictMono typeclass"
+    ],
+    "prerequisites": [
+      "strong induction",
+      "StrictMono",
+      "Nat.lt_succ_iff_lt_or_eq"
+    ]
+  },
+  {
+    "id": "ann-e315-ge-two",
+    "proofId": "erdos-315",
+    "range": {
+      "startLine": 93,
+      "endLine": 97
+    },
+    "type": "concept",
+    "title": "Lower Bound",
+    "content": "**sylvester_ge_two:**\n\nAll terms of Sylvester's sequence are at least 2: $u_n \\geq 2$ for all $n$.\n\n**Proof:** By induction. Base: $u_0 = 2$. Step: $u_{n+1} = u_n^2 - u_n + 1 \\geq 4 - 2 + 1 = 3 \\geq 2$.\n\nThis lower bound is essential for the strict monotonicity proof and ensures all unit fractions $1/u_n$ are well-defined and positive.",
+    "mathContext": "$u_n \\geq 2$ for all $n \\in \\mathbb{N}$. Combined with monotonicity, this gives $u_n \\geq n + 2$, ensuring rapid convergence of $\\sum 1/u_n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Induction",
+      "Lower bounds",
+      "Well-definedness"
+    ],
+    "prerequisites": [
+      "Nat.induction",
+      "omega tactic"
+    ]
+  },
+  {
+    "id": "ann-e315-product",
+    "proofId": "erdos-315",
+    "range": {
+      "startLine": 103,
+      "endLine": 108
+    },
+    "type": "definition",
+    "title": "Sylvester Product",
+    "content": "**sylvesterProduct:**\n\nThe partial product $P_n = \\prod_{k=0}^{n-1} u_k$. This auxiliary function supports the telescoping argument for $\\sum 1/u_n = 1$.\n\nThe key relation is $1/P_n - 1/P_{n+1} = 1/(u_n \\cdot P_n) \\cdot (u_n - 1)$, which telescopes to give the partial sums of unit fractions.",
+    "mathContext": "$P_0 = 1, \\; P_{n+1} = P_n \\cdot u_n$. The partial sums satisfy $\\sum_{k=0}^{n-1} \\frac{1}{u_k} = 1 - \\frac{1}{P_n}$, so the series converges to 1 since $P_n \\to \\infty$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Partial products",
+      "Telescoping sums"
+    ],
+    "prerequisites": [
+      "Nat arithmetic",
+      "recursive definitions"
+    ]
+  },
+  {
+    "id": "ann-e315-identity",
+    "proofId": "erdos-315",
+    "range": {
+      "startLine": 110,
+      "endLine": 114
+    },
+    "type": "concept",
+    "title": "Key Identity",
+    "content": "**sylvester_identity:**\n\nu_{n+1} - 1 = u_n(u_n - 1)\n\nThis identity is central to proving Σ 1/u_n = 1 via telescoping.\n\n**Proof:** Direct computation: (u² - u + 1) - 1 = u² - u = u(u-1).",
+    "mathContext": "$u_{n+1} - 1 = u_n(u_n - 1)$. Dividing both sides by $(u_{n+1}-1)(u_n - 1)$ gives $\\frac{1}{u_n - 1} = \\frac{u_n}{u_{n+1} - 1} = \\frac{1}{u_n - 1} \\cdot \\frac{u_n(u_n-1)}{u_{n+1}-1}$, yielding the telescoping decomposition $\\frac{1}{u_n} = \\frac{1}{u_n - 1} - \\frac{1}{u_{n+1} - 1}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Algebraic identities",
+      "Telescoping",
+      "Partial fraction decomposition"
+    ],
+    "prerequisites": [
+      "algebraic identities",
+      "Nat.sub_add_cancel",
+      "ring tactic"
+    ]
+  },
+  {
+    "id": "ann-e315-sum-one",
+    "proofId": "erdos-315",
+    "range": {
+      "startLine": 121,
+      "endLine": 124
+    },
+    "type": "concept",
+    "title": "Sum Equals One",
+    "content": "**sylvester_sum_equals_one:**\n\nΣ_{n=0}^∞ 1/u_n = 1\n\nThis remarkable property makes Sylvester's sequence an Egyptian fraction representation of 1.\n\n**Proof idea:** Use the identity u_{n+1} - 1 = u_n(u_n - 1) to get a telescoping product.",
+    "mathContext": "1 = 1/2 + 1/3 + 1/7 + 1/43 + 1/1807 + ... This is the greedy algorithm's output for representing 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Egyptian fractions",
+      "Infinite series"
+    ],
+    "prerequisites": [
+      "infinite series",
+      "telescoping products",
+      "sylvester_identity"
+    ]
+  },
+  {
+    "id": "ann-e315-vardi",
+    "proofId": "erdos-315",
+    "range": {
+      "startLine": 130,
+      "endLine": 141
+    },
+    "type": "definition",
+    "title": "The Vardi Constant",
+    "content": "**vardiConstant:**\n\nc₀ = lim_{n→∞} u_n^{1/2^n} ≈ 1.264085...\n\nThe Vardi constant (OEIS A076393) measures the growth rate of Sylvester's sequence.\n\n**Properties:**\n- Well-defined limit exists (axiomatized)\n- Bounded: 1.264 < c₀ < 1.265\n- Believed to be transcendental",
+    "mathContext": "Named after Ilan Vardi who studied it in his 1991 book. Defined here as $c_0 = \\sup_n u_n^{1/2^n}$, which equals the limit since the sequence $u_n^{1/2^n}$ is eventually increasing. The constant also appears in the dynamics of the iteration $z \\mapsto z^2 - z + 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "OEIS A076393",
+      "Growth rates",
+      "Transcendental numbers",
+      "Iteration dynamics"
+    ],
+    "prerequisites": [
+      "Real.rpow",
+      "Filter.Tendsto",
+      "sequence limits",
+      "iSup"
+    ]
+  },
+  {
+    "id": "ann-e315-egyptian-seq",
+    "proofId": "erdos-315",
+    "range": {
+      "startLine": 147,
+      "endLine": 153
+    },
+    "type": "definition",
+    "title": "Egyptian Sequence Structure",
+    "content": "**EgyptianSequence:**\n\nA structure capturing sequences (a_n) satisfying:\n- strictly increasing\n- all terms positive\n- Σ 1/a_n = 1 (in the limit)\n\nThis formalizes 'any other sequence' in the conjecture statement.",
+    "mathContext": "An Egyptian fraction representation of 1 is a set of distinct positive integers $\\{a_1 < a_2 < \\cdots\\}$ with $\\sum_{n=1}^{\\infty} 1/a_n = 1$. The structure fields encode: `StrictMono a` ($a_1 < a_2 < \\cdots$), `positive` ($a_n > 0$), and `sum_eq_one` ($\\sum 1/a_n \\to 1$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lean structures",
+      "Type-theoretic encoding",
+      "Egyptian fractions"
+    ],
+    "prerequisites": [
+      "Lean structures",
+      "StrictMono",
+      "infinite series",
+      "Filter.Tendsto"
+    ]
+  },
+  {
+    "id": "ann-e315-growth-rate",
+    "proofId": "erdos-315",
+    "range": {
+      "startLine": 155,
+      "endLine": 157
+    },
+    "type": "definition",
+    "title": "Growth Rate",
+    "content": "**growthRate:**\n\nFor an EgyptianSequence seq: growthRate(seq) = liminf a_n^{1/2^n}\n\nUsing liminf (not lim) allows for sequences where the limit may not exist.\n\nThe conjecture compares growthRate(seq) to vardiConstant.",
+    "mathContext": "$\\text{growthRate}(a) = \\liminf_{n \\to \\infty} a_n^{1/2^n}$. The $2^n$-th root normalization is natural because Sylvester's sequence satisfies $u_{n+1} \\approx u_n^2$, so $u_n \\approx c_0^{2^n}$ and $u_n^{1/2^n} \\to c_0$. Using `liminf` rather than `lim` is essential since the limit need not exist for general Egyptian sequences.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Liminf",
+      "Asymptotic analysis",
+      "Growth rate normalization"
+    ],
+    "prerequisites": [
+      "Filter.liminf",
+      "Real.rpow",
+      "EgyptianSequence"
+    ]
+  },
+  {
+    "id": "ann-e315-sylvester-egyptian",
+    "proofId": "erdos-315",
+    "range": {
+      "startLine": 159,
+      "endLine": 164
+    },
+    "type": "definition",
+    "title": "Sylvester as Egyptian Sequence",
+    "content": "**sylvesterEgyptian:**\n\nConstructs Sylvester's sequence as an instance of EgyptianSequence, verifying:\n- `strictMono`: from `sylvester_strictMono`\n- `positive`: from `sylvester_ge_two` (≥ 2 implies > 0)\n- `sum_eq_one`: from `sylvester_sum_equals_one` (axiomatized)\n\nThis allows comparing Sylvester's growth rate against arbitrary Egyptian sequences.",
+    "mathContext": "The Lean term `sylvesterEgyptian : EgyptianSequence` witnesses that Sylvester's sequence belongs to the class of Egyptian sequences. The positivity proof chains $0 < 2 \\leq u_n$ via `Nat.lt_of_lt_of_le`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Structure instances",
+      "Witness terms"
+    ],
+    "prerequisites": [
+      "EgyptianSequence",
+      "sylvester_strictMono",
+      "sylvester_sum_equals_one"
+    ]
+  },
+  {
+    "id": "ann-e315-conjecture",
+    "proofId": "erdos-315",
+    "range": {
+      "startLine": 166,
+      "endLine": 172
+    },
+    "type": "definition",
+    "title": "The Erdős-Graham Conjecture",
+    "content": "**erdosGrahamConjecture:**\n\nFor any EgyptianSequence seq with seq.a ≠ sylvester:\n\n  growthRate(seq) < vardiConstant\n\nSylvester's sequence has the **strictly** largest growth rate among all Egyptian sequences for 1.\n\nThis formalizes Erdős Problem #315.",
+    "mathContext": "$\\forall \\, (a_n) \\in \\mathcal{E}, \\; a \\neq u \\implies \\liminf_{n \\to \\infty} a_n^{1/2^n} < c_0$, where $\\mathcal{E}$ is the set of strictly increasing sequences with $\\sum 1/a_n = 1$. The strict inequality means Sylvester's sequence is the *unique* maximizer.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Optimality",
+      "Extremal sequences",
+      "Uniqueness of maximizer"
+    ],
+    "prerequisites": [
+      "EgyptianSequence",
+      "growthRate",
+      "vardiConstant"
+    ]
+  },
+  {
+    "id": "ann-e315-solution",
+    "proofId": "erdos-315",
+    "range": {
+      "startLine": 178,
+      "endLine": 185
+    },
+    "type": "concept",
+    "title": "The Solution (2025)",
+    "content": "**kamio_li_tang_2025:**\n\nThe conjecture is TRUE - proved independently by:\n- Y. Kamio (Japan), arXiv:2503.02317\n- Z. Li and Q. Tang (China), arXiv:2503.12277\n\nBoth papers appeared in 2025, solving a problem open since 1980.",
+    "mathContext": "A 45-year-old conjecture resolved! The proofs use deep analysis of Egyptian fraction representations and careful bounds on the growth rates of competing sequences.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Recent results",
+      "Independent discovery"
+    ],
+    "prerequisites": [
+      "erdosGrahamConjecture definition"
+    ]
+  },
+  {
+    "id": "ann-e315-double-exp",
+    "proofId": "erdos-315",
+    "range": {
+      "startLine": 197,
+      "endLine": 204
+    },
+    "type": "concept",
+    "title": "Double Exponential Growth",
+    "content": "**sylvester_double_exponential:**\n\nFor any ε > 0, eventually |u_n^{1/2^n} - c₀| < ε.\n\nThis means u_n ~ c₀^{2^n} - doubly exponential growth.\n\n**Proof:** Direct application of vardiConstant_is_limit via Metric.tendsto_atTop.",
+    "mathContext": "$\\forall \\varepsilon > 0, \\; \\exists N : \\forall n \\geq N, \\; |u_n^{1/2^n} - c_0| < \\varepsilon$. Equivalently, $\\log u_n \\sim 2^n \\log c_0$, so $u_n$ grows as a tower of height $n$. This is faster than any fixed tower $a^{b^n}$ but slower than the Ackermann function.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Tower of exponents",
+      "Convergence",
+      "Metric.tendsto_atTop"
+    ],
+    "prerequisites": [
+      "vardiConstant_is_limit",
+      "Metric.tendsto_atTop"
+    ]
+  },
+  {
+    "id": "ann-e315-ratio",
+    "proofId": "erdos-315",
+    "range": {
+      "startLine": 206,
+      "endLine": 209
+    },
+    "type": "concept",
+    "title": "Ratio Limit",
+    "content": "**sylvester_ratio_limit:**\n\nThe ratio $u_{n+1}/u_n^2$ converges to 1. Since $u_{n+1} = u_n^2 - u_n + 1$, we have $u_{n+1}/u_n^2 = 1 - 1/u_n + 1/u_n^2 \\to 1$.\n\nThis captures the asymptotic dominance of the $u_n^2$ term in the recurrence and is the mechanism behind the doubly exponential growth.",
+    "mathContext": "$\\lim_{n \\to \\infty} \\frac{u_{n+1}}{u_n^2} = 1$. More precisely, $u_{n+1} = u_n^2(1 - 1/u_n + 1/u_n^2)$, so the correction factor $1 - 1/u_n + 1/u_n^2 \\to 1$ super-exponentially fast.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Asymptotic analysis",
+      "Quadratic recurrences"
+    ],
+    "prerequisites": [
+      "Filter.Tendsto",
+      "nhds 1",
+      "Real division"
+    ]
+  },
+  {
+    "id": "ann-e315-related",
+    "proofId": "erdos-315",
+    "range": {
+      "startLine": 215,
+      "endLine": 226
+    },
+    "type": "concept",
+    "title": "Related Problems",
+    "content": "**Connections to other Egyptian fraction problems:**\n\n- **Erdős-Straus conjecture:** For every $n \\geq 2$, can $4/n$ be written as a sum of three unit fractions? Open since 1948, verified for $n \\leq 10^{17}$.\n\n- **Odd greedy expansion:** Always take the largest *odd* unit fraction. Does this terminate for every positive rational? Related to questions about the structure of Egyptian representations.\n\n- **OEIS references:** A000058 (Sylvester's sequence), A076393 (Vardi constant digits).",
+    "mathContext": "The Erdős-Straus conjecture: $\\forall n \\geq 2, \\exists a,b,c \\in \\mathbb{Z}^+ : 4/n = 1/a + 1/b + 1/c$. While Problem #315 concerns infinite representations summing to 1, Erdős-Straus concerns finite representations of $4/n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Erdős-Straus conjecture",
+      "Odd greedy expansion",
+      "OEIS"
+    ],
+    "prerequisites": [
+      "Egyptian fractions",
+      "Rational arithmetic"
+    ]
+  },
+  {
+    "id": "ann-e315-historical",
+    "proofId": "erdos-315",
+    "range": {
+      "startLine": 228,
+      "endLine": 236
+    },
+    "type": "concept",
+    "title": "Historical Correction",
+    "content": "**Historical note on the original formulation:**\n\nThe 1980 Erdős-Graham monograph [ErGr80, p.41] stated the problem with $u_1 = 1$ and recurrence $u_{n+1} = u_n(u_n + 1)$, giving the sequence 1, 2, 6, 42, 1806, ... But $\\sum 1/u_n > 1$ for this sequence (since $1/1 = 1$ already). Quanyu Tang identified this error; the correct formulation uses the standard Sylvester sequence starting at $u_1 = 2$.",
+    "mathContext": "With $u_1 = 1$: the sequence is $1, 2, 6, 42, 1806, \\ldots$ and $\\sum_{n=1}^{\\infty} 1/u_n = 1/1 + 1/2 + 1/6 + 1/42 + \\cdots > 1$, violating the Egyptian fraction condition. The correct sequence $2, 3, 7, 43, 1807, \\ldots$ satisfies $\\sum 1/u_n = 1$ exactly.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Errata",
+      "Erdős-Graham monograph"
+    ],
+    "prerequisites": [
+      "Egyptian fractions"
+    ]
+  },
+  {
+    "id": "ann-e315-summary",
+    "proofId": "erdos-315",
+    "range": {
+      "startLine": 245,
+      "endLine": 250
+    },
+    "type": "concept",
+    "title": "Summary Theorem",
+    "content": "**erdos_315_summary:**\n\nCombines the main result with the Vardi constant bounds:\n\n1. erdosGrahamConjecture holds (Kamio, Li-Tang 2025)\n2. 1.264 < vardiConstant < 1.265\n\nSylvester's sequence is the unique maximizer of growth rate among Egyptian sequences for 1.",
+    "mathContext": "$(\\text{erdosGrahamConjecture}) \\wedge (1.264 < c_0 < 1.265)$. The conjunction packages both the qualitative result (Sylvester is optimal) and quantitative bounds on the optimal growth rate into a single statement.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Main theorem",
+      "Summary",
+      "Conjunction"
+    ],
+    "prerequisites": [
+      "kamio_li_tang_2025",
+      "vardiConstant_bounds"
+    ]
+  }
+]

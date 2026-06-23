@@ -1,0 +1,138 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "solution-of-cubic-oq-05",
+    "range": {
+      "startLine": 1,
+      "endLine": 49
+    },
+    "type": "concept",
+    "title": "Module Header and Mathematical Context",
+    "content": "The file imports `Mathlib`, `Proofs.SolutionOfCubic` (Cardano's formula, Wiedijk #37), and `Proofs.GeneralQuartic` (Ferrari's method, Wiedijk #46). The module header documents the full arithmetic derivation of the Tschirnhaus reduction: substituting $m = t - 5p/6$ into the resolvent cubic $8m^3 + 20pm^2 + (16p^2-8r)m + (4p^3-4pr-q^2) = 0$ eliminates the quadratic term (coefficient: $8(-3 \\cdot 5p/6) + 20p = 0$) and produces the coefficients $P_r = -p^2/12 - r$ and $Q_r = pr/3 - p^3/108 - q^2/8$.",
+    "mathContext": "Ferrari's resolvent cubic arises from the depressed quartic $y^4 + py^2 + qy + r = 0$ via the substitution $y^2 + m = \\sqrt{\\ldots}$. The resolvent root $m_0$ enables completing-the-square twice to factor the quartic into two quadratics.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Ferrari's quartic method",
+      "Tschirnhaus transformation",
+      "depressed polynomial",
+      "Cardano's formula"
+    ],
+    "prerequisites": [
+      "Lean 4 module system",
+      "polynomial algebra over ℂ"
+    ]
+  },
+  {
+    "id": "ann-tschirnhaus-params",
+    "proofId": "solution-of-cubic-oq-05",
+    "range": {
+      "startLine": 53,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "Tschirnhaus Parameters: resolventP, resolventQ, tschirnhausShift",
+    "content": "Three noncomputable definitions encoding the Tschirnhaus reduction of Ferrari's resolvent cubic:\n\n- **`resolventP (p r : ℂ) := −p²/12 − r`**: The linear coefficient of the depressed resolvent cubic. Derived from collecting the $t$ terms after substitution: $8 \\cdot 3 \\cdot (5p/6)^2 - 20p \\cdot 2 \\cdot (5p/6) + (16p^2-8r) = 8P_r$.\n\n- **`resolventQ (p q r : ℂ) := pr/3 − p³/108 − q²/8`**: The constant term of the depressed resolvent. Derived from the full expansion: the constant terms after substitution give $8Q_r$.\n\n- **`tschirnhausShift (p : ℂ) := 5p/6`**: The Tschirnhaus shift. For a cubic $am^3 + bm^2 + \\ldots$, the shift is $b/(3a) = 20p/(3 \\cdot 8) = 5p/6$.",
+    "mathContext": "Tschirnhaus transformations (1683) are substitutions that eliminate specific terms from polynomials. For a cubic $at^3 + bt^2 + ct + d$, the shift $t \\mapsto t - b/(3a)$ eliminates the $t^2$ term, producing the 'depressed' form. This technique is essential for applying Cardano's formula, which is stated for depressed cubics.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Tschirnhaus transformation",
+      "depressed cubic",
+      "resolvent cubic",
+      "coefficient computation"
+    ],
+    "prerequisites": [
+      "polynomial algebra",
+      "Ferrari's resolvent cubic from GeneralQuartic.lean"
+    ]
+  },
+  {
+    "id": "ann-key-identity",
+    "proofId": "solution-of-cubic-oq-05",
+    "range": {
+      "startLine": 71,
+      "endLine": 88
+    },
+    "type": "insight",
+    "title": "Key Identity: Tschirnhaus Reduction by ring",
+    "content": "The central algebraic identity of the file:\n\n```\n(resolventCubic p q r).eval (t − tschirnhausShift p) = 8 * (depressedCubic (resolventP p r) (resolventQ p q r)).eval t\n```\n\nThe proof strategy is:\n1. **Unfold** all definitions with `simp only` — `resolventCubic`, `depressedCubic`, `resolventP`, `resolventQ`, `tschirnhausShift`, and all polynomial evaluation lemmas (`eval_add`, `eval_mul`, `eval_pow`, `eval_X`, `eval_C`, etc.).\n2. **Apply `ring`** — Lean's ring tactic expands both sides as polynomials in $t$, $p$, $q$, $r$ and verifies they are equal by direct computation.\n\nThis is a genuine polynomial identity: both sides are degree-3 polynomials in $t$ with coefficients in $\\mathbb{Z}[p,q,r]$ (after clearing the factor of 8), and `ring` certifies their equality definitively.",
+    "mathContext": "Expanding $(t - 5p/6)$ into $8m^3 + 20pm^2 + (16p^2-8r)m + (4p^3-4pr-q^2)$:\n- $t^3$ coefficient: $8$ ✓\n- $t^2$ coefficient: $8(-3)(5p/6) + 20p = -20p + 20p = 0$ ✓ (quadratic eliminated)\n- $t^1$ coefficient: $8 \\cdot 3(5p/6)^2 - 20p \\cdot 2(5p/6) + 16p^2 - 8r = 8(-p^2/12 - r) = 8P_r$ ✓\n- $t^0$ coefficient: (full expansion) $= 8(pr/3 - p^3/108 - q^2/8) = 8Q_r$ ✓",
+    "significance": "key",
+    "relatedConcepts": [
+      "ring tactic",
+      "polynomial identity",
+      "Tschirnhaus substitution",
+      "coefficient verification"
+    ],
+    "prerequisites": [
+      "Mathlib polynomial evaluation API",
+      "ring arithmetic in ℂ"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "solution-of-cubic-oq-05",
+    "range": {
+      "startLine": 89,
+      "endLine": 107
+    },
+    "type": "insight",
+    "title": "Main Theorem: Cardano + Tschirnhaus → Resolvent Root",
+    "content": "The mathematical heart of the file:\n\n**Given**: $u^3 + v^3 = -Q_r$ and $u \\cdot v = -P_r/3$ (Cardano's hypotheses for the depressed resolvent cubic $t^3 + P_r t + Q_r = 0$).\n\n**Proves**: $(u+v) - 5p/6$ is a root of Ferrari's resolvent cubic.\n\n**Proof**:\n1. Rewrite using the Tschirnhaus identity — the goal reduces to showing $8 \\cdot (\\text{depressedCubic}\\; P_r\\; Q_r)(u+v) = 0$.\n2. Apply `SolutionOfCubic.cardano_formula` — since $u, v$ satisfy the Cardano hypotheses, $(\\text{depressedCubic}\\; P_r\\; Q_r)(u+v) = 0$.\n3. Conclude: $8 \\cdot 0 = 0$ by `mul_zero`.\n\nThis is a beautiful example of lemma composition: the algebraic identity does the heavy lifting, and the main theorem is just two rewrites.",
+    "mathContext": "This theorem is the precise statement connecting Wiedijk #37 and #46: to apply Ferrari's quartic method, one needs a root $m_0$ of the resolvent cubic. This root is $m_0 = (u+v) - 5p/6$ where $u, v$ are the Cardano cube roots of the depressed resolvent cubic. The chain is: quartic → resolvent cubic → Tschirnhaus shift → depressed cubic → Cardano's formula.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lemma composition",
+      "Cardano's formula",
+      "Ferrari's method",
+      "resolvent cubic"
+    ],
+    "prerequisites": [
+      "resolvent_tschirnhaus_identity",
+      "SolutionOfCubic.cardano_formula"
+    ]
+  },
+  {
+    "id": "ann-fta-existence",
+    "proofId": "solution-of-cubic-oq-05",
+    "range": {
+      "startLine": 110,
+      "endLine": 133
+    },
+    "type": "concept",
+    "title": "FTA Existence: Every Resolvent Cubic Has a Root",
+    "content": "Two existence theorems proved via the Fundamental Theorem of Algebra:\n\n**`depressed_resolvent_has_root`**: The monic depressed cubic $t^3 + P_r t + Q_r$ has a root over $\\mathbb{C}$. The proof:\n1. Show the degree-3 coefficient is nonzero (`simp` + `norm_num` on the explicit coefficient formula)\n2. Deduce the degree is nonzero\n3. Apply `IsAlgClosed.exists_root` — valid because $\\mathbb{C}$ is algebraically closed\n\n**`resolvent_has_root_via_tschirnhaus`**: Immediately derives that the full resolvent cubic also has a root, by lifting the depressed root via $m = t_0 - 5p/6$.\n\nThis mirrors the pattern in `GeneralQuartic.resolvent_cubic_has_root` — a systematic technique for proving polynomial roots exist in $\\mathbb{C}$ without constructing them explicitly.",
+    "mathContext": "$\\mathbb{C}$ is algebraically closed (this is the FTA). The instance `IsAlgClosed ℂ` in Mathlib provides `IsAlgClosed.exists_root : p.degree ≠ 0 → ∃ x, p.eval x = 0`. The degree-3 coefficient of `depressedCubic P_r Q_r` is the coefficient of $X^3$ in $X^3 + C P_r \\cdot X + C Q_r$, which equals 1.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "IsAlgClosed",
+      "Fundamental Theorem of Algebra",
+      "polynomial degree",
+      "existence proofs"
+    ],
+    "prerequisites": [
+      "algebraic closure of ℂ",
+      "Mathlib polynomial coefficient API"
+    ]
+  },
+  {
+    "id": "ann-numerical-checks",
+    "proofId": "solution-of-cubic-oq-05",
+    "range": {
+      "startLine": 143,
+      "endLine": 183
+    },
+    "type": "concept",
+    "title": "Numerical Parameter Verification",
+    "content": "Five concrete verifications:\n\n1. **`params_p0_q2_r0`**: When $p=0$, the Tschirnhaus shift vanishes, $P_r = 0$, and $Q_r = -1/2$. The resolvent cubic is $8m^3 - 4 = 0$ (root $m = \\sqrt[3]{1/2}$) and the depressed form is $t^3 - 1/2 = 0$ — they agree since there's no shift.\n\n2. **`params_p_neg1_q0_r0`**: When $p=-1$, the shift is $-5/6$, $P_r = -1/12$, $Q_r = 1/108$.\n\n3. **`identity_at_t1_p0`**: Evaluates both sides at $t=1$, $p=0$, $q=2$, $r=0$ — both equal 4.\n\n4. **`identity_at_t2_p0_q60`**: Evaluates both sides at $t=2$, $p=0$, $q=60$, $r=0$ — both equal $-3536$.\n\nThese examples serve as sanity checks on the parameter formulas and the key identity, verified by `norm_num` and `ring`.",
+    "mathContext": "For $p=0$: no Tschirnhaus shift, $8m^3 - q^2 = 0$, so $m^3 = q^2/8$. For the identity at $t=1$, $p=0$, $q=2$: LHS $= 8(1)^3 - (2)^2 = 4$; RHS $= 8(1^3 - 1/2) = 4$. ✓",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "norm_num",
+      "concrete verification",
+      "sanity checks"
+    ],
+    "prerequisites": [
+      "resolventP, resolventQ, tschirnhausShift definitions"
+    ]
+  }
+]

@@ -1,0 +1,196 @@
+{
+  "id": "erdos-6",
+  "title": "Erdős Problem #6: Monotone Prime Gap Sequences",
+  "slug": "erdos-6",
+  "description": "Are there infinitely many n with d_n < d_{n+1} < d_{n+2}? Proved affirmatively by Banks-Freiberg-Turnage-Butterbaugh (2015) using Maynard-Tao machinery.",
+  "meta": {
+    "author": "Banks, Freiberg, Turnage-Butterbaugh (2015)",
+    "sourceUrl": "https://erdosproblems.com/6",
+    "date": "2015",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos6Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "prime-gaps",
+      "maynard-tao",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 6,
+    "erdosUrl": "https://erdosproblems.com/6",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$100",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime.nth",
+        "description": "The n-th prime number function",
+        "module": "Mathlib.Data.Nat.Prime.Nth"
+      },
+      {
+        "theorem": "Nat.Prime.nth_strictMono",
+        "description": "The prime enumeration is strictly monotone",
+        "module": "Mathlib.Data.Nat.Prime.Nth"
+      }
+    ],
+    "originalContributions": [
+      "Prime gap function d_n = p_{n+1} - p_n formalized",
+      "HasIncreasingGaps and HasDecreasingGaps predicates",
+      "InfinitelyManyIncreasing/Decreasing definitions",
+      "Banks-Freiberg-Turnage-Butterbaugh theorem axiomatized",
+      "Main result erdos_6_solved derived from the theorem",
+      "Maynard-Tao and Zhang bounded gaps machinery referenced",
+      "Generalization to arbitrary length m proved"
+    ],
+    "dateAdded": "2025-01-14",
+    "axiomCount": 2,
+    "lineCount": 191,
+    "prerequisites": [
+      "Prime gaps and the distribution of primes",
+      "Sequences and monotonicity",
+      "Prime number theorem (for context)",
+      "Erdős's work on prime gap problems"
+    ],
+    "assumptions": "2 axioms: banks_freiberg_turnage_butterbaugh, banks_freiberg_turnage_butterbaugh_decreasing. 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10,
+    "definitionCount": 7
+  },
+  "overview": {
+    "historicalContext": "This problem was posed by Erdős and Turán in 1948. Erdős was confident it was true, famously offering substantial money only for a *disproof*. The problem remained open for over 60 years until the revolutionary work on bounded gaps between primes.\n\nThe breakthrough came from Zhang's 2013 proof of bounded gaps (infinitely many prime pairs differ by at most 70 million), followed by Maynard and Tao's improvements. Banks, Freiberg, and Turnage-Butterbaugh applied this machinery to solve Erdős Problem 6 in 2015.",
+    "problemStatement": "**Question**: Let $d_n = p_{n+1} - p_n$ be the gap between consecutive primes. Are there infinitely many $n$ such that $d_n < d_{n+1} < d_{n+2}$?\n\n**Answer**: YES. In fact, for any $m \\geq 1$:\n- Infinitely many $n$ with $d_n < d_{n+1} < \\cdots < d_{n+m}$\n- Infinitely many $n$ with $d_n > d_{n+1} > \\cdots > d_{n+m}$",
+    "text": "Are there infinitely many n with d_n < d_{n+1} < d_{n+2}? Proved affirmatively by Banks-Freiberg-Turnage-Butterbaugh (2015) using Maynard-Tao machinery.",
+    "proofStrategy": "The formalization defines the prime gap function $d_n$ using Mathlib's `Nat.Prime.nth`. Predicates `HasIncreasingGaps` and `HasDecreasingGaps` capture monotone sequences of gaps. The main theorem by Banks-Freiberg-Turnage-Butterbaugh is axiomatized since its proof requires:\n\n1. **Maynard-Tao sieve methods**: Finding many primes in short intervals\n2. **Zhang's bounded gaps**: The foundational breakthrough\n3. **Careful distribution analysis**: Controlling gap patterns\n\nThe resolution `erdos_6_solved` follows directly as the case $m=2$.",
+    "keyInsights": [
+      "Solved using the Maynard-Tao bounded gaps machinery (2015)",
+      "Zhang's 2013 breakthrough on bounded gaps enabled the proof",
+      "Not just triples: arbitrarily long monotone runs exist",
+      "Both increasing and decreasing patterns occur infinitely often",
+      "Prime gaps oscillate forever - no eventual monotonicity"
+    ],
+    "prerequisites": [
+      "Prime gaps and the distribution of primes",
+      "Sequences and monotonicity",
+      "Prime number theorem (for context)",
+      "Erdős's work on prime gap problems"
+    ]
+  },
+  "sections": [
+    {
+      "id": "prime-gap",
+      "title": "Prime Gap Definition and Basic Properties",
+      "summary": "Definition of d_n = p_{n+1} - p_n and basic prime gap lemmas",
+      "mathContext": "$d_n = p_{n+1} - p_n$, where $p_n$ denotes the $n$-th prime (0-indexed via `Nat.nth Nat.Prime`)",
+      "startLine": 32,
+      "endLine": 67
+    },
+    {
+      "id": "monotone",
+      "title": "Monotone Sequences",
+      "summary": "HasIncreasingGaps, HasDecreasingGaps, InfinitelyMany predicates",
+      "mathContext": "`HasIncreasingGaps n m` $\\iff$ $\\forall i < m,\\; d_{n+i} < d_{n+i+1}$; similarly for decreasing",
+      "startLine": 68,
+      "endLine": 85
+    },
+    {
+      "id": "conjecture",
+      "title": "Original Conjecture",
+      "summary": "Erdős Problem 6 as InfinitelyManyIncreasing 2",
+      "mathContext": "$\\exists^\\infty n,\\; d_n < d_{n+1} < d_{n+2}$, i.e., `InfinitelyManyIncreasing 2`",
+      "startLine": 86,
+      "endLine": 96
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem and Resolution",
+      "summary": "Banks-Freiberg-Turnage-Butterbaugh (2015) axioms and erdos_6_solved",
+      "mathContext": "$\\forall m \\geq 1,\\; \\forall N,\\; \\exists n > N,\\; d_n < d_{n+1} < \\cdots < d_{n+m}$",
+      "startLine": 97,
+      "endLine": 124
+    },
+    {
+      "id": "machinery",
+      "title": "Maynard-Tao Machinery",
+      "summary": "Key ingredients: bounded gaps theorems of Maynard-Tao and Zhang",
+      "mathContext": "$\\exists H,\\; \\forall N,\\; \\exists n > N,\\; |\\{p \\text{ prime} : p \\in [n, n+H]\\}| \\geq m$",
+      "startLine": 125,
+      "endLine": 139
+    },
+    {
+      "id": "generalizations",
+      "title": "Generalizations and Related Results",
+      "summary": "Arbitrarily long runs and oscillation theorems",
+      "mathContext": "$\\forall m \\geq 1$, both `InfinitelyManyIncreasing m` and `InfinitelyManyDecreasing m` hold; prime gaps oscillate without eventual monotonicity",
+      "startLine": 140,
+      "endLine": 191
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #6 is SOLVED in the affirmative. Banks, Freiberg, and Turnage-Butterbaugh (2015) proved that there are infinitely many n with d_n < d_{n+1} < d_{n+2}, and more generally, arbitrarily long monotone sequences of prime gaps exist in both directions.",
+    "implications": "**Theoretical Significance**: **Historical Significance:**\n\nThis problem demonstrates how breakthroughs in one area (bounded gaps) can unlock progress in related questions. The Maynard-Tao machinery, developed for the twin prime conjecture, proved versatile enough to settle this 67-year-old problem.\n\n**Mathematical Impact:**\n\n1.\n\nPrime gaps are highly irregular - they oscillate forever\n2. No eventual monotonicity in either direction\n3. The distribution of primes is rich enough to produce arbitrarily complex local patterns.",
+    "openQuestions": [
+      "What is the density of n with d_n < d_{n+1} < d_{n+2}?",
+      "How does the count of monotone triples up to N grow?",
+      "Can we find explicit examples of long monotone sequences?",
+      "What is the smallest n with d_n < d_{n+1} < ... < d_{n+10}?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Set"
+    ],
+    "namespace": "Erdos6",
+    "lineCount": 191,
+    "axiomCount": 2,
+    "theoremCount": 10,
+    "definitionCount": 7,
+    "path": "Proofs/Erdos6Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The infinitude of primes is a basic prerequisite. Problem #6 studies the fine structure of gaps between consecutive primes"
+    },
+    {
+      "targetId": "erdos-15",
+      "relationship": "related",
+      "description": "Problem #15 on alternating prime series also concerns the distribution of primes. Both study how primes are spaced and distributed"
+    },
+    {
+      "targetId": "erdos-9",
+      "relationship": "related",
+      "description": "Problem #9 on integers not of the form p + 2^k + 2^l concerns the interplay between primes and structured sequences, related to the prime gap structure studied in Problem #6"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "The difference of consecutive primes",
+      "year": "1940",
+      "venue": "Duke Mathematical Journal, vol. 6, pp. 438–441",
+      "note": "Foundational study of prime gaps using sieve methods"
+    },
+    {
+      "authors": "Maynard, James",
+      "title": "Small gaps between primes",
+      "year": "2015",
+      "venue": "Annals of Mathematics, vol. 181, no. 1, pp. 383–413",
+      "note": "Breakthrough on bounded prime gaps, establishing that lim inf (p_{n+1} - p_n) ≤ 246"
+    },
+    {
+      "authors": "Zhang, Yitang",
+      "title": "Bounded gaps between primes",
+      "year": "2014",
+      "venue": "Annals of Mathematics, vol. 179, no. 3, pp. 1121–1174",
+      "note": "First proof of bounded gaps between primes, showing infinitely many pairs of primes differ by at most 70 million"
+    }
+  ],
+  "sorries": 0
+}

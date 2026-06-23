@@ -1,0 +1,159 @@
+[
+  {
+    "id": "ann-at-oq01-oq01-01-header",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 47
+    },
+    "type": "concept",
+    "title": "Unification Question: One Pattern Behind Two Proofs",
+    "content": "The header frames the open question: can the cos(20°) and cos(π/7) Galois results be unified into a single parameterized theorem? Both cases share the same algebraic pattern — degree-3 minimal polynomial, splitting field of degree 3 over ℚ, Galois group of order 3 — but were proved in separate files (AngleTrisectionCos20Gal and AngleTrisectionCos20GalOQ01) using different Eisenstein primes (p=3 and p=7).\n\nThe unification approach here: define `trisectionPoly p` and `eisensteinCubic p` as parameterized families, then prove all unified theorems by `rcases hp with rfl | rfl` — reducing each case to the corresponding theorem in the parent file. No abstract lemma is needed; the unification is achieved through parameterization.",
+    "mathContext": "Both polynomials arise as images of Eisenstein cubics under a linear shift: $r_3(2X+1) = 8X^3-6X-1$ (cos 20°) and $r_7(2X+2) = 8X^3-4X^2-4X+1$ (cos π/7), where $r_3 = X^3-6X^2+9X-3$ (Eisenstein at 3) and $r_7 = X^3-7X^2+14X-7$ (Eisenstein at 7).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Eisenstein criterion",
+      "Galois theory",
+      "minimal polynomial",
+      "angle trisection",
+      "unification"
+    ],
+    "prerequisites": [
+      "Polynomial.Gal",
+      "Polynomial.SplittingField",
+      "angle-trisection-cos-20-gal",
+      "angle-trisection-cos-20-gal-oq-01"
+    ]
+  },
+  {
+    "id": "ann-at-oq01-oq01-02-param-defs",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-01",
+    "range": {
+      "startLine": 48,
+      "endLine": 78
+    },
+    "type": "definition",
+    "title": "Parameterized Families: trisectionPoly and eisensteinCubic",
+    "content": "`trisectionPoly p` and `eisensteinCubic p` are noncomputable ℚ[X]-valued functions of the Eisenstein prime p ∈ {3, 7} (with a default value of 1 for other inputs). The four `@[simp]` lemmas establish the concrete values by `simp [trisectionPoly]` + `norm_num`, enabling Lean's simp tactic to reduce instances in proof goals.\n\nThe parameterized design is the key to unification: instead of two separate proofs, all subsequent theorems take `(hp : p = 3 ∨ p = 7)` and reduce via `rcases hp with rfl | rfl`. The `norm_num` call in `trisectionPoly_7` and `eisensteinCubic_7` handles the arithmetic distinguishing 7 ≠ 3 ≠ 0.",
+    "mathContext": "$\\text{trisectionPoly}(3) = 8X^3-6X-1$ (minimal poly of $\\cos(\\pi/9) = \\cos 20°$); $\\text{trisectionPoly}(7) = 8X^3-4X^2-4X+1$ (minimal poly of $\\cos(\\pi/7)$). $\\text{eisensteinCubic}(3) = X^3-6X^2+9X-3$; $\\text{eisensteinCubic}(7) = X^3-7X^2+14X-7$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "noncomputable def",
+      "@[simp] lemma",
+      "norm_num",
+      "parameterized family",
+      "if-then-else case analysis"
+    ],
+    "prerequisites": [
+      "Polynomial.X",
+      "Polynomial.C",
+      "ℚ[X]",
+      "Lean 4 simp attribute"
+    ]
+  },
+  {
+    "id": "ann-at-oq01-oq01-03-unified-thms",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-01",
+    "range": {
+      "startLine": 80,
+      "endLine": 108
+    },
+    "type": "concept",
+    "title": "Unified Galois Theorems: rcases Case Split Pattern",
+    "content": "Three unified theorems prove properties of `trisectionPoly p` for p ∈ {3, 7} by a uniform `rcases hp with rfl | rfl` pattern:\n\n1. **`trisection_gal_order_3`**: |Gal(trisectionPoly p)| = 3. Reduces to `cos20_gal_card` (p=3) or `cos_pi_7_gal_card` (p=7).\n2. **`trisection_poly_irreducible`**: trisectionPoly p is irreducible over ℚ. Reduces to `trisection_poly_irreducible` or `cos_pi_7_poly_irreducible` from parent files.\n3. **`trisection_splitting_degree`**: degree of splitting field over ℚ is 3. Reduces to `splitting_finrank` from each parent.\n\nThe `rw [trisectionPoly_3]` / `rw [trisectionPoly_7]` step uses the simp lemmas from the previous section to unfold the parameterized definition before applying the parent theorem.",
+    "mathContext": "Pattern: `rcases hp with rfl | rfl` splits the hypothesis $p = 3 \\vee p = 7$ into two definitional equalities. After `rw [trisectionPoly_3]`, the goal becomes exactly the statement in `AngleTrisectionCos20Gal`, so `exact cos20_gal_card` closes it. For $p=7$: same pattern. This is the proof-by-parameterization principle: one theorem statement, two one-line cases.",
+    "significance": "key",
+    "relatedConcepts": [
+      "rcases",
+      "rw (rewrite)",
+      "exact",
+      "Galois group order",
+      "splitting field degree",
+      "irreducibility"
+    ],
+    "prerequisites": [
+      "trisectionPoly_3",
+      "trisectionPoly_7",
+      "AngleTrisectionCos20Gal.cos20_gal_card",
+      "AngleTrisectionCos20GalOQ01.cos_pi_7_gal_card"
+    ]
+  },
+  {
+    "id": "ann-at-oq01-oq01-04-cyclic-cubic",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-01",
+    "range": {
+      "startLine": 109,
+      "endLine": 138
+    },
+    "type": "concept",
+    "title": "CyclicCubicData: Packaging Three Properties as a Structure",
+    "content": "`CyclicCubicData poly` is a structure with three fields: irreducibility of the polynomial, degree 3 of the splitting field, and Galois group order 3. Packing these into a structure serves two purposes: (1) it names the combined property so it can be referenced concisely, and (2) it enables the parameterized theorem `trisection_cyclic_cubic_data` to assert all three properties at once for any p ∈ {3, 7}.\n\n`cos20Data` and `cosPi7Data` are concrete instances, constructed using record syntax `{ irred := ..., degree_3 := ..., gal_order := ... }`. The parameterized theorem then reduces to `exact cos20Data` or `exact cosPi7Data` via the same `rcases` pattern.",
+    "mathContext": "A cyclic cubic extension of $\\mathbb{Q}$ is a degree-3 Galois extension with cyclic Galois group $\\mathbb{Z}/3\\mathbb{Z}$. Both cos(20°) and cos(π/7) generate such extensions: irreducible degree-3 polynomial + Galois group of order 3 (which is cyclic since order 3 is prime). `CyclicCubicData` certifies exactly these properties at the type level.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "structure",
+      "record syntax",
+      "CyclicCubicData",
+      "cyclic cubic extension",
+      "Galois group Z/3Z"
+    ],
+    "prerequisites": [
+      "trisection_gal_order_3",
+      "trisection_poly_irreducible",
+      "trisection_splitting_degree",
+      "Lean 4 structure"
+    ]
+  },
+  {
+    "id": "ann-at-oq01-oq01-05-eisenstein-connection",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-01",
+    "range": {
+      "startLine": 139,
+      "endLine": 162
+    },
+    "type": "insight",
+    "title": "The Eisenstein Connection: Coefficient Pattern and Substitution",
+    "content": "Two theorems document the algebraic relationship between the Eisenstein cubics and the trisection polynomials:\n\n1. **`eisensteinCubic_coeff_pattern`**: the constant term of `eisensteinCubic p` is divisible by p but not p². This is the key Eisenstein condition: for p=3, coeff 0 = -3, divisible by 3 but not 9. For p=7, coeff 0 = -7, divisible by 7 but not 49. Proved by `simp` + `norm_num`.\n\n2. **`eisenstein_cubic_to_trisection`**: the Eisenstein cubic composed with the linear shift (2X + shift) equals the trisection polynomial. Crucially, the shift differs: p=3 uses shift=1 (so 2X+1), while p=7 uses shift=2 (so 2X+2). This explains why the unification is 'almost but not quite' a uniform substitution — the shifts differ by case. Proved by `ring`.",
+    "mathContext": "Eisenstein criterion: $q_p \\in \\mathbb{Z}[X]$ is irreducible over $\\mathbb{Z}$ (hence $\\mathbb{Q}$ by Gauss) if all non-leading coefficients are divisible by prime $p$, the constant term is not divisible by $p^2$, and the leading coefficient is not divisible by $p$. The composition identity: $r_3(2x+1) = (2x+1)^3-6(2x+1)^2+9(2x+1)-3 = 8x^3-6x-1$ and $r_7(2x+2) = 8x^3-4x^2-4x+1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Eisenstein criterion",
+      "polynomial composition",
+      "linear substitution",
+      "ring tactic",
+      "constant term divisibility"
+    ],
+    "prerequisites": [
+      "eisensteinCubic_3",
+      "eisensteinCubic_7",
+      "trisectionPoly_3",
+      "trisectionPoly_7",
+      "Polynomial.comp"
+    ]
+  },
+  {
+    "id": "ann-at-oq01-oq01-06-summary",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-01",
+    "range": {
+      "startLine": 163,
+      "endLine": 182
+    },
+    "type": "concept",
+    "title": "Main Summary: both_trisection_gal_order_3",
+    "content": "`both_trisection_gal_order_3` is the final packaged statement: all four key facts at once — Galois group order 3 for both polynomials, irreducibility for both — in a single conjunction. Constructed as a 4-tuple using angle brackets, pulling existing theorems from the parent imports (`cos20_gal_card`, `cos_pi_7_gal_card`, `trisection_poly_irreducible`, `cos_pi_7_poly_irreducible`). No new proof is needed; this theorem is documentation-as-proof.\n\nThe `end AngleTrisectionCos20GalOQ01OQ01` closes the namespace, which was opened after the imports to organize the parameterized definitions and avoid collision with the parent namespace names.",
+    "mathContext": "The four conditions in `both_trisection_gal_order_3` are: (1) $|\\text{Gal}(8X^3-6X-1/\\mathbb{Q})| = 3$, (2) $|\\text{Gal}(8X^3-4X^2-4X+1/\\mathbb{Q})| = 3$, (3) $8X^3-6X-1$ irreducible over $\\mathbb{Q}$, (4) $8X^3-4X^2-4X+1$ irreducible over $\\mathbb{Q}$. These together imply both extensions are cyclic cubic and both cosines are algebraic of degree 3.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "And.intro (angle brackets)",
+      "namespace end",
+      "conjunction",
+      "documentation theorem"
+    ],
+    "prerequisites": [
+      "trisection_gal_order_3",
+      "trisection_poly_irreducible",
+      "AngleTrisectionCos20Gal",
+      "AngleTrisectionCos20GalOQ01"
+    ]
+  }
+]

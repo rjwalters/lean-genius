@@ -1,0 +1,169 @@
+[
+  {
+    "id": "ann-559-defs",
+    "proofId": "erdos-559",
+    "range": {
+      "startLine": 48,
+      "endLine": 71
+    },
+    "type": "definition",
+    "title": "Graph Definitions: FiniteGraph, Edge Count, Degree",
+    "content": "**FiniteGraph** defines a simple graph with symmetric adjacency and no loops on a finite vertex type.\n\n**edgeCount** counts edges as unordered pairs $(u, v)$ with $u < v$ and $G.\\text{adj}(u, v)$.\n\n**degree** counts the neighbors of a vertex $v$. **maxDegree** $\\Delta(G)$ is the supremum over all vertex degrees.\n\nThe conjecture concerns graphs with bounded $\\Delta(G) \\leq d$: can their size Ramsey numbers be controlled linearly in $n$?",
+    "mathContext": "For a graph $G = (V, E)$ with $|V| = n$: $|E| = \\sum_{v} \\deg(v) / 2$ (handshaking lemma). The maximum degree $\\Delta(G) \\leq d$ constrains the local structure: each vertex has at most $d$ neighbors. Bounded-degree graphs can still have complex global structure — which is why the size Ramsey question is subtle.",
+    "significance": "key",
+    "relatedConcepts": [
+      "simple graph",
+      "maximum degree",
+      "handshaking lemma",
+      "bounded-degree graphs"
+    ],
+    "prerequisites": [
+      "graph theory basics",
+      "Fintype",
+      "decidable relations"
+    ]
+  },
+  {
+    "id": "ann-559-ramsey",
+    "proofId": "erdos-559",
+    "range": {
+      "startLine": 73,
+      "endLine": 92
+    },
+    "type": "definition",
+    "title": "Ramsey Property and Size Ramsey Number R̂(G)",
+    "content": "**IsRamseyFor**: $H$ is Ramsey for $G$ if every 2-coloring of $H$'s edges contains a monochromatic copy of $G$ — an injective embedding $f: V(G) \\hookrightarrow V(H)$ where all image edges have the same color.\n\n**sizeRamsey** $\\hat{R}(G)$ is defined via `Nat.find` as the minimum $m$ such that $\\exists H$ with $m$ edges that is Ramsey for $G$. The complete graph on $V$ trivially satisfies this (by Ramsey's theorem), providing the well-definedness witness.",
+    "mathContext": "$\\hat{R}(G) = \\min\\{|E(H)| : H \\text{ is Ramsey for } G\\}$. Unlike the classical Ramsey number $R(G)$ (which minimizes vertices), the size Ramsey number minimizes edges. We always have $\\hat{R}(G) \\leq \\binom{R(G)}{2}$ (take $H = K_{R(G)}$), but $\\hat{R}(G)$ can be much smaller since $H$ need not be complete. The key insight: sparse Ramsey hosts are possible.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey's theorem",
+      "size Ramsey number",
+      "Ramsey host graph",
+      "sparse regularity"
+    ],
+    "prerequisites": [
+      "Ramsey theory",
+      "edge counting",
+      "Nat.find"
+    ]
+  },
+  {
+    "id": "ann-559-conjecture",
+    "proofId": "erdos-559",
+    "range": {
+      "startLine": 94,
+      "endLine": 109
+    },
+    "type": "concept",
+    "title": "Beck-Erdős Conjecture (DISPROVED)",
+    "content": "**beck_erdos_conjecture**: For each $d \\geq 1$, $\\exists c_d > 0$ such that $\\hat{R}(G) \\leq c_d n$ for all $n$-vertex graphs $G$ with $\\Delta(G) \\leq d$.\n\n**beck_erdos_conjecture_false**: This is FALSE (Rödl-Szemerédi 2000). The conjecture was motivated by Beck's 1983 proof for paths and seemed natural: bounded degree limits local complexity, so why not global Ramsey complexity? The answer: bounded-degree graphs can still encode complex global structures (via expander-like properties) that force superlinear size Ramsey numbers.",
+    "mathContext": "The conjecture $\\hat{R}(G) \\leq c_d n$ when $\\Delta(G) \\leq d$ is equivalent to: the class of bounded-degree graphs has linear size Ramsey numbers. Rödl and Szemerédi (2000) disproved this for $d = 3$ by constructing degree-3 graphs $G_n$ on $n$ vertices with $\\hat{R}(G_n) \\geq cn(\\log n)^c$. Their construction uses a delicate probabilistic argument: random regular graphs of degree 3 have this property with positive probability.",
+    "significance": "key",
+    "relatedConcepts": [
+      "size Ramsey linearity",
+      "random regular graphs",
+      "Ramsey complexity",
+      "graph regularity"
+    ],
+    "prerequisites": [
+      "Ramsey theory",
+      "bounded-degree graph theory",
+      "probabilistic method"
+    ]
+  },
+  {
+    "id": "ann-559-positive",
+    "proofId": "erdos-559",
+    "range": {
+      "startLine": 111,
+      "endLine": 150
+    },
+    "type": "concept",
+    "title": "Positive Results: Paths, Trees, and Cycles",
+    "content": "**beck_paths** (Beck 1983): $\\hat{R}(P_n) = O(n)$ for paths. Beck's original breakthrough — he showed random graphs of linear size are Ramsey for paths, initiating the study of size Ramsey numbers.\n\n**friedman_pippenger_trees** (1987): $\\hat{R}(T) = O(n)$ for any $n$-vertex tree $T$. The proof uses expander graphs: a sufficiently good expander with $O(n)$ edges is Ramsey for any tree with $n$ vertices.\n\n**haxell_kohayakawa_luczak_cycles** (1995): $\\hat{R}(C_n) = O(n)$ for cycles. This completed the picture for $\\Delta \\leq 2$: paths, cycles, and hence all graphs with maximum degree $\\leq 2$ have linear size Ramsey numbers.",
+    "mathContext": "Beck (1983) proved $\\hat{R}(P_n) \\leq cn$ by showing that a random graph $G(N, p)$ with $N = cn$ and appropriate $p$ is Ramsey for $P_n$ with high probability. Friedman-Pippenger (1987) extended this to all trees using expansion: if $H$ is a $(k, \\varepsilon)$-expander with $|V(H)| \\geq (1 + \\varepsilon)n$, then $H$ contains every tree with $n$ vertices and maximum degree $\\leq k$. Since good expanders have $O(n)$ edges, this gives $\\hat{R}(T) = O(n)$. The transition from linear to superlinear happens precisely at $\\Delta = 3$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Beck's theorem",
+      "expander graphs",
+      "expansion lemma",
+      "sparse Ramsey graphs"
+    ],
+    "prerequisites": [
+      "random graphs",
+      "graph expansion",
+      "tree embedding"
+    ]
+  },
+  {
+    "id": "ann-559-counter",
+    "proofId": "erdos-559",
+    "range": {
+      "startLine": 152,
+      "endLine": 171
+    },
+    "type": "concept",
+    "title": "Counterexamples: Rödl-Szemerédi and Tikhomirov",
+    "content": "**rodl_szemeredi_counterexample** (2000): $\\exists c > 0$ such that for all $N \\geq 2$, $\\exists$ degree-3 graph $G$ on $N$ vertices with $\\hat{R}(G) \\geq cN(\\log N)^c$. This was the key breakthrough disproving the Beck-Erdős conjecture at $d = 3$, the smallest possible counterexample degree.\n\n**tikhomirov_improved_lower_bound** (2022): $\\exists c > 0$ with $\\hat{R}(G) \\geq cN \\cdot \\exp(c\\sqrt{\\log N})$. This is much stronger than any polylogarithmic factor but still subpolynomial — the lower bound is $n^{1+o(1)}$, leaving a large gap with the upper bound $n^{3/2+o(1)}$.",
+    "mathContext": "Rödl-Szemerédi's construction: take a random 3-regular graph $G_n$. With positive probability, any graph $H$ that is Ramsey for $G_n$ must have $\\geq cn(\\log n)^c$ edges. The argument uses the fact that random regular graphs have complex neighborhood structure that resists embedding into sparse Ramsey hosts. Tikhomirov's improvement to $n \\cdot \\exp(c\\sqrt{\\log n})$ uses a refined analysis of the structure of Ramsey hosts, showing they must contain many more paths than a linear-sized graph can accommodate.",
+    "significance": "key",
+    "relatedConcepts": [
+      "random regular graphs",
+      "Ramsey host complexity",
+      "superlinear lower bounds",
+      "subpolynomial gaps"
+    ],
+    "prerequisites": [
+      "probabilistic method",
+      "regular graph theory",
+      "size Ramsey lower bounds"
+    ]
+  },
+  {
+    "id": "ann-559-upper",
+    "proofId": "erdos-559",
+    "range": {
+      "startLine": 173,
+      "endLine": 200
+    },
+    "type": "concept",
+    "title": "Upper Bounds for Degree-3: Progressing Toward n^{3/2}",
+    "content": "**kohayakawa_upper_bound**: $\\hat{R}(G) \\leq n^{5/3+o(1)}$ for degree-3 graphs. The initial polynomial upper bound.\n\n**conlon_nenadov_trujic_upper_bound**: $\\hat{R}(G) \\leq cn^{8/5}$ for degree-3 graphs. Improved the exponent from $5/3 \\approx 1.667$ to $8/5 = 1.6$.\n\n**draganic_petrova_best_upper_bound** (2022): $\\hat{R}(G) \\leq n^{3/2+o(1)}$. The current best, reducing the exponent to $3/2 = 1.5$. The proof uses sparse regularity and the blow-up lemma to embed bounded-degree graphs into random-like subgraphs of the Ramsey host.",
+    "mathContext": "The exponent progression: $5/3 \\to 8/5 \\to 3/2$ for degree-3 graphs. Combined with Tikhomirov's lower bound $n \\cdot \\exp(c\\sqrt{\\log n}) = n^{1+o(1)}$, the current gap is between exponents $1+o(1)$ and $3/2+o(1)$. The key technique for upper bounds is the **sparse regularity method**: decompose a random graph into regular pairs using Szemerédi's regularity lemma for sparse graphs, then apply the blow-up lemma to embed $G$. The regularity method naturally gives polynomial bounds; breaking below $n^{3/2}$ would likely require fundamentally new ideas.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sparse regularity lemma",
+      "blow-up lemma",
+      "polynomial Ramsey bounds",
+      "random graph embedding"
+    ],
+    "prerequisites": [
+      "Szemerédi regularity",
+      "blow-up lemma",
+      "sparse graph theory"
+    ]
+  },
+  {
+    "id": "ann-559-open",
+    "proofId": "erdos-559",
+    "range": {
+      "startLine": 202,
+      "endLine": 237
+    },
+    "type": "insight",
+    "title": "The Open Question: True Growth Rate for Degree 3",
+    "content": "**open_degree_3_question** formalizes the existence of a tight growth function: $\\exists f$ such that $\\hat{R}(G) \\leq f(N)$ for all degree-3 $G$ on $N$ vertices, and $\\hat{R}(G) \\geq f(N)/2$ for some such $G$.\n\nCurrent bounds for $d = 3$: $n \\cdot \\exp(c\\sqrt{\\log n}) \\leq \\hat{R}(G) \\leq n^{3/2+o(1)}$. The gap between exponents $1+o(1)$ and $3/2+o(1)$ is substantial. Is the true answer closer to $n^{1+\\varepsilon}$ (nearly linear) or $n^{3/2}$ (polynomial)?",
+    "mathContext": "The gap spans from $n^{1+o(1)}$ to $n^{1.5+o(1)}$ — a factor of $n^{0.5-o(1)}$. Neither side has obvious room for dramatic improvement: the lower bound technique (analyzing random regular graph embedding) seems hard to push past $n^{1+o(1)}$, while the upper bound technique (sparse regularity + blow-up) seems stuck at $n^{3/2}$. Resolving this gap would require either: (a) a fundamentally new lower bound technique, or (b) a non-regularity-based embedding method for upper bounds. Some experts conjecture the truth is $n^{1+o(1)}$ (nearly linear).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey growth rates",
+      "extremal exponents",
+      "sparse vs dense Ramsey",
+      "graph embedding techniques"
+    ],
+    "prerequisites": [
+      "all preceding sections",
+      "exponent analysis"
+    ]
+  }
+]

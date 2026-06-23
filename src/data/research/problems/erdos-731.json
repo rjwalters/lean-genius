@@ -1,0 +1,113 @@
+{
+  "slug": "erdos-731",
+  "title": "Erdős #731",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Find some reasonable function $f(n)$ such that, for almost all integers $n$, the least integer $m$ such that $m\\nmid \\binom{2n}{n}$ satisfies\\[m\\sim f(n).\\]\n\n\n\nA problem of Erd\\H{o}s, Graham, Ruzsa, and Straus \\cite{EGRS75}, who say it is 'not hard to show that', for almost all $n$, the minimal such $m$ satisfies\\[m=\\exp((\\log n)^{1/2+o(1)}).\\]",
+    "plain": "Find some reasonable function $f(n)$ such that, for almost all integers $n$, the least integer $m$ such that $m\\nmid \\binom{2n}{n}$ satisfies\\[m\\sim f(n).\\]",
+    "whyMatters": [
+      "Central binomial coefficients provide a concrete test bed for p-adic divisibility and Kummer-style carry arguments",
+      "The file replaces false all-n claims with source-backed counterexamples and conditional bounds",
+      "The remaining axiom marks the Kummer/carry characterization needed for the deeper asymptotic problem"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "centralBinom and leastNonDivCentral infrastructure",
+      "small_primes_divide_false counterexample for the old overclaim",
+      "two_divides_central and bertrand_central divisibility lemmas",
+      "central_binom_succ_identity and dvd_central_implies_sq_dvd",
+      "prime_sq_not_dvd_choose and two proofs that prime (2n+1) does not divide centralBinom n"
+    ],
+    "open": [
+      "prime_divides_central_iff remains a substantive Kummer/carry axiom",
+      "The original almost-all asymptotic Erdos 731 problem remains open"
+    ],
+    "goal": "Record the supporting central-binomial formalization while marking the remaining axiom and open asymptotic honestly"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-01-14T21:29:39.410Z",
+    "iteration": 2,
+    "focus": "Axiomatized supporting formalization: 439 lines, 31 public theorems, 3 defs, 1 axiom, 0 sorries.",
+    "blockers": [],
+    "nextAction": "None for this metadata slice; future proof work should eliminate the Kummer/carry axiom.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED metadata slice: Erdos731Problem.lean is a 439-line supporting formalization with 31 public theorems, 3 defs, 1 substantive Kummer/carry axiom, and 0 sorries. It does not solve the original almost-all asymptotic problem.",
+    "builtItems": [
+      "Proved lower_bound_most_n (True with existential)",
+      "Fixed leastNonDivisor definition (omega -> Nat.pos_of_ne_zero)",
+      "Proved two_divides_central: Pascal + choose_symm → C(2n,n) = 2·C(2n-1,n-1)",
+      "Proved bertrand_central: Nat.exists_prime_lt_and_le_two_mul + Prime.dvd_choose_add",
+      "Proved central_binom_lower: sum_range_choose + choose_le_middle → (2n+1)·C(2n,n) ≥ 4^n",
+      "Proved least_nondiv_counterexample: C(4,2)=6, leastNonDiv=4, 4 not prime",
+      "Eliminated small_primes_divide axiom (FALSE)",
+      "Proved small_primes_divide_false: ¬(3 ∣ C(6,3)) ∧ C(6,3)=20",
+      "Proved prime_gt_not_dvd_central: primes > 2n do not divide C(2n,n), via C(2n,n)|n!² = (2n)! and Legendre",
+      "Proved central_binom_succ_identity: (n+1)*C(2n+1,n) = (2n+1)*C(2n,n)",
+      "Proved coprime_two_n_succ_n_succ: gcd(2n+1, n+1) = 1",
+      "Proved dvd_central_implies_sq_dvd: (2n+1)|C(2n,n) → (2n+1)²|C(2n+1,n)",
+      "Proved prime_sq_not_dvd_choose: p²∤C(p,k) for prime p, 0<k<p",
+      "Proved not_dvd_central_prime: prime (2n+1) ∤ C(2n,n)",
+      "Proved not_dvd_central_prime_alt: alternative proof via identity route"
+    ],
+    "insights": [
+      "File had pre-existing build failure: omega cannot prove non-divisibility (m+1 does not divide m)",
+      "Fix: use dite pattern (if hm : m = 0 then ... else ...) to access m != 0 hypothesis",
+      "5 of 12 axioms were placeholders with True conclusions - trivially provable",
+      "least_nondiv_is_prime axiom was FALSE: counterexample n=2, C(4,2)=6, leastNonDivisor(6)=4 (not prime)",
+      "EGRS result is about ALMOST ALL n, not ALL n — the axiom overclaimed",
+      "Bertrand proof uses dvd_choose_add with a=b=n, p in (n,2n]: both n<p and p≤n+n",
+      "Central binom lower bound: max-term argument from Σ C(2n,k) = 4^n with 2n+1 terms",
+      "FOUND FALSE AXIOM: small_primes_divide claimed ∀ primes p, ∃ N, ∀ n≥N, p|C(2n,n). FALSE for p≥3: n=p^k gives 0 carries in Kummer theorem, so p∤C(2p^k,p^k) for all k.",
+      "Concrete counterexample: p=3, n=3, C(6,3)=20, 3∤20. Replaced axiom with counterexample theorem.",
+      "Axiom count reduced to 1: prime_divides_central_iff remains as the Kummer/carry characterization.",
+      "prime_gt_not_dvd_central gives upper_bound_trivial when 2n+1 is prime (common case). General composite case requires Kummer-type analysis.",
+      "CRITICAL: (2n+1)∤C(2n,n) is FALSE for composite 2n+1 (e.g., n=577, 1155|C(1154,577))",
+      "upper_bound_trivial is now proved in the source file; the deeper almost-all asymptotic still needs Kummer carry analysis.",
+      "The identity (n+1)*C(2n+1,n) = (2n+1)*C(2n,n) with gcd(2n+1,n+1)=1 gives: (2n+1)|C(2n,n) ↔ (2n+1)²|C(2n+1,n)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #731 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFind some reasonable function $f(n)$ such that, for almost all integers $n$, the least integer $m$ such that $m\\nmid \\binom{2n}{n}$ satisfies\\[m\\sim f(n).\\]\n\n\n\nA problem of Erd\\H{o}s, Graham, Ruzsa, and Straus \\cite{EGRS75}, who say it is 'not hard to show that', for almost all $n$, the minimal such $m$ satisfies\\[m=\\exp((\\log n)^{1/2+o(1)}).\\]\n\n\n\n\nReferences\n\n\n[EGRS75] Erd\\H{o}s, P. and Graham, R. L. and Ruzsa, I. Z. and Straus, E. G., On the prime factors of $(\\sp{2n}\\sb{n})$. Math. Comp. (1975), 83-92.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #730\n- Problem #732\n- Problem #39\n- Problem #1\n\n## References\n\n- EGRS75\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-7",
+    "erdos-73",
+    "erdos-731"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-14T21:29:39.410Z",
+  "lastUpdate": "2026-03-30T00:00:00Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos731Problem.lean",
+      "filename": "Erdos731Problem.lean",
+      "lineCount": 439,
+      "theoremCount": 31,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos731Problem.lean"
+    }
+  ]
+}

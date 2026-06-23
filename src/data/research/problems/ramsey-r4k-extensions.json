@@ -1,0 +1,74 @@
+{
+  "slug": "ramsey-r4k-extensions",
+  "title": "Ramsey R(4,k) Probabilistic Method Extensions",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formalization extending an existing formalization in combinatorics: Ramsey R(4,k) Probabilistic Method Extensions.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-27T22:18:02.334Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [],
+  "tags": [
+    "seeker-selected",
+    "combinatorics",
+    "ramsey-theory",
+    "graph-theory",
+    "probabilistic-method",
+    "extension"
+  ],
+  "relatedProofs": [
+    "ramsey-r4k",
+    "ramsey-r4k-extensions"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-27T22:18:02.334Z",
+  "lastUpdate": "2026-02-07T00:59:53.389Z",
+  "completed": "2026-02-07T00:59:53.389Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/RamseyR4kExtensions.lean",
+      "filename": "RamseyR4kExtensions.lean",
+      "lineCount": 1143,
+      "theoremCount": 74,
+      "axiomCount": 15,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RamseyR4kExtensions.lean"
+    }
+  ]
+}

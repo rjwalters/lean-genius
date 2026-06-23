@@ -1,0 +1,209 @@
+{
+  "slug": "law-of-cosines-oq-01-oq-01-oq-01",
+  "title": "Spherical sine rule generalization sin(A)/sin(a) = sin(B)/sin(b) = sin(C)/sin(c)",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Spherical sine rule generalization sin(A)/sin(a) = sin(B)/sin(b) = sin(C)/sin(c).",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-08T03:50:00Z",
+    "iteration": 3,
+    "focus": "Completed and shipped. Upstream blocker #16613 was resolved by PR #16710 (closed 2026-05-07). LawOfCosinesOQ01OQ02 now builds; the 64-line wrapper in proofs/Proofs/LawOfCosinesOQ01OQ01OQ01.lean is verified (2 theorems, 0 sorries, 0 axioms) and gallery entry shipped in src/data/proofs/law-of-cosines-oq-01-oq-01-oq-01/.",
+    "blockers": [],
+    "nextAction": "None — entry shipped. Future work: degenerate-triangle generalization (sides 0/π) and curvature-parametric K ≠ 1 versions.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED 2026-05-08. Upstream blocker (issue #16613) was resolved by PR #16710 (closed 2026-05-07). The 64-line wrapper file (proofs/Proofs/LawOfCosinesOQ01OQ01OQ01.lean) was already on main from earlier work; this iteration shipped the gallery entry (src/data/proofs/law-of-cosines-oq-01-oq-01-oq-01/) with meta.json + index.ts + annotations.json. spherical_law_of_sines_angle_over_side proves sin(A)/sin(a) = sin(B)/sin(b) ∧ sin(A)/sin(a) = sin(C)/sin(c) by algebraic inversion (div_eq_div_iff + linear_combination) of spherical_law_of_sines_all from OQ02; spherical_law_of_sines_BC_angle_over_side adds B/b = C/c by transitivity. Counts: 2 theorems, 0 sorries, 0 axioms, 64 lines. Closes the open question raised in law-of-cosines-oq-01-oq-01: 'Generalize the Gram determinant argument to prove the full sine rule.' Answer: yes, by 64 lines of formal inversion of the side-over-angle form, no new geometric content needed.",
+    "builtItems": [
+      "sinC_sq_gramDet: sin²(C)·sin²(a)·sin²(b) = gramDet (parallel to sinA/sinB)",
+      "sinC_nonneg: 0 ≤ sin(C)",
+      "spherical_sine_rule_{AB,BC,AC}: cross-multiplication forms",
+      "spherical_law_of_sines: division form sin(A)/sin(a)=sin(B)/sin(b)=sin(C)/sin(c)"
+    ],
+    "insights": [
+      "All three squared angle-sine products equal gramDet: sin²(X)·sin²(y)·sin²(z) = Δ²",
+      "From squared equality + nonnegativity: (sinX·siny)²=(sinY·sinx)² → sinX·siny=sinY·sinx",
+      "Parent file LawOfCosinesOQ01OQ01 has cos_arccos API drift (|x|≤1 → -1≤x, x≤1), needed fixing",
+      "LawOfCosinesOQ01OQ02.lean has 20+ errors in Mathlib 4.26.0: linarith failures, rw pattern changes (arcLength_comm direction), le_div_iff removed, angleA field notation fails outside defining namespace",
+      "LawOfCosinesOQ01OQ01.lean also broken: real_inner_comm pattern change, div_le_one_of_le removed",
+      "Proof strategy is correct: extend LawOfCosinesOQ01OQ02 namespace, use linear_combination to invert side/angle ratios",
+      "SphericalLawOfCosines.lean (base) likely still compiles — could write standalone proof from scratch (200+ lines)",
+      "Inversion side/angle → angle/side via div_eq_div_iff + linear_combination: a clean 2-line tactic combo for converting any ratio equality between products with positive denominators.",
+      "OQ02 spherical_law_of_sines_all C-case is mathematically sound (permutation argument) but tactically broken on main; identified 3 distinct tactic bugs at lines 347/349/354.",
+      "Root cause of dite/ite mismatch: SphericalTriangle.angleA/angleB defined in OQ02 use plain `if`, but SphericalTriangle.angleC defined in SphericalLawOfCosines.lean uses dependent `if h :`. Inconsistent definition style.",
+      "A clean fix would normalize all three angle defs to use plain `if` (since the `h` binder is unused in angleC); requires updating one downstream `dif_neg` to `if_neg` in LawOfCosinesOQ01OQ01:162."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Future generalization (open question): degenerate spherical triangles where sides are 0 or π (some sines vanish). Right reformulation likely the cross-multiplied form sin(A)·sin(b) = sin(B)·sin(a), which holds without nondegeneracy hypotheses.",
+      "Future generalization (open question): geodesic triangles on surfaces of constant curvature K ≠ 1, via the curvature-parametric framework of law-of-cosines-oq-01-oq-05 (UnifiedTriangle).",
+      "Possible direct proof (no inversion): unfold angleA = arccos(...) via the cosine formula and prove sin²(A)·sin²(b)·sin²(c) = sin²(B)·sin²(a)·sin²(c) directly, mirroring the dual cosine law's pattern."
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "generalization",
+    "spherical-geometry"
+  ],
+  "relatedProofs": [
+    "law-of-cosines",
+    "law-of-cosines-oq-01",
+    "law-of-cosines-oq-01-oq-01",
+    "law-of-cosines-oq-01-oq-01-oq-03",
+    "law-of-cosines-oq-01-oq-02",
+    "law-of-cosines-oq-01-oq-04",
+    "law-of-cosines-oq-01-oq-05",
+    "law-of-cosines-oq-03",
+    "law-of-cosines-oq-03-oq-02",
+    "law-of-cosines-oq-04",
+    "law-of-cosines-oq-04-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-06T11:50:53.695Z",
+  "lastUpdate": "2026-05-08T03:50:00Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/LawOfCosines.lean",
+      "filename": "LawOfCosines.lean",
+      "lineCount": 281,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosines.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ01OQ01.lean",
+      "filename": "LawOfCosinesOQ01OQ01.lean",
+      "lineCount": 335,
+      "theoremCount": 21,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ01OQ01OQ01.lean",
+      "filename": "LawOfCosinesOQ01OQ01OQ01.lean",
+      "lineCount": 64,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ01OQ01OQ03.lean",
+      "filename": "LawOfCosinesOQ01OQ01OQ03.lean",
+      "lineCount": 272,
+      "theoremCount": 12,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ01OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ01OQ02.lean",
+      "filename": "LawOfCosinesOQ01OQ02.lean",
+      "lineCount": 394,
+      "theoremCount": 21,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ01OQ04.lean",
+      "filename": "LawOfCosinesOQ01OQ04.lean",
+      "lineCount": 191,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ03.lean",
+      "filename": "LawOfCosinesOQ03.lean",
+      "lineCount": 193,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ03.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ03OQ02.lean",
+      "filename": "LawOfCosinesOQ03OQ02.lean",
+      "lineCount": 265,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ04.lean",
+      "filename": "LawOfCosinesOQ04.lean",
+      "lineCount": 156,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ04.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ04OQ02.lean",
+      "filename": "LawOfCosinesOQ04OQ02.lean",
+      "lineCount": 174,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ05.lean",
+      "filename": "LawOfCosinesOQ05.lean",
+      "lineCount": 693,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ05.lean"
+    }
+  ]
+}

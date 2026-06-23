@@ -1,0 +1,144 @@
+{
+  "slug": "infinitude-primes-4k3-oq-02",
+  "title": "Density 1/φ(d) of Primes in Arithmetic Progressions",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\lim_{x\\to\\infty} \\frac{\\#\\{p \\le x : p\\ \\text{prime},\\ p\\equiv a \\pmod d\\}}{\\#\\{p\\le x : p\\ \\text{prime}\\}} = \\frac{1}{\\varphi(d)}.",
+    "plain": "The parent shows there are infinitely many primes leaving remainder 3 when divided by 4. This",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-06-14T20:50:00-07:00",
+    "iteration": 3,
+    "focus": "Survey re-confirmed against the live Mathlib checkout (Docker UP). The M1",
+    "activeApproach": "Davenport-style PNT-AP: indicator-decomposition by Dirichlet characters (M1, now a",
+    "blockers": [
+      "- **M2 analytic crux absent from Mathlib**: the quantitative PNT-AP asymptotic"
+    ],
+    "nextAction": "- Hold `surveyed` (stated cleanly; not provable until M2 lands; M1 is a citation).",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEYED/GATED (2026-06-20, researcher-12): gap localized to a SINGLE missing theorem — Wiener-Ikehara (comment-only in pin, PrimesInAP.lean:298). Mathlib already has the residue-class L-function machinery with the pole residue (q.totient)⁻¹ isolated (continuousOn_LFunctionResidueClassAux), so PNT-AP would follow almost directly once Wiener-Ikehara lands. Pin also lacks ordinary PNT asymptotic (Chebyshev bounds only). No buildable original sub-content; correct status surveyed.",
+    "builtItems": [],
+    "insights": [
+      "GAP SHARPENED (r12, 2026-06-20): the sole missing analytic input for the density 1/φ(d) (M2) is the WIENER-IKEHARA Tauberian theorem. Pinned Mathlib v4.26 has built almost everything else in NumberTheory/LSeries/PrimesInAP.lean (M. Stoll): the von Mangoldt residue-class function residueClass a, its character decomposition residueClass_eq, the residue-class L-function, and crucially continuousOn_LFunctionResidueClassAux which establishes that this L-function is continuous on re s ≥ 1 EXCEPT a simple pole at s=1 with residue (q.totient)⁻¹ — i.e. the 1/φ(d) main term is already isolated. The file uses this to prove only the QUALITATIVE Dirichlet theorem (infinite_setOf_prime_and_eq_mod) via divergence of Σ Λ(n)/n over the class; its own docstring (line 298) notes the auxiliary function is the input one would feed to Wiener-Ikehara to get the quantitative asymptotic.",
+      "Wiener-Ikehara is NOT a theorem in pinned Mathlib v4.26 — only a COMMENT (PrimesInAP.lean:298). Whole-pin grep for a `theorem … Wiener/Ikehara` returns 0 hits.",
+      "CORRECTION to S1: the pin does NOT contain the ordinary PNT asymptotic (ψ(x)~x) either. NumberTheory/Chebyshev.lean has only the elementary Chebyshev definitions (ψ, θ) and bounds (e.g. theta_le_log4_mul_x), with a header note that parts were upstreamed from the PrimeNumberTheoremAnd project — the full PNT asymptotic has not been upstreamed. So S1 listing `ordinary PNT (d=1 baseline)` as available was over-optimistic for this pin. Both ordinary PNT and PNT-AP are gated on the same missing Wiener-Ikehara theorem.",
+      "M1 (character-orthogonality indicator decomposition) is a Mathlib one-liner (DirichletCharacter.sum_char_inv_mul_char_eq in DirichletCharacter/Orthogonality.lean) — confirmed still present; not buildable original content. (Re-confirms S2.)"
+    ],
+    "mathlibGaps": [
+      "Wiener-Ikehara Tauberian theorem (Σ over n of a(n), with Dirichlet series having a simple pole of residue A at s=1 and continuous on re s≥1 otherwise ⟹ partial sums ~ A·x). Comment-only in PrimesInAP.lean:298; exists in the external PrimeNumberTheoremAnd project (Kontorovich et al), hundreds of LOC of contour/complex-analysis. This single theorem unblocks BOTH ordinary PNT and PNT-AP (M2).",
+      "Ordinary PNT asymptotic ψ(x)~x / π(x)~x/log x: absent from pin (Chebyshev.lean has bounds only).",
+      "M2 PNT-AP density asymptotic π(x;d,a) ~ (1/φ(d))π(x): absent, but reduces to Wiener-Ikehara applied to the ALREADY-PRESENT residue-class L-function (continuousOn_LFunctionResidueClassAux gives the pole residue (q.totient)⁻¹)."
+    ],
+    "nextSteps": [
+      "WATCH/PORT Wiener-Ikehara from PrimeNumberTheoremAnd (Kontorovich et al) into Mathlib (or as a local >300 LOC build if high-value). It is the SINGLE gate: once present, PNT-AP (M2) follows almost directly from Mathlib PrimesInAP.lean continuousOn_LFunctionResidueClassAux (pole residue (q.totient)⁻¹ already isolated) — far less work than the previously-assumed multi-month effort.",
+      "Until Wiener-Ikehara lands, status = surveyed. Building M1 alone is a thin Mathlib re-export (sum_char_inv_mul_char_eq) and is NOT progress.",
+      "When ordinary PNT asymptotic appears in a Mathlib release, re-check: the d=4 milestone (π(x;4,1)~π(x;4,3)~½π(x)) becomes the first provable deliverable."
+    ],
+    "markdown": "# Knowledge Base: infinitude-primes-4k3-oq-02\n\nInsights accumulated during research on this problem.\n\nTarget: PNT-AP / Dirichlet density. For `gcd(a,d)=1`, the primes `p ≡ a (mod d)`\nhave natural density `1/φ(d)` among all primes. Quantitative refinement of the\nparent's qualitative `d=4, a=3` Euclid argument.\n\n---\n\n## Problem Understanding\n\n- The statement is the **Prime Number Theorem for arithmetic progressions**\n  (PNT-AP) in its density form: `π(x;d,a)/π(x) → 1/φ(d)`.\n- The standard textbook proof (Davenport, *Multiplicative Number Theory*) factors as:\n  1. **Character orthogonality** (purely algebraic): over the finite abelian group\n     `G = (ℤ/dℤ)ˣ` of order `φ(d)`,\n     `𝟙[n ≡ a (mod d)] = (1/φ(d)) · Σ_{χ mod d} χ̄(a) χ(n)`.\n  2. **Per-character analytic input** (the crux): for `χ ≠ χ₀`,\n     `Σ_{p ≤ x} χ(p) = o(π(x))`, which follows from `L(1,χ) ≠ 0` plus a\n     PNT-strength Tauberian/contour argument. The principal character `χ₀`\n     contributes the main term `(1/φ(d)) π(x)` via ordinary PNT.\n- So the proof is `(elementary orthogonality) + (φ(d)−1 copies of a PNT-AP-strength\n  analytic asymptotic) + (ordinary PNT for the χ₀ term)`.\n\n---\n\n## Insights\n\n### S1 (2026-06-14, ORIENT) — Mathlib gap survey: scaffold buildable, crux gated\n\n**Mode**: FRESH (claimed from pool, score 0). Docker DOWN — no build performed;\nthis is a literature/API-grounded orientation only.\n\n**What Mathlib already provides (verified via mathlib4 docs / PNT+ project notes):**\n- Qualitative Dirichlet's theorem (infinitude in each coprime class):\n  `Nat.setOf_prime_and_eq_mod_infinite` / `Nat.forall_exists_prime_gt_and_eq_mod`.\n- Dirichlet characters and L-series: `Mathlib.NumberTheory.DirichletCharacter.*`,\n  `Mathlib.NumberTheory.LSeries.*`.\n- **Non-vanishing `L(1,χ) ≠ 0` for `χ ≠ χ₀`**: `Mathlib.NumberTheory.LSeries.Nonvanishing`.\n- Ordinary Prime Number Theorem (`d = 1` density baseline), `Nat.totient`,\n  finite-abelian-group `MulChar` machinery.\n\n**The crux is NOT in Mathlib (confirmed):** the *quantitative* PNT-AP asymptotic\n`π(x;d,a) = (1/φ(d)) Li(x) + o(·)` — equivalently `Σ_{p≤x} χ(p) = o(π(x))` for\n`χ ≠ χ₀` — is an explicit **future** goal of the PNT+ project, not yet merged.\nMathlib stops at qualitative Dirichlet + `L(1,χ)≠0` + PNT(d=1); the Tauberian\ntransfer that upgrades `L(1,χ)≠0` to the density asymptotic is the missing piece.\n\n**Decomposition by buildability:**\n- **M1 — character-orthogonality indicator decomposition** (BUILDABLE, ~80–150 LOC):\n  `𝟙[n ≡ a] = (1/φ(d)) Σ_χ χ̄(a) χ(n)` over `(ℤ/dℤ)ˣ`. This is standard\n  finite-abelian-group character orthogonality (`Σ_χ χ(g) = |G|·𝟙[g=1]`). Mathlib's\n  `MulChar` / dual-group infrastructure should make this routine — but it is pure\n  **scaffold**: by itself it proves nothing about primes and does not touch the\n  analytic obstruction.\n- **M2 — per-character prime asymptotic** (GATED, >1000 LOC / multi-month):\n  `Σ_{p≤x} χ(p) = o(π(x))`. Needs PNT-AP-strength analytic NT not yet packaged in\n  Mathlib. Even the `d=4` milestone (`π(x;4,1) ∼ π(x;4,3) ∼ ½π(x)`) requires this\n  asymptotic for the single non-principal quadratic character mod 4.\n\n**Honest classification:** can be *stated* cleanly in Lean today; cannot be *proved*\nuntil M2 lands. M1 is buildable but non-advancing alone, and is itself currently\ngated by the Docker build blackout.\n\n### S2 (2026-06-20, ORIENT re-grep) — M1 scaffold collapses to a Mathlib one-liner\n\n**Mode**: continuation (claimed from pool, WEAK). Docker UP; re-grepped the live\nMathlib checkout at `proofs/.lake/packages/mathlib/`.\n\n**Finding**: the M1 character-orthogonality indicator decomposition that S1 listed\nas \"BUILDABLE, ~80–150 LOC\" is now a **direct Mathlib citation**, not buildable\ncontent. `Mathlib/NumberTheory/DirichletCharacter/Orthogonality.lean` provides:\n\n- `DirichletCharacter.sum_characters_eq (a : ZMod n) :`\n  `∑ χ : DirichletCharacter R n, χ a = if a = 1 then (n.totient : R) else 0`\n- `DirichletCharacter.sum_char_inv_mul_char_eq (ha : IsUnit a) (b : ZMod n) :`\n  `∑ χ, χ a⁻¹ * χ b = if a = b then (n.totient : R) else 0`\n\nThe second lemma **is exactly** the orthogonality relation underlying M1. The\n\"indicator decomposition\" `𝟙[n≡a] = (1/φ(d)) Σ_χ χ̄(a) χ(n)` is just this lemma\ndivided by `φ(d)` (over `R = ℂ`, using `χ(a⁻¹)=χ̄(a)` for the unit `a`). That is a\none-line rearrangement — an auditor would (correctly) classify a standalone entry\nbuilt on it as a thin Mathlib re-export, badge `mathlib`, not original research.\n\n**Consequence**: this problem now has **zero buildable sub-content**. It is purely\ngated on M2 (the PNT-AP analytic asymptotic `Σ_{p≤x} χ(p)=o(π(x))` for `χ≠χ₀`),\nstill absent from Mathlib (PNT+ future goal). S1's hedge — \"M1 buildable but\nnon-advancing\" — is now sharper: M1 isn't even worth building. Correct status\nremains `surveyed`; nothing ships until PNT+ lands M2.\n\n---\n\n## Dead Ends\n\n- **\"Reduce to Mathlib's qualitative Dirichlet\"**: insufficient. Infinitude /\n  `Σ 1/p` divergence per class does **not** give the density `1/φ(d)`; that needs\n  the M2 asymptotic, which is exactly what is missing.\n- **\"Build M1 and call it progress\"**: M1 (orthogonality scaffold) is real but does\n  not move the proof toward the target; the target stands or falls on M2.\n\n---\n\n## Next Steps\n\n1. When Docker returns: build M1 (orthogonality indicator decomposition) as a small\n   self-contained file, citing the `MulChar` orthogonality lemma actually present in\n   Mathlib (verify exact name on the live build, e.g. a `sum_..._eq` over the dual).\n2. Watch the **PNT+ project** for the merged PNT-AP asymptotic (`Σ_{p≤x} χ(p)=o(π(x))`).\n   When it lands in Mathlib, M2 unblocks and the `d=4` milestone becomes the first\n   provable deliverable.\n3. Until M2 is available, keep this `surveyed` — stated, approach pinned, crux gated.\n"
+  },
+  "tags": [
+    "number-theory",
+    "analytic-number-theory",
+    "primes-in-progressions",
+    "dirichlet-characters"
+  ],
+  "relatedProofs": [
+    "infinitude-primes",
+    "infinitude-primes-4k3",
+    "infinitude-primes-4k3-oq-01",
+    "infinitude-primes-4k3-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-15T02:22:21.994Z",
+  "lastUpdate": "2026-06-15T02:22:23.799Z",
+  "significance": 8,
+  "tractability": 3,
+  "leanFiles": [
+    {
+      "path": "Proofs/InfinitudePrimes4k3.lean",
+      "filename": "InfinitudePrimes4k3.lean",
+      "lineCount": 257,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k3.lean"
+    },
+    {
+      "path": "Proofs/InfinitudePrimes4k3OQ01.lean",
+      "filename": "InfinitudePrimes4k3OQ01.lean",
+      "lineCount": 102,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k3OQ01.lean"
+    },
+    {
+      "path": "Proofs/InfinitudePrimes4k3OQ01Klein2.lean",
+      "filename": "InfinitudePrimes4k3OQ01Klein2.lean",
+      "lineCount": 225,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k3OQ01Klein2.lean"
+    },
+    {
+      "path": "Proofs/InfinitudePrimes4k3OQ01Q12Q24.lean",
+      "filename": "InfinitudePrimes4k3OQ01Q12Q24.lean",
+      "lineCount": 142,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k3OQ01Q12Q24.lean"
+    },
+    {
+      "path": "Proofs/InfinitudePrimes4k3OQ01Tower.lean",
+      "filename": "InfinitudePrimes4k3OQ01Tower.lean",
+      "lineCount": 132,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k3OQ01Tower.lean"
+    },
+    {
+      "path": "Proofs/InfinitudePrimes4k3OQ03.lean",
+      "filename": "InfinitudePrimes4k3OQ03.lean",
+      "lineCount": 104,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k3OQ03.lean"
+    }
+  ]
+}

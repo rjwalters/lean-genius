@@ -1,0 +1,74 @@
+[
+  {
+    "id": "def-latin-rectangle",
+    "proofId": "erdos-725",
+    "range": { "startLine": 39, "endLine": 44 },
+    "type": "definition",
+    "title": "Latin Rectangle",
+    "content": "A k×n Latin rectangle has n symbols where each row is a permutation and no column has repeats.",
+    "significance": "major"
+  },
+  {
+    "id": "def-L-function",
+    "proofId": "erdos-725",
+    "range": { "startLine": 49, "endLine": 53 },
+    "type": "definition",
+    "title": "Counting Function L(k,n)",
+    "content": "L(k,n) = number of k×n Latin rectangles. Central counting function in the problem.",
+    "significance": "major"
+  },
+  {
+    "id": "def-ek-formula",
+    "proofId": "erdos-725",
+    "range": { "startLine": 67, "endLine": 70 },
+    "type": "definition",
+    "title": "Erdős-Kaplansky Formula",
+    "content": "L(k,n) ~ e^{-C(k,2)} · (n!)^k where C(k,2) = k(k-1)/2. The conjectured asymptotic formula.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-erdos-kaplansky",
+    "proofId": "erdos-725",
+    "range": { "startLine": 77, "endLine": 81 },
+    "type": "theorem",
+    "title": "Erdős-Kaplansky (1946)",
+    "content": "The formula L(k,n) ~ e^{-C(k,2)} · (n!)^k holds when k = o((log n)^{3/2-ε}).",
+    "significance": "major"
+  },
+  {
+    "id": "thm-yamamoto",
+    "proofId": "erdos-725",
+    "range": { "startLine": 95, "endLine": 98 },
+    "type": "theorem",
+    "title": "Yamamoto (1951)",
+    "content": "Extended the Erdős-Kaplansky formula to hold when k ≤ n^{1/3-o(1)}.",
+    "significance": "major"
+  },
+  {
+    "id": "def-permanent",
+    "proofId": "erdos-725",
+    "range": { "startLine": 106, "endLine": 109 },
+    "type": "definition",
+    "title": "Matrix Permanent",
+    "content": "perm(A) = Σ_σ Π_i A_{i,σ(i)}. Key tool for counting Latin rectangles via Godsil-McKay.",
+    "significance": "minor"
+  },
+  {
+    "id": "conj-extended",
+    "proofId": "erdos-725",
+    "range": { "startLine": 179, "endLine": 185 },
+    "type": "conjecture",
+    "title": "Extended Conjecture (Open)",
+    "content": "Does the formula e^{-C(k,2)}(n!)^k hold for k = Θ(n)? This remains OPEN for k > n^{1/3}.",
+    "significance": "major"
+  },
+  {
+    "id": "summary",
+    "proofId": "erdos-725",
+    "range": { "startLine": 204, "endLine": 220 },
+    "type": "summary",
+    "title": "Problem Summary",
+    "content": "PARTIALLY SOLVED: Formula L(k,n) ~ e^{-C(k,2)}(n!)^k proven for k ≤ n^{1/3-o(1)}. General k remains OPEN.",
+    "significance": "major"
+  }
+]

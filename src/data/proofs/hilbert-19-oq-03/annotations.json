@@ -1,0 +1,299 @@
+[
+  {
+    "id": "hilbert19-oq03-fully-nonlinear-op",
+    "proofId": "hilbert-19-oq-03",
+    "range": {
+      "startLine": 52,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "Fully Nonlinear Operator (1D)",
+    "content": "The structure FullyNonlinearOp1D encodes a scalar operator F acting on the second derivative u''. In the PDE F(D^2u) = 0, the Hessian D^2u is a symmetric matrix; in 1D this collapses to a single real number u''. The normalization condition F(0) = 0 ensures that the zero function is always a solution, which is standard in elliptic PDE theory.",
+    "mathContext": "F : \\mathbb{R} \\to \\mathbb{R}, \\quad F(0) = 0",
+    "significance": "key",
+    "relatedConcepts": [
+      "fully nonlinear PDE",
+      "elliptic operator",
+      "Hessian matrix"
+    ],
+    "prerequisites": [
+      "second-order PDE",
+      "operator theory"
+    ]
+  },
+  {
+    "id": "hilbert19-oq03-uniform-ellipticity",
+    "proofId": "hilbert-19-oq-03",
+    "range": {
+      "startLine": 65,
+      "endLine": 78
+    },
+    "type": "definition",
+    "title": "Uniform Ellipticity with Sandwich Bounds",
+    "content": "Uniform ellipticity quantifies the degree to which an operator F responds to changes in its argument. The sandwich condition lambda(b - a) <= F(b) - F(a) <= Lambda(b - a) bounds F between two linear functions with slopes lambda and Lambda. This is the 1D reduction of the matrix inequality lambda |xi|^2 <= F_{ij} xi_i xi_j <= Lambda |xi|^2 that governs the n-dimensional theory.",
+    "mathContext": "0 < \\lambda \\le \\Lambda, \\quad \\lambda(b-a) \\le F(b) - F(a) \\le \\Lambda(b-a) \\text{ for } a \\le b",
+    "significance": "key",
+    "relatedConcepts": [
+      "ellipticity constants",
+      "Lipschitz continuity",
+      "coercivity"
+    ],
+    "prerequisites": [
+      "monotone functions",
+      "linear bounds"
+    ]
+  },
+  {
+    "id": "hilbert19-oq03-monotone-from-elliptic",
+    "proofId": "hilbert-19-oq-03",
+    "range": {
+      "startLine": 80,
+      "endLine": 87
+    },
+    "type": "concept",
+    "title": "Uniform Ellipticity Implies Monotonicity",
+    "content": "This theorem shows that uniform ellipticity is strictly stronger than degenerate ellipticity (monotonicity). The proof extracts the lower bound lambda(b - a) <= F(b) - F(a), observes that lambda > 0 and b - a >= 0 make the left side nonneg, so F(b) >= F(a). This is a clean linarith argument from the positivity of the ellipticity constant.",
+    "mathContext": "\\lambda > 0,\\; a \\le b \\implies \\lambda(b-a) \\ge 0 \\implies F(b) - F(a) \\ge 0",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "degenerate ellipticity",
+      "maximum principle",
+      "monotone operator"
+    ],
+    "prerequisites": [
+      "uniform ellipticity definition"
+    ]
+  },
+  {
+    "id": "hilbert19-oq03-pucci-operators",
+    "proofId": "hilbert-19-oq-03",
+    "range": {
+      "startLine": 101,
+      "endLine": 107
+    },
+    "type": "definition",
+    "title": "Pucci Extremal Operators M+ and M-",
+    "content": "The Pucci operators are the extremal members of the class S(lambda, Lambda) of all uniformly elliptic operators with given constants. M+ maximizes and M- minimizes over this class. In 1D, M+(t) = Lambda*t for t >= 0 and lambda*t for t < 0, with M- swapping the roles. These operators appear as the universal comparison objects in fully nonlinear regularity theory.",
+    "mathContext": "M^+(t) = \\begin{cases} \\Lambda t & t \\ge 0 \\\\ \\lambda t & t < 0 \\end{cases}, \\quad M^-(t) = \\begin{cases} \\lambda t & t \\ge 0 \\\\ \\Lambda t & t < 0 \\end{cases}",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal operator",
+      "ellipticity class S(lambda,Lambda)",
+      "Caffarelli-Cabre theory"
+    ],
+    "prerequisites": [
+      "uniform ellipticity",
+      "piecewise linear functions"
+    ]
+  },
+  {
+    "id": "hilbert19-oq03-pucci-ordering",
+    "proofId": "hilbert-19-oq-03",
+    "range": {
+      "startLine": 119,
+      "endLine": 129
+    },
+    "type": "insight",
+    "title": "M- <= M+ and the Role of Sign Reversal",
+    "content": "The proof of M-(t) <= M+(t) splits into two cases by the sign of t. For t >= 0, both operators scale t but M- uses the smaller constant lambda while M+ uses Lambda, so lambda*t <= Lambda*t. For t < 0, the roles reverse: M- uses Lambda (larger magnitude, more negative) and M+ uses lambda. The sign reversal is the key subtlety, handled by mul_le_mul_of_nonpos_right.",
+    "mathContext": "t \\ge 0: \\lambda t \\le \\Lambda t; \\quad t < 0: \\Lambda t \\le \\lambda t \\;(\\text{since } \\Lambda|t| \\ge \\lambda|t|)",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ordered operators",
+      "sign analysis",
+      "Pucci bounds"
+    ],
+    "prerequisites": [
+      "Pucci operator definitions",
+      "multiplication by negative numbers"
+    ]
+  },
+  {
+    "id": "hilbert19-oq03-viscosity-solutions",
+    "proofId": "hilbert-19-oq-03",
+    "range": {
+      "startLine": 190,
+      "endLine": 212
+    },
+    "type": "concept",
+    "title": "Viscosity Solution Framework",
+    "content": "Viscosity solutions (Crandall-Lions 1983) are the correct weak solution concept for fully nonlinear PDEs, replacing Sobolev-space weak solutions used for divergence-form equations. A function u is a viscosity subsolution if for every smooth test function phi that touches u from above at x0, F(phi''(x0)) >= 0. This converts pointwise PDE conditions into a condition tested against smooth probes, avoiding the need for u itself to be differentiable.",
+    "mathContext": "u \\text{ is a viscosity subsolution} \\iff \\forall \\varphi \\in C^2,\\; \\varphi \\text{ touches } u \\text{ from above at } x_0 \\implies F(\\varphi''(x_0)) \\ge 0",
+    "significance": "key",
+    "relatedConcepts": [
+      "weak solution",
+      "test function",
+      "Crandall-Lions theory",
+      "comparison principle"
+    ],
+    "prerequisites": [
+      "classical PDE solutions",
+      "C^2 regularity",
+      "local extrema"
+    ]
+  },
+  {
+    "id": "hilbert19-oq03-comparison-uniqueness",
+    "proofId": "hilbert-19-oq-03",
+    "range": {
+      "startLine": 264,
+      "endLine": 273
+    },
+    "type": "concept",
+    "title": "Viscosity Uniqueness via Double Comparison",
+    "content": "Uniqueness of viscosity solutions follows from applying the comparison principle twice. If u and v are both viscosity solutions with the same boundary data, then u <= v (comparing u as subsolution against v as supersolution) and v <= u (comparing v as subsolution against u as supersolution). The linarith tactic closes the proof from these two inequalities. This elegant argument reduces uniqueness entirely to the comparison principle.",
+    "mathContext": "u \\le v \\text{ and } v \\le u \\implies u = v \\text{ on } [a,b]",
+    "significance": "key",
+    "relatedConcepts": [
+      "comparison principle",
+      "maximum principle",
+      "Crandall-Ishii-Lions doubling"
+    ],
+    "prerequisites": [
+      "viscosity sub/supersolution",
+      "comparison principle"
+    ]
+  },
+  {
+    "id": "hilbert19-oq03-evans-krylov",
+    "proofId": "hilbert-19-oq-03",
+    "range": {
+      "startLine": 296,
+      "endLine": 304
+    },
+    "type": "concept",
+    "title": "Evans-Krylov Theorem: C^{2,alpha} Regularity",
+    "content": "The Evans-Krylov theorem (1982) is the central result of this formalization. It states that viscosity solutions of uniformly elliptic, convex F(D^2u) = 0 have Holder-continuous second derivatives. This is axiomatized because the proof requires deep PDE analysis (Krylov-Safonov Harnack inequality, Ishii-Lions method). The theorem is the fully nonlinear counterpart of De Giorgi-Nash regularity for divergence-form equations.",
+    "mathContext": "F \\text{ convex, uniformly elliptic} \\implies u \\in C^{2,\\alpha} \\text{ for some } \\alpha \\in (0,1]",
+    "significance": "key",
+    "relatedConcepts": [
+      "Holder regularity",
+      "De Giorgi-Nash-Moser",
+      "Schauder estimates",
+      "Harnack inequality"
+    ],
+    "prerequisites": [
+      "uniform ellipticity",
+      "convexity",
+      "viscosity solutions"
+    ]
+  },
+  {
+    "id": "hilbert19-oq03-regularity-chain",
+    "proofId": "hilbert-19-oq-03",
+    "range": {
+      "startLine": 448,
+      "endLine": 454
+    },
+    "type": "insight",
+    "title": "The Complete Regularity Chain: Evans-Krylov + Schauder = C-infinity",
+    "content": "This theorem composes two axioms into the full regularity result. Evans-Krylov provides C^{2,alpha}, then the Schauder bootstrap iteratively differentiates the equation F(D^2u) = 0 to push regularity to C^{k,alpha} for every k, hence C-infinity. The composition is direct in Lean: apply evans_krylov_1d to get the Holder exponent, then feed it to schauder_bootstrap. This chain mirrors the standard textbook proof strategy.",
+    "mathContext": "\\text{Evans-Krylov: } C^{2,\\alpha} \\xrightarrow{\\text{Schauder}} C^{3,\\alpha} \\xrightarrow{\\text{Schauder}} \\cdots \\to C^\\infty",
+    "significance": "key",
+    "relatedConcepts": [
+      "bootstrap argument",
+      "Schauder estimates",
+      "elliptic regularity ladder"
+    ],
+    "prerequisites": [
+      "Evans-Krylov theorem",
+      "Schauder estimates"
+    ]
+  },
+  {
+    "id": "hilbert19-oq03-bellman-convexity",
+    "proofId": "hilbert-19-oq-03",
+    "range": {
+      "startLine": 390,
+      "endLine": 398
+    },
+    "type": "concept",
+    "title": "Bellman Equations: Why Convexity Is Natural",
+    "content": "The supremum of affine (linear + constant) functions is convex, which explains why the Evans-Krylov hypothesis of convexity is not merely technical. Bellman equations from stochastic optimal control take the form F(M) = sup_alpha L_alpha(M), where each L_alpha is linear in M. This theorem proves the pointwise convexity inequality, showing that the most important class of fully nonlinear PDEs in applications automatically satisfies the Evans-Krylov condition.",
+    "mathContext": "F(M) = \\sup_\\alpha L_\\alpha(M), \\quad L_\\alpha \\text{ affine} \\implies F \\text{ convex}",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Bellman equation",
+      "optimal control",
+      "stochastic control",
+      "sup of convex is convex"
+    ],
+    "prerequisites": [
+      "convexity definition",
+      "affine functions",
+      "supremum"
+    ]
+  },
+  {
+    "id": "hilbert19-oq03-abp-principle",
+    "proofId": "hilbert-19-oq-03",
+    "range": {
+      "startLine": 347,
+      "endLine": 349
+    },
+    "type": "concept",
+    "title": "ABP Maximum Principle: Foundation of Nonlinear Regularity",
+    "content": "The Alexandrov-Bakelman-Pucci (ABP) maximum principle is the foundational estimate for all fully nonlinear regularity theory. It controls the supremum of a subsolution u by its boundary values plus an $L^n$ norm of the right-hand side $f$, using the contact set (where the convex envelope of $u$ touches $u$). In 1D, this simplifies to: $\\max u \\leq \\max(u(a), u(b)) + C \\|f\\|$. The ABP estimate replaces the energy methods used for divergence-form equations, which are unavailable in the fully nonlinear setting.",
+    "mathContext": "$\\sup_{\\Omega} u \\leq \\sup_{\\partial\\Omega} u^+ + C \\|f\\|_{L^n(\\Gamma^+)}$ where $\\Gamma^+$ is the upper contact set of $u$",
+    "significance": "key",
+    "relatedConcepts": [
+      "contact set",
+      "convex envelope",
+      "maximum principle",
+      "Alexandrov estimate"
+    ],
+    "prerequisites": [
+      "viscosity subsolution",
+      "convex envelope",
+      "measure theory"
+    ]
+  },
+  {
+    "id": "hilbert19-oq03-krylov-safonov",
+    "proofId": "hilbert-19-oq-03",
+    "range": {
+      "startLine": 373,
+      "endLine": 376
+    },
+    "type": "concept",
+    "title": "Krylov-Safonov Harnack Inequality",
+    "content": "The Krylov-Safonov Harnack inequality (1980) is the nondivergence-form analog of the De Giorgi-Nash-Moser theory. It states that non-negative solutions of $M^-(D^2 u) \\leq 0 \\leq M^+(D^2 u)$ satisfy $\\sup u \\leq C \\inf u$ on interior subdomains. The constant $C$ depends only on dimension, ellipticity ratio $\\Lambda/\\lambda$, and the ratio of domain sizes. This Harnack inequality implies Holder continuity (oscillation decay) via the standard iteration argument, providing $C^\\alpha$ regularity for solutions of uniformly elliptic equations without any convexity assumption.",
+    "mathContext": "$u \\geq 0,\\; M^-(D^2u) \\leq 0 \\leq M^+(D^2u) \\implies \\sup_{B_{r/2}} u \\leq C \\inf_{B_{r/2}} u$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Harnack inequality",
+      "oscillation decay",
+      "De Giorgi-Nash-Moser",
+      "Holder continuity"
+    ],
+    "prerequisites": [
+      "Pucci operators",
+      "ABP maximum principle",
+      "viscosity solutions"
+    ]
+  },
+  {
+    "id": "hilbert19-oq03-counterexamples",
+    "proofId": "hilbert-19-oq-03",
+    "range": {
+      "startLine": 417,
+      "endLine": 428
+    },
+    "type": "insight",
+    "title": "Nadirashvili-Vladut and De Giorgi Counterexamples",
+    "content": "Two counterexamples delineate the boundaries of regularity theory. Nadirashvili and Vladut (2008) constructed a uniformly elliptic but non-convex operator $F$ in dimension $n \\geq 5$ whose viscosity solutions fail to be $C^{1,1}$, showing that the convexity hypothesis in Evans-Krylov is essential. De Giorgi (1968) showed that elliptic systems (vector-valued equations) can have discontinuous solutions even with smooth coefficients, demonstrating that scalar equations enjoy special regularity properties unavailable for systems.",
+    "mathContext": "Nadirashvili-Vladut: $\\exists F$ uniformly elliptic, non-convex, $n \\geq 5$, with $u \\in C^{1,\\alpha} \\setminus C^{1,1}$. De Giorgi: $\\exists$ elliptic system with unbounded $u$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counterexample",
+      "regularity failure",
+      "convexity hypothesis",
+      "elliptic systems"
+    ],
+    "prerequisites": [
+      "Evans-Krylov theorem",
+      "uniform ellipticity",
+      "viscosity solutions"
+    ]
+  }
+]

@@ -1,0 +1,396 @@
+[
+  {
+    "id": "ann-86-header",
+    "proofId": "erdos-86",
+    "range": {
+      "startLine": 1,
+      "endLine": 47
+    },
+    "type": "concept",
+    "title": "Problem Statement and References",
+    "content": "Erdős Problem #86 asks: what is the maximum number of edges in a $C_4$-free subgraph of the $n$-dimensional hypercube $Q_n$? Erdős conjectured in 1991 that $f(n) = (1/2 + o(1)) \\cdot e(Q_n)$ where $e(Q_n) = n \\cdot 2^{n-1}$. This is a Turán-type problem on a specific host graph. The problem carries a $\\$100$ prize. References include Erdős (1991), Brass-Harborth-Nienborg (1995), Balogh-Hu-Lidický-Liu (2014), and Baber (2012).",
+    "mathContext": "$f(n) = \\max\\{e(G) : G \\subseteq Q_n, G \\text{ is } C_4\\text{-free}\\}$. Conjecture: $f(n) = (1/2 + o(1)) \\cdot n \\cdot 2^{n-1}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán problem",
+      "hypercube graph",
+      "extremal graph theory",
+      "forbidden subgraph"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "combinatorics"
+    ]
+  },
+  {
+    "id": "ann-86-vertex",
+    "proofId": "erdos-86",
+    "range": {
+      "startLine": 56,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Hypercube Vertices",
+    "content": "Vertices of the $n$-dimensional hypercube $Q_n$ are binary strings of length $n$, represented as functions $\\text{Fin}\\, n \\to \\text{Bool}$. There are $2^n$ such vertices, corresponding to the elements of $\\{0,1\\}^n$. The hypercube is a fundamental structure appearing in coding theory (Hamming codes), Boolean function analysis, and theoretical computer science.",
+    "mathContext": "$V(Q_n) = \\{0,1\\}^n$, $|V(Q_n)| = 2^n$. In Lean: `HypercubeVertex n := Fin n → Bool`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Boolean lattice",
+      "Hamming cube",
+      "binary string",
+      "Fin type"
+    ],
+    "prerequisites": [
+      "combinatorics",
+      "type theory"
+    ]
+  },
+  {
+    "id": "ann-86-adj",
+    "proofId": "erdos-86",
+    "range": {
+      "startLine": 59,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "Hypercube Adjacency (Hamming Distance 1)",
+    "content": "Two vertices $u, v \\in \\{0,1\\}^n$ are adjacent in $Q_n$ if they differ in exactly one coordinate, i.e., their Hamming distance is $1$. This is computed by filtering coordinates where $u_i \\neq v_i$ and checking the count equals $1$. Each vertex has exactly $n$ neighbors (one per coordinate to flip), so $Q_n$ is $n$-regular.",
+    "mathContext": "$u \\sim v \\iff |\\{i : u_i \\neq v_i\\}| = 1 \\iff d_H(u,v) = 1$. $Q_n$ is $n$-regular: $\\deg(v) = n$ for all $v$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hamming distance",
+      "regular graph",
+      "coordinate flip"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "coding theory"
+    ]
+  },
+  {
+    "id": "ann-86-graph",
+    "proofId": "erdos-86",
+    "range": {
+      "startLine": 63,
+      "endLine": 77
+    },
+    "type": "definition",
+    "title": "Hypercube Graph as SimpleGraph",
+    "content": "The hypercube graph $Q_n$ is constructed as a `SimpleGraph` with vertices `HypercubeVertex n` and the Hamming-distance-1 adjacency relation. The proof verifies symmetry ($u \\sim v \\implies v \\sim u$, since $\\{i : u_i \\neq v_i\\} = \\{i : v_i \\neq u_i\\}$) and irreflexivity ($v \\not\\sim v$, since $\\{i : v_i \\neq v_i\\} = \\emptyset$ has card $0 \\neq 1$). These are fully proved, not axiomatized.",
+    "mathContext": "$Q_n = (\\{0,1\\}^n, E)$ where $\\{u,v\\} \\in E \\iff d_H(u,v) = 1$. Symmetry and looplessness proved in Lean.",
+    "significance": "key",
+    "relatedConcepts": [
+      "SimpleGraph",
+      "symmetric relation",
+      "irreflexive relation"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "Mathlib SimpleGraph API"
+    ]
+  },
+  {
+    "id": "ann-86-vertexcount",
+    "proofId": "erdos-86",
+    "range": {
+      "startLine": 79,
+      "endLine": 83
+    },
+    "type": "concept",
+    "title": "Vertex Count: $|V(Q_n)| = 2^n$",
+    "content": "The hypercube $Q_n$ has exactly $2^n$ vertices. The proof uses `Fintype.card_fun` which computes the cardinality of a function type $\\text{Fin}\\, n \\to \\text{Bool}$ as $|\\text{Bool}|^n = 2^n$. This is fully proved (no sorry).",
+    "mathContext": "$|V(Q_n)| = |\\{0,1\\}^n| = 2^n$. Proof: `Fintype.card_fun`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Fintype.card_fun",
+      "cardinality of function types"
+    ],
+    "prerequisites": [
+      "type theory",
+      "Mathlib Fintype"
+    ]
+  },
+  {
+    "id": "ann-86-edgecount",
+    "proofId": "erdos-86",
+    "range": {
+      "startLine": 85,
+      "endLine": 87
+    },
+    "type": "concept",
+    "title": "Edge Count: $e(Q_n) = n \\cdot 2^{n-1}$",
+    "content": "The hypercube $Q_n$ has $n \\cdot 2^{n-1}$ edges. Since $Q_n$ is $n$-regular on $2^n$ vertices, the handshaking lemma gives $e(Q_n) = n \\cdot 2^n / 2 = n \\cdot 2^{n-1}$. This is axiomatized (not proved in Lean) since computing the edge set cardinality for the formalized graph requires more infrastructure.",
+    "mathContext": "$e(Q_n) = n \\cdot 2^{n-1}$. By handshaking: $\\sum_v \\deg(v) = n \\cdot 2^n = 2 \\cdot e(Q_n)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "handshaking lemma",
+      "regular graph edge count",
+      "edgeFinset"
+    ],
+    "prerequisites": [
+      "graph theory"
+    ]
+  },
+  {
+    "id": "ann-86-c4",
+    "proofId": "erdos-86",
+    "range": {
+      "startLine": 96,
+      "endLine": 99
+    },
+    "type": "definition",
+    "title": "4-Cycle ($C_4$) Definition",
+    "content": "A 4-cycle in a graph consists of four distinct vertices $a, b, c, d$ with edges $ab, bc, cd, da$ and no additional edges (pairwise distinctness ensures $a \\neq c$ and $b \\neq d$). In $Q_n$, a $C_4$ corresponds to a 'square': fix all coordinates except two positions $i, j$, then the four vertices $v, v^i, v^j, v^{ij}$ (where $v^S$ flips coordinates in $S$) form a 4-cycle.",
+    "mathContext": "$C_4 = (a, b, c, d)$ with $a \\sim b \\sim c \\sim d \\sim a$ and all six pairs distinct. In $Q_n$: $C_4$'s biject with $(v, \\{i,j\\})$ for $v \\in \\{0,1\\}^n$, $1 \\leq i < j \\leq n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cycle graph",
+      "4-cycle",
+      "square in hypercube",
+      "coordinate pairs"
+    ],
+    "prerequisites": [
+      "graph theory"
+    ]
+  },
+  {
+    "id": "ann-86-c4free",
+    "proofId": "erdos-86",
+    "range": {
+      "startLine": 101,
+      "endLine": 103
+    },
+    "type": "definition",
+    "title": "$C_4$-Free Subgraph",
+    "content": "A graph is $C_4$-free if it contains no 4-cycle as a subgraph. For hypercube subgraphs, this means no two edges 'complete a square' — if $u \\sim v$ and $u' \\sim v'$ where $u, u'$ and $v, v'$ agree outside two coordinates $i, j$, then not all four edges can be present. This is the central forbidden pattern.",
+    "mathContext": "$G$ is $C_4$-free $\\iff \\nexists\\, a,b,c,d \\in V(G)$ all distinct with $ab, bc, cd, da \\in E(G)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "forbidden subgraph",
+      "Turán-type problem",
+      "extremal graph theory"
+    ],
+    "prerequisites": [
+      "graph theory"
+    ]
+  },
+  {
+    "id": "ann-86-subgraph",
+    "proofId": "erdos-86",
+    "range": {
+      "startLine": 111,
+      "endLine": 112
+    },
+    "type": "definition",
+    "title": "Hypercube Subgraph Type",
+    "content": "A subgraph of $Q_n$ is a `SimpleGraph` on the same vertex set with $G \\leq Q_n$ (every edge of $G$ is an edge of $Q_n$). This uses Mathlib's subgraph ordering on `SimpleGraph`. The edge set $E(G) \\subseteq E(Q_n)$ preserves the hypercube vertex set while selecting a subset of edges.",
+    "mathContext": "$G \\subseteq Q_n \\iff E(G) \\subseteq E(Q_n)$ with $V(G) = V(Q_n) = \\{0,1\\}^n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "subgraph ordering",
+      "spanning subgraph",
+      "SimpleGraph.le"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "Mathlib SimpleGraph"
+    ]
+  },
+  {
+    "id": "ann-86-f",
+    "proofId": "erdos-86",
+    "range": {
+      "startLine": 114,
+      "endLine": 117
+    },
+    "type": "definition",
+    "title": "The Extremal Function $f(n)$",
+    "content": "The function $f(n)$ is the maximum number of edges in any $C_4$-free subgraph of $Q_n$. Defined noncomputably via `sSup` over the set of edge counts of all valid subgraphs. The central question is the ratio $f(n) / e(Q_n) = f(n) / (n \\cdot 2^{n-1})$ and its behavior as $n \\to \\infty$.",
+    "mathContext": "$f(n) = \\max\\{e(G) : G \\subseteq Q_n,\\, G \\text{ is } C_4\\text{-free}\\}$. Key ratio: $f(n) / (n \\cdot 2^{n-1})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal function",
+      "Turán number",
+      "supremum"
+    ],
+    "prerequisites": [
+      "extremal graph theory"
+    ]
+  },
+  {
+    "id": "ann-86-erdoslower",
+    "proofId": "erdos-86",
+    "range": {
+      "startLine": 125,
+      "endLine": 127
+    },
+    "type": "concept",
+    "title": "Erdős Lower Bound (1991)",
+    "content": "Erdős (1991) showed $f(n) \\geq (1/2 + c/n) \\cdot n \\cdot 2^{n-1}$ for some constant $c > 0$. This means we can keep slightly more than half the edges while avoiding $C_4$. The construction uses a careful partition of coordinates. Axiomatized since the proof requires an explicit construction.",
+    "mathContext": "$\\exists\\, c > 0,\\; \\forall\\, n \\geq 2: f(n) \\geq (1/2 + c/n) \\cdot n \\cdot 2^{n-1}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "probabilistic method",
+      "coordinate partition",
+      "lower bound construction"
+    ],
+    "prerequisites": [
+      "extremal graph theory",
+      "combinatorics"
+    ]
+  },
+  {
+    "id": "ann-86-bhnlower",
+    "proofId": "erdos-86",
+    "range": {
+      "startLine": 129,
+      "endLine": 131
+    },
+    "type": "concept",
+    "title": "Brass-Harborth-Nienborg Lower Bound (1995)",
+    "content": "Brass, Harborth, and Nienborg (1995) improved the lower bound to $f(n) \\geq (1/2 + c/\\sqrt{n}) \\cdot n \\cdot 2^{n-1}$. The excess over $1/2$ decays like $1/\\sqrt{n}$ rather than $1/n$, showing the construction is significantly better. If the conjecture is true ($f(n)/(n \\cdot 2^{n-1}) \\to 1/2$), then the convergence rate is at most $O(1/\\sqrt{n})$.",
+    "mathContext": "$\\exists\\, c > 0,\\; \\forall\\, n \\geq 2: f(n) \\geq (1/2 + c/\\sqrt{n}) \\cdot n \\cdot 2^{n-1}$. Improved from $c/n$ to $c/\\sqrt{n}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "convergence rate",
+      "lower bound improvement",
+      "explicit construction"
+    ],
+    "prerequisites": [
+      "extremal graph theory",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-86-baberupper",
+    "proofId": "erdos-86",
+    "range": {
+      "startLine": 133,
+      "endLine": 135
+    },
+    "type": "concept",
+    "title": "Baber's Upper Bound via Flag Algebras (2012)",
+    "content": "Baber (2012) proved $f(n) \\leq 0.60318 \\cdot n \\cdot 2^{n-1}$ using Razborov's flag algebra method, which translates the combinatorial optimization into a semidefinite programming problem. This is the best known upper bound and strictly less than $2/3$ — an earlier natural barrier. The flag algebra approach certifies the bound by analyzing local statistics of $C_4$-free hypercube subgraphs.",
+    "mathContext": "$f(n) \\leq 0.60318 \\cdot n \\cdot 2^{n-1}$ for all $n \\geq 1$. Proved via semidefinite programming in the flag algebra framework.",
+    "significance": "key",
+    "relatedConcepts": [
+      "flag algebras",
+      "Razborov's method",
+      "semidefinite programming",
+      "Turán density"
+    ],
+    "prerequisites": [
+      "extremal combinatorics",
+      "flag algebras",
+      "optimization"
+    ]
+  },
+  {
+    "id": "ann-86-summary",
+    "proofId": "erdos-86",
+    "range": {
+      "startLine": 137,
+      "endLine": 150
+    },
+    "type": "concept",
+    "title": "Combined Bounds Summary (Proved in Lean)",
+    "content": "The theorem `f_bounds_summary` combines the lower and upper bounds into a single statement: $1/2 \\cdot n \\cdot 2^{n-1} < f(n) \\leq 0.60318 \\cdot n \\cdot 2^{n-1}$ for $n \\geq 2$. The lower bound follows from the BHN bound (the $c/\\sqrt{n}$ term is strictly positive). The upper bound is Baber's result. This is one of the few fully proved theorems in the file — it combines the axiomatized bounds with real arithmetic.",
+    "mathContext": "$\\forall\\, n \\geq 2: \\frac{1}{2} \\cdot n \\cdot 2^{n-1} < f(n) \\leq 0.60318 \\cdot n \\cdot 2^{n-1}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "bound combination",
+      "real arithmetic",
+      "positivity"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "combinatorics"
+    ]
+  },
+  {
+    "id": "ann-86-conjecture",
+    "proofId": "erdos-86",
+    "range": {
+      "startLine": 158,
+      "endLine": 161
+    },
+    "type": "concept",
+    "title": "Erdős's Conjecture: $f(n)/(n \\cdot 2^{n-1}) \\to 1/2$",
+    "content": "The main conjecture: $f(n)/(n \\cdot 2^{n-1}) \\to 1/2$ as $n \\to \\infty$. Formalized using `Filter.Tendsto` with the `atTop` filter and the neighborhood `nhds (1/2)`. This states that the $C_4$-free edge density of $Q_n$ converges to $1/2$. The problem remains OPEN with a $\\$100$ prize from Erdős.",
+    "mathContext": "$\\lim_{n \\to \\infty} \\frac{f(n)}{n \\cdot 2^{n-1}} = \\frac{1}{2}$. Formalized: `Filter.Tendsto (fun n => f(n) / (n * 2^(n-1))) atTop (nhds (1/2))`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Filter.Tendsto",
+      "nhds",
+      "atTop",
+      "asymptotic density"
+    ],
+    "prerequisites": [
+      "topology",
+      "real analysis",
+      "filter theory"
+    ]
+  },
+  {
+    "id": "ann-86-alt",
+    "proofId": "erdos-86",
+    "range": {
+      "startLine": 163,
+      "endLine": 165
+    },
+    "type": "theorem",
+    "title": "Alternative $\\varepsilon$-$N$ Formulation",
+    "content": "The conjecture restated in $\\varepsilon$-$N$ form: for all $\\varepsilon > 0$, there exists $N$ such that $f(n) \\leq (1/2 + \\varepsilon) \\cdot n \\cdot 2^{n-1}$ for all $n \\geq N$. Note this only requires the upper bound direction; the lower bound $(1/2 - \\varepsilon) \\cdot n \\cdot 2^{n-1} \\leq f(n)$ follows from the BHN construction for large $n$.",
+    "mathContext": "$\\forall\\, \\varepsilon > 0,\\; \\exists\\, N,\\; \\forall\\, n \\geq N: f(n) \\leq (1/2 + \\varepsilon) \\cdot n \\cdot 2^{n-1}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "epsilon-N definition",
+      "convergence",
+      "one-sided bound"
+    ],
+    "prerequisites": [
+      "real analysis"
+    ]
+  },
+  {
+    "id": "ann-86-open",
+    "proofId": "erdos-86",
+    "range": {
+      "startLine": 167,
+      "endLine": 171
+    },
+    "type": "concept",
+    "title": "Open Problem Status",
+    "content": "The axiom `erdos86_open` serves as a placeholder indicating the problem is neither proved nor disproved. The formulation $\\neg(P \\lor \\neg P \\to \\text{False})$ is a logical tautology used to mark open status without making mathematical claims. Resolution paths: (1) prove the conjecture by showing $f(n) \\leq (1/2+\\varepsilon) \\cdot n \\cdot 2^{n-1}$ for all $\\varepsilon > 0$, or (2) disprove by constructing $C_4$-free subgraphs with density bounded away from $1/2$.",
+    "mathContext": "To prove: $\\forall\\, \\varepsilon > 0,\\; f(n) \\leq (1/2+\\varepsilon) n 2^{n-1}$ for large $n$. To disprove: $\\exists\\, c > 0,\\; f(n) \\geq (1/2+c) n 2^{n-1}$ for all $n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "open problem",
+      "resolution strategy"
+    ],
+    "prerequisites": [
+      "logic"
+    ]
+  },
+  {
+    "id": "ann-86-implication",
+    "proofId": "erdos-86",
+    "range": {
+      "startLine": 180,
+      "endLine": 186
+    },
+    "type": "concept",
+    "title": "Conjecture Implies Convergence (Proved)",
+    "content": "The theorem `conjecture_implies_limit` proves that if the conjecture holds, then for any $\\varepsilon > 0$ there exists $N$ such that $|f(n)/(n \\cdot 2^{n-1}) - 1/2| < \\varepsilon$ for all $n \\geq N$. This is a direct consequence of the `Metric.tendsto_atTop` characterization of convergence. Fully proved in Lean.",
+    "mathContext": "If $\\lim f(n)/(n 2^{n-1}) = 1/2$, then $\\forall\\, \\varepsilon > 0,\\; \\exists\\, N,\\; \\forall\\, n \\geq N: |f(n)/(n 2^{n-1}) - 1/2| < \\varepsilon$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Metric.tendsto_atTop",
+      "convergence characterization"
+    ],
+    "prerequisites": [
+      "metric spaces",
+      "Mathlib filter API"
+    ]
+  }
+]

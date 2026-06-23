@@ -1,0 +1,427 @@
+[
+  {
+    "id": "ann-131-statement",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 7,
+      "endLine": 12
+    },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "Let $F(N)$ be the maximum size of $A \\subseteq \\{1,\\ldots,N\\}$ where no element divides the sum of other distinct elements. The original question 'Is $F(N) > N^{1/2-o(1)}$?' was answered NO by Pham-Zakharov (2024), who showed $F(N) \\leq N^{1/4+o(1)}$.",
+    "mathContext": "$F(N) = \\max\\{|A| : A \\subseteq [N],\\; \\forall a \\in A,\\; \\forall S \\subseteq A \\setminus \\{a\\},\\; |S| \\geq 2 \\implies a \\nmid \\sum_{s \\in S} s\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "non-averaging sets",
+      "sum-free sets",
+      "divisibility",
+      "extremal combinatorics"
+    ],
+    "prerequisites": [
+      "divisibility in N",
+      "subset sums",
+      "asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-131-nondiv",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 43,
+      "endLine": 47
+    },
+    "type": "definition",
+    "title": "Non-Dividing Set",
+    "content": "A set $A$ is non-dividing if for every $a \\in A$ and every subset $S \\subseteq A \\setminus \\{a\\}$ with $|S| \\geq 2$, we have $a \\nmid \\sum_{s \\in S} s$. This is formalized as `IsNonDividing` using `Finset.erase` and `Finset.sum id`.",
+    "mathContext": "`IsNonDividing A` $\\iff$ $\\forall a \\in A,\\; \\forall S \\subseteq A \\setminus \\{a\\},\\; |S| \\geq 2 \\implies a \\nmid \\sum S$. Implemented via `S.sum id` for subset sums over `Finset N`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sum-free sets",
+      "Sidon sets",
+      "B_h sets",
+      "divisibility structures"
+    ],
+    "prerequisites": [
+      "Finset.erase",
+      "Finset.sum",
+      "Nat.dvd"
+    ]
+  },
+  {
+    "id": "ann-131-nondiv-alt",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 49,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Alternative Non-Dividing Definition",
+    "content": "An equivalent formulation `IsNonDividingAlt` uses $B \\subseteq A$ with $a \\notin B$ instead of $S \\subseteq A \\setminus \\{a\\}$. The equivalence `nondividing_equiv` is stated for $|A| \\geq 2$ but remains a sorry.",
+    "mathContext": "`IsNonDividingAlt A` $\\iff$ $\\forall a \\in A,\\; \\forall B \\subseteq A,\\; a \\notin B \\land B \\neq \\emptyset \\implies a \\nmid \\sum B$. Note: this version requires $|B| \\geq 1$ rather than $\\geq 2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "equivalent definitions",
+      "Finset membership",
+      "set complement"
+    ],
+    "prerequisites": [
+      "Finset operations",
+      "logical equivalence"
+    ]
+  },
+  {
+    "id": "ann-131-nonavg",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 59,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "Non-Averaging Set",
+    "content": "A set $A$ is non-averaging if no element equals the average of any subset of other elements: $a \\neq \\frac{1}{|S|} \\sum_{s \\in S} s$ for all $a \\in A$, $S \\subseteq A \\setminus \\{a\\}$ with $|S| \\geq 2$. Formalized over $\\mathbb{Q}$ to handle division.",
+    "mathContext": "`IsNonAveraging A` $\\iff$ $\\forall a \\in A,\\; \\forall S \\subseteq A \\setminus \\{a\\},\\; |S| \\geq 2 \\implies \\frac{\\sum S}{|S|} \\neq a$ in $\\mathbb{Q}$. The cast to $\\mathbb{Q}$ is necessary since $\\mathbb{N}$ lacks division.",
+    "significance": "key",
+    "relatedConcepts": [
+      "arithmetic progressions",
+      "Szemeredi's theorem",
+      "Problem #186"
+    ],
+    "prerequisites": [
+      "rational arithmetic",
+      "Finset.sum",
+      "type casting N to Q"
+    ]
+  },
+  {
+    "id": "ann-131-implies",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 95,
+      "endLine": 104
+    },
+    "type": "concept",
+    "title": "Non-dividing Implies Non-averaging",
+    "content": "Every non-dividing set is non-averaging. The proof sketch: if $a = \\text{avg}(S)$, then $\\sum S = a \\cdot |S|$, so $a \\mid \\sum S$, contradicting the non-dividing property. The divisibility extraction from the rational equation remains a sorry.",
+    "mathContext": "$a = \\frac{\\sum S}{|S|}$ in $\\mathbb{Q}$ $\\implies$ $\\sum S = a \\cdot |S|$ in $\\mathbb{N}$ $\\implies$ $a \\mid \\sum S$. The key step is lifting the $\\mathbb{Q}$-equation back to $\\mathbb{N}$-divisibility.",
+    "significance": "key",
+    "relatedConcepts": [
+      "implication between set properties",
+      "rational-to-integer lifting",
+      "Problem #186 connection"
+    ],
+    "prerequisites": [
+      "Nat.dvd",
+      "rational arithmetic",
+      "type casting"
+    ]
+  },
+  {
+    "id": "ann-131-f-def",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 109,
+      "endLine": 111
+    },
+    "type": "definition",
+    "title": "The Function F(N)",
+    "content": "$F(N)$ is the maximum cardinality of a non-dividing subset of $\\{1,\\ldots,N\\}$. Defined as the supremum of `Finset.card` over all subsets of `Finset.Icc 1 N` satisfying `IsNonDividing`.",
+    "mathContext": "$F(N) = \\sup\\{|A| : A \\subseteq \\{1,\\ldots,N\\},\\; \\text{IsNonDividing}(A)\\}$. Implemented via `Finset.filter` on `Finset.powerset (Finset.Icc 1 N)` followed by `.sup Finset.card`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal function",
+      "Finset.sup",
+      "powerset enumeration"
+    ],
+    "prerequisites": [
+      "Finset.powerset",
+      "Finset.Icc",
+      "Finset.sup"
+    ]
+  },
+  {
+    "id": "ann-131-monotonic",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 114,
+      "endLine": 123
+    },
+    "type": "concept",
+    "title": "Monotonicity of F",
+    "content": "$F$ is monotone: $N \\leq M \\implies F(N) \\leq F(M)$. Any non-dividing subset of $\\{1,\\ldots,N\\}$ is also a subset of $\\{1,\\ldots,M\\}$ when $N \\leq M$.",
+    "mathContext": "$N \\leq M \\implies \\{1,\\ldots,N\\} \\subseteq \\{1,\\ldots,M\\} \\implies$ every non-dividing $A \\subseteq [N]$ is a candidate in $[M]$, so $F(N) \\leq F(M)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotone functions",
+      "Finset.Icc monotonicity"
+    ],
+    "prerequisites": [
+      "Finset.Icc_subset_Icc",
+      "Finset.sup_le"
+    ]
+  },
+  {
+    "id": "ann-131-elrss",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 128,
+      "endLine": 130
+    },
+    "type": "concept",
+    "title": "ELRSS Upper Bound (1999)",
+    "content": "Erdős, Lev, Rauzy, Sandor, and Sarkozy (1999) proved $F(N) < 3\\sqrt{N} + 1$. This was the first strong upper bound, establishing $F(N) = O(\\sqrt{N})$ and showing the problem was tractable.",
+    "mathContext": "$F(N) < 3\\sqrt{N} + 1$ for all $N \\geq 1$. The bound is tight up to constants: the $\\sqrt{N}$ exponent was later improved to $N^{1/4}$ by Pham-Zakharov.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sieve methods",
+      "exponential sums",
+      "counting arguments"
+    ],
+    "prerequisites": [
+      "Real.sqrt",
+      "inequality reasoning"
+    ]
+  },
+  {
+    "id": "ann-131-pham",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 134,
+      "endLine": 137
+    },
+    "type": "concept",
+    "title": "Pham-Zakharov Upper Bound (2024)",
+    "content": "Pham and Zakharov (2024) proved $F(N) \\leq N^{1/4+o(1)}$. The key innovation was exploiting the connection to non-averaging sets: since non-dividing $\\implies$ non-averaging, any upper bound on non-averaging sets applies to non-dividing sets. This resolved the original question.",
+    "mathContext": "$\\exists \\varepsilon(N) \\to 0: F(N) \\leq N^{1/4 + \\varepsilon(N)}$ for $N \\geq 2$. Formalized with explicit $\\varepsilon : \\mathbb{N} \\to \\mathbb{R}$ satisfying $|\\varepsilon(N)| < \\delta$ for all $N \\geq N_0(\\delta)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "non-averaging bounds",
+      "additive combinatorics",
+      "sum-product estimates"
+    ],
+    "prerequisites": [
+      "asymptotic notation",
+      "real analysis",
+      "o(1) formalization"
+    ]
+  },
+  {
+    "id": "ann-131-resolved",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 142,
+      "endLine": 170
+    },
+    "type": "concept",
+    "title": "Original Question Resolved: NO",
+    "content": "The original question 'Is $F(N) > N^{1/2-o(1)}$?' is answered NO. Since $N^{1/4+o(1)} < N^{1/2-\\varepsilon}$ for large $N$ and any $\\varepsilon > 0$, the Pham-Zakharov bound rules out $N^{1/2}$-type growth.",
+    "mathContext": "$F(N) \\leq N^{1/4+o(1)}$ and $1/4 < 1/2 - \\varepsilon$ for small $\\varepsilon$, so $F(N) \\not> N^{1/2-o(1)}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "exponent comparison",
+      "asymptotic domination"
+    ],
+    "prerequisites": [
+      "comparison of growth rates",
+      "real exponent arithmetic"
+    ]
+  },
+  {
+    "id": "ann-131-csaba",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 175,
+      "endLine": 177
+    },
+    "type": "concept",
+    "title": "Csaba Lower Bound",
+    "content": "Csaba proved $F(N) \\gg N^{1/5}$: there exist non-dividing subsets of $\\{1,\\ldots,N\\}$ of size $\\geq c N^{1/5}$. This provides a polynomial lower bound but is much weaker than the $N^{1/4}$ upper bound.",
+    "mathContext": "$\\exists c > 0: F(N) \\geq c \\cdot N^{1/5}$ for all $N \\geq 1$. The exponent $1/5$ is far from the upper bound exponent $1/4$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "constructive lower bounds",
+      "explicit set constructions"
+    ],
+    "prerequisites": [
+      "real power functions",
+      "constructive combinatorics"
+    ]
+  },
+  {
+    "id": "ann-131-straus",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 180,
+      "endLine": 185
+    },
+    "type": "concept",
+    "title": "Straus Lower Bound",
+    "content": "Straus proved $F(N) > \\exp\\left((\\sqrt{2/\\ln 2} + o(1))\\sqrt{\\ln N}\\right)$ where $\\sqrt{2/\\ln 2} \\approx 1.699$. This is subexponential but superpolynomial in $\\log N$, disproving Erdős's original conjecture that $F(N) < (\\log N)^{O(1)}$.",
+    "mathContext": "$F(N) > \\exp\\left(c\\sqrt{\\log N}\\right)$ with $c = \\sqrt{2/\\log 2} \\approx 1.699$. This grows faster than $(\\log N)^k$ for any $k$ but slower than $N^\\alpha$ for any $\\alpha > 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "subexponential growth",
+      "intermediate growth rates",
+      "explicit constructions"
+    ],
+    "prerequisites": [
+      "Real.exp",
+      "Real.sqrt",
+      "Real.log",
+      "growth rate comparison"
+    ]
+  },
+  {
+    "id": "ann-131-straus-constant",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 127,
+      "endLine": 130
+    },
+    "type": "concept",
+    "title": "Straus Constant Bounds",
+    "content": "The Straus constant $\\sqrt{2/\\ln 2}$ satisfies $1.6 < \\sqrt{2/\\ln 2} < 1.8$. This numerical verification (currently a sorry) would follow from `norm_num` with appropriate Real.sqrt and Real.log bounds.",
+    "mathContext": "$\\sqrt{2/\\log 2} = \\sqrt{2/0.6931\\ldots} = \\sqrt{2.8854\\ldots} \\approx 1.6992$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "numerical verification",
+      "special constants"
+    ],
+    "prerequisites": [
+      "Real.sqrt bounds",
+      "Real.log bounds"
+    ]
+  },
+  {
+    "id": "ann-131-gap",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 134,
+      "endLine": 146
+    },
+    "type": "concept",
+    "title": "The Open Gap",
+    "content": "The current knowledge gap is immense: $\\exp(c\\sqrt{\\log N}) \\leq F(N) \\leq N^{1/4+o(1)}$. The lower bound is subexponential (slower than any polynomial $N^\\alpha$) while the upper bound is polynomial. Determining whether $F(N)$ is polynomial or subexponential is the central open question.",
+    "mathContext": "$\\exp(c\\sqrt{\\log N}) = o(N^\\alpha)$ for all $\\alpha > 0$, while $N^{1/4+o(1)}$ is polynomial. The question is whether $F(N) = N^{\\theta + o(1)}$ for some $0 < \\theta \\leq 1/4$, or whether $F$ has intermediate (subexponential) growth.",
+    "significance": "key",
+    "relatedConcepts": [
+      "growth rate classification",
+      "polynomial vs subexponential",
+      "Erdos bounty problems"
+    ],
+    "prerequisites": [
+      "asymptotic analysis",
+      "growth rate hierarchy"
+    ]
+  },
+  {
+    "id": "ann-131-log-conjecture",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 247,
+      "endLine": 308
+    },
+    "type": "concept",
+    "title": "Erdős's Original Conjecture Disproved",
+    "content": "Erdős originally conjectured $F(N) < (\\log N)^{O(1)}$. Straus's construction disproved this: $\\exp(c\\sqrt{\\log N})$ grows faster than $(\\log N)^k$ for any $k$, since $c\\sqrt{\\log N} \\gg k \\log\\log N$.",
+    "mathContext": "$\\exp(c\\sqrt{\\log N}) > (\\log N)^k$ for large $N$, since $c\\sqrt{\\log N} > k \\log\\log N$ as $\\sqrt{x}/\\log x \\to \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "disproof by construction",
+      "growth rate comparison"
+    ],
+    "prerequisites": [
+      "asymptotic comparison",
+      "exponential vs polynomial growth"
+    ]
+  },
+  {
+    "id": "ann-131-singleton",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 313,
+      "endLine": 321
+    },
+    "type": "concept",
+    "title": "Singleton Non-Dividing (Verified)",
+    "content": "Any singleton $\\{n\\}$ with $n \\geq 1$ is trivially non-dividing: $\\{n\\}\\setminus\\{n\\} = \\emptyset$ has no subset with $\\geq 2$ elements. This is fully verified in Lean using `Finset.subset_empty` and the cardinality contradiction.",
+    "mathContext": "$|S| \\geq 2$ and $S \\subseteq \\{n\\} \\setminus \\{n\\} = \\emptyset$ is a contradiction, so the universal quantifier is vacuously true.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "vacuous truth",
+      "base case",
+      "Finset.empty"
+    ],
+    "prerequisites": [
+      "Finset.singleton",
+      "Finset.erase",
+      "Finset.subset_empty"
+    ]
+  },
+  {
+    "id": "ann-131-g-def",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 395,
+      "endLine": 397
+    },
+    "type": "theorem",
+    "title": "Non-Averaging Function g(N)",
+    "content": "$g(N)$ is the maximum size of a non-averaging subset of $\\{1,\\ldots,N\\}$, the central object of Problem #186. Defined identically to $F(N)$ but with `IsNonAveraging` replacing `IsNonDividing`.",
+    "mathContext": "$g(N) = \\max\\{|A| : A \\subseteq [N],\\; \\text{IsNonAveraging}(A)\\}$. Since non-dividing $\\implies$ non-averaging, every non-dividing set is a candidate for $g(N)$, giving $F(N) \\leq g(N)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Problem #186",
+      "non-averaging sets",
+      "extremal function comparison"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "Finset.powerset",
+      "Finset.sup"
+    ]
+  },
+  {
+    "id": "ann-131-f-le-g",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 196,
+      "endLine": 198
+    },
+    "type": "concept",
+    "title": "F(N) ≤ g(N)",
+    "content": "The non-dividing maximum is at most the non-averaging maximum. This key inequality allows transferring upper bounds: any bound on $g(N)$ (from Problem #186 research) immediately applies to $F(N)$.",
+    "mathContext": "$\\text{IsNonDividing}(A) \\implies \\text{IsNonAveraging}(A) \\implies A$ is a candidate for $g(N) \\implies F(N) \\leq g(N)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "monotonicity of extremal functions",
+      "implication transfer"
+    ],
+    "prerequisites": [
+      "nondividing_implies_nonaveraging",
+      "Finset.sup_le"
+    ]
+  },
+  {
+    "id": "ann-131-chain",
+    "proofId": "erdos-131",
+    "range": {
+      "startLine": 200,
+      "endLine": 206
+    },
+    "type": "concept",
+    "title": "Pham-Zakharov Bound Transfer",
+    "content": "The Pham-Zakharov bound on $g(N)$ chains to $F(N)$: if $g(N) \\leq N^{1/4+\\varepsilon}$ then $F(N) \\leq N^{1/4+\\varepsilon}$. This is the mechanism by which the original question was resolved.",
+    "mathContext": "$g(N) \\leq N^{1/4+\\varepsilon} \\implies F(N) \\leq g(N) \\leq N^{1/4+\\varepsilon}$. The proof uses `F_le_g` and transitivity of $\\leq$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "bound transfer",
+      "transitivity",
+      "chain of inequalities"
+    ],
+    "prerequisites": [
+      "F_le_g",
+      "Nat.cast_le",
+      "le_trans"
+    ]
+  }
+]

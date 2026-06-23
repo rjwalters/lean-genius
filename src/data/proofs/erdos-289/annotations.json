@@ -1,0 +1,273 @@
+[
+  {
+    "id": "erdos-289-ann-block",
+    "proofId": "erdos-289",
+    "range": {
+      "startLine": 31,
+      "endLine": 41
+    },
+    "type": "definition",
+    "title": "Interval Block Structure",
+    "content": "Defines IntervalBlock as a structure with lo, hi : ℕ, positivity (0 < lo), ordering (lo ≤ hi), and size constraint (hi - lo + 1 ≥ 2). The toFinset function returns Finset.Icc lo hi. The size ≥ 2 constraint prevents degenerate singleton intervals.",
+    "mathContext": "An interval block is $I = [a, b] \\cap \\mathbb{N}$ with $0 < a \\le b$ and $|I| = b - a + 1 \\ge 2$. The positivity constraint $a > 0$ avoids division by zero in reciprocal sums. Lean's `Finset.Icc` provides the concrete finset $\\{a, a+1, \\ldots, b\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "interval arithmetic",
+      "Finset.Icc",
+      "Egyptian fractions",
+      "integer intervals"
+    ],
+    "prerequisites": [
+      "Finset.Icc",
+      "structure definition",
+      "Nat subtraction"
+    ]
+  },
+  {
+    "id": "erdos-289-ann-nonadj",
+    "proofId": "erdos-289",
+    "range": {
+      "startLine": 43,
+      "endLine": 49
+    },
+    "type": "definition",
+    "title": "Disjointness and Non-Adjacency",
+    "content": "Disjoint: I.hi < J.lo ∨ J.hi < I.lo (no overlap). NonAdjacent: I.hi + 1 < J.lo ∨ J.hi + 1 < I.lo (gap of at least one integer between blocks). Non-adjacency is strictly stronger than disjointness.",
+    "mathContext": "Non-adjacency requires $\\max(I) + 1 < \\min(J)$ or $\\max(J) + 1 < \\min(I)$, meaning there is at least one integer in the gap between blocks. Without this, adjacent blocks $[a,b]$ and $[b+1,c]$ could be merged into $[a,c]$, trivializing the decomposition problem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "gap condition",
+      "separation constraint",
+      "packing problems",
+      "interval scheduling"
+    ],
+    "prerequisites": [
+      "Nat.lt",
+      "disjunction"
+    ]
+  },
+  {
+    "id": "erdos-289-ann-recipsum",
+    "proofId": "erdos-289",
+    "range": {
+      "startLine": 51,
+      "endLine": 53
+    },
+    "type": "definition",
+    "title": "Reciprocal Sum",
+    "content": "The reciprocal sum of a block [lo, hi] is Σ_{n=lo}^{hi} 1/n computed over ℚ. Uses Finset.sum over the block's toFinset with rational arithmetic to maintain exact computation.",
+    "mathContext": "Defines $S(I) = \\sum_{n=a}^{b} \\frac{1}{n} \\in \\mathbb{Q}$. Working over $\\mathbb{Q}$ rather than $\\mathbb{R}$ preserves exact arithmetic — the target sum $1$ is rational, so exact equality is meaningful. For the block $[2,7]$: $S = \\frac{1}{2} + \\frac{1}{3} + \\frac{1}{4} + \\frac{1}{5} + \\frac{1}{6} + \\frac{1}{7} = \\frac{223}{140}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "harmonic numbers",
+      "partial harmonic sums",
+      "rational arithmetic",
+      "Egyptian fractions"
+    ],
+    "prerequisites": [
+      "Finset.sum",
+      "ℚ division",
+      "IntervalBlock.toFinset"
+    ]
+  },
+  {
+    "id": "erdos-289-ann-valid",
+    "proofId": "erdos-289",
+    "range": {
+      "startLine": 55,
+      "endLine": 59
+    },
+    "type": "definition",
+    "title": "Valid Decomposition",
+    "content": "A collection of k pairwise non-adjacent interval blocks whose reciprocal sums total exactly 1. Indexed by Fin k for type-safe enumeration. The pairwise non-adjacency is checked for all distinct pairs i ≠ j.",
+    "mathContext": "A valid $k$-decomposition is a family $\\{I_1, \\ldots, I_k\\}$ of interval blocks satisfying: (1) $\\forall i \\ne j$, $I_i$ and $I_j$ are non-adjacent; (2) $\\sum_{i=1}^{k} S(I_i) = 1$. The exactness of the sum (not approximate) is what makes the problem hard — it requires precise rational arithmetic over harmonic-type sums.",
+    "significance": "key",
+    "relatedConcepts": [
+      "partition into intervals",
+      "exact cover",
+      "unit fraction decomposition"
+    ],
+    "prerequisites": [
+      "Fin k",
+      "Finset.sum",
+      "IntervalBlock.NonAdjacent"
+    ]
+  },
+  {
+    "id": "erdos-289-ann-conjecture",
+    "proofId": "erdos-289",
+    "range": {
+      "startLine": 63,
+      "endLine": 67
+    },
+    "type": "definition",
+    "title": "Erdős Problem #289",
+    "content": "For all sufficiently large k, a valid decomposition of 1 into k blocks exists. Axiomatized as: ∃ K, ∀ k ≥ K, ∃ blocks with ValidDecomposition. The existential threshold K is unknown.",
+    "mathContext": "States $\\exists K \\in \\mathbb{N}$ such that $\\forall k \\ge K$, there exist $k$ pairwise non-adjacent interval blocks $I_1, \\ldots, I_k \\subset \\mathbb{N}$ with $\\sum_{i=1}^{k} \\sum_{n \\in I_i} \\frac{1}{n} = 1$. The problem is open: neither the existence of such $K$ nor a counterexample is known.",
+    "significance": "key",
+    "relatedConcepts": [
+      "threshold phenomena",
+      "Erdős–Graham conjecture",
+      "unit fraction representations"
+    ],
+    "prerequisites": [
+      "ValidDecomposition",
+      "existential quantifier"
+    ]
+  },
+  {
+    "id": "erdos-289-ann-size",
+    "proofId": "erdos-289",
+    "range": {
+      "startLine": 71,
+      "endLine": 76
+    },
+    "type": "concept",
+    "title": "Block Size ≥ 2",
+    "content": "Every interval block contains at least 2 elements by construction. Proved from the structure field hsize using Nat.card_Icc and omega.",
+    "mathContext": "Proves $|I| = |\\text{Finset.Icc}(a, b)| \\ge 2$ from the structural constraint $b - a + 1 \\ge 2$. The `omega` tactic handles the linear arithmetic. This ensures each block contributes a nontrivial sum of at least two reciprocals.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.card",
+      "Nat.card_Icc",
+      "omega tactic"
+    ],
+    "prerequisites": [
+      "IntervalBlock.hsize",
+      "Finset.Icc"
+    ]
+  },
+  {
+    "id": "erdos-289-ann-nonadj-disjoint",
+    "proofId": "erdos-289",
+    "range": {
+      "startLine": 78,
+      "endLine": 86
+    },
+    "type": "concept",
+    "title": "Non-Adjacency Implies Disjointness",
+    "content": "If I.hi + 1 < J.lo then certainly I.hi < J.lo (disjointness). The proof unfolds both definitions and applies omega to the linear arithmetic in each case.",
+    "mathContext": "Proves the implication: if $\\max(I) + 1 < \\min(J)$ or $\\max(J) + 1 < \\min(I)$, then $\\max(I) < \\min(J)$ or $\\max(J) < \\min(I)$. This is immediate from $a + 1 < b \\Rightarrow a < b$ over $\\mathbb{N}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "logical implication",
+      "linear arithmetic",
+      "omega tactic"
+    ],
+    "prerequisites": [
+      "IntervalBlock.NonAdjacent",
+      "IntervalBlock.Disjoint"
+    ]
+  },
+  {
+    "id": "erdos-289-ann-hm",
+    "proofId": "erdos-289",
+    "range": {
+      "startLine": 90,
+      "endLine": 96
+    },
+    "type": "insight",
+    "title": "Hickerson–Montgomery Example",
+    "content": "Five intervals [2,7], [9,10], [17,18], [34,35], [84,85] have reciprocal sum exactly 2, demonstrating that exact rational targets can be hit with non-adjacent blocks. This shows the feasibility of the approach, though the target here is 2 rather than 1.",
+    "mathContext": "The example achieves $\\sum_{n=2}^{7}\\frac{1}{n} + \\frac{1}{9}+\\frac{1}{10} + \\frac{1}{17}+\\frac{1}{18} + \\frac{1}{34}+\\frac{1}{35} + \\frac{1}{84}+\\frac{1}{85} = 2$ exactly. The blocks are pairwise non-adjacent (gaps at 8, 11–16, 19–33, 36–83). This demonstrates that the non-adjacency constraint does not prevent exact rational targets.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Egyptian fraction algorithms",
+      "constructive examples",
+      "greedy algorithm for unit fractions"
+    ],
+    "prerequisites": [
+      "IntervalBlock",
+      "ValidDecomposition"
+    ]
+  },
+  {
+    "id": "erdos-289-ann-harmonic",
+    "proofId": "erdos-289",
+    "range": {
+      "startLine": 100,
+      "endLine": 105
+    },
+    "type": "concept",
+    "title": "Harmonic Tail Divergence",
+    "content": "For any starting point M and target C > 0, there exists N > M such that Σ_{n=M}^{N} 1/n > C. This guarantees enough reciprocal sum is available from any tail of ℕ, a necessary condition for the problem to have solutions for large k.",
+    "mathContext": "Axiomatizes $\\forall M \\in \\mathbb{N},\\, \\forall C > 0,\\, \\exists N > M : \\sum_{n=M}^{N} \\frac{1}{n} > C$. This follows from the divergence of the harmonic series $\\sum_{n=1}^{\\infty} \\frac{1}{n} = \\infty$. Without divergence, one might exhaust the available reciprocal sum before reaching the target 1.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "harmonic series divergence",
+      "Euler's proof",
+      "comparison test",
+      "integral test"
+    ],
+    "prerequisites": [
+      "Finset.Icc",
+      "ℚ ordering"
+    ]
+  },
+  {
+    "id": "erdos-289-ann-bounds",
+    "proofId": "erdos-289",
+    "range": {
+      "startLine": 107,
+      "endLine": 113
+    },
+    "type": "concept",
+    "title": "Reciprocal Sum Bounds",
+    "content": "Upper bound: S([a,b]) ≤ (b-a+1)/a (all terms bounded by largest 1/a). Lower bound: S([a,b]) ≥ (b-a+1)/b (all terms bounded by smallest 1/b). These bracket the contribution of each block.",
+    "mathContext": "For a block $I = [a, b]$: $\\frac{b-a+1}{b} \\le S(I) = \\sum_{n=a}^{b} \\frac{1}{n} \\le \\frac{b-a+1}{a}$. The upper bound uses $\\frac{1}{n} \\le \\frac{1}{a}$ for $n \\ge a$; the lower bound uses $\\frac{1}{n} \\ge \\frac{1}{b}$ for $n \\le b$. These bounds are tight for size-2 blocks where $b = a+1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "harmonic number bounds",
+      "integral approximation",
+      "telescoping bounds"
+    ],
+    "prerequisites": [
+      "IntervalBlock.recipSum",
+      "ℚ inequality"
+    ]
+  },
+  {
+    "id": "erdos-289-ann-spreading",
+    "proofId": "erdos-289",
+    "range": {
+      "startLine": 115,
+      "endLine": 123
+    },
+    "type": "insight",
+    "title": "Exact Target Difficulty and Spreading",
+    "content": "With many blocks forced to be non-adjacent, the blocks must spread out to large values of n. Axiomatizes that at least one block has hi ≥ k. As n grows, reciprocal contributions shrink, making exact rational targets harder to achieve.",
+    "mathContext": "States: for $k$ pairwise non-adjacent blocks, $\\exists i : \\max(I_i) \\ge k$. Since non-adjacent blocks occupy disjoint intervals with gaps, the $k$ blocks span at least $2k + (k-1) = 3k - 1$ consecutive integers. The largest endpoint is thus $\\ge k$. This forces increasingly precise cancellation to hit the exact target $1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "interval packing",
+      "density constraints"
+    ],
+    "prerequisites": [
+      "IntervalBlock.NonAdjacent",
+      "Fin k"
+    ]
+  },
+  {
+    "id": "erdos-289-ann-trivial",
+    "proofId": "erdos-289",
+    "range": {
+      "startLine": 125,
+      "endLine": 131
+    },
+    "type": "concept",
+    "title": "Easier Without Non-Adjacency",
+    "content": "Without the non-adjacency constraint, decompositions of 1 into k disjoint intervals exist for large k (Erdős–Graham remark). This isolates non-adjacency as the essential difficulty: adjacency allows merging tricks that non-adjacency forbids.",
+    "mathContext": "Axiomatizes $\\exists K,\\, \\forall k \\ge K$, there exist $k$ pairwise disjoint (but possibly adjacent) blocks summing to $1$. The observation is that one can start with a known representation $1 = \\sum 1/n_i$ and split intervals, since adjacent intervals can be rearranged. The non-adjacency constraint prevents this splitting strategy.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Egyptian fraction decomposition",
+      "Erdős–Graham conjecture",
+      "Sylvester–Fibonacci representation"
+    ],
+    "prerequisites": [
+      "IntervalBlock.Disjoint",
+      "ValidDecomposition"
+    ]
+  }
+]

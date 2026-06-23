@@ -1,0 +1,132 @@
+{
+  "id": "quadratic-gauss-sum-square-oq-01",
+  "title": "Real/Imaginary Dichotomy of the Quadratic Gauss Sum",
+  "slug": "quadratic-gauss-sum-square-oq-01",
+  "description": "Building on the square identity g² = (-1)^((p-1)/2)·p for the quadratic Gauss sum g = ∑ₙ χ(n)·ψ(n) (odd prime p, primitive additive character ψ), this entry proves the elementary half of Gauss's sign theorem: the real/imaginary DICHOTOMY. When p ≡ 1 (mod 4) the square is the positive real +p, forcing g to be real (g.im = 0); when p ≡ 3 (mod 4) the square is the negative real −p, forcing g to be purely imaginary (g.re = 0). Together with the magnitude ‖g‖² = p this gives g = ±√p resp. g = ±i√p — only the leading ± sign, the genuinely deep part of Gauss's theorem, remains open.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-18",
+    "status": "verified",
+    "proofRepoPath": "Proofs/QuadraticGaussSumSquareOQ01.lean",
+    "tags": [
+      "number-theory",
+      "gauss-sum",
+      "quadratic-character",
+      "quadratic-reciprocity",
+      "complex-analysis",
+      "zmod",
+      "additive-character"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 116,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "assumptions": ""
+  },
+  "overview": {
+    "historicalContext": "Gauss's $g^2 = (-1)^{(p-1)/2} p$ pins the quadratic Gauss sum down only up to sign. Gauss famously struggled for four years to determine the sign of $g$ itself — the statement $g = \\sqrt{p}$ for $p \\equiv 1 \\pmod 4$ and $g = i\\sqrt{p}$ for $p \\equiv 3 \\pmod 4$ — before finding the argument (28 August 1805) now usually presented via Schur's eigenvalue computation on the finite Fourier transform or Dirichlet's analytic evaluation. That full sign determination remains out of scope here. What this entry isolates is the *elementary half*: the real/imaginary dichotomy, which already follows from the square identity by pure complex arithmetic without any of Gauss's analytic input. It tells us $g$ lies on the real axis when $p \\equiv 1$ and on the imaginary axis when $p \\equiv 3$, leaving exactly the leading $\\pm$ that the hard theorem fixes.",
+    "problemStatement": "Let $p$ be an odd prime and $\\psi : \\mathbb{Z}/p\\mathbb{Z} \\to \\mathbb{C}$ a primitive additive character, with $g = \\operatorname{gaussSum}(\\chi_{\\mathbb{C}}, \\psi)$ the transported quadratic Gauss sum. Granting the parent's square identity $g^2 = (-1)^{(p-1)/2}\\,p$, prove: (1) if $p \\equiv 1 \\pmod 4$ then $g$ is real ($\\operatorname{Im} g = 0$); (2) if $p \\equiv 3 \\pmod 4$ then $g$ is purely imaginary ($\\operatorname{Re} g = 0$); (3) the magnitude satisfies $\\lVert g \\rVert^2 = p$.",
+    "proofStrategy": "Two self-contained complex-arithmetic lemmas do the work. `im_eq_zero_of_sq_eq_pos_real`: if $z^2$ is a positive real $r$, then taking real and imaginary parts of $z^2 = r$ gives $2\\,\\operatorname{Re}(z)\\operatorname{Im}(z) = 0$ and $\\operatorname{Re}(z)^2 - \\operatorname{Im}(z)^2 = r$; the product being zero splits into cases, and $\\operatorname{Re}(z) = 0$ is excluded because it would force $-\\operatorname{Im}(z)^2 = r > 0$, so $\\operatorname{Im}(z) = 0$. `re_eq_zero_of_sq_eq_neg_real` is the mirror image for negative reals. The two dichotomy theorems then feed the parent's `gaussSum_quadratic_sq`: for $p \\equiv 1 \\pmod 4$ the exponent $(p-1)/2$ is even, so $(-1)^{(p-1)/2} = 1$ and $g^2 = +p$ is a positive real; for $p \\equiv 3 \\pmod 4$ it is odd, so $g^2 = -p$ is a negative real. The magnitude theorem `gaussSum_normSq_eq` applies the multiplicative `Complex.normSq` to $g^2 = (-1)^{(p-1)/2} p$, giving $(\\operatorname{normSq} g)^2 = p^2$, whence $\\operatorname{normSq} g = p$ by nonnegativity.",
+    "keyInsights": [
+      "The dichotomy is the *soft* half of Gauss's sign theorem: it needs nothing beyond the square identity and the algebra of $\\mathbb{C} = \\mathbb{R}[i]$. Concretely, a complex number whose square is a nonzero real must lie on one of the two coordinate axes — real axis if the square is positive, imaginary axis if negative — and which axis is decided entirely by the sign $(-1)^{(p-1)/2}$ already computed in the parent.",
+      "The parity of $(p-1)/2$ is the hinge. `Nat.even_iff`/`Nat.odd_iff` plus `omega` translate $p \\bmod 4 \\in \\{1,3\\}$ into `Even`/`Odd ((p-1)/2)`, and `Even.neg_one_pow`/`Odd.neg_one_pow` collapse the sign factor to $+1$ or $-1$ — exactly the input the two arithmetic lemmas need.",
+      "Both arithmetic lemmas are proved by extracting `Complex.re` and `Complex.im` of the hypothesis $z^2 = r$ via `congrArg`, expanding with `Complex.mul_re`/`Complex.mul_im`, and discharging the resulting real (in)equalities with `linarith`/`nlinarith` and `mul_self_nonneg`. No appeal to square roots or the argument function is needed — the obstruction $\\operatorname{Re}(z) = 0$ (resp. $\\operatorname{Im}(z) = 0$) is ruled out purely by sign.",
+      "The magnitude $\\lVert g \\rVert^2 = p$ is independent of the residue of $p$ mod 4 and of the unknown leading sign: `Complex.normSq` is multiplicative, so $\\operatorname{normSq}(g)^2 = \\operatorname{normSq}(g^2) = \\operatorname{normSq}((-1)^{(p-1)/2} p) = p^2$, and nonnegativity of `normSq` selects the positive square root. This is the Parseval/orthogonality content $|g| = \\sqrt{p}$ made explicit.",
+      "Dichotomy plus magnitude pin $g$ to one of just four points: $\\pm\\sqrt{p}$ when $p \\equiv 1 \\pmod 4$ and $\\pm i\\sqrt{p}$ when $p \\equiv 3 \\pmod 4$. The remaining binary choice — which sign — is precisely Gauss's hard theorem and the sole piece this entry leaves open, cleanly separating the elementary from the deep."
+    ]
+  },
+  "conclusion": {
+    "summary": "For every odd prime $p$ and primitive additive character $\\psi$, the quadratic Gauss sum $g$ is machine-checked to be real when $p \\equiv 1 \\pmod 4$ and purely imaginary when $p \\equiv 3 \\pmod 4$, with magnitude $\\lVert g \\rVert^2 = p$. These follow from the parent's square identity by elementary complex arithmetic, with no axioms and no sorries.",
+    "implications": "The dichotomy and magnitude reduce the full sign-determination problem to a single binary choice — the leading $\\pm$ — making explicit exactly where Gauss's deep analytic argument is required and where it is not. The same real/imaginary split governs the functional equation of the Dirichlet $L$-function attached to the quadratic character mod $p$, where the location of $g$ on the real or imaginary axis controls the root number. The magnitude $\\lVert g \\rVert^2 = p$ is reproved independently from character orthogonality (Parseval) in the companion `Proofs/QuadraticGaussSumNormParseval.lean`, giving a square-identity-free cross-check.",
+    "openQuestions": [
+      "Can the leading sign of $g$ — $g = +\\sqrt{p}$ for $p \\equiv 1 \\pmod 4$ and $g = +i\\sqrt{p}$ for $p \\equiv 3 \\pmod 4$ (Gauss's hard theorem) — be formalized in Lean 4 on top of this dichotomy, e.g. via Schur's eigenvalue argument on the finite Fourier transform? PARTIAL: the reduction `QuadraticGaussSumSignReduction` collapses the whole hard theorem to a single real positivity ($0<\\operatorname{Re}g$ for $p\\equiv1$, $0<\\operatorname{Im}g$ for $p\\equiv3$), and small-prime witnesses now confirm it by a coarse sine/cosine sign-and-monotonicity estimate for $p=3,5,7,11,13$ (`QuadraticGaussSumSignSmall*`, the $p\\equiv1$ branch now at $p=5,13$). The general positivity remains the open DFT-spectrum crux.",
+      "Does the dichotomy-from-square-sign mechanism extend to higher-order Gauss sums, where the square (or higher power) lands on a denser set of rays in $\\mathbb{C}$?",
+      "RESOLVED (companion `Proofs/QuadraticGaussSumNormParseval.lean`): the magnitude $\\lVert g \\rVert^2 = p$ is now also derived directly from character orthogonality (Parseval) — `gaussSum_mul_gaussSum_eq_card` — independently of the square identity, by identifying $\\overline{g}$ with $\\operatorname{gaussSum}(\\chi, \\psi^{-1})$ (conjugation fixes the real quadratic character and inverts the additive character) and using $\\chi^{-1} = \\chi$. This confirms $\\lVert g \\rVert^2 = p$ on a logically separate route, sorry-free and axiom-free."
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "quadratic-gauss-sum-square",
+      "relationship": "extends",
+      "description": "This entry is the direct sequel: it takes the parent's square identity g² = (-1)^((p-1)/2)·p as its sole mathematical input and extracts the real/imaginary dichotomy and magnitude from it by complex arithmetic."
+    },
+    {
+      "proofId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "The sign (-1)^((p-1)/2) that decides whether g is real or imaginary is the first supplement to quadratic reciprocity; the dichotomy makes the p mod 4 distinction geometrically visible in the complex plane."
+    },
+    {
+      "proofId": "gauss-wilson-non-cyclic",
+      "relationship": "related",
+      "description": "Both entries study the quadratic residue character of (ZMod p)×; the Gauss sum whose location is pinned here is the discrete Fourier transform of that character."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/QuadraticGaussSumSquareOQ01.lean",
+    "axiomCount": 0,
+    "lineCount": 116,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "header-and-imports",
+      "title": "Setup: the Square Identity and What Remains",
+      "startLine": 1,
+      "endLine": 34,
+      "summary": "The module docstring recalls the parent's square identity g² = (-1)^((p-1)/2)·p and states the goal: the elementary real/imaginary dichotomy (g real for p ≡ 1, imaginary for p ≡ 3 mod 4) plus magnitude ‖g‖² = p, leaving only the leading ± of Gauss's hard theorem open. Imports `Mathlib` and the parent `Proofs.QuadraticGaussSumSquare`, opens the namespace and fixes `variable {p : ℕ} [Fact p.Prime]`."
+    },
+    {
+      "id": "arithmetic-lemmas",
+      "title": "Complex Arithmetic: a Square that is Real Forces an Axis",
+      "startLine": 36,
+      "endLine": 69,
+      "summary": "`im_eq_zero_of_sq_eq_pos_real`: if z² is a positive real r then z is real. Taking Im and Re of z² = r gives 2·Re(z)·Im(z) = 0 and Re(z)² − Im(z)² = r; the product splitting plus the exclusion Re(z) = 0 ⟹ −Im(z)² = r > 0 (impossible) forces Im(z) = 0. `re_eq_zero_of_sq_eq_neg_real` is the mirror lemma for negative reals. Both run on `Complex.mul_re`/`mul_im`, `linarith`, `nlinarith`, and `mul_self_nonneg`."
+    },
+    {
+      "id": "dichotomy-one-mod-four",
+      "title": "Case p ≡ 1 (mod 4): g is Real",
+      "startLine": 71,
+      "endLine": 81,
+      "summary": "`gaussSum_im_eq_zero_of_one_mod_four`: from `Even ((p-1)/2)` (via `Nat.even_iff` + `omega`) the sign factor is 1, so the parent gives g² = +p, a positive real; `im_eq_zero_of_sq_eq_pos_real` then yields Im g = 0."
+    },
+    {
+      "id": "dichotomy-three-mod-four",
+      "title": "Case p ≡ 3 (mod 4): g is Purely Imaginary",
+      "startLine": 83,
+      "endLine": 95,
+      "summary": "`gaussSum_re_eq_zero_of_three_mod_four`: from `Odd ((p-1)/2)` the sign factor is −1, so g² = −p, a negative real; `re_eq_zero_of_sq_eq_neg_real` yields Re g = 0."
+    },
+    {
+      "id": "magnitude",
+      "title": "Magnitude: ‖g‖² = p",
+      "startLine": 97,
+      "endLine": 116,
+      "summary": "`gaussSum_normSq_eq`: applying the multiplicative `Complex.normSq` to g² = (-1)^((p-1)/2)·p gives normSq(g)² = p²; with `Complex.normSq_nonneg` and `nlinarith` this forces normSq g = p, i.e. |g| = √p, independent of p mod 4 and of the open leading sign."
+    }
+  ],
+  "references": [
+    {
+      "title": "Disquisitiones Arithmeticae",
+      "author": "C. F. Gauss",
+      "year": 1801,
+      "note": "Introduces Gauss sums and the g² identity; the determination of the sign of g itself was completed by Gauss only in 1805."
+    },
+    {
+      "title": "A Classical Introduction to Modern Number Theory",
+      "author": "K. Ireland and M. Rosen",
+      "year": 1990,
+      "note": "Chapter 6 develops Gauss sums, the identity g² = (-1)^((p-1)/2)·p, and the sign theorem; the real/imaginary dichotomy is the immediate corollary isolated here."
+    },
+    {
+      "title": "Mathlib4: Analysis.SpecialFunctions and Data.Complex",
+      "author": "The Mathlib Community",
+      "year": 2024,
+      "note": "Provides `Complex.mul_re`, `Complex.mul_im`, and `Complex.normSq` used in the arithmetic lemmas."
+    }
+  ],
+  "sorries": 0
+}

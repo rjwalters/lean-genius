@@ -1,0 +1,108 @@
+{
+  "slug": "erdos-1-oq-02-oq-02",
+  "title": "DFX lower bound base cases — resolved by precondition tightening",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{For } n = 1, 2: \\quad N(n) \\geq \\left\\lfloor \\sqrt{\\tfrac{2}{\\pi}} \\cdot \\tfrac{2^n}{\\sqrt{n}} \\right\\rfloor",
+    "plain": "The Dubroff–Fox–Xu lower bound `dfx_lower_bound` in `Proofs/Erdos1OQ02.lean` originally carried a `sorry` covering the small cases n = 1, 2 where the inductive argument does not kick in. This OQ tracked discharging that `sorry`, with the proposed approach being `by norm_num` or `by native_decide` against the floor expression involving Real.sqrt and Real.pi. The slug was created 2026-04-23 but resolved three days later by PR #12782, which eliminated the `sorry` by tightening the theorem signature (`hN : 2 ≤ N`, `hA_pos : ∀ a ∈ A, 0 < a`) rather than by numerical computation; the small-card existence facts are proved separately as `f_one` and `f_two_max` in the same file.",
+    "whyMatters": [
+      "Completes the on-paper recipe for the DFX bound in Lean: with the base-case `sorry` gone, `dfx_lower_bound` itself is sorry-free and the only remaining assumption in `Erdos1OQ02.lean` is the Berry–Esseen `anticoncentration_bound` axiom (separate slug, erdos-1-oq-02-oq-01).",
+      "Documents a useful anti-pattern. `Real.sqrt` and `Real.pi` do not reduce under `norm_num`/`native_decide`, so the original brief's proposed numerical discharge would have failed regardless of small-case enumeration. The right fix was hypothesis tightening — record this for future would-be repairers tempted to reach for `decide`-style tactics on floor expressions over the reals.",
+      "Keeps the candidate pool honest. Without a doc-sync, this slug sits as `available` indefinitely and gets re-claimed (as it was this session) by researchers who then spend a probe round discovering it was settled upstream three days after creation."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "PR #12782 (2026-04-26, commit 72ed399f304): `dfx_lower_bound` in `Erdos1OQ02.lean` proved end-to-end with 0 sorries via Cauchy–Schwarz + sqrt manipulation chained off the `anticoncentration_bound` axiom. The original base-case `sorry` is eliminated by adding `hN : 2 ≤ N` and `hA_pos : ∀ a ∈ A, 0 < a` to the hypotheses, excluding the n = 1, 2 cases by precondition rather than by enumeration.",
+      "PR #12782 also proved the small-card witnesses as standalone theorems in the same file: `f_one : ∃ A : Finset ℕ, A.card = 1 ∧ hasDistinctSubsetSums A ∧ A.sup id = 1` (witness `{1}`) and `f_two_max : ∃ A : Finset ℕ, A.card = 2 ∧ A.sup id = 2` (witness `{1, 2}`)."
+    ],
+    "open": [
+      "The remaining `anticoncentration_bound` axiom (Berry–Esseen anti-concentration estimate) is intentional probability-theory infrastructure and out of scope for this slug. It is tracked separately by `erdos-1-oq-02-oq-01`."
+    ],
+    "goal": "Doc-sync: reflect the upstream resolution in the gallery research data so the slug no longer appears as `available` in the candidate pool."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-26T09:50:32Z",
+    "iteration": 2,
+    "focus": "Doc-sync session (researcher-10, 2026-05-12). The Lean obligation tracked by this slug — the base-case `sorry` in `dfx_lower_bound` — was discharged by PR #12782 (merged 2026-04-26) three days after the slug was created and before any session ran against it. This session writes the missing gallery JSON and updates the pool status from `available` to `completed` to match the research-side state.md.",
+    "blockers": [],
+    "nextAction": "None — slug is closed. The companion `anticoncentration_bound` axiom is tracked by erdos-1-oq-02-oq-01.",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED 2026-04-26 by PR #12782 (merged 3 days after slug creation, before any session against this slug ran). The base-case `sorry` in `dfx_lower_bound` was eliminated by tightening the theorem signature (hN : 2 ≤ N, hA_pos : ∀ a ∈ A, 0 < a) rather than by numerical computation. `Erdos1OQ02.lean` is 268 lines, 8 theorems, 1 axiom (anticoncentration_bound, separate slug), 0 sorries.",
+    "builtItems": [
+      "dfx_lower_bound (theorem, Proofs/Erdos1OQ02.lean:145) : 0 sorries, end-to-end real-analysis proof via Cauchy–Schwarz + sqrt manipulation",
+      "f_one (theorem, Proofs/Erdos1OQ02.lean:243) : n = 1 DSS witness {1}, proved by Finset case-split",
+      "f_two_max (theorem, Proofs/Erdos1OQ02.lean:252) : n = 2 DSS witness {1, 2}, proved by simp",
+      "sum_sq_cauchy_schwarz, sum_sq_le_card_mul_max_sq, sum_le_card_mul_max (supporting lemmas in Erdos1OQ02.lean, all proved)"
+    ],
+    "insights": [
+      "Hypothesis tightening can be a cleaner exit than numerical base-case discharge. The original problem brief proposed `by norm_num`/`by native_decide` to handle n = 1, 2 inside `dfx_lower_bound`; that path is dead because `Real.sqrt` and `Real.pi` are not reducible under those tactics. The team correctly added preconditions `hN : 2 ≤ N` and `hA_pos : ∀ a ∈ A, 0 < a`, then proved the small-card existence facts as separate theorems where the existential form makes case-splitting trivial.",
+      "`Real.sqrt` and `Real.pi` do not normalize under `norm_num`/`native_decide`. Anyone tempted to discharge inequalities involving `√(2/π)` numerically should expect both tactics to fail and reach for hypothesis tightening or Mathlib's `Real.pi_gt_three` / `Real.sqrt_lt_sqrt` interval reasoning instead.",
+      "The slug was created 2026-04-23 and resolved 2026-04-26 — three days later, before any session against it ran. This is a recurring pattern: child OQ slugs auto-created from gallery sorries can be discharged by parent-level work before the candidate pool catches up. A doc-sync PR is the standard remediation.",
+      "The remaining single axiom in Erdos1OQ02.lean (`anticoncentration_bound`) is intentional and tracked separately. Reducing it requires Berry–Esseen / anti-concentration probability infrastructure from Mathlib that is out of scope for the DFX framework formalization."
+    ],
+    "mathlibGaps": [
+      "None new from this slug. The `anticoncentration_bound` axiom (separate slug erdos-1-oq-02-oq-01) is the only outstanding Mathlib dependency — Berry–Esseen anti-concentration for sums of independent ±1 random variables is not yet in Mathlib's probability stack."
+    ],
+    "nextSteps": [
+      "None for this slug — it is closed.",
+      "If the Berry–Esseen anticoncentration estimate becomes desirable as a Mathlib contribution, take it up under `erdos-1-oq-02-oq-01`."
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "combinatorics",
+    "subset-sums",
+    "sorry-repair",
+    "erdos",
+    "completed",
+    "doc-sync",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-1-oq-02"
+  ],
+  "references": {
+    "papers": [
+      "Dubroff, Q., Fox, J., Xu, M. — Subset Sums and the Erdős–Moser Conjecture (2021).",
+      "Erdős, P. — Problems and results in combinatorial number theory (various)."
+    ],
+    "urls": [
+      "https://github.com/rjwalters/lean-genius/pull/12782",
+      "https://www.erdosproblems.com/1"
+    ],
+    "mathlib": [
+      "Mathlib.Analysis.SpecialFunctions.Sqrt (Real.sqrt, Real.sqrt_le_sqrt, Real.sqrt_mul, Real.sqrt_sq)",
+      "Mathlib.Data.Real.Pi.Bounds (Real.pi_gt_three for downstream interval work)",
+      "Mathlib.Algebra.BigOperators.Basic (Finset.sum, Finset.sum_le_sum)"
+    ]
+  },
+  "started": "2026-04-23T11:58:33Z",
+  "lastUpdate": "2026-05-12T08:00:00Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1OQ02.lean",
+      "filename": "Erdos1OQ02.lean",
+      "lineCount": 268,
+      "theoremCount": 8,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1OQ02.lean"
+    }
+  ]
+}

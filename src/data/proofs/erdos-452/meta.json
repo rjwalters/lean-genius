@@ -1,0 +1,232 @@
+{
+  "id": "erdos-452",
+  "title": "Erdős Problem #452: Largest Interval with ω(n) > log log n",
+  "slug": "erdos-452",
+  "description": "Let ω(n) count distinct prime factors. What is the largest interval I ⊆ [x,2x] where ω(n) > log log n for all n ∈ I? Known: |I| ≥ log x/(log log x)². Conjecture: (log x)^k is achievable for any k.",
+  "meta": {
+    "author": "Erdős (1937 density result)",
+    "sourceUrl": "https://erdosproblems.com/452",
+    "date": "1937+",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos452Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "prime-factors",
+      "analytic-number-theory",
+      "intervals"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 452,
+    "erdosUrl": "https://erdosproblems.com/452",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.primeFactors",
+        "description": "Set of prime factors of n",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "ArithmeticFunction",
+        "description": "Arithmetic functions framework",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "omega definition: count of distinct prime factors",
+      "satisfiesCondition definition: ω(n) > log log n",
+      "validInterval definition: interval in [x,2x] where all satisfy condition",
+      "maxValidIntervalLength axiom: maximum length of valid interval",
+      "erdos_1937_density axiom: density 1/2",
+      "primorial definition and omega_primorial axiom",
+      "erdos_452_summary theorem: combines density, CRT bound, and prime obstruction"
+    ],
+    "axiomCount": 4,
+    "lineCount": 175,
+    "assumptions": "4 axioms: erdos_1937_density (Erdős 1937: density of integers n with ω(n) > log log n is 1/2), maxValidIntervalLength (max valid interval length function in [x, 2x]), prime_gap_constraint (limitation from prime gaps), known_lower_bound (lower bound (log x)/(log log x)²). 0 sorries.",
+    "theoremCount": 1,
+    "definitionCount": 9
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #452** probes the correlation structure of the prime factorization function $\\omega(n)$ across consecutive integers, asking how long an interval can maintain $\\omega(n) > \\log\\log n$ for every element.\n\n**Historical Development:**\n- **Hardy and Ramanujan (1917):** Proved the foundational result that $\\omega(n)$ has *normal order* $\\log\\log n$ — for almost all integers, $|\\omega(n) - \\log\\log n| < (\\log\\log n)^{1/2+\\varepsilon}$. This was the first rigorous result on the typical size of an additive arithmetic function.\n- **Erdős (1937):** Showed the density of integers with $\\omega(n) > \\log\\log n$ is exactly $\\frac{1}{2}$, a precursor to the more refined Erdős–Kac theorem.\n- **Erdős and Kac (1940):** Proved the remarkable *Erdős–Kac theorem*: the standardized function $\\frac{\\omega(n) - \\log\\log n}{\\sqrt{\\log\\log n}}$ converges in distribution to the standard normal $\\mathcal{N}(0,1)$. This explains the density-$\\frac{1}{2}$ result and reveals Gaussian fluctuations in prime factor counts.\n- **Cramér (1936):** Conjectured maximal prime gaps are $O((\\log p)^2)$, which if true would allow valid intervals of length $(\\log x)^{2-\\varepsilon}$ in prime gaps.\n\n**Key Tension:** Individual integers have $\\omega(n) > \\log\\log n$ with probability $\\frac{1}{2}$, but maintaining this for *every* element of an interval is much harder. Primes ($\\omega(p) = 1$) are the main obstruction, so valid intervals must lie within prime gaps. The Chinese Remainder Theorem constructs intervals of length $\\frac{\\log x}{(\\log\\log x)^2}$ where all elements are divisible by many small primes, but the conjecture predicts much longer intervals of length $(\\log x)^k$ are possible.",
+    "problemStatement": "**Problem Statement**\n\nLet $\\omega(n)$ count the number of distinct prime factors of $n$.\n\n**Question:** What is the size of the largest interval $I \\subseteq [x, 2x]$ such that $\\omega(n) > \\log\\log n$ for all $n \\in I$?\n\n**Known Bounds:**\n- Lower: $|I| \\geq (1+o(1)) \\frac{\\log x}{(\\log\\log x)^2}$ via Chinese Remainder Theorem\n- Upper: Primes obstruct, so intervals must avoid all primes in $[x, 2x]$\n\n**Conjecture:** $|I| \\geq (\\log x)^k$ is achievable for arbitrarily large $k$.\n\n**Status:** OPEN",
+    "text": "Let ω(n) count distinct prime factors. What is the largest interval I ⊆ [x,2x] where ω(n) > log log n for all n ∈ I? Known: |I| ≥ log x/(log log x)². Conjecture: (log x)^k is achievable for any k.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** `omega(n) = |n.primeFactors|`, `satisfiesCondition` ($\\omega(n) > \\log\\log n$), `validInterval` ($[a,b] \\subseteq [x,2x]$ with all elements satisfying the condition).\n\n2. **Foundational Results:** Hardy–Ramanujan normal order (axiom with $\\varepsilon$-form), Erdős 1937 density $\\frac{1}{2}$ (axiom with $\\varepsilon$-$N$ form).\n\n3. **Lower Bound:** CRT construction axiomatized with the bound $\\frac{\\log x}{(\\log\\log x)^2}$.\n\n4. **Obstructions:** Primes $p > 16$ have $\\omega(p) = 1 < \\log\\log p$ (since $e^e \\approx 15.15$), so valid intervals must lie within prime gaps.\n\n5. **Conjecture:** $(\\log x)^k$ intervals axiomatized as an open conjecture.\n\n6. **Summary:** Proved by combining density, CRT bound, and prime obstruction via `⟨erdos_1937_density, known_lower_bound, prime_gap_constraint⟩`.",
+    "keyInsights": [
+      "**Erdős–Kac Gaussian distribution:** The standardized $\\frac{\\omega(n) - \\log\\log n}{\\sqrt{\\log\\log n}} \\to \\mathcal{N}(0,1)$ implies $\\omega(n) > \\log\\log n$ with probability exactly $\\frac{1}{2}$ — matching the symmetry of the normal distribution about its mean.",
+      "**Prime obstruction at $e^e \\approx 15.15$:** For primes $p > e^e$, we have $\\log\\log p > 1$ but $\\omega(p) = 1$, so primes *always* fail the condition. Valid intervals must therefore lie entirely within prime gaps, connecting this problem to prime gap theory (Cramér's conjecture, Baker–Harman–Pintz, etc.).",
+      "**CRT construction via primorials:** To ensure $\\omega(n) > \\log\\log n$, make $n$ divisible by the primorial $P_k = 2 \\cdot 3 \\cdot 5 \\cdots p_k$, guaranteeing $\\omega(n) \\geq k$. The CRT finds $k$ consecutive multiples of $P_k$ in $[x, 2x]$, yielding intervals of length $\\sim \\frac{\\log x}{(\\log\\log x)^2}$.",
+      "**Enormous gap between known and conjectured:** The established lower bound $\\frac{\\log x}{(\\log\\log x)^2}$ is barely super-logarithmic, while the conjecture predicts polynomial-in-$\\log x$ intervals. Bridging this gap likely requires new techniques from sieve theory or probabilistic number theory.",
+      "**Individual vs. correlated behavior:** The Erdős–Kac theorem describes $\\omega(n)$ for individual $n$, but Problem #452 asks about *correlated* behavior across consecutive integers. Consecutive integers share few prime factors (they are coprime in pairs), making the correlation structure highly nontrivial."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-header",
+      "title": "Imports and Problem Statement",
+      "summary": "Module header, imports, and the statement of Erdős #452",
+      "startLine": 1,
+      "endLine": 33,
+      "mathContext": "ω(n)=# distinct prime factors; question on intervals in [x,2x] where ω(n) > log log n."
+    },
+    {
+      "id": "definitions",
+      "title": "Part 1: Basic Definitions",
+      "summary": "ω(n), the condition ω(n) > log log n, and valid intervals",
+      "startLine": 34,
+      "endLine": 57,
+      "mathContext": "omega n; satisfiesCondition: ω(n) > log log n; validInterval ⊆ [x,2x]; intervalLength."
+    },
+    {
+      "id": "hardy-ramanujan",
+      "title": "Part 2: Hardy–Ramanujan and Erdős–Kac",
+      "summary": "Normal order of ω(n) and Erdős's 1937 density-1/2 result",
+      "startLine": 58,
+      "endLine": 68,
+      "mathContext": "erdos_1937_density (axiom): density of {n : ω(n) > log log n} is exactly 1/2."
+    },
+    {
+      "id": "crt-bound",
+      "title": "Part 3: Lower Bound via Chinese Remainder Theorem",
+      "summary": "CRT construction of valid intervals (exposition)",
+      "startLine": 69,
+      "endLine": 74,
+      "mathContext": "CRT yields valid intervals; the quantitative bound is stated later as known_lower_bound."
+    },
+    {
+      "id": "main-question",
+      "title": "Part 4: The Main Question",
+      "summary": "Maximum length of a valid interval (axiomatized)",
+      "startLine": 75,
+      "endLine": 83,
+      "mathContext": "maxValidIntervalLength x (axiom): the quantity whose growth rate is the open problem."
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Part 5: Upper Bounds",
+      "summary": "Prime obstruction limiting valid-interval length",
+      "startLine": 84,
+      "endLine": 93,
+      "mathContext": "prime_gap_constraint: for x≥16 some prime p∈[x,2x] fails the condition, capping interval length."
+    },
+    {
+      "id": "primorial",
+      "title": "Part 6: Primorial Connection",
+      "summary": "The primorial n# as a source of many distinct prime factors",
+      "startLine": 94,
+      "endLine": 103,
+      "mathContext": "primorial n = ∏ primes ≤ n; construction with many distinct prime factors."
+    },
+    {
+      "id": "examples",
+      "title": "Part 7: Small Examples",
+      "summary": "Computed values ω(1), ω(2), ω(6), ω(30), ω(210)",
+      "startLine": 104,
+      "endLine": 123,
+      "mathContext": "ω(1)=0, ω(2)=1, ω(6)=2, ω(30)=3, ω(210)=4, checked via native_decide."
+    },
+    {
+      "id": "consecutive",
+      "title": "Part 8: Consecutive Integers with Many Prime Factors",
+      "summary": "Exposition heading — no formalized content in this section yet",
+      "startLine": 124,
+      "endLine": 127,
+      "mathContext": "Heading for consecutive-integer variants; not yet formalized."
+    },
+    {
+      "id": "related",
+      "title": "Part 9: Related Problems",
+      "summary": "Variants for Ω(n) (with multiplicity) and the radical rad(n)",
+      "startLine": 128,
+      "endLine": 141,
+      "mathContext": "bigOmega n = Ω(n) counts prime factors with multiplicity; bigOmegaCondition; radical rad(n) = ∏ distinct primes."
+    },
+    {
+      "id": "current-state",
+      "title": "Part 10: Current State of Knowledge",
+      "summary": "Best known lower bound and open status",
+      "startLine": 142,
+      "endLine": 152,
+      "mathContext": "known_lower_bound (axiom): a valid interval of length ≥ log x/(log log x)² exists for x≥3."
+    },
+    {
+      "id": "summary",
+      "title": "Part 11: Summary",
+      "summary": "Collected results and the open conjecture as a single theorem",
+      "startLine": 153,
+      "endLine": 175,
+      "mathContext": "erdos_452_summary bundles density, CRT lower bound, and prime obstruction; open: intervals of length (log x)^k for any k."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #452 is **OPEN**. The largest interval in $[x, 2x]$ where every integer $n$ has $\\omega(n) > \\log\\log n$ has length at least $\\frac{\\log x}{(\\log\\log x)^2}$ (via CRT), and is conjectured to achieve $(\\log x)^k$ for any fixed $k$. Primes are the main obstruction — since $\\omega(p) = 1 < \\log\\log p$ for $p > e^e \\approx 15.15$, valid intervals must lie within prime gaps. The formalization axiomatizes the density result, CRT construction, prime obstruction, and open conjecture, with the summary theorem proved by combining the established results.",
+    "implications": "**Theoretical Significance**: **Implications for Number Theory**\n\n1. **Correlated prime factor behavior:** Unlike the Erdős–Kac theorem (which describes individual integers), this problem probes the *correlation* of $\\omega(n)$ across consecutive integers — a much harder statistical question.\n\n2. **Prime gap connection:** The requirement that valid intervals avoid all primes connects directly to Cramér's conjecture on maximal prime gaps. If maximal gaps are $O((\\log p)^2)$, then intervals of length up to $(\\log x)^{2-\\varepsilon}$ could lie within a single prime gap.\n\n**3. Sieve theory limitations:** The CRT construction gives only $\\frac{\\log x}{(\\log\\log x)^2}$. Improving this likely requires going beyond simple CRT-based sieving to more sophisticated multiplicative structure arguments.\n\n4. **Probabilistic heuristics:** If $\\omega(n) > \\log\\log n$ independently with probability $\\frac{1}{2}$, then runs of length $L$ would occur with probability $2^{-L}$, suggesting intervals of length $\\sim \\log_2 x$. The conjecture $(\\log x)^k$ far exceeds this, reflecting strong positive correlation among consecutive integers' factorizations.",
+    "openQuestions": [
+      "Can intervals of length $(\\log x)^k$ be achieved for any fixed $k$? Even $k = 2$ would be a major breakthrough.",
+      "What is the exact asymptotic order of the maximum interval length? Is it closer to $\\frac{\\log x}{(\\log\\log x)^2}$ or to $(\\log x)^k$?",
+      "Does Cramér's conjecture on prime gaps imply the existence of longer valid intervals? What conditional results are known?",
+      "What is the answer for $\\Omega(n) > \\log\\log n$ instead of $\\omega(n) > \\log\\log n$? Since $\\Omega(n) \\geq \\omega(n)$, the condition is weaker, potentially allowing longer intervals.",
+      "Can probabilistic models (random multiplicative functions or random prime factorizations) predict the correct order of the maximum interval length?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "The prime number theorem governs the density of primes in $[x, 2x]$ — approximately $x/\\log x$ primes — and hence the typical spacing between prime obstructions",
+      "targetId": "prime-number-theorem"
+    },
+    {
+      "relationship": "The divergence $\\sum 1/p = \\infty$ underlies the Hardy–Ramanujan theorem: since small primes contribute to most factorizations, $\\omega(n) \\sim \\log\\log n$ follows from the additive structure of $\\sum_{p \\mid n} 1$",
+      "targetId": "prime-reciprocal-divergence"
+    },
+    {
+      "relationship": "Euclid's theorem guarantees primes are dense enough to obstruct long valid intervals; the quantitative refinement via PNT determines how dense the obstructions are",
+      "targetId": "infinitude-primes"
+    },
+    {
+      "relationship": "Bertrand's postulate guarantees a prime in $[x, 2x]$, ensuring every valid interval in that range has a prime obstruction — the question is how close the prime must be",
+      "targetId": "bertrands-postulate"
+    },
+    {
+      "relationship": "Both problems study the distribution of integers with special arithmetic properties in short intervals: #222 concerns sums of two squares, #452 concerns integers with many prime factors",
+      "targetId": "erdos-222"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.NumberTheory.ArithmeticFunction",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "ArithmeticFunction",
+      "Real"
+    ],
+    "namespace": "Erdos452",
+    "lineCount": 175,
+    "axiomCount": 4,
+    "theoremCount": 1,
+    "definitionCount": 9,
+    "path": "Proofs/Erdos452Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

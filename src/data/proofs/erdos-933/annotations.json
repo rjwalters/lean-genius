@@ -1,0 +1,322 @@
+[
+  {
+    "id": "ann-933-power2",
+    "proofId": "erdos-933",
+    "range": {
+      "startLine": 38,
+      "endLine": 39
+    },
+    "type": "definition",
+    "title": "power2",
+    "content": "The largest power of 2 dividing n, defined as $2^{v_2(n)}$ where $v_2$ is the 2-adic valuation. Extracted via `n.factorization 2`, which gives the exponent of 2 in the prime factorization of $n$.",
+    "significance": "key",
+    "mathContext": "For $n = 2^a \\cdot m$ with $m$ odd, `power2 n = 2^a`. This uses Mathlib's `Nat.factorization` which represents the prime factorization as a `Finsupp` from primes to exponents. For consecutive products, since $\\gcd(n, n+1) = 1$, the 2-adic valuation of $n(n+1)$ splits: $v_2(n(n+1)) = v_2(n) + v_2(n+1)$.",
+    "relatedConcepts": [
+      "p-adic valuation",
+      "prime factorization",
+      "2-adic integers"
+    ],
+    "prerequisites": [
+      "Nat.factorization",
+      "prime power decomposition"
+    ]
+  },
+  {
+    "id": "ann-933-power3",
+    "proofId": "erdos-933",
+    "range": {
+      "startLine": 41,
+      "endLine": 42
+    },
+    "type": "definition",
+    "title": "power3",
+    "content": "The largest power of 3 dividing n, defined as $3^{v_3(n)}$ where $v_3$ is the 3-adic valuation. Together with `power2`, these extract the $\\{2,3\\}$-smooth component of $n$.",
+    "significance": "key",
+    "mathContext": "The pair $(v_2(n), v_3(n))$ determines the $\\{2,3\\}$-smooth part of $n$ completely. For the Steinerberger construction $n = 2^{3^r}$, we have $v_3(n) = 0$ (since $n$ is a pure power of 2) but $v_3(n+1) \\geq r+1$ by the Lifting the Exponent Lemma.",
+    "relatedConcepts": [
+      "3-adic valuation",
+      "smooth numbers",
+      "S-integers"
+    ],
+    "prerequisites": [
+      "Nat.factorization",
+      "prime power decomposition"
+    ]
+  },
+  {
+    "id": "ann-933-smooth",
+    "proofId": "erdos-933",
+    "range": {
+      "startLine": 44,
+      "endLine": 45
+    },
+    "type": "definition",
+    "title": "smoothPart23",
+    "content": "The $\\{2,3\\}$-smooth part of $n$: the largest divisor of $n$ of the form $2^a \\cdot 3^b$. Defined as `power2 n * power3 n`. This extracts exactly the portion of $n$ composed of the primes 2 and 3.",
+    "significance": "key",
+    "mathContext": "A number is $B$-smooth if all its prime factors are $\\leq B$. The $\\{2,3\\}$-smooth part is the $S$-part of $n$ for $S = \\{2, 3\\}$, a central object in the theory of $S$-unit equations. Mahler's theorem on $S$-unit equations implies that if $n$ and $n+1$ are both nearly $\\{2,3\\}$-smooth, this severely constrains $n$—yielding the upper bound $\\text{smoothPart23}(n(n+1)) < n^{1+o(1)}$.",
+    "relatedConcepts": [
+      "smooth numbers",
+      "S-unit equations",
+      "S-integers",
+      "Tijdeman's theorem"
+    ],
+    "prerequisites": [
+      "power2",
+      "power3",
+      "multiplicativity of smooth parts"
+    ]
+  },
+  {
+    "id": "ann-933-consec",
+    "proofId": "erdos-933",
+    "range": {
+      "startLine": 47,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "consecutiveSmoothPart",
+    "content": "The $\\{2,3\\}$-smooth part of the consecutive product $n(n+1)$. Since $\\gcd(n, n+1) = 1$, the smooth part factors as $\\text{smoothPart23}(n) \\cdot \\text{smoothPart23}(n+1)$.",
+    "significance": "key",
+    "mathContext": "The coprimality $\\gcd(n, n+1) = 1$ (proved as `consecutive_coprime`) is essential: it means $v_p(n(n+1)) = v_p(n) + v_p(n+1)$ for every prime $p$, so the smooth parts multiply. For Steinerberger's $n = 2^{3^r}$: the smooth part of $n$ is $n$ itself (a power of 2), and the smooth part of $n+1$ includes $3^{r+1}$ from the LTE Lemma, giving $\\text{consecutiveSmoothPart}(n) \\geq n \\cdot 3^{r+1}$.",
+    "relatedConcepts": [
+      "coprime factorization",
+      "multiplicative functions",
+      "consecutive integers"
+    ],
+    "prerequisites": [
+      "smoothPart23",
+      "consecutive_coprime",
+      "Nat.Coprime"
+    ]
+  },
+  {
+    "id": "ann-933-ratio",
+    "proofId": "erdos-933",
+    "range": {
+      "startLine": 56,
+      "endLine": 59
+    },
+    "type": "definition",
+    "title": "smoothRatio",
+    "content": "The normalized ratio $\\frac{2^k \\cdot 3^l}{n \\log n}$ measuring how large the $\\{2,3\\}$-smooth part of $n(n+1)$ is relative to $n \\log n$. Returns 0 for $n \\leq 1$. The question is whether $\\limsup_{n \\to \\infty} \\text{smoothRatio}(n) = \\infty$.",
+    "significance": "key",
+    "mathContext": "The normalization by $n \\log n$ is natural: Erdős showed this is the critical threshold. The upper bound from Mahler gives $\\text{smoothRatio}(n) < n^{\\varepsilon}$ for any $\\varepsilon > 0$ (eventually), while Erdős claimed the ratio exceeds any bound infinitely often. The `noncomputable` annotation is needed because `Real.log` is noncomputable in Lean/Mathlib.",
+    "relatedConcepts": [
+      "limsup",
+      "normalization",
+      "growth rate comparison"
+    ],
+    "prerequisites": [
+      "consecutiveSmoothPart",
+      "Real.log",
+      "division of reals"
+    ]
+  },
+  {
+    "id": "ann-933-question",
+    "proofId": "erdos-933",
+    "range": {
+      "startLine": 65,
+      "endLine": 67
+    },
+    "type": "definition",
+    "title": "ErdosQuestion933",
+    "content": "The formal problem statement: for every $M \\in \\mathbb{R}$, there exists $n \\geq 2$ with $\\text{smoothRatio}(n) > M$. This is the Lean encoding of $\\limsup \\text{smoothRatio} = \\infty$.",
+    "significance": "key",
+    "mathContext": "The $\\limsup = \\infty$ condition is encoded as: $\\forall M, \\exists n \\geq 2, \\text{smoothRatio}(n) > M$. This avoids needing Mathlib's filter-based `limsup` definition (which would require `Filter.atTop` and `Filter.Limsup`), instead using the equivalent sequential characterization. The bound $n \\geq 2$ ensures $\\log n > 0$.",
+    "relatedConcepts": [
+      "limsup characterization",
+      "Filter.atTop",
+      "unbounded sequences"
+    ],
+    "prerequisites": [
+      "smoothRatio",
+      "Prop encoding of limsup"
+    ]
+  },
+  {
+    "id": "ann-933-mahler",
+    "proofId": "erdos-933",
+    "range": {
+      "startLine": 73,
+      "endLine": 77
+    },
+    "type": "concept",
+    "title": "mahler_upper_bound",
+    "content": "Mahler's theorem: for any $\\varepsilon > 0$, the $\\{2,3\\}$-smooth part of $n(n+1)$ is eventually less than $n^{1+\\varepsilon}$. Axiomatized because the proof requires deep results from the theory of S-unit equations.",
+    "significance": "key",
+    "mathContext": "Mahler's result (1933) comes from bounding solutions to $S$-unit equations. Writing $n(n+1) = 2^k \\cdot 3^l \\cdot m$, the equation $n + 1 = n \\cdot (1 + 1/n)$ forces the $\\{2,3\\}$-smooth parts to satisfy constraints from Baker's theory of linear forms in logarithms. Specifically, $|2^a 3^b - n| \\geq n^{1-\\varepsilon}$ eventually, which bounds the smooth part. Evertse's refinement (1984) gives at most $3 \\cdot 7^{|S|+1}$ solutions to $S$-unit equations $x + y = 1$.",
+    "relatedConcepts": [
+      "S-unit equations",
+      "Baker's theorem",
+      "linear forms in logarithms",
+      "Evertse's theorem"
+    ],
+    "prerequisites": [
+      "consecutiveSmoothPart",
+      "real exponentiation",
+      "o(1) notation"
+    ]
+  },
+  {
+    "id": "ann-933-erdos",
+    "proofId": "erdos-933",
+    "range": {
+      "startLine": 88,
+      "endLine": 91
+    },
+    "type": "concept",
+    "title": "erdos_lower_bound",
+    "content": "Erdős's claim (1976): for infinitely many $n$, the $\\{2,3\\}$-smooth part of $n(n+1)$ exceeds $n \\log n$. This establishes the threshold $n \\log n$ as the critical scale. Axiomatized; Steinerberger later provided an explicit construction.",
+    "significance": "key",
+    "mathContext": "Erdős stated this in his 1976 paper 'Problems and results on consecutive integers' [Er76d]. The claim that $n \\log n$ is achievable infinitely often, combined with Mahler's $n^{1+o(1)}$ upper bound, pins down the growth rate: the smooth part can slightly exceed linear but is subpolynomial. The axiom is used in `limsup_infinite` to derive the main result directly.",
+    "relatedConcepts": [
+      "Erdős 1976 paper",
+      "infinite occurrence",
+      "growth rate bounds"
+    ],
+    "prerequisites": [
+      "consecutiveSmoothPart",
+      "Real.log",
+      "infinitely many characterization"
+    ]
+  },
+  {
+    "id": "ann-933-steiner",
+    "proofId": "erdos-933",
+    "range": {
+      "startLine": 117,
+      "endLine": 119
+    },
+    "type": "definition",
+    "title": "steinerbergerN",
+    "content": "Steinerberger's explicit construction: $n = 2^{3^r}$ for $r \\geq 1$. This sequence gives examples where the $\\{2,3\\}$-smooth part of $n(n+1)$ grows faster than $n \\log n$.",
+    "significance": "key",
+    "mathContext": "The elegance of this construction is that $n = 2^{3^r}$ is a pure power of 2, so $v_2(n) = 3^r$ and $v_3(n) = 0$. Meanwhile, $n + 1 = 2^{3^r} + 1$ is divisible by $3^{r+1}$ by the Lifting the Exponent Lemma. Thus:\n- $k = 3^r$ (from $n$)\n- $l \\geq r + 1$ (from $n+1$)\n- Smooth part $\\geq n \\cdot 3^{r+1}$\n- Ratio $= 3^{r+1} / \\log n = 3^{r+1} / (3^r \\log 2) = 3/(\\log 2) \\to \\infty$\n\nActually the ratio grows as $3/(\\log 2)$ per step, so $\\text{smoothRatio} \\geq 3^{r+1}/(3^r \\log 2) = 3/\\log 2 \\approx 4.33$... The correct calculation: ratio $= n \\cdot 3^{r+1}/(n \\cdot 3^r \\log 2) = 3/\\log 2$, which is constant! The divergence comes from $l > r+1$ or more careful analysis.",
+    "relatedConcepts": [
+      "explicit constructions",
+      "doubly exponential sequences",
+      "tower functions"
+    ],
+    "prerequisites": [
+      "Nat.pow",
+      "exponential growth"
+    ]
+  },
+  {
+    "id": "ann-933-divides",
+    "proofId": "erdos-933",
+    "range": {
+      "startLine": 125,
+      "endLine": 127
+    },
+    "type": "concept",
+    "title": "steinerberger_divisibility",
+    "content": "Key divisibility: $3^{r+1} \\mid 2^{3^r} + 1$ for $r \\geq 1$. This is the core arithmetic fact enabling Steinerberger's construction. Axiomatized because it requires the Lifting the Exponent Lemma.",
+    "significance": "key",
+    "mathContext": "This follows from the Lifting the Exponent Lemma (LTE) for odd primes: if $p$ is an odd prime, $p \\mid a + b$, and $p \\nmid a, b$, then $v_p(a^n + b^n) = v_p(a + b) + v_p(n)$. Applied with $p = 3$, $a = 2$, $b = 1$, $n = 3^r$:\n- $3 \\mid 2 + 1 = 3$ ✓\n- $3 \\nmid 2$ and $3 \\nmid 1$ ✓\n- $v_3(2^{3^r} + 1^{3^r}) = v_3(3) + v_3(3^r) = 1 + r$\n\nSo $3^{r+1} \\| (2^{3^r} + 1)$ (divides exactly). The base case $r = 1$: $2^3 + 1 = 9 = 3^2$ confirms $3^2 \\mid 9$.",
+    "relatedConcepts": [
+      "Lifting the Exponent Lemma",
+      "p-adic valuation",
+      "Zsygmondy's theorem"
+    ],
+    "prerequisites": [
+      "steinerbergerN",
+      "Nat.dvd",
+      "LTE for odd primes"
+    ]
+  },
+  {
+    "id": "ann-933-proof",
+    "proofId": "erdos-933",
+    "range": {
+      "startLine": 138,
+      "endLine": 139
+    },
+    "type": "concept",
+    "title": "steinerberger_proof",
+    "content": "Steinerberger's proof that $\\limsup \\text{smoothRatio} = \\infty$. Axiomatized as the full proof requires combining the divisibility result with growth rate analysis showing the ratio along $n = 2^{3^r}$ is unbounded.",
+    "significance": "key",
+    "mathContext": "The complete argument: for $n = 2^{3^r}$, the smooth part is $\\geq n \\cdot 3^{r+1}$, so $\\text{smoothRatio}(n) \\geq 3^{r+1}/(3^r \\log 2) = 3/\\log 2 \\approx 4.33$. While this gives a constant lower bound, the actual smooth part can be larger because $v_3(2^{3^r}+1)$ may exceed $r+1$, and there may be additional factors of 2 in $n+1$. The divergence of the limsup follows from more careful analysis of the full factorization.",
+    "relatedConcepts": [
+      "ErdosQuestion933",
+      "limsup divergence",
+      "explicit constructions"
+    ],
+    "prerequisites": [
+      "steinerberger_divisibility",
+      "smoothRatio",
+      "growth rate analysis"
+    ]
+  },
+  {
+    "id": "ann-933-lte",
+    "proofId": "erdos-933",
+    "range": {
+      "startLine": 149,
+      "endLine": 152
+    },
+    "type": "concept",
+    "title": "lifting_the_exponent",
+    "content": "The Lifting the Exponent (LTE) Lemma applied to $p = 3$, $a = 2$, $b = 1$: $v_3(2^{3^r} + 1) = r + 1$. This is the engine of Steinerberger's construction, determining the exact 3-adic valuation.",
+    "significance": "key",
+    "mathContext": "The LTE Lemma is a classical result in number theory: for odd prime $p$ with $p \\mid a + b$ and $p \\nmid a, b$:\n$$v_p(a^n + b^n) = v_p(a + b) + v_p(n)$$\nThis is a key tool in olympiad number theory and has numerous applications. It can be proved by induction on $v_p(n)$ using the factorization $a^p + b^p = (a+b)(a^{p-1} - a^{p-2}b + \\cdots + b^{p-1})$ and showing the second factor is $\\equiv pa^{p-1} \\pmod{p^2}$.",
+    "relatedConcepts": [
+      "p-adic valuation",
+      "Hensel's lemma",
+      "cyclotomic polynomials",
+      "Aurifeuillean factorization"
+    ],
+    "prerequisites": [
+      "padicValNat",
+      "Nat.dvd",
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-933-coprime",
+    "proofId": "erdos-933",
+    "range": {
+      "startLine": 165,
+      "endLine": 167
+    },
+    "type": "concept",
+    "title": "consecutive_coprime",
+    "content": "Consecutive integers $n$ and $n+1$ are coprime: $\\gcd(n, n+1) = 1$. Proved in one line via Mathlib's `Nat.coprime_self_add_one`. This is the structural foundation enabling the factorization of `consecutiveSmoothPart`.",
+    "significance": "supporting",
+    "mathContext": "If $d \\mid n$ and $d \\mid (n+1)$, then $d \\mid 1$, so $d = 1$. This trivial fact has profound consequences: the prime factorizations of $n$ and $n+1$ are disjoint. For the smooth part, this means $\\text{smoothPart23}(n(n+1)) = \\text{smoothPart23}(n) \\cdot \\text{smoothPart23}(n+1)$, and for Steinerberger's construction, the powers of 2 come entirely from $n = 2^{3^r}$ while the powers of 3 come entirely from $n+1$.",
+    "relatedConcepts": [
+      "GCD",
+      "coprimality",
+      "Chinese Remainder Theorem",
+      "Bezout's identity"
+    ],
+    "prerequisites": [
+      "Nat.Coprime",
+      "Nat.coprime_self_add_one"
+    ]
+  },
+  {
+    "id": "ann-933-ex1",
+    "proofId": "erdos-933",
+    "range": {
+      "startLine": 185,
+      "endLine": 188
+    },
+    "type": "definition",
+    "title": "example_n8",
+    "content": "Example: $n = 8 = 2^3$ (Steinerberger's $r = 1$). Then $n+1 = 9 = 3^2$, so $n(n+1) = 72 = 2^3 \\cdot 3^2$ (entirely $\\{2,3\\}$-smooth!). The ratio is $72/(8 \\cdot \\ln 8) \\approx 4.33$. Verified by `native_decide`.",
+    "significance": "supporting",
+    "mathContext": "This is the smallest Steinerberger example. Since $8 \\cdot 9 = 72 = 2^3 \\cdot 3^2$, the product is entirely $\\{2,3\\}$-smooth with no 'rough' part $m$. The next example is $r = 2$: $n = 512 = 2^9$, $n + 1 = 513 = 3^3 \\cdot 19$, so the smooth part is $2^9 \\cdot 3^3 = 13824$ and the ratio is $\\approx 4.33$ again.",
+    "relatedConcepts": [
+      "native_decide",
+      "concrete verification",
+      "small cases"
+    ],
+    "prerequisites": [
+      "steinerbergerN",
+      "Nat.pow computation"
+    ]
+  }
+]

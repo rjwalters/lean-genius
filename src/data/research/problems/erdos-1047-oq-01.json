@@ -1,0 +1,99 @@
+{
+  "slug": "erdos-1047-oq-01",
+  "title": "What is the maximum number of non-convex components for degree d polynomials",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in complex analysis: What is the maximum number of non-convex components for degree d polynomials.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-24T00:48:59.903Z",
+    "iteration": 7,
+    "focus": "S7 cleanup: Mathlib v4.26.0 closedBall_isConvex repair + exact natDegree lemmas via compute_degree!.",
+    "blockers": [
+      "grunskyConjecture_false and goodman_counterexample remain irreducible axioms — require lemniscate geometry / numerical verification machinery not in current Mathlib"
+    ],
+    "nextAction": "No further proof work tractable until lemniscate component-geometry infrastructure exists in Mathlib.",
+    "attemptCounts": {
+      "total": 7,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: 2 irreducible axioms remain (complex analysis counterexamples). 0 sorries. S7 (2026-06-09): repaired pre-existing Mathlib v4.26.0 breakage in closedBall_isConvex (convex_closedBall is now ∀⦃x⦄, x∈s → StarConvex ℝ x s, not direct Convex API); added goodmanPolynomial_natDegree=4 and refereePolynomial_natDegree=6 via compute_degree!; dropped unused (a≠0) from pommerenkePolynomial_degree; theoremCount 11→13. Docker 2712 jobs clean.",
+    "builtItems": [
+      "Proved pommerenkePolynomial_degree: deg(X^k(X-a)) = k+1 (S7: unused a≠0 hypothesis dropped — holds for every a∈ℂ including 0)",
+      "Proved goodmanPolynomial_monic: (X²+1)(X-2)² is monic",
+      "Proved refereePolynomial_monic: X(X⁵-1) is monic",
+      "Proved goodmanPolynomial_natDegree: goodmanPolynomial.natDegree = 4 (S7, via compute_degree!)",
+      "Proved refereePolynomial_natDegree: refereePolynomial.natDegree = 6 (S7, via compute_degree!)",
+      "Proved goodmanPolynomial_degree_pos: degree > 0 (S7: simplified to rw [goodmanPolynomial_natDegree]; omega)",
+      "nonconvex_exists_degree_ge_4: proved trivially (maxNonConvexComponents d = d by definition, so d ≥ 4 → d ≥ 1)",
+      "lemniscate_isClosed: proved via isClosed_le + fun_prop (continuous preimage of closed set)",
+      "S7: Repaired closedBall_isConvex — Mathlib v4.26.0 broke .smul_add_smul_mem_of_nonneg_of_le dot notation on convex_closedBall result. New proof applies Convex_def directly: (convex_closedBall center r) hz hw (by linarith) ht0 (by ring).",
+      "Updated meta.json: lineCount 252→261, theoremCount 11→13"
+    ],
+    "insights": [
+      "pommerenkePolynomial_degree provable via natDegree_mul + natDegree_pow (proof works for all a∈ℂ since X_sub_C_ne_zero holds even when a=0)",
+      "Monic for product polynomials via Monic.mul and monic_X_pow_add_C/monic_X_sub_C",
+      "monic_X_pow_sub_C needs the exponent ≠ 0 proof",
+      "compute_degree! (from Mathlib.Tactic.ComputeDegree) discharges exact natDegree facts for explicit polynomials — strictly stronger than simp+omega and replaces an indirect Monic.natDegree_pos eval-based contradiction approach",
+      "Mathlib v4.26.0 API change: Convex is now defined as ∀⦃x⦄, x∈s → StarConvex ℝ x s; old .smul_add_smul_mem_of_nonneg_of_le dot notation no longer resolves on the Convex predicate. Apply Convex directly as a 5-arg function: hconv hz hw (0≤a) (0≤b) (a+b=1).",
+      "nonconvex_exists_degree_ge_4 was trivially provable: maxNonConvexComponents is defined as d (placeholder), making the axiom just d ≥ 1 when d ≥ 4",
+      "lemniscate_isClosed: {z | ‖f.eval z‖ ≤ c} is closed because z ↦ ‖f.eval z‖ is continuous and Iic c is closed",
+      "Both axioms (grunskyConjecture_false, goodman_counterexample) are independent — goodman_counterexample provides one c value but grunskyConjecture_false requires arbitrarily small c"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "maxNonConvexComponents def is currently a placeholder (= d). An honest definition would be supremum over deg-d polynomials of non-convex component counts — but that requires connected-component machinery on ℂ that doesn't yet exist in the file. Goodman's open question remains: pin down maxNonConvexComponents d exactly for small d.",
+      "Both remaining axioms require numerical/geometric verification of explicit lemniscate components (Goodman c=5^(3/2)/4, Pommerenke z^k(z-a)). Not tractable without computational complex analysis infrastructure in Mathlib."
+    ]
+  },
+  "tags": [
+    "erdos",
+    "complex-analysis",
+    "polynomials",
+    "lemniscates",
+    "convexity",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-104",
+    "erdos-1047"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-24T00:48:59.903Z",
+  "lastUpdate": "2026-06-09T22:00:00.000Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1047Problem.lean",
+      "filename": "Erdos1047Problem.lean",
+      "lineCount": 261,
+      "theoremCount": 13,
+      "axiomCount": 2,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1047Problem.lean"
+    }
+  ]
+}

@@ -1,0 +1,201 @@
+{
+  "id": "erdos-710",
+  "title": "Erdős Problem #710: Minimal Interval for Divisibility Matching",
+  "slug": "erdos-710",
+  "description": "Let f(n) be minimal such that in (n, n+f(n)) there exist distinct integers a₁,...,aₙ with k|aₖ for all k. Obtain an asymptotic formula for f(n). Known bounds differ by √(log log n) factor; exact asymptotics remain OPEN.",
+  "meta": {
+    "author": "Erdős, Pomerance (bounds 1980), Open (asymptotics)",
+    "sourceUrl": "https://erdosproblems.com/710",
+    "date": "1980",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos710Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "divisibility",
+      "asymptotic-analysis",
+      "combinatorics",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 710,
+    "erdosUrl": "https://erdosproblems.com/710",
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": "2000 rupees (~$78 in 1992)",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.div_mul_le_self",
+        "description": "Division-multiplication inequality",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Fin",
+        "description": "Finite ordinal type",
+        "module": "Mathlib.Data.Fin.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Real square root",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Real logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsValidSelection definition: valid divisibility matching in interval",
+      "IntervalAdmitsSelection definition: existence of valid selection",
+      "minimalIntervalLength definition: the function f(n)",
+      "multiplesInInterval definition: counting multiples",
+      "erdos_pomerance_lower_bound axiom: (2/√e + o(1))n√(log n / log log n)",
+      "erdos_pomerance_upper_bound axiom: (1.7398... + o(1))n√(log n)",
+      "Small examples for n = 1, 2, 3",
+      "smallest_multiple_bound theorem: greedy algorithm insight",
+      "constraintDensity definition: heuristic analysis"
+    ],
+    "axiomCount": 3,
+    "lineCount": 320,
+    "assumptions": "3 axioms: selection_exists_large, erdos_pomerance_lower_bound, erdos_pomerance_upper_bound. 0 sorries.",
+    "theoremCount": 5,
+    "definitionCount": 7
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #710**\n\nThis problem concerns the minimal interval length needed for divisibility matching, a combinatorial problem at the intersection of number theory and extremal combinatorics.\n\n**Key History:**\n- Erdős and Pomerance (1980): Established upper and lower bounds in \"Matching the natural numbers up to n with distinct multiples of another interval\"\n- Erdős [Er92c] (1992): \"Some of my forgotten problems in number theory\" - offered 2000 rupees prize\n- The problem remains OPEN - exact asymptotics unknown\n\n**Mathematical Setting:**\n- Given n, we seek distinct integers a₁,...,aₙ in a short interval starting at n\n- The k-th integer must be divisible by k\n- f(n) = minimal interval length for this to be possible\n- The challenge is finding the precise asymptotic growth rate of f(n)",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet f(n) be minimal such that in (n, n+f(n)) there exist distinct integers a₁,...,aₙ with k | aₖ for all 1 ≤ k ≤ n.\n\nObtain an asymptotic formula for f(n).\n\n**Known Bounds (Erdős-Pomerance 1980):**\n- Lower: (2/√e + o(1)) · n · √(log n / log log n) ≈ 1.213 · n · √(log n / log log n)\n- Upper: (1.7398... + o(1)) · n · √(log n)\n\n**Gap:** The bounds differ by a factor of √(log log n), which grows very slowly but is unbounded.\n\n**Prize:** Erdős offered 2000 rupees (~$78 in 1992) for an asymptotic formula.",
+    "text": "Let f(n) be minimal such that in (n, n+f(n)) there exist distinct integers a₁,...,aₙ with k|aₖ for all k. Obtain an asymptotic formula for f(n). Known bounds differ by √(log log n) factor; exact asymptotics remain OPEN.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** Define IsValidSelection (divisibility matching), IntervalAdmitsSelection, and minimalIntervalLength f(n)\n\n2. **Counting Functions:** Define multiplesInInterval to count multiples of d in an interval\n\n3. **Known Bounds:** Axiomatize the Erdős-Pomerance upper and lower bounds\n\n4. **Bounds Gap:** Show the gap is √(log log n)\n\n5. **Open Problem:** Document the asymptotic gap as an unresolved open question (no axiom)\n\n6. **Examples:** Verify divisibility matching for n = 1, 2, 3\n\n7. **Heuristics:** Analyze why the constraint for large k is critical",
+    "keyInsights": [
+      "**Divisibility Constraint:** The k-th integer must be divisible by k, making large k the hardest constraint (fewest multiples in any interval)",
+      "**Bounds Gap:** The √(log log n) gap between upper and lower bounds is the key mystery",
+      "**Critical k:** For slot n, we need a multiple of n in the interval, requiring L ≈ n as a minimum",
+      "**Greedy Approach:** Assigning smallest available multiples gives upper bound but is not optimal",
+      "**Prize Problem:** This is one of Erdős's \"forgotten problems\" with a modest prize attached",
+      "**Related Problem:** See also #711 for a connected question"
+    ],
+    "prerequisites": [
+      "**Divisibility and multiples in intervals**: The count of multiples of $d$ in an interval $(a, a+L)$ is $\\lfloor (a+L)/d \\rfloor - \\lfloor a/d \\rfloor$, which is approximately $L/d$. For large $d$, multiples become sparse, making the matching constraint tight.",
+      "**Hall's marriage theorem and bipartite matching**: The existence of a perfect matching in a bipartite graph requires Hall's condition: every subset $S$ of slots must have $|N(S)| \\ge |S|$ available multiples. This is the combinatorial framework underlying the minimal interval problem.",
+      "**Asymptotic analysis and growth rates**: Familiarity with $O$, $o$, $\\Theta$ notation and the functions $\\sqrt{\\log n}$, $\\sqrt{\\log n / \\log \\log n}$, and their relative growth rates. The gap between the Erdos-Pomerance bounds involves the very slowly growing factor $\\sqrt{\\log \\log n}$.",
+      "**Distribution of prime factors and smooth numbers**: The prime factorization structure of integers in intervals, since the hardest divisibility constraints come from large prime divisors of $k$ where multiples of $k$ are most widely spaced."
+    ]
+  },
+  "sections": [
+    {
+      "id": "basic-setup",
+      "title": "Basic Setup",
+      "summary": "IsValidSelection, IntervalAdmitsSelection, minimalIntervalLength definitions",
+      "startLine": 42,
+      "endLine": 88,
+      "mathContext": "Formal definition: IsValidSelection, IntervalAdmitsSelection, minimalIntervalLength definitions"
+    },
+    {
+      "id": "constraint-analysis",
+      "title": "Divisibility Constraint Analysis",
+      "summary": "multiplesInInterval definition: counting multiples of d in an interval",
+      "startLine": 89,
+      "endLine": 112,
+      "mathContext": "Mathematical content: multiplesInInterval definition"
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "summary": "erdos_pomerance_lower_bound axiom, erdos_pomerance_upper_bound axiom",
+      "startLine": 113,
+      "endLine": 152,
+      "mathContext": "Bound: erdos_pomerance_lower_bound axiom, erdos_pomerance_upper_bound axiom"
+    },
+    {
+      "id": "open-problem",
+      "title": "The Open Problem",
+      "summary": "Docstring discussion of the open asymptotic problem: the exact formula for f(n) is unknown; the √(log log n) gap between the Erdős-Pomerance bounds is unresolved. No axiom declaration in this section.",
+      "startLine": 153,
+      "endLine": 175
+    },
+    {
+      "id": "examples",
+      "title": "Small Examples",
+      "summary": "example_n1, example_n2, example_n3",
+      "startLine": 176,
+      "endLine": 229,
+      "mathContext": "Mathematical content: example_n1, example_n2, example_n3"
+    },
+    {
+      "id": "heuristics",
+      "title": "Heuristic Analysis",
+      "summary": "smallest_multiple_bound theorem: greedy algorithm bound for divisibility matching",
+      "startLine": 230,
+      "endLine": 263,
+      "mathContext": "Verified: smallest_multiple_bound theorem"
+    },
+    {
+      "id": "greedy",
+      "title": "Greedy Algorithm Insight",
+      "summary": "Part VIII related-problems notes and fValues placeholder sequence",
+      "startLine": 264,
+      "endLine": 273,
+      "mathContext": "Related: Part VIII connection notes and fValues placeholder"
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results Summary",
+      "summary": "erdos_710_summary theorem",
+      "startLine": 274,
+      "endLine": 320,
+      "mathContext": "Verified: erdos_710_summary theorem"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #710 asks for an asymptotic formula for f(n), the minimal interval length needed for divisibility matching. Erdős and Pomerance (1980) established bounds that differ by a factor of √(log log n). The exact asymptotics remain open, with a prize of 2000 rupees offered by Erdős. The formalization defines the key concepts, axiomatizes the known bounds, and verifies the setup with small examples.",
+    "implications": "**Theoretical Significance**: **Number-Theoretic Connections**\n\n1. **Divisibility Structure:** The distribution of multiples in intervals is central to the problem\n\n2. **Extremal Combinatorics:** Finding optimal matchings with divisibility constraints\n\n**3. Asymptotic Analysis:** The √(log n) vs √(log n / log log n) question is delicate\n\n4. **Algorithmic Aspects:** Greedy algorithms give bounds but not optimal solutions\n\n5. **Prize Problems:** Part of Erdős's legacy of encouraging research with cash prizes.",
+    "openQuestions": [
+      "What is the exact asymptotic formula for f(n)?",
+      "Is the upper bound tight: f(n) ~ C·n·√(log n)?",
+      "Is the lower bound tight: f(n) ~ C·n·√(log n / log log n)?",
+      "Is there a polynomial-time algorithm to compute f(n) exactly?",
+      "What is the connection to Problem #711?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Interval",
+      "Mathlib.Order.Interval.Finset.Nat",
+      "Mathlib.Algebra.Order.Floor"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos710",
+    "lineCount": 320,
+    "axiomCount": 3,
+    "theoremCount": 5,
+    "definitionCount": 7,
+    "path": "Proofs/Erdos710Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-711",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotic-analysis, combinatorics, divisibility, number-theory"
+    },
+    {
+      "targetId": "erdos-1005",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotic-analysis, combinatorics, number-theory"
+    },
+    {
+      "targetId": "erdos-13",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, divisibility, number-theory"
+    }
+  ],
+  "sorries": 0
+}

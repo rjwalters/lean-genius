@@ -1,0 +1,122 @@
+{
+  "slug": "factor-remainder-nullstellensatz-oq-02",
+  "title": "Formalize Alon's Combinatorial Nullstellensatz in Lean",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\operatorname{coeff}_{\\prod_i X_i^{t_i}}(f)\\ne 0,\\quad \\deg f\\le \\sum_i t_i,\\quad |S_i|>t_i\\ \\Longrightarrow\\ \\exists s\\in\\prod_i S_i,\\ f(s)\\ne 0.",
+    "plain": "Formalize Alon's Combinatorial Nullstellensatz: a polynomial with a nonzero maximal-degree coefficient cannot vanish on every sufficiently large grid. The Lean development proves the single-variable non-vanishing base case and states the grid/nonvanishing theorem with two explicit axioms.",
+    "whyMatters": [
+      "Cornerstone of the polynomial method in combinatorics",
+      "Applications to Cauchy-Davenport, Chevalley-Warning, graph coloring"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`exists_eval_ne_zero` proves the single-variable non-vanishing result from polynomial root-count bounds.",
+      "`combinatorial_nullstellensatz'` and `nonvanishing_uniform_grid` derive useful corollaries from the main axiomatized theorem."
+    ],
+    "open": [
+      "`grid_nonvanishing` and `combinatorial_nullstellensatz` are axioms in the current OQ-02 file.",
+      "A fully internal proof still needs grid non-vanishing by induction and multivariate polynomial reduction infrastructure."
+    ],
+    "goal": "Make the axiom boundary explicit while preserving the proved single-variable base case and corollary metadata."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-12T21:00:00Z",
+    "iteration": 1,
+    "focus": "Initial formalization with clean statement and single-variable base case.",
+    "blockers": [
+      "Multivariate polynomial division not in Mathlib"
+    ],
+    "nextAction": "Prove grid_nonvanishing by induction, then tackle polynomial reduction.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Formalized Alon's Combinatorial Nullstellensatz. Proved single-variable non-vanishing from Mathlib root bounds. Axiomatized grid non-vanishing and full theorem. 2 axioms, 5 theorems, 0 sorries.",
+    "builtItems": [
+      "Created FactorRemainderNullstellensatzOQ02.lean with clean formal statement",
+      "Proved exists_eval_ne_zero: single-variable non-vanishing from card_roots_le_degree",
+      "Axiomatized combinatorial_nullstellensatz with precise type signature",
+      "Proved two corollaries: alternative |Sᵢ| ≥ tᵢ + 1 version and uniform grid specialization",
+      "Created gallery entry: src/data/proofs/factor-remainder-nullstellensatz-oq-02/"
+    ],
+    "insights": [
+      "The single-variable base case is clean: by_contra + push_neg gives all roots, then card_roots_le_degree contradicts |S| > deg",
+      "Monomial multi-indices use Finsupp.equivFunOnFinite.symm to convert σ → ℕ to σ →₀ ℕ",
+      "The main formalization barrier is MvPolynomial division modulo grid polynomials ∏(xᵢ - s)",
+      "Grid non-vanishing is provable by induction on σ using the single-variable case — could be next step",
+      "The theorem works over any field, not just algebraically closed — key distinction from Hilbert's Nullstellensatz"
+    ],
+    "mathlibGaps": [
+      "No multivariate polynomial division (reducing MvPolynomial one variable at a time) in Mathlib",
+      "MvPolynomial.degreeOf bounds under evaluation/substitution could be strengthened"
+    ],
+    "nextSteps": [
+      "Prove grid_nonvanishing by induction on Fintype σ cardinality",
+      "Formalize Cauchy-Davenport theorem as a consequence",
+      "Build MvPolynomial division infrastructure for removing main axiom"
+    ]
+  },
+  "tags": [
+    "combinatorics",
+    "algebra",
+    "nullstellensatz",
+    "polynomial-method",
+    "seeker-selected",
+    "combinatorial-nullstellensatz",
+    "axiom-backed",
+    "formalization"
+  ],
+  "relatedProofs": [
+    "factor-remainder-nullstellensatz",
+    "factor-remainder-nullstellensatz-oq-01",
+    "factor-remainder-nullstellensatz-oq-02"
+  ],
+  "references": {
+    "papers": [
+      "Alon 1999 - Combinatorial Nullstellensatz"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Polynomial.card_roots_le_degree",
+      "MvPolynomial.coeff",
+      "MvPolynomial.eval"
+    ]
+  },
+  "started": "2026-04-12T20:45:00Z",
+  "lastUpdate": "2026-04-12T21:00:00Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/FactorRemainderNullstellensatzOQ01.lean",
+      "filename": "FactorRemainderNullstellensatzOQ01.lean",
+      "lineCount": 82,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FactorRemainderNullstellensatzOQ01.lean"
+    },
+    {
+      "path": "Proofs/FactorRemainderNullstellensatzOQ02.lean",
+      "filename": "FactorRemainderNullstellensatzOQ02.lean",
+      "lineCount": 230,
+      "theoremCount": 3,
+      "axiomCount": 2,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FactorRemainderNullstellensatzOQ02.lean"
+    }
+  ]
+}

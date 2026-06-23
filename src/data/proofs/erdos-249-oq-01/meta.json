@@ -1,0 +1,145 @@
+{
+  "id": "erdos-249-oq-01",
+  "title": "Tighter Bounds on ∑ φ(n)/2^n: (87/64, 351/256)",
+  "slug": "erdos-249-oq-01",
+  "description": "Pins the value of ∑ φ(n)/2^n to the narrow interval (87/64, 351/256) ≈ (1.359, 1.371) of width 3/256 ≈ 0.012, and proves the sum is not a rational with denominator dividing 4 nor equal to 4/3. Extends the parent formalization with 21 proved theorems; the exact term values φ(n)/2^n are computed via native_decide, so the bounds depend on Lean.ofReduceBool (no literal axiom declarations).",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-24",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos249OQ01.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "irrationality",
+      "totient",
+      "series",
+      "bounds",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 249,
+    "erdosUrl": "https://erdosproblems.com/249",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-04-04",
+    "axiomCount": 1,
+    "lineCount": 303,
+    "theoremCount": 26,
+    "definitionCount": 0,
+    "assumptions": "Lean.ofReduceBool: the exact term values φ(n)/2^n (termFn_four/six/eight/nine/ten) — advertised deliverables that the partial-sum and interval bounds (partial_sum_6/7/11, totientPowerSum_ge/gt_*) build on — are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction via the Lean.ofReduceBool axiom. There are no literal `axiom` declarations (leanFile.axiomCount is 0), and Erdos249Problem.lean is itself axiom-free; the only assumption is the native_decide kernel-reduction dependency. The Erdős 249 conjecture itself remains open — only the bounding theorems are formalized.",
+    "originalContributions": [
+      "termFn_three/four/five/six/seven/eight/nine/ten: exact term values φ(n)/2^n for n = 3–10",
+      "partial_sum_6: first 6 terms sum exactly to 5/4",
+      "partial_sum_7: first 7 terms sum exactly to 41/32",
+      "partial_sum_11: first 11 terms sum exactly to 87/64 ≈ 1.359375",
+      "totientPowerSum_ge_five_fourths: ∑ φ(n)/2^n ≥ 5/4 (from partial_sum_6)",
+      "totientPowerSum_gt_five_fourths: ∑ φ(n)/2^n > 5/4 (strict, from partial_sum_7)",
+      "totientPowerSum_gt_87_64: ∑ φ(n)/2^n > 87/64 (strict, from partial_sum_11)",
+      "totientPowerSum_lt_two: ∑ φ(n)/2^n < 2 (strict comparison with ∑ n/2^n at n=4)",
+      "totientPowerSum_lt_three_halves: ∑ φ(n)/2^n < 3/2 (tail splitting at n=6)",
+      "totientPowerSum_lt_351_256: ∑ φ(n)/2^n < 351/256 (tail splitting at n=11)",
+      "totientPowerSum_not_int: sum is not an integer",
+      "totientPowerSum_not_quarter_int: sum is not a rational with denominator dividing 4",
+      "totientPowerSum_ne_four_thirds: sum ≠ 4/3"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #249 asks whether $\\sum_{n=1}^{\\infty} \\varphi(n)/2^n$ is irrational. Erdős posed many irrationality questions about series of the form $\\sum f(n)/2^n$ where $f$ is a multiplicative arithmetic function. These problems share the feature that standard irrationality proofs (Apéry's method for ζ(3), Lindemann-Weierstrass for e and π) do not apply: there is no known functional equation or recursion relating partial sums to a simpler object. The parent formalization (erdos-249) proved convergence via comparison with $\\sum n/2^n = 2$. This extension pushes the bounds iteratively—first to (5/4, 3/2) using 7 terms, then to the narrow interval (87/64, 351/256) using 11 terms—and also proves the sum is not equal to 4/3.",
+    "problemStatement": "Prove that 87/64 < ∑_{n=0}^{∞} φ(n)/2^n < 351/256 and that the sum is not a rational number with denominator dividing 4 or equal to 4/3.",
+    "proofStrategy": "**Lower bound (87/64 < S)**: The partial sum of the first 11 terms (n=0,...,10) equals exactly 87/64 = 1.359375. Since all terms are non-negative, the full sum exceeds 87/64.\n\n**Upper bound (S < 351/256)**: Split both the totient series and the comparison series ∑ n/2^n at position 11. The first 11 terms of the comparison sum to 509/256. Since φ(n) ≤ n, the tail ∑_{n≥11} φ(n)/2^n ≤ ∑_{n≥11} n/2^n = 2 - 509/256 = 3/256. So S ≤ 87/64 + 3/256 = 348/256 + 3/256 = 351/256.\n\n**Not a quarter-integer**: Since 87/64 = 348/256 and 351/256, the interval (348/256, 351/256) contains no multiple of 1/4 (nearest: 5/4 = 320/256 below, 6/4 = 384/256 above).\n\n**Not equal to 4/3**: Since 87/64 > 4/3 (equivalently 87·3 = 261 > 256 = 4·64), the lower bound excludes 4/3.\n\n**Strict upper < 2**: A single strict gap at n=4 (φ(4) = 2 < 4) gives totientPowerSum < 2 via hasSum_lt.",
+    "keyInsights": [
+      "Tail splitting at n=11 gives a very tight upper bound: ∑_{n≥11} φ(n)/2^n ≤ 3/256 ≈ 0.012",
+      "hasSum.nat_add decomposes the series into head and tail, enabling pointwise comparison on tails",
+      "The lower bound 87/64 > 4/3 rules out the simple rational 4/3 as a possible value",
+      "The interval (87/64, 351/256) has width 3/256 ≈ 0.012, pinning the value to (1.359, 1.371)",
+      "All 21 public theorems proved with no literal axiom declarations (the native_decide term-value certificates depend on Lean.ofReduceBool), building on the parent formalization's infrastructure"
+    ],
+    "prerequisites": [
+      "totientPowerSum_summable: convergence of ∑ φ(n)/2^n (from Erdos249Problem.lean)",
+      "termFn_zero/one/two: first three terms (from Erdos249Problem.lean)",
+      "termFn_nonneg: non-negativity of terms (from Erdos249Problem.lean)",
+      "hasSum_coe_mul_geometric_of_norm_lt_one: Mathlib geometric series formula",
+      "hasSum_le: comparison bound for infinite series",
+      "hasSum_lt: strict comparison for infinite series",
+      "HasSum.nat_add: series splitting at a finite position",
+      "sum_le_hasSum: lower bound from finite partial sum"
+    ]
+  },
+  "sections": [
+    {
+      "id": "term-computations-1",
+      "title": "Part I: Term Computations (n = 3, 4, 5)",
+      "summary": "Computes φ(n)/2^n for n = 3 (prime: 1/4), n = 4 (= 2², native_decide: 1/8), n = 5 (prime: 1/8).",
+      "startLine": 27,
+      "endLine": 48
+    },
+    {
+      "id": "partial-sums-initial",
+      "title": "Part II: Partial Sums = 5/4 and 41/32",
+      "summary": "partial_sum_6: first 6 terms (n=0..5) = 5/4. partial_sum_7: first 7 terms (n=0..6) = 41/32.",
+      "startLine": 49,
+      "endLine": 60
+    },
+    {
+      "id": "lower-bound-initial",
+      "title": "Part III: Initial Lower Bounds (≥ 5/4, > 1)",
+      "summary": "totientPowerSum_ge_five_fourths uses sum_le_hasSum to bound from below by 5/4. totientPowerSum_gt_one follows immediately.",
+      "startLine": 61,
+      "endLine": 80
+    },
+    {
+      "id": "upper-bound-strict",
+      "title": "Part IV: Strict Upper Bound < 2 via Comparison Series",
+      "summary": "hasSum_n_mul_half establishes Σ n/2^n = 2. termFn_le_comp bounds termFn pointwise by n/2^n. termFn_four_lt gives strict gap at n=4. hasSum_lt combines these to prove totientPowerSum < 2. Includes totientPowerSum_not_int.",
+      "startLine": 82,
+      "endLine": 128
+    },
+    {
+      "id": "tighter-interval-1",
+      "title": "Parts V–VI: First Tightening (5/4, 3/2) and Quarter-Integer Exclusion",
+      "summary": "termFn_six + partial_sum_7 give strict lower bound > 5/4. HasSum.nat_add tail splitting at n=6 gives upper bound < 3/2. totientPowerSum_not_quarter_int proves the interval contains no multiple of 1/4.",
+      "startLine": 130,
+      "endLine": 203
+    },
+    {
+      "id": "tighter-interval-2",
+      "title": "Part VII: Second Tightening (87/64, 351/256) and 4/3 Exclusion",
+      "summary": "Terms n=7..10 computed exactly. partial_sum_11 = 87/64. Tail splitting at n=11 gives upper bound < 351/256. totientPowerSum_ne_four_thirds proved since 87/64 > 4/3.",
+      "startLine": 205,
+      "endLine": 303
+    }
+  ],
+  "conclusion": {
+    "summary": "Proved that 87/64 < ∑ φ(n)/2^n < 351/256 with width 3/256 ≈ 0.012. 308 lines, 21 public theorems, 0 sorries, no literal axiom declarations (the native_decide term-value certificates depend on Lean.ofReduceBool).",
+    "implications": "The narrow interval (87/64, 351/256) pins the value to approximately (1.359, 1.371). The sum cannot be an integer, half-integer, quarter-integer, or equal to 4/3. Irrationality remains open, but any proof must handle a value in this narrow range.",
+    "openQuestions": [
+      "Prove ∑ φ(n)/2^n is irrational (the main Erdős #249 conjecture)",
+      "Narrow the interval further using more terms: can we achieve width < 1/1000?",
+      "Prove analogous bounds for ∑ φ(n)/b^n for other bases b ≥ 2",
+      "Does ∑ φ(n)/2^n have finite irrationality measure? Is it transcendental?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-249",
+      "relationship": "extends",
+      "description": "Parent formalization: proves convergence and weak bound [0, 2]"
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "Both concern exact and approximate values of infinite series with number-theoretic significance"
+    }
+  ],
+  "leanFile": {
+    "namespace": "Erdos249OQ01",
+    "lineCount": 303,
+    "axiomCount": 0,
+    "theoremCount": 26,
+    "definitionCount": 0,
+    "path": "Proofs/Erdos249OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

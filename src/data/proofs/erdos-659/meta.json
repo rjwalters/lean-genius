@@ -1,0 +1,195 @@
+{
+  "id": "erdos-659",
+  "title": "Erdős Problem #659: Point Configurations with Few Distances",
+  "slug": "erdos-659",
+  "description": "Is there a set of n points in R² such that every 4-point subset determines at least 3 distances, yet the total distinct distances is O(n/√log n)? Answer: Yes, via the Moree-Osburn lattice.",
+  "meta": {
+    "author": "Moree-Osburn (2006), Lund-Sheffer",
+    "sourceUrl": "https://erdosproblems.com/659",
+    "date": "2006",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos659Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorial-geometry",
+      "distance-problems",
+      "lattices"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "erdosNumber": 659,
+    "erdosUrl": "https://erdosproblems.com/659",
+    "erdosProblemStatus": "proved",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root function on reals",
+        "module": "Mathlib.Data.Real.Sqrt"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "dist",
+        "description": "Metric space distance function",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalization of the 4-point distance property",
+      "Definition of distinct distances for finite point sets",
+      "Partial classification of 6 two-distance configurations: square, 60° rhombus, and pentagon subset formally characterized; isosceles trapezoid (2 types) and kite left as True placeholders",
+      "Educational explanation of Moree-Osburn lattice construction"
+    ],
+    "axiomCount": 1,
+    "lineCount": 220,
+    "assumptions": "1 axiom: moreeOsburnWorks. 1 sorry.",
+    "theoremCount": 2,
+    "definitionCount": 10
+  },
+  "overview": {
+    "historicalContext": "This problem explores the interplay between local constraints (every 4 points determine many distances) and global behavior (few total distances). It belongs to the rich tradition of Erdős distance problems, initiated by Erdős himself in 1946 when he asked for the minimum number of distinct distances determined by $n$ points in the plane — a question that drove combinatorial geometry for decades and was finally resolved by Guth and Katz (2015) who proved the $\\Omega(n/\\log n)$ lower bound using algebraic methods.\n\nErdős believed configurations satisfying the 4-point property with few distances should exist, and that their study would illuminate the structure of extremal distance sets. The solution came from an unexpected direction: algebraic number theory. Moree and Osburn (2006) discovered that points on a 'stretched' integer lattice $\\{(a, b\\sqrt{2}) : a,b \\in \\mathbb{Z}\\}$ have the remarkable property of avoiding regular geometric configurations while having few distinct distances. The key insight is that squared distances in this lattice are integers of the form $x^2 + 2y^2$ — a positive definite binary quadratic form of discriminant $-8$.\n\nBy Landau's theorem (1908), the count of positive integers $\\leq N$ representable as $x^2 + Dy^2$ is asymptotic to $C_D \\cdot N/\\sqrt{\\log N}$, where $C_D$ depends on the class number of $\\mathbb{Q}(\\sqrt{-D})$. For $D = 2$, the class number of $\\mathbb{Q}(\\sqrt{-2})$ is 1, and $C_2 = \\frac{1}{\\sqrt{2}} \\prod_{p \\equiv 3,5 \\pmod{8}} (1 - p^{-2})^{-1/2}$. This controls the distinct distance count.\n\nLund and Sheffer independently found this construction. The 4-point property was verified by classifying all six configurations of 4 points with exactly 2 distances (the square, two types of rhombus, two isosceles trapezoids, and a pentagon subset) and showing the $\\sqrt{2}$-stretching eliminates each. Grayzel later completed the proof by ruling out the pentagon configuration using computer-assisted verification.",
+    "problemStatement": "Is there a set of $n$ points in $\\mathbb{R}^2$ such that every subset of $4$ points determines at least $3$ distances, yet the total number of distinct distances is $\\ll \\frac{n}{\\sqrt{\\log n}}$?\n\n**Answer:** Yes. The truncated lattice $\\{(a, b\\sqrt{2}) : a,b \\in \\mathbb{Z}\\}$ achieves this bound.",
+    "text": "Is there a set of n points in R² such that every 4-point subset determines at least 3 distances, yet the total distinct distances is O(n/√log n)? Answer: Yes, via the Moree-Osburn lattice.",
+    "proofStrategy": "The proof uses the Moree-Osburn lattice construction. The strategy has two parts:\n\n1. **Few total distances**: Distances between lattice points have form √(x² + 2y²). By Landau's theorem on sums of two squares (generalized), the count of such integers ≤ N is O(N/√log N).\n\n2. **4-point property**: There are exactly 6 configurations of 4 points with only 2 distances. Five contain squares or equilateral triangles (impossible in this lattice due to √2 stretching). The sixth is 4 vertices of a regular pentagon, ruled out by explicit calculation.",
+    "keyInsights": [
+      "**Moree-Osburn lattice**: The set {(a, b√2) : a,b ∈ ℤ} 'stretches' the integer lattice by √2 in one direction, breaking symmetries that would create regular polygons",
+      "**Landau's theorem**: The number of integers ≤ N representable as x² + 2y² is Θ(N/√log N), controlling the distance count",
+      "**Configuration classification**: Only 6 ways exist for 4 points to have exactly 2 distances; this lattice avoids all of them",
+      "**Quadratic forms**: Distances are √(x² + 2y²) - a positive definite binary quadratic form whose representation theory is well understood",
+      "**Near-optimality**: The Guth-Katz theorem (2015) shows any n points determine ≥ Ω(n/log n) distinct distances, so this construction achieves the optimal order — the 4-point property comes 'for free' from the lattice structure"
+    ],
+    "prerequisites": [
+      "Combinatorial geometry (point configurations, distance problems in the plane)",
+      "Algebraic number theory (binary quadratic forms, representation of integers as $x^2 + Dy^2$)",
+      "Analytic number theory (Landau's theorem on the distribution of representable integers)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Imports and Definitions",
+      "startLine": 24,
+      "endLine": 43,
+      "summary": "Import Mathlib dependencies for real analysis and metric spaces"
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 44,
+      "endLine": 58,
+      "summary": "Define distinct distances and the 4-point property"
+    },
+    {
+      "id": "axiom",
+      "title": "Main Axiom",
+      "startLine": 59,
+      "endLine": 94,
+      "summary": "State the Moree-Osburn construction works (requires deep number theory); axiom moreeOsburnWorks declared at lines 89–94"
+    },
+    {
+      "id": "theorem",
+      "title": "Main Theorem",
+      "startLine": 96,
+      "endLine": 113,
+      "summary": "Derive the answer to Erdős #659 from the axiom; theorem erdos_659 at lines 100–113"
+    },
+    {
+      "id": "configurations",
+      "title": "Two-Distance Configurations",
+      "startLine": 96,
+      "endLine": 220,
+      "summary": "Enumerate the 6 configurations with only 2 distances among 4 points"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #659 is answered affirmatively: large point sets exist with the 4-point property and few distinct distances. The Moree-Osburn lattice construction achieves O(n/√log n) distances while ensuring every 4-point subset determines at least 3 distances.",
+    "implications": "This result connects discrete geometry to algebraic number theory, showing how arithmetic properties of quadratic forms control geometric configurations. It also provides effective bounds for related Erdős problems about squares in point sets.",
+    "openQuestions": [
+      "Can the $O(n/\\sqrt{\\log n})$ bound be improved while maintaining the 4-point property? The Guth–Katz lower bound $\\Omega(n/\\log n)$ applies to *all* point sets, so the gap between the construction ($n/\\sqrt{\\log n}$) and the universal lower bound ($n/\\log n$) is a factor of $\\sqrt{\\log n}$.",
+      "Are there constructions based on other quadratic forms $x^2 + Dy^2$ with $D \\neq 2$ that achieve the 4-point property? Different values of $D$ yield different distance spectra and may avoid different configuration families.",
+      "What is the exact asymptotic constant $C_2$ in the distance count? Landau's theorem gives $C_2 = \\frac{1}{\\sqrt{2}} \\prod_{p \\equiv 3,5 \\pmod{8}} (1 - p^{-2})^{-1/2}$, but the relationship between this analytic constant and the geometric configuration count is not fully understood.",
+      "Can the 4-point property be strengthened to a $k$-point property (every $k$ points determine $\\geq k-1$ distances) while maintaining $O(n/\\sqrt{\\log n})$ total distances? For $k = 5$ the classification of configurations becomes much more complex.",
+      "Can the Moree–Osburn construction be formalized in Lean without axioms, by proving Landau's theorem and the configuration classification purely in Mathlib? This would require formalizing the analytic theory of binary quadratic forms."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Topology.MetricSpace.Basic"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "Erdos659",
+    "lineCount": 220,
+    "axiomCount": 1,
+    "theoremCount": 2,
+    "definitionCount": 10,
+    "path": "Proofs/Erdos659Problem.lean",
+    "sorries": 1
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-132",
+      "relationship": "related",
+      "description": "Distance multiplicities in planar point sets: asks how often a given distance can occur among $n$ points. Problem 659 constrains the *number* of distinct distances while Problem 132 constrains the *multiplicity* of each distance — dual perspectives on the same distance geometry landscape."
+    },
+    {
+      "targetId": "erdos-662",
+      "relationship": "related",
+      "description": "Distances in separated point sets: imposes geometric separation constraints on point configurations, complementing Problem 659's constraint that 4-point subsets avoid degenerate distance patterns. Both problems study how structural constraints interact with distance counting."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Moree, Pieter; Osburn, Robert",
+      "title": "Two-dimensional lattices with few distances",
+      "year": "2006",
+      "venue": "L'Enseignement Mathématique (2), vol. 52, pp. 361–380",
+      "note": "The key paper solving Erdős Problem 659: shows that the lattice {(a, b√2)} has the 4-point property and O(n/√log n) distinct distances, using Landau's theorem on the quadratic form x² + 2y²."
+    },
+    {
+      "authors": "Landau, Edmund",
+      "title": "Über die Einteilung der positiven ganzen Zahlen in vier Klassen nach der Mindestzahl der zu ihrer additiven Zusammensetzung erforderlichen Quadrate",
+      "year": "1908",
+      "venue": "Archiv der Mathematik und Physik, vol. 13, pp. 305–312",
+      "note": "Proves that the number of positive integers ≤ N representable as x² + Dy² is asymptotic to C·N/√(log N), the fundamental counting result underlying the distance bound in the Moree–Osburn construction."
+    },
+    {
+      "authors": "Guth, Larry; Katz, Nets Hawk",
+      "title": "On the Erdős distinct distances problem in the plane",
+      "year": "2015",
+      "venue": "Annals of Mathematics, vol. 181, no. 1, pp. 155–190",
+      "note": "Proves any n points in the plane determine Ω(n/log n) distinct distances, nearly matching the O(n/√log n) upper bound achieved by lattice constructions like Moree–Osburn. The gap of √log n between upper and lower bounds remains open."
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "On sets of distances of n points",
+      "year": "1946",
+      "venue": "American Mathematical Monthly, vol. 53, no. 5, pp. 248–250",
+      "note": "The foundational paper posing the distinct distances problem: what is the minimum number of distinct distances determined by n points in the plane? Conjectured Ω(n/√log n), which the Moree–Osburn construction shows is tight up to the 4-point constraint."
+    },
+    {
+      "authors": "Cox, David A.",
+      "title": "Primes of the Form x² + ny²: Fermat, Class Field Theory, and Complex Multiplication",
+      "year": "2013",
+      "venue": "John Wiley & Sons, 2nd edition",
+      "note": "Standard reference for the arithmetic of binary quadratic forms x² + Dy², including Landau's counting theorem and the connection to class numbers of imaginary quadratic fields — the number-theoretic machinery underlying the Moree–Osburn distance count."
+    },
+    {
+      "authors": "Pach, János; Sharir, Micha",
+      "title": "Repeated angles in the plane and related problems",
+      "year": "1992",
+      "venue": "Journal of Combinatorial Theory, Series A, vol. 59, no. 1, pp. 12–22",
+      "note": "Studies the combinatorial geometry of repeated patterns in point configurations, including the classification of configurations with few distances that appears in the 4-point property verification of Problem 659."
+    }
+  ],
+  "sorries": 1
+}

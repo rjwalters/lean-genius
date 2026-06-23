@@ -1,0 +1,174 @@
+{
+  "id": "erdos-196",
+  "title": "Erdős Problem #196: Monotone 4-Term APs in Permutations",
+  "slug": "erdos-196",
+  "description": "Must every permutation of ℕ contain a monotone 4-term arithmetic progression? k=3: YES (DEGS 1977). k=4: OPEN. k=5: NO (DEGS 1977). LeSaulnier–Vijay (2011) showed odd-CD 4-APs are avoidable.",
+  "meta": {
+    "author": "Erdős, Graham",
+    "sourceUrl": "https://erdosproblems.com/196",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos196Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "permutations",
+      "arithmetic progressions",
+      "monotone subsequences"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 196,
+    "erdosUrl": "https://erdosproblems.com/196",
+    "erdosProblemStatus": "open",
+    "axiomCount": 0,
+    "lineCount": 155,
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 10
+  },
+  "overview": {
+    "historicalContext": "Davis, Entringer, Graham, and Simmons (DEGS) initiated the study of monotone arithmetic progressions in permutations in their 1977 paper, proving that every permutation of $\\mathbb{N}$ contains a monotone 3-term AP and constructing one avoiding monotone 5-term APs. The $k = 4$ case was left as an open problem, later highlighted by Erdős and Graham in their 1979 and 1980 monographs on combinatorial number theory. The problem sat largely untouched until LeSaulnier and Vijay (2011) achieved the key structural reduction: they showed that monotone 4-APs with odd common difference can be avoided, reducing the conjecture to the even-CD case. This parity decomposition is the deepest known structural insight into the problem. The question connects to Szemerédi's theorem on APs in dense sets and to the Erdős–Szekeres theorem on monotone subsequences, though neither directly implies the result for permutations.",
+    "problemStatement": "Must every permutation of $\\mathbb{N}$ contain a monotone 4-term arithmetic progression? That is, must there exist indices $i_1 < i_2 < i_3 < i_4$ (or $i_1 > i_2 > i_3 > i_4$) such that $\\pi(i_1), \\pi(i_2), \\pi(i_3), \\pi(i_4)$ form a 4-AP?",
+    "text": "Must every permutation of ℕ contain a monotone 4-term arithmetic progression? k=3: YES (DEGS 1977). k=4: OPEN. k=5: NO (DEGS 1977). LeSaulnier–Vijay (2011) showed odd-CD 4-APs are avoidable.",
+    "proofStrategy": "The formalization uses `Perm := ℕ ≃ ℕ` for permutations and defines $k$-term APs via constant differences. Monotone APs require index monotonicity (increasing or decreasing). The DEGS results for $k = 3$ and $k = 5$ are axiomatized, and the $k = 4$ implication is proved in Lean. The LeSaulnier–Vijay parity reduction is formalized: odd/even CD definitions, the parity dichotomy theorem (proved), and the equivalence to even-CD forcing. Non-extendability constraints and the Erdős–Szekeres theorem provide structural context.",
+    "keyInsights": [
+      "**Critical threshold $k = 4$**: DEGS (1977) proved $k = 3$ exists in all permutations and $k = 5$ can be avoided — making $k = 4$ the sharp boundary between universality and avoidability",
+      "**LeSaulnier–Vijay parity reduction (2011)**: Odd-CD monotone 4-APs can be avoided, reducing the conjecture to showing even-CD 4-APs are unavoidable",
+      "**Non-extendability**: If no monotone 4-AP exists, every 3-AP forbids a specific value at all later monotone positions, creating cumulative constraints that may force a contradiction",
+      "**Erdős–Szekeres gap**: The theorem guarantees long monotone subsequences of length $\\Theta(\\sqrt{n})$ but provides no arithmetic structure — a monotone subsequence need not contain a 4-AP",
+      "**Proved implication**: The 4-AP conjecture implies the 3-AP theorem, verified in Lean by extracting three terms from a 4-AP and using `omega` for the arithmetic"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Module Overview",
+      "startLine": 21,
+      "endLine": 26,
+      "summary": "Imports Mathlib for equivalences ($\\mathbb{N} \\equiv \\mathbb{N}$), monotonicity, and tactics, following the opening module docstring summarizing key results and references."
+    },
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 27,
+      "endLine": 43,
+      "summary": "Defines `Perm` (the type of bijections on $\\mathbb{N}$) and the progression predicates IsAP3, IsAP4, IsAP5 via constant differences $b - a = c - b = \\cdots$ with strict ordering $a < b < c < \\cdots$.",
+      "mathContext": "A $k$-term arithmetic progression: $a, a+d, a+2d, \\ldots, a+(k-1)d$ with common difference $d > 0$. Here $a < b < c$ and $b - a = c - b$."
+    },
+    {
+      "id": "monotone-aps",
+      "title": "Monotone APs in Permutations",
+      "startLine": 44,
+      "endLine": 61,
+      "summary": "HasMonotone$k$AP$(\\pi)$: $\\exists$ monotone indices with values forming a $k$-AP. Covers 3, 4, and 5-term variants.",
+      "mathContext": "$\\text{HasMonotone4AP}(\\pi) \\iff \\exists i_1 < i_2 < i_3 < i_4$ with $\\pi(i_1), \\pi(i_2), \\pi(i_3), \\pi(i_4)$ forming an AP (either increasing or decreasing)."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Open Conjecture ($k = 4$)",
+      "startLine": 62,
+      "endLine": 69,
+      "summary": "ErdosProblem196: $\\forall \\pi: \\mathbb{N} \\equiv \\mathbb{N},$ HasMonotone4AP$(\\pi)$. The critical threshold question, stated as a definition since it is open.",
+      "mathContext": "Conjecture: every permutation $\\pi : \\mathbb{N} \\to \\mathbb{N}$ contains a monotone 4-term AP. OPEN."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results ($k = 3$, $k = 5$, and 4-AP $\\Rightarrow$ 3-AP)",
+      "startLine": 70,
+      "endLine": 85,
+      "summary": "Records the DEGS (1977) results in comments — $k = 3$ always exists, $k = 5$ can be avoided — and proves `conjecture_implies_3ap`: the 4-AP conjecture implies the 3-AP theorem by extracting three terms and using `omega`.",
+      "mathContext": "DEGS (1977): $k = 3$ — every permutation has a monotone 3-AP; $k = 5$ — there exists a permutation avoiding all monotone 5-APs, so $k = 4$ is the threshold candidate. The Lean theorem shows that if $\\pi$ has a monotone 4-AP $(a, a+d, a+2d, a+3d)$, then $(a, a+d, a+2d)$ is a monotone 3-AP."
+    },
+    {
+      "id": "parity",
+      "title": "Common Difference Parity Analysis",
+      "startLine": 86,
+      "endLine": 130,
+      "summary": "Odd/even CD definitions, LeSaulnier–Vijay odd-CD avoidance (2011), the parity dichotomy `ap4_parity` (proved), and the structural equivalence `conjecture_equiv_even_forced` reducing the conjecture to even-CD forcing.",
+      "mathContext": "LeSaulnier-Vijay (2011): odd-CD monotone 4-APs can be avoided. So the conjecture reduces to: can *even-CD* monotone 4-APs be avoided? Parity dichotomy proved in Lean."
+    },
+    {
+      "id": "non-extendability",
+      "title": "Non-Extendability Constraints",
+      "startLine": 131,
+      "endLine": 150,
+      "summary": "`non_extendable_constraint`: if no monotone 4-AP exists, each monotone 3-AP forbids the value $a + 3d$ at all later monotone positions — accumulating constraints toward a contradiction.",
+      "mathContext": "If $(a, a+d, a+2d)$ is a monotone 3-AP in $\\pi$, then $a+3d$ cannot appear at a monotone position — a forbidden value constraint."
+    },
+    {
+      "id": "erdos-szekeres",
+      "title": "Erdős–Szekeres Connection",
+      "startLine": 151,
+      "endLine": 155,
+      "summary": "A closing contextual note (no theorem): Erdős–Szekeres (1935) — every sequence of $(r-1)(s-1)+1$ distinct numbers has a monotone subsequence of length $r$ or $s$. Gives long monotone subsequences but not APs.",
+      "mathContext": "Erdős-Szekeres: every sequence of $> (r-1)(s-1)$ distinct reals has an increasing subsequence of length $r$ or decreasing of length $s$. Gives structure but not AP structure."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #196 asks whether $k = 4$ is the sharp threshold for monotone APs in permutations of $\\mathbb{N}$. The DEGS (1977) results establish that $k = 3$ is universal and $k = 5$ is avoidable, while LeSaulnier–Vijay (2011) reduce the $k = 4$ conjecture to the even common difference case. The formalization includes a Lean proof of the 4-AP → 3-AP implication and the parity dichotomy theorem.",
+    "implications": "A positive resolution would complete the classification of which $k$ yield unavoidable monotone $k$-APs in permutations, establishing $k = 4$ as the exact boundary. This would connect to Szemerédi-type results for structured sequences and illuminate the role of parity in arithmetic combinatorics.",
+    "openQuestions": [
+      "Must every permutation of $\\mathbb{N}$ contain a monotone 4-term AP?",
+      "Can even-CD monotone 4-APs be avoided in permutations of $\\mathbb{N}$?",
+      "What is the minimum $N$ such that every permutation of $\\{1, \\ldots, N\\}$ contains a monotone 4-AP?",
+      "Does the non-extendability constraint eventually lead to a density contradiction?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Logic.Equiv.Basic",
+      "Mathlib.Order.Monotone.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Function"
+    ],
+    "namespace": null,
+    "lineCount": 155,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 10,
+    "path": "Proofs/Erdos196Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-34",
+      "relationship": "related",
+      "description": "Related Erdős combinatorial problem involving permutation structure"
+    },
+    {
+      "targetId": "arithmetic-series",
+      "relationship": "foundational",
+      "description": "Arithmetic progressions are the core object: this problem asks which k-term APs are unavoidable in permutations of ℕ"
+    },
+    {
+      "targetId": "erdos-szekeres",
+      "relationship": "foundational",
+      "description": "The Erdős-Szekeres theorem (monotone subsequences in sequences) is a structural cousin — both guarantee structured subsequences, but Erdős-Szekeres gives monotone subsequences while #196 asks about monotone APs"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Davis, J.A.; Entringer, R.C.; Graham, R.L.; Simmons, G.J.",
+      "title": "On permutations containing no long arithmetic progressions",
+      "year": "1977",
+      "venue": "Acta Arithmetica, vol. 34, pp. 81–90",
+      "note": "Proved k=3 always exists and k=5 can be avoided; left k=4 as the critical open case"
+    },
+    {
+      "authors": "LeSaulnier, T.D.; Vijay, S.",
+      "title": "Monotone arithmetic progressions in permutations",
+      "year": "2011",
+      "venue": "Preprint",
+      "note": "Showed odd common-difference 4-APs can be avoided, reducing the conjecture to the even-CD case"
+    },
+    "https://erdosproblems.com/196"
+  ],
+  "sorries": 0
+}

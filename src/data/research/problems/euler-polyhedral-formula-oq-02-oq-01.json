@@ -1,0 +1,83 @@
+{
+  "slug": "euler-polyhedral-formula-oq-02-oq-01",
+  "title": "Smooth Gauss-Bonnet theorem formalization",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formalizes the smooth Gauss-Bonnet theorem ∫_M K dA = 2πχ(M) and its consequences for compact Riemannian surfaces. The core theorem is axiomatized (Mathlib lacks Riemannian geometry infrastructure), with 20+ consequence theorems fully proved: genus determination from curvature sign, curvature-topology constraints, average curvature formulas, and connections to the discrete case.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-06T22:03:59.700Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "topology",
+    "differential-geometry"
+  ],
+  "relatedProofs": [
+    "euler-polyhedral-formula",
+    "euler-polyhedral-formula-oq-01-oq-02",
+    "euler-polyhedral-formula-oq-02",
+    "euler-polyhedral-formula-oq-02-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-07T18:02:01.177Z",
+  "lastUpdate": "2026-03-12T17:29:54.450Z",
+  "completed": "2026-03-12T17:29:54.450Z",
+  "significance": 8,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/EulerPolyhedralFormula.lean",
+      "filename": "EulerPolyhedralFormula.lean",
+      "lineCount": 1093,
+      "theoremCount": 65,
+      "axiomCount": 1,
+      "defCount": 27,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerPolyhedralFormula.lean"
+    },
+    {
+      "path": "Proofs/EulerPolyhedralFormulaOQ01OQ02.lean",
+      "filename": "EulerPolyhedralFormulaOQ01OQ02.lean",
+      "lineCount": 142,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerPolyhedralFormulaOQ01OQ02.lean"
+    }
+  ]
+}

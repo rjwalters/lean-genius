@@ -1,0 +1,162 @@
+[
+  {
+    "id": "ann-bnoq01oq02-overview",
+    "proofId": "buffons-needle-oq-01-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 32
+    },
+    "type": "concept",
+    "title": "Buffon's Needle in n Dimensions: From Lines to Hyperplanes",
+    "content": "The classical Buffon needle gives P = 2L/(πd) for a needle of length L on lines spaced d apart. In n dimensions, we replace lines with parallel hyperplanes and ask: what is the expected number of crossings? The answer is E = c_n · L/d where c_n is the dimensional constant — the expected absolute cosine of a random direction in ℝⁿ. This file defines c_n via the Gamma function, proves its values for n = 2,3,4,5,6, and establishes the connection to integral geometry.",
+    "mathContext": "$c_n = \\frac{2\\Gamma(n/2)}{(n-1)\\sqrt{\\pi}\\,\\Gamma((n-1)/2)}$. Key values: $c_2 = 2/\\pi$, $c_3 = 1/2$, $c_4 = 4/(3\\pi)$, $c_5 = 3/8$, $c_6 = 16/(15\\pi)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Buffon's needle",
+      "integral geometry",
+      "Gamma function",
+      "sphere surface area",
+      "mean width"
+    ],
+    "prerequisites": [
+      "Real.Gamma",
+      "Real.pi_pos"
+    ]
+  },
+  {
+    "id": "ann-bnoq01oq02-gamma-def",
+    "proofId": "buffons-needle-oq-01-oq-02",
+    "range": {
+      "startLine": 36,
+      "endLine": 55
+    },
+    "type": "definition",
+    "title": "The Gamma-Function Definition of c_n",
+    "content": "The buffonConstant is defined as 2Γ(n/2)/((n-1)·√π·Γ((n-1)/2)), encoding a ratio of consecutive sphere surface areas. For n ≤ 1 (degenerate dimensions) it's set to 0. The lemma gamma_one_half (Γ(1/2) = √π) is proved from Mathlib's Gamma_one_half_eq; all other Gamma values follow from the functional equation Γ(s+1) = sΓ(s) and Γ(1) = 1.",
+    "mathContext": "$c_n = \\frac{2\\Gamma(n/2)}{(n-1)\\sqrt{\\pi}\\,\\Gamma((n-1)/2)}$. The value $\\Gamma(1/2) = \\sqrt{\\pi}$ (from the Gaussian integral) is proved, not assumed.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gamma function",
+      "sphere surface area",
+      "Gaussian integral"
+    ],
+    "prerequisites": [
+      "Real.Gamma",
+      "Real.sqrt"
+    ]
+  },
+  {
+    "id": "ann-bnoq01oq02-c2",
+    "proofId": "buffons-needle-oq-01-oq-02",
+    "range": {
+      "startLine": 57,
+      "endLine": 68
+    },
+    "type": "concept",
+    "title": "Proving c₂ = 2/π: The Classical Buffon Constant",
+    "content": "The proof unfolds the definition, simplifies (2:ℕ)/2 to 1 and ((2:ℕ)-1)/2 to 1/2 via push_cast, then applies Γ(1) = 1 (Mathlib) and Γ(1/2) = √π (proved from Mathlib's Gamma_one_half_eq). The key step: √π · √π = π via mul_self_sqrt. This confirms the Gamma-function definition reproduces the classical constant.",
+    "mathContext": "$c_2 = \\frac{2\\Gamma(1)}{\\sqrt{\\pi}\\Gamma(1/2)} = \\frac{2 \\cdot 1}{\\sqrt{\\pi} \\cdot \\sqrt{\\pi}} = \\frac{2}{\\pi}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gamma function values",
+      "push_cast",
+      "mul_self_sqrt"
+    ],
+    "prerequisites": [
+      "Real.Gamma_one",
+      "gamma_one_half"
+    ]
+  },
+  {
+    "id": "ann-bnoq01oq02-c3",
+    "proofId": "buffons-needle-oq-01-oq-02",
+    "range": {
+      "startLine": 70,
+      "endLine": 86
+    },
+    "type": "insight",
+    "title": "c₃ = 1/2: The Clean 3D Constant",
+    "content": "In 3D, the Buffon constant is c₃ = 1/2, giving E = L/(2d). The proof uses Γ(3/2) = (1/2)Γ(1/2) = √π/2 (functional equation), then c₃ = 2·(√π/2) / (2·√π·Γ(1)) = √π / (2√π) = 1/2; the (n-1) = 2 factor in the denominator is essential (dropping it would give the incorrect value 1).",
+    "mathContext": "$c_3 = \\frac{2\\Gamma(3/2)}{(3-1)\\sqrt{\\pi}\\,\\Gamma(1)} = \\frac{2 \\cdot \\sqrt{\\pi}/2}{2\\sqrt{\\pi} \\cdot 1} = \\frac{1}{2}$. Uses $\\Gamma(3/2) = \\frac{1}{2}\\Gamma(1/2) = \\frac{\\sqrt{\\pi}}{2}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gamma functional equation",
+      "dimension 3 specialness",
+      "field_simp"
+    ],
+    "prerequisites": [
+      "Real.Gamma_add_one",
+      "gamma_one_half"
+    ]
+  },
+  {
+    "id": "ann-bnoq01oq02-comparison",
+    "proofId": "buffons-needle-oq-01-oq-02",
+    "range": {
+      "startLine": 224,
+      "endLine": 249
+    },
+    "type": "concept",
+    "title": "Dimension Comparison: Why 2D Beats Higher Dimensions",
+    "content": "The theorem two_beats_three proves c₃ < c₂ (equivalently 1/2 < 2/π, i.e. π < 4), and two_beats_four proves c₄ < c₂ (equivalently 4/(3π) < 2/π, i.e. 4/3 < 2). Geometrically, a line in ℝ² is crossed by the widest range of needle orientations; as the dimension grows the average absolute cosine c_n shrinks. The theorem crossings_2d_ge_3d lifts the constant comparison to the expected-crossings formula.",
+    "mathContext": "$c_2 = 2/\\pi \\approx 0.637 > 1/2 = c_3$ (proof: $1/2 < 2/\\pi \\iff \\pi < 4$) and $c_2 = 2/\\pi > 4/(3\\pi) = c_4$ (proof: $4/3 < 2$). Crossings are monotone in $c_n$, so 2D yields the most.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "pi_gt_three",
+      "geometric intuition",
+      "dimension dependence"
+    ],
+    "prerequisites": [
+      "buffonConstant_two",
+      "buffonConstant_three",
+      "pi_gt_three"
+    ]
+  },
+  {
+    "id": "ann-bnoq01oq02-mean-width",
+    "proofId": "buffons-needle-oq-01-oq-02",
+    "range": {
+      "startLine": 250,
+      "endLine": 271
+    },
+    "type": "insight",
+    "title": "Mean Width: Connecting Buffon to Convex Geometry",
+    "content": "`meanWidth n L` is defined as `buffonConstant n * L`, capturing the one-dimensional projection width of a segment of length L. The theorem `crossings_eq_width_div_spacing` shows E[crossings] = meanWidth(L)/d — the expected number of hyperplane crossings equals the mean width divided by the spacing.\n\nThis is the Cauchy-Crofton formula specialized to line segments. For a general convex body K, the mean width w(K) = ∫_{S^{n-1}} h_K(u) dσ(u) / σ(S^{n-1}) (where h_K is the support function). For a segment of length L, w(K) = c_n · L, recovering the Buffon formula. The theorems `meanWidth_two` and `meanWidth_three` give the explicit values: w₂(L) = 2L/π and w₃(L) = L/2.",
+    "mathContext": "Mean width of segment: $w_n(L) = c_n \\cdot L$. Cauchy-Crofton: $E[\\text{crossings}] = w_n(L)/d$. Special values: $w_2(L) = 2L/\\pi$ (classical Cauchy formula), $w_3(L) = L/2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "mean width",
+      "Cauchy-Crofton formula",
+      "convex body",
+      "support function",
+      "integral geometry"
+    ],
+    "prerequisites": [
+      "buffonConstant",
+      "expectedCrossings",
+      "Cauchy-Crofton formula"
+    ]
+  },
+  {
+    "id": "ann-bnoq01oq02-recurrence",
+    "proofId": "buffons-needle-oq-01-oq-02",
+    "range": {
+      "startLine": 272,
+      "endLine": 325
+    },
+    "type": "concept",
+    "title": "The Recurrence: Computing c_n for Any Dimension",
+    "content": "The recurrence c_{n+2} = (n/(n+1))·c_n (buffonConstant_recurrence) is proved from the Gamma functional equation Γ(z+1) = z·Γ(z) applied to both Gamma arguments. Since n/(n+1) < 1 for n ≥ 2, the sequence c_n → 0 (high-dimensional concentration of measure). The recurrence enables computing c₅ = (3/4)·c₃ = 3/8 and c₆ = (4/5)·c₄ = 16/(15π) without re-invoking the Gamma function directly.",
+    "mathContext": "$c_{n+2} = \\frac{n}{n+1} c_n$. Even indices: $c_2 = 2/\\pi,\\ c_4 = 4/(3\\pi),\\ c_6 = 16/(15\\pi),\\ \\ldots$ Odd indices: $c_3 = 1/2,\\ c_5 = 3/8,\\ c_7 = 5/16,\\ \\ldots$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sphere volume recurrence",
+      "concentration of measure",
+      "Wallis-type product"
+    ],
+    "prerequisites": [
+      "buffonConstant_three",
+      "buffonConstant_four"
+    ]
+  }
+]

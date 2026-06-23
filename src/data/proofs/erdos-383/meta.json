@@ -1,0 +1,220 @@
+{
+  "id": "erdos-383",
+  "title": "Erdős Problem #383: Prime Divisors of Consecutive Squares",
+  "slug": "erdos-383",
+  "description": "For every k, are there infinitely many primes p such that p is the largest prime divisor of ∏_{i=0}^k (p² + i)?",
+  "meta": {
+    "author": "Erdős, Graham",
+    "sourceUrl": "https://erdosproblems.com/383",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos383Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "prime-divisors",
+      "smooth-numbers",
+      "dickman",
+      "open"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 383,
+    "erdosUrl": "https://erdosproblems.com/383",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.primeFactors",
+        "description": "Set of prime factors",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Finset.prod",
+        "description": "Product over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Nat.maxPrimeFac",
+        "description": "Largest prime factor",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      }
+    ],
+    "originalContributions": [
+      "primeDivisors definition: set of prime factors",
+      "hasLargestPrimeFactor definition: p is max prime factor",
+      "consecutiveSquareProduct definition: ∏_{i=0}^k (p² + i)",
+      "isKGood definition: p is k-good prime",
+      "kGoodPrimes definition: set of k-good primes",
+      "ErdosConjecture383 definition: main conjecture",
+      "Problem382Part2 definition: related problem",
+      "isSmooth definition: y-smooth numbers",
+      "countSmooth definition: counting smooth numbers",
+      "erdos_383_statement theorem: formal statement"
+    ],
+    "axiomCount": 0,
+    "prerequisites": [
+      "Elementary number theory (prime factorization, divisibility)",
+      "Smooth numbers and the Dickman rho function",
+      "Finite products over consecutive integers",
+      "Basic analytic number theory (asymptotic density)"
+    ],
+    "lineCount": 286,
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "theoremCount": 17,
+    "definitionCount": 13
+  },
+  "overview": {
+    "historicalContext": "Paul Erdős and Ronald Graham posed this problem in their 1980 monograph [ErGr80]. It asks whether primes can dominate the factorization of consecutive integers near their square — specifically, whether for each k, infinitely many primes p have no prime factor of p²(p²+1)···(p²+k) exceeding p. The problem connects deeply to smooth number theory, pioneered by Nicolaas Govert de Bruijn in 1951, who showed that the density of y-smooth numbers up to x is asymptotic to ρ(log x / log y) where ρ is the Dickman function. Since ρ(2) ≈ 0.307, about 30.7% of integers have all prime factors below their square root, providing strong heuristic evidence for a positive answer. The k=0 case is trivial (p always dominates p²), and the k=1 case is directly connected to Problem #382, which asks about primes where all prime factors of p²+1 are at most p. Despite the compelling probabilistic heuristics, proving the conjecture even for k=1 remains open, illustrating the difficulty of converting density arguments into unconditional infinitude results.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nFor every positive integer k, is it true that there are infinitely many primes p such that p is the largest prime divisor of\n$$\\prod_{i=0}^{k} (p^2 + i) = p^2(p^2+1)(p^2+2)\\cdots(p^2+k)?$$\n\n**Heuristic Argument:**\nProbabilistic reasoning suggests YES. The Dickman function ρ(2) ≈ 0.307 implies about 30.7% of numbers have all prime factors ≤ √n.",
+    "text": "For every k, are there infinitely many primes p such that p is the largest prime divisor of ∏_{i=0}^k (p² + i)?",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Prime Factors:** primeDivisors(n), hasLargestPrimeFactor(n, p)\n\n2. **Product:** consecutiveSquareProduct(p, k) = ∏_{i=0}^k (p² + i)\n\n3. **k-Good Primes:** isKGood(p, k) := p is largest prime factor of product\n\n4. **Conjecture:** ErdosConjecture383 := ∀k, kGoodPrimes(k) is infinite\n\n5. **Smooth Numbers:** isSmooth(n, y), connection to Dickman function",
+    "keyInsights": [
+      "**k=0 Case:** Every prime is 0-good since maxPrimeFac(p²) = p",
+      "**Smooth Connection:** p is k-good iff p²+i is p-smooth for all i ≤ k",
+      "**Dickman's Function:** ρ(2) > 0 implies positive density of √n-smooth numbers",
+      "**Problem #382:** A positive answer resolves part of Problem #382",
+      "**Heuristic:** Probabilistic arguments strongly suggest YES"
+    ],
+    "prerequisites": [
+      "Elementary number theory (prime factorization, divisibility)",
+      "Smooth numbers and the Dickman rho function",
+      "Finite products over consecutive integers",
+      "Basic analytic number theory (asymptotic density)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "prime-factors",
+      "title": "Prime Factor Definitions",
+      "summary": "Defines `primeDivisors` (wrapper around Mathlib's `primeFactors`), `hasLargestPrimeFactor(n, p)` (p is in prime factors and maximal), and proves the equivalence theorem `hasLargestPrimeFactor_iff` converting to p.Prime ∧ p ∣ n ∧ ∀ q prime, q ∣ n → q ≤ p.",
+      "startLine": 34,
+      "endLine": 52,
+      "mathContext": "Defines `primeDivisors` (wrapper around Mathlib's `primeFactors`), `hasLargestPrimeFactor(n, p)` (p is in prime factors and maximal), and proves the equivalence theorem `hasLargestPrimeFactor_iff` converting to p.Prime ∧ p ∣ n ∧ ∀ q prime, q ∣ n → q ≤ p."
+    },
+    {
+      "id": "product",
+      "title": "The Product Definition",
+      "summary": "Defines `consecutiveSquareProduct(p, k) = ∏_{i ∈ Icc 0 k} (p²+i)` using Finset.prod, proves equivalence with range-based form, and verifies special cases: k=0 gives p², k=1 gives p²(p²+1).",
+      "startLine": 53,
+      "endLine": 81,
+      "mathContext": "Formal definition: Defines `consecutiveSquareProduct(p, k) = ∏_{i ∈ Icc 0 k} (p²+i)` using Finset.prod, proves equivalence with range-based form, and verifies special cases: k=0 gives p², k=1 gives p²(p²+1)."
+    },
+    {
+      "id": "kgood",
+      "title": "k-Good Primes",
+      "summary": "Defines `isKGood(p, k)` (p is prime and largest factor of the product), `kGoodPrimes(k)` as the set of k-good primes, proves positivity of the product, and proves `zero_good`: every prime is 0-good since p is the only prime factor of p².",
+      "startLine": 82,
+      "endLine": 104,
+      "mathContext": "Defines `isKGood(p, k)` (p is prime and largest factor of the product), `kGoodPrimes(k)` as the set of k-good primes, proves positivity of the product, and proves `zero_good`: every prime is 0-good since p is the only prime factor of p²."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős Conjecture",
+      "summary": "States the conjecture in two forms: `ErdosConjecture383` (∀k, kGoodPrimes(k) is infinite) and `ErdosConjecture383'` using `Nat.maxPrimeFac` directly. Axiomatizes their equivalence.",
+      "startLine": 105,
+      "endLine": 121,
+      "mathContext": "Axiomatized: States the conjecture in two forms: `ErdosConjecture383` (∀k, kGoodPrimes(k) is infinite) and `ErdosConjecture383'` using `Nat.maxPrimeFac` directly. Axiomatizes their equivalence."
+    },
+    {
+      "id": "partial",
+      "title": "Partial Results",
+      "summary": "Proves the k=0 case: `all_primes_zero_good` (trivial from `zero_good`) and `infinitely_many_zero_good` (from infinitude of primes). documents in source comments `positive_density_smooth` (no Lean declaration exists): √n-smooth numbers have positive asymptotic density.",
+      "startLine": 122,
+      "endLine": 138,
+      "mathContext": "Proves the k=0 case: `all_primes_zero_good` (trivial from `zero_good`) and `infinitely_many_zero_good` (from infinitude of primes). documents in source comments `positive_density_smooth` (no Lean declaration exists): √n-smooth numbers have positive asymptotic density."
+    },
+    {
+      "id": "problem382",
+      "title": "Relation to Problem #382",
+      "summary": "Defines `Problem382Part2` (infinitely many p where all prime factors of p²+1 are ≤ p), proves `kGood_one_smooth_p2_plus_1` (1-good implies factors of p²+1 are small), and `problem383_implies_382`: the k=1 case of #383 resolves #382.",
+      "startLine": 139,
+      "endLine": 151,
+      "mathContext": "Defines `Problem382Part2` (infinitely many p where all prime factors of p²+1 are ≤ p), proves `kGood_one_smooth_p2_plus_1` (1-good implies factors of p²+1 are small), and `problem383_implies_382`: the k=1 case of #383 resolves #382."
+    },
+    {
+      "id": "smooth",
+      "title": "Smooth Numbers",
+      "summary": "Defines `isSmooth(n, y)` (all prime factors ≤ y), proves the key equivalence `kGood_iff_smooth` (p is k-good ↔ each p²+i is p-smooth), defines `countSmooth`, and axiomatizes the Dickman asymptotic Ψ(x, x^{1/u}) ~ x·ρ(u).",
+      "startLine": 152,
+      "endLine": 175,
+      "mathContext": "Defines `isSmooth(n, y)` (all prime factors ≤ y), proves the key equivalence `kGood_iff_smooth` (p is k-good ↔ each p²+i is p-smooth), defines `countSmooth`, and axiomatizes the Dickman asymptotic Ψ(x, x^{1/u}) ~ x·ρ(u)."
+    },
+    {
+      "id": "heuristic",
+      "title": "Heuristic Argument",
+      "summary": "Dickman ρ(2) ≈ 0.307 supports positive answer",
+      "startLine": 176,
+      "endLine": 190,
+      "mathContext": "Mathematical content: Dickman ρ(2) ≈ 0.307 supports positive answer"
+    },
+    {
+      "id": "summary",
+      "title": "Summary and Formal Statement",
+      "summary": "Status string (OPEN) and `erdos_383_statement`: the formal conjecture using `Nat.maxPrimeFac` and `Finset.Icc`, proving equivalence with the `ErdosConjecture383'` formulation.",
+      "startLine": 191,
+      "endLine": 244,
+      "mathContext": "Mathematical content: Status string (OPEN) and `erdos_383_statement`: the formal conjecture using `Nat.maxPrimeFac` and `Finset.Icc`, proving equivalence with the `ErdosConjecture383'` formulation."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #383 asks whether for every k, infinitely many primes p have p as the largest prime divisor of ∏_{i=0}^k (p² + i). The problem is OPEN, but heuristic arguments based on smooth number theory strongly suggest YES.",
+    "implications": "A positive answer would confirm infinitely many primes with special divisibility properties near their squares, and would resolve part of Problem #382.",
+    "openQuestions": [
+      "Is the conjecture true for k = 1?",
+      "What is the density of k-good primes for small k?",
+      "Can explicit examples of k-good primes be found for large k?",
+      "Is there an effective version: for which p < N is p k-good?",
+      "How does the density depend on k?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "note": "[ErGr80] where Problem 383 appears, related to Problem #382"
+    },
+    {
+      "authors": "de Bruijn, N. G.",
+      "title": "On the number of positive integers ≤ x and free of prime factors > y",
+      "year": "1951",
+      "venue": "Indag. Math. 13, pp. 50-60",
+      "note": "Foundational work on the Dickman function ρ(u) used in the heuristic analysis"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-382",
+      "relationship": "related",
+      "description": "Directly related: #382 concerns prime powers in factorial products, and a positive answer to #383 would resolve part of #382"
+    },
+    {
+      "targetId": "erdos-334",
+      "relationship": "related",
+      "description": "Both involve smooth numbers: #334 asks about sums of smooth numbers, #383 asks about smooth numbers near prime squares"
+    },
+    {
+      "targetId": "erdos-368",
+      "relationship": "related",
+      "description": "Both concern the largest prime factor of products of consecutive integers: #368 studies P(n(n+1)), #383 studies P(∏(p²+i))"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "Erdos383",
+    "lineCount": 286,
+    "axiomCount": 0,
+    "theoremCount": 17,
+    "definitionCount": 13,
+    "path": "Proofs/Erdos383Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

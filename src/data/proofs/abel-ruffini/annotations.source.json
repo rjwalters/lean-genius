@@ -1,0 +1,626 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "abel-ruffini",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "What This Proves"
+    },
+    "type": "concept",
+    "title": "Module Documentation",
+    "content": "The Abel-Ruffini theorem, proven by Niels Henrik Abel in 1824 and later illuminated by Galois's theory, answers a 300-year-old question: why is there no 'quintic formula' like the quadratic formula?\n\nGalois discovered that solvability by radicals is equivalent to having a solvable Galois group, revealing a profound connection between field theory and group theory.\n\nThis formalization is structured as a seven-part development mirroring how modern algebra textbooks present the proof. Parts I–II establish the field-theoretic side (radical solvability and the Galois bridge). Part III provides the group-theoretic obstruction ($S_n$ not solvable for $n \\geq 5$, with $A_5$ simple). Part IV contrasts with the solvable cases ($S_0, S_1$). Part V synthesizes the argument via contrapositive. Parts VI–VII provide mathematical and historical commentary.\n\nThe entire proof is a composition of four Mathlib modules — no sorries, no axioms, zero original sorry-carrying definitions. The file's original contributions are pedagogical wrappers (`galois_bridge`, `symmetric_group_not_solvable`, `not_solvable_by_rad_of_not_solvable_gal`) that make the Mathlib infrastructure explicit and accessible. This is Wiedijk 100 theorem #16.\n\n**Position in the Wiedijk 100 ecosystem.** Wiedijk's list (F. Wiedijk, *Formalizing 100 Theorems*, https://www.cs.ru.nl/~freek/100/, originating from a 1999 challenge problem set) is the de-facto benchmark for formal-proof systems; as of 2026, this proof is the gallery's authoritative formalization of entry #16, sitting in a tightly-coupled cluster of Wiedijk results that span the algebraic landscape between *existence*, *expressibility*, and *structural simplicity*. The five nearest neighbors in the cluster — each with its own gallery entry under this file's `crossReferences` — are: **#2 Fundamental Theorem of Algebra** (`fundamental-theorem-algebra`, every non-constant $p \\in \\mathbb{C}[X]$ has a root) supplies *existence* of the five quintic roots that Abel-Ruffini then certifies *cannot be expressed in radicals*; **#56 Hermite-Lindemann** (`hermite-lindemann`, $e^\\alpha$ transcendental for nonzero algebraic $\\alpha$) is the top of the expressibility hierarchy $\\mathbb{Q} \\subsetneq \\overline{\\mathbb{Q}}_{\\text{rad}} \\subsetneq \\overline{\\mathbb{Q}} \\subsetneq \\mathbb{C}$ that Abel-Ruffini opens at its second-lowest rung; **#63 Cantor's Theorem** (`cantors-theorem`, $|A| < |\\mathcal{P}(A)|$ via the diagonal set $\\{a : a \\notin f(a)\\}$) supplies the abstract methodological template — translate an expressibility/enumeration question into a structural invariant and exhibit a violating instance — that Wantzel 1837 transferred from Galois's radical setting to compass-and-straightedge, and that Gödel 1931 / Turing 1936 / Tarski 1933 later transferred to formal systems via self-referential codings; **#72 Sylow's Theorems** (`sylow-theorem`, `sylow-theorems`) supplies the group-theoretic machinery — via $n_2 = 5, n_3 = 10, n_5 = 6$ for $|A_5| = 60$ — underlying the simplicity of $A_5$ that this file delegates to Mathlib's `alternatingGroup.isSimpleGroup_five`; and **#22 Liouville-on-transcendence** populates an adjacent position in the algebraic-impossibility lineage. Together with the closely-coupled but un-Wiedijk-numbered companions (`abel-ruffini-galois-extensions` for the sharp $S_n$ solvable $\\iff n \\leq 4$ classification, and `abel-ruffini-oq-04-oq-01` for the concrete unsolvable quintic $x^5 - 4x + 2$ with $\\text{Gal} \\cong S_5$, both axiom-free), the Wiedijk #16 designation marks this file as the *abstract* center of a constellation of gallery proofs — abstract because the theorem certifies a non-existence over the entire class of quintics rather than producing a specific witness, with the witness work delegated downstream.",
+    "mathContext": "The question: Given $ax^5 + bx^4 + cx^3 + dx^2 + ex + f = 0$, is there a formula for $x$ using only $+, -, \\times, \\div,$ and $\\sqrt[n]{\\phantom{x}}$?\n\nAnswer: No. The Galois group of the generic quintic is $S_5$, which is not solvable ($A_5$ is simple and non-abelian), so no radical formula exists. Specific quintics with solvable Galois groups (e.g., $x^5 - 1$, with cyclic Galois group $\\mathbb{Z}/4\\mathbb{Z}$) can still be solved by radicals.\n\n**Why \"generic\" means $S_5$ (Tschirnhaus and density).** The naïve worry that $S_5$ might be a pathological corner case is wrong. The ostensibly 6-parameter family $ax^5 + bx^4 + cx^3 + dx^2 + ex + f$ collapses, under the Tschirnhaus substitution $x \\mapsto x - b/(5a)$, to the depressed quintic $y^5 + Py^3 + Qy^2 + Ry + S$ — a 4-parameter family. A second Tschirnhaus step (due to Bring 1786 and rediscovered by Jerrard 1852) further reduces to the Bring-Jerrard form $y^5 + y + t$, a single-parameter family; the Bring radical $\\text{BR}(t)$ (the unique real root) is provably outside the radical closure of $\\mathbb{Q}(t)$.\n\nQuantitatively, Hilbert's irreducibility theorem (1892) plus a specialization argument shows that among monic quintics $f \\in \\mathbb{Z}[X]$ with coefficients in $[-N, N]^5$, the fraction with $\\text{Gal}(f/\\mathbb{Q}) \\cong S_5$ has natural density $1$ as $N \\to \\infty$. Van der Waerden (1934) bounded the failure count by $O(N^{5 - 1/2 + \\varepsilon})$, and Bhargava-Shankar-Tsimerman (2023, *Annals of Math.*) sharpened this to $O(N^{5 - 1})$ — the conjecturally optimal exponent. The solvable quintics (cyclotomic $x^5 - 1$, the De Moivre family $x^5 + 5ax^3 + 5a^2 x + b$, and the constrained-$(p,q)$ Bring-Jerrard slice) form a measure-zero subvariety of the 5-dimensional coefficient space.\n\n**Contrast with degrees $\\leq 4$ via derived series.** Cardano (1545, cubic) and Ferrari (1540, quartic) succeed while degree 5 fails because of the derived series $G \\rhd [G,G] \\rhd \\cdots$. Degree 3: $S_3 \\rhd A_3 \\rhd 1$ — quotients $\\mathbb{Z}/2, \\mathbb{Z}/3$, matching the square-then-cube nesting in Cardano. Degree 4: $S_4 \\rhd A_4 \\rhd V_4 \\rhd 1$ where $V_4 = \\{e, (12)(34), (13)(24), (14)(23)\\}$ is the Klein four group; quotients $\\mathbb{Z}/2, \\mathbb{Z}/3, \\mathbb{Z}/2, \\mathbb{Z}/2$ match Ferrari's cubic resolvent plus nested square roots. Degree 5: $S_5 \\rhd A_5 \\rhd A_5 \\rhd \\cdots$ becomes constant at the non-trivial simple group $A_5$, never reaching $1$. The obstruction is not a discontinuity at $n = 5$ but the precise mechanism by which the Cardano-Ferrari resolvent strategy ceases to terminate. Companion entry `abel-ruffini-oq-04-oq-02` formalizes the full bidirectional $S_n$-solvable $\\iff n \\leq 4$ classification.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Galois theory",
+      "radical extensions",
+      "polynomial solvability",
+      "Wiedijk 100 theorems",
+      "Mathlib",
+      "fundamental-theorem-algebra (Wiedijk #2)",
+      "hermite-lindemann (Wiedijk #56)",
+      "cantors-theorem (Wiedijk #63)",
+      "sylow-theorem (Wiedijk #72)",
+      "abel-ruffini-galois-extensions (sharp threshold)",
+      "abel-ruffini-oq-04-oq-01 (concrete quintic witness)",
+      "expressibility hierarchy",
+      "Tschirnhaus transformation",
+      "Bring-Jerrard normal form $y^5 + y + t$",
+      "Bring radical $\\text{BR}(t)$",
+      "Hilbert's irreducibility theorem (1892)",
+      "van der Waerden $O(N^{5-1/2+\\varepsilon})$ bound",
+      "Bhargava-Shankar-Tsimerman 2023 sharpening $O(N^{5-1})$",
+      "Cardano (cubic) and Ferrari (quartic) formulas",
+      "derived series $G \\rhd [G,G] \\rhd \\cdots$",
+      "Klein four group $V_4 \\subset S_4$",
+      "abel-ruffini-oq-04-oq-02 (bidirectional $S_n$ classification)"
+    ],
+    "prerequisites": [
+      "abstract algebra: groups, fields, and rings",
+      "polynomial rings and irreducibility criteria",
+      "group theory: normal subgroups, quotient groups, derived series",
+      "field extensions and algebraic elements",
+      "the Galois correspondence between subfields and subgroups"
+    ]
+  },
+  {
+    "id": "ann-imports",
+    "proofId": "abel-ruffini",
+    "anchor": {
+      "type": "imports"
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import the key Mathlib modules:\n- `AbelRuffini`: The main theorem connecting radicals to solvable groups\n- `Solvable`: Definition of solvable groups and key theorems\n- `Alternating`: Properties of alternating groups, including A₅ simplicity\n- `Galois.Basic`: Galois group definitions and correspondence\n\n**Why exactly these four imports?** Mathlib's Galois infrastructure spans roughly two dozen files; the minimal set that lets the present formalization avoid stating any independent lemmas about radical towers, derived series, or simple groups is exactly this quartet. `FieldTheory.AbelRuffini` is the closure of the radical-tower theory under composition with the Galois bridge — by importing it, we inherit a single Mathlib lemma (`solvableByRad.isSolvable'`) that already packages the entire Kummer-theoretic decomposition of a radical tower into cyclic Galois layers. Importing leaner field-theory modules alone would force us to redevelop the bridge from scratch. Similarly, `GroupTheory.Solvable` is the minimal home of the `IsSolvable` predicate together with its closure properties (subgroups, quotients, extensions) and the $S_5$-obstruction lemma `Equiv.Perm.not_solvable`; `SpecificGroups.Alternating` is the minimal home of `alternatingGroup.isSimpleGroup_five`; `FieldTheory.Galois.Basic` exposes `Polynomial.Gal` as a type with the correct `IsSolvable` instance machinery. No subset of three suffices, and any superset would import results the file does not use.",
+    "mathContext": "The four imports form a complete logical chain: `FieldTheory.AbelRuffini` provides `solvableByRad.isSolvable'` ($\\alpha$ solvable by radicals $\\Rightarrow$ $\\text{Gal}(\\text{minpoly}(\\alpha))$ solvable); `GroupTheory.Solvable` provides `IsSolvable` and `Equiv.Perm.not_solvable` ($5 \\leq |X| \\Rightarrow S_X$ not solvable); `SpecificGroups.Alternating` provides `alternatingGroup.isSimpleGroup_five` ($A_5$ simple); `FieldTheory.Galois.Basic` provides `Polynomial.Gal`, the type of the Galois group of a polynomial.\n\n**The Kummer-theoretic substrate.** Although `solvableByRad.isSolvable'` is invoked as a one-line black box in `galois_bridge`, its proof inside `FieldTheory.AbelRuffini` ultimately reduces each radical step $K_i \\subset K_{i+1} = K_i(\\sqrt[n]{a})$ to a cyclic Galois extension via the Kummer correspondence: when $K_i$ contains a primitive $n$th root of unity, $K_{i+1}/K_i$ has Galois group a quotient of $\\mathbb{Z}/n$ (see keyInsight #12 on Kummer theory). The decomposition $\\text{Gal}(K_m/K_0) \\twoheadrightarrow \\text{Gal}(K_m/K_{m-1}) \\twoheadrightarrow \\cdots$ then exhibits a composition series with cyclic factors — exactly the definition of a solvable group. By importing `FieldTheory.AbelRuffini`, this entire algebraic chain (Kummer + composition series + cyclotomic abelianness) is delivered as a single hypothesis-discharging step, which is why the file's `galois_bridge` is a one-line wrapper rather than a multi-page proof.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "Galois theory",
+      "group theory",
+      "IsSolvableByRad",
+      "solvableByRad.isSolvable'",
+      "Equiv.Perm.not_solvable",
+      "alternatingGroup.isSimpleGroup_five",
+      "Polynomial.Gal",
+      "Kummer theory",
+      "cyclotomic abelianness",
+      "radical-tower-to-cyclic-tower reduction",
+      "minimal import set",
+      "abel-ruffini-oq-04 (concrete witness pipeline reusing this import quartet)"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib library structure",
+      "radical tower $K_0 \\subset K_1 \\subset \\cdots \\subset K_m$ with $K_{i+1} = K_i(\\sqrt[n_i]{a_i})$",
+      "Kummer correspondence: cyclic extensions of $K$ containing $\\mu_n$ correspond to subgroups of $K^\\times/(K^\\times)^n$",
+      "cyclotomic extensions $\\mathbb{Q}(\\zeta_n)$ and abelianness of $\\text{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}) \\cong (\\mathbb{Z}/n)^\\times$",
+      "composition series with cyclic factors as the definition of a solvable group",
+      "Mathlib's `Polynomial.Gal` typeclass machinery (`IsSolvable` instance plumbing)"
+    ]
+  },
+  {
+    "id": "ann-namespace",
+    "proofId": "abel-ruffini",
+    "anchor": {
+      "type": "namespace",
+      "name": "AbelRuffini",
+      "extendAfter": 1
+    },
+    "type": "concept",
+    "title": "Namespace and Proof Architecture",
+    "content": "The `AbelRuffini` namespace scopes the entire proof development into a seven-part logical structure that mirrors the mathematical argument:\n\n- **Part I** (Solvable by Radicals): Definitions — `IsSolvableByRad` and field variables\n- **Part II** (Galois Bridge): radical solvability implies solvable Galois group\n- **Part III** (Non-Solvability): $S_n$ not solvable for $n \\geq 5$, $A_5$ simple\n- **Part IV** (Small Groups): $S_0, S_1$ are solvable — contrast with the threshold\n- **Part V** (Abel-Ruffini): Synthesis via contrapositive\n- **Parts VI–VII** (Commentary): Why degree 5, historical significance\n\nThis organization separates the field-theoretic ingredient (Part II) from the group-theoretic ingredient (Part III) before combining them (Part V), reflecting how modern algebra textbooks present the proof as a composition of independent modules. All theorem names are prefixed with `AbelRuffini.` when referenced externally.\n\n**The seven-part decomposition is not arbitrary — it is the canonical textbook split.** Stewart's *Galois Theory* (4th ed., 2015) devotes Chapter 18 to Part I (radical extensions), Chapter 19 to Part II (the radicality–solvability bridge via splitting fields and Kummer theory), Chapter 20 to Part III (simplicity of $A_5$ and non-solvability of $S_n$ for $n \\geq 5$), and Chapter 21 to Part V (the impossibility theorem itself, synthesizing the previous chapters by contrapositive). Lang's *Algebra* (3rd ed., Chapter VI §7) and Dummit & Foote (3rd ed., §14.7) follow the same modular split, with the radical-tower-to-solvable-Galois-group implication isolated as a stand-alone lemma reusable for Hilbert's 7th, casus irreducibilis, and the differential Galois Picard–Vessiot analog (cross-reference: `abel-ruffini-galois-extensions` keyInsight #14). This file preserves that modularity: Part II's `galois_bridge` could be excised as `Mathlib.FieldTheory.SolvableByRad` without disturbing Parts III–V — and indeed `solvableByRad.isSolvable'` is exactly that excision, providing the field-theoretic content as a Mathlib lemma that this file then wraps.\n\n**Lean-specific namespace mechanics.** The `namespace AbelRuffini ... end AbelRuffini` block (lines 34 and 187) prefixes every declaration in between with `AbelRuffini.`, so external clients see `AbelRuffini.galois_bridge`, `AbelRuffini.s5_not_solvable`, etc. Two import patterns are then available: (a) **qualified**: `import Proofs.AbelRuffini` followed by full-name references like `AbelRuffini.not_solvable_by_rad_of_not_solvable_gal`, the safest pattern for cross-module use; (b) **open**: `import Proofs.AbelRuffini; open AbelRuffini` to drop the prefix, suitable for downstream files that work entirely inside this conceptual territory. The namespace also protects against name collisions — Mathlib has its own `IsSolvable` and `Polynomial.Gal`, and this file would shadow nothing if `AbelRuffini.exists_quintic` is added near Mathlib's `Polynomial.exists_quintic_with_galois_group_S5` (sub-entry `abel-ruffini-oq-04-oq-01`, now formalized). Compare with sibling file `AbelRuffiniGaloisExtensions.lean` which deliberately uses no namespace — its declarations like `perm_fin_5_not_solvable` are top-level instances and globally visible, a design choice reflecting that file's role as a *typeclass instance library* rather than a self-contained module.",
+    "mathContext": "The namespace groups nine declarations: two core theorems (`galois_bridge`, `not_solvable_by_rad_of_not_solvable_gal`), four group-theoretic results (`symmetric_group_not_solvable`, `s5_not_solvable`, `s6_not_solvable`, `a5_is_simple`), two solvability instances (`s0_solvable`, `s1_solvable`), and one existence witness (`exists_quintic`). The modular structure enables each component to be independently verified and reused.\n\n**Dependency DAG**: $\\text{galois\\_bridge} \\to \\text{not\\_solvable\\_by\\_rad\\_of\\_not\\_solvable\\_gal}$ (Part II $\\to$ Part V, the contrapositive), and independently $\\text{a5\\_is\\_simple} \\to \\text{symmetric\\_group\\_not\\_solvable} \\to \\{\\text{s5\\_not\\_solvable}, \\text{s6\\_not\\_solvable}\\}$ (Part III internal chain). Parts III and II feed Part V in parallel; Part IV (`s0_solvable`, `s1_solvable`) is independent — its purpose is to *sharpen the threshold* by showing solvability holds below the boundary, complementing the non-solvability above it. The DAG has depth 3 (Part III chain) and width 2 at the synthesis (Parts II + III $\\to$ Part V).\n\n**Theorem-naming convention**: each theorem follows the Mathlib pattern *predicate_of_hypotheses* (`isSolvable_of_subsingleton`, `solvable_of_ker_le_range`) or *subject_property* (`s5_not_solvable`, `a5_is_simple`), aligning this file's API with Mathlib's discoverability conventions. The combinator name `not_solvable_by_rad_of_not_solvable_gal` is a literal transcription of the contrapositive direction *not-solvable-by-radicals follows from not-solvable-Galois-group* — readable left-to-right as Lean expects.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lean 4 namespaces",
+      "module organization",
+      "proof architecture",
+      "pedagogical proof structuring",
+      "textbook decomposition (Stewart, Lang, Dummit-Foote)",
+      "dependency DAG",
+      "open vs qualified imports",
+      "Mathlib `solvableByRad.isSolvable'`"
+    ],
+    "prerequisites": [
+      "Lean 4 namespace system",
+      "proof architecture patterns",
+      "Mathlib naming conventions",
+      "dependency-graph reasoning"
+    ]
+  },
+  {
+    "id": "ann-solvable-by-rad",
+    "proofId": "abel-ruffini",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "Part I: Solvable by Radicals",
+      "extendAfter": 3
+    },
+    "type": "definition",
+    "title": "Solvable by Radicals and Field Variables",
+    "content": "An element α is 'solvable by radicals' if it can be built from the base field using field operations and nth roots. The quadratic formula is an example: $x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}$\n\nMathlib defines this inductively via `IsSolvableByRad`, with constructors for: base field elements, arithmetic operations (+, -, ×, ÷), and radical extraction ($\\alpha \\mapsto \\alpha^{1/n}$). The intermediate field `solvableByRad F E` is the largest subfield of $E$ whose elements are all solvable by radicals over $F$.\n\nThe variable declarations introduce a universe-polymorphic framework: `F` is an arbitrary field and `E/F` is a field extension with `[Algebra F E]`. This generality means the development applies to any characteristic, though the classical Abel-Ruffini theorem is typically stated over $\\mathbb{Q}$.\n\n**Historical genealogy of the definition.** What 'solvable by radicals' means today crystallized over three centuries. **Cardano (1545, *Ars Magna*)** treated the cubic and quartic case-by-case, with no general framework. **Lagrange (1771, *Réflexions sur la résolution algébrique des équations*)** isolated the operative ingredient — *resolvents* expressing roots as rational functions of permuted roots and primitive $n$-th roots of unity — but did not yet formulate solvability as a closure property of a field. **Ruffini (1799, *Teoria generale delle equazioni*)** gave the first attempt at a general impossibility proof but tacitly assumed any radical solution must be a rational function of the roots; **Abel's 1826 lemma on natural irrationalities** rigorously closed this gap. **Galois (1830–1832 manuscripts)** finally produced the modern definition by inverting the question: an element is solvable by radicals *iff* it lies in a tower $F = K_0 \\subset K_1 \\subset \\cdots \\subset K_m$ with each step a simple radical extension $K_{i+1} = K_i(\\beta_i)$, $\\beta_i^{n_i} \\in K_i$ — and this happens *iff* the Galois group of a normal closure containing $\\alpha$ is solvable. Mathlib's `IsSolvableByRad` formalizes the Galois-cleaned definition rather than Ruffini's pre-Abel rational-function ambiguity, which is why `solvableByRad.isSolvable'` (the radical-implies-solvable-Galois-group direction) holds without the assumption that the radicals lie in $F(\\alpha_1, \\ldots, \\alpha_n)$ — an assumption Ruffini's argument required.\n\n**Mathlib design pattern: inductive `Prop` vs existential tower.** `IsSolvableByRad F E` is defined as an inductive predicate (a sub-`Prop`-valued type family) rather than the existential statement 'there exists a tower $K_0 \\subset \\cdots \\subset K_m$'. The two are mathematically equivalent but the inductive form has three concrete benefits in the proof development: (i) **structural recursion** — every theorem about elements of `IsSolvableByRad` admits a five-case induction (base, four arithmetic ops, radical) directly mirroring the constructor list, which is exactly how `solvableByRad.isSolvable'` proves Galois-group solvability by induction on the radical-tower structure; (ii) **automation friendliness** — Lean's `induction` tactic and the `IsSolvableByRad.recOn` eliminator generate sub-goals automatically without needing to manage explicit tower witnesses; and (iii) **closure under field operations is free** — the intermediate field `solvableByRad F E` is realized as the carrier of the inductive predicate, so the field-operation closure properties needed to make it a sub-field are exactly the four arithmetic constructors. The trade-off is that explicit tower constructions (e.g., for a specific quintic) must be unfolded into iterated constructor applications, which the helper `solvableByRad.basis` lemma handles. This design choice — inductive predicate over existential — is the same pattern Mathlib uses for `IsAlgebraic`, `IsIntegral`, and `Polynomial.Splits`, making `IsSolvableByRad` a natural citizen of the algebraic-closure ecosystem.",
+    "mathContext": "`solvableByRad F E` is the intermediate field of all elements solvable by radicals over $F$. Formally, $\\alpha \\in \\text{solvableByRad}(F, E)$ iff there exists a radical tower $F = K_0 \\subset K_1 \\subset \\cdots \\subset K_m$ with $\\alpha \\in K_m$ and each $K_{i+1} = K_i(\\beta_i)$ where $\\beta_i^{n_i} \\in K_i$.\n\nExample: $\\sqrt{1 + \\sqrt{2}}$ is built by the tower $\\mathbb{Q} \\subset \\mathbb{Q}(\\sqrt{2}) \\subset \\mathbb{Q}(\\sqrt{2}, \\sqrt{1+\\sqrt{2}})$.\n\n**Characteristic-dependence of the radical–solvable equivalence.** The Galois bridge `solvableByRad.isSolvable'` and its converse hold cleanly in characteristic 0; in characteristic $p > 0$ the radical concept needs supplementation. The radical step $K \\subset K(\\sqrt[n]{a})$ yields a cyclic Galois group of order dividing $n$ only when $p \\nmid n$ (the Kummer regime). For $n = p$ the polynomial $X^p - a$ is purely inseparable: if $\\alpha^p = a$ then $X^p - a = (X - \\alpha)^p$ in characteristic $p$, so $K(\\alpha)/K$ is either trivial (if $a \\in K^p$) or a purely inseparable degree-$p$ extension with trivial Galois group. The Galois-theoretic analog is the **Artin–Schreier extension**: for $K$ of characteristic $p$ and $a \\in K$, adjoining a root of the polynomial $X^p - X - a$ produces a cyclic Galois extension of degree $p$ (when $X^p - X - a$ is irreducible) — the characteristic-$p$ surrogate for $X^n - a$ in characteristic 0. The companion Lang–Steinitz theorem (Lang 1959, generalizing Witt) bidirectionally classifies *all* cyclic extensions of characteristic-$p$ fields of $p$-power degree via Witt vectors, the characteristic-$p$ analog of Kummer's $K^* / (K^*)^n$. Mathlib's `IsSolvableByRad` is the characteristic-0 / coprime-degree notion; the Abhyankar conjecture (Raynaud 1994, Harbater 1994) — referenced in this entry's openQuestion #6 — classifies which Galois groups arise from *Artin–Schreier–Witt towers* over $\\mathbb{A}^1_{\\overline{\\mathbb{F}_p}}$ and reveals that the Abel–Ruffini-style impossibility is genuinely characteristic-dependent: in characteristic 5, the $A_5$ obstruction can be bypassed via Artin–Schreier-type radicals that the characteristic-0 definition does not capture.",
+    "significance": "key",
+    "relatedConcepts": [
+      "radical extension",
+      "intermediate field",
+      "inductive definition",
+      "Kummer theory",
+      "Artin–Schreier extension",
+      "Witt vectors",
+      "Abhyankar conjecture",
+      "openQuestion #6 (positive characteristic)",
+      "purely inseparable extension"
+    ],
+    "prerequisites": [
+      "field extensions",
+      "nth roots",
+      "IsSolvableByRad",
+      "radical tower",
+      "characteristic of a field",
+      "separability and purely inseparable extensions"
+    ]
+  },
+  {
+    "id": "ann-part-ii-bridge",
+    "proofId": "abel-ruffini",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "Part II: The Galois-Theoretic Bridge"
+    },
+    "type": "concept",
+    "title": "Part II: The Galois-Theoretic Bridge",
+    "content": "This docstring introduces the central insight of the formalization: the connection between radical solvability (a field-theoretic property) and group solvability (a group-theoretic property). Galois's 1831 memoir established that these two notions correspond precisely.\n\nThe bridge is one-directional for the impossibility proof: solvable by radicals $\\Rightarrow$ solvable Galois group. The converse (solvable Galois group $\\Rightarrow$ solvable by radicals) also holds in characteristic 0 but is not needed here — only the contrapositive of the forward direction is used in `not_solvable_by_rad_of_not_solvable_gal`.\n\n**Irreducibility vs minimal polynomial.** The Lean signature takes any irreducible $q \\in F[X]$ with $q(\\alpha) = 0$, not literally the minimal polynomial. This is equivalent: over a field, every irreducible polynomial vanishing at $\\alpha$ is a unit multiple of $\\text{minpoly}_F(\\alpha)$ (uniqueness of $\\text{minpoly}$ up to associates), so $q.\\text{Gal} \\cong \\text{Gal}(\\text{minpoly}_F(\\alpha) / F)$. Working with an arbitrary irreducible $q$ rather than $\\text{minpoly}_F(\\alpha)$ avoids a level of indirection in the statement and matches Mathlib's `solvableByRad.isSolvable'` API.\n\n**The converse direction (Kummer theory).** The constructive direction — solvable $\\text{Gal} \\Rightarrow$ solvable by radicals — is *not* a formal consequence of solvability alone; it requires the base field to contain enough roots of unity at each step. Given a composition series $\\{e\\} = G_k \\trianglelefteq \\cdots \\trianglelefteq G_0 = \\text{Gal}(q)$ with cyclic quotients $G_{i-1}/G_i \\cong \\mathbb{Z}/n_i$, one (a) first adjoins primitive $n_i$th roots of unity $\\zeta_{n_i}$ (each abelian and hence solvable by elementary radicals), then (b) applies *Kummer's theorem*: over a field containing $\\zeta_n$, every cyclic degree-$n$ extension has the form $K(\\sqrt[n]{a})$ for some $a \\in K$. The cyclotomic + Kummer alternation builds an explicit radical tower step-by-step. In characteristic dividing some $n_i$, an *Artin-Schreier* extension $K(\\alpha)$ with $\\alpha^p - \\alpha = a$ replaces the $p$th-root step.\n\n**Worked-out gallery cases.** The constructive direction is exhibited in `solution-of-cubic` (Cardano's 1545 formula realizes the cyclic resolvent $\\mathbb{Z}/3$ as $\\sqrt[3]{\\cdot}$), `general-quartic` (Ferrari's 1545 formula realizes the $S_4$ derived series $S_4 \\triangleright A_4 \\triangleright V_4 \\triangleright \\{e\\}$ as nested square-then-cube-then-square roots via the resolvent cubic), `inverse-galois-d4` ($D_4 = \\text{Gal}(X^4-2/\\mathbb{Q})$, radical tower $\\mathbb{Q} \\subset \\mathbb{Q}(\\sqrt{2}) \\subset \\mathbb{Q}(\\sqrt[4]{2}) \\subset \\mathbb{Q}(\\sqrt[4]{2}, i)$ matching the derived series step-for-step), and `inverse-galois-f20` ($F_{20} = \\text{Gal}(X^5-2/\\mathbb{Q})$, the solvable quintic case where roots are $\\sqrt[5]{2} \\cdot \\zeta_5^k$). These positive realizations are the precise counterpart of the present negative result: where the converse succeeds, an explicit Cardano/Ferrari-style formula appears; where it fails (Abel-Ruffini, $n \\geq 5$), no such formula can.\n\n**Notably, this Galois-theoretic approach differs from Abel's original 1824 proof.** Abel worked directly with the structure of radical expressions: he showed that any radical solution of a degree-$n$ polynomial can be written as a sum $x = p_0 + p_1 R^{1/m} + p_2 R^{2/m} + \\cdots + p_{m-1} R^{(m-1)/m}$ where the $p_i$ and $R$ involve nested radicals, and that the resulting permutation symmetries force inconsistencies for $n \\geq 5$. Abel never formulated the notion of a 'group' — that was Galois's contribution, which made the argument conceptually transparent and generalizable to characterize solvability for *any* polynomial, not just the generic one.",
+    "mathContext": "**Galois's correspondence (characteristic 0):** $\\text{IsSolvableByRad}\\,F\\,\\alpha \\Leftrightarrow \\text{IsSolvable}(\\text{Gal}(\\text{minpoly}_F(\\alpha)/F))$.\n\nThe Lean theorem `galois_bridge` formalizes the forward direction in slightly more general form: for *any* irreducible $q \\in F[X]$ with $q(\\alpha) = 0$, $\\text{IsSolvableByRad}\\,F\\,\\alpha \\Rightarrow \\text{IsSolvable}\\,q.\\text{Gal}$. This is equivalent to the minpoly form because any such $q$ is an associate of $\\text{minpoly}_F(\\alpha)$ (irreducibility + $q(\\alpha) = 0$ forces $\\text{minpoly}_F(\\alpha) \\mid q$, and $\\deg(\\text{minpoly}) \\geq \\deg(q)$ by irreducibility, so equality up to units).\n\n**Forward direction** ($\\Rightarrow$, used here): `solvableByRad.isSolvable'`. Lifts a radical tower $F = F_0 \\subset F_1 \\subset \\cdots \\subset F_k \\ni \\alpha$ (each $F_{i+1} = F_i(\\sqrt[n_i]{a_i})$) to a tower of normal subgroups of $\\text{Gal}(q)$ with abelian quotients.\n\n**Backward direction** ($\\Leftarrow$, *not* used here): cyclotomic + Kummer. Given $\\{e\\} = G_k \\trianglelefteq \\cdots \\trianglelefteq G_0 = \\text{Gal}(q)$ with $G_{i-1}/G_i \\cong \\mathbb{Z}/n_i$: adjoin $\\zeta_{n_i}$, then apply Kummer ($\\text{cyclic degree } n \\text{ over field } \\ni \\zeta_n \\Leftrightarrow \\sqrt[n]{a}$). In characteristic $p \\mid n_i$, replace Kummer with Artin-Schreier.\n\n**Failure in characteristic $p$ without modification:** the naive biconditional fails in characteristic $p$ for $p$-extensions; e.g., $\\mathbb{F}_p(t)(\\alpha)$ with $\\alpha^p - \\alpha = t$ is a cyclic degree-$p$ extension but is not of the form $\\mathbb{F}_p(t)(\\sqrt[p]{a})$ (the Frobenius makes $p$th roots trivial in characteristic $p$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Galois correspondence",
+      "contrapositive reasoning",
+      "fundamental theorem of Galois theory",
+      "Abel's original proof",
+      "Kummer theory",
+      "cyclotomic extensions and roots of unity",
+      "Artin-Schreier extensions (characteristic p)",
+      "minimal polynomial uniqueness up to associates",
+      "solution-of-cubic (Cardano's formula as constructive radical tower)",
+      "general-quartic (Ferrari's formula as constructive radical tower)",
+      "inverse-galois-d4 (D_4 radical tower)",
+      "inverse-galois-f20 (F_20 radical tower)"
+    ],
+    "prerequisites": [
+      "Galois theory",
+      "solvable groups",
+      "radical extensions",
+      "composition series with abelian/cyclic quotients",
+      "Kummer's theorem (cyclic degree-n extensions over fields with ζ_n)",
+      "cyclotomic field extensions ℚ(ζ_n)/ℚ",
+      "Polynomial.Gal API (Mathlib's splitting-field Galois group)"
+    ]
+  },
+  {
+    "id": "ann-abel-ruffini-theorem",
+    "proofId": "abel-ruffini",
+    "anchor": {
+      "type": "declaration",
+      "name": "galois_bridge",
+      "kind": "theorem"
+    },
+    "type": "insight",
+    "title": "The Galois Bridge Theorem",
+    "content": "**Theorem**: If α is expressible using radicals, then the Galois group of its minimal polynomial is solvable.\n\nThis is the key bridge: radical solvability (field theory) → group solvability (group theory).\n\nThe Lean proof is a one-liner: `solvableByRad.isSolvable' hq hroot hrad`. Internally, Mathlib proves this by induction on the `IsSolvableByRad` construction: each radical step $K_i \\to K_i(\\sqrt[n]{a})$ yields a cyclic (hence abelian) Galois group quotient, and a group built from abelian quotients is solvable. The hypotheses `hq : Irreducible q`, `hroot : aeval α q = 0`, and `hrad : IsSolvableByRad F α` are passed directly to Mathlib's lemma — the theorem is a pedagogical wrapper making the bridge explicit.\n\n**Internal Mathlib proof structure (what the one-liner hides).** The black-box invocation `solvableByRad.isSolvable' hq hroot hrad` conceals the work of several Mathlib files in `FieldTheory.AbelRuffini` and its dependencies. The proof proceeds in four logical stages: (i) **Reduction to a normal radical tower.** The inductive predicate `IsSolvableByRad F α` says $\\alpha$ lies in some radical extension $F \\subset F(\\beta_1) \\subset F(\\beta_1, \\beta_2) \\subset \\cdots$ with each $\\beta_i^{n_i} \\in F(\\beta_1, \\ldots, \\beta_{i-1})$. Mathlib first replaces this with a *normal* tower whose top field $L$ is Galois over $F$ — using the Galois closure of each intermediate field — at the cost of adjoining at most a primitive $\\text{lcm}(n_1, \\ldots, n_k)$th root of unity $\\zeta$. (ii) **Per-step cyclic quotient via Kummer.** Once $F$ contains $\\zeta_{n_i}$, the radical adjunction $F(\\beta_1, \\ldots, \\beta_{i-1}) \\subset F(\\beta_1, \\ldots, \\beta_{i-1}, \\beta_i)$ is a *Kummer extension* — its Galois group is a subgroup of $\\mathbb{Z}/n_i$, hence cyclic. The cyclotomic adjunction $F \\subset F(\\zeta)$ is itself abelian (Galois group a subgroup of $(\\mathbb{Z}/n)^\\times$). (iii) **Solvability of $\\text{Gal}(L/F)$.** The tower of cyclic / abelian quotients exhibits a *normal series* whose composition factors are all cyclic — by Mathlib's `IsSolvable` closure under extensions (`solvable_of_solvable_normal_quotient`), $\\text{Gal}(L/F)$ is solvable. (iv) **Restriction to $\\text{Gal}(q)$.** Since $\\alpha$ has minimal polynomial $q$ irreducible over $F$ and $\\alpha \\in L$ (a normal extension), the splitting field of $q$ embeds into $L$, so $\\text{Gal}(q)$ is a quotient of $\\text{Gal}(L/F)$. Solvability descends to quotients (Mathlib: `IsSolvable.quotient`), giving the conclusion. The entire chain — four nontrivial closure properties of `IsSolvable` plus the Kummer correspondence — is what the one-line `solvableByRad.isSolvable' hq hroot hrad` discharges.\n\n**Why the forward direction needs roots of unity.** Step (ii) above requires $F$ to contain $\\zeta_{n_i}$ for the radical step $\\beta_i^{n_i} \\in F$ to yield a *cyclic* Galois group rather than a more complicated metacyclic one. Concretely, $\\text{Gal}(\\mathbb{Q}(\\sqrt[3]{2}) / \\mathbb{Q})$ is *not* cyclic of order 3 — it is the trivial group, because $\\mathbb{Q}(\\sqrt[3]{2})/\\mathbb{Q}$ is not Galois ($X^3 - 2$ does not split in $\\mathbb{Q}(\\sqrt[3]{2})$, missing $\\zeta_3 \\sqrt[3]{2}$). The proper Galois closure $\\mathbb{Q}(\\sqrt[3]{2}, \\zeta_3)/\\mathbb{Q}$ has Galois group $S_3$ (non-abelian!), which decomposes as $S_3 \\triangleright A_3 \\triangleleft \\{e\\}$ with $A_3 \\cong \\mathbb{Z}/3$ (the radical step) and $S_3/A_3 \\cong \\mathbb{Z}/2$ (the cyclotomic step from adjoining $\\zeta_3 = e^{2\\pi i/3}$). This forced cyclotomic supplementation is exactly the 'hidden ingredient' keyInsight #11 (Roots of Unity as the Engine of Radical Extensions) emphasizes — and it is what makes the bridge a *forward* implication rather than an equivalence on the nose: solvability by radicals implies solvable Galois group only after admitting that radical towers automatically force cyclotomic supplementation.\n\n**Position in the file's two-line synthesis.** `galois_bridge` is one of the two strictly mathematical ingredients combined by `not_solvable_by_rad_of_not_solvable_gal` (`ann-contrapositive`); the other is `symmetric_group_not_solvable` (`ann-sn-not-solvable`). The bridge is the *positive* field-theoretic direction; non-solvability of $S_5$ is the *negative* group-theoretic obstruction. Their contrapositive composition `fun hns hrad => hns (galois_bridge α q hq hroot hrad)` is the entire Abel-Ruffini theorem — see `ann-part-v-synthesis` for the architectural separation discussion. The converse direction (solvable Galois group ⇒ solvable by radicals) — *not* used here, since only the contrapositive of the forward implication is needed — is the Kummer-theoretic *constructive* problem flagged in openQuestion #1: it requires explicitly assembling the radical tower from a composition series via Kummer adjunction, a strictly harder formalization task than the existence-only forward direction Mathlib provides.",
+    "mathContext": "$\\alpha \\in \\text{solvableByRad}(F, E) \\Rightarrow \\text{IsSolvable}(\\text{Gal}(\\text{minpoly}_F(\\alpha)))$\n\nContrapositive (used in `not_solvable_by_rad_of_not_solvable_gal`): $\\neg\\text{IsSolvable}(\\text{Gal}(q)) \\Rightarrow \\neg\\text{IsSolvableByRad}\\,F\\,\\alpha$.\n\nThe converse ($\\Leftarrow$) also holds: given a solvable Galois group, one constructs a radical tower from the composition series $\\{e\\} = G_n \\triangleleft \\cdots \\triangleleft G_0 = G$ where each $G_i/G_{i+1}$ is cyclic, using Kummer theory to extract the radical at each step.\n\n**Mathlib closure lemmas invoked internally.** The proof of `solvableByRad.isSolvable'` chains together four `IsSolvable` closure properties from `Mathlib.GroupTheory.Solvable`, each non-trivial in its own right: (a) `isSolvable_of_comm` (commutative groups are solvable) — base case for cyclic Kummer / cyclotomic quotients; (b) `IsSolvable.quotient` (closure under quotients) — used to descend from $\\text{Gal}(L/F)$ to $\\text{Gal}(q)$; (c) `IsSolvable.subgroupOf` (closure under subgroups) — symmetric to (b), used when restricting Galois action; (d) `solvable_of_solvable_normal_quotient` (a group with a solvable normal subgroup and solvable quotient is solvable) — the inductive step climbing the radical tower one layer at a time. Stage (d) is the load-bearing closure: at each radical step $F_i \\subset F_i(\\beta_i)$ with $\\beta_i^{n_i} \\in F_i$, the cyclic Galois group $\\text{Gal}(F_i(\\beta_i)/F_i) \\hookrightarrow \\mathbb{Z}/n_i$ supplies the normal-subgroup contribution, and the inductive hypothesis on the lower tower $F \\subset F_i$ supplies the quotient contribution.\n\n**Kummer correspondence as load-bearing lemma.** The cyclic-Galois-group conclusion at each radical step is precisely the Kummer correspondence (keyInsight #12): for a base field $K$ containing $\\zeta_n$ and $a \\in K^*$, the extension $K \\subset K(a^{1/n})$ has Galois group $\\text{Gal}(K(a^{1/n})/K) \\cong \\langle a \\rangle \\subseteq K^*/(K^*)^n$ — cyclic of order equal to the order of $a$ in $K^*/(K^*)^n$. The full bidirectional Kummer correspondence ($n$-cyclic extensions of $K$ correspond bijectively to cyclic subgroups of $K^*/(K^*)^n$) is the constructive engine that would let one prove the *converse* direction (solvable Galois group ⇒ exists radical tower) — currently not in Mathlib in a way that yields `galois_bridge`'s converse algorithmically, hence the open status of openQuestion #1.\n\n**Composition-factor visualization (derived series / radical-tower correspondence).** For $\\text{Gal}(q) \\cong G$ solvable with derived length $\\text{dl}(G) = k$ (keyInsight #20), the bridge's forward direction guarantees a radical tower of depth at most $k$ via the constructive converse; equivalently, the *non-existence* of a radical tower of any depth (Abel-Ruffini) corresponds to $\\text{dl}(G) = \\infty$, i.e., the derived series stalls at a perfect subgroup. For the canonical $q = x^5 - 4x + 2$ (formalized in `abel-ruffini-oq-04-oq-01`), $\\text{Gal}(q) \\cong S_5$ has $D^1(S_5) = A_5$ perfect, so the derived series stalls and no radical tower of any finite depth can express the roots — exactly what `not_solvable_by_rad_of_not_solvable_gal` (via this bridge's contrapositive) certifies abstractly.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Galois group",
+      "solvable group",
+      "minimal polynomial",
+      "Kummer theory",
+      "cyclic Galois extensions",
+      "derived series and derived length",
+      "normal radical tower (Galois closure)",
+      "cyclotomic extension as abelian Galois layer",
+      "solvable_of_solvable_normal_quotient",
+      "isSolvable_of_comm",
+      "IsSolvable.quotient",
+      "constructive converse (openQuestion #1)",
+      "keyInsight #11 (roots of unity)",
+      "keyInsight #12 (Kummer theory)",
+      "keyInsight #20 (derived length scaling)"
+    ],
+    "prerequisites": [
+      "field extensions",
+      "Galois theory",
+      "solvableByRad.isSolvable'",
+      "Kummer correspondence",
+      "IsSolvable closure lemmas (quotient, subgroup, normal extension)",
+      "Galois closure of an intermediate field",
+      "cyclotomic supplementation $F \\to F(\\zeta_n)$"
+    ]
+  },
+  {
+    "id": "ann-sn-not-solvable",
+    "proofId": "abel-ruffini",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "Part III: Non-Solvability of Large Symmetric Groups"
+    },
+    "type": "concept",
+    "title": "Non-Solvability of Large Symmetric Groups",
+    "content": "Part III introduces the group-theoretic core of Abel-Ruffini: for $n \\geq 5$, the symmetric group $S_n$ is not solvable. The theorem `symmetric_group_not_solvable` generalizes beyond degree 5 — it applies to all $n \\geq 5$. The proof delegates to Mathlib's `Equiv.Perm.not_solvable` after bridging from $\\mathbb{N}$ to Cardinal (see next annotation).\n\nThe key mathematical fact: the derived series of $S_n$ reaches $A_n$ and stalls because $A_n$ is perfect ($[A_n, A_n] = A_n$) for $n \\geq 5$, since $A_n$ is simple and non-abelian.\n\n**Why $A_n$ is perfect for $n \\geq 5$ (the technical heart):** every 3-cycle $(a\\,b\\,c) \\in A_n$ is a commutator. Concretely, for distinct $a, b, c, d, e \\in \\{1, \\ldots, n\\}$ (using $n \\geq 5$ so five distinct letters exist), one checks $(a\\,b\\,c) = [(a\\,b\\,d), (a\\,c\\,e)]$ by direct computation: $(a\\,b\\,d)(a\\,c\\,e)(a\\,b\\,d)^{-1}(a\\,c\\,e)^{-1} = (a\\,b\\,c)$. Since 3-cycles generate $A_n$ (Jordan 1870, *Traité des substitutions*), this shows $[A_n, A_n] \\supseteq A_n$, hence $[A_n, A_n] = A_n$. The need for the *fifth* letter $e$ is *exactly* why the argument fails for $A_4$: there is no fifth letter available, the commutator identity above cannot be set up, and indeed $[A_4, A_4] = V_4 \\subsetneq A_4$ — the same Klein four-group whose normal-in-$S_4$ status makes $S_4$ solvable.\n\n**Architectural role in this file:** `symmetric_group_not_solvable` is the *negative* group-theoretic ingredient of `not_solvable_by_rad_of_not_solvable_gal`. Combined with the *positive* algebraic ingredient `galois_bridge` (radical tower ⇒ solvable Galois group), the contrapositive synthesis yields Abel-Ruffini. The Cardinal coercion in the next annotation (`ann-cardinal-bridge`) is the technical glue bridging Mathlib's `Equiv.Perm.not_solvable` (which takes a `Cardinal.mk α ≥ 5` hypothesis) to the natural-number formulation used here. See keyInsight #5 ('Mathlib Integration Pattern') for the broader composition strategy, keyInsight #10 ('Jordan-Hölder Guarantees Completeness') for why this derived-series analysis is canonical rather than ad hoc, and keyInsight #20 ('Derived Length Scales Linearly with Radical Nesting Depth') for how $\\text{dl}(S_n)$ controls radical-formula complexity at every $n$.",
+    "mathContext": "For $n \\geq 5$: $D^0(S_n) = S_n,\\; D^1(S_n) = [S_n, S_n] = A_n,\\; D^k(S_n) = A_n$ for all $k \\geq 1$. The derived series never reaches $\\{e\\}$, so $S_n$ is not solvable. Compare: for $n = 4$, $D^4(S_4) = \\{e\\}$ via the Klein four-group.\n\n**Commutator identity (witness for $A_n$ perfect, $n \\geq 5$):** $(a\\,b\\,c) = [(a\\,b\\,d),\\, (a\\,c\\,e)]$ for distinct $a, b, c, d, e$. Since $\\{\\text{3-cycles}\\}$ generates $A_n$ (Jordan 1870), $[A_n, A_n] = A_n$.\n\n**Contrast at $n = 4$:** $[A_4, A_4] = V_4 = \\{e, (12)(34), (13)(24), (14)(23)\\}$ — the Klein four-group, abelian. Then $[V_4, V_4] = \\{e\\}$. Derived series: $S_4 \\triangleright A_4 \\triangleright V_4 \\triangleright \\{e\\}$, length 3.\n\n**General form:** $S_n$ has derived length $\\text{dl}(S_n) = 0, 0, 1, 2, 3, \\infty, \\infty, \\ldots$ for $n = 0, 1, 2, 3, 4, 5, 6, \\ldots$ — matching the nesting depth of the corresponding radical formulas (cf. keyInsight #20).\n\n**Alternative commutator-witness for $A_5$ specifically.** At $n = 5$ the commutator identity can be exhibited on a fixed alphabet $\\{1, 2, 3, 4, 5\\}$: $(1\\,2\\,3) = [(1\\,2\\,4),\\, (1\\,3\\,5)]$ realizes the 3-cycle $(1\\,2\\,3)$ as a single commutator of two 3-cycles in $A_5$, using all five letters exactly as the general identity requires. This is the *minimal* witness for the perfection $[A_5, A_5] = A_5$ — every other 3-cycle is obtained from $(1\\,2\\,3)$ by $A_5$-conjugation, and 3-cycles generate $A_5$ (Jordan 1870, *Traité des substitutions* §III). The simplicity-plus-non-abelianness route to perfection — any normal subgroup of $A_5$ contained in $[A_5, A_5]$ either equals $\\{e\\}$ or $A_5$, and $[A_5, A_5] \\neq \\{e\\}$ since $A_5$ is non-abelian, so $[A_5, A_5] = A_5$ — is conceptually cleaner but the explicit commutator above is what Lean-level proofs deploy (via Mathlib's `Commutator.commutator_eq_top_of_isSimpleGroup_of_nonabelian` and similar closure lemmas).\n\n**Cayley-embedding interpretation.** Cayley's theorem (1854) embeds every finite group $G$ of order $n$ as a subgroup of $S_n$ via the regular action $g \\mapsto (h \\mapsto gh)$. Hence the non-solvable groups $A_n, S_n$ for $n \\geq 5$ are the *smallest concrete obstruction* to solvability that the symmetric-group framework can express — every non-solvable finite group embeds in some $S_n$, and the minimum $n$ realising this is $n = 5$ (via $A_5 \\hookrightarrow S_5$). The gallery sub-entry `inverse-galois-oq-01` formalizes the Cayley-embedding-cum-classification ($S_n$ solvable $\\iff n \\leq 4$, $A_n$ solvable $\\iff n \\leq 4$, $A_5$ simple-perfect-non-solvable), making the present theorem's non-solvability conclusion a downstream consequence of an abstract group-theoretic threshold rather than a permutation-group-specific phenomenon.",
+    "significance": "key",
+    "relatedConcepts": [
+      "derived series",
+      "perfect group",
+      "simple group",
+      "commutator subgroup",
+      "Klein four-group",
+      "Jordan 1870 Traite des substitutions",
+      "Cauchy permutation theory",
+      "Cayley's theorem (1854)",
+      "explicit $A_5$-commutator witness $[(1\\,2\\,4),(1\\,3\\,5)] = (1\\,2\\,3)$",
+      "inverse-galois-oq-01 (Cayley-embedding-cum-classification)",
+      "abel-ruffini-oq-04-oq-02 ($S_n$ solvable iff $n \\leq 4$ bidirectional)",
+      "Mathlib `Commutator.commutator_eq_top_of_isSimpleGroup_of_nonabelian`",
+      "perfection-via-simplicity-plus-nonabelianness route",
+      "minimal-letter-count requirement (5 letters needed)"
+    ],
+    "prerequisites": [
+      "group theory",
+      "Equiv.Perm.not_solvable",
+      "derived subgroup",
+      "3-cycle generation of A_n",
+      "Cardinal.mk coercion",
+      "explicit commutator $[(1\\,2\\,4),(1\\,3\\,5)] = (1\\,2\\,3)$ in $A_5$",
+      "Cayley's embedding theorem ($G \\hookrightarrow S_{|G|}$)",
+      "Mathlib's `Commutator.commutator_eq_top` closure lemma"
+    ]
+  },
+  {
+    "id": "ann-cardinal-bridge",
+    "proofId": "abel-ruffini",
+    "anchor": {
+      "type": "declaration",
+      "name": "symmetric_group_not_solvable",
+      "kind": "theorem"
+    },
+    "type": "insight",
+    "title": "The Cardinal Bridge: From ℕ to Lean's Type Universe",
+    "content": "The proof of `symmetric_group_not_solvable` bridges between $\\mathbb{N}$ (where `5 ≤ n` lives) and `Cardinal` (where Mathlib's `Equiv.Perm.not_solvable` expects `5 ≤ Cardinal.mk α`). The two-line tactic block performs the bridge: `simp only [Cardinal.mk_fintype, Fintype.card_fin]` rewrites `Cardinal.mk (Fin n)` as the canonically lifted `↑n`, and `exact_mod_cast hn` strips the resulting `ℕ → Cardinal` cast and applies the natural-number hypothesis directly. The `ℕ → Cardinal` coercion is an order embedding, so the inequality `5 ≤ n` transfers without effort.\n\n**Why does Mathlib state `Equiv.Perm.not_solvable` in terms of `Cardinal` rather than `ℕ`?** The theorem is genuinely more general: $S_X$ is non-solvable for *any* type $X$ with $|X| \\geq 5$, not only finite types of the form `Fin n`. Examples include $S_\\omega$ (the symmetric group on a countable infinite set), $S_X$ for $X$ uncountable, and exotic finite types like products and sums where the cardinality bound is more naturally expressed via `Cardinal.mk` than `Fintype.card`. Stating the result over `Cardinal` lets Mathlib avoid duplicating the proof for finite and infinite cases — a single statement covers both. Concrete callers like the present file pay a 2-line cardinal cast as the cost of this generality. The same pattern recurs verbatim in `AbelRuffiniOQ04.lean` and similar downstream files; it has become an idiomatic Lean pattern for invoking cardinal-stated Mathlib lemmas with concrete `Fin n` arguments.\n\n**The deeper design lesson.** This is a small instance of a broader Mathlib design principle: whenever a result holds in greater generality without complicating the proof, state it in the more general form, even at the cost of slightly more friction at instantiation sites. The friction is local (a 2-line cast), the benefit is global (one proof serves all callers). Compare with the alternative — a separate `Fintype`-based statement — which would require Mathlib to maintain duplicate proofs and force every caller to choose the right variant. The cardinal bridge is the user-visible manifestation of this trade-off.\n\n**The infinite-cardinality regime and its gallery anchors.** Mathlib's cardinal-stated `Equiv.Perm.not_solvable` does genuine work at infinite cardinalities — and the gallery contains explicit instances of those regimes through its set-theory neighbors. For countable $X$ (i.e. $\\#X = \\aleph_0$), the symmetric group $S_\\omega = \\operatorname{Sym}(\\mathbb{N})$ has cardinality $2^{\\aleph_0}$ and contains an isomorphic copy of every countable group (Higman-Neumann-Neumann 1949), in particular every $S_n$ for $n \\geq 5$ — so non-solvability of $S_\\omega$ is downstream of $S_5$-non-solvability via the subgroup-closure of solvability. The countability hypothesis itself is the algebraic-numbers regime formalized in the gallery via `algebraic-numbers-countable` (Cantor 1874, $|\\overline{\\mathbb{Q}}| = \\aleph_0$), pinning the cardinality bound to a concrete classical setting. For uncountable $X$ (e.g. $\\#X = 2^{\\aleph_0}$), the further structural input is **Cantor's theorem** $|X| < |\\mathcal{P}(X)|$, formalized in the gallery as `cantors-theorem` (Wiedijk #63, 0 axioms, 0 sorries) — the diagonal-set construction that certifies $X \\not\\hookrightarrow \\mathcal{P}(X)$ and hence guarantees the existence of types of arbitrary cardinality on which `Equiv.Perm.not_solvable` then applies. The cardinality-bound machinery `simp only [Cardinal.mk_fintype, Fintype.card_fin]` used here is the finite-type *specialization* of the same `Cardinal.mk` API that Mathlib's `Cantor.cantor_injective` and `Function.cantor_surjective` (the engine of `cantors-theorem`) operate on at the infinite end, so the present 2-line cast and Cantor's diagonal proof both live inside the same Mathlib cardinality vocabulary — an architectural connection that lets the Wiedijk #16 (this entry) and Wiedijk #63 (`cantors-theorem`) cluster share the same type-universe substrate. The infinite case of `Equiv.Perm.not_solvable` is therefore not a curiosity: it is the categorical generalization that makes the present finite-degree theorem a structural fragment of the broader symmetric-group-of-arbitrary-type result.",
+    "mathContext": "$5 \\leq n$ in $\\mathbb{N}$ $\\xrightarrow{\\text{cast}}$ $\\uparrow 5 \\leq \\uparrow n$ in Cardinal $\\xleftarrow{\\text{simp}}$ $5 \\leq |\\text{Fin}\\,n|$. The cast $\\mathbb{N} \\hookrightarrow \\text{Cardinal}$ is an order embedding (preserving and reflecting $\\leq$).\n\nThe Mathlib statement: `Equiv.Perm.not_solvable : ∀ (X : Type u), 5 ≤ Cardinal.mk X → ¬ IsSolvable (Equiv.Perm X)`. The cardinal hypothesis covers the finite case (via `Cardinal.mk_fintype : Cardinal.mk α = (Fintype.card α : Cardinal)` for any `Fintype α`) and the infinite case uniformly. The non-solvability proof inducts on a 5-element subtype $\\{x_1, \\ldots, x_5\\} \\hookrightarrow X$ (extracted using the cardinality bound), realizes $S_5 \\hookrightarrow S_X$ as a subgroup, and applies the closure of solvability under subgroups (`IsSolvable.subgroupOf`) — the structure of $A_5$ as a perfect simple group inside $S_5$ then propagates the non-solvability obstruction.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "cardinal arithmetic",
+      "exact_mod_cast tactic",
+      "type coercion",
+      "order embedding",
+      "Mathlib generality principle",
+      "Fintype.card vs Cardinal.mk",
+      "infinite symmetric group",
+      "subgroup closure of solvability",
+      "S_ω = Sym(ℕ) and cardinality 2^ℵ_0",
+      "Higman-Neumann-Neumann embedding (1949)",
+      "algebraic-numbers-countable (ℵ_0 anchor)",
+      "cantors-theorem (Wiedijk #63, type-universe infinite case)",
+      "Function.cantor_surjective (Mathlib)",
+      "shared Cardinal.mk substrate Wiedijk #16 ↔ Wiedijk #63"
+    ],
+    "prerequisites": [
+      "Cardinal.mk_fintype",
+      "Fintype.card_fin",
+      "exact_mod_cast",
+      "Equiv.Perm",
+      "IsSolvable.subgroupOf"
+    ]
+  },
+  {
+    "id": "ann-s5-s6-not-solvable",
+    "proofId": "abel-ruffini",
+    "anchor": {
+      "type": "declaration",
+      "name": "s5_not_solvable",
+      "kind": "theorem",
+      "extendAfter": 5
+    },
+    "type": "insight",
+    "title": "Instantiating Non-Solvability for S₅ and S₆",
+    "content": "`s5_not_solvable` and `s6_not_solvable` specialize the general `symmetric_group_not_solvable` to $n = 5$ and $n = 6$. The proofs are one-liners: for $n = 5$, the bound $5 \\leq 5$ is `le_rfl`; for $n = 6$, it is discharged by `omega`. The simplicity of $A_5$ (`a5_is_simple`) is stated separately as the structural reason the derived series of $S_5$ stalls.\n\nThese instantiations make the abstract result concrete: $S_5$ is the specific group relevant to quintic polynomials, while $S_6$ confirms the pattern extends to all higher degrees.\n\n**Why two instantiations instead of one?** The pair `s5_not_solvable` / `s6_not_solvable` is not redundant — it is the minimal demonstration of the *monotonicity-of-non-solvability* pattern. Once $S_5$ fails to be solvable, every higher $S_n$ inherits the failure via the standard inclusion $S_5 \\hookrightarrow S_n$ (any permutation of $\\{1, \\ldots, 5\\}$ extended by the identity on $\\{6, \\ldots, n\\}$). If $S_n$ were solvable, the subgroup-closure of solvability would force $S_5$ solvable — contradiction. The Lean witnesses `s5_not_solvable` and `s6_not_solvable` are the first two instances of this infinite chain; rather than re-derive each, the general `symmetric_group_not_solvable n hn` is the universal statement. The tactic dichotomy `le_rfl` vs `omega` exhibits the syntactic distinction between *trivial* literal-arithmetic facts (where $5 \\leq 5$ holds by reflexivity of $\\leq$ at $5$) and *non-trivial* ones requiring decision procedures over linear integer arithmetic — `omega` is Lean's general Presburger-arithmetic solver, which handles $5 \\leq 6$ as a special case of inequality dispatch. Either tactic could in principle prove either fact, but using the most parsimonious tactic for each makes the proof's intent transparent.\n\n**The concrete polynomial-degree dictionary.** $S_5$ is the generic Galois group of degree-5 polynomials over $\\mathbb{Q}$, and `s5_not_solvable` is the obstruction `not_solvable_by_rad_of_not_solvable_gal` invokes for the quintic. The gallery formalizes the explicit instance $\\text{Gal}(x^5 - 4x + 2/\\mathbb{Q}) \\cong S_5$ in `abel-ruffini-oq-04-oq-01` via Eisenstein-at-$p=2$ irreducibility + galActionHom bijectivity (0 axioms, 0 sorries), making `s5_not_solvable` the load-bearing input to a fully verified concrete unsolvable quintic. By the same token, $S_6$ is the generic Galois group of degree-6 polynomials, with `s6_not_solvable` certifying their generic radical-unsolvability — the *sextic analogue* of Abel-Ruffini. A concrete sextic with $\\text{Gal} \\cong S_6$ is $x^6 - x - 1$ (Selmer 1956: the family $x^n - x - 1$ is irreducible for all $n \\geq 2$, and Osada 1987 proved $\\text{Gal}(x^n - x - 1) = S_n$ for all $n \\geq 2$, so `s6_not_solvable` applied through `not_solvable_by_rad_of_not_solvable_gal` shows its roots are not radically expressible — formalizing Osada's family-wide $S_n$ result in Lean would be the natural sibling enrichment to `abel-ruffini-oq-04-oq-01`).\n\n**Why $S_5$ and not $S_3$ or $S_4$?** The deliberate selection of $n = 5$ as the named witness — rather than $n = 1000$ — encodes the threshold value: $n = 5$ is the *minimum* index at which $S_n$ becomes non-solvable, because $S_2, S_3, S_4$ are all solvable (formalized in the sibling entry `abel-ruffini-oq-04-oq-02`, derived series $S_3 \\triangleright A_3 \\triangleright \\{e\\}$, $S_4 \\triangleright A_4 \\triangleright V_4 \\triangleright \\langle (12)(34) \\rangle \\triangleright \\{e\\}$). The juxtaposition with `s0_solvable` and `s1_solvable` in Part IV exhibits this sharp threshold: $n \\in \\{0, 1, 2, 3, 4\\}$ solvable; $n \\in \\{5, 6, 7, \\ldots\\}$ not solvable, mirroring exactly the existence of radical formulas (quadratic 1500 BCE, cubic Cardano 1545, quartic Ferrari 1545) versus their non-existence (Abel-Ruffini 1824). `s5_not_solvable` is therefore *the* gallery's named witness to the smallest non-solvable symmetric group.",
+    "mathContext": "$S_5 = \\text{Equiv.Perm}(\\text{Fin}\\ 5)$, $|S_5| = 120$. The derived series: $S_5 \\triangleright A_5 \\triangleright A_5 \\triangleright \\cdots$ (stuck because $[A_5, A_5] = A_5$, i.e., $A_5$ is perfect). Compare $S_4 \\triangleright A_4 \\triangleright V_4 \\triangleright \\mathbb{Z}/2 \\triangleright \\{e\\}$ which terminates.\n\n**Monotonicity formally.** Non-solvability propagates along subgroups: if $H \\leq G$ and $H$ is not solvable, then $G$ is not solvable (contrapositive of Mathlib's `IsSolvable.of_subgroup` / `Subgroup.isSolvable_of_isSolvable`). The natural inclusion $\\iota_n : S_5 \\hookrightarrow S_n$ ($n \\geq 5$) defined by $\\iota_n(\\sigma)(k) = \\sigma(k)$ if $k \\leq 5$ and $\\iota_n(\\sigma)(k) = k$ otherwise gives a copy of $S_5$ inside $S_n$. Hence $\\neg \\text{IsSolvable}(S_5) \\Rightarrow \\neg \\text{IsSolvable}(S_n)$ for all $n \\geq 5$ — and this is exactly the content of `symmetric_group_not_solvable n hn` via `Equiv.Perm.not_solvable (Fin n) h` once $5 \\leq |\\text{Fin}\\ n|$ is established (the `Cardinal.mk` casting layer). In particular `s6_not_solvable` could also be derived by stacking `s5_not_solvable` with the subgroup-closure lemma, but the direct instantiation via `omega` is more parsimonious.\n\n**Tactic provenance.** `le_rfl : 5 ≤ 5` is the reflexivity instance of the preorder $\\leq$ on $\\mathbb{N}$. `omega` (Lean's omega tactic, after Pugh 1991) is a complete decision procedure for Presburger arithmetic — quantifier-free linear arithmetic over $\\mathbb{Z}$ and $\\mathbb{N}$ — and dispatches goals like $5 \\leq 6$, $5 \\leq 6{+}k$, $5 \\leq n \\land n \\leq 7 \\Rightarrow n \\in \\{5,6,7\\}$ in constant time. The choice of `le_rfl` over `omega` for $n=5$ reflects a *minimality principle* in tactic usage: when a single-step kernel reduction (reflexivity) suffices, deploying a heavyweight decision procedure obscures the proof's structure.\n\nLean signatures: `s5_not_solvable : ¬ IsSolvable (Equiv.Perm (Fin 5))` and `s6_not_solvable : ¬ IsSolvable (Equiv.Perm (Fin 6))`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "derived series",
+      "perfect group",
+      "composition series",
+      "simple group",
+      "monotonicity of non-solvability",
+      "Sn subgroup chain",
+      "abel-ruffini-oq-04-oq-01",
+      "abel-ruffini-oq-04-oq-02",
+      "Osada's theorem on x^n - x - 1",
+      "Selmer 1956 irreducibility",
+      "Pugh's omega decision procedure"
+    ],
+    "prerequisites": [
+      "symmetric_group_not_solvable",
+      "le_rfl",
+      "omega tactic",
+      "subgroup closure of solvability",
+      "Presburger arithmetic"
+    ]
+  },
+  {
+    "id": "ann-a5-simple",
+    "proofId": "abel-ruffini",
+    "anchor": {
+      "type": "declaration",
+      "name": "a5_is_simple",
+      "kind": "theorem"
+    },
+    "type": "insight",
+    "title": "A₅ is Simple",
+    "content": "A group is simple if its only normal subgroups are {1} and the whole group. The alternating group A₅ is simple — the smallest non-abelian simple group, with 60 elements.\n\nA crucial subtlety distinguishes the cycle decomposition in $S_5$ from $A_5$: among the 24 total 5-cycles, all 24 are conjugate in $S_5$ (a single $S_5$-conjugacy class), but they split into **two** $A_5$-conjugacy classes of size 12 each. The reason is that no even permutation can swap, say, $(1\\,2\\,3\\,4\\,5)$ with $(1\\,2\\,3\\,5\\,4)$; the conjugation $(4\\,5)$ that swaps them is odd, hence outside $A_5$. The five $A_5$-conjugacy classes therefore have sizes $\\{1, 15, 20, 12, 12\\}$ summing to $60$, and this finer partition is exactly what makes the simplicity argument work — a normal subgroup of $A_5$ would have to be a union of $A_5$-classes whose order divides $60$.\n\nThe standard argument shows any normal subgroup of $A_5$ containing a non-identity element must contain a 3-cycle (by computing commutators), and 3-cycles generate all of $A_5$. Equivalently, no sum of $A_5$-class sizes containing $\\{1\\}$ — other than $\\{1\\}$ itself or the full set $\\{1,15,20,12,12\\}$ — divides $60$.\n\n**Sylow-counting proof (the canonical alternative).** Mathlib's `alternatingGroup.isSimpleGroup_five` delegates the simplicity to a Sylow-counting argument that is structurally independent of the conjugacy-class enumeration above and is formalized as a stand-alone gallery entry in `sylow-theorem-oq-04` (and its sibling `sylow-theorems-oq-04`). The argument runs: $|A_5| = 60 = 2^2 \\cdot 3 \\cdot 5$, so Sylow III gives $n_p \\equiv 1 \\pmod{p}$ and $n_p \\mid |A_5|/p^{v_p(|A_5|)}$ for each $p \\in \\{2, 3, 5\\}$. Exhaustive enumeration of the divisibility/congruence constraints forces $n_2 = 5$ (candidates $\\{1, 3, 5, 15\\}$ filtered by $n_2 \\equiv 1 \\pmod{2}$ and $n_2 \\mid 15$, then ruling out $n_2 = 1$ via existence of multiple 2-Sylows), $n_3 = 10$ (candidates $\\{1, 4, 10\\}$ from $n_3 \\equiv 1 \\pmod{3}$ and $n_3 \\mid 20$; rule out 1 and 4), and $n_5 = 6$ (candidates $\\{1, 6\\}$ from $n_5 \\equiv 1 \\pmod{5}$ and $n_5 \\mid 12$; rule out 1). None of $\\{n_2, n_3, n_5\\}$ equals 1, so no Sylow subgroup of $A_5$ is normal. A minimal normal subgroup of a finite group is necessarily characteristic of a single prime — the *Fitting-decomposition* refinement — but the non-normality of *every* Sylow class blocks all three prime-by-prime Fitting candidates. Combined with the orbit-stabilizer identity $n_p = [G : N_G(P)]$ (formalized in `sylow-theorem-oq-02`, 0 axioms, 0 sorries, 204 lines), no proper non-trivial normal subgroup can exist. **The two proofs (conjugacy-class sub-sum enumeration above and Sylow-counting here) are structurally distinct but numerically reconcilable**: the sub-sums $\\{1, 16, 21, 13, 36, 28, 33, 25, 48, 40, 45\\}$ correspond, via Burnside-style fixed-point counts, to potential unions of conjugate Sylow subgroups, and the impossibility of *any* such union dividing 60 is exactly the conjugacy-class manifestation of the Sylow-counting obstruction. Mathlib bundles both perspectives in `alternatingGroup.isSimpleGroup_five`, with the proof internally favoring the Sylow route (cleaner inductive structure for the simple-group certification machinery).\n\n**Why this matters for `not_solvable_by_rad_of_not_solvable_gal`.** The `a5_is_simple` theorem in this file is the one-line delegation to `alternatingGroup.isSimpleGroup_five`, and the *entire* group-theoretic obstruction to Abel-Ruffini at $n=5$ — the perfection $[A_5, A_5] = A_5$ that stalls the derived series — is downstream of A₅'s simplicity. Concretely: simple + non-abelian $\\Rightarrow$ $[A_5, A_5]$ is a normal subgroup not equal to $\\{e\\}$, so it must equal $A_5$ (perfection); perfection $\\Rightarrow$ $D^k(S_5) = A_5$ for all $k \\geq 1$ (derived series stalls); stalled derived series $\\Rightarrow$ $S_5$ not solvable (`Equiv.Perm.not_solvable`); $S_5$ not solvable + galois_bridge $\\Rightarrow$ generic quintic not solvable by radicals (`not_solvable_by_rad_of_not_solvable_gal`). The Sylow chain `sylow-theorem-oq-02` $\\to$ `sylow-theorem-oq-04` $\\to$ `alternatingGroup.isSimpleGroup_five` $\\to$ `a5_is_simple` is therefore the foundational subroutine that makes the synthesis at line 145 of this file possible. The Lean formalization compresses these five proofs into a single import and a one-line invocation, but each link in the chain is a non-trivial classical theorem (Cayley 1854, Sylow 1872, Jordan 1870, Galois 1832, Abel 1824 — five generations of group theory packed into `alternatingGroup.isSimpleGroup_five`).\n\nThe simplicity of A₅ has a direct consequence via Abel-Ruffini: since A₅ is not solvable, any polynomial over ℚ with Galois group isomorphic to A₅ has roots not expressible by radicals. The gallery entry `inverse-galois-oq-06` proves this is not vacuous — it exhibits the explicit polynomial x⁵-5x⁴+10x³-10x²+25x-5 with A₅ ≅ Gal(q/ℚ), providing a concrete quintic whose unsolvability-by-radicals follows by combining that entry with `not_solvable_by_rad_of_not_solvable_gal`. The independent companion realization `inverse-galois-a5` provides a second A₅-witness via Eisenstein at $p=5$, a Vandermonde-discriminant argument bounding $\\text{Gal} \\leq A_5$, and a single Dedekind-derived axiom forcing $|\\text{Gal}| = 60$.",
+    "mathContext": "$A_5 = \\ker(\\text{sign} : S_5 \\to \\{\\pm 1\\}) = \\{\\sigma \\in S_5 : \\text{sign}(\\sigma) = +1\\}$, $|A_5| = 60 = 5!/2$.\n\n**$A_5$-conjugacy classes** (note that 5-cycles split): identity (1), products of two disjoint transpositions (15), 3-cycles (20), and two classes of 5-cycles (12 + 12). Compare with **$S_5$-conjugacy classes** restricted to $A_5$: identity (1), products of two disjoint transpositions (15), 3-cycles (20), 5-cycles (24 — single $S_5$-class). The 5-cycle splitting in $A_5$ is governed by the centralizer-index criterion: an $S_n$-class $C$ contained in $A_n$ either remains a single $A_n$-class (if some element of $C$ commutes with an odd permutation) or splits into two equal-sized $A_n$-classes of size $|C|/2$ (if no such commuting odd permutation exists). For 5-cycles in $A_5$, the centralizer of a 5-cycle is the cyclic subgroup it generates (order 5), entirely contained in $A_5$, so no odd permutation centralizes a 5-cycle, forcing the split.\n\n**The general splitting criterion (classical, Frobenius).** An $S_n$-conjugacy class contained in $A_n$ splits into two $A_n$-classes of equal size if and only if its cycle type has all parts *distinct* and all parts *odd*; otherwise it remains a single $A_n$-class. Centralizer derivation: for $\\sigma$ with cycle type $\\lambda = (\\lambda_1, \\ldots, \\lambda_k)$, the $S_n$-centralizer has order $\\prod_i \\lambda_i \\cdot \\prod_j m_j!$ where $m_j$ counts how often the part $j$ appears (cyclic factors from cycle generators; symmetric factors from permutations swapping equal-length cycles). The class splits iff this centralizer sits inside $A_n$. Repeated parts $m_j \\geq 2$ introduce transpositions of equal cycles — odd permutations — so *all parts distinct* is necessary. Even-length cycles $\\lambda_i$ are themselves odd permutations, so *all parts odd* is necessary. Conversely, distinct odd parts make every centralizer generator even, so the centralizer lies in $A_n$ and the class splits. Applied to $A_5$, the four cycle types inherited from $S_5$ — $1^5$ (identity: repeated 1's), $2^2 \\cdot 1$ (double transposition: even part), $3 \\cdot 1^2$ (3-cycle: repeated 1's), and $5$ (5-cycle: single odd part) — are checked one by one, and *only* the 5-cycle class satisfies both conditions. This is the structural reason $A_5$ has exactly 5 conjugacy classes (one more than the four cycle types it inherits) and the unique combinatorial input $\\{1, 15, 20, 12, 12\\}$ to the sub-sum simplicity argument below.\n\nA normal subgroup $N \\trianglelefteq A_5$ must be a union of $A_5$-conjugacy classes containing $\\{e\\}$ (size 1), and $|N|$ must divide 60. The possible sub-sums starting with 1 are: $1, 1{+}15{=}16, 1{+}20{=}21, 1{+}12{=}13, 1{+}15{+}20{=}36, 1{+}15{+}12{=}28, 1{+}20{+}12{=}33, 1{+}12{+}12{=}25, 1{+}15{+}20{+}12{=}48, 1{+}15{+}12{+}12{=}40, 1{+}20{+}12{+}12{=}45$ — none divides 60. The only divisors of 60 obtainable from these sub-sums are 1 (just $\\{e\\}$) and 60 (the full group). Therefore $A_5$ has no proper nontrivial normal subgroups.\n\nLean: `alternatingGroup.isSimpleGroup_five : IsSimpleGroup (alternatingGroup (Fin 5))`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "alternating group",
+      "simple group",
+      "normal subgroup",
+      "cycle type",
+      "centralizer",
+      "conjugacy class splitting",
+      "Frobenius splitting criterion (distinct odd parts)",
+      "Sylow's theorems (existence, conjugacy, counting)",
+      "Sylow numbers $n_p \\equiv 1 \\pmod p$ and $n_p \\mid |G|/p^{v_p(|G|)}$",
+      "Fitting decomposition of minimal normal subgroups",
+      "orbit-stabilizer identity $n_p = [G : N_G(P)]$",
+      "perfection: $[A_5, A_5] = A_5$",
+      "derived-series stalling at perfect groups",
+      "Mathlib `alternatingGroup.isSimpleGroup_five`",
+      "inverse-galois-oq-06",
+      "inverse-galois-a5",
+      "sylow-theorem-oq-02",
+      "sylow-theorem-oq-04",
+      "sylow-theorems-oq-04"
+    ],
+    "prerequisites": [
+      "permutation groups",
+      "normal subgroups",
+      "alternatingGroup.isSimpleGroup_five",
+      "Sylow's three theorems (existence, conjugacy, counting constraint $n_p \\equiv 1 \\pmod p$)",
+      "minimal normal subgroup structure (Fitting decomposition)"
+    ]
+  },
+  {
+    "id": "ann-small-solvable",
+    "proofId": "abel-ruffini",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "Part IV: Solvability of Small Symmetric Groups",
+      "extendAfter": 6
+    },
+    "type": "insight",
+    "title": "Solvable Small Symmetric Groups: The Other Side of the Threshold",
+    "content": "$S_0$ and $S_1$ are trivially solvable (both are the trivial group of order 1), and Lean's typeclass inference (`inferInstance`) finds their `IsSolvable` instances automatically. These contrast with $S_5$ and beyond, highlighting the sharp boundary.\n\nHistorically, $S_2$, $S_3$, and $S_4$ are all solvable, each corresponding to a classical radical formula. The $S_2$ case has a long chronology that is often compressed into the misleading shorthand 'quadratic formula, ~2000 BCE': Babylonian tablets (notably BM 13901, Old Babylonian period, c. 1800 BCE) record case-by-case *numerical procedures* equivalent to completing the square on specific worked examples, but always with positive numerical coefficients and no general two-root statement. The first explicit algebraic *two-root* formula appears in **Brahmagupta's *Brāhmasphuṭasiddhānta* (628 CE)** as the rule for $ax^2 + bx = c$ giving both roots, including the negative one — the genuine modern $S_2$-radical formula in algebraic form. **Al-Khwarizmi's *al-Kitāb al-mukhtaṣar fī ḥisāb al-jabr wal-muqābala* (c. 820–825 CE)** then supplies the canonical geometric completing-the-square proof for all six reduced forms with positive coefficients. The $S_3$ and $S_4$ cases compress similarly: **del Ferro (c. 1515, unpublished)** and **Tartaglia (1535)** independently solved depressed cubics by radicals before **Cardano** included the formula in *Ars Magna* (1545); **Ferrari** discovered the quartic reduction to the resolvent cubic also in 1545. The gallery includes formalizations of both the cubic solution (see `solution-of-cubic`) and the quartic solution (see `general-quartic`), providing the positive counterparts to Abel-Ruffini's impossibility: those proofs construct the radical formulas that exist precisely because $S_3$ and $S_4$ are solvable. Together with Abel-Ruffini, they form a complete picture of radical solvability for polynomials of every degree.\n\nThe file notes that Mathlib did not yet provide `IsSolvable` instances for $S_2, S_3, S_4$ at time of writing. **[Gap now filled]** The companion entry `abel-ruffini-oq-04-oq-02` provides these instances explicitly: $S_2$ via commutativity (`isSolvable_of_comm`), $S_3$ via the short exact sequence $1 \\to A_3 \\to S_3 \\to \\mathbb{Z}^\\times \\to 1$ using `solvable_of_ker_le_range`, and $S_4$ via the Klein four-group $V_4 \\trianglelefteq A_4$ yielding the chain $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4 \\trianglelefteq S_4$. Together with the current entry's `symmetric_group_not_solvable`, these instances complete the full biconditional: $S_n$ is solvable if and only if $n \\leq 4$.",
+    "mathContext": "$S_0 \\cong S_1 \\cong \\{e\\}$ (trivial). $S_2 \\cong \\mathbb{Z}/2$ (abelian). $S_3$: derived series $S_3 \\triangleright A_3 \\cong \\mathbb{Z}/3 \\triangleright \\{e\\}$ (derived length 2). $S_4$: derived series $S_4 \\triangleright A_4 \\triangleright V_4 \\triangleright \\{e\\}$ (derived length 3, since $V_4$ is abelian), where $V_4 = \\{e,(12)(34),(13)(24),(14)(23)\\}$ is the Klein four-group. The composition series refinement $S_4 \\triangleright A_4 \\triangleright V_4 \\triangleright \\langle(12)(34)\\rangle \\triangleright \\{e\\}$ inserts an additional $\\mathbb{Z}/2$ step between $V_4$ and $\\{e\\}$ so that every quotient is simple (i.e., cyclic of prime order) — needed for the radical-tower correspondence below.\n\nEach solvable $S_n$ ($n \\leq 4$) yields a composition series with abelian (in fact cyclic prime-order) quotients, and the Galois correspondence converts these quotients into radical extraction steps: $S_2/A_2 \\cong \\mathbb{Z}/2$ gives square roots, $A_3 \\cong \\mathbb{Z}/3$ gives cube roots, $A_4/V_4 \\cong \\mathbb{Z}/3$ and $V_4/\\langle(12)(34)\\rangle \\cong \\mathbb{Z}/2$ and $\\langle(12)(34)\\rangle \\cong \\mathbb{Z}/2$ give the nested radicals in Ferrari's formula.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Klein four-group",
+      "abelian group",
+      "typeclass inference",
+      "quadratic formula",
+      "Cardano's formula",
+      "Ferrari's formula",
+      "abel-ruffini-oq-04-oq-02",
+      "solvable_of_ker_le_range",
+      "isSolvable_of_comm",
+      "solution-of-cubic (positive radical-formula counterpart for $S_3$)",
+      "general-quartic (positive radical-formula counterpart for $S_4$)",
+      "abel-ruffini-galois-extensions (complete $S_n$ solvability classification)",
+      "Brahmagupta's two-root quadratic formula (628 CE)",
+      "Al-Khwarizmi's *al-jabr* (completing-the-square geometric proof, c. 820–825 CE)",
+      "Cardano's *Ars Magna* (1545, cubic formula publication)",
+      "Tartaglia's depressed-cubic algorithm (1535)",
+      "del Ferro's unpublished cubic solution (~1515)",
+      "Ferrari's resolvent cubic reduction for the quartic (1545)",
+      "Composition series with cyclic-of-prime-order quotients (refinement of derived series)",
+      "Radical tower: nested $n$th-root field extensions"
+    ],
+    "prerequisites": [
+      "IsSolvable typeclass",
+      "inferInstance",
+      "Equiv.Perm (Fin n)",
+      "Solvable groups: derived series and composition series",
+      "Klein four-group $V_4 \\trianglelefteq A_4$ as the normal subgroup that unlocks $A_4$'s solvability",
+      "Short exact sequence $1 \\to A_n \\to S_n \\to \\mathbb{Z}^\\times \\to 1$ (sign-homomorphism kernel-cokernel)",
+      "Mathlib's `solvable_of_ker_le_range` (extension solvability theorem)",
+      "Mathlib's `isSolvable_of_comm` (every commutative group is solvable)",
+      "Galois correspondence: composition series of $\\text{Gal}(L/F)$ ↔ tower of subfields with cyclic Galois groups",
+      "Kummer theory: $\\mathbb{Z}/n$ Galois extension ↔ $n$th-root adjunction (given $\\zeta_n \\in F$)"
+    ]
+  },
+  {
+    "id": "ann-part-v-synthesis",
+    "proofId": "abel-ruffini",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "Part V: The Abel-Ruffini Theorem"
+    },
+    "type": "insight",
+    "title": "Synthesis: Combining the Bridge with Non-Solvability",
+    "content": "Part V is the climax of the formalization. The docstring frames the logical synthesis: Parts II and III are independent ingredients — the Galois bridge (solvable by radicals ⟹ solvable Galois group) and the group-theoretic fact ($S_5$ is not solvable). Their combination via contrapositive yields Abel-Ruffini.\n\n**Abstract vs concrete: a separation enforced by the proof architecture.** The synthesis in `not_solvable_by_rad_of_not_solvable_gal` is *abstract*: it takes an arbitrary irreducible $q$ with non-solvable Galois group and concludes non-radical-expressibility of its roots. The *concrete* instantiation — exhibiting a specific quintic $q \\in \\mathbb{Q}[X]$ with $\\text{Gal}(q) \\cong S_5$ — is a separate piece of mathematical work delegated to the gallery sub-entry `abel-ruffini-oq-04-oq-01`, which proves $\\text{Gal}(x^5 - 4x + 2/\\mathbb{Q}) \\cong S_5$ via Eisenstein at $p = 2$ and galActionHom bijectivity (0 sorries, 0 axioms). Two further concrete witnesses appear in `inverse-galois-oq-06` and `inverse-galois-a5` (both for $A_5 \\cong \\text{Gal}(x^5 - 5x^4 + 10x^3 - 10x^2 + 25x - 5/\\mathbb{Q})$ via independent strategies). The abstract synthesis here is the universal certificate; the concrete witnesses are its instantiations — and the proof architecture rightly separates the two, since each concrete quintic requires its own Eisenstein/Sylow/discriminant-style analysis specific to that polynomial.\n\n**Historical bridge: Abel (1824) without group theory vs Galois (1832) with it.** Abel's original 1824 proof did *not* use group theory — the concept barely existed (Cauchy's 1815 permutation results were available, but the structural notion of 'group' would not crystallize until Galois). Instead, Abel argued combinatorially about the *form* of radical expressions: any putative radical formula for the roots of a quintic would have a definite syntactic structure (a tower of nested $\\sqrt[n]{\\cdot}$ operations), and Abel showed that no such structure can satisfy the symmetry constraints imposed by the polynomial's roots. This direct combinatorial argument is preserved in Cox's textbook (Cox 2012, Chapter 8) for historical accuracy. Galois's 1832 reorganization replaces Abel's syntactic analysis with the abstract Galois group: rather than tracking the form of radical expressions, one tracks the symmetry group of the splitting field. The proof becomes structural rather than combinatorial — and the modern Lean formalization here reflects that reorganization fully, with the 2-line `intro`/`exact` of `not_solvable_by_rad_of_not_solvable_gal` (`ann-contrapositive`, lines 137-149) standing as the synthetic apex of the Galois-theoretic recasting that the *abstract* synthesis sets up.\n\n**Why the field-theoretic / group-theoretic separation is canonical.** The independence of Parts II and III is not a stylistic choice — it reflects the underlying mathematical reality. Part II (`galois_bridge`) lives entirely in field theory: radical extensions, minimal polynomials, splitting fields, automorphisms over a base field. Part III (`symmetric_group_not_solvable`, `a5_is_simple`) lives entirely in finite-group theory: derived series, simple groups, commutator subgroups, conjugacy classes. The contrapositive bridge in Part V is the *only* place these two worlds meet. This separation has architectural consequences: Part III can be reused for any application of finite-group non-solvability (e.g., the constructibility-via-2-groups criterion of `angle-trisection-oq-02`, Wantzel-Galois), while Part II generalizes to differential Galois theory (Picard-Vessiot, giving Liouville-style integration impossibility — see implications #6 and the gallery entry `abel-ruffini-oq-09`). The synthesis is hence not just a proof step but a *modular interface* between two independently developed theories.",
+    "mathContext": "The logical chain at the level of propositions:\n- Part II (`galois_bridge`): $P \\Rightarrow Q$ where $P = \\text{IsSolvableByRad}\\,F\\,\\alpha$ and $Q = \\text{IsSolvable}(q.\\text{Gal})$.\n- Part III (`symmetric_group_not_solvable`): $\\neg Q$ when $q.\\text{Gal} \\cong S_n$ for $n \\geq 5$.\n- Part V (`not_solvable_by_rad_of_not_solvable_gal`): $(P \\Rightarrow Q) \\land \\neg Q \\Rightarrow \\neg P$, i.e., the **contrapositive** $\\neg Q \\Rightarrow \\neg P$.\n\nThis is the most-basic non-trivial pattern of classical propositional reasoning (modus tollens). At the Lean term level, the proof is `fun hns hrad => hns (galois_bridge α q hq hroot hrad)` — explicit lambda-abstraction over the non-solvability witness `hns : ¬ IsSolvable q.Gal` and the radical-solvability witness `hrad : IsSolvableByRad F α`, returning `False` by feeding the bridge's conclusion `IsSolvable q.Gal` into `hns`. In tactic form this is the 2-line `intro hrad; exact hns (galois_bridge α q hq hroot hrad)` (annotated in `ann-contrapositive`).\n\n**Quantified form.** The statement specializes to the existential 'there exists an unsolvable quintic': $\\exists q \\in \\mathbb{Q}[X],\\; \\text{Irreducible}\\,q \\land q.\\text{natDegree} = 5 \\land \\neg\\,\\text{IsSolvableByRad}\\,\\mathbb{Q}\\,(\\text{any root of } q)$. The synthesis here is the universal direction $\\forall \\alpha, q, \\ldots, \\neg\\text{IsSolvable}\\,q.\\text{Gal} \\Rightarrow \\neg\\text{IsSolvableByRad}\\,F\\,\\alpha$; the existential instantiation requires producing a concrete $q$ — the work of `abel-ruffini-oq-04-oq-01` ($x^5 - 4x + 2$, $\\text{Gal} \\cong S_5$, Eisenstein at $p=2$) and `inverse-galois-oq-06` / `inverse-galois-a5` ($A_5$-witness via Sylow + discriminant).\n\n**Counterpoint at the same degree.** Not every quintic instantiates Part V: $\\text{Gal}(X^5 - 2/\\mathbb{Q}) \\cong F_{20}$ (Frobenius group of order 20, formalized in `inverse-galois-f20`) is *solvable*, so $X^5 - 2$ is solvable by radicals ($\\sqrt[5]{2}$). The synthesis in Part V applies precisely when $\\text{Gal}(q)$ is non-solvable — group structure alone, not degree, is the discriminant. See keyInsight #7 ('Degree 5 is Necessary but Not Sufficient') for the full $X^5 - 2$ vs $x^5 - 4x + 2$ dichotomy.",
+    "significance": "key",
+    "relatedConcepts": [
+      "logical synthesis",
+      "modus tollens",
+      "contrapositive",
+      "proof architecture",
+      "abstract-vs-concrete separation",
+      "Abel 1824 combinatorial argument",
+      "Galois 1832 group-theoretic reformulation",
+      "modular interface between field theory and group theory",
+      "Picard-Vessiot analog",
+      "Wantzel-Galois constructibility analog",
+      "differential Galois theory"
+    ],
+    "prerequisites": [
+      "galois_bridge (Part II)",
+      "symmetric_group_not_solvable (Part III)",
+      "contrapositive reasoning",
+      "modus tollens",
+      "abel-ruffini-oq-04-oq-01 for concrete instantiation",
+      "inverse-galois-f20 (counterpoint at degree 5)"
+    ]
+  },
+  {
+    "id": "ann-exists-quintic",
+    "proofId": "abel-ruffini",
+    "anchor": {
+      "type": "declaration",
+      "name": "exists_quintic",
+      "kind": "theorem"
+    },
+    "type": "insight",
+    "title": "Existence of Degree-5 Polynomials",
+    "content": "`exists_quintic` provides a trivial witness that degree-5 polynomials exist over $\\mathbb{Q}$: the polynomial $X^5$ has `natDegree = 5`. The Lean proof uses `simp only` with `Polynomial.natDegree_pow` and `Polynomial.natDegree_X`, followed by `mul_one`.\n\nThis is mathematically trivial and is **not** used in the main Abel-Ruffini argument (`not_solvable_by_rad_of_not_solvable_gal`). The witness $X^5$ is in fact *doubly* deficient: it is not irreducible (it factors as $X \\cdot X \\cdot X \\cdot X \\cdot X$), and even granting irreducibility, degree-5 alone is insufficient — the substantive statement the proof actually needs is the existence of an *irreducible* degree-5 polynomial with *non-solvable* Galois group, i.e., $\\exists q \\in \\mathbb{Q}[X],\\; \\text{Irreducible}\\,q \\land q.\\text{natDegree} = 5 \\land \\neg\\,\\text{IsSolvable}\\,q.\\text{Gal}$.\n\n**Why both qualifications are necessary** — the gallery contains the concrete contrast: `inverse-galois-f20` formalizes $\\text{Gal}(X^5 - 2 / \\mathbb{Q}) \\cong F_{20}$ (the Frobenius group of order 20), where $X^5 - 2$ is *irreducible* of *degree 5* over $\\mathbb{Q}$ (Eisenstein at $p = 2$), yet $F_{20} \\supset \\mathbb{Z}/5 \\supset \\{e\\}$ is solvable (abelian quotients $\\mathbb{Z}/4$ and $\\mathbb{Z}/5$), so $X^5 - 2$ *is* solvable by radicals — explicitly, its roots are $\\sqrt[5]{2} \\cdot \\zeta_5^k$ for $k = 0, \\ldots, 4$. This is the precise content of keyInsight #8: Abel-Ruffini's threshold is *group-structural*, not *degree-based*, and the trivial witness here would have to be sharpened to capture the actual obstruction.\n\nThe sub-entry `abel-ruffini-oq-04-oq-01` fills the substantive gap: it exhibits $x^5 - 4x + 2$ with $\\text{Gal} \\cong S_5$, proved via Eisenstein irreducibility at $p = 2$ and galActionHom bijectivity, now fully verified with 0 axioms and 0 sorries (all former axioms for disc < 0, the Vandermonde identity, and Dedekind at $p = 13$ have been eliminated). The companion entries `inverse-galois-oq-06` and `inverse-galois-a5` provide the analogous $A_5$ realization via $x^5 - 5x^4 + 10x^3 - 10x^2 + 25x - 5$.\n\n**The discriminant criterion (S_n vs A_n).** Once an irreducible polynomial $f \\in \\mathbb{Q}[X]$ of degree $n$ is in hand, the practical test distinguishing $\\text{Gal}(f) = S_n$ from $\\text{Gal}(f) \\subseteq A_n$ is the *discriminant square criterion*: for a separable monic $f$ with splitting field $K/\\mathbb{Q}$ and Galois group $G \\hookrightarrow S_n$ acting by root permutation, $G \\subseteq A_n$ iff $\\text{disc}(f) \\in (\\mathbb{Q}^\\times)^2$. The forward direction is the action $\\sigma(\\sqrt{\\text{disc}(f)}) = \\text{sgn}(\\sigma) \\sqrt{\\text{disc}(f)}$ on the square root of the discriminant (a Vandermonde-style construction), so $\\sigma$ even iff it fixes $\\sqrt{\\text{disc}(f)}$; the converse is Galois descent applied to $\\mathbb{Q}(\\sqrt{\\text{disc}(f)})$. Applied here: $\\text{disc}(x^5 - x - 1) = 2869 = 19 \\cdot 151$ — not a square, so $\\text{Gal}(x^5 - x - 1) \\not\\subseteq A_5$; combined with transitivity (irreducibility) and the presence of a 2-cycle (complex conjugation when there are exactly 3 real and 2 complex roots — Sturm/Sylvester sign-counting on $x^5 - x - 1$ confirms this real-root count), Jordan's lemma (a transitive subgroup of $S_p$ for $p$ prime containing a 2-cycle is all of $S_p$) forces $\\text{Gal} = S_5$. The same recipe applies to $x^5 - 4x + 2$: Eisenstein at $p = 2$ gives irreducibility, the discriminant is non-square, and complex conjugation supplies the 2-cycle — three lines of arithmetic upgrade a `degree = 5` witness to a full $S_5$ certificate. The discriminant criterion is the *first* tool a working number theorist reaches for when faced with a candidate non-solvable quintic; it is what makes the gap from `exists_quintic` to the substantive statement bridgeable in finite time.\n\n**Hilbert irreducibility — most quintics work.** A complementary perspective: *generic* monic integer quintics have $\\text{Gal} = S_5$ in a precise density sense (Hilbert's irreducibility theorem, 1892, refined by van der Waerden 1934 to give density bounds, by Chow-Wang 2017 to give the optimal exponent). Among monic integer polynomials of degree $n$ with coefficients bounded by $H$, the density of those with Galois group $S_n$ tends to $1$ as $H \\to \\infty$ at rate $1 - O(H^{-1/2} \\log H)$ for $n = 5$. So the substantive statement `exists_quintic` aspires to is true not just constructively (via the explicit witness $x^5 - 4x + 2$) but generically: a *random* irreducible quintic over $\\mathbb{Q}$ is overwhelmingly likely to be a witness to Abel-Ruffini. The constructive witnesses formalized in `abel-ruffini-oq-04-oq-01` and `inverse-galois-a5` are therefore both *representative* of the typical case and *necessary* — the typical-case proof (Hilbert irreducibility + density) is itself non-trivial to formalize and would dwarf the explicit-witness proof in Lean complexity.",
+    "mathContext": "$\\exists p \\in \\mathbb{Q}[X],\\; \\deg(p) = 5$. Witness: $p = X^5$.\n\n$\\text{natDegree}(X^n) = n \\cdot \\text{natDegree}(X) = n \\cdot 1 = n$.\n\nThe statement the proof *actually needs* is: $\\exists q \\in \\mathbb{Q}[X],\\; \\text{Irreducible}\\,q \\land q.\\text{natDegree} = 5 \\land \\neg\\,\\text{IsSolvable}\\,q.\\text{Gal}$.\n\nDegree-5 + irreducible is *not* sufficient: $X^5 - 2$ is irreducible (Eisenstein at $p = 2$) of degree 5, but $\\text{Gal}(X^5 - 2/\\mathbb{Q}) \\cong F_{20}$ is solvable, so $X^5 - 2$ is solvable by radicals (`inverse-galois-f20`). Both conditions — irreducibility *and* non-solvable $\\text{Gal}$ — are required.\n\nSubstantive examples (irreducible quintics with $\\text{Gal} = S_5$): $x^5 - x - 1$ (discriminant $2869 = 19 \\times 151$, not a perfect square, 3 real roots) or $x^5 - 4x + 2$ (Eisenstein at $p = 2$; formalized in `abel-ruffini-oq-04-oq-01`).\n\n**Discriminant criterion (square test for $G \\subseteq A_n$).** $G = \\text{Gal}(f) \\hookrightarrow S_n$ satisfies $G \\subseteq A_n$ iff $\\text{disc}(f) \\in (\\mathbb{Q}^\\times)^2$. The discriminant $\\text{disc}(f) = \\prod_{i < j}(\\alpha_i - \\alpha_j)^2$ (where the $\\alpha_i$ are roots in the splitting field) satisfies $\\sigma(\\sqrt{\\text{disc}(f)}) = \\text{sgn}(\\sigma) \\sqrt{\\text{disc}(f)}$ for the natural $S_n$-action; hence $\\sigma \\in A_n$ iff $\\sigma$ fixes $\\sqrt{\\text{disc}(f)}$, and $G \\subseteq A_n$ iff $\\sqrt{\\text{disc}(f)} \\in \\mathbb{Q}$ iff $\\text{disc}(f)$ is a square. Combined with (i) transitivity from irreducibility and (ii) the presence of a 2-cycle (e.g., complex conjugation when $f$ has exactly two non-real roots), Jordan's lemma — *a transitive subgroup of $S_p$ ($p$ prime) containing a 2-cycle is all of $S_p$* — concludes $G = S_p$ for $p = 5$. This is the practical recipe by which $\\text{Gal}(x^5 - 4x + 2) = S_5$ and $\\text{Gal}(x^5 - x - 1) = S_5$ are verified in textbooks (cf. Dummit-Foote Ch. 14, §14.8).\n\n**Hilbert irreducibility (density of $\\text{Gal} = S_n$).** Hilbert (1892) showed that for any $f(t, X) \\in \\mathbb{Q}(t)[X]$ irreducible over $\\mathbb{Q}(t)$, the specializations $f(a, X) \\in \\mathbb{Q}[X]$ remain irreducible for all $a \\in \\mathbb{Q}$ outside a *thin* set $T \\subset \\mathbb{Q}$. Applied to the generic polynomial $X^n + t_1 X^{n-1} + \\cdots + t_n$, this gives: among monic integer polynomials of degree $n$ with coefficients bounded by $H$, the density of those with $\\text{Gal} = S_n$ tends to $1$ as $H \\to \\infty$. Quantitative refinement (Chow-Wang 2017): the failure rate is $O(H^{-1/2} \\log H)$ for $n = 5$. So `exists_quintic` is *constructively* witnessed by $x^5 - 4x + 2$ but *generically* true: a uniformly random monic integer quintic of bounded height almost surely has $\\text{Gal} = S_5$, hence is not solvable by radicals.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Polynomial.natDegree",
+      "witness construction",
+      "Galois group computation",
+      "irreducibility (Eisenstein criterion)",
+      "Frobenius group F_20 = ℤ/5 ⋊ ℤ/4",
+      "degree vs group-structural obstruction",
+      "discriminant square criterion ($G \\subseteq A_n$ iff $\\text{disc}(f) \\in (\\mathbb{Q}^\\times)^2$)",
+      "Jordan's lemma for transitive subgroups of $S_p$ (prime $p$)",
+      "complex conjugation as a 2-cycle (when $f$ has exactly two non-real roots)",
+      "Hilbert irreducibility theorem (density of $\\text{Gal} = S_n$)",
+      "Chow-Wang 2017 (quantitative Hilbert irreducibility for $n = 5$)",
+      "Dummit-Foote Ch. 14 §14.8 (practical Galois group computation recipe)"
+    ],
+    "prerequisites": [
+      "Polynomial.natDegree_pow",
+      "Polynomial.natDegree_X",
+      "irreducibility of polynomials over ℚ",
+      "Eisenstein's criterion at a prime",
+      "Galois group computation for polynomial splitting fields",
+      "solvable vs non-solvable groups (derived series)",
+      "Frobenius group F_20 = ℤ/5 ⋊ ℤ/4 as solvable transitive subgroup of S_5",
+      "discriminant of a polynomial $\\text{disc}(f) = \\prod_{i<j}(\\alpha_i - \\alpha_j)^2$",
+      "Jordan's lemma (transitive subgroup of $S_p$ containing a 2-cycle is all of $S_p$, $p$ prime)",
+      "Hilbert irreducibility theorem (1892): density of $\\text{Gal} = S_n$ specializations is 1"
+    ]
+  },
+  {
+    "id": "ann-contrapositive",
+    "proofId": "abel-ruffini",
+    "anchor": {
+      "type": "declaration",
+      "name": "not_solvable_by_rad_of_not_solvable_gal",
+      "kind": "theorem"
+    },
+    "type": "insight",
+    "title": "The Abel-Ruffini Contrapositive: The Main Event",
+    "content": "`not_solvable_by_rad_of_not_solvable_gal` is the logical heart of the formalization. It takes the contrapositive of `galois_bridge`: if the Galois group of an irreducible polynomial $q$ is **not** solvable and $\\alpha$ is a root, then $\\alpha$ is **not** solvable by radicals.\n\nThe Lean proof is a textbook example of contrapositive reasoning in tactic mode: `intro hrad` assumes the negated conclusion ($\\alpha$ is solvable by radicals), then `exact hns (galois_bridge α q hq hroot hrad)` applies the forward direction of the bridge to obtain `IsSolvable q.Gal`, which contradicts hypothesis `hns`. This 2-line proof compresses centuries of mathematics — from Lagrange's 1770 analysis of resolvents through Abel's 1824 impossibility to Galois's 1832 group-theoretic framework — into a single `intro`/`exact` pair.\n\nTo instantiate Abel-Ruffini for a *specific* unsolvable quintic, one would exhibit $q \\in \\mathbb{Q}[X]$ with $\\text{Gal}(q) \\cong S_5$. The standard example is $x^5 - x - 1$: irreducibility mod 2 (giving a 5-cycle via Cauchy's theorem), a non-square discriminant ($\\Delta = 2869 = 19 \\times 151$, so $\\text{Gal}(f) \\not\\subseteq A_5$), and the existence of exactly three real roots — proved via Sturm's theorem, which gives the exact count, unlike Descartes' rule which gives only an upper bound — contribute a complex-conjugation transposition to $\\text{Gal}(f)$. These three ingredients together force $\\text{Gal}(x^5 - x - 1/\\mathbb{Q}) = S_5$.\n\n**Why the contrapositive *is* the historically and operationally canonical form.** The theorem `not_solvable_by_rad_of_not_solvable_gal` is *not* an arbitrary repackaging of `galois_bridge`: it is the exact statement Abel proved in his 1824 pamphlet *Mémoire sur les équations algébriques où on démontre l'impossibilité de la résolution de l'équation générale du cinquième degré*. Abel did not prove the biconditional — he proved an *impossibility result*, with the direction precisely matching the contrapositive form: assuming a polynomial were solvable by radicals, the Galois-theoretic structure of its splitting field would force a solvable group; the generic quintic has $S_5$, which is non-solvable; therefore the generic quintic is not solvable by radicals. The biconditional form `IsSolvableByRad ↔ IsSolvable q.Gal` is Galois's 1832 contribution (the *characterization* of radical solvability), but the *impossibility* direction Abel proved is precisely this file's main theorem. The contrapositive is therefore the *historically authentic* statement of Abel-Ruffini, with the biconditional being Galois's strengthening — the file correctly names its main result after the impossibility direction (Abel-Ruffini), not the characterization (Galois's criterion).\n\n**Tactic-style choice: `intro hrad; exact ...` versus `mt galois_bridge ... hns`.** The two-line tactic proof is equivalent to the one-line term-mode proof `mt (galois_bridge α q hq hroot) hns`, which uses Mathlib's `mt : (a → b) → (¬b → ¬a)` (modus tollens). Both proofs share the same proof term up to definitional equality; the choice between them is pedagogical: the `intro hrad; exact ...` form makes the contrapositive logic explicit at the goal-state level (Lean displays `hrad : IsSolvableByRad F α ⊢ False` after `intro`, making the contradiction visible), while `mt` compresses the logic into a single combinator application. The file uses the explicit tactic form because Abel-Ruffini is a *teaching* result: the 2-line proof reveals the logical structure to the reader, where `mt` would hide it inside a library lemma name. This is the same pedagogical principle that drives all of this file's wrapper architecture — explicit composition over hidden delegation.\n\n**What this 2-line proof does *not* contain — the structural delegation to `galois_bridge` and Mathlib's `solvableByRad.isSolvable'`.** The heavy lifting is *entirely* in `galois_bridge` (Part II of this file, lines 51–57), which is itself a 2-line wrapper around Mathlib's `solvableByRad.isSolvable'` (declared in `Mathlib.FieldTheory.AbelRuffini`). The Mathlib lemma's proof is approximately 50 lines and builds the structural argument: a radical tower $F = F_0 \\subseteq F_1 \\subseteq \\cdots \\subseteq F_k$ (each $F_{i+1} = F_i(\\sqrt[n_i]{a_i})$) produces a Galois group $\\text{Gal}(F_k/F)$ that is solvable, because each radical step $F_i \\hookrightarrow F_{i+1}$ contributes an abelian factor (cyclic of order $n_i$ after adjoining roots of unity, by Kummer theory). The recursive composition yields a solvable composition series. This file's contribution is the *logical repackaging* (contrapositive) of that structural theorem into the form most useful for downstream applications — proving that *specific* polynomials are unsolvable, not characterizing radical solvability in general.\n\n**The 'last mile' that this theorem does not deliver — and the gallery's closing of it.** `not_solvable_by_rad_of_not_solvable_gal` is *universal*: it works for *any* polynomial with non-solvable Galois group. But applying it requires a *specific* polynomial whose Galois group is provably non-solvable — and constructing such a polynomial in Lean is non-trivial. The file's `exists_quintic` (lines 131–135) provides only a degree-5 witness ($X^5$, trivially), not a non-solvable Galois group witness. The substantive missing step — exhibiting an irreducible quintic with $\\text{Gal} \\cong S_5$ — is delivered by the companion entry `abel-ruffini-oq-04-oq-01` (the $x^5 - 4x + 2$ specialization): Eisenstein-at-$p = 2$ irreducibility, exactly three real roots (forcing a complex conjugation transposition in $\\text{Gal}$), and `galActionHom` bijectivity (the action on the 5 roots is faithful and transitive, embedding $\\text{Gal} \\hookrightarrow S_5$ as a transitive subgroup containing a transposition and a 5-cycle, hence equal to all of $S_5$). Composing that companion entry's witness with `not_solvable_by_rad_of_not_solvable_gal` yields the gallery's *only* end-to-end machine-verified concrete unsolvable quintic. The architectural lesson: a clean general theorem (here) requires a difficult specific witness (companion entry) to deliver a concrete impossibility result — the same labor split visible in Hilbert's 17th problem, the Bombieri-Lang conjecture, and any 'specific witness' theorem in number theory.",
+    "mathContext": "$\\neg\\,\\text{IsSolvable}(q.\\text{Gal}) \\Rightarrow \\neg\\,\\text{IsSolvableByRad}\\,F\\,\\alpha$.\n\nProof: Assume $\\text{IsSolvableByRad}\\,F\\,\\alpha$. By `galois_bridge`, $\\text{IsSolvable}(q.\\text{Gal})$. Contradiction with $\\neg\\,\\text{IsSolvable}(q.\\text{Gal})$. $\\square$\n\n**Classical worked example.** $q = x^5 - x - 1$ over $\\mathbb{Q}$ has $\\text{Gal}(q) \\cong S_5$ (irreducibility-mod-2 + non-square discriminant $\\Delta = 2869 = 19 \\cdot 151$ + three real roots; see annotation content for the full 3-ingredient construction). $S_5$ is not solvable, so `not_solvable_by_rad_of_not_solvable_gal` certifies that the roots of $x^5 - x - 1$ are not expressible by radicals.\n\n**Formalized gallery witness.** The companion entry `abel-ruffini-oq-04-oq-01` machine-verifies the analogous statement $\\text{Gal}(x^5 - 4x + 2 / \\mathbb{Q}) \\cong S_5$ with 0 sorries and 0 axioms, using a different (Eisenstein-at-$p = 2$ + `galActionHom` bijectivity) recipe. Applying `not_solvable_by_rad_of_not_solvable_gal` to that polynomial therefore yields the gallery's only end-to-end machine-verified concrete unsolvable quintic: the roots of $x^5 - 4x + 2$ are provably not expressible by radicals in Lean. The Selmer-style $x^5 - x - 1$ argument remains unformalized (the irreducibility of $x^n - x - 1$ is Selmer's 1956 theorem, not yet in Mathlib), so $x^5 - 4x + 2$ is the canonical concrete witness this contrapositive operates on at the present formalization frontier.\n\n**Historical authenticity of the contrapositive form.** Abel's 1824 pamphlet proves *exactly* the contrapositive direction (impossibility), not the biconditional. The biconditional form `IsSolvableByRad F α ↔ IsSolvable q.Gal` is Galois's 1832 strengthening — the *characterization* of radical solvability via Galois groups. The file's name 'AbelRuffini.lean' and the theorem's name (`not_solvable_by_rad_of_not_solvable_gal`) correctly assign credit: Abel proved the impossibility direction (this theorem), Galois proved the characterization (`galois_bridge` plus its converse, the latter being Mathlib's `solvableByRad.isSolvable'`). The two-direction split — Abel's impossibility + Galois's characterization — explains the file's modular architecture, with `galois_bridge` (Galois's direction) cited inside `not_solvable_by_rad_of_not_solvable_gal` (Abel's direction).\n\n**Tactic equivalence: `intro hrad; exact hns (galois_bridge ...)` vs `mt (galois_bridge ...) hns`.** The two-line tactic form unfolds to the same proof term as the one-line `mt` term-mode form. Definitionally: `mt : (a → b) → (¬b → ¬a) := fun hab hnb ha => hnb (hab ha)`, so `mt (galois_bridge α q hq hroot) hns hrad = hns ((galois_bridge α q hq hroot) hrad)` — exactly the file's expansion. The choice of the tactic form is pedagogical, exposing the contrapositive logic at the goal-state level.\n\n**Delegation chain for `galois_bridge`.** $\\text{IsSolvableByRad}(F, \\alpha) \\xrightarrow{\\text{galois\\_bridge}} \\text{IsSolvable}(q.\\text{Gal}) \\xrightarrow{\\text{Mathlib.solvableByRad.isSolvable'}} \\text{abelian composition factors via Kummer theory}$. The Mathlib lemma's proof builds the composition series from the radical tower by adjoining roots of unity (Kummer correspondence: $F(\\sqrt[n]{a})/F$ has cyclic Galois group of order dividing $n$ when $F$ contains a primitive $n$-th root of unity) and inducting on tower depth. This file inherits the full strength of Kummer theory through the single citation `galois_bridge`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "contrapositive reasoning",
+      "proof by contradiction",
+      "irreducible polynomial",
+      "Galois group computation",
+      "abel-ruffini-oq-04-oq-01",
+      "inverse-galois-oq-06",
+      "modus tollens (mt) combinator",
+      "Abel's 1824 impossibility",
+      "Galois's 1832 characterization",
+      "Mathlib solvableByRad.isSolvable'",
+      "Kummer theory",
+      "radical tower composition series",
+      "Selmer 1956 irreducibility theorem",
+      "abel-ruffini-oq-04-oq-01 (companion witness)",
+      "end-to-end concrete unsolvable quintic",
+      "pedagogical wrapper architecture"
+    ],
+    "prerequisites": [
+      "galois_bridge",
+      "IsSolvable",
+      "IsSolvableByRad",
+      "contrapositive logic (`mt` / modus tollens)",
+      "Galois group of a polynomial",
+      "radical tower",
+      "Kummer correspondence ($F(\\sqrt[n]{a})/F$ cyclic)",
+      "Mathlib's `solvableByRad.isSolvable'`",
+      "Abel-Ruffini's historical attribution split (Abel 1824 + Galois 1832)"
+    ]
+  },
+  {
+    "id": "ann-part-vi-threshold",
+    "proofId": "abel-ruffini",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "Part VI: The Threshold at Degree 5"
+    },
+    "type": "insight",
+    "title": "Part VI: Why Degree 5 Is the Exact Threshold",
+    "content": "Part VI explains the sharp transition at degree 5 by comparing the derived series of $S_4$ and $S_5$.\n\nFor $S_4$: the derived series terminates because $A_4$ contains the Klein four-group $V_4 = \\{e, (12)(34), (13)(24), (14)(23)\\}$ as a normal subgroup. The full chain is $S_4 \\triangleright A_4 \\triangleright V_4 \\triangleright \\langle(12)(34)\\rangle \\triangleright \\{e\\}$, with all quotients abelian. Each abelian quotient in the composition series corresponds to a radical extraction step in Cardano/Ferrari's formulas: $S_4/A_4 \\cong \\mathbb{Z}/2$ gives the discriminant square root, $A_4/V_4 \\cong \\mathbb{Z}/3$ gives the cube root in Cardano's resolvent, and so on.\n\nFor $S_5$: the derived series stalls at $A_5$ because $A_5$ is simple and non-abelian. $[S_5, S_5] = A_5$ and $[A_5, A_5] = A_5$ (since $A_5$ is perfect), so $D^k(S_5) = A_5$ for all $k \\geq 1$. No abelian quotient can be extracted, so no radical step can proceed.\n\n**Geometric picture.** This algebraic threshold has a Platonic-solid interpretation: $S_4$ is the rotation group of the cube (acting on its four space diagonals), $A_4$ is the rotation group of the regular tetrahedron inscribed in the cube, and $V_4$ comprises the three 180° rotations about the cube's face-axes — geometrically *visible* normal subgroups whose abelian quotients underwrite Ferrari's formula. The icosahedron's rotation group $I \\cong A_5$ admits no analogous inscribed sub-symmetry: simplicity of $A_5$ means no rotation orbit short of the full group is closed under conjugation. The cube/icosahedron dichotomy is thus the geometric face of the radical-solvability threshold.\n\nThe Lean formalization now captures this transition completely: `inferInstance` succeeds for $S_0, S_1$ (Part IV), `Equiv.Perm.not_solvable` blocks $S_n$ for $n \\geq 5$ (Part III), and the companion entry `abel-ruffini-oq-04-oq-02` provides the three intermediate instances — $S_2$ via commutativity (`isSolvable_of_comm`), $S_3$ via the short exact sequence $1 \\to A_3 \\to S_3 \\to \\mathbb{Z}^\\times \\to 1$ using `solvable_of_ker_le_range`, and $S_4$ via the Klein four-group chain $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4 \\trianglelefteq S_4$. Together these results establish the full biconditional: $S_n$ is solvable if and only if $n \\leq 4$.",
+    "mathContext": "The transition is governed by the structure of $A_n$:\n- $A_3 \\cong \\mathbb{Z}/3$ (cyclic, hence abelian and solvable)\n- $A_4$: has normal subgroup $V_4$ with $A_4/V_4 \\cong \\mathbb{Z}/3$ and $V_4 \\cong (\\mathbb{Z}/2)^2$ (abelian quotients → solvable)\n- $A_5$: simple, $|A_5| = 60$, conjugacy classes of sizes $1, 15, 20, 12, 12$. No proper nontrivial normal subgroup (no sub-sum including 1 divides 60). The jump from $A_4$ (solvable) to $A_5$ (simple) is the structural cause of Abel-Ruffini's impossibility.\n\n$A_5$ is also perfect: $[A_5, A_5] = A_5$ since the only normal subgroups are $\\{e\\}$ and $A_5$ itself, and $[A_5, A_5] \\neq \\{e\\}$ because $A_5$ is non-abelian.\n\n**Quantitative manifestation of the threshold (the measure-theoretic face).** The structural threshold above is matched by a *measure-theoretic* threshold at the same $n = 5$. For $n \\leq 4$, the entire host group $S_n$ is solvable, so *every* irreducible polynomial $f \\in \\mathbb{Q}[X]$ of degree $n$ has solvable Galois group (since $\\mathrm{Gal}(f)$ embeds as a transitive subgroup of $S_n$ and subgroups of solvable groups are solvable) — the radical-solvable proportion is $1$ at every degree $\\leq 4$. At $n = 5$ this binary inverts: by **van der Waerden (1934)**, the proportion of integer-coefficient quintics with $\\max|c_i| \\leq H$ whose Galois group is *not* $S_5$ is $O(H^{-1/2} \\log H)$, and **Bhargava (2010, *Annals of Math.* 172: 1559–1591)** quantified the analogous discriminant-ordered statement: $N_5(X; S_5) \\sim c_5 X$ dominates, while solvable cases $N_5(X; \\{C_5, D_5, F_{20}\\}) = O(X^{1/2})$ vanish in relative proportion $O(X^{-1/2})$. **Bhargava-Shankar-Tsimerman (2023)** resolved van der Waerden's 1936 conjecture: the unsolvable proportion is exactly $1 - O(H^{-1})$, asymptotically optimal. The threshold at $n = 5$ is therefore both *structural* (derived series stops terminating) and *measure-theoretic* (radical-solvable Galois groups change from totality to thin set). See keyInsight #22 (Hilbert irreducibility / van der Waerden), keyInsight #34 (Bhargava-Shankar-Tsimerman 2023), and openQuestion #13 (Bhargava-Malle quintic field counting) for the full quantitative development, and `inverse-galois-f20` for the explicit solvable degree-5 witness $X^5 - 2$ that lives in the vanishing $O(X^{-1/2})$ proportion.",
+    "significance": "key",
+    "relatedConcepts": [
+      "perfect group",
+      "Jordan-Hölder theorem",
+      "abelian quotient",
+      "radical extraction",
+      "Cardano's formula",
+      "Ferrari's formula",
+      "van der Waerden 1934 generic-Galois density",
+      "Bhargava 2010 discriminant-ordered counting $N_5(X; G)$",
+      "Bhargava-Shankar-Tsimerman 2023 (van der Waerden's conjecture)",
+      "Hilbert irreducibility theorem",
+      "measure-theoretic vs structural threshold",
+      "inverse-galois-f20 (solvable degree-5 witness)",
+      "keyInsight #22 (Hilbert irreducibility)",
+      "keyInsight #34 (Bhargava-Shankar-Tsimerman)",
+      "abel-ruffini-galois-extensions (sibling companion: complete $S_n$ classification for $n \\leq 4$ via Klein-four chain $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4 \\trianglelefteq S_4$)",
+      "abel-ruffini-oq-04-oq-02 (companion: instance build-out for $S_2, S_3, S_4$ via `solvable_of_ker_le_range` and Klein-four normality)",
+      "derived length $\\text{dl}(S_4) = 3$ vs $\\text{dl}(S_5) = \\infty$ (the quantitative form of the threshold)",
+      "$A_5 \\cong \\text{PSL}(2, 5) \\cong I$ icosahedral correspondence (Klein 1884)"
+    ],
+    "prerequisites": [
+      "derived series",
+      "composition series",
+      "Klein four-group",
+      "simple groups",
+      "conjugacy classes",
+      "transitive subgroups of $S_n$ (Galois group as such)",
+      "asymptotic field counting (van der Waerden 1934; Bhargava 2010)"
+    ]
+  },
+  {
+    "id": "ann-part-vii-historical",
+    "proofId": "abel-ruffini",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "Part VII: Historical Significance"
+    },
+    "type": "insight",
+    "title": "Part VII: The Impossibility Paradigm and Historical Significance",
+    "content": "Part VII frames Abel-Ruffini as the prototype of **impossibility proofs** — a methodological revolution in mathematics. The commentary identifies five distinct contributions:\n\n1. **Conceptual shift**: Before Abel, mathematicians sought a quintic formula. Abel showed the search was futile — a qualitative change in mathematical reasoning from constructive to existential impossibility.\n\n2. **Birth of abstract algebra**: Galois's group-theoretic framework for solvability was the first major instance of studying algebraic structures for their own sake, independent of any specific equation. This launched group theory, field theory, and eventually all of modern algebra. Galois himself coined the noun *groupe* in his 1830 manuscript (*Analyse d'un mémoire sur la résolution algébrique des équations*, *Bulletin de Férussac* XIII, p. 271), making the abstract group concept — a set with one composition law satisfying associativity, identity, and inverses — the first algebraic structure axiomatized for its own sake. Cayley's 1854 *On the theory of groups* (*Philosophical Magazine* 7) then gave the first stand-alone axiomatic definition divorced from any specific permutation realization, completing Galois's structural turn.\n\n3. **Impossibility methodology**: The technique of proving something *cannot* be done became a recurring theme. The chronologically first descendant is **Wantzel (1837)**, *Recherches sur les moyens de reconnaître si un Problème de Géométrie peut se résoudre avec la règle et le compas* (Journal de Mathématiques Pures et Appliquées, vol. 2, pp. 366–372) — published only five years after Galois's death and *nine years before* Liouville's 1846 edition of Galois's manuscripts, deploying Galois's framework via the 'Galois underground' (Chevalier letter + Liouville's curation circle at the École Polytechnique). Wantzel proved the four classical compass-and-straightedge impossibilities (angle trisection of 60°, doubling the cube, regular heptagon and 9-gon) by the *exact same template* Abel-Ruffini exhibits: translate the expressibility question into a structural invariant of the field extension $F(\\alpha)/F$, characterize the class for which expressibility holds (2-group Galois groups vs solvable Galois groups), and exhibit a violating instance (e.g., $|\\text{Gal}(8X^3 - 6X - 1/\\mathbb{Q})| = 3$ for $\\cos 20°$, formalized in `angle-trisection-cos-20-gal`). This was the first recognition that Galois's framework *generalizes beyond radicals* — a methodological breakthrough that inaugurated the impossibility-proof tradition. The subsequent canonical descendants are: **Liouville's transcendentals** (1844, the first explicit transcendentals via Diophantine approximation), **Lindemann's transcendence of $\\pi$** (1882, impossibility of squaring the circle), **Cantor's diagonal argument** (1891, uncountability of $\\mathbb{R}$), **Gödel's incompleteness** (1931, impossibility of complete consistent arithmetic), **Turing's halting problem** (1936, impossibility of universal decidability), and **Matiyasevich's negative resolution of Hilbert's 10th** (1970, impossibility of Diophantine decision procedures). All seven sit on the same Galois–Wantzel methodological lineage that Abel-Ruffini inaugurated in 1824/1832, each translating a positive search ('find a method to...') into a structural invariant whose absence witnesses impossibility. See keyInsight #24 in `meta.json` for the full Wantzel transmission history through the Galois underground (1832–1846).\n\n4. **Existence vs. expressibility**: A subtle but crucial distinction — quintic equations **do** have solutions in $\\mathbb{C}$ (by the Fundamental Theorem of Algebra, see `fundamental-theorem-algebra`), and can be approximated numerically to arbitrary precision. Abel-Ruffini shows only that the roots cannot be *named* using the specific symbolic vocabulary of $+, -, \\times, \\div, \\sqrt[n]{\\phantom{x}}$.\n\n5. **Precise characterization**: Galois theory doesn't merely say 'quintics are unsolvable' — it classifies which polynomials of *any* degree are solvable by radicals: exactly those with solvable Galois groups.\n\nThe `end AbelRuffini` on line 187 closes the namespace, completing a self-contained modular development that can be imported and reused via `import Proofs.AbelRuffini`.",
+    "mathContext": "Abel-Ruffini sits in an expressibility hierarchy:\n- **Irrationality** ($\\sqrt{2} \\notin \\mathbb{Q}$, c. 500 BCE): certain quantities escape rational expressions\n- **Radical inexpressibility** (Abel-Ruffini, 1824): certain algebraic quantities escape radical expressions\n- **Algebraic inexpressibility** (Hermite-Lindemann, 1882): $e, \\pi \\notin \\overline{\\mathbb{Q}}$ — certain quantities escape all polynomial equations\n- **Computational undecidability** (Turing, 1936): certain predicates escape all algorithms\n\nNotably, the impossibility is framework-specific: Hermite (1858) solved the general quintic via elliptic modular functions $j(\\tau)$, and Puiseux series always express algebraic roots. The barrier is about the operations allowed, not about the roots themselves.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "impossibility proof",
+      "Fundamental Theorem of Algebra",
+      "Wantzel 1837 (first descendant)",
+      "compass-and-straightedge impossibilities",
+      "Galois underground (1832–1846)",
+      "Cauchy-Liouville transmission",
+      "Galois 1830 coining of \"groupe\"",
+      "Cayley 1854 axiomatic groups",
+      "transcendence of pi",
+      "Liouville 1844 transcendentals",
+      "Cantor diagonal argument",
+      "Gödel incompleteness",
+      "Turing halting problem",
+      "Matiyasevich Hilbert 10",
+      "angle trisection",
+      "angle-trisection-cos-20-gal",
+      "Puiseux series",
+      "elliptic modular functions",
+      "monodromy groups",
+      "topological Galois theory",
+      "fundamental group of configuration spaces",
+      "branched coverings",
+      "keyInsight #24 (Wantzel methodological-descendant)"
+    ],
+    "prerequisites": [
+      "impossibility proofs",
+      "Fundamental Theorem of Algebra",
+      "expressibility hierarchies",
+      "history of compass-and-straightedge constructibility",
+      "Wantzel-Galois constructibility criterion"
+    ]
+  }
+]

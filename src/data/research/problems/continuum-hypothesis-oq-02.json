@@ -1,0 +1,155 @@
+{
+  "slug": "continuum-hypothesis-oq-02",
+  "title": "Continuum size constraints and cardinal characteristics",
+  "phase": "NEW",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "ContinuumHypothesis.continuum \\ne Cardinal.aleph 0, ContinuumHypothesis.continuum \\ne Cardinal.aleph \\omega, successor alephs satisfy the possible-continuum predicate, and \\aleph_1 \\le \\mathfrak b \\le \\mathfrak d \\le 2^{\\aleph_0}.",
+    "plain": "Backfill the set-theoretic metadata around possible values of the continuum: Konig-style cofinality excludes aleph_omega, successor alephs remain possible, and bounding/dominating cardinal characteristics sit between aleph_1 and the continuum.",
+    "whyMatters": [
+      "The continuum problem is not just CH versus not-CH; ZFC also imposes cofinality constraints on possible continuum values.",
+      "Bounding and dominating numbers provide a finer structure between aleph_1 and 2^aleph_0.",
+      "The Lean file cleanly separates proved cardinal-arithmetic scaffolding from deep forcing/MA assumptions."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`aleph_one_is_regular`, `aleph_succ_is_regular`, `aleph_omega_is_singular`, and `konig_cofinality` provide the cofinality infrastructure.",
+      "`continuum_ne_aleph_omega`, `IsPossibleContinuumValue`, `successor_alephs_possible`, and `aleph_omega_not_possible` formalize the possible-continuum-value split.",
+      "`eventuallyDominates`, `IsUnbounded`, `IsDominating`, `boundingNumber`, and `dominatingNumber` define the cardinal-characteristic layer.",
+      "`dominating_le_continuum`, `bounding_le_dominating`, `characteristics_chain`, `easton_konig_characterization`, and `zfc_constraints_on_continuum` summarize the ZFC-side constraints."
+    ],
+    "open": [
+      "`bounding_number_uncountable` and `MA_implies_b_eq_continuum` remain axiom-backed in `ContinuumHypothesisOQ02.lean`; the file has zero sorries."
+    ],
+    "goal": "Expose the verified continuum-value and cardinal-characteristic scaffold while marking the forcing-strength inputs as assumptions."
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-23T00:42:35.521Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "ASSESSED: bounding_number_uncountable proof strategy documented. Main Lean challenge: enumerating countable sets.",
+    "builtItems": [
+      "aleph_one_is_regular: proved from Mathlib Cardinal.isRegular_aleph_one",
+      "aleph_succ_is_regular: proved from Mathlib for all successor alephs",
+      "aleph_omega_is_singular: proved singular from cofinality axiom",
+      "continuum_ne_aleph_omega: proved 2^aleph_0 != aleph_omega via Konig",
+      "IsPossibleContinuumValue: predicate for consistent continuum values (regular + >= aleph_1)",
+      "successor_alephs_possible: all successor alephs are possible continuum values",
+      "aleph_omega_not_possible: aleph_omega ruled out (singular)",
+      "eventuallyDominates, IsUnbounded, IsDominating: definitions for cardinal characteristics",
+      "boundingNumber, dominatingNumber: definitions of b and d",
+      "characteristics_chain: proved aleph_1 <= b <= d <= 2^aleph_0",
+      "ch_determines_characteristics: proved CH collapses b = d = aleph_1",
+      "MA_collapses_characteristics: proved MA implies b = d = 2^aleph_0",
+      "easton_konig_characterization: both possible and impossible values exist",
+      "the_open_question: at least two distinct possible values + ruled-out values",
+      "Gallery data: meta.json, index.ts, annotations.json, tacticStates.json created",
+      "aleph_omega_cof_eq_omega: proved from Mathlib (was axiom)",
+      "bounding_le_dominating: proved via infimum reasoning (was axiom)",
+      "easton_regular_consistency: proved as trivial (was axiom)",
+      "MartinsAxiom: converted from axiom to opaque",
+      "Proved konig_cofinality (theorem, 3 lines)",
+      "Proved dominating_le_continuum (theorem, 7 lines)"
+    ],
+    "insights": [
+      "Konig cofinality constraint is the ONLY constraint beyond Cantor lower bound",
+      "Spectrum of possible values = regular uncountable cardinals (complete characterization)",
+      "Cardinal characteristics b, d provide intermediate structure between aleph_1 and 2^aleph_0",
+      "CH collapses all characteristics; MA makes them maximal",
+      "Three natural scenarios: aleph_1 (CH), aleph_2 (PFA), and exotic values",
+      "8 axioms kept minimal: Konig, Easton, cardinal char bounds, MA, and aleph_omega cofinality",
+      "Cardinal.cof_aleph gives cofinality of aleph at limit ordinals from Mathlib",
+      "bounding_le_dominating provable via le_ciInf + ciInf_le using dominating_implies_unbounded",
+      "easton_regular_consistency had conclusion True — axiom was vacuous",
+      "MartinsAxiom as axiom Prop pollutes axiom environment — opaque Prop is cleaner",
+      "konig_cofinality proved from Cardinal.lt_cof_power (König consequence in Mathlib)",
+      "dominating_le_continuum proved trivially: empty set is not dominating so infimum term equals continuum",
+      "Cardinal.lt_cof_power: for ℵ₀ ≤ a and 1 < b, a < (b^a).ord.cof — directly gives cf(2^ℵ₀) > ℵ₀",
+      "bounding_number_uncountable: Hausdorff diagonal argument — standard but requires constructive proof of dominance",
+      "MA_implies_b_eq_continuum: forcing/transfinite recursion — deep set-theoretic result",
+      "Both remaining axioms are appropriate — no further elimination possible",
+      "bounding_number_uncountable IS PROVABLE: standard diagonalization. Countable F → enumerate {f_n} → g(k)=max{f_i(k):i≤k} → g eventually dominates all f_n",
+      "Proof sketch: le_ciInf, split on IsUnbounded. For unbounded F with mk F < ℵ₁, get countable enum, construct diagonal g, show g bounds F. Contradiction.",
+      "Needs: Cardinal.lt_aleph_one_iff for countability, Finset.sup for pointwise max, Set.Countable.exists_surjective for enumeration",
+      "MA_implies_b_eq_continuum is genuinely deep (Martin Axiom machinery)",
+      "bounding_number_uncountable proof strategy: for countable F = {f_n}, define g(k) = max(f_0(k),...,f_k(k))+1, then g eventually dominates each f_n",
+      "Key Lean challenge: need Countable instance for Set to enumerate, then build the diagonal function, then prove eventuallyDominates for each element"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove bounding_number_uncountable: countable_not_unbounded via diagonal argument",
+      "Need Set.Countable → ∃ enum : ℕ → α, to construct diagonal function"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "extension",
+    "set-theory",
+    "foundations",
+    "cardinal-arithmetic",
+    "cardinal-characteristics",
+    "axiom-backed"
+  ],
+  "relatedProofs": [
+    "continuum-hypothesis",
+    "continuum-hypothesis-oq-01",
+    "continuum-hypothesis-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-23T00:42:35.520Z",
+  "lastUpdate": "2026-03-23T00:42:35.520Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/ContinuumHypothesis.lean",
+      "filename": "ContinuumHypothesis.lean",
+      "lineCount": 396,
+      "theoremCount": 8,
+      "axiomCount": 4,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ContinuumHypothesis.lean"
+    },
+    {
+      "path": "Proofs/ContinuumHypothesisOQ01.lean",
+      "filename": "ContinuumHypothesisOQ01.lean",
+      "lineCount": 318,
+      "theoremCount": 20,
+      "axiomCount": 10,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ContinuumHypothesisOQ01.lean"
+    },
+    {
+      "path": "Proofs/ContinuumHypothesisOQ02.lean",
+      "filename": "ContinuumHypothesisOQ02.lean",
+      "lineCount": 585,
+      "theoremCount": 32,
+      "axiomCount": 2,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ContinuumHypothesisOQ02.lean"
+    }
+  ]
+}

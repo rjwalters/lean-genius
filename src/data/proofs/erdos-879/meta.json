@@ -1,0 +1,192 @@
+{
+  "id": "erdos-879",
+  "title": "Erdős Problem #879: Maximum Sum of Pairwise Coprime Sets",
+  "slug": "erdos-879",
+  "description": "For admissible (pairwise coprime) sets S ⊆ {1,...,n}, what is the maximum sum G(n)? Erdős-Van Lint proved H(n) - n^{3/2} < G(n) < H(n) where H(n) = Σp + n·π(√n). Open: Is G(n) > H(n) - n^{1+o(1)}?",
+  "meta": {
+    "author": "Erdős-Van Lint",
+    "sourceUrl": "https://erdosproblems.com/879",
+    "date": "",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos879Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "coprime-sets",
+      "additive-combinatorics",
+      "prime-sums",
+      "optimization",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 879,
+    "erdosUrl": "https://erdosproblems.com/879",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Coprime",
+        "description": "Coprimality predicate",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.factorization",
+        "description": "Prime factorization",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Finite sums",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsAdmissible predicate for pairwise coprime sets",
+      "setSum, admissibleSetsUpTo definitions",
+      "G function: maximum sum of admissible sets",
+      "primeCountingFn, sumOfPrimes, H function",
+      "G_upper_bound, G_lower_bound axioms (Erdős-Van Lint bounds)",
+      "gap_grows axiom: (H-G)/n → ∞",
+      "Question1 definition: tighter lower bound conjecture",
+      "Question2 definition and question2_k2 axiom (k=2 solved)",
+      "primes_admissible theorem: constructive proof",
+      "erdos_879_summary: combines all known results"
+    ],
+    "axiomCount": 4,
+    "lineCount": 192,
+    "assumptions": "4 axioms: G_upper_bound, G_lower_bound, gap_grows, and 1 more. See Lean source for complete statements.",
+    "theoremCount": 2,
+    "definitionCount": 11
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #879, posed by Paul Erdős in collaboration with J.H. van Lint, investigates the maximum sum achievable by a pairwise coprime subset of {1,...,n}. The problem first appeared in [Er84e] and was revisited in [Er98]. It sits at the intersection of additive combinatorics and analytic number theory, connecting the structure of coprime sets to the distribution of primes.\n\nErdős and Van Lint defined the comparison function H(n) = Σ_{p<n} p + n·π(√n), which represents the sum one would obtain by taking all primes below n plus a correction term for semiprimes involving small primes. They proved the bounds H(n) - n^{3/2-o(1)} < G(n) < H(n), showing that the primes-plus-semiprimes strategy is nearly optimal. They also showed that (H(n) - G(n))/n → ∞, meaning the gap grows faster than linearly.\n\nThe problem poses two open questions. Question 1 asks whether the gap can be tightened to n^{1+o(1)}, which Erdős and Van Lint showed holds under plausible (but unproven) assumptions about prime distribution related to the twin prime conjecture. Question 2 asks whether optimal admissible sets must contain integers with arbitrarily many prime factors; the k=2 case (semiprimes) is proved, but k ≥ 3 remains open. The problem is closely related to Problem #878 and connects to OEIS sequence A186736.",
+    "problemStatement": "**Problem Statement (Open)**\n\nCall $S \\subseteq \\{1,\\ldots,n\\}$ **admissible** if $(a,b)=1$ for all distinct $a,b \\in S$. Define:\n$$G(n) = \\max_S \\sum_{a \\in S} a, \\quad H(n) = \\sum_{p<n} p + n\\pi(\\sqrt{n})$$\n\n**Questions:**\n1. Is $G(n) > H(n) - n^{1+o(1)}$?\n2. For every $k \\geq 2$, does the optimal set contain an integer with $\\geq k$ prime factors?\n\n**Known Bounds (Erdős-Van Lint):**\n$$H(n) - n^{3/2-o(1)} < G(n) < H(n)$$\n$$(H(n) - G(n))/n \\to \\infty$$",
+    "text": "For admissible (pairwise coprime) sets S ⊆ {1,...,n}, what is the maximum sum G(n)? Erdős-Van Lint proved H(n) - n^{3/2} < G(n) < H(n) where H(n) = Σp + n·π(√n). Open: Is G(n) > H(n) - n^{1+o(1)}?",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization defines the core objects constructively where possible: IsAdmissible captures pairwise coprimality using Nat.Coprime, G(n) is defined as the supremum over sums of admissible sets, and H(n) is built from sumOfPrimes and primeCountingFn.\n\nThe three main results of Erdős-Van Lint are axiomatized since they require deep analytic number theory beyond Mathlib: the upper bound G(n) < H(n), the lower bound G(n) > H(n) - c·n^{3/2}, and the gap growth (H(n)-G(n))/n → ∞. The k=2 case of Question 2 is similarly axiomatized.\n\nThe key constructive result is primes_admissible, which directly proves that the set of primes below n forms an admissible set. The summary theorem erdos_879_summary ties together the three axiomatized bounds with a constructive proof using exact ⟨...⟩.",
+    "keyInsights": [
+      "**Primes Form an Admissible Set:** Any two distinct primes are coprime, so all primes below n form a natural admissible set whose sum is close to G(n)",
+      "**Semiprimes Boost the Sum:** A semiprime pq with p, q > √n can be added to the prime set without breaking coprimality, increasing the total sum beyond Σp",
+      "**Gap Between G and H:** The gap H(n) - G(n) lies between n^{1+o(1)} (conjectured) and n^{3/2-o(1)} (proved), with the exact exponent unknown",
+      "**Connection to Prime Distribution:** Question 1 holds under assumptions about prime gaps related to the twin prime conjecture",
+      "**Structural Complexity of Optimal Sets:** As n grows, optimal admissible sets must include composites with increasingly many prime factors (proved for k=2, open for k≥3)"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Additive combinatorics (sumsets, density)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "admissible-sets",
+      "title": "Admissible Sets",
+      "summary": "Defines `IsAdmissible S`: all pairs in $S$ are coprime ($\\gcd(a,b) = 1$ for $a \\neq b$). `setSum`: $\\sum_{a \\in S} a$. `admissibleSetsUpTo n`: all admissible subsets of $\\{1, \\ldots, n\\}$.",
+      "startLine": 39,
+      "endLine": 60,
+      "mathContext": "A set $S \\subseteq \\{1, \\ldots, n\\}$ is admissible if $\\gcd(a,b) = 1$ for all distinct $a, b \\in S$. The primes $\\leq n$ form an admissible set, but optimal sets also include 1 and some prime powers."
+    },
+    {
+      "id": "functions",
+      "title": "The Functions G(n) and H(n)",
+      "summary": "Defines $G(n) = \\max\\{\\sum S : S \\text{ admissible in } [n]\\}$ and the comparison function $H(n) = \\sum_{p \\leq n} p + n \\cdot \\pi(\\sqrt{n})$, where $\\pi$ is the prime counting function.",
+      "startLine": 61,
+      "endLine": 90,
+      "mathContext": "$G(n) = \\max_{S \\text{ admissible}} \\sum_{a \\in S} a$. $H(n) = \\sum_{p \\leq n} p + n \\cdot \\pi(\\sqrt{n})$. By PNT: $H(n) \\sim n^2/(2\\ln n)$, so $G(n) \\sim n^2/(2\\ln n)$."
+    },
+    {
+      "id": "bounds",
+      "title": "The Erdős-Van Lint Bounds",
+      "summary": "Axiomatizes: $H(n) - n^{3/2} < G(n) < H(n)$ and that the gap $H(n) - G(n)$ grows superlinearly (faster than any linear function of $n$).",
+      "startLine": 91,
+      "endLine": 116,
+      "mathContext": "Erdős-Van Lint: $H(n) - n^{3/2} < G(n) < H(n)$. The gap $H(n) - G(n)$ grows as $\\omega(n)$ (faster than linear). Upper bound: optimal set $\\subseteq$ primes $\\cup$ {1, prime powers near $n$}."
+    },
+    {
+      "id": "question1",
+      "title": "Question 1 (Open)",
+      "summary": "Is $G(n) > H(n) - n^{1+o(1)}$? This asks whether the gap is subpolynomial. Conditionally true under strong prime gap assumptions.",
+      "startLine": 117,
+      "endLine": 127,
+      "mathContext": "Question 1: Is $H(n) - G(n) = o(n^{1+\\varepsilon})$ for all $\\varepsilon > 0$? Equivalently, is the gap subpolynomial? Connected to prime gap conjectures."
+    },
+    {
+      "id": "question2",
+      "title": "Question 2 (Partially Solved)",
+      "summary": "Does the optimal admissible set contain integers with $k$ prime factors for each $k$? Solved for $k = 2$ (yes: includes semiprimes $pq$ near $n$). Open for $k \\geq 3$.",
+      "startLine": 128,
+      "endLine": 161,
+      "mathContext": "Question 2: $\\forall k$, does the optimal set contain an element with $\\omega(a) = k$ distinct prime factors? For $k = 2$: yes, semiprimes $pq \\leq n$ with $p, q > \\sqrt{n}$ can be added to the prime set. For $k \\geq 3$: open."
+    },
+    {
+      "id": "optimal-structure",
+      "title": "Optimal Admissible Set Structure",
+      "summary": "Constructively proves `primes_admissible`: the set of primes $\\leq n$ is admissible (since distinct primes are coprime). This provides a concrete lower bound $G(n) \\geq \\sum_{p \\leq n} p$.",
+      "startLine": 162,
+      "endLine": 175,
+      "mathContext": "Primes are pairwise coprime: $\\gcd(p, q) = 1$ for distinct primes $p, q$. So $G(n) \\geq \\sum_{p \\leq n} p \\sim n^2/(2\\ln n)$ by PNT."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "`erdos_879_summary`: combines the Erdős-Van Lint bounds, the solved $k=2$ case of Question 2, and the admissibility of primes into a single conjunction.",
+      "startLine": 176,
+      "endLine": 192,
+      "mathContext": "Known: $H(n) - n^{3/2} < G(n) < H(n)$, optimal sets contain semiprimes, primes are admissible. Open: tighter gap bounds, $k \\geq 3$ structure."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #879 asks about the maximum sum G(n) of pairwise coprime subsets of {1,...,n}. Erdős-Van Lint proved the bounds H(n) - n^{3/2} < G(n) < H(n) and that the gap grows superlinearly. The formalization axiomatizes these bounds and the solved k=2 case of Question 2, while constructively proving that the set of primes is admissible.",
+    "implications": "**Theoretical Significance**: **Number Theory Connections**\n\n1. **Prime Distribution:** Question 1 connects to assumptions about prime gaps and the twin prime conjecture\n\n**2. Additive Combinatorics:** The optimization problem over coprime sets bridges number theory and extremal combinatorics\n\n3. **Structure of Extremal Sets:** Question 2 reveals that optimal coprime sets have rich composite structure, not just primes\n\n4. **Asymptotic Analysis:** H(n) ~ n²/(2 ln n) by the prime number theorem, placing G(n) in the same asymptotic regime.",
+    "openQuestions": [
+      "Is G(n) > H(n) - n^{1+o(1)}? (Question 1, open)",
+      "Does the optimal set contain integers with k ≥ 3 prime factors? (Question 2 for k ≥ 3, open)",
+      "What is the exact exponent in the gap H(n) - G(n)?",
+      "Can the conditional proof of Question 1 be made unconditional?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.NumberTheory.ArithmeticFunction"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos879",
+    "lineCount": 192,
+    "axiomCount": 4,
+    "theoremCount": 2,
+    "definitionCount": 11,
+    "path": "Proofs/Erdos879Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1148",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, open"
+    },
+    {
+      "targetId": "erdos-200",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, open"
+    },
+    {
+      "targetId": "erdos-28",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, open"
+    }
+  ],
+  "sorries": 0
+}

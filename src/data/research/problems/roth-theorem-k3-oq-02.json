@@ -1,0 +1,87 @@
+{
+  "slug": "roth-theorem-k3-oq-02",
+  "title": "Can we formalize the alternative proof via triangle removal lemma, showing th...",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in combinatorics: Can we formalize the alternative proof via triangle removal lemma, showing th....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T01:04:30.839Z",
+    "iteration": 2,
+    "focus": "Explicit Ruzsa-Szemeredi graph construction and triangle-AP correspondence",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Replaced 1 vague sorry with complete proof structure: rsVertex_card (proved), rs_tc_ap_free_le (sorry), rs_removal_lb (sorry), roth_via_triangle_removal (complete, uses helpers), roth_proofs_agree (fixed). 2 focused sorries remain.",
+    "builtItems": [
+      "RothTriangleRemoval.lean: RS graph SimpleGraph definition on Fin 3 x ZMod N",
+      "APTriple structure: (a,b,c in A, a+b=2c)",
+      "triangle_yields_ap_triple: triangle in G(A) -> generalized 3-AP",
+      "ap_triple_yields_triangle: AP triple + base point -> triangle in G(A)",
+      "ap_free_forces_equal: AP-free => a=b=c in any AP triple",
+      "xy_edge_unique_triangle: each XY-edge in exactly one triangle when AP-free",
+      "ap_free_min_removal: edge removal lower bound |R| >= |A|N",
+      "Gallery entry: src/data/proofs/roth-theorem-k3-oq-02/",
+      "rsVertex_card: Fintype.card (RSVertex N) = 3 * N (proved)",
+      "rs_tc_ap_free_le: triangleCount RS \u2264 6|A|N when APFree (sorry - needs triangle counting argument)",
+      "rs_removal_lb: |R| \u2265 |A|\u00b7N when R makes RS triangle-free and APFree (sorry - needs edge-disjointness injectivity)",
+      "roth_via_triangle_removal: complete 60-line proof body connecting TRL to RS via helper lemmas",
+      "roth_proofs_agree: fixed broken proof (replaced min 1 (le_of_lt hdelta) with correct case split)"
+    ],
+    "insights": [
+      "RS construction naturally symmetric: forward diff (higher-part minus lower-part) makes Adj symmetric",
+      "XZ edge uses doubling condition (z-x = 2a) rather than division by 2, avoiding invertibility issues",
+      "AP-freeness proof via set d=c-a, then APFree forces d=0: clean 5-line argument",
+      "Edge-disjointness is the key: each edge in exactly one triangle when AP-free",
+      "linear_combination tactic essential for ZMod N arithmetic (linarith does not work)",
+      "Existing Mathlib uses triangle removal internally via corners chain, but does not expose the RS construction",
+      "Main proof structure: get rational eps_q=1/n0 < delta/18, apply TRL to get gamma, set N0=ceil(6/27gamma)+1, contradiction via delta*N^2 \u2264 |A|*N \u2264 |R| \u2264 9*eps_q*N^2 < delta*N^2",
+      "SzemerediCounting.lean has pre-existing timeout errors (lines 665, 1031) blocking full build verification",
+      "The two helper sorries have clear mathematical content: rs_tc_ap_free_le via bijection (a,x,sigma)->ordered-triangle, rs_removal_lb via XY-edge injectivity"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove rs_tc_ap_free_le: count ordered triangles (a,x,sigma in A x ZMod N x Fin 6) in RS graph",
+      "Prove rs_removal_lb: inject A x ZMod N into R via canonical XY-edge, use xy_edge_unique_triangle for injectivity",
+      "Fix SzemerediCounting.lean timeout errors (lines 665, 1031) to enable full build verification",
+      "Consider Aristotle submission for rs_tc_ap_free_le (HARD: needs triangleCount API knowledge)"
+    ]
+  },
+  "tags": [
+    "szemeredi",
+    "combinatorics",
+    "additive-combinatorics",
+    "arithmetic-progressions",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "roth-theorem-k3",
+    "roth-theorem-k3-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T01:04:30.839Z",
+  "lastUpdate": "2026-03-30T02:00:00.000Z",
+  "significance": 7,
+  "tractability": 6
+}

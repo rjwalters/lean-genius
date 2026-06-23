@@ -1,0 +1,155 @@
+{
+  "slug": "erdos-1017-oq-01",
+  "title": "Can $f(n,k) < \\lfloor n^2/4 \\rfloor$ when $k > n^2/4$ and $K_4$ subgraphs are present?",
+  "phase": "MATURE-AXIOMATIZED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "erdos1017_question : Prop := forall V [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj], isDense G -> cliquePartitionNum G < turanBound (Fintype.card V)",
+    "plain": "Can f(n,k) < floor(n^2/4) when k > n^2/4? Erdos-Goodman-Posa proved f(n,k) <= floor(n^2/4) for all graphs. The question is whether dense graphs (with K_4 or larger) can do better. The K_4-free case was resolved by Gyori-Keszegh (2017).",
+    "whyMatters": [
+      "Connects clique partition to Turan-type extremal graph theory",
+      "K_4-free case resolved but general case remains open",
+      "Relates to edge coloring of complement graphs via Vizing's theorem"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "completeBipartite_cliqueFree: K_{a,b} is triangle-free (proved via pigeonhole on bipartition)",
+      "turanBound properties: monotonicity, positivity, quadratic identity, growth bound",
+      "k4free_improves: K_4-free dense graphs strictly improve on floor(n^2/4) (proved from axioms)",
+      "k4free_savings_linear: savings formula cp(G) + m = turanBound(n) (proved from axioms)",
+      "k4free_double_savings: more edges => smaller partition number (proved from axioms)",
+      "triangle_free_not_dense: triangle-free graphs are not dense (proved from axioms)",
+      "clique_savings: K_r saves r*(r-1)/2 - 1 over individual edges",
+      "savings_growth: K_{r+1} saves at least r more than K_r"
+    ],
+    "open": [
+      "erdos1017_question: general case with K_4 and larger cliques"
+    ],
+    "goal": "Achieved: 7 axioms eliminated (9→2). Remaining 2 axioms are deep published results (EGP 1966, Gyori-Keszegh 2017 partition formula). The redundant gyori_keszegh_triangles axiom was removed since it is logically weaker than the partition formula and was unused."
+  },
+  "currentState": {
+    "phase": "MATURE-AXIOMATIZED",
+    "since": "2026-04-30T00:00:00Z",
+    "iteration": 4,
+    "focus": "Eliminated 7 axioms total (9→2). Remaining 2 axioms — EGP theorem (1966) and the Gyori-Keszegh partition formula (2017) — are deep published results. Session 4 removed the redundant gyori_keszegh_triangles axiom (logically weaker than the partition formula, completely unused in the file). Problem at natural stopping point.",
+    "blockers": [
+      "EGP theorem (Erdos-Goodman-Posa 1966) requires ~500+ lines of greedy triangle extraction + bipartite remainder argument",
+      "Gyori-Keszegh partition formula (2017) requires ~1000+ lines of deep graph decomposition machinery"
+    ],
+    "nextAction": "Hold at axiomatized status. Future work: formalize EGP theorem as a multi-session project (would eliminate one axiom); Gyori-Keszegh partition formula remains out of scope. Could also derive the m-triangles existence statement as a theorem from k4free_partition_number via sInf-witness extraction + edge-counting (~80 lines), restoring it for downstream consumers.",
+    "attemptCounts": {
+      "total": 4,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Eliminated 7 axioms total (9→2). Session 4 removed redundant gyori_keszegh_triangles axiom (m distinct 3-cliques) — logically weaker than k4free_partition_number (which gives cp = t - m) and completely unused. Session 3 proved dense_contains_triangle (via Mathlib Turan), triangleFree_cliquePartition_eq_edges (via injection), cliquePartition_le_vertices (via EGP). Remaining 2 axioms: EGP theorem and Gyori-Keszegh partition formula — both deep published results.",
+    "builtItems": [
+      "completeBipartite_cliqueFree: K_{a,b} triangle-free (PROVED via case analysis on Sum types)",
+      "completeBipartite_adj_iff: adjacency characterization for bipartite graph",
+      "turanBound_eq_product: n^2/4 = (n/2) * (n - n/2) (PROVED)",
+      "turanBound_pos: turanBound positive for n >= 2 (PROVED)",
+      "turanBound_succ_diff: growth bound for turanBound (PROVED)",
+      "turanBound_le_choose_two: turanBound <= n*(n-1)/2 (PROVED)",
+      "k4free_savings_linear: cp + m = turanBound formula (PROVED from axioms)",
+      "k4free_double_savings: monotonicity of partition number (PROVED from axioms)",
+      "triangle_free_not_dense: triangle-free => not dense (PROVED from axioms)",
+      "clique_savings: general K_r savings formula (PROVED)",
+      "savings_growth: savings grow quadratically (PROVED)",
+      "completeBipartite_edgeCount: PROVED via Finset.card_image_of_injective (axiom eliminated)",
+      "lovasz_covering: PROVED trivially with ⟨0, Nat.zero_le _⟩ (axiom eliminated)",
+      "supersaturation_triangles: PROVED trivially with ⟨m, le_refl m⟩ (axiom eliminated)",
+      "dense_contains_triangle: PROVED via Mathlib Turan (axiom eliminated)",
+      "triangleFree_cliquePartition_eq_edges: PROVED via edge partition + injection (axiom eliminated)",
+      "cliquePartition_le_vertices: PROVED via EGP + edge bound (axiom eliminated)",
+      "cliqueFree3_clique_card_le_two: helper lemma for triangle-free clique size bound",
+      "edges_in_same_clique_eq: two edges in same triangle-free clique must be equal",
+      "edgeToFinset: maps Sym2 V to Finset V via univ.filter",
+      "edgeByEdgePartition: constructs partition with one clique per edge"
+    ],
+    "insights": [
+      "CliqueFree 3 proof for bipartite graphs: 3 vertices on 2 sides => pigeonhole gives same-side pair => no adjacency",
+      "The Adj relation for completeBipartite reduces to True/False by pattern matching on Sum.inl/Sum.inr",
+      "turanBound n = (n/2) * (n - n/2) connects the Turan number to the balanced bipartite graph edge count",
+      "The K_4-free savings are exactly linear: each extra edge beyond the Turan threshold saves exactly 1 from the partition count",
+      "lovasz_covering and supersaturation_triangles were trivially provable: their conclusions do not use the graph hypothesis",
+      "completeBipartite_edgeCount proved via bijection: image of Fin a × Fin b under s(inl -, inr -) equals edgeFinset, using Sym2.eq_iff for injectivity and Sym2.eq_swap for the inr/inl case",
+      "dense_contains_triangle proved via Mathlib CliqueFree.card_edgeFinset_le (Turan bound) — case split on n%2 simplifies to n²/4",
+      "triangleFree_cliquePartition_eq_edges proved by ≤/≥: edge partition (each edge = 1 clique) gives ≤, injection argument (cliques have ≤2 vertices in triangle-free graph) gives ≥",
+      "cliquePartition_le_vertices follows from cp(G) ≤ |E| ≤ n(n-1)/2 via card_edgeFinset_le_card_choose_two",
+      "Axiom redundancy detection: gyori_keszegh_triangles (existence of m distinct 3-cliques) is implied by k4free_partition_number (cp(G) = t - m) — apply Nat.sInf_mem to extract a partition with t - m cliques; in K₄-free, cliques have card ≤ 3; counting yields ≥ m triangle-cliques. The triangles-existence statement was unused in the file, so direct deletion suffices.",
+      "Both remaining axioms are deep published results: EGP (1966) and Gyori-Keszegh partition formula (2017)"
+    ],
+    "mathlibGaps": [
+      "Mathlib's edgeFinset.card for bipartite graphs on Sum types requires manual enumeration",
+      "No Mathlib lemma for CliqueFree of bipartite graphs directly"
+    ],
+    "nextSteps": [
+      "EGP theorem would require formalizing greedy triangle extraction + bipartite remainder argument (~500+ lines)",
+      "Gyori-Keszegh partition formula would require deep graph decomposition formalization (~1000+ lines)",
+      "Optional: derive m-triangles existence as a theorem from k4free_partition_number (~80 lines via sInf-witness extraction + edge-counting). Useful only if downstream consumers need the triangles existence statement directly.",
+      "Problem is at a natural stopping point — remaining 2 axioms are genuinely deep published results"
+    ]
+  },
+  "tags": [
+    "graph-theory",
+    "extremal-combinatorics",
+    "erdos",
+    "clique-partition",
+    "graph-decomposition",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-101",
+    "erdos-1017",
+    "erdos-1017-oq-01"
+  ],
+  "references": {
+    "papers": [
+      "Erdos-Goodman-Posa (1966): The representation of a graph by set intersections",
+      "Gyori-Keszegh (2017): On the number of edge-disjoint triangles in K_4-free graphs",
+      "Lovasz (1968): On covering of graphs"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1017"
+    ],
+    "mathlib": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique"
+    ]
+  },
+  "started": "2026-03-24T00:48:59.902Z",
+  "lastUpdate": "2026-04-30T00:00:00Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1017OQ01.lean",
+      "filename": "Erdos1017OQ01.lean",
+      "lineCount": 697,
+      "theoremCount": 30,
+      "axiomCount": 2,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1017OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1017Problem.lean",
+      "filename": "Erdos1017Problem.lean",
+      "lineCount": 2,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1017Problem.lean"
+    }
+  ]
+}

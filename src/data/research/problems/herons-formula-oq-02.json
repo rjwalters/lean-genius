@@ -1,0 +1,123 @@
+{
+  "slug": "herons-formula-oq-02",
+  "title": "Kahan-stable Heron formula and exact area equivalence",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "kahan_product(a,b,c) = 16 * heron_product(a,b,c), and for valid triangle sides kahan_area(a,b,c) = triangle_area(a,b,c).",
+    "plain": "This entry records the exact Lean proof that Kahan's rearranged Heron formula agrees with the classical area formula while keeping each algebraic factor well behaved for nearly degenerate triangles.",
+    "whyMatters": [
+      "Connects a classical geometry formula to a numerically stable computation pattern.",
+      "Shows the equality and non-negativity facts can be proved by elementary real algebra rather than left as informal numerical-analysis commentary."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`kahan_product` and `heron_product` define the stable and classical products.",
+      "`kahan_eq_sixteen_heron` proves the core algebraic identity.",
+      "`kahan_product_nonneg` and `heron_product_nonneg` prove non-negativity under triangle inequalities.",
+      "`kahan_area_eq_triangle_area` proves the stable area formula equals the classical Heron area.",
+      "`kahan_factors_nonneg_ordered`, `kahan_product_345`, `kahan_area_345`, and `kahan_area_5_12_13` document the ordered-factor and numerical-example behavior."
+    ],
+    "open": [
+      "Floating-point rounding-error bounds are discussed mathematically but not formalized.",
+      "Related Heron/Brahmagupta entries handle adjacent inequalities and should stay separate from this exact Kahan identity file."
+    ],
+    "goal": "Use the axiom-free Kahan identity as the stable-area bridge before adding any true floating-point error model."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-30T04:42:50-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Proved isoperimetric_quadrilateral in HeronsFormulaOQ01.lean (1→0 sorries). Proof uses 3 applications of 2-var AM-GM.",
+    "builtItems": [
+      "Proved isoperimetric_quadrilateral: brahmaguptaProduct ≤ ((a+b+c+d)/4)^4 via 3x AM-GM"
+    ],
+    "insights": [
+      "4-var AM-GM: pair factors (sa*sb, sc*sd), apply 2-var AM-GM to each pair, then to the geometric means"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: herons-formula-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "geometry",
+    "numerical-analysis",
+    "herons-formula",
+    "kahan",
+    "triangle-geometry"
+  ],
+  "relatedProofs": [
+    "herons-formula",
+    "herons-formula-oq-01",
+    "herons-formula-oq-03",
+    "herons-formula-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T11:59:37.383Z",
+  "lastUpdate": "2026-03-30T11:59:37.397Z",
+  "significance": 6,
+  "tractability": 8,
+  "leanFiles": [
+    {
+      "path": "Proofs/HeronsFormula.lean",
+      "filename": "HeronsFormula.lean",
+      "lineCount": 269,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HeronsFormula.lean"
+    },
+    {
+      "path": "Proofs/HeronsFormulaOQ01.lean",
+      "filename": "HeronsFormulaOQ01.lean",
+      "lineCount": 225,
+      "theoremCount": 13,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HeronsFormulaOQ01.lean"
+    },
+    {
+      "path": "Proofs/HeronsFormulaOQ03.lean",
+      "filename": "HeronsFormulaOQ03.lean",
+      "lineCount": 301,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HeronsFormulaOQ03.lean"
+    },
+    {
+      "path": "Proofs/HeronsFormulaOQ04.lean",
+      "filename": "HeronsFormulaOQ04.lean",
+      "lineCount": 363,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HeronsFormulaOQ04.lean"
+    }
+  ]
+}

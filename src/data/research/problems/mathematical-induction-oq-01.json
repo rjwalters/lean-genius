@@ -1,0 +1,152 @@
+{
+  "slug": "mathematical-induction-oq-01",
+  "title": "Transfinite Induction over Ordinals via Lean's WellFounded",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Demonstrate that } \\forall (P : \\mathrm{Ordinal} \\to \\mathrm{Prop}),\\ (\\forall \\alpha, (\\forall \\beta < \\alpha,\\ P\\,\\beta) \\to P\\,\\alpha) \\to \\forall \\alpha,\\ P\\,\\alpha \\text{ is provable in Lean 4 from } \\mathtt{Mathlib.Ordinal.induction},\\ \\text{equivalently from } \\mathtt{WellFounded.fix},\\ \\text{and that the three-case (zero / successor / limit) form follows.}",
+    "plain": "How does Lean's well-founded recursion (`WellFounded.fix`) connect to transfinite induction over ordinals? Can the standard ordinal transfinite-induction principle, its three-case (zero / successor / limit) decomposition, course-of-values induction on ℕ as a special case, and the well-ordering principle, all be expressed and proved in Lean 4 using Mathlib's existing `Ordinal` and `WellFounded` infrastructure?",
+    "whyMatters": [
+      "Foundational: well-founded recursion is the type-theoretic mechanism underlying every Lean 4 inductive definition, and transfinite induction is its set-theoretic shadow. Establishing the bridge concretely (rather than just by analogy) lets gallery entries on the ordinal hierarchy reuse standard induction tactics.",
+      "Pedagogical: the standard three-case (zero / successor / limit) decomposition is widely taught in set-theory courses but its Lean 4 expression is non-obvious to newcomers. Having `transfinite_induction_cases` in-tree as a worked example reduces the entry barrier for downstream ordinal-arithmetic formalisations.",
+      "Cross-references: the well-ordering principle (`nat_well_ordering`) is the constructive shadow of Zermelo's theorem; the parent gallery entry `mathematical-induction` covers classical ℕ-induction; this OQ-01 establishes that ℕ-induction is recoverable from `transfinite_induction_cases` via the embedding `ℕ ↪ Ordinal`."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Mathlib `Ordinal.induction` (in `Mathlib.SetTheory.Ordinal.Basic`): transfinite induction directly from the well-foundedness of `<` on Ordinal.",
+      "Mathlib `WellFounded.fix` (in `Mathlib.Init.WellFoundedTactics`): the abstract well-founded fixpoint combinator that powers every Lean 4 recursive definition.",
+      "Mathlib `Ordinal.zero_or_succ_or_limit`: the three-way case split that turns generic transfinite induction into the classical zero/successor/limit form.",
+      "Mathlib `Nat.strongRecOn`: course-of-values induction on ℕ, derivable from well-founded induction on `Nat.lt`.",
+      "In-tree `MathematicalInductionOQ01.lean` (status: verified, 0 sorries, 0 axioms, 150 lines, 8 theorems): the complete formalisation of the question's answer (see `builtItems`)."
+    ],
+    "open": [
+      "Non-trivial application: full proof of the Cantor-Bendixson theorem (every closed subset of a Polish space is the disjoint union of a perfect set and a countable set) via transfinite-induction-on-derivative-sequence.",
+      "Connection to axiom of choice: prove Zermelo's well-ordering theorem (every set admits a well-ordering) from `WellFounded.fix` + `Classical.choice`, exhibiting the choice-dependence explicitly.",
+      "Ordinal arithmetic: formalise the basic ordinal operations (addition, multiplication, exponentiation) via transfinite recursion using the three-case `transfinite_induction_cases` principle proved here. (Mathlib has these via `Ordinal.add`/`Ordinal.mul`/`Ordinal.opow` but using a different machinery.)"
+    ],
+    "goal": "Resolve OQ-01 by demonstrating that Lean's `WellFounded.fix` provides a clean implementation of transfinite induction over ordinals, with the classical three-case (zero / successor / limit) form, course-of-values induction on ℕ as a special case, and the well-ordering principle, all proved without axiom or sorry."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-03T05:35:32Z",
+    "iteration": 2,
+    "focus": "S2 COMPLETION-SYNC (researcher-9, 2026-05-13): doc-only state-drift sync. The S1 work (originally landed in PRs #8674 / #12519 / #18310 between 2026-04-03 and 2026-05-12, primarily as enrichment passes that included Lean file authoring + gallery entry) produced MathematicalInductionOQ01.lean — verified, 0 sorries, 0 axioms, 150 lines, 8 theorems — but the research JSON was never updated past its 2026-03-30 stub. This S2 sync rewrites currentState, problemStatement, knownResults, knowledge.{progressSummary,builtItems,insights,nextSteps,mathlibGaps}, and lastUpdate to reflect the actual completed state. Pool status updated from in-progress → completed.",
+    "blockers": [],
+    "nextAction": "Slug graduated. No further research action on OQ-01 itself. The three forward-extension candidates listed in `knownResults.open` are independent and substantive enough to warrant their own sub-OQs (mathematical-induction-oq-01-oq-01 Cantor-Bendixson; -oq-02 Zermelo well-ordering; -oq-03 ordinal arithmetic via transfinite-induction-cases). Seeker may spawn these as separate slugs when prioritised.",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: MathematicalInductionOQ01.lean is verified (status `verified` in gallery meta.json; 8 theorems, 0 sorries, 0 axioms, 150 lines). All four parts of the file are sorry-free: Part I well-founded induction abstract (`wf_induction`, `nat_induction_from_wf`); Part II transfinite induction with three-case decomposition (`transfinite_induction`, `transfinite_induction_cases`); Part III course-of-values induction (`course_of_values`, `weak_from_strong`); Part IV well-ordering principle (`nat_well_ordering`, `induction_from_well_ordering`). Part V documents Mathlib's `Ordinal.CNF` as the canonical Cantor-normal-form entry point. S2 (2026-05-13, researcher-9) is doc-only completion-sync; no Lean code changes.",
+    "builtItems": [
+      "MathematicalInductionOQ01.lean Part I `wf_induction` (theorem): abstract well-founded induction via `WellFounded.fix`. Type-class-generic over any `{α : Type*} {r : α → α → Prop}` with `WellFounded r`.",
+      "MathematicalInductionOQ01.lean Part I `nat_induction_from_wf` (theorem): standard ℕ-induction recovered as well-founded induction on `Nat.lt`, via `Nat.lt_wfRel.wf`.",
+      "MathematicalInductionOQ01.lean Part II `transfinite_induction` (theorem): the ordinal transfinite-induction principle, direct from `Ordinal.induction`.",
+      "MathematicalInductionOQ01.lean Part II `transfinite_induction_cases` (theorem): the classical three-case form (zero / successor / limit), via `Ordinal.zero_or_succ_or_limit` + `Order.lt_succ`.",
+      "MathematicalInductionOQ01.lean Part III `course_of_values` (theorem): course-of-values (strong) induction on ℕ, via `Nat.strongRecOn`.",
+      "MathematicalInductionOQ01.lean Part III `weak_from_strong` (theorem): standard weak ℕ-induction derived from `course_of_values` (P 0 ∧ ∀ n, P n → P (n+1) ⇒ ∀ n, P n).",
+      "MathematicalInductionOQ01.lean Part IV `nat_well_ordering` (theorem): the well-ordering principle for ℕ (every non-empty subset has a least element), via `Nat.find` + `Nat.find_spec` + `Nat.find_min'`.",
+      "MathematicalInductionOQ01.lean Part IV `induction_from_well_ordering` (theorem): the reverse direction (well-ordering ⇒ induction), via `by_contra` + smallest-counterexample.",
+      "Gallery entry `src/data/proofs/mathematical-induction-oq-01/` (meta.json status `verified`, badge `mathlib`, 5+ crossReferences, ~150 LOC formalisation; expanded over PRs #8674, #12519, #18310)."
+    ],
+    "insights": [
+      "**`WellFounded.fix` is the abstract core**: ordinal transfinite induction and ℕ standard induction are both instantiations of the same `WellFounded.fix` combinator. The pedagogical takeaway is that 'transfinite' is a property of the well-founded relation, not of the proof principle — Lean's type theory makes this unification cleanly visible.",
+      "**The three-case form follows mechanically**: once `transfinite_induction` is in hand, `transfinite_induction_cases` is a 5-line `rcases` on `Ordinal.zero_or_succ_or_limit` — Mathlib already exposes the trichotomy as a single lemma, so the classical decomposition into zero/successor/limit branches is a one-pattern-match away.",
+      "**Course-of-values vs. weak induction**: `course_of_values` is the ℕ-instantiation of `transfinite_induction`; `weak_from_strong` shows the classical (P 0 ∧ P n → P (n+1)) form is its strict specialisation. The two differ only in the strength of the induction hypothesis; the proof witnesses the strengthening explicitly via a single `match n with | 0 | n+1`.",
+      "**Well-ordering principle is constructive on ℕ**: `nat_well_ordering` uses `Nat.find`, which is decidable on ℕ — no Classical.choice. The same statement on arbitrary sets (Zermelo's theorem) requires AC; the contrast is one of the key pedagogical points of this OQ.",
+      "**Mathlib's `Ordinal.CNF` is the natural successor**: Cantor normal form (`ω^β₁·c₁ + ω^β₂·c₂ + ⋯`) is what one would prove next using `transfinite_induction_cases`, but Mathlib already ships this as `Ordinal.CNF` (in `Mathlib.SetTheory.Ordinal.CantorNormalForm`); the Lean file documents this as Part V (closing remark, not a new theorem)."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Cantor-Bendixson theorem (potential sub-OQ -oq-01-oq-01): every closed subset of a Polish space decomposes as the disjoint union of a perfect set and a countable set, via transfinite induction on the derivative sequence. Mathlib has `TopologicalSpace.IsPerfect` and partial machinery but the full theorem is not formalised; this is a natural application of `transfinite_induction_cases`.",
+      "Zermelo well-ordering theorem (potential sub-OQ -oq-01-oq-02): every set admits a well-ordering, derived from `Classical.choice` + `WellFounded.fix`. Mathlib has `IsWellOrder` and `Zorn` lemmas but a direct Zermelo proof from these primitives is a clean exercise in choice-explicit transfinite reasoning.",
+      "Ordinal arithmetic via three-case induction (potential sub-OQ -oq-01-oq-03): re-derive ordinal addition / multiplication / exponentiation using `transfinite_induction_cases`. Mathlib already has these via different machinery (`Ordinal.add`, `Ordinal.mul`, `Ordinal.opow`); this would be a pedagogical companion showing the three-case form yields the classical recursive definitions directly.",
+      "Slug graduated: no further iteration on OQ-01 itself. Pool status pending update to `completed`."
+    ]
+  },
+  "tags": [
+    "set-theory",
+    "logic",
+    "foundations",
+    "induction",
+    "ordinals",
+    "well-founded-recursion",
+    "seeker-selected",
+    "completed"
+  ],
+  "relatedProofs": [
+    "mathematical-induction",
+    "cantor-diagonalization",
+    "cantors-theorem",
+    "schroeder-bernstein",
+    "halting-problem",
+    "godel-incompleteness"
+  ],
+  "references": {
+    "papers": [
+      "Cantor, G. (1883). 'Grundlagen einer allgemeinen Mannigfaltigkeitslehre.' Mathematische Annalen — the historical origin of ordinal theory.",
+      "Zermelo, E. (1904). 'Beweis, daß jede Menge wohlgeordnet werden kann.' Mathematische Annalen 59: 514-516 — Zermelo's well-ordering theorem from AC.",
+      "Jech, T. *Set Theory* (3rd ed., 2003), Chapter 2 — transfinite induction over ordinals and the well-ordering principle."
+    ],
+    "urls": [
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/SetTheory/Ordinal/Basic.html",
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Init/WellFoundedTactics.html",
+      "https://en.wikipedia.org/wiki/Transfinite_induction",
+      "https://en.wikipedia.org/wiki/Well-ordering_theorem"
+    ],
+    "mathlib": [
+      "Ordinal.induction (Mathlib.SetTheory.Ordinal.Basic)",
+      "Ordinal.zero_or_succ_or_limit (Mathlib.SetTheory.Ordinal.Basic)",
+      "Ordinal.IsLimit (Mathlib.SetTheory.Ordinal.Basic)",
+      "WellFounded.fix (Mathlib.Init.WellFoundedTactics)",
+      "Nat.strongRecOn (Mathlib.Init.Data.Nat.Lemmas)",
+      "Nat.find / Nat.find_spec / Nat.find_min' (Mathlib.Data.Nat.Find)",
+      "Ordinal.CNF (Mathlib.SetTheory.Ordinal.CantorNormalForm) — Cantor normal form, mentioned as Part V closing remark"
+    ]
+  },
+  "started": "2026-03-30T01:04:30.789Z",
+  "lastUpdate": "2026-05-13T11:30:00Z",
+  "significance": 8,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/MathematicalInduction.lean",
+      "filename": "MathematicalInduction.lean",
+      "lineCount": 250,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MathematicalInduction.lean"
+    },
+    {
+      "path": "Proofs/MathematicalInductionOQ01.lean",
+      "filename": "MathematicalInductionOQ01.lean",
+      "lineCount": 151,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MathematicalInductionOQ01.lean"
+    },
+    {
+      "path": "Proofs/MathematicalInductionOQ03.lean",
+      "filename": "MathematicalInductionOQ03.lean",
+      "lineCount": 149,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MathematicalInductionOQ03.lean"
+    }
+  ]
+}

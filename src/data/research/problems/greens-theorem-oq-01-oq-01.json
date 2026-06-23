@@ -1,0 +1,150 @@
+{
+  "slug": "greens-theorem-oq-01-oq-01",
+  "title": "Can Fubini be proved from Mathlib's MeasureTheory",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-28T20:58:08-07:00",
+    "iteration": 1,
+    "focus": "All sorries eliminated. 0 axioms, 0 sorries.",
+    "blockers": [],
+    "nextAction": "None - proof complete.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: All 3 sorries eliminated. intervalIntegral_swap proved via Mathlib Fubini, fubini_of_continuous proved via integrableOn_compact.",
+    "builtItems": [
+      "Created GreensTheoremOQ01OQ01.lean with Fubini bridge",
+      "Stated intervalIntegral_swap (core result, 1 sorry)",
+      "Proved greens_fubini_eliminated: hFubini follows from intervalIntegral_swap (0 sorries)",
+      "Stated fubini_of_continuous: C^0 functions always satisfy Fubini (1 sorry)",
+      "Proved greens_fubini_for_C1: C^1 vector fields satisfy Fubini (0 new sorries)",
+      "intervalIntegral_swap: FULLY PROVED via integral_of_le + integral_integral_swap",
+      "fubini_of_continuous: FULLY PROVED via integrableOn_compact + restrict_prod_eq_prod_restrict"
+    ],
+    "insights": [
+      "GreensTheoremOQ03.lean:12 axiom is inside a comment block — actual axiom count is 2, not 3",
+      "Real axioms: greens_theorem_typeI (Green for Type I), disk_area_eq_pi (area of disk)",
+      "Plus greens_theorem_rectangle in GreensTheorem.lean — total 3 real axioms",
+      "disk_area_eq_pi provable via Complex.volume_ball (Mathlib) + Fubini bridge to TypeIRegion.area",
+      "AreaOfCircleOQ02.lean already proves disk area = pi*r^2 using Complex.volume_ball",
+      "The key gap: connecting TypeIRegion.area (iterated integral) to Lebesgue measure (Fubini)",
+      "Fubini for iterated intervalIntegral requires: convert to set_integral, apply Mathlib Fubini, convert back",
+      "Key Mathlib tool: MeasureTheory.integral_integral_swap for product measures",
+      "For C^1 vector fields (standard Green thm assumption), all integrability conditions are automatic",
+      "intervalIntegral defined via Lebesgue integral on Ioc with sign handling - need to unwrap this",
+      "intervalIntegral.integral_of_le converts interval to set integral for a ≤ b",
+      "simp_rw rewrites under integral binders (unlike rw)",
+      "Measure.prod_mono + restrict_mono transfers integrability from Icc to Ioc product",
+      "Measure.restrict_prod_eq_prod_restrict bridges IntegrableOn and product-restricted Integrable"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Complete intervalIntegral_swap proof: convert intervalIntegral ↔ set_integral on Ioc",
+      "Use MeasureTheory.integral_integral_swap or MeasureTheory.set_integral_prod to bridge",
+      "Handle Ioc vs Icc and sign convention in intervalIntegral"
+    ],
+    "markdown": "# Knowledge Base: greens-theorem-oq-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "greens-theorem",
+    "greens-theorem-oq-01",
+    "greens-theorem-oq-01-oq-01",
+    "greens-theorem-oq-02",
+    "greens-theorem-oq-03",
+    "greens-theorem-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T04:28:18.978Z",
+  "lastUpdate": "2026-06-14T01:06:09Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/GreensTheorem.lean",
+      "filename": "GreensTheorem.lean",
+      "lineCount": 359,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheorem.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01.lean",
+      "filename": "GreensTheoremOQ01.lean",
+      "lineCount": 339,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01OQ01.lean",
+      "filename": "GreensTheoremOQ01OQ01.lean",
+      "lineCount": 150,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ02.lean",
+      "filename": "GreensTheoremOQ02.lean",
+      "lineCount": 508,
+      "theoremCount": 21,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ03.lean",
+      "filename": "GreensTheoremOQ03.lean",
+      "lineCount": 558,
+      "theoremCount": 31,
+      "axiomCount": 3,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ04.lean",
+      "filename": "GreensTheoremOQ04.lean",
+      "lineCount": 588,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ04.lean"
+    }
+  ]
+}

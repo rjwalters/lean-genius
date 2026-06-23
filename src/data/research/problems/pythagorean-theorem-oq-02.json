@@ -1,0 +1,93 @@
+{
+  "slug": "pythagorean-theorem-oq-02",
+  "title": "Euclidean and hyperbolic Pythagorean theorem formalizations",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "v\\perp w\\Rightarrow \\|v+w\\|^2=\\|v\\|^2+\\|w\\|^2,\\quad \\operatorname{cosh}(c)=\\operatorname{cosh}(a)\\operatorname{cosh}(b)\\text{ for hyperbolic right triangles}.",
+    "plain": "Repair the truncated metadata for the Pythagorean theorem track. The Lean support proves the inner-product-space Euclidean theorem and converse, records classical numeric triples, and gives the hyperbolic right-triangle law in a separate zero-sorry development.",
+    "whyMatters": [
+      "The Euclidean theorem is a canonical example of translating geometry into inner-product algebra.",
+      "The converse theorem turns the metric identity back into perpendicularity.",
+      "The hyperbolic variant shows the same theorem family across geometries without axiom or sorry debt in the declared files."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`pythagorean_theorem` proves the squared-norm identity for perpendicular vectors in the Euclidean plane.",
+      "`pythagorean_converse` proves that the squared-norm identity implies perpendicularity.",
+      "`hyperbolic_pythagorean` records the hyperbolic right-triangle law `cosh c = cosh a * cosh b`."
+    ],
+    "open": [
+      "Future work can connect these algebraic statements to richer geometric constructions and diagrammatic triangle APIs."
+    ],
+    "goal": "Present the completed Euclidean and hyperbolic Lean content under a non-truncated, geometry-focused research problem shell."
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T17:32:58.852Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "geometry",
+    "euclidean-geometry",
+    "hyperbolic-geometry",
+    "inner-product-spaces",
+    "formalization"
+  ],
+  "relatedProofs": [
+    "pythagorean-theorem",
+    "pythagorean-theorem-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T17:32:58.852Z",
+  "lastUpdate": "2026-03-30T17:32:58.852Z",
+  "significance": 7,
+  "tractability": 8,
+  "leanFiles": [
+    {
+      "path": "Proofs/PythagoreanTheorem.lean",
+      "filename": "PythagoreanTheorem.lean",
+      "lineCount": 215,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTheorem.lean"
+    },
+    {
+      "path": "Proofs/PythagoreanTheoremOQ03.lean",
+      "filename": "PythagoreanTheoremOQ03.lean",
+      "lineCount": 1432,
+      "theoremCount": 104,
+      "axiomCount": 0,
+      "defCount": 18,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTheoremOQ03.lean"
+    }
+  ]
+}

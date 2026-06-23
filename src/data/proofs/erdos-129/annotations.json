@@ -1,0 +1,195 @@
+[
+  {
+    "id": "erdos-129-edgecoloring",
+    "proofId": "erdos-129",
+    "type": "definition",
+    "range": {
+      "startLine": 25,
+      "endLine": 27
+    },
+    "title": "Edge Coloring",
+    "content": "**EdgeColoring N r** assigns a color in `Fin r` to each edge of the complete graph $K_N$.\n\n**Lean representation**: An edge is a subtype `{ p : Fin N × Fin N // p.1 < p.2 }`, so each undirected edge appears exactly once (the constraint `p.1 < p.2` canonicalizes the pair). The coloring is then a function from this subtype to `Fin r`.\n\n**Why ordered pairs**: Using `p.1 < p.2` rather than `p.1 ≠ p.2` halves the edge count and avoids the need for symmetry axioms. This is equivalent to coloring the upper triangle of the adjacency matrix.\n\n**Edge count**: $K_N$ has $\\binom{N}{2} = N(N-1)/2$ edges. For $N = 10$ and $r = 2$, there are $2^{45} \\approx 3.5 \\times 10^{13}$ possible colorings — too many for brute force even at modest sizes.",
+    "mathContext": "EdgeColoring : { p : Fin N × Fin N // p.1 < p.2 } → Fin r",
+    "significance": "key",
+    "relatedConcepts": [
+      "complete graph",
+      "edge coloring",
+      "Fin type",
+      "subtype",
+      "upper triangular matrix"
+    ],
+    "prerequisites": [
+      "complete graphs K_N",
+      "finite types (Fin N)",
+      "subtypes in Lean"
+    ]
+  },
+  {
+    "id": "erdos-129-avoidsmono",
+    "proofId": "erdos-129",
+    "type": "definition",
+    "range": {
+      "startLine": 31,
+      "endLine": 35
+    },
+    "title": "Avoids Monochromatic Clique",
+    "content": "**AvoidsMono N r coloring S k c**: the vertex set $S \\subseteq V(K_N)$ has no monochromatic $K_k$ in color $c$.\n\n**Formal definition**: For every $k$-element subset $T \\subseteq S$, there exists an edge $e$ with both endpoints in $T$ such that $\\text{coloring}(e) \\neq c$. This is the **existential witness** formulation — rather than requiring ALL edges to be non-$c$ (which would mean no edge of color $c$ at all), we only need ONE non-$c$ edge per $k$-subset.\n\n**Negation**: $\\neg\\text{AvoidsMono}$ means there exists a $k$-subset $T \\subseteq S$ where ALL edges are color $c$ — a monochromatic $K_k$ in color $c$.\n\n**Comparison with classical Ramsey**: In classical $R(s,t)$, we seek monochromatic cliques. Here we seek sets that AVOID them — the complementary property. The classical Ramsey theorem guarantees monochromatic cliques exist; this problem asks how large a clique-free set can be.",
+    "mathContext": "∀ T ⊆ S, |T| = k → ∃ edge e in T with coloring(e) ≠ c",
+    "significance": "key",
+    "relatedConcepts": [
+      "monochromatic clique",
+      "Ramsey property",
+      "existential witness",
+      "Finset.card"
+    ],
+    "prerequisites": [
+      "Finset subset relation",
+      "cliques in graphs",
+      "classical Ramsey theory"
+    ]
+  },
+  {
+    "id": "erdos-129-hasramseyavoid",
+    "proofId": "erdos-129",
+    "type": "definition",
+    "range": {
+      "startLine": 44,
+      "endLine": 46
+    },
+    "title": "HasRamseyAvoid",
+    "content": "**HasRamseyAvoid N n k r**: Every $r$-coloring of $K_N$ admits a set of $\\geq n$ vertices containing no monochromatic $K_k$ in any color.\n\n**Structure**: Universal over colorings (∀ coloring), existential over vertex sets (∃ S with |S| ≥ n), universal over colors (∀ c, AvoidsMono). This triple quantifier alternation makes the property computationally hard — verifying it requires checking all $r^{\\binom{N}{2}}$ colorings.\n\n**R(n;k,r) connection**: The Ramsey number $R(n;k,r)$ is the smallest $N$ such that HasRamseyAvoid N n k r holds. The formalization doesn't define $R(n;k,r)$ explicitly as a number — instead, it works directly with HasRamseyAvoid, which is cleaner in Lean since it avoids the need for a well-definedness proof that the minimum exists.\n\n**Lean**: `∀ coloring : EdgeColoring N r, ∃ S : Finset (Fin N), S.card ≥ n ∧ NoMonoClique N r coloring S k`",
+    "mathContext": "∀ coloring, ∃ S with |S| ≥ n and ∀ c, AvoidsMono(S, k, c)",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey number",
+      "quantifier alternation",
+      "Finset.card",
+      "NoMonoClique"
+    ],
+    "prerequisites": [
+      "EdgeColoring",
+      "AvoidsMono",
+      "NoMonoClique",
+      "universal/existential quantification"
+    ]
+  },
+  {
+    "id": "erdos-129-conjecture",
+    "proofId": "erdos-129",
+    "type": "definition",
+    "range": {
+      "startLine": 52,
+      "endLine": 59
+    },
+    "title": "Erdős–Gyárfás Conjecture",
+    "content": "**ErdosProblem129**: For $k \\geq 2$ and $r \\geq 2$, there exist constants $C_1, C_2 > 1$ (depending on $r$) such that:\n\n$$C_1^{n^{1/(k-1)}} < R(n;k,r) < C_2^{n^{1/(k-1)}}$$\n\nfor all sufficiently large $n$.\n\n**The exponent $1/(k-1)$**: For $k=2$ this gives $C^n$, matching the classical Ramsey number growth $R(n,n) \\sim 4^{n/2}$. For $k=3$ it gives $C^{\\sqrt{n}}$, and for large $k$ the growth approaches $C^{n^\\epsilon}$ for small $\\epsilon$.\n\n**Lean encoding**: The lower bound is encoded as: if HasRamseyAvoid N n k r holds, then $N > C_1^{n^{1/(k-1)}}$. The upper bound is encoded existentially: there EXISTS an $M < C_2^{n^{1/(k-1)}}$ with HasRamseyAvoid M n k r. The `Filter.atTop` quantifier handles 'for all sufficiently large $n$'.\n\n**Status**: OPEN. The lower bound is known for $k=3$ (Erdős–Gyárfás 1997). The upper bound is open even for $k=3$.",
+    "mathContext": "C₁^{n^{1/(k-1)}} < R(n;k,r) < C₂^{n^{1/(k-1)}}",
+    "significance": "key",
+    "relatedConcepts": [
+      "Filter.atTop",
+      "Real.rpow",
+      "exponential growth",
+      "Ramsey number bounds"
+    ],
+    "prerequisites": [
+      "HasRamseyAvoid",
+      "real exponentials",
+      "Filter.atTop (eventually for large n)"
+    ]
+  },
+  {
+    "id": "erdos-129-k3",
+    "proofId": "erdos-129",
+    "type": "definition",
+    "range": {
+      "startLine": 62,
+      "endLine": 65
+    },
+    "title": "k=3 Upper Bound Conjecture",
+    "content": "**ErdosProblem129_k3**: For $r \\geq 2$, there exists $C > 1$ such that $R(n;3,r) < C^{\\sqrt{n}}$ for all large $n$.\n\n**Why k=3 is special**: When $k=3$, we avoid monochromatic triangles. The exponent $1/(k-1) = 1/2$ gives $\\sqrt{n}$, making the conjecture: the number of vertices needed grows at most exponentially in $\\sqrt{n}$. This is the simplest open case — for $k=2$ the problem reduces to classical Ramsey numbers which are well-understood.\n\n**Known bounds for k=3**: The lower bound $R(n;3,r) > C^{\\sqrt{n}}$ is proved (axiom `erdos_gyarfas_lower_bound`). Combined with the conjectured upper bound, this would give $R(n;3,r) = \\Theta(C^{\\sqrt{n}})$ — a sharp characterization.\n\n**Lean**: Uses `Real.sqrt n` directly (since $1/(3-1) = 1/2$), making the statement cleaner than the general case which requires `n ^ (1 / (k - 1 : ℝ))`.",
+    "mathContext": "R(n;3,r) < C^{√n} for some C > 1",
+    "significance": "key",
+    "relatedConcepts": [
+      "triangle-free Ramsey",
+      "Real.sqrt",
+      "sharp threshold",
+      "simplest open case"
+    ],
+    "prerequisites": [
+      "ErdosProblem129 (general conjecture)",
+      "Real.sqrt",
+      "triangle-free colorings"
+    ]
+  },
+  {
+    "id": "erdos-129-lowerbound",
+    "proofId": "erdos-129",
+    "type": "concept",
+    "range": {
+      "startLine": 69,
+      "endLine": 70
+    },
+    "title": "Erdős–Gyárfás Lower Bound",
+    "content": "**Erdős–Gyárfás (1997)**: For $r \\geq 2$, there exists $C > 1$ such that for all large $n$:\n\n$$R(n; 3, r) > C^{\\sqrt{n}}$$\n\n**Proof idea** (not formalized): Use the probabilistic method. Take a random $r$-coloring of $K_N$. For any fixed set $S$ of $n$ vertices, the probability that $S$ contains no monochromatic triangle is at most $(1 - r^{-1})^{\\binom{n}{3}/\\binom{3}{2}} \\approx e^{-cn^3/r}$ after careful counting. Union-bounding over all $\\binom{N}{n}$ vertex sets shows that when $N < C^{\\sqrt{n}}$, the expected number of triangle-free $n$-sets tends to 0.\n\n**Lean**: Stated in **contrapositive form**: if $N < C^{\\sqrt{n}}$, then $\\neg\\text{HasRamseyAvoid}(N, n, 3, r)$. This avoids defining $R(n;3,r)$ explicitly as a minimum. Axiomatized because the probabilistic proof requires measure theory on the space of colorings.\n\n**Combined with conjecture**: If the upper bound is also $C^{\\sqrt{n}}$, then $R(n;3,r) = \\Theta(C^{\\sqrt{n}})$, giving a complete growth rate characterization.",
+    "mathContext": "∀ N < C^{√n}, ¬HasRamseyAvoid(N, n, 3, r)",
+    "significance": "key",
+    "relatedConcepts": [
+      "probabilistic method",
+      "union bound",
+      "contrapositive form",
+      "Filter.atTop"
+    ],
+    "prerequisites": [
+      "HasRamseyAvoid",
+      "probabilistic combinatorics",
+      "exponential bounds"
+    ]
+  },
+  {
+    "id": "erdos-129-nomonoclique",
+    "proofId": "erdos-129",
+    "type": "definition",
+    "range": {
+      "startLine": 38,
+      "endLine": 40
+    },
+    "title": "No Monochromatic Clique (All Colors)",
+    "content": "**NoMonoClique N r coloring S k**: the vertex set $S$ contains no monochromatic $K_k$ in ANY color. This universally quantifies AvoidsMono over all $r$ colors: $\\forall c \\in \\text{Fin}\\,r,\\, \\text{AvoidsMono}(S, k, c)$.\n\n**Comparison with classical Ramsey**: In the classical Ramsey number $R(s,t)$, we seek either a red $K_s$ or a blue $K_t$ — the goal is a monochromatic clique. Here, NoMonoClique requires the ABSENCE of monochromatic cliques in every color simultaneously. The Erdős-Gyárfás problem asks how many vertices are needed to guarantee such a set exists.\n\n**Multi-color aspect**: For $r$ colors, the avoidance must hold simultaneously across all $r$ — a conjunction that becomes easier to satisfy as $r$ grows (more colors means smaller monochromatic subgraphs). This is captured by the axiom hasRamseyAvoid_more_colors.",
+    "mathContext": "$\\text{NoMonoClique}(S, k) \\iff \\forall c \\in [r],\\, \\text{AvoidsMono}(S, k, c)$. A set $S$ avoids monochromatic $K_k$ in every color simultaneously.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "universal quantification over colors",
+      "anti-Ramsey property",
+      "AvoidsMono"
+    ],
+    "prerequisites": [
+      "AvoidsMono",
+      "Fin r (color type)",
+      "classical Ramsey theory"
+    ]
+  },
+  {
+    "id": "erdos-129-structural",
+    "proofId": "erdos-129",
+    "type": "concept",
+    "range": {
+      "startLine": 76,
+      "endLine": 140
+    },
+    "title": "Structural Properties of HasRamseyAvoid",
+    "content": "Five structural properties of NoMonoClique / HasRamseyAvoid, all proved from first principles (no axioms, no sorries):\n\n1. **Empty set** (`hasRamseyAvoid_zero`): for n = 0 the empty set has card ≥ 0 and vacuously avoids every monochromatic clique.\n\n2. **Singleton, k ≥ 3** (`hasRamseyAvoid_one_of_k_ge_three`): for k ≥ 3 and N ≥ 1, a single vertex {v} avoids monochromatic K_k, since a 1-element set has no k-element subset.\n\n3. **Small cardinality** (`noMonoClique_of_card_lt`): if |S| < k then S has no monochromatic K_k, because any clique T ⊆ S satisfies |T| ≤ |S| < k.\n\n4. **n ≤ 1** (`hasRamseyAvoid_of_n_le_one`): for k ≥ 3, n ≤ 1 and n ≤ N, HasRamseyAvoid holds, unifying the n = 0 and n = 1 cases via a singleton witness.\n\n5. **More colors help** (`noMonoClique_of_color_embed`): if a set avoids monochromatic K_k under an r-coloring, it still avoids them under any r'-coloring with r ≤ r', viewing the r-coloring as an r'-coloring via Fin.castLE — anti-monotonicity in the number of colors.\n\nAll five follow directly from the Finset cardinality API (Finset.card_le_card) and the definitions.",
+    "mathContext": "Card bound: $|S| < k \\Rightarrow$ no monochromatic $K_k$ in $S$. Boundary: $n \\leq 1 \\Rightarrow$ HasRamseyAvoid (for $k \\geq 3$). Color monotonicity: $r \\leq r' \\Rightarrow$ avoidance under $r$ colors lifts to $r'$ colors (via Fin.castLE). Together these are the elementary constraints on the Ramsey function $R(n;k,r)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monochromatic clique avoidance",
+      "Finset cardinality bounds",
+      "boundary cases",
+      "color embedding (Fin.castLE)"
+    ],
+    "prerequisites": [
+      "HasRamseyAvoid definition",
+      "basic Finset operations",
+      "NoMonoClique"
+    ]
+  }
+]

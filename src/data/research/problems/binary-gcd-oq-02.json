@@ -1,0 +1,163 @@
+{
+  "slug": "binary-gcd-oq-02",
+  "title": "Binary GCD Algorithm for Integers or Bignums",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Can the binary GCD algorithm be extended to integers (handling negative inputs) or bignums.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-01",
+    "iteration": 2,
+    "focus": "Integer half of OQ-02 closed in PR. Bignum half deferred.",
+    "blockers": [],
+    "nextAction": "(Optional) Pursue Lehmer GCD or extended binary xgcd as separate follow-ups.",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "ACT (completed integer half): Created proofs/Proofs/BinaryGcdOQ02.lean (~135 lines, 0 sorries, 0 axioms). Defines binaryGcdInt:ℤ→ℤ→ℕ via natAbs reduction; binaryGcdInt_eq_intGcd proves correctness vs Mathlib Int.gcd via two-line unfold + binaryGcd_eq_gcd. Sign invariance, edges, commutativity, divisibility universal property all derived through the bridge. Bignum half deferred (project-scale).",
+    "builtItems": [
+      "Created Proofs/BinaryGcdOQ02.lean: binaryGcdInt definition + 13 theorems + 8 decide sanity examples (~135 lines)",
+      "binaryGcdInt_eq_intGcd : ∀ a b : ℤ, binaryGcdInt a b = Int.gcd a b — main correctness theorem",
+      "@[simp] sign-invariance lemmas: binaryGcdInt_neg_left/right/neg_neg",
+      "Edge cases: binaryGcdInt_zero_left/right, binaryGcdInt_self",
+      "Universal property: dvd_binaryGcdInt + binaryGcdInt_dvd_left/right",
+      "Created src/data/proofs/binary-gcd-oq-02/{meta.json,index.ts,annotations.json}",
+      "Added Proofs.BinaryGcdOQ02 import to proofs/Proofs.lean"
+    ],
+    "insights": [
+      "binaryGcd:ℕ→ℕ→ℕ already defined at proofs/Proofs/GcdAlgorithmOQ02.lean:74 (with both-even/one-even/both-odd cases)",
+      "Mathlib has Int.gcd a b := a.natAbs.gcd b.natAbs — correct comparison target for integer extension",
+      "Integer extension is mechanical: binaryGcdInt a b := binaryGcd a.natAbs b.natAbs, prove correct via existing binaryGcd_correct + Int.gcd unfold (~50 lines)",
+      "Bignum extension is project-scale: would require formalizing bit-sequence representations (Nat.bits / Nat.digits 2) since Lean Nat is already unbounded — ~200+ lines for non-trivial reformulation",
+      "5 sibling files (BinaryGcdOQ01, OQ01OQ03, OQ01OQ04, OQ03, OQ03OQ01) all 0 sorries / 0 axioms — established formalization style available",
+      "Did not create OQ02 file this session due to no Docker availability — submitting unverified Int extension with surrogate sorry would be lower-value than a clear survey",
+      "The natAbs reduction is the canonical idiom for ℕ→ℤ extension of GCD-style algorithms; Mathlib Int.gcd uses the exact same pattern, so the bridge proof is two unfoldings",
+      "Marking sign-invariance as @[simp] makes downstream ℤ-level reasoning negation-blind without explicit case-splits",
+      "All algebraic properties (comm, divisibility, edges, self) inherit through the single bridge — each is one rewrite to the corresponding Int.gcd_* Mathlib lemma",
+      "Bignum half resolves automatically via Lean kernel: Nat ops compile to GMP, so binaryGcd already runs on bignums — formal bit-sequence proof is a separate project"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "(Optional) Add Lehmer GCD ℤ-extension as follow-up open question via the same natAbs idiom",
+      "(Optional) Extended binary GCD: define binaryXgcdInt and prove equivalence to Int.gcdA/Int.gcdB",
+      "(Project-scale) Formal bit-sequence equivalence between binaryGcd on Nat and limb-by-limb bignum implementation"
+    ]
+  },
+  "tags": [
+    "algorithm",
+    "number-theory",
+    "gcd",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "binary-gcd",
+    "binary-gcd-oq-01",
+    "binary-gcd-oq-01-oq-04",
+    "binary-gcd-oq-02",
+    "binary-gcd-oq-03",
+    "binary-gcd-oq-03-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T12:03:52.282Z",
+  "lastUpdate": "2026-05-01T16:55:00Z",
+  "significance": 5,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/BinaryGcdOQ01.lean",
+      "filename": "BinaryGcdOQ01.lean",
+      "lineCount": 216,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ01.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ01OQ03.lean",
+      "filename": "BinaryGcdOQ01OQ03.lean",
+      "lineCount": 226,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ01OQ04.lean",
+      "filename": "BinaryGcdOQ01OQ04.lean",
+      "lineCount": 158,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ02.lean",
+      "filename": "BinaryGcdOQ02.lean",
+      "lineCount": 135,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ02.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ03.lean",
+      "filename": "BinaryGcdOQ03.lean",
+      "lineCount": 488,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ03.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ03OQ01.lean",
+      "filename": "BinaryGcdOQ03OQ01.lean",
+      "lineCount": 240,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ03OQ02.lean",
+      "filename": "BinaryGcdOQ03OQ02.lean",
+      "lineCount": 2225,
+      "theoremCount": 65,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 10,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ03OQ02.lean"
+    }
+  ]
+}

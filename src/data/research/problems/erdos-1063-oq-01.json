@@ -1,0 +1,88 @@
+{
+  "slug": "erdos-1063-oq-01",
+  "title": "Is $n_k$ polynomial in $k$",
+  "phase": "COMPLETED",
+  "status": "in-progress",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in number theory: Is $n_k$ polynomial in $k$.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-24T00:48:59.904Z",
+    "iteration": 2,
+    "focus": "Axiom elimination via computational verification",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: File already improved in earlier iterations. Now has 3 axioms and 5 theorems (all thresholds k=2..5 proved).",
+    "builtItems": [
+      "threshold_k2 theorem (proved by native_decide + omega)",
+      "threshold_k3 theorem (proved by native_decide + omega)",
+      "threshold_k4 theorem (proved by native_decide + omega, m=8 check)",
+      "threshold_k5 theorem (proved by native_decide + omega, m∈{10,11} check)"
+    ],
+    "insights": [
+      "Threshold axioms (k=2,3,4,5) are computationally verifiable using native_decide",
+      "Key: remove noncomputable from divisibilityCount and mark AllButOneDivide as @[reducible]",
+      "For k=2,3 minimality is vacuous (2k = nk). For k=4 check m=8, k=5 check m∈{10,11}",
+      "Remaining 3 axioms are deep results: Erdős-Selfridge nondivisibility, Monier factorial bound, Cambie lcm bound"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Could compute threshold values for k=6,7,... by extending the pattern",
+      "Erdős-Selfridge nondivisibility result might be provable for small k values",
+      "Consider proving Monier bound for specific small k values"
+    ]
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "binomial-coefficients",
+    "divisibility",
+    "extremal-thresholds",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-106",
+    "erdos-1063"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-24T00:48:59.903Z",
+  "lastUpdate": "2026-03-24T17:30:00Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1063Problem.lean",
+      "filename": "Erdos1063Problem.lean",
+      "lineCount": 170,
+      "theoremCount": 5,
+      "axiomCount": 3,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1063Problem.lean"
+    }
+  ]
+}

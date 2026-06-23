@@ -1,0 +1,117 @@
+[
+  {
+    "id": "ann-ballot-oq0103-reflection-overview",
+    "proofId": "ballot-problem-oq-01-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
+    "type": "concept",
+    "title": "Reflection Principle and the Two Forms of the Catalan Number",
+    "content": "The classical ballot theorem is proved by André's *reflection principle*: the number of 'good' lattice paths (those that stay strictly on one side of the diagonal) equals the total number of monotone paths minus the number of 'bad' paths, where the bad paths are counted bijectively by reflecting their initial segment. For the symmetric Dyck-path case — $n$ up-steps and $n$ down-steps that never dip below the axis — this reflection count is\n\n$$\\operatorname{catalan} n = \\binom{2n}{n} - \\binom{2n}{n+1}.$$\n\nThis *reflection form* is mathematically distinct from Mathlib's *division form* `catalan_eq_centralBinom_div` ($\\operatorname{catalan} n = \\operatorname{centralBinom} n / (n+1)$): it never divides, being a literal 'all paths minus reflected bad paths' difference — exactly what the ballot/reflection argument delivers. The file proves the reflection form and reconciles the two in `choose_sub_choose_eq_centralBinom_div`.",
+    "mathContext": "Mathlib provides the Catalan number only via the recurrence $(n+1)\\cdot\\operatorname{catalan} n = \\operatorname{centralBinom} n$ and the division closed form. The subtraction identity $\\binom{2n}{n} - \\binom{2n}{n+1}$ is not a named Mathlib lemma; it is the combinatorially meaningful 'reflection count' and is derived here from the Catalan and adjacent-binomial recurrences.",
+    "significance": "key",
+    "relatedConcepts": [
+      "reflection principle",
+      "ballot theorem",
+      "Catalan number",
+      "Dyck paths",
+      "central binomial coefficient"
+    ],
+    "prerequisites": [
+      "Monotone lattice paths",
+      "Binomial coefficients",
+      "Definition of the Catalan number"
+    ]
+  },
+  {
+    "id": "ann-ballot-oq0103-all-paths",
+    "proofId": "ballot-problem-oq-01-oq-03",
+    "range": {
+      "startLine": 37,
+      "endLine": 44
+    },
+    "type": "theorem",
+    "title": "All Paths: C(2n, n) = (n+1)·catalan n",
+    "content": "`two_mul_choose_eq` identifies the total monotone-path count with $(n+1)$ copies of the Catalan number:\n\n$$\\binom{2n}{n} = (n+1)\\cdot\\operatorname{catalan} n.$$\n\nThe one-line proof rewrites $\\binom{2n}{n}$ backwards through `Nat.centralBinom_eq_two_mul_choose` to $\\operatorname{centralBinom} n$, then forward through `succ_mul_catalan_eq_centralBinom` to $(n+1)\\cdot\\operatorname{catalan} n$.",
+    "mathContext": "$\\binom{2n}{n}$ counts every monotone path from $(0,0)$ to $(n,n)$. The Catalan defining recurrence $(n+1)\\operatorname{catalan} n = \\operatorname{centralBinom} n$ exhibits this total as $(n+1)$ equal blocks of $\\operatorname{catalan} n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "central binomial coefficient",
+      "succ_mul_catalan_eq_centralBinom",
+      "Nat.centralBinom_eq_two_mul_choose"
+    ],
+    "prerequisites": [
+      "Central binomial coefficient",
+      "Catalan recurrence"
+    ]
+  },
+  {
+    "id": "ann-ballot-oq0103-bad-paths",
+    "proofId": "ballot-problem-oq-01-oq-03",
+    "range": {
+      "startLine": 46,
+      "endLine": 63
+    },
+    "type": "theorem",
+    "title": "Bad (Reflected) Paths: C(2n, n+1) = n·catalan n",
+    "content": "`two_mul_choose_succ_eq` computes the count of reflected bad paths:\n\n$$\\binom{2n}{n+1} = n\\cdot\\operatorname{catalan} n.$$\n\nIt starts from the adjacent-binomial recurrence `Nat.choose_succ_right_eq` applied at $(2n, n)$, substitutes the previous identity `two_mul_choose_eq`, simplifies $2n - n = n$ with `omega`, and then cancels the common factor $(n+1)$ via `Nat.eq_of_mul_eq_mul_right` (legal since $n+1 > 0$).",
+    "mathContext": "Reflecting the initial segment of a bad Dyck path sends it bijectively to a monotone path with a shifted endpoint, counted by $\\binom{2n}{n+1}$. Algebraically this equals $n\\cdot\\operatorname{catalan} n$, i.e. $n$ of the $(n+1)$ blocks that make up the total.",
+    "significance": "key",
+    "relatedConcepts": [
+      "reflection principle",
+      "Nat.choose_succ_right_eq",
+      "Nat.eq_of_mul_eq_mul_right",
+      "cancellation"
+    ],
+    "prerequisites": [
+      "Adjacent-binomial recurrence",
+      "Cancellation in ℕ"
+    ]
+  },
+  {
+    "id": "ann-ballot-oq0103-reflection-form",
+    "proofId": "ballot-problem-oq-01-oq-03",
+    "range": {
+      "startLine": 65,
+      "endLine": 78
+    },
+    "type": "theorem",
+    "title": "Reflection Form: catalan n = C(2n, n) − C(2n, n+1)",
+    "content": "`catalan_eq_choose_sub_choose` is the headline identity:\n\n$$\\operatorname{catalan} n = \\binom{2n}{n} - \\binom{2n}{n+1}.$$\n\nRewriting both binomials through the two preceding lemmas turns the right-hand side into $(n+1)\\cdot\\operatorname{catalan} n - n\\cdot\\operatorname{catalan} n$, which `omega` reduces to $\\operatorname{catalan} n$. No division appears anywhere — this is the division-free count the reflection principle produces.",
+    "mathContext": "The difference of the two counts is one block: $(n+1)\\operatorname{catalan} n - n\\operatorname{catalan} n = \\operatorname{catalan} n$. Because $\\binom{2n}{n} \\ge \\binom{2n}{n+1}$, the truncated subtraction over $\\mathbb{N}$ is exact, so `omega` closes the goal.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Catalan number",
+      "Dyck paths",
+      "ballot theorem",
+      "truncated subtraction over ℕ"
+    ],
+    "prerequisites": [
+      "The two binomial count lemmas",
+      "omega decision procedure"
+    ]
+  },
+  {
+    "id": "ann-ballot-oq0103-reconciliation",
+    "proofId": "ballot-problem-oq-01-oq-03",
+    "range": {
+      "startLine": 80,
+      "endLine": 91
+    },
+    "type": "theorem",
+    "title": "Reconciliation with Mathlib's Division Form",
+    "content": "`choose_sub_choose_eq_centralBinom_div` confirms that the reflection form agrees with the standard closed form:\n\n$$\\binom{2n}{n} - \\binom{2n}{n+1} = \\frac{\\operatorname{centralBinom} n}{n+1}.$$\n\nThe proof rewrites the left side backwards through `catalan_eq_choose_sub_choose` to $\\operatorname{catalan} n$, then forward through Mathlib's `catalan_eq_centralBinom_div`. Both expressions compute the same Catalan number.",
+    "mathContext": "This closes the loop between the combinatorial reflection count and the algebraic division form already in Mathlib, certifying that the two standard presentations of the Catalan number coincide.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "catalan_eq_centralBinom_div",
+      "division form",
+      "closed form"
+    ],
+    "prerequisites": [
+      "Reflection form catalan_eq_choose_sub_choose",
+      "Mathlib division form"
+    ]
+  }
+]

@@ -1,0 +1,208 @@
+{
+  "id": "erdos-317",
+  "title": "Erdős Problem #317: Signed Unit Fraction Approximations",
+  "slug": "erdos-317",
+  "description": "Is there c > 0 such that for every n, we can find δ_k ∈ {-1,0,1} with 0 < |∑δ_k/k| < c/2^n? Also: for large n, must nonzero such sums exceed 1/lcm(1,...,n)? OPEN.",
+  "meta": {
+    "author": "Erdős-Graham [ErGr80]",
+    "sourceUrl": "https://erdosproblems.com/317",
+    "date": "1980",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos317Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "diophantine-approximation",
+      "open-problem"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 317,
+    "erdosUrl": "https://erdosproblems.com/317",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Finset.lcm",
+        "description": "LCM over finite sets",
+        "module": "Mathlib.Algebra.GCDMonoid.Finset"
+      },
+      {
+        "theorem": "Filter.Eventually",
+        "description": "Eventually predicate for filters",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      }
+    ],
+    "originalContributions": [
+      "IsSignFunction: δ with values in {-1, 0, 1}",
+      "signedUnitFractionSum: ∑ δ_k/(k+1) as rational",
+      "signedSumAbs: absolute value as real",
+      "Question1: formal statement of the c/2^n conjecture",
+      "lcm_1_to_n: LCM of {1,...,n} via Finset.lcm",
+      "Question2: formal statement of 1/lcm strict lower bound",
+      "weak_inequality theorem (PROVED): |sum| ≥ 1/lcm when nonzero — denominator divisibility argument via Finset.dvd_lcm",
+      "counterexample_small_n theorem: equality at n=4 via native_decide",
+      "nonzero_signed_sum_exists theorem: trivially via harmonic number (allOnesDelta)",
+      "erdos_317_summary: proved — combining weak inequality and counterexample"
+    ],
+    "axiomCount": 0,
+    "lineCount": 192,
+    "assumptions": "None. All theorems fully machine-checked. Open conjecture; supporting lemmas fully verified.",
+    "theoremCount": 8,
+    "definitionCount": 8
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #317: Signed Unit Fraction Approximations**\n\nFrom Erdős-Graham (1980), p.42. This problem asks how small a nonzero signed combination of the first n unit fractions can be.\n\n**Two Questions:**\n1. Can we achieve exponentially small sums < c/2^n for some universal constant c?\n2. For large n, is 1/lcm(1,...,n) a strict lower bound for nonzero sums?\n\n**Known Results:** Kovac and van Doorn achieved 2^{-n·(log log log n)^{1+o(1)}/log n}, far from c/2^n. Van Doorn's heuristic suggests this may be optimal, which would make Question 1 false. Question 2 fails for small n: 1/2 - 1/3 - 1/4 = -1/12 achieves exactly 1/lcm(1,2,3,4).",
+    "problemStatement": "**Problem Statement (OPEN)**\n\n**Question 1:** Is there $c > 0$ such that for every $n \\geq 1$, there exist $\\delta_k \\in \\{-1, 0, 1\\}$ with $0 < |\\sum_{k=1}^n \\delta_k/k| < c/2^n$?\n\n**Question 2:** For sufficiently large $n$, must $|\\sum \\delta_k/k| > 1/\\text{lcm}(1,\\ldots,n)$ whenever the sum is nonzero?\n\n**Known:** Weak inequality $\\geq 1/\\text{lcm}$ holds trivially. Strict inequality fails for $n = 4$.",
+    "text": "A 192-line formalization of Erdős Problem #317 (open, Erdős-Graham 1980) on signed unit fraction approximations. Two questions: (Q1) is there $c > 0$ such that for every $n$, signs $\\delta_k \\in \\{-1, 0, 1\\}$ exist with $0 < |\\sum_{k=1}^n \\delta_k/k| < c/2^n$? (Q2) For large $n$, must nonzero signed sums exceed $1/\\text{lcm}(1,\\ldots,n)$? Defines `IsSignFunction`, `signedUnitFractionSum`, and `signedSumAbs` using `Fin n` and `Finset.sum`. Known results fully proved (0 axioms, 0 sorries): the weak inequality $|\\sum \\delta_k/k| \\geq 1/\\text{lcm}$ (denominator divisibility argument), and a counterexample at $n = 4$ ($1/2 - 1/3 - 1/4 = -1/12 = 1/\\text{lcm}(1,2,3,4)$). The Kovač-van Doorn bound is not formalized in this file.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Clean Definitions:** IsSignFunction, signedUnitFractionSum, signedSumAbs using Fin n and Finset.sum.\n\n2. **Both Questions as Defs:** Question1 and Question2 as Prop definitions (open problems).\n\n3. **All Known Results Proved:** weak_inequality (denominator divisibility via Finset.dvd_lcm), counterexample_small_n (n=4 equality via native_decide), nonzero_signed_sum_exists (harmonic number positivity).\n\n4. **Summary Theorem:** erdos_317_summary proved, combining the weak inequality with the counterexample and existence result.\n\n5. **Key Proof: weak_inequality** — Shows L*S is an integer (each (k+1) divides L = lcm(1,...,n)), so nonzero S has |S| >= 1/L.",
+    "keyInsights": [
+      "**Exponential vs Sub-exponential:** c/2^n is exponential in n; the known Kovac-van Doorn bound 2^{-n·polylog/log n} is sub-exponential — a huge gap",
+      "**Weak vs Strict:** |sum| ≥ 1/lcm is trivial (denominator divisibility); |sum| > 1/lcm (strict) is the hard question",
+      "**Small-n Counterexample:** 1/2 - 1/3 - 1/4 = -1/12 = 1/lcm(1,2,3,4) shows equality is achievable",
+      "**Heuristic Pessimism:** Van Doorn's heuristic suggests Question 1 may be FALSE — the sub-exponential bound may be optimal",
+      "**Diophantine Nature:** The problem is equivalent to making a linear form with rational coefficients 1/k close to zero while keeping it nonzero"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Defines `IsSignFunction` ($\\delta : \\text{Fin}\\,n \\to \\mathbb{Z}$ with each $\\delta_k \\in \\{-1, 0, 1\\}$), `signedUnitFractionSum` ($\\sum_{k=0}^{n-1} \\delta_k/(k+1)$ as a rational number), and `signedSumAbs` (the absolute value $|\\sum \\delta_k/(k+1)|$).",
+      "startLine": 39,
+      "endLine": 53,
+      "mathContext": "$\\text{IsSignFunction}(\\delta) := \\forall k,\\, \\delta(k) \\in \\{-1, 0, 1\\}$. $\\text{signedUnitFractionSum}(n, \\delta) = \\sum_{k=0}^{n-1} \\delta(k) \\cdot \\frac{1}{k+1} \\in \\mathbb{Q}$. The shift $k+1$ maps `Fin n` (0-indexed) to denominators $1, 2, \\ldots, n$."
+    },
+    {
+      "id": "question-1",
+      "title": "Question 1 (Main Conjecture)",
+      "summary": "Defines `Question1`: $\\exists c > 0,\\, \\forall n \\geq 1,\\, \\exists \\delta$ with $0 < |\\sum \\delta_k/k| < c/2^n$.",
+      "startLine": 54,
+      "endLine": 63,
+      "mathContext": "Q1 asks whether signed unit fractions can approximate 0 exponentially fast: $\\min_{\\delta \\neq 0} |\\sum \\delta_k/k| < c/2^n$ for some universal $c$. The search space has $3^n$ sign choices. By the Prime Number Theorem, $\\text{lcm}(1,\\ldots,n) \\sim e^n$, so the trivial lower bound $1/\\text{lcm} \\approx e^{-n}$ is weaker than $c/2^n \\approx (1/2)^n$."
+    },
+    {
+      "id": "question-2",
+      "title": "Question 2",
+      "summary": "Defines `lcm_1_to_n` and `Question2`: for sufficiently large $n$, every nonzero signed unit fraction sum exceeds $1/\\text{lcm}(1,\\ldots,n)$.",
+      "startLine": 64,
+      "endLine": 76,
+      "mathContext": "Q2 asks whether $1/\\text{lcm}(1,\\ldots,n)$ is a strict lower bound for nonzero sums. The weak inequality $|\\sum \\delta_k/k| \\geq 1/\\text{lcm}$ is trivial (the sum is a fraction with denominator dividing $\\text{lcm}$). The strict inequality $>$ fails for $n = 4$: $1/2 - 1/3 - 1/4 = -1/12 = 1/\\text{lcm}(1,2,3,4)$."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "summary": "Proved theorems `counterexampleDelta_isSign` (the counterexample $\\delta = (0, 1, -1, -1)$ is a valid sign function) and `counterexample_sum_eq` (its signed sum equals $-1/12$). Both fully machine-checked.",
+      "startLine": 77,
+      "endLine": 93,
+      "mathContext": "The weak inequality follows from denominator divisibility: $\\sum \\delta_k/k = p/\\text{lcm}$ for some integer $p$, so $|\\sum| \\geq 1/\\text{lcm}$ when $p \\neq 0$. The $n = 4$ counterexample: $\\delta = (0, 1, -1, -1)$ gives $1/2 - 1/3 - 1/4 = 6/12 - 4/12 - 3/12 = -1/12$."
+    },
+    {
+      "id": "kovac-van-doorn",
+      "title": "Kovac-van Doorn Upper Bound",
+      "summary": "Proved theorem `counterexample_small_n`: for $n = 4$, the sign function $\\delta = (0, 1, -1, -1)$ satisfies $|\\sum \\delta_k/(k+1)| = 1/12 = 1/\\text{lcm}(1,2,3,4)$, demonstrating that Question 2's strict inequality fails for small $n$. Proof uses `native_decide`.",
+      "startLine": 94,
+      "endLine": 104,
+      "mathContext": "Kovac and van Doorn showed that for all large $n$, signs $\\delta_k$ exist with $0 < |\\sum \\delta_k/k| \\leq 2^{-n \\cdot (\\log\\log\\log n)^{1+o(1)}/\\log n}$. This is sub-exponential in $n$ — much larger than $c/2^n$ — suggesting Q1 may be false."
+    },
+    {
+      "id": "summary",
+      "title": "Summary Theorem",
+      "summary": "The proved theorem `erdos_317_summary` combines the weak inequality with the small-$n$ counterexample, packaging the known results into a single statement.",
+      "startLine": 105,
+      "endLine": 158,
+      "mathContext": "The summary theorem states: (1) for all $n$ and all sign functions $\\delta$, $|\\sum \\delta_k/k| \\geq 1/\\text{lcm}(1,\\ldots,n)$ (weak inequality), AND (2) there exists a sign function at $n = 4$ achieving equality. This is the provable content of the file; Questions 1 and 2 remain open."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #317 remains OPEN. Question 1 asks whether signed unit fraction sums can be made exponentially small (< c/2^n). Kovac-van Doorn achieved a weaker sub-exponential bound. Question 2 about the 1/lcm strict lower bound fails for small n. The summary theorem packages the weak inequality with the small-n counterexample.",
+    "implications": "**Theoretical Significance**: **Connections**\n\n1. **Diophantine Approximation:** Making linear combinations of 1/k close to zero\n\n**2. Egyptian Fractions:** Structure of subset sums of unit fractions\n\n3. **Number Theory:** lcm(1,...,n) ~ e^n by the Prime Number Theorem\n\n4. **Combinatorics:** 3^n sign choices make the search space exponentially large.",
+    "openQuestions": [
+      "Is there c > 0 achieving 0 < |∑δ_k/k| < c/2^n for all n?",
+      "Is the Kovac-van Doorn bound optimal?",
+      "For what minimal N does Question 2 hold for all n ≥ N?",
+      "Can counterexamples to the strict inequality be characterized?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset",
+      "Mathlib.Order.Filter.AtTopBot",
+      "Mathlib.Algebra.GCDMonoid.Finset",
+      "Mathlib.Tactic.NormNum"
+    ],
+    "opens": [
+      "Finset",
+      "Filter",
+      "BigOperators"
+    ],
+    "namespace": "Erdos317",
+    "lineCount": 192,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos317Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1000",
+      "relationship": "related",
+      "description": "Erdős #1000 also concerns Diophantine approximation — the study of how closely rational combinations of specific numbers can approach targets. Both problems ask about the limits of linear forms with constrained coefficients, with #317 restricting coefficients to $\\{-1, 0, 1\\}$ and denominators to $1/k$"
+    },
+    {
+      "targetId": "erdos-1001",
+      "relationship": "related",
+      "description": "Erdős #1001 shares the Diophantine approximation framework — both problems study how efficiently structured linear combinations of rational numbers can approach zero, with constraints on the coefficient set and the denominators"
+    },
+    {
+      "targetId": "erdos-1147",
+      "relationship": "related",
+      "description": "Erdős #1147 concerns unit fractions and Diophantine approximation — the same family of problems as #317, where the fundamental question is how the arithmetic structure of $1/k$ interacts with sign choices to produce near-zero sums"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "The Prime Number Theorem implies $\\text{lcm}(1,\\ldots,n) = e^{n(1+o(1))}$ via the Chebyshev function $\\psi(n) = \\sum_{p^k \\leq n} \\log p \\sim n$. This makes the trivial lower bound $1/\\text{lcm} \\approx e^{-n}$ explicit and shows that the conjectured $c/2^n$ bound (Q1) would be exponentially better than the trivial barrier"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "L'Enseignement Mathématique, Monographie No. 28, Université de Genève, p.42",
+      "note": "Original source of Problem #317 — asks whether signed unit fraction sums can be made exponentially small"
+    },
+    {
+      "authors": "Kovač, Vjekoslav; van Doorn, Marijn",
+      "title": "On signed sums of unit fractions",
+      "year": "2019",
+      "venue": "Preprint",
+      "note": "Achieved the best known upper bound: nonzero signed sums exist of size 2^{-n·(log log log n)^{1+o(1)}/log n}, sub-exponential but far from the conjectured c/2^n"
+    },
+    {
+      "authors": "Guy, Richard K.",
+      "title": "Unsolved Problems in Number Theory",
+      "year": "2004",
+      "venue": "Springer, 3rd edition, Problem D11",
+      "note": "Surveys Egyptian fraction problems including signed unit fraction approximations, placing Erdős #317 in the broader context of unit fraction combinatorics"
+    }
+  ],
+  "sorries": 0
+}

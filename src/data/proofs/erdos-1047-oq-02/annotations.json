@@ -1,0 +1,113 @@
+[
+  {
+    "id": "ann-e1047-oq02-integrity-problem",
+    "proofId": "erdos-1047-oq-02",
+    "range": {
+      "startLine": 5,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "The Integrity Problem: An Unsound Small-c Axiom",
+    "content": "The flagship `Erdos1047Problem.lean` originally defined `grunskyConjecture` with a spurious **small-c** restriction (`∃ c₀ > 0, ∀ c < c₀, …`) and then *posited* its negation as `axiom grunskyConjecture_false : ¬grunskyConjecture`, with the headline `erdos_1047 := grunskyConjecture_false`.\n\nBut the small-c statement is **true**: for a fixed monic f, as c → 0 the sublevel set {|f| ≤ c} breaks into one tiny component around each root, each a disk — hence convex. So a threshold c₀ always exists and `grunskyConjecture` holds; its negation was therefore a **false axiom**, and it did not even match the question Grunsky asked (the genuine counterexamples occur at specific non-small c).",
+    "mathContext": "Small-c form: $\\exists c_0>0,\\ \\forall c,\\ 0<c<c_0,\\ \\dots$. Near a root $r$ of multiplicity $k$ the component is $\\{|z-r|^k \\lesssim c'\\} = \\{|z-r| \\le c'^{1/k}\\}$, a disk ⇒ convex. Hence a threshold exists for every $f$, so the small-c statement holds and negating it is unsound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Axiom integrity",
+      "Polynomial lemniscates",
+      "Quantifier strength",
+      "Soundness"
+    ],
+    "prerequisites": [
+      "Polynomial lemniscates and sublevel sets",
+      "Logical strength of quantifier restrictions"
+    ]
+  },
+  {
+    "id": "ann-e1047-oq02-patch-applied",
+    "proofId": "erdos-1047-oq-02",
+    "range": {
+      "startLine": 43,
+      "endLine": 63
+    },
+    "type": "concept",
+    "title": "Parent Patch Applied, then Axiom Fully Discharged (Count → 0)",
+    "content": "The parent soundness patch landed: `Erdos1047Problem.lean` redefined `grunskyConjecture` to the faithful `∀ c > 0` form and proved `grunskyConjecture_false` as a theorem, leaving `goodman_counterexample` as the sole axiom. **That last axiom is now discharged too**: `Erdos1047OQ02Certificate.lean` proves `goodman_counterexample_proof` — the exact statement — with no `sorry` and no axiom (a preconnected Goodman arc inside the lemniscate whose chord midpoint escapes it, via the topological reduction bridge). This entry now imports that certificate, so `grunsky_false_faithful` derives the Erdős #1047 answer from a fully machine-checked proof. `#print axioms` reports only `propext`/`Classical.choice`/`Quot.sound`; axiomCount **1 → 0**.",
+    "mathContext": "Post-patch dependency chain has exactly one axiom, `goodman_counterexample`; `grunskyConjecture_false : ¬grunskyConjecture` is a theorem, not an axiom.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Axiom elimination",
+      "Soundness",
+      "Definitional equality"
+    ],
+    "prerequisites": [
+      "Axioms And Soundness",
+      "Polynomial Lemniscates",
+      "Print Axioms Command"
+    ]
+  },
+  {
+    "id": "ann-e1047-oq02-faithful",
+    "proofId": "erdos-1047-oq-02",
+    "range": {
+      "startLine": 73,
+      "endLine": 80
+    },
+    "type": "definition",
+    "title": "Faithful Grunsky Question (∀ c > 0)",
+    "content": "`grunskyConjectureFaithful` states Grunsky's question with **no** small-c restriction: for every monic f of positive degree and *every* c > 0, all components of {z : |f(z)| ≤ c} are convex.\n\nThis is the statement the Erdős #1047 docstring actually describes. After the parent patch, the flagship's `grunskyConjecture` has been redefined to this same `∀ c > 0` form, so the two are now definitionally equal. The statement is genuinely FALSE (Pommerenke 1961, Goodman 1966).",
+    "mathContext": "$\\forall f$ monic, $\\deg f > 0$, $\\forall c > 0$, every component of $\\{|f(z)| \\le c\\}$ is convex. Genuinely FALSE (Pommerenke 1961, Goodman 1966).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Polynomial lemniscates",
+      "Convexity in ℂ",
+      "Quantifier strength"
+    ],
+    "prerequisites": [
+      "Polynomial lemniscates and sublevel sets"
+    ]
+  },
+  {
+    "id": "ann-e1047-oq02-coincides",
+    "proofId": "erdos-1047-oq-02",
+    "range": {
+      "startLine": 82,
+      "endLine": 89
+    },
+    "type": "theorem",
+    "title": "Faithful Coincides with the Flagship (the Implication is the Identity)",
+    "content": "`faithful_imp_grunsky : grunskyConjectureFaithful → grunskyConjecture` is proved by `fun h => h`. Because the flagship's `grunskyConjecture` was redefined to the faithful `∀ c > 0` form (parent patch #24613), the two propositions are **definitionally equal** and the implication carries no content.\n\nHistorically — before the patch — the flagship used a weaker `∃ c₀ > 0, ∀ c < c₀` form, and this lemma was a *strict* implication (take c₀ = 1) that exposed how the parent's negation axiom over-claimed by negating the weaker statement. That unsoundness has since been removed, so the lemma is now the identity.",
+    "mathContext": "$\\mathrm{grunskyConjectureFaithful} \\equiv \\mathrm{grunskyConjecture}$ (definitional after the patch); proof term `fun h => h`. Pre-patch it was the strict implication $\\text{faithful} \\Rightarrow \\text{small-}c$ via $c_0 = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Definitional equality",
+      "Logical implication",
+      "Axiom integrity"
+    ],
+    "prerequisites": [
+      "Definitional Equality",
+      "Logical Implication",
+      "Quantifier Strength"
+    ]
+  },
+  {
+    "id": "ann-e1047-oq02-negation-theorem",
+    "proofId": "erdos-1047-oq-02",
+    "range": {
+      "startLine": 91,
+      "endLine": 104
+    },
+    "type": "theorem",
+    "title": "The Corrected Axiom, Now a Fully-Proved Theorem",
+    "content": "`grunsky_false_faithful` destructs the Goodman counterexample to exhibit a non-convex lemniscate component at `f = (z²+1)(z−2)²`, `c = 5^{3/2}/4`, refuting convexity for all `c > 0`. The witness is `Erdos1047OQ02Cert.goodman_counterexample_proof`, an axiom-free, `sorry`-free theorem — so the negation (and the Erdős #1047 answer NO along this route) rests on **no** analytic axiom.",
+    "mathContext": "From $\\exists z_0,\\ z_0 \\in$ Goodman component $\\wedge\\ \\neg\\text{convex}$, derive $\\neg\\mathrm{grunskyConjectureFaithful}$. The positivity side-goal for $c = 5^{3/2}/4 > 0$ is discharged by `positivity`. Negation is a deduction, not an axiom.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Goodman's counterexample",
+      "Proof by contradiction",
+      "Axiom elimination"
+    ],
+    "prerequisites": [
+      "Goodman's degree-4 counterexample"
+    ]
+  }
+]

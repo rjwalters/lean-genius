@@ -1,0 +1,222 @@
+[
+  {
+    "id": "ann-e408-overview",
+    "proofId": "erdos-408",
+    "range": {
+      "startLine": 1,
+      "endLine": 38
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #408 concerns the iterated Euler totient function. Define $f(n) = \\min\\{k : \\phi_k(n) = 1\\}$, where $\\phi_k$ denotes $k$-fold iteration of Euler's totient $\\phi$. Since $\\phi(m) < m$ for $m > 1$, the sequence $n, \\phi(n), \\phi^2(n), \\ldots$ strictly decreases until reaching 1, so $f(n)$ is always finite.\n\nErdős asked three questions:\n1. Does $f(n)/\\log n$ have a distribution function?\n2. Is $f(n)/\\log n$ almost always equal to a constant?\n3. What is the largest prime factor $P(\\phi_k(n))$ when $k \\approx \\log\\log n$?\n\nErdős, Granville, Pomerance, and Spiro (1990) proved that, conditional on the Elliott-Halberstam conjecture, both Q1 and Q2 have answer YES with limiting constant $1/\\log 2 \\approx 1.4427$. The problem remains open unconditionally.",
+    "mathContext": "The iterated totient sits at the intersection of multiplicative number theory and probabilistic methods. The key difficulty is that understanding $f(n)/\\log n$ for typical $n$ requires controlling how $\\phi$ interacts with the prime factorization across many iterations — a question intimately connected to the distribution of primes in arithmetic progressions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler's totient function",
+      "Distribution functions in number theory",
+      "Elliott-Halberstam conjecture",
+      "Bombieri-Vinogradov theorem"
+    ],
+    "prerequisites": [
+      "Euler's totient: $\\phi(n) = n \\prod_{p \\mid n}(1 - 1/p)$",
+      "Natural density of a set $S \\subseteq \\mathbb{N}$"
+    ]
+  },
+  {
+    "id": "ann-e408-definitions",
+    "proofId": "erdos-408",
+    "range": {
+      "startLine": 40,
+      "endLine": 103
+    },
+    "type": "definition",
+    "title": "Iterated Totient and Iteration Length",
+    "content": "The formalization defines $\\phi_k(n)$ (iteratedTotient) recursively: $\\phi_0(n) = n$ and $\\phi_{k+1}(n) = \\phi(\\phi_k(n))$. The iteration length $f(n)$ (iterationLength) is the minimum $k$ with $\\phi_k(n) = 1$, defined as 0 for $n \\le 1$.\n\nBasic properties are established: $\\phi_0(n) = n$, $\\phi_1(n) = \\phi(n)$, $\\phi_{k+1}(n) = \\phi(\\phi_k(n))$ (all by rfl), and $f(n) \\ge 1$ for $n > 1$ (axiomatized). The existence proof for $f(n)$ uses a sorry placeholder — the termination argument relies on the strict decrease $\\phi(m) < m$ for $m > 1$.",
+    "mathContext": "The function $f(n)$ appears as OEIS A003434 (or equivalently A049108 shifted by 1). Its values begin $f(2) = 1, f(3) = 2, f(4) = 2, f(5) = 3, f(6) = 2, f(7) = 3, \\ldots$ The existence of $f(n)$ is immediate from the well-ordering of $\\mathbb{N}$ and the strict decrease of the totient sequence.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Well-founded recursion",
+      "Nat.find in Lean/Mathlib",
+      "OEIS A003434"
+    ],
+    "prerequisites": [
+      "Nat.totient in Mathlib",
+      "$\\phi(m) < m$ for $m > 1$"
+    ]
+  },
+  {
+    "id": "ann-e408-pillai",
+    "proofId": "erdos-408",
+    "range": {
+      "startLine": 105,
+      "endLine": 143
+    },
+    "type": "concept",
+    "title": "Pillai's Bounds (1929)",
+    "content": "Pillai proved the first quantitative bounds on $f(n)$: for sufficiently large $n$,\n$$\\log_3 n < f(n) < \\log_2 n.$$\nThe lower bound follows because each totient application can reduce $n$ by at most a factor of $2/3$ (since $\\phi(n) \\ge n/3$ for $n$ with small prime factors), requiring at least $\\log_3 n$ steps. The upper bound follows because $\\phi(n) \\le n/2$ for even $n$ (and $\\phi(n)$ is always even for $n \\ge 3$), so after at most $\\log_2 n$ steps we reach 1.\n\nThe theorem pillai_bounds combines both axiomatized bounds by taking $N = \\max(N_1, N_2)$. This is one of the few results in the file that is proved from the axioms rather than axiomatized directly.",
+    "mathContext": "These bounds pin down the ratio $f(n)/\\log n$ to the interval $(1/\\log 3, 1/\\log 2) \\approx (0.910, 1.443)$. The fact that this interval is bounded away from 0 and $\\infty$ is what makes the distribution question meaningful. Pillai's original 1929 paper 'On some functions connected with $\\phi(n)$' initiated the study of iterated arithmetic functions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Logarithmic growth rate",
+      "Totient bounds: $\\phi(n) \\ge n/(2 \\log\\log n)$",
+      "Rosser-Schoenfeld inequalities"
+    ],
+    "prerequisites": [
+      "$\\phi(n)$ is even for $n \\ge 3$",
+      "$\\phi(n) \\le n/2$ for even $n$"
+    ]
+  },
+  {
+    "id": "ann-e408-shapiro",
+    "proofId": "erdos-408",
+    "range": {
+      "startLine": 145,
+      "endLine": 166
+    },
+    "type": "concept",
+    "title": "Shapiro's Essential Multiplicativity (1950)",
+    "content": "Shapiro proved that $f$ is essentially multiplicative: there exists a constant $C$ such that for all coprime $m, n$,\n$$|f(mn) - f(m) - f(n)| \\le C.$$\nThe formalization defines EssentiallyMultiplicative as a structure requiring this bounded-error additivity, then axiomatizes Shapiro's result.\n\nThe key idea is that for coprime $m$ and $n$, the totient iteration of $mn$ can be 'decomposed' into parallel iterations on the $m$-part and $n$-part of the factorization. The bounded error arises because the parts interact slightly through the multiplicativity of $\\phi$.",
+    "mathContext": "Essential multiplicativity is a crucial structural property: it means $f$ behaves like a completely additive function (such as $\\Omega(n)$, the number of prime factors with multiplicity) up to bounded error. By the Erdős-Kac philosophy, such functions on coprime factors tend to have Gaussian-like behavior, which is why a distribution function is expected. Shapiro's 1950 paper generalized this to a broader class of iterated arithmetic functions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Completely additive functions",
+      "Erdős-Kac theorem",
+      "Chinese Remainder Theorem for $\\phi$"
+    ],
+    "prerequisites": [
+      "$\\phi(mn) = \\phi(m)\\phi(n)$ for coprime $m, n$",
+      "Unique factorization"
+    ]
+  },
+  {
+    "id": "ann-e408-questions",
+    "proofId": "erdos-408",
+    "range": {
+      "startLine": 168,
+      "endLine": 208
+    },
+    "type": "definition",
+    "title": "Distribution Function and Concentration Questions",
+    "content": "The formalization defines two key concepts:\n\nHasDistributionFunction: for all $\\alpha \\in \\mathbb{R}$, the natural density $D(\\alpha) = \\lim_{x \\to \\infty} \\frac{1}{x}|\\{n \\le x : f(n)/\\log n \\le \\alpha\\}|$ exists. This is Question 1.\n\nAlmostAlwaysConstant: there exists $c > 0$ such that $f(n)/\\log n \\to c$ in density — that is, for every $\\varepsilon > 0$, the set $\\{n : |f(n)/\\log n - c| \\ge \\varepsilon\\}$ has density 0. This is Question 2, which is strictly stronger than Question 1.\n\nBoth definitions use placeholder True bodies in Lean since the precise measure-theoretic formalization would require significant infrastructure.",
+    "mathContext": "Question 2 implies Question 1: if $f(n)/\\log n \\to c$ in density, then $D(\\alpha) = 0$ for $\\alpha < c$ and $D(\\alpha) = 1$ for $\\alpha \\ge c$ (a degenerate distribution concentrated at $c$). The EGPS result shows this is indeed the case with $c = 1/\\log 2$, making the distribution function a step function rather than a smooth CDF.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Natural density",
+      "Erdős-Wintner theorem",
+      "Concentration of measure"
+    ],
+    "prerequisites": [
+      "Natural density: $d(S) = \\lim_{x \\to \\infty} |S \\cap [1,x]|/x$"
+    ]
+  },
+  {
+    "id": "ann-e408-egps",
+    "proofId": "erdos-408",
+    "range": {
+      "startLine": 210,
+      "endLine": 245
+    },
+    "type": "concept",
+    "title": "EGPS Conditional Theorem (1990)",
+    "content": "The landmark 1990 paper by Erdős, Granville, Pomerance, and Spiro proves, conditional on the Elliott-Halberstam conjecture, that $f(n)/\\log n \\to 1/\\log 2$ for almost all $n$ in the density sense.\n\nThe Elliott-Halberstam conjecture is axiomatized as an opaque Prop (its precise statement involves the distribution of primes in arithmetic progressions with level of distribution $\\theta$ for all $\\theta < 1$). The EGPS theorem is then axiomatized as: ElliottHalberstam $\\to$ question1 $\\wedge$ question2. The limiting constant $1/\\log 2 \\approx 1.4427$ is captured separately.\n\nRemarkably, the limiting constant coincides with the upper endpoint of Pillai's interval $(1/\\log 3, 1/\\log 2)$. This means $f(n)$ is 'almost as large as possible' for typical $n$.",
+    "mathContext": "The EGPS proof uses the Elliott-Halberstam conjecture to control the error terms in sieve-theoretic estimates for how $\\phi$ distributes values among residue classes. The Bombieri-Vinogradov theorem (the unconditional version) gives level of distribution $\\theta = 1/2$, but EGPS requires $\\theta$ arbitrarily close to 1. The constant $1/\\log 2$ arises because for 'generic' $n$, the dominant contribution to $f(n)$ comes from the factor of 2 removed at each step: $\\phi(n)$ is always even for $n \\ge 3$, so each iteration at least halves, and this halving dominates the iteration count.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Elliott-Halberstam conjecture",
+      "Bombieri-Vinogradov theorem",
+      "Sieve methods",
+      "Level of distribution"
+    ],
+    "prerequisites": [
+      "Bombieri-Vinogradov theorem",
+      "Primes in arithmetic progressions"
+    ]
+  },
+  {
+    "id": "ann-e408-prime-factor",
+    "proofId": "erdos-408",
+    "range": {
+      "startLine": 247,
+      "endLine": 289
+    },
+    "type": "definition",
+    "title": "Largest Prime Factor Question",
+    "content": "The third question concerns the largest prime factor $P(\\phi_k(n))$ after $k$ iterations, specifically when $k \\approx \\log\\log n$. The formalization defines largestPrimeFactor using Mathlib's Nat.factors and axiomatizes the conjecture that $P(\\phi_k(n)) \\le n^{o(1)}$ for almost all $n$ when $k \\to \\infty$.\n\nThe prime_factor_conjecture is stated for any function $k(n) \\to \\infty$: for every $\\varepsilon > 0$, the set of $n$ where $P(\\phi_{k(n)}(n)) \\le n^\\varepsilon$ has density 1. Both question3 and prime_factor_conjecture use placeholder True bodies.",
+    "mathContext": "This question probes the 'smoothing' effect of iterated totient application. After many iterations, the prime factorization of $\\phi_k(n)$ should consist only of small primes. The threshold $k \\approx \\log\\log n$ is natural because the prime factors of $\\phi(n)$ are roughly the primes $p-1$ dividing $n$, and iterating this $\\log\\log n$ times 'cascades' down through the prime hierarchy. Ford, Luca, and Pomerance have made progress on related questions about the largest prime factor of $\\phi(n)$ itself.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Smooth numbers",
+      "Largest prime factor function $P(n)$",
+      "Ford-Luca-Pomerance results"
+    ],
+    "prerequisites": [
+      "$\\phi(p) = p-1$ for primes",
+      "Prime factorization of $\\phi(n)$"
+    ]
+  },
+  {
+    "id": "ann-e408-examples",
+    "proofId": "erdos-408",
+    "range": {
+      "startLine": 291,
+      "endLine": 317
+    },
+    "type": "concept",
+    "title": "Computed Examples",
+    "content": "The formalization verifies totient computations for small values using native_decide: $\\phi(2) = 1$, $\\phi(3) = 2$, $\\phi(4) = 2$, $\\phi(5) = 4$, $\\phi(6) = 2$, $\\phi(7) = 6$. These trace the iteration chains:\n\n$f(2) = 1$: $2 \\to 1$\n$f(3) = 2$: $3 \\to 2 \\to 1$\n$f(5) = 3$: $5 \\to 4 \\to 2 \\to 1$\n$f(7) = 3$: $7 \\to 6 \\to 2 \\to 1$\n\nThe small_values axiom packages $f(2) = 1, f(3) = 2, f(4) = 2, f(5) = 3, f(6) = 2, f(7) = 3$. The corresponding ratios $f(n)/\\log n$ are approximately $1.44, 1.82, 1.44, 1.86, 1.12, 1.54$, which already suggest concentration around $1/\\log 2 \\approx 1.44$.",
+    "mathContext": "For small $n$, the ratios $f(n)/\\log n$ fluctuate considerably. The EGPS prediction of convergence to $1/\\log 2$ is an asymptotic statement — concentration becomes apparent only for large $n$. Computationally, the sequence $f(n)$ for $n \\le 10^6$ shows the distribution tightening around $1/\\log 2$ as predicted.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide in Lean 4",
+      "OEIS A003434"
+    ],
+    "prerequisites": [
+      "$\\phi(n)$ values for small $n$",
+      "native_decide kernel evaluation in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-e408-related",
+    "proofId": "erdos-408",
+    "range": {
+      "startLine": 319,
+      "endLine": 345
+    },
+    "type": "concept",
+    "title": "Structural Properties: Monotonicity, Powers, and Primes",
+    "content": "Three structural results are axiomatized:\n\n1. Weak monotonicity: $f(n) \\le f(n+1) + 1$ for $n \\ge 2$. This is not strict monotonicity — for example $f(4) = f(6) = 2$ — but bounds how fast $f$ can decrease.\n\n2. Powers of 2: $f(2^k) = k$ for $k \\ge 1$. Since $\\phi(2^j) = 2^{j-1}$, each iteration reduces the exponent by 1. This gives $f(2^k)/\\log(2^k) = k/(k\\log 2) = 1/\\log 2$, matching the EGPS constant exactly.\n\n3. Primes: $f(p) = f(p-1) + 1$ for prime $p$, since $\\phi(p) = p-1$ adds exactly one step. This recursive formula, combined with the factorization of $p-1$, makes computing $f(p)$ tractable.",
+    "mathContext": "The formula $f(2^k) = k$ shows that powers of 2 achieve the EGPS limiting ratio exactly, not just asymptotically. This is suggestive: the 'typical' behavior of $f(n)$ is governed by the power-of-2 component of the iteration, since $\\phi(n)$ is always even for $n \\ge 3$. The prime formula $f(p) = f(p-1) + 1$ connects $f$ on primes to $f$ on even numbers, creating a recursive structure tied to the Goldbach-type decomposition of $p-1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "$\\phi(2^k) = 2^{k-1}$",
+      "Totient of primes",
+      "Carmichael's theorem on $\\phi(n)$"
+    ],
+    "prerequisites": [
+      "$\\phi(p) = p - 1$ for primes $p$"
+    ]
+  },
+  {
+    "id": "ann-e408-summary",
+    "proofId": "erdos-408",
+    "range": {
+      "startLine": 347,
+      "endLine": 393
+    },
+    "type": "concept",
+    "title": "Summary and Main Theorem",
+    "content": "Two summary theorems package the formalization:\n\nerdos_408_summary combines three facts: Pillai's bounds exist, $f$ is essentially multiplicative (Shapiro), and Elliott-Halberstam implies YES to Q1 and Q2. This is proved by assembling pillai_bounds, shapiro_multiplicativity, and egps_conditional.\n\nerdos_408 states that $f(n) \\ge 1$ for $n \\ge 2$ (well-posedness) and that Elliott-Halberstam implies Q1 $\\wedge$ Q2. Both components are proved by applying the corresponding axioms.\n\nThe formalization spans 393 lines with 1 sorry (existence of $f(n)$), multiple axioms for deep results (Pillai, Shapiro, EGPS, Elliott-Halberstam), and proved theorems (Pillai combined bounds, summary assemblies, small examples via native_decide).",
+    "mathContext": "This problem exemplifies a common pattern in Erdős's later questions: asking whether an arithmetic function has a distribution function, and whether its normalized form concentrates. Many such questions were resolved conditionally on strong forms of the prime number theorem in arithmetic progressions. The unconditional resolution would likely require a breakthrough in understanding the level of distribution of primes.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős-Kac theorem",
+      "Distribution of additive functions",
+      "Level of distribution"
+    ],
+    "prerequisites": [
+      "Iterated totient $\\phi_k$ and iteration length $f(n)$",
+      "Axioms vs. proved theorems in a formalization",
+      "Conditional implication structure $H \\to (Q_1 \\wedge Q_2)$"
+    ]
+  }
+]

@@ -1,0 +1,308 @@
+{
+  "id": "konigsberg-oq-03",
+  "title": "Eulerian Paths in Hypergraphs and Infinite Graphs",
+  "slug": "konigsberg-oq-03",
+  "description": "Generalizes Euler's theorem to r-uniform hypergraphs (NP-complete for r≥3) and infinite graphs (Erdős-Grünwald-Weiszfeld characterization).",
+  "meta": {
+    "author": "Erdős-Grünwald-Weiszfeld (1936), Lonc-Naroski (2010)",
+    "date": "1936",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/KonigsbergOQ03.lean",
+    "tags": [
+      "graph-theory",
+      "euler-paths",
+      "hypergraphs",
+      "infinite-graphs",
+      "np-complete",
+      "complexity-theory",
+      "combinatorics",
+      "open-problem",
+      "infinite-combinatorics"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "lineCount": 302,
+    "assumptions": "0 axioms, 0 sorries, **0 `:= True` placeholders**. The 2026-06-03 S4 ACT discharged the remaining 2 placeholders (`HasInfiniteEulerPath`, `HasOneWayEulerPath`) by porting the `InfiniteWalk` / `BiInfiniteWalk` / `IsEulerWalk` / `IsBiInfiniteEulerWalk` infrastructure from sibling `Proofs/KonigsbergOQ03OQ02.lean` (adapted to use this file's own `InfiniteGraph`). All three Eulerian predicates (`HasEulerTour` from 2026-06-01 S3 ACT for the r=2 hypergraph case, `HasInfiniteEulerPath` for the bi-infinite case, `HasOneWayEulerPath` for the one-way infinite case) are now bound to genuine mathematical content. The file remains badge=`wip` because, while the predicates are now honestly defined, no nontrivial theorems characterising when they hold (e.g. Erdős–Grünwald–Weiszfeld) have been proved yet. Structure fields (uniform, symm, loopless, step_adj) are definitional, not assumptions. Build NOT independently verified after the S4 ACT (Docker daemon broken on the contributor's host) — confidence grounded in line-for-line pattern equivalence with the verified sibling file.",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Eulerian_path#In_directed_graphs",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets — used in hyperDegree to count edges containing a vertex",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.pair_comm",
+        "description": "Symmetry of unordered pairs as Finsets — used in toSimpleGraph.symm to discharge the SimpleGraph symmetry obligation",
+        "module": "Mathlib.Data.Finset.Insert"
+      },
+      {
+        "theorem": "SimpleGraph.Walk.IsEulerian",
+        "description": "Predicate that a finite walk traverses every edge exactly once — bound to HasEulerTour for the r=2 hypergraph reduction (Combinatorics/SimpleGraph/Trails.lean:79)",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Trails"
+      },
+      {
+        "theorem": "WithTop ℕ",
+        "description": "Extended naturals ℕ∞ — used as codomain of infiniteDegree to handle infinite-degree vertices",
+        "module": "Mathlib.Order.WithBot"
+      },
+      {
+        "theorem": "Set.encard",
+        "description": "Extended-natural cardinality of arbitrary sets — used in infiniteDegree, returning ⊤ for infinite sets without needing Finite instances (the S3 ACT 2026-06-01 replacement for the previous type-incorrect Set.toFinite version)",
+        "module": "Mathlib.Data.Set.Card"
+      }
+    ],
+    "originalContributions": [
+      "RUniformHypergraph structure: type-theoretic formalization of r-uniform hypergraphs with Set (Finset V) edges allowing infinite edge sets",
+      "hyperDegree: vertex degree in r-uniform hypergraphs generalized beyond the binary edge case",
+      "toSimpleGraph (S3 ACT, 2026-06-01): r=2 hypergraph → SimpleGraph reduction (adjacency `u ≠ v ∧ {u, v} ∈ H.edges`, symm via Finset.pair_comm, loopless via the `u ≠ v` clause)",
+      "HasEulerTour (S3 ACT, 2026-06-01): r=2 hypergraph Euler tour bound to ∃ u (p : (toSimpleGraph H).Walk u u), p.IsEulerian via Mathlib's SimpleGraph.Walk.IsEulerian; sanity theorem hasEulerTour_iff_simpleGraph_eulerian confirms definitional equivalence",
+      "InfiniteGraph structure: symmetric loopless adjacency-based graph type supporting countably infinite vertex sets",
+      "infiniteDegree: vertex degree valued in ℕ∞ handling both finite-degree and infinite-degree vertices, via Set.encard (S3 ACT 2026-06-01 rewrite from the original type-incorrect Set.toFinite stub)",
+      "InfiniteWalk structure (S4 ACT, 2026-06-03): ℕ-indexed sequence of adjacent vertices in an InfiniteGraph, with consecutive adjacency hypothesis; sameEdge / IsEdgeInjective / CoversDirArc / CoversEdge predicates plus step_ne theorem (each step traverses a non-loop edge)",
+      "IsEulerWalk (S4 ACT, 2026-06-03): one-way Euler walk = covers every edge + edge-injective",
+      "BiInfiniteWalk structure (S4 ACT, 2026-06-03): ℤ-indexed sequence of adjacent vertices, with CoversEdge predicate, needed for the bi-infinite version of the Erdős–Grünwald–Weiszfeld theorem",
+      "IsBiInfiniteEulerWalk (S4 ACT, 2026-06-03): bi-infinite Euler walk = covers every edge + distinct integer step indices traverse distinct edges",
+      "HasInfiniteEulerPath (S4 ACT, 2026-06-03): bi-infinite Euler path bound to ∃ w : BiInfiniteWalk G, IsBiInfiniteEulerWalk G w — replaces the prior := True placeholder",
+      "HasOneWayEulerPath (S4 ACT, 2026-06-03): one-way infinite Euler path bound to ∃ w : InfiniteWalk G, IsEulerWalk G w — replaces the prior := True placeholder"
+    ],
+    "theoremCount": 11,
+    "definitionCount": 17
+  },
+  "overview": {
+    "historicalContext": "Euler's 1736 solution to the Königsberg bridge problem established that a graph has an Eulerian circuit iff every vertex has even degree, and an Eulerian path iff exactly two vertices have odd degree. This is one of the founding results of graph theory. Generalizing Euler's theorem beyond simple finite graphs has occupied mathematicians for nearly three centuries. For *hypergraphs* (where edges can connect more than 2 vertices), the naive degree condition fails for $r \\geq 3$: Lonc and Naroski (2010) proved that determining whether an $r$-uniform hypergraph ($r \\geq 3$) has an Eulerian circuit is NP-complete. For *infinite graphs*, the situation is more subtle: Erdős, Grünwald, and Weiszfeld (1936) characterized Eulerian paths in countable graphs. Their result has two parts: for locally finite graphs (every vertex has finite degree), the condition is essentially the same as the finite case; for graphs with vertices of infinite degree, additional conditions on finite subgraphs are required.",
+    "problemStatement": "Do the classical Euler path/circuit conditions generalize to (1) $r$-uniform hypergraphs for $r \\geq 3$, and (2) countably infinite graphs? For hypergraphs: does a simple degree condition characterize the existence of Euler tours? For infinite graphs: what does the Erdős-Grünwald-Weiszfeld theorem say, and can it be formalized?",
+    "proofStrategy": "The formalization establishes the mathematical framework in three layers. **Hypergraph layer:** `RUniformHypergraph` (uniform hypergraph structure) and `hyperDegree` (vertex degree). The r=2 case is bound to `SimpleGraph.Walk.IsEulerian` via `toSimpleGraph` (2026-06-01 S3 ACT). For r ≥ 3, existence is NP-complete (Lonc–Naroski 2010) so no characterising theorem is available. **Infinite graph layer:** `InfiniteGraph` (adjacency-based, supports infinite degrees) and `infiniteDegree` valued in ℕ∞ via `Set.encard`. **Infinite walk layer (2026-06-03 S4 ACT):** `InfiniteWalk` (ℕ-indexed, ported from sibling `KonigsbergOQ03OQ02`) with `IsEulerWalk` (covers ∧ edge-injective) gives the one-way infinite case; `BiInfiniteWalk` (ℤ-indexed) with `IsBiInfiniteEulerWalk` gives the bi-infinite case. The three Eulerian predicates `HasEulerTour` / `HasInfiniteEulerPath` / `HasOneWayEulerPath` are now bound to genuine `∃` statements over these walk types — no `:= True` placeholders remain. A nontrivial characterising theorem (e.g. the Erdős–Grünwald–Weiszfeld 1936 result) remains as future work; the current file ships the predicates and their definitional infrastructure only.",
+    "keyInsights": [
+      "For $r$-uniform hypergraphs with $r \\geq 3$, the Euler tour problem is NP-complete (Lonc-Naroski 2010). This is a sharp contrast with the $r = 2$ case (ordinary graphs) where the degree condition is checkable in linear time. The complexity jump at $r = 3$ arises because the 'transition system' structure of a hypergraph Euler tour encodes 3-regular bipartite graph properties, which are NP-complete to verify in general.",
+      "`hyperDegree v` counts the number of hyperedges containing vertex $v$. For $r = 2$, this is the ordinary graph degree. For $r \\geq 3$, a necessary condition for an Euler tour is that the 'link degree' (number of edges through each pair of vertices) is even — a condition that is stronger than just the vertex degree being divisible by $(r-1)$. These conditions are related to the theory of $\\lambda$-designs and resolvable hypergraph decompositions.",
+      "The `InfiniteGraph` structure uses an adjacency relation `adj : V → V → Prop` rather than a `Finset`-based edge set. The `infiniteDegree` is valued in `ℕ∞` (extended naturals) to handle vertices of infinite degree. The `Set.toFinite` guard in the definition makes the degree computable only for locally finite graphs; for vertices with infinite degree, the `Finset.card` computation requires classical reasoning.",
+      "The Erdős-Grünwald-Weiszfeld theorem (1936) for countable graphs has two regimes: (a) *locally finite* case (all degrees finite): Eulerian circuit iff connected and all degrees even; Eulerian path iff connected and exactly 2 odd-degree vertices — same as the finite case. (b) *non-locally-finite* case: additional condition that every finite edge cut is even-sized. After the 2026-06-03 S4 ACT, `HasOneWayEulerPath` is bound to `∃ w : InfiniteWalk G, IsEulerWalk G w` (one-way ℕ-indexed version) and `HasInfiniteEulerPath` is bound to `∃ w : BiInfiniteWalk G, IsBiInfiniteEulerWalk G w` (bi-infinite ℤ-indexed version); both `:= True` placeholders are eliminated. A theorem stating EGW (either regime) and its proof remain future work.",
+      "The Chinese Postman Problem (mentioned in comments) asks for the minimum-weight closed walk covering all edges. For finite graphs, this is solvable in polynomial time via minimum-weight perfect matching on odd-degree vertices (Edmond-Johnson 1973). For infinite graphs, the optimal solution may not exist (no finite walk can cover infinitely many edges), requiring the theory of infinite paths and transfinite induction.",
+      "**Graph ends and Freudenthal compactification** provide the correct topological framework for infinite Euler paths. A 'graph end' (Freudenthal 1931) is an equivalence class of rays (one-way infinite paths) under eventual co-residence in finite subgraphs. For a locally finite, connected graph $G$, the Freudenthal compactification $|G|$ adds one point per end, turning $G$ into a compact topological space. Diestel's 2004 theorem shows: $G$ has an Euler tour iff $|G|$ is Eulerian in the topological sense (every arc between ends is Eulerian). This is the precise statement behind the EGW theorem's even-cut condition — it says that no end of $G$ is topologically 'odd' (reached by an odd number of edge-directions). The current `HasInfiniteEulerPath` predicate is stated over the adjacency relation of $G$ via the ℤ-indexed `BiInfiniteWalk`; a full topological EGW theorem would instead need to be phrased in terms of $|G|$, not just the adjacency relation of $G$.",
+      "**The $r = 3$ case and 3-SAT reduction**: The NP-completeness proof for $r = 3$ hypergraph Euler tours reduces from 3-SAT. Each clause of a 3-SAT formula corresponds to a hyperedge (3-element set), and the reduction constructs a 3-uniform hypergraph whose Euler tour existence encodes the satisfiability of the formula. The key construction is a 'transition gadget' at each vertex: a vertex of degree $d$ (where $(r-1) = 2$ divides $d$) has a local choice of how to pair $d/2$ pairs of incident edges, and the global consistency of these local pairings is equivalent to 3-SAT satisfiability. This is why the problem crosses the P/NP boundary at $r = 3$ rather than some higher $r$: the smallest non-trivial pairing structure (pairs of 2-element subsets of a 3-element edge) already captures boolean satisfiability."
+    ],
+    "prerequisites": [
+      "Euler's theorem for finite graphs (Königsberg bridges problem)",
+      "Hypergraph theory (r-uniform hypergraphs, vertex degree generalization)",
+      "NP-completeness and polynomial-time reductions",
+      "Infinite graph theory (countable graphs, locally finite graphs)",
+      "Extended naturals ℕ∞ (WithTop ℕ in Mathlib)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "Module header describing the two generalizations: hypergraph Euler tours (NP-complete for r≥3) and infinite graph Euler paths (Erdős-Grünwald-Weiszfeld 1936). Imports Mathlib; the unused parent Konigsberg.lean import was removed 2026-06-01 (it fails to build under Mathlib v4.26.0). Opens the KonigsbergOQ03 namespace.",
+      "mathContext": "The parent file Konigsberg.lean proves: a connected finite graph has an Eulerian circuit iff every vertex has even degree (and an Eulerian path iff exactly 2 vertices have odd degree). This file asks: does this classical result extend to (1) hypergraphs where each edge connects r≥3 vertices, and (2) countably infinite graphs?"
+    },
+    {
+      "id": "hypergraph-structures",
+      "title": "Hypergraph Definitions: Structure and Degree",
+      "startLine": 23,
+      "endLine": 40,
+      "summary": "PART I header, then RUniformHypergraph V r (edges are r-element Finsets of vertices, with uniformity condition) and hyperDegree H v (count of edges containing v via Finset.univ.filter, using classical decidability). The noncomputable attribute reflects the Set-based edge storage.",
+      "mathContext": "For r=2, RUniformHypergraph reduces to an ordinary undirected simple graph (edges are 2-element sets). The handshaking lemma generalizes: Σ_v hyperDegree(v) = r·|E|. For an Euler tour to exist, a necessary (but not sufficient for r≥3) condition is that (r-1) ∣ hyperDegree(v) for every vertex v."
+    },
+    {
+      "id": "euler-tour-r2",
+      "title": "r=2 Euler Tour via SimpleGraph Reduction",
+      "startLine": 42,
+      "endLine": 72,
+      "summary": "The r=2 hypergraph case, bound to genuine content (no stub). toSimpleGraph maps a 2-uniform hypergraph to a SimpleGraph (adjacency u ≠ v ∧ {u,v} ∈ H.edges, symm via Finset.pair_comm, loopless via the u ≠ v clause); HasEulerTour is defined as ∃ u (p : (toSimpleGraph H).Walk u u), p.IsEulerian; the theorem hasEulerTour_iff_simpleGraph_eulerian confirms definitional equivalence to Mathlib's IsEulerian. A comment records that r≥3 Euler tours are NP-complete (Lonc-Naroski 2010).",
+      "mathContext": "For r=2 (ordinary graphs), HasEulerTour ↔ connected ∧ all degrees even (checkable in O(|V|+|E|) time), and reduces cleanly to Mathlib's SimpleGraph.Walk.IsEulerian. For r≥3: Lonc and Naroski (2010) show the decision problem is NP-complete via reduction from 3-SAT. The reduction exploits 'transition systems': at each vertex, one must choose how to pair incoming and outgoing edge-uses, and valid pairing structures encode boolean satisfiability."
+    },
+    {
+      "id": "infinite-graph-structures",
+      "title": "Infinite Graph Definitions and Degree",
+      "startLine": 74,
+      "endLine": 88,
+      "summary": "PART II (infinite graphs). InfiniteGraph V is a symmetric loopless adjacency relation supporting countably many vertices/edges; infiniteDegree G v is valued in ℕ∞ via Set.encard (the 2026-06-01 S3 ACT replacement for the original type-incorrect Set.toFinite stub), returning ⊤ for infinite-degree vertices.",
+      "mathContext": "The InfiniteGraph structure uses adj : V → V → Prop rather than a Finset-based edge set, so it supports vertices of infinite degree. infiniteDegree is valued in ℕ∞ (extended naturals) via Set.encard, which is defined for arbitrary sets without requiring Finite instances — the correct semantics for the locally-finite vs non-locally-finite distinction that the Erdős-Grünwald-Weiszfeld theorem hinges on."
+    },
+    {
+      "id": "infinite-walk-api",
+      "title": "One-Way Infinite Walks and Edge-Coverage API",
+      "startLine": 90,
+      "endLine": 148,
+      "summary": "The ℕ-indexed InfiniteWalk infrastructure (S4 ACT, 2026-06-03; mirrors sibling KonigsbergOQ03OQ02). InfiniteWalk G is a sequence of adjacent vertices; the namespace adds sameEdge (two steps traverse the same undirected edge), IsEdgeInjective ('at most once' half of Eulerian), CoversDirArc / CoversEdge ('at least once' half), and the theorems step_ne (each step is a non-loop edge) and step_is_adj (consecutive vertices adjacent).",
+      "mathContext": "Using ℕ → V (rather than Stream' V) avoids coinductive complexity while remaining mathematically equivalent. The sameEdge / IsEdgeInjective / CoversEdge predicates decompose the Eulerian condition into its 'no edge twice' and 'every edge at least once' halves — the discrete combinatorial substitute for the topological arc-coverage condition in Diestel's compactification framework."
+    },
+    {
+      "id": "euler-walk-accessors",
+      "title": "One-Way Euler Walks and Accessors",
+      "startLine": 150,
+      "endLine": 171,
+      "summary": "IsEulerWalk G w := (covers every adjacent pair) ∧ (edge-injective), the one-way Eulerian condition. The IsEulerWalk namespace exposes the projection accessors covers and injective (mirroring sibling KonigsbergOQ03OQ02.IsEulerWalk).",
+      "mathContext": "An Eulerian walk on an infinite graph is exactly a walk that is both surjective onto edges (covers) and injective on edges (no repeat). Splitting these as named projections matches the sibling file's API and keeps downstream proofs (the no-edge and single-edge sanity theorems) compositional."
+    },
+    {
+      "id": "bi-infinite-euler-paths",
+      "title": "Bi-Infinite Walks and Euler-Path Predicates",
+      "startLine": 173,
+      "endLine": 223,
+      "summary": "The ℤ-indexed BiInfiniteWalk infrastructure (S4 ACT) plus the two top-level Euler-path predicates. BiInfiniteWalk G with CoversEdge and IsBiInfiniteEulerWalk (covers ∧ distinct integer step indices traverse distinct edges) gives the bi-infinite case; HasInfiniteEulerPath := ∃ w : BiInfiniteWalk G, IsBiInfiniteEulerWalk G w and HasOneWayEulerPath := ∃ w : InfiniteWalk G, IsEulerWalk G w replace the former := True placeholders. Comments record the Erdős-Grünwald-Weiszfeld characterization, the locally-finite criterion, and the Chinese Postman Problem.",
+      "mathContext": "Erdős-Grünwald-Weiszfeld (1936): a connected countable graph has an Eulerian circuit iff (1) all vertex degrees are even and (2) every finite edge cut contains an even number of edges; condition (2) is automatic for locally finite graphs. The bi-infinite (ℤ-indexed) version allows the Euler tour to extend to infinity in both directions; the one-way (ℕ-indexed) version starts at a chosen vertex. The Chinese Postman Problem (minimum-weight closed walk through all edges) is polynomial-time for finite graphs (Edmonds-Johnson 1973) but may have no feasible solution for infinite graphs. A characterising theorem (EGW) remains future work; this file ships only the predicates and their definitional infrastructure."
+    },
+    {
+      "id": "no-edge-sanity",
+      "title": "No-Edge Sanity Theorems",
+      "startLine": 225,
+      "endLine": 254,
+      "summary": "Four theorems establishing that an edgeless InfiniteGraph supports no Euler path: InfiniteWalk.isEmpty_of_no_edges and BiInfiniteWalk.isEmpty_of_no_edges (the walk types are IsEmpty), and not_hasOneWayEulerPath_of_no_edges / not_hasInfiniteEulerPath_of_no_edges (the predicates evaluate to False). These confirm the S4-discharged predicates are non-degenerate.",
+      "mathContext": "The smallest non-trivial Eulerian facts: if no pair of vertices is adjacent, any candidate walk's step-0 adjacency contradicts the no-edge hypothesis, so the walk type is empty and both Euler-path existentials are unsatisfiable. This verifies the predicates do not hold vacuously for every graph."
+    },
+    {
+      "id": "single-edge-sanity",
+      "title": "Single-Edge Sanity Theorems",
+      "startLine": 256,
+      "endLine": 302,
+      "summary": "Two theorems (S7 ACT, #22934): an InfiniteGraph whose only edge is {u,v} (u ≠ v) has no Euler path — not_hasInfiniteEulerPath_of_single_edge (bi-infinite) and not_hasOneWayEulerPath_of_single_edge (one-way). The walk is forced to bounce u ↔ v, so steps 0 and 1 repeat the edge {u,v}, violating edge-injectivity.",
+      "mathContext": "The next-smallest Eulerian facts after the no-edge case: with a single available edge an infinite walk must traverse it at every step, forcing the u → v → u → ⋯ bounce. Steps 0 and 1 then traverse the same undirected edge, contradicting the 'no edge twice' (edge-injectivity) half of the Eulerian condition. This exercises the IsEdgeInjective / sameEdge machinery on a concrete minimal graph."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization establishes the definitional framework for Euler tours in hypergraphs and infinite graphs, with key complexity and characterization results documented. The three central `Prop` definitions (`HasEulerTour`, `HasInfiniteEulerPath`, `HasOneWayEulerPath`) are now bound to genuine mathematical content — `∃` statements over the `SimpleGraph.Walk.IsEulerian`, `InfiniteWalk`/`IsEulerWalk`, and `BiInfiniteWalk`/`IsBiInfiniteEulerWalk` infrastructure (S3/S4 ACTs); no `:= True` placeholders remain. The file is theorem-rich (11 theorems, including no-edge and single-edge sanity results confirming the predicates are non-degenerate); a characterising theorem such as Erdős-Grünwald-Weiszfeld remains future work, which is why the entry stays badge=`wip`.",
+    "implications": "Formalizing the Erdős-Grünwald-Weiszfeld theorem in Lean would require a theory of infinite walks in graphs — sequences indexed by $\\mathbb{N}$ or $\\omega + 1$ that are eventually defined. Mathlib's `Stream` and `CoList` types may support this. The NP-completeness of hypergraph Euler tours (Lonc-Naroski) is a complexity-theoretic statement whose formalization would require a formal model of NP — a substantial but feasible project using Mathlib's `Computability` library.",
+    "openQuestions": [
+      "Can the Erdős-Grünwald-Weiszfeld theorem be proved in Lean for locally finite countable graphs? The key step is constructing an Euler path as a limit of finite Euler paths on increasing subgraphs — a compactness argument.",
+      "The `HasInfiniteEulerPath` / `HasOneWayEulerPath` predicates are now formalized via ℤ-indexed `BiInfiniteWalk` and ℕ-indexed `InfiniteWalk` (rather than Mathlib's `Stream`/`Path` API). Is this the right semantic foundation for stating and proving the Erdős-Grünwald-Weiszfeld characterization, or would a `Stream`-based or topological (`|G|`) formulation be cleaner?",
+      "Can the NP-completeness of hypergraph Euler tours (r≥3) be stated as a formal complexity result in Lean? This requires formalizing NP and polynomial-time reductions, which are available in Mathlib's `Computability.TuringMachine` framework.",
+      "Is there a characterization of which $r$-uniform hypergraphs have Euler tours for small $r$ (e.g., $r = 3$)? The known necessary conditions (divisibility of link degrees) are checkable — can a partial converse be formalized for special graph families like complete $r$-uniform hypergraphs $K_n^r$?"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "RUniformHypergraph",
+      "type": "core",
+      "description": "Structure defining r-uniform hypergraphs: edges are r-element Finsets of vertices",
+      "leanType": "structure RUniformHypergraph (V : Type*) (r : ℕ)"
+    },
+    {
+      "name": "hyperDegree",
+      "type": "supporting",
+      "description": "Vertex degree in an r-uniform hypergraph (number of edges containing the vertex)",
+      "leanType": "RUniformHypergraph V r → V → ℕ"
+    },
+    {
+      "name": "HasEulerTour",
+      "type": "core",
+      "description": "Euler tour existence for 2-uniform hypergraphs, bound to ∃ u (p : (toSimpleGraph H).Walk u u), p.IsEulerian via the toSimpleGraph reduction (S3 ACT, 2026-06-01)",
+      "leanType": "RUniformHypergraph V 2 → Prop"
+    },
+    {
+      "name": "InfiniteGraph",
+      "type": "core",
+      "description": "Structure for infinite graphs via symmetric, loopless adjacency relation",
+      "leanType": "structure InfiniteGraph (V : Type*)"
+    },
+    {
+      "name": "infiniteDegree",
+      "type": "supporting",
+      "description": "Vertex degree in an infinite graph, valued in ℕ∞ (extended naturals)",
+      "leanType": "InfiniteGraph V → V → ℕ∞"
+    },
+    {
+      "name": "HasInfiniteEulerPath",
+      "type": "core",
+      "description": "Bi-infinite Euler path existence in an infinite graph, bound to ∃ w : BiInfiniteWalk G, IsBiInfiniteEulerWalk G w (S4 ACT, 2026-06-03; the := True placeholder is eliminated)",
+      "leanType": "InfiniteGraph V → Prop"
+    },
+    {
+      "name": "HasOneWayEulerPath",
+      "type": "core",
+      "description": "One-way infinite Euler path from a starting vertex, bound to ∃ w : InfiniteWalk G, IsEulerWalk G w (S4 ACT, 2026-06-03; the := True placeholder is eliminated). A characterising theorem (EGW) remains future work.",
+      "leanType": "InfiniteGraph V → Prop"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "konigsberg",
+      "relationship": "extends",
+      "description": "Königsberg Bridges Problem — the original Eulerian impossibility proof whose theorem this file generalizes to hypergraphs and infinite graphs."
+    },
+    {
+      "targetId": "konigsberg-oq-01",
+      "relationship": "related",
+      "description": "Eulerian Circuits in Finite Graphs — the positive characterization (connected + all even degrees) that serves as the baseline for both generalizations in this file."
+    },
+    {
+      "targetId": "konigsberg-oq-02",
+      "relationship": "related",
+      "description": "Directed Euler Paths — the directed analogue (in-degree = out-degree condition) that parallels the undirected theory extended here."
+    },
+    {
+      "targetId": "konigsberg-oq-03-oq-02",
+      "relationship": "related",
+      "description": "Infinite Paths in Graphs: ℕ-Indexed Formalization — provides the foundational BiInfiniteWalk and InfiniteWalk definitions needed to formalize HasInfiniteEulerPath and HasOneWayEulerPath in this file."
+    },
+    {
+      "targetId": "konigsberg-oq-04",
+      "relationship": "related",
+      "description": "The BEST Theorem (de Bruijn-van Aardenne-Ehrenfest-Smith-Tutte): counts directed Eulerian circuits as a product of in-degrees, tree counts, and arborescences. While this entry asks *whether* hypergraph Euler tours exist (NP-complete), OQ-04 asks *how many* Eulerian circuits exist in the simpler directed case — the decision vs. counting complexity gap."
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey theory studies unavoidable structure in large hypergraphs: the hypergraph Ramsey number $R(r; k_1, \\ldots, k_t)$ for $r$-uniform hypergraphs parallels the graph case. The NP-completeness of Euler tours in $r$-uniform hypergraphs (Lonc-Naroski 2010) is part of the broader story of how classical P-time graph problems become NP-hard when edges gain dimension — a phenomenon Ramsey theory also exhibits."
+    },
+    {
+      "targetId": "p-vs-np",
+      "relationship": "related",
+      "description": "P vs NP Millennium Prize Problem — the Lonc-Naroski (2010) result that deciding Euler tour existence in $r$-uniform hypergraphs ($r \\geq 3$) is NP-complete is a concrete instance of the P ≠ NP landscape the Millennium Prize seeks to resolve. The sharp complexity jump at $r = 3$ — from $O(|V|+|E|)$ decidability for $r = 2$ to NP-completeness for $r \\geq 3$ — illustrates exactly the kind of boundary that makes P vs NP so central: a single additional dimension in the edge structure collapses tractability. The transition system reduction to 3-SAT encodes boolean satisfiability inside a combinatorial path problem, showing how the hardest problems in NP embed naturally in seemingly geometric questions."
+    },
+    {
+      "targetId": "szemeredi-hypergraph-core",
+      "relationship": "related",
+      "description": "Hypergraph Regularity Core Definitions — both entries formalize $r$-uniform hypergraph structures. The Szemerédi regularity lemma for hypergraphs (Gowers 2007) provides a structural decomposition that yields quasi-random degree distributions in dense $r$-uniform hypergraphs. For Euler tour existence in dense regular hypergraphs, the degree divisibility conditions ($(r-1) \\mid \\deg(v)$) become nearly automatic by regularity, pushing the difficulty to the transition system structure. The `RUniformHypergraph` definition here and the $k$-uniform hypergraph type in `szemeredi-hypergraph-core` are parallel formalizations of the same mathematical object in different mathematical contexts."
+    },
+    {
+      "targetId": "konigsberg-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Hierholzer's Algorithm — Directed Eulerian Circuit: provides a constructive Lean formalization of Euler circuit existence in directed graphs, with the corrected strong-connectivity hypothesis. While this entry shows that hypergraph Euler tour *existence* is NP-complete, Hierholzer's algorithm demonstrates that once existence is guaranteed by the degree condition, construction is efficient. The contrast is instructive: for $r$-uniform hypergraphs ($r \\geq 3$), even deciding existence is NP-hard, whereas for ordinary directed graphs the constructive algorithm runs in linear time — illustrating how dimension interacts with both the decision and construction aspects of Eulerian traversal."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Lonc, Z.; Naroski, M.",
+      "title": "On Complexity of Some Problems on Eulerian Hypergraphs",
+      "year": "2010",
+      "venue": "Discrete Mathematics & Theoretical Computer Science, 12(1), 219-230",
+      "note": "Proves NP-completeness of deciding Euler tour existence in r-uniform hypergraphs for r≥3, via reduction from 3-SAT through transition systems"
+    },
+    {
+      "authors": "Erdős, P.; Grünwald, T.; Weiszfeld, E.",
+      "title": "Végtelen gráfok Euler-vonalairól (On Euler Lines of Infinite Graphs)",
+      "year": "1936",
+      "venue": "Matematikai és Fizikai Lapok, vol. 43, pp. 129-140",
+      "note": "Original paper characterizing Eulerian paths in countably infinite graphs; establishes the even-cut condition (condition (ii)) for non-locally-finite graphs"
+    },
+    {
+      "authors": "Diestel, R.",
+      "title": "Graph Theory",
+      "year": "2017",
+      "venue": "Springer GTM 173, 5th edition",
+      "note": "Chapters 1 (finite Euler tours), 8 (infinite graph theory), and the section on topological Euler tours via Freudenthal compactification and graph ends — the standard modern reference covering all three aspects: finite, hypergraph, and infinite"
+    },
+    {
+      "authors": "Berge, C.",
+      "title": "Hypergraphs: Combinatorics of Finite Sets",
+      "year": "1989",
+      "venue": "North-Holland (translation of Hypergraphes, 1987)",
+      "note": "The foundational monograph on hypergraph theory, including the degree generalizations for r-uniform hypergraphs and the transition system characterization of Eulerian hypergraphs"
+    }
+  ],
+  "leanFile": {
+    "axiomCount": 0,
+    "lineCount": 302,
+    "path": "Proofs/KonigsbergOQ03.lean",
+    "sorries": 0,
+    "definitionCount": 17,
+    "theoremCount": 11
+  },
+  "sorries": 0
+}

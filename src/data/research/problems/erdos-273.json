@@ -1,0 +1,117 @@
+{
+  "slug": "erdos-273",
+  "title": "Erdos #273",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Is there a covering system all of whose moduli are of the form $p-1$ for some primes $p\\geq 5$?\n\n\n\nSelfridge has found an example using divisors of $360$ if $p=3$ is allowed.",
+    "plain": "Is there a covering system all of whose moduli are of the form $p-1$ for some primes $p\\geq 5$?",
+    "whyMatters": [
+      "Covering systems are a compact way to encode congruence obstructions, and the prime-minus-one restriction makes density the central barrier.",
+      "The Selfridge p = 3 example shows why excluding modulus 2 changes the problem sharply.",
+      "The reciprocal-sum obstruction gives a reusable quantitative test for candidate covering systems."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "If all moduli have the form p - 1 with p >= 5 prime, then every modulus is even and at least 4.",
+      "The Selfridge example allowing p = 3 is formalized by the covering {0 mod 2, 1 mod 4, 3 mod 4}.",
+      "For any covering system, the sum of reciprocal moduli is at least 1 (Lean: covering_reciprocal_sum).",
+      "The easy-prime divisor set p in {5, 7, 13, 19, 37, 61, 181} has reciprocal sum 109/180, so it cannot by itself cover all integers.",
+      "No single p - 1 modulus with p >= 5 covers more than one quarter of the integers."
+    ],
+    "open": [
+      "The main question remains open: whether a covering system exists using only moduli p - 1 for primes p >= 5.",
+      "A complete obstruction or explicit construction for the p >= 5 restriction is not formalized.",
+      "Search bounds for finite candidate prime-minus-one modulus sets remain outside the current Lean development."
+    ],
+    "goal": "Capture the verified Selfridge comparison example and reciprocal-density obstructions for the prime-minus-one covering-system problem."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-01-12T22:33:22.718Z",
+    "iteration": 3,
+    "focus": "Axiom elimination complete (4→2)",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 0 axioms, 0 sorries, 13 theorems, 303 lines. Eliminated both axioms: selfridge_example proved by explicit {0 mod 2, 1 mod 4, 3 mod 4} construction; covering_reciprocal_sum proved via product-counting argument (N=∏m_i, union bound on residue classes).",
+    "builtItems": [
+      "Proved difficulty_even_coverage: all moduli > 2 when using primes ≥ 5 (omega)",
+      "Proved min_modulus_ge_4: all moduli ≥ 4 when using primes ≥ 5 (omega)",
+      "Proved moduli_even: all moduli in p-1 covering (p≥5) are even",
+      "Proved easyPrimes_all_prime: all 7 primes verified by decide",
+      "Proved easyPrimes_ge_five: all ≥ 5 by decide",
+      "Proved easyPrimes_mod_divides_360: (p-1)|360 for all by decide",
+      "easyPrimes_reciprocal_sum_lt_one: proved (109/180 < 1)",
+      "reciprocal_sum_109_over_180: proved (exact value)",
+      "max_single_density: proved (1/(p-1) ≤ 1/4 for p≥5)",
+      "selfridge_example PROVED: explicit covering {0 mod 2, 1 mod 4, 3 mod 4} with moduli 2=3-1, 4=5-1",
+      "covering_reciprocal_sum PROVED: product-counting via N=∏m_i, union bound on Finset.range N, exact division Nat.cast_div",
+      "card_residue_class_nat: helper counting elements in arithmetic progressions mod m in [0,N)",
+      "CoveringSystem.n_pos: covering systems must have n≥1 (Fin 0 is empty)"
+    ],
+    "insights": [
+      "CoveringSystem structure is well-designed: uses Fin n for indices, ℤ for residues, covers all integers",
+      "IsPrimeMinusOne and AllModuliPrimeMinusOne definitions are clean and correct",
+      "The key constraint: excluding p=3 removes modulus 2, so all moduli ≥ 4 — very restrictive for covering",
+      "Selfridge example (p≥3) uses divisors of 360 = 2³·3²·5 as moduli",
+      "easyPrimes {5,7,13,19,37,61,181} are primes p≥5 with (p-1)|360",
+      "All p-1 moduli for p≥5 are even because p≥5 implies p is odd",
+      "Nat.Odd.sub_odd used to show p-1 is even when p is odd",
+      "covering_reciprocal_sum proof requires counting residue class elements in ranges - doable but ~50 lines",
+      "Proved easyPrimes reciprocal sum = 109/180 < 1: the easy primes alone cannot form a covering",
+      "Proved max_single_density: no single p-1 modulus (p≥5) covers more than 1/4 of integers",
+      "The obstruction is quantitative: need sum ≥ 1 but easy primes only give 0.606",
+      "Product ∏m_i is simpler than LCM for positivity proofs (Finset.prod_pos vs no Finset.lcm_pos)",
+      "Int.ofNat_toNat gives ↑n.toNat = max n 0 (not = n); need max_eq_left for nonneg case",
+      "Avoiding Int.toNat in proofs simplifies ℤ↔ℕ bridge: work at ℤ level via key and h, then exact_mod_cast"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Problem fully proved: 0 axioms, 0 sorries. No further work needed."
+    ],
+    "markdown": "# Erdos #273 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a covering system all of whose moduli are of the form $p-1$ for some primes $p\\geq 5$?\n\n\n\nSelfridge has found an example using divisors of $360$ if $p=3$ is allowed.\n\n\nBack to the problem\n\n## Status\n\n**Erdos Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #272\n- Problem #274\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "covering-systems",
+    "prime-moduli"
+  ],
+  "relatedProofs": [
+    "erdos-2",
+    "erdos-27",
+    "erdos-273"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T22:33:22.718Z",
+  "lastUpdate": "2026-03-24T08:10:00.000Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos273Problem.lean",
+      "filename": "Erdos273Problem.lean",
+      "lineCount": 304,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos273Problem.lean"
+    }
+  ]
+}

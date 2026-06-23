@@ -1,0 +1,238 @@
+{
+  "id": "erdos-218",
+  "title": "Erdős Problem #218: Prime Gap Densities",
+  "slug": "erdos-218",
+  "description": "Let d_n = p_{n+1} - p_n be the prime gap. Erdős conjectured that the sets where d_{n+1} ≥ d_n and d_{n+1} ≤ d_n each have density 1/2, and that infinitely many equal gaps d_n = d_{n+1} exist. OPEN.",
+  "meta": {
+    "author": "Erdős (1955-1985)",
+    "sourceUrl": "https://erdosproblems.com/218",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos218Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "prime-gaps",
+      "natural-density",
+      "arithmetic-progressions",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 218,
+    "erdosUrl": "https://erdosproblems.com/218",
+    "erdosProblemStatus": "open",
+    "axiomCount": 3,
+    "prerequisites": [
+      "Prime numbers and basic properties of Nat.Prime",
+      "Prime Number Theorem (average gap growth)",
+      "Natural density and asymptotic density of integer sets",
+      "Arithmetic progressions in the primes",
+      "Green-Tao theorem (arbitrarily long APs in primes)",
+      "Cramér probabilistic model for primes"
+    ],
+    "lineCount": 492,
+    "assumptions": "3 axioms: erdos_218a (gap increasing density 1/2), erdos_218b (gap decreasing density 1/2), and the private auxiliary infinite_of_hasDensity_pos (a set with positive density is infinite — standard real-analysis fact, re-axiomatized due to Mathlib v4.26 API drift in `Filter.Tendsto.div` and decidability handling). 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 28,
+    "definitionCount": 12
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem across several papers from 1955-1985, asking about the local statistical behavior of prime gaps $d_n = p_{n+1} - p_n$. While the Prime Number Theorem (Hadamard, de la Vallée-Poussin 1896) shows $d_n \\sim \\log p_n$ on average, the local behavior — whether consecutive gaps tend to increase, decrease, or stay equal — is far subtler. Cramér's probabilistic model (1936) suggests that gap comparisons should behave like independent coin flips, yielding density $1/2$ for both increasing and decreasing gaps. However, primes exhibit nontrivial correlations (e.g., the Hardy-Littlewood prime $k$-tuples conjecture) that could affect local gap statistics. The equal-gap conjecture ($d_n = d_{n+1}$ infinitely often) is equivalent to asking for infinitely many 3-term arithmetic progressions of consecutive primes. The Green-Tao theorem (2004) gives arbitrarily long APs in primes, but not of consecutive primes. Terence Tao assessed this problem as 'looks difficult' on his blog.",
+    "problemStatement": "Let d_n = p_{n+1} - p_n. Conjectures: (1) {n : d_{n+1} ≥ d_n} has density 1/2, (2) {n : d_{n+1} ≤ d_n} has density 1/2, (3) infinitely many n have d_n = d_{n+1}. All three remain OPEN. Conjecture 3 is equivalent to infinitely many 3-term APs of consecutive primes.",
+    "text": "Let d_n = p_{n+1} - p_n be the prime gap. Erdős conjectured that the sets where d_{n+1} ≥ d_n and d_{n+1} ≤ d_n each have density 1/2, and that infinitely many equal gaps d_n = d_{n+1} exist. OPEN.",
+    "proofStrategy": "The formalization defines nthPrime (via Nat.nth), primeGap, HasDensity (via Tendsto), and the three key sets (gapIncreasingSet, gapDecreasingSet, gapEqualSet). The three conjectures are axioms. Key proved results: primeGap_pos, gapEqualSet_eq_inter, partition of ℕ by gap comparison. The connection gapEqual ↔ threePrimesInAP is axiomatized. Green-Tao theorem is stated for context.",
+    "keyInsights": [
+      "d_n = p_{n+1} - p_n measures gaps between consecutive primes",
+      "Natural density captures the asymptotic proportion of integers with a property",
+      "Equal gaps d_n = d_{n+1} means p_n, p_{n+1}, p_{n+2} form an arithmetic progression",
+      "Symmetry heuristic: if gap comparisons were random, density 1/2 would be natural",
+      "Primes have subtle correlations that defeat simple probabilistic arguments",
+      "Green-Tao gives long APs in primes, but not necessarily of consecutive primes"
+    ],
+    "prerequisites": [
+      "Prime gaps ($d_n = p_{n+1} - p_n$)",
+      "Density of integer sets (natural, upper, lower)",
+      "Arithmetic progressions in primes (Green-Tao)",
+      "Prime number theorem ($p_n \\\\sim n\\\\log n$)",
+      "Heuristic models for prime distribution"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Header: Statement and References",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "States Erdős Problem #218 (prime gap densities). With $d_n=p_{n+1}-p_n$, Erdős conjectured: (a) $\\{n:d_{n+1}\\geq d_n\\}$ has density $1/2$; (b) $\\{n:d_{n+1}\\leq d_n\\}$ has density $1/2$; (c) infinitely many $n$ with $d_{n+1}=d_n$ (equivalent to infinitely many 3-term APs of consecutive primes). Status OPEN (Tao: 'looks difficult'). Notes the Green–Tao connection. Imports `Nat.Prime.Nth`, liminf/limsup topology, reals.",
+      "mathContext": "$d_n=p_{n+1}-p_n$. Conjectures: density$(\\{d_{n+1}\\geq d_n\\})=$density$(\\{d_{n+1}\\leq d_n\\})=1/2$; $\\{d_{n+1}=d_n\\}$ infinite."
+    },
+    {
+      "id": "prime-enumeration",
+      "title": "Part I: Prime Enumeration and Gaps",
+      "startLine": 44,
+      "endLine": 93,
+      "summary": "Defines `nthPrime n = Nat.nth Nat.Prime n` and PROVES `nthPrime_prime`, `nthPrime_strictMono`, and the small values `nthPrime_zero/_one/_two` ($2,3,5$) — all derived from Mathlib's `Nat.nth` API (previously axiomatized). Private helpers `nthPrime_three`/`nthPrime_four` ($7,11$) via `Nat.count`/`decide`.",
+      "mathContext": "$p_0=2,p_1=3,p_2=5,p_3=7,p_4=11$; `nthPrime` strictly monotone and prime-valued (proved from `Nat.nth`)."
+    },
+    {
+      "id": "prime-gaps",
+      "title": "Part II: Prime Gaps",
+      "startLine": 94,
+      "endLine": 134,
+      "summary": "Defines `primeGap n = nthPrime (n+1) - nthPrime n` and PROVES `primeGap_pos` ($d_n>0$ from strict monotonicity) and the small gaps `primeGap_zero/_one/_two/_three` ($1,2,2,4$) from the `nthPrime` values (previously axiomatized).",
+      "mathContext": "$d_0=1,d_1=2,d_2=2,d_3=4$; $d_n>0$ for all $n$."
+    },
+    {
+      "id": "natural-density",
+      "title": "Part III: Natural Density",
+      "startLine": 135,
+      "endLine": 191,
+      "summary": "Defines `HasDensity S d` (the limit of $|S\\cap[0,N)|/N$ equals $d$), `upperDensity` (`limsup`) and `lowerDensity` (`liminf`), using `Classical.decPred` for arbitrary $S$. PROVES `hasDensity_iff_upper_lower`: $S$ has density $d$ iff upper and lower densities both equal $d$, via `tendsto_of_le_liminf_of_limsup_le` and the bounds $0\\leq\\text{count}/N\\leq1$.",
+      "mathContext": "$\\text{HasDensity}(S,d)\\Leftrightarrow\\overline{d}(S)=\\underline{d}(S)=d$, with $\\text{count}/N\\in[0,1]$."
+    },
+    {
+      "id": "sets-of-interest",
+      "title": "Part IV: The Sets of Interest",
+      "startLine": 192,
+      "endLine": 243,
+      "summary": "Defines `gapIncreasingSet` ($d_n\\leq d_{n+1}$), `gapDecreasingSet` ($d_{n+1}\\leq d_n$), `gapEqualSet` ($d_n=d_{n+1}$). PROVES `zero_mem_gapIncreasingSet`, `one_mem_gapEqualSet` (gaps at $n=1$ both $2$), and `gapEqualSet_eq_inter` (equal set = increasing $\\cap$ decreasing).",
+      "mathContext": "$\\text{gapEqual}=\\text{gapIncreasing}\\cap\\text{gapDecreasing}$; $0\\in$ increasing, $1\\in$ equal."
+    },
+    {
+      "id": "conjectures",
+      "title": "Part V: The Conjectures (OPEN)",
+      "startLine": 244,
+      "endLine": 273,
+      "summary": "States the two density conjectures as AXIOMS: `erdos_218a` (gapIncreasingSet has density $1/2$) and `erdos_218b` (gapDecreasingSet has density $1/2$). A docstring records conjecture 218c (infinitely many equal gaps), equivalent to infinitely many 3-term APs of consecutive primes. All OPEN.",
+      "mathContext": "Axioms: density$(\\text{gapIncreasing})=$density$(\\text{gapDecreasing})=1/2$. 218c: $\\text{gapEqual}$ infinite."
+    },
+    {
+      "id": "ap-connection",
+      "title": "Part VI: Connection to Arithmetic Progressions",
+      "startLine": 274,
+      "endLine": 305,
+      "summary": "Defines `threePrimesInAP n` ($p_n+p_{n+2}=2p_{n+1}$). PROVES `gapEqual_iff_ap` (equal gaps iff three consecutive primes form an AP, via `omega` on ℕ subtraction) and `infinitely_many_3ap_from_218c` (if gapEqualSet is infinite, so is the set of AP triples).",
+      "mathContext": "$d_n=d_{n+1}\\Leftrightarrow p_n+p_{n+2}=2p_{n+1}$ (3-term AP of consecutive primes)."
+    },
+    {
+      "id": "known-examples",
+      "title": "Part VII: Known Examples of Equal Gaps",
+      "startLine": 306,
+      "endLine": 319,
+      "summary": "Concrete example. PROVES `example_ap_1` ($1\\in$ gapEqualSet: primes $3,5,7$). Defines `apTriples` and PROVES `ap_357` ($1\\in$ apTriples) from gap equality.",
+      "mathContext": "$(3,5,7)$ is a 3-term AP of consecutive primes (common difference $2$)."
+    },
+    {
+      "id": "green-tao",
+      "title": "Part VIII: Connection to Green-Tao",
+      "startLine": 320,
+      "endLine": 330,
+      "summary": "A docstring discussing the Green–Tao theorem (2008): the primes contain arbitrarily long arithmetic progressions. Noted as much stronger than 218c but not directly implying that *consecutive* primes form APs. No declarations.",
+      "mathContext": "Green–Tao: arbitrarily long APs in primes; does not directly yield consecutive-prime APs."
+    },
+    {
+      "id": "partial-results",
+      "title": "Part IX: Partial Results",
+      "startLine": 331,
+      "endLine": 369,
+      "summary": "Declares the private AXIOM `infinite_of_hasDensity_pos` (a set of positive density is infinite — axiomatized due to Mathlib API drift around `Filter.Tendsto.div`). PROVES `gapIncreasingSet_infinite` and `gapDecreasingSet_infinite` by applying it to the density-$1/2$ axioms. A note discusses average gap growth ($\\sim\\log p$ by PNT).",
+      "mathContext": "Positive density $\\Rightarrow$ infinite (axiom); hence gapIncreasing and gapDecreasing are infinite."
+    },
+    {
+      "id": "symmetry",
+      "title": "Part X: Symmetry Argument (Heuristic)",
+      "startLine": 370,
+      "endLine": 453,
+      "summary": "A heuristic for why density $1/2$ is plausible, plus the full set-algebra. Defines `strictlyIncreasing`/`strictlyDecreasing`. PROVES: `partition` (strict$\\uparrow\\cup$strict$\\downarrow\\cup$equal $=$ univ), `gapIncreasingSet_union_gapDecreasingSet` ($=$ univ by totality of $\\leq$), the strict$\\subseteq$non-strict subset lemmas, the decompositions of increasing/decreasing into strict$\\cup$equal, and `strictlyIncreasing_disjoint_strictlyDecreasing`.",
+      "mathContext": "$\\text{strict}\\uparrow\\sqcup\\text{strict}\\downarrow\\sqcup\\text{equal}=\\mathbb{N}$; gapIncreasing$\\cup$gapDecreasing$=\\mathbb{N}$."
+    },
+    {
+      "id": "summary",
+      "title": "Part XI: Summary",
+      "startLine": 454,
+      "endLine": 492,
+      "summary": "Recaps the three OPEN conjectures, what is known (both gap sets infinite; conjecture 3 $\\Leftrightarrow$ infinitely many 3-term consecutive-prime APs; Green–Tao gives long but not-necessarily-consecutive APs), and why it is hard. PROVES `erdos_218_summary`: (gapIncreasing and gapDecreasing infinite) $\\wedge$ (gapEqual infinite $\\Leftrightarrow$ apTriples infinite).",
+      "mathContext": "Summary theorem: both gap sets infinite; $\\text{gapEqual infinite}\\Leftrightarrow\\text{apTriples infinite}$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #218 asks about the natural density of indices where consecutive prime gaps increase, decrease, or stay equal. All three parts remain OPEN. The equal gap conjecture is equivalent to infinitely many 3-term APs of consecutive primes. Green-Tao gives arbitrarily long APs in primes but not necessarily consecutive.",
+    "implications": "**Theoretical Significance**: Resolution would reveal whether local prime gap statistics match the Cramér random model or exhibit deeper correlations.\n\nThe equal-gap conjecture connects to the Hardy-Littlewood prime $k$-tuples conjecture (for $k=3$): if the $k$-tuples conjecture is true, then infinitely many consecutive prime triples form APs. This tests the boundary between what the Green-Tao methods can reach and what remains beyond current technology.",
+    "openQuestions": [
+      "Do the sets $\\{n : d_{n+1} \\geq d_n\\}$ and $\\{n : d_{n+1} \\leq d_n\\}$ each have natural density $1/2$?",
+      "Are there infinitely many $n$ with $d_n = d_{n+1}$ (i.e., infinitely many 3-term APs of consecutive primes)?",
+      "What is the natural density of $\\{n : d_n = d_{n+1}\\}$? Expected to be 0 by Hardy-Littlewood heuristics",
+      "Can sieve methods or the Green-Tao machinery be adapted to consecutive primes?",
+      "What is the distribution of $d_{n+1}/d_n$? Is it concentrated near 1 (as Cramér predicts)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Prime.Nth",
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Order.Filter.AtTopBot.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Topology.Algebra.Order.LiminfLimsup",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Set",
+      "Filter"
+    ],
+    "namespace": "Erdos218",
+    "lineCount": 492,
+    "axiomCount": 3,
+    "theoremCount": 30,
+    "definitionCount": 12,
+    "path": "Proofs/Erdos218Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-932",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: natural-density, number-theory, prime-gaps"
+    },
+    {
+      "targetId": "erdos-1055",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-gaps"
+    },
+    {
+      "targetId": "erdos-1137",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-gaps"
+    }
+  ],
+  "references": [
+    {
+      "key": "GPY09",
+      "authors": [
+        "D.A. Goldston",
+        "J. Pintz",
+        "C.Y. Yıldırım"
+      ],
+      "title": "Primes in tuples I",
+      "venue": "Annals of Mathematics",
+      "year": "2009",
+      "volume": "170",
+      "pages": "819-862",
+      "note": "Breakthrough on small prime gaps: lim inf (p_{n+1}-p_n)/log p_n = 0"
+    },
+    {
+      "key": "Ma15",
+      "authors": [
+        "J. Maynard"
+      ],
+      "title": "Small gaps between primes",
+      "venue": "Annals of Mathematics",
+      "year": "2015",
+      "volume": "181",
+      "pages": "383-413",
+      "note": "Showed bounded gaps between primes; improved Zhang's result"
+    }
+  ],
+  "sorries": 0
+}

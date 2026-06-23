@@ -1,0 +1,116 @@
+{
+  "slug": "cantors-theorem-oq-04",
+  "title": "The Schröder-Bernstein theorem shows that mutual injections $A \\hookrightarro...",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE: The Schröder-Bernstein theorem shows that mutual injections $A \\hookrightarrow B$ and $B \\hookrightarrow A$ imply $|A| = |B|$.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-26T20:00:24.432Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "extension"
+  ],
+  "relatedProofs": [
+    "cantors-theorem",
+    "cantors-theorem-oq-01",
+    "cantors-theorem-oq-01-oq-01",
+    "cantors-theorem-oq-02",
+    "cantors-theorem-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-26T20:00:24.432Z",
+  "lastUpdate": "2026-03-27T00:41:59.424Z",
+  "completed": "2026-03-27T00:41:59.424Z",
+  "significance": 5,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/CantorsTheorem.lean",
+      "filename": "CantorsTheorem.lean",
+      "lineCount": 158,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorsTheorem.lean"
+    },
+    {
+      "path": "Proofs/CantorsTheoremOQ01.lean",
+      "filename": "CantorsTheoremOQ01.lean",
+      "lineCount": 295,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorsTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/CantorsTheoremOQ01OQ01.lean",
+      "filename": "CantorsTheoremOQ01OQ01.lean",
+      "lineCount": 172,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorsTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CantorsTheoremOQ02.lean",
+      "filename": "CantorsTheoremOQ02.lean",
+      "lineCount": 282,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorsTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/CantorsTheoremOQ03.lean",
+      "filename": "CantorsTheoremOQ03.lean",
+      "lineCount": 311,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorsTheoremOQ03.lean"
+    }
+  ]
+}

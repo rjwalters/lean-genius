@@ -1,0 +1,187 @@
+[
+  {
+    "id": "ann-cbs-oq04-defs",
+    "proofId": "schroeder-bernstein-oq-04",
+    "range": {
+      "startLine": 45,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "Base Set, Expansion, and Reachable Set",
+    "content": "Three definitions form the constructive core. baseSet filters α for elements with no preimage under g — these are the chain heads. expand adds forward images under g∘f to a Finset, growing the reachable set by one orbit step. reachableSet iterates expand exactly |α| times from baseSet. The key insight: unlike classical CBS which classifies orbits non-constructively, these definitions are fully computable because Finset membership is decidable.",
+    "mathContext": "$A_0 = \\{a \\in \\alpha \\mid a \\notin \\text{range}(g)\\}$, $S_{n+1} = S_n \\cup (g \\circ f)''(S_n)$, $S = S_{|\\alpha|}$ (the reachable set).",
+    "significance": "key",
+    "relatedConcepts": [
+      "orbit classification",
+      "decidable membership",
+      "Finset operations",
+      "chain termination"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "Finset.image",
+      "Function.iterate"
+    ]
+  },
+  {
+    "id": "ann-cbs-oq04-monotonicity",
+    "proofId": "schroeder-bernstein-oq-04",
+    "range": {
+      "startLine": 60,
+      "endLine": 91
+    },
+    "type": "concept",
+    "title": "Monotonicity of the Expansion Sequence",
+    "content": "Four lemmas establishing that the iteration sequence S₀ ⊆ S₁ ⊆ ... is non-decreasing. subset_expand shows S ⊆ expand(S) (adding images only grows the set). expand_mono shows monotonicity of the expand operator. iterate_expand_mono and iterate_expand_le lift this to iterates. baseSet_subset_reachable follows as a corollary. These are the prerequisites for the pigeonhole stabilization argument.",
+    "mathContext": "The sequence $|S_0| \\le |S_1| \\le \\cdots \\le |S_{|\\alpha|}|$ is non-decreasing with values in $\\{0, 1, \\ldots, |\\alpha|\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotone operator",
+      "Finset subset",
+      "image monotonicity"
+    ],
+    "prerequisites": [
+      "Finset.subset_union_left",
+      "Finset.image_subset_image",
+      "Function.iterate"
+    ]
+  },
+  {
+    "id": "ann-cbs-oq04-pigeonhole",
+    "proofId": "schroeder-bernstein-oq-04",
+    "range": {
+      "startLine": 95,
+      "endLine": 116
+    },
+    "type": "insight",
+    "title": "Pigeonhole Stabilization — The Key Lemma",
+    "content": "A non-decreasing sequence s(0) ≤ s(1) ≤ ... with s(n) ≤ N must have s(k) = s(k+1) for some k ≤ N. The proof is by contradiction: if all increments are strict, then s(N+1) ≥ s(0) + (N+1) > N, violating the bound. This is the constructive heart of the proof — it replaces the classical use of excluded middle for orbit classification with a finitary termination argument. The omega tactic handles the arithmetic.",
+    "mathContext": "If $0 \\le s(0) \\le s(1) \\le \\cdots \\le N$, then $\\exists k \\le N, s(k) = s(k+1)$. Proof: $N+2$ non-decreasing values in $\\{0, \\ldots, N\\}$ must repeat.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "monotone stabilization",
+      "finite orbit termination"
+    ],
+    "prerequisites": [
+      "omega tactic",
+      "Nat.lt_of_le_of_ne"
+    ]
+  },
+  {
+    "id": "ann-cbs-oq04-fixed-point",
+    "proofId": "schroeder-bernstein-oq-04",
+    "range": {
+      "startLine": 138,
+      "endLine": 167
+    },
+    "type": "concept",
+    "title": "Reachable Set Is a Fixed Point of expand",
+    "content": "The central technical result: expand(reachableSet) = reachableSet. The proof chains together: (1) the cardinality sequence stabilizes by pigeonhole at some k ≤ |α|; (2) equal cardinality + subset implies set equality; (3) iterate_stable_forever propagates the equality from k to |α| and |α|+1. The fixed-point property is what makes the bijection well-defined — it ensures the reachable set is closed under the forward orbit operation.",
+    "mathContext": "$(g \\circ f)''(S) \\subseteq S$ (the reachable set $S$ is closed under $g \\circ f$), equivalently $\\text{expand}(S) = S$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fixed point",
+      "Knaster-Tarski",
+      "finite stabilization",
+      "closure property"
+    ],
+    "prerequisites": [
+      "nat_seq_stabilize",
+      "Finset.eq_of_subset_of_card_le",
+      "iterate_stable_forever"
+    ]
+  },
+  {
+    "id": "ann-cbs-oq04-decomposition",
+    "proofId": "schroeder-bernstein-oq-04",
+    "range": {
+      "startLine": 169,
+      "endLine": 219
+    },
+    "type": "concept",
+    "title": "Closure and Decomposition Properties",
+    "content": "Three structural lemmas about the reachable set: (1) reachable_closed: if a is reachable, so is g(f(a)) — the set is closed under the forward orbit; (2) not_reachable_in_range: elements outside the reachable set must be in range(g) — they can't be chain heads; (3) reachable_decomp: every reachable element is either a chain head (in baseSet) or equals g(f(a')) for a reachable a'. The decomposition drives the surjectivity proof.",
+    "mathContext": "For $a \\in S$: $g(f(a)) \\in S$ (closure). For $a \\notin S$: $a \\in \\text{range}(g)$ (not a chain head). For $a \\in S$: $a \\in A_0 \\lor \\exists a' \\in S, g(f(a')) = a$ (decomposition).",
+    "significance": "key",
+    "relatedConcepts": [
+      "orbit decomposition",
+      "inductive structure",
+      "chain head classification"
+    ],
+    "prerequisites": [
+      "reachable_stable",
+      "baseSet_subset_reachable"
+    ]
+  },
+  {
+    "id": "ann-cbs-oq04-bijection-def",
+    "proofId": "schroeder-bernstein-oq-04",
+    "range": {
+      "startLine": 221,
+      "endLine": 240
+    },
+    "type": "definition",
+    "title": "The Constructive CBS Bijection",
+    "content": "The bijection h : α → β defined by cases: if a ∈ reachableSet (decidable!), use f(a); otherwise, use the preimage g⁻¹(a) (which exists by not_reachable_in_range). The orbit classification `a ∈ reachableSet` is decidable because reachableSet is a Finset. The only non-constructive step is extracting the preimage via Classical.choose — a Lean 4 artifact of Multiset quotients, not a mathematical obstruction.",
+    "mathContext": "$h(a) = \\begin{cases} f(a) & \\text{if } a \\in S \\\\ g^{-1}(a) & \\text{if } a \\notin S \\end{cases}$ where $S$ is the reachable set.",
+    "significance": "key",
+    "relatedConcepts": [
+      "piecewise function",
+      "decidable classification",
+      "preimage extraction",
+      "Classical.choose"
+    ],
+    "prerequisites": [
+      "Finset.decidableMem",
+      "not_reachable_in_range"
+    ]
+  },
+  {
+    "id": "ann-cbs-oq04-injectivity",
+    "proofId": "schroeder-bernstein-oq-04",
+    "range": {
+      "startLine": 242,
+      "endLine": 272
+    },
+    "type": "concept",
+    "title": "Injectivity via Cross-Case Contradiction",
+    "content": "Injectivity is proved by four cases: both reachable, both non-reachable, and two cross-cases. The cross-cases are the interesting ones: if a₁ is reachable and a₂ is not, and f(a₁) = g⁻¹(a₂), then g(f(a₁)) = a₂. But g(f(a₁)) ∈ reachableSet by closure, contradicting a₂ ∉ reachableSet. The same-side cases use injectivity of f (for reachable) and injectivity of g (for non-reachable).",
+    "mathContext": "Cross-case: $a_1 \\in S, a_2 \\notin S$, $f(a_1) = g^{-1}(a_2)$ $\\Rightarrow$ $g(f(a_1)) = a_2 \\in S$ (by closure) — contradiction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "case analysis",
+      "cross-case contradiction",
+      "injective function",
+      "orbit closure"
+    ],
+    "prerequisites": [
+      "reachable_closed",
+      "Function.Injective"
+    ]
+  },
+  {
+    "id": "ann-cbs-oq04-surjectivity",
+    "proofId": "schroeder-bernstein-oq-04",
+    "range": {
+      "startLine": 274,
+      "endLine": 297
+    },
+    "type": "concept",
+    "title": "Surjectivity via Decomposition",
+    "content": "For any b ∈ β, we find a preimage under h. If some reachable a maps to b via f, done (h(a) = f(a) = b). Otherwise, consider g(b): if g(b) were reachable, the decomposition lemma would give either g(b) ∈ baseSet (contradicting g(b) ∈ range(g)) or g(b) = g(f(a')) for reachable a' (then f(a') = b by injectivity of g, contradicting our assumption). So g(b) is non-reachable, and h(g(b)) = g⁻¹(g(b)) = b.",
+    "mathContext": "For $b \\notin f(S)$: $g(b) \\notin S$ (by decomposition + contradiction), so $h(g(b)) = g^{-1}(g(b)) = b$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "surjectivity",
+      "decomposition argument",
+      "preimage existence",
+      "case exhaustion"
+    ],
+    "prerequisites": [
+      "reachable_decomp",
+      "not_reachable_in_range",
+      "Function.Injective"
+    ]
+  }
+]

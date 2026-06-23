@@ -1,0 +1,126 @@
+[
+  {
+    "id": "ann-squares-mod-8",
+    "proofId": "lagrange-four-squares-oq-04",
+    "range": {
+      "startLine": 30,
+      "endLine": 56
+    },
+    "type": "concept",
+    "title": "Squares Mod 8: The Local Obstruction {0, 1, 4}",
+    "content": "The key modular arithmetic: squares mod 4 are in {0,1} (proved by `interval_cases` on a mod 4, giving 4 cases with `norm_num`), and squares mod 8 are in {0,1,4} (8 cases). The main theorem `three_sq_not_7_mod_8` proves that no sum of three squares is ≡ 7 mod 8, by exhaustive case analysis: each square contributes 0, 1, or 4 mod 8, and no combination of three such values sums to 7 mod 8. The `rcases ... <;> omega` tactic handles all 27 cases automatically.",
+    "mathContext": "$a^2 \\bmod 8$: $0^2=0, 1^2=1, 2^2=4, 3^2=1, 4^2=0, 5^2=1, 6^2=4, 7^2=1$, so $a^2 \\bmod 8 \\in \\{0,1,4\\}$. Possible sums of three elements of $\\{0,1,4\\}$ modulo 8: $\\{0,1,2,3,4,5,6\\}$ — but 7 is missing. Specifically: $0+0+0=0$, ..., $4+4+4=12\\equiv 4$, $4+4+1=9\\equiv 1$, $4+4+0=8\\equiv 0$, $4+1+1=6$, $4+1+0=5$, $4+0+0=4$, $1+1+1=3$, $1+1+0=2$, $1+0+0=1$, $0+0+0=0$. Maximum achievable without 7 is 6. So $n \\equiv 7 \\pmod{8} \\Rightarrow n \\ne x^2+y^2+z^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "squares mod 8",
+      "interval_cases tactic",
+      "norm_num",
+      "omega",
+      "local obstructions"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "Lean interval_cases tactic",
+      "Nat.pow_mod"
+    ]
+  },
+  {
+    "id": "ann-descent-lemma",
+    "proofId": "lagrange-four-squares-oq-04",
+    "range": {
+      "startLine": 58,
+      "endLine": 95
+    },
+    "type": "insight",
+    "title": "The Descent Lemma: 4 | Sum → Each Base Even",
+    "content": "The theorem `four_dvd_three_sq` proves: if 4 | (x²+y²+z²), then 2|x, 2|y, 2|z. The key step is `all_sq_mod4_zero_of_sum_div4`: since squares mod 4 are {0,1}, for x²+y²+z² ≡ 0 mod 4, the only possibility is x²≡y²≡z²≡0 mod 4 (because 0+0+0=0, but 1+anything ≢ 0 unless compensated, and the 27 cases show {0,1}³ → mod-4 sum is 0 only for (0,0,0)). Then `even_of_sq_mod_4_eq_0` gives 2|x from x²≡0 mod 4.",
+    "mathContext": "Descent is the core of the inductive proof. If $4^{a+1}(8b+7) = x^2+y^2+z^2$, then $4 \\mid x^2+y^2+z^2$. Since $x^2 \\equiv 0$ or $1 \\pmod{4}$, having $x^2+y^2+z^2 \\equiv 0 \\pmod{4}$ forces all three $x^2, y^2, z^2 \\equiv 0 \\pmod{4}$. Hence $4 \\mid x^2$, meaning $2 \\mid x$ (if $x = 2k+1$ odd, then $x^2 = 4k^2+4k+1 \\equiv 1 \\pmod{4}$). Write $x=2x', y=2y', z=2z'$: then $4^a(8b+7) = x'^2+y'^2+z'^2$, so the induction hypothesis applies.",
+    "significance": "key",
+    "relatedConcepts": [
+      "descent argument",
+      "four_dvd_three_sq",
+      "even_of_sq_mod_4_eq_0",
+      "4-adic valuation",
+      "induction hypothesis"
+    ],
+    "prerequisites": [
+      "modular arithmetic (squares mod 4)",
+      "divisibility in ℕ",
+      "Lean omega tactic"
+    ]
+  },
+  {
+    "id": "ann-forward-direction",
+    "proofId": "lagrange-four-squares-oq-04",
+    "range": {
+      "startLine": 97,
+      "endLine": 127
+    },
+    "type": "concept",
+    "title": "Forward Direction by Induction: 4^a(8b+7) ≢ Sum of Three Squares",
+    "content": "The theorem `obstructed_not_three_squares` proves by induction on `a` (the 4-adic valuation) that if n = 4^a(8b+7), then n has no three-square representation. Base case (a=0): n = 8b+7 ≡ 7 mod 8, impossible by `three_sq_not_7_mod_8`. Inductive step: given n = 4^(a+1)(8b+7) = 4·m where m = 4^a(8b+7), if n = x²+y²+z², the descent lemma forces x=2x', y=2y', z=2z', giving m = (x')²+(y')²+(z')², contradicting the IH.",
+    "mathContext": "Formal structure: `induction a with | zero => ... | succ a ih => ...`. The zero case: $n = 8b+7$, so $n \\bmod 8 = 7$, contradicting `three_sq_not_7_mod_8`. The successor case: $n = 4^{a+1}(8b+7)$. If $\\exists x,y,z: x^2+y^2+z^2 = n$, then $4 \\mid n$ so $4 \\mid x^2+y^2+z^2$, giving $x=2x',y=2y',z=2z'$ by the descent lemma. Then $x'^2+y'^2+z'^2 = n/4 = 4^a(8b+7)$, contradicting the IH `ih`. The `nlinarith` tactic handles the algebraic manipulation $4x'^2+4y'^2+4z'^2=n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "induction on 4-adic valuation",
+      "descent",
+      "obstructed_not_three_squares",
+      "three_sq_not_7_mod_8",
+      "four_dvd_three_sq"
+    ],
+    "prerequisites": [
+      "Lean induction tactic",
+      "descent lemma",
+      "modular obstruction"
+    ]
+  },
+  {
+    "id": "ann-backward-axiom",
+    "proofId": "lagrange-four-squares-oq-04",
+    "range": {
+      "startLine": 129,
+      "endLine": 145
+    },
+    "type": "concept",
+    "title": "Backward Direction: Gauss's Genus Theory (Axiomatized)",
+    "content": "The axiom `not_obstructed_is_three_squares` states: if n is NOT of the form 4^a(8b+7), then n IS a sum of three squares. This is the deep half: Gauss's proof uses ternary quadratic forms and genus theory. The full biconditional `legendre_three_squares'` combines the proved forward direction with this axiom. The axiomatization is honest: it identifies exactly what requires deep theory (genus/Hasse-Minkowski) versus what is elementary (modular obstruction).",
+    "mathContext": "Gauss's proof (Disquisitiones §291): The ternary form $f = x^2+y^2+z^2$ belongs to a single genus, and every integer in that genus is represented by some form in the genus. The local conditions (no $p$-adic obstruction at any prime) suffice because the genus class number is 1. This is equivalent to: the Hasse-Minkowski theorem for the form $f$ over $\\mathbb{Q}$, plus a global-to-local transfer. Specifically, $n = x^2+y^2+z^2$ has a solution iff $n$ has a solution mod $p^k$ for all primes $p$ and all $k$, which reduces to checking mod 8 (at $p=2$) and mod $p$ (at odd $p$, where squares always suffice).",
+    "significance": "key",
+    "relatedConcepts": [
+      "genus theory",
+      "Hasse-Minkowski theorem",
+      "ternary quadratic forms",
+      "local-global principle",
+      "not_obstructed_is_three_squares"
+    ],
+    "prerequisites": [
+      "ternary quadratic forms",
+      "genus theory for quadratic forms",
+      "Hasse-Minkowski theorem"
+    ]
+  },
+  {
+    "id": "ann-corollaries",
+    "proofId": "lagrange-four-squares-oq-04",
+    "range": {
+      "startLine": 162,
+      "endLine": 210
+    },
+    "type": "concept",
+    "title": "Corollaries: Lagrange Connection and Concrete Examples",
+    "content": "The theorem `three_or_four_squares` proves that every natural number is a sum of at most 4 squares (Lagrange's theorem), by combining three-square representability with the case 4^a(8b+7) = 1²+1²+1²+... Plus sign. Concrete examples verify: 7 = 4⁰(8·0+7), 15 = 4⁰(8·1+7), 28 = 4¹(8·0+7), 112 = 4²(8·0+7) all require four squares. The theorem `three_sq_1_mod_8` shows all n ≡ 1 mod 8 are three-square (and more).",
+    "mathContext": "The connection to Lagrange: $n = 4^a(8b+7)$ needs exactly 4 squares; all other $n$ need at most 3. The four-square representation exists because $4^a(8b+7) = 4^a \\cdot (4+4+4) + \\ldots$? Actually the proof uses Lagrange's four-square theorem (proved elsewhere) plus the three-square characterization. Density: among $n \\le N$, the 'obstruction set' has density $\\sim c/\\sqrt{N}$ (Landau 1908), so almost all integers are three-square sums. Examples: the sequence 7, 15, 23, 28, 31, ... includes all obstructed numbers, sparse in the naturals.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lagrange four-square theorem",
+      "three_or_four_squares",
+      "obstruction density",
+      "concrete examples"
+    ],
+    "prerequisites": [
+      "Lagrange four-square theorem (parent proof)",
+      "three_sq_1_mod_8",
+      "IsObstructed definition"
+    ]
+  }
+]

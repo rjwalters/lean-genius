@@ -1,0 +1,159 @@
+{
+  "id": "lagrange-four-squares-waring-g2-oq-03-oq-05-oq-01",
+  "slug": "lagrange-four-squares-waring-g2-oq-03-oq-05-oq-01",
+  "title": "The Non-Three-Square Density Error Is One-Sided and Genuinely Unbounded",
+  "description": "A complete answer to the second-order question left open by the density-1/6 entry: the oscillation E(N) = N − 6·excludedCount N of the non-three-square counting function is one-sided (always ≥ 0, so the density is approached strictly from below) and genuinely unbounded above (Θ(log N), not O(1)). The whole analysis collapses to a single mod-8 increment table, which simultaneously fixes the sign and exhibits an explicit divergent extremal family.",
+  "overview": {
+    "historicalContext": "The sibling entry oq-03-oq-05 proved that the excluded family E = {4^a(8b+7)} (the integers not representable as a sum of three squares) has natural density 1/6, with a two-sided logarithmic error bound |6·excludedCount N − N| ≤ 6(log₂ N + 1), and explicitly asked whether the oscillation is O(1) along subsequences or genuinely unbounded — and what its true order is. Such second-order questions about counting functions (the size and sign of the remainder after the leading density term) are the natural refinement of any density law, paralleling the study of error terms for the prime-counting and divisor functions. This entry settles the dichotomy completely and constructively.",
+    "problemStatement": "For the non-three-square counting function excludedCount N = #{n < N : n ∈ E}, analyze the error E(N) = N − 6·excludedCount N: determine its sign and its true asymptotic order. Show E(N) ≥ 0 for all N (the density 1/6 is never overshot) and that E(N) is unbounded above, hence Θ(log N) rather than O(1).",
+    "proofStrategy": "Telescope the oq-03-oq-05 recursion excludedCount N = ⌊N/8⌋ + excludedCount ⌈N/4⌉ into E(N) = E(⌈N/4⌉) + δ(N), where the increment δ(N) = ⌊(N mod 8 + 3)/4⌋ − (N mod 8) depends only on N mod 8 and takes the eight values 0,0,−1,−2,−3,−3,−4,−5. Since all δ ≤ 0, strong induction gives 6·excludedCount N ≤ N (one-sided). For unboundedness, build the extremal family a 0 = 6, a (k+1) = 4·a k − 2: every member is ≡ 6 (mod 8) (the residue with sustainable maximal loss δ = −4) and the descent stays on the family, so 6·excludedCount (a k) = a k − (4k+6), giving error 4k+6 → ∞. All residue and division arithmetic is discharged by omega.",
+    "keyInsights": [
+      "A two-variable error analysis collapses to a single mod-8 lookup: the per-step increment δ(N) depends only on N mod 8, and its eight-value table answers both the sign question and the worst-case question at once.",
+      "All eight increment values are ≤ 0, so the counting function never overshoots N/6 — the density 1/6 is approached strictly from below, a one-sided sharpness strictly stronger than the parent's symmetric bound.",
+      "Unboundedness is witnessed constructively by a self-sustaining maximal-loss orbit: the family a k = (4^{k+2}+2)/3 stays on residue 6 (δ = −4) under descent, accumulating error 4k+6.",
+      "The residue 6 — not 7 — is the extremal one: residue 7 has the most negative δ = −5 but cannot chain to another 7, so the sustainable worst case is residue 6, a subtlety the increment table makes explicit.",
+      "The true order of the oscillation is pinned to Θ(log N): the explicit family realizes the lower bound 4k+6 ≈ log₂ a k, matching the parent's logarithmic upper bound up to a constant."
+    ]
+  },
+  "sections": [
+    {
+      "id": "one-sided-section",
+      "title": "One-Sided Sharpness",
+      "startLine": 56,
+      "endLine": 81,
+      "summary": "six_excludedCount_le proves 6·excludedCount N ≤ N for all N (excludedCount_le_div_six: ≤ ⌊N/6⌋), by telescoping the recursion into per-step increments δ(N) ≤ 0 depending only on N mod 8 — the density 1/6 is approached strictly from below.",
+      "mathContext": "6·excludedCount N ≤ N always; δ(N) ∈ {0,0,−1,−2,−3,−3,−4,−5}, all ≤ 0."
+    },
+    {
+      "id": "extremal-section",
+      "title": "The Extremal Family and Its Exact Error",
+      "startLine": 83,
+      "endLine": 144,
+      "summary": "Defines a k = (4^{k+2}+2)/3 (a 0 = 6, a (k+1) = 4·a k − 2), proves every member ≡ 6 (mod 8) (a_mod8) with descent staying on the family (a_step), and computes the exact error 6·excludedCount (a k) = a k − (4k+6) (excludedCount_a, error_eq).",
+      "mathContext": "Along a k: error = 4k+6 = Θ(log a k), since a k ≈ 4^k."
+    },
+    {
+      "id": "dichotomy-section",
+      "title": "The Dichotomy Settled",
+      "startLine": 146,
+      "endLine": 172,
+      "summary": "error_unbounded shows the error reaches every height (N = a ⌈C⌉), and density_error_one_sided_and_unbounded combines both halves: E(N) ≥ 0 for all N and unbounded above — the oscillation is one-sided and Θ(log N), not O(1).",
+      "mathContext": "0 ≤ N − 6·excludedCount N for all N, and unbounded above: one-sided, Θ(log N)."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.LagrangeFourSquaresWaringG2OQ03OQ05"
+    ],
+    "opens": [
+      "LagrangeFourSquaresWaringG2OQ03OQ05"
+    ],
+    "namespace": "LagrangeFourSquaresWaringG2OQ03OQ05OQ01",
+    "lineCount": 172,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "path": "Proofs/LagrangeFourSquaresWaringG2OQ03OQ05OQ01.lean",
+    "sorries": 0
+  },
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LagrangeFourSquaresWaringG2OQ03OQ05OQ01.lean",
+    "tags": [
+      "number-theory",
+      "sums-of-squares",
+      "three-square-theorem",
+      "legendre-three-square",
+      "waring-problem",
+      "natural-density",
+      "asymptotic-density",
+      "error-term",
+      "counting",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 172,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "badge": "original",
+    "originalContributions": [
+      "density_error_one_sided_and_unbounded: the headline — a complete answer to the oq-03-oq-05 dichotomy. The oscillation E(N) = N − 6·excludedCount N of the non-three-square counting function satisfies BOTH (i) 0 ≤ E(N) for every N (one-sided), AND (ii) for every target C there is an N with C ≤ E(N) (unbounded above). So E(N) is NOT O(1): its true order is Θ(log N), pinned between the explicit family below and the oq-03-oq-05 upper bound |E(N)| ≤ 6(log₂N+1).",
+      "six_excludedCount_le: the ONE-SIDED SHARP bound 6·excludedCount N ≤ N for ALL N (equivalently excludedCount N ≤ ⌊N/6⌋, excludedCount_le_div_six). The density 1/6 is approached STRICTLY FROM BELOW — never overshot. This is strictly stronger than the oq-03-oq-05 two-sided bound whose upper half was +6(log₂N+1). The proof: the oq-03-oq-05 recursion telescopes E(N) = E(⌈N/4⌉) + δ(N) with a per-step increment δ(N) = ⌊(N mod 8 + 3)/4⌋ − (N mod 8) depending ONLY on N mod 8, taking the eight values 0,0,−1,−2,−3,−3,−4,−5 — all ≤ 0, so the running total never turns positive (strong induction, the residue arithmetic discharged by omega).",
+      "excludedCount_a + the extremal family a: an EXPLICIT divergent subsequence settling unboundedness. Define a 0 = 6, a (k+1) = 4·a k − 2 (closed form a k = (4^{k+2}+2)/3). Every a k ≡ 6 (mod 8) (a_mod8) — the residue with the largest negative δ = −4 that admits an infinite descent (a residue 7 cannot chain to another 7) — and the descent stays on the family: ⌈a(k+1)/4⌉ = a k (a_step). Hence by induction 6·excludedCount (a k) = a k − (4k+6), i.e. E(a k) = 4k+6 grows linearly in k = Θ(log a k) while a k ≈ 4^k.",
+      "The residue reduction δ(N) = ⌊(N mod 8 + 3)/4⌋ − (N mod 8): the conceptual core. The two-variable error analysis of oq-03-oq-05 collapses to a single mod-8 lookup, which simultaneously yields the sign (all δ ≤ 0 ⟹ one-sided) and the worst case (δ = −4 on residue 6, sustainable ⟹ unbounded). This is what turns a 'bounded or not?' question into a closed-form answer."
+    ],
+    "prerequisites": [
+      "excludedCount, excludedCount_rec (excludedCount N = N/8 + excludedCount ⌈N/4⌉), and excludedCount_zero_of_le from the merged sibling oq-03-oq-05 entry — imported and reused verbatim; this entry adds no new facts about the excluded family itself, only a finer analysis of the same recursion.",
+      "Nat.div_add_mod and Nat.strong_induction_on (Mathlib): the division/remainder identities feeding omega, and the strong-induction scheme along the 4-descent.",
+      "omega (Lean): discharges every residue-arithmetic and Nat-division goal, including the mod-8 case split for δ and the ℤ-cast error identities."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.div_add_mod",
+        "description": "8*(N/8)+N%8 = N and 4*M+(N+3)%4 = N+3; the only inputs omega needs to evaluate the per-step increment δ(N) and prove 6·excludedCount N ≤ N.",
+        "module": "Mathlib.Data.Nat.Defs"
+      },
+      {
+        "theorem": "Nat.strong_induction_on",
+        "description": "Strong induction along the 4-descent N ↦ ⌈N/4⌉, used for the one-sided bound six_excludedCount_le.",
+        "module": "Mathlib.Init.Data.Nat.Lemmas"
+      },
+      {
+        "theorem": "Nat.le_div_iff_mul_le",
+        "description": "Converts 6·excludedCount N ≤ N into the floor form excludedCount N ≤ ⌊N/6⌋.",
+        "module": "Mathlib.Data.Nat.Defs"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "lagrange-four-squares-waring-g2-oq-03-oq-05-oq-01-oq-01",
+      "question": "Determine the exact normalized extremal constant: the family a k gives error 4k+6 at a k ≈ 4^k, i.e. (N − 6·excludedCount N)/log₄ N → 4 along it. Is 4 the true limsup of the normalized one-sided error over all N, or do other residue chains (or interleavings of descents) push it strictly higher?",
+      "significance": "medium"
+    },
+    {
+      "id": "lagrange-four-squares-waring-g2-oq-03-oq-05-oq-01-oq-02",
+      "question": "Characterize the full spectrum {N − 6·excludedCount N : N ∈ ℕ} of attained error values: which nonnegative integers occur, with what asymptotic frequency, and does the pair (N mod 8, error) equidistribute according to a stationary measure of the underlying 4-descent dynamics?",
+      "significance": "low"
+    },
+    {
+      "id": "lagrange-four-squares-waring-g2-oq-03-oq-05-oq-01-oq-03",
+      "question": "Apply the same residue-reduction template to the exceptional sets of the other two-class ternary genera (x²+y²+2z², x²+2y²+2z², …): is the corresponding density error always one-sided, and is its sign determined solely by the signs in the increment table of the relevant 2-adic descent?",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "lagrange-four-squares-waring-g2-oq-03-oq-05",
+      "relationship": "extends",
+      "description": "Direct sequel answering oq-03-oq-05's own follow-up question (oq-03-oq-05-oq-01): whether the density error 6·excludedCount N − N is O(1) along subsequences or genuinely unbounded. This entry reuses the parent's 4-descent recursion verbatim and settles the dichotomy — the error is one-sided (always ≤ 0) and Θ(log N), via a residue reduction the parent did not extract."
+    },
+    {
+      "targetId": "lagrange-four-squares-waring-g2-oq-03-oq-04",
+      "relationship": "depends-on",
+      "description": "Transitively relies on the 2-adic normal form and computable Decidable instance for the excluded family E = {4^a(8b+7)} supplied by oq-03-oq-04, through which excludedCount is a genuine Finset.card."
+    },
+    {
+      "targetId": "lagrange-four-squares-waring-g2-oq-03-oq-03",
+      "relationship": "related",
+      "description": "Refines the quantitative picture of the three-square exceptional set: where the density entry gave the leading density 1/6, this entry pins the exact one-sided sign and the Θ(log N) order of the second-order fluctuation; the two-square sufficiency slice studies the complementary representable side."
+    }
+  ],
+  "references": [
+    {
+      "title": "Essai sur la théorie des nombres",
+      "author": "Adrien-Marie Legendre",
+      "year": "1798",
+      "venue": "Three-square theorem",
+      "description": "n = x²+y²+z² is solvable iff n ≠ 4^a(8b+7). This entry analyses the second-order error term in the counting function of the exceptional family 4^a(8b+7)."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "A complete answer to the oq-03-oq-05 dichotomy about the second-order behaviour of the non-three-square counting function excludedCount N = #{n < N : n ∈ E}, E = {4^a(8b+7)}. Writing E(N) = N − 6·excludedCount N, the parent's 4-descent recursion excludedCount N = N/8 + excludedCount ⌈N/4⌉ telescopes to E(N) = E(⌈N/4⌉) + δ(N), where the increment δ(N) = ⌊(N mod 8 + 3)/4⌋ − (N mod 8) depends ONLY on N mod 8, taking the eight values 0,0,−1,−2,−3,−3,−4,−5. Two consequences: (1) ONE-SIDED SHARPNESS (six_excludedCount_le) — every δ ≤ 0 forces 6·excludedCount N ≤ N for all N, i.e. excludedCount N ≤ ⌊N/6⌋, so the density 1/6 is approached strictly from below and never overshot; (2) GENUINE UNBOUNDEDNESS (error_unbounded) via the explicit extremal family a 0 = 6, a (k+1) = 4·a k − 2 (= (4^{k+2}+2)/3), every member ≡ 6 (mod 8) with descent ⌈a(k+1)/4⌉ = a k staying on the family, giving 6·excludedCount (a k) = a k − (4k+6) so E(a k) = 4k+6 → ∞. The combined statement density_error_one_sided_and_unbounded records both halves. 172 lines, 9 theorems, 1 definition, 0 axioms, 0 sorries; #print axioms = [propext, Classical.choice, Quot.sound], no native_decide.",
+    "implications": "The oscillation in the density-1/6 law is settled: not O(1) but Θ(log N), and one-sided — the counting function never exceeds N/6. The mechanism is a clean reduction of a two-variable error analysis to a single mod-8 lookup, which exposes both the sign (all increments ≤ 0) and the extremal direction (the sustainable residue 6) at once. The same residue-reduction template applies to the exceptional sets of other 2-adically self-similar ternary genera, where the analogous increment table determines whether the corresponding density error is one-sided and what its logarithmic constant is."
+  }
+}

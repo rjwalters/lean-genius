@@ -1,0 +1,230 @@
+{
+  "slug": "bounded-prime-gaps",
+  "title": "Bounded Prime Gaps (Zhang/Maynard-Tao)",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "S",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\exists H, \\forall N, \\exists p > N, p \\text{ prime} \\wedge (p' - p \\leq H)",
+    "plain": "There exist infinitely many pairs of consecutive primes differing by at most H, for some finite H. Best known in this formal family: H <= 246 unconditionally, and H <= 12 assuming Elliott-Halberstam.",
+    "whyMatters": []
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-20T14:50:00Z",
+    "iteration": 2,
+    "focus": "Metadata refreshed for 15 matched Lean files across the bounded-prime-gaps family, including OQ01OQ02, OQ01OQ03, and OQ03OQ02."
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Bounded-prime-gaps proof family now records 15 matched Lean files. The core theorem remains completed while newer companion files document EH, exact tuple tables, finitary Engelsma search, BV prerequisites, and TPC links.",
+    "builtItems": [
+      "BoundedPrimeGaps.lean: 2018 script-counted lines, 125 theorem/lemma declarations, 3 axioms, 16 defs",
+      "BoundedPrimeGapsOQ01.lean plus OQ01OQ02/OQ01OQ03: verified gap-bound extensions, EH comparison, and exact small tuple table",
+      "BoundedPrimeGapsOQ03.lean plus OQ03 descendants: Engelsma 50-tuple optimality and finitary search scaffolding",
+      "BoundedPrimeGapsOQ04.lean plus OQ04 descendants: BV formalization map, Polya-Vinogradov prerequisite, and minimal Mathlib addition catalog",
+      "BoundedPrimeGapsSieve.lean and BoundedPrimeGapsTPC.lean: sieve reductions and twin-prime-conjecture connections"
+    ],
+    "insights": [
+      "Zhang's bound H <= 70000000, Maynard's H <= 600, and Polymath's H <= 246 are represented in the hierarchy",
+      "Assuming Elliott-Halberstam, the formal family records H <= 12, close to the twin-prime target H = 2",
+      "Admissible k-tuples are the combinatorial core: p divides at most p-1 residues mod p",
+      "6 axioms encode deep sieve theory results (Bombieri-Vinogradov, Selberg sieve)",
+      "polymath_bounded_gaps_246 is a consequence of maynard_tao_sieve + polymath50Tuple (proved)",
+      "bounded_gaps_conditional_EH is a consequence of maynard_tao_sieve_eh + {0,2,6,8,12} quintuple (proved)",
+      "The 4 remaining axioms (3 sieve + 1 Engelsma) are genuinely deep results requiring infrastructure not in Mathlib",
+      "Twin-prime Euler product factor p(p-2)/(p-1)^2 < 1 is proved for p >= 3",
+      "Full gap hierarchy: TPC(2), GEH(6), EH(12), Polymath(246), Maynard(4680), Zhang(70M)"
+    ],
+    "nextSteps": []
+  },
+  "tags": [
+    "number-theory",
+    "primes",
+    "prime-gaps",
+    "sieve-theory"
+  ],
+  "started": "2026-03-20T10:28:00Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
+  "significance": 9,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/BoundedPrimeGaps.lean",
+      "filename": "BoundedPrimeGaps.lean",
+      "lineCount": 2018,
+      "theoremCount": 125,
+      "axiomCount": 3,
+      "defCount": 16,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGaps.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01.lean",
+      "filename": "BoundedPrimeGapsOQ01.lean",
+      "lineCount": 439,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01OQ02.lean",
+      "filename": "BoundedPrimeGapsOQ01OQ02.lean",
+      "lineCount": 220,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01OQ03.lean",
+      "filename": "BoundedPrimeGapsOQ01OQ03.lean",
+      "lineCount": 156,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03.lean",
+      "filename": "BoundedPrimeGapsOQ03.lean",
+      "lineCount": 280,
+      "theoremCount": 21,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ01.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ01.lean",
+      "lineCount": 390,
+      "theoremCount": 20,
+      "axiomCount": 2,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ01OQ04.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ01OQ04.lean",
+      "lineCount": 188,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ02.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ02.lean",
+      "lineCount": 954,
+      "theoremCount": 26,
+      "axiomCount": 2,
+      "defCount": 4,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ03.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ03.lean",
+      "lineCount": 175,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04.lean",
+      "filename": "BoundedPrimeGapsOQ04.lean",
+      "lineCount": 367,
+      "theoremCount": 12,
+      "axiomCount": 1,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04OQ01.lean",
+      "filename": "BoundedPrimeGapsOQ04OQ01.lean",
+      "lineCount": 264,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 7,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04OQ01Aristotle.lean",
+      "filename": "BoundedPrimeGapsOQ04OQ01Aristotle.lean",
+      "lineCount": 165,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04OQ02.lean",
+      "filename": "BoundedPrimeGapsOQ04OQ02.lean",
+      "lineCount": 600,
+      "theoremCount": 10,
+      "axiomCount": 6,
+      "defCount": 8,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsSieve.lean",
+      "filename": "BoundedPrimeGapsSieve.lean",
+      "lineCount": 368,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsSieve.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsTPC.lean",
+      "filename": "BoundedPrimeGapsTPC.lean",
+      "lineCount": 282,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsTPC.lean"
+    }
+  ],
+  "relatedProofs": [
+    "bounded-prime-gaps",
+    "bounded-prime-gaps-oq-01",
+    "bounded-prime-gaps-oq-01-oq-02",
+    "bounded-prime-gaps-oq-01-oq-03",
+    "bounded-prime-gaps-oq-03",
+    "bounded-prime-gaps-oq-03-oq-01",
+    "bounded-prime-gaps-oq-03-oq-01-oq-04",
+    "bounded-prime-gaps-oq-04",
+    "bounded-prime-gaps-oq-04-oq-01",
+    "bounded-prime-gaps-oq-04-oq-02"
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "slug": "erdos-285",
+  "title": "Egyptian Fractions Asymptotics",
+  "phase": "SURVEYED",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "f(k) := \\min \\{ n_k : 1 = 1/n_1 + \\cdots + 1/n_k,\\ n_1 < \\cdots < n_k \\}.\\quad f(k) = (1 + o(1))\\,\\frac{e}{e-1}\\,k.",
+    "plain": "Let f(k) be the minimal possible largest denominator among Egyptian fraction representations of 1 with k terms. Erdős asked whether f(k) is asymptotic to (e/(e-1))·k; Martin (2000) proved that the answer is yes.",
+    "whyMatters": [
+      "Connects Egyptian fraction representations with sharp asymptotic behavior.",
+      "The constant e/(e-1) is a concrete harmonic-series constant, about 1.582.",
+      "Provides a compact test case for formalizing a deep analytic number theory theorem around explicit finite witnesses and constant estimates."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Martin (2000) proved the asymptotic formula f(k) = (1 + o(1))·e/(e-1)·k; the Lean file records this as the axiom martin_egyptian_fractions.",
+      "Lean formalization defines IsEgyptianRepresentation, ValidLengths, f, and egyptianConstant.",
+      "Lean proves constant facts for e/(e-1), including positivity, 3/2 < e/(e-1) < 2, and e/(e-1) > 79/50.",
+      "Lean proves concrete valid-length witnesses for k=0, k=2, k=3, and k=4, plus f_set_nonempty for valid lengths."
+    ],
+    "open": [
+      "Formalize Martin's 2000 proof without the martin_egyptian_fractions axiom.",
+      "Optional enrichment: add more valid-length witnesses or prove monotonicity properties of f."
+    ],
+    "goal": "Represent Erdős #285 in Lean with accurate definitions and support lemmas, while leaving Martin's deep asymptotic theorem explicitly axiomatized."
+  },
+  "currentState": {
+    "phase": "SURVEYED",
+    "since": "2026-02-04T08:37:00Z",
+    "iteration": 3,
+    "focus": "Problem is well-formalized. Only axiom is Martin's main theorem (deep result).",
+    "activeApproach": "Added structural properties and valid length witnesses. All supporting infrastructure proved.",
+    "blockers": [
+      "None active. The remaining axiom (martin_egyptian_fractions) requires Martin (2000) proof which is beyond Mathlib and Aristotle."
+    ],
+    "nextAction": "Problem is essentially complete. Could add more valid lengths or monotonicity as optional enrichment.",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 2,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEYED: Erdos285Problem.lean formalizes the definitions, constant estimates, and several concrete Egyptian fraction witnesses with 0 sorries. The main asymptotic theorem is not proved in-repo; it is represented by the martin_egyptian_fractions axiom, citing Martin (2000).",
+    "builtItems": [
+      "IsEgyptianRepresentation: predicate for Egyptian fraction representations.",
+      "ValidLengths: set of lengths for which representations exist.",
+      "f: minimal largest denominator function for valid representations.",
+      "egyptianConstant: the constant e/(e-1).",
+      "zero_mem_validLengths, two_mem_validLengths, three_mem_validLengths, four_mem_validLengths: concrete representation witnesses.",
+      "f_set_nonempty: valid lengths have achievable largest denominators.",
+      "erdos_285 and egyptian_lower_bound: consequences of the martin_egyptian_fractions axiom."
+    ],
+    "insights": [
+      "The local development is strongest around definitions, explicit witnesses, and elementary real-constant algebra.",
+      "The central mathematical content is Martin's asymptotic theorem; the evidence marks it as a deep result beyond Mathlib and Aristotle.",
+      "The formalization should be presented as axiomatized, not as an in-repo proof of the asymptotic."
+    ],
+    "mathlibGaps": [
+      "Martin's 2000 proof of the Egyptian fraction asymptotic is not available in Mathlib.",
+      "A proof of the main asymptotic would require substantial number-theoretic infrastructure beyond the current local file."
+    ],
+    "nextSteps": [
+      "Keep martin_egyptian_fractions explicitly documented as the sole deep axiom.",
+      "Optionally add more concrete valid lengths such as k=5 and k=6.",
+      "Optionally develop monotonicity or other structural properties of f."
+    ],
+    "markdown": "# Erdős #285: Egyptian Fractions Asymptotics - Knowledge\n\n## Problem\nLet f(k) be the minimal value of the largest denominator nₖ among all representations\n1 = 1/n₁ + ··· + 1/nₖ with n₁ < n₂ < ··· < nₖ. Is f(k) = (1 + o(1)) · e/(e-1) · k?\n\n**Answer**: YES — proved by Greg Martin (2000).\n\n## Key Results\n\n### Proved Theorems (17 theorems, 0 sorries, 3 examples)\n\n**Core definitions:**\n1. `IsEgyptianRepresentation`: Predicate for valid Egyptian fraction representations\n2. `ValidLengths`: Set of k for which representations exist\n3. `f`: Minimal largest denominator function\n4. `egyptianConstant`: The constant e/(e-1) ≈ 1.582\n\n**Main result (axiomatized):**\n5. `martin_egyptian_fractions` (AXIOM): f(k) = (1 + o(1)) · e/(e-1) · k\n6. `erdos_285`: The asymptotic formula holds (from axiom)\n7. `egyptian_lower_bound`: f(k) ≥ (1 + o(1)) · e/(e-1) · k\n\n**Constant analysis:**\n8. `egyptianConstant_gt_one`: e/(e-1) > 1\n9. `egyptianConstant_lt_two`: e/(e-1) < 2\n10. `egyptianConstant_gt_three_halves`: e/(e-1) > 3/2\n11. `egyptianConstant_gt_79_over_50`: e/(e-1) > 79/50 = 1.58\n12. `egyptianConstant_pos`: e/(e-1) > 0\n13. `egyptianConstant_eq`: e/(e-1) = 1 + 1/(e-1)\n14. `egyptianConstant_inv`: (e/(e-1))⁻¹ = 1 - e⁻¹\n15. `egyptianConstant_in_interval`: 3/2 < e/(e-1) < 2\n16. `egyptianConstant_eq_one_plus_inv`: e/(e-1) = 1 + (e-1)⁻¹\n17. `egyptianConstant_well_defined`: e > 0 ∧ e-1 > 0\n\n**Valid lengths (concrete witnesses):**\n18. `zero_mem_validLengths`: k=0 valid (1 = 1/1)\n19. `two_mem_validLengths`: k=2 valid (1 = 1/2 + 1/3 + 1/6)\n20. `three_mem_validLengths`: k=3 valid (1 = 1/2 + 1/4 + 1/5 + 1/20)\n21. `four_mem_validLengths`: k=4 valid (1 = 1/3 + 1/4 + 1/5 + 1/6 + 1/20)\n\n**Structural properties:**\n22. `f_set_nonempty`: Valid lengths have achievable largest denominators\n\n**Examples:**\n- 1 = 1/2 + 1/3 + 1/6\n- 1 = 1/2 + 1/4 + 1/5 + 1/20\n- 1 = 1/3 + 1/4 + 1/5 + 1/6 + 1/20\n\n### Iteration 2 Progress (2026-02-04, researcher-1)\n- **Added `zero_mem_validLengths`**: k=0 via {1} witness\n- **Added `f_set_nonempty`**: Structural property for valid lengths\n- **Added `egyptianConstant_in_interval`**: Combined bound 3/2 < e/(e-1) < 2\n- **Added `egyptianConstant_eq_one_plus_inv`**: Alternative form using inverse\n- **Added `egyptianConstant_well_defined`**: Positivity of both factors\n- Total: 5 new theorems, all fully proved, 0 sorries\n\n### Iteration 1 Progress\n- Initial formalization with Martin's theorem as axiom\n- Proved constant bounds: > 1, < 2, > 3/2, > 79/50\n- Proved constant algebraic identities\n- Proved valid lengths k=2, k=3, k=4 with explicit witnesses\n\n## Axiom Inventory (1 axiom)\n1. `martin_egyptian_fractions` - f(k) = (1 + o(1)) · e/(e-1) · k (Martin 2000, deep result NOT in Mathlib)\n\n## Assessment\nThis problem is well-formalized. The only remaining axiom is the main theorem itself\n(Martin's 2000 proof), which is a deep number-theoretic result far beyond Mathlib's\ncurrent capabilities. All supporting infrastructure (definitions, constant properties,\nconcrete witnesses) is fully proved.\n\n## Next Steps\n- This problem is essentially complete for formalization purposes\n- The martin_egyptian_fractions axiom is NOT tractable for Aristotle (deep research result)\n- Consider adding more valid lengths (k=5, k=6, ...) as exercises\n- Could add monotonicity of f if needed\n"
+  },
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "egyptian-fractions",
+    "asymptotics",
+    "axiomatized"
+  ],
+  "relatedProofs": [
+    "erdos-2",
+    "erdos-28",
+    "erdos-285"
+  ],
+  "references": {
+    "papers": [
+      "Greg Martin (2000), proof of the Egyptian fraction asymptotic formula cited by the local evidence"
+    ],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-27T22:18:02.333Z",
+  "lastUpdate": "2026-02-11T05:41:00.788Z",
+  "completed": "2026-02-11T05:41:00.788Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos285Problem.lean",
+      "filename": "Erdos285Problem.lean",
+      "lineCount": 375,
+      "theoremCount": 21,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos285Problem.lean"
+    }
+  ]
+}

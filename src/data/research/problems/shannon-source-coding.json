@@ -1,0 +1,132 @@
+{
+  "slug": "shannon-source-coding",
+  "title": "Shannon Source Coding Theorem",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "S",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{For an i.i.d. source } X_1, X_2, \\ldots \\text{ with entropy } H(X):",
+    "plain": "Shannon's source coding theorem says that entropy is the fundamental limit of lossless data compression. You can compress data to H bits per symbol (on average), but no further. This is the mathematical foundation of ZIP, gzip, and all lossless compression.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-21",
+    "iteration": 0,
+    "focus": "Formalize Shannon's first coding theorem via AEP and typical sets.",
+    "blockers": [
+      "Depends on shannon-entropy for entropy definition and chain rule."
+    ],
+    "nextAction": "Wait for entropy foundation, then formalize AEP (weak law for -log p(X)).",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "information-theory",
+    "analysis",
+    "probability",
+    "cs-math-bridge",
+    "marquee-phase-2"
+  ],
+  "relatedProofs": [
+    "shannon-source-coding",
+    "shannon-source-coding-oq-01",
+    "shannon-source-coding-oq-02",
+    "shannon-source-coding-oq-03",
+    "shannon-source-coding-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-21T20:11:02.346Z",
+  "lastUpdate": "2026-03-21T21:57:07.470Z",
+  "completed": "2026-03-21T21:57:07.470Z",
+  "significance": 9,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/ShannonSourceCoding.lean",
+      "filename": "ShannonSourceCoding.lean",
+      "lineCount": 33,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonSourceCoding.lean"
+    },
+    {
+      "path": "Proofs/ShannonSourceCodingOQ01.lean",
+      "filename": "ShannonSourceCodingOQ01.lean",
+      "lineCount": 293,
+      "theoremCount": 15,
+      "axiomCount": 1,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonSourceCodingOQ01.lean"
+    },
+    {
+      "path": "Proofs/ShannonSourceCodingOQ02.lean",
+      "filename": "ShannonSourceCodingOQ02.lean",
+      "lineCount": 358,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonSourceCodingOQ02.lean"
+    },
+    {
+      "path": "Proofs/ShannonSourceCodingOQ03.lean",
+      "filename": "ShannonSourceCodingOQ03.lean",
+      "lineCount": 477,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonSourceCodingOQ03.lean"
+    },
+    {
+      "path": "Proofs/ShannonSourceCodingOQ04.lean",
+      "filename": "ShannonSourceCodingOQ04.lean",
+      "lineCount": 463,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonSourceCodingOQ04.lean"
+    },
+    {
+      "path": "Proofs/ShannonSourceCodingOQ04Aristotle.lean",
+      "filename": "ShannonSourceCodingOQ04Aristotle.lean",
+      "lineCount": 234,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonSourceCodingOQ04Aristotle.lean"
+    }
+  ]
+}

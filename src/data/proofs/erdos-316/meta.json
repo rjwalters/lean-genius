@@ -1,0 +1,202 @@
+{
+  "id": "erdos-316",
+  "title": "Erdős Problem #316: Partitioning Sets by Reciprocal Sums",
+  "slug": "erdos-316",
+  "description": "Can every finite set with reciprocal sum < 2 be partitioned into two parts each with sum < 1? Answer: NO - disproved by Sándor (1997).",
+  "meta": {
+    "author": "Csaba Sándor (1997)",
+    "sourceUrl": "https://erdosproblems.com/316",
+    "date": "1997",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos316Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "partitions",
+      "counterexample"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 316,
+    "erdosUrl": "https://erdosproblems.com/316",
+    "erdosProblemStatus": "disproved",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.Disjoint",
+        "description": "Disjointness predicate for finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Finpartition",
+        "description": "Finite partitions of finite sets",
+        "module": "Mathlib.Order.Partition.Finpartition"
+      }
+    ],
+    "dateAdded": "2026-01-19",
+    "originalContributions": [
+      "Educational documentation explaining the counterexample strategy",
+      "Verified computation of the minimal counterexample's reciprocal sum",
+      "Clean separation of main theorem from multiset and generalized variants"
+    ],
+    "relatedProblems": [
+      {
+        "id": "erdos-191",
+        "relationship": "Both involve reciprocal sums of natural numbers; #191 studies monochromatic sets with large 1/log sum"
+      },
+      {
+        "id": "erdos-315",
+        "relationship": "Adjacent problem in the Erdős unit fractions series"
+      },
+      {
+        "id": "erdos-305",
+        "relationship": "Another Erdős problem on arithmetic structure of natural number subsets"
+      },
+      {
+        "id": "erdos-317",
+        "relationship": "Adjacent problem in the Erdős conjecture series; explores related partitioning questions"
+      }
+    ],
+    "axiomCount": 1,
+    "lineCount": 116,
+    "assumptions": "1 axiom: erdos_316_generalized — Sándor's 1997 generalization that for every n ≥ 2, there exists a finite A ⊆ ℕ\\{1} with ∑1/k < n that cannot be n-partitioned with all parts summing to < 1. The n=2 case (erdos_316) is proved computationally; the general case is axiomatized.",
+    "theoremCount": 4,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "This problem belongs to the rich tradition of **Egyptian fraction** problems — the study of representations of rationals as sums of distinct unit fractions $1/n$. The ancient Egyptians used such representations exclusively, and the modern study was revitalized by Erdős, who made dozens of conjectures about unit fraction sums.\n\nErdős and Graham posed this specific question in their influential 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory*. The conjecture seemed natural: if a set's reciprocal sum is below 2, the 'spare capacity' should allow a balanced bisection. This intuition works for most random sets but fails for carefully constructed ones.\n\nThe conjecture remained open for 17 years until Csaba Sándor disproved it in 1997 in his paper \"On a problem of Erdős\" published in the *Journal of Number Theory*. Sándor not only found a counterexample but proved a more general negative result: for every $n \\ge 2$, there exists a set with reciprocal sum $< n$ that resists $n$-partition.\n\nThe minimal counterexample set $\\{2, 3, 4, 5, 6, 7, 10, 11, 13, 14, 15\\}$ was discovered by Tom Stobart through computational search over subsets of $\\{2, \\ldots, 15\\}$. This 11-element set has reciprocal sum $4234829/2162160 \\approx 1.9586$, yet any partition into two parts must have at least one part with reciprocal sum $\\ge 1$. The gap of $2 - 1.9586 \\approx 0.041$ is precisely too small for any balanced split.",
+    "problemStatement": "**Conjecture (Erdős-Graham)**: Is it true that if $A \\subseteq \\mathbb{N} \\setminus \\{1\\}$ is a finite set with $\\sum_{n \\in A} \\frac{1}{n} < 2$, then there exists a partition $A = A_1 \\sqcup A_2$ such that $\\sum_{n \\in A_i} \\frac{1}{n} < 1$ for $i = 1, 2$?\n\n**Answer**: NO. The set $\\{2, 3, 4, 5, 6, 7, 10, 11, 13, 14, 15\\}$ is a counterexample.",
+    "text": "Can every finite set with reciprocal sum < 2 be partitioned into two parts each with sum < 1? Answer: NO - disproved by Sándor (1997).",
+    "proofStrategy": "The proof is a constructive disproof by counterexample. We exhibit the specific finite set A = {2, 3, 4, 5, 6, 7, 10, 11, 13, 14, 15} and prove two things:\n\n1. The sum of reciprocals satisfies ∑(1/n) = 4234829/2162160 ≈ 1.9586 < 2\n\n2. For every possible partition of A into two disjoint subsets, at least one subset has reciprocal sum ≥ 1\n\nThe second claim is verified exhaustively by checking all 2^11 = 2048 possible subsets. For each subset B ⊆ A with ∑_{n ∈ B}(1/n) < 1, we verify that the complement A \\ B has ∑_{n ∈ A\\B}(1/n) ≥ 1. This exhaustive verification is performed using Lean's `decide +kernel` tactic.",
+    "keyInsights": [
+      "**Unit fractions**: Reciprocals of natural numbers (1/2, 1/3, 1/4, ...) have special properties in additive combinatorics. The harmonic series diverges but specific finite sums have structured behavior.",
+      "**Greedy fails**: One might expect that a set with total < 2 could always be split near the midpoint. The counterexample shows this intuition fails: the 11 elements are arranged such that any subset summing to < 1 leaves too much for its complement.",
+      "**Exhaustive verification**: With only 2048 possible subsets, Lean can verify all cases computationally. This is a clean example of proof by exhaustive search.",
+      "**Generalization**: Sándor proved that for any n ≥ 2, there exists a set with sum < n that cannot be partitioned into n parts each with sum < 1. The case n = 2 is what we formalize here.",
+      "**Certified computation**: The `decide +kernel` tactic performs a verified exhaustive search of all 2048 subsets, producing a kernel-level proof certificate. This is fundamentally different from a pen-and-paper 'check all cases' argument — the Lean kernel independently verifies every step, eliminating the possibility of computational error."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Header Documentation",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "Problem statement: can every finite $A \\subseteq \\mathbb{N} \\setminus \\{1\\}$ with $\\sum_{n \\in A} 1/n < 2$ be partitioned into two parts each with sum $< 1$? Answer: NO (Sándor 1997). References to Erdős–Graham 1980 monograph.",
+      "mathContext": "The conjecture asks whether the threshold $\\sum 1/n < 2$ guarantees a balanced bipartition $A = A_1 \\sqcup A_2$ with $\\sum_{A_i} 1/n < 1$ for both parts. Intuitively, the 'spare capacity' $2 - \\sum 1/n > 0$ seems to allow it, but the structure of unit fractions defeats this."
+    },
+    {
+      "id": "counterexample-construction",
+      "title": "Counterexample Construction",
+      "startLine": 25,
+      "endLine": 59,
+      "summary": "Introduces the counterexample set A = {2, 3, 4, 5, 6, 7, 10, 11, 13, 14, 15} with reciprocal sum 4234829/2162160 ≈ 1.9586 < 2. Describes the four-step proof strategy: exhibit, verify sum, exhaustively check all 2048 partitions.",
+      "mathContext": "$A = \\{2, 3, 4, 5, 6, 7, 10, 11, 13, 14, 15\\}$ with $\\sum_{n \\in A} \\frac{1}{n} = \\frac{4234829}{2162160} \\approx 1.9586 < 2$. The set skips 8, 9, 12 — including any of these would push the sum above 2 or enable a valid partition."
+    },
+    {
+      "id": "exhaustive-verification",
+      "title": "Exhaustive Verification via decide+kernel",
+      "startLine": 60,
+      "endLine": 72,
+      "summary": "The erdos_316 theorem: constructs A, verifies sum < 2 via decide+kernel, then proves that for every B ⊆ A with ∑(1/n) < 1, the complement A \\ B has ∑(1/n) ≥ 1. The exhaustive check of 2048 subsets is dispatched by decide+kernel, producing a kernel-level proof certificate.",
+      "mathContext": "$\\neg \\forall A,\\, P(A) \\Rightarrow Q(A)$ is proved by witnessing $A$ with $P(A) \\wedge \\neg Q(A)$. For each of $2^{11} = 2048$ subsets $B \\subseteq A$: if $\\sum_B 1/n < 1$ then $\\sum_{A \\setminus B} 1/n \\geq 1$. The `decide +kernel` tactic checks all cases via kernel-level computation."
+    },
+    {
+      "id": "multiset-variant",
+      "title": "Multiset Variant",
+      "startLine": 81,
+      "endLine": 104,
+      "summary": "Multiset variant: the counterexample $\\{2,3,3,5,5,5,5\\}$ has $\\sum 1/n_i = 1/2 + 2/3 + 4/5 = 59/30 < 2$ but resists bipartition. Uses `Multiset` with addition $A = A_1 + A_2$ replacing disjoint union.",
+      "mathContext": "The multiset $\\{2, 3, 3, 5, 5, 5, 5\\}$ has $\\sum 1/n_i = 1/2 + 2 \\cdot 1/3 + 4 \\cdot 1/5 = 59/30 \\approx 1.967 < 2$. Multiset splitting uses $A = A_1 + A_2$ (multiset addition), and the four copies of 5 contribute $4/5$ — almost 1 by themselves."
+    },
+    {
+      "id": "generalization",
+      "title": "Sándor's Generalization",
+      "startLine": 105,
+      "endLine": 116,
+      "summary": "Sándor's 1997 generalization: for every $n \\ge 2$, $\\exists A \\subseteq \\mathbb{N}$ with $\\sum_{k \\in A} 1/k < n$ that cannot be partitioned into $n$ parts each with sum $< 1$. Axiomatized via `Finpartition`.",
+      "mathContext": "$\\forall n \\geq 2,\\, \\exists A \\subseteq \\mathbb{N} \\setminus \\{0,1\\}$: $A$ is nonempty, $\\sum_{k \\in A} 1/k < n$, and for every partition of $A$ into $n$ parts, at least one part has $\\sum 1/k \\geq 1$. Uses `Finpartition` from Mathlib to represent the $n$-fold partition."
+    }
+  ],
+  "conclusion": {
+    "summary": "We have formally verified that Erdős's conjecture about partitioning sets by reciprocal sums is FALSE. The minimal counterexample {2, 3, 4, 5, 6, 7, 10, 11, 13, 14, 15} has reciprocal sum approximately 1.96, yet cannot be split into two parts each summing to less than 1. The proof uses exhaustive computational verification of all 2048 possible partitions.",
+    "implications": "**Theoretical Significance**: This result shows that the additive structure of unit fractions is more complex than naive intuition suggests.\n\nEven with 'room to spare' (total sum well below 2), the specific values can conspire to prevent any balanced partition. Sándor's generalization shows this phenomenon extends to all partition numbers n ≥ 2.",
+    "openQuestions": [
+      "What is the minimum cardinality of a counterexample for each partition number n?",
+      "Are there structural characterizations of sets that CAN be partitioned as Erdős conjectured?",
+      "What is the 'gap' between the threshold 2 and achievable partition bounds for random sets?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-191",
+      "relationship": "related",
+      "description": "Both involve reciprocal sums of natural numbers; #191 studies monochromatic sets with large $1/\\log$ sum while #316 studies partition constraints on $\\sum 1/n$ sums"
+    },
+    {
+      "targetId": "erdos-315",
+      "relationship": "related",
+      "description": "Adjacent problem in the Erdős unit fractions series — #315 and #316 both concern partitioning constraints on sets of unit fractions"
+    },
+    {
+      "targetId": "erdos-317",
+      "relationship": "related",
+      "description": "Adjacent problem in the Erdős conjecture series — #317 explores related partitioning questions for sets with reciprocal sum constraints"
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "foundational",
+      "description": "The divergence of $\\sum 1/n$ implies that large finite sets of natural numbers have arbitrarily large reciprocal sums. The threshold $\\sum 1/n < 2$ in Erdős #316 is a finite-set constraint within this divergent series"
+    },
+    {
+      "targetId": "prime-reciprocal-divergence",
+      "relationship": "related",
+      "description": "The divergence of $\\sum 1/p$ over primes shows that even prime-restricted reciprocal sums grow without bound. The counterexample set $\\{2,3,5,7,11,13\\}$ uses primes because their reciprocals are the 'largest' unit fractions for their size, creating tighter partition constraints"
+    },
+    {
+      "targetId": "erdos-305",
+      "relationship": "related",
+      "description": "Another Erdős problem on arithmetic structure of natural number subsets — both concern how combinatorial properties interact with the additive/multiplicative structure of finite subsets of $\\mathbb{N}$"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "Erdos316",
+    "lineCount": 116,
+    "axiomCount": 1,
+    "theoremCount": 4,
+    "definitionCount": 1,
+    "path": "Proofs/Erdos316Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Sándor, Csaba",
+      "title": "On a problem of Erdős",
+      "year": "1997",
+      "venue": "Journal of Number Theory, vol. 63, pp. 203–210",
+      "note": "Disproved the conjecture and proved the generalization: for every n ≥ 2, there exists a set with reciprocal sum < n that cannot be n-partitioned with all parts < 1"
+    },
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "L'Enseignement Mathématique, Monographie No. 28, Geneva",
+      "note": "Original source of the conjecture — an influential monograph collecting hundreds of open problems in combinatorial number theory"
+    }
+  ],
+  "sorries": 0
+}

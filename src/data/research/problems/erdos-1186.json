@@ -1,0 +1,58 @@
+{
+  "slug": "erdos-1186",
+  "title": "Erd\u0151s #1186",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "(LaTeX not available)",
+    "plain": "Let $\\delta_k$ be such that in any $2$-colouring of $\\{1,\\ldots,n\\}$ there exist at least $(\\delta_k+o(1))n^2$ many monochromatic $k$-term arithmetic progressions. Give reasonable bounds (or even an asymptotic formula) for $\\delta_k$.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-01-16T08:44:15.247Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Problem statement retrieved. Ready for exploration.",
+    "builtItems": [],
+    "insights": [
+      "Statement unavailable"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erd\u0151s #1186 - Knowledge Base\n\n## Problem Statement\n\nLet $\\delta_k$ be such that in any $2$-colouring of $\\{1,\\ldots,n\\}$ there exist at least $(\\delta_k+o(1))n^2$ many monochromatic $k$-term arithmetic progressions. Give reasonable bounds (or even an asymptotic formula) for $\\delta_k$.\n\n## Status\n\n**Erd\u0151s Database Status**: SOLVED\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-16*\n"
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-118"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-16T08:44:15.247Z",
+  "lastUpdate": "2026-03-13T07:52:17.060Z",
+  "significance": 7,
+  "tractability": 6
+}

@@ -1,0 +1,397 @@
+{
+  "id": "algebraic-numbers-countable-oq-02-oq-04",
+  "title": "Countability of Computable Real Numbers",
+  "slug": "algebraic-numbers-countable-oq-02-oq-04",
+  "description": "Open question addressing the cardinality layer below algebraic in the real-number hierarchy: prove that the set of computable real numbers is countable. A real `r` is computable when some Turing machine (formalized as a `Computable` function `ℕ → ℚ` in Mathlib) outputs a sequence of rationals converging to `r`. Since Turing-machine descriptions form a countable set, so does the set of computable reals — yielding the hierarchy ℚ ⊊ algebraic ⊊ computable ⊊ ℝ with all but the last carrying cardinality ℵ₀. S3 (build-verified): full proof via `decodeReal : Nat.Partrec.Code → ℝ` pipeline; main theorem `computable_reals_countable` and exact cardinality `card_computable_reals_eq_aleph0` are unconditional.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Computable_number",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AlgebraicNumbersCountableOQ02OQ04.lean",
+    "tags": [
+      "set-theory",
+      "cardinality",
+      "real-analysis",
+      "computability",
+      "computable-analysis",
+      "open-problem",
+      "research",
+      "seeker-selected"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 1079,
+    "assumptions": "",
+    "mathlib_version": "4.26.0",
+    "dateAdded": "2026-05-11",
+    "openQuestions": [
+      "Prove that every algebraic real is computable (so the inclusion `algebraic ⊆ computable` lifts to the new definition).",
+      "Prove `IsComputable e` and `IsComputable π` to exhibit a computable transcendental (concrete strict inclusion `algebraic ⊊ computable`).",
+      "Construct an explicit non-computable real (e.g. Chaitin's Ω). The S4 cardinality argument proves existence; an explicit construction would witness it."
+    ],
+    "originalContributions": [
+      "IsComputable (r : ℝ) : Prop — Mathlib-Computable rational sequence converging to r",
+      "decodeReal (c : Nat.Partrec.Code) : ℝ — S3 noncomputable decoder mapping codes to limits of their evaluated rational sequences (0 when undefined)",
+      "exists_code_of_computable_rat_seq — S3 pipeline lemma: every Computable (ℕ → ℚ) is the eval of some Nat.Partrec.Code (Computable.encode.comp + Partrec.nat_iff + Nat.Partrec.Code.exists_code)",
+      "computable_real_mem_range_decodeReal — S3 key lemma: every IsComputable real is in Set.range decodeReal (uniqueness of limit + Part.some + Encodable.encode injectivity)",
+      "computable_reals_countable — main theorem (S3, build pending): {r | IsComputable r} is countable, via Set.countable_range + Set.Countable.mono on Nat.Partrec.Code",
+      "card_computable_reals_le_aleph0 — cardinal upper bound (now unconditional after S3)",
+      "rat_isComputable, int_/nat_/zero_/one_isComputable — five concrete computable witnesses (S2, researcher-1)",
+      "aleph0_le_card_computable_reals — unconditional ℵ₀ lower bound via ℚ ↪ {r | IsComputable r} (S2)",
+      "card_computable_reals_eq_aleph0 — exact ℵ₀ equality (S2 statement, now unconditional after S3)",
+      "nonComputableReals : Set ℝ — S4 complement set definition",
+      "card_nonComputableReals_eq_continuum — S4 main theorem: #(non-computable reals) = 𝔠, via partition + ℵ₀ absorption (mirrors OQ02OQ03 transcendental cardinality argument)",
+      "exists_non_computable_real — S4 corollary: ∃ r : ℝ, ¬ IsComputable r (Turing's negative observation, by cardinality alone)",
+      "computable_reals_strict_ssubset_univ — S4 strict inclusion {r | IsComputable r} ⊊ ℝ",
+      "card_computable_reals_lt_card_reals, card_computable_lt_card_nonComputable — S4 strict cardinal inequalities ℵ₀ < 𝔠 specialised to the computable/non-computable split",
+      "card_computable_reals_eq_card_algebraic_reals, card_nonComputableReals_eq_card_reals, cardinality_trichotomy — S5 cross-cardinal consolidation lifting the cardinal coordinates of the hierarchy from the imported sibling AlgebraicNumbersCountable.card_algebraic_reals_eq_aleph0",
+      "computable_reals_nonempty, computable_reals_infinite — S6 Set-level structural API for the computable side (0 ∈ S; infinite via ℚ ↪ S and Set.infinite_range_of_injective + Rat.cast_injective)",
+      "nonComputableReals_nonempty, nonComputableReals_uncountable, nonComputableReals_infinite — S6 Set-level structural API for the non-computable side (uncountable from card = 𝔠 > ℵ₀; infinite from Set.Finite.countable contradiction)",
+      "computable_reals_dense, closure_computable_reals_eq_univ — S7 topological structure: computable reals are dense in ℝ (Rat.denseRange_cast + rat_isComputable + Dense.mono), closure = univ via Dense.closure_eq",
+      "nonComputableReals_dense, closure_nonComputableReals_eq_univ — S8-prep topological complement: non-computable reals also dense (Ioo a b argument via IsOpen.exists_Ioo_subset + Cardinal.mk_Ioo_real / aleph0_lt_continuum contradiction); closure = univ",
+      "nonComputableReals_isGδ, nonComputableReals_residual, computable_reals_meagre — S8 Baire-category sharpening: complement of countable in T1 is Gδ (Set.Countable.isGδ_compl), Gδ ∩ dense is residual, meagre dual via IsMeagre definitional unfolding",
+      "interior_computable_reals_eq_empty, interior_nonComputableReals_eq_empty — S8 corollary: both sides of the partition have empty interior (interior_eq_empty_iff_dense_compl applied to the dual density results)",
+      "frontier_computable_reals_eq_univ, frontier_nonComputableReals_eq_univ — S9 boundary characterization: every real is a boundary point of both partition halves simultaneously (frontier := closure \\ interior, combining S7/S8-prep closure = univ with S8 interior = ∅, then Set.diff_empty)",
+      "computable_reals_isFsigma_witness — S10 explicit Fσ-style witness: ∃ s : Nat.Partrec.Code → Set ℝ, (∀ c, IsClosed (s c)) ∧ {r | IsComputable r} = ⋃ c, s c, with s c := {decodeReal c} ∩ {r | IsComputable r}. Each s c is a subsingleton (closed in T1 via Set.Subsingleton.isClosed); union covers via S3 computable_real_mem_range_decodeReal. Completes the Σ⁰₂ / Π⁰₂ Borel-hierarchy picture (Fσ-style for computable, Gδ for non-computable from S8)."
+    ],
+    "prerequisites": [
+      "AlgebraicNumbersCountable: algebraic_reals_countable — the next layer up in the hierarchy",
+      "Mathlib.Computability.Partrec: the `Computable` predicate on `α → σ` for `Primcodable` types",
+      "Mathlib.Computability.PartrecCode: `Nat.Partrec.Code` as the recursive code type",
+      "Mathlib.Data.Rat.Denumerable: `Encodable ℚ` (required so `Computable (f : ℕ → ℚ)` elaborates)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Computable",
+        "description": "The `Computable` predicate on a function `α → σ` between `Primcodable` types: arises from a partial recursive function.",
+        "module": "Mathlib.Computability.Partrec"
+      },
+      {
+        "theorem": "Nat.Partrec.Code",
+        "description": "The inductive type of recursive program codes; `Encodable`, hence countable.",
+        "module": "Mathlib.Computability.PartrecCode"
+      },
+      {
+        "theorem": "le_aleph0_iff_set_countable",
+        "description": "`#s ≤ ℵ₀ ↔ s.Countable`. Converts countability to a cardinal bound.",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Set.Countable.image",
+        "description": "Image of a countable set under any function is countable. Backbone of the strategy.",
+        "module": "Mathlib.Data.Set.Countable"
+      },
+      {
+        "theorem": "Cardinal.aleph0_lt_continuum",
+        "description": "ℵ₀ < 𝔠 — sufficient to conclude `{r | IsComputable r}` is a strict subset of ℝ.",
+        "module": "Mathlib.SetTheory.Cardinal.Continuum"
+      }
+    ],
+    "theoremCount": 47,
+    "definitionCount": 3,
+    "relatedProblems": [
+      {
+        "id": "algebraic-numbers-countable-oq-02",
+        "relationship": "Parent: proves ℝ is uncountable. Combined with the present result, gives the strict inclusion computable ⊊ ℝ in cardinality terms."
+      },
+      {
+        "id": "algebraic-numbers-countable",
+        "relationship": "Grandparent: proves the algebraic reals are countable. Computable reals contain algebraic reals (every algebraic real is computable via root-finding), but are still countable."
+      },
+      {
+        "id": "algebraic-numbers-countable-oq-02-oq-03",
+        "relationship": "Sibling: proves #transcendentalReals = 𝔠 (exact cardinality). Together with the present countability result, partitions ℝ into countable (computable) and continuum-many (non-computable) pieces."
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Alan Turing's 1936 paper *On Computable Numbers* introduced the notion of a computable real: a real number whose decimal expansion (or, equivalently, rational approximation sequence) is produced by a Turing machine. Turing immediately observed that the set of computable reals is countable, since Turing-machine descriptions are finite strings over a finite alphabet (hence countable). This established the existence of *non-computable* reals — uncountably many of them, since ℝ has cardinality 𝔠. Specific examples of non-computable reals followed: Chaitin's Ω, the halting probability, is the canonical one.\n\nThe computable reals form a real closed subfield of ℝ — sums, products, differences, and quotients of computable reals are computable; so are limits of computable sequences (when computably so). However, they are not Cauchy-complete: there exist Cauchy sequences of computable reals whose limit is not computable.",
+    "problemStatement": "**Open Question (OQ-02-OQ-04)**: Prove that the set of computable real numbers is countable.\n\nFormally, define `IsComputable (r : ℝ) := ∃ f : ℕ → ℚ, Computable f ∧ Tendsto (· ∘ f : ℕ → ℝ) atTop (nhds r)`. The goal is to prove `Set.Countable {r : ℝ | IsComputable r}`, completing the cardinality hierarchy `ℚ ⊊ algebraic ⊊ computable ⊊ ℝ` with the first three layers all at cardinality ℵ₀.",
+    "proofStrategy": "**Three-step strategy** (deferred from S1 SCAFFOLD to future iterations):\n\n1. *Code countability* (`Nat.Partrec.Code` is `Encodable`): the type of recursive program codes is countable by construction (finite inductive type closure under finitely many constructors). Mathlib's `Encodable` instance is direct.\n\n2. *Code completeness* (every `Computable f : ℕ → ℚ` has a code): Mathlib's `Computable` predicate is defined in terms of `Partrec`, and `Partrec` functions admit recursive codes via `Nat.Partrec.Code.exists`. Combined with `Primcodable ℚ` (via `Mathlib.Data.Rat.Denumerable`), every computable rational-valued function lifts to a code.\n\n3. *Image of countable* (`Set.Countable.image`): the partial map `Nat.Partrec.Code → Option ℝ` sending each code to the limit of its rational evaluation (when defined) has the computable reals as its image. Image of a countable set is countable.\n\nDischarging the `sorry` in `computable_reals_countable` requires implementing the three pieces and composing them.",
+    "keyInsights": [
+      "The countability of computable reals is a direct consequence of the *finiteness of Turing-machine descriptions*: every computable real has a finite name, finite names form a countable set, so computable reals are countable.",
+      "Both the algebraic reals (parent) and the computable reals (this entry) have cardinality ℵ₀, but the inclusion `algebraic ⊊ computable` is strict — `e` and `π` are computable yet transcendental. So 'algebraic' and 'computable' are distinct *qualitative* layers, both of which collapse to the same *cardinal* ℵ₀.",
+      "The strict inclusion `computable ⊊ ℝ` follows by cardinality alone (`ℵ₀ < 𝔠 = #ℝ`). One does *not* need to exhibit a specific non-computable real to know that uncountably many exist. (Chaitin's Ω is one explicit example, but Cantor diagonalization of computable reals gives another, abstract, witness.)",
+      "The Mathlib formalization choice — `Computable f : ℕ → ℚ` — is one of several equivalent definitions of a computable real (others use Cauchy modulus, Dedekind cuts, decidable digit predicates). All are provably equivalent in classical mathematics, but the equivalences themselves are non-trivial to formalize.",
+      "An important non-property: computable reals are **not** computably enumerable as a subset of ℝ. There is no algorithm that lists the computable reals in a way recognizable by another algorithm. Cantor diagonalization fails to produce a non-computable real *because the enumeration is itself non-computable*.",
+      "**The Specker sequence phenomenon**: Ernst Specker (1949) constructed a *computable, monotone, bounded* sequence of computable rationals whose limit is **not** computable. This proves the computable reals are not Cauchy-complete — even when all the data of a Cauchy sequence (the terms, the rate of convergence) is computable, the limit can fail to be. This is the foundational obstruction to doing analysis purely within the computable reals, and motivates the move to *type-2 effectivity* (Weihrauch's TTE) where convergence is required to come with a *computable modulus*. The current definition of `IsComputable` uses unbounded-modulus `Tendsto`, which sits between 'just convergent' and 'convergent with computable modulus' — the equivalence among these notions is itself a non-trivial classical fact.",
+      "**The arithmetical hierarchy refinement**: Although `{r : ℝ | IsComputable r}` is countable, its *complexity within the arithmetical hierarchy* is non-trivial. Viewed as a set of TM indices (Gödel numbers), `{e : ℕ | the e-th TM computes a Cauchy real}` is $\\Pi_2^0$-complete — a $\\forall \\exists$ assertion 'for every precision $k$, there exists $N$ such that successive outputs are within $2^{-k}$'. This complexity is *invisible* to the set-theoretic countability proof formalized here but is crucial when one wants effective (rather than merely set-theoretic) results about the computable reals."
+    ],
+    "prerequisites": [
+      "AlgebraicNumbersCountable (Proofs/AlgebraicNumbersCountable.lean): algebraic reals are countable",
+      "Mathlib `Computable` (Mathlib.Computability.Partrec): predicate on `α → σ` between Primcodable types",
+      "Mathlib `Encodable ℚ` (Mathlib.Data.Rat.Denumerable): enables `Computable` for ℚ-codomain functions",
+      "Cardinal arithmetic basics: `le_aleph0_iff_set_countable`, `Cardinal.aleph0_lt_continuum`"
+    ],
+    "furtherWork": [
+      "Prove the strict inclusion `algebraic ⊊ computable` by formalizing `IsComputable π` or `IsComputable e`.",
+      "Prove the strict inclusion `computable ⊊ ℝ` directly via Cantor-style diagonalization of computable reals.",
+      "Prove the computable reals form a real closed field (closure under arithmetic and limits of computable Cauchy sequences with a computable modulus).",
+      "Construct Chaitin's Ω as an explicit non-computable real, demonstrating the non-emptiness of the complement.",
+      "Connect to type-2 effectivity (Weihrauch's TTE): equivalence of the Mathlib `Computable`-based definition with Type-2 computability."
+    ]
+  },
+  "sections": [
+    {
+      "id": "introduction",
+      "title": "§1: Introduction, Hierarchy, and Iteration Plan",
+      "startLine": 1,
+      "endLine": 118,
+      "summary": "Module-level docstring framing the open question, locating computable reals in the hierarchy `ℚ ⊊ algebraic ⊊ computable ⊊ ℝ`, recording the per-iteration scaffolding (S1 SCAFFOLD → S2 lower bound → S3 upper bound → S4 exact equality), and citing Turing 1936 and the relevant Mathlib modules (`Computability.Partrec`, `Computability.PartrecCode`, `Data.Rat.Denumerable`).",
+      "mathContext": "Cardinality hierarchy: each strict inclusion (ℚ⊊algebraic, algebraic⊊computable) is a non-cardinality strict inclusion — sets differ qualitatively but share cardinality ℵ₀. The final inclusion computable⊊ℝ is strict by cardinality (ℵ₀<𝔠). The intro frames the goal: prove the countability of {r : ℝ | IsComputable r}."
+    },
+    {
+      "id": "definition",
+      "title": "§2: Namespace, Opens, and IsComputable Definition",
+      "startLine": 119,
+      "endLine": 133,
+      "summary": "Opens `namespace AlgebraicNumbersCountableOQ02OQ04`, brings `Cardinal Filter Classical` into scope, and defines `IsComputable (r : ℝ) : Prop := ∃ f : ℕ → ℚ, Computable f ∧ Tendsto (fun n => (f n : ℝ)) atTop (nhds r)`. Captures Turing's original notion via Mathlib's `Computable` predicate on `ℕ → ℚ`.",
+      "mathContext": "The `Computable` predicate in Mathlib is one canonical formalization of TM-computable functions; alternatives include `Primrec` (primitive recursive) and `Partrec` (partial recursive). For this entry's purposes, `Computable` is the appropriate level — total recursive functions that produce rational approximations whose real images converge."
+    },
+    {
+      "id": "upper-bound",
+      "title": "§3 (S3): Upper Bound — codeReal Pipeline",
+      "startLine": 134,
+      "endLine": 247,
+      "summary": "S3 (researcher follow-up). Defines `decodeReal : Nat.Partrec.Code → ℝ` (noncomputable, via `Classical.choose`) decoding each code to the limit of its evaluated rational sequence (0 when undefined). Proves the two pipeline lemmas `exists_code_of_computable_rat_seq` (every `Computable (ℕ → ℚ)` is the eval of some `Nat.Partrec.Code`) and `computable_real_mem_range_decodeReal` (every `IsComputable` real is in `Set.range decodeReal`). Closes the main theorems `computable_reals_countable : Set.Countable {r | IsComputable r}` and `card_computable_reals_le_aleph0 : #{r | IsComputable r} ≤ ℵ₀` via `Set.countable_range` + `Set.Countable.mono`.",
+      "mathContext": "The pipeline factorization is `{r | IsComputable r} ⊆ Set.range decodeReal ⊆ ℝ`, with `Nat.Partrec.Code` countable by `Encodable.countable`. Set-countability transfers across `Set.range` then `Set.Countable.mono` to give `Set.Countable {r | IsComputable r}`, which converts to the cardinal bound `#·≤ℵ₀` via `le_aleph0_iff_set_countable`."
+    },
+    {
+      "id": "lower-bound",
+      "title": "§4 (S2): Lower Bound — ℚ ↪ Computable Reals",
+      "startLine": 249,
+      "endLine": 318,
+      "summary": "S2 (researcher follow-up). Proves five concrete computable witnesses (`rat_isComputable`, `int_isComputable`, `nat_isComputable`, `zero_isComputable`, `one_isComputable`) each by exhibiting a Computable constant sequence converging to the named rational. Combines these into `aleph0_le_card_computable_reals : ℵ₀ ≤ #({r | IsComputable r} : Set ℝ)` via the embedding `ℚ ↪ {r | IsComputable r}`, lifting through `Cardinal.mk_le_of_injective` and `Cardinal.mk_rat = ℵ₀`.",
+      "mathContext": "The five-witness pattern is overkill for `IsComputable q : IsComputable (q : ℝ)` alone, but the explicit `int`/`nat`/`zero`/`one` corollaries serve downstream consumers wanting to exhibit specific elements without re-routing through `rat`. The ℵ₀ lower bound completes one half of `#{r | IsComputable r} = ℵ₀`."
+    },
+    {
+      "id": "exact-equality",
+      "title": "§5: Exact ℵ₀ Equality",
+      "startLine": 320,
+      "endLine": 334,
+      "summary": "Combines the §3 upper bound `≤ ℵ₀` with the §4 lower bound `ℵ₀ ≤ ·` via `le_antisymm` to prove `card_computable_reals_eq_aleph0 : #({r | IsComputable r} : Set ℝ) = ℵ₀`. This is the precise cardinal statement: computable reals are *exactly* countably infinite, matching ℚ and the algebraic reals.",
+      "mathContext": "`le_antisymm` of the two bounds gives the exact cardinality. The final form `#·= ℵ₀` is the cleanest cardinal statement: computable reals are not finite (the ℚ-embedding rules that out), not larger than ℵ₀ (the code pipeline rules that out), so exactly ℵ₀. This completes the cardinality picture: ℚ, algebraic, and computable all sit at ℵ₀ in the layered hierarchy below 𝔠 = #ℝ."
+    },
+    {
+      "id": "strict-inclusion",
+      "title": "§6 (S4): Strict Inclusion computable ⊊ ℝ and #non-computable = 𝔠",
+      "startLine": 336,
+      "endLine": 512,
+      "summary": "Defines `nonComputableReals := {r : ℝ | ¬ IsComputable r}` and pins its cardinality at the continuum. The argument is purely cardinal — no explicit Cantor diagonal or Chaitin-Ω construction: from the partition `𝔠 = #ℝ ≤ #computable + #nonComputable ≤ ℵ₀ + #nonComputable = #nonComputable` (cardinal absorption, via the bootstrap `ℵ₀ ≤ #nonComputable`). Delivers `card_nonComputableReals_eq_continuum`, Turing's negative result `exists_non_computable_real`, the strict inclusion `computable_reals_strict_ssubset_univ`, and the strict cardinal inequalities `card_computable_reals_lt_card_reals` and `card_computable_lt_card_nonComputable`.",
+      "mathContext": "Counting argument: `𝔠 = #ℝ ≤ #computable + #nonComputable`. With `#computable = ℵ₀` and absorption `ℵ₀ + κ = κ` for `ℵ₀ ≤ κ`, this forces `#nonComputable = 𝔠`. The bootstrap `ℵ₀ ≤ #nonComputable` is by contradiction: `#nonComputable < ℵ₀ ⟹ #ℝ ≤ ℵ₀ + ℵ₀ = ℵ₀`, against `ℵ₀ < 𝔠`. Parallels the sibling transcendentals result `continuum_le_card_transcendentals`."
+    },
+    {
+      "id": "cross-cardinal",
+      "title": "§7 (S5): Cross-Cardinal Consolidation Across Hierarchy Layers",
+      "startLine": 514,
+      "endLine": 585,
+      "summary": "Packages three consolidation theorems pinning the exact cardinal coordinates of every layer of `ℚ ⊊ algebraic ⊊ computable ⊊ ℝ`: `card_computable_reals_eq_card_algebraic_reals` (algebraic and computable reals share cardinality ℵ₀ despite the strict qualitative inclusion), `card_nonComputableReals_eq_card_reals` (non-computable reals match ℝ cardinally), and `cardinality_trichotomy` (a compact summary of the three cardinalities). The constructive inclusion `algebraic ⊆ computable` is deferred; only its cardinal coordinate is recorded here.",
+      "mathContext": "Cardinal coordinates: `#algebraic = #computable = ℵ₀` and `#nonComputable = #ℝ = 𝔠`. The cardinal equality `#algebraic = #computable` is the cardinal shadow of the (classical) inclusion `algebraic ⊆ computable`; equal cardinality coexists with strict set inclusion — the hallmark of infinite sets."
+    },
+    {
+      "id": "structural-api",
+      "title": "§8 (S6): Set-Theoretic Structural API — Nonempty, Infinite, Uncountable",
+      "startLine": 587,
+      "endLine": 655,
+      "summary": "Extracts the standard Set-level predicates across the partition, each as a one-liner citing the corresponding S2–S4 cardinal result. Computable side (cardinality ℵ₀): `computable_reals_nonempty` (0 is computable) and `computable_reals_infinite` (ℚ embeds). Non-computable side (cardinality 𝔠): `nonComputableReals_nonempty`, `nonComputableReals_uncountable`, and `nonComputableReals_infinite`. These give downstream consumers Set-level facts without round-tripping through `Cardinal.mk`.",
+      "mathContext": "Translating cardinal facts to Set predicates: `ℵ₀ ≤ #S ⟹ S.Infinite`; `𝔠 = #S > ℵ₀ ⟹ ¬ S.Countable` (uncountable); uncountable ⟹ infinite. The API form is what measure theory / descriptive set theory consumers expect."
+    },
+    {
+      "id": "topology-dense",
+      "title": "§9 (S7): Topological Structure — Computable Reals Are Dense",
+      "startLine": 657,
+      "endLine": 694,
+      "summary": "Proves `computable_reals_dense : Dense {r | IsComputable r}` and its closure form `closure_computable_reals_eq_univ`. Immediate from density of ℚ in ℝ plus `rat_isComputable`. Combined with countability (S3), this exhibits the computable reals as a *countable dense subset* of ℝ — a constructive separability witness using only computable points: small in cardinality (ℵ₀) yet large topologically (dense).",
+      "mathContext": "Density: `closure {r | IsComputable r} = ℝ` since `ℚ ⊆ {r | IsComputable r}` and `closure ℚ = ℝ`. A countable dense subset is exactly a separability witness for ℝ; here it is built from computable points only, the topological counterpart of the ℵ₀ cardinality."
+    },
+    {
+      "id": "noncomputable-dense",
+      "title": "§10 (S8-prep): Topological Complement — Non-Computable Reals Are Dense",
+      "startLine": 696,
+      "endLine": 755,
+      "summary": "Proves `nonComputableReals_dense : Dense nonComputableReals` and `closure_nonComputableReals_eq_univ`. Argument is cardinality-vs-countability: any nonempty open `U` contains an interval `Ioo a b` of cardinality 𝔠; if `U` missed the non-computable reals then `Ioo a b ⊆ computable` would inherit countability from S3, forcing `𝔠 ≤ ℵ₀` — contradiction. Together with S7, ℝ is the disjoint union of two simultaneously dense sets.",
+      "mathContext": "If `U ∩ nonComputable = ∅` then `Ioo a b ⊆ {r | IsComputable r}` (countable), but `#(Ioo a b) = 𝔠` (`Cardinal.mk_Ioo_real`), so `𝔠 ≤ ℵ₀`, contradicting `aleph0_lt_continuum`. Hence every open set meets the non-computable reals: density."
+    },
+    {
+      "id": "baire-category",
+      "title": "§11 (S8): Baire-Category Sharpening — Meagre vs Residual",
+      "startLine": 757,
+      "endLine": 867,
+      "summary": "Sharpens countability into category-theoretic smallness. `computable_reals_meagre`: the computable reals are meagre (first Baire category) — a countable union of nowhere-dense singletons. `nonComputableReals_isGδ` and `nonComputableReals_residual`: the non-computable reals contain a dense Gδ, hence are topologically generic (comeagre). Empty-interior corollaries `interior_computable_reals_eq_empty` and `interior_nonComputableReals_eq_empty` are recorded. The computable reals are countable, dense, and meagre — the exact profile of ℚ.",
+      "mathContext": "Meagre = countable union of nowhere-dense sets; in a T1 space singletons are nowhere dense, and a countable set `⋃ {xₙ}` is meagre. Residual = complement of meagre = contains a dense Gδ (Baire genericity). This is strictly stronger than countability: it fixes Baire category, not merely cardinality. Mirrors Mathlib's `Irrational`/`eventually_residual_irrational` story."
+    },
+    {
+      "id": "boundary",
+      "title": "§12 (S9): Boundary Characterization — Every Real Is a Boundary Point",
+      "startLine": 869,
+      "endLine": 959,
+      "summary": "Combines closure = univ (S7/S8-prep) with interior = ∅ (S8 corollaries) to compute the frontier of both halves exactly: `frontier_computable_reals_eq_univ` and `frontier_nonComputableReals_eq_univ`. Since `frontier s = closure s \\ interior s = univ \\ ∅ = univ`, every real is a boundary point of both the computable and non-computable reals — no real sits cleanly on either side. This refines the rational/irrational boundary profile to the finer computable/non-computable split.",
+      "mathContext": "`frontier s := closure s \\ interior s`. With `closure = univ` and `interior = ∅` on both halves, `frontier = univ \\ ∅ = univ`. Every point is approached from both sides simultaneously — the same profile as `frontier {q : ℝ | q ∈ range ((↑):ℚ→ℝ)} = univ`."
+    },
+    {
+      "id": "fsigma",
+      "title": "§13 (S10): Fσ-Style Structure — Countable Union of Closed Sets",
+      "startLine": 961,
+      "endLine": 996,
+      "summary": "Provides an explicit Fσ-style witness `computable_reals_isFsigma_witness` for the computable reals via the family `s c := {decodeReal c} ∩ {r | IsComputable r}` indexed by `Nat.Partrec.Code`. Each `s c` is a subsingleton (subset of a singleton), hence closed in the T1 space ℝ; and `{r | IsComputable r} = ⋃ c, s c` by S3's `computable_real_mem_range_decodeReal`. The intersection formulation absorbs the case-analysis into the membership predicate, avoiding any Computable-on-`decodeReal c` argument.",
+      "mathContext": "Fσ = countable union of closed sets. `s c ⊆ {decodeReal c}` is a subsingleton ⟹ closed (`Set.Subsingleton.isClosed`). Forward inclusion uses that every computable real has a decoding code (S3); reverse uses the right factor of the intersection. Countability of the index `Nat.Partrec.Code` makes the union countable."
+    },
+    {
+      "id": "open-closed-status",
+      "title": "§14 (S11): Open/Closed Status — Neither Half Is Open or Closed",
+      "startLine": 998,
+      "endLine": 1079,
+      "summary": "Draws the headline consequence of the topological invariants: `computable_reals_not_isClosed`, `computable_reals_not_isOpen`, `nonComputableReals_not_isClosed`, `nonComputableReals_not_isOpen`. A closed set equals its closure (= univ for both halves), contradicted by a witness on the other side; an open set equals its interior (= ∅ for both halves), contradicted by nonemptiness. Each half is thus a proper, dense, boundaryless subset of ℝ that is simultaneously not open and not closed — the canonical signature of a countable-dense set sharing the line with its residual complement.",
+      "mathContext": "A closed half would satisfy `closure = self`, but `closure = univ` and both halves are proper (each omits a witness from the other), so not closed. An open half would satisfy `interior = self`, but `interior = ∅` and both halves are nonempty, so not open. Uses only `IsClosed.closure_eq` and `IsOpen.interior_eq`."
+    }
+  ],
+  "conclusion": {
+    "summary": "**S3 status (build pending)**: This entry resolves the open question — countability of the computable reals — by (i) defining `IsComputable` via Mathlib's `Computable` predicate, (ii) constructing the noncomputable decoder `decodeReal : Nat.Partrec.Code → ℝ`, and (iii) proving the pipeline lemmas (`exists_code_of_computable_rat_seq`, `computable_real_mem_range_decodeReal`) that route every computable real through the countable code type. The main theorem `computable_reals_countable` (no sorry), the upper bound `card_computable_reals_le_aleph0`, the lower bound `aleph0_le_card_computable_reals` (via the ℚ embedding), and the exact equality `card_computable_reals_eq_aleph0` are all unconditional. Badge remains `wip` until Docker build verifies the named Mathlib API calls.",
+    "implications": "Once discharged, this result will:\n\n1. **Complete the cardinality hierarchy** `ℚ ⊊ algebraic ⊊ computable ⊊ ℝ` with the middle three layers all at cardinality ℵ₀. The final inclusion is then strict by `ℵ₀ < 𝔠` — uncountably many non-computable reals exist.\n\n2. **Establish 'almost all reals are non-computable'** in the precise cardinality sense: removing the countable computable reals from ℝ leaves a set of full cardinality 𝔠. This complements (and refines) the analogous statement for algebraic reals.\n\n3. **Provide a foundation for computable analysis** in Lean. Many subsequent results (computable arithmetic, computable Cauchy completion, etc.) rest on the basic countability of the underlying set.\n\n4. **Bridge to Type-2 effectivity**: the Mathlib-based definition can be related to Weihrauch's TTE formalism, opening a route to formalizing more general computable-analysis results.",
+    "openQuestions": [
+      "Verify the S3 build under Docker (`./proofs/scripts/docker-build.sh Proofs.AlgebraicNumbersCountableOQ02OQ04`) and bump `badge` from `wip` to `verified` on green.",
+      "Prove `IsComputable e` and `IsComputable π` to demonstrate the strict inclusion `algebraic ⊊ computable`. Both follow from constructive Cauchy sequences with explicit moduli of convergence: $e = \\sum_{n=0}^\\infty 1/n!$ has modulus $\\epsilon_n = 1/n!$, and $\\pi = 4 \\arctan(1) = 4 \\sum_{n=0}^\\infty (-1)^n/(2n+1)$ with Leibniz modulus (or a faster Machin-style series). The `Computable` predicate on the rational truncation function is mechanical.",
+      "Construct a specific non-computable real (Chaitin's Ω) to demonstrate `computable ⊊ ℝ` via an explicit witness rather than cardinality alone. $\\Omega = \\sum_{p \\text{ halts}} 2^{-|p|}$ (sum over halting programs $p$ of $2^{-\\text{length}(p)}$) is provably non-computable because computing finitely many bits would solve the Halting Problem (via Chaitin's compression argument). See `halting-problem` gallery entry.",
+      "Quantify the GAP between computable and definable: every computable real is definable (by its defining Turing machine), but Hilbert's hotel of further-definable reals extends beyond computability. Specifically, $\\Sigma_1^0$-definable, $\\Pi_2^0$-definable, $\\Sigma_2^0$-definable etc. form a transfinite arithmetical hierarchy of definability classes, ALL of which are countable (countably many formulas per class). This refines the present entry's $\\mathbb{Q} \\subsetneq \\text{Alg} \\subseteq \\text{Computable} \\subsetneq \\mathbb{R}$ into $\\mathbb{Q} \\subsetneq \\text{Alg} \\subsetneq \\text{Computable} \\subsetneq \\Delta_2^0 \\subsetneq \\Sigma_2^0 \\subsetneq \\cdots \\subsetneq \\text{Arithmetical} \\subsetneq \\text{Analytical} \\subsetneq \\mathbb{R}$ — an entire $\\omega_1$-tower of countable definability classes inside $\\mathbb{R}$.",
+      "Formalize Specker's 1949 theorem: there exists a computable, monotone, bounded sequence of rationals whose limit is non-computable. This is the formal proof that the computable reals are NOT closed under the limit operation — a key disanalogy with $\\mathbb{Q}$ (closed under no limit) and $\\mathbb{R}$ (closed under all bounded monotone limits). Specker's example uses a recursively-enumerable-but-not-recursive set $S \\subseteq \\mathbb{N}$ and $r_n = \\sum_{k \\in S, k \\leq n} 2^{-k}$: the sequence is computable and converges, but the limit $\\sum_{k \\in S} 2^{-k}$ encodes membership in $S$ and is therefore non-computable.",
+      "Compare three countability proofs structurally: (a) the present entry's `decodeReal : Nat.Partrec.Code → ℝ` route via Mathlib's Encodable on partial-recursive codes; (b) the parent `algebraic-numbers-countable`'s `Algebraic.countable` via polynomial enumeration; (c) Cantor's 1874 height-function approach (`algebraic-numbers-countable-oq-05`). All three instantiate the abstract pattern 'countable index $\\to$ real via a partial map; image is countable by Set.Countable.mono'. A unified abstract lemma `Set.Countable.of_image_partial` would refactor all three."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "algebraic-numbers-countable",
+      "relationship": "parent",
+      "description": "Parent result: algebraic reals are countable. Computable reals form a superset of algebraic reals (e, π are computable yet transcendental); both remain countable."
+    },
+    {
+      "targetId": "algebraic-numbers-countable-oq-02",
+      "relationship": "ancestor",
+      "description": "Ancestor result: ℝ is uncountable. Combined with computable reals countable, gives the strict inclusion computable ⊊ ℝ by cardinality."
+    },
+    {
+      "targetId": "algebraic-numbers-countable-oq-02-oq-03",
+      "relationship": "sibling",
+      "description": "Sibling: #transcendentalReals = 𝔠 (exact cardinality). Together with this entry, partitions ℝ into countable (computable) and continuum-many (non-computable) layers."
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "Proves e is transcendental. e is a canonical example of a *computable transcendental* — algebraic ⊊ computable witness."
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "foundational",
+      "description": "Cantor's diagonal argument: the basis for showing ℵ₀ < 𝔠 and hence the strict inclusion computable ⊊ ℝ once countability of computable is established."
+    },
+    {
+      "targetId": "halting-problem",
+      "relationship": "complementary",
+      "description": "The Halting Problem's undecidability is the canonical example of a non-computable real (Chaitin's $\\Omega = \\sum_{p \\text{ halts}} 2^{-|p|}$ encodes the halting status of every program); this entry proves $|\\text{Computable}(\\mathbb{R})| = \\aleph_0 < \\mathfrak{c} = |\\mathbb{R}|$, giving cardinality evidence that non-computable reals are abundant. The pair (halting problem provides an explicit non-computable witness; this entry proves uncountably many non-computables exist) parallels the algebraic/transcendental dichotomy: Liouville gave the first explicit transcendental, Cantor proved transcendentals form an uncountable set."
+    },
+    {
+      "targetId": "algebraic-numbers-countable-oq-05",
+      "relationship": "complementary",
+      "description": "Cantor's 1874 height-function proof of algebraic countability uses the same Encodable-style enumeration pattern as the present entry: index by a countable type (polynomial heights $\\mathbb{N}$ vs. partial-recursive codes $\\texttt{Nat.Partrec.Code}$), map to reals via a partial 'extract' function (roots of polynomial of given height; limit of computable Cauchy sequence), and apply $\\texttt{Set.Countable.mono}$. The structural parallel suggests a unified abstract lemma — see openQuestion #5."
+    },
+    {
+      "targetId": "algebraic-numbers-countable-oq-04",
+      "relationship": "related",
+      "description": "Baker's theorem on linear forms in logarithms: produces effective lower bounds for $|\\sum n_i \\log \\alpha_i|$ in terms of heights and degrees of algebraic $\\alpha_i$. Linear forms in logarithms of computable algebraic numbers are themselves computable (via Baker's algorithm), demonstrating that the algebraic-computable inclusion $\\text{Alg}(\\mathbb{R}) \\subseteq \\text{Computable}(\\mathbb{R})$ formalized in the present entry has effective content beyond pure cardinality: explicit computability of arithmetic operations on $\\text{Alg}$ within $\\text{Computable}$."
+    },
+    {
+      "targetId": "hermite-lindemann",
+      "relationship": "related",
+      "description": "Lindemann-Weierstrass: $e^\\alpha$ is transcendental for algebraic $\\alpha \\neq 0$. Both $e$ and $\\pi$ are Lindemann-Weierstrass transcendentals AND computable (via convergent series with computable rate of convergence), so they sit in the gap $\\text{Computable}(\\mathbb{R}) \\setminus \\text{Alg}(\\mathbb{R})$ — explicit witnesses that this entry's inclusion $\\text{Alg} \\subsetneq \\text{Computable}$ is strict. The strictness proof (openQuestion #2) reduces to verifying $\\texttt{IsComputable}\\ e$ and $\\texttt{IsComputable}\\ \\pi$."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "IsComputable",
+      "type": "definition",
+      "description": "A real `r` is computable if there exists a `Computable` function `f : ℕ → ℚ` such that `(f n : ℝ)` tends to `r` as `n → ∞`.",
+      "leanType": "(r : ℝ) → Prop"
+    },
+    {
+      "name": "computable_reals_countable",
+      "type": "core",
+      "description": "**MAIN (S3, build pending)**: The set of computable real numbers is countable. Proved via `decodeReal : Nat.Partrec.Code → ℝ`: the image of `Nat.Partrec.Code` (countable, by `Encodable`) under the partial 'limit-of-eval' map contains every computable real, so `Set.Countable.mono` applies.",
+      "leanType": "Set.Countable {r : ℝ | IsComputable r}"
+    },
+    {
+      "name": "card_computable_reals_le_aleph0",
+      "type": "key",
+      "description": "Cardinal form of the main theorem: the cardinality of the computable reals is at most ℵ₀. Direct corollary via `le_aleph0_iff_set_countable`.",
+      "leanType": "(#({r : ℝ | IsComputable r} : Set ℝ) : Cardinal) ≤ ℵ₀"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Alan Turing"
+      ],
+      "title": "On Computable Numbers, with an Application to the Entscheidungsproblem",
+      "year": "1936",
+      "venue": "Proceedings of the London Mathematical Society, 2nd Series, vol. 42, pp. 230–265",
+      "note": "Original definition of computable real and observation that they form a countable set."
+    },
+    {
+      "authors": [
+        "Marian Pour-El",
+        "J. Ian Richards"
+      ],
+      "title": "Computability in Analysis and Physics",
+      "year": "1989",
+      "venue": "Springer-Verlag, Perspectives in Mathematical Logic",
+      "note": "Comprehensive treatment of computable real analysis, including the countability of computable reals and its consequences for measure theory."
+    },
+    {
+      "authors": [
+        "Klaus Weihrauch"
+      ],
+      "title": "Computable Analysis: An Introduction",
+      "year": "2000",
+      "venue": "Springer, Texts in Theoretical Computer Science",
+      "note": "Type-2 effectivity (TTE) framework — an alternative foundation that connects to the `Computable`-based definition used here."
+    },
+    {
+      "authors": [
+        "The Mathlib Community"
+      ],
+      "title": "Mathlib4: Computability Library",
+      "year": "2024",
+      "venue": "Mathlib.Computability.Partrec, Mathlib.Computability.PartrecCode",
+      "note": "Provides `Computable`, `Partrec`, `Nat.Partrec.Code` — the formal foundation for this entry."
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Continuum",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Set.Countable",
+      "Mathlib.Data.Rat.Denumerable",
+      "Mathlib.Logic.Denumerable",
+      "Mathlib.Computability.Primrec",
+      "Mathlib.Computability.Partrec",
+      "Mathlib.Computability.PartrecCode",
+      "Mathlib.Topology.Instances.Real",
+      "Mathlib.Tactic",
+      "Proofs.AlgebraicNumbersCountable"
+    ],
+    "opens": [
+      "Cardinal",
+      "Filter",
+      "Classical"
+    ],
+    "namespace": "AlgebraicNumbersCountableOQ02OQ04",
+    "lineCount": 1079,
+    "axiomCount": 0,
+    "theoremCount": 47,
+    "definitionCount": 3,
+    "sorries": 0,
+    "path": "Proofs/AlgebraicNumbersCountableOQ02OQ04.lean"
+  }
+}

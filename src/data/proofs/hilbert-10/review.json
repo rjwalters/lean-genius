@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "proofId": "hilbert-10",
+  "reviewDate": "2026-03-24T12:30:00Z",
+  "reviewer": "peer-reviewer",
+  "overallAssessment": {
+    "grade": "B-",
+    "oneLiner": "Well-architected formalization with genuine intermediate proofs (diagonal argument, reduction construction) and excellent pedagogy, but the main theorem is axiomatically short-circuited rather than derived from the existing machinery.",
+    "tier": "C",
+    "tierJustification": "The main theorem (hilbert_10_undecidable) relies on axiom halting_reduction_contradiction which directly asserts its conclusion. The MRDP theorem is also axiomatized (appropriate for such a deep result). However, the file has genuine proofs: a self-contained diagonal argument for halting undecidability, the reduction construction from H10 to halting, and a substantive corollary. This is a high-quality Tier C — the scaffold is well-designed and partially proved."
+  },
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "Hilbert10.lean, lines 100-123 (Part 5)",
+      "finding": "The halting problem proof is fully self-contained with no axioms or imports. The diagonal argument (diagonalBehavior, diagonal_differs, halting_problem_undecidable) is a genuine, well-executed proof by case analysis. This is real formalized mathematics.",
+      "recommendation": "Preserve this as a strong example of a clean self-contained proof."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "Hilbert10.lean, lines 130-168 (Part 6); annotations.json throughout",
+      "finding": "The reduction construction (halting_set_is_diophantine, getPolynomial, constructed_oracle_matches) is genuine proof work that chains MRDP with classical choice to build a halting oracle from an H10 oracle. The pedagogical exposition throughout is excellent — historically accurate, well-structured, and proportionate to the formal content.",
+      "recommendation": "Preserve the proof architecture and exposition quality."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "meta.json status/assumptions fields",
+      "finding": "Status is honestly 'axiomatized'. The assumptions field lists all 4 axioms with clear descriptions of what each one assumes and why. The self-contained nature (no Mathlib imports) is clearly documented.",
+      "recommendation": "Preserve the honest labeling."
+    },
+    {
+      "severity": "major",
+      "category": "overclaim",
+      "location": "halting_reduction_contradiction, line 174; hilbert_10_undecidable, line 180",
+      "finding": "The axiom halting_reduction_contradiction asserts '∀ h10 : H10Oracle, H10OracleCorrect h10 → False', which is logically equivalent to the main theorem hilbert_10_undecidable. The 'proof' of the main theorem (line 182-183) is just: intro, exact halting_reduction_contradiction. This means the main result is axiomatized, not derived. The file builds genuine machinery (diagonal argument, reduction construction, oracle matching) but then axiomatizes the final connection instead of using it.",
+      "recommendation": "Researcher: The gap is bridging halting_problem_undecidable (which proves no oracle predicts all *behaviors*) with the constructed oracle (which correctly predicts *program halting*). The missing piece is that the diagonal behavior corresponds to a program — i.e., the formalization needs a model of program enumeration. If this is infeasible, the axiom should be renamed to something like 'h10_oracle_implies_false' and the docstring/annotations should not describe the main theorem as 'proved'."
+    },
+    {
+      "severity": "moderate",
+      "category": "inconsistency",
+      "location": "Hilbert10.lean, docstring lines 4-7; lines 29-33",
+      "finding": "The docstring says 'We prove that no algorithm can determine whether an arbitrary Diophantine equation has integer solutions' and the status checklist marks '[x] Undecidability of H10 proven'. But the main theorem relies on an axiom that directly asserts its conclusion. This contradicts the 'axiomatized' status in meta.json.",
+      "recommendation": "Enricher: Change docstring to 'We formalize the reduction from Halting to H10 and axiomatize the final step' and change checklist to '[ ] Undecidability of H10 (axiomatized)' or similar."
+    },
+    {
+      "severity": "moderate",
+      "category": "gap",
+      "location": "Hilbert10.lean, lines 217-224 (Part 8)",
+      "finding": "Axioms exponential_is_diophantine and linear_diophantine_decidable are standalone context axioms not used anywhere in the proof chain. They add to the axiom count (4 total) but are supplementary. Their presence may confuse readers about which axioms are load-bearing for the main result.",
+      "recommendation": "Enricher: In the assumptions field of meta.json, distinguish 'load-bearing axioms' (mrdp_theorem, halting_reduction_contradiction) from 'contextual axioms' (exponential_is_diophantine, linear_diophantine_decidable) that provide mathematical context but aren't used in the proof."
+    },
+    {
+      "severity": "moderate",
+      "category": "precision",
+      "location": "meta.json originalContributions, 'Reduction from Halting Problem to H10'",
+      "finding": "The reduction is partially formalized: the construction (haltingOracleFromH10) and correctness (constructed_oracle_matches) are proved, but the final step connecting this to the contradiction is axiomatized. Calling it simply 'Reduction from Halting Problem to H10' implies the full reduction is proved.",
+      "recommendation": "Enricher: Qualify as 'Reduction construction from Halting to H10 (final connection axiomatized)' or split into 'Oracle construction (proved)' and 'Reduction conclusion (axiomatized)'."
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "meta.json leanFile.defCount",
+      "finding": "defCount is listed as 10 but the file has 12 def/noncomputable def declarations: DiophantinePolynomial, hasDiophantineSolution, DiophantineSet, ProgramHalts, RecursivelyEnumerable, H10Oracle, H10OracleCorrect, HaltingOracle, diagonalBehavior, haltingSet, getPolynomial, haltingOracleFromH10.",
+      "recommendation": "Enricher: Update defCount to 12."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "annotations.json, ann-main-theorem",
+      "finding": "The ann-main-theorem annotation describes the proof as complete ('Proof: If such an algorithm existed, we could use it (via MRDP) to decide the halting problem. But halting is undecidable. Contradiction.') without noting that the final step is axiomatized. This gives readers the impression the proof chain is fully formalized.",
+      "recommendation": "Enricher: Add a note like '(The final connection from the constructed oracle to the halting contradiction is axiomatized as halting_reduction_contradiction.)'"
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json description",
+      "finding": "Description says 'The MRDP theorem (1970) proves that...' which could be read as saying the file proves MRDP. The description conflates the historical mathematical result with what the file formalizes.",
+      "recommendation": "Enricher: Consider 'Formalization of the undecidability of Diophantine equations, axiomatizing the MRDP theorem and proving the reduction from the halting problem.'"
+    }
+  ],
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "high",
+      "target": "researcher",
+      "description": "Close the gap in the main proof: replace axiom halting_reduction_contradiction with a derivation using halting_problem_undecidable and constructed_oracle_matches. This requires modeling program enumeration so the diagonal behavior corresponds to an actual program whose halting the oracle must predict.",
+      "status": "open"
+    },
+    {
+      "id": "ai-2",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Fix docstring overclaim: change 'We prove that...' to 'We formalize the reduction...' and update status checklist. Fix ann-main-theorem to note the axiomatized final step.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-3",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Distinguish load-bearing axioms (mrdp_theorem, halting_reduction_contradiction) from contextual axioms (exponential_is_diophantine, linear_diophantine_decidable) in the assumptions field. Update defCount from 10 to 12.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-4",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Qualify originalContributions: 'Reduction from Halting Problem to H10' should note the final connection is axiomatized. Update description to avoid conflating historical result with formalization.",
+      "status": "resolved"
+    }
+  ],
+  "qualityScores": {
+    "mathematicalSubstance": 6,
+    "originalityAccuracy": 7,
+    "completeness": 5,
+    "framingPrecision": 6,
+    "pedagogicalQuality": 9,
+    "internalConsistency": 7,
+    "overall": 6.7
+  },
+  "suggestedBestFraming": "A formalization of the undecidability of Diophantine equations (Hilbert's 10th Problem) that proves the halting-problem diagonal argument from scratch and constructs the MRDP-based reduction, axiomatizing the MRDP theorem itself and the final step connecting the reduction to the contradiction."
+}

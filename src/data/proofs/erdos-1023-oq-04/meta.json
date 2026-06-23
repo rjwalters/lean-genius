@@ -1,0 +1,100 @@
+{
+  "id": "erdos-1023-oq-04",
+  "title": "Erdős #1023: elementary growth brackets 2ⁿ/(n+1) ≤ F(n) ≤ 2ⁿ for the union-free maximum",
+  "slug": "erdos-1023-oq-04",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Choose.Sum",
+      "Mathlib.Data.Nat.Choose.Bounds",
+      "Mathlib.Data.Nat.Choose.Central",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos1023OQ04",
+    "lineCount": 133,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "path": "Proofs/Erdos1023OQ04.lean",
+    "sorries": 0
+  },
+  "description": "Supplies rigorous, completely elementary growth brackets for the union-free maximum F(n) of Erdős Problem #1023. F(n) is the largest family of subsets of {1,...,n} in which no set is the union of two or more distinct other members; Erdős asked whether F(n) ~ c·2^n/√n, and the answer is YES with F(n) = C(n, floor(n/2)), the central binomial coefficient (middle layer optimal by Erdős-Kleitman). The parent file Erdos1023Problem.lean establishes the exact asymptotic only through axioms (stirling_central, unionFreeMax_asymptotic) because the constant √(2/π) needs Stirling's formula. This sibling takes the established value F(n) = C(n, floor(n/2)) as a definition and proves, with ZERO axioms beyond Mathlib's foundations: the upper bound F(n) ≤ 2^n (central_le_pow), the KEY lower bound 2^n ≤ (n+1)·F(n) i.e. F(n) ≥ 2^n/(n+1) (pow_le_succ_mul_central, by averaging ∑ C(n,m) = 2^n against the maximal central column Nat.choose_le_middle), the combined bracket, its real-valued form 2^n/(n+1) ≤ F(n), and divergence F(n) → ∞ (unionFreeMax_unbounded, proved purely over ℕ via F(2n) = centralBinom n ≥ C(2n,1) = 2n). This replaces the qualitative content of the parent's Stirling axiom — that F grows like 2^n up to a polynomial factor and tends to infinity — by a machine-checked elementary statement. 9 theorems, 1 definition, 0 sorries, 0 axioms, no native_decide.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "date": "formalized 2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1023OQ04.lean",
+    "tags": [
+      "combinatorics",
+      "extremal-set-theory",
+      "union-free-families",
+      "central-binomial-coefficient",
+      "binomial-coefficients",
+      "erdos-problems"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-06-22",
+    "axiomCount": 0,
+    "assumptions": "Machine-checked with Lean v4.26.0 against the repository Mathlib pin (elaborated clean, #print axioms on every substantive theorem reports only propext / Classical.choice / Quot.sound). 0 sorries, 0 axiom declarations, no native_decide (the concrete-value examples use kernel `decide`, so no Lean.ofReduceBool). Self-contained: F(n) is defined directly as Nat.choose n (n/2); the parent file's axioms (problem_447_solution Erdős-Kleitman optimality, stirling_central, unionFreeMax_asymptotic) are NOT imported or used. Honest scope: this is the ELEMENTARY growth of the central binomial column (brackets up to a polynomial factor and divergence), NOT the exact asymptotic constant √(2/π) (which needs Stirling) and NOT the Erdős-Kleitman optimality that identifies F(n) with the central column.",
+    "lineCount": 133,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "originalContributions": [
+      "pow_le_succ_mul_central: the key elementary lower bound 2^n ≤ (n+1)·F(n) — averaging the binomial identity ∑_{m≤n} C(n,m) = 2^n against the maximality of the central column (Nat.choose_le_middle); gives F(n) ≥ 2^n/(n+1) with no Stirling estimate",
+      "central_le_pow: the trivial upper bound F(n) ≤ 2^n (the central column is one term of the binomial sum)",
+      "unionFreeMax_bracket: the two-sided bracket 2^n ≤ (n+1)·F(n) and F(n) ≤ 2^n, pinning down the growth of F up to a polynomial factor",
+      "pow_div_succ_le_central: the real-valued lower bound 2^n/(n+1) ≤ F(n)",
+      "unionFreeMax_two_mul: the identity F(2n) = C(2n,n) = centralBinom n linking the even subsequence to the central binomial coefficient",
+      "two_mul_le_unionFreeMax_two_mul: the clean linear lower bound 2n ≤ F(2n) via Nat.choose_le_centralBinom",
+      "unionFreeMax_unbounded: divergence F(n) → ∞ (∀ M, ∃ n, M ≤ F(n)), proved purely over ℕ on the even subsequence"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1023 asks for F(n), the maximum size of a family of subsets of {1,...,n} in which no member is the union of two or more distinct other members (a 'union-free' family). Erdős conjectured F(n) ~ c·2^n/√n. The conjecture is true: the middle layer of all floor(n/2)-element subsets is union-free (two distinct sets of the same size cannot have a union of that size), giving F(n) ≥ C(n, floor(n/2)), and Erdős-Kleitman proved this is optimal, so F(n) = C(n, floor(n/2)) ~ √(2/π)·2^n/√n by Stirling. The central binomial coefficient C(n, floor(n/2)) is the largest entry of row n of Pascal's triangle.",
+    "problemStatement": "With F(n) = C(n, floor(n/2)) (the value established by the parent entry), bound the growth of F elementarily. This entry proves 2^n/(n+1) ≤ F(n) ≤ 2^n and F(n) → ∞ without invoking Stirling's formula.",
+    "proofStrategy": "Upper bound: the central column is a single term of ∑_{m≤n} C(n,m) = 2^n, so F(n) ≤ 2^n (Nat.choose_le_two_pow). Lower bound: every term of that sum is at most the maximal central column (Nat.choose_le_middle), so 2^n = ∑_{m≤n} C(n,m) ≤ (n+1)·C(n, floor(n/2)) = (n+1)·F(n); a one-line Finset.sum_le_sum followed by Finset.sum_const. The real-valued form follows by div_le_iff₀ and a cast. Divergence is shown over ℕ: F(2n) = C(2n, n) = centralBinom n, and centralBinom n ≥ C(2n,1) = 2n by Nat.choose_le_centralBinom, so F(2M) ≥ 2M ≥ M for every M.",
+    "keyInsights": [
+      "The qualitative growth of the union-free maximum needs NO Stirling estimate: a single averaging of the binomial identity ∑ C(n,m) = 2^n against the maximality of the central column gives 2^n ≤ (n+1)·F(n) in one line.",
+      "Combined with the trivial upper bound F(n) ≤ 2^n, this pins F(n) between 2^n/(n+1) and 2^n — capturing the 'order 2^n up to a polynomial factor' content of the parent's asymptotic axiom, but fully machine-checked.",
+      "Divergence is purely combinatorial: the even subsequence F(2n) equals the central binomial coefficient centralBinom n, which dominates C(2n,1) = 2n, so F is unbounded without any analysis.",
+      "The central binomial coefficient is the largest entry of Pascal's row n; Nat.choose_le_middle is exactly the maximality statement that powers the lower bracket."
+    ]
+  },
+  "sections": [
+    {
+      "id": "definition-bounds",
+      "title": "Definition and the Two-Sided Bracket",
+      "summary": "unionFreeMax (= C(n, floor(n/2))), positivity, the upper bound F(n) ≤ 2^n (central_le_pow), the key lower bound 2^n ≤ (n+1)·F(n) (pow_le_succ_mul_central), the combined bracket, and its real form.",
+      "startLine": 1,
+      "endLine": 96,
+      "mathContext": "Average the binomial identity ∑_{m≤n} C(n,m) = 2^n against the maximal central column (Nat.choose_le_middle) to get the lower bound; the upper bound is one term of the same sum."
+    },
+    {
+      "id": "divergence",
+      "title": "Even Subsequence and Divergence",
+      "summary": "unionFreeMax_two_mul (F(2n) = centralBinom n), two_mul_le_unionFreeMax_two_mul (2n ≤ F(2n)), unionFreeMax_unbounded (F(n) → ∞), and concrete values F(0..6) = 1,1,2,3,6,10,20.",
+      "startLine": 97,
+      "endLine": 133,
+      "mathContext": "F(2n) = C(2n,n) = centralBinom n ≥ C(2n,1) = 2n via Nat.choose_le_centralBinom, giving unboundedness over ℕ with no real analysis."
+    }
+  ],
+  "conclusion": {
+    "summary": "The union-free maximum F(n) = C(n, floor(n/2)) of Erdős Problem #1023 is bracketed elementarily by 2^n/(n+1) ≤ F(n) ≤ 2^n, and shown to diverge F(n) → ∞, with zero axioms beyond Mathlib's foundations. The lower bracket is a one-line average of the binomial identity ∑ C(n,m) = 2^n against the maximality of the central column; the upper bracket is a single term of that sum; divergence uses F(2n) = centralBinom n ≥ 2n. This captures the qualitative growth content of the parent file's Stirling-based asymptotic axiom as a machine-checked elementary statement.",
+    "implications": "The brackets make rigorous, without Stirling's formula, the fact that the maximum union-free family has size of order 2^n up to a polynomial factor and grows without bound. They isolate exactly what the exact asymptotic F(n) ~ √(2/π)·2^n/√n adds beyond the elementary picture (only the precise constant and the √n power, which genuinely require Stirling). The central-binomial bracket 2^n/(n+1) ≤ C(n, floor(n/2)) ≤ 2^n is reusable wherever the central column appears.",
+    "openQuestions": [
+      "Sharpen the lower bracket to the true order: prove 2^n/√(c·n) ≤ C(n, floor(n/2)) (the √n rather than n denominator), which requires a Stirling-type estimate.",
+      "Discharge the parent file's axioms (problem_447_solution Erdős-Kleitman optimality, stirling_central) to make the exact asymptotic fully proved.",
+      "Establish strict monotonicity F(n) < F(n+2) of the central binomial column directly from a Pascal recurrence, strengthening the unboundedness proved here."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1023",
+      "relationship": "parent",
+      "description": "The main Erdős #1023 union-free families file (isUnionFree, middleLayer, the lower bound unionFreeMax_ge_middle, and the axiomatized Erdős-Kleitman optimality and Stirling asymptotic). It establishes F(n) = C(n, floor(n/2)); this sibling supplies the elementary, 0-axiom growth brackets 2^n/(n+1) ≤ F(n) ≤ 2^n and divergence that the parent only obtains through its Stirling axiom."
+    }
+  ]
+}

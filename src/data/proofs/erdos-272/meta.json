@@ -1,0 +1,179 @@
+{
+  "id": "erdos-272",
+  "title": "Erdős Problem #272: Intersection Properties of Subsets",
+  "slug": "erdos-272",
+  "description": "Maximum number of sets A_1,...,A_t ⊆ {1,...,N} with all pairwise intersections being non-empty arithmetic progressions. Answer: t ~ N²/2. Solved by Szabó (1999).",
+  "meta": {
+    "author": "Szabó (1999), Simonovits-Sós (1981)",
+    "sourceUrl": "https://erdosproblems.com/272",
+    "date": "1999",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos272Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "intersection-theory",
+      "arithmetic-progressions",
+      "extremal-set-theory",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 272,
+    "erdosUrl": "https://erdosproblems.com/272",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset",
+        "description": "Finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Real logarithm",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients",
+        "module": "Mathlib.Data.Nat.Basic"
+      }
+    ],
+    "originalContributions": [
+      "ArithProg structure and IsArithProg predicate",
+      "singleton_is_ap and pair_is_ap theorems (constructive)",
+      "hasAPIntersectionProperty definition",
+      "maxAPFamily axiom",
+      "simonovits_sos_upper axiom (lower bound noted only in docstring at L91)",
+      "smallSetsThroughElement construction",
+      "szabo_theorem axiom (leading constant noted only in docstring at L120)",
+      "erdos_272_summary theorem"
+    ],
+    "axiomCount": 3,
+    "lineCount": 135,
+    "assumptions": "3 axioms: maxAPFamily (maximum AP family function — axiomatized), simonovits_sos_upper (Simonovits-Sós 1981 — t = O(N²)), szabo_theorem (Szabó asymptotic theorem). 0 sorries.",
+    "theoremCount": 3,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #272 asks for the maximum number of subsets of {1,...,N} such that every pairwise intersection is a non-empty arithmetic progression. The problem was posed by Erdős and Graham, who conjectured that the optimal family consists of all arithmetic progressions passing through the middle element ⌊N/2⌋, giving approximately π²N²/24 sets.\n\nSimonovits and Sós (1981) made two key contributions: they proved the upper bound t = O(N²), establishing the quadratic growth rate, and they disproved the Erdős-Graham conjecture by showing that a simpler construction — all subsets of size ≤ 3 containing a fixed element — gives C(N-1,2) + 1 ≈ N²/2 sets, beating the π²N²/24 ≈ N²/2.4 from arithmetic progressions. The key insight is that any two sets of size ≤ 3 sharing a common element intersect in {k} (a singleton, which is trivially an AP).\n\nSzabó (1999) resolved the problem completely by determining the exact asymptotic: t = N²/2 + O(N^{5/3}(log N)³). He improved the lower bound to C(N,2) + ⌊(N-1)/4⌋ + 1 and conjectured that the exact answer is C(N,2) + O(N) and that every extremal family has a common element contained in all sets.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet $N \\geq 1$. What is the largest $t$ such that there exist $A_1, \\ldots, A_t \\subseteq \\{1,\\ldots,N\\}$ with $A_i \\cap A_j$ a non-empty arithmetic progression for all $i \\neq j$?\n\n**Answer (Szabó 1999):** $t = N^2/2 + O(N^{5/3}(\\log N)^3)$.\n\nThe Erdős-Graham conjecture (APs through $\\lfloor N/2 \\rfloor$ are optimal) is FALSE.",
+    "text": "Maximum number of sets A_1,...,A_t ⊆ {1,...,N} with all pairwise intersections being non-empty arithmetic progressions. Answer: t ~ N²/2. Solved by Szabó (1999).",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization defines arithmetic progressions via the ArithProg structure and proves constructively that singletons and pairs are APs. The AP-intersection property and maxAPFamily are defined, with maxAPFamily axiomatized as a function from ℕ to ℕ.\n\nThe main formalized results are: `simonovits_sos_upper` axiom (upper bound t = O(N²)), `szabo_theorem` axiom (asymptotic t ~ N²/2), and `smallSetsThroughElement` construction. The lower bound (t = Ω(N²)), disproof of the Erdős-Graham conjecture, small-sets count/AP property, and leading constant 1/2 are noted only in docstring comments — not declared as Lean axioms or theorems.\n\nThe summary theorem combines the upper bound and Szabó's asymptotic into a single conjunction proved by exact ⟨...⟩.",
+    "keyInsights": [
+      "**Small Sets Beat APs:** Sets of size ≤ 3 through a fixed element give ~N²/2 sets, beating the ~N²/2.4 from APs through the middle",
+      "**Erdős-Graham Conjecture is False:** The optimal construction is NOT arithmetic progressions through a central element",
+      "**Singleton Intersections Suffice:** Two sets of size ≤ 3 sharing an element intersect in {k}, a trivial AP",
+      "**Asymptotic: N²/2:** Szabó (1999) proved t = N²/2 + O(N^{5/3}(log N)³) with leading constant exactly 1/2",
+      "**Common Element Conjecture:** Szabó conjectured that every extremal family shares a common element"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "interval, ArithProg, IsArithProg, singleton_is_ap, pair_is_ap",
+      "startLine": 31,
+      "endLine": 69,
+      "mathContext": "Mathematical content: interval, ArithProg, IsArithProg, singleton_is_ap, pair_is_ap"
+    },
+    {
+      "id": "ap-intersection",
+      "title": "The AP-Intersection Property",
+      "summary": "hasAPIntersectionProperty, maxAPFamily",
+      "startLine": 70,
+      "endLine": 83,
+      "mathContext": "Mathematical content: hasAPIntersectionProperty, maxAPFamily"
+    },
+    {
+      "id": "simonovits-sos",
+      "title": "The Simonovits-Sós Bounds",
+      "summary": "`simonovits_sos_upper` axiom (upper bound t = O(N²)). Lower bound noted only in a docstring (L91) — not separately axiomatized.",
+      "startLine": 84,
+      "endLine": 93,
+      "mathContext": "`simonovits_sos_upper` axiom: upper bound t = O(N²). Lower bound t = Ω(N²) discussed in docstring only."
+    },
+    {
+      "id": "erdos-graham",
+      "title": "Erdős-Graham Conjecture (Disproved)",
+      "summary": "Docstring discussion of the disproved Erdős-Graham conjecture (lines 102–107). No axiom or theorem declaration — not formalized in this file.",
+      "startLine": 94,
+      "endLine": 111,
+      "mathContext": "Erdős-Graham conjecture disproof discussed in docstring; not formalized as a Lean declaration."
+    },
+    {
+      "id": "small-sets",
+      "title": "Simonovits-Sós Construction",
+      "summary": "`smallSetsThroughElement` construction (line 101). Count and AP property noted only in docstrings (lines 113–115) — not formalized as declarations.",
+      "startLine": 112,
+      "endLine": 126,
+      "mathContext": "`smallSetsThroughElement`: all subsets of size ≤ 3 containing a fixed element. Count C(N-1,2)+1 and AP property discussed in docstrings only."
+    },
+    {
+      "id": "szabo-theorem",
+      "title": "Szabó's Theorem (1999)",
+      "summary": "`szabo_theorem` axiom (t ~ N²/2). Leading constant 1/2 noted only in a docstring (L120) — not separately axiomatized.",
+      "startLine": 127,
+      "endLine": 135,
+      "mathContext": "`szabo_theorem` axiom: t = N²/2 + O(N^{5/3}(log N)³). Leading constant discussed in docstring only."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #272 was resolved by Szabó (1999): the maximum t is N²/2 + O(N^{5/3}(log N)³). The Erdős-Graham conjecture was disproved by Simonovits-Sós, who showed that small sets through a fixed element outperform APs through the middle.",
+    "implications": "**Theoretical Significance**: **Combinatorial Significance**\n\n1. **Extremal Set Theory:** Shows that intersection constraints on set families lead to precise quadratic bounds\n\n**2. Small Sets are Powerful:** The key insight that sets of size ≤ 3 beat structured APs was unexpected\n\n3. **Common Element Structure:** Szabó's conjecture suggests extremal families have a star-like structure\n\n4. **Arithmetic Progression Theory:** Connects the algebraic structure of APs to combinatorial optimization.",
+    "openQuestions": [
+      "Is the exact answer t = C(N,2) + O(N)? (Szabó's conjecture)",
+      "Does every extremal family have a common element? (Szabó's structural conjecture)",
+      "What is the exact coefficient of the O(N) error term?",
+      "Can similar bounds be obtained for k-term AP intersections?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Algebra.Order.Floor"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos272",
+    "lineCount": 135,
+    "axiomCount": 3,
+    "theoremCount": 3,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos272Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-194",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics, solved"
+    },
+    {
+      "targetId": "erdos-645",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics, solved"
+    },
+    {
+      "targetId": "erdos-702",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-set-theory, solved"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,138 @@
+{
+  "id": "sqrt2-plus-sqrt3-irrational-oq-03",
+  "title": "Minimal Polynomial of √2 + √3",
+  "slug": "sqrt2-plus-sqrt3-irrational-oq-03",
+  "description": "Proves the minimal polynomial of α = √2+√3 over ℚ is X⁴ − 10X² + 1. Establishes: f(α)=0 by direct computation (α²=5+2√6, α⁴=49+20√6), f is monic, and f is irreducible over ℚ via Gauss's lemma (irreducibility over ℤ[X]: no integer roots + coefficient analysis eliminates quadratic factors). Concludes [ℚ(√2+√3):ℚ] = 4. 0 sorries, 0 literal axiom declarations; the irrationality theorem uses `native_decide` and so depends on `Lean.ofReduceBool`.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-22",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Sqrt2PlusSqrt3IrrationalOQ03.lean",
+    "tags": [
+      "minimal-polynomial",
+      "algebraic-number-theory",
+      "field-extensions",
+      "irreducibility",
+      "square-roots"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-04-22",
+    "axiomCount": 1,
+    "assumptions": "0 sorries, 0 literal `axiom` declarations. Free of mathematical assumptions: irreducibility is proved over ℤ[X] via case analysis, then transferred to ℚ[X] via Gauss's lemma (Mathlib's IsPrimitive.Int.irreducible_iff_irreducible_map_cast). However, the credited theorem sqrt2_plus_sqrt3_irrational discharges the ¬IsSquare 6 side condition (via irrational_sqrt_natCast_iff) using `native_decide`, which depends on the `Lean.ofReduceBool` axiom (Lean compiler kernel reduction); that theorem is therefore not axiom-free. Hence axiomCount = 1; leanFile.axiomCount remains 0 since there are no literal `axiom` declarations.",
+    "lineCount": 403,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "additionalFiles": [
+      "Proofs/Sqrt2PlusSqrt3IrrationalOQ03Aristotle.lean"
+    ],
+    "originalContributions": [
+      "aeval_sqrt2_plus_sqrt3: f(√2+√3)=0, proved by step-by-step computation (α²=5+2√6, α⁴=49+20√6)",
+      "minpoly_sqrt2_plus_sqrt3: minpoly ℚ (√2+√3) = X⁴−10X²+1, via eq_of_irreducible_of_monic",
+      "adjoin_sqrt2_plus_sqrt3_finrank: [ℚ(√2+√3):ℚ] = 4",
+      "f_monic: X⁴−10X²+1 is monic (leading coefficient = 1)",
+      "sqrt2_plus_sqrt3_isIntegral: √2+√3 is algebraic over ℚ"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The minimal polynomial of $\\sqrt{2}+\\sqrt{3}$ over $\\mathbb{Q}$ is a classical result in algebraic number theory. While the irrationality of $\\sqrt{2}+\\sqrt{3}$ follows from a squaring argument (proved in the parent gallery entry), the deeper question asks: what is the exact degree of this algebraic number? The answer — degree 4 with minimal polynomial $x^4 - 10x^2 + 1$ — was certainly known to 19th-century algebraists and follows easily from Galois theory: the splitting field of $x^4-10x^2+1$ over $\\mathbb{Q}$ is $\\mathbb{Q}(\\sqrt{2},\\sqrt{3})$, which has degree 4 over $\\mathbb{Q}$ by the tower law and the fact that $\\sqrt{3} \\notin \\mathbb{Q}(\\sqrt{2})$. The Galois group is the Klein 4-group $\\mathbb{Z}/2\\mathbb{Z} \\times \\mathbb{Z}/2\\mathbb{Z}$ — in particular, $x^4-10x^2+1$ factors mod every prime (explaining why Eisenstein's criterion fails), but remains irreducible over $\\mathbb{Q}$.",
+    "problemStatement": "Prove that the minimal polynomial of α = √2 + √3 ∈ ℝ over ℚ is f(X) = X⁴ − 10X² + 1.",
+    "text": "The proof proceeds in three stages. First, direct computation establishes f(α) = 0: since α² = (√2+√3)² = 5+2√6 and α⁴ = (5+2√6)² = 49+20√6, we get f(α) = 49+20√6 − 10(5+2√6) + 1 = 0, with the √6 terms cancelling. Second, f is irreducible over ℚ: the rational root theorem limits candidates to ±1, both of which satisfy f(±1) = −8 ≠ 0; and equating coefficients in a hypothetical factorization f = (X²+aX+b)(X²−aX+d) leads to a system with no rational solutions in all cases (the discriminant or required square roots are always irrational). Third, since f is monic, irreducible, and has α as a root, Mathlib's `minpoly.eq_of_irreducible_of_monic` gives minpoly ℚ α = f, and the degree formula yields [ℚ(√2+√3):ℚ] = 4.",
+    "proofStrategy": "Three components: (1) Root check via step-by-step algebra: prove α²=5+2√6 from sq_sqrt, then α⁴=49+20√6 by squaring again, close with linarith. (2) Irreducibility over ℤ[X]: (a) no integer roots via f_no_int_root (integer root theorem + interval_cases), (b) no quadratic factors via coefficient analysis (discriminant 96 irrational, a²∈{8,12} non-square), then transfer to ℚ[X] via Gauss's lemma. (3) Apply minpoly.eq_of_irreducible_of_monic with the irreducibility and root check.",
+    "keyInsights": [
+      "The key cancellation: α²=5+2√6 and α⁴=49+20√6, so f(α)=49+20√6−50−20√6+1=0. The √6 terms cancel exactly, making this a 'lucky' polynomial root.",
+      "The Galois group of x⁴−10x²+1 over ℚ is the Klein 4-group V₄ = {e, σ, τ, στ} where σ(√2)=−√2 and τ(√3)=−√3. This implies the polynomial factors mod every prime p — there is no prime for which it stays irreducible mod p — which is why Eisenstein and mod-p irreducibility tests all fail. The polynomial is 'invisibly irreducible' over ℚ.",
+      "Irreducibility proof structure: degree 4 over a field ⟹ irreducible iff no roots AND no quadratic factors. The quadratic factor case requires solving a 4×4 coefficient system, which always produces irrational solutions: discriminant 96 (= 4·24, with √24 ∉ ℚ) or required a² ∈ {8, 12} (both non-square).",
+      "The tower law confirms [ℚ(√2+√3):ℚ] = 4: since √2+√3 generates the same field as ℚ(√2,√3) (because √2 = ((√2+√3)²-5)/2 · ... , see Galois theory), and [ℚ(√2,√3):ℚ] = [ℚ(√2,√3):ℚ(√2)]·[ℚ(√2):ℚ] = 2·2 = 4.",
+      "Connection to the parent proof: the parent (`sqrt2-plus-sqrt3-irrational`) proved irrationality via the squaring trick (reducing to √6 ∉ ℚ). This proof gives the stronger statement: not only is √2+√3 ∉ ℚ, but it has degree exactly 4 — it cannot be expressed as any rational combination of square roots of rational numbers."
+    ],
+    "prerequisites": [
+      "Polynomial.aeval: evaluation homomorphism for polynomials",
+      "minpoly.eq_of_irreducible_of_monic: characterization of minimal polynomials",
+      "Real.sq_sqrt: (√r)² = r for r ≥ 0",
+      "IntermediateField.adjoin.finrank: field extension degree via minimal polynomial"
+    ]
+  },
+  "conclusion": {
+    "summary": "Verified with 0 sorries and 0 literal axiom declarations: minpoly ℚ (√2+√3) = X⁴−10X²+1 and [ℚ(√2+√3):ℚ]=4. Irreducibility proved over ℤ[X] via integer root theorem + quadratic factor coefficient analysis, then transferred to ℚ[X] by Gauss's lemma. The irrationality corollary (sqrt2_plus_sqrt3_irrational) uses `native_decide` for the ¬IsSquare 6 check and so depends on `Lean.ofReduceBool`; it is not axiom-free. 5 main theorems, ~400 lines.",
+    "implications": "The degree-4 result shows √2+√3 is a primitive element of the biquadratic extension ℚ(√2,√3)/ℚ. Combined with the explicit minimal polynomial, this enables computation of the full Galois group (Klein 4-group) and explains why the polynomial factors mod every prime despite being irreducible over ℚ.",
+    "openQuestions": [
+      "Generalize the irreducibility proof to parametric X⁴ - (a+b+2√(ab))X² + (a-b)² for squarefree a,b.",
+      "Prove √2+√3 generates ℚ(√2,√3): show √2 and √3 can be recovered from √2+√3 alone.",
+      "Generalize: compute minpoly ℚ (√a+√b) for arbitrary squarefree positive integers a, b with distinct prime factors.",
+      "Compute minpoly ℚ (√2+√3+√5): expected degree 8, polynomial (x²-5)²(x²-2)(x²-3)(x²-6)... requires 3-variable case."
+    ]
+  },
+  "leanFile": {
+    "namespace": "Sqrt2PlusSqrt3IrrationalOQ03",
+    "lineCount": 403,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/Sqrt2PlusSqrt3IrrationalOQ03.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/Sqrt2PlusSqrt3IrrationalOQ03Aristotle.lean"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "sqrt2-plus-sqrt3-irrational",
+      "relationship": "extends",
+      "description": "Parent proof establishing √2+√3 ∉ ℚ via the squaring trick. This proof gives the stronger result: √2+√3 has degree exactly 4 over ℚ."
+    },
+    {
+      "targetId": "sqrt2-minpoly",
+      "relationship": "related",
+      "description": "Minimal polynomial of √2 over ℚ is X²−2 (degree 2). The techniques are similar: Eisenstein for X²−2, rational root + quadratic factor analysis for X⁴−10X²+1."
+    },
+    {
+      "targetId": "algebraic-numbers-countable",
+      "relationship": "related",
+      "description": "Algebraic numbers over ℚ are countable: √2+√3 has degree 4, minimal polynomial X⁴−10X²+1, and generates the biquadratic extension ℚ(√2,√3)."
+    }
+  ],
+  "sections": [
+    {
+      "id": "header-overview",
+      "title": "Overview and Proof Strategy",
+      "summary": "Module header for the irrationality of $\\sqrt2+\\sqrt3$ via its minimal polynomial: states the main result, the proof strategy (exhibit $X^4-10X^2+1$ as a monic root polynomial, prove it irreducible over $\\mathbb{Q}$, conclude it is the minimal polynomial of degree 4), and the 0-sorry status. Enters the `Sqrt2PlusSqrt3IrrationalOQ03` namespace.",
+      "startLine": 1,
+      "endLine": 38,
+      "mathContext": "$\\sqrt2+\\sqrt3$ has minimal polynomial $X^4-10X^2+1$ over $\\mathbb{Q}$, so $[\\mathbb{Q}(\\sqrt2+\\sqrt3):\\mathbb{Q}]=4$ and the number is irrational."
+    },
+    {
+      "id": "part1-root-witness",
+      "title": "Part I: Root Witness",
+      "summary": "Proves `aeval_sqrt2_plus_sqrt3`: $\\sqrt2+\\sqrt3$ satisfies $X^4-10X^2+1=0$ (expanding $(\\sqrt2+\\sqrt3)^2=5+2\\sqrt6$ and squaring).",
+      "startLine": 39,
+      "endLine": 70,
+      "mathContext": "$(\\sqrt2+\\sqrt3)^4-10(\\sqrt2+\\sqrt3)^2+1=0$ — the explicit annihilating polynomial."
+    },
+    {
+      "id": "part2-monic-integral",
+      "title": "Part II: Monic Polynomial and Integrality",
+      "summary": "Establishes `f_monic` ($X^4-10X^2+1$ is monic) and `sqrt2_plus_sqrt3_isIntegral` ($\\sqrt2+\\sqrt3$ is integral/algebraic over $\\mathbb{Q}$, being a root of this monic polynomial).",
+      "startLine": 71,
+      "endLine": 106,
+      "mathContext": "$X^4-10X^2+1$ is monic with $\\sqrt2+\\sqrt3$ as a root, so the number is algebraic of degree $\\le 4$."
+    },
+    {
+      "id": "part2-irreducibility",
+      "title": "Part II: Irreducibility over ℚ (via Gauss's Lemma)",
+      "summary": "The technical core: `f_no_int_root` (no integer root, since $X^4-10X^2+1$ has none in $\\mathbb{Z}$) feeds `irred_f`, proving $X^4-10X^2+1$ irreducible over $\\mathbb{Q}$ by ruling out both linear factors (Gauss's lemma / rational root test) and a factorization into two monic quadratics.",
+      "startLine": 107,
+      "endLine": 356,
+      "mathContext": "Irreducibility over $\\mathbb{Q}$: no rational roots (Gauss) and no $\\mathbb{Q}$-quadratic split, so the quartic is irreducible."
+    },
+    {
+      "id": "part3-consequences",
+      "title": "Part III: Consequences of the Minimal Polynomial",
+      "summary": "Draws the conclusions: `minpoly_sqrt2_plus_sqrt3` (the minimal polynomial is exactly $X^4-10X^2+1$, from monic + irreducible + root), `adjoin_sqrt2_plus_sqrt3_finrank` ($[\\mathbb{Q}(\\sqrt2+\\sqrt3):\\mathbb{Q}]=4$), and `sqrt2_plus_sqrt3_irrational` ($\\sqrt2+\\sqrt3\\notin\\mathbb{Q}$, since a rational would have degree 1).",
+      "startLine": 357,
+      "endLine": 403,
+      "mathContext": "Minimal polynomial degree 4 $\\Rightarrow [\\mathbb{Q}(\\sqrt2+\\sqrt3):\\mathbb{Q}]=4 \\Rightarrow \\sqrt2+\\sqrt3$ irrational."
+    }
+  ],
+  "sorries": 0
+}

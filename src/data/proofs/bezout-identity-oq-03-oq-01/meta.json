@@ -1,0 +1,229 @@
+{
+  "id": "bezout-identity-oq-03-oq-01",
+  "title": "CRT Ring Isomorphism ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ",
+  "slug": "bezout-identity-oq-03-oq-01",
+  "description": "Formalizes the Chinese Remainder Theorem as a ring isomorphism: for coprime m, n, the natural map ℤ/mnℤ → ℤ/mℤ × ℤ/nℤ is a ring isomorphism. Wraps Mathlib's ZMod.chineseRemainder and proves applications: orthogonal idempotent decomposition, Bézout-based explicit solutions, cardinality preservation, Euler totient multiplicativity, and unit group characterization.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Chinese_remainder_theorem#Statement",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BezoutIdentityOQ03OQ01.lean",
+    "tags": [
+      "number-theory",
+      "algebra",
+      "chinese-remainder-theorem",
+      "ring-theory",
+      "bezout",
+      "zmod",
+      "idempotents",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "ZMod.chineseRemainder",
+        "description": "For coprime m, n: ZMod (m * n) ≃+* ZMod m × ZMod n",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Int.gcd_eq_gcd_ab",
+        "description": "Bézout's identity: gcd(a,b) = a * gcdA + b * gcdB",
+        "module": "Mathlib.Data.Int.GCD"
+      },
+      {
+        "theorem": "IsCoprime.mul_dvd",
+        "description": "If gcd(m,n)=1, m|k, n|k then mn|k",
+        "module": "Mathlib.RingTheory.Coprime.Basic"
+      },
+      {
+        "theorem": "Nat.totient_mul",
+        "description": "Euler totient is multiplicative for coprime arguments",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "ZMod.card",
+        "description": "|ZMod n| = n for n > 0",
+        "module": "Mathlib.Data.ZMod.Basic"
+      }
+    ],
+    "originalContributions": [
+      "crtRingIso: named wrapper for ZMod.chineseRemainder with explicit properties",
+      "Orthogonal idempotent decomposition e₁ + e₂ = 1, e₁e₂ = 0, e₁² = e₁, e₂² = e₂",
+      "Explicit Bézout-based CRT solution formula with modular arithmetic verification",
+      "Unit group characterization: x is a unit mod mn iff both components are units",
+      "Power preservation and cardinality equality through the isomorphism",
+      "Connection between abstract ring isomorphism and explicit Bézout coefficients"
+    ],
+    "dateAdded": "2026-03-11",
+    "relatedProblems": [
+      {
+        "id": "bezout-identity-oq-03",
+        "relationship": "Parent: CRT via Bézout's identity for integers (explicit solution formula)"
+      },
+      {
+        "id": "bezout-identity",
+        "relationship": "Foundational: Bézout's identity gcd(a,b) = ax + by"
+      },
+      {
+        "id": "bezout-identity-oq-02-oq-01",
+        "relationship": "Sibling: Fundamental Theorem of Arithmetic via Euclid's lemma (also from Bézout)"
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 315,
+    "assumptions": "0 axioms, 0 sorries. Core ring isomorphism derived from Mathlib's ZMod.chineseRemainder.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 25,
+    "definitionCount": 5
+  },
+  "overview": {
+    "historicalContext": "**Chinese Remainder Theorem as Ring Isomorphism**\n\nThe Chinese Remainder Theorem (CRT) dates to Sun Zi's Suanjing (~3rd century). In its modern algebraic form, for coprime ideals $I, J$ of a ring $R$, the natural map $R/(I \\cap J) \\to R/I \\times R/J$ is a ring isomorphism. For $R = \\mathbb{Z}$, $I = m\\mathbb{Z}$, $J = n\\mathbb{Z}$ with $\\gcd(m,n) = 1$: $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$.\n\nThis formalization wraps Mathlib's `ZMod.chineseRemainder` and extends it with applications: orthogonal idempotent decomposition, explicit Bézout solutions, and unit group characterization.",
+    "problemStatement": "**Theorem**: For coprime natural numbers $m, n$, the canonical ring homomorphism $\\varphi: \\mathbb{Z}/mn\\mathbb{Z} \\to \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$ defined by $x \\mapsto (x \\bmod m, x \\bmod n)$ is a ring isomorphism.",
+    "text": "A 315-line formalization of the Chinese Remainder Theorem as a ring isomorphism $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$ for coprime $m, n$. Wraps Mathlib's `ZMod.chineseRemainder` and develops five applications: (1) orthogonal idempotent decomposition $e_1 = nv, e_2 = mu$ from Bézout coefficients with $e_1 + e_2 = 1$ and $e_1 e_2 = 0$; (2) explicit CRT solutions via Bézout-based formulas; (3) cardinality preservation $|\\mathbb{Z}/mn\\mathbb{Z}| = |\\mathbb{Z}/m\\mathbb{Z}| \\times |\\mathbb{Z}/n\\mathbb{Z}|$; (4) Euler totient multiplicativity $\\varphi(mn) = \\varphi(m) \\varphi(n)$; (5) unit group characterization $(\\mathbb{Z}/mn\\mathbb{Z})^\\times \\cong (\\mathbb{Z}/m\\mathbb{Z})^\\times \\times (\\mathbb{Z}/n\\mathbb{Z})^\\times$. Connects to the Bézout identity (parent), constructive CRT, and Euler totient entries in the gallery.",
+    "proofStrategy": "The proof uses Mathlib's `ZMod.chineseRemainder` for the core isomorphism, then develops applications:\n\n1. **Ring isomorphism properties**: additivity, multiplicativity, bijectivity\n2. **Inverse map and round-trips**: explicit inverse via `.symm`\n3. **Idempotent decomposition**: $e_1 = \\varphi^{-1}(1,0)$ and $e_2 = \\varphi^{-1}(0,1)$ satisfy $e_1 + e_2 = 1$, $e_1 e_2 = 0$, $e_i^2 = e_i$\n4. **Bézout connection**: explicit solution $x = a \\cdot n \\cdot v + b \\cdot m \\cdot u$ where $mu + nv = 1$\n5. **Cardinality and units**: $|\\mathbb{Z}/mn\\mathbb{Z}| = mn$, $\\varphi(m \\cdot n) = \\varphi(m) \\cdot \\varphi(n)$, unit characterization",
+    "keyInsights": [
+      "The CRT isomorphism is a ring isomorphism (not just a group isomorphism) — it preserves both addition and multiplication",
+      "The isomorphism reveals nontrivial idempotents in ℤ/mnℤ when m,n > 1, decomposing the ring as a direct product",
+      "Bézout coefficients give the explicit inverse: if mu + nv = 1, then x = a·nv + b·mu solves x ≡ a (mod m), x ≡ b (mod n)",
+      "Euler totient multiplicativity φ(mn) = φ(m)φ(n) follows immediately from the ring isomorphism preserving units",
+      "An element is a unit mod mn iff its image in both factors is a unit — this characterizes (ℤ/mnℤ)× ≅ (ℤ/mℤ)× × (ℤ/nℤ)×"
+    ],
+    "prerequisites": [
+      "Number theory (primes, divisibility)",
+      "Abstract algebra"
+    ]
+  },
+  "sections": [
+    {
+      "id": "crt-isomorphism",
+      "title": "The CRT Ring Isomorphism",
+      "summary": "Wraps ZMod.chineseRemainder as crtRingIso and proves ring homomorphism properties: additivity, multiplicativity, unit preservation, bijectivity.",
+      "startLine": 34,
+      "endLine": 85,
+      "mathContext": "The Chinese Remainder Theorem as a ring isomorphism: for coprime $m, n$, the map $\\varphi: \\mathbb{Z}/mn\\mathbb{Z} \\to \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$ defined by $x \\mapsto (x \\bmod m,\\, x \\bmod n)$ is a ring isomorphism ($\\varphi(x+y) = \\varphi(x) + \\varphi(y)$, $\\varphi(xy) = \\varphi(x)\\varphi(y)$, $\\varphi(1) = (1,1)$, and $\\varphi$ is bijective)."
+    },
+    {
+      "id": "inverse-map",
+      "title": "The Inverse Map and Round-Trips",
+      "summary": "Defines crtInverse via .symm and proves both round-trip identities: forward-then-inverse and inverse-then-forward.",
+      "startLine": 86,
+      "endLine": 113,
+      "mathContext": "The inverse map $\\varphi^{-1}: \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z} \\to \\mathbb{Z}/mn\\mathbb{Z}$ satisfies $\\varphi^{-1}(\\varphi(x)) = x$ and $\\varphi(\\varphi^{-1}(a,b)) = (a,b)$, establishing a bijective correspondence. Explicitly, $\\varphi^{-1}(a,b) = a \\cdot nv + b \\cdot mu \\pmod{mn}$ where $mu + nv = 1$ from B\\'{e}zout's identity."
+    },
+    {
+      "id": "coprimality",
+      "title": "CRT and Coprimality",
+      "summary": "Coprimality is symmetric, and the isomorphism works with swapped factors ℤ/(nm)ℤ ≅ ℤ/nℤ × ℤ/mℤ.",
+      "startLine": 114,
+      "endLine": 127,
+      "mathContext": "Since $\\gcd(m,n) = 1 \\iff \\gcd(n,m) = 1$, the CRT isomorphism is symmetric: $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z} \\cong \\mathbb{Z}/n\\mathbb{Z} \\times \\mathbb{Z}/m\\mathbb{Z}$. The swapped version uses $mn = nm$ in $\\mathbb{Z}$."
+    },
+    {
+      "id": "idempotents",
+      "title": "Orthogonal Idempotent Decomposition",
+      "summary": "Constructs idempotents e₁ = φ⁻¹(1,0) and e₂ = φ⁻¹(0,1) satisfying e₁+e₂=1, e₁e₂=0, eᵢ²=eᵢ.",
+      "startLine": 128,
+      "endLine": 182,
+      "mathContext": "Orthogonal idempotent decomposition in $\\mathbb{Z}/mn\\mathbb{Z}$: define $e_1 = \\varphi^{-1}(1,0) = nv$ and $e_2 = \\varphi^{-1}(0,1) = mu$ where $mu + nv = 1$. These satisfy $e_1 + e_2 = 1$, $e_1 e_2 = 0$, $e_1^2 = e_1$, and $e_2^2 = e_2$. The idempotents decompose $\\mathbb{Z}/mn\\mathbb{Z} = e_1 \\cdot \\mathbb{Z}/mn\\mathbb{Z} \\oplus e_2 \\cdot \\mathbb{Z}/mn\\mathbb{Z}$."
+    },
+    {
+      "id": "bezout-connection",
+      "title": "Connecting to Bézout's Identity",
+      "summary": "Shows the explicit CRT solution formula x = a·nv + b·mu from Bézout coefficients mu + nv = 1.",
+      "startLine": 183,
+      "endLine": 215,
+      "mathContext": "Explicit CRT solution via B\\'{e}zout coefficients: given $\\gcd(m,n) = 1$ with $mu + nv = 1$, the system $x \\equiv a \\pmod{m},\\; x \\equiv b \\pmod{n}$ has solution $x = a \\cdot nv + b \\cdot mu$. Verification: $x \\equiv a \\cdot nv + b \\cdot mu \\equiv a(1 - mu) + b \\cdot mu \\equiv a \\pmod{m}$, and similarly $x \\equiv b \\pmod{n}$."
+    },
+    {
+      "id": "cardinality",
+      "title": "Cardinality and Counting",
+      "summary": "Card(ℤ/mnℤ) = Card(ℤ/mℤ) × Card(ℤ/nℤ) and Euler totient multiplicativity φ(mn) = φ(m)φ(n).",
+      "startLine": 216,
+      "endLine": 234,
+      "mathContext": "The ring isomorphism preserves cardinality: $|\\mathbb{Z}/mn\\mathbb{Z}| = mn = m \\cdot n = |\\mathbb{Z}/m\\mathbb{Z}| \\cdot |\\mathbb{Z}/n\\mathbb{Z}|$. Since isomorphisms preserve units, $\\varphi(mn) = |( \\mathbb{Z}/mn\\mathbb{Z})^\\times| = |(\\mathbb{Z}/m\\mathbb{Z})^\\times| \\cdot |(\\mathbb{Z}/n\\mathbb{Z})^\\times| = \\varphi(m)\\varphi(n)$, establishing the multiplicativity of Euler's totient function for coprime arguments."
+    },
+    {
+      "id": "applications",
+      "title": "Applications: Simultaneous Congruences",
+      "summary": "Existence and uniqueness of simultaneous solutions, power preservation, and unit characterization.",
+      "startLine": 235,
+      "endLine": 315,
+      "mathContext": "Applications of the CRT isomorphism: (1) the system $x \\equiv a \\pmod{m},\\; x \\equiv b \\pmod{n}$ has a unique solution mod $mn$; (2) $\\varphi(x^k) = (\\varphi(x))^k$ (power preservation); (3) $x \\in (\\mathbb{Z}/mn\\mathbb{Z})^\\times \\iff \\gcd(x,m) = 1 \\land \\gcd(x,n) = 1$, giving the unit group decomposition $(\\mathbb{Z}/mn\\mathbb{Z})^\\times \\cong (\\mathbb{Z}/m\\mathbb{Z})^\\times \\times (\\mathbb{Z}/n\\mathbb{Z})^\\times$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization proves the CRT ring isomorphism ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ with 0 sorries and 0 axioms. It wraps Mathlib's ZMod.chineseRemainder and develops substantial applications: orthogonal idempotent decomposition, explicit Bézout-based solutions, cardinality preservation, Euler totient multiplicativity, and a complete unit group characterization.",
+    "implications": "**Theoretical Significance**: **Mathematical Significance**\n\n1. **Ring decomposition**: The CRT isomorphism decomposes ℤ/mnℤ into a direct product, revealing its algebraic structure.\n**2. Idempotent lifting**: The orthogonal idempotents e₁, e₂ are the building blocks for ring decomposition and have applications in algebraic geometry (étale algebras).\n3. **Computational number theory**: The explicit Bézout-based formula gives an efficient algorithm for solving simultaneous congruences.\n4. **Unit group structure**: The characterization (ℤ/mnℤ)× ≅ (ℤ/mℤ)× × (ℤ/nℤ)× is fundamental to multiplicative number theory and cryptography (RSA).",
+    "openQuestions": [
+      "Can the CRT be extended to k-fold products ℤ/(n₁···nₖ)ℤ ≅ ∏ᵢ ℤ/nᵢℤ for pairwise coprime nᵢ?",
+      "Can the non-coprime case be formalized: ℤ/mnℤ ↪ ℤ/mℤ × ℤ/nℤ with characterization of the image?",
+      "Can the CRT for general rings R/IJ ≅ R/I × R/J (coprime ideals) be connected to this concrete case?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "bezout-identity-oq-03",
+      "relationship": "extends",
+      "description": "Parent entry proving CRT existence/uniqueness via Bézout — this file upgrades to the full ring isomorphism ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ"
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "ancestor",
+      "description": "Bézout's identity gcd(m,n) = mu + nv provides the idempotents e₁ = nv, e₂ = mu that decompose ℤ/mnℤ"
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "complementary",
+      "description": "The natural-number CRT uses Nat.chineseRemainder — this file provides the algebraically richer ring isomorphism perspective"
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-03",
+      "relationship": "related",
+      "description": "The Gauss-Wantzel theorem uses the structure of (ℤ/nℤ)* — the CRT decomposition (ℤ/mnℤ)* ≅ (ℤ/mℤ)* × (ℤ/nℤ)* proved here is key to computing totients"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Sun Tzu (Sunzi)",
+      "title": "Sunzi Suanjing (Master Sun's Mathematical Manual)",
+      "year": "400",
+      "venue": "~3rd–5th century CE, Problem 26",
+      "note": "Earliest known statement of the CRT: find a number that leaves remainders 2, 3, 2 when divided by 3, 5, 7. The systematic algorithm for solving such systems was developed by Qin Jiushao (1247)"
+    },
+    {
+      "authors": "Gauss, Carl Friedrich",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Gerhard Fleischer, Leipzig, §36",
+      "note": "First modern formulation of the CRT for modular arithmetic, establishing the isomorphism ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ for coprime m, n as part of the foundations of number theory"
+    },
+    {
+      "authors": "Lang, Serge",
+      "title": "Algebra",
+      "year": "2002",
+      "venue": "Springer Graduate Texts in Mathematics 211, 3rd edition, Chapter II §2",
+      "note": "Modern algebraic treatment of the CRT as a ring isomorphism, including the idempotent decomposition and applications to structure theory of commutative rings"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Data.Int.GCD",
+      "Mathlib.RingTheory.Coprime.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "ZMod"
+    ],
+    "namespace": "BezoutCRT",
+    "lineCount": 315,
+    "axiomCount": 0,
+    "theoremCount": 25,
+    "definitionCount": 5,
+    "path": "Proofs/BezoutIdentityOQ03OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

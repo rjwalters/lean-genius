@@ -1,0 +1,238 @@
+[
+  {
+    "id": "ann-bu-oq03oq01-01-lipschitz",
+    "proofId": "borsuk-ulam-oq-03-oq-01",
+    "range": {
+      "startLine": 49,
+      "endLine": 56
+    },
+    "type": "concept",
+    "title": "Antisymmetric Difference is 2L-Lipschitz",
+    "content": "antisymmetric_diff_lipschitz proves that g(x) = f(x) - f(-x) is (L+L)-Lipschitz when f is L-Lipschitz. The proof composes f with negation (LipschitzWith.id.neg, constant 1) to get f(-x) as L-Lipschitz, then uses LipschitzWith.sub.",
+    "mathContext": "$g(x) = f(x) - f(-x)$, $\\text{Lip}(g) \\leq \\text{Lip}(f) + \\text{Lip}(f \\circ (-)) = L + L = 2L$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "LipschitzWith",
+      "LipschitzWith.sub",
+      "LipschitzWith.comp"
+    ],
+    "prerequisites": [
+      "LipschitzWith.id",
+      "LipschitzWith.neg"
+    ]
+  },
+  {
+    "id": "ann-bu-oq03oq01-02-deviation",
+    "proofId": "borsuk-ulam-oq-03-oq-01",
+    "range": {
+      "startLine": 61,
+      "endLine": 76
+    },
+    "type": "concept",
+    "title": "Lipschitz Antipodal Deviation Bound (2L)",
+    "content": "lipschitz_antipodal_deviation_bound shows |f(x) - f(-x)| <= 2L for L-Lipschitz f and x in [-1,1]. Uses dist(x,-x) = |2x| <= 2 (since |x| <= 1) combined with the Lipschitz bound |f(x)-f(-x)| <= L * dist(x,-x).",
+    "mathContext": "$|f(x) - f(-x)| \\leq L \\cdot \\text{dist}(x,-x) \\leq L \\cdot 2 = 2L$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "LipschitzWith.dist_le_mul",
+      "dist_eq_norm"
+    ],
+    "prerequisites": [
+      "LipschitzWith",
+      "abs_le"
+    ]
+  },
+  {
+    "id": "ann-bu-oq03oq01-03-bisection",
+    "proofId": "borsuk-ulam-oq-03-oq-01",
+    "range": {
+      "startLine": 106,
+      "endLine": 114
+    },
+    "type": "concept",
+    "title": "Bisection Convergence to Zero",
+    "content": "bisection_width_tendsto_zero proves 2*(1/2)^n -> 0 as n -> infinity. Uses tendsto_pow_atTop_nhds_zero_of_lt_one (for |1/2| < 1) followed by multiplication by the constant 2.",
+    "mathContext": "$2 \\cdot (1/2)^n \\to 0$ as $n \\to \\infty$. Rate: $O(2^{-n})$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "tendsto_pow_atTop_nhds_zero_of_lt_one",
+      "Tendsto.const_mul"
+    ],
+    "prerequisites": [
+      "Filter.Tendsto",
+      "nhds"
+    ]
+  },
+  {
+    "id": "ann-bu-oq03oq01-04-oscillation",
+    "proofId": "borsuk-ulam-oq-03-oq-01",
+    "range": {
+      "startLine": 133,
+      "endLine": 154
+    },
+    "type": "concept",
+    "title": "Antipodal Deviation Bounded by Oscillation",
+    "content": "antipodal_deviation_le_oscillation shows |f(x) - f(-x)| <= sup(f) - inf(f) on [-1,1]. Both f(x) and f(-x) are in the image of f on [-1,1] (since x in [-1,1] implies -x in [-1,1] by symmetry), so each lies between inf and sup.",
+    "mathContext": "$|f(x) - f(-x)| \\leq \\sup_{[-1,1]} f - \\inf_{[-1,1]} f = \\omega(f, [-1,1])$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "IsCompact.bddAbove_image",
+      "le_csSup",
+      "csInf_le"
+    ],
+    "prerequisites": [
+      "isCompact_Icc",
+      "Continuous.continuousOn"
+    ]
+  },
+  {
+    "id": "ann-bu-oq03oq01-05-coincidence",
+    "proofId": "borsuk-ulam-oq-03-oq-01",
+    "range": {
+      "startLine": 173,
+      "endLine": 198
+    },
+    "type": "concept",
+    "title": "Coincidence Set: Nonempty, Compact, Has Minimum",
+    "content": "coincidence_set_nonempty_compact proves {x in [-1,1] | f(x)=f(-x)} is nonempty (x=0 witness) and compact (closed subset of compact [-1,1], where closedness uses isClosed_eq). coincidence_set_has_inf proves this set has a minimum element via csInf_mem for compact nonempty sets.",
+    "mathContext": "$C(f) = \\{x \\in [-1,1] \\mid f(x) = f(-x)\\}$ is nonempty ($0 \\in C$), compact, and has $\\inf C \\in C$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsCompact.isClosed",
+      "isClosed_eq",
+      "IsClosed.csInf_mem"
+    ],
+    "prerequisites": [
+      "isCompact_Icc",
+      "Continuous.comp",
+      "continuous_neg"
+    ]
+  },
+  {
+    "id": "ann-bu-oq03oq01-06-circle",
+    "proofId": "borsuk-ulam-oq-03-oq-01",
+    "range": {
+      "startLine": 213,
+      "endLine": 241
+    },
+    "type": "concept",
+    "title": "Circle Antipodal Deviation Bound",
+    "content": "circle_antipodal_deviation_bound shows |f(cos theta, sin theta) - f(-cos theta, -sin theta)| <= 2L for L-Lipschitz f: R^2 -> R. Key: dist((cos,sin),(-cos,-sin)) = max(|2cos|,|2sin|) <= 2 using the product max-norm.",
+    "mathContext": "$|f(p) - f(-p)| \\leq L \\cdot \\text{dist}(p, -p) \\leq L \\cdot 2$ for $p \\in S^1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Prod.dist_eq",
+      "abs_cos_le_one",
+      "abs_sin_le_one"
+    ],
+    "prerequisites": [
+      "LipschitzWith.dist_le_mul",
+      "max_le"
+    ]
+  },
+  {
+    "id": "ann-bu-oq03oq01-07-perturbation",
+    "proofId": "borsuk-ulam-oq-03-oq-01",
+    "range": {
+      "startLine": 445,
+      "endLine": 459
+    },
+    "type": "concept",
+    "title": "Perturbation Stability (2 epsilon Bound)",
+    "content": "perturbation_antisymmetric_bound shows |(f(x)-f(-x)) - (g(x)-g(-x))| <= 2*epsilon when |f-g| <= epsilon on [-1,1]. Proof: triangle inequality gives |..| <= |f(x)-g(x)| + |f(-x)-g(-x)| <= epsilon + epsilon.",
+    "mathContext": "$|(f-f^-) - (g-g^-)| \\leq |f-g|_x + |f-g|_{-x} \\leq 2\\varepsilon$ where $f^-(x) = f(-x)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "abs_add_le",
+      "abs_sub_comm"
+    ],
+    "prerequisites": [
+      "abs_add_le"
+    ]
+  },
+  {
+    "id": "ann-bu-oq03oq01-08-discrete-ivt",
+    "proofId": "borsuk-ulam-oq-03-oq-01",
+    "range": {
+      "startLine": 539,
+      "endLine": 544
+    },
+    "type": "concept",
+    "title": "Discrete IVT: Different Endpoints Imply Adjacent Change",
+    "content": "discrete_ivt proves: if f: Fin(n+2) -> alpha has f(0) != f(last), then there exist adjacent i, i+1 with f(i) != f(i+1). Proof: contrapositive via fin_adjacent_eq_implies_const (if all adjacent agree, function is constant by Fin.induction).",
+    "mathContext": "If $f(0) \\neq f(n+1)$ for $f : \\{0,\\ldots,n+1\\} \\to \\alpha$, then $\\exists i$ with $f(i) \\neq f(i+1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fin.induction",
+      "Fin.castSucc",
+      "Fin.succ"
+    ],
+    "prerequisites": [
+      "Fin.last",
+      "Fin.induction"
+    ]
+  },
+  {
+    "id": "ann-bu-oq03oq01-09-tucker-1d",
+    "proofId": "borsuk-ulam-oq-03-oq-01",
+    "range": {
+      "startLine": 571,
+      "endLine": 586
+    },
+    "type": "concept",
+    "title": "Tucker's Lemma (1D) with Integer Labels",
+    "content": "tucker_1d proves: given f: Fin(n+2) -> Z with values in {+-1} and f(0) = -f(last), there exists adjacent i with f(i)+f(i+1) = 0. Step 1: f(0) != f(last) since f(0) = -f(last) and f(last) in {+-1} means negation differs. Step 2: discrete_ivt gives adjacent pair with different values. Step 3: case split on all {+-1} combinations shows different implies sum zero.",
+    "mathContext": "Tucker's 1D: $f(0) = -f(n+1)$ with $f(i) \\in \\{\\pm 1\\}$ $\\Rightarrow$ $\\exists i: f(i) + f(i+1) = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "discrete_ivt",
+      "Fin.castSucc",
+      "Fin.succ"
+    ],
+    "prerequisites": [
+      "discrete_ivt"
+    ]
+  },
+  {
+    "id": "ann-bu-oq03oq01-10-tucker-bu-equiv",
+    "proofId": "borsuk-ulam-oq-03-oq-01",
+    "range": {
+      "startLine": 723,
+      "endLine": 738
+    },
+    "type": "concept",
+    "title": "Tucker-BU Equivalence in 1D",
+    "content": "tucker_bu_equivalence_1d proves the logical equivalence between BU (continuous odd f has zero in [-1,1]) and Tucker (antipodal {+-1} labeling has complementary edge). Forward: Tucker is independently proved. Backward: x=0 witnesses odd function zero (f(0)=-f(-0)=-f(0) gives 2f(0)=0).",
+    "mathContext": "$\\text{BU}_{1D} \\Leftrightarrow \\text{Tucker}_{1D}$: continuous odd zeros $\\Leftrightarrow$ complementary edges in labeled sequences.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tucker_1d",
+      "borsuk_ulam_interval"
+    ],
+    "prerequisites": [
+      "tucker_1d"
+    ]
+  },
+  {
+    "id": "ann-bu-oq03oq01-11-circle-noninjectivity",
+    "proofId": "borsuk-ulam-oq-03-oq-01",
+    "range": {
+      "startLine": 349,
+      "endLine": 368
+    },
+    "type": "concept",
+    "title": "Circle Non-Injectivity via IVT",
+    "content": "circle_noninjectivity proves: for continuous f: R^2 -> R, there exists theta in [0,pi] with f(cos theta, sin theta) = f(-cos theta, -sin theta). This is the circle BU proved directly via IVT on g(theta) = f(cos theta,...) - f(-cos theta,...), using g(pi) = -g(0) from trig identities cos(pi)=-1, sin(pi)=0.",
+    "mathContext": "For continuous $f: \\mathbb{R}^2 \\to \\mathbb{R}$, $\\exists \\theta \\in [0,\\pi]: f(\\cos\\theta, \\sin\\theta) = f(-\\cos\\theta, -\\sin\\theta)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "intermediate_value_Icc",
+      "Real.cos_pi",
+      "Real.sin_pi"
+    ],
+    "prerequisites": [
+      "ContinuousOn",
+      "intermediate_value_Icc"
+    ]
+  }
+]

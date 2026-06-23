@@ -1,0 +1,262 @@
+{
+  "id": "buffons-noodle",
+  "title": "Buffon's Noodle Theorem (Polygonal Case)",
+  "slug": "buffons-noodle",
+  "description": "Formalizes Buffon's Noodle Theorem — the generalization of Buffon's Needle from straight needles to arbitrary curves. The expected number of crossings of a curve dropped on a parallel-line grid (spacing d) depends only on the total arc length L, equalling 2L/(πd), independent of shape. The polygonal case is proved in full via linearity of expectation; the smooth (Barbier/Cauchy-Crofton) generalization is stated as an axiom pending kinematic-measure infrastructure in Mathlib.",
+  "meta": {
+    "author": "lean-genius researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Buffon%27s_noodle",
+    "date": "2026-06-16",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/BuffonsNoodle.lean",
+    "tags": [
+      "geometric-probability",
+      "integral-geometry",
+      "buffon",
+      "linearity-of-expectation",
+      "cauchy-crofton",
+      "arc-length"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-06-16",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.mul_sum",
+        "description": "Distribute a constant factor across a finite sum (the algebraic core of linearity of expectation)",
+        "module": "Mathlib.Algebra.BigOperators.Ring.Finset"
+      },
+      {
+        "theorem": "intervalIntegral.integral_nonneg",
+        "description": "An interval integral of a nonneg integrand over a≤b is nonneg (arc-length nonnegativity)",
+        "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic"
+      },
+      {
+        "theorem": "Real.pi_pos",
+        "description": "π > 0, used for positivity of the spacing factor π·d",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Continuous.div_const",
+        "description": "x ↦ f(x)/c is continuous; used to pass the crossing functional through an arc-length limit",
+        "module": "Mathlib.Topology.Algebra.Order.LiminfLimsup"
+      }
+    ],
+    "originalContributions": [
+      "buffon_noodle_polygon: PROVED expected crossings of a polygonal noodle = 2L/(πd), depending only on total length",
+      "buffon_noodle_shape_independence: PROVED two polygonal noodles of equal total length have identical expected crossings",
+      "needle_equals_noodle: PROVED a single needle of length L matches any polygonal noodle of total length L",
+      "buffon_noodle_scaling / buffon_noodle_additive: PROVED scaling and additivity of the expected-crossing functional",
+      "buffon_noodle_lipschitz: PROVED |E[N₁]−E[N₂]| ≤ (2/πd)·|L₁−L₂| (Lipschitz in arc length)",
+      "buffon_noodle_approx_limit: PROVED polygonal expected crossings converge to 2L/(πd) when total lengths converge to L (polygonal→smooth bridge)",
+      "circle/square/regular_polygon_crossings: PROVED concrete numerical instances confirming shape-independence",
+      "buffon_noodle_smooth_eq: AXIOM stating the smooth C¹ case equals 2L/(πd) (Barbier 1860 / Cauchy-Crofton)"
+    ],
+    "axiomCount": 2,
+    "prerequisites": [
+      "Buffon's Needle crossing probability 2ℓ/(πd) (taken as the per-segment definition; proved separately in Buffon's Needle)",
+      "Linearity of finite sums (Finset.mul_sum)",
+      "Basic interval-integral arc length and continuity"
+    ],
+    "lineCount": 456,
+    "relatedProblems": [
+      {
+        "id": "buffons-needle",
+        "relationship": "Specialization: the noodle theorem reduces to Buffon's Needle for a single straight segment"
+      }
+    ],
+    "assumptions": "2 axioms, both confined to the SMOOTH curve generalization: smoothExpectedCrossings (the primitive expected-crossing functional for C¹ curves) and buffon_noodle_smooth_eq (its value equals 2L/(πd), the Barbier/Cauchy-Crofton result). The smooth case is axiomatized because a formal proof requires the kinematic measure on the space of lines in ℝ², not yet in Mathlib. The POLYGONAL case — including shape independence, scaling, additivity, Lipschitz continuity, the approximation-limit bridge, and the numerical examples — is fully machine-checked with 0 sorries. The per-segment crossing probability 2ℓ/(πd) is encoded as a definition (segmentCrossingProb), reflecting Buffon's Needle proved elsewhere; it is not an additional axiom.",
+    "theoremCount": 19,
+    "definitionCount": 4,
+    "structureCount": 1
+  },
+  "overview": {
+    "historicalContext": "Buffon posed the needle problem in 1777: drop a needle of length ℓ on a floor ruled with parallel lines spaced d apart and the probability it crosses a line is 2ℓ/(πd). In 1860, Joseph-Émile Barbier extended this to arbitrary curved 'needles' (noodles), showing that the EXPECTED NUMBER of crossings of a curve of length L is 2L/(πd) — independent of the curve's shape. This is the simplest nontrivial instance of the Cauchy-Crofton formula of integral geometry, which relates the length of a rectifiable curve to the kinematic measure of the lines meeting it.",
+    "problemStatement": "Formalize Buffon's Noodle Theorem: the expected number of crossings of a curve of total length L with a parallel-line grid of spacing d equals 2L/(πd), depending only on length and not on shape.",
+    "text": "A 456-line formalization. The polygonal case is proved completely: a polygonal noodle is modelled as a finite family of nonneg segment lengths, its expected crossings are the sum of per-segment crossing probabilities 2Lᵢ/(πd), and linearity of finite sums collapses this to 2(ΣLᵢ)/(πd) = 2L/(πd). From this the headline shape-independence, scaling, additivity, monotonicity, Lipschitz continuity, and an approximation-limit theorem (polygonal expected crossings converge to the smooth formula as total lengths converge) all follow. The smooth C¹ generalization — requiring the kinematic measure on the line space — is stated as two axioms.",
+    "proofStrategy": "Linearity of expectation. The crux is that the expected total number of crossings is the SUM of the per-segment expected crossings, with no independence assumption needed — linearity of expectation holds for correlated summands. Algebraically this is Finset.mul_sum: ∑ᵢ (2/πd)·Lᵢ = (2/πd)·∑ᵢ Lᵢ. Every downstream theorem (shape independence, scaling, additivity, monotonicity, Lipschitz) is a one- or two-line corollary obtained by rewriting through buffon_noodle_polygon. The polygonal→smooth bridge is the approximation-limit theorem: continuity of x ↦ 2x/(πd) carries arc-length convergence to crossing-count convergence.",
+    "keyInsights": [
+      "**Shape is irrelevant — only length matters.** Two noodles with the same total length have identical expected crossings even if their shapes are completely different. This counterintuitive fact is the whole content of the theorem and is captured exactly by buffon_noodle_shape_independence.",
+      "**Linearity of expectation needs no independence.** The expected total crossings equal the sum of per-segment expectations whether or not the segments are correlated (they are, since consecutive segments share endpoints). Formally this is just linearity of the finite sum — the probabilistic subtlety vanishes into Finset.mul_sum.",
+      "**The per-segment formula is the only external input.** segmentCrossingProb ℓ d := 2ℓ/(πd) encodes Buffon's Needle as a definition; everything proved here is the GENERALIZATION from one segment to many, which is precisely Barbier's contribution over Buffon's.",
+      "**A circle crosses each line pair twice on average.** circle_expected_crossings shows a circle of circumference 2πr has expected crossings 4r/d — independent of π — a clean sanity check of the 2L/(πd) law, and the basis of the elegant elementary proof of Buffon's needle via a circular noodle.",
+      "**Polygonal ⇒ smooth by continuity.** buffon_noodle_approx_limit shows that any sequence of polygonal noodles whose total lengths converge to L has expected crossings converging to 2L/(πd). This is the justification for the smooth case: approximate the curve by polygons in arc length, then pass to the limit. Only the value of the limit functional itself is axiomatized."
+    ],
+    "prerequisites": [
+      "Buffon's Needle crossing probability (per-segment input)",
+      "Linearity of finite sums",
+      "Elementary interval integration and continuity"
+    ]
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview: Buffon's Noodle and Linearity of Expectation",
+      "startLine": 1,
+      "endLine": 78,
+      "summary": "File docstring, imports, and namespace. States the theorem (expected crossings = 2L/(πd), shape-independent), explains the linearity-of-expectation strategy, gives historical context (Buffon 1777, Barbier 1860, Cauchy-Crofton), and lists what is proved (polygonal case) versus axiomatized (smooth case).",
+      "mathContext": "For a curve of length $L$ dropped on a grid of spacing $d$, $E[\\text{crossings}] = \\frac{2L}{\\pi d}$, independent of shape. Polygonal proof: $E[\\text{total}] = \\sum_i E[\\text{segment }i] = \\sum_i \\frac{2L_i}{\\pi d} = \\frac{2L}{\\pi d}$."
+    },
+    {
+      "id": "single-segment",
+      "title": "Crossing Probability for a Single Segment",
+      "startLine": 80,
+      "endLine": 101,
+      "summary": "Defines segmentCrossingProb ℓ d = 2ℓ/(πd) (Buffon's Needle, taken as the per-segment primitive) and proves it is linear in length, vanishes at length 0, and is nonneg for nonneg length and positive spacing.",
+      "mathContext": "$P(\\ell, d) = \\frac{2\\ell}{\\pi d}$; linear in $\\ell$, zero at $\\ell = 0$, nonneg when $\\ell \\geq 0$ and $d > 0$."
+    },
+    {
+      "id": "polygonal-noodles",
+      "title": "Polygonal Noodles",
+      "startLine": 103,
+      "endLine": 133,
+      "summary": "Defines a PolygonalNoodle as a finite family of nonneg segment lengths, its totalLength as the sum of segment lengths, and its expectedCrossings as the sum of per-segment crossing probabilities. Proves total length is nonneg.",
+      "mathContext": "Noodle $N$ with lengths $L_1,\\dots,L_n \\geq 0$; $\\text{totalLength}(N) = \\sum_i L_i$; $E[N](d) = \\sum_i \\frac{2L_i}{\\pi d}$."
+    },
+    {
+      "id": "noodle-theorem",
+      "title": "The Noodle Theorem (Polygonal Case)",
+      "startLine": 135,
+      "endLine": 164,
+      "summary": "The main proved result: the expected crossings of a polygonal noodle equal 2L/(πd), depending only on total length and not on segment orientations. Proof is linearity of the finite sum (Finset.mul_sum) plus field algebra.",
+      "mathContext": "$E[N](d) = \\sum_i \\frac{2L_i}{\\pi d} = \\frac{2}{\\pi d}\\sum_i L_i = \\frac{2\\,\\text{totalLength}(N)}{\\pi d}$."
+    },
+    {
+      "id": "shape-independence",
+      "title": "Shape Independence",
+      "startLine": 166,
+      "endLine": 188,
+      "summary": "Two polygonal noodles with equal total length have identical expected crossings regardless of shape; and a single needle of length L matches any polygonal noodle of total length L. The headline conceptual payoff of the theorem.",
+      "mathContext": "$\\text{totalLength}(N_1) = \\text{totalLength}(N_2) \\Rightarrow E[N_1](d) = E[N_2](d)$; a straight needle is just the one-segment case."
+    },
+    {
+      "id": "scaling",
+      "title": "Scaling",
+      "startLine": 190,
+      "endLine": 206,
+      "summary": "Scaling all segment lengths by a constant c ≥ 0 scales the expected crossings by c — the linearity of the crossing functional in arc length.",
+      "mathContext": "$E[cN](d) = c\\,E[N](d)$ for $c \\geq 0$."
+    },
+    {
+      "id": "smooth-axioms",
+      "title": "The Smooth Curve Generalization (Axiomatized)",
+      "startLine": 208,
+      "endLine": 291,
+      "summary": "Defines planar C¹ arc length via an interval integral and proves it nonneg. Introduces the two axioms: smoothExpectedCrossings (the primitive crossing functional for C¹ curves) and buffon_noodle_smooth_eq (its value is 2L/(πd), Barbier/Cauchy-Crofton). Derives smooth shape-independence and nonnegativity from the axioms.",
+      "mathContext": "Arc length $L(\\gamma,a,b) = \\int_a^b \\sqrt{x'(t)^2 + y'(t)^2}\\,dt$; axiom: $\\text{smoothExpectedCrossings}(\\gamma,a,b,d) = \\frac{2L(\\gamma,a,b)}{\\pi d}$. Formal proof needs the kinematic measure on lines in $\\mathbb{R}^2$."
+    },
+    {
+      "id": "approximation-limit",
+      "title": "Approximation Limit and Lipschitz Bound",
+      "startLine": 293,
+      "endLine": 343,
+      "summary": "Proves that if a sequence of polygonal noodles has total lengths converging to L, their expected crossings converge to 2L/(πd) (the polygonal→smooth bridge, via continuity of x ↦ 2x/(πd)), and that the crossing functional is Lipschitz in arc length with constant 2/(πd).",
+      "mathContext": "$\\text{totalLength}(N_k) \\to L \\Rightarrow E[N_k](d) \\to \\frac{2L}{\\pi d}$; $|E[N_1](d) - E[N_2](d)| \\leq \\frac{2}{\\pi d}|L_1 - L_2|$."
+    },
+    {
+      "id": "examples",
+      "title": "Numerical Examples and Monotonicity",
+      "startLine": 345,
+      "endLine": 456,
+      "summary": "Cauchy-Crofton connection discussion plus concrete instances: a circle (4r/d crossings, independent of π), a square (8s/(πd)), a regular n-gon (2ns/(πd)). Closes with monotonicity, strict monotonicity, and additivity of the expected-crossing functional, and a conclusion on the integral-geometry significance.",
+      "mathContext": "Circle circumference $2\\pi r$: $E = \\frac{4r}{d}$. Square side $s$: $E = \\frac{8s}{\\pi d}$. Monotone and additive in total length."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "buffons-needle",
+      "relationship": "specializes",
+      "description": "Buffon's Needle is the one-segment special case of this theorem. The per-segment crossing probability 2ℓ/(πd) proved there is the primitive input (segmentCrossingProb) on which the polygonal noodle generalization is built; needle_equals_noodle makes the reduction explicit."
+    },
+    {
+      "targetId": "liouville-theorem",
+      "relationship": "related",
+      "description": "Both belong to classical analysis built on real integration and approximation. Liouville's theorem concerns Diophantine approximation; Buffon's noodle concerns geometric probability. The link is methodological — each reduces a continuous statement to an elementary inequality, here linearity of finite sums."
+    },
+    {
+      "targetId": "hurwitz-theorem",
+      "relationship": "related",
+      "description": "A neighboring result in geometric/analytic number theory illustrating how sharp constants (Hurwitz's 1/√5; Buffon-Barbier's 2/π) emerge from averaging arguments over a continuous parameter (here the random drop angle)."
+    }
+  ],
+  "leanFile": {
+    "lineCount": 456,
+    "namespace": "BuffonsNoodle",
+    "opens": [
+      "Real",
+      "Finset",
+      "BigOperators"
+    ],
+    "structureCount": 1,
+    "axiomCount": 2,
+    "theoremCount": 19,
+    "substantiveTheoremCount": 6,
+    "computationalVerifications": 0,
+    "lemmaCount": 0,
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Algebra.BigOperators.Ring.Finset",
+      "Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic",
+      "Mathlib.Analysis.Calculus.Deriv.Basic",
+      "Mathlib.Topology.Algebra.Order.LiminfLimsup",
+      "Mathlib.Tactic"
+    ],
+    "path": "Proofs/BuffonsNoodle.lean",
+    "sorries": 0,
+    "definitionCount": 4
+  },
+  "mainTheorems": [
+    {
+      "name": "buffon_noodle_polygon",
+      "type": "core",
+      "description": "Expected crossings of a polygonal noodle equal 2L/(πd), depending only on total length L (PROVED, 0 axioms)",
+      "leanType": "∀ {n : ℕ} (N : PolygonalNoodle n) (d : ℝ), 0 < d → N.expectedCrossings d = 2 * N.totalLength / (π * d)"
+    },
+    {
+      "name": "buffon_noodle_shape_independence",
+      "type": "core",
+      "description": "Two polygonal noodles of equal total length have identical expected crossings (PROVED, 0 axioms)",
+      "leanType": "∀ {m n : ℕ} (N₁ : PolygonalNoodle m) (N₂ : PolygonalNoodle n) (d : ℝ), 0 < d → N₁.totalLength = N₂.totalLength → N₁.expectedCrossings d = N₂.expectedCrossings d"
+    },
+    {
+      "name": "buffon_noodle_smooth_eq",
+      "type": "axiom",
+      "description": "Smooth C¹ case: expected crossings equal 2L/(πd) for arc length L (AXIOM — Barbier/Cauchy-Crofton, pending kinematic measure in Mathlib)",
+      "leanType": "∀ (γ : ℝ → ℝ × ℝ) (a b d : ℝ), 0 < d → a ≤ b → ContDiff ℝ 1 γ → smoothExpectedCrossings γ a b d = 2 * planarCurveArcLength γ a b / (π * d)"
+    }
+  ],
+  "conclusion": {
+    "summary": "A formalization of Buffon's Noodle Theorem whose polygonal case is fully machine-checked (0 sorries) via linearity of expectation, with the smooth Barbier/Cauchy-Crofton generalization stated as two axioms. The mathematical heart — that expected crossings depend only on total length, not shape — is captured and proved for polygonal noodles, with an explicit approximation-limit bridge to the smooth case.",
+    "implications": "Buffon's Noodle is the gateway to integral geometry: it is the simplest case of the Cauchy-Crofton formula relating curve length to the kinematic measure of intersecting lines, and underlies stereological length estimation in microscopy and materials science. The shape-independence proved here is the same phenomenon that lets one estimate the length of an irregular curve by counting random line crossings. The two remaining axioms isolate exactly the missing Mathlib infrastructure (the measure on the space of lines in ℝ²); the polygonal theorems and the approximation-limit lemma already supply everything needed to discharge them once that measure is available.",
+    "openQuestions": [
+      "Discharge the smooth axioms by formalizing the kinematic measure on the space of lines in ℝ² and proving the Cauchy-Crofton formula ∫∫ n(C, l) dρ dθ = 2·length(C), then deriving buffon_noodle_smooth_eq from the polygonal case via buffon_noodle_approx_limit.",
+      "Replace the definitional per-segment input segmentCrossingProb with a genuine derivation from a measure-theoretic Buffon's Needle (the registered Buffon's Needle entry), making the polygonal noodle theorem axiom-free end to end.",
+      "Generalize to higher dimensions: the expected number of intersections of a space curve with a random hyperplane arrangement, and Cauchy's surface-area formula for convex bodies."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Barbier, Joseph-Émile",
+      "title": "Note sur le problème de l'aiguille et le jeu du joint couvert",
+      "year": "1860",
+      "venue": "Journal de mathématiques pures et appliquées, 2e série, tome 5",
+      "note": "Pages 273-286. Extends Buffon's needle to curved needles — the noodle theorem."
+    },
+    {
+      "authors": "Buffon, Georges-Louis Leclerc, Comte de",
+      "title": "Essai d'arithmétique morale",
+      "year": "1777",
+      "venue": "Supplément à l'Histoire naturelle, tome 4",
+      "note": "Original statement of the needle problem."
+    },
+    {
+      "authors": "Santaló, Luis A.",
+      "title": "Integral Geometry and Geometric Probability",
+      "year": "2004",
+      "venue": "Cambridge Mathematical Library, 2nd edition",
+      "note": "Standard reference for the Cauchy-Crofton formula and the kinematic measure on lines, of which Buffon's noodle is the simplest case."
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,239 @@
+{
+  "id": "primitive-roots-oq-02",
+  "title": "Primitive Roots: Testing Criterion for Finding Generators Modulo p",
+  "slug": "primitive-roots-oq-02",
+  "description": "Answers the algorithmic question: how to efficiently find a primitive root modulo a prime p. The key result is the prime factor testing criterion: g is a generator iff g^{(p-1)/q} ≢ 1 (mod p) for every prime q dividing p-1. This reduces the test from O(p) to O(k·log p) operations where k is the number of distinct prime factors of p-1.",
+  "meta": {
+    "author": "Classical number theory; formalized in Lean 4 / Mathlib 4",
+    "date": "1801",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PrimitiveRootsOQ02.lean",
+    "tags": [
+      "number-theory",
+      "primitive-roots",
+      "cyclic-groups",
+      "computational-number-theory",
+      "algorithm",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 224,
+    "assumptions": "0 axioms, 0 sorries. Fully verified using Mathlib's group theory and number theory machinery.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "orderOf_dvd_card",
+        "description": "The order of any element divides the group cardinality",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      },
+      {
+        "theorem": "orderOf_dvd_of_pow_eq_one",
+        "description": "If g^n = 1 then orderOf g ∣ n",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      },
+      {
+        "theorem": "isCyclic_of_subgroup_isDomain",
+        "description": "Finite subgroups of units in integral domains are cyclic",
+        "module": "Mathlib.RingTheory.IntegralDomain"
+      },
+      {
+        "theorem": "Nat.minFac_prime",
+        "description": "The minimum factor of n ≠ 1 is prime",
+        "module": "Mathlib.Data.Nat.Factors"
+      },
+      {
+        "theorem": "Nat.primeFactors",
+        "description": "The Finset of prime factors of a natural number",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Proved orderOf_eq_of_prime_factor_test: the general lemma that prime factor testing characterizes orderOf",
+      "Proved isGenerator_iff_prime_factor_test: the main testing criterion for primitive roots",
+      "Proved isGenerator_iff_primeFactors_test: equivalent form using Nat.primeFactors",
+      "Proved exists_generator: every prime has at least one primitive root (from cyclic group theory)",
+      "Concrete primeFactors computations for p = 3, 5, 7, 11, 13, 23, 1000003"
+    ],
+    "dateAdded": "2026-04-12",
+    "theoremCount": 5,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "The existence of primitive roots modulo primes was first proved by Euler (1773), and Gauss gave a complete characterization in Disquisitiones Arithmeticae (1801): primitive roots exist modulo n if and only if n = 1, 2, 4, p^k, or 2p^k for odd prime p.\n\nThe practical question of *finding* a primitive root efficiently arose with the development of number-theoretic algorithms and cryptography. The naive test (checking that no power g^k = 1 for 0 < k < p-1) requires O(p) multiplications. The prime factor criterion, while not stated as a theorem by any single historical source, is a direct consequence of the structure of cyclic groups and has been known informally since the 19th century.\n\nIn modern cryptography, primitive roots (called 'generators') are essential for Diffie-Hellman key exchange and discrete logarithm-based schemes. Efficient generator finding is thus of practical importance.",
+    "problemStatement": "**Open Question (primitive-roots-oq-02)**: How can we efficiently determine whether a given element g is a primitive root modulo a prime p?\n\nSpecifically, can we reduce the test from O(p) to O(k·log p) operations, where k is the number of distinct prime factors of p-1?\n\n**Answer: YES** — via the prime factor testing criterion: g is a generator iff g^{(p-1)/q} ≠ 1 for all prime q | (p-1).",
+    "text": "The prime factor testing criterion formalizes a key observation about cyclic groups: an element g has order exactly n iff g^n = 1 AND g^(n/q) ≠ 1 for every prime q dividing n. The proof uses the fundamental divisibility structure of cyclic groups: every proper divisor d of n (with d ∣ n) must divide n/q for some prime q ∣ n, so testing n/q for primes q covers all cases.\n\nFor primitive roots mod p: n = p-1, and Fermat's little theorem gives g^(p-1) = 1 automatically. So only the 'not too small order' condition needs to be checked, and the prime factor test does exactly that.",
+    "proofStrategy": "**Three-step structure:**\n\n1. **General lemma** (`orderOf_eq_of_prime_factor_test`): For any finite group G and g ∈ G, if g^n = 1 and g^(n/q) ≠ 1 for all primes q | n, then orderOf g = n. Proof: show n | orderOf g. If orderOf g < n, let q = minFac(n/orderOf g); then orderOf g | n/q, so g^(n/q) = 1, contradiction.\n\n2. **Primitive root application** (`isGenerator_iff_prime_factor_test`): Specialize to G = (ZMod p)ˣ, n = p-1. Forward direction: if orderOf g = p-1 but g^((p-1)/q) = 1, then orderOf g ≤ (p-1)/q < p-1, contradiction. Backward direction: apply the general lemma with Fermat's little theorem providing g^(p-1) = 1.\n\n3. **primeFactors form** (`isGenerator_iff_primeFactors_test`): Restate using Nat.primeFactors, which is the computable set of prime divisors.",
+    "keyInsights": [
+      "The Diffie-Hellman key exchange (1976) depends on this testing criterion for parameter generation: Alice and Bob need a generator $g$ of $(\\mathbb{Z}/p\\mathbb{Z})^\\times$, verified efficiently by the prime factor test. Security rests on the discrete logarithm problem — recovering $k$ from $g^k \\bmod p$ — which has no known polynomial-time algorithm.",
+      "Pohlig-Hellman reduction (1978): if $p-1 = \\prod q_i^{e_i}$ factors into small primes ('$B$-smooth'), discrete logs can be computed in time $O(\\sum e_i(\\log p + \\sqrt{q_i}))$ via CRT decomposition. This is why cryptographic primes use $p = 2q+1$ with $q$ prime ('safe primes'): $p-1 = 2q$ has only large prime factors, defeating Pohlig-Hellman.",
+      "The key insight: every proper divisor d of n (with d < n, d | n) divides n/q for SOME prime q | n. Proof: n/d > 1 has a prime factor q; then d | n/q. This means the prime factor test at n/q catches ALL elements with order < n.",
+      "Fermat's little theorem gives g^(p-1) = 1 for free, reducing the test to only the 'order is not smaller than p-1' condition.",
+      "The number of distinct prime factors of p-1 is O(log(p-1)) = O(log p), so only O(log p) modular exponentiations are needed per candidate.",
+      "By the Mertens-type bound φ(p-1)/(p-1) ≥ C/log log p, the probability that a random element is a generator is Ω(1/log log p), so O(log log p) candidates suffice on average.",
+      "The criterion applies more generally: for any finite cyclic group G, an element g is a generator iff g^(|G|/q) ≠ 1 for all prime q | |G|."
+    ],
+    "prerequisites": [
+      "Primitive roots modulo primes (gallery: primitive-roots)",
+      "Cyclic groups and generators (IsCyclic)",
+      "Fermat's little theorem (orderOf g ∣ p-1)",
+      "Prime factorization (Nat.primeFactors, Nat.minFac)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header: Testing Criterion and Algorithm Description",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "Module docstring states the prime factor testing criterion: g is a primitive root mod p iff g^{(p-1)/q} ≢ 1 mod p for every prime q | (p-1). Explains why this works (orderOf g < p-1 implies ∃ prime q | p-1 with g^{(p-1)/q} = 1). Describes the O(k·log p) algorithm. Gives the expected search time O(log log p) via the Mertens-type bound φ(p-1)/(p-1) ≥ C/log log p. Imports Mathlib; enters PrimitiveRootsOQ02 namespace.",
+      "mathContext": "The criterion is a corollary of the structure theorem for cyclic groups: if H = ⟨g⟩ has order d < p-1, then d | (p-1)/q for some prime q | p-1 (since d is a proper divisor of p-1 and every proper divisor divides (p-1)/q for some prime factor q). Equivalently: g is a primitive root iff the order d = p-1 is not a proper multiple of any (p-1)/q."
+    },
+    {
+      "id": "setup",
+      "title": "Setup: Generators and Fermat's Little Theorem",
+      "startLine": 55,
+      "endLine": 70,
+      "summary": "IsGenerator definition, pow_pred_prime_eq_one (Fermat's little theorem)",
+      "mathContext": "A generator g ∈ (ZMod p)ˣ has orderOf g = p-1. Fermat's little theorem g^(p-1) = 1 is derived from orderOf g ∣ (p-1) (which follows from orderOf g ∣ |G| = p-1)."
+    },
+    {
+      "id": "core-lemma",
+      "title": "Core Lemma: Prime Factor Testing",
+      "startLine": 72,
+      "endLine": 125,
+      "summary": "orderOf_eq_of_prime_factor_test: the general prime factor testing lemma",
+      "mathContext": "The key lemma works for any finite group G. The proof of the hard direction (n ∣ orderOf g) proceeds by contradiction: if orderOf g < n, take q = minFac(n/orderOf g); then orderOf g ∣ n/q, giving g^(n/q) = (g^(orderOf g))^k = 1."
+    },
+    {
+      "id": "main-criterion",
+      "title": "Main Theorem: Testing Criterion",
+      "startLine": 127,
+      "endLine": 165,
+      "summary": "isGenerator_iff_prime_factor_test and isGenerator_iff_primeFactors_test",
+      "mathContext": "The criterion for (ZMod p)ˣ: g is a generator iff g^((p-1)/q) ≠ 1 for all prime q | p-1. The Finset form using Nat.primeFactors is equivalent and directly computable."
+    },
+    {
+      "id": "existence-algorithm",
+      "title": "Existence and Decidability",
+      "startLine": 167,
+      "endLine": 185,
+      "summary": "exists_generator, Decidable instance, concrete examples",
+      "mathContext": "Existence follows from (ZMod p)ˣ being cyclic. Decidability follows from DecidableEq ℕ applied to orderOf g = p-1."
+    }
+  ],
+  "conclusion": {
+    "summary": "The prime factor testing criterion reduces finding a primitive root mod p from O(p) to O(k·log p) operations, where k = #{prime factors of p-1}. Formalized as isGenerator_iff_prime_factor_test with 0 sorries, 0 axioms.",
+    "implications": "This criterion is the foundation for: (1) efficient discrete logarithm algorithm preprocessing; (2) Diffie-Hellman parameter generation; (3) generating safe primes where p-1 = 2q (q prime) — then only one test suffices; (4) the Adleman-Manders-Miller algorithm for computing discrete logs.",
+    "openQuestions": [
+      "Can we compute an explicit generator for any given prime p in Lean using native_decide? For p ≤ 100, the smallest primitive root can be found by native_decide on orderOf.",
+      "Can we prove Gauss's full characterization: primitive roots exist modulo n iff n = 1, 2, 4, p^k, or 2p^k? The ring-of-integers case is more complex."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem (subgroup order divides group order) guarantees that every element of $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ satisfies $g^{p-1} = 1$ — this is Fermat's little theorem and the starting point of the testing criterion. Without Lagrange, the prime factor test's base case ($g^{p-1} = 1$) would need a separate proof."
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "The number of primitive roots mod $p$ is exactly $\\varphi(p-1)$ — the Euler totient of $p-1$. The density $\\varphi(p-1)/(p-1)$ governs how quickly random search finds a generator; the Mertens-type bound $\\varphi(n)/n \\geq C/\\log\\log n$ implies expected $O(\\log\\log p)$ trials."
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Primitive roots underpin the Legendre symbol: if $g$ is a generator of $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ and $a = g^k$, then $(a/p) = 1$ iff $k$ is even — this is Euler's criterion $(a/p) = a^{(p-1)/2}$ translated into the cyclic group language. The prime factor testing criterion here gives an efficient way to find the $g$ that makes this characterization effective."
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "extends",
+      "description": "Parent: existence and count of primitive roots (φ(p-1) generators) — this file addresses how to find them"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "PrimitiveRootsOQ02",
+    "lineCount": 224,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "mainTheorems": [
+      {
+        "name": "orderOf_eq_of_prime_factor_test",
+        "type": "key",
+        "description": "General lemma: orderOf g = n iff g^n = 1 and g^(n/q) ≠ 1 for all primes q | n",
+        "leanType": "[Group G] [Fintype G] → 0 < n → g^n = 1 → (∀ q prime, q ∣ n → g^(n/q) ≠ 1) → orderOf g = n"
+      },
+      {
+        "name": "isGenerator_iff_prime_factor_test",
+        "type": "core",
+        "description": "Prime factor testing criterion for primitive roots",
+        "leanType": "(g : (ZMod p)ˣ) → IsGenerator g ↔ ∀ q prime, q ∣ p-1 → g^((p-1)/q) ≠ 1"
+      },
+      {
+        "name": "exists_generator",
+        "type": "supporting",
+        "description": "Every prime p has at least one primitive root",
+        "leanType": "∃ g : (ZMod p)ˣ, IsGenerator g"
+      }
+    ],
+    "path": "Proofs/PrimitiveRootsOQ02.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "orderOf_eq_of_prime_factor_test",
+      "type": "key",
+      "description": "General: orderOf g = n iff g^n = 1 and g^(n/q) ≠ 1 for all primes q | n",
+      "leanType": "[Group G] [Fintype G] → 0 < n → g^n = 1 → (∀ q prime, q ∣ n → g^(n/q) ≠ 1) → orderOf g = n"
+    },
+    {
+      "name": "isGenerator_iff_prime_factor_test",
+      "type": "core",
+      "description": "Prime factor testing criterion for primitive roots mod p",
+      "leanType": "(g : (ZMod p)ˣ) → IsGenerator g ↔ ∀ q prime, q ∣ p-1 → g^((p-1)/q) ≠ 1"
+    },
+    {
+      "name": "isGenerator_iff_primeFactors_test",
+      "type": "key",
+      "description": "Equivalent criterion using Nat.primeFactors set",
+      "leanType": "(g : (ZMod p)ˣ) → IsGenerator g ↔ ∀ q ∈ primeFactors (p-1), g^((p-1)/q) ≠ 1"
+    },
+    {
+      "name": "exists_generator",
+      "type": "supporting",
+      "description": "Every prime p has at least one primitive root",
+      "leanType": "∃ g : (ZMod p)ˣ, IsGenerator g"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Gauss, Carl Friedrich",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Leipzig: G. Fleischer",
+      "note": "Article 57: primitive roots exist for every prime modulus; Article 89-92: complete characterization"
+    },
+    {
+      "authors": "Ireland, Kenneth; Rosen, Michael",
+      "title": "A Classical Introduction to Modern Number Theory",
+      "year": "1990",
+      "venue": "Springer GTM 84, 2nd edition",
+      "note": "Chapter 4: primitive roots and indices; Proposition 4.1.2 is the testing criterion"
+    },
+    {
+      "authors": "Shoup, Victor",
+      "title": "A Computational Introduction to Number Theory and Algebra",
+      "year": "2009",
+      "venue": "Cambridge University Press, 2nd edition",
+      "note": "Section 11.1: finding generators; the efficient testing criterion and its application to Diffie-Hellman"
+    }
+  ],
+  "sorries": 0
+}

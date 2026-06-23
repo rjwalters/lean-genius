@@ -1,0 +1,131 @@
+[
+  {
+    "id": "ann-e855-header",
+    "proofId": "erdos-855",
+    "range": {
+      "startLine": 1,
+      "endLine": 25
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #855: The Second Hardy-Littlewood Conjecture**\n\nIs π(x+y) ≤ π(x) + π(y) for large x and y? Erdős described this as 'an old conjecture of mine which was probably already stated by Hardy and Littlewood.' The conjecture is likely FALSE based on its incompatibility with the prime k-tuples conjecture (Hensley-Richards, 1973).",
+    "mathContext": "The conjecture asserts asymptotic subadditivity of the prime counting function. If true, it would mean that the primes in [1, x+y] are never more numerous than those in [1, x] and [1, y] combined.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime-counting-function",
+      "hardy-littlewood-conjectures",
+      "prime-k-tuples"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e855-primepi",
+    "proofId": "erdos-855",
+    "range": {
+      "startLine": 37,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "Prime Counting Function π(n)",
+    "content": "**primePi(n)** counts the number of primes p with 1 ≤ p ≤ n. This is the fundamental object in the conjecture.\n\nKey properties axiomatized:\n- **Monotonicity**: primePi is monotone increasing\n- **Prime Number Theorem**: π(n) ~ n/log(n) as n → ∞",
+    "mathContext": "Defined as the cardinality of {p ∈ [1,n] : p prime} using Finset.filter and Finset.Icc.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime-number-theorem",
+      "analytic-number-theory"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e855-conjecture",
+    "proofId": "erdos-855",
+    "range": {
+      "startLine": 62,
+      "endLine": 71
+    },
+    "type": "definition",
+    "title": "The Second Hardy-Littlewood Conjecture",
+    "content": "**SecondHardyLittlewoodConjecture**: For all sufficiently large x and y, π(x+y) ≤ π(x) + π(y).\n\nThis asserts that the prime counting function is 'subadditive' for large arguments. Intuitively, the interval [1, x+y] should never have more primes than [1, x] and [1, y] combined.",
+    "mathContext": "Formalized as: ∃ N₀, ∀ x y ≥ N₀, primePi(x+y) ≤ primePi(x) + primePi(y).",
+    "significance": "key",
+    "relatedConcepts": [
+      "subadditivity",
+      "prime-distribution"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e855-admissible",
+    "proofId": "erdos-855",
+    "range": {
+      "startLine": 77,
+      "endLine": 93
+    },
+    "type": "definition",
+    "title": "Admissible Tuples and k-Tuples Conjecture",
+    "content": "**IsAdmissibleTuple(H)**: A finite set H of natural numbers is admissible if for every prime p, the residues of H mod p do not cover all residue classes.\n\n**PrimeKTuplesConjecture**: For any admissible tuple H, there are infinitely many n such that n + h is prime for all h ∈ H. This is widely believed to be true and is the key conjecture that conflicts with the Second Hardy-Littlewood.",
+    "mathContext": "The admissibility condition prevents trivial obstructions: if H covered all residues mod p, then some n + h would always be divisible by p.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sieve-theory",
+      "prime-patterns",
+      "twin-prime-conjecture"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e855-incompatibility",
+    "proofId": "erdos-855",
+    "range": {
+      "startLine": 95,
+      "endLine": 131
+    },
+    "type": "concept",
+    "title": "Hensley-Richards Incompatibility (1973)",
+    "content": "**hensley_richards_incompatibility**: The k-tuples conjecture implies ¬SecondHardyLittlewoodConjecture.\n\nThe key insight is that admissible tuples can be denser than the primes: **dense_admissible_tuples_exist** shows that for large k, there exist admissible k-tuples in [0,k) with more than π(k) elements.\n\nThe **quantitative version** shows the violation can be substantial: under k-tuples, π(x+y) > π(x) + π(y) + (log 2/2) · y/(log y)² for infinitely many x.",
+    "mathContext": "If an admissible H ⊂ [0,k) has |H| > π(k) elements, and k-tuples guarantees n where all n+h are prime, then π(n+k) ≥ π(n) + |H| > π(n) + π(k).",
+    "significance": "key",
+    "relatedConcepts": [
+      "sieve-theory",
+      "prime-gaps",
+      "extremal-combinatorics"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e855-unconditional",
+    "proofId": "erdos-855",
+    "range": {
+      "startLine": 133,
+      "endLine": 153
+    },
+    "type": "concept",
+    "title": "Unconditional Results",
+    "content": "**montgomery_vaughan_bound**: Unconditionally, π(x+y) ≤ π(x) + 2y/log(y). This is weaker than the conjecture's π(x) + π(y) but requires no unproved hypothesis.\n\n**primePi_add_ge**: The trivial lower bound π(x+y) ≥ π(x) holds by monotonicity. This is the only fully proved result in the file (using primePi_monotone).",
+    "mathContext": "The Montgomery-Vaughan bound uses the large sieve inequality. The factor of 2 is the best known constant.",
+    "significance": "key",
+    "relatedConcepts": [
+      "large-sieve",
+      "brun-titchmarsh"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e855-related",
+    "proofId": "erdos-855",
+    "range": {
+      "startLine": 155,
+      "endLine": 172
+    },
+    "type": "definition",
+    "title": "Related Conjectures",
+    "content": "**StrausConjecture**: π(x+y) ≤ π(x) + 2π(y/2). Straus suggested this as a potential 'correct' formulation, but it is also incompatible with k-tuples.\n\n**ErdosWeakerConjecture**: π(x+y) ≤ π(x) + π(y) + O(y/(log y)²). This weaker form allows an error term and may be consistent with k-tuples. If true, the Second Hardy-Littlewood fails by at most O(y/(log y)²).",
+    "mathContext": "The weaker conjecture suggests that even if π is not subadditive, the violation is bounded by a secondary term from the prime number theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "error-terms",
+      "prime-number-theorem"
+    ],
+    "prerequisites": []
+  }
+]

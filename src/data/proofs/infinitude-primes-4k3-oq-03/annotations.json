@@ -1,0 +1,308 @@
+[
+  {
+    "id": "imports",
+    "proofId": "infinitude-primes-4k3-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 8
+    },
+    "type": "concept",
+    "title": "Imports: Inheriting Two Completed Proofs",
+    "content": "This file imports both InfinitudePrimes4k3 and InfinitudePrimes4k1 — the two sibling proofs that establish infinitely many primes ≡ 3 and ≡ 1 (mod 4) respectively. The OQ-03 file acts as an integration layer: all four theorems here are either direct delegations or conjunctions of results from these two files. Nat.NumberTheory.SumTwoSquares provides Euler's criterion (Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one), which is the key Mathlib theorem underlying InfinitudePrimes4k1's proof that primes dividing k² + 1 must be ≡ 1 (mod 4).",
+    "mathContext": "The dependency graph: OQ-03 imports Primes4k1 (proves $\\{p \\mid p\\equiv 1\\pmod 4\\}$ infinite) and Primes4k3 (proves $\\{p \\mid p\\equiv 3\\pmod 4\\}$ infinite). Both lean on `Mathlib.NumberTheory.SumTwoSquares` for Euler's criterion: $\\left(\\frac{-1}{p}\\right)=1 \\Leftrightarrow p\\equiv 1\\pmod 4$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lean 4 imports",
+      "module composition",
+      "Mathlib.NumberTheory.SumTwoSquares",
+      "Euler's criterion"
+    ],
+    "prerequisites": [
+      "InfinitudePrimes4k1",
+      "InfinitudePrimes4k3",
+      "Lean 4 import system"
+    ]
+  },
+  {
+    "id": "oq-answer",
+    "proofId": "infinitude-primes-4k3-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 25
+    },
+    "type": "concept",
+    "title": "Answering OQ-03: Elementary ≡ 1 (mod 4) Proof",
+    "content": "OQ-03 from infinitude-primes-4k3 asks whether the Euclid-style argument for ≡ 3 (mod 4) can be adapted to ≡ 1 (mod 4). The answer is yes, but the construction differs: instead of N = 4(n+1)! − 1, we use N = (2(n+1)!)² + 1. The ≡ 3 proof exploits that products of residues ≡ 1 (mod 4) stay ≡ 1, forcing a prime factor ≡ 3. For ≡ 1, the key is that any prime p dividing k² + 1 must have −1 as a quadratic residue mod p, which by Euler's criterion forces p ≡ 1 (mod 4). This difference (elementary product argument vs. quadratic residue theory) is what makes the ≡ 1 case slightly deeper.",
+    "mathContext": "For $N = (2(n+1)!)^2 + 1$: any odd prime $p \\mid N$ satisfies $(2(n+1)!)^2 \\equiv -1 \\pmod p$, so $\\left(\\frac{-1}{p}\\right) = 1$. Euler's criterion: $\\left(\\frac{-1}{p}\\right) = (-1)^{(p-1)/2}$, which equals 1 iff $p \\equiv 1 \\pmod 4$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler's criterion",
+      "quadratic residues",
+      "Legendre symbol",
+      "Euclid's proof of infinitely many primes",
+      "Fermat's theorem on sums of two squares",
+      "quadratic reciprocity"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "quadratic reciprocity basics",
+      "Nat.Prime",
+      "Legendre symbol definition"
+    ]
+  },
+  {
+    "id": "comparison-table",
+    "proofId": "infinitude-primes-4k3-oq-03",
+    "range": {
+      "startLine": 26,
+      "endLine": 52
+    },
+    "type": "concept",
+    "title": "Two Parallel Constructions: ≡ 3 vs ≡ 1 (mod 4)",
+    "content": "The module comment compares both constructions side-by-side and states the complete classification. For ≡ 3: N = 4(n+1)! − 1 is ≡ 3 (mod 4), and since a product of ≡ 1 numbers is ≡ 1, N must have a prime factor ≡ 3 (mod 4). For ≡ 1: N = (2(n+1)!)² + 1 has an odd prime factor p, and since p | k² + 1, we have −1 ≡ k² (mod p), so −1 is a QR mod p, forcing p ≡ 1 (mod 4). In both cases, the new prime p > n follows by the same contradiction argument. The complete picture: together InfinitudePrimes4k3 and InfinitudePrimes4k1 classify all odd primes mod 4 — both classes are infinite, every odd prime belongs to exactly one, and 2 is the unique even prime.",
+    "mathContext": "\\begin{array}{l|l|l} & p \\equiv 3 \\pmod 4 & p \\equiv 1 \\pmod 4 \\\\ \\hline N & 4(n+1)!-1 & (2(n+1)!)^2+1 \\\\ \\text{Key lemma} & \\prod_{p_i\\equiv 1} \\equiv 1 & (-1/p)=1 \\Rightarrow p\\equiv 1 \\\\ \\text{p > n} & p\\mid (n+1)! \\Rightarrow p\\mid 1 & \\text{same} \\end{array}",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Euclid's argument",
+      "Dirichlet's theorem",
+      "arithmetic progressions",
+      "product of residues"
+    ],
+    "prerequisites": [
+      "mod 4 arithmetic",
+      "Nat.dvd_factorial",
+      "prime factorization"
+    ]
+  },
+  {
+    "id": "euler-criterion-cyclic-group",
+    "proofId": "infinitude-primes-4k3-oq-03",
+    "range": {
+      "startLine": 55,
+      "endLine": 66
+    },
+    "type": "insight",
+    "title": "Why Euler's Criterion Holds: Cyclicity of (ℤ/pℤ)×",
+    "content": "The underlying reason Euler's criterion forces $p \\equiv 1 \\pmod 4$ when $-1$ is a square mod $p$ is purely group-theoretic: $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ is cyclic of order $p - 1$ (Fermat's little theorem + primitive-root existence). If $k^2 \\equiv -1 \\pmod p$ then $k$ has order exactly $4$ in this group — $k^4 = (k^2)^2 = (-1)^2 = 1$, but $k^2 = -1 \\neq 1$ and $k$ itself is not $\\pm 1$. By Lagrange's theorem applied to the cyclic group, $4 \\mid p - 1$, i.e. $p \\equiv 1 \\pmod 4$. The Mathlib lemma `Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one` packages this argument; this annotation surfaces *why* the criterion is true, not just *that* it is used. The same reasoning extends to higher cyclotomic cases: $-1$ is an $n$-th power mod $p$ iff $2n \\mid p - 1$, which is the elementary input for primes ≡ 1 (mod 2n).",
+    "mathContext": "Group-theoretic core: $|\\mathrm{ord}_p(k)|$ divides $|(\\mathbb{Z}/p\\mathbb{Z})^\\times| = p - 1$. If $k^2 = -1$ in $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ then $\\mathrm{ord}_p(k) = 4$, so $4 \\mid p - 1$, i.e. $p \\equiv 1 \\pmod 4$. Compactly: $\\left(\\frac{-1}{p}\\right) = 1 \\iff 4 \\mid p - 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cyclic group",
+      "order of element",
+      "Lagrange's theorem",
+      "Fermat's little theorem",
+      "primitive root mod p",
+      "multiplicative group of finite field"
+    ],
+    "prerequisites": [
+      "(ℤ/pℤ)× is cyclic of order p−1",
+      "Lagrange's theorem (subgroup order divides group order)",
+      "order of an element in a cyclic group"
+    ]
+  },
+  {
+    "id": "main-theorem",
+    "proofId": "infinitude-primes-4k3-oq-03",
+    "range": {
+      "startLine": 55,
+      "endLine": 66
+    },
+    "type": "insight",
+    "title": "infinitely_many_primes_1_mod_4 — Delegation Pattern",
+    "content": "The main theorem is a one-line delegation to InfinitudePrimes4k1.infinitely_many_primes_1_mod_4. This is the correct design: the actual proof lives in InfinitudePrimes4k1.lean, which is imported here. The OQ-03 file serves as a wrapper that packages the result in the context of the parent proof's open question. The Lean proof term is simply an identifier — no tactics needed — making it maximally transparent. The InfinitudePrimes4k1 proof internally uses Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one from Mathlib's SumTwoSquares module to apply Euler's criterion.",
+    "mathContext": "\\forall n \\in \\mathbb{N},\\; \\exists p \\text{ prime},\\; p > n \\wedge p \\equiv 1 \\pmod 4. \\text{ Proof: take } N = (2(n+1)!)^2+1, \\text{ find odd prime } p \\mid N, \\text{ then } p \\equiv 1 \\pmod 4 \\text{ by Euler's criterion, and } p > n \\text{ by divisibility contradiction.}",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler's criterion",
+      "SumTwoSquares",
+      "Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one",
+      "proof delegation",
+      "Fermat's theorem on sums of two squares",
+      "Gaussian integers"
+    ],
+    "prerequisites": [
+      "InfinitudePrimes4k1",
+      "Mathlib.NumberTheory.SumTwoSquares",
+      "quadratic residues"
+    ]
+  },
+  {
+    "id": "classification-theorem",
+    "proofId": "infinitude-primes-4k3-oq-03",
+    "range": {
+      "startLine": 68,
+      "endLine": 82
+    },
+    "type": "insight",
+    "title": "Both Classes Infinite and Complete mod-4 Classification",
+    "content": "Two theorems complete the mod-4 picture. both_classes_infinite packages the conjunction of InfinitudePrimes4k1.primes_1_mod_4_infinite and InfinitudePrimes4k3.primes_3_mod_4_infinite — both residue classes {p prime | p ≡ 1 mod 4} and {p prime | p ≡ 3 mod 4} are Set.Infinite. odd_prime_mod_four_classification delegates to prime_mod_four from InfinitudePrimes4k3: every odd prime satisfies p % 4 ∈ {1, 3} since p odd means p % 2 = 1, forcing p % 4 ∈ {1, 3}. Together these give the complete elementary classification of primes by residue mod 4 — all without Dirichlet L-functions.",
+    "mathContext": "Every prime $p$ belongs to exactly one of: $\\{2\\}$, $\\{p: p\\equiv 1\\pmod 4\\}$, $\\{p: p\\equiv 3\\pmod 4\\}$. Together: $\\{\\text{primes}\\} = \\{2\\} \\cup \\{p: 4\\mid p-1\\} \\cup \\{p: 4\\mid p-3\\}$ — a complete partition, the mod-4 special case of Dirichlet's theorem proved elementarily.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Dirichlet's theorem",
+      "arithmetic progressions",
+      "Set.Infinite",
+      "modular arithmetic classification"
+    ],
+    "prerequisites": [
+      "InfinitudePrimes4k3",
+      "InfinitudePrimes4k1",
+      "Set.Infinite API"
+    ]
+  },
+  {
+    "id": "constructions-cover",
+    "proofId": "infinitude-primes-4k3-oq-03",
+    "range": {
+      "startLine": 84,
+      "endLine": 103
+    },
+    "type": "concept",
+    "title": "constructions_cover_all_odd_primes: rcases Pattern for Classification",
+    "content": "The final theorem constructions_cover_all_odd_primes is the most structurally interesting: given any odd prime p, it exhibits a witness showing p lies in an infinite family. The proof uses `rcases InfinitudePrimes4k3.prime_mod_four hp hp2 with h1 | h3` to split on whether p ≡ 1 or p ≡ 3 (mod 4), then `refine ⟨h1, 0, p, hp, hp.two_le, h1, rfl⟩` to provide the witness n=0 (any n works since p > n=0 is p.two_le ≥ 2 > 0). The statement uses a disjunctive type `A ∨ B` with existential witnesses, which is idiomatic Lean for 'the prime belongs to one of two infinite families, and here is the witness'. This pattern shows both sets are covering families, not just abstract infinite sets.",
+    "mathContext": "$\\forall p$ prime, $p \\neq 2$: $(p\\%4=1 \\wedge \\exists n,q:q>n \\wedge q\\%4=1 \\wedge q=p) \\vee (p\\%4=3 \\wedge \\exists n,q:q>n \\wedge q\\%4=3 \\wedge q=p)$. Witness: $n=0$, $q=p$; valid since $p \\geq 2 > 0 = n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "rcases tactic",
+      "refine with anonymous constructor",
+      "disjunctive types",
+      "existential witness"
+    ],
+    "prerequisites": [
+      "odd_prime_mod_four_classification",
+      "InfinitudePrimes4k3.prime_mod_four",
+      "Lean 4 rcases pattern matching"
+    ]
+  },
+  {
+    "id": "cyclotomic-pattern",
+    "proofId": "infinitude-primes-4k3-oq-03",
+    "range": {
+      "startLine": 24,
+      "endLine": 33
+    },
+    "type": "insight",
+    "title": "Why x² + 1 Works: The Cyclotomic Pattern",
+    "content": "The construction $N = (2(n+1)!)^2 + 1$ in the 1 (mod 4) case is not arbitrary — it instantiates a general pattern from cyclotomic polynomials. The polynomial $f(x) = x^2 + 1$ is exactly the **4th cyclotomic polynomial** $\\Phi_4(x)$. The key fact: if a prime $p \\nmid n$ divides $\\Phi_n(k)$ for some integer $k$, then the order of $k$ mod $p$ is exactly $n$, so by Lagrange's theorem $n \\mid p - 1$, i.e. $p \\equiv 1 \\pmod n$. For $n = 4$: primes dividing $k^2 + 1$ have $k$ of order 4 mod $p$, hence $4 \\mid p - 1$ — exactly Euler's criterion. This generalizes to every class $\\equiv 1 \\pmod n$ (Bang 1886, Wendt 1895): take $f(x) = \\Phi_n(x)$, apply Euclid's argument with the factorial-multiplied input. The classes $\\not\\equiv 1 \\pmod n$ are genuinely harder — for $n = 4$ the second class $\\equiv 3$ admits an ad hoc product argument (its parent file `infinitude-primes-4k3`), but for $n = 5$ only $a = 1, 4$ have Euclid-style proofs (Murty's criterion: $a^2 \\equiv 1 \\pmod n$).",
+    "mathContext": "$\\Phi_n(x)$ = $n$-th cyclotomic polynomial = $\\prod_{\\gcd(k,n)=1, 1 \\leq k \\leq n} (x - e^{2\\pi i k/n})$. For $n = 4$: $\\Phi_4(x) = x^2 + 1$. **Key lemma** (Wendt): $p \\nmid n$ and $p \\mid \\Phi_n(k)$ for some $k$ $\\Rightarrow$ $\\mathrm{ord}_p(k) = n$ $\\Rightarrow$ $n \\mid p - 1$ $\\Rightarrow$ $p \\equiv 1 \\pmod n$. **Murty's criterion** for which $(a, d)$ admit Euclid-style proofs: $a^2 \\equiv 1 \\pmod d$. For $d = 4$: $a \\in \\{1, 3\\}$ (both work). For $d = 5$: $a \\in \\{1, 4\\}$ only.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cyclotomic polynomial",
+      "order of element mod p",
+      "Lagrange's theorem",
+      "Bang–Zsygmondy theorem",
+      "Murty's criterion for elementary AP infinitude",
+      "Wendt 1895"
+    ],
+    "prerequisites": [
+      "cyclotomic polynomials Φ_n",
+      "order of element in (ℤ/pℤ)×",
+      "Lagrange's theorem on subgroup orders"
+    ]
+  },
+  {
+    "id": "gaussian-integers-splitting",
+    "proofId": "infinitude-primes-4k3-oq-03",
+    "range": {
+      "startLine": 55,
+      "endLine": 66
+    },
+    "type": "insight",
+    "title": "Gaussian Integers: The Algebraic Shadow of the mod-4 Split",
+    "content": "The same mod-4 dichotomy proved elementarily here is, in algebraic number theory, the splitting behaviour of rational primes in the **Gaussian integers** $\\mathbb{Z}[i] = \\{a + bi : a, b \\in \\mathbb{Z}\\}$. Three exclusive cases govern every rational prime $p$:\n\n- **Split** ($p \\equiv 1 \\pmod 4$): $p = (a+bi)(a-bi)$ for unique $a, b$. Examples: $5 = (2+i)(2-i)$, $13 = (3+2i)(3-2i)$, $17 = (4+i)(4-i)$, $29 = (5+2i)(5-2i)$. The two Gaussian primes $a \\pm bi$ are conjugate and non-associate; $\\mathbb{Z}[i]/(p)$ is *not* a field, it decomposes as $\\mathbb{F}_p \\times \\mathbb{F}_p$.\n- **Inert** ($p \\equiv 3 \\pmod 4$): $p$ remains a Gaussian prime. Examples: $3, 7, 11, 19, 23, 31$. The quotient $\\mathbb{Z}[i]/(p) \\cong \\mathbb{F}_{p^2}$ is a degree-2 field extension.\n- **Ramified** ($p = 2$): $2 = -i(1+i)^2$ — the prime $1+i$ appears with multiplicity 2; $\\mathbb{Z}[i]/(2) \\cong \\mathbb{F}_2[\\epsilon]/\\epsilon^2$ is a non-reduced ring.\n\nThe link to the elementary proof: $p$ splits in $\\mathbb{Z}[i]$ ⟺ $X^2 + 1$ factors mod $p$ ⟺ $-1$ is a quadratic residue mod $p$ ⟺ $p \\equiv 1 \\pmod 4$ (Euler's criterion). The construction $N = (2(n+1)!)^2 + 1$ is exactly choosing $X = 2(n+1)!$ in $X^2 + 1$ and demanding a *split* prime factor. This is the simplest non-trivial example of the **Dedekind splitting principle**: in $\\mathcal{O}_K = \\mathbb{Z}[\\alpha]$ with $\\alpha$ root of minimal polynomial $f$, a rational prime $p \\nmid \\mathrm{disc}(f)$ splits according to the factorisation of $f$ mod $p$.",
+    "mathContext": "**Trichotomy in $\\mathbb{Z}[i]$**:\n- Split: $p \\equiv 1 \\pmod 4 \\Leftrightarrow p = \\pi \\bar{\\pi}$ with $\\pi, \\bar{\\pi}$ non-associate Gaussian primes.\n- Inert: $p \\equiv 3 \\pmod 4 \\Leftrightarrow p$ stays prime in $\\mathbb{Z}[i]$.\n- Ramified: $p = 2 = -i(1+i)^2$.\n\n**Dedekind-Kummer**: For $K = \\mathbb{Q}(i)$, $\\mathcal{O}_K = \\mathbb{Z}[i]$, minimal polynomial $f(X) = X^2 + 1$. Factor $f \\bmod p$:\n- $p \\equiv 1 \\pmod 4$: $X^2 + 1 \\equiv (X-k)(X+k) \\pmod p$ where $k^2 \\equiv -1$. ⟹ $p$ splits.\n- $p \\equiv 3 \\pmod 4$: $X^2 + 1$ stays irreducible mod $p$. ⟹ $p$ inert.\n- $p = 2$: $X^2 + 1 \\equiv (X+1)^2 \\pmod 2$. ⟹ ramified, $\\mathrm{disc} = -4$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gaussian integers ℤ[i]",
+      "splitting of primes in number fields",
+      "Dedekind-Kummer theorem",
+      "ramification and discriminant",
+      "Fermat's two-squares theorem",
+      "norm form a²+b²",
+      "Frobenius element"
+    ],
+    "prerequisites": [
+      "unique factorisation in ℤ[i]",
+      "splitting/inert/ramified terminology",
+      "minimal polynomial mod p",
+      "Euler's criterion for −1 as QR"
+    ]
+  },
+  {
+    "id": "boundary-of-elementary",
+    "proofId": "infinitude-primes-4k3-oq-03",
+    "range": {
+      "startLine": 84,
+      "endLine": 103
+    },
+    "type": "concept",
+    "title": "Boundary of Elementary Methods: Why mod 5 Is Already Hard",
+    "content": "The constructions_cover_all_odd_primes theorem encodes a remarkable fact: **the two infinite families in this file exhaust every odd prime**. This kind of complete covering is possible at modulus 4 but breaks down already at modulus 5. Of the four invertible classes $\\{1, 2, 3, 4\\} \\pmod 5$, only $a = 1$ and $a = 4$ satisfy Murty's criterion $a^2 \\equiv 1 \\pmod 5$ — these admit Euclid-style elementary proofs (using $\\Phi_5$ and $\\Phi_{10}$ respectively). For $a = 2, 3 \\pmod 5$, no Euclid-style polynomial construction is known. Selberg's 1949 elementary proof of Dirichlet's general theorem covers them but is technically as deep as the elementary proof of the prime number theorem (Selberg–Erdős 1949), not the textbook Euclid argument seen here. The same pattern persists for every modulus $d \\geq 5$: the classes with $a^2 \\equiv 1 \\pmod d$ — namely the elements of $(\\mathbb{Z}/d\\mathbb{Z})^\\times$ of order $\\leq 2$ — admit elementary proofs; the rest require either Dirichlet L-functions or Selberg's deep elementary methods.\n\nThe rcases-on-classification proof pattern used here (split on residue, supply witness in each branch) is therefore not a generic technique — it is specific to moduli with a small invertible group of involutions. For $d = 4$, $(\\mathbb{Z}/4\\mathbb{Z})^\\times = \\{1, 3\\}$ consists entirely of involutions ($1^2 = 1$, $3^2 = 9 \\equiv 1$), so both classes qualify. For $d = 8$, $(\\mathbb{Z}/8\\mathbb{Z})^\\times = \\{1, 3, 5, 7\\}$ — all four square to 1, so all four classes have elementary infinitude proofs. For $d = 12$ similarly. For $d = p$ an odd prime, only $\\{1, p-1\\}$ are involutions, so only two of $p - 1$ classes admit elementary proofs.",
+    "mathContext": "**Murty's criterion (1988)**: A class $a \\pmod d$ admits a Euclid-style elementary infinitude proof iff $a^2 \\equiv 1 \\pmod d$. Equivalently, $a$ is an involution in $(\\mathbb{Z}/d\\mathbb{Z})^\\times$. The number of qualifying classes is $|\\{x \\in (\\mathbb{Z}/d\\mathbb{Z})^\\times : x^2 = 1\\}|$, computable via CRT from the 2-torsion of each $(\\mathbb{Z}/p^k\\mathbb{Z})^\\times$ factor (size $2$ for odd prime power, sizes $1, 2, 4$ for $2^1, 2^2, 2^{k \\geq 3}$).\n\n**Examples**:\n- $d = 4$: 2 of 2 invertible classes elementary ($a = 1, 3$). Coverage: **complete**.\n- $d = 5$: 2 of 4 elementary ($a = 1, 4$). Coverage: half.\n- $d = 8$: 4 of 4 elementary ($a = 1, 3, 5, 7$). Coverage: **complete**.\n- $d = 12$: 4 of 4 elementary. Coverage: **complete**.\n- $d = 7$: 2 of 6 elementary ($a = 1, 6$). Coverage: 1/3.\n- $d = 11$: 2 of 10 elementary ($a = 1, 10$). Coverage: 1/5.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Murty's criterion",
+      "Dirichlet's theorem",
+      "Selberg-Erdős elementary methods",
+      "Bang–Zsygmondy theorem",
+      "cyclotomic polynomial Φ_n",
+      "involutions in (ℤ/dℤ)×",
+      "boundary of elementary number theory"
+    ],
+    "prerequisites": [
+      "structure of (ℤ/dℤ)× as abelian group",
+      "involutions and order-2 elements",
+      "cyclotomic polynomial framework",
+      "Dirichlet's theorem statement"
+    ]
+  },
+  {
+    "id": "integration-layer-pattern",
+    "proofId": "infinitude-primes-4k3-oq-03",
+    "range": {
+      "startLine": 47,
+      "endLine": 53
+    },
+    "type": "insight",
+    "title": "Integration-Layer File: A Reusable Gallery Pattern",
+    "content": "The `namespace InfinitudePrimes4k3OQ03` plus PART I divider establishes this file's role: it is an **integration-layer wrapper**, not a fresh proof. All four theorems are either re-exports (proof term = single identifier from a sibling) or trivial conjunctions of sibling results. No new mathematics happens after the namespace — the file's value is in *packaging* and *naming*: it gives the answer to a specific open question (OQ-03) a stable, citable proof-term name in a dedicated namespace, separate from the sibling files that did the heavy lifting. This is a reusable design pattern for any gallery entry whose answer is assembled from results that already exist in two or more sibling files: write a thin wrapper rather than duplicating proof bodies or forcing one sibling to absorb the other's API. The proof DAG stays clean (parents → siblings → integration wrapper) and each sibling file remains focused on its own construction. Lean's namespace mechanism makes the wrapper essentially zero-cost: imports add no proof terms, and re-exports are checked once at elaboration time.",
+    "mathContext": "Wrapper file structure: `import P_1; import P_2; namespace W; theorem t_i := P_{j(i)}.t_i (or trivial combination)`. No new axioms, no new sorries, no new tactics. The file's contribution is **semantic**: naming, namespace organization, and OQ-attribution at the gallery level. Cost model: $|W| = O(1)$ proof terms relative to $|P_1| + |P_2|$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "integration-layer design pattern",
+      "Lean namespace organization",
+      "proof DAG composition",
+      "gallery wrapper files",
+      "open question attribution",
+      "re-export pattern"
+    ],
+    "prerequisites": [
+      "Lean 4 namespace and import system",
+      "InfinitudePrimes4k1 and InfinitudePrimes4k3 (the imported siblings)"
+    ]
+  },
+  {
+    "id": "set-infinite-api",
+    "proofId": "infinitude-primes-4k3-oq-03",
+    "range": {
+      "startLine": 72,
+      "endLine": 76
+    },
+    "type": "concept",
+    "title": "Set.Infinite: The Lean 4 / Mathlib API for Infinite Sets",
+    "content": "In Mathlib, `Set.Infinite S` is the proposition that a set S is not finite — equivalently, for every n, S contains more than n elements. It is weaker than `S ≃ ℕ` (countably infinite) and avoids issues with choice axioms. The proof of `both_classes_infinite` is a conjunction of two Set.Infinite propositions, combined with angle brackets `⟨.., ..⟩`. The two witnesses come directly from the sibling proofs: InfinitudePrimes4k1.primes_1_mod_4_infinite and InfinitudePrimes4k3.primes_3_mod_4_infinite.",
+    "mathContext": "`Set.Infinite S` ↔ `¬ S.Finite` ↔ `∀ n, ∃ T ⊆ S, T.card ≥ n`. Mathlib's primes_1_mod_4_infinite and primes_3_mod_4_infinite establish this via `Set.infinite_of_injective_forall_mem` or similar: the sequence of witness primes $p_n > n$ gives an injective embedding $\\mathbb{N} \\to S$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Set.Infinite",
+      "Set.Finite",
+      "Mathlib set theory API",
+      "cardinality vs infinitude"
+    ],
+    "prerequisites": [
+      "Lean 4 Set type",
+      "Set.Infinite vs Set.Finite in Mathlib",
+      "conjunction introduction ⟨.., ..⟩"
+    ]
+  }
+]

@@ -1,0 +1,185 @@
+{
+  "id": "erdos-1156",
+  "title": "Erdos Problem #1156: Chromatic Number Concentration in Random Graphs",
+  "slug": "erdos-1156",
+  "description": "Does the chromatic number of the random graph G(n, 1/2) concentrate on a bounded number of values? Heckel (2021) showed concentration on two consecutive values for at least half of all n, but the general case remains open.",
+  "meta": {
+    "author": "Erdos",
+    "sourceUrl": "https://erdosproblems.com/1156",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1156Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "random-graphs",
+      "chromatic-number",
+      "concentration-inequalities",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1156,
+    "erdosUrl": "https://erdosproblems.com/1156",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-04-22",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type and adjacency",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Filter.Basic",
+        "description": "Filter infrastructure for asymptotic statements",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsKColorable' predicate: proper k-coloring via Fin k",
+      "chromaticNumber' definition: minimum colors for proper vertex coloring",
+      "erdosRenyi axiom: random graph model G(n, 1/2)",
+      "chromaticNumberRV axiom: chromatic number as random variable",
+      "erdos_1156_q1_conjecture axiom: constant concentration conjecture",
+      "erdos_1156_q2_conjecture theorem: anti-concentration (trivially proved placeholder)",
+      "isKColorable_card theorem: n-colorability of n-vertex graphs",
+      "isKColorable_zero_iff theorem: 0-colorable iff edgeless"
+    ],
+    "axiomCount": 3,
+    "lineCount": 124,
+    "assumptions": "3 axioms: erdosRenyi (random graph model), chromaticNumberRV (measurability), erdos_1156_q1_conjecture (open conjecture). 0 sorries.",
+    "theoremCount": 3,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #1156: A 35-Year Journey Toward Constant Concentration**\n\nThe chromatic number $\\chi(G)$ of the Erdős–Rényi random graph $G(n, 1/2)$ has been a central subject in probabilistic combinatorics since the 1970s.\n\n**Bollobás (1988)** proved the asymptotic formula $\\chi(G(n,1/2)) \\sim n/(2\\log_2 n)$ almost surely — establishing that the chromatic number grows, but sublinearly. His proof used the second moment method and the observation that dense subgraphs dominate the coloring barrier.\n\n**Shamir–Spencer (1987)** showed $\\chi$ concentrates within $O(n^{1/2})$ values using the martingale method: the Azuma–Hoeffding inequality applied to a vertex exposure martingale (revealing vertices one at a time) gives $|\\chi - \\mathbb{E}[\\chi]| = O(n^{1/2})$ with high probability.\n\n**Alon–Krivelevich (1997)** tightened this to $O(n^{1/2}/\\log n)$ using a more careful analysis of 'color-critical' subgraphs and the structure of the chromatic number near its expectation.\n\n**Heckel (2021)** achieved the breakthrough result: for at least half of all $n$, $\\chi(G(n,1/2))$ concentrates on just *two consecutive values* — meaning $C = 1$ suffices for a density-1 subsequence of $n$. Her proof exploited the 'jumping' behavior of the chromatic number as $n$ increases, related to changes in the structure of extremal color-critical subgraphs.\n\n**Status (2026):** The general conjecture ($C = O(1)$ for ALL $n$) remains open. The gap between Alon–Krivelevich's $O(n^{1/2}/\\log n)$ and the conjectured $O(1)$ is a polynomial factor, with no conditional results known.",
+    "problemStatement": "**Question 1 (Constant concentration):**\nDoes there exist a constant C such that chi(G(n, 1/2)) is almost surely concentrated within at most C values?\n\n**Question 2 (Anti-concentration):**\nFor any slowly growing omega(n) -> infinity, does there exist f(n) such that Pr[|chi(G) - f(n)| < omega(n)] < 1/2 for all sufficiently large n?\n\nQuestion 1 remains the central open problem. Question 2 is stated as a placeholder (the measure-theoretic formalization would require MeasureTheory).",
+    "text": "Does there exist a constant C such that the chromatic number of G(n, 1/2) is almost surely concentrated within at most C values?",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Chromatic Number:** Self-contained definition via IsKColorable' and chromaticNumber' (minimum k for proper k-coloring)\n\n2. **Random Graph Model:** Axiomatized via erdosRenyi type and chromaticNumberRV (no MeasureTheory infrastructure in Mathlib for graph probability spaces)\n\n3. **Question 1:** Axiomatized as erdos_1156_q1_conjecture -- existence of constant C bounding concentration width\n\n4. **Question 2:** Proved trivially (placeholder body is True) -- proper formalization needs measure theory\n\n5. **Basic Facts:** Proved isKColorable_card (every n-vertex graph is n-colorable) and isKColorable_zero_iff (0-colorable iff edgeless)",
+    "keyInsights": [
+      "**Bollobas Asymptotic:** chi(G(n,1/2)) ~ n/(2 log_2 n) a.s. -- the chromatic number grows, but slowly relative to n",
+      "**Concentration Gap:** Best known upper bound is O(n^{1/2}/log n) values, but the conjecture is O(1) -- a polynomial gap",
+      "**Heckel's Breakthrough:** For at least half of all n, chi concentrates on just TWO consecutive values",
+      "**Infrastructure Gap:** Full formalization requires random graph probability spaces not yet in Mathlib",
+      "**Two Questions:** Q1 asks for constant concentration (open), Q2 asks about anti-concentration (weaker, also open in full generality)"
+    ],
+    "prerequisites": [
+      "Graph theory (chromatic number, graph coloring)",
+      "Probability theory (random graphs, concentration inequalities)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Namespace",
+      "summary": "Imports SimpleGraph for graph structure, Filter.Basic for asymptotic limits. Opens SimpleGraph namespace. MeasureTheory is intentionally absent — the random graph model is axiomatized because G(n,1/2) as a probability measure on SimpleGraph(Fin n) is not yet in Mathlib.",
+      "startLine": 48,
+      "endLine": 53,
+      "mathContext": "`SimpleGraph V` provides the adjacency structure; `Filter.atTop` provides the $n \\to \\infty$ limit for concentration statements."
+    },
+    {
+      "id": "chromatic-number",
+      "title": "Chromatic Number Definition",
+      "summary": "Self-contained definitions of k-colorability and chromatic number",
+      "startLine": 55,
+      "endLine": 65,
+      "mathContext": "IsKColorable' and chromaticNumber' definitions using Fin k colorings"
+    },
+    {
+      "id": "random-graph-model",
+      "title": "Random Graph Model (Axiomatized)",
+      "summary": "Axioms for the Erdos-Renyi random graph G(n, 1/2) and measurability of chromatic number",
+      "startLine": 67,
+      "endLine": 79,
+      "mathContext": "erdosRenyi type axiom and chromaticNumberRV axiom"
+    },
+    {
+      "id": "basic-facts",
+      "title": "Basic Coloring Facts",
+      "summary": "Proved: every n-vertex graph is n-colorable; 0-colorable iff edgeless",
+      "startLine": 81,
+      "endLine": 96,
+      "mathContext": "isKColorable_card and isKColorable_zero_iff theorems"
+    },
+    {
+      "id": "q1-conjecture",
+      "title": "Question 1: Constant Concentration (Open)",
+      "summary": "The main open conjecture: chi(G(n,1/2)) concentrates within O(1) values",
+      "startLine": 98,
+      "endLine": 114,
+      "mathContext": "erdos_1156_q1_conjecture axiom: existence of constant C for concentration"
+    },
+    {
+      "id": "q2-placeholder",
+      "title": "Question 2: Anti-Concentration (Placeholder)",
+      "summary": "Trivially proved placeholder for the anti-concentration question",
+      "startLine": 116,
+      "endLine": 124,
+      "mathContext": "erdos_1156_q2_conjecture theorem (body is True, proved trivially)"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdos Problem #1156 asks whether the chromatic number of G(n, 1/2) concentrates on a bounded number of values. Despite major progress (Shamir-Spencer, Alon-Krivelevich, Heckel), the conjecture remains open. The formalization axiomatizes the random graph model and states both the constant concentration conjecture (Q1) and the anti-concentration question (Q2).",
+    "implications": "**Significance in Random Graph Theory**\n\n1. **Central Open Problem:** One of the most important questions about random graph colorings\n\n2. **Concentration Phenomena:** Connects to broader themes of concentration of measure in probability\n\n3. **Heckel's Result:** The 2021 breakthrough showing two-value concentration for half of n suggests the conjecture may be true\n\n4. **Infrastructure Gap:** Full formalization awaits development of random graph probability spaces in Mathlib",
+    "openQuestions": [
+      "Does chi(G(n,1/2)) concentrate on O(1) values for ALL n (not just half)?",
+      "What is the optimal concentration width -- is it exactly 2?",
+      "Can the Alon-Krivelevich O(n^{1/2}/log n) bound be improved substantially?",
+      "Does the concentration behavior change for G(n, p) with p != 1/2?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Order.Filter.Basic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "",
+    "lineCount": 124,
+    "axiomCount": 3,
+    "theoremCount": 3,
+    "definitionCount": 2,
+    "path": "Proofs/Erdos1156Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "related",
+      "description": "The four-color theorem bounds chi(G) ≤ 4 for planar graphs — an extreme concentration result (in one specific graph class). Erdős #1156 asks about concentration for random dense graphs where chi(G) ≈ n/(2 log n) >> 4."
+    },
+    {
+      "targetId": "prob-method-second-moment",
+      "relationship": "related",
+      "description": "The second moment method (Shamir-Spencer 1987) is the key technique yielding O(n^{1/2}) concentration for chi(G(n,1/2)). This gallery entry formalizes the method; Erdős #1156 is its outstanding open application."
+    },
+    {
+      "targetId": "lovasz-local-lemma",
+      "relationship": "related",
+      "description": "The Lovász Local Lemma is a powerful tool for graph coloring lower bounds (showing chi(G) is large). It complements the concentration question: LLL gives existence results, while Erdős #1156 asks about uniqueness/narrowness of chi."
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey theory and random graphs are deeply intertwined: the probabilistic method (Erdős 1947) established the probabilistic lower bound R(k,k) ≥ 2^(k/2) by showing G(n,1/2) avoids K_k with positive probability. The same G(n,1/2) appears in Erdős #1156."
+    },
+    {
+      "targetId": "erdos-1006",
+      "relationship": "related",
+      "description": "Erdős #1006 concerns chromatic number bounds via orientations. Both #1006 and #1156 address chi(G) from different angles: #1006 via structural properties, #1156 via probabilistic concentration."
+    },
+    {
+      "targetId": "erdos-1011",
+      "relationship": "related",
+      "description": "Erdős #1011 asks about triangles in graphs with high chromatic number. High chi(G) is the regime where Erdős #1156's concentration question lives, making #1011's structural constraints relevant to understanding chi(G(n,1/2))."
+    },
+    {
+      "targetId": "erdos-2",
+      "relationship": "related",
+      "description": "Erdős #2 also concerns random graph properties and probabilistic combinatorics"
+    }
+  ],
+  "sorries": 0
+}

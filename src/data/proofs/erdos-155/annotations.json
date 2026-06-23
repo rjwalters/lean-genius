@@ -1,0 +1,247 @@
+[
+  {
+    "id": "ann-155-imports",
+    "proofId": "erdos-155",
+    "range": {
+      "startLine": 26,
+      "endLine": 29
+    },
+    "type": "concept",
+    "title": "Imports and Dependencies",
+    "content": "Imports Mathlib's `Finset` operations, natural number basics, `Filter` theory, and the tactic library. The formalization uses `Finset.filter`, `Finset.card`, and `Finset.range` for combinatorial definitions, and `Real.sqrt` for the asymptotic bounds.",
+    "mathContext": "Uses `Finset.filter`, `Finset.card`, `Real.sqrt`, and `Nat.floor` from Mathlib for finite set counting and real-valued asymptotic bounds.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset",
+      "Real.sqrt",
+      "Nat.floor",
+      "Mathlib tactics"
+    ],
+    "prerequisites": [
+      "Lean 4",
+      "Mathlib"
+    ]
+  },
+  {
+    "id": "ann-155-sidon-def",
+    "proofId": "erdos-155",
+    "range": {
+      "startLine": 36,
+      "endLine": 38
+    },
+    "type": "definition",
+    "title": "Sidon Set ($B_2$ Set)",
+    "content": "A set $S$ of natural numbers is a **Sidon set** (also called a $B_2$ set) if all pairwise sums $a + b$ with $a \\le b$, $a, b \\in S$ are distinct. Equivalently, the representation function $r(n) = \\#\\{(a,b) \\in S^2 : a + b = n, a \\le b\\}$ satisfies $r(n) \\le 1$ for all $n$. Named after the Hungarian mathematician Simon Sidon, who asked Erdős about such sets in 1932. The equivalent formulation via distinct differences ($a - b = c - d$ implies $\\{a,b\\} = \\{c,d\\}$) is sometimes more convenient.",
+    "mathContext": "$S$ is Sidon iff $\\forall a \\le b, c \\le d \\in S : a + b = c + d \\Rightarrow (a,b) = (c,d)$. The number of pairwise sums $\\binom{|S|}{2} + |S|$ must be $\\le 2N$ for $S \\subseteq [N]$, giving $|S| \\le \\sqrt{2N} + O(1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "B_2 set",
+      "distinct pairwise sums",
+      "additive combinatorics",
+      "representation function"
+    ],
+    "prerequisites": [
+      "Finset",
+      "pairwise sums"
+    ]
+  },
+  {
+    "id": "ann-155-max-sidon",
+    "proofId": "erdos-155",
+    "range": {
+      "startLine": 41,
+      "endLine": 41
+    },
+    "type": "concept",
+    "title": "Maximum Sidon Size $F(N)$",
+    "content": "The function $F(N)$ gives the maximum cardinality of a Sidon subset of $\\{1, \\ldots, N\\}$. This is the central extremal function of Sidon set theory. Defined axiomatically (as an opaque function) with separate axioms for achievability and optimality, since computing $F(N)$ exactly requires checking exponentially many subsets.",
+    "mathContext": "$F(N) = \\max\\{|S| : S \\subseteq [N],\\, S \\text{ is Sidon}\\}$. Known values (OEIS A003022): $F(1)=1$, $F(2)=2$, $F(3)=3$, $F(6)=4$, $F(11)=5$, $F(18)=6$, $F(26)=7$, $F(35)=8$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal function",
+      "OEIS A003022",
+      "Sidon set"
+    ],
+    "prerequisites": [
+      "IsSidonSet"
+    ]
+  },
+  {
+    "id": "ann-155-achievable",
+    "proofId": "erdos-155",
+    "range": {
+      "startLine": 44,
+      "endLine": 45
+    },
+    "type": "concept",
+    "title": "Achievability and Optimality of $F(N)$",
+    "content": "Two companion axioms: (1) **achievability** — there exists a Sidon subset of $\\{1,\\ldots,N\\}$ of size exactly $F(N)$; (2) **optimality** — no Sidon subset of $\\{1,\\ldots,N\\}$ exceeds $F(N)$ in cardinality. Together they characterize $F(N)$ as a maximum (not just supremum). These are axiomatized since the existence proof requires the finite extremal principle.",
+    "mathContext": "$\\exists S \\subseteq [N] : S \\text{ Sidon} \\wedge |S| = F(N)$, and $\\forall S \\subseteq [N] : S \\text{ Sidon} \\Rightarrow |S| \\le F(N)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "extremal principle",
+      "maximum vs supremum"
+    ],
+    "prerequisites": [
+      "IsSidonSet",
+      "maxSidonSize"
+    ]
+  },
+  {
+    "id": "ann-155-monotone",
+    "proofId": "erdos-155",
+    "range": {
+      "startLine": 55,
+      "endLine": 55
+    },
+    "type": "concept",
+    "title": "Monotonicity: $F(N) \\le F(N+1) \\le F(N) + 1$",
+    "content": "Two basic structural properties: (1) $F$ is monotone nondecreasing — enlarging the interval $[N]$ to $[N+1]$ can only help; (2) $F$ increases by at most 1 per step — adding one new element $N+1$ to the interval can increase the maximum Sidon set by at most 1. Together: the sequence $F(1), F(2), \\ldots$ is a nondecreasing integer sequence with steps of 0 or 1.",
+    "mathContext": "$F(N) \\le F(N+1) \\le F(N) + 1$. The increase points $\\{N : F(N+1) > F(N)\\}$ form a sparse set, with $\\sim \\sqrt{N}$ increase points in $[1,N]$ (since $F(N) \\sim \\sqrt{N}$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "monotone functions",
+      "integer sequences",
+      "step size"
+    ],
+    "prerequisites": [
+      "maxSidonSize"
+    ]
+  },
+  {
+    "id": "ann-155-upper",
+    "proofId": "erdos-155",
+    "range": {
+      "startLine": 64,
+      "endLine": 65
+    },
+    "type": "concept",
+    "title": "Erdős–Turán/Lindström Upper Bound",
+    "content": "The classical upper bound $F(N) \\le \\sqrt{N} + N^{1/4} + 1$, refined by Lindström (1969) from the original Erdős–Turán (1941) bound $F(N) = O(\\sqrt{N})$. The proof counts pairwise sums: a Sidon set $S \\subseteq [N]$ has $\\binom{|S|}{2}$ distinct pairwise sums in $[2, 2N]$, giving $|S|^2/2 \\lesssim 2N$, hence $|S| \\lesssim \\sqrt{2N}$. Lindström's refinement uses a more careful counting of sums near the boundary.",
+    "mathContext": "$F(N) \\le \\sqrt{N} + N^{1/4} + 1$. The leading term $\\sqrt{N}$ is sharp: $F(N) = (1 + o(1))\\sqrt{N}$ by matching lower bounds.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős–Turán theorem",
+      "Lindström bound",
+      "pairwise sum counting",
+      "B_2 problem"
+    ],
+    "prerequisites": [
+      "maxSidonSize",
+      "Real.sqrt"
+    ]
+  },
+  {
+    "id": "ann-155-lower",
+    "proofId": "erdos-155",
+    "range": {
+      "startLine": 69,
+      "endLine": 71
+    },
+    "type": "concept",
+    "title": "Lower Bound: $F(N) \\ge (1-o(1))\\sqrt{N}$",
+    "content": "Singer's perfect difference set construction (1938) and its refinements (Ruzsa, Cilleruelo) produce Sidon sets of size $(1-o(1))\\sqrt{N}$ in $\\{1,\\ldots,N\\}$, matching the upper bound asymptotically. Singer's construction uses the fact that for $q$ a prime power, the set of elements of $\\mathbb{F}_{q^2}^*$ with specified trace gives a perfect difference set of size $q+1$ in $\\mathbb{Z}/(q^2+q+1)$. This yields $F(N) \\ge \\sqrt{N} - O(N^{1/4})$ when $N$ is near $q^2 + q + 1$.",
+    "mathContext": "$F(N) \\ge (1-\\varepsilon)\\sqrt{N}$ for all $N \\ge N_0(\\varepsilon)$. Singer's construction: for $q$ prime power, $\\{1, \\ldots, q^2+q+1\\}$ contains a Sidon set of size $q+1 = \\sqrt{N} + O(1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Singer difference sets",
+      "perfect difference sets",
+      "finite fields",
+      "Cilleruelo's construction"
+    ],
+    "prerequisites": [
+      "maxSidonSize",
+      "finite field constructions"
+    ]
+  },
+  {
+    "id": "ann-155-main",
+    "proofId": "erdos-155",
+    "range": {
+      "startLine": 80,
+      "endLine": 81
+    },
+    "type": "concept",
+    "title": "Main Conjecture: $F(N+k) \\le F(N) + 1$ for Fixed $k$",
+    "content": "The central open problem: for every fixed $k \\ge 1$, is $F(N+k) \\le F(N) + 1$ for all sufficiently large $N$ (where $N_0$ may depend on $k$)? This asserts that $F$ increases by at most 1 over any interval of fixed length, once $N$ is large enough. Since $F(N) \\sim \\sqrt{N}$, the increase points $\\{N : F(N+1) > F(N)\\}$ have density $\\sim 1/\\sqrt{N} \\to 0$, so heuristically adjacent increase points are $\\sim \\sqrt{N}$ apart — far more than any fixed $k$.",
+    "mathContext": "$\\forall k \\ge 1,\\, \\exists N_0 : \\forall N \\ge N_0,\\, F(N+k) \\le F(N) + 1$. The heuristic gap between increase points is $N/(F(N)) \\sim \\sqrt{N} \\to \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős Problem #155",
+      "growth rate",
+      "increase points",
+      "density zero"
+    ],
+    "prerequisites": [
+      "maxSidonSize",
+      "monotonicity"
+    ]
+  },
+  {
+    "id": "ann-155-strong",
+    "proofId": "erdos-155",
+    "range": {
+      "startLine": 88,
+      "endLine": 90
+    },
+    "type": "concept",
+    "title": "Stronger Form: $k \\approx \\varepsilon\\sqrt{N}$",
+    "content": "Erdős's stronger conjecture: $F(N + \\lfloor \\varepsilon\\sqrt{N} \\rfloor) \\le F(N) + 1$ for all sufficiently large $N$ (depending on $\\varepsilon$). This says $F$ plateaus over intervals of length proportional to $\\sqrt{N}$, meaning consecutive increase points are separated by at least $\\sim \\varepsilon\\sqrt{N}$. If true, this would give sharp information about the distribution of increase points, showing they are roughly uniformly spaced with gap $\\sim \\sqrt{N}$.",
+    "mathContext": "$\\forall \\varepsilon > 0,\\, \\exists N_0 : \\forall N \\ge N_0,\\, F(N + \\lfloor\\varepsilon\\sqrt{N}\\rfloor) \\le F(N) + 1$. This implies increase points have minimal gap $\\sim \\varepsilon\\sqrt{N}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "strong Sidon conjecture",
+      "increase point spacing",
+      "plateau length"
+    ],
+    "prerequisites": [
+      "main conjecture",
+      "Nat.floor",
+      "Real.sqrt"
+    ]
+  },
+  {
+    "id": "ann-155-sparse",
+    "proofId": "erdos-155",
+    "range": {
+      "startLine": 96,
+      "endLine": 100
+    },
+    "type": "concept",
+    "title": "Increase Points Are Sparse",
+    "content": "A consequence of $F(N) \\sim \\sqrt{N}$: the number of increase points $\\{N \\le M : F(N+1) > F(N)\\}$ is at most $(1+\\varepsilon)\\sqrt{M}$ for large $M$. Since $F$ starts at 1 and reaches $\\sim \\sqrt{M}$, and each increase adds exactly 1, there are exactly $F(M)-F(1) \\sim \\sqrt{M}$ increase points in $[1,M]$. The conjecture says these increase points are far apart; this axiom just bounds their count.",
+    "mathContext": "$|\\{N \\le M : F(N+1) > F(N)\\}| \\le (1+\\varepsilon)\\sqrt{M}$ for $M \\ge M_0(\\varepsilon)$. Since $F(M) \\sim \\sqrt{M}$ and each increase adds 1, the count of increase points equals $F(M) - F(1) \\sim \\sqrt{M}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "density of increase points",
+      "sparse sets",
+      "counting argument"
+    ],
+    "prerequisites": [
+      "maxSidonSize",
+      "asymptotic bounds"
+    ]
+  },
+  {
+    "id": "ann-155-small-values",
+    "proofId": "erdos-155",
+    "range": {
+      "startLine": 107,
+      "endLine": 109
+    },
+    "type": "concept",
+    "title": "Known Small Values of $F(N)$",
+    "content": "Exact values from OEIS A003022: $F(1)=1$, $F(2)=2$, $F(3)=3$, $F(6)=4$, $F(11)=5$, $F(18)=6$. The gaps between consecutive increase points are $1, 1, 3, 5, 7$, growing roughly as $\\sqrt{N}$ — consistent with both the main conjecture and the strong form. The increase points themselves ($1, 2, 3, 6, 11, 18, 26, 35, \\ldots$, OEIS A143824) are a fundamental sequence in Sidon set theory.",
+    "mathContext": "$F(1)=1, F(2)=2, F(3)=3, F(6)=4, F(11)=5, F(18)=6$. Gaps: $1, 1, 3, 5, 7, 8, 9, \\ldots$ The $n$-th gap is $\\approx 2n-1 \\approx 2\\sqrt{N}$ where $N$ is the $n$-th increase point.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "OEIS A003022",
+      "OEIS A143824",
+      "small Sidon sets",
+      "computed values"
+    ],
+    "prerequisites": [
+      "maxSidonSize"
+    ]
+  }
+]

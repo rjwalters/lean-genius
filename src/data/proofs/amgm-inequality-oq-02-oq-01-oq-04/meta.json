@@ -1,0 +1,146 @@
+{
+  "id": "amgm-inequality-oq-02-oq-01-oq-04",
+  "title": "Newton-Girard Recurrence for Arbitrary k (Finset / CommRing Form)",
+  "slug": "amgm-inequality-oq-02-oq-01-oq-04",
+  "description": "Proves the general Newton-Girard recurrence for every k ≥ 1, relating power sums pₖ = Σ_{i∈s} (f i)^k and elementary symmetric functions eₖ = Σ_{T⊆s,|T|=k} ∏_{i∈T} f i for an arbitrary finite family f : ι → R indexed by a Finset s over any commutative ring R: Σ_{j=0}^{k-1} (-1)^j eⱼ p_{k-j} + (-1)^k k eₖ = 0. Mathlib provides Newton's identities only in the universal MvPolynomial form; this entry transports that universal identity to the directly usable Finset/CommRing layer via the algebra map aeval, closing the parent entry's open question for arbitrary k. 4 theorems, 2 definitions, 0 axioms.",
+  "leanFile": {
+    "namespace": "AmgmNewtonGirard",
+    "lineCount": 127,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 2,
+    "path": "Proofs/AmgmInequalityOQ02OQ01OQ04.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AmgmInequalityOQ02OQ01OQ04.lean",
+    "tags": [
+      "combinatorics",
+      "symmetric-polynomials",
+      "newton-girard",
+      "algebraic-identities",
+      "finset",
+      "mvpolynomial",
+      "aeval-transport"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-15",
+    "axiomCount": 0,
+    "assumptions": "No axioms or sorries. Fully machine-verified under Lean v4.26.0 / Mathlib for any commutative ring R, any index type ι, any Finset s, and every k ≥ 1. The core recurrence is obtained by transporting Mathlib's universal identity MvPolynomial.mul_esymm_eq_sum along the algebra map aeval — the combinatorial content lives in Mathlib; this entry contributes the concrete Finset/CommRing statement plus the bridge lemmas (psum_bridge, esymm_bridge, reindex_filter).",
+    "lineCount": 127,
+    "theoremCount": 4,
+    "definitionCount": 2,
+    "originalContributions": [
+      "newton_girard: the full Newton-Girard recurrence Σ_{j<k} (-1)^j eⱼ p_{k-j} + (-1)^k k eₖ = 0 for arbitrary k ≥ 1, stated directly over a Finset family in any CommRing (not the polynomial-ring form)",
+      "psum_bridge: aeval (i ↦ f i) (MvPolynomial.psum ↥s R n) = psum s f n — transports the universal power sum to the concrete one",
+      "esymm_bridge: aeval (i ↦ f i) (MvPolynomial.esymm ↥s R n) = esymm s f n — transports the universal elementary symmetric polynomial to the concrete one via Finset.esymm_map_val and Multiset.attach_map_val'",
+      "reindex_filter: rewrites the filtered antidiagonal sum from Mathlib's universal identity onto a clean Σ_{j∈range k} form",
+      "Closes the parent entry's open question 'Prove the general Finset-level Newton-Girard recurrence for arbitrary k' by reduction to Mathlib's MvPolynomial.mul_esymm_eq_sum rather than a bespoke induction"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Isaac Newton recorded the power-sum recurrences connecting elementary symmetric polynomials $e_k = \\sum_{i_1 < \\cdots < i_k} x_{i_1} \\cdots x_{i_k}$ to power sums $p_k = \\sum x_i^k$ around 1666, building on Albert Girard's 1629 statement. In full generality Newton's identity reads $\\sum_{j=0}^{k-1} (-1)^j e_j p_{k-j} + (-1)^k k\\, e_k = 0$ for $k \\geq 1$ (with $e_0 = 1$), equivalently $p_k = e_1 p_{k-1} - e_2 p_{k-2} + \\cdots + (-1)^{k-1} k\\, e_k$. The identity is the computational core of the fundamental theorem of symmetric polynomials and underlies Vieta's formulas, Maclaurin's inequalities, and the chain that recovers AM-GM at its extremes. Mathlib formalizes Newton's identities for the universal symmetric functions over a `Fintype` (the polynomial-root form, `MvPolynomial.mul_esymm_eq_sum`), but not the directly usable Finset/CommRing statement for an explicit finite family — the layer needed when the $x_i$ are concrete ring elements rather than indeterminates.",
+    "problemStatement": "For any commutative ring $R$, index type $\\iota$, finite set $s : \\text{Finset } \\iota$, family $f : \\iota \\to R$, and $k \\geq 1$, prove $\\sum_{j=0}^{k-1} (-1)^j e_j(s,f)\\, p_{k-j}(s,f) + (-1)^k k\\, e_k(s,f) = 0$ where $p_n(s,f) = \\sum_{i \\in s} f(i)^n$ and $e_n(s,f) = \\sum_{T \\subseteq s,\\, |T|=n} \\prod_{i \\in T} f(i)$.",
+    "text": "The proof takes Mathlib's universal Newton identity over the index subtype $\\uparrow s = \\{i // i \\in s\\}$ (a `Fintype`) and pushes it through the algebra map $\\text{aeval}(i \\mapsto f\\, i.1) : \\text{MvPolynomial}\\, \\uparrow s\\, R \\to R$. Because `aeval` is a ring homomorphism it commutes with sums, products, powers, negation and `Nat.cast`, so the universal identity becomes the concrete one once two evaluation bridges are established: `psum_bridge` (aeval of `MvPolynomial.psum` is the concrete `psum`) and `esymm_bridge` (aeval of `MvPolynomial.esymm` is the concrete `esymm`). The elementary-symmetric bridge is the substantive one: `aeval_esymm_eq_multiset_esymm` reduces aeval to a multiset esymm, then `univ.val.map = s.val.map f` (via `s.attach` and `Multiset.attach_map_val'`) and `Finset.esymm_map_val` land exactly on the `powersetCard` definition of `esymm`. After transport, `reindex_filter` rewrites the filtered antidiagonal sum onto `range k`, and a short sign computation ($(-1)^k (-1)^{k+1} = -1$ via `Odd.neg_one_pow`) closes the recurrence.",
+    "proofStrategy": "**Route A (executed): transport, not induction.** Rather than re-deriving Newton's identity by induction on $s$ (the self-contained ~200-line alternative, Route B), the proof reduces to Mathlib's universal `MvPolynomial.mul_esymm_eq_sum` over $\\uparrow s$. The key move is `apply_fun (aeval (fun i : ↥s => f i.1)) at key`, turning the universal polynomial identity into a ring equation in $R$. The simp set `[map_mul, map_pow, map_neg, map_one, map_natCast, map_sum, esymm_bridge, psum_bridge]` discharges every ring-hom commutation and substitutes the two bridges in one pass. `reindex_filter` normalises the antidiagonal-filter sum (using `Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk` and `Finset.sum_range_succ`, peeling the vacuous $j=k$ term via `lt_self_iff_false`) to the canonical `Σ_{j ∈ range k}`. The final sign closure multiplies through by $(-1)^k$ and uses $(-1)^k (-1)^{k+1} = (-1)^{2k+1} = -1$ (`Odd.neg_one_pow ⟨k, _⟩`) so the $(-1)^k k e_k$ correction cancels the transported right-hand side, and `ring` finishes.",
+    "keyInsights": [
+      "**Transport beats re-derivation.** Mathlib already has the hard combinatorial content (Newton's identity for universal symmetric functions); the Finset/CommRing form is recovered for free by evaluating along `aeval`, since a ring homomorphism preserves the entire algebraic identity. This converts a multi-hundred-line induction into a ~15-line transport plus two bridge lemmas.",
+      "**The index subtype $\\uparrow s$ is the right `Fintype`.** Specialising the universal identity to the coe-sort $\\{i // i \\in s\\}$ (whose `univ` is definitionally `s.attach`) makes the concrete power sums and elementary symmetric functions land exactly on Mathlib's `MvPolynomial.psum`/`esymm` evaluated at $i \\mapsto f(i.1)$.",
+      "**`esymm_bridge` is the load-bearing step.** `MvPolynomial.aeval_esymm_eq_multiset_esymm` rewrites aeval of the universal esymm to a `Multiset.esymm` of the mapped values; `s.attach` together with `Multiset.attach_map_val'` collapses `univ.val.map (f ∘ val)` to `s.val.map f`, and `Finset.esymm_map_val` rewrites that to the `powersetCard` sum that defines the concrete `esymm`.",
+      "**Sign bookkeeping is the only arithmetic.** Mathlib states the identity as $k\\, e_k = (-1)^{k+1} \\sum_{j} (-1)^j e_j p_{k-j}$; multiplying by $(-1)^k$ and using $(-1)^{2k+1} = -1$ turns it into the symmetric vanishing form $\\sum_j (-1)^j e_j p_{k-j} + (-1)^k k\\, e_k = 0$, which is the cleaner statement for downstream use.",
+      "**Why $e_0 = 1$ matters.** The $j = 0$ summand is $(-1)^0 e_0 p_k = p_k$ since $e_0 = \\sum_{T \\subseteq s, |T|=0} \\prod_{i\\in T} f(i) = \\prod_{i \\in \\varnothing} = 1$; this is what makes the recurrence express $p_k$ in terms of lower power sums and the symmetric functions."
+    ],
+    "prerequisites": [
+      "MvPolynomial.mul_esymm_eq_sum: Mathlib's universal Newton identity over a Fintype",
+      "MvPolynomial.aeval as an AlgHom: commutes with sum/product/pow/neg/natCast",
+      "MvPolynomial.aeval_esymm_eq_multiset_esymm and Finset.esymm_map_val",
+      "Multiset.attach_map_val', Finset.attach_val (collapsing univ over the coe-sort)",
+      "Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk, Odd.neg_one_pow"
+    ]
+  },
+  "conclusion": {
+    "summary": "The general Newton-Girard recurrence Σ_{j<k} (-1)^j eⱼ p_{k-j} + (-1)^k k eₖ = 0 for every k ≥ 1, stated over an arbitrary Finset family in any CommRing, obtained by transporting Mathlib's universal MvPolynomial identity along aeval. 4 theorems, 2 definitions, 0 axioms, 127 lines.",
+    "implications": "This entry closes the parent's standing open question — the general arbitrary-$k$ Finset/CommRing Newton-Girard recurrence — and does so by reduction rather than bespoke induction, demonstrating a reusable pattern: a universal symmetric-function identity in `MvPolynomial` becomes a concrete identity about explicit ring elements simply by evaluating along the algebra map. The two bridge lemmas `psum_bridge` and `esymm_bridge` are independently useful for any future transport of `MvPolynomial.NewtonIdentities` results to the Finset layer (e.g. complete homogeneous symmetric functions, or the dual recurrences). Because the statement holds over any commutative ring it applies to polynomial-coefficient arithmetic, formal power series, and combinatorial generating functions, not only real inequalities. The result is also a candidate Mathlib contribution: the universal form exists upstream but the directly usable Finset/CommRing combinatorial layer does not.",
+    "openQuestions": [
+      "Contribute psum_bridge / esymm_bridge and the Finset-level newton_girard upstream to Mathlib, where only the universal MvPolynomial form currently exists.",
+      "Transport the dual Newton identities (complete homogeneous symmetric functions hₖ via Σ (-1)^j eⱼ h_{k-j} = 0) to the same Finset/CommRing layer using the identical aeval bridge.",
+      "Derive the Maclaurin inequality chain S_k^{1/k} ≥ S_{k+1}^{1/(k+1)} over an ordered field directly from this recurrence together with a power-mean bound, formalizing the base case S_1^2 ≥ S_2."
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring-strategy",
+      "title": "Module Docstring: Statement, Two-Route Strategy, and Verification Status",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "States the target Finset/CommRing Newton-Girard recurrence Σ_{j<k} (-1)^j eⱼ p_{k-j} + (-1)^k k eₖ = 0 with worked k=1,2 sanity checks on s={a,b}. Lays out the two viable reductions — Route A (apply the algebra map aeval to Mathlib's universal MvPolynomial.mul_esymm_eq_sum) versus Route B (self-contained ~150–250-line induction on s via the update rule eₖ(s∪{a}) = eₖ(s) + a·e_{k-1}(s)) — records that Route A was executed and machine-checked under Lean v4.26.0 (0 sorries, 0 axioms), and enumerates every Mathlib lemma the transport depends on."
+    },
+    {
+      "id": "imports-defs",
+      "title": "Imports, Namespace, and Concrete Definitions",
+      "startLine": 52,
+      "endLine": 65,
+      "summary": "Imports Mathlib, opens Finset and BigOperators, opens namespace AmgmNewtonGirard, and declares variables {ι R : Type*} [CommRing R]. Defines the concrete power sum psum s f k = Σ_{i∈s} (f i)^k and the concrete elementary symmetric function esymm s f k = Σ_{T ∈ s.powersetCard k} ∏_{i∈T} f i — the explicit Finset-indexed objects onto which the universal MvPolynomial identity is transported."
+    },
+    {
+      "id": "bridges",
+      "title": "Power-Sum and Elementary-Symmetric Bridges",
+      "startLine": 67,
+      "endLine": 89,
+      "summary": "psum_bridge: aeval (i ↦ f i.1) (MvPolynomial.psum ↥s R n) = psum s f n, by pushing aeval through the sum (map_sum) and evaluating each X i via aeval_X, after ← Finset.sum_coe_sort. esymm_bridge: the harder transport, using aeval_esymm_eq_multiset_esymm, then collapsing univ.val.map over the coe-sort to s.val.map f via s.attach and Multiset.attach_map_val', then Finset.esymm_map_val to reach the powersetCard definition."
+    },
+    {
+      "id": "reindex",
+      "title": "Antidiagonal-to-Range Reindexing",
+      "startLine": 91,
+      "endLine": 103,
+      "summary": "reindex_filter rewrites Σ_{a ∈ antidiagonal k, a.1 < k} (-1)^{a.1} e_{a.1} p_{a.2} to Σ_{j ∈ range k} (-1)^j e_j p_{k-j}, via Finset.sum_filter, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk and Finset.sum_range_succ, discharging the vacuous j=k summand with lt_self_iff_false and closing each remaining term with if_pos from mem_range."
+    },
+    {
+      "id": "newton-girard",
+      "title": "The Newton-Girard Recurrence",
+      "startLine": 105,
+      "endLine": 127,
+      "summary": "newton_girard: takes key := MvPolynomial.mul_esymm_eq_sum ↥s R k, applies aeval via apply_fun, simp-normalises with the two bridges and the ring-hom lemmas (map_mul/pow/neg/one/natCast/sum), rewrites by reindex_filter, then closes the sign with hsign : (-1)^k (-1)^{k+1} = -1 (Odd.neg_one_pow) and ring."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "amgm-inequality-oq-02-oq-01",
+      "relationship": "parent-problem",
+      "description": "The n=2 Newton-Girard identity p₂ = e₁² - 2e₂ and its diagonal/off-diagonal decomposition. This entry generalizes that base case to arbitrary k and explicitly resolves its open question 'Prove the general Finset-level Newton-Girard recurrence for arbitrary k'."
+    },
+    {
+      "targetId": "amgm-inequality-oq-02",
+      "relationship": "parent-problem",
+      "description": "Maclaurin's inequalities via elementary symmetric polynomials — the general Newton-Girard recurrence proved here is the algebraic engine feeding the Maclaurin chain."
+    },
+    {
+      "targetId": "vietas-formulas",
+      "relationship": "foundational",
+      "description": "Vieta's formulas express polynomial coefficients as elementary symmetric polynomials of the roots; Newton's identities convert between those eₖ and the power sums pₖ, which is exactly the recurrence formalized here."
+    },
+    {
+      "targetId": "amgm-inequality-oq-02-oq-03",
+      "relationship": "complementary",
+      "description": "Maclaurin chain from Newton's log-concavity — consumes the Newton-Girard identities (now available for all k from this entry) to establish inequalities between elementary symmetric means."
+    }
+  ],
+  "references": [
+    {
+      "title": "Newton's identities",
+      "url": "https://en.wikipedia.org/wiki/Newton%27s_identities",
+      "description": "Statement and derivations of the power-sum / elementary-symmetric recurrences."
+    },
+    {
+      "title": "Mathlib: RingTheory.MvPolynomial.Symmetric.NewtonIdentities",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/MvPolynomial/Symmetric/NewtonIdentities.html",
+      "description": "Mathlib's universal form of Newton's identities (MvPolynomial.mul_esymm_eq_sum) transported here to the Finset/CommRing layer."
+    }
+  ]
+}

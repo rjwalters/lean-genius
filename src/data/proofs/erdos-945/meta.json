@@ -1,0 +1,161 @@
+{
+  "id": "erdos-945",
+  "title": "Erdős Problem #945: Consecutive Integers with Distinct Divisor Counts",
+  "slug": "erdos-945",
+  "description": "How long can a run of consecutive integers be where all have distinct numbers of divisors? Is the maximum length bounded by a polynomial in log x?",
+  "meta": {
+    "author": "Open Problem (Bounds by Erdős-Mirsky 1952, Beker)",
+    "sourceUrl": "https://erdosproblems.com/945",
+    "date": "",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos945Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "divisors",
+      "consecutive-integers",
+      "open-problem"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 945,
+    "erdosUrl": "https://erdosproblems.com/945",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.divisors",
+        "description": "The set of divisors of a natural number",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "The filter of neighborhoods of +∞",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      },
+      {
+        "theorem": "Asymptotics.IsBigO",
+        "description": "Big-O notation for asymptotic bounds",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of τ(n) using Mathlib's divisors.card",
+      "Verified examples: τ(1)=1, τ(2)=2, τ(6)=4, τ(12)=6",
+      "Formal definition of F(x) as supremum over valid sequences",
+      "Statements of Erdős-Mirsky bounds and Beker's improvement",
+      "Conditional result under Cramér's conjecture"
+    ],
+    "axiomCount": 0,
+    "lineCount": 148,
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "theoremCount": 4,
+    "definitionCount": 4
+  },
+  "overview": {
+    "historicalContext": "This problem, posed by Erdős and Mirsky in their 1952 paper on the distribution of the divisor function, asks a natural question: how long can consecutive integers maintain distinct divisor counts?\n\nThe divisor function τ(n) counts divisors of n. While τ varies considerably—primes have τ = 2, highly composite numbers have large τ—the question is whether collisions (τ(a) = τ(b) for distinct a, b) must occur within short intervals.\n\nErdős and Mirsky established both lower and upper bounds in 1952, but the gap between them has resisted closure for over 70 years. Beker later improved the upper bound, and connections to Cramér's conjecture on prime gaps have been observed.",
+    "problemStatement": "Let $F(x)$ be the maximal $k$ such that there exist consecutive integers $n+1, \\ldots, n+k \\leq x$ with $\\tau(n+1), \\ldots, \\tau(n+k)$ all distinct, where $\\tau(m)$ counts divisors.\n\n**Conjecture** (OPEN): $F(x) \\leq (\\log x)^{O(1)}$\n\nEquivalently: there exists $C > 0$ such that every interval $[x, x + (\\log x)^C]$ contains two integers with the same number of divisors.\n\n**Known Bounds**:\n- Lower (Erdős-Mirsky 1952): $F(x) \\gg (\\log x)^{1/2} / \\log\\log x$\n- Upper (Erdős-Mirsky 1952): $F(x) \\ll \\exp(O((\\log x)^{1/2} / \\log\\log x))$\n- Upper (Beker): $F(x) \\ll \\exp(O((\\log x)^{1/3+o(1)}))$\n- Conditional (Cramér): $F(x) \\ll (\\log x)^2$",
+    "text": "How long can a run of consecutive integers be where all have distinct numbers of divisors? Is the maximum length bounded by a polynomial in log x?",
+    "proofStrategy": "Since the main conjecture is open, we cannot prove it. Our formalization:\n\n1. **Defines τ(n)** using Mathlib's `Nat.divisors.card`\n2. **Verifies concrete τ values** via `native_decide`\n3. **Defines F(x)** as a supremum over valid sequences\n4. **States the conjecture** and its equivalent collision formulation\n5. **Records known bounds** from Erdős-Mirsky (1952) and Beker\n6. **States the conditional result** under Cramér's conjecture",
+    "keyInsights": [
+      "**Divisor Collisions**: τ(n) takes relatively few values compared to n, so collisions are inevitable. The question is *how quickly* they must occur.",
+      "**Exponential Gap**: The Erdős-Mirsky bounds have an exponential gap—lower bound is polynomial in log, upper is exponential in √log. Closing this is the main challenge.",
+      "**Prime Gap Connection**: Cramér's conjecture (prime gaps ≤ (log p)²) would imply F(x) ≤ (log x)², nearly resolving the problem.",
+      "**Problem B18**: This appears as problem B18 in Guy's 'Unsolved Problems in Number Theory', highlighting its importance.",
+      "**Highly composite witnesses**: The first counterexample to long runs must involve highly composite numbers (n with many divisors), since these create more opportunities for τ(n) = τ(n+1) coincidences — connecting the problem to Ramanujan's theory of highly composite numbers."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "divisor-function",
+      "title": "The Divisor Counting Function",
+      "startLine": 31,
+      "endLine": 63,
+      "summary": "Defines τ(n) and verifies concrete examples"
+    },
+    {
+      "id": "function-f",
+      "title": "The Function F(x)",
+      "startLine": 64,
+      "endLine": 75,
+      "summary": "Defines F(x) as the maximal distinct-τ run length"
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 76,
+      "endLine": 95,
+      "summary": "States the open conjecture F(x) ≤ (log x)^{O(1)}"
+    },
+    {
+      "id": "equivalent",
+      "title": "Equivalent Formulation",
+      "startLine": 96,
+      "endLine": 113,
+      "summary": "Restates conjecture in terms of τ collisions"
+    },
+    {
+      "id": "known-bounds",
+      "title": "Erdős-Mirsky Bounds (1952)",
+      "startLine": 114,
+      "endLine": 138,
+      "summary": "The original lower and upper bounds"
+    },
+    {
+      "id": "beker",
+      "title": "Beker's Improvement",
+      "startLine": 139,
+      "endLine": 148,
+      "summary": "Improved upper bound on F(x)"
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #945, asking whether the maximal length of consecutive integers with distinct divisor counts is bounded by a polynomial in log x. We define the key concepts, state the open conjecture and its equivalent forms, and record the known bounds from 70+ years of research.",
+    "implications": "Resolving this would reveal deep structure in how the divisor function distributes its values. The connection to Cramér's conjecture links it to prime distribution theory.",
+    "openQuestions": [
+      "Is F(x) ≤ (log x)^C for some constant C?",
+      "Can the gap between lower and upper bounds be narrowed?",
+      "What is the relationship to the distribution of highly composite numbers?",
+      "Does every interval [x, x + (log x)²] contain a τ collision?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Real",
+      "Classical"
+    ],
+    "namespace": "Erdos945",
+    "lineCount": 148,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 4,
+    "path": "Proofs/Erdos945Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1054",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisors, number-theory"
+    },
+    {
+      "targetId": "erdos-1099",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisors, number-theory"
+    },
+    {
+      "targetId": "erdos-1100",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisors, number-theory"
+    }
+  ],
+  "sorries": 0
+}

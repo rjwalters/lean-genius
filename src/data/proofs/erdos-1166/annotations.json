@@ -1,0 +1,361 @@
+[
+  {
+    "id": "ann-e1166-header",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 20,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Problem Statement and Background",
+    "content": "Erdős Problem #1166, posed by Erdős and Révész, asks about the geometry of planar random walks. Given a simple random walk $(s_n)$ on $\\mathbb{Z}^2$, let $f_k(x)$ count visits to point $x$ through step $k$, and let $F(k)$ be the set of most-visited points. The question is whether $|\\bigcup_{k \\leq n} F(k)|$ grows at most polylogarithmically. The answer is YES: almost surely $|\\bigcup_{k \\leq n} F(k)| \\ll (\\log n)^2$.",
+    "mathContext": "$F(k) = \\{x \\in \\mathbb{Z}^2 : f_k(x) = \\max_y f_k(y)\\}$, and the main result is $|\\bigcup_{k \\leq n} F(k)| = O((\\log n)^2)$ a.s.",
+    "significance": "key",
+    "relatedConcepts": [
+      "random walk",
+      "most-visited sites",
+      "polylogarithmic bounds",
+      "almost sure convergence"
+    ],
+    "prerequisites": [
+      "probability theory",
+      "random walks on lattices",
+      "Erdős–Taylor theorem"
+    ]
+  },
+  {
+    "id": "ann-e1166-lattice-defs",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 35,
+      "endLine": 38
+    },
+    "type": "concept",
+    "title": "Lattice Point and Origin",
+    "content": "Defines the integer lattice $\\mathbb{Z}^2$ as pairs of integers and the origin $(0,0)$. The integer lattice is the natural setting for simple random walks: at each step the walker moves to one of four adjacent lattice points with equal probability $1/4$.",
+    "mathContext": "$\\mathbb{Z}^2 = \\mathbb{Z} \\times \\mathbb{Z}$, with origin $o = (0,0)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "integer lattice",
+      "simple random walk",
+      "nearest-neighbor walk"
+    ],
+    "prerequisites": [
+      "integer arithmetic"
+    ]
+  },
+  {
+    "id": "ann-e1166-random-walk",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 41,
+      "endLine": 45
+    },
+    "type": "concept",
+    "title": "Random Walk Axiomatization",
+    "content": "Axiomatizes random walks as an abstract type with a trajectory function mapping step numbers to lattice positions. The key constraint is that every walk starts at the origin. This axiomatization abstracts away the probability space and filtration, focusing on path properties needed for the combinatorial argument.",
+    "mathContext": "A random walk $\\omega$ gives a trajectory $(s_n(\\omega))_{n \\geq 0}$ with $s_0(\\omega) = (0,0)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "stochastic process",
+      "sample path",
+      "probability space"
+    ],
+    "prerequisites": [
+      "probability theory",
+      "measure theory"
+    ]
+  },
+  {
+    "id": "ann-e1166-visit-counts",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 50,
+      "endLine": 61
+    },
+    "type": "concept",
+    "title": "Visit Count Function and Properties",
+    "content": "Defines the visit count $f_k(x, \\omega)$: the number of times point $x$ is visited by walk $\\omega$ through step $k$. Key properties include non-negativity (trivial for $\\mathbb{N}$), monotonicity in $k$ (more steps means at least as many visits), and that the origin has visit count $\\geq 1$ at step 0.",
+    "mathContext": "$f_k(x, \\omega) = |\\{0 \\leq j \\leq k : s_j(\\omega) = x\\}|$",
+    "significance": "key",
+    "relatedConcepts": [
+      "local time",
+      "occupation measure",
+      "Green's function"
+    ],
+    "prerequisites": [
+      "counting",
+      "monotonicity"
+    ]
+  },
+  {
+    "id": "ann-e1166-max-visit-count",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 66,
+      "endLine": 82
+    },
+    "type": "concept",
+    "title": "Maximum Visit Count $T_k$",
+    "content": "Defines $T_k(\\omega) = \\max_x f_k(x, \\omega)$, the maximum number of visits to any single lattice point through step $k$. The axioms assert that $T_k$ is an upper bound for all visit counts and is achieved by some point. The theorem `maxVisitCount_pos` proves $T_k \\geq 1$ by combining the visit count at the origin with monotonicity — a clean example of a non-trivial result following from basic axioms.",
+    "mathContext": "$T_k(\\omega) = \\max_{x \\in \\mathbb{Z}^2} f_k(x, \\omega) \\geq 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "maximum local time",
+      "favorite point",
+      "Erdős–Taylor theorem"
+    ],
+    "prerequisites": [
+      "supremum",
+      "finitary optimization"
+    ]
+  },
+  {
+    "id": "ann-e1166-most-visited-set",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 89,
+      "endLine": 97
+    },
+    "type": "concept",
+    "title": "Most-Visited Set $F(k)$",
+    "content": "Defines $F(k, \\omega)$ as the finite set of lattice points achieving the maximum visit count at step $k$. The characterization axiom states $x \\in F(k) \\iff f_k(x) = T_k$. The set is always nonempty since the maximum is achieved. The size $|F(k)|$ is a key quantity: Erdős and Révész showed $|F(n)| \\leq 3$ almost surely for large $n$.",
+    "mathContext": "$F(k) = \\{x \\in \\mathbb{Z}^2 : f_k(x) = T_k\\}$, with $|F(k)| \\leq 3$ a.s. for large $k$",
+    "significance": "key",
+    "relatedConcepts": [
+      "favorite point",
+      "argmax",
+      "tied maxima"
+    ],
+    "prerequisites": [
+      "finite sets",
+      "cardinality"
+    ]
+  },
+  {
+    "id": "ann-e1166-cumulative-set",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 103,
+      "endLine": 119
+    },
+    "type": "concept",
+    "title": "Cumulative Most-Visited Set",
+    "content": "Defines $\\bigcup_{k \\leq n} F(k)$, the cumulative set of all points that were ever among the most-visited through step $n$. Axioms ensure it contains each $F(k)$ for $k \\leq n$ and nothing else. The proved monotonicity theorem shows this set can only grow: if $m \\leq n$ then $\\bigcup_{k \\leq m} F(k) \\subseteq \\bigcup_{k \\leq n} F(k)$. The cardinality of this cumulative set is exactly what Problem #1166 asks about.",
+    "mathContext": "$\\bigcup_{k \\leq n} F(k) \\subseteq \\bigcup_{k \\leq n'} F(k)$ for $n \\leq n'$",
+    "significance": "key",
+    "relatedConcepts": [
+      "monotone set family",
+      "union bound",
+      "cumulative process"
+    ],
+    "prerequisites": [
+      "set theory",
+      "finite set operations"
+    ]
+  },
+  {
+    "id": "ann-e1166-almost-surely",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 125,
+      "endLine": 134
+    },
+    "type": "concept",
+    "title": "Almost Sure Events Axiomatization",
+    "content": "Axiomatizes 'almost surely' as an abstract predicate on walk properties, with two key closure properties: monotonicity (if $P \\Rightarrow Q$ then a.s. $P$ implies a.s. $Q$) and conjunction (a.s. $P$ and a.s. $Q$ imply a.s. $(P \\wedge Q)$). This elegantly avoids formalizing the full measure-theoretic probability space while retaining the logical structure needed for the proof.",
+    "mathContext": "If $\\mathbb{P}[P] = 1$ and $P \\Rightarrow Q$ then $\\mathbb{P}[Q] = 1$; if $\\mathbb{P}[P] = \\mathbb{P}[Q] = 1$ then $\\mathbb{P}[P \\wedge Q] = 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "measure-one events",
+      "probability space",
+      "null sets",
+      "countable intersection"
+    ],
+    "prerequisites": [
+      "measure theory",
+      "probability axioms"
+    ]
+  },
+  {
+    "id": "ann-e1166-key-result-1",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 141,
+      "endLine": 143
+    },
+    "type": "insight",
+    "title": "Erdős–Révész Bound: $|F(n)| \\leq 3$ a.s.",
+    "content": "The first key ingredient: almost surely, for all sufficiently large $n$, at most 3 points achieve the maximum visit count. This deep result of Erdős and Révész is closely related to Problem #1165. Intuitively, in two dimensions the random walk is barely recurrent (the Green's function diverges logarithmically), so the competition for 'most visited' is tight — but not so tight that many points can tie.",
+    "mathContext": "$\\mathbb{P}[\\exists N, \\forall n \\geq N: |F(n)| \\leq 3] = 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős Problem #1165",
+      "recurrence in 2D",
+      "Green's function",
+      "logarithmic divergence"
+    ],
+    "prerequisites": [
+      "random walk recurrence",
+      "potential theory"
+    ]
+  },
+  {
+    "id": "ann-e1166-erdos-taylor",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 151,
+      "endLine": 154
+    },
+    "type": "insight",
+    "title": "Erdős–Taylor Upper Bound",
+    "content": "The second key ingredient: the Erdős–Taylor theorem (1960) establishes that the maximum visit count $T_n$ satisfies $T_n \\leq C \\cdot (\\log n)^2$ almost surely for some constant $C$ and all large $n$. More precisely, $T_n / (\\pi (\\log n)^2) \\to 1$ a.s. This controls how many distinct 'regimes' of most-visited points can occur, since the integer-valued $T_n$ can take at most $O((\\log n)^2)$ values.",
+    "mathContext": "$T_n \\leq C (\\log n)^2$ a.s. for large $n$, and more precisely $T_n \\sim \\frac{1}{\\pi}(\\log n)^2$",
+    "significance": "key",
+    "relatedConcepts": [
+      "maximum local time",
+      "logarithmic growth",
+      "Erdős–Taylor 1960"
+    ],
+    "prerequisites": [
+      "random walk theory",
+      "asymptotic analysis",
+      "local time theory"
+    ]
+  },
+  {
+    "id": "ann-e1166-main-theorem",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 165,
+      "endLine": 168
+    },
+    "type": "insight",
+    "title": "Main Theorem: Erdős Problem #1166",
+    "content": "The main result: almost surely, the cumulative most-visited set satisfies $|\\bigcup_{k \\leq n} F(k)| \\leq C (\\log n)^2$ for large $n$. This answers Erdős and Révész's question affirmatively. The bound is stated as an axiom here; the proof structure is given in `erdos1166_from_ingredients`.",
+    "mathContext": "$\\mathbb{P}[\\exists C > 0, \\exists N, \\forall n \\geq N: |\\bigcup_{k \\leq n} F(k)| \\leq C (\\log n)^2] = 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "polylogarithmic bound",
+      "Erdős–Révész conjecture",
+      "random walk geometry"
+    ],
+    "prerequisites": [
+      "Erdős–Révész bound on |F(n)|",
+      "Erdős–Taylor theorem"
+    ]
+  },
+  {
+    "id": "ann-e1166-polylog-form",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 173,
+      "endLine": 180
+    },
+    "type": "concept",
+    "title": "Polylogarithmic Reformulation",
+    "content": "Converts the $O((\\log n)^2)$ bound into the polylogarithmic form $(\\log n)^{O(1)}$ asked for in the original problem. Specifically, $C (\\log n)^2 \\leq (\\log n)^3$ for sufficiently large $n$ (since $C \\leq (\\log n)$ eventually). This uses the `almostSurely_mono` axiom to lift the pointwise implication to an almost sure statement.",
+    "mathContext": "$C (\\log n)^2 \\leq (\\log n)^\\alpha$ for $\\alpha = 3$ and large $n$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "polylogarithmic functions",
+      "asymptotic comparison",
+      "exponent tradeoff"
+    ],
+    "prerequisites": [
+      "logarithmic inequalities",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-e1166-proof-structure",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 197,
+      "endLine": 210
+    },
+    "type": "concept",
+    "title": "Proof from Two Ingredients",
+    "content": "Demonstrates how the main theorem follows from combining the two key ingredients. The docstring gives the full argument: (1) $|F(n)| \\leq 3$ for large $n$, (2) $T_n \\leq C(\\log n)^2$ for large $n$, and (3) since $T_n$ is integer-valued and bounded by $C(\\log n)^2$, it takes at most $O((\\log n)^2)$ distinct values, each contributing at most 3 new points. Thus $|\\bigcup_{k \\leq n} F(k)| \\leq 3C(\\log n)^2$. The `almostSurely_and` axiom combines the two almost sure events.",
+    "mathContext": "$|\\bigcup_{k \\leq n} F(k)| \\leq |\\{T_k : k \\leq n\\}| \\cdot \\max_k |F(k)| \\leq C(\\log n)^2 \\cdot 3$",
+    "significance": "key",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "counting argument",
+      "regime decomposition"
+    ],
+    "prerequisites": [
+      "combinatorial counting",
+      "almost sure events"
+    ]
+  },
+  {
+    "id": "ann-e1166-connection-1165",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 216,
+      "endLine": 219
+    },
+    "type": "concept",
+    "title": "Connection to Erdős Problem #1165",
+    "content": "Explicitly connects to Erdős Problem #1165, which asks about the size of $F(n)$ itself (not the cumulative union). The result $|F(n)| \\leq 3$ a.s. is the bridge between the two problems. This illustrates how Erdős problems often form interconnected families where solving one contributes to others.",
+    "mathContext": "Problem #1165: What is $\\limsup_{n \\to \\infty} |F(n)|$? Answer: $\\leq 3$ a.s.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Erdős Problem #1165",
+      "problem families",
+      "favorite points"
+    ],
+    "prerequisites": [
+      "limsup",
+      "almost sure behavior"
+    ]
+  },
+  {
+    "id": "ann-e1166-polya-recurrence",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 225,
+      "endLine": 232
+    },
+    "type": "insight",
+    "title": "Pólya Recurrence and Divergent Visit Counts",
+    "content": "States Pólya's 1921 recurrence theorem: a 2D simple random walk returns to the origin infinitely often, almost surely. This is the foundational fact underlying the entire problem. As a corollary, the maximum visit count $T_n \\to \\infty$ a.s. Two dimensions is the critical case: 1D walks are also recurrent, but 3D walks are transient (Pólya). The logarithmic rate of growth of $T_n$ is specific to 2D.",
+    "mathContext": "$\\mathbb{P}[\\forall N, \\exists n \\geq N: s_n = o] = 1$ (2D recurrence). Consequently $T_n \\to \\infty$ a.s.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pólya recurrence theorem",
+      "transience vs recurrence",
+      "dimension dependence",
+      "critical dimension"
+    ],
+    "prerequisites": [
+      "random walk theory",
+      "Pólya 1921"
+    ]
+  },
+  {
+    "id": "ann-e1166-erdos-taylor-constant",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 238,
+      "endLine": 257
+    },
+    "type": "insight",
+    "title": "Erdős–Taylor Constant $1/\\pi$",
+    "content": "The precise asymptotic: $T_n / (\\log n)^2 \\to 1/\\pi$ almost surely. The appearance of $\\pi$ reflects the connection between 2D random walks and Brownian motion via Donsker's invariance principle, and ultimately to the Green's function of the 2D lattice. The theorem `erdosTaylor_implies_bound` shows this precise asymptotic implies the upper bound $T_n \\leq C(\\log n)^2$ needed for the main result, by choosing $C = 1/\\pi + 1$.",
+    "mathContext": "$\\frac{T_n}{(\\log n)^2} \\to \\frac{1}{\\pi}$ a.s., so $T_n \\leq (\\frac{1}{\\pi} + 1)(\\log n)^2$ for large $n$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős–Taylor constant",
+      "Brownian motion",
+      "Donsker's theorem",
+      "Green's function"
+    ],
+    "prerequisites": [
+      "invariance principles",
+      "potential theory",
+      "Brownian local time"
+    ]
+  }
+]

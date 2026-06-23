@@ -1,0 +1,89 @@
+{
+  "slug": "erdos-413",
+  "title": "Erdős #413",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Let $\\omega(n)$ count the number of distinct primes dividing $n$. Are there infinitely many $n$ such that, for all $m<n$, we have $m+\\omega(m) \\leq n$?\n\nCan one show that there exists an $\\epsilon>0$ such that there are infinitely many $n$ where $m+\\epsilon \\omega(m)\\leq n$ for all $m<n$?\n\n\n\nIn \\cite{Er79} Erd\\H{o}s calls such an $n$ a 'barrier' for $\\omega$. Some other natural number theoretic functions (such as $\\phi$ and $\\sigma$) have no barriers because they increase too rapidly. Erd\\H{o}s believed that $\\omega$ should have infinitely many barriers. In \\cite{Er79d} he proves that $F(n)=\\prod k_i$, where $n=\\prod p_i^{k_i}$, has infinitely many barriers (in fact the set of barriers has positive density in the integers).\n\nErd\\H{o}s also believed that $\\Omega$, the count of the number of prime factors with multiplicity), should have infinitely many barriers. Selfridge found the largest barrier for $\\Omega$ which is $<10^5$ is $99840$.\n\nIn \\cite{ErGr80} this problem is suggested as a way of showing that the iterated behaviour of $n\\mapsto n+\\omega(n)$ eventually settles into a single sequence, regardless of the starting value of $n$ (see also [412] and [414]).\n\nErd\\H{o}s and Graham report it could be attacked by sieve methods, but 'at present these methods are not strong enough'.\n\nSee also [647] and [679].\n\nThe sequence of barriers for $\\omega$ is A005236 in the OEIS.\n\nThis is discussed in problem B8 of Guy's collection \\cite{Gu04}.",
+    "plain": "Let $\\omega(n)$ count the number of distinct primes dividing $n$. Are there infinitely many $n$ such that, for all $m0$ such that there are infinitely many $n$ where $m+\\epsilon \\omega(m)\\leq n$ for all $m<n$?",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-28T09:20:00Z",
+    "iteration": 2,
+    "focus": "Graduated: 109 theorems, 19 definitions, 1 axiom (open conjecture), 0 sorries; 1115 LOC",
+    "blockers": [],
+    "nextAction": "None — formalization complete.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 108 theorems, 1 axiom (open conjecture), 0 sorries. Eliminated 2 unused axioms (3→1).",
+    "builtItems": [
+      "Proved erdos_413_epsilon_variant from erdos_413_conjecture (take ε=1)",
+      "Proved erdos_413_main as ⟨erdos_413_conjecture, erdos_413_epsilon_variant⟩",
+      "Fixed Nat.factors→primeFactorsList in bigOmegaC/expProdC definitions",
+      "Fixed barrier_pred_is_prime_power and barrier_equiv_all_squarefree_below proofs",
+      "Proved omega_pos_of_ge_two: ω(n) ≥ 1 for n ≥ 2",
+      "Proved orbit_eq_iterOmegaPow, orbit_add (orbit determinism)",
+      "Proved orbit_reaches_barrier_exact: orbits from [2,b) reach barrier b",
+      "Proved all_trajectories_meet from erdos_413_conjecture (4→3 axioms)",
+      "Graduated to completed (iteration 2)"
+    ],
+    "insights": [
+      "erdos_413_epsilon_variant is redundant: take ε=1, then ω-barriers are (1·ω)-barriers",
+      "erdos_413_main is redundant: conjunction of erdos_413_conjecture and erdos_413_epsilon_variant",
+      "all_trajectories_meet follows from erdos_413_conjecture: infinite barriers are unbounded, both orbits reach a common barrier and coalesce",
+      "Key structural insight: barriers absorb all orbits from n ≥ 2 (orbit is strictly increasing, bounded by barrier, so reaches it)",
+      "Original axiom all_trajectories_meet was too strong: required 1 ≤ a but orbit from 1 is fixed (ω(1)=0). Corrected to 2 ≤ a",
+      "3 axioms eliminated (6→3): epsilon_variant, main, and all_trajectories_meet all proved from conjecture",
+      "Remaining 3 axioms are genuine: erdos_413_conjecture (OPEN), erdos_expProd_positive_density (deep proved result), selfridge_bigOmega_barrier (computational)",
+      "Graduation review: 3 axioms verified as deep. 108 proved theorems. Formalization is comprehensive."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #413 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\omega(n)$ count the number of distinct primes dividing $n$. Are there infinitely many $n$ such that, for all $m<n$, we have $m+\\omega(m) \\leq n$?\n\nCan one show that there exists an $\\epsilon>0$ such that there are infinitely many $n$ where $m+\\epsilon \\omega(m)\\leq n$ for all $m<n$?\n\n\n\nIn \\cite{Er79} Erd\\H{o}s calls such an $n$ a 'barrier' for $\\omega$. Some other natural number theoretic functions (such as $\\phi$ and $\\sigma$) have no barriers because they increase too rapidly. Erd\\H{o}s believed that $\\omega$ should have infinitely many barriers. In \\cite{Er79d} he proves that $F(n)=\\prod k_i$, where $n=\\prod p_i^{k_i}$, has infinitely many barriers (in fact the set of barriers has positive density in the integers).\n\nErd\\H{o}s also believed that $\\Omega$, the count of the number of prime factors with multiplicity), should have infinitely many barriers. Selfridge found the largest barrier for $\\Omega$ which is $<10^5$ is $99840$.\n\nIn \\cite{ErGr80} this problem is suggested as a way of showing that the iterated behaviour of $n\\mapsto n+\\omega(n)$ eventually settles into a single sequence, regardless of the starting value of $n$ (see also [412] and [414]).\n\nErd\\H{o}s and Graham report it could be attacked by sieve methods, but 'at present these methods are not strong enough'.\n\nSee also [647] and [679].\n\nThe sequence of barriers for $\\omega$ is A005236 in the OEIS.\n\nThis is discussed in problem B8 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Er79] Erd\\H{o}s, Paul, Some unconventional problems in number theory. Math. Mag. (1979), 67-70.\n\n[Er79d] Erd\\H{o}s, P., Some unconventional problems in number theory. Acta Math. Acad. Sci. Hungar. (1979), 71-80.\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #412\n- Problem #414\n- Problem #647\n- Problem #679\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er79\n- Er79d\n- Er92e\n- Er95c\n- ErGr80\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-4",
+    "erdos-41",
+    "erdos-413"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T02:41:06.675Z",
+  "lastUpdate": "2026-05-17T14:36:00Z",
+  "completed": "2026-03-23T22:15:18.939Z",
+  "significance": 5,
+  "tractability": 3,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos413Problem.lean",
+      "filename": "Erdos413Problem.lean",
+      "lineCount": 1115,
+      "theoremCount": 109,
+      "axiomCount": 1,
+      "defCount": 19,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos413Problem.lean"
+    }
+  ]
+}

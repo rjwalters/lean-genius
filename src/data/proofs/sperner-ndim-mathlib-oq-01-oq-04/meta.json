@@ -1,0 +1,225 @@
+{
+  "id": "sperner-ndim-mathlib-oq-01-oq-04",
+  "title": "Signed CellComplex: ℤ-Valued Sign with Interior-Door Cancellation",
+  "slug": "sperner-ndim-mathlib-oq-01-oq-04",
+  "description": "Answers OQ-04 of sperner-ndim-mathlib-oq-01: generalize the abstract CellComplex framework to signed cell complexes (oriented chains). Adjacent facets carry opposite ±1 signs satisfying the coherence sign(s,k) + sign(s',k') = 0. The signed-interior-doors theorem shows the sum of facet signs over interior doors vanishes in ℤ, via Finset.sum_involution applied to the lifted adjacency map. The naive ZMod-2-valued sign with sum-to-one coherence is shown to be mathematically vacuous (collapses to a Bool-valued labeling under ZMod.neg_eq_self_mod_two); ℤ is the right ground ring for orientation tracking.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SpernerNDimMathlibOQ01OQ04.lean",
+    "tags": [
+      "combinatorics",
+      "topology",
+      "sperner",
+      "abstract-cell-complex",
+      "signed-cell-complex",
+      "oriented-chain-complex",
+      "boundary-cancellation",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 207,
+    "assumptions": "No axioms or sorries. The signed_interior_doors_sum_zero theorem is discharged via Finset.sum_involution applied to the signedAdjMap involution, using only the structure's sign_adj coherence and the parent's adj_symm, adj_vertices, adj_ne axioms.",
+    "dateAdded": "2026-05-16",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "SignedCellComplex: structure extending CellComplex with per-facet ℤ-valued ±1 sign field and sign_adj coherence (adjacent facets sum to 0)",
+      "signedAdjMap: lift of the parent's adjacency map to the signed signature",
+      "signedDoorCount: signed door count (sum of facet signs over door facets, in ℤ)",
+      "signed_interior_doors_sum_zero: the sum of facet signs over interior doors vanishes in ℤ — signed analog of the parent's interior_doors_even, discharged via Finset.sum_involution",
+      "sign_ne_zero: facet signs are never zero (immediate from sign_pm_one)",
+      "door_transfer_signed_one_dir: private helper re-proving the parent's private door_transfer for use in the cancellation proof",
+      "signedAdjMap_invol: private helper showing signedAdjMap is an involution on interior facets, extracted to dodge a dependent-type generalize failure in the main theorem's invol case"
+    ],
+    "theoremCount": 4,
+    "definitionCount": 3,
+    "prerequisites": [
+      "SpernerNDimMathlib (abstract CellComplex framework: adj_symm, adj_vertices, adj_ne axioms)",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic (Finset.sum_involution)",
+      "ℤ arithmetic with one_ne_zero"
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/SpernerNDimMathlibOQ01OQ04.lean",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 207,
+    "theoremCount": 4,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "The unsigned door-counting argument formalised in the parent `SpernerNDimMathlib.lean` works over `ZMod 2` parity: interior doors cancel pairwise mod 2, and the boundary-door count detects fully-coloured cells. To lift this to signed (oriented) chain complexes — needed for the equivariant generalisations Tucker's lemma and Borsuk–Ulam — one would naïvely add a `ZMod 2`-valued sign field with a `sign s k + sign s' k' = 1` coherence on adjacent facets, intending 'opposite signs'. This file diagnoses that approach as **mathematically vacuous**: in `ZMod 2`, every element satisfies `-a = a` (Mathlib's `ZMod.neg_eq_self_mod_two`), so 'opposite signs' degenerates to 'differs-on-adjacency', and the would-be signed-cancellation theorem reduces to the parent's unsigned even-count statement. The classical signed-chain boundary `∂σ = ∑ (-1)^i ∂_i σ` lives over ℤ (or any field of characteristic ≠ 2); in `ℤ/2` it collapses to the unsigned boundary.\n\nThis file implements the **ℤ-valued** signed cell complex: per-facet `±1` signs with `sign s k + sign s' k' = 0` (i.e., genuinely opposite in ℤ). The signed-interior-doors cancellation theorem then closes directly via Mathlib's `Finset.sum_involution` (lemma added by the Mathlib community as the additive cousin of `Finset.prod_involution`). The discharge mirrors the parent's `interior_doors_even` proof: the same `adjMap` involution structure is reused, with the parent's three adjacency axioms (`adj_symm`, `adj_vertices`, `adj_ne`) supplying involution / membership preservation / fixed-point-freeness, and `sign_adj` supplying the cancellation hypothesis `f a + f (g a) = 0`.\n\nThe motivation is structural: a signed `CellComplex` is the natural Lean-side substrate for a future Tucker's lemma formalisation (antipodal ℤ/2-equivariant Sperner) and for bridging the abstract `CellComplex` API to Mathlib's `AlternatingFaceMapComplex` over `ModuleCat ℤ`. This file delivers the structural definition + the foundational cancellation theorem in 200 LOC with 0 axioms and 0 sorries, leaving the Tucker/Borsuk–Ulam bridges as separate follow-up sessions.",
+    "problemStatement": "Generalize the abstract CellComplex framework (sperner-ndim-mathlib) to signed cell complexes: enrich each cell complex with a per-facet ℤ-valued ±1 sign field satisfying sign(s,k) + sign(s',k') = 0 for adjacent facets. Prove the signed analog of interior_doors_even: ∑_{(s,k) interior door} sign(s,k) = 0 in ℤ.",
+    "text": "Proves that adjacent-facet sign cancellation in a signed cell complex yields a vanishing signed-door sum over interior doors, discharging via Finset.sum_involution.",
+    "proofStrategy": "1. Define SignedCellComplex extending CellComplex with sign : Simplex → Fin (d+1) → ℤ, sign_pm_one (±1 valuation), and sign_adj (adjacent sum = 0). 2. Define signedAdjMap as the lifted adjacency map and signedDoorCount as the sum of facet signs over door facets. 3. For signed_interior_doors_sum_zero: restrict to S = {(s,k) | door ∧ adj ≠ none}; apply Finset.sum_involution with g := λp _hp => signedAdjMap p; verify the four obligations (cancellation = sign_adj, fixed-point-freeness = adj_ne, membership preservation = door_transfer + adj_symm, involution = adj_symm).",
+    "keyInsights": [
+      "ZMod 2 is the wrong ground ring for orientation tracking: ZMod.neg_eq_self_mod_two collapses opposite signs to identical signs, making the 'signed' structure degenerate to the unsigned parent.",
+      "The right coherence for adjacent facets is sign(s,k) + sign(s',k') = 0 in ℤ (i.e., they are genuinely negatives), which makes ∂σ = ∑ (-1)^i ∂_i σ a meaningful boundary operator.",
+      "Finset.sum_involution (additive cousin of prod_involution, derived via @[to_additive]) is the ideal Mathlib hammer: it takes a dependent involution g : ∀ a ∈ s, ι with a cancellation hypothesis f a + f (g a ha) = 0 and yields ∑ x ∈ s, f x = 0 directly.",
+      "The parent's interior_doors_even proof structure (using adjMap as the involution and the three CellComplex adjacency axioms) reuses verbatim for the signed cancellation, modulo replacing the parity-of-cardinality conclusion with the additive-zero conclusion.",
+      "The parent's door_transfer lemma is private, so the signed file re-proves a one-dir variant (door_transfer_signed_one_dir, 8 LOC) directly from the public adj_vertices axiom. No parent surgery is needed.",
+      "The `structure ... extends CellComplex` design (rather than bundling a parent field) is the right Lean 4 idiom: the autogenerated `K.toCellComplex` projection lets every `SignedCellComplex` inherit the parent's API (adj_symm, adj_vertices, adj_ne, isDoorAt, doorCount) without re-declaration — the standard Mathlib pattern for adding orientation, grading, or filtration data to an existing combinatorial structure."
+    ],
+    "prerequisites": [
+      "SpernerNDimMathlib (abstract CellComplex with adj_symm, adj_vertices, adj_ne axioms)",
+      "Finset.sum_involution from Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "ℤ arithmetic"
+    ],
+    "openQuestions": [
+      "Bridge to Mathlib's AlternatingFaceMapComplex over ModuleCat ℤ: embed SignedCellComplex into a chain complex with the standard signed boundary operator.",
+      "Tucker's lemma: state and prove the antipodal ℤ/2-equivariant Sperner statement over an Antipodal variant of SignedCellComplex (vertex-level involution ι : V → V with ι_involutive + ι_no_fp).",
+      "Borsuk–Ulam: derive the topological consequence from the signed cancellation theorem via the standard reduction to antipodal sphere maps."
+    ]
+  },
+  "sections": [
+    {
+      "id": "file-header",
+      "title": "File Header and Motivation",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Documents why ℤ is the right ground ring (ZMod 2 vacuity diagnosis via ZMod.neg_eq_self_mod_two) and previews the structure / main theorem."
+    },
+    {
+      "id": "namespace-setup",
+      "title": "Namespace and Imports",
+      "startLine": 50,
+      "endLine": 56,
+      "summary": "Opens `SpernerAbstract.Signed` namespace and `Finset BigOperators` to enable `∑ p ∈ s, f p` notation. Disables the unused-variables linter so the dependent obligation lambdas (whose `_hp` membership args go unused) stay readable."
+    },
+    {
+      "id": "structure-def",
+      "title": "SignedCellComplex Structure",
+      "startLine": 57,
+      "endLine": 71,
+      "summary": "Defines `SignedCellComplex V d extends CellComplex V d` with a ℤ-valued `sign` field, `sign_pm_one` (sign ∈ {±1}), and `sign_adj` coherence (adjacent facets sum to 0)."
+    },
+    {
+      "id": "support-defs",
+      "title": "Supporting Lemmas and Definitions",
+      "startLine": 72,
+      "endLine": 97,
+      "summary": "`sign_ne_zero` (sign values are nonzero), `signedAdjMap` (lifted adjacency map on `Simplex × Fin (d+1)`), and `signedDoorCount` (ℤ-valued sum of facet signs over door facets)."
+    },
+    {
+      "id": "private-helpers",
+      "title": "Private Helper Lemmas",
+      "startLine": 98,
+      "endLine": 130,
+      "summary": "Two `private` helpers consumed only by the main theorem: `door_transfer_signed_one_dir` (public re-proof of the parent's private `door_transfer_one_dir`, via `Finset.mem_image` / `Finset.mem_erase` chasing) and `signedAdjMap_invol` (extracted to dodge a dependent-type `generalize` failure in the main theorem's `invol` case)."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Signed Interior Doors Sum to Zero",
+      "startLine": 131,
+      "endLine": 207,
+      "summary": "`signed_interior_doors_sum_zero`: the central cancellation theorem. Applies `Finset.sum_involution` with the four obligations dispatched in named case blocks (cancel / fpf / gmem / invol). Mirrors the parent's `interior_doors_even` skeleton but yields an additive-zero conclusion in ℤ instead of an even-cardinality conclusion."
+    }
+  ],
+  "conclusion": {
+    "summary": "Delivers a structural ℤ-valued signed CellComplex and the foundational signed-interior-doors cancellation theorem (sum vanishes in ℤ) in 207 LOC with 0 axioms and 0 sorries. The ZMod-2-vacuity diagnosis (sign collapse via ZMod.neg_eq_self_mod_two) justifies the move to ℤ, and Finset.sum_involution discharges the cancellation directly.",
+    "implications": "This is the substrate for two follow-up directions: (1) embedding into Mathlib's AlternatingFaceMapComplex over ModuleCat ℤ to connect with the standard algebraic-topology API, and (2) the Tucker/Borsuk–Ulam chain — Tucker's lemma is the antipodal ℤ/2-equivariant Sperner statement, and the ℤ-valued sign structure here is exactly the orientation data needed for the equivariant counting argument. The 207-LOC delivery preserves the proof economy of the parent's abstract framework: no concrete triangulation is required, the three CellComplex adjacency axioms suffice for the signed cancellation. Notably, the four Finset.sum_involution obligations align bijectively with the four CellComplex+Signed axioms (cancel↔sign_adj, fpf↔adj_ne, gmem↔adj_vertices+adj_symm, invol↔adj_symm), evidencing a tight axiomatisation with no redundancy for this theorem.",
+    "openQuestions": [
+      "S2-B (Mathlib bridge): embed SignedCellComplex into AlternatingFaceMapComplex over ModuleCat ℤ (~80 LOC, expected).",
+      "S2-C (Tucker scaffold): define AntipodalCellComplex (vertex-level involution ι : V → V) and state Tucker's lemma over it (~120 LOC, 2 statement-only sorries expected).",
+      "S2-D (Borsuk–Ulam): bridge the antipodal Tucker statement to the topological Borsuk–Ulam conclusion."
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "sperner-ndim-mathlib",
+      "relationship": "extends",
+      "description": "Parent: abstract CellComplex framework with door-counting parity. This OQ-04 entry adds a signed-coherence layer (ℤ-valued ±1 sign field with adjacent-sum-zero) and proves the signed analog of the parent's interior_doors_even (cardinality even ⟹ ℤ-sum zero)."
+    },
+    {
+      "proofId": "sperner-ndim-mathlib-oq-01",
+      "relationship": "sibling",
+      "description": "Companion OQ-01 entry (Freudenthal CellComplex bridge). Both are open-question follow-ups to the parent's abstract framework, addressing different generalisations."
+    },
+    {
+      "proofId": "sperner-ndim-mathlib-oq-02",
+      "relationship": "sibling",
+      "description": "Companion OQ-02 entry (Brouwer fixed point from Sperner). The signed structure here is a candidate substrate for an equivariant version of the Brouwer–Sperner chain."
+    },
+    {
+      "proofId": "borsuk-ulam",
+      "relationship": "supports",
+      "description": "The signed CellComplex structure here is the natural ℤ-valued substrate for an equivariant Sperner argument; Tucker's lemma (the ℤ/2-equivariant Sperner statement) is the combinatorial heart of Borsuk–Ulam. This file delivers the foundational cancellation theorem; the Tucker/Borsuk–Ulam bridges remain follow-up work."
+    },
+    {
+      "proofId": "brouwer-fixed-point",
+      "relationship": "supports",
+      "description": "The Sperner → Brouwer reduction relies on the unsigned door-counting parity argument; the signed (oriented) analog here is the natural lift for an *equivariant* Brouwer statement (degree-tracking via the ℤ-valued sign field). The signed-interior-doors cancellation theorem is the structural ingredient that would feed any such oriented refinement."
+    },
+    {
+      "proofId": "sperner-mathlib4",
+      "relationship": "complements",
+      "description": "Mathlib4's concrete Sperner formalisation operates over a specific geometric triangulation; this file's abstract signed CellComplex is the orientation-aware companion to the parent's abstract unsigned framework. The two stacks are complementary: Mathlib4-Sperner gives a concrete combinatorial closed theorem; the abstract framework here gives the structural API for equivariant / signed extensions."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "SignedCellComplex",
+      "type": "structure",
+      "statement": "$\\mathrm{SignedCellComplex}\\ V\\ d := \\mathrm{CellComplex}\\ V\\ d \\text{ extended with } \\{\\mathrm{sign} : \\mathrm{Simplex} \\to \\mathrm{Fin}(d{+}1) \\to \\mathbb{Z},\\ \\mathrm{sign\\_pm\\_one},\\ \\mathrm{sign\\_adj}\\}$",
+      "significance": "The structural definition: enriches the parent's abstract `CellComplex` with a per-facet ℤ-valued ±1 sign field and the adjacency-orientation coherence `sign s k + sign s' k' = 0`. This is the right framework for orientation-aware combinatorial topology (Tucker's lemma, Borsuk–Ulam, signed chain complexes).",
+      "description": "Signed cell complex structure. Extends `CellComplex V d` with `sign : Simplex → Fin (d+1) → ℤ`, `sign_pm_one : sign ∈ {±1}`, and `sign_adj : adj s k = some (s', k') → sign s k + sign s' k' = 0`."
+    },
+    {
+      "name": "signedAdjMap",
+      "type": "definition",
+      "statement": "$\\mathrm{signedAdjMap}\\ K\\ p := \\begin{cases} (s',k') & K.\\mathrm{adj}\\ p_1\\ p_2 = \\mathrm{some}\\ (s',k') \\\\ p & K.\\mathrm{adj}\\ p_1\\ p_2 = \\mathrm{none} \\end{cases}$",
+      "significance": "The lifted adjacency map: at an interior facet, follow the parent's adjacency; at a boundary facet, stay put. Identical in form to the parent's `private adjMap`, lifted to a public name for use in the signed cancellation theorem.",
+      "description": "Signed adjacency map on `K.Simplex × Fin (d+1)`. Match on `K.adj p.1 p.2` and return the paired facet or fall through to the original at boundary."
+    },
+    {
+      "name": "signedDoorCount",
+      "type": "definition",
+      "statement": "$\\mathrm{signedDoorCount}\\ K\\ c := \\sum_{(s,k)\\ :\\ \\mathrm{isDoorAt}\\ c\\ K\\ s\\ k} K.\\mathrm{sign}\\ s\\ k$",
+      "significance": "The signed door count: sum of facet signs over door facets (in ℤ). Together with the signed-interior-doors-sum-zero theorem, this isolates the boundary-door contribution to the signed count, mirroring the parent's unsigned parity split.",
+      "description": "Signed door count: ∑ K.sign s k over facets (s,k) satisfying isDoorAt c K s k. Lives in ℤ."
+    },
+    {
+      "name": "signed_interior_doors_sum_zero",
+      "type": "theorem",
+      "statement": "$\\forall K,\\ c,\\ \\sum_{(s,k)\\ :\\ \\mathrm{isDoorAt}\\ c\\ K\\ s\\ k \\land K.\\mathrm{adj}\\ s\\ k \\ne \\mathrm{none}} K.\\mathrm{sign}\\ s\\ k = 0$",
+      "significance": "**The headline cancellation result.** The sum of facet signs over interior doors vanishes in ℤ. Discharged directly via `Finset.sum_involution` applied to `signedAdjMap`, with cancellation supplied by `sign_adj`. This is the signed analog of the parent's `interior_doors_even` (cardinality is even).",
+      "description": "Signed interior-door cancellation. Apply Finset.sum_involution with g := λ p _hp => signedAdjMap K p. Four obligations: cancellation (sign_adj), fixed-point-freeness for nonzero values (adj_ne), domain preservation (door_transfer_signed_one_dir + adj_symm), and involution (adj_symm)."
+    }
+  ],
+  "references": [
+    {
+      "type": "library",
+      "citation": "The mathlib Community. \"Mathlib.Algebra.BigOperators.Group.Finset.Basic — `Finset.prod_involution` / `Finset.sum_involution`.\" (accessed 2026, lake-pinned SHA 2df2f015).",
+      "relevance": "Provides `sum_involution` as the additive cousin of `prod_involution` via @[to_additive]. The dependent-argument signature (`g : ∀ a ∈ s, ι`) is the precise shape we need for the signed cancellation discharge."
+    },
+    {
+      "type": "library",
+      "citation": "The mathlib Community. \"Mathlib.Data.ZMod.Basic — `ZMod.neg_eq_self_mod_two`.\" (accessed 2026).",
+      "relevance": "The vacuity witness: `∀ a : ZMod 2, -a = a` is the precise lemma that collapses 'opposite signs' to 'identical signs' in ZMod 2, justifying the move to ℤ-valued signs."
+    },
+    {
+      "type": "paper",
+      "citation": "Tucker, A. W. (1946). \"Some topological properties of disk and sphere.\" Proceedings of the First Canadian Mathematical Congress, 285–309.",
+      "relevance": "Original Tucker's lemma — the antipodal ℤ/2-equivariant Sperner statement that motivates the signed-CellComplex structure. The ℤ-valued sign field here is the natural Lean-side substrate for a future Tucker formalisation."
+    },
+    {
+      "type": "textbook",
+      "citation": "Matoušek, J. (2008). Using the Borsuk-Ulam Theorem. Springer.",
+      "relevance": "Standard reference for the equivariant / antipodal versions of Sperner's lemma (Tucker, Ky Fan, KKM equivariant). Chapter 2 details the signed counting argument that this file's signed_interior_doors_sum_zero theorem foundationally supports."
+    },
+    {
+      "type": "textbook",
+      "citation": "Hatcher, A. (2002). Algebraic Topology. Cambridge University Press. §2.1 (Simplicial and Singular Homology).",
+      "relevance": "Standard reference for oriented simplicial chain complexes with the alternating-sign boundary operator $\\partial \\sigma = \\sum_i (-1)^i \\partial_i \\sigma$. The ℤ-valued sign field of `SignedCellComplex` is the abstract-CellComplex analogue of Hatcher's per-facet orientation data; the signed-interior-doors cancellation theorem here mirrors the $\\partial \\circ \\partial = 0$ identity over a single facet pair. Hatcher's discussion of why characteristic ≠ 2 matters for orientation is the textbook companion to this file's ZMod-2-vacuity diagnosis."
+    },
+    {
+      "type": "internal",
+      "citation": "Session memo research/problems/sperner-ndim-mathlib-oq-01-oq-04/sessions/2026-05-15-s02-prep-mathlib-bearers-zmod2-skeleton-correction.md (researcher-8, PR #19243).",
+      "relevance": "The S2 PREP that diagnosed the ZMod-2 vacuity, audited 7 Mathlib bearers at the lake-pinned SHA, and proposed the Variant A-ℤ skeleton implemented here."
+    }
+  ],
+  "sorries": 0
+}

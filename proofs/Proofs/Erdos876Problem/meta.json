@@ -1,0 +1,18 @@
+{
+  "problem_number": 876,
+  "title": "Sum-Free Sets and Gap Growth",
+  "status": "partially_solved",
+  "solvers": [],
+  "source_url": "https://erdosproblems.com/876",
+  "overview": "For an infinite sum-free set A = {a₁ < a₂ < ⋯} (no element is a sum of distinct smaller elements), how small can gaps aₙ₊₁ - aₙ be? Is aₙ₊₁ - aₙ < n possible?",
+  "sections": [],
+  "conclusion": "PARTIALLY SOLVED: Graham showed gaps < n^{1+o(1)} achievable. Whether gaps < n is possible remains OPEN. Additional results: sum-free sets have density zero (Erdős), |A ∩ [1,N]| = Θ((N log N)^{1/2}) (Łuczak-Schoen), reciprocal sum < 4 (Sullivan).",
+  "references": [
+    "Graham - Gap bound n^{1+o(1)}",
+    "Deshouillers-Erdős-Melfi [DEM99] - Growth aₙ ~ n^{3+o(1)}",
+    "Łuczak-Schoen [LuSc00] - Counting bound",
+    "Sullivan - Reciprocal sum < 4"
+  ],
+  "related_problems": [790],
+  "tags": ["combinatorics", "sum-free-sets", "sequences", "density", "partially-solved"]
+}

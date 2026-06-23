@@ -1,0 +1,91 @@
+[
+  {
+    "id": "ann-fsdoq04-header",
+    "proofId": "four-square-distribution-oq-04",
+    "range": { "startLine": 5, "endLine": 57 },
+    "type": "concept",
+    "title": "OQ-04: Generalizing the Type Decomposition to r₆(n)",
+    "content": "The parent four-square-distribution writes r₄(n) as a sum over ordering types, each contributing (4!/∏mᵢ!)·2^(#nonzero) under the hyperoctahedral group B₄. This file answers OQ-04's 2k=6 case: the same bookkeeping holds verbatim for r₆(n) under B₆ = S₆ ⋉ (ℤ/2)⁶, |B₆| = 6!·2⁶ = 46080, with orbit-size formula (6!/∏mᵢ!)·2^(#nonzero). The computational route (sorted-tuple structure + native_decide) mirrors the parent rather than building the full MulAction.",
+    "mathContext": "The hyperoctahedral (signed-permutation) group $B_k = S_k \\ltimes (\\mathbb{Z}/2)^k$ acts on representations of $n$ as a sum of $k$ squares; an orbit is determined by the sorted multiset of $|coordinate|$ values, and has size $\\tfrac{k!}{\\prod m_i!}\\cdot 2^{\\#\\text{nonzero}}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "hyperoctahedral group",
+      "orbit-stabilizer",
+      "sums of squares",
+      "Jacobi r₆ formula"
+    ],
+    "prerequisites": ["four-square-distribution (parent)", "orbit counting"]
+  },
+  {
+    "id": "ann-fsdoq04-reptype6",
+    "proofId": "four-square-distribution-oq-04",
+    "range": { "startLine": 68, "endLine": 88 },
+    "type": "definition",
+    "title": "RepType6: Sorted Six-Tuple Representation Type",
+    "content": "A type is a sorted six-tuple (a₁ ≤ … ≤ a₆) with ∑aᵢ² = n, capturing the unordered multiset of absolute values of a six-square representation. `deriving DecidableEq` makes types decidable, enabling native_decide on their contributions. `nonzeroCount` counts the nonzero coordinates — the only ones carrying sign freedom.",
+    "mathContext": "Each $B_6$-orbit has a unique sorted representative $0 \\le a_1 \\le \\dots \\le a_6$ with $\\sum a_i^2 = n$. The structure bundles the sortedness predicate and the sum-of-squares obligation as fields.",
+    "significance": "key",
+    "relatedConcepts": ["multiset of absolute values", "decidable type", "canonical representative"],
+    "prerequisites": ["DecidableEq", "structure with proof fields"]
+  },
+  {
+    "id": "ann-fsdoq04-formula",
+    "proofId": "four-square-distribution-oq-04",
+    "range": { "startLine": 90, "endLine": 110 },
+    "type": "definition",
+    "title": "The Orbit-Size Formula (★): contribution = permutations · 2^(#nonzero)",
+    "content": "`permutations = 720/∏(count v)!` is the multinomial number of distinct orderings of the six values; `signFactor = 2^(#nonzero)` counts independent sign choices. Their product is the orbit size. The sign factor uses #nonzero rather than 6 because flipping the sign of a zero coordinate fixes the tuple — the same zero-degeneracy as the parent.",
+    "mathContext": "$\\text{contribution}(t) = \\dfrac{6!}{\\prod_v (\\text{mult}\\,v)!}\\cdot 2^{\\#\\text{nonzero}(t)}$. The multinomial $720/\\prod m_i!$ counts orderings of a multiset; $2^{\\#\\text{nonzero}}$ counts sign assignments to nonzero entries.",
+    "significance": "key",
+    "relatedConcepts": ["multinomial coefficient", "sign degeneracy of zeros", "orbit size"],
+    "prerequisites": ["List.dedup", "List.count", "Nat.factorial"]
+  },
+  {
+    "id": "ann-fsdoq04-types",
+    "proofId": "four-square-distribution-oq-04",
+    "range": { "startLine": 112, "endLine": 139 },
+    "type": "concept",
+    "title": "Complete Type Enumeration for n ∈ {1,2,3,5,6,12,30}",
+    "content": "Each sorted six-square shape is given as an explicit RepType6 term via the mk6 constructor (sortedness by `decide`, sum by `norm_num`). The lists are exhaustive for each n (cross-checked by the Python certificate): one shape each for n=1,2,3; two for n=5,6; three for n=12; six for n=30, including the all-distinct-nonzero (1,1,2,2,2,4) and the largest single orbit (0,0,1,2,3,4).",
+    "mathContext": "Exhaustive enumeration of sorted tuples $0 \\le a_1 \\le \\dots \\le a_6$ with $\\sum a_i^2 = n$. For $n = 30$: $(0,0,0,1,2,5), (0,0,1,2,3,4), (0,2,2,2,3,3), (1,1,1,1,1,5), (1,1,1,3,3,3), (1,1,2,2,2,4)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["exhaustive shape enumeration", "decide", "norm_num"],
+    "prerequisites": ["RepType6 constructor"]
+  },
+  {
+    "id": "ann-fsdoq04-contributions",
+    "proofId": "four-square-distribution-oq-04",
+    "range": { "startLine": 141, "endLine": 158 },
+    "type": "theorem",
+    "title": "Per-Type Contributions via native_decide",
+    "content": "The 16 contribution theorems (t1_contribution … t30f_contribution) evaluate (★) for each enumerated type, e.g. t30b.contribution = 5760 for (0,0,1,2,3,4) and t6b.contribution = 64 for the all-ones (1,1,1,1,1,1). Each is a concrete natural-number computation discharged by `native_decide`, the same trusted-compiler route the parent uses. This is the load-bearing step where the orbit-size formula becomes a checkable number.",
+    "mathContext": "For $(0,0,1,2,3,4)$: distinct nonzero values $1,2,3,4$ plus two zeros, $\\#\\text{nonzero}=4$, orderings $6!/2! = 360$, sign $2^4 = 16$, contribution $360\\cdot16 = 5760$.",
+    "significance": "key",
+    "relatedConcepts": ["native_decide", "Lean.ofReduceBool", "concrete orbit size"],
+    "prerequisites": ["DecidableEq on RepType6"]
+  },
+  {
+    "id": "ann-fsdoq04-totals",
+    "proofId": "four-square-distribution-oq-04",
+    "range": { "startLine": 160, "endLine": 187 },
+    "type": "theorem",
+    "title": "∑ contributions = r₆(n): Reproducing Jacobi's Values",
+    "content": "r6_5, r6_6, r6_12, r6_30 sum the per-type contributions to recover Jacobi's r₆(n): 312, 544, 2080, 14144. Each follows by rewriting with the contribution lemmas — no theta-function machinery is invoked. This is the combinatorial cross-check: the hyperoctahedral orbit count reproduces the analytic representation number exactly on representative n.",
+    "mathContext": "$r_6(30) = 14144 = 960+5760+1920+384+1280+3840$, the sum of the six shape contributions for $n=30$. The totals match Jacobi's closed-form $r_6$ computed independently in the certificate.",
+    "significance": "key",
+    "relatedConcepts": ["Jacobi r₆", "combinatorial verification of an analytic count"],
+    "prerequisites": ["per-type contribution theorems"]
+  },
+  {
+    "id": "ann-fsdoq04-structural",
+    "proofId": "four-square-distribution-oq-04",
+    "range": { "startLine": 189, "endLine": 207 },
+    "type": "lemma",
+    "title": "Structural Bounds: #nonzero ≤ 6 and signFactor ≤ 64",
+    "content": "nonzeroCount_le_six bounds the number of nonzero parts by six (split_ifs + omega); signFactor_le_64 deduces the sign factor 2^(#nonzero) is at most 2⁶ = 64 via Nat.pow_le_pow_right. These hold for every RepType6 n (universally quantified), unlike the per-type computations above — small but genuinely general structural facts about the six-square decomposition.",
+    "mathContext": "$\\#\\text{nonzero}(t) \\le 6$ since there are six coordinates, hence $\\text{signFactor}(t) = 2^{\\#\\text{nonzero}(t)} \\le 2^6 = 64$ by monotonicity of $2^{(\\cdot)}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["universal bound", "monotonicity of powers", "omega"],
+    "prerequisites": ["Nat.pow_le_pow_right"]
+  }
+]

@@ -1,0 +1,418 @@
+[
+  {
+    "id": "ann-e982-header",
+    "proofId": "erdos-982",
+    "range": {
+      "startLine": 1,
+      "endLine": 32
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #982** asks a fundamental question about convex polygons:\n\nIf n points form a convex polygon, must some vertex see at least floor(n/2) different distances to other vertices?\n\n**Status:** OPEN\n\n**Key facts:**\n- Regular n-gon shows floor(n/2) would be tight\n- Best known: f(n) >= 0.361n (Nivasch et al. 2013)\n- Related stronger conjectures have been disproved",
+    "mathContext": "Let $f(n)$ be the largest $k$ such that every convex $n$-gon has a vertex with at least $k$ distinct distances. The conjecture states $f(n) \\ge \\lfloor n/2 \\rfloor$. Currently $\\tfrac{13}{36}n \\lesssim f(n) \\le \\lceil n/2 \\rceil$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Convex polygon",
+      "Distinct distances",
+      "Discrete geometry"
+    ],
+    "prerequisites": [
+      "Euclidean distance in the plane",
+      "Convex hull and extreme points"
+    ]
+  },
+  {
+    "id": "ann-e982-plane",
+    "proofId": "erdos-982",
+    "range": {
+      "startLine": 49,
+      "endLine": 53
+    },
+    "type": "definition",
+    "title": "Euclidean Plane",
+    "content": "**Plane:**\n\nWe define the 2-dimensional Euclidean plane using Mathlib's EuclideanSpace:\n\n```lean\nabbrev Plane : Type := EuclideanSpace R (Fin 2)\n```\n\nThis gives us the full metric space structure with the standard Euclidean distance.",
+    "significance": "supporting",
+    "mathContext": "The plane is $\\mathbb{R}^2$ equipped with the Euclidean metric $d(p,q) = \\sqrt{(p_1 - q_1)^2 + (p_2 - q_2)^2}$, realized in Lean as `EuclideanSpace \\mathbb{R}\\;(\\text{Fin}\\;2)`.",
+    "relatedConcepts": [
+      "Inner product space",
+      "Metric space",
+      "EuclideanSpace"
+    ],
+    "prerequisites": [
+      "Real inner product spaces",
+      "Metric space axioms"
+    ]
+  },
+  {
+    "id": "ann-e982-distinct-distances",
+    "proofId": "erdos-982",
+    "range": {
+      "startLine": 55,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "Distinct Distances From a Point",
+    "content": "**distinctDistancesFrom:**\n\nCounts the number of distinct distances from point p to points in a finite set S.\n\n```lean\ndef distinctDistancesFrom (p : Plane) (S : Finset Plane) : N :=\n  (S.image (fun q => dist p q)).card\n```\n\n**Example:** In a regular hexagon, each vertex has 3 distinct distances to the other 5 vertices.",
+    "mathContext": "For a point $p$ and finite set $S$, define $\\Delta(p, S) = |\\{d(p,q) : q \\in S\\}|$. This counts the image cardinality of the distance map $q \\mapsto d(p,q)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Image of a function on Finset",
+      "Finset.card",
+      "Distinct distances problem"
+    ],
+    "prerequisites": [
+      "Finset.image and cardinality",
+      "Euclidean distance function"
+    ]
+  },
+  {
+    "id": "ann-e982-max-distances",
+    "proofId": "erdos-982",
+    "range": {
+      "startLine": 63,
+      "endLine": 68
+    },
+    "type": "definition",
+    "title": "Maximum Distinct Distances",
+    "content": "**maxDistinctDistances:**\n\nThe maximum number of distinct distances achieved by any vertex in the polygon.\n\n```lean\ndef maxDistinctDistances (S : Finset Plane) : N :=\n  S.sup (fun p => distinctDistancesFrom p (S.erase p))\n```\n\nThe conjecture asks: is this at least floor(n/2)?",
+    "significance": "key",
+    "mathContext": "Define $\\operatorname{MaxDist}(S) = \\max_{p \\in S} \\Delta(p,\\, S \\setminus \\{p\\})$. The conjecture asserts $\\operatorname{MaxDist}(S) \\ge \\lfloor |S|/2 \\rfloor$ for convex $S$.",
+    "relatedConcepts": [
+      "Finset.sup",
+      "Finset.erase",
+      "Extremal combinatorics"
+    ],
+    "prerequisites": [
+      "Lattice supremum on Finset",
+      "distinctDistancesFrom definition"
+    ]
+  },
+  {
+    "id": "ann-e982-convex-position",
+    "proofId": "erdos-982",
+    "range": {
+      "startLine": 78,
+      "endLine": 86
+    },
+    "type": "definition",
+    "title": "Convex Position",
+    "content": "**InConvexPosition:**\n\nA set of points is in convex position if no point lies strictly between any two others (on the line segment).\n\nThis means all points are extreme points of their convex hull, forming the vertices of a convex polygon.\n\n**Note:** This is a simplified characterization; the full formal-conjectures uses EuclideanGeometry.IsConvexPolygon.",
+    "mathContext": "A finite set $S \\subset \\mathbb{R}^2$ is in convex position if every point of $S$ is a vertex of $\\operatorname{conv}(S)$. Equivalently, no point $r \\in S$ lies on the open segment $(p,q)$ for any other $p, q \\in S$: $\\forall\\, t \\in (0,1),\\; t\\,p + (1-t)\\,q \\neq r$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Convex hull",
+      "Extreme points",
+      "Convex polygon vertices"
+    ],
+    "prerequisites": [
+      "Convexity in vector spaces",
+      "Affine combinations"
+    ]
+  },
+  {
+    "id": "ann-e982-guaranteed-f",
+    "proofId": "erdos-982",
+    "range": {
+      "startLine": 88,
+      "endLine": 97
+    },
+    "type": "definition",
+    "title": "Guaranteed Distinct Distances f(n)",
+    "content": "**guaranteedDistinctDistances:**\n\nf(n) is the largest k such that EVERY convex n-gon has a vertex with at least k distinct distances.\n\nThis is the extremal quantity - the conjecture states f(n) >= floor(n/2).\n\n**Known bounds:**\n- f(n) >= ceil(n/3) (Moser 1952)\n- f(n) <= ceil(n/2) (regular polygon)",
+    "significance": "key",
+    "mathContext": "Define $f(n) = \\min_{S} \\operatorname{MaxDist}(S)$ where $S$ ranges over all convex $n$-gons. Equivalently, $f(n) = \\max\\{k : \\forall\\, S,\\; \\operatorname{MaxDist}(S) \\ge k\\}$. We have $\\lceil n/3 \\rceil \\le f(n) \\le \\lceil n/2 \\rceil$.",
+    "relatedConcepts": [
+      "Extremal function",
+      "Minimax",
+      "Nat.find"
+    ],
+    "prerequisites": [
+      "Well-ordering of natural numbers",
+      "maxDistinctDistances definition"
+    ]
+  },
+  {
+    "id": "ann-e982-conjecture",
+    "proofId": "erdos-982",
+    "range": {
+      "startLine": 105,
+      "endLine": 112
+    },
+    "type": "concept",
+    "title": "The Main Conjecture",
+    "content": "**erdos982Conjecture:**\n\n```lean\ndef erdos982Conjecture : Prop :=\n  forall n >= 3,\n    forall (S : Finset Plane), S.card = n -> InConvexPosition S ->\n      maxDistinctDistances S >= n / 2\n```\n\n**Status:** This proposition is OPEN - neither proved nor disproved.",
+    "mathContext": "The conjecture states: for all $n \\ge 3$ and every convex $n$-gon $S$, $\\operatorname{MaxDist}(S) \\ge \\lfloor n/2 \\rfloor$, i.e., $f(n) \\ge \\lfloor n/2 \\rfloor$. Proposed by Erdos in 1946.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Open problem",
+      "Extremal geometry"
+    ],
+    "prerequisites": [
+      "InConvexPosition predicate",
+      "maxDistinctDistances function"
+    ]
+  },
+  {
+    "id": "ann-e982-moser",
+    "proofId": "erdos-982",
+    "range": {
+      "startLine": 132,
+      "endLine": 139
+    },
+    "type": "concept",
+    "title": "Moser's Bound (1952)",
+    "content": "**moser_bound:**\n\nLeo Moser proved in 1952 that f(n) >= ceil(n/3).\n\nThis was the first lower bound on the problem, published in \"On the different distances determined by n points\".\n\n**Proof idea:** Pigeonhole argument on distance classes.",
+    "mathContext": "Moser showed $f(n) \\ge \\lceil n/3 \\rceil$. In Lean this is stated as $\\operatorname{MaxDist}(S) \\ge (n + 2)/3$ using natural number division, which equals $\\lceil n/3 \\rceil$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pigeonhole principle",
+      "Ceiling function",
+      "Lower bound"
+    ],
+    "prerequisites": [
+      "Pigeonhole principle",
+      "Natural number division rounding"
+    ]
+  },
+  {
+    "id": "ann-e982-erdos-fishburn",
+    "proofId": "erdos-982",
+    "range": {
+      "startLine": 141,
+      "endLine": 148
+    },
+    "type": "concept",
+    "title": "Erdos-Fishburn Bound (1994)",
+    "content": "**erdos_fishburn_bound:**\n\nErdos and Fishburn improved Moser's bound to f(n) >= floor(n/3 + 1).\n\nPublished in \"A postscript on distances in convex n-gons\" (1994).\n\nThis is a small but significant improvement over Moser's ceil(n/3).",
+    "significance": "key",
+    "mathContext": "Erdos and Fishburn proved $f(n) \\ge \\lfloor n/3 + 1 \\rfloor = \\lfloor n/3 \\rfloor + 1$, formalized as $\\operatorname{MaxDist}(S) \\ge n/3 + 1$ in natural number arithmetic.",
+    "relatedConcepts": [
+      "Floor function",
+      "Improved lower bound",
+      "Convex distance problems"
+    ],
+    "prerequisites": [
+      "Moser's bound",
+      "Convex polygon structure"
+    ]
+  },
+  {
+    "id": "ann-e982-dumitrescu",
+    "proofId": "erdos-982",
+    "range": {
+      "startLine": 150,
+      "endLine": 157
+    },
+    "type": "concept",
+    "title": "Dumitrescu's Bound (2006)",
+    "content": "**dumitrescu_bound:**\n\nAdrian Dumitrescu proved f(n) >= ceil((13n-6)/36) in 2006.\n\nThis is approximately 0.361n, a substantial improvement over the n/3 bounds.\n\nPublished in \"On distinct distances from a vertex of a convex polygon\".",
+    "significance": "key",
+    "mathContext": "Dumitrescu showed $f(n) \\ge \\lceil (13n - 6)/36 \\rceil \\approx 0.361n$. In Lean: $\\operatorname{MaxDist}(S) \\ge (13n - 6 + 35)/36$, encoding the ceiling via $(a + b - 1)/b$.",
+    "relatedConcepts": [
+      "Ceiling division encoding",
+      "Asymptotic lower bound",
+      "Geometric graph theory"
+    ],
+    "prerequisites": [
+      "Erdos-Fishburn bound",
+      "Natural number ceiling division"
+    ]
+  },
+  {
+    "id": "ann-e982-nppz",
+    "proofId": "erdos-982",
+    "range": {
+      "startLine": 159,
+      "endLine": 168
+    },
+    "type": "concept",
+    "title": "Nivasch et al. Bound (2013)",
+    "content": "**nppz_bound:**\n\nNivasch, Pach, Pinchasi, and Zerbib achieved the current best bound:\n\nf(n) >= (13/36 + 1/22701)n - O(1)\n\nThis is approximately 0.3611n, a tiny improvement over Dumitrescu.\n\nPublished in \"The number of distinct distances from a vertex of a convex polygon\" (2013).",
+    "mathContext": "The NPPZ bound gives $f(n) \\ge \\bigl(\\tfrac{13}{36} + \\tfrac{1}{22701}\\bigr)n - O(1)$. The Lean axiom uses the simplified form $\\exists\\, C,\\; \\forall\\, n \\ge 3,\\; \\operatorname{MaxDist}(S) \\ge 13n/36$, absorbing the small correction into the existential constant.",
+    "significance": "key",
+    "relatedConcepts": [
+      "State-of-the-art bound",
+      "Existential constant",
+      "Asymptotic analysis"
+    ],
+    "prerequisites": [
+      "Dumitrescu's bound",
+      "Asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-e982-regular-polygon",
+    "proofId": "erdos-982",
+    "range": {
+      "startLine": 176,
+      "endLine": 184
+    },
+    "type": "concept",
+    "title": "Regular Polygon Optimality",
+    "content": "**regular_polygon_distances:**\n\nThe regular n-gon achieves the conjectured bound:\n- Even n: each vertex has exactly n/2 distinct distances\n- Odd n: each vertex has (n+1)/2 = ceil(n/2) distinct distances\n\nThis shows the conjecture, if true, would be tight.",
+    "mathContext": "In a regular $n$-gon, vertex $v_0$ sees distances $2\\sin(\\pi k/n)$ for $k = 1, \\dots, \\lfloor n/2 \\rfloor$, giving exactly $\\lceil n/2 \\rceil$ distinct values. Thus $f(n) \\le \\lceil n/2 \\rceil$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Regular polygon",
+      "Symmetry",
+      "Optimality"
+    ],
+    "prerequisites": [
+      "Roots of unity and regular polygon geometry",
+      "Trigonometric distance formula"
+    ]
+  },
+  {
+    "id": "ann-e982-triangle",
+    "proofId": "erdos-982",
+    "range": {
+      "startLine": 199,
+      "endLine": 210
+    },
+    "type": "concept",
+    "title": "Triangle Case (n=3)",
+    "content": "**triangle_case:**\n\nEvery triangle vertex has at least 1 distinct distance.\n\nThe conjecture requires floor(3/2) = 1.\n\n**Proof:** In a triangle, each vertex sees exactly 2 other vertices, giving at least 1 distinct distance (and usually 2).",
+    "significance": "supporting",
+    "mathContext": "For $n = 3$: $\\lfloor 3/2 \\rfloor = 1$. Each vertex $v$ of a triangle sees two other vertices at distances $d_1, d_2 > 0$, so $\\Delta(v, S \\setminus \\{v\\}) \\ge 1$. This case has a remaining `sorry`.",
+    "relatedConcepts": [
+      "Base case verification",
+      "Triangle inequality",
+      "Small case analysis"
+    ],
+    "prerequisites": [
+      "Positive distance between distinct points"
+    ]
+  },
+  {
+    "id": "ann-e982-pentagon",
+    "proofId": "erdos-982",
+    "range": {
+      "startLine": 225,
+      "endLine": 235
+    },
+    "type": "concept",
+    "title": "Pentagon Case (n=5)",
+    "content": "**pentagon_case:**\n\nEvery convex pentagon has a vertex with at least 2 distinct distances.\n\nThe conjecture requires floor(5/2) = 2.\n\n**Proof:** Direct from Moser's bound: (5+2)/3 = 2.\n\n```lean\nexact moser_bound 5 (by norm_num) S hcard hconv\n```",
+    "significance": "supporting",
+    "mathContext": "For $n = 5$: $\\lfloor 5/2 \\rfloor = 2$. Moser's bound gives $\\operatorname{MaxDist}(S) \\ge \\lceil 5/3 \\rceil = 2$, matching the conjecture. In Lean: $(5 + 2)/3 = 2$ by `norm_num`.",
+    "relatedConcepts": [
+      "Moser's bound application",
+      "norm_num tactic",
+      "Small case reduction"
+    ],
+    "prerequisites": [
+      "Moser's bound axiom",
+      "Natural number arithmetic"
+    ]
+  },
+  {
+    "id": "ann-e982-stronger-false",
+    "proofId": "erdos-982",
+    "range": {
+      "startLine": 243,
+      "endLine": 260
+    },
+    "type": "concept",
+    "title": "Stronger Conjecture (Disproved)",
+    "content": "**strongerConjectureDisproved:**\n\nErdos originally conjectured something stronger: every convex polygon has a vertex with no three equidistant vertices.\n\nThis is FALSE - see Erdos Problem #97 for counterexamples.\n\nThe failure of this stronger conjecture is why Problem #982 remains interesting.",
+    "mathContext": "The disproved conjecture asserts: $\\forall\\, S$ convex, $\\exists\\, v \\in S$ with no $a, b, c \\in S \\setminus \\{v\\}$ satisfying $d(v,a) = d(v,b) = d(v,c)$. Its negation $\\exists\\, S$ such that every vertex admits an equidistant triple is formalized as `strongerConjectureDisproved`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Problem #97",
+      "Counterexample",
+      "Equidistant points"
+    ],
+    "prerequisites": [
+      "Convex position predicate",
+      "Metric space distance equality"
+    ]
+  },
+  {
+    "id": "ann-e982-curve-counterexample",
+    "proofId": "erdos-982",
+    "range": {
+      "startLine": 268,
+      "endLine": 279
+    },
+    "type": "concept",
+    "title": "Curve Conjecture (False)",
+    "content": "**acute_triangle_counterexample:**\n\nErdos conjectured a continuous version: every convex curve has a point p where circles centered at p intersect the curve in at most 2 points.\n\nBarany and Roldan-Pensado (2013) showed this is FALSE: the boundary of any acute triangle is a counterexample.",
+    "mathContext": "The continuous conjecture asks: $\\forall$ convex curve $\\gamma$, $\\exists\\, p \\in \\gamma$ such that $|\\gamma \\cap S^1(p,r)| \\le 2$ for all $r > 0$. For an acute triangle with angles $< \\pi/2$, every boundary point $p$ admits a radius $r$ with $|\\partial T \\cap S^1(p,r)| \\ge 3$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Convex curve",
+      "Metric sphere intersection",
+      "Acute triangle geometry"
+    ],
+    "prerequisites": [
+      "Convexity of sets in the plane",
+      "Metric.sphere definition"
+    ]
+  },
+  {
+    "id": "ann-e982-barany",
+    "proofId": "erdos-982",
+    "range": {
+      "startLine": 281,
+      "endLine": 292
+    },
+    "type": "concept",
+    "title": "Weakened Curve Result",
+    "content": "**barany_roldan_pensado:**\n\nBarany and Roldan-Pensado proved a weaker version: for any convex body, there's a boundary point p where circles centered at p hit the boundary in O(1) points (constant depending on the body).\n\nThey conjecture this can be bounded by an absolute constant - a potential new direction.",
+    "significance": "supporting",
+    "mathContext": "For any planar convex body $K$, $\\exists\\, C = C(K)$ and $p \\in \\partial K$ such that $|\\partial K \\cap S^1(p,r)| \\le C$ for all $r > 0$. The open question is whether $C$ can be chosen independently of $K$.",
+    "relatedConcepts": [
+      "Frontier of a set",
+      "IsClosed predicate",
+      "Uniform bound conjecture"
+    ],
+    "prerequisites": [
+      "Convex body topology (closed, nonempty)",
+      "Set.ncard for potentially infinite sets"
+    ]
+  },
+  {
+    "id": "ann-e982-gap",
+    "proofId": "erdos-982",
+    "range": {
+      "startLine": 300,
+      "endLine": 312
+    },
+    "type": "concept",
+    "title": "Gap Analysis",
+    "content": "**currentGap:**\n\nThe gap between known bounds and the conjecture:\n\n- Known: f(n) >= 0.361n (approximately 13/36)\n- Conjectured: f(n) >= 0.5n (exactly 1/2)\n- Gap: 0.139n (approximately 5/36)\n\n```lean\ntheorem gap_value : currentGap 1 = 5 / 36 := by native_decide\n```\n\nClosing this gap is the main open problem.",
+    "mathContext": "The gap is $\\tfrac{1}{2} - \\tfrac{13}{36} = \\tfrac{18 - 13}{36} = \\tfrac{5}{36} \\approx 0.139$. This is computed in $\\mathbb{Q}$ and verified by `native_decide`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Rational arithmetic",
+      "native_decide tactic",
+      "Open mathematical gap"
+    ],
+    "prerequisites": [
+      "Rational number arithmetic in Lean",
+      "NPPZ bound value"
+    ]
+  },
+  {
+    "id": "ann-e982-status",
+    "proofId": "erdos-982",
+    "range": {
+      "startLine": 320,
+      "endLine": 333
+    },
+    "type": "concept",
+    "title": "Problem Status Summary",
+    "content": "**erdos_982_status:**\n\nSummarizes the current state of knowledge:\n\n1. Lower bound: f(n) >= (13n)/36 for large n (Nivasch et al.)\n2. Upper bound: Regular polygon achieves ceil(n/2)\n\nThe theorem combines the NPPZ bound with the regular polygon construction to give both directions.\n\n**Status:** OPEN - the gap between 0.361n and 0.5n remains.",
+    "mathContext": "The theorem proves two facts: (1) $\\exists\\, n_0,\\; \\forall\\, n \\ge n_0,\\; \\operatorname{MaxDist}(S) \\ge 13n/36$ (from `nppz_bound`), and (2) $\\forall\\, n \\ge 3,\\; \\exists\\, S$ with $\\operatorname{MaxDist}(S) = \\lceil n/2 \\rceil$ (from `regular_polygon_distances`).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Existential witness extraction",
+      "Axiomatic bound combination",
+      "Constructive upper bound"
+    ],
+    "prerequisites": [
+      "nppz_bound axiom",
+      "regular_polygon_distances axiom"
+    ]
+  }
+]

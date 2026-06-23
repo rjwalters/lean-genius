@@ -1,0 +1,201 @@
+{
+  "id": "erdos-186",
+  "title": "Erdős Problem #186: Non-Averaging Sets",
+  "slug": "erdos-186",
+  "description": "What is the maximum size of a non-averaging subset of {1,...,N}? Answer: N^(1/4+o(1)), essentially resolved by Bosznay (1989) and Pham-Zakharov (2024).",
+  "meta": {
+    "author": "Straus (original), Bosznay (1989 lower), Pham-Zakharov (2024 upper)",
+    "sourceUrl": "https://erdosproblems.com/186",
+    "date": "2024",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos186Problem.lean",
+    "tags": [
+      "erdos",
+      "additive-combinatorics",
+      "arithmetic-progressions",
+      "extremal-combinatorics",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 186,
+    "erdosUrl": "https://erdosproblems.com/186",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real exponentiation",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "IsNonAveraging definition for non-averaging sets",
+      "F(N) definition as maximum non-averaging set size",
+      "empty_is_nonAveraging, singleton_is_nonAveraging verified theorems",
+      "pair_is_nonAveraging verified theorem",
+      "nonAveraging_subset hereditary property (verified)",
+      "nonAveraging_no_centered_AP symmetry lemma (verified)",
+      "lower_bound_quarter axiom: F(N) ≥ N^(1/4)/2 for N ≥ 1 (Bosznay 1989)",
+      "pham_zakharov_upper_bound_2024 axiom: F(N) ≤ C·N^(1/4+ε) for all ε > 0 (Pham-Zakharov 2024)",
+      "erdos_186_bounds theorem combining lower_bound_quarter and pham_zakharov_upper_bound_2024"
+    ],
+    "axiomCount": 2,
+    "lineCount": 243,
+    "assumptions": "2 axioms: lower_bound_quarter (lower bound of 1/4 on density), pham_zakharov_upper_bound_2024 (Pham-Zakharov 2024 upper bound). 0 sorries.",
+    "theoremCount": 6,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #186 concerns non-averaging sets, a concept originally formulated by Ernst Straus. A subset A of {1,...,N} is called non-averaging if no element of A is the arithmetic mean of two other distinct elements in A. The central question asks for F(N), the maximum size of such a set.\n\nThe problem has a rich history spanning decades of work. Erdős and Sárközy established the first non-trivial upper bound of (N log N)^{1/2} in 1990. On the lower side, Bosznay proved in 1989 that non-averaging sets of size at least N^{1/4} exist, using a number-theoretic construction. For over 30 years, a significant gap remained between the N^{1/4} lower bound and the (N log N)^{1/2} upper bound.\n\nThe breakthrough came in 2023 when Conlon, Fox, and Pham improved the upper bound to N^{1/4} * (log N)^c, bringing the exponent close to the lower bound. Shortly after, Pham and Zakharov (2024) established the sharp upper bound F(N) << N^{1/4+o(1)}, essentially resolving the problem. The exponent 1/4 is now established as the correct order of growth, though the precise sub-polynomial correction factor remains an open question.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet $F(N)$ be the maximum size of $A \\subseteq \\{1,\\ldots,N\\}$ that is non-averaging (no element is the arithmetic mean of two other distinct elements).\n\n**Question:** What is the asymptotic growth of $F(N)$?\n\n**Answer:** $F(N) = N^{1/4+o(1)}$\n\n- Lower bound: $F(N) \\geq c \\cdot N^{1/4}$ (Bosznay 1989)\n- Upper bound: $F(N) \\leq C \\cdot N^{1/4+\\varepsilon}$ for all $\\varepsilon > 0$ (Pham-Zakharov 2024)",
+    "text": "What is the maximum size of a non-averaging subset of {1,...,N}? Answer: N^(1/4+o(1)), essentially resolved by Bosznay (1989) and Pham-Zakharov (2024).",
+    "proofStrategy": "The formalization defines non-averaging sets (IsNonAveraging) and the extremal function F(N), then axiomatizes the deep combinatorial bounds. Basic properties (empty, singleton, pair sets are non-averaging; hereditary property) are proved constructively. The key bounds from Bosznay (lower) and Pham-Zakharov (upper) are axiomatized since their proofs require sophisticated analytic combinatorics beyond Mathlib. The main theorem erdos_186_bounds combines both bounds into a single statement, proved from the axioms.",
+    "keyInsights": [
+      "**Non-Averaging vs AP-free:** Non-averaging sets only avoid centered 3-APs, a weaker condition than full AP-freeness, allowing much larger sets",
+      "**Exponent 1/4:** The correct growth rate, established through 35 years of work from Bosznay (1989) to Pham-Zakharov (2024)",
+      "**Hereditary Property:** Subsets of non-averaging sets remain non-averaging, making this a monotone set system",
+      "**Historical Gap:** The upper bound improved from (N log N)^{1/2} to N^{1/4+o(1)} over three decades",
+      "**Roth Connection:** Roth-type sets (avoiding all 3-APs) have size at most N/log N, while non-averaging sets can reach N^{1/4}"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Additive combinatorics (sumsets, density)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "nonaveraging-def",
+      "title": "Non-Averaging Sets",
+      "summary": "IsNonAveraging definition and alternative formulation",
+      "startLine": 39,
+      "endLine": 69,
+      "mathContext": "Formal definition: IsNonAveraging definition and alternative formulation"
+    },
+    {
+      "id": "simple-examples",
+      "title": "Simple Examples",
+      "summary": "Verified theorems for empty, singleton, and pair sets",
+      "startLine": 71,
+      "endLine": 99,
+      "mathContext": "Verified: Verified theorems for empty, singleton, and pair sets"
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lower Bound (Bosznay 1989)",
+      "summary": "Construction achieving N^(1/4) and corollary",
+      "startLine": 101,
+      "endLine": 121,
+      "mathContext": "Mathematical content: Construction achieving N^(1/4) and corollary"
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Upper Bounds",
+      "summary": "Erdős-Sárközy, Conlon-Fox-Pham, Pham-Zakharov bounds",
+      "startLine": 123,
+      "endLine": 145,
+      "mathContext": "Bound: Erdős-Sárközy, Conlon-Fox-Pham, Pham-Zakharov bounds"
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "erdos_186_bounds theorem combining lower and upper bounds",
+      "startLine": 147,
+      "endLine": 173,
+      "mathContext": "Verified: erdos_186_bounds theorem combining lower_bound_quarter and pham_zakharov_upper_bound_2024"
+    },
+    {
+      "id": "properties",
+      "title": "Properties of Non-Averaging Sets",
+      "summary": "Hereditary property and centered AP avoidance",
+      "startLine": 185,
+      "endLine": 204,
+      "mathContext": "Mathematical content: Hereditary property and centered AP avoidance"
+    },
+    {
+      "id": "connections",
+      "title": "Connection to Arithmetic Progressions",
+      "summary": "Roth's theorem connection: non-averaging vs AP-free comparison",
+      "startLine": 206,
+      "endLine": 214,
+      "mathContext": "Context: Roth's theorem connection and non-averaging vs AP-free comparison"
+    },
+    {
+      "id": "growth-rate",
+      "title": "The Growth Rate",
+      "summary": "Exponent 1/4 correctness and o(1) necessity",
+      "startLine": 216,
+      "endLine": 225,
+      "mathContext": "Mathematical content: Exponent 1/4 correctness and o(1) necessity"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #186 asks for the maximum size of non-averaging subsets of {1,...,N}. The answer is F(N) = N^(1/4+o(1)), with the lower bound from Bosznay (1989) and the matching upper bound from Pham-Zakharov (2024). The formalization captures the key definitions, proves basic properties constructively, and axiomatizes the deep combinatorial bounds.",
+    "implications": "This result is central to additive combinatorics, connecting to Roth's theorem on arithmetic progressions, Szemerédi regularity, and the broader study of forbidden arithmetic patterns. The 35-year journey from problem to resolution illustrates the difficulty of determining exact growth rates in extremal combinatorics.",
+    "openQuestions": [
+      "What is the exact asymptotic with logarithmic factors?",
+      "Is there a more explicit optimal construction?",
+      "What happens for non-averaging sets in other settings (primes, finite fields)?",
+      "Connection to related Erdős Problem #789?",
+      "Algorithmic aspects of finding large non-averaging sets?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "Erdos186",
+    "lineCount": 243,
+    "axiomCount": 2,
+    "theoremCount": 6,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos186Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-179",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, solved"
+    },
+    {
+      "targetId": "erdos-721",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, solved"
+    },
+    {
+      "targetId": "erdos-817",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, extremal-combinatorics"
+    }
+  ],
+  "references": [
+    {
+      "key": "GT08b",
+      "authors": [
+        "B. Green",
+        "T. Tao"
+      ],
+      "title": "The primes contain arbitrarily long arithmetic progressions",
+      "venue": "Annals of Mathematics",
+      "year": "2008",
+      "volume": "167",
+      "pages": "481-547",
+      "note": "Context for arithmetic progression problems in structured sets"
+    }
+  ],
+  "sorries": 0
+}

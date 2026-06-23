@@ -1,0 +1,234 @@
+{
+  "id": "erdos-382",
+  "title": "Erdős Problem #382: Prime Powers in Factorial Products",
+  "slug": "erdos-382",
+  "description": "For intervals [u,v] where the largest prime dividing u(u+1)...v has exponent ≥ 2, is v−u = v^o(1)? Can v−u be arbitrarily large? Ramachandra showed v−u ≤ v^{1/2+o(1)}. OPEN.",
+  "meta": {
+    "author": "Erdős-Graham (1980 problem), Ramachandra (partial result)",
+    "sourceUrl": "https://erdosproblems.com/382",
+    "date": "1980",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos382Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "prime-numbers",
+      "factorization",
+      "prime-gaps",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 382,
+    "erdosUrl": "https://erdosproblems.com/382",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-28",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Finset.Icc",
+        "description": "Closed-closed interval as a Finset",
+        "module": "Mathlib.Order.Interval.Finset.Nat"
+      },
+      {
+        "theorem": "Finset.prod",
+        "description": "Product over a finite set",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.factorization",
+        "description": "Prime factorization as a Finsupp",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Real logarithm for Cramér's conjecture statement",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "prodInterval definition: product of integers in [u,v] via Finset.Icc",
+      "largestPrimeDivisor definition: largest prime in factorization",
+      "exponent / exponentInProduct: p-adic valuation wrappers",
+      "satisfiesCondition: Erdős-Graham condition formalized",
+      "question1: subpolynomial growth conjecture (v−u = v^o(1))",
+      "question2: unbounded length conjecture",
+      "ramachandra_bound axiom: v−u ≤ v^{1/2+ε}",
+      "cramersConjecture definition and cramer_implies_q1 theorem (proved)",
+      "noPrimeLargerThanSqrt: equivalent prime-free interval formulation",
+      "erdos_382_summary: combined known results theorem",
+      "Concrete example: prodInterval 2 4 = 24 via native_decide"
+    ],
+    "axiomCount": 1,
+    "lineCount": 659,
+    "assumptions": "1 axiom: ramachandra_bound. 0 sorries.",
+    "theoremCount": 18,
+    "definitionCount": 9
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #382 originates from the 1980 monograph by Erdős and Graham [ErGr80], which systematically cataloged open problems in combinatorial number theory. The problem studies the factorization structure of products of consecutive integers u·(u+1)·...·v, specifically asking about the exponent of the largest prime divisor.\n\nThe key constraint is that the largest prime p dividing the product must appear with exponent ≥ 2. Since p² must divide some integer in [u,v], this forces p ≤ √v, meaning the interval [u,v] is 'prime-free' above √v. The problem asks two questions: whether v−u grows subpolynomially in v, and whether v−u can be arbitrarily large.\n\nRamachandra established the best known upper bound v−u ≤ v^{1/2+o(1)}, using techniques from the distribution of primes in short intervals. Cramér's famous conjecture on prime gaps would imply the stronger result that v−u = v^o(1). Cambie's heuristic analysis suggests that v−u can indeed be arbitrarily large, but both questions remain open.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet $u \\leq v$ be positive integers such that the largest prime dividing the product $\\prod_{m=u}^{v} m$ appears with exponent at least 2.\n\n**Question 1:** Is $v - u = v^{o(1)}$? That is, for every $\\varepsilon > 0$ and sufficiently large $v$, is $v - u < v^\\varepsilon$?\n\n**Question 2:** Can $v - u$ be arbitrarily large?\n\n**Known:** Ramachandra: $v - u \\leq v^{1/2 + o(1)}$. Under Cramér's conjecture, Question 1 has answer YES.",
+    "text": "For intervals [u,v] where the largest prime dividing u(u+1)...v has exponent ≥ 2, is v−u = v^o(1)? Can v−u be arbitrarily large? Ramachandra showed v−u ≤ v^{1/2+o(1)}. OPEN.",
+    "proofStrategy": "The formalization defines the product of an interval via Finset.Icc, the largest prime divisor via primeFactorsList maximum, and the p-adic valuation via Nat.factorization. The Erdős-Graham condition (largest prime has exponent ≥ 2) is captured by satisfiesCondition. Both questions are stated as formal Prop definitions. Ramachandra's bound is axiomatized (deep analytic number theory beyond Mathlib); Cramér's conjecture is stated as a Prop definition and used as a hypothesis in the proved theorem cramer_implies_q1. The key equivalence — the condition means no prime larger than √v lies in [u,v] — is formalized via noPrimeLargerThanSqrt. A summary theorem combines all known results.",
+    "keyInsights": [
+      "**Prime-Free Reformulation**: The condition is equivalent to all primes in [u,v] being ≤ √v, since a prime p > √v has p² > v and thus exponent exactly 1",
+      "**Ramachandra's Bound**: v − u ≤ v^{1/2+o(1)} is the best known upper bound, derived from prime distribution in short intervals",
+      "**Cramér Connection**: Cramér's conjecture (prime gaps are O((log p)²)) would imply Question 1 is YES, since it prevents long prime-free intervals above √v",
+      "**Heuristic for Question 2**: Near squares of large primes, prime-free intervals can be long, suggesting v−u can be arbitrarily large",
+      "**Concrete Example**: [2,4] has product 24 = 2³·3 where the largest prime 3 has exponent 1, so it does NOT satisfy the condition"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-imports",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Module docstring stating the problem, known results, and references, followed by Mathlib imports for primes, Finset, BigOperators, factorization, real analysis, logarithms, and Bertrand's postulate. Opens Nat, BigOperators, Finset, Real namespaces.",
+      "mathContext": "Imports provide $\\mathbb{N}$ prime infrastructure (`Nat.Prime`, `primeFactorsList`, `factorization`), finite set products $\\prod_{m \\in S} m$ via `BigOperators`, closed intervals `Finset.Icc`, real-valued expressions $v^\\varepsilon$ and $\\log p$ for asymptotic bounds, and Bertrand's postulate $\\exists q \\text{ prime}, p < q \\le 2p$."
+    },
+    {
+      "id": "basic-definitions",
+      "title": "Part I: Basic Definitions",
+      "startLine": 45,
+      "endLine": 73,
+      "summary": "Defines prodInterval(u,v) = product over Finset.Icc u v. Two theorems proved: prodInterval_singleton (prodInterval n n = n, by simp on Icc_self) and prodInterval_factorial (prodInterval 1 n = n!, by induction splitting Icc at the successor).",
+      "mathContext": "Defines $\\mathrm{prodInterval}(u,v) = \\prod_{m=u}^{v} m = \\frac{v!}{(u-1)!}$ using `Finset.Icc`. Proves $\\mathrm{prodInterval}(n,n) = n$ and $\\mathrm{prodInterval}(1,n) = n!$ by induction, decomposing $\\mathrm{Icc}\\,1\\,(n+1) = \\{n+1\\} \\cup \\mathrm{Icc}\\,1\\,n$ and applying `Nat.factorial_succ`."
+    },
+    {
+      "id": "largest-prime",
+      "title": "Part II: Largest Prime Divisor",
+      "startLine": 74,
+      "endLine": 157,
+      "summary": "Defines largestPrimeDivisor as foldl max 0 over primeFactorsList. Four private helper lemmas establish that foldl max is monotone, dominates members, and its result is either init or a list member. Key lemma: for n > 1, primeFactorsList is nonempty and foldl max 0 is a member. Three public theorems proved: largestPrimeDivisor divides n, is prime, and every prime divisor p|n satisfies p ≤ largestPrimeDivisor n.",
+      "mathContext": "Defines $\\mathrm{lpd}(n) = \\max(n.\\mathrm{primeFactorsList})$ via `List.foldl max 0`. Helper lemmas prove $\\mathrm{foldl}\\,\\max\\,\\mathrm{init}\\,l \\ge \\mathrm{init}$, $x \\in l \\Rightarrow \\mathrm{foldl}\\,\\max\\,\\mathrm{init}\\,l \\ge x$, and that the result is $\\mathrm{init}$ or a member. Since $n > 1$ implies `primeFactorsList` is nonempty (via `Nat.prod_primeFactorsList`), the foldl result is a member, yielding: $\\mathrm{lpd}(n) \\mid n$, $\\mathrm{lpd}(n)$ is prime, and $p \\mid n \\Rightarrow p \\le \\mathrm{lpd}(n)$."
+    },
+    {
+      "id": "exponent",
+      "title": "Part III: Exponent of Prime in Product",
+      "startLine": 158,
+      "endLine": 193,
+      "summary": "Defines exponent(p,n) = n.factorization p and exponentInProduct(p,u,v) = exponent of p in prodInterval(u,v). Private lemma factorization_finset_prod_id proves factorization distributes over Finset products of nonzero naturals via induction. Main theorem exponentInProduct_sum (PROVED): for prime p and u > 0, the exponent of p in the interval product equals the sum of individual exponents.",
+      "mathContext": "Wraps $v_p(n) = n.\\mathrm{factorization}(p)$ (the $p$-adic valuation). Proves $v_p\\!\\left(\\prod_{m \\in S} m\\right) = \\sum_{m \\in S} v_p(m)$ for $S \\subseteq \\mathbb{N}_{>0}$ by Finset induction, using `Nat.factorization_mul` and `Finset.prod_ne_zero`. Applies this to show $v_p(\\mathrm{prodInterval}(u,v)) = \\sum_{m=u}^{v} v_p(m)$ when $u > 0$."
+    },
+    {
+      "id": "condition-and-bertrand",
+      "title": "Part IV: The Condition and Bertrand Application",
+      "startLine": 194,
+      "endLine": 257,
+      "summary": "Defines satisfiesCondition(u,v): u ≤ v, u > 0, and the largest prime dividing the product has exponent ≥ 2. Proves largest_prime_exp_one (PROVED, 42 lines): if p is the largest prime ≤ v with p² > v, then exponent of p in prodInterval is exactly 1, using Bertrand's postulate to show 2p > v (so p is the unique multiple of p in [u,v]) and the sum decomposition to compute the exponent. Includes a note explaining why a previously axiomatized result (exp_ge_two_needs_square) was incorrect and removed.",
+      "mathContext": "Defines the Erd\\H{o}s--Graham condition: $u \\le v$, $u > 0$, and $v_p(\\mathrm{prodInterval}(u,v)) \\ge 2$ where $p = \\mathrm{lpd}(\\mathrm{prodInterval}(u,v))$. Key theorem `largest_prime_exp_one`: if $p$ is the largest prime $\\le v$ with $p^2 > v$, Bertrand's postulate gives a prime $q$ with $p < q \\le 2p$; if $q \\le v$ then $q \\le p$ by maximality, contradiction, so $v < 2p$. Thus $p$ is the unique multiple of itself in $[u,v]$, and $v_p(\\mathrm{prodInterval}) = v_p(p) + 0 = 1$. Note: the removed axiom `exp\\_ge\\_two\\_needs\\_square` was wrong because $v_p \\ge 2$ can arise from multiple distinct multiples of $p$ (e.g., $[3,6]$ with $p=3$: $v_3(3)+v_3(6)=2$ but $9 \\nmid k$ for any $k \\in [3,6]$)."
+    },
+    {
+      "id": "questions",
+      "title": "Part V: The Questions",
+      "startLine": 259,
+      "endLine": 283,
+      "summary": "Formalizes both open questions. question1: for every ε > 0 and large enough v, satisfiesCondition(u,v) implies (v−u : ℝ) < v^ε (subpolynomial growth). question2: for every bound L, there exist u,v satisfying the condition with v−u > L (unbounded length). Both are stated as open Prop definitions (not axioms). Cambie's heuristic suggests Question 2 is YES.",
+      "mathContext": "Question 1: $\\forall \\varepsilon > 0,\\; \\exists V,\\; \\forall u,v \\ge V,\\; \\text{satisfiesCondition}(u,v) \\Rightarrow v - u < v^\\varepsilon$ (i.e., $v - u = v^{o(1)}$). Question 2: $\\forall L \\in \\mathbb{N},\\; \\exists u,v,\\; \\text{satisfiesCondition}(u,v) \\wedge v - u > L$. Both are stated as open Prop definitions. Cambie's heuristic suggests Question 2 is YES."
+    },
+    {
+      "id": "ramachandra",
+      "title": "Part VI: Known Upper Bound",
+      "startLine": 284,
+      "endLine": 297,
+      "summary": "Axiomatizes Ramachandra's bound: for any ε > 0 and sufficiently large v, if [u,v] satisfies the condition, then (v−u : ℝ) ≤ v^(1/2 + ε). This is the best known unconditional upper bound on interval length.",
+      "mathContext": "Ramachandra's bound (axiomatized): $\\forall \\varepsilon > 0,\\; \\exists V,\\; \\forall u,v \\ge V,\\; \\text{satisfiesCondition}(u,v) \\Rightarrow v - u \\le v^{1/2 + \\varepsilon}$. Equivalently, $v - u \\le v^{1/2 + o(1)}$. This is the strongest known unconditional result, derived from analytic estimates on the distribution of primes in short intervals."
+    },
+    {
+      "id": "cramer",
+      "title": "Part VII: Connection to Cramér's Conjecture",
+      "startLine": 298,
+      "endLine": 487,
+      "summary": "Defines cramersConjecture: there exists C > 0 such that consecutive prime gaps satisfy q−p ≤ C·(log p)². Proves cramer_implies_q1 (PROVED): Cramér's conjecture implies Question 1 (subpolynomial growth). Helper lemma log_sq_lt_rpow shows C·(log v)² < v^ε for large v. The proof uses no_prime_in_upper_half, Bertrand's postulate, and the Cramér gap bound to show u > √v, placing [u,v] within a single Cramér gap of length < v^ε.",
+      "mathContext": "Cram\\'er's conjecture: $\\exists C > 0$ such that for consecutive primes $p < q$ with no prime between them, $q - p \\le C (\\log p)^2$. Theorem `cramer_implies_q1` (PROVED): Cram\\'er $\\Rightarrow$ Question 1. Helper: $C (\\log v)^2 < v^\\varepsilon$ for large $v$ (from $\\log = o(x^{\\varepsilon/4})$). Main argument: if $v - u > v^\\varepsilon$, Cram\\'er bounds gaps by $O((\\log v)^2)$, so a prime $p > \\sqrt{v}$ must appear in $[u,v]$, contradicting `no_prime_in_upper_half`. Hence $u > \\sqrt{v}$ and $[u,v]$ lies within a single Cram\\'er gap."
+    },
+    {
+      "id": "examples-and-main-theorem",
+      "title": "Part VIII: Examples and Main Structural Theorem",
+      "startLine": 488,
+      "endLine": 589,
+      "summary": "Concrete example: prodInterval 2 4 = 24 proved by native_decide. Major theorem no_prime_in_upper_half (PROVED, 83 lines): if [u,v] satisfies the condition, then every prime p in [u,v] satisfies p ≤ √v. Proof: assume p > √v; then p divides the product, so q = lpd(product) ≥ p > √v; Bertrand gives 2q > v; thus q is the unique multiple of itself in [u,v]; the sum decomposition gives exponent = 1, contradicting the condition's requirement of ≥ 2.",
+      "mathContext": "Example: $\\mathrm{prodInterval}(2,4) = 2 \\cdot 3 \\cdot 4 = 24$ by `native_decide`. Main theorem `no_prime_in_upper_half`: $\\text{satisfiesCondition}(u,v) \\Rightarrow \\forall p \\text{ prime},\\; u \\le p \\le v \\Rightarrow p \\le \\lfloor\\sqrt{v}\\rfloor$. Proof by contradiction: if $p > \\sqrt{v}$, then $q := \\mathrm{lpd}(\\Pi) \\ge p > \\sqrt{v}$. Bertrand's postulate gives a prime $r$ with $q < r \\le 2q$; if $r \\le v$ then $r$ divides $\\Pi$ so $q \\ge r > q$, contradiction, hence $v < 2q$. The only multiple of $q$ in $[u,v]$ is $q$ itself (since $2q > v$), so $v_q(\\Pi) = v_q(q) + \\sum_{m \\ne q} 0 = 1 < 2$, contradicting the condition."
+    },
+    {
+      "id": "prime-free",
+      "title": "Part IX: Prime-Free Interval Perspective",
+      "startLine": 590,
+      "endLine": 618,
+      "summary": "Defines noPrimeLargerThanSqrt(u,v): every prime p with u ≤ p ≤ v satisfies p ≤ √v. Notes that the previous axiom condition_iff_no_large_prime was REMOVED as mathematically incorrect — counterexample [24,28] shows the backward direction fails because noPrimeLargerThanSqrt only constrains primes IN [u,v], not prime factors of composite numbers. The forward direction (satisfiesCondition → noPrimeLargerThanSqrt) remains proved as no_prime_in_upper_half.",
+      "mathContext": "Defines the predicate $\\text{noPrimeLargerThanSqrt}(u,v) :\\equiv \\forall p \\text{ prime},\\; u \\le p \\le v \\Rightarrow p \\le \\lfloor\\sqrt{v}\\rfloor$. The previously axiomatized equivalence `condition_iff_no_large_prime` was removed: the backward direction ($\\Leftarrow$) is false. Counterexample: $[24,28]$ has no primes, so `noPrimeLargerThanSqrt` holds vacuously, but $\\mathrm{lpd}(\\prod_{24}^{28} m) = 13$ (from $26 = 2 \\cdot 13$) has exponent 1, so `satisfiesCondition` fails. Only the forward direction ($\\Rightarrow$) is valid, proved as `no_prime_in_upper_half`."
+    },
+    {
+      "id": "summary",
+      "title": "Part X: Summary",
+      "startLine": 619,
+      "endLine": 659,
+      "summary": "erdos_382_summary (PROVED): a conjunction of Ramachandra's bound, Cramér implies Q1, and True (both questions stated), assembled from the three axioms. ramachandra_consistent_with_questions (PROVED): identity function showing the bound is consistent with both questions. Closes the Erdos382 namespace.",
+      "mathContext": "Theorem `erdos_382_summary`: $\\left(\\forall \\varepsilon > 0,\\; \\exists V,\\; \\ldots v-u \\le v^{1/2+\\varepsilon}\\right) \\wedge \\left(\\text{Cram\\'er} \\Rightarrow \\text{Q1}\\right) \\wedge \\top$, proved by $\\langle\\texttt{ramachandra\\_bound},\\, \\texttt{cramer\\_implies\\_q1},\\, \\texttt{trivial}\\rangle$. Theorem `ramachandra_consistent_with_questions`: the identity function, witnessing that Ramachandra's bound $v - u \\le v^{1/2+o(1)}$ is logically compatible with both subpolynomial growth (Q1) and unbounded length (Q2), since $v^{1/2+o(1)} \\to \\infty$ yet $v^{1/2+o(1)} = v^{o(1)} \\cdot v^{1/2}$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #382 asks about intervals [u,v] where the largest prime in the product u(u+1)...v has exponent ≥ 2. Both questions — whether v−u is subpolynomial and whether v−u can be arbitrarily large — remain open. The key insight is that the condition is equivalent to the interval being prime-free above √v. Ramachandra established v−u ≤ v^{1/2+o(1)}, and Cramér's conjecture would resolve Question 1.",
+    "implications": "Resolution of this problem would illuminate the relationship between prime distribution in short intervals and the multiplicative structure of products of consecutive integers. It connects to fundamental open questions in analytic number theory including Cramér's conjecture on prime gaps and the structure of prime-free intervals.",
+    "openQuestions": [
+      "Is v − u = v^o(1) for all intervals satisfying the condition?",
+      "Can v − u be made arbitrarily large?",
+      "Can the Ramachandra bound v−u ≤ v^{1/2+o(1)} be improved unconditionally?",
+      "Are there explicit constructions yielding large v−u satisfying the condition?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Order.Interval.Finset.Nat",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.NumberTheory.Bertrand",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "BigOperators",
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos382",
+    "lineCount": 659,
+    "axiomCount": 1,
+    "theoremCount": 18,
+    "definitionCount": 9,
+    "path": "Proofs/Erdos382Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-238",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-gaps, prime-numbers"
+    },
+    {
+      "targetId": "erdos-680",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-gaps, prime-numbers"
+    },
+    {
+      "targetId": "erdos-950",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-gaps, prime-numbers"
+    }
+  ],
+  "sorries": 0
+}

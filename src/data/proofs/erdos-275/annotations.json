@@ -1,0 +1,291 @@
+[
+  {
+    "id": "ann-e275-header",
+    "proofId": "erdos-275",
+    "range": {
+      "startLine": 1,
+      "endLine": 21
+    },
+    "type": "concept",
+    "title": "Problem Overview: Covering Congruences",
+    "content": "**Erdős Problem #275: Covering Congruences**\n\nIf $r$ congruences cover $2^r$ consecutive integers, they cover all integers.\n\n**Status:** SOLVED (1970) by Selfridge (independently) and Crittenden–Vanden Eynden.\n\nThe bound $2^r$ is tight: the system $\\{2^{i-1} \\pmod{2^i} : 1 \\leq i \\leq r\\}$ covers everything except multiples of $2^r$, so $2^r - 1$ consecutive integers do not suffice.\n\n**Context:** This is one of Erdős's foundational problems on covering systems, closely related to #2, #7, and #276–281.",
+    "mathContext": "Covering systems originated in Erdős's 1950 proof that infinitely many odd integers are not of the form $2^k + p$. He used the covering system $\\{0(2), 0(3), 1(4), 3(8), 7(12), 23(24)\\}$ to construct residue classes avoiding primes. Problem #275 quantifies the finite verification threshold for arbitrary covering systems.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Covering systems",
+      "Congruences",
+      "Modular arithmetic",
+      "Chinese Remainder Theorem",
+      "Binary representation"
+    ],
+    "prerequisites": [
+      "Modular arithmetic",
+      "Arithmetic progressions",
+      "Finite sets"
+    ]
+  },
+  {
+    "id": "ann-e275-imports",
+    "proofId": "erdos-275",
+    "range": {
+      "startLine": 23,
+      "endLine": 28
+    },
+    "type": "concept",
+    "title": "Imports and Namespace",
+    "content": "**Mathlib Imports:**\n- `Mathlib.Data.Int.ModEq`: Provides `Int.ModEq` for the relation $x \\equiv a \\pmod{n}$, used in `CongruenceClass`.\n- `Mathlib.Data.Nat.Basic`: Natural number arithmetic for moduli and exponents.\n- `Mathlib.Data.Finset.Basic` and `Card`: Finite sets and cardinality, used in `IsExactlyCovering` to count how many congruences cover each integer.\n\nThe `Erdos275` namespace encapsulates all definitions.",
+    "mathContext": "The `Int.ModEq` relation in Mathlib formalizes $a \\equiv b \\pmod{n}$ as $n \\mid (a - b)$ over $\\mathbb{Z}$. This is the integer (not natural number) version, essential because congruence classes extend over all of $\\mathbb{Z}$, not just $\\mathbb{N}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Int.ModEq",
+      "Finset.card",
+      "Lean namespaces"
+    ],
+    "prerequisites": [
+      "Lean 4 module system",
+      "Mathlib organization"
+    ]
+  },
+  {
+    "id": "ann-e275-congclass",
+    "proofId": "erdos-275",
+    "range": {
+      "startLine": 37,
+      "endLine": 38
+    },
+    "type": "definition",
+    "title": "Congruence Class Definition",
+    "content": "**CongruenceClass(a, n):**\n\n$$\\{x \\in \\mathbb{Z} : x \\equiv a \\pmod{n}\\} = a + n\\mathbb{Z}$$\n\nThis is the arithmetic progression $\\{\\ldots, a - 2n, a - n, a, a + n, a + 2n, \\ldots\\}$.\n\nEach congruence class partitions $\\mathbb{Z}$ into $n$ residue classes. For modulus $n$, there are exactly $n$ disjoint classes forming a partition of $\\mathbb{Z}$.",
+    "mathContext": "Congruence classes are cosets of the subgroup $n\\mathbb{Z} \\leq \\mathbb{Z}$. The quotient $\\mathbb{Z}/n\\mathbb{Z}$ has exactly $n$ elements. A covering system selects one coset from each of several different subgroup lattices, aiming for their union to be all of $\\mathbb{Z}$. The necessary condition $\\sum_{i=1}^r 1/n_i \\geq 1$ follows from measure-theoretic considerations.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Residue classes",
+      "Quotient groups",
+      "Arithmetic progressions",
+      "Cosets"
+    ],
+    "prerequisites": [
+      "Modular arithmetic",
+      "Integer divisibility"
+    ],
+    "leanSymbol": "CongruenceClass"
+  },
+  {
+    "id": "ann-e275-covering",
+    "proofId": "erdos-275",
+    "range": {
+      "startLine": 44,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "Covering System Structure",
+    "content": "**CoveringSystem:**\n\nA Lean structure with fields:\n- `size : ℕ` — the number $r$ of congruence classes\n- `residues : Fin r → ℤ` — the residues $a_1, \\ldots, a_r$\n- `moduli : Fin r → ℕ` — the moduli $n_1, \\ldots, n_r$\n- `moduli_pos : ∀ i, moduli i > 0` — all moduli are positive\n\nRepresents the system $\\{a_i \\pmod{n_i} : 1 \\leq i \\leq r\\}$.",
+    "mathContext": "The positivity constraint $n_i > 0$ ensures each congruence class is a proper arithmetic progression. Without it, modulus 0 would give the singleton $\\{a_i\\}$, changing the nature of the problem. The structure uses `Fin r` for type-safe indexing, ensuring exactly $r$ classes are specified. This is a constructive representation — the system is given by explicit data, not as an existential.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lean structures",
+      "Fin type",
+      "Arithmetic progressions",
+      "Covering systems"
+    ],
+    "prerequisites": [
+      "Lean 4 structures",
+      "Fin indexing",
+      "Positive naturals"
+    ],
+    "leanSymbol": "CoveringSystem"
+  },
+  {
+    "id": "ann-e275-predicates",
+    "proofId": "erdos-275",
+    "range": {
+      "startLine": 54,
+      "endLine": 76
+    },
+    "type": "definition",
+    "title": "Coverage Predicates",
+    "content": "**Three levels of coverage:**\n\n1. **IsCovered(C, x):** $\\exists i \\in \\text{Fin}(r),\\; x \\in \\text{CongruenceClass}(a_i, n_i)$ — at least one class contains $x$.\n\n2. **CoversSet(C, S):** $\\forall x \\in S,\\; \\text{IsCovered}(C, x)$ — every element of set $S$ is covered.\n\n3. **CoversAll(C):** $\\forall x \\in \\mathbb{Z},\\; \\text{IsCovered}(C, x)$ — the system is a complete covering system.\n\n**ConsecutiveIntegers(a, n):** The set $\\{x : a \\leq x < a + n\\}$ — $n$ consecutive integers starting at $a$.",
+    "mathContext": "The key logical structure of Problem #275 is the implication $\\text{CoversSet}(C, \\text{ConsecutiveIntegers}(a, 2^r)) \\Rightarrow \\text{CoversAll}(C)$. This is a *finite-to-infinite extension* principle: checking finitely many values (a finite set of $2^r$ integers) guarantees an infinitary property (coverage of all $\\mathbb{Z}$). The bridge is periodicity — coverage by congruences is periodic with period $\\text{lcm}(n_1, \\ldots, n_r)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Existential quantification",
+      "Universal quantification",
+      "Set membership",
+      "Periodicity"
+    ],
+    "prerequisites": [
+      "First-order logic",
+      "Set theory basics"
+    ]
+  },
+  {
+    "id": "ann-e275-main",
+    "proofId": "erdos-275",
+    "range": {
+      "startLine": 85,
+      "endLine": 87
+    },
+    "type": "concept",
+    "title": "Main Theorem: The 2^r Bound",
+    "content": "**erdos_275_theorem:**\n\n$$\\forall C,\\; \\forall a \\in \\mathbb{Z},\\; \\text{CoversSet}(C, [a, a + 2^r)) \\Rightarrow \\text{CoversAll}(C)$$\n\nIf $r$ congruence classes cover ANY $2^r$ consecutive integers, they cover ALL integers.\n\n**This is the central result of Problem #275.** The universality in $a$ means it doesn't matter which $2^r$ consecutive integers are checked — any window of that size suffices.",
+    "mathContext": "The proof by Crittenden and Vanden Eynden (1970, *Proc. AMS*) uses strong induction on $r$. For the inductive step, they partition the $r$ congruences into those with even moduli and those with odd moduli. The even-modulus classes are halved (replacing $a_i \\pmod{2n_i}$ with $a_i/2 \\pmod{n_i}$), reducing to a system with $r - k$ classes (where $k$ classes had odd moduli) acting on the integers divided by 2. The $2^r$ bound arises because halving $2^r$ gives $2^{r-1}$, matching the inductive hypothesis for $r - 1$ classes after absorbing the odd-modulus ones.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Strong induction",
+      "Periodicity of congruences",
+      "LCM",
+      "Finite verification"
+    ],
+    "prerequisites": [
+      "Modular arithmetic",
+      "Mathematical induction",
+      "Chinese Remainder Theorem"
+    ],
+    "leanSymbol": "erdos_275_theorem"
+  },
+  {
+    "id": "ann-e275-cve",
+    "proofId": "erdos-275",
+    "range": {
+      "startLine": 94,
+      "endLine": 98
+    },
+    "type": "concept",
+    "title": "Crittenden–Vanden Eynden Formulation",
+    "content": "**crittenden_vanden_eynden:**\n\nAlternative formulation: if $r$ arithmetic progressions $a_i \\pmod{n_i}$ cover $\\{0, 1, \\ldots, 2^r - 1\\}$, they cover all of $\\mathbb{Z}$.\n\nThis is equivalent to the main theorem (by translation invariance of congruences) but uses the canonical starting point $a = 0$.\n\nPublished in *Proceedings of the American Mathematical Society*, Volume 24 (1970), pp. 475–481.",
+    "mathContext": "The equivalence with `erdos_275_theorem` follows because $x \\equiv a_i \\pmod{n_i}$ iff $(x - a) \\equiv (a_i - a) \\pmod{n_i}$, so shifting the starting point from $a$ to $0$ merely shifts all residues. Crittenden and Vanden Eynden's original paper proved this specific formulation, with the reduction to $\\{0, \\ldots, 2^r - 1\\}$ simplifying the induction base case.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Translation invariance",
+      "Canonical forms",
+      "Proc. AMS",
+      "Equivalent formulations"
+    ],
+    "prerequisites": [
+      "Modular arithmetic",
+      "Translation of congruences"
+    ],
+    "leanSymbol": "crittenden_vanden_eynden"
+  },
+  {
+    "id": "ann-e275-optimal",
+    "proofId": "erdos-275",
+    "range": {
+      "startLine": 109,
+      "endLine": 113
+    },
+    "type": "definition",
+    "title": "Optimal Example Construction",
+    "content": "**OptimalExample(r):**\n\nThe system $\\{2^{i-1} \\pmod{2^i} : 1 \\leq i \\leq r\\}$, implemented as:\n- `residues(i) = 2^i` (0-indexed: $2^0, 2^1, \\ldots, 2^{r-1}$)\n- `moduli(i) = 2^{i+1}` (0-indexed: $2^1, 2^2, \\ldots, 2^r$)\n\n**Binary interpretation:** The $i$-th class (0-indexed) covers $x$ iff the $(i+1)$-th bit of $x$ is 1. The only integers NOT covered are those with all first $r$ bits zero — i.e., multiples of $2^r$.\n\n**Positivity:** Proved by `Nat.pos_pow_of_pos` — $2^n > 0$ for all $n$.",
+    "mathContext": "This is a *greedy binary construction*: the $i$-th congruence class $2^{i-1} \\pmod{2^i}$ captures exactly the integers whose $i$-th binary digit is 1. Since every nonzero element of $\\{0, \\ldots, 2^r - 1\\}$ has at least one nonzero bit in positions $1$ through $r$, the system covers $2^r - 1$ of the $2^r$ consecutive integers $\\{0, \\ldots, 2^r - 1\\}$ (missing only 0). This constructive example is the canonical proof that $2^r - 1$ does not suffice.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Binary representation",
+      "Powers of 2",
+      "Greedy construction",
+      "Bit extraction"
+    ],
+    "prerequisites": [
+      "Binary number system",
+      "Powers of 2",
+      "Lean Nat.pos_pow_of_pos"
+    ],
+    "leanSymbol": "OptimalExample"
+  },
+  {
+    "id": "ann-e275-coverage",
+    "proofId": "erdos-275",
+    "range": {
+      "startLine": 119,
+      "endLine": 120
+    },
+    "type": "concept",
+    "title": "Optimal Example Coverage Characterization",
+    "content": "**optimal_example_coverage:**\n\n$$\\forall x \\in \\mathbb{Z},\\; \\text{IsCovered}(\\text{OptimalExample}(r), x) \\iff 2^r \\nmid x$$\n\nThe optimal example covers $x$ if and only if $x$ is NOT a multiple of $2^r$. Among any $2^r - 1$ consecutive integers, at most one multiple of $2^r$ can appear (and it might appear exactly once, showing incompleteness).",
+    "mathContext": "This characterization follows from the observation that $x \\equiv 2^{i-1} \\pmod{2^i}$ iff the $i$-th bit of $x$ (in binary) is 1. Taking the disjunction over $i = 1, \\ldots, r$: $x$ is covered iff at least one of its first $r$ bits is 1, i.e., $x \\not\\equiv 0 \\pmod{2^r}$. The density of uncovered integers is $1/2^r$, approaching 0 as $r \\to \\infty$ but never reaching 0 for finite $r$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Divisibility",
+      "2-adic valuation",
+      "Density of multiples",
+      "Biconditional"
+    ],
+    "prerequisites": [
+      "Binary representation",
+      "Divisibility by powers of 2"
+    ],
+    "leanSymbol": "optimal_example_coverage"
+  },
+  {
+    "id": "ann-e275-tight",
+    "proofId": "erdos-275",
+    "range": {
+      "startLine": 127,
+      "endLine": 130
+    },
+    "type": "concept",
+    "title": "Tightness: 2^r - 1 Does Not Suffice",
+    "content": "**not_covered_2r_minus_1:**\n\n$$\\exists C,\\; |C| = r \\wedge \\exists a,\\; \\text{CoversSet}(C, [a, a + 2^r - 1)) \\wedge \\neg\\text{CoversAll}(C)$$\n\nThere exists a system of $r$ classes that covers $2^r - 1$ consecutive integers but fails to cover all of $\\mathbb{Z}$.\n\nThe witness is `OptimalExample(r)` with $a = 1$: it covers $\\{1, 2, \\ldots, 2^r - 1\\}$ (all nonzero mod $2^r$) but misses $0, 2^r, 2 \\cdot 2^r, \\ldots$",
+    "mathContext": "This tightness result completes the characterization: the exact threshold is $2^r$, not $2^r - 1$. Combined with the main theorem, this gives a *sharp* finite verification criterion. The gap between sufficient ($2^r$) and insufficient ($2^r - 1$) is exactly 1 integer — a remarkably tight boundary. The choice of $a = 1$ avoids the only problematic value (0) in the first $2^r - 1$ integers.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sharpness of bounds",
+      "Existential witness",
+      "Extremal examples"
+    ],
+    "prerequisites": [
+      "Optimal example properties",
+      "Negation of universal coverage"
+    ],
+    "leanSymbol": "not_covered_2r_minus_1"
+  },
+  {
+    "id": "ann-e275-exactly",
+    "proofId": "erdos-275",
+    "range": {
+      "startLine": 147,
+      "endLine": 149
+    },
+    "type": "definition",
+    "title": "Exactly k-Covering Systems",
+    "content": "**IsExactlyCovering(C, k):**\n\n$$\\forall x \\in \\mathbb{Z},\\; |\\{i : x \\in \\text{CongruenceClass}(a_i, n_i)\\}| = k$$\n\nEvery integer is covered by exactly $k$ of the congruence classes.\n\n- **k = 1:** Disjoint covering systems — partitions of $\\mathbb{Z}$ into congruence classes.\n- **k > 1:** $k$-fold covering systems, studied by Porubský, Znám, and others.\n\nUses `Finset.filter` and `Finset.card` to count the covering multiplicity.",
+    "mathContext": "Disjoint covering systems ($k = 1$) have a strong structural constraint: by the Chinese Remainder Theorem, the moduli must satisfy $\\sum_{i=1}^r 1/n_i = 1$. The simplest example is $\\{0 \\pmod{2}, 1 \\pmod{2}\\}$. For $k$-fold coverings, the reciprocal sum equals $k$: $\\sum 1/n_i = k$. Znám (1969) characterized when exactly-1-covering systems exist for given moduli. The connection to Problem #275 is that the main theorem's proof technique extends to $k$-fold coverings with threshold $k \\cdot 2^r$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Multiplicity",
+      "Partition of integers",
+      "Reciprocal sum condition",
+      "Znám's theorem"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "Finset.card",
+      "Covering systems"
+    ],
+    "leanSymbol": "IsExactlyCovering"
+  },
+  {
+    "id": "ann-e275-summary",
+    "proofId": "erdos-275",
+    "range": {
+      "startLine": 169,
+      "endLine": 171
+    },
+    "type": "concept",
+    "title": "Summary Theorem: Main Result and Tightness",
+    "content": "**erdos_275:**\n\nCombines both parts as a conjunction:\n1. **Sufficiency:** $\\forall C, a,\\; \\text{CoversSet}(C, [a, a+2^r)) \\Rightarrow \\text{CoversAll}(C)$\n2. **Tightness:** $\\forall r \\geq 1,\\; \\exists C$ with $|C| = r$ covering $2^r - 1$ consecutive integers but not all of $\\mathbb{Z}$\n\n**Proof:** `⟨erdos_275_theorem, not_covered_2r_minus_1⟩` — direct pairing of the two axiomatized results.\n\n**Status:** SOLVED. The threshold for $r$ congruences to guarantee complete coverage is exactly $2^r$ consecutive integers.",
+    "mathContext": "The conjunction $P \\wedge Q$ is proved by the anonymous constructor $\\langle p, q \\rangle$ in Lean 4. This is the first nontrivial *proved* result in the file (as opposed to axiomatized), demonstrating how axiomatized deep results can be composed into summary theorems. The proof is constructive in the Lean sense — it produces a term of type $P \\wedge Q$ from terms of types $P$ and $Q$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Conjunction introduction",
+      "Axiom composition",
+      "Summary theorems"
+    ],
+    "prerequisites": [
+      "erdos_275_theorem",
+      "not_covered_2r_minus_1",
+      "Lean And.intro"
+    ],
+    "leanSymbol": "erdos_275"
+  }
+]

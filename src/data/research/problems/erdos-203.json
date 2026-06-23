@@ -1,0 +1,83 @@
+{
+  "slug": "erdos-203",
+  "title": "Erdős #203",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Is there an integer $m$ with $(m,6)=1$ such that none of $2^k3^\\ell m+1$ are prime, for any $k,\\ell\\geq 0$?\n\n\n\nPositive odd integers $m$ such that none of $2^km+1$ are prime are called Sierpinski numbers - see [1113] for more details.\n\nErd\\H{o}s and Graham also ask more generally about $p_1^{k_1}\\cdots p_r^{k_r}m+1$ for distinct primes $p_i$, or $q_1\\cdots q_rm+1$ where the $q_i$ are primes congruent to $1\\pmod{4}$. (Dogmachine has noted in the comments this latter question has the trivial answer $m=1$ - perhaps some condition such as $m$ even is meant.)",
+    "plain": "Is there an integer $m$ with $(m,6)=1$ such that none of $2^k3^\\ell m+1$ are prime, for any $k,\\ell\\geq 0$?",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-01-12T16:01:50.837Z",
+    "iteration": 3,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: 1A→0A. Proved selfridge_sierpinski_is_sierpinski via covering system {3,5,7,13,19,37,73} with period 36. File now fully verified (0A 0S 36T).",
+    "builtItems": [
+      "def Covers2D, IsCoveringSystem2D",
+      "theorems twentyfive_fails through thirtyseven_fails",
+      "theorems candidate_mono_k, candidate_mono_l",
+      "Proved selfridge_sierpinski_is_sierpinski: covering system verification",
+      "pow2_mod_period: periodicity of 2^k mod p when p | 2^36-1",
+      "covering_prime: computational verification of 36 covering cases"
+    ],
+    "insights": [
+      "Both axioms (selfridge_sierpinski, covering_implies_sierpinski) are established results not in Mathlib",
+      "Added 2D covering system definition (IsCoveringSystem2D, Covers2D)",
+      "Added 5 more small case eliminations (m=25,29,31,35,37), now 13 total",
+      "Added candidate monotonicity lemmas (candidate_mono_k, candidate_mono_l)",
+      "covering_implies_sierpinski axiom was unused — removed (2→1A)",
+      "78557 Sierpiński covering system: period 36, primes {3,5,7,13,19,37,73}. All primes divide 2^36-1."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #203 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an integer $m$ with $(m,6)=1$ such that none of $2^k3^\\ell m+1$ are prime, for any $k,\\ell\\geq 0$?\n\n\n\nPositive odd integers $m$ such that none of $2^km+1$ are prime are called Sierpinski numbers - see [1113] for more details.\n\nErd\\H{o}s and Graham also ask more generally about $p_1^{k_1}\\cdots p_r^{k_r}m+1$ for distinct primes $p_i$, or $q_1\\cdots q_rm+1$ where the $q_i$ are primes congruent to $1\\pmod{4}$. (Dogmachine has noted in the comments this latter question has the trivial answer $m=1$ - perhaps some condition such as $m$ even is meant.)\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1113\n- Problem #202\n- Problem #204\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-2",
+    "erdos-20",
+    "erdos-203"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T16:01:50.837Z",
+  "lastUpdate": "2026-06-10T02:47:38.000Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos203Problem.lean",
+      "filename": "Erdos203Problem.lean",
+      "lineCount": 391,
+      "theoremCount": 41,
+      "axiomCount": 0,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos203Problem.lean"
+    }
+  ]
+}

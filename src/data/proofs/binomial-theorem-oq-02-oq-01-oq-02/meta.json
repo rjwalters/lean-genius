@@ -1,0 +1,145 @@
+{
+  "id": "binomial-theorem-oq-02-oq-01-oq-02",
+  "title": "Marginal Distributions of Multinomial Are Binomial",
+  "slug": "binomial-theorem-oq-02-oq-01-oq-02",
+  "description": "Proves that each marginal component of a multinomial distribution follows a binomial distribution, using the probability generating function (PGF) approach via the multinomial theorem.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BinomialTheoremOQ02OQ01OQ02.lean",
+    "tags": [
+      "probability",
+      "multinomial distribution",
+      "binomial distribution",
+      "generating functions",
+      "marginal distribution",
+      "combinatorics"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 337,
+    "assumptions": "None. All 9 theorems are fully proved with 0 sorries.",
+    "theoremCount": 9,
+    "mathlib_version": "4.26.0",
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "The fact that marginals of the multinomial distribution are binomial is a classical result in probability theory, following from the multinomial theorem and the binomial theorem. If $(X_1, \\ldots, X_k) \\sim \\text{Multinomial}(n, p_1, \\ldots, p_k)$, then each $X_i \\sim \\text{Binomial}(n, p_i)$. This was known implicitly since Laplace's *Théorie Analytique des Probabilités* (1812), but is rarely proved explicitly in formal mathematics because it follows so naturally from generating functions. The probability generating function $E[t^{X_i}] = (p_i t + (1-p_i))^n$ was systematized in the 20th century and provides the cleanest proof: two random variables with the same PGF must have the same distribution.",
+    "problemStatement": "If $(X_1, \\ldots, X_k) \\sim \\text{Multinomial}(n, p_1, \\ldots, p_k)$ with $\\sum p_i = 1$, does each component $X_i$ follow $\\text{Binomial}(n, p_i)$?",
+    "text": "Proves that the probability generating function of each marginal component $X_{i_0}$ of a multinomial distribution equals $(p_{i_0} \\cdot t + (1 - p_{i_0}))^n$, which is exactly the PGF of $\\text{Binomial}(n, p_{i_0})$. The proof uses the multinomial MGF theorem with a strategically chosen weight function.",
+    "proofStrategy": "Apply the multinomial MGF theorem with weight function $g(i) = t$ if $i = i_0$ and $g(i) = 1$ otherwise. The product $\\prod g(i)^{k(i)}$ collapses to $t^{k(i_0)}$ since all other factors equal $1^{k(i)} = 1$. The weighted sum $\\sum p(i) g(i) = p(i_0) t + \\sum_{i \\neq i_0} p(i) = p(i_0) t + (1 - p(i_0))$ using $\\sum p(i) = 1$. Together these give the Binomial PGF.",
+    "keyInsights": [
+      "The PGF approach is natural: choose $g(i) = t^{[i = i_0]}$ to 'select' one coordinate",
+      "The multinomial theorem IS the proof — no additional work beyond algebraic manipulation",
+      "Product concentration: $\\prod_{i \\in s} (\\text{if } i = i_0 \\text{ then } t \\text{ else } 1)^{k(i)} = t^{k(i_0)}$ via `Finset.prod_eq_single`",
+      "Sum simplification: $\\sum_s p(i) \\cdot (\\text{if } i = i_0 \\text{ then } t \\text{ else } 1) = p(i_0) t + (1 - p(i_0))$ via linearity and `Finset.sum_ite_eq'`",
+      "The direct PMF formula `multinomial_marginal_pmf` is proved via an explicit bijection between filtered piAntidiag elements and `(s.erase i₀).piAntidiag (n−j)`, bypassing polynomial coefficient extraction entirely"
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-docstring",
+      "title": "Module Overview and Proof Strategy",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "Explains the open question (marginals of multinomial are binomial?), the PGF proof strategy (choose g(i) = t if i=i₀ else 1), and the Mathlib dependencies (Finset.sum_pow_eq_sum_piAntidiag, Finset.prod_eq_single, Finset.sum_ite_eq'). Also includes four imports and opens BigOperators."
+    },
+    {
+      "id": "setup",
+      "title": "Setup: Multinomial PMF and MGF Identity",
+      "startLine": 50,
+      "endLine": 84,
+      "summary": "Defines multinomialProb (the multinomial PMF: multinomial coefficient × product of p(i)^k(i)) and proves multinomial_mgf_real (the algebraic MGF identity: (∑ p(i)g(i))^n = ∑_k P(X=k) · ∏ g(i)^k(i)) and multinomialProb_sum_one (normalization: ∑ P(X=k) = 1 when ∑ p(i) = 1)."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: Marginal PGF Formula",
+      "startLine": 86,
+      "endLine": 124,
+      "summary": "Proves multinomial_marginal_pgf: the PGF of marginal X_{i₀} equals (p(i₀)·t + (1−p(i₀)))^n. Uses the MGF identity with indicator weight g(i) = t if i=i₀ else 1. Two key inline lemmas: prod_simp (product collapses to t^k(i₀)) and sum_simp (weighted sum simplifies using normalization)."
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries: Binomial Identification and Normalization",
+      "startLine": 126,
+      "endLine": 147,
+      "summary": "multinomial_marginal_pgf_eq_binomial rewrites the marginal PGF as the binomial expansion ∑ C(n,j)·p^j·(1−p)^(n−j)·t^j, confirming marginals are Binomial(n, p(i₀)). multinomial_marginal_sum_one derives normalization from multinomialProb_sum_one."
+    },
+    {
+      "id": "pmf-formula",
+      "title": "Direct PMF Formula via Bijection",
+      "startLine": 149,
+      "endLine": 280,
+      "summary": "Directly proves P(X_{i₀}=j) = C(n,j)·p(i₀)^j·(1−p(i₀))^(n−j) via an explicit bijection between filtered piAntidiag elements and (s.erase i₀).piAntidiag (n−j). Uses Finset.sum_nbij', Nat.multinomial_insert to factor the multinomial coefficient, and the multinomial theorem on the erased subset."
+    },
+    {
+      "id": "examples",
+      "title": "Bool Case: Bernoulli Marginals",
+      "startLine": 282,
+      "endLine": 337,
+      "summary": "Instantiates the main theorem to s = {false, true} with p(true) = p, p(false) = 1−p. Proves bernoulli_marginal_pgf (true component PGF = (pt+(1−p))^n), binomial_2_pgf (n=2 special case), and bernoulli_false_marginal_pgf (false component PGF = ((1−p)t+p)^n)."
+    }
+  ],
+  "conclusion": {
+    "summary": "The main result `multinomial_marginal_pgf` proves that the PGF of each marginal of the multinomial distribution equals the Binomial PGF. Additionally, `multinomial_marginal_pmf` directly proves the PMF formula P(X_{i₀}=j) = C(n,j)·p(i₀)^j·(1−p(i₀))^(n−j) via an explicit bijection and Nat.multinomial_insert. All 9 theorems fully machine-verified, 0 sorries.",
+    "implications": "The marginal-is-binomial result is foundational in statistics: it justifies treating each category of a multinomial experiment as an independent success/failure trial when only one category is of interest. This is used routinely in goodness-of-fit tests (chi-squared), confidence intervals for proportions, and the derivation of the multinomial's covariance structure Cov(Xᵢ,Xⱼ) = -npᵢpⱼ (which follows from knowing the marginals). The PGF method exemplified here generalizes to any compound distribution whose PGF factors — a principle underlying the Poisson limit theorem and branching processes.",
+    "openQuestions": [
+      "Can the proof be extended to show joint independence of disjoint subsets of multinomial components? Specifically, if S₁∪S₂⊂{1,...,k} are disjoint, is (∑_{i∈S₁}Xᵢ, ∑_{i∈S₂}Xᵢ) jointly multinomial on the collapsed categories?",
+      "Formalize the multinomial covariance: Cov(Xᵢ,Xⱼ) = -npᵢpⱼ for i≠j, derivable from this marginal result plus E[Xᵢ]=npᵢ and E[XᵢXⱼ] via the joint PGF",
+      "Prove the Poisson limit: as n→∞ and pᵢ→0 with npᵢ→λᵢ, the multinomial converges to independent Poisson(λᵢ) components — the infinite-dimensional analogue of the marginal binomial result"
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/BinomialTheoremOQ02OQ01OQ02.lean",
+    "theorems": [
+      "multinomial_mgf_real",
+      "multinomialProb_sum_one",
+      "multinomial_marginal_pgf",
+      "multinomial_marginal_pgf_eq_binomial",
+      "multinomial_marginal_sum_one",
+      "multinomial_marginal_pmf",
+      "bernoulli_marginal_pgf",
+      "binomial_2_pgf",
+      "bernoulli_false_marginal_pgf"
+    ],
+    "lineCount": 337,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 1,
+    "theoremCount": 9
+  },
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Proves the multinomial MGF formula that this file uses as its key tool"
+    },
+    {
+      "targetId": "binomial-theorem-oq-02",
+      "relationship": "related",
+      "description": "The multinomial theorem formalization"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "The original binomial theorem"
+    },
+    {
+      "targetId": "binomial-theorem-oq-02-oq-02",
+      "relationship": "related",
+      "description": "Vandermonde's identity via the binomial theorem — another combinatorial identity derived from the same multinomial framework"
+    },
+    {
+      "targetId": "binomial-theorem-oq-02-oq-03",
+      "relationship": "related",
+      "description": "q-Multinomial coefficients — a q-analogue generalization of the multinomial coefficients used here"
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "related",
+      "description": "Central Limit Theorem — the marginal binomial Xᵢ ∼ Bin(n,pᵢ) proved here converges to Normal(npᵢ, npᵢ(1-pᵢ)) by CLT as n→∞"
+    }
+  ],
+  "sorries": 0
+}

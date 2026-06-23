@@ -1,0 +1,113 @@
+{
+  "slug": "erdos-1144",
+  "title": "Erdos #1144: Partial Sums of Random Multiplicative Functions",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For random completely multiplicative f with f(p) in {-1, 1}, prove limsup_{N -> infinity} |sum_{m <= N} f(m)| / sqrt(N) = infinity almost surely.",
+    "plain": "Do random completely multiplicative sign functions have partial sums that exceed every constant multiple of sqrt(N) infinitely often?",
+    "whyMatters": [
+      "Tests whether multiplicative correlations preserve square-root-scale random-walk fluctuations.",
+      "Connects random multiplicative functions with sharp analytic bounds such as Atherfold's upper estimate.",
+      "Clarifies the gap between deterministic Rademacher examples and a genuine probabilistic formalization."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Lean defines completely multiplicative and Rademacher multiplicative functions, plus the partial-sum functional.",
+      "The file proves basic Rademacher value lemmas, square values, partial-sum recursion, a trivial absolute bound, and the constant-one Rademacher example with linear growth.",
+      "Atherfold's almost-sure upper bound is recorded as the single active axiom, not proved in Lean."
+    ],
+    "open": [
+      "The Erdos limsup lower-bound conjecture remains open.",
+      "The formal probabilistic statement is a placeholder over Rademacher functions rather than a full probability-space model.",
+      "The constant-one example should not be treated as evidence for the random almost-sure claim."
+    ],
+    "goal": "Separate the open limsup conjecture from the Atherfold upper-bound axiom while preserving the verified partial-sum and Rademacher infrastructure."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-01-15T16:41:04.200Z",
+    "iteration": 2,
+    "focus": "Metadata now describes the active Rademacher/partial-sum scaffold, the constant-one example, and the lone Atherfold axiom without claiming the open random conjecture is solved.",
+    "blockers": [
+      "The main limsup lower-bound conjecture is open.",
+      "Atherfold's upper bound is axiomatized.",
+      "A full probability-space treatment is not formalized."
+    ],
+    "nextAction": "Future Lean work should either add a genuine probabilistic model or extend concrete multiplicative-function examples such as the Liouville function.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: 16 theorems (was 12), 1 deep axiom, 0 sorries. Added f≡1 as concrete Rademacher example with linear growth (partialSum = N-1), formalizing the note about Atherfold's bound being probabilistic.",
+    "builtItems": [
+      "partialSum_one: partialSum f 1 = 0",
+      "partialSum_two: partialSum f 2 = f 1",
+      "partialSum_succ: recursion partialSum f (N+1) = partialSum f N + f N for N ≥ 1",
+      "completely_mult_pow: f(n^k) = (f n)^k in Erdos1144Problem.lean",
+      "rademacher_sq_one: f(n²) = 1 for Rademacher mult in Erdos1144Problem.lean",
+      "completely_mult_zero_or_one: f(0) ∈ {0,1} (corrected) in Erdos1144Problem.lean",
+      "const_one_completely_mult: f≡1 is completely multiplicative (Erdos1144Problem.lean:166)",
+      "const_one_rademacher: f≡1 is Rademacher multiplicative (Erdos1144Problem.lean:170)",
+      "partialSum_const_one: partialSum of f≡1 is N-1 (Erdos1144Problem.lean:174)",
+      "exists_linear_growth_rademacher: existence of linear growth example (Erdos1144Problem.lean:186)"
+    ],
+    "insights": [
+      "partialSum sums f(m) for m ∈ [1, N-1] (range N filtered by ≥ 1), so it is off-by-one from mathematical convention ∑_{m≤N}",
+      "1 axiom (atherfold_upper_bound 2025) — deep, cannot eliminate",
+      "All f(m) values are ±1 by strong induction on prime factorization (proved by Aristotle)",
+      "Proved completely_mult_pow: f(n^k) = (f n)^k for completely multiplicative f, by induction on k",
+      "Proved rademacher_sq_one: f(n²) = 1 for Rademacher multiplicative f (follows from f(n)∈{±1})",
+      "f≡1 is Rademacher multiplicative with partialSum = N-1 (linear growth), showing Atherfold bound is probabilistic not deterministic",
+      "The conjecture holds trivially for f≡1 since linear growth exceeds √N"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Show const-1 function satisfies the conjecture (linear growth > √N eventually)",
+      "Add Liouville function λ(n) = (-1)^Ω(n) as another Rademacher example",
+      "Connect to Riemann hypothesis via Liouville function partial sums"
+    ],
+    "markdown": "# Erdős #1144 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "tags": [
+    "erdos",
+    "multiplicative-functions",
+    "probabilistic-number-theory",
+    "partial-sums",
+    "open-problem"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-114",
+    "erdos-1144"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T16:41:04.200Z",
+  "lastUpdate": "2026-05-18T08:13:08Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1144Problem.lean",
+      "filename": "Erdos1144Problem.lean",
+      "lineCount": 226,
+      "theoremCount": 16,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1144Problem.lean"
+    }
+  ]
+}

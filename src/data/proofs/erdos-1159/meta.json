@@ -1,0 +1,152 @@
+{
+  "id": "erdos-1159",
+  "title": "Erdos Problem #1159: Bounded Blocking Sets in Projective Planes",
+  "slug": "erdos-1159",
+  "description": "Does there exist an absolute constant C such that every finite projective plane has a blocking set meeting every line in at most C points?",
+  "meta": {
+    "author": "Erdos",
+    "sourceUrl": "https://erdosproblems.com/1159",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1159Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "finite-geometry",
+      "projective-planes",
+      "blocking-sets",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1159,
+    "erdosUrl": "https://erdosproblems.com/1159",
+    "erdosProblemStatus": "open",
+    "axiomCount": 1,
+    "lineCount": 144,
+    "assumptions": "1 axiom: ess_log_blocking_set. See Lean source for the complete statement.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 7,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "This problem was formulated by Erdos in 1981 and connects to fundamental questions in finite geometry. A blocking set in a projective plane is a set of points that intersects every line. Trivially, any line is a blocking set, but with n+1 points per line intersection. The question is whether one can find blocking sets with uniformly bounded line intersections. Erdos, Silverman, and Stein (1983) proved that every projective plane of order n admits a blocking set meeting each line in at most O(log n) points, using the probabilistic method: include each point independently with probability c*log(n)/n. The open question is whether the logarithmic dependence on n can be eliminated entirely, replaced by an absolute constant C independent of the plane's order. This connects to deep questions about the structure of non-Desarguesian planes and whether 'exotic' projective planes might force large intersections. Problem 664 extends this to general block designs.",
+    "problemStatement": "Does there exist a constant $C > 1$ such that for any finite projective plane $\\Pi$ of order $n$, one can find a set of points $S$ where each line $\\ell$ intersects $S$ in at least 1 but at most $C$ points?",
+    "text": "Does there exist an absolute constant C such that every finite projective plane has a blocking set meeting every line in at most C points?",
+    "proofStrategy": "The formalization defines IsBlockingSet generically for any incidence structure, proves monotonicity and non-triviality, then specializes to projective planes using Mathlib's ProjectivePlane typeclass. The ESS theorem (O(log n) bounded blocking sets exist) is axiomatized. The main conjecture BoundedBlockingSetConjecture asks for the quantifier order swap: existence of a universal C before quantifying over all planes. The theorem ess_implies_per_order_bound demonstrates the logical gap between the known result and the conjecture.",
+    "keyInsights": [
+      "The conjecture reduces to a quantifier order question: ESS gives 'for all n, exists C(n)' while the conjecture asks 'exists C, for all n' -- the difference between non-uniform and uniform bounds",
+      "The probabilistic method gives O(log n) because the union bound over n^2+n+1 lines introduces a log factor; eliminating this would require structural arguments beyond probabilistic methods",
+      "Blocking sets in projective planes have a beautiful duality with external sets (sets missing every line), and the minimum blocking set size is known to be n+1 (a line) but the bounded intersection constraint is orthogonal to minimality",
+      "The Fano plane (order 2) trivially has bounded blocking sets since every line has only 3 points, so any blocking set meets each line in at most 3 points -- the difficulty arises for large orders",
+      "Non-Desarguesian planes (which exist for all prime-power orders > 8) might behave differently from Desarguesian planes PG(2,q), making the 'for all planes' quantifier essential"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Header documentation with problem statement, ESS background, and references. Imports Mathlib and opens Configuration namespace for ProjectivePlane.",
+      "mathContext": "Mathematical content: Header documentation with problem statement, ESS background, and references. Imports Mathlib and opens Configuration namespace for ProjectivePlane."
+    },
+    {
+      "id": "blocking-set-def",
+      "title": "Blocking Set Definition",
+      "startLine": 40,
+      "endLine": 45,
+      "summary": "Defines IsBlockingSet S as the property that every line contains at least one point of S, generic over any incidence structure.",
+      "mathContext": "Formal definition: Defines IsBlockingSet S as the property that every line contains at least one point of S, generic over any incidence structure."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 46,
+      "endLine": 62,
+      "summary": "Proves monotonicity (supersets of blocking sets are blocking) and non-triviality (empty set is never blocking).",
+      "mathContext": "Verified: Proves monotonicity (supersets of blocking sets are blocking) and non-triviality (empty set is never blocking)."
+    },
+    {
+      "id": "projective-plane",
+      "title": "Projective Plane Structure",
+      "startLine": 63,
+      "endLine": 88,
+      "summary": "Extracts n+1 points per line, n+1 lines per point, and n^2+n+1 total points/lines from Mathlib's ProjectivePlane.",
+      "mathContext": "Extracts n+1 points per line, n+1 lines per point, and $n^{2}$+n+1 total points/lines from Mathlib's ProjectivePlane."
+    },
+    {
+      "id": "ess-theorem",
+      "title": "ESS Theorem (1983)",
+      "startLine": 89,
+      "endLine": 106,
+      "summary": "Axiomatizes the Erdos-Silverman-Stein result: O(log n)-bounded blocking sets exist in any plane of order n.",
+      "mathContext": "Axiomatizes the Erdos-Silverman-Stein result: $O($\\log n$)$-bounded blocking sets exist in any plane of order n."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Open Conjecture",
+      "startLine": 107,
+      "endLine": 125,
+      "summary": "Defines BoundedBlockingSetConjecture: exists an absolute constant C such that every plane has a C-bounded blocking set.",
+      "mathContext": "Formal definition: Defines BoundedBlockingSetConjecture: exists an absolute constant C such that every plane has a C-bounded blocking set."
+    },
+    {
+      "id": "implication",
+      "title": "ESS Implication",
+      "startLine": 126,
+      "endLine": 138,
+      "summary": "Proves ESS implies per-order bounds, highlighting the gap between non-uniform (known) and uniform (conjectured) bounds.",
+      "mathContext": "Verified: Proves ESS implies per-order bounds, highlighting the gap between non-uniform (known) and uniform (conjectured) bounds."
+    },
+    {
+      "id": "related",
+      "title": "Related Problems",
+      "startLine": 139,
+      "endLine": 144,
+      "summary": "Notes connection to Problem 664 (bounded blocking sets in general block designs).",
+      "mathContext": "Bound: Notes connection to Problem 664 (bounded blocking sets in general block designs)."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdos Problem 1159 using Mathlib's ProjectivePlane typeclass: the blocking set definition, its basic lattice properties, the projective plane counting results, the ESS O(log n) theorem, and the main conjecture asking for a uniform constant. The logical gap between the known non-uniform bound and the conjectured uniform bound is made explicit.",
+    "implications": "A positive resolution would reveal deep structural uniformity in projective planes -- that despite the diversity of plane constructions (Desarguesian, Hall, Hughes, and other exotic types), they all admit bounded blocking sets. A negative resolution would identify a family of planes where large-order structure forces growing intersection sizes, with implications for combinatorial design theory and coding theory.",
+    "openQuestions": [
+      "Does there exist an absolute constant C such that every projective plane has a C-bounded blocking set?",
+      "Can the ESS O(log n) bound be improved for Desarguesian planes PG(2,q)? The algebraic structure might allow better constructions",
+      "What is the relationship between the minimum blocking set size (n + sqrt(n) + 1 for PG(2,q)) and the bounded intersection property?",
+      "Does the answer change for non-Desarguesian planes? Exotic planes might have structural obstructions to bounded blocking sets"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-664",
+      "relationship": "strengthens",
+      "description": "Problem 664 generalizes to all pairwise balanced block designs, not just projective planes"
+    },
+    {
+      "targetId": "erdos-1104",
+      "relationship": "related",
+      "description": "Both use the probabilistic method as the primary tool and ask whether probabilistic bounds can be improved to constants"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Configuration"
+    ],
+    "namespace": "Erdos1159",
+    "lineCount": 144,
+    "axiomCount": 1,
+    "theoremCount": 7,
+    "definitionCount": 2,
+    "path": "Proofs/Erdos1159Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

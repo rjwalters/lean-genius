@@ -1,0 +1,220 @@
+[
+  {
+    "id": "ann-sb-state-machine",
+    "proofId": "denumerability-rationals-oq-03",
+    "range": {
+      "startLine": 57,
+      "endLine": 80
+    },
+    "type": "definition",
+    "title": "State Machine Navigation",
+    "content": "Defines the Stern-Brocot tree as a state machine with state $(la/lb, ra/rb)$ tracking the left and right ancestor fractions. The current node is the mediant $(la+ra)/(lb+rb)$. Going left makes the current node the new right ancestor (narrowing from above); going right makes it the new left ancestor (narrowing from below). The `eval` function navigates the tree by a list of L/R directions, and `pathNum`/`pathDen` extract the numerator and denominator of the reached node. This representation is more amenable to formal verification than an explicit binary tree type.",
+    "mathContext": "$\\text{State} = (la/lb, ra/rb),\\quad \\text{node} = \\frac{la+ra}{lb+rb}$. $L : ra \\gets la+ra,\\; rb \\gets lb+rb$. $R : la \\gets la+ra,\\; lb \\gets lb+rb$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "binary search trees",
+      "continued fraction algorithm",
+      "Euclidean algorithm",
+      "mediants"
+    ],
+    "prerequisites": [
+      "List Dir",
+      "Nat"
+    ],
+    "importance": "high"
+  },
+  {
+    "id": "ann-sb-det-invariant",
+    "proofId": "denumerability-rationals-oq-03",
+    "range": {
+      "startLine": 94,
+      "endLine": 124
+    },
+    "type": "definition",
+    "title": "The Determinant Invariant",
+    "content": "Defines $\\det(s) = ra \\cdot lb - la \\cdot rb$ and proves it equals 1 for all reachable states. The base case is $\\det(0/1, 1/0) = 1 \\cdot 1 - 0 \\cdot 0 = 1$. Both left and right steps preserve the determinant (verified by `linarith`). The inductive proof over paths uses `det_left`/`det_right` at each step. This single identity is the master key: from it, coprimality, ordering, and ultimately bijectivity all follow. It is the formal analogue of the unimodularity condition for $\\mathrm{SL}_2(\\mathbb{Z})$ matrices.",
+    "mathContext": "$\\det(s) = ra \\cdot lb - la \\cdot rb = 1$ for all reachable states. Equivalently, $\\begin{pmatrix} ra & la \\\\ rb & lb \\end{pmatrix} \\in \\mathrm{SL}_2(\\mathbb{Z})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "SL(2,Z)",
+      "unimodular matrices",
+      "Farey neighbors",
+      "modular group"
+    ],
+    "prerequisites": [
+      "Int",
+      "linarith",
+      "induction on List"
+    ],
+    "importance": "high"
+  },
+  {
+    "id": "ann-sb-coprimality",
+    "proofId": "denumerability-rationals-oq-03",
+    "range": {
+      "startLine": 134,
+      "endLine": 163
+    },
+    "type": "concept",
+    "title": "Coprimality from Determinant via Bezout",
+    "content": "Proves that every node $(la+ra)/(lb+rb)$ is in lowest terms. The key step: $ra(lb+rb) - rb(la+ra) = ra \\cdot lb - la \\cdot rb = \\det = 1$. So $\\gcd(la+ra, lb+rb)$ divides this linear combination, hence divides 1, giving $\\gcd = 1$. This is a Bezout-style argument: the existence of integers $ra, -rb$ such that $ra \\cdot (lb+rb) + (-rb) \\cdot (la+ra) = 1$ certifies coprimality. This is the Stern-Brocot tree's most elegant feature: coprimality is algebraic, not requiring explicit gcd computation.",
+    "mathContext": "$\\gcd(la+ra, lb+rb) \\mid ra(lb+rb) - rb(la+ra) = 1 \\implies \\gcd = 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bezout's identity",
+      "extended Euclidean algorithm",
+      "Farey sequence lowest terms"
+    ],
+    "prerequisites": [
+      "Nat.Coprime",
+      "Int.natCast_dvd_natCast",
+      "Int.le_of_dvd",
+      "det_path"
+    ],
+    "importance": "high"
+  },
+  {
+    "id": "ann-sb-positivity",
+    "proofId": "denumerability-rationals-oq-03",
+    "range": {
+      "startLine": 170,
+      "endLine": 197
+    },
+    "type": "concept",
+    "title": "Positivity by Structural Induction",
+    "content": "Proves $la + ra > 0$ and $lb + rb > 0$ for all reachable states. The inductive argument: for left steps, the numerator sum $la + (la + ra) = 2la + ra > 0$ since $ra > 0$ is preserved; for right steps, $(la + ra) + ra > 0$ since $ra > 0$ is maintained. Similarly for denominators. The proofs use `omega` for the base case and step arithmetic. This ensures `toRat` always yields a well-defined positive rational.",
+    "mathContext": "$la + ra > 0$ and $lb + rb > 0$ for all states reachable from $(0/1, 1/0)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "well-definedness",
+      "positive rationals",
+      "structural induction"
+    ],
+    "prerequisites": [
+      "omega",
+      "induction on Path"
+    ],
+    "importance": "medium"
+  },
+  {
+    "id": "ann-sb-torat",
+    "proofId": "denumerability-rationals-oq-03",
+    "range": {
+      "startLine": 204,
+      "endLine": 213
+    },
+    "type": "definition",
+    "title": "Rational Value Function",
+    "content": "Defines `toRat p = pathNum(p) / pathDen(p)` as a rational number, and proves `toRat [] = 1` (root is 1/1) and `toRat p > 0` (all nodes are positive). Positivity follows directly from `num_pos_path` and `den_pos_path` via `div_pos`. This function is the bridge between the combinatorial tree structure and the arithmetic of $\\mathbb{Q}^+$.",
+    "mathContext": "$\\text{toRat}(p) = \\frac{\\text{pathNum}(p)}{\\text{pathDen}(p)} > 0$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "rational number embedding",
+      "Q+",
+      "canonical forms"
+    ],
+    "prerequisites": [
+      "pathNum",
+      "pathDen",
+      "div_pos",
+      "Nat.cast_pos"
+    ],
+    "importance": "medium"
+  },
+  {
+    "id": "ann-sb-ordering",
+    "proofId": "denumerability-rationals-oq-03",
+    "range": {
+      "startLine": 221,
+      "endLine": 226
+    },
+    "type": "concept",
+    "title": "Mediant Ordering Property",
+    "content": "Proves that the mediant lies strictly between the left and right ancestors: $la/lb < (la+ra)/(lb+rb) < ra/rb$, stated in cross-multiplication form to avoid rational division. Both inequalities follow from the determinant identity by `nlinarith`. This ordering property is what makes the tree a binary search tree for rationals, and is the key ingredient for proving injectivity: left descendants are strictly smaller than the current node, right descendants strictly larger.",
+    "mathContext": "$la \\cdot (lb+rb) < (la+ra) \\cdot lb$ and $(la+ra) \\cdot rb < ra \\cdot (lb+rb)$, i.e., $\\frac{la}{lb} < \\frac{la+ra}{lb+rb} < \\frac{ra}{rb}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "binary search tree property",
+      "mediant inequality",
+      "Farey sequence ordering"
+    ],
+    "prerequisites": [
+      "State.det",
+      "nlinarith"
+    ],
+    "importance": "high"
+  },
+  {
+    "id": "ann-sb-injectivity",
+    "proofId": "denumerability-rationals-oq-03",
+    "range": {
+      "startLine": 418,
+      "endLine": 488
+    },
+    "type": "concept",
+    "title": "Injectivity (Proved)",
+    "content": "Proves that different paths from the root produce different `(pathNum, pathDen)` pairs via structural induction with BST ordering. The proof (`eval_injective_gen`) uses induction on paths, showing that at each L/R step, the BST ordering invariants (`value_between_ancestors`) force different paths to yield different rational values. The base cases use `ra_pos_of_det` and `lb_pos_of_det` from the determinant infrastructure. `eval_injective` specializes to the root state.",
+    "mathContext": "$\\text{evalPath}(p_1) = \\text{evalPath}(p_2) \\implies p_1 = p_2$. Proved by structural induction: if $p_1$ and $p_2$ first disagree at position $k$ (one goes L, the other R), then BST ordering gives $\\text{val}(p_1) < \\text{mediant} < \\text{val}(p_2)$, contradicting equality.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tree injectivity",
+      "binary word encoding",
+      "Stern-Brocot bijection",
+      "BST ordering"
+    ],
+    "prerequisites": [
+      "value_between_ancestors",
+      "ra_pos_of_det",
+      "lb_pos_of_det"
+    ],
+    "importance": "high"
+  },
+  {
+    "id": "ann-sb-bst-infrastructure",
+    "proofId": "denumerability-rationals-oq-03",
+    "range": {
+      "startLine": 228,
+      "endLine": 400
+    },
+    "type": "concept",
+    "title": "Injectivity Infrastructure: Monotonicity and BST Invariants (Proved)",
+    "content": "A suite of 10+ proved theorems establishing the monotonicity properties needed for injectivity. **Component monotonicity** (all proved): `ra_ge_eval`, `lb_ge_eval`, `rb_ge_eval`, `la_ge_eval` — each state component is non-decreasing along any path. **Post-step bounds**: `rb_ge_after_left`, `lb_ge_after_right`, `la_ge_after_right` — after going left, $rb$ increases by at least $lb$; after going right, $lb$ and $la$ increase similarly. **BST preservation** (proved via induction + `nlinarith`): `num_lt_den_preserved` and `num_gt_den_preserved` show that the ordering of numerator/denominator sums is preserved through all navigation, using the determinant to establish cross-product inequalities at each step.",
+    "mathContext": "Component monotonicity: $s.ra \\leq (\\text{eval}\\, s\\, p).ra$, etc. BST preservation: if $\\det = 1$ and $la + ra < lb + rb$ at the root, then this inequality holds at every descendant. These are the technical lemmas needed to show the tree is a binary search tree on $\\mathbb{Q}^+$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "binary search tree invariant",
+      "monotonicity",
+      "structural induction",
+      "nlinarith"
+    ],
+    "prerequisites": [
+      "State navigation",
+      "determinant invariant",
+      "omega tactic"
+    ],
+    "importance": "high"
+  },
+  {
+    "id": "ann-sb-examples",
+    "proofId": "denumerability-rationals-oq-03",
+    "range": {
+      "startLine": 401,
+      "endLine": 600
+    },
+    "type": "concept",
+    "title": "Concrete Verification: First Three Levels of the Tree",
+    "content": "Seven verified examples confirming the first three levels of the Stern-Brocot tree: root $[] \\to 1/1$, level 1: $[L] \\to 1/2$, $[R] \\to 2/1$, level 2: $[L,L] \\to 1/3$, $[L,R] \\to 2/3$, $[R,L] \\to 3/2$, $[R,R] \\to 3/1$. Each example verifies numerator, denominator, coprimality, and ordering properties by `native_decide` or `norm_num`. This section also includes the full `eval_injective_gen` proof and the final `eval_injective` theorem, establishing that the tree enumeration is injective.",
+    "mathContext": "Level 0: $1/1$. Level 1: $1/2, 2/1$. Level 2: $1/3, 2/3, 3/2, 3/1$. All fractions are in lowest terms with the BST ordering property verified computationally.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Stern-Brocot tree levels",
+      "Farey sequence F_3",
+      "native_decide"
+    ],
+    "prerequisites": [
+      "state machine definitions",
+      "eval function"
+    ],
+    "importance": "medium"
+  }
+]

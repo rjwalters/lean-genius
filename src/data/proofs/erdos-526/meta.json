@@ -1,0 +1,224 @@
+{
+  "id": "erdos-526",
+  "title": "Erdős Problem #526: Circle Coverage by Random Arcs (Dvoretzky's Problem)",
+  "slug": "erdos-526",
+  "description": "Given arc lengths a_n → 0 with Σa_n = ∞, when do random arcs cover the unit circle with probability 1? Shepp (1972) proved the necessary and sufficient condition is Σ exp(a_1+...+a_n)/n² = ∞.",
+  "meta": {
+    "author": "Dvoretzky, A.",
+    "sourceUrl": "https://erdosproblems.com/526",
+    "date": "1956",
+    "status": "axiomatized",
+    "dateAdded": "2026-01-23",
+    "proofRepoPath": "Proofs/Erdos526Problem.lean",
+    "tags": [
+      "erdos",
+      "probability",
+      "random-covering",
+      "geometric-probability",
+      "circle",
+      "arcs"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 526,
+    "erdosUrl": "https://erdosproblems.com/526",
+    "erdosProblemStatus": "solved",
+    "solvedBy": "L. A. Shepp",
+    "solvedYear": 1972,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.exp",
+        "description": "The exponential function on reals"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "The natural logarithm function"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Convergence of sequences via filters"
+      },
+      {
+        "theorem": "Summable",
+        "description": "Predicate for summable sequences"
+      },
+      {
+        "theorem": "Set.Ico",
+        "description": "Half-open interval [a, b) as a set"
+      },
+      {
+        "theorem": "BigOperators",
+        "description": "Sum and product notation over finite sets"
+      }
+    ],
+    "originalContributions": [
+      "UnitCircle and Arc definitions",
+      "ArcSequence structure with conditions",
+      "partialSum formalization",
+      "SheppCriterion predicate",
+      "CoversWithProbOne definition",
+      "criticalSeq at 1/n boundary",
+      "Shepp's theorem axiomatization",
+      "Main theorem combining all results"
+    ],
+    "axiomCount": 4,
+    "assumptions": "4 axioms: CoversWithProbOne, shepp_1972, criticalSeq, erdos_critical. 0 sorries.",
+    "prerequisites": [
+      "Probability theory: independent random variables and almost sure events",
+      "Series convergence and divergence (harmonic series, p-series)",
+      "Exponential and logarithmic functions on the reals",
+      "Poisson processes and renewal theory fundamentals",
+      "Geometric probability on the unit circle"
+    ],
+    "lineCount": 242,
+    "mathlib_version": "4.26.0",
+    "theoremCount": 2,
+    "definitionCount": 5
+  },
+  "overview": {
+    "historicalContext": "Dvoretzky posed this problem in 1956, asking for a characterization of when random arcs on a circle provide complete coverage. Kahane (1959) showed a_n = (1+c)/n covers with probability 1. Erdős (unpublished) proved a_n = 1/n is the critical case: it covers, but a_n = (1-c)/n fails. Shepp (1972) gave the complete answer via the elegant criterion Σ exp(S_n)/n² = ∞, where S_n is the partial sum of arc lengths. The random coverage problem connects to the Poisson process on the circle and to Borel-Cantelli type arguments; the logarithmic threshold a_n ~ 1/n is a one-dimensional analogue of the threshold for covering a d-dimensional cube, where a_n ~ (d log n)/n is required, as proved by Flajolet, Grabner, Kirschenhofer, and Prodinger in 1993.",
+    "problemStatement": "Let a_n ≥ 0 with a_n → 0 and Σa_n = ∞. Find a necessary and sufficient condition on the a_n such that random arcs of lengths a_n, placed uniformly and independently on the unit circle, cover the entire circle with probability 1.",
+    "text": "Given arc lengths a_n → 0 with Σa_n = ∞, when do random arcs cover the unit circle with probability 1? Shepp (1972) proved the necessary and sufficient condition is Σ exp(a_1+...+a_n)/n² = ∞.",
+    "proofStrategy": "Shepp used Poisson process techniques to analyze the expected number of uncovered points. The key insight is that at a_n = 1/n, the partial sum S_n grows like log n, making exp(S_n)/n² ~ 1/n, which barely diverges. Below 1/n, the sum converges and coverage fails.",
+    "keyInsights": [
+      "Shepp's criterion: Σ exp(a_1+...+a_n)/n² = ∞",
+      "Critical boundary at a_n = 1/n",
+      "Harmonic series growth: H_n ~ log n + γ",
+      "exp(log n)/n² = 1/n, which diverges",
+      "Connection to Poisson processes and renewal theory"
+    ],
+    "prerequisites": [
+      "Probability theory: independent random variables and almost sure events",
+      "Series convergence and divergence (harmonic series, p-series)",
+      "Exponential and logarithmic functions on the reals",
+      "Poisson processes and renewal theory fundamentals",
+      "Geometric probability on the unit circle"
+    ]
+  },
+  "sections": [
+    {
+      "id": "overview-and-setup",
+      "title": "Overview and Setup",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Problem statement, Shepp's 1972 solution criterion, historical results (Dvoretzky, Kahane, Erdős), references, imports, and namespace setup."
+    },
+    {
+      "id": "basic-setup",
+      "title": "Part I: Basic Setup",
+      "startLine": 43,
+      "endLine": 67,
+      "summary": "The unit circle [0,1) with wraparound, the Arc definition, and the ArcSequence structure encoding a_n ≥ 0, a_n → 0, and Σa_n = ∞."
+    },
+    {
+      "id": "coverage-condition",
+      "title": "Part II: The Coverage Condition",
+      "startLine": 68,
+      "endLine": 93,
+      "summary": "Partial sum S_n, Shepp's criterion as divergence of Σ exp(S_n)/n², and the axiomatized CoversWithProbOne event."
+    },
+    {
+      "id": "shepps-theorem",
+      "title": "Part III: Shepp's Theorem (1972)",
+      "startLine": 94,
+      "endLine": 112,
+      "summary": "Shepp's characterization axiom (coverage ⇔ Shepp's criterion) and the main theorem erdos_526_solved restating it."
+    },
+    {
+      "id": "special-cases",
+      "title": "Part IV: Special Cases",
+      "startLine": 113,
+      "endLine": 142,
+      "summary": "Supercritical a_n=(1+c)/n, critical a_n=1/n (criticalSeq, erdos_critical), and subcritical a_n=(1-c)/n at the 1/n boundary."
+    },
+    {
+      "id": "verification-special-cases",
+      "title": "Part V: Verification of Shepp's Criterion for Special Cases",
+      "startLine": 143,
+      "endLine": 163,
+      "summary": "Asymptotics of exp(S_n)/n² for each regime: n^{c-1} diverges (super), 1/n diverges (critical), n^{-1-c} converges (sub)."
+    },
+    {
+      "id": "dvoretzky-observation",
+      "title": "Part VI: Dvoretzky's Observation",
+      "startLine": 164,
+      "endLine": 176,
+      "summary": "Dvoretzky (1956): under the basic conditions almost all the circle is covered (uncovered Lebesgue measure → 0), though uncovered points may remain."
+    },
+    {
+      "id": "poisson-connection",
+      "title": "Part VII: The Poisson Process Connection",
+      "startLine": 177,
+      "endLine": 195,
+      "summary": "Shepp's proof technique modeling arc placements as a Poisson process and relating expected uncovered points to exp(-S_n)."
+    },
+    {
+      "id": "computational-examples",
+      "title": "Part VIII: Computational Examples",
+      "startLine": 196,
+      "endLine": 202,
+      "summary": "Numerical sanity check that the partial harmonic sum 1 + 1/2 + ... + 1/5 exceeds 2, verified by native_decide."
+    },
+    {
+      "id": "logarithmic-growth",
+      "title": "Part IX: Logarithmic Growth and the Critical Boundary",
+      "startLine": 203,
+      "endLine": 214,
+      "summary": "Harmonic sum growth H_n ≈ log n + γ explaining why 1/n is critical: exp(H_n)/n² ≈ exp(γ)/n, whose sum diverges."
+    },
+    {
+      "id": "summary",
+      "title": "Part X: Summary",
+      "startLine": 215,
+      "endLine": 242,
+      "summary": "Final summary theorem erdos_526_summary combining Shepp's characterization with the critical-case coverage, recapping the answer and critical boundary."
+    }
+  ],
+  "conclusion": {
+    "summary": "Shepp (1972) solved Dvoretzky's random arc covering problem: random arcs of lengths a_n cover the circle with probability 1 iff Σ exp(a_1+...+a_n)/n² = ∞. The critical case a_n = 1/n just barely succeeds.",
+    "implications": "The result connects probability theory, geometric measure, and the fine structure of divergent series. It shows how the harmonic series growth log n creates a precise phase transition in random covering problems.",
+    "openQuestions": [
+      "Higher-dimensional generalizations",
+      "Non-uniform arc placement distributions",
+      "Rate of convergence to full coverage"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Topology.Basic",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+    ],
+    "opens": [
+      "Real",
+      "MeasureTheory",
+      "Filter",
+      "Topology",
+      "BigOperators"
+    ],
+    "namespace": "Erdos526",
+    "lineCount": 242,
+    "axiomCount": 4,
+    "theoremCount": 2,
+    "definitionCount": 5,
+    "path": "Proofs/Erdos526Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-525",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-neighbor"
+    },
+    {
+      "targetId": "erdos-527",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-neighbor"
+    }
+  ],
+  "sorries": 0,
+  "definitionCount": 5
+}

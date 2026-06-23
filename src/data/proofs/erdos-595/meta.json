@@ -1,0 +1,189 @@
+{
+  "id": "erdos-595",
+  "title": "Erdős Problem #595: Infinite Graphs and Countable Triangle-Free Decomposition",
+  "slug": "erdos-595",
+  "description": "Is there an infinite graph G which contains no K₄ and is not the union of countably many triangle-free graphs? A fundamental question by Erdős and Hajnal about the chromatic structure of infinite graphs. OPEN, $250 prize.",
+  "meta": {
+    "author": "Erdős-Hajnal",
+    "sourceUrl": "https://erdosproblems.com/595",
+    "date": "~1967",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos595Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "infinite-combinatorics",
+      "ramsey-theory",
+      "chromatic-theory",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 595,
+    "erdosUrl": "https://erdosproblems.com/595",
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": "$250",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.IsClique",
+        "description": "Clique predicate",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Set cardinality for infinite graphs",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "Cardinal",
+        "description": "Cardinal arithmetic",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      }
+    ],
+    "originalContributions": [
+      "hasCliqueInfinite: clique predicate using Set.ncard for infinite graphs",
+      "isKFreeInfinite, isK4Free, isTriangleFree: forbidden subgraph predicates",
+      "isCountableUnionOf, hasCountableTriangleFreeCover: covering definitions",
+      "erdos595_conjecture: formal statement of the open problem",
+      "hasFiniteTriangleFreeCover: finite covering predicate",
+      "folkman_finite_resistance axiom: Folkman (1970)",
+      "nesetril_rodl_finite_resistance axiom: Nešetřil-Rödl (1975)",
+      "problem595_reformulated: alternative formalization",
+      "c4_free_countable_trees axiom: Erdős-Hajnal C₄-free result",
+      "finite_case_complete theorem: proved from Folkman",
+      "erdos_595_summary theorem: combines Folkman and C₄-free results"
+    ],
+    "axiomCount": 3,
+    "lineCount": 229,
+    "assumptions": "3 axiom(s): folkman_finite_resistance, nesetril_rodl_finite_resistance, c4_free_countable_trees. See Lean source for complete statements.",
+    "theoremCount": 2,
+    "definitionCount": 10
+  },
+  "overview": {
+    "historicalContext": "This problem originated from Erdős and Hajnal around 1967, exploring the chromatic properties of infinite graphs. It asks whether a 'local' constraint (K₄-free) can coexist with 'global' resistance to decomposition into countably many triangle-free parts.\n\nThe finite case is completely solved: Folkman (1970) and Nešetřil-Rödl (1975) proved that for every n ≥ 1, there exists a K₄-free graph that cannot be covered by n triangle-free graphs. The jump to countably infinite covers introduces fundamentally new difficulties.\n\nThe problem connects to a broader family of questions about (G₁, G₂) decomposition pairs (Problem #596) and to Folkman numbers (Problem #582). Erdős offered a $250 prize, reflecting the problem's significance and difficulty.",
+    "problemStatement": "Is there an infinite graph G which contains no K₄ and is not the union of countably many triangle-free graphs?\n\n**Known Results:**\n- For every finite n, there exists a finite K₄-free graph not coverable by n triangle-free graphs (Folkman 1970, Nešetřil-Rödl 1975)\n- Every C₄-free graph IS a countable union of trees, hence countably coverable (Erdős-Hajnal)\n- The K₄-free countable case remains OPEN",
+    "text": "Is there an infinite graph G which contains no K₄ and is not the union of countably many triangle-free graphs? A fundamental question by Erdős and Hajnal about the chromatic structure of infinite graphs. OPEN, $250 prize.",
+    "proofStrategy": "The formalization defines cliques and covering for infinite graphs using Set.ncard. The conjecture is stated as erdos595_conjecture and equivalently as problem595_reformulated. Finite analogues are axiomatized via folkman_finite_resistance and nesetril_rodl_finite_resistance. The contrast result c4_free_countable_trees shows C₄-free graphs are coverable. The summary theorem erdos_595_summary combines Folkman's finite resistance with the C₄-free coverability result.",
+    "keyInsights": [
+      "**Finite resistance does not imply countable resistance**: for each n, K₄-free graphs resist n-covers, but this doesn't extend to countable covers",
+      "**C₄-free graphs are coverable**: Erdős-Hajnal showed C₄-free graphs decompose into countably many trees",
+      "**Local vs global**: K₄-free is a 'local' constraint; countable non-coverability is 'global'",
+      "**Connection to Problem 596**: this is the (K₄, K₃) case of the general (G₁, G₂) decomposition question",
+      "**Compactness barrier**: The finite-to-infinite jump fails because compactness arguments don't apply — each finite graph's resistance to n-covers doesn't compose into resistance to ω-covers, a fundamental limitation of finitary Ramsey theory"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Ramsey theory (partition regularity)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 43,
+      "endLine": 75,
+      "summary": "hasCliqueInfinite, isKFreeInfinite, isK4Free, isTriangleFree",
+      "mathContext": "Infinite graph cliques: $\\text{hasCliqueInfinite}(G, k)$ means $G$ contains $K_k$ as a subgraph. $\\text{isKFreeInfinite}(G, k) \\iff \\neg\\text{hasCliqueInfinite}(G, k)$."
+    },
+    {
+      "id": "coverings",
+      "title": "Graph Coverings and Unions",
+      "startLine": 76,
+      "endLine": 102,
+      "summary": "IsSubgraph, isCountableUnionOf, hasCountableTriangleFreeCover",
+      "mathContext": "$\\text{hasCountableTriangleFreeCover}(G)$: $\\exists$ countable family $\\{G_i\\}_{i \\in \\mathbb{N}}$ of triangle-free subgraphs with $G = \\bigcup_i G_i$."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 103,
+      "endLine": 121,
+      "summary": "erdos595_conjecture: formal statement of the open problem",
+      "mathContext": "Conjecture: every $K_4$-free graph has a countable triangle-free cover. Formally: $\\text{isK4Free}(G) \\implies \\text{hasCountableTriangleFreeCover}(G)$."
+    },
+    {
+      "id": "finite-case",
+      "title": "Finite Analogues",
+      "startLine": 122,
+      "endLine": 155,
+      "summary": "hasFiniteTriangleFreeCover, folkman_finite_resistance, nesetril_rodl_finite_resistance",
+      "mathContext": "Finite case: every $K_4$-free graph on finitely many vertices has a finite triangle-free cover (Folkman 1970, Nešetřil-Rödl). Proved via Ramsey-type partition."
+    },
+    {
+      "id": "infinite-gap",
+      "title": "The Infinite Case",
+      "startLine": 156,
+      "endLine": 178,
+      "summary": "Discussion of finite-to-countable gap, problem595_reformulated",
+      "mathContext": "The finite-to-countable gap: finite covers exist for finite graphs, but extending to countable covers of infinite $K_4$-free graphs is the open problem."
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results",
+      "startLine": 179,
+      "endLine": 193,
+      "summary": "c4_free_countable_trees axiom: C₄-free graphs are countably coverable",
+      "mathContext": "Related: $C_4$-free graphs (no 4-cycles) have countable covers by trees (axiomatized). Trees are triangle-free, so this is a stronger structural result for a different forbidden subgraph."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 194,
+      "endLine": 229,
+      "summary": "finite_case_complete theorem, erdos_595_summary theorem",
+      "mathContext": "Summary theorems: $\\text{finite_case_complete}$ packages the solved finite case. $\\text{erdos_595_summary}$ records that the infinite case remains open."
+    }
+  ],
+  "conclusion": {
+    "summary": "Problem 595 remains one of the significant open problems in infinite graph theory. The $250 prize reflects its difficulty. The finite analogues are well-understood (Folkman 1970, Nešetřil-Rödl 1975), but the countable case requires fundamentally new ideas. The formalization captures the known results: finite resistance for all n, C₄-free coverability, and the precise conjecture statement.",
+    "implications": "A positive answer would demonstrate a deep structural difference between finite and countable decomposability. A negative answer would establish a powerful compactness-type result for graph coverings.",
+    "openQuestions": [
+      "Does such an infinite K₄-free graph exist?",
+      "Can probabilistic or algebraic methods construct an explicit example?",
+      "What set-theoretic methods might be applicable?",
+      "What is the relationship to the general (G₁, G₂) question (Problem 596)?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "Ramsey theory underpins the finite case: K₄-free finite graphs have finite triangle-free covers via Ramsey-type partition arguments"
+    },
+    {
+      "targetId": "erdos-1155",
+      "relationship": "related",
+      "description": "Both concern triangle-related structural problems in graph theory; #1155 studies triangle removal while #595 asks about triangle-free decomposition"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.SetTheory.Cardinal.Basic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset",
+      "Cardinal"
+    ],
+    "namespace": "Erdos595",
+    "lineCount": 229,
+    "axiomCount": 3,
+    "theoremCount": 2,
+    "definitionCount": 10,
+    "path": "Proofs/Erdos595Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

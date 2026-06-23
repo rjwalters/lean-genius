@@ -1,0 +1,217 @@
+{
+  "id": "euler-totient-oq-01",
+  "title": "Carmichael's Function: λ(n) and the Minimal Universal Exponent",
+  "slug": "euler-totient-oq-01",
+  "description": "Carmichael's function λ(n), defined as the exponent of (ℤ/nℤ)*, gives the smallest e with a^e ≡ 1 (mod n) for all coprime a. Proves λ(n) | φ(n), minimality, and special values.",
+  "meta": {
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "group-theory",
+      "modular-arithmetic",
+      "carmichael"
+    ],
+    "proofRepoPath": "Proofs/EulerTotientOQ01.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. Core results derived from Mathlib's Monoid.exponent, Monoid.exponent_dvd_card, and IsCyclic.exponent_eq_card.",
+    "lineCount": 83,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "mathlib_version": "4.26.0",
+    "dateAdded": "2026-03-30",
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Carmichael_function",
+    "date": "Carmichael 1910; formalized 2026",
+    "mathlibDependencies": [
+      {
+        "theorem": "Monoid.exponent",
+        "description": "Group exponent: smallest positive e with g^e = 1 for all g",
+        "module": "Mathlib.GroupTheory.Exponent"
+      },
+      {
+        "theorem": "Monoid.exponent_dvd_card",
+        "description": "Exponent divides group order (instance of Lagrange's theorem)",
+        "module": "Mathlib.GroupTheory.Exponent"
+      },
+      {
+        "theorem": "IsCyclic.exponent_eq_card",
+        "description": "For cyclic groups, exponent equals order",
+        "module": "Mathlib.GroupTheory.SpecificGroups.Cyclic"
+      },
+      {
+        "theorem": "ZMod.card_units_eq_totient",
+        "description": "|(ℤ/nℤ)*| = φ(n)",
+        "module": "Mathlib.Data.ZMod.Units"
+      }
+    ],
+    "originalContributions": [
+      "carmichael: λ(n) = Monoid.exponent (ZMod n)ˣ (DEFINED)",
+      "carmichael_pow_eq_one: a^λ(n) = 1 for all units (PROVED via Monoid.pow_exponent_eq_one)",
+      "carmichael_dvd_totient: λ(n) | φ(n) (PROVED via exponent_dvd_card)",
+      "carmichael_minimal: λ(n) | e for all universal exponents (PROVED)",
+      "carmichael_prime: λ(p) = p-1 for prime p (PROVED via IsCyclic)",
+      "carmichael_one, carmichael_two: λ(1) = λ(2) = 1 (PROVED)"
+    ]
+  },
+  "overview": {
+    "prerequisites": [
+      "Group theory: finite abelian groups, exponent (LCM of element orders), Lagrange's theorem",
+      "Number theory: Euler's totient φ(n), multiplicative group (ℤ/nℤ)*, units and coprimality",
+      "Primitive root theorem (Gauss): (ℤ/pℤ)* is cyclic for prime p",
+      "Lean 4 typeclasses: IsCyclic, Monoid.exponent, ZMod API",
+      "Mathlib group theory library: GroupTheory.Exponent, SpecificGroups.Cyclic"
+    ],
+    "text": "Carmichael's function λ(n) = exponent((ℤ/nℤ)*) refines Euler's totient φ(n) to the exact minimal universal exponent satisfying a^λ(n) ≡ 1 (mod n) for all coprime a. This formalization proves the three fundamental properties — universality, divisibility λ(n) | φ(n), and minimality — as one-line consequences of Mathlib's abstract `Monoid.exponent` API, then computes λ(p) = p−1 via Gauss's primitive root theorem. The formalization reveals why λ(n) is the correct modulus for RSA key generation: decryption is possible if and only if λ(n) | (ed−1), not merely φ(n) | (ed−1).",
+    "historicalContext": "Euler's theorem (1763) states $a^{\\varphi(n)} \\equiv 1 \\pmod{n}$ for $\\gcd(a, n) = 1$, where $\\varphi(n) = |({\\mathbb{Z}}/n{\\mathbb{Z}})^*|$ is Euler's totient. Robert D. Carmichael (1910) observed that Euler's exponent $\\varphi(n)$ is often far from optimal: for instance, $\\varphi(8) = 4$ but $a^2 \\equiv 1 \\pmod{8}$ for all odd $a$. Carmichael defined $\\lambda(n)$ as the smallest universal exponent, now known as Carmichael's function or the reduced totient. He showed $\\lambda(n) \\mid \\varphi(n)$ and computed when equality holds: $(\\mathbb{Z}/n\\mathbb{Z})^*$ is cyclic — equivalently $\\lambda(n) = \\varphi(n)$ — precisely when $n \\in \\{1, 2, 4, p^k, 2p^k\\}$ for odd primes $p$. This characterization was already implicit in Gauss's Disquisitiones Arithmeticae (1801), where the primitive root theorem establishes cyclicity for prime moduli. Carmichael's function has since become essential in cryptography: the RSA private key exponent $d$ satisfies $ed \\equiv 1 \\pmod{\\lambda(n)}$ (not merely $\\pmod{\\varphi(n)}$), giving a smaller and therefore more efficient $d$.",
+    "problemStatement": "Define Carmichael's function $\\lambda(n)$ as the exponent of the multiplicative group $(\\mathbb{Z}/n\\mathbb{Z})^*$ (the LCM of the orders of all elements). Prove: (1) $a^{\\lambda(n)} \\equiv 1 \\pmod{n}$ for all $a$ coprime to $n$; (2) $\\lambda(n) \\mid \\varphi(n)$; (3) $\\lambda(n)$ is minimal: if $a^e \\equiv 1 \\pmod{n}$ for all coprime $a$, then $\\lambda(n) \\mid e$; (4) special values $\\lambda(p) = p-1$ for primes $p$, $\\lambda(1) = \\lambda(2) = 1$.",
+    "proofStrategy": "All results follow from Mathlib's `Monoid.exponent` API. `carmichael n` is defined as `Monoid.exponent (ZMod n)ˣ`. The three core properties — `pow_exponent_eq_one`, `exponent_dvd_card`, and `exponent_dvd_of_forall_pow_eq_one` — are pre-proved in Mathlib's group theory library and require no additional argument. For `carmichael_prime`, the key ingredient is `IsCyclic.exponent_eq_card`: for a cyclic group, the exponent equals the group order (since a generator has order = group order = LCM of all orders).",
+    "keyInsights": [
+      "Carmichael's function equals `Monoid.exponent` in Mathlib's group theory framework: the exponent of a group $G$ is the LCM of the orders of all elements, equivalently the smallest positive $e$ with $g^e = 1$ for all $g \\in G$. This abstract concept applies to any monoid and is pre-developed in Mathlib independently of number theory.",
+      "The divisibility $\\lambda(n) \\mid \\varphi(n)$ is an instance of Lagrange's theorem: the exponent of any finite group $G$ divides its order $|G|$. Here $|G| = |(\\mathbb{Z}/n\\mathbb{Z})^*| = \\varphi(n)$, so `exponent_dvd_card` gives the result immediately without explicit computation.",
+      "The minimality theorem `carmichael_minimal` states that $\\lambda(n)$ divides any universal exponent $e$. This is equivalent to saying $\\lambda(n)$ is the order-theoretic infimum of all universal exponents — $\\lambda(n) = \\gcd$ of all $e$ with $a^e = 1$ for all coprime $a$. In Mathlib, `exponent_dvd_of_forall_pow_eq_one` captures exactly this property.",
+      "For prime $p$, the group $(\\mathbb{Z}/p\\mathbb{Z})^*$ is cyclic of order $p-1$ (Gauss's primitive root theorem). `IsCyclic.exponent_eq_card` then gives $\\lambda(p) = p-1$. The formula $\\lambda(p^k) = p^{k-1}(p-1) = \\varphi(p^k)$ also holds (cyclicity extends to prime powers for odd $p$), but this is not proved in this file.",
+      "The failure of cyclicity for $n = 2^k$ ($k \\geq 3$) is arithmetic: $(\\mathbb{Z}/2^k\\mathbb{Z})^* \\cong \\mathbb{Z}/2 \\times \\mathbb{Z}/2^{k-2}$ (non-cyclic for $k \\geq 3$), giving $\\lambda(2^k) = 2^{k-2} \\neq \\varphi(2^k) = 2^{k-1}$. This is the source of the '2-adic' anomaly in the structure of $\\lambda$.",
+      "The theorems `carmichael_pow_eq_one` and `carmichael_minimal` together give the **exact characterization** of RSA correctness. Classical RSA uses $ed \\equiv 1 \\pmod{\\varphi(n)}$ as the key constraint, but the correct constraint is $ed \\equiv 1 \\pmod{\\lambda(n)}$: decryption $(m^e)^d \\equiv m \\pmod{n}$ succeeds iff $\\lambda(n) \\mid (ed - 1)$, not merely $\\varphi(n) \\mid (ed - 1)$. Since $\\lambda(n) \\mid \\varphi(n)$, the $\\varphi$-based constraint is sufficient but strictly stronger — it excludes valid key pairs where $\\gcd(e, \\varphi(n)) > 1$ but $\\gcd(e, \\lambda(n)) = 1$. The `carmichael_minimal` theorem is precisely the Lean statement of RSA correctness necessity: if decryption works for all messages, then $\\lambda(n) \\mid (ed-1)$. PKCS#1 v2.1 (RFC 3447) and FIPS 186-4 both mandate $\\lambda(n)$-based key generation for this reason.",
+      "The `carmichael_minimal` theorem is the key tool for characterizing **Carmichael numbers** — composite integers $n$ where $a^n \\equiv a \\pmod{n}$ for all $a$ (pseudoprimes to every base). The Korselt criterion (1899) states: $n$ is a Carmichael number iff $n$ is squarefree, $n > 1$, and $\\lambda(n) \\mid (n-1)$. The proof uses exactly `carmichael_minimal`: since $a^n \\equiv a$ for all $a$, in particular $a^{n-1} \\equiv 1$ for all coprime $a$, so $\\lambda(n) \\mid (n-1)$. The infinite existence of Carmichael numbers (Alford-Granville-Pomerance 1994) shows pseudoprimality cannot be eliminated by any fixed base — the minimal universal exponent $\\lambda(n)$ is the correct measure of how far a composite is from being prime-like."
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-overview",
+      "title": "Module Documentation: Carmichael vs. Euler's Totient",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "Imports Mathlib and presents the module structure: Carmichael's function λ(n) as the minimal universal exponent, its divisibility λ(n) | φ(n), and the connection to Mathlib's Monoid.exponent. Opening ZMod namespace gives access to ZMod.card_units_eq_totient.",
+      "mathContext": "Carmichael (1910): $\\lambda(n) = \\text{exp}((\\mathbb{Z}/n\\mathbb{Z})^*) = \\text{lcm}\\{\\text{ord}(a) : a \\in (\\mathbb{Z}/n\\mathbb{Z})^*\\}$, satisfying $\\lambda(n) \\mid \\varphi(n)$ with equality iff the group is cyclic."
+    },
+    {
+      "id": "definition",
+      "title": "Carmichael's Function: Definition via Monoid.exponent",
+      "startLine": 30,
+      "endLine": 34,
+      "summary": "Defines `carmichael n = Monoid.exponent (ZMod n)ˣ`. The `noncomputable` annotation reflects classical finset operations. This abstract definition automatically inherits all group-exponent properties from Mathlib.",
+      "mathContext": "The exponent of a finite group $G = \\mathbb{Z}/d_1 \\times \\cdots \\times \\mathbb{Z}/d_k$ equals $\\text{lcm}(d_1, \\ldots, d_k)$. Defined abstractly via `Monoid.exponent`, $\\lambda(n)$ inherits: $a^{\\lambda(n)} = 1$, $\\lambda(n) \\mid |G|$, and minimality."
+    },
+    {
+      "id": "core-theorems",
+      "title": "Three Core Properties: Universality, Divisibility, Minimality",
+      "startLine": 35,
+      "endLine": 57,
+      "summary": "Three one-line proofs: carmichael_pow_eq_one (a^λ(n) = 1 from Monoid.pow_exponent_eq_one), carmichael_dvd_totient (λ(n) | φ(n) from exponent_dvd_card and card_units_eq_totient), carmichael_minimal (λ(n) | e for any universal exponent, from exponent_dvd_of_forall_pow_eq_one).",
+      "mathContext": "These three properties characterize $\\lambda(n)$ as the infimum of universal exponents: $\\lambda(n) = \\min\\{e > 0 : a^e \\equiv 1 \\pmod{n}\\ \\forall \\gcd(a,n)=1\\}$. Together they show $\\lambda(n)$ is the 'exact' exponent of the group."
+    },
+    {
+      "id": "prime-case",
+      "title": "Special Value: λ(p) = p − 1 via Cyclicity (Gauss)",
+      "startLine": 58,
+      "endLine": 68,
+      "summary": "Proves carmichael_prime: λ(p) = p − 1 for prime p. Uses the chain IsCyclic.exponent_eq_card → ZMod.card_units_eq_totient → Nat.totient_prime. Key ingredient: (ℤ/pℤ)* is cyclic (Gauss's primitive root theorem), so exponent = order = p − 1.",
+      "mathContext": "Gauss (1801): $(\\mathbb{Z}/p\\mathbb{Z})^*$ is cyclic of order $p-1$ for prime $p$. For a cyclic group $G = \\langle g \\rangle$: $\\text{exp}(G) = \\text{ord}(g) = |G|$. So $\\lambda(p) = |(\\mathbb{Z}/p\\mathbb{Z})^*| = \\varphi(p) = p-1$. Also: $\\lambda(p^k) = \\varphi(p^k)$ for odd prime $p$ (cyclic), but $\\lambda(2^k) = 2^{k-2} \\neq \\varphi(2^k)$ for $k \\geq 3$ (non-cyclic)."
+    },
+    {
+      "id": "special-values",
+      "title": "Special Values: λ(1) = 1 and λ(2) = 1 (Trivial Groups)",
+      "startLine": 69,
+      "endLine": 83,
+      "summary": "Proves carmichael_one and carmichael_two: both equal 1 because (ℤ/1ℤ)* and (ℤ/2ℤ)* are trivial groups (exponent 1). Closes namespace. These are the only n where λ(n) = 1.",
+      "mathContext": "$(\\mathbb{Z}/1\\mathbb{Z})^* = \\{0\\}$ (trivial) and $(\\mathbb{Z}/2\\mathbb{Z})^* = \\{1\\}$ (trivial), so $\\lambda(1) = \\lambda(2) = 1$. In general, $\\lambda(n) = 1 \\iff (\\mathbb{Z}/n\\mathbb{Z})^*$ trivial $\\iff \\varphi(n) = 1 \\iff n \\in \\{1, 2\\}$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Carmichael's function $\\lambda(n)$ is formalized as `Monoid.exponent (ZMod n)ˣ`. The three core properties — universality ($a^{\\lambda(n)} = 1$), divisibility ($\\lambda \\mid \\varphi$), and minimality ($\\lambda$ divides all universal exponents) — are proved as one-line consequences of Mathlib's group theory API. Special values for primes and small moduli are computed.",
+    "implications": "Carmichael's function is more natural than Euler's totient for many applications. In RSA cryptography, the correct key constraint is $ed \\equiv 1 \\pmod{\\lambda(n)}$ (not $\\pmod{\\varphi(n)}$): this gives a smaller private exponent $d$ and reveals when decryption is possible even when $e$ and $\\varphi(n)$ share a small common factor. The characterization of when $\\lambda(n) = \\varphi(n)$ (cyclic multiplicative group) is equivalent to the primitive root theorem — one of Gauss's key results in the Disquisitiones.",
+    "openQuestions": [
+      "Can `carmichael_dvd_totient` be strengthened to a full characterization: $\\lambda(n) = \\varphi(n)$ iff $n \\in \\{1, 2, 4, p^k, 2p^k\\}$ for odd prime $p$? This requires `IsCyclic` instances for these moduli and non-cyclic instances for $2^k$ ($k \\geq 3$).",
+      "Is the formula $\\lambda(2^k) = 2^{k-2}$ (for $k \\geq 3$) provable in Lean via Mathlib's `Monoid.exponent`? This would require the structure theorem $(\\mathbb{Z}/2^k\\mathbb{Z})^* \\cong \\mathbb{Z}/2 \\times \\mathbb{Z}/2^{k-2}$ and the LCM formula for product groups.",
+      "Can Carmichael's function be used to define a Lean-verified implementation of RSA with the correct modular exponent? A formally verified RSA would need: carmichael(n) definition, key generation (e with gcd(e, λ(n)) = 1), and decryption correctness (m^(ed) ≡ m mod n).",
+      "Is the generalization to the Carmichael-λ function for arbitrary rings of integers formalizable? For a number field $K$ with ring of integers $\\mathcal{O}_K$ and ideal $\\mathfrak{a}$, Carmichael's function for $(\\mathcal{O}_K/\\mathfrak{a})^*$ generalizes the classical case."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "euler-totient",
+      "relationship": "extends",
+      "description": "Refines Euler theorem to the sharper a^lambda(n) = 1 where lambda(n) | phi(n)"
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "related",
+      "description": "Primitive root theorem (Gauss): (Z/pZ)* is cyclic. This entry uses IsCyclic to prove lambda(p) = p-1"
+    },
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson theorem (p-1)! = -1 (mod p) — both concern the multiplicative structure of (Z/nZ)*"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "uses",
+      "description": "Lagrange's theorem (exponent divides group order) is the key lemma in carmichael_dvd_totient via Monoid.exponent_dvd_card"
+    },
+    {
+      "targetId": "euler-totient-oq-02",
+      "relationship": "sibling",
+      "description": "Multiplicativity of Euler's Totient: φ(mn) = φ(m)·φ(n) for gcd(m,n)=1. The multiplicativity of φ is equivalent to the Chinese Remainder Theorem isomorphism (ℤ/mnℤ)* ≅ (ℤ/mℤ)* × (ℤ/nℤ)*, which in turn gives the product formula λ(mn) = lcm(λ(m), λ(n)) for the Carmichael function — the multiplicative structure that this entry's formalization inherits via Monoid.exponent."
+    },
+    {
+      "targetId": "euler-totient-oq-03",
+      "relationship": "sibling",
+      "description": "Structural Properties of φ: parity, divisibility, and the product formula φ(n) = n·∏_{p|n}(1-1/p). These structural results, combined with λ(n) | φ(n) proved here, determine when Carmichael's function equals Euler's totient: λ(n) = φ(n) iff (ℤ/nℤ)* is cyclic, which can be detected from n's prime factorization structure."
+    },
+    {
+      "targetId": "bezout-identity-oq-03",
+      "relationship": "related",
+      "description": "Chinese Remainder Theorem — CRT gives the product formula λ(p₁^k₁ · p₂^k₂ · ... ) = lcm(λ(p₁^k₁), λ(p₂^k₂), ...), which follows because (ℤ/nℤ)* ≅ ∏(ℤ/pᵢ^kᵢ ℤ)* and the exponent of a direct product is the lcm of component exponents. The CRT isomorphism (formalized in bezout-identity-oq-03) is the structural bridge between the component-wise computation of λ and the global value."
+    }
+  ],
+  "leanFile": {
+    "namespace": "CarmichaelFunction",
+    "lineCount": 83,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "path": "Proofs/EulerTotientOQ01.lean",
+    "sorries": 0,
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "ZMod"
+    ]
+  },
+  "references": [
+    {
+      "key": "Ca10",
+      "citation": "Carmichael, R. D. (1910). Note on a new number theory function. Bull. Amer. Math. Soc. 16(5), 232-238.",
+      "type": "paper",
+      "description": "Original definition of λ(n) and proof that λ(n) | φ(n) with equality iff (ℤ/nℤ)* is cyclic."
+    },
+    {
+      "key": "Ga01",
+      "citation": "Gauss, C. F. (1801). Disquisitiones Arithmeticae, §57. Leipzig: Fleischer.",
+      "type": "book",
+      "description": "Primitive root theorem: (ℤ/pℤ)* is cyclic for prime p. Used here via IsCyclic instance."
+    },
+    {
+      "key": "NZM91",
+      "citation": "Niven, I., Zuckerman, H. S. & Montgomery, H. L. (1991). An Introduction to the Theory of Numbers (5th ed.). Wiley.",
+      "type": "textbook",
+      "description": "Standard reference for Carmichael's function, primitive roots, and the structure of (ℤ/nℤ)*."
+    },
+    {
+      "key": "RSA78",
+      "citation": "Rivest, R. L., Shamir, A. & Adleman, L. (1978). A method for obtaining digital signatures and public-key cryptosystems. Communications of the ACM, 21(2), 120–126.",
+      "type": "paper",
+      "description": "Original RSA paper; uses φ(n) as the key modulus. Carmichael's λ(n) is the correct (smaller) modulus, as formalized by carmichael_minimal: decryption succeeds iff λ(n) | (ed−1)."
+    },
+    {
+      "key": "AGP94",
+      "citation": "Alford, W. R., Granville, A. & Pomerance, C. (1994). There are infinitely many Carmichael numbers. Annals of Mathematics, 139(3), 703–722.",
+      "type": "paper",
+      "description": "Proves that Carmichael numbers (composites n with λ(n) | (n−1)) are infinite; the Korselt criterion characterizing them uses carmichael_minimal as its key lemma."
+    }
+  ],
+  "sorries": 0
+}

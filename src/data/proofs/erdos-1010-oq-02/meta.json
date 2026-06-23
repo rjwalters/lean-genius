@@ -1,0 +1,219 @@
+{
+  "id": "erdos-1010-oq-02",
+  "title": "Erdős #1010 OQ2: Supersaturation for K_r",
+  "slug": "erdos-1010-oq-02",
+  "description": "Generalize triangle supersaturation to K_r: what is the minimum number of r-cliques in a graph exceeding the Turán threshold ex(n, K_r)? Solved for r=3 (Razborov 2010) and r=4 (Reiher 2016), open for r≥5.",
+  "meta": {
+    "author": "Razborov / Reiher",
+    "sourceUrl": "https://erdosproblems.com/1010",
+    "date": "2026-03-24",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1010OQ02Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "extremal",
+      "turán",
+      "supersaturation",
+      "flag-algebras",
+      "kruskal-katona"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1010,
+    "erdosUrl": "https://erdosproblems.com/1010",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-03-24",
+    "axiomCount": 3,
+    "lineCount": 200,
+    "assumptions": "3 axioms: turan_theorem (Turán's theorem for K_r), razborov_triangle_density (Razborov 2010 for K_3), reiher_k4_density (Reiher 2016 for K_4). erdos_simonovits_supersaturation, kruskal_katona, kr_density_conjecture proved or removed.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 0,
+    "definitionCount": 8
+  },
+  "overview": {
+    "historicalContext": "**From Turán to Supersaturation**\n\nTurán's theorem (1941) is the cornerstone of extremal graph theory: the maximum number of edges in a K_r-free graph on n vertices is achieved by the complete (r-1)-partite graph with balanced parts. Erdős asked the natural follow-up: if we have *more* edges than this threshold, how many copies of K_r are forced?\n\n**The Triangle Case (r=3)**\n\nRademacher (unpublished, c. 1940s) proved the first supersaturation result: one extra edge over ⌊n²/4⌋ forces ⌊n/2⌋ triangles. Erdős (#1010) conjectured that t extra edges force t·⌊n/2⌋ triangles for t < ⌊n/2⌋, proved by Lovász-Simonovits (1976). Razborov (2010) determined the *exact* minimum triangle density for all edge densities using his flag algebra method, a landmark result.\n\n**Beyond Triangles**\n\nReiher (2016) extended flag algebras to K_4, confirming the Lovász-Simonovits conjecture for 4-cliques. For r ≥ 5, the exact minimum K_r density remains one of the central open problems in extremal combinatorics. The Kruskal-Katona theorem provides structural lower bounds, but exact results require the still-developing theory of flag algebras for hypergraphs.",
+    "problemStatement": "What is the minimum number of copies of K_r in a graph on n vertices with a given number of edges exceeding the Turán threshold ex(n, K_r)? More precisely, determine the function g_r(d) giving the minimum K_r density as a function of edge density d.",
+    "text": "Generalize triangle supersaturation to K_r: what is the minimum number of r-cliques in a graph exceeding the Turán threshold? Solved for r=3 (Razborov 2010) and r=4 (Reiher 2016), open for r≥5.",
+    "proofStrategy": "**Flag Algebras (Razborov 2007)**\n\nThe key method is Razborov's flag algebra framework, which reformulates extremal graph theory problems as semidefinite programming (SDP) problems. For triangles (r=3), the SDP has a clean solution; for K_4, Reiher's proof required substantial computational and analytic extensions. For general r, the complexity of the SDP grows rapidly and new ideas may be needed.",
+    "keyInsights": [
+      "**Turán's theorem** establishes the threshold; supersaturation asks what happens beyond it",
+      "**Kruskal-Katona theorem** (1963/1968): the optimal shadow-minimizing set family is the initial colex segment — this gives structural constraints on clique-minimizing graphs",
+      "**Razborov (2010)**: exact minimum triangle density g₃(d) = d(2d-1)²/2 for d ≥ 1/2, proved via flag algebras and SDP",
+      "**Reiher (2016)**: extended flag algebra methods to determine exact K₄ density, confirming Lovász-Simonovits conjecture",
+      "**Open for r ≥ 5**: conjectured that the minimum is achieved by balanced complete multipartite graphs, but exact formulas unknown"
+    ],
+    "prerequisites": [
+      "Extremal graph theory: Turán's theorem, Turán graph",
+      "Kruskal-Katona theorem on shadows of set systems",
+      "Flag algebras and semidefinite programming (for modern results)",
+      "SimpleGraph in Mathlib (Mathlib.Combinatorics.SimpleGraph.Basic)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "turan-number",
+      "title": "Turán Number for K_r",
+      "summary": "ex(n, K_r) = (1 - 1/(r-1)) · n²/2, the maximum K_r-free edge count",
+      "startLine": 33,
+      "endLine": 47,
+      "mathContext": "Mathematical content: ex(n, K_r) = (1 - 1/(r-1)) · n²/2, the maximum K_r-free edge count"
+    },
+    {
+      "id": "clique-counting",
+      "title": "Clique Counting and Density",
+      "summary": "Definitions of cliqueCount(G, r), edgeDensity(G), and cliqueDensity(G, r)",
+      "startLine": 49,
+      "endLine": 73,
+      "mathContext": "Formal definition: Definitions of cliqueCount(G, r), edgeDensity(G), and cliqueDensity(G, r)"
+    },
+    {
+      "id": "turan-theorem",
+      "title": "Turán's Theorem (General)",
+      "summary": "Exceeding ex(n, K_r) forces at least one K_r",
+      "startLine": 75,
+      "endLine": 84,
+      "mathContext": "Mathematical content: Exceeding ex(n, K_r) forces at least one K_r"
+    },
+    {
+      "id": "supersaturation",
+      "title": "General Supersaturation",
+      "summary": "Erdős-Simonovits: exceeding threshold by factor (1+δ) forces Ω(n^r) copies",
+      "startLine": 86,
+      "endLine": 98,
+      "mathContext": "Mathematical content: Erdős-Simonovits: exceeding threshold by factor (1+δ) forces Ω(n^r) copies"
+    },
+    {
+      "id": "kruskal-katona",
+      "title": "Kruskal-Katona Theorem",
+      "summary": "Shadow bound: minimum shadow size is achieved by initial colex segment",
+      "startLine": 100,
+      "endLine": 117,
+      "mathContext": "Bound: Shadow bound: minimum shadow size is achieved by initial colex segment"
+    },
+    {
+      "id": "razborov",
+      "title": "Razborov's Triangle Density (2010)",
+      "summary": "Exact minimum: g₃(d) = d(2d-1)²/2 for d ≥ 1/2 via flag algebras",
+      "startLine": 119,
+      "endLine": 140,
+      "mathContext": "Exact minimum: g₃(d) = d(2d-1)²/2 for d $\\geq$ 1/2 via flag algebras"
+    },
+    {
+      "id": "reiher",
+      "title": "Reiher's K₄ Density (2016)",
+      "summary": "Extended flag algebras to determine exact K₄ density",
+      "startLine": 142,
+      "endLine": 155,
+      "mathContext": "Mathematical content: Extended flag algebras to determine exact K₄ density"
+    },
+    {
+      "id": "open-kr",
+      "title": "Open: Exact K_r Density for r ≥ 5",
+      "summary": "Conjectured to be achieved by iterated Turán constructions, but exact formulas unknown",
+      "startLine": 157,
+      "endLine": 177,
+      "mathContext": "Mathematical content: Conjectured to be achieved by iterated Turán constructions, but exact formulas unknown"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Solved for r=3,4; open for r≥5. Key tools: Kruskal-Katona, flag algebras, stability method",
+      "startLine": 179,
+      "endLine": 193,
+      "mathContext": "Solved for r=3,4; open for r$\\geq$5. Key tools: Kruskal-Katona, flag algebras, stability method"
+    }
+  ],
+  "conclusion": {
+    "summary": "The generalization of triangle supersaturation to K_r is a central problem in extremal graph theory. Razborov (2010) solved the triangle case exactly using flag algebras, and Reiher (2016) extended this to K_4. For r ≥ 5, the exact minimum K_r density remains open.",
+    "implications": "1. **Flag algebras**: Razborov's method (2007) has become the primary tool for exact extremal graph theory results.\n\n2. **Computational methods**: Flag algebra proofs reduce to semidefinite programming, blurring the line between human and computer-assisted proofs.\n\n3. **Hypergraph extensions**: The same questions arise for hypergraph Turán problems, where even less is known.",
+    "openQuestions": [
+      "Determine the exact minimum K_r density for r ≥ 5",
+      "Are the minimizers always balanced complete multipartite graphs?",
+      "Can flag algebra methods scale to general r, or are new ideas needed?",
+      "What are the implications for hypergraph Turán problems?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "Parent problem: triangle supersaturation (t extra edges force t·⌊n/2⌋ triangles)",
+      "targetId": "erdos-1010"
+    },
+    {
+      "relationship": "Sidon sets — another extremal combinatorics problem using counting arguments",
+      "targetId": "erdos-340"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "A. Razborov"
+      ],
+      "title": "On the minimal density of triangles in graphs",
+      "venue": "Combinatorics, Probability and Computing",
+      "year": "2010",
+      "volume": "19",
+      "pages": "201–225",
+      "notes": "Exact minimum triangle density via flag algebras: g₃(d) = d(2d-1)²/2 for d ≥ 1/2"
+    },
+    {
+      "authors": [
+        "C. Reiher"
+      ],
+      "title": "The clique density theorem",
+      "venue": "Annals of Mathematics",
+      "year": "2016",
+      "volume": "184",
+      "pages": "683–707",
+      "notes": "Extended flag algebra methods to determine exact K₄ density, confirming Lovász-Simonovits conjecture"
+    },
+    {
+      "authors": [
+        "J.B. Kruskal"
+      ],
+      "title": "The number of simplices in a complex",
+      "venue": "Mathematical Optimization Techniques",
+      "year": "1963",
+      "pages": "251–278",
+      "notes": "The Kruskal-Katona theorem: minimum shadow size for k-uniform set families"
+    },
+    {
+      "authors": [
+        "G.O.H. Katona"
+      ],
+      "title": "A theorem of finite sets",
+      "venue": "Theory of Graphs (Proc. Colloq. Tihany 1966)",
+      "year": "1968",
+      "pages": "187–207",
+      "notes": "Independent proof of the Kruskal-Katona theorem"
+    },
+    {
+      "authors": [
+        "A. Razborov"
+      ],
+      "title": "Flag algebras",
+      "venue": "Journal of Symbolic Logic",
+      "year": "2007",
+      "volume": "72",
+      "pages": "1239–1282",
+      "notes": "Introduced the flag algebra framework that enables systematic SDP-based solutions to extremal problems"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 200,
+    "axiomCount": 3,
+    "theoremCount": 0,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos1010OQ02Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

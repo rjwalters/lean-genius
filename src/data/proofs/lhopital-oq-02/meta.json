@@ -1,0 +1,177 @@
+{
+  "id": "lhopital-oq-02",
+  "title": "L'Hôpital's Rule: ∞/∞ Form",
+  "slug": "lhopital-oq-02",
+  "description": "The ∞/∞ form of L'Hôpital's rule: if g(x) → ∞ and f'(x)/g'(x) → c, then f(x)/g(x) → c. Complements Mathlib's 0/0 form.",
+  "meta": {
+    "author": "Johann Bernoulli / Guillaume de l'Hôpital (1696)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/L%27H%C3%B4pital%27s_rule",
+    "date": "1696",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/LHopitalOQ02.lean",
+    "tags": [
+      "calculus",
+      "limits",
+      "lhopital",
+      "real-analysis",
+      "indeterminate-forms"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "HasDerivAt.lhopital_zero_right_on_Ioo",
+        "description": "L'Hôpital's rule for 0/0 form (reference, not directly used)",
+        "module": "Mathlib.Analysis.Calculus.LHopital"
+      },
+      {
+        "theorem": "exists_ratio_hasDerivAt_eq_ratio_slope",
+        "description": "Cauchy's Mean Value Theorem (core tool for the ∞/∞ proof)",
+        "module": "Mathlib.Analysis.Calculus.MeanValue"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Filter-based limit definitions",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Statement of ∞/∞ L'Hôpital's rule for right approach (𝓝[>] a)",
+      "Statement of ∞/∞ L'Hôpital's rule for left approach (𝓝[<] b)",
+      "Statement of ∞/∞ L'Hôpital's rule at +∞ (atTop)",
+      "Statement of ∞/∞ L'Hôpital's rule at -∞ (atBot)",
+      "Complete proof of right approach via two-variable Cauchy MVT with explicit epsilon management",
+      "Proof of left approach via negation reduction (following Mathlib's 0/0 pattern)",
+      "Proof of atTop via inversion reduction (following Mathlib's 0/0 pattern)",
+      "Proof of atBot via negation reduction to atTop (following Mathlib's 0/0 pattern)",
+      "Documentation of why ∞/∞ needs a separate proof from 0/0"
+    ],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "lineCount": 428,
+    "assumptions": "0 axioms, 0 sorries. All 4 variants fully proved: right approach via Cauchy MVT, left via negation, atTop via inversion, atBot via negation of atTop.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "additionalFiles": [
+      "Proofs/LHopitalOQ02Aristotle.lean"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 61,
+      "summary": "Module docstring stating the ∞/∞ goal, proof-strategy outline, status checklist (all 4 variants proved), and Mathlib dependencies. Imports LHopital, MeanValue, Deriv.Basic, SpecificLimits.Normed, Filter.Basic, Topology.Order.Basic; opens the `LHopitalInfty` namespace with `Set Filter Topology Real`.",
+      "mathContext": "Mathlib's 26 L'Hôpital variants (as of v4.26.0) cover only the 0/0 form. This file adds the logically independent ∞/∞ form, whose 0/0 strategy ($f(a)=g(a)=0$ with Cauchy MVT on $[a,x]$) does not apply when both functions diverge."
+    },
+    {
+      "id": "zero-case",
+      "title": "Private Lemma: c = 0 Case (Core Engine)",
+      "startLine": 62,
+      "endLine": 233,
+      "summary": "PART I banner plus the private theorem proving g→∞, f'/g'→0 ⟹ f/g→0 via three-δ construction + Cauchy MVT on [x, x₀] + algebraic identity.",
+      "mathContext": "Three-δ: fix $x_0$ near $a$ with $|f'/g'|<\\varepsilon/2$ for $\\xi < x_0$, then ensure $g(x) \\ge M = \\max(g(x_0)+1, 2|f(x_0)|/\\varepsilon+1)$. Key identity: $f/g = (f'/g')\\cdot(1-g(x_0)/g) + f(x_0)/g$."
+    },
+    {
+      "id": "right-approach",
+      "title": "Main Theorem: ∞/∞ L'Hôpital, Right Approach",
+      "startLine": 234,
+      "endLine": 284,
+      "summary": "Public theorem for general c: reduce to c=0 via h(x)=f(x)-c·g(x), then apply the private lemma and add c back.",
+      "mathContext": "$f/g \\to c$ iff $h/g = (f-c\\cdot g)/g \\to 0$, where $h'/g' = f'/g' - c \\to 0$."
+    },
+    {
+      "id": "variants",
+      "title": "Additional Variants (All Proved)",
+      "startLine": 285,
+      "endLine": 378,
+      "summary": "PART II banner plus left approach (negation), atTop (inversion), and atBot (negation of atTop) — all fully proved following Mathlib's 0/0 reduction pattern.",
+      "mathContext": "Each reduces to the right approach via a substitution that maps the limit direction to $\\mathcal{N}^+[a]$. Left: $u=-x$ with $\\text{neg\\_Ioo}$; atTop: $u=x^{-1}$ with $\\text{hasDerivAt\\_inv}$; atBot: $u=-x$ composed with atTop."
+    },
+    {
+      "id": "examples",
+      "title": "Classic Examples: x/eˣ and ln(x)/cot(x)",
+      "startLine": 379,
+      "endLine": 398,
+      "summary": "PART III banner plus two canonical ∞/∞ examples as commentary. x/eˣ → 0 (x→∞), ln(x)/cot(x) → 0 (x→0⁺)."
+    },
+    {
+      "id": "comparison",
+      "title": "Why ∞/∞ Needs a Different Proof from 0/0",
+      "startLine": 399,
+      "endLine": 428,
+      "summary": "PART IV banner explaining why the 0/0 Cauchy MVT at the limit point fails for ∞/∞ and why the two-variable argument is necessary, followed by `#check` sanity checks for all four variants and the namespace close.",
+      "mathContext": "For $0/0$: MVT on $[a,x]$ gives $f(x)/g(x) = (f(x)-f(a))/(g(x)-g(a)) = f'(\\xi)/g'(\\xi)$ directly. For $\\infty/\\infty$: $f(a), g(a)$ don't exist; must use MVT on $[x, x_0]$ with $x_0 > a$ as anchor."
+    }
+  ],
+  "overview": {
+    "historicalContext": "L'Hôpital's rule was published in 1696 in the Marquis de l'Hôpital's textbook Analyse des infiniment petits, the first calculus textbook ever printed. The result was actually discovered by Johann Bernoulli, who communicated it to l'Hôpital as part of a private tutoring arrangement. The 0/0 form was the primary focus in the 18th and 19th centuries, but the ∞/∞ form is equally fundamental and arises naturally in applications like computing lim(x→∞) x/eˣ = 0. The modern rigorous proof using Cauchy's Mean Value Theorem was developed in the 19th century. The ∞/∞ form requires a genuinely different two-variable argument because the functions diverge at the limit point, preventing the direct MVT application that works for 0/0. As of Mathlib 4.26.0, all 26 L'Hôpital variants in Mathlib handle only the 0/0 form — this formalization fills that gap with the complementary ∞/∞ form.",
+    "problemStatement": "**∞/∞ L'Hôpital's Rule**: If f and g are differentiable near a, g(x) → ∞ as x → a⁺, g'(x) ≠ 0, and f'(x)/g'(x) → c, then f(x)/g(x) → c.",
+    "text": "Formalize the ∞/∞ form of L'Hôpital's rule, complementing Mathlib's 0/0 form.",
+    "proofStrategy": "The proof fixes x₀ near a, applies Cauchy's MVT on (x, x₀), and rewrites f(x)/g(x) as a combination of f'(ξ)/g'(ξ) (close to c) and correction terms f(x₀)/g(x) and g(x₀)/g(x) that vanish as g(x) → ∞.",
+    "keyInsights": [
+      "Only $g \\to \\infty$ is needed, not both $f$ and $g$: the proof only uses divergence of $g$ to make correction terms $f(x_0)/g(x)$ and $g(x_0)/g(x)$ vanish, never requiring $f \\to \\infty$",
+      "The key algebraic identity $f/g = [f'/g'] \\cdot [1-g(x_0)/g] + f(x_0)/g$ decomposes the ratio into an MVT term (close to $c$) and two correction terms (that vanish as $g \\to \\infty$) — this is the central insight of the two-variable argument",
+      "The bound $|1 - g(x_0)/g(x)| \\le 1$ (since $0 < g(x_0) < g(x)$) is crucial: it ensures the MVT term contributes at most $|f'/g'|$, even without knowing the bracket is small",
+      "The reduction to $c=0$ via $h = f - c \\cdot g$ is a bookkeeping simplification that transforms 'ratio tends to $c$' into 'ratio tends to 0', making the epsilon argument cleaner",
+      "The three directional variants (left, atTop, atBot) each reduce to the right approach by a single substitution rather than a fresh epsilon argument: left via reflection $u=-x$ (neg_Ioo), atTop via inversion $u=x^{-1}$ (hasDerivAt_inv), atBot via negation composed with atTop"
+    ],
+    "prerequisites": [
+      "Cauchy's Mean Value Theorem",
+      "Filter-based limits (Mathlib)",
+      "Derivative definitions (HasDerivAt)"
+    ],
+    "openQuestions": [
+      "Can the proof be done by reducing to the 0/0 form via substitution u = 1/g(x)?"
+    ]
+  },
+  "conclusion": {
+    "summary": "All four variants of the ∞/∞ L'Hôpital's rule are fully proved (0 sorries, 0 axioms): right approach via two-variable Cauchy MVT, left via negation, atTop via inversion, atBot via negation of atTop. Docker-verified with Lean 4.26.0.",
+    "implications": "This formalization fills a genuine gap in Mathlib's calculus library: as of v4.26.0, all 26 L'Hôpital variants handle only the 0/0 form. All four directional variants are now complete and could be contributed to Mathlib. The two-variable argument with explicit delta construction is a template applicable to other limit theorems where direct MVT application at the limit point fails.",
+    "openQuestions": [
+      "The 0/0 form can sometimes be reduced to the ∞/∞ form via $u = 1/f(x)$. Is there a clean formal proof that the two forms are logically equivalent (derivable from each other), or does each require its own independent epsilon-delta argument?",
+      "Mathlib's 26 L'Hôpital variants include different derivative hypotheses (HasDerivAt, HasStrictDerivAt, DifferentiableOn). Should the ∞/∞ variants be stated for each hypothesis style to match the existing API surface?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "The parent proof formalizes the 0/0 form (Wiedijk #64). This OQ adds the complementary ∞/∞ form",
+      "sharedConcepts": [
+        "lhopital",
+        "limits",
+        "derivatives",
+        "cauchy-mvt"
+      ],
+      "targetId": "lhopital"
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Calculus.LHopital",
+      "Mathlib.Analysis.Calculus.MeanValue",
+      "Mathlib.Analysis.Calculus.Deriv.Basic",
+      "Mathlib.Analysis.SpecificLimits.Normed",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Topology.Order.Basic"
+    ],
+    "opens": [
+      "Set",
+      "Filter",
+      "Topology",
+      "Real"
+    ],
+    "namespace": "LHopitalInfty",
+    "lineCount": 428,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/LHopitalOQ02.lean",
+    "additionalFiles": [
+      "Proofs/LHopitalOQ02Aristotle.lean"
+    ]
+  }
+}

@@ -1,0 +1,260 @@
+[
+  {
+    "id": "ann-425-imports",
+    "proofId": "erdos-425",
+    "type": "concept",
+    "range": {
+      "startLine": 31,
+      "endLine": 37
+    },
+    "title": "Imports and Namespace",
+    "content": "Imports `Nat.Prime` for primality testing, `Finset` for finite set operations, `Primorial` for prime-related combinatorics, and `Real.Basic` for the real-valued bounds. Opens the `Erdos425` namespace.",
+    "significance": "supporting",
+    "mathContext": "The formalization uses `Finset.filter` and `Finset.image` to define product sets and counting functions. `Real.log` and `Real.sqrt` are needed for the $n^{3/4} (\\log n)^{-3/2}$ secondary term in Erdős's bounds and the $\\sqrt{n}$ Sidon bound.",
+    "relatedConcepts": [
+      "finite set operations",
+      "prime counting function",
+      "real-valued bounds"
+    ],
+    "prerequisites": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic"
+    ]
+  },
+  {
+    "id": "ann-425-basic-defs",
+    "proofId": "erdos-425",
+    "type": "definition",
+    "range": {
+      "startLine": 46,
+      "endLine": 58
+    },
+    "title": "Basic Definitions",
+    "content": "`SubsetOfInterval n` restricts to A in {1,...,n}. `OrderedPair A` captures pairs (a,b) with a < b. `ProductSet A` computes {ab : a,b in A, a < b} via `Finset.product`, `filter`, and `image`.",
+    "significance": "supporting",
+    "mathContext": "The product set construction uses `(A.product A).filter (fun p => p.1 < p.2) |>.image (fun p => p.1 * p.2)`. Ordering pairs by $a < b$ avoids counting $ab$ and $ba$ as different. The cardinality of `ProductSet A` is at most $\\binom{|A|}{2}$, with equality exactly when $A$ is multiplicatively Sidon.",
+    "relatedConcepts": [
+      "ordered pairs",
+      "product sets",
+      "Finset.product",
+      "Finset.image"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "Finset.image",
+      "Finset.product"
+    ]
+  },
+  {
+    "id": "ann-425-mult-sidon",
+    "proofId": "erdos-425",
+    "type": "definition",
+    "range": {
+      "startLine": 65,
+      "endLine": 75
+    },
+    "title": "Multiplicative Sidon Set",
+    "content": "`IsMultiplicativeSidon A` holds when ab = cd with a < b and c < d implies a = c, b = d. Equivalently, the product map (a,b) -> ab is injective on ordered pairs. `IsMultiplicativeSidon'` gives the cardinality-based characterization.",
+    "significance": "key",
+    "mathContext": "A multiplicative Sidon set (also called a $B_2^\\times$ set) is the multiplicative analogue of a classical additive Sidon ($B_2$) set. The name comes from Simon Sidon, who studied sets with distinct pairwise sums in the 1930s. The key structural insight: the set of primes $\\le n$ is always multiplicatively Sidon by the **fundamental theorem of arithmetic** (unique factorization). This makes $\\pi(n)$ the natural baseline for $F(n)$.",
+    "relatedConcepts": [
+      "B2 sequences",
+      "additive Sidon sets",
+      "unique factorization",
+      "product-distinct sets"
+    ],
+    "prerequisites": [
+      "Finset membership",
+      "natural number multiplication",
+      "fundamental theorem of arithmetic"
+    ]
+  },
+  {
+    "id": "ann-425-function-f",
+    "proofId": "erdos-425",
+    "type": "definition",
+    "range": {
+      "startLine": 84,
+      "endLine": 91
+    },
+    "title": "The Function F(n)",
+    "content": "`F n` is the maximum cardinality of a multiplicative Sidon subset of {1,...,n}, defined via `Finset.sup'` over the powerset filtered by the Sidon property. The nonemptiness witness is the empty set (vacuously Sidon).",
+    "significance": "key",
+    "mathContext": "$F(n)$ is the extremal function for multiplicative Sidon sets. By unique factorization, the primes $\\le n$ form a multiplicative Sidon set of size $\\pi(n)$, giving $F(n) \\ge \\pi(n)$. Erdős proved $F(n) - \\pi(n) = \\Theta(n^{3/4}(\\log n)^{-3/2})$, showing approximately $n^{3/4}(\\log n)^{-3/2}$ composite numbers can be added beyond the primes without creating product collisions.",
+    "relatedConcepts": [
+      "extremal combinatorics",
+      "prime counting function π(n)",
+      "Finset.sup'"
+    ],
+    "prerequisites": [
+      "IsMultiplicativeSidon",
+      "Finset.powerset",
+      "Finset.sup'"
+    ]
+  },
+  {
+    "id": "ann-425-primes-sidon",
+    "proofId": "erdos-425",
+    "type": "concept",
+    "range": {
+      "startLine": 99,
+      "endLine": 108
+    },
+    "title": "Primes Form a Multiplicative Sidon Set",
+    "content": "`primes_are_sidon` (axiom): the primes up to n are multiplicatively Sidon. `F_ge_prime_count` (axiom): F(n) >= π(n) for n >= 2. Both axiomatized since the formal proof requires unique factorization machinery.",
+    "significance": "key",
+    "mathContext": "If $p_1 p_2 = q_1 q_2$ with all four values prime and $p_1 < p_2$, $q_1 < q_2$, then by unique prime factorization $\\{p_1, p_2\\} = \\{q_1, q_2\\}$. Since both are ordered, $p_1 = q_1$ and $p_2 = q_2$. This is the **only** infinite family of multiplicative Sidon sets with density $\\sim 1/\\log n$ (by PNT). The lower bound $F(n) \\ge \\pi(n)$ is sharp up to the $n^{3/4}$ correction.",
+    "relatedConcepts": [
+      "unique factorization",
+      "prime counting function",
+      "prime number theorem"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "fundamental theorem of arithmetic",
+      "Finset.filter"
+    ]
+  },
+  {
+    "id": "ann-425-erdos-bounds",
+    "proofId": "erdos-425",
+    "type": "concept",
+    "range": {
+      "startLine": 119,
+      "endLine": 124
+    },
+    "title": "Erdős's Bounds (1968)",
+    "content": "`erdos_bounds` (axiom): there exist 0 < c₁ ≤ c₂ such that π(n) + c₁ n^(3/4)(log n)^(-3/2) ≤ F(n) ≤ π(n) + c₂ n^(3/4)(log n)^(-3/2). The order of magnitude of F(n) - π(n) is determined.",
+    "significance": "key",
+    "mathContext": "Erdős proved these bounds in his 1968 paper \"On some applications of graph theory to number theoretic problems.\" The **upper bound** uses collision counting: the number of representations $n = ab$ with $a, b \\le n$ constrains how many composites can be added. The **lower bound** uses a greedy construction. The exponent $3/4$ arises from balancing available composites ($\\sim n$) against the collision constraint ($\\sim n^{1/2}$ per element).",
+    "relatedConcepts": [
+      "asymptotic bounds",
+      "secondary term",
+      "greedy constructions",
+      "collision counting"
+    ],
+    "prerequisites": [
+      "F(n) definition",
+      "π(n)",
+      "Real.log",
+      "real exponentiation"
+    ]
+  },
+  {
+    "id": "ann-425-main-question",
+    "proofId": "erdos-425",
+    "type": "definition",
+    "range": {
+      "startLine": 130,
+      "endLine": 134
+    },
+    "title": "The Main Open Question",
+    "content": "`MainQuestion`: Does a constant c exist such that F(n) = π(n) + (c + o(1)) n^(3/4)(log n)^(-3/2)? Formalized as an epsilon-N limit definition.",
+    "significance": "key",
+    "mathContext": "This asks whether the ratio $(F(n) - \\pi(n)) / (n^{3/4}(\\log n)^{-3/2})$ converges. If $c$ exists, it would be a **universal constant** characterizing the capacity of composites to extend the prime Sidon core. The $\\varepsilon$-$N$ formulation: $\\exists c,\\, \\forall \\varepsilon > 0,\\, \\exists N,\\, \\forall n \\ge N,\\, |F(n) - (\\pi(n) + c \\cdot \\text{extra})| \\le \\varepsilon \\cdot \\text{extra}$.",
+    "relatedConcepts": [
+      "asymptotic constant",
+      "o(1) notation",
+      "limit of ratio"
+    ],
+    "prerequisites": [
+      "erdos_bounds",
+      "absolute value",
+      "real inequalities"
+    ]
+  },
+  {
+    "id": "ann-425-r-product",
+    "proofId": "erdos-425",
+    "type": "definition",
+    "range": {
+      "startLine": 144,
+      "endLine": 161
+    },
+    "title": "r-Product Generalization",
+    "content": "`IsRMultiplicativeSidon A r`: all r-fold products a₁...aᵣ (with a₁ < ... < aᵣ) are distinct. `RProductConjecture`: |A| ≤ π(n) + O(n^((r+1)/(2r))).",
+    "significance": "key",
+    "mathContext": "The exponent $(r+1)/(2r)$ decreases as $r$ increases: $3/4$ for $r = 2$, $2/3$ for $r = 3$, approaching $1/2$ as $r \\to \\infty$. Requiring more products to be distinct is a **stronger constraint**, reducing the number of permissible composites. The formalization uses `Finset.prod id` to compute $r$-fold products over subsets of size $r$.",
+    "relatedConcepts": [
+      "r-fold products",
+      "Finset.prod",
+      "asymptotic exponents"
+    ],
+    "prerequisites": [
+      "IsMultiplicativeSidon",
+      "Finset.prod",
+      "subset cardinality"
+    ]
+  },
+  {
+    "id": "ann-425-real-version",
+    "proofId": "erdos-425",
+    "type": "definition",
+    "range": {
+      "startLine": 171,
+      "endLine": 198
+    },
+    "title": "Real Multiplicative Sidon and Alexander's Disproof",
+    "content": "`RealMultSidon A`: |ab - cd| >= 1 for all distinct pairs. Erdős conjectured max |A| = o(x) for A in [1,x]. `alexander_construction` (axiom): there exists c > 0 with |A| >= cx, **disproving** Erdős's conjecture.",
+    "significance": "key",
+    "mathContext": "Alexander's construction uses a **Sidon-to-real lifting**: take a Sidon set $B \\subseteq [1, X^2]$ with $|B| \\gg X$, then set $A = \\{X e^{b/X^2} : b \\in B\\}$. The exponential map converts additive separation $|b_1 + b_2 - b_3 - b_4| \\ge 1$ into multiplicative separation $|a_1 a_2 - a_3 a_4| \\gg 1$. After rescaling, this gives a set of size $\\Theta(x)$ in $[1, O(x)]$, contradicting the $o(x)$ conjecture.",
+    "relatedConcepts": [
+      "exponential map",
+      "additive-to-multiplicative conversion",
+      "Sidon set construction"
+    ],
+    "prerequisites": [
+      "RealMultSidon definition",
+      "Sidon set existence",
+      "exponential function"
+    ]
+  },
+  {
+    "id": "ann-425-sidon-connection",
+    "proofId": "erdos-425",
+    "type": "definition",
+    "range": {
+      "startLine": 208,
+      "endLine": 232
+    },
+    "title": "Connection to Additive Sidon Sets",
+    "content": "`IsSidonSet S`: all pairwise sums a + b (a ≤ b) are distinct. `log_conversion` (axiom): multiplicative Sidon implies additive Sidon under log. `sidon_bound` (axiom): |S| ≤ √n + n^(1/4) for additive Sidon S in {1,...,n}.",
+    "significance": "key",
+    "mathContext": "The logarithmic conversion exploits $\\log(ab) = \\log a + \\log b$: if all products $ab$ are distinct, then all sums $\\log a + \\log b$ are distinct. The classical additive Sidon bound is $(1 + o(1))\\sqrt{n}$ (Lindström 1969, lower bound via Singer difference sets). Whether $\\sqrt{n} + O(n^\\varepsilon)$ suffices is Erdős Problem #30, carrying a \\$1000 prize.",
+    "relatedConcepts": [
+      "additive Sidon sets",
+      "B2 sequences",
+      "logarithmic conversion",
+      "Singer difference sets"
+    ],
+    "prerequisites": [
+      "IsMultiplicativeSidon",
+      "Real.log",
+      "additive Sidon theory"
+    ]
+  },
+  {
+    "id": "ann-425-counterexample",
+    "proofId": "erdos-425",
+    "type": "concept",
+    "range": {
+      "startLine": 242,
+      "endLine": 247
+    },
+    "title": "Verified Counterexample: {1,2,3,6}",
+    "content": "Proves {1,2,3,6} is NOT multiplicatively Sidon: 1 * 6 = 6 = 2 * 3. This is one of the few results fully verified (not axiomatized) using `norm_num` and `simp`.",
+    "significance": "supporting",
+    "mathContext": "The smallest non-Sidon collision occurs at $n = 6$: the pairs $(1,6)$ and $(2,3)$ both give product 6. This shows that including 1 is problematic for multiplicative Sidon sets (it trivially creates collisions $1 \\cdot n = n$), which is why some formulations exclude 1 or consider $A \\subseteq \\{2,\\ldots,n\\}$.",
+    "relatedConcepts": [
+      "product collisions",
+      "norm_num tactic",
+      "Lean verification"
+    ],
+    "prerequisites": [
+      "IsMultiplicativeSidon",
+      "norm_num",
+      "simp"
+    ]
+  }
+]

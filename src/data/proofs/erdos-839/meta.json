@@ -1,0 +1,176 @@
+{
+  "id": "erdos-839",
+  "title": "Erdős Problem #839: Sequences Avoiding Consecutive-Term Sums",
+  "slug": "erdos-839",
+  "description": "For sequences where no term is a sum of consecutive earlier terms: is lim sup(aₙ/n) = ∞? Does the logarithmic density vanish? Upper density can reach 19/36 (Freud), disproving Erdős's 1/2 conjecture. Open.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/839",
+    "date": "1938",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos839Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "sequences",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 839,
+    "erdosUrl": "https://erdosproblems.com/839",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.Icc",
+        "description": "Integer intervals for consecutive sums",
+        "module": "Mathlib.Data.Finset.LocallyFinite"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Finite sums over intervals",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Filter.limsup",
+        "description": "Limit superior for upper density",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Real logarithm for density questions",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "consecutiveSum: sum of contiguous block a_i + ... + a_j",
+      "AvoidConsecutiveSums: no term equals a consecutive block sum",
+      "ValidSeq: positive, strictly increasing, sum-avoiding",
+      "Question1: lim sup(a_n/n) = ∞ for all valid sequences",
+      "Question2: logarithmic density vanishes",
+      "upperDensity: via Filter.limsup",
+      "14 fully proved theorems/lemmas (no sorry/axiom)",
+      "liminf_finite: derived from freud_density via counting argument",
+      "term_le_of_count_gt: counting function bounds sequence terms"
+    ],
+    "dateAdded": "2026-01-19",
+    "axiomCount": 1,
+    "lineCount": 255,
+    "assumptions": "1 axiom: freud_density. 0 sorries.",
+    "theoremCount": 14,
+    "definitionCount": 7
+  },
+  "overview": {
+    "historicalContext": "This problem originates from Erdős's work on additive restrictions in integer sequences, closely related to his broader program on sum-free sets and primitive sets. A 'primitive' set has no element dividing another; here the condition is additive: no term equals the sum of a contiguous block of earlier terms. Erdős posed two questions: whether such sequences must grow super-linearly ($\\limsup a_n/n = \\infty$) and whether their logarithmic density must vanish. He also conjectured the upper density is at most $1/2$, but Freud disproved this by constructing a valid sequence with upper density $19/36 \\approx 0.528$, exploiting the fact that only contiguous block sums (not arbitrary subset sums) are forbidden. The problem connects to Problems #359 (sum-free sets) and #867 in Erdős's catalog. Both growth-rate questions remain open, making this one of the more delicate problems in additive combinatorial number theory. The formalization is notable for including seven fully proved structural theorems about valid sequences, alongside the single axiomatized deep result (Freud's $19/36$ construction).",
+    "problemStatement": "Let $1 \\leq a_1 < a_2 < \\cdots$ be integers where no $a_m$ equals $a_i + a_{i+1} + \\cdots + a_j$ for $i \\leq j < m$. (1) Is $\\limsup(a_n/n) = \\infty$? (2) Does $(1/\\log x) \\sum_{a_n < x} 1/a_n \\to 0$?",
+    "text": "For sequences where no term is a sum of consecutive earlier terms: is lim sup(aₙ/n) = ∞? Does the logarithmic density vanish? Upper density can reach 19/36 (Freud), disproving Erdős's 1/2 conjecture. Open.",
+    "proofStrategy": "The formalization builds a complete framework for the problem with an unusually high ratio of proved results. The consecutive sum function is defined via `Finset.Icc`, and the avoidance property and valid sequence type are cleanly specified. Seven structural theorems are fully proved in Lean: linear lower bound ($a_n \\geq n + 1$), single-term sum identity, no-repeat lemma, empty sum, sum-at-least-first, strict sum inequality, and the real-valued growth bound. The two open questions are formalized precisely — Question 1 via universal quantification over constants, Question 2 via epsilon-$X_0$ convergence. Freud's $19/36$ density construction is axiomatized as `freud_density`; from it, `liminf_finite` (the existence of a valid sequence with bounded $a_n/n$) is derived via a counting argument. The upper density is defined noncomputably via `Filter.limsup`.",
+    "keyInsights": [
+      "Consecutive-sum avoidance is strictly weaker than subset-sum avoidance: only contiguous blocks $a_i + \\cdots + a_j$ are forbidden, allowing much denser sequences",
+      "The $\\limsup$ vs $\\liminf$ distinction is crucial: $\\liminf(a_n/n)$ can be finite (the sequence can be dense infinitely often), but $\\limsup(a_n/n) = \\infty$ is conjectured (it must also be sparse infinitely often)",
+      "Freud's counterexample with upper density $19/36 > 1/2$ shows the consecutive-only restriction allows significantly denser sequences than Erdős expected, exploiting periodic patterns that avoid contiguous block sums",
+      "The seven proved theorems establish the basic arithmetic of consecutive sums: monotonicity, boundary cases, and the linear lower bound $a_n \\geq n + 1$ — providing the foundations for any future attack on the open questions",
+      "The reciprocal sum growth rate ($\\Omega(\\log \\log x)$) is documented in historical context but is not formalized in this Lean file — only Freud's $19/36$ construction is axiomatized",
+      "The formalization demonstrates that open conjectures can be productively axiomatized alongside proved structural results, creating a 'scaffold' for future proof attempts"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Additive combinatorics (sumsets, density)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 21,
+      "endLine": 35,
+      "summary": "Core definitions: consecutive sum ∑_{k=i}^{j} a_k, avoidance property a_m ≠ ∑_{k=i}^{j} a_k for i ≤ j < m, and the ValidSeq subtype bundling positivity, strict monotonicity, and avoidance.",
+      "mathContext": "Definitions: consecutiveSum (L24), AvoidConsecutiveSums (L28), ValidSeq subtype (L34). No axioms in this section."
+    },
+    {
+      "id": "growth-rate-questions",
+      "title": "Growth Rate Questions",
+      "startLine": 37,
+      "endLine": 49,
+      "summary": "The two open questions: Question 1 (lim sup a_n/n = ∞, formalized as ∀ C, ∃ n: a_n/(n+1) > C) and Question 2 (vanishing logarithmic density, formalized via ε-X_0).",
+      "mathContext": "Definitions: Question1 (L40), Question2 (L45). Both are Prop-valued definitions encoding open conjectures — no theorems or axioms in this section."
+    },
+    {
+      "id": "structural-theorems",
+      "title": "Structural Theorems (Proved)",
+      "startLine": 51,
+      "endLine": 120,
+      "summary": "Eight fully proved theorems: linear lower bound a_n ≥ n+1 (by induction), single-term sum identity, no-repeat from monotonicity, avoidance implies no single-term match, empty sum is zero, sum ≥ first term, strict sum inequality for i < j, and the real-valued growth coercion.",
+      "mathContext": "Proved theorems (no axioms, no sorries): valid_seq_lower_bound (L55), consecutiveSum_single (L64), valid_seq_no_repeat (L70), avoid_implies_no_single_match (L77), consecutiveSum_empty (L82), consecutiveSum_ge_first (L88), consecutiveSum_gt_first (L100), valid_seq_linear_growth (L116)."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results (Axioms and Counterexample)",
+      "startLine": 122,
+      "endLine": 141,
+      "summary": "Axiomatized known results: upperDensity defined via Filter.limsup; axiom freud_density (Freud's construction achieves upper density 19/36); proved theorem freud_counterexample (refutes Erdős's 1/2 conjecture using freud_density).",
+      "mathContext": "Definitions: upperDensity (L126, via Filter.limsup). Axiom: freud_density (L132, ∃ a : ValidSeq, upperDensity a = 19/36). Proved: freud_counterexample (L138, follows from freud_density). This section contains the file's sole axiom."
+    },
+    {
+      "id": "liminf-finite-derivation",
+      "title": "Deriving liminf_finite from freud_density",
+      "startLine": 143,
+      "endLine": 250,
+      "summary": "Key derivation: liminf_finite proved from freud_density via counting argument — positive upper density forces a(n)/(n+1) < 4 infinitely often. Includes helper lemmas: countRatio_isCoboundedUnder (Filter coboundedness), frequently_lt_of_lt_limsup (contrapositive extraction), term_le_of_count_gt (counting function bounds terms by contradiction on monotonicity).",
+      "mathContext": "All theorems proved (no additional axioms). Lemmas: term_le_of_count_gt (L182). Theorems: liminf_finite (L204). Namespace: LiminfFinite (ends at L250). All proofs depend on freud_density axiom (L132) via the `known-results` section."
+    },
+    {
+      "id": "main-open-questions",
+      "title": "Main Open Questions",
+      "startLine": 252,
+      "endLine": 255,
+      "summary": "Documentation of the two open questions for the proof gallery: Question 1 (lim sup a_n/n = ∞?) and Question 2 (logarithmic density vanishes?). These docstrings reference the formal definitions from the opening section.",
+      "mathContext": "Documentation only — no formal declarations. References Question1 (L40) and Question2 (L45) defined earlier."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #839 poses two open questions about sequences avoiding consecutive-term sums. The formalization is notable for its seven fully proved structural theorems alongside the single axiomatized deep result (Freud's $19/36$ construction), providing a solid scaffold for future proof attempts. Freud's construction with upper density $19/36$ disproves the $1/2$ conjecture, but the growth rate ($\\limsup a_n/n = \\infty$?) and logarithmic density (vanishing?) questions remain completely open.",
+    "implications": "**Theoretical Significance**: Resolution of either question would illuminate the structure of additive avoidance constraints in number theory.\n\nThe problem connects consecutive-sum avoidance to sum-free sets (Problem #359), primitive sets, and additive combinatorics more broadly. The interplay between the linear lower bound $a_n \\geq n+1$ (proved) and the conjectured $\\limsup a_n/n = \\infty$ (open) suggests subtle number-theoretic structure that the current axiom scaffold is well-positioned to probe.",
+    "openQuestions": [
+      "Is $\\limsup(a_n/n) = \\infty$ for all valid sequences? This is Question 1, the primary open question.",
+      "Does the logarithmic density $(1/\\log x) \\sum_{a_n < x} 1/a_n \\to 0$? This is Question 2.",
+      "What is the supremum of achievable upper densities? Is Freud's $19/36$ optimal, or can it be improved?",
+      "What is the relationship between Questions 1 and 2? Does one imply the other?",
+      "Can the seven proved structural theorems be leveraged to make progress on the open questions, e.g., via a counting or probabilistic argument?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 255,
+    "axiomCount": 1,
+    "theoremCount": 14,
+    "definitionCount": 7,
+    "path": "Proofs/Erdos839Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-342",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, sequences"
+    },
+    {
+      "targetId": "erdos-423",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, sequences"
+    },
+    {
+      "targetId": "erdos-11",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory"
+    }
+  ],
+  "sorries": 0
+}

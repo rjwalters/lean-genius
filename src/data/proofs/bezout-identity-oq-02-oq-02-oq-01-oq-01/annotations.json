@@ -1,0 +1,180 @@
+[
+  {
+    "id": "ann-bezout-comp-extgcd-def",
+    "proofId": "bezout-identity-oq-02-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 34,
+      "endLine": 40
+    },
+    "type": "definition",
+    "title": "Extended Euclidean Algorithm",
+    "content": "The `extGcd` function implements the extended Euclidean algorithm recursively: for inputs $(a, 0)$ it returns $(1, 0, a)$, and for $(a, b+1)$ it recurses on $(b+1, a \\bmod (b+1))$ and adjusts the coefficients. The termination proof uses the fact that $a \\bmod (b+1) < b+1$. This mirrors the classical algorithm from Knuth's TAOCP Vol. 2, but formalized with Lean's structural recursion.",
+    "mathContext": "$\\text{extGcd}(a, b) = (x, y, g)$ where $ax + by = g = \\gcd(a, b)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euclidean algorithm",
+      "Bézout coefficients",
+      "structural recursion",
+      "well-founded recursion"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "natural number induction"
+    ]
+  },
+  {
+    "id": "ann-bezout-comp-extgcd-bezout",
+    "proofId": "bezout-identity-oq-02-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 53,
+      "endLine": 73
+    },
+    "type": "concept",
+    "title": "Bézout Identity Proof by Strong Induction",
+    "content": "The proof that `extGcd` satisfies the Bézout identity $ax + by = g$ uses `Nat.strongRecOn` (strong/complete induction) on $b$. The inductive step reconstructs the division algorithm identity $a = (a/b) \\cdot b + (a \\bmod b)$ and uses `linear_combination` to close the algebraic goal. This is more involved than the GCD correctness proof because it must track the coefficient transformation across recursive calls.",
+    "mathContext": "$a \\cdot x + b \\cdot y = \\gcd(a, b)$ proved by strong induction on $b$, using $a = q \\cdot b + r$ at each step",
+    "significance": "key",
+    "relatedConcepts": [
+      "strong induction",
+      "linear combination tactic",
+      "division algorithm"
+    ],
+    "prerequisites": [
+      "integer arithmetic",
+      "strong induction"
+    ]
+  },
+  {
+    "id": "ann-bezout-comp-computable-def",
+    "proofId": "bezout-identity-oq-02-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 86,
+      "endLine": 100
+    },
+    "type": "definition",
+    "title": "The Computable Quotient Function",
+    "content": "The key definition: `constructive_div_computable` computes $q = xc + y \\cdot \\lfloor bc/a \\rfloor$ where $x, y$ are Bézout coefficients. Critically, this is NOT marked `noncomputable` — the only arithmetic operations are multiplication, addition, and integer division, all of which are decidable. The parent file's version used `hdvd.choose` (axiom of choice) which forced the `noncomputable` annotation.",
+    "mathContext": "$q = xc + y \\cdot \\lfloor bc/a \\rfloor$ where $ax + by = 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "constructive mathematics",
+      "computability",
+      "axiom of choice",
+      "integer division"
+    ],
+    "prerequisites": [
+      "extended Euclidean algorithm",
+      "integer division"
+    ]
+  },
+  {
+    "id": "ann-bezout-comp-correctness",
+    "proofId": "bezout-identity-oq-02-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 102,
+      "endLine": 126
+    },
+    "type": "concept",
+    "title": "Correctness Proof via Calc Chain",
+    "content": "The correctness proof $a \\cdot q = c$ uses a `calc` chain that mirrors the algebraic identity: $a(xc + yk) = xac + yak = xac + y(bc) = (xa + yb)c = 1 \\cdot c = c$. The key step `Int.mul_ediv_cancel'` establishes that $a \\cdot k = bc$ when $a \\mid bc$, converting the computable division back to the exact divisibility equation. The Bézout identity then collapses the expression to $c$.",
+    "mathContext": "$a(xc + yk) = (ax + by)c = 1 \\cdot c = c$ where $k = \\lfloor bc/a \\rfloor$ and $ak = bc$",
+    "significance": "key",
+    "relatedConcepts": [
+      "calc proof",
+      "algebraic simplification",
+      "Int.mul_ediv_cancel'"
+    ],
+    "prerequisites": [
+      "Bézout identity",
+      "divisibility",
+      "ring arithmetic"
+    ]
+  },
+  {
+    "id": "ann-bezout-comp-euclid-lemma",
+    "proofId": "bezout-identity-oq-02-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 128,
+      "endLine": 134
+    },
+    "type": "concept",
+    "title": "Computable Euclid's Lemma",
+    "content": "Euclid's lemma — if $\\gcd(a,b) = 1$ and $a \\mid bc$ then $a \\mid c$ — is proved by exhibiting `constructive_div_computable` as the explicit witness. The anonymous constructor `⟨q, proof⟩` packages the witness and its correctness proof into a divisibility statement. This is the computable version of the classical lemma, usable in `#eval` contexts.",
+    "mathContext": "$\\gcd(a,b) = 1 \\wedge a \\mid bc \\implies a \\mid c$, with $c/a$ computed as $xc + y \\cdot \\lfloor bc/a \\rfloor$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Euclid's lemma",
+      "constructive proof",
+      "witness extraction"
+    ],
+    "prerequisites": [
+      "coprimality",
+      "divisibility"
+    ]
+  },
+  {
+    "id": "ann-bezout-comp-native-decide",
+    "proofId": "bezout-identity-oq-02-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 143,
+      "endLine": 152
+    },
+    "type": "concept",
+    "title": "Verification via native_decide",
+    "content": "The `native_decide` tactic compiles the expression to native code and evaluates it, checking equality at the kernel level. These examples serve as computational certificates: they prove not only that the answers are correct, but that the function *can be evaluated* — confirming the absence of any `noncomputable` or `sorry` dependencies in the call chain.",
+    "mathContext": "Concrete verification: $\\text{constructive\\_div\\_computable}(3, 7, 6) = 2$ and $3 \\times 2 = 6$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "kernel evaluation",
+      "computational verification"
+    ],
+    "prerequisites": [
+      "decidable equality"
+    ]
+  },
+  {
+    "id": "ann-bezout-comp-eval",
+    "proofId": "bezout-identity-oq-02-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 154,
+      "endLine": 158
+    },
+    "type": "insight",
+    "title": "#eval Demonstrations of Computability",
+    "content": "The `#eval` commands are the ultimate computability test: Lean's elaborator refuses to evaluate `noncomputable` definitions via `#eval`. The fact that these produce values (2, 2, 11, 2) proves the function is genuinely computable. The last two examples demonstrate non-trivial cases: $\\text{extGcd}(7, 11)$ computes Bézout coefficients for coprime inputs, and the quotient is computed via integer division.",
+    "mathContext": "#eval serves as a computability certificate in Lean 4 — it cannot evaluate `noncomputable` definitions",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "#eval",
+      "noncomputable",
+      "computability",
+      "Lean kernel"
+    ],
+    "prerequisites": [
+      "Lean 4 evaluation model"
+    ]
+  },
+  {
+    "id": "ann-bezout-comp-div-witness",
+    "proofId": "bezout-identity-oq-02-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 165,
+      "endLine": 170
+    },
+    "type": "insight",
+    "title": "The Core Insight: Int.mul_ediv_cancel'",
+    "content": "This theorem isolates the essential observation: when $a \\mid bc$, the integer division $\\lfloor bc/a \\rfloor$ is exact, so $a \\cdot (bc/a) = bc$. This is the single fact that makes the replacement of `Exists.choose` with `Int.ediv` valid. In Mathlib, `Int.mul_ediv_cancel'` encodes this exactness property. The generality of this insight extends beyond this specific proof — it is applicable whenever a divisibility witness needs to be computed rather than chosen classically.",
+    "mathContext": "$a \\mid bc \\implies a \\cdot \\lfloor bc/a \\rfloor = bc$ — exact division replaces classical choice",
+    "significance": "key",
+    "relatedConcepts": [
+      "exact division",
+      "Int.mul_ediv_cancel'",
+      "axiom of choice elimination"
+    ],
+    "prerequisites": [
+      "integer division",
+      "divisibility"
+    ]
+  }
+]

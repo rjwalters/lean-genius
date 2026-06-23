@@ -1,0 +1,114 @@
+{
+  "version": 1,
+  "proofId": "cauchy-schwarz",
+  "reviewDate": "2026-03-24T16:00:00Z",
+  "reviewer": "peer-reviewer-1",
+  "overallAssessment": {
+    "grade": "B+",
+    "oneLiner": "A well-structured, fully verified formalization of Cauchy-Schwarz in three forms, with genuine proof content in most theorems and honest Mathlib attribution, marred only by one overclaimed wrapper and minor metadata inconsistencies.",
+    "tier": "B",
+    "tierJustification": "The core abstract inequality (cauchy_schwarz_inner) is a single Mathlib call to abs_real_inner_le_norm, placing the proof in Tier B. However, the file adds substantial value beyond the wrapper: an independent two-variable proof via Lagrange identity, a non-trivial EuclideanSpace bridge for finite sums, equality characterization, and two derived applications. The badge 'mathlib' is honest about this dependency."
+  },
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "cauchy_schwarz_two and cauchy_schwarz_two_eq_iff, lines 92-114",
+      "finding": "The two-variable algebraic proof via the Lagrange identity is an independent proof path that does not rely on abs_real_inner_le_norm. It provides genuine mathematical content: the insight that (a1*b2 - a2*b1)^2 >= 0 makes the inequality immediate, and the equality characterization via sq_eq_zero_iff is clean and well-structured. This is the strongest original contribution in the file.",
+      "recommendation": "Preserve and highlight this as the file's centerpiece. Consider emphasizing in the overview that this provides an independent, elementary proof alongside the abstract Mathlib result."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "cauchy_schwarz_sum, lines 127-145",
+      "finding": "The EuclideanSpace embedding that bridges abstract inner products to concrete finite sums is non-trivial bridge work. The three simp lemmas (inner_eq, norm_u_sq, norm_v_sq) demonstrate genuine understanding of Mathlib's EuclideanSpace API. This is exactly the kind of 'connecting abstract to concrete' work that makes a Mathlib-based formalization valuable.",
+      "recommendation": "No change needed. This is well-executed."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "File structure and section organization",
+      "finding": "The file follows a clear logical progression: abstract form -> squared form -> elementary proof -> finite sums -> equality -> examples -> applications. The section headers (/-! ... -/) and theorem docstrings provide clear navigation. The meta.json section boundaries accurately reflect the Lean file structure.",
+      "recommendation": "No change needed. This is a model for how to organize a multi-form proof."
+    },
+    {
+      "severity": "moderate",
+      "category": "overclaim",
+      "location": "meta.json originalContributions[0]: 'Inner product form via abs_real_inner_le_norm'",
+      "finding": "The theorem cauchy_schwarz_inner (line 62-65) is defined as: abs_real_inner_le_norm u v. This is a single Mathlib call with zero proof steps. Listing it as an 'original contribution' is inaccurate -- it is a restatement/wrapper of a Mathlib lemma, not an original contribution.",
+      "recommendation": "Remove this from originalContributions or rephrase to 'Restatement of Mathlib's abs_real_inner_le_norm as a named theorem for pedagogical reference'. The other 7 items in the list have genuine content."
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "overview.historicalContext vs references[2]",
+      "finding": "The historical context says Schwarz 'proved the integral version in 1888' but the references section cites his paper as 1885 (Acta Societatis Scientiarum Fennicae). The correct year for Schwarz's published paper is 1885.",
+      "recommendation": "Change '1888' to '1885' in the historicalContext to match the references section and the historical record."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json mathlibDependencies",
+      "finding": "The mathlibDependencies list only 3 Mathlib lemmas (abs_real_inner_le_norm, EuclideanSpace.inner_eq_star_dotProduct, sq_nonneg), but the proofs also use real_inner_self_eq_norm_sq (lines 79, 176), norm_inner_eq_norm_iff (line 171), norm_add_sq_real (line 208), sq_le_sq' (line 75), sq_eq_zero_iff (line 110), and Real.sqrt_le_sqrt (line 157). These are key lemmas that enable several of the proofs.",
+      "recommendation": "Add at least real_inner_self_eq_norm_sq, norm_inner_eq_norm_iff, and norm_add_sq_real to the mathlibDependencies list, as these are load-bearing in the squared form, equality characterization, and triangle inequality proofs respectively."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "crossReferences to hurwitz-theorem, yang-mills, central-limit-theorem",
+      "finding": "Three cross-references use the 'foundational' relationship type to link this formalization to Hurwitz's theorem, Yang-Mills, and CLT. While Cauchy-Schwarz is indeed foundational to mathematics broadly, claiming this specific Lean file is 'foundational' to those other formalizations overstates the connection. None of those proofs import CauchySchwarz.lean.",
+      "recommendation": "Change the relationship type from 'foundational' to 'related' for these three entries, or add a qualifier like 'Cauchy-Schwarz is a foundational inequality used in the mathematical theory underlying these results' to distinguish the mathematical relationship from a code dependency."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json badge field",
+      "finding": "The badge is 'mathlib' which is honest and appropriate -- the core abstract result comes from Mathlib. However, the status is 'verified' while the badge says 'mathlib'. Per the axiom integrity policy, 'verified' with badge 'original' means fully original, while 'verified' with badge 'mathlib' means verified but Mathlib-dependent. This combination is correctly used here.",
+      "recommendation": "No change needed. This is the correct badge for a Mathlib-based verified proof."
+    }
+  ],
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Remove 'Inner product form via abs_real_inner_le_norm' from originalContributions or rephrase to acknowledge it is a Mathlib wrapper/restatement. The current framing overstates originality for a single-line Mathlib call.",
+      "status": "resolved",
+      "resolution": "Rephrased originalContributions[0] from \"Inner product form via abs_real_inner_le_norm\" to \"Pedagogical wrapper of Mathlib's abs_real_inner_le_norm for the inner product form\"."
+    },
+    {
+      "id": "ai-2",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Fix Schwarz date in overview.historicalContext from '1888' to '1885' to match the references section and historical record.",
+      "status": "resolved",
+      "resolution": "Fixed Schwarz date from 1888 to 1885 in overview.historicalContext."
+    },
+    {
+      "id": "ai-3",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Add real_inner_self_eq_norm_sq, norm_inner_eq_norm_iff, and norm_add_sq_real to the mathlibDependencies list, as these are key Mathlib lemmas used in multiple proofs.",
+      "status": "resolved",
+      "resolution": "Added real_inner_self_eq_norm_sq, norm_inner_eq_norm_iff, and norm_add_sq_real to mathlibDependencies."
+    },
+    {
+      "id": "ai-4",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Soften the 'foundational' cross-reference relationship for hurwitz-theorem, yang-mills, and central-limit-theorem to 'related', since this Lean file is not imported by those formalizations.",
+      "status": "resolved",
+      "resolution": "Softened hurwitz-theorem, yang-mills, and central-limit-theorem cross-references from \"foundational\" to \"related\" in both crossReferences and relatedProofs arrays."
+    }
+  ],
+  "qualityScores": {
+    "mathematicalSubstance": 7,
+    "originalityAccuracy": 7,
+    "completeness": 9,
+    "framingPrecision": 8,
+    "pedagogicalQuality": 8,
+    "internalConsistency": 8,
+    "overall": 7.8
+  },
+  "suggestedBestFraming": "A fully verified Lean 4 formalization of the Cauchy-Schwarz inequality in three forms (abstract inner product, two-variable algebraic via Lagrange identity, finite sums via EuclideanSpace), with equality characterization and two corollaries (triangle inequality, correlation bound). The abstract form applies Mathlib's abs_real_inner_le_norm directly; the two-variable form provides an independent elementary proof; the finite sum form bridges abstract and concrete via EuclideanSpace embedding."
+}

@@ -1,0 +1,169 @@
+{
+  "id": "erdos-274",
+  "title": "Erdős Problem #274: Exact Coverings by Cosets (Herzog-Schönheim)",
+  "slug": "erdos-274",
+  "description": "Can a group be exactly covered by cosets with pairwise distinct indices? NO for abelian groups (Sun 2004). OPEN in general.",
+  "meta": {
+    "author": "Sun Zhi-Wei (2004, abelian case)",
+    "sourceUrl": "https://erdosproblems.com/274",
+    "date": "2004",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos274Problem.lean",
+    "tags": [
+      "erdos",
+      "group-theory",
+      "cosets",
+      "covering-systems",
+      "combinatorics"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 274,
+    "erdosUrl": "https://erdosproblems.com/274",
+    "erdosProblemStatus": "partially-solved",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Subgroup.index",
+        "description": "Index of a subgroup [G:H]",
+        "module": "Mathlib.GroupTheory.Index"
+      },
+      {
+        "theorem": "Subgroup",
+        "description": "Subgroup structure",
+        "module": "Mathlib.Algebra.Group.Subgroup.Basic"
+      },
+      {
+        "theorem": "Fintype.card",
+        "description": "Cardinality of finite types",
+        "module": "Mathlib.Data.Fintype.Card"
+      }
+    ],
+    "originalContributions": [
+      "Formalization of exact covering structure for groups",
+      "Definition of distinct indices property",
+      "Axiomatization of Sun's theorem for abelian groups"
+    ],
+    "axiomCount": 1,
+    "lineCount": 127,
+    "assumptions": "1 axiom: sun_abelian_case. 0 sorries.",
+    "theoremCount": 3,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "The Herzog-Schönheim conjecture, posed in the 1970s, asks whether a group G can be partitioned by cosets of subgroups with pairwise distinct indices. Erdős included this as Problem #274, specifically asking about the abelian case.\n\nSun Zhi-Wei proved in 2004 that for finite abelian groups (and more generally, when all subgroups are subnormal), the answer is NO - at least two cosets must have the same index. This settled Erdős's original question.\n\nMargolis and Schnabel (2019) verified computationally that the conjecture holds for all groups of order less than 1440. The general case remains open.",
+    "problemStatement": "**Herzog-Schönheim Conjecture:** Let G be a group and let a₁G₁, ..., aₖGₖ be k > 1 cosets of subgroups that partition G. Must at least two of the indices [G:Gᵢ] be equal?\n\n**Erdős asked** (Problem #274): Can an abelian group be exactly covered by cosets with distinct indices?\n\n**Answer (Abelian):** NO (Sun 2004)\n**Answer (General):** OPEN\n\n**Known cases:**\n- Abelian groups: Proved (Sun 2004)\n- Subnormal subgroups: Proved (Sun 2004)\n- |G| < 1440: Verified (Margolis-Schnabel 2019)",
+    "text": "Can a group be exactly covered by cosets with pairwise distinct indices? NO for abelian groups (Sun 2004). OPEN in general.",
+    "proofStrategy": "The formalization defines:\n\n1. **ExactCovering**: A structure with k subgroups and k coset representatives that partition G\n2. **hasDistinctIndices**: Property that all [G:Hᵢ] are pairwise different\n3. **HerzogSchonheimConjecture**: No exact covering with k > 1 can have distinct indices\n\nWe axiomatize:\n- Sun's theorem: The conjecture holds for finite abelian groups\n\nThe Margolis-Schnabel (2019) computational verification (|G| < 1440) is noted in a block comment but not separately axiomatized.\n\nThe main theorem `erdos_274_abelian_solved` shows that Sun's axiom implies the full conjecture for abelian groups.",
+    "keyInsights": [
+      "**Egyptian fractions constraint:** If k cosets partition G with indices n₁,...,nₖ, then 1/n₁ + ... + 1/nₖ = 1. Distinct indices must satisfy this equation.",
+      "**Abelian vs non-abelian:** The abelian case was solved in 2004, but the structure of non-abelian groups may allow exotic partitions not possible in abelian groups.",
+      "**Computational frontier:** The conjecture is verified for groups up to order 1439. The smallest potential counterexample (if one exists) has order ≥ 1440.",
+      "**Connection to covering systems:** The problem is related to Erdős's covering system problems, where residue classes cover ℤ with distinct moduli.",
+      "**Subnormality matters:** Sun's proof works for subnormal subgroups, which includes all subgroups in abelian groups but not necessarily in non-abelian groups."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "summary": "ExactCovering structure with proper partition property and hasDistinctIndices predicate",
+      "startLine": 29,
+      "endLine": 44
+    },
+    {
+      "id": "conjecture",
+      "title": "Herzog-Schönheim Conjecture",
+      "summary": "The main conjecture statement",
+      "startLine": 45,
+      "endLine": 57
+    },
+    {
+      "id": "abelian",
+      "title": "Abelian Case (Solved)",
+      "summary": "Sun's theorem for finite abelian groups",
+      "startLine": 58,
+      "endLine": 78
+    },
+    {
+      "id": "computational",
+      "title": "Computational Verification",
+      "summary": "Margolis-Schnabel result (2019) noted as a block comment: the conjecture holds for |G| < 1440. Not separately axiomatized.",
+      "startLine": 79,
+      "endLine": 84
+    },
+    {
+      "id": "problem",
+      "title": "The Open Problem",
+      "summary": "Statement of Erdős Problem #274 and `erdos_274_abelian_solved` theorem",
+      "startLine": 85,
+      "endLine": 100
+    },
+    {
+      "id": "index-sum",
+      "title": "Index Sum Lemma",
+      "summary": "Informal note (as block comment) on the necessary index-sum condition ∑ 1/nᵢ = 1; not separately formalized.",
+      "startLine": 101,
+      "endLine": 110
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_274_summary: abelian case proved via Sun's theorem",
+      "startLine": 111,
+      "endLine": 127
+    }
+  ],
+  "conclusion": {
+    "summary": "We formalize the Herzog-Schönheim conjecture and prove it for finite abelian groups using Sun's 2004 result. The formalization captures the structure of exact coverings by cosets and the key property of distinct indices.",
+    "implications": "**Theoretical Significance**: This result connects to several areas:\n\n1. **Covering systems:** Partitioning integers by residue classes with distinct moduli\n2. **Finite group theory:** Understanding the constraints on subgroup structures\n**3. Egyptian fractions:** The index sum 1/n₁ + ... + 1/nₖ = 1 relates to unit fraction decompositions\n4. **Computational group theory:** Systematic verification for small groups.",
+    "openQuestions": [
+      "Does the Herzog-Schönheim conjecture hold for all groups?",
+      "What is the smallest non-abelian group (if any) admitting distinct-index coverings?",
+      "Can the subnormality condition in Sun's proof be weakened?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.Coset.Basic",
+      "Mathlib.GroupTheory.Index",
+      "Mathlib.Algebra.Group.Subgroup.Basic",
+      "Mathlib.Data.Fintype.Card",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Subgroup",
+      "BigOperators"
+    ],
+    "namespace": "Erdos274",
+    "lineCount": 127,
+    "axiomCount": 1,
+    "theoremCount": 3,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos274Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-2",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, covering-systems"
+    },
+    {
+      "targetId": "erdos-202",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, covering-systems"
+    },
+    {
+      "targetId": "erdos-543",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, group-theory"
+    }
+  ],
+  "sorries": 0
+}

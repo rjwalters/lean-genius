@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "repunit-oq-01",
+    "range": { "startLine": 3, "endLine": 31 },
+    "type": "concept",
+    "title": "Repunits and the Divisibility Criterion",
+    "content": "A base-$b$ repunit of length $n$ is $R_b(n) = 1 + b + b^2 + \\cdots + b^{n-1} = (b^n - 1)/(b - 1)$, the number written as $n$ ones in base $b$ (so $R_{10}(3) = 111$). The file proves the classical criterion $R_b(m) \\mid R_b(n) \\iff m \\mid n$ for every base $b \\ge 2$. The docstring records the two-step plan: a power-difference engine $(b^m - 1) \\mid (b^n - 1) \\iff m \\mid n$, bridged to repunits by $(b-1)R_b(n) = b^n - 1$.",
+    "mathContext": "$R_b(n) = \\sum_{i=0}^{n-1} b^i,\\qquad R_b(m) \\mid R_b(n) \\iff m \\mid n.$",
+    "significance": "key",
+    "relatedConcepts": ["repunit", "geometric series", "divisibility", "OEIS A002275"],
+    "prerequisites": ["finite geometric sums", "elementary divisibility"]
+  },
+  {
+    "id": "ann-defn",
+    "proofId": "repunit-oq-01",
+    "range": { "startLine": 37, "endLine": 43 },
+    "type": "definition",
+    "title": "Repunit as a Sum of Powers",
+    "content": "`repunit b n` is defined directly as the finite geometric sum $\\sum_{i<n} b^i$ over `Finset.range n`, keeping every value a genuine natural number. `repunit_zero` gives the empty sum $R_b(0) = 0$, and `repunit_succ` exposes the one-step recurrence $R_b(n+1) = R_b(n) + b^n$ as a rewrite lemma (via `Finset.sum_range_succ`), which drives the inductive bridge to powers.",
+    "mathContext": "$R_b(0) = 0,\\qquad R_b(n+1) = R_b(n) + b^n.$",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.sum", "geometric series", "structural recursion"],
+    "prerequisites": ["finite sums in Lean"]
+  },
+  {
+    "id": "ann-bridge-add",
+    "proofId": "repunit-oq-01",
+    "range": { "startLine": 46, "endLine": 57 },
+    "type": "theorem",
+    "title": "Subtraction-Free Power Bridge",
+    "content": "The key bridge $(b-1)\\,R_b(n) + 1 = b^n$, stated additively to sidestep $\\mathbb{N}$'s truncated subtraction. The proof substitutes $b = c + 1$ (so $b - 1$ becomes the honest natural number $c$) and inducts: the successor step rearranges $c\\,R_b(n) + c\\,b^n + 1 = (c\\,R_b(n) + 1) + c\\,b^n$, applies the induction hypothesis, and finishes with `ring` — valid precisely because no subtraction remains.",
+    "mathContext": "$(b-1)\\,R_b(n) + 1 = b^n,\\qquad\\text{equivalently } c\\,R_{c+1}(n) + 1 = (c+1)^n.$",
+    "significance": "key",
+    "relatedConcepts": ["truncated subtraction", "induction", "ring normalization"],
+    "prerequisites": ["natural number subtraction semantics", "mathematical induction"]
+  },
+  {
+    "id": "ann-bridge-mul",
+    "proofId": "repunit-oq-01",
+    "range": { "startLine": 59, "endLine": 63 },
+    "type": "theorem",
+    "title": "Multiplicative Form of the Bridge",
+    "content": "Restates the additive bridge as $(b-1)\\,R_b(n) = b^n - 1$, the form actually used to transport divisibility. The conversion is a single `omega` step from the additive identity, treating $(b-1)R_b(n)$ and $b^n$ as opaque terms — legitimate because $b^n = (b-1)R_b(n) + 1 \\ge 1$, so the subtraction does not underflow.",
+    "mathContext": "$(b-1)\\,R_b(n) = b^n - 1.$",
+    "significance": "key",
+    "relatedConcepts": ["omega", "ℕ subtraction"],
+    "prerequisites": ["linear arithmetic over ℕ"]
+  },
+  {
+    "id": "ann-engine",
+    "proofId": "repunit-oq-01",
+    "range": { "startLine": 65, "endLine": 120 },
+    "type": "theorem",
+    "title": "Power-Difference Divisibility via the Division Algorithm",
+    "content": "The engine: for $b \\ge 2$, $(b^m - 1) \\mid (b^n - 1) \\iff m \\mid n$. Forward direction — write $n = mq + r$ with $r < m$; modulo $b^m - 1$ one has $b^m \\equiv 1$ (`Nat.modEq_iff_dvd'` applied to `dvd_refl`), so $b^n = (b^m)^q b^r \\equiv b^r$. The hypothesis gives $b^n \\equiv 1$, hence $b^r \\equiv 1$, i.e. $(b^m - 1) \\mid (b^r - 1)$. Since $0 \\le b^r - 1 < b^m - 1$ (as $r < m$, $b \\ge 2$), a positive divisor would be too large, so $b^r - 1 = 0$, forcing $r = 0$ and $m \\mid n$. Converse — for $n = mk$, $(b^m - 1) \\mid (b^m)^k - 1^k = b^{mk} - 1$ by `nat_sub_dvd_pow_sub_pow`.",
+    "mathContext": "$b^n = (b^m)^q\\,b^r \\equiv 1^q\\,b^r = b^r \\pmod{b^m - 1},\\qquad b^r - 1 < b^m - 1.$",
+    "significance": "key",
+    "relatedConcepts": ["division algorithm", "Nat.ModEq", "multiplicative order", "Mersenne numbers"],
+    "prerequisites": ["modular arithmetic", "the division algorithm"]
+  },
+  {
+    "id": "ann-order",
+    "proofId": "repunit-oq-01",
+    "range": { "startLine": 96, "endLine": 110 },
+    "type": "insight",
+    "title": "Why the Remainder Must Vanish",
+    "content": "The crux of the forward direction is that $b$ has multiplicative order exactly $m$ modulo $b^m - 1$. Concretely, $(b^m - 1) \\mid (b^r - 1)$ together with the strict bound $b^r - 1 < b^m - 1$ (proved here by writing $b^m = b^r \\cdot b^{m-r}$ with $b^{m-r} \\ge 2$) leaves only $b^r - 1 = 0$. This is the same mechanism that yields $\\gcd(b^m - 1, b^n - 1) = b^{\\gcd(m,n)} - 1$.",
+    "mathContext": "$b^r - 1 = 0 \\implies b^r = 1 \\implies r = 0 \\implies m \\mid n.$",
+    "significance": "key",
+    "relatedConcepts": ["multiplicative order", "gcd of power differences", "strict monotonicity of b^·"],
+    "prerequisites": ["order of an element", "monotone powers"]
+  },
+  {
+    "id": "ann-main",
+    "proofId": "repunit-oq-01",
+    "range": { "startLine": 122, "endLine": 127 },
+    "type": "theorem",
+    "title": "Repunit Divisibility by Cancelling b − 1",
+    "content": "The main theorem $R_b(m) \\mid R_b(n) \\iff m \\mid n$. Rewriting both repunits through the bridge $(b-1)R_b(\\cdot) = b^{\\cdot} - 1$ turns the goal into $(b-1)R_b(m) \\mid (b-1)R_b(n) \\iff (b^m-1) \\mid (b^n-1)$; cancelling the positive common factor $b - 1$ with `Nat.mul_dvd_mul_iff_left` reduces it to the power-difference engine. The whole criterion thus rests on one cancellation plus the engine.",
+    "mathContext": "$R_b(m) \\mid R_b(n) \\iff (b-1)R_b(m) \\mid (b-1)R_b(n) \\iff (b^m - 1) \\mid (b^n - 1) \\iff m \\mid n.$",
+    "significance": "key",
+    "relatedConcepts": ["cancellation of common factors", "Nat.mul_dvd_mul_iff_left"],
+    "prerequisites": ["divisibility and cancellation in ℕ"]
+  },
+  {
+    "id": "ann-ten",
+    "proofId": "repunit-oq-01",
+    "range": { "startLine": 129, "endLine": 131 },
+    "type": "theorem",
+    "title": "The Base-Ten Repunits",
+    "content": "Instantiating $b = 10$ recovers the everyday repunits $1, 11, 111, 1111, \\dots$: $R_{10}(m) \\mid R_{10}(n) \\iff m \\mid n$. A corollary worth noting is that $R_{10}(n)$ can be prime only when $n$ is prime, since any proper divisor of $n$ gives a proper repunit divisor.",
+    "mathContext": "$R_{10}(m) \\mid R_{10}(n) \\iff m \\mid n;\\quad R_{10}(n)\\text{ prime} \\implies n\\text{ prime}.$",
+    "significance": "supporting",
+    "relatedConcepts": ["base-ten repunits", "repunit primes", "necessary primality condition"],
+    "prerequisites": ["specialization of a general theorem"]
+  }
+]

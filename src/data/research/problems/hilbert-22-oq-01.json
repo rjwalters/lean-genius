@@ -1,0 +1,112 @@
+{
+  "slug": "hilbert-22-oq-01",
+  "title": "Higher-Dimensional Uniformization",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{For complex manifolds of dimension } n \\ge 2, \\text{ identify what replaces the one-dimensional uniformization trichotomy } \\{S^2, \\mathbb{C}, \\mathbb{D}\\} \\text{ and whether a finite classification of simply connected complex manifolds exists.}",
+    "plain": "Understand how the uniformization theorem for Riemann surfaces extends, or fails to extend, beyond dimension one. Local evidence points to Kodaira dimension, the Enriques-Kodaira surface classification, Yau's Kahler-Einstein framework, Kobayashi hyperbolicity, and the minimal model program as the relevant higher-dimensional replacements for the simple sphere/plane/disk trichotomy.",
+    "whyMatters": [
+      "Connects Hilbert's twenty-second problem to modern complex geometry and birational classification.",
+      "Clarifies why the complete three-model classification of simply connected Riemann surfaces is special to dimension one.",
+      "Frames what would need to be surveyed before any stronger Lean formalization of higher-dimensional uniformization could be claimed."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "The parent Hilbert 22 metadata records the classical one-dimensional uniformization theorem: simply connected Riemann surfaces are classified by the sphere, the complex plane, and the unit disk; the parent Lean entry is marked axiomatized rather than fully proved.",
+      "Proofs/Hilbert22OQ01.lean defines KodairaDimension, maps the three Riemann-surface model cases to Kodaira dimensions, encodes eight compact complex surface classes, defines IsKobayashiHyperbolic, and proves the local theorem model_spaces_dim_one : Fintype.card (Fin 3) = 3.",
+      "Local proof metadata for Hilbert22OQ01 records 0 axioms, 0 sorries, 1 theorem, and 5 definitions in Proofs/Hilbert22OQ01.lean."
+    ],
+    "open": [
+      "The research problem itself remains in OBSERVE phase with no recorded attempts beyond initial context gathering.",
+      "The local OQ metadata lists the Lang conjecture for general type and Kobayashi hyperbolicity, termination questions in the minimal model program, and construction of the Kobayashi pseudometric in Lean as open directions.",
+      "No local research note yet establishes a substantive Lean formalization of Kodaira dimension, Yau's theorem, or the minimal model program beyond the lightweight definitions in Proofs/Hilbert22OQ01.lean."
+    ],
+    "goal": "Survey and formalize the higher-dimensional replacement framework for Riemann-surface uniformization without claiming a complete finite classification or unrecorded Lean proof progress."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-29T23:03:00-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "OBSERVE scaffold backfill from local evidence. problem.md identifies the question as how uniformization generalizes to higher-dimensional complex manifolds; state.md keeps the problem at OBSERVE/full with zero attempts. Existing proof metadata supplies a lightweight Hilbert22OQ01 Lean file about Kodaira dimension, surface classes, Kobayashi hyperbolicity, and the toy theorem model_spaces_dim_one, but the research notes do not record new proof progress.",
+    "builtItems": [
+      "research/problems/hilbert-22-oq-01/problem.md states the OQ and relates it to parent proof hilbert-22.",
+      "Proofs/Hilbert22OQ01.lean contains the existing Lean exploration of KodairaDimension, SurfaceClass, IsKobayashiHyperbolic, and model_spaces_dim_one.",
+      "src/data/proofs/hilbert-22-oq-01/meta.json records the proof metadata for the local OQ Lean file."
+    ],
+    "insights": [
+      "The local problem is a generalization of Hilbert 22 in complex geometry.",
+      "Dimension one has the sphere/complex-plane/unit-disk trichotomy; the local OQ material treats Kodaira dimension, the Enriques-Kodaira surface classification, Yau's theorem, Kobayashi hyperbolicity, and the minimal model program as higher-dimensional analogues.",
+      "The current research state has no active approach and zero attempts, so metadata should not claim an executed research strategy."
+    ],
+    "mathlibGaps": [
+      "No Mathlib gap survey is recorded in the local knowledge or literature files yet.",
+      "A future ORIENT pass should check Mathlib coverage for complex manifolds, Kodaira dimension, Kobayashi hyperbolicity, Kahler-Einstein metrics, and minimal model program prerequisites before proposing formal targets."
+    ],
+    "nextSteps": [
+      "Move from OBSERVE to ORIENT only after a literature and Mathlib survey is actually recorded.",
+      "Separate existing pedagogical definitions in Proofs/Hilbert22OQ01.lean from any future theorem targets about higher-dimensional uniformization.",
+      "Replace the scaffold literature README with concrete local references only after sources are gathered."
+    ],
+    "markdown": "# Knowledge Base: hilbert-22-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nThis OQ asks how the one-dimensional uniformization theorem for Riemann surfaces generalizes to higher-dimensional complex manifolds. The parent problem is Hilbert 22, whose local metadata presents the classical sphere/complex-plane/unit-disk trichotomy for simply connected Riemann surfaces.\n\nThe local Hilbert22OQ01 Lean file frames the higher-dimensional replacements as Kodaira dimension, the Enriques-Kodaira classification of compact complex surfaces, Yau's Kahler-Einstein metric framework, Kobayashi hyperbolicity, and the minimal model program. This is evidence for the shape of the research question, not evidence that those theories have been fully formalized here.\n\n---\n\n## Current Local State\n\nstate.md keeps this problem in OBSERVE phase on the full path, iteration 1, with zero total attempts, zero current-approach attempts, and zero approaches tried. The current focus is initial problem understanding, and the next action is to read problem.md and gather context before moving to ORIENT.\n\nknowledge.md and literature/README.md are still scaffold-level files, so this JSON should not claim literature findings beyond the existing proof metadata.\n\n---\n\n## Lean Evidence\n\nProofs/Hilbert22OQ01.lean defines KodairaDimension, riemann_surface_kodaira, SurfaceClass, surfaceKodaira, and IsKobayashiHyperbolic, then proves model_spaces_dim_one : Fintype.card (Fin 3) = 3 by decide. Local proof metadata records the file as 0 axioms, 0 sorries, 1 theorem, and 5 definitions.\n\nThe parent Hilbert22Uniformization file is relevant background for Hilbert 22. Its metadata describes the classical uniformization theorem but marks the parent proof entry as axiomatized, so this research record should avoid implying a complete Lean proof of the classical theorem.\n\n---\n\n## Dead Ends\n\nNo dead ends are recorded locally.\n"
+  },
+  "tags": [
+    "complex-geometry",
+    "complex-analysis",
+    "riemann-surfaces",
+    "uniformization",
+    "hilbert-problems",
+    "automorphic-functions",
+    "kodaira-dimension",
+    "kobayashi-hyperbolicity",
+    "classification"
+  ],
+  "relatedProofs": [
+    "hilbert-22",
+    "hilbert-22-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T06:03:08.378Z",
+  "lastUpdate": "2026-03-30T06:03:08.396Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Hilbert22OQ01.lean",
+      "filename": "Hilbert22OQ01.lean",
+      "lineCount": 155,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert22OQ01.lean"
+    },
+    {
+      "path": "Proofs/Hilbert22Uniformization.lean",
+      "filename": "Hilbert22Uniformization.lean",
+      "lineCount": 305,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert22Uniformization.lean"
+    }
+  ]
+}

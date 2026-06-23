@@ -1,0 +1,261 @@
+{
+  "id": "erdos-719",
+  "title": "Erdős Problem #719: Hypergraph Decomposition into Cliques",
+  "slug": "erdos-719",
+  "description": "Can every r-uniform hypergraph on n vertices be decomposed into ≤ ex_r(n; K_{r+1}^r) copies of K_r^r and K_{r+1}^r with no shared r-edge? Erdős-Sauer conjecture. Open.",
+  "meta": {
+    "author": "Erdős, Sauer (1981)",
+    "sourceUrl": "https://erdosproblems.com/719",
+    "date": "1981",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos719Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "hypergraphs",
+      "turan-theory",
+      "decomposition"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 719,
+    "erdosUrl": "https://erdosproblems.com/719",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "dateAdded": "2026-01-19",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat",
+        "description": "Natural number type and basic operations",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for hyperedge representation",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.powerset",
+        "description": "Powerset for complete clique construction",
+        "module": "Mathlib.Data.Finset.Powerset"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality for uniformity and counting",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients for clique edge counts",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
+    ],
+    "originalContributions": [
+      "RUniformHypergraph structure with edges and uniformity proof",
+      "completeClique via powerset filtering for K_{r+1}^r",
+      "IsFullClique, IsSingleEdge, IsDecompPiece type hierarchy",
+      "PiecesEdgeDisjoint and IsValidDecomp structure",
+      "IsCliqueFree predicate and turanHypergraph via sSup",
+      "erdos_sauer_conjecture axiom: main OPEN conjecture",
+      "turan_graph theorem: Turán's theorem for r=2",
+      "graph_case_bound proved: reduces to ⌊n²/4⌋",
+      "choose_succ_self proved: C(r+1,r) = r+1",
+      "empty_case proved: empty hypergraph satisfies conjecture"
+    ],
+    "relatedProblems": [
+      {
+        "id": "erdos-720",
+        "relationship": "Turán densities for higher uniformity — the Turán number in the conjecture is itself open for r ≥ 3"
+      },
+      {
+        "id": "erdos-76",
+        "relationship": "Monochromatic triangle packings — related edge-disjoint decomposition in colored complete graphs"
+      },
+      {
+        "id": "erdos-746",
+        "relationship": "Hamiltonicity and random graphs — structural decomposition questions in extremal graph theory"
+      }
+    ],
+    "axiomCount": 1,
+    "lineCount": 546,
+    "assumptions": "1 axiom: erdos_sauer_conjecture (OPEN problem). Turán's theorem for graphs fully proved via Mathlib bridge.",
+    "theoremCount": 20,
+    "definitionCount": 10
+  },
+  "overview": {
+    "historicalContext": "Turán's theorem (1941) determines the maximum number of edges in a triangle-free graph on $n$ vertices: $\\text{ex}_2(n; K_3) = \\lfloor n^2/4 \\rfloor$, achieved by the complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$. This foundational result of extremal graph theory was extended by the Erdős-Stone-Simonovits theorem (1966) to determine $\\text{ex}_2(n; H)$ for all non-bipartite graphs $H$.\n\nFor $r$-uniform hypergraphs with $r \\ge 3$, the Turán problem becomes dramatically harder. Even $\\text{ex}_3(n; K_4^3)$ — the 3-uniform analogue of the triangle Turán number — is a central open problem. Turán conjectured the extremal hypergraph is a specific 3-partite construction with $(5/9 + o(1))\\binom{n}{3}$ edges, but this remains unproven.\n\nErdős and Sauer (1981) posed Problem #719: can every $r$-uniform hypergraph on $n$ vertices be decomposed into at most $\\text{ex}_r(n; K_{r+1}^r)$ edge-disjoint pieces, where each piece is either a single $r$-edge ($K_r^r$) or a complete $(r+1)$-clique ($K_{r+1}^r$)? The conjecture connects two deep areas: Turán-type extremal theory (bounding edge counts) and decomposition theory (partitioning edge sets into canonical structures).\n\nFor $r = 2$, the conjecture asks whether every graph on $n$ vertices can be written as at most $\\lfloor n^2/4 \\rfloor$ edges and triangles — already non-trivial. For $r \\ge 3$, the conjecture is doubly open: the decomposition bound depends on a Turán number that is itself unknown. The problem remains OPEN.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nIs every $r$-uniform hypergraph $G$ on $n$ vertices the union of at most $\\text{ex}_r(n; K_{r+1}^r)$ copies of $K_r^r$ and $K_{r+1}^r$, no two sharing a $K_r^r$?\n\n**Key Definitions**:\n- $K_r^r$: A single $r$-edge (trivial clique)\n- $K_{r+1}^r$: All $\\binom{r+1}{r} = r+1$ $r$-edges on $r+1$ vertices\n- $\\text{ex}_r(n; K_{r+1}^r)$: Maximum $r$-edges on $n$ vertices avoiding $K_{r+1}^r$\n\n**Graph case** ($r = 2$): Decompose into $\\le \\lfloor n^2/4 \\rfloor$ edges and triangles.\n\n**Status**: OPEN for all $r \\ge 2$.",
+    "text": "Can every r-uniform hypergraph on n vertices be decomposed into ≤ ex_r(n; K_{r+1}^r) copies of K_r^r and K_{r+1}^r with no shared r-edge? Erdős-Sauer conjecture. Open.",
+    "proofStrategy": "**Formalization Strategy**\n\n1. **Hypergraph representation**: `RUniformHypergraph V r` as `Finset (Finset V)` with uniformity proof\n2. **Complete cliques**: `completeClique r S` via powerset filtering\n3. **Decomposition types**: `IsDecompPiece` as disjunction of `IsSingleEdge` and `IsFullClique`\n4. **Valid decomposition**: `IsValidDecomp` structure with validity, disjointness, and coverage\n5. **Turán number**: `turanHypergraph n r` via `sSup` over clique-free edge counts\n6. **Main conjecture**: `erdos_sauer_conjecture` axiomatized (OPEN problem)\n7. **Graph case**: `turan_graph` axiom + `graph_case_bound` proof reducing to $\\lfloor n^2/4 \\rfloor$\n8. **Structural lemmas**: `choose_succ_self`, `empty_case` proved; counting lemmas remain sorry",
+    "keyInsights": [
+      "**Edge-disjoint decomposition**: Each $r$-edge belongs to exactly one piece — a single edge or an $(r+1)$-clique consuming $r+1$ edges",
+      "**Graph case ($r = 2$)**: The bound $\\lfloor n^2/4 \\rfloor$ from Turán's theorem; conjecture asks for decomposition into $\\le \\lfloor n^2/4 \\rfloor$ edges and triangles",
+      "**Doubly open for $r \\ge 3$**: The Turán number $\\text{ex}_r(n; K_{r+1}^r)$ is itself unknown, making the conjecture depend on another major open problem",
+      "**$\\binom{r+1}{r} = r+1$**: Each clique piece saves $r$ pieces compared to single-edge decomposition",
+      "**Trivial decomposition**: Breaking every $r$-edge into its own piece always works but may exceed the Turán bound",
+      "**Block design analogy**: The decomposition resembles a packing design where cliques serve as blocks"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "problem-statement",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "Module docstring stating Erdős Problem #719: the Erdős–Sauer conjecture asking whether every $r$-uniform hypergraph on $n$ vertices decomposes into at most $\\mathrm{ex}_r(n; K_{r+1}^r)$ copies of $K_r^r$ and $K_{r+1}^r$, no two sharing a common $K_r^r$. Imports Mathlib finset/powerset/card APIs and `Combinatorics.SimpleGraph.Extremal.Turan`.",
+      "mathContext": "$\\mathrm{ex}_r(n; K_{r+1}^r)$ is the Turán number: the maximum number of $r$-edges on $n$ vertices avoiding a complete $(r+1)$-clique $K_{r+1}^r$ (all $r$-subsets of an $(r+1)$-set). Status: OPEN (erdosproblems.com/719)."
+    },
+    {
+      "id": "hypergraph-defs",
+      "title": "r-Uniform Hypergraphs and Cliques",
+      "startLine": 22,
+      "endLine": 47,
+      "summary": "Defines `RUniformHypergraph V r` as a `Finset` of edges with the uniformity condition $|e| = r$, `completeClique r S` as all $r$-subsets of $S$ (via `powersetCard`), `IsFullClique` ($K_{r+1}^r$ = all $r$-subsets of an $(r+1)$-set), and `IsSingleEdge` (the trivial clique $K_r^r$, a single $r$-edge).",
+      "mathContext": "A complete $r$-clique on $S$ is $\\binom{S}{r} = \\{T \\subseteq S : |T| = r\\}$. The two decomposition building blocks are $K_r^r$ (one edge) and $K_{r+1}^r$ (the $r+1$ edges of an $(r+1)$-set)."
+    },
+    {
+      "id": "decomposition",
+      "title": "Decomposition Framework",
+      "startLine": 48,
+      "endLine": 74,
+      "summary": "Defines `IsDecompPiece` (a piece is either a single $r$-edge or a full $(r+1)$-clique), `PiecesEdgeDisjoint` (two pieces share no common $r$-subset), and the `IsValidDecomp` structure bundling a family of pieces that are valid, pairwise $r$-edge-disjoint, and cover the hypergraph.",
+      "mathContext": "A valid decomposition writes $H = \\bigcup_i P_i$ with each $P_i \\in \\{K_r^r, K_{r+1}^r\\}$ and the $P_i$ pairwise sharing no $r$-edge. The conjecture bounds the number of pieces by the Turán number."
+    },
+    {
+      "id": "turan",
+      "title": "Turán Number and Main Conjecture (OPEN)",
+      "startLine": 75,
+      "endLine": 107,
+      "summary": "Defines `IsCliqueFree r H` ($H$ contains no $K_{r+1}^r$) and `turanHypergraph n r` $= \\sup\\{|E(H)| : H \\text{ on } \\mathrm{Fin}\\,n \\text{ is } K_{r+1}^r\\text{-free}\\}$. States the sole assumption of the file, `axiom erdos_sauer_conjecture`, asserting every $r$-uniform hypergraph admits a valid decomposition into at most `turanHypergraph n r` pieces.",
+      "mathContext": "$\\mathrm{turanHypergraph}\\,n\\,r = \\mathrm{ex}_r(n; K_{r+1}^r)$. The conjecture (Erdős–Sauer, 1981) is the file's one `axiom` ($\\texttt{axiomCount}=1$, $\\texttt{status: axiomatized}$); all other results are unconditional theorems."
+    },
+    {
+      "id": "graph-case",
+      "title": "Graph Case (r = 2)",
+      "startLine": 108,
+      "endLine": 114,
+      "summary": "Docstring framing the graph specialization: for $r = 2$ the Turán number $\\mathrm{ex}_2(n; K_3)$ equals $\\lfloor n^2/4 \\rfloor$ (Turán's theorem / Mantel's theorem), the entry point for the unconditional graph-case results proven later in the file.",
+      "mathContext": "Mantel's theorem (1907): a triangle-free graph on $n$ vertices has at most $\\lfloor n^2/4 \\rfloor$ edges, attained by the balanced complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Results",
+      "startLine": 115,
+      "endLine": 140,
+      "summary": "Basic combinatorial lemmas: `choose_succ_self` ($\\binom{r+1}{r} = r+1$), `completeClique_subset` (edges of a clique are subsets of its vertex set), `completeClique_uniform` (each edge has exactly $r$ elements), and `piecesEdgeDisjoint_comm` (edge-disjointness is symmetric).",
+      "mathContext": "$\\binom{r+1}{r} = r+1$ underlies the edge count of a full clique. These lemmas establish the well-formedness of `completeClique` as an $r$-uniform family."
+    },
+    {
+      "id": "clique-cardinality",
+      "title": "Clique Cardinality",
+      "startLine": 141,
+      "endLine": 184,
+      "summary": "Cardinality theory of cliques: `completeClique_eq_powersetCard` (a complete clique is exactly `powersetCard r S`), `completeClique_card` ($|completeClique\\,r\\,S| = \\binom{|S|}{r}$), `fullClique_edge_count` ($K_{r+1}^r$ has exactly $r+1$ edges), `completeClique_mono` (monotonicity in the vertex set), and `decomp_piece_card_le` (each piece in a valid decomposition has at most $r+1$ edges).",
+      "mathContext": "$|completeClique\\,r\\,S| = \\binom{|S|}{r}$ via `Finset.card_powersetCard`. A full $(r+1)$-clique therefore has $\\binom{r+1}{r} = r+1$ edges; a single edge has $1 \\le r+1$, so every decomposition piece has at most $r+1$ edges."
+    },
+    {
+      "id": "edge-counting",
+      "title": "Edge Counting and Turán Bound",
+      "startLine": 185,
+      "endLine": 215,
+      "summary": "Global edge bounds: `edges_le_choose` (any $r$-uniform hypergraph on $\\mathrm{Fin}\\,n$ has at most $\\binom{n}{r}$ edges, since edges are distinct $r$-subsets), `cliqueFree_edgeCounts_bddAbove` (the set of edge counts of clique-free hypergraphs is bounded above), and `cliqueFree_le_turan` (every clique-free hypergraph has at most `turanHypergraph n r` edges).",
+      "mathContext": "Edges inject into $\\binom{\\mathrm{Fin}\\,n}{r}$, so $|E(H)| \\le \\binom{n}{r}$. Boundedness of the clique-free edge counts is what makes `turanHypergraph n r` (a supremum) well-defined and an actual upper bound."
+    },
+    {
+      "id": "empty-trivial",
+      "title": "Empty and Trivial Cases",
+      "startLine": 216,
+      "endLine": 270,
+      "summary": "Unconditional special cases of the conjecture: `empty_case` (the empty hypergraph trivially decomposes) and `trivial_decomp_exists` (every $r$-uniform hypergraph admits the trivial decomposition in which each $r$-edge becomes its own piece $K_r^r$ — these pieces are automatically pairwise $r$-edge-disjoint and cover $H$). Both are fully proved (no `sorry`).",
+      "mathContext": "The trivial decomposition uses $|E(H)|$ singleton pieces. It shows the decomposition *exists* but does not meet the conjectured bound `turanHypergraph n r`; the conjecture's content is the existence of an *economical* decomposition."
+    },
+    {
+      "id": "related",
+      "title": "Relationship to Other Problems",
+      "startLine": 271,
+      "endLine": 281,
+      "summary": "Docstring locating #719 within extremal hypergraph theory: the graph case ($r=2$) connects to Erdős' edge-disjoint triangle decompositions, and to neighboring Erdős problems #718 (Turán lower bounds for hypergraphs), #720 (Turán densities at higher uniformity), and #83 (triangle decompositions of dense graphs).",
+      "mathContext": "Turán-type extremal problems ask for the maximum edge count avoiding a fixed subhypergraph; #719 couples this with a covering/decomposition requirement, blending extremal and design-theoretic questions."
+    },
+    {
+      "id": "turan-axiom-elimination",
+      "title": "Turán's Theorem for Graphs — Axiom Elimination Path",
+      "startLine": 282,
+      "endLine": 546,
+      "summary": "Discharges the former `turan_graph` axiom into a proved theorem. Constructs `completeBipartiteHypergraph n` (2-edges between vertices of differing parity), proves it triangle-free (`completeBipartiteHypergraph_cliqueFree`) and that it has $\\lfloor n^2/4 \\rfloor$ edges (`completeBipartiteHypergraph_card`). Combining the lower bound `turanHypergraph_graph_ge` with the upper bound `turanHypergraph_graph_le` yields `turan_graph : turanHypergraph n 2 = n^2/4` (now a theorem, not an axiom), and `graph_case_bound` specializes the decomposition bound to $\\lfloor n^2/4 \\rfloor$ pieces.",
+      "mathContext": "The extremal triangle-free construction is the balanced bipartite graph: edges $\\{v,w\\}$ with $v \\bmod 2 \\ne w \\bmod 2$, giving $\\lfloor n/2\\rfloor \\cdot \\lceil n/2\\rceil = \\lfloor n^2/4\\rfloor$ edges. Matching lower and upper bounds prove $\\mathrm{ex}_2(n;K_3) = \\lfloor n^2/4\\rfloor$ unconditionally, eliminating the graph-case axiom and leaving `erdos_sauer_conjecture` as the file's only assumption."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Erdős-Sauer conjecture (Problem #719) asks whether every $r$-uniform hypergraph on $n$ vertices decomposes into at most $\\text{ex}_r(n; K_{r+1}^r)$ edge-disjoint pieces (single edges or complete $(r+1)$-cliques). The formalization defines the decomposition framework, proves the graph case reduction via Turán's theorem, and establishes structural lemmas including $\\binom{r+1}{r} = r+1$. The conjecture remains OPEN for all $r \\ge 2$.",
+    "implications": "1. **Connects Turán theory and decomposition**: Resolution would provide a fundamental structural result linking extremal edge counts to decomposability\n\n**2. Doubly open for $r \\ge 3$**: The conjecture depends on the hypergraph Turán problem, itself one of the hardest open problems in combinatorics\n\n3. **Graph case still open**: Even the $r = 2$ case — decomposing graphs into $\\le \\lfloor n^2/4 \\rfloor$ edges and triangles — is unresolved\n\n4. **Design theory connection**: Valid decompositions resemble packing designs with cliques as blocks.",
+    "openQuestions": [
+      "Does the Erdős-Sauer decomposition hold for the graph case r = 2?",
+      "Can the conjecture be proved approximately (with a multiplicative constant)?",
+      "What is the relationship to fractional decompositions and LP relaxations?",
+      "Does the conjecture hold for specific families of hypergraphs (e.g., random, dense)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Tactic",
+      "Mathlib.Combinatorics.SimpleGraph.Extremal.Turan"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 546,
+    "axiomCount": 1,
+    "theoremCount": 20,
+    "definitionCount": 10,
+    "sorries": 0,
+    "path": "Proofs/Erdos719Problem.lean"
+  },
+  "references": [
+    {
+      "key": "ES81",
+      "citation": "Erdős, P. and Sauer, N. (1981). Problem on hypergraph decomposition into cliques.",
+      "type": "paper"
+    },
+    {
+      "key": "Tu41",
+      "citation": "Turán, P. (1941). Eine Extremalaufgabe aus der Graphentheorie. Mat. Fiz. Lapok, 48, 436–452.",
+      "type": "paper"
+    },
+    {
+      "key": "ESS66",
+      "citation": "Erdős, P. and Simonovits, M. (1966). A limit theorem in graph theory. Studia Sci. Math. Hungar., 1, 51–57.",
+      "type": "paper"
+    },
+    {
+      "key": "Ke11",
+      "citation": "Keevash, P. (2011). Hypergraph Turán problems. In Surveys in Combinatorics 2011, London Math. Soc. Lecture Note Ser. 392, 83–139.",
+      "type": "paper"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-720",
+      "relationship": "related",
+      "description": "Turán densities for higher uniformity — the Turán number in the conjecture is itself open for r ≥ 3"
+    },
+    {
+      "targetId": "erdos-76",
+      "relationship": "related",
+      "description": "Monochromatic triangle packings — related edge-disjoint decomposition in colored complete graphs"
+    },
+    {
+      "targetId": "erdos-746",
+      "relationship": "related",
+      "description": "Hamiltonicity and random graphs — structural decomposition questions in extremal graph theory"
+    }
+  ],
+  "sorries": 0
+}

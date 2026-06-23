@@ -1,0 +1,212 @@
+[
+  {
+    "id": "ann-e85-header",
+    "proofId": "erdos-85",
+    "range": {
+      "startLine": 1,
+      "endLine": 18
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #85** asks about the monotonicity of the minimum degree threshold for 4-cycles.\n\n**The Setup**: Let f(n) be the smallest minimum degree that forces every n-vertex graph to contain a 4-cycle (C₄).\n\n**The Question**: Is f(n+1) ≥ f(n) for all large n?\n\n**Status**: OPEN\n\n**Known Results**:\n- f(n) = (1 + o(1))√n asymptotically\n- f(n) < √n + 1\n- Connected to Ramsey numbers R(C₄, K_{1,n})",
+    "mathContext": "This problem connects extremal graph theory with Ramsey theory. The monotonicity question is subtle because adding vertices might allow new high-minimum-degree C₄-free configurations.",
+    "significance": "key",
+    "relatedConcepts": [
+      "erdos",
+      "4-cycle",
+      "minimum-degree",
+      "extremal-graph-theory"
+    ],
+    "prerequisites": [
+      "Extremal Graph Theory",
+      "Minimum Degree",
+      "Asymptotic Notation"
+    ]
+  },
+  {
+    "id": "ann-e85-background",
+    "proofId": "erdos-85",
+    "range": {
+      "startLine": 27,
+      "endLine": 37
+    },
+    "type": "concept",
+    "title": "4-Cycles and Minimum Degree",
+    "content": "A **4-cycle** (C₄) is a cycle on 4 vertices: a-b-c-d-a. It's the simplest even cycle and appears throughout graph theory.\n\n**Minimum degree** is the smallest vertex degree in a graph. High minimum degree forces certain substructures to appear—this is a central theme in extremal graph theory.\n\n**The question**: What minimum degree guarantees a C₄ must exist?",
+    "mathContext": "The C₄ is special because it's connected to the Kővári–Sós–Turán theorem and the Zarankiewicz problem about bipartite graphs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cycle",
+      "minimum-degree",
+      "extremal"
+    ],
+    "prerequisites": [
+      "Graph Cycles",
+      "Vertex Degree",
+      "Turán-Type Problems"
+    ]
+  },
+  {
+    "id": "ann-e85-c4-def",
+    "proofId": "erdos-85",
+    "range": {
+      "startLine": 39,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "The 4-Cycle Graph",
+    "content": "**C4** is the 4-cycle graph on Fin 4 (vertices 0, 1, 2, 3).\n\nAdjacency is defined by: vertex i is adjacent to vertex j iff they differ by 1 modulo 4.\n\nEdges: 0-1, 1-2, 2-3, 3-0.\n\n**Loopless proof**: We use `fin_cases i` to check all 4 vertices—none is adjacent to itself.",
+    "mathContext": "Formally: `Adj i j ↔ (i.val + 1) % 4 = j.val ∨ (j.val + 1) % 4 = i.val`",
+    "significance": "key",
+    "relatedConcepts": [
+      "cycle-graph",
+      "fin",
+      "modular-arithmetic"
+    ],
+    "prerequisites": [
+      "Simple Graphs",
+      "Finite Types (Fin)",
+      "Modular Arithmetic"
+    ]
+  },
+  {
+    "id": "ann-e85-contains",
+    "proofId": "erdos-85",
+    "range": {
+      "startLine": 50,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "Containing a 4-Cycle",
+    "content": "**containsC4 V G** says the graph G on vertices V contains a 4-cycle.\n\nFormally: there exists an injective function f: Fin 4 → V such that whenever i,j are adjacent in C4, f(i) and f(j) are adjacent in G.\n\nThis is the standard notion of subgraph embedding via graph homomorphism.",
+    "mathContext": "We require injectivity to ensure the 4 vertices map to 4 distinct vertices of G (no 'collapsed' cycles).",
+    "significance": "key",
+    "relatedConcepts": [
+      "subgraph",
+      "embedding",
+      "injective"
+    ],
+    "prerequisites": [
+      "Graph Homomorphism",
+      "Subgraph Embedding",
+      "Injective Functions"
+    ]
+  },
+  {
+    "id": "ann-e85-threshold",
+    "proofId": "erdos-85",
+    "range": {
+      "startLine": 58,
+      "endLine": 66
+    },
+    "type": "definition",
+    "title": "The Threshold Function f(n)",
+    "content": "**minDegreeForC4 n** is f(n), the minimum degree threshold for C₄ in n-vertex graphs.\n\nFormally: f(n) = inf{k : every n-vertex graph with minDeg ≥ k contains C₄}\n\nThis is THE function that Erdős asked about: is it monotone?",
+    "mathContext": "Defined using `sInf` over natural numbers. The function is noncomputable because checking all graphs is undecidable.",
+    "significance": "key",
+    "relatedConcepts": [
+      "infimum",
+      "threshold",
+      "noncomputable"
+    ],
+    "prerequisites": [
+      "Infimum (sInf)",
+      "Threshold Functions",
+      "Noncomputable Definitions"
+    ]
+  },
+  {
+    "id": "ann-e85-question",
+    "proofId": "erdos-85",
+    "range": {
+      "startLine": 74,
+      "endLine": 83
+    },
+    "type": "definition",
+    "title": "The Monotonicity Question (OPEN)",
+    "content": "**Erdos85Question** asks: Is f eventually non-decreasing?\n\nFormally: ∀ᶠ n in atTop, f(n) ≤ f(n+1)\n\nThis uses the 'eventually' filter: for all sufficiently large n, the inequality holds.\n\n**Why it's subtle**: Adding vertices might create 'room' for new C₄-avoiding configurations with high minimum degree.",
+    "mathContext": "The filter `atTop` means 'for all n larger than some N₀'. We don't assert this is true—just define the question.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open-problem",
+      "filter",
+      "eventually",
+      "monotone"
+    ],
+    "prerequisites": [
+      "Eventually Filter",
+      "Filter atTop",
+      "Monotone Sequences"
+    ]
+  },
+  {
+    "id": "ann-e85-asymptotic",
+    "proofId": "erdos-85",
+    "range": {
+      "startLine": 107,
+      "endLine": 115
+    },
+    "type": "concept",
+    "title": "Asymptotic Behavior",
+    "content": "**minDegreeForC4_asymptotic** states that f(n)/√n → 1 as n → ∞.\n\nThis means f(n) = (1 + o(1))√n: the threshold grows like the square root of the number of vertices.\n\n**Why an axiom?** This is a known result from extremal graph theory, but formalizing the proof requires substantial machinery.",
+    "mathContext": "Formally: `Tendsto (fun n => f(n)/√n) atTop (𝓝 1)` says the ratio converges to 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "axiom",
+      "tendsto",
+      "asymptotic",
+      "square-root"
+    ],
+    "prerequisites": [
+      "Limit Of Sequences",
+      "Tendsto",
+      "Little-o Notation"
+    ]
+  },
+  {
+    "id": "ann-e85-ramsey",
+    "proofId": "erdos-85",
+    "range": {
+      "startLine": 139,
+      "endLine": 154
+    },
+    "type": "definition",
+    "title": "Ramsey Connection",
+    "content": "**ramseyConnection** states the relationship between f(n) and the Ramsey number R(C₄, K_{1,n}).\n\nThe Ramsey number R(C₄, K_{1,n}) is the minimum m such that every graph on m vertices either contains C₄ or has a vertex of degree ≥ n (a 'star' K_{1,n}).\n\n**The equivalence**: f(m) ≤ m - n iff every m-vertex graph contains C₄ or has a high-degree vertex.\n\nThis reformulation connects the degree threshold problem to Ramsey theory.",
+    "mathContext": "The star graph K_{1,n} has one central vertex connected to n leaves. It's the complement of the C₄ constraint in Ramsey terms.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ramsey-theory",
+      "star-graph",
+      "equivalence"
+    ],
+    "prerequisites": [
+      "Ramsey Numbers",
+      "Star Graph",
+      "Logical Equivalence"
+    ]
+  },
+  {
+    "id": "ann-e85-weaker",
+    "proofId": "erdos-85",
+    "range": {
+      "startLine": 163,
+      "endLine": 173
+    },
+    "type": "definition",
+    "title": "Weaker Conjecture",
+    "content": "**WeakerConjecture** asks: Is f 'almost monotone'?\n\nFormally: ∃ c such that for all m > n ≥ 4, f(m) + c > f(n).\n\nThis allows f to occasionally decrease, but by at most a constant c. If strict monotonicity fails, this weaker version might still hold.",
+    "mathContext": "The bound c would be absolute—not depending on n or m. This is a common pattern when strict monotonicity is hard to prove.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "almost-monotone",
+      "weakening",
+      "constant-bound"
+    ],
+    "prerequisites": [
+      "Almost Monotonicity",
+      "Existential Quantifier",
+      "Absolute Constant"
+    ]
+  }
+]

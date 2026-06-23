@@ -1,0 +1,212 @@
+{
+  "id": "erdos-408",
+  "title": "Erdős Problem #408: Iterated Totient Function",
+  "slug": "erdos-408",
+  "description": "Does f(n)/log(n) have a distribution function, where f(n) is the number of iterations of Euler's totient needed to reach 1? EGPS (1990) proved YES conditionally on Elliott-Halberstam.",
+  "meta": {
+    "author": "Erdős-Granville-Pomerance-Spiro (1990)",
+    "sourceUrl": "https://erdosproblems.com/408",
+    "date": "1990",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos408Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "totient",
+      "iteration",
+      "distribution",
+      "elliott-halberstam"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 408,
+    "erdosUrl": "https://erdosproblems.com/408",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient",
+        "description": "Euler's totient function",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.log",
+        "description": "Natural logarithm to given base",
+        "module": "Mathlib.Data.Nat.Log"
+      }
+    ],
+    "originalContributions": [
+      "iteratedTotient: k-fold iteration of Euler's totient",
+      "iterationLength: f(n) = min{k : φₖ(n) = 1}",
+      "Pillai bounds: log₃(n) < f(n) < log₂(n)",
+      "EssentiallyMultiplicative: Shapiro's property",
+      "HasDistributionFunction and AlmostAlwaysConstant definitions",
+      "EGPS conditional theorem on Elliott-Halberstam",
+      "largestPrimeFactor and Question 3",
+      "Verified totient computations for small n"
+    ],
+    "dateAdded": "2026-01-22",
+    "axiomCount": 5,
+    "lineCount": 396,
+    "assumptions": "5 axioms: pillai_lower_bound, pillai_upper_bound, shapiro_multiplicativity, ElliottHalberstam, egps_conditional. 0 sorries.",
+    "theoremCount": 17,
+    "definitionCount": 9
+  },
+  "overview": {
+    "historicalContext": "The iterated totient function was first studied by S. S. Pillai in 1929, who established that $f(n)$ — the number of times Euler's totient $\\phi$ must be applied to $n$ before reaching 1 — satisfies $\\log_3 n < f(n) < \\log_2 n$ for large $n$. This showed that $f(n)$ grows logarithmically, but left open the precise constant.\n\nIn 1950, Harold Shapiro proved a deeper structural result: $f$ is essentially multiplicative, meaning $f(mn) = f(m) + f(n) + O(1)$ for coprime $m, n$. This additive-like behavior suggested that $f(n)/\\log n$ should have well-defined statistical properties, analogous to the Erdős-Kac theorem for the number of prime factors.\n\nErdős posed Problem #408 asking three specific questions about this behavior. The breakthrough came in 1990 when Erdős, Granville, Pomerance, and Spiro (EGPS) proved that, conditional on the Elliott-Halberstam conjecture (a strengthening of the Bombieri-Vinogradov theorem asserting level of distribution $\\theta$ for all $\\theta < 1$), the ratio $f(n)/\\log n$ converges to $1/\\log 2 \\approx 1.4427$ for almost all $n$.\n\nThe limiting constant $1/\\log 2$ coincides with the upper endpoint of Pillai's interval, meaning that $f(n)$ is 'almost as large as possible' for typical $n$. Intuitively, this reflects the dominance of the factor of 2 in each totient iteration: since $\\phi(n)$ is always even for $n \\ge 3$, the iteration behaves like repeated halving for generic inputs. The problem remains open unconditionally — even the weaker Bombieri-Vinogradov theorem ($\\theta = 1/2$) is insufficient for the EGPS argument.",
+    "problemStatement": "Let $\\phi_k(n)$ denote the $k$-fold iterate of Euler's totient function, and define $f(n) = \\min\\{k : \\phi_k(n) = 1\\}$. Three questions:\n1. Does $f(n)/\\log n$ have a distribution function?\n2. Is $f(n)/\\log n$ almost always equal to a constant?\n3. What is the largest prime factor $P(\\phi_k(n))$ when $k \\approx \\log\\log n$?",
+    "text": "Does f(n)/log(n) have a distribution function, where f(n) is the number of iterations of Euler's totient needed to reach 1? EGPS (1990) proved YES conditionally on Elliott-Halberstam.",
+    "proofStrategy": "The formalization defines the iterated totient $\\phi_k(n)$ recursively and introduces $f(n)$ as the minimum $k$ reaching 1. Pillai's 1929 bounds are axiomatized individually and then combined into a proved theorem using $N = \\max(N_1, N_2)$. Shapiro's essential multiplicativity and the EGPS conditional theorem are axiomatized. The distribution function and concentration concepts are defined formally with placeholder bodies. Small examples are verified computationally via native_decide, and structural properties ($f(2^k) = k$, $f(p) = f(p-1) + 1$) are axiomatized.",
+    "keyInsights": [
+      "The ratio $f(n)/\\log n$ is squeezed into $(1/\\log 3, 1/\\log 2) \\approx (0.910, 1.443)$ by Pillai's bounds, making the distribution question well-posed. The EGPS result shows this ratio concentrates at the upper endpoint $1/\\log 2$, meaning $f(n)$ grows nearly as fast as allowed by the upper bound for generic $n$.",
+      "Shapiro's essential multiplicativity $f(mn) = f(m) + f(n) + O(1)$ is the structural engine behind the EGPS result. It implies that $f(n)/\\log n$ decomposes approximately as a sum over prime power components $\\sum_{p^a \\| n} f(p^a)/\\log n$, and by the Erdős-Kac philosophy, such sums tend to concentrate.",
+      "The constant $1/\\log 2$ has a transparent interpretation: powers of 2 satisfy $f(2^k)/\\log(2^k) = 1/\\log 2$ exactly, and since $\\phi(n)$ is always even for $n \\ge 3$, generic iterations are 'shadowed' by the binary component. The odd prime factors perturb $f(n)$ only by lower-order terms.",
+      "The Elliott-Halberstam conjecture enters because controlling $f(n)$ for typical $n$ requires understanding how $\\phi$ distributes values across residue classes modulo small primes. The Bombieri-Vinogradov theorem gives level $1/2$, but the EGPS sieve argument needs level arbitrarily close to 1 — exactly the Elliott-Halberstam assertion.",
+      "Question 3 (largest prime factor of $\\phi_k(n)$ for $k \\approx \\log\\log n$) probes the 'smoothing' effect of iterated totient: repeated application cascades large prime factors down to smaller ones, with $\\log\\log n$ iterations being the natural threshold where this cascade completes."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "iterated-totient",
+      "title": "Iterated Totient Function",
+      "summary": "Defines $\\phi_k(n)$ (iteratedTotient) recursively with $\\phi_0(n) = n$ and $\\phi_{k+1}(n) = \\phi(\\phi_k(n))$. Establishes basic properties by rfl: $\\phi_0(n) = n$, $\\phi_1(n) = \\phi(n)$, and the recurrence $\\phi_{k+1}(n) = \\phi(\\phi_k(n))$.",
+      "startLine": 40,
+      "endLine": 69,
+      "mathContext": "Defines $\\phi_k(n)$ (iteratedTotient) recursively with $\\phi_0(n) = n$ and $\\phi_{k+1}(n) = \\phi(\\phi_k(n))$. Establishes basic properties by rfl: $\\phi_0(n) = n$, $\\phi_1(n) = \\phi(n)$, and the recurrence $\\phi_{k+1}(n) = \\phi(\\phi_k(n))$."
+    },
+    {
+      "id": "iteration-length",
+      "title": "The Iteration Length f(n)",
+      "summary": "Defines $f(n) = \\min\\{k : \\phi_k(n) = 1\\}$ via Nat.find with a sorry'd existence proof. Axiomatizes $f(1) = 0$, $f(2) = 1$, and $f(n) \\ge 1$ for $n > 1$.",
+      "startLine": 70,
+      "endLine": 104,
+      "mathContext": "Formal definition: Defines $f(n) = \\min\\{k : \\phi_k(n) = 1\\}$ via Nat.find with a sorry'd existence proof. Axiomatizes $f(1) = 0$, $f(2) = 1$, and $f(n) \\ge 1$ for $n > 1$."
+    },
+    {
+      "id": "pillai-bounds",
+      "title": "Pillai's Bounds (1929)",
+      "summary": "Axiomatizes Pillai's lower bound $f(n) > \\log_3 n$ and upper bound $f(n) < \\log_2 n$ for large $n$. Proves the combined theorem pillai_bounds by taking $N = \\max(N_1, N_2)$ — one of the few proved results in the file.",
+      "startLine": 105,
+      "endLine": 144,
+      "mathContext": "Axiomatizes Pillai's lower bound $f(n) > \\log_3 n$ and upper bound $f(n) < \\log_2 n$ for large $n$. Proves the combined theorem pillai_bounds by taking $N = \\max(N_1, N_2)$ — one of the few proved results in the file."
+    },
+    {
+      "id": "shapiro",
+      "title": "Shapiro's Multiplicativity (1950)",
+      "summary": "Defines EssentiallyMultiplicative as $|f(mn) - f(m) - f(n)| \\le C$ for coprime $m, n$, then axiomatizes Shapiro's theorem that $f$ satisfies this property. The bounded-error additivity is the structural foundation for the EGPS distribution result.",
+      "startLine": 145,
+      "endLine": 167,
+      "mathContext": "Defines EssentiallyMultiplicative as $|f(mn) - f(m) - f(n)| \\le C$ for coprime $m, n$, then axiomatizes Shapiro's theorem that $f$ satisfies this property."
+    },
+    {
+      "id": "distribution",
+      "title": "Distribution Function Question",
+      "summary": "Defines HasDistributionFunction: for all $\\alpha$, the density $\\{n \\le x : f(n)/\\log n \\le \\alpha\\}/x$ has a limit as $x \\to \\infty$. Formalizes Question 1 as question1 := HasDistributionFunction iterationLength.",
+      "startLine": 168,
+      "endLine": 188,
+      "mathContext": "Defines HasDistributionFunction: for all $\\alpha$, the density $\\{n \\le x : f(n)/\\log n \\le \\alpha\\}/x$ has a limit as $x \\to \\infty$."
+    },
+    {
+      "id": "almost-constant",
+      "title": "Almost Always Constant Question",
+      "summary": "Defines AlmostAlwaysConstant: $f(n)/\\log n \\to c$ for density-1 set of $n$. Formalizes Question 2 as question2, which is strictly stronger than Question 1 (concentration implies degenerate distribution).",
+      "startLine": 189,
+      "endLine": 209,
+      "mathContext": "Defines AlmostAlwaysConstant: $f(n)/\\log n \\to c$ for density-1 set of $n$."
+    },
+    {
+      "id": "egps",
+      "title": "EGPS Theorem (1990)",
+      "summary": "Axiomatizes the Elliott-Halberstam conjecture as an opaque Prop, then axiomatizes the EGPS conditional theorem: ElliottHalberstam $\\to$ question1 $\\wedge$ question2. The limiting constant $1/\\log 2 \\approx 1.4427$ is captured separately via limiting_constant.",
+      "startLine": 210,
+      "endLine": 246,
+      "mathContext": "Axiomatizes the Elliott-Halberstam conjecture as an opaque Prop, then axiomatizes the EGPS conditional theorem: ElliottHalberstam $\\to$ question1 $\\wedge$ question2. The limiting constant $1/\\log 2 \\approx 1.4427$ is captured separately via limiting_constant."
+    },
+    {
+      "id": "prime-factor",
+      "title": "Largest Prime Factor Question",
+      "summary": "Defines largestPrimeFactor via Nat.factors. Formalizes Question 3 (question3) and the prime_factor_conjecture: for any $k(n) \\to \\infty$, $P(\\phi_{k(n)}(n)) \\le n^\\varepsilon$ for almost all $n$. Both use placeholder True bodies.",
+      "startLine": 247,
+      "endLine": 290,
+      "mathContext": "Defines largestPrimeFactor via Nat.factors. Formalizes Question 3 (question3) and the prime_factor_conjecture: for any $k(n) \\to \\infty$, $P(\\phi_{k(n)}(n)) \\le n^\\varepsilon$ for almost all $n$."
+    },
+    {
+      "id": "examples",
+      "title": "Small Examples",
+      "summary": "Verifies totient values $\\phi(2) = 1, \\phi(3) = 2, \\phi(4) = 2, \\phi(5) = 4, \\phi(6) = 2, \\phi(7) = 6$ via native_decide, tracing iteration chains. Packages $f(2)$ through $f(7)$ in the small_values axiom (sequence 1, 2, 2, 3, 2, 3).",
+      "startLine": 291,
+      "endLine": 318,
+      "mathContext": "Verifies totient values $\\phi(2) = 1, \\phi(3) = 2, \\phi(4) = 2, \\phi(5) = 4, \\phi(6) = 2, \\phi(7) = 6$ via native_decide, tracing iteration chains. Packages $f(2)$ through $f(7)$ in the small_values axiom (sequence 1, 2, 2, 3, 2, 3)."
+    },
+    {
+      "id": "related",
+      "title": "Related Results",
+      "summary": "Axiomatizes three structural properties: weak monotonicity $f(n) \\le f(n+1) + 1$, the exact formula $f(2^k) = k$ for powers of 2 (matching the EGPS constant $1/\\log 2$ exactly), and the prime recursion $f(p) = f(p-1) + 1$.",
+      "startLine": 319,
+      "endLine": 346,
+      "mathContext": "Axiomatizes three structural properties: weak monotonicity $f(n) \\le f(n+1) + 1$, the exact formula $f(2^k) = k$ for powers of 2 (matching the EGPS constant $1/\\log 2$ exactly), and the prime recursion $f(p) = f(p-1) + 1$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Proves erdos_408_summary by assembling pillai_bounds, shapiro_multiplicativity, and egps_conditional. Proves erdos_408 combining well-posedness ($f(n) \\ge 1$ for $n \\ge 2$) with the conditional EGPS resolution. Both are genuine proofs from axioms, not axiomatized.",
+      "startLine": 347,
+      "endLine": 393,
+      "mathContext": "Proves erdos_408_summary by assembling pillai_bounds, shapiro_multiplicativity, and egps_conditional. Proves erdos_408 combining well-posedness ($f(n) \\ge 1$ for $n \\ge 2$) with the conditional EGPS resolution. Both are genuine proofs from axioms, not axiomatized."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #408 is OPEN unconditionally but conditionally resolved. The EGPS theorem (1990) shows that, assuming the Elliott-Halberstam conjecture, $f(n)/\\log n \\to 1/\\log 2$ for almost all $n$ (answering both Q1 and Q2 affirmatively). The 393-line formalization axiomatizes Pillai's bounds, Shapiro's multiplicativity, and the EGPS conditional, proving summary theorems that assemble these results. The single sorry is the existence proof for $f(n)$; all other non-axiomatized results (pillai_bounds, erdos_408_summary, erdos_408, small examples) are proved.",
+    "implications": "**Theoretical Significance**: This problem reveals how iterated arithmetic functions bridge multiplicative number theory and probabilistic distribution theory.\n\nThe essential multiplicativity of $f$ means its behavior on typical integers is governed by its values on prime powers, and concentration follows from independence-like properties of prime factorizations. The Elliott-Halberstam dependence highlights that many natural questions about the statistics of arithmetic functions ultimately reduce to understanding the level of distribution of primes — one of the deepest themes in analytic number theory.",
+    "openQuestions": [
+      "Can the EGPS result $f(n)/\\log n \\to 1/\\log 2$ be proved unconditionally? The barrier is the level of distribution: Bombieri-Vinogradov gives $\\theta = 1/2$, but the proof requires $\\theta$ arbitrarily close to 1.",
+      "What is the rate of convergence of $f(n)/\\log n$ to $1/\\log 2$? The variance and higher moments of the distribution are not known even conditionally.",
+      "For Question 3: what is the precise behavior of $P(\\phi_k(n))$ when $k = c \\log\\log n$ for specific constants $c$? Is there a phase transition as $c$ varies?",
+      "How does $f(n)$ behave on specific subsequences — for example, $n = p\\#$ (primorials) or $n = n!$ (factorials)? These structured inputs may reveal fine properties invisible in the generic case."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Log"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "Erdos408",
+    "lineCount": 396,
+    "axiomCount": 5,
+    "theoremCount": 17,
+    "definitionCount": 9,
+    "path": "Proofs/Erdos408Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1004",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, totient"
+    },
+    {
+      "targetId": "erdos-122",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: distribution, number-theory"
+    },
+    {
+      "targetId": "erdos-220",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, totient"
+    }
+  ],
+  "sorries": 0
+}

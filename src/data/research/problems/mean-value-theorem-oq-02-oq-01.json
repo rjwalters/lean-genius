@@ -1,0 +1,114 @@
+{
+  "slug": "mean-value-theorem-oq-02-oq-01",
+  "title": "Mean value inequality and FTC bridge for Taylor remainders",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\|f(x)-f(a)\\|\\le C(x-a),\\quad \\int_a^b f(t)\\,dt=F(b)-F(a),\\quad \\exists c\\in(a,b),\\ f'(c)=\\frac{f(b)-f(a)}{b-a}.",
+    "plain": "Track the Lean route from mean value inequalities and Newton-Leibniz/FTC infrastructure toward Taylor-Lagrange remainder estimates. The current support proves a vector-valued mean value inequality, the Newton-Leibniz formula, and an FTC-to-MVT bridge for scalar functions.",
+    "whyMatters": [
+      "Taylor remainder estimates depend on converting derivative control into function-value control.",
+      "The FTC bridge connects integral averages of derivatives with classical mean value points.",
+      "Separating proved Mathlib-backed statements from axiom-backed Taylor goals keeps the proof roadmap honest."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`mean_value_inequality` proves a norm bound from a derivative bound on an interval.",
+      "`newton_leibniz` proves the integral identity `int f = F b - F a` under derivative and continuity hypotheses.",
+      "`ftc_implies_mvt` derives the classical scalar MVT conclusion from FTC-style infrastructure."
+    ],
+    "open": [
+      "`MeanValueTheoremOQ02.lean` still contains one axiom, and a fully internal Taylor-Lagrange remainder derivation remains the intended next proof target."
+    ],
+    "goal": "Use the completed MVT/FTC pieces to remove the remaining Taylor-remainder axiom and connect the entry to Mathlib integral MVT infrastructure."
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-03T12:23:52.518Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "calculus",
+    "taylor-theorem",
+    "analysis",
+    "axiom-removal"
+  ],
+  "relatedProofs": [
+    "mean-value-theorem",
+    "mean-value-theorem-oq-02",
+    "mean-value-theorem-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T12:23:52.518Z",
+  "lastUpdate": "2026-04-03T12:23:52.518Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/MeanValueTheorem.lean",
+      "filename": "MeanValueTheorem.lean",
+      "lineCount": 164,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MeanValueTheorem.lean"
+    },
+    {
+      "path": "Proofs/MeanValueTheoremOQ02.lean",
+      "filename": "MeanValueTheoremOQ02.lean",
+      "lineCount": 155,
+      "theoremCount": 4,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MeanValueTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/MeanValueTheoremOQ03.lean",
+      "filename": "MeanValueTheoremOQ03.lean",
+      "lineCount": 462,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MeanValueTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/MeanValueTheoremOQ04.lean",
+      "filename": "MeanValueTheoremOQ04.lean",
+      "lineCount": 294,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MeanValueTheoremOQ04.lean"
+    }
+  ]
+}

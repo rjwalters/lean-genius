@@ -1,0 +1,156 @@
+[
+  {
+    "id": "erdos-505-imports",
+    "proofId": "erdos-505",
+    "type": "concept",
+    "range": {
+      "startLine": 21,
+      "endLine": 24
+    },
+    "title": "Mathlib Imports",
+    "content": "Imports Mathlib tactics, real number basics, finite sets, and inner product spaces. The inner product space structure provides the norm $\\|x - y\\|$ used in the diameter definition, while finite sets support the partition structure.",
+    "mathContext": "Requires $\\|\\cdot\\| : \\mathbb{R}^n \\to \\mathbb{R}$ from inner product spaces, $\\text{sSup}$ for the diameter, and $\\text{Fin}\\,k$ for indexed partitions.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "inner product spaces",
+      "normed spaces",
+      "finite indexing"
+    ],
+    "prerequisites": [
+      "Lean 4 basics",
+      "Mathlib metric spaces"
+    ]
+  },
+  {
+    "id": "erdos-505-bounded-set",
+    "proofId": "erdos-505",
+    "type": "definition",
+    "range": {
+      "startLine": 29,
+      "endLine": 29
+    },
+    "title": "Bounded Set in Euclidean Space",
+    "content": "Defines BoundedSet n as a set of vectors in $\\mathbb{R}^n$, represented as $\\text{Fin}\\,n \\to \\mathbb{R}$. This is the domain for Borsuk's partition problem. Note that no boundedness condition is imposed at the type level; diameter finiteness is handled separately.",
+    "mathContext": "$\\text{BoundedSet}(n) := \\mathcal{P}(\\mathbb{R}^n)$, where $\\mathbb{R}^n = \\text{Fin}\\,n \\to \\mathbb{R}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "bounded sets",
+      "Euclidean space",
+      "type-level representations"
+    ],
+    "prerequisites": [
+      "Fin n → ℝ",
+      "Set type"
+    ]
+  },
+  {
+    "id": "erdos-505-diameter",
+    "proofId": "erdos-505",
+    "type": "definition",
+    "range": {
+      "startLine": 32,
+      "endLine": 33
+    },
+    "title": "Diameter of a Set",
+    "content": "The diameter of $S \\subseteq \\mathbb{R}^n$ is the supremum of $\\|x - y\\|$ over all pairs $x, y \\in S$. This is the standard metric diameter. The definition uses Lean's $\\text{sSup}$ (supremum of a set of reals), which returns $0$ for the empty set — a harmless convention since Borsuk's problem concerns nonempty sets.",
+    "mathContext": "$\\text{diam}(S) = \\sup\\{\\|x - y\\| : x, y \\in S\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "metric diameter",
+      "supremum",
+      "metric geometry"
+    ],
+    "prerequisites": [
+      "sSup",
+      "norm",
+      "inner product space"
+    ]
+  },
+  {
+    "id": "erdos-505-partition",
+    "proofId": "erdos-505",
+    "type": "definition",
+    "range": {
+      "startLine": 36,
+      "endLine": 40
+    },
+    "title": "Small-Diameter Partition",
+    "content": "IsSmallDiamPartition S k d pieces holds when the $k$ pieces cover $S$, each piece is a subset of $S$, and each piece has diameter strictly less than $d$. This formalizes the decomposition required by Borsuk's conjecture: can every diameter-1 set be partitioned into $\\leq n+1$ parts of diameter $< 1$?",
+    "mathContext": "$S = \\bigcup_{i=1}^{k} P_i$ with $P_i \\subseteq S$ and $\\text{diam}(P_i) < d$ for all $i$",
+    "significance": "key",
+    "relatedConcepts": [
+      "set partitions",
+      "covering problems",
+      "diameter bounds"
+    ],
+    "prerequisites": [
+      "Fin k indexing",
+      "diameter definition"
+    ]
+  },
+  {
+    "id": "erdos-505-borsuk-number",
+    "proofId": "erdos-505",
+    "type": "definition",
+    "range": {
+      "startLine": 42,
+      "endLine": 48
+    },
+    "title": "Borsuk Number $\\alpha(n)$",
+    "content": "The Borsuk number $\\alpha(n)$ is the minimum $k$ such that every diameter-1 set in $\\mathbb{R}^n$ can be partitioned into $k$ parts of strictly smaller diameter. It is axiomatized as a function $\\mathbb{N} \\to \\mathbb{N}$ since computing it requires solving an extremal geometry problem. Borsuk conjectured $\\alpha(n) = n + 1$; this is true for $n \\leq 3$ but fails dramatically for $n \\geq 64$.",
+    "mathContext": "$\\alpha(n) = \\min\\{k : \\forall S \\subseteq \\mathbb{R}^n,\\; \\text{diam}(S) = 1 \\implies S = \\bigcup_{i=1}^{k} P_i,\\; \\text{diam}(P_i) < 1\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "partition number",
+      "chromatic number",
+      "covering number",
+      "extremal geometry"
+    ],
+    "prerequisites": [
+      "axiomatized functions",
+      "IsSmallDiamPartition"
+    ]
+  },
+  {
+    "id": "erdos-505-conjecture",
+    "proofId": "erdos-505",
+    "type": "definition",
+    "range": {
+      "startLine": 52,
+      "endLine": 55
+    },
+    "title": "Borsuk's Conjecture (1933)",
+    "content": "States the conjecture as a predicate: borsukConjecture n iff $\\alpha(n) \\leq n + 1$. This elegant formulation makes it easy to state both positive results ($\\alpha(n) \\leq n+1$ for small $n$) and counterexamples ($\\neg\\,\\text{borsukConjecture}(n)$ for large $n$) using the same definition.",
+    "mathContext": "$\\text{borsukConjecture}(n) \\iff \\alpha(n) \\leq n + 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Borsuk partition problem",
+      "conjecture formalization",
+      "predicate definitions"
+    ],
+    "prerequisites": [
+      "borsukNumber"
+    ]
+  },
+  {
+    "id": "erdos-505-dim2-dim3",
+    "proofId": "erdos-505",
+    "type": "concept",
+    "range": {
+      "startLine": 59,
+      "endLine": 60
+    },
+    "title": "Low-Dimensional Positive Results",
+    "content": "Axioms asserting Borsuk's conjecture for $n = 2$ (classical, due to Lenz and Hadwiger) and $n = 3$ (Eggleston 1955, also by Grünbaum and Heppes). For $n = 2$, the result follows from the fact that any planar set of diameter 1 can be covered by 3 strips. For $n = 3$, the proof uses the geometry of the Reuleaux triangle and its 3D analogues. The case $n = 1$ is trivial: any interval is already diameter $< 1$ after splitting into 2 parts.",
+    "mathContext": "$\\alpha(2) = 3 \\leq 3$ and $\\alpha(3) = 4 \\leq 4$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Reuleaux triangle",
+      "covering by strips",
+      "low-dimensional geometry"
+    ],
+    "prerequisites": [
+      "borsukConjecture"
+    ]
+  }
+]

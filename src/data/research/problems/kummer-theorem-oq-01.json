@@ -1,0 +1,143 @@
+{
+  "slug": "kummer-theorem-oq-01",
+  "title": "Multinomial analogs of Kummer's theorem",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "v_p\\binom{k_1+\\cdots+k_m}{k_1,\\ldots,k_m}=\\text{total base-}p\\text{ carries across the successive partial sums}.",
+    "plain": "Extend Kummer's theorem from ordinary binomial coefficients to multinomial coefficients. The Lean support proves multinomial/binomial product decompositions and a p-adic carry-count formula, with q-binomial material present as adjacent support rather than the central OQ-01 claim.",
+    "whyMatters": [
+      "Kummer's theorem turns divisibility of binomial coefficients into a concrete carrying problem.",
+      "The multinomial version supports higher-arity combinatorial coefficients.",
+      "The adjacent q-binomial files provide nearby cyclotomic context without changing the multinomial scope of this entry."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`multinomial_eq_prod_choose` decomposes a multinomial coefficient into successive binomial coefficients.",
+      "`multinomial_kummer` proves the multinomial valuation formula as a sum of base-p carry counts.",
+      "`multinomial_kummer_concrete` supplies a concrete bound choice for the carry-count formula."
+    ],
+    "open": [
+      "Sibling Kummer open-question entries refine adjacent q-binomial and follow-up variants, so this entry should stay scoped to the multinomial OQ-01 story."
+    ],
+    "goal": "Present the zero-sorry multinomial Kummer track as a coherent bridge from binomial decompositions to base-p carry counts."
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T13:49:26.405Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "combinatorics",
+    "number-theory",
+    "extension",
+    "p-adic-valuation",
+    "multinomial",
+    "q-binomial",
+    "cyclotomic-polynomials",
+    "formalization"
+  ],
+  "relatedProofs": [
+    "kummer-theorem",
+    "kummer-theorem-oq-01",
+    "kummer-theorem-oq-01-oq-01",
+    "kummer-theorem-oq-02",
+    "kummer-theorem-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T13:49:26.405Z",
+  "lastUpdate": "2026-03-30T13:49:26.405Z",
+  "significance": 7,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/KummerTheorem.lean",
+      "filename": "KummerTheorem.lean",
+      "lineCount": 192,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheorem.lean"
+    },
+    {
+      "path": "Proofs/KummerTheoremOQ01.lean",
+      "filename": "KummerTheoremOQ01.lean",
+      "lineCount": 109,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/KummerTheoremOQ01Aristotle.lean",
+      "filename": "KummerTheoremOQ01Aristotle.lean",
+      "lineCount": 182,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheoremOQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/KummerTheoremOQ01OQ01.lean",
+      "filename": "KummerTheoremOQ01OQ01.lean",
+      "lineCount": 202,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/KummerTheoremOQ02.lean",
+      "filename": "KummerTheoremOQ02.lean",
+      "lineCount": 413,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/KummerTheoremOQ03.lean",
+      "filename": "KummerTheoremOQ03.lean",
+      "lineCount": 117,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheoremOQ03.lean"
+    }
+  ]
+}

@@ -1,0 +1,247 @@
+[
+  {
+    "id": "ann-249-header",
+    "proofId": "erdos-249",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #249: Is $\\sum_{n=1}^{\\infty} \\phi(n)/2^n$ irrational? Here $\\phi$ is Euler's totient function. The series converges to $\\approx 1.3240$ (OEIS A256936). Status: OPEN.\n\nPosed by Erdős and Graham [ErGr80, p.61] and revisited in [Er88c, p.102]. No proof of irrationality or rationality is known. The formalization proves convergence, positivity, and bounds with 0 axioms.",
+    "mathContext": "$\\phi(n) = |\\{k : 1 \\le k \\le n, \\gcd(k,n) = 1\\}|$. The series $\\sum \\phi(n)/2^n$ converges since $\\phi(n) \\le n$ and $\\sum n/2^n = 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "irrationality",
+      "Euler's totient function",
+      "infinite series"
+    ],
+    "prerequisites": [
+      "Euler's totient function",
+      "infinite series",
+      "irrationality"
+    ]
+  },
+  {
+    "id": "ann-249-termfn",
+    "proofId": "erdos-249",
+    "range": {
+      "startLine": 38,
+      "endLine": 39
+    },
+    "type": "definition",
+    "title": "Term Function",
+    "content": "`termFn(n) = (Nat.totient n : ℝ) / (2^n : ℝ)` — the general term $\\phi(n)/2^n$ of the series. Each term is rational (a quotient of integers), but their infinite sum might be irrational — this is the mystery at the heart of the problem.",
+    "mathContext": "$\\text{termFn}(n) = \\frac{\\phi(n)}{2^n}$. The sequence decays exponentially: $\\text{termFn}(n) \\le n/2^n \\to 0$ as $n \\to \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.totient",
+      "series terms",
+      "exponential decay"
+    ],
+    "prerequisites": [
+      "Euler's totient function",
+      "real division"
+    ]
+  },
+  {
+    "id": "ann-249-sum",
+    "proofId": "erdos-249",
+    "range": {
+      "startLine": 44,
+      "endLine": 45
+    },
+    "type": "definition",
+    "title": "The Totient Power Sum",
+    "content": "`totientPowerSum = ∑' n, termFn n` — the infinite sum using Mathlib's `tsum`. Since $\\phi(0) = 0$, this equals $\\sum_{n \\ge 1} \\phi(n)/2^n$. The `tsum` function handles non-convergent sums by returning 0, but we prove convergence separately.",
+    "mathContext": "$\\text{totientPowerSum} = \\sum_{n=0}^{\\infty} \\frac{\\phi(n)}{2^n} = \\sum_{n=1}^{\\infty} \\frac{\\phi(n)}{2^n} \\approx 1.3240$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tsum",
+      "infinite series",
+      "totient function"
+    ],
+    "prerequisites": [
+      "tsum (topological sum)",
+      "termFn"
+    ]
+  },
+  {
+    "id": "ann-249-bound",
+    "proofId": "erdos-249",
+    "range": {
+      "startLine": 50,
+      "endLine": 51
+    },
+    "type": "concept",
+    "title": "Totient Bound (Proved)",
+    "content": "`totient_le_self` (**proved**): $\\phi(n) \\le n$ for all $n$. A one-line proof from `Nat.totient_le`. This bound is the key to the convergence argument: it allows comparison with the geometric series derivative $\\sum n/2^n$.",
+    "mathContext": "$\\phi(n) \\le n$ with equality iff $n = 1$. The totient satisfies the exact formula $\\phi(n) = n \\prod_{p | n} (1 - 1/p)$, so $\\phi(n)/n = \\prod_{p | n} (1 - 1/p) \\le 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.totient_le",
+      "comparison test",
+      "Euler product"
+    ],
+    "prerequisites": [
+      "Nat.totient",
+      "Nat.totient_le"
+    ]
+  },
+  {
+    "id": "ann-249-nonneg",
+    "proofId": "erdos-249",
+    "range": {
+      "startLine": 54,
+      "endLine": 57
+    },
+    "type": "concept",
+    "title": "Non-negativity (Proved)",
+    "content": "`termFn_nonneg` (**proved**): Each term $\\phi(n)/2^n \\ge 0$. Uses Lean's `positivity` tactic for the denominator $2^n > 0$ and `Nat.cast_nonneg` for the numerator. Non-negativity ensures partial sums are monotonically increasing.",
+    "mathContext": "$\\text{termFn}(n) = \\frac{\\phi(n)}{2^n} \\ge 0$ since $\\phi(n) \\ge 0$ and $2^n > 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "positivity tactic",
+      "monotone convergence"
+    ],
+    "prerequisites": [
+      "div_nonneg",
+      "Nat.cast_nonneg",
+      "positivity"
+    ]
+  },
+  {
+    "id": "ann-249-small-terms",
+    "proofId": "erdos-249",
+    "range": {
+      "startLine": 60,
+      "endLine": 71
+    },
+    "type": "concept",
+    "title": "Small Term Values (Proved)",
+    "content": "Three concrete computations (**all proved**):\n- `termFn_zero`: $\\phi(0)/2^0 = 0$ (since $\\phi(0) = 0$)\n- `termFn_one`: $\\phi(1)/2^1 = 1/2$ (since $\\phi(1) = 1$)\n- `termFn_two`: $\\phi(2)/2^2 = 1/4$ (since $\\phi(2) = 1$ for prime 2)\n\nUses `Nat.totient_zero`, `Nat.totient_one`, and `Nat.totient_prime`.",
+    "mathContext": "The series begins $1/2 + 1/4 + 2/8 + 2/16 + 4/32 + 2/64 + \\cdots$ where the numerators are $\\phi(1), \\phi(2), \\phi(3), \\phi(4), \\phi(5), \\phi(6), \\ldots = 1, 1, 2, 2, 4, 2, \\ldots$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.totient_zero",
+      "Nat.totient_one",
+      "Nat.totient_prime"
+    ],
+    "prerequisites": [
+      "termFn",
+      "Nat.totient computation"
+    ]
+  },
+  {
+    "id": "ann-249-convergence",
+    "proofId": "erdos-249",
+    "range": {
+      "startLine": 97,
+      "endLine": 126
+    },
+    "type": "concept",
+    "title": "Convergence and Bounds (All Proved)",
+    "content": "Three key results, all **fully proved** (no axioms):\n\n`totientPowerSum_summable` (**proved**): The series converges. Uses `Summable.of_nonneg_of_le` with comparison to $\\sum n \\cdot (1/2)^n$.\n\n`totientPowerSum_pos` (**proved**): The sum is positive. Since $\\text{termFn}(1) = 1/2 > 0$ and all terms are non-negative, the sum is at least $1/2$. Uses `le_hasSum`.\n\n`totientPowerSum_le_two` (**proved**): The sum is at most 2. Since $\\phi(n)/2^n \\le n \\cdot (1/2)^n$ and $\\sum n \\cdot (1/2)^n = 2$ exactly. Uses `hasSum_le`.",
+    "mathContext": "The comparison series $\\sum_{n=0}^{\\infty} n \\cdot (1/2)^n = \\frac{1/2}{(1-1/2)^2} = 2$. This is the derivative of the geometric series $\\sum r^n = 1/(1-r)$ evaluated at $r = 1/2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "comparison test",
+      "Summable.of_nonneg_of_le",
+      "hasSum_le",
+      "geometric series"
+    ],
+    "prerequisites": [
+      "summable_pow_mul_geometric_of_norm_lt_one",
+      "le_hasSum",
+      "hasSum_le"
+    ]
+  },
+  {
+    "id": "ann-249-conjecture",
+    "proofId": "erdos-249",
+    "range": {
+      "startLine": 135,
+      "endLine": 135
+    },
+    "type": "definition",
+    "title": "The Main Conjecture (OPEN)",
+    "content": "`erdos_249 := Irrational totientPowerSum` — the open problem stated as a `def`, not an axiom. This makes it available as a hypothesis in future work without assuming its truth. The `Irrational` predicate from Mathlib means $\\nexists r : \\mathbb{Q}, (r : \\mathbb{R}) = \\text{totientPowerSum}$.",
+    "mathContext": "The sum $\\approx 1.3240$ is the subject of the irrationality question. Unlike $e$ or $\\pi$, no transcendence technique has been adapted to sums $\\sum f(n)/b^n$ for multiplicative arithmetic functions $f$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Irrational",
+      "open problem",
+      "Prop as type"
+    ],
+    "prerequisites": [
+      "totientPowerSum",
+      "Irrational"
+    ]
+  },
+  {
+    "id": "ann-249-alternative",
+    "proofId": "erdos-249",
+    "range": {
+      "startLine": 140,
+      "endLine": 147
+    },
+    "type": "definition",
+    "title": "Alternative Characterization (Proved)",
+    "content": "`isRational` defines the negation: $\\exists r : \\mathbb{Q}, (r : \\mathbb{R}) = \\text{totientPowerSum}$.\n\n`erdos_249_iff_not_rational` (**proved by `rfl`**): `erdos_249 ↔ ¬isRational`. This is definitionally true since `Irrational x` in Mathlib is exactly `¬∃ r : ℚ, (r : ℝ) = x`.",
+    "mathContext": "The `rfl` proof means this is a definitional equality in Lean's type theory — no computation needed, just unfolding definitions.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "definitional equality",
+      "rfl",
+      "Irrational definition"
+    ],
+    "prerequisites": [
+      "erdos_249",
+      "isRational",
+      "Irrational"
+    ]
+  },
+  {
+    "id": "ann-249-numerical",
+    "proofId": "erdos-249",
+    "range": {
+      "startLine": 161,
+      "endLine": 163
+    },
+    "type": "concept",
+    "title": "Partial Sum Computation (Proved)",
+    "content": "`partial_sum_2` (**proved**): $\\text{termFn}(1) + \\text{termFn}(2) = 3/4$. The proof rewrites using `termFn_one` and `termFn_two`, then closes with `ring`. This verifies the first two nonzero terms of the series.",
+    "mathContext": "$\\frac{\\phi(1)}{2} + \\frac{\\phi(2)}{4} = \\frac{1}{2} + \\frac{1}{4} = \\frac{3}{4}$. The full sum $\\approx 1.3240$ requires many more terms.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "partial sums",
+      "ring tactic",
+      "computation"
+    ],
+    "prerequisites": [
+      "termFn_one",
+      "termFn_two"
+    ]
+  },
+  {
+    "id": "ann-249-summary",
+    "proofId": "erdos-249",
+    "range": {
+      "startLine": 186,
+      "endLine": 190
+    },
+    "type": "concept",
+    "title": "Summary: 0 Axioms, Full Convergence Proof",
+    "content": "**Status**: OPEN. All convergence and bound results are fully proved from Mathlib (0 axioms). The key results are: convergence (comparison test), positivity (≥ 1/2), upper bound (≤ 2), term computations, and the equivalence between irrationality and non-rationality.\n\nThe `#check` commands at the end serve as a verification that all key theorems are accessible.",
+    "mathContext": "Summary: $0 < \\sum_{n=1}^{\\infty} \\frac{\\phi(n)}{2^n} \\le 2$, with the exact value $\\approx 1.3240$. Whether this is rational or irrational is unknown.",
+    "significance": "key",
+    "relatedConcepts": [
+      "axiom count",
+      "formalization status",
+      "open problem"
+    ],
+    "prerequisites": [
+      "all preceding sections"
+    ]
+  }
+]

@@ -1,0 +1,16 @@
+{
+  "problem_number": 164,
+  "title": "Maximum Sum for Primitive Sets",
+  "status": "solved",
+  "solvers": ["Lichtman (2023)"],
+  "source_url": "https://erdosproblems.com/164",
+  "overview": "A set A ⊆ ℕ is primitive if no member divides another. The problem asks whether the sum Σ_{n ∈ A} 1/(n log n) is maximized when A is the set of primes. Erdős (1935) proved this sum converges for any primitive set. Lichtman (2023) proved the primes uniquely maximize the sum.",
+  "sections": [],
+  "conclusion": "YES - The primes maximize Σ 1/(n log n) among all primitive sets, and they are the unique maximizer. This confirms Erdős's belief that primes are extremal for many properties of primitive sets. The sum over primes is approximately 1.6366.",
+  "references": [
+    "Erdős (1935) - Note on Sequences of Integers",
+    "Lichtman (2023) - proof of maximum"
+  ],
+  "related_problems": [],
+  "tags": ["number-theory", "primitive-sets", "primes", "extremal", "sums"]
+}

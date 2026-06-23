@@ -1,0 +1,131 @@
+{
+  "version": 1,
+  "proofId": "lagrange-theorem",
+  "reviewDate": "2026-03-24T16:00:00Z",
+  "reviewer": "peer-reviewer",
+  "overallAssessment": {
+    "grade": "B",
+    "oneLiner": "An honest and well-documented pedagogical curation of Mathlib's Lagrange theorem and six corollaries, with two duplicate theorems and one genuinely illustrative Fermat derivation.",
+    "tier": "B",
+    "tierJustification": "Core divisibility |H| | |G| and all corollaries delegate to Mathlib. The file contributes pedagogical arrangement and one multi-step calc proof (Fermat's little theorem). No original proof work or new mathematical results."
+  },
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "meta.json assumptions field and originalContributions",
+      "finding": "The entry is commendably honest about its nature. The assumptions field explicitly states 'All 11 theorems are pedagogical wrappers composing Mathlib lemmas' and originalContributions leads with 'Pedagogical wrapper: delegates core |H| | |G| to Mathlib's Subgroup.card_subgroup_dvd_card'. This is a model of accurate self-description for a Mathlib-based entry.",
+      "recommendation": "Preserve this level of transparency. Other gallery entries should follow this example."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "fermat_little_from_lagrange, lines 145-152",
+      "finding": "The Fermat's little theorem derivation is the file's genuine highlight. The calc chain a^(p-1) = a^phi(p) = a^|units| = 1 threading three Mathlib lemmas (Nat.totient_prime, ZMod.card_units_eq_totient, pow_card_eq_one) is a pedagogically valuable demonstration of how Lagrange yields number-theoretic consequences. This is more than a wrapper -- it shows the mathematical connection.",
+      "recommendation": "Keep as-is. Consider adding a brief Euler's theorem corollary (a^phi(n) = 1 mod n for general n) as a natural extension."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "annotations.json and overview.keyInsights",
+      "finding": "The annotations and key insights are mathematically accurate and genuinely informative. The coset partition table (lines 98-103), the false converse discussion (A4 counterexample), the Cauchy's theorem sharpening note, and the 'chain of reinterpretations' observation in keyInsights[6] all add real pedagogical value beyond what the Lean code alone provides.",
+      "recommendation": "Preserve. The prose is proportionate to the importance of the theorem."
+    },
+    {
+      "severity": "moderate",
+      "category": "filler",
+      "location": "lagrange (lines 76-79) and order_divides_card (lines 119-121)",
+      "finding": "Two of the 11 named theorems are exact duplicates. 'lagrange' has an identical proof body to 'card_subgroup_dvd_card' (both do the same Nat.card conversion and call Subgroup.card_subgroup_dvd_card). Similarly, 'order_divides_card' is identical to 'orderOf_dvd_card''. These inflate the theorem count without adding mathematical or pedagogical content.",
+      "recommendation": "Either (a) remove the duplicates and adjust theoremCount to 9 in meta.json, or (b) if both names serve an API purpose, document why both exist (e.g., 'lagrange is an alias for discoverability') and do not count them as separate corollaries in the description."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json originalContributions[1]",
+      "finding": "The second original contribution claims 'Euler's theorem connection via ZMod.pow_totient'. However, the Lean file does not call ZMod.pow_totient anywhere. The actual proof uses ZMod.card_units_eq_totient (line 147) and Nat.totient_prime (line 148). Furthermore, the file only proves Fermat's little theorem (the prime case), not Euler's theorem (the general case for arbitrary n).",
+      "recommendation": "Change to: 'Fermat's little theorem derivation via ZMod.card_units_eq_totient and Nat.totient_prime, demonstrating the group-theoretic bridge from Lagrange to number theory.'"
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json description",
+      "finding": "The description says 'Derives six corollaries' but by a strict count there are: (1) element order divides group order, (2) g^|G|=1, (3) Fermat's little theorem, (4) index = card of quotient, (5) index divides group order, (6) prime-order groups have no nontrivial proper subgroups, (7) prime-order groups are cyclic. That is 7 corollaries if we count both prime-order results, or 5 if we exclude the two duplicates. The number 6 is approximately right but imprecise.",
+      "recommendation": "Clarify: either list the six explicitly counted (excluding one of the duplicates and collapsing the prime-order pair) or adjust the count."
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "meta.json leanFile.imports vs actual imports",
+      "finding": "meta.json lists the import as 'Mathlib.GroupTheory.Coset.Basic' but also references the module as 'Mathlib.GroupTheory.Coset' in the mathlibDependencies[0].module field. Both are approximately correct but inconsistent with each other. The actual import on line 1 is 'Mathlib.GroupTheory.Coset.Basic'.",
+      "recommendation": "Align mathlibDependencies[0].module to 'Mathlib.GroupTheory.Coset.Basic' for consistency."
+    },
+    {
+      "severity": "minor",
+      "category": "overclaim",
+      "location": "overview.text",
+      "finding": "The overview says '22 declarations' but the file contains 11 named theorems, 2 examples, and 7 #check statements = 20 items. If we count the /-! ... -/ doc sections as 'declarations' the number still does not reach 22. This appears to be an inflated count.",
+      "recommendation": "Correct to the accurate count. Named theorems: 11. Examples: 2. #check verification: 7."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json description and overview.text",
+      "finding": "Both mention 'prime-order simplicity' but the theorem prime_order_simple (lines 188-192) does not prove simplicity in the group-theoretic sense (no nontrivial normal subgroups). It proves that subgroups of a prime-order group have order 1 or p -- which is stronger than simplicity for abelian groups but the term 'simplicity' could mislead, since 'simple' has a precise technical meaning in group theory that applies to non-abelian groups. For cyclic groups of prime order, simplicity is trivially true since all subgroups are normal, but calling this result 'simplicity' overstates what the theorem proves.",
+      "recommendation": "Replace 'prime-order simplicity' with 'prime-order subgroup constraint' or 'prime-order groups have only trivial subgroups' to avoid conflation with the group-theoretic notion of simple groups."
+    }
+  ],
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Remove or document the two duplicate theorems (lagrange = card_subgroup_dvd_card, order_divides_card = orderOf_dvd_card'). If kept as aliases, add a comment explaining why and do not count them as separate corollaries in the meta.json description.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-2",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Fix originalContributions[1]: replace 'Euler's theorem connection via ZMod.pow_totient' with 'Fermat's little theorem derivation via ZMod.card_units_eq_totient and Nat.totient_prime, bridging group theory to number theory'.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-3",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Correct overview.text declaration count from '22 declarations' to the accurate count (11 named theorems, 2 examples, 7 #check statements).",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-4",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Align module name in mathlibDependencies[0] from 'Mathlib.GroupTheory.Coset' to 'Mathlib.GroupTheory.Coset.Basic' to match the actual import.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-5",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Replace 'prime-order simplicity' phrasing with 'prime-order subgroup constraint' throughout meta.json and description to avoid conflation with the technical group-theoretic definition of simple groups.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-6",
+      "priority": "low",
+      "target": "researcher",
+      "description": "Consider adding an Euler's theorem corollary (a^phi(n) = 1 mod n for general composite n) as a natural extension of the existing Fermat derivation. This would make the 'Euler's theorem connection' claim accurate and add genuine mathematical content.",
+      "status": "open"
+    }
+  ],
+  "qualityScores": {
+    "mathematicalSubstance": 5,
+    "originalityAccuracy": 8,
+    "completeness": 7,
+    "framingPrecision": 7,
+    "pedagogicalQuality": 8,
+    "internalConsistency": 7,
+    "overall": 7.0
+  },
+  "suggestedBestFraming": "A pedagogical curation of Mathlib's Lagrange theorem (Wiedijk #71) that arranges the core divisibility result and seven corollaries -- element order, power identity, Fermat's little theorem, index properties, and prime-order cyclicity -- into a documented progression, with the Fermat derivation as a genuine three-step calc proof bridging group theory to number theory."
+}

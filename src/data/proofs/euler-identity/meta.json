@@ -1,0 +1,321 @@
+{
+  "id": "euler-identity",
+  "title": "Euler's Identity",
+  "slug": "euler-identity",
+  "description": "The most beautiful equation in mathematics: e^(iπ) + 1 = 0. This elegant identity connects five fundamental constants—e, i, π, 1, and 0—in one perfect equation.",
+  "meta": {
+    "author": "Leonhard Euler (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Euler%27s_identity",
+    "date": "1748",
+    "status": "verified",
+    "tags": [
+      "complex-analysis",
+      "exponentials",
+      "trigonometry",
+      "classic",
+      "intermediate",
+      "wiedijk-100"
+    ],
+    "proofRepoPath": "Proofs/EulerIdentity.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.exp_mul_I",
+        "description": "Euler's formula: e^(ix) = cos(x) + i·sin(x)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Log"
+      },
+      {
+        "theorem": "Real.cos_pi",
+        "description": "cos(π) = -1",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.sin_pi",
+        "description": "sin(π) = 0",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Two-line proof combining Mathlib theorems",
+      "Alternative forms: full, half, and quarter rotations",
+      "Geometric interpretation via unit circle"
+    ],
+    "dateAdded": "2025-12-21",
+    "prerequisites": [
+      "Complex exponential function and Taylor series",
+      "Trigonometric functions (sin, cos)",
+      "Complex numbers from Mathlib",
+      "Real.pi definition"
+    ],
+    "axiomCount": 0,
+    "lineCount": 341,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 13,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Euler's Identity has a layered history that spans from 17th-century logarithms to 20th-century iconography.\n\n**Roger Cotes (1714)**: The earliest precursor appears in Cotes's Logometria: $ix = \\log(\\cos x + i\\sin x)$, equivalent to Euler's formula in logarithmic dress. Cotes died at age 33, before he could develop the idea. Newton lamented, 'If he had lived we should have known something.'\n\n**Leonhard Euler (1748)**: In Introductio in analysin infinitorum, Chapter 8, Euler derived $e^{ix} = \\cos x + i\\sin x$ by comparing Taylor series for $e^z$, $\\cos x$, and $\\sin x$. The formula $e^{i\\pi} + 1 = 0$ in its modern isolated form does not appear explicitly — Euler preferred to state the general formula and let readers substitute $x = \\pi$.\n\n**Caspar Wessel (1797) and Jean-Robert Argand (1806)**: Independently gave the geometric interpretation of complex numbers as points in the plane, placing $e^{i\\theta}$ on the unit circle — the visual understanding that makes Euler's identity intuitive today.\n\n**Benjamin Peirce (c. 1860s)**: Harvard mathematician who reportedly told his class, 'Gentlemen, that is surely true, it is absolutely paradoxical; we cannot understand it, and we don't know what it means, but we have proved it, and therefore we know it must be the truth.'\n\n**20th-century iconography**: The exact form $e^{i\\pi} + 1 = 0$ as a celebrated standalone equation gained prominence in the 20th century. In 1988, a poll of 68 mathematicians in Mathematical Intelligencer (Wells, 1988) ranked it 'the most beautiful theorem in mathematics.' Richard Feynman called it 'our jewel... the most remarkable formula in mathematics.' Keith Devlin compared it to 'a Shakespearean sonnet that captures the very essence of love.'\n\nThe identity connects five of the most important constants in mathematics:\n- e (~2.718): The base of natural logarithms, fundamental to calculus\n- i (√-1): The imaginary unit that extends the real numbers\n- π (~3.14159): The ratio of circumference to diameter\n- 1: The multiplicative identity\n- 0: The additive identity",
+    "problemStatement": "Euler's Identity:\n\n$$e^{i\\pi} + 1 = 0$$\n\nEquivalently: $e^{i\\pi} = -1$\n\nThis follows from Euler's Formula: For any real number $x$,\n\n$$e^{ix} = \\cos(x) + i\\sin(x)$$\n\nSubstituting $x = \\pi$ and using $\\cos(\\pi) = -1$, $\\sin(\\pi) = 0$, we get $e^{i\\pi} = -1$.",
+    "text": "This entry formalizes Euler's Identity $e^{i\\pi} + 1 = 0$ in Lean 4 using Mathlib's complex analysis library. The proof is axiom-free and sorry-free: it chains three Mathlib theorems — `Complex.exp_mul_I` (Euler's formula), `Real.cos_pi`, and `Real.sin_pi` — via `simp` and `ring`, yielding a two-tactic proof. Beyond the headline identity, the file verifies full rotation (`e^{2\\pi i} = 1`), quarter rotation (`e^{i\\pi/2} = i`), unit-circle membership (`|e^{i\\theta}| = 1`), and the definition `\\cos x = (e^{ix} + e^{-ix})/2$ as a Lean `rfl`. The formalization demonstrates how Mathlib's interconnected hierarchy of complex analysis results can be composed to prove classical identities with negligible proof effort once the library is in place.",
+    "proofStrategy": "This proof uses Mathlib's complete formalization of complex analysis:\n\n1. Import Mathlib's Complex Numbers: We use Complex, Complex.I, and Complex.exp from Mathlib, which provides all arithmetic properties.\n\n2. Apply Euler's Formula (Complex.exp_mul_I): This Mathlib theorem states $e^{ix} = \\cos(x) + i\\sin(x)$.\n\n3. Use Trigonometric Values: Mathlib provides Real.cos_pi = -1 and Real.sin_pi = 0.\n\n4. Combine: Substituting $x = \\pi$ gives $e^{i\\pi} = -1 + 0i = -1$, so $e^{i\\pi} + 1 = 0$.\n\nThe entire proof is two lines using Lean tactics.",
+    "keyInsights": [
+      "**Mathlib Proof Architecture**: The core proof `exp_i_pi_eq_neg_one` uses `rw [Complex.exp_mul_I]` to apply Euler's formula, then `simp [Real.cos_pi, Real.sin_pi]` to evaluate at $x=\\pi$. The alternative `eulers_identity'` reduces to a single `simp [Complex.exp_pi_mul_I]`, demonstrating that `Complex.exp_pi_mul_I` bundles the entire chain.",
+      "**Rotation Interpretation via `exp_mul_I`**: In Lean, `Complex.exp_mul_I` has type `∀ (x : ℝ), exp (↑x * I) = ↑(cos x) + ↑(sin x) * I`. Instantiating at $x = \\pi$ and using `cos_pi = -1`, `sin_pi = 0` gives $e^{i\\pi} = -1 + 0i$. The `ring` tactic then closes $-1 + 1 = 0$ by the ring axioms of $\\mathbb{C}$.",
+      "**Unit Circle Certification**: `theorem exp_on_unit_circle (θ : ℝ) : Complex.abs (Complex.exp (θ * Complex.I)) = 1` is proved using `Complex.abs_cos_add_sin_mul_I`. This certifies that the entire Euler formula family $e^{i\\theta}$ lies on $S^1 \\subset \\mathbb{C}$, not just at the special value $\\theta = \\pi$.",
+      "**`cos_eq_exp` as `rfl`**: The identity `cos x = (e^{ix} + e^{-ix})/2` is literally `rfl` in Lean because Mathlib defines `Complex.cos` this way. This demonstrates that Euler's formula is not just a theorem but a *definition-level* choice in Mathlib's design, making complex and trigonometric analysis a single coherent body.",
+      "**Wiedijk #96 — Machine-Checked**: Euler's Identity appears as theorem #96 in Wiedijk's list of 100 greatest theorems. This Lean 4 / Mathlib formalization provides a fully machine-checked proof that requires zero additional axioms beyond Lean's foundational kernel, a stronger guarantee than the original 1748 paper's informal derivation."
+    ],
+    "prerequisites": [
+      "Complex exponential function and Taylor series",
+      "Trigonometric functions (sin, cos)",
+      "Complex numbers from Mathlib",
+      "Real.pi definition"
+    ]
+  },
+  "sections": [
+    {
+      "id": "introduction",
+      "title": "Introduction",
+      "summary": "Module header for Euler's identity $e^{i\\pi}+1=0$: states what is proved, the approach (Mathlib's `Complex.exp_pi_mul_I` as foundation, with original pedagogical exposition and alternative proofs), status, and the Mathlib dependencies. Imports the complex-exponential analysis libraries and opens `Complex`/`Real`.",
+      "startLine": 1,
+      "endLine": 40,
+      "mathContext": "Euler's identity $e^{i\\pi}+1=0$ unites $e,i,\\pi,1,0$. Built on Mathlib's complex analysis (`Complex.exp_mul_I`, `Complex.exp_pi_mul_I`)."
+    },
+    {
+      "id": "part1-complex-numbers",
+      "title": "Part 1: Complex Numbers in Mathlib",
+      "summary": "Pedagogical overview of Mathlib's complex-number support — the type `Complex`, the imaginary unit `Complex.I` with $I^2=-1$, `Complex.exp`, and `Complex.cos`/`Complex.sin` — illustrated with `#check`s.",
+      "startLine": 41,
+      "endLine": 59,
+      "mathContext": "$\\mathbb{C}$ with $I^2=-1$; complex exponential and trigonometric functions are fully developed in Mathlib."
+    },
+    {
+      "id": "part2-eulers-formula",
+      "title": "Part 2: Euler's Formula in Mathlib",
+      "summary": "Introduces Euler's formula $e^{ix}=\\cos x+i\\sin x$ as `Complex.exp_mul_I`, noting that complex exponentials trace the unit circle.",
+      "startLine": 60,
+      "endLine": 81,
+      "mathContext": "Euler's formula: $\\exp(xI)=\\cos x+\\sin x\\cdot I$ (`Complex.exp_mul_I`)."
+    },
+    {
+      "id": "part3-trig-values",
+      "title": "Part 3: Key Trigonometric Values",
+      "summary": "Records the trig values needed for the identity: $\\cos\\pi=-1$ (`Real.cos_pi`) and $\\sin\\pi=0$ (`Real.sin_pi`).",
+      "startLine": 82,
+      "endLine": 96,
+      "mathContext": "$\\cos\\pi=-1$, $\\sin\\pi=0$."
+    },
+    {
+      "id": "part4-main-theorem",
+      "title": "Part 4: Euler's Identity — The Main Theorem",
+      "summary": "The heart: proves `exp_i_pi_eq_neg_one` ($e^{i\\pi}=-1$, via Euler's formula plus $\\cos\\pi=-1$, $\\sin\\pi=0$), then `eulers_identity` ($e^{i\\pi}+1=0$) and the one-line `eulers_identity'` using `Complex.exp_pi_mul_I` directly.",
+      "startLine": 97,
+      "endLine": 133,
+      "mathContext": "$e^{i\\pi}=\\cos\\pi+i\\sin\\pi=-1$, hence $e^{i\\pi}+1=0$."
+    },
+    {
+      "id": "part5-alternative-forms",
+      "title": "Part 5: Alternative Forms",
+      "summary": "Other rotations on the unit circle: `full_rotation` ($e^{2\\pi i}=1$), `half_rotation` ($e^{i\\pi}=-1$), and `quarter_rotation` ($e^{i\\pi/2}=i$).",
+      "startLine": 134,
+      "endLine": 163,
+      "mathContext": "$e^{2\\pi i}=1$, $e^{i\\pi}=-1$, $e^{i\\pi/2}=i$ — rotations by $2\\pi,\\pi,\\pi/2$."
+    },
+    {
+      "id": "part6-geometric",
+      "title": "Part 6: The Geometric Interpretation",
+      "summary": "$e^{i\\theta}$ as a point on the unit circle at angle $\\theta$: `exp_on_unit_circle` proves $|e^{i\\theta}|=1$ for all real $\\theta$.",
+      "startLine": 164,
+      "endLine": 186,
+      "mathContext": "$|e^{i\\theta}|=1$: the complex exponential parameterizes the unit circle."
+    },
+    {
+      "id": "part7-trig-connection",
+      "title": "Part 7: Connection to Trigonometry",
+      "summary": "Euler's formula yields the exponential expressions for trig functions; `cos_eq_exp` gives $\\cos z=(e^{iz}+e^{-iz})/2$ (definitionally, by `rfl`).",
+      "startLine": 187,
+      "endLine": 204,
+      "mathContext": "$\\cos z=(e^{iz}+e^{-iz})/2$, $\\sin z=(e^{iz}-e^{-iz})/(2i)$."
+    },
+    {
+      "id": "part8-why-matters",
+      "title": "Part 8: Why This Matters",
+      "summary": "Commentary on the identity's significance across physics (quantum mechanics, signal processing, AC circuits) and mathematics (linking analysis, algebra, geometry; foundation for analytic functions).",
+      "startLine": 205,
+      "endLine": 228,
+      "mathContext": "Applications of $e^{i\\theta}$: Fourier analysis, quantum wavefunctions, AC impedance."
+    },
+    {
+      "id": "part9-historical",
+      "title": "Part 9: Historical Context",
+      "summary": "Timeline (Cotes 1714, Euler 1748, the 1988 \"most beautiful theorem\" vote) and notable admirers of the identity.",
+      "startLine": 229,
+      "endLine": 252,
+      "mathContext": "Euler published $e^{ix}=\\cos x+i\\sin x$ in 1748 (Introductio in analysin infinitorum)."
+    },
+    {
+      "id": "part10-taylor-series",
+      "title": "Part 10: Taylor Series Proof of Euler's Formula (OQ-01)",
+      "summary": "Open question OQ-01: prove Euler's formula from the Taylor series without `Complex.exp_mul_I`. Answered YES: `pow_mul_I_even`/`pow_mul_I_odd` show even/odd powers of $zI$ give the cosine/$I\\cdot$sine series (`exp_mul_I_series_term_even`/`_odd`), and `euler_formula_algebraic` proves $\\exp(zI)=\\cos z+\\sin z\\cdot I$ from the cos/sin definitions and $I^2=-1$.",
+      "startLine": 253,
+      "endLine": 341,
+      "mathContext": "$(zI)^{2k}=(-1)^k z^{2k}$ (real, cosine terms) and $(zI)^{2k+1}=(-1)^k z^{2k+1}I$ (sine terms); recovers $\\exp(zI)=\\cos z+\\sin z\\cdot I$ algebraically."
+    }
+  ],
+  "conclusion": {
+    "summary": "Euler's Identity $e^{i\\pi} + 1 = 0$ is now fully verified in Lean 4 using Mathlib's complex analysis library, with 0 axioms and 0 sorries. The two-line proof `rw [exp_i_pi_eq_neg_one]; ring` is machine-checked by Lean's kernel, providing a guarantee stronger than any informal proof. The file also verifies eight related theorems — full rotation, quarter rotation, unit-circle membership, and the exponential-cosine identity — all as corollaries of the same Mathlib imports.",
+    "implications": "**Theoretical Significance**: This formalization demonstrates that Mathlib's modular complex analysis hierarchy (real numbers → complex numbers → exponential → trigonometry) is mature enough to prove one of mathematics' most celebrated identities in two tactics. The structure `ℝ → ℂ → exp → cos/sin` is not merely convenient; it reflects the mathematical reality that Euler's formula is the *definitional* bridge between the two worlds.\\n\\n**Foundational implications**: Because `Complex.cos` is defined via exponentials in Mathlib, `cos_eq_exp` is `rfl` — the identity is built into the type theory, not proved. This is a deliberate design choice that makes theorems downstream (Fourier analysis, spectral theory) easier to prove formally.\\n\\n**Pedagogical value**: The contrasting proofs `eulers_identity` (explicit `rw` + `simp`) and `eulers_identity'` (single `simp`) show how Lean's automation can collapse multi-step mathematical arguments into single tactics once the right lemma names are known — a recurring pattern in Mathlib-based formalization.",
+    "openQuestions": [
+      "Can the full Taylor series proof — showing $\\sum (ix)^n/n!$ splits into cosine and sine series — be formalized as a standalone theorem without relying on `Complex.exp_mul_I` directly?",
+      "Is there a formalization of Euler's identity as a theorem in the *p*-adic setting? The *p*-adic exponential and logarithm have restricted domains; does any analogue of $e^{i\\pi} = -1$ hold?",
+      "Gelfond's constant $e^\\pi = (-1)^{-i}$ is transcendental by Gelfond–Schneider. Can Mathlib's `hermite_lindemann` machinery be extended to formally prove this, using the Lean formalization of Euler's identity as an intermediate step?",
+      "The identity $e^{2\\pi i} = 1$ means $z \\mapsto e^z$ is periodic with period $2\\pi i$. Can the Lean proof be extended to characterize the full kernel of `Complex.exp` as the subgroup $2\\pi i \\mathbb{Z} \\subset \\mathbb{C}$, and connect this to the fundamental group $\\pi_1(S^1) \\cong \\mathbb{Z}$?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Euler, Leonhard",
+      "title": "Introductio in analysin infinitorum",
+      "year": "1748",
+      "venue": "Lausanne: Bousquet",
+      "note": "Chapter 8 derives e^(ix) = cos(x) + i·sin(x), from which the identity e^(iπ) + 1 = 0 follows immediately"
+    },
+    {
+      "authors": "Nahin, Paul J.",
+      "title": "Dr. Euler's Fabulous Formula: Cures Many Mathematical Ills",
+      "year": "2006",
+      "venue": "Princeton University Press",
+      "note": "Popular account of the history and significance of e^(iπ) + 1 = 0, tracing its connections to signal processing, number theory, and physics"
+    },
+    {
+      "authors": "Cotes, Roger",
+      "title": "Logometria",
+      "year": "1714",
+      "venue": "Philosophical Transactions of the Royal Society 29, 5–45",
+      "note": "Contains the earliest form of the relationship between logarithms and trigonometric functions: ix = log(cos x + i sin x), equivalent to Euler's formula. Cotes died at 33 before fully developing the idea"
+    },
+    {
+      "authors": "Stillwell, John",
+      "title": "Mathematics and Its History",
+      "year": "2010",
+      "venue": "Springer, 3rd edition, Chapter 15",
+      "note": "Places Euler's identity in the context of the development of complex analysis, from Cardano's casus irreducibilis through Wessel, Argand, and Gauss to the modern theory"
+    },
+    {
+      "authors": "Wells, David",
+      "title": "Which is the most beautiful?",
+      "year": "1988",
+      "venue": "The Mathematical Intelligencer, Vol. 10, No. 4, pp. 30–31",
+      "note": "Survey of 68 mathematicians that ranked Euler's identity $e^{i\\pi}+1=0$ as 'the most beautiful theorem in mathematics', ahead of Euclid's proof of infinite primes and the Pythagorean theorem. This poll gave the identity its popular status as the 'most beautiful equation'"
+    },
+    {
+      "authors": "Dunham, William",
+      "title": "Euler: The Master of Us All",
+      "year": "1999",
+      "venue": "Mathematical Association of America",
+      "note": "Surveys Euler's most significant contributions across number theory, algebra, analysis, and geometry, including the derivation of Euler's formula from the exponential function. Chapter 5 covers the identity in the context of Euler's work on the analysis of infinite series and complex functions"
+    },
+    {
+      "authors": "Sandifer, C. Edward",
+      "title": "How Euler Did It",
+      "year": "2007",
+      "venue": "Mathematical Association of America",
+      "note": "Month-by-month reconstruction of Euler's original methods, including his treatment of $e^{i\\theta} = \\cos\\theta + i\\sin\\theta$ in the Introductio. Shows that Euler used the formula extensively but the specific identity $e^{i\\pi}+1=0$ as a highlighted equation may be a 20th-century retronym"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "Both are crown jewels of Euler's work. The Basel identity ζ(2) = π²/6 and Euler's identity e^(iπ) + 1 = 0 both connect fundamental constants in unexpected ways"
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "uses",
+      "description": "Euler's identity uses π as a specific value. The transcendence of π (Lindemann 1882) means e^(iπ) = -1 is an equation relating transcendental quantities to a rational number"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "Hermite proved $e$ is transcendental (1873). Euler's identity $e^{i\\pi} + 1 = 0$ relates two transcendental numbers ($e$ and $\\pi$) via the imaginary unit to produce the integer $-1$ — a striking equation between transcendental and rational quantities"
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "Euler's formula $e^{2\\pi ik/n}$ generates the $n$th roots of unity — the roots of $z^n - 1$. FTA guarantees these $n$ roots exist in $\\mathbb{C}$, and Euler's formula provides them explicitly, giving the cleanest demonstration that $\\mathbb{C}$ is algebraically closed for cyclotomic polynomials"
+    },
+    {
+      "targetId": "hermite-lindemann",
+      "relationship": "related",
+      "description": "The Hermite-Lindemann theorem ($e^\\alpha$ is transcendental for nonzero algebraic $\\alpha$) means $e^{i\\pi}$ is transcendental IF $i\\pi$ were algebraic — but $e^{i\\pi} = -1$ is rational, confirming that $i\\pi$ (hence $\\pi$) must be transcendental. Euler's identity is thus a direct witness to Lindemann's theorem"
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "related",
+      "description": "Primitive $n$th roots of unity $\\zeta_n = e^{2\\pi i/n}$ are the fundamental building blocks of cyclotomic fields. Euler's formula provides the explicit representation, and the identity $e^{i\\pi} = -1$ is the case $n = 2$ (the primitive square root of unity)"
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "Euler's formula $e^{ix} = \\cos x + i\\sin x$ is derived by integrating the ODE $f'(x) = if(x)$ with $f(0) = 1$ — a direct application of the fundamental theorem of calculus connecting the exponential function (defined by its differential equation) to trigonometric functions"
+    },
+    {
+      "targetId": "gelfond-schneider",
+      "relationship": "related",
+      "description": "The Gelfond-Schneider theorem proves $\\alpha^\\beta$ is transcendental for algebraic $\\alpha \\neq 0,1$ and irrational algebraic $\\beta$. Euler's identity can be written as $(-1)^{1/i\\pi} = e$, connecting the transcendence of $e$ to the exponential framework. Gelfond's constant $e^\\pi = (-1)^{-i}$ is transcendental by Gelfond-Schneider"
+    },
+    {
+      "targetId": "de-moivre",
+      "relationship": "foundational",
+      "description": "De Moivre's theorem $(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)$ is an immediate corollary of Euler's formula: $(e^{i\\theta})^n = e^{in\\theta}$. Conversely, de Moivre's theorem motivated the search for the exponential representation that Euler's formula provides — making Euler's identity the conceptual foundation for de Moivre"
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "foundational",
+      "description": "Fourier series $f(x) = \\sum_{n=-\\infty}^{\\infty} c_n e^{inx}$ are built entirely on Euler's formula $e^{ix} = \\cos x + i\\sin x$. The complex exponential basis $\\{e^{inx}\\}$ forms an orthonormal system in $L^2[-\\pi,\\pi]$ precisely because $\\int_{-\\pi}^{\\pi} e^{i(n-m)x} dx = 2\\pi\\delta_{nm}$ — a direct consequence of the periodicity $e^{2\\pi i} = 1$ from Euler's identity"
+    },
+    {
+      "targetId": "de-moivre-oq-01",
+      "relationship": "extended-by",
+      "description": "Extends de Moivre's theorem to Chebyshev polynomials: $\\cos(n\\theta) = T_n(\\cos\\theta)$ and $\\sin(n\\theta) = \\sin\\theta \\cdot U_{n-1}(\\cos\\theta)$. These identities follow from Euler's formula by extracting real and imaginary parts of $(e^{i\\theta})^n = e^{in\\theta}$, connecting the exponential representation to classical polynomial identities"
+    },
+    {
+      "targetId": "leibniz-pi",
+      "relationship": "related",
+      "description": "The Leibniz formula $\\pi/4 = 1 - 1/3 + 1/5 - 1/7 + \\ldots$ is recovered from Euler's formula by evaluating $\\log(1+i) = i\\pi/4 + \\text{Re}$ or by the Gregory-Leibniz series for $\\arctan(1) = \\pi/4$. More directly, the Fourier series of a square wave — built on $e^{inx}$ via Euler's formula — specializes to the Leibniz series at $x = \\pi/2$. Both identities express $\\pi$ as an infinite series, showing $\\pi$'s deep entrenchment in analysis"
+    },
+    {
+      "targetId": "taylor-theorem",
+      "relationship": "foundational",
+      "description": "Taylor's theorem underpins the classical proof of Euler's formula: expanding $e^{ix}$, $\\cos x$, and $\\sin x$ as power series and identifying them term-by-term is the most transparent path to $e^{ix} = \\cos x + i\\sin x$. The convergence of these series (entire functions with infinite radius) is guaranteed by Taylor's theorem in the complex setting. In Mathlib, `Complex.exp_mul_I` abstracts away this series computation, but Taylor's theorem is its logical ancestor"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Complex.Circle",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+    ],
+    "opens": [
+      "Complex",
+      "Real"
+    ],
+    "namespace": null,
+    "lineCount": 341,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 0,
+    "path": "Proofs/EulerIdentity.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "euler_identity",
+      "type": "core",
+      "description": "e^(i*pi) + 1 = 0 (Euler's identity)",
+      "leanType": "Complex.exp (Complex.I * Real.pi) + 1 = 0"
+    }
+  ],
+  "sorries": 0
+}

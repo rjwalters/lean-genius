@@ -1,0 +1,233 @@
+{
+  "id": "pi-transcendental",
+  "title": "Transcendence of Pi",
+  "slug": "pi-transcendental",
+  "description": "Pi is transcendental: it is not a root of any polynomial with integer coefficients. This proves the impossibility of squaring the circle with ruler and compass.",
+  "meta": {
+    "wiedijkNumber": 53,
+    "author": "Ferdinand von Lindemann (1882)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Lindemann%E2%80%93Weierstrass_theorem",
+    "date": "1882",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/PiTranscendental.lean",
+    "tags": [
+      "number-theory",
+      "transcendental",
+      "pi",
+      "geometry",
+      "wiedijk-100",
+      "classic"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.pi",
+        "description": "Definition of pi",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Transcendental",
+        "description": "Transcendental number definition",
+        "module": "Mathlib.RingTheory.Algebraic"
+      }
+    ],
+    "originalContributions": [
+      "Framework connecting pi's transcendence to circle squaring",
+      "Outline of Lindemann's proof via Hermite-Lindemann theorem",
+      "Connection to constructibility with ruler and compass"
+    ],
+    "dateAdded": "2025-12-29",
+    "axiomCount": 1,
+    "lineCount": 432,
+    "assumptions": "1 axiom (transitive): HermiteLindemann.hermite_lindemann (Hermite-Lindemann theorem). Local axiom lindemann_theorem discharged via IsFractionRing.isAlgebraic_iff bridge to hermite_lindemann (S8 ACT, 2026-06-05). pi_transcendental now proved from theorem lindemann_theorem via Euler s identity. All other results proved from these.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 19,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The problem of squaring the circle dates to the Rhind Papyrus (c. 1650 BCE) and was a central challenge in ancient Greek mathematics, studied by Anaxagoras, Hippocrates of Chios, and Archimedes. In 1761, Johann Heinrich Lambert proved $\\pi$ is irrational, but transcendence required entirely new methods. Charles Hermite's landmark 1873 proof that $e$ is transcendental introduced the auxiliary polynomial technique. Ferdinand von Lindemann, building directly on Hermite's method, proved $\\pi$ transcendental in 1882, definitively resolving the 2,000-year-old circle-squaring problem. Karl Weierstrass later generalized Lindemann's result to the full Lindemann-Weierstrass theorem (1885), establishing that $e^{\\alpha_1}, \\ldots, e^{\\alpha_n}$ are algebraically independent when $\\alpha_1, \\ldots, \\alpha_n$ are linearly independent algebraic numbers. This line of work opened transcendental number theory as a distinct field, leading to Gelfond-Schneider (1934), Baker's theorem (1966), and modern Diophantine analysis.",
+    "problemStatement": "**Theorem**: $\\pi$ is transcendental over $\\mathbb{Z}$, i.e., there is no nonzero polynomial $P \\in \\mathbb{Z}[X]$ such that $P(\\pi) = 0$.\n\n$$\\nexists P \\in \\mathbb{Z}[X] \\setminus \\{0\\}: P(\\pi) = 0$$\n\n**Corollary**: Squaring the circle is impossible with ruler and compass, since constructible numbers are algebraic of degree $2^n$.",
+    "text": "Pi is transcendental: it is not a root of any polynomial with integer coefficients. This proves the impossibility of squaring the circle with ruler and compass.",
+    "proofStrategy": "The proof proceeds by contradiction using **Lindemann's theorem**: if $\\alpha \\neq 0$ is algebraic, then $e^\\alpha$ is transcendental. Suppose $\\pi$ were algebraic. Then $i\\pi$ would be algebraic (since $i$ is algebraic and algebraic numbers form a field). By Lindemann's theorem, $e^{i\\pi}$ must be transcendental. But Euler's identity gives $e^{i\\pi} = -1$, which is algebraic (root of $X + 1$). This contradiction proves $\\pi$ is transcendental. The Lean formalization axiomatizes Lindemann's theorem and then proves corollaries: $-1$ and $i$ are algebraic, and expressions like $2\\pi$, $\\pi^2$, $\\pi + 1$, $1/\\pi$, and $\\sqrt{\\pi}$ are all transcendental.",
+    "keyInsights": [
+      "**Contraposition via Euler's identity**: The proof hinges on $e^{i\\pi} = -1$; if $\\pi$ were algebraic, Lindemann's theorem would force $e^{i\\pi}$ to be transcendental, contradicting that $-1$ is algebraic",
+      "**Lindemann-Weierstrass generalization**: Lindemann's theorem for a single exponent is a special case of the Lindemann-Weierstrass theorem on linear independence of $e^{\\alpha_i}$ over algebraic numbers",
+      "**Transcendence propagation**: Once $\\pi$ is transcendental, polynomial-compositional arguments show $2\\pi$, $\\pi^2$, $\\pi + 1$, $1/\\pi$, and $\\sqrt{\\pi}$ are all transcendental — any 'simple' algebraic expression in $\\pi$ remains transcendental",
+      "**Constructibility barrier**: Constructible numbers lie in iterated quadratic extensions of $\\mathbb{Q}$, hence are algebraic with degree $2^n$. Since $\\pi$ is not even algebraic, $\\sqrt{\\pi}$ is transcendental and squaring the circle is impossible",
+      "**Hierarchy of number properties**: Transcendence ($\\pi \\notin \\overline{\\mathbb{Q}}$) is strictly stronger than irrationality ($\\pi \\notin \\mathbb{Q}$), which is strictly stronger than non-constructibility. The Lean file makes these distinctions explicit"
+    ],
+    "prerequisites": [
+      "Number theory (primes, divisibility)",
+      "Geometry (Euclidean, combinatorial)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-setup",
+      "title": "Imports and Module Documentation",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Imports from Mathlib: `RingTheory.Algebraic.Basic` for `Transcendental`, `SpecialFunctions.ExpDeriv` for `Complex.exp`, and `Complex.Circle` for Euler's identity. Opens `Real`, `Complex`, and `Polynomial` namespaces.",
+      "mathContext": "Imports from Mathlib: `RingTheory.Algebraic.Basic` for `Transcendental`, `SpecialFunctions.ExpDeriv` for `Complex.exp`, and `Complex.Circle` for Euler's identity. Opens `Real`, `Complex`, and `Polynomial` namespaces."
+    },
+    {
+      "id": "definitions-background",
+      "title": "Definitions and Background",
+      "startLine": 47,
+      "endLine": 66,
+      "summary": "Documents the definition of transcendental numbers: $x$ is transcendental over $R$ if no nonzero $P \\in R[X]$ satisfies $P(x) = 0$. Explains the key insight linking $\\pi$'s transcendence to Euler's identity $e^{i\\pi} = -1$ via Lindemann-Weierstrass.",
+      "mathContext": "Documents the definition of transcendental numbers: $x$ is transcendental over $R$ if no nonzero $P \\in R[X]$ satisfies $P(x) = 0$. Explains the key insight linking $\\pi$'s transcendence to Euler's identity $e^{i\\pi} = -1$ via Lindemann-Weierstrass."
+    },
+    {
+      "id": "key-properties",
+      "title": "Key Properties of $\\pi$ from Mathlib",
+      "startLine": 67,
+      "endLine": 76,
+      "summary": "Proves $\\pi > 0$ from `Real.pi_pos` and demonstrates Euler's identity $e^{i\\pi} = -1$ via `Complex.exp_pi_mul_I`.",
+      "mathContext": "Proves $\\pi > 0$ from `Real.pi_pos` and demonstrates Euler's identity $e^{i\\pi} = -1$ via `Complex.exp_pi_mul_I`."
+    },
+    {
+      "id": "lindemann-proof",
+      "title": "Lindemann's Proof Strategy (1882)",
+      "startLine": 77,
+      "endLine": 117,
+      "summary": "Detailed documentation of Lindemann's proof outline: the Lindemann-Weierstrass theorem on linear independence of $e^{\\alpha_i}$, the corollary for single exponents, and the contraposition argument via Euler's identity.",
+      "mathContext": "Detailed documentation of Lindemann's proof outline: the Lindemann-Weierstrass theorem on linear independence of $e^{\\alpha_i}$, the corollary for single exponents, and the contraposition argument via Euler's identity."
+    },
+    {
+      "id": "main-axioms",
+      "title": "The Main Theorem (Axiomatized)",
+      "startLine": 118,
+      "endLine": 154,
+      "summary": "Axiomatizes Lindemann's theorem (`lindemann_theorem`) and the main result `Transcendental ℤ Real.pi`, plus `Transcendental ℚ Real.pi`. These await Mathlib's Lindemann-Weierstrass formalization.",
+      "mathContext": "Axiomatizes Lindemann's theorem (`lindemann_theorem`) and the main result `Transcendental $\\mathbb{Z}$ Real.$\\pi$`, plus `Transcendental $\\mathbb{Q}$ Real.$\\pi$`. These await Mathlib's Lindemann-Weierstrass formalization."
+    },
+    {
+      "id": "algebraic-numbers",
+      "title": "Why $\\pi$ Cannot Be Algebraic",
+      "startLine": 155,
+      "endLine": 193,
+      "summary": "Proves the supporting lemmas: Euler's identity $e^{i\\pi} = -1$, that $-1$ is algebraic (root of $X + 1$), and that $i$ is algebraic (root of $X^2 + 1$). These are the key ingredients for the contraposition argument.",
+      "mathContext": "Proves the supporting lemmas: Euler's identity $e^{i\\pi} = -1$, that $-1$ is algebraic (root of $X + 1$), and that $i$ is algebraic (root of $X^2 + 1$)."
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries of Transcendence",
+      "startLine": 194,
+      "endLine": 283,
+      "summary": "Axiomatizes and states propagation results: $\\pi$ is irrational, $2\\pi$ is transcendental, $\\pi^2$ is transcendental, $\\pi + 1$ is transcendental, and $1/\\pi$ is transcendental — each via polynomial composition arguments.",
+      "mathContext": "Axiomatizes and states propagation results: $\\pi$ is irrational, $2\\pi$ is transcendental, $\\pi^2$ is transcendental, $\\pi + 1$ is transcendental, and $1/\\pi$ is transcendental — each via polynomial composition arguments."
+    },
+    {
+      "id": "squaring-circle",
+      "title": "The Squaring of the Circle",
+      "startLine": 284,
+      "endLine": 341,
+      "summary": "Connects $\\pi$'s transcendence to the ancient impossibility result. Since constructible numbers are algebraic of degree $2^n$, and $\\sqrt{\\pi}$ is transcendental, a square with area $\\pi r^2$ cannot be constructed by ruler and compass.",
+      "mathContext": "Connects $\\pi$'s transcendence to the ancient impossibility result. Since constructible numbers are algebraic of degree $2^n$, and $\\sqrt{\\pi}$ is transcendental, a square with area $\\pi r^2$ cannot be constructed by ruler and compass."
+    },
+    {
+      "id": "connections",
+      "title": "Connections to Other Results",
+      "startLine": 342,
+      "endLine": 372,
+      "summary": "Links to related transcendence results: Hermite (1873, $e$), Lindemann-Weierstrass (1882), Gelfond-Schneider (1934, $\\alpha^\\beta$), and Baker (1966, linear forms in logarithms). Lists open problems: is $e + \\pi$ transcendental?",
+      "mathContext": "Links to related transcendence results: Hermite (1873, $e$), Lindemann-Weierstrass (1882), Gelfond-Schneider (1934, $\\alpha^\\beta$), and Baker (1966, linear forms in logarithms). Lists open problems: is $e + \\pi$ transcendental?"
+    },
+    {
+      "id": "computation-significance",
+      "title": "Computational and Physical Significance",
+      "startLine": 373,
+      "endLine": 432,
+      "summary": "Discusses computation of $\\pi$ (Leibniz, Machin, Ramanujan, Chudnovsky) and its physical appearances in circle geometry, Heisenberg uncertainty, Coulomb's law, and Einstein's field equations. Notes the philosophical significance: the simplest curved figure has transcendental complexity.",
+      "mathContext": "Discusses computation of $\\pi$ (Leibniz, Machin, Ramanujan, Chudnovsky) and its physical appearances in circle geometry, Heisenberg uncertainty, Coulomb's law, and Einstein's field equations."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization axiomatizes Lindemann's 1882 proof that $\\pi$ is transcendental, resolving the 2,000-year-old problem of squaring the circle. The Lean file proves the supporting lemmas ($-1$ and $i$ are algebraic, Euler's identity) and derives corollaries ($2\\pi$, $\\pi^2$, $\\pi + 1$, $1/\\pi$, $\\sqrt{\\pi}$ are all transcendental). The main result and Lindemann's theorem are axiomatized pending Mathlib's formalization of the Lindemann-Weierstrass theorem.",
+    "implications": "**Theoretical Significance**: The transcendence of $\\pi$ established transcendental number theory as a major branch of mathematics.\n\nIt resolved the most famous classical construction problem and demonstrated that fundamental geometric constants lie beyond algebraic description. The proof techniques — auxiliary polynomials, integration by parts estimates, and algebraic independence arguments — became foundational tools leading to Gelfond-Schneider, Baker's theorem, and modern Diophantine approximation theory.",
+    "openQuestions": [
+      "Is $\\pi + e$ transcendental? Both are individually transcendental, but their sum's status remains one of the great open problems in transcendental number theory",
+      "Is $\\pi$ a normal number (equidistributed digits in every base)? Statistical evidence strongly suggests yes, but no proof is known",
+      "What is the exact irrationality measure $\\mu(\\pi)$? Known: $2 \\leq \\mu(\\pi) \\leq 7.103205$; conjectured to be exactly 2",
+      "Can the Lindemann-Weierstrass theorem be fully formalized in Lean/Mathlib? This would eliminate the axioms in this file and provide a complete proof"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "generalizes",
+      "description": "The Hermite-Lindemann theorem ($e^\\alpha$ transcendental for algebraic $\\alpha \\neq 0$) is the key lemma axiomatized here; π's transcendence is a direct corollary",
+      "targetId": "hermite-lindemann"
+    },
+    {
+      "relationship": "related",
+      "description": "Hermite's 1873 proof of $e$'s transcendence introduced the auxiliary polynomial method that Lindemann extended to prove $\\pi$ transcendental in 1882",
+      "targetId": "e-transcendental"
+    },
+    {
+      "relationship": "uses",
+      "description": "Euler's identity $e^{i\\pi} = -1$ is the critical bridge: it converts the transcendence of exponentials into a statement about $\\pi$",
+      "targetId": "euler-identity"
+    },
+    {
+      "relationship": "related",
+      "description": "The Gelfond-Schneider theorem (1934) extended transcendence theory beyond exponentials to $\\alpha^\\beta$, resolving Hilbert's 7th problem",
+      "targetId": "gelfond-schneider"
+    },
+    {
+      "relationship": "parallel",
+      "description": "Another classical impossibility result using field-theoretic arguments; angle trisection fails because some angles require degree-3 extensions, while circle squaring fails because $\\pi$ is transcendental",
+      "targetId": "angle-trisection"
+    },
+    {
+      "relationship": "foundation",
+      "description": "Irrationality of $\\sqrt{2}$ is the simplest case of showing a number is not rational; transcendence of $\\pi$ is the much stronger statement that $\\pi$ is not algebraic",
+      "targetId": "sqrt2-irrational"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Lindemann, Ferdinand von",
+      "title": "Über die Zahl π",
+      "year": "1882",
+      "venue": "Mathematische Annalen, 20, pp. 213-225",
+      "note": "Original proof that π is transcendental, resolving the ancient problem of squaring the circle"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.Algebraic.Basic",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "Mathlib.Analysis.SpecialFunctions.Complex.Circle",
+      "Mathlib.Data.Real.Irrational"
+    ],
+    "opens": [
+      "Real",
+      "Complex",
+      "Polynomial"
+    ],
+    "namespace": null,
+    "lineCount": 432,
+    "axiomCount": 0,
+    "theoremCount": 19,
+    "definitionCount": 0,
+    "path": "Proofs/PiTranscendental.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "pi_transcendental",
+      "type": "core",
+      "description": "Pi is transcendental over Q",
+      "leanType": "Transcendental Q Real.pi"
+    },
+    {
+      "name": "squaring_circle_impossible",
+      "type": "key",
+      "description": "Squaring the circle is impossible (corollary of pi's transcendence)",
+      "leanType": "not (Constructible Real.pi)"
+    }
+  ],
+  "sorries": 0
+}

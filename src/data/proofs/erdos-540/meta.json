@@ -1,0 +1,201 @@
+{
+  "id": "erdos-540",
+  "title": "Erdős Problem #540: Zero-Sum Subsets (Erdős-Heilbronn Conjecture)",
+  "slug": "erdos-540",
+  "description": "If A ⊆ ℤ/Nℤ has size ≫ √N, must A contain a non-empty zero-sum subset? YES, proved by Szemerédi (1970). Optimal threshold √(2N) for primes (Balandraud 2012).",
+  "meta": {
+    "author": "Erdős–Heilbronn (1964 conjecture), Szemerédi (1970 proof)",
+    "sourceUrl": "https://erdosproblems.com/540",
+    "date": "1970",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos540Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "zero-sums",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 540,
+    "erdosUrl": "https://erdosproblems.com/540",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "ZMod",
+        "description": "Integers modulo N",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Real square root for thresholds",
+        "module": "Mathlib.Data.Real.Sqrt"
+      }
+    ],
+    "originalContributions": [
+      "subsetSum: sum of elements in a Finset of ZMod N",
+      "IsZeroSumSubset / HasZeroSumSubset: zero-sum subset predicates",
+      "ErdosHeilbronnConjecture: parameterized by constant c",
+      "OriginalConjecture: existential form of the conjecture",
+      "olson_prime_case axiom: prime case with √(2p) threshold",
+      "szemeredi_general_case axiom: general case resolving the conjecture",
+      "erdos_540_solved theorem: proved from szemeredi_general_case",
+      "case_N_1 theorem: trivial case proved directly",
+      "erdos_540_summary / erdos_540 theorems: summary and main entry point"
+    ],
+    "axiomCount": 2,
+    "lineCount": 160,
+    "assumptions": "2 axioms: olson_prime_case, szemeredi_general_case. 0 sorries.",
+    "theoremCount": 5,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "The Erdős-Heilbronn conjecture was posed in 1964 and asks whether large subsets of cyclic groups necessarily contain non-empty zero-sum subsets. The precise question is: does there exist a constant c such that any A ⊆ ℤ/Nℤ with |A| > c·√N must contain a non-empty subset summing to 0 mod N? The conjecture sits at the foundation of additive combinatorics, connecting subset sum problems to group structure.\n\nOlson made the first breakthrough in 1968, proving the conjecture for prime N with the constant √2: any subset of ℤ/pℤ of size exceeding √(2p) must contain a zero-sum subset. His proof used polynomial methods. Szemerédi then settled the general case in 1970, proving the conjecture for all N by showing that large subsets in any cyclic group have this property. This resolved Problem #540 completely.\n\nSubsequent work refined the constants. Hamidoune and Zémor (1996) showed that (1+o(1))·√(2N) works asymptotically for arbitrary finite abelian groups. Balandraud (2012) achieved the definitive result for primes: √(2p) is the exact threshold, meaning sets just below this size can avoid zero-sums, but any set at or above it cannot. The optimal constant is thus √2 for primes and asymptotically √2 in general.",
+    "problemStatement": "**Problem (SOLVED)**\n\nIs it true that if $A \\subseteq \\mathbb{Z}/N\\mathbb{Z}$ has size $\\gg \\sqrt{N}$ then there exists some non-empty $S \\subseteq A$ such that $\\sum_{s \\in S} s \\equiv 0 \\pmod{N}$?\n\n**Answer:** YES\n- **Olson (1968):** Proved for primes, threshold $\\sqrt{2p}$\n- **Szemerédi (1970):** Proved for all $N$\n- **Balandraud (2012):** Exact threshold $\\sqrt{2p}$ for primes\n- **Optimal constant:** $\\sqrt{2}$",
+    "text": "If A ⊆ ℤ/Nℤ has size ≫ √N, must A contain a non-empty zero-sum subset? YES, proved by Szemerédi (1970). Optimal threshold √(2N) for primes (Balandraud 2012).",
+    "proofStrategy": "The formalization defines subset sums in ℤ/Nℤ, the zero-sum property, and the Erdős-Heilbronn threshold as a parameterized Prop. Two axioms encode the proven results: olson_prime_case (1968, prime case with √(2p) threshold) and szemeredi_general_case (1970, general resolution). Balandraud's tight bound (2012) and the Hamidoune–Zémor (1996) asymptotic are mentioned in docstrings but not axiomatized. The main theorem erdos_540_solved is proved from Szemerédi's axiom. The trivial case N = 1 is proved directly (all elements are 0 in ℤ/1ℤ). The Davenport constant provides context: sequences need N elements for zero-sums, but subsets only need √N.",
+    "keyInsights": [
+      "**√N vs N Threshold:** The Davenport constant gives a linear bound (sequences of length N), but subsets of size √N already suffice — a dramatic improvement from subset combinatorics.",
+      "**Pigeonhole Foundation:** With k elements there are 2^k − 1 non-empty subsets mapping to N possible sums. When 2^k > N (i.e., k > log N), two subsets collide; their symmetric difference has sum 0. The √N bound requires deeper structural analysis.",
+      "**Optimal Constant √2:** For primes, √(2p) is exact (Balandraud). Sets of size < √(2p) can avoid zero-sums by choosing elements from a sum-free-like configuration.",
+      "**Abelian Generalization:** The result extends beyond cyclic groups to all finite abelian groups G with threshold √|G|.",
+      "**Polynomial Method:** Olson's original proof for primes uses the Chevalley–Warning theorem and polynomial arguments over finite fields."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Additive combinatorics (sumsets, density)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "Subset sums, zero-sum subsets, and the HasZeroSumSubset predicate",
+      "startLine": 28,
+      "endLine": 42,
+      "mathContext": "Mathematical content: Subset sums, zero-sum subsets, and the HasZeroSumSubset predicate"
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős-Heilbronn Conjecture",
+      "summary": "Threshold property and the original conjecture statement",
+      "startLine": 44,
+      "endLine": 58,
+      "mathContext": "Mathematical content: Threshold property and the original conjecture statement"
+    },
+    {
+      "id": "olson",
+      "title": "Olson's Theorem (1968) — Prime Case",
+      "summary": "First proof for primes with √(2p) threshold",
+      "startLine": 60,
+      "endLine": 78,
+      "mathContext": "Verified: First proof for primes with √(2p) threshold"
+    },
+    {
+      "id": "szemeredi",
+      "title": "Szemerédi's Theorem (1970) — General Case",
+      "summary": "Complete resolution of the conjecture",
+      "startLine": 80,
+      "endLine": 93,
+      "mathContext": "Mathematical content: Complete resolution of the conjecture"
+    },
+    {
+      "id": "balandraud",
+      "title": "Balandraud's Optimal Result (2012)",
+      "summary": "Discusses the exact √(2p) threshold (mentioned in docstring; not axiomatized in this file)",
+      "startLine": 95,
+      "endLine": 104,
+      "mathContext": "Mathematical content: Exact threshold √(2p) for primes with tightness"
+    },
+    {
+      "id": "hamidoune-zemor",
+      "title": "Hamidoune–Zémor (1996)",
+      "summary": "Discusses the (1+o(1))√(2N) asymptotic (mentioned in docstring; not axiomatized in this file)",
+      "startLine": 105,
+      "endLine": 113,
+      "mathContext": "Mathematical content: Near-optimal (1+o(1))√(2N) for all N"
+    },
+    {
+      "id": "davenport",
+      "title": "Trivial Case and Davenport Constant",
+      "summary": "case_N_1 theorem proved directly for ℤ/1ℤ; Davenport constant context in docstring",
+      "startLine": 114,
+      "endLine": 131,
+      "mathContext": "Mathematical content: N = 1 proved directly; Davenport constant comparison"
+    },
+    {
+      "id": "abelian",
+      "title": "Generalization to Abelian Groups",
+      "summary": "Discusses extension to arbitrary finite abelian groups (docstring only; not axiomatized)",
+      "startLine": 132,
+      "endLine": 138,
+      "mathContext": "Mathematical content: Extension to arbitrary finite abelian groups"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_540_summary and erdos_540 theorems collecting the results",
+      "startLine": 139,
+      "endLine": 160,
+      "identifiers": []
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #540 is SOLVED. The Erdős-Heilbronn conjecture (1964) was proved by Szemerédi (1970): large subsets of ℤ/Nℤ necessarily contain zero-sum subsets. The optimal threshold is √(2N) for primes (Balandraud 2012) and asymptotically (1+o(1))√(2N) for all N (Hamidoune–Zémor 1996). The result extends to arbitrary finite abelian groups.",
+    "implications": "**Theoretical Significance**: This result is foundational in additive combinatorics.\n\nIt shows that large subsets of cyclic groups cannot avoid zero-sum configurations, with precise thresholds now known. The √N threshold (versus the linear Davenport bound) highlights the power of subset combinatorics over sequence combinatorics.",
+    "openQuestions": [
+      "What is the exact threshold for composite N (non-prime)?",
+      "Can the proof for general N be made elementary?",
+      "What are the best bounds for non-cyclic abelian groups?",
+      "What about weighted or signed variants of the zero-sum problem?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos540",
+    "lineCount": 160,
+    "axiomCount": 2,
+    "theoremCount": 5,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos540Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1136",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-237",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-339",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, solved"
+    }
+  ],
+  "sorries": 0
+}

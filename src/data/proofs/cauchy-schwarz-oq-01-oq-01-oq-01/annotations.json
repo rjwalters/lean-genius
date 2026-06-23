@@ -1,0 +1,125 @@
+[
+  {
+    "id": "ann-projection-pipeline",
+    "proofId": "cauchy-schwarz-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 38,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "The Projection Pipeline: projCoeff → orthProj → orthResidual",
+    "content": "The three definitions form a clean pipeline: `projCoeff v u = ⟪v,u⟫/⟪v,v⟫` is the scalar coefficient of the projection; `orthProj v u = projCoeff v u • v` is the projection vector itself; `orthResidual v u = u - orthProj v u` is the component of u orthogonal to v. The fundamental theorem `orthResidual_inner_eq_zero` proves ⟪orthResidual v u, v⟫ = 0 by `field_simp; ring` after expanding the inner product. The decomposition identity u = orthProj v u + orthResidual v u holds trivially.",
+    "mathContext": "For an inner product space $E$ over $\\mathbb{K}$ (real or complex), the orthogonal projection of $u$ onto $v \\ne 0$ is $\\text{proj}_v(u) = \\frac{\\langle v, u\\rangle}{\\langle v, v\\rangle} v$. The residual $u - \\text{proj}_v(u)$ is orthogonal to $v$: $\\langle u - \\text{proj}_v(u), v\\rangle = \\langle u, v\\rangle - \\frac{\\langle v, u\\rangle}{\\langle v, v\\rangle}\\langle v, v\\rangle = \\langle u,v\\rangle - \\langle v, u\\rangle = 0$ (using conjugate symmetry $\\langle v,u\\rangle = \\overline{\\langle u,v\\rangle}$ — the `inner_conj_symm` Mathlib lemma). The `field_simp; ring` proof works because Lean can simplify the division after establishing $\\langle v,v\\rangle \\ne 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "inner product",
+      "orthogonal projection",
+      "projCoeff",
+      "inner_conj_symm",
+      "field_simp + ring"
+    ],
+    "prerequisites": [
+      "inner product spaces",
+      "Lean RCLike typeclass",
+      "InnerProductSpace 𝕜 E"
+    ]
+  },
+  {
+    "id": "ann-gram-schmidt-2",
+    "proofId": "cauchy-schwarz-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 70,
+      "endLine": 82
+    },
+    "type": "concept",
+    "title": "Two-Vector Gram-Schmidt: Orthogonality by Residual",
+    "content": "The two-vector Gram-Schmidt orthogonalization is just the residual computation: given v₁ ≠ 0 and u₂, set v₂ = orthResidual v₁ u₂ = u₂ - (⟪v₁,u₂⟫/⟪v₁,v₁⟫)·v₁. Then v₂ ⊥ v₁ by `orthResidual_inner_eq_zero`. The theorem `gramSchmidt2_pair_orthogonal` gets ⟪v₁, v₂⟫ = 0 from ⟪v₂, v₁⟫ = 0 using `inner_eq_zero_symm`. This is the complete 2-vector Gram-Schmidt: no computation needed beyond the fundamental orthogonality of the residual.",
+    "mathContext": "Gram-Schmidt (2-vector): Given $v_1, u_2$ with $v_1 \\ne 0$, set $v_2 = u_2 - \\frac{\\langle v_1, u_2\\rangle}{\\langle v_1, v_1\\rangle} v_1$. Then $v_1 \\perp v_2$: $\\langle v_2, v_1\\rangle = \\langle u_2 - \\text{proj}_{v_1}(u_2), v_1\\rangle = 0$. The symmetric form $\\langle v_1, v_2\\rangle = 0$ follows from $\\langle x, y\\rangle = 0 \\Leftrightarrow \\langle y, x\\rangle = 0$ (which holds because $\\langle y,x\\rangle = \\overline{\\langle x,y\\rangle}$ and $\\overline{0} = 0$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Gram-Schmidt process",
+      "orthogonality",
+      "inner_eq_zero_symm",
+      "NormedAddCommGroup"
+    ],
+    "prerequisites": [
+      "orthResidual definition and fundamental theorem",
+      "inner product conjugate symmetry"
+    ]
+  },
+  {
+    "id": "ann-gram-schmidt-3",
+    "proofId": "cauchy-schwarz-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 87,
+      "endLine": 116
+    },
+    "type": "insight",
+    "title": "Three-Vector Gram-Schmidt: The Cross-Term Cancellation",
+    "content": "The 3-vector step `gramSchmidt3 v₁ v₂ u₃ = orthResidual v₂ (orthResidual v₁ u₃)` first removes the v₁-component of u₃, then removes the v₂-component. Orthogonality to v₂ is immediate (it's the final residual). Orthogonality to v₁ requires the key assumption v₁ ⊥ v₂: when computing ⟪gramSchmidt3 v₁ v₂ u₃, v₁⟫, expanding produces a term `(⟪v₂, ...⟫/⟪v₂,v₂⟫)·⟪v₂, v₁⟫`. This cross-term vanishes because ⟪v₂, v₁⟫ = conj(⟪v₁, v₂⟫) = conj(0) = 0.",
+    "mathContext": "The key algebraic fact: $\\langle \\text{GS}_3(v_1,v_2,u_3), v_1 \\rangle = \\langle u_3 - \\text{proj}_{v_1}(u_3) - \\text{proj}_{v_2}(u_3 - \\text{proj}_{v_1}(u_3)), v_1 \\rangle$. After expanding: $\\langle u_3, v_1\\rangle - \\frac{\\langle v_1,u_3\\rangle}{\\langle v_1,v_1\\rangle}\\langle v_1,v_1\\rangle - \\frac{\\langle v_2, u_3 - \\ldots\\rangle}{\\langle v_2,v_2\\rangle} \\cdot \\underbrace{\\langle v_2, v_1\\rangle}_{= 0} = 0$. Without $v_1 \\perp v_2$, the last term would NOT vanish. This is why Gram-Schmidt processes the orthogonalized vectors in order — each new projection must be against already-orthogonalized vectors.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gram-Schmidt 3-vector",
+      "cross-term cancellation",
+      "iterated projection",
+      "inner_eq_zero_symm",
+      "inner_conj_symm"
+    ],
+    "prerequisites": [
+      "orthResidual orthogonality",
+      "inner product conjugate symmetry",
+      "two-vector GS orthogonality"
+    ]
+  },
+  {
+    "id": "ann-cs-equality",
+    "proofId": "cauchy-schwarz-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 134,
+      "endLine": 178
+    },
+    "type": "insight",
+    "title": "CS Equality ↔ Residual Zero: The Central Biconditional",
+    "content": "The theorem `cs_equality_iff_residual_zero` proves: ‖⟪u,v⟫‖ = ‖u‖·‖v‖ ↔ orthResidual v u = 0. The backward direction (scalar multiple → equality) is a direct computation. The forward direction uses the Pythagorean decomposition: ‖u‖² = ‖residual‖² + ‖projection‖². From CS equality, one derives ‖projection‖ = ‖u‖, forcing ‖residual‖ = 0. The proof uses `orthResidual_eq_zero_iff_smul` to convert 'residual = 0' to '∃ c, u = c·v'.",
+    "mathContext": "The proof reconstructs the CS equality proof from scratch using the projection decomposition. Let $c = \\langle v,u\\rangle/\\langle v,v\\rangle$ and $w = u - cv$. Then: (1) $w \\perp v$ so $w \\perp cv$, giving Pythagoras $\\|u\\|^2 = \\|w\\|^2 + \\|cv\\|^2$; (2) $|\\langle u,v\\rangle| = \\|cv\\|\\cdot\\|v\\| = \\|c\\|\\cdot\\|v\\|^2$; (3) CS equality forces $\\|c\\|\\cdot\\|v\\| = \\|u\\|$, so $\\|cv\\|^2 = \\|u\\|^2$, so $\\|w\\|^2 = 0$, so $w = 0$. The forward direction (residual zero → CS equality) is simply: if $u = cv$ then $|\\langle u,v\\rangle| = |c|\\cdot\\|v\\|^2 = \\|cv\\|\\cdot\\|v\\| = \\|u\\|\\cdot\\|v\\|$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cauchy-Schwarz equality case",
+      "Pythagorean theorem",
+      "linear dependence",
+      "norm_add_sq",
+      "orthResidual_eq_zero_iff_smul"
+    ],
+    "prerequisites": [
+      "Cauchy-Schwarz inequality",
+      "inner product Pythagorean theorem",
+      "Lean norm_add_sq lemma"
+    ]
+  },
+  {
+    "id": "ann-norm-bound",
+    "proofId": "cauchy-schwarz-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 183,
+      "endLine": 196
+    },
+    "type": "concept",
+    "title": "Norm Bound: Projection Decreases Norm via Pythagoras",
+    "content": "The theorem `norm_orthResidual_le` proves ‖orthResidual v u‖ ≤ ‖u‖ using the Pythagorean theorem. Since residual ⊥ projection, we have ‖u‖² = ‖residual‖² + ‖projection‖². Since ‖projection‖² ≥ 0, we get ‖residual‖² ≤ ‖u‖². The proof uses `orthResidual_inner_eq_zero` to get the perpendicularity, then `norm_add_sq` (with the appropriate sign convention) to get the Pythagorean identity, and finally `nlinarith` to conclude.",
+    "mathContext": "Key geometric fact: Orthogonal projection is the closest point in a subspace. $\\|u - \\text{proj}_v(u)\\| \\le \\|u - w\\|$ for any $w$ in span$(v)$. In particular, ‖residual‖ ≤ ‖u‖ (choosing $w = 0$). The formal Pythagorean identity: if $x \\perp y$ then $\\|x+y\\|^2 = \\|x\\|^2 + \\|y\\|^2$. This is `norm_add_sq (𝕜 := 𝕜)` after verifying $\\langle x,y\\rangle = 0$ forces the cross-term $\\text{Re}(\\langle x,y\\rangle) = 0$ in the Mathlib expansion $\\|x+y\\|^2 = \\|x\\|^2 + \\|y\\|^2 + 2\\text{Re}(\\langle x,y\\rangle)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Pythagorean theorem",
+      "closest point projection",
+      "norm_add_sq",
+      "nlinarith",
+      "orthogonal complement"
+    ],
+    "prerequisites": [
+      "inner product Pythagorean identity",
+      "Lean norm_add_sq lemma",
+      "orthResidual_inner_eq_zero"
+    ]
+  }
+]

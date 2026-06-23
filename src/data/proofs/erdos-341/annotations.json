@@ -1,0 +1,168 @@
+[
+  {
+    "id": "erdos-341-ann-header",
+    "proofId": "erdos-341",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Module Documentation and Imports",
+    "content": "The module docstring introduces Erdős Problem #341 (Dickson's sum-free extension): given a finite starting set $A_0 = \\{a_1 < \\cdots < a_k\\}$, greedily extend to an infinite sequence where each $a_{n+1}$ is the smallest integer greater than $a_n$ not expressible as $a_i + a_j$ for $i, j \\leq n$. The conjecture asks whether the difference sequence $a_{m+1} - a_m$ is eventually periodic. Originally studied by Dickson, popularized by Erdős and Graham (1980, p. 53), and featured as Problem 7 on Ben Green's open problems list. Even the starting set $\\{1, 4, 9, 16, 25\\}$ (perfect squares) requires thousands of terms before periodicity emerges. Imports provide Finset (for finite initial sets and their pairwise sums), Nat.Basic (for natural number arithmetic), and Tactic (for proof automation).",
+    "mathContext": "Given $A_0 = \\{a_1, \\ldots, a_k\\}$, define $a_{n+1} = \\min\\{m > a_n : m \\notin \\{a_i + a_j : i, j \\leq n\\}\\}$. Conjecture: $\\exists p \\geq 1, N$ such that $a_{n+p+1} - a_{n+p} = a_{n+1} - a_n$ for all $n \\geq N$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "greedy algorithms",
+      "sum-free extension",
+      "Dickson's problem",
+      "Ben Green's problem list"
+    ],
+    "prerequisites": [
+      "Finset API",
+      "natural number arithmetic"
+    ]
+  },
+  {
+    "id": "erdos-341-ann-sums",
+    "proofId": "erdos-341",
+    "range": {
+      "startLine": 29,
+      "endLine": 36
+    },
+    "type": "definition",
+    "title": "Pairwise Sums and Sum Representability",
+    "content": "pairwiseSums S = {a_i + a_j : a_i, a_j in S}. IsSumRepresentable S n holds when n is in the pairwise sum set. The Dickson extension avoids landing on these values.",
+    "mathContext": "The set of pairwise sums $P(S) = \\{a + b : a, b \\in S\\}$ is computed in Lean as `(S.product S).image (fun p => p.1 + p.2)`, which includes both ordered and diagonal sums ($a + a$). `IsSumRepresentable S n := n \\in P(S)` is the membership test. Note this allows $a = b$ (self-sums), so $2a \\in P(S)$ for all $a \\in S$. The size $|P(S)| \\le \\binom{|S|+1}{2}$ for a Sidon-like set, but can be much smaller if $S$ has additive structure. The Dickson extension explicitly avoids $P(S)$ at each step.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sumset A+A",
+      "sum-free sets",
+      "Schur numbers",
+      "Sidon set sum structure"
+    ],
+    "prerequisites": [
+      "Finset.product and Finset.image",
+      "natural number addition",
+      "membership in Finset"
+    ]
+  },
+  {
+    "id": "erdos-341-ann-seq",
+    "proofId": "erdos-341",
+    "range": {
+      "startLine": 38,
+      "endLine": 49
+    },
+    "type": "definition",
+    "title": "Dickson Extension Sequence and Differences",
+    "content": "dicksonSeq A0 gives the n-th element of the greedy sum-avoiding extension. dicksonDiff A0 n = a_{n+1} - a_n is the difference sequence whose eventual periodicity is the conjecture.",
+    "mathContext": "The Dickson extension $a_0 = \\max A_0$, $a_{n+1} = \\min\\{m > a_n : m \\notin P(\\{a_0, \\ldots, a_n\\})\\}$ is defined in Lean using `Nat.find` (which requires an existence proof, here axiomatized via `sorry`). The sequence is automatically strictly increasing since each $a_{n+1} > a_n$. The difference sequence $d(n) = a_{n+1} - a_n$ transforms the growth rate question into a periodicity question. If $d(n)$ is eventually periodic with period $p$ from index $N$, then $a_n \\sim cn$ for large $n$ with $c = (d(N) + \\cdots + d(N+p-1))/p$, giving exact linear growth.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.find in Mathlib",
+      "greedy sequence constructions",
+      "difference operators on sequences",
+      "linear recurrence via periodicity"
+    ],
+    "prerequisites": [
+      "noncomputable definitions with Nat.find",
+      "Finset.max' for nonempty sets",
+      "natural number subtraction"
+    ]
+  },
+  {
+    "id": "erdos-341-ann-periodic",
+    "proofId": "erdos-341",
+    "range": {
+      "startLine": 51,
+      "endLine": 53
+    },
+    "type": "lemma",
+    "title": "Eventual Periodicity",
+    "content": "IsEventuallyPeriodic f p N holds when f(n+p) = f(n) for all n >= N with p >= 1. This captures the notion of 'periodic after a transient phase'.",
+    "mathContext": "Eventual periodicity means $\\exists p \\ge 1,\\ \\exists N,\\ \\forall n \\ge N,\\ f(n+p) = f(n)$. The Lean predicate `IsEventuallyPeriodic f p N` requires $p \\ge 1$ (excluding the trivial $p = 0$ case) and universal agreement from index $N$ onward. This is equivalent to saying the sequence $f$ is ultimately a periodic function, or that $f$ is an element of the eventual image of the shift operator. Eventually periodic sequences are automatic sequences of a special type, connecting to the theory of finite automata and regular languages.",
+    "significance": "key",
+    "relatedConcepts": [
+      "automatic sequences",
+      "shift dynamical systems",
+      "ultimately periodic words",
+      "Cobham's theorem"
+    ],
+    "prerequisites": [
+      "universal quantification from a starting index",
+      "periodicity of natural number sequences"
+    ]
+  },
+  {
+    "id": "erdos-341-ann-conjecture",
+    "proofId": "erdos-341",
+    "range": {
+      "startLine": 57,
+      "endLine": 61
+    },
+    "type": "concept",
+    "title": "Erdos-Dickson Conjecture",
+    "content": "For every finite nonempty starting set A0, the difference sequence d(n) is eventually periodic. An old problem of Dickson, highlighted by Erdos-Graham (1980) and featured as Problem 7 on Ben Green's open problems list.",
+    "mathContext": "The conjecture `erdos_341_conjecture` states: $\\forall A_0 \\text{ (finite, nonempty)},\\ \\exists p \\ge 1,\\ \\exists N,\\ \\forall n \\ge N,\\ d(n+p) = d(n)$. The universality over ALL starting sets makes this very strong — it asserts that the greedy sum-avoidance mechanism always produces eventually periodic behaviour, regardless of the initial conditions. This is reminiscent of the Collatz conjecture in spirit (a simple iteration rule always reaches a periodic pattern), though the mechanism is entirely different. Dickson originally studied this in the early 20th century; Erdos and Graham gave it wider visibility. Ben Green lists it as Problem 7 in his collection, indicating its continued interest in modern additive combinatorics.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Collatz-type problems",
+      "greedy algorithm convergence",
+      "additive combinatorics open problems",
+      "Ben Green's problem list"
+    ],
+    "prerequisites": [
+      "Finset.Nonempty",
+      "existential quantification over period and offset",
+      "IsEventuallyPeriodic definition"
+    ]
+  },
+  {
+    "id": "erdos-341-ann-structural",
+    "proofId": "erdos-341",
+    "range": {
+      "startLine": 63,
+      "endLine": 87
+    },
+    "type": "insight",
+    "title": "Structural Properties: Monotonicity, Avoidance, Minimality",
+    "content": "The sequence is strictly increasing (d(n) >= 1), avoids self-sums at each step, and each element is the smallest valid extension. These are the defining invariants of the Dickson construction.",
+    "mathContext": "Four structural axioms: (1) `dickson_strictly_increasing`: $a_{n+1} > a_n$, immediate from the greedy rule. (2) `dickson_diff_pos`: $d(n) \\ge 1$, a corollary. (3) `dickson_avoids_sums`: $a_{n+1} \\notin P(\\{a_0, \\ldots, a_n\\})$, the defining sum-avoidance property. (4) `dickson_minimal`: every integer $m$ with $a_n < m < a_{n+1}$ satisfies $m \\in P(\\{a_0, \\ldots, a_n\\})$, meaning the greedy choice is truly the smallest valid extension. Together, these characterize the Dickson sequence uniquely given $A_0$. The minimality property is crucial: it means the 'gaps' in the sequence are precisely filled by pairwise sums, creating a partition of $\\mathbb{N}_{> a_0}$ into sequence elements and pairwise sums.",
+    "significance": "key",
+    "relatedConcepts": [
+      "greedy algorithm characterization",
+      "partition of integers by sumset membership",
+      "minimal excluded elements",
+      "sum-free set structure"
+    ],
+    "prerequisites": [
+      "strict inequality chains",
+      "IsSumRepresentable predicate",
+      "Finset.range and Finset.image composition"
+    ]
+  },
+  {
+    "id": "erdos-341-ann-examples",
+    "proofId": "erdos-341",
+    "range": {
+      "startLine": 89,
+      "endLine": 116
+    },
+    "type": "concept",
+    "title": "Examples, Slow Periodicity, and Growth",
+    "content": "Starting from {1}: sequence is 1, 2, 4, 8, 13, 21, 31, 45, ... (the Mian-Chowla sequence). Starting from {1,4,9,16,25}: periodicity takes thousands of terms. Different starting sets yield different eventual periods. Growth is at least linear.",
+    "mathContext": "The singleton case $A_0 = \\{1\\}$ gives the Mian-Chowla (greedy Sidon) sequence, connecting Problems #340 and #341. The axiom `squares_slow_periodicity` states that for the perfect squares starting set, no small period ($p \\le 10$) works before index 1000, illustrating the 'slow emergence' phenomenon. `period_depends_on_initial` asserts different starting sets yield different periods, showing the eventual period is a non-trivial function of $A_0$. `dickson_linear_growth` gives $a_n \\ge cn$ for some $c \\ge 1$, which follows from $d(n) \\ge 1$. If the conjecture holds, the asymptotic slope $\\lim a_n/n = (d(N) + \\cdots + d(N+p-1))/p$ is a computable rational number depending on $A_0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mian-Chowla sequence (Problem #340)",
+      "transient length in dynamical systems",
+      "period as function of initial conditions",
+      "linear growth rate"
+    ],
+    "prerequisites": [
+      "specific Finset literals",
+      "negation of small-period periodicity",
+      "existential quantification over distinct initial sets"
+    ]
+  }
+]

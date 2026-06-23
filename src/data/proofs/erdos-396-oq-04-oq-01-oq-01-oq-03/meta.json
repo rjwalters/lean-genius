@@ -1,0 +1,106 @@
+{
+  "id": "erdos-396-oq-04-oq-01-oq-01-oq-03",
+  "title": "Erdős #396 OQ-04 → OQ-01 → OQ-01 → OQ-03: Catalan Numbers Are Log-Convex (the Turán Inequality)",
+  "slug": "erdos-396-oq-04-oq-01-oq-01-oq-03",
+  "description": "The grandparent proves the Catalan recurrence ratio r n = (4n+2)/(n+2) = 4 − 6/(n+2) is strictly increasing. A strictly increasing ratio of consecutive terms is exactly strict log-convexity of the underlying sequence, so this follow-up extracts the structural consequence for the Catalan numbers. The deficit δ n = 6/(n+2) is shown strictly decreasing (refining the parent's δ n → 0 to a monotone descent). The Turán inequality catalan(n+1)² < catalan n · catalan(n+2) is proved over both ℝ and ℕ: substituting catalan(n+1) = r n · catalan n and catalan(n+2) = r(n+1)·r n·catalan n, the gap equals r n · catalan(n)² · (r(n+1) − r n) > 0, positive precisely because the ratio strictly increases. The same fact is phrased as positivity of the 2×2 Hankel minor catalan n · catalan(n+2) − catalan(n+1)², and taking logarithms of the positive Turán inequality gives the literal log-convexity statement 2·log(catalan(n+1)) < log(catalan n) + log(catalan(n+2)). No Stirling estimate or asymptotic is used.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "sourceUrl": "https://erdosproblems.com/396",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos396OQ04OQ01OQ01OQ03.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "catalan",
+      "recurrence",
+      "log-convexity",
+      "turan-inequality",
+      "hankel-determinant",
+      "monotonicity",
+      "logarithm"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "erdosNumber": 396,
+    "erdosUrl": "https://erdosproblems.com/396",
+    "axiomCount": 0,
+    "lineCount": 128,
+    "assumptions": "0 axioms, 0 sorries. All results depend only on the foundational axioms propext / Classical.choice / Quot.sound (no sorryAx, no Lean.ofReduceBool / native_decide). Built against Mathlib 4.26.0.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The grandparent Erdős #396 OQ-04 → OQ-01 reads the two-term Catalan recurrence as the multiplicative step r n = (4n+2)/(n+2) = 4 − 6/(n+2), and proves it is strictly increasing (ratio_strictMono), with r n < 4 and r n → 4. The parent OQ-04 → OQ-01 → OQ-01 repackages this as the harmonic deficit δ n = 4 − r n = 6/(n+2) with δ n → 0. A sequence of positive terms is (strictly) log-convex exactly when the ratio of consecutive terms is (strictly) increasing; for the Catalan numbers this is the classical Turán inequality catalan(n+1)² ≤ catalan n · catalan(n+2), a named structural property distinct from the asymptotic-rate questions pursued by the sibling entries. This entry makes that consequence explicit at the recurrence level.",
+    "problemStatement": "The upstream ratio r n = catalan(n+1)/catalan(n) is strictly increasing. Does this directly yield the strict log-convexity (Turán inequality) of the Catalan numbers, catalan(n+1)² < catalan n · catalan(n+2), with the gap controlled by the ratio increment r(n+1) − r n — and equivalently the literal logarithmic-midpoint inequality 2·log catalan(n+1) < log catalan n + log catalan(n+2)?",
+    "text": "Each Catalan step multiplies by the ratio: catalan(n+1) = r n · catalan n, hence catalan(n+2) = r(n+1)·r n·catalan n. The Turán difference factors as catalan n · catalan(n+2) − catalan(n+1)² = r n · catalan(n)² · (r(n+1) − r n), which is positive because catalan(n) > 0, r n > 0, and the ratio strictly increases (the upstream ratio_strictMono). This gives the real and integer forms of the Turán inequality, the determinant phrasing 0 < catalan n · catalan(n+2) − catalan(n+1)² (positivity of the 2×2 Hankel minor of the shifted Catalan moment matrix), and — applying strict monotonicity of log on positives together with log(x²) = 2 log x and log(xy) = log x + log y — the literal log-convexity 2·log catalan(n+1) < log catalan n + log catalan(n+2). The deficit δ n = 6/(n+2) is correspondingly strictly decreasing, refining the parent's δ n → 0 to a monotone descent of r n to its supremum 4.",
+    "proofStrategy": "Import the parent (Proofs.Erdos396OQ04OQ01OQ01), reusing the ratio definition and identities, the recurrence bridge catalan(n+1) = r n · catalan n, ratio positivity, strict monotonicity ratio_strictMono, catalan positivity, and the deficit identity δ n = 6/(n+2). (1) deficit_strictAnti: rewrite both sides via deficit_eq and apply div_lt_div_of_pos_left to the cast a+2 < b+2. (2) ratio_lt_succ: ratio_strictMono at n < n+1. (3) turan_real: rewrite catalan(n+1) and catalan(n+2) through catalan_succ_eq_ratio_mul, supply the positive product r n · catalan(n)² · (r(n+1) − r n) as a witness, and close with nlinarith. (4) turan_nat: cast turan_real with exact_mod_cast. (5) hankel_det_pos: sub_pos.mpr turan_real. (6) catalan_logConvex: apply Real.log_lt_log to the positive Turán inequality, then rewrite with Real.log_pow and Real.log_mul and finish with linarith.",
+    "keyInsights": [
+      "**Strictly increasing ratio = strict log-convexity.** A positive sequence is strictly log-convex exactly when the ratio of consecutive terms strictly increases. The grandparent already established ratio_strictMono for r n = catalan(n+1)/catalan(n), so the Turán inequality for Catalan numbers is its immediate structural reading — no new analytic input is needed.",
+      "**The Turán gap is the ratio increment, scaled.** Writing both sides through the recurrence, catalan n · catalan(n+2) − catalan(n+1)² = r n · catalan(n)² · (r(n+1) − r n). Every factor is manifestly positive, so the single inequality r n < r(n+1) (= the deficit decreasing) drives the whole result.",
+      "**One inequality, four faces.** The same positive quantity is the real Turán inequality, its integer form (Catalan numbers being integers), positivity of the 2×2 Hankel minor of the shifted Catalan moment matrix, and — after taking logs — the literal midpoint log-convexity 2·log catalan(n+1) < log catalan n + log catalan(n+2).",
+      "**A monotone refinement of the parent.** Strict monotonicity of the ratio is exactly strict antitonicity of the deficit δ n = 6/(n+2): the parent's δ n → 0 is upgraded to a strictly decreasing descent, so r n rises monotonically to its supremum 4."
+    ],
+    "prerequisites": [
+      "The grandparent ratio identity r n = 4 − 6/(n+2), its strict monotonicity ratio_strictMono, and the recurrence bridge catalan(n+1) = r n · catalan n",
+      "The parent deficit identity δ n = 6/(n+2)",
+      "Positivity of the Catalan numbers and the order lemma div_lt_div_of_pos_left",
+      "Strict monotonicity of log on positives, with log(x²) = 2 log x and log(xy) = log x + log y"
+    ]
+  },
+  "conclusion": {
+    "summary": "Because the Catalan recurrence ratio r n strictly increases (upstream ratio_strictMono), the Catalan numbers are strictly log-convex: the Turán inequality catalan(n+1)² < catalan n · catalan(n+2) holds over both ℝ and ℕ, with gap r n · catalan(n)² · (r(n+1) − r n) > 0. Equivalent phrasings are positivity of the 2×2 Hankel minor catalan n · catalan(n+2) − catalan(n+1)² and the literal log-convexity 2·log catalan(n+1) < log catalan n + log catalan(n+2). The deficit δ n = 6/(n+2) is correspondingly strictly decreasing, refining the parent's δ n → 0. All six theorems are fully machine-checked with no axioms or sorries.",
+    "implications": "The entry exhibits a named structural property of the Catalan numbers — log-convexity / the Turán inequality — as a direct consequence of the recurrence-ratio monotonicity established upstream, complementing the sibling entries that study the growth rate and the 3/2 critical exponent. The factored gap localises the whole phenomenon in the single increment r(n+1) − r n, and the Hankel-minor phrasing connects it to determinant positivity of the Catalan moment sequence.",
+    "openQuestions": [
+      "Does the same ratio-monotonicity argument give the stronger Newton-type log-concavity/convexity hierarchy, e.g. bounds on catalan n · catalan(n+2) / catalan(n+1)² = r(n+1)/r n, and does that quotient converge to 1 monotonically as n → ∞?",
+      "Is the full Hankel matrix of Catalan numbers (det = 1 classically) recoverable by an LU/Cholesky factorisation whose pivots are exactly the consecutive ratios r n, tying the 2×2 minor positivity proved here to total positivity of the Catalan moment matrix?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.Erdos396OQ04OQ01OQ01"
+    ],
+    "opens": [
+      "Nat",
+      "Filter",
+      "Topology",
+      "Finset"
+    ],
+    "namespace": "Erdos396OQ01OQ01OQ03",
+    "lineCount": 128,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/Erdos396OQ04OQ01OQ01OQ03.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-396-oq-04-oq-01-oq-01",
+      "relationship": "parent",
+      "description": "Parent OQ: the deficit δ n = 4 − r n = 6/(n+2) is a harmonic tail with δ n → 0. This follow-up shows δ n is strictly decreasing (so r n is strictly increasing) and reads that monotonicity as the strict log-convexity (Turán inequality) of the Catalan numbers."
+    },
+    {
+      "targetId": "erdos-396-oq-04-oq-01-oq-01-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling OQ: exponentiates the harmonic deficit sum to extract the 3/2 critical exponent of Catalan growth. This entry instead uses the strict monotonicity of the ratio to prove log-convexity / the Turán inequality."
+    },
+    {
+      "targetId": "erdos-396-oq-04-oq-01",
+      "relationship": "ancestor",
+      "description": "Grandparent OQ: the asymptotics of the Catalan recurrence ratio r n = 4 − 6/(n+2), including the strict monotonicity ratio_strictMono that directly drives the Turán inequality here, and the recurrence catalan(n+1) = r n · catalan n."
+    },
+    {
+      "targetId": "erdos-396-oq-04",
+      "relationship": "ancestor",
+      "description": "The two-term Catalan recurrence (n+2)·catalan(n+1) = 2(2n+1)·catalan(n), the source of the ratio whose monotonicity is exploited here."
+    },
+    {
+      "targetId": "erdos-396",
+      "relationship": "ancestor",
+      "description": "Root problem: descending factorials dividing central binomial coefficients, whose base case rests on the Catalan numbers."
+    }
+  ],
+  "sorries": 0
+}

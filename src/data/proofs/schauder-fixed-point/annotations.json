@@ -1,0 +1,179 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "schauder-fixed-point",
+    "range": {
+      "startLine": 17,
+      "endLine": 56
+    },
+    "type": "concept",
+    "title": "From Finite to Infinite Dimensions",
+    "content": "Brouwer's Fixed Point Theorem (1911) guarantees that every continuous self-map of a closed ball in $\\mathbb{R}^n$ has a fixed point. But what happens in infinite-dimensional spaces like function spaces?\n\nThe answer is surprising: **Brouwer's theorem fails in infinite dimensions.** The unit ball in $\\ell^2$ is not compact, and there exist continuous self-maps with no fixed point.\n\nSchauder's insight (1930): **compactness is the key**, not finite-dimensionality. If we map a compact convex set to itself continuously, fixed points are guaranteed regardless of dimension.\n\nThis file formalizes the complete hierarchy: Brouwer -> Schauder -> Tychonoff, with applications to ODEs and the Banach contraction principle proved using Mathlib.",
+    "significance": "key",
+    "relatedConcepts": [
+      "compactness",
+      "finite-dimensional approximation",
+      "fixed point"
+    ],
+    "mathContext": "See annotation content for formal details of from finite to infinite dimensions",
+    "prerequisites": [
+      "Brouwer Fixed Point Theorem",
+      "Compactness",
+      "Convex Sets"
+    ]
+  },
+  {
+    "id": "ann-projection-lemma",
+    "proofId": "schauder-fixed-point",
+    "range": {
+      "startLine": 81,
+      "endLine": 101
+    },
+    "type": "concept",
+    "title": "Schauder Projection Lemma: The Bridge Between Dimensions",
+    "content": "The Schauder Projection Lemma is the technical heart of the proof. It says: given a compact set $K$ in a normed space and $\\varepsilon > 0$, we can approximate the identity map on $K$ by a continuous map into a finite-dimensional convex hull.\n\n**Construction:** Cover $K$ by finitely many $\\varepsilon$-balls $B(x_1,\\varepsilon), \\ldots, B(x_n,\\varepsilon)$ (possible by compactness). Define:\n$$\\pi_\\varepsilon(x) = \\frac{\\sum_i \\varphi_i(x) \\cdot x_i}{\\sum_i \\varphi_i(x)}$$\nwhere $\\varphi_i(x) = \\max(0, \\varepsilon - \\|x - x_i\\|)$ is a partition of unity.\n\nThen $\\pi_\\varepsilon$ is continuous, maps into $\\text{conv}\\{x_1,\\ldots,x_n\\}$ (finite-dimensional!), and $\\|\\pi_\\varepsilon(x) - x\\| < \\varepsilon$.",
+    "mathContext": "For compact $K$, $\\forall \\varepsilon > 0$, $\\exists \\pi_\\varepsilon: K \\to \\text{conv}(\\text{finite subset of } K)$ with $\\|\\pi_\\varepsilon - \\text{id}\\| < \\varepsilon$",
+    "significance": "key",
+    "relatedConcepts": [
+      "partition of unity",
+      "compact set",
+      "convex hull"
+    ],
+    "prerequisites": [
+      "Compact Sets",
+      "Partition Of Unity",
+      "Convex Hull"
+    ]
+  },
+  {
+    "id": "ann-schauder-main",
+    "proofId": "schauder-fixed-point",
+    "range": {
+      "startLine": 124,
+      "endLine": 149
+    },
+    "type": "concept",
+    "title": "Schauder Fixed Point Theorem",
+    "content": "**Theorem (Schauder, 1930):** Every continuous self-map of a nonempty compact convex subset of a normed space has a fixed point.\n\n**Proof idea:**\n1. For each $n$, use the projection lemma to get $\\pi_n: K \\to K_n$ with $\\|\\pi_n(x) - x\\| < 1/n$\n2. Define $g_n = \\pi_n \\circ f: K_n \\to K_n$ (maps a finite-dimensional compact convex set to itself)\n3. By **Brouwer's theorem**, each $g_n$ has a fixed point $x_n$\n4. By **compactness** of $K$, extract a convergent subsequence $x_{n_k} \\to x^*$\n5. Then $\\|f(x^*) - x^*\\| = \\lim \\|f(x_{n_k}) - \\pi_{n_k}(f(x_{n_k}))\\| \\leq \\lim 1/n_k = 0$\n\nSo $f(x^*) = x^*$. The key: **finite-dimensional approximation reduces Schauder to Brouwer.**",
+    "mathContext": "$K$ compact convex in normed space, $f: K \\to K$ continuous $\\Rightarrow \\exists x^* \\in K: f(x^*) = x^*$",
+    "significance": "key",
+    "prerequisites": [
+      "ann-projection-lemma"
+    ],
+    "relatedConcepts": [
+      "Brouwer fixed point theorem",
+      "sequential compactness",
+      "finite-dimensional approximation"
+    ]
+  },
+  {
+    "id": "ann-compact-operator",
+    "proofId": "schauder-fixed-point",
+    "range": {
+      "startLine": 162,
+      "endLine": 186
+    },
+    "type": "concept",
+    "title": "Compact Operator Version: The PDE Workhorse",
+    "content": "The compact operator version is perhaps the most useful form for applications:\n\n**Theorem:** Let $C$ be a closed bounded convex subset of a Banach space, and $T: C \\to C$ continuous with $\\overline{T(C)}$ compact. Then $T$ has a fixed point.\n\n**Why this matters:** In PDEs and integral equations, the domain (e.g., a closed ball in $C([0,1])$) is NOT compact. But the operator $T$ (e.g., an integral operator) is often compact: it maps bounded sets to relatively compact sets (by Arzela-Ascoli).\n\n**Proof:** Let $K = \\overline{\\text{conv}(T(C))}$. By **Mazur's theorem**, this is compact and convex. Since $T(C) \\subseteq C$ and $C$ is convex and closed, $K \\subseteq C$. Apply the compact convex version to $T|_K: K \\to K$.",
+    "mathContext": "$C$ closed bounded convex in Banach space, $T: C \\to C$ with $\\overline{T(C)}$ compact $\\Rightarrow$ fixed point",
+    "significance": "key",
+    "prerequisites": [
+      "ann-schauder-main"
+    ],
+    "relatedConcepts": [
+      "compact operator",
+      "Mazur's theorem",
+      "Arzela-Ascoli"
+    ]
+  },
+  {
+    "id": "ann-tychonoff",
+    "proofId": "schauder-fixed-point",
+    "range": {
+      "startLine": 191,
+      "endLine": 211
+    },
+    "type": "concept",
+    "title": "Tychonoff's Generalization",
+    "content": "**Theorem (Tychonoff, 1935):** Every continuous self-map of a nonempty compact convex subset of a locally convex topological vector space has a fixed point.\n\nThis is the most general theorem in the Brouwer-Schauder lineage for single-valued maps. It applies to spaces that don't even have a norm, only a family of seminorms defining the topology.\n\n**Examples of locally convex spaces:**\n- $C^\\infty(\\mathbb{R})$ with the topology of uniform convergence on compact sets\n- Spaces of distributions\n- Frechet spaces (metrizable locally convex spaces)\n\nEvery normed space is locally convex, so Tychonoff subsumes Schauder.",
+    "significance": "key",
+    "prerequisites": [
+      "ann-schauder-main"
+    ],
+    "relatedConcepts": [
+      "locally convex space",
+      "seminorm",
+      "Frechet space"
+    ],
+    "mathContext": "See annotation content for formal details of tychonoff's generalization"
+  },
+  {
+    "id": "ann-interval-fpt",
+    "proofId": "schauder-fixed-point",
+    "range": {
+      "startLine": 219,
+      "endLine": 224
+    },
+    "type": "concept",
+    "title": "Interval Fixed Point: Fully Proved via IVT",
+    "content": "The simplest case: every continuous $f: [0,1] \\to [0,1]$ has a fixed point.\n\nThis is fully proved using Mathlib's `exists_mem_Icc_isFixedPt_of_mapsTo`, which applies the Intermediate Value Theorem to $g(x) = f(x) - x$.\n\nThis is the 1D base case of the entire hierarchy, and it's the only level where a simple calculus argument suffices.",
+    "significance": "key",
+    "relatedConcepts": [
+      "intermediate value theorem",
+      "closed interval"
+    ],
+    "mathContext": "See annotation content for formal details of interval fixed point: fully proved via ivt",
+    "prerequisites": [
+      "Intermediate Value Theorem",
+      "Continuous Functions",
+      "Closed Interval"
+    ]
+  },
+  {
+    "id": "ann-banach",
+    "proofId": "schauder-fixed-point",
+    "range": {
+      "startLine": 287,
+      "endLine": 307
+    },
+    "type": "concept",
+    "title": "Banach Contraction Mapping: Uniqueness and Constructive Iteration",
+    "content": "**Theorem (Banach, 1922):** If $f: X \\to X$ is a contraction ($\\text{dist}(f(x), f(y)) \\leq k \\cdot \\text{dist}(x, y)$ with $k < 1$) on a complete metric space, then $f$ has a **unique** fixed point.\n\nThis is proved using Mathlib's `ContractingWith` API, which provides:\n- `ContractingWith.fixedPoint`: the unique fixed point\n- `ContractingWith.fixedPoint_isFixedPt`: it satisfies $f(x^*) = x^*$\n- `ContractingWith.fixedPoint_unique`: no other fixed point exists\n\n**Relationship to Schauder:** Contractions on bounded closed convex sets in Banach spaces are automatically compact operators (contraction images are totally bounded). So Schauder gives existence; Banach adds uniqueness and the constructive iteration $x^* = \\lim f^n(x_0)$.",
+    "mathContext": "$f$ contraction with constant $k < 1$ on complete metric space $\\Rightarrow \\exists! x^*: f(x^*) = x^*$",
+    "significance": "key",
+    "relatedConcepts": [
+      "contraction mapping",
+      "Cauchy sequence",
+      "completeness"
+    ],
+    "prerequisites": [
+      "Contraction Mapping",
+      "Complete Metric Space",
+      "Cauchy Sequences"
+    ]
+  },
+  {
+    "id": "ann-counterexample",
+    "proofId": "schauder-fixed-point",
+    "range": {
+      "startLine": 350,
+      "endLine": 362
+    },
+    "type": "insight",
+    "title": "Why Compactness Is Necessary",
+    "content": "In infinite dimensions, the unit ball is NOT compact (by Riesz's lemma, the unit ball in a normed space is compact if and only if the space is finite-dimensional).\n\nConsequently, there exist continuous self-maps of the unit ball in $\\ell^2$ with no fixed point. A concrete example:\n$$T(x_1, x_2, \\ldots) = (\\sqrt{1 - \\|x\\|^2}, x_1, x_2, \\ldots)$$\n\nThis maps the unit ball to itself continuously but has no fixed point. The existence of such maps is precisely why Schauder needs the compactness hypothesis.\n\n**Takeaway:** Brouwer's theorem is about compact convex sets, not about balls. In finite dimensions these coincide (Heine-Borel); in infinite dimensions they don't.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Riesz's lemma",
+      "non-compact unit ball",
+      "infinite-dimensional analysis"
+    ],
+    "mathContext": "See annotation content for formal details of why compactness is necessary",
+    "prerequisites": [
+      "Riesz's Lemma",
+      "Compactness In Normed Spaces",
+      "The Sequence Space Ell-2"
+    ]
+  }
+]

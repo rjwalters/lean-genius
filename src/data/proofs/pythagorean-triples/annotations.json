@@ -1,0 +1,226 @@
+[
+  {
+    "id": "ann-imports",
+    "proofId": "pythagorean-triples",
+    "range": {
+      "startLine": 1,
+      "endLine": 2
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "Two imports provide the foundation: `Mathlib.NumberTheory.PythagoreanTriples` contains the complete classification theory including `PythagoreanTriple`, `IsPrimitiveClassified`, and the main theorems. `Mathlib.Tactic` provides automation tools like `ring`, `norm_num`, and `simp` used throughout the verification examples.",
+    "mathContext": "The `PythagoreanTriple` predicate is defined as $x \\cdot x + y \\cdot y = z \\cdot z$ over $\\mathbb{Z}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "PythagoreanTriple",
+      "NumberTheory"
+    ],
+    "prerequisites": [
+      "Lean 4 imports"
+    ]
+  },
+  {
+    "id": "ann-header",
+    "proofId": "pythagorean-triples",
+    "range": {
+      "startLine": 4,
+      "endLine": 48
+    },
+    "type": "concept",
+    "title": "Module Documentation and Historical Context",
+    "content": "The module docstring establishes this as Wiedijk's 100 Theorems #23 — the complete classification of Pythagorean triples. It describes the parametric formula $a = m^2 - n^2$, $b = 2mn$, $c = m^2 + n^2$ and connects it to the rational parametrization of the unit circle. The historical note traces the result from the Plimpton 322 tablet (c. 1800 BCE) through Greek mathematicians, emphasizing that the parametric form provides a complete characterization when $m > n > 0$ are coprime with opposite parity.",
+    "mathContext": "Wiedijk #23: For coprime $m > n > 0$ with $m - n$ odd, $(m^2 - n^2, 2mn, m^2 + n^2)$ is a primitive Pythagorean triple, and all primitive triples have this form",
+    "significance": "key",
+    "relatedConcepts": [
+      "Wiedijk 100 theorems",
+      "Plimpton 322",
+      "unit circle parametrization",
+      "Diophantine equations"
+    ],
+    "prerequisites": [
+      "number theory basics",
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-predicate",
+    "proofId": "pythagorean-triples",
+    "range": {
+      "startLine": 50,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "Pythagorean Triple Predicate",
+    "content": "Introduces Mathlib's `PythagoreanTriple x y z` predicate, defined as $x \\cdot x + y \\cdot y = z \\cdot z$. The `Iff.rfl` proof on line 65 confirms this unfolds to exactly the expected equation — a useful sanity check that the definition matches the mathematical intent. The predicate works over any type with multiplication and addition, though our usage is over $\\mathbb{Z}$.",
+    "mathContext": "$\\text{PythagoreanTriple}(x, y, z) \\iff x^2 + y^2 = z^2$ where $x, y, z \\in \\mathbb{Z}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Diophantine equations",
+      "Pythagorean theorem",
+      "type class inference"
+    ],
+    "prerequisites": [
+      "integer arithmetic",
+      "Lean propositions"
+    ]
+  },
+  {
+    "id": "ann-classification-defs",
+    "proofId": "pythagorean-triples",
+    "range": {
+      "startLine": 67,
+      "endLine": 83
+    },
+    "type": "definition",
+    "title": "Classification Structures",
+    "content": "Documents two key Mathlib structures:\n\n- **IsPrimitiveClassified**: A triple can be written as $(m^2 - n^2, 2mn, m^2 + n^2)$ or the swapped form for some coprime $m, n$ with opposite parity\n- **IsClassified**: A triple is a scalar multiple $k$ of a primitively classified triple\n\nThese structures encode what it means for a triple to match the parametric formula, separating the 'shape' of the claim from the proof that all triples have this shape.",
+    "mathContext": "$\\text{IsPrimitiveClassified}: \\exists m, n,\\; \\gcd(m,n)=1 \\land m \\not\\equiv n \\pmod{2}$ such that the triple matches the parametric form",
+    "significance": "key",
+    "relatedConcepts": [
+      "coprimality",
+      "parity",
+      "parametric representation"
+    ],
+    "prerequisites": [
+      "GCD",
+      "modular arithmetic",
+      "Lean structures"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "pythagorean-triples",
+    "range": {
+      "startLine": 85,
+      "endLine": 113
+    },
+    "type": "concept",
+    "title": "Main Classification Theorems",
+    "content": "The two central results of the formalization:\n\n**primitive_triples_are_classified** (line 98): If $(x, y, z)$ is a Pythagorean triple with $\\gcd(x, y) = 1$, then it has the parametric form. This is a direct application of Mathlib's `isPrimitiveClassified_of_coprime`. The proof encodes the deep result that the rational parametrization of the unit circle captures all rational points.\n\n**all_triples_are_classified** (line 110): Every Pythagorean triple (not just primitive ones) can be written as $k \\cdot (m^2 - n^2, 2mn, m^2 + n^2)$ for some integer $k$. This follows from the fact that dividing by $\\gcd(x, y)$ produces a primitive triple.",
+    "mathContext": "$\\forall x, y, z \\in \\mathbb{Z},\\; x^2 + y^2 = z^2 \\implies \\exists k, m, n$ such that $(x, y, z) = k \\cdot (m^2 - n^2, 2mn, m^2 + n^2)$ (up to leg swap)",
+    "significance": "key",
+    "relatedConcepts": [
+      "GCD factorization",
+      "rational points",
+      "stereographic projection",
+      "Diophantine classification"
+    ],
+    "prerequisites": [
+      "coprimality",
+      "unique factorization",
+      "unit circle geometry"
+    ]
+  },
+  {
+    "id": "ann-verification",
+    "proofId": "pythagorean-triples",
+    "range": {
+      "startLine": 115,
+      "endLine": 133
+    },
+    "type": "concept",
+    "title": "Algebraic Verification of the Formula",
+    "content": "The converse direction: the parametric formula always produces valid triples. Two theorems handle both orderings of legs:\n\n- `parametric_form_is_triple`: $(m^2 - n^2, 2mn, m^2 + n^2)$ is a triple\n- `parametric_form_is_triple'`: $(2mn, m^2 - n^2, m^2 + n^2)$ is a triple\n\nBoth proofs unfold the `PythagoreanTriple` definition and apply `ring`, which automatically verifies the polynomial identity $(m^2 - n^2)^2 + (2mn)^2 = (m^2 + n^2)^2$. This expands to $m^4 - 2m^2n^2 + n^4 + 4m^2n^2 = m^4 + 2m^2n^2 + n^4$.",
+    "mathContext": "$(m^2 - n^2)^2 + (2mn)^2 = m^4 - 2m^2n^2 + n^4 + 4m^2n^2 = m^4 + 2m^2n^2 + n^4 = (m^2 + n^2)^2$",
+    "significance": "key",
+    "relatedConcepts": [
+      "ring tactic",
+      "polynomial identity",
+      "algebraic verification"
+    ],
+    "prerequisites": [
+      "polynomial arithmetic",
+      "commutative rings"
+    ]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "pythagorean-triples",
+    "range": {
+      "startLine": 135,
+      "endLine": 192
+    },
+    "type": "insight",
+    "title": "Classical Examples with Parameters",
+    "content": "Five primitive Pythagorean triples verified with their generating parameters:\n\n| Triple | m | n | Verification |\n|--------|---|---|-------------|\n| (3, 4, 5) | 2 | 1 | $4-1=3$, $4=4$, $4+1=5$ |\n| (5, 12, 13) | 3 | 2 | $9-4=5$, $12=12$, $9+4=13$ |\n| (8, 15, 17) | 4 | 1 | $16-1=15$, $8=8$, $16+1=17$ |\n| (7, 24, 25) | 4 | 3 | $16-9=7$, $24=24$, $16+9=25$ |\n| (20, 21, 29) | 5 | 2 | $25-4=21$, $20=20$, $25+4=29$ |\n\nEach triple is verified directly via `norm_num`, and separate `example` declarations confirm the parameter computations.",
+    "mathContext": "$(3,4,5)$: $m=2, n=1$; $(5,12,13)$: $m=3, n=2$; $(8,15,17)$: $m=4, n=1$; $(7,24,25)$: $m=4, n=3$; $(20,21,29)$: $m=5, n=2$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "norm_num",
+      "concrete verification",
+      "right triangles"
+    ],
+    "prerequisites": [
+      "basic arithmetic"
+    ]
+  },
+  {
+    "id": "ann-properties",
+    "proofId": "pythagorean-triples",
+    "range": {
+      "startLine": 194,
+      "endLine": 209
+    },
+    "type": "concept",
+    "title": "Structural Properties",
+    "content": "Three properties of the Pythagorean triple predicate:\n\n- **Symmetry** (`triple_symm`): If $(x, y, z)$ is a triple, so is $(y, x, z)$. This reflects the commutativity of addition.\n- **Zero triple** (`triple_zero`): $(0, 0, 0)$ is trivially a triple since $0 + 0 = 0$.\n- **Parity** (`even_odd_of_coprime`): In a primitive triple, exactly one of $x, y$ is even and the other odd. This is because if both were odd, $x^2 + y^2 \\equiv 2 \\pmod{4}$, which cannot be a perfect square.",
+    "mathContext": "If $\\gcd(x,y) = 1$ and $x^2 + y^2 = z^2$, then $(x \\bmod 2, y \\bmod 2) \\in \\{(0,1), (1,0)\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "parity",
+      "modular arithmetic",
+      "coprimality constraints"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "GCD"
+    ]
+  },
+  {
+    "id": "ann-geometric",
+    "proofId": "pythagorean-triples",
+    "range": {
+      "startLine": 211,
+      "endLine": 239
+    },
+    "type": "insight",
+    "title": "Unit Circle Parametrization",
+    "content": "This documentation section explains the geometric heart of the classification: **stereographic projection** from $(-1, 0)$ on the unit circle. A line through $(-1, 0)$ with rational slope $t = n/m$ intersects $x^2 + y^2 = 1$ at a second rational point. Clearing denominators yields integer solutions — the parametric formula. This construction establishes a bijection between $\\mathbb{Q}$ (slopes) and rational points on the circle minus $(-1, 0)$, which is why the parametrization is complete.\n\nThe algebraic verification confirms: $a^2 + b^2 = (m^2 - n^2)^2 + (2mn)^2 = (m^2 + n^2)^2 = c^2$.",
+    "mathContext": "Stereographic projection: the line $y = t(x + 1)$ with $t = n/m$ meets $x^2 + y^2 = 1$ at $\\left(\\frac{m^2 - n^2}{m^2 + n^2}, \\frac{2mn}{m^2 + n^2}\\right)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "stereographic projection",
+      "rational points",
+      "algebraic geometry",
+      "birational equivalence"
+    ],
+    "prerequisites": [
+      "analytic geometry",
+      "rational numbers",
+      "circle equation"
+    ]
+  },
+  {
+    "id": "ann-scaling",
+    "proofId": "pythagorean-triples",
+    "range": {
+      "startLine": 241,
+      "endLine": 260
+    },
+    "type": "concept",
+    "title": "Scaling and Non-primitive Triples",
+    "content": "The final section shows that multiplying a Pythagorean triple by any integer $k$ produces another triple: if $x^2 + y^2 = z^2$, then $(kx)^2 + (ky)^2 = k^2(x^2 + y^2) = k^2 z^2 = (kz)^2$. This is demonstrated concretely:\n\n- $(6, 8, 10) = 2 \\times (3, 4, 5)$\n- $(9, 12, 15) = 3 \\times (3, 4, 5)$\n\nCombined with the primitive classification, this completes the picture: **every** Pythagorean triple is an integer multiple of a parametrically generated primitive triple.",
+    "mathContext": "$k(x, y, z)$ is a Pythagorean triple whenever $(x, y, z)$ is, since $(kx)^2 + (ky)^2 = k^2(x^2 + y^2) = (kz)^2$",
+    "significance": "key",
+    "relatedConcepts": [
+      "homogeneity",
+      "scalar multiples",
+      "complete classification"
+    ],
+    "prerequisites": [
+      "integer arithmetic",
+      "homogeneous equations"
+    ]
+  }
+]

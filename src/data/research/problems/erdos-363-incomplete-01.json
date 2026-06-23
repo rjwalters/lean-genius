@@ -1,0 +1,53 @@
+{
+  "slug": "erdos-363-incomplete-01",
+  "title": "Erdős #363: Square Products from Disjoint Intervals",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-28T20:35:00Z",
+    "iteration": 1,
+    "focus": "Axiomatized-complete: source has 0 sorries and 3 axioms (pomerance_observation, ulas_theorem, erdos_selfridge). Earlier product-reindexing sorry no longer present in source.",
+    "blockers": [],
+    "nextAction": "Reduce axiom count if Mathlib gains support for the Ulas / Erdős–Selfridge bounds (no sorries remain).",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE (axiomatized): source has 0 sorries and 3 axioms (pomerance_observation, ulas_theorem, erdos_selfridge). The product-reindexing sorry is no longer present; an earlier 5-axiom listing was superseded by a source refactor.",
+    "builtItems": [
+      "Fixed single_block_not_square: added hne : I.product ≠ 0 hypothesis"
+    ],
+    "insights": [
+      "Original theorem was FALSE: [0,1] has product 0 = 0², so isPerfectSquare holds",
+      "Erdős-Selfridge axiom has nonzero hypothesis — theorem needs it too",
+      "Product reindexing (∏ m ∈ Icc(a, a+n-1) = ∏ i ∈ range(n), (a+i)) is the main gap",
+      "Source now carries 3 axioms (pomerance_observation, ulas_theorem, erdos_selfridge); the earlier 5-axiom listing (erdos_selfridge/sawhney/ulas/bauer_bennett/bennett_van_luijk) was superseded by a refactor"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Reduce axiom count (Ulas / Erdős–Selfridge bounds) — product reindexing already discharged (0 sorries)"
+    ]
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "diophantine-equations",
+    "perfect-squares",
+    "incomplete",
+    "seeker-selected"
+  ],
+  "started": "2026-03-28T20:30:00Z",
+  "lastUpdate": "2026-03-28T20:35:00Z",
+  "significance": 5,
+  "tractability": 6,
+  "relatedProofs": [
+    "erdos-3",
+    "erdos-36",
+    "erdos-363"
+  ]
+}

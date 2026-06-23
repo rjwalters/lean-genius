@@ -1,0 +1,86 @@
+[
+  {
+    "id": "tri-defs",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-02",
+    "range": { "startLine": 41, "endLine": 58 },
+    "type": "definition",
+    "title": "Triangular Numbers and Exact Halving",
+    "content": "`tri k = k(k+1)/2` is the k-th triangular number, and `IsSumTwoTriangular n` asserts n = T(a)+T(b) for some naturals a, b. The key technical lemma `two_mul_tri` records that the division by 2 is exact: 2·T(k) = k(k+1), because k(k+1) is always even (`Nat.even_mul_succ_self`). Working with the doubled quantity k(k+1) throughout avoids division entirely and is what keeps every later computation in ℤ clean.",
+    "mathContext": "$T(k)=\\binom{k+1}{2}=\\frac{k(k+1)}{2}$, and $2T(k)=k(k+1)$ exactly since one of $k,k+1$ is even.",
+    "significance": "supporting",
+    "relatedConcepts": ["triangular numbers", "binomial coefficients", "parity", "exact division"],
+    "prerequisites": ["natural number arithmetic"]
+  },
+  {
+    "id": "negative-indices",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-02",
+    "range": { "startLine": 60, "endLine": 72 },
+    "type": "lemma",
+    "title": "Negative Indices Give Nothing New: T(k) = T(−1−k)",
+    "content": "`exists_nat_tri_index` (and its doubled form `exists_nat_two_mul_tri`) show that for any *integer* index k, the value k(k+1) equals j(j+1) for some *natural* j. The symmetry T(k) = T(−1−k) means a negative integer index maps to the natural index −1−k. This is the lemma that lets the backward construction — which naturally produces integer indices p, q — land back inside the natural-number predicate `IsSumTwoTriangular`.",
+    "mathContext": "$k(k+1)=(-1-k)(-k)$, so $T(k)=T(-1-k)$; every integer triangular value is a natural triangular value. Witness: $j=k$ if $k\\ge 0$, else $j=-1-k$.",
+    "significance": "key",
+    "relatedConcepts": ["index symmetry", "integer-to-natural bridge", "Int.toNat"],
+    "prerequisites": ["integers", "casting ℤ↔ℕ"]
+  },
+  {
+    "id": "rotation-identity",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-02",
+    "range": { "startLine": 74, "endLine": 80 },
+    "type": "lemma",
+    "title": "The Rotation Identity",
+    "content": "`sum_tri_identity`: the algebraic heart of the whole entry, 4·(T(a)+T(b))+1 = (a+b+1)² + (a−b)². This is a lattice rotation (a,b) ↦ (a+b+1, a−b) that converts a sum of two triangular numbers (scaled by 4 and shifted by 1) into a sum of two squares. The proof is a one-line `linear_combination` of the doubled-triangular identities. Reading it left-to-right is the forward direction; inverting the rotation is the backward direction.",
+    "mathContext": "$4\\bigl(T(a)+T(b)\\bigr)+1 = (a+b+1)^2 + (a-b)^2$. The map $(a,b)\\mapsto(a+b+1,\\,a-b)$ is a change of variables with constant Jacobian — a 'rotation' of the integer lattice.",
+    "significance": "critical",
+    "relatedConcepts": ["change of variables", "quadratic forms", "lattice rotation", "completing the square"],
+    "prerequisites": ["polynomial identities", "integer arithmetic"]
+  },
+  {
+    "id": "forward",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-02",
+    "range": { "startLine": 82, "endLine": 90 },
+    "type": "theorem",
+    "title": "Forward Direction: Two Triangles ⟹ 4n+1 Two Squares",
+    "content": "`isSumTwoTriangular_to_sq`: if n = T(a)+T(b) then 4n+1 = (a+b+1)² + (a−b)² is visibly a sum of two integer squares. This is just the rotation identity read forward, with the explicit square roots X = a+b+1 and Y = a−b. No case analysis is needed in this direction.",
+    "mathContext": "$n=T(a)+T(b)\\ \\Rightarrow\\ 4n+1=(a+b+1)^2+(a-b)^2$.",
+    "significance": "key",
+    "relatedConcepts": ["constructive proof", "explicit witness"],
+    "prerequisites": ["integer arithmetic"]
+  },
+  {
+    "id": "backward-parity",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-02",
+    "range": { "startLine": 92, "endLine": 139 },
+    "type": "theorem",
+    "title": "Backward Direction: Division-Free Parity Inversion",
+    "content": "`sq_to_isSumTwoTriangular` inverts the rotation. Since 4n+1 ≡ 1 (mod 4), of the two squares X²+Y² exactly one is odd and one even — the two same-parity cases (both even ⟹ sum ≡ 0, both odd ⟹ sum ≡ 2) are dispatched as `4 ∣ 1` contradictions. Writing the even square as 2t and the odd as 2s+1, the inverse rotation p = s+t, q = s−t (integers, no halving) gives 2n = p(p+1)+q(q+1) via the `core_pq` lemma. Finally the integer indices p, q are pulled back to natural triangular numbers using T(k)=T(−1−k). The division-free design is what keeps the whole argument inside ℤ without parity-of-half headaches.",
+    "mathContext": "$4n+1\\equiv 1\\pmod 4$ forces one of $X,Y$ odd. With $X=2t,\\ Y=2s+1$, set $p=s+t,\\ q=s-t$: then $2n=p(p+1)+q(q+1)$, and each $p(p+1)/2$ is a natural triangular number.",
+    "significance": "critical",
+    "relatedConcepts": ["parity argument", "inverse change of variables", "modular obstruction", "case analysis"],
+    "prerequisites": ["modular arithmetic", "even and odd integers"]
+  },
+  {
+    "id": "main-iff",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-02",
+    "range": { "startLine": 141, "endLine": 165 },
+    "type": "theorem",
+    "title": "Main Equivalence and Natural-Number Form",
+    "content": "`isSumTwoTriangular_iff` packages the two directions into the headline equivalence: n is a sum of two triangular numbers iff 4n+1 is a sum of two integer squares. `int_sq_iff_nat_sq` bridges integer squares to natural squares (the squares depend only on |X|, |Y|), and `isSumTwoTriangular_iff_nat` restates the result purely over ℕ: n = T(a)+T(b) iff 4n+1 = x²+y² for naturals x, y.",
+    "mathContext": "$n=T(a)+T(b)\\iff 4n+1=X^2+Y^2\\ (X,Y\\in\\mathbb Z)\\iff 4n+1=x^2+y^2\\ (x,y\\in\\mathbb N)$.",
+    "significance": "key",
+    "relatedConcepts": ["sum of two squares", "if and only if", "ℤ↔ℕ bridge"],
+    "prerequisites": ["sums of two squares"]
+  },
+  {
+    "id": "factorization",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-02",
+    "range": { "startLine": 167, "endLine": 177 },
+    "type": "theorem",
+    "title": "Complete Arithmetic Characterization",
+    "content": "`isSumTwoTriangular_iff_factorization` composes the equivalence with Mathlib's two-square theorem (`Nat.eq_sq_add_sq_iff`): n is a sum of two triangular numbers iff every prime q ≡ 3 (mod 4) divides 4n+1 to an even power. Because the two-square theorem is fully in Mathlib (unlike three-square sufficiency), this is a *decidable* test — strictly stronger than the still-axiomatized Gauss Eureka companion. The docstring flags the trap that the naive 'no prime factor ≡ 3 (mod 4)' form is false: n = 2 = T₁+T₁ yet 4·2+1 = 9 = 3².",
+    "mathContext": "$n=T(a)+T(b)\\iff \\forall q\\equiv 3\\ (4),\\ q\\mid 4n+1\\Rightarrow \\operatorname{Even}\\bigl(v_q(4n+1)\\bigr)$. The 'no factor $\\equiv 3$' form fails: $9=3^2$ is a sum of two squares.",
+    "significance": "critical",
+    "relatedConcepts": ["two-square theorem", "p-adic valuation", "prime factorization", "decidability", "Fermat's Christmas theorem"],
+    "prerequisites": ["sum of two squares theorem", "prime factorization"]
+  }
+]

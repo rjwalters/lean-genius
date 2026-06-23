@@ -1,0 +1,74 @@
+[
+  {
+    "id": "demoivre-uu-ann-question",
+    "proofId": "de-moivre-oq-02-oq-02-oq-01",
+    "range": { "startLine": 3, "endLine": 45 },
+    "type": "concept",
+    "title": "The U·U Linearization Open Question",
+    "content": "The parent file proved a U·U product-to-difference identity scaled by (1−x²): 2(1−x²)·U_m·U_n = T_{m−n} − T_{m+n+2}. This entry answers whether the bare product U_m·U_n can be expressed purely in second-kind polynomials, with no T and no (1−x²) factor. Unlike the two-term first-kind formula 2·T_m·T_n = T_{m+n} + T_{m−n}, the answer is a genuine sum of min(m,n)+1 terms.",
+    "mathContext": "$U_m \\cdot U_n = \\sum_{k=0}^{n} U_{m+n-2k}$, an arithmetic progression of indices from $m-n$ to $m+n$ in steps of $2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Chebyshev polynomials", "product-to-sum identities", "linearization"],
+    "prerequisites": ["second-kind Chebyshev polynomials U_n"]
+  },
+  {
+    "id": "demoivre-uu-ann-ssum",
+    "proofId": "de-moivre-oq-02-oq-02-oq-01",
+    "range": { "startLine": 53, "endLine": 55 },
+    "type": "definition",
+    "title": "The Linearization Sum S(m,n)",
+    "content": "Ssum m n is the candidate right-hand side ∑_{k∈range(n+1)} U_(m+n−2k). Indexing the summand by m + n − 2k with m : ℤ keeps the identity valid for every integer m via Mathlib's ℤ-indexed U, so no m ≥ n hypothesis is needed. It is noncomputable because Polynomial arithmetic over a general ring is.",
+    "mathContext": "$S(m,n) := \\sum_{k=0}^{n} U_{m+n-2k} \\in R[X]$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.sum", "integer-indexed Chebyshev polynomials"],
+    "prerequisites": ["Finset.range", "Polynomial ring R[X]"]
+  },
+  {
+    "id": "demoivre-uu-ann-two-x-u",
+    "proofId": "de-moivre-oq-02-oq-02-oq-01",
+    "range": { "startLine": 58, "endLine": 62 },
+    "type": "insight",
+    "title": "Rearranging the Chebyshev Recurrence",
+    "content": "two_X_U turns the standard recurrence U_add_two into the symmetric form 2·X·U_k = U_(k+1) + U_(k−1). This is the single algebraic identity that lets 2X be distributed across the linearization sum; it is proved by shifting U_add_two at k−1 and a linear_combination.",
+    "mathContext": "$2X\\,U_k = U_{k+1} + U_{k-1}$, equivalent to $U_{k+1} = 2X\\,U_k - U_{k-1}$.",
+    "significance": "key",
+    "relatedConcepts": ["three-term recurrence", "linear_combination tactic"],
+    "prerequisites": ["Polynomial.Chebyshev.U_add_two"]
+  },
+  {
+    "id": "demoivre-uu-ann-ssum-rec",
+    "proofId": "de-moivre-oq-02-oq-02-oq-01",
+    "range": { "startLine": 79, "endLine": 100 },
+    "type": "insight",
+    "title": "The Product-Free Sum Recurrence",
+    "content": "Ssum_rec proves 2·X·S(m,n+1) = S(m,n+2) + S(m,n) — the combinatorial heart of the whole proof, mentioning no Chebyshev product at all. After Ssum_succ_expand distributes 2X into a sum of U-pairs, the two shifted copies of the sum overlap; peeling the boundary terms with Finset.sum_range_succ leaves exactly U_(m−n−2) from each, which cancel. Isolating this product-free identity is what reduces the product theorem to recurrence-matching.",
+    "mathContext": "$2X\\,S(m,n{+}1) = S(m,n{+}2) + S(m,n)$, with both boundary terms equal to $U_{m-n-2}$.",
+    "significance": "key",
+    "relatedConcepts": ["telescoping sums", "boundary cancellation", "Finset.sum_range_succ"],
+    "prerequisites": ["Finset.sum_add_distrib", "Finset.mul_sum", "push_cast"]
+  },
+  {
+    "id": "demoivre-uu-ann-base",
+    "proofId": "de-moivre-oq-02-oq-02-oq-01",
+    "range": { "startLine": 102, "endLine": 113 },
+    "type": "insight",
+    "title": "Base Values for the Two-Step Induction",
+    "content": "Ssum_zero (S(m,0) = U_m) and Ssum_one (S(m,1) = U_(m+1) + U_(m−1)) provide the two consecutive base cases that a second-order recurrence requires. They are computed directly from the sum definition via Finset.sum_range_one and Finset.sum_range_succ plus cast normalization.",
+    "mathContext": "$S(m,0) = U_m$ and $S(m,1) = U_{m+1} + U_{m-1}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["base cases", "Finset.sum_range_one"],
+    "prerequisites": ["U_zero", "U_one"]
+  },
+  {
+    "id": "demoivre-uu-ann-main",
+    "proofId": "de-moivre-oq-02-oq-02-oq-01",
+    "range": { "startLine": 118, "endLine": 143 },
+    "type": "insight",
+    "title": "Main Identity by Two-Step Induction",
+    "content": "U_mul_U proves U_m·U_n = S(m,n). Because U satisfies the second-order recurrence U_{i+2} = 2X·U_{i+1} − U_i, the induction is strengthened to carry the pair P(j) ∧ P(j+1). The base bundles n=0,1; the step rewrites the goal with U_add_two and then combines the two inductive hypotheses with Ssum_rec via linear_combination, so the product identity follows from the product-free recurrence.",
+    "mathContext": "$U_m(2X\\,U_{i+1} - U_i) = 2X(U_m U_{i+1}) - U_m U_i = 2X\\,S(m,i{+}1) - S(m,i) = S(m,i{+}2)$.",
+    "significance": "key",
+    "relatedConcepts": ["paired strong induction", "second-order recurrence"],
+    "prerequisites": ["Nat.rec", "linear_combination", "Polynomial.Chebyshev.U_add_two"]
+  }
+]

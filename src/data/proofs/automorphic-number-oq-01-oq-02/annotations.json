@@ -1,0 +1,47 @@
+[
+  {
+    "id": "ann-autonum-oq01oq02-context",
+    "proofId": "automorphic-number-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 44 },
+    "type": "concept",
+    "title": "From counting to structure: the four residues as two complementary pairs",
+    "content": "The parent entry proves ZMod (10^k) has exactly four automorphic residues e²≡e (its four idempotents), and the first follow-up explains the count as 2^ω(n). This entry asks what those four residues ARE, not how many. The answer: they organize into two orthogonal complementary pairs. In any commutative ring the complement 1-e of an idempotent is again idempotent, and the two are orthogonal — e+(1-e)=1 and e·(1-e)=0. For 10^k the trivial pair is {0,1} and the nontrivial pair is the classic {…5,…6}: 5+6=1, 5·6=0 mod 10; 25+76=1, 25·76=0 mod 100; 376+625=1, 376·625=0 mod 1000. A second theorem shows each residue is pinned down by its last digit, so the four have four distinct final digits.",
+    "mathContext": "The idempotents of a commutative ring form a Boolean algebra; for $\\mathbb{Z}/10^k$ it is the four-element algebra with atoms the $\\dots5$ and $\\dots6$ automorphic numbers, paired by complementation $e\\mapsto 1-e$."
+  },
+  {
+    "id": "ann-autonum-oq01oq02-complement",
+    "proofId": "automorphic-number-oq-01-oq-02",
+    "range": { "startLine": 45, "endLine": 60 },
+    "type": "key-step",
+    "title": "Orthogonal-complement algebra of idempotents",
+    "content": "Three one-line identities valid in every commutative ring R. compl_idem: if e²=e then (1-e)²=1-e, so the complement is idempotent (a single linear_combination of e²=e). mul_compl: e·(1-e)=0 — an idempotent and its complement are orthogonal. add_compl: e+(1-e)=1 by ring. Together these say {0,1} and {e,1-e} are complementary pairs of idempotents; specialized to a nontrivial idempotent a of ZMod (10^k) they produce the second nontrivial idempotent 1-a and the relations a+(1-a)=1, a·(1-a)=0.",
+    "mathContext": "$e^2=e \\Rightarrow (1-e)^2=1-e$, $e(1-e)=0$, $e+(1-e)=1$: complementation is an involution on idempotents and complementary idempotents are orthogonal."
+  },
+  {
+    "id": "ann-autonum-oq01oq02-uniqueness",
+    "proofId": "automorphic-number-oq-01-oq-02",
+    "range": { "startLine": 61, "endLine": 104 },
+    "type": "key-step",
+    "title": "Uniqueness of idempotent lifts modulo a nil ideal",
+    "content": "The algebraic engine. idem_diff_cube proves the tripotent identity (e-f)³=e-f for any two idempotents — a single linear_combination of the two idempotency hypotheses with explicit cofactors (e+1-3f) and (3e-f-1). idem_nil_zero proves an element that is both idempotent and nilpotent is 0 (an idempotent g satisfies g^(n)=g for n≥1, so a vanishing power forces g=0; the exponent-0 case makes the ring subsingleton). idem_eq_of_sub_nilpotent then combines them: if e-f is nilpotent, the cube identity makes (e-f)² idempotent, and a power of the nilpotent e-f, hence nilpotent — so (e-f)²=0, whence e-f=(e-f)³=(e-f)·(e-f)²=0. No Mathlib idempotent-lifting lemma is used; the whole argument is the four lines (e-f)³=e-f, (e-f)²·(e-f)²=(e-f)², nilpotency, collapse.",
+    "mathContext": "A difference of idempotents is tripotent: $(e-f)^3=e-f$. Over a nil ideal this collapses to $e=f$, the uniqueness of idempotent lifts (the ring-theoretic heart of Hensel-style lifting of idempotents)."
+  },
+  {
+    "id": "ann-autonum-oq01oq02-lastdigit",
+    "proofId": "automorphic-number-oq-01-oq-02",
+    "range": { "startLine": 105, "endLine": 127 },
+    "type": "key-step",
+    "title": "The last digit determines the automorphic residue",
+    "content": "ten_pow_eq_zero records that 10 is nilpotent in ZMod (10^k): (10)^k = ↑(10^k) = 0 by ZMod.natCast_self. same_last_digit then says two automorphic residues e, f with 10 ∣ (e-f) — i.e. the same last digit — are equal: writing e-f = 10·c gives (e-f)^k = 10^k·c^k = 0, so e-f is nilpotent and idem_eq_of_sub_nilpotent forces e = f. The kernel of reduction ZMod (10^k) → ZMod 10 is the nil ideal (10), so idempotents inject under reduction mod 10 and the final digit is a complete invariant — each of the four residues has a distinct last digit (0, 1, 5, 6).",
+    "mathContext": "$(10)$ is a nil ideal of $\\mathbb{Z}/10^k$, so the reduction $\\mathbb{Z}/10^k\\to\\mathbb{Z}/10$ is injective on idempotents: an automorphic number is determined by its last digit."
+  },
+  {
+    "id": "ann-autonum-oq01oq02-pairing",
+    "proofId": "automorphic-number-oq-01-oq-02",
+    "range": { "startLine": 128, "endLine": 212 },
+    "type": "technique",
+    "title": "Assembling the complementary pair and concrete examples",
+    "content": "automorphic_complementary_pair extracts the full structure from the parent's count. Since the idempotent set S has card 4 (automorphic_idempotent_count) but {0,1} has card 2, card_le_card forces an idempotent a ∉ {0,1} to exist; a is nontrivial (a≠0, a≠1). Its complement 1-a is the other nontrivial idempotent (compl_idem, with 1-a≠0,1 from a≠1,0), orthogonal to a (mul_compl), summing to 1 (add_compl), and distinct from a — for a=1-a would give 1=2a and then a=a·1=a·2a=2a²=2a=1, contradicting a≠1. The four distinct idempotents 0,1,a,1-a then fill the 4-element set, so eq_of_subset_of_card_le upgrades {0,1,a,1-a} ⊆ S to S = {0,1,a,1-a}. The closing decide examples exhibit the smallest nontrivial pairs 5/6, 25/76, 376/625, each satisfying a+b=1 and ab=0 exactly as predicted.",
+    "mathContext": "The four idempotents are $\\{0,1,a,1-a\\}$; the nontrivial pair $a,1-a$ are the $\\dots5/\\dots6$ automorphic numbers with $a+(1-a)=1$, $a(1-a)=0$ — e.g. $5+6=1$, $5\\cdot 6=0\\pmod{10}$."
+  }
+]

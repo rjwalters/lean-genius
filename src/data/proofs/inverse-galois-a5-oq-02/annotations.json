@@ -1,0 +1,173 @@
+[
+  {
+    "id": "ann-trinks-polynomial",
+    "proofId": "inverse-galois-a5-oq-02",
+    "range": {
+      "startLine": 82,
+      "endLine": 82
+    },
+    "type": "definition",
+    "title": "Trinks' Polynomial f(x) = x⁷ − 7x + 3",
+    "content": "Defines the degree-7 witness whose Galois group over ℚ is PSL(2,7). Discovered by W. Trinks in 1968, it is the standard explicit polynomial realizing the order-168 simple group. The `noncomputable` marker is required because polynomial arithmetic over ℚ routes through Mathlib's noncomputable field structure. Its splitting field is a degree-168 Galois extension of ℚ, and the roots carry the PSL(2,7)-action on the 7 points of the Fano plane.",
+    "mathContext": "$f(x) = x^7 - 7x + 3,\\quad \\mathrm{Gal}(f/\\mathbb{Q}) \\cong \\mathrm{PSL}(2,7) \\cong \\mathrm{GL}(3,2),\\ |G| = 168$",
+    "significance": "key",
+    "prerequisites": [
+      "field theory",
+      "Galois theory",
+      "finite simple groups"
+    ],
+    "relatedConcepts": [
+      "inverse Galois problem",
+      "PSL(2,7)",
+      "Fano plane",
+      "splitting field",
+      "Klein quartic"
+    ]
+  },
+  {
+    "id": "ann-discriminant",
+    "proofId": "inverse-galois-a5-oq-02",
+    "range": {
+      "startLine": 90,
+      "endLine": 94
+    },
+    "type": "theorem",
+    "title": "Square Discriminant: disc(f) = 194481² = 3⁸·7⁸",
+    "content": "Two `norm_num` identities establish that the discriminant value 37822859361 is a perfect square (194481²) and factors as 3⁸·7⁸. A square discriminant is exactly the criterion for Gal(f) ⊆ Aₙ (here A₇): the square root of the discriminant is fixed by the Galois action iff every element acts as an even permutation. The factorization 3⁸·7⁸ also pins the ramified primes to {3, 7}. The bridge 'square disc ⟹ ⊆ Aₙ' and the degree-7 discriminant computation itself are part of the deferred analytic certificate (not in Mathlib 4.26.0).",
+    "mathContext": "$\\mathrm{disc}(f) = 37822859361 = 194481^2 = (3^4\\cdot 7^4)^2 = 3^8\\cdot 7^8 \\in (\\mathbb{Q}^\\times)^2 \\Rightarrow \\mathrm{Gal}(f)\\subseteq A_7$",
+    "significance": "supporting",
+    "prerequisites": [
+      "discriminant of a polynomial",
+      "alternating group",
+      "even permutations"
+    ],
+    "relatedConcepts": [
+      "discriminant",
+      "alternating group",
+      "even permutation",
+      "ramification"
+    ]
+  },
+  {
+    "id": "ann-simplicity-collapse",
+    "proofId": "inverse-galois-a5-oq-02",
+    "range": {
+      "startLine": 109,
+      "endLine": 134
+    },
+    "type": "theorem",
+    "title": "The Simplicity Collapse (general group theory)",
+    "content": "The session's substantive, fully machine-checked result. In any finite simple group G of order 168, a subgroup H with 84 ∣ |H| must equal the whole group. Proof: Lagrange (|H| ∣ 168) together with 84 ∣ |H| forces |H| ∈ {84, 168}; an order-84 subgroup would have index 2, hence be normal (`Subgroup.normal_of_index_eq_two`), contradicting simplicity (`IsSimpleGroup.eq_bot_or_eq_top_of_normal` leaves only ⊥ or ⊤, neither of order 84). This isolates why |Gal| = 168 follows from the divisibility data without enumerating the transitive subgroups of A₇ — the classical bottleneck. Proved with zero axioms.",
+    "mathContext": "$G \\text{ simple},\\ |G|=168,\\ H\\le G,\\ 84\\mid|H| \\;\\Rightarrow\\; H = G.\\quad [G:H]=2 \\Rightarrow H\\trianglelefteq G \\Rightarrow H\\in\\{\\bot,\\top\\}$ — contradiction.",
+    "significance": "key",
+    "prerequisites": [
+      "group theory",
+      "Lagrange's theorem",
+      "normal subgroups",
+      "simple groups"
+    ],
+    "relatedConcepts": [
+      "simple group",
+      "Lagrange's theorem",
+      "index-2 subgroups are normal",
+      "normal subgroup"
+    ]
+  },
+  {
+    "id": "ann-embedding-corollary",
+    "proofId": "inverse-galois-a5-oq-02",
+    "range": {
+      "startLine": 140,
+      "endLine": 152
+    },
+    "type": "theorem",
+    "title": "Embedding Corollary: injection into simple-168 forces |G| = 168",
+    "content": "The reusable abstract form of the certificate's conclusion. If a finite group Gal with 84 ∣ |Gal| injects (via an injective homomorphism φ) into a simple group P of order 168, then |Gal| = 168 and φ is an isomorphism onto P. Proof: `MonoidHom.ofInjective` gives Gal ≃* φ.range; the collapse theorem forces φ.range = ⊤, so |Gal| = |φ.range| = |P| = 168. This is the bridge that consumes the geometric embedding axiom and outputs the order, independent of the specific polynomial.",
+    "mathContext": "$\\varphi:\\mathrm{Gal}\\hookrightarrow P \\text{ injective},\\ P \\text{ simple},\\ |P|=168,\\ 84\\mid|\\mathrm{Gal}| \\;\\Rightarrow\\; |\\mathrm{Gal}|=168 \\text{ and } \\varphi(\\mathrm{Gal})=P$",
+    "significance": "key",
+    "prerequisites": [
+      "group homomorphisms",
+      "injective maps",
+      "isomorphism theorems"
+    ],
+    "relatedConcepts": [
+      "MonoidHom.ofInjective",
+      "group embedding",
+      "first isomorphism theorem",
+      "image subgroup"
+    ]
+  },
+  {
+    "id": "ann-axiom-cycle-types",
+    "proofId": "inverse-galois-a5-oq-02",
+    "range": {
+      "startLine": 164,
+      "endLine": 164
+    },
+    "type": "warning",
+    "title": "Certificate Axiom 1: 84 ∣ |Gal| from Dedekind cycle types",
+    "content": "The first deferred analytic input. Reducing f modulo unramified primes and reading off the factorization (Dedekind's theorem) yields Galois elements with prescribed cycle types: f mod 2 = x⁷+x+1 is irreducible ⟹ a 7-cycle (order 7); f mod 13 has type (1,2,4) ⟹ an order-4 element; f mod 17 has type (1,3,3) ⟹ an order-3 element. Hence lcm(7,4,3) = 84 divides |Gal|. Verified exactly in verify_trinks_psl27.py; the Lean discharge needs Dedekind's theorem, which is absent from Mathlib 4.26.0.",
+    "mathContext": "$f \\bmod 2 \\text{ irred.} \\Rightarrow 7\\mid|G|;\\ (1,2,4)\\bmod 13 \\Rightarrow 4\\mid|G|;\\ (1,3,3)\\bmod 17 \\Rightarrow 3\\mid|G|;\\ \\mathrm{lcm}(7,4,3)=84\\mid|G|$",
+    "significance": "supporting",
+    "prerequisites": [
+      "algebraic number theory",
+      "factorization mod p",
+      "Frobenius automorphism"
+    ],
+    "relatedConcepts": [
+      "Dedekind's theorem",
+      "Frobenius element",
+      "cycle type",
+      "reduction mod p",
+      "Chebotarev density"
+    ]
+  },
+  {
+    "id": "ann-axiom-embedding",
+    "proofId": "inverse-galois-a5-oq-02",
+    "range": {
+      "startLine": 177,
+      "endLine": 179
+    },
+    "type": "warning",
+    "title": "Certificate Axiom 2: the geometric embedding Gal ↪ PSL(2,7)",
+    "content": "The single honest analytic input that replaced two earlier axioms (PR #24436). It states that Gal(f/ℚ) injects into a finite simple group of order 168 (PSL(2,7)): irreducibility gives transitivity, the square discriminant gives Gal ⊆ A₇, and the rational root of the degree-15 PSL(2,7)-resolvent ([A₇:PSL(2,7)] = 15) gives the injection. This is strictly stronger than the bare divisibility |Gal| ∣ 168 (mere Lagrange), and — crucially — it lets the proven simplicity collapse discharge the former separate |Gal| ≠ 84 axiom as a theorem. Net axiom economy: 3 → 2.",
+    "mathContext": "$\\exists\\,P\\ \\text{simple},\\ |P|=168,\\ \\exists\\,\\varphi:\\mathrm{Gal}(f/\\mathbb{Q})\\hookrightarrow P.\\qquad [A_7:\\mathrm{PSL}(2,7)] = 2520/168 = 15$",
+    "significance": "key",
+    "prerequisites": [
+      "Galois theory",
+      "resolvent method",
+      "group actions"
+    ],
+    "relatedConcepts": [
+      "resolvent polynomial",
+      "transitive subgroup",
+      "PSL(2,7)",
+      "axiom economy",
+      "Galois resolvent"
+    ]
+  },
+  {
+    "id": "ann-main-result",
+    "proofId": "inverse-galois-a5-oq-02",
+    "range": {
+      "startLine": 191,
+      "endLine": 195
+    },
+    "type": "theorem",
+    "title": "Main Result: |Gal(f/ℚ)| = 168 (derived, not assumed)",
+    "content": "The order of the Galois group is derived — not axiomatized — by feeding the embedding axiom `trinks_gal_embeds_simple168` and the cycle-type divisibility `trinks_gal_84_dvd` into the proven collapse corollary `card_eq_168_of_embeds_in_simple168`. Composed with the (deferred) identification of the target as PSL(2,7), this realizes PSL(2,7) as a Galois group over ℚ — the second non-solvable simple group in the gallery after A₅ (order 60). The proof destructures the existential embedding axiom, re-installs the Group/Finite instances via `haveI`, and applies the corollary.",
+    "mathContext": "$|\\mathrm{Gal}(f/\\mathbb{Q})| = 168 = |\\mathrm{PSL}(2,7)|,\\ \\text{derived from } 84\\mid|G| \\text{ and } G\\hookrightarrow \\text{simple-}168$",
+    "significance": "key",
+    "prerequisites": [
+      "Galois theory",
+      "finite simple groups"
+    ],
+    "relatedConcepts": [
+      "inverse Galois problem",
+      "PSL(2,7)",
+      "non-solvable group",
+      "A₅ realization"
+    ]
+  }
+]

@@ -1,0 +1,117 @@
+{
+  "id": "erdos-1002-oq-01-oq-01-incomplete-01",
+  "title": "Erdős #1002: a priori control of the weighted fractional sum and the zero mean of the deviation",
+  "slug": "erdos-1002-oq-01-oq-01-incomplete-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Integrals.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory"
+    ],
+    "namespace": "Erdos1002OQ01OQ01Incomplete01",
+    "lineCount": 173,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos1002OQ01OQ01Incomplete01.lean",
+    "sorries": 0
+  },
+  "description": "Establishes the unconditional, elementary backbone of the open Erdős Problem #1002 (asymptotic distribution of the weighted fractional sum f(alpha,n) = (1/log n) sum_{k=1}^n (1/2 - {alpha k})). The companion equidistribution file Erdos1002OQ01OQ01.lean still carries one analytic sorry (Stone-Weierstrass uniform approximation by trigonometric polynomials); this entry does NOT depend on it. For the deviation deviation(x) = 1/2 - {x}, it proves the sharp pointwise envelope -1/2 < deviation x <= 1/2 (hence |deviation x| <= 1/2), the resulting a priori bounds |S(alpha,n)| <= n/2 on the inner sum and |f(alpha,n)| <= (n/2)/log n for n >= 2 (certifying f is finite and well behaved), and — the headline — the ZERO MEAN integral_deviation_eq_zero: integral over [0,1] of deviation = 0, the exact analytic fact every Weyl/Cesaro equidistribution statement for deviation converges to. Self-contained: the base file Erdos1002Problem.lean currently fails to build on the pinned Mathlib (it imports removed modules Mathlib.Topology.Instances.Real.Basic and Mathlib.Data.Int.Floor), so the three definitions are re-declared verbatim. 6 theorems, 3 definitions, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "date": "formalized 2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1002OQ01OQ01Incomplete01.lean",
+    "tags": [
+      "number-theory",
+      "equidistribution",
+      "fractional-parts",
+      "erdos-problems",
+      "weyl",
+      "measure-theory"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-06-22",
+    "axiomCount": 0,
+    "assumptions": "Machine-checked: `./proofs/scripts/docker-build.sh Proofs.Erdos1002OQ01OQ01Incomplete01` builds green (Lean v4.26.0, Mathlib pin, 3079 jobs). 0 sorries, 0 axiom declarations, no native_decide; only the standard foundational axioms via Mathlib. Self-contained: the base file Erdos1002Problem.lean currently fails to build on the pinned Mathlib (bad imports Mathlib.Topology.Instances.Real.Basic and Mathlib.Data.Int.Floor, both removed upstream), so deviation/innerSum/f are re-declared verbatim. The analytic sorry in the sibling Erdos1002OQ01OQ01.lean (Stone-Weierstrass) is neither imported nor used. The contribution is honest: it formalizes the unconditional elementary backbone (pointwise envelope, a priori sum bounds, zero mean), not the open distributional question.",
+    "lineCount": 173,
+    "theoremCount": 6,
+    "definitionCount": 3,
+    "originalContributions": [
+      "neg_half_lt_deviation / deviation_le_half / abs_deviation_le_half: the sharp pointwise envelope -1/2 < deviation x <= 1/2, hence |deviation x| <= 1/2, immediate from 0 <= {x} < 1",
+      "abs_innerSum_le: the a priori bound |S(alpha,n)| <= n/2 on the inner sum, by the triangle inequality over the pointwise envelope",
+      "abs_f_le: the normalized a priori bound |f(alpha,n)| <= (n/2)/log n for n >= 2 — the crude control certifying f is finite, with the open problem asking for the far finer distributional behaviour",
+      "integral_deviation_eq_zero: THE HEADLINE — the zero mean, integral over [0,1] of deviation = 0. On [0,1) the fractional part is the identity so deviation x = 1/2 - x, whose integral is 1/2 - 1/2 = 0 (via an a.e. congruence dropping the single point x = 1). This vanishing mean is the structural reason the equidistribution averages of deviation converge to 0"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1002 concerns the weighted fractional sum f(alpha,n) = (1/log n) sum_{k=1}^n (1/2 - {alpha k}), asking whether it has an asymptotic distribution function. Weyl (1916) proved {k alpha} is equidistributed for irrational alpha; Kesten (1960) showed the two-parameter variant f(alpha,beta,n) has a Cauchy limit distribution; the one-parameter case (beta = 0) remains open. The deviation 1/2 - {x} measures the signed gap from the midpoint of [0,1], and its averages encode how far the orbit {k alpha} departs from perfect equidistribution.",
+    "problemStatement": "Erdős #1002 (open): for 0 < alpha < 1, does f(alpha,n) = (1/log n) sum_{k=1}^n (1/2 - {alpha k}) have an asymptotic distribution function? This entry isolates the unconditional elementary facts the analysis rests on: the size of the deviation, the resulting control of the sum, and the deviation's mean.",
+    "proofStrategy": "From 0 <= {x} < 1 (Int.fract_nonneg, Int.fract_lt_one) read off -1/2 < 1/2 - {x} <= 1/2, giving the pointwise envelope and |deviation| <= 1/2. Sum via the triangle inequality for |S(alpha,n)| <= n/2, and divide by log n (positive for n >= 2 via Real.log_pos) for |f(alpha,n)| <= (n/2)/log n. For the zero mean, note deviation x = 1/2 - x on [0,1) (Int.fract_eq_self) and integrate: replacing {x} by x is valid almost everywhere on the interval (they differ only at the single point x = 1, of measure zero), so integral over [0,1] of (1/2 - x) = 1/2 - 1/2 = 0.",
+    "keyInsights": [
+      "The deviation has a sharp, elementary pointwise envelope |deviation x| <= 1/2 with the upper value attained at integers — no equidistribution input needed.",
+      "That envelope alone controls the whole weighted sum a priori: |S(alpha,n)| <= n/2 and |f(alpha,n)| <= (n/2)/log n, so f is finite and the open question is purely about its finer distribution.",
+      "The deviation has zero mean over a period: integral over [0,1] of deviation = 0. This is the exact value every Weyl/Cesaro average of deviation converges to in the irrational case, and it needs no approximation theory.",
+      "The a.e. congruence trick (drop the single point x = 1) lets the fractional-part integral be computed as the ordinary integral of the identity, avoiding any special fractional-part integration lemma."
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "The Erdős #1002 Definitions (re-declared)",
+      "summary": "deviation x = 1/2 - {x}, the inner sum S(alpha,n), and the normalized f(alpha,n) = S/log n, re-declared verbatim because the base file currently fails to build on the pinned Mathlib.",
+      "startLine": 1,
+      "endLine": 78,
+      "mathContext": "Self-contained re-declaration; the base Erdos1002Problem.lean imports removed Mathlib modules and no longer builds."
+    },
+    {
+      "id": "envelope",
+      "title": "The Pointwise Envelope of the Deviation",
+      "summary": "-1/2 < deviation x <= 1/2 and |deviation x| <= 1/2, immediate from 0 <= {x} < 1.",
+      "startLine": 79,
+      "endLine": 99,
+      "mathContext": "deviation x = 1/2 - {x} with {x} in [0,1) gives the sharp two-sided envelope."
+    },
+    {
+      "id": "a-priori-control",
+      "title": "A Priori Control of the Weighted Sum",
+      "summary": "abs_innerSum_le (|S| <= n/2) and abs_f_le (|f| <= (n/2)/log n for n >= 2), certifying the weighted sum and its normalization are finite and bounded.",
+      "startLine": 100,
+      "endLine": 127,
+      "mathContext": "Triangle inequality over the |deviation| <= 1/2 envelope; division by log n > 0 (Real.log_pos) for n >= 2."
+    },
+    {
+      "id": "zero-mean",
+      "title": "The Zero Mean of the Deviation",
+      "summary": "integral_deviation_eq_zero: integral over [0,1] of deviation = 0, the structural fact the equidistribution averages converge to.",
+      "startLine": 128,
+      "endLine": 173,
+      "mathContext": "deviation x = 1/2 - x a.e. on [0,1] (differ only at x = 1); integral over [0,1] of (1/2 - x) = 1/2 - 1/2 = 0 via integral_id and integral_const."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős #1002 asks whether the weighted fractional sum f(alpha,n) = (1/log n) sum (1/2 - {alpha k}) has an asymptotic distribution — open for one parameter. This entry establishes the unconditional elementary backbone with no equidistribution or approximation input: the sharp pointwise envelope |deviation x| <= 1/2, the a priori bounds |S(alpha,n)| <= n/2 and |f(alpha,n)| <= (n/2)/log n certifying f is finite, and the zero mean integral over [0,1] of deviation = 0 — the exact value the Weyl/Cesaro averages converge to. It is self-contained because the base file no longer builds on the pinned Mathlib (removed imports).",
+    "implications": "Separating the elementary backbone from the open distributional question pins down what is unconditional. The zero mean is the structural keystone: every equidistribution statement for the deviation is the assertion that its Cesaro average converges to this mean, 0, so the open content is entirely about the finer fluctuations around 0 (the conjectured Cauchy-type or other limiting distribution), not the location of the center. The a priori bounds give the crude envelope inside which that fluctuation analysis must take place. The a.e.-congruence technique for the fractional-part integral is reusable for any periodic piecewise-affine integrand.",
+    "openQuestions": [
+      "Does f(alpha,n) have an asymptotic distribution function for irrational alpha (the open one-parameter Erdős #1002 conjecture)?",
+      "Discharge the Stone-Weierstrass uniform-approximation sorry in the sibling Erdos1002OQ01OQ01.lean to complete the Weyl equidistribution average (1/N) sum deviation(alpha (n+1)) -> 0 for irrational alpha — building on the zero mean proved here.",
+      "Repair or replace the bit-rotted base Erdos1002Problem.lean (it imports the removed Mathlib modules Mathlib.Topology.Instances.Real.Basic and Mathlib.Data.Int.Floor)."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1002-oq-01-oq-01",
+      "relationship": "parent",
+      "description": "The equidistribution file that builds toward Weyl-type convergence for the irrational case and still carries one analytic sorry (Stone-Weierstrass uniform approximation). This entry supplies, independently of that sorry, the unconditional backbone — the deviation envelope, a priori sum bounds, and the zero mean that the equidistribution average converges to."
+    },
+    {
+      "targetId": "erdos-1002-oq-01",
+      "relationship": "related",
+      "description": "A sibling strand of the same Erdős #1002 problem on the weighted fractional sum and its distribution. This entry's pointwise and integral facts about the deviation are foundational for any distributional analysis in the family."
+    }
+  ]
+}

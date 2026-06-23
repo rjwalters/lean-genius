@@ -1,0 +1,198 @@
+[
+  {
+    "id": "ann-module-header",
+    "proofId": "yang-mills-lattice",
+    "range": {
+      "startLine": 1,
+      "endLine": 42
+    },
+    "type": "concept",
+    "title": "Module Overview and Epistemic Status",
+    "content": "The Exploration module imports from the rigorous Core, Classical, and Quantum sub-modules and organizes exploratory formalizations with explicit epistemic labels. The header documents which results are rigorous (plaquette gauge invariance, action bounds, 2D exact solutions, transfer matrix mass gap) versus heuristic (confinement arguments, SUSY, AdS/CFT). This epistemic transparency is a design choice: rather than excluding speculative physics, the file includes it with clear caveats, making the boundary between theorem and conjecture visible.",
+    "mathContext": "Imports: `YangMills.Classical` (field strength, gauge invariance), `YangMills.Quantum` (Wightman QFT, mass gap definition). The `noncomputable section` signals that many constructions use classical logic.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "epistemic labeling",
+      "modular formalization",
+      "noncomputable sections"
+    ],
+    "prerequisites": [
+      "Lean 4 module system",
+      "Mathlib conventions"
+    ]
+  },
+  {
+    "id": "ann-wilson-loop-structures",
+    "proofId": "yang-mills-lattice",
+    "range": {
+      "startLine": 44,
+      "endLine": 74
+    },
+    "type": "concept",
+    "title": "Wilson Loop Structures and Gauge Invariance",
+    "content": "Defines the Wilson loop $W(C) = (1/\\dim R) \\operatorname{Tr}(\\mathcal{P} \\exp(i \\oint_C A_\\mu dx^\\mu))$, the fundamental gauge-invariant observable in Yang-Mills theory. The `WilsonLoop` structure encodes gauge invariance as a field (`gauge_invariant`) and bounds the normalized trace (`bounded`). `RectangularWilsonLoop` specializes to $T \\times R$ rectangles, which extract the quark-antiquark potential $V(R)$ via $\\langle W(T,R) \\rangle \\sim e^{-V(R) T}$ at large $T$. Kenneth Wilson introduced these observables in 1974 specifically as non-perturbative probes of confinement — the behavior of $\\langle W(C) \\rangle$ as a function of loop size distinguishes confining from non-confining theories.",
+    "mathContext": "$W(C) = \\frac{1}{\\dim R} \\operatorname{Tr}\\left(\\mathcal{P} \\exp\\left(i \\oint_C A_\\mu \\, dx^\\mu\\right)\\right)$. Gauge invariance: $W[A^g] = W[A]$ for all gauge transformations $g$. Boundedness: $|W(C)| \\leq 1$ (normalized trace in a unitary representation).",
+    "significance": "key",
+    "relatedConcepts": [
+      "path-ordered exponential",
+      "gauge invariance",
+      "holonomy",
+      "quark-antiquark potential"
+    ],
+    "prerequisites": [
+      "gauge theory",
+      "group representations",
+      "trace class functions"
+    ]
+  },
+  {
+    "id": "ann-area-perimeter-law",
+    "proofId": "yang-mills-lattice",
+    "range": {
+      "startLine": 87,
+      "endLine": 124
+    },
+    "type": "concept",
+    "title": "Area Law vs Perimeter Law: The Confinement Criterion",
+    "content": "The `WilsonAreaLaw` structure encodes Wilson's confinement criterion: $\\langle W(C) \\rangle \\sim e^{-\\sigma A}$ where $\\sigma > 0$ is the string tension and $A = T \\cdot R$ is the minimal area enclosed by the loop. This implies a linear quark-antiquark potential $V(R) = \\sigma R$, meaning it costs infinite energy to separate quarks — confinement. The `WilsonPerimeterLaw` structure encodes the opposite: $\\langle W(C) \\rangle \\sim e^{-m P}$ (perimeter law), indicating screened (Yukawa-type) interactions as in QED. The theorem `area_vs_perimeter` proves these are mutually exclusive for large loops: $\\sigma T R > 0$ grows faster than any perimeter-proportional bound, so a theory cannot simultaneously satisfy both laws.",
+    "mathContext": "Area law (confinement): $\\langle W(T,R) \\rangle \\leq e^{-\\sigma T R}$, $\\sigma > 0$. Perimeter law (deconfinement): $\\langle W(T,R) \\rangle \\leq e^{-m(2T + 2R)}$, $m > 0$. The string tension $\\sigma$ has dimensions of energy$^2$ ($\\sim 0.18 \\text{ GeV}^2$ in QCD).",
+    "significance": "key",
+    "relatedConcepts": [
+      "confinement",
+      "string tension",
+      "quark-antiquark potential",
+      "phase transition",
+      "order parameter"
+    ],
+    "prerequisites": [
+      "statistical mechanics",
+      "gauge theory",
+      "exponential decay"
+    ]
+  },
+  {
+    "id": "ann-lattice-structures",
+    "proofId": "yang-mills-lattice",
+    "range": {
+      "startLine": 126,
+      "endLine": 198
+    },
+    "type": "definition",
+    "title": "Lattice Gauge Theory: Sites, Links, Plaquettes",
+    "content": "Builds the combinatorial foundation of lattice gauge theory. `LatticeSite d L` models points on a periodic $L^d$ lattice using `Fin d → Fin L` (functions from directions to positions). `LatticeLink` pairs a site with a direction $\\mu$, representing the edge from $x$ to $x + \\hat{e}_\\mu$. `LinkVariable` assigns a group element $U_\\ell \\in G$ to each link — the lattice analogue of the gauge connection $A_\\mu$. The reversal property $U_{-\\ell} = U_\\ell^{-1}$ encodes orientation dependence. `LatticeGaugeTransform` assigns group elements to sites, and `gaugeTransformLink` implements the lattice gauge transformation $U_\\ell(x,\\mu) \\mapsto g(x) \\cdot U_\\ell(x,\\mu) \\cdot g(x + \\hat{e}_\\mu)^{-1}$. Finally, `Plaquette` defines the minimal closed loop (elementary square in the $\\mu$-$\\nu$ plane) and `plaquetteVariable` computes $U_P = U_1 U_2 U_3^{-1} U_4^{-1}$ — the lattice analogue of the field strength tensor $F_{\\mu\\nu}$.",
+    "mathContext": "Lattice: $\\Lambda = (\\mathbb{Z}/L\\mathbb{Z})^d$. Link variable: $U_{x,\\mu} \\in G$. Gauge transform: $U_{x,\\mu} \\mapsto g(x) U_{x,\\mu} g(x+\\hat{e}_\\mu)^{-1}$. Plaquette variable: $U_P = U_{x,\\mu} U_{x+\\hat{e}_\\mu,\\nu} U_{x+\\hat{e}_\\nu,\\mu}^{-1} U_{x,\\nu}^{-1}$. In the continuum limit $a \\to 0$: $U_{x,\\mu} \\approx e^{iaA_\\mu(x)}$ and $U_P \\approx e^{ia^2 F_{\\mu\\nu}(x)}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lattice discretization",
+      "gauge connection",
+      "field strength tensor",
+      "periodic boundary conditions",
+      "holonomy"
+    ],
+    "prerequisites": [
+      "group theory",
+      "differential geometry (connections)",
+      "lattice combinatorics"
+    ]
+  },
+  {
+    "id": "ann-gauge-invariance-proof",
+    "proofId": "yang-mills-lattice",
+    "range": {
+      "startLine": 200,
+      "endLine": 301
+    },
+    "type": "concept",
+    "title": "Plaquette Gauge Invariance and Action Bounds",
+    "content": "The heart of the formalization. `plaquetteVariable_gauge_conjugation` proves that under gauge transformation, $U_P \\mapsto g(x) U_P g(x)^{-1}$ — the plaquette transforms by conjugation at its base point. This is proved by Lean's `group` tactic, which normalizes the group word. Combined with the conjugation invariance of the character $\\chi$, this yields `plaquetteAction_gauge_invariant`: the plaquette action $S_P = \\beta(1 - \\chi(U_P)/\\chi(1))$ is exactly gauge-invariant. The bounds `plaquetteAction_nonneg` ($S_P \\geq 0$) and `plaquetteAction_upper_bound` ($S_P \\leq 2\\beta$) follow from $|\\chi(g)| \\leq \\chi(1)$, the standard bound on characters. The identity configuration gives zero action (`plaquetteAction_identity`), confirming the vacuum is the global minimum.",
+    "mathContext": "Conjugation: $U_P \\mapsto g U_P g^{-1}$. Gauge invariance: $S_P(g U_P g^{-1}) = \\beta(1 - \\chi(gU_Pg^{-1})/\\chi(1)) = \\beta(1 - \\chi(U_P)/\\chi(1)) = S_P(U_P)$. Bounds: $0 \\leq S_P \\leq 2\\beta$ since $-\\chi(1) \\leq \\chi(g) \\leq \\chi(1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "gauge invariance",
+      "class function",
+      "character theory",
+      "conjugation invariance",
+      "Wilson action"
+    ],
+    "prerequisites": [
+      "group theory",
+      "representation theory (characters)",
+      "real analysis (inequalities)"
+    ]
+  },
+  {
+    "id": "ann-total-action-bounds",
+    "proofId": "yang-mills-lattice",
+    "range": {
+      "startLine": 303,
+      "endLine": 379
+    },
+    "type": "concept",
+    "title": "Total Action, Strong Coupling, and Partition Function",
+    "content": "Extends plaquette-level results to the full lattice. `totalLatticeAction` sums plaquette actions over all plaquettes, and `totalLatticeAction_nonneg` and `totalLatticeAction_upper_bound` prove $0 \\leq S_W \\leq 2\\beta N_P$ where $N_P$ is the plaquette count. The `strong_coupling_bound` theorem proves that when $\\beta < \\varepsilon / (2N_P)$, the total action is less than $\\varepsilon$ — in the strong coupling limit ($\\beta \\to 0$), the action vanishes and only trivial configurations contribute significantly to the path integral. The `ContinuumLimit` structure defines the continuum limit $a \\to 0$ with running coupling, encoding asymptotic freedom. The counting theorem `plaquette_count_4d` establishes $6L^4$ plaquettes on a 4D lattice ($d(d-1)/2 = 6$ orientations per site).",
+    "mathContext": "Total action: $S_W = \\sum_{P} S_P$. Bounds: $0 \\leq S_W \\leq 2\\beta N_P$. Strong coupling: $\\beta < \\varepsilon/(2N_P) \\Rightarrow S_W < \\varepsilon$. Continuum limit: $\\beta(a) \\sim -b_0 \\ln(a\\Lambda_{\\text{QCD}})$ as $a \\to 0$ (asymptotic freedom). Plaquette count: $N_P = \\binom{d}{2} L^d = 6L^4$ in 4D.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "strong coupling expansion",
+      "asymptotic freedom",
+      "continuum limit",
+      "partition function",
+      "lattice spacing"
+    ],
+    "prerequisites": [
+      "statistical mechanics",
+      "renormalization group",
+      "combinatorics"
+    ]
+  },
+  {
+    "id": "ann-2d-exact-solution",
+    "proofId": "yang-mills-lattice",
+    "range": {
+      "startLine": 381,
+      "endLine": 482
+    },
+    "type": "insight",
+    "title": "2D Yang-Mills: Exact Solution via Migdal Formula",
+    "content": "In two dimensions, Yang-Mills theory is exactly solvable — a key testing ground for non-perturbative methods. The `MigdalFormula` structure encodes Migdal's 1975 result: the Wilson loop expectation value is $\\langle W_R(C) \\rangle = (\\dim R) \\cdot e^{-g^2 A C_2(R) / (2 \\dim R)}$ where $A$ is the enclosed area and $C_2(R)$ is the quadratic Casimir. The theorem `migdal_area_law` proves this decays with area — exact confinement in 2D. The proof uses that $e^{-c}$ is strictly decreasing for $c > 0$, established via `Real.exp_lt_one_iff`. The `twoDStringTension` definition extracts $\\sigma = g^2 C_2(R)/(2 \\dim R)$ and `twoDStringTension_pos` proves it is positive. The 2D theory has no propagating gluons (no local degrees of freedom), which is why it is exactly solvable — the path integral reduces to independent plaquette integrals.",
+    "mathContext": "Migdal formula: $\\langle W_R(C) \\rangle = (\\dim R) \\cdot \\exp\\left(-\\frac{g^2 A \\, C_2(R)}{2 \\dim R}\\right)$. String tension: $\\sigma_{2D} = \\frac{g^2 C_2(R)}{2 \\dim R} > 0$. For SU($N$) fundamental: $C_2 = (N^2-1)/(2N)$, $\\dim R = N$, giving $\\sigma = g^2(N^2-1)/(4N^2)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "exact solvability",
+      "Migdal formula",
+      "quadratic Casimir",
+      "topological field theory",
+      "plaquette factorization"
+    ],
+    "prerequisites": [
+      "representation theory",
+      "path integral",
+      "2D gauge theory"
+    ]
+  },
+  {
+    "id": "ann-transfer-matrix",
+    "proofId": "yang-mills-lattice",
+    "range": {
+      "startLine": 484,
+      "endLine": 549
+    },
+    "type": "concept",
+    "title": "Transfer Matrix and Mass Gap from Eigenvalue Ratio",
+    "content": "The transfer matrix formalism connects the Euclidean lattice path integral to Hamiltonian quantum mechanics. The `TransferMatrix` structure encodes the key spectral data: eigenvalues $\\lambda_0 \\geq \\lambda_1 > 0$. The mass gap is $\\Delta = -\\ln(\\lambda_1/\\lambda_0)/a$, and `transferMatrixMassGap_pos` proves this is positive when $\\lambda_1 < \\lambda_0$ (strict spectral gap), using `Real.log_neg` for $0 < \\lambda_1/\\lambda_0 < 1$. The `correlation_decay_rate` theorem shows $(\\lambda_1/\\lambda_0) \\leq 1$, governing exponential decay of correlations. For a finite-volume lattice with compact gauge group, the transfer matrix is a finite-dimensional positive operator, so a spectral gap exists by the Perron-Frobenius theorem — but the Millennium Prize asks whether this gap survives the infinite-volume continuum limit.",
+    "mathContext": "Partition function: $Z = \\operatorname{Tr}(T^{N_t}) = \\sum_i \\lambda_i^{N_t}$. Mass gap: $\\Delta = -\\frac{\\ln(\\lambda_1/\\lambda_0)}{a} > 0$ when $\\lambda_1 < \\lambda_0$. Correlation decay: $\\langle O(t) O(0) \\rangle \\sim (\\lambda_1/\\lambda_0)^{t/a} = e^{-\\Delta t}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "transfer matrix",
+      "spectral gap",
+      "Perron-Frobenius theorem",
+      "Hamiltonian lattice gauge theory",
+      "correlation length"
+    ],
+    "prerequisites": [
+      "linear algebra (eigenvalues)",
+      "statistical mechanics",
+      "functional analysis"
+    ]
+  }
+]

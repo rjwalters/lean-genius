@@ -1,0 +1,229 @@
+{
+  "id": "derangements-oq-02-oq-01",
+  "title": "Partial Derangements for Arbitrary Finite Types",
+  "slug": "derangements-oq-02-oq-01",
+  "description": "Generalizes the partial derangement formula S(n,k) = C(n,k)·D(n-k) from Fin n to arbitrary Fintype α. For any finite type α with decidable equality and k ≤ |α|, the number of permutations with exactly k fixed points equals C(|α|,k)·D(|α|-k). Proved via transport from Fin |α| using Fintype.equivFin and permutation conjugation.",
+  "meta": {
+    "author": "Classical combinatorics; formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Derangement#Generalizations",
+    "date": "classical",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DerangementsOQ02OQ01.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "tags": [
+      "combinatorics",
+      "permutations",
+      "derangements",
+      "fixed-points",
+      "generalization",
+      "fintype",
+      "research",
+      "open-problem"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Fintype.equivFin",
+        "description": "Any Fintype α is equivalent to Fin (Fintype.card α)",
+        "module": "Mathlib.Data.Fintype.Basic"
+      },
+      {
+        "theorem": "Equiv.permCongr",
+        "description": "Transport a permutation along an equivalence: (e : α ≃ β) → Perm α → Perm β",
+        "module": "Mathlib.Logic.Equiv.Perm.Basic"
+      },
+      {
+        "theorem": "numDerangements",
+        "description": "The derangement number D(n): count of fixed-point-free permutations of Fin n",
+        "module": "Mathlib.Combinatorics.Derangements.Finite"
+      },
+      {
+        "theorem": "Fintype.card_congr",
+        "description": "Types with an equivalence have equal cardinality: α ≃ β → card α = card β",
+        "module": "Mathlib.Data.Fintype.Basic"
+      },
+      {
+        "theorem": "Fintype.card_subtype",
+        "description": "Cardinality of a subtype equals filter cardinality",
+        "module": "Mathlib.Data.Fintype.Basic"
+      }
+    ],
+    "originalContributions": [
+      "fixedPoint_count_permCongr: fixed-point count is preserved by permCongr (bijection between fixed-point subtypes)",
+      "card_kfixed_permCongr: k-fixed-point filter cardinality is invariant under Equiv transport",
+      "card_perms_with_kfixed_fintype: main theorem S(α,k) = C(|α|,k)·D(|α|-k) for arbitrary Fintype α",
+      "permsWithCardMinus1Fixed_eq_zero: S(α,|α|-1) = 0 for |α| ≥ 2 (general version)",
+      "permsWithAllFixed_eq_one: S(α,|α|) = 1 (only identity fixes all, general version)",
+      "sum_kfixed_eq_factorial: ∑_{k=0}^{|α|} S(α,k) = |α|! (general version)"
+    ],
+    "dateAdded": "2026-03-11",
+    "axiomCount": 0,
+    "lineCount": 123,
+    "assumptions": "0 axioms, 0 sorries. Main result transported from Fin n via Fintype.equivFin and permutation conjugation from parent entry.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "**Generalizing the Partial Derangement Formula**\n\nThe study of derangements dates to Montmort's *problème des rencontres* (1708): if $n$ cards numbered 1 through $n$ are shuffled, what is the probability that no card lands in its original position? Euler (1753) derived the alternating series $D(n) = n! \\sum_{k=0}^n (-1)^k/k!$ and the recurrence $D(n) = (n-1)(D(n-1) + D(n-2))$.\n\nThe partial derangement formula $S(n,k) = \\binom{n}{k} \\cdot D(n-k)$ extends this to count permutations with *exactly* $k$ fixed points: choose which $k$ elements to fix, then derange the rest. The original formalization (derangements-oq-02) proved this for $\\text{Fin}\\, n$.\n\nThe natural question is: does the same formula hold for **any** finite type $\\alpha$, not just the canonical $\\text{Fin}\\, n$? The answer is yes, by a transport argument: every finite type $\\alpha$ is equivalent to $\\text{Fin}\\, |\\alpha|$ via `Fintype.equivFin`, and permutation conjugation via `Equiv.permCongr` preserves the fixed-point count.\n\nThis generalization is important because mathematical structures rarely come labeled as $\\text{Fin}\\, n$. Graph automorphisms, symmetries of geometric objects, and group actions all involve permutations of abstract finite sets.",
+    "problemStatement": "**Open Question (derangements-oq-02-oq-01)**: Prove the partial derangement formula for arbitrary finite types.\n\n**Formally**: For any $\\alpha : \\text{Type}^*$ with $[\\text{Fintype}\\; \\alpha]$ $[\\text{DecidableEq}\\; \\alpha]$ and $k \\leq |\\alpha|$:\n$$\\left|\\{\\sigma \\in \\text{Perm}\\; \\alpha \\mid |\\text{Fix}(\\sigma)| = k\\}\\right| = \\binom{|\\alpha|}{k} \\cdot D(|\\alpha| - k)$$",
+    "text": "Generalizes the partial derangement formula S(n,k) = C(n,k)·D(n-k) from Fin n to arbitrary Fintype α. For any finite type α with decidable equality and k ≤ |α|, the number of permutations with exactly k fixed points equals C(|α|,k)·D(|α|-k). Proved via transport from Fin |α| using Fintype.equivFin and permutation conjugation.",
+    "proofStrategy": "**Transport via Fintype.equivFin**\n\nThe proof has two layers:\n\n**Layer 1: Fixed-point preservation** (`fixedPoint_count_permCongr`)\nFor any equivalence $e : \\alpha \\simeq \\beta$, the conjugation $\\sigma \\mapsto e \\circ \\sigma \\circ e^{-1}$ preserves the number of fixed points. This is proved by constructing an explicit bijection between the fixed-point subtypes $\\{x : \\alpha \\mid \\sigma(x) = x\\} \\simeq \\{y : \\beta \\mid (e \\circ \\sigma \\circ e^{-1})(y) = y\\}$.\n\n**Layer 2: Filter cardinality transfer** (`card_kfixed_permCongr`)\nThe $k$-fixed-point filter on $\\text{Perm}\\; \\alpha$ bijects with the corresponding filter on $\\text{Perm}\\; \\beta$ via `permCongr`. This gives equal cardinalities.\n\n**Layer 3: Instantiation**\nApply the transport with $e = \\texttt{Fintype.equivFin}\\; \\alpha : \\alpha \\simeq \\text{Fin}\\; |\\alpha|$, then invoke the $\\text{Fin}\\; n$ result from `PartialDerangements.card_perms_with_kfixed`.",
+    "keyInsights": [
+      "**Transport principle**: Rather than reproving the combinatorial argument for arbitrary types, transport the existing Fin n result via Fintype.equivFin. This yields a 2-line proof of the main theorem.",
+      "**permCongr preserves fixed points**: The key lemma. Conjugation σ ↦ e∘σ∘e⁻¹ sends fixed points x↦x to fixed points e(x)↦e(x), giving a bijection on fixed-point sets.",
+      "**Subtype formulation for fixed points**: Using Fintype.card {x : α // σ x = x} rather than filter cardinality gives cleaner proofs via Fintype.card_congr.",
+      "**Corollaries transfer automatically**: Once the filter bijection is established, all corollaries (S(α,|α|-1)=0, S(α,|α|)=1, sum=|α|!) follow by a single rewrite.",
+      "**Reusable methodology**: The three-step pattern (prove invariance under permCongr → establish filter bijection → instantiate with equivFin) applies to any permutation statistic preserved by conjugation: cycle type, descent count, inversion number, etc."
+    ],
+    "prerequisites": [
+      "Combinatorics (permutations, inclusion-exclusion principle)",
+      "Probability theory (random permutations, expectations)",
+      "Analysis (exponential function, e as a limit)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-setup",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "Documents the open question (generalizing S(n,k) = C(n,k)·D(n-k) from Fin n to arbitrary Fintype α) and imports DerangementsOQ02 for the Fin n result. Opens Finset, Fintype, Nat, and Equiv.Perm namespaces and declares the type variable α with DecidableEq and Fintype instances.",
+      "mathContext": "Import `PartialDerangements.card_perms_with_kfixed` from OQ-02: $|\\{\\sigma \\in S_n : |\\text{Fix}(\\sigma)| = k\\}| = \\binom{n}{k} D(n-k)$ for $\\text{Fin}\\;n$."
+    },
+    {
+      "id": "section-i",
+      "title": "Fixed-Point Count Preservation",
+      "startLine": 23,
+      "endLine": 37,
+      "summary": "fixedPoint_count_permCongr: permutation conjugation via permCongr preserves the number of fixed points. Proved by explicit bijection between fixed-point subtypes.",
+      "mathContext": "$|\\{x : \\alpha \\mid \\sigma(x) = x\\}| = |\\{y : \\beta \\mid (e \\circ \\sigma \\circ e^{-1})(y) = y\\}|$ via the bijection $x \\mapsto e(x)$."
+    },
+    {
+      "id": "section-ii",
+      "title": "Filter Bijection for k-Fixed Permutations",
+      "startLine": 42,
+      "endLine": 60,
+      "summary": "card_kfixed_permCongr: the k-fixed-point filter on Perm α bijects with the filter on Perm β via permCongr, giving equal cardinalities.",
+      "mathContext": "$\\{\\sigma \\in \\text{Perm}\\;\\alpha : |\\text{Fix}(\\sigma)| = k\\} \\cong \\{\\tau \\in \\text{Perm}\\;\\beta : |\\text{Fix}(\\tau)| = k\\}$ via $\\sigma \\mapsto e \\circ \\sigma \\circ e^{-1}$."
+    },
+    {
+      "id": "section-iii",
+      "title": "Main Generalization",
+      "startLine": 65,
+      "endLine": 79,
+      "summary": "card_perms_with_kfixed_fintype: main theorem S(α,k) = C(|α|,k)·D(|α|-k) for arbitrary Fintype α, via transport from Fin |α|.",
+      "mathContext": "$S(\\alpha, k) = \\binom{|\\alpha|}{k} \\cdot D(|\\alpha| - k)$ for any Fintype $\\alpha$. Two-line proof: transport via $\\alpha \\simeq \\text{Fin}\\;|\\alpha|$, then apply the $\\text{Fin}\\;n$ result."
+    },
+    {
+      "id": "section-iv",
+      "title": "Corollaries for Arbitrary Fintype",
+      "startLine": 84,
+      "endLine": 123,
+      "summary": "Three corollaries: S(α,|α|-1) = 0 (for |α| ≥ 2), S(α,|α|) = 1 (only identity), and ∑ S(α,k) = |α|!.",
+      "mathContext": "$S(\\alpha, |\\alpha|-1) = 0$ (can't fix all but one), $S(\\alpha, |\\alpha|) = 1$ (only $\\text{id}$), $\\sum_{k=0}^{|\\alpha|} S(\\alpha, k) = |\\alpha|!$ (partition of $S_{|\\alpha|}$)."
+    }
+  ],
+  "conclusion": {
+    "summary": "The partial derangement formula S(n,k) = C(n,k)·D(n-k) is fully generalized from Fin n to arbitrary Fintype α in Lean 4 with 0 sorries. The proof uses transport via Fintype.equivFin: conjugation by the canonical equivalence α ≃ Fin |α| preserves fixed-point counts, reducing the general case to the Fin n result. All corollaries transfer automatically.",
+    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Type-agnostic combinatorics**: The formula now works for any finite type, not just Fin n. This is essential for applications to graph theory (automorphism groups), abstract algebra (Burnside's lemma), and other settings where the underlying set is not canonically ordered.\n\n**2. Transport methodology**: The proof demonstrates a general technique: prove a combinatorial result for Fin n, then transport to arbitrary Fintype via Fintype.equivFin. This pattern applies broadly to permutation combinatorics in Mathlib.\n\n3. **Building on OQ-02**: This extends the earlier partial derangement formalization by removing the artificial restriction to Fin n, answering the open question posed in the OQ-02 conclusion.",
+    "openQuestions": [
+      "Prove the generating function for partial derangements over arbitrary finite types",
+      "Apply the transport methodology to other Fin n permutation results (e.g., cycle index polynomials)",
+      "Connect to Burnside's lemma for group actions on finite sets"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "derangements",
+      "relationship": "foundational",
+      "description": "The base derangement formula D(n) = n! · Σ(-1)^k/k! that this proof generalizes. The parent entry proves the classical derangement count for Fin n"
+    },
+    {
+      "targetId": "derangements-oq-02",
+      "relationship": "extends",
+      "description": "Direct parent: OQ-02 proves the partial derangement formula S(n,k) = C(n,k)·D(n-k) for Fin n. This OQ-01 generalizes to arbitrary Fintype α via transport"
+    },
+    {
+      "targetId": "derangements-oq-03",
+      "relationship": "related",
+      "description": "Sibling exploration of derangement theory, complementing this generalization with other aspects of the combinatorics of fixed-point-free permutations"
+    },
+    {
+      "targetId": "inclusion-exclusion",
+      "relationship": "foundational",
+      "description": "The inclusion-exclusion principle is the classical tool for counting derangements: D(n) = Σ(-1)^k C(n,k)(n-k)! = n! Σ(-1)^k/k!. The partial derangement formula S(n,k) similarly decomposes via inclusion-exclusion on the fixed-point set"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "Binomial coefficients C(n,k) appear as the 'choose the fixed points' factor in S(n,k) = C(n,k)·D(n-k). The binomial theorem provides the algebraic framework for manipulating these coefficients"
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "foundational",
+      "description": "The combinations formula C(n,k) = n!/(k!(n-k)!) is used directly in the partial derangement formula S(n,k) = C(n,k)·D(n-k) to count the number of ways to choose which k elements are fixed"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient φ(n) counts elements of (ℤ/nℤ)* coprime to n, paralleling how derangements count fixed-point-free permutations. Both involve counting elements of a finite group satisfying a constraint, and both use inclusion-exclusion in their classical proofs"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Stanley, Richard P.",
+      "title": "Enumerative Combinatorics, Volume 1",
+      "year": "2011",
+      "venue": "Cambridge University Press, 2nd edition",
+      "note": "Chapter 2 covers permutation enumeration including derangements and partial derangements via generating functions and inclusion-exclusion"
+    },
+    {
+      "authors": "Aigner, Martin",
+      "title": "A Course in Enumeration",
+      "year": "2007",
+      "venue": "Springer GTM 238",
+      "note": "Section 1.3 develops the derangement formula via inclusion-exclusion and relates it to Euler's constant e via the exponential series truncation"
+    },
+    {
+      "authors": "Even, Shimon; Gillis, Joseph",
+      "title": "Derangements and Laguerre polynomials",
+      "year": "1976",
+      "venue": "Mathematical Proceedings of the Cambridge Philosophical Society, vol. 79, pp. 135–143",
+      "note": "Connects derangement numbers to Laguerre polynomials and generating functions, extending classical results on partial derangements"
+    },
+    {
+      "authors": "P. R. de Montmort",
+      "title": "Essay d'Analyse sur les Jeux de Hazard",
+      "year": "1708",
+      "venue": "Quillau, Paris",
+      "note": "First study of the problème des rencontres (matching problem), introducing derangement counting"
+    },
+    {
+      "authors": "L. Euler",
+      "title": "Calcul de la probabilité dans le jeu de rencontre",
+      "year": "1753",
+      "venue": "Mémoires de l'Académie des Sciences de Berlin",
+      "note": "Derived the alternating series formula D(n) = n! Σ (-1)^k/k! and the recurrence D(n) = (n-1)(D(n-1) + D(n-2))"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Proofs.DerangementsOQ02"
+    ],
+    "opens": [
+      "Finset",
+      "Fintype",
+      "Nat",
+      "Equiv.Perm"
+    ],
+    "namespace": "PartialDerangementsGeneral",
+    "lineCount": 123,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/DerangementsOQ02OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

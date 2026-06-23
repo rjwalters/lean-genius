@@ -1,0 +1,234 @@
+/-
+  Jordan-Hölder Uniqueness Theorem for Finite Groups (OQ-04)
+
+  Instantiates `JordanHolderLattice` for `Subgroup G` (filling a Mathlib TODO)
+  and derives the Jordan-Hölder theorem for finite groups.
+
+  ## Main Results
+
+  1. `instJordanHolderLatticeSubgroup` — `JordanHolderLattice (Subgroup G)` instance
+  2. `jordan_holder_subgroups` — Jordan-Hölder theorem for groups
+
+  ## Mathlib Gap
+
+  As of Mathlib 2026, `JordanHolderLattice (Subgroup G)` is a TODO in
+  `Mathlib.Order.JordanHolder` with the note "it is not entirely clear how this
+  should be done." This file fills that gap.
+
+  ## Proof Status
+
+  All three `JordanHolderLattice` axioms are fully proved (0 sorries):
+  - `sup_eq_of_isMaximal`: proved via subgroupOf_sup + maximality argument
+  - `isMaximal_inf_left_of_isMaximal_sup`: proved via element-wise decomposition (Subgroup.mem_sup)
+  - `second_iso`: proved via first isomorphism theorem (avoids sup_comm rewrite failure)
+-/
+
+import Mathlib.Tactic
+import Mathlib.Order.JordanHolder
+import Mathlib.GroupTheory.QuotientGroup.Basic
+import Mathlib.GroupTheory.Subgroup.Simple
+import Proofs.AbelRuffiniGaloisExtensions
+
+namespace AbelRuffiniGaloisExtensionsOQ04
+
+open Subgroup QuotientGroup
+
+variable {G : Type*} [Group G]
+
+-- ============================================================
+-- PART I: Predicates
+-- ============================================================
+
+/-- H is a maximal normal subgroup of K:
+    H < K, H is relatively normal in K, and every normal-in-K subgroup
+    between H and K equals H or K.
+
+    This is equivalent to `IsSimpleGroup (K ⧸ H.subgroupOf K)` by the
+    correspondence theorem, but avoids quotient typeclass issues. -/
+def IsMaxNorm (H K : Subgroup G) : Prop :=
+  H < K ∧
+  (H.subgroupOf K).Normal ∧
+  ∀ N : Subgroup G, H ≤ N → N ≤ K → (N.subgroupOf K).Normal → N = H ∨ N = K
+
+/-- Quotient iso: K₁/H₁ ≃* K₂/H₂, carrying normality evidence. -/
+def GroupQuotIso (X Y : Subgroup G × Subgroup G) : Prop :=
+  ∃ (hn1 : (X.1.subgroupOf X.2).Normal) (hn2 : (Y.1.subgroupOf Y.2).Normal),
+    letI := hn1; letI := hn2
+    Nonempty (X.2 ⧸ X.1.subgroupOf X.2 ≃* Y.2 ⧸ Y.1.subgroupOf Y.2)
+
+-- ============================================================
+-- PART II: Key Normalizer Lemma
+-- ============================================================
+
+/-- If H is relatively normal in H ⊔ K, then K ≤ H.normalizer. -/
+lemma le_normalizer_of_normal_in_sup {H K : Subgroup G}
+    (hn : (H.subgroupOf (H ⊔ K)).Normal) : K ≤ H.normalizer :=
+  le_sup_right.trans ((normal_subgroupOf_iff_le_normalizer le_sup_left).mp hn)
+
+-- ============================================================
+-- PART III: JordanHolderLattice Instance
+-- ============================================================
+
+noncomputable instance instJordanHolderLatticeSubgroup :
+    JordanHolderLattice (Subgroup G) where
+
+  IsMaximal := IsMaxNorm
+
+  lt_of_isMaximal := fun h => h.1
+
+  sup_eq_of_isMaximal := by
+    /- Proof: x, y both maximal normal in z (with x ≠ y).
+       Strategy: apply x's maximality to x⊔y (which is normal in z via subgroupOf_sup),
+       getting x⊔y = x or x⊔y = z. The first case gives y ≤ x, then y's maximality
+       applied to x in z gives a contradiction with x ≠ y or x not maximal. -/
+    intro x y z hxz hyz hne
+    have hx_le_z : x ≤ z := hxz.1.le
+    have hy_le_z : y ≤ z := hyz.1.le
+    have hn_xy_z : ((x ⊔ y).subgroupOf z).Normal := by
+      rw [subgroupOf_sup hx_le_z hy_le_z]
+      haveI := hxz.2.1; haveI := hyz.2.1
+      infer_instance
+    rcases hxz.2.2 le_sup_left (sup_le hx_le_z hy_le_z) hn_xy_z with h | h
+    · have hyx : y ≤ x := h ▸ le_sup_right
+      rcases hyz.2.2 hyx hx_le_z hxz.2.1 with h2 | h2
+      · exact absurd h2 hne
+      · exact absurd h2 (ne_of_lt hxz.1)
+    · exact h
+
+  isMaximal_inf_left_of_isMaximal_sup := by
+    /- Proof: x, y both maximal normal in x⊔y. Want: x⊓y maximal normal in x.
+       Three parts: (1) x⊓y < x via inf_le_left + contradiction; (2) normality via
+       inf_subgroupOf_right; (3) maximality via element-wise argument — for N⊔y = x⊔y,
+       any a ∈ x decomposes as n*b with n ∈ N ≤ x, b ∈ y∩x = x⊓y ≤ N, so a ∈ N. -/
+    intro x y hx hy
+    refine ⟨?_, ?_, ?_⟩
+    · -- x ⊓ y < x
+      apply lt_of_le_of_ne inf_le_left
+      intro h_eq
+      have hxy : x ≤ y := h_eq ▸ inf_le_right
+      rcases hy.2.2 hxy hx.1.le hx.2.1 with h | h
+      · simp only [h, sup_idem] at hx; exact lt_irrefl _ hx.1
+      · exact absurd h.symm hx.1.ne'
+    · -- (x ⊓ y).subgroupOf x is Normal
+      have hxle_yn : x ≤ y.normalizer := by
+        have := (normal_subgroupOf_iff_le_normalizer le_sup_right).mp hy.2.1
+        exact le_trans le_sup_left this
+      have : (y.subgroupOf x).Normal := normal_subgroupOf_of_le_normalizer hxle_yn
+      rwa [inf_comm, inf_subgroupOf_right]
+    · -- maximality: ∀ N, x ⊓ y ≤ N ≤ x → (N.subgroupOf x).Normal → N = x ⊓ y ∨ N = x
+      intro N hN_lo hN_hi hN_norm
+      -- Use second_iso direction: x/(x⊓y) ≃* (x⊔y)/y
+      -- N/x⊓y is a subquotient; transfer to a subgroup between y and x⊔y
+      -- then use maximality of y in x⊔y
+      -- N⊔y is between y and x⊔y
+      have hNy_le : N ⊔ y ≤ x ⊔ y := sup_le_sup_right hN_hi y
+      have hy_le_Ny : y ≤ N ⊔ y := le_sup_right
+      -- (y.subgroupOf (N⊔y)).Normal: need y normal in N⊔y
+      have hxle_yn : x ≤ y.normalizer := by
+        have := (normal_subgroupOf_iff_le_normalizer le_sup_right).mp hy.2.1
+        exact le_trans le_sup_left this
+      have hN_le_yn : N ≤ y.normalizer := hN_hi.trans hxle_yn
+      have hn_y_Ny : (y.subgroupOf (N ⊔ y)).Normal :=
+        (normal_subgroupOf_iff_le_normalizer hy_le_Ny).mpr
+          (sup_le hN_le_yn (le_normalizer y))
+      -- Apply maximality of y in x⊔y to N⊔y
+      rcases hy.2.2 hy_le_Ny hNy_le hn_y_Ny with h | h
+      · -- N ⊔ y = y → N ≤ y → N = x ⊓ y
+        left
+        have hNy : N ≤ y := le_sup_left.trans (h ▸ le_refl _)
+        exact le_antisymm (le_inf hN_hi hNy) hN_lo
+      · -- N ⊔ y = x ⊔ y: element-wise argument directly gives x ≤ N, so N = x.
+        -- For any a ∈ x: a ∈ x ⊔ y = N ⊔ y, so ∃ n ∈ N, b ∈ y, n*b = a.
+        -- Then b = n⁻¹*a ∈ x (since n ∈ N ≤ x and a ∈ x) ∩ y = x⊓y ≤ N.
+        -- So a = n*b ∈ N. Hence x ≤ N, and with N ≤ x: N = x.
+        right
+        apply le_antisymm hN_hi
+        intro a haA
+        have ha_in_Ny : a ∈ N ⊔ y := by rw [h]; exact le_sup_left haA
+        rw [Subgroup.mem_sup] at ha_in_Ny
+        obtain ⟨n, hnN, b, hby, hnb_eq⟩ := ha_in_Ny
+        have hnx : n ∈ x := hN_hi hnN
+        have hbx : b ∈ x := by
+          have h_eq : b = n⁻¹ * a := by rw [← hnb_eq]; group
+          rw [h_eq]; exact x.mul_mem (x.inv_mem hnx) haA
+        have hbN : b ∈ N := hN_lo (Subgroup.mem_inf.mpr ⟨hbx, hby⟩)
+        rw [← hnb_eq]
+        exact N.mul_mem hnN hbN
+
+  Iso := GroupQuotIso
+
+  iso_symm := by
+    rintro ⟨_, _⟩ ⟨_, _⟩ ⟨hn1, hn2, f⟩
+    refine ⟨hn2, hn1, ?_⟩
+    haveI := hn1; haveI := hn2
+    exact f.map (·.symm)
+
+  iso_trans := by
+    rintro ⟨_, _⟩ ⟨_, _⟩ ⟨_, _⟩ ⟨hn1, hn2, f⟩ ⟨hn2', hn3, g⟩
+    refine ⟨hn1, hn3, ?_⟩
+    haveI := hn1; haveI := hn2; haveI := hn2'; haveI := hn3
+    rcases f with ⟨e1⟩; rcases g with ⟨e2⟩; exact ⟨e1.trans e2⟩
+
+  second_iso := by
+    /- Proof: (x ⊔ y) ⧸ x ≃* y ⧸ (x ⊓ y) via Noether's second isomorphism.
+       Key insight: construct φ : y →* (x ⊔ y) ⧸ x directly as mk' ∘ inclusion,
+       avoiding rw [sup_comm] which fails due to Normal typeclass dependency.
+       ker φ = (x ⊓ y).subgroupOf y; φ surjective by decomposing elements of x ⊔ y.
+       Apply quotientKerEquivOfSurjective to get the isomorphism. -/
+    intro x y hx
+    have hn_sup : (x.subgroupOf (x ⊔ y)).Normal := hx.2.1
+    have hle : y ≤ x.normalizer := le_normalizer_of_normal_in_sup hn_sup
+    have hn_inf : ((x ⊓ y).subgroupOf y).Normal := by
+      rw [inf_comm, inf_subgroupOf_right]
+      exact normal_subgroupOf_of_le_normalizer hle
+    refine ⟨hn_sup, hn_inf, ?_⟩
+    haveI := hn_sup; haveI := hn_inf
+    let φ : y →* (x ⊔ y) ⧸ x.subgroupOf (x ⊔ y) :=
+      (mk' (x.subgroupOf (x ⊔ y))).comp (inclusion le_sup_right)
+    have hker : φ.ker = (x ⊓ y).subgroupOf y := by
+      ext ⟨g, hg⟩
+      simp only [φ, MonoidHom.mem_ker, MonoidHom.comp_apply, inclusion_mk, mk'_apply,
+                 QuotientGroup.eq_one_iff, mem_subgroupOf, mem_inf, hg, and_true]
+    have hφ_surj : Function.Surjective φ := fun q =>
+      q.inductionOn' fun ⟨g, hg⟩ => by
+        obtain ⟨a, ha, b, hb, rfl⟩ := Subgroup.mem_sup.mp hg
+        refine ⟨⟨b, hb⟩, QuotientGroup.eq.mpr ?_⟩
+        simp only [φ, MonoidHom.comp_apply, inclusion_mk, leftRel_apply, mem_subgroupOf]
+        have key := hn_sup.conj_mem'
+          (show (⟨a, Subgroup.mem_sup_left ha⟩ : (x ⊔ y)) ∈ x.subgroupOf (x ⊔ y)
+           from Subgroup.mem_subgroupOf.mpr ha)
+          (⟨b, Subgroup.mem_sup_right hb⟩ : (x ⊔ y))
+        rw [Subgroup.mem_subgroupOf] at key
+        rw [← mul_assoc]; exact key
+    haveI : (φ.ker).Normal := by rw [hker]; infer_instance
+    have e := QuotientGroup.quotientKerEquivOfSurjective φ hφ_surj
+    rw [hker] at e
+    exact ⟨e.symm⟩
+
+-- ============================================================
+-- PART IV: Jordan-Hölder Theorem
+-- ============================================================
+
+/-- **Jordan-Hölder Theorem**: Any two composition series of a group with the
+    same endpoints are equivalent (same length, same composition factors). -/
+theorem jordan_holder_subgroups
+    (s₁ s₂ : CompositionSeries (Subgroup G))
+    (hb : s₁.head = s₂.head) (ht : s₁.last = s₂.last) :
+    CompositionSeries.Equivalent s₁ s₂ :=
+  CompositionSeries.jordan_holder s₁ s₂ hb ht
+
+/-- Jordan-Hölder for finite groups. -/
+theorem jordan_holder_finite_groups [Finite G]
+    (s₁ s₂ : CompositionSeries (Subgroup G))
+    (hb : s₁.head = s₂.head) (ht : s₁.last = s₂.last) :
+    CompositionSeries.Equivalent s₁ s₂ :=
+  jordan_holder_subgroups s₁ s₂ hb ht
+
+-- ============================================================
+-- PART V: Verification
+-- ============================================================
+
+#check @jordan_holder_subgroups
+#check @instJordanHolderLatticeSubgroup
+
+end AbelRuffiniGaloisExtensionsOQ04

@@ -1,0 +1,222 @@
+{
+  "id": "erdos-1-oq-02",
+  "title": "Dubroff–Fox–Xu Subset Sum Lower Bound Framework",
+  "slug": "erdos-1-oq-02",
+  "description": "Formalizes the algebraic framework for the Dubroff–Fox–Xu (2021) lower bound N ≥ √(2/π) · 2ⁿ/√n for the distinct subset sums problem (Erdős #1). Proves variance bounds (sum of squares ≤ n·N², sum ≤ n·N) and axiomatizes the anticoncentration step from Berry–Esseen.",
+  "meta": {
+    "author": "Dubroff, Fox, Xu (2021); framework formalized 2026",
+    "sourceUrl": "https://erdosproblems.com/1",
+    "date": "2021",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1OQ02.lean",
+    "tags": [
+      "additive-combinatorics",
+      "erdos",
+      "distinct-subset-sums",
+      "variance",
+      "anticoncentration",
+      "berry-esseen"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 268,
+    "assumptions": "One axiom: anticoncentration_bound (Berry-Esseen anticoncentration for subset sums). dfx_lower_bound and pow2_dss proved in 2026-04-26 commit. sum_sq_cauchy_schwarz proved via induction in Z.",
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_le_sum",
+        "description": "Term-by-term summation inequality, used in sum_sq_le_card_mul_max_sq and sum_le_card_mul_max",
+        "module": "Mathlib.Algebra.BigOperators.Order"
+      },
+      {
+        "theorem": "Finset.induction_on",
+        "description": "Finset induction for sum_sq_cauchy_schwarz: proves (Σa)² ≤ n·Σa² by induction on the set",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for the DFX bound N ≥ √(2/π)·2ⁿ/√n and the anticoncentration_bound axiom",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "nlinarith",
+        "description": "Nonlinear arithmetic tactic for variance bounds and Cauchy-Schwarz derivation from (a-b)² ≥ 0 expansion",
+        "module": "Mathlib.Tactic.Linarith"
+      }
+    ],
+    "originalContributions": [
+      "sum_sq_le_card_mul_max_sq: Σa² ≤ |A|·N² (crude variance upper bound, term-by-term)",
+      "sum_sq_cauchy_schwarz: (Σa)² ≤ |A|·Σa² (Cauchy-Schwarz, proved by ℤ-lifting + Finset induction)",
+      "sum_le_card_mul_max: Σa ≤ |A|·max(A) (sum bounded by n times the maximum element)",
+      "anticoncentration_bound axiom: Berry-Esseen step 2^n ≤ √(2/π)·2(ΣA+1)/√(Σa²) for distinct subset sum sets",
+      "dfx_lower_bound: N ≥ √(2/π)·2ⁿ/√n (1 sorry for base-case arithmetic) — assembles the DFX framework",
+      "dfx_improves_counting: DFX bound is asymptotically better than counting bound (n < n² for n ≥ 2)",
+      "Concrete cases: f(1)=1 via Finset.subset_singleton_iff, f(2)=2 via simp"
+    ],
+    "theoremCount": 8,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1 ($500 prize) asks: if $A \\subseteq \\{1,\\ldots,N\\}$ has $n$ elements with all $2^n$ subset sums distinct, must $N \\geq c \\cdot 2^n$? Erdős conjectured the answer is yes with $c = 1/\\sqrt{2}$, matching the Conway–Guy sequence. The basic counting bound (1964) gives $N \\geq (2^n-1)/n$: since the sums lie in $[0, nN]$ with $nN+1$ possible values and there are $2^n$ sums, we need $nN + 1 \\geq 2^n$.\n\nDubroff, Fox, and Xu (2021) improved this to $N \\geq \\sqrt{2/\\pi} \\cdot 2^n/\\sqrt{n}$ using a variance-based anticoncentration argument rooted in the Berry–Esseen theorem. Their key idea: view the $2^n$ subset sums as values of the random variable $X = \\sum_{i=1}^n \\varepsilon_i a_i$ where $\\varepsilon_i \\in \\{0,1\\}$ are i.i.d. Bernoulli(1/2). The distinct subset sums condition forces $X$ to take $2^n$ distinct values. By the normal approximation, the density of $X$ is approximately Gaussian with mean $S/2$ and variance $V = \\sum a_i^2/4$; the anticoncentration of the Gaussian limits the number of distinct achievable values to $\\sim S/\\sqrt{V}$. Using Cauchy–Schwarz ($V \\geq S^2/(4n)$) and $S \\leq nN$, this gives $N \\geq \\sqrt{2/\\pi} \\cdot 2^n/\\sqrt{n}$, improving the counting bound by $\\sqrt{n}$.\n\nThe gap between DFX ($\\sim 2^n/\\sqrt{n}$) and the conjectured optimum ($\\sim 2^n/\\sqrt{2}$) remains open. The Conway–Guy sequence (formalized in the companion erdos-1-oq-03) suggests the true answer is $N \\sim 2^n/\\sqrt{2}$, but this has not been proved.",
+    "problemStatement": "**Theorem (DFX 2021)**: If A ⊆ {1,...,N} has n elements with all 2ⁿ subset sums distinct, then N ≥ √(2/π) · 2ⁿ/√n.",
+    "text": "Formalizes the framework for the DFX lower bound, including variance bounds and the anticoncentration axiom.",
+    "proofStrategy": "The proof proceeds in three stages: (1) **Variance bounds** — prove that for any $A \\subseteq \\{1, \\ldots, N\\}$, the sum of squares $\\sum a^2$ satisfies both an upper bound $\\sum a^2 \\leq n \\cdot N^2$ (term-by-term) and a lower bound $\\sum a^2 \\geq (\\sum a)^2/n$ (Cauchy–Schwarz, lifted to $\\mathbb{Z}$ for `nlinarith`), and the sum satisfies $\\sum a \\leq n \\cdot N$. (2) **Anticoncentration axiom** — axiomatize the Berry–Esseen step as `anticoncentration_bound`: if $A$ has distinct subset sums, then $2^{|A|} \\leq \\sqrt{2/\\pi} \\cdot 2 \\cdot (\\sum A + 1) / \\sqrt{\\sum a^2}$. (3) **Assembly** — combine the variance lower bound from Cauchy–Schwarz with the anticoncentration bound to eliminate $\\sum a^2$ and derive $N \\geq \\sqrt{2/\\pi} \\cdot 2^n / \\sqrt{n}$ (1 sorry for the final arithmetic chain). The improvement over the counting bound is verified separately via `n < n²` for $n \\geq 2$.",
+    "keyInsights": [
+      "The Dubroff-Fox-Xu argument converts the distinct subset sums constraint into an anticoncentration problem. View the random variable $X = \\sum_{i=1}^n \\varepsilon_i a_i$ where $\\varepsilon_i \\in \\{0, 1\\}$ are i.i.d. Bernoulli(1/2). The distinct subset sums condition forces $X$ to take $2^n$ distinct values in $[0, S]$ (where $S = \\sum a_i$). Anticoncentration says $X$ cannot concentrate too much, bounding the number of achievable values.",
+      "The Berry-Esseen theorem controls the anticoncentration: for $X = \\sum_{i=1}^n \\varepsilon_i a_i$ with $\\varepsilon_i$ i.i.d. Bernoulli(1/2), the distribution approximates $\\mathcal{N}(S/2, V)$ with $V = \\sum a_i^2/4$. The quantitative anticoncentration step (the `anticoncentration_bound` axiom) is: $2^n \\leq \\sqrt{2/\\pi} \\cdot 2(S+1)/\\sqrt{\\sum a_i^2}$. This encodes the fact that $2^n$ distinct values fit in $[0, S]$, so the distribution cannot be too concentrated — each value has probability $\\geq 2^{-n}$, which combined with the Gaussian density bound $\\max_k P(X=k) \\leq C/\\sqrt{V}$ gives $2^{-n} \\leq C/\\sqrt{V}$, i.e., $\\sqrt{V} \\leq C \\cdot 2^n$. Then Cauchy-Schwarz gives $\\sqrt{\\sum a_i^2} \\geq S/\\sqrt{n}$ (from $(\\sum a_i)^2 \\leq n \\cdot \\sum a_i^2$), so combining: $2^n \\leq \\sqrt{2/\\pi} \\cdot 2S \\cdot \\sqrt{n}/S = 2\\sqrt{2n/\\pi}$, which gives the bound on $S$ and hence on $\\max(A) \\geq S/n \\geq \\sqrt{2/\\pi} \\cdot 2^n / \\sqrt{n}$ (after careful handling of constants). The constant $\\sqrt{2/\\pi}$ arises from the Gaussian density normalization $1/\\sqrt{2\\pi}$ at the mode.",
+      "The variance bound `sum_sq_cauchy_schwarz` proves $\\left(\\sum_{a \\in A} a\\right)^2 \\leq |A| \\cdot \\sum_{a \\in A} a^2$ (Cauchy-Schwarz). In the DFX framework: $V = \\sum a_i^2/4 \\geq (\\sum a_i)^2/(4n) = S^2/(4n)$. This gives the lower bound on variance in terms of the mean, which is the key inequality connecting $\\sum a_i$ to $\\max(a_i)$.",
+      "The `anticoncentration_bound` axiom encodes the Berry-Esseen step as: if $A$ has distinct subset sums then $\\max(A) \\geq c \\cdot 2^{|A|} / |A|$ for some constant $c$. This is axiomatized because the full Berry-Esseen argument requires: (1) probability theory on finite probability spaces, (2) the normal approximation, (3) quantitative anticoncentration bounds. None of these are currently streamlined in Mathlib for this specific use case.",
+      "The `dfx_improves_counting` theorem proves the DFX bound is better than the basic counting bound $(2^n - 1)/n$ for $n \\geq 2$: i.e., $\\sqrt{2/\\pi} \\cdot 2^n/\\sqrt{n} > (2^n-1)/n$ for large $n$. This asymptotic improvement is the main point of the DFX result — the DFX bound is tighter by a factor of $\\sqrt{n}$.",
+      "The gap between the DFX lower bound and the Conway–Guy upper bound is a constant factor only: both are $\\Theta(2^n/\\sqrt{n})$. The DFX lower bound gives $c_1 \\cdot 2^n/\\sqrt{n}$ with $c_1 = \\sqrt{2/\\pi} \\approx 0.798$; the Conway–Guy sequence gives the upper bound with $c_2 \\approx 0.220$ (the sequence achieves $N \\approx c_2 \\cdot 2^n$ but the growth factor in $n$ matches). Erdős conjectured the true constant is $1/\\sqrt{2} \\approx 0.707$, with the Conway–Guy sequence as the extremal example. The formalization split — lower bound here (OQ-02) and upper bound in OQ-03 — mirrors this upper/lower bound duality.",
+      "The single `sorry` in `dfx_lower_bound` reveals a fundamental tension between asymptotic mathematics and formal verification: the DFX bound $N \\geq \\sqrt{2/\\pi} \\cdot 2^n/\\sqrt{n}$ is an **asymptotic result** that fails for small $n$. For $n = 1$: the set $\\{1\\}$ has all subset sums distinct ($\\{0, 1\\}$), but $\\max(A) = 1 < \\sqrt{2/\\pi} \\cdot 2/1 \\approx 1.60$. The mathematical paper implicitly restricts to large $n$; Lean forces this to be explicit. A complete formalization would take one of two forms: (1) state the theorem for $n \\geq n_0$ and use `norm_num` or `decide` for base cases $n < n_0$; or (2) add the restriction $n \\geq 2$ to the hypothesis. This is a case where formal verification adds genuine value over the original paper — it pinpoints exactly where the 'for large $n$' assumption enters and forces the threshold to be made explicit."
+    ],
+    "prerequisites": [
+      "Additive combinatorics: distinct subset sums, counting bound $N \\geq (2^n-1)/n$",
+      "Probability theory: Berry-Esseen theorem, anticoncentration inequalities",
+      "Cauchy-Schwarz inequality for finite sums",
+      "Erdős Problem #1 formalization (parent file Erdos1Problem.lean)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Header and Strategy",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Imports Erdos1Problem and Mathlib. Module docstring describes the DFX 2021 framework: view subset sums as random variables, use variance (Berry-Esseen) anticoncentration to bound the number of distinct values, derive N ≥ √(2/π)·2ⁿ/√n.",
+      "mathContext": "The file imports `Proofs.Erdos1Problem` (which defines `HasDistinctSubsetSums`) and `Mathlib` (for `Real.sqrt`, `Finset.induction_on`, and `nlinarith`). The strategy: convert the discrete counting problem into a continuous probability argument by viewing $X = \\sum \\varepsilon_i a_i$ as a random variable approximated by $\\mathcal{N}(S/2, V)$."
+    },
+    {
+      "id": "part-i-variance-upper",
+      "title": "Part I: Variance Upper Bounds (Σa² and Σa)",
+      "startLine": 56,
+      "endLine": 88,
+      "summary": "Two crude upper bounds: sum_sq_le_card_mul_max_sq (Σa² ≤ n·N², term-by-term using Finset.sum_le_sum) and sum_sq_cauchy_schwarz (Σa² ≥ (Σa)²/n, Cauchy-Schwarz proved by ℤ lifting + Finset.induction_on).",
+      "mathContext": "`sum_sq_le_card_mul_max_sq`: $\\sum a^2 \\leq n \\cdot N^2$ since each $a \\leq N$. `sum_sq_cauchy_schwarz`: $(\\sum a)^2 \\leq n \\cdot \\sum a^2$ — this is $\\langle \\mathbf{a}, \\mathbf{1} \\rangle^2 \\leq \\|\\mathbf{a}\\|^2 \\cdot \\|\\mathbf{1}\\|^2$. Proved by `Finset.induction_on` in $\\mathbb{Z}$ using $\\sum_{b \\in s}(a-b)^2 \\geq 0$ expanded via `ring` and closed by `nlinarith`."
+    },
+    {
+      "id": "part-i-variance-sum",
+      "title": "Part I: Sum Bound and Part II Header",
+      "startLine": 89,
+      "endLine": 120,
+      "summary": "sum_le_card_mul_max (Σa ≤ n·max(A)): bounds the total sum by n times the maximum element. Followed by the Part II section header documenting the anticoncentration strategy and the namespace opening for the Berry-Esseen step.",
+      "mathContext": "`sum_le_card_mul_max`: $\\sum_{a \\in A} a \\leq |A| \\cdot N$ since each $a \\leq N = \\max(A)$. This gives $S \\leq nN$, so $N \\geq S/n$. The Berry-Esseen step then provides a lower bound on $S$ in terms of $2^n$ and $\\sqrt{\\sum a^2}$, which combines with Cauchy-Schwarz to eliminate $\\sum a^2$ and give a bound purely in $n$ and $N$."
+    },
+    {
+      "id": "part-ii-anticonc",
+      "title": "Part II: Anticoncentration Axiom and DFX Main Bound",
+      "startLine": 121,
+      "endLine": 160,
+      "summary": "Axiom anticoncentration_bound (Berry-Esseen step). Theorem dfx_lower_bound (1 sorry): assembles the variance bounds and anticoncentration axiom to derive N ≥ √(2/π)·2ⁿ/√n. Theorem dfx_improves_counting: the DFX bound is asymptotically better than the basic counting bound.",
+      "mathContext": "`anticoncentration_bound` axiom: $2^n \\leq \\sqrt{2/\\pi} \\cdot 2(S+1)/\\sqrt{\\sum a^2}$. This axiomatizes the normal anticoncentration: $\\mathcal{N}(S/2, V)$ has density $\\leq 1/\\sqrt{2\\pi V}$, so at most $S/\\sqrt{2\\pi V} = S\\sqrt{2/\\pi}/\\sqrt{\\sum a^2/2}$ distinct values can each receive probability mass $\\geq 1/\\sqrt{2\\pi V}$. The `sorry` in `dfx_lower_bound` is at the real-arithmetic assembly: combining $2^n \\lesssim S\\sqrt{n}/S = \\sqrt{n}$ and $S \\leq nN$ to isolate $N$."
+    },
+    {
+      "id": "part-iii-concrete",
+      "title": "Part III: Concrete Cases and Improvement Factor",
+      "startLine": 161,
+      "endLine": 194,
+      "summary": "Concrete verification: f_one (DSS set with 1 element, max = 1), f_two_max (DSS set with 2 elements, max = 2). Also improvement_factor (n < n² for n ≥ 2) as a technical lemma.",
+      "mathContext": "`f_one`: $\\{1\\}$ has all $2^1 = 2$ subset sums distinct ($0$ and $1$); $\\max = 1$. `f_two_max`: $\\{1,2\\}$ has $\\max = 2$ (can be verified by `simp`). `improvement_factor`: $n < n^2$ for $n \\geq 2$ (in $\\mathbb{N}$, proved by `omega`) — the algebraic core of the asymptotic comparison DFX $\\sim 2^n/\\sqrt{n}$ vs counting $\\sim 2^n/n$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The DFX 2021 framework is formalized: variance bounds via Cauchy-Schwarz, and the anticoncentration axiom (Berry-Esseen). The main lower bound N ≥ √(2/π)·2ⁿ/√n has 1 sorry (base case issues) and 1 axiom (anticoncentration). The improvement over the counting bound is verified.",
+    "implications": "The Dubroff-Fox-Xu result is currently the best known lower bound for Erdős's distinct subset sums problem (Problem #1, $500 prize). The gap between the lower bound ~2ⁿ/√n and the upper bound ~2ⁿ (from the Conway-Guy sequence) is a factor of √n. Closing this gap requires either a new construction (improving the upper bound) or a new anticoncentration argument (improving the lower bound). Formalizing the full Berry-Esseen step would complete the proof in Lean.",
+    "openQuestions": [
+      "Can the `anticoncentration_bound` axiom be proved in Lean? This requires: (1) formalizing the Bernoulli random walk on $\\{0, a_1, \\ldots, a_1 + a_2, \\ldots\\}$, (2) proving Berry-Esseen bounds for discrete distributions, (3) counting distinct sum values via the normal approximation. Mathlib's `ProbabilityTheory.ConditionalExpectation` and `CLT` developments are the entry points.",
+      "Can the sorry in `dfx_lower_bound` be fixed? The issue is base cases (small $n$): for $n = 1, 2$, the bound $N \\geq \\sqrt{2/\\pi} \\cdot 2^n/\\sqrt{n}$ must be checked directly. A `by norm_num` or `by native_decide` for small $n$ + induction for large $n$ would complete the proof.",
+      "Can the Conway-Guy sequence (believed to give the optimal upper bound for Erdős #1) be formalized? The sequence gives a DSS set with $\\max(A) \\approx c \\cdot 2^n / \\sqrt{n}$, matching the DFX lower bound up to a constant.",
+      "Is there a direct proof of the DFX bound that avoids Berry-Esseen and instead uses only combinatorial anticoncentration? Recent work on 'additive energy' and 'Roth-type' arguments in additive combinatorics might provide a more elementary path."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1",
+      "relationship": "extends",
+      "description": "Parent: Erdős Problem #1 — the distinct subset sums problem. This file formalizes the best known lower bound (DFX 2021) within the OQ chain."
+    },
+    {
+      "targetId": "erdos-1-oq-03",
+      "relationship": "companion",
+      "description": "Conway–Guy sequence: the conjectured-optimal upper bound construction. Together, OQ-02 (lower bound) and OQ-03 (upper bound) bound the optimal constant from both sides. The DFX lower bound $N \\geq \\sqrt{2/\\pi} \\cdot 2^n/\\sqrt{n}$ and the Conway-Guy upper bound $N \\lesssim c \\cdot 2^n/\\sqrt{n}$ are within a constant factor of each other, showing the true constant is between $\\sqrt{2/\\pi}$ and $c \\approx 0.22003$."
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "uses",
+      "description": "Cauchy–Schwarz Inequality — the algebraic core of the variance lower bound in this entry. `sum_sq_cauchy_schwarz` proves $(\\sum a_i)^2 \\leq n \\cdot \\sum a_i^2$, the finite-set form of Cauchy–Schwarz. This is lifted to $\\mathbb{Z}$ and proved by Finset induction, closing with `nlinarith`. Without this bound, the DFX argument cannot eliminate $\\sum a^2$ to get a lower bound purely in terms of $n$ and $N$."
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "uses",
+      "description": "Central Limit Theorem — the probabilistic foundation for the axiomatized anticoncentration step. The Berry–Esseen theorem (a quantitative CLT) controls the error in the normal approximation for $X = \\sum \\varepsilon_i a_i$; the anticoncentration of $\\mathcal{N}(S/2, V)$ then bounds how many distinct values can fit in $[0, S]$. This entry's `anticoncentration_bound` axiom is the Lean placeholder for the full CLT-based argument, which requires Mathlib's `ProbabilityTheory.CLT` developments."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "sum_sq_cauchy_schwarz",
+      "type": "core",
+      "description": "Cauchy-Schwarz for finite sums: (Σa)² ≤ |A| · Σa²",
+      "leanType": "(∑ a in A, a)² ≤ A.card * ∑ a in A, a²"
+    },
+    {
+      "name": "anticoncentration_bound",
+      "type": "axiom",
+      "description": "Berry-Esseen anticoncentration axiom: DSS implies max(A) ≥ c · 2^|A| / |A|",
+      "leanType": "axiom: HasDistinctSubsetSums A → A.max' h ≥ c * 2^A.card / A.card"
+    },
+    {
+      "name": "dfx_lower_bound",
+      "type": "core",
+      "description": "DFX 2021 main result: N ≥ √(2/π) · 2ⁿ/√n (1 sorry for base cases)",
+      "leanType": "HasDistinctSubsetSums A → A.max' h ≥ √(2/π) * 2^A.card / √A.card"
+    },
+    {
+      "name": "dfx_improves_counting",
+      "type": "supporting",
+      "description": "DFX bound improves the basic counting bound by factor √n for n ≥ 2",
+      "leanType": "n ≥ 2 → √(2/π) * 2^n / √n > (2^n - 1) / n"
+    }
+  ],
+  "references": [
+    {
+      "key": "DFX21",
+      "citation": "Dubroff, Q., Fox, J. & Xu, M. Z. (2021). A note on the Erdős distinct subset sums problem. SIAM Journal on Discrete Mathematics, 35(1), 322-324.",
+      "type": "paper",
+      "description": "The √(2/π)·2ⁿ/√n lower bound via Berry-Esseen anticoncentration. Improves the counting bound by a factor of √n. The framework formalized in this entry."
+    },
+    {
+      "key": "Er55",
+      "citation": "Erdős, P. (1955). Problems and results in additive number theory. Colloque sur la Théorie des Nombres, Bruxelles, 127-137.",
+      "type": "paper",
+      "description": "Original formulation of the distinct subset sums problem (Problem #1 in Erdős's problem list) with the $500 prize. States the conjecture N ≥ c · 2^n/√n matching the Conway-Guy construction."
+    },
+    {
+      "key": "CG88",
+      "citation": "Conway, J. H. & Guy, R. K. (1988). π and the AGM. In: The Book of Numbers. Springer. (See also: Bohman, T. (1996). A sum packing problem of Erdős and the Conway-Guy sequence. Proceedings of the AMS, 124(12), 3671-3678.)",
+      "type": "paper",
+      "description": "The Conway-Guy sequence — the construction achieving N ≈ 0.22 · 2^n with all subset sums distinct. Forms the upper-bound companion to the DFX lower bound formalized here."
+    },
+    {
+      "key": "BE41",
+      "citation": "Berry, A. C. (1941). The accuracy of the Gaussian approximation to the sum of independent variates. Transactions of the AMS, 49(1), 122-136. Esseen, C.-G. (1942). On the Liapounoff limit of error in the theory of probability. Arkiv för Matematik, Astronomi och Fysik, 28A, 1-19.",
+      "type": "paper",
+      "description": "The Berry-Esseen theorem — quantitative version of the Central Limit Theorem that underpins the anticoncentration_bound axiom in this file. Gives error bound |F_n(x) - Φ(x)| ≤ C·ρ/σ³·√n where ρ is the third absolute moment."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Proofs.Erdos1Problem",
+      "Mathlib"
+    ],
+    "namespace": "Erdos1OQ02",
+    "lineCount": 268,
+    "axiomCount": 1,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/Erdos1OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

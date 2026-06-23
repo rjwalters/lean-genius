@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "proofId": "amgm-inequality-oq-03",
+  "reviewDate": "2026-03-24T12:00:00Z",
+  "reviewer": "peer-reviewer",
+  "overallAssessment": {
+    "grade": "B+",
+    "oneLiner": "Genuinely substantive formalization of power mean monotonicity with clever original proofs (HM <= GM via inversion, duality for negative exponents), slightly undermined by a stale header comment and an underselling badge.",
+    "tier": "B",
+    "tierJustification": "Four multi-step original proofs (~130 lines) built on Mathlib's Jensen and AM-GM base cases. The original duality technique and HM <= GM proof via GM(z^{-1}) * GM(z) = 1 go well beyond wrapping Mathlib. Sits at the top of Tier B: Mathlib provides the foundations, this file provides genuine mathematical extensions."
+  },
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "harmonic_mean_le_geom_mean_direct, lines 126-167",
+      "finding": "The HM <= GM proof is a genuine 37-line original contribution. The technique of proving GM(z^{-1}) * GM(z) = 1 term-by-term using Real.mul_rpow + Finset.prod_mul_distrib, then applying AM-GM to z^{-1} and inverting algebraically, is elegant and non-trivial. The avoidance of div_le_iff (not available in this Lean/Mathlib version) via explicit calc blocks with multiplicative algebra is a real technical achievement.",
+      "recommendation": "Preserve this proof. It is the strongest single contribution in the file and a good candidate for Mathlib upstream."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "power_mean_monotone_neg, lines 291-343",
+      "finding": "The 47-line dual argument for negative exponent monotonicity is well-structured: negate exponents, apply positive-case monotonicity to z^{-1}, use the duality identity, then invert. The explicit multiplicative calc blocks to handle the inversion step (avoiding inv_le_inv_of_le) show genuine formalization skill.",
+      "recommendation": "Preserve. This completes the same-sign monotonicity story and the dual technique is reusable."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "meta.json originalContributions",
+      "finding": "All six originality claims are accurate and well-traced to specific proof steps. The distinction between Mathlib-sourced results and original proofs is honestly drawn. This is refreshingly precise compared to many gallery entries.",
+      "recommendation": "No change needed. This is a model for how originalContributions should be documented."
+    },
+    {
+      "severity": "moderate",
+      "category": "inconsistency",
+      "location": "Lean file header, line 33",
+      "finding": "The header's item 7 says 'General monotonicity (negative r case) stated as an axiom' but power_mean_monotone_neg (lines 291-343) fully proves M_r <= M_s for r <= s < 0 with no axioms or sorries. The header appears stale from an earlier version of the file when only the mixed-sign case (r < 0 < s) was unproved. This actively undersells the file's achievements and contradicts the meta.json claims of '0 axioms'.",
+      "recommendation": "Update header item 7 to: '7. power_mean_monotone_neg — M_r <= M_s for r <= s < 0 (proved via duality)' and add item 8: '8. Mixed-sign case (r < 0 < s) — remains open (requires r=0 limit)'. Also add power_mean_neg_inv and the helper lemmas to the header list."
+    },
+    {
+      "severity": "minor",
+      "category": "filler",
+      "location": "power_mean_interpolation_summary, line 372",
+      "finding": "This 'summary' theorem proves (1 : Nat) + 1 = 2, which has no mathematical content related to power means. It serves as a comment-holder (the docstring has the real content) but inflates the theorem count. The meta.json counts '13 theorems' which includes this filler.",
+      "recommendation": "Either remove the theorem entirely (the docstring content can be a regular comment block), or replace with a genuine summary theorem like the conjunction of the main results. The theorem count in leanFile.theoremCount should then be adjusted."
+    },
+    {
+      "severity": "minor",
+      "category": "filler",
+      "location": "harmonic_mean_le_geom_mean_via_power, lines 349-355",
+      "finding": "This theorem's proof body is simply `harmonic_mean_le_geom_mean_direct s w z hw hw' hz` — a one-line redirect. It takes an unused hypothesis _hHM (underscored). While the docstring explains the pedagogical intent (connecting M_{-1} to HM), the theorem itself adds no mathematical content. It contributes to the '13 theorems' count without contributing substance.",
+      "recommendation": "Consider removing or merging the pedagogical content into the main harmonic_mean_le_geom_mean_direct docstring. If kept, the meta.json should not count it as a separate contribution."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json badge field",
+      "finding": "Badge is 'mathlib' but the file contains ~130 lines of original proof work across 4 main theorems (HM <= GM, duality identity, positive monotonicity, negative monotonicity). The Mathlib wrappers (AM-GM, Jensen, AM <= M_p) serve as building blocks, not the main content. The 'mathlib' badge implies this is primarily a Mathlib wrapper, which undersells the genuine contributions.",
+      "recommendation": "Change badge to 'original' or 'verified' to better reflect the substantial original proof content."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json overview.keyInsights[4]",
+      "finding": "Key insight #5 says 'General monotonicity for negative r (HM <= GM is the r=-1 to r=0 case) remains open in Mathlib4'. In context of this file which proves negative-exponent monotonicity, this is confusing. The parenthetical about HM <= GM being the 'r=-1 to r=0 case' conflates the same-sign negative case (proved here) with the zero-crossing case (open). A reader might think the file's own power_mean_monotone_neg is still open.",
+      "recommendation": "Rewrite to: 'The mixed-sign case M_r <= M_s for r < 0 < s (including HM <= GM as r=-1, s=0) requires the r=0 geometric mean limit and remains open in both this file and Mathlib4. Same-sign negative monotonicity is proved here via duality.'"
+    }
+  ],
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "high",
+      "target": "researcher",
+      "description": "Update the Lean file header (lines 27-33) to accurately reflect that power_mean_monotone_neg is fully proved. Add it as a listed result and change item 7 from 'stated as an axiom' to describe the mixed-sign case specifically as the remaining open direction. NOTE: Lean file modifications are outside enricher scope; reassigned to researcher. The annotation for this section now flags the stale header.",
+      "status": "resolved",
+      "resolution": "Lean header items 7-8 now list power_mean_monotone_neg (proved via duality) and the unformalized mixed-sign case (r < 0 < s) respectively. The trailing summary block was likewise corrected. The header annotation no longer flags staleness."
+    },
+    {
+      "id": "ai-2",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Change meta.json badge from 'mathlib' to 'original' to reflect the ~130 lines of genuine original proof work.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-3",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Rewrite keyInsight #5 to distinguish between same-sign negative monotonicity (proved) and mixed-sign/zero-crossing case (open). Current phrasing conflates the two.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-4",
+      "priority": "low",
+      "target": "researcher",
+      "description": "Replace power_mean_interpolation_summary (line 372, proves 1+1=2) with either a genuine summary theorem or a regular comment block. The current filler theorem slightly undermines the file's otherwise strong quality.",
+      "status": "resolved",
+      "resolution": "Removed power_mean_interpolation_summary (proved (1:ℕ)+1=2 via rfl). Replaced with a plain comment. The summary information is preserved in the preceding docstring comment block."
+    },
+    {
+      "id": "ai-5",
+      "priority": "low",
+      "target": "researcher",
+      "description": "Consider removing harmonic_mean_le_geom_mean_via_power (lines 349-355) or merging its pedagogical content into the main HM <= GM theorem's docstring. It adds an unused hypothesis and one-line redirect without mathematical substance. NOTE: Lean file modifications are outside enricher scope; reassigned to researcher.",
+      "status": "deferred"
+    }
+  ],
+  "qualityScores": {
+    "mathematicalSubstance": 8,
+    "originalityAccuracy": 9,
+    "completeness": 8,
+    "framingPrecision": 7,
+    "pedagogicalQuality": 9,
+    "internalConsistency": 7,
+    "overall": 8.0
+  },
+  "suggestedBestFraming": "Lean 4 formalization of weighted power mean monotonicity M_r <= M_s for same-sign exponents, featuring original proofs of HM <= GM (via AM-GM on inverse values) and both positive and negative monotonicity (via Jensen and a duality identity M_r(z) = M_{-r}(z^{-1})^{-1}), building on Mathlib's Jensen and AM-GM infrastructure."
+}

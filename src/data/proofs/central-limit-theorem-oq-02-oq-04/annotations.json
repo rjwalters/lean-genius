@@ -1,0 +1,249 @@
+[
+  {
+    "id": "ann-header-docstring",
+    "proofId": "central-limit-theorem-oq-02-oq-04",
+    "range": { "startLine": 1, "endLine": 43 },
+    "type": "concept",
+    "title": "Ibragimov CLT: Polynomial-Rate Specialization",
+    "content": "The header docstring states the open question and its sharp answer. Given a stationary α-mixing sequence $\\{X_n\\}$ with $E[X_1]=0$, $E[|X_1|^{2+\\delta}]<\\infty$ and polynomial mixing rate $\\alpha(n)\\le C\\,n^{-r}$, the threshold $r > (2+\\delta)/\\delta$ is necessary and sufficient (in the polynomial-rate class) for the standard Bernstein-blocks proof to deliver $S_n/\\sqrt n \\to_d \\mathcal N(0,\\sigma^2)$. This file is the S2 ORIENT scaffold layer: predicates, the hypothesis structure, two proven helpers, and two main statements left at `sorry` per the seven-step decomposition.",
+    "mathContext": "Sharp threshold: $r > \\dfrac{2+\\delta}{\\delta}$. Equivalently, $\\dfrac{r\\,\\delta}{2+\\delta} > 1$, the $p$-series exponent for $\\sum_n \\alpha(n)^{\\delta/(2+\\delta)} = \\sum_n n^{-r\\delta/(2+\\delta)}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "α-mixing coefficient",
+      "Davydov covariance inequality",
+      "long-run variance",
+      "Bernstein blocks",
+      "Lindeberg–Feller CLT"
+    ],
+    "prerequisites": [
+      "classical CLT",
+      "stationary processes",
+      "Lp moment bounds"
+    ]
+  },
+  {
+    "id": "ann-imports",
+    "proofId": "central-limit-theorem-oq-02-oq-04",
+    "range": { "startLine": 45, "endLine": 54 },
+    "type": "insight",
+    "title": "Mathlib + Parent-File Imports",
+    "content": "The file imports `MeasureTheory.Function.LpSpace.Basic` (for `MemLp`), `Probability.IdentDistrib` (for the marginal-stationarity predicate), `Probability.Variance` (for the long-run variance computation downstream), and the two `SpecialFunctions.Pow` files (for `Real.summable_nat_rpow_inv` and `rpow_neg`). The crucial dependency is `Proofs.CentralLimitTheoremOQ02`, the parent file that introduces `alphaMixingCoeff`, `AlphaMixingSequence`, and `longRunVariance` — Mathlib has no native α-mixing API, so the parent supplies it.",
+    "mathContext": "Open namespaces: `MeasureTheory`, `ProbabilityTheory`, `Filter`, `Real`. These unify integration, probability measures, sequential limits, and real-valued `rpow` in a single tactic context.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "MemLp",
+      "IdentDistrib",
+      "Real.rpow",
+      "alphaMixingCoeff (parent)"
+    ],
+    "prerequisites": [
+      "Lean 4 module system",
+      "Mathlib probability API"
+    ]
+  },
+  {
+    "id": "ann-stationary-def",
+    "proofId": "central-limit-theorem-oq-02-oq-04",
+    "range": { "startLine": 60, "endLine": 72 },
+    "type": "definition",
+    "title": "Marginal Stationarity Predicate",
+    "content": "`Stationary μ X` asserts that every $X_k$ has the same marginal distribution as $X_0$ under $\\mu$. This is the weakest stationarity slice — it is what the *long-run variance computation* actually needs at the level of one-dimensional integrals $E[X_k] = E[X_0]$ and $\\operatorname{Var}(X_k) = \\operatorname{Var}(X_0)$. Full joint (finite-tuple) stationarity is the natural strengthening required by S6's Bernstein-block argument and is deferred. Using `IdentDistrib` keeps the predicate Mathlib-native and composes cleanly with `Integrable.congr` and `MemLp.congr`.",
+    "mathContext": "$\\mathrm{Stationary}(\\mu, X)\\iff \\forall k,\\; X_k \\stackrel{d}{=} X_0 \\text{ under } \\mu$. Joint stationarity (deferred): $\\forall k,\\, \\forall (i_1,\\dots,i_m),\\; (X_{i_1+k},\\dots,X_{i_m+k}) \\stackrel{d}{=} (X_{i_1},\\dots,X_{i_m})$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "IdentDistrib",
+      "marginal distribution",
+      "shift-invariant measure",
+      "ergodic theorem"
+    ],
+    "prerequisites": [
+      "pushforward measure",
+      "joint vs marginal distribution"
+    ]
+  },
+  {
+    "id": "ann-polynomial-mixing-rate",
+    "proofId": "central-limit-theorem-oq-02-oq-04",
+    "range": { "startLine": 74, "endLine": 79 },
+    "type": "definition",
+    "title": "Polynomial α-Mixing Rate",
+    "content": "`PolynomialMixingRate α C r` says the numerical mixing-coefficient bound decays polynomially: $\\alpha(n)\\le C\\,n^{-r}$ for all $n\\ge 1$, with both $C>0$ and $r>0$. Choosing the polynomial rate (as opposed to exponential $\\alpha(n)\\le C\\,e^{-rn}$ or arithmetic $\\alpha(n)\\le C/\\log n$) is the standard most-studied special case in the mixing-CLT literature; exponential mixing makes the CLT free, while polynomial mixing exhibits the sharp dependence on the moment exponent $\\delta$ that this entry quantifies.",
+    "mathContext": "$\\mathrm{PolynomialMixingRate}(\\alpha, C, r) := C > 0 \\wedge r > 0 \\wedge \\forall n\\ge 1,\\; \\alpha(n) \\le C\\,n^{-r}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "α-mixing coefficient",
+      "exponential mixing",
+      "absolute regularity (β-mixing)",
+      "ρ-mixing"
+    ],
+    "prerequisites": [
+      "Rosenblatt mixing coefficients",
+      "rate-of-decay classification"
+    ]
+  },
+  {
+    "id": "ann-moment-bound",
+    "proofId": "central-limit-theorem-oq-02-oq-04",
+    "range": { "startLine": 81, "endLine": 87 },
+    "type": "definition",
+    "title": "Uniform (2+δ)-th Moment Bound",
+    "content": "`MomentBound2δ μ X δ` asserts that every $X_k$ lies in $L^{2+\\delta}(\\mu)$, i.e., $E[|X_k|^{2+\\delta}] < \\infty$. The exponent $2+\\delta$ for some $\\delta>0$ is sharp: it cannot be relaxed to $\\delta=0$ (only second moments) without breaking the Lindeberg condition in the Bernstein-block proof. The encoding via `MemLp (X k) (ENNReal.ofReal (2+δ)) μ` is Mathlib-native: `MemLp` carries both the snorm-finiteness and the strong measurability required for downstream integrations.",
+    "mathContext": "$\\mathrm{MomentBound2\\delta}(\\mu, X, \\delta)\\iff \\forall k,\\; X_k \\in L^{2+\\delta}(\\mu) \\iff \\forall k,\\; \\int |X_k|^{2+\\delta}\\,d\\mu < \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "MemLp",
+      "Lp spaces",
+      "Lindeberg condition",
+      "uniform integrability"
+    ],
+    "prerequisites": [
+      "Lebesgue integration",
+      "Lp spaces"
+    ]
+  },
+  {
+    "id": "ann-ibragimov-hypotheses",
+    "proofId": "central-limit-theorem-oq-02-oq-04",
+    "range": { "startLine": 89, "endLine": 127 },
+    "type": "definition",
+    "title": "IbragimovHypotheses: Bundled CLT Premise",
+    "content": "The `IbragimovHypotheses` structure packages eleven fields into a single hypothesis the main theorem can take as one argument. It bundles: stationarity, per-index integrability and mean-zero, the moment exponent `δ_pos`, the moment bound, the numerical mixing-coefficient bound `α : ℕ → ℝ`, the past/future σ-algebra families, an `alpha_bound` field witnessing that the parent's abstract `alphaMixingCoeff` is dominated by the numerical α, the polynomial decay assertion `poly_rate`, and the critical sharp-threshold field `rate_admissible : r > (2+δ)/δ`.\n\n**Axiom integrity note**: although `axiomCount: 0` and there are no `axiom` declarations in this file, the eleven structure fields ARE the mathematical assumptions of the theorem — the structure encodes the hypotheses of the CLT statement. The reported axiomCount=0 is correct because every field is a *premise* of the theorems consuming the structure (rather than a stand-alone axiomatic claim).",
+    "mathContext": "$\\mathrm{IbragimovHypotheses}(\\mu, X, \\delta, C, r)$ bundles $X$ stationary, integrable, mean zero, $\\delta > 0$, $X \\in L^{2+\\delta}$, plus past/future σ-algebras $\\mathcal F_k^-, \\mathcal F_{k+n}^+$ and a numerical bound $\\alpha\\colon \\mathbb N \\to \\mathbb R$ with $\\alpha\\text{-mix-coeff}(\\mathcal F_k^-, \\mathcal F_{k+n}^+) \\le \\alpha(n)$, $\\alpha(n) \\le C\\,n^{-r}$, and $r > (2+\\delta)/\\delta$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "α-mixing CLT premises",
+      "structure-encoded hypotheses",
+      "axiom integrity",
+      "σ-algebra filtration"
+    ],
+    "prerequisites": [
+      "Lean structure types",
+      "σ-algebra of past/future",
+      "α-mixing coefficient"
+    ]
+  },
+  {
+    "id": "ann-rate-admissible",
+    "proofId": "central-limit-theorem-oq-02-oq-04",
+    "range": { "startLine": 125, "endLine": 127 },
+    "type": "insight",
+    "title": "Sharp Threshold Field rate_admissible",
+    "content": "This single field `r > (2+δ)/δ` is the entire mathematical content of the paper's *sharpness* claim, isolated as a structure field for direct exhibition. Above the threshold, the Bernstein-block proof carries through; below, the CLT can fail (concrete counterexamples in Bradley 2007 vol III, Ch 17). The exponent $(2+\\delta)/\\delta$ is the unique value at which Davydov's inequality, the moment bound, and the variance summability all become simultaneously feasible.",
+    "mathContext": "Threshold derivation: Davydov $\\Rightarrow |\\mathrm{Cov}(X_i,X_j)| \\le 12\\,\\alpha(|i-j|)^{\\delta/(2+\\delta)} \\|X\\|_{2+\\delta}^2$. Polynomial rate $\\Rightarrow \\sum_n \\alpha(n)^{\\delta/(2+\\delta)} \\le C^{\\delta/(2+\\delta)} \\sum_n n^{-r\\delta/(2+\\delta)}$. $p$-series $\\Rightarrow$ convergent iff $\\frac{r\\delta}{2+\\delta} > 1 \\iff r > \\frac{2+\\delta}{\\delta}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "p-series convergence",
+      "Davydov exponent δ/(2+δ)",
+      "sharpness counterexamples",
+      "Bradley mixing surveys"
+    ],
+    "prerequisites": [
+      "Davydov's covariance inequality",
+      "p-series"
+    ]
+  },
+  {
+    "id": "ann-polynomial-summable",
+    "proofId": "central-limit-theorem-oq-02-oq-04",
+    "range": { "startLine": 131, "endLine": 149 },
+    "type": "insight",
+    "title": "Polynomial Summability via Mathlib's rpow ζ-Fact",
+    "content": "`polynomial_summable_of_exponent_gt_one s hs` proves $\\sum_n n^{-s} < \\infty$ for $s > 1$ by appealing to `Real.summable_nat_rpow_inv : Summable (((n:ℝ)^p)⁻¹) ↔ 1 < p` and bridging $((n:ℝ)^s)^{-1} = (n:ℝ)^{-s}$ via `Summable.congr`. The interesting subtlety is the $n=0$ boundary: $0^{-s}$ and $0^s$ are defined as $0$ in Mathlib's `Real.rpow` when the exponent is nonzero, so the case split `Nat.eq_zero_or_pos` handles $n=0$ separately with `Real.zero_rpow hs_ne` and `Real.zero_rpow hsneg_ne`. For $n>0$, `Real.rpow_neg` (with the standard `0 ≤ (n:ℝ)` side condition) flips the sign of the exponent.",
+    "mathContext": "$\\sum_{n=1}^{\\infty} n^{-s} < \\infty \\iff s > 1$ (Euler's $\\zeta$-function fact). Lean encoding: `(n:ℝ)^(-s)` rather than `((n:ℝ)^s)⁻¹`, the two definitions differ at $n=0$ unless `s ≠ 0`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "p-series",
+      "Riemann ζ-function",
+      "Real.rpow",
+      "Real.summable_nat_rpow_inv"
+    ],
+    "prerequisites": [
+      "improper integrals",
+      "ζ-function convergence",
+      "Real.rpow conventions in Mathlib"
+    ]
+  },
+  {
+    "id": "ann-ibragimov-threshold-summable",
+    "proofId": "central-limit-theorem-oq-02-oq-04",
+    "range": { "startLine": 151, "endLine": 168 },
+    "type": "insight",
+    "title": "Sharp-Threshold Summability Corollary",
+    "content": "`ibragimov_threshold_summable` is the fully-proven corollary: from $\\delta>0$ and $r > (2+\\delta)/\\delta$, deduce $\\sum_n n^{-r\\delta/(2+\\delta)} < \\infty$. This is the *only* place in S2 where the sharp threshold is *used* (rather than just stated). The proof reduces to `polynomial_summable_of_exponent_gt_one` once the threshold algebra $\\frac{r\\delta}{2+\\delta} > 1$ is verified. The algebra is two lines: multiply $r > (2+\\delta)/\\delta$ by $\\delta>0$ to get $r\\delta > 2+\\delta$, then divide both sides by $2+\\delta>0$ via `lt_div_iff₀`. `mul_lt_mul_of_pos_right` and `div_mul_cancel₀` handle the bookkeeping.",
+    "mathContext": "Goal: $r > (2+\\delta)/\\delta$ and $\\delta > 0 \\Rightarrow r\\delta/(2+\\delta) > 1$. Multiply: $r\\delta > 2+\\delta$. Divide: $r\\delta/(2+\\delta) > 1$. The threshold $r > (2+\\delta)/\\delta$ is *equivalent* to $r\\delta/(2+\\delta) > 1$ under $\\delta>0$; the corollary is just a change of variable.",
+    "significance": "key",
+    "relatedConcepts": [
+      "p-series",
+      "Davydov exponent",
+      "covariance summability"
+    ],
+    "prerequisites": [
+      "polynomial_summable_of_exponent_gt_one",
+      "ordered-field algebra"
+    ]
+  },
+  {
+    "id": "ann-longrun-variance-stmt",
+    "proofId": "central-limit-theorem-oq-02-oq-04",
+    "range": { "startLine": 172, "endLine": 189 },
+    "type": "concept",
+    "title": "S5 Target: Absolute Convergence of the Long-Run Variance",
+    "content": "`longrun_variance_absolutely_convergent` (sorry) is the S5 tractable target: $\\sum_k |\\mathrm{Cov}(X_0, X_{k+1})| < \\infty$. Once Davydov's covariance inequality (S4) supplies $|\\mathrm{Cov}(X_0, X_{k+1})| \\le 12\\,\\alpha(k+1)^{\\delta/(2+\\delta)} \\|X_0\\|_{2+\\delta}\\|X_{k+1}\\|_{2+\\delta}$, stationarity makes $\\|X_{k+1}\\|_{2+\\delta} = \\|X_0\\|_{2+\\delta}$ a constant, and the sum becomes $C' \\sum_k \\alpha(k+1)^{\\delta/(2+\\delta)}$ — bounded by $\\sum_k n^{-r\\delta/(2+\\delta)}$, which `ibragimov_threshold_summable` proves convergent after the index shift $k\\mapsto k+1$ via `Summable.comp_injective`.",
+    "mathContext": "$\\sigma^2 = \\mathrm{Var}(X_0) + 2\\sum_{k\\ge 1} \\mathrm{Cov}(X_0, X_k)$ exists in $\\mathbb R$ iff the sum is absolutely convergent. The S5 target asserts exactly that absolute convergence under Ibragimov's hypotheses.",
+    "significance": "key",
+    "relatedConcepts": [
+      "long-run variance",
+      "Davydov covariance inequality",
+      "stationary covariance function",
+      "spectral density at 0"
+    ],
+    "prerequisites": [
+      "Davydov inequality",
+      "stationary covariance",
+      "p-series summability"
+    ]
+  },
+  {
+    "id": "ann-main-clt-statement",
+    "proofId": "central-limit-theorem-oq-02-oq-04",
+    "range": { "startLine": 191, "endLine": 229 },
+    "type": "concept",
+    "title": "Main CLT Statement via Lévy Continuity",
+    "content": "`mixing_clt_ibragimov` (sorry) is the headline theorem statement: under `IbragimovHypotheses` and a positive long-run variance $\\sigma^2 > 0$, the characteristic function of $S_n/\\sqrt n$ converges pointwise to $\\exp(-\\sigma^2 t^2 / 2)$, the characteristic function of $\\mathcal N(0,\\sigma^2)$. By Lévy's continuity theorem, this is equivalent to $S_n/\\sqrt n \\to_d \\mathcal N(0,\\sigma^2)$.\n\nThe choice of characteristic-function form (rather than e.g. the parent's distribution-tendsto form) avoids the Mathlib plumbing of `MeasureTheory.Measure.bind` and integrability hypotheses on $\\sigma^2 \\cdot$ Gaussian densities. $\\sigma^2$ is passed as a parameter rather than computed inline as the parent's `longRunVariance` — this decouples the S6+ proof from the S5 absolute-convergence step.",
+    "mathContext": "Goal: $\\displaystyle\\lim_{n\\to\\infty} \\int_{\\Omega} \\exp\\!\\left(i t \\cdot \\frac{1}{\\sqrt n}\\sum_{k<n} X_k(\\omega)\\right) d\\mu(\\omega) = \\exp\\!\\left(-\\frac{\\sigma^2 t^2}{2}\\right) \\quad \\forall t \\in \\mathbb R$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lévy continuity theorem",
+      "characteristic function",
+      "weak convergence",
+      "Lindeberg–Feller CLT",
+      "Bernstein blocks"
+    ],
+    "prerequisites": [
+      "Lévy continuity",
+      "complex exponential integration",
+      "weak convergence of measures"
+    ]
+  },
+  {
+    "id": "ann-proof-outline-comment",
+    "proofId": "central-limit-theorem-oq-02-oq-04",
+    "range": { "startLine": 204, "endLine": 215 },
+    "type": "concept",
+    "title": "Seven-Step Decomposition Plan (S3–S9)",
+    "content": "The docstring lists the proof's seven sub-tasks scheduled for follow-up sessions: (S3) sharp-threshold algebra — *done*; (S4) Davydov covariance inequality; (S5) long-run variance absolute convergence — stated in this file; (S6) Bernstein block decomposition with $p_n, q_n \\to \\infty$, $n/p_n \\to \\infty$; (S7) large-block independence approximation via mixing; (S8) Lindeberg condition on large blocks (consuming the $(2+\\delta)$-th moment bound); (S9) invoke the Lindeberg–Feller CLT axiom from the parent file. Estimated total: ~400 lines on top of the Davydov+Bernstein infrastructure built in S4–S6.",
+    "mathContext": "Bernstein blocks: partition $[1,n] = \\bigsqcup_j (B_j \\sqcup b_j)$ with $|B_j| = p_n$ (large), $|b_j| = q_n$ (small), $p_n \\gg q_n \\to \\infty$. The mixing gap $q_n$ shrinks $\\alpha(q_n) \\to 0$, so the large blocks $\\{B_j\\}$ are approximately independent and Lindeberg–Feller applies; small blocks contribute $o(\\sqrt n)$ and are negligible.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Bernstein blocks",
+      "large-small block decomposition",
+      "Lindeberg–Feller CLT",
+      "Davydov inequality"
+    ],
+    "prerequisites": [
+      "block decomposition technique",
+      "Lindeberg condition",
+      "triangular-array CLT"
+    ]
+  }
+]

@@ -1,0 +1,219 @@
+[
+  {
+    "id": "ann-881-header",
+    "proofId": "erdos-881",
+    "range": {
+      "startLine": 1,
+      "endLine": 25
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #881** concerns minimal additive bases. An additive basis of order k is a set A ⊂ ℕ where every sufficiently large integer is a sum of at most k elements from A. A minimal basis cannot have any infinite subset removed while maintaining the same order. The question: can we always find an infinite subset to remove that increases the order by exactly 1?",
+    "mathContext": "Classic examples: ℕ is a basis of order 1, squares are order 4 (Lagrange), k-th powers are order g(k) (Waring). The problem asks about the fine structure of 'tight' bases.",
+    "significance": "key",
+    "relatedConcepts": [
+      "additive basis",
+      "Waring's problem",
+      "Lagrange's theorem"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-881-basis-def",
+    "proofId": "erdos-881",
+    "range": {
+      "startLine": 38,
+      "endLine": 45
+    },
+    "type": "definition",
+    "title": "Asymptotic Additive Basis",
+    "content": "**IsAsymptoticAddBasisOfOrder k A** means A is an additive basis of order k: there exists N such that every n ≥ N can be written as a sum of at most k elements from A. The 'asymptotic' qualifier means we only care about sufficiently large integers.",
+    "mathContext": "Formally: ∃ N, ∀ n ≥ N, ∃ s : Finset ℕ, s ⊆ A ∧ |s| ≤ k ∧ Σs = n. The order is the minimum k for which this holds.",
+    "significance": "key",
+    "relatedConcepts": [
+      "representation",
+      "additive number theory"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-881-order-one",
+    "proofId": "erdos-881",
+    "range": {
+      "startLine": 47,
+      "endLine": 66
+    },
+    "type": "concept",
+    "title": "Order 1 Characterization",
+    "content": "**order_one_basis**: A set is a basis of order 1 iff it contains all sufficiently large integers. This is because order 1 means each number represents itself (one element sum). This is a fully proved theorem, not an axiom.",
+    "mathContext": "The proof uses that a singleton sum {n} requires n ∈ A, and conversely if n ∈ A then {n} represents n.",
+    "significance": "key",
+    "relatedConcepts": [
+      "order 1",
+      "trivial representation"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-881-minimal-def",
+    "proofId": "erdos-881",
+    "range": {
+      "startLine": 70,
+      "endLine": 81
+    },
+    "type": "concept",
+    "title": "Minimal Additive Basis",
+    "content": "**IsMinimalAsymptoticAddBasisOfOrder k A** means A is a basis of order k that is 'tight': removing ANY infinite subset B ⊆ A destroys the order-k property (makes A\\B not a basis of order k). These are bases with no redundancy.",
+    "mathContext": "Formally: IsAsymptoticAddBasisOfOrder k A ∧ ∀ B ⊆ A infinite, ¬IsAsymptoticAddBasisOfOrder k (A\\B).",
+    "significance": "key",
+    "relatedConcepts": [
+      "minimality",
+      "redundancy"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-881-minimal-infinite",
+    "proofId": "erdos-881",
+    "range": {
+      "startLine": 83,
+      "endLine": 86
+    },
+    "type": "concept",
+    "title": "Minimal Bases Are Infinite",
+    "content": "**minimal_basis_infinite**: Every minimal basis must be infinite. A finite set can only produce finitely many sums, so it cannot be a basis of any order. Axiomatized since the full proof requires careful analysis of finite sum bounds.",
+    "significance": "key",
+    "relatedConcepts": [
+      "infinite sets",
+      "finiteness"
+    ],
+    "mathContext": "See annotation content for formal details of minimal bases are infinite",
+    "prerequisites": []
+  },
+  {
+    "id": "ann-881-conjecture",
+    "proofId": "erdos-881",
+    "range": {
+      "startLine": 90,
+      "endLine": 102
+    },
+    "type": "concept",
+    "title": "Main Conjecture (OPEN)",
+    "content": "**erdos881Conjecture**: For every minimal basis A of order k, there exists an infinite B ⊆ A such that A\\B is a basis of order exactly k+1. This asks: can minimal bases always 'degrade gracefully' by exactly one order?",
+    "mathContext": "The conjecture is stated as a Prop and axiomatized via erdos_881. The challenge is proving the order increases by exactly 1, not 2 or more.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open problem",
+      "order increase"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-881-weak",
+    "proofId": "erdos-881",
+    "range": {
+      "startLine": 109,
+      "endLine": 118
+    },
+    "type": "concept",
+    "title": "Weak Version",
+    "content": "**erdos881Weak**: A weaker question asks if we can increase the order by SOME finite amount m > 0, not necessarily 1. This is easier than the main conjecture but still open.",
+    "significance": "key",
+    "relatedConcepts": [
+      "weak version",
+      "relaxation"
+    ],
+    "mathContext": "See annotation content for formal details of weak version",
+    "prerequisites": []
+  },
+  {
+    "id": "ann-881-implication",
+    "proofId": "erdos-881",
+    "range": {
+      "startLine": 120,
+      "endLine": 124
+    },
+    "type": "concept",
+    "title": "Strong Implies Weak",
+    "content": "**strong_implies_weak**: The main conjecture (m=1) implies the weak version (any m). This is proved by taking m=1 and using the strong conjecture's witness. A clean, fully proved theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "implication",
+      "weakening"
+    ],
+    "mathContext": "See annotation content for formal details of strong implies weak",
+    "prerequisites": []
+  },
+  {
+    "id": "ann-881-squares",
+    "proofId": "erdos-881",
+    "range": {
+      "startLine": 128,
+      "endLine": 137
+    },
+    "type": "definition",
+    "title": "Perfect Squares Example",
+    "content": "**squares**: The set {n² : n ∈ ℕ} of perfect squares. By Lagrange's four-square theorem, every positive integer is a sum of four squares, so squares form a basis of order 4.",
+    "mathContext": "This is the classical example motivating Waring's problem. The axiom squares_basis_order_4 asserts the basis property.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lagrange",
+      "four squares"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-881-monotone",
+    "proofId": "erdos-881",
+    "range": {
+      "startLine": 149,
+      "endLine": 160
+    },
+    "type": "definition",
+    "title": "Monotonicity of Order",
+    "content": "**basis_order_monotone**: If A is a basis of order k and k' ≥ k, then A is also a basis of order k'. Using more summands can only make representation easier. Fully proved.",
+    "mathContext": "The proof simply observes that any k-representation is also a k'-representation when k' ≥ k.",
+    "significance": "key",
+    "relatedConcepts": [
+      "monotonicity",
+      "order"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-881-subset",
+    "proofId": "erdos-881",
+    "range": {
+      "startLine": 162,
+      "endLine": 173
+    },
+    "type": "concept",
+    "title": "Subset Property",
+    "content": "**basis_subset**: If A ⊆ A' and A is a basis of order k, then A' is also a basis of order k. Adding more elements can only improve or maintain representability. Fully proved.",
+    "significance": "key",
+    "relatedConcepts": [
+      "subset",
+      "superset"
+    ],
+    "mathContext": "See annotation content for formal details of subset property",
+    "prerequisites": []
+  },
+  {
+    "id": "ann-881-summary",
+    "proofId": "erdos-881",
+    "range": {
+      "startLine": 177,
+      "endLine": 197
+    },
+    "type": "concept",
+    "title": "Summary",
+    "content": "**erdos_881_summary**: Erdős Problem #881 remains OPEN. The summary theorem shows the conjecture is definitionally equal to its natural language form. Related to Waring's problem, Sidon sets, and the Erdős-Turán conjecture.",
+    "significance": "key",
+    "relatedConcepts": [
+      "summary",
+      "open problems"
+    ],
+    "mathContext": "See annotation content for formal details of summary",
+    "prerequisites": []
+  }
+]

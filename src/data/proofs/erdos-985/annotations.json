@@ -1,0 +1,350 @@
+[
+  {
+    "id": "ann-e985-header",
+    "proofId": "erdos-985",
+    "range": {
+      "startLine": 1,
+      "endLine": 18
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #985: Prime Primitive Roots**\n\nThis problem asks a natural but difficult question: for every prime p > 2, is there always a prime q < p that is a primitive root modulo p?\n\n**Key Concepts:**\n- A primitive root g modulo p satisfies ord_p(g) = p - 1\n- This means g generates the entire multiplicative group (ℤ/pℤ)×\n- Erdős asks specifically for PRIME primitive roots\n\n**Status:** OPEN - No proof or counterexample known",
+    "mathContext": "The problem connects to Artin's conjecture (1927) about primitive roots and Heath-Brown's unconditional result (1986).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Primitive roots",
+      "Artin's conjecture",
+      "Cyclic groups"
+    ],
+    "prerequisites": [
+      "Definition of a prime number",
+      "Multiplicative order ord_p(g)",
+      "The multiplicative group (ℤ/pℤ)×",
+      "Notion of a primitive root modulo p"
+    ]
+  },
+  {
+    "id": "ann-e985-primitive-root-def",
+    "proofId": "erdos-985",
+    "range": {
+      "startLine": 29,
+      "endLine": 32
+    },
+    "type": "definition",
+    "title": "Primitive Root Definition",
+    "content": "**isPrimitiveRoot g p:**\n\nAn integer g is a primitive root modulo p if:\n1. p is prime and p ≠ 2\n2. orderOf (g : ZMod p) = p - 1\n\n**Meaning:** The powers g, g², g³, ..., g^(p-1) cycle through all nonzero residues mod p before returning to 1.\n\n**Example:** 3 is a primitive root mod 7 because 3¹=3, 3²=2, 3³=6, 3⁴=4, 3⁵=5, 3⁶=1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Multiplicative order",
+      "Cyclic groups",
+      "Generators"
+    ],
+    "mathContext": "See annotation content for formal details of primitive root definition",
+    "prerequisites": [
+      "Mathlib's orderOf for an element",
+      "ZMod p (integers modulo p)",
+      "orderOf (g : ZMod p) = p - 1",
+      "Nat.Prime predicate"
+    ]
+  },
+  {
+    "id": "ann-e985-prime-primitive-root",
+    "proofId": "erdos-985",
+    "range": {
+      "startLine": 34,
+      "endLine": 40
+    },
+    "type": "definition",
+    "title": "Prime Primitive Root",
+    "content": "**isPrimePrimitiveRoot q p:**\n\nq is a prime primitive root modulo p if:\n1. q is prime\n2. q < p\n3. q is a primitive root modulo p\n\n**primesWithPrimePrimitiveRoot:**\nThe set of primes p that have at least one prime primitive root less than p.\n\nErdős asks: is this set equal to all odd primes?",
+    "significance": "key",
+    "relatedConcepts": [
+      "Prime numbers",
+      "Primitive roots"
+    ],
+    "mathContext": "See annotation content for formal details of prime primitive root",
+    "prerequisites": [
+      "isPrimitiveRoot g p definition",
+      "Nat.Prime predicate",
+      "Set-builder notation for subsets of ℕ",
+      "Ordering q < p on naturals"
+    ]
+  },
+  {
+    "id": "ann-e985-basic-facts",
+    "proofId": "erdos-985",
+    "range": {
+      "startLine": 42,
+      "endLine": 51
+    },
+    "type": "concept",
+    "title": "Existence of Primitive Roots",
+    "content": "**Two fundamental facts:**\n\n1. **exists_primitive_root:** Every odd prime p has at least one primitive root g with 0 < g < p.\n\n2. **zmod_units_cyclic:** The multiplicative group (ℤ/pℤ)× is cyclic for prime p.\n\nThese are well-known theorems but axiomatized here since the full proofs require substantial group theory.",
+    "mathContext": "The existence of primitive roots for primes was known to Gauss. The cyclicity of (ℤ/pℤ)× follows from the structure theorem for finite abelian groups.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime numbers",
+      "group theory"
+    ],
+    "prerequisites": [
+      "isPrimitiveRoot definition",
+      "IsCyclic predicate on a group",
+      "Structure theorem for finite abelian groups",
+      "axiom declarations in Lean"
+    ]
+  },
+  {
+    "id": "ann-e985-example-2-mod-3",
+    "proofId": "erdos-985",
+    "range": {
+      "startLine": 55,
+      "endLine": 57
+    },
+    "type": "concept",
+    "title": "Example: 2 is a Primitive Root mod 3",
+    "content": "**primitiveRoot_2_mod_3:**\n\nord_3(2) = 2 = 3 - 1\n\n**Verification:**\n- 2¹ ≡ 2 (mod 3)\n- 2² ≡ 1 (mod 3)\n\nSo 2 has order 2, which equals φ(3) = 2. Thus 2 generates (ℤ/3ℤ)×.",
+    "significance": "supporting",
+    "mathContext": "See annotation content for formal details of example: 2 is a primitive root mod 3",
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
+    "prerequisites": [
+      "orderOf in ZMod 3",
+      "Euler's totient φ(3) = 2",
+      "Powers of 2 modulo 3",
+      "primitiveRoot definition (ord = p-1)"
+    ]
+  },
+  {
+    "id": "ann-e985-example-3-mod-7",
+    "proofId": "erdos-985",
+    "range": {
+      "startLine": 63,
+      "endLine": 65
+    },
+    "type": "concept",
+    "title": "Example: 3 is a Primitive Root mod 7",
+    "content": "**primitiveRoot_3_mod_7:**\n\nord_7(3) = 6 = 7 - 1\n\n**Verification:**\n- 3¹ ≡ 3, 3² ≡ 2, 3³ ≡ 6, 3⁴ ≡ 4, 3⁵ ≡ 5, 3⁶ ≡ 1 (mod 7)\n\nAll 6 nonzero residues appear, so 3 generates (ℤ/7ℤ)×.\n\n**Note:** 2 is NOT a primitive root mod 7 (ord_7(2) = 3).",
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of example: 3 is a primitive root mod 7",
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
+    "prerequisites": [
+      "orderOf in ZMod 7",
+      "Powers of 3 modulo 7",
+      "Nonzero residues of (ℤ/7ℤ)×",
+      "primitiveRoot definition (ord = p-1)"
+    ]
+  },
+  {
+    "id": "ann-e985-not-primitive-2-mod-7",
+    "proofId": "erdos-985",
+    "range": {
+      "startLine": 67,
+      "endLine": 69
+    },
+    "type": "concept",
+    "title": "Counterexample: 2 is NOT Primitive mod 7",
+    "content": "**not_primitiveRoot_2_mod_7:**\n\nord_7(2) = 3 ≠ 6\n\n**Verification:**\n- 2³ = 8 ≡ 1 (mod 7)\n\nSo 2 has order 3, not 6. This shows not every small prime is a primitive root for every prime.\n\nBut 3 IS a primitive root mod 7, so Erdős 985 holds for p = 7.",
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of counterexample: 2 is not primitive mod 7",
+    "relatedConcepts": [
+      "proof technique",
+      "prime numbers"
+    ],
+    "prerequisites": [
+      "orderOf in ZMod 7",
+      "Computing 2³ ≡ 1 (mod 7)",
+      "primitiveRoot definition (ord = p-1)",
+      "primitiveRoot_3_mod_7 (existence of a primitive root mod 7)"
+    ]
+  },
+  {
+    "id": "ann-e985-verified-cases",
+    "proofId": "erdos-985",
+    "range": {
+      "startLine": 87,
+      "endLine": 111
+    },
+    "type": "concept",
+    "title": "Verified Cases of Erdős 985",
+    "content": "**Computational Verification:**\n\nWe verify Erdős 985 for several small primes:\n\n| p | Prime primitive root q | Order |\n|---|------------------------|-------|\n| 3 | 2 | 2 |\n| 5 | 2 | 4 |\n| 7 | 3 | 6 |\n| 11 | 2 | 10 |\n| 13 | 2 | 12 |\n| 23 | 5 | 22 |\n\nIn each case, we find a prime q < p with ord_p(q) = p - 1.\n\nProved using `native_decide` for computational verification.",
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of verified cases of erdős 985",
+    "relatedConcepts": [
+      "proof technique",
+      "prime numbers"
+    ],
+    "prerequisites": [
+      "isPrimePrimitiveRoot definition",
+      "native_decide tactic",
+      "orderOf computation in ZMod p",
+      "Nat.Prime predicate"
+    ]
+  },
+  {
+    "id": "ann-e985-artin-conjecture",
+    "proofId": "erdos-985",
+    "range": {
+      "startLine": 115,
+      "endLine": 121
+    },
+    "type": "concept",
+    "title": "Artin's Conjecture",
+    "content": "**artin_conjecture_for_2:**\n\nArtin conjectured (1927) that 2 is a primitive root for infinitely many primes.\n\n**Generalization:** Any integer a ≠ -1, 0, 1 that is not a perfect square is a primitive root for infinitely many primes.\n\n**Status:**\n- Unconditionally OPEN\n- Hooley (1967) proved it assuming GRH\n- Density would be ≈ 37.4% of primes",
+    "mathContext": "Artin's constant C = ∏_p (1 - 1/(p(p-1))) ≈ 0.3739558136 is the conjectured density.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Generalized Riemann Hypothesis",
+      "Prime density"
+    ],
+    "prerequisites": [
+      "Notion of a primitive root modulo p",
+      "Perfect squares and the exception a ≠ -1, 0, 1",
+      "Generalized Riemann Hypothesis (Hooley 1967)",
+      "Artin's constant and primitive-root density"
+    ]
+  },
+  {
+    "id": "ann-e985-heath-brown",
+    "proofId": "erdos-985",
+    "range": {
+      "startLine": 123,
+      "endLine": 129
+    },
+    "type": "concept",
+    "title": "Heath-Brown's Theorem (1986)",
+    "content": "**heath_brown_theorem:**\n\nAt least one of 2, 3, or 5 is a primitive root for infinitely many primes.\n\n**Significance:** This is the strongest UNCONDITIONAL result toward Artin's conjecture.\n\n**Method:** Heath-Brown showed that if 2, 3, and 5 all fail to be primitive roots infinitely often, we reach a contradiction.\n\n**Implication:** Since 2, 3, 5 are all prime, Heath-Brown's result gives evidence for Erdős 985.",
+    "mathContext": "Heath-Brown's proof uses sieves and careful analysis of character sums.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Artin's conjecture",
+      "Sieve methods"
+    ],
+    "prerequisites": [
+      "Artin's conjecture statement",
+      "Primitive root for infinitely many primes",
+      "Sieve methods",
+      "Character sums"
+    ]
+  },
+  {
+    "id": "ann-e985-main-conjecture",
+    "proofId": "erdos-985",
+    "range": {
+      "startLine": 133,
+      "endLine": 146
+    },
+    "type": "concept",
+    "title": "Erdős Problem #985 Conjecture",
+    "content": "**erdos_985_conjecture:**\n\nFor every prime p > 2, there exists a prime q < p which is a primitive root modulo p.\n\n**Status:** OPEN\n\n**What makes this hard:**\n- We know primitive roots exist (always)\n- We know infinitely many primes are primitive roots somewhere (Heath-Brown)\n- But we don't know if EVERY prime p has a PRIME primitive root < p\n\n**The gap:** Existence vs. universality",
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of erdős problem #985 conjecture",
+    "relatedConcepts": [
+      "prime numbers",
+      "Lean 4 formalization"
+    ],
+    "prerequisites": [
+      "isPrimePrimitiveRoot definition",
+      "exists_primitive_root (existence of primitive roots)",
+      "heath_brown_theorem axiom",
+      "axiom declarations in Lean"
+    ]
+  },
+  {
+    "id": "ann-e985-equivalence",
+    "proofId": "erdos-985",
+    "range": {
+      "startLine": 148,
+      "endLine": 172
+    },
+    "type": "concept",
+    "title": "Equivalent Formulation",
+    "content": "**erdos_985_iff_all_odd_primes:**\n\nErdős 985 is equivalent to:\n\nprimesWithPrimePrimitiveRoot = {p : ℕ | p.Prime ∧ p ≠ 2}\n\n**Meaning:** The set of primes having a prime primitive root equals all odd primes.\n\n**Proof:** A straightforward set-theoretic argument showing the bijection between the universal quantifier and set equality.",
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of equivalent formulation",
+    "relatedConcepts": [
+      "proof technique",
+      "prime numbers"
+    ],
+    "prerequisites": [
+      "primesWithPrimePrimitiveRoot set",
+      "erdos_985_conjecture statement",
+      "Set equality via extensionality",
+      "Universal quantifier vs. set-membership"
+    ]
+  },
+  {
+    "id": "ann-e985-heuristic",
+    "proofId": "erdos-985",
+    "range": {
+      "startLine": 174,
+      "endLine": 183
+    },
+    "type": "concept",
+    "title": "Heuristic Argument",
+    "content": "**heuristic_prime_primitive_roots:**\n\nFor large p, we expect the conjecture to hold:\n\n1. There are φ(p-1) primitive roots in [1, p-1]\n2. By PNT, about p/log(p) primes in [1, p]\n3. Expected prime primitive roots ≈ φ(p-1)/log(p)\n\nSince φ(p-1) grows roughly like p/log(log(p)), this ratio goes to infinity.\n\n**Caveat:** Heuristics don't constitute proof!",
+    "mathContext": "The heuristic assumes primitive roots are \"random\" among [1, p-1], which is not rigorous.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "prime numbers",
+      "Lean 4 formalization"
+    ],
+    "prerequisites": [
+      "Euler's totient function φ(p-1)",
+      "Prime Number Theorem (π(x) ≈ x/log x)",
+      "Growth rate φ(n) ≈ n/log log n",
+      "Notion of heuristic vs. rigorous proof"
+    ]
+  },
+  {
+    "id": "ann-e985-artin-implies",
+    "proofId": "erdos-985",
+    "range": {
+      "startLine": 185,
+      "endLine": 198
+    },
+    "type": "concept",
+    "title": "Artin Implies Erdős 985",
+    "content": "**artin_implies_erdos_985:**\n\nIf Artin's conjecture holds for all primes, then Erdős 985 follows.\n\n**Argument:**\n- Each prime q is a primitive root for infinitely many primes (by Artin)\n- Given p, at least one of the primes 2, 3, 5, ..., q_k < p must be a primitive root mod p\n- By quantitative versions of Artin, this happens for large p\n\n**Note:** The actual implication requires quantitative bounds not just infinity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Artin's conjecture",
+      "Quantitative number theory"
+    ],
+    "mathContext": "See annotation content for formal details of artin implies erdős 985",
+    "prerequisites": [
+      "Artin's conjecture statement",
+      "erdos_985_conjecture statement",
+      "Quantitative (Linnik-type) bounds",
+      "Primitive root for infinitely many primes"
+    ]
+  },
+  {
+    "id": "ann-e985-summary",
+    "proofId": "erdos-985",
+    "range": {
+      "startLine": 200,
+      "endLine": 223
+    },
+    "type": "concept",
+    "title": "Summary Theorem",
+    "content": "**erdos_985_summary:**\n\nCombines our main results:\n\n1. **Verified cases:** p = 3, 5, 7, 11, 13 all satisfy Erdős 985\n2. **Heath-Brown:** At least one of {2, 3, 5} is a primitive root for infinitely many primes\n\n**What we know:**\n- Conjecture holds for all tested small primes\n- Theoretical support from Heath-Brown\n- Heuristic evidence from PNT\n\n**What we don't know:**\n- Whether the conjecture is true for ALL primes",
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of summary theorem",
+    "relatedConcepts": [
+      "proof technique",
+      "prime numbers",
+      "combinatorics"
+    ],
+    "prerequisites": [
+      "Verified cases erdos985_for_3,5,7,11,13",
+      "heath_brown_theorem axiom",
+      "Heuristic argument from PNT",
+      "isPrimePrimitiveRoot definition"
+    ]
+  }
+]

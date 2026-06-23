@@ -1,0 +1,351 @@
+[
+  {
+    "id": "ann-e867-header",
+    "proofId": "erdos-867",
+    "range": {
+      "startLine": 31,
+      "endLine": 41
+    },
+    "type": "concept",
+    "title": "Imports and Namespace Setup",
+    "content": "Imports Mathlib modules for finite sets (`Finset.Basic`, `Finset.Card`, `Finset.Interval`), natural number intervals (`Nat.Interval`, `Interval.Finset.Nat`), big operator notation (`BigOperators`), and real numbers (`Data.Real.Basic`). Opens `Finset` and `BigOperators` namespaces for concise notation. The `Erdos867` namespace scopes all definitions.",
+    "mathContext": "Uses `Finset.Ioc` for the half-open interval $(a, b] \\cap \\mathbb{N}$, `Finset.Icc` for $[a, b] \\cap \\mathbb{N}$, `List.sum` for $\\sum_{i} a_i$, and `Nat.log2` for $\\lfloor \\log_2 N \\rfloor$. The `BigOperators` import enables `\\sum` notation.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.Ioc",
+      "Finset.Icc",
+      "List.sum",
+      "Nat.log2",
+      "BigOperators"
+    ],
+    "prerequisites": [
+      "Mathlib imports",
+      "namespace management"
+    ]
+  },
+  {
+    "id": "ann-e867-consecutive-sums",
+    "proofId": "erdos-867",
+    "range": {
+      "startLine": 54,
+      "endLine": 59
+    },
+    "type": "definition",
+    "title": "Consecutive Sums Definition",
+    "content": "Defines `consecutiveSums : List N -> Finset N` collecting all sums of consecutive subsequences. For a sorted list A = [a_1, ..., a_t], it computes all sums a_i + a_{i+1} + ... + a_j for 0 <= i and j < |A|. Implementation uses nested folds over `List.range`, with `List.drop i` and `List.take (j+1)` to extract segments, then `List.sum` to compute each sum.",
+    "mathContext": "For $A = [a_1, \\ldots, a_t]$, the set of consecutive sums is $\\{\\sum_{k=i}^{j} a_k : 0 \\leq i \\leq j < t\\}$. This includes single elements ($i = j$). The total number of consecutive sums is $\\binom{t+1}{2}$, though many may coincide.",
+    "significance": "key",
+    "relatedConcepts": [
+      "List.drop",
+      "List.take",
+      "List.sum",
+      "Finset.foldl",
+      "consecutive subsequence"
+    ],
+    "prerequisites": [
+      "List operations",
+      "Finset union"
+    ]
+  },
+  {
+    "id": "ann-e867-sumfree-property",
+    "proofId": "erdos-867",
+    "range": {
+      "startLine": 68,
+      "endLine": 72
+    },
+    "type": "definition",
+    "title": "Consecutive Sum-Free Property",
+    "content": "Defines `isConsecutiveSumFree : List N -> Prop` requiring that for all indices i < j with segment length > 1, the sum of the segment A[i..j] does not lie in A.toFinset. The length > 1 condition excludes single-element 'sums' (trivially in A). This is the central predicate: A is consecutive sum-free iff no genuine consecutive sum lands back in A.",
+    "mathContext": "A set $A = \\{a_1 < \\cdots < a_t\\}$ is consecutive sum-free if $\\sum_{k=i}^{j} a_k \\notin A$ for all $i < j$. Equivalently, $A \\cap \\text{consecutiveSums}(A) \\setminus A = \\emptyset$ when restricting to multi-element sums. This generalizes the classical sum-free condition $A \\cap (A + A) = \\emptyset$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sum-free sets",
+      "List.toFinset",
+      "additive combinatorics",
+      "Schur numbers"
+    ],
+    "prerequisites": [
+      "consecutiveSums",
+      "List indexing",
+      "membership"
+    ]
+  },
+  {
+    "id": "ann-e867-maxdensity",
+    "proofId": "erdos-867",
+    "range": {
+      "startLine": 78,
+      "endLine": 80
+    },
+    "type": "definition",
+    "title": "Maximum Density Function",
+    "content": "Defines `maxDensity : N -> R` as the supremum of |A|/N over all lists A. Marked noncomputable since it uses `sSup` (completeness of reals). This is a simplified definition; the full version would constrain A to be a sorted subset of {1, ..., N} that is consecutive sum-free.",
+    "mathContext": "The maximum density $\\mu(N) = \\sup\\{|A|/N : A \\subseteq \\{1, \\ldots, N\\},\\, A \\text{ consecutive sum-free}\\}$. Erdős conjectured $\\mu(N) \\leq 1/2 + O(1/N)$. The actual value satisfies $13/24 \\leq \\limsup \\mu(N) \\leq 2/3 - 1/512$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sSup",
+      "noncomputable",
+      "density function",
+      "supremum"
+    ],
+    "prerequisites": [
+      "Real.Basic",
+      "sSup",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "ann-e867-upper-half",
+    "proofId": "erdos-867",
+    "range": {
+      "startLine": 95,
+      "endLine": 95
+    },
+    "type": "definition",
+    "title": "Upper Half Construction",
+    "content": "Defines `upperHalf N = Finset.Ioc (N/2) N`, the set of natural numbers in the half-open interval (N/2, N]. For N = 10, this gives {6, 7, 8, 9, 10}. This is the canonical example achieving density 1/2: any two elements a, b > N/2 satisfy a + b > N, so no sum of consecutive elements can lie in {1, ..., N}.",
+    "mathContext": "The upper half $A = (\\lfloor N/2 \\rfloor, N] \\cap \\mathbb{N}$ has $|A| = N - \\lfloor N/2 \\rfloor = \\lceil N/2 \\rceil$. For any $a, b \\in A$ with $a \\neq b$, $a + b > N$, so $a + b \\notin \\{1, \\ldots, N\\} \\supseteq A$. This is the largest 'obvious' consecutive sum-free set.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.Ioc",
+      "density 1/2",
+      "sum-free property",
+      "interval arithmetic"
+    ],
+    "prerequisites": [
+      "Finset.Ioc",
+      "natural number division"
+    ]
+  },
+  {
+    "id": "ann-e867-upperhalf-card",
+    "proofId": "erdos-867",
+    "range": {
+      "startLine": 100,
+      "endLine": 101
+    },
+    "type": "concept",
+    "title": "Upper Half Cardinality (PROVED)",
+    "content": "Proves `upperHalf_card : (upperHalf N).card = N - N/2` by simplifying with `Finset.card_Ioc`. This is a genuine Lean proof using the Mathlib lemma that `|Ioc a b| = b - a` for natural numbers. For even N, this gives exactly N/2; for odd N, it gives (N+1)/2.",
+    "mathContext": "$(\\text{Ioc}\\,(N/2)\\,N).\\text{card} = N - \\lfloor N/2 \\rfloor$. By `Finset.card_Ioc`: $|\\{a+1, \\ldots, b\\}| = b - a$ when $a \\leq b$. Since $\\lfloor N/2 \\rfloor \\leq N$, the result follows.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.card_Ioc",
+      "simp tactic",
+      "natural number division"
+    ],
+    "prerequisites": [
+      "upperHalf definition",
+      "Finset.card_Ioc"
+    ]
+  },
+  {
+    "id": "ann-e867-upperhalf-axioms",
+    "proofId": "erdos-867",
+    "range": {
+      "startLine": 106,
+      "endLine": 115
+    },
+    "type": "concept",
+    "title": "Upper Half Density and Sum-Free Property",
+    "content": "Two axiomatized properties: (1) `upperHalf_density`: for N >= 2, |upperHalf(N)| >= N/2 - 1, confirming density approaches 1/2. (2) `upperHalf_sumFree`: for N >= 4 and distinct a, b in upperHalf(N), a + b > N. The sum-free property follows because any consecutive sum of 2+ elements exceeds N and thus cannot lie in {1, ..., N}.",
+    "mathContext": "For $a, b \\in (N/2, N]$ with $a \\neq b$: $a + b > 2 \\cdot (N/2) = N$. More generally, $\\sum_{k=i}^{j} a_k \\geq 2 \\cdot (N/2 + 1) > N$ for $j > i$, so $\\text{upperHalf}(N)$ is consecutive sum-free.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "density bound",
+      "pairwise sum bound",
+      "axiomatization"
+    ],
+    "prerequisites": [
+      "upperHalf",
+      "Finset.mem_Ioc"
+    ]
+  },
+  {
+    "id": "ann-e867-adenwalla",
+    "proofId": "erdos-867",
+    "range": {
+      "startLine": 130,
+      "endLine": 143
+    },
+    "type": "concept",
+    "title": "Adenwalla's Dyadic Upper Bound",
+    "content": "Axiomatizes two results: (1) The dyadic lemma: if |A intersect [x, 2x]| = t, then the t-1 consecutive pair sums land in (2x, 4x] and are forbidden, giving |A intersect [x, 4x]| <= t + 2x - t + 1 = 2x + 1. (2) The global bound: |A| <= (2/3)N + log_2(N) + 1 for any consecutive sum-free A in {1, ..., N}. The O(log N) term comes from summing over O(log N) dyadic intervals.",
+    "mathContext": "Partition $\\{1, \\ldots, N\\}$ into $\\sim \\log_2 N$ dyadic intervals $[2^k, 2^{k+1})$. In each pair of adjacent intervals $[2^k, 2^{k+2})$: if $t$ elements lie in $[2^k, 2^{k+1})$, the $t-1$ pair sums are distinct and lie in $(2^{k+1}, 2^{k+2}]$. So $|A \\cap [2^k, 2^{k+2})| \\leq 2^{k+1} + 1$, giving density $\\leq 2/3 + O(1/2^k)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "dyadic decomposition",
+      "Finset.Icc",
+      "Nat.log2",
+      "harmonic analysis"
+    ],
+    "prerequisites": [
+      "Finset.card",
+      "consecutive sum-free property",
+      "dyadic intervals"
+    ]
+  },
+  {
+    "id": "ann-e867-freud",
+    "proofId": "erdos-867",
+    "range": {
+      "startLine": 157,
+      "endLine": 165
+    },
+    "type": "concept",
+    "title": "Freud's Construction (1993)",
+    "content": "Axiomatizes Freud's 1993 disproof: there exists a function f : N -> List N such that for all N >= 36, f(N) is a sorted subset of {1, ..., N}, is consecutive sum-free, and has |f(N)| * 36 >= 19 * N - 36, achieving density >= 19/36 ~ 0.5278. This is the key counterexample to Erdős's conjecture, published in the James Cook Mathematical Notes.",
+    "mathContext": "Freud constructed explicit sets $A_N \\subseteq \\{1, \\ldots, N\\}$ with $|A_N| \\geq \\frac{19}{36}N - O(1)$. The integer arithmetic $|A| \\cdot 36 \\geq 19N - 36$ avoids rational division. Since $19/36 > 1/2$, this disproves $|A| \\leq N/2 + O(1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "explicit construction",
+      "counterexample",
+      "density lower bound",
+      "James Cook Math Notes"
+    ],
+    "prerequisites": [
+      "isConsecutiveSumFree",
+      "List.length",
+      "integer arithmetic"
+    ]
+  },
+  {
+    "id": "ann-e867-nineteen-thirtysixth",
+    "proofId": "erdos-867",
+    "range": {
+      "startLine": 171,
+      "endLine": 172
+    },
+    "type": "concept",
+    "title": "19/36 > 1/2 (PROVED)",
+    "content": "Proves `nineteen_thirty_sixth_gt_half : (19 : Q) / 36 > 1 / 2` via `norm_num`. This single line formally verifies that Freud's density exceeds the conjectured threshold, completing the disproof. The `norm_num` tactic handles rational arithmetic automatically.",
+    "mathContext": "$\\frac{19}{36} = 0.527\\overline{7} > 0.5 = \\frac{1}{2}$. Equivalently, $19 \\cdot 2 = 38 > 36 = 36 \\cdot 1$. This is the critical numerical fact that turns Freud's construction into a formal disproof.",
+    "significance": "key",
+    "relatedConcepts": [
+      "norm_num tactic",
+      "rational arithmetic",
+      "formal disproof"
+    ],
+    "prerequisites": [
+      "Rat",
+      "norm_num"
+    ]
+  },
+  {
+    "id": "ann-e867-coppersmith-phillips",
+    "proofId": "erdos-867",
+    "range": {
+      "startLine": 186,
+      "endLine": 202
+    },
+    "type": "concept",
+    "title": "Coppersmith-Phillips Bounds (1996)",
+    "content": "Axiomatizes the state-of-the-art bounds from SIAM J. Discrete Math: (1) Lower: for N >= 24, there exists A in {1, ..., N} with |A| * 24 >= 13 * N - 24, achieving density >= 13/24 ~ 0.5417. (2) Upper: for any consecutive sum-free A in {1, ..., N}, |A| * 512 * 3 <= (2*512 - 3) * N + 512 * 3 * log_2(N), giving density <= 2/3 - 1/512 ~ 0.6647. The integer formulations avoid rational arithmetic in the axiom statements.",
+    "mathContext": "Lower: $|A| \\geq \\frac{13}{24}N - O(1)$, i.e., $13/24 \\leq \\liminf \\mu(N)$. Upper: $|A| \\leq (\\frac{2}{3} - \\frac{1}{512})N + O(\\log N)$, i.e., $\\limsup \\mu(N) \\leq 2/3 - 1/512 = 341/512$. The gap $[13/24, 341/512] = [0.5417, 0.6660]$ remains open.",
+    "significance": "key",
+    "relatedConcepts": [
+      "SIAM J. Discrete Math.",
+      "density bounds",
+      "integer encoding of rationals",
+      "Nat.log2"
+    ],
+    "prerequisites": [
+      "Finset.card",
+      "Nat.log2",
+      "isConsecutiveSumFree"
+    ]
+  },
+  {
+    "id": "ann-e867-best-bounds",
+    "proofId": "erdos-867",
+    "range": {
+      "startLine": 208,
+      "endLine": 210
+    },
+    "type": "concept",
+    "title": "Bounds Consistency (PROVED)",
+    "content": "Proves `best_bounds_fractions : (13 : Q) / 24 < 2/3 - 1/512` via `norm_num`. This verifies that the lower bound 13/24 is strictly less than the upper bound 2/3 - 1/512, confirming the Coppersmith-Phillips bounds are consistent (there is a genuine gap between them).",
+    "mathContext": "$\\frac{13}{24} = \\frac{277}{512} < \\frac{341}{512} = \\frac{2}{3} - \\frac{1}{512}$. Equivalently, $13 \\cdot 512 = 6656 < 8184 = 341 \\cdot 24$. The gap $341/512 - 277/512 = 64/512 = 1/8$ is substantial.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "norm_num tactic",
+      "rational comparison",
+      "bound consistency"
+    ],
+    "prerequisites": [
+      "Rat",
+      "norm_num"
+    ]
+  },
+  {
+    "id": "ann-e867-problem-839",
+    "proofId": "erdos-867",
+    "range": {
+      "startLine": 223,
+      "endLine": 236
+    },
+    "type": "definition",
+    "title": "Connection to Problem 839 (Infinite Version)",
+    "content": "Defines `isInfiniteConsecutiveSumFree : Set N -> Prop` for infinite sets: for every list of length >= 2 that is strictly increasing with all terms in A, the sum is not in A. Axiomatizes `problem_839_connection`: the asymptotic density of any infinite consecutive sum-free set is at most 2/3. Problem #839 is the infinite analogue of #867.",
+    "mathContext": "Problem #839 asks: what is the supremum of the upper asymptotic density $\\bar{d}(A) = \\limsup_{N \\to \\infty} |A \\cap [1, N]|/N$ over all infinite consecutive sum-free sets $A \\subseteq \\mathbb{N}$? The $2/3$ upper bound carries over from the finite setting.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic density",
+      "Set N",
+      "Problem 839",
+      "infinite combinatorics"
+    ],
+    "prerequisites": [
+      "Set membership",
+      "List.sum",
+      "List ordering"
+    ]
+  },
+  {
+    "id": "ann-e867-examples",
+    "proofId": "erdos-867",
+    "range": {
+      "startLine": 248,
+      "endLine": 267
+    },
+    "type": "concept",
+    "title": "Concrete Examples (PROVED)",
+    "content": "Three computationally verified examples: (1) {3, 4, 5} is a subset of Icc 1 5, proved via `simp` and `omega`. (2) |{3, 4, 5}| = 3, proved via `native_decide`. (3) {6, 7, 8, 9, 10} = upperHalf 10, proved via `ext`, `simp`, and `omega`. These demonstrate the definitions work correctly on small inputs. The set {3, 4, 5} achieves density 3/5 = 0.6, exceeding both 1/2 and 13/24.",
+    "mathContext": "For $A = \\{3, 4, 5\\}$: sums are $3+4=7$, $4+5=9$, $3+4+5=12$, none in $A$. Density $= 3/5 = 0.6$. For $\\text{upperHalf}(10) = \\{6,7,8,9,10\\}$: minimum pair sum $= 6+7 = 13 > 10$, density $= 1/2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "omega tactic",
+      "Finset.ext",
+      "computational verification"
+    ],
+    "prerequisites": [
+      "upperHalf",
+      "Finset.Icc",
+      "Finset literal"
+    ]
+  },
+  {
+    "id": "ann-e867-conjecture-false",
+    "proofId": "erdos-867",
+    "range": {
+      "startLine": 279,
+      "endLine": 282
+    },
+    "type": "concept",
+    "title": "Erdős's Conjecture is False",
+    "content": "Axiomatizes `erdos_867_conjecture_false`: the negation of the claim that for all N >= 2 and all A in {1, ..., N} with the required properties, |A| * 2 <= N + 2. This is axiomatized because the full proof requires exhibiting Freud's explicit construction and verifying its consecutive sum-free property.",
+    "mathContext": "The axiom states $\\neg(\\forall N \\geq 2,\\, \\forall A \\subseteq \\{1, \\ldots, N\\},\\, |A| \\cdot 2 \\leq N + 2)$. The witness is Freud's construction with $|A| \\geq (19/36)N - O(1)$, giving $|A| \\cdot 2 \\geq (19/18)N - O(1) > N + 2$ for large $N$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "negation",
+      "counterexample axiom",
+      "Freud's construction"
+    ],
+    "prerequisites": [
+      "freud_construction",
+      "nineteen_thirty_sixth_gt_half"
+    ]
+  }
+]

@@ -1,0 +1,229 @@
+[
+  {
+    "id": "ann-e107-imports",
+    "proofId": "erdos-107",
+    "range": {
+      "startLine": 24,
+      "endLine": 28
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "Imports full Mathlib and opens `Finset` and `BigOperators` for working with finite sets and summation notation. The proof resides in the `Erdos107` namespace.",
+    "mathContext": "The formalization uses Mathlib's EuclideanSpace for $\\mathbb{R}^2$, Collinear for the general position predicate, convexHull for the convex $n$-gon definition, Finset for finite point sets, and Filter.atTop for Suk's asymptotic bound.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "mathlib",
+      "euclidean-space",
+      "finset"
+    ],
+    "prerequisites": [
+      "lean4-basics"
+    ]
+  },
+  {
+    "id": "ann-e107-general-position",
+    "proofId": "erdos-107",
+    "range": {
+      "startLine": 34,
+      "endLine": 36
+    },
+    "type": "definition",
+    "title": "General Position",
+    "content": "A finite set of points in $\\mathbb{R}^2$ is in **general position** if no three points are collinear. This is formalized using Mathlib's `Collinear` predicate over $\\mathbb{R}$: for any three distinct points $p, q, r \\in S$, the set $\\{p, q, r\\}$ is not collinear. General position is the standard non-degeneracy condition in combinatorial geometry, ensuring that the convex hull structure is well-behaved.",
+    "mathContext": "$\\text{InGeneralPosition}(S) \\;:\\Leftrightarrow\\; \\forall\\, p, q, r \\in S,\\; p \\neq q \\neq r \\neq p \\;\\Rightarrow\\; \\neg\\,\\text{Collinear}_{\\mathbb{R}}(\\{p, q, r\\})$. Uses Mathlib's Collinear predicate which checks if points lie on a common affine line. Three points are collinear iff they are affinely dependent.",
+    "significance": "key",
+    "relatedConcepts": [
+      "collinearity",
+      "general-position",
+      "affine-dependence",
+      "non-degeneracy"
+    ],
+    "prerequisites": [
+      "euclidean-plane",
+      "affine-geometry"
+    ]
+  },
+  {
+    "id": "ann-e107-convex-ngon",
+    "proofId": "erdos-107",
+    "range": {
+      "startLine": 40,
+      "endLine": 41
+    },
+    "type": "definition",
+    "title": "Convex n-gon and Containment",
+    "content": "A set of $n$ points forms a **convex $n$-gon** if the set has exactly $n$ points and each point is a vertex of the convex hull (i.e., no point lies in the convex hull of the remaining points). This is the **convex position** characterization: $S$ is in convex position iff every point of $S$ is an extreme point of $\\operatorname{conv}(S)$. A point set **contains a convex $n$-gon** if it has a subset forming one.",
+    "mathContext": "$\\text{IsConvexNGon}(n, S) \\;:\\Leftrightarrow\\; |S| = n \\;\\wedge\\; \\forall\\, p \\in S,\\; p \\notin \\operatorname{conv}(S \\setminus \\{p\\})$. Uses Mathlib's convexHull over $\\mathbb{R}$ and Finset.erase. The definition avoids ordering the vertices, capturing convex position purely via the extreme point property.",
+    "significance": "key",
+    "relatedConcepts": [
+      "convex-hull",
+      "extreme-point",
+      "convex-position",
+      "polygon"
+    ],
+    "prerequisites": [
+      "convex-sets",
+      "finset-operations"
+    ]
+  },
+  {
+    "id": "ann-e107-f-definition",
+    "proofId": "erdos-107",
+    "range": {
+      "startLine": 50,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "The Function f(n)",
+    "content": "The central object of study: $f(n) = \\inf\\{N \\mid \\text{any } N \\text{ points in general position contain a convex } n\\text{-gon}\\}$. The set `CardSet(n)` collects all threshold values $N$, and $f(n)$ is its infimum. The Erdos-Szekeres theorem proves this infimum is achieved (i.e., $f(n)$ is finite for all $n \\geq 3$).",
+    "mathContext": "$f(n) = \\inf\\,\\bigl\\{\\, N \\in \\mathbb{N} \\;\\big|\\; \\forall\\, S \\subseteq \\mathbb{R}^2,\\; |S| = N \\wedge \\text{gen. pos.}(S) \\;\\Rightarrow\\; S \\supseteq \\text{convex } n\\text{-gon}\\,\\bigr\\}$. Defined noncomputably via sInf since the existence of the minimum requires the Erdos-Szekeres theorem. The function is a Ramsey-type extremal function.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal-function",
+      "ramsey-type",
+      "infimum",
+      "threshold-function"
+    ],
+    "prerequisites": [
+      "general-position",
+      "convex-ngon",
+      "natural-number-infimum"
+    ]
+  },
+  {
+    "id": "ann-e107-small-cases",
+    "proofId": "erdos-107",
+    "range": {
+      "startLine": 80,
+      "endLine": 84
+    },
+    "type": "concept",
+    "title": "Small Cases: f(3)=3, f(4)=5, f(5)=9",
+    "content": "The known exact values of $f$: **$f(3) = 3$** (trivial: three non-collinear points form a triangle), **$f(4) = 5$** (Klein 1931: case analysis on the convex hull of 5 points), and **$f(5) = 9$** (Makai-Turan: any 9 points in general position contain a convex pentagon). Klein's proof of $f(4) = 5$ was the observation that sparked the entire problem: if the convex hull of 5 points is a quadrilateral or pentagon, we're done; if it's a triangle, the two interior points with two hull vertices form a convex quadrilateral.",
+    "mathContext": "$f(3) = 3, \\quad f(4) = 5, \\quad f(5) = 9$. The values $f(4)$ and $f(5)$ are axiomatized; $f(3)$ has a sorry proof (needs case analysis showing $3 \\in \\text{CardSet}(3)$ and $2 \\notin \\text{CardSet}(3)$). All three values match $2^{n-2}+1$ for $n=3,4,5$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "case-analysis",
+      "convex-hull-structure",
+      "base-cases"
+    ],
+    "prerequisites": [
+      "general-position",
+      "convex-ngon"
+    ]
+  },
+  {
+    "id": "ann-e107-ersz-lower",
+    "proofId": "erdos-107",
+    "range": {
+      "startLine": 95,
+      "endLine": 95
+    },
+    "type": "concept",
+    "title": "Erdos-Szekeres Lower Bound (1960)",
+    "content": "**$2^{n-2}+1 \\leq f(n)$** for all $n \\geq 3$: There exist $2^{n-2}$ points in general position containing no convex $n$-gon. The construction is recursive: start with a suitable configuration for $n-1$ and carefully place new points to double the count while preventing any convex $n$-gon. This shows the conjectured value $2^{n-2}+1$ would be tight.",
+    "mathContext": "$\\forall\\, n \\geq 3:\\quad 2^{n-2} + 1 \\leq f(n)$. Axiomatized. The construction uses a 'double sequence' (Horton set variant). The points are arranged so that certain orientations prevent large convex subsets.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lower-bound",
+      "extremal-construction",
+      "horton-set",
+      "recursive-construction"
+    ],
+    "prerequisites": [
+      "f-definition",
+      "general-position"
+    ]
+  },
+  {
+    "id": "ann-e107-upper-bounds",
+    "proofId": "erdos-107",
+    "range": {
+      "startLine": 103,
+      "endLine": 124
+    },
+    "type": "concept",
+    "title": "Upper Bounds: ES (1935), Suk (2017), HMPT (2020)",
+    "content": "Three progressively tighter upper bounds on $f(n)$:\n\n1. **Erdos-Szekeres (1935)**: $f(n) \\leq \\binom{2n-4}{n-2} + 1 \\sim 4^n/\\sqrt{n}$, using Ramsey theory\n2. **Suk (2017)**: $f(n) \\leq 2^{(1+o(1))n}$, a breakthrough reducing the base from 4 to 2 via a novel cups-and-caps argument with improved counting\n3. **HMPT (2020)**: $f(n) \\leq 2^{n + O(\\sqrt{n \\log n})}$, the current best bound by Holmsen-Mojarrad-Pach-Tardos\n\nThe gap between lower bound $2^{n-2}+1$ and upper bound $2^{n+O(\\sqrt{n\\log n})}$ is now only $O(\\sqrt{n \\log n})$ in the exponent.",
+    "mathContext": "$2^{n-2}+1 \\;\\leq\\; f(n) \\;\\leq\\; 2^{n + C\\sqrt{n \\log n}}$. All three bounds axiomatized. Suk's bound uses Filter.atTop for the $o(1)$ term. HMPT uses an existential constant $C > 0$. The exponential gap has been dramatically narrowed from $\\sim 4^n$ to $\\sim 2^{O(\\sqrt{n \\log n})}$ above $2^n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ramsey-theory",
+      "cups-and-caps",
+      "upper-bound",
+      "asymptotic-analysis"
+    ],
+    "prerequisites": [
+      "f-definition",
+      "binomial-coefficient",
+      "asymptotic-notation"
+    ]
+  },
+  {
+    "id": "ann-e107-main-conjecture",
+    "proofId": "erdos-107",
+    "range": {
+      "startLine": 137,
+      "endLine": 138
+    },
+    "type": "theorem",
+    "title": "The Happy Ending Conjecture (OPEN)",
+    "content": "**Conjecture (Erdos-Szekeres)**: $f(n) = 2^{n-2}+1$ for all $n \\geq 3$. This is defined as a `Prop` without asserting truth, since it remains **OPEN**. Erdos offered **$500** for a proof and **$100** for a counterexample. The conjecture is supported by the three known values ($f(3)=3, f(4)=5, f(5)=9$, all matching $2^{n-2}+1$) and by the tightening upper bounds. The name 'Happy Ending' comes from George Szekeres and Esther Klein's marriage, prompted by their collaboration on this problem.",
+    "mathContext": "$\\text{HappyEndingConjecture} :\\Leftrightarrow \\forall\\, n \\geq 3,\\; f(n) = 2^{n-2} + 1$. Stated as def (a Prop) rather than axiom, correctly reflecting its open status. The value $f(6)$ is unknown: the conjecture predicts $f(6) = 17$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open-problem",
+      "erdos-prize",
+      "combinatorial-geometry"
+    ],
+    "prerequisites": [
+      "f-definition",
+      "ersz-lower-bound"
+    ]
+  },
+  {
+    "id": "ann-e107-existence",
+    "proofId": "erdos-107",
+    "range": {
+      "startLine": 148,
+      "endLine": 152
+    },
+    "type": "concept",
+    "title": "Existence and Finiteness of f(n)",
+    "content": "**Erdos-Szekeres (1935)**: For every $n \\geq 3$, $f(n)$ is finite, i.e., `CardSet(n)` is nonempty. This is the foundational result that makes the problem well-defined. The proof uses the upper bound: $\\binom{2n-4}{n-2}+1 \\in \\text{CardSet}(n)$. Additionally, explicit bounds for $f(4)$ are stated: $4 < f(4)$ (4 points can avoid a quadrilateral) and $f(4) \\leq 5$ (Klein's result).",
+    "mathContext": "$\\forall\\, n \\geq 3,\\; \\text{CardSet}(n) \\neq \\emptyset$ (i.e., $f(n) < \\infty$). Has a sorry proof; the proof would instantiate the Ramsey-theoretic argument showing $\\binom{2n-4}{n-2}+1$ points suffice.",
+    "significance": "key",
+    "relatedConcepts": [
+      "finiteness",
+      "well-definedness",
+      "ramsey-theorem"
+    ],
+    "prerequisites": [
+      "ersz-upper-bound",
+      "cardset-definition"
+    ]
+  },
+  {
+    "id": "ann-e107-verified-bounds",
+    "proofId": "erdos-107",
+    "range": {
+      "startLine": 157,
+      "endLine": 169
+    },
+    "type": "concept",
+    "title": "Verified Small Bounds for f(4)",
+    "content": "Three theorems bracketing $f(4)$: `f_3_value` ($f(3) = 3$, sorry), `f_4_lb` ($4 < f(4)$, sorry), and `f_4_ub` ($f(4) \\leq 5$, sorry). Together with the axiom `f_four_eq`, these give a complete picture for $n = 4$. The sorry proofs would require explicit case analysis on point configurations in the plane.",
+    "mathContext": "$f(3) = 3$, $4 < f(4)$, and $f(4) \\leq 5$, all with sorry proofs requiring combinatorial case analysis on small point sets in general position.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "case-analysis",
+      "small-cases",
+      "explicit-computation"
+    ],
+    "prerequisites": [
+      "f-definition",
+      "general-position",
+      "convex-ngon"
+    ]
+  }
+]

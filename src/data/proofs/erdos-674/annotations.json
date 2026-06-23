@@ -1,0 +1,442 @@
+[
+  {
+    "id": "erdos-674-imports",
+    "proofId": "erdos-674",
+    "range": {
+      "startLine": 19,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Imports: Number Theory and Arithmetic",
+    "content": "Imports Mathlib modules for divisors, prime numbers, GCD, ordered ring lemmas, and tactics. These provide the foundations for prime factorization, coprimality arguments, and ordered arithmetic on ℕ and ℚ.",
+    "significance": "supporting",
+    "mathContext": "The formalization uses `Nat.primeFactors`, `Nat.gcd`, and `Nat.Prime` from Mathlib to reason about the prime structure of solutions to $x^x y^y = z^z$.",
+    "relatedConcepts": [
+      "Nat.Prime",
+      "Nat.gcd",
+      "primeFactors",
+      "Finset"
+    ],
+    "prerequisites": [
+      "Mathlib basics"
+    ]
+  },
+  {
+    "id": "erdos-674-solution",
+    "proofId": "erdos-674",
+    "range": {
+      "startLine": 31,
+      "endLine": 39
+    },
+    "type": "definition",
+    "title": "Solution Structure",
+    "content": "Defines **Solution** as a dependent structure: a triple $(x, y, z)$ with proofs $x, y, z > 1$ and the equation $x^x \\cdot y^y = z^z$. This encapsulates the constraints as a single mathematical object.",
+    "significance": "key",
+    "mathContext": "The structure bundles the Diophantine equation $x^x y^y = z^z$ with positivity constraints $x,y,z > 1$ as a dependent record. The condition $> 1$ excludes the trivial solution $1^1 \\cdot 1^1 = 1^1$.",
+    "relatedConcepts": [
+      "Diophantine equation",
+      "dependent type",
+      "structure"
+    ],
+    "prerequisites": [
+      "Natural number arithmetic",
+      "exponentiation"
+    ]
+  },
+  {
+    "id": "erdos-674-exist",
+    "proofId": "erdos-674",
+    "range": {
+      "startLine": 41,
+      "endLine": 42
+    },
+    "type": "definition",
+    "title": "Solutions Exist",
+    "content": "Defines **SolutionsExist** as `Nonempty Solution` — the proposition that at least one solution exists. This is the main question of Problem #674.",
+    "significance": "key",
+    "mathContext": "The existential statement $\\exists (x,y,z), x,y,z > 1 \\wedge x^x y^y = z^z$ is captured as `Nonempty Solution`, using Lean 4's `Nonempty` to express non-emptiness of the solution type.",
+    "relatedConcepts": [
+      "Nonempty",
+      "existential quantifier",
+      "Diophantine equation"
+    ],
+    "prerequisites": [
+      "Solution"
+    ]
+  },
+  {
+    "id": "erdos-674-ko1940",
+    "proofId": "erdos-674",
+    "range": {
+      "startLine": 44,
+      "endLine": 46
+    },
+    "type": "concept",
+    "title": "Ko (1940): Solutions Exist",
+    "content": "**Ko's Theorem**: YES, solutions to $x^x y^y = z^z$ exist with $x,y,z > 1$. The affirmative answer to Erdős Problem #674, proved by exhibiting an explicit example.",
+    "significance": "key",
+    "mathContext": "Ko's 1940 paper not only established existence but initiated the systematic study of $x^x y^y = z^z$. The proof constructs a solution by choosing $x, y, z$ as products of powers of 2 and 3, then verifying the equation arithmetically.",
+    "relatedConcepts": [
+      "existence proof",
+      "constructive proof",
+      "Ko's example"
+    ],
+    "prerequisites": [
+      "SolutionsExist",
+      "Solution"
+    ]
+  },
+  {
+    "id": "erdos-674-koexample",
+    "proofId": "erdos-674",
+    "range": {
+      "startLine": 50,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Ko's Explicit Solution",
+    "content": "Defines $x = 2^{12} \\cdot 3^6 = 2{,}985{,}984$, $y = 2^8 \\cdot 3^8 = 1{,}679{,}616$, $z = 2^{11} \\cdot 3^7 = 4{,}478{,}976$. This is Ko's smallest known explicit solution to $x^x y^y = z^z$.",
+    "significance": "key",
+    "mathContext": "Ko's example uses only primes 2 and 3. Taking logarithms: $x \\log x + y \\log y = z \\log z$, which requires $(12 \\log 2 + 6 \\log 3)(12 \\log 2 + 6 \\log 3) + (8 \\log 2 + 8 \\log 3)(8 \\log 2 + 8 \\log 3) = (11 \\log 2 + 7 \\log 3)(11 \\log 2 + 7 \\log 3)$ to balance.",
+    "relatedConcepts": [
+      "powers of 2",
+      "powers of 3",
+      "logarithmic identity"
+    ],
+    "prerequisites": [
+      "Solution"
+    ]
+  },
+  {
+    "id": "erdos-674-validity",
+    "proofId": "erdos-674",
+    "range": {
+      "startLine": 74,
+      "endLine": 76
+    },
+    "type": "concept",
+    "title": "Ko's Solution Validity",
+    "content": "States that Ko's example satisfies $\\text{koX}^{\\text{koX}} \\cdot \\text{koY}^{\\text{koY}} = \\text{koZ}^{\\text{koZ}}$. This is a computational verification requiring enormous arithmetic (numbers with millions of digits).",
+    "significance": "key",
+    "mathContext": "Verifying $x^x y^y = z^z$ for $x \\approx 3 \\times 10^6$ requires computing numbers with $\\sim 10^7$ digits. The sorry reflects the impracticality of `norm_num` for such large computations; a certificate-based approach or modular verification would be needed.",
+    "relatedConcepts": [
+      "computational verification",
+      "norm_num",
+      "large number arithmetic"
+    ],
+    "prerequisites": [
+      "koX",
+      "koY",
+      "koZ"
+    ]
+  },
+  {
+    "id": "erdos-674-nocoprime",
+    "proofId": "erdos-674",
+    "range": {
+      "startLine": 90,
+      "endLine": 92
+    },
+    "type": "concept",
+    "title": "No Coprime Solutions (Ko 1940)",
+    "content": "**No coprime solutions**: If $\\gcd(x,y) = 1$ then $x^x y^y = z^z$ has no solution with $x,y,z > 1$. This means every solution must have shared prime factors between $x$ and $y$.",
+    "significance": "key",
+    "mathContext": "If $\\gcd(x,y) = 1$ and $p \\mid x$, then $v_p(x^x y^y) = x \\cdot v_p(x)$ (since $p \\nmid y$). For $z^z$, $v_p(z^z) = z \\cdot v_p(z)$. The equation forces $x \\cdot v_p(x) = z \\cdot v_p(z)$, but careful analysis shows this leads to a contradiction when $\\gcd(x,y) = 1$.",
+    "relatedConcepts": [
+      "p-adic valuation",
+      "unique factorization",
+      "coprimality"
+    ],
+    "prerequisites": [
+      "Solution",
+      "Nat.gcd"
+    ]
+  },
+  {
+    "id": "erdos-674-schinzel",
+    "proofId": "erdos-674",
+    "range": {
+      "startLine": 100,
+      "endLine": 103
+    },
+    "type": "concept",
+    "title": "Schinzel (1958): Shared Prime Divisors",
+    "content": "**Schinzel's Theorem**: For any solution and any prime $p$, $p \\mid x \\iff p \\mid y$. This strengthens Ko's coprimality result: not just $\\gcd(x,y) > 1$, but $x$ and $y$ have exactly the same prime divisors.",
+    "significance": "key",
+    "mathContext": "Schinzel proved that if $p \\mid x$ but $p \\nmid y$, then $v_p(x^x y^y) = x \\cdot v_p(x)$ while $v_p(z^z) = z \\cdot v_p(z)$, forcing $z \\cdot v_p(z) = x \\cdot v_p(x)$. Combined with the equation $x + y = z + \\text{(correction)}$ from the logarithmic form, this yields a contradiction.",
+    "relatedConcepts": [
+      "prime factorization",
+      "radical of an integer",
+      "Schinzel's conjecture"
+    ],
+    "prerequisites": [
+      "no_coprime_solutions",
+      "Nat.Prime"
+    ]
+  },
+  {
+    "id": "erdos-674-schinzel-conj",
+    "proofId": "erdos-674",
+    "range": {
+      "startLine": 105,
+      "endLine": 108
+    },
+    "type": "definition",
+    "title": "Schinzel's Conjecture (Full Version)",
+    "content": "Defines **SchinzelConjecture**: for all solutions, $p \\mid x \\iff p \\mid y$ AND $p \\mid y \\iff p \\mid z$. This extends Schinzel's 1958 result to include $z$, conjecturing all three variables share identical prime factors.",
+    "significance": "key",
+    "mathContext": "The full conjecture states $\\text{rad}(x) = \\text{rad}(y) = \\text{rad}(z)$, where $\\text{rad}(n) = \\prod_{p \\mid n} p$ is the radical. Dem'janenko (1975) proved this conjecture.",
+    "relatedConcepts": [
+      "radical of an integer",
+      "prime support",
+      "Dem'janenko"
+    ],
+    "prerequisites": [
+      "schinzel_1958"
+    ]
+  },
+  {
+    "id": "erdos-674-demjanenko",
+    "proofId": "erdos-674",
+    "range": {
+      "startLine": 112,
+      "endLine": 114
+    },
+    "type": "concept",
+    "title": "Dem'janenko (1975): Identical Prime Factors",
+    "content": "**Dem'janenko's Theorem**: Schinzel's conjecture is true — all three variables $x, y, z$ share identical prime factors. This is the deepest structural result about solutions to $x^x y^y = z^z$.",
+    "significance": "key",
+    "mathContext": "Dem'janenko's proof analyzes the equation $x \\log x + y \\log y = z \\log z$ using properties of the strictly convex function $t \\mapsto t \\log t$. Combined with $p$-adic valuation arguments, this forces $\\text{primeFactors}(x) = \\text{primeFactors}(y) = \\text{primeFactors}(z)$.",
+    "relatedConcepts": [
+      "p-adic valuation",
+      "convex functions",
+      "primeFactors"
+    ],
+    "prerequisites": [
+      "SchinzelConjecture",
+      "Solution"
+    ]
+  },
+  {
+    "id": "erdos-674-ratioQ",
+    "proofId": "erdos-674",
+    "range": {
+      "startLine": 124,
+      "endLine": 126
+    },
+    "type": "definition",
+    "title": "Ratio Q = xy/z²",
+    "content": "Defines **ratioQ(s)** = xy/z² as a rational number. This parameter classifies solutions: Ko's family achieves Q = 1/4 (equality in 4xy = z²), and Mills proved Q ≤ 1/4 universally.",
+    "significance": "key",
+    "mathContext": "The ratio $Q = xy/z^2$ is the key invariant for solution classification. By AM-GM applied to the logarithmic equation, $Q \\le 1/4$ with equality iff the exponents in the prime factorization satisfy a specific balance condition.",
+    "relatedConcepts": [
+      "AM-GM inequality",
+      "solution classification",
+      "rational number"
+    ],
+    "prerequisites": [
+      "Solution"
+    ]
+  },
+  {
+    "id": "erdos-674-mills",
+    "proofId": "erdos-674",
+    "range": {
+      "startLine": 128,
+      "endLine": 131
+    },
+    "type": "concept",
+    "title": "Mills' Constraint: No Solutions with 4xy > z²",
+    "content": "**Mills' Theorem**: No non-trivial solutions satisfy $4xy > z^2$ (i.e., $Q > 1/4$) when $x \\ne y$. This restricts all solutions to the region $Q \\le 1/4$.",
+    "significance": "key",
+    "mathContext": "Mills proved this using the concavity of $\\log$: from $x \\log x + y \\log y = z \\log z$ and $x + y > z$ (which holds when $4xy > z^2$), one derives a contradiction via Jensen's inequality for $t \\mapsto t \\log t$.",
+    "relatedConcepts": [
+      "Jensen's inequality",
+      "convexity",
+      "AM-GM"
+    ],
+    "prerequisites": [
+      "ratioQ",
+      "Solution"
+    ]
+  },
+  {
+    "id": "erdos-674-ko-family-ratio",
+    "proofId": "erdos-674",
+    "range": {
+      "startLine": 133,
+      "endLine": 135
+    },
+    "type": "concept",
+    "title": "Ko's Family: 4xy = z²",
+    "content": "Ko's explicit example satisfies $4 \\cdot \\text{koX} \\cdot \\text{koY} = \\text{koZ}^2$, i.e., $Q = 1/4$. This can be verified: $4 \\cdot 2^{12} \\cdot 3^6 \\cdot 2^8 \\cdot 3^8 = 2^{22} \\cdot 3^{14} = (2^{11} \\cdot 3^7)^2$.",
+    "significance": "supporting",
+    "mathContext": "The identity $4xy = z^2$ for Ko's example follows from $4 \\cdot 2^{20} \\cdot 3^{14} = 2^{22} \\cdot 3^{14} = (2^{11} \\cdot 3^7)^2$. This equality characterizes Ko's family among all solutions.",
+    "relatedConcepts": [
+      "koX",
+      "koY",
+      "koZ",
+      "ratio Q"
+    ],
+    "prerequisites": [
+      "koX",
+      "koY",
+      "koZ"
+    ]
+  },
+  {
+    "id": "erdos-674-uchiyama",
+    "proofId": "erdos-674",
+    "range": {
+      "startLine": 147,
+      "endLine": 150
+    },
+    "type": "concept",
+    "title": "Uchiyama (1984): Finiteness for Fixed Q",
+    "content": "**Uchiyama's Theorem**: For each fixed $Q \\in (0, 1/4)$, the set of solutions with $\\text{ratioQ}(s) = Q$ is finite. Uses Baker's theory of linear forms in logarithms.",
+    "significance": "key",
+    "mathContext": "Baker's theorem gives effective lower bounds for $|\\alpha_1^{b_1} \\cdots \\alpha_m^{b_m} - 1|$ where $\\alpha_i$ are algebraic and $b_i$ integers. Applied to $x^x y^y / z^z = 1$, this bounds the $p$-adic valuations and hence the size of solutions for fixed $Q$.",
+    "relatedConcepts": [
+      "Baker's theorem",
+      "linear forms in logarithms",
+      "effective bounds",
+      "transcendence theory"
+    ],
+    "prerequisites": [
+      "ratioQ",
+      "Solution"
+    ]
+  },
+  {
+    "id": "erdos-674-kofamily",
+    "proofId": "erdos-674",
+    "range": {
+      "startLine": 159,
+      "endLine": 164
+    },
+    "type": "definition",
+    "title": "Ko's Parametric Family",
+    "content": "Defines **koFamily(n)** for $n \\ge 2$: set $a = 2^{n+1}$, $b = 2^n - 1$, base $= 2^{a(b-n)} \\cdot b^{2b}$, then $(x,y,z) = (\\text{base} \\cdot 2^{2n}, \\text{base} \\cdot b^2, \\text{base} \\cdot 2^{n+1} \\cdot b)$.",
+    "significance": "key",
+    "mathContext": "Ko's construction uses $a = 2^{n+1}$ and $b = 2^n - 1$ (a Mersenne-like number). The key identity is $a = 2b + 2 - 2^{-(n-1)}\\cdot(\\ldots)$, which ensures $x^x y^y = z^z$ balances. For $n = 2$: $a = 8$, $b = 3$, recovering the example $x = 2^{12} \\cdot 3^6$.",
+    "relatedConcepts": [
+      "parametric family",
+      "Mersenne numbers",
+      "infinite solutions"
+    ],
+    "prerequisites": [
+      "Solution"
+    ]
+  },
+  {
+    "id": "erdos-674-infinite",
+    "proofId": "erdos-674",
+    "range": {
+      "startLine": 172,
+      "endLine": 175
+    },
+    "type": "concept",
+    "title": "Infinitely Many Solutions",
+    "content": "Ko's parametric family produces infinitely many distinct solutions to $x^x y^y = z^z$. Since different $n \\ge 2$ yield different solutions (the prime factorization changes), the solution set is infinite.",
+    "significance": "key",
+    "mathContext": "The proof shows `koFamily` is injective for $n \\ge 2$ (different $n$ give different $b = 2^n - 1$, hence different prime factorizations). Combined with `ko_family_valid`, this gives $|\\{s : \\text{Solution} \\mid \\top\\}| = \\infty$.",
+    "relatedConcepts": [
+      "Set.Infinite",
+      "injective function",
+      "parametric solutions"
+    ],
+    "prerequisites": [
+      "koFamily",
+      "ko_family_valid"
+    ]
+  },
+  {
+    "id": "erdos-674-isKoType",
+    "proofId": "erdos-674",
+    "range": {
+      "startLine": 192,
+      "endLine": 196
+    },
+    "type": "definition",
+    "title": "Ko Type Solutions",
+    "content": "A solution is **Ko type** if it equals `koFamily(n)` for some $n \\ge 2$. The open question is whether ALL solutions are of Ko type (i.e., whether Ko's family is exhaustive).",
+    "significance": "key",
+    "mathContext": "The conjecture $\\text{KoConjectureFull}: \\forall s, \\text{IsKoType}(s)$ would mean the solution set of $x^x y^y = z^z$ is exactly $\\{\\text{koFamily}(n) \\mid n \\ge 2\\}$. Mills' computational evidence supports this but no proof exists.",
+    "relatedConcepts": [
+      "exhaustive classification",
+      "KoConjectureFull",
+      "koFamily"
+    ],
+    "prerequisites": [
+      "koFamily",
+      "Solution"
+    ]
+  },
+  {
+    "id": "erdos-674-ratio-constraint",
+    "proofId": "erdos-674",
+    "range": {
+      "startLine": 203,
+      "endLine": 205
+    },
+    "type": "concept",
+    "title": "Universal Ratio Constraint Q ≤ 1/4",
+    "content": "Every solution satisfies $Q = xy/z^2 \\le 1/4$, i.e., $4xy \\le z^2$. This universal bound partitions the problem: equality ($Q = 1/4$) is Ko's family, and strict inequality ($Q < 1/4$) has only finitely many solutions per fixed $Q$.",
+    "significance": "key",
+    "mathContext": "The bound $Q \\le 1/4$ follows from AM-GM: $xy \\le ((x+y)/2)^2$ combined with $z \\le x + y - 1$ (from the logarithmic equation). Equality holds iff the prime factorization exponents satisfy a specific balance.",
+    "relatedConcepts": [
+      "AM-GM inequality",
+      "Mills' constraint",
+      "ratioQ"
+    ],
+    "prerequisites": [
+      "ratioQ",
+      "Solution"
+    ]
+  },
+  {
+    "id": "erdos-674-smallcases",
+    "proofId": "erdos-674",
+    "range": {
+      "startLine": 214,
+      "endLine": 227
+    },
+    "type": "concept",
+    "title": "Small Cases: No Solutions for x = 2, 3, or x = y",
+    "content": "No solutions with $x = 2$ (since $4 y^y = z^z$ forces contradictory 2-adic valuations), $x = 3$ (similar argument with 3-adic valuations), or $x = y$ (since $x^{2x} = z^z$ requires $z = x^{2x/z}$ which has no integer solutions for $x,z > 1$).",
+    "significance": "supporting",
+    "mathContext": "For $x = 2$: $4 y^y = z^z$ gives $v_2(z^z) = v_2(4 y^y) = 2 + y \\cdot v_2(y)$. Since $z \\cdot v_2(z) = 2 + y \\cdot v_2(y)$, careful case analysis on the parity of $y$ yields contradictions. The $x = y$ case reduces to $x^{2x} = z^z$.",
+    "relatedConcepts": [
+      "p-adic valuation",
+      "small cases",
+      "case analysis"
+    ],
+    "prerequisites": [
+      "Solution",
+      "Nat.Prime"
+    ]
+  },
+  {
+    "id": "erdos-674-ordering",
+    "proofId": "erdos-674",
+    "range": {
+      "startLine": 242,
+      "endLine": 245
+    },
+    "type": "concept",
+    "title": "Ordering: x < z < y",
+    "content": "In any solution with $x \\le y$, the ordering is $x < z < y$. This follows from the strict convexity of $t \\mapsto t \\log t$: the equation $x \\log x + y \\log y = z \\log z$ forces $z$ to lie strictly between $x$ and $y$.",
+    "significance": "supporting",
+    "mathContext": "Since $f(t) = t \\log t$ is strictly convex for $t > 0$, the equation $f(x) + f(y) = f(z)$ with $x < y$ implies $f(x) < f(z) < f(x) + f(y)$, and by monotonicity of $f$, $x < z < y$ (for $x,y,z$ large enough).",
+    "relatedConcepts": [
+      "convex function",
+      "t log t",
+      "intermediate value",
+      "monotonicity"
+    ],
+    "prerequisites": [
+      "Solution",
+      "wlog_x_le_y"
+    ]
+  }
+]

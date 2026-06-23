@@ -1,0 +1,181 @@
+[
+  {
+    "id": "ann-cltoq03-probmeasure",
+    "proofId": "central-limit-theorem-oq-03",
+    "range": {
+      "startLine": 40,
+      "endLine": 47
+    },
+    "type": "definition",
+    "title": "ProbMeasure and Dirac Delta",
+    "content": "**ProbMeasure** wraps Mathlib's `Measure R` with an `IsProbabilityMeasure` typeclass constraint, ensuring total mass 1. **diracProb** constructs the Dirac delta measure $\\delta_x$ concentrated at a single point, which serves as the identity element for convolution.\n\nThis wrapping isolates the probability-specific structure from the general measure theory machinery, making the monoid axioms cleaner to state.",
+    "mathContext": "$\\delta_x(A) = \\begin{cases} 1 & x \\in A \\\\ 0 & x \\notin A \\end{cases}$, with $\\delta_0$ as the convolution identity",
+    "significance": "key",
+    "relatedConcepts": [
+      "Probability measure",
+      "Dirac measure",
+      "IsProbabilityMeasure"
+    ],
+    "prerequisites": [
+      "Measure theory",
+      "Mathlib.MeasureTheory.Measure.Dirac"
+    ]
+  },
+  {
+    "id": "ann-cltoq03-convolution",
+    "proofId": "central-limit-theorem-oq-03",
+    "range": {
+      "startLine": 56,
+      "endLine": 60
+    },
+    "type": "concept",
+    "title": "Convolution of Probability Measures",
+    "content": "**convolution** (axiom)\n\nConvolution of two probability measures $\\mu, \\nu$ on $\\mathbb{R}$ produces the distribution of $X + Y$ where $X \\sim \\mu$ and $Y \\sim \\nu$ independently:\n$$(\\mu * \\nu)(A) = \\iint \\mathbf{1}_A(x + y)\\, d\\mu(x)\\, d\\nu(y)$$\n\nAxiomatized because the full construction requires product measures and Fubini's theorem. The key property `convolution_isProbability` ensures the result remains a probability measure.",
+    "mathContext": "$(\\mu * \\nu)(A) = \\int \\mu(A - y)\\, d\\nu(y)$, the distribution of the sum of independent random variables",
+    "significance": "key",
+    "relatedConcepts": [
+      "Product measure",
+      "Fubini's theorem",
+      "Sum of independent random variables"
+    ],
+    "prerequisites": [
+      "Measure theory",
+      "Product measures"
+    ]
+  },
+  {
+    "id": "ann-cltoq03-monoid-axioms",
+    "proofId": "central-limit-theorem-oq-03",
+    "range": {
+      "startLine": 67,
+      "endLine": 80
+    },
+    "type": "concept",
+    "title": "Commutative Monoid Axioms",
+    "content": "**convolution_assoc**, **convolution_dirac_left/right**, **convolution_comm**\n\nFour axioms establishing $(\\text{ProbMeasure}, *, \\delta_0)$ as a commutative monoid:\n1. **Associativity:** $(\\mu * \\nu) * \\rho = \\mu * (\\nu * \\rho)$\n2. **Left identity:** $\\delta_0 * \\mu = \\mu$\n3. **Right identity:** $\\mu * \\delta_0 = \\mu$\n4. **Commutativity:** $\\mu * \\nu = \\nu * \\mu$\n\nThese are the algebraic backbone of the entire formalization.",
+    "mathContext": "$(\\text{ProbMeasure}, *, \\delta_0)$ is a commutative monoid",
+    "significance": "key",
+    "relatedConcepts": [
+      "Commutative monoid",
+      "Banach algebra",
+      "Convolution algebra"
+    ],
+    "prerequisites": [
+      "Abstract algebra",
+      "Monoid axioms"
+    ]
+  },
+  {
+    "id": "ann-cltoq03-convpow-add",
+    "proofId": "central-limit-theorem-oq-03",
+    "range": {
+      "startLine": 107,
+      "endLine": 113
+    },
+    "type": "concept",
+    "title": "Convolution Power Distribution Law",
+    "content": "**convPow_add**\n\n$\\mu^{*(m+n)} = \\mu^{*m} * \\mu^{*n}$\n\nThe probability analogue of the law of exponents $a^{m+n} = a^m \\cdot a^n$. Proved by induction on $n$:\n- Base case ($n = 0$): $\\mu^{*m} = \\mu^{*m} * \\delta_0$ by the right identity\n- Inductive step: uses `Nat.add_succ`, `convPow` unfolding, the IH, and `convolution_assoc`\n\nThis is one of the key proved (non-axiomatized) results in the formalization.",
+    "mathContext": "$\\mu^{*(m+n)} = \\mu^{*m} * \\mu^{*n}$, proved by induction using associativity",
+    "significance": "key",
+    "relatedConcepts": [
+      "Law of exponents",
+      "Induction on natural numbers",
+      "Monoid power"
+    ],
+    "prerequisites": [
+      "convolution_assoc",
+      "convolution_dirac_right",
+      "Nat.add_succ"
+    ]
+  },
+  {
+    "id": "ann-cltoq03-charfun-homo",
+    "proofId": "central-limit-theorem-oq-03",
+    "range": {
+      "startLine": 132,
+      "endLine": 139
+    },
+    "type": "concept",
+    "title": "Characteristic Function Power Law",
+    "content": "**charFun_convPow**\n\n$\\varphi_{\\mu^{*n}}(t) = \\varphi_\\mu(t)^n$\n\nThe characteristic function of the $n$-fold convolution power is the $n$-th power of the original characteristic function. Proved by induction on $n$:\n- Base case: $\\varphi_{\\delta_0}(t) = 1 = \\varphi_\\mu(t)^0$ (using `charFun_dirac_zero`)\n- Inductive step: $\\varphi_{\\mu^{*(n+1)}}(t) = \\varphi_{\\mu^{*n}}(t) \\cdot \\varphi_\\mu(t) = \\varphi_\\mu(t)^n \\cdot \\varphi_\\mu(t) = \\varphi_\\mu(t)^{n+1}$\n\nThis transforms convolution power analysis into complex multiplication, which is the key technique behind all CLT proofs.",
+    "mathContext": "$\\varphi_{\\mu^{*n}}(t) = [\\varphi_\\mu(t)]^n$, reducing convolution powers to complex powers",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fourier transform",
+      "Monoid homomorphism",
+      "Levy continuity theorem"
+    ],
+    "prerequisites": [
+      "charFun_convolution",
+      "charFun_dirac_zero",
+      "pow_succ"
+    ]
+  },
+  {
+    "id": "ann-cltoq03-clt",
+    "proofId": "central-limit-theorem-oq-03",
+    "range": {
+      "startLine": 187,
+      "endLine": 189
+    },
+    "type": "concept",
+    "title": "CLT as Convergence in the Convolution Monoid",
+    "content": "**clt_convergence** (axiom)\n\nFor any probability measure $\\mu$ with positive variance, the normalized convolution powers converge to the standard Gaussian:\n$$\\frac{X_1 + \\cdots + X_n - n\\mu}{\\sigma\\sqrt{n}} \\xrightarrow{d} N(0,1)$$\n\nStated via `ConvergesInDistribution`, defined as pointwise convergence of characteristic functions (Levy's continuity theorem). The algebraic content: the Gaussian is the attractor of the normalization-convolution iteration.",
+    "mathContext": "$\\text{normalizedConvPow}(\\mu, n) \\xrightarrow{d} N(0,1)$ for all $\\mu$ with $\\text{Var}(\\mu) > 0$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Central Limit Theorem",
+      "Convergence in distribution",
+      "Levy continuity theorem"
+    ],
+    "prerequisites": [
+      "ConvergesInDistribution",
+      "normalizedConvPow",
+      "standardGaussian"
+    ]
+  },
+  {
+    "id": "ann-cltoq03-cramer",
+    "proofId": "central-limit-theorem-oq-03",
+    "range": {
+      "startLine": 208,
+      "endLine": 213
+    },
+    "type": "concept",
+    "title": "Cramer's Indecomposability Theorem",
+    "content": "**cramer_theorem** (axiom)\n\nIf $\\mu * \\nu$ has a Gaussian characteristic function, then both $\\mu$ and $\\nu$ are Gaussian. The Gaussian cannot be \"factored\" into non-Gaussian components in the convolution monoid.\n\nCramer proved this in 1936 using the theory of entire functions of finite order. It is the probability-theoretic analogue of primality: just as a prime number cannot be written as a product of smaller numbers, the Gaussian cannot be decomposed as a convolution of non-Gaussian distributions.",
+    "mathContext": "$\\mu * \\nu \\sim N(\\cdot, \\cdot) \\Rightarrow \\mu \\sim N(\\cdot, \\cdot)$ and $\\nu \\sim N(\\cdot, \\cdot)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Entire functions",
+      "Indecomposable distributions",
+      "Primality"
+    ],
+    "prerequisites": [
+      "Characteristic function of Gaussian",
+      "Complex.exp"
+    ]
+  },
+  {
+    "id": "ann-cltoq03-doa",
+    "proofId": "central-limit-theorem-oq-03",
+    "range": {
+      "startLine": 229,
+      "endLine": 241
+    },
+    "type": "theorem",
+    "title": "Domain of Attraction",
+    "content": "**InDomainOfAttraction** and related theorems\n\nA distribution $\\mu$ is in the domain of attraction of the Gaussian if its normalized convolution powers converge to $N(0,1)$. Three key results:\n\n1. **clt_domain_of_attraction:** Every distribution with positive variance is in the DOA\n2. **gaussian_in_own_domain:** The Gaussian is trivially in its own DOA\n3. **doa_closed_under_convolution:** If $\\mu, \\nu$ are in the DOA, so is $\\mu * \\nu$\n\nThe DOA is thus a convolution-closed subset: a sub-monoid of ProbMeasure.",
+    "mathContext": "$\\text{DOA}(N(0,1)) = \\{\\mu : \\text{normalizedConvPow}(\\mu, n) \\to N(0,1)\\}$ is closed under $*$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Domain of attraction",
+      "Stable distributions",
+      "Sub-monoid"
+    ],
+    "prerequisites": [
+      "ConvergesInDistribution",
+      "clt_convergence"
+    ]
+  }
+]

@@ -1,0 +1,142 @@
+{
+  "slug": "erdos-1027-oq-01",
+  "title": "Erdős #1027 OQ-01: Union Bound Lower Bound on Good Sets",
+  "phase": "ACT",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "significance": 7,
+  "tractability": 6,
+  "problemStatement": {
+    "formal": "For any n-uniform set family F over X = ∪F, prove |goodSets F| ≥ 2^|X| − |F|·2^{|X|−n+1}.",
+    "plain": "The number of good subsets (intersecting every member but containing none) satisfies an explicit union-bound lower bound. If |F| < 2^{n-1}, this gives positive count, recovering the classical Erdős-Hajnal Property B result.",
+    "whyMatters": [
+      "Makes the classical Property B result quantitative: not just existence but an explicit count of good sets",
+      "The union bound is the simplest probabilistic method argument — formalizing it in Lean4 builds infrastructure for more complex probabilistic arguments",
+      "card_subsets_missing (proved via Finset.subset_sdiff) is reusable for other counting arguments in set family theory"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "card_subsets_missing: |{B ⊆ X : Disjoint B A}| = 2^{|X|−|A|} (proved via Finset.subset_sdiff bijection)",
+      "card_bad_bound: |bad-due-to-A| ≤ 2·2^{|X|−|A|} (proved via Finset.card_union_le)",
+      "property_b_from_union_bound: corollary via good_set_lower_bound + nlinarith"
+    ],
+    "open": [
+      "card_subsets_containing: bijection via B ↦ X \\ B (3 sorries)",
+      "hbad_bound: total bad ≤ |F|·2·2^{|X|−n} (needs partitioning argument)",
+      "hgood_bad: good + bad = 2^|X| (needs partition of X.powerset)"
+    ],
+    "goal": "Prove good_set_lower_bound: 2^|X| ≤ |goodSets F| + |F| · 2^{|X|−n+1}"
+  },
+  "currentState": {
+    "blockers": [
+      "card_subsets_containing: requires Finset.card_bij or image_eq approach for the involution B ↦ X \\ B",
+      "hgood_bad: partition argument needs IsGoodSet ↔ ¬bad formalization and disjointness proof",
+      "hbad_bound: union bound over F needs Finset.sum_card_inter_filter or biUnion approach"
+    ]
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: All 3 sorries proved. card_subsets_containing via Finset.card_bij + sdiff_sdiff_cancel_left involution. hbad_bound via biUnion + card_biUnion_le + sum_le_sum. hgood_bad via disjoint filter partition. property_b_from_union_bound corollary also proved. 183 lines, 0 sorries, 0 axioms.",
+    "insights": [
+      "card_subsets_missing proved cleanly: filter (Disjoint · A) X.powerset = (X \\ A).powerset via Finset.subset_sdiff",
+      "card_bad_bound follows immediately from card_union_le + both component counts = 2^{|X|-|A|}",
+      "The corollary property_b_from_union_bound uses pow_add to relate 2^{|X|-n+1} and 2^{|X|}, then nlinarith",
+      "The sorries hbad_bound and hgood_bad are the structural crux: they encode the partition of X.powerset into good and bad sets"
+    ],
+    "builtItems": [
+      "card_subsets_missing lemma: filter proof via subset_sdiff (Erdos1027OQ01.lean:50-54)",
+      "card_subsets_containing lemma stub: sorry with detailed comment (Erdos1027OQ01.lean:60-62)",
+      "card_bad_bound lemma: proved via card_union_le (Erdos1027OQ01.lean:65-72)",
+      "good_set_lower_bound theorem: structure with 3 steps, 2 sorries (Erdos1027OQ01.lean:82-98)",
+      "property_b_from_union_bound corollary: fully proved (Erdos1027OQ01.lean:103-119)",
+      "Gallery entry created: src/data/proofs/erdos-1027-oq-01/ (meta.json, index.ts, annotations.json)"
+    ],
+    "mathlibGaps": [
+      "Finset.card_bij or Finset.card_image_of_injOn for the B ↦ X \\ B involution proof",
+      "Finset.card_biUnion for the union bound sum over F (hbad_bound)"
+    ],
+    "nextSteps": [
+      "Optional refactor: hgood_bad could alternatively use Finset.card_sdiff_add_card_eq_card (current proof: disjoint filter partition, already sorry-free)",
+      "Optional: upstream card_subsets_containing involution bijection (B ↦ X \\ B) to Mathlib"
+    ],
+    "phase": "ACT"
+  },
+  "tags": [
+    "erdos",
+    "combinatorics",
+    "set-families",
+    "property-b",
+    "probabilistic-method",
+    "intermediate"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-102",
+    "erdos-1027",
+    "erdos-1027-oq-01",
+    "erdos-1027-oq-03"
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Hajnal",
+      "title": "On chromatic number of graphs and set-systems",
+      "year": "1966",
+      "note": "Original Property B paper with the classical n-uniform bound"
+    },
+    {
+      "authors": "Koishi Chan",
+      "title": "Solution to Erdős Problem #1027",
+      "year": "2024",
+      "note": "Proves quantitative supersaturation: ≫_c 2^|X| good sets for |F| ≤ c·2^n"
+    }
+  ],
+  "started": "2026-04-13T00:00:00Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1027Aristotle.lean",
+      "filename": "Erdos1027Aristotle.lean",
+      "lineCount": 50,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1027Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos1027OQ01.lean",
+      "filename": "Erdos1027OQ01.lean",
+      "lineCount": 184,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1027OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1027OQ03.lean",
+      "filename": "Erdos1027OQ03.lean",
+      "lineCount": 309,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1027OQ03.lean"
+    },
+    {
+      "path": "Proofs/Erdos1027Problem.lean",
+      "filename": "Erdos1027Problem.lean",
+      "lineCount": 354,
+      "theoremCount": 10,
+      "axiomCount": 1,
+      "defCount": 10,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1027Problem.lean"
+    }
+  ]
+}

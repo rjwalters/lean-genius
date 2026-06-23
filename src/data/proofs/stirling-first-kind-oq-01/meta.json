@@ -1,0 +1,158 @@
+{
+  "id": "stirling-first-kind-oq-01",
+  "title": "Stirling Numbers of the First Kind: the row sum ∑ₖ c(n,k) = n!",
+  "slug": "stirling-first-kind-oq-01",
+  "description": "The classical row-sum identity for the unsigned Stirling numbers of the first kind: summing c(n,k), the number of permutations of an n-set with exactly k cycles, over all k recovers the total number of permutations, n!. Mathlib records the defining recurrence and several edge values (c(n,n)=1, c(n+1,1)=n!, c(n+1,n)=C(n+1,2)) but not the row sum — this entry fills that gap with a subtraction-free induction.",
+  "meta": {
+    "author": "James Stirling (1730)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/StirlingFirstKindOQ01.lean",
+    "tags": [
+      "combinatorics",
+      "stirling-numbers",
+      "permutations",
+      "cycles",
+      "enumerative",
+      "factorial",
+      "classic"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-06-20",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.stirlingFirst_succ_succ",
+        "description": "Defining recurrence c(n+1,k+1) = n·c(n,k+1) + c(n,k) for the unsigned Stirling numbers of the first kind",
+        "module": "Mathlib.Combinatorics.Enumerative.Stirling"
+      },
+      {
+        "theorem": "Nat.stirlingFirst_succ_zero",
+        "description": "Leftmost-column edge value c(n+1,0) = 0, used to show n·c(n,0) = 0",
+        "module": "Mathlib.Combinatorics.Enumerative.Stirling"
+      },
+      {
+        "theorem": "Nat.stirlingFirst_eq_zero_of_lt",
+        "description": "Vanishing above the diagonal: c(n,k) = 0 for n < k, used to drop the top term of the shifted sum",
+        "module": "Mathlib.Combinatorics.Enumerative.Stirling"
+      },
+      {
+        "theorem": "Finset.sum_range_succ'",
+        "description": "Index-shift form ∑_{i<n+1} f i = (∑_{i<n} f(i+1)) + f 0, the engine of the row-sum recursion",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Nat.factorial_succ",
+        "description": "(n+1)! = (n+1)·n!, folding the row-sum recursion into the factorial",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      }
+    ],
+    "originalContributions": [
+      "stirlingFirst_row_sum: the row-sum identity ∑_{k=0}^{n} c(n,k) = n!, proved by induction on the Stirling recurrence",
+      "stirlingFirst_mul_zero_left: the auxiliary collapse n·c(n,0) = 0 that reduces the row-sum recursion to the factorial recursion",
+      "stirlingFirst_row_sum_pos: the row sum is strictly positive (every finite set admits a permutation)"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. Depends only on propext, Classical.choice, Quot.sound. The base case and concrete examples use kernel `decide` (no `native_decide`, so no `Lean.ofReduceBool`).",
+    "lineCount": 115,
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The (unsigned) Stirling numbers of the first kind c(n,k) count the permutations of an n-element set with exactly k disjoint cycles; the signed version s(n,k) = (−1)^{n−k} c(n,k) gives the coefficients expressing the falling factorial x^{(n)} = x(x−1)…(x−n+1) in the monomial basis. They originate in James Stirling's 1730 *Methodus Differentialis* alongside the second-kind numbers. The triangle obeys the recurrence c(n+1,k) = n·c(n,k) + c(n,k−1), and a basic structural fact — the one already encoded by their meaning as a statistic on permutations — is that each row sums to n!.",
+    "problemStatement": "Sum the cycle-count statistic c(n,k) over all possible numbers of cycles k.\n\n**Answer:** ∑_{k=0}^{n} c(n,k) = n! for every n.",
+    "text": "The rows of the unsigned Stirling triangle of the first kind sum to n!, because partitioning the n! permutations by their number of cycles and re-summing recovers all of them. The identity is proved in Lean from the recurrence with no axioms.",
+    "proofStrategy": "1. stirlingFirst_mul_zero_left: n·c(n,0) = 0 for all n — by cases, n = 0 kills the factor and n = m+1 makes c(n,0) = 0 (stirlingFirst_succ_zero).\n2. stirlingFirst_row_sum: induct on n. Base R(0) = c(0,0) = 1 = 0! by decide. Step: peel the k = 0 term with Finset.sum_range_succ' (it is 0), apply the recurrence c(n+1,k+1) = n·c(n,k+1) + c(n,k) termwise, and split into n·A + R(n) with A = ∑_{k≤n} c(n,k+1). A second index shift gives A + c(n,0) = R(n) (the top term c(n,n+1) vanishes by stirlingFirst_eq_zero_of_lt). Multiplying by n and using n·c(n,0) = 0 yields n·A = n·R(n), so R(n+1) = n·R(n) + R(n) = (n+1)·R(n) = (n+1)!.\n3. stirlingFirst_row_sum_pos: rewrite by the identity and apply Nat.factorial_pos.",
+    "keyInsights": [
+      "**A statistic identity for free**: every permutation of an n-set has a well-defined number of cycles, so the cycle-count statistic c(n,·) is a partition of the n! permutations; summing it over all k must return n!.",
+      "**The recurrence collapses to the factorial recursion**: c(n+1,k+1) = n·c(n,k+1) + c(n,k) turns the row sum into R(n+1) = n·A + R(n), and the single index-shift fact A + c(n,0) = R(n) — together with n·c(n,0) = 0 — reduces it to R(n+1) = (n+1)·R(n).",
+      "**Subtraction-free over ℕ**: phrasing the shift as the *additive* identity A + c(n,0) = R(n) (rather than A = R(n) − c(n,0)) keeps the whole argument in ℕ with no truncated-subtraction side conditions.",
+      "**Filling a real Mathlib gap**: Mathlib's Stirling file proves the recurrence and the edge values c(n,n)=1, c(n+1,1)=n!, c(n+1,n)=C(n+1,2), but not the row sum; this is the first aggregate identity for the first-kind triangle."
+    ],
+    "prerequisites": [
+      "Unsigned Stirling numbers of the first kind and the cycle decomposition of permutations",
+      "Induction on the natural numbers",
+      "Finite sums and index shifts (Finset.sum_range_succ / sum_range_succ')"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-docstring",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 60,
+      "summary": "File-level docstring stating ∑ₖ c(n,k) = n!, its combinatorial meaning (cycle-count statistic on permutations), and the recurrence-to-factorial collapse used. Imports Mathlib and opens Nat and Finset.",
+      "mathContext": "Nat.stirlingFirst n k counts permutations of an n-set with k cycles; Mathlib supplies the recurrence and edge values but not the row sum."
+    },
+    {
+      "id": "column-zero",
+      "title": "The Leftmost Column Collapse n·c(n,0) = 0",
+      "startLine": 61,
+      "endLine": 73,
+      "summary": "stirlingFirst_mul_zero_left: by cases on n. For n = 0 the prefactor is 0; for n = m+1, c(n,0) = 0 by stirlingFirst_succ_zero. This is the fact that makes the row-sum recursion match the factorial recursion exactly.",
+      "mathContext": "c(n,0) = 0 for n ≥ 1 (a nonempty permutation has at least one cycle) and the n = 0 term is annihilated by its prefactor."
+    },
+    {
+      "id": "row-sum",
+      "title": "The Row Sum ∑ₖ c(n,k) = n!",
+      "startLine": 74,
+      "endLine": 108,
+      "summary": "stirlingFirst_row_sum: induction on n. Base by decide. Step peels k=0 (sum_range_succ'), applies the recurrence termwise, splits into n·A + R(n), uses the additive shift A + c(n,0) = R(n) and n·c(n,0) = 0 to get n·A = n·R(n), then folds (n+1)·R(n) = (n+1)! via Nat.factorial_succ.",
+      "mathContext": "R(n+1) = n·R(n) + R(n) = (n+1)·R(n) with R(0) = 1, the factorial recursion."
+    },
+    {
+      "id": "positivity",
+      "title": "Positivity of the Row Sum",
+      "startLine": 109,
+      "endLine": 115,
+      "summary": "stirlingFirst_row_sum_pos: rewrite by the row-sum identity and apply Nat.factorial_pos. Two concrete checks (row 4 sums to 24, c(4,2) = 11) close the file by decide.",
+      "mathContext": "n! > 0, so there is always at least one permutation of an n-element set."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Stirling, James",
+      "title": "Methodus Differentialis",
+      "year": "1730",
+      "note": "Origin of the Stirling numbers; first-kind numbers as connection coefficients between falling factorials and powers"
+    },
+    {
+      "authors": "Graham, Knuth, Patashnik",
+      "title": "Concrete Mathematics",
+      "year": "1994",
+      "note": "Chapter 6 develops the Stirling triangles; the first-kind row sum ∑ₖ c(n,k) = n! is the cycle-count statistic identity"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "stirling-second-kind-oq-01",
+      "relationship": "related",
+      "description": "Companion entry for the other Stirling triangle: the second-kind two-block column S(n,2) = 2^(n-1) − 1. Same author and recurrence style, distinct combinatorial object (set partitions vs. cycle structure of permutations)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Each row of the unsigned Stirling triangle of the first kind sums to n! (stirlingFirst_row_sum), because the cycle-count statistic partitions the n! permutations and re-summing recovers all of them. The proof is a subtraction-free induction collapsing the Stirling recurrence to the factorial recursion, supported by the column-zero lemma (stirlingFirst_mul_zero_left) and a positivity corollary (stirlingFirst_row_sum_pos). All are verified with 0 axioms and 0 sorries.",
+    "implications": "Supplies the first aggregate identity for the first-kind Stirling triangle as a directly citable result, complementing Mathlib's recurrence and edge values and pairing naturally with the second-kind closed-form entry.",
+    "openQuestions": [
+      "Can the signed row identity ∑ₖ (−1)^{n−k} c(n,k) = [n = 1] (the alternating sum vanishing for n ≥ 2) be formalized from the same recurrence?",
+      "Is the generating identity ∑ₖ c(n,k) x^k = x(x+1)…(x+n−1) (the rising factorial) within reach, recovering the row sum as the x = 1 specialization?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "StirlingFirstKindOQ01",
+    "lineCount": 115,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/StirlingFirstKindOQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

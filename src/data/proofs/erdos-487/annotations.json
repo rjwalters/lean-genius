@@ -1,0 +1,396 @@
+[
+  {
+    "id": "ann-e487-header",
+    "proofId": "erdos-487",
+    "range": {
+      "startLine": 1,
+      "endLine": 35
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #487: LCM Triples in Dense Sets**\n\nLet A ⊆ ℕ have positive density. Must there exist distinct a, b, c ∈ A with lcm(a,b) = c?\n\n**Answer:** YES.\n\n**Proof:** Follows from Kleitman's 1971 theorem on union-free collections.\n\n**Key insight:** Prime factorization bijection maps LCM to set union.",
+    "mathContext": "This connects number-theoretic density to extremal combinatorics. The solution uses the correspondence between LCM-free sets and union-free collections.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Density",
+      "LCM",
+      "Union-free collections",
+      "Prime factorization"
+    ],
+    "tags": [
+      "number-theory",
+      "combinatorics",
+      "density",
+      "lcm"
+    ],
+    "prerequisites": [
+      "natural density of a subset of the integers",
+      "least common multiple and prime factorization",
+      "Kleitman's theorem on union-free set collections"
+    ]
+  },
+  {
+    "id": "ann-e487-density",
+    "proofId": "erdos-487",
+    "range": {
+      "startLine": 51,
+      "endLine": 68
+    },
+    "type": "definition",
+    "title": "Density Definitions",
+    "content": "**HasPositiveUpperDensity A:** lim sup |A ∩ [1,n]| / n > 0.\n\n**HasPositiveLowerDensity A:** lim inf |A ∩ [1,n]| / n > 0.\n\nPositive upper density is the relevant hypothesis: infinitely many n have |A ∩ [1,n]| ≥ δn.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Density",
+      "Limsup",
+      "Liminf"
+    ],
+    "tags": [
+      "density",
+      "analysis",
+      "definition",
+      "asymptotic"
+    ],
+    "mathContext": "See annotation content for formal details of density definitions",
+    "prerequisites": [
+      "limit superior and limit inferior of a sequence",
+      "counting density |A ∩ [1,n]| / n",
+      "asymptotic lower bounds of the form |A ∩ [1,n]| ≥ δn"
+    ]
+  },
+  {
+    "id": "ann-e487-lcm-triple",
+    "proofId": "erdos-487",
+    "range": {
+      "startLine": 69,
+      "endLine": 75
+    },
+    "type": "definition",
+    "title": "LCM Triple",
+    "content": "**IsLCMTriple a b c:** a ≠ b ∧ b ≠ c ∧ a ≠ c ∧ lcm(a,b) = c.\n\nThree distinct elements where the LCM of two equals the third. The distinctness requirement is essential - otherwise lcm(a,a) = a would be trivial.",
+    "significance": "key",
+    "relatedConcepts": [
+      "LCM",
+      "Distinctness"
+    ],
+    "tags": [
+      "lcm",
+      "definition",
+      "number-theory"
+    ],
+    "mathContext": "See annotation content for formal details of lcm triple",
+    "prerequisites": [
+      "least common multiple of two natural numbers",
+      "distinctness conditions a ≠ b, b ≠ c, a ≠ c",
+      "why lcm(a,a) = a makes distinctness essential"
+    ]
+  },
+  {
+    "id": "ann-e487-div-chain",
+    "proofId": "erdos-487",
+    "range": {
+      "startLine": 76,
+      "endLine": 82
+    },
+    "type": "definition",
+    "title": "Divisibility Chain",
+    "content": "**IsDivisibilityChain f:** f(i) < f(i+1) for all i, and f(i) | f(j) for i < j.\n\nAn infinite strictly increasing sequence where earlier terms divide later terms. Davenport-Erdős showed dense sets contain such chains.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Divisibility",
+      "Infinite sequences"
+    ],
+    "tags": [
+      "divisibility",
+      "definition",
+      "sequences",
+      "number-theory"
+    ],
+    "mathContext": "See annotation content for formal details of divisibility chain",
+    "prerequisites": [
+      "divisibility relation f(i) | f(j)",
+      "strictly increasing infinite sequences",
+      "Davenport-Erdős chains in dense sets"
+    ]
+  },
+  {
+    "id": "ann-e487-union-free",
+    "proofId": "erdos-487",
+    "range": {
+      "startLine": 87,
+      "endLine": 95
+    },
+    "type": "definition",
+    "title": "Union-Free Collection",
+    "content": "**IsUnionFree F:** No three distinct A, B, C ∈ F satisfy A ∪ B = C.\n\nA collection of sets avoiding the union pattern. Under prime factorization, LCM-free sets correspond to union-free collections.",
+    "mathContext": "This is the key combinatorial structure. Kleitman's theorem bounds the size of such collections.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Set union",
+      "Extremal combinatorics"
+    ],
+    "tags": [
+      "combinatorics",
+      "extremal",
+      "definition",
+      "set-theory"
+    ],
+    "prerequisites": [
+      "set union A ∪ B = C",
+      "union-free families of sets",
+      "correspondence between LCM-free and union-free collections"
+    ]
+  },
+  {
+    "id": "ann-e487-factorization",
+    "proofId": "erdos-487",
+    "range": {
+      "startLine": 96,
+      "endLine": 103
+    },
+    "type": "definition",
+    "title": "Prime Factorization Bijection",
+    "content": "**factorizationSet n:** The set of (prime, exponent) pairs in n's factorization.\n\nThis creates a bijection ℕ⁺ → P(ℙ × ℕ). Under this map:\n- lcm(a, b) corresponds to union (taking max exponents)\n- gcd(a, b) corresponds to intersection (taking min exponents)",
+    "mathContext": "The fundamental theorem of arithmetic ensures this is a well-defined bijection.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Prime factorization",
+      "Bijection"
+    ],
+    "tags": [
+      "prime-factorization",
+      "bijection",
+      "definition",
+      "number-theory"
+    ],
+    "prerequisites": [
+      "fundamental theorem of arithmetic",
+      "prime-exponent representation of a positive integer",
+      "lcm as max exponents and gcd as min exponents"
+    ]
+  },
+  {
+    "id": "ann-e487-davenport",
+    "proofId": "erdos-487",
+    "range": {
+      "startLine": 110,
+      "endLine": 156
+    },
+    "type": "concept",
+    "title": "Davenport-Erdős 1936",
+    "content": "**davenport_erdos_1936:**\n\nIf A ⊆ ℕ has positive upper density, then A contains an infinite divisibility chain a₁ | a₂ | a₃ | ...\n\n**coprime_multipliers_lcm_triple:**\n\nIf gcd(k, m) = 1 with k > 1, m > 1, then (a*k, a*m, a*k*m) is an LCM triple.\n\nThis is proved directly using Nat.Coprime.lcm_eq_mul.",
+    "mathContext": "Published in 'On sequences of positive integers' [DaEr36]. Uses density arguments.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Divisibility",
+      "Dense sets",
+      "Coprimality"
+    ],
+    "tags": [
+      "density",
+      "divisibility",
+      "classical-result",
+      "coprimality"
+    ],
+    "prerequisites": [
+      "positive upper density implying infinite divisibility chains",
+      "coprimality and Nat.Coprime.lcm_eq_mul",
+      "constructing the LCM triple (a·k, a·m, a·k·m)"
+    ]
+  },
+  {
+    "id": "ann-e487-kleitman",
+    "proofId": "erdos-487",
+    "range": {
+      "startLine": 158,
+      "endLine": 221
+    },
+    "type": "concept",
+    "title": "Kleitman's Theorem 1971",
+    "content": "**kleitman_1971:**\n\nUnion-free collections F ⊆ P([n]) satisfy:\n|F| ≤ (1 + o(1)) · C(n, ⌊n/2⌋)\n\nThis is exponentially smaller than 2^n (since C(n,n/2) ≈ 2^n/√n).\n\n**union_free_is_little_o:**\n\nThe corollary that |F| / 2^n < ε for large n. Proved using Kleitman's bound and the asymptotics of C(n, n/2).",
+    "mathContext": "Published in 'Collections of subsets containing no two sets and their union', Proceedings AMS (1971).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Extremal combinatorics",
+      "Binomial coefficients"
+    ],
+    "tags": [
+      "extremal",
+      "combinatorics",
+      "classical-result",
+      "binomial-coefficients"
+    ],
+    "prerequisites": [
+      "central binomial coefficient C(n, ⌊n/2⌋)",
+      "asymptotic C(n, n/2) ≈ 2^n / √n",
+      "little-o bound |F| / 2^n < ε for union-free families"
+    ]
+  },
+  {
+    "id": "ann-e487-main",
+    "proofId": "erdos-487",
+    "range": {
+      "startLine": 223,
+      "endLine": 243
+    },
+    "type": "concept",
+    "title": "Main Theorem",
+    "content": "**lcm_triple_in_dense_set:**\n\nIf A ⊆ ℕ has positive upper density, then A contains distinct a, b, c with lcm(a,b) = c.\n\n**infinitely_many_lcm_triples:**\n\nIn fact, there are infinitely many such triples.\n\nThese are the main results resolving Erdős Problem #487.",
+    "significance": "key",
+    "relatedConcepts": [
+      "LCM",
+      "Density",
+      "Kleitman's theorem"
+    ],
+    "tags": [
+      "lcm",
+      "density",
+      "main-result",
+      "combinatorics"
+    ],
+    "mathContext": "See annotation content for formal details of main theorem",
+    "prerequisites": [
+      "positive upper density hypothesis",
+      "existence of an LCM triple lcm(a,b) = c",
+      "extending one triple to infinitely many"
+    ]
+  },
+  {
+    "id": "ann-e487-example-6",
+    "proofId": "erdos-487",
+    "range": {
+      "startLine": 245,
+      "endLine": 264
+    },
+    "type": "concept",
+    "title": "Example: Multiples of 6",
+    "content": "**multiples_of_6_example:** IsLCMTriple 12 18 36\n\nA = {6, 12, 18, 24, ...} has density 1/6.\n\nlcm(12, 18) = 36 ∈ A gives an explicit LCM triple.\n\nVerified computationally with native_decide.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Examples",
+      "Computation"
+    ],
+    "tags": [
+      "example",
+      "computation",
+      "lcm"
+    ],
+    "mathContext": "See annotation content for formal details of example: multiples of 6",
+    "prerequisites": [
+      "arithmetic progression of multiples of 6",
+      "checking lcm(12, 18) = 36",
+      "native_decide computational verification"
+    ]
+  },
+  {
+    "id": "ann-e487-example-pow2",
+    "proofId": "erdos-487",
+    "range": {
+      "startLine": 266,
+      "endLine": 295
+    },
+    "type": "concept",
+    "title": "Counterexample: Powers of 2",
+    "content": "**powers_of_2_no_lcm_triple:**\n\nA = {1, 2, 4, 8, 16, ...} has NO LCM triples.\n\nlcm(2^i, 2^j) = 2^(max i j), which equals either a or b.\n\nProved using Nat.Prime.pow_max_lcm and case analysis on max.\n\nBut this set has density 0, so the theorem doesn't apply.",
+    "mathContext": "This shows density is necessary - sparse sets can avoid LCM triples.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Counterexamples",
+      "Powers of 2"
+    ],
+    "tags": [
+      "counterexample",
+      "powers-of-2",
+      "density",
+      "lcm"
+    ],
+    "prerequisites": [
+      "powers of 2 as a sparse set of density zero",
+      "lcm(2^i, 2^j) = 2^(max i j)",
+      "case analysis on the maximum exponent"
+    ]
+  },
+  {
+    "id": "ann-e487-example-even",
+    "proofId": "erdos-487",
+    "range": {
+      "startLine": 296,
+      "endLine": 310
+    },
+    "type": "concept",
+    "title": "Example: Even Numbers",
+    "content": "**even_numbers_example:** IsLCMTriple 4 6 12\n\nA = {2, 4, 6, 8, ...} has density 1/2.\n\nlcm(4, 6) = 12 ∈ A gives an explicit LCM triple.\n\nThe even numbers have many LCM triples due to their density.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Examples",
+      "Even numbers"
+    ],
+    "tags": [
+      "example",
+      "even-numbers",
+      "lcm"
+    ],
+    "mathContext": "See annotation content for formal details of example: even numbers",
+    "prerequisites": [
+      "even numbers as a set of density 1/2",
+      "checking lcm(4, 6) = 12",
+      "explicit LCM triple within a dense set"
+    ]
+  },
+  {
+    "id": "ann-e487-proof-outline",
+    "proofId": "erdos-487",
+    "range": {
+      "startLine": 312,
+      "endLine": 334
+    },
+    "type": "concept",
+    "title": "Proof Outline",
+    "content": "**Proof by contradiction:**\n\n1. Assume A has density δ > 0 but no LCM triples.\n2. Map A via prime factorization to a collection F of sets.\n3. F is union-free (since LCM ↔ union).\n4. By Kleitman: |F| = o(2^(log N)) = o(N).\n5. But |A ∩ [1,N]| ≥ δN for large N.\n6. Contradiction: δN ≤ o(N) fails.",
+    "mathContext": "The key step is translating the number-theoretic problem to combinatorics via prime factorization.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Proof by contradiction",
+      "Density counting"
+    ],
+    "tags": [
+      "proof-strategy",
+      "contradiction",
+      "density",
+      "combinatorics"
+    ],
+    "prerequisites": [
+      "proof by contradiction from a density-δ assumption",
+      "mapping A to a union-free collection via prime factorization",
+      "deriving δN ≤ o(N) from Kleitman's bound"
+    ]
+  },
+  {
+    "id": "ann-e487-summary",
+    "proofId": "erdos-487",
+    "range": {
+      "startLine": 335,
+      "endLine": 350
+    },
+    "type": "concept",
+    "title": "Summary Theorem",
+    "content": "**erdos_487_summary:**\n\nCombines both main results:\n\n1. Dense sets contain LCM triples (main result)\n2. Kleitman's bound on union-free collections (the tool)\n\n**Conclusion:** Erdős Problem #487 is SOLVED affirmatively.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Summary",
+      "Solved problems"
+    ],
+    "tags": [
+      "summary",
+      "solved",
+      "lcm",
+      "density"
+    ],
+    "mathContext": "See annotation content for formal details of summary theorem",
+    "prerequisites": [
+      "main result that dense sets contain LCM triples",
+      "Kleitman's bound as the combinatorial tool",
+      "affirmative resolution of Erdős Problem #487"
+    ]
+  }
+]

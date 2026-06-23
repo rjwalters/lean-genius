@@ -1,0 +1,199 @@
+{
+  "id": "fundamental-theorem-calculus-oq-01",
+  "title": "Fundamental Theorem of Calculus: Lebesgue Generalization",
+  "slug": "fundamental-theorem-calculus-oq-01",
+  "description": "Formalizes the Lebesgue generalization of the Fundamental Theorem of Calculus. Defines absolutely continuous functions (not yet in Mathlib), states the Lebesgue FTC (AC → a.e. differentiable, integral of derivative = net change), and connects to Mathlib's Vitali covering theorem, Lebesgue density theorem, and monotone a.e. differentiability.",
+  "meta": {
+    "status": "axiomatized",
+    "tags": [
+      "analysis",
+      "measure-theory",
+      "calculus",
+      "lebesgue-integral",
+      "open-question"
+    ],
+    "proofRepoPath": "Proofs/FundamentalTheoremCalculusLebesgue.lean",
+    "badge": "axiom",
+    "sorries": 1,
+    "axiomCount": 1,
+    "assumptions": "1 axiom: Lebesgue FTC Part 2 (integral of a.e. derivative = net change). Part 1 (AC → a.e. differentiable) is now proved in the companion file FundamentalTheoremCalculusLebesgueOQ01.lean (FTCLebesgueACImpliesBV.lebesgue_ftc_differentiable, via AC → BV → a.e. differentiable). 1 sorry(s) remaining (Cantor function construction).",
+    "mathlibDependencies": [
+      {
+        "theorem": "Monotone.ae_differentiableAt",
+        "description": "Monotone functions are a.e. differentiable (Lebesgue's theorem)",
+        "module": "Mathlib.Analysis.Convex.Deriv"
+      },
+      {
+        "theorem": "VitaliFamily",
+        "description": "Vitali covering family for measure differentiation",
+        "module": "Mathlib.MeasureTheory.Covering.VitaliFamily"
+      },
+      {
+        "theorem": "VitaliFamily.ae_tendsto_measure_inter_div",
+        "description": "Lebesgue density theorem",
+        "module": "Mathlib.MeasureTheory.Covering.Differentiation"
+      }
+    ],
+    "originalContributions": [
+      "AbsolutelyContinuousOn definition for ℝ → ℝ functions (new, not in Mathlib)",
+      "Lebesgue FTC statement connecting AC functions to Mathlib infrastructure",
+      "Cantor function counterexample statement (AC is necessary)",
+      "Monotone a.e. differentiability re-export from Mathlib"
+    ],
+    "dateAdded": "2026-03-22",
+    "lineCount": 309,
+    "mathlib_version": "4.26.0",
+    "theoremCount": 7,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "The Fundamental Theorem of Calculus in its classical Newton-Leibniz form (late 17th century) assumes the integrand is continuous. Throughout the 19th century, mathematicians including Cauchy, Riemann, and Darboux progressively weakened the hypotheses, but the question of the *minimal* regularity for the FTC remained open. Henri Lebesgue's 1904 thesis 'Leçons sur l'intégration et la recherche des fonctions primitives' introduced the concept of absolute continuity and proved that it is the *precise* necessary and sufficient condition: a function F satisfies ∫ₐᵇ F'(x)dx = F(b) - F(a) with the Lebesgue integral if and only if F is absolutely continuous. The sharpness of this characterization was demonstrated by the Cantor function (devil's staircase), constructed by Georg Cantor in 1884: a continuous, monotone function on [0,1] whose derivative is zero almost everywhere, yet whose net change is 1. Vitali (1905) independently arrived at similar results, and the modern proof uses the Vitali covering lemma as a key tool. The connection between absolute continuity of functions and absolute continuity of measures (via the Radon-Nikodym theorem) was later clarified by Nikodym (1930).",
+    "problemStatement": "If $F : [a,b] \\to \\mathbb{R}$ is absolutely continuous, then $F$ is differentiable almost everywhere, $F'$ is Lebesgue integrable, and $\\int_a^b F'(x)\\,dx = F(b) - F(a)$.",
+    "text": "Formalizes the Lebesgue generalization of the Fundamental Theorem of Calculus. Defines absolutely continuous functions (not yet in Mathlib), states the Lebesgue FTC (AC → a.e. differentiable, integral of derivative = net change), and connects to Mathlib's Vitali covering theorem, Lebesgue density theorem, and monotone a.e. differentiability.",
+    "proofStrategy": "The formalization defines absolutely continuous functions using Fin n-indexed families of disjoint subintervals, states the Lebesgue FTC as two axioms (a.e. differentiability and integral recovery), and connects to Mathlib's existing infrastructure. The intended proof path for the axioms is: AC → BV (total variation bound from the AC definition with a single ε) → Jordan decomposition as difference of monotone functions → apply Mathlib's Monotone.ae_differentiableAt to each → integral recovery using the Vitali covering lemma and Lebesgue differentiation theorem (both available in Mathlib).",
+    "keyInsights": [
+      "Absolute continuity sits strictly between Lipschitz continuity and uniform continuity in the regularity hierarchy: Lipschitz → AC → uniformly continuous → continuous, with each implication strict",
+      "The Cantor function (devil's staircase) is the canonical counterexample proving AC is necessary: it is continuous and monotone with F' = 0 a.e., yet ∫₀¹ F'(x)dx = 0 ≠ 1 = F(1) - F(0)",
+      "The AC condition controls total variation on sets of small measure, not just oscillation at individual points — this is what distinguishes it from uniform continuity and makes it the right condition for integration",
+      "Mathlib already contains the hardest building blocks (Vitali covering families, Lebesgue density theorem, monotone a.e. differentiability), so the main gap is AC → BV and Jordan decomposition",
+      "Absolute continuity of functions is intimately connected to absolute continuity of measures: F is AC iff the signed measure dF is absolutely continuous with respect to Lebesgue measure, and F' is its Radon-Nikodym derivative"
+    ],
+    "prerequisites": [
+      "Lebesgue measure and integration (MeasureTheory in Mathlib)",
+      "Almost everywhere (a.e.) properties and null sets",
+      "Classical Fundamental Theorem of Calculus (Newton-Leibniz form)",
+      "Bounded variation and total variation of functions",
+      "Lipschitz continuity and uniform continuity",
+      "Vitali covering lemma and Lebesgue differentiation theorem",
+      "Monotone functions and their a.e. differentiability (Lebesgue 1904)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-and-docstring",
+      "title": "Imports and Module Documentation",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Imports from Mathlib (interval integrals, Bochner FTC, Vitali families, differentiation, Stieltjes measures, bounded variation, derivatives, Lipschitz) and module-level documentation explaining the Lebesgue FTC and its relationship to the classical version.",
+      "mathContext": "Imports Mathlib's interval integral, Bochner FTC, Vitali families, and Stieltjes measure. The Lebesgue generalization of FTC: an absolutely continuous function $F$ is differentiable a.e. and $F(b) - F(a) = \\int_a^b F'(x)\\,dx$."
+    },
+    {
+      "id": "ac-definition",
+      "title": "Part I: Absolutely Continuous Functions",
+      "startLine": 55,
+      "endLine": 81,
+      "summary": "Defines AbsolutelyContinuousOn using Fin n-indexed families of pairwise disjoint subintervals. The definition captures the key property that AC controls total variation on collections of intervals with small total length, placing it strictly between Lipschitz and uniform continuity.",
+      "mathContext": "Absolute continuity on $[a,b]$: for every $\\varepsilon > 0$, there exists $\\delta > 0$ such that $\\sum |F(b_i) - F(a_i)| < \\varepsilon$ whenever $\\{(a_i, b_i)\\}$ are pairwise disjoint subintervals with $\\sum(b_i - a_i) < \\delta$. Stronger than uniform continuity."
+    },
+    {
+      "id": "lipschitz-implies-ac",
+      "title": "Part II: Lipschitz Implies AC",
+      "startLine": 82,
+      "endLine": 103,
+      "summary": "Proves that K-Lipschitz functions are absolutely continuous by choosing δ = ε/(K+1). The Lipschitz bound on each interval gives total variation ≤ K times total length, which is less than ε. Contains one sorry for the final arithmetic chain.",
+      "mathContext": "$K$-Lipschitz $\\Rightarrow$ absolutely continuous: choose $\\delta = \\varepsilon/(K+1)$, then $\\sum|F(b_i) - F(a_i)| \\leq K\\sum(b_i - a_i) < K\\delta < \\varepsilon$. The Lipschitz constant provides a uniform modulus of absolute continuity."
+    },
+    {
+      "id": "ac-implies-uniform",
+      "title": "Part III: AC Implies Uniformly Continuous",
+      "startLine": 104,
+      "endLine": 124,
+      "summary": "Proves AC implies uniform continuity by instantiating the AC definition with a single interval (n=1). Contains one sorry for the technical Fin 1 specialization.",
+      "mathContext": "Absolutely continuous $\\Rightarrow$ uniformly continuous: instantiate the AC definition with a single interval $(a_1, b_1)$ to get $|F(b_1) - F(a_1)| < \\varepsilon$ when $|b_1 - a_1| < \\delta$. AC is strictly stronger: the Cantor function is uniformly continuous but not AC."
+    },
+    {
+      "id": "lebesgue-ftc-axioms",
+      "title": "Part IV: Lebesgue FTC Axioms",
+      "startLine": 125,
+      "endLine": 164,
+      "summary": "States the two core axioms of the Lebesgue FTC: (1) AC functions are a.e. differentiable (via AC → BV → monotone decomposition → Lebesgue's theorem), and (2) the Lebesgue integral of the a.e. derivative recovers the function's net change.",
+      "mathContext": "Two core axioms: (1) AC functions are a.e. differentiable (Lebesgue, 1904), and (2) for AC functions, $F(b) - F(a) = \\int_a^b F'(x)\\,dx$. Together these constitute the Lebesgue FTC, which drops the hypothesis $F' \\in C^0$ from the classical version."
+    },
+    {
+      "id": "consequences",
+      "title": "Part V: Consequences and Counterexamples",
+      "startLine": 165,
+      "endLine": 201,
+      "summary": "Derives the classical FTC as a one-line corollary of the Lebesgue FTC (C^1 → Lipschitz → AC). States the Cantor function counterexample: a continuous monotone function on [0,1] that is NOT AC, proving AC is a necessary hypothesis.",
+      "mathContext": "Classical FTC as a corollary: $F \\in C^1 \\Rightarrow F$ Lipschitz $\\Rightarrow F$ AC $\\Rightarrow F(b) - F(a) = \\int_a^b F'(x)\\,dx$. The chain $C^1 \\subset \\text{Lip} \\subset \\text{AC} \\subset \\text{BV}$ is strict, and the Lebesgue FTC applies to the entire AC class."
+    },
+    {
+      "id": "mathlib-connections",
+      "title": "Part VI: Mathlib Infrastructure",
+      "startLine": 202,
+      "endLine": 252,
+      "summary": "Re-exports key Mathlib results that form the building blocks for a full proof: Monotone.ae_differentiableAt (Lebesgue's 1904 theorem on monotone functions), VitaliFamily (abstract differentiation framework), and the Lebesgue density theorem.",
+      "mathContext": "Re-exports key Mathlib building blocks: `Monotone.ae_differentiableAt` (monotone functions are a.e. differentiable), `intervalIntegral.integral_eq_sub_of_hasDerivAt` (classical FTC), and connections to the Vitali covering lemma."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization establishes the key definitions and statements for the Lebesgue generalization of the FTC in Lean 4. It introduces AbsolutelyContinuousOn (not yet in Mathlib), proves the regularity hierarchy Lipschitz → AC → uniformly continuous, states the Lebesgue FTC as axioms, demonstrates the classical FTC as a corollary, and provides the Cantor function counterexample showing AC is necessary. The formalization connects to Mathlib's Vitali covering families, Lebesgue density theorem, and monotone a.e. differentiability.",
+    "implications": "**Theoretical Significance**: Completing the two axioms would establish the full Lebesgue FTC in Lean 4, filling a significant gap in Mathlib's real analysis library.\n\nThe AbsolutelyContinuousOn definition could be contributed upstream to Mathlib, where it would complement the existing MeasureTheory.Measure.AbsolutelyContinuous for measures. This would also enable formalizing the Radon-Nikodym theorem for functions (connecting function-level AC to measure-level AC) and advanced results in Sobolev space theory where AC is a key regularity condition.",
+    "openQuestions": [
+      "Can AC → BV be proved directly from the ε-δ definition, or does it require additional Mathlib infrastructure for total variation?",
+      "Does Mathlib's current Jordan decomposition for signed measures extend to functions of bounded variation in a way that yields the monotone decomposition needed here?",
+      "Can the integral recovery step (Part 2 axiom) be derived from Vitali covering + Lebesgue differentiation, or does it require additional machinery (e.g., Radon-Nikodym)?",
+      "Should AbsolutelyContinuousOn be generalized to functions between normed spaces, or is the ℝ → ℝ case sufficient for Mathlib?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic",
+      "Mathlib.MeasureTheory.Integral.Bochner.FundThmCalculus",
+      "Mathlib.MeasureTheory.Covering.VitaliFamily",
+      "Mathlib.MeasureTheory.Covering.Differentiation",
+      "Mathlib.MeasureTheory.Measure.Stieltjes",
+      "Mathlib.Analysis.BoundedVariation",
+      "Mathlib.Analysis.Calculus.Deriv.Basic",
+      "Mathlib.Topology.MetricSpace.Lipschitz",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Set",
+      "Filter",
+      "Topology",
+      "intervalIntegral"
+    ],
+    "namespace": "FTCLebesgue",
+    "lineCount": 309,
+    "axiomCount": 1,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "path": "Proofs/FundamentalTheoremCalculusLebesgue.lean",
+    "sorries": 1
+  },
+  "crossReferences": [
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "extends",
+      "description": "Parent formalization of the classical Newton-Leibniz FTC for continuous integrands; this entry generalizes to the Lebesgue setting where absolute continuity replaces C^1 regularity"
+    },
+    {
+      "targetId": "mean-value-theorem",
+      "relationship": "relates",
+      "description": "The MVT is a key ingredient in the classical FTC proof and in showing AC implies bounded variation; the Lebesgue FTC can be viewed as an a.e. generalization of the MVT relationship between a function and its derivative"
+    },
+    {
+      "targetId": "intermediate-value-theorem",
+      "relationship": "relates",
+      "description": "IVT establishes that continuous functions satisfy the intermediate value property; the Lebesgue FTC shows that AC functions (a strictly stronger regularity class) additionally recover their values via integration of their a.e. derivative"
+    },
+    {
+      "targetId": "lebesgue-measure",
+      "relationship": "uses",
+      "description": "Lebesgue measure is the foundational measure for this formalization: the AC definition controls total variation on sets of small Lebesgue measure, and the integral in the FTC statement is the Lebesgue integral"
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "relates",
+      "description": "Computing the area of a circle as pi*r^2 via integration is a classical application of the FTC; the Lebesgue generalization extends such computations to broader classes of integrands"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "relates",
+      "description": "The Cauchy-Schwarz integral inequality operates in the L^2 space built on the Lebesgue integral; the FTC connects pointwise derivatives to this integral framework, enabling L^p regularity analysis of AC functions"
+    }
+  ],
+  "sorries": 1
+}

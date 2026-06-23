@@ -1,0 +1,104 @@
+{
+  "slug": "erdos-1153",
+  "title": "Erdos #1153: Lebesgue Constants of Lagrange Interpolation",
+  "phase": "OBSERVE",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For nodes x_1,...,x_n in [-1,1], prove max_{x in [a,b]} lambda(x) > (2/pi - o(1)) log n for every fixed subinterval [a,b] of [-1,1].",
+    "plain": "No choice of interpolation nodes can prevent the Lebesgue function from growing logarithmically, even when measured on a fixed subinterval.",
+    "whyMatters": [
+      "Lebesgue constants measure worst-case amplification in polynomial interpolation.",
+      "The sharp constant 2/pi explains why Chebyshev-type nodes are essentially optimal.",
+      "The Lean file separates elementary interpolation algebra from the deep analytic lower bound."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Lean defines Lagrange basis polynomials, the Lebesgue function, interval membership for nodes, and node distinctness.",
+      "The Kronecker-delta behavior of Lagrange basis polynomials and exact value lambda(x_k) = 1 at nodes are proved from the definitions.",
+      "The full-interval corollary is derived from the main Erdos lower-bound axiom."
+    ],
+    "open": [
+      "The sharp lower-bound theorem erdos_1153 is an active axiom in Lean.",
+      "Chebyshev-node tightness is discussed in comments, not formalized as a theorem."
+    ],
+    "goal": "Keep the solved mathematical status visible while making clear that the analytic lower bound itself is represented axiomatically."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-01-15T16:46:42.683Z",
+    "iteration": 1,
+    "focus": "The record now distinguishes proved Lagrange/Lebesgue algebra from the single axiomatized Erdos lower bound.",
+    "blockers": [
+      "A formal proof of the analytic Lebesgue-constant lower bound is not present.",
+      "Matching Chebyshev optimality is documentation only."
+    ],
+    "nextAction": "Future proof work would need analytic interpolation machinery rather than more metadata cleanup.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "builtItems": [
+      "lagrangeBasis: Lagrange basis polynomial definition via finite products",
+      "lebesgueFunction: sum of absolute values of Lagrange basis",
+      "lagrangeBasis_other: proved l_k(x_j) = 0 for j != k",
+      "lagrangeBasis_self: proved l_k(x_k) = 1 for distinct nodes",
+      "lebesgueFunction_nonneg: nonnegativity proved",
+      "lebesgueFunction_at_node: proved lambda(x_k) >= 1",
+      "lebesgueFunction_at_node_eq: proved lambda(x_k) = 1 exactly",
+      "erdos_1153_full_interval: corollary for [-1,1] proved from axiom"
+    ],
+    "insights": [
+      "Erdos 1153 is about Lebesgue constants of Lagrange interpolation - SOLVED",
+      "The Lebesgue function lambda(x) = sum |l_k(x)| measures interpolation error amplification",
+      "Lower bound: max lambda >= (2/pi - o(1)) log n on ANY subinterval of [-1,1]",
+      "Upper bound: Chebyshev nodes achieve (2/pi + o(1)) log n - optimal",
+      "Lagrange basis Kronecker delta property fully provable from product definitions",
+      "Bernstein (1931) proved for full interval, Erdos (1961) sharpened to 2/pi constant"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #1153 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "tags": [
+    "erdos",
+    "approximation-theory",
+    "lagrange-interpolation",
+    "lebesgue-constants",
+    "solved"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-115",
+    "erdos-1153"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T16:46:42.683Z",
+  "lastUpdate": "2026-05-18T08:13:08Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1153Problem.lean",
+      "filename": "Erdos1153Problem.lean",
+      "lineCount": 169,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1153Problem.lean"
+    }
+  ]
+}

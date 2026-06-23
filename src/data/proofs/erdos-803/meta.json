@@ -1,0 +1,173 @@
+{
+  "id": "erdos-803",
+  "title": "Erdős Problem #803: D-Balanced Subgraphs in Dense Graphs",
+  "slug": "erdos-803",
+  "description": "Do graphs with n log n edges contain O(1)-balanced subgraphs with m log m edges? NO — disproved by Alon (2008). Maximum is O(m√(log m)).",
+  "meta": {
+    "author": "Alon (2008 disproof), Janzer-Sudakov (2023 best bound)",
+    "sourceUrl": "https://erdosproblems.com/803",
+    "date": "2008",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos803Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "degree-sequences",
+      "extremal-combinatorics",
+      "balanced-graphs"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 803,
+    "erdosUrl": "https://erdosproblems.com/803",
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type and adjacency",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.degree",
+        "description": "Degree of a vertex in a simple graph",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset.sup",
+        "description": "Supremum over finite sets",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm on reals",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "maxDegree and minDegree definitions for SimpleGraph",
+      "IsDBalanced predicate: Δ(H) ≤ D · δ(H)",
+      "regular_is_1_balanced theorem (proved)",
+      "balanced_monotone theorem (proved)",
+      "HasLogDensity definition: ≥ n log n edges",
+      "Erdos803Conjecture definition: formal statement of the disproved conjecture",
+      "erdos_803_disproved axiom: negation of the conjecture",
+      "erdos_simonovits_polynomial axiom: positive result for polynomial density",
+      "erdos_803_summary theorem combining disproof with positive result"
+    ],
+    "axiomCount": 2,
+    "lineCount": 159,
+    "assumptions": "2 axioms: erdos_803_disproved, erdos_simonovits_polynomial. 0 sorries.",
+    "theoremCount": 3,
+    "definitionCount": 7
+  },
+  "overview": {
+    "historicalContext": "This problem concerns finding 'nearly regular' subgraphs in graphs with many edges. A graph H is D-balanced if its maximum degree is at most D times its minimum degree. Erdős asked whether graphs with n log n edges must contain O(1)-balanced subgraphs with m log m edges — a natural generalization of the Erdős-Simonovits result that works for polynomial density.\n\nThe question remained open until Alon (2008) constructed an elegant counterexample. He showed that for every D > 1, there exist graphs with n log n edges where every D-balanced subgraph has at most O(m√(log m)) edges — far fewer than the conjectured m log m. The gap between √(log m) and log m grows unboundedly.\n\nJanzer and Sudakov (2023) obtained the best positive result in the logarithmic density regime, achieving m√(log m)/(log log m)^(3/2) edges, nearly matching Alon's upper bound. This leaves only a (log log m)^(3/2) factor between the upper and lower bounds, suggesting the true answer is Θ(m√(log m)).",
+    "problemStatement": "A graph H is D-balanced if Δ(H) ≤ D · δ(H). For every m ≥ 1, does any sufficiently large graph with n log n edges contain a O(1)-balanced subgraph on m vertices with m log m edges?\n\n**Answer: NO** — Alon (2008) showed the maximum is O(m√(log m)), not O(m log m).",
+    "text": "Do graphs with n log n edges contain O(1)-balanced subgraphs with m log m edges? NO — disproved by Alon (2008). Maximum is O(m√(log m)).",
+    "proofStrategy": "The formalization defines D-balanced graphs using maxDegree and minDegree on SimpleGraph, proves basic properties (regularity implies 1-balanced, monotonicity in D), then formally states the conjecture. Alon's counterexample and the negation of the conjecture are axiomatized. Positive results for polynomial density (Erdős-Simonovits) and the best logarithmic bound (Janzer-Sudakov) are also axiomatized. The summary theorem packages the disproof together with the polynomial-density positive result.",
+    "keyInsights": [
+      "**D-balanced** means Δ(H) ≤ D · δ(H): max degree bounded by D times min degree",
+      "**The gap:** conjecture asked for m log m edges, but only m√(log m) is achievable",
+      "**Polynomial vs logarithmic:** For n^(1+c) edges the conjecture holds, but for n log n it fails",
+      "**Alon's construction:** exploits the sparse, irregular structure possible at logarithmic density",
+      "**Near-tight:** Janzer-Sudakov achieves m√(log m)/(log log m)^(3/2), close to Alon's upper bound"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "balanced",
+      "title": "D-Balanced Graphs",
+      "startLine": 32,
+      "endLine": 71,
+      "summary": "Definitions of maxDegree, minDegree, IsDBalanced; proofs that regular graphs are 1-balanced and the balanced property is monotone in D."
+    },
+    {
+      "id": "density",
+      "title": "Edge Density",
+      "startLine": 73,
+      "endLine": 86,
+      "summary": "Definitions of edgeCount, vertexCount, and HasLogDensity (n log n edge threshold)."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture (Disproved)",
+      "startLine": 88,
+      "endLine": 105,
+      "summary": "Formal statement of the original (false) conjecture: O(1)-balanced subgraphs with m log m edges."
+    },
+    {
+      "id": "alon",
+      "title": "Alon's Counterexample (2008)",
+      "startLine": 107,
+      "endLine": 113,
+      "summary": "Alon's 2008 counterexample axiom and the disproof of the conjecture."
+    },
+    {
+      "id": "positive",
+      "title": "Positive Results",
+      "startLine": 115,
+      "endLine": 135,
+      "summary": "Erdős-Simonovits for polynomial density and Janzer-Sudakov 2023 for best logarithmic bound."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 136,
+      "endLine": 159,
+      "summary": "erdos_803_summary theorem combining the disproof (erdos_803_disproved) with the polynomial-density positive result (erdos_simonovits_polynomial)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #803 is DISPROVED. Alon (2008) showed that graphs with n log n edges do NOT always contain O(1)-balanced subgraphs with m log m edges. The correct bound is O(m√(log m)), and Janzer-Sudakov (2023) achieved nearly this bound. The polynomial density regime (n^(1+c) edges) behaves differently — the conjecture holds there.",
+    "implications": "The result reveals a fundamental phase transition in extremal graph theory: polynomial density (n^(1+c) edges) allows strong balanced subgraph guarantees, but logarithmic density (n log n edges) does not. The gap factor √(log m) between what was conjectured and what is achievable shows that the degree distribution in sparse graphs is more constrained than expected.",
+    "openQuestions": [
+      "Close the log log m gap between Alon's upper bound and the Janzer-Sudakov lower bound",
+      "Determine exact constants in the Θ(m√(log m)) bound",
+      "Are there other density thresholds with interesting phase transitions for balanced subgraphs?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos803",
+    "lineCount": 159,
+    "axiomCount": 2,
+    "theoremCount": 3,
+    "definitionCount": 7,
+    "path": "Proofs/Erdos803Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1077",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: balanced-graphs, extremal-combinatorics, graph-theory"
+    },
+    {
+      "targetId": "erdos-1012",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory"
+    },
+    {
+      "targetId": "erdos-1017",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory"
+    }
+  ],
+  "sorries": 0
+}

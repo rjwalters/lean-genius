@@ -1,0 +1,128 @@
+{
+  "id": "szemeredi-core-oq-01",
+  "title": "Energy Increment Lemma for Szemer\u00e9di Regularity",
+  "slug": "szemeredi-core-oq-01",
+  "description": "The energy increment step at the heart of Szemer\u00e9di's regularity lemma: if a partition contains an \u03b5-irregular pair (A, B), the refined partition obtained by splitting A and B using the irregularity witnesses has energy at least \u03b5\u2076 larger. Covers edge-density convexity, a 2D variance identity, and the full block-decomposition argument.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Szemer%C3%A9di_regularity_lemma",
+    "date": "2026",
+    "status": "verified",
+    "badge": "original",
+    "proofRepoPath": "Proofs/SzemerediCoreOQ01.lean",
+    "additionalFiles": [
+      "Proofs/SzemerediCoreOQ01Aristotle.lean",
+      "Proofs/SzemerediCore.lean"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "lineCount": 843,
+    "tags": [
+      "combinatorics",
+      "szemer-edi",
+      "regularity",
+      "energy-increment",
+      "graph-theory"
+    ],
+    "assumptions": [],
+    "imports": [
+      "Mathlib",
+      "Proofs.SzemerediCore",
+      "Proofs.SzemerediRegularity"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Szemer\u00e9di's regularity lemma (1975), proved to solve the Erd\u0151s-Tur\u00e1n conjecture on arithmetic progressions in dense sets, is one of the most influential results in combinatorics. It states that every graph's vertex set can be equipartitioned so that almost all pairs of parts are '\u03b5-regular' (their bipartite subgraph looks pseudorandom). The proof proceeds via the energy increment method: define the energy E(P) = \u03a3_{A,B} |A||B|d(A,B)\u00b2/n\u00b2 of a partition, then show each irregularity forces a refinement that increases energy by \u03b5\u2075 (or \u03b5\u2076 for a single pair). Since E \u2264 1, the process terminates in O(\u03b5\u207b\u2076) steps. This energy method inspired Gowers' 1998 proof of Szemer\u00e9di's theorem (via hypergraph regularity) and the Green-Tao theorem (2008) on primes in arithmetic progressions. The energy increment formalism in this file provides the machine-verified core of this argument.",
+    "problemStatement": "Let $G$ be a graph on $n$ vertices with vertex partition $P$. The *energy* of $P$ is $E(P) = \\sum_{A,B\\in P} \\frac{|A||B|}{n^2}d(A,B)^2$ where $d(A,B) = e(A,B)/(|A||B|)$ is the edge density. A pair $(A,B)$ is $\\varepsilon$-irregular if there exist $A'\\subseteq A$, $B'\\subseteq B$ with $|A'|\\geq \\varepsilon|A|$, $|B'|\\geq \\varepsilon|B|$, and $|d(A',B')-d(A,B)|>\\varepsilon$. The theorem: if $(A,B)$ is $\\varepsilon$-irregular and every part has size $\\geq \\varepsilon n$, then the refinement obtained by splitting $A$ into $\\{A', A\\setminus A'\\}$ and $B$ into $\\{B', B\\setminus B'\\}$ has $E(P') \\geq E(P) + \\varepsilon^6$.",
+    "proofStrategy": "Four stages: (1) *Convexity*: prove $|B|d(A,B)^2 \\leq |B_1|d(A,B_1)^2 + |B_2|d(A,B_2)^2$ (Jensen's inequality for $d^2$), so splitting an argument never decreases energy. (2) *Variance identity*: for a $2\\times 2$ split $A = A_1\\cup A_2$, $B = B_1\\cup B_2$: total 4-pair energy = original energy + variance term $\\sum_{i,j}|A_i||B_j|(d(A_i,B_j)-d(A,B))^2/n^2$. (3) *Increment bound*: irregularity witnesses give $|A'|\\geq \\varepsilon^2 n$, $|B'|\\geq \\varepsilon^2 n$, $|d(A',B')-d(A,B)|>\\varepsilon$, so variance $\\geq \\varepsilon^2 n \\cdot \\varepsilon^2 n \\cdot \\varepsilon^2/n^2 = \\varepsilon^6$. (4) *Block decomposition*: sum over all pairs not involving $A$ or $B$ is unchanged; pairs in $\\{A,B\\}\\times\\text{other}$ contribute non-negatively by convexity; the 4-pair block $\\{A',A\\setminus A'\\}\\times\\{B',B\\setminus B'\\}$ contributes $\\geq \\varepsilon^6$.",
+    "keyInsights": [
+      "The energy $E(P) = \\sum |A||B|d(A,B)^2/n^2$ is a discrete analogue of the $L^2$-norm of the edge density function. Jensen's inequality for $d^2$ implies that refining a partition never decreases energy \u2014 it can only increase it.",
+      "The variance identity (2D parallel axis theorem) $\\sum_{i,j}|A_i||B_j|d(A_i,B_j)^2 = |A||B|d(A,B)^2 + \\sum_{i,j}|A_i||B_j|(d(A_i,B_j)-d(A,B))^2$ converts the increment to a sum of squared deviations \u2014 exactly what the irregularity condition provides.",
+      "The \u03b5\u2076 bound comes from three \u03b5\u00b2 factors: $|A'|\\geq \\varepsilon^2 n$ (size condition), $|B'|\\geq \\varepsilon^2 n$ (size condition), and $(d(A',B')-d(A,B))^2 > \\varepsilon^2$ (density deviation). The product gives $\\varepsilon^6 n^2/n^2 = \\varepsilon^6$.",
+      "The block-decomposition argument (`energy_increment_packaging`) cleanly separates the three cases: blocks not touching $\\{A,B\\}$ (unchanged), blocks touching $\\{A,B\\}$ but not in the 4-pair block (non-negative by convexity), and the 4-pair block itself (positive increment). This modularity is the key to the 843-line formal proof.",
+      "Iterating `energy_increment_step` produces the full regularity lemma: each irregularity gives +\u03b5\u2076 in energy, so after O(\u03b5\u207b\u2076) steps all pairs must be \u03b5-regular. The tower-type bound on the partition size (iterated exponential in \u03b5) emerges from the exponential growth of parts needed at each refinement step."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Imports and Module Header",
+      "startLine": 1,
+      "endLine": 63,
+      "summary": "Imports Mathlib and two parent files: SzemerediCore (defining edgeDensity, partitionEnergy, IsEpsilonRegular) and SzemerediRegularity (irregularity witness existence). Opens the Szemeredi.EnergyIncrement namespace."
+    },
+    {
+      "id": "edge-density-algebra",
+      "title": "Edge Density Algebra",
+      "startLine": 64,
+      "endLine": 240,
+      "summary": "Five foundational lemmas: edgeDensity_symm (d(A,B)=d(B,A)), density_sq_convex_right (Jensen: splitting B never decreases |B|\u00b7d\u00b2), sub4pair_energy_lower_bound (splitting both A and B never decreases energy), edgeDensity_union_weighted_avg (d(A,B)=(|B\u2081|d(A,B\u2081)+|B\u2082|d(A,B\u2082))/|B|), energy_excess_A_split (exact formula for energy excess when A is split)."
+    },
+    {
+      "id": "variance-decomposition",
+      "title": "4-Subpair Variance Decomposition",
+      "startLine": 241,
+      "endLine": 405,
+      "summary": "Three theorems for the 2\u00d72 split: four_subpair_edge_count_identity (weighted average identity for edge counts), four_subpair_deviation_identity (variance formula: 4-pair energy = original + squared-deviation term), four_subpair_excess_lb (the key lower bound: 4-pair energy \u2265 |A||B|d(A,B)\u00b2/n\u00b2 + 2|A'||B'|(d(A',B')-d(A,B))\u00b2/n\u00b2)."
+    },
+    {
+      "id": "energy-increment-packaging",
+      "title": "Block-Decomposition Core Lemma (energy_increment_packaging)",
+      "startLine": 406,
+      "endLine": 741,
+      "summary": "The 335-line block-decomposition argument: separates the partition energy into (S\u00d7S blocks unchanged) + (S\u00d7T and T\u00d7S blocks non-negative by convexity) + (T\u00d7T = 4-subpair block \u2265 original + 2|A'||B'|\u03b4\u00b2/n\u00b2). This is the most technically complex part of the proof, requiring careful Finset manipulations."
+    },
+    {
+      "id": "energy-increment-step",
+      "title": "Energy Increment Step (Main Theorem)",
+      "startLine": 742,
+      "endLine": 843,
+      "summary": "Main theorem energy_increment_step: given \u03b5-irregular pair (A,B) with irregularity witnesses A'\u2286A, B'\u2286B, the refined partition has energy \u2265 E(P) + \u03b5\u2076. Assembles the packaging lemma with the quantitative irregularity bounds |A'|\u2265\u03b5\u00b2n, |B'|\u2265\u03b5\u00b2n, |d(A',B')-d(A,B)|>\u03b5 to get |A'||B'|\u03b4\u00b2\u2265\u03b5\u2076n\u00b2."
+    }
+  ],
+  "conclusion": {
+    "summary": "The \u03b5\u2076 energy increment for a single \u03b5-irregular pair is machine-checked: if (A,B) is irregular with witnesses A'\u2286A, B'\u2286B, then splitting A and B at those witnesses strictly increases partition energy by at least \u03b5\u2076. This is the core of Szemer\u00e9di's iterative regularity construction.",
+    "implications": "The energy increment lemma implies the full Szemer\u00e9di regularity lemma (existence of \u03b5-regular equipartitions) by iteration: starting from any partition, repeatedly refine any irregular pair, increasing energy by \u03b5\u2076 each time. Since energy \u2264 1, after at most \u03b5\u207b\u2076 steps, all pairs must be regular. The number of parts grows at most by a factor of 4 per step, giving a tower-type bound exp(exp(...\u03b5\u207b\u2075...)). The energy method also underlies Gowers' hypergraph regularity and the proof of Szemer\u00e9di's theorem on arithmetic progressions.",
+    "openQuestions": [
+      "Can the full regularity lemma (existence of \u03b5-regular equipartitions with bounded part count) be formalized in Lean 4 by iterating energy_increment_step, using the energy upper bound E \u2264 1 as the termination witness?",
+      "The standard Szemer\u00e9di proof gets \u03b5\u2075 (not \u03b5\u2076) by summing over \u2265 \u03b5\u00b7k\u00b2 irregular pairs at each step. Can this sharper iteration be formalized?",
+      "Can Gowers' higher-order energy increment (for k-uniform hypergraphs, giving the tower-type bound for Szemer\u00e9di's theorem) be formalized using similar infrastructure?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "szemeredi-core",
+      "relationship": "Imports edgeDensity, partitionEnergy, and IsEpsilonRegular from this parent file."
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "Imports irregularity witness existence from this sibling file."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/SzemerediCoreOQ01.lean",
+    "lineCount": 843,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "imports": [
+      "import Mathlib",
+      "import Proofs.SzemerediCore",
+      "import Proofs.SzemerediRegularity"
+    ],
+    "opens": [
+      "Classical",
+      "Szemeredi.Core",
+      "Szemeredi.Regularity"
+    ],
+    "namespace": "Szemeredi.EnergyIncrement",
+    "additionalFiles": [
+      "Proofs/SzemerediCoreOQ01Aristotle.lean",
+      "Proofs/SzemerediCore.lean"
+    ]
+  },
+  "sorries": 0
+}

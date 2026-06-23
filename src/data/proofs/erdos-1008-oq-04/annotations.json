@@ -1,0 +1,163 @@
+[
+  {
+    "id": "ann-preamble",
+    "proofId": "erdos-1008-oq-04",
+    "range": {
+      "startLine": 1,
+      "endLine": 28
+    },
+    "type": "concept",
+    "title": "Problem Context: From C₄-Free to K_{s,t}-Free Subgraphs",
+    "content": "The module header sets the stage by explaining the relationship to Erdős Problem 1008 (C₄-free subgraphs) and motivating the generalization to K_{s,t}. It provides the Kővári-Sós-Turán context (K_{s,t}-free graphs have O(n^{2-1/s}) edges), explains the probabilistic method sketch for the CFS theorem, and inventories the axioms (CFS existence and exponent optimality) vs. proved results (C₄ corollary). The docstring explicitly warns about the exponent discrepancy (1/2 from K_{2,2} vs 2/3 from parent problem), preparing the reader for the nuanced corollary section.",
+    "mathContext": "Background chain: $K_{s,t}$-free $\\Rightarrow$ $O(n^{2-1/s})$ edges (KST 1954) $\\Rightarrow$ $K_{s,t}$-free subgraphs of size $\\Omega(m^{1-1/s})$ exist (CFS 2014). For $s = t = 2$: $K_{2,2} = C_4$, giving exponent $1 - 1/2 = 1/2$ from this theorem (versus $2/3$ from the refined CFS degeneracy bound).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Kővári-Sós-Turán theorem",
+      "probabilistic method",
+      "Zarankiewicz problem",
+      "Erdős Problem 1008"
+    ],
+    "prerequisites": [
+      "extremal graph theory",
+      "complete bipartite graphs",
+      "random vertex sampling"
+    ]
+  },
+  {
+    "id": "ann-kst-free-def",
+    "proofId": "erdos-1008-oq-04",
+    "range": {
+      "startLine": 39,
+      "endLine": 43
+    },
+    "type": "definition",
+    "title": "$K_{s,t}$-Freeness via Disjoint Vertex Sets",
+    "content": "Defines $K_{s,t}$-freeness combinatorially: $G$ is $K_{s,t}$-free iff there do not exist disjoint vertex sets $A, B$ with $|A| = s$, $|B| = t$ and every vertex in $A$ adjacent to every vertex in $B$. This is the standard definition from extremal graph theory, equivalent to saying $G$ contains no copy of the complete bipartite graph $K_{s,t}$ as a subgraph.",
+    "mathContext": "$G$ is $K_{s,t}$-free $\\iff$ $\\nexists A, B \\subseteq V(G)$ with $A \\cap B = \\emptyset$, $|A| = s$, $|B| = t$, and $\\forall a \\in A, b \\in B: ab \\in E(G)$. For $s = t = 2$, this is $C_4$-freeness (in simple graphs, $K_{2,2} \\cong C_4$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "complete bipartite graph",
+      "Zarankiewicz problem",
+      "Turán-type problem",
+      "subgraph containment"
+    ],
+    "prerequisites": [
+      "SimpleGraph",
+      "Finset",
+      "Disjoint"
+    ]
+  },
+  {
+    "id": "ann-kst-theorem",
+    "proofId": "erdos-1008-oq-04",
+    "range": {
+      "startLine": 49,
+      "endLine": 71
+    },
+    "type": "concept",
+    "title": "CFS $K_{s,t}$-Free Subgraph Theorem (Axiom)",
+    "content": "Axiomatizes the main result of Conlon-Fox-Sudakov (2014): for any $s \\leq t$, there exists a constant $c > 0$ such that every graph $G$ contains a $K_{s,t}$-free subgraph. The proof sketch in the docstring outlines the probabilistic argument: sample vertices with probability $p = c \\cdot m^{-1/s}$, bound $K_{s,t}$ copies via Kővári-Sós-Turán, delete one edge from each surviving $K_{s,t}$. The expected surviving edge count is $\\Omega(m^{1-1/s})$.",
+    "mathContext": "The probabilistic method: sample each $v \\in V(G)$ independently with probability $p$. Expected surviving edges: $\\Theta(p^2 m)$. Expected $K_{s,t}$ copies: $O(p^{s+t} n^{s+t} \\cdot n^{-s})$ by KST. Setting $p \\sim m^{-1/(2s)}$ balances these, yielding $\\Omega(m^{1-1/s})$ surviving $K_{s,t}$-free edges.",
+    "significance": "key",
+    "relatedConcepts": [
+      "probabilistic method",
+      "Kővári-Sós-Turán theorem",
+      "random subgraph",
+      "expectation argument"
+    ],
+    "prerequisites": [
+      "extremal graph theory",
+      "probabilistic method",
+      "Kővári-Sós-Turán bound"
+    ]
+  },
+  {
+    "id": "ann-optimality",
+    "proofId": "erdos-1008-oq-04",
+    "range": {
+      "startLine": 72,
+      "endLine": 81
+    },
+    "type": "concept",
+    "title": "Exponent Optimality via Zarankiewicz Constructions",
+    "content": "States that the exponent $1 - 1/s$ is best possible, currently as a placeholder axiom (`True`). The justification is the Zarankiewicz problem: algebraic constructions (incidence graphs of projective planes over $\\mathbb{F}_q$) provide $K_{s,t}$-free graphs with $\\Theta(n^{2-1/s})$ edges. These extremal graphs show that no $K_{s,t}$-free subgraph of the complete graph can be much larger, establishing a matching lower bound.",
+    "mathContext": "The Zarankiewicz number $z(n; s, t) = \\Theta(n^{2-1/s})$ for $s \\leq t$ (when $t \\geq (s-1)! + 1$). This means $K_{s,t}$-free graphs on $n$ vertices have at most $O(n^{2-1/s})$ edges, and constructions achieving this bound show the exponent is tight.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Zarankiewicz problem",
+      "algebraic construction",
+      "finite projective plane",
+      "incidence graph"
+    ],
+    "prerequisites": [
+      "extremal graph theory",
+      "finite geometry"
+    ]
+  },
+  {
+    "id": "ann-c4-exponent-gap",
+    "proofId": "erdos-1008-oq-04",
+    "range": {
+      "startLine": 87,
+      "endLine": 103
+    },
+    "type": "insight",
+    "title": "The $C_4$ Exponent Discrepancy: $1/2$ vs $2/3$",
+    "content": "The Lean docstring contains a revealing self-correction: the $K_{2,2}$ instantiation gives exponent $1 - 1/2 = 1/2$, but the parent $C_4$ result achieves $2/3$. The resolution is that the full CFS paper uses a degeneracy parameter $r$ rather than the bipartite parameter $s$. For $C_4$ (which has degeneracy 2 and $K_{2,2}$ structure), the refined formula gives $1 - 1/r = 1 - 1/3 = 2/3$, matching the known bound. This illustrates how the same forbidden subgraph can yield different extremal thresholds depending on which structural parameter (bipartite vs. degeneracy) is used.",
+    "mathContext": "For $C_4 = K_{2,2}$: the crude $K_{s,t}$ bound gives $m^{1-1/s} = m^{1/2}$, while the refined CFS degeneracy bound gives $m^{1-1/r}$ with $r = 3$ for $C_4$, yielding $m^{2/3}$. The degeneracy $r$ of a graph $H$ is $\\max_{H' \\subseteq H} \\delta(H')$ where $\\delta$ is minimum degree.",
+    "significance": "key",
+    "relatedConcepts": [
+      "graph degeneracy",
+      "Turán exponent",
+      "extremal threshold",
+      "refinement hierarchy"
+    ],
+    "prerequisites": [
+      "extremal graph theory",
+      "graph degeneracy"
+    ]
+  },
+  {
+    "id": "ann-c4-from-kst",
+    "proofId": "erdos-1008-oq-04",
+    "range": {
+      "startLine": 104,
+      "endLine": 110
+    },
+    "type": "concept",
+    "title": "One-Line Corollary: $C_4$ from $K_{2,2}$",
+    "content": "The $C_4$ case is recovered by a single `exact` tactic instantiating the general $K_{s,t}$ theorem with $s = t = 2$. This clean specialization demonstrates the power of the generalized formulation: specific cases require no additional argument beyond parameter substitution. The `norm_num` calls discharge the side conditions $1 \\leq 2$ and $2 \\leq 2$.",
+    "mathContext": "Since $C_4 \\cong K_{2,2}$ in simple graphs, the $K_{s,t}$-free subgraph theorem with $s = t = 2$ immediately gives: every graph with $m$ edges has a $C_4$-free subgraph (though with the weaker $m^{1/2}$ bound rather than $m^{2/3}$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "specialization",
+      "complete bipartite graph",
+      "C₄-freeness"
+    ],
+    "prerequisites": [
+      "kst_subgraph_theorem",
+      "norm_num tactic"
+    ]
+  },
+  {
+    "id": "ann-summary-section",
+    "proofId": "erdos-1008-oq-04",
+    "range": {
+      "startLine": 112,
+      "endLine": 136
+    },
+    "type": "concept",
+    "title": "Axiom Inventory and Formalization Roadmap",
+    "content": "Summarizes the formalization: 2 axioms (CFS theorem and exponent optimality, both requiring probabilistic method), 1 proved corollary ($C_4$ from $K_{2,2}$). Notes that the key insight is the Kővári-Sós-Turán exponent's dual role: it governs both maximum edge density of $K_{s,t}$-free graphs and minimum size of $K_{s,t}$-free subgraphs. The full CFS degeneracy refinement yields better exponents for specific graphs.",
+    "mathContext": "The Kővári-Sós-Turán exponent $1/s$ appears in two dual roles: the Zarankiewicz upper bound $\\text{ex}(n; K_{s,t}) = O(n^{2-1/s})$ and the CFS subgraph bound $\\Omega(m^{1-1/s})$. The duality arises because both are controlled by the same random sampling calculation.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Zarankiewicz problem",
+      "extremal number",
+      "Kővári-Sós-Turán duality"
+    ],
+    "prerequisites": [
+      "extremal graph theory"
+    ]
+  }
+]

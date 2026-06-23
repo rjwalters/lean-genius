@@ -1,0 +1,99 @@
+{
+  "slug": "binomial-theorem-oq-02-oq-01-oq-01-oq-01-oq-02",
+  "title": "Multinomial Marginal Distribution is Binomial via piAntidiag reindexing",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall \\alpha\\ [\\mathrm{DecidableEq}\\,\\alpha]\\;\\forall (s : \\mathrm{Finset}\\,\\alpha)(p : \\alpha \\to \\mathbb{R})(n : \\mathbb{N}),\\;(\\textstyle\\sum_{j\\in s} p_j = 1) \\Rightarrow \\forall i\\in s,\\ \\forall m\\le n,\\ \\textstyle\\sum_{k\\in \\mathrm{piAntidiag}(s,n),\\,k_i=m} \\binom{n}{k} \\prod_{j\\in s} p_j^{k_j} = \\binom{n}{m} p_i^{m} (1-p_i)^{n-m}.",
+    "plain": "The parent file BinomialTheoremOQ02OQ01OQ01.lean defers (sorry, line 178) the marginal-distribution law of the multinomial: the marginal of a single coordinate count X_i of Multinomial(n; p) is Binomial(n, p_i). Summing the multinomial mass over all compositions k of n on alphabet s with k_i fixed to m collapses to the binomial mass C(n,m) p_i^m (1-p_i)^(n-m). The question is whether this can be formalized over Mathlib's piAntidiag / Nat.multinomial infrastructure.",
+    "whyMatters": [
+      "Discharges one of the four deferred sorries on the multinomial PMF in BinomialTheoremOQ02OQ01OQ01.lean (the marginal law).",
+      "Marginal-is-binomial is the canonical structural property of the multinomial distribution; it is the bridge from the gallery's multinomial PMF to the already-formalized binomial distribution.",
+      "Establishes the reusable reindex pattern {k in piAntidiag s n | k i = m} <-> piAntidiag (s.erase i) (n-m), via Function.update, which transfers to multinomial mean and covariance (the two remaining parent sorries)."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Nat.multinomial_insert (Mathlib): multinomial (insert a s) f = (f a + sum_{i in s} f i).choose (f a) * multinomial s f, when a not in s.",
+      "Finset.sum_pow_eq_sum_piAntidiag (Mathlib): (sum_{i in s} f i)^n = sum_{k in s.piAntidiag n} multinomial s k * prod_{i in s} f i ^ k i.",
+      "Finset.insert_erase / Finset.not_mem_erase / Finset.sum_erase_eq_sub (Mathlib): split s at i and reduce sum_{s.erase i} p = (sum_s p) - p i = 1 - p i."
+    ],
+    "open": [
+      "Leaf A marginal_sum_reindex: the indexing bijection {k in piAntidiag s n | k i = m} <-> piAntidiag (s.erase i) (n-m) (forward update k i 0; inverse update f i m).",
+      "Leaf B multinomial_update_eq: multinomial s (update f i m) = C(n,m) * multinomial (s.erase i) f for f supported on s.erase i summing to n-m.",
+      "Leaf C prod_update_eq: prod_{j in s} p_j^(update f i m)_j = p_i^m * prod_{j in s.erase i} p_j^{f_j}."
+    ],
+    "goal": "Close BinomialTheoremOQ02OQ01OQ01.multinomial_marginal_binomial. This session produced proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ01OQ02.lean: the full reduction (combining Leaves A/B/C + the in-line power fold) written in tactics, with the three combinatorial leaves stated precisely as sorry (Aristotle targets). Build-pending: Docker pool saturated, Aristotle backend offline."
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED (2026-06-16): proved all three combinatorial leaf lemmas of BinomialTheoremOQ02OQ01OQ01OQ01OQ02.lean from Mathlib (Aristotle 404 all session, done by hand mirroring the verified sibling BinomialTheoremOQ02OQ01OQ02.lean). Leaf A marginal_sum_reindex via Finset.sum_nbij (forward update k i 0, inverse update f i m); Leaf B multinomial_update_eq via Nat.multinomial_insert + Nat.multinomial_congr; Leaf C prod_update_eq via Finset.mul_prod_erase. Main theorem multinomial_marginal_binomial now 0 sorries / 0 axioms. Docker-verified GREEN (3060 jobs). Same marginal law also proved independently in sibling as multinomial_marginal_pmf; this file is the clean Function.update decomposition into reusable leaves.",
+    "builtItems": [
+      "proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ01OQ02.lean — namespace BinomialMultinomialMarginal: theorem multinomial_marginal_binomial proved modulo three leaf lemmas; reduction (sum_congr with B+C, mul_sum, sum_pow_eq_sum_piAntidiag reversed, sum_erase_eq_sub, ring) written in full.",
+      "Registered the file in proofs/Proofs.lean (import after BinomialTheoremOQ02OQ01OQ01OQ01OQ01).",
+      "2026-06-16: discharged the 3 leaf sorries (A/B/C); full file Docker-verified GREEN (3060 jobs). 0 sorries, 0 axioms."
+    ],
+    "insights": [
+      "The whole proof is reindex-then-fold: fix k_i=m, peel coordinate i off s via s = insert i (s.erase i), then the residual sum over compositions of n-m on s.erase i is exactly the multinomial theorem, giving (1-p_i)^(n-m).",
+      "Nat.multinomial_insert turns the multinomial coefficient split into n.choose m * multinomial(erase) once m + (n-m) = n (m <= n).",
+      "The reindex bijection is the only genuinely combinatorial step; forward map update k i 0, inverse update f i m, with f_i = 0 forced because i not in s.erase i.",
+      "The same reindex pattern (Leaf A) and coefficient split (Leaf B) directly serve the parent's multinomial_mean and multinomial_covariance sorries."
+    ],
+    "mathlibGaps": [
+      "Mathlib has no packaged 'marginal of multinomial is binomial' lemma; this is a gallery-internal de-sorry, not an upstream contribution candidate."
+    ],
+    "nextSteps": [
+      "Reuse Leaf A (marginal_sum_reindex) and Leaf B (multinomial_update_eq) to attack the parent BinomialTheoremOQ02OQ01OQ01 sorries multinomial_mean and multinomial_covariance.",
+      "The parent multinomial_marginal_binomial sorry can now be discharged by referencing this file or the sibling multinomial_marginal_pmf."
+    ]
+  },
+  "tags": [
+    "combinatorics",
+    "multinomial",
+    "binomial",
+    "marginal-distribution",
+    "piAntidiag",
+    "probability",
+    "seeker-selected",
+    "gallery-extracted"
+  ],
+  "relatedProofs": [
+    "binomial-theorem",
+    "binomial-theorem-oq-02",
+    "binomial-theorem-oq-02-oq-01",
+    "binomial-theorem-oq-02-oq-01-oq-01",
+    "binomial-theorem-oq-02-oq-01-oq-01-oq-01",
+    "binomial-theorem-oq-02-oq-01-oq-01-oq-01-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ01.lean#L178-L186"
+    ],
+    "mathlib": [
+      "Nat.multinomial_insert (Mathlib/Data/Nat/Choose/Multinomial.lean): coefficient peel for insert.",
+      "Finset.sum_pow_eq_sum_piAntidiag (Mathlib/Data/Nat/Choose/Multinomial.lean): multinomial theorem for CommSemiring.",
+      "Finset.mem_piAntidiag / Finset.piAntidiag_insert (Mathlib/Algebra/Order/Antidiag/Pi.lean): membership and insert split.",
+      "Finset.insert_erase, Finset.not_mem_erase, Finset.ne_of_mem_erase, Finset.sum_erase_eq_sub.",
+      "Function.update_self / Function.update_of_ne."
+    ]
+  },
+  "started": "2026-06-15T00:00:00.000Z",
+  "lastUpdate": "2026-06-16T00:00:00.000Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/BinomialTheoremOQ02OQ01OQ01OQ01OQ02.lean",
+      "filename": "BinomialTheoremOQ02OQ01OQ01OQ01OQ02.lean",
+      "lineCount": 163,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ01OQ02.lean"
+    }
+  ]
+}

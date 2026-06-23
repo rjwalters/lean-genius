@@ -1,0 +1,373 @@
+[
+  {
+    "id": "imports-setup",
+    "proofId": "erdos-901",
+    "type": "concept",
+    "range": {
+      "startLine": 25,
+      "endLine": 34
+    },
+    "title": "Imports and Namespace",
+    "content": "Imports Mathlib modules for set families, finite sets, finite types, logarithmic and power functions, and general tactics. Opens the `Finset` and `Real` namespaces within the `Erdos901` namespace.",
+    "mathContext": "The key imports are `SetFamily.Basic` for hypergraph-like structures, `Log.Basic` for $\\log n$ in the Radhakrishnan–Srinivasan bound, and `Pow.Real` for real exponentiation $n^{1/3}$ in Beck's bound.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib set families",
+      "finite type API",
+      "special functions"
+    ],
+    "prerequisites": [
+      "Lean 4 module system",
+      "Mathlib library structure"
+    ]
+  },
+  {
+    "id": "uniform-hypergraph-def",
+    "proofId": "erdos-901",
+    "type": "definition",
+    "range": {
+      "startLine": 38,
+      "endLine": 46
+    },
+    "title": "Uniform Hypergraph Structure",
+    "content": "Defines an $n$-uniform hypergraph as a structure `UniformHypergraph V n` with a `Finset (Finset V)` of edges, each of cardinality exactly $n$. The `edgeCount` function returns $|E(H)|$.",
+    "mathContext": "An $n$-uniform hypergraph $H = (V, E)$ has $E \\subseteq \\binom{V}{n}$, where every edge $e \\in E$ satisfies $|e| = n$. The uniformity constraint is enforced by the `uniform` field: $\\forall e \\in \\texttt{edges},\\, e.\\texttt{card} = n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "hypergraph",
+      "Finset of Finsets",
+      "structure definition",
+      "uniform set family"
+    ],
+    "prerequisites": [
+      "Finset",
+      "Fintype",
+      "cardinality"
+    ]
+  },
+  {
+    "id": "two-coloring-def",
+    "proofId": "erdos-901",
+    "type": "definition",
+    "range": {
+      "startLine": 51,
+      "endLine": 51
+    },
+    "title": "Two-Coloring",
+    "content": "A 2-coloring is a function $c : V \\to \\{0, 1\\}$ (i.e., `V -> Fin 2`). This is the vertex coloring relevant to Property B.",
+    "mathContext": "A 2-coloring $c : V \\to \\{0, 1\\}$ partitions $V$ into two color classes $c^{-1}(0)$ and $c^{-1}(1)$. Property B asks whether some partition avoids monochromatic edges.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "vertex coloring",
+      "Fin 2",
+      "partition of vertices"
+    ],
+    "prerequisites": [
+      "function types",
+      "Fin"
+    ]
+  },
+  {
+    "id": "monochromatic-edge-def",
+    "proofId": "erdos-901",
+    "type": "definition",
+    "range": {
+      "startLine": 54,
+      "endLine": 55
+    },
+    "title": "Monochromatic Edge",
+    "content": "An edge $e$ is monochromatic under coloring $c$ if all vertices receive the same color: $(\\forall v \\in e,\\, c(v) = 0) \\lor (\\forall v \\in e,\\, c(v) = 1)$.",
+    "mathContext": "For an $n$-element edge $e$, $\\Pr[e \\text{ monochromatic}] = 2 \\cdot (1/2)^n = 2^{1-n}$ under a uniformly random 2-coloring, since all $n$ vertices must agree on one of two colors.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monochromatic set",
+      "uniform coloring",
+      "probability of bad event"
+    ],
+    "prerequisites": [
+      "universal quantification over Finset",
+      "disjunction"
+    ]
+  },
+  {
+    "id": "property-b-def",
+    "proofId": "erdos-901",
+    "type": "definition",
+    "range": {
+      "startLine": 57,
+      "endLine": 65
+    },
+    "title": "Property B (Bernstein Property)",
+    "content": "A hypergraph has Property B if there exists a 2-coloring with no monochromatic edge: $\\exists c : V \\to \\{0,1\\},\\, \\forall e \\in E,\\, \\neg\\texttt{IsMonochromatic}(c, e)$. Named after Felix Bernstein (1908). Its negation `LacksPropertyB` means every 2-coloring has a monochromatic edge.",
+    "mathContext": "$\\texttt{HasPropertyB}(H) \\iff \\chi(H) \\le 2$, where $\\chi$ is the hypergraph chromatic number. Equivalently, $H$ is 2-colorable. The negation $\\texttt{LacksPropertyB}(H) \\iff \\chi(H) \\ge 3$ means $H$ is not 2-colorable.",
+    "significance": "key",
+    "relatedConcepts": [
+      "2-colorability",
+      "chromatic number",
+      "hypergraph coloring",
+      "Bernstein's property"
+    ],
+    "prerequisites": [
+      "existential and universal quantification",
+      "negation",
+      "IsMonochromatic"
+    ]
+  },
+  {
+    "id": "property-b-dichotomy",
+    "proofId": "erdos-901",
+    "type": "concept",
+    "range": {
+      "startLine": 68,
+      "endLine": 71
+    },
+    "title": "Property B Dichotomy",
+    "content": "States $\\texttt{HasPropertyB}(H) \\iff \\neg\\texttt{LacksPropertyB}(H)$. This is a logical tautology ($\\exists\\, \\forall\\, \\neg \\iff \\neg\\, \\forall\\, \\exists$) but useful as a rewrite lemma. Currently `sorry`.",
+    "mathContext": "The equivalence $\\bigl(\\exists c,\\, \\forall e,\\, \\neg P(c,e)\\bigr) \\iff \\neg\\bigl(\\forall c,\\, \\exists e,\\, P(c,e)\\bigr)$ follows from `push_neg` and classical logic. The sorry is a formalization gap, not a mathematical one.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "push_neg",
+      "classical logic",
+      "quantifier duality"
+    ],
+    "prerequisites": [
+      "HasPropertyB",
+      "LacksPropertyB",
+      "classical reasoning"
+    ]
+  },
+  {
+    "id": "m-function-def",
+    "proofId": "erdos-901",
+    "type": "definition",
+    "range": {
+      "startLine": 75,
+      "endLine": 78
+    },
+    "title": "The Function $m(n)$",
+    "content": "Defines $m(n) = \\inf\\{|E(H)| : H \\text{ is } n\\text{-uniform and lacks Property B}\\}$ via `sInf`. This is the central quantity: the minimum number of edges needed to force every 2-coloring to have a monochromatic edge.",
+    "mathContext": "$m(n) = \\min\\bigl\\{|E| : \\exists\\, H = (V, E),\\, H \\text{ is } n\\text{-uniform},\\, \\chi(H) \\ge 3\\bigr\\}$. The use of `sInf` over $\\mathbb{N}$ is well-founded since the complete $n$-uniform hypergraph on $2n-1$ vertices provides an upper bound via pigeonhole.",
+    "significance": "key",
+    "relatedConcepts": [
+      "infimum of natural numbers",
+      "sInf",
+      "extremal function",
+      "Turán-type problem"
+    ],
+    "prerequisites": [
+      "UniformHypergraph",
+      "LacksPropertyB",
+      "natural number well-ordering"
+    ]
+  },
+  {
+    "id": "exact-values",
+    "proofId": "erdos-901",
+    "type": "concept",
+    "range": {
+      "startLine": 90,
+      "endLine": 100
+    },
+    "title": "Exact Values: $m(2) = 3$, $m(3) = 7$, $m(4) = 23$",
+    "content": "States the known exact values. $m(2) = 3$: three edges on 4 vertices (the triangle minus one vertex type). $m(3) = 7$: the Fano plane $PG(2, 2)$, the unique Steiner triple system $S(2, 3, 7)$. $m(4) = 23$: found by Östergård (2014) via computer search. All currently `sorry`.",
+    "mathContext": "The Fano plane achieving $m(3) = 7$ is the projective plane over $\\mathbb{F}_2$: 7 points $\\{1,\\ldots,7\\}$ with 7 lines of 3 points each, where every pair of points lies on exactly one line. Its automorphism group is $GL(3, \\mathbb{F}_2) \\cong PSL(2, 7)$ of order 168.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fano plane",
+      "Steiner triple system",
+      "projective plane",
+      "computer search"
+    ],
+    "prerequisites": [
+      "m(n) definition",
+      "explicit hypergraph constructions"
+    ]
+  },
+  {
+    "id": "erdos-lower-bound",
+    "proofId": "erdos-901",
+    "type": "concept",
+    "range": {
+      "startLine": 104,
+      "endLine": 106
+    },
+    "title": "Erdős Original Lower Bound",
+    "content": "States $m(n) > 2^{n-1}$ (Erdős 1963-64). A random 2-coloring makes each $n$-edge monochromatic with probability $2^{1-n}$. If $|E| \\leq 2^{n-1}$, the expected number of monochromatic edges is $\\leq 1$, so some coloring avoids all. Currently `sorry`.",
+    "mathContext": "By linearity of expectation: $\\mathbb{E}[\\text{\\# monochromatic edges}] = |E| \\cdot 2^{1-n}$. If $|E| \\le 2^{n-1}$, then $\\mathbb{E} \\le 1$, so $\\Pr[\\text{no monochromatic edge}] > 0$ by the first moment method. This is one of the earliest applications of the probabilistic method to combinatorics.",
+    "significance": "key",
+    "relatedConcepts": [
+      "probabilistic method",
+      "first moment method",
+      "linearity of expectation"
+    ],
+    "prerequisites": [
+      "m(n) definition",
+      "random coloring",
+      "expected value"
+    ]
+  },
+  {
+    "id": "beck-lower-bound",
+    "proofId": "erdos-901",
+    "type": "concept",
+    "range": {
+      "startLine": 108,
+      "endLine": 112
+    },
+    "title": "Beck Lower Bound",
+    "content": "States $m(n) \\gg n^{1/3} \\cdot 2^n$ (Beck 1977-78). Beck improved Erdős's bound using the Lovász Local Lemma applied to a dependency graph on edges. Currently `sorry`.",
+    "mathContext": "Beck's improvement uses the LLL with a carefully chosen dependency graph: two edges $e, e'$ are dependent if $e \\cap e' \\ne \\emptyset$. The maximum degree $d$ in this graph satisfies $d \\le n \\cdot \\binom{|V|-1}{n-1}$, and the LLL condition $ep(d+1) \\le 1$ with $p = 2^{1-n}$ gives the $n^{1/3}$ factor improvement.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lovász Local Lemma",
+      "dependency graph",
+      "asymptotic improvement"
+    ],
+    "prerequisites": [
+      "LLL symmetric form",
+      "edge intersection bounds"
+    ]
+  },
+  {
+    "id": "rs-lower-bound",
+    "proofId": "erdos-901",
+    "type": "concept",
+    "range": {
+      "startLine": 114,
+      "endLine": 118
+    },
+    "title": "Radhakrishnan-Srinivasan Lower Bound",
+    "content": "States $m(n) \\gg \\sqrt{n / \\log n} \\cdot 2^n$ (Radhakrishnan-Srinivasan 2000). The best known lower bound, proved via a clever resampling argument that improves on the standard LLL application. Currently `sorry`.",
+    "mathContext": "The resampling argument: start with a random coloring, identify monochromatic edges, and recolor one random vertex per monochromatic edge. After $O(\\log n)$ rounds, the expected number of remaining monochromatic edges drops below 1. The $\\sqrt{n/\\log n}$ factor comes from bounding the mutual interference between recoloring steps across different edges.",
+    "significance": "key",
+    "relatedConcepts": [
+      "resampling method",
+      "iterative coloring",
+      "probabilistic combinatorics"
+    ],
+    "prerequisites": [
+      "probabilistic method",
+      "Real.sqrt",
+      "Real.log",
+      "Filter.atTop"
+    ]
+  },
+  {
+    "id": "erdos-upper-bound",
+    "proofId": "erdos-901",
+    "type": "concept",
+    "range": {
+      "startLine": 128,
+      "endLine": 131
+    },
+    "title": "Erdős Upper Bound",
+    "content": "States $m(n) < n^2 \\cdot 2^n$ (Erdős 1963-64). An explicit greedy construction produces an $n$-uniform hypergraph without Property B using $O(n^2 \\cdot 2^n)$ edges. Still essentially the best known upper bound. Currently `sorry`.",
+    "mathContext": "The construction: take a ground set $V$ of size $n \\cdot 2^{n-1}$ and greedily add $n$-element edges that are not properly 2-colored by any existing partial coloring. After $< n^2 \\cdot 2^n$ edges, no proper 2-coloring remains. The $n^2$ factor arises from a double-counting argument on vertex appearances.",
+    "significance": "key",
+    "relatedConcepts": [
+      "greedy construction",
+      "explicit hypergraph",
+      "upper bound method"
+    ],
+    "prerequisites": [
+      "m(n) definition",
+      "constructive existence",
+      "counting argument"
+    ]
+  },
+  {
+    "id": "erdos-lovasz-conjecture",
+    "proofId": "erdos-901",
+    "type": "concept",
+    "range": {
+      "startLine": 140,
+      "endLine": 144
+    },
+    "title": "Erdős-Lovász Conjecture",
+    "content": "States $m(n) = \\Theta(n \\cdot 2^n)$: there exist constants $c_1, c_2 > 0$ such that eventually $c_1 \\cdot n \\cdot 2^n \\leq m(n) \\leq c_2 \\cdot n \\cdot 2^n$. The gap between the known lower bound $\\sqrt{n/\\log n}$ and the conjectured $n$ in the coefficient of $2^n$ is the main open question.",
+    "mathContext": "Formalized as $\\exists\\, c_1, c_2 > 0,\\; \\forall^{\\infty}\\, n,\\; c_1 \\cdot n \\cdot 2^n \\le m(n) \\le c_2 \\cdot n \\cdot 2^n$ using Lean's `Filter.atTop`. The upper half is essentially known ($m(n) \\ll n^2 \\cdot 2^n$ is close); the lower half requires improving $\\sqrt{n/\\log n}$ to $n$, a factor-$\\sqrt{n \\log n}$ gap.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic notation",
+      "Filter.atTop",
+      "Theta bound",
+      "open conjecture"
+    ],
+    "prerequisites": [
+      "m(n) bounds",
+      "eventually filter",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "complete-hypergraph-construction",
+    "proofId": "erdos-901",
+    "type": "concept",
+    "range": {
+      "startLine": 155,
+      "endLine": 158
+    },
+    "title": "Complete Hypergraph Lacks Property B",
+    "content": "States that the complete $n$-uniform hypergraph on $2n - 1$ vertices lacks Property B. By the pigeonhole principle, any 2-coloring of $2n - 1$ vertices has at least $n$ vertices of one color, forming a monochromatic $n$-edge. Currently `sorry`.",
+    "mathContext": "By pigeonhole: $2n-1$ vertices colored with 2 colors $\\implies$ some color class has $\\ge \\lceil(2n-1)/2\\rceil = n$ vertices. Since all $\\binom{2n-1}{n}$ subsets of size $n$ are edges, this color class contains a monochromatic edge. This gives $m(n) \\le \\binom{2n-1}{n}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "complete hypergraph",
+      "Fin type"
+    ],
+    "prerequisites": [
+      "UniformHypergraph",
+      "LacksPropertyB",
+      "Fintype (Fin k)"
+    ]
+  },
+  {
+    "id": "lll-property-b",
+    "proofId": "erdos-901",
+    "type": "concept",
+    "range": {
+      "startLine": 171,
+      "endLine": 175
+    },
+    "title": "Lovász Local Lemma for Property B",
+    "content": "States that if each edge of an $n$-uniform hypergraph shares vertices with fewer than $2^{n-1}$ other edges, then the hypergraph has Property B. This is the symmetric LLL applied to the events '$e$ is monochromatic' with $p = 2^{1-n}$ and dependency degree $d < 2^{n-1}$, satisfying $ep(d+1) \\leq 1$.",
+    "mathContext": "The **symmetric Lovász Local Lemma**: if events $A_1, \\ldots, A_m$ each have $\\Pr[A_i] \\le p$ and each depends on at most $d$ others, and $ep(d+1) \\le 1$, then $\\Pr[\\bigcap_i \\overline{A_i}] > 0$. Here $A_e = \\{e \\text{ monochromatic}\\}$ with $p = 2^{1-n}$, so the condition $d < 2^{n-1}$ gives $e \\cdot 2^{1-n} \\cdot 2^{n-1} \\le 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lovász Local Lemma",
+      "dependency graph",
+      "probabilistic existence",
+      "sparse hypergraphs"
+    ],
+    "prerequisites": [
+      "HasPropertyB",
+      "edge intersection",
+      "LLL symmetric form"
+    ]
+  },
+  {
+    "id": "chromatic-number-connection",
+    "proofId": "erdos-901",
+    "type": "definition",
+    "range": {
+      "startLine": 190,
+      "endLine": 200
+    },
+    "title": "Chromatic Number Characterization",
+    "content": "Defines the chromatic number of a hypergraph via `sInf` and states that $\\texttt{LacksPropertyB}(H) \\iff \\chi(H) \\geq 3$. Property B is exactly 2-colorability, so its failure means the chromatic number exceeds 2. Currently `sorry`.",
+    "mathContext": "$\\chi(H) = \\min\\{k : \\exists\\, c : V \\to [k],\\, \\forall\\, e \\in E,\\, \\exists\\, v, w \\in e,\\, c(v) \\ne c(w)\\}$. The characterization $\\texttt{LacksPropertyB}(H) \\iff \\chi(H) \\ge 3$ links the combinatorial Property B to the chromatic number framework, enabling connections to the list chromatic number in Problem #629.",
+    "significance": "key",
+    "relatedConcepts": [
+      "chromatic number",
+      "proper coloring",
+      "sInf",
+      "list chromatic number"
+    ],
+    "prerequisites": [
+      "sInf",
+      "proper hypergraph coloring",
+      "LacksPropertyB"
+    ]
+  }
+]

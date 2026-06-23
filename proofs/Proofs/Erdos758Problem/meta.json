@@ -1,0 +1,17 @@
+{
+  "problem_number": 758,
+  "title": "Cochromatic Number z(n)",
+  "status": "solved",
+  "solvers": ["Bhavik Mehta (computational)"],
+  "source_url": "https://erdosproblems.com/758",
+  "overview": "The cochromatic number ζ(G) is the minimum number of colors needed to color vertices such that each color class induces a clique or independent set. Let z(n) = max{ζ(G) : |V(G)| = n}. Determine z(n) for small n; in particular, is z(12) = 4?",
+  "sections": [],
+  "conclusion": "SOLVED: z(12) = 4 (Bhavik Mehta, computational). Known values for n=1..19: {1,1,2,2,3,3,3,3,4,4,4,4,5,5,5,6,6,6,6}. Mehta identified the unique graph (up to complement) on 12 vertices where both G and Ḡ are K₄-free with χ ≥ 5. Asymptotic: z(n) ~ n/log n (Gimbel). z(20) remains unknown (6 or 7).",
+  "references": [
+    "Erdős-Gimbel - Established 4 ≤ z(12) ≤ 5 and 5 ≤ z(15) ≤ 6",
+    "Gimbel - Asymptotic result z(n) ~ n/log n",
+    "Bhavik Mehta - Computational verification z(12) = 4"
+  ],
+  "related_problems": [],
+  "tags": ["graph-theory", "cochromatic-number", "coloring", "computational", "solved"]
+}

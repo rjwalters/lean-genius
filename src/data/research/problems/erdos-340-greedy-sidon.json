@@ -1,0 +1,94 @@
+{
+  "slug": "erdos-340-greedy-sidon",
+  "title": "Erdős #340: Greedy Sidon Sequence Growth",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "IsSidon(A) := \\forall a,b,c,d\\in A,\\ a+b=c+d\\to (a=c\\land b=d)\\lor(a=d\\land b=c); the greedy Sidon growth conjecture asks for |A\\cap[1,N]| \\gg N^{1/2-\\varepsilon}, while the Lean file proves finite Sidon-set difference bounds.",
+    "plain": "Keep the open greedy Sidon growth conjecture explicit while surfacing the verified Lean infrastructure: Sidon-set definitions, subset closure, injectivity of pair differences, and weak cardinality bounds for finite Sidon sets.",
+    "whyMatters": [
+      "Sidon sets are central objects in additive combinatorics because their pair sums are essentially unique.",
+      "The greedy Sidon sequence growth lower bound is open, so the page should not read as if the conjecture is solved.",
+      "The formalized finite difference-set lemmas are still useful reusable infrastructure for the larger problem."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`IsSidon`, `IsSidon'`, `isSidon_empty`, `isSidon_singleton`, `isSidon_pair`, and `IsSidon.subset` define and stabilize finite Sidon sets.",
+      "`IsSidon.diff_injective`, `sidon_pairDiff_injective`, `sidon_diffSet_card`, and `card_diffSet_eq` formalize the difference-set injectivity mechanism.",
+      "`orderedPairsLt_card_via_choose`, `orderedPairsLt_card`, `sidon_lower_bound`, and `sidon_upper_bound_weak` provide finite cardinality estimates.",
+      "`greedySidon_strictMono` and `greedySidonSet_isSidon` expose the axiomatized greedy-sequence interface used for the conjectural part."
+    ],
+    "open": [
+      "`greedySidonSeq`, `greedySidonSeq_strictMono`, and `greedySidonSeq_isSidon` are axioms; the asymptotic greedy Sidon lower bound remains an open conjecture."
+    ],
+    "goal": "Separate the verified finite Sidon infrastructure from the axiom-backed greedy sequence and unsolved growth conjecture."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-01-12T09:10:09.148Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Backfilled status: the finite Sidon-set infrastructure is formalized with zero sorries, while the greedy sequence interface is axiom-backed and the asymptotic growth conjecture remains open.",
+    "builtItems": [
+      "Lean formalization complete"
+    ],
+    "insights": [
+      "Proof verified: 0 sorries via grep; greedy sequence behavior is represented by axioms",
+      "Lean file exists and compiles",
+      "Ready for gallery publication"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "number-theory",
+    "additive-combinatorics",
+    "sidon-sets",
+    "erdos-problem",
+    "open-conjecture",
+    "blocked-open-problem",
+    "difference-sets",
+    "axiom-backed",
+    "formalization"
+  ],
+  "relatedProofs": [
+    "erdos-3",
+    "erdos-34",
+    "erdos-340",
+    "erdos-340-greedy-sidon"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T09:10:09.147Z",
+  "lastUpdate": "2026-03-20T09:30:00Z",
+  "significance": 8,
+  "tractability": 1,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos340GreedySidon.lean",
+      "filename": "Erdos340GreedySidon.lean",
+      "lineCount": 506,
+      "theoremCount": 16,
+      "axiomCount": 3,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos340GreedySidon.lean"
+    }
+  ]
+}

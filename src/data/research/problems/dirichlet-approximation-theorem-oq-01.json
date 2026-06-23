@@ -1,0 +1,72 @@
+{
+  "slug": "dirichlet-approximation-theorem-oq-01",
+  "title": "Infinitude of good rational approximations |α − p/q| < 1/q² for irrational α",
+  "problemStatement": "Upgrade the parent one-shot Dirichlet pigeonhole bound to the infinitude statement: for every irrational α there are infinitely many fractions p/q in lowest terms with |α − p/q| < 1/q². Equivalently, the set {q : ℚ | |α − q| < 1/q.den²} is infinite, and this characterizes irrationality.",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "tier": "B",
+  "significance": 6,
+  "tractability": 7,
+  "path": "full",
+  "started": "2026-06-18",
+  "lastUpdate": "2026-06-18",
+  "tags": [
+    "number-theory",
+    "diophantine-approximation",
+    "rational-approximation",
+    "irrational-numbers",
+    "infinitude"
+  ],
+  "currentState": {
+    "summary": "Formalized (PR #25627). Headline infinitude delegates to Mathlib; the original contribution is the bridge to the classical coprime integer-pair form. 0 sorry / 0 axiom. CI is the build gate (local Docker saturated this cycle).",
+    "leanFile": "proofs/Proofs/DirichletApproximationOQ01.lean",
+    "sorries": 0,
+    "axioms": 0
+  },
+  "knowledge": {
+    "insights": [
+      "The infinitude statement is ALREADY in Mathlib: Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational (and the iff version _iff_irrational) in Mathlib.NumberTheory.DiophantineApproximation.Basic. The research value is therefore presentational: re-expressing the set-of-rationals form as the classical coprime integer-pair statement.",
+      "The bridge is a transport along the injection q ↦ (q.num, q.den): rationals are stored in lowest terms (Rat.reduced gives gcd(|num|,den)=1) with positive denominator (Rat.pos), and (q.num:ℝ)/(q.den:ℝ) = (q:ℝ) (Rat.cast_def), so the image pair has IDENTICAL error and bound — no analytic estimate is repeated.",
+      "Infinitude transports cleanly: Set.infinite_image_iff (InjOn ⇒ image infinite iff domain infinite) + Set.Infinite.mono (subset preserves infinitude) reduce the whole bridge to structural ℚ facts.",
+      "The hypothesis is sharp: Mathlib's iff shows a real admits infinitely many good approximations exactly when irrational (rationals have finitely many, finite_rat_abs_sub_lt_one_div_den_sq), so Irrational α is necessary and sufficient, not just convenient.",
+      "The coprime integer-pair infinitude is FULLY equivalent to irrationality (not merely implied by it): the converse follows from the rational-form iff (Mathlib) by transporting along the injective, denominator-preserving embedding (p,q)↦p/q. Key Mathlib bearers: Rat.div_int_inj (reduced-fraction uniqueness) and Rat.den_div_eq_of_coprime (reduced denominator of a coprime ratio)."
+    ],
+    "builtItems": [
+      "infinite_good_rat_approx (DirichletApproximationOQ01.lean:49) — headline infinitude, Mathlib delegation",
+      "infinite_coprime_approx (DirichletApproximationOQ01.lean:61) — ORIGINAL: classical coprime (p,q) form via num/den injection",
+      "infinite_approx_iff_irrational (DirichletApproximationOQ01.lean:89) — sharp converse, Mathlib iff",
+      "exists_good_approx (DirichletApproximationOQ01.lean:96) — one-shot existence corollary from infinitude",
+      "infinite_coprime_approx_iff_irrational in Proofs/DirichletApproximationOQ01.lean: full iff converse upgrading the one-way infinite_coprime_approx (Hardy & Wright Thm 193). Transports infinitude of the coprime integer-pair set back to Mathlibs rational form via (p,q)↦p/q, injective on coprimes (Rat.div_int_inj), denominator-preserving (Rat.den_div_eq_of_coprime)."
+    ],
+    "mathlibGaps": [
+      "No Mathlib lemma for finiteness of rationals with bounded denominator inside a bounded interval (would enable the 'unbounded denominators' strengthening). Mathlib's finite_rat_abs_sub_lt_one_div_den_sq is for RATIONAL targets only (uses ξ.den) and does not apply to irrational ξ; a bespoke num/den-injection finiteness argument (~25-30 lines, real→int cast bounds) would be required.",
+      "No classical coprime-integer-pair form of the infinitude theorem in Mathlib — only the set-of-rationals form. This file supplies that reformulation."
+    ],
+    "nextSteps": [
+      "Extend the coprime-pair iff to simultaneous approximation (one denominator for several reals).",
+      "Quantitative refinement: lower bound on number of coprime good approximations with denominator in [N,2N]."
+    ],
+    "progressSummary": "COMPLETE: full coprime-pair iff converse infinite_coprime_approx_iff_irrational added (8 theorems, 0 sorry, 0 axiom). Upgrades the one-way coprime reformulation to an equivalence."
+  },
+  "approaches": [
+    {
+      "name": "Transport Mathlib infinitude along the num/den injection",
+      "outcome": "success",
+      "notes": "Set.infinite_image_iff + Set.Infinite.mono carry infinitude from {q:ℚ|...} to the coprime (p,q) set; image-subset proved via Rat.pos/Rat.reduced/Rat.cast_def."
+    }
+  ],
+  "knownResults": [
+    "Dirichlet (1842): one-shot bound (parent entry).",
+    "Hardy & Wright, Theorem 193: infinitely many p/q with |α − p/q| < 1/q² for irrational α.",
+    "Hurwitz: sharp constant 1/(√5 q²), best possible.",
+    "Mathlib: Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational and the iff characterization."
+  ],
+  "references": [
+    "Mathlib/NumberTheory/DiophantineApproximation/Basic.lean",
+    "Hardy & Wright, An Introduction to the Theory of Numbers, Thm 193",
+    "https://en.wikipedia.org/wiki/Dirichlet%27s_approximation_theorem"
+  ],
+  "relatedProofs": [
+    "dirichlet-approximation-theorem (parent, one-shot bound)"
+  ]
+}

@@ -1,0 +1,187 @@
+[
+  {
+    "id": "ann-e790-header",
+    "proofId": "erdos-790",
+    "range": {
+      "startLine": 1,
+      "endLine": 19
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #790** defines l(n) as the maximum guaranteed size of a sum-free subset in any n-element integer set. Sum-free here means no element equals a sum of ≥2 distinct others (weaker than the classical no a+b=c). The best known bounds are √(n log n / log log n) ≤ l(n) ≤ n/log n (Choi-Komlós-Szemerédi 1975). The main conjecture l(n) ≥ n^{1-o(1)} remains OPEN.",
+    "mathContext": "The problem originated in Erdős's 1965 survey on extremal number theory. He claimed a proof that l(n) = o(n) but couldn't reconstruct it by 1973. The CKS 1975 paper in Trans. Amer. Math. Soc. resolved the main questions but left a large gap.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sum-free-sets",
+      "extremal-combinatorics",
+      "additive-number-theory"
+    ],
+    "prerequisites": [
+      "additive number theory",
+      "extremal combinatorics",
+      "asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-e790-sumfree",
+    "proofId": "erdos-790",
+    "range": {
+      "startLine": 31,
+      "endLine": 45
+    },
+    "type": "definition",
+    "title": "Sum-Free Definitions",
+    "content": "**IsSumFree B** holds when no element of B equals a sum of ≥2 distinct other elements: ∀ a ∈ B, ∀ S ⊆ B\\{a} with |S| ≥ 2, a ≠ Σ S. **classicalSumFree B** is the stronger condition: no a + b = c with distinct a, b, c ∈ B. Every classically sum-free set is also sum-free in the weak sense. The weak condition means more sets qualify, so l(n) is larger than the analogous function for classical sum-free.",
+    "mathContext": "The distinction matters: for classical sum-free, every set of n integers has a sum-free subset of size ≥ n/3 (Eberhard-Green-Manners 2014 improvement of the Schur bound). For the weak version, the optimal bound is much less understood.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sum-free",
+      "classical-sum-free",
+      "additive-combinatorics"
+    ],
+    "prerequisites": [
+      "set theory",
+      "additive combinatorics",
+      "Lean 4 definitions"
+    ]
+  },
+  {
+    "id": "ann-e790-extremal",
+    "proofId": "erdos-790",
+    "range": {
+      "startLine": 47,
+      "endLine": 63
+    },
+    "type": "concept",
+    "title": "The Extremal Function l(n)",
+    "content": "**l(n)** is axiomatized as a natural number with two characterizing properties. **l_characterization** says every n-element integer set has a sum-free subset of size ≥ l(n) — this is the lower bound property. **l_optimal** says l(n) is tight: for any k > l(n), some n-set has no sum-free subset of size k. Together these define l(n) uniquely as a minimax quantity.",
+    "mathContext": "Computing l(n) requires quantifying over all n-element subsets of ℤ and all their sum-free subsets — an inherently infinite optimization problem. The axiomatization captures its properties without requiring the computation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal-function",
+      "minimax",
+      "axiomatization"
+    ],
+    "prerequisites": [
+      "minimax optimization",
+      "Lean 4 axiom declarations",
+      "logic and quantifiers"
+    ]
+  },
+  {
+    "id": "ann-e790-lower-bounds",
+    "proofId": "erdos-790",
+    "range": {
+      "startLine": 65,
+      "endLine": 84
+    },
+    "type": "concept",
+    "title": "Progressive Lower Bounds",
+    "content": "Three progressively stronger lower bounds on l(n): **Erdős** showed l(n) ≥ √(n/2) ≈ 0.707√n by observing that the upper half of {1,...,n} is nearly sum-free. **Choi** improved this to l(n) > (1+c)√n for some constant c > 0. **CKS (1975)** proved l(n) ≥ c√(n log n / log log n), which is significantly better than √n for large n due to the logarithmic factor.",
+    "mathContext": "The progression from √(n/2) to √(n log n / log log n) represents genuine conceptual advances. Erdős's argument is elementary; Choi used more careful combinatorics; CKS employed probabilistic and sieve methods.",
+    "significance": "key",
+    "relatedConcepts": [
+      "erdos-lower-bound",
+      "choi-improvement",
+      "cks-lower-bound"
+    ],
+    "prerequisites": [
+      "analytic number theory",
+      "probabilistic method",
+      "sieve methods",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-e790-upper-bound",
+    "proofId": "erdos-790",
+    "range": {
+      "startLine": 86,
+      "endLine": 93
+    },
+    "type": "concept",
+    "title": "CKS Upper Bound",
+    "content": "**cks_upper_bound** states l(n) ≤ Cn/log n for large n. This is the only known upper bound and shows l(n) = o(n) — confirming Erdős's claim whose proof was lost. The construction uses sets with many additive dependencies: dense subsets of arithmetic progressions force all sum-free subsets to be small.",
+    "mathContext": "The upper bound constructs specific sets A where all sum-free subsets are bounded by n/log n. This is an existential result — finding the 'worst-case' sets that minimize the maximum sum-free subset.",
+    "significance": "key",
+    "relatedConcepts": [
+      "upper-bound",
+      "construction",
+      "arithmetic-progressions"
+    ],
+    "prerequisites": [
+      "extremal combinatorics",
+      "arithmetic progressions",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-e790-questions",
+    "proofId": "erdos-790",
+    "range": {
+      "startLine": 95,
+      "endLine": 111
+    },
+    "type": "concept",
+    "title": "Main Questions Answered",
+    "content": "**Question 1** (l(n)/√n → ∞?) is answered YES: the CKS lower bound gives l(n)/√n ≥ c√(log n / log log n) → ∞. **Question 2** (l(n) < n^{1-c}?) is answered YES: the CKS upper bound l(n) ≤ n/log n is o(n^{1-c}) for any c. Both answers are formalized as axioms referencing the CKS bounds.",
+    "mathContext": "These questions were posed by Erdős to understand the qualitative behavior of l(n). The CKS bounds settle them definitively, but the quantitative gap between the bounds remains enormous.",
+    "significance": "key",
+    "relatedConcepts": [
+      "erdos-questions",
+      "qualitative-behavior",
+      "cks-bounds"
+    ],
+    "prerequisites": [
+      "asymptotic analysis",
+      "real analysis",
+      "Lean 4 axiom declarations"
+    ]
+  },
+  {
+    "id": "ann-e790-conjecture",
+    "proofId": "erdos-790",
+    "range": {
+      "startLine": 113,
+      "endLine": 121
+    },
+    "type": "concept",
+    "title": "CKS Conjecture (OPEN)",
+    "content": "**cks_conjecture** states l(n) ≥ n^{1-o(1)}: for any ε > 0 and large enough n, l(n) ≥ n^{1-ε}. If true, this means l(n) is nearly linear — close to the upper bound n/log n. The current gap between √(n log n / log log n) ≈ n^{1/2+ε} and n^{1-o(1)} is roughly the entire exponent range from 1/2 to 1. This is the main open question.",
+    "mathContext": "Confirming the conjecture would require either (a) dramatically improving the lower bound or (b) finding a new structural argument. Disproving it would require constructing sets where all sum-free subsets are of size ≈ n^c for some c < 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cks-conjecture",
+      "open-problem",
+      "exponent-gap"
+    ],
+    "prerequisites": [
+      "asymptotic notation",
+      "real analysis",
+      "extremal combinatorics"
+    ]
+  },
+  {
+    "id": "ann-e790-cks-bounds",
+    "proofId": "erdos-790",
+    "range": {
+      "startLine": 123,
+      "endLine": 129
+    },
+    "type": "concept",
+    "title": "Combined CKS Bounds",
+    "content": "**cks_bounds** combines both CKS results into a single theorem: √(n log n / log log n) ≪ l(n) ≪ n / log n. The proof pairs the lower and upper bound axioms. Both bounds come from the same 1975 paper, making it remarkable that neither has been improved in 50 years.",
+    "mathContext": "The ≪ notation (Vinogradov notation) means 'bounded above by a constant times.' The combined statement captures the state of the art for this problem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "combined-bounds",
+      "vinogradov-notation",
+      "state-of-art"
+    ],
+    "prerequisites": [
+      "asymptotic notation",
+      "analytic number theory",
+      "Lean 4 theorem composition"
+    ]
+  }
+]

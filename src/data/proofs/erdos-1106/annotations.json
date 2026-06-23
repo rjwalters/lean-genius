@@ -1,0 +1,267 @@
+[
+  {
+    "id": "ann-1106-header",
+    "proofId": "erdos-1106",
+    "range": {
+      "startLine": 1,
+      "endLine": 40
+    },
+    "type": "concept",
+    "title": "Problem Statement and References",
+    "content": "Erdos posed this problem at Oberwolfach in 1986. Given the partition function $p(n)$ (counting unordered sums of positive integers), define $F(n) = \\omega(\\prod_{k=1}^n p(k))$ where $\\omega(m)$ counts distinct prime factors. Question 1 (Does $F(n) \\to \\infty$?) was proved by Schinzel via Tijdeman's 1973 result. Question 2 ($F(n) > n$ eventually?) remains open. References include Tijdeman (1973), Schinzel-Wirsing (1987), Erdos-Ivic (1990), and Ono (2000).",
+    "mathContext": "$F(n) = \\omega\\!\\left(\\prod_{k=1}^{n} p(k)\\right)$, where $\\omega(m) = |\\{p \\in \\mathbb{P} : p \\mid m\\}|$",
+    "significance": "key",
+    "relatedConcepts": [
+      "partition function",
+      "arithmetic functions",
+      "omega function"
+    ],
+    "prerequisites": [
+      "Nat.Partition",
+      "Nat.primeFactors"
+    ]
+  },
+  {
+    "id": "ann-1106-partition",
+    "proofId": "erdos-1106",
+    "range": {
+      "startLine": 54,
+      "endLine": 76
+    },
+    "type": "definition",
+    "title": "Partition Function p(n)",
+    "content": "Defines $p(n) = |\\{\\text{Nat.Partition}\\;n\\}|$ using Lean's `Fintype.card`. A partition of $n$ is a multiset of positive integers summing to $n$. The first values are $p(0)=1, p(1)=1, p(2)=2, p(3)=3, p(4)=5, p(5)=7$, verified by `native_decide`. The generating function is $\\sum_{n=0}^\\infty p(n)q^n = \\prod_{k=1}^\\infty \\frac{1}{1-q^k}$.",
+    "mathContext": "$p(n) = |\\{(\\lambda_1, \\ldots, \\lambda_k) : \\lambda_1 \\ge \\cdots \\ge \\lambda_k \\ge 1,\\; \\sum \\lambda_i = n\\}|$",
+    "significance": "key",
+    "relatedConcepts": [
+      "integer partitions",
+      "generating functions",
+      "Young diagrams"
+    ],
+    "prerequisites": [
+      "Nat.Partition",
+      "Fintype.card"
+    ]
+  },
+  {
+    "id": "ann-1106-product",
+    "proofId": "erdos-1106",
+    "range": {
+      "startLine": 78,
+      "endLine": 90
+    },
+    "type": "definition",
+    "title": "Partition Product",
+    "content": "Defines the cumulative product $\\prod_{k=1}^{n} p(k)$ using `Finset.prod` over `Icc 1 n`. Positivity follows from $p(k) \\ge 1$ for all $k$. By the Hardy-Ramanujan formula, $\\log \\prod_{k=1}^n p(k) \\sim \\pi\\sum_{k=1}^n \\sqrt{2k/3} \\sim \\frac{2\\pi}{3}\\sqrt{\\frac{2}{3}}\\, n^{3/2}$, so the product grows super-exponentially.",
+    "mathContext": "$\\texttt{partitionProduct}(n) = \\prod_{k=1}^{n} p(k)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.prod",
+      "super-exponential growth",
+      "OEIS A194259"
+    ],
+    "prerequisites": [
+      "partitionNumber",
+      "Finset.Icc"
+    ]
+  },
+  {
+    "id": "ann-1106-primefactors",
+    "proofId": "erdos-1106",
+    "range": {
+      "startLine": 92,
+      "endLine": 106
+    },
+    "type": "definition",
+    "title": "Function F(n): Distinct Prime Factor Count",
+    "content": "Defines $F(n) = \\omega(\\prod_{k=1}^n p(k))$ as the cardinality of the `primeFactors` finset of the partition product. The monotonicity claim $F(m) \\le F(n)$ for $m \\le n$ has a `sorry` — it requires showing that $\\text{primeFactors}(a \\cdot b) \\supseteq \\text{primeFactors}(a)$ for positive $a, b$.",
+    "mathContext": "$F(n) = |\\{p \\in \\mathbb{P} : p \\mid \\prod_{k=1}^n p(k)\\}|$",
+    "significance": "key",
+    "relatedConcepts": [
+      "omega function",
+      "Nat.primeFactors",
+      "monotone functions"
+    ],
+    "prerequisites": [
+      "partitionProduct",
+      "Nat.primeFactors",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "ann-1106-schinzel",
+    "proofId": "erdos-1106",
+    "range": {
+      "startLine": 110,
+      "endLine": 116
+    },
+    "type": "concept",
+    "title": "Schinzel-Wirsing Lower Bound (1987)",
+    "content": "Schinzel and Wirsing proved $F(n) \\gg \\log n$, i.e., $\\exists c > 0$ such that $F(n) \\ge c \\log n$ for large $n$. This is the best known unconditional lower bound. The proof analyzes the prime factorization structure of the partition product using multiplicative number theory. The gap between $\\log n$ and the conjectured $n$ is enormous.",
+    "mathContext": "$\\exists c > 0,\\; F(n) \\ge c \\log n$ for $n$ sufficiently large",
+    "significance": "key",
+    "relatedConcepts": [
+      "multiplicative functions",
+      "lower bounds",
+      "prime counting"
+    ],
+    "prerequisites": [
+      "F",
+      "Real.log"
+    ]
+  },
+  {
+    "id": "ann-1106-hardyramanujan",
+    "proofId": "erdos-1106",
+    "range": {
+      "startLine": 118,
+      "endLine": 129
+    },
+    "type": "concept",
+    "title": "Hardy-Ramanujan Asymptotic Formula (1918)",
+    "content": "The celebrated Hardy-Ramanujan formula gives $p(n) \\sim \\frac{1}{4n\\sqrt{3}} \\exp\\!\\left(\\pi\\sqrt{\\frac{2n}{3}}\\right)$. This was the first major application of the circle method in analytic number theory. The exponential growth of $p(n)$ is the key driver: it forces the partition product to have super-exponential growth, which in turn forces new prime factors to appear.",
+    "mathContext": "$p(n) \\sim \\frac{1}{4n\\sqrt{3}}\\, e^{\\pi\\sqrt{2n/3}}$ as $n \\to \\infty$",
+    "significance": "key",
+    "relatedConcepts": [
+      "circle method",
+      "modular forms",
+      "asymptotic analysis"
+    ],
+    "prerequisites": [
+      "partitionNumber",
+      "Real.exp",
+      "Real.sqrt"
+    ]
+  },
+  {
+    "id": "ann-1106-ono",
+    "proofId": "erdos-1106",
+    "range": {
+      "startLine": 131,
+      "endLine": 137
+    },
+    "type": "concept",
+    "title": "Ono's Prime Divisibility Theorem (2000)",
+    "content": "Ken Ono proved that every prime $p$ divides $p(n)$ for some $n \\ge 1$, and in fact for a positive proportion of $n$. The proof uses the theory of modular forms and Galois representations, building on Ramanujan's congruences $p(5n+4) \\equiv 0 \\pmod{5}$, $p(7n+5) \\equiv 0 \\pmod{7}$, $p(11n+6) \\equiv 0 \\pmod{11}$.",
+    "mathContext": "$\\forall p \\in \\mathbb{P},\\; \\exists n \\ge 1,\\; p \\mid p(n)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramanujan congruences",
+      "modular forms",
+      "Galois representations"
+    ],
+    "prerequisites": [
+      "partitionNumber",
+      "Nat.Prime"
+    ]
+  },
+  {
+    "id": "ann-1106-part1",
+    "proofId": "erdos-1106",
+    "range": {
+      "startLine": 141,
+      "endLine": 156
+    },
+    "type": "concept",
+    "title": "Part 1: F(n) → ∞ (PROVED)",
+    "content": "The first part of Erdos's question is resolved: $F(n) \\to \\infty$. Schinzel observed this follows from combining Hardy-Ramanujan's exponential growth $p(n) \\sim ce^{\\alpha\\sqrt{n}}$ with Tijdeman's 1973 theorem: any sequence of integers growing at least exponentially must accumulate infinitely many distinct prime factors. Full details appear in Erdos-Ivic (1990), page 69.",
+    "mathContext": "$F(n) = \\omega\\!\\left(\\prod_{k=1}^n p(k)\\right) \\to \\infty$ as $n \\to \\infty$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Tijdeman's theorem",
+      "prime factorization",
+      "Filter.Tendsto"
+    ],
+    "prerequisites": [
+      "F",
+      "hardy_ramanujan_asymptotic"
+    ]
+  },
+  {
+    "id": "ann-1106-part2",
+    "proofId": "erdos-1106",
+    "range": {
+      "startLine": 158,
+      "endLine": 169
+    },
+    "type": "definition",
+    "title": "Part 2: F(n) > n Eventually (OPEN CONJECTURE)",
+    "content": "The conjecture $F(n) > n$ for large $n$ remains open. This asks whether the partition product has 'more primes than its length' — a strong statement about the density of prime factors. The heuristic: by Hardy-Ramanujan, $\\log(\\prod_{k=1}^n p(k)) \\approx cn^{3/2}$, and a typical number of size $N$ has $\\sim \\log N / \\log \\log N$ prime factors, giving $F(n) \\approx cn^{3/2}/\\log n \\gg n$. But making this rigorous is hard.",
+    "mathContext": "$\\forall^\\infty n,\\; F(n) > n$ (OPEN; best known: $F(n) \\gg \\log n$)",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdos-Kac theorem",
+      "normal order of omega",
+      "open problems"
+    ],
+    "prerequisites": [
+      "F",
+      "Filter.atTop"
+    ]
+  },
+  {
+    "id": "ann-1106-f5",
+    "proofId": "erdos-1106",
+    "range": {
+      "startLine": 173,
+      "endLine": 175
+    },
+    "type": "definition",
+    "title": "F(5) = 4",
+    "content": "$\\prod_{k=1}^5 p(k) = 1 \\cdot 2 \\cdot 3 \\cdot 5 \\cdot 7 = 210 = 2 \\cdot 3 \\cdot 5 \\cdot 7$. So $F(5) = 4$. Notably, this product is $210 = \\binom{10}{4}$, a primorial. Proved by `native_decide` (kernel-level computation).",
+    "mathContext": "$F(5) = \\omega(1 \\cdot 2 \\cdot 3 \\cdot 5 \\cdot 7) = \\omega(210) = 4$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "primorial",
+      "computational verification"
+    ],
+    "prerequisites": [
+      "F",
+      "partitionProduct"
+    ]
+  },
+  {
+    "id": "ann-1106-smallvals",
+    "proofId": "erdos-1106",
+    "range": {
+      "startLine": 177,
+      "endLine": 192
+    },
+    "type": "concept",
+    "title": "Small Values F(1) through F(4)",
+    "content": "$F(1) = 0$ ($p(1) = 1$ has no prime factors), $F(2) = 1$ (product $= 2$), $F(3) = 2$ (product $= 6 = 2 \\cdot 3$), $F(4) = 3$ (product $= 30 = 2 \\cdot 3 \\cdot 5$). Each new partition number $p(k)$ can introduce new primes, but not always: $p(6) = 11$ is prime (adding one new factor), while $p(7) = 15 = 3 \\cdot 5$ introduces no new primes.",
+    "mathContext": "$F(1) = 0,\\; F(2) = 1,\\; F(3) = 2,\\; F(4) = 3$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "partition values",
+      "prime factor accumulation"
+    ],
+    "prerequisites": [
+      "F"
+    ]
+  },
+  {
+    "id": "ann-1106-oeis",
+    "proofId": "erdos-1106",
+    "range": {
+      "startLine": 194,
+      "endLine": 208
+    },
+    "type": "concept",
+    "title": "OEIS Sequences A194259 and A194260",
+    "content": "The partition products form OEIS A194259: $1, 2, 6, 30, 210, 2310, 32340, 614460, \\ldots$ The prime factor counts form A194260: $0, 1, 2, 3, 4, 5, 5, 6, \\ldots$ Note that $F(6) = F(7) = 5$ because $p(6) = 11$ (new prime) and $p(7) = 15 = 3 \\cdot 5$ (no new primes). These sequences provide empirical evidence for the conjecture $F(n) > n$.",
+    "mathContext": "A194259: $\\prod_{k=1}^n p(k)$; A194260: $\\omega(\\prod_{k=1}^n p(k))$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "OEIS",
+      "empirical evidence",
+      "computational number theory"
+    ],
+    "prerequisites": [
+      "partitionProduct",
+      "F"
+    ]
+  }
+]

@@ -1,0 +1,209 @@
+{
+  "id": "property-b-first-moment",
+  "title": "Property B (Erdős 1963): Small k-Uniform Hypergraphs Are 2-Colorable",
+  "slug": "property-b-first-moment",
+  "description": "The genuine first-moment proof of Erdős' Property B theorem: every k-uniform hypergraph (k ≥ 1) with fewer than 2^(k-1) edges admits a 2-coloring of its vertices under which no edge is monochromatic. The argument is carried out over the finite sample space of all 2^n colorings c : V → Bool. The crux is an exact count — the number of colorings monochromatic on a fixed k-set is 2·2^(n-k) — after which the total number of (coloring, monochromatic-edge) incidences is |E|·2·2^(n-k), which is < 2^n exactly when |E| < 2^(k-1); the first moment principle then yields a coloring with zero monochromatic edges. This replaces the gallery's vacuous `ProbMethod.Applications.property_b_lower` placeholder (which only asserts 2^(k-1) > 0) with the actual combinatorial theorem the applications module claims. Verified, 0 axioms, 0 sorries, no native_decide.",
+  "meta": {
+    "author": "Paul Erdős (1963), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Property_B",
+    "date": "1963",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PropertyBFirstMoment.lean",
+    "tags": [
+      "probabilistic-method",
+      "first-moment-method",
+      "combinatorics",
+      "hypergraph-coloring",
+      "property-b",
+      "erdos",
+      "counting"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Fintype.card_piFinset",
+        "description": "#(piFinset t) = ∏ i, #(t i). The engine of the counting crux: the colorings constant (= b) on an edge e are exactly the piFinset pinning the color to {b} on e and leaving it free (univ) off e, so their number is the product ∏ x (if x∈e then 1 else 2).",
+        "module": "Mathlib.Data.Fintype.BigOperators"
+      },
+      {
+        "theorem": "Finset.prod_pow_eq_pow_sum",
+        "description": "∏ i ∈ s, b ^ f i = b ^ (∑ i ∈ s, f i). Collapses the per-vertex product 2^(if x∈e then 0 else 1) into 2^(∑ …), reducing the count to an exponent sum.",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.card_univ_diff",
+        "description": "#(univ \\ s) = Fintype.card α - #s. Evaluates the exponent sum ∑ x (if x∉e then 1 else 0) = #{x ∉ e} = n - |e|, giving the 2^(n-k) factor.",
+        "module": "Mathlib.Data.Fintype.Card"
+      },
+      {
+        "theorem": "Finset.card_filter",
+        "description": "#{i ∈ s | p i} = ∑ i ∈ s, ite (p i) 1 0. Used in both directions to interchange a filtered cardinality with an indicator sum, enabling the Fubini swap that turns ∑_colorings(#mono edges) into ∑_edges(#mono colorings).",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Piecewise"
+      },
+      {
+        "theorem": "Finset.sum_comm",
+        "description": "∑ x ∈ s, ∑ y ∈ t, f x y = ∑ y ∈ t, ∑ x ∈ s, f x y. The linearity-of-expectation step: swaps the sum over colorings with the sum over edges.",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Fintype.card_fun",
+        "description": "Fintype.card (α → β) = Fintype.card β ^ Fintype.card α. Gives |Ω| = #(V → Bool) = 2^n, the size of the sample space against which the incidence total is compared.",
+        "module": "Mathlib.Data.Fintype.BigOperators"
+      }
+    ],
+    "originalContributions": [
+      "property_b_two_colorable: a self-contained, 0-axiom Lean proof of Erdős' Property B theorem — every k-uniform hypergraph (edge family E over a finite vertex type V, every edge of size k ≥ 1) with |E| < 2^(k-1) has a 2-coloring c : V → Bool with no monochromatic edge. This is the genuine combinatorial result that the gallery's prob-method-applications module lists as result-family #3 and claims is 'formalized for the first time', but where the actual Lean only proves the vacuous placeholder property_b_lower : 2^(k-1) > 0",
+      "card_const_on: the exact count of colorings taking a prescribed constant value b on an edge e equals 2^(n - |e|), proved by identifying the filtered set with a Fintype.piFinset (color pinned to {b} on e, free off e) and collapsing the resulting product of cardinalities via prod_pow_eq_pow_sum and card_univ_diff — no explicit bijection construction needed",
+      "card_mono: the exact count of colorings monochromatic on a nonempty edge equals 2·2^(n - |e|), obtained by splitting 'monochromatic' into the disjoint all-true and all-false events (disjoint because a nonempty edge cannot be simultaneously all-true and all-false) and adding the two card_const_on counts",
+      "exists_zero_of_sum_lt_card: a self-contained statement of the first moment principle over ℕ — if a nonnegative statistic sums to less than the number of outcomes, some outcome is zero — which is the precise pigeonhole form of 'expected number of bad events < 1 ⟹ a perfect outcome exists'",
+      "A Fubini/linearity argument computing the total number of (coloring, monochromatic-edge) incidences as |E|·2·2^(n-k) exactly, then a clean reduction of the threshold |E|·2·2^(n-k) < 2^n to |E| < 2^(k-1) using 2^n = 2^k·2^(n-k) and 2^k = 2·2^(k-1)"
+    ],
+    "dateAdded": "2026-06-23",
+    "relatedProblems": [
+      {
+        "id": "prob-method-applications",
+        "relationship": "Strengthens result-family #3 (Property B). The applications module states the Property B theorem in its problem statement and claims Property B is 'formalized for the first time', yet its Lean file only proves property_b_lower : 2^(k-1) > 0 (a positivity placeholder). This entry supplies the actual theorem — existence of a proper 2-coloring — over an explicit finite sample space."
+      },
+      {
+        "id": "prob-method-expectation",
+        "relationship": "Application of the first moment method. The expectation module proves the abstract principle (E[X] < t ⟹ some outcome < t); this entry instantiates it on the concrete statistic 'number of monochromatic edges' over the 2^n uniform 2-colorings, including the exact edge-count computation that makes the threshold sharp."
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 203,
+    "assumptions": "0 axioms, 0 sorries, no native_decide. The hypotheses (k-uniformity, |E| < 2^(k-1), k ≥ 1) are inputs to the statement, not standing assumptions. The vertex type V is an arbitrary Fintype with DecidableEq; the sample space is the full function space V → Bool. #print axioms reports only the foundational propext, Classical.choice, Quot.sound for property_b_two_colorable, card_mono, and card_const_on — no sorryAx, no Lean.ofReduceBool.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Paul Erdős introduced 'Property B' (named for Felix Bernstein, who studied 2-colorings of set systems in 1908) and in 1963 gave the first nontrivial lower bound on m(k), the minimum number of edges in a k-uniform hypergraph that is NOT 2-colorable. His one-line probabilistic argument shows m(k) ≥ 2^(k-1): any hypergraph with fewer than 2^(k-1) edges can be properly 2-colored. The proof is the prototypical first-moment argument — color the vertices independently and uniformly at random, observe that each edge is monochromatic with probability 2·2^(-k) = 2^(1-k), so the expected number of monochromatic edges is |E|·2^(1-k) < 1 whenever |E| < 2^(k-1); an outcome below the mean must have zero monochromatic edges. Erdős' bound was the start of a long story: the lower bound was improved by Radhakrishnan–Srinivasan to Ω(2^k √(k/log k)), while the Erdős–Lovász upper bound m(k) = O(k²2^k) shows the truth lies in a narrow window. This entry formalizes Erdős' original 1963 lower-bound argument in full.",
+    "problemStatement": "Let $V$ be a finite vertex set and $E$ a family of $k$-element subsets ('edges'), with $k \\ge 1$. If $|E| < 2^{k-1}$, then there is a 2-coloring $c : V \\to \\{0,1\\}$ such that no edge of $E$ is monochromatic (every edge contains both colors). Equivalently, the minimum number of edges in a non-2-colorable $k$-uniform hypergraph satisfies $m(k) \\ge 2^{k-1}$.",
+    "text": "Color the vertices with two colors at random. A fixed k-edge is monochromatic with probability 2^(1-k), so the expected number of monochromatic edges across all 2^n colorings is |E|·2^(1-k). When |E| < 2^(k-1) this expectation is below 1, and since the count is a nonnegative integer, some coloring must achieve zero monochromatic edges — a proper 2-coloring. The only real work is the exact count: how many of the 2^n colorings are monochromatic on a given edge.",
+    "proofStrategy": "Work over the finite sample space Ω = (V → Bool) of all 2-colorings, |Ω| = 2^n where n = |V|.\n\n1. **Counting crux (card_const_on).** The colorings taking a fixed value b on every vertex of an edge e form exactly the `Fintype.piFinset` that pins the color to {b} on e and leaves it free (univ) off e. Hence their number is ∏_x #(if x∈e then {b} else univ) = ∏_x (if x∈e then 1 else 2) = 2^(#{x ∉ e}) = 2^(n - |e|), computed via prod_pow_eq_pow_sum and card_univ_diff.\n\n2. **Monochromatic count (card_mono).** 'Monochromatic on e' = (all-true on e) ⊔ (all-false on e). For nonempty e these two events are disjoint, so the count is 2·2^(n - |e|).\n\n3. **Linearity / Fubini.** The total number of (coloring, monochromatic edge) incidences is ∑_{c} #{e ∈ E : e mono under c}. Rewriting each filtered cardinality as an indicator sum (card_filter) and swapping the order of summation (sum_comm) gives ∑_{e ∈ E} #{c : e mono} = |E|·2·2^(n-k), using k-uniformity.\n\n4. **Threshold.** |Ω| = 2^n = 2^k·2^(n-k) (since k ≤ n, because every edge embeds in V) and 2^k = 2·2^(k-1) (since k ≥ 1). Thus the incidence total |E|·2·2^(n-k) is < 2^n exactly when |E|·2 < 2^k, i.e. |E| < 2^(k-1).\n\n5. **First moment (exists_zero_of_sum_lt_card).** Since the incidence total is < |Ω| = ∑_{c} 1, some coloring c has zero monochromatic edges; its monochromatic-edge filter is empty, so no edge of E is monochromatic under c. The empty edge family is handled separately (any constant coloring works vacuously).",
+    "keyInsights": [
+      "**The content is an exact count, not an estimate.** The whole theorem reduces to counting how many colorings are monochromatic on one edge (2·2^(n-k)); everything else is linearity of expectation and arithmetic. Formalizing this count cleanly via `Fintype.piFinset` avoids constructing any explicit bijection",
+      "**First moment = integer pigeonhole.** Over the finite sample space the 'expected value < 1' step is literally 'a sum of nonnegative integers is smaller than the number of terms, so one term is zero' (exists_zero_of_sum_lt_card) — no measure theory or real-valued probability is needed",
+      "**Disjointness comes from nonemptiness.** A nonempty edge cannot be simultaneously all-true and all-false, which is exactly what makes the monochromatic count 2·2^(n-k) rather than an inclusion–exclusion expression",
+      "**The threshold 2^(k-1) is the boundary where the mean crosses 1.** The reduction |E|·2·2^(n-k) < 2^n ⟺ |E| < 2^(k-1) shows the sharp role of 2^(k-1): it is precisely the point at which the expected number of monochromatic edges drops below one",
+      "**This is the genuine theorem behind a placeholder.** The gallery's prob-method-applications module advertises Property B as a headline application but only proves 2^(k-1) > 0; this entry delivers the existence of a proper 2-coloring that the module's own problem statement promises"
+    ],
+    "prerequisites": [
+      "The first moment method: if E[X] < 1 for a nonnegative integer-valued X, some outcome has X = 0",
+      "Counting functions with prescribed values on a subset (free choice on the complement gives a power of 2)",
+      "Linearity of expectation / Fubini for finite double sums of indicators",
+      "Basic hypergraph 2-colorability (Property B) and the quantity m(k)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Docstring, Definition, Decidability",
+      "startLine": 1,
+      "endLine": 36,
+      "mathContext": "$\\text{Mono}(e, c) :\\Leftrightarrow \\exists b,\\ \\forall x \\in e,\\ c(x) = b$",
+      "summary": "Module docstring framing the result as the genuine first-moment Property B theorem (contrasting the vacuous property_b_lower placeholder). The predicate Mono e c ('edge e is monochromatic under coloring c') is defined as ∃ b, ∀ x ∈ e, c x = b, with a Decidable instance so it can be used inside Finset.filter."
+    },
+    {
+      "id": "first-moment",
+      "title": "First Moment Principle",
+      "startLine": 38,
+      "endLine": 55,
+      "mathContext": "$\\left(\\sum_{a \\in s} f(a)\\right) < |s| \\;\\Rightarrow\\; \\exists a \\in s,\\ f(a) = 0$",
+      "summary": "exists_zero_of_sum_lt_card: a self-contained proof that if a nonnegative integer statistic sums to less than the number of outcomes, some outcome is zero. The integer form of 'expected number of bad events < 1 ⟹ a perfect outcome exists', proved by contradiction (if all f a ≥ 1 then the sum is ≥ |s|)."
+    },
+    {
+      "id": "counting-crux",
+      "title": "Counting Crux: Colorings Constant on an Edge",
+      "startLine": 57,
+      "endLine": 98,
+      "mathContext": "$\\#\\{c : V \\to \\text{Bool} \\mid \\forall x \\in e,\\ c(x) = b\\} = 2^{\\,n - |e|}$",
+      "summary": "card_const_on: the colorings taking a fixed value b on e are exactly the Fintype.piFinset pinning the color to {b} on e and to univ off e, so their count is ∏_x (if x∈e then 1 else 2) = 2^(∑_x (if x∈e then 0 else 1)) = 2^(n - |e|), via Fintype.card_piFinset, prod_pow_eq_pow_sum, filter_not, card_univ_diff, and filter_univ_mem."
+    },
+    {
+      "id": "mono-count",
+      "title": "Counting Monochromatic Colorings of an Edge",
+      "startLine": 100,
+      "endLine": 135,
+      "mathContext": "$e \\ne \\varnothing \\;\\Rightarrow\\; \\#\\{c \\mid \\text{Mono}(e,c)\\} = 2 \\cdot 2^{\\,n-|e|}$",
+      "summary": "card_mono: 'monochromatic on e' splits as the disjoint union of the all-true and all-false events; the two are disjoint because a nonempty edge cannot be both all-true and all-false. card_union_of_disjoint plus two applications of card_const_on give 2·2^(n-|e|)."
+    },
+    {
+      "id": "main",
+      "title": "Erdős' Property B Theorem",
+      "startLine": 137,
+      "endLine": 203,
+      "mathContext": "$|E| < 2^{k-1} \\;\\Rightarrow\\; \\exists c,\\ \\forall e \\in E,\\ \\neg\\,\\text{Mono}(e,c)$",
+      "summary": "property_b_two_colorable: after dispatching the empty family, k ≤ n holds since every edge embeds in V. The incidence total ∑_c #(mono edges) is computed as |E|·2·2^(n-k) by card_filter + sum_comm (Fubini) + card_mono. The threshold |E|·2·2^(n-k) < 2^n reduces to |E| < 2^(k-1) via 2^n = 2^k·2^(n-k) and 2^k = 2·2^(k-1). The first moment principle then yields a coloring whose monochromatic-edge filter is empty."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős' 1963 Property B theorem — every k-uniform hypergraph with fewer than 2^(k-1) edges is 2-colorable — formalized over the finite sample space of all 2-colorings with zero sorries and zero axioms. The argument is the prototypical first-moment proof: an exact count (2·2^(n-k) colorings are monochromatic on a fixed k-edge), linearity of expectation, and the observation that an integer statistic below its mean must somewhere hit zero.",
+    "implications": "This entry replaces the prob-method-applications module's vacuous property_b_lower placeholder (2^(k-1) > 0) with the genuine theorem that module's problem statement and conclusion advertise. It demonstrates the first-moment method end-to-end on a real combinatorial existence problem, including the exact counting that the abstract expectation lemmas leave implicit, and provides a reusable template (Fintype.piFinset for 'constant on a subset', card_filter + sum_comm for linearity) for further probabilistic-method formalizations such as the random-coloring Ramsey lower bound.",
+    "openQuestions": [
+      "Formalize the Erdős–Lovász upper bound m(k) = O(k²·2^k) (a non-2-colorable k-uniform hypergraph with few edges exists), so that the gallery brackets m(k) from both sides.",
+      "Prove the random-coloring Ramsey lower bound R(k,k) > n when C(n,k)·2^(1-C(k,2)) < 1 with the same counting template (edges of K_n 2-colored), replacing prob-method-expectation's currently trivial erdos_ramsey_lower_bound.",
+      "Sharpen the lower bound to the Radhakrishnan–Srinivasan m(k) = Ω(2^k·√(k/log k)) via the asymmetric/recoloring refinement of the first moment argument."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "prob-method-applications",
+      "relationship": "extends",
+      "description": "Supplies the genuine Property B theorem (result-family #3) that the applications module advertises but only proves as the placeholder property_b_lower : 2^(k-1) > 0."
+    },
+    {
+      "targetId": "prob-method-expectation",
+      "relationship": "depends-on",
+      "description": "Instantiates the first moment method on the concrete statistic 'number of monochromatic edges' over the 2^n uniform 2-colorings."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/PropertyBFirstMoment.lean",
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "ProbMethod.PropertyB",
+    "lineCount": 203,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 1,
+    "theoremCount": 4
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "On a combinatorial problem",
+      "year": "1963",
+      "venue": "Nordisk Matematisk Tidskrift 11, 5–10",
+      "note": "Introduces the probabilistic lower bound m(k) ≥ 2^(k-1) for non-2-colorable k-uniform hypergraphs."
+    },
+    {
+      "authors": "Alon, Noga; Spencer, Joel H.",
+      "title": "The Probabilistic Method",
+      "year": "2016",
+      "venue": "Wiley, 4th edition",
+      "note": "Property B and the first moment method are treated in the opening chapter; this entry follows that exposition."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "property_b_two_colorable",
+      "type": "core",
+      "description": "A k-uniform hypergraph (k ≥ 1) with fewer than 2^(k-1) edges has a 2-coloring with no monochromatic edge.",
+      "leanType": "(∀ e ∈ E, e.card = k) → E.card < 2^(k-1) → ∃ c : V → Bool, ∀ e ∈ E, ¬ Mono e c"
+    },
+    {
+      "name": "card_mono",
+      "type": "supporting",
+      "description": "Exactly 2·2^(n-|e|) colorings are monochromatic on a nonempty edge e.",
+      "leanType": "e.Nonempty → #{c | Mono e c} = 2 * 2^(Fintype.card V - e.card)"
+    }
+  ],
+  "sorries": 0
+}

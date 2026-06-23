@@ -1,0 +1,174 @@
+{
+  "id": "erdos-422",
+  "title": "Erdős Problem #422: Hofstadter-Type Recursive Sequence",
+  "slug": "erdos-422",
+  "description": "f(1)=f(2)=1, f(n) = f(n-f(n-1))+f(n-f(n-2)). Not even known if well-defined for all n. Does f miss infinitely many integers? OEIS A005185. Open.",
+  "meta": {
+    "author": "Hofstadter, Erdős, Graham (1980)",
+    "sourceUrl": "https://erdosproblems.com/422",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos422Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "sequences",
+      "recursion",
+      "self-referential"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 422,
+    "erdosUrl": "https://erdosproblems.com/422",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2025-01-01",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat",
+        "description": "Natural number arithmetic and properties",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Predicate for infinite sets",
+        "module": "Mathlib.Data.Set.Finite.Basic"
+      },
+      {
+        "theorem": "Function.Surjective",
+        "description": "Surjectivity of functions",
+        "module": "Mathlib.Logic.Function.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Defined computable hofstadterFList iterative accumulator for the Hofstadter sequence",
+      "Defined hofstadterF as computable extraction from the list accumulator",
+      "Proved initial_values theorem: f(1)=1, f(2)=1, f(3)=2, f(4)=3, f(5)=3, f(6)=4 via native_decide",
+      "Defined WellDefinedAt and IsWellDefined predicates for well-definedness analysis",
+      "Stated erdos_422_well_defined: well-definedness conjecture for all n",
+      "Stated erdos_422_misses_infinitely: infinite set of missing integers",
+      "Stated erdos_422_not_surjective: non-surjectivity conjecture",
+      "Stated erdos_422_growth: linear growth bound f(n) ≤ (1+ε)n"
+    ],
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives.",
+    "lineCount": 93,
+    "theoremCount": 7,
+    "definitionCount": 4
+  },
+  "overview": {
+    "historicalContext": "Douglas Hofstadter, famous for *Gödel, Escher, Bach* (1979), proposed this self-referential sequence and communicated it to Erdős. It appears in the Erdős–Graham monograph *Old and New Problems and Results in Combinatorial Number Theory* (1980) [ErGr80] and is listed as OEIS A005185.\n\nThe sequence $f(1) = f(2) = 1$, $f(n) = f(n - f(n-1)) + f(n - f(n-2))$ for $n > 2$ is remarkable because its most basic property—whether $f(n)$ is well-defined for all $n$—is unknown. The recursion is self-referential: to compute $f(n)$, one needs $f(n-1)$ and $f(n-2)$ to determine the indices $n - f(n-1)$ and $n - f(n-2)$, and then evaluates $f$ at those indices. If $f(n-1) \\geq n$ or $f(n-2) \\geq n$, the indices become non-positive and the recursion breaks down.\n\nComputationally, the sequence has been verified to be well-defined for billions of terms, and it appears to grow roughly linearly with a complicated local structure. The sequence begins $1, 1, 2, 3, 3, 4, 5, 7, 7, 8, \\ldots$ and exhibits no obvious pattern. It is one of the simplest self-referential recursions whose behavior resists all known analytical techniques, making it a paradigmatic example of 'simple to state, impossible to analyze.'\n\nThe self-referential nature of the recursion places this problem at the intersection of number theory, dynamical systems, and computability theory. Unlike the closely related Hofstadter $Q$-sequence ($Q(n) = Q(n - Q(n-1))$), which involves a single self-referential term, Problem #422 uses two such terms summed together, adding an additional layer of complexity.\n\n**Status**: OPEN — Well-definedness, surjectivity, and growth rate are all unknown.",
+    "problemStatement": "**Problem (OPEN)**\n\nDefine $f(1) = f(2) = 1$ and for $n > 2$:\n$$f(n) = f(n - f(n-1)) + f(n - f(n-2))$$\n\n1. Is $f(n)$ well-defined for all $n$?\n2. Does $f$ miss infinitely many positive integers?\n3. Is $f$ surjective onto the positive integers?\n4. What is the asymptotic growth rate of $f$?\n\n**Known**: The sequence begins $1, 1, 2, 3, 3, 4, 5, 7, 7, 8, \\ldots$ (OEIS A005185). Well-definedness has been verified computationally for billions of terms.\n\n**Open**: All four questions are unresolved.",
+    "text": "f(1)=f(2)=1, f(n) = f(n-f(n-1))+f(n-f(n-2)). Not even known if well-defined for all n. Does f miss infinitely many integers? OEIS A005185. Open.",
+    "proofStrategy": "**Formalization Strategy**\n\nThe Lean file (78 lines) formalizes the problem with all results axiomatized:\n\n1. **Core definitions** (lines 28–37): `hofstadterF` is defined via Lean's equation compiler with explicit pattern matching on $0, 1, 2$, and $n+3$. The case $n = 0$ returns 0 (unused sentinel). `IsWellDefined n` asserts that for all $k \\leq n$ with $k \\geq 3$, the recursive indices $k - f(k-1)$ and $k - f(k-2)$ are positive, i.e., $f(k-1) < k$ and $f(k-2) < k$.\n\n2. **Main questions** (lines 42–57): Four open questions axiomatized: `erdos_422_well_defined` ($\\forall n, \\text{IsWellDefined}(n)$), `erdos_422_misses_infinitely` (infinitely many positive integers not in the range of $f$), `erdos_422_surjectivity` ($f$ restricted to positive integers is not surjective), and `erdos_422_growth` ($f(n) \\leq (1 + \\varepsilon)n$ for large $n$).\n\n3. **Known values** (lines 63–66): `initial_values` axiomatizes $f(1) = 1, f(2) = 1, f(3) = 2, f(4) = 3, f(5) = 3, f(6) = 4$.\n\n4. **Observations** (lines 68–77): Comments on Hofstadter's origin, the self-referential difficulty, and the open question of eventual constancy.",
+    "keyInsights": [
+      "**Well-definedness is unknown**: The most fundamental question—whether $f(n)$ is defined for all $n$—is open. The recursion requires $f(n-1) < n$ and $f(n-2) < n$ for the indices to be valid, and this has only been verified computationally for billions of terms",
+      "**Self-referential indexing**: Unlike standard recursions where $f(n)$ depends on $f(n-1)$ and $f(n-2)$ directly, here the evaluation points $n - f(n-1)$ and $n - f(n-2)$ themselves depend on $f$, creating a nested feedback loop that defeats inductive arguments",
+      "**OEIS A005185**: The sequence begins $1, 1, 2, 3, 3, 4, 5, 7, 7, 8, \\ldots$ and has been computed to many terms without encountering a failure of well-definedness",
+      "**Missing integers**: Even assuming well-definedness, whether $f$ misses infinitely many integers (i.e., fails to be surjective) is unknown, and the related question of whether $f$ is eventually constant is also open",
+      "**Linear growth conjecture**: Computational evidence suggests $f(n)$ grows linearly, formalized as $f(n) \\leq (1 + \\varepsilon)n$ for any $\\varepsilon > 0$ and large enough $n$—but even this weaker statement is unproved"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "Module docstring describing the Hofstadter-type recursive sequence from Erdős Problem #422, its origin from Hofstadter's communication to Erdős, and the open status of well-definedness, surjectivity, and growth. Imports Mathlib for natural number arithmetic and set theory.",
+      "mathContext": "$f(1) = f(2) = 1$, $f(n) = f(n - f(n-1)) + f(n - f(n-2))$ for $n > 2$. All questions about this sequence remain OPEN."
+    },
+    {
+      "id": "definition",
+      "title": "Computable Definition",
+      "startLine": 24,
+      "endLine": 45,
+      "summary": "Defines `hofstadterFList : ℕ → List ℕ` as a computable iterative accumulator building the sequence as a list, with base cases for indices 0, 1, 2 and a recursive case that appends $f(k) = f(k - f(k-1)) + f(k - f(k-2))$ using `List.getD` for safe indexing. Defines `hofstadterF (n : ℕ) : ℕ` by extracting the $n$-th element from the accumulated list."
+    },
+    {
+      "id": "initial-values",
+      "title": "Proved Initial Values",
+      "startLine": 47,
+      "endLine": 63,
+      "summary": "Proves the first six values of the sequence via `native_decide`: $f(1) = 1, f(2) = 1, f(3) = 2, f(4) = 3, f(5) = 3, f(6) = 4$. Combines these into the `initial_values` theorem. These were previously axiomatized; now proved from the computable definition."
+    },
+    {
+      "id": "well-definedness",
+      "title": "Well-Definedness Predicates",
+      "startLine": 65,
+      "endLine": 75,
+      "summary": "Defines `WellDefinedAt k` asserting that recursive lookups at index $k$ stay in bounds ($1 \\leq f(k-1) < k$ and $1 \\leq f(k-2) < k$), and `IsWellDefined n` asserting well-definedness for all indices up to $n$."
+    },
+    {
+      "id": "open-questions",
+      "title": "Open Questions",
+      "startLine": 77,
+      "endLine": 93,
+      "summary": "Axiomatizes four open questions: `erdos_422_well_defined` ($\\forall n, \\text{IsWellDefined}(n)$), `erdos_422_misses_infinitely` ($\\{m > 0 : \\forall n, f(n) \\neq m\\}$ is infinite via `Set.Infinite`), `erdos_422_not_surjective` ($f$ restricted to $\\mathbb{N}^+$ is not surjective via $\\neg$`Function.Surjective`), and `erdos_422_growth` ($f(n) \\leq (1+\\varepsilon)n$ for large $n$)."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #422 with the recursive definition of Hofstadter's sequence, the well-definedness predicate, four axiomatized open questions (well-definedness, infinitely many missing integers, non-surjectivity, linear growth), and known initial values. All results are axiomatized. The self-referential recursion resists standard analysis techniques.",
+    "implications": "1. **Self-Referential Dynamics**: Resolving this problem would advance understanding of self-referential recursions, a class of discrete dynamical systems where the map depends on the orbit itself\n\n**2. Computability and Decidability**: The well-definedness question borders on computability theory—it is conceivable that well-definedness is undecidable, though this would require a fundamentally new approach to prove\n\n3. **Meta-Fibonacci Sequences**: Problem #422 belongs to a family of 'meta-Fibonacci' sequences (including Hofstadter's $Q$-sequence and Conway's $a(n)$) that share the property of self-referential indexing\n\n4. **Number Theory**: Understanding the range of $f$ would illuminate how self-referential operations distribute over the integers—a question with no current theoretical framework.",
+    "openQuestions": [
+      "Is f(n) well-defined for all n, or does the recursion eventually break down?",
+      "Does f miss infinitely many positive integers?",
+      "Is f eventually surjective, eventually constant, or neither?",
+      "What is the precise growth rate of f? Is f(n)/n bounded?",
+      "Is the well-definedness of f decidable?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 93,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 4,
+    "path": "Proofs/Erdos422Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "key": "ErGr80",
+      "citation": "Erdős, P. and Graham, R.L. (1980). Old and New Problems and Results in Combinatorial Number Theory. Monographies de L'Enseignement Mathématique 28, Université de Genève.",
+      "type": "book"
+    },
+    {
+      "key": "Hof79",
+      "citation": "Hofstadter, D.R. (1979). Gödel, Escher, Bach: An Eternal Golden Braid. Basic Books.",
+      "type": "book"
+    },
+    {
+      "key": "A005185",
+      "citation": "OEIS Foundation. A005185: Hofstadter-Maler-Mitchell (or Hofstadter-Conway) $10,000 sequence. The On-Line Encyclopedia of Integer Sequences.",
+      "type": "database"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1101",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, sequences"
+    },
+    {
+      "targetId": "erdos-243",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, sequences"
+    },
+    {
+      "targetId": "erdos-255",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, sequences"
+    }
+  ],
+  "sorries": 0
+}

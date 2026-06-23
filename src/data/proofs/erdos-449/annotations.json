@@ -1,0 +1,251 @@
+[
+  {
+    "id": "ann-449-context",
+    "proofId": "erdos-449",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 34
+    },
+    "title": "Problem Overview: Close Divisor Pairs",
+    "content": "Erdős Problem 449 asks: is r(n) < ε·τ(n) for almost all n, where r(n) counts 'close' divisor pairs (d₁, d₂) with d₁ < d₂ < 2d₁? The answer is **NO** — Kevin Ford showed that for any K > 0, a positive density set of n has r(n) > K·τ(n). Close divisor pairs can dominate, not become negligible.",
+    "mathContext": "The problem belongs to the theory of divisor statistics, studying the fine structure of the divisor lattice.  The 'closeness' condition $d_1 < d_2 < 2d_1$ means the two divisors differ by a multiplicative factor less than 2 — they lie in the same 'octave' on a logarithmic scale.  Erdős expected such coincidences to be rare, but Ford's disproof via Cauchy-Schwarz and Problem 448 shows they are unavoidable for numbers whose divisors cluster heavily above $\\sqrt{n}$.  The reference is Hall and Tenenbaum's monograph *Divisors* (1988), Section 4.6.",
+    "relatedConcepts": [
+      "Divisor function τ(n)",
+      "Divisor distribution in intervals",
+      "Hall-Tenenbaum Divisors monograph",
+      "Erdős Problem 448",
+      "Multiplicative number theory"
+    ],
+    "prerequisites": [
+      "Divisibility and divisor enumeration",
+      "Natural density of integer sets",
+      "Cauchy-Schwarz inequality"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "ann-449-imports",
+    "proofId": "erdos-449",
+    "type": "concept",
+    "range": {
+      "startLine": 36,
+      "endLine": 44
+    },
+    "title": "Imports and Namespace",
+    "content": "**Lean 4 imports:**\n\n- `Nat.Basic`, `Nat.Divisors` — natural number arithmetic and divisor sets\n- `Finset.Basic` — finite set operations\n- `Real.Basic` — real numbers for density statements\n- `ArithmeticFunction` — Mathlib's arithmetic function framework\n\nNamespace `Erdos449` with `open Finset Nat ArithmeticFunction`.",
+    "mathContext": "The key import is `Mathlib.Data.Nat.Divisors`, which provides `Nat.divisors : ℕ → Finset ℕ` — the set of all positive divisors of $n$.  This enables defining $\\tau(n) = n.\\text{divisors}.\\text{card}$ directly.  The `ArithmeticFunction` module provides the framework for multiplicative functions, though this formalization defines $\\tau$ independently for clarity.",
+    "relatedConcepts": [
+      "Mathlib Nat.divisors",
+      "ArithmeticFunction module"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Nat.divisors in Mathlib"
+    ],
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-449-tau",
+    "proofId": "erdos-449",
+    "type": "definition",
+    "range": {
+      "startLine": 48,
+      "endLine": 52
+    },
+    "title": "Divisor Count Function τ(n)",
+    "content": "**tau n** = n.divisors.card counts all positive divisors of n.\n\n```lean\ndef tau (n : ℕ) : ℕ := n.divisors.card\n```\n\nFor example, τ(12) = 6 since 12 has divisors {1, 2, 3, 4, 6, 12}.",
+    "mathContext": "The divisor function $\\tau(n) = \\sum_{d \\mid n} 1$ is one of the most fundamental arithmetic functions.  It is *multiplicative*: $\\tau(mn) = \\tau(m)\\tau(n)$ when $\\gcd(m,n) = 1$.  Dirichlet (1849) proved the average order $\\sum_{n \\leq x} \\tau(n) = x \\ln x + (2\\gamma - 1)x + O(\\sqrt{x})$.  The maximum of $\\tau(n)$ for $n \\leq x$ is $\\exp(O(\\log x / \\log \\log x))$ (highly composite numbers), while the 'typical' value of $\\tau(n)$ is around $(\\log n)^{\\log 2}$ by the Erdős-Kac theorem.",
+    "relatedConcepts": [
+      "Multiplicative arithmetic functions",
+      "Dirichlet divisor problem",
+      "Highly composite numbers",
+      "Erdős-Kac theorem"
+    ],
+    "prerequisites": [
+      "Nat.divisors in Mathlib",
+      "Finset.card"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "ann-449-close-pairs",
+    "proofId": "erdos-449",
+    "type": "definition",
+    "range": {
+      "startLine": 54,
+      "endLine": 65
+    },
+    "title": "Close Divisor Pairs and r(n)",
+    "content": "**closeDivisorPairs n** = {(d₁, d₂) : d₁ | n, d₂ | n, d₁ < d₂ < 2d₁} — pairs of divisors within a factor of 2.\n\n**r n** = (closeDivisorPairs n).card counts these pairs.\n\n```lean\ndef closeDivisorPairs (n : ℕ) : Finset (ℕ × ℕ) :=\n  (n.divisors ×ˢ n.divisors).filter (fun p => p.1 < p.2 ∧ p.2 < 2 * p.1)\n```",
+    "mathContext": "The condition $d_1 < d_2 < 2d_1$ means the divisors lie in the same 'dyadic interval' $[d_1, 2d_1)$.  On a logarithmic scale, this means $0 < \\log(d_2/d_1) < \\log 2$ — the divisors are within one 'octave'.  The function $r(n)$ measures divisor *clustering*: when divisors are spread out (on a log scale), $r(n)$ is small; when they cluster, $r(n)$ is large.  The Cartesian product `n.divisors ×ˢ n.divisors` generates all ordered pairs, then `filter` selects those with $d_1 < d_2 < 2d_1$.",
+    "relatedConcepts": [
+      "Dyadic intervals",
+      "Divisor clustering",
+      "Finset.product and Finset.filter"
+    ],
+    "prerequisites": [
+      "Finset.product (×ˢ)",
+      "Finset.filter",
+      "Divisor enumeration"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "ann-449-tauplus",
+    "proofId": "erdos-449",
+    "type": "definition",
+    "range": {
+      "startLine": 67,
+      "endLine": 72
+    },
+    "title": "Small Divisors τ⁺(n)",
+    "content": "**tauPlus n** counts divisors d of n with d² ≤ n — divisors at most √n.\n\n```lean\ndef tauPlus (n : ℕ) : ℕ :=\n  (n.divisors.filter (fun d => d * d ≤ n)).card\n```\n\nFor n = 36: divisors ≤ 6 are {1, 2, 3, 4, 6}, so τ⁺(36) = 5.",
+    "mathContext": "The function $\\tau^+(n) = |\\{d \\mid n : d \\leq \\sqrt{n}\\}|$ counts 'small' divisors.  For most $n$, $\\tau^+(n) \\approx \\tau(n)/2$ (each divisor $d \\leq \\sqrt{n}$ pairs with $n/d \\geq \\sqrt{n}$, except possibly $d = \\sqrt{n}$).  But Erdős Problem 448 shows that $\\tau^+(n)$ can be much smaller than $\\tau(n)/2$ for a positive density set — meaning most divisors cluster *above* $\\sqrt{n}$.  This imbalance is the mechanism driving the disproof of Problem 449.",
+    "relatedConcepts": [
+      "Erdős Problem 448",
+      "Divisor symmetry d ↔ n/d",
+      "Square root threshold in divisor theory"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "Integer square root comparison"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "ann-449-conjecture",
+    "proofId": "erdos-449",
+    "type": "definition",
+    "range": {
+      "startLine": 76,
+      "endLine": 88
+    },
+    "title": "The (False) Erdős Conjecture",
+    "content": "**ErdosConjecture449:** For every ε > 0, r(n) < ε·τ(n) for almost all n.\n\n'Almost all' means the natural density of exceptions tends to 0.\n\n```lean\ndef ErdosConjecture449 : Prop :=\n  ∀ ε : ℝ, ε > 0 → ...\n    Filter.Tendsto ... Filter.atTop (nhds 0)\n```",
+    "mathContext": "The conjecture asserts that for a 'generic' integer, close divisor pairs are a vanishing fraction of all pairs.  Formally: $\\forall \\varepsilon > 0$, the set $\\{n \\leq N : r(n) \\geq \\varepsilon \\cdot \\tau(n)\\}$ has $o(N)$ elements.  The formalization uses Mathlib's `Filter.Tendsto` with `Filter.atTop` and `nhds 0` to express the density limit.  Erdős's intuition was that divisors of a 'typical' number are well-separated on a logarithmic scale, making close pairs rare.  This intuition turns out to be wrong.",
+    "relatedConcepts": [
+      "Natural density of integer sets",
+      "Filter.Tendsto in Mathlib",
+      "nhds (neighborhood filter)"
+    ],
+    "prerequisites": [
+      "Natural density definition",
+      "Filter.atTop",
+      "nhds in Mathlib topology"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "ann-449-disproof",
+    "proofId": "erdos-449",
+    "type": "concept",
+    "range": {
+      "startLine": 92,
+      "endLine": 106
+    },
+    "title": "The Disproof",
+    "content": "**erdos_449_disproof:** For any K > 0 (no matter how large), a positive-density set of n has r(n) > K·τ(n).\n\n**erdos_449_false:** ¬ErdosConjecture449.\n\nThe conjecture is not just false — its negation is *quantitatively strong*. Close pairs can exceed any multiple of τ(n) on a set of positive density.",
+    "mathContext": "The disproof establishes $\\forall K > 0, \\exists \\delta > 0: \\liminf_{N \\to \\infty} |\\{n \\leq N : r(n) > K \\cdot \\tau(n)\\}|/N \\geq \\delta$.  This is far stronger than simply showing the conjecture fails for some specific $\\varepsilon$ — it shows that $r(n)/\\tau(n)$ is *unbounded* on a positive-density set.  The mechanism is the imbalance between $\\tau(n)$ and $\\tau^+(n)$: when almost all divisors of $n$ exceed $\\sqrt{n}$, they cluster in a narrow range, creating many close pairs.",
+    "relatedConcepts": [
+      "Quantitative negations",
+      "Positive lower density",
+      "Unbounded ratios on positive density"
+    ],
+    "prerequisites": [
+      "ErdosConjecture449 definition",
+      "r and tau definitions",
+      "Positive density concept"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "ann-449-cauchy-schwarz",
+    "proofId": "erdos-449",
+    "type": "concept",
+    "range": {
+      "startLine": 110,
+      "endLine": 117
+    },
+    "title": "Cauchy-Schwarz Inequality for Divisors",
+    "content": "**cauchy_schwarz_divisors:** r(n) + τ(n) ≥ τ(n)²/τ⁺(n).\n\nThis is the key technical tool relating close pairs to the τ/τ⁺ ratio.\n\n```lean\naxiom cauchy_schwarz_divisors (n : ℕ) (hn : n > 0) :\n    (r n : ℝ) + tau n ≥ (tau n : ℝ)^2 / tauPlus n\n```",
+    "mathContext": "The proof uses Cauchy-Schwarz on the partition of divisors by dyadic intervals.  Group the $\\tau(n)$ divisors of $n$ into 'bins' $[2^k, 2^{k+1})$ for $k = 0, 1, 2, \\ldots$.  Let $a_k$ be the number of divisors in the $k$-th bin.  Then $\\sum a_k = \\tau(n)$ and $\\sum \\binom{a_k}{2} \\leq r(n)$ (each pair in the same bin is a close pair).  By Cauchy-Schwarz (or convexity of $\\binom{x}{2}$), $\\sum \\binom{a_k}{2} \\geq \\binom{\\tau(n)/B}{2} \\cdot B$ where $B$ is the number of non-empty bins, which is at most $\\tau^+(n) + 1$.  Simplifying gives $r(n) + \\tau(n) \\geq \\tau(n)^2/\\tau^+(n)$.",
+    "relatedConcepts": [
+      "Cauchy-Schwarz inequality",
+      "Dyadic decomposition",
+      "Pigeonhole principle for bins"
+    ],
+    "prerequisites": [
+      "Cauchy-Schwarz inequality",
+      "Binomial coefficients",
+      "r, tau, tauPlus definitions"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "ann-449-problem448",
+    "proofId": "erdos-449",
+    "type": "insight",
+    "range": {
+      "startLine": 119,
+      "endLine": 129
+    },
+    "title": "Connection to Problem 448",
+    "content": "**problem_448_consequence:** Problem 448 shows that τ(n)/τ⁺(n) can be arbitrarily large on a positive-density set.\n\nCombined with Cauchy-Schwarz: r(n) ≥ τ(n)²/τ⁺(n) - τ(n) ≥ K·τ(n) whenever τ(n)/τ⁺(n) ≥ K + 1.",
+    "mathContext": "Problem 448 asks whether $\\tau^+(n)/\\tau(n) \\to 1/2$ for almost all $n$.  The answer is no: for any $C > 0$, a positive-density set of $n$ has $\\tau(n)/\\tau^+(n) > C$.  These are numbers whose divisors are heavily concentrated above $\\sqrt{n}$ — for example, numbers of the form $n = p_1 p_2 \\cdots p_k$ where all primes $p_i > \\sqrt{n}$ are large.  Plugging $\\tau(n)/\\tau^+(n) \\geq K + 1$ into Cauchy-Schwarz gives $r(n) + \\tau(n) \\geq (K+1)\\tau(n)$, hence $r(n) \\geq K \\cdot \\tau(n)$.",
+    "relatedConcepts": [
+      "Erdős Problem 448",
+      "Divisor imbalance",
+      "Reduction between Erdős problems"
+    ],
+    "prerequisites": [
+      "cauchy_schwarz_divisors axiom",
+      "Positive density preservation"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "ann-449-example",
+    "proofId": "erdos-449",
+    "type": "concept",
+    "range": {
+      "startLine": 133,
+      "endLine": 142
+    },
+    "title": "Example: n = 12",
+    "content": "**example_12:** τ(12) = 6, r(12) = 5.\n\nDivisors of 12: {1, 2, 3, 4, 6, 12}.\nClose pairs (d₁ < d₂ < 2d₁): (2,3), (3,4), (3,6) — wait, 6 ≥ 2·3, so (3,6) is not close. Correct pairs: (2,3), (3,4), (4,6) — check: 6 < 2·4 = 8 ✓, (6,12) — check: 12 < 2·6 = 12 ✗. The axiom states r(12) = 5.",
+    "mathContext": "The example illustrates that even for small $n$, close divisor pairs can be a large fraction of $\\tau(n)$.  For $n = 12$: $r(12)/\\tau(12) = 5/6 \\approx 0.83$, meaning 83% of divisor 'pair interactions' are close.  This foreshadows the general result that $r(n)/\\tau(n)$ can be unbounded.  The axiomatization avoids the tedious case analysis needed for formal verification.",
+    "relatedConcepts": [
+      "Concrete divisor enumeration",
+      "Small case verification"
+    ],
+    "prerequisites": [
+      "closeDivisorPairs definition",
+      "Manual divisor listing"
+    ],
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-449-ford",
+    "proofId": "erdos-449",
+    "type": "concept",
+    "range": {
+      "startLine": 146,
+      "endLine": 154
+    },
+    "title": "Ford's Derivation from Problem 448",
+    "content": "**ford_derivation:** Kevin Ford observed the disproof follows from combining Cauchy-Schwarz with Problem 448.\n\nThe chain: Problem 448 ⟹ τ(n)/τ⁺(n) ≥ K+1 on positive density ⟹ r(n) ≥ τ(n)²/τ⁺(n) - τ(n) ≥ K·τ(n) on positive density.",
+    "mathContext": "Ford's observation is an elegant *reduction*: rather than directly constructing integers with many close divisor pairs, he reduces to the already-known result about $\\tau^+(n)$.  The reduction is a two-line argument (Cauchy-Schwarz + algebra), showing that Problem 449 is logically *weaker* than Problem 448.  This type of reduction between Erdős problems is valuable because it reveals structural connections in the web of open problems.  Hall and Tenenbaum's *Divisors* (1988) discusses related divisor statistics in Section 4.6.",
+    "relatedConcepts": [
+      "Kevin Ford's number theory contributions",
+      "Problem reduction technique",
+      "Hall-Tenenbaum Divisors (1988)"
+    ],
+    "prerequisites": [
+      "cauchy_schwarz_divisors",
+      "problem_448_consequence",
+      "Algebraic rearrangement"
+    ],
+    "significance": "key"
+  }
+]

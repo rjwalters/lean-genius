@@ -1,0 +1,60 @@
+{
+  "slug": "erdos-307-incomplete-01",
+  "title": "Erdős #307: Prime Reciprocal Products — Complete Proof",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\nexists \\text{ finite prime sets } P, Q \\text{ s.t. } \\left(\\sum_{p \\in P} \\frac{1}{p}\\right)\\left(\\sum_{q \\in Q} \\frac{1}{q}\\right) = 1",
+    "plain": "Are there two finite sets of primes P, Q with (Σ 1/p)(Σ 1/q) = 1? The prime version is OPEN. The coprime version was solved by Cambie: (1 + 1/5)(1/2 + 1/3) = 1.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-03T04:51:14-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-307-incomplete-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "primes",
+    "egyptian-fractions",
+    "reciprocals",
+    "p-adic"
+  ],
+  "relatedProofs": [
+    "erdos-3",
+    "erdos-30",
+    "erdos-307"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T04:51:14-07:00",
+  "significance": 7,
+  "tractability": 6
+}

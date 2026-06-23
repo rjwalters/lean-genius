@@ -1,0 +1,47 @@
+[
+  {
+    "id": "ann-e396growthrate-pos",
+    "proofId": "erdos-396-oq-04-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 51, "endLine": 57 },
+    "type": "lemma",
+    "title": "Positivity of the Catalan numbers",
+    "content": "Every Catalan number is positive. The identity $(n+1)\\cdot\\mathrm{catalan}\\,n = \\binom{2n}{n} > 0$ forces $\\mathrm{catalan}\\,n \\neq 0$, since a zero factor would make the product vanish. Needed throughout to take logarithms.",
+    "mathContext": "$\\mathrm{catalan}\\,n > 0$ for all $n$."
+  },
+  {
+    "id": "ann-e396growthrate-upper",
+    "proofId": "erdos-396-oq-04-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 59, "endLine": 72 },
+    "type": "lemma",
+    "title": "Upper bracket: catalan n ≤ 4ⁿ",
+    "content": "The central binomial coefficient $\\binom{2n}{n}$ is one term of row $2n$ of Pascal's triangle, whose entries sum to $2^{2n}$, so $\\binom{2n}{n} \\le 2^{2n} = 4^n$ (Mathlib's `Nat.choose_le_two_pow`). Combined with $\\mathrm{catalan}\\,n \\le (n+1)\\cdot\\mathrm{catalan}\\,n = \\binom{2n}{n}$, this gives $\\mathrm{catalan}\\,n \\le 4^n$ for every $n$.",
+    "mathContext": "$\\mathrm{catalan}\\,n \\le \\binom{2n}{n} \\le 2^{2n} = 4^n$."
+  },
+  {
+    "id": "ann-e396growthrate-lower",
+    "proofId": "erdos-396-oq-04-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 74, "endLine": 89 },
+    "type": "lemma",
+    "title": "Lower bracket: 4ⁿ ≤ 2n²·catalan n",
+    "content": "Erdős's exponential lower bound on the central binomial coefficient, $4^n < n\\cdot\\binom{2n}{n}$ for $n \\ge 4$ (Mathlib's `Nat.four_pow_lt_mul_centralBinom`), rewrites via $\\binom{2n}{n} = (n+1)\\cdot\\mathrm{catalan}\\,n$ to $4^n < n(n+1)\\cdot\\mathrm{catalan}\\,n$. Since $n(n+1) \\le 2n^2$ for $n \\ge 1$ — the gap $2n^2 - n(n+1) = n(n-1)\\cdot\\mathrm{catalan}\\,n \\ge 0$ closes by `nlinarith` — we obtain $4^n \\le 2n^2\\cdot\\mathrm{catalan}\\,n$.",
+    "mathContext": "$4^n < n(n+1)\\,\\mathrm{catalan}\\,n \\le 2n^2\\,\\mathrm{catalan}\\,n$ for $n \\ge 4$."
+  },
+  {
+    "id": "ann-e396growthrate-main",
+    "proofId": "erdos-396-oq-04-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 93, "endLine": 146 },
+    "type": "theorem",
+    "title": "The exponential growth rate is log 4",
+    "content": "Taking logarithms of the two brackets and dividing by $n$ traps $(\\log \\mathrm{catalan}\\,n)/n$ between $\\log 4 - (\\log 2)/n - 2(\\log n)/n$ and $\\log 4$. Both flanks tend to $\\log 4$ because $(\\log n)/n \\to 0$ — Mathlib's `Real.isLittleO_log_id_atTop` composed with $n \\mapsto \\uparrow n \\to \\infty$. The squeeze theorem `tendsto_of_tendsto_of_tendsto_of_le_of_le'` then forces $(1/n)\\log(\\mathrm{catalan}\\,n) \\to \\log 4$.",
+    "mathContext": "$\\dfrac{1}{n}\\log(\\mathrm{catalan}\\,n) \\to \\log 4$."
+  },
+  {
+    "id": "ann-e396growthrate-rpow",
+    "proofId": "erdos-396-oq-04-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 148, "endLine": 158 },
+    "type": "theorem",
+    "title": "n-th root form: (catalan n)^{1/n} → 4",
+    "content": "Composing the logarithmic limit with the continuity of $\\exp$ gives $(\\mathrm{catalan}\\,n)^{1/n} = \\exp\\!\\big((\\log \\mathrm{catalan}\\,n)/n\\big) \\to \\exp(\\log 4) = 4$. This is the Cauchy–Hadamard statement that the Catalan generating function $\\sum \\mathrm{catalan}\\,n\\,x^n$ has radius of convergence exactly $1/4$.",
+    "mathContext": "$(\\mathrm{catalan}\\,n)^{1/n} \\to 4$; radius of convergence $= 1/4$."
+  }
+]

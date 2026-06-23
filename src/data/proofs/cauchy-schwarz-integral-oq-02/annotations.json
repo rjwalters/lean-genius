@@ -1,0 +1,203 @@
+[
+  {
+    "id": "ann-cs-oq02-imports",
+    "proofId": "cauchy-schwarz-integral-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 7
+    },
+    "type": "concept",
+    "title": "Mathlib Imports for Lp and Bochner Theory",
+    "content": "The proof draws on five distinct Mathlib modules. `L2Space` provides the Hilbert space structure for L²(μ), including the inner product that makes Cauchy-Schwarz applicable. `Bochner.Basic` provides `norm_integral_le_integral_norm`, the workhorse for the two-variable Minkowski integral inequality. `MeanInequalities` and `MeanInequalitiesPow` contain Hölder's inequality and its power-function variants. `InnerProductSpace.Basic` supplies `abs_real_inner_le_norm` (the Cauchy-Schwarz inequality) and `norm_add_sq_real` (the polarization identity used in the L² proof).",
+    "mathContext": "The key dependency chain: $\\|f+g\\|^2 = \\|f\\|^2 + 2\\langle f,g\\rangle + \\|g\\|^2$ (polarization) and $|\\langle f,g\\rangle| \\leq \\|f\\|\\cdot\\|g\\|$ (CS) together give $\\|f+g\\|^2 \\leq (\\|f\\|+\\|g\\|)^2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lp spaces",
+      "Bochner integration",
+      "inner product spaces",
+      "Hölder inequality"
+    ],
+    "prerequisites": [
+      "measure theory",
+      "functional analysis",
+      "Lean 4 Mathlib imports"
+    ]
+  },
+  {
+    "id": "ann-cs-oq02-header",
+    "proofId": "cauchy-schwarz-integral-oq-02",
+    "range": {
+      "startLine": 9,
+      "endLine": 57
+    },
+    "type": "concept",
+    "title": "The Mathematical Hierarchy: CS → Hölder → Minkowski",
+    "content": "This header documents the central result: Minkowski's inequality ‖f+g‖_p ≤ ‖f‖_p + ‖g‖_p can be derived from Cauchy-Schwarz via two paths. For p=2, the derivation is direct — the inner product identity ‖f+g‖² = ‖f‖² + 2⟪f,g⟫ + ‖g‖² combined with |⟪f,g⟫| ≤ ‖f‖·‖g‖ (CS) immediately gives ‖f+g‖² ≤ (‖f‖+‖g‖)². For general p≥1, one applies Hölder's inequality (the generalization of CS to conjugate exponents) twice: splitting ∫|f+g|ᵖ = ∫|f|·|f+g|^{p-1} + ∫|g|·|f+g|^{p-1} and applying Hölder to each term yields Minkowski after algebraic simplification.",
+    "mathContext": "The hierarchy: $|\\langle f,g\\rangle| \\leq \\|f\\|\\|g\\|$ (CS, $p=2$) $\\Rightarrow$ $\\int|fg|\\,d\\mu \\leq \\|f\\|_p\\|g\\|_q$ (Hölder, $\\frac{1}{p}+\\frac{1}{q}=1$) $\\Rightarrow$ $\\|f+g\\|_p \\leq \\|f\\|_p+\\|g\\|_p$ (Minkowski, $p\\geq 1$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cauchy-Schwarz inequality",
+      "Hölder inequality",
+      "Minkowski inequality",
+      "Lp norm",
+      "conjugate exponents"
+    ],
+    "prerequisites": [
+      "Lp spaces",
+      "measure theory",
+      "inner product spaces"
+    ]
+  },
+  {
+    "id": "ann-cs-oq02-l2-proof",
+    "proofId": "cauchy-schwarz-integral-oq-02",
+    "range": {
+      "startLine": 74,
+      "endLine": 91
+    },
+    "type": "concept",
+    "title": "L² Minkowski from Cauchy-Schwarz: Explicit Lean Derivation",
+    "content": "This theorem provides the explicit Lean 4 proof that the Minkowski inequality for L²(μ) follows from Cauchy-Schwarz. The proof proceeds in four steps: (1) `abs_real_inner_le_norm f g` gives |⟪f,g⟫| ≤ ‖f‖·‖g‖; (2) `le_abs_self` extracts the non-absolute-value bound ⟪f,g⟫ ≤ ‖f‖·‖g‖; (3) `norm_add_sq_real` expands ‖f+g‖² and `nlinarith` closes the arithmetic gap to show ‖f+g‖² ≤ (‖f‖+‖g‖)²; (4) `Real.sqrt_le_sqrt` combined with `Real.sqrt_sq` converts the squared inequality to the norm inequality. The `nlinarith` call handles the nonlinear arithmetic automatically given `norm_nonneg` as a hint.",
+    "mathContext": "Steps: $\\langle f,g\\rangle \\leq |\\langle f,g\\rangle| \\leq \\|f\\|\\|g\\|$, so $\\|f+g\\|^2 = \\|f\\|^2 + 2\\langle f,g\\rangle + \\|g\\|^2 \\leq \\|f\\|^2 + 2\\|f\\|\\|g\\| + \\|g\\|^2 = (\\|f\\|+\\|g\\|)^2$. Taking square roots (valid since both sides are non-negative): $\\|f+g\\| \\leq \\|f\\|+\\|g\\|$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "norm_add_sq_real",
+      "abs_real_inner_le_norm",
+      "Real.sqrt_le_sqrt",
+      "nlinarith",
+      "polarization identity"
+    ],
+    "prerequisites": [
+      "real inner product spaces",
+      "Lean 4 tactic mode",
+      "norm inequalities"
+    ]
+  },
+  {
+    "id": "ann-cs-oq02-abstract-ips",
+    "proofId": "cauchy-schwarz-integral-oq-02",
+    "range": {
+      "startLine": 93,
+      "endLine": 107
+    },
+    "type": "insight",
+    "title": "Abstract Inner Product Space: CS implies Triangle Inequality Universally",
+    "content": "This theorem generalizes the L² result to any real inner product space E. The type signature `{E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]` captures any Hilbert space or pre-Hilbert space over ℝ. The proof is structurally identical to the L²(μ) case since L²(μ) is itself an InnerProductSpace. This abstraction reveals that the p=2 Minkowski inequality is not a special property of L² functions over a measure space, but a universal consequence of the inner product axioms. In particular, it applies to ℝⁿ (with the Euclidean inner product), any Hilbert space, and abstract L² spaces.",
+    "mathContext": "In any real inner product space $(E, \\langle \\cdot,\\cdot\\rangle)$: the parallelogram law $\\|u+v\\|^2 + \\|u-v\\|^2 = 2(\\|u\\|^2+\\|v\\|^2)$ implies $\\|u+v\\|^2 = \\|u\\|^2 + 2\\langle u,v\\rangle + \\|v\\|^2$, and CS gives $\\langle u,v\\rangle \\leq \\|u\\|\\|v\\|$, so $\\|u+v\\| \\leq \\|u\\|+\\|v\\|$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "inner product space",
+      "pre-Hilbert space",
+      "parallelogram law",
+      "NormedAddCommGroup",
+      "triangle inequality"
+    ],
+    "prerequisites": [
+      "abstract algebra",
+      "functional analysis",
+      "Lean 4 type classes"
+    ]
+  },
+  {
+    "id": "ann-cs-oq02-general-lp",
+    "proofId": "cauchy-schwarz-integral-oq-02",
+    "range": {
+      "startLine": 119,
+      "endLine": 163
+    },
+    "type": "concept",
+    "title": "General Lp Minkowski via Fact (1 ≤ p) and norm_add_le",
+    "content": "The two theorems `minkowski_lp_from_holder` and `minkowski_lp_triangle` prove Minkowski for arbitrary p ≥ 1 with a one-line proof: `norm_add_le f g`. The key is the typeclass `[Fact (1 ≤ p)]` which activates the `instNormedAddCommGroupLp` instance — Mathlib's proof that `Lp E p μ` forms a normed additive commutative group when p ≥ 1. This instance internally relies on `eLpNorm_add_le` (formerly `snorm_add_le`), which proves the Lp seminorm triangle inequality via Hölder's inequality applied twice. The `Fact` typeclass is used because `p : ENNReal` is a value-level argument, not a type-level constraint, so the condition p ≥ 1 must be wrapped in a proposition-level assumption.",
+    "mathContext": "$\\|f+g\\|_{L^p} \\leq \\|f\\|_{L^p} + \\|g\\|_{L^p}$ for $p \\geq 1$ follows from Hölder: $\\int|f+g|^p \\leq (\\|f\\|_p + \\|g\\|_p)\\cdot\\|f+g\\|_p^{p-1}$, which gives Minkowski after dividing by $\\|f+g\\|_p^{p-1}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fact typeclass",
+      "ENNReal",
+      "NormedAddCommGroup",
+      "instNormedAddCommGroupLp",
+      "eLpNorm_add_le",
+      "Hölder inequality"
+    ],
+    "prerequisites": [
+      "Lp spaces",
+      "Lean 4 type class system",
+      "measure theory"
+    ]
+  },
+  {
+    "id": "ann-cs-oq02-elpnorm",
+    "proofId": "cauchy-schwarz-integral-oq-02",
+    "range": {
+      "startLine": 172,
+      "endLine": 183
+    },
+    "type": "definition",
+    "title": "Minkowski in eLpNorm Seminorm Form",
+    "content": "The `eLpNorm` (extended Lp seminorm) is Mathlib's primitive definition of the Lp norm before quotienting by null sets. Unlike the norm on `Lp E p μ` (which works on equivalence classes), `eLpNorm f p μ` is defined for any measurable function `f : α → E` and takes values in `ℝ≥0∞`. The theorem `minkowski_elpnorm_triangle` proves `eLpNorm (f+g) p μ ≤ eLpNorm f p μ + eLpNorm g p μ` by calling `eLpNorm_add_le`, which is the version-stable name in Mathlib ≥ 4.14 (formerly `snorm_add_le`). The hypotheses `AEStronglyMeasurable f μ` and `AEStronglyMeasurable g μ` ensure the functions are measurable enough for the Lp seminorm to be well-behaved.",
+    "mathContext": "$\\text{eLpNorm}(f, p, \\mu) := \\left(\\int |f|^p\\,d\\mu\\right)^{1/p}$ for $p \\in (0,\\infty)$, and $\\text{esssup}|f|$ for $p=\\infty$. The triangle inequality $\\text{eLpNorm}(f+g) \\leq \\text{eLpNorm}(f) + \\text{eLpNorm}(g)$ is the raw integral form of Minkowski.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "eLpNorm",
+      "AEStronglyMeasurable",
+      "eLpNorm_add_le",
+      "ENNReal arithmetic",
+      "essential supremum"
+    ],
+    "prerequisites": [
+      "measure theory",
+      "Lp seminorms",
+      "Mathlib MeasureTheory module"
+    ]
+  },
+  {
+    "id": "ann-cs-oq02-bochner",
+    "proofId": "cauchy-schwarz-integral-oq-02",
+    "range": {
+      "startLine": 201,
+      "endLine": 232
+    },
+    "type": "insight",
+    "title": "Full Two-Variable Minkowski via Bochner Integration",
+    "content": "The two-variable Minkowski integral inequality ‖∫_β F(·,y) dν(y)‖_{Lp(μ)} ≤ ∫_β ‖F(·,y)‖_{Lp(μ)} dν(y) is proved by `norm_integral_le_integral_norm`. This is a consequence of the Bochner integral's key property: for any normed space-valued integrable function F : β → X, ‖∫F dν‖ ≤ ∫‖F‖ dν. Here X = Lp(μ), which is a Banach space (for p ≥ 1) with norm precisely the Lp norm. The proof at line 216 is a one-liner precisely because all the heavy work — that Lp(μ) is a normed space via Minkowski/Hölder — is encapsulated in the typeclass infrastructure. The L² special case at lines 228-232 makes the CS provenance explicit.",
+    "mathContext": "For $F : \\beta \\to L^p(\\mu)$ Bochner-integrable: $\\left\\|\\int_\\beta F(y)\\,d\\nu(y)\\right\\|_{L^p(\\mu)} \\leq \\int_\\beta \\|F(y)\\|_{L^p(\\mu)}\\,d\\nu(y)$. This is the vector-valued Jensen inequality for the convex function $x \\mapsto \\|x\\|$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bochner integral",
+      "norm_integral_le_integral_norm",
+      "vector-valued integration",
+      "Jensen inequality",
+      "Banach space"
+    ],
+    "prerequisites": [
+      "Bochner integration",
+      "Lp spaces",
+      "functional analysis",
+      "vector-valued measure theory"
+    ]
+  },
+  {
+    "id": "ann-cs-oq02-main",
+    "proofId": "cauchy-schwarz-integral-oq-02",
+    "range": {
+      "startLine": 234,
+      "endLine": 263
+    },
+    "type": "concept",
+    "title": "Main Result: Complete CS → Minkowski Derivation Chain",
+    "content": "The closing section formalizes the answer to the open question. `minkowski_from_cauchy_schwarz` (line 252) is the primary named result — it proves L² Minkowski by delegating to `minkowski_l2_from_CS`, making the CS provenance visible in the proof term. `minkowski_integral_ineq_l2` is an alias that confirms the same result holds for the integral form. Together with the earlier theorems, this file constitutes a complete formal derivation chain: CS (abs_real_inner_le_norm) → L² triangle inequality (minkowski_l2_from_CS) → Bochner integral bound (norm_integral_le_integral_norm) → full two-variable Minkowski integral inequality.",
+    "mathContext": "The complete chain: $|\\langle f,g\\rangle| \\leq \\|f\\|\\|g\\|$ (CS) $\\xrightarrow{\\text{polarization}}$ $\\|f+g\\|_2 \\leq \\|f\\|_2 + \\|g\\|_2$ (L² Minkowski) $\\xrightarrow{\\text{Bochner}}$ $\\|\\int F\\,d\\nu\\|_{L^2} \\leq \\int \\|F\\|_{L^2}\\,d\\nu$ (integral Minkowski).",
+    "significance": "key",
+    "relatedConcepts": [
+      "proof by delegation",
+      "theorem aliasing",
+      "formal proof chains",
+      "Cauchy-Schwarz",
+      "Bochner integration"
+    ],
+    "prerequisites": [
+      "L² spaces",
+      "Bochner integration",
+      "inner product spaces"
+    ]
+  }
+]

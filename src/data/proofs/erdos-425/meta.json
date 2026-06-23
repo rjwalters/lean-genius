@@ -1,0 +1,196 @@
+{
+  "id": "erdos-425",
+  "title": "Erdős Problem #425: Multiplicative Sidon Sets",
+  "slug": "erdos-425",
+  "description": "Let F(n) be the maximum size of A ⊆ {1,...,n} such that all pairwise products ab (a < b) are distinct. Erdős proved π(n) + c₁·n^(3/4)·(log n)^(-3/2) ≤ F(n) ≤ π(n) + c₂·n^(3/4)·(log n)^(-3/2). The exact constant c (if it exists) is unknown. Alexander disproved the real version conjecture.",
+  "meta": {
+    "author": "Paul Erdős",
+    "sourceUrl": "https://erdosproblems.com/425",
+    "date": "1968",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos425Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "sidon-sets",
+      "multiplicative-structure",
+      "prime-numbers"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 425,
+    "erdosUrl": "https://erdosproblems.com/425",
+    "erdosProblemStatus": "partially-solved",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtered finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsMultiplicativeSidon predicate for product-distinct sets",
+      "ProductSet definition for pairwise products",
+      "F(n) as supremum over multiplicative Sidon subsets",
+      "IsRMultiplicativeSidon for r-fold product distinctness",
+      "RealMultSidon for real number version",
+      "IsSidonSet for additive Sidon comparison",
+      "Erdős bounds axiom with n^(3/4)·(log n)^(-3/2) term",
+      "Alexander construction disproving real conjecture"
+    ],
+    "axiomCount": 2,
+    "lineCount": 264,
+    "assumptions": "2 axioms: erdos_bounds, alexander_construction. 0 sorries.",
+    "theoremCount": 1,
+    "definitionCount": 11
+  },
+  "overview": {
+    "historicalContext": "Erdős introduced this problem in his 1968 paper \"On some applications of graph theory to number theoretic problems\" [Er68], where he established both upper and lower bounds for $F(n)$, the maximum size of a multiplicative Sidon subset of $\\{1,\\ldots,n\\}$. The bounds take the form $\\pi(n) + c_i n^{3/4}(\\log n)^{-3/2}$, showing that the prime counting function $\\pi(n)$ is the dominant term.\n\nThe problem was further discussed in Erdős (1973, 1977) and in the influential monograph of Erdős and Graham [ErGr80], where the real-number version was proposed: for $A \\subset [1,x]$ with $|ab - cd| \\ge 1$ for all distinct pairs, Erdős conjectured $\\max |A| = o(x)$. This conjecture was **disproved by Alexander** (reported in [ErGr80]), who showed that linear-sized sets $|A| \\ge cx$ are achievable using an exponential lifting of additive Sidon sets.\n\nThe connection between multiplicative and additive Sidon sets is central: taking logarithms converts products to sums, so $\\log(ab) = \\log a + \\log b$. Classical additive Sidon sets ($B_2$ sequences) have been studied since the 1930s by Sidon, Erdős, and Turán, with the maximum size being $(1 + o(1))\\sqrt{n}$ (Lindström 1969). Whether the error term can be reduced to $O(n^\\varepsilon)$ is Erdős Problem #30, one of his most famous open questions (\\$1000 prize).",
+    "problemStatement": "Let $F(n) = \\max |A|$ where $A \\subseteq \\{1,\\ldots,n\\}$ and all products $ab$ ($a < b$) are distinct.\n\n**Questions:**\n1. Is there a constant $c$ such that $F(n) = \\pi(n) + (c + o(1)) n^{3/4}(\\log n)^{-3/2}$?\n2. For $r$-fold products, is $|A| \\le \\pi(n) + O(n^{(r+1)/(2r)})$?\n\n**Real Version:** What is $\\max |A|$ for $A \\subset [1,x]$ with $|ab - cd| \\ge 1$?\n\n**Status:** Integer order of magnitude known; exact constant OPEN. Real version: $o(x)$ conjecture is FALSE (Alexander).",
+    "text": "Let F(n) be the maximum size of A ⊆ {1,...,n} such that all pairwise products ab (a < b) are distinct. Erdős proved π(n) + c₁·n^(3/4)·(log n)^(-3/2) ≤ F(n) ≤ π(n) + c₂·n^(3/4)·(log n)^(-3/2). The exact constant c (if it exists) is unknown. Alexander disproved the real version conjecture.",
+    "proofStrategy": "The formalization builds from basic definitions to the main results:\n\n1. **Infrastructure**: `SubsetOfInterval`, `OrderedPair`, `ProductSet` using `Finset` operations\n2. **Core definitions**: `IsMultiplicativeSidon` (product injectivity), `IsMultiplicativeSidon'` (cardinality characterization)\n3. **Extremal function**: $F(n)$ via `Finset.sup'` over the powerset\n4. **Prime lower bound**: $F(n) \\ge \\pi(n)$ is discussed in source comments (docstring only; no Lean axiom `primes_are_sidon` is declared)\n5. **Erdős bounds**: Axiomatized $n^{3/4}(\\log n)^{-3/2}$ secondary term with constants $c_1, c_2$ (`erdos_bounds` axiom)\n6. **Generalizations**: $r$-fold products (`IsRMultiplicativeSidon`), real version (`RealMultSidon`)\n7. **Alexander's disproof**: Construction giving $|A| \\ge cx$ via exponential lifting of Sidon sets (`alexander_construction` axiom)\n8. **Additive connection**: `IsSidonSet` (additive $B_2$); log-conversion and classical $\\sqrt{n}$ bound are discussed in source comments only (no Lean declarations)",
+    "keyInsights": [
+      "**Primes are the core**: Any large multiplicative Sidon set must contain almost all primes $\\le n$, since primes are the only elements whose products are guaranteed distinct (by unique factorization). The gap $F(n) - \\pi(n) = \\Theta(n^{3/4}(\\log n)^{-3/2})$ measures how many composites can be safely added",
+      "**The $3/4$ exponent**: The secondary term $n^{3/4}(\\log n)^{-3/2}$ arises from a balance between the number of composite candidates ($\\sim n$) and the collision probability ($\\sim n^{-1/2}$ per element). The upper bound uses collision counting; the lower bound uses greedy construction",
+      "**Alexander's exponential trick**: The real version is defeated by the map $b \\mapsto X e^{b/X^2}$, which converts additive Sidon structure (all sums distinct) into multiplicative separation ($|ab - cd| \\ge 1$). This shows the integer and real problems have fundamentally different behavior",
+      "**Logarithmic bridge**: $\\log(ab) = \\log a + \\log b$ converts multiplicative Sidon to additive Sidon, connecting to the rich theory of $B_2$ sequences and Erdős Problem #30 (\\$1000 prize for the $\\sqrt{n} + O(n^\\varepsilon)$ bound)",
+      "**$r$-fold hierarchy**: The conjectured bound $\\pi(n) + O(n^{(r+1)/(2r)})$ gives $3/4$ for pairwise products, $2/3$ for triple products, and approaches $1/2$ as $r \\to \\infty$---showing that higher-order distinctness constraints progressively restrict the set size"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Combinatorics (counting, extremal problems)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Namespace",
+      "summary": "Imports `Nat.Prime`, `Finset`, `Primorial`, and `Real.Basic`. Opens `Erdos425` namespace for all definitions and theorems.",
+      "startLine": 31,
+      "endLine": 37,
+      "mathContext": "Formal definition: Imports `Nat.Prime`, `Finset`, `Primorial`, and `Real.Basic`. Opens `Erdos425` namespace for all definitions and theorems."
+    },
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Defines `SubsetOfInterval n`, `OrderedPair A`, `ProductSet A = \\{ab : a,b \\in A,\\, a < b\\}$`, `IsMultiplicativeSidon` (product injectivity), and `IsMultiplicativeSidon'` (cardinality characterization).",
+      "startLine": 39,
+      "endLine": 75,
+      "mathContext": "Defines `SubsetOfInterval n`, `OrderedPair A`, `ProductSet A = \\{ab : a,b \\in A,\\, a < b\\}$`, `IsMultiplicativeSidon` (product injectivity), and `IsMultiplicativeSidon'` (cardinality characterization)."
+    },
+    {
+      "id": "function-f",
+      "title": "The Function F(n)",
+      "summary": "$F(n) = \\max |A|$ over multiplicative Sidon $A \\subseteq \\{1,\\ldots,n\\}$ via `Finset.sup'`. Lower bound $F(n) \\ge \\pi(n)$ discussed in source comments only; no Lean axiom `primes_are_sidon` is declared.",
+      "startLine": 77,
+      "endLine": 102,
+      "mathContext": "$F(n) = \\max |A|$ over multiplicative Sidon $A \\subseteq \\{1,\\ldots,n\\}$ via `Finset.sup'`. The lower bound $F(n) \\ge \\pi(n)$ is described in docstrings (lines 93-102) with no corresponding Lean declaration."
+    },
+    {
+      "id": "erdos-bounds",
+      "title": "Erdős's Bounds",
+      "summary": "Axiom: $\\exists\\, 0 < c_1 \\le c_2$ with $\\pi(n) + c_1 n^{3/4}(\\log n)^{-3/2} \\le F(n) \\le \\pi(n) + c_2 n^{3/4}(\\log n)^{-3/2}$. `MainQuestion`: does a single constant $c$ exist?",
+      "startLine": 103,
+      "endLine": 128,
+      "mathContext": "Axiom: $\\exists\\, 0 < c_1 \\le c_2$ with $\\$\\pi$(n) + c_1 n^{3/4}(\\$\\log n$)^{-3/2} \\le F(n) \\le \\$\\pi$(n) + c_2 n^{3/4}(\\$\\log n$)^{-3/2}$. `MainQuestion`: does a single constant $c$ exist?"
+    },
+    {
+      "id": "r-product",
+      "title": "r-Product Generalization",
+      "summary": "`IsRMultiplicativeSidon A r` for $r$-fold product distinctness. `RProductConjecture`: $|A| \\le \\pi(n) + O(n^{(r+1)/(2r)})$ with exponent $3/4, 2/3, \\ldots \\to 1/2$.",
+      "startLine": 129,
+      "endLine": 155,
+      "mathContext": "`IsRMultiplicativeSidon A r` for $r$-fold product distinctness. `RProductConjecture`: $|A| \\le \\$\\pi$(n) + $O(n^{(r+1)$/(2r)})$ with exponent $3/4, 2/3, \\ldots \\to 1/2$."
+    },
+    {
+      "id": "real-version",
+      "title": "The Real Number Version",
+      "summary": "`RealMultSidon`: $|ab - cd| \\ge 1$. Erdős conjectured $o(x)$---**DISPROVED** by Alexander via Sidon-to-exponential lifting giving $|A| \\ge cx$.",
+      "startLine": 156,
+      "endLine": 187,
+      "mathContext": "Mathematical content: `RealMultSidon`: $|ab - cd| \\ge 1$. Erdős conjectured $o(x)$---**DISPROVED** by Alexander via Sidon-to-exponential lifting giving $|A| \\ge cx$."
+    },
+    {
+      "id": "sidon-connection",
+      "title": "Connection to Additive Sidon Sets",
+      "summary": "`IsSidonSet` (additive $B_2$ def, line 196). Log-conversion and classical $\\sqrt{n}$ Sidon bound discussed in source comments (no Lean declarations `log_conversion` or `sidon_bound`). Links to Erdős Problem #30.",
+      "startLine": 188,
+      "endLine": 210,
+      "mathContext": "Formal definition: `IsSidonSet` (line 196). The log-conversion remark ($\\log(ab) = \\log a + \\log b$) and classical $\\sqrt{n}$ bound are docstring commentary only — no corresponding Lean declarations."
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "Verified counterexample: $\\{1,2,3,6\\}$ is not multiplicative Sidon since $1 \\cdot 6 = 2 \\cdot 3 = 6$. Proved with `norm_num` and `simp`.",
+      "startLine": 211,
+      "endLine": 225,
+      "mathContext": "Mathematical content: Verified counterexample: $\\{1,2,3,6\\}$ is not multiplicative Sidon since $1 \\cdot 6 = 2 \\cdot 3 = 6$. Proved with `norm_num` and `simp`."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "`erdos_425_summary`: packages Erdős bounds $\\wedge$ Alexander construction. Proved by `⟨erdos_bounds, alexander_construction⟩`.",
+      "startLine": 226,
+      "endLine": 264,
+      "mathContext": "Bound: `erdos_425_summary`: packages Erdős bounds $\\wedge$ Alexander construction. Proved by `⟨erdos_bounds, alexander_construction⟩`."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #425 studies multiplicative Sidon sets---subsets of $\\{1,\\ldots,n\\}$ where all pairwise products are distinct. Erdős (1968) proved tight bounds $F(n) = \\pi(n) + \\Theta(n^{3/4}(\\log n)^{-3/2})$, showing the primes form the core and approximately $n^{3/4}(\\log n)^{-3/2}$ composites can be added. Whether the constant converges is open. For the real version, Erdős's conjecture $\\max |A| = o(x)$ was disproved by Alexander using an exponential lifting of additive Sidon sets.",
+    "implications": "**Theoretical Significance**: This problem connects multiplicative and additive combinatorics through the logarithmic bridge.\n\nThe precise determination of the secondary term's constant would require understanding the fine structure of product collisions among composites. Alexander's construction demonstrates that the integer and real settings have fundamentally different extremal behavior, with the real case allowing linear-sized sets.",
+    "openQuestions": [
+      "Does the constant $c$ in $F(n) = \\pi(n) + (c + o(1)) n^{3/4}(\\log n)^{-3/2}$ exist?",
+      "What is the correct bound for $r$-fold multiplicative Sidon sets? Is $|A| \\le \\pi(n) + O(n^{(r+1)/(2r)})$?",
+      "Can Alexander's construction constant $c$ (in $|A| \\ge cx$) be determined explicitly?",
+      "What is the maximum size of a multiplicative Sidon set in $\\{1,\\ldots,n\\}$ that avoids 1?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-30",
+      "relationship": "directly-related",
+      "description": "Additive Sidon sets (B₂ sequences); logarithmic conversion links multiplicative to additive. $1000 prize for √n + O(n^ε) bound"
+    },
+    {
+      "targetId": "erdos-340",
+      "relationship": "thematic",
+      "description": "Growth of the greedy Sidon sequence (Mian-Chowla), another extremal problem on additive Sidon sets"
+    },
+    {
+      "targetId": "erdos-324",
+      "relationship": "thematic",
+      "description": "Distinct polynomial pair sums; maximal sumset property parallels the multiplicative Sidon condition"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.NumberTheory.Primorial",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos425",
+    "lineCount": 264,
+    "axiomCount": 2,
+    "theoremCount": 1,
+    "definitionCount": 11,
+    "path": "Proofs/Erdos425Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

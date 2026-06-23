@@ -1,0 +1,243 @@
+{
+  "id": "area-of-circle-oq-01",
+  "title": "Circumference Formula via Area Differentiation",
+  "slug": "area-of-circle-oq-01",
+  "description": "The circumference C = 2πr derived by differentiating the area formula A = πr². Formalizes the fundamental relationship that the boundary length equals the rate of change of area with respect to radius, using Mathlib's power rule (hasDerivAt_pow). Includes corollaries for differentiability, monotonicity, scaling, and the algebraic identity C² = 4πA.",
+  "meta": {
+    "author": "Archimedes (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Area_of_a_circle",
+    "date": "~250 BCE",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CircumferenceFromArea.lean",
+    "tags": [
+      "analysis",
+      "geometry",
+      "calculus",
+      "differentiation",
+      "extension"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "hasDerivAt_pow",
+        "description": "Derivative of x^n is n * x^(n-1)",
+        "module": "Mathlib.Analysis.Calculus.Deriv.Pow"
+      },
+      {
+        "theorem": "HasDerivAt.const_mul",
+        "description": "Derivative of c * f(x) is c * f'(x)",
+        "module": "Mathlib.Analysis.Calculus.Deriv.Basic"
+      },
+      {
+        "theorem": "Real.pi_pos",
+        "description": "π > 0",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Pedagogical formalization connecting area differentiation to circumference via Mathlib's power rule",
+      "Second derivative and monotonicity corollaries for circle area and circumference",
+      "Convenience lemma: algebraic identity C² = 4πA for circles (proved by unfold + ring)"
+    ],
+    "dateAdded": "2026-02-14",
+    "axiomCount": 0,
+    "lineCount": 162,
+    "prerequisites": [
+      "Differentiation of real functions (HasDerivAt)",
+      "Area of circle (pi*r^2) and circumference (2*pi*r)",
+      "Chain rule and power rule for derivatives",
+      "Pi and trigonometric function properties"
+    ],
+    "assumptions": "0 axioms, 0 sorries. Main result is a direct application of Mathlib hasDerivAt_pow.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 18,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "The relationship between a circle's area and circumference was understood by Archimedes of Syracuse (~287–212 BCE) in *Measurement of a Circle*: he viewed the disk as composed of infinitely many concentric rings, each of circumference $C(\\rho) = 2\\pi\\rho$, yielding $A(r) = \\int_0^r 2\\pi\\rho\\, d\\rho = \\pi r^2$. The inverse relationship $C = dA/dr$ follows by the Fundamental Theorem of Calculus, independently discovered by Newton and Leibniz in the 1660s–1680s. This elegant connection—that **boundary measure equals the derivative of enclosed measure**—generalizes to all dimensions: the surface area of an $n$-ball is the derivative of its volume with respect to radius, a fact formalized by Federer and Fleming in their 1960 foundational work on geometric measure theory. The isoperimetric equality $C^2 = 4\\pi A$ appearing as a corollary here is the equality case of the classical isoperimetric inequality, studied by Zenodorus (~200 BCE) and rigorously proved by Weierstrass (1870s) using the calculus of variations.",
+    "problemStatement": "**Circumference via Differentiation**:\n\nFor the area function $A(r) = \\pi r^2$, prove:\n$$\\frac{dA}{dr} = 2\\pi r = C(r)$$\n\nwhere $C(r)$ is the circumference of a circle with radius $r$.",
+    "text": "A pedagogical formalization applying Mathlib's power rule to derive C = 2πr from A = πr², with corollaries for differentiability, monotonicity, scaling, and the algebraic identity C² = 4πA.",
+    "proofStrategy": "Define $A(r) = \\pi r^2$ as a real-valued function and use Mathlib's calculus infrastructure. The power rule gives $d(r^2)/dr = 2r$, and constant multiplication gives $d(\\pi r^2)/dr = \\pi \\cdot 2r = 2\\pi r$. This is packaged using `HasDerivAt` for the strongest form, with `deriv` and `Differentiable` corollaries.",
+    "keyInsights": [
+      "The derivative $dA/dr = 2\\pi r$ has a beautiful geometric interpretation: increasing the radius by $dr$ adds an annular strip of width $dr$ and length $C(r)$",
+      "The isoperimetric equality $C^2 = 4\\pi A$ follows purely by algebra from the definitions",
+      "The second derivative $d^2A/dr^2 = 2\\pi$ is constant, reflecting that circumference grows linearly with radius",
+      "This relationship generalizes to all dimensions: $S_n(r) = dV_n/dr$ where $S_n$ is surface area and $V_n$ is volume",
+      "The **scaling laws** $A(cr) = c^2 A(r)$ and $C(cr) = c \\cdot C(r)$ reflect the dimensional analysis: area scales as length$^2$, perimeter as length$^1$, connected to the homogeneity degree of each function"
+    ],
+    "prerequisites": [
+      "Differentiation of real functions (HasDerivAt)",
+      "Area of circle (pi*r^2) and circumference (2*pi*r)",
+      "Chain rule and power rule for derivatives",
+      "Pi and trigonometric function properties"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle",
+      "relationship": "extends",
+      "description": "This proof answers the open question from the Area of a Circle entry: whether $C = 2\\pi r$ can be derived by differentiating $A = \\pi r^2$. It extends that formalization from the integral/measure-theoretic direction to the differential calculus direction."
+    },
+    {
+      "targetId": "isoperimetric-theorem",
+      "relationship": "related",
+      "description": "The algebraic identity $C^2 = 4\\pi A$ proved here for circles is the equality case of the isoperimetric inequality. The optimality statement (circles maximize area for given perimeter) is not proved here — see the Isoperimetric Theorem entry."
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "related",
+      "description": "Both formalizations use $\\pi$ as defined in Mathlib's trigonometric module. The transcendence of $\\pi$ ensures the circumference $2\\pi r$ is transcendental for any nonzero rational radius."
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "This entry proves the derivative direction: differentiating the area function πr² yields the circumference 2πr. The integral direction (A(r) = ∫₀ʳ C(ρ) dρ) is listed as an open question but not formalized here"
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-02",
+      "relationship": "extended-by",
+      "description": "Proves the integral direction this entry left as an open question: $A(r) = \\int_0^r C(\\rho)\\,d\\rho = \\int_0^r 2\\pi\\rho\\,d\\rho = \\pi r^2$. Together with this entry's derivative direction $dA/dr = C(r)$, they form a complete FTC round-trip"
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-03",
+      "relationship": "extended-by",
+      "description": "Proves the full isoperimetric inequality $C^2 \\geq 4\\pi A$ with equality iff the curve is a circle. This entry only proves the algebraic identity $C^2 = 4\\pi A$ for circles; the OQ-03 entry establishes the optimality of circles among all closed curves"
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-01",
+      "relationship": "extended-by",
+      "description": "Generalizes the derivative relationship $dA/dr = C(r)$ to $n$ dimensions: $dV_n/dr = S_n(r)$ where $V_n$ is the volume and $S_n$ the surface area of an $n$-ball. Answers the open question about formalizing the $n$-dimensional volume-surface area derivative"
+    },
+    {
+      "targetId": "area-of-circle-oq-03",
+      "relationship": "complementary",
+      "description": "Formalizes Archimedes' method of exhaustion for computing the area of a circle, the ancient precursor to the calculus-based approach used here. Where this entry differentiates $A = \\pi r^2$, Archimedes approximated the area by inscribed/circumscribed polygons"
+    }
+  ],
+  "sections": [
+    {
+      "id": "imports-setup",
+      "title": "Imports and Module Setup",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Imports Mathlib's calculus infrastructure (`Deriv.Basic`, `Deriv.Pow`), trigonometric definitions for $\\pi$, and Lebesgue volume-of-balls. Opens the `Real` and `MeasureTheory` namespaces within `CircumferenceFromArea`.",
+      "mathContext": "Imports from Mathlib: `Deriv.Basic` and `Deriv.Pow` for differentiation infrastructure, `Trigonometric.Basic` for the definition of $\\pi$, `VolumeOfBalls` for measure-theoretic connection (unused in current proofs)."
+    },
+    {
+      "id": "definitions",
+      "title": "Area and Circumference Functions",
+      "startLine": 46,
+      "endLine": 51,
+      "summary": "Defines `circleArea(r) = \\pi r^2` and `circumference(r) = 2\\pi r` as noncomputable real-valued functions.",
+      "mathContext": "Definitions: $A(r) = \\pi r^2$ (area as function of radius), $C(r) = 2\\pi r$ (circumference as function of radius)."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: Derivative of Area Equals Circumference",
+      "startLine": 52,
+      "endLine": 72,
+      "summary": "Proves `hasDerivAt_circleArea`: the area function has derivative $2\\pi r$ at every point $r$, using the power rule and constant multiplication. Also proves the `HasDerivAt` form with the circumference function.",
+      "mathContext": "Main result: $\\frac{d}{dr}(\\pi r^2) = 2\\pi r$, i.e., $A'(r) = C(r)$. The circumference is the derivative of area with respect to radius."
+    },
+    {
+      "id": "deriv-forms",
+      "title": "Derivative and Differentiability",
+      "startLine": 73,
+      "endLine": 89,
+      "summary": "Derives the `deriv` form (`deriv circleArea r = 2\\pi r`), equality with the circumference function, and global differentiability of the area function.",
+      "mathContext": "Alternative derivative forms: $\\frac{d}{dr}A = 2\\pi r$ via power rule, $\\frac{d}{dr}(\\pi r^2) = \\pi \\cdot 2r$ via chain rule."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases and Scaling Laws",
+      "startLine": 90,
+      "endLine": 115,
+      "summary": "Unit circumference ($2\\pi$), zero circumference ($0$), scaling laws for both area ($c^2$-quadratic) and circumference ($c$-linear).",
+      "mathContext": "Special case: unit circle $A'(1) = 2\\pi$. The rate of area growth at $r = 1$ equals the circumference of the unit circle."
+    },
+    {
+      "id": "higher-order",
+      "title": "Higher-Order Properties",
+      "startLine": 116,
+      "endLine": 149,
+      "summary": "Second derivative equals $2\\pi$ (constant), positivity for positive radius, monotonicity of both area and circumference for non-negative radii.",
+      "mathContext": "Higher derivatives: $A''(r) = 2\\pi$ (constant curvature), $A'''(r) = 0$. The area function is a quadratic in $r$."
+    },
+    {
+      "id": "isoperimetric",
+      "title": "Algebraic Identity and Duality",
+      "startLine": 150,
+      "endLine": 162,
+      "summary": "The algebraic identity $C^2 = 4\\pi A$ (verified by expanding definitions) and the circumference-from-derivative duality theorem.",
+      "mathContext": "Algebraic identity: $(2\\pi r)^2 = 4\\pi \\cdot (\\pi r^2)$, i.e., $C^2 = 4\\pi A$. This is the equality case of the isoperimetric inequality, but only the algebraic identity is proved here — the optimality of circles among all curves is not formalized."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization proves that the circumference formula $C = 2\\pi r$ follows from differentiating the area formula $A = \\pi r^2$, answering the open question from the Area of a Circle gallery entry. The proof uses Mathlib's calculus infrastructure (HasDerivAt, deriv) and includes extensive corollaries: differentiability, second derivative, isoperimetric equality, monotonicity, and scaling laws. All 163 lines, 0 sorries, 0 axioms.",
+    "implications": "**Theoretical Significance**: This formalizes a fundamental relationship in geometry: the boundary length is the derivative of the enclosed area.\n\nThe same principle generalizes to higher dimensions ($S_n = dV_n/dr$) and to arbitrary smooth domains via the coarea formula. The isoperimetric equality $C^2 = 4\\pi A$ is the equality case of the isoperimetric inequality.",
+    "openQuestions": [
+      "**Addressed** by `area-of-circle-oq-01-oq-02-oq-01`: the $n$-dimensional volume-surface area derivative relationship $V'_n(r) = S_n(r)$ is formalized for the $n$-ball.",
+      "**Addressed** by `area-of-circle-oq-01-oq-02`: the integral direction $A(r) = \\int_0^r C(\\rho)\\,d\\rho$ is formalized, completing the FTC round-trip with this entry's derivative direction.",
+      "**Addressed** by `area-of-circle-oq-01-oq-03`: the isoperimetric inequality $C^2 \\geq 4\\pi A$ with equality only for circles is formalized."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Calculus.Deriv.Basic",
+      "Mathlib.Analysis.Calculus.Deriv.Pow",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real",
+      "MeasureTheory"
+    ],
+    "namespace": "CircumferenceFromArea",
+    "lineCount": 162,
+    "axiomCount": 0,
+    "theoremCount": 18,
+    "definitionCount": 2,
+    "path": "Proofs/CircumferenceFromArea.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Archimedes",
+      "title": "Measurement of a Circle (Κύκλου μέτρησις)",
+      "year": "~250 BCE",
+      "venue": "Syracuse",
+      "note": "First rigorous treatment of the area-circumference relationship: Archimedes proved A = (1/2)Cr by exhaustion, viewing the disk as a limit of inscribed and circumscribed polygons. The derivative relationship A'(r) = C(r) is the infinitesimal version of his argument"
+    },
+    {
+      "authors": "Federer, Herbert; Fleming, Wendell H.",
+      "title": "Normal and Integral Currents",
+      "year": "1960",
+      "venue": "Annals of Mathematics, vol. 72, no. 3, pp. 458–520",
+      "note": "Foundational work in geometric measure theory establishing the coarea formula, which generalizes the derivative relationship V'_n(r) = S_n(r) (volume derivative = surface area) to arbitrary codimension. The circle case A'(r) = C(r) is the simplest instance"
+    },
+    {
+      "authors": "Weierstrass, Karl",
+      "title": "Über eine besondere Classe von Minimalflächen-Problemen",
+      "year": "1870",
+      "venue": "Berlin Academy of Sciences",
+      "note": "First rigorous proof of the isoperimetric inequality C² ≥ 4πA using the calculus of variations. The equality C² = 4πA proved as a corollary in this formalization characterizes the circle as the unique maximizer"
+    },
+    {
+      "authors": "Hurwitz, Adolf",
+      "title": "Sur le problème des isopérimètres",
+      "year": "1902",
+      "venue": "Comptes rendus de l'Académie des Sciences, vol. 132, pp. 401–403",
+      "note": "Elegant Fourier-analytic proof of the isoperimetric inequality, showing C² ≥ 4πA with equality iff the curve is a circle. Uses the Parseval identity applied to the Fourier expansion of the boundary curve"
+    },
+    {
+      "authors": "Spivak, Michael",
+      "title": "Calculus",
+      "year": "1994",
+      "venue": "Publish or Perish, 3rd edition",
+      "note": "Chapter 12 presents the derivative A'(r) = C(r) as a motivating example for the Fundamental Theorem of Calculus, connecting the annular ring argument to Riemann integration"
+    }
+  ],
+  "sorries": 0
+}

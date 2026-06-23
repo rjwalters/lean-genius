@@ -1,0 +1,244 @@
+{
+  "id": "continuum-hypothesis-oq-01",
+  "title": "Should We Adopt Axioms That Decide CH?",
+  "slug": "continuum-hypothesis-oq-01",
+  "description": "The Continuum Hypothesis is independent of ZFC, raising a natural question: should we extend our axiom system to settle it? This exploration formalizes the CH axiom landscape — V=L (implies CH) vs forcing axioms like PFA (implies ¬CH) — and reveals a key asymmetry: CH-deciding axioms are incompatible with large cardinals, while ¬CH-deciding axioms are not.",
+  "meta": {
+    "author": "Gödel (1940), Cohen (1963), Scott (1961), Foreman-Magidor-Shelah (1988), Woodin (1999-)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Continuum_hypothesis#Arguments_for_and_against_CH",
+    "date": "1940",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/ContinuumHypothesisOQ01.lean",
+    "tags": [
+      "set-theory",
+      "foundations",
+      "logic",
+      "independence",
+      "continuum-hypothesis",
+      "large-cardinals",
+      "forcing",
+      "extension",
+      "hilbert",
+      "wiedijk-100"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Cardinal.aleph",
+        "description": "Aleph hierarchy of infinite cardinals",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      },
+      {
+        "theorem": "Cardinal.cantor",
+        "description": "Cantor's theorem: κ < 2^κ for any cardinal",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Order.succ_le_of_lt",
+        "description": "a < b implies succ a ≤ b (for aleph-one ≤ continuum)",
+        "module": "Mathlib.Order.SuccPred.Basic"
+      },
+      {
+        "theorem": "Cardinal.aleph_lt_aleph",
+        "description": "aleph α < aleph β iff α < β (strict ordering of alephs)",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of `Decides`: axiom Φ decides CH iff Φ → CH or Φ → ¬CH",
+      "Proof that V=L implies GCH implies CH (connecting constructibility to CH)",
+      "Proof that PFA implies ¬CH (via 2^ℵ₀ = ℵ₂ ≠ ℵ₁)",
+      "Formalization of Scott's theorem: V=L is incompatible with measurable cardinals",
+      "Key asymmetry theorem: CH-deciding axioms (V=L) lose large cardinals; ¬CH axioms (PFA) keep them",
+      "Summary theorem: both CH-deciding and ¬CH-deciding axioms exist (open question is substantive)"
+    ],
+    "dateAdded": "2026-02-22",
+    "axiomCount": 10,
+    "lineCount": 317,
+    "assumptions": "10 axioms: VeqL, VeqL_implies_GCH, UltimateL, UltimateL_implies_GCH, PFA, PFA_implies_continuum_eq_aleph_two, MM, MM_implies_PFA, VeqL_incompatible_with_measurable, PFA_large_cardinal_compatible. 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 20,
+    "definitionCount": 4
+  },
+  "overview": {
+    "historicalContext": "Gödel (1940) showed CH is consistent with ZFC using the constructible universe L; Cohen (1963) showed ¬CH is also consistent using forcing. The independence of CH left open a deeper philosophical question: which axioms, if any, should we add to ZFC to settle it? Gödel initially hoped V=L was the right answer, but Scott (1961) showed V=L is incompatible with measurable cardinals — large cardinals that most set theorists consider mathematically natural. Since the 1970s, forcing axioms like Martin's Maximum (MM) and the Proper Forcing Axiom (PFA) have emerged as popular alternatives, and these axioms imply ¬CH. Woodin's ongoing Ultimate-L program (1999–) seeks a canonical inner model that satisfies GCH while accommodating all large cardinals.",
+    "problemStatement": "**Open Question (continuum-hypothesis-oq-01)**: Should we extend ZFC with a new axiom that decides CH?\n\nFormally: which propositions Φ satisfy `Decides Φ` (meaning Φ → CH or Φ → ¬CH), and what are their mathematical consequences?\n\n**Key tension**: V=L → CH but V=L excludes measurable cardinals; PFA → ¬CH but PFA is consistent with large cardinals. This asymmetry has led most set theorists to favor the ¬CH side.",
+    "text": "The Continuum Hypothesis is independent of ZFC, raising a natural question: should we extend our axiom system to settle it? This exploration formalizes the CH axiom landscape — V=L (implies CH) vs forcing axioms like PFA (implies ¬CH) — and reveals a key asymmetry: CH-deciding axioms are incompatible with large cardinals, while ¬CH-deciding axioms are not.",
+    "proofStrategy": "Rather than resolving whether CH is 'true', we formalize the axiom landscape. We define `Decides Φ` as `(Φ → CH) ∨ (Φ → ¬CH)`, then exhibit natural axioms for each direction: V=L (constructibility) for CH, and PFA (proper forcing axiom) for ¬CH. We then formalize Scott's incompatibility result (V=L and measurable cardinals cannot coexist) and the large-cardinal compatibility of PFA, establishing the key asymmetry.",
+    "keyInsights": [
+      "CH is formally 'decidable by axiom' — both V=L → CH and PFA → ¬CH are natural extensions of ZFC",
+      "V=L implies the full Generalized Continuum Hypothesis (2^ℵ_α = ℵ_{α+1} for all α), of which CH is the α=0 case",
+      "PFA implies 2^ℵ₀ = ℵ₂, so the continuum skips ℵ₁ and ¬CH follows by ℵ₁ < ℵ₂",
+      "Scott's 1961 theorem: if a measurable cardinal exists, then V ≠ L — forcing CH-deciding axiom V=L to sacrifice large cardinals",
+      "Key asymmetry: ¬CH-deciding axioms (PFA, MM) are consistent with measurable cardinals; CH-deciding V=L is not",
+      "Woodin's Ultimate-L program seeks to resolve the tension by finding an inner model that satisfies GCH while accommodating all large cardinals"
+    ],
+    "prerequisites": [
+      "Set theory and cardinality (cardinal arithmetic, aleph hierarchy)",
+      "Cantor's theorem: |S| < |P(S)| for any set S",
+      "ZFC axioms and the concept of axiomatic independence",
+      "Ordinal and cardinal successor operations",
+      "Basic familiarity with large cardinal axioms (measurable cardinals)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 59,
+      "summary": "Imports, problem statement, and overview of the CH axiom landscape.",
+      "mathContext": "**CH**: $2^{\\aleph_0} = \\aleph_1$. **GCH**: $2^{\\aleph_\\alpha} = \\aleph_{\\alpha+1}$ for all ordinals $\\alpha$. Gödel (1938): $\\text{Con}(\\text{ZFC}) \\Rightarrow \\text{Con}(\\text{ZFC} + \\text{CH})$. Cohen (1963): $\\text{Con}(\\text{ZFC}) \\Rightarrow \\text{Con}(\\text{ZFC} + \\neg\\text{CH})$."
+    },
+    {
+      "id": "deciding-ch",
+      "title": "What It Means to Decide CH",
+      "startLine": 60,
+      "endLine": 80,
+      "summary": "The `Decides` predicate: axiom Φ decides CH iff it implies CH or implies ¬CH. CH and ¬CH trivially decide themselves.",
+      "mathContext": "$\\text{Decides}(\\Phi, \\text{CH}) \\iff (\\Phi \\Rightarrow \\text{CH}) \\lor (\\Phi \\Rightarrow \\neg\\text{CH})$. CH and $\\neg$CH are both consistent with ZFC, so ZFC alone does not decide CH."
+    },
+    {
+      "id": "zfc-bounds",
+      "title": "ZFC-Provable Bounds",
+      "startLine": 81,
+      "endLine": 129,
+      "summary": "ℵ₁ ≤ 2^ℵ₀ (provable in ZFC); under ¬CH, the continuum is strictly > ℵ₁ and at least ℵ₂.",
+      "mathContext": "$\\aleph_1 \\leq 2^{\\aleph_0}$ (provable in ZFC: $\\omega_1$ injects into $\\mathcal{P}(\\omega)$). Under $\\neg$CH: $\\aleph_1 < 2^{\\aleph_0}$, and $2^{\\aleph_0}$ can be $\\aleph_2$, $\\aleph_{\\omega_1}$, or any cardinal of uncountable cofinality (Easton's theorem for regular cardinals)."
+    },
+    {
+      "id": "constructibility-direction",
+      "title": "V=L — The Constructibility Direction",
+      "startLine": 130,
+      "endLine": 166,
+      "summary": "V=L implies GCH implies CH. Ultimate-L (Woodin) also implies GCH conditionally.",
+      "mathContext": "$V = L \\Rightarrow \\text{GCH} \\Rightarrow \\text{CH}$, where $L$ is Gödel's constructible universe. Ultimate-$L$ (Woodin): a conjectured inner model compatible with all large cardinals that also implies GCH."
+    },
+    {
+      "id": "forcing-axioms",
+      "title": "PFA and MM — The Forcing Axiom Direction",
+      "startLine": 167,
+      "endLine": 213,
+      "summary": "PFA implies 2^ℵ₀ = ℵ₂, hence ¬CH. MM implies PFA hence also ¬CH.",
+      "mathContext": "**PFA** (Proper Forcing Axiom): $2^{\\aleph_0} = \\aleph_2$, hence $\\neg$CH. **MM** (Martin's Maximum): strengthens PFA, also implies $2^{\\aleph_0} = \\aleph_2$. These axioms extend ZFC's combinatorial power while negating CH."
+    },
+    {
+      "id": "large-cardinal-incompatibility",
+      "title": "V=L vs Large Cardinals (Scott's Theorem)",
+      "startLine": 214,
+      "endLine": 236,
+      "summary": "Scott (1961): V=L and measurable cardinals are mutually exclusive. V=L is not large-cardinal compatible.",
+      "mathContext": "Scott (1961): $V = L \\Rightarrow$ no measurable cardinals exist. Measurable $\\kappa$: $\\exists$ non-principal $\\kappa$-complete ultrafilter on $\\kappa$. Since large cardinals are accepted in modern set theory, $V = L$ is considered too restrictive."
+    },
+    {
+      "id": "axiom-selection",
+      "title": "Mathematical Criteria for Axiom Selection",
+      "startLine": 237,
+      "endLine": 260,
+      "summary": "Key asymmetry theorem: V=L (→ CH) fails large-cardinal compatibility; PFA (→ ¬CH) satisfies it.",
+      "mathContext": "$V = L \\Rightarrow \\text{CH}$ but $V = L \\Rightarrow \\neg\\exists$ measurable cardinals. PFA $\\Rightarrow \\neg\\text{CH}$ ($2^{\\aleph_0} = \\aleph_2$) and PFA is compatible with large cardinals. This asymmetry favors the $\\neg$CH direction."
+    },
+    {
+      "id": "open-question-summary",
+      "title": "Summary of the Open Question",
+      "startLine": 261,
+      "endLine": 317,
+      "summary": "Both CH-deciding and ¬CH-deciding axioms exist. The ¬CH side has structural advantages via large-cardinal compatibility.",
+      "mathContext": "Both CH and $\\neg$CH are equiconsistent with ZFC. The $\\neg$CH axioms (PFA, MM) have structural advantages: compatibility with large cardinals, natural combinatorial consequences, and Woodin's $\\Omega$-logic arguments. The question \"should we adopt $\\neg$CH?\" remains open in the philosophy of set theory."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Lean formalization reveals the core tension in the CH axiom-adoption question: natural axioms exist for both CH and ¬CH, but they differ in their relationship to large cardinal axioms. V=L settles CH positively but excludes measurable cardinals (Scott, 1961). PFA and MM settle CH negatively (¬CH, 2^ℵ₀ = ℵ₂) while remaining consistent with large cardinals.",
+    "implications": "This large-cardinal compatibility asymmetry explains why most contemporary set theorists lean toward the ¬CH side, though Woodin's Ultimate-L program keeps open the possibility of a canonical inner model satisfying GCH while accommodating all large cardinals.",
+    "openQuestions": [
+      "Does Woodin's Ultimate-L program yield a canonical inner model satisfying GCH and all large cardinal axioms?",
+      "Is there a mathematically compelling axiom that decides CH and is also large-cardinal compatible?",
+      "Does the set-theoretic multiverse (Hamkins) dissolve the question by treating CH as having no unique truth value?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.Order.SuccPred.Basic",
+      "Mathlib.Logic.Basic",
+      "Mathlib.Tactic",
+      "Proofs.ContinuumHypothesis"
+    ],
+    "opens": [
+      "Cardinal",
+      "ContinuumHypothesis",
+      "(CH",
+      "GCH",
+      "gch_implies_ch)"
+    ],
+    "namespace": "ContinuumHypothesisOQ01",
+    "lineCount": 317,
+    "axiomCount": 10,
+    "theoremCount": 20,
+    "definitionCount": 4,
+    "path": "Proofs/ContinuumHypothesisOQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "continuum-hypothesis",
+      "relationship": "extends",
+      "description": "Parent formalization of the independence of CH (Gödel 1940, Cohen 1963). This open-question entry imports CH, GCH, and gch_implies_ch from the parent module and builds the axiom-selection landscape on top of them."
+    },
+    {
+      "targetId": "cantors-theorem",
+      "relationship": "uses",
+      "description": "Cantor's theorem (|S| < |P(S)|) is the foundational inequality underlying CH. The proof of aleph_one_le_continuum applies Cardinal.cantor to show aleph_0 < 2^aleph_0, from which aleph_1 <= 2^aleph_0 follows by successor minimality."
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "related",
+      "description": "Cantor's diagonalization argument establishes the uncountability of the reals (aleph_0 < |R|). CH asks whether |R| = aleph_1 or something larger — the diagonalization result is what makes CH a non-trivial question in the first place."
+    },
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "related",
+      "description": "Gödel's incompleteness theorems and his consistency proof of CH share a common theme: the limits of formal systems. Gödel's constructible universe L (used to prove Con(ZFC + CH)) was developed by the same mathematician who proved the incompleteness of arithmetic, and both results concern what axiom systems can and cannot decide."
+    },
+    {
+      "targetId": "halting-problem",
+      "relationship": "related",
+      "description": "Both the halting problem and CH independence are landmark undecidability/independence results. The halting problem shows certain questions are undecidable by algorithms; CH independence shows certain questions are undecidable by ZFC. Cohen's forcing technique is the set-theoretic analog of diagonalization in computability."
+    },
+    {
+      "targetId": "parallel-postulate-independence",
+      "relationship": "related",
+      "description": "The independence of the parallel postulate from neutral geometry is the classical precursor to CH independence from ZFC. Both results demonstrate that a natural-seeming statement is neither provable nor refutable from the base axioms, and both led to the development of alternative consistent extensions (Euclidean vs non-Euclidean geometry; CH vs forcing axioms)."
+    },
+    {
+      "targetId": "hilbert-6",
+      "relationship": "related",
+      "description": "Hilbert's sixth problem (axiomatization of physics) shares the foundational concern of axiom selection with CH. Both ask: what axioms should we adopt for a mathematical domain? CH was Hilbert's first problem; the sixth problem similarly asks which formal framework best captures physical reality."
+    }
+  ],
+  "references": [
+    {
+      "key": "Go40",
+      "citation": "Gödel, K., The Consistency of the Axiom of Choice and of the Generalized Continuum Hypothesis with the Axioms of Set Theory, Annals of Mathematics Studies 3, Princeton University Press (1940). Proved Con(ZFC) → Con(ZFC + GCH).",
+      "type": "book"
+    },
+    {
+      "key": "Co63",
+      "citation": "Cohen, P.J., The independence of the continuum hypothesis, Proceedings of the National Academy of Sciences 50(6) (1963), 1143–1148. Proved Con(ZFC) → Con(ZFC + ¬CH) via forcing.",
+      "type": "paper"
+    },
+    {
+      "key": "Wo01",
+      "citation": "Woodin, W.H., The Continuum Hypothesis, Parts I & II, Notices of the AMS 48(6-7) (2001). Survey of large cardinal axioms and their bearing on CH.",
+      "type": "paper"
+    },
+    {
+      "key": "Ku80",
+      "citation": "Kunen, K., Set Theory: An Introduction to Independence Proofs, North-Holland (1980). Standard reference for forcing and independence results.",
+      "type": "book"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,160 @@
+[
+  {
+    "id": "erdos-390-imports",
+    "proofId": "erdos-390",
+    "type": "concept",
+    "range": {
+      "startLine": 15,
+      "endLine": 18
+    },
+    "title": "Imports and Setup",
+    "content": "Imports Mathlib for `Nat.Factorial.Basic` (factorial computation), `Finset.Basic`, `Order.Filter.Basic` (for the limit statement in the open conjecture), and tactics. The formalization uses `List` for factorizations and `Filter.Tendsto` for asymptotics.",
+    "mathContext": "The function $f(n)$ involves optimizing over factorizations of $n!$, requiring factorial arithmetic. The conjecture asks about $\\lim_{n \\to \\infty} (f(n) - 2n) \\log n / n$, formalized via `Filter.Tendsto` and `nhds`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "factorial",
+      "Filter.Tendsto",
+      "nhds"
+    ],
+    "prerequisites": [
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Order.Filter.Basic"
+    ]
+  },
+  {
+    "id": "erdos-390-valid-factorization",
+    "proofId": "erdos-390",
+    "type": "definition",
+    "range": {
+      "startLine": 25,
+      "endLine": 31
+    },
+    "title": "Valid Factorization Structure",
+    "content": "A valid factorization of $n!$ into strictly increasing factors all greater than $n$. The structure carries: a sorted list of factors, the proof that all factors exceed $n$, nonemptiness, and the product identity $\\prod a_i = n!$. This encodes the constraint that we decompose $n!$ using only 'large' factors.",
+    "mathContext": "A valid factorization is a sequence $n < a_1 < a_2 < \\cdots < a_k$ with $a_1 \\cdot a_2 \\cdots a_k = n!$. The strict ordering and lower bound $a_i > n$ are the key constraints. For $n \\geq 3$, such factorizations always exist (the trivial one is $[n!]$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "integer factorization",
+      "strictly increasing sequences",
+      "proof-carrying structures"
+    ],
+    "prerequisites": [
+      "List.Sorted",
+      "List.prod",
+      "Nat.factorial"
+    ]
+  },
+  {
+    "id": "erdos-390-factorization-max",
+    "proofId": "erdos-390",
+    "type": "definition",
+    "range": {
+      "startLine": 38,
+      "endLine": 41
+    },
+    "title": "The Function f(n)",
+    "content": "Defines $f(n) = \\min\\{\\max(\\text{factors}) : \\text{valid factorization of } n!\\}$, the minimal largest factor over all valid factorizations. Uses `sInf` over the set of maximum factors. Returns 0 when no valid factorization exists (i.e., $n < 3$). Made `noncomputable` because minimizing over an infinite search space is not constructive.",
+    "mathContext": "$f(n) = \\inf\\{a_k : n! = a_1 \\cdots a_k, n < a_1 < \\cdots < a_k\\}$. The infimum is attained since the set of possible $a_k$ values is bounded below by $n+1$ and the factorizations have finite length. Erdős, Guy, and Selfridge (1982) showed $f(n) - 2n \\asymp n/\\log n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "optimization",
+      "sInf",
+      "noncomputable definitions"
+    ],
+    "prerequisites": [
+      "ValidFactorization",
+      "sInf"
+    ]
+  },
+  {
+    "id": "erdos-390-concrete-values",
+    "proofId": "erdos-390",
+    "type": "definition",
+    "range": {
+      "startLine": 49,
+      "endLine": 129
+    },
+    "title": "Concrete Values and Witnesses",
+    "content": "Explicit factorizations for small $n$: $3! = 6 = [6]$ (so $f(3) = 6$), $5! = 120 = 10 \\cdot 12$, $6! = 720 = 8 \\cdot 9 \\cdot 10$, $7! = 5040 = 14 \\cdot 18 \\cdot 20$. The $n = 3$ case is fully proved: the only factorization of $6$ with factors $> 3$ is $[6]$ itself, established by case analysis showing two factors would require product $\\geq 20 > 6$. Uses `native_decide` for arithmetic verification.",
+    "mathContext": "OEIS A193429 records $f(n)$ values. The excess $f(n) - 2n$: $f(3) - 6 = 0$, $f(5) - 10 = 2$, $f(6) - 12 = -2$ (wait — $f(6) \\leq 10 < 12$, so $f(6) - 2 \\cdot 6 \\leq -2$). Actually for small $n$ the excess can be negative; the asymptotic $f(n) - 2n \\asymp n/\\log n$ holds for large $n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "OEIS A193429",
+      "native_decide",
+      "constructive witnesses",
+      "case analysis"
+    ],
+    "prerequisites": [
+      "ValidFactorization",
+      "Nat.factorial"
+    ]
+  },
+  {
+    "id": "erdos-390-structural",
+    "proofId": "erdos-390",
+    "type": "concept",
+    "range": {
+      "startLine": 134,
+      "endLine": 147
+    },
+    "title": "Structural Properties",
+    "content": "Two basic results: (1) the maximum factor in any valid factorization exceeds $n$ (follows from `all_gt` and `getLast_mem`), and (2) the trivial factorization $[n!]$ gives an upper bound $f(n) \\leq n!$ for $n \\geq 3$. The trivial bound is far from tight — the interesting bound is $f(n) \\leq 2n + O(n/\\log n)$.",
+    "mathContext": "$f(n) > n$ trivially (all factors exceed $n$). The bound $f(n) \\leq n!$ from the single-factor factorization is exponentially loose. Erdős–Guy–Selfridge showed $f(n) \\leq 2n + C \\cdot n/\\log n$ by constructing clever factorizations using divisors of $n!$ in the range $(n, 2n]$ and beyond.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "upper bounds",
+      "trivial factorization",
+      "getLast_mem"
+    ],
+    "prerequisites": [
+      "ValidFactorization",
+      "maxFactor"
+    ]
+  },
+  {
+    "id": "erdos-390-egs-bounds",
+    "proofId": "erdos-390",
+    "type": "concept",
+    "range": {
+      "startLine": 155,
+      "endLine": 159
+    },
+    "title": "Erdős–Guy–Selfridge Asymptotic (1982)",
+    "content": "The central known result: $f(n) - 2n \\asymp n/\\log n$, meaning $\\exists c, C > 0$ such that $c \\cdot n/\\log n \\leq f(n) - 2n \\leq C \\cdot n/\\log n$ for $n \\geq 10$. The lower bound uses counting arguments on prime factorizations; the upper bound constructs explicit factorizations. The paper 'Another property of 239 and some related questions' (1982) established this.",
+    "mathContext": "**Erdős–Guy–Selfridge (1982)**: $c \\cdot \\frac{n}{\\log n} \\leq f(n) - 2n \\leq C \\cdot \\frac{n}{\\log n}$ for all $n \\geq 10$. The key idea: the interval $(n, 2n]$ contains $n$ integers. Their product is $(2n)!/n! \\approx 4^n/\\sqrt{\\pi n}$ by Stirling, while $n! \\approx (n/e)^n \\sqrt{2\\pi n}$. The 'excess' $n/\\log n$ arises from prime factors that must be redistributed.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic analysis",
+      "prime factorization",
+      "Stirling approximation"
+    ],
+    "prerequisites": [
+      "factorizationMax",
+      "Real.log"
+    ]
+  },
+  {
+    "id": "erdos-390-open-conjecture",
+    "proofId": "erdos-390",
+    "type": "concept",
+    "range": {
+      "startLine": 167,
+      "endLine": 171
+    },
+    "title": "The Open Conjecture (Problem #390)",
+    "content": "Defines `ErdosProblem390` as the proposition that $\\lim_{n \\to \\infty} (f(n) - 2n) \\cdot \\log n / n = c$ for some positive constant $c$. The Erdős–Guy–Selfridge bounds show the ratio is bounded between positive constants, but convergence to a specific limit is unknown. Formalized using `Filter.Tendsto` to `nhds c`.",
+    "mathContext": "**Open**: Does $\\lim_{n \\to \\infty} \\frac{(f(n) - 2n) \\log n}{n} = c$ exist with $c > 0$? The EGS bounds give $c \\leq \\liminf \\leq \\limsup \\leq C$, but whether $\\liminf = \\limsup$ is unknown. If the limit exists, computing $c$ would be a secondary challenge.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Filter.Tendsto",
+      "nhds",
+      "limit existence",
+      "asymptotic constants"
+    ],
+    "prerequisites": [
+      "factorizationMax",
+      "Real.log",
+      "Filter.atTop"
+    ]
+  }
+]

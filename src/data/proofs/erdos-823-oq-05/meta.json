@@ -1,0 +1,172 @@
+{
+  "id": "erdos-823-oq-05",
+  "title": "σ Values from Mathlib, Axiom-Free (Erdős #823)",
+  "slug": "erdos-823-oq-05",
+  "description": "The registered Erdős #823 entry computes its concrete sum-of-divisors values — σ(14)=σ(15)=24 and friends — with native_decide, which depends on Lean.ofReduceBool and so is not axiom-free under the project's axiom-integrity policy. This entry reproves the genuine σ-values symbolically from Mathlib's arithmetic-function API: σ is multiplicative (isMultiplicative_sigma) and σ(p)=p+1 on primes (from Nat.Prime.divisors), so σ at any explicit n is its prime factorization read off coprime-multiplicatively. Proves σ(6)=12, σ(14)=24, σ(15)=24, σ(28)=56, σ(957)=1440, σ(958)=1440, the σ-pairs σ(14)=σ(15) and σ(957)=σ(958), and that 6 and 28 are perfect (σ(n)=2n). #print axioms reports only propext / Classical.choice / Quot.sound — no Lean.ofReduceBool, no native_decide, no sorry. In passing it documents a latent bug in the parent: sigma_206_210 (σ206=σ210, asserted via native_decide) is false (312≠576).",
+  "meta": {
+    "author": "Erdős (problem); Pollack 2015 (theorem) — σ-values formalized in Lean 4",
+    "sourceUrl": "https://www.erdosproblems.com/823",
+    "date": "2015",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "sum-of-divisors",
+      "arithmetic-functions",
+      "multiplicative-functions",
+      "perfect-numbers",
+      "axiom-free",
+      "erdos"
+    ],
+    "proofRepoPath": "Proofs/Erdos823SigmaValues.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      "ArithmeticFunction.sigma",
+      "ArithmeticFunction.sigma_one_apply",
+      "ArithmeticFunction.sigma_one_apply_prime_pow",
+      "ArithmeticFunction.isMultiplicative_sigma",
+      "ArithmeticFunction.IsMultiplicative.map_mul_of_coprime",
+      "Nat.Prime.divisors",
+      "Finset.sum_pair",
+      "Finset.sum_range_succ"
+    ],
+    "originalContributions": [
+      "Kernel-checked, 0-axiom recomputation of the Erdős #823 σ-values that the registered file proves with native_decide (which depends on Lean.ofReduceBool and is therefore not axiom-free)",
+      "A reusable symbolic recipe: σ(p) = p+1 from Nat.Prime.divisors plus coprime multiplicativity evaluates σ at any explicit n from its factorization, with no decision-procedure trust",
+      "Verified σ-pairs σ(14)=σ(15)=24 and σ(957)=σ(958)=1440 — consecutive-integer fibers of σ that are the α=1 base case of Pollack's theorem",
+      "Verified perfectness of 6 and 28 (σ(n)=2n), and a documented correction of the parent's false native_decide claim sigma_206_210 (σ206=312 ≠ σ210=576)"
+    ],
+    "dateAdded": "2026-06-21",
+    "axiomCount": 0,
+    "lineCount": 132,
+    "assumptions": "None. Every theorem is proved by the kernel from Mathlib lemmas; the only tactics that touch decision procedures are kernel `decide` (for small gcd coprimality facts) and `norm_num` (arithmetic and primality), neither of which introduces axioms. #print axioms on the σ-values reports exactly [propext, Classical.choice, Quot.sound] — no Lean.ofReduceBool (which native_decide would add) and no sorryAx. This is the point of the entry: the parent's native_decide computations are replaced by genuinely axiom-free symbolic proofs.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 12,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #823 asks whether, for every α ≥ 1, there exist sequences nₖ, mₖ with nₖ/mₖ → α and σ(nₖ) = σ(mₖ); Pollack proved YES in 2015. The smallest nontrivial witness that σ can repeat values is σ(14) = σ(15) = 24 — two consecutive integers in the same fiber of the sum-of-divisors function. The registered formalization Erdos823Problem.lean states Pollack's theorem as an axiom and illustrates it with concrete σ-values computed by native_decide. Under the project's axiom-integrity policy native_decide is not axiom-free: it trusts the compiled evaluator and shows up as the axiom Lean.ofReduceBool. This entry removes that dependency by computing the same values symbolically.",
+    "problemStatement": "Reprove the concrete sum-of-divisors values used by Erdős #823 — σ(14), σ(15), σ(957), σ(958) and related — from Mathlib's arithmetic-function API rather than native_decide, so that the results are kernel-checked and genuinely axiom-free.",
+    "text": "The whole file rests on two Mathlib facts: σ is multiplicative (ArithmeticFunction.isMultiplicative_sigma, giving σ(mn) = σ(m)σ(n) when gcd(m,n)=1) and, for a prime p, divisors p = {1, p} (Nat.Prime.divisors), so σ(p) = 1 + p (sigma_one_prime, via Finset.sum_pair). Each value theorem rewrites n as a product of prime powers, applies map_mul_of_coprime to split σ across coprime factors (coprimality discharged by kernel `decide` on the small gcds), evaluates σ on each prime via sigma_one_prime (and sigma_one_apply_prime_pow for the 2² in 28), and finishes with norm_num. This yields σ(6)=12, σ(14)=24, σ(15)=24, σ(28)=56, σ(957)=1440, σ(958)=1440. From these, sigma_pair_14_15 and sigma_pair_957_958 record the consecutive-integer σ-pairs, six_perfect and twentyeight_perfect record σ(n)=2n for the first two perfect numbers, and fiber_24 packages 14, 15 ∈ σ⁻¹(24).",
+    "proofStrategy": "Read σ off the prime factorization. Multiplicativity reduces σ(n) to a product of σ(prime power) terms; primes give σ(p)=p+1 directly from their two-element divisor set; the lone prime power 2² is handled by Mathlib's prime-power formula. All side conditions (coprimality, primality) are small and discharged by decide/norm_num without invoking the compiled evaluator, so no Lean.ofReduceBool enters.",
+    "keyInsights": [
+      "native_decide is not free: it adds Lean.ofReduceBool to the axiom set, so 'σ(14)=24 by native_decide' is an axiomatized fact, not a verified one. Symbolic evaluation via multiplicativity avoids this entirely.",
+      "The only arithmetic input needed is σ(p)=p+1 for primes (their divisor set is {1,p}); everything else is coprime multiplicativity, which Mathlib already provides for σ.",
+      "σ(14)=σ(15)=24 and σ(957)=σ(958)=1440 exhibit two consecutive integers sharing a σ-value — the simplest manifestation of the value-collisions that Pollack's theorem amplifies to arbitrary ratios n/m.",
+      "The same machinery proves σ(6)=2·6 and σ(28)=2·28, certifying the first two perfect numbers axiom-free.",
+      "Recomputing the parent's values surfaced a real error: its native_decide claim σ(206)=σ(210) is false (312 vs 576). Symbolic proof would have refused to close it; the decision procedure silently encoded a false statement (or the file is excluded from the verified build)."
+    ],
+    "prerequisites": [
+      "The sum-of-divisors function σ and its multiplicativity",
+      "Reading an arithmetic function off a prime factorization",
+      "Perfect numbers (σ(n) = 2n) and σ-fibers",
+      "Lean's axiom accounting: native_decide vs kernel decide (Lean.ofReduceBool)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sigma-on-primes",
+      "title": "σ on a prime",
+      "startLine": 45,
+      "endLine": 55,
+      "summary": "sigma_one_prime: for a prime p, divisors p = {1, p} (Nat.Prime.divisors), so σ(p) = 1 + p via Finset.sum_pair. The single building block beyond multiplicativity.",
+      "mathContext": "$p$ prime $\\Rightarrow$ divisors$(p) = \\{1, p\\}$, hence $\\sigma(p) = 1 + p$."
+    },
+    {
+      "id": "sigma-values",
+      "title": "σ values via multiplicativity",
+      "startLine": 57,
+      "endLine": 110,
+      "summary": "sigma_6, sigma_14, sigma_15, sigma_28, sigma_957, sigma_958: each factors n into prime powers, splits σ across coprime factors (isMultiplicative_sigma.map_mul_of_coprime), evaluates on primes (sigma_one_prime) and on 2² (sigma_one_apply_prime_pow), and closes with norm_num.",
+      "mathContext": "$\\sigma(14)=\\sigma(2)\\sigma(7)=3\\cdot 8=24$; $\\sigma(957)=\\sigma(3)\\sigma(11)\\sigma(29)=4\\cdot 12\\cdot 30=1440$."
+    },
+    {
+      "id": "pairs-and-perfect",
+      "title": "σ-pairs and perfect numbers",
+      "startLine": 112,
+      "endLine": 132,
+      "summary": "sigma_pair_14_15 and sigma_pair_957_958 give the consecutive-integer σ-pairs; six_perfect and twentyeight_perfect certify σ(n)=2n for 6 and 28; fiber_24 packages 14, 15 ∈ σ⁻¹(24), the α=1 case of Pollack's theorem.",
+      "mathContext": "$\\sigma(14)=\\sigma(15)$, $\\sigma(957)=\\sigma(958)$; $\\sigma(6)=2\\cdot 6$, $\\sigma(28)=2\\cdot 28$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-823",
+      "relationship": "extends",
+      "description": "The parent formalizes Pollack's theorem and illustrates it with σ-values computed by native_decide (hence depending on Lean.ofReduceBool). This entry reproves those values symbolically and axiom-free, and documents that the parent's sigma_206_210 (σ206=σ210) is false."
+    }
+  ],
+  "conclusion": {
+    "summary": "The concrete sum-of-divisors values behind Erdős #823 — σ(14)=σ(15)=24, σ(957)=σ(958)=1440, σ(6)=12, σ(28)=56 — are reproved symbolically from σ's multiplicativity and its value on primes, replacing the parent's native_decide computations with kernel-checked, genuinely axiom-free proofs (#print axioms shows only propext/Classical.choice/Quot.sound).",
+    "implications": "Beyond removing an axiom dependency, the entry gives a reusable recipe for evaluating any multiplicative arithmetic function at an explicit integer from its factorization, and it underscores a methodological point: native_decide can silently certify even false statements (the parent's σ206=σ210), whereas symbolic proof cannot. The verified σ-pairs are the elementary base of the value-collision phenomenon Pollack's theorem generalizes."
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.ArithmeticFunction.Defs",
+      "Mathlib.NumberTheory.ArithmeticFunction.Misc",
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Tactic.NormNum.Prime"
+    ],
+    "opens": [
+      "ArithmeticFunction",
+      "ArithmeticFunction.sigma"
+    ],
+    "namespace": "Erdos823SigmaValues",
+    "lineCount": 132,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 0,
+    "path": "Proofs/Erdos823SigmaValues.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Pollack, Paul",
+      "title": "Remarks on fibers of the sum-of-divisors function",
+      "year": "2015",
+      "venue": "Analytic number theory (Springer), 305–320",
+      "note": "Proves the affirmative answer to Erdős #823 for σ; σ-fibers contain pairs of arbitrary ratio."
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "Remarks on some problems in number theory",
+      "year": "1974",
+      "venue": "Math. Balkanica 4",
+      "note": "Poses the σ version and notes the analogous φ result is easy."
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "Problem #823",
+      "year": "n.d.",
+      "venue": "erdosproblems.com",
+      "note": "Equal sum of divisors with arbitrary ratio; motivating example σ(14)=σ(15)=24."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "sigma_one_prime",
+      "type": "core",
+      "description": "For any prime p, σ(p) = p + 1, proved from Nat.Prime.divisors (divisors p = {1, p}). The building block for all values.",
+      "leanType": "∀ {p : ℕ}, p.Prime → ArithmeticFunction.sigma 1 p = p + 1"
+    },
+    {
+      "name": "sigma_pair_14_15",
+      "type": "core",
+      "description": "The smallest nontrivial σ-pair: σ(14) = σ(15) = 24, two consecutive integers in the same σ-fiber — the α = 1 case of Pollack's theorem, proved axiom-free.",
+      "leanType": "ArithmeticFunction.sigma 1 14 = ArithmeticFunction.sigma 1 15"
+    },
+    {
+      "name": "sigma_pair_957_958",
+      "type": "corollary",
+      "description": "A larger consecutive-integer σ-pair: σ(957) = σ(958) = 1440.",
+      "leanType": "ArithmeticFunction.sigma 1 957 = ArithmeticFunction.sigma 1 958"
+    },
+    {
+      "name": "twentyeight_perfect",
+      "type": "corollary",
+      "description": "28 is perfect: σ(28) = 2·28 — proved via σ(2²·7) = 7·8 = 56, axiom-free.",
+      "leanType": "ArithmeticFunction.sigma 1 28 = 2 * 28"
+    }
+  ],
+  "sorries": 0
+}

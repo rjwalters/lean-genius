@@ -1,0 +1,193 @@
+[
+  {
+    "id": "ann-indicator-lp",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 53,
+      "endLine": 73
+    },
+    "type": "concept",
+    "title": "Indicator Functions in Lp",
+    "content": "Proves that indicator functions $\\mathbf{1}_E$ of finite-measure measurable sets belong to $L^p$ for $1 \\leq p < \\infty$, with norm $\\|\\mathbf{1}_E\\|_p = \\mu(E)^{1/p}$. The proof delegates to `Memℒp.indicator` and `memℒp_const` — indicators are bounded by the constant function 1, which is always in $L^p$. The norm formula follows from $\\int |\\mathbf{1}_E|^p\\,d\\mu = \\mu(E)$.",
+    "mathContext": "$\\mathbf{1}_E \\in L^p(\\mu)$ with $\\|\\mathbf{1}_E\\|_p = \\mu(E)^{1/p}$ for $\\mu(E) < \\infty$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "indicator functions",
+      "Lp membership",
+      "Mathlib Memℒp",
+      "eLpNorm"
+    ],
+    "prerequisites": [
+      "Lp spaces",
+      "measurable sets",
+      "measure finiteness"
+    ]
+  },
+  {
+    "id": "ann-ae-zero-null-set",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 75,
+      "endLine": 102
+    },
+    "type": "concept",
+    "title": "Absolute Continuity: Indicators of Null Sets Vanish in Lp",
+    "content": "Two lemmas establishing that indicators of null sets are zero almost everywhere and have zero $L^p$ norm. If $\\mu(E) = 0$, then $\\mathbf{1}_E = 0$ $\\mu$-a.e. because the set where $\\mathbf{1}_E \\neq 0$ is contained in $E$, which has measure zero. The `eLpNorm_eq_zero_of_ae_zero` lemma then gives $\\|\\mathbf{1}_E\\|_p = 0$. These are the technical prerequisites for the absolute continuity argument in Step 2.",
+    "mathContext": "$\\mu(E) = 0 \\implies \\mathbf{1}_E = 0$ $\\mu$-a.e. $\\implies \\|\\mathbf{1}_E\\|_p = 0$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "null sets",
+      "almost everywhere equality",
+      "Lp norm",
+      "filter_upwards"
+    ],
+    "prerequisites": [
+      "measure theory",
+      "ae equivalence"
+    ]
+  },
+  {
+    "id": "ann-functional-set-fn",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 104,
+      "endLine": 137
+    },
+    "type": "concept",
+    "title": "Functional-Induced Set Function and AC Condition",
+    "content": "The core construction: given $\\varphi \\in (L^p)^*$, define $\\nu(E) = \\varphi(\\mathbf{1}_E)$ for measurable sets $E$ with $\\mu(E) < \\infty$. The key theorem `functionalSetFn_null` proves absolute continuity: if $\\mu(E) = 0$, then $\\mathbf{1}_E = 0$ in $L^p$, so $\\nu(E) = \\varphi(0) = 0$. This uses `map_zero` after showing the $L^p$ representative is the zero function. The absolute continuity $\\nu \\ll \\mu$ is what enables the Radon-Nikodym step.",
+    "mathContext": "$\\nu(E) := \\varphi(\\mathbf{1}_E)$; $\\mu(E) = 0 \\implies \\nu(E) = 0$ ($\\nu \\ll \\mu$)",
+    "significance": "key",
+    "relatedConcepts": [
+      "absolute continuity",
+      "signed measures",
+      "continuous linear functionals",
+      "Radon-Nikodym prerequisite"
+    ],
+    "prerequisites": [
+      "Lp duality",
+      "measure theory",
+      "ContinuousLinearMap"
+    ]
+  },
+  {
+    "id": "ann-rn-reconstruction",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 139,
+      "endLine": 160
+    },
+    "type": "concept",
+    "title": "Radon-Nikodym Reconstruction",
+    "content": "Applies Mathlib's Radon-Nikodym theorem: for a signed measure $s$ absolutely continuous with respect to $\\mu$, the RN derivative $g = ds/d\\mu$ reconstructs $s$ via $\\mu.\\mathrm{withDensity}_v(g) = s$. This is a direct application of `SignedMeasure.absolutelyContinuous_iff_withDensityᵥ_rnDeriv_eq`, one of Mathlib's most substantial measure theory results. The RN derivative is the candidate representing function for the Riesz theorem.",
+    "mathContext": "$s \\ll \\mu \\implies \\mu.\\mathrm{withDensity}_v(s.\\mathrm{rnDeriv}\\,\\mu) = s$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Radon-Nikodym theorem",
+      "signed measures",
+      "withDensityᵥ",
+      "absolute continuity"
+    ],
+    "prerequisites": [
+      "measure theory",
+      "Radon-Nikodym",
+      "signed measure API"
+    ]
+  },
+  {
+    "id": "ann-holder-extremizer-gap",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 162,
+      "endLine": 197
+    },
+    "type": "insight",
+    "title": "Holder Extremizer Argument (Infrastructure Gap)",
+    "content": "Documents the key infrastructure gap: showing $g \\in L^q$ via the Holder extremizer trick. The classical proof (Rudin 6.16) takes the test function $s = |g|^{q/p} \\cdot \\mathrm{sgn}(g)$, which is the unique function achieving equality in Holder's inequality. Substituting into $|\\varphi(s)| \\leq \\|\\varphi\\| \\cdot \\|s\\|_p$ gives $\\int |g|^q \\, d\\mu \\leq \\|\\varphi\\|^q$, hence $\\|g\\|_q \\leq \\|\\varphi\\|$. This requires measurability of $|g|^{q/p} \\cdot \\mathrm{sgn}(g)$, its $L^p$ membership, and the norm computation — each nontrivial in Lean.",
+    "mathContext": "Test function $s = |g|^{q/p} \\cdot \\mathrm{sgn}(g)$ gives $\\|g\\|_q \\leq \\|\\varphi\\|$ via $(\\int |g|^q)^{1/q} \\leq M$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Holder extremizer",
+      "conjugate exponents",
+      "Lq membership",
+      "norm duality"
+    ],
+    "prerequisites": [
+      "Holder inequality",
+      "Lp/Lq duality",
+      "measurable function operations"
+    ]
+  },
+  {
+    "id": "ann-density-extension",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 199,
+      "endLine": 224
+    },
+    "type": "concept",
+    "title": "Integral Representation via Density",
+    "content": "States the extension of $\\varphi(f) = \\int fg\\,d\\mu$ from indicators to all of $L^p$. The argument: (1) the identity holds on indicators $\\mathbf{1}_E$ by construction; (2) by linearity, it extends to simple functions; (3) simple functions are dense in $L^p$ (Mathlib's `Lp.simpleFunc.denseRange`); (4) both sides are continuous in $f$ (the LHS by $\\varphi$ being bounded, the RHS by Holder's inequality), so they agree on all of $L^p$.",
+    "mathContext": "$\\varphi(\\mathbf{1}_E) = \\int_E g\\,d\\mu$ for all $E$ $\\implies$ $\\varphi(f) = \\int fg\\,d\\mu$ for all $f \\in L^p$",
+    "significance": "key",
+    "relatedConcepts": [
+      "density of simple functions",
+      "continuous extension",
+      "Holder inequality",
+      "bounded linear maps"
+    ],
+    "prerequisites": [
+      "Lp density results",
+      "continuity of integration",
+      "simple functions"
+    ]
+  },
+  {
+    "id": "ann-main-surjectivity",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 226,
+      "endLine": 254
+    },
+    "type": "concept",
+    "title": "Riesz Representation Surjectivity (Main Theorem)",
+    "content": "The main theorem: every bounded linear functional $\\varphi \\in (L^p)^*$ is represented by integration against some $g \\in L^q$, i.e., $\\varphi(f) = \\int fg\\,d\\mu$ for all $f \\in L^p$, where $1/p + 1/q = 1$ and $1 < p < \\infty$. This is the surjectivity half of the Riesz representation theorem for $L^p$ spaces. Combined with the embedding $(L^q \\hookrightarrow (L^p)^*)$ from Holder's inequality, it establishes the isometric isomorphism $(L^p)^* \\cong L^q$.",
+    "mathContext": "$\\forall \\varphi \\in (L^p)^*, \\exists g \\in L^q : \\varphi(f) = \\int fg\\,d\\mu$ for all $f \\in L^p$ ($1 < p < \\infty$, $1/p + 1/q = 1$)",
+    "significance": "key",
+    "relatedConcepts": [
+      "Riesz representation theorem",
+      "Lp duality",
+      "isometric isomorphism",
+      "reflexive Banach spaces"
+    ],
+    "prerequisites": [
+      "Radon-Nikodym theorem",
+      "Holder inequality",
+      "Lp spaces",
+      "bounded linear functionals"
+    ]
+  },
+  {
+    "id": "ann-assessment",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 256,
+      "endLine": 280
+    },
+    "type": "concept",
+    "title": "Assessment: Axiom Eliminability",
+    "content": "Summarizes the status: the parent file's `riesz_lp_surjective` axiom IS eliminable using Mathlib's infrastructure. Steps 1-3 (indicators in $L^p$, absolute continuity, Radon-Nikodym) are proved from Mathlib. Steps 4-5 (Holder extremizer for $L^q$ membership, density extension) require approximately 200 lines of formalization but face no mathematical obstacles — all required Mathlib primitives exist. Notably, Aristotle cannot help because these are infrastructure composition tasks, not single-lemma proofs.",
+    "mathContext": "3 of 5 proof steps formalized; 2 remain (~200 lines of infrastructure, no mathematical gaps)",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib infrastructure",
+      "axiom elimination",
+      "proof engineering"
+    ],
+    "prerequisites": [
+      "Axiom Elimination",
+      "Mathlib Infrastructure",
+      "Proof Formalization"
+    ]
+  }
+]

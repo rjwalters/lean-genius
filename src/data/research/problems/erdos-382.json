@@ -1,0 +1,100 @@
+{
+  "slug": "erdos-382",
+  "title": "Erdős #382",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Let $u\\leq v$ be such that the largest prime dividing $\\prod_{u\\leq m\\leq v}m$ appears with exponent at least $2$. Is it true that $v-u=v^{o(1)}$? Can $v-u$ be arbitrarily large?\n\n\n\nErd\\H{o}s and Graham report it follows from results of Ramachandra that $v-u\\leq v^{1/2+o(1)}$.\n\nCambie has observed that the first question boils down to some old conjectures on prime gaps.\nBy Cram\\'{er's conjecture}, for every $\\epsilon>0,$ for every $u$ sufficiently large there is a prime between $u$ and $u+u^\\epsilon$.\nThus for $u+u^\\epsilon<v$, the largest prime divisor of \\( \\prod_{u \\leq m \\leq v} m \\) appears with exponent $1$.\nSince this is not the case in the question, \\( v - u = v^{o(1)} \\).\n\nCambie also gives the following heuristic for the second question. The 'probability' that the largest prime divisor of $n$ is $<n^{1/2}$ is $1-\\log 2>0$. For any fixed $k$, there is therefore a positive 'probability' that there are $k$ consecutive integers around $q^2$ (for a prime $q$) all of whose prime divisors are bounded above by $q$, when $v-u\\geq k$. See [383] for a conjecture along these lines. A similar argument applies if we replace multiplicity $2$ with multiplicity $r$, for any fixed $r\\geq 2$.\n\nSee also [380].",
+    "plain": "Let $u\\leq v$ be such that the largest prime dividing $\\prod_{u\\leq m\\leq v}m$ appears with exponent at least $2$. Is it true that $v-u=v^{o(1)}$? Can $v-u$ be arbitrarily large?",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-24T00:00:00Z",
+    "iteration": 2,
+    "focus": "Proved 3 more axioms + removed 1 incorrect. Axioms 9→5.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 0S, 3A. Proved cramer_implies_q1 (Cramér → Q1 via Bertrand + consecutive primes + gap bound).",
+    "builtItems": [
+      "Proved prodInterval_factorial by induction with Finset.prod_insert",
+      "Fixed largestPrimeDivisor: List.foldl max 0 replaces removed List.maximum?",
+      "Fixed cramersConjecture: consecutive prime formulation replaces removed Nat.nth",
+      "Removed orphaned docstring causing parse error",
+      "Proved largestPrimeDivisor_dvd via foldl_max_mem_primeFactorsList + Nat.dvd_of_mem_primeFactorsList",
+      "Proved largestPrimeDivisor_prime via foldl_max_mem_primeFactorsList + Nat.prime_of_mem_primeFactorsList",
+      "Proved prime_le_largestPrimeDivisor via Nat.mem_primeFactorsList + foldl_max_ge_of_mem",
+      "Helper lemmas: foldl_max_ge_init, foldl_max_ge_of_mem, foldl_max_eq_init_or_mem, primeFactorsList_ne_nil, foldl_max_mem_primeFactorsList",
+      "cramer_implies_q1 (THEOREM): eliminated axiom — Cramér gap bound + no_prime_in_upper_half gives v-u < v^ε",
+      "PROVED log_sq_lt_rpow: C*(log v)² < v^ε for large v, using isLittleO_log_rpow_atTop with ε/4 splitting",
+      "PROVED V₂ bound: v - √v > C*(log v)² for large v, via log_sq_lt_rpow with ε=1/2 and √v ≥ 2 for v ≥ 4",
+      "Added imports: Pow.Asymptotics, Log.Deriv for isLittleO_log_rpow_atTop",
+      "cramer_implies_q1: PROVED (was sorry). 0 sorries remain in file."
+    ],
+    "insights": [
+      "12 axioms remain (was 13). prodInterval_factorial proved by induction",
+      "largestPrimeDivisor_dvd/prime/le axioms likely provable from primeFactorsList + foldl max API",
+      "exponentInProduct_sum likely provable from Nat.factorization multiplicativity",
+      "Pre-existing API breakage: List.maximum? and Nat.nth removed from Lean/Mathlib",
+      "foldl max 0 of primeFactorsList is a member when n > 1: proved via induction (foldl_max_eq_init_or_mem) + primeFactorsList nonempty + all elements ≥ 2",
+      "exponentInProduct_sum axiom has pre-existing bug: wrong when u=0 (product is 0 but sum of valuations is positive)",
+      "exp_ge_two_needs_square axiom is also incorrect: exponent ≥ 2 can come from two separate multiples of p, not requiring p²|k",
+      "cramer_implies_q1 is provable: condition forces u > √v (else gap too long), then Cramér gives v-u ≤ C(log v)² = o(v^ε)",
+      "3 sorries remain: (1) C(log v)² < v^ε for large v, (2) v - √v > C(log v)² for large v, (3) case split + Cramér gap arithmetic",
+      "isLittleO_log_rpow_atTop pattern: .bound δ gives |log x| ≤ δ*x^p eventually, then Filter.eventually_atTop.mp extracts the ℝ threshold",
+      "For C*log²<v^ε: split ε as ε/4+ε/4+ε/2; first two for log² via squaring, last for absorbing C via C^(2/ε) threshold",
+      "Real.sqrt_eq_rpow connects √v = v^(1/2) for rpow ↔ sqrt conversions",
+      "cramer_implies_q1 proved: Bertrand forces u > sqrt(v), interval is prime-free, Cramér bounds gap",
+      "Key technique: Finset.max primes_lt_u for largest prime < u, Nat.find for smallest prime > v"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Remaining 4 axioms: 2 OPEN conjectures (erdos_382_q1, erdos_382_q2_heuristic) + 2 deep results (ramachandra_bound, cramer_implies_q1) — none are provable from Mathlib"
+    ],
+    "markdown": "# Erdős #382 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $u\\leq v$ be such that the largest prime dividing $\\prod_{u\\leq m\\leq v}m$ appears with exponent at least $2$. Is it true that $v-u=v^{o(1)}$? Can $v-u$ be arbitrarily large?\n\n\n\nErd\\H{o}s and Graham report it follows from results of Ramachandra that $v-u\\leq v^{1/2+o(1)}$.\n\nCambie has observed that the first question boils down to some old conjectures on prime gaps.\nBy Cram\\'{er's conjecture}, for every $\\epsilon>0,$ for every $u$ sufficiently large there is a prime between $u$ and $u+u^\\epsilon$.\nThus for $u+u^\\epsilon<v$, the largest prime divisor of \\( \\prod_{u \\leq m \\leq v} m \\) appears with exponent $1$.\nSince this is not the case in the question, \\( v - u = v^{o(1)} \\).\n\nCambie also gives the following heuristic for the second question. The 'probability' that the largest prime divisor of $n$ is $<n^{1/2}$ is $1-\\log 2>0$. For any fixed $k$, there is therefore a positive 'probability' that there are $k$ consecutive integers around $q^2$ (for a prime $q$) all of whose prime divisors are bounded above by $q$, when $v-u\\geq k$. See [383] for a conjecture along these lines. A similar argument applies if we replace multiplicity $2$ with multiplicity $r$, for any fixed $r\\geq 2$.\n\nSee also [380].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #383\n- Problem #380\n- Problem #381\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-3",
+    "erdos-38",
+    "erdos-382"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T00:59:36.242Z",
+  "lastUpdate": "2026-03-13T07:52:17.047Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos382Problem.lean",
+      "filename": "Erdos382Problem.lean",
+      "lineCount": 660,
+      "theoremCount": 11,
+      "axiomCount": 1,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos382Problem.lean"
+    }
+  ]
+}

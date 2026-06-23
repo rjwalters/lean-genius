@@ -1,0 +1,208 @@
+{
+  "id": "erdos-706",
+  "title": "Erdős Problem #706: Chromatic Number of Multi-Distance Graphs",
+  "slug": "erdos-706",
+  "description": "For a set A of r positive reals, let G_A be the distance graph on ℝ² with edges at distances in A. Let L(r) = max χ(G_A). Is L(r) ≤ r^{O(1)}? Open.",
+  "meta": {
+    "author": "Paul Erdős",
+    "sourceUrl": "https://erdosproblems.com/706",
+    "date": "1981",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos706Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorial-geometry",
+      "chromatic-number",
+      "distance-graphs",
+      "Hadwiger-Nelson",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 706,
+    "erdosUrl": "https://erdosproblems.com/706",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-24",
+    "mathlib_version": "4.26.0",
+    "mathContext": {
+      "field": "Combinatorial Geometry",
+      "subfield": "Chromatic numbers of distance graphs in the Euclidean plane",
+      "level": "research",
+      "centralObjects": [
+        "multi-distance graph G_A",
+        "chromatic function L(r)",
+        "distance set A ⊂ (0,∞)",
+        "unit distance graph"
+      ],
+      "keyTechniques": [
+        "axiomatization of L(r)",
+        "monotonicity from subgraph inclusion",
+        "Hadwiger-Nelson base case (de Grey)",
+        "Frankl-Wilson exponential bounds"
+      ],
+      "significance": "Generalizes the Hadwiger-Nelson problem from one forbidden distance to r distances. The gap between the known exponential upper bound L(r) ≤ C^r and the conjectured polynomial bound L(r) ≤ r^{O(1)} is vast. Even the r = 1 case (5 ≤ L(1) ≤ 7) remains unsolved after 75 years, making the general question one of the hardest open problems in chromatic geometry."
+    },
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for modeling distance sets A of size r",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real",
+        "description": "Real numbers for distances, polynomial bounds, and exponential bounds",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Nat.Basic",
+        "description": "Natural numbers for the chromatic number L(r) and the parameter r",
+        "module": "Mathlib.Data.Nat.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsDistanceSet: predicate for finite subsets of positive reals",
+      "multiDistChromatic: axiomatized chromatic function L(r) = max χ(G_A) over |A| = r",
+      "erdos_706_base_case: axiomatized Hadwiger-Nelson bounds 5 ≤ L(1) ≤ 7",
+      "erdos_706_monotone: axiomatized monotonicity r ≤ s → L(r) ≤ L(s)",
+      "erdos_706_lower: proved theorem — trivial lower bound L(r) ≥ 5 for r ≥ 1 (from monotonicity + base case)"
+    ],
+    "axiomCount": 3,
+    "lineCount": 71,
+    "assumptions": "3 axioms: multiDistChromatic, erdos_706_base_case, erdos_706_monotone. 0 sorries.",
+    "theoremCount": 1,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem in 1981 as a natural generalization of the Hadwiger-Nelson problem (1950). The Hadwiger-Nelson problem asks for the chromatic number of the unit distance graph of ℝ² — the single-distance case r = 1. For 65 years the bounds were 4 ≤ χ ≤ 7, until Aubrey de Grey's 2018 breakthrough showing χ ≥ 5 via a computer-found 1581-vertex unit distance graph. The upper bound 7 (from Isbell's hexagonal 7-coloring) has stood since the 1950s.\n\nFor multiple distances, the question becomes far harder. The function L(r) = max_{|A|=r} χ(G_A) captures the worst-case chromatic number over all distance sets of size r. The known upper bound is exponential (L(r) ≤ C^r, from Frankl-Wilson type methods), while the conjecture asks for polynomial growth. Closing the gap between polynomial and exponential would be a landmark result in combinatorial geometry.",
+    "problemStatement": "For a finite set A ⊂ (0,∞) of size r, let G_A be the graph on ℝ² with edges between points at distance in A. Let L(r) = max_{|A|=r} χ(G_A). Estimate L(r). In particular, is L(r) ≤ r^{O(1)}?",
+    "text": "For a set A of r positive reals, let G_A be the distance graph on ℝ² with edges at distances in A. Let L(r) = max χ(G_A). Is L(r) ≤ r^{O(1)}? Open.",
+    "proofStrategy": "The formalization axiomatizes the multi-distance chromatic function L(r) as an opaque function, then axiomatizes the Hadwiger-Nelson base case (5 ≤ L(1) ≤ 7 from de Grey 2018) and monotonicity (r ≤ s → L(r) ≤ L(s)). The trivial lower bound L(r) ≥ 5 is a proved theorem derived from these two axioms. The polynomial conjecture L(r) ≤ r^{O(1)} and the Frankl-Wilson exponential upper bound L(r) ≤ C^r are described in prose commentary only — they are not formalized as Lean declarations. The file connects to Problems #508, #704, and #705 as related distance graph problems.",
+    "keyInsights": [
+      "The case r = 1 is the Hadwiger-Nelson problem: 5 ≤ L(1) ≤ 7 (de Grey 2018, Isbell 1950s)",
+      "L(r) is monotone non-decreasing: more distances → more edges → higher chromatic number",
+      "Known upper bound L(r) ≤ C^r is exponential (Frankl-Wilson methods)",
+      "Polynomial conjecture L(r) ≤ r^{O(1)} is completely open",
+      "Some distance sets may give low chromatic numbers (geometrically spaced), while algebraically related sets force higher numbers",
+      "Related to #508 (Hadwiger-Nelson), #704 (higher dimensions), #705 (girth constraints)"
+    ],
+    "prerequisites": [
+      "Combinatorial geometry (incidence bounds, configurations)",
+      "Combinatorics (Brooks' theorem, greedy coloring)",
+      "Discrete geometry (point-line incidences, arrangements)",
+      "Graph theory (chromatic number, coloring algorithms)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "Distance Set and L(r)",
+      "summary": "Defines `IsDistanceSet` (finite subset of positive reals) and `multiDistChromatic` (axiomatized L(r) = max χ(G_A) over distance sets A of size r). The function is noncomputable since it involves a supremum over uncountably many geometric configurations.",
+      "startLine": 21,
+      "endLine": 30
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Polynomial Bound Conjecture",
+      "summary": "Describes the polynomial bound conjecture ∃ C, k > 0 such that L(r) ≤ C · r^k for all r ≥ 1 in prose commentary. This conjecture is not formalized as a Lean declaration — it is the central open question motivating the problem.",
+      "startLine": 32,
+      "endLine": 36
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds: Hadwiger-Nelson and Monotonicity",
+      "summary": "Records `erdos_706_base_case` (5 ≤ L(1) ≤ 7 from de Grey and Isbell), `erdos_706_monotone` (L is non-decreasing), and `erdos_706_lower` (L(r) ≥ 5 for r ≥ 1, combining monotonicity with de Grey's result).",
+      "startLine": 37,
+      "endLine": 53
+    },
+    {
+      "id": "exponential-upper",
+      "title": "Exponential Upper Bound",
+      "summary": "Notes in commentary that ∃ C > 1 such that L(r) ≤ C^r (Frankl-Wilson exponential upper bound). This bound is described in prose only — it is not formalized as a Lean axiom or theorem. The polynomial conjecture asks whether this exponential bound can be dramatically improved.",
+      "startLine": 55,
+      "endLine": 60
+    },
+    {
+      "id": "observations",
+      "title": "Connections to Related Problems",
+      "summary": "Notes connections to Problem #508 (Hadwiger-Nelson, the r = 1 case), Problem #704 (unit distance graphs in ℝⁿ, where Frankl-Wilson gives exponential lower bounds), and Problem #705 (girth constraints on unit distance graphs).",
+      "startLine": 61,
+      "endLine": 71
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #706 asks whether the maximum chromatic number L(r) of multi-distance graphs in the plane grows polynomially in r. Even the single-distance case (Hadwiger-Nelson, 5 ≤ L(1) ≤ 7) is unsolved, making the general question extremely challenging. The known bounds are L(r) ≥ 5 (trivial) and L(r) ≤ C^r (exponential), with a vast gap between these and the conjectured polynomial growth.",
+    "implications": "A polynomial bound would reveal deep structure in distance graphs: many forbidden distances increase chromatic requirement only mildly An exponential lower bound would show distance constraints interact multiplicatively in the plane Progress on L(r) for any r > 1 would shed light on the Hadwiger-Nelson problem Connects to the broader study of chromatic numbers of geometric graphs",
+    "openQuestions": [
+      "Is L(r) ≤ r^{O(1)}? (the main conjecture)",
+      "What is the exact value of L(1)? (Hadwiger-Nelson: 5, 6, or 7)",
+      "What is L(2)? Even the two-distance case is not well understood",
+      "Does L(r) grow polynomially, exponentially, or somewhere in between?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 71,
+    "axiomCount": 3,
+    "theoremCount": 1,
+    "definitionCount": 1,
+    "path": "Proofs/Erdos706Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "key": "E81",
+      "citation": "Erdős, Paul, Some applications of graph theory and combinatorial methods to number theory and geometry, Algebraic Methods in Graph Theory (Szeged, 1978), Colloq. Math. Soc. J. Bolyai 25, North-Holland, 1981, 137-148.",
+      "type": "paper"
+    },
+    {
+      "key": "dG18",
+      "citation": "de Grey, Aubrey D.N.J., The chromatic number of the plane is at least 5, Geombinatorics 28 (2018), 18-31.",
+      "type": "paper"
+    },
+    {
+      "key": "FW81",
+      "citation": "Frankl, P. and Wilson, R.M., Intersection theorems with geometric consequences, Combinatorica 1 (1981), 357-368.",
+      "type": "paper"
+    },
+    {
+      "key": "erdos706",
+      "citation": "Erdős Problems, Problem #706, https://erdosproblems.com/706",
+      "type": "website"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-130",
+      "relationship": "related",
+      "description": "Erdős #130 asks about integer distance graphs in general position — a variant where distances are integer-valued rather than from a fixed set A, but chromatic number questions arise similarly"
+    },
+    {
+      "targetId": "erdos-101",
+      "relationship": "related",
+      "description": "Erdős #101 on four-point lines from planar point sets studies geometric constraints on point configurations, sharing the theme of how distance/incidence structure constrains combinatorial properties"
+    },
+    {
+      "targetId": "erdos-1066",
+      "relationship": "related",
+      "description": "Erdős #1066 studies the independence number α(G_A) of unit distance graphs — the dual chromatic question. For L(r) = χ, we need α ≤ n/χ, so independence bounds directly constrain chromatic bounds"
+    },
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "related",
+      "description": "The four-color theorem gives χ ≤ 4 for planar graphs. Distance graphs G_A are generally non-planar, so the Hadwiger-Nelson problem (L(1) ∈ {5,6,7}) already exceeds the planar bound"
+    },
+    {
+      "targetId": "erdos-1084",
+      "relationship": "related",
+      "description": "Erdős #1084 counts unit-distance pairs among separated points. The unit-distance graph's edge density controls both pair counts (1084) and chromatic number (706) through the degeneracy-chromatic relationship"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,160 @@
+[
+  {
+    "id": "ann-606oq03oq03-header",
+    "proofId": "erdos-606-oq-03-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 38
+    },
+    "type": "concept",
+    "title": "Problem History and Kelly's Proof Strategy",
+    "content": "J.J. Sylvester posed the problem in 1893: must any finite non-collinear point set have a line through exactly 2 points? After decades without a published proof, Tibor Gallai (under his birth name Tibor Grünwald) proved it in 1944. L.M. Kelly's 1948 proof, a one-paragraph gem, is formalized here. The key idea is extremal: choose the closest point-line pair and show that $\\ge 3$ collinear points on the line leads to a strictly closer pair, contradicting minimality.",
+    "mathContext": "The Sylvester-Gallai theorem: for any finite set $S \\subseteq \\mathbb{R}^2$ with $|S| \\ge 3$ and not all collinear, there exists a line through exactly 2 points of $S$ (an 'ordinary line').",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "incidence geometry",
+      "ordinary lines",
+      "extremal argument"
+    ],
+    "prerequisites": [
+      "plane geometry",
+      "finite point sets"
+    ]
+  },
+  {
+    "id": "ann-606oq03oq03-collinear",
+    "proofId": "erdos-606-oq-03-oq-03",
+    "range": {
+      "startLine": 41,
+      "endLine": 73
+    },
+    "type": "definition",
+    "title": "Collinearity in ℝ² via Parametric Lines",
+    "content": "Defines collinearity parametrically: $c$ is collinear with $a, b$ iff $c - a = t(b - a)$ for some $t \\in \\mathbb{R}$. This is equivalent to the cross product $(b-a) \\times (c-a) = 0$. Includes two proved lemmas: `collinear_self_left` (reflexivity, $t = 0$) and `collinear_comm` (symmetry in $a, b$, $t \\mapsto 1-t$). The symmetry proof handles the degenerate case $a = b$ separately.",
+    "mathContext": "The parametric definition $c = a + t(b - a)$ for $t \\in \\mathbb{R}$ describes the full line through $a$ and $b$. For $t \\in [0,1]$ it gives the segment $\\overline{ab}$; $t = 0$ gives $a$, $t = 1$ gives $b$. The cross product vanishing $(b_1-a_1)(c_2-a_2) - (b_2-a_2)(c_1-a_1) = 0$ is the standard collinearity test.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "affine combination",
+      "cross product",
+      "parametric lines"
+    ],
+    "prerequisites": [
+      "linear algebra over ℝ",
+      "ring_nf tactic"
+    ]
+  },
+  {
+    "id": "ann-606oq03oq03-ordinary",
+    "proofId": "erdos-606-oq-03-oq-03",
+    "range": {
+      "startLine": 75,
+      "endLine": 91
+    },
+    "type": "definition",
+    "title": "Ordinary Lines and Problem Statement",
+    "content": "Defines three key predicates: `AllCollinear S` (all points of $S$ lie on one line), `IsOrdinaryLine S a b` (the line through $a, b$ contains exactly these 2 points from $S$), and `HasOrdinaryLine S` (existence of such a pair). The formalization carefully separates the 'all collinear' condition (negated as a hypothesis) from the conclusion (ordinary line exists).",
+    "mathContext": "An ordinary line of a point set $S$ is a line $\\ell$ with $|\\ell \\cap S| = 2$. Sylvester-Gallai asserts: $|S| \\ge 3 \\wedge \\neg\\text{AllCollinear}(S) \\Rightarrow \\text{HasOrdinaryLine}(S)$. The Green-Tao theorem (2013) strengthens this: for $|S| \\ge n$, at least $n/2$ ordinary lines exist.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ordinary line",
+      "dual configuration",
+      "Green-Tao ordinary lines theorem"
+    ],
+    "prerequisites": [
+      "Finset membership",
+      "existential quantification"
+    ]
+  },
+  {
+    "id": "ann-606oq03oq03-distance",
+    "proofId": "erdos-606-oq-03-oq-03",
+    "range": {
+      "startLine": 93,
+      "endLine": 104
+    },
+    "type": "definition",
+    "title": "Point-Line Distance Formula",
+    "content": "Defines `pointLineDistance p a b` as $|\\det([b-a, p-a])| / |b-a|$, the standard signed-area-based formula for distance from point $p$ to the line through $a, b$. Uses `Real.sqrt` for the denominator. This distance function is central to Kelly's proof: the minimizer among all (point, line) pairs is the starting point of the argument.",
+    "mathContext": "For a line through $a = (a_1, a_2)$ and $b = (b_1, b_2)$, the distance from $p = (p_1, p_2)$ is $d(p, \\overline{ab}) = \\frac{|(b_1-a_1)(p_2-a_2) - (b_2-a_2)(p_1-a_1)|}{\\sqrt{(b_1-a_1)^2 + (b_2-a_2)^2}}$. This equals $|\\vec{(b-a)} \\times \\vec{(p-a)}| / |\\vec{(b-a)}|$, the area of the parallelogram divided by the base length.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cross product",
+      "signed area",
+      "point-line distance"
+    ],
+    "prerequisites": [
+      "Real.sqrt",
+      "absolute value",
+      "coordinate geometry"
+    ]
+  },
+  {
+    "id": "ann-606oq03oq03-kelly-lemma",
+    "proofId": "erdos-606-oq-03-oq-03",
+    "range": {
+      "startLine": 106,
+      "endLine": 129
+    },
+    "type": "concept",
+    "title": "Kelly's Distance Lemma (Axiomatized)",
+    "content": "The heart of Kelly's proof, axiomatized here: if $(p, \\overline{ab})$ is the closest point-line pair and the line contains a third point $c$, then $\\text{False}$. The proof sketch places the perpendicular foot at the origin with $\\ell$ along the $x$-axis and $p = (0, h)$. With $a = (\\alpha, 0)$ and $c = (\\gamma, 0)$ on the same side of the foot, $d(a, \\overline{pc}) = h(\\gamma - \\alpha)/\\sqrt{h^2 + \\gamma^2} < h$ because $\\alpha(\\alpha - 2\\gamma) \\le 0 < h^2$.",
+    "mathContext": "The coordinate calculation: after normalization, $d(a, \\overline{pc}) = \\frac{h|\\gamma - \\alpha|}{\\sqrt{h^2 + \\gamma^2}}$. We need $\\frac{(\\gamma-\\alpha)^2}{h^2+\\gamma^2} < 1$, equivalently $\\gamma^2 - 2\\alpha\\gamma + \\alpha^2 < h^2 + \\gamma^2$, i.e., $\\alpha^2 - 2\\alpha\\gamma < h^2$. Since $0 \\le \\alpha \\le \\gamma$, we have $\\alpha(\\alpha - 2\\gamma) \\le 0 < h^2$. This gives a closer pair $(a, \\overline{pc})$, contradicting minimality.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal principle",
+      "minimum-distance argument",
+      "coordinate geometry"
+    ],
+    "prerequisites": [
+      "point-line distance formula",
+      "triangle inequality",
+      "Aristotle candidate"
+    ]
+  },
+  {
+    "id": "ann-606oq03oq03-main",
+    "proofId": "erdos-606-oq-03-oq-03",
+    "range": {
+      "startLine": 131,
+      "endLine": 154
+    },
+    "type": "insight",
+    "title": "Sylvester-Gallai Main Theorem (Sorry)",
+    "content": "States the main theorem: for $|S| \\ge 3$ with $\\neg\\text{AllCollinear}(S)$, an ordinary line exists. The proof structure follows Kelly: (1) by contradiction, assume no ordinary line; (2) every line through 2 points of $S$ has $\\ge 3$ points; (3) combined with non-collinearity, choose a minimum-distance pair; (4) apply `kelly_distance_lemma` for contradiction. The sorry covers the extremal setup (finite set $\\Rightarrow$ minimum exists) and the connection to the key lemma.",
+    "mathContext": "The proof by contradiction assumes $\\forall a, b \\in S,\\, a \\ne b \\Rightarrow \\exists c \\in S,\\, c \\ne a \\wedge c \\ne b \\wedge \\text{Collinear}(a, b, c)$. Since $S$ is finite and not all collinear, the set of triples $(p, a, b)$ with $p \\notin \\overline{ab}$ is nonempty and finite, so a minimum-distance pair exists. Kelly's lemma then yields $\\text{False}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "proof by contradiction",
+      "well-ordering of finite sets",
+      "extremal combinatorics"
+    ],
+    "prerequisites": [
+      "kelly_distance_lemma",
+      "Finset finiteness",
+      "minimum over finite set"
+    ]
+  },
+  {
+    "id": "ann-606oq03oq03-summary",
+    "proofId": "erdos-606-oq-03-oq-03",
+    "range": {
+      "startLine": 156,
+      "endLine": 184
+    },
+    "type": "concept",
+    "title": "Proof Roadmap and Axiom Inventory",
+    "content": "Summarizes the formalization status: 1 axiom (`kelly_distance_lemma`), 1 sorry (the extremal argument setup in `sylvester_gallai`), and 2 proved collinearity lemmas. The key lemma is identified as a candidate for Aristotle (automated proof search) since it reduces to a routine coordinate inequality after the geometric setup is formalized.",
+    "mathContext": "The path to a complete proof requires: (1) proving the coordinate inequality $\\alpha(\\alpha - 2\\gamma) \\le 0$ when $0 \\le \\alpha \\le \\gamma$ (straightforward); (2) proving that a minimum over a finite nonempty set exists (standard Finset lemma); (3) connecting the extremal pair to Kelly's lemma hypotheses.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Aristotle proof search",
+      "sorry elimination",
+      "proof completion roadmap"
+    ],
+    "prerequisites": [
+      "axiom and sorry status",
+      "extremal argument",
+      "finite set minimum"
+    ]
+  }
+]

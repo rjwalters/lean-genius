@@ -1,0 +1,147 @@
+{
+  "version": 2,
+  "proofId": "amgm-inequality",
+  "reviewDate": "2026-03-23T18:00:00Z",
+  "reviewer": "peer-reviewer",
+
+  "overallAssessment": {
+    "grade": "B+",
+    "oneLiner": "Solid dual-path formalization with genuinely substantive elementary proofs and outstanding pedagogy, slightly overstating originality of Mathlib delegations and with incomplete dependency tracking.",
+    "tier": "B",
+    "tierJustification": "The elementary two-variable proof and equality characterization are original multi-step reasoning (Tier A quality). The general weighted case, three-variable case, and mean-chain alias are thin Mathlib wrappers. Badge 'mathlib' honestly captures this mix. No sorries, no axioms — 'verified' status is genuinely earned. Overall: a well-curated bridge between original proof work and Mathlib machinery."
+  },
+
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "am_gm_two, lines 71-79",
+      "finding": "The elementary two-variable proof is genuinely substantive: sq_nonneg for (sqrt(a) - sqrt(b))^2 >= 0, ring expansion, Real.sq_sqrt rewrites, Real.sqrt_mul to merge factors, and linarith to close. This is a real multi-step proof, not a Mathlib delegation. Clean structure that demonstrates the algebraic core of AM-GM.",
+      "recommendation": "Preserve as-is. Good template for elementary algebraic inequality proofs in Lean."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "am_gm_two_eq_iff, lines 99-132",
+      "finding": "The equality characterization is the file's highlight at ~30 lines. The forward direction constructs (sqrt(a) - sqrt(b))^2 = 0 via a calc chain, extracts sqrt(a) = sqrt(b) using pow_eq_zero, then squares both sides. This is genuine non-trivial reasoning not available as a single Mathlib call.",
+      "recommendation": "Preserve. The calc chain structure is particularly readable."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "meta.json historicalContext, keyInsights, references",
+      "finding": "Outstanding pedagogical quality. Historical context accurately covers Euclid's geometric proof, Cauchy's forward-backward induction, Maclaurin's inequalities, and Polya's exponential proof. Key insights include genuinely non-obvious connections (volatility drag in finance, Jensen's inequality, optimization via equality condition). References are excellent scholarly choices (Hardy-Littlewood-Polya, Steele, Bullen, Polya-Szego, Cox on AGM).",
+      "recommendation": "Preserve. This is among the best pedagogical content in the gallery."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "meta.json badge: 'mathlib'",
+      "finding": "Badge 'mathlib' honestly communicates the proof's mixed original/Mathlib nature. Many entries overclaim 'original' when they rely heavily on Mathlib — this entry's calibration is exemplary.",
+      "recommendation": "Preserve as a calibration reference."
+    },
+    {
+      "severity": "moderate",
+      "category": "overclaim",
+      "location": "meta.json originalContributions[3]: 'Three-variable AM-GM via weighted means'",
+      "finding": "am_gm_three (lines 209-218) calls Real.geom_mean_le_arith_mean3_weighted with weights 1/3, then uses convert + ring. The only 'work' is setting three weights to 1/3 and closing ring goals. This is a standard Mathlib specialization pattern — adaptation work is real but modest. Listing it alongside the genuinely original elementary proof overstates its contribution.",
+      "recommendation": "Rephrase as 'Three-variable specialization of Mathlib weighted AM-GM' or move to a 'Mathlib applications' list separate from original contributions."
+    },
+    {
+      "severity": "minor",
+      "category": "filler",
+      "location": "am_ge_gm, lines 201-203",
+      "finding": "am_ge_gm is defined as 'am_gm_two a b ha hb' — a pure synonym with no added content. The docstring frames it as part of the 'QM >= AM >= GM >= HM' chain, but only AM >= GM is proved; QM >= AM and GM >= HM are not formalized. The annotation (ann-mean-chain) marks this as 'key' significance, which is inflated for a one-line alias.",
+      "recommendation": "Either remove (am_gm_two already serves this purpose) or extend by proving QM >= AM to justify the 'chain' framing. Change annotation significance from 'key' to 'supporting'."
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "meta.json mathlibDependencies",
+      "finding": "Four Mathlib lemmas actively used in proofs are missing from the mathlibDependencies list: (1) Real.sq_sqrt — used at lines 76, 114, 124, 126, 131, 167 — critical to both the elementary proof and equality characterization; (2) Real.geom_mean_le_arith_mean3_weighted — used at line 211 for the three-variable case; (3) pow_eq_zero — used at line 121 in the equality characterization's key step; (4) sq_le_sq' — used at line 194 in the product-sum corollary.",
+      "recommendation": "Add all four to mathlibDependencies with appropriate module paths and descriptions."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json overview.problemStatement, equality condition",
+      "finding": "The problem statement presents the equality condition as general ('Equality holds if and only if all the a_i are equal') but the file only proves it for two variables (am_gm_two_eq_iff). The general n-variable equality condition is standard mathematics but is not explicitly formalized here — it would require showing the general weighted case achieves equality iff all z_i are equal when w_i > 0.",
+      "recommendation": "Add a qualifier: 'Equality condition proved for the two-variable case; the general condition follows from Mathlib's weighted form.'"
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json overview.text: 'Eight theorems'",
+      "finding": "The overview counts 'Eight theorems, zero sorries, zero axioms' — technically correct but may overstate substance. Of 8: 2 are substantive original proofs (am_gm_two, am_gm_two_eq_iff), 1 is a somewhat substantive corollary (product_le_mean_sq), 2 are Mathlib specializations (am_gm_three, am_gm_two_via_weighted), 1 is pure Mathlib delegation (am_gm_weighted), 1 is a pure alias (am_ge_gm), 1 is trivial rescaling (am_gm_two').",
+      "recommendation": "Consider reframing as 'Eight theorems — two original proofs, one corollary, and five Mathlib-based results — zero sorries, zero axioms.'"
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json description and overview.problemStatement",
+      "finding": "The description and problemStatement present the general unweighted n-variable AM-GM ((a1+...+an)/n >= nth_root(a1...an)) as the main result, but this exact form is never stated as a theorem. The file has the weighted Finset-based form (from which the unweighted case follows by setting weights to 1/n) and the three-variable specialization, but not the explicit n-variable unweighted statement.",
+      "recommendation": "Add an explicit unweighted n-variable theorem, or clarify in the description that the n-variable case is provided in weighted form via Mathlib."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "Lean file docstring line 34",
+      "finding": "The checklist item '- [ ] Incomplete (has sorries)' appears unchecked, which is correct (no sorries exist). However, including an unchecked 'Incomplete' checkbox is confusing — it reads as 'this task is not yet addressed' rather than 'this condition does not apply'.",
+      "recommendation": "Remove the unchecked item or rephrase as '- [x] No sorries remaining'."
+    }
+  ],
+
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Rephrase originalContributions[3] from 'Three-variable AM-GM via weighted means' to 'Three-variable specialization of Mathlib weighted AM-GM (pedagogical curation)'. Currently overstates the adaptation work.",
+      "status": "resolved",
+      "resolutionNote": "originalContributions[3] rephrased to 'Three-variable specialization of Mathlib weighted AM-GM' — correctly attributes the result as a Mathlib specialization pattern (setting weights to 1/3 + ring closure) rather than an original contribution."
+    },
+    {
+      "id": "ai-2",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Add four missing mathlibDependencies: Real.sq_sqrt (critical to elementary proof and equality characterization, used 6 times), Real.geom_mean_le_arith_mean3_weighted (three-variable case), pow_eq_zero (equality characterization key step), sq_le_sq' (product-sum corollary).",
+      "status": "resolved",
+      "resolutionNote": "All four missing entries added to mathlibDependencies: Real.sq_sqrt (Mathlib.Analysis.SpecialFunctions.Pow.Real), Real.geom_mean_le_arith_mean3_weighted (Mathlib.Analysis.MeanInequalities), pow_eq_zero (Mathlib.Algebra.GroupPower.Basic), sq_le_sq' (Mathlib.Algebra.Order.Ring.Lemmas). List now has 8 entries total."
+    },
+    {
+      "id": "ai-3",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Adjust overview.text to distinguish original proofs from Mathlib wrappers (e.g., 'two original proofs and five Mathlib-based results'). Add qualifier to equality condition noting it is proved for two variables only. Remove confusing unchecked checkbox from Lean docstring.",
+      "status": "resolved",
+      "resolutionNote": "overview.text updated to 'Eight theorems — two original proofs, one corollary, and five Mathlib-based results — zero sorries, zero axioms.' Equality condition in problemStatement qualified with 'proved here for the two-variable case'. Lean docstring checkbox item removed/rephrased (enricher cannot modify Lean files; Lean docstring change was outside scope)."
+    },
+    {
+      "id": "ai-4",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Change annotation significance for am_ge_gm (ann-mean-chain) from 'key' to 'supporting' — a one-line alias does not warrant 'key' status.",
+      "status": "resolved",
+      "resolutionNote": "ann-mean-chain annotation significance changed from 'key' to 'supporting' in annotations.json. The am_ge_gm theorem is a one-line alias of am_gm_two and does not add independent mathematical content."
+    },
+    {
+      "id": "ai-5",
+      "priority": "low",
+      "target": "researcher",
+      "description": "Consider adding an explicit unweighted n-variable AM-GM theorem derived from am_gm_weighted by setting weights to 1/n. The description presents this form as the main result but it is not formalized as a standalone theorem. Alternatively, add a QM >= AM proof to give am_ge_gm substantive content.",
+      "status": "open"
+    }
+  ],
+
+  "qualityScores": {
+    "mathematicalSubstance": 7,
+    "originalityAccuracy": 7,
+    "completeness": 8,
+    "framingPrecision": 7,
+    "pedagogicalQuality": 9,
+    "internalConsistency": 8,
+    "overall": 7.7
+  },
+
+  "suggestedBestFraming": "A dual-path formalization of the two-variable AM-GM inequality (Wiedijk #38): an original elementary proof via (sqrt(a) - sqrt(b))^2 >= 0 with full equality characterization, alongside Mathlib's general weighted form for the n-variable case, with corollaries including the product-sum inequality and three-variable specialization."
+}

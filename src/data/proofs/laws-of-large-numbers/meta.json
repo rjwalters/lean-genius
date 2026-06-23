@@ -1,0 +1,295 @@
+{
+  "id": "laws-of-large-numbers",
+  "title": "Laws of Large Numbers",
+  "slug": "laws-of-large-numbers",
+  "description": "The Laws of Large Numbers describe how sample averages converge to expected values. The Weak Law shows convergence in probability, while the Strong Law shows almost sure convergence.",
+  "meta": {
+    "author": "Bernoulli (1713), Kolmogorov (1930), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Law_of_large_numbers",
+    "date": "1713 (Bernoulli), 1930 (Kolmogorov)",
+    "status": "axiomatized",
+    "tags": [
+      "probability",
+      "statistics",
+      "analysis",
+      "convergence",
+      "wiedijk-100"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "proofRepoPath": "Proofs/LawsOfLargeNumbers.lean",
+    "mathlibDependencies": [
+      {
+        "theorem": "ProbabilityTheory.strong_law_ae",
+        "description": "Strong Law of Large Numbers for Banach space-valued random variables",
+        "module": "Mathlib.Probability.StrongLaw"
+      },
+      {
+        "theorem": "ProbabilityTheory.strong_law_ae_real",
+        "description": "Strong Law for real-valued random variables",
+        "module": "Mathlib.Probability.StrongLaw"
+      },
+      {
+        "theorem": "MeasureTheory.Measure",
+        "description": "Measure theory foundations",
+        "module": "Mathlib.MeasureTheory.Measure.MeasureSpace"
+      },
+      {
+        "theorem": "ProbabilityTheory.iIndepFun",
+        "description": "Independence of random variables",
+        "module": "Mathlib.Probability.Independence.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Weak Law proof framework via Chebyshev's inequality",
+      "Convergence in probability definition and properties",
+      "Connection between almost sure and probability convergence",
+      "Applications to Monte Carlo and Bernoulli trials"
+    ],
+    "dateAdded": "2025-12-27",
+    "wiedijkNumber": 59,
+    "axiomCount": 3,
+    "assumptions": "3 axioms across the chain (main 1 + LawsOfLargeNumbersOQ02.lean 2): main file declares weak_law_of_large_numbers_axiom wrapping the WLLN proof using Mathlib's Chebyshev inequality and variance properties; LawsOfLargeNumbersOQ02.lean declares standardNormalCDF and berryEsseenConstant. 2 stub theorems (monte_carlo_convergence, bernoulli_law) use placeholder proofs.",
+    "mathlib_version": "4.26.0",
+    "lineCount": 396,
+    "theoremCount": 11,
+    "definitionCount": 3,
+    "additionalFiles": [
+      "Proofs/LawsOfLargeNumbersOQ02.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Laws of Large Numbers are among the oldest and most fundamental results in probability theory, with a history spanning over three centuries.\n\nJacob Bernoulli proved the first version in 1713 for Bernoulli trials, published posthumously in Part IV of his *Ars Conjectandi*. Bernoulli worked on the proof for over 20 years and considered it his most important result — he called it his 'golden theorem.' His proof used direct combinatorial estimates of binomial probabilities, predating the concept of variance by over a century. Abraham de Moivre strengthened Bernoulli's result in 1733 by proving what we now call the normal approximation to the binomial (a precursor to the Central Limit Theorem), giving the rate of convergence that Bernoulli's theorem lacks.\n\nThe term 'Law of Large Numbers' (*loi des grands nombres*) was coined by Siméon Denis Poisson in 1835 in his *Recherches sur la probabilité des jugements*. Pafnuty Chebyshev gave the first general proof (for arbitrary distributions with finite variance) in 1867, using the inequality that now bears his name — the same approach formalized here. His student Andrei Markov extended the result to dependent sequences in 1906 (Markov chains).\n\nThe Strong Law, which provides almost sure convergence rather than just convergence in probability, was first proved by Émile Borel in 1909 for the special case of Bernoulli trials, using the Borel-Cantelli lemma. Francesco Cantelli gave an independent proof in 1917. The general SLLN was established by Andrey Kolmogorov in 1930, building on his measure-theoretic axiomatization of probability (*Grundbegriffe der Wahrscheinlichkeitsrechnung*, 1933). Kolmogorov proved that finite first moment ($E[|X|] < \\infty$) is both necessary and sufficient for the SLLN — a remarkably sharp result. Nassim Etemadi simplified Kolmogorov's proof in 1981, requiring only pairwise independence rather than full mutual independence; Mathlib implements Etemadi's approach in `strong_law_ae`.\n\nThese theorems provide the mathematical foundation for statistical inference, explaining why sample means are reliable estimators of population means when samples are large enough. They underpin frequentist probability, Monte Carlo methods, insurance mathematics, and the empirical sciences.",
+    "problemStatement": "**Weak Law of Large Numbers (WLLN)**: For i.i.d. random variables $X_1, X_2, \\ldots$ with mean $\\mu$ and finite variance $\\sigma^2$, the sample mean $\\bar{X}_n = \\frac{1}{n}\\sum_{i=1}^n X_i$ converges to $\\mu$ in probability:\n\n$$\\forall \\varepsilon > 0: \\lim_{n \\to \\infty} P(|\\bar{X}_n - \\mu| > \\varepsilon) = 0$$\n\n**Strong Law of Large Numbers (SLLN)**: Under the same conditions (with finite expectation), the sample mean converges almost surely:\n\n$$P\\left(\\lim_{n \\to \\infty} \\bar{X}_n = \\mu\\right) = 1$$\n\nThe Strong Law is strictly stronger: almost sure convergence implies convergence in probability, but not vice versa.",
+    "text": "The Laws of Large Numbers describe how sample averages converge to expected values. The Weak Law shows convergence in probability, while the Strong Law shows almost sure convergence.",
+    "proofStrategy": "**Weak Law via Chebyshev**:\n\n1. **Compute variance of sample mean**: For i.i.d. variables with variance $\\sigma^2$, we have $\\text{Var}(\\bar{X}_n) = \\sigma^2/n$.\n\n2. **Apply Chebyshev's inequality**: $P(|\\bar{X}_n - \\mu| \\geq \\varepsilon) \\leq \\frac{\\text{Var}(\\bar{X}_n)}{\\varepsilon^2} = \\frac{\\sigma^2}{n\\varepsilon^2}$.\n\n3. **Take the limit**: As $n \\to \\infty$, the bound $\\sigma^2/(n\\varepsilon^2) \\to 0$.\n\n**Strong Law (Mathlib)**:\n\nMathlib's proof uses Etemadi's method with truncation. The key steps are:\n1. Truncate variables at level $n$\n2. Show convergence along subsequences $c^n$\n3. Extend to all indices\n4. Control the error from truncation",
+    "keyInsights": [
+      "**Variance reduction**: The key insight of WLLN is that averaging reduces variance by a factor of $1/n$, making large deviations increasingly unlikely.",
+      "**Almost sure vs. in probability**: SLLN gives a stronger statement - the sample path converges pointwise except on a set of measure zero.",
+      "**Only integrability needed**: Remarkably, SLLN only requires finite first moment, not finite variance.",
+      "**Independence is essential**: Both laws rely crucially on independence; for dependent sequences, different laws apply.",
+      "**Monte Carlo foundation**: These theorems justify using sample averages to estimate expectations in simulation.",
+      "**Frequentist probability**: The laws provide the mathematical basis for the frequentist interpretation of probability."
+    ],
+    "prerequisites": [
+      "Probability theory",
+      "Mathematical analysis"
+    ]
+  },
+  "sections": [
+    {
+      "id": "introduction",
+      "title": "Module Documentation and Imports",
+      "startLine": 1,
+      "endLine": 62,
+      "summary": "Comprehensive module docstring explaining both Laws of Large Numbers, their mathematical statements, proof approaches, Mathlib dependencies, and historical timeline from Bernoulli (1713) through Kolmogorov (1930). Imports from Probability.StrongLaw, Probability.Moments.Variance, Probability.Independence.Basic, ConvergenceInMeasure, and supporting analysis modules.",
+      "mathContext": "WLLN: $\\forall \\varepsilon > 0: P(|\\bar{X}_n - \\mu| > \\varepsilon) \\to 0$. SLLN: $P(\\lim \\bar{X}_n = \\mu) = 1$. Wiedijk #59."
+    },
+    {
+      "id": "definitions",
+      "title": "Probability Space Setup and Sample Mean",
+      "startLine": 64,
+      "endLine": 89,
+      "summary": "Defines `sampleMean X n ω` as $(1/n) \\sum_{i \\in \\text{range}(n)} X_i(\\omega)$ in a probability space $(\\Omega, \\mu)$ with `IsProbabilityMeasure μ`. Proves the equivalence `sampleMean_pos` between multiplicative and division forms.",
+      "mathContext": "$\\bar{X}_n(\\omega) = \\frac{1}{n}\\sum_{i=0}^{n-1} X_i(\\omega)$"
+    },
+    {
+      "id": "convergence-probability",
+      "title": "Convergence in Probability",
+      "startLine": 91,
+      "endLine": 121,
+      "summary": "Defines `ConvergesInProbability X L` as $\\forall \\varepsilon > 0$, $\\mu\\{|X_n - L| > \\varepsilon\\} \\to 0$, using Mathlib's `Filter.Tendsto` toward `nhds 0` along `atTop`. The definition unfolds by `rfl`.",
+      "mathContext": "$X_n \\xrightarrow{P} L \\iff \\forall \\varepsilon > 0:\\; P(|X_n - L| > \\varepsilon) \\to 0$"
+    },
+    {
+      "id": "chebyshev",
+      "title": "Chebyshev's Inequality",
+      "startLine": 123,
+      "endLine": 160,
+      "summary": "Wraps Mathlib's `ProbabilityTheory.meas_ge_le_variance_div_sq` as `chebyshev_inequality`: $P(|X - E[X]| \\geq \\varepsilon) \\leq \\text{Var}(X)/\\varepsilon^2$. Also proves `variance_nonneg` from Mathlib. The key ingredient for the Chebyshev-based WLLN proof.",
+      "mathContext": "$P(|X - \\mu| \\geq \\varepsilon) \\leq \\frac{\\text{Var}(X)}{\\varepsilon^2}$ (Chebyshev 1867)"
+    },
+    {
+      "id": "weak-law",
+      "title": "Weak Law of Large Numbers",
+      "startLine": 162,
+      "endLine": 234,
+      "summary": "States and proves (via axiom wrapper) the WLLN: for i.i.d. random variables with finite variance, $P(|\\bar{X}_n - \\mu| > \\varepsilon) \\to 0$. Uses `variance_sum_indep` (Mathlib) and `chebyshev_inequality` to derive $P(|\\bar{X}_n - \\mu| \\geq \\varepsilon) \\leq \\sigma^2/(n\\varepsilon^2) \\to 0$. Contains 1 axiom wrapping the proof chain.",
+      "mathContext": "$P(|\\bar{X}_n - \\mu| \\geq \\varepsilon) \\leq \\frac{\\sigma^2}{n\\varepsilon^2} \\to 0$ as $n \\to \\infty$. Wiedijk #59 (partial)."
+    },
+    {
+      "id": "strong-law",
+      "title": "Strong Law of Large Numbers",
+      "startLine": 236,
+      "endLine": 277,
+      "summary": "Direct application of Mathlib's `ProbabilityTheory.strong_law_ae` (Etemadi's proof): for pairwise independent, identically distributed, integrable random variables, $\\bar{X}_n \\to E[X_0]$ almost surely. Requires only finite first moment, not finite variance.",
+      "mathContext": "$P\\left(\\lim_{n \\to \\infty} \\frac{1}{n}\\sum_{i=0}^{n-1} X_i = E[X_0]\\right) = 1$. Etemadi's 1981 proof via truncation."
+    },
+    {
+      "id": "relationships",
+      "title": "Convergence Hierarchy",
+      "startLine": 279,
+      "endLine": 316,
+      "summary": "Proves SLLN $\\Rightarrow$ WLLN via `tendstoInMeasure_of_tendsto_ae` from Mathlib: almost sure convergence implies convergence in measure. Composes `ae_convergence_implies_measure_convergence` with the SLLN to get `slln_implies_wlln`.",
+      "mathContext": "a.s. convergence $\\Rightarrow$ convergence in probability. The converse fails (flickering counterexample)."
+    },
+    {
+      "id": "applications",
+      "title": "Applications and Corollaries",
+      "startLine": 318,
+      "endLine": 360,
+      "summary": "Two application stubs (placeholder proofs): Monte Carlo convergence ($(1/n)\\sum f(X_i) \\to E[f(X)]$ a.s.) and Bernoulli's original theorem (relative frequency $\\to$ probability). Both follow directly from the SLLN.",
+      "mathContext": "Monte Carlo: $\\frac{1}{n}\\sum f(X_i) \\xrightarrow{\\text{a.s.}} E[f(X)]$. Bernoulli: $\\frac{\\#\\{X_i = 1\\}}{n} \\xrightarrow{\\text{a.s.}} p$."
+    },
+    {
+      "id": "conclusion",
+      "title": "Conclusion and Axiom Summary",
+      "startLine": 362,
+      "endLine": 396,
+      "summary": "Summarizes both laws, their applications, and the axiom inventory (1 axiom: `weak_law_of_large_numbers_axiom`). Documents all Mathlib dependencies used. Closes the `LawsOfLargeNumbers` namespace.",
+      "mathContext": "1 axiom wrapping the WLLN proof chain. All other results directly from Mathlib."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Laws of Large Numbers provide the mathematical foundation for statistical inference and Monte Carlo methods. The Weak Law, proved via Chebyshev's inequality, shows that sample means converge in probability to the population mean. The Strong Law, available in Mathlib as `strong_law_ae`, gives the stronger result of almost sure convergence.\n\nThese theorems explain why averaging works: the variance of sample means decreases as $1/n$, making large deviations from the true mean increasingly improbable. This justifies the use of sample statistics to estimate population parameters.",
+    "implications": "**Statistical Applications**:\n- Sample means are consistent estimators of population means\n- Confidence intervals become narrower with larger samples\n- Monte Carlo integration converges to true expectations\n\n**Theoretical Significance**:\n- Foundation for ergodic theory and dynamical systems\n- Basis for frequentist interpretation of probability\n- Connection to central limit theorem (rate of convergence)\n\n**Practical Impact**:\n- Quality control in manufacturing\n- Opinion polling and surveys\n- Insurance and risk assessment\n- Machine learning (empirical risk minimization)",
+    "openQuestions": [
+      "What happens with heavy-tailed distributions where variance is infinite? The WLLN via Chebyshev fails, but SLLN may still hold.",
+      "How fast does convergence occur? This leads to the Central Limit Theorem and Berry-Esseen bounds.",
+      "RESOLVED: Birkhoff's Ergodic Theorem formalized in LawsOfLargeNumbersOQ03.lean — extends SLLN to stationary sequences via measure-preserving dynamics",
+      "Can we get uniform convergence over families of distributions? This leads to Glivenko-Cantelli and empirical process theory."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "extends",
+      "description": "The CLT refines the LLN by quantifying the fluctuations: $\\sqrt{n}(\\bar{X}_n - \\mu) \\xrightarrow{d} N(0, \\sigma^2)$. LLN is the first-order result (convergence of the mean), CLT is the second-order result (the Gaussian shape of the deviations). Together they form the backbone of statistical inference"
+    },
+    {
+      "targetId": "fair-games-theorem",
+      "relationship": "related",
+      "description": "The martingale convergence theorem generalizes the SLLN from i.i.d. sums to martingales. The partial sums $S_n = \\sum_{i=1}^n (X_i - \\mu)$ form a martingale when $X_i$ are i.i.d. with mean $\\mu$, and LLN is the special case of martingale convergence for i.i.d. increments"
+    },
+    {
+      "targetId": "birthday-problem",
+      "relationship": "related",
+      "description": "Both are fundamental probability results illustrating different regimes: the birthday problem shows that rare events can become likely with moderate samples (a finite-sample phenomenon), while LLN shows that averages stabilize in large samples (an asymptotic phenomenon)"
+    },
+    {
+      "targetId": "prob-method-second-moment",
+      "relationship": "related",
+      "description": "The second moment method uses variance bounds (Chebyshev's inequality) to prove existence — the same Chebyshev inequality that powers the WLLN proof. Both exploit the $\\text{Var}(X)/\\varepsilon^2$ tail bound, applied in different contexts: LLN for convergence of averages, the second moment method for concentration of random combinatorial structures"
+    },
+    {
+      "targetId": "randomized-maxcut",
+      "relationship": "related",
+      "description": "The randomized MaxCut algorithm's expected performance guarantee ($E[\\text{cut}] \\geq |E|/2$) is meaningful precisely because the LLN ensures that the actual cut value concentrates near its expectation for large graphs — the practical reliability of randomized algorithms rests on laws of large numbers"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Bernoulli, Jacob",
+      "title": "Ars Conjectandi",
+      "year": "1713",
+      "venue": "Basel: Thurneysen",
+      "note": "Contains the first proof of the weak law of large numbers (Part IV) — published posthumously 8 years after Bernoulli's death. Bernoulli worked on the proof for over 20 years and called it his 'golden theorem'"
+    },
+    {
+      "authors": "Kolmogorov, Andrey N.",
+      "title": "Sur la loi forte des grands nombres",
+      "year": "1930",
+      "venue": "Comptes Rendus de l'Académie des Sciences 191, 910–912",
+      "note": "Proved the strong law of large numbers for independent identically distributed random variables with finite first moment — establishing that E[|X|] < ∞ is both necessary and sufficient"
+    },
+    {
+      "authors": "Chebyshev, Pafnuty L.",
+      "title": "Des valeurs moyennes",
+      "year": "1867",
+      "venue": "Journal de Mathématiques Pures et Appliquées, 2e série, vol. 12, pp. 177–184",
+      "note": "First general proof of the WLLN for arbitrary distributions with finite variance, using the inequality P(|X - μ| ≥ ε) ≤ Var(X)/ε² — the approach formalized in this Lean file"
+    },
+    {
+      "authors": "Etemadi, Nasrollah",
+      "title": "An elementary proof of the strong law of large numbers",
+      "year": "1981",
+      "venue": "Zeitschrift für Wahrscheinlichkeitstheorie und verwandte Gebiete, vol. 55, pp. 119–122",
+      "note": "Simplified proof of the SLLN requiring only pairwise independence (not full mutual independence). This is the proof implemented in Mathlib's strong_law_ae"
+    },
+    {
+      "authors": "Borel, Émile",
+      "title": "Les probabilités dénombrables et leurs applications arithmétiques",
+      "year": "1909",
+      "venue": "Rendiconti del Circolo Matematico di Palermo, vol. 27, pp. 247–271",
+      "note": "First proof of the strong law of large numbers for the special case of Bernoulli trials, introducing the Borel-Cantelli lemma as a tool"
+    },
+    {
+      "authors": "Kolmogorov, Andrey N.",
+      "title": "Grundbegriffe der Wahrscheinlichkeitsrechnung",
+      "year": "1933",
+      "venue": "Springer, Berlin",
+      "note": "Foundational monograph establishing the measure-theoretic axiomatization of probability theory — the framework within which the Laws of Large Numbers are now stated and proved"
+    },
+    {
+      "authors": "Feller, William",
+      "title": "An Introduction to Probability Theory and Its Applications",
+      "year": "1968",
+      "venue": "Wiley, vol. I (3rd ed.) and vol. II (2nd ed.)",
+      "note": "Standard reference covering both Laws of Large Numbers with numerous examples and applications. Volume I treats the discrete case; Volume II gives the general measure-theoretic treatment"
+    },
+    {
+      "authors": "Wiedijk, Freek",
+      "title": "Formalizing 100 Theorems",
+      "year": "2008",
+      "venue": "https://www.cs.ru.nl/~freek/100/",
+      "note": "The Laws of Large Numbers is #59 on Wiedijk's list of 100 well-known mathematical theorems tracked for formalization across proof assistants"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Probability.StrongLaw",
+      "Mathlib.Probability.Moments.Variance",
+      "Mathlib.Probability.Independence.Basic",
+      "Mathlib.Probability.Notation",
+      "Mathlib.MeasureTheory.Integral.Bochner.Basic",
+      "Mathlib.MeasureTheory.Function.ConvergenceInMeasure",
+      "Mathlib.Analysis.Normed.Field.Basic",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Filter",
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "LawsOfLargeNumbers",
+    "lineCount": 396,
+    "axiomCount": 1,
+    "theoremCount": 11,
+    "definitionCount": 3,
+    "path": "Proofs/LawsOfLargeNumbers.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/LawsOfLargeNumbersOQ02.lean"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "weak_lln",
+      "type": "core",
+      "description": "Sample average converges in probability to the expected value",
+      "leanType": "[IID X] -> E[X] = mu -> Tendsto (fun n => (sum X_i / n)) atTop (Measure.ae (nhds mu))"
+    },
+    {
+      "name": "strong_lln",
+      "type": "key",
+      "description": "Sample average converges almost surely to the expected value",
+      "leanType": "[IID X] -> E[X] = mu -> ae (fun omega => Tendsto (fun n => sum X_i(omega) / n) atTop (nhds mu))"
+    }
+  ],
+  "sorries": 0,
+  "additionalFiles": [
+    "Proofs/LawsOfLargeNumbersOQ02.lean"
+  ]
+}

@@ -1,0 +1,179 @@
+{
+  "id": "geometric-series-oq-08",
+  "slug": "geometric-series-oq-08",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.GeomSum",
+      "Mathlib.Analysis.SpecificLimits.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "GeometricSeriesOQ08",
+    "lineCount": 129,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/GeometricSeriesOQ08.lean",
+    "sorries": 0
+  },
+  "title": "Finite Geometric Sums and the Infinite Limit: Defect, Bounds, and Monotonicity",
+  "description": "The quantitative bridge between the finite geometric partial sum S n = ∑_{k<n} rᵏ = (1−rⁿ)/(1−r) and the infinite value 1/(1−r), for 0 ≤ r < 1. The exact truncation defect is 1/(1−r) − S n = rⁿ/(1−r) — the infinite tail is itself a scaled power. From it: the strict bound S n < 1/(1−r) (and non-strict ≤), monotonicity of n ↦ S n, and upward convergence S n → 1/(1−r), together realizing the infinite value as the supremum of an increasing bounded sequence with explicit error rⁿ/(1−r). Mathlib has the closed form and the infinite value separately; this packages their difference — the estimate behind the comparison test, the ratio-test remainder, and numerical truncation bounds.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GeometricSeriesOQ08.lean",
+    "tags": [
+      "analysis",
+      "geometric-series",
+      "finite-sums",
+      "partial-sums",
+      "truncation-error",
+      "monotonicity",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 129,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "badge": "original",
+    "originalContributions": [
+      "geometric_sum_tail: the exact truncation defect (1 - r)⁻¹ − ∑_{k<n} rᵏ = rⁿ/(1 − r) for real r < 1 — the infinite tail of the geometric series is itself a scaled power. This explicit error term is the estimate used whenever a geometric series is truncated; Mathlib states the closed form and the infinite value separately but not this difference.",
+      "geometric_sum_lt_inv / geometric_sum_le_inv: the strict bound ∑_{k<n} rᵏ < (1 − r)⁻¹ (for 0 < r < 1) and the non-strict bound ≤ (for 0 ≤ r < 1, all n), exhibiting every finite geometric sum as lying strictly below its infinite limit.",
+      "geometric_sum_monotone: the partial sums n ↦ ∑_{k<n} rᵏ are Monotone for 0 ≤ r (each new term rⁿ ≥ 0).",
+      "geometric_sum_tendsto_inv: the finite sums converge to (1 − r)⁻¹; combined with monotonicity and the upper bound this realises the infinite value as the supremum of an increasing, bounded sequence.",
+      "geometric_sum_closed: the closed form in the (1 − rⁿ)/(1 − r) convention, the anchor from which the defect and bounds are derived."
+    ],
+    "prerequisites": [
+      "Mathlib's geom_sum_eq (∑_{k<n} xᵏ = (xⁿ − 1)/(x − 1) for x ≠ 1)",
+      "Mathlib's hasSum_geometric_of_abs_lt_one (∑ rⁿ = (1 − r)⁻¹ for |r| < 1)",
+      "HasSum.tendsto_sum_nat (partial sums of a HasSum tend to its value)",
+      "monotone_nat_of_le_succ; pow_nonneg / pow_pos; div_pos / div_nonneg",
+      "Parent: geometric-series (∑ rⁿ = 1/(1−r)) and base finite forms in GeometricSeries.lean"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "geom_sum_eq",
+        "description": "∑_{k<n} xᵏ = (xⁿ − 1)/(x − 1) for x ≠ 1. Rewritten into the (1 − xⁿ)/(1 − x) convention to anchor the defect and bound theorems.",
+        "module": "Mathlib.Algebra.GeomSum"
+      },
+      {
+        "theorem": "hasSum_geometric_of_abs_lt_one",
+        "description": "HasSum (fun n => rⁿ) (1 − r)⁻¹ for |r| < 1. Supplies the infinite value and, via HasSum.tendsto_sum_nat, the upward convergence of the partial sums.",
+        "module": "Mathlib.Analysis.SpecificLimits.Basic"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The finite geometric sum 1 + r + ··· + rⁿ⁻¹ = (1−rⁿ)/(1−r) is among the oldest closed forms in mathematics — Euclid's Elements IX.35 states it geometrically, and it is the engine behind Archimedes' quadrature of the parabola, where the convergent series ∑(1/4)ᵏ = 4/3 is summed by bounding partial sums. The modern viewpoint separates two facts: the algebraic identity for the finite sum (valid in any commutative ring, r ≠ 1) and the analytic statement that for |r| < 1 the partial sums converge to 1/(1−r). The quantitative content tying them together is the truncation error rⁿ/(1−r): it is exactly what Cauchy's comparison and ratio tests use to certify convergence of a general series by domination by a geometric one, and what numerical analysis uses to bound the cost of truncating a series at n terms. This entry isolates that error term as a typed identity and derives from it the order structure (monotone, bounded, supremum) that makes 1/(1−r) the least upper bound of the finite sums.",
+    "problemStatement": "**Open Question (oq-08)**: make explicit the relationship between the finite geometric partial sums S n = ∑_{k<n} rᵏ and the infinite value 1/(1−r) for 0 ≤ r < 1 — not just that S n → 1/(1−r), but the exact defect, the strict/non-strict bounds, and the monotonic-bounded structure realizing the limit as a supremum. Answer: 1/(1−r) − S n = rⁿ/(1−r), S n < 1/(1−r), n ↦ S n monotone, S n ↑ 1/(1−r).",
+    "proofStrategy": "Everything is anchored on the closed form. (1) geometric_sum_closed rewrites Mathlib's geom_sum_eq from the (rⁿ−1)/(r−1) convention into (1−rⁿ)/(1−r) via div_eq_div_iff and ring. (2) geometric_sum_tail computes the defect 1/(1−r) − S n = rⁿ/(1−r) by substituting the closed form and clearing denominators (field_simp; ring) — this single identity drives the rest. (3) The bounds follow because the defect rⁿ/(1−r) is nonnegative (≤, via div_nonneg) or strictly positive (<, via div_pos), discharged by linarith with the tail identity rewritten in. (4) geometric_sum_monotone uses Finset.sum_range_succ to expose the new term rⁿ ≥ 0 and monotone_nat_of_le_succ. (5) geometric_sum_tendsto_inv converts |r| < 1 from 0 ≤ r < 1, applies hasSum_geometric_of_abs_lt_one, and reads off convergence of partial sums via HasSum.tendsto_sum_nat. Concrete r = 1/2 examples (sum 15/8, defect 1/8) close the file.",
+    "keyInsights": [
+      "The infinite tail of the geometric series is itself a scaled geometric power: 1/(1−r) − S n = rⁿ/(1−r). This one identity is the source of every bound and the explicit truncation error simultaneously.",
+      "That error term rⁿ/(1−r) is precisely the estimate behind the comparison test, the ratio-test remainder, and numerical truncation bounds — packaging it as a typed identity makes it reusable rather than re-derived inline each time.",
+      "The strict bound S n < 1/(1−r) versus the non-strict S n ≤ 1/(1−r) is exactly the distinction between r > 0 (missing tail strictly positive) and allowing r = 0 or n = 0 (tail can vanish) — the sign of rⁿ/(1−r) decides it.",
+      "Monotone + bounded-above + the convergence statement together realize 1/(1−r) as the SUPREMUM of the partial sums, the order-theoretic face of the analytic limit (and the structure Archimedes used for the parabola).",
+      "The development needs only two Mathlib inputs — the finite closed form and the infinite value — with the entire finite/infinite bridge (defect, bounds, monotonicity) assembled by elementary linarith/field_simp reasoning."
+    ]
+  },
+  "sections": [
+    {
+      "id": "closed-form",
+      "title": "The Closed Form (1−rⁿ)/(1−r)",
+      "startLine": 57,
+      "endLine": 63,
+      "summary": "geometric_sum_closed wraps Mathlib's geom_sum_eq (stated as (rⁿ−1)/(r−1)) into the (1−rⁿ)/(1−r) convention via div_eq_div_iff and ring — the anchor from which the defect and bounds are derived."
+    },
+    {
+      "id": "truncation-defect",
+      "title": "The Exact Truncation Defect",
+      "startLine": 65,
+      "endLine": 72,
+      "summary": "geometric_sum_tail proves the keystone identity 1/(1−r) − S n = rⁿ/(1−r) for r < 1, by substituting the closed form and clearing denominators (field_simp; ring). The infinite tail is a scaled power — the single fact that drives every subsequent result."
+    },
+    {
+      "id": "bounds",
+      "title": "Strict and Non-Strict Bounds",
+      "startLine": 74,
+      "endLine": 93,
+      "summary": "geometric_sum_le_inv (S n ≤ 1/(1−r) for 0 ≤ r < 1, all n) and geometric_sum_lt_inv (strict, for 0 < r < 1) follow from the sign of the defect rⁿ/(1−r): nonnegative gives ≤, strictly positive gives <. Both close by linarith with the tail identity rewritten in."
+    },
+    {
+      "id": "monotone-converge",
+      "title": "Monotonicity and Upward Convergence",
+      "startLine": 95,
+      "endLine": 114,
+      "summary": "geometric_sum_monotone (partial sums increase, via Finset.sum_range_succ exposing rⁿ ≥ 0) and geometric_sum_tendsto_inv (S n → 1/(1−r), via hasSum_geometric_of_abs_lt_one and HasSum.tendsto_sum_nat) together realize the infinite value as the supremum of an increasing, bounded sequence."
+    },
+    {
+      "id": "concrete",
+      "title": "A Concrete Instance: r = 1/2",
+      "startLine": 116,
+      "endLine": 129,
+      "summary": "Worked examples at r = 1/2: the four-term sum is 15/8, strictly below the limit 2, with truncation defect (1/2)⁴/(1−1/2) = 1/8 — pinning the abstract defect and bound to recognizable numbers."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "geometric-series-oq-08-oq-01",
+      "question": "Insert the index weight k: give the finite arithmetico-geometric closed form ∑_{k<n} k·xᵏ — the division-free identity (1 − x)²·∑_{k<n} k·xᵏ = x·(1 − xⁿ) − n·xⁿ·(1 − x) over any commutative ring and the field form over (1 − x)² — and reconcile it with Mathlib's infinite value x/(1 − x)².",
+      "significance": "low"
+    },
+    {
+      "id": "geometric-series-oq-08-oq-02",
+      "question": "Give the two-sided form for negative ratios: for −1 < r < 0 the partial sums oscillate around (1 − r)⁻¹, with the same |rⁿ|/(1 − r) error envelope; formalise the alternating bracketing.",
+      "significance": "low"
+    },
+    {
+      "id": "geometric-series-oq-08-oq-03",
+      "question": "Extend the defect identity to the Ico-slice partial sum ∑_{k ∈ Ico m n} rᵏ and bound the slice by rᵐ/(1 − r); state the corresponding Cauchy-criterion estimate |∑_{k ∈ Ico m n} rᵏ| ≤ rᵐ/(1 − r) used in the comparison/ratio tests.",
+      "significance": "low"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "geometric-series",
+      "relationship": "extends",
+      "description": "Parent. The base entry records the finite closed form (1 − rⁿ)/(1 − r) and, separately, the infinite value 1/(1 − r). This entry supplies the quantitative bridge between them: the exact truncation defect rⁿ/(1 − r), the strict/non-strict bounds, monotonicity, and upward convergence."
+    },
+    {
+      "targetId": "geometric-series-oq-07",
+      "relationship": "sibling",
+      "description": "A sibling extension of the geometric series: oq-07 computes the second moment ∑ n² rⁿ of the infinite series, while this entry quantifies how the bare finite partial sums ∑_{k<n} rᵏ approach the infinite value 1/(1 − r)."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Algebra.GeomSum",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of the finite geometric closed form geom_sum_eq used as the anchor."
+    },
+    {
+      "title": "Mathlib4: Analysis.SpecificLimits.Basic",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of the infinite geometric value hasSum_geometric_of_abs_lt_one and the partial-sum convergence HasSum.tendsto_sum_nat."
+    },
+    {
+      "title": "Concrete Mathematics (geometric series)",
+      "author": "Graham, Knuth, Patashnik",
+      "year": "1994",
+      "venue": "Addison-Wesley",
+      "description": "Standard reference for the finite geometric sum, its closed form, and the truncation error term."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "For a real ratio r the finite geometric partial sum S n = ∑_{k<n} rᵏ has closed form (1 − rⁿ)/(1 − r) when r ≠ 1. This entry quantifies the relationship between these finite sums and the infinite value (1 − r)⁻¹ for 0 ≤ r < 1: the exact truncation defect (1 − r)⁻¹ − S n = rⁿ/(1 − r); the bounds S n < (1 − r)⁻¹ (strict, 0 < r < 1) and S n ≤ (1 − r)⁻¹; monotonicity of n ↦ S n; and upward convergence S n → (1 − r)⁻¹. Together they exhibit the infinite geometric value as the supremum of an increasing, bounded sequence with explicit error rⁿ/(1 − r). 128 lines, 6 theorems, 0 definitions, 0 axioms, 0 sorries; each result depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "Mathlib provides the finite closed form and the infinite value as separate facts; the difference between them — the truncation error rⁿ/(1 − r) — is exactly what is needed to estimate a truncated geometric series, and it is the engine behind the comparison test, the ratio-test remainder, and numerical error bounds. Packaging it as a typed identity, together with the monotonicity and bound that make 1/(1 − r) the least upper bound of the partial sums, makes the finite/infinite relationship reusable rather than re-derived inline.",
+    "openQuestions": [
+      "State the alternating-bracketing version for −1 < r < 0.",
+      "Extend the defect and error envelope to Ico-slice partial sums (the Cauchy-criterion form)."
+    ]
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "slug": "lovasz-local-lemma-oq-02-incomplete-01",
+  "title": "Lovász LLL OQ-02: Algebraic Tightness of the Threshold T(d)",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Complete 2 sorries in LovaszLocalLemmaOQ02.lean: prove lllThreshold_is_maximum (T(d) maximizes p*(1-p)^d) and lllThreshold_strict_maximum (the maximum is strict) using Real AM-GM inequality",
+    "plain": "The Lovász Local Lemma threshold T(d) = d^d/(d+1)^(d+1) is the unique maximum of p*(1-p)^d over [0,1]. The file has 2 sorry-holes: proving T(d) achieves this maximum, and proving the maximum is strict. Both require casting ℚ-arithmetic to ℝ and applying AM-GM.",
+    "whyMatters": [
+      "Closes the two remaining sorries in LovaszLocalLemmaOQ02.lean (badge: wip)",
+      "Establishes algebraic tightness of the LLL threshold — proving the bound is exact",
+      "Contributes to Mathlib-quality probability/combinatorics formalization"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "lllThreshold definition: T(d) = d^d/(d+1)^(d+1) in ℚ (exact arithmetic)",
+      "LLL statement: if each event has prob ≤ p and ≤ d dependencies, and p*(1-p)^d ≤ T(d), then Pr(none happen) > 0",
+      "lllThreshold_is_maximum for small d by norm_num"
+    ],
+    "open": [
+      "lllThreshold_is_maximum: ∀ d : ℕ, ∀ p : ℝ, 0 ≤ p → p ≤ 1 → p * (1-p)^d ≤ T(d)",
+      "lllThreshold_strict_maximum: strict inequality unless p = T(d)"
+    ],
+    "goal": "Fill the 2 sorries using Real.geom_mean_le_arith_mean3_weighted or AM-GM from Mathlib"
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-21T00:00:00Z",
+    "iteration": 1,
+    "focus": "Locate LovaszLocalLemmaOQ02.lean and read the sorry holes",
+    "blockers": [],
+    "nextAction": "OBSERVE: Read proofs/Proofs/LovaszLocalLemmaOQ02.lean to understand the sorry context",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [
+      "Need Real AM-GM in the form: for weights w_i summing to 1, prod x_i^w_i ≤ sum w_i * x_i"
+    ],
+    "nextSteps": [
+      "Read LovaszLocalLemmaOQ02.lean for sorry context",
+      "Search Mathlib for Real.geom_mean_le_arith_mean or inner_mul_le_norm_mul_iff",
+      "Cast ℚ lllThreshold to ℝ for comparison"
+    ]
+  },
+  "tags": ["probability", "combinatorics", "lll", "wip-completion", "am-gm"],
+  "relatedProofs": ["lovasz-local-lemma", "lovasz-local-lemma-oq-02"],
+  "references": {
+    "papers": ["Lovász (1975) - On the ratio of optimal integral and fractional covers"],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Analysis.MeanInequalities",
+      "Mathlib.Algebra.Order.Field.Basic"
+    ]
+  },
+  "started": "2026-04-21T00:00:00Z",
+  "lastUpdate": "2026-04-21T00:00:00Z",
+  "significance": 7,
+  "tractability": 6
+}

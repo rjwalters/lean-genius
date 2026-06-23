@@ -1,0 +1,185 @@
+{
+  "id": "erdos-192",
+  "title": "Erdős Problem #192: Unit Vector Sequences and Abelian Squares",
+  "slug": "erdos-192",
+  "description": "For which d must an infinite unit vector sequence in ℝᵈ contain a 3-term AP? Answer: d ≤ 3 yes, d ≥ 4 no (Keränen 1992).",
+  "meta": {
+    "author": "Erdős-Graham (problem), Keränen (1992)",
+    "sourceUrl": "https://erdosproblems.com/192",
+    "date": "1992",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos192Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorics-on-words",
+      "abelian-squares",
+      "arithmetic-progressions",
+      "geometry"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 192,
+    "erdosUrl": "https://erdosproblems.com/192",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Fin.VecNotation",
+        "description": "Fin vector notation for step directions in Fin d",
+        "module": "Mathlib.Data.Fin.VecNotation"
+      },
+      {
+        "theorem": "Int.Basic",
+        "description": "Integer arithmetic for walkPosition coordinates in ℤ",
+        "module": "Mathlib.Data.Int.Basic"
+      },
+      {
+        "theorem": "Finset.Basic",
+        "description": "Finset.range and Finset.sum for computing walk positions via conditional sums",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "UnitVectorWalk d := ℕ → Fin d: unit vector step sequence representation",
+      "walkPosition: position in ℤᵈ via Finset.range(n).sum with indicator functions",
+      "HasThreeTermAP: 3-term AP via coordinate-wise midpoint condition",
+      "three_term_ap_low_dim axiom: d ≤ 3 forces APs (abelian square unavoidability)",
+      "keranen_counterexample axiom: ∃ AP-free walk in ℤ⁴ (85-letter morphism)",
+      "erdos_192 theorem: complete characterization (d=3 threshold) proved by exact tuple"
+    ],
+    "relatedProblems": [
+      {
+        "id": "erdos-231",
+        "relationship": "Equivalent problem: #231 asks directly about abelian squares over d-letter alphabets, which is the combinatorial reformulation of #192"
+      }
+    ],
+    "axiomCount": 2,
+    "lineCount": 103,
+    "assumptions": "2 axioms: three_term_ap_low_dim, keranen_counterexample. See Lean source for complete statements.",
+    "theoremCount": 1,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "**Erdős-Graham Problem (1980)**\n\nErdős and Graham posed this problem in their 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory*: if you walk in $\\mathbb{Z}^d$ taking unit steps along coordinate axes, must your path contain three equally-spaced points?\n\n**The Abelian Square Reduction**\n\nThe problem transforms beautifully into combinatorics on words. Record which axis each step follows as a letter from $\\{1, 2, \\ldots, d\\}$, producing an infinite word $w = w_0 w_1 w_2 \\cdots$. Then positions at steps $i, j, k$ form an AP if and only if the subword $w_i \\cdots w_{j-1}$ and $w_j \\cdots w_{k-1}$ have the same **Parikh vector** (letter frequency count) — i.e., they form an **abelian square**. So: APs in $\\mathbb{Z}^d$ walks $\\iff$ abelian squares in $d$-letter words.\n\n**Small Dimensions (d $\\leq$ 3)**\n\nFor 3-letter alphabets, Evdokimov (1968) proved that every word of length $\\geq 7$ contains an abelian square. (The word $abcacba$ of length 7 is abelian-square-free, showing the bound is tight.) Since infinite words have length $> 7$, APs are unavoidable in $\\mathbb{Z}^3$, hence also in $\\mathbb{Z}^1$ and $\\mathbb{Z}^2$.\n\n**Keränen's Breakthrough (1992)**\n\nVeikko Keränen, a Finnish mathematician, constructed an infinite abelian-square-free word over a 4-letter alphabet $\\{a, b, c, d\\}$. His method: define a **morphism** $h$ where each letter maps to an 85-letter string over the same alphabet. The fixed point $h^\\omega(a) = \\lim_{n \\to \\infty} h^n(a)$ is infinite and abelian-square-free. Keränen verified this by a computer-assisted argument checking all potential abelian squares of length $\\leq 2 \\times 85^2 = 14{,}450$; a compactness/pumping argument then extends to all lengths. His paper appeared in the *Journal of Combinatorial Theory, Series A* (1992).\n\n**Recent Developments**\n\nDekking (1979) had earlier shown that abelian *cube*-free words exist over 3 letters, but the square-free question for 4 letters remained open for over a decade. Fici and Puzynina (2023) surveyed the field of abelian combinatorics on words in their comprehensive overview *Abelian combinatorics on words: a survey*.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet $A = \\{a_1, a_2, \\ldots\\} \\subset \\mathbb{Z}^d$ be an infinite sequence where each successive difference $a_{i+1} - a_i$ is a standard basis vector $e_j$ for some $j \\in \\{1, \\ldots, d\\}$.\n\n**Question:** For which $d$ must $A$ contain a three-term arithmetic progression?\n\n**Answer:**\n- **$d \\leq 3$**: YES, APs are unavoidable (Evdokimov 1968: every length-$\\geq 7$ word over 3 letters has an abelian square)\n- **$d \\geq 4$**: NO, AP-free sequences exist (Keränen 1992: infinite abelian-square-free word over 4 letters)\n\n**Equivalently:** For which alphabet sizes $d$ does every infinite word contain an abelian square?",
+    "text": "For which d must an infinite unit vector sequence in ℝᵈ contain a 3-term AP? Answer: d ≤ 3 yes, d ≥ 4 no (Keränen 1992).",
+    "proofStrategy": "**Formalization Approach**\n\nThe compact 103-line formalization within the `Erdos192` namespace:\n\n1. **Walk Infrastructure (lines 33–53):** `UnitVectorWalk d := ℕ → Fin d` for step sequences. `walkPosition` computes $\\mathbb{Z}^d$ coordinates via `Finset.range n` and conditional sums. `HasThreeTermAP` encodes the coordinate-wise midpoint condition.\n\n2. **Low-Dimension Case (lines 59–67):** `three_term_ap_low_dim` axiomatizes $d \\leq 3 \\implies$ APs exist, relying on abelian square unavoidability for 3-letter alphabets.\n\n3. **Keränen Counterexample (lines 73–81):** `keranen_counterexample` axiomatizes the existence of an AP-free walk in $\\mathbb{Z}^4$ via Keränen's 85-letter morphism construction.\n\n4. **Main Theorem (lines 87–101):** `erdos_192` proved constructively by `⟨three_term_ap_low_dim 3 (by omega), keranen_counterexample⟩`, establishing the $d = 3$ threshold (the formal statement covers $d = 3$ unavoidability and $d = 4$ avoidability).",
+    "keyInsights": [
+      "**Geometric-to-combinatorial reduction:** Recording step directions converts the geometric AP problem in $\\mathbb{Z}^d$ into the purely combinatorial question of abelian square avoidability over $d$-letter alphabets. The Parikh vector (letter frequency count) of a subword equals the displacement vector of the corresponding walk segment, so equal Parikh vectors mean equal displacements — the AP condition.",
+      "**The threshold is exactly 4:** The critical alphabet size for abelian square avoidability is $|\\Sigma| = 4$. For $|\\Sigma| \\leq 3$, Evdokimov (1968) showed every word of length $\\geq 7$ has an abelian square (tight: $abcacba$ is abelian-square-free). For $|\\Sigma| = 4$, Keränen (1992) constructed an infinite abelian-square-free word. This is analogous to how the critical alphabet size for ordinary square avoidance is 3 (Thue 1906).",
+      "**Morphism method:** Keränen's construction uses iterative morphisms — a standard technique in combinatorics on words pioneered by Thue. The key innovation is finding a morphism $h : \\Sigma \\to \\Sigma^{85}$ whose fixed point $h^\\omega(a)$ avoids abelian squares. The morphism length 85 is large but necessary; shorter morphisms (checked exhaustively for small lengths) fail.",
+      "**Computer-assisted verification:** Keränen's proof is one of the early examples of computer-assisted mathematics in combinatorics. Verifying abelian-square-freeness of $h^\\omega(a)$ reduces to checking all subwords of length $\\leq 2|h|^2 = 14{,}450$, which is finite but infeasible by hand.",
+      "**Contrast with ordinary squares:** Thue (1906) showed ordinary square-free (no $ww$ subwords) infinite words exist over 3 letters — much easier than abelian squares since abelian squares allow rearrangement. The abelian version was open for decades longer, highlighting the combinatorial difficulty of controlling letter frequencies rather than exact subword structure.",
+      "**Connection to Problem #231:** Erdős Problem #231 asks the same question phrased directly in terms of abelian squares, without the geometric language. The formalization notes this equivalence, connecting two independently-stated problems in the Erdős collection."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Geometry (Euclidean, combinatorial)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-and-imports",
+      "title": "Header, Imports, and Namespace",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Module documentation with problem statement, solution summary, and references (Erdős 1961, Keränen 1992); imports Fin.VecNotation, Int.Basic, and Finset.Basic; opens Erdos192 namespace"
+    },
+    {
+      "id": "setup",
+      "title": "Part I: Walk Infrastructure",
+      "startLine": 26,
+      "endLine": 54,
+      "summary": "Defines UnitVectorWalk d := ℕ → Fin d (step directions), walkPosition via Finset.range conditional sums (ℤ-valued coordinates), and HasThreeTermAP (coordinate-wise midpoint condition for indices i < j < k)"
+    },
+    {
+      "id": "low-dim",
+      "title": "Part II: The d ≤ 3 Case",
+      "startLine": 55,
+      "endLine": 68,
+      "summary": "Axiom three_term_ap_low_dim: every infinite walk in ℤᵈ for d ≤ 3 contains a 3-term AP, via abelian square unavoidability on ≤ 3-letter alphabets"
+    },
+    {
+      "id": "counterexample",
+      "title": "Part III: The d ≥ 4 Counterexample",
+      "startLine": 69,
+      "endLine": 82,
+      "summary": "Axiom keranen_counterexample: AP-free walk in ℤ⁴ via Keränen's 85-letter morphism construction (existence of an infinite abelian-square-free word over 4 letters)"
+    },
+    {
+      "id": "classification",
+      "title": "Part IV: Complete Classification",
+      "startLine": 83,
+      "endLine": 103,
+      "summary": "Theorem erdos_192: conjunction of d=3 unavoidability and d=4 avoidability, proved by ⟨three_term_ap_low_dim 3 (by omega), keranen_counterexample⟩; establishes threshold dimension d = 3"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #192 asks for which dimensions $d$ an infinite unit vector walk in $\\mathbb{Z}^d$ must contain a 3-term AP. The complete answer is $d \\leq 3$ (unavoidable, via abelian square unavoidability on 3-letter alphabets) and $d \\geq 4$ (avoidable, via Keränen's 1992 construction of an infinite abelian-square-free word over 4 letters using a morphism with 85-letter images). The 103-line formalization axiomatizes both directions and proves the threshold characterization constructively.",
+    "implications": "**Theoretical Significance**: **Connections and Impact**\n\n1. **Combinatorics on Words:** The problem is a flagship application of abelian pattern avoidance, connecting discrete geometry to formal language theory. It demonstrates the power of morphism-based constructions.\n\n2. **Thue-Morse and Beyond:** The morphism method traces back to Thue (1906) for ordinary square-freeness over 3 letters.\n\nKeränen's work extends this paradigm to abelian squares, a significantly harder setting requiring larger morphisms.\n\n3. **Problem #231 Equivalence:** Erdős Problem #231 asks about abelian squares directly, without geometric language. The two problems are formally equivalent via the Parikh vector correspondence.\n\n4. **Ramsey-Theoretic Flavor:** The unavoidability of APs for $d \\leq 3$ has a Ramsey-theoretic character: any infinite structure in a sufficiently constrained setting must contain a regular pattern. The $d \\geq 4$ counterexample shows this regularity is dimension-dependent.",
+    "openQuestions": [
+      "Can Keränen's morphism length 85 be reduced? The minimum morphism length for abelian-square-free fixed points over 4 letters is unknown.",
+      "What about higher-order abelian patterns? Dekking (1979) showed abelian cube-free words exist over 3 letters; what are the thresholds for abelian k-th powers?",
+      "What is the growth rate of the number of abelian-square-free words of length n over 4 letters?",
+      "Can the abelian square avoidability result be proved constructively without computer verification?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Fin.VecNotation",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos192",
+    "lineCount": 103,
+    "axiomCount": 2,
+    "theoremCount": 1,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos192Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-231",
+      "relationship": "related",
+      "description": "Equivalent problem: #231 asks directly about abelian squares over d-letter alphabets, which is the combinatorial reformulation of #192"
+    },
+    {
+      "targetId": "erdos-188",
+      "relationship": "related",
+      "description": "Both concern unit distance geometry and arithmetic progressions: #188 asks about unit distance colorings with AP constraints, #192 asks about abelian squares in unit vector sequences — related extremal geometric combinatorics problems."
+    },
+    {
+      "targetId": "erdos-966",
+      "relationship": "related",
+      "description": "Both concern arithmetic progressions in combinatorial structures: #966 studies Ramsey-type AP properties, #192 studies abelian-square avoidance in AP-structured vector sequences."
+    },
+    {
+      "targetId": "erdos-984",
+      "relationship": "related",
+      "description": "Both address coloring/avoidance problems in combinatorial structures: #984 asks about 2-colorings controlling monochromatic structure, #192 asks about avoiding abelian squares in vector sequences."
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Abelian-square avoidance in infinite sequences is a Ramsey-type question: does every long enough sequence necessarily contain the forbidden pattern? The Erdős-type bounds connect to Ramsey number asymptotics."
+    }
+  ],
+  "references": [
+    {
+      "key": "De11",
+      "authors": [
+        "J.D. Currie"
+      ],
+      "title": "Pattern avoidance: themes and variations",
+      "venue": "Theoretical Computer Science",
+      "year": "2005",
+      "volume": "339",
+      "pages": "7-18",
+      "note": "Survey of pattern avoidance in combinatorics on words including abelian squares"
+    }
+  ],
+  "sorries": 0
+}

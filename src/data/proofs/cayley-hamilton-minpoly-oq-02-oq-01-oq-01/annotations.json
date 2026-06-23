@@ -1,0 +1,190 @@
+[
+  {
+    "id": "ann-module-header",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 18
+    },
+    "type": "concept",
+    "title": "Module Overview: Skolem-Noether for Matrix Algebras",
+    "content": "A fully verified proof of the Skolem-Noether theorem for matrix algebras: every $K$-algebra automorphism of $M_n(K)$ is inner (conjugation by an invertible matrix). The formalization uses an elementary matrix units approach — no Artin-Wedderburn theory or simple module theory is needed.\n\nThe file contains 26 theorems/lemmas in 570 lines with 0 axioms and 0 sorries. Beyond the main theorem, it derives $\\text{Aut}_K(M_n(K)) \\cong \\text{PGL}_n(K)$, proves $\\text{Center}(M_n(K)) = K \\cdot I$, and characterizes the kernel of the conjugation map.",
+    "mathContext": "Skolem-Noether: $\\forall \\varphi \\in \\text{Aut}_K(M_n(K)),\\; \\exists P \\in \\text{GL}_n(K),\\; \\varphi(A) = P^{-1}AP$.\n\nConsequence: $\\text{Aut}_K(M_n(K)) \\cong \\text{GL}_n(K) / K^* = \\text{PGL}_n(K)$.",
+    "significance": "key",
+    "prerequisites": [
+      "matrix algebra",
+      "algebra automorphisms",
+      "invertible matrices"
+    ],
+    "relatedConcepts": [
+      "Skolem-Noether theorem",
+      "inner automorphism",
+      "central simple algebra",
+      "projective general linear group"
+    ]
+  },
+  {
+    "id": "ann-conjugation",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 19,
+      "endLine": 92
+    },
+    "type": "definition",
+    "title": "Conjugation Automorphism and Inner Automorphism Predicate",
+    "content": "`conjAlgEquiv P` constructs the conjugation map $A \\mapsto P^{-1}AP$ as a $K$-algebra equivalence (`AlgEquiv`). The inverse map is $A \\mapsto PAP^{-1}$, and the proof that it preserves multiplication uses $(P^{-1}AB P) = (P^{-1}AP)(P^{-1}BP)$.\n\n`IsInnerAut φ` is the existential predicate: $\\varphi$ is inner iff $\\exists P \\in (M_n(K))^\\times,\\; \\varphi = \\text{conjAlgEquiv}(P)$. Note that $P$ is not unique — $P$ and $cP$ give the same automorphism for any $c \\in K^*$.\n\nInner automorphisms form a group: `isInnerAut_id` (identity = conj(1)), `isInnerAut_symm` (inverse = conj($P^{-1}$)), `isInnerAut_trans` (composition = conj($PQ$)).",
+    "mathContext": "$\\text{conj}_P(A) = P^{-1}AP$. The map $P \\mapsto \\text{conj}_P$ is a group homomorphism $\\text{GL}_n(K) \\to \\text{Aut}_K(M_n(K))$ with kernel $K^* \\cdot I$.",
+    "significance": "key",
+    "prerequisites": [
+      "AlgEquiv",
+      "Units",
+      "mul_inv_cancel"
+    ],
+    "relatedConcepts": [
+      "conjugation",
+      "inner automorphism",
+      "group homomorphism"
+    ]
+  },
+  {
+    "id": "ann-helper-lemmas",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 93,
+      "endLine": 176
+    },
+    "type": "concept",
+    "title": "Elementary Matrix Unit Helpers and Linear Independence",
+    "content": "The proof's technical core: helper lemmas for the elementary matrix units approach.\n\n`stdBasis_entry` and `stdBasis_mul` compute entries and products of standard basis matrices $E_{ij}$: $(E_{ij})_{kl} = \\delta_{ik}\\delta_{jl}$ and $E_{ij} \\cdot E_{kl} = \\delta_{jk} E_{il}$.\n\n`f_mul` proves $\\varphi(E_{ij}) \\cdot \\varphi(E_{kl}) = \\delta_{jk} \\varphi(E_{il})$ — the images preserve the same multiplication rules. This is the key structural property.\n\n`intertwine_prop` shows $\\varphi(E_{kk}) \\cdot p_j = \\delta_{kj} p_k$ where $p_j = \\varphi(E_{j,i_0}) \\cdot v_0$.\n\n`p_linearIndependent` proves the vectors $\\{p_j\\}$ are linearly independent using the intertwine property: if $\\sum c_j p_j = 0$, apply $\\varphi(E_{kk})$ to extract $c_k p_k = 0$, then use $p_k \\neq 0$ to get $c_k = 0$.",
+    "mathContext": "$E_{ij} E_{kl} = \\delta_{jk} E_{il}$ (standard matrix unit multiplication). Images $\\varphi(E_{ij})$ satisfy the same rule. Vectors $p_j = \\varphi(E_{j,i_0}) v_0$ are linearly independent because $\\varphi(E_{kk})$ acts as the projection onto $p_k$.",
+    "significance": "key",
+    "prerequisites": [
+      "Matrix.stdBasisMatrix",
+      "linearIndependent_iff",
+      "Fintype.linearIndependent_iff"
+    ],
+    "relatedConcepts": [
+      "matrix units",
+      "Kronecker delta",
+      "linear independence",
+      "projection"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 178,
+      "endLine": 280
+    },
+    "type": "concept",
+    "title": "The Skolem-Noether Theorem: Fully Proved",
+    "content": "The main theorem `skolemNoether` is **fully proved** (not axiomatized) using elementary matrix units.\n\n**Proof outline**:\n1. Choose $i_0 \\in n$ (from `Nonempty n`) and find $v_0$ such that $\\varphi(E_{i_0,i_0}) \\cdot v_0 \\neq 0$ (by contradiction: if all actions are zero, $\\varphi(E_{i_0,i_0}) = 0$, contradicting injectivity since $E_{i_0,i_0} \\neq 0$).\n2. Define $p_j = \\varphi(E_{j,i_0}) \\cdot v_0$ for each $j \\in n$.\n3. Form the matrix $P$ with columns $p_j$. Since $\\{p_j\\}$ are linearly independent (from `p_linearIndependent`), $P$ is invertible.\n4. Show $\\varphi(A) = P^{-1}AP$ for all $A$ by decomposing $A = \\sum_{i,j} A_{ij} E_{ij}$ and using the multiplication rules of the images.\n\nThis avoids Artin-Wedderburn theory entirely — it uses only basic matrix arithmetic and linear independence.",
+    "mathContext": "Proof: $P = [p_0 | p_1 | \\cdots | p_{n-1}]$ where $p_j = \\varphi(E_{j,i_0}) v_0$. Then $\\varphi(E_{ij}) = P^{-1} E_{ij} P$ by the multiplication rule, and $\\varphi(A) = \\sum A_{ij} \\varphi(E_{ij}) = P^{-1} (\\sum A_{ij} E_{ij}) P = P^{-1}AP$.",
+    "significance": "key",
+    "prerequisites": [
+      "LinearIndependent → IsUnit (Matrix.of p)",
+      "matrix decomposition",
+      "AlgEquiv.map_sum"
+    ],
+    "relatedConcepts": [
+      "change of basis",
+      "matrix unit decomposition",
+      "constructive proof"
+    ]
+  },
+  {
+    "id": "ann-consequences",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 281,
+      "endLine": 311
+    },
+    "type": "insight",
+    "title": "Consequences: Surjection, Minpoly Preservation, and n=1 Case",
+    "content": "Four immediate consequences of the main theorem:\n\n`exists_conjugating_matrix`: extracts the witnessing invertible $P$ from `skolemNoether`.\n\n`surjection_units_to_aut`: the conjugation map is surjective — every automorphism equals some `conjAlgEquiv P`. This uses `AlgEquiv.ext` to promote pointwise equality to algebraic equality.\n\n`automorphism_preserves_minpoly`: every automorphism preserves minimal polynomials, via Mathlib's `minpoly.algEquiv_eq`.\n\n`skolemNoether_one`: the $n = 1$ case is proved independently — $M_1(K) \\cong K$ has only the identity automorphism, since every 1×1 matrix is scalar and automorphisms fix scalars.",
+    "mathContext": "$\\text{conj}: \\text{GL}_n(K) \\twoheadrightarrow \\text{Aut}_K(M_n(K))$ is surjective. $\\varphi(\\text{minpoly}_K(A)) = \\text{minpoly}_K(\\varphi(A)) = \\text{minpoly}_K(A)$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "AlgEquiv.ext",
+      "minpoly.algEquiv_eq"
+    ],
+    "relatedConcepts": [
+      "surjection",
+      "minimal polynomial invariance",
+      "trivial case"
+    ]
+  },
+  {
+    "id": "ann-matrix-units",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 347,
+      "endLine": 387
+    },
+    "type": "concept",
+    "title": "Matrix Unit Product Formulas",
+    "content": "`mul_eij_entry` and `eij_mul_entry` compute the entries of products $A \\cdot E_{ij}$ and $E_{ij} \\cdot A$:\n- $(A \\cdot E_{ij})_{kl} = \\delta_{jl} \\cdot A_{ki}$ (right-multiplication by $E_{ij}$ extracts column $i$ and places it in column $j$)\n- $(E_{ij} \\cdot A)_{kl} = \\delta_{ik} \\cdot A_{jl}$ (left-multiplication extracts row $j$ and places it in row $i$)\n\nThese are the computational workhorses for the center characterization: commuting with $E_{ij}$ forces specific entry constraints on $A$.",
+    "mathContext": "$(A E_{ij})_{kl} = A_{ki} \\delta_{jl}$, $(E_{ij} A)_{kl} = \\delta_{ik} A_{jl}$. Commutativity $AE_{ij} = E_{ij}A$ forces $A_{ki}\\delta_{jl} = \\delta_{ik}A_{jl}$ for all $k, l$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Matrix.mul_apply",
+      "Matrix.stdBasisMatrix",
+      "Finset.sum_ite_eq"
+    ],
+    "relatedConcepts": [
+      "matrix unit arithmetic",
+      "column extraction",
+      "row extraction"
+    ]
+  },
+  {
+    "id": "ann-center",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 388,
+      "endLine": 452
+    },
+    "type": "concept",
+    "title": "Center of Mₙ(K) = Scalar Matrices",
+    "content": "Proves `center_iff_scalar`: a matrix $A$ commutes with all matrices iff $A = c \\cdot I$ for some $c \\in K$.\n\n**Proof**: Two helper lemmas:\n1. `off_diagonal_vanish_of_center`: If $AE_{ij} = E_{ij}A$ for all $i \\neq j$, then $A_{kl} = 0$ for $k \\neq l$. Setting $k = i, l = j$ in the entry formula gives $A_{ki}\\delta_{jl} = \\delta_{ik}A_{jl}$; with $k \\neq i$ and $l = j$ this gives $A_{kj} = 0$.\n2. `diagonal_constant_of_center`: If $A$ commutes with all $E_{ij}$, then all diagonal entries are equal: $A_{ii} = A_{jj}$.\n\nCombined: $A$ commuting with all matrices $\\Rightarrow$ $A$ is diagonal with constant diagonal $\\Rightarrow$ $A = c \\cdot I$.",
+    "mathContext": "$\\text{Center}(M_n(K)) = \\{c \\cdot I : c \\in K\\} \\cong K$. This is a special case of the general fact that the center of a central simple algebra is the base field.",
+    "significance": "key",
+    "prerequisites": [
+      "mul_eij_entry",
+      "eij_mul_entry",
+      "Matrix.ext_iff"
+    ],
+    "relatedConcepts": [
+      "center of a ring",
+      "scalar matrices",
+      "Schur's lemma",
+      "central simple algebra"
+    ]
+  },
+  {
+    "id": "ann-pgl",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 453,
+      "endLine": 570
+    },
+    "type": "concept",
+    "title": "PGL Structure: Conjugation Kernel and Automorphism Classification",
+    "content": "The final section characterizes when two units give the same conjugation:\n\n`conjAlgEquiv_eq_iff_center`: $\\text{conj}_P = \\text{conj}_Q$ iff $Q^{-1}P$ is central (i.e., scalar). Proof: $P^{-1}AP = Q^{-1}AQ$ for all $A$ iff $(QP^{-1})A = A(QP^{-1})$ for all $A$ iff $QP^{-1} \\in \\text{Center}(M_n(K))$.\n\n`conjAlgEquiv_eq_refl_iff`: the kernel of the conjugation map ($\\text{conj}_P = \\text{id}$) is exactly the scalar matrices. This gives the short exact sequence:\n$$1 \\to K^* \\to \\text{GL}_n(K) \\xrightarrow{\\text{conj}} \\text{Aut}_K(M_n(K)) \\to 1$$\nand hence $\\text{Aut}_K(M_n(K)) \\cong \\text{GL}_n(K) / K^* = \\text{PGL}_n(K)$.",
+    "mathContext": "$\\ker(\\text{conj}) = K^* \\cdot I \\cong K^*$. Combined with surjectivity (Skolem-Noether): $\\text{Aut}_K(M_n(K)) \\cong \\text{GL}_n(K) / K^* = \\text{PGL}_n(K)$.",
+    "significance": "key",
+    "prerequisites": [
+      "center_iff_scalar",
+      "skolemNoether",
+      "short exact sequence"
+    ],
+    "relatedConcepts": [
+      "PGL",
+      "projective general linear group",
+      "short exact sequence",
+      "quotient group",
+      "kernel characterization"
+    ]
+  }
+]

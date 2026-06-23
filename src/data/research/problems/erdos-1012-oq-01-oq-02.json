@@ -1,0 +1,63 @@
+{
+  "slug": "erdos-1012-oq-01-oq-02",
+  "title": "Structural arithmetic of the Woodall edge threshold in n (recurrence and monotonicity)",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "edgeThreshold n k = C(n-k-1,2)+C(k+2,2)+1. For n ≥ k+1: edgeThreshold (n+1) k = edgeThreshold n k + (n-k-1); for n ≥ k+2 it is strictly increasing in n; for k+1 ≤ n ≤ m, edgeThreshold n k ≤ edgeThreshold m k.",
+    "plain": "How the Erdős/Woodall edge threshold C(n-k-1,2)+C(k+2,2)+1 varies with the vertex count n: an explicit polynomial form, an exact recurrence (each added vertex raises the threshold by n-k-1), and monotonicity — the structure that makes f(k) a well-defined minimum n₀.",
+    "whyMatters": [
+      "The parent Erdos1012OQ01 evaluates edgeThreshold only at the fixed boundary points n=2k+2 and n=2k+3; the variation in n was not recorded.",
+      "Monotonicity of the threshold in n is exactly what makes f(k) (the minimum n₀ with the long-cycle property) well-defined."
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-22T00:00:00-07:00",
+    "iteration": 1,
+    "focus": "Formalized closed form, n-recurrence, and monotonicity of edgeThreshold.",
+    "blockers": [],
+    "nextAction": "None — complete.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE. Child of erdos-1012-oq-01 (Woodall function f(k) and edge threshold). The parent evaluates edgeThreshold n k = C(n-k-1,2)+C(k+2,2)+1 only at the boundary points n=2k+2, 2k+3. This entry supplies the variation in n: edgeThreshold_eq (explicit polynomial form), edgeThreshold_succ_left (recurrence: adding a vertex raises the threshold by exactly n-k-1, for n≥k+1), edgeThreshold_lt_succ (strict monotonicity for n≥k+2), edgeThreshold_mono (weak monotonicity for k+1≤n≤m). Erdos1012OQ01OQ02.lean, 1 helper + 4 theorems, 0 axioms, 0 sorries, no native_decide.",
+    "builtItems": [
+      "Erdos1012OQ01OQ02.lean: 5 theorems, 0 axioms (propext/Quot.sound only — no Classical.choice), 0 sorries. Imports Proofs.Erdos1012OQ01 for the edgeThreshold definition.",
+      "choose_two_succ: Pascal discrete-derivative C(m+1,2) = C(m,2) + m (via Nat.choose_succ_succ + Nat.choose_one_right).",
+      "edgeThreshold_eq: explicit form (n-k-1)(n-k-2)/2 + (k+2)(k+1)/2 + 1 (via Nat.choose_two_right + omega subtraction identities).",
+      "edgeThreshold_succ_left: edgeThreshold (n+1) k = edgeThreshold n k + (n-k-1) for n≥k+1 (the C(m+1,2)-C(m,2)=m recurrence with m=n-k-1).",
+      "edgeThreshold_lt_succ (strict mono, n≥k+2), edgeThreshold_mono (weak mono via induction on the ≤ proof)."
+    ],
+    "insights": [
+      "The threshold's discrete derivative in n is exactly n-k-1: C((n-k-1)+1,2) - C(n-k-1,2) = n-k-1. This is the structural reason the edge requirement tightens with each added vertex and f(k) is a well-defined minimum.",
+      "Lean gotcha: Nat.choose_succ_succ m 1 produces m.choose (1+1) (NOT m.choose 2); omega treats those as distinct atoms. Force the defeq with `show m + m.choose 2 = ...` before omega.",
+      "edgeThreshold_eq cannot be finished by omega alone (the m*(m-1) product is nonlinear); use Nat.choose_two_right and only the linear subtraction identities (n-k-1-1 = n-k-2, k+2-1 = k+1) under omega.",
+      "Weak monotonicity proved by `induction hnm with | refl | @step m h ih` on the ≤ proof (Nat.le.rec); the step case applies the n-recurrence and omega (treating edgeThreshold terms as atoms, n-k-1 ≥ 0)."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Non-degeneracy: edgeThreshold n k ≤ C(n,2) (the complete-graph edge count) on the Woodall range n ≥ 2k+3, so the long-cycle hypothesis is satisfiable rather than vacuous.",
+      "Monotonicity in k for fixed n, and the joint growth rate Θ(n²) of the threshold.",
+      "Connect the n-recurrence to the parent's threshold_diff (the boundary difference C(k+2,2)-C(k+1,2) is the single step at n=2k+2)."
+    ]
+  },
+  "tags": [
+    "extension"
+  ],
+  "relatedProofs": [
+    "erdos-1012",
+    "erdos-1012-oq-01"
+  ]
+}

@@ -1,0 +1,236 @@
+[
+  {
+    "id": "abel-ruffini-oq-04-oq-02-header",
+    "proofId": "abel-ruffini-oq-04-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 50
+    },
+    "type": "concept",
+    "title": "Module Overview: Answering the Open Question from abel-ruffini-oq-04",
+    "content": "This file is a direct answer to an open question posed in `abel-ruffini-oq-04`: prove that S₂, S₃, S₄ are solvable explicitly (not just S₀, S₁ via `inferInstance`). The parent file used `inferInstance` to show the two trivial cases, but explicitly asked for the degree-by-degree proofs that would make the derived series table in Part V fully machine-checked. This file delivers that, and goes further: it also proves the *bidirectional* theorem `Sₙ solvable ↔ n ≤ 4`, which was not present in the parent.\n\n**The three proofs at a glance:**\n\n- **S₂** (order 2): S₂ ≅ ℤ/2ℤ is abelian. Commutativity is verified by `decide` (4 pairs to check). Since every abelian group is solvable (derived subgroup = {e}), solvability follows by typeclass inference.\n\n- **S₃** (order 6): The derived series S₃ ⊵ A₃ ⊵ {e} terminates in 2 steps. A₃ ≅ ℤ/3ℤ is cyclic (abelian), and [A₃, A₃] = {e}. Proved by `decide` with witness n = 2.\n\n- **S₄** (order 24): The derived series S₄ ⊵ A₄ ⊵ V₄ ⊵ {e} terminates in 3 steps. V₄ = {e, (12)(34), (13)(24), (14)(23)} is the Klein four-group (isomorphic to ℤ/2ℤ × ℤ/2ℤ), and [V₄, V₄] = {e} since V₄ is abelian. Proved by `native_decide` with witness n = 3 (too large for `decide`).\n\n**Why this matters for Abel-Ruffini:** The parent file `abel-ruffini-oq-04` proved S₅ is not solvable and noted the degree-by-degree table as pedagogical context. This file completes the machine verification: together, the two files give a fully verified classification with explicit derived series witnesses for every symmetric group. The bidirectional theorem `solvable_iff_le_four` makes the threshold at degree 5 a single importable fact, directly applicable in the Galois-theoretic argument that connects solvable groups to solvable-by-radicals polynomials.\n\n**Imports:** Three Mathlib modules: `GroupTheory.Solvable` (IsSolvable, isSolvable_def, derivedSeries), `GroupTheory.SpecificGroups.Alternating` (needed for A₅ simplicity used in the forward direction of the biconditional), and `Tactic`. The `linter.unusedVariables` and `linter.unusedTactic` suppressions reflect the use of `decide`/`native_decide` which sometimes generate warnings. The `maxHeartbeats 1600000` increase (from default 400000) is required for the `native_decide` call in `s4_solvable`.",
+    "mathContext": "$S_2 \\cong \\mathbb{Z}/2\\mathbb{Z}$, $S_3 \\cong D_3$ with derived series $S_3 \\rhd A_3 \\cong \\mathbb{Z}/3\\mathbb{Z} \\rhd \\{e\\}$, $S_4$ with derived series $S_4 \\rhd A_4 \\rhd V_4 \\cong (\\mathbb{Z}/2\\mathbb{Z})^2 \\rhd \\{e\\}$. Together with $S_n$ not solvable for $n \\geq 5$: $S_n$ solvable $\\iff n \\leq 4$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "derived series",
+      "alternating group A₃",
+      "alternating group A₄",
+      "Klein four-group V₄",
+      "CommGroup",
+      "isSolvable_def",
+      "decide vs native_decide",
+      "Abel-Ruffini theorem",
+      "Galois theory"
+    ],
+    "prerequisites": [
+      "Group theory: derived series, solvable groups",
+      "Lean 4: decide, native_decide, inferInstance",
+      "Mathlib: isSolvable_def, GroupTheory.Solvable"
+    ]
+  },
+  {
+    "id": "abel-ruffini-oq-04-oq-02-s2-comm",
+    "proofId": "abel-ruffini-oq-04-oq-02",
+    "range": {
+      "startLine": 51,
+      "endLine": 52
+    },
+    "type": "insight",
+    "title": "S₂ as a CommGroup: Decidable Commutativity",
+    "content": "The instance `s2_comm` constructs a CommGroup structure for Perm(Fin 2) by verifying `mul_comm` via `decide`. Since |S₂| = 2! = 2, there are only 4 pairs to check: (e,e), (e,τ), (τ,e), (τ,τ), where τ is the single transposition. All commute trivially. This instance is key: Lean's typeclass system deduces `IsSolvable` automatically because every CommGroup is solvable (the derived subgroup of an abelian group is trivial).",
+    "mathContext": "$S_2 \\cong \\mathbb{Z}/2\\mathbb{Z}$, the unique group of order 2. `decide` exhaustively checks all $2! = 2$ permutations: $\\sigma \\tau = \\tau \\sigma$ holds for all $\\sigma, \\tau \\in S_2$. Abelian groups have $[G,G] = \\{e\\}$, giving derived series length 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "CommGroup",
+      "IsSolvable",
+      "derived series",
+      "abelian group",
+      "Perm (Fin 2)"
+    ],
+    "prerequisites": [
+      "Lean 4 typeclass instances",
+      "decide tactic for finite decidable propositions",
+      "IsSolvable via derived series"
+    ]
+  },
+  {
+    "id": "abel-ruffini-oq-04-oq-02-s2-solvable",
+    "proofId": "abel-ruffini-oq-04-oq-02",
+    "range": {
+      "startLine": 55,
+      "endLine": 55
+    },
+    "type": "concept",
+    "title": "S₂ Is Solvable via inferInstance",
+    "content": "`s2_solvable` is proved by `inferInstance`, which works because the `s2_comm` instance above made Perm(Fin 2) a CommGroup, and Mathlib has an instance `IsSolvable` for every CommGroup (since abelian groups have trivial commutator subgroup). This one-line proof is an example of how rich typeclass hierarchies enable powerful inference: proving S₂ solvable requires no manual work once the CommGroup instance exists.\n\n**The typeclass chain in Lean 4:** The instance hierarchy runs `CommGroup → CommMonoid → Monoid → IsSolvable`. Specifically, Mathlib provides `instIsSolvableOfCommGroup : CommGroup G → IsSolvable G`, which works because for any abelian group $G$, $[G,G] = \\{e\\}$ (the commutator subgroup is trivial), so `derivedSeries G 1 = ⊥`. The `inferInstance` tactic synthesizes this chain automatically, avoiding the need to manually unfold `isSolvable_def` and supply a witness.\n\n**Why S₂ is the unique non-trivial abelian symmetric group:** Among $S_n$ for $n \\geq 2$, only $S_2$ is abelian. For $n \\geq 3$, $S_n$ contains non-commuting transpositions: $(1\\;2)$ and $(1\\;3)$ do not commute in $S_3$ (their product $(1\\;2)(1\\;3) = (1\\;2\\;3)$ while $(1\\;3)(1\\;2) = (1\\;3\\;2)$). This is why S₂ is a special case requiring its own CommGroup instance, while S₃ and S₄ require different proof strategies (explicit witness `n` for the derived series length).\n\n**Connection to radical solvability:** $S_2$ being abelian directly corresponds to the quadratic formula's existence. The Galois group of a generic degree-2 polynomial over $\\mathbb{Q}$ is $\\mathbb{Z}/2\\mathbb{Z}$, which is abelian (hence solvable). The one radical extraction (square root) in the quadratic formula corresponds precisely to the single-step derived series $S_2 \\rhd \\{e\\}$.",
+    "mathContext": "For any abelian group $G$: $[G,G] = \\{e\\}$, so $G^{(1)} = \\{e\\}$ and $G$ is solvable with derived length 1. $S_2$: derived series is $S_2 \\rhd \\{e\\}$ with quotient $S_2/\\{e\\} \\cong \\mathbb{Z}/2\\mathbb{Z}$, which is abelian. Typeclass chain: $\\text{CommGroup} \\Rightarrow \\text{IsSolvable}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "inferInstance",
+      "IsSolvable",
+      "CommGroup",
+      "typeclass inference",
+      "abelian group",
+      "quadratic formula",
+      "commutator subgroup"
+    ],
+    "prerequisites": [
+      "CommGroup implies IsSolvable",
+      "Lean typeclass hierarchy",
+      "derived series definition"
+    ]
+  },
+  {
+    "id": "abel-ruffini-oq-04-oq-02-s3-solvable",
+    "proofId": "abel-ruffini-oq-04-oq-02",
+    "range": {
+      "startLine": 63,
+      "endLine": 69
+    },
+    "type": "concept",
+    "title": "S₃ Solvable: Derived Series Verified by decide",
+    "content": "Solvability of S₃ is proved by unfolding `isSolvable_def` (which is `∃ n, derivedSeries G n = ⊥`) and providing the witness `n = 2`, verified by `decide`. The decidability of `derivedSeries G n = ⊥` for finite groups follows from the finite computability of commutator subgroups. With |S₃| = 6, Lean can exhaustively verify that the second derived subgroup is trivial: `[S₃, S₃] = A₃ ≅ ℤ/3ℤ` and `[A₃, A₃] = {e}`.",
+    "mathContext": "Derived series of $S_3$: $S_3^{(0)} = S_3$ (order 6), $S_3^{(1)} = [S_3, S_3] = A_3 \\cong \\mathbb{Z}/3\\mathbb{Z}$ (order 3), $S_3^{(2)} = [A_3, A_3] = \\{e\\}$. Composition factors: $\\mathbb{Z}/2\\mathbb{Z}$ and $\\mathbb{Z}/3\\mathbb{Z}$, both cyclic of prime order.",
+    "significance": "key",
+    "relatedConcepts": [
+      "isSolvable_def",
+      "derivedSeries",
+      "alternating group A₃",
+      "decide",
+      "commutator subgroup"
+    ],
+    "prerequisites": [
+      "isSolvable_def: IsSolvable ↔ ∃ n, derivedSeries n = ⊥",
+      "Decidability of finite group equality",
+      "Derived subgroup computation"
+    ]
+  },
+  {
+    "id": "abel-ruffini-oq-04-oq-02-s4-solvable",
+    "proofId": "abel-ruffini-oq-04-oq-02",
+    "range": {
+      "startLine": 78,
+      "endLine": 82
+    },
+    "type": "concept",
+    "title": "S₄ Solvable: native_decide for the Klein Four-Group Chain",
+    "content": "S₄ (order 24) requires `native_decide` instead of `decide` because the computation is too large for the kernel's definitional reduction. The witness `n = 3` encodes the three-step derived series: S₄ ⊵ A₄ ⊵ V₄ ⊵ {e}. Here V₄ = {e, (12)(34), (13)(24), (14)(23)} is the Klein four-group (normal in S₄, the unique such subgroup of order 4). The third derived subgroup `[V₄, V₄] = {e}` since V₄ is abelian, completing the series.",
+    "mathContext": "Derived series of $S_4$: $S_4^{(0)} = S_4$ (order 24), $S_4^{(1)} = A_4$ (order 12), $S_4^{(2)} = [A_4, A_4] = V_4 \\cong \\mathbb{Z}/2\\mathbb{Z} \\times \\mathbb{Z}/2\\mathbb{Z}$ (order 4), $S_4^{(3)} = \\{e\\}$. Composition factors: $\\mathbb{Z}/2\\mathbb{Z}$, $\\mathbb{Z}/3\\mathbb{Z}$, $\\mathbb{Z}/2\\mathbb{Z}$, $\\mathbb{Z}/2\\mathbb{Z}$ — all cyclic of prime order.",
+    "significance": "key",
+    "relatedConcepts": [
+      "native_decide",
+      "Klein four-group V₄",
+      "alternating group A₄",
+      "derivedSeries",
+      "normal subgroup"
+    ],
+    "prerequisites": [
+      "native_decide for computations too large for kernel reduction",
+      "Klein four-group as V₄ ≅ ℤ/2ℤ × ℤ/2ℤ",
+      "Normal subgroup chain in S₄"
+    ]
+  },
+  {
+    "id": "abel-ruffini-oq-04-oq-02-classification",
+    "proofId": "abel-ruffini-oq-04-oq-02",
+    "range": {
+      "startLine": 91,
+      "endLine": 110
+    },
+    "type": "insight",
+    "title": "Complete Classification: Sₙ Solvable iff n ≤ 4",
+    "content": "The bidirectional classification `solvable_iff_le_four` is the main result. The forward direction (solvable → n ≤ 4) uses contrapositive: if n ≥ 5, then |Fin n| ≥ 5, so `Equiv.Perm.not_solvable` applies. The backward direction (n ≤ 4 → solvable) uses `interval_cases n` to split into 5 subcases {0, 1, 2, 3, 4}, each dispatched by the previously proved instances and theorems. The proof architecture is clean: reduce the infinite problem to 5 finite verifications plus one Mathlib theorem.\n\n**The Cardinal bridge in the forward direction**: `Equiv.Perm.not_solvable` states `5 ≤ Cardinal.mk α → ¬IsSolvable (Perm α)`, using Mathlib's `Cardinal` type rather than `ℕ`. To apply it with `α = Fin n`, the proof must convert `h5 : 5 ≤ n` (a `ℕ` inequality) into `5 ≤ Cardinal.mk (Fin n)` (a cardinal inequality). The proof does this in two steps: `simp only [Cardinal.mk_fintype, Fintype.card_fin]` rewrites `Cardinal.mk (Fin n)` to `↑(Fintype.card (Fin n)) = ↑n` (a coercion of `ℕ` to `Cardinal`), then `exact_mod_cast h5` closes the goal by casting `h5` across the coercion. This is the only non-trivial proof engineering in the file — the same cardinal-to-natural-number bridge that was identified as the key contribution in the sibling entry `abel-ruffini-oq-04`'s `symmetric_not_solvable` theorem.\n\n**`interval_cases` as a finiteness tactic**: The backward direction `n ≤ 4 → IsSolvable (Perm (Fin n))` handles an infinite statement (for any `n : ℕ` with `n ≤ 4`) by case-splitting into the 5 specific values `n ∈ {0, 1, 2, 3, 4}`. The `interval_cases n` tactic performs this reduction automatically when Lean can infer a finite range from available hypotheses (here `0 ≤ n` is implicit and `n ≤ 4` is the hypothesis). Each resulting subgoal `IsSolvable (Perm (Fin k))` for `k ∈ {0,1,2,3,4}` is dispatched by the concrete instances: `inferInstance` for `k = 0, 1`, and the theorems `s2_solvable`, `s3_solvable`, `s4_solvable` for `k = 2, 3, 4`.",
+    "mathContext": "Complete classification: $S_n$ is solvable $\\iff n \\leq 4$. The threshold is determined by the simplicity of $A_5$ (order 60, the smallest non-abelian simple group): for $n \\geq 5$, the derived series stalls at $A_n = [A_n, A_n]$, never reaching $\\{e\\}$. For $n \\leq 4$, all composition factors are cyclic $\\mathbb{Z}/p\\mathbb{Z}$. The forward direction requires the coercion: $\\text{Cardinal.mk}(\\text{Fin}\\ n) = \\uparrow n$ (via $\\texttt{Cardinal.mk\\_fintype}$ and $\\texttt{Fintype.card\\_fin}$), bridging the $\\mathbb{N}$-valued hypothesis $5 \\leq n$ to the $\\text{Cardinal}$-valued hypothesis required by $\\texttt{Equiv.Perm.not\\_solvable}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Equiv.Perm.not_solvable",
+      "interval_cases",
+      "A₅ simplicity",
+      "Galois theory",
+      "radical extensions"
+    ],
+    "prerequisites": [
+      "Equiv.Perm.not_solvable: |α| ≥ 5 → ¬IsSolvable (Perm α)",
+      "interval_cases for bounded natural numbers",
+      "Cardinal.mk_fintype for |Fin n| = n"
+    ]
+  },
+  {
+    "id": "abel-ruffini-oq-04-oq-02-small-solvable",
+    "proofId": "abel-ruffini-oq-04-oq-02",
+    "range": {
+      "startLine": 116,
+      "endLine": 121
+    },
+    "type": "concept",
+    "title": "Small Symmetric Groups Are Solvable (n ≤ 4)",
+    "content": "`small_symmetric_solvable` is a convenience corollary that extracts the backward direction of `solvable_iff_le_four`: given `n ≤ 4`, conclude `IsSolvable (Perm (Fin n))`. Together with `large_symmetric_not_solvable`, these two one-liner corollaries provide the most user-friendly API for the classification. In applications, one typically knows which side of the threshold a given degree falls on, so these avoid the need to unfold the biconditional.\n\n**API design rationale:** The biconditional `solvable_iff_le_four` is powerful but requires the user to apply `.mp` or `.mpr` and may require `omega` to close the numerical goals. The directional corollaries (`small_symmetric_solvable` and `large_symmetric_not_solvable`) present a friendlier interface: each is a one-hypothesis implication that can be applied directly. This is standard Lean/Mathlib style for important biconditionals: prove the `↔`, then extract `.mp` and `.mpr` as separate lemmas with human-readable names.\n\n**The polynomial connection:** `small_symmetric_solvable` is the group-theoretic license for radical formulas in degrees 1–4. By the Galois correspondence, a polynomial of degree $n$ over $\\mathbb{Q}$ with Galois group $G \\leq S_n$ is solvable by radicals iff $G$ is solvable. For $n \\leq 4$, since $S_n$ itself is solvable (this theorem), every polynomial of degree $\\leq 4$ has a solvable Galois group — and hence a radical formula exists. This doesn't mean the formula is easy to find (Cardano's 1545 discovery required centuries of effort), but it guarantees existence. For $n = 5$, by contrast, `large_symmetric_not_solvable` shows $S_5$ is not solvable, so generic quintics have no such formula.\n\n**Derived series lengths by degree:** 0 and 1 (trivial groups, length 0), 2 ($S_2$ abelian, length 1), 3 ($S_3 \\supset A_3 \\supset \\{e\\}$, length 2), 4 ($S_4 \\supset A_4 \\supset V_4 \\supset \\{e\\}$, length 3). The derived series length equals the number of nested radical extractions needed for the general radical formula at each degree.",
+    "mathContext": "For $n \\leq 4$: $S_n$ is solvable. Derived series lengths: 0 ($n \\leq 1$), 1 ($n=2$), 2 ($n=3$), 3 ($n=4$). Each step in the derived series corresponds to one radical extraction in the classical formula for that degree.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "solvable_iff_le_four",
+      "API convenience lemma",
+      "polynomial solvability by radicals",
+      "Galois correspondence",
+      "derived series length",
+      "Cardano's formula",
+      "Ferrari's method"
+    ],
+    "prerequisites": [
+      "solvable_iff_le_four as the master theorem",
+      "Galois correspondence for radical extensions"
+    ]
+  },
+  {
+    "id": "abel-ruffini-oq-04-oq-02-large-not-solvable",
+    "proofId": "abel-ruffini-oq-04-oq-02",
+    "range": {
+      "startLine": 126,
+      "endLine": 128
+    },
+    "type": "insight",
+    "title": "Large Symmetric Groups Are Not Solvable (n ≥ 5)",
+    "content": "`large_symmetric_not_solvable` derives the non-solvability of Sₙ for n ≥ 5 as a corollary of `solvable_iff_le_four`. The proof is one line: assume `h : IsSolvable (Perm (Fin n))`, then `solvable_iff_le_four` gives `n ≤ 4`, contradicting `5 ≤ n` by `omega`. This is cleaner than invoking `Equiv.Perm.not_solvable` directly, as the classification theorem handles all the bookkeeping.",
+    "mathContext": "For $n \\geq 5$: $A_n$ is simple and non-abelian, so $[A_n, A_n] = A_n \\neq \\{e\\}$. The derived series of $S_n$ is $S_n \\rhd A_n = A_n = A_n = \\cdots$ — it stalls and never reaches $\\{e\\}$. Hence $S_n$ has no solvable series.",
+    "significance": "key",
+    "relatedConcepts": [
+      "solvable_iff_le_four",
+      "Aₙ simplicity",
+      "omega",
+      "not_solvable",
+      "Abel-Ruffini theorem"
+    ],
+    "prerequisites": [
+      "solvable_iff_le_four as the master theorem",
+      "omega for linear arithmetic on ℕ"
+    ]
+  },
+  {
+    "id": "abel-ruffini-oq-04-oq-02-summary-table",
+    "proofId": "abel-ruffini-oq-04-oq-02",
+    "range": {
+      "startLine": 130,
+      "endLine": 154
+    },
+    "type": "concept",
+    "title": "Summary: Complete Solvability Classification Table",
+    "content": "The closing documentation presents the complete classification as a table: for n = 0 through ≥5, it records |Sₙ|, whether Sₙ is solvable, the derived series length, and the proof method used. This table crystallizes the file's contribution alongside the parent `abel-ruffini-oq-04`:\n\n| n | \\|Sₙ\\| | Solvable? | Derived Series Length | Method |\n|---|-------|-----------|----------------------|--------|\n| 0 | 1     | Yes ✓     | 0 (trivial)          | inferInstance |\n| 1 | 1     | Yes ✓     | 0 (trivial)          | inferInstance |\n| 2 | 2     | Yes ✓     | 1 (S₂ abelian)       | CommGroup + decide |\n| 3 | 6     | Yes ✓     | 2 (S₃ ⊵ A₃ ⊵ {e})   | decide |\n| 4 | 24    | Yes ✓     | 3 (S₄ ⊵ A₄ ⊵ V₄ ⊵ {e}) | native_decide |\n| ≥5 | ≥120 | **No** ✗  | ∞ (stuck at Aₙ)     | Equiv.Perm.not_solvable |\n\n**Why 5?** The answer given here is concise and accurate: A₅ is the smallest non-abelian simple group (order 60), and its derived series is A₅ = [A₅, A₅], which never reaches {e}. For n < 5, all composition factors are cyclic of prime order — {ℤ/2ℤ, ℤ/3ℤ} for S₃, {ℤ/2ℤ, ℤ/3ℤ, ℤ/2ℤ, ℤ/2ℤ} for S₄ — satisfying the Jordan-Hölder criterion for solvability.\n\n**Connection to radical solvability:** Each row in the table corresponds to a degree of polynomial. Degrees 1–4 (corresponding to rows n = 1–4) have general radical formulas: linear formula, quadratic formula, Cardano's cubic (1545), Ferrari's quartic (1540). The table makes vivid that the barrier at degree 5 is not arbitrary — it is the algebraic signature of A₅'s simplicity propagating through the Galois correspondence.\n\n**Proof method progression:** The table also shows a hierarchy of verification strategies: trivial cases use `inferInstance` (Lean's automated typeclass search), small cases (S₂, S₃) use `decide` (kernel evaluation), medium cases (S₄) need `native_decide` (compiled evaluation due to |S₄| = 24), and the infinite family (n ≥ 5) uses Mathlib's abstract theorem `Equiv.Perm.not_solvable`. This progression from automation to abstraction reflects how mathematical difficulty scales with group size.",
+    "mathContext": "Complete classification: $S_n$ solvable $\\iff n \\leq 4$. Composition factors: $S_3$ has factors $\\{\\mathbb{Z}/2\\mathbb{Z}, \\mathbb{Z}/3\\mathbb{Z}\\}$; $S_4$ has factors $\\{\\mathbb{Z}/2\\mathbb{Z}, \\mathbb{Z}/3\\mathbb{Z}, \\mathbb{Z}/2\\mathbb{Z}, \\mathbb{Z}/2\\mathbb{Z}\\}$ (Jordan-Hölder: all cyclic of prime order $\\Rightarrow$ solvable); $S_5$ has composition factor $A_5$ (non-abelian simple, order 60, not cyclic of prime order $\\Rightarrow$ not solvable).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "classification table",
+      "composition factors",
+      "Jordan-Hölder theorem",
+      "A₅ simplicity",
+      "radical solvability",
+      "Cardano's formula",
+      "Ferrari's method",
+      "degree-by-degree analysis",
+      "Galois correspondence"
+    ],
+    "prerequisites": [
+      "Group theory: composition series, Jordan-Hölder theorem",
+      "History of algebra: Cardano (1545), Ferrari (1540)"
+    ]
+  }
+]

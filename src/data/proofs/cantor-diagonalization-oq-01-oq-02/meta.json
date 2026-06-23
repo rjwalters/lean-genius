@@ -1,0 +1,201 @@
+{
+  "id": "cantor-diagonalization-oq-01-oq-02",
+  "title": "Large Cardinal Axioms and the Continuum Hypothesis",
+  "slug": "cantor-diagonalization-oq-01-oq-02",
+  "description": "Is CH decided by large cardinal axioms? Standard large cardinals (inaccessible, measurable) do not settle CH by the Lévy-Solovay theorem. Forcing axioms (Martin's Maximum) do decide CH: they imply ¬CH (2^ℵ₀ = ℵ₂). The Woodin Ultimate-L program is the current frontier.",
+  "meta": {
+    "author": "Set Theory",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Continuum_hypothesis#Generalization",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/CantorDiagonalizationOQ01OQ02.lean",
+    "tags": [
+      "set-theory",
+      "large-cardinals",
+      "continuum-hypothesis",
+      "forcing",
+      "independence",
+      "cardinal-arithmetic"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": null,
+    "axiomCount": 7,
+    "assumptions": "7 axioms: levy_solovay_inaccessible_ch (Lévy-Solovay 1967: inaccessible + CH consistent), levy_solovay_inaccessible_not_ch (Lévy-Solovay 1967: inaccessible + ¬CH consistent), levy_solovay_measurable_ch (Lévy-Solovay: measurable + CH consistent), levy_solovay_measurable_not_ch (Lévy-Solovay: measurable + ¬CH consistent), mm_consistent (Foreman-Magidor-Shelah 1988: MM consistent with ZFC+supercompact), ma_consistent (Martin-Solovay: MA consistent with ZFC), ultimate_l_implies_ch_consistent (Woodin program: open).",
+    "lineCount": 361,
+    "mathlib_version": "4.26.0",
+    "theoremCount": 19,
+    "originalContributions": [
+      "IsStrongLimit definition: ∀ λ < κ, 2^λ < κ",
+      "IsRegular definition: κ.ord.cof.card = κ",
+      "IsInaccessible definition: ℵ₀ < κ ∧ regular ∧ strong limit",
+      "IsMeasurable definition: inaccessible + abstract ultrafilter condition",
+      "HasInaccessible, HasMeasurable propositions",
+      "MartinsAxiom definition: 2^ℵ₀ ≥ ℵ₂",
+      "MartinsMaximum definition: 2^ℵ₀ = ℵ₂",
+      "measurable_is_inaccessible, inaccessible_is_strong_limit, inaccessible_uncountable theorems",
+      "measurable_implies_inaccessible, mm_implies_ma theorems",
+      "levy_solovay_* axioms (4): independence of CH from inaccessible/measurable cardinals",
+      "inaccessible_independent_of_ch, measurable_independent_of_ch theorems",
+      "mm_implies_not_ch theorem: MM → ¬CH proved via ℵ₁ < ℵ₂ (Cardinal.aleph_lt.mpr)",
+      "ma_implies_not_ch theorem: MA → ¬CH proved analogously",
+      "mm_consistent, ma_consistent axioms",
+      "UltimateLConjecture definition",
+      "ultimate_l_implies_ch_consistent axiom",
+      "large_cardinals_and_ch_summary, ch_independent_of_large_cardinals theorems",
+      "GCH definition: ∀ n : ℕ, 2^ℵₙ = ℵₙ₊₁",
+      "gch_implies_ch theorem: GCH → CH proved by specializing n=0 (simp + Cardinal.aleph_zero)",
+      "gch_decides_all_aleph theorem: GCH gives exact value of all higher continua",
+      "gch_continuum_below_aleph_add_two theorem: GCH → 2^ℵₙ < ℵₙ₊₂ (Cardinal.aleph_lt.mpr + omega)",
+      "ch_implies_not_mm theorem: CH → ¬MM (contrapositive of mm_implies_not_ch)",
+      "ch_implies_not_ma theorem: CH → ¬MA (contrapositive of ma_implies_not_ch)",
+      "gch_implies_not_mm theorem: GCH → ¬MM (composes gch_implies_ch with ch_implies_not_mm)",
+      "gch_implies_not_ma theorem: GCH → ¬MA (composes gch_implies_ch with ch_implies_not_ma)",
+      "mm_continuum_gt_aleph_one theorem: MM → ℵ₁ < 2^ℵ₀ (quantitative refinement)"
+    ],
+    "definitionCount": 10
+  },
+  "overview": {
+    "historicalContext": "After Gödel (1940) and Cohen (1963) established CH's independence from ZFC, set theorists naturally asked whether adding large cardinal axioms — the strongest known axioms of infinity — could settle the question. The answer turned out to be nuanced: the Lévy-Solovay theorem (1967) showed that standard large cardinals (measurable, supercompact) are compatible with both CH and ¬CH via small forcing. However, forcing axioms like Martin's Maximum (1988) do decide CH, implying ¬CH. The Woodin Ultimate-L program (2001–present) remains the frontier, potentially canonically settling CH as true. The Generalized Continuum Hypothesis (GCH: 2^ℵₙ = ℵₙ₊₁ for all n) strengthens CH to all infinite cardinals and is the target of the Ultimate-L program.",
+    "problemStatement": "Is the Continuum Hypothesis (CH: 2^ℵ₀ = ℵ₁) decided by large cardinal axioms?",
+    "text": "Standard large cardinals do not settle CH (Lévy-Solovay). Martin's Maximum implies ¬CH. The Woodin Ultimate-L program is ongoing. GCH (2^ℵₙ = ℵₙ₊₁) implies CH and is a central goal of Ultimate-L.",
+    "proofStrategy": "Define large cardinal properties (inaccessible, measurable), forcing axioms (Martin's Axiom, Martin's Maximum), and the Ultimate-L conjecture. Prove mathematically that MM → ¬CH and MA → ¬CH. Axiomatize the independence results (Lévy-Solovay) and consistency results (Foreman-Magidor-Shelah). Add GCH as a stronger hypothesis and prove GCH → CH plus key structural consequences.",
+    "keyInsights": [
+      "Lévy-Solovay (1967): ccc forcing of size < κ preserves the measurability of κ — so adding/removing Cohen reals preserves large cardinals, making CH and ¬CH each consistent with measurable cardinals",
+      "Martin's Maximum implies 2^ℵ₀ = ℵ₂ ≠ ℵ₁, so MM → ¬CH (proved in Lean)",
+      "Martin's Axiom (MA_ℵ₁) implies 2^ℵ₀ ≥ ℵ₂, so MA → ¬CH (proved in Lean)",
+      "Every measurable cardinal is inaccessible — the large cardinal hierarchy is strict",
+      "Woodin's Ultimate-L program proposes a canonical inner model with all large cardinals satisfying GCH, potentially making CH canonical",
+      "GCH (2^ℵₙ = ℵₙ₊₁ for all n) implies CH (specializing n=0) and decides all higher continua: 2^ℵₙ < ℵₙ₊₂"
+    ],
+    "prerequisites": [
+      "Cardinal arithmetic",
+      "Set theory (ZFC, large cardinals, forcing)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-header-setup",
+      "title": "Module Header and Setup",
+      "summary": "File header framing the open question — is the Continuum Hypothesis decided by large cardinal axioms? — with the partial answer: standard large cardinals (inaccessible, measurable, supercompact) do NOT decide CH (Lévy-Solovay), whereas forcing axioms (MA, PFA, MM) imply ¬CH, and Woodin's Ultimate-L program seeks a canonical resolution. Imports Mathlib cardinal/cofinality theory and the sibling `Proofs.ContinuumHypothesis`, sets linters, and opens the `CantorDiagOQ01OQ02` namespace. References: Lévy-Solovay (1967), Foreman-Magidor-Shelah (1988), Woodin (2001), Kanamori (2003).",
+      "startLine": 1,
+      "endLine": 57,
+      "mathContext": "Independence backdrop: CH is independent of ZFC (Gödel, Cohen); the question here is whether adding large cardinal axioms or forcing axioms settles it. Lévy-Solovay (1967): small forcing preserves large cardinals, so they cannot decide CH."
+    },
+    {
+      "id": "large-cardinals",
+      "title": "Large Cardinal Hierarchy",
+      "startLine": 58,
+      "endLine": 95,
+      "summary": "Defines IsStrongLimit, IsRegular, IsInaccessible, IsMeasurable and derives basic properties (measurable ⇒ inaccessible ⇒ strong limit, inaccessible uncountable).",
+      "mathContext": "$\\kappa$ inaccessible: $\\aleph_0 < \\kappa$, regular, and $2^\\lambda < \\kappa$ for all $\\lambda < \\kappa$. Measurable implies inaccessible."
+    },
+    {
+      "id": "forcing-axioms",
+      "title": "Large Cardinal & Forcing Axiom Propositions",
+      "startLine": 96,
+      "endLine": 123,
+      "summary": "Defines HasInaccessible, HasMeasurable, MartinsAxiom (2^ℵ₀ ≥ ℵ₂), MartinsMaximum (2^ℵ₀ = ℵ₂); proves measurable_implies_inaccessible and mm_implies_ma.",
+      "mathContext": "$\\text{MA}_{\\aleph_1}: 2^{\\aleph_0} \\geq \\aleph_2$. $\\text{MM}: 2^{\\aleph_0} = \\aleph_2$. $\\text{MM} \\implies \\text{MA}$."
+    },
+    {
+      "id": "levy-solovay",
+      "title": "Lévy-Solovay Theorem",
+      "startLine": 124,
+      "endLine": 167,
+      "summary": "Axiomatizes that inaccessible and measurable cardinals are each consistent with both CH and ¬CH.",
+      "mathContext": "Both $\\text{ZFC} + \\text{HasMeasurable} + \\text{CH}$ and $\\text{ZFC} + \\text{HasMeasurable} + \\neg\\text{CH}$ are relatively consistent."
+    },
+    {
+      "id": "forcing-implies-not-ch",
+      "title": "Forcing Axioms Imply ¬CH",
+      "startLine": 168,
+      "endLine": 201,
+      "summary": "Proves MM → ¬CH and MA → ¬CH by cardinal arithmetic: ℵ₁ ≠ ℵ₂.",
+      "mathContext": "$\\text{MM} \\implies 2^{\\aleph_0} = \\aleph_2 \\neq \\aleph_1$, so $\\neg\\text{CH}$. Similarly for MA."
+    },
+    {
+      "id": "consistency-forcing-axioms",
+      "title": "Consistency of Forcing Axioms",
+      "startLine": 202,
+      "endLine": 214,
+      "summary": "Axiomatizes the relative consistency of Martin's Maximum (Foreman-Magidor-Shelah 1988, modulo supercompact) and Martin's Axiom (Martin-Solovay).",
+      "mathContext": "$\\text{Con}(\\text{ZFC} + \\text{supercompact}) \\Rightarrow \\text{Con}(\\text{ZFC} + \\text{MM})$ and $\\text{Con}(\\text{ZFC}) \\Rightarrow \\text{Con}(\\text{ZFC} + \\text{MA})$."
+    },
+    {
+      "id": "woodin",
+      "title": "Woodin Ultimate-L Program",
+      "startLine": 215,
+      "endLine": 239,
+      "summary": "States the Ultimate-L conjecture and its connection to CH.",
+      "mathContext": "Ultimate-L would be an inner model containing all large cardinals and satisfying GCH, canonically settling CH as true."
+    },
+    {
+      "id": "gch",
+      "title": "Generalized Continuum Hypothesis",
+      "startLine": 240,
+      "endLine": 286,
+      "summary": "Defines GCH (2^ℵₙ = ℵₙ₊₁ for all n), proves GCH → CH, gch_decides_all_aleph, and gch_continuum_below_aleph_add_two.",
+      "mathContext": "$\\text{GCH}: \\forall n : \\mathbb{N}, 2^{\\aleph_n} = \\aleph_{n+1}$. GCH implies CH (n=0). Under GCH: $2^{\\aleph_n} < \\aleph_{n+2}$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary Theorems",
+      "startLine": 287,
+      "endLine": 310,
+      "summary": "large_cardinals_and_ch_summary and ch_independent_of_large_cardinals combining the main results.",
+      "mathContext": "Standard large cardinals leave CH independent; MM decides ¬CH; GCH decides all continua."
+    },
+    {
+      "id": "contrapositive-corollaries",
+      "title": "Contrapositive Corollaries (CH/GCH ⇒ ¬MM/¬MA)",
+      "startLine": 311,
+      "endLine": 361,
+      "summary": "Five axiom-free corollaries that connect Parts IV and VII: ch_implies_not_mm, ch_implies_not_ma, gch_implies_not_mm, gch_implies_not_ma, mm_continuum_gt_aleph_one.",
+      "mathContext": "From $\\text{MM} \\Rightarrow \\neg\\text{CH}$ and $\\text{MA} \\Rightarrow \\neg\\text{CH}$ (Part IV), the contrapositives $\\text{CH} \\Rightarrow \\neg\\text{MM}$ and $\\text{CH} \\Rightarrow \\neg\\text{MA}$ follow directly; composing with $\\text{GCH} \\Rightarrow \\text{CH}$ (Part VII) gives the four-corner logical structure linking CH/GCH and the forcing axioms. The quantitative refinement $\\text{MM} \\Rightarrow \\aleph_1 < 2^{\\aleph_0}$ records the cardinal-arithmetic content."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes the large cardinal landscape around CH: standard large cardinals leave CH undecided (Lévy-Solovay, axiomatized), while forcing axioms (MM, MA) decide ¬CH (proved). Adds GCH section: defines GCH (2^ℵₙ = ℵₙ₊₁), proves GCH → CH and structural consequences. 0 sorries, 7 axioms, 19 theorems (5 contrapositive corollaries added in S3 connecting Parts IV and VII).",
+    "implications": "The formalization clarifies the precise boundary: set-theoretic 'size' axioms (large cardinals) don't decide CH, but 'saturation' axioms (forcing axioms) do. GCH is the ultimate strengthening and is the target of Woodin's program.",
+    "openQuestions": [
+      "Does the Woodin Ultimate-L program succeed in settling CH canonically as true?",
+      "Is there a 'correct' set-theoretic universe where CH has a definite truth value?",
+      "Can the Ω-conjecture be proved or refuted?",
+      "Does GCH hold in the inner model Ultimate-L (if it exists)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.SetTheory.Cardinal.Cofinality",
+      "Mathlib.Logic.Basic",
+      "Mathlib.Tactic",
+      "Proofs.ContinuumHypothesis"
+    ],
+    "opens": [
+      "Cardinal",
+      "ContinuumHypothesis"
+    ],
+    "namespace": "CantorDiagOQ01OQ02",
+    "lineCount": 361,
+    "axiomCount": 7,
+    "theoremCount": 19,
+    "definitionCount": 10,
+    "path": "Proofs/CantorDiagonalizationOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cantor-diagonalization-oq-01",
+      "relationship": "extends",
+      "description": "Extends OQ01 (CH independence from ZFC) to ask whether large cardinal axioms settle CH"
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "OQ01OQ01 covers independence and intermediate cardinals; this covers the large cardinal angle"
+    }
+  ],
+  "sorries": 0
+}

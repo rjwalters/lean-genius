@@ -1,0 +1,151 @@
+[
+  {
+    "id": "ann-mvt02oq04-imports",
+    "proofId": "mean-value-theorem-oq-02-oq-04",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 2
+    },
+    "title": "Imports: Mathlib and the Parent Lagrange-Remainder File",
+    "content": "Two imports establish the file's *historical* dependency surface: `Mathlib` (broad — the S1 axiom referenced `AnalyticOn ℝ`, `Set.Ioo`, `Set.Icc`, and `iteratedDeriv`) and `Proofs.MeanValueTheoremOQ02` (the parent file providing `taylorPolynomial` and `taylorPolynomial_zero`, plus the still-active `taylor_lagrange_remainder` qualitative axiom). The import of `Proofs.MeanValueTheoremOQ02` is retained even after retraction so that downstream consumers re-importing this file continue to transitively access the parent's verified API without a chain break — but no symbol from either import is actually used in the (post-retraction) body. Removing the imports would also be valid; they are kept to make the retraction stub a *drop-in replacement* for the S1 file at the import level.",
+    "mathContext": "No active mathematical content. The parent file's `taylorPolynomial` is defined as $T_n f(a)(x) = \\sum_{k=0}^{n} \\frac{f^{(k)}(a)}{k!}(x-a)^k$ via `iteratedDeriv`; the S1 axiom statement consumed this and the post-retraction file no longer does.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "transitive imports",
+      "import-stability under retraction",
+      "Proofs.MeanValueTheoremOQ02",
+      "taylorPolynomial",
+      "AnalyticOn"
+    ],
+    "prerequisites": [
+      "Lean 4 module system",
+      "Mathlib imports"
+    ]
+  },
+  {
+    "id": "ann-mvt02oq04-oq-statement",
+    "proofId": "mean-value-theorem-oq-02-oq-04",
+    "type": "concept",
+    "range": {
+      "startLine": 4,
+      "endLine": 13
+    },
+    "title": "The Open Question (OQ-04 Verbatim)",
+    "content": "The module docstring opens by quoting OQ-04 of the parent slug verbatim: 'Is there a uniform error bound formalization: for all `x ∈ [a − r, a + r]` and `f` analytic on the disk of radius `R > r`, `|f(x) − T_n f(a)(x)| ≤ M · r^(n+1) / (R − r)`?' Critically, the OQ-04 prose does *not* specify whether the disk is real (i.e. the interval `(a − R, a + R) ⊂ ℝ`) or complex (i.e. `D(a, R) ⊂ ℂ`). The S1 iteration interpreted it as real (the natural reading given the parent file's real-line Lagrange remainder); this turned out to be a fatal interpretive mistake — the bound is *only* true on a complex disk. The retraction docstring preserves the question verbatim so that future researchers can independently verify the interpretive ambiguity and choose the complex-disk formulation from the start.",
+    "mathContext": "The Cauchy uniform Taylor remainder bound: $|f(x) - T_n f(a)(x)| \\le M \\cdot r^{n+1} / (R - r)$ for $|x - a| \\le r < R$. Mathematically this holds when $f$ is *holomorphic* on the complex disk $D(a, R) \\subset \\mathbb{C}$ with $|f| \\le M$ there; it generally fails when only the real interval $(a - R, a + R) \\subset \\mathbb{R}$ is controlled.",
+    "significance": "key",
+    "relatedConcepts": [
+      "OQ-04 open question",
+      "Cauchy's uniform Taylor remainder bound",
+      "real-vs-complex disk ambiguity",
+      "interpretive failure modes"
+    ],
+    "prerequisites": [
+      "Taylor polynomial",
+      "analytic functions",
+      "complex analysis basics"
+    ]
+  },
+  {
+    "id": "ann-mvt02oq04-runge-refutation",
+    "proofId": "mean-value-theorem-oq-02-oq-04",
+    "type": "insight",
+    "range": {
+      "startLine": 14,
+      "endLine": 39
+    },
+    "title": "The Runge Counterexample and Root-Cause Analysis",
+    "content": "The docstring records the constructive refutation in detail. The witness `(f, a, R, M, r, n, x) = (runge, 0, 100, 1, 1, 0, 1)` with `runge x := 1 / (1 + x²)` makes the failure concrete: `runge` is real-analytic on `(−100, 100)` with `|runge| ≤ 1` uniformly, yet `|runge 1 − runge 0| = 1/2` violates the claimed bound `1 · 1¹ / (100 − 1) = 1/99` by a factor of 49.5. The *mathematical* root cause — explained on lines 31–39 — is the **Runge phenomenon**: a real sup bound on `(a − R, a + R) ⊂ ℝ` does not control Cauchy's coefficient bounds `|f^{(k)}(a) / k!| ≤ M / R^k`, because those coefficient bounds depend on `f` extending holomorphically to a *complex* disk of radius `R`. The function `1 / (1 + x²)` is real-analytic on all of `ℝ` but has poles at `±i`, capping its complex radius of convergence at `1`. The interval radius `100` is irrelevant to the geometric-tail estimate; only the complex radius `1` matters, and indeed the actual remainder at `x = 1` lives exactly at the edge of the complex disk of analyticity, where the bound naturally diverges.",
+    "mathContext": "**Runge's function**: $f(x) = 1 / (1 + x^2) = \\sum_{k \\ge 0} (-1)^k x^{2k}$ converges only for $|x| < 1$ despite $f$ being smooth and bounded on all of $\\mathbb{R}$. Complex extension: $f(z) = 1 / (1 + z^2)$ has simple poles at $z = \\pm i$, so $f$ is holomorphic on the open complex disk $D(0, 1)$ but not on any larger complex disk centered at 0. Cauchy's bound on the complex disk gives $|f^{(k)}(0)/k!| \\le M_{\\mathrm{complex}} / R_{\\mathrm{complex}}^k$ with $R_{\\mathrm{complex}} = 1$ — *not* $R = 100$. The S1 axiom assumed the real radius $R = 100$ would control the coefficient bounds, which it does not.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Runge phenomenon",
+      "complex radius of convergence",
+      "Cauchy's coefficient estimates",
+      "real-analytic vs holomorphic",
+      "constructive refutation",
+      "oq04_axiom_is_false"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "power series radius of convergence",
+      "poles of meromorphic functions"
+    ]
+  },
+  {
+    "id": "ann-mvt02oq04-action-taken",
+    "proofId": "mean-value-theorem-oq-02-oq-04",
+    "type": "concept",
+    "range": {
+      "startLine": 41,
+      "endLine": 67
+    },
+    "title": "S2 Action: Axiom and Corollary Removed; Build-Closure False Eliminated",
+    "content": "Lines 41–67 record the corrective action taken in S2 (researcher-8, 2026-05-14) and *why* removal — not just deprecation — was the correct response. Crucially, lines 56–61 spell out the gallery-integrity bug that the S1 file silently introduced: any downstream consumer that imports both `Proofs.MeanValueTheoremOQ02OQ04` and `Proofs.MeanValueTheoremOQ02OQ04OQ01` together could derive `False` via `oq04_axiom_is_false (fun … => analytic_taylor_remainder_uniform_bound …)` — i.e. compose the (false) S1 axiom with the (true) child theorem that says the S1 axiom is false. Leaving the S1 axiom in place would propagate this `False`-witness through the entire build closure, voiding all proof-correctness guarantees of any file in its transitive closure. Pure deprecation (marking the axiom `@[deprecated]`) would have been *insufficient*: a `False`-witness in the build closure is a soundness bug, not a style issue.",
+    "mathContext": "Soundness threat model: in classical (sequent-style) Lean, if $\\vdash \\bot$ is derivable in the build closure, then $\\vdash \\varphi$ is derivable for every proposition $\\varphi$. Concretely, with the S1 axiom $A$ and the child theorem $\\neg A$, modus ponens yields $\\bot$, and from $\\bot$ Lean derives any goal via `exact absurd … …` or `exact (… : False).elim`. The retraction removes $A$ from the closure, breaking the chain.",
+    "significance": "key",
+    "relatedConcepts": [
+      "soundness",
+      "build closure",
+      "axiom hygiene",
+      "False-witness propagation",
+      "retraction vs deprecation",
+      "ex falso quodlibet"
+    ],
+    "prerequisites": [
+      "classical logic",
+      "Lean axiom system",
+      "modus ponens"
+    ]
+  },
+  {
+    "id": "ann-mvt02oq04-bookkeeping-and-siblings",
+    "proofId": "mean-value-theorem-oq-02-oq-04",
+    "type": "concept",
+    "range": {
+      "startLine": 69,
+      "endLine": 112
+    },
+    "title": "Gallery Bookkeeping, Sibling Links, and Path Forward",
+    "content": "The docstring tail records: (a) gallery integrity counters before/after (`axiomCount` 1→0 in this file, but still 1 from the parent's `taylor_lagrange_remainder`; `theoremCount` 1→0; `lineCount` 173→~90), (b) the three sibling entries and what each contributes — parent for `taylorPolynomial` and Lagrange remainder, child for the constructive refutation *and* the corrected complex-disk form, cousin `taylor-theorem-oq-02` for the qualitative `R_n(x) → 0` convergence (which crucially does *not* fall to Runge because it doesn't need a sup bound), and (c) the curator-level choice between keeping the file as a retraction record or deleting it after `Proofs.lean` updates. Option (a) was chosen here to make the refutation discoverable to future researchers searching the gallery for OQ-04. The Runge phenomenon citation (lines 109–111) points to Carl Runge's 1901 paper introducing the phenomenon in polynomial interpolation.",
+    "mathContext": "The cousin's qualitative result `taylor_remainder_tendsto_zero` only requires *some* power-series representation in *some* neighborhood — it doesn't need a uniform sup bound, which is exactly the hypothesis that fails for Runge's function on a non-shrinking interval. So OQ-02's qualitative result is Runge-immune; OQ-04's quantitative version is not, unless the hypothesis is upgraded to a complex-disk sup bound.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "gallery integrity",
+      "axiomCount accounting",
+      "taylor-theorem-oq-02",
+      "Runge 1901",
+      "polynomial interpolation",
+      "curator decision points"
+    ],
+    "prerequisites": [
+      "gallery metadata conventions",
+      "Lean axiom counting"
+    ]
+  },
+  {
+    "id": "ann-mvt02oq04-empty-namespace",
+    "proofId": "mean-value-theorem-oq-02-oq-04",
+    "type": "concept",
+    "range": {
+      "startLine": 114,
+      "endLine": 128
+    },
+    "title": "Intentionally Empty Namespace: Doc-Only Retraction Stub",
+    "content": "Lines 114–128 declare and immediately close the `MeanValueTheoremOQ02OQ04` namespace with a single inline comment. There are **no axioms, no theorems, no definitions, no sorries** between `namespace` and `end` — this is the post-retraction body. Two design choices are visible: (1) the namespace name `MeanValueTheoremOQ02OQ04` is preserved (rather than removed entirely) so that any downstream `open MeanValueTheoremOQ02OQ04` directives in other files still type-check, even though no symbols are exported; (2) the inline comment cross-references the corrected complex-disk theorem `analytic_taylor_remainder_uniform_bound_complex` in `Proofs/MeanValueTheoremOQ02OQ04OQ01.lean`, directing consumers to the file that carries the mathematical content. The comment style is `/- … -/` (a block comment) rather than `/-! … -/` (a docstring), since the file's primary docstring is already at the top and this is internal-implementation commentary.",
+    "mathContext": "No mathematical content in the body — the slug's mathematical statement and proof live in the child file at `Proofs/MeanValueTheoremOQ02OQ04OQ01.lean`. From a *type-theoretic* perspective, the empty namespace exports the empty signature, which is trivially compatible with any open call.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "doc-only stub",
+      "namespace preservation",
+      "API stability under retraction",
+      "block comment vs docstring",
+      "MeanValueTheoremOQ02OQ04OQ01"
+    ],
+    "prerequisites": [
+      "Lean 4 namespaces",
+      "Lean 4 comment syntax"
+    ]
+  }
+]

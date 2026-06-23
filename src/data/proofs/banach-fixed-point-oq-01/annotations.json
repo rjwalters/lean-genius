@@ -1,0 +1,64 @@
+[
+  {
+    "title": "From 'a fixed point exists' to a quantitative theorem",
+    "mathContext": "Mathlib's `ContractingWith K f` bundles `K < 1` with `LipschitzWith K f`. Over a nonempty complete metric space, `ContractingWith.fixedPoint f hf` is THE fixed point, `fixedPoint_isFixedPt` proves `f p = p`, and `fixedPoint_unique'` proves any two fixed points coincide. The uniqueness lemma `fixedPoint_unique_of_isFixedPt` carries `omit [CompleteSpace α] [Nonempty α]` because uniqueness is a pure consequence of the contraction inequality — two fixed points x,y satisfy d(x,y) = d(fx,fy) ≤ K·d(x,y) with K<1, forcing d(x,y)=0.",
+    "significance": "core",
+    "relatedConcepts": [
+      "ContractingWith.fixedPoint and fixedPoint_isFixedPt in Mathlib",
+      "ContractingWith.fixedPoint_unique'",
+      "the contraction inequality d(fx,fy) ≤ K·d(x,y)"
+    ],
+    "prerequisites": [
+      "metric spaces and completeness",
+      "Lipschitz maps and contraction constants",
+      "the definition of a fixed point IsFixedPt f x ↔ f x = x"
+    ],
+    "proofId": "banach-fixed-point-oq-01",
+    "range": { "startLine": 46, "endLine": 55 },
+    "id": "ann-banach-oq01-existence-uniqueness",
+    "type": "insight",
+    "content": "Existence and uniqueness are the foundation. `exists_fixedPoint` packages Mathlib's `ContractingWith.fixedPoint f hf` together with `fixedPoint_isFixedPt` to produce `∃ p, IsFixedPt f p`. `fixedPoint_unique_of_isFixedPt` shows any two fixed points coincide via `fixedPoint_unique'`. Crucially this uniqueness statement omits the `CompleteSpace` and `Nonempty` instances: uniqueness needs neither — it follows purely from the contraction inequality, since if f x = x and f y = y then d(x,y) = d(f x, f y) ≤ K·d(x,y) with K < 1, which forces d(x,y) = 0. Completeness and nonemptiness are only needed to guarantee a fixed point actually exists (the Picard iterates form a Cauchy sequence whose limit must lie in the space)."
+  },
+  {
+    "title": "Constructive convergence with a geometric rate",
+    "mathContext": "`tendsto_iterate_fixedPoint` states f^[n] x → p in the neighborhood filter 𝓝 p. The a-priori estimate `apriori_dist_iterate_fixedPoint_le` gives dist (f^[n] x) p ≤ dist x (f x) · Kⁿ / (1 − K): the right-hand side is computable from the very first step x, f x and decays geometrically. The a-posteriori estimate `dist_fixedPoint_le` is the n = 0 specialization, dist x p ≤ dist x (f x)/(1 − K). The denominator 1 − K is the sum of the geometric tail Σ_{k≥0} Kᵏ.",
+    "significance": "core",
+    "relatedConcepts": [
+      "ContractingWith.tendsto_iterate_fixedPoint",
+      "ContractingWith.apriori_dist_iterate_fixedPoint_le",
+      "ContractingWith.dist_fixedPoint_le",
+      "geometric series Σ Kⁿ = 1/(1−K)"
+    ],
+    "prerequisites": [
+      "function iteration f^[n] and its convergence",
+      "Filter.Tendsto and the neighborhood filter",
+      "geometric series and their tails"
+    ],
+    "proofId": "banach-fixed-point-oq-01",
+    "range": { "startLine": 57, "endLine": 75 },
+    "id": "ann-banach-oq01-rate",
+    "type": "insight",
+    "content": "What distinguishes Banach's theorem from purely existential fixed point theorems (Brouwer, Schauder) is that it is constructive AND quantitative. `tendsto_iterate` says the Picard iterates f^[n] x converge to p from ANY starting point x — the fixed point is the limit of an explicit algorithm. `apriori_estimate` then bounds the error before you iterate: d(fⁿx,p) ≤ d(x,fx)·Kⁿ/(1−K), geometric decay with ratio K. The factor 1/(1−K) is exactly the geometric series sum Σ Kᵏ that accumulates the contraction over the infinite tail of remaining steps. `aposteriori_estimate` is the n=0 instance and is the practically useful one: after a single application of f you can already certify d(x,p) ≤ d(x,fx)/(1−K), which is the standard stopping criterion in numerical fixed-point iteration."
+  },
+  {
+    "title": "A worked example: x ↦ x/2 + c has fixed point 2c",
+    "mathContext": "`contractAffine c = fun x => x/2 + c`. To apply the abstract theorem we must discharge `ContractingWith (1/2) (contractAffine c)`. The Lipschitz half is proved by `LipschitzWith.of_dist_le_mul`: |f(x)−f(y)| = |(x−y)/2| = |x−y|/2, so distances scale by exactly 1/2. Then `contractAffine_fixedPoint` exhibits 2c as a fixed point (2c/2 + c = 2c) and pins it down as THE fixed point via `fixedPoint_unique`. The convergence and rate theorems are instantiated at this map by rewriting with the computed fixed point 2c.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "LipschitzWith.of_dist_le_mul",
+      "Real.dist_eq and abs_div",
+      "ContractingWith.fixedPoint_unique for identifying the fixed point",
+      "NNReal coercion of the constant 1/2"
+    ],
+    "prerequisites": [
+      "affine maps on ℝ and their Lipschitz constants",
+      "solving x = x/2 + c for the fixed point",
+      "real absolute value and the metric dist x y = |x − y|"
+    ],
+    "proofId": "banach-fixed-point-oq-01",
+    "range": { "startLine": 77, "endLine": 121 },
+    "id": "ann-banach-oq01-concrete",
+    "type": "example",
+    "content": "The abstract theorem is only useful once you can recognize contractions in the wild, so the file closes with a fully worked instance: the affine map f(x) = x/2 + c on ℝ. `contractAffine_contracting` verifies it is (1/2)-Lipschitz — distances scale by exactly 1/2 — which combined with 1/2 < 1 gives `ContractingWith (1/2) f`. `contractAffine_fixedPoint` then computes the fixed point in closed form: solving x = x/2 + c gives x = 2c, and uniqueness from the contraction property guarantees there is no other. Finally `contractAffine_tendsto` and `contractAffine_apriori` specialize the abstract Picard convergence and geometric error bound to this map, so from any real starting point the iterates x, x/2+c, x/4+3c/2, … converge to 2c at rate (1/2)ⁿ. This is the simplest nontrivial contraction and makes every part of the abstract theorem concrete and checkable."
+  }
+]

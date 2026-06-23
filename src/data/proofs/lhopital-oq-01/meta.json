@@ -1,0 +1,188 @@
+{
+  "id": "lhopital-oq-01",
+  "title": "L'Hôpital's Rule: Failure of the Converse",
+  "slug": "lhopital-oq-01",
+  "description": "Proves the canonical counterexample showing L'Hôpital's rule cannot be reversed: f(x) = x + sin x, g(x) = x satisfy lim f/g = 1 but lim f'/g' does not exist (oscillates between 0 and 2).",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://archive.org/details/principlesofmath00rudi",
+    "date": "2026",
+    "status": "verified",
+    "tags": [
+      "calculus",
+      "analysis",
+      "limits",
+      "counterexample",
+      "lhopital",
+      "wiedijk-100",
+      "extension"
+    ],
+    "proofRepoPath": "Proofs/LHopitalOQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "tendsto_inv_atTop_zero",
+        "description": "x⁻¹ → 0 as x → ∞ — used to prove sin(x)/x → 0",
+        "module": "Mathlib.Topology.Algebra.Order.LiminfLimsup"
+      },
+      {
+        "theorem": "Real.cos_int_mul_two_pi",
+        "description": "cos(n · 2π) = 1 for integer n — used to evaluate limit along 2πn subsequence",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.cos_add_pi",
+        "description": "cos(x + π) = -cos(x) — used to evaluate cos(π + 2πn) = -1",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "tendsto_nhds_unique",
+        "description": "Limits are unique — used to extract L = 2 and L = 0 from subsequences",
+        "module": "Mathlib.Topology.Basic"
+      }
+    ],
+    "originalContributions": [
+      "tendsto_sin_div_atTop: sin(x)/x → 0 as x → ∞ via direct ε-N squeeze with x⁻¹",
+      "lim_ratio_eq_one: (x + sin x)/x → 1 via 1 + sin(x)/x rewrite",
+      "val_on_seq1: cos(n·2π) = 1 for all n : ℕ via Real.cos_nat_mul_two_pi",
+      "val_on_seq2: cos(n·2π + π) = -1 for all n : ℕ via Real.cos_nat_mul_two_pi_add_pi",
+      "deriv_ratio_no_limit: ¬∃ L, Tendsto (1 + cos x) atTop (nhds L) via two subsequences",
+      "lhopital_converse_fails: combined statement of the counterexample"
+    ],
+    "dateAdded": "2026-04-21",
+    "lineCount": 142,
+    "assumptions": "0 sorries, 0 axioms. Fully machine-verified.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "L'Hôpital's rule was published in the first calculus textbook, *Analyse des Infiniment Petits* (1696) by Guillaume de l'Hôpital, though the rule was actually discovered by Johann Bernoulli, who communicated it privately. The rule states: if $f(a) = g(a) = 0$ (or both approach $\\pm\\infty$) and $f'(x)/g'(x) \\to L$ as $x \\to a$, then $f(x)/g(x) \\to L$. Students and practitioners often wonder whether the rule can be applied in reverse — if we know $f/g \\to L$, can we conclude anything about $f'/g'$? The answer is emphatically NO. The canonical counterexample — $f(x) = x + \\sin x$, $g(x) = x$ — appears in Rudin's *Principles of Mathematical Analysis* (§5.13), Apostol's *Calculus*, and most standard real analysis textbooks. It is pedagogically important because it prevents the common error of 'running L'Hôpital backwards'. This Lean 4 formalization (142 lines, 0 axioms) is the first machine-verified proof of this counterexample, extending the parent `LHopital.lean` (Wiedijk list entry #64). The proof technique — squeeze theorem for $\\sin(x)/x \\to 0$, and the two-subsequence argument for non-convergence of $1 + \\cos(x)$ — is classical and appears in virtually all real analysis courses.",
+    "problemStatement": "Show that L'Hôpital's rule has no converse: there exists f, g differentiable on (0, ∞) such that $\\lim_{x \\to \\infty} \\frac{f(x)}{g(x)}$ exists but $\\lim_{x \\to \\infty} \\frac{f'(x)}{g'(x)}$ does not exist.",
+    "text": "Formalizes the canonical L'Hôpital counterexample: f(x) = x + sin(x), g(x) = x. The limit f/g = (x + sin x)/x → 1 is proved via the squeeze theorem (|sin x/x| ≤ 1/x → 0). The non-existence of the limit of f'/g' = 1 + cos(x) is proved via the two-subsequence argument: along 2πn the value is 2, along π + 2πn the value is 0, so no single limit exists.",
+    "proofStrategy": "The limit sin(x)/x → 0 is proved via the squeeze: using tendsto_inv_atTop_zero, we get x⁻¹ < ε eventually, and |sin x/x| ≤ x⁻¹ by gcongr + |sin x| ≤ 1. For the non-convergence: cos(2πn) = 1 via Real.cos_int_mul_two_pi (after casting ℕ → ℤ), and cos(π + 2πn) = -1 via Real.cos_add_pi. Both subsequences 2πn and π + 2πn tend to ∞, so by tendsto_nhds_unique any hypothetical limit must be both 2 and 0.",
+    "keyInsights": [
+      "L'Hôpital's rule is strictly one-directional: f'/g' → L implies f/g → L, but NOT conversely.",
+      "sin(x)/x → 0 follows cleanly from |sin x| ≤ 1 and x⁻¹ → 0 (no L'Hôpital needed).",
+      "Non-convergence via two subsequences: 2πn → ∞ with value 2, and π + 2πn → ∞ with value 0. Any limit would be both 2 and 0 — contradiction.",
+      "tendsto_nhds_unique provides the clean contradiction: unique limits of the same sequence at two different subsequences.",
+      "The proof is entirely elementary: it only uses `|sin x| ≤ 1` (a basic bound, not L'Hôpital itself), `x⁻¹ → 0` (tendsto_inv_atTop_zero), periodicity identities `cos(2πn) = 1` and `cos(π + 2πn) = -1`, and limit uniqueness (tendsto_nhds_unique). No Fourier analysis, no complex analysis, no measure theory — all 142 lines follow from first-year analysis.",
+      "**Three-part proof architecture**: Part I establishes convergence of f/g (the positive result), Part II destroys any hope of convergence for f'/g' (the negative result), and Part III packages both into a single conjunction. This mirrors how a textbook presents a counterexample — state the claim, prove the positive side, prove the negative side, combine — and makes the logical structure maximally transparent in the formal proof."
+    ],
+    "prerequisites": [
+      "L'Hôpital's rule (LHopital.lean)",
+      "Real analysis: limits, squeeze theorem",
+      "Basic trigonometric identities: cos(2πn) = 1, cos(π + x) = -cos(x)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "file-header",
+      "title": "Module Header and Documentation",
+      "summary": "Block comment (lines 1-29) documenting the counterexample (f = x + sin x, g = x), the two main claims, and the proof strategy for each part. This serves as a human-readable specification — the formal Lean proofs below implement exactly what this header describes.",
+      "startLine": 1,
+      "endLine": 29,
+      "mathContext": "The header precisely states the two claims: (1) $\\lim_{x\\to\\infty}(x + \\sin x)/x = 1$ (proved via squeeze on $|\\sin x|/x \\leq 1/x \\to 0$); (2) $\\lim_{x\\to\\infty}(1 + \\cos x)$ does not exist (proved via subsequences at $n \\cdot 2\\pi$ and $n \\cdot 2\\pi + \\pi$)."
+    },
+    {
+      "id": "imports-setup",
+      "title": "Imports, Namespace, and Opens",
+      "summary": "Five targeted Mathlib imports supply exactly the infrastructure needed: `Trigonometric.Basic` for cosine periodicity identities (`cos_nat_mul_two_pi`, `cos_nat_mul_two_pi_add_pi`), `SpecificLimits.Basic` for `tendsto_natCast_atTop_atTop`, `Topology.Algebra.Order.Field` for order-compatible limit lemmas, `Order.Filter.AtTopBot.Archimedean` for filter-at-top tools, and `Topology.Separation.Hausdorff` for `tendsto_nhds_unique`. The `namespace LHopitalConverse` isolates the 8 declarations, and `open Real Filter Topology` makes `sin`, `cos`, `pi`, `Tendsto`, `atTop`, and `nhds` unqualified throughout.",
+      "startLine": 30,
+      "endLine": 46,
+      "mathContext": "The imports form a minimal dependency graph. Notably, L'Hôpital's rule itself is NOT imported — the counterexample is self-contained, using only $|\\sin x| \\leq 1$, $x^{-1} \\to 0$, cosine periodicity, and limit uniqueness. The namespace `LHopitalConverse` (not `LHopitalFailure`) signals this is an exploration of the rule's logical boundary rather than a refutation."
+    },
+    {
+      "id": "limit-exists",
+      "title": "Part I — The Limit f/g → 1",
+      "summary": "Two theorems: `tendsto_sin_div_atTop` proves sin(x)/x → 0 by a direct ε-N squeeze argument (witness N = 1/ε + 1), then `lim_ratio_eq_one` rewrites (x + sin x)/x = 1 + sin(x)/x and applies the sum rule to get → 1.",
+      "startLine": 47,
+      "endLine": 82,
+      "mathContext": "$|\\sin(x)/x| = |\\sin x|/x \\leq 1/x$ for $x > 0$ (from $|\\sin x| \\leq 1$). As $x \\to \\infty$: $1/x \\to 0$. Then $(x + \\sin x)/x = 1 + \\sin(x)/x \\to 1 + 0 = 1$."
+    },
+    {
+      "id": "subsequence-helpers",
+      "title": "Part II — Subsequence Infrastructure (Private Lemmas)",
+      "summary": "Four private lemmas build scaffolding for the contradiction: `seq1_atTop` and `seq2_atTop` show n·2π and n·2π+π both tend to +∞; `val_on_seq1` and `val_on_seq2` show 1+cos equals 2 and 0 on these subsequences, respectively.",
+      "startLine": 83,
+      "endLine": 103,
+      "mathContext": "$\\cos(n \\cdot 2\\pi) = 1$ (period $2\\pi$) so $1 + \\cos(n \\cdot 2\\pi) = 2$; $\\cos(n \\cdot 2\\pi + \\pi) = -1$ (half-period shift) so $1 + \\cos(n \\cdot 2\\pi + \\pi) = 0$. Both sequences $x_n = n \\cdot 2\\pi$ and $y_n = n \\cdot 2\\pi + \\pi$ are cofinal in $(0, \\infty)$."
+    },
+    {
+      "id": "limit-nonexistent",
+      "title": "Part II — The Derivative Ratio Has No Limit",
+      "summary": "Proves 1 + cos(x) → (no limit): assuming L exists, composing with seq1_atTop gives L = 2; composing with seq2_atTop gives L = 0; linarith derives 2 = 0, contradiction.",
+      "startLine": 104,
+      "endLine": 127,
+      "mathContext": "If $\\exists L,\\ 1 + \\cos x \\to L$, then every cofinal subsequence must converge to $L$. Since $1 + \\cos(n \\cdot 2\\pi) = 2 \\to 2$ and $1 + \\cos(n \\cdot 2\\pi + \\pi) = 0 \\to 0$, `tendsto_nhds_unique` forces $L = 2$ and $L = 0$ simultaneously — contradiction by `linarith`."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Part III — Main Theorem: Converse Fails",
+      "summary": "`lhopital_converse_fails` bundles the two results into the conjunction: lim f/g = 1 AND ¬∃L, lim f'/g' = L. The `simpa using hL` normalizes (1 + cos x)/1 to 1 + cos x via div_one before applying deriv_ratio_no_limit.",
+      "startLine": 129,
+      "endLine": 142,
+      "mathContext": "The public theorem states $P \\land Q$ where $P = (\\lim_{x\\to\\infty}(x + \\sin x)/x = 1)$ and $Q = (\\nexists L,\\ \\lim_{x\\to\\infty}(1 + \\cos x)/1 = L)$. The `simpa` step uses `div_one : a/1 = a` to bridge the gap between the abstract counterexample statement and the non-existence lemma proved for $(1 + \\cos x)$ without the denominator 1."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified (0 sorries, 0 axioms): 8 theorems/lemmas proving that L'Hôpital's rule cannot be reversed. The counterexample f(x) = x + sin(x), g(x) = x demonstrates that the existence of lim f/g gives no information about lim f'/g'.",
+    "implications": "**Pedagogical**: This counterexample is essential for students learning L'Hôpital's rule — it prevents the common error of 'running L'Hôpital's rule backwards.' The proof illustrates the squeeze theorem for sin(x)/x and the subsequence argument for oscillating limits.\n\n**Extension of LHopital.lean**: The parent proof establishes L'Hôpital's rule; this extension proves the boundary of the theorem's applicability.",
+    "openQuestions": [
+      "Can the converse hold for monotone quotients? For instance, if f/g is monotone and the indeterminate-form conditions hold, must lim f/g = lim f'/g' whenever both limits exist?",
+      "What is the weakest additional hypothesis on f and g that makes the converse valid? For example, do Lipschitz derivatives, or the condition that f'/g' is uniformly continuous, suffice to recover a partial converse?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "lhopital",
+      "relationship": "extends",
+      "description": "Parent proof establishing L'Hôpital's rule — this entry shows the rule's converse fails"
+    },
+    {
+      "targetId": "lhopital-oq-02",
+      "relationship": "sibling",
+      "description": "LHopital OQ-02 covers the ∞/∞ form; this covers the failure of the converse"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Analysis.SpecificLimits.Basic",
+      "Mathlib.Topology.Algebra.Order.Field",
+      "Mathlib.Order.Filter.AtTopBot.Archimedean",
+      "Mathlib.Topology.Separation.Hausdorff"
+    ],
+    "opens": [
+      "Real",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "LHopitalConverse",
+    "lineCount": 142,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/LHopitalOQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Rudin, W.",
+      "title": "Principles of Mathematical Analysis, 3rd ed.",
+      "year": "1976",
+      "venue": "McGraw-Hill",
+      "note": "§5.13 contains the counterexample f(x) = x + sin x, g(x) = x"
+    },
+    {
+      "authors": "l'Hôpital, G.F.A.",
+      "title": "Analyse des Infiniment Petits pour l'Intelligence des Lignes Courbes",
+      "year": "1696",
+      "venue": "Paris",
+      "note": "First calculus textbook; the rule was actually discovered by Bernoulli"
+    }
+  ],
+  "sorries": 0
+}

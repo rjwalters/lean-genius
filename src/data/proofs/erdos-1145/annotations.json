@@ -1,0 +1,440 @@
+[
+  {
+    "id": "ann-1145-rep-func",
+    "proofId": "erdos-1145",
+    "range": {
+      "startLine": 32,
+      "endLine": 35
+    },
+    "type": "definition",
+    "title": "Two-Set Representation Function",
+    "content": "The central object of study: $r_{A,B}(n)$ counts the number of ordered pairs $(a,b)$ with $a \\in A$, $b \\in B$, and $a + b = n$. Defined via `Set.ncard` on the set of qualifying pairs. Unlike the one-set case $r_{A,A}(n)$ in Problem #28, the two-set version allows $A \\neq B$, which introduces fundamentally new behavior — the ratio condition $a_n/b_n \\to 1$ becomes necessary to prevent bounded representations.",
+    "mathContext": "$r_{A,B}(n) = |\\{(a,b) \\in A \\times B : a + b = n\\}|$",
+    "significance": "key",
+    "relatedConcepts": [
+      "representation function",
+      "additive basis",
+      "sumset",
+      "Sidon set"
+    ],
+    "prerequisites": [
+      "Set.ncard",
+      "Finset filtering",
+      "set-builder notation in Lean"
+    ]
+  },
+  {
+    "id": "ann-1145-sumset",
+    "proofId": "erdos-1145",
+    "range": {
+      "startLine": 37,
+      "endLine": 39
+    },
+    "type": "definition",
+    "title": "Sumset Definition",
+    "content": "The sumset $A + B$ is defined as $\\{n \\mid \\exists a \\in A, b \\in B, n = a + b\\}$. This is the Minkowski sum restricted to natural numbers. The key question is: when $A + B$ covers all large integers, how does the multiplicity of coverage (the representation count) behave?",
+    "mathContext": "$A + B = \\{a + b : a \\in A,\\, b \\in B\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Minkowski sum",
+      "sumset",
+      "additive combinatorics"
+    ],
+    "prerequisites": [
+      "set comprehension in Lean",
+      "existential quantifiers"
+    ]
+  },
+  {
+    "id": "ann-1145-basis-defs",
+    "proofId": "erdos-1145",
+    "range": {
+      "startLine": 41,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "Two-Set Basis Definitions",
+    "content": "Two equivalent formulations of 'asymptotic basis': (1) $\\exists N_0$ such that $A + B \\supseteq [N_0, \\infty)$, and (2) $(A+B)^c$ is finite. The equivalence is proved in `isTwoSetBasis_iff`. The second form is more elegant but the first is more constructive — the proof extracts $N_0 = \\sup((A+B)^c) + 1$ from the finite complement.",
+    "mathContext": "$\\text{IsTwoSetBasis}(A,B) \\iff (A+B)^c \\text{ is finite} \\iff \\exists N_0,\\, \\forall n \\geq N_0,\\, n \\in A+B$",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic basis",
+      "additive basis of order 2",
+      "Schnirelmann density"
+    ],
+    "prerequisites": [
+      "Set.Finite",
+      "BddAbove",
+      "sSup for finite sets"
+    ]
+  },
+  {
+    "id": "ann-1145-counting-fn",
+    "proofId": "erdos-1145",
+    "range": {
+      "startLine": 50,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "Counting Function",
+    "content": "The counting function $A(N) = |A \\cap [1, N]|$ measures the density of $A$ up to $N$. Implemented by filtering `Finset.Icc 1 N` against membership in $A$. This is the bridge between the 'element-wise' ratio $a_n/b_n \\to 1$ and the 'density' ratio $A(N)/B(N) \\to 1$. The two formulations are equivalent for infinite sets with increasing enumerations.",
+    "mathContext": "$A(N) = |A \\cap [1,N]| = |\\{a \\in A : 1 \\leq a \\leq N\\}|$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "counting function",
+      "asymptotic density",
+      "Schnirelmann density"
+    ],
+    "prerequisites": [
+      "Finset.Icc",
+      "Finset.filter",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "ann-1145-asymp-ratio",
+    "proofId": "erdos-1145",
+    "range": {
+      "startLine": 56,
+      "endLine": 65
+    },
+    "type": "concept",
+    "title": "Asymptotic Ratio Condition",
+    "content": "The crucial hypothesis distinguishing Problem #1145 from its false generalization: $A(N)/B(N) \\to 1$ as $N \\to \\infty$, expressed via Lean's `Tendsto` and `atTop` filter. An alternative formulation uses the enumerating sequences directly: $a_n/b_n \\to 1$. The equivalence is standard but nontrivial — it requires that both sets are infinite and their enumerations are strictly increasing. Without this condition, Ruzsa's counterexample shows the conjecture fails.",
+    "mathContext": "$\\frac{A(N)}{B(N)} \\to 1 \\iff \\frac{a_n}{b_n} \\to 1$ as $n \\to \\infty$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Tendsto",
+      "atTop filter",
+      "asymptotic equivalence",
+      "natural density"
+    ],
+    "prerequisites": [
+      "Filter.Tendsto",
+      "nhds topology on ℝ",
+      "division of reals"
+    ]
+  },
+  {
+    "id": "ann-1145-basis-equiv",
+    "proofId": "erdos-1145",
+    "range": {
+      "startLine": 69,
+      "endLine": 93
+    },
+    "type": "concept",
+    "title": "Basis Equivalence Proof",
+    "content": "Proves `IsTwoSetBasis A B ↔ IsTwoSetBasis' A B`. Forward direction: if all $n \\geq N_0$ are in $A+B$, then the complement is contained in `Finset.range N₀`, hence finite. Reverse: from a finite complement, extract $N_0 = \\sup((A+B)^c) + 1$ so no integer $\\geq N_0$ lies in the complement. The empty-complement case is handled separately — if $(A+B)^c = \\emptyset$, take $N_0 = 0$. Uses `le_csSup` for the bounded-above finite set and `omega` for arithmetic.",
+    "mathContext": "Forward: $(A+B)^c \\subseteq \\{0,\\ldots,N_0-1\\}$. Reverse: $N_0 = \\sup((A+B)^c) + 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "conditional supremum",
+      "finite set characterization",
+      "complement finiteness"
+    ],
+    "prerequisites": [
+      "BddAbove",
+      "le_csSup",
+      "Set.Finite.bddAbove",
+      "omega tactic"
+    ]
+  },
+  {
+    "id": "ann-1145-pairs-finite",
+    "proofId": "erdos-1145",
+    "range": {
+      "startLine": 97,
+      "endLine": 104
+    },
+    "type": "concept",
+    "title": "Finiteness of Representation Pairs",
+    "content": "A foundational lemma: the set of pairs $(a,b)$ with $a + b = n$ is always finite, because both components are bounded by $n$. The proof embeds this set into the product $[0,n) \\times [0,n)$. This finiteness is essential for `Set.ncard` to give meaningful values — without it, the representation function could be ill-defined.",
+    "mathContext": "$\\{(a,b) \\in A \\times B : a+b=n\\} \\subseteq [0,n) \\times [0,n)$, which is finite.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Set.Finite.prod",
+      "Set.finite_Iio",
+      "well-definedness of ncard"
+    ],
+    "prerequisites": [
+      "Set.Finite.subset",
+      "Set.finite_Iio",
+      "Prod membership"
+    ]
+  },
+  {
+    "id": "ann-1145-pos-of-mem",
+    "proofId": "erdos-1145",
+    "range": {
+      "startLine": 106,
+      "endLine": 117
+    },
+    "type": "concept",
+    "title": "Positivity of Representation Count",
+    "content": "If $n \\in A + B$, then there exists at least one pair $(a,b)$ with $a + b = n$, so $r_{A,B}(n) \\geq 1$. The proof constructs a witness pair from the sumset membership, shows the pair set is nonempty, then applies `Set.ncard_pos` (which requires the finiteness lemma). This is the converse direction of the observation that $r_{A,B}(n) = 0$ iff $n \\notin A + B$.",
+    "mathContext": "$n \\in A + B \\Rightarrow r_{A,B}(n) \\geq 1$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Set.ncard_pos",
+      "nonempty witness",
+      "sumset membership"
+    ],
+    "prerequisites": [
+      "existential elimination",
+      "Set.ncard_pos"
+    ]
+  },
+  {
+    "id": "ann-1145-monotonicity",
+    "proofId": "erdos-1145",
+    "range": {
+      "startLine": 119,
+      "endLine": 126
+    },
+    "type": "concept",
+    "title": "Monotonicity of Representation Function",
+    "content": "Enlarging either set can only increase the representation count: if $A \\subseteq A'$ and $B \\subseteq B'$, then $r_{A,B}(n) \\leq r_{A',B'}(n)$. Proved by `Set.ncard_le_ncard` applied to the subset inclusion of pair sets. This monotonicity is used implicitly in arguments about lower bounds — any lower bound on $r_{A,B}(n)$ automatically applies to supersets.",
+    "mathContext": "$A \\subseteq A',\\, B \\subseteq B' \\Rightarrow r_{A,B}(n) \\leq r_{A',B'}(n)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotonicity",
+      "Set.ncard_le_ncard",
+      "subset relation"
+    ],
+    "prerequisites": [
+      "Set.ncard_le_ncard",
+      "subset of pair sets"
+    ]
+  },
+  {
+    "id": "ann-1145-zero-small",
+    "proofId": "erdos-1145",
+    "range": {
+      "startLine": 128,
+      "endLine": 140
+    },
+    "type": "concept",
+    "title": "Vanishing for Small Arguments",
+    "content": "When $n < \\min(A) + \\min(B)$, no pair can sum to $n$, so $r_{A,B}(n) = 0$. The proof shows the pair set is empty by deriving a contradiction from any alleged pair via `omega`. Combined with positivity, this cleanly characterizes where the representation function can be nonzero.",
+    "mathContext": "$n < a_0 + b_0 \\Rightarrow r_{A,B}(n) = 0$ where $a_0 = \\min(A)$, $b_0 = \\min(B)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "empty set characterization",
+      "lower bound on sums"
+    ],
+    "prerequisites": [
+      "Set.ncard_empty",
+      "set extensionality",
+      "omega"
+    ]
+  },
+  {
+    "id": "ann-1145-main-conjecture",
+    "proofId": "erdos-1145",
+    "range": {
+      "startLine": 144,
+      "endLine": 155
+    },
+    "type": "insight",
+    "title": "The Erdős–Sárközy Conjecture",
+    "content": "The heart of the formalization: the open conjecture stated as an axiom. Given infinite $A, B$ with $a_n/b_n \\to 1$ and $A + B$ covering all large integers, the representation function $r_{A,B}(n)$ must be unbounded. Formalized as $\\forall k,\\, \\exists n,\\, k < r_{A,B}(n)$. This is strictly stronger than the Erdős–Turán conjecture (Problem #28), which is the special case $A = B$. Erdős offered \\$500 for Problem #28; this generalization remains wide open with no partial results beyond the $A = B$ case.",
+    "mathContext": "$A^\\infty \\wedge B^\\infty \\wedge \\frac{a_n}{b_n} \\to 1 \\wedge \\text{IsTwoSetBasis}(A,B) \\Rightarrow \\forall k,\\, \\exists n,\\, r_{A,B}(n) > k$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős–Turán conjecture",
+      "additive basis",
+      "unbounded representation",
+      "open problem"
+    ],
+    "prerequisites": [
+      "Set.Infinite",
+      "Tendsto atTop",
+      "axiom declarations in Lean"
+    ]
+  },
+  {
+    "id": "ann-1145-self-reduction",
+    "proofId": "erdos-1145",
+    "range": {
+      "startLine": 159,
+      "endLine": 188
+    },
+    "type": "insight",
+    "title": "Reduction to Erdős–Turán",
+    "content": "The key structural result connecting Problems #1145 and #28: when $A = B$, the two-set representation function equals the one-set version (by `rfl`), and the ratio condition $a_n/b_n \\to 1$ holds trivially because $a_n/a_n = 1$ for all $n$ (via `div_self` once the counting function is shown positive). The proof of `hasAsymptoticRatio_self` is the interesting part — it requires showing $A(N) > 0$ for large $N$, which uses the infinitude of $A$ to find an element $a \\in A$ with $a > 0$, then filters to show the counting function is positive for all $N \\geq a$.",
+    "mathContext": "$A = B \\Rightarrow r_{A,A}(n) = r_{A,B}(n)$ and $\\frac{A(N)}{A(N)} = 1$ for $N$ large. Hence #1145 $\\Rightarrow$ #28.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős–Turán conjecture",
+      "self-reduction",
+      "div_self",
+      "filter convergence"
+    ],
+    "prerequisites": [
+      "Filter.Tendsto.congr'",
+      "Finset.card_pos",
+      "Set.Infinite.exists_gt"
+    ]
+  },
+  {
+    "id": "ann-1145-ruzsa-construction",
+    "proofId": "erdos-1145",
+    "range": {
+      "startLine": 192,
+      "endLine": 207
+    },
+    "type": "concept",
+    "title": "Ruzsa's Binary Digit Construction",
+    "content": "Ruzsa's elegant counterexample from Problem #331: define $A$ as numbers whose binary expansion has nonzero digits only in even positions, and $B$ as numbers with nonzero digits only in odd positions. Then every natural number has a unique representation $a + b$ with $a \\in A, b \\in B$ (binary digits interleave). This gives $A + B = \\mathbb{N}$ with $r_{A,B}(n) = 1$ for all $n \\geq 1$. Crucially, $|A \\cap [1,N]| \\sim \\sqrt{N}$ and $|B \\cap [1,N]| \\sim \\sqrt{2N}$, so $a_n/b_n \\to 1/\\sqrt{2} \\neq 1$.",
+    "mathContext": "$A = \\{\\sum a_i 4^i\\}$, $B = \\{\\sum b_i 2 \\cdot 4^i\\}$. Each $n$ has unique binary split: even-position bits to $A$, odd-position bits to $B$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "binary representation",
+      "Sidon-like property",
+      "unique representation",
+      "digit interleaving"
+    ],
+    "prerequisites": [
+      "binary arithmetic",
+      "modular arithmetic in Lean",
+      "Set membership via predicates"
+    ]
+  },
+  {
+    "id": "ann-1145-ruzsa-axioms",
+    "proofId": "erdos-1145",
+    "range": {
+      "startLine": 209,
+      "endLine": 229
+    },
+    "type": "concept",
+    "title": "Axiomatized Ruzsa Properties",
+    "content": "Six axioms encode the known properties of Ruzsa's construction: infinitude of both sets, unique representations, bounded representation function ($r = 1$), basis property ($A + B$ covers all large integers), and failure of the ratio condition. These could in principle be proved from the explicit definitions of `ruzsaA` and `ruzsaB`, but the proofs would require extensive binary arithmetic reasoning. The axiomatization is faithful — each property is a theorem about the concrete construction.",
+    "mathContext": "Axioms: $A^\\infty$, $B^\\infty$, $\\forall n \\geq 1\\, \\exists! (a,b)\\, a+b=n$, $r(n)=1$, basis, $\\lnot(a_n/b_n \\to 1)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "axiom declaration",
+      "faithful axiomatization",
+      "construction properties"
+    ],
+    "prerequisites": [
+      "ExistsUnique",
+      "axiom declarations in Lean"
+    ]
+  },
+  {
+    "id": "ann-1145-necessity-thm",
+    "proofId": "erdos-1145",
+    "range": {
+      "startLine": 231,
+      "endLine": 257
+    },
+    "type": "insight",
+    "title": "Necessity of the Ratio Condition",
+    "content": "The formalization's most substantive proved theorem: the ratio condition $a_n/b_n \\to 1$ is **necessary** for the conjecture. The proof assembles Ruzsa's construction as a witness — infinite $A, B$ forming a basis, with $\\lnot(a_n/b_n \\to 1)$, yet $r_{A,B}(n) \\leq 1$ for all $n$. The bound $C = 1$ is established by case-splitting on $n \\geq 1$ (using `ruzsa_rep_bounded`) versus $n = 0$ (showing the pair set has at most one element via subset inclusion into a singleton). This makes precise exactly where the boundary lies between the true conjecture and its false generalization.",
+    "mathContext": "$\\exists A, B: A^\\infty \\wedge B^\\infty \\wedge \\text{IsTwoSetBasis}(A,B) \\wedge \\lnot(a_n/b_n \\to 1) \\wedge \\forall n,\\, r_{A,B}(n) \\leq 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "counterexample construction",
+      "necessity vs sufficiency",
+      "sharpness of conditions"
+    ],
+    "prerequisites": [
+      "existential construction in Lean",
+      "interval_cases",
+      "Set.ncard_le_ncard"
+    ]
+  },
+  {
+    "id": "ann-1145-average-rep",
+    "proofId": "erdos-1145",
+    "range": {
+      "startLine": 259,
+      "endLine": 280
+    },
+    "type": "concept",
+    "title": "Average Representation Growth",
+    "content": "Two axiomatized results on average behavior. First, a counting identity: $\\sum_{n \\leq N} r_{A,B}(n) \\geq A(N) \\cdot B(N) - \\text{error}$, which follows from double counting — each pair $(a,b)$ with $a \\leq N$ and $b \\leq N$ contributes to $r_{A,B}(a+b)$. Second, if both sets have density $\\gg \\sqrt{N}$ (the minimal density for a basis), then the average representation $\\frac{1}{N}\\sum_{n \\leq N} r_{A,B}(n) \\to \\infty$. This shows the conjecture is about the **maximum**, not the average — the average already grows.",
+    "mathContext": "$\\sum_{n=0}^{N} r_{A,B}(n) \\geq A(N) \\cdot B(N) - O(A(N) \\cdot B(N))$. If $A(N), B(N) \\gg \\sqrt{N}$, the average $\\to \\infty$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "double counting",
+      "average order",
+      "density of bases",
+      "pigeonhole principle"
+    ],
+    "prerequisites": [
+      "Finset.sum",
+      "Tendsto atTop atTop",
+      "Real.sqrt"
+    ]
+  },
+  {
+    "id": "ann-1145-grekos",
+    "proofId": "erdos-1145",
+    "range": {
+      "startLine": 282,
+      "endLine": 291
+    },
+    "type": "concept",
+    "title": "Grekos Partial Result",
+    "content": "An axiomatized partial result due to Grekos, Haddad, Helou, and Pihko: under the full hypotheses of Problem #1145, one can show $r_{A,B}(n) \\geq 6$ infinitely often. This is far from the conjecture (which demands unboundedness), but it is the best known unconditional lower bound. The result extends earlier work on the $A = B$ case, where Erdős and Fuchs showed the representation function cannot be eventually constant.",
+    "mathContext": "$\\forall M,\\, \\exists n > M,\\, r_{A,B}(n) \\geq 6$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Grekos–Haddad–Helou–Pihko theorem",
+      "infinitely often lower bounds",
+      "Erdős–Fuchs theorem"
+    ],
+    "prerequisites": [
+      "existential with bound",
+      "asymptotic lower bounds"
+    ]
+  },
+  {
+    "id": "ann-1145-symmetry",
+    "proofId": "erdos-1145",
+    "range": {
+      "startLine": 295,
+      "endLine": 317
+    },
+    "type": "concept",
+    "title": "Symmetry via Pair-Swap Bijection",
+    "content": "Proves $r_{A,B}(n) = r_{B,A}(n)$ by constructing an explicit bijection $(a,b) \\mapsto (b,a)$ between the pair sets. The proof rewrites the $A$-side pair set as the image of the $B$-side pair set under the swap map, then applies `Set.ncard_image_of_injective`. Injectivity of the swap is shown by component-wise equality. This commutativity is not merely cosmetic — it means the conjecture's truth is symmetric in $A$ and $B$.",
+    "mathContext": "$r_{A,B}(n) = r_{B,A}(n)$ via the bijection $(a,b) \\mapsto (b,a)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "bijection",
+      "Set.ncard_image_of_injective",
+      "commutativity of addition"
+    ],
+    "prerequisites": [
+      "Set.ncard_image_of_injective",
+      "Prod.ext",
+      "image of a set under a function"
+    ]
+  },
+  {
+    "id": "ann-1145-zero-large",
+    "proofId": "erdos-1145",
+    "range": {
+      "startLine": 319,
+      "endLine": 331
+    },
+    "type": "concept",
+    "title": "Vanishing for Large Arguments",
+    "content": "When $A, B \\subseteq [0, N]$ are both bounded, $r_{A,B}(n) = 0$ for $n > 2N$. This is the 'upper' companion to the 'lower' vanishing lemma: the representation function is supported on $[\\min(A)+\\min(B),\\, \\max(A)+\\max(B)]$. For infinite sets the support is unbounded above, but for finite truncations this gives a clean support bound. Useful in finite combinatorial arguments and for bounding sums.",
+    "mathContext": "$A, B \\subseteq [0,N] \\Rightarrow r_{A,B}(n) = 0$ for $n > 2N$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "support of representation function",
+      "finite truncation",
+      "bounded sumset"
+    ],
+    "prerequisites": [
+      "set extensionality",
+      "omega",
+      "Set.ncard_empty"
+    ]
+  }
+]

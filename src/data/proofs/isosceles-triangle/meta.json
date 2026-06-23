@@ -1,0 +1,217 @@
+{
+  "id": "isosceles-triangle",
+  "title": "Isosceles Triangle Theorem",
+  "slug": "isosceles-triangle",
+  "description": "In an isosceles triangle, the base angles are equal. Known as Pons Asinorum (Bridge of Asses).",
+  "meta": {
+    "author": "Euclid (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Isosceles_triangle",
+    "date": "~300 BCE",
+    "status": "verified",
+    "tags": [
+      "geometry",
+      "euclidean",
+      "classic",
+      "beginner",
+      "wiedijk",
+      "wiedijk-100"
+    ],
+    "proofRepoPath": "Proofs/IsoscelesTriangle.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanGeometry.angle_eq_angle_of_dist_eq",
+        "description": "Forward direction: equal sides imply equal base angles",
+        "module": "Mathlib.Geometry.Euclidean.Triangle"
+      },
+      {
+        "theorem": "EuclideanGeometry.dist_eq_of_angle_eq_angle_of_angle_ne_pi",
+        "description": "Converse: equal base angles imply equal sides (non-degenerate)",
+        "module": "Mathlib.Geometry.Euclidean.Triangle"
+      },
+      {
+        "theorem": "InnerProductGeometry.angle_sub_eq_angle_sub_rev_of_norm_eq",
+        "description": "Vector form: equal norms imply equal angles with difference vectors",
+        "module": "Mathlib.Geometry.Euclidean.Triangle"
+      }
+    ],
+    "originalContributions": [
+      "Pedagogical wrapper: re-exports Mathlib's EuclideanGeometry.dist_eq_iff_eq_of_dist_eq as the isosceles triangle theorem",
+      "Converse formulation (equal angles implies equal sides) via Mathlib bridge",
+      "Biconditional statement combining both directions"
+    ],
+    "dateAdded": "2025-12-26",
+    "wiedijkNumber": 65,
+    "axiomCount": 0,
+    "lineCount": 129,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The isosceles triangle theorem appears as Proposition 5 in Book I of Euclid's *Elements* (c. 300 BCE), making it one of the earliest recorded proofs in mathematics. Euclid's original proof extended the equal sides beyond the base and used auxiliary triangles — an unnecessarily complex construction that became legendary for confusing students. The medieval Latin name **Pons Asinorum** ('Bridge of Asses') arose because this proposition was the first proof requiring non-trivial reasoning beyond direct axiom application, serving as the dividing line between students who could reason deductively and those who could not. Pappus of Alexandria (c. 340 AD) gave a beautifully simple alternative: consider triangle ABC congruent to triangle ACB by SAS, immediately yielding ∠ABC = ∠ACB. This 'self-congruence' argument is essentially the symmetry proof used in modern treatments. Proclus (c. 450 AD) offered yet another proof using angle bisectors. The theorem is #65 on Wiedijk's list of 100 formalized theorems. In Mathlib's formalization, the proof works in arbitrary inner product spaces over ℝ, not just the Euclidean plane — a significant generalization showing that the result depends only on the metric and inner product structure, not on dimension or specific coordinates.",
+    "problemStatement": "**Isosceles Triangle Theorem (Pons Asinorum)**:\n\n$$d(A,B) = d(A,C) \\implies \\angle ABC = \\angle ACB$$\n\n**Converse** (for non-degenerate triangles with $\\angle BAC \\neq \\pi$):\n\n$$\\angle ABC = \\angle ACB \\implies d(A,B) = d(A,C)$$",
+    "text": "In an isosceles triangle, the base angles are equal. Known as Pons Asinorum (Bridge of Asses).",
+    "proofStrategy": "The forward direction uses Mathlib's `angle_eq_angle_of_dist_eq`, which derives angle equality from distance equality in any normed inner product space. The converse uses `dist_eq_of_angle_eq_angle_of_angle_ne_pi` with an explicit non-degeneracy hypothesis excluding collinear points. Both directions are combined into a biconditional `↔` statement, and a vector formulation is proved using `angle_sub_eq_angle_sub_rev_of_norm_eq`.",
+    "keyInsights": [
+      "**Pappus's self-congruence** is the deepest insight: reflecting triangle $ABC$ to $ACB$ shows the triangle is congruent to its own mirror image, making the angle equality immediate from SAS — no auxiliary constructions needed",
+      "The **non-degeneracy condition** $\\angle BAC \\neq \\pi$ in the converse is essential: when $A$, $B$, $C$ are collinear, the 'triangle' degenerates and equal base angles (both $0$ or both $\\pi$) no longer force $AB = AC$",
+      "The **inner product space formulation** generalizes Pons Asinorum beyond $\\mathbb{R}^2$: the theorem holds in any real inner product space of any dimension, showing the result depends only on the metric structure",
+      "The **vector form** $\\|x\\| = \\|y\\| \\implies \\angle(x, x-y) = \\angle(y, y-x)$ reveals the theorem as a statement about the geometry of equal-norm vectors and their differences — a perspective useful in functional analysis and physics",
+      "The **biconditional form** (equal sides $\\iff$ equal base angles) gives a complete characterization of isosceles triangles among non-degenerate triangles, combining Euclid I.5 and I.6 into a single equivalence"
+    ],
+    "prerequisites": [
+      "Euclidean geometry (congruence, triangle properties)",
+      "Mathematical logic (biconditional proofs, contrapositive)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation and Historical Context",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Imports (`Mathlib.Geometry.Euclidean.Triangle`, `Mathlib.Tactic`) and module docstring: the isosceles triangle theorem (Pons Asinorum, Euclid I.5, Wiedijk #65) with approach, status, and historical note.",
+      "mathContext": "The isosceles triangle theorem (Pons Asinorum, Euclid I.5, Wiedijk #1): if $|AB| = |AC|$ in triangle $ABC$, then $\\angle ABC = \\angle ACB$. One of the oldest theorems in mathematics, first proved rigorously by Euclid circa 300 BCE."
+    },
+    {
+      "id": "setup",
+      "title": "Imports and Type Variables",
+      "startLine": 50,
+      "endLine": 57,
+      "summary": "Opens `EuclideanGeometry`, declares `namespace IsoscelesTriangle`, and the type variables `V` (real inner product space) and `P` (metric torsor over `V`).",
+      "mathContext": "Imports for Euclidean geometry: inner product spaces, metric spaces, and norm definitions. Sets up the framework for proving that equal sides imply equal base angles in a triangle."
+    },
+    {
+      "id": "forward",
+      "title": "Forward Direction: Equal Sides Imply Equal Angles",
+      "startLine": 58,
+      "endLine": 74,
+      "summary": "Proves `base_angles_equal_of_sides_equal`: $d(A,B) = d(A,C) \\Rightarrow \\angle ABC = \\angle ACB$. Direct application of `EuclideanGeometry.angle_eq_angle_of_dist_eq`. This is Euclid's Proposition I.5.",
+      "mathContext": "The forward direction: $d(A,B) = d(A,C) \\Rightarrow \\angle ABC = \\angle ACB$. In the inner product space formulation, equal norms of the displacement vectors $\\overrightarrow{BA}$ and $\\overrightarrow{CA}$ imply equal angles."
+    },
+    {
+      "id": "converse",
+      "title": "Converse: Equal Angles Imply Equal Sides",
+      "startLine": 75,
+      "endLine": 92,
+      "summary": "Proves `sides_equal_of_base_angles_equal`: $\\angle ABC = \\angle ACB \\land \\angle BAC \\neq \\pi \\Rightarrow d(A,B) = d(A,C)$. The non-degeneracy hypothesis $\\angle BAC \\neq \\pi$ excludes collinear configurations. Uses `dist_eq_of_angle_eq_angle_of_angle_ne_pi`. This is Euclid's Proposition I.6.",
+      "mathContext": "The converse: if $\\angle ABC = \\angle ACB$ then $|AB| = |AC|$. Together with the forward direction, this gives: a triangle has two equal sides if and only if it has two equal base angles."
+    },
+    {
+      "id": "biconditional",
+      "title": "Biconditional Characterization",
+      "startLine": 93,
+      "endLine": 107,
+      "summary": "Proves `isosceles_triangle_iff`: for non-degenerate triangles, $d(A,B) = d(A,C) \\iff \\angle ABC = \\angle ACB$. Combines forward and converse via $\\langle$`base_angles_equal_of_sides_equal`, $\\lambda h \\Rightarrow$ `sides_equal_of_base_angles_equal h hnd`$\\rangle$.",
+      "mathContext": "The full characterization: for non-degenerate triangles, $d(A,B) = d(A,C) \\iff \\angle ABC = \\angle ACB$. This combines the forward direction (Euclid I.5) with the converse (Euclid I.6)."
+    },
+    {
+      "id": "vector-form",
+      "title": "Vector Formulation",
+      "startLine": 108,
+      "endLine": 121,
+      "summary": "Proves `angle_eq_of_norm_eq`: for vectors $x, y \\in V$ with $\\|x\\| = \\|y\\|$, the angles $\\angle(x, x-y) = \\angle(y, y-x)$. Uses `InnerProductGeometry.angle_sub_eq_angle_sub_rev_of_norm_eq`. Interprets the theorem using position vectors from the apex.",
+      "mathContext": "The inner product space formulation: for vectors $x, y \\in V$ with $\\|x\\| = \\|y\\|$, the angle between $x$ and any reference direction equals the angle between $y$ and the same reference. This abstracts the isosceles theorem to arbitrary inner product spaces."
+    },
+    {
+      "id": "verification",
+      "title": "Verification and Exports",
+      "startLine": 122,
+      "endLine": 129,
+      "summary": "Exports all four main results via `#check`: `base_angles_equal_of_sides_equal`, `sides_equal_of_base_angles_equal`, `isosceles_triangle_iff`, `angle_eq_of_norm_eq`. Closes `IsoscelesTriangle` namespace.",
+      "mathContext": "Type-checking the four main results to verify their Lean signatures."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "The Pythagorean theorem characterizes right triangles via side lengths. An isosceles right triangle (45-45-90) combines both results: equal legs give equal base angles by Pons Asinorum, and the hypotenuse satisfies a^2 + a^2 = c^2."
+    },
+    {
+      "targetId": "triangle-angle-sum",
+      "relationship": "related",
+      "description": "The angle sum theorem (angles sum to pi) combined with Pons Asinorum determines the apex angle: if base angles are both beta, then alpha = pi - 2*beta. This fully determines isosceles triangle shape from one angle."
+    },
+    {
+      "targetId": "triangle-inequality",
+      "relationship": "related",
+      "description": "The triangle inequality constrains side lengths. For isosceles triangles with equal sides a and base b, the constraint reduces to b < 2a, which is equivalent to the base angles being less than pi/2."
+    },
+    {
+      "targetId": "herons-formula",
+      "relationship": "related",
+      "description": "Heron's formula simplifies for isosceles triangles: with sides a, a, b, the semi-perimeter is s = a + b/2 and the area becomes (b/4)*sqrt(4a^2 - b^2), a direct consequence of Pons Asinorum symmetry."
+    }
+  ],
+  "conclusion": {
+    "summary": "The isosceles triangle theorem (Pons Asinorum, Euclid I.5, Wiedijk #65) is fully formalized with zero sorries: the forward direction, converse with non-degeneracy condition, biconditional characterization, and a vector formulation in arbitrary inner product spaces. All proofs delegate to Mathlib's Euclidean geometry library.",
+    "implications": "The inner product space generality — working in any real inner product space, not just R^2 — is inherited from Mathlib's type-polymorphic EuclideanGeometry module, not an original design choice of this entry. The formalization serves as a clean pedagogical example of Mathlib's geometry API.",
+    "openQuestions": [
+      "Formalize Euclid's original proof (I.5) with auxiliary constructions and compare its complexity to Pappus's self-congruence argument",
+      "Prove the isosceles triangle theorem in hyperbolic and spherical geometry, where the inner product space structure is unavailable",
+      "Derive the formula for the area of an isosceles triangle A = (b/4)*sqrt(4a^2 - b^2) as a corollary of Heron's formula combined with Pons Asinorum"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Geometry.Euclidean.Triangle",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "EuclideanGeometry"
+    ],
+    "namespace": "IsoscelesTriangle",
+    "lineCount": 129,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/IsoscelesTriangle.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Euclid",
+      "title": "Elements, Book I, Proposition 5",
+      "year": "c. 300 BCE",
+      "note": "Original statement and proof of the isosceles triangle theorem using auxiliary construction"
+    },
+    {
+      "authors": "Pappus of Alexandria",
+      "title": "Synagoge (Collection), Book III",
+      "year": "c. 340 AD",
+      "note": "Simplified proof by considering the triangle congruent to itself (SAS with triangle ABC ≅ ACB)"
+    },
+    {
+      "authors": "Proclus",
+      "title": "Commentary on the First Book of Euclid's Elements",
+      "year": "c. 450 AD",
+      "note": "Historical commentary on Pons Asinorum and its pedagogical significance"
+    },
+    {
+      "authors": "D. Hilbert",
+      "title": "Grundlagen der Geometrie",
+      "year": "1899",
+      "venue": "Leipzig",
+      "note": "Axiomatic treatment of Euclidean geometry; the isosceles triangle theorem follows from SAS congruence"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "isosceles_base_angles",
+      "type": "core",
+      "description": "In an isosceles triangle, base angles are equal (pons asinorum)",
+      "leanType": "side_AB = side_AC -> angle_B = angle_C"
+    },
+    {
+      "name": "isosceles_converse",
+      "type": "key",
+      "description": "If two angles of a triangle are equal, the sides opposite them are equal",
+      "leanType": "angle_B = angle_C -> side_AB = side_AC"
+    }
+  ],
+  "sorries": 0
+}

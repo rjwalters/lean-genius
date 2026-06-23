@@ -1,0 +1,240 @@
+{
+  "id": "pell-equation",
+  "title": "Solutions to Pell's Equation",
+  "slug": "pell-equation",
+  "description": "Pell's equation x^2 - Dy^2 = 1 always has infinitely many solutions when D is not a perfect square, all generated from a unique fundamental solution.",
+  "meta": {
+    "author": "Lagrange (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Pell%27s_equation",
+    "date": "1766-1769",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "diophantine-equations",
+      "continued-fractions",
+      "intermediate",
+      "wiedijk-100"
+    ],
+    "proofRepoPath": "Proofs/PellEquation.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Pell.exists_of_not_isSquare",
+        "description": "Existence of non-trivial solutions",
+        "module": "Mathlib.NumberTheory.Pell"
+      },
+      {
+        "theorem": "Pell.IsFundamental",
+        "description": "Characterization of fundamental solution",
+        "module": "Mathlib.NumberTheory.Pell"
+      },
+      {
+        "theorem": "Pell.IsFundamental.eq_zpow_or_neg_zpow",
+        "description": "All solutions are powers of fundamental",
+        "module": "Mathlib.NumberTheory.Pell"
+      }
+    ],
+    "originalContributions": [
+      "Group structure of solutions",
+      "Explicit verification examples",
+      "Connection to algebraic number theory"
+    ],
+    "dateAdded": "2025-12-27",
+    "wiedijkNumber": 39,
+    "axiomCount": 0,
+    "lineCount": 298,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "**Pell's Equation: A 2000-Year Journey**\n\nDespite its name, John Pell (1611-1685) contributed virtually nothing to this equation. The misattribution is due to Euler, who confused Pell with Lord Brouncker.\n\n**Ancient Origins:**\n- **Brahmagupta** (598-668 CE) discovered the *samasa* (composition) law: if $(x_1,y_1)$ and $(x_2,y_2)$ solve $x^2 - Dy^2 = 1$, then so does $(x_1 x_2 + D y_1 y_2,\\, x_1 y_2 + x_2 y_1)$. This is exactly the group operation on solutions.\n- **Bhaskara II** (1114-1185) developed the *chakravala* method, an algorithm that computes fundamental solutions efficiently. He solved $x^2 - 61y^2 = 1$ finding $x = 1766319049$.\n\n**European Revival:**\n- **Fermat** (1657) challenged English mathematicians to solve $x^2 - 61y^2 = 1$, knowing the solution was enormous. Brouncker and Wallis found it independently.\n- **Euler** (1732-1770s) studied the equation extensively and connected it to continued fractions.\n- **Lagrange** (1766-1769) gave the first rigorous existence proof using continued fraction expansions of $\\sqrt{D}$, showing the periodic structure guarantees a solution.\n\n**Modern Significance:**\nPell's equation is central to algebraic number theory: solutions correspond to units in the ring $\\mathbb{Z}[\\sqrt{D}]$, and the fundamental solution corresponds to the fundamental unit. Dirichlet's unit theorem generalizes this to all number fields. The equation also appears in lattice-based cryptography (NTRU) and Diophantine approximation.\n\n**Wiedijk's 100 Theorems:** This is entry #39 in Freek Wiedijk's list of 100 greatest theorems formalized in proof assistants.",
+    "problemStatement": "**Pell's Equation**:\n\nFor any positive integer $D$ that is not a perfect square, the equation\n$$x^2 - Dy^2 = 1$$\nhas infinitely many integer solutions, all generated from a unique fundamental solution $(x_1, y_1)$ by the recurrence $x_n + y_n\\sqrt{D} = (x_1 + y_1\\sqrt{D})^n$.",
+    "text": "Pell's equation x^2 - Dy^2 = 1 always has infinitely many solutions when D is not a perfect square, all generated from a unique fundamental solution.",
+    "proofStrategy": "**Formalization Strategy**\n\nThe proof builds on Mathlib's `Mathlib.NumberTheory.Pell` library:\n\n1. **Existence** (lines 86-105): `Pell.exists_of_not_isSquare` and `Solution₁.exists_pos_of_not_isSquare` establish that non-trivial solutions exist when $D$ is not a perfect square. The underlying proof uses Dirichlet's approximation theorem and the pigeonhole principle.\n\n2. **Infinitely Many** (lines 107-124): Given a fundamental solution $a$, the powers $a^n$ for distinct $n \\in \\mathbb{Z}$ are all distinct, proved via strict monotonicity of the $y$-coordinate (`y_strictMono`).\n\n3. **Fundamental Solution** (lines 128-153): `Pell.IsFundamental` characterizes the unique minimal positive solution. Existence follows from well-ordering; uniqueness from minimality.\n\n4. **Generation** (lines 157-166): `IsFundamental.eq_zpow_or_neg_zpow` shows every solution is $\\pm a_1^n$, establishing the group structure.\n\n5. **Group Operations** (lines 170-196): Explicit verification that solution multiplication corresponds to multiplication in $\\mathbb{Z}[\\sqrt{D}]$, with identity $(1,0)$ and inverse $(x,-y)$.\n\n6. **Non-Square Necessity** (lines 247-270): Original proof that $D = k^2$ forces $y = 0$, via integer factorization of $(x-ky)(x+ky) = 1$.\n\n7. **Examples** (lines 200-243): Computational verification for $D = 2, 3, 5, 7, 61$.",
+    "keyInsights": [
+      "**Multiplicative Structure:** Solutions form a group under $(x_1,y_1) \\cdot (x_2,y_2) = (x_1 x_2 + D y_1 y_2,\\, x_1 y_2 + x_2 y_1)$, corresponding to multiplication in $\\mathbb{Z}[\\sqrt{D}]$",
+      "**Fundamental Unit:** The fundamental solution generates all others as integer powers, mirroring the fundamental unit in algebraic number theory (Dirichlet's unit theorem)",
+      "**Continued Fractions:** The fundamental solution arises from the periodic continued fraction expansion of $\\sqrt{D}$; the period length determines which convergent gives the first solution",
+      "**Quantifier Inversion:** Proving 'infinitely many' requires showing distinct powers give distinct solutions, which follows from strict monotonicity of the $y$-coordinate under powering",
+      "**Non-Square Necessity:** When $D = k^2$, the equation factors as $(x-ky)(x+ky) = 1$, forcing $y = 0$ by unique factorization in $\\mathbb{Z}$",
+      "**Computational Complexity:** The fundamental solution can be exponentially large in $D$: for $D = 61$, the solution has 10 digits, discovered by Bhaskara II in the 12th century"
+    ],
+    "prerequisites": [
+      "Number theory (continued fractions, quadratic irrationals)",
+      "Algebraic number theory (units in quadratic rings)",
+      "Group theory (structure of unit groups, infinite cyclic groups)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 67,
+      "summary": "Imports `Mathlib.NumberTheory.Pell` and provides extensive documentation: historical context (Brahmagupta, Bhaskara II, Fermat, Lagrange), the equation $x^2 - Dy^2 = 1$, key Mathlib API (`Solution₁`, `IsFundamental`), and the multiplicative structure in $\\mathbb{Z}[\\sqrt{D}]$",
+      "mathContext": "Imports `Mathlib.NumberTheory.Pell` and provides extensive documentation: historical context (Brahmagupta, Bhaskara II, Fermat, Lagrange), the equation $x^2 - Dy^2 = 1$, key Mathlib API (`Solution₁`, `IsFundamental`), and the multiplicative structure in $\\mathbb{Z}[\\sqrt{D}]$"
+    },
+    {
+      "id": "existence",
+      "title": "Existence of Solutions",
+      "startLine": 68,
+      "endLine": 106,
+      "summary": "Two existence theorems: `pell_has_nontrivial_solution_int` gives $(x,y)$ with $x^2 - Dy^2 = 1$ and $y \\neq 0$ (wrapping `Pell.exists_of_not_isSquare`); `pell_has_pos_solution` gives a `Solution₁` with $x > 1$ and $y > 0$",
+      "mathContext": "Two existence theorems: `pell_has_nontrivial_solution_int` gives $(x,y)$ with $x^2 - Dy^2 = 1$ and $y \\neq 0$ (wrapping `Pell.exists_of_not_isSquare`); `pell_has_pos_solution` gives a `Solution₁` with $x > 1$ and $y > 0$"
+    },
+    {
+      "id": "infinitely-many",
+      "title": "Infinitely Many Solutions",
+      "startLine": 107,
+      "endLine": 125,
+      "summary": "Proves infinitely many distinct solutions exist by showing distinct integer powers of the fundamental solution have distinct $y$-coordinates, using `y_strictMono.injective`",
+      "mathContext": "Verified: Proves infinitely many distinct solutions exist by showing distinct integer powers of the fundamental solution have distinct $y$-coordinates, using `y_strictMono.injective`"
+    },
+    {
+      "id": "fundamental",
+      "title": "The Fundamental Solution",
+      "startLine": 126,
+      "endLine": 154,
+      "summary": "Defines `IsFundamentalSolution` wrapping `Pell.IsFundamental`, proves existence via `IsFundamental.exists_of_not_isSquare`, and uniqueness via the `subsingleton` property of minimal elements",
+      "mathContext": "Formal definition: Defines `IsFundamentalSolution` wrapping `Pell.IsFundamental`, proves existence via `IsFundamental.exists_of_not_isSquare`, and uniqueness via the `subsingleton` property of minimal elements"
+    },
+    {
+      "id": "generation",
+      "title": "Generating All Solutions",
+      "startLine": 155,
+      "endLine": 167,
+      "summary": "The key structural theorem: every solution $a$ satisfies $a = a_1^n$ or $a = -a_1^n$ for some $n \\in \\mathbb{Z}$, via `IsFundamental.eq_zpow_or_neg_zpow`. The solution group is $\\mathbb{Z} \\times \\mathbb{Z}/2\\mathbb{Z}$",
+      "mathContext": "The key structural theorem: every solution $a$ satisfies $a = a_1^n$ or $a = -a_1^n$ for some $n \\in \\mathbb{Z}$, via `IsFundamental.eq_zpow_or_neg_zpow`. The solution group is $\\mathbb{Z} \\times \\mathbb{Z}/2\\mathbb{Z}$"
+    },
+    {
+      "id": "group-structure",
+      "title": "Group Structure of Solutions",
+      "startLine": 168,
+      "endLine": 197,
+      "summary": "Verifies the group operations explicitly: multiplication formula $(x_1 x_2 + Dy_1 y_2,\\, x_1 y_2 + x_2 y_1)$ matching $\\mathbb{Z}[\\sqrt{D}]$ multiplication, identity $(1,0)$, and inverse $(x,-y)$ (conjugation)",
+      "mathContext": "Verifies the group operations explicitly: multiplication formula $(x_1 x_2 + Dy_1 y_2,\\, x_1 y_2 + x_2 y_1)$ matching $\\mathbb{Z}[\\sqrt{D}]$ multiplication, identity $(1,0)$, and inverse $(x,-y)$ (conjugation)"
+    },
+    {
+      "id": "examples",
+      "title": "Explicit Verification Examples",
+      "startLine": 198,
+      "endLine": 244,
+      "summary": "Computational verification via `norm_num` for $D = 2$ (fundamental $(3,2)$, powers $(17,12)$, $(99,70)$), $D = 3$ ($(2,1)$, $(7,4)$), $D = 5$ ($(9,4)$), $D = 7$ ($(8,3)$), and Fermat's challenge $D = 61$ ($(1766319049, 226153980)$)",
+      "mathContext": "Computational verification via `norm_num` for $D = 2$ (fundamental $(3,2)$, powers $(17,12)$, $(99,70)$), $D = 3$ ($(2,1)$, $(7,4)$), $D = 5$ ($(9,4)$), $D = 7$ ($(8,3)$), and Fermat's challenge $D = 61$ ($(1766319049, 226153980)$)"
+    },
+    {
+      "id": "non-square",
+      "title": "Non-Square Requirement",
+      "startLine": 245,
+      "endLine": 271,
+      "summary": "Original proof that $D = k^2$ forces only trivial solutions: factors $x^2 - k^2 y^2 = (x-ky)(x+ky) = 1$, then uses $a \\mid 1 \\Rightarrow a = \\pm 1$ in $\\mathbb{Z}$ to conclude $ky = 0$",
+      "mathContext": "Original proof that $D = $k^{2}$$ forces only trivial solutions: factors $x^2 - $k^{2}$ y^2 = (x-ky)(x+ky) = 1$, then uses $a \\mid 1 \\Rightarrow a = \\pm 1$ in $\\mathbb{Z}$ to conclude $ky = 0$"
+    },
+    {
+      "id": "connections",
+      "title": "Connections to Other Areas",
+      "startLine": 272,
+      "endLine": 298,
+      "summary": "Outlines connections to algebraic number theory (units in $\\mathbb{Z}[\\sqrt{D}]$, fundamental unit), continued fractions (convergents give solutions), Diophantine approximation ($|\\sqrt{D} - x/y| < 1/(2y^2)$), and cryptography (NTRU)",
+      "mathContext": "Outlines connections to algebraic number theory (units in $\\mathbb{Z}[\\sqrt{D}]$, fundamental unit), continued fractions (convergents give solutions), Diophantine approximation ($|\\sqrt{D} - x/y| < 1/(2y^2)$), and cryptography (NTRU)"
+    }
+  ],
+  "conclusion": {
+    "summary": "Pell's equation $x^2 - Dy^2 = 1$ is fully characterized: for non-square $D$, infinitely many solutions exist, all generated from a unique fundamental solution via the multiplicative structure of $\\mathbb{Z}[\\sqrt{D}]$. The formalization leverages Mathlib's `Pell` library for the deep existence and structure theorems, while providing original proofs (non-square necessity, group operations) and computational verifications.",
+    "implications": "**Theoretical Significance**: **Connections and Implications**\n\n1. **Dirichlet's Unit Theorem:** The solution group of Pell's equation is a special case: the unit group of $\\mathbb{Z}[\\sqrt{D}]$ is $\\{\\pm 1\\} \\times \\mathbb{Z}$, generated by the fundamental solution\n\n2. **Class Field Theory:** The solvability of generalized Pell equations $x^2 - Dy^2 = N$ connects to the class number of $\\mathbb{Q}(\\sqrt{D})$\n\n**3. Computational Number Theory:** Computing fundamental solutions is equivalent to computing continued fraction expansions; the LLL algorithm provides modern alternatives\n\n4. **Cryptographic Applications:** Pell equations appear in lattice-based cryptography, particularly in the NTRU cryptosystem and related schemes\n\n5. **Diophantine Approximation:** Pell solutions give the best rational approximations to $\\sqrt{D}$, with error bounded by $1/(2y^2)$.",
+    "openQuestions": [
+      "What is the expected size of the fundamental solution as a function of D? Heuristically $\\log(x_1 + y_1\\sqrt{D}) \\approx \\sqrt{D}$, but the distribution is poorly understood",
+      "How does the period length of the continued fraction of $\\sqrt{D}$ relate to the size of the fundamental solution?",
+      "Can Pell equations be solved in polynomial time? The best known algorithms are subexponential",
+      "What are the implications of generalizing to Pell-like equations $x^2 - Dy^2 = N$ for arbitrary $N$?",
+      "How do higher-dimensional analogues (norm equations in number fields of degree > 2) behave?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Pell",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Pell"
+    ],
+    "namespace": "PellEquation",
+    "lineCount": 298,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 2,
+    "path": "Proofs/PellEquation.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Quadratic reciprocity determines when $D$ is a quadratic residue mod $p$, which governs the factoring of primes in $\\mathbb{Z}[\\sqrt{D}]$ — the number ring whose unit group encodes Pell equation solutions. The Legendre symbol $(D/p)$ predicts whether $x^2 \\equiv D \\pmod{p}$ has solutions, a local condition for Pell solvability"
+    },
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "related",
+      "description": "Fermat's two-squares theorem ($p = x^2 + y^2 \\iff p \\equiv 1 \\pmod{4}$) is the $D = -1$ analogue of Pell's equation in the Gaussian integers $\\mathbb{Z}[i]$. Both reduce to questions about units and norms in quadratic rings: Pell solutions are units of $\\mathbb{Z}[\\sqrt{D}]$, while two-squares representations correspond to norms from $\\mathbb{Z}[i]$"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "foundational",
+      "description": "The irrationality of $\\sqrt{2}$ ($\\sqrt{2} \\notin \\mathbb{Q}$) ensures that the Pell equation $x^2 - 2y^2 = 1$ has infinitely many solutions — if $\\sqrt{2}$ were rational, the fundamental solution would produce only finitely many. The convergents of the continued fraction $\\sqrt{2} = [1; \\overline{2}]$ give the solutions: $(x,y) = (1,0), (3,2), (17,12), (577,408), \\ldots$"
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Dirichlet's theorem on primes in arithmetic progressions and Pell's equation are both cornerstones of algebraic number theory. Dirichlet's unit theorem generalizes the Pell equation structure: the unit group of the ring of integers of a number field has rank r_1 + r_2 - 1, and for real quadratic fields Q(sqrt(D)) this gives rank 1 — exactly the infinite cyclic group of Pell solutions."
+    },
+    {
+      "targetId": "pythagorean-triples",
+      "relationship": "related",
+      "description": "Both are classical Diophantine equations with complete parametric solutions. Pythagorean triples x^2 + y^2 = z^2 are parametrized by (m^2-n^2, 2mn, m^2+n^2), while Pell solutions x^2 - Dy^2 = 1 are generated by powers of the fundamental solution. Both reduce to norm equations in quadratic rings: Z[i] for Pythagorean triples, Z[sqrt(D)] for Pell."
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization in Z is the foundation for Pell equation theory. The non-square requirement on D uses unique factorization, and the structure of Z[sqrt(D)] as a Dedekind domain (where unique factorization of ideals replaces unique factorization of elements) governs the deeper theory of generalized Pell equations x^2 - Dy^2 = N."
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "complementary",
+      "description": "The recurrence x_n + y_n*sqrt(D) = (x_1 + y_1*sqrt(D))^n generates Pell solutions as a geometric progression in the ring Z[sqrt(D)]. The growth rate of solutions is governed by the fundamental unit, and generating functions built from geometric series can encode the sequence of Pell solutions."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Lagrange, Joseph-Louis",
+      "title": "Additions to Euler's Elements of Algebra",
+      "year": "1770",
+      "venue": "Lyon",
+      "note": "First complete proof that Pell's equation x² - Dy² = 1 always has nontrivial solutions for non-square D, using continued fractions"
+    },
+    {
+      "authors": "Lenstra, Hendrik W.",
+      "title": "Solving the Pell Equation",
+      "year": "2002",
+      "venue": "Notices of the AMS 49(2), 182–192",
+      "note": "Modern survey of algorithms for solving Pell's equation including connections to class field theory"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "pell_fundamental_solution",
+      "type": "core",
+      "description": "Pell's equation x^2 - Dy^2 = 1 has a fundamental solution for non-square D",
+      "leanType": "(D : Nat) -> not (IsSquare D) -> exists x y : Int, x^2 - D * y^2 = 1 and x > 0 and y > 0"
+    },
+    {
+      "name": "pell_all_solutions",
+      "type": "key",
+      "description": "All solutions are powers of the fundamental solution",
+      "leanType": "PellSolution D -> exists n : Int, sol = fundamental_sol D ^ n"
+    }
+  ],
+  "sorries": 0
+}

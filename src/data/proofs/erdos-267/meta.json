@@ -1,0 +1,236 @@
+{
+  "id": "erdos-267",
+  "title": "Erdős Problem #267: Irrationality of Fibonacci Reciprocal Sums",
+  "slug": "erdos-267",
+  "description": "If n₁ < n₂ < ... is a sequence with n_{k+1}/n_k ≥ c > 1, must Σ 1/F_{n_k} be irrational? PARTIALLY SOLVED: Special cases proved, general conjecture OPEN.",
+  "meta": {
+    "author": "Good (1974), Bicknell-Hoggatt (1976), André-Jeannin (1989)",
+    "sourceUrl": "https://erdosproblems.com/267",
+    "date": "1989",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos267Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "fibonacci",
+      "irrationality",
+      "reciprocal-sums"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 267,
+    "erdosUrl": "https://erdosproblems.com/267",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-02-06",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.fib",
+        "description": "Fibonacci sequence definition and recurrence",
+        "module": "Mathlib.Data.Nat.Fib.Basic"
+      },
+      {
+        "theorem": "Irrational",
+        "description": "Irrationality predicate",
+        "module": "Mathlib.NumberTheory.Real.Irrational"
+      },
+      {
+        "theorem": "Nat.fib_pos",
+        "description": "Fibonacci numbers are positive for n ≥ 1",
+        "module": "Mathlib.Data.Nat.Fib.Basic"
+      }
+    ],
+    "originalContributions": [
+      "goldenRatio definition and goldenRatio_gt_one proof (φ > 1)",
+      "Fibonacci values fib_one through fib_twelve verified by rfl",
+      "fib_pos from Nat.fib_pos (Fibonacci positivity)",
+      "HasRatioBoundedBelow and HasSuperlinearGrowth predicate definitions",
+      "Erdos267Conjecture and Erdos267WeakerVariant formal statements",
+      "erdos_267_open by classical EM (decidability of open conjecture)",
+      "pow_two_series_first_terms computation via native_decide"
+    ],
+    "axiomCount": 0,
+    "prerequisites": [
+      "Fibonacci sequence and recurrence relations",
+      "Golden ratio and Binet's formula",
+      "Convergence of infinite series",
+      "Irrationality proofs and transcendence theory",
+      "Geometric series comparison test"
+    ],
+    "lineCount": 224,
+    "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 12,
+    "definitionCount": 5
+  },
+  "overview": {
+    "historicalContext": "This problem connects to a long tradition of irrationality questions in number theory going back to Euler's work on $e$ and Lambert's proof that $\\pi$ is irrational (1761). Erdős posed it as part of his broader program asking when 'natural' arithmetic series sum to irrational numbers.\n\nGood (1974) proved the first special case: $\\sum 1/F_{2^n}$ is irrational, using the rapid growth of $F_{2^n}$ and a clever continued fraction argument. Bicknell and Hoggatt (1976) extended this to related subsequences with indices $2^n k$.\n\nThe breakthrough came when André-Jeannin (1989) proved the full sum $\\sum 1/F_n$ is irrational using techniques from transcendence theory, specifically Padé approximation and the connection between Fibonacci numbers and the theory of $q$-series. Paradoxically, this proves the $c = 1$ case (all indices, weakest sparsity condition) while the general $c > 1$ case remains open — a situation where the strongest-looking result is proved but weaker-looking intermediate cases resist proof.\n\nThe problem is part of a cluster of Erdős irrationality conjectures including #250 ($\\sum \\sigma(n)/2^n$, solved by Nesterenko 1996) and #259 ($\\sum \\mu(n)^2 n / 2^n$, solved by Chen-Ruzsa).",
+    "problemStatement": "Let F_n be the Fibonacci sequence (F₁ = F₂ = 1, F_{n+1} = F_n + F_{n-1}). If n₁ < n₂ < ... is an infinite sequence with n_{k+1}/n_k ≥ c > 1, must Σ 1/F_{n_k} be irrational? Erdős also asked if n_k/k → ∞ might suffice.",
+    "text": "If n₁ < n₂ < ... is a sequence with n_{k+1}/n_k ≥ c > 1, must Σ 1/F_{n_k} be irrational? PARTIALLY SOLVED: Special cases proved, general conjecture OPEN.",
+    "proofStrategy": "The formalization defines Fibonacci growth, the golden ratio, and series convergence. Verified theorems include Fibonacci values and the golden ratio bound. The solved cases (2^n indices and full sum) are recorded as axioms. The main conjecture and weaker variant are formalized as open problems.",
+    "keyInsights": [
+      "Fibonacci values F₁ through F₁₂ verified by rfl",
+      "goldenRatio_gt_one verified: φ = (1+√5)/2 > 1",
+      "Σ 1/F_{2^n} irrational (Good, Bicknell-Hoggatt) - first special case",
+      "Σ 1/F_n irrational (André-Jeannin 1989) - full sum!",
+      "General c > 1 case remains OPEN",
+      "Weaker variant (n_k/k → ∞) also OPEN"
+    ],
+    "prerequisites": [
+      "Fibonacci sequence and recurrence relations",
+      "Golden ratio and Binet's formula",
+      "Convergence of infinite series",
+      "Irrationality proofs and transcendence theory",
+      "Geometric series comparison test"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement",
+      "summary": "Fibonacci reciprocal sum irrationality conjecture, partially solved cases",
+      "startLine": 1,
+      "endLine": 19,
+      "mathContext": "Mathematical content: Fibonacci reciprocal sum irrationality conjecture, partially solved cases"
+    },
+    {
+      "id": "fibonacci-background",
+      "title": "Fibonacci Background",
+      "summary": "Fibonacci sequence definition, golden ratio, exponential growth",
+      "startLine": 27,
+      "endLine": 48,
+      "mathContext": "Formal definition: Fibonacci sequence definition, golden ratio, exponential growth"
+    },
+    {
+      "id": "verified-values",
+      "title": "Verified Fibonacci Values",
+      "summary": "fib_one through fib_twelve verified by rfl — direct computation in Lean 4 confirming F₁=1, F₂=1, ..., F₁₂=144.",
+      "startLine": 49,
+      "endLine": 72,
+      "mathContext": "Mathematical content: fib_one through fib_twelve verified by rfl — direct computation in Lean 4 confirming F₁=1, F₂=1, ..., F₁₂=144."
+    },
+    {
+      "id": "golden-ratio",
+      "title": "Golden Ratio and Fibonacci Growth",
+      "summary": "Defines goldenRatio = (1+√5)/2, proves goldenRatio_gt_one (needed for convergence), and fib_pos from Mathlib's Nat.fib_pos.",
+      "startLine": 73,
+      "endLine": 95,
+      "mathContext": "Formal definition: Defines goldenRatio = (1+√5)/2, proves goldenRatio_gt_one (needed for convergence), and fib_pos from Mathlib's Nat.fib_pos."
+    },
+    {
+      "id": "convergence",
+      "title": "Series Convergence",
+      "summary": "fibonacci_reciprocal_summable axiom, comparison with geometric series",
+      "startLine": 96,
+      "endLine": 107,
+      "mathContext": "Axiomatized: fibonacci_reciprocal_summable axiom, comparison with geometric series"
+    },
+    {
+      "id": "solved-cases",
+      "title": "Solved Cases",
+      "summary": "good_bicknell_hoggatt (2^n indices), andre_jeannin (full sum) axioms",
+      "startLine": 108,
+      "endLine": 129,
+      "mathContext": "good_bicknell_hoggatt ($2^{n}$ indices), andre_jeannin (full sum) axioms"
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture (OPEN)",
+      "summary": "HasRatioBoundedBelow, Erdos267Conjecture, erdos_267_open by classical EM",
+      "startLine": 130,
+      "endLine": 169,
+      "mathContext": "Bound: HasRatioBoundedBelow, Erdos267Conjecture, erdos_267_open by classical EM"
+    },
+    {
+      "id": "weaker-variant",
+      "title": "Weaker Variant (OPEN)",
+      "summary": "HasSuperlinearGrowth, Erdos267WeakerVariant — n_k/k → ∞ might suffice",
+      "startLine": 170,
+      "endLine": 190,
+      "mathContext": "HasSuperlinearGrowth, Erdos267WeakerVariant — n_k/k $\\to$ ∞ might suffice"
+    },
+    {
+      "id": "numerical",
+      "title": "Numerical Observations",
+      "summary": "pow_two_series_first_terms (verified by native_decide), sum ≈ 3.3598",
+      "startLine": 191,
+      "endLine": 217,
+      "mathContext": "Mathematical content: pow_two_series_first_terms (verified by native_decide), sum ≈ 3.3598"
+    },
+    {
+      "id": "related-problems",
+      "title": "Related Problems",
+      "summary": "Problems #250 and #259, connections to continued fractions and transcendence",
+      "startLine": 218,
+      "endLine": 224,
+      "mathContext": "Mathematical content: Problems #250 and #259, connections to continued fractions and transcendence"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #267 is PARTIALLY SOLVED. The specific cases Σ 1/F_{2^n} and Σ 1/F_n are proved irrational, but the general conjecture for arbitrary ratio bound c > 1 remains open. Paradoxically, the strongest result (c=1, all terms) is proved while intermediate cases are open.",
+    "implications": "The results connect Fibonacci numbers to transcendence theory and continued fractions. Understanding which subsequences give irrational sums reveals deep structure in the Fibonacci sequence.",
+    "openQuestions": [
+      "Is Σ 1/F_{n_k} irrational for all sequences with n_{k+1}/n_k ≥ c > 1?",
+      "Is superlinear growth (n_k/k → ∞) sufficient for irrationality?",
+      "What is the exact value of Σ 1/F_n (continued fraction form)?",
+      "Can transcendence methods prove the general conjecture?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-249",
+      "relationship": "related",
+      "description": "Both are Erdős irrationality problems about sums involving arithmetic functions (Σ φ(n)/2^n vs Σ 1/F_{n_k})"
+    },
+    {
+      "targetId": "erdos-250",
+      "relationship": "related",
+      "description": "Part of Erdős's irrationality cluster: #250 asks about Σ σ(n)/2^n (solved by Nesterenko 1996), while #267 asks about Σ 1/F_{n_k}"
+    },
+    {
+      "targetId": "erdos-259",
+      "relationship": "related",
+      "description": "Another Erdős irrationality problem: #259 concerns Σ μ(n)²n/2^n. Both probe when 'natural' arithmetic series produce irrational sums"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "BigOperators",
+      "Nat",
+      "Real"
+    ],
+    "namespace": "Erdos267",
+    "lineCount": 224,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 5,
+    "path": "Proofs/Erdos267Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Good, I. J.",
+      "title": "A reciprocal series of Fibonacci numbers",
+      "year": "1974",
+      "venue": "Fibonacci Quarterly 12(4), p. 346",
+      "note": "Proved Σ 1/F_{2^n} is irrational"
+    },
+    {
+      "authors": "Bicknell, Marjorie; Hoggatt, Verner E.",
+      "title": "A reciprocal series of Fibonacci numbers with subscripts 2^n k",
+      "year": "1976",
+      "venue": "Fibonacci Quarterly 14(5), pp. 408-410",
+      "note": "Extended Good's result to related subsequences"
+    },
+    {
+      "authors": "André-Jeannin, Richard",
+      "title": "Irrationalité de la somme des inverses de certaines suites récurrentes",
+      "year": "1989",
+      "venue": "Comptes Rendus de l'Académie des Sciences, Série I 308(17), pp. 539-541",
+      "note": "Proved Σ 1/F_n is irrational using transcendence methods"
+    }
+  ],
+  "sorries": 0
+}

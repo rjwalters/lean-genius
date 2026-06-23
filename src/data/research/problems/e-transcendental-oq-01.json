@@ -1,0 +1,114 @@
+{
+  "slug": "e-transcendental-oq-01",
+  "title": "Is e + pi Transcendental?",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\operatorname{Transcendental}_{\\mathbb{Q}}(e+\\pi)\\ ?",
+    "plain": "Ask whether e + pi is transcendental. The file proves the unconditional symmetric-polynomial consequence that at least one of e + pi or e*pi is transcendental, then records stronger conclusions that follow from algebraic-independence assumptions.",
+    "whyMatters": [
+      "The problem is a classic reminder that individual transcendence of two constants does not settle the transcendence of their sum.",
+      "The formal proof cleanly isolates what follows from Vieta-style algebra from what still depends on deep open conjectures."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`e_transcendental_q` and `pi_transcendental_q` make the imported transcendence facts for e and pi available over Q.",
+      "`e_root_of_vieta_quadratic` and `pi_root_of_vieta_quadratic` verify the quadratic identities with coefficients e+pi and e*pi.",
+      "`algebraic_root_of_algebraic_quadratic` proves that a root of a monic quadratic with algebraic coefficients is algebraic over Q.",
+      "`e_plus_pi_or_e_times_pi_transcendental` proves that e+pi and e*pi cannot both be algebraic.",
+      "`sum_transcendental_if_prod_algebraic` and `prod_transcendental_if_sum_algebraic` record the two conditional alternatives.",
+      "`pi_irrational_from_mathlib` imports Mathlib's direct irrationality theorem for pi.",
+      "`e_plus_pi_transcendental_from_independence`, `e_times_pi_transcendental_from_independence`, and `summary_independence_implies` prove the consequences of algebraic independence of e and pi."
+    ],
+    "open": [
+      "The transcendence and even irrationality of e+pi remain open unconditionally.",
+      "`nesterenko_algebraic_independence` and algebraic independence of e and pi are used as axiom/conjecture inputs for stronger results."
+    ],
+    "goal": "Document the unconditional disjunction while keeping conjectural algebraic-independence consequences clearly marked."
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-02-21T19:21:07.134Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "extension",
+    "challenging",
+    "number-theory",
+    "transcendental",
+    "e",
+    "analysis",
+    "wiedijk-100",
+    "classic"
+  ],
+  "relatedProofs": [
+    "e-transcendental",
+    "e-transcendental-oq-01",
+    "e-transcendental-oq-01-oq-01",
+    "e-transcendental-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-21T19:21:07.134Z",
+  "lastUpdate": "2026-03-06T06:42:42.096Z",
+  "completed": "2026-03-06T06:42:42.096Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/ETranscendentalOQ01.lean",
+      "filename": "ETranscendentalOQ01.lean",
+      "lineCount": 539,
+      "theoremCount": 15,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ETranscendentalOQ01.lean"
+    },
+    {
+      "path": "Proofs/ETranscendentalOQ01OQ01.lean",
+      "filename": "ETranscendentalOQ01OQ01.lean",
+      "lineCount": 342,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ETranscendentalOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/ETranscendentalOQ03.lean",
+      "filename": "ETranscendentalOQ03.lean",
+      "lineCount": 220,
+      "theoremCount": 4,
+      "axiomCount": 2,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ETranscendentalOQ03.lean"
+    }
+  ]
+}

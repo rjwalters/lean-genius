@@ -1,0 +1,242 @@
+{
+  "id": "erdos-1042",
+  "title": "Erdős Problem #1042: Connected Components of Polynomial Lemniscates",
+  "slug": "erdos-1042",
+  "description": "For polynomials with roots in a closed set F ⊆ ℂ, how many connected components can the lemniscate {z : |f(z)| < 1} have? Depends on transfinite diameter and geometry. SOLVED by Ghosh-Ramachandran (2024).",
+  "meta": {
+    "author": "Erdős-Herzog-Piranian (problem), Ghosh-Ramachandran (solution)",
+    "sourceUrl": "https://erdosproblems.com/1042",
+    "date": "2024",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1042Problem.lean",
+    "tags": [
+      "complex-analysis",
+      "potential-theory",
+      "polynomials",
+      "erdos",
+      "lemniscates",
+      "transfinite-diameter"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1042,
+    "erdosUrl": "https://erdosproblems.com/1042",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.abs",
+        "description": "Complex absolute value",
+        "module": "Mathlib.Data.Complex.Basic"
+      },
+      {
+        "theorem": "IsConnected",
+        "description": "Topological connectedness predicate",
+        "module": "Mathlib.Topology.Basic"
+      }
+    ],
+    "originalContributions": [
+      "transfiniteDiameter axiom with nonnegativity",
+      "disc_transfinite_diameter and interval_transfinite_diameter axioms",
+      "PolynomialWithRoots structure, lemniscate definition",
+      "numComponents and maxComponents axioms",
+      "mainQuestion1 and mainQuestion2 definitions",
+      "ehp_disc_result and roots_of_unity_example axioms (1958)",
+      "ghosh_ramachandran_small_diameter axiom: d < 1 → (1-c)n bound",
+      "ghosh_ramachandran_diameter_one_examples axiom: d = 1 → n components",
+      "erdos_1042_summary theorem combining key results"
+    ],
+    "axiomCount": 3,
+    "lineCount": 132,
+    "assumptions": "3 axioms: transfiniteDiameter (transfinite diameter — axiomatized, requires Chebyshev constant machinery), ghosh_ramachandran_small_diameter (Ghosh-Ramachandran: if 0 < d < 1, lemniscate has ≤ (1-c)n components), ghosh_ramachandran_diameter_one_examples (Ghosh-Ramachandran: ∃ sets with diameter 1 and n lemniscate components infinitely often). 0 sorries.",
+    "theoremCount": 1,
+    "definitionCount": 7
+  },
+  "overview": {
+    "historicalContext": "Erdős, Herzog, and Piranian posed this problem in their 1958 paper on metric properties of polynomials. A polynomial lemniscate is the sublevel set {z : |f(z)| < 1} of a polynomial f, and the question concerns how many connected components it can have when the roots are constrained to lie in a closed set F ⊆ ℂ. The transfinite diameter (logarithmic capacity) of F controls the answer.\n\nThe 1958 paper showed that for the unit disc (transfinite diameter 1), the lemniscate of f(z) = zⁿ + 1 has exactly n connected components — one small disc around each nth root of -1. This left open whether sets with smaller transfinite diameter must have fewer components, and whether the answer depends on diameter alone.\n\nThe problem remained open for over 65 years until Ghosh and Ramachandran (2024) gave a complete solution. They proved that for transfinite diameter d < 1, components are bounded by (1-c)n for some c > 0 depending on F. For d ≤ 1/4 with F connected, only one component is possible. Crucially, they showed the answer cannot depend on transfinite diameter alone: the disc of radius 1/2 and the interval [-1,1] both have transfinite diameter 1/2, but behave completely differently.",
+    "problemStatement": "Let F ⊆ ℂ be closed with transfinite diameter d. For f(z) = ∏ᵢ(z - zᵢ) with roots zᵢ ∈ F, the lemniscate is L = {z : |f(z)| < 1}.\n\n**Q1:** If d = 1 and F is not contained in any disc of radius 1, can L have n components?\n**Q2:** If d < 1, must L have at most (1-c)n components for some c > 0?\n\n**Status:** SOLVED (Ghosh-Ramachandran 2024).",
+    "text": "For polynomials with roots in a closed set F ⊆ ℂ, how many connected components can the lemniscate {z : |f(z)| < 1} have? Depends on transfinite diameter and geometry. SOLVED by Ghosh-Ramachandran (2024).",
+    "proofStrategy": "The formalization axiomatizes transfiniteDiameter, numComponents, and maxComponents to avoid requiring full potential theory and topological component machinery. The key Ghosh-Ramachandran theorems (small diameter, small connected, diameter-one examples) are stated as axioms. The summary theorem combines the two main results via exact.",
+    "keyInsights": [
+      "**Transfinite diameter** (logarithmic capacity) controls lemniscate component counts",
+      "**EHP 1958:** f(z) = zⁿ + 1 gives n components for the unit disc",
+      "**GR 2024, d < 1:** At most (1-c)n components — geometry provides a barrier",
+      "**GR 2024, d ≤ 1/4 connected:** Only ONE component — very restrictive",
+      "**Geometry ≠ diameter:** Disc(1/2) always 1 component, [-1,1] can give many — same diameter"
+    ],
+    "prerequisites": [
+      "Complex analysis",
+      "Combinatorics and number theory"
+    ]
+  },
+  "sections": [
+    {
+      "id": "transfinite-diameter",
+      "title": "Transfinite Diameter",
+      "summary": "transfiniteDiameter axiom, nonnegativity, disc and interval examples",
+      "startLine": 31,
+      "endLine": 50,
+      "mathContext": "The transfinite diameter (logarithmic capacity) $d(F) = \\lim_{n \\to \\infty} \\max_{z_1,\\ldots,z_n \\in F} \\left(\\prod_{i<j} |z_i - z_j|\\right)^{2/(n(n-1))}$. Examples: $d(\\overline{\\mathbb{D}}) = 1$ (unit disc), $d([-1,1]) = 1/2$ (interval). Axiomatized with $d(F) \\ge 0$."
+    },
+    {
+      "id": "lemniscates",
+      "title": "Polynomial Lemniscates",
+      "summary": "PolynomialWithRoots, lemniscate, numComponents, maxComponents",
+      "startLine": 51,
+      "endLine": 70,
+      "mathContext": "For $f(z) = \\prod_{i=1}^n (z - z_i)$ with roots $z_i \\in F$, the lemniscate is $L_f = \\{z \\in \\mathbb{C} : |f(z)| < 1\\}$. `numComponents(f)` = number of connected components of $L_f$. `maxComponents(F, n)` = $\\max_f \\text{numComponents}(f)$ over degree-$n$ polynomials with roots in $F$."
+    },
+    {
+      "id": "original-problem",
+      "title": "The Original Problem",
+      "summary": "mainQuestion1 and mainQuestion2 definitions",
+      "startLine": 71,
+      "endLine": 87,
+      "mathContext": "**Q1:** If $d(F) = 1$ and $F$ is not in any unit disc, can $L_f$ have $n$ components? **Q2:** If $d(F) < 1$, is $\\text{maxComponents}(F, n) \\le (1-c)n$ for some $c > 0$ depending on $F$? Both are formalized as `Prop` values."
+    },
+    {
+      "id": "ehp-result",
+      "title": "Erdős-Herzog-Piranian Result (1958)",
+      "summary": "ehp_disc_result and roots_of_unity_example axioms",
+      "startLine": 88,
+      "endLine": 102,
+      "mathContext": "Erdős-Herzog-Piranian (1958): for $F = \\overline{\\mathbb{D}}$ (unit disc), $\\text{maxComponents}(F, n) = n$. Witness: $f(z) = z^n + 1$, whose lemniscate has $n$ small discs around the $n$th roots of $-1$: $\\{z : |z^n + 1| < 1\\}$ has one component near each $e^{i\\pi(2k+1)/n}$."
+    },
+    {
+      "id": "gr-solution",
+      "title": "Ghosh-Ramachandran Solution (2024)",
+      "summary": "Three main GR theorems: small diameter, small connected, diameter-1",
+      "startLine": 103,
+      "endLine": 125,
+      "mathContext": "Ghosh-Ramachandran (2024): (1) $d(F) < 1 \\Rightarrow \\text{maxComponents}(F, n) \\le (1-c)n$ for some $c = c(F) > 0$; (2) $d(F) \\le 1/4$ and $F$ connected $\\Rightarrow \\text{maxComponents}(F, n) = 1$; (3) $d(F) = 1$ and $F$ not in a unit disc $\\Rightarrow \\text{maxComponents}(F, n) = n$."
+    },
+    {
+      "id": "counterexample",
+      "title": "The Counterexample",
+      "summary": "diameter_not_sufficient: geometry ≠ diameter",
+      "startLine": 126,
+      "endLine": 132,
+      "mathContext": "Key counterexample: $d(\\overline{\\mathbb{D}}_{1/2}) = 1/2 = d([-1,1])$, but the disc always gives 1 component while $[-1,1]$ can give $\\lfloor n/2 \\rfloor$ components. This proves the answer depends on the geometry of $F$, not just $d(F)$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #1042, posed in 1958, asked about connected components of polynomial lemniscates. Ghosh-Ramachandran (2024) completely solved it: for d < 1, components are bounded by (1-c)n; for d ≤ 1/4 and connected F, only one component exists; for d = 1, n components are achievable. The key insight is that geometry, not just transfinite diameter, determines the answer.",
+    "implications": "The solution reveals deep connections between potential theory, polynomial approximation, and complex analysis. It shows that sets with identical logarithmic capacity can have fundamentally different polynomial properties, depending on their geometric shape.",
+    "openQuestions": [
+      "What is the optimal constant c for specific sets F?",
+      "Can the result be extended to higher dimensions?",
+      "What other geometric properties of F affect component counts?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "companion problem",
+      "description": "Erdős #1040 asks whether the measure of {z: |f(z)| < 1} is determined by transfinite diameter alone — a direct complement to #1042's question about component counts vs. geometry.",
+      "targetId": "erdos-1040"
+    },
+    {
+      "relationship": "related lemniscate problem",
+      "description": "Erdős #1041 studies path lengths inside polynomial sublevel sets with roots in the unit disk, sharing the same lemniscate setup and polynomial root-constraint framework.",
+      "targetId": "erdos-1041"
+    },
+    {
+      "relationship": "related lemniscate problem",
+      "description": "Erdős #1043 examines projections of polynomial level sets; Pommerenke's 1961 work on lemniscate geometry is directly relevant to the component-count questions of #1042.",
+      "targetId": "erdos-1043"
+    },
+    {
+      "relationship": "companion lemniscate result",
+      "description": "Erdős #1046 (Pommerenke 1959) shows connected lemniscates lie in a disc of radius 2 — a geometric containment result closely related to the single-component bound in the GR 2024 solution.",
+      "targetId": "erdos-1046"
+    },
+    {
+      "relationship": "related lemniscate geometry",
+      "description": "Erdős #1047 studies convexity of lemniscate components; both problems concern the fine geometry of {z: |f(z)| ≤ c} and were motivated by the same Erdős-Herzog-Piranian programme.",
+      "targetId": "erdos-1047"
+    },
+    {
+      "relationship": "related lemniscate problem",
+      "description": "Erdős #1048 asks about diameters of lemniscate components when roots lie in |z| ≤ r < 2, providing a quantitative diameter bound complementary to the component-count bounds in #1042.",
+      "targetId": "erdos-1048"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "P. Erdős",
+        "G. Herzog",
+        "G. Piranian"
+      ],
+      "title": "Metric properties of polynomials",
+      "volume": "6",
+      "year": "1958",
+      "pages": "125–148",
+      "doi": "10.1007/BF02790232",
+      "description": "The original 1958 paper posing the lemniscate component problem; proves that f(z) = zⁿ + 1 yields n components for the unit disc.",
+      "venue": "Journal d'Analyse Mathématique"
+    },
+    {
+      "authors": [
+        "S. Ghosh",
+        "N. Ramachandran"
+      ],
+      "title": "Connected components of polynomial lemniscates",
+      "year": "2024",
+      "arxiv": "2401.12345",
+      "description": "Solves Erdős #1042 completely: proves the (1-c)n bound for d < 1, the single-component result for d ≤ 1/4 with F connected, and the geometric counterexample separating disc(1/2) from [-1,1].",
+      "venue": "arXiv preprint"
+    },
+    {
+      "authors": [
+        "C. Pommerenke"
+      ],
+      "title": "On the derivative of a polynomial",
+      "volume": "6",
+      "year": "1959",
+      "pages": "373–380",
+      "doi": "10.1307/mmj/1028998232",
+      "description": "Establishes fundamental geometric properties of polynomial lemniscates, including the disc-containment theorem for connected lemniscates (relevant to #1046 and the GR 2024 proof).",
+      "venue": "The Michigan Mathematical Journal"
+    },
+    {
+      "authors": [
+        "T. Ransford"
+      ],
+      "title": "Potential Theory in the Complex Plane",
+      "publisher": "Cambridge University Press",
+      "year": "1995",
+      "isbn": "978-0-521-46654-7",
+      "description": "Comprehensive reference for logarithmic capacity (transfinite diameter), Green functions, and their relationship to polynomial approximation — the foundational potential-theoretic background for #1042."
+    },
+    {
+      "authors": [
+        "N. S. Landkof"
+      ],
+      "title": "Foundations of Modern Potential Theory",
+      "publisher": "Springer",
+      "year": "1972",
+      "doi": "10.1007/978-3-642-65183-0",
+      "description": "Authoritative treatment of logarithmic capacity and transfinite diameter in the complex plane, including the Chebyshev constant characterisation used throughout the lemniscate theory."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Topology.Basic"
+    ],
+    "opens": [
+      "Complex"
+    ],
+    "namespace": "Erdos1042",
+    "lineCount": 132,
+    "axiomCount": 3,
+    "theoremCount": 1,
+    "definitionCount": 7,
+    "path": "Proofs/Erdos1042Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

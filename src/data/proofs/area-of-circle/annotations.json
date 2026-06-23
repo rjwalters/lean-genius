@@ -1,0 +1,178 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "area-of-circle",
+    "range": {
+      "startLine": 1,
+      "endLine": 51
+    },
+    "type": "concept",
+    "title": "Introduction: Area of a Circle (Wiedijk #9)",
+    "content": "The file opens with imports of `Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls` (providing `Complex.volume_ball`) and `Mathlib.Tactic`. The extensive doc comment establishes this as Wiedijk #9 — one of the 100 most famous theorems. It explains the measure-theoretic approach: area is formalized as Lebesgue measure in $\\mathbb{R}^2$, modeled via $\\mathbb{C}$. The historical note credits Archimedes (c. 287–212 BCE) with the first rigorous proof using the method of exhaustion, where he showed the area equals that of a right triangle with base = circumference and height = radius.",
+    "mathContext": "The method of exhaustion, formalized by Eudoxus of Cnidus and perfected by Archimedes, proves equalities by showing that the difference between two quantities can be made smaller than any given positive value — essentially the $\\varepsilon$-$\\delta$ definition of a limit. Archimedes inscribed $n$-gons with area $\\frac{n}{2}r^2 \\sin(2\\pi/n) \\to \\pi r^2$ as $n \\to \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lebesgue measure",
+      "Archimedes",
+      "Wiedijk 100 theorems",
+      "method of exhaustion",
+      "inscribed polygons",
+      "Eudoxus of Cnidus"
+    ],
+    "prerequisites": [
+      "measure theory basics",
+      "complex plane as ℝ²",
+      "Mathlib library structure",
+      "Fubini-Tonelli theorem"
+    ]
+  },
+  {
+    "id": "ann-namespace-setup",
+    "proofId": "area-of-circle",
+    "range": {
+      "startLine": 52,
+      "endLine": 61
+    },
+    "type": "concept",
+    "title": "Namespace and Measure-Theoretic Setup",
+    "content": "The namespace `AreaOfCircle` scopes all theorems, and `open MeasureTheory Metric` brings the key abstractions into scope: `volume` (the canonical Lebesgue measure on ℂ via `MeasureTheory.MeasureSpace.volume`), `ball` (the open metric ball `{z : dist z c < r}`), and `closedBall` (the closed metric ball `{z : dist z c ≤ r}`). The section docstring explains the modeling choice: using ℂ rather than ℝ² because Mathlib's `Complex.volume_ball` is stated directly for the complex plane. The isomorphism ℂ ≅ ℝ² as real inner product spaces means this is equivalent to the classical Euclidean statement.\n\n**Why ℂ rather than ℝ²?** Mathlib's `Complex.volume_ball` is a directly usable API that gives the volume of a ball in ℂ without manual coordinate identification. Working in ℝ² would require establishing that the product measure on ℝ × ℝ agrees with the canonical volume and that the Euclidean metric ball in ℝ² corresponds to the disk — all of which Mathlib handles automatically for ℂ via the `InnerProductSpace ℝ ℂ` instance.",
+    "mathContext": "The complex plane ℂ carries a canonical `MeasureSpace` structure from its identification with ℝ². The Lebesgue measure `volume` on ℂ is the product measure $\\lambda \\otimes \\lambda$ on $\\mathbb{R}^2$. Metric balls in ℂ use $|z - c| = \\sqrt{(\\text{Re}(z-c))^2 + (\\text{Im}(z-c))^2}$, the standard Euclidean distance.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "MeasureSpace",
+      "Lebesgue measure",
+      "metric ball",
+      "complex plane"
+    ],
+    "prerequisites": [
+      "measure theory",
+      "metric spaces",
+      "complex analysis"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "area-of-circle",
+    "range": {
+      "startLine": 63,
+      "endLine": 84
+    },
+    "type": "concept",
+    "title": "Main Theorems: Open and Closed Disk Area = πr²",
+    "content": "The core results. `area_of_circle` proves that the Lebesgue measure of an open ball in $\\mathbb{C}$ with center $c$ and radius $r$ equals $r^2 \\cdot \\pi$, expressed as `ENNReal.ofReal r ^ 2 * ↑NNReal.pi`. The proof is a single line: `Complex.volume_ball center r`. Similarly, `area_of_closed_disk` proves the same for closed balls via `Complex.volume_closedBall`. The equality of open and closed disk areas reflects the measure-theoretic fact that the boundary circle (a 1-dimensional manifold) has 2-dimensional Lebesgue measure zero. Internally, `Complex.volume_ball` uses the general $n$-dimensional ball volume formula $V_n(r) = \\pi^{n/2} r^n / \\Gamma(n/2+1)$ specialized to $n=2$, where $\\Gamma(2) = 1! = 1$.",
+    "mathContext": "The result is stated using `ENNReal` (extended non-negative reals $[0, \\infty]$) because Lebesgue measure takes values in $\\overline{\\mathbb{R}_{\\geq 0}}$. The expression `ENNReal.ofReal r ^ 2 * ↑NNReal.pi` encodes $r^2 \\pi$: `ENNReal.ofReal` coerces $r \\in \\mathbb{R}$ to $\\overline{\\mathbb{R}_{\\geq 0}}$ (mapping negatives to 0), and `↑NNReal.pi` lifts $\\pi \\in \\mathbb{R}_{\\geq 0}$ to `ENNReal`.\n\nInternally, `Complex.volume_ball` derives from the general $n$-dimensional ball volume formula: $V_n(r) = \\frac{\\pi^{n/2}}{\\Gamma(n/2 + 1)} r^n$. For $n = 2$: $V_2(r) = \\frac{\\pi^1}{\\Gamma(2)} r^2 = \\frac{\\pi}{1!} r^2 = \\pi r^2$. Mathlib proves this via the Fubini-Tonelli theorem and the recurrence $V_n(r) = \\int_{-r}^{r} V_{n-1}(\\sqrt{r^2 - x^2}) \\, dx$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Complex.volume_ball",
+      "Complex.volume_closedBall",
+      "ENNReal",
+      "NNReal.pi",
+      "MeasureTheory.volume"
+    ],
+    "prerequisites": [
+      "Lebesgue measure",
+      "metric balls in ℂ",
+      "ENNReal coercions"
+    ]
+  },
+  {
+    "id": "ann-corollaries-header",
+    "proofId": "area-of-circle",
+    "range": {
+      "startLine": 85,
+      "endLine": 87
+    },
+    "type": "concept",
+    "title": "Properties and Corollaries: Edge Cases and Special Values",
+    "content": "This section header introduces five corollaries that exercise the main theorem at boundary values of the radius parameter. The corollaries serve a dual purpose: they verify that the formula behaves correctly at edge cases (r = 0, r < 0, r = 1) and they demonstrate the robustness of the measure-theoretic formulation — unlike a purely geometric definition, the Lebesgue measure approach naturally handles degenerate cases (empty sets have measure 0, singletons have 2D measure 0) without special-case reasoning.",
+    "mathContext": "Edge case analysis: $r = 1 \\Rightarrow A = \\pi$ (unit disk), $r = 0 \\Rightarrow A = 0$ (empty/singleton), $r < 0 \\Rightarrow A = 0$ (empty). Each follows from the general formula $A = \\pi r^2$ with `ENNReal.ofReal` mapping negative values to 0.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "edge cases",
+      "robustness",
+      "ENNReal.ofReal",
+      "measure of empty set"
+    ],
+    "prerequisites": [
+      "ENNReal arithmetic",
+      "metric ball properties"
+    ]
+  },
+  {
+    "id": "ann-special-cases",
+    "proofId": "area-of-circle",
+    "range": {
+      "startLine": 88,
+      "endLine": 115
+    },
+    "type": "concept",
+    "title": "Special Cases: Unit Disk, Zero Radius, Negative Radius",
+    "content": "Five corollaries exercise the main theorem at boundary values:\n\n1. **Unit disk** (`area_unit_disk`, `area_unit_closed_disk`): Setting $r = 1$ gives area $\\pi$. The proof rewrites with `area_of_circle` then simplifies $\\text{ENNReal.ofReal}(1)^2 \\cdot \\pi = 1 \\cdot \\pi = \\pi$ via `simp [ENNReal.ofReal_one]`. Historically, the unit disk area $\\pi$ is how $\\pi$ was *defined* in many axiomatic treatments of geometry.\n\n2. **Zero radius** (`area_zero_radius`, `area_zero_radius_closed`): $r = 0$ gives area 0. The open ball $B(c, 0) = \\emptyset$ (since $|z - c| < 0$ is impossible), and the closed ball $\\overline{B}(c, 0) = \\{c\\}$ is a singleton with $\\lambda^2$-measure 0. Both proofs use `simp` with `ball_zero` or `closedBall_zero`.\n\n3. **Negative radius** (`area_negative_radius`): $r < 0$ gives area 0 via `ball_eq_empty.mpr (le_of_lt hr)`, which shows the ball is empty when the radius is non-positive. The `ENNReal.ofReal` coercion also maps negative values to 0, providing a second route to the same conclusion.",
+    "mathContext": "The `simp` tactic with `ENNReal.ofReal_one` simplifies $\\text{ofReal}(1)^2 \\cdot \\pi = 1 \\cdot \\pi = \\pi$. The `ball_zero` lemma states $B(c, 0) = \\emptyset$ (strict inequality $|x - c| < 0$ is impossible). The `closedBall_zero` states $\\overline{B}(c, 0) = \\{c\\}$, a singleton with $\\lambda^2$-measure 0 because a point is a 0-dimensional set in $\\mathbb{R}^2$ and $\\lambda^n(M) = 0$ whenever $\\dim(M) < n$ (a consequence of Fubini's theorem: the cross-section of $\\{c\\}$ at any $x$-coordinate is at most one point, which has $\\lambda^1$-measure 0). The `ball_eq_empty` lemma for $r < 0$ maps to $\\lambda^2(\\emptyset) = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ENNReal.ofReal_one",
+      "ball_zero",
+      "closedBall_zero",
+      "ball_eq_empty"
+    ],
+    "prerequisites": [
+      "ENNReal arithmetic",
+      "metric ball edge cases",
+      "measure of singletons"
+    ]
+  },
+  {
+    "id": "ann-significance",
+    "proofId": "area-of-circle",
+    "range": {
+      "startLine": 117,
+      "endLine": 136
+    },
+    "type": "concept",
+    "title": "Why This Matters: Cross-Disciplinary Significance",
+    "content": "A doc section explaining the ubiquity of $A = \\pi r^2$. In **geometry**, it underpins circle, sphere, and curved surface theory. In **calculus**, it is the canonical polar coordinate integral $\\int_0^{2\\pi} \\int_0^r \\rho\\, d\\rho\\, d\\theta = \\pi r^2$. In **physics**, it governs intensity through circular apertures. In **probability**, the Gaussian integral $\\iint e^{-x^2-y^2}\\, dA = \\pi$ depends on it. In **engineering**, it appears in calculations for pipes, gears, and wheels. The appearance of $\\pi$ reflects the deep connection between circles and the circumference-to-diameter ratio.",
+    "mathContext": "The Gaussian integral connection is particularly deep: $\\int_{-\\infty}^{\\infty} e^{-x^2}\\, dx = \\sqrt{\\pi}$ is proved by squaring and converting to polar coordinates, where $A = \\pi r^2$ provides the area element $r\\, dr\\, d\\theta$. This is one of the most elegant applications of the circle area formula.",
+    "significance": "key",
+    "relatedConcepts": [
+      "polar coordinates",
+      "Gaussian integral",
+      "circumference",
+      "normal distribution",
+      "Jacobian determinant"
+    ],
+    "prerequisites": [
+      "multivariable calculus",
+      "change of variables",
+      "probability theory",
+      "polar coordinate transformation"
+    ]
+  },
+  {
+    "id": "ann-archimedes",
+    "proofId": "area-of-circle",
+    "range": {
+      "startLine": 138,
+      "endLine": 155
+    },
+    "type": "concept",
+    "title": "Archimedes' Insight: Concentric Ring Integration",
+    "content": "The final doc section connects the area formula to the circumference $C = 2\\pi r$ via the annular ring argument. Imagining the disk as concentric thin rings of radius $\\rho$ and width $d\\rho$: each ring has area $dA = 2\\pi\\rho\\, d\\rho$ (circumference times thickness). Integrating: $A = \\int_0^r 2\\pi\\rho\\, d\\rho = \\pi\\rho^2\\big|_0^r = \\pi r^2$.\n\n**Archimedes' insight**: This is how Archimedes conceptualized the proof in *Measurement of a Circle* (Proposition 1): the disk has the same area as a right triangle with base $C = 2\\pi r$ and height $r$, giving $A = \\frac{1}{2}Cr = \\frac{1}{2}(2\\pi r)r = \\pi r^2$. He proved this by contradiction using the method of exhaustion — if the areas differed, inscribing or circumscribing sufficiently many-sided polygons would produce a contradiction. This argument anticipated integral calculus by nearly two millennia; Newton and Leibniz's fundamental theorem merely systematized what Archimedes had done case-by-case.\n\nThe file ends with four `#check` commands verifying the API: `area_of_circle`, `area_of_closed_disk`, `area_unit_disk`, and `area_negative_radius` — confirming these theorems are accessible in the `AreaOfCircle` namespace.",
+    "mathContext": "The annular ring argument is equivalent to computing $A(r) = \\int_0^r C(\\rho)\\, d\\rho = \\int_0^r 2\\pi\\rho\\, d\\rho$, giving the relationship $A'(r) = C(r) = 2\\pi r$. This derivative relationship — the circumference is the derivative of the area with respect to radius — generalizes to all dimensions: the surface area of an $n$-ball is the derivative of its volume with respect to radius.",
+    "significance": "key",
+    "relatedConcepts": [
+      "circumference",
+      "integration",
+      "method of exhaustion",
+      "fundamental theorem of calculus",
+      "n-ball volume derivative",
+      "surface area as derivative"
+    ],
+    "prerequisites": [
+      "single-variable integration",
+      "circumference formula",
+      "Archimedes' method",
+      "Leibniz integral rule"
+    ]
+  }
+]

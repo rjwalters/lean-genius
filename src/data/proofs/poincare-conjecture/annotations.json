@@ -1,0 +1,519 @@
+[
+  {
+    "id": "ann-pc-imports",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 1,
+      "endLine": 15
+    },
+    "type": "concept",
+    "title": "Imports and Dependencies",
+    "content": "The formalization draws on Mathlib's topology, homotopy theory, and algebraic topology infrastructure. Key imports include `FundamentalGroupoid.FundamentalGroup` for $\\pi_1(X, x)$ and `SimplyConnected` for the triviality condition. The `PiL2` import provides EuclideanSpace for defining spheres.",
+    "mathContext": "Mathlib's FundamentalGroup X x is defined as the automorphism group Aut(x) in the fundamental groupoid of X. SimplyConnectedSpace X means the fundamental groupoid is equivalent to Discrete Unit. These are the standard algebraic-topological definitions.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "fundamental groupoid",
+      "algebraic topology",
+      "Mathlib infrastructure"
+    ],
+    "prerequisites": [
+      "Algebraic Topology",
+      "Fundamental Group",
+      "Homotopy Theory"
+    ]
+  },
+  {
+    "id": "ann-sphere3",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 120,
+      "endLine": 145
+    },
+    "type": "definition",
+    "title": "The 3-Sphere $S^3$",
+    "content": "The 3-sphere $S^3$ is defined as the unit sphere in $\\mathbb{R}^4$: all points at distance 1 from the origin. Properties proved constructively: nonempty (contains $(1,0,0,0)$), compact (closed and bounded in $\\mathbb{R}^4$), connected and path-connected (via Mathlib's `isConnected_sphere` requiring $\\dim > 1$).",
+    "mathContext": "$S^3 = \\{x \\in \\mathbb{R}^4 : \\|x\\| = 1\\} = \\text{Metric.sphere } 0 \\; 1$ in EuclideanSpace $\\mathbb{R}$ (Fin 4). The proof that $S^3$ is connected uses Module.rank $\\mathbb{R}$ $(\\mathbb{R}^4) > 1$, which follows from finrank = 4. Path-connectedness follows from `isPathConnected_sphere`. These are genuine Lean proofs, not axioms.",
+    "significance": "key",
+    "relatedConcepts": [
+      "unit sphere",
+      "Euclidean space",
+      "compactness",
+      "path-connectedness"
+    ],
+    "prerequisites": [
+      "ann-pc-imports"
+    ]
+  },
+  {
+    "id": "ann-simply-connected",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 147,
+      "endLine": 167
+    },
+    "type": "definition",
+    "title": "Simply Connected Spaces and Fundamental Group",
+    "content": "A space is simply connected if it is path-connected and every loop can be continuously shrunk to a point. The formalization uses Mathlib's `SimplyConnectedSpace`, which says the fundamental groupoid is equivalent to `Discrete Unit`. Two key results are **proved**: `loops_nullhomotopic_of_simply_connected` extracts loop contractibility, and `pathConnected_of_simply_connected` shows path-connectedness follows.",
+    "mathContext": "SimplyConnectedSpace X $\\iff$ path-connected $\\wedge$ $\\forall x, \\forall \\gamma : \\text{Path } x \\; x, \\; \\gamma \\simeq \\text{refl}_x$. Equivalently, $\\pi_1(X, x)$ is trivial for all $x$. The bridge theorem `simply_connected_iff_loops_nullhomotopic` connects Mathlib's categorical definition to the classical loop-contractibility formulation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fundamental group",
+      "homotopy",
+      "path-connectedness",
+      "loop space"
+    ],
+    "prerequisites": [
+      "ann-pc-imports"
+    ]
+  },
+  {
+    "id": "ann-closed-manifold",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 180,
+      "endLine": 186
+    },
+    "type": "definition",
+    "title": "Closed $n$-Manifolds",
+    "content": "A closed $n$-manifold is a compact, connected, nonempty topological space where every point has a neighborhood homeomorphic to $\\mathbb{R}^n$. 'Closed' means compact without boundary (not the point-set topology meaning). The abbreviation `Closed3Manifold` specializes to $n = 3$.",
+    "mathContext": "The structure `ClosedManifold n M` requires: (1) `CompactSpace M`, (2) `ConnectedSpace M`, (3) `Nonempty M`, (4) $\\forall x : M, \\exists U$ open with $x \\in U$ and $U \\cong_t \\mathbb{R}^n$. The locally Euclidean condition is the key manifold property, distinguishing manifolds from more general topological spaces.",
+    "significance": "key",
+    "relatedConcepts": [
+      "topological manifold",
+      "compactness",
+      "locally Euclidean",
+      "dimension"
+    ],
+    "prerequisites": [
+      "Topological Manifold",
+      "Compact Space",
+      "Locally Euclidean Space"
+    ]
+  },
+  {
+    "id": "ann-homeomorphism",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 184,
+      "endLine": 201
+    },
+    "type": "definition",
+    "title": "Homeomorphism as Equivalence Relation",
+    "content": "The predicate `AreHomeomorphic X Y` asserts the existence of a homeomorphism $X \\cong_t Y$. Three properties are **proved**: reflexivity (identity map), symmetry (inverse homeomorphism), and transitivity (composition). This establishes homeomorphism as an equivalence relation on topological spaces.",
+    "mathContext": "`AreHomeomorphic X Y := Nonempty (X ≃ₜ Y)` wraps Mathlib's `Homeomorph` in a propositional existence. The proofs use `Homeomorph.refl`, `.symm`, and `.trans`. This is a standard wrapper that simplifies stating the Poincaré Conjecture as a proposition rather than constructing explicit homeomorphisms.",
+    "significance": "key",
+    "relatedConcepts": [
+      "topological equivalence",
+      "continuous bijection",
+      "equivalence relation"
+    ],
+    "prerequisites": [
+      "Homeomorphism",
+      "Equivalence Relation",
+      "Continuous Bijection"
+    ]
+  },
+  {
+    "id": "ann-poincare-statement",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 215,
+      "endLine": 220
+    },
+    "type": "definition",
+    "title": "The Poincaré Conjecture (Formal Statement)",
+    "content": "The conjecture is stated as: for every type $M$ with a topology, if $M$ is a closed 3-manifold and $M$ is simply connected, then $M$ is homeomorphic to $S^3$. This is the canonical formulation Poincaré posed in 1904: simple connectivity characterizes the 3-sphere among closed 3-manifolds.",
+    "mathContext": "`PoincareConjectureStatement := ∀ (M : Type) [TopologicalSpace M], Closed3Manifold M → SimplyConnectedSpace M → AreHomeomorphic M Sphere3`. Poincaré originally asked whether homology alone suffices (it doesn't — the Poincaré homology sphere has $H_*(M) \\cong H_*(S^3)$ but $\\pi_1(M) \\neq 1$). He then refined to homotopy: $\\pi_1(M) = 1 \\implies M \\cong S^3$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Millennium Prize",
+      "topological classification",
+      "Poincaré homology sphere"
+    ],
+    "prerequisites": [
+      "ann-sphere3",
+      "ann-simply-connected",
+      "ann-closed-manifold",
+      "ann-homeomorphism"
+    ]
+  },
+  {
+    "id": "ann-ricci-flow",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 214,
+      "endLine": 233
+    },
+    "type": "concept",
+    "title": "Ricci Flow and Perelman's Approach",
+    "content": "Ricci flow is the geometric PDE $\\partial g / \\partial t = -2 \\operatorname{Ric}(g)$ introduced by Hamilton (1982). It evolves a Riemannian metric like a heat equation for geometry. The file axiomatizes `RicciCurvature`, `RiemannianMetric`, and the flow operator. Perelman's key innovations—surgery and finite extinction—are stated as axioms.",
+    "mathContext": "The Ricci flow $\\partial g_{ij}/\\partial t = -2 R_{ij}$ shrinks positively curved regions and expands negatively curved ones. Hamilton (1982) proved that on a closed 3-manifold with positive Ricci curvature, the flow converges to a round metric (constant curvature $+1$), yielding $M \\cong S^3$. Perelman extended this to all simply connected closed 3-manifolds via surgery.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Riemannian geometry",
+      "heat equation",
+      "geometric evolution",
+      "Hamilton's theorem"
+    ],
+    "prerequisites": [
+      "ann-poincare-statement"
+    ]
+  },
+  {
+    "id": "ann-perelman-surgery",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 232,
+      "endLine": 239
+    },
+    "type": "concept",
+    "title": "Perelman's Surgery and Finite Extinction",
+    "content": "Two critical axioms encode Perelman's proof: (1) **Surgery**: given any metric on a closed 3-manifold, surgery produces a new closed 3-manifold preserving simple connectivity. (2) **Finite extinction**: a simply connected closed 3-manifold becomes extinct under Ricci flow with surgery in finite time, yielding homeomorphism to $S^3$.",
+    "mathContext": "Perelman's surgery procedure (arXiv:math/0303109) cuts out $\\varepsilon$-horns near singularities and caps them with standard $S^2 \\times [0,\\infty)$ pieces. The finite extinction theorem (arXiv:math/0307245, also Colding-Minicozzi 2005) shows that $\\pi_1(M) = 1$ forces the width $W(g(t))$ to become zero in finite time, so the manifold disappears—leaving only $S^3$ pieces.",
+    "significance": "key",
+    "relatedConcepts": [
+      "surgery theory",
+      "singularity analysis",
+      "epsilon-horns",
+      "W-functional"
+    ],
+    "prerequisites": [
+      "ann-ricci-flow"
+    ]
+  },
+  {
+    "id": "ann-thurston",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 247,
+      "endLine": 259
+    },
+    "type": "definition",
+    "title": "Thurston's Eight Model Geometries",
+    "content": "Thurston's Geometrization Conjecture (proved by Perelman) states every closed 3-manifold decomposes into pieces each carrying one of exactly 8 model geometries: $S^3$, $\\mathbb{E}^3$, $\\mathbb{H}^3$, $S^2 \\times \\mathbb{R}$, $\\mathbb{H}^2 \\times \\mathbb{R}$, $\\widetilde{\\text{SL}_2(\\mathbb{R})}$, Nil, Sol. The count $= 8$ is **proved** via `native_decide`.",
+    "mathContext": "The `ThurstonGeometry` inductive type enumerates all 8 geometries. Each geometry $G$ is a simply connected homogeneous Riemannian manifold with $\\text{Isom}(G)$ acting transitively. A 3-manifold $M$ is 'geometric' if $M \\cong G/\\Gamma$ for a discrete $\\Gamma \\leq \\text{Isom}(G)$. Thurston classified these in 1982; Perelman proved every closed 3-manifold admits such a decomposition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "geometric structures",
+      "model geometries",
+      "Thurston classification",
+      "homogeneous spaces"
+    ],
+    "prerequisites": [
+      "ann-ricci-flow"
+    ]
+  },
+  {
+    "id": "ann-w-entropy",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 262,
+      "endLine": 268
+    },
+    "type": "definition",
+    "title": "Perelman's $W$-Entropy and Hamilton's Theorem",
+    "content": "Perelman's $W$-entropy functional is **monotone** along Ricci flow, providing a Lyapunov function that controls the flow's behavior. Hamilton's earlier theorem (1982) handles the special case: simply connected $+$ positive Ricci curvature $\\implies S^3$. Both are axiomatized since they require deep PDE analysis.",
+    "mathContext": "Perelman's $\\mathcal{W}(g, f, \\tau) = \\int_M [\\tau(|\\nabla f|^2 + R) + f - n](4\\pi\\tau)^{-n/2} e^{-f} dV$ is monotone under coupled Ricci flow. This is the 'no local collapsing' ingredient. Hamilton's 1982 paper 'Three-manifolds with positive Ricci curvature' (J. Differential Geometry 17) proved the first convergence result for Ricci flow.",
+    "significance": "key",
+    "relatedConcepts": [
+      "entropy functional",
+      "Lyapunov function",
+      "no local collapsing",
+      "positive Ricci curvature"
+    ],
+    "prerequisites": [
+      "ann-ricci-flow"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 276,
+      "endLine": 279
+    },
+    "type": "concept",
+    "title": "The Poincaré Conjecture (Main Theorem)",
+    "content": "**`poincare_conjecture_holds`**: the Poincaré Conjecture is derived from the axioms. Given a simply connected closed 3-manifold $M$, `perelman_finite_extinction` yields $T > 0$ and a homeomorphism $M \\cong S^3$. The proof is a one-line extraction from the existential statement.",
+    "mathContext": "The formal proof: `intro M _ hM hsc; obtain ⟨_, _, h⟩ := perelman_finite_extinction M hM hsc; exact h`. This is deliberately simple—the mathematical content is in the axioms. The proof structure mirrors the mathematical argument: Perelman's theorem directly implies the conjecture.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Millennium Prize",
+      "axiom-derived proof",
+      "Perelman's theorem"
+    ],
+    "prerequisites": [
+      "ann-poincare-statement",
+      "ann-perelman-surgery"
+    ]
+  },
+  {
+    "id": "ann-generalized-dims",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 296,
+      "endLine": 310
+    },
+    "type": "concept",
+    "title": "Generalized Poincaré in Other Dimensions",
+    "content": "The generalized Poincaré Conjecture is axiomatized per dimension: $n \\geq 5$ (Smale 1961, h-cobordism), $n = 4$ (Freedman 1982, topological), $n = 2$ (classical uniformization). Each returns a homeomorphism to the $n$-sphere. Dimension 3 was the last to be resolved.",
+    "mathContext": "Smale's proof for $n \\geq 5$ uses the h-cobordism theorem and Whitney trick. Freedman's proof for $n = 4$ uses Casson handles and is highly non-constructive. The smooth 4-dimensional Poincaré conjecture remains **open** — it is unknown whether every exotic $S^4$ is diffeomorphic to the standard one. This dimensional sensitivity is captured by the separate axiom statements.",
+    "significance": "key",
+    "relatedConcepts": [
+      "h-cobordism theorem",
+      "Freedman's theorem",
+      "Smale's theorem",
+      "exotic spheres"
+    ],
+    "prerequisites": [
+      "ann-poincare-statement"
+    ]
+  },
+  {
+    "id": "ann-consequences",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 315,
+      "endLine": 345
+    },
+    "type": "concept",
+    "title": "Consequences and Alternative Formulations",
+    "content": "Several corollaries are **proved**: (1) `trivial_pi1_implies_sphere` — direct application. (2) `poincare_of_trivial_pi1` — if $\\pi_1(M, x)$ is trivial at every point, then $M \\cong S^3$, bridging Mathlib's `FundamentalGroup` with the conjecture. (3) `not_sphere_has_nontrivial_pi1` — contrapositive. (4) `poincare_dichotomy` — every closed 3-manifold is either $S^3$ or has nontrivial $\\pi_1$.",
+    "mathContext": "The `poincare_of_trivial_pi1` proof is notable: it constructs `SimplyConnectedSpace M` from the hypothesis that `FundamentalGroup M x` is `Subsingleton` at every point, using `Quotient.exact` and `Subsingleton.elim` on the homotopy quotient. This bridges Mathlib's algebraic topology API with the geometric statement.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fundamental group",
+      "contrapositive",
+      "classification dichotomy",
+      "FundamentalGroup bridge"
+    ],
+    "prerequisites": [
+      "ann-main-theorem",
+      "ann-simply-connected"
+    ]
+  },
+  {
+    "id": "ann-sphere-properties",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 374,
+      "endLine": 395
+    },
+    "type": "concept",
+    "title": "Generalized $n$-Sphere Properties",
+    "content": "Four properties of the $n$-sphere $S^n \\subset \\mathbb{R}^{n+1}$ are **proved** for all $n$: connectedness and path-connectedness (for $n \\geq 1$, using rank $> 1$), nonemptiness (contains $(1, 0, \\ldots, 0)$), and compactness. These feed into the generalized Poincaré statement.",
+    "mathContext": "The proof of `sphere_n_connected` uses `isConnected_sphere` which requires `1 < Module.rank ℝ (EuclideanSpace ℝ (Fin (n+1)))`. This is established via `finrank_euclideanSpace_fin` giving finrank $= n + 1 \\geq 2$. The `SphereN n` definition $:= \\text{Metric.sphere } 0 \\; 1$ in $\\mathbb{R}^{n+1}$ provides a uniform notation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "n-sphere",
+      "module rank",
+      "Mathlib sphere API",
+      "uniform construction"
+    ],
+    "prerequisites": [
+      "ann-sphere3"
+    ]
+  },
+  {
+    "id": "ann-poincare-all-dims",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 424,
+      "endLine": 443
+    },
+    "type": "concept",
+    "title": "Poincaré Conjecture for All Dimensions $\\geq 2$",
+    "content": "**`poincare_all_dimensions`** is **proved** by case analysis: if $n \\geq 5$, use Smale's theorem; otherwise `interval_cases n` dispatches $n = 2$ (uniformization), $n = 3$ (Perelman), $n = 4$ (Freedman). This unifies all known results into a single theorem: `GeneralizedPoincareStatement n` holds for all $n \\geq 2$.",
+    "mathContext": "The proof structure mirrors the historical arc: Smale (1961) for $n \\geq 5$, Freedman (1982) for $n = 4$, Perelman (2003) for $n = 3$, classical for $n = 2$. The `interval_cases` tactic enumerates $n \\in \\{2, 3, 4\\}$ when $2 \\leq n$ and $n < 5$. Each case is a one-line application of the corresponding theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "interval_cases tactic",
+      "case analysis",
+      "dimension unification"
+    ],
+    "prerequisites": [
+      "ann-generalized-dims",
+      "ann-main-theorem"
+    ]
+  },
+  {
+    "id": "ann-fundamental-group-char",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 432,
+      "endLine": 442
+    },
+    "type": "concept",
+    "title": "Fundamental Group Triviality",
+    "content": "**`fundamental_group_trivial_of_sc`** is **proved**: for a simply connected space $X$, the fundamental group $\\pi_1(X, x)$ is a subsingleton (trivial) at every point. The proof uses `simply_connected_iff_paths_homotopic` which gives `Subsingleton` on all path homotopy quotients.",
+    "mathContext": "In Mathlib, `FundamentalGroup X x` is `CategoryTheory.Aut x` in the fundamental groupoid. `SimplyConnectedSpace` implies all path quotients are singletons via `simply_connected_iff_paths_homotopic`. Specializing the endpoints to $x_0 = x_1 = x$ gives triviality of the loop space quotient, i.e., $\\pi_1(X, x) \\cong 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fundamental group",
+      "subsingleton",
+      "path homotopy quotient",
+      "algebraic topology bridge"
+    ],
+    "prerequisites": [
+      "ann-simply-connected"
+    ]
+  },
+  {
+    "id": "ann-sphere-retraction",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 468,
+      "endLine": 479
+    },
+    "type": "concept",
+    "title": "Normalization Retraction onto the Sphere",
+    "content": "Two results about the normalization map $x \\mapsto x/\\|x\\|$ are **proved**: (1) `normalize_mem_sphere` — nonzero vectors are sent to the unit sphere, and (2) `normalize_on_sphere` — vectors already on the sphere are fixed. This map is a retraction from $\\mathbb{R}^n \\setminus \\{0\\}$ onto $S^{n-1}$.",
+    "mathContext": "The proof of `normalize_mem_sphere` uses $\\|\\|x\\|^{-1} \\cdot x\\| = \\|x\\|^{-1} \\cdot \\|x\\| = 1$ via `norm_smul`, `norm_inv`, `norm_norm`, and `inv_mul_cancel₀`. For `normalize_on_sphere`, if $\\|x\\| = 1$ then $\\|x\\|^{-1} = 1$ so $1 \\cdot x = x$. These are foundational for constructing deformation retractions in algebraic topology.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "retraction",
+      "deformation retract",
+      "normalization",
+      "homotopy type"
+    ],
+    "prerequisites": [
+      "ann-sphere3"
+    ]
+  },
+  {
+    "id": "ann-s3-instances",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 502,
+      "endLine": 516
+    },
+    "type": "definition",
+    "title": "$S^3$ Type Class Instances and Simple Connectivity",
+    "content": "Subset properties of $S^3 \\subset \\mathbb{R}^4$ are lifted to type class instances on $\\uparrow S^3$: `CompactSpace`, `ConnectedSpace`, `Nonempty`. The locally Euclidean property (via stereographic projection) and simple connectivity ($\\pi_1(S^3) = 1$, via Seifert–van Kampen) are axiomatized since they require tools beyond current Mathlib.",
+    "mathContext": "The instance `sphere3_compact_inst` uses `isCompact_iff_compactSpace.mp sphere3_compact` to lift `IsCompact Sphere3` to `CompactSpace (↥Sphere3)`. Simple connectivity of $S^n$ for $n \\geq 2$ follows from Seifert–van Kampen: decompose into overlapping hemispheres $D^n_+, D^n_-$ with $D^n_+ \\cap D^n_- \\simeq S^{n-1} \\times (-\\varepsilon, \\varepsilon)$, connected for $n \\geq 2$, giving $\\pi_1(S^n) = \\pi_1(D^n) *_{\\pi_1(\\text{overlap})} \\pi_1(D^n) = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "type class lifting",
+      "Seifert-van Kampen theorem",
+      "stereographic projection",
+      "hemisphere decomposition"
+    ],
+    "prerequisites": [
+      "ann-sphere3",
+      "ann-simply-connected"
+    ]
+  },
+  {
+    "id": "ann-classification",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 791,
+      "endLine": 798
+    },
+    "type": "concept",
+    "title": "3-Manifold Classification via Simple Connectivity",
+    "content": "**`closed_3_manifold_classification`** is **proved**: a closed 3-manifold is simply connected $\\iff$ it is homeomorphic to $S^3$. The forward direction is Perelman's theorem; the reverse uses `simply_connected_of_homeomorphic` (axiom: homeomorphisms preserve $\\pi_1$ triviality).",
+    "mathContext": "This biconditional captures the full strength of the Poincaré Conjecture: simple connectivity perfectly characterizes $S^3$ among closed 3-manifolds. The proof uses `poincare_conjecture_holds` for ($\\Rightarrow$) and `simply_connected_of_homeomorphic` for ($\\Leftarrow$). The latter requires that homeomorphisms induce isomorphisms on fundamental groups—a fact that Mathlib's `FundamentalGroupoid.instFunctor` partially handles.",
+    "significance": "key",
+    "relatedConcepts": [
+      "topological characterization",
+      "biconditional",
+      "fundamental group invariance"
+    ],
+    "prerequisites": [
+      "ann-main-theorem",
+      "ann-s3-instances"
+    ]
+  },
+  {
+    "id": "ann-connected-sum",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 811,
+      "endLine": 877
+    },
+    "type": "concept",
+    "title": "Connected Sum and Prime Decomposition",
+    "content": "The connected sum $M \\# N$ is axiomatized with properties: commutativity ($M \\# N \\cong N \\# M$), identity ($M \\# S^3 \\cong M$). A 3-manifold is **prime** if it cannot decompose as a nontrivial connected sum. **Kneser's theorem** (1929, uniqueness by Milnor 1962): every closed orientable 3-manifold decomposes uniquely into prime factors. $S^3$ is **proved** to be prime.",
+    "mathContext": "The connected sum removes a small 3-ball from each manifold and glues along the resulting $S^2$ boundaries. The `IsPrime3Manifold` predicate says $M \\cong A \\# B \\implies A \\cong S^3 \\lor B \\cong S^3$. The proof `sphere3_is_prime` uses `sphere3_prime_factor_left` (axiom): if $S^3 \\cong A \\# B$ then $\\pi_1(S^3) = 1 = \\pi_1(A) * \\pi_1(B)$ forces both factors to be $S^3$ by Poincaré.",
+    "significance": "key",
+    "relatedConcepts": [
+      "connected sum",
+      "prime decomposition",
+      "Kneser theorem",
+      "Milnor uniqueness"
+    ],
+    "prerequisites": [
+      "ann-main-theorem",
+      "ann-homeomorphism"
+    ]
+  },
+  {
+    "id": "ann-geometrization-consequence",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 884,
+      "endLine": 889
+    },
+    "type": "concept",
+    "title": "Geometrization and Spherical Geometry",
+    "content": "**`simply_connected_geometry`** is **proved**: a simply connected closed 3-manifold admits only spherical geometry among Thurston's 8 types. This follows because the other 7 geometries require nontrivial $\\pi_1$ (e.g., $\\mathbb{E}^3$-manifolds have $\\mathbb{Z}^3$; $\\mathbb{H}^3$-manifolds have infinite $\\pi_1$). Combined with `thurston_geometrization`, every piece must be spherical.",
+    "mathContext": "The axiom `simply_connected_only_spherical` encodes: of Thurston's 8 geometries ($S^3, \\mathbb{E}^3, \\mathbb{H}^3, S^2 \\times \\mathbb{R}, \\mathbb{H}^2 \\times \\mathbb{R}, \\widetilde{\\text{SL}_2\\mathbb{R}}, \\text{Nil}, \\text{Sol}$), only $S^3$-geometry admits compact quotients with $\\pi_1 = 1$. The spherical space forms are $S^3/\\Gamma$ where $\\Gamma \\leq SO(4)$ acts freely; $\\pi_1(S^3/\\Gamma) \\cong \\Gamma$, so $\\Gamma = 1$ gives $S^3$ itself.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Thurston geometrization",
+      "spherical space forms",
+      "geometric structures",
+      "quotient manifolds"
+    ],
+    "prerequisites": [
+      "ann-thurston",
+      "ann-main-theorem"
+    ]
+  },
+  {
+    "id": "ann-historical",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 419,
+      "endLine": 430
+    },
+    "type": "concept",
+    "title": "Historical Timeline",
+    "content": "The topological Poincaré Conjecture has been proved in **all dimensions**: $n = 1$ (trivial), $n = 2$ (uniformization), $n \\geq 5$ (Smale 1961, Fields Medal 1966), $n = 4$ (Freedman 1982, Fields Medal 1986), $n = 3$ (Perelman 2002–2003, declined Fields Medal 2006 and Millennium Prize 2010). Dimension 3 was the last and hardest case.",
+    "mathContext": "The historical paradox: higher dimensions were easier because the Whitney trick works for $n \\geq 5$ (allowing handle cancellation in h-cobordisms). Dimension 4 required Freedman's revolutionary Casson handle technique. Dimension 3 was uniquely hard because neither h-cobordism nor Casson handles apply—Ricci flow with surgery was the entirely new approach needed.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Fields Medal",
+      "Millennium Prize",
+      "Whitney trick",
+      "dimensional hierarchy"
+    ],
+    "prerequisites": [
+      "ann-poincare-all-dims"
+    ]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 629,
+      "endLine": 696
+    },
+    "type": "concept",
+    "title": "Summary of Verified Results",
+    "content": "The formalization contains 698 lines covering 20 parts. **Proved results** include: $S^3$ and $S^n$ topological properties, loop contractibility, fundamental group triviality, Thurston geometry count, Poincaré dichotomy, normalization retraction, $S^3$ primality, and the all-dimensions unification. **Axiomatized**: Perelman's surgery/extinction, Thurston geometrization, $W$-entropy monotonicity, Hamilton's theorem, Seifert–van Kampen for spheres, connected sum properties, Kneser decomposition.",
+    "mathContext": "The ratio of proved to axiomatized results is notable: 15+ theorems proved vs ~12 axioms. The axioms encode deep analytic and topological results (PDEs, surgery theory, algebraic topology) while the proved theorems handle the logical structure, typeclass lifting, case analysis, and algebraic topology bridges. This demonstrates how formal mathematics can capture the architecture of a proof even when the technical core requires axiomatization.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "proof architecture",
+      "axiom-theorem ratio",
+      "formal verification strategy"
+    ],
+    "prerequisites": [
+      "Poincaré Conjecture",
+      "Axiom Versus Theorem",
+      "Formal Verification"
+    ]
+  }
+]

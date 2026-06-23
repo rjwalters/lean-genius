@@ -1,0 +1,146 @@
+{
+  "slug": "minpoly-charpoly-oq-02",
+  "title": "Diagonalizable Matrices via Squarefree Minimal Polynomial",
+  "phase": "ACT",
+  "status": "blocked",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall M \\in \\mathrm{Mat}_n(K),\\ K \\text{ algebraically closed, } \\mathrm{char}\\ K = 0 \\Longrightarrow\\ \\bigl(M \\text{ is diagonalizable} \\iff \\mathrm{minpoly}_K(M) \\text{ is squarefree}\\bigr).",
+    "plain": "Can the textbook diagonalizability characterisation — a matrix M ∈ Mat_n(K) over an algebraically closed field of characteristic zero is diagonalizable iff its minimal polynomial is squarefree (no repeated roots) — be formalized in Lean 4?",
+    "whyMatters": [
+      "This is the operational test for diagonalizability used everywhere in elementary linear algebra and applied mathematics (numerical linear algebra, dynamical systems, quantum mechanics, …).",
+      "The parent gallery entry `minpoly-charpoly` (17 theorems on minpoly | charpoly) has this as `conclusion.openQuestions[1]` — sandwiched between OQ-01 (Jordan normal form) and OQ-03 (rational canonical form). Closing it completes the three open questions of the parent.",
+      "Unlike the Jordan / rational canonical form sub-OQs, the diagonalizability characterisation has **no Mathlib gap**: the entire forward and reverse implications follow from `Module.End.IsSemisimple` ↔ `Squarefree (minpoly K f)` (`Mathlib.LinearAlgebra.Semisimple`) plus the alg-closed `splits` boundary."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Standard textbook fact (Axler, *Linear Algebra Done Right* 3rd ed., §8.A; Dummit–Foote, *Abstract Algebra* 3rd ed., §12.2): over an algebraically closed field, an operator is diagonalizable iff its minimal polynomial has distinct roots.",
+      "Mathlib `Module.End.isSemisimple_iff_squarefree_minpoly` (`Mathlib.LinearAlgebra.Semisimple`): for a finite-dim endomorphism over a field where minpoly is separable, `IsSemisimple` ↔ `Squarefree (minpoly K f)`.",
+      "Mathlib `Matrix.minpoly_toLin'` (`Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly`): the minimal polynomial transports across the matrix–endomorphism bridge.",
+      "Mathlib `Module.End.IsSemisimple` API: definition and basic closure properties.",
+      "In-tree (S1, this PR): `Matrix.IsDiagonalizable` predicate, `Matrix.IsDiagonalizable.of_isDiag`, `Matrix.IsDiagonalizable.zero`."
+    ],
+    "open": [
+      "Full discharge of `diagonalizable_iff_squarefree_minpoly` (sorry in S1 scaffold).",
+      "Bridge `Matrix.IsDiagonalizable M ↔ Module.End.IsSemisimple (Matrix.toLin' M) ∧ Polynomial.Splits (algebraMap K K) (minpoly K M)` (OQ-02-OQ-02 target).",
+      "General-field version with explicit `splits` hypothesis (OQ-02-OQ-03).",
+      "Char-0 corollary: `CharZero K → ∀ M, Separable (minpoly K M)` so the `IsSemisimple` ↔ `Squarefree minpoly` API applies unconditionally (OQ-02-OQ-04)."
+    ],
+    "goal": "Statement and proof of `diagonalizable_iff_squarefree_minpoly`: over an algebraically closed field of characteristic zero (and, in OQ-02-OQ-03, over any field with the explicit `splits` hypothesis), `M.IsDiagonalizable ↔ Squarefree (minpoly K M)`."
+  },
+  "currentState": {
+    "phase": "BLOCKED",
+    "since": "2026-06-13T00:00:00Z",
+    "iteration": 17,
+    "focus": "S13 STATE-SYNC (researcher-1, 2026-06-13): CONTENT CORRECTION — prior records (leanFiles + S12 focus) were stale, NOT dormant. They claimed MinpolyCharpolyOQ02.lean = 169 LOC, 1 sorry at line 122, '25 days dormant, no PRs since S7'. Reality on origin/main: PR #22923 (helpers) and PR #22909 (forward direction) merged AFTER S12, growing the file to 279 LOC. The FORWARD direction (diagonalizable ⇒ squarefree minpoly) is now FULLY PROVED and unconditional over any field (Matrix.IsDiagonalizable.squarefree_minpoly); matConj similarity-transport automorphism built. The SOLE remaining sorry is the REVERSE direction at line 221 inside diagonalizable_iff_squarefree_minpoly ([IsAlgClosed K][CharZero K]): squarefree minpoly ⇒ diagonalizable, via Bridge C (Module.End.isSemisimple_iff_squarefree_minpoly) + Bridge B (iSup_eigenspace_eq_top_of_isSemisimple) transported through Matrix.toLin'. This corrects a factual missed-merge, distinct from the prior 5:1 doc-only infra re-measurement churn (S6/S8/S10/S11/S12). Build NOT attempted: Docker down 2026-06-13 (verification blackout).",
+    "blockers": [
+      "Verification blackout (2026-06-13, all routes): Docker daemon HUNG (docker info rc=124) and Aristotle backend 404 (mcp-smoke-test.sh). The sole remaining sorry (reverse direction, MinpolyCharpolyOQ02.lean:221) is build-dependent; CI does not build Lean, so a blind edit could silently break the currently-green file. Mathematically unblocked — bridges pinned."
+    ],
+    "nextAction": "UNBLOCK when Docker recovers, then S15 ACT (reverse direction only). Bridges B-fwd/C/D are in-tree; the sole gap is Bridge A reverse (eigenspace decomposition -> conjugating matrix), recipe written out in state.md S14: set f:=toLin' M; minpoly K f = minpoly K M (Matrix.minpoly_toLin'); f.IsSemisimple (Bridge C); iSup eigenspace = top (Bridge B fwd); then DirectSum.IsInternal of eigenspaces -> collectedBasis -> reindex to n -> P:=Basis.toMatrix -> IsDiag(P-inv M P). Est ~50 LOC -> ~330 LOC, 0 sorries, promote to verified.",
+    "attemptCounts": {
+      "total": 15,
+      "currentApproach": 14,
+      "approachesTried": 14
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S13 STATE-SYNC (researcher-1, 2026-06-13): content correction. The forward direction of the headline theorem (diagonalizable ⇒ squarefree minpoly) is now FULLY PROVED and unconditional over any field (Matrix.IsDiagonalizable.squarefree_minpoly), shipped via PR #22909 after S12. File MinpolyCharpolyOQ02.lean is 279 LOC, 9 theorems/lemmas, 2 defs, 0 axioms, 1 sorry — the sorry is now ONLY the reverse direction at line 221 (squarefree minpoly ⇒ diagonalizable over alg-closed char-0, via Bridge B/C through Matrix.toLin'). Prior tracker records (S11/S12) incorrectly described the file as 169 LOC / dormant-since-S7 with the forward direction still open. Build not attempted (Docker down 2026-06-13).",
+    "builtItems": [
+      "Matrix.IsDiagonalizable (def, line 107-108): `∃ P, IsUnit P ∧ IsDiag (P⁻¹ * M * P)` — the matrix-level diagonalizability predicate as an existential over invertible similarity transforms.",
+      "diagonalizable_iff_squarefree_minpoly (theorem, sorry-guarded, lines 119-122): the S1 statement of the textbook characterisation under `IsAlgClosed K + CharZero K`. Single sorry at line 122; ~59 LOC paste expected to close it per S7c PREP §5.1.",
+      "Matrix.IsDiagonalizable.of_isDiag (theorem, unconditional, lines 126-129): a diagonal matrix is diagonalizable — `P = 1` works. v4.26.0 fix shipped in S7 ACT #19095 (dropped `Matrix.inv_one` from `simpa` lemma list).",
+      "Matrix.IsDiagonalizable.zero (theorem, unconditional, lines 132-134): the zero matrix is diagonalizable (via `of_isDiag`).",
+      "**Module.End.iSup_eigenspace_eq_top_of_isSemisimple (lemma, file-local, lines 146-155)** — Bridge B forward; over an algebraically closed field in finite dimensions, semisimplicity of an endomorphism implies its eigenspaces span the whole space. Proven by S7 ACT #19095 via the corrected 3-lemma chain (`IsSemisimple.isFinitelySemisimple` → `IsFinitelySemisimple.maxGenEigenspace_eq_eigenspace` → `iSup_maxGenEigenspace_eq_top`) composed via `iSup_congr` (replaced the original `congr 1` + `ext μ` calc form which produced unexpected goal at v4.26.0).",
+      "**Module.End.isSemisimple_iff_squarefree_minpoly (theorem, file-local, lines 162-167)** — Bridge C iff; over a finite-dimensional space, an endomorphism is semisimple iff its minimal polynomial is squarefree. Proven by S7 ACT #19095 as a direct iff combining `Module.End.IsSemisimple.minpoly_squarefree` (→) and `Module.End.isSemisimple_of_squarefree_aeval_eq_zero ∘ minpoly.aeval` (←)."
+    ],
+    "insights": [
+      "**Three-ingredient resolution** — `Module.End.isSemisimple_iff_squarefree_minpoly` + `Matrix.minpoly_toLin'` + alg-closed `splits` boundary. All three are in Mathlib `v4.26.0`; the remaining work is purely integrative. **No Mathlib gap.**",
+      "**OQ-02 is the smallest of the three minpoly-charpoly sub-OQs** — Sub-OQ roadmap totals ≈ 450 lines, compared to ~930 for OQ-01 (JNF) and ~900 for OQ-03 (RCF). The `Module.End.IsSemisimple` API absorbs the bulk of the work, and the matrix↔endomorphism transport is one Mathlib lemma.",
+      "**Alg-closed-char-0 vs general field** — Over `IsAlgClosed K` the `Polynomial.Splits` hypothesis is automatic (every polynomial splits) and `CharZero K` implies the minpoly is separable (so the Mathlib `IsSemisimple ↔ Squarefree minpoly` API applies). The general-field version requires both as explicit hypotheses.",
+      "**Diagonalizable = Semisimple + Splits** — operator-theoretically, diagonalizability decomposes as semisimplicity (eigenspaces span) plus the field-theoretic condition that all eigenvalues are in K (`splits`). The minimal-polynomial form `Squarefree` captures the semisimplicity half; the `splits` half is a field-theoretic side condition that disappears over algebraically closed fields.",
+      "**Weak vs strong statement** — S1 asserts only the iff at the matrix level. The strong form (similarity transform `P` is constructive from an eigenbasis) is the target of OQ-02-OQ-02 and is a ~5–10 line statement edit on top of S1's weak form.",
+      "**Doc-only-PREP backlog can mask Lean regressions** — S7 ACT #19095 surfaced 5 v4.26.0 elaboration errors silently introduced by Mathlib pin shifts during the 6 doc-only PREPs + 1 STATE-SYNC between S1 (2026-05-12) and S7 (2026-05-15). Lesson: any ACT picker following a doc-only-PREP backlog should run a baseline Docker build before pasting new code, not after.",
+      "**`ring`-bridge between `Finset.erase` and `Finset.sdiff`-singleton fails silently** — S7c PREP #19257 §3 surfaced the latent issue in S5b §5: `ring` treats `∏ x ∈ S.erase μ, …` and `∏ x ∈ S \\ {μ}, …` as opaque distinct terms even though they're propositionally equal via `Finset.erase_eq`. The 1-line fix (S7c §3.3 Option A) is to define `let q := (S \\ {μ}).prod …` directly. Picker-blocker debugging cost without this catch: 5-10 min.",
+      "S11: Docker daemon and host disk recovered without intervention over the 17-day idle window. The S9/S10 B1 blocker was real but transient (likely a Docker Desktop restart by the user resolved the daemon hang; the disk reclaim source is unclear but the working set rose from 4.5 Gi to 25 Gi).",
+      "S11: marginal disk pressure (25 Gi vs 30 Gi threshold) means the S8 ACT picker should treat the build as resource-bounded — pre-verify free disk immediately before docker-build.sh, prefer warm-cache mode if available, and have a contingency for mid-build OOM. The first attempt may need to be at a quiet system moment (no parallel Mathlib clones from other agents)."
+    ],
+    "mathlibGaps": [
+      "(None for the headline theorem.) The four sub-OQs are integrative, not gap-filling."
+    ],
+    "nextSteps": [
+      "S8 ACT (next session, any researcher): execute the ~59 LOC synthesis at MinpolyCharpolyOQ02.lean:122 per S7c PREP §5.1 punch list. Pre-flight (~30s): df -h / ≥25 Gi, docker info Server responsive, proofs/lake-manifest.json Mathlib rev = 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67. Apply §3.3 Option A. docker-build.sh. Expected: 228 LOC, 0 sorries, 0 axioms.",
+      "Post-S8 ACT: update gallery JSON (lineCount, theoremCount, sorryCount → 0, status verified), refresh state.md S12 STATE-SYNC."
+    ]
+  },
+  "tags": [
+    "linear-algebra",
+    "matrices",
+    "diagonalization",
+    "minimal-polynomial",
+    "squarefree",
+    "semisimple",
+    "algebraically-closed",
+    "characteristic-zero",
+    "algebra",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "minpoly-charpoly",
+    "minpoly-charpoly-oq-03",
+    "cayley-hamilton",
+    "cayley-hamilton-minpoly"
+  ],
+  "references": {
+    "papers": [
+      "Axler, S. (2015). *Linear Algebra Done Right* (3rd ed.). Springer. §8.A — diagonalizability and the minimal polynomial.",
+      "Dummit, D. S. & Foote, R. M. (2004). *Abstract Algebra* (3rd ed.). Wiley. §12.2 — rational and Jordan canonical forms; diagonalizability via squarefree minimal polynomial.",
+      "Hoffman, K. & Kunze, R. (1971). *Linear Algebra* (2nd ed.). Prentice Hall. §6.4."
+    ],
+    "urls": [
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/LinearAlgebra/Semisimple.html",
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/LinearAlgebra/Matrix/Charpoly/Minpoly.html",
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Polynomial/Squarefree.html",
+      "https://en.wikipedia.org/wiki/Diagonalizable_matrix"
+    ],
+    "mathlib": [
+      "Module.End.IsSemisimple (Mathlib.LinearAlgebra.Semisimple)",
+      "Module.End.isSemisimple_iff_squarefree_minpoly (Mathlib.LinearAlgebra.Semisimple)",
+      "Matrix.minpoly_toLin' (Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly)",
+      "Polynomial.Squarefree (Mathlib.Algebra.Polynomial.Squarefree)",
+      "Polynomial.Splits (Mathlib.FieldTheory.Splitting Field.Basic)",
+      "IsAlgClosed (Mathlib.FieldTheory.IsAlgClosed.Basic)",
+      "Matrix.IsDiag (Mathlib.LinearAlgebra.Matrix.Diagonal)"
+    ]
+  },
+  "started": "2026-05-12T20:35:00Z",
+  "lastUpdate": "2026-06-13T00:00:00.000Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/MinpolyCharpoly.lean",
+      "filename": "MinpolyCharpoly.lean",
+      "lineCount": 246,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinpolyCharpoly.lean"
+    },
+    {
+      "path": "Proofs/MinpolyCharpolyOQ02.lean",
+      "filename": "MinpolyCharpolyOQ02.lean",
+      "lineCount": 279,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinpolyCharpolyOQ02.lean"
+    }
+  ],
+  "updatedAt": "2026-06-13T00:00:00Z"
+}

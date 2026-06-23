@@ -1,0 +1,187 @@
+[
+  {
+    "id": "erdos-598-ann-header",
+    "proofId": "erdos-598",
+    "range": {
+      "startLine": 1,
+      "endLine": 20
+    },
+    "type": "concept",
+    "title": "Problem Statement and Imports",
+    "content": "The header states Erdős Problem #598: can one color the countable subsets of an infinite set with κ = (2^ℵ₀)⁺ colors so that every κ-sized subset contains subsets of all colors? The formalization imports Mathlib's cardinal arithmetic, continuum, ordinal, and successor modules.",
+    "mathContext": "Let $\\kappa = (2^{\\aleph_0})^+$, the successor of the continuum. The problem asks whether $\\forall m \\ge \\kappa$, there exists $c: [m]^{\\le\\omega} \\to \\kappa$ such that every $X \\subseteq m$ with $|X| = \\kappa$ satisfies $c([X]^{\\le\\omega}) = \\kappa$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "partition calculus",
+      "cardinal coloring",
+      "continuum function"
+    ],
+    "prerequisites": [
+      "cardinal arithmetic",
+      "successor cardinals",
+      "countable sets"
+    ]
+  },
+  {
+    "id": "erdos-598-ann-kappa",
+    "proofId": "erdos-598",
+    "range": {
+      "startLine": 22,
+      "endLine": 30
+    },
+    "type": "definition",
+    "title": "The Cardinal κ = (2^ℵ₀)⁺",
+    "content": "Defines κ as Order.succ (2 ^ ℵ₀), the successor of the continuum cardinal. Under CH, κ = ℵ₂; without CH, κ can be much larger. The axiom kappa_gt_aleph0 records that κ exceeds ℵ₀. This cardinal serves a dual role: as the number of colors and as the minimum subset size that must realize all colors.",
+    "mathContext": "$\\kappa = (2^{\\aleph_0})^+ = \\mathfrak{c}^+$. Under CH ($\\mathfrak{c} = \\aleph_1$), $\\kappa = \\aleph_2$. Under $\\mathfrak{c} = \\aleph_{\\omega}$, $\\kappa = \\aleph_{\\omega+1}$. The successor operation ensures $\\kappa$ is a regular cardinal (Hausdorff's theorem).",
+    "significance": "key",
+    "relatedConcepts": [
+      "continuum hypothesis",
+      "successor cardinal",
+      "regular cardinal",
+      "König's theorem"
+    ],
+    "prerequisites": [
+      "cardinal exponentiation",
+      "Order.succ",
+      "aleph hierarchy"
+    ]
+  },
+  {
+    "id": "erdos-598-ann-countable",
+    "proofId": "erdos-598",
+    "range": {
+      "startLine": 32,
+      "endLine": 37
+    },
+    "type": "definition",
+    "title": "Countable Subsets",
+    "content": "CountableSubset α is the type of countable subsets of α, defined as the subtype { S : Set α // S.Countable }. These are the objects being colored. The number of countable subsets of a set of cardinality m is m^ℵ₀, which by König's theorem satisfies m^ℵ₀ ≥ m⁺ when cf(m) = ω.",
+    "mathContext": "The set $[\\alpha]^{\\le\\omega} = \\{S \\subseteq \\alpha : |S| \\le \\aleph_0\\}$ of countable subsets. For $|\\alpha| = m$, $|[\\alpha]^{\\le\\omega}| = m^{\\aleph_0}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "countable set",
+      "power set",
+      "cardinal exponentiation"
+    ],
+    "prerequisites": [
+      "Set.Countable",
+      "subtype",
+      "cardinal arithmetic"
+    ]
+  },
+  {
+    "id": "erdos-598-ann-completeness",
+    "proofId": "erdos-598",
+    "range": {
+      "startLine": 39,
+      "endLine": 53
+    },
+    "type": "definition",
+    "title": "Chromatic Completeness",
+    "content": "ChromaticCompleteness requires that for every subset X ⊆ α with |X| = κ, every color c < κ is realized by some countable subset of X. This is a strong Ramsey-type property: no matter how one selects a κ-sized subset, it must contain countable subsets of every single color. The coloring must be 'complete' on every large piece.",
+    "mathContext": "A coloring $c: [\\alpha]^{\\le\\omega} \\to \\kappa$ is chromatically complete if $\\forall X \\subseteq \\alpha$ with $|X| = \\kappa$, $\\forall \\gamma < \\kappa$, $\\exists S \\in [X]^{\\le\\omega}$ with $c(S) = \\gamma$. Equivalently, $c''[X]^{\\le\\omega} = \\kappa$ for every $\\kappa$-sized $X$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey property",
+      "partition relation",
+      "homogeneous set"
+    ],
+    "prerequisites": [
+      "cardinal equality",
+      "universal quantification",
+      "Set.Iio"
+    ]
+  },
+  {
+    "id": "erdos-598-ann-conjecture",
+    "proofId": "erdos-598",
+    "range": {
+      "startLine": 55,
+      "endLine": 66
+    },
+    "type": "insight",
+    "title": "Erdős Problem #598",
+    "content": "The central conjecture: for every infinite type α with |α| ≥ κ, there exists a κ-coloring of countable subsets with chromatic completeness. This is a partition-calculus question asking whether the successor of the continuum is the right threshold for universal color realization. Erdős posed this in 1987 as part of his investigations into partition properties of cardinal arithmetic.",
+    "mathContext": "The problem asserts $\\forall m \\ge \\kappa = (2^{\\aleph_0})^+$, $\\exists c: [m]^{\\le\\omega} \\to \\kappa$ such that $c$ is chromatically complete. The existential quantifier over colorings makes this a combinatorial existence problem in ZFC (or possibly independent of ZFC).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős–Rado partition relation",
+      "cardinal invariants of the continuum",
+      "ZFC independence"
+    ],
+    "prerequisites": [
+      "Infinite typeclass",
+      "cardinal comparison",
+      "existential quantification"
+    ]
+  },
+  {
+    "id": "erdos-598-ann-minimal",
+    "proofId": "erdos-598",
+    "range": {
+      "startLine": 68,
+      "endLine": 76
+    },
+    "type": "concept",
+    "title": "Minimal Case m = κ",
+    "content": "The smallest interesting case sets the ground set to have cardinality exactly κ. If the coloring exists even for this minimal case, monotonicity gives it for all larger m. This is the hardest case since there are fewest countable subsets to work with. The number of countable subsets is κ^ℵ₀ = (2^ℵ₀)^{+ℵ₀}, which under GCH equals κ itself.",
+    "mathContext": "The minimal case asks: $\\exists c: [\\kappa]^{\\le\\omega} \\to \\kappa$ chromatically complete? Here $|[\\kappa]^{\\le\\omega}| = \\kappa^{\\aleph_0}$. Under GCH, $\\kappa^{\\aleph_0} = \\kappa$ since $\\kappa$ is a successor cardinal $> 2^{\\aleph_0}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "GCH",
+      "cardinal exponentiation",
+      "minimal counterexample"
+    ],
+    "prerequisites": [
+      "Set.Iio",
+      "CountableSubset",
+      "ChromaticCompleteness"
+    ]
+  },
+  {
+    "id": "erdos-598-ann-ch",
+    "proofId": "erdos-598",
+    "range": {
+      "startLine": 78,
+      "endLine": 82
+    },
+    "type": "concept",
+    "title": "Under CH: κ = ℵ₂",
+    "content": "Under the continuum hypothesis (2^ℵ₀ = ℵ₁), κ = ℵ₂. The problem takes a concrete form: can one color countable subsets with ℵ₂ colors so that every ℵ₂-sized subset realizes all colors? This is the most computationally accessible version and connects to classical results in set theory about partition properties of ℵ₂.",
+    "mathContext": "CH asserts $2^{\\aleph_0} = \\aleph_1$, so $\\kappa = \\aleph_1^+ = \\aleph_2$. The problem becomes: $\\forall m \\ge \\aleph_2$, $\\exists c: [m]^{\\le\\omega} \\to \\aleph_2$ chromatically complete.",
+    "significance": "key",
+    "relatedConcepts": [
+      "continuum hypothesis",
+      "aleph-2",
+      "Shelah's pcf theory"
+    ],
+    "prerequisites": [
+      "Cardinal.continuum",
+      "aleph function",
+      "cardinal successor"
+    ]
+  },
+  {
+    "id": "erdos-598-ann-monotone",
+    "proofId": "erdos-598",
+    "range": {
+      "startLine": 84,
+      "endLine": 84
+    },
+    "type": "concept",
+    "title": "Monotonicity in Ground Set Size",
+    "content": "If a chromatically complete coloring exists for a ground set of cardinality m', it also exists for any m ≤ m'. The coloring can be restricted to the smaller set. This means the problem is hardest for the minimal case m = κ, and solving that case would settle all larger cases. The axiom formalizes this with an existential witness for the restricted coloring.",
+    "mathContext": "If $m \\le m'$ and $c: [m']^{\\le\\omega} \\to \\kappa$ is chromatically complete, then the restriction $c|_{[m]^{\\le\\omega}}$ is chromatically complete for $m$. This follows from $[X]^{\\le\\omega} \\cap [m]^{\\le\\omega} \\ne \\emptyset$ for $X \\subseteq m$ with $|X| = \\kappa$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "restriction of coloring",
+      "monotone property",
+      "hereditary property"
+    ],
+    "prerequisites": [
+      "cardinal ordering",
+      "function restriction",
+      "Infinite typeclass"
+    ]
+  }
+]

@@ -1,0 +1,198 @@
+[
+  {
+    "id": "erdos-949-sum-free",
+    "proofId": "erdos-949",
+    "type": "definition",
+    "range": {
+      "startLine": 26,
+      "endLine": 29
+    },
+    "title": "Sum-Free Set",
+    "content": "A set $S \\subseteq \\mathbb{R}$ is sum-free if $\\forall a, b \\in S,\\; a + b \\notin S$. Equivalently, $(S + S) \\cap S = \\emptyset$ where $S + S = \\{a + b : a, b \\in S\\}$. Note this allows $a = b$, so $2a \\notin S$ for any $a \\in S$. Sum-free subsets of $\\{1, \\ldots, n\\}$ have been extensively studied: the maximum size is $\\lceil n/2 \\rceil$ (achieved by the odd numbers in $[n/2, n]$). In $\\mathbb{R}$, the structure is richer due to the continuum cardinality.",
+    "mathContext": "$\\text{IsSumFreeSet}(S) \\iff \\forall a \\in S,\\; \\forall b \\in S,\\; a + b \\notin S \\iff (S + S) \\cap S = \\emptyset$",
+    "significance": "key",
+    "relatedConcepts": [
+      "sumset",
+      "sum-free subsets of integers",
+      "Schur numbers",
+      "cap sets"
+    ],
+    "prerequisites": [
+      "Set ℝ",
+      "set membership",
+      "addition on ℝ"
+    ]
+  },
+  {
+    "id": "erdos-949-sidon-def",
+    "proofId": "erdos-949",
+    "type": "definition",
+    "range": {
+      "startLine": 31,
+      "endLine": 35
+    },
+    "title": "Sidon Set in ℝ",
+    "content": "A set $S \\subseteq \\mathbb{R}$ is Sidon if all pairwise sums $a + b$ with $a \\leq b$ are distinct: $a + b = c + d$ with $a \\leq b, c \\leq d$ implies $(a, b) = (c, d)$. In finite sets, Sidon sets have size $O(\\sqrt{n})$ in $\\{1, \\ldots, n\\}$. In $\\mathbb{R}$, Sidon sets can be uncountable (e.g., algebraically independent sets over $\\mathbb{Q}$). Sidon sets are NOT necessarily sum-free—the file proves this with the counterexample $\\{1, 2, 4\\}$.",
+    "mathContext": "$\\text{IsSidonReal}(S) \\iff \\forall a \\leq b,\\; c \\leq d \\in S:\\; a + b = c + d \\implies (a,b) = (c,d)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "B₂ sets",
+      "additive Sidon sets",
+      "distinct sums",
+      "algebraic independence"
+    ],
+    "prerequisites": [
+      "Set ℝ",
+      "linear order on ℝ",
+      "addition"
+    ]
+  },
+  {
+    "id": "erdos-949-sumset",
+    "proofId": "erdos-949",
+    "type": "definition",
+    "range": {
+      "startLine": 37,
+      "endLine": 39
+    },
+    "title": "The Sumset A + A",
+    "content": "The sumset $A + A = \\{a + b : a, b \\in A\\}$ collects all pairwise sums from $A$. This is the image of the addition map $A \\times A \\to \\mathbb{R}$. If $|A| = \\aleph_0$, then $|A+A| \\leq \\aleph_0$. If $|A| = \\mathfrak{c}$, then $|A+A| \\leq \\mathfrak{c}$. The problem asks for $A$ with $(A+A) \\cap S = \\emptyset$, i.e., the sumset avoids the original sum-free set entirely.",
+    "mathContext": "$\\text{realSumset}(A) = \\{x \\in \\mathbb{R} : \\exists a \\in A,\\; \\exists b \\in A,\\; x = a + b\\} = A + A$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Minkowski sum",
+      "sumset bounds",
+      "Freiman's theorem",
+      "additive energy"
+    ],
+    "prerequisites": [
+      "Set ℝ",
+      "existential quantification",
+      "addition"
+    ]
+  },
+  {
+    "id": "erdos-949-conjecture",
+    "proofId": "erdos-949",
+    "type": "insight",
+    "range": {
+      "startLine": 43,
+      "endLine": 49
+    },
+    "title": "Erdős Problem 949: Main Conjecture",
+    "content": "For every sum-free $S \\subseteq \\mathbb{R}$, there exists $A \\subseteq S^c$ with $|A| = \\mathfrak{c}$ (the cardinality of the continuum) and $A + A \\subseteq S^c$. This asks: does a sum-free set always leave enough additive room in its complement for a continuum-sized set whose sumset also stays in the complement? The continuum cardinality is essential—the question is trivial for countable $A$ since $S^c$ always has cardinality $\\mathfrak{c}$ (as $S$ is sum-free, hence cannot be all of $\\mathbb{R}$).",
+    "mathContext": "$\\forall S \\subseteq \\mathbb{R},\\; \\text{IsSumFreeSet}(S) \\implies \\exists A \\subseteq S^c:\\; |A| = \\mathfrak{c} \\wedge A + A \\subseteq S^c$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cardinal.continuum",
+      "complement structure",
+      "additive combinatorics",
+      "set-theoretic combinatorics"
+    ],
+    "prerequisites": [
+      "IsSumFreeSet",
+      "realSumset",
+      "Cardinal.mk",
+      "Cardinal.continuum"
+    ]
+  },
+  {
+    "id": "erdos-949-odd-example",
+    "proofId": "erdos-949",
+    "type": "concept",
+    "range": {
+      "startLine": 58,
+      "endLine": 68
+    },
+    "title": "Odd Numbers Are Sum-Free (Proved)",
+    "content": "The set of odd positive reals $\\{2n+1 : n \\in \\mathbb{N}\\}$ is sum-free because odd + odd = even, so the sum never lands in the set. The proof uses `ring` to show $2m + 1 + 2n + 1 = 2(m+n+1)$ (even), then derives a contradiction if this equals $2k + 1$ (odd) via `omega`. This is the simplest concrete example of a sum-free set in the formalization.",
+    "mathContext": "$S = \\{2n+1 : n \\in \\mathbb{N}\\}$ is sum-free: $(2m+1) + (2n+1) = 2(m+n+1) \\neq 2k+1$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "parity argument",
+      "ring tactic",
+      "concrete example",
+      "omega tactic"
+    ],
+    "prerequisites": [
+      "IsSumFreeSet",
+      "Nat cast",
+      "ring",
+      "omega"
+    ]
+  },
+  {
+    "id": "erdos-949-sidon-not-sumfree",
+    "proofId": "erdos-949",
+    "type": "concept",
+    "range": {
+      "startLine": 82,
+      "endLine": 100
+    },
+    "title": "Sidon Does Not Imply Sum-Free (Proved)",
+    "content": "The theorem `sidon_not_implies_sum_free` proves that $\\{1, 2, 4\\} \\subseteq \\mathbb{R}$ is Sidon (all 6 pairwise sums $2, 3, 5, 3, 5, 8$ with repetitions but distinct ordered sums) yet not sum-free since $1 + 1 = 2 \\in S$. This corrects a previous unsound axiom `sidon_is_sum_free`. The proof constructs the Sidon verification by case analysis on all element combinations (12 cases) and shows the sum-free property fails by exhibiting the witness $a = b = 1$.",
+    "mathContext": "$\\{1, 2, 4\\}$ is Sidon (B₂) but $1 + 1 = 2 \\in S$, so Sidon $\\not\\Rightarrow$ sum-free",
+    "significance": "key",
+    "relatedConcepts": [
+      "counterexample",
+      "corrected axiom",
+      "Sidon vs sum-free distinction",
+      "case analysis"
+    ],
+    "prerequisites": [
+      "IsSidonReal",
+      "IsSumFreeSet",
+      "mem_insert_iff",
+      "linarith"
+    ]
+  },
+  {
+    "id": "erdos-949-sidon-solved",
+    "proofId": "erdos-949",
+    "type": "insight",
+    "range": {
+      "startLine": 104,
+      "endLine": 111
+    },
+    "title": "Sidon Variant (Solved by Dillies-AlphaProof)",
+    "content": "The Sidon variant of Problem 949 is proved: if $S \\subseteq \\mathbb{R}$ is Sidon, then there exists $A \\subseteq S^c$ with $|A| = \\mathfrak{c}$ and $A + A \\subseteq S^c$. Note this does NOT require $S$ to be sum-free. The proof splits into two cases: (1) if $|S| < \\mathfrak{c}$, Zorn's lemma produces a maximal sumset-avoiding subset of $S^c$, and maximality forces $|A| = \\mathfrak{c}$; (2) if $|S| = \\mathfrak{c}$, pick $a \\neq 0$ in $S$ and form $A = ((S \\setminus \\{a\\}) - a/2) \\setminus S$, where the Sidon property ensures the image has at most one element in $S$.",
+    "mathContext": "$\\forall S \\subseteq \\mathbb{R},\\; \\text{IsSidonReal}(S) \\implies \\exists A \\subseteq S^c:\\; |A| = \\mathfrak{c} \\wedge A + A \\subseteq S^c$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Zorn's lemma",
+      "maximal set",
+      "shift construction",
+      "cardinality dichotomy"
+    ],
+    "prerequisites": [
+      "IsSidonReal",
+      "Cardinal.continuum",
+      "realSumset",
+      "Zorn's lemma"
+    ]
+  },
+  {
+    "id": "erdos-949-open",
+    "proofId": "erdos-949",
+    "type": "concept",
+    "range": {
+      "startLine": 119,
+      "endLine": 121
+    },
+    "title": "General Sum-Free Case Remains Open",
+    "content": "The general Problem 949 for arbitrary sum-free sets remains open. The key difficulty: sum-free sets can be much denser than Sidon sets (sum-free subsets of $[n]$ can have $\\sim n/2$ elements, while Sidon subsets have $\\sim \\sqrt{n}$). The Sidon proof exploits the injectivity of the sum map ($a + b = c + d \\implies (a,b) = (c,d)$), which fails for general sum-free sets. The axiom `erdos_949_open` records the full conjecture.",
+    "mathContext": "ErdosProblem949 is stated as an axiom: the general case $\\text{IsSumFreeSet}(S) \\implies \\exists A$ with the required properties is OPEN",
+    "significance": "key",
+    "relatedConcepts": [
+      "density gap between Sidon and sum-free",
+      "injectivity of addition",
+      "open problem",
+      "axiom in Lean"
+    ],
+    "prerequisites": [
+      "ErdosProblem949",
+      "IsSumFreeSet",
+      "Sidon proof limitations"
+    ]
+  }
+]

@@ -1,0 +1,115 @@
+[
+  {
+    "id": "oq04-statement",
+    "proofId": "cantors-theorem-oq-01-oq-03-oq-04",
+    "range": { "startLine": 9, "endLine": 27 },
+    "type": "concept",
+    "title": "The OQ-04 Question and Its One-Line Resolution",
+    "content": "The parent file's `cf_powerSet_real_ne_aleph0` corollary is a *single-cardinal* exclusion: it rules out $\\operatorname{cf}(|\\mathcal{P}(\\mathbb{R})|) = \\aleph_0$ and, via the Hausdorff cofinality theorem, $|\\mathcal{P}(\\mathbb{R})| = \\aleph_\\omega$ (which has cofinality $\\aleph_0$). The OQ-04 question is whether this can be generalised to every cardinal $\\kappa \\leq \\mathfrak{c}$.\n\nThe answer is yes, and the proof is one line. From the parent's strict inequality $\\mathfrak{c} < \\operatorname{cf}(|\\mathcal{P}(\\mathbb{R})|)$, if we assume $\\operatorname{cf}(|\\mathcal{P}(\\mathbb{R})|) = \\kappa$ and $\\kappa \\leq \\mathfrak{c}$, then transporting the inequality through the equation gives $\\mathfrak{c} < \\kappa \\leq \\mathfrak{c}$, contradicting irreflexivity. The value of naming and bundling the lemma is that downstream consumers (Easton-style independence arguments, cardinal arithmetic surveys) can cite a single named theorem instead of re-deriving the family of corollaries one cardinal at a time.",
+    "mathContext": "For every cardinal $\\kappa \\leq \\mathfrak{c}$, $\\operatorname{cf}(|\\mathcal{P}(\\mathbb{R})|) \\neq \\kappa$. The general exclusion family includes the parent's $\\kappa = \\aleph_0$ as the smallest case and $\\kappa = \\mathfrak{c}$ as the largest.",
+    "significance": "key",
+    "prerequisites": [
+      "Cardinal arithmetic (cofinality)",
+      "König's theorem cf(2^κ) > κ",
+      "The parent's `cf_powerSet_real_gt_continuum`"
+    ],
+    "relatedConcepts": [
+      "König's theorem",
+      "Continuum Hypothesis",
+      "Easton's theorem",
+      "Cofinality"
+    ]
+  },
+  {
+    "id": "general-vs-specific",
+    "proofId": "cantors-theorem-oq-01-oq-03-oq-04",
+    "range": { "startLine": 81, "endLine": 98 },
+    "type": "insight",
+    "title": "Pattern: Every Strict Inequality Yields a Family of Disequalities",
+    "content": "The proof of `cf_powerSet_real_ne_of_le_continuum` exhibits a general pattern in cardinal arithmetic: every parent inequality of the form $c < \\operatorname{cf}(\\#X)$ automatically yields the entire family of disequalities $\\{\\operatorname{cf}(\\#X) \\neq \\kappa : \\kappa \\leq c\\}$. This is mathematically trivial — strict inequality implies disequality — but proof-engineering matters: by naming the general lemma, every downstream specialisation is one application of the lemma rather than an independent contradiction-style argument.\n\nThis pattern recurs throughout Mathlib's cardinal arithmetic library. Consider `Cardinal.aleph_lt_continuum_iff` or `Cardinal.beth_strictMono.lt_iff_lt`: each is a strict-inequality lemma that *implicitly* defines a family of disequalities for downstream use. Codifying the named version of the disequality family — as this file does for the König-constraint case — saves later proofs the work of repeated `intro h; rw at; absurd` steps.",
+    "mathContext": "Order-theoretic pattern: $a < b \\implies a \\neq b$. In the cardinal setting, when $a, b$ are cardinals and the strict inequality is named (e.g. König's constraint), the disequality form deserves to be named separately to support direct citation.",
+    "significance": "key",
+    "prerequisites": [
+      "Linear-order irreflexivity",
+      "Mathlib's `lt_irrefl` and `LE.le.trans_lt`"
+    ],
+    "relatedConcepts": [
+      "Cardinal exponentiation",
+      "Lemma-naming conventions in formal mathematics"
+    ]
+  },
+  {
+    "id": "aleph0-rederivation",
+    "proofId": "cantors-theorem-oq-01-oq-03-oq-04",
+    "range": { "startLine": 104, "endLine": 112 },
+    "type": "theorem",
+    "title": "ℵ₀ Specialisation: Re-deriving the Parent Corollary",
+    "content": "`cf_powerSet_real_ne_aleph0_general` recovers the parent file's `cf_powerSet_real_ne_aleph0` as the smallest instance ($\\kappa = \\aleph_0$) of the general exclusion, by feeding `Cardinal.aleph0_le_continuum` to `cf_powerSet_real_ne_of_le_continuum`. The point is structural rather than mathematical: the parent stated this corollary as an independent result, whereas here it falls out of the general lemma in a single term-mode application, refactoring the proof tree so the family of exclusions has one common root. The $\\aleph_0$ case is the one with the most classical bite: via the Hausdorff cofinality formula $\\operatorname{cf}(\\aleph_\\omega) = \\aleph_0$, it is exactly what rules out $|\\mathcal{P}(\\mathbb{R})| = \\aleph_\\omega$ — the smallest singular cardinal that König's theorem forbids the continuum's power set from equalling.",
+    "mathContext": "$\\operatorname{cf}(|\\mathcal{P}(\\mathbb{R})|) \\neq \\aleph_0$, obtained as `cf_powerSet_real_ne_of_le_continuum aleph0_le_continuum`. Combined with $\\operatorname{cf}(\\aleph_\\omega) = \\aleph_0$ this yields $|\\mathcal{P}(\\mathbb{R})| \\neq \\aleph_\\omega$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Cardinal.aleph0_le_continuum",
+      "Hausdorff cofinality cf(ℵ_ω) = ℵ₀"
+    ],
+    "relatedConcepts": [
+      "König's theorem",
+      "singular cardinals",
+      "proof-tree refactoring"
+    ]
+  },
+  {
+    "id": "continuum-boundary",
+    "proofId": "cantors-theorem-oq-01-oq-03-oq-04",
+    "range": { "startLine": 117, "endLine": 130 },
+    "type": "insight",
+    "title": "The κ = 𝔠 Boundary Case Is the Strongest Single-Cardinal Exclusion",
+    "content": "The specialisation `cf_powerSet_real_ne_continuum : cf(|\\mathcal{P}(\\mathbb{R})|) \\neq \\mathfrak{c}` is the strongest below-continuum exclusion implied by König's constraint. The parent file proved the *strict* inequality $\\mathfrak{c} < \\operatorname{cf}(|\\mathcal{P}(\\mathbb{R})|)$; this file extracts the disequational form. They differ logically only on the question of *direction* (the parent says cof is bigger; this says cof is not equal), but downstream proofs often care only about the disequality — typically when they have a parameter that may or may not equal $\\mathfrak{c}$ and need to rule out one value.\n\nThe `κ = 𝔠` case was not stated explicitly in the parent file. Adding it here closes a small gap and makes the bundle complete: the parent's bundle covered general-κ, 𝔠-application, |𝒫(ℝ)|-application, and cf ≠ ℵ₀; the OQ-04 bundle covers the general-disequation form and four named specialisations.",
+    "mathContext": "$\\operatorname{cf}(|\\mathcal{P}(\\mathbb{R})|) \\neq \\mathfrak{c}$ is the boundary case of the general exclusion family. The parent proved the strict $\\mathfrak{c} < \\operatorname{cf}(|\\mathcal{P}(\\mathbb{R})|)$; the disequality form makes it citable in `≠`-shaped downstream goals.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Cardinal arithmetic at the continuum",
+      "Reflexivity of `≤`"
+    ],
+    "relatedConcepts": [
+      "König's constraint",
+      "Hausdorff cofinality"
+    ]
+  },
+  {
+    "id": "aleph-beth-uniformity",
+    "proofId": "cantors-theorem-oq-01-oq-03-oq-04",
+    "range": { "startLine": 132, "endLine": 162 },
+    "type": "concept",
+    "title": "Uniform Aleph and Beth Specialisations",
+    "content": "The aleph specialisation `cf_powerSet_real_ne_aleph_of_aleph_le_continuum` and the beth specialisation `cf_powerSet_real_ne_beth_of_beth_le_continuum` parameterise the exclusion over the entire below-continuum aleph and beth hierarchies, respectively. The implicit ordinal $\\alpha$ ranges over all ordinals such that $\\aleph_\\alpha \\leq \\mathfrak{c}$ (resp. $\\beth_\\alpha \\leq \\mathfrak{c}$).\n\n**Aleph range depends on the model of ZFC**: Under CH, $\\mathfrak{c} = \\aleph_1$ so $\\alpha \\in \\{0, 1\\}$. Under Martin's Axiom + $\\neg$CH, $\\mathfrak{c}$ can be $\\aleph_2, \\aleph_3, \\ldots$ extending the valid range of $\\alpha$.\n\n**Beth range is uniform**: Since $\\beth_1 = 2^{\\aleph_0} = \\mathfrak{c}$, the constraint $\\beth_\\alpha \\leq \\mathfrak{c}$ forces $\\alpha \\leq 1$ in every ZFC model. So the beth specialisation has a fixed range (just $\\alpha = 0$ giving $\\aleph_0$ or $\\alpha = 1$ giving $\\mathfrak{c}$), making it less informative than the aleph version but still useful as a named lemma.\n\nUnder CH the aleph and beth ranges coincide; without CH the aleph range can extend strictly further (e.g. $\\aleph_2 \\leq \\mathfrak{c}$ is consistent, but $\\beth_2 = 2^{\\mathfrak{c}} > \\mathfrak{c}$ is forced by König).",
+    "mathContext": "Aleph and beth families relative to $\\mathfrak{c}$: aleph range is model-dependent ($\\alpha = 0$ under CH, larger under Martin's Axiom + $\\neg$CH); beth range is fixed ($\\alpha \\leq 1$ in every ZFC model since $\\beth_1 = \\mathfrak{c}$).",
+    "significance": "supporting",
+    "prerequisites": [
+      "Aleph and beth hierarchies",
+      "ZFC consistency landscape (CH, MA, GCH)"
+    ],
+    "relatedConcepts": [
+      "Continuum Hypothesis",
+      "Martin's Axiom",
+      "Cardinal hierarchies in ZFC"
+    ]
+  },
+  {
+    "id": "resolution-bundle",
+    "proofId": "cantors-theorem-oq-01-oq-03-oq-04",
+    "range": { "startLine": 164, "endLine": 200 },
+    "type": "concept",
+    "title": "Why Bundle Five Forms in `oq01oq03oq04_resolution`?",
+    "content": "The resolution bundle theorem packages the universally-quantified general form together with four salient specialisations as a single conjunction. The mathematical content is *not* new: each component is one application of `cf_powerSet_real_ne_of_le_continuum`. The bundle's purpose is documentation and citability — it gives gallery readers and downstream consumers a single named theorem that affirmatively resolves the OQ-04 open question.\n\nThe pattern mirrors the parent's `oq01oq03_resolution` bundle, which packaged four König-constraint forms. By following the same convention, the bundle becomes a navigable index: an outside reader interested in 'the König-constraint family at |𝒫(ℝ)|' can locate it via either parent or child bundle and find all relevant forms.\n\nThe `@` prefix in `@cf_powerSet_real_ne_of_le_continuum` is necessary to inhibit implicit-argument insertion when binding the universally-quantified κ inside the bundle conjunction.",
+    "mathContext": "Bundle theorem pattern: package the universally-quantified general form together with named specialisations as a conjunction. Mathematically trivial but pedagogically essential for downstream citation.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Lean 4 implicit-argument syntax (the `@` operator)",
+      "Universally-quantified-statement formalisation in dependent type theory"
+    ],
+    "relatedConcepts": [
+      "Bundle theorems in Mathlib",
+      "Open-question resolution conventions in Lean Genius"
+    ]
+  }
+]

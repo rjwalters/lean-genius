@@ -1,0 +1,188 @@
+{
+  "id": "vietas-formulas-oq-03-oq-01",
+  "title": "Generalized Newton's Identities via MvPolynomial",
+  "slug": "vietas-formulas-oq-03-oq-01",
+  "description": "Newton's identities generalized to arbitrary n variables using Mathlib's MvPolynomial infrastructure. Defines concrete power sums and elementary symmetric polynomials for Fin n → R, bridges them to MvPolynomial.psum and MvPolynomial.esymm via the aeval evaluation homomorphism, and derives the general Newton recurrence from Mathlib's combinatorial proof.",
+  "meta": {
+    "author": "Isaac Newton (1707); generalized formalization here",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Newton%27s_identities",
+    "date": "1707",
+    "status": "verified",
+    "proofRepoPath": "Proofs/VietasFormulasOQ03OQ01.lean",
+    "tags": [
+      "algebra",
+      "symmetric-functions",
+      "polynomials",
+      "research",
+      "newtons-identities",
+      "power-sums",
+      "mv-polynomial",
+      "generalization"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "defCount": 2,
+    "lineCount": 185,
+    "mathlibDependencies": [
+      {
+        "theorem": "MvPolynomial.mul_esymm_eq_sum",
+        "description": "Newton's identity for elementary symmetric polynomials in MvPolynomial",
+        "module": "Mathlib.RingTheory.MvPolynomial.Symmetric.NewtonIdentities"
+      },
+      {
+        "theorem": "MvPolynomial.psum_eq_mul_esymm_sub_sum",
+        "description": "Newton's identity for power sums in MvPolynomial",
+        "module": "Mathlib.RingTheory.MvPolynomial.Symmetric.NewtonIdentities"
+      },
+      {
+        "theorem": "MvPolynomial.aeval",
+        "description": "Evaluation algebra homomorphism for multivariate polynomials",
+        "module": "Mathlib.Algebra.MvPolynomial.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Concrete power sum and elementary symmetric polynomial definitions for Fin n → R",
+      "Evaluation bridge: MvPolynomial.psum/esymm at x equals concrete powerSum/elemSymm",
+      "General Newton's identity for arbitrary n: k·eₖ(x) = (-1)^{k+1}·∑ (-1)^a·eₐ(x)·p_b(x)",
+      "Power sum form: pₖ(x) = (-1)^{k+1}·k·eₖ(x) - ∑ correction terms",
+      "Specialization consistency: ring-verified 2, 3, 4 variable cases",
+      "Vieta product formulas for degrees 2, 3, 4"
+    ],
+    "dateAdded": "2026-03-29",
+    "prerequisites": [
+      "MvPolynomial symmetric functions (esymm, psum)",
+      "Algebra homomorphisms (aeval evaluation)",
+      "Finset.antidiagonal and filtering",
+      "Commutative ring axioms"
+    ],
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "Newton's identities, first published in *Arithmetica Universalis* (1707), connect power sums pₖ = Σxᵢᵏ to elementary symmetric polynomials eₖ. While the case-by-case identities (for 2, 3, 4 variables) were formalized in VietasFormulasOQ03.lean using the `ring` tactic, this file takes the fundamentally different approach of deriving the general identity for arbitrary n from Mathlib's abstract combinatorial proof.\n\nThe key mathematical insight is that Newton's identities are a property of the ring of symmetric functions Λ, not of any particular number of variables. Mathlib formalizes this at the level of MvPolynomial using Zeilberger's sign-reversing involution proof, and we recover concrete identities by evaluating at specific points via the aeval homomorphism.",
+    "problemStatement": "Generalize Newton's identities to n variables: for any function x : Fin n → R over a commutative ring R, prove\n\nk · eₖ(x) = (-1)^{k+1} · Σ_{a+b=k, a<k} (-1)^a · eₐ(x) · p_b(x)\n\nwhere eₖ(x) = Σ_{|S|=k} Π_{i∈S} xᵢ and pₖ(x) = Σᵢ xᵢᵏ, by specializing Mathlib's MvPolynomial.mul_esymm_eq_sum via the evaluation homomorphism aeval.",
+    "text": "Newton's identities generalized to arbitrary n variables using Mathlib's MvPolynomial infrastructure. Defines concrete power sums and elementary symmetric polynomials for Fin n → R, bridges them to MvPolynomial.psum and MvPolynomial.esymm via the aeval evaluation homomorphism, and derives the general Newton recurrence from Mathlib's combinatorial proof.",
+    "proofStrategy": "The proof follows a three-layer architecture:\n\n1. **Concrete definitions**: powerSum and elemSymm for Fin n → R, defined as direct Finset sums/products.\n\n2. **Evaluation bridge**: Prove that MvPolynomial.aeval x (MvPolynomial.psum k) = powerSum k x and similarly for esymm. These follow by simp from the definitions and aeval's distribution over sums/products.\n\n3. **General identity**: Apply aeval to both sides of Mathlib's mul_esymm_eq_sum, then use the bridge lemmas to rewrite in concrete terms.\n\nThe specialization examples use `ring` to verify consistency with the case-by-case results.",
+    "keyInsights": [
+      "**Evaluation bridge pattern**: Abstract algebraic identities in MvPolynomial can be specialized to concrete functions via aeval, a general technique for extracting usable results from Mathlib's abstract algebra.",
+      "**One theorem for all n**: Instead of proving Newton's identity for n=2, n=3, n=4 separately, we prove it once for arbitrary n. The case-by-case results are then mere specializations.",
+      "**Zeilberger's proof**: Mathlib uses a sign-reversing involution argument (Zeilberger 1984) rather than induction or generating functions, yielding a purely combinatorial proof that works over any commutative ring.",
+      "**Vieta-Newton circuit**: The file closes the full circuit from polynomial roots to power sums: Vieta's formulas extract eₖ from polynomial coefficients (proved by ring for degrees 2-4), then Newton's identities recover pₖ from the eₖ. Together they form the complete symmetric function toolkit for characteristic polynomial analysis.",
+      "**No characteristic zero needed**: The general Newton identity holds over any commutative ring R, including finite fields and rings with torsion. The key hypothesis-free structure means the same theorem works for matrices over ℤ, polynomials over 𝔽ₚ, or elements of any CommRing."
+    ],
+    "prerequisites": [
+      "MvPolynomial symmetric functions (esymm, psum)",
+      "Algebra homomorphisms (aeval evaluation)",
+      "Finset.antidiagonal and filtering",
+      "Commutative ring axioms"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Module docstring explaining the generalization strategy: derive Newton's identities for arbitrary n variables from Mathlib's MvPolynomial.mul_esymm_eq_sum via evaluation. Imports MvPolynomial.Symmetric.NewtonIdentities and opens MvPolynomial, Finset namespaces.",
+      "mathContext": "The file proves the general Newton identity $k \\cdot e_k(x) = (-1)^{k+1} \\sum_{a+b=k,\\,a<k} (-1)^a e_a(x) p_b(x)$ for $x : \\text{Fin}\\ n \\to R$ in any commutative ring $R$, by specializing Mathlib's abstract MvPolynomial identity via the evaluation homomorphism aeval."
+    },
+    {
+      "id": "concrete-defs",
+      "title": "Concrete Definitions",
+      "startLine": 27,
+      "endLine": 42,
+      "summary": "Defines `powerSum k x = ∑ᵢ (x i)^k` and `elemSymm k x = ∑_{|S|=k} ∏_{i∈S} x i` for functions `x : Fin n → R`.",
+      "mathContext": "These are the standard concrete forms of symmetric functions, operating on tuples rather than abstract polynomial rings."
+    },
+    {
+      "id": "eval-bridge",
+      "title": "Evaluation Bridge",
+      "startLine": 44,
+      "endLine": 58,
+      "summary": "Proves that `aeval x (psum k) = powerSum k x` and `aeval x (esymm k) = elemSymm k x`. These bridge lemmas connect abstract MvPolynomial identities to concrete computations.",
+      "mathContext": "The evaluation homomorphism aeval : MvPolynomial σ R →ₐ[R] R sends X i ↦ x i and preserves all ring operations, so it commutes with sums, products, and powers."
+    },
+    {
+      "id": "general-newton",
+      "title": "General Newton's Identities",
+      "startLine": 60,
+      "endLine": 102,
+      "summary": "The main results: newton_identity (elementary symmetric form) and newton_identity_psum (power sum form), both for arbitrary n. Derived from Mathlib's MvPolynomial.mul_esymm_eq_sum via evaluation.",
+      "mathContext": "k · eₖ(x) = (-1)^{k+1} · Σ_{a+b=k, a<k} (-1)^a · eₐ(x) · p_b(x). This single theorem subsumes all the individual identities from VietasFormulasOQ03.lean."
+    },
+    {
+      "id": "basic-props",
+      "title": "Basic Properties",
+      "startLine": 104,
+      "endLine": 118,
+      "summary": "Elementary properties: e₀ = 1, e₁ = Σxᵢ, p₁ = Σxᵢ, and the first Newton identity p₁ = e₁.",
+      "mathContext": "These are the base cases that anchor the Newton recurrence."
+    },
+    {
+      "id": "specializations",
+      "title": "Specializations to Small n",
+      "startLine": 120,
+      "endLine": 143,
+      "summary": "Ring-verified specializations for n=2 (p₂ = e₁² − 2e₂), n=3 (p₃ = e₁p₂ − e₂p₁ + 3e₃), and n=4 (p₄ = e₁p₃ − e₂p₂ + e₃p₁ − 4e₄), showing consistency with VietasFormulasOQ03.lean.",
+      "mathContext": "These concrete identities are the same ones proved case-by-case in the parent file, now available as specializations of the general theorem."
+    },
+    {
+      "id": "vieta-connection",
+      "title": "Vieta's Formulas Connection",
+      "startLine": 145,
+      "endLine": 168,
+      "summary": "Vieta product formulas ∏(t − xᵢ) expanded for degrees 2, 3, 4, connecting polynomial coefficients to elementary symmetric polynomials.",
+      "mathContext": "Vieta gives coefficients as (−1)^k · eₖ. Newton's identities then recover all power sums from those coefficients."
+    }
+  ],
+  "conclusion": {
+    "summary": "Generalized Newton's identities from case-by-case to arbitrary n variables using Mathlib's MvPolynomial.mul_esymm_eq_sum via evaluation. 14 theorems, 0 sorries, 0 axioms. The two main results (newton_identity and newton_identity_psum) subsume all individual Newton identities from VietasFormulasOQ03.lean.",
+    "implications": "This generalization demonstrates the evaluation bridge pattern: proving identities at the abstract MvPolynomial level and specializing via aeval. The same pattern applies to Schur polynomials, Waring's formula, and other symmetric function identities in Mathlib.",
+    "openQuestions": [
+      "Connect to Mathlib's Polynomial.Vieta infrastructure for roots of specific polynomials",
+      "Formalize the Faddeev-LeVerrier algorithm using the general Newton identity",
+      "Prove the generating function relation: Σ pₖ tᵏ⁻¹ = −(d/dt) log E(−t)"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "vietas-formulas-oq-03",
+      "relationship": "generalizes",
+      "description": "Generalizes the case-by-case Newton identities (n=2,3,4) to arbitrary n using MvPolynomial evaluation"
+    },
+    {
+      "targetId": "vietas-formulas",
+      "relationship": "extends",
+      "description": "Extends Vieta's formulas by providing the general Newton identity that recovers all power sums from elementary symmetric polynomials"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Zeilberger, Doron",
+      "title": "A Combinatorial Proof of Newton's Identities",
+      "year": "1984",
+      "venue": "Discrete Mathematics 49",
+      "note": "The sign-reversing involution proof used by Mathlib's formalization"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.MvPolynomial.Symmetric.NewtonIdentities"
+    ],
+    "opens": [
+      "MvPolynomial",
+      "Finset"
+    ],
+    "namespace": "GeneralizedNewton",
+    "lineCount": 185,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 2,
+    "path": "Proofs/VietasFormulasOQ03OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

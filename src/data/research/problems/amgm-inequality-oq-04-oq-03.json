@@ -1,0 +1,363 @@
+{
+  "slug": "amgm-inequality-oq-04-oq-03",
+  "title": "Gauss AGM Theorem via Hypergeometric Elliptic Integral Identity",
+  "phase": "BLOCKED",
+  "status": "blocked",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "M(a,b)=\\frac{a\\pi}{2K(k')}\\text{ where }k=b/a\\text{ and }k'=\\sqrt{1-k^2},\\text{ via }K(k)=\\frac{\\pi}{2}\\,{}_2F_1\\left(\\frac12,\\frac12;1;k^2\\right).",
+    "plain": "Prove Gauss's AGM theorem connecting the AGM limit M(a,b) to the complete elliptic integral K, using the stated hypergeometric-series identity for K(k).",
+    "whyMatters": [
+      "Connects the AGM limit to the complete elliptic integral K.",
+      "Extends the Gauss AGM iteration and elliptic-integral thread from amgm-inequality-oq-04 into a deeper analysis problem."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "The problem statement records the intended hypergeometric route: K(k) = (pi/2) * _2F_1(1/2,1/2;1;k^2).",
+      "The source context is amgm-inequality-oq-04, described as Gauss AGM iteration and elliptic integrals.",
+      "Lean (verified, this session): hypCoeff 0 = 1; hypCoeff 1 = 1/4; hypCoeff n > 0; hyp2F1 0 = 1; K(0) = (pi/2)*2F1(...;0) [ellipticK_hyp2F1_consistent_zero]."
+    ],
+    "open": [
+      "No active approach is recorded for this subproblem.",
+      "No Lean proof attempt is recorded; all attempt counts remain zero.",
+      "Mathlib hypergeometric-series support still needs to be checked.",
+      "A formal route from AGM convergence to the complete elliptic integral identity has not been documented."
+    ],
+    "goal": "Formalize Gauss's AGM theorem M(a,b) = a*pi/(2K(k')) with k = b/a and k' = sqrt(1-k^2), using the hypergeometric identity for K(k)."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-02T00:55:00Z",
+    "iteration": 6,
+    "focus": "S5 BLOCKED + STATE-SYNC (researcher-2, 2026-06-13): renewed Docker daemon outage (`timeout 5 docker info` exits 124) makes the remaining discharge legs unverifiable. Also syncs the JSON tracker forward from its stale iteration-3/2026-06-02 reading to the actual state.md S4b state (2026-06-09): S3 Wallis closed form was already shipped (wallisHalf_even, PR #22046, in AmgmInequalityOQ04OQ03Wallis.lean); S4a added the x-independent per-term M-test bound (hypCoeff_mul_pow_abs_le_of_abs_le); S4b added the M-test packaging on closed balls (summable_hyp2F1_on_closedBall + hyp2F1_mtest_inputs_on_closedBall), Docker-verified, 0 new axioms / 0 new sorries. AmgmInequalityOQ04OQ03.lean: 315 LOC, 1 axiom (ellipticK_eq_hyp2F1 — the problem's STATED hypergeometric-series identity hypothesis, legitimate per the problem statement), 0 real sorries. Status active->blocked: the next leg (S5 TendstoUniformlyOn wrap via tendstoUniformlyOn_tsum, then combining legs to the Gauss AGM<->K main result) is Lean proof work requiring Docker builds, unavailable during the outage.",
+    "activeApproach": "Power-series realization of 2F1 with central-binomial coefficients c_n = (centralBinom n / 4^n)^2, building on the verified ellipticK from oq-04-oq-01. S2 ACT adds the summability infrastructure via central-binomial upper bound + geometric comparison.",
+    "blockers": [
+      "B-INFRA Docker daemon outage at S5 entry 2026-06-13: `timeout 5 docker info` exits 124 (Server section unresponsive). Fleet-wide outage (same pathology cleared 2026-05-30, down again). Disk recovered (17% used). Aristotle backend 404s. Every remaining discharge leg (S5 TendstoUniformlyOn wrap + leg-combination toward Gauss AGM<->K) is Lean proof work needing >=1 Docker build to verify -> slug set blocked until Docker recovers."
+    ],
+    "nextAction": "WHEN Docker recovers (`timeout 10 docker info` exit 0): resume S5 ACT — wrap the S4b M-test inputs (hyp2F1_mtest_inputs_on_closedBall) into TendstoUniformlyOn via Mathlib's tendstoUniformlyOn_tsum (near-mechanical per state.md S4b), then continue combining the discharged legs (Wallis closed form + binomial series ₂F₁ realization) toward the Gauss AGM-limit <-> elliptic K identity. Each leg needs a Docker build. Spec/legs detailed in state.md (Active Approach) + knowledge.md.",
+    "attemptCounts": {
+      "total": 6,
+      "currentApproach": 2,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 ACT (PR #20885) shipped the scaffold Proofs/AmgmInequalityOQ04OQ03.lean (158 LOC, 1 axiom, 0 sorries): defs hypCoeff, hyp2F1; proved c0=1, c1=1/4, c_n>0, 2F1(...;0)=1, k=0 consistency. Axiomatized ellipticK_eq_hyp2F1. S2 ACT (this session) added section 6 Summability of the Hypergeometric Series (+64 LOC -> 222 LOC, 0 new axioms, 0 sorries): centralBinom_le_four_pow (Mathlib gap-filler), hypCoeff_le_one, summable_hyp2F1 for |x| < 1 (via absolute-summability comparison with the geometric series + Summable.of_norm). Closes the summability leg of the five-leg axiom-discharge plan; the remaining four legs are: Wallis closed form, binomial series for (1-u)^(-1/2), uniform summability on compacta, DCT interchange + final discharge.",
+    "builtItems": [
+      "Proofs/AmgmInequalityOQ04OQ03.lean (builds clean, 0 sorries, 1 axiom): defs hypCoeff, hyp2F1.",
+      "hypCoeff_zero : hypCoeff 0 = 1 (proved).",
+      "hypCoeff_one : hypCoeff 1 = 1/4 (proved; matches classical k^2 coefficient).",
+      "hypCoeff_nonneg / hypCoeff_pos : coefficient positivity (proved).",
+      "hyp2F1_zero : hyp2F1 0 = 1 (proved via tsum_eq_single).",
+      "ellipticK_hyp2F1_consistent_zero : K(0) = (pi/2)*2F1(...;0), proved independently of the axiom.",
+      "ellipticK_eq_hyp2F1 (axiom): K(k) = (pi/2)*2F1(1/2,1/2;1;k^2) for |k|<1 (deep term-by-term-integration identity).",
+      "centralBinom_le_four_pow : Nat.centralBinom n <= 4^n (S2 ACT; Mathlib v4.26.0 gap-filler -- has only the lower bound).",
+      "hypCoeff_le_one : hypCoeff n <= 1 (S2 ACT corollary).",
+      "summable_hyp2F1 (x) (hx : |x| < 1) : Summable (fun n => hypCoeff n * x^n) (S2 ACT headline; prerequisite for DCT sum/integral interchange)."
+    ],
+    "insights": [
+      "The target theorem is Gauss's AGM theorem M(a,b) = a*pi/(2K(k')).",
+      "The problem defines k = b/a and k' = sqrt(1-k^2).",
+      "The proposed route is through the hypergeometric-series identity K(k) = (pi/2) * _2F_1(1/2,1/2;1;k^2).",
+      "The context marks this as a challenging deep analysis extension requiring hypergeometric functions and AGM convergence.",
+      "The hypergeometric series coefficient is c_n = ((1/2)_n / n!)^2 = (centralBinom n / 4^n)^2, using the identity (1/2)_n/n! = (2n choose n)/4^n.",
+      "K(k) = (pi/2) * sum_{n>=0} c_n k^(2n); the k^0 coefficient is 1 and the k^2 coefficient is (1/2)^2 = 1/4 (verified: hypCoeff_zero, hypCoeff_one).",
+      "The identity is provable in principle via: binomial series (1-u)^(-1/2), substitution u = k^2 sin^2(theta), term-by-term integration over [0,pi/2], and the Wallis integral int_0^(pi/2) sin^(2n) = (pi/2)(2n choose n)/4^n.",
+      "k=0 consistency is verifiable WITHOUT the deep identity: K(0)=pi/2 (ellipticK_zero) and 2F1(...;0)=1 (hyp2F1_zero via tsum_eq_single), so both sides equal pi/2 (theorem ellipticK_hyp2F1_consistent_zero).",
+      "Mathlib has Nat.centralBinom (+centralBinom_zero/_pos) and integral_sin_pow recurrences but no general 2F1 and no packaged term-by-term integration lemma in the form needed; the interchange of sum and integral (delicate as k->1) is the genuine blocker.",
+      "Mathlib v4.26.0 has Nat.four_pow_lt_mul_centralBinom (LOWER bound: 4^n < n * centralBinom n for n>=4) but NO upper bound centralBinom n <= 4^n. The upper bound is a one-liner via Nat.sum_range_choose applied to 2n + Finset.single_le_sum; S2 ACT proves it inline.",
+      "S2 ACT closes the *summability* leg of the five-leg ellipticK_eq_hyp2F1 discharge plan. Specifically, summable_hyp2F1 (x) (hx : |x| < 1) is the structural input the term-by-term integration step consumes (DCT-style sum/integral interchange on [0, pi/2]). Without this, the subsequent steps cannot even be stated. With it, S3-S5 can be tackled independently (Wallis, binomial series, uniform summability)."
+    ],
+    "mathlibGaps": [
+      "No general Gauss hypergeometric function 2F1 in Mathlib.",
+      "No packaged term-by-term integration lemma for power series against intervalIntegral suitable for K (dominated-convergence interchange needed, delicate near k=1).",
+      "Binomial series (1-u)^(-1/2) = sum centralBinom n /4^n u^n not located in usable form (needs verification).",
+      "Wallis integral int_0^(pi/2) sin^(2n) = (pi/2)(2n choose n)/4^n: Mathlib has integral_sin_pow recurrences; the closed form via central binomial coefficient needs to be assembled."
+    ],
+    "nextSteps": [
+      "S3 ACT (Wallis): prove int_0^(pi/2) sin^(2n) = (pi/2) * centralBinom n / 4^n via integral_sin_pow recurrence (~50-100 LOC).",
+      "S4 ACT (binomial series): (1-u)^(-1/2) = sum centralBinom n / 4^n u^n for |u|<1 (~80-150 LOC).",
+      "S5 ACT (uniform summability): extend summable_hyp2F1 to TendstoUniformlyOn compacta in (-1,1) (~30 LOC).",
+      "S6 ACT (DCT discharge): compose Wallis + binomial series + uniform summability to discharge ellipticK_eq_hyp2F1 (deep, ~150-300 LOC).",
+      "S7 ACT (AGM-K chain): combine with oq-04-oq-01 connection to reach M(a,b) = a*pi/(2*K(k'))."
+    ],
+    "markdown": "# Knowledge Base: amgm-inequality-oq-04-oq-03\n\n## Problem Understanding\n\n- Target: prove Gauss's AGM theorem M(a,b) = a*pi/(2K(k')).\n- Parameters recorded in the problem statement: k = b/a and k' = sqrt(1-k^2).\n- Intended route: use K(k) = (pi/2) * _2F_1(1/2,1/2;1;k^2).\n- Context: extension from amgm-inequality-oq-04, categorized as a challenging deep analysis problem involving hypergeometric functions and AGM convergence.\n\n## Current State\n\n- Phase: OBSERVE.\n- Path: fast.\n- Since: 2026-04-04T02:41:25-07:00.\n- Iteration: 1.\n- Active approach: none recorded yet.\n- Attempts: total 0, current approach 0, approaches tried 0.\n- Blockers: none recorded.\n\n## Known Work and Open Items\n\n- No Lean proof attempt or completion is recorded for this subproblem.\n- The existing AGM formalization in amgm-inequality-oq-04 still needs to be checked.\n- Mathlib hypergeometric-series support still needs to be searched.\n- A preliminary AGM convergence-rate lemma is the first suggested proof target.\n\n## Next Steps\n\n1. Check the existing AGM formalization in amgm-inequality-oq-04.\n2. Search Mathlib for hypergeometric-series support.\n3. Try proving just the AGM convergence rate first.\n4. Move to ACT only if the quick search reveals an obvious formal route.\n\n## Dead Ends\n\nNone recorded.\n"
+  },
+  "tags": [
+    "analysis",
+    "agm",
+    "elliptic-integrals",
+    "hypergeometric-series",
+    "convergence"
+  ],
+  "relatedProofs": [
+    "amgm-inequality",
+    "amgm-inequality-oq-02",
+    "amgm-inequality-oq-02-oq-01-oq-02",
+    "amgm-inequality-oq-02-oq-01-oq-02-oq-01",
+    "amgm-inequality-oq-02-oq-01-oq-02-oq-01-oq-01",
+    "amgm-inequality-oq-02-oq-03",
+    "amgm-inequality-oq-02-oq-03-oq-03",
+    "amgm-inequality-oq-03",
+    "amgm-inequality-oq-03-oq-01",
+    "amgm-inequality-oq-03-oq-02-oq-01-oq-01",
+    "amgm-inequality-oq-03-oq-02-oq-04",
+    "amgm-inequality-oq-03-oq-03",
+    "amgm-inequality-oq-03-oq-03-oq-01",
+    "amgm-inequality-oq-03-oq-04",
+    "amgm-inequality-oq-04",
+    "amgm-inequality-oq-04-oq-05"
+  ],
+  "references": {
+    "papers": [
+      "Borwein & Borwein, Pi and the AGM (1987)"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Nat.centralBinom",
+      "Nat.centralBinom_zero",
+      "Nat.centralBinom_pos",
+      "tsum_eq_single",
+      "intervalIntegral",
+      "integral_sin_pow"
+    ]
+  },
+  "started": "2026-04-04T09:42:47.007Z",
+  "lastUpdate": "2026-06-13",
+  "leanFiles": [
+    {
+      "path": "Proofs/AmgmInequalityOQ02.lean",
+      "filename": "AmgmInequalityOQ02.lean",
+      "lineCount": 543,
+      "theoremCount": 25,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02Aristotle.lean",
+      "filename": "AmgmInequalityOQ02Aristotle.lean",
+      "lineCount": 353,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02Defs.lean",
+      "filename": "AmgmInequalityOQ02Defs.lean",
+      "lineCount": 394,
+      "theoremCount": 21,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02Defs.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02OQ01OQ02.lean",
+      "filename": "AmgmInequalityOQ02OQ01OQ02.lean",
+      "lineCount": 139,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02OQ01OQ02OQ01.lean",
+      "filename": "AmgmInequalityOQ02OQ01OQ02OQ01.lean",
+      "lineCount": 92,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02OQ01OQ02OQ01Aristotle.lean",
+      "filename": "AmgmInequalityOQ02OQ01OQ02OQ01Aristotle.lean",
+      "lineCount": 117,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ01OQ02OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02OQ01OQ02OQ01OQ01.lean",
+      "filename": "AmgmInequalityOQ02OQ01OQ02OQ01OQ01.lean",
+      "lineCount": 134,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ01OQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02OQ02.lean",
+      "filename": "AmgmInequalityOQ02OQ02.lean",
+      "lineCount": 959,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02OQ03.lean",
+      "filename": "AmgmInequalityOQ02OQ03.lean",
+      "lineCount": 226,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02OQ03OQ03.lean",
+      "filename": "AmgmInequalityOQ02OQ03OQ03.lean",
+      "lineCount": 66,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ03.lean",
+      "filename": "AmgmInequalityOQ03.lean",
+      "lineCount": 373,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ03.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ03OQ02OQ01.lean",
+      "filename": "AmgmInequalityOQ03OQ02OQ01.lean",
+      "lineCount": 186,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ03OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ03OQ02OQ01OQ01.lean",
+      "filename": "AmgmInequalityOQ03OQ02OQ01OQ01.lean",
+      "lineCount": 139,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ03OQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ03OQ02OQ04.lean",
+      "filename": "AmgmInequalityOQ03OQ02OQ04.lean",
+      "lineCount": 220,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ03OQ02OQ04.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ03OQ03.lean",
+      "filename": "AmgmInequalityOQ03OQ03.lean",
+      "lineCount": 66,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ03OQ04.lean",
+      "filename": "AmgmInequalityOQ03OQ04.lean",
+      "lineCount": 232,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ03OQ04.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ04.lean",
+      "filename": "AmgmInequalityOQ04.lean",
+      "lineCount": 306,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ04.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ04OQ01.lean",
+      "filename": "AmgmInequalityOQ04OQ01.lean",
+      "lineCount": 187,
+      "theoremCount": 10,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ04OQ05.lean",
+      "filename": "AmgmInequalityOQ04OQ05.lean",
+      "lineCount": 243,
+      "theoremCount": 6,
+      "axiomCount": 7,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ04OQ05.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityPowerMeanLimits.lean",
+      "filename": "AmgmInequalityPowerMeanLimits.lean",
+      "lineCount": 273,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityPowerMeanLimits.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ04OQ03.lean",
+      "filename": "AmgmInequalityOQ04OQ03.lean",
+      "lineCount": 222,
+      "theoremCount": 7,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ04OQ03.lean"
+    }
+  ],
+  "leanFile": "Proofs/AmgmInequalityOQ04OQ03.lean"
+}

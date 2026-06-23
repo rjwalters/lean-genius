@@ -1,0 +1,180 @@
+{
+  "slug": "partition-theorem-oq-04",
+  "title": "Glaisher Bijection as Computable Function",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{Define a computable Lean function realizing the Glaisher bijection between partitions into odd parts and partitions into distinct parts, and prove it is weight-preserving and bijective.}",
+    "plain": "Euler's partition theorem says that partitions of n into odd parts are equinumerous with partitions of n into distinct parts. The Glaisher bijection gives the constructive map: group repeated odd parts by the binary expansion of their multiplicities, replacing p repeated k times with the distinct parts p*2^a for the set bits of k.",
+    "whyMatters": [
+      "Turns Euler's odd-parts/distinct-parts theorem into an explicit constructive proof.",
+      "Shows the Glaisher bijection can be represented as computable Lean definitions rather than only a nonconstructive counting argument.",
+      "Exercises reusable Lean infrastructure for certified computable bijections on multisets and partitions."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Forward and backward Glaisher maps are implemented as computable multiset functions.",
+      "Weight preservation is proved for the forward and backward steps.",
+      "The forward map produces odd parts, and both round-trip directions are proved modulo the remaining multiset reconstruction identity."
+    ],
+    "open": [
+      "dedup_bind_replicate_count_eq remains as a sorry: reconstructing a multiset from toFinset values and counts.",
+      "glaisher_bijection_exists remains as a sorry for packaging the established round-trip lemmas as Function.Bijective."
+    ],
+    "goal": "Finish the multiset reconstruction lemma and then package the computable Glaisher maps as a bijection proving the constructive form of Euler's partition theorem."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-04-03T05:03:40-07:00",
+    "iteration": 2,
+    "focus": "glaisherBwdStep_add_pow_two proved; round-trip glaisherBwd_glaisherFwd remaining",
+    "blockers": [],
+    "nextAction": "Prove count formula for glaisherFwd, then use glaisherBwdStep_add_pow_two to complete round-trip",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Both round-trip directions proved. 2 sorries remain: dedup_bind_replicate_count_eq + glaisher_bijection_exists",
+    "builtItems": [
+      "glaisherFwdPart_sum: forward step preserves weight (PartitionTheoremOQ04.lean:96)",
+      "glaisherFwd_sum: forward map preserves total weight (PartitionTheoremOQ04.lean:102)",
+      "glaisherBwdStep_sum: backward step sum = m*b (PartitionTheoremOQ04.lean:113)",
+      "glaisherBwdStep_pow_two: core inverse glaisherBwdStep b (2^a) = {2^a*b} (PartitionTheoremOQ04.lean:214)",
+      "glaisherFwdPart_parts_odd: forward produces only odd parts (PartitionTheoremOQ04.lean:180)",
+      "glaisherFwd_parts_odd: all forward-image elements odd (PartitionTheoremOQ04.lean:190)",
+      "oddPart_odd: k/2^(padicValNat 2 k) is odd for k!=0 (PartitionTheoremOQ04.lean:150)",
+      "padicValNat_two_pow: padicValNat 2 (2^n) = n by induction (PartitionTheoremOQ04.lean:138)",
+      "glaisherBwd_glaisherFwdPart: backward undoes forward for single distinct part (PartitionTheoremOQ04.lean:236)",
+      "glaisherBwdStep_add_pow_two: if bit a of m is 0, glaisherBwdStep b (2^a + m) = {2^a*b} + glaisherBwdStep b m (PartitionTheoremOQ04.lean:261)",
+      "add_two_pow_lt_of_bit_zero: arithmetic helper — adding 2^v is carry-free when bit v of r is 0 (PartitionTheoremOQ04.lean:367)",
+      "glaisherFwd_count_bit_zero_aux: multiset induction with universal IH over a,b (PartitionTheoremOQ04.lean:393)",
+      "glaisherFwd_count_bit_zero: bit a of count b is 0 when 2^a*b not in t (PartitionTheoremOQ04.lean:462)",
+      "glaisherBwd_glaisherFwd: full round-trip theorem, 0 sorry (PartitionTheoremOQ04.lean:473)",
+      "glaisherFwd_glaisherBwdStep_gen: strong induction lemma for reverse round-trip (PartitionTheoremOQ04.lean:495)",
+      "glaisherFwd_glaisherBwd: forward undoes backward on odd multisets (PartitionTheoremOQ04.lean:603)"
+    ],
+    "insights": [
+      "Well-founded recursion on m/2 is opaque: simp [f] fails; need cases m with | succ n => simp [f]",
+      "padicValNat.mul gives multiplicativity: key for proving odd part via contradiction",
+      "native_decide required for padicValNat 2 2 = 1 (Nat.find cannot be kernel-reduced)",
+      "After set a := padicValNat 2 k, explicit type annotation needed: have hdec : 2^a*m = k := ...",
+      "glaisherBwdStep_pow_two proof: even case recurse with 2*b, odd case emit b; induction on a",
+      "termination_by m (not termination_by _ m => m) for two-arg (b m) form with match m",
+      "glaisherBwd_glaisherFwdPart: use Finset.singleton_val + show {b} = b ::m 0 to reduce singleton toFinset bind",
+      "glaisherBwdStep_add_pow_two: key sub-lemma for round-trip; induction on a with even/odd case split on m",
+      "Even m from Nat.even_or_odd gives m = k+k (not 2*k); need omega to convert before subst",
+      "pow_succ direction: use show 2*2^a = 2^(a+1) from by ring instead of <- pow_succ",
+      "glaisherBwdStep b (2*k) = glaisherBwdStep (2*b) k: needs k=0 case separately (glaisherBwdStep_zero)",
+      "Multiset commutativity: ring fails; use add_left_comm for {a}+({b}+X) = {b}+({a}+X)",
+      "glaisherFwd_count_bit_zero proved: bit a of count b is 0 when 2^a*b ∉ t — key lemma for round-trip",
+      "glaisherBwd_glaisherFwd proved: backward map is left-inverse of forward map on Nodup multisets — main round-trip theorem",
+      "Reverse round-trip glaisherFwd_glaisherBwd proved by strong induction on m generalizing over j (shift parameter): glaisherFwd(glaisherBwdStep(2^j*b, m)) = replicate(2^j*m, b)",
+      "Multiset bind associativity not available as Multiset.bind_bind; must prove inline via Multiset.induction",
+      "dedup_bind_replicate_count_eq is the key remaining sorry: toFinset.val.bind (replicate count b) = s; provable by ext+count analysis with nodup constraint"
+    ],
+    "mathlibGaps": [
+      "Multiset.toFinset_replicate: toFinset (replicate n b) = {b} for n>=1 (needed for bijectivity)",
+      "Multiset.count_replicate: count b (replicate n b) = n (check if in Mathlib)"
+    ],
+    "nextSteps": [
+      "Prove dedup_bind_replicate_count_eq by ext+count+nodup induction or find Mathlib equivalent",
+      "Prove glaisher_bijection_exists once dedup_bind is done",
+      "Submit remaining 2 sorries to Aristotle for automated proof search"
+    ],
+    "markdown": "# Knowledge Base: partition-theorem-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "combinatorics",
+    "partitions",
+    "bijection",
+    "computability",
+    "euler-theorem"
+  ],
+  "relatedProofs": [
+    "partition-theorem",
+    "partition-theorem-oq-01",
+    "partition-theorem-oq-01-oq-01",
+    "partition-theorem-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T12:03:52.282Z",
+  "lastUpdate": "2026-04-03T12:03:52.296Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/PartitionTheorem.lean",
+      "filename": "PartitionTheorem.lean",
+      "lineCount": 282,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PartitionTheorem.lean"
+    },
+    {
+      "path": "Proofs/PartitionTheoremOQ01.lean",
+      "filename": "PartitionTheoremOQ01.lean",
+      "lineCount": 3553,
+      "theoremCount": 129,
+      "axiomCount": 3,
+      "defCount": 40,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PartitionTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/PartitionTheoremOQ01OQ01.lean",
+      "filename": "PartitionTheoremOQ01OQ01.lean",
+      "lineCount": 72,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PartitionTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/PartitionTheoremOQ03.lean",
+      "filename": "PartitionTheoremOQ03.lean",
+      "lineCount": 63,
+      "theoremCount": 2,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PartitionTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/PartitionTheoremOQ04.lean",
+      "filename": "PartitionTheoremOQ04.lean",
+      "lineCount": 546,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PartitionTheoremOQ04.lean"
+    },
+    {
+      "path": "Proofs/PartitionTheoremOQ04Aristotle.lean",
+      "filename": "PartitionTheoremOQ04Aristotle.lean",
+      "lineCount": 47,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PartitionTheoremOQ04Aristotle.lean"
+    }
+  ]
+}

@@ -1,0 +1,219 @@
+{
+  "id": "erdos-1018-oq-04",
+  "title": "Hypergraph Extension of Non-Planar Subgraph Density",
+  "slug": "erdos-1018-oq-04",
+  "description": "Extends Erdős 1018 (Kostochka-Pyber) to r-uniform hypergraphs: does n^(r-1+ε) edge density force a non-embeddable sub-hypergraph on O_{r,ε}(1) vertices? Uses the van Kampen-Flores theorem (K_{2r+1}^(r) is not embeddable in R^(2(r-1))) as the topological obstruction.",
+  "meta": {
+    "author": "Research (open question from Erdős 1018)",
+    "sourceUrl": "https://erdosproblems.com/1018",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1018OQ04.lean",
+    "tags": [
+      "hypergraph",
+      "topological-combinatorics",
+      "simplicial-complex",
+      "extremal-combinatorics",
+      "erdos",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "axiomCount": 4,
+    "lineCount": 318,
+    "assumptions": "4 axioms: van Kampen-Flores theorem, embeddability of K₃ and K₄ in R², density-exceeds-Turán threshold. 1 sorry: turanNumber definition (was 2: isEmbeddable now concretely defined via vertex-map + convex-hull intersection).",
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card_filter_le",
+        "description": "Cardinality of a filter is at most the cardinality of the original finset",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "originalContributions": [
+      "Formalization of the van Kampen-Flores topological obstruction framework for r-uniform hypergraphs",
+      "Statement of the generalized Kostochka-Pyber conjecture for arbitrary uniformity r",
+      "Recovery of the graph case (r=2) from the general framework",
+      "Explicit 3-uniform case as the first non-trivial instance (K₇³ in R⁴)"
+    ],
+    "theoremCount": 11,
+    "definitionCount": 12
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1018 asked whether every dense graph (with n^{1+ε} edges) must contain a non-planar subgraph on only O_ε(1) vertices. Kostochka and Pyber (1988) answered affirmatively: n^{1+ε} edges force a K₅ topological minor on a bounded number of vertices. The key insight was that K₅ non-planarity is the topological obstruction for graphs: by Kuratowski, every non-planar graph contains K₅ or K_{3,3} as a minor. For r-uniform hypergraphs viewed as (r-1)-dimensional simplicial complexes, the natural analogue of planarity is embeddability in R^{2(r-1)}: a generic (r-1)-dimensional complex embeds in R^{2(r-1)+1} by general position, so R^{2(r-1)} is the first dimension where non-embeddability can occur. The van Kampen-Flores theorem, proved independently by van Kampen and Flores in 1933 using the newly proved Borsuk-Ulam theorem, establishes the minimal obstruction: K_{2r+1}^{(r)} is not embeddable in R^{2(r-1)}. The proof uses deleted products and Z/2-equivariant topology — the same framework used by Lovász in his proof of the Kneser conjecture (1978). For r=2 this gives K₅ non-planarity; for r=3 it gives K₇^{(3)} non-embeddability in R⁴. The Turán density of K₄^{(3)} — asking for the maximum edges in a K₄^{(3)}-free 3-uniform hypergraph — is one of the most famous open problems in extremal combinatorics (Turán 1941, still unsolved). The super-linear density threshold n^{r-1+ε} exceeds these Turán numbers for large n, making the conjecture well-motivated.",
+    "problemStatement": "For r ≥ 2 and ε > 0, does every r-uniform hypergraph on n vertices with at least n^(r-1+ε) edges contain a sub-hypergraph on O_{r,ε}(1) vertices that is not embeddable in R^(2(r-1))? This is OPEN for r ≥ 3.",
+    "text": "Formalizes the hypergraph extension of Erdős 1018. Defines r-uniform hypergraphs, the density threshold n^(r-1+ε), and the topological obstruction via the van Kampen-Flores theorem. States the generalized Kostochka-Pyber conjecture and proves recovery of the graph case (r=2). Explicit treatment of the 3-uniform case (K₇³, R⁴).",
+    "proofStrategy": "The framework parallels the graph case: (1) density threshold n^(r-1+ε) generalizes n^(1+ε), (2) topological obstruction via van Kampen-Flores generalizes K₅ non-planarity, (3) the conjecture asks for bounded-size non-embeddable sub-hypergraphs. The 3-uniform case (density n^(2+ε), obstruction in R⁴) is the first non-trivial instance.",
+    "keyInsights": [
+      "The van Kampen-Flores theorem is the higher-dimensional K₅: K_{2r+1}^{(r)} is not embeddable in R^{2(r-1)}, proved using Borsuk-Ulam + deleted products. For r=2: K₅ non-planar. For r=3: K₇^{(3)} not in R⁴",
+      "The critical dimension 2(r-1) is determined by general position: a generic (r-1)-simplex lives in R^{r-1}, and a generic (r-1)-dimensional simplicial complex embeds in R^{2(r-1)+1} but can obstruct embedding in R^{2(r-1)}",
+      "The density threshold n^{r-1+ε} is the super-Turán regime: Turán numbers for r-uniform complete subhypergraphs are polynomially smaller than n^{r-1+ε} for large n, so dense hypergraphs force complete sub-hypergraphs as candidates for non-embeddable pieces",
+      "The Hypergraph structure uses a Finset-of-Finsets model with a proof-valued uniformity field, allowing the uniformity constraint to be inherited automatically by sub-hypergraphs via the induced definition",
+      "The isEmbeddable definition is concretely formalized via injective vertex maps with the convex-hull intersection condition, so non-embeddability is a concrete (not axiomatic) statement; the vanKampen_Flores axiom is needed because formalizing the deleted-product / Borsuk-Ulam proof is out of scope",
+      "K₇^{(3)} has C(7,3) = 35 edges — proved by decide. The analogous K₅ has C(5,2) = 10 edges. The ratio 35/10 shows how much richer 3-uniform hypergraph theory is compared to graphs"
+    ],
+    "prerequisites": [
+      "Graph theory and hypergraph basics",
+      "Topological combinatorics (van Kampen-Flores theorem)",
+      "Extremal combinatorics (Turán-type problems)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Header and Overview",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "States Erdős #1018 OQ-04: the hypergraph extension. Parent #1018 (Kostochka–Pyber 1988): graphs with $n^{1+\\varepsilon}$ edges contain a non-planar subgraph on $O_\\varepsilon(1)$ vertices. OQ-04 asks the $r$-uniform analogue, with planarity replaced by embeddability of the $(r-1)$-dimensional complex in $\\mathbb{R}^{2(r-1)}$, density threshold $n^{r-1+\\varepsilon}$, obstruction $K_{2r+1}^{(r)}$ (van Kampen–Flores).",
+      "mathContext": "$r$-uniform: $n^{r-1+\\varepsilon}$ edges force a sub-hypergraph non-embeddable in $\\mathbb{R}^{2(r-1)}$ on $O_{r,\\varepsilon}(1)$ vertices?"
+    },
+    {
+      "id": "part1",
+      "title": "Part I: r-Uniform Hypergraphs",
+      "startLine": 29,
+      "endLine": 60,
+      "summary": "Defines the `Hypergraph` structure, `Hypergraph.edgeCount`, `Hypergraph.induced` (induced sub-hypergraph), and PROVES `Hypergraph.induced_le_edges`.",
+      "mathContext": "$r$-uniform hypergraph = set of $r$-element edges; induced sub-hypergraph has $\\leq$ edges."
+    },
+    {
+      "id": "part2",
+      "title": "Part II: Complete r-Uniform Hypergraphs",
+      "startLine": 61,
+      "endLine": 88,
+      "summary": "Defines `completeHypergraph t r` ($K_t^{(r)}$) and PROVES `completeHypergraph_edgeCount` ($\\binom{t}{r}$) and `complete_graph_edge_count` ($r=2$ case $\\binom{t}{2}$).",
+      "mathContext": "$K_t^{(r)}$ has $\\binom{t}{r}$ edges."
+    },
+    {
+      "id": "part3",
+      "title": "Part III: Density for Hypergraphs",
+      "startLine": 89,
+      "endLine": 118,
+      "summary": "Defines `isDenseHypergraph` (edge count $\\geq n^{r-1+\\varepsilon}$) and PROVES `max_edges` (the maximum possible edge count).",
+      "mathContext": "Dense: $\\text{edgeCount}\\geq n^{r-1+\\varepsilon}$."
+    },
+    {
+      "id": "part4",
+      "title": "Part IV: Topological Obstruction",
+      "startLine": 119,
+      "endLine": 191,
+      "summary": "Defines `isEmbeddable`/`isNonEmbeddable` (in $\\mathbb{R}^d$, via convex-hull intersection) and `criticalDim r` $=2(r-1)$. States the AXIOMS `vanKampen_Flores` ($K_{2r+1}^{(r)}$ is non-embeddable in $\\mathbb{R}^{2(r-1)}$), `triangle_planar`, `K4_planar`, and PROVES `vanKampen_Flores_graph` (the $r=2$ case: $K_5$ non-planar).",
+      "mathContext": "$K_{2r+1}^{(r)}$ non-embeddable in $\\mathbb{R}^{2(r-1)}$ (van Kampen–Flores); $r=2$: $K_5$ non-planar."
+    },
+    {
+      "id": "part5",
+      "title": "Part V: The Generalized Conjecture",
+      "startLine": 192,
+      "endLine": 217,
+      "summary": "Defines `hasSmallNonEmbeddable` (a non-embeddable sub-hypergraph on $\\leq k$ vertices) and `hypergraph_kostochka_pyber` (the generalized conjecture: density $n^{r-1+\\varepsilon}$ forces a small non-embeddable sub-hypergraph).",
+      "mathContext": "Conjecture: dense $r$-uniform $\\Rightarrow$ small non-embeddable (in $\\mathbb{R}^{2(r-1)}$) sub-hypergraph."
+    },
+    {
+      "id": "part6",
+      "title": "Part VI: Recovery of the Graph Case (r = 2)",
+      "startLine": 218,
+      "endLine": 237,
+      "summary": "PROVES the $r=2$ specializations recovering original Erdős #1018: `criticalDim_graph` ($=2$), `density_exponent_graph` ($r-1+\\varepsilon=1+\\varepsilon$), `obstruction_size_graph` ($2r+1=5$, $K_5$), and `obstruction_size_3uniform` ($=7$).",
+      "mathContext": "$r=2$: critical dim $2$, exponent $1+\\varepsilon$, obstruction $K_5$ (original #1018)."
+    },
+    {
+      "id": "part7",
+      "title": "Part VII: The 3-Uniform Case",
+      "startLine": 238,
+      "endLine": 273,
+      "summary": "The first non-trivial instance ($r=3$: density $n^{2+\\varepsilon}$, embeddability in $\\mathbb{R}^4$). PROVES `K7_3_edge_count` ($\\binom{7}{3}=35$) and `K7_3_nonembeddable` ($K_7^{(3)}$ not embeddable in $\\mathbb{R}^4$, from van Kampen–Flores). Defines `conjecture_3uniform`.",
+      "mathContext": "$r=3$: $K_7^{(3)}$ has $35$ edges, non-embeddable in $\\mathbb{R}^4$; conjecture at exponent $2+\\varepsilon$."
+    },
+    {
+      "id": "part8",
+      "title": "Part VIII: Turán-Type Density Threshold and Summary",
+      "startLine": 274,
+      "endLine": 318,
+      "summary": "Defines `turanNumber` (the Turán number $\\text{ex}(n,K_t^{(r)})$, left as `sorry` — the only sorry, since $r\\geq3$ Turán densities are largely open) and states the AXIOM `density_exceeds_turan` (super-linear $n^{r-1+\\varepsilon}$ eventually exceeds any subquadratic Turán number). Closes with a summary docstring (4 axioms, 1 sorry; conjecture OPEN for $r\\geq3$).",
+      "mathContext": "`turanNumber := sorry` (Turán densities open for $r\\geq3$); $n^{r-1+\\varepsilon}>\\text{ex}(n,K_t^{(r)})$ eventually."
+    }
+  ],
+  "conclusion": {
+    "summary": "The hypergraph extension of Erdős 1018 asks whether n^(r-1+ε) edge density in r-uniform hypergraphs forces non-embeddable (in R^(2(r-1))) sub-hypergraphs of bounded size. The van Kampen-Flores theorem provides the topological obstruction, generalizing K₅ non-planarity. The conjecture is OPEN for r ≥ 3.",
+    "implications": "If true, establishes a topological Ramsey-type principle for hypergraphs: sufficiently dense r-uniform hypergraphs must contain topologically complex sub-structures of bounded size, connecting extremal combinatorics to topological combinatorics in higher dimensions.",
+    "openQuestions": [
+      "Prove the generalized Kostochka-Pyber conjecture for r=3: does n^{2+ε} edge density in 3-uniform hypergraphs force a K₇^{(3)}-subdivision on O_ε(1) vertices?",
+      "Formalize isEmbeddable: define geometric realization of simplicial complexes in R^d and almost-embeddings (maps where disjoint simplices have disjoint images) in Mathlib",
+      "Prove the van Kampen-Flores theorem from Borsuk-Ulam in Lean: requires deleted product construction, Z/2-equivariant maps, and Smith theory for Z/2",
+      "Determine the Turán density of K₄^{(3)}: the maximum asymptotic edge density of a K₄^{(3)}-free 3-uniform hypergraph. Turán conjectured 2/9 in 1941; still unsolved",
+      "Does the Erdős-Ko-Rado theorem (1961) for intersecting families connect to the BU dimension of the hypergraph Kneser complex?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1018",
+      "relationship": "parent-problem",
+      "description": "Parent problem: non-planar subgraphs in dense graphs (Kostochka-Pyber 1988)"
+    },
+    {
+      "targetId": "erdos-1075",
+      "relationship": "related-problem",
+      "description": "Dense subgraphs in r-uniform hypergraphs (Erdős 1964), uses similar hypergraph framework"
+    },
+    {
+      "targetId": "erdos-500",
+      "relationship": "related-problem",
+      "description": "Turán density of K₄³, the central open problem in hypergraph Turán theory"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "A. V. Kostochka",
+        "L. Pyber"
+      ],
+      "title": "Small topological complete subgraphs of 'dense' graphs",
+      "year": "1988",
+      "venue": "Combinatorica",
+      "note": "Proves the graph case (r=2): n^(1+ε) edges → K₅ subdivision on O_ε(1) vertices"
+    },
+    {
+      "authors": [
+        "E. R. van Kampen"
+      ],
+      "title": "Komplexe in euklidischen Räumen",
+      "year": "1933",
+      "venue": "Abh. Math. Sem. Univ. Hamburg",
+      "note": "Proved non-embeddability of certain simplicial complexes, precursor to the van Kampen-Flores theorem"
+    },
+    {
+      "authors": [
+        "A. Flores"
+      ],
+      "title": "Über n-dimensionale Komplexe die im R_{2n+1} absolut selbstverschlungen sind",
+      "year": "1933",
+      "venue": "Ergeb. Math. Kolloq.",
+      "note": "Proved that the (r-1)-skeleton of the (2r)-simplex is not embeddable in R^(2(r-1))"
+    },
+    {
+      "authors": [
+        "J. Matoušek"
+      ],
+      "title": "Using the Borsuk-Ulam Theorem",
+      "year": "2003",
+      "venue": "Springer Universitext",
+      "note": "Standard reference for van Kampen-Flores theorem and topological combinatorics methods"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos1018OQ04",
+    "lineCount": 318,
+    "axiomCount": 4,
+    "theoremCount": 11,
+    "definitionCount": 12,
+    "path": "Proofs/Erdos1018OQ04.lean",
+    "sorries": 1
+  },
+  "sorries": 1
+}

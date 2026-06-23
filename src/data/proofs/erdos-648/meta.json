@@ -1,0 +1,297 @@
+{
+  "id": "erdos-648",
+  "title": "Erdős Problem #648: Decreasing Greatest Prime Factors",
+  "slug": "erdos-648",
+  "description": "Let g(n) be the longest increasing sequence below n with strictly decreasing greatest prime factors. What is g(n)? SOLVED: g(n) ≍ (n/log n)^(1/2) (Cambie 2025).",
+  "meta": {
+    "author": "Erdős (problem), Stijn Cambie (2025 solution)",
+    "sourceUrl": "https://erdosproblems.com/648",
+    "date": "2025",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos648Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "prime-factors",
+      "sequences",
+      "asymptotics"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 648,
+    "erdosUrl": "https://erdosproblems.com/648",
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.primeFactors",
+        "description": "Prime factorization of natural numbers",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Nat.primeCounting",
+        "description": "Prime counting function π(n)",
+        "module": "Mathlib.NumberTheory.PrimeCounting"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for asymptotic bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm for asymptotic bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of greatest prime factor function P(n)",
+      "Definition of smooth numbers and counting function Ψ(x,y)",
+      "Structure for decreasing GPF sequences",
+      "Definition of the extremal function g(n)",
+      "Axiomatization of Cambie's upper bound g(n) ≤ O((n/log n)^(1/2))",
+      "Axiomatization of construction lower bound g(n) ≥ Ω((n/log n)^(1/2))",
+      "Statement of Cambie's constant question c ∈ [2, 2√2]",
+      "Connection to smooth numbers and de Bruijn estimates",
+      "OEIS sequence connection A391750"
+    ],
+    "relatedProblems": [
+      {
+        "id": "prime-number-theorem",
+        "relationship": "The prime number theorem $\\pi(x) \\sim x/\\ln x$ is essential for counting available primes in Cambie's bound. The number of distinct GPF values below $n$ is $\\pi(n)$, and the PNT determines the growth rate of $g(n)$."
+      },
+      {
+        "id": "erdos-1055",
+        "relationship": "Both problems study the interplay between prime factorization structure and classification. Erdős #1055 classifies primes by the smoothness of $p+1$, while #648 builds sequences ordered by greatest prime factor."
+      },
+      {
+        "id": "erdos-1095",
+        "relationship": "The Erdős-Selfridge function also involves greatest prime factors of combinatorial objects (binomial coefficients), connecting smooth number theory to extremal problems."
+      },
+      {
+        "id": "bertrands-postulate",
+        "relationship": "Bertrand's postulate (proved by Erdős in 1932) guarantees prime existence in intervals — relevant for ensuring enough distinct primes are available to build long GPF-descending sequences."
+      },
+      {
+        "id": "erdos-4",
+        "relationship": "Both are solved Erdős problems involving prime distribution asymptotics. Erdős #4 (large prime gaps, solved by Maynard 2016) uses sieve methods that also appear in smooth number estimates underlying #648."
+      },
+      {
+        "id": "prime-reciprocal-divergence",
+        "relationship": "The divergence $\\sum_{p} 1/p = \\infty$ (Euler, 1737) implies the set of primes is dense enough to support arbitrarily long GPF-descending sequences, consistent with $g(n) \\to \\infty$."
+      }
+    ],
+    "axiomCount": 3,
+    "lineCount": 378,
+    "assumptions": "3 axiom(s) (Cambie's bounds + asymptotic conjecture), 0 sorries. See the Lean source for details.",
+    "theoremCount": 41,
+    "definitionCount": 9
+  },
+  "overview": {
+    "historicalContext": "The greatest prime factor function $P(n)$ has been studied since the earliest days of analytic number theory. Ramanujan (1915) investigated $P(n)$ in connection with highly composite numbers, and Karl Dickman (1930) established the foundational result on the distribution of $P(n)$: the proportion of integers $n \\le x$ with $P(n) \\le x^{1/u}$ tends to the Dickman function $\\rho(u)$. Nicolaas de Bruijn (1951) refined Dickman's estimates with his celebrated asymptotic for the smooth number counting function $\\Psi(x, y) = |\\{n \\le x : P(n) \\le y\\}|$, which satisfies $\\Psi(x, y) \\sim x \\cdot \\rho(\\log x / \\log y)$. These estimates were further sharpened by Hildebrand and Tenenbaum (1986).\n\nErdős posed Problem #648 as a combinatorial question about $P(n)$: given $n$, how long can an increasing sequence $a_1 < a_2 < \\cdots < a_t < n$ be if the greatest prime factors must strictly decrease: $P(a_1) > P(a_2) > \\cdots > P(a_t)$? The tension between increasing values and decreasing GPF creates a delicate optimization problem at the interface of combinatorics and analytic number theory.\n\nStijn Cambie resolved the problem in 2025, proving $g(n) \\asymp (n/\\log n)^{1/2}$, with the constant $c$ in $g(n) \\sim c\\sqrt{n/\\log n}$ satisfying $2 \\le c \\le 2\\sqrt{2}$. The lower bound uses an explicit construction leveraging smooth numbers (numbers with bounded GPF), while the upper bound employs counting arguments via de Bruijn's $\\Psi$-function estimates. The exact value of $c$ remains an open question.",
+    "problemStatement": "**Problem Statement**\n\nLet $P(m)$ denote the greatest prime factor of $m$. Let $g(n)$ denote the largest $t$ such that there exist integers $2 \\le a_1 < a_2 < \\cdots < a_t < n$ with $P(a_1) > P(a_2) > \\cdots > P(a_t)$.\n\nWhat is the asymptotic behavior of $g(n)$?\n\n**Status**: SOLVED (Cambie 2025)\n\n**Answer**: $g(n) \\asymp (n/\\log n)^{1/2}$, with the constant $c$ in $g(n) \\sim c\\sqrt{n/\\log n}$ satisfying $2 \\le c \\le 2\\sqrt{2}$.",
+    "text": "Let g(n) be the longest increasing sequence below n with strictly decreasing greatest prime factors. What is g(n)? SOLVED: g(n) ≍ (n/log n)^(1/2) (Cambie 2025).",
+    "proofStrategy": "The formalization proceeds in eleven parts:\n\n1. **Axiomatize $P(n)$**: Define the greatest prime factor function with key properties ($P(p) = p$, divisibility, primality, maximality)\n2. **Concrete examples**: Verify $P$ for small integers (2 through 64)\n3. **Define GPF-descending sequences**: Formalize the dual monotonicity condition using `List.Chain'`\n4. **Define $g(n)$**: The extremal function as a supremum over valid sequence lengths\n5. **Small cases**: Prove $g(n) \\ge k$ for $k = 1, 2, 3, 4$ via explicit witnesses\n6. **Smooth numbers**: Define $B$-smooth numbers and prove prime powers are smooth\n7. **Cambie's bounds**: Axiomatize the lower bound ($c_1 \\ge 2$) and upper bound ($c_2 \\le 2\\sqrt{2}$)\n8. **Main theorem**: Derive the two-sided bound $g(n) = \\Theta(\\sqrt{n/\\log n})$\n9. **Constant question**: State the conjecture on the limit $g(n)/\\sqrt{n/\\log n} \\to c$\n10. **Related functions**: Define smallest prime factor $p(n)$ and its relationship to $P(n)$\n11. **Summary**: Package the complete solution to Erdős #648",
+    "keyInsights": [
+      "**Smooth number connection**: The growth rate $\\sqrt{n/\\log n}$ emerges from balancing the number of available primes ($\\sim \\pi(\\sqrt{n \\log n})$) against the smooth number counts at each prime level. The Dickman function $\\rho(u)$ and de Bruijn's $\\Psi(x, y)$ estimates are the key analytic tools.",
+      "**Construction via prime powers**: To build a long GPF-descending sequence, choose primes $p_1 > p_2 > \\cdots > p_k \\ge 2$ and representatives $a_i$ with $P(a_i) = p_i$ and $a_1 < a_2 < \\cdots < a_k$. Smaller primes allow higher powers ($2^{20} \\gg 3^{12} \\gg 5^8$), enabling the increasing-value condition even as GPFs decrease.",
+      "**The exponent $1/2$ from prime counting**: The square root arises because the number of primes $\\le y$ is $\\sim y/\\log y$, and setting $y \\approx \\sqrt{n \\log n}$ optimally balances sequence length ($\\sim \\pi(y) \\sim \\sqrt{n/\\log n}$) against the constraint that representatives must fit below $n$.",
+      "**Gap in the constant**: The lower bound $c \\ge 2$ comes from a specific construction, while the upper bound $c \\le 2\\sqrt{2}$ comes from counting arguments. The gap factor of $\\sqrt{2}$ reflects the difference between the best known construction and the information-theoretic limit.",
+      "**Duality with smallest prime factor**: The dual problem (increasing SPF sequences) has different asymptotics because $p(n) \\le \\sqrt{n}$ for composites, giving a much tighter constraint than $P(n) \\le n$. This asymmetry reflects the fundamental difference between the smallest and largest prime factors."
+    ],
+    "prerequisites": [
+      "Multiplicative number theory: greatest prime factor $P^+(n)$, smooth numbers, Dickman function $\\rho(u)$",
+      "Prime counting: $\\pi(x) \\sim x/\\log x$ and its role in bounding sequence lengths",
+      "de Bruijn's smooth number estimates: $\\Psi(x,y)$ for counting $y$-smooth integers $\\leq x$",
+      "Extremal combinatorics: constructing optimal sequences under monotonicity constraints"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Namespace",
+      "summary": "Imports Mathlib modules for `Nat.Prime`, `Nat.Factorization`, `Finset`, `Real.Sqrt`, and `Real.log`. Opens `Nat` and `Finset` namespaces within the `Erdos648` namespace.",
+      "startLine": 33,
+      "endLine": 42,
+      "mathContext": "Mathematical content: Imports Mathlib modules for `Nat.Prime`, `Nat.Factorization`, `Finset`, `Real.Sqrt`, and `Real.log`. Opens `Nat` and `Finset` namespaces within the `Erdos648` namespace."
+    },
+    {
+      "id": "gpf",
+      "title": "Greatest Prime Factor $P(n)$",
+      "summary": "Axiomatizes the greatest prime factor function with `gpfAx`, defines `gpf n` as $P(n)$ (returning 0 for $n \\le 1$), and establishes four key properties: $P(p) = p$ for primes, $P(n) \\mid n$, $P(n)$ is prime, and $P(n)$ is maximal among prime divisors.",
+      "startLine": 43,
+      "endLine": 81,
+      "mathContext": "Axiomatizes the greatest prime factor function with `gpfAx`, defines `gpf n` as $P(n)$ (returning 0 for $n \\le 1$), and establishes four key properties: $P(p) = p$ for primes, $P(n) \\mid n$, $P(n)$ is prime, and $P(n)$ is maximal among prime divisors."
+    },
+    {
+      "id": "examples",
+      "title": "Concrete GPF Computations",
+      "summary": "Verifies $P(n)$ for eleven small integers: $P(2) = 2$, $P(3) = 3$, $P(4) = 2$, $P(6) = 3$, $P(8) = 2$, $P(9) = 3$, $P(10) = 5$, $P(12) = 3$, $P(16) = 2$, $P(27) = 3$, $P(64) = 2$. Demonstrates the key pattern that prime powers $p^k$ have $P(p^k) = p$.",
+      "startLine": 82,
+      "endLine": 118,
+      "mathContext": "Verifies $P(n)$ for eleven small integers: $P(2) = 2$, $P(3) = 3$, $P(4) = 2$, $P(6) = 3$, $P(8) = 2$, $P(9) = 3$, $P(10) = 5$, $P(12) = 3$, $P(16) = 2$, $P(27) = 3$, $P(64) = 2$. Demonstrates the key pattern that prime powers $p^k$ have $P(p^k) = p$."
+    },
+    {
+      "id": "sequences",
+      "title": "GPF-Descending Sequence Definitions",
+      "summary": "Defines `isGPFDescendingSeq` (strictly increasing values with strictly decreasing GPFs via `List.Chain'`), `isValidGPFSeq` (bounded in $[2, n)$), and the extremal function $g(n) = \\sup\\{|\\text{seq}| : \\text{isValidGPFSeq}\\, n\\, \\text{seq}\\}$.",
+      "startLine": 119,
+      "endLine": 148,
+      "mathContext": "Defines `isGPFDescendingSeq` (strictly increasing values with strictly decreasing GPFs via `List.Chain'`), `isValidGPFSeq` (bounded in $[2, n)$), and the extremal function $g(n) = \\sup\\{|\\text{seq}| : \\text{isValidGPFSeq}\\, n\\, \\text{seq}\\}$."
+    },
+    {
+      "id": "example-sequences",
+      "title": "Example GPF-Descending Sequences",
+      "summary": "Proves three concrete examples: $[3, 4]$ with GPFs $[3, 2]$, $[7, 9, 16]$ with GPFs $[7, 3, 2]$, and $[7, 10, 27, 64]$ with GPFs $[7, 5, 3, 2]$. Each is verified by rewriting GPF values and using `omega`.",
+      "startLine": 149,
+      "endLine": 199,
+      "mathContext": "Proves three concrete examples: $[3, 4]$ with GPFs $[3, 2]$, $[7, 9, 16]$ with GPFs $[7, 3, 2]$, and $[7, 10, 27, 64]$ with GPFs $[7, 5, 3, 2]$."
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Small Lower Bounds on $g(n)$",
+      "summary": "States (with sorry) that $g(n) \\ge 1$ for $n \\ge 3$, $g(n) \\ge 2$ for $n \\ge 5$, $g(n) \\ge 3$ for $n \\ge 17$, and $g(n) \\ge 4$ for $n \\ge 65$, using the example sequences as witnesses.",
+      "startLine": 200,
+      "endLine": 219,
+      "mathContext": "Mathematical content: States (with sorry) that $g(n) \\ge 1$ for $n \\ge 3$, $g(n) \\ge 2$ for $n \\ge 5$, $g(n) \\ge 3$ for $n \\ge 17$, and $g(n) \\ge 4$ for $n \\ge 65$, using the example sequences as witnesses."
+    },
+    {
+      "id": "smooth",
+      "title": "Smooth Numbers",
+      "summary": "Defines `isSmooth B n` ($P(n) \\le B$, i.e., $n$ is $B$-smooth/friable). Proves (with sorry) that $2^k$ is 2-smooth and $p^k$ is $p$-smooth for any prime $p$ with $k \\ge 1$.",
+      "startLine": 220,
+      "endLine": 241,
+      "mathContext": "Defines `isSmooth B n` ($P(n) \\le B$, i.e., $n$ is $B$-smooth/friable). Proves (with sorry) that $$2^{k}$$ is 2-smooth and $p^k$ is $p$-smooth for any prime $p$ with $k \\ge 1$."
+    },
+    {
+      "id": "cambie",
+      "title": "Cambie's Theorem: $g(n) \\asymp \\sqrt{n/\\log n}$",
+      "summary": "Axiomatizes Cambie's lower bound ($g(n) \\ge c_1\\sqrt{n/\\log n}$ with $c_1 \\ge 2$) and upper bound ($g(n) \\le c_2\\sqrt{n/\\log n}$ with $c_2 \\le 2\\sqrt{2}$). The main theorem `cambie_main` combines both directions into a $\\Theta$-bound, proved by extracting and repacking the axiomatized constants.",
+      "startLine": 242,
+      "endLine": 279,
+      "mathContext": "Axiomatizes Cambie's lower bound ($g(n) \\ge c_1\\sqrt{n/\\log n}$ with $c_1 \\ge 2$) and upper bound ($g(n) \\le c_2\\sqrt{n/\\log n}$ with $c_2 \\le 2\\sqrt{2}$). The main theorem `cambie_main` combines both directions into a $\\Theta$-bound, proved by extracting and repacking the axiomatized constants."
+    },
+    {
+      "id": "constant",
+      "title": "The Asymptotic Constant Question",
+      "summary": "Axiomatizes Cambie's conjecture that $g(n)/\\sqrt{n/\\log n} \\to c$ for some $c \\in [2, 2\\sqrt{2}]$ using `Filter.Tendsto`. Defines `c_lower = 2` and `c_upper = 2\\sqrt{2}`, and proves $2\\sqrt{2} < 3$ via `nlinarith`.",
+      "startLine": 280,
+      "endLine": 310,
+      "mathContext": "Axiomatizes Cambie's conjecture that $g(n)/\\sqrt{n/\\log n} \\to c$ for some $c \\in [2, 2\\sqrt{2}]$ using `Filter.Tendsto`. Defines `c_lower = 2` and `c_upper = 2\\sqrt{2}`, and proves $2\\sqrt{2} < 3$ via `nlinarith`."
+    },
+    {
+      "id": "construction",
+      "title": "Construction Strategy",
+      "summary": "Documents the construction principle: pick descending primes $p_1 > \\cdots > p_k$, then find representatives with $P(a_i) = p_i$ and $a_1 < \\cdots < a_k$. Smaller primes allow larger powers, enabling the increasing-value condition. Defines `primePowerSequence` as a concrete example.",
+      "startLine": 311,
+      "endLine": 335,
+      "mathContext": "Documents the construction principle: pick descending primes $p_1 > \\cdots > p_k$, then find representatives with $P(a_i) = p_i$ and $a_1 < \\cdots < a_k$. Defines `primePowerSequence` as a concrete example."
+    },
+    {
+      "id": "related-functions",
+      "title": "Smallest Prime Factor and Duality",
+      "summary": "Defines the smallest prime factor $p(n) = n.\\text{minFac}$, axiomatizes $p(n) \\le P(n)$, and proves $p(p) = P(p) = p$ for primes. Introduces the dual problem of increasing-SPF sequences.",
+      "startLine": 336,
+      "endLine": 353,
+      "mathContext": "Formal definition: Defines the smallest prime factor $p(n) = n.\\text{minFac}$, axiomatizes $p(n) \\le P(n)$, and proves $p(p) = P(p) = p$ for primes. Introduces the dual problem of increasing-SPF sequences."
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results Summary",
+      "summary": "Packages the solution: `erdos_648_summary` states both bounds, `erdos_648` gives the full $\\Theta$-result, and `length_four_exists` provides a concrete verified witness that $g(100) \\ge 4$ using $[7, 10, 27, 64]$.",
+      "startLine": 354,
+      "endLine": 378,
+      "mathContext": "Packages the solution: `erdos_648_summary` states both bounds, `erdos_648` gives the full $\\Theta$-result, and `length_four_exists` provides a concrete verified witness that $g(100) \\ge 4$ using $[7, 10, 27, 64]$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #648 asks for the asymptotic behavior of $g(n)$, the length of the longest increasing sequence below $n$ with strictly decreasing greatest prime factors. Stijn Cambie (2025) resolved the problem completely: $g(n) \\asymp (n/\\log n)^{1/2}$. The formalization axiomatizes Cambie's bounds ($c_1 \\ge 2$ for the lower bound, $c_2 \\le 2\\sqrt{2}$ for the upper) and derives the main $\\Theta$-result. The proof includes concrete verified examples up to length 4 and connects to smooth number theory via the de Bruijn $\\Psi$-function.",
+    "implications": "1. **Smooth number theory in combinatorics**: The solution demonstrates how de Bruijn's estimates on $\\Psi(x, y)$ — originally tools of analytic number theory — resolve a purely combinatorial question about sequence optimization.\n\n2. **Arithmetic function extremal problems**: Erdős #648 belongs to a family of problems asking how arithmetic functions (here $P(n)$) constrain combinatorial structures.\n\nSimilar questions for $\\omega(n)$, $\\Omega(n)$, and $\\tau(n)$ remain largely open.\n\n3. **The square-root barrier**: The growth rate $\\sqrt{n/\\log n}$ is intermediate between the trivial bounds $1 \\ll g(n) \\ll \\pi(n) \\sim n/\\log n$. The square root emerges from a balance between prime density and representability constraints — a phenomenon seen in other extremal number theory problems.\n\n4. **Precise asymptotics remain open**: While the order of magnitude is determined, the exact constant $c \\in [2, 2\\sqrt{2}]$ and whether the limit $g(n)/\\sqrt{n/\\log n}$ even exists are open questions connecting to deep properties of smooth number distributions.",
+    "openQuestions": [
+      "What is the exact constant $c$ in $g(n) \\sim c\\sqrt{n/\\log n}$? Does the limit exist, and if so, is $c = 2$, $c = 2\\sqrt{2}$, or some intermediate value?",
+      "What is the growth rate of the dual problem: longest increasing sequence with increasing smallest prime factors $p(a_1) < p(a_2) < \\cdots < p(a_t)$?",
+      "Can the 6 remaining sorry-ed theorems (lower bounds $g(n) \\ge k$ and smooth number properties) be proved from the axiomatized GPF properties, or do they require full Mathlib factorization machinery?",
+      "For the multidimensional generalization, how does $g_k(n)$ behave when we require $k$ simultaneous arithmetic constraints (e.g., decreasing GPF and increasing $\\omega(n)$)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos648",
+    "lineCount": 378,
+    "axiomCount": 3,
+    "theoremCount": 41,
+    "definitionCount": 9,
+    "path": "Proofs/Erdos648Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "key": "Ca25b",
+      "citation": "Cambie, S. (2025). On Erdős problem #648. arXiv:2503.22691.",
+      "type": "paper"
+    },
+    {
+      "key": "Er95c",
+      "citation": "Erdős, P. Original problem statement.",
+      "type": "paper"
+    },
+    {
+      "key": "A391750",
+      "citation": "OEIS A391750: Values of g(n).",
+      "type": "database"
+    },
+    {
+      "key": "dB51",
+      "citation": "de Bruijn, N.G. (1951). On the number of positive integers ≤ x and free of prime factors > y. Nederl. Akad. Wetensch. Proc. Ser. A 54, 50-60.",
+      "type": "paper"
+    },
+    {
+      "key": "Di30",
+      "citation": "Dickman, K. (1930). On the frequency of numbers containing prime factors of a certain relative magnitude. Ark. Mat. Astr. Fys. 22, 1-14.",
+      "type": "paper"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The prime number theorem $\\pi(x) \\sim x/\\ln x$ is essential for counting available primes in Cambie's bound. The number of distinct GPF values below $n$ is $\\pi(n)$, and the PNT determines the growth rate of $g(n)$."
+    },
+    {
+      "targetId": "erdos-1055",
+      "relationship": "related",
+      "description": "Both problems study the interplay between prime factorization structure and classification. Erdős #1055 classifies primes by the smoothness of $p+1$, while #648 builds sequences ordered by greatest prime factor."
+    },
+    {
+      "targetId": "erdos-1095",
+      "relationship": "related",
+      "description": "The Erdős-Selfridge function also involves greatest prime factors of combinatorial objects (binomial coefficients), connecting smooth number theory to extremal problems."
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate (proved by Erdős in 1932) guarantees prime existence in intervals — relevant for ensuring enough distinct primes are available to build long GPF-descending sequences."
+    },
+    {
+      "targetId": "erdos-4",
+      "relationship": "related",
+      "description": "Both are solved Erdős problems involving prime distribution asymptotics. Erdős #4 (large prime gaps, solved by Maynard 2016) uses sieve methods that also appear in smooth number estimates underlying #648."
+    },
+    {
+      "targetId": "prime-reciprocal-divergence",
+      "relationship": "related",
+      "description": "The divergence $\\sum_{p} 1/p = \\infty$ (Euler, 1737) implies the set of primes is dense enough to support arbitrarily long GPF-descending sequences, consistent with $g(n) \\to \\infty$."
+    }
+  ],
+  "sorries": 0
+}

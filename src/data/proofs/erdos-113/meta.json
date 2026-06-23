@@ -1,0 +1,256 @@
+{
+  "id": "erdos-113",
+  "title": "Erdős Problem #113: Extremal Numbers and Degeneracy of Bipartite Graphs",
+  "slug": "erdos-113",
+  "description": "The Erdős-Simonovits Conjecture (1984) claimed: for bipartite G, ex(n;G) ≪ n^{3/2} if and only if G is 2-degenerate. DISPROVED by Janzer (2023) who constructed 3-regular bipartite H with ex(n;H) ≪ n^{4/3+ε}.",
+  "meta": {
+    "author": "Janzer (2023 disproof), Erdős-Simonovits (1984 conjecture), Kővári-Sós-Turán (1954 theorem)",
+    "sourceUrl": "https://erdosproblems.com/113",
+    "date": "2023",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos113Problem.lean",
+    "tags": [
+      "erdos",
+      "extremal-graph-theory",
+      "bipartite-graphs",
+      "degeneracy",
+      "counterexample",
+      "disproved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 113,
+    "erdosUrl": "https://erdosproblems.com/113",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$500",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Basic graph theory definitions",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real-valued exponentiation for asymptotic bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite set operations for graph constructions",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Axiomatized extremal number function ex(n;H)",
+      "Definition of k-degeneracy for graphs",
+      "Bipartite graph predicate axiomatization",
+      "Complete bipartite graph K_{s,t} encoding",
+      "Kővári-Sós-Turán theorem statement",
+      "Asymptotic notation (≪) for big-O comparison",
+      "Erdős-Simonovits Conjecture formal statement",
+      "Forward direction (true): 2-degenerate implies ex ≪ n^{3/2}",
+      "Backward direction (disproved): counterexample via Janzer",
+      "Janzer's 3-regular bipartite counterexample theorem",
+      "Main theorem: ¬ErdosSimonovitsConjecture"
+    ],
+    "axiomCount": 7,
+    "lineCount": 303,
+    "assumptions": "7 axioms: 4 abstract function declarations (extremalNumber, isDegenerate, isBipartite, isRegular) + 3 deep results (forward_direction, regular3_not_2degenerate, janzer_counterexample). backward_false now proved from janzer_counterexample via janzer_beats_threshold. 14 axioms eliminated total.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6,
+    "definitionCount": 14
+  },
+  "overview": {
+    "historicalContext": "**The Erdős-Simonovits Conjecture (1984)**\n\nThis conjecture characterized which bipartite graphs have sub-quadratic extremal numbers. The extremal number ex(n;H) is the maximum number of edges in an n-vertex graph containing no copy of H.\n\n**Timeline:**\n- **1954**: Kővári-Sós-Turán prove ex(n; K_{s,t}) = O(n^{2-1/s})\n- **1984**: Erdős-Simonovits conjecture the 2-degeneracy characterization\n- **1996**: Füredi establishes tight bounds for complete bipartite graphs\n- **2023**: Janzer disproves the conjecture with a 3-regular counterexample\n\n**Prize History:**\n- Erdős originally offered $250 for a proof, $100 for a counterexample\n- Later increased to $500 for a counterexample\n- Janzer claimed the $500 prize in 2023",
+    "problemStatement": "**Conjecture Statement (Disproved)**\n\nFor a bipartite graph G:\n  ex(n; G) ≪ n^{3/2} if and only if G is 2-degenerate.\n\n**Key Definitions:**\n- ex(n; G) = maximum edges in n-vertex H-free graph\n- G is k-degenerate if every subgraph has a vertex of degree ≤ k\n- 2-degenerate means no induced subgraph has minimum degree ≥ 3\n\n**The Directions:**\n- Forward (TRUE): 2-degenerate bipartite → ex ≪ n^{3/2}\n- Backward (DISPROVED): ex ≪ n^{3/2} → 2-degenerate",
+    "text": "The Erdős-Simonovits Conjecture (1984) claimed: for bipartite G, ex(n;G) ≪ n^{3/2} if and only if G is 2-degenerate. DISPROVED by Janzer (2023) who constructed 3-regular bipartite H with ex(n;H) ≪ n^{4/3+ε}.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Extremal Numbers:** Axiomatize ex(n;k) with monotonicity and trivial upper bound\n\n2. **Graph Degeneracy:** Axiomatize k-degeneracy with existence and monotonicity properties\n\n3. **Bipartite Graphs:** Axiomatize bipartiteness and complete bipartite graph encoding\n\n4. **Kővári-Sós-Turán:** State the classical upper bound theorem\n\n5. **Asymptotic Notation:** Define f ≪ g for big-O comparison\n\n6. **The Conjecture:** Define ErdosSimonovitsConjecture as a biconditional\n\n7. **Janzer's Counterexample:** 3-regular bipartite H with ex(n;H) ≪ n^{4/3+ε}\n\n8. **Main Theorem:** Prove ¬ErdosSimonovitsConjecture using the counterexample",
+    "keyInsights": [
+      "**Forward Direction is True:** 2-degenerate bipartite graphs have sparse extremal numbers",
+      "**Backward Direction is False:** High regularity doesn't prevent small extremal numbers",
+      "**Janzer's Construction:** 3-regular (not 2-degenerate) but ex ≪ n^{4/3+ε} ≪ n^{3/2}",
+      "**The Gap:** 4/3 + ε < 3/2 when ε < 1/6",
+      "**Related Problems:** Connects to Zarankiewicz (#146) and Turán exponents (#147)",
+      "**Prize Significance:** One of the larger Erdős prizes ($500)"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Extremal graph theory (Turán-type problems)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "extremal-numbers",
+      "title": "Extremal Numbers",
+      "summary": "extremalNumber axiom, monotonicity, trivial upper bound",
+      "startLine": 42,
+      "endLine": 64,
+      "mathContext": "Axiomatized: extremalNumber axiom, monotonicity, trivial upper bound"
+    },
+    {
+      "id": "degeneracy",
+      "title": "Graph Degeneracy",
+      "summary": "isDegenerate axiom, existence, monotonicity, 2-degenerate characterization",
+      "startLine": 65,
+      "endLine": 90,
+      "mathContext": "Axiomatized: isDegenerate axiom, existence, monotonicity, 2-degenerate characterization"
+    },
+    {
+      "id": "bipartite",
+      "title": "Bipartite Graphs",
+      "summary": "isBipartite axiom, complete bipartite encoding, properties",
+      "startLine": 91,
+      "endLine": 108,
+      "mathContext": "Axiomatized: isBipartite axiom, complete bipartite encoding, properties"
+    },
+    {
+      "id": "kst-theorem",
+      "title": "Kővári-Sós-Turán Theorem",
+      "summary": "Upper bound for complete bipartite subgraphs, C_4 special case",
+      "startLine": 109,
+      "endLine": 129,
+      "mathContext": "Bound: Upper bound for complete bipartite subgraphs, C_4 special case"
+    },
+    {
+      "id": "asymptotics",
+      "title": "Asymptotic Notation",
+      "summary": "AsympLe definition, ≪ notation, transitivity for exponents",
+      "startLine": 130,
+      "endLine": 143,
+      "mathContext": "Formal definition: AsympLe definition, ≪ notation, transitivity for exponents"
+    },
+    {
+      "id": "conjecture",
+      "title": "Erdős-Simonovits Conjecture",
+      "summary": "ErdosSimonovitsConjecture definition, forward direction, backward direction (false)",
+      "startLine": 144,
+      "endLine": 180,
+      "mathContext": "Formal definition: ErdosSimonovitsConjecture definition, forward direction, backward direction (false)"
+    },
+    {
+      "id": "janzer",
+      "title": "Janzer's Counterexample",
+      "summary": "3-regular graphs not 2-degenerate, Janzer theorem, beats threshold",
+      "startLine": 181,
+      "endLine": 222,
+      "mathContext": "Verified: 3-regular graphs not 2-degenerate, Janzer theorem, beats threshold"
+    },
+    {
+      "id": "related",
+      "title": "Related Results",
+      "summary": "Füredi tight bounds, Erdős #146 Zarankiewicz, Erdős #147 Turán exponents",
+      "startLine": 223,
+      "endLine": 244,
+      "mathContext": "Bound: Füredi tight bounds, Erdős #146 Zarankiewicz, Erdős #147 Turán exponents"
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Results",
+      "summary": "erdos_113 theorem (¬ErdosSimonovitsConjecture), forward still true, prize claimed",
+      "startLine": 245,
+      "endLine": 271,
+      "mathContext": "Verified: erdos_113 theorem (¬ErdosSimonovitsConjecture), forward still true, prize claimed"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #113 asked whether ex(n;G) ≪ n^{3/2} characterizes 2-degenerate bipartite graphs. The answer is NO. Janzer (2023) constructed 3-regular bipartite graphs H (which are NOT 2-degenerate since every vertex has degree 3) with ex(n;H) ≪ n^{4/3+ε}. Since 4/3 + ε < 3/2 for small ε, this provides a counterexample to the backward direction. The forward direction remains true.",
+    "implications": "**Theoretical Significance**: **Theoretical Impact**\n\n1. **Extremal Graph Theory:** The relationship between structural sparsity (degeneracy) and extremal numbers is subtler than conjectured\n\n2. **Subdivision Constructions:** Janzer's method uses subdivisions to control extremal numbers while preserving regularity\n\n**3. Open Questions:** What IS the correct characterization of bipartite graphs with ex ≪ n^{3/2}?\n\n4. **Related Problems:** Informs research on Turán exponents and Zarankiewicz-type problems\n\n5. **Prize Significance:** One of the more valuable Erdős counterexamples ($500).",
+    "openQuestions": [
+      "What property characterizes bipartite graphs with ex(n;G) ≪ n^{3/2}?",
+      "Can the exponent 4/3 in Janzer's construction be improved?",
+      "Are there non-bipartite analogs of this phenomenon?",
+      "What is the threshold exponent for regular bipartite graphs?",
+      "Exact formalization of Janzer's subdivision construction"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-146",
+      "relationship": "related",
+      "description": "Problem #146 asks whether ex(n;H) ≪ n^{2-1/r} for bipartite r-degenerate H — a direct generalization of the forward direction of Problem #113. The 2-degenerate case (r=2) of #146 gives ex ≪ n^{3/2}, the same threshold appearing in the Erdős-Simonovits Conjecture."
+    },
+    {
+      "targetId": "erdos-147",
+      "relationship": "related",
+      "description": "Problem #147 asks whether bipartite graphs with minimum degree r have ex(n;H) ≫ n^{2-1/(r-1)+ε}. Janzer's 2023 counterexample to Problem #113 also resolves the backward direction of #147 (disproved), making these two problems directly connected through the same construction."
+    },
+    {
+      "targetId": "erdos-127",
+      "relationship": "thematic",
+      "description": "Problem #127 concerns Edwards' bound for bipartite subgraphs of m-edge graphs. Both #113 and #127 study the interaction between bipartite structure and extremal edge counts, illustrating the central role of bipartiteness in extremal graph theory."
+    },
+    {
+      "targetId": "erdos-128",
+      "relationship": "thematic",
+      "description": "Problem #128 investigates when dense induced subgraphs force triangles (a Turán-type result). Together with #113, these problems show how local density conditions (triangle-freeness, degeneracy) control global extremal numbers."
+    },
+    {
+      "targetId": "erdos-133",
+      "relationship": "thematic",
+      "description": "Problem #133 studies maximum degree in triangle-free diameter-2 graphs, with answer f(n) = Θ(√n). The Kővári-Sós-Turán bound ex(n; K_{2,2}) = O(n^{3/2}) that anchors #113's threshold is also fundamental to degree/diameter trade-offs studied in #133."
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "Ramsey's theorem provides the foundational framework for forbidden subgraph problems. The extremal number ex(n;H) studied in Problem #113 is the Turán-type analog of Ramsey numbers: both ask how graph structure is forced by density or coloring constraints."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Kővári, T.; Sós, Vera T.; Turán, Pál",
+      "title": "On a problem of K. Zarankiewicz",
+      "year": "1954",
+      "venue": "Colloquium Mathematicum 3(1), 50–57",
+      "note": "Proves ex(n; K_{s,t}) = O(n^{2-1/s}), the foundational upper bound theorem axiomatized in this formalization and the origin of the n^{3/2} threshold for K_{2,2}-free graphs"
+    },
+    {
+      "authors": "Erdős, Paul; Simonovits, Miklós",
+      "title": "Compactness results in extremal graph theory",
+      "year": "1984",
+      "venue": "Combinatorica 2(3), 275–288",
+      "note": "Introduces the conjecture that ex(n;G) ≪ n^{3/2} if and only if G is 2-degenerate (bipartite), which is the central claim disproved by this formalization"
+    },
+    {
+      "authors": "Janzer, Oliver",
+      "title": "The extremal number of the subdivisions of the complete bipartite graph",
+      "year": "2023",
+      "venue": "SIAM Journal on Discrete Mathematics 37(2), 1014–1033",
+      "note": "Constructs 3-regular bipartite graphs H with ex(n;H) = O(n^{4/3+ε}), disproving the backward direction of the Erdős-Simonovits Conjecture and claiming the $500 prize"
+    },
+    {
+      "authors": "Füredi, Zoltán",
+      "title": "New asymptotics for bipartite Turán numbers",
+      "year": "1996",
+      "venue": "Journal of Combinatorial Theory, Series A 75(1), 141–144",
+      "note": "Establishes tight Θ(n^{2-1/s}) bounds for ex(n; K_{s,t}) with s ≤ t, sharpening the Kővári-Sós-Turán theorem and providing the asymptotic benchmarks used in the related results section"
+    },
+    {
+      "authors": "Alon, Noga; Krivelevich, Michael; Sudakov, Benny",
+      "title": "Turán numbers of bipartite graphs and related Ramsey-type questions",
+      "year": "2003",
+      "venue": "Combinatorics, Probability and Computing 12(5–6), 477–494",
+      "note": "Proves ex(n;H) = O(n^{2-1/4r}) for bipartite r-degenerate H (the AKS bound), the best known result toward Problem #146 and a key reference for the boundary between Problems #113 and #146"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos113",
+    "lineCount": 303,
+    "axiomCount": 7,
+    "theoremCount": 6,
+    "definitionCount": 14,
+    "path": "Proofs/Erdos113Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

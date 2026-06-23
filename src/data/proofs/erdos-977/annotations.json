@@ -1,0 +1,363 @@
+[
+  {
+    "id": "ann-977-gpf",
+    "proofId": "erdos-977",
+    "type": "definition",
+    "title": "Greatest Prime Factor",
+    "content": "Defines $P(n)$ as the largest prime dividing $n$, returning 0 for $n \\le 1$. This is the central function in the problem. For composite $n = p_1^{a_1} \\cdots p_k^{a_k}$ with $p_1 < \\cdots < p_k$, we have $P(n) = p_k$. The function is multiplicative in the sense that $P(mn) = \\max(P(m), P(n))$.",
+    "mathContext": "$P(n) = \\max\\{p \\text{ prime} : p \\mid n\\}$ for $n \\ge 2$, $P(1) = P(0) = 0$. The problem asks about the growth of $P(2^n - 1)/n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime factorization",
+      "arithmetic functions",
+      "smooth numbers"
+    ],
+    "prerequisites": [
+      "prime numbers",
+      "divisibility",
+      "Nat.Primes in Mathlib"
+    ],
+    "range": {
+      "startLine": 33,
+      "endLine": 40
+    }
+  },
+  {
+    "id": "ann-977-gpfdvd",
+    "proofId": "erdos-977",
+    "type": "concept",
+    "title": "P(n) Divides n",
+    "content": "The greatest prime factor of $n$ divides $n$. This is immediate from the definition: $P(n)$ is one of the prime factors of $n$. Used throughout the formalization to connect $P(2^n-1)$ to the arithmetic of Mersenne numbers.",
+    "mathContext": "$P(n) \\mid n$ for all $n \\ge 2$. Equivalently, $n = P(n) \\cdot m$ for some $m \\ge 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "divisibility",
+      "prime factorization",
+      "Nat.dvd"
+    ],
+    "prerequisites": [
+      "definition of P(n)",
+      "prime divisor existence"
+    ],
+    "range": {
+      "startLine": 42,
+      "endLine": 44
+    }
+  },
+  {
+    "id": "ann-977-gpfprime",
+    "proofId": "erdos-977",
+    "type": "concept",
+    "title": "P(n) is Prime",
+    "content": "For $n \\ge 2$, $P(n)$ is a prime number. This ensures $P(n)$ is well-defined as a prime and enables reasoning about congruence conditions like $P(2^n-1) \\equiv 1 \\pmod{n}$ for primitive prime factors.",
+    "mathContext": "$\\text{Nat.Prime}(P(n))$ for $n \\ge 2$. Combined with $P(n) \\mid n$, this characterizes $P(n)$ as the largest element of $\\{p \\text{ prime} : p \\mid n\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.Prime",
+      "prime characterization",
+      "greatest element"
+    ],
+    "prerequisites": [
+      "definition of P(n)",
+      "existence of prime factors"
+    ],
+    "range": {
+      "startLine": 46,
+      "endLine": 48
+    }
+  },
+  {
+    "id": "ann-977-mersenne",
+    "proofId": "erdos-977",
+    "type": "definition",
+    "title": "Mersenne Number",
+    "content": "Defines $M_n = 2^n - 1$, the $n$-th Mersenne number. Named after Marin Mersenne (1588–1648), who studied which values of $n$ make $2^n - 1$ prime. The factorization $2^n - 1 = \\prod_{d \\mid n} \\Phi_d(2)$ via cyclotomic polynomials is the key algebraic structure exploited by Schinzel and Stewart.",
+    "mathContext": "$M_n = 2^n - 1$. Key factorization: $2^n - 1 = \\prod_{d \\mid n} \\Phi_d(2)$ where $\\Phi_d$ is the $d$-th cyclotomic polynomial. If $p$ is prime, $M_p = 2^p - 1$ is a Mersenne prime candidate.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Mersenne primes",
+      "cyclotomic polynomials",
+      "exponential sequences"
+    ],
+    "prerequisites": [
+      "natural number exponentiation",
+      "cyclotomic polynomial basics"
+    ],
+    "range": {
+      "startLine": 57,
+      "endLine": 58
+    }
+  },
+  {
+    "id": "ann-977-mainq",
+    "proofId": "erdos-977",
+    "type": "definition",
+    "title": "Main Question: $P(2^n-1)/n \\to \\infty$",
+    "content": "The formalization of Erdős's central question: does the ratio $P(2^n - 1)/n$ tend to infinity? This asks whether the greatest prime factor of Mersenne numbers grows super-linearly. Trivially $P(2^n-1) \\ge n+1$ by Zsygmondy, so the question is about *how fast* beyond linear growth.",
+    "mathContext": "$\\lim_{n \\to \\infty} P(2^n - 1)/n = \\infty$? Equivalently: $\\forall M,\\, \\exists N_0,\\, \\forall n \\ge N_0: P(2^n-1) \\ge Mn$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "divergence to infinity",
+      "super-linear growth",
+      "greatest prime factor growth rates"
+    ],
+    "prerequisites": [
+      "definition of P(n)",
+      "Mersenne numbers",
+      "limit definition"
+    ],
+    "range": {
+      "startLine": 75,
+      "endLine": 77
+    }
+  },
+  {
+    "id": "ann-977-stewart",
+    "proofId": "erdos-977",
+    "type": "concept",
+    "title": "Stewart's Theorem (2013): Yes",
+    "content": "Cameron Stewart proved in 2013 that $P(2^n - 1)/n \\to \\infty$, fully resolving Erdős's question. The proof uses Baker's theory of linear forms in logarithms: if $P(2^n - 1)$ were bounded by $Cn$, then $2^n - 1$ would be $(Cn)$-smooth, and the logarithmic representation $n \\log 2 = \\sum a_i \\log p_i$ would give a linear form in logarithms too close to zero, contradicting Baker's lower bounds.",
+    "mathContext": "$P(2^n - 1)/n \\to \\infty$ as $n \\to \\infty$ (Stewart 2013). The proof shows that if $P(2^n-1) \\le f(n)$ for slowly-growing $f$, then Baker's theorem on $|\\Lambda| = |b_1 \\log \\alpha_1 + \\cdots + b_k \\log \\alpha_k|$ gives a contradiction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Baker's theorem",
+      "linear forms in logarithms",
+      "smooth numbers",
+      "transcendental number theory"
+    ],
+    "prerequisites": [
+      "P(n) definition",
+      "Mersenne numbers",
+      "Baker's theory basics"
+    ],
+    "range": {
+      "startLine": 79,
+      "endLine": 81
+    }
+  },
+  {
+    "id": "ann-977-schinzel",
+    "proofId": "erdos-977",
+    "type": "concept",
+    "title": "Schinzel's Bound (1962)",
+    "content": "Andrzej Schinzel proved $P(2^n - 1) > 2n$ for all $n > 12$. The proof uses the cyclotomic factorization $2^n - 1 = \\prod_{d \\mid n} \\Phi_d(2)$ and the fact that primitive prime factors of $\\Phi_n(2)$ satisfy $p \\equiv 1 \\pmod{n}$, hence $p \\ge 2n + 1 > 2n$. The finitely many exceptions $n \\le 12$ are checked computationally.",
+    "mathContext": "$P(2^n - 1) > 2n$ for $n > 12$ (Schinzel 1962). Proof sketch: primitive prime $p \\mid \\Phi_n(2)$ has $\\text{ord}_p(2) = n$, so $p \\equiv 1 \\pmod{n}$, giving $p \\ge 2n+1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cyclotomic polynomials",
+      "primitive prime factors",
+      "congruence conditions on primes"
+    ],
+    "prerequisites": [
+      "cyclotomic factorization of 2^n - 1",
+      "multiplicative order",
+      "Fermat's little theorem"
+    ],
+    "range": {
+      "startLine": 85,
+      "endLine": 92
+    }
+  },
+  {
+    "id": "ann-977-stewartq",
+    "proofId": "erdos-977",
+    "type": "concept",
+    "title": "Stewart's Quantitative Bound",
+    "content": "Stewart's 2013 result with explicit growth rate: $P(2^n - 1) \\ge n^{1 + 1/(104 \\log\\log n)}$ for sufficiently large $n$. This gives super-polynomial but sub-exponential growth, with the exponent $1 + 1/(104 \\log\\log n)$ tending slowly to 1. The constant 104 arises from the effective bounds in Baker's theory.",
+    "mathContext": "$P(2^n - 1) \\ge n^{1 + 1/(104 \\log\\log n)}$ for $n$ sufficiently large. Since $1 + 1/(104 \\log\\log n) > 1$ for all $n \\ge 3$, this gives $P(2^n-1)/n \\ge n^{1/(104\\log\\log n)} \\to \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "effective bounds in transcendental number theory",
+      "Baker's constants",
+      "super-polynomial growth"
+    ],
+    "prerequisites": [
+      "Stewart's theorem",
+      "Baker's effective estimates",
+      "iterated logarithm"
+    ],
+    "range": {
+      "startLine": 97,
+      "endLine": 110
+    }
+  },
+  {
+    "id": "ann-977-m2",
+    "proofId": "erdos-977",
+    "type": "concept",
+    "title": "$P(M_2) = 3$",
+    "content": "$P(2^2 - 1) = P(3) = 3$, the simplest case. Here $M_2 = 3$ is itself prime. The ratio $P(M_2)/2 = 3/2 > 1$, consistent with Schinzel's bound for this small case.",
+    "mathContext": "$P(2^2 - 1) = P(3) = 3$. Ratio: $P(M_2)/2 = 1.5$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "small Mersenne numbers",
+      "computational verification"
+    ],
+    "prerequisites": [
+      "P(n) definition",
+      "Mersenne number definition"
+    ],
+    "range": {
+      "startLine": 112,
+      "endLine": 130
+    }
+  },
+  {
+    "id": "ann-977-mersenneprime",
+    "proofId": "erdos-977",
+    "type": "definition",
+    "title": "Mersenne Prime",
+    "content": "A Mersenne prime is a prime of the form $M_p = 2^p - 1$ where $p$ itself must be prime (since if $d \\mid n$ with $1 < d < n$, then $2^d - 1 \\mid 2^n - 1$). As of 2024, 51 Mersenne primes are known, the largest being $M_{82589933} = 2^{82589933} - 1$ (24,862,048 digits). It is unknown whether infinitely many exist.",
+    "mathContext": "$\\text{isMersennePrime}(n) \\iff \\text{Nat.Prime}(2^n - 1)$. Necessary condition: $n$ must be prime. Known examples: $M_2, M_3, M_5, M_7, M_{13}, M_{17}, M_{19}, \\ldots$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Mersenne prime search (GIMPS)",
+      "Lucas–Lehmer test",
+      "perfect numbers"
+    ],
+    "prerequisites": [
+      "primality",
+      "Mersenne numbers",
+      "divisibility of 2^n - 1"
+    ],
+    "range": {
+      "startLine": 134,
+      "endLine": 135
+    }
+  },
+  {
+    "id": "ann-977-gpfmp",
+    "proofId": "erdos-977",
+    "type": "concept",
+    "title": "GPF of Mersenne Prime",
+    "content": "When $M_n$ is prime, $P(M_n) = M_n = 2^n - 1$. This is trivial (a prime's greatest prime factor is itself) but highlights that Mersenne primes represent extreme cases where $P(2^n-1)/n = (2^n-1)/n$, growing exponentially — far beyond what the problem asks.",
+    "mathContext": "$\\text{Nat.Prime}(2^n - 1) \\Rightarrow P(2^n - 1) = 2^n - 1$. Ratio: $P(M_n)/n = (2^n - 1)/n \\sim 2^n/n \\to \\infty$ exponentially.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime number as its own GPF",
+      "extreme cases",
+      "exponential growth"
+    ],
+    "prerequisites": [
+      "Mersenne prime definition",
+      "P(p) = p for primes"
+    ],
+    "range": {
+      "startLine": 137,
+      "endLine": 145
+    }
+  },
+  {
+    "id": "ann-977-related",
+    "proofId": "erdos-977",
+    "type": "definition",
+    "title": "Related Open Problem: $P(n! + 1)$",
+    "content": "The formalization also states the open analogue: does $P(n! + 1)/(n \\log n) \\to \\infty$? Unlike $2^n - 1$, the factorial $n!+1$ lacks a cyclotomic-type factorization, making Baker's method inapplicable. The best known result is Lai's (2021) limsup bound.",
+    "mathContext": "Open: $P(n! + 1)/(n \\log n) \\to \\infty$? The normalization by $n \\log n$ (instead of $n$) reflects that $n! + 1$ has about $n \\log n$ digits, so $P(n!+1) \\ge n\\log n$ would be analogous to $P(2^n-1) \\ge n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "factorial arithmetic",
+      "open problems",
+      "limitations of Baker's method"
+    ],
+    "prerequisites": [
+      "P(n) definition",
+      "factorial growth",
+      "comparison with Mersenne case"
+    ],
+    "range": {
+      "startLine": 149,
+      "endLine": 156
+    }
+  },
+  {
+    "id": "ann-977-lai",
+    "proofId": "erdos-977",
+    "type": "concept",
+    "title": "Lai's Bound (2021)",
+    "content": "Lai proved $\\limsup_{n \\to \\infty} P(n! + 1)/n \\ge 1 + 9\\log 2 \\approx 7.238$. This is a partial result: it shows $P(n!+1)$ exceeds $7n$ infinitely often, but doesn't establish divergence. The proof uses sieve methods and properties of smooth numbers near factorials.",
+    "mathContext": "$\\limsup_{n \\to \\infty} P(n!+1)/n \\ge 1 + 9\\log 2 \\approx 7.238$. Note: $\\limsup$ rather than $\\lim$ — this only guarantees infinitely many $n$ with $P(n!+1) \\ge 7.238n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "limsup vs limit",
+      "sieve methods",
+      "smooth numbers near factorials"
+    ],
+    "prerequisites": [
+      "P(n!+1) problem statement",
+      "sieve theory basics"
+    ],
+    "range": {
+      "startLine": 158,
+      "endLine": 162
+    }
+  },
+  {
+    "id": "ann-977-primitive",
+    "proofId": "erdos-977",
+    "type": "definition",
+    "title": "Primitive Prime Factor",
+    "content": "A prime $p$ is a *primitive* prime factor of $2^n - 1$ if $p \\mid 2^n - 1$ but $p \\nmid 2^k - 1$ for any $0 < k < n$. Equivalently, $\\text{ord}_p(2) = n$, so by Fermat's little theorem $n \\mid p - 1$, giving $p \\ge n + 1$. This is the algebraic engine behind all lower bounds on $P(2^n - 1)$.",
+    "mathContext": "$p$ is primitive for $2^n - 1$ $\\iff$ $\\text{ord}_p(2) = n$ $\\iff$ $p \\mid \\Phi_n(2)$ (where $\\Phi_n$ is the $n$-th cyclotomic polynomial). Then $n \\mid p-1$, so $p \\equiv 1 \\pmod{n}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cyclotomic polynomials",
+      "multiplicative order",
+      "Fermat's little theorem"
+    ],
+    "prerequisites": [
+      "prime factorization of 2^n - 1",
+      "multiplicative order mod p"
+    ],
+    "range": {
+      "startLine": 167,
+      "endLine": 169
+    }
+  },
+  {
+    "id": "ann-977-zsygmondy",
+    "proofId": "erdos-977",
+    "type": "concept",
+    "title": "Zsygmondy's Theorem",
+    "content": "Karl Zsygmondy proved in 1892 that for $n > 6$, the number $2^n - 1$ has a primitive prime factor. The exceptions at $n \\le 6$ are: $n = 1$ ($M_1 = 1$), $n = 2$ ($M_2 = 3$, primitive), $n = 6$ ($M_6 = 63 = 7 \\cdot 9$, all primes divide earlier Mersenne numbers). This immediately gives $P(2^n - 1) \\ge n + 1$ for $n > 6$.",
+    "mathContext": "Zsygmondy (1892): $\\forall n > 6,\\, \\exists p$ prime with $p \\mid 2^n - 1$ and $\\text{ord}_p(2) = n$. The more general form covers $a^n - b^n$ for coprime $a > b \\ge 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bang's theorem",
+      "Birkhoff-Vandiver theorem",
+      "primitive divisors of Lehmer sequences"
+    ],
+    "prerequisites": [
+      "multiplicative order",
+      "cyclotomic polynomials",
+      "Mersenne number factorization"
+    ],
+    "range": {
+      "startLine": 171,
+      "endLine": 179
+    }
+  },
+  {
+    "id": "ann-977-ord",
+    "proofId": "erdos-977",
+    "type": "definition",
+    "title": "Multiplicative Order of 2 mod p",
+    "content": "Defines $\\text{ord}_p(2)$ as the smallest positive integer $k$ with $2^k \\equiv 1 \\pmod{p}$. The key connection: $p \\mid 2^n - 1$ if and only if $\\text{ord}_p(2) \\mid n$. This links the prime factorization of $2^n - 1$ to the group structure of $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ and explains why primitive prime factors satisfy $p \\equiv 1 \\pmod{n}$.",
+    "mathContext": "$\\text{ord}_p(2) = \\min\\{k \\ge 1 : 2^k \\equiv 1 \\pmod{p}\\}$. Then $p \\mid 2^n - 1 \\iff \\text{ord}_p(2) \\mid n$, and $\\text{ord}_p(2) \\mid p - 1$ by Fermat's little theorem.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "multiplicative group of finite fields",
+      "Fermat's little theorem",
+      "cyclic group structure"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "group order",
+      "Lagrange's theorem for finite groups"
+    ],
+    "range": {
+      "startLine": 183,
+      "endLine": 197
+    }
+  }
+]

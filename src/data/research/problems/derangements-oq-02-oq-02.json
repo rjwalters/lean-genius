@@ -1,0 +1,232 @@
+{
+  "slug": "derangements-oq-02-oq-02",
+  "title": "Prove derangement generating function via Stirling numbers",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\sum_{\\sigma \\in S_n} |\\mathrm{Fix}(\\sigma)| = n! \\quad \\text{and} \\quad \\sum_{k=0}^{n} k \\binom{n}{k} D_{n-k} = n!",
+    "plain": "Two combinatorial identities about permutations and derangements, proved via Burnside’s lemma and double-counting: (1) the total number of fixed points across all permutations of [n] is n! (equivalently the expected number of fixed points of a random permutation is 1); (2) the weighted partition identity Σ k·C(n,k)·D(n-k) = n!",
+    "whyMatters": [
+      "The expected-fixed-points-equals-one fact is a classical result in combinatorial probability — basis for the derangement generating function via inclusion-exclusion.",
+      "Demonstrates Burnside’s lemma (orbit-counting) on a transitive action — useful template for similar enumerative arguments.",
+      "The weighted partition identity Σ k C(n,k) D(n-k) = n! gives a bijective interpretation of derangement decomposition: every permutation factors uniquely as fixed-set + derangement of the rest."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "sum_fixedPoints_eq_factorial: Σ_σ |Fix(σ)| = n! via Burnside (orbit-counting).",
+      "total_fixed_eq_card_perm: total fixed-points equals |S_n| (rephrased form).",
+      "card_perm_fixing_point: |{σ : σ(x) = x}| = (n-1)! via orbit-stabilizer.",
+      "weighted_partition_identity: Σ k C(n,k) D(n-k) = n! by fiberwise summation.",
+      "summary_expected_fixed_one: average number of fixed points over S_n equals 1.",
+      "Concrete checks via native_decide for n = 1, 2, 3, 4."
+    ],
+    "open": [],
+    "goal": "Complete — both identities formalized; no remaining open subgoals."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-03T00:00:00Z",
+    "iteration": 2,
+    "focus": "Verified: 12 theorems, 0 sorries, 0 axioms in DerangementsOQ02OQ02.lean. Status verified in gallery meta.json.",
+    "blockers": [],
+    "nextAction": "None — proof complete (gallery: status=verified).",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 2,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: All proofs done. 0 sorries, 0 axioms. 12 theorems in DerangementsOQ02OQ02.lean",
+    "builtItems": [
+      "sum_fixedPoints_eq_factorial proved via Burnside's lemma: ∑_σ |Fix(σ)| = |orbits| · |Perm(Fin n)| = 1 · n! = n!",
+      "filter_eq_fixedBy_card (private): (filter fun x => σ x = x).card = Fintype.card (fixedBy (Fin n) σ) via Fintype.card_subtype + Equiv.subtypeEquiv",
+      "total_fixed_eq_card_perm proved via sum_fixedPoints_eq_factorial + Fintype.card_perm",
+      "summary_expected_fixed_one proved via weighted_partition_identity",
+      "4 native_decide verifications (n=1,2,3,4) for sum_fixedPoints and weighted_sum",
+      "card_perm_fixing_point: orbit-stabilizer gives |{σ : σ x = x}| = (n-1)! in DerangementsOQ02OQ02.lean:103",
+      "weighted_partition_identity: fiberwise identity via Finset.sum_fiberwise_of_maps_to in DerangementsOQ02OQ02.lean:196"
+    ],
+    "insights": [
+      "Burnside's lemma (MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group) directly gives ∑_σ |Fix(σ)| = |Ω| · |G|",
+      "Equiv.Perm acts transitively on Fin n: IsPretransitive (Perm α) α instance in Algebra.Group.Action.End",
+      "From IsPretransitive + Nonempty: MulAction.pretransitive_iff_unique_quotient_of_nonempty gives Unique Ω → Fintype Ω (via Unique.fintype) → Fintype.card_unique gives 1",
+      "Key pattern: (pretransitive_iff... |>.mp inferInstance).some extracts Unique from Nonempty(Unique ...)",
+      "card_perm_fixing_point ({σ | σ x = x}.card = (n-1)!) remains sorry; approach via orbit-stabilizer is valid but needs API work to convert stabilizer.card to filter.card",
+      "weighted_partition_identity (∑_k k·C(n,k)·D(n-k) = n!) remains sorry; needs sum-exchange/bijection between perms-with-k-fixed and C(n,k)·D(n-k)",
+      "card_perm_fixing_point proved via orbit-stabilizer: n·|stab(x)| = n! = n·(n-1)!, so |stab(x)| = (n-1)!",
+      "weighted_partition_identity proved via double counting: k·C(n,k)·D(n-k) = k·|A_k| = ∑_{A_k} fp(σ) → ∑_σ fp(σ) = n!"
+    ],
+    "mathlibGaps": [
+      "No direct API for Fintype.card (stabilizer (Perm (Fin n)) x) = (filter fun σ => σ x = x).card",
+      "Sum exchange ∑_k k·#{σ:|Fix|=k} = ∑_σ |Fix(σ)| requires Finset manipulation"
+    ],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "combinatorics",
+    "derangements",
+    "generating-functions"
+  ],
+  "relatedProofs": [
+    "derangements",
+    "derangements-convergence",
+    "derangements-convergence-oq-01",
+    "derangements-convergence-oq-01-oq-01",
+    "derangements-convergence-oq-03",
+    "derangements-oq-02",
+    "derangements-oq-02-oq-01",
+    "derangements-oq-02-oq-02",
+    "derangements-oq-03",
+    "derangements-oq-03-oq-01",
+    "derangements-oq-03-oq-01-oq-02",
+    "derangements-oq-03-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T02:57:02.771Z",
+  "lastUpdate": "2026-06-14T01:06:09Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Derangements.lean",
+      "filename": "Derangements.lean",
+      "lineCount": 227,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Derangements.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergence.lean",
+      "filename": "DerangementsConvergence.lean",
+      "lineCount": 283,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergence.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ01.lean",
+      "filename": "DerangementsConvergenceOQ01.lean",
+      "lineCount": 153,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ01.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ01OQ01.lean",
+      "filename": "DerangementsConvergenceOQ01OQ01.lean",
+      "lineCount": 148,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ03.lean",
+      "filename": "DerangementsConvergenceOQ03.lean",
+      "lineCount": 89,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ03.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ02.lean",
+      "filename": "DerangementsOQ02.lean",
+      "lineCount": 358,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ02.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ02OQ01.lean",
+      "filename": "DerangementsOQ02OQ01.lean",
+      "lineCount": 124,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ02OQ02.lean",
+      "filename": "DerangementsOQ02OQ02.lean",
+      "lineCount": 250,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ03.lean",
+      "filename": "DerangementsOQ03.lean",
+      "lineCount": 406,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ03.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ03OQ01.lean",
+      "filename": "DerangementsOQ03OQ01.lean",
+      "lineCount": 244,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ03OQ01OQ02.lean",
+      "filename": "DerangementsOQ03OQ01OQ02.lean",
+      "lineCount": 413,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ03OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ03OQ02.lean",
+      "filename": "DerangementsOQ03OQ02.lean",
+      "lineCount": 383,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ03OQ02.lean"
+    }
+  ]
+}

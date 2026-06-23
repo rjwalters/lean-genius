@@ -1,0 +1,146 @@
+[
+  {
+    "id": "ann-e192-overview",
+    "proofId": "erdos-192",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "type": "concept",
+    "title": "Problem Overview: Unit Vector Walks and Abelian Squares",
+    "content": "Erdős Problem #192 asks: for which dimensions $d$ must every infinite unit vector walk in $\\mathbb{Z}^d$ contain a three-term arithmetic progression? The answer is $d \\leq 3$ (unavoidable) and $d \\geq 4$ (avoidable). The key insight is a reduction to combinatorics on words: recording which coordinate axis each step follows produces a string over a $d$-letter alphabet, and three equally-spaced positions correspond precisely to an **abelian square** (two consecutive blocks that are anagrams). Keränen (1992) constructed an infinite abelian-square-free word over 4 letters using a morphism with 85-letter images, resolving the problem. The formalization imports `Fin.VecNotation`, `Int.Basic`, and `Finset.Basic`.",
+    "mathContext": "Walk $w : \\mathbb{N} \\to \\text{Fin}\\, d$ with position $\\text{pos}(n)_i = |\\{k < n : w(k) = i\\}|$. Three-term AP: $\\exists\\, i < j < k,\\, \\text{pos}(j) - \\text{pos}(i) = \\text{pos}(k) - \\text{pos}(j)$ coordinate-wise. Equivalent to abelian square in the word $w(0) w(1) w(2) \\cdots$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "abelian squares",
+      "unit vector walks",
+      "arithmetic progressions",
+      "combinatorics on words"
+    ],
+    "prerequisites": [
+      "Fin type",
+      "Finset.range",
+      "integer arithmetic",
+      "word combinatorics basics"
+    ]
+  },
+  {
+    "id": "ann-e192-setup",
+    "proofId": "erdos-192",
+    "range": {
+      "startLine": 26,
+      "endLine": 53
+    },
+    "type": "definition",
+    "title": "Walk Infrastructure: UnitVectorWalk, walkPosition, HasThreeTermAP",
+    "content": "Three core definitions: (1) `UnitVectorWalk d := ℕ → Fin d` — an infinite sequence of step directions. Each step increments one coordinate by 1. (2) `walkPosition d w n : Fin d → ℤ` — the position after $n$ steps, computed as $\\text{pos}(n)_i = \\sum_{k=0}^{n-1} [w(k) = i]$ using `Finset.range n` and conditional summation. (3) `HasThreeTermAP d w` — existence of indices $i < j < k$ where the position differences match coordinate-wise: $\\text{pos}(j)_c - \\text{pos}(i)_c = \\text{pos}(k)_c - \\text{pos}(j)_c$ for all $c \\in \\text{Fin}\\, d$. This is the integer-valued midpoint condition $2 \\cdot \\text{pos}(j) = \\text{pos}(i) + \\text{pos}(k)$.",
+    "mathContext": "$\\text{UnitVectorWalk}(d) = \\mathbb{N} \\to \\text{Fin}\\, d$. $\\text{walkPosition}(n)_i = \\sum_{k < n} \\mathbf{1}_{w(k)=i} \\in \\mathbb{Z}$. AP condition: $\\exists\\, i < j < k,\\, \\forall c,\\, \\text{pos}(j)_c - \\text{pos}(i)_c = \\text{pos}(k)_c - \\text{pos}(j)_c$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "step sequence",
+      "lattice walk",
+      "coordinate counting",
+      "midpoint condition"
+    ],
+    "prerequisites": [
+      "Fin d",
+      "Finset.range",
+      "conditional summation",
+      "integer subtraction"
+    ]
+  },
+  {
+    "id": "ann-e192-low-dim",
+    "proofId": "erdos-192",
+    "range": {
+      "startLine": 55,
+      "endLine": 67
+    },
+    "type": "concept",
+    "title": "The d <= 3 Case: APs Are Unavoidable",
+    "content": "The axiom `three_term_ap_low_dim` states that every infinite unit vector walk in $\\mathbb{Z}^d$ for $d \\leq 3$ must contain a three-term arithmetic progression. The proof (axiomatized) relies on a classical result in combinatorics on words: every sufficiently long string over a 3-letter alphabet contains an **abelian square** — two consecutive blocks of equal length that are anagrams (same letter frequencies). Specifically, any word of length $\\geq 7$ over $\\{1, 2, 3\\}$ contains an abelian square. Since the walk word is infinite, abelian squares are unavoidable for $d \\leq 3$, and each abelian square corresponds to a 3-term AP in the walk.",
+    "mathContext": "Axiom: $d \\leq 3 \\implies \\forall w : \\mathbb{N} \\to \\text{Fin}\\, d,\\, \\text{HasThreeTermAP}(d, w)$. Key fact: every word of length $\\geq 7$ over a 3-letter alphabet contains an abelian square $u v$ with $|u| = |v|$ and $|u|_a = |v|_a$ for each letter $a$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "abelian square",
+      "Parikh vector",
+      "small alphabet avoidability",
+      "pigeonhole principle"
+    ],
+    "prerequisites": [
+      "abelian square definition",
+      "alphabet size vs. avoidability",
+      "AP-abelian square equivalence"
+    ]
+  },
+  {
+    "id": "ann-e192-keranen",
+    "proofId": "erdos-192",
+    "range": {
+      "startLine": 69,
+      "endLine": 81
+    },
+    "type": "concept",
+    "title": "Keränen's Counterexample: d = 4 Allows AP-Free Walks",
+    "content": "The axiom `keranen_counterexample` states there exists an infinite unit vector walk in $\\mathbb{Z}^4$ with no three-term AP. **Keränen's construction (1992):** Define a morphism $h : \\{a, b, c, d\\} \\to \\{a, b, c, d\\}^{85}$ where each letter maps to a specific 85-letter string. Starting from $a$ and iterating $h$ produces an infinite word $h^\\omega(a)$ that is abelian-square-free. Keränen verified this by computer-assisted proof, checking that no abelian square of length $\\leq 2 \\times 85^2$ appears, which suffices by a compactness argument. The morphism length 85 was the smallest Keränen found; whether a shorter morphism exists remains open.",
+    "mathContext": "Axiom: $\\exists w : \\mathbb{N} \\to \\text{Fin}\\, 4,\\, \\neg\\text{HasThreeTermAP}(4, w)$. Keränen's morphism $h : \\Sigma^* \\to \\Sigma^*$ with $|\\Sigma| = 4$, $|h(a)| = 85$ for each $a \\in \\Sigma$, and $h^\\omega(a)$ abelian-square-free.",
+    "significance": "key",
+    "relatedConcepts": [
+      "morphic words",
+      "abelian square-freeness",
+      "substitution systems",
+      "Keränen morphism"
+    ],
+    "prerequisites": [
+      "morphism iteration",
+      "fixed point $h^\\omega(a)$",
+      "abelian square avoidability"
+    ]
+  },
+  {
+    "id": "ann-e192-high-dim",
+    "proofId": "erdos-192",
+    "range": {
+      "startLine": 83,
+      "endLine": 85
+    },
+    "type": "concept",
+    "title": "Extension to d >= 4: Projection from Keränen's Construction",
+    "content": "The axiom `counterexample_high_dim` extends the $d = 4$ result to all $d \\geq 4$: there exists an AP-free walk in $\\mathbb{Z}^d$ for any $d \\geq 4$. The proof is straightforward: embed Keränen's 4-letter walk into $\\mathbb{Z}^d$ by using only the first 4 coordinates, leaving the remaining $d - 4$ coordinates at zero. If the embedded walk contained an AP, projecting onto the first 4 coordinates would give an AP in the original 4-dimensional walk, contradicting Keränen's construction.",
+    "mathContext": "$d \\geq 4 \\implies \\exists w : \\mathbb{N} \\to \\text{Fin}\\, d,\\, \\neg\\text{HasThreeTermAP}(d, w)$. Proof: embed $\\text{Fin}\\, 4 \\hookrightarrow \\text{Fin}\\, d$ and compose with Keränen's walk.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "dimension embedding",
+      "projection argument",
+      "monotonicity of avoidability"
+    ],
+    "prerequisites": [
+      "Fin embedding",
+      "Keränen counterexample"
+    ]
+  },
+  {
+    "id": "ann-e192-classification",
+    "proofId": "erdos-192",
+    "range": {
+      "startLine": 87,
+      "endLine": 103
+    },
+    "type": "concept",
+    "title": "Complete Classification: erdos_192",
+    "content": "The main theorem `erdos_192` states the conjunction: (1) every walk in $\\mathbb{Z}^3$ has a 3-term AP, AND (2) there exists a walk in $\\mathbb{Z}^4$ with no 3-term AP. Proved by `⟨three_term_ap_low_dim 3 (by omega), keranen_counterexample⟩`. The `omega` tactic discharges $3 \\leq 3$. This gives the complete characterization: $d = 3$ is the threshold dimension, below which APs are forced and above which they can be avoided. The file also names this threshold via the `Erdos192` namespace, connecting to the equivalence with Erdős Problem #231 on abelian squares directly.",
+    "mathContext": "$\\text{erdos\\_192}: (\\forall w : \\text{Walk}\\, 3,\\, \\text{AP}(w)) \\wedge (\\exists w : \\text{Walk}\\, 4,\\, \\neg\\text{AP}(w))$. Proved: $\\langle \\text{three\\_term\\_ap\\_low\\_dim}\\, 3\\, (\\text{by omega}),\\, \\text{keranen\\_counterexample} \\rangle$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "threshold dimension",
+      "complete characterization",
+      "Erdős Problem #231",
+      "abelian square avoidability"
+    ],
+    "prerequisites": [
+      "three_term_ap_low_dim",
+      "keranen_counterexample",
+      "omega tactic"
+    ]
+  }
+]

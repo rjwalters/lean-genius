@@ -1,0 +1,204 @@
+{
+  "id": "abundant-number-oq-01",
+  "title": "Abundant Numbers: 12 Is Smallest, and There Are Infinitely Many",
+  "slug": "abundant-number-oq-01",
+  "description": "An abundant number n satisfies σ(n) > 2n (the sum of its proper divisors exceeds n). Working with Mathlib's canonical Nat.Abundant predicate, this entry establishes four facts: (1) minimality — 12 is the least abundant number, proved axiom-free by kernel decide; (2) closure — every positive multiple of an abundant number is abundant; (3) infinitude — the abundant numbers form an infinite set, witnessed by the family {12·(k+1)}; and (4) the perfect-number boundary — every proper multiple of a perfect number (σ(n) = 2n) is abundant, so perfection is exactly the threshold at which multiples turn abundant. All results are fully machine-checked with 0 axioms and 0 sorries.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Abundant_number",
+    "date": "Antiquity (Nicomachus, ~100 CE); OEIS A005101",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AbundantMultiplesOQ01.lean",
+    "badge": "verified",
+    "tags": [
+      "number-theory",
+      "divisor-sum",
+      "abundant-numbers",
+      "decidability",
+      "infinitude",
+      "intermediate"
+    ],
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 236,
+    "theoremCount": 13,
+    "definitionCount": 0,
+    "dateAdded": "2026-06-18",
+    "mathlib_version": "4.26.0",
+    "assumptions": "None. Fully machine-checked with 0 axioms and 0 sorries across both source files. Minimality (AbundantNumberOQ01.lean) uses kernel `decide` — not `native_decide` — so it carries no `Lean.ofReduceBool` axiom; it builds directly on Mathlib's `Nat.abundant_twelve`. The closure and infinitude results (AbundantMultiplesOQ01.lean) are elementary Finset/divisor-sum arithmetic over ℕ with no decision procedure at all.",
+    "originalContributions": [
+      "Proves `IsLeast {n | n.Abundant} 12` (minimality of the smallest abundant number) using Mathlib's canonical `Nat.Abundant` predicate and the bounded kernel-`decide` check `∀ n < 12, ¬ Nat.Abundant n` — keeping the result axiom-free (no `native_decide`, hence no `Lean.ofReduceBool`).",
+      "Proves `abundant_mul_right` / `abundant_of_abundant_dvd`: every positive multiple of an abundant number is abundant — a structural closure fact Mathlib does not record. The proof injects the scaled divisors `d ↦ t·d` of `a` into the divisors of `a·t`, giving σ(a·t) ≥ t·σ(a) > t·(2a) = 2(a·t).",
+      "Supplies the bridge lemma `abundant_iff_two_mul_lt_sigma`: for n the proper-divisor form `n < ∑_{d∣n, d<n} d` is equivalent to the full divisor-sum form `2n < ∑_{d∣n} d`.",
+      "Proves `infinitely_many_abundant : {n : ℕ | n.Abundant}.Infinite` — there are infinitely many abundant numbers — by exhibiting the injective family `k ↦ 12·(k+1)` of abundant numbers, a direct consequence of closure under multiples.",
+      "Proves `abundant_of_perfect_mul`: every proper multiple `a·t` (`t ≥ 2`) of a perfect number `a` (σ(a) = 2a) is abundant — the perfect-number boundary the closure argument hints at but does not by itself give. Since a perfect number only *meets* the threshold (σ(a) = 2a), the strict surplus comes from the divisor `1` of `a·t`, which lies outside the scaled image `{t·d : d ∣ a}` whenever `t ≥ 2`; via `Finset.sum_lt_sum_of_subset` this forces σ(a·t) > t·σ(a) = 2(a·t). Concretely `abundant_of_six_mul`: every proper multiple of `6` (= 12, 18, 24, …) is abundant, with `perfect_six : Nat.Perfect 6` discharged by kernel `decide`."
+    ]
+  },
+  "overview": {
+    "historicalContext": "The classification of integers as deficient (σ(n) < 2n), perfect (σ(n) = 2n), or abundant (σ(n) > 2n) dates to Nicomachus of Gerasa (~100 CE) and is among the oldest themes in number theory. The abundant numbers begin 12, 18, 20, 24, 30, 36, … (OEIS A005101); 12 is the smallest, and Mathlib records its abundance as `Nat.abundant_twelve` but does not record minimality, closure, or infinitude. That abundant numbers are infinite is classical and elementary — every multiple of a perfect or abundant number is itself abundant, so the multiples of 12 alone already give an infinite supply. (Quantitatively, the abundant numbers have natural density ≈ 0.2476, a much deeper fact due to Davenport and others.)",
+    "problemStatement": "Working with Mathlib's `Nat.Abundant n := n < ∑_{d ∈ properDivisors n} d`, establish: (1) `IsLeast {n | n.Abundant} 12` — 12 is the least abundant number; (2) if `a.Abundant`, `a ∣ m`, `0 < m`, then `m.Abundant` — closure under multiples; and (3) `{n | n.Abundant}.Infinite` — there are infinitely many abundant numbers.",
+    "text": "A Lean 4 / Mathlib formalization in two companion files (236 lines total, 0 sorries, 0 axioms). `AbundantNumberOQ01.lean` settles minimality: `Nat.Abundant` is a decidable comparison of concrete divisor sums, so `not_abundant_below_twelve : ∀ n < 12, ¬ Nat.Abundant n` is discharged by kernel `decide` (the bounded quantifier via `Nat.decidableBallLT`), and combined with `Nat.abundant_twelve` yields `smallest_abundant : IsLeast {n | n.Abundant} 12`. `AbundantMultiplesOQ01.lean` proves the structural half: a bridge lemma rewriting abundance into the full divisor-sum form `2n < σ(n)`, then `abundant_mul_right` (positive multiples of an abundant number are abundant) via an injection of scaled divisors, `infinitely_many_abundant` — the abundant numbers are infinite — from the injective abundant family `k ↦ 12·(k+1)`, and `abundant_of_perfect_mul` — every proper multiple of a perfect number is abundant — locating the strict surplus in the omitted unit divisor.",
+    "proofStrategy": "1. **Minimality (axiom-free decide).** `Nat.Abundant n` unfolds to a decidable inequality between concrete `ℕ` sums, so both `twelve_abundant := Nat.abundant_twelve` and `not_abundant_below_twelve : ∀ n < 12, ¬ Nat.Abundant n` are closed by kernel `decide`. `smallest_abundant : IsLeast {n | n.Abundant} 12` pairs membership with the lower bound: any abundant `n < 12` would contradict the bounded check.\n\n2. **Divisor-sum bridge.** `abundant_iff_two_mul_lt_sigma` rewrites `Nat.Abundant n` (proper-divisor form) into `2n < ∑_{d ∣ n} d` using `Nat.sum_divisors_eq_sum_properDivisors_add_self` and `omega`.\n\n3. **Closure under multiples.** For `a` abundant and `t > 0`, the map `d ↦ t·d` is injective on `a.divisors` and lands inside `(a·t).divisors`, so `∑_{e ∣ a·t} e ≥ t · ∑_{d ∣ a} d > t · 2a = 2(a·t)` — hence `a·t` is abundant (`abundant_mul_right`), and dividing through gives `abundant_of_abundant_dvd`.\n\n4. **Infinitude.** `abundant_twelve_mul k : (12·(k+1)).Abundant` instantiates closure at `a = 12`. The witnessing map `k ↦ 12·(k+1)` is injective, so `Set.infinite_of_injective_forall_mem` yields `infinitely_many_abundant : {n | n.Abundant}.Infinite`.",
+    "keyInsights": [
+      "**Minimality is a finite kernel computation.** Because `Nat.Abundant` is decidable, the lower bound `∀ n < 12, ¬ Nat.Abundant n` is a single bounded `decide` over eleven cases — no hand case analysis — and because it is kernel `decide` (not `native_decide`) the result is genuinely axiom-free, avoiding the `Lean.ofReduceBool` axiom.",
+      "**Abundance propagates upward along divisibility.** The abundancy index σ(n)/n is non-decreasing under multiplication: scaling the divisors of `a` by a factor `t` injects them into the divisors of `a·t`, so σ(a·t) ≥ t·σ(a). This single monotonicity is what turns one abundant number into an infinite family.",
+      "**Infinitude needs no analytic input.** Unlike the density statement (abundant numbers have density ≈ 0.2476, a 20th-century result), mere infinitude is elementary: the multiples of 12 are all abundant by closure, and there are infinitely many of them. The proof reduces to injectivity of `k ↦ 12·(k+1)`.",
+      "**Canonical predicate, axiom-free.** The entry works with Mathlib's own `Nat.Abundant` and `Nat.abundant_twelve` rather than a bespoke σ definition, and discharges minimality with kernel `decide`, so every claim is machine-checked with 0 axioms.",
+      "**One injection, two classical corollaries.** The scaled-divisor injection `d ↦ t·d` is the single mechanism behind the folklore facts that *every* multiple of an abundant number is abundant (`abundant_mul_right`) and that *every proper* multiple of a perfect number σ(n) = 2n is abundant (`abundant_of_perfect_mul`). In the abundant case strictness is immediate because `a` already overshoots `2a`; in the perfect case `a` only *meets* `2a`, so the strict surplus must be located explicitly — it is the divisor `1` of `a·t`, which the image `{t·d}` omits precisely when `t ≥ 2`, turning σ(a·t) ≥ t·σ(a) = 2(a·t) into a strict inequality. The two corollaries together explain why abundant numbers, once seeded by an abundant *or* perfect number, proliferate along every multiple.",
+      "**Closure stratifies the abundant numbers into generators and generated.** Because every multiple of an abundant number is abundant, the abundant set is exactly the upward closure (under multiples) of its *primitive* members — those whose proper divisors are all deficient, smallest 20. The closure theorem says the generated members are abundant for free; the genuinely new abundant numbers are the primitive ones, which Erdős (1935) showed are infinite yet sparse. Refining the membership condition itself rather than the divisibility structure leads to weird numbers (abundant but not semiperfect, smallest 70), where the deep open question of whether any odd weird number exists still resists every computational search."
+    ],
+    "prerequisites": [
+      "The sum-of-divisors function σ and proper divisors",
+      "Abundant / deficient / perfect classification",
+      "Finset sums, divisor finsets, and injections between them",
+      "Decidability and kernel `decide`; `IsLeast`, `Set.Infinite`, and injective families"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Closure and Infinitude: Statement",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Module docstring of AbundantMultiplesOQ01.lean: defines abundance via σ(n) > 2n, states the closure fact (every positive multiple of an abundant number is abundant) and its structural consequence (the abundant numbers form an infinite set, witnessed by {12·(k+1)}), and notes the proof is axiom-free.",
+      "mathContext": "Abundance propagates along divisibility because the abundancy index σ(n)/n is non-decreasing under multiplication."
+    },
+    {
+      "id": "bridge",
+      "title": "Divisor-Sum Bridge and Positivity",
+      "startLine": 38,
+      "endLine": 53,
+      "summary": "`abundant_iff_two_mul_lt_sigma` rewrites `Nat.Abundant n` (proper-divisor form) into the full divisor-sum form `2n < ∑_{d ∣ n} d` via `Nat.sum_divisors_eq_sum_properDivisors_add_self` and `omega`. `pos_of_abundant` records that abundant numbers are positive.",
+      "mathContext": "Two equivalent ways to say a number is abundant: proper divisors exceed n, or the full divisor sum exceeds 2n."
+    },
+    {
+      "id": "closure",
+      "title": "Multiples of an Abundant Number Are Abundant",
+      "startLine": 55,
+      "endLine": 88,
+      "summary": "`abundant_mul_right`: for abundant `a` and `t > 0`, the scaled divisors `d ↦ t·d` inject into the divisors of `a·t` (subset `hsub` plus injectivity `hinj`), so `Finset.sum_le_sum_of_subset` gives σ(a·t) ≥ t·σ(a) > t·2a = 2(a·t); hence `a·t` is abundant. The `sum_image` rewrite is phrased over the bound variable so the higher-order unification (motive `g = id`) succeeds.",
+      "mathContext": "An explicit injection of divisor sets realizes the monotonicity of the abundancy index along divisibility: σ(a·t) ≥ t·σ(a)."
+    },
+    {
+      "id": "closure-dvd",
+      "title": "Divisibility Restatement of Closure",
+      "startLine": 90,
+      "endLine": 99,
+      "summary": "`abundant_of_abundant_dvd`: if `a` is abundant, `a ∣ m`, and `m > 0`, then `m` is abundant. Writing `m = a·t` from divisibility and deducing `t > 0` from `m > 0`, the claim reduces directly to `abundant_mul_right`. This is the form most convenient for applications phrased with `∣` rather than an explicit product.",
+      "mathContext": "Closure under multiples re-expressed along the divisibility relation: a.Abundant → a ∣ m → 0 < m → m.Abundant."
+    },
+    {
+      "id": "infinitude",
+      "title": "Infinitely Many Abundant Numbers",
+      "startLine": 101,
+      "endLine": 132,
+      "summary": "`abundant_twelve_mul k` instantiates closure at 12: each `12·(k+1)` is abundant. `twelve_mul_succ_injective` shows the family is injective, and `Set.infinite_of_injective_forall_mem` delivers `infinitely_many_abundant : {n | n.Abundant}.Infinite`.",
+      "mathContext": "An injective family of abundant numbers proves the set of abundant numbers is infinite."
+    },
+    {
+      "id": "perfect-boundary",
+      "title": "Perfect-Number Boundary: Proper Multiples of a Perfect Number Are Abundant",
+      "startLine": 134,
+      "endLine": 195,
+      "summary": "`abundant_of_perfect_mul`: for `a` perfect (σ(a) = 2a, via `Nat.perfect_iff_sum_divisors_eq_two_mul`) and `t ≥ 2`, `a·t` is abundant. The scaled divisors `d ↦ t·d` inject into `(a·t).divisors` contributing exactly `t·σ(a) = 2(a·t)`; the divisor `1` of `a·t` lies outside that image (since `t·d = 1` forces `t = 1`), so `Finset.sum_lt_sum_of_subset` makes the divisor sum strictly exceed `2(a·t)`. `perfect_six : Nat.Perfect 6` (kernel `decide` after unfolding) and `abundant_of_six_mul` give the concrete family 12, 18, 24, … of abundant proper multiples of 6.",
+      "mathContext": "Perfection σ(n) = 2n is the exact threshold: a perfect number is not abundant, but every proper multiple of it is, because the omitted unit divisor supplies the strict surplus."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "infinitely_many_abundant",
+      "type": "core",
+      "description": "{n : ℕ | n.Abundant}.Infinite — there are infinitely many abundant numbers, witnessed by the injective family k ↦ 12·(k+1) of multiples of 12 (each abundant by closure). In AbundantMultiplesOQ01.lean.",
+      "leanType": "{n : ℕ | n.Abundant}.Infinite"
+    },
+    {
+      "name": "smallest_abundant",
+      "type": "core",
+      "description": "IsLeast {n : ℕ | n.Abundant} 12 — 12 is abundant (Nat.abundant_twelve) and a lower bound for the abundant numbers, i.e. the smallest abundant number. Proved axiom-free by kernel decide. In AbundantNumberOQ01.lean.",
+      "leanType": "IsLeast {n : ℕ | n.Abundant} 12"
+    },
+    {
+      "name": "abundant_mul_right",
+      "type": "supporting",
+      "description": "If a.Abundant and 0 < t then (a * t).Abundant — closure of abundance under positive multiplication, via an injection of scaled divisors. In AbundantMultiplesOQ01.lean.",
+      "leanType": "a.Abundant → 0 < t → (a * t).Abundant"
+    },
+    {
+      "name": "abundant_of_abundant_dvd",
+      "type": "supporting",
+      "description": "If a.Abundant, a ∣ m, 0 < m then m.Abundant — divisibility form of closure under multiples. In AbundantMultiplesOQ01.lean.",
+      "leanType": "a.Abundant → a ∣ m → 0 < m → m.Abundant"
+    },
+    {
+      "name": "abundant_of_perfect_mul",
+      "type": "supporting",
+      "description": "If a.Perfect and 2 ≤ t then (a * t).Abundant — every proper multiple of a perfect number is abundant. The strict surplus over 2(a·t) is supplied by the divisor 1, which is absent from the scaled image {t·d : d ∣ a} when t ≥ 2. In AbundantMultiplesOQ01.lean.",
+      "leanType": "a.Perfect → 2 ≤ t → (a * t).Abundant"
+    },
+    {
+      "name": "not_abundant_below_twelve",
+      "type": "supporting",
+      "description": "∀ n < 12, ¬ Nat.Abundant n — the lower bound for minimality; a finite divisor-sum check discharged by kernel decide via Nat.decidableBallLT. In AbundantNumberOQ01.lean.",
+      "leanType": "∀ n < 12, ¬ Nat.Abundant n"
+    }
+  ],
+  "conclusion": {
+    "summary": "Using Mathlib's canonical Nat.Abundant predicate, the entry pins four facts about abundant numbers: 12 is the smallest (axiom-free kernel decide); abundance is closed under taking positive multiples; the abundant numbers form an infinite set (the multiples 12·(k+1) give an explicit injective abundant family); and every proper multiple of a perfect number is abundant (abundant_of_perfect_mul), pinning perfection σ(n) = 2n as the exact threshold above which multiples turn abundant. All 13 theorems are machine-checked with 0 sorries and 0 axioms.",
+    "implications": "Closure under multiples is the structural engine: it converts a single witness (12) into an infinite family and underlies the elementary proof of infinitude, which needs no analytic input — in contrast to the natural-density statement (abundant numbers have density ≈ 0.2476), which is a far deeper 20th-century result. The same scaled-divisor injection shows the abundancy index σ(n)/n is non-decreasing along divisibility, a fact useful for any argument that propagates abundance, perfection-adjacency, or related divisor-sum inequalities upward. Closure also organizes the abundant numbers into those generated as multiples of smaller abundant numbers versus the primitive abundant numbers (all proper divisors deficient, smallest 20), which seed the rest — every abundant number is a multiple of a primitive one.",
+    "openQuestions": [
+      "Prove that the abundant numbers have positive natural density (Davenport: the density of {n : σ(n) > 2n} exists and is ≈ 0.2476), or at least a clean lower bound such as density ≥ 1/4 from the multiples of any fixed abundant number.",
+      "Formalize that 945 is the smallest odd abundant number — a minimality statement whose bounded check is far larger and likely needs a kernel-reducible σ to remain axiom-free.",
+      "Show every integer greater than 20161 is the sum of two abundant numbers (the largest integer that is not such a sum is 20161), connecting closure to an additive-basis question.",
+      "Formalize the primitive abundant numbers — abundant numbers all of whose proper divisors are deficient (the smallest is 20: its proper divisors 1, 2, 4, 5, 10 are each deficient) — and Erdős's 1935 theorem that they are infinite yet sparse (the sum of their reciprocals converges). These are exactly the abundant numbers the closure theorem above cannot produce from a smaller witness: if a proper divisor were abundant, closure would already make the number abundant, so primitivity is the failure of that divisor to be abundant.",
+      "Formalize weird numbers — abundant numbers that are not semiperfect, i.e. no subset of the proper divisors sums to the number itself (the smallest is 70, whose proper divisors sum to 74 but admit no subset summing to 70). Whether any odd weird number exists is a long-standing open problem (none is known, despite searches past 10^21)."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Nicomachus of Gerasa",
+      "title": "Introduction to Arithmetic",
+      "year": "~100 CE",
+      "venue": "—",
+      "note": "Earliest classification of numbers as deficient, perfect, and abundant (superabundant)."
+    },
+    {
+      "authors": "OEIS Foundation",
+      "title": "A005101: Abundant numbers (sum of divisors of n exceeds 2n)",
+      "year": "—",
+      "venue": "The On-Line Encyclopedia of Integer Sequences",
+      "note": "The sequence 12, 18, 20, 24, 30, 36, … of abundant numbers; 12 is the smallest."
+    },
+    {
+      "authors": "H. Davenport",
+      "title": "Über numeri abundantes",
+      "year": "1933",
+      "venue": "Sitzungsber. Preuss. Akad. Wiss.",
+      "note": "Establishes that the abundant numbers have a well-defined natural density (≈ 0.2476)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "sum-of-divisors",
+      "relationship": "related",
+      "description": "The sum-of-divisors entry formalizes σ broadly with file-local IsAbundant/sigma definitions and independently records that 12 is the smallest abundant number (there via native_decide). This entry instead uses Mathlib's canonical Nat.Abundant, proves minimality axiom-free with kernel decide, and adds the closure and infinitude results that sum-of-divisors does not contain."
+    },
+    {
+      "targetId": "perfect-numbers",
+      "relationship": "related",
+      "description": "Perfect numbers satisfy σ(n) = 2n, the boundary case between deficient and abundant. The same divisor-sum function and classification underlie both entries; this entry formalizes that any proper multiple of a perfect number is abundant (`abundant_of_perfect_mul`), so perfection is exactly the threshold above which the multiples become abundant."
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/AbundantMultiplesOQ01.lean",
+    "namespace": "AbundantMultiplesOQ01",
+    "imports": [
+      "Mathlib"
+    ],
+    "lineCount": 197,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 10,
+    "definitionCount": 0
+  }
+}

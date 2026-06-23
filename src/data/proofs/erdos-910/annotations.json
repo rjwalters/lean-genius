@@ -1,0 +1,304 @@
+[
+  {
+    "id": "ann-e910-imports",
+    "proofId": "erdos-910",
+    "type": "concept",
+    "range": {
+      "startLine": 30,
+      "endLine": 36
+    },
+    "title": "Imports and Setup",
+    "content": "The formalization imports the full Mathlib library, bringing in topological spaces, homeomorphisms, cardinal arithmetic, and set operations. The `open Set Cardinal` command puts set and cardinal notations in scope. The variable `{X : Type*} [TopologicalSpace X]` establishes a generic topological space for the definitions.",
+    "mathContext": "We work in a general topological space $(X, \\tau)$ with Mathlib's `TopologicalSpace` typeclass, later specialized to $\\mathbb{R} \\times \\mathbb{R}$ for the concrete conjectures.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "TopologicalSpace",
+      "Cardinal arithmetic",
+      "Mathlib"
+    ],
+    "prerequisites": [
+      "General topology",
+      "Set theory"
+    ]
+  },
+  {
+    "id": "connected-subsets-def",
+    "proofId": "erdos-910",
+    "type": "definition",
+    "range": {
+      "startLine": 41,
+      "endLine": 42
+    },
+    "title": "Connected Subsets Collection",
+    "content": "Defines `connectedSubsetsOf S` as the set of all connected subsets contained in $S$. A subset $T \\subseteq S$ is in this collection iff $T \\subseteq S$ and $T$ is connected (cannot be partitioned into two disjoint non-empty open sets in the subspace topology).",
+    "mathContext": "$\\text{connectedSubsetsOf}(S) = \\{T \\subseteq S : T \\text{ is connected}\\}$. A set $T$ is connected iff there is no decomposition $T = U \\cup V$ with $U, V$ open, non-empty, and disjoint.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Connected topological spaces",
+      "Subspace topology",
+      "Components"
+    ],
+    "prerequisites": [
+      "General topology",
+      "Connectedness"
+    ]
+  },
+  {
+    "id": "homeomorphic-sets-def",
+    "proofId": "erdos-910",
+    "type": "definition",
+    "range": {
+      "startLine": 45,
+      "endLine": 46
+    },
+    "title": "Homeomorphism Between Subsets",
+    "content": "Defines `AreHomeomorphic S T` as the existence of a homeomorphism $S \\simeq_t T$ — a continuous bijection with continuous inverse, where $S$ and $T$ carry the subspace topology. This captures topological equivalence: $S$ and $T$ have identical topological structure.",
+    "mathContext": "$\\text{AreHomeomorphic}(S, T) :\\iff \\exists f: S \\to T$ continuous bijection with $f^{-1}$ continuous, i.e., $S \\cong T$ as topological spaces. Formally: $\\text{Nonempty}(S \\simeq_t T)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Homeomorphism",
+      "Topological invariants",
+      "Continuous bijection"
+    ],
+    "prerequisites": [
+      "Continuous functions",
+      "Subspace topology"
+    ]
+  },
+  {
+    "id": "diverse-subset-def",
+    "proofId": "erdos-910",
+    "type": "definition",
+    "range": {
+      "startLine": 50,
+      "endLine": 53
+    },
+    "title": "Diverse Connected Subset",
+    "content": "A set $S$ has a diverse connected subset if there exists $T \\subsetneq S$ that is: (1) connected, (2) contains at least two points (not a singleton), and (3) not homeomorphic to $S$. This formalizes Erdos's intuition that connected sets should possess 'intermediate' connected substructures that are topologically distinct from the whole.",
+    "mathContext": "$\\text{HasDiverseConnectedSubset}(S) :\\iff \\exists T \\subsetneq S,\\; T \\text{ connected} \\wedge |T| \\geq 2 \\wedge T \\not\\cong S$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Self-similar sets",
+      "Topological rigidity",
+      "Proper subsets"
+    ],
+    "prerequisites": [
+      "Connected subsets",
+      "Homeomorphism"
+    ]
+  },
+  {
+    "id": "rudin-set-def",
+    "proofId": "erdos-910",
+    "type": "definition",
+    "range": {
+      "startLine": 57,
+      "endLine": 60
+    },
+    "title": "Rudin Set",
+    "content": "A set $S$ is a Rudin set if it is connected and every proper connected subset is either a singleton $\\{x\\}$ or homeomorphic to $S$ itself. This extreme self-similarity means the topology of $S$ is maximally rigid: there are no 'intermediate' connected substructures. The `ExistsUnique` formulation ensures each singleton is identified by a unique point.",
+    "mathContext": "$\\text{IsRudinSet}(S) :\\iff S \\text{ connected} \\wedge \\forall T \\subsetneq S,\\; T \\text{ connected} \\implies (\\exists! x,\\; T = \\{x\\}) \\vee T \\cong S$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Self-similar topology",
+      "Hereditarily indecomposable continua",
+      "Pathological connected sets"
+    ],
+    "prerequisites": [
+      "Connectedness",
+      "Homeomorphism",
+      "Proper subsets"
+    ]
+  },
+  {
+    "id": "ann-e910-homeo-refl",
+    "proofId": "erdos-910",
+    "type": "concept",
+    "range": {
+      "startLine": 64,
+      "endLine": 65
+    },
+    "title": "Homeomorphism Reflexivity",
+    "content": "Every set is homeomorphic to itself, via the identity homeomorphism `Homeomorph.refl S`. This is a basic property of the homeomorphism relation.",
+    "mathContext": "$\\forall S,\\; S \\cong S$ via $\\text{id}_S$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Equivalence relation",
+      "Identity function"
+    ],
+    "prerequisites": [
+      "Homeomorphism definition"
+    ]
+  },
+  {
+    "id": "ann-e910-homeo-symm",
+    "proofId": "erdos-910",
+    "type": "concept",
+    "range": {
+      "startLine": 67,
+      "endLine": 69
+    },
+    "title": "Homeomorphism Symmetry",
+    "content": "If $S \\cong T$ then $T \\cong S$: homeomorphism is symmetric. The proof uses `Homeomorph.symm` to invert the continuous bijection.",
+    "mathContext": "$S \\cong T \\implies T \\cong S$ via $f^{-1}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Equivalence relation",
+      "Inverse function"
+    ],
+    "prerequisites": [
+      "Homeomorphism definition"
+    ]
+  },
+  {
+    "id": "first-conjecture",
+    "proofId": "erdos-910",
+    "type": "definition",
+    "range": {
+      "startLine": 74,
+      "endLine": 76
+    },
+    "title": "Erdos's First Conjecture (Disproved)",
+    "content": "States that every connected set in $\\mathbb{R}^2$ has a diverse connected subset: a proper connected non-singleton subset not homeomorphic to the whole. Erdos posed this in the 1940s, expecting an affirmative answer based on the behavior of typical connected sets like intervals and disks. Disproved by Rudin (1958) under CH.",
+    "mathContext": "$\\text{erdosFirstConjecture} :\\iff \\forall S \\subseteq \\mathbb{R}^2,\\; S \\text{ connected} \\implies \\text{HasDiverseConnectedSubset}(S)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Connected sets in Euclidean space",
+      "Topological diversity",
+      "Counterexamples"
+    ],
+    "prerequisites": [
+      "Diverse connected subset",
+      "Euclidean topology"
+    ]
+  },
+  {
+    "id": "connected-cardinality-def",
+    "proofId": "erdos-910",
+    "type": "definition",
+    "range": {
+      "startLine": 79,
+      "endLine": 85
+    },
+    "title": "Connected Subset Cardinality and Second Conjecture",
+    "content": "Defines `connectedSubsetCardinality S` as the cardinal $|\\text{connectedSubsetsOf}(S)|$ and `erdosSecondConjecture`: every connected set in $\\mathbb{R}^2$ has strictly more than $2^{\\aleph_0}$ connected subsets. For typical connected sets (intervals, manifolds), the number of connected subsets is indeed $2^{2^{\\aleph_0}}$, but the Rudin set achieves exactly $2^{\\aleph_0}$.",
+    "mathContext": "$\\text{erdosSecondConjecture} :\\iff \\forall S \\subseteq \\mathbb{R}^2,\\; S \\text{ connected} \\implies |\\text{connectedSubsetsOf}(S)| > 2^{\\aleph_0}$. Uses `Cardinal.continuum` $= |\\mathbb{R}| = 2^{\\aleph_0}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cardinal arithmetic",
+      "Continuum",
+      "Power set cardinality"
+    ],
+    "prerequisites": [
+      "Connected subsets",
+      "Cardinal numbers"
+    ]
+  },
+  {
+    "id": "rudin-theorem",
+    "proofId": "erdos-910",
+    "type": "concept",
+    "range": {
+      "startLine": 93,
+      "endLine": 98
+    },
+    "title": "Rudin's Theorem (1958) — Axiomatized",
+    "content": "The central axiom: under the Continuum Hypothesis ($\\aleph_1 = 2^{\\aleph_0}$), there exists a connected subset $S \\subseteq \\mathbb{R}^2$ that is a Rudin set with exactly $2^{\\aleph_0}$ connected subsets and is nontrivial ($|S| \\geq 2$). Mary Ellen Rudin's construction uses transfinite induction of length $\\aleph_1$ (which equals $2^{\\aleph_0}$ under CH) to build $S$ point by point while maintaining both connectivity and the self-similarity property at each successor stage. This was published in 'A connected subset of the plane' (Fundamenta Mathematicae 46, 1958).",
+    "mathContext": "$\\text{CH} \\implies \\exists S \\subseteq \\mathbb{R}^2,\\; \\text{IsRudinSet}(S) \\wedge |\\text{connectedSubsetsOf}(S)| = 2^{\\aleph_0} \\wedge |S| \\geq 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Transfinite induction",
+      "Continuum Hypothesis",
+      "Point-set topology constructions"
+    ],
+    "prerequisites": [
+      "CH",
+      "Ordinal induction",
+      "Topology of the plane"
+    ]
+  },
+  {
+    "id": "no-diverse-subset-theorem",
+    "proofId": "erdos-910",
+    "type": "concept",
+    "range": {
+      "startLine": 104,
+      "endLine": 121
+    },
+    "title": "Rudin Sets Have No Diverse Subsets",
+    "content": "The key structural theorem, fully proved (no sorry): for any Rudin set $S$, $\\neg\\text{HasDiverseConnectedSubset}(S)$. The proof assumes a diverse subset $T$ exists, then applies the Rudin property: since $T$ is a proper connected non-singleton subset of $S$, it must be either a singleton (contradicting $|T| \\geq 2$) or homeomorphic to $S$ (contradicting $T \\not\\cong S$). Both cases lead to contradiction.",
+    "mathContext": "$\\text{IsRudinSet}(S) \\implies \\neg\\text{HasDiverseConnectedSubset}(S)$. Proof by contradiction: if $T$ is diverse, then $T \\subsetneq S$, $T$ connected, $|T| \\geq 2$, $T \\not\\cong S$. But the Rudin property gives $T = \\{x\\}$ or $T \\cong S$, both contradictions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Proof by contradiction",
+      "Case analysis",
+      "Topological rigidity"
+    ],
+    "prerequisites": [
+      "Rudin set definition",
+      "Diverse connected subset"
+    ]
+  },
+  {
+    "id": "first-conjecture-false",
+    "proofId": "erdos-910",
+    "type": "concept",
+    "range": {
+      "startLine": 124,
+      "endLine": 129
+    },
+    "title": "First Conjecture False Under CH",
+    "content": "Proves $\\text{CH} \\to \\neg\\text{erdosFirstConjecture}$, fully verified (0 sorries). The proof: assume CH, obtain the Rudin set $S$ from the axiom, apply the first conjecture to $S$ to get a diverse subset, then apply `rudin_set_no_diverse_subset` to derive a contradiction.",
+    "mathContext": "$\\text{CH} \\implies \\neg(\\forall S \\subseteq \\mathbb{R}^2,\\; S \\text{ connected} \\implies \\text{HasDiverseConnectedSubset}(S))$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Counterexample method",
+      "Negation of universal statement"
+    ],
+    "prerequisites": [
+      "Rudin's theorem",
+      "No diverse subset theorem"
+    ]
+  },
+  {
+    "id": "second-conjecture-false",
+    "proofId": "erdos-910",
+    "type": "concept",
+    "range": {
+      "startLine": 132,
+      "endLine": 139
+    },
+    "title": "Second Conjecture False Under CH",
+    "content": "Proves $\\text{CH} \\to \\neg\\text{erdosSecondConjecture}$, fully verified (0 sorries). The proof: the Rudin set has exactly $2^{\\aleph_0}$ connected subsets, but the conjecture requires strictly more than $2^{\\aleph_0}$. Substituting the cardinality bound yields $2^{\\aleph_0} > 2^{\\aleph_0}$, a contradiction via `lt_irrefl`.",
+    "mathContext": "$\\text{CH} \\implies \\neg(\\forall S \\subseteq \\mathbb{R}^2,\\; S \\text{ connected} \\implies |\\text{connectedSubsetsOf}(S)| > 2^{\\aleph_0})$. The Rudin set achieves exactly $2^{\\aleph_0}$, so $2^{\\aleph_0} > 2^{\\aleph_0}$ is absurd.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cardinal inequality",
+      "Irreflexivity of strict order"
+    ],
+    "prerequisites": [
+      "Rudin's theorem",
+      "Cardinal comparison"
+    ]
+  },
+  {
+    "id": "ann-e910-combined",
+    "proofId": "erdos-910",
+    "type": "concept",
+    "range": {
+      "startLine": 150,
+      "endLine": 153
+    },
+    "title": "Both Conjectures False Under CH",
+    "content": "The combined summary theorem: under CH, both of Erdos's conjectures about connected subsets of Euclidean space are false. Constructed as a simple conjunction of the two individual disproof theorems. This is the main exported result of the formalization.",
+    "mathContext": "$\\text{CH} \\implies \\neg\\text{erdosFirstConjecture} \\wedge \\neg\\text{erdosSecondConjecture}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Conjunction of results",
+      "Summary theorem"
+    ],
+    "prerequisites": [
+      "Both individual disproof theorems"
+    ]
+  }
+]

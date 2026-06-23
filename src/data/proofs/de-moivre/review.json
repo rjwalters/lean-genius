@@ -1,0 +1,138 @@
+{
+  "version": 1,
+  "proofId": "de-moivre",
+  "reviewDate": "2026-03-24T16:00:00Z",
+  "reviewer": "peer-reviewer",
+  "overallAssessment": {
+    "grade": "B",
+    "oneLiner": "Honest Mathlib-based formalization of De Moivre's theorem with good pedagogical framing, but the 'original contributions' claims overstate what the file actually proves and four of ten theorems are trivial instantiations.",
+    "tier": "B",
+    "tierJustification": "The core result (de_moivre) relies on Mathlib's Complex.exp_mul_I and Complex.exp_nat_mul, with the file providing coercion management, integer extensions, and a roots-of-unity connection. The badge 'mathlib' is honest. The file adds genuine value beyond raw Mathlib calls through the nth_root_of_unity_power theorem and the pedagogical structure, but does not contain deep original mathematical reasoning."
+  },
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "nth_root_of_unity_power, lines 178-189",
+      "finding": "The roots-of-unity theorem is the most substantive result in the file. It requires a non-trivial proof: exp_nat_mul to pull out n, field_simp to cancel the denominator, rearrangement to factor out k, then exp_two_pi_mul_I to close. This is genuine bridge work connecting De Moivre to algebraic number theory, not a trivial Mathlib wrapper.",
+      "recommendation": "Preserve this theorem and consider it the strongest original contribution."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "meta.json badge field",
+      "finding": "The badge is set to 'mathlib' rather than 'original', which is an honest and accurate description of the proof's character. The status 'verified' is also correct (0 sorries, 0 axioms). This kind of honest self-categorization should be the standard.",
+      "recommendation": "No change needed."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "Lean source, overall structure",
+      "finding": "The file is well-organized into clearly labeled parts (Main Result, Exponential Form, Integer Extension, Double/Triple Angle, Roots of Unity, Special Cases) with good inline documentation explaining the proof strategy. The docstring at lines 5-41 accurately describes the approach and Mathlib dependencies.",
+      "recommendation": "Preserve this organizational structure."
+    },
+    {
+      "severity": "moderate",
+      "category": "overclaim",
+      "location": "meta.json originalContributions[1]: 'Double and triple angle formula derivations'",
+      "finding": "The double and triple angle 'derivations' are one-line instantiations: `exact de_moivre theta 2` (line 146) and `exact de_moivre theta 3` (line 162). They prove that (cos theta + i sin theta)^2 = cos(2 theta) + i sin(2 theta) as a complex-valued identity, but they do NOT extract the standard real-valued formulas cos(2 theta) = cos^2(theta) - sin^2(theta) or sin(2 theta) = 2 sin(theta) cos(theta). The 'derivation' claim is misleading -- these are trivial specializations, not derivations of the double/triple angle formulas in the usual sense.",
+      "recommendation": "Change to 'Double and triple angle special cases (n=2, n=3 instantiations of main theorem)' or remove this claim. The real extraction work is correctly noted as an open question and is done in DeMoivreOQ01.lean."
+    },
+    {
+      "severity": "moderate",
+      "category": "overclaim",
+      "location": "meta.json originalContributions[0]: 'Extension to integer exponents'",
+      "finding": "The integer extension (de_moivre_int, line 111-115) is a 3-line proof: rw [Complex.exp_int_mul], congr 1, ring. The 'original' work is type coercion management between Z, R, and C, not mathematical insight. The trigonometric form (de_moivre_int', lines 118-126) adds coercion handling via ofReal_intCast. While useful, calling this an 'original contribution' overstates it -- it is more accurately a 'Mathlib bridge providing the integer formulation'.",
+      "recommendation": "Reframe as 'Integer exponent formulation bridging Mathlib's exp_int_mul to the classical statement' rather than claiming it as an original contribution."
+    },
+    {
+      "severity": "minor",
+      "category": "filler",
+      "location": "de_moivre_zero (line 196-198) and de_moivre_one (line 201-204)",
+      "finding": "These two theorems are trivially true: x^0 = 1 and x^1 = x, proved by `simp`. They contribute no mathematical content. Combined with the one-liner double and triple angle theorems, 4 of 10 theorems (40%) are trivial instantiations or tautologies.",
+      "recommendation": "These are fine as pedagogical completeness (covering edge cases), but they should not be counted as contributing to the proof's substance. Consider removing them from the theorem count or explicitly noting they are edge-case checks."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "overview.keyInsights[2]: 'Multiple-Angle Factory'",
+      "finding": "The key insight states 'Setting n = 2: cos 2theta = cos^2(theta) - sin^2(theta)' as if this is proved in the file. It is not. The file proves the complex-valued identity but does not extract the real/imaginary parts. The open questions section (conclusion.openQuestions[0]) correctly notes this extraction is NOT formalized, creating an internal tension.",
+      "recommendation": "Revise the key insight to say: 'Setting n = 2 gives the complex identity immediately; extracting the real-valued formula cos(2 theta) = cos^2 - sin^2 requires comparing real parts (see open question OQ-01).'"
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "Lean source docstring, line 35",
+      "finding": "The Lean docstring lists 'Complex.cos_add, Complex.sin_add : Addition formulas' as Mathlib dependencies, but these lemmas are never called in DeMoivre.lean. They are used in the companion file DeMoivreOQ01.lean but not in the main file.",
+      "recommendation": "Remove cos_add and sin_add from the main file's dependency list, or note they are used in companion files."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "Lean source, line 2: import Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "finding": "The ExpDeriv module is imported but no derivative-related operations appear in the file. It may be needed transitively for some lemma to resolve, but its purpose is unclear.",
+      "recommendation": "Verify whether this import is actually needed. If it is a transitive dependency, add a comment explaining why it is required."
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "meta.json sections vs annotations significance ratings",
+      "finding": "All seven annotations except the final 'Applications' one are marked significance: 'key'. The exponential form (ann-exp-form) and double/triple angle (ann-double-triple) annotations describe theorems that are trivial restatements or one-liner instantiations. Marking everything as 'key' dilutes the signal.",
+      "recommendation": "Downgrade ann-exp-form to 'supporting' (the exponential forms are notational variants) and ann-double-triple to 'supporting' (trivial instantiations). Reserve 'key' for the main theorem, integer extension, and roots of unity."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "crossReferences to law-of-cosines and angle-trisection",
+      "finding": "The cross-reference to law-of-cosines mentions 'Chebyshev polynomials' as the connection, but no Chebyshev polynomial work appears in DeMoivre.lean (it is in DeMoivreOQ01.lean). The angle-trisection reference claims 'De Moivre's theorem shows cos(theta/3) satisfies a cubic equation' but this is not proved in the file. These are mathematically valid connections but not formalized connections.",
+      "recommendation": "Add a note like '(connection not formalized in this file)' or reference the companion files where the connection IS formalized."
+    }
+  ],
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Revise meta.json originalContributions to accurately reflect the file content: (1) rename 'Double and triple angle formula derivations' to 'Double and triple angle special cases (n=2, n=3)'; (2) reframe 'Extension to integer exponents' as 'Integer exponent formulation via Mathlib bridge'; (3) keep 'Roots of unity connection' as-is.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-2",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Revise keyInsights[2] ('Multiple-Angle Factory') to note that the real-valued extraction (cos 2theta = cos^2 - sin^2) is NOT proved in this file but is addressed in DeMoivreOQ01.lean.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-3",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Downgrade annotation significance for ann-exp-form and ann-double-triple from 'key' to 'supporting' to better distinguish the substantive theorems from trivial instantiations.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-4",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Remove Complex.cos_add and Complex.sin_add from the Lean docstring dependency list (line 35), or note they are used in companion files only.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-5",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Add '(not formalized in this file)' qualifier to the law-of-cosines and angle-trisection cross-references, or reference the companion files DeMoivreOQ01/OQ02 where the Chebyshev connection IS formalized.",
+      "status": "resolved"
+    }
+  ],
+  "qualityScores": {
+    "mathematicalSubstance": 6,
+    "originalityAccuracy": 6,
+    "completeness": 8,
+    "framingPrecision": 6,
+    "pedagogicalQuality": 8,
+    "internalConsistency": 7,
+    "overall": 6.8
+  },
+  "suggestedBestFraming": "Pedagogical formalization of De Moivre's theorem (Wiedijk #17) via Mathlib's exponential function API, extending to integer exponents and connecting to roots of unity, with the core proof reducing to Euler's formula and the exponential power rule."
+}

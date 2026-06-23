@@ -1,0 +1,174 @@
+{
+  "version": 1,
+  "proofId": "lagrange-four-squares",
+  "reviewDate": "2026-03-24T00:00:00Z",
+  "reviewer": "peer-reviewer",
+  "overallAssessment": {
+    "grade": "C+",
+    "oneLiner": "A well-narrated pedagogical tour of Lagrange's theorem and its mathematical context, but undermined by vacuous axioms, filler theorems, and a placeholder definition that create a misleading impression of formalization depth.",
+    "tier": "B",
+    "tierJustification": "The main theorem (Lagrange's four squares) IS fully proved, but via a single Mathlib call. The file adds bridge infrastructure (definitions, corollary, examples) and supplementary axiomatized material. This is Tier B: core theorem relies on Mathlib, file provides pedagogical curation and modest original lemma work."
+  },
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "overview.historicalContext and overview.keyInsights in meta.json",
+      "finding": "The pedagogical narrative connecting Euler's four-square identity to quaternion norm multiplicativity, and explaining why four squares succeed where three fail via Frobenius's theorem on division algebras, is mathematically accurate, historically informed, and genuinely insightful. This is the entry's real contribution.",
+      "recommendation": "Preserve this narrative. It is the strongest aspect of the entry."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "r4_prime_formula, line 219-234",
+      "finding": "The proof that sumDivisorsNot4(p) = 1 + p for odd primes is a genuine multi-step proof (12 lines) using Finset filter manipulation and Nat.Prime.eq_one_or_self_of_dvd. This is the most substantive original formal content in the file.",
+      "recommendation": "Highlight this in originalContributions. Consider adding annotations for this proof."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "two_squares_multiplicative, line 305-316",
+      "finding": "The Brahmagupta-Fibonacci identity proof is a genuine 7-line proof using zify, natAbs, and ring. It demonstrates real formal reasoning rather than a Mathlib wrapper.",
+      "recommendation": "Add this to originalContributions and create an annotation for it."
+    },
+    {
+      "severity": "critical",
+      "category": "filler",
+      "location": "lipschitz_norm_multiplicative, line 343-346",
+      "finding": "The docstring and comment claim this theorem proves 'N(q1 * q2) = N(q1) * N(q2)' (quaternion norm multiplicativity), but the actual statement and proof is '(1 : Nat) + 1 = 2 := rfl'. This is a placeholder masquerading as a substantive theorem. The comment on line 345 says 'This is exactly Euler's four-square identity in disguise' but the body proves nothing of the sort.",
+      "recommendation": "Either prove the actual norm multiplicativity statement (defining quaternion multiplication on LipschitzQuaternion and proving norm is multiplicative), or replace with an honest axiom/sorry, or remove entirely and note it as future work."
+    },
+    {
+      "severity": "major",
+      "category": "inconsistency",
+      "location": "jacobi_four_squares axiom, line 213-216; hurwitz_quaternions_euclidean, line 357-359; hurwitz_representation_count, line 365-369",
+      "finding": "Three axioms (jacobi_four_squares, hurwitz_quaternions_euclidean, hurwitz_representation_count) have docstrings describing deep mathematical results but their bodies assert only 'True'. They carry no mathematical content. They are counted among the 9 axioms in axiomCount, inflating the apparent formalization depth.",
+      "recommendation": "Either state the actual mathematical content in these axioms (even if the types are complex) or remove them and keep as commentary only. If they remain as True axioms, the assumptions field in meta.json should explicitly note that 3 of 9 axioms are vacuous placeholders."
+    },
+    {
+      "severity": "major",
+      "category": "inconsistency",
+      "location": "r4 definition, line 203-206",
+      "finding": "The definition of r4(n) (number of representations as sum of 4 squares) is hardcoded to return 0 for all inputs. The comment says 'Simplified placeholder; actual computation is over Z including negatives.' r4 is never used in any theorem, making this dead code that appears as part of the formalization.",
+      "recommendation": "Either implement the actual computation (using Finset over a bounded range of integers) or remove the definition entirely. A definition that returns a wrong value is worse than no definition."
+    },
+    {
+      "severity": "moderate",
+      "category": "filler",
+      "location": "four_always_suffices, line 184-186",
+      "finding": "This theorem is a verbatim copy of lagrange_four_squares with a different name. Its proof body is 'lagrange_four_squares n'. It adds no mathematical content.",
+      "recommendation": "Remove this redundant theorem or, if it serves a pedagogical purpose in the gallery display, acknowledge the redundancy in an annotation."
+    },
+    {
+      "severity": "moderate",
+      "category": "inconsistency",
+      "location": "jacobi_implies_lagrange, line 238-243",
+      "finding": "This theorem is framed as showing 'Jacobi's formula gives r4(n) > 0, providing an alternative proof of Lagrange's theorem.' But the proof ignores its own hypothesis entirely: it discards the premise and simply calls lagrange_four_squares. This is not an alternative proof; it is the same proof with an unused hypothesis.",
+      "recommendation": "Either genuinely derive Lagrange from the positivity of sumDivisorsNot4 (which would require connecting r4 to actual representations), or reframe this theorem honestly without the misleading Jacobi connection."
+    },
+    {
+      "severity": "moderate",
+      "category": "precision",
+      "location": "meta.json sections, line 108-115",
+      "finding": "The final section is labeled 'Connection to Two Squares Theorem' spanning lines 129-398, but this range covers four distinct mathematical topics: Legendre three-square theorem (Part II), Jacobi representation counts (Part III), Waring's problem (Part IV), and quaternion structure (Part V). Collapsing these into one section misrepresents the file's structure.",
+      "recommendation": "Split into four sections matching the actual PART II/III/IV/V divisions in the Lean file."
+    },
+    {
+      "severity": "moderate",
+      "category": "overclaim",
+      "location": "meta.json assumptions field, line 36",
+      "finding": "The assumptions field lists all 9 axioms with descriptions of what they mathematically represent, but does not disclose that 3 of them (jacobi_four_squares, hurwitz_quaternions_euclidean, hurwitz_representation_count) assert only True and carry no mathematical content. A reader would believe these axioms actually formalize the stated results.",
+      "recommendation": "Add a note that 3 axioms are placeholder statements (assert True) with mathematical content described only in comments."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json originalContributions[2]",
+      "finding": "'Examples showing why three squares fail but four succeed' is listed as an original contribution, but these are rfl-level numerical computations. The genuinely substantive proofs (r4_prime_formula, two_squares_multiplicative) are NOT listed.",
+      "recommendation": "Replace with the actual original contributions: r4_prime_formula and two_squares_multiplicative."
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "annotations.json, ann-example-seven (line range 49-69) and ann-why-not-three (line range 49-62)",
+      "finding": "Both annotations point to the Euler identity section (lines 49-69) rather than the actual locations of the 7 example (line 78) and three-square discussion (lines 71-78). These line ranges are misanchored.",
+      "recommendation": "Fix the line ranges to match the actual Lean source locations."
+    },
+    {
+      "severity": "minor",
+      "category": "gap",
+      "location": "annotations.json coverage",
+      "finding": "No annotations exist for Parts II through V of the Lean file (lines 143-370), which contain the most substantive original content including r4_prime_formula, two_squares_multiplicative, the Waring problem definitions, and the quaternion structure.",
+      "recommendation": "Add annotations for r4_prime_formula, two_squares_multiplicative, the Waring problem context, and the Lipschitz quaternion structure."
+    }
+  ],
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "high",
+      "target": "researcher",
+      "description": "Fix lipschitz_norm_multiplicative (line 343): either prove actual norm multiplicativity for LipschitzQuaternion (define multiplication, prove N(q1*q2) = N(q1)*N(q2)), or remove the theorem and replace with an honest axiom or comment noting it as future work.",
+      "status": "open"
+    },
+    {
+      "id": "ai-2",
+      "priority": "high",
+      "target": "researcher",
+      "description": "Fix the 3 vacuous True axioms: jacobi_four_squares (line 213), hurwitz_quaternions_euclidean (line 357), hurwitz_representation_count (line 365). Either state the actual mathematical content in the type signature or remove and keep as commentary only.",
+      "status": "open"
+    },
+    {
+      "id": "ai-3",
+      "priority": "medium",
+      "target": "researcher",
+      "description": "Fix or remove the r4 definition (line 203) which unconditionally returns 0. Either implement the actual representation count or remove the dead definition.",
+      "status": "open"
+    },
+    {
+      "id": "ai-4",
+      "priority": "medium",
+      "target": "researcher",
+      "description": "Fix jacobi_implies_lagrange (line 238): the proof ignores its hypothesis. Either derive Lagrange from sumDivisorsNot4 positivity or reframe honestly.",
+      "status": "open"
+    },
+    {
+      "id": "ai-5",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Split the final meta.json section ('Connection to Two Squares Theorem', lines 129-398) into four sections matching the PART II/III/IV/V structure in the Lean file.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-6",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Update meta.json originalContributions to list r4_prime_formula and two_squares_multiplicative instead of 'examples showing why three squares fail.' Update assumptions field to note that 3 of 9 axioms assert True.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-7",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Add annotations for Parts II-V: r4_prime_formula, two_squares_multiplicative, Waring problem definitions, LipschitzQuaternion structure. Fix misanchored line ranges on ann-example-seven and ann-why-not-three.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-8",
+      "priority": "low",
+      "target": "researcher",
+      "description": "Remove the redundant four_always_suffices theorem (line 184) which is identical to lagrange_four_squares.",
+      "status": "resolved",
+      "resolution": "Removed four_always_suffices (one-line wrapper of lagrange_four_squares: identical statement and trivial proof). Updated theoremCount."
+    }
+  ],
+  "qualityScores": {
+    "mathematicalSubstance": 5,
+    "originalityAccuracy": 6,
+    "completeness": 5,
+    "framingPrecision": 6,
+    "pedagogicalQuality": 7,
+    "internalConsistency": 5,
+    "overall": 5.7
+  },
+  "suggestedBestFraming": "A pedagogical tour of Lagrange's Four Squares Theorem (Wiedijk #19) that wraps Mathlib's complete proof with rich historical commentary connecting Euler's identity to quaternion algebra. Includes two original proofs (prime divisor-sum formula, Brahmagupta-Fibonacci identity) and axiomatized statements of related deep results (Legendre, Jacobi, Waring, Hurwitz), though three of the nine axioms are placeholder True statements awaiting proper formalization."
+}

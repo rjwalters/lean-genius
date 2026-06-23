@@ -1,0 +1,432 @@
+[
+  {
+    "id": "ann-fclt-header",
+    "proofId": "central-limit-theorem-oq-04",
+    "range": {
+      "startLine": 1,
+      "endLine": 69,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "type": "concept",
+    "title": "Free CLT: From Commutative to Non-Commutative Universality",
+    "content": "This file answers a fundamental question: does the topological interpretation of the CLT — the Gaussian as a renormalization fixed point — extend beyond commutative probability? The answer is yes, and the extension is remarkably clean. Voiculescu's **free probability** (1985) replaces classical independence with **free independence**, convolution with **free convolution** $\\boxplus$, and the Gaussian with the **semicircle distribution**. The entire renormalization story carries over: the semicircle is the unique fixed point and global attractor of the free renormalization flow. The file also introduces `CLTStructure`, an abstract Lean 4 structure capturing the universal pattern shared by all five independence types classified by Muraki (2003).",
+    "mathContext": "Classical CLT: $(X_1 + \\cdots + X_n)/\\sqrt{n} \\xrightarrow{d} \\mathcal{N}(0,1)$ for i.i.d. $X_i$ with mean 0, variance 1.\n\nFree CLT: $(a_1 + \\cdots + a_n)/\\sqrt{n} \\xrightarrow{d} w(0,1)$ for freely independent $a_i$ with mean 0, variance 1, where $w(0,1)$ is the Wigner semicircle distribution with density $\\rho(x) = \\frac{2}{\\pi}\\sqrt{1-x^2}$ on $[-1,1]$.\n\nThe R-transform $R_\\mu(z)$ linearizes free convolution just as the log-characteristic function linearizes classical convolution.",
+    "significance": "key",
+    "relatedConcepts": [
+      "free probability",
+      "Wigner semicircle law",
+      "renormalization group",
+      "non-commutative probability",
+      "CLT universality"
+    ],
+    "prerequisites": [
+      "probability theory",
+      "operator algebras (motivation)",
+      "central limit theorem"
+    ]
+  },
+  {
+    "id": "ann-fclt-ncdist",
+    "proofId": "central-limit-theorem-oq-04",
+    "range": {
+      "startLine": 89,
+      "endLine": 106,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "type": "definition",
+    "title": "Non-Commutative Distribution as Moment Sequence",
+    "content": "Defines `NCDistribution` as a moment sequence $\\{m_n\\}_{n \\ge 0}$ with $m_0 = 1$. In a non-commutative probability space $(A, \\tau)$, the distribution of a self-adjoint element $a$ is determined by its moments $\\tau(a^n)$. The extensionality theorem `nc_dist_ext` proves that distributions are uniquely determined by their moments — two distributions are equal iff all moments agree. This parallels the classical moment problem but avoids the subtleties of the Hamburger moment problem by working algebraically.",
+    "mathContext": "$\\mu = \\{m_n\\}_{n \\ge 0}$ where $m_n = \\tau(a^n)$ and $m_0 = \\tau(1) = 1$. Two distributions $\\mu, \\nu$ are equal iff $m_n(\\mu) = m_n(\\nu)$ for all $n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "moment sequence",
+      "tracial state",
+      "non-commutative probability space",
+      "Hamburger moment problem",
+      "operator algebras"
+    ],
+    "prerequisites": [
+      "probability theory",
+      "functional analysis basics"
+    ],
+    "importance": "high"
+  },
+  {
+    "id": "ann-fclt-free-independence",
+    "proofId": "central-limit-theorem-oq-04",
+    "range": {
+      "startLine": 114,
+      "endLine": 133,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "type": "concept",
+    "title": "Free Independence: The Non-Commutative Analog",
+    "content": "Free independence is the fundamental concept of Voiculescu's theory. Unlike classical independence (where $E[f(X)g(Y)] = E[f(X)] \\cdot E[g(Y)]$), free independence constrains **alternating products** of centered elements: $\\tau(p_1(a) q_1(b) p_2(a) q_2(b) \\cdots) = 0$ whenever each factor is centered ($\\tau(p_i(a)) = 0$, $\\tau(q_j(b)) = 0$). The canonical example is asymptotically free random matrices: independent Haar-random unitaries on large Hilbert spaces are asymptotically free as the dimension grows.",
+    "mathContext": "Free independence: $a, b$ are free iff $\\tau(p_1(a)q_1(b)\\cdots p_k(a)q_k(b)) = 0$ whenever $\\tau(p_i(a)) = 0$ and $\\tau(q_j(b)) = 0$ for all $i, j$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "classical independence",
+      "free probability",
+      "random matrices",
+      "Haar measure",
+      "von Neumann algebras"
+    ],
+    "prerequisites": [
+      "probability theory",
+      "operator algebras (motivation)"
+    ],
+    "importance": "high"
+  },
+  {
+    "id": "ann-fclt-free-cumulants",
+    "proofId": "central-limit-theorem-oq-04",
+    "range": {
+      "startLine": 142,
+      "endLine": 170,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "type": "concept",
+    "title": "Free Cumulants via Non-Crossing Partitions",
+    "content": "Free cumulants $\\kappa_n$ are defined via the moment-cumulant formula using **non-crossing partitions**: $m_n = \\sum_{\\pi \\in NC(n)} \\prod_{B \\in \\pi} \\kappa_{|B|}$. The lattice $NC(n)$ of non-crossing partitions replaces the full partition lattice used for classical cumulants. Key axioms: $\\kappa_1 = m_1$ (the mean), $\\kappa_2 = m_2 - m_1^2$ (the variance), and the moment-cumulant bijection is invertible (Möbius inversion on $NC(n)$). The crucial property: $a, b$ are free iff all mixed free cumulants vanish.",
+    "mathContext": "$m_n = \\sum_{\\pi \\in NC(n)} \\prod_{B \\in \\pi} \\kappa_{|B|}$, where $NC(n)$ is the lattice of non-crossing partitions of $\\{1, \\ldots, n\\}$. Compare classical: $m_n = \\sum_{\\pi \\in \\mathcal{P}(n)} \\prod_{B \\in \\pi} \\kappa^{\\text{cl}}_{|B|}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "non-crossing partitions",
+      "Möbius inversion",
+      "Catalan numbers",
+      "classical cumulants",
+      "Speicher's combinatorial approach"
+    ],
+    "prerequisites": [
+      "combinatorics (lattice theory)",
+      "moment-cumulant relations"
+    ],
+    "importance": "high"
+  },
+  {
+    "id": "ann-fclt-free-conv-monoid",
+    "proofId": "central-limit-theorem-oq-04",
+    "range": {
+      "startLine": 189,
+      "endLine": 217,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "type": "definition",
+    "title": "Free Convolution Monoid Structure",
+    "content": "Free convolution $\\mu \\boxplus \\nu$ is the distribution of $a + b$ where $a \\sim \\mu$, $b \\sim \\nu$, and $a, b$ are freely independent. It forms a commutative monoid with the Dirac mass $\\delta_0$ as identity. The defining property is cumulant linearization: $\\kappa_n(\\mu \\boxplus \\nu) = \\kappa_n(\\mu) + \\kappa_n(\\nu)$. This exactly parallels classical convolution, where classical cumulants (not free cumulants) linearize. The proved theorem `freeConv_dirac_left` derives from commutativity + right identity.",
+    "mathContext": "$(\\text{NCDistribution}, \\boxplus, \\delta_0)$ is a commutative monoid with $\\kappa_n(\\mu \\boxplus \\nu) = \\kappa_n(\\mu) + \\kappa_n(\\nu)$ for all $n \\ge 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "free convolution",
+      "commutative monoid",
+      "cumulant linearization",
+      "classical convolution",
+      "characteristic function multiplication"
+    ],
+    "prerequisites": [
+      "abstract algebra (monoids)",
+      "free probability"
+    ],
+    "importance": "high"
+  },
+  {
+    "id": "ann-fclt-convpow-add",
+    "proofId": "central-limit-theorem-oq-04",
+    "range": {
+      "startLine": 233,
+      "endLine": 238,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "type": "concept",
+    "title": "Proved: Distribution Law for Convolution Powers",
+    "content": "**Proved by induction.** Shows $\\mu^{\\boxplus(m+n)} = \\mu^{\\boxplus m} \\boxplus \\mu^{\\boxplus n}$ — the convolution power distributes over addition of exponents. The base case uses the right identity ($\\mu^{\\boxplus 0} = \\delta_0$), and the inductive step uses associativity of free convolution. This is the free analog of the classical fact that $\\mu^{*(m+n)} = \\mu^{*m} * \\mu^{*n}$.",
+    "mathContext": "$\\mu^{\\boxplus(m+n)} = \\mu^{\\boxplus m} \\boxplus \\mu^{\\boxplus n}$ (proved by induction on $n$)",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "convolution power",
+      "distribution law",
+      "induction",
+      "monoid exponentiation"
+    ],
+    "prerequisites": [
+      "free convolution monoid",
+      "natural number induction"
+    ],
+    "importance": "medium"
+  },
+  {
+    "id": "ann-fclt-convpow-cumulant",
+    "proofId": "central-limit-theorem-oq-04",
+    "range": {
+      "startLine": 241,
+      "endLine": 256,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "type": "concept",
+    "title": "Proved: Free Cumulant Scaling Under Convolution Powers",
+    "content": "**Proved by induction.** The key computational result: $\\kappa_k(\\mu^{\\boxplus n}) = n \\cdot \\kappa_k(\\mu)$. The base case ($n = 0$) is the most subtle — it requires showing $\\kappa_k(\\delta_0) = 0$ for $k \\ge 1$, derived from the identity $\\delta_0 \\boxplus \\mu = \\mu$ and cumulant linearization: $\\kappa_k(\\delta_0) + \\kappa_k(\\mu) = \\kappa_k(\\mu)$, so $\\kappa_k(\\delta_0) = 0$. The inductive step follows directly from linearization. This theorem is the engine of the free CLT proof.",
+    "mathContext": "$\\kappa_k(\\mu^{\\boxplus n}) = n \\cdot \\kappa_k(\\mu)$ for all $k \\ge 1$. Base case: $\\kappa_k(\\delta_0) = 0$ from $\\kappa_k(\\delta_0 \\boxplus \\mu) = \\kappa_k(\\delta_0) + \\kappa_k(\\mu) = \\kappa_k(\\mu)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cumulant scaling",
+      "Dirac cumulants vanish",
+      "induction",
+      "linearization"
+    ],
+    "prerequisites": [
+      "free cumulants",
+      "cumulant linearization"
+    ],
+    "importance": "high"
+  },
+  {
+    "id": "ann-fclt-rtransform",
+    "proofId": "central-limit-theorem-oq-04",
+    "range": {
+      "startLine": 279,
+      "endLine": 304,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "type": "concept",
+    "title": "R-Transform: Free Analog of Log-Characteristic Function",
+    "content": "The R-transform $R_\\mu(z) = \\sum_{n \\ge 1} \\kappa_n z^{n-1}$ is Voiculescu's key tool. It converts free convolution to pointwise addition: $R_{\\mu \\boxplus \\nu}(z) = R_\\mu(z) + R_\\nu(z)$, exactly as the log-characteristic function converts classical convolution to addition. The proved theorem `Rtransform_freeConvPow` shows $R_{\\mu^{\\boxplus n}}(z) = n \\cdot R_\\mu(z)$ by induction (same structure as `freeConvPow_cumulant`), deriving $R_{\\delta_0} = 0$ from the identity law.",
+    "mathContext": "$R_\\mu(z) = \\sum_{n=1}^\\infty \\kappa_n z^{n-1}$. Additivity: $R_{\\mu \\boxplus \\nu} = R_\\mu + R_\\nu$. Scaling: $R_{\\mu^{\\boxplus n}} = n \\cdot R_\\mu$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "R-transform",
+      "characteristic function",
+      "generating function",
+      "Voiculescu transform",
+      "Cauchy transform"
+    ],
+    "prerequisites": [
+      "free cumulants",
+      "formal power series"
+    ],
+    "importance": "high"
+  },
+  {
+    "id": "ann-fclt-semicircle",
+    "proofId": "central-limit-theorem-oq-04",
+    "range": {
+      "startLine": 310,
+      "endLine": 369,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "type": "definition",
+    "title": "Semicircle Distribution: The Free Gaussian",
+    "content": "The semicircle (Wigner) distribution $w(0,1)$ has density $\\rho(x) = \\frac{2}{\\pi}\\sqrt{1-x^2}$ on $[-1,1]$. Its moments are Catalan numbers: $m_{2k} = C_k$, $m_{2k+1} = 0$ (by symmetry). Its free cumulants are extraordinarily simple: $\\kappa_1 = 0$, $\\kappa_2 = 1$, $\\kappa_n = 0$ for $n \\ge 3$. This gives $R_w(z) = z$ (linear!). Compare the Gaussian: classical $\\kappa_1 = 0$, $\\kappa_2 = 1$, $\\kappa_n = 0$ for $n \\ge 3$, giving $\\log\\varphi_G(t) = -t^2/2$ (quadratic). The semicircle IS the Gaussian of free probability — same cumulant structure, different partition lattice.",
+    "mathContext": "$w(0,1)$: density $\\frac{2}{\\pi}\\sqrt{1-x^2}$, moments $m_{2k} = C_k = \\frac{1}{k+1}\\binom{2k}{k}$, free cumulants $\\kappa_2 = 1$ (all others zero), $R_w(z) = z$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Wigner semicircle law",
+      "Catalan numbers",
+      "random matrix theory",
+      "Gaussian distribution",
+      "cumulant characterization"
+    ],
+    "prerequisites": [
+      "free cumulants",
+      "Catalan numbers",
+      "moment sequences"
+    ],
+    "importance": "high"
+  },
+  {
+    "id": "ann-fclt-semicircle-cumulants",
+    "proofId": "central-limit-theorem-oq-04",
+    "range": {
+      "startLine": 353,
+      "endLine": 369,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "type": "concept",
+    "title": "Semicircle Cumulant Structure: The Defining Signature of a CLT Limit",
+    "content": "The semicircle's free cumulant structure — $\\kappa_1 = 0$, $\\kappa_2 = 1$, $\\kappa_n = 0$ for $n \\geq 3$ — is the **universal signature** of any CLT limit law. The Gaussian has the identical classical cumulant structure. The resulting R-transform $R_w(z) = z$ (linear) mirrors the Gaussian's log-characteristic function $\\log \\varphi_G(t) = -t^2/2$ (quadratic). This is not a coincidence: in any independence framework where cumulants linearize convolution, the distribution with only $\\kappa_2 \\neq 0$ is necessarily the CLT attractor — the partition lattice determines which distribution has this property (non-crossing → semicircle, all partitions → Gaussian, interval → Bernoulli).",
+    "mathContext": "The cumulant characterization is universal: For classical independence (all partitions $\\Pi(n)$): $\\kappa_2^{\\text{class}} = 1 \\Rightarrow$ Gaussian $N(0,1)$. For free independence (non-crossing $NC(n)$): $\\kappa_2^{\\text{free}} = 1 \\Rightarrow$ semicircle $w(0,1)$. For Boolean independence (interval partitions): $\\beta_2 = 1 \\Rightarrow$ symmetric Bernoulli $\\frac{1}{2}(\\delta_{-1}+\\delta_{+1})$. Each case: the limit law's moments equal the number of pair partitions in the corresponding lattice, giving Catalan numbers for free (semicircle moments $m_{2k} = C_k$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "universality",
+      "cumulant characterization",
+      "partition lattice",
+      "Gaussian cumulants",
+      "Catalan numbers"
+    ],
+    "prerequisites": [
+      "combinatorics",
+      "probability theory"
+    ]
+  },
+  {
+    "id": "ann-fclt-dilation",
+    "proofId": "central-limit-theorem-oq-04",
+    "range": {
+      "startLine": 384,
+      "endLine": 402,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "type": "definition",
+    "title": "Dilation and Normalized Free Convolution",
+    "content": "Dilation $D_c(\\mu)$ is the distribution of $c \\cdot a$ where $a \\sim \\mu$. It scales cumulants: $\\kappa_n(D_c(\\mu)) = c^n \\cdot \\kappa_n(\\mu)$. The normalized free convolution power $D_{1/\\sqrt{n}}(\\mu^{\\boxplus n})$ is the distribution of $(a_1 + \\cdots + a_n)/\\sqrt{n}$ where $a_i \\sim \\mu$ are freely independent — the free analog of the classical normalized sum. The different scaling exponents for different cumulant orders ($n^{1-k/2}$) are what make the CLT work: $\\kappa_2$ is preserved while all higher cumulants vanish.",
+    "mathContext": "$\\kappa_k(D_{1/\\sqrt{n}}(\\mu^{\\boxplus n})) = (1/\\sqrt{n})^k \\cdot n \\cdot \\kappa_k(\\mu) = n^{1-k/2} \\cdot \\kappa_k(\\mu)$. For $k=2$: preserved. For $k \\ge 3$: $\\to 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "dilation",
+      "normalization",
+      "scaling of cumulants",
+      "central limit argument"
+    ],
+    "prerequisites": [
+      "free convolution powers",
+      "cumulant scaling"
+    ],
+    "importance": "high"
+  },
+  {
+    "id": "ann-fclt-fixed-point",
+    "proofId": "central-limit-theorem-oq-04",
+    "range": {
+      "startLine": 432,
+      "endLine": 454,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "type": "insight",
+    "title": "Semicircle as Fixed Point of Free Renormalization",
+    "content": "The free renormalization map $T(\\mu) = D_{1/\\sqrt{2}}(\\mu \\boxplus \\mu)$ maps a distribution to the normalized sum of two free copies. The semicircle is a fixed point: $T(w) = w$. The cumulant calculation: $\\kappa_n(T(w)) = (1/\\sqrt{2})^n \\cdot 2\\kappa_n(w)$. For $n=2$: $(1/2) \\cdot 2 \\cdot 1 = 1 = \\kappa_2(w)$. For $n \\neq 2$: $(1/\\sqrt{2})^n \\cdot 2 \\cdot 0 = 0 = \\kappa_n(w)$. The proved theorem `semicircle_renorm_cumulant_two` verifies the $\\kappa_2$ preservation step directly.",
+    "mathContext": "$T(\\mu) = D_{1/\\sqrt{2}}(\\mu \\boxplus \\mu)$. Fixed point: $T(w) = w$ because $\\kappa_n(T(w)) = 2^{1-n/2} \\cdot \\kappa_n(w) = \\kappa_n(w)$ (only works when $\\kappa_n = 0$ for $n \\neq 2$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "renormalization group",
+      "fixed point",
+      "dynamical systems",
+      "universality"
+    ],
+    "prerequisites": [
+      "free convolution",
+      "dilation",
+      "semicircle properties"
+    ],
+    "importance": "high"
+  },
+  {
+    "id": "ann-fclt-free-clt",
+    "proofId": "central-limit-theorem-oq-04",
+    "range": {
+      "startLine": 461,
+      "endLine": 486,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "type": "insight",
+    "title": "The Free CLT: Semicircle as Global Attractor",
+    "content": "**Voiculescu's Free Central Limit Theorem (1985)**: For any NC distribution $\\mu$ with $\\kappa_1 = 0$ (mean 0) and $\\kappa_2 = 1$ (variance 1), the normalized free convolution powers converge to the semicircle: $D_{1/\\sqrt{n}}(\\mu^{\\boxplus n}) \\to w$. The proof idea: higher cumulants scale as $n^{1-k/2} \\to 0$ for $k \\ge 3$, while $\\kappa_2$ is preserved. The limiting cumulant sequence $(0, 1, 0, 0, \\ldots)$ uniquely determines the semicircle. The proved theorem `semicircle_is_attractor` wraps the CLT axiom, showing the semicircle is indeed the global attractor of the renormalization flow.",
+    "mathContext": "Free CLT: $\\mu$ centered with unit variance $\\implies D_{1/\\sqrt{n}}(\\mu^{\\boxplus n}) \\xrightarrow{d} w$ (semicircle). Convergence is in moments: $m_k(D_{1/\\sqrt{n}}(\\mu^{\\boxplus n})) \\to m_k(w)$ for all $k$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Voiculescu's theorem",
+      "universality",
+      "convergence in distribution",
+      "moment convergence",
+      "renormalization attractor"
+    ],
+    "prerequisites": [
+      "free convolution",
+      "cumulant scaling",
+      "semicircle distribution"
+    ],
+    "importance": "high"
+  },
+  {
+    "id": "ann-fclt-clt-structure",
+    "proofId": "central-limit-theorem-oq-04",
+    "range": {
+      "startLine": 513,
+      "endLine": 553,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "type": "definition",
+    "title": "CLTStructure: Universal Pattern Across All Independences",
+    "content": "The `CLTStructure` type captures the abstract pattern shared by all CLTs: a commutative convolution monoid, a cumulant family that linearizes convolution, and a distinguished limit law with only $\\kappa_2 \\neq 0$. The `freeCLTStructure` instance verifies that free probability satisfies all these axioms. This abstraction reveals that the CLT phenomenon is not about specific distributions — it is about the algebraic structure of convolution + cumulant linearization + renormalization. What varies across the five universal independences is only the partition lattice (all, non-crossing, interval, etc.).",
+    "mathContext": "A CLTStructure consists of $(D, \\star, e, \\kappa, L)$ where $(D, \\star, e)$ is a commutative monoid, $\\kappa_n(\\mu \\star \\nu) = \\kappa_n(\\mu) + \\kappa_n(\\nu)$, and $L$ has $\\kappa_1 = 0, \\kappa_2 = 1, \\kappa_n = 0$ for $n \\ge 3$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "universal algebra",
+      "categorical abstraction",
+      "monoid structure",
+      "Muraki classification",
+      "five independences"
+    ],
+    "prerequisites": [
+      "abstract algebra",
+      "free probability",
+      "classical probability"
+    ],
+    "importance": "high"
+  },
+  {
+    "id": "ann-fclt-structural-verification",
+    "proofId": "central-limit-theorem-oq-04",
+    "range": {
+      "startLine": 555,
+      "endLine": 573,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "type": "concept",
+    "title": "Proved: Structural Verification Theorems",
+    "content": "Three theorems proved for any `CLTStructure S`: (1) `clt_structure_fixed_point_cumulant` shows the limit law's cumulants double under double convolution ($\\kappa_n(L \\star L) = 2\\kappa_n(L)$); (2) `clt_structure_double_variance` shows $\\kappa_2(L \\star L) = 2$; (3) `clt_structure_double_higher` shows $\\kappa_n(L \\star L) = 0$ for $n \\ge 3$. These verify the fixed-point structure at the abstract level — they hold for classical, free, Boolean, and all other CLT instances simultaneously.",
+    "mathContext": "For any CLTStructure: $\\kappa_n(L \\star L) = 2\\kappa_n(L)$ (proved from linearization), $\\kappa_2(L \\star L) = 2$ (from $\\kappa_2(L) = 1$), $\\kappa_n(L \\star L) = 0$ for $n \\ge 3$ (from $\\kappa_n(L) = 0$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "abstract verification",
+      "polymorphic theorem",
+      "universal property"
+    ],
+    "prerequisites": [
+      "CLTStructure",
+      "cumulant linearization"
+    ],
+    "importance": "medium"
+  },
+  {
+    "id": "ann-fclt-muraki",
+    "proofId": "central-limit-theorem-oq-04",
+    "range": {
+      "startLine": 583,
+      "endLine": 641,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "type": "concept",
+    "title": "Muraki's Classification: Five Universal Independences",
+    "content": "Muraki (2003) proved there are exactly **five** universal notions of independence: classical (all partitions, Gaussian limit), free (non-crossing partitions, semicircle), Boolean (interval partitions, Bernoulli), monotone (ordered non-crossing, arcsine), and anti-monotone (reverse ordered, arcsine). Each has its own convolution, cumulants, and CLT limit law. The formalization axiomatizes the Boolean case (cumulants $\\beta_n$, Bernoulli limit law) and proves `topological_perspective_extends` — that the free CLTStructure satisfies all the same abstract properties as the classical one.",
+    "mathContext": "Five universal independences and their CLT limit laws: Classical $\\to$ Gaussian $N(0,1)$, Free $\\to$ Semicircle $w(0,1)$, Boolean $\\to$ Bernoulli $\\frac{1}{2}(\\delta_{-1} + \\delta_1)$, Monotone/Anti-monotone $\\to$ Arcsine.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Muraki classification",
+      "Boolean independence",
+      "monotone independence",
+      "universal products",
+      "partition lattices"
+    ],
+    "prerequisites": [
+      "free probability",
+      "classical probability",
+      "category theory (for universal products)"
+    ],
+    "importance": "high"
+  }
+]

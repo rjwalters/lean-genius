@@ -1,0 +1,312 @@
+[
+  {
+    "id": "erdos-663-imports",
+    "proofId": "erdos-663",
+    "type": "concept",
+    "range": {
+      "startLine": 18,
+      "endLine": 22
+    },
+    "title": "Mathlib Imports for Asymptotic Analysis",
+    "content": "Imports prime number basics, filter/limit machinery for $\\limsup$/$\\liminf$ (needed for asymptotic $o(1)$ statements), real number arithmetic, and general Lean tactics. The filter imports support the $\\varepsilon$-$N$ formulation of the conjecture.",
+    "mathContext": "The asymptotic statement $q(n,k) < (1+o(1))\\log n$ is formalized using $\\forall \\varepsilon > 0,\\, \\exists N_0,\\, \\forall n \\geq N_0$ rather than $\\limsup$ directly, but the filter imports support potential future generalizations.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib filters",
+      "asymptotic analysis",
+      "real logarithm"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib library structure"
+    ]
+  },
+  {
+    "id": "erdos-663-product",
+    "proofId": "erdos-663",
+    "type": "definition",
+    "range": {
+      "startLine": 26,
+      "endLine": 28
+    },
+    "title": "Consecutive Product Definition",
+    "content": "Defines the product of $k$ consecutive integers starting from $n+1$ as a Finset product: $\\mathrm{consecutiveProduct}(n,k) = \\prod_{i=0}^{k-1}(n+i+1) = (n+1)(n+2)\\cdots(n+k)$. This is the central arithmetic object whose prime divisors determine $q(n,k)$.",
+    "mathContext": "$\\mathrm{consecutiveProduct}(n,k) = \\prod_{i \\in \\{0,\\ldots,k-1\\}} (n+i+1) = \\frac{(n+k)!}{n!}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "falling factorial",
+      "Finset.prod",
+      "binomial coefficients"
+    ],
+    "prerequisites": [
+      "natural number arithmetic",
+      "Finset.range",
+      "product notation"
+    ]
+  },
+  {
+    "id": "erdos-663-qnk-axiom",
+    "proofId": "erdos-663",
+    "type": "concept",
+    "range": {
+      "startLine": 30,
+      "endLine": 31
+    },
+    "title": "Axiomatized $q(n,k)$ Function",
+    "content": "Declares $q(n,k)$ (smallestMissingPrime) as an axiom — a function $\\mathbb{N} \\times \\mathbb{N} \\to \\mathbb{N}$ whose properties are specified separately. This axiomatization avoids the complexity of constructing the least prime not dividing a given number, which would require decidability of primality and divisibility search.",
+    "mathContext": "$q(n,k) = \\min\\{p \\in \\mathbb{P} : p \\nmid (n+1)(n+2)\\cdots(n+k)\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "axiomatization",
+      "least prime",
+      "Nat.Prime"
+    ],
+    "prerequisites": [
+      "prime numbers",
+      "divisibility"
+    ]
+  },
+  {
+    "id": "erdos-663-qnk-props",
+    "proofId": "erdos-663",
+    "type": "concept",
+    "range": {
+      "startLine": 33,
+      "endLine": 44
+    },
+    "title": "Three Axioms Characterizing $q(n,k)$",
+    "content": "The function $q(n,k)$ is fully characterized by three axioms: (1) $q(n,k)$ is prime, (2) $q(n,k) \\nmid (n+1)\\cdots(n+k)$, and (3) every prime $p < q(n,k)$ divides the product. Together these uniquely determine $q(n,k)$ as the least prime not dividing the consecutive product.",
+    "mathContext": "$q(n,k) \\in \\mathbb{P}$, $q(n,k) \\nmid \\prod_{i=1}^{k}(n+i)$, and $\\forall p \\in \\mathbb{P},\\, p < q(n,k) \\Rightarrow p \\mid \\prod_{i=1}^{k}(n+i)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "well-ordering of primes",
+      "prime factorization",
+      "unique characterization"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "divisibility ordering"
+    ]
+  },
+  {
+    "id": "erdos-663-conjecture",
+    "proofId": "erdos-663",
+    "type": "concept",
+    "range": {
+      "startLine": 48,
+      "endLine": 54
+    },
+    "title": "Erdős Problem 663 — Main Conjecture",
+    "content": "The central conjecture: for each fixed $k \\geq 1$ and every $\\varepsilon > 0$, the bound $q(n,k) < (1+\\varepsilon)\\log n$ holds for all sufficiently large $n$. This is a precise formalization of $q(n,k) < (1+o(1))\\log n$, converting the asymptotic notation into a quantified statement.",
+    "mathContext": "$\\forall k \\geq 1,\\, \\forall \\varepsilon > 0,\\, \\exists N_0,\\, \\forall n \\geq N_0: q(n,k) < (1+\\varepsilon)\\log n$",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic notation",
+      "prime number theorem",
+      "epsilon-N definition"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "natural logarithm",
+      "asymptotic bounds"
+    ]
+  },
+  {
+    "id": "erdos-663-weak",
+    "proofId": "erdos-663",
+    "type": "concept",
+    "range": {
+      "startLine": 58,
+      "endLine": 65
+    },
+    "title": "Weak Bound from Prime Number Theorem",
+    "content": "The known weaker bound $q(n,k) < (1+o(1))\\,k\\log n$, which follows from the prime number theorem. By PNT, the number of primes up to $x$ is approximately $x/\\log x$, so primes up to $k\\log n$ number about $k\\log n / \\log(k\\log n)$, and $k$ consecutive integers provide enough residue classes to cover all such primes.",
+    "mathContext": "$\\forall k \\geq 1,\\, \\forall \\varepsilon > 0,\\, \\exists N_0,\\, \\forall n \\geq N_0: q(n,k) < (1+\\varepsilon)\\,k\\log n$",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime number theorem",
+      "prime counting function",
+      "sieve of Eratosthenes"
+    ],
+    "prerequisites": [
+      "prime number theorem",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "erdos-663-k1",
+    "proofId": "erdos-663",
+    "type": "concept",
+    "range": {
+      "startLine": 67,
+      "endLine": 77
+    },
+    "title": "Weak Bound Implies Conjecture for $k=1$",
+    "content": "When $k=1$, the weak bound $(1+\\varepsilon) \\cdot 1 \\cdot \\log n = (1+\\varepsilon)\\log n$ coincides with the conjectured bound. The proof is a simple rewrite using `mul_one`. This shows the conjecture is trivially true for $k=1$ given the weak bound, and the real content lies in $k \\geq 2$.",
+    "mathContext": "$(1+\\varepsilon) \\cdot 1 \\cdot \\log n = (1+\\varepsilon)\\log n$, so the weak bound for $k=1$ is exactly the main conjecture for $k=1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "special case analysis",
+      "mul_one",
+      "base case"
+    ],
+    "prerequisites": [
+      "real arithmetic",
+      "multiplication identity"
+    ]
+  },
+  {
+    "id": "erdos-663-product-k1",
+    "proofId": "erdos-663",
+    "type": "concept",
+    "range": {
+      "startLine": 81,
+      "endLine": 84
+    },
+    "title": "Consecutive Product for $k=1$",
+    "content": "For $k=1$, the consecutive product reduces to a single term: $(n+1)$. Proved by `simp` on the Finset.range definition. This grounds the abstract product definition in the simplest case.",
+    "mathContext": "$\\mathrm{consecutiveProduct}(n,1) = \\prod_{i \\in \\{0\\}}(n+i+1) = n+1$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.range 1",
+      "product base case"
+    ],
+    "prerequisites": [
+      "Finset.prod simplification"
+    ]
+  },
+  {
+    "id": "erdos-663-pos",
+    "proofId": "erdos-663",
+    "type": "concept",
+    "range": {
+      "startLine": 86,
+      "endLine": 92
+    },
+    "title": "Positivity of Consecutive Product",
+    "content": "The consecutive product is always positive for $k > 0$, since each factor $n+i+1 \\geq 1$. Proved using `Finset.prod_pos` with `omega` closing each positivity goal. This ensures the product is a valid nonzero natural number for divisibility arguments.",
+    "mathContext": "$\\forall n, k,\\, k > 0 \\Rightarrow \\mathrm{consecutiveProduct}(n,k) > 0$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.prod_pos",
+      "positivity",
+      "omega tactic"
+    ],
+    "prerequisites": [
+      "natural number positivity",
+      "product of positive numbers"
+    ]
+  },
+  {
+    "id": "erdos-663-problem457",
+    "proofId": "erdos-663",
+    "type": "concept",
+    "range": {
+      "startLine": 94,
+      "endLine": 98
+    },
+    "title": "Connection to Erdős Problem #457",
+    "content": "States the connection to Erdős Problem #457: among $k$ consecutive integers starting from $n+1$, there is always a prime $p \\leq k+1$ dividing the product. This is a weaker but related structural property about small prime divisors of consecutive products, providing a floor for the prime coverage.",
+    "mathContext": "$\\forall k \\geq 1,\\, \\forall n,\\, \\exists p \\in \\mathbb{P},\\, p \\leq k+1 \\text{ and } p \\mid (n+1)\\cdots(n+k)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős Problem 457",
+      "small prime divisors",
+      "Bertrand's postulate"
+    ],
+    "prerequisites": [
+      "prime divisibility",
+      "consecutive integers"
+    ]
+  },
+  {
+    "id": "erdos-663-small-prime",
+    "proofId": "erdos-663",
+    "type": "concept",
+    "range": {
+      "startLine": 100,
+      "endLine": 105
+    },
+    "title": "Small Primes Divide Consecutive Products",
+    "content": "Axiomatizes the pigeonhole principle for primes: if $p \\leq k$, then $p$ divides $(n+1)(n+2)\\cdots(n+k)$ because among any $k$ consecutive integers, at least one must be divisible by $p$ (since the residues $\\bmod p$ cycle with period $p \\leq k$).",
+    "mathContext": "$\\forall p \\in \\mathbb{P},\\, p \\leq k \\Rightarrow p \\mid \\prod_{i=1}^{k}(n+i)$, since $\\{n+1,\\ldots,n+k\\}$ contains a complete residue system $\\bmod p$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "residue classes",
+      "complete residue system"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "divisibility",
+      "pigeonhole principle"
+    ]
+  },
+  {
+    "id": "erdos-663-lower-bound",
+    "proofId": "erdos-663",
+    "type": "concept",
+    "range": {
+      "startLine": 107,
+      "endLine": 110
+    },
+    "title": "Lower Bound $q(n,k) > k$",
+    "content": "For $k > 1$, the smallest missing prime exceeds $k$. This is an immediate consequence of small_prime_divides_product: every prime $p \\leq k$ divides the product, so the least non-dividing prime must be strictly greater than $k$. This establishes a non-trivial lower bound on $q(n,k)$.",
+    "mathContext": "$k > 1 \\Rightarrow q(n,k) > k$, since all primes $p \\leq k$ satisfy $p \\mid (n+1)\\cdots(n+k)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lower bound",
+      "prime gap",
+      "Bertrand's postulate"
+    ],
+    "prerequisites": [
+      "small_prime_divides_product",
+      "minimality of q"
+    ]
+  },
+  {
+    "id": "erdos-663-mono",
+    "proofId": "erdos-663",
+    "type": "concept",
+    "range": {
+      "startLine": 114,
+      "endLine": 116
+    },
+    "title": "Monotonicity of $q$ in $k$",
+    "content": "Axiomatizes that $q(n,k)$ is non-increasing in $k$: if $k_1 \\leq k_2$, then $q(n,k_2) \\leq q(n,k_1)$. Adding more consecutive terms can only introduce new prime factors, never remove them, so the smallest missing prime can only decrease (or stay the same).",
+    "mathContext": "$k_1 \\leq k_2 \\Rightarrow q(n,k_2) \\leq q(n,k_1)$, since $(n+1)\\cdots(n+k_1) \\mid (n+1)\\cdots(n+k_2)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "monotonicity",
+      "divisibility lattice",
+      "product extension"
+    ],
+    "prerequisites": [
+      "divisibility ordering",
+      "product monotonicity"
+    ]
+  },
+  {
+    "id": "erdos-663-main-implies-weak",
+    "proofId": "erdos-663",
+    "type": "concept",
+    "range": {
+      "startLine": 118,
+      "endLine": 128
+    },
+    "title": "Main Conjecture Implies Weak Bound",
+    "content": "Proves that the main conjecture (without $k$ factor) implies the weak bound (with $k$ factor). The proof extracts the $N_0$ from the main conjecture and uses the chain of inequalities $(1+\\varepsilon)\\log n \\leq (1+\\varepsilon)\\,k\\log n$ since $k \\geq 1$. Uses `mul_assoc`, `mul_le_mul_of_nonneg_left`, and `nlinarith` with the cast `Nat.cast_pos.mpr hk`.",
+    "mathContext": "$q(n,k) < (1+\\varepsilon)\\log n \\leq (1+\\varepsilon) \\cdot k \\cdot \\log n$ since $k \\geq 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "implication between bounds",
+      "calc block",
+      "nlinarith"
+    ],
+    "prerequisites": [
+      "real number inequalities",
+      "natural number casting",
+      "mul_assoc"
+    ]
+  }
+]

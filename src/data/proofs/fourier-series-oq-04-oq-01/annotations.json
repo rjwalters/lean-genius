@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-t2-and-haar",
+    "proofId": "fourier-series-oq-04-oq-01",
+    "range": { "startLine": 72, "endLine": 82 },
+    "type": "definition",
+    "title": "The 2-torus and its product Haar measure",
+    "content": "The 2-torus $\\mathbb{T}^2 = (\\mathbb{R}/\\mathbb{Z})^2$ is modelled as `Fin 2 → AddCircle (1 : ℝ)`, a `Pi` type rather than a record. This shape makes the product Haar measure cheap to define: `haarT2 := Measure.pi (fun _ => haarAddCircle)`. The `Fact (0 < 1)` instance is the standard hypothesis that `AddCircle T` expects to expose its full measure-theoretic instance suite (`MeasurableSpace`, `BorelSpace`, `IsAddHaarMeasure haarAddCircle`).",
+    "mathContext": "$\\mathbb{T}^2 = (\\mathbb{R}/\\mathbb{Z})^2 \\cong \\mathrm{AddCircle}(1)^2$ with $d\\mu(x_0,x_1) = dx_0 \\otimes dx_1$. Choosing the `Pi`-type representation lets `Measure.pi` build $\\mu$ for free from the 1D Haar.",
+    "significance": "key",
+    "relatedConcepts": ["AddCircle", "product measure", "Haar measure", "Pi type"],
+    "prerequisites": ["measure theory: product / iterated measures", "Mathlib's AddCircle API"]
+  },
+  {
+    "id": "ann-multi-fourier-coeff",
+    "proofId": "fourier-series-oq-04-oq-01",
+    "range": { "startLine": 84, "endLine": 92 },
+    "type": "definition",
+    "title": "Multi-index Fourier coefficient as iterated character integral",
+    "content": "The 2D Fourier coefficient $\\hat f(k)$ is defined as the integral of $f(x)$ against the *factored* multi-character $e^{-2\\pi i k_0 x_0} \\cdot e^{-2\\pi i k_1 x_1}$. Crucially, the code uses Mathlib's `fourier n : AddCircle T → ℂ` for each coordinate separately, so the multi-character is built as a *product of 1D characters* rather than as a fresh primitive. This compositional construction is what eventually lets one invoke Plancherel on $\\mathbb{T}^2$ as a tensor product of two 1D Plancherel identities.",
+    "mathContext": "$\\hat f(k) = \\int_{\\mathbb{T}^2} f(x)\\, e_{-k_0}(x_0)\\, e_{-k_1}(x_1)\\, d\\mu(x)$ where $e_n(t) = e^{2\\pi i n t}$. The sign convention `fourier (-(k 0))` on `AddCircle 1` gives $e^{-2\\pi i k_0 x_0}$ — Mathlib's `fourier` is the *positive* exponential, so negation produces the conjugate character used in the analysis convention.",
+    "significance": "key",
+    "relatedConcepts": ["Fourier coefficient", "character", "tensor product of orthonormal bases", "Plancherel theorem"],
+    "prerequisites": ["1D Fourier series on AddCircle", "Fubini / iterated integration"]
+  },
+  {
+    "id": "ann-lattice-disc",
+    "proofId": "fourier-series-oq-04-oq-01",
+    "range": { "startLine": 94, "endLine": 105 },
+    "type": "insight",
+    "title": "Realising the lattice disc as a Finset via bounding-box filter",
+    "content": "A `Finset` representation of the integer disc $\\{k \\in \\mathbb{Z}^2 : k_0^2 + k_1^2 \\leq R^2\\}$ is needed so the spherical partial sum is a *finite* `Finset.sum` (rather than a `tsum`). The trick: any point in the disc has $|k_i| \\leq |R| \\leq \\lceil |R| \\rceil$, so we can take the `Finset.Icc` bounding box $[-\\lceil |R| \\rceil, \\lceil |R| \\rceil]^2$ and `.filter` by the disc predicate. Classical decidability provides the `DecidablePred` instance needed by `filter` on a real-valued inequality. This is a common 'finite-from-bounded' pattern when a continuous condition selects a finite subset of an integer lattice.",
+    "mathContext": "$\\{k \\in \\mathbb{Z}^2 : k_0^2 + k_1^2 \\leq R^2\\} = \\big([-\\lceil |R| \\rceil, \\lceil |R| \\rceil]^2 \\cap \\mathbb{Z}^2\\big) \\cap \\{k : |k|^2 \\leq R^2\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.Icc", "Finset.filter", "classical decidability", "DecidablePred"],
+    "prerequisites": ["Finset API", "integer lattices"]
+  },
+  {
+    "id": "ann-sph-partial-sum",
+    "proofId": "fourier-series-oq-04-oq-01",
+    "range": { "startLine": 107, "endLine": 114 },
+    "type": "definition",
+    "title": "Spherical partial Fourier sum on T²",
+    "content": "The spherical partial sum $S_R^{\\text{sph}} f(x)$ is the explicit `Finset.sum` over `latticeDisc R` of $\\hat f(k) \\cdot e^{2\\pi i k \\cdot x}$. The multi-character is again factored across coordinates as `fourier (k 0) (x 0) * fourier (k 1) (x 1)`, the conjugate of the character used in defining the coefficient — this is the *synthesis* step that mirrors the *analysis* in `multiFourierCoeff`. The defining feature distinguishing the spherical sum from rectangular partial sums is exactly the indexing set: a Euclidean disc, not a product of intervals. This single change — disc vs. rectangle — is what separates the *open* 2D Carleson conjecture from Fefferman's *negative* ball-multiplier result.",
+    "mathContext": "$S_R^{\\text{sph}} f(x) = \\sum_{|k| \\leq R} \\hat f(k)\\, e^{2\\pi i k \\cdot x}$, with $|k| = \\sqrt{k_0^2 + k_1^2}$. Contrast: the rectangular partial sum sums over $\\{k : |k_i| \\leq N_i\\}$ — for which a.e. convergence at the $L^1$ endpoint is known to *fail* in $n \\geq 2$ (Fefferman 1971).",
+    "significance": "key",
+    "relatedConcepts": ["spherical summation", "Bochner-Riesz means", "ball multiplier", "Fourier synthesis"],
+    "prerequisites": ["1D Fourier inversion formula", "Plancherel identity"]
+  },
+  {
+    "id": "ann-carleson-conjecture",
+    "proofId": "fourier-series-oq-04-oq-01",
+    "range": { "startLine": 116, "endLine": 131 },
+    "type": "insight",
+    "title": "The open conjecture: L² pointwise a.e. convergence (axiomatised)",
+    "content": "`carleson_2d_sph` is the central axiom of this file: for every $f \\in L^2(\\mathbb{T}^2)$, $S_R^{\\text{sph}} f(x) \\to f(x)$ for $\\mu$-a.e. $x$. This is an open problem in mathematics. The 1D analogue is Carleson's 1966 theorem (Fields-Medal-class work), but the 2D extension is blocked by a structural obstacle: the lattice disc has a *curved* boundary, defeating the time-frequency tiling that powered Carleson's 1D proof. Per the gallery's Axiom Integrity Policy, an open conjecture must be `status: axiomatized` with `badge: axiom` — never `verified`. Asserting this as an axiom is the mathematically honest move: the file does not claim to prove the conjecture, only to state it precisely in Lean and surround it with rigorous definitions and an unconditional companion theorem.",
+    "mathContext": "$\\forall f \\in L^2(\\mathbb{T}^2):\\ \\forall^{a.e.}\\, x:\\ \\lim_{R \\to \\infty} S_R^{\\text{sph}} f(x) = f(x).$ Equivalent (by a standard maximal-operator argument) to the weak-type $(2,2)$ bound for $\\sup_R |S_R^{\\text{sph}} f|$, which is the missing analytic content.",
+    "significance": "key",
+    "relatedConcepts": ["Carleson theorem (1D)", "Bochner-Riesz conjecture", "maximal operator", "weak-type inequality", "Kakeya conjecture", "restriction conjecture"],
+    "prerequisites": ["L^p spaces", "almost-everywhere convergence", "Filter.Tendsto on the reals"]
+  },
+  {
+    "id": "ann-l2-norm-companion",
+    "proofId": "fourier-series-oq-04-oq-01",
+    "range": { "startLine": 458, "endLine": 594 },
+    "type": "insight",
+    "title": "Unconditional companion: L²-norm convergence by Plancherel (proved, S15)",
+    "content": "Although the a.e. convergence is open, the *norm* version — $\\|S_R^{\\text{sph}} f - f\\|_{L^2} \\to 0$ — is unconditional and follows from Plancherel on $\\mathbb{T}^2$. It is proved sorry-free by transporting to Mathlib's multivariate Fourier engine `UnitAddTorus.hasSum_mFourier_series_L2` (`Mathlib.Analysis.Fourier.AddCircleMulti`), which packages Plancherel as a Hilbert-basis `HasSum` over `Finset (ℤ²)`. The decisive observation is that the engine declares a *local* `MeasureSpace UnitAddCircle := ⟨haarAddCircle⟩`, so its ambient `volume` on `UnitAddTorus (Fin 2)` is `Measure.pi (fun _ ↦ haarAddCircle)` — *definitionally* our `haarT2`. The engine therefore applies with no measure-cast (this supersedes the earlier `haarT2_eq_volume` route, which targets the off-by-`(1•)` global `volume`). Two bridge lemmas reconcile notation: `mFourier_fin2` (the engine's multi-character factors as the product of the two 1-D characters used by `sphPartialSum`) and `mFourierCoeff_eq_multiFourierCoeff` (the engine's coefficient functional equals our `multiFourierCoeff`). The `latticeDisc` cofinality `latticeDisc_eventually_supset` (S9) gives `Tendsto latticeDisc atTop atTop` in the inclusion-directed `Finset` filter; composing with the engine's `HasSum` yields the `R → ∞` limit, and `tendsto_iff_norm_sub_tendsto_zero` + `Lp.norm_def` + `ENNReal.tendsto_toReal_iff` convert the `Lp`-norm convergence to the `eLpNorm` goal.",
+    "mathContext": "Plancherel on $\\mathbb{T}^n$: $\\|f\\|_{L^2}^2 = \\sum_{k \\in \\mathbb{Z}^n} |\\hat f(k)|^2$. Hence $\\|f - S_R^{\\text{sph}} f\\|_{L^2}^2 = \\sum_{|k| > R} |\\hat f(k)|^2 \\to 0$ by tail-of-summable.",
+    "significance": "key",
+    "relatedConcepts": ["Plancherel theorem", "Hilbert basis HasSum", "Finset cofinality", "lp 2 spaces", "definitional measure equality"],
+    "prerequisites": ["Hilbert space orthonormal bases", "L² inner product", "Lp space coercions"]
+  },
+  {
+    "id": "ann-sanity-checks",
+    "proofId": "fourier-series-oq-04-oq-01",
+    "range": { "startLine": 146, "endLine": 160 },
+    "type": "concept",
+    "title": "Sanity-check lemmas (no sorries)",
+    "content": "`multiFourierCoeff_zero` and `sphPartialSum_zero` are not substantive theorems — they are sanity checks confirming that the definitions are well-typed and that `simp` resolves the obvious case (zero function → zero coefficient, zero partial sum). Their role in a file whose sole assumption is the open conjecture `carleson_2d_sph` is to demonstrate that the *definitional* layer is rigorous and non-vacuous, even though the conjecture itself is axiomatised. This is a common pattern in axiom-style files: anchor the definitions with provable corollaries so that future readers can verify the types compose correctly before trusting the axiom statement.",
+    "mathContext": "$\\widehat{0}(k) = \\int 0 = 0$ and $\\sum_k 0 \\cdot e_k = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["definitional unfolding", "simp normal form", "axiom integrity"],
+    "prerequisites": ["basic Lean 4 syntax"]
+  }
+]

@@ -1,0 +1,229 @@
+[
+  {
+    "id": "ann-e938-header",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #938** asks whether there are only finitely many three-term arithmetic progressions among consecutive powerful numbers. A powerful number (squarefull number) is a positive integer where every prime factor appears with exponent at least 2. The problem was posed by Erdős in 1976 and remains open.",
+    "mathContext": "Let A = {n₁ < n₂ < ···} be the sequence of powerful numbers. The question is: are there only finitely many k such that n_{k+1} - n_k = n_{k+2} - n_{k+1}? This cannot be resolved by finite computation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "powerful numbers",
+      "arithmetic progressions",
+      "squarefull numbers",
+      "OEIS A001694"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e938-imports",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 26,
+      "endLine": 35
+    },
+    "type": "concept",
+    "title": "Imports and Namespace",
+    "content": "**Targeted Mathlib imports** for prime numbers, filters, real analysis, and finite sets. The namespace Erdos938 encapsulates all definitions to avoid name collisions.",
+    "mathContext": "Uses Nat.Prime for primality, Filter.Tendsto for asymptotic statements, Real.sqrt for the counting function, and Finset operations for computational definitions.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "Lean 4",
+      "namespace"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e938-powerful-def",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 47,
+      "endLine": 49
+    },
+    "type": "definition",
+    "title": "Powerful Number (Squarefull)",
+    "content": "**A powerful number** is a positive integer n where every prime divisor p satisfies p² | n. For example, 36 = 2²·3² is powerful because both 2² and 3² divide 36. Numbers like 12 = 2²·3 are NOT powerful because 3² does not divide 12.",
+    "mathContext": "Formally: Powerful(n) ≡ n ≥ 1 ∧ ∀ p prime, p | n → p² | n. This is equivalent to requiring all prime exponents in the factorization to be ≥ 2.",
+    "significance": "key",
+    "relatedConcepts": [
+      "squarefull",
+      "prime factorization",
+      "divisibility"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e938-powerful-alt",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 51,
+      "endLine": 53
+    },
+    "type": "definition",
+    "title": "Alternative Characterization",
+    "content": "**Every powerful number** can be written as n = a²·b³ for positive integers a, b. This representation is useful for constructing powerful numbers: take any a and b, compute a²b³, and the result is always powerful.",
+    "mathContext": "PowerfulAlt(n) ≡ ∃ a b ≥ 1, n = a²·b³. The equivalence Powerful ↔ PowerfulAlt follows from the structure of prime factorizations: any exponent ≥ 2 can be written as 2q + 3r for non-negative q, r.",
+    "significance": "key",
+    "relatedConcepts": [
+      "number representation",
+      "squarefull characterization"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e938-examples",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 58,
+      "endLine": 76
+    },
+    "type": "concept",
+    "title": "Small Powerful Numbers",
+    "content": "**Concrete verification** that 1, 4, 8, 9 are powerful. 1 is vacuously powerful (no prime divides it). 4 = 2² is powerful because 2² | 4. Similarly 8 = 2³ and 9 = 3². These are the first four powerful numbers.",
+    "mathContext": "Each proof uses interval_cases to enumerate small primes and verify the divisibility condition p | n → p² | n. The proofs are fully constructive with no sorry or axiom.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "decidability",
+      "interval_cases",
+      "concrete verification"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e938-enumeration",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 78,
+      "endLine": 96
+    },
+    "type": "definition",
+    "title": "Enumeration of Powerful Numbers",
+    "content": "**nthPowerful** provides a 0-indexed enumeration of powerful numbers in increasing order: P(0) = 1, P(1) = 4, P(2) = 8, P(3) = 9, etc. Three axioms establish its properties: strict monotonicity, every output is powerful, and every powerful number appears.",
+    "mathContext": "The enumeration is noncomputable and axiomatized because Lean cannot compute it directly. StrictMono ensures P(i) < P(j) for i < j. Together with membership and surjectivity, this uniquely characterizes the enumeration.",
+    "significance": "key",
+    "relatedConcepts": [
+      "enumeration",
+      "strict monotonicity",
+      "noncomputable"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e938-ap-def",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 105,
+      "endLine": 113
+    },
+    "type": "definition",
+    "title": "Consecutive Powerful AP",
+    "content": "**ConsecutivePowerfulAP(k)** holds when three consecutive powerful numbers P(k), P(k+1), P(k+2) form an arithmetic progression — meaning the two gaps are equal. The set **apIndices** collects all such indices k.",
+    "mathContext": "Formally: P(k+1) - P(k) = P(k+2) - P(k+1). In natural number arithmetic, this uses truncated subtraction, but since nthPowerful is strictly increasing, the values are always positive.",
+    "significance": "key",
+    "relatedConcepts": [
+      "arithmetic progression",
+      "consecutive terms",
+      "gap equality"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e938-gap",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 115,
+      "endLine": 123
+    },
+    "type": "definition",
+    "title": "Gap Function and AP Equivalence",
+    "content": "**powerfulGap(k)** measures the distance between consecutive powerful numbers: P(k+1) - P(k). The lemma **ap_iff_equal_gaps** reformulates the AP condition as gap(k) = gap(k+1), providing an alternative perspective.",
+    "mathContext": "The equivalence ConsecutivePowerfulAP(k) ↔ powerfulGap(k) = powerfulGap(k+1) is definitional (proved by rfl). This gap-based formulation is often more natural for analysis.",
+    "significance": "key",
+    "relatedConcepts": [
+      "gap distribution",
+      "consecutive differences"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e938-main",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 125,
+      "endLine": 138
+    },
+    "type": "concept",
+    "title": "Main Problem: Erdős #938",
+    "content": "**The central question**: Is apIndices.Finite? This asks whether the set of indices where consecutive powerful numbers form APs is finite. Axiomatized because the problem is open — neither proved nor disproved.",
+    "mathContext": "Stated as: axiom erdos_938 : apIndices.Finite. Using axiom rather than theorem+sorry signals that this is a genuine open problem, not a gap in the formalization. The answer is unknown.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open problem",
+      "finiteness",
+      "Erdős conjecture"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e938-problem364",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 140,
+      "endLine": 154
+    },
+    "type": "concept",
+    "title": "Connection to Problem #364",
+    "content": "**Erdős Problem #364** makes the stronger conjecture that no three consecutive integers n, n+1, n+2 can all be powerful. If true, this immediately rules out APs with common difference 1 among consecutive powerful numbers.",
+    "mathContext": "NoThreeConsecutivePowerful ≡ ∀ n, ¬(Powerful(n) ∧ Powerful(n+1) ∧ Powerful(n+2)). Problem #364 ⟹ no AP with d=1, which is a special case of Problem #938.",
+    "significance": "key",
+    "relatedConcepts": [
+      "consecutive integers",
+      "Problem 364",
+      "implication"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e938-counting",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 156,
+      "endLine": 173
+    },
+    "type": "concept",
+    "title": "Asymptotic Counting",
+    "content": "**The density of powerful numbers** up to x is asymptotically (ζ(3/2)/ζ(3))·√x ≈ 2.17·√x. This classical result shows powerful numbers become increasingly sparse, with average gap growing like √n.",
+    "mathContext": "countPowerful(n) counts powerful numbers in {0, ..., n}. The axiom states ∃ c > 0 such that countPowerful(n)/√n → c as n → ∞. The constant c = ζ(3/2)/ζ(3) involves the Riemann zeta function.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic density",
+      "Riemann zeta function",
+      "counting function"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e938-differences",
+    "proofId": "erdos-938",
+    "range": {
+      "startLine": 175,
+      "endLine": 201
+    },
+    "type": "concept",
+    "title": "AP Differences and Finiteness",
+    "content": "**If the AP indices are finite**, then the set of common differences is also finite. The structure ConsecutivePowerfulAPWithDiff packages an AP index with its common difference, and apDifferences collects all differences that occur.",
+    "mathContext": "The lemma differences_finite_of_indices_finite proves: apIndices.Finite → apDifferences.Finite, using Set.Finite.subset and the fact that apDifferences ⊆ powerfulGap '' apIndices. This is a genuine derived result, not axiomatized.",
+    "significance": "key",
+    "relatedConcepts": [
+      "derived result",
+      "image finiteness",
+      "common difference"
+    ],
+    "prerequisites": []
+  }
+]

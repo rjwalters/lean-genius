@@ -1,0 +1,276 @@
+{
+  "id": "fundamental-theorem-algebra-oq-04",
+  "title": "C is the Unique Algebraic Closure of R",
+  "slug": "fundamental-theorem-algebra-oq-04",
+  "description": "Proves that the complex numbers C form the unique algebraic closure of the reals R: C is algebraically closed and algebraic over R (making it an algebraic closure), any algebraic closure of R is R-algebra isomorphic to C (Steinitz uniqueness), [C:R] = 2 with no intermediate fields, and R is not algebraically closed (X^2+1 has no real root).",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FundamentalTheoremAlgebraOQ04.lean",
+    "tags": [
+      "algebra",
+      "field-theory",
+      "algebraic-closure",
+      "complex-numbers",
+      "steinitz-theorem",
+      "wiedijk-100"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 207,
+    "assumptions": "None. Fully verified with 0 axioms, 0 sorries. The algebraic closure property delegates to Mathlib's Complex.isAlgClosed; algebraicity follows from the finite extension degree [C:R] = 2; uniqueness uses IsAlgClosure.equiv (Steinitz theorem). All original contributions are fully machine-checked.",
+    "originalContributions": [
+      "reals_not_alg_closed: R is not algebraically closed (X^2+1 has no real root) — original proof",
+      "charQuad / is_root_charQuad: characteristic real quadratic and root proof — original",
+      "no_intermediate_field: tower law argument showing no proper intermediate fields — original",
+      "complex_algebraic_over_reals: C/R algebraic via Algebra.IsAlgebraic.of_finite — Mathlib bridge",
+      "complex_is_alg_closure: assembled IsAlgClosure instance — Mathlib bridge",
+      "unique_algebraic_closure: Steinitz uniqueness via IsAlgClosure.equiv — Mathlib delegation",
+      "finrank_complex_over_reals: [C:R]=2 via Complex.finrank_real_complex — Mathlib alias"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.isAlgClosed",
+        "description": "C is algebraically closed",
+        "module": "Mathlib.FieldTheory.IsAlgClosed.Basic"
+      },
+      {
+        "theorem": "Complex.finrank_real_complex",
+        "description": "[C:R] = 2",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
+      },
+      {
+        "theorem": "IsAlgClosure.equiv",
+        "description": "Algebraic closures are unique up to isomorphism (Steinitz)",
+        "module": "Mathlib.FieldTheory.IsAlgClosed.Basic"
+      },
+      {
+        "theorem": "Algebra.IsAlgebraic.of_finite",
+        "description": "Finite extensions are algebraic",
+        "module": "Mathlib.RingTheory.Algebraic.Basic"
+      },
+      {
+        "theorem": "Module.finrank_mul_finrank",
+        "description": "Tower law for finite extensions",
+        "module": "Mathlib.LinearAlgebra.FreeModule.Finite.Rank"
+      }
+    ],
+    "dateAdded": "2026-03-24",
+    "prerequisites": [
+      "Field extensions and extension degree",
+      "Algebraic closure definition (algebraically closed + algebraic over base)",
+      "Basic polynomial algebra (roots, evaluation, degree)",
+      "Familiarity with Lean 4 and Mathlib"
+    ],
+    "wiedijkNumber": 2,
+    "sourceUrl": "https://en.wikipedia.org/wiki/Fundamental_theorem_of_algebra",
+    "date": "1799",
+    "relatedProblems": [
+      {
+        "id": "fundamental-theorem-algebra",
+        "relationship": "Extends the base FTA (C is algebraically closed) to prove C is the unique algebraic closure of R"
+      }
+    ],
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "The Fundamental Theorem of Algebra — that every non-constant polynomial with complex coefficients has a complex root — was first stated by Albert Girard (1629) and proved (with gaps) by d'Alembert (1746) and Gauss (1799). Gauss alone gave four proofs during his lifetime, the most rigorous being his 1816 proof using winding numbers. The theorem is paradoxically named: it is a theorem about complex numbers, and its most natural proofs use analysis (Liouville's theorem, the argument principle) or topology (the fundamental group), not algebra.\n\nThe question of whether $\\mathbb{C}$ is the *unique* algebraic closure of $\\mathbb{R}$ is answered by Steinitz's theorem (1910): any two algebraic closures of a given field are isomorphic. Ernst Steinitz proved this in his foundational paper 'Algebraische Theorie der Körper' (*Journal für die reine und angewandte Mathematik*, 1910), which also introduced the modern axiomatic definition of a field and established the existence of algebraic closures using transfinite methods.\n\nThe deeper question — why does $\\mathbb{R}$ need only a single quadratic extension to become algebraically closed? — is answered by the Artin-Schreier theorem (1927). Emil Artin and Otto Schreier proved that a field $F$ is real-closed (every positive element has a square root, every odd-degree polynomial has a root) if and only if $F(\\sqrt{-1})$ is algebraically closed. Since $\\mathbb{R}$ is the prototypical real-closed field (by the intermediate value theorem, every continuous function changing sign has a root), one quadratic extension $\\mathbb{R}(i) = \\mathbb{C}$ suffices. This is exceptional: for $\\mathbb{Q}$, the algebraic closure requires infinitely many extensions (algebraic numbers of every degree exist), and for $\\mathbb{F}_p$, the closure is $\\bigcup_n \\mathbb{F}_{p^n}$ — an infinite tower of finite extensions.\n\nThe minimality of $\\mathbb{C}$ over $\\mathbb{R}$ (no intermediate algebraically closed fields) follows from the tower law: $[\\mathbb{C}:\\mathbb{R}] = 2$ is prime, so there are no proper intermediate fields at all. Equivalently, the Galois group $\\text{Gal}(\\mathbb{C}/\\mathbb{R}) \\cong \\mathbb{Z}/2\\mathbb{Z}$ (generated by complex conjugation) has no proper subgroups, so the Galois correspondence yields no intermediate fields.",
+    "problemStatement": "Is $\\mathbb{C}$ the unique algebraic closure of $\\mathbb{R}$? Formally: (1) Is $\\mathbb{C}$ an algebraic closure of $\\mathbb{R}$ (algebraically closed + algebraic over $\\mathbb{R}$)? (2) Is any algebraic closure of $\\mathbb{R}$ isomorphic to $\\mathbb{C}$ as an $\\mathbb{R}$-algebra? (3) Is $\\mathbb{C}$ minimal (no proper intermediate algebraically closed field)?",
+    "text": "A 207-line verified formalization proving $\\mathbb{C}$ is the unique algebraic closure of $\\mathbb{R}$, with 0 sorries and 0 axioms. The proof establishes eight results: (1) $[\\mathbb{C}:\\mathbb{R}] = 2$ via Mathlib's `finrank_real_complex`; (2) $\\mathbb{C}/\\mathbb{R}$ is algebraic since finite extensions are algebraic; (3) $\\mathbb{C}$ is an algebraic closure combining algebraic closure with algebraicity; (4) any algebraic closure $L$ of $\\mathbb{R}$ satisfies $L \\cong_{\\mathbb{R}} \\mathbb{C}$ by Steinitz's theorem; (5) $\\mathbb{R}$ is not algebraically closed ($X^2 + 1 > 0$ for all $x \\in \\mathbb{R}$); (6) every $z \\in \\mathbb{C}$ is a root of $X^2 - 2\\mathrm{Re}(z)X + |z|^2 \\in \\mathbb{R}[X]$; (7) the tower law forces any intermediate field to have degree 1 or 2 over $\\mathbb{R}$; (8) the single quadratic extension $\\mathbb{R} \\to \\mathbb{C} = \\mathbb{R}[i]/(i^2+1)$ suffices.",
+    "proofStrategy": "The proof combines three threads from Mathlib:\n\n1. **Algebraic closure**: `Complex.isAlgClosed` (via Liouville's theorem) gives that $\\mathbb{C}$ is algebraically closed. Since $[\\mathbb{C}:\\mathbb{R}] = 2 < \\infty$, the extension is finite $\\implies$ integral $\\implies$ algebraic. Combining these yields `IsAlgClosure \\mathbb{R} \\mathbb{C}`.\n\n2. **Uniqueness (Steinitz)**: `IsAlgClosure.equiv` provides an $\\mathbb{R}$-algebra isomorphism between any two algebraic closures. Applying it with $L$ and $\\mathbb{C}$ gives $L \\cong_{\\mathbb{R}} \\mathbb{C}$.\n\n3. **Minimality (Tower Law)**: For any intermediate field $\\mathbb{R} \\subseteq K \\subseteq \\mathbb{C}$, the tower law gives $[\\mathbb{C}:K] \\cdot [K:\\mathbb{R}] = [\\mathbb{C}:\\mathbb{R}] = 2$. Since both factors are positive, $[K:\\mathbb{R}] \\in \\{1, 2\\}$, meaning $K = \\mathbb{R}$ or $K = \\mathbb{C}$.",
+    "keyInsights": [
+      "**One Extension Suffices**: Adjoining a single element $i = \\sqrt{-1}$ to $\\mathbb{R}$ creates an algebraically closed field. This is exceptional: $\\overline{\\mathbb{Q}}$ requires infinitely many extensions, and $p$-adic fields $\\mathbb{Q}_p$ need uncountably many. The special property of $\\mathbb{R}$ is that it is real-closed: an ordered field where every positive element has a square root and every odd-degree polynomial has a root.",
+      "**Degree 2 is Minimal and Maximal**: $[\\mathbb{C}:\\mathbb{R}] = 2$ is simultaneously the smallest possible nontrivial extension and already enough to close the field. The Artin-Schreier theorem explains why: a field $F$ is real-closed iff $F(\\sqrt{-1})$ is algebraically closed, and any finite extension of a real-closed field has degree 1 or 2.",
+      "**Steinitz Uniqueness**: All algebraic closures of a given field are isomorphic (Steinitz 1910). This is a non-constructive result: the isomorphism uses Zorn's lemma to extend embeddings. For $\\mathbb{R}$, the isomorphism is actually computable (every algebraic closure is $\\mathbb{R}$-isomorphic to $\\mathbb{C}$ via explicit coordinates), but the general theorem applies uniformly.",
+      "**No Intermediate Algebraically Closed Fields**: The tower law argument shows there are no fields properly between $\\mathbb{R}$ and $\\mathbb{C}$. Combined with the fact that $\\mathbb{R}$ is not algebraically closed ($X^2 + 1$ has no real root), this means $\\mathbb{C}$ is the unique minimal algebraically closed extension.",
+      "**Frobenius Perspective**: By Frobenius's theorem (1877), the only finite-dimensional associative division algebras over $\\mathbb{R}$ are $\\mathbb{R}$, $\\mathbb{C}$, and $\\mathbb{H}$ (quaternions). Since $\\mathbb{C}$ is the only commutative option beyond $\\mathbb{R}$, the extension $\\mathbb{R} \\to \\mathbb{C}$ is forced: any commutative algebraic closure of $\\mathbb{R}$ must be $\\mathbb{C}$. The quaternions $\\mathbb{H}$, despite being 4-dimensional, are non-commutative and so cannot serve as a field extension."
+    ],
+    "prerequisites": [
+      "Field extensions, algebraic elements, and extension degree [K:F]",
+      "Algebraic closure: algebraically closed fields that are algebraic over the base",
+      "The Fundamental Theorem of Algebra (every complex polynomial has a root)",
+      "The tower law for field extensions and Steinitz's uniqueness theorem"
+    ]
+  },
+  "sections": [
+    {
+      "id": "extension-degree",
+      "title": "Extension Degree [C:R] = 2",
+      "startLine": 37,
+      "endLine": 49,
+      "summary": "Establishes that C is a 2-dimensional R-vector space using Mathlib's Complex.finrank_real_complex.",
+      "mathContext": "$[\\mathbb{C}:\\mathbb{R}] = \\dim_{\\mathbb{R}} \\mathbb{C} = 2$, with basis $\\{1, i\\}$. This is the fundamental structural fact about the extension."
+    },
+    {
+      "id": "algebraicity",
+      "title": "C is Algebraic over R",
+      "startLine": 51,
+      "endLine": 60,
+      "summary": "Since [C:R] = 2 < infinity, the extension is finite hence algebraic. Every z in C satisfies a polynomial of degree at most 2 over R.",
+      "mathContext": "Finite $\\implies$ integral $\\implies$ algebraic: if $[K:F] < \\infty$ then every $\\alpha \\in K$ satisfies a polynomial over $F$ of degree $\\leq [K:F]$."
+    },
+    {
+      "id": "algebraic-closure",
+      "title": "C is an Algebraic Closure of R",
+      "startLine": 62,
+      "endLine": 75,
+      "summary": "Combines Complex.isAlgClosed with algebraicity to construct the IsAlgClosure instance.",
+      "mathContext": "$\\mathbb{C}$ is an algebraic closure of $\\mathbb{R}$: algebraically closed (Mathlib) + algebraic over $\\mathbb{R}$ (finite extension)."
+    },
+    {
+      "id": "uniqueness",
+      "title": "Uniqueness via Steinitz's Theorem",
+      "startLine": 77,
+      "endLine": 88,
+      "summary": "Any algebraic closure L of R is R-algebra isomorphic to C, via IsAlgClosure.equiv (Steinitz's theorem).",
+      "mathContext": "Steinitz (1910): if $K_1, K_2$ are algebraic closures of $R$, there exists an $R$-algebra isomorphism $K_1 \\cong_R K_2$. Applied with $K_1 = L$, $K_2 = \\mathbb{C}$."
+    },
+    {
+      "id": "reals-not-closed",
+      "title": "R is Not Algebraically Closed",
+      "startLine": 90,
+      "endLine": 111,
+      "summary": "X^2 + 1 has no real root since x^2 + 1 > 0 for all x in R, proving R is not algebraically closed.",
+      "mathContext": "$x^2 + 1 > 0$ for all $x \\in \\mathbb{R}$ (by positivity), so $X^2 + 1 \\in \\mathbb{R}[X]$ is a degree-2 polynomial with no root."
+    },
+    {
+      "id": "characteristic-quadratic",
+      "title": "Characteristic Real Quadratic",
+      "startLine": 113,
+      "endLine": 143,
+      "summary": "Defines charQuad z = X^2 - 2Re(z)X + |z|^2 and proves both z and its conjugate are roots.",
+      "mathContext": "For $z = a + bi$: $z^2 - 2az + (a^2+b^2) = (z-a)^2 + b^2 - b^2 I^2 - 2abi + 2abi = 0$. The conjugate $\\bar{z}$ is also a root since $\\mathrm{Re}(\\bar{z}) = \\mathrm{Re}(z)$ and $|\\bar{z}|^2 = |z|^2$."
+    },
+    {
+      "id": "minimality",
+      "title": "Minimality via Tower Law",
+      "startLine": 145,
+      "endLine": 173,
+      "summary": "The tower law [C:K]*[K:R] = [C:R] = 2 forces any intermediate field K to have [K:R] = 1 or 2.",
+      "mathContext": "For $\\mathbb{R} \\subseteq K \\subseteq \\mathbb{C}$: $[\\mathbb{C}:K] \\cdot [K:\\mathbb{R}] = 2$ with both factors positive $\\implies [K:\\mathbb{R}] \\in \\{1,2\\}$."
+    },
+    {
+      "id": "quadratic-extension",
+      "title": "The Quadratic Extension",
+      "startLine": 175,
+      "endLine": 198,
+      "summary": "Establishes i^2 = -1 and z = Re(z) + Im(z)*i, combining the degree and closure results.",
+      "mathContext": "$\\mathbb{C} = \\mathbb{R}[i]/(i^2+1)$: a single quadratic extension closes $\\mathbb{R}$. Contrast: $\\overline{\\mathbb{Q}}$ requires infinitely many extensions."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms) 207-line formalization proving $\\mathbb{C}$ is the unique algebraic closure of $\\mathbb{R}$ via 9 theorems and 2 definitions. Original contributions include the characteristic quadratic construction, the tower-law minimality argument, and the explicit non-closure of $\\mathbb{R}$. The proof assembles Mathlib's `Complex.isAlgClosed` (FTA), `Algebra.IsAlgebraic.of_finite`, and `IsAlgClosure.equiv` (Steinitz) into a comprehensive picture of the $\\mathbb{R}$-$\\mathbb{C}$ relationship.",
+    "implications": "**Theoretical Significance**: This result explains why $\\mathbb{C}$ is the canonical setting for polynomial algebra: it is the smallest field containing $\\mathbb{R}$ where every polynomial splits. The uniqueness (Steinitz) means there is essentially one way to complete $\\mathbb{R}$ algebraically — any alternative construction (e.g., via Cauchy sequences, via ultraproducts, via splitting fields) produces an isomorphic field.\n\nThe degree $[\\mathbb{C}:\\mathbb{R}] = 2$ being prime forces no intermediate fields to exist, making $\\mathbb{C}$ minimal. Combined with the Galois correspondence, this means the $\\mathbb{R}$-$\\mathbb{C}$ extension has the simplest possible Galois structure: $\\text{Gal}(\\mathbb{C}/\\mathbb{R}) \\cong \\mathbb{Z}/2\\mathbb{Z}$, generated by complex conjugation.\n\n**Connections**: The Artin-Schreier theorem generalizes this picture: a field $F$ is real-closed iff $F(\\sqrt{-1})$ is algebraically closed. The p-adic analogue is different: $\\mathbb{Q}_p$ is not real-closed, and its algebraic closure $\\overline{\\mathbb{Q}_p}$ has infinite degree (moreover, $\\overline{\\mathbb{Q}_p}$ is not even complete — its completion $\\mathbb{C}_p$ is algebraically closed by Krasner's lemma). The contrast highlights how special $\\mathbb{R}$ is among locally compact fields.",
+    "openQuestions": [
+      "Formalize the Artin-Schreier theorem: $F$ is real-closed $\\iff$ $F(\\sqrt{-1})$ is algebraically closed, and show that FTA is the special case $F = \\mathbb{R}$",
+      "Formalize that $\\mathbb{C}$ is the unique algebraically closed field of cardinality $\\mathfrak{c} = 2^{\\aleph_0}$ and characteristic 0 (up to isomorphism) — a model-theoretic uniqueness stronger than Steinitz",
+      "Prove the Galois correspondence for $\\mathbb{C}/\\mathbb{R}$: intermediate fields correspond bijectively to subgroups of $\\text{Gal}(\\mathbb{C}/\\mathbb{R}) \\cong \\mathbb{Z}/2\\mathbb{Z}$, giving an alternative proof of no-intermediate-fields",
+      "Formalize the p-adic contrast: $[\\overline{\\mathbb{Q}_p}:\\mathbb{Q}_p] = \\infty$ and the completion $\\mathbb{C}_p$ is algebraically closed by Krasner's lemma — showing that 'one extension suffices' is special to real-closed fields"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "extends",
+      "description": "The base FTA proof establishes C is algebraically closed; this proof extends it to show C is the unique algebraic closure of R"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "complementary",
+      "description": "FTA+uniqueness guarantees roots exist in the unique C; Abel-Ruffini shows they cannot always be expressed by radicals — existence vs expressibility"
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Quadratic reciprocity concerns the structure of Z/pZ, while this file concerns the unique quadratic extension of R — both explore how quadratic phenomena control algebraic structure"
+    },
+    {
+      "targetId": "inverse-galois",
+      "relationship": "related",
+      "description": "The inverse Galois problem asks which groups are Galois groups over Q; this file shows Gal(C/R) = Z/2Z is the simplest possible non-trivial Galois group"
+    },
+    {
+      "targetId": "solution-of-cubic",
+      "relationship": "complementary",
+      "description": "Cardano's cubic formula works over any algebraically closed field; this proof shows C = R(i) is the unique such extension of R, explaining why complex numbers appear in cubic solutions (casus irreducibilis)"
+    },
+    {
+      "targetId": "general-quartic",
+      "relationship": "complementary",
+      "description": "Ferrari's quartic formula similarly requires C for intermediate computations; the unique algebraic closure C/R is the natural setting for all classical radical formulas"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial",
+      "Complex"
+    ],
+    "namespace": "FTAUniqueAlgebraicClosure",
+    "lineCount": 207,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 2,
+    "mainTheorems": [
+      {
+        "name": "complex_is_alg_closure",
+        "type": "original",
+        "description": "C is an algebraic closure of R (IsAlgClosure instance)",
+        "leanType": "IsAlgClosure ℝ ℂ"
+      },
+      {
+        "name": "unique_algebraic_closure",
+        "type": "bridge",
+        "description": "Any algebraic closure L of R is R-algebra isomorphic to C (Steinitz)",
+        "leanType": "(L : Type*) → [Field L] → [Algebra ℝ L] → [Module.IsTorsionFree ℝ L] → [IsAlgClosure ℝ L] → L ≃ₐ[ℝ] ℂ"
+      },
+      {
+        "name": "no_intermediate_field",
+        "type": "original",
+        "description": "No proper intermediate fields between R and C (tower law argument)",
+        "leanType": "(K : IntermediateField ℝ ℂ) → Module.Finite ℝ K → finrank ℝ K = 1 ∨ finrank ℝ K = 2"
+      },
+      {
+        "name": "reals_not_alg_closed",
+        "type": "original",
+        "description": "R is not algebraically closed (X²+1 has no real root)",
+        "leanType": "¬ IsAlgClosed ℝ"
+      }
+    ],
+    "path": "Proofs/FundamentalTheoremAlgebraOQ04.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "key": "Ga99",
+      "citation": "Gauss, C.F., Demonstratio nova theorematis omnem functionem algebraicam rationalem integram unius variabilis in factores reales primi vel secundi gradus resolvi posse, Helmstedt (1799). First rigorous proof of the Fundamental Theorem of Algebra.",
+      "type": "paper"
+    },
+    {
+      "key": "St10",
+      "citation": "Steinitz, E., Algebraische Theorie der Körper, Journal für die reine und angewandte Mathematik 137 (1910), 167–309. Foundation of modern field theory; proves existence and uniqueness of algebraic closures.",
+      "type": "paper"
+    },
+    {
+      "key": "AS27",
+      "citation": "Artin, E. and Schreier, O., Algebraische Konstruktion reeller Körper, Abhandlungen aus dem Mathematischen Seminar der Universität Hamburg 5 (1927), 85–99. Characterizes real-closed fields.",
+      "type": "paper"
+    },
+    {
+      "key": "La02",
+      "citation": "Lang, S., Algebra, 3rd ed., Springer GTM 211 (2002), Chapters V and VI: algebraic extensions and algebraic closure.",
+      "type": "book"
+    },
+    {
+      "key": "Fi12",
+      "citation": "Fine, B. and Rosenberger, G., The Fundamental Theorem of Algebra, Springer Undergraduate Texts in Mathematics (2012). Historical survey of proofs of FTA.",
+      "type": "book"
+    }
+  ],
+  "sorries": 0
+}

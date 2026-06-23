@@ -1,0 +1,83 @@
+{
+  "slug": "erdos-311",
+  "title": "Erdős #311",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "What is the minimal value of $\\lvert 1-\\sum_{n\\in A}\\frac{1}{n}\\rvert$ as $A$ ranges over all subsets of $\\{1,\\ldots,N\\}$ which contain no $S$ such that $\\sum_{n\\in S}\\frac{1}{n}=1$? Is it\\[e^{-(c+o(1))N}\\]for some constant $c\\in (0,1)$?\n\n\n\nIt is trivially at least $1/[1,\\ldots,N]$.",
+    "plain": "What is the minimal value of $\\lvert 1-\\sum_{n\\in A}\\frac{1}{n}\\rvert$ as $A$ ranges over all subsets of $\\{1,\\ldots,N\\}$ which contain no $S$ such that $\\sum_{n\\in S}\\frac{1}{n}=1$? Is it\\[e^{-(c+o(1))N}\\]for some constant $c\\in (0,1)$?",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-01-12T23:51:53.284Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 3 axioms formally declared (PNT lower bound, Tang upper bound, open conjecture), 3 theorems proved. 0 sorries. Fixed meta.json axiomCount 0→3 consistency issue.",
+    "builtItems": [
+      "Concrete def delta using Finset.min' over deviations (proofs/Proofs/Erdos311Problem.lean)",
+      "Proved theorem delta_pos from the concrete definition",
+      "Helper defs: validCandidates, deviations, empty_mem_validCandidates, deviations_nonempty, deviations_pos",
+      "3 formal axiom declarations in Erdos311Problem.lean (lines 92-114)"
+    ],
+    "insights": [
+      "delta can be defined concretely as Finset.min' over deviations {1 - unitFracSum(A)} for valid A ⊆ {1,...,N}",
+      "delta_pos follows from: all deviations are positive (unitFracSum A < 1) and Finset.min' returns an element of the set",
+      "Remaining 3 axioms (delta_lower_bound, tang_upper_bound, erdos_311_conjecture) are genuinely deep: PNT-based, research results, and the open conjecture",
+      "3 remaining axioms are all deep/open: no further elimination possible",
+      "Fixed inconsistency: meta.json showed axiomCount:0 with status:axiomatized; now correctly shows 3 axioms",
+      "delta_lower_bound_pnt: ∀ε>0, ∃N₀, ∀N≥N₀, exp(-(1+ε)N) ≤ delta N",
+      "tang_upper_bound: ∃c>0, ∀N≥3, delta N ≤ exp(-cN/(log N · log log N)³)",
+      "erdos_311_conjecture (Tendsto form): ∃c∈(0,1), log(delta N)/N → -c at Filter.atTop"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #311 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the minimal value of $\\lvert 1-\\sum_{n\\in A}\\frac{1}{n}\\rvert$ as $A$ ranges over all subsets of $\\{1,\\ldots,N\\}$ which contain no $S$ such that $\\sum_{n\\in S}\\frac{1}{n}=1$? Is it\\[e^{-(c+o(1))N}\\]for some constant $c\\in (0,1)$?\n\n\n\nIt is trivially at least $1/[1,\\ldots,N]$.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #310\n- Problem #312\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-3",
+    "erdos-31",
+    "erdos-311"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T23:51:53.284Z",
+  "lastUpdate": "2026-03-13T07:52:17.045Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos311Problem.lean",
+      "filename": "Erdos311Problem.lean",
+      "lineCount": 104,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos311Problem.lean"
+    }
+  ]
+}

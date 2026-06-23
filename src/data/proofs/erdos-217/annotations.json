@@ -1,0 +1,241 @@
+[
+  {
+    "id": "ann-217-imports",
+    "proofId": "erdos-217",
+    "range": {
+      "startLine": 1,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Imports and Dependencies",
+    "content": "The formalization imports Mathlib's inner product space (for Euclidean distance structure), finite set operations (for counting distance multiplicities), and real number basics. These provide the foundational types for point configurations in $\\mathbb{R}^2$ and cardinality arguments over pairwise distances.",
+    "mathContext": "The formalization works in $\\mathbb{R}^2$ using `Fin n \\to \\mathbb{R} \\times \\mathbb{R}$` rather than `EuclideanSpace \\mathbb{R} (Fin 2)`, keeping the coordinate representation explicit for the collinearity cross-product test.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Euclidean plane",
+      "inner product spaces",
+      "finite sets",
+      "real analysis"
+    ],
+    "prerequisites": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ]
+  },
+  {
+    "id": "ann-217-pointconfig",
+    "proofId": "erdos-217",
+    "range": {
+      "startLine": 32,
+      "endLine": 34
+    },
+    "type": "definition",
+    "title": "Point Configuration",
+    "content": "A point configuration of $n$ points in the plane is modeled as a function from $\\mathrm{Fin}\\, n$ to $\\mathbb{R} \\times \\mathbb{R}$. Using `abbrev` (rather than `def`) ensures this is transparent to the type checker, allowing direct access to coordinates $(P_i.1, P_i.2)$ without unfolding.",
+    "mathContext": "A **point configuration** is $P : \\{0, 1, \\ldots, n{-}1\\} \\to \\mathbb{R}^2$, representing $n$ labeled points $(P_0, P_1, \\ldots, P_{n-1})$ in the Euclidean plane.",
+    "significance": "key",
+    "relatedConcepts": [
+      "point set",
+      "Euclidean plane",
+      "configuration space",
+      "labeled points"
+    ],
+    "prerequisites": [
+      "coordinate geometry",
+      "finite types"
+    ]
+  },
+  {
+    "id": "ann-217-sqdist",
+    "proofId": "erdos-217",
+    "range": {
+      "startLine": 35,
+      "endLine": 38
+    },
+    "type": "definition",
+    "title": "Squared Distance",
+    "content": "The squared Euclidean distance avoids square roots, keeping everything in $\\mathbb{R}$ without needing positivity proofs. This is standard in combinatorial geometry formalizations: since $d(p,q)^2 = (p_1 - q_1)^2 + (p_2 - q_2)^2$ is a monotone function of $d(p,q)$ for nonneg values, comparing squared distances is equivalent to comparing distances.",
+    "mathContext": "$\\mathrm{sqDist}(p, q) = (p_1 - q_1)^2 + (p_2 - q_2)^2 = \\|p - q\\|^2$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Euclidean distance",
+      "metric space",
+      "squared norm",
+      "distance geometry"
+    ],
+    "prerequisites": [
+      "real arithmetic",
+      "Euclidean metric"
+    ]
+  },
+  {
+    "id": "ann-217-collinear",
+    "proofId": "erdos-217",
+    "range": {
+      "startLine": 39,
+      "endLine": 44
+    },
+    "type": "definition",
+    "title": "No Three Collinear",
+    "content": "The general position condition that no three points are collinear uses the cross-product criterion: points $P_i, P_j, P_k$ are collinear if and only if $(P_j - P_i) \\times (P_k - P_i) = 0$. In coordinates, this is the vanishing of the $2 \\times 2$ determinant $\\det \\begin{pmatrix} P_j^x - P_i^x & P_k^x - P_i^x \\\\ P_j^y - P_i^y & P_k^y - P_i^y \\end{pmatrix}$. The formalization requires this for all distinct triples.",
+    "mathContext": "$\\forall\\, i \\ne j \\ne k,\\; (P_j^x - P_i^x)(P_k^y - P_i^y) \\ne (P_k^x - P_i^x)(P_j^y - P_i^y)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "collinearity",
+      "cross product",
+      "general position",
+      "affine independence",
+      "determinant"
+    ],
+    "prerequisites": [
+      "analytic geometry",
+      "linear algebra",
+      "cross product in R^2"
+    ]
+  },
+  {
+    "id": "ann-217-triangular",
+    "proofId": "erdos-217",
+    "range": {
+      "startLine": 45,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "Triangular Multiplicity Property",
+    "content": "The central definition: a point configuration has **triangular multiplicity** if its $\\binom{n}{2}$ pairwise distances can be partitioned into $n{-}1$ distinct values where the $i$-th smallest appears exactly $i$ times. The name 'triangular' comes from the triangular number identity $1 + 2 + \\cdots + (n{-}1) = \\binom{n}{2}$, which ensures the multiplicities perfectly exhaust all pairs. The formalization uses `Finset.filter` to count pairs at each squared distance.",
+    "mathContext": "$\\exists\\, d_1, \\ldots, d_{n-1} \\text{ distinct}: \\; |\\{\\{i,j\\} : \\mathrm{sqDist}(P_i, P_j) = d_k^2\\}| = k \\quad \\text{for } k = 1, \\ldots, n{-}1$\n\nThe total count is $\\sum_{k=1}^{n-1} k = \\frac{n(n-1)}{2} = \\binom{n}{2}$, matching the number of unordered pairs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "distance multiplicity",
+      "triangular numbers",
+      "combinatorial identity",
+      "distance spectrum",
+      "partition of pairs"
+    ],
+    "prerequisites": [
+      "combinatorics",
+      "triangular numbers",
+      "distance geometry",
+      "finite cardinality"
+    ]
+  },
+  {
+    "id": "ann-217-n4",
+    "proofId": "erdos-217",
+    "range": {
+      "startLine": 59,
+      "endLine": 62
+    },
+    "type": "concept",
+    "title": "Construction for n = 4",
+    "content": "The base case: an isosceles triangle with its center (incenter or centroid, depending on the specific triangle) yields 4 points with 3 distinct distances having multiplicities 1, 2, 3. Concretely, one can take an equilateral triangle with side $s$ and place its center at distance $s/\\sqrt{3}$ from each vertex, giving distances $s$ (3 times), $s/\\sqrt{3}$ (3 times) — but this has only 2 distinct distances. A careful choice of isosceles triangle is needed to achieve the (1, 2, 3) pattern.",
+    "mathContext": "For $n = 4$: $\\binom{4}{2} = 6$ pairs, needing 3 distinct distances with multiplicities $1, 2, 3$. An isosceles triangle with vertices at appropriate positions plus its center point achieves this.",
+    "significance": "key",
+    "relatedConcepts": [
+      "isosceles triangle",
+      "incenter",
+      "centroid",
+      "triangle geometry",
+      "small cases"
+    ],
+    "prerequisites": [
+      "elementary geometry",
+      "distance computation"
+    ]
+  },
+  {
+    "id": "ann-217-pomerance",
+    "proofId": "erdos-217",
+    "range": {
+      "startLine": 63,
+      "endLine": 66
+    },
+    "type": "concept",
+    "title": "Pomerance's Construction for n = 5",
+    "content": "Carl Pomerance (b. 1944, Dartmouth) found a construction for $n = 5$, which surprised Erdős who had initially believed $n \\geq 5$ was impossible. For 5 points one needs 4 distinct distances with multiplicities $1, 2, 3, 4$ totaling $\\binom{5}{2} = 10$ pairs. Pomerance's construction demonstrated that the arithmetic constraint alone does not force impossibility at small $n$.",
+    "mathContext": "For $n = 5$: $\\binom{5}{2} = 10$ pairs, requiring 4 distinct distances with multiplicities $1, 2, 3, 4$. Pomerance exhibited an explicit 5-point configuration in general position achieving this pattern.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Carl Pomerance",
+      "explicit construction",
+      "counterexample to conjecture",
+      "distance realization"
+    ],
+    "prerequisites": [
+      "point configurations",
+      "general position",
+      "distance counting"
+    ]
+  },
+  {
+    "id": "ann-217-palasti",
+    "proofId": "erdos-217",
+    "range": {
+      "startLine": 67,
+      "endLine": 75
+    },
+    "type": "concept",
+    "title": "Palásti's Extension to n <= 8",
+    "content": "Ilona Palásti (1924-1991, Alfréd Rényi Institute, Budapest) extended the constructions to all $n \\leq 8$, showing that configurations with the staircase multiplicity pattern exist for 4, 5, 6, 7, and 8 points. The formalization parameterizes over $n$ with the hypothesis $4 \\leq n \\leq 8$. Palásti was known for work in geometric probability and combinatorial geometry, and this result significantly pushed the boundary of what was known.",
+    "mathContext": "For each $n \\in \\{4, 5, 6, 7, 8\\}$: $\\exists\\, P : \\mathrm{PointConfig}\\, n$ in general position with triangular multiplicity. For $n = 8$: $\\binom{8}{2} = 28$ pairs, 7 distinct distances with multiplicities $1, 2, \\ldots, 7$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ilona Palásti",
+      "Alfréd Rényi Institute",
+      "geometric constructions",
+      "exhaustive case analysis"
+    ],
+    "prerequisites": [
+      "point configurations",
+      "general position constraints",
+      "distance counting"
+    ]
+  },
+  {
+    "id": "ann-217-conjecture",
+    "proofId": "erdos-217",
+    "range": {
+      "startLine": 76,
+      "endLine": 88
+    },
+    "type": "concept",
+    "title": "Erdős's Conjecture: Impossibility for Large n",
+    "content": "Erdős conjectured (c. 1983) that there exists a threshold $N_0$ beyond which no $n$-point configuration in general position can have the triangular multiplicity property. The formalization states this as an axiom (since the conjecture is open). The intuition is that as $n$ grows, the $\\binom{n}{2}$ pairwise distance constraints become so overdetermined that no geometric realization can satisfy the precise staircase pattern. This connects to the Erdős distinct distances problem (#98): Guth-Katz (2015) showed $n$ points determine $\\Omega(n / \\log n)$ distinct distances, while triangular multiplicity requires exactly $n - 1$.",
+    "mathContext": "$\\exists\\, N_0 \\in \\mathbb{N},\\; \\forall\\, n \\geq N_0: \\;\\nexists\\, P : \\mathrm{PointConfig}\\, n$ with $\\mathrm{NoThreeCollinear}(n, P) \\wedge \\mathrm{HasTriangularMultiplicity}(n, P)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős conjecture",
+      "overdetermined systems",
+      "distinct distances problem",
+      "Guth-Katz theorem",
+      "algebraic geometry"
+    ],
+    "prerequisites": [
+      "combinatorial geometry",
+      "distinct distances",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-217-main",
+    "proofId": "erdos-217",
+    "range": {
+      "startLine": 89,
+      "endLine": 91
+    },
+    "type": "concept",
+    "title": "Main Theorem: Existence for n = 4 and n = 5",
+    "content": "The main theorem combines the two explicit axioms for $n = 4$ and $n = 5$ into a single conjunction, proved by the anonymous constructor $\\langle \\cdot, \\cdot \\rangle$. This serves as the entry point for the formalization, demonstrating that the Erdős-217 property is satisfiable. The proof is trivial given the axioms — the mathematical content lies in the definitions and the conjecture.",
+    "mathContext": "$(\\exists\\, P_4 : \\mathrm{PointConfig}\\, 4,\\; \\mathrm{GP}(P_4) \\wedge \\mathrm{TM}(P_4)) \\;\\wedge\\; (\\exists\\, P_5 : \\mathrm{PointConfig}\\, 5,\\; \\mathrm{GP}(P_5) \\wedge \\mathrm{TM}(P_5))$\n\nProved by: $\\langle \\texttt{example\\_n\\_eq\\_4}, \\texttt{pomerance\\_n\\_eq\\_5} \\rangle$",
+    "significance": "key",
+    "relatedConcepts": [
+      "anonymous constructor",
+      "conjunction introduction",
+      "proof by axiom"
+    ],
+    "prerequisites": [
+      "propositional logic",
+      "Lean 4 anonymous constructors"
+    ]
+  }
+]

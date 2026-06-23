@@ -1,0 +1,262 @@
+[
+  {
+    "id": "erdos-301-imports",
+    "proofId": "erdos-301",
+    "type": "concept",
+    "range": {
+      "startLine": 15,
+      "endLine": 20
+    },
+    "title": "Imports and Setup",
+    "content": "Imports **Finset** (finite set operations, powerset, filter, sup), **Rat** (rational arithmetic for unit fraction sums), **Filter** (for asymptotic o(1) formulation), and general **Tactic** support. Opens the Finset namespace for concise notation.",
+    "mathContext": "The formalization works over the rationals rather than the reals to express unit fraction equations exactly. This avoids floating-point issues and makes the decomposition condition **decidable in principle** for finite sets. The Filter import supports the asymptotic formulation of the conjecture.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset",
+      "rational arithmetic",
+      "Filter",
+      "namespace"
+    ],
+    "prerequisites": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Rat.Defs"
+    ]
+  },
+  {
+    "id": "erdos-301-decomp",
+    "proofId": "erdos-301",
+    "type": "definition",
+    "range": {
+      "startLine": 24,
+      "endLine": 28
+    },
+    "title": "Egyptian Fraction Decomposition",
+    "content": "**HasEgyptianDecomp A a** holds when there exists a nonempty subset **B** of A with a not in B such that the sum of reciprocals **sum(1/b for b in B) = 1/a**. This captures the forbidden pattern: an element whose reciprocal decomposes into reciprocals of other set members.",
+    "mathContext": "The decomposition requires **distinct** elements (B is a Finset subset, and a is excluded from B). This is crucial: without distinctness the problem trivializes. The condition is phrased over the rationals to ensure exact equality. The existential quantification over B makes this a **Sigma-1** property for each fixed a, decidable by exhaustive search over subsets.",
+    "significance": "key",
+    "relatedConcepts": [
+      "unit fractions",
+      "subset sums",
+      "rational arithmetic",
+      "Egyptian fractions"
+    ],
+    "prerequisites": [
+      "Finset.sum",
+      "Rat",
+      "Finset.Nonempty"
+    ]
+  },
+  {
+    "id": "erdos-301-free",
+    "proofId": "erdos-301",
+    "type": "definition",
+    "range": {
+      "startLine": 30,
+      "endLine": 33
+    },
+    "title": "Egyptian Fraction Free Sets",
+    "content": "**EgyptFractionFree A** means **no** element of A has an Egyptian fraction decomposition using other elements of A. This is the avoidance property that extremal sets must satisfy.",
+    "mathContext": "This is a **hereditary property**: any subset of an EgyptFractionFree set is also EgyptFractionFree (proved as `egyptFractionFree_subset` below). Hereditary properties are well-studied in extremal combinatorics. The family of EgyptFractionFree subsets of {1,...,N} forms an **abstract simplicial complex**, and the extremal question asks for the maximum face dimension.",
+    "significance": "key",
+    "relatedConcepts": [
+      "hereditary property",
+      "extremal combinatorics",
+      "set avoidance",
+      "simplicial complex"
+    ],
+    "prerequisites": [
+      "HasEgyptianDecomp",
+      "Finset.mem"
+    ]
+  },
+  {
+    "id": "erdos-301-maxfree",
+    "proofId": "erdos-301",
+    "type": "definition",
+    "range": {
+      "startLine": 35,
+      "endLine": 37
+    },
+    "title": "Extremal Function f(N)",
+    "content": "**maxEgyptFree(N)** is the maximum cardinality of an EgyptFractionFree subset of {1, ..., N}. Defined as the supremum of cardinalities over all qualifying subsets of the powerset of Icc 1 N, filtered by EgyptFractionFree.",
+    "mathContext": "The function is declared **noncomputable** because it involves taking a supremum over an exponentially large powerset (2^N subsets). In practice, computing f(N) exactly is infeasible for large N. The definition uses `Finset.sup` which returns the maximum over a finite set, well-defined since the powerset of Icc 1 N is finite. The problem asks only for the **asymptotic density** f(N)/N as N tends to infinity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal function",
+      "powerset enumeration",
+      "asymptotic density",
+      "noncomputable"
+    ],
+    "prerequisites": [
+      "EgyptFractionFree",
+      "Finset.Icc",
+      "Finset.powerset",
+      "Finset.sup"
+    ]
+  },
+  {
+    "id": "erdos-301-conjecture",
+    "proofId": "erdos-301",
+    "type": "concept",
+    "range": {
+      "startLine": 41,
+      "endLine": 45
+    },
+    "title": "Main Conjecture: f(N) = (1/2 + o(1)) * N",
+    "content": "**ErdosProblem301** states that for every epsilon > 0, for all sufficiently large N, **(1/2 - epsilon) * N <= f(N) <= (1/2 + epsilon) * N**. This means the extremal density is exactly 1/2, matching the trivial half-interval construction.",
+    "mathContext": "The conjecture is formalized as a **two-sided epsilon-delta** statement: both lower and upper bounds must converge to N/2. The lower bound is established (the half-interval works); the difficulty lies entirely in proving the upper bound. Closing the gap would require showing that any set with density exceeding 1/2 + o(1) necessarily contains an Egyptian fraction decomposition. This connects to **inverse theorems** in additive combinatorics: dense sets must contain structured patterns.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic density",
+      "o-notation",
+      "epsilon-delta",
+      "extremal density",
+      "inverse theorems"
+    ],
+    "prerequisites": [
+      "maxEgyptFree",
+      "Real",
+      "epsilon-delta formulation"
+    ]
+  },
+  {
+    "id": "erdos-301-half-interval",
+    "proofId": "erdos-301",
+    "type": "concept",
+    "range": {
+      "startLine": 50,
+      "endLine": 51
+    },
+    "title": "Half-Interval is EgyptFractionFree",
+    "content": "**halfInterval_egyptFree**: the interval **(N/2, N] intersected with the naturals** is EgyptFractionFree. Axiomatized since the combinatorial argument involves bounding harmonic sums over restricted ranges.",
+    "mathContext": "For any a in (N/2, N], we have 1/a < 2/N. Any sum of k >= 2 distinct reciprocals from (N/2, N] \\ {a} satisfies sum >= 2/(N-1) > 2/N > 1/a when the summands are near N, but the **exact equality** 1/a = sum(1/b_i) is impossible because the partial sums of reciprocals in (N/2, N] are too coarse to hit 1/a precisely. This is the **extremal construction** that motivates the conjecture.",
+    "significance": "key",
+    "relatedConcepts": [
+      "harmonic sums",
+      "interval construction",
+      "extremal construction"
+    ],
+    "prerequisites": [
+      "EgyptFractionFree",
+      "Finset.Icc",
+      "Finset.filter"
+    ]
+  },
+  {
+    "id": "erdos-301-lower",
+    "proofId": "erdos-301",
+    "type": "concept",
+    "range": {
+      "startLine": 54,
+      "endLine": 55
+    },
+    "title": "Lower Bound: f(N) >= N/2",
+    "content": "**maxEgyptFree_lower**: combines the half-interval construction with a cardinality count to give **f(N) >= N/2**. Since (N/2, N] contains floor(N/2) elements, and this set is EgyptFractionFree, the extremal function is at least N/2.",
+    "mathContext": "This lower bound is **trivial** once halfInterval_egyptFree is established. The cardinality of {n in Icc 1 N | N/2 < n} is exactly floor(N/2), giving the bound. The interesting question is whether this trivial construction is **optimal**, i.e., whether f(N)/N converges to 1/2 rather than some larger constant.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lower bound",
+      "cardinality",
+      "floor function",
+      "optimal construction"
+    ],
+    "prerequisites": [
+      "halfInterval_egyptFree",
+      "maxEgyptFree",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "erdos-301-vandoorn",
+    "proofId": "erdos-301",
+    "type": "concept",
+    "range": {
+      "startLine": 60,
+      "endLine": 61
+    },
+    "title": "Van Doorn Upper Bound: f(N) <= (25/28 + o(1)) * N",
+    "content": "**vanDoorn_upper**: the best known upper bound, showing **f(N) <= (25/28 + o(1)) * N**. The proof uses divisibility patterns: among any 28 consecutive integers, at least 3 participate in forced Egyptian fraction decompositions via relations like **1/(2a) = 1/(3a) + 1/(6a)**.",
+    "mathContext": "The ratio 25/28 arises because in each block of 28 integers, the divisibility structure forces at least 3 elements into Egyptian fraction configurations. The identity 1/(2a) = 1/(3a) + 1/(6a) and its relatives (involving multiples like {2a, 3a, 4a, 6a, 12a}) create unavoidable patterns. The formalization uses an additive +1 constant instead of o(1) for simplicity. Closing the gap between 1/2 and 25/28 is the **core open challenge** of this problem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "density upper bound",
+      "divisibility patterns",
+      "covering arguments",
+      "Van Doorn"
+    ],
+    "prerequisites": [
+      "maxEgyptFree",
+      "Real",
+      "Nat.cast"
+    ]
+  },
+  {
+    "id": "erdos-301-empty",
+    "proofId": "erdos-301",
+    "type": "concept",
+    "range": {
+      "startLine": 66,
+      "endLine": 67
+    },
+    "title": "Empty Set is EgyptFractionFree (Proved)",
+    "content": "**egyptFractionFree_empty**: the empty set trivially satisfies EgyptFractionFree since there are no elements to decompose. Proved directly by deriving a contradiction from membership in the empty set (`Finset.not_mem_empty`).",
+    "mathContext": "This is a **base case** for the hereditary property and a standard verification for any set predicate. The proof is by **vacuous truth**: the universal quantifier over elements of the empty set is trivially satisfied. Together with the subset theorem, this establishes the bottom of the simplicial complex structure.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "vacuous truth",
+      "base case",
+      "Finset.not_mem_empty"
+    ],
+    "prerequisites": [
+      "EgyptFractionFree",
+      "Finset.not_mem_empty"
+    ]
+  },
+  {
+    "id": "erdos-301-singleton",
+    "proofId": "erdos-301",
+    "type": "concept",
+    "range": {
+      "startLine": 70,
+      "endLine": 70
+    },
+    "title": "Singleton is EgyptFractionFree",
+    "content": "**egyptFractionFree_singleton**: a singleton set {n} is EgyptFractionFree because there are no other elements to form a decomposition subset B. Axiomatized, though it follows from the subset property and the fact that any nonempty B subset of {n} minus {n} is empty.",
+    "mathContext": "For a singleton {n}, any subset B with n not in B must be a subset of {n} \\ {n} = empty, contradicting the requirement that B be nonempty. This could be proved from `egyptFractionFree_subset` applied to the inclusion {n} into a larger EgyptFractionFree set, but is stated as a standalone fact for clarity.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "singleton",
+      "vacuous argument",
+      "base case"
+    ],
+    "prerequisites": [
+      "EgyptFractionFree",
+      "HasEgyptianDecomp",
+      "Finset.Nonempty"
+    ]
+  },
+  {
+    "id": "erdos-301-hereditary",
+    "proofId": "erdos-301",
+    "type": "concept",
+    "range": {
+      "startLine": 73,
+      "endLine": 76
+    },
+    "title": "Hereditary Property (Proved)",
+    "content": "**egyptFractionFree_subset**: if A is EgyptFractionFree and **B is a subset of A**, then B is also EgyptFractionFree. Proved by showing any decomposition in B would lift to a decomposition in A via subset transitivity, contradicting A's freedom.",
+    "mathContext": "The proof uses the **monotonicity of subset inclusion**: if C is a subset of B and B is a subset of A, then C is a subset of A. So any decomposition witness (C, hC, ...) for an element of B also witnesses a decomposition in A. This makes the family of EgyptFractionFree sets a **downward-closed** (or **monotone**) family, equivalent to an **abstract simplicial complex**. Such structures admit Kruskal-Katona type bounds on face numbers.",
+    "significance": "key",
+    "relatedConcepts": [
+      "hereditary property",
+      "simplicial complex",
+      "monotone family",
+      "Kruskal-Katona theorem"
+    ],
+    "prerequisites": [
+      "EgyptFractionFree",
+      "HasEgyptianDecomp",
+      "Finset.Subset.trans"
+    ]
+  }
+]

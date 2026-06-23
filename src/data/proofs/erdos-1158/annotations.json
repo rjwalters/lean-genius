@@ -1,0 +1,331 @@
+[
+  {
+    "id": "uniform-hypergraph",
+    "proofId": "erdos-1158",
+    "range": {
+      "startLine": 43,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "Uniform Hypergraph Structure",
+    "content": "A $t$-uniform hypergraph on vertex set $V$ is a `Finset` of `Finset V`, where each hyperedge has exactly $t$ elements. This is the natural generalization of a graph ($2$-uniform hypergraph) to higher uniformities. The `uniform` field enforces the cardinality constraint on every edge.",
+    "mathContext": "A $t$-uniform hypergraph $H = (V, E)$ satisfies $|e| = t$ for every $e \\in E$. For $t = 2$ this recovers the definition of a simple graph. The edge count $|E|$ is the primary quantity studied in Turán-type problems.",
+    "significance": "key",
+    "relatedConcepts": [
+      "uniform hypergraph",
+      "Finset",
+      "simple graph",
+      "Turán-type problem"
+    ],
+    "prerequisites": [
+      "Fintype",
+      "Finset.card",
+      "graph theory basics"
+    ]
+  },
+  {
+    "id": "edge-count",
+    "proofId": "erdos-1158",
+    "range": {
+      "startLine": 51,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "Hyperedge Count",
+    "content": "The `edgeCount` function returns the cardinality of the edge set. This is the quantity maximized in the Turán problem: we seek the largest $|E|$ such that $H$ avoids a forbidden sub-hypergraph.",
+    "mathContext": "$|E(H)| = \\#\\{e \\in \\binom{V}{t} : e \\in H\\}$. The hypergraph Turán number $\\mathrm{ex}_t(n, F)$ is $\\max\\{|E(H)| : H \\text{ is } F\\text{-free on } n \\text{ vertices}\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.card",
+      "extremal number",
+      "forbidden subgraph"
+    ],
+    "prerequisites": [
+      "Finset cardinality"
+    ]
+  },
+  {
+    "id": "contains-ktr",
+    "proofId": "erdos-1158",
+    "range": {
+      "startLine": 65,
+      "endLine": 81
+    },
+    "type": "definition",
+    "title": "K_t(r) Containment via Transversals",
+    "content": "$K_t(r)$ containment is defined via $t$ pairwise-disjoint vertex parts $A_1, \\ldots, A_t$ of size $r$ such that every transversal (choosing one vertex from each $A_i$) forms a hyperedge. For $t = 2$ this reduces to the complete bipartite subgraph $K_{r,r}$.",
+    "mathContext": "$H \\supseteq K_t(r)$ iff $\\exists A_1, \\ldots, A_t \\subseteq V$ with $|A_i| = r$, $A_i \\cap A_j = \\emptyset$ for $i \\neq j$, and $\\{f(1), \\ldots, f(t)\\} \\in E(H)$ for every choice function $f$ with $f(i) \\in A_i$. The number of transversal hyperedges is $r^t$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complete multipartite hypergraph",
+      "transversal",
+      "Koenig's theorem",
+      "bipartite graph K_{r,r}"
+    ],
+    "prerequisites": [
+      "Fin",
+      "Finset.image",
+      "disjointness of Finsets",
+      "choice functions"
+    ]
+  },
+  {
+    "id": "ktr-free",
+    "proofId": "erdos-1158",
+    "range": {
+      "startLine": 83,
+      "endLine": 87
+    },
+    "type": "definition",
+    "title": "K_t(r)-Free Property",
+    "content": "A hypergraph is $K_t(r)$-free if it does not contain $K_t(r)$ as a sub-hypergraph. This is the central forbidden-substructure condition for the Turán problem. All extremal constructions must satisfy this property.",
+    "mathContext": "$H$ is $K_t(r)$-free iff $\\neg(H \\supseteq K_t(r))$. The extremal number $\\mathrm{ex}_t(n, K_t(r))$ is the maximum edge count over all $K_t(r)$-free $t$-uniform hypergraphs on $n$ vertices.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "forbidden subgraph",
+      "extremal graph theory",
+      "Ramsey theory"
+    ],
+    "prerequisites": [
+      "containsKtr definition",
+      "negation in Prop"
+    ]
+  },
+  {
+    "id": "ex-hypergraph",
+    "proofId": "erdos-1158",
+    "range": {
+      "startLine": 96,
+      "endLine": 103
+    },
+    "type": "definition",
+    "title": "Hypergraph Turán Number ex_t(n, K_t(r))",
+    "content": "The hypergraph Turán number $\\mathrm{ex}_t(n, K_t(r))$ is defined as the supremum over all edge counts of $K_t(r)$-free $t$-uniform hypergraphs on $n$ vertices. For $t = 2$, this is the classical Zarankiewicz number $z(n; r)$. The use of `sSup` makes this noncomputable but mathematically precise.",
+    "mathContext": "$\\mathrm{ex}_t(n, K_t(r)) = \\max\\{|E(H)| : H \\text{ is a } K_t(r)\\text{-free } t\\text{-uniform hypergraph on } n \\text{ vertices}\\}$. Existence of the maximum follows from finiteness of $\\binom{[n]}{t}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Zarankiewicz number",
+      "Turán number",
+      "extremal number",
+      "sSup"
+    ],
+    "prerequisites": [
+      "UniformHypergraph",
+      "isKtrFree",
+      "sSup over ℕ",
+      "Fintype.card"
+    ]
+  },
+  {
+    "id": "hypergraph-exponent",
+    "proofId": "erdos-1158",
+    "range": {
+      "startLine": 115,
+      "endLine": 123
+    },
+    "type": "insight",
+    "title": "The Critical Exponent t − r^{1−t}",
+    "content": "The conjectured exponent $t - r^{1-t}$ is the heart of the problem. It unifies all cases: for $t = 2$ it yields the Kővári–Sós–Turán exponent $2 - 1/r$, and for $t = 3, r = 2$ it gives $11/4$. The gap between this exponent and the known lower bound exponent $t - Cr^{1-t}$ (with $C > 1$) is the essence of the conjecture.",
+    "mathContext": "$\\alpha(t, r) = t - r^{1-t}$. For $t = 2$: $\\alpha(2, r) = 2 - r^{-1} = 2 - 1/r$. For $t = 3, r = 2$: $\\alpha(3, 2) = 3 - 2^{-2} = 11/4$. The conjecture asserts $\\mathrm{ex}_t(n, K_t(r)) \\geq n^{\\alpha(t,r) - o(1)}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Kővári–Sós–Turán exponent",
+      "real exponentiation",
+      "asymptotic notation"
+    ],
+    "prerequisites": [
+      "Real.rpow",
+      "exponent arithmetic"
+    ]
+  },
+  {
+    "id": "erdos-upper",
+    "proofId": "erdos-1158",
+    "range": {
+      "startLine": 125,
+      "endLine": 134
+    },
+    "type": "definition",
+    "title": "Erdős Upper Bound (1964)",
+    "content": "Erdős (1964) proved $\\mathrm{ex}_t(n, K_t(r)) \\leq C \\cdot n^{t - r^{1-t}}$ by a double-counting argument generalizing the Kővári–Sós–Turán method. The key idea: count $t$-tuples of candidate parts that could witness a copy of $K_t(r)$, then bound by the total edge count. This is axiomatized because the proof uses techniques not yet in Mathlib.",
+    "mathContext": "$\\mathrm{ex}_t(n, K_t(r)) \\leq C_{t,r} \\cdot n^{t - r^{1-t}}$ where $C_{t,r}$ depends only on $t$ and $r$. The proof proceeds by bounding the number of $r$-element subsets with large co-degree.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Kővári–Sós–Turán theorem",
+      "double counting",
+      "co-degree",
+      "erdos-714"
+    ],
+    "prerequisites": [
+      "hypergraphExponent",
+      "axiom declaration in Lean"
+    ]
+  },
+  {
+    "id": "erdos-lower",
+    "proofId": "erdos-1158",
+    "range": {
+      "startLine": 146,
+      "endLine": 155
+    },
+    "type": "concept",
+    "title": "Erdős Lower Bound via Probabilistic Method",
+    "content": "Erdős (1964) established a weaker lower bound $\\mathrm{ex}_t(n, K_t(r)) \\geq c \\cdot n^{t - C r^{1-t}}$ with $C > 1$ using the probabilistic method. A random $t$-uniform hypergraph with carefully chosen edge probability $p$, after deleting all copies of $K_t(r)$, achieves this bound. The constant $C > 1$ (rather than $C = 1$) is the fundamental gap the conjecture seeks to close.",
+    "mathContext": "$\\mathrm{ex}_t(n, K_t(r)) \\geq c \\cdot n^{t - C r^{1-t}}$ for constants $c, C > 0$ with $C > 1$. The probabilistic argument: take $H \\sim H_t(n, p)$, then $\\mathbb{E}[|E(H)|] = \\binom{n}{t} p$ and $\\mathbb{E}[\\#K_t(r)] \\leq n^{tr} p^{r^t}$. Choosing $p$ to balance these gives the weaker exponent.",
+    "significance": "key",
+    "relatedConcepts": [
+      "probabilistic method",
+      "random hypergraph",
+      "deletion method",
+      "first moment method"
+    ],
+    "prerequisites": [
+      "probability on random hypergraphs",
+      "expected value",
+      "deletion method"
+    ]
+  },
+  {
+    "id": "conjecture-statement",
+    "proofId": "erdos-1158",
+    "range": {
+      "startLine": 168,
+      "endLine": 180
+    },
+    "type": "concept",
+    "title": "Erdős Problem #1158: The ε-Formulation",
+    "content": "The conjecture is formalized using the standard $\\varepsilon$-formulation of $o(1)$ bounds: for every $\\varepsilon > 0$, there exists $c > 0$ and $N_0$ such that $\\mathrm{ex}_t(n, K_t(r)) \\geq c \\cdot n^{t - r^{1-t} - \\varepsilon}$ for all $n \\geq N_0$. This is the precise statement that the upper bound exponent $t - r^{1-t}$ is tight up to sub-polynomial factors.",
+    "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists c > 0,\\; \\exists N_0 \\in \\mathbb{N},\\; \\forall n \\geq N_0: \\quad \\mathrm{ex}_t(n, K_t(r)) \\geq c \\cdot n^{t - r^{1-t} - \\varepsilon}$. Equivalently, $\\mathrm{ex}_t(n, K_t(r)) = n^{t - r^{1-t} - o(1)}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic lower bound",
+      "sub-polynomial factor",
+      "o(1) notation",
+      "extremal number"
+    ],
+    "prerequisites": [
+      "hypergraphExponent",
+      "exHypergraph",
+      "ε-δ formulation"
+    ]
+  },
+  {
+    "id": "graph-reduction",
+    "proofId": "erdos-1158",
+    "range": {
+      "startLine": 192,
+      "endLine": 215
+    },
+    "type": "concept",
+    "title": "Reduction to the Graph Case (t = 2)",
+    "content": "When $t = 2$, a $2$-uniform hypergraph is simply a graph, $K_2(r) = K_{r,r}$, and the problem reduces to the Zarankiewicz problem (Erdős #714). The theorem `exponent_t2` proves $\\alpha(2, r) = 2 - 1/r$ using `Real.rpow_neg_one`. The special case theorems `exponent_t2_r2` and `exponent_t2_r3` compute the exact numerical values $3/2$ and $5/3$.",
+    "mathContext": "For $t = 2$: $\\alpha(2, r) = 2 - r^{1-2} = 2 - r^{-1} = 2 - 1/r$. Special cases: $\\alpha(2,2) = 3/2$ and $\\alpha(2,3) = 5/3$. The Zarankiewicz number $z(n; r) = \\mathrm{ex}_2(n, K_{2,2}(r)) = \\mathrm{ex}(n; K_{r,r})$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Zarankiewicz problem",
+      "erdos-714",
+      "norm_num tactic",
+      "real power simplification"
+    ],
+    "prerequisites": [
+      "hypergraphExponent",
+      "Real.rpow",
+      "ring_nf",
+      "norm_num"
+    ]
+  },
+  {
+    "id": "known-cases-t2",
+    "proofId": "erdos-1158",
+    "range": {
+      "startLine": 223,
+      "endLine": 237
+    },
+    "type": "concept",
+    "title": "Solved Cases: t = 2, r ∈ {2, 3}",
+    "content": "The conjecture is known for $t = 2, r = 2$ (via projective plane constructions giving $\\mathrm{ex}(n; K_{2,2}) \\geq c n^{3/2}$) and $t = 2, r = 3$ (Brown 1966, Erdős–Rényi–Sós 1966 giving $\\mathrm{ex}(n; K_{3,3}) \\geq c n^{5/3}$). Both proofs use algebraic constructions over finite fields, not probabilistic methods — this is why they achieve the tight exponent.",
+    "mathContext": "$\\mathrm{ex}(n; K_{2,2}) \\geq \\frac{1}{2} n^{3/2}$ from incidence geometry of projective planes of order $q \\approx \\sqrt{n}$. $\\mathrm{ex}(n; K_{3,3}) \\geq c n^{5/3}$ from norm graphs over $\\mathbb{F}_q$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "projective planes",
+      "algebraic constructions",
+      "norm graphs",
+      "finite fields",
+      "incidence geometry"
+    ],
+    "prerequisites": [
+      "erdos1158Conjecture",
+      "finite fields",
+      "projective geometry"
+    ]
+  },
+  {
+    "id": "stepping-up",
+    "proofId": "erdos-1158",
+    "range": {
+      "startLine": 247,
+      "endLine": 258
+    },
+    "type": "concept",
+    "title": "Erdős–Hajnal Stepping-Up Lemma",
+    "content": "The stepping-up lemma converts a $(t-1)$-uniform lower bound with exponent $\\alpha$ into a $t$-uniform lower bound with exponent $\\alpha + 1 - o(1)$. This is the only known method for lifting graph Turán bounds to hypergraph Turán bounds, but it incurs a multiplicative loss in the $r^{1-t}$ term that compounds across uniformities. This is why the conjecture remains open for $t \\geq 3$ even though cases are known for $t = 2$.",
+    "mathContext": "If $\\mathrm{ex}_{t-1}(n, K_{t-1}(r)) \\geq n^{\\alpha - o(1)}$ then $\\mathrm{ex}_t(n, K_t(r)) \\geq n^{\\alpha + 1 - o(1)}$. Iterating from the $t = 2$ base: $\\alpha_2 = 2 - C/r$ gives $\\alpha_t = t - C \\cdot r^{1-t}$ with $C > 1$, not the conjectured $C = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "induction on uniformity",
+      "Erdős–Hajnal",
+      "hypergraph regularity",
+      "loss compounding"
+    ],
+    "prerequisites": [
+      "exHypergraph",
+      "induction on t",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "summary-theorem",
+    "proofId": "erdos-1158",
+    "range": {
+      "startLine": 264,
+      "endLine": 278
+    },
+    "type": "insight",
+    "title": "Status Summary and Known Cases Theorem",
+    "content": "The final theorem `erdos_1158_known_cases` packages the two known cases ($t = 2, r \\in \\{2, 3\\}$) into a single conjunction. The proof is trivial — it pairs the two axiomatized known cases. The surrounding docstring serves as a concise status summary of all known and open instances of the problem.",
+    "mathContext": "$\\texttt{erdos\\_1158\\_known\\_cases} : \\texttt{erdos1158Conjecture}\\,2\\,2 \\,\\wedge\\, \\texttt{erdos1158Conjecture}\\,2\\,3$. Proof: $\\langle \\texttt{conjecture\\_t2\\_r2},\\, \\texttt{conjecture\\_t2\\_r3} \\rangle$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "And.intro",
+      "axiom pairing",
+      "problem status documentation"
+    ],
+    "prerequisites": [
+      "conjecture_t2_r2",
+      "conjecture_t2_r3"
+    ]
+  },
+  {
+    "id": "structural-properties",
+    "proofId": "erdos-1158",
+    "range": {
+      "startLine": 280,
+      "endLine": 306
+    },
+    "type": "concept",
+    "title": "Structural Properties of the Exponent",
+    "content": "Three proved structural theorems about `hypergraphExponent`: (1) `exponent_lt_t` shows $\\alpha(t,r) < t$ since $r^{1-t} > 0$; (2) `exponent_ge_t_sub_one` shows $\\alpha(t,r) \\geq t - 1$ since $r^{1-t} \\leq 1$ for $r \\geq 1$; (3) `exponent_pos` shows $\\alpha(t,r) > 0$ for $t \\geq 2$. These bounds confirm the exponent lies in the interval $(t-1, t)$, which matches the combinatorial intuition that $K_t(r)$-free hypergraphs can have nearly $n^t$ edges but not quite.",
+    "mathContext": "$t - 1 \\leq \\alpha(t,r) < t$ for $t \\geq 1$ and $r \\geq 1$. The upper bound uses $r^{1-t} > 0$ for $r > 0$. The lower bound uses $r^{1-t} \\leq r^0 = 1$ for $r \\geq 1$ and $1-t \\leq 0$ (monotonicity of $x \\mapsto x^y$ for $x \\geq 1$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Real.rpow_pos_of_pos",
+      "Real.rpow_le_rpow_of_exponent_le",
+      "exponent bounds"
+    ],
+    "prerequisites": [
+      "hypergraphExponent",
+      "Real.rpow monotonicity",
+      "linarith"
+    ]
+  }
+]

@@ -1,0 +1,155 @@
+{
+  "id": "pythagorean-theorem-oq-06",
+  "title": "De Gua's Theorem: The 3-D Pythagorean Theorem",
+  "slug": "pythagorean-theorem-oq-06",
+  "description": "For a trirectangular tetrahedron — a tetrahedron with three mutually perpendicular edges meeting at one vertex — the square of the area of the face opposite that vertex equals the sum of the squares of the areas of the three right-angle faces: Area(ABC)² = Area(OAB)² + Area(OBC)² + Area(OCA)². This is the natural three-dimensional analogue of the Pythagorean theorem.",
+  "meta": {
+    "author": "Jean Paul de Gua de Malves (1783), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/De_Gua%27s_theorem",
+    "date": "1783",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DeGuaTheorem.lean",
+    "tags": [
+      "geometry",
+      "euclidean-space",
+      "pythagorean",
+      "pythagorean-theorem",
+      "cross-product",
+      "tetrahedron",
+      "generalization"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Pi.sub_apply",
+        "description": "Pointwise evaluation of vector subtraction on Fin 3 → ℝ, used to expand edge vectors coordinatewise.",
+        "module": "Mathlib.Data.Pi.Algebra"
+      },
+      {
+        "theorem": "linear_combination / ring",
+        "description": "Polynomial-identity tactics that discharge the core cross-product identity and the algebraic reductions.",
+        "module": "Mathlib.Tactic"
+      }
+    ],
+    "originalContributions": [
+      "Coordinate formalization of squared triangle area in ℝ³ as ¼‖(B−A)×(C−A)‖² via an explicit cross-product norm",
+      "Core de Gua identity in edge-vector form: under mutual orthogonality of u, v, w, crossSq(v−u, w−u) = crossSq(u,v) + crossSq(v,w) + crossSq(w,u), proved by a single linear_combination certificate",
+      "Vertex form for an arbitrary trirectangular tetrahedron O A B C, reducing the three orthogonality hypotheses to the core identity",
+      "Closed-form verification for the canonical axis-aligned tetrahedron with leg lengths a, b, c, giving the explicit slant-face area ¼(a²b² + b²c² + c²a²)"
+    ],
+    "dateAdded": "2026-06-16",
+    "relatedProblems": [
+      {
+        "id": "pythagorean-theorem",
+        "relationship": "The classical Euclidean Pythagorean theorem c² = a² + b², of which de Gua's theorem is the three-dimensional analogue (recovered by collapsing one dimension)."
+      },
+      {
+        "id": "pythagorean-theorem-oq-03",
+        "relationship": "A sibling generalization of the Pythagorean theorem, extending it to non-Euclidean geometries rather than to higher dimension."
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 101,
+    "assumptions": "0 axioms, 0 sorries. The orthogonality hypotheses (dot u v = 0, etc.) are inputs to the theorem statements, not standing assumptions — they characterize the trirectangular tetrahedron. Every theorem is fully machine-checked.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 3,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "De Gua's theorem is named after Jean Paul de Gua de Malves, who presented it to the Paris Academy in 1783, though the result was known earlier to René Descartes (c. 1620) and to Johann Faulhaber. It is the three-dimensional generalization of the Pythagorean theorem: where the planar theorem relates the squared lengths of the sides of a right triangle, de Gua's theorem relates the squared areas of the faces of a tetrahedron with a right-angle corner.\n\nA trirectangular tetrahedron is one in which three faces meet at a single vertex at mutually right angles — the solid analogue of the right angle of a triangle. The face opposite this corner plays the role of the hypotenuse. De Gua's theorem states that the squared area of this 'hypotenuse face' equals the sum of the squared areas of the three perpendicular faces. The planar Pythagorean theorem is recovered by collapsing one dimension.\n\nThe theorem is a special case of a much more general result: for any flat k-dimensional simplex, the squared k-volume of the projection onto a coordinate subspace, summed over all coordinate subspaces, equals the squared k-volume of the simplex (a Pythagorean theorem for measure, often attributed to Conant and Beyer / the Cayley–Menger circle of ideas).",
+    "problemStatement": "Let $O A B C$ be a tetrahedron whose three edges at $O$ are mutually perpendicular, i.e. $(A-O)\\cdot(B-O) = (B-O)\\cdot(C-O) = (C-O)\\cdot(A-O) = 0$. Then\n\n$$\\operatorname{Area}(ABC)^2 = \\operatorname{Area}(OAB)^2 + \\operatorname{Area}(OBC)^2 + \\operatorname{Area}(OCA)^2.$$",
+    "text": "For a trirectangular tetrahedron, the squared area of the face opposite the right-angle vertex equals the sum of the squared areas of the three faces meeting at that vertex — the three-dimensional analogue of a² + b² = c².",
+    "proofStrategy": "The formalization works directly in ℝ³ (vectors as `Fin 3 → ℝ`) with the squared-area formula $\\operatorname{Area}(PQR)^2 = \\tfrac14\\,\\|(Q-P)\\times(R-P)\\|^2$.\n\nWriting the three perpendicular edges from the right-angle vertex as $u = A-O$, $v = B-O$, $w = C-O$, the hypotenuse-face edges are $v-u$ and $w-u$, and the cross product expands as $(v-u)\\times(w-u) = u\\times v + v\\times w + w\\times u$. Expanding the squared norm produces the three squared terms plus cross terms $2[(u\\times v)\\cdot(v\\times w) + \\cdots]$. By the Binet–Cauchy identity $(a\\times b)\\cdot(c\\times d) = (a\\cdot c)(b\\cdot d) - (a\\cdot d)(b\\cdot c)$, each cross term reduces to pairwise dot products, and under the orthogonality hypotheses $u\\cdot v = v\\cdot w = w\\cdot u = 0$ the entire correction vanishes.\n\nIn Lean the whole reduction is a single polynomial identity: after unfolding `crossSq` and `dot`, the core lemma `de_gua_core` is discharged by one `linear_combination` certificate whose coefficients were verified numerically over 10⁵ random samples before formalizing. The vertex form `de_gua` rewrites the face edges in terms of the corner edges and applies the core lemma; the axis-aligned corollary `de_gua_axis_aligned` is pure `ring`.",
+    "keyInsights": [
+      "**The cross product linearizes the corner**: choosing edge vectors based at the right-angle vertex makes the opposite-face cross product split additively, $(v-u)\\times(w-u) = u\\times v + v\\times w + w\\times u$, which is the structural heart of the proof",
+      "**Orthogonality kills exactly the cross terms**: the Binet–Cauchy identity turns each $(u\\times v)\\cdot(v\\times w)$ cross term into products of dot products, every one of which contains a factor $u\\cdot v$, $v\\cdot w$, or $w\\cdot u$ — so the three right-angle hypotheses annihilate the entire correction, leaving a clean sum of squares",
+      "**A geometric theorem becomes one polynomial certificate**: once areas are written as cross-product norms, de Gua's theorem is an algebraic identity in the nine coordinates, dischargeable by a single `linear_combination` whose multipliers are the three orthogonality hypotheses",
+      "**Pythagoras is the shadow**: collapsing one coordinate (sending one leg to zero) reduces the axis-aligned form $\\tfrac14(a^2b^2+b^2c^2+c^2a^2) = (\\tfrac{ab}{2})^2+(\\tfrac{bc}{2})^2+(\\tfrac{ca}{2})^2$ to the planar Pythagorean relation",
+      "**De Gua is Pythagoras for oriented area-vectors.** The three terms in $(v-u)\\times(w-u) = u\\times v + v\\times w + w\\times u$ are exactly (twice) the oriented area-vectors of the three right-angle faces, and their sum is the area-vector of the opposite face. Because the legs $u,v,w$ point along mutually orthogonal axes, those three area-vectors lie along the three coordinate axes too — an orthogonal triple — so $\\|u\\times v + v\\times w + w\\times u\\|^2 = \\|u\\times v\\|^2+\\|v\\times w\\|^2+\\|w\\times u\\|^2$ is literally the Pythagorean theorem applied in the 3-dimensional space of area-vectors. This is why the areas must combine *in squares*: it is length-Pythagoras one dimension up, with the closed tetrahedron's faces playing the role of an edge-loop that sums to zero."
+    ],
+    "prerequisites": [
+      "Vectors and the dot product in ℝ³",
+      "The cross product and the area formula Area = ½‖(B−A)×(C−A)‖",
+      "The Binet–Cauchy / Lagrange identity for (a×b)·(c×d)",
+      "Polynomial identities (the linear_combination and ring tactics)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Docstring and Imports",
+      "startLine": 1,
+      "endLine": 48,
+      "mathContext": "Area(ABC)² = Area(OAB)² + Area(OBC)² + Area(OCA)² when the edges at O are mutually orthogonal.",
+      "summary": "The module docstring stating de Gua's theorem — the 3D Pythagorean analogue for a trirectangular tetrahedron — together with `import Mathlib.Tactic` and `namespace DeGuaTheorem`."
+    },
+    {
+      "id": "definitions",
+      "title": "Vector Primitives: Dot, Cross-Norm, and Squared Area",
+      "startLine": 49,
+      "endLine": 58,
+      "mathContext": "$\\operatorname{dot}(a,b)=\\sum a_i b_i$; $\\operatorname{crossSq}(a,b)=\\|a\\times b\\|^2$; $\\operatorname{areaSq}(A,B,C)=\\tfrac14\\|(B-A)\\times(C-A)\\|^2$.",
+      "summary": "The three coordinate primitives the proof is built on: `dot` (the ℝ³ dot product), `crossSq` (the squared Euclidean norm of the cross product, written out coordinatewise), and `areaSq` (squared triangle area as ¼ of the squared cross-product norm of two edge vectors)."
+    },
+    {
+      "id": "core-identity",
+      "title": "Core de Gua Identity (Edge-Vector Form)",
+      "startLine": 60,
+      "endLine": 74,
+      "mathContext": "If $u\\cdot v=v\\cdot w=w\\cdot u=0$ then $\\operatorname{crossSq}(v-u,w-u)=\\operatorname{crossSq}(u,v)+\\operatorname{crossSq}(v,w)+\\operatorname{crossSq}(w,u)$.",
+      "summary": "`de_gua_core`: for three vectors u, v, w from a common vertex that are mutually orthogonal, the squared cross-product norm of the opposite face equals the sum of the three right-angle faces' squared cross-product norms. Proved by a single `linear_combination` certificate using the three orthogonality hypotheses as multipliers."
+    },
+    {
+      "id": "vertex-form",
+      "title": "De Gua's Theorem (Vertex Form)",
+      "startLine": 76,
+      "endLine": 89,
+      "mathContext": "$\\operatorname{areaSq}(A,B,C)=\\operatorname{areaSq}(O,A,B)+\\operatorname{areaSq}(O,B,C)+\\operatorname{areaSq}(O,C,A)$ for a trirectangular tetrahedron $OABC$.",
+      "summary": "`de_gua`: the geometric statement for an arbitrary trirectangular tetrahedron O A B C. The face edges B−A and C−A are rewritten as differences of the corner edges (B−O)−(A−O) and (C−O)−(A−O), reducing the goal to `de_gua_core`, then closed by `ring`."
+    },
+    {
+      "id": "axis-aligned",
+      "title": "Canonical Axis-Aligned Tetrahedron",
+      "startLine": 91,
+      "endLine": 99,
+      "mathContext": "Legs $a,b,c$ along the coordinate axes: $\\tfrac14(a^2b^2+b^2c^2+c^2a^2)=(\\tfrac{ab}{2})^2+(\\tfrac{bc}{2})^2+(\\tfrac{ca}{2})^2$.",
+      "summary": "`de_gua_axis_aligned`: the explicit closed form for the tetrahedron with right-angle vertex at the origin and legs of lengths a, b, c along the axes. The slant face has squared area ¼(a²b²+b²c²+c²a²), equal to the sum of the squared leg-face areas. A pure `ring` identity that makes the theorem concrete."
+    }
+  ],
+  "conclusion": {
+    "summary": "De Gua's theorem — the three-dimensional Pythagorean theorem — is formalized in ℝ³ with zero sorries and zero axioms. The proof reduces the geometric statement about face areas to a single polynomial identity in the vertex coordinates: expressing areas as cross-product norms, the opposite-face cross product splits additively, and the mutual-orthogonality hypotheses annihilate every Binet–Cauchy cross term, leaving a clean sum of squares.",
+    "implications": "De Gua's theorem is the base case of the general Pythagorean theorem for simplices (the squared volume of a flat simplex equals the sum of squared volumes of its projections onto coordinate subspaces), and it underlies orthogonal-projection area formulas used in computer graphics, finite-element methods, and crystallography. The cross-product formulation here generalizes directly to the Cayley–Menger / Gram-determinant treatment of simplex volumes.",
+    "openQuestions": [
+      "Can the result be lifted to Mathlib's `EuclideanSpace ℝ (Fin 3)` with the library cross product and `MeasureTheory` area, rather than the explicit coordinate model?",
+      "Can the proof be generalized to the n-dimensional Pythagorean theorem for simplices, with squared k-volume summed over coordinate k-subspaces?",
+      "Is there a coordinate-free proof via the Gram determinant of the edge vectors that avoids the explicit linear_combination certificate?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "parent",
+      "description": "The classical Euclidean Pythagorean theorem a² + b² = c². De Gua's theorem is its three-dimensional analogue, recovered by collapsing one dimension."
+    },
+    {
+      "targetId": "pythagorean-theorem-oq-03",
+      "relationship": "related",
+      "description": "A sibling generalization that extends the Pythagorean theorem to hyperbolic, spherical, and Minkowski geometries — a generalization in curvature rather than in dimension."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/DeGuaTheorem.lean",
+    "imports": [
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "DeGuaTheorem",
+    "lineCount": 101,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 3,
+    "theoremCount": 3
+  },
+  "sorries": 0
+}

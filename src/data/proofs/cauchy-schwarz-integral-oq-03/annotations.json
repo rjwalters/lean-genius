@@ -1,0 +1,180 @@
+[
+  {
+    "id": "ann-cs-oq03-bridge",
+    "proofId": "cauchy-schwarz-integral-oq-03",
+    "range": {
+      "startLine": 19,
+      "endLine": 21
+    },
+    "type": "concept",
+    "title": "Bridge Theorem: Abstract to Integral",
+    "content": "The bridge theorem `complex_L2_inner_eq_integral` equates the abstract $L^2$ inner product $\\langle f, g \\rangle_{\\mathbb{C}}$ with the integral $\\int \\langle f(x), g(x) \\rangle_{\\mathbb{C}} \\, d\\mu$ of pointwise inner products. This single identity, proved by invoking Mathlib's `L2.inner_def`, is the key that transfers all abstract inner product space results to integral form. Without it, abstract Cauchy-Schwarz and the concrete integral inequality live in separate worlds.",
+    "mathContext": "$\\langle f, g \\rangle_{L^2} = \\int_\\alpha \\langle f(x), g(x) \\rangle_{\\mathbb{C}} \\, d\\mu(x)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "L2.inner_def",
+      "Bochner integral",
+      "pointwise inner product"
+    ],
+    "prerequisites": [
+      "InnerProductSpace ℂ (Lp ℂ 2 μ)",
+      "MeasureTheory.integral"
+    ]
+  },
+  {
+    "id": "ann-cs-oq03-conjugation",
+    "proofId": "cauchy-schwarz-integral-oq-03",
+    "range": {
+      "startLine": 24,
+      "endLine": 35
+    },
+    "type": "concept",
+    "title": "Explicit Conjugation Form",
+    "content": "Two theorems making the conjugation explicit: `complex_inner_eq_conj_mul` shows $\\langle z, w \\rangle_{\\mathbb{C}} = \\bar{z} \\cdot w$ (the physics convention, conjugate-linear in the first argument), and `complex_L2_inner_eq_integral_star` lifts this to $L^2$: $\\langle f, g \\rangle = \\int \\bar{f}(x) \\cdot g(x) \\, d\\mu$. The star notation `starRingEnd ℂ` is Mathlib's conjugation operator. These forms are essential for computational applications where the explicit $\\bar{f} g$ product appears.",
+    "mathContext": "$\\langle f, g \\rangle_{L^2} = \\int_\\alpha \\overline{f(x)} \\cdot g(x) \\, d\\mu(x)$, using $\\langle z, w \\rangle_{\\mathbb{C}} = \\bar{z} w$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Complex.inner_apply",
+      "starRingEnd",
+      "sesquilinearity"
+    ],
+    "prerequisites": [
+      "complex_L2_inner_eq_integral",
+      "starRingEnd ℂ"
+    ]
+  },
+  {
+    "id": "ann-cs-oq03-complex-cs",
+    "proofId": "cauchy-schwarz-integral-oq-03",
+    "range": {
+      "startLine": 41,
+      "endLine": 62
+    },
+    "type": "concept",
+    "title": "Complex Cauchy-Schwarz in Four Forms",
+    "content": "Four progressively concrete formulations of Cauchy-Schwarz for complex $L^2$: (1) abstract form $\\|\\langle f, g \\rangle\\| \\leq \\|f\\| \\cdot \\|g\\|$ via `norm_inner_le_norm`, (2) integral form with pointwise inner products, (3) integral form with explicit conjugation $\\|\\int \\bar{f} g \\, d\\mu\\| \\leq \\|f\\| \\cdot \\|g\\|$, and (4) squared form $\\|\\langle f, g \\rangle\\|^2 \\leq \\|f\\|^2 \\cdot \\|g\\|^2$. The squared form uses `nlinarith` to square the basic inequality, exploiting positivity of norms.",
+    "mathContext": "$\\|\\langle f, g \\rangle_{\\mathbb{C}}\\| \\leq \\|f\\|_{L^2} \\cdot \\|g\\|_{L^2}$, equivalently $\\left|\\int \\bar{f} g \\, d\\mu\\right|^2 \\leq \\int |f|^2 \\, d\\mu \\cdot \\int |g|^2 \\, d\\mu$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "norm_inner_le_norm",
+      "Bunyakovsky inequality",
+      "squared Cauchy-Schwarz"
+    ],
+    "prerequisites": [
+      "complex_L2_inner_eq_integral",
+      "complex_L2_inner_eq_integral_star"
+    ]
+  },
+  {
+    "id": "ann-cs-oq03-self-inner",
+    "proofId": "cauchy-schwarz-integral-oq-03",
+    "range": {
+      "startLine": 69,
+      "endLine": 91
+    },
+    "type": "concept",
+    "title": "Self-Inner Product Properties",
+    "content": "Four properties of $\\langle f, f \\rangle_{\\mathbb{C}}$: (1) equals $\\|f\\|^2$ as a complex number (via `inner_self_eq_norm_sq_to_K`), (2) has zero imaginary part (the self-inner product is always real despite living in $\\mathbb{C}$), (3) has non-negative real part ($\\text{Re}\\langle f, f \\rangle \\geq 0$), and (4) equals the integral $\\int \\|f(x)\\|^2 \\, d\\mu$ (connecting abstract norm to pointwise norm integral). These establish that the complex $L^2$ norm is well-behaved as a real quantity.",
+    "mathContext": "$\\langle f, f \\rangle_{\\mathbb{C}} = \\|f\\|^2 \\in \\mathbb{R}_{\\geq 0}$, and $\\langle f, f \\rangle = \\int |f(x)|^2 \\, d\\mu$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "inner_self_eq_norm_sq_to_K",
+      "positive definiteness",
+      "L2 norm"
+    ],
+    "prerequisites": [
+      "complex_L2_inner_eq_integral",
+      "sq_nonneg"
+    ]
+  },
+  {
+    "id": "ann-cs-oq03-re-im-bounds",
+    "proofId": "cauchy-schwarz-integral-oq-03",
+    "range": {
+      "startLine": 98,
+      "endLine": 110
+    },
+    "type": "concept",
+    "title": "Real and Imaginary Part Bounds",
+    "content": "Two component-wise bounds: $\\text{Re}\\langle f, g \\rangle \\leq \\|f\\| \\cdot \\|g\\|$ and $|\\text{Im}\\langle f, g \\rangle| \\leq \\|f\\| \\cdot \\|g\\|$. Both follow from the chain $|\\text{Re}(z)| \\leq |z|$ (resp. $|\\text{Im}(z)| \\leq |z|$) composed with Cauchy-Schwarz. The `calc` blocks make the reasoning transparent: real/imaginary part $\\leq$ absolute value $\\leq$ complex norm $\\leq$ product of norms.",
+    "mathContext": "$\\text{Re}\\langle f, g \\rangle \\leq \\|f\\| \\|g\\|$ and $|\\text{Im}\\langle f, g \\rangle| \\leq \\|f\\| \\|g\\|$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Complex.abs_re_le_abs",
+      "Complex.abs_im_le_abs",
+      "calc blocks"
+    ],
+    "prerequisites": [
+      "norm_inner_le_norm",
+      "Complex norm properties"
+    ]
+  },
+  {
+    "id": "ann-cs-oq03-equality",
+    "proofId": "cauchy-schwarz-integral-oq-03",
+    "range": {
+      "startLine": 117,
+      "endLine": 128
+    },
+    "type": "concept",
+    "title": "Equality Characterization via Linear Dependence",
+    "content": "Equality $\\|\\langle f, g \\rangle\\| = \\|f\\| \\cdot \\|g\\|$ holds if and only if $f = cg$ for some $c \\in \\mathbb{C}$. The forward direction uses Mathlib's `norm_inner_eq_norm_iff` to get $g = rf$ for some $r$, then inverts to get $f = r^{-1}g$. The reverse direction computes $\\langle cf, f \\rangle = \\bar{c} \\|f\\|^2$ and verifies $\\|\\bar{c}\\| \\cdot \\|f\\|^2 = |c| \\cdot \\|f\\|^2 = \\|cf\\| \\cdot \\|f\\|$. This is the complex analogue of the classical characterization: proportional functions saturate Cauchy-Schwarz.",
+    "mathContext": "$\\|\\langle f, g \\rangle\\| = \\|f\\| \\|g\\| \\iff \\exists c \\in \\mathbb{C}, \\; f = cg$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "norm_inner_eq_norm_iff",
+      "linear dependence",
+      "equality conditions"
+    ],
+    "prerequisites": [
+      "norm_inner_le_norm",
+      "inner_smul_left",
+      "inner_self_eq_norm_sq_to_K"
+    ]
+  },
+  {
+    "id": "ann-cs-oq03-rclike",
+    "proofId": "cauchy-schwarz-integral-oq-03",
+    "range": {
+      "startLine": 135,
+      "endLine": 154
+    },
+    "type": "concept",
+    "title": "Uniform RCLike Formulation",
+    "content": "Three theorems parameterized by `RCLike 𝕜` (Mathlib's typeclass unifying $\\mathbb{R}$ and $\\mathbb{C}$): the bridge theorem, abstract Cauchy-Schwarz, and integral Cauchy-Schwarz. By working over an arbitrary `RCLike` field, these statements simultaneously cover real and complex $L^2$ without duplication. The `RCLike` typeclass provides conjugation, norm, and completeness properties needed for inner product space theory. This is the most general formulation in the development.",
+    "mathContext": "For any `RCLike` field $\\mathbb{K}$ (covering $\\mathbb{R}$ and $\\mathbb{C}$): $\\|\\langle f, g \\rangle_{\\mathbb{K}}\\| \\leq \\|f\\|_{L^2} \\cdot \\|g\\|_{L^2}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "RCLike typeclass",
+      "uniform formulation",
+      "type polymorphism"
+    ],
+    "prerequisites": [
+      "L2.inner_def",
+      "norm_inner_le_norm",
+      "RCLike"
+    ]
+  },
+  {
+    "id": "ann-cs-oq03-real-recovery",
+    "proofId": "cauchy-schwarz-integral-oq-03",
+    "range": {
+      "startLine": 161,
+      "endLine": 172
+    },
+    "type": "concept",
+    "title": "Real L2 Recovery",
+    "content": "Specializing the complex framework back to $\\mathbb{R}$ recovers the original Bunyakovsky-Schwarz inequality: $\\langle f, g \\rangle_{\\mathbb{R}} = \\int f(x) g(x) \\, d\\mu$ (no conjugation needed since $\\bar{r} = r$ for $r \\in \\mathbb{R}$) and $|\\int f g \\, d\\mu| \\leq \\|f\\| \\cdot \\|g\\|$. The real bridge theorem uses `simp [mul_comm]` to simplify the trivial conjugation. This closes the circle: the complex extension specializes back to the real case, confirming consistency.",
+    "mathContext": "$\\left|\\int f(x) g(x) \\, d\\mu\\right| \\leq \\|f\\|_{L^2} \\cdot \\|g\\|_{L^2}$ for real-valued $f, g \\in L^2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Bunyakovsky-Schwarz inequality",
+      "real inner product",
+      "specialization"
+    ],
+    "prerequisites": [
+      "L2.inner_def",
+      "abs_real_inner_le_norm"
+    ]
+  }
+]

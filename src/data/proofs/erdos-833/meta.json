@@ -1,0 +1,231 @@
+{
+  "id": "erdos-833",
+  "title": "Erdős Problem #833: Vertex Degrees in 3-Chromatic Hypergraphs",
+  "slug": "erdos-833",
+  "description": "Does there exist c > 0 such that every r-uniform 3-chromatic hypergraph has a vertex in at least (1+c)^r edges? SOLVED by Erdős-Lovász (1975): YES, with bound 2^{r-1}/(4r).",
+  "meta": {
+    "author": "Erdős-Lovász (1975)",
+    "sourceUrl": "https://erdosproblems.com/833",
+    "date": "1975",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos833Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "hypergraphs",
+      "chromatic-number",
+      "vertex-degree",
+      "extremal-combinatorics",
+      "probabilistic-method",
+      "lovasz-local-lemma",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 833,
+    "erdosUrl": "https://erdosproblems.com/833",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Graph theory basics (used for conceptual foundation)",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for hypergraph edges and vertex sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets (edge uniformity, degree counting)",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Real",
+        "description": "Real numbers for the exponential bound $2^{r-1}/(4r)$",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "UniformHypergraph structure: r-uniform hypergraph definition",
+      "vertexDegree definition: edges containing a vertex",
+      "IsProperColoring, IsKColorable: hypergraph coloring",
+      "HasChromaticNumber3: exactly 3-chromatic",
+      "hypergraph_trivially_colorable axiom: every H is |V|-colorable",
+      "f(r) definition: minimum max degree over 3-chromatic r-uniform hypergraphs",
+      "ExponentialGrowthConjecture: the main question",
+      "erdos_lovasz_bound axiom: 2^{r-1}/(4r) bound",
+      "f_lower_bound: f(r) ≥ 2^{r-1}/(4r)",
+      "bound_is_exponential: bound grows like (√2)^r",
+      "erdos_833_solution axiom: exponential growth holds",
+      "f_2_achieved: triangle achieves f(2)=2",
+      "contrapositive_form: low degree implies 2-colorable"
+    ],
+    "axiomCount": 3,
+    "lineCount": 215,
+    "assumptions": "3 axioms: hypergraph_trivially_colorable, erdos_lovasz_bound, erdos_833_solution. Structure fields are object definitions, not assumptions.",
+    "theoremCount": 2,
+    "definitionCount": 11
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #833: Vertex Degrees in 3-Chromatic Hypergraphs**\n\nThis problem lies at the intersection of hypergraph coloring theory and the probabilistic method, and its resolution introduced one of the most important tools in combinatorics.\n\n**Property B and Hypergraph Coloring:** A hypergraph $H = (V, E)$ has **Property B** (named after Felix Bernstein, who studied the concept in 1908) if its vertices can be 2-colored so that no edge is monochromatic. For $r$-uniform hypergraphs (every edge has exactly $r$ vertices), Erdős (1963) showed that any $r$-uniform hypergraph with fewer than $2^{r-1}$ edges has Property B — this is the simplest application of the probabilistic method to hypergraph coloring. A hypergraph with chromatic number $\\chi(H) = 3$ is one that fails Property B but can be properly 3-colored.\n\n**The Function $f(r)$:** Erdős defined $f(r)$ as the minimum, over all $r$-uniform 3-chromatic hypergraphs $H$, of the maximum vertex degree $\\Delta(H)$. The question is: how large must the busiest vertex be in any 3-chromatic $r$-uniform hypergraph? Known values are $f(2) = 2$ (the triangle $K_3$ is the unique minimal 3-chromatic graph, with every vertex in exactly 2 edges) and $f(3) = 3$ (the **Fano plane** $\\mathrm{PG}(2,2)$, the smallest finite projective plane, with 7 vertices, 7 triples, every vertex in exactly 3 triples, and $\\chi = 3$). Erdős noted that $f(4)$ was unknown.\n\n**The 1975 Paper and the Birth of the LLL:** The question was resolved in the landmark 1975 paper *Problems and results on 3-chromatic hypergraphs and some related questions* by Erdős and Lovász, presented at the Keszthely conference. This same paper introduced the **Lovász Local Lemma** (LLL), one of the most powerful and widely-used tools in probabilistic combinatorics. The LLL provides conditions under which a random experiment avoids all 'bad events' simultaneously, even when the events are not independent.\n\n**The Proof:** Erdős and Lovász proved that every $r$-uniform 3-chromatic hypergraph has a vertex in at least $2^{r-1}/(4r)$ edges. The argument is by contrapositive: assume all vertices have degree $< 2^{r-1}/(4r)$. Color each vertex randomly with one of 2 colors. For each edge $e$, the bad event $A_e$ (edge is monochromatic) has probability $2 \\cdot 2^{-r} = 2^{1-r}$. Each bad event depends on at most $r \\cdot \\Delta$ others (edges sharing a vertex with $e$). The symmetric LLL guarantees all bad events are simultaneously avoided when $e \\cdot p \\cdot d \\leq 1$, yielding $\\Delta < 2^{r-1}/(er)$. The published bound $2^{r-1}/(4r)$ uses a slightly sharper analysis.\n\n**Exponential Growth:** Since $2^{r-1}/(4r) \\sim (\\sqrt{2})^r / (4r)$ and $(\\sqrt{2})^r$ dominates $4r$, we get $f(r) \\geq (1+c)^r$ for $c \\approx 0.414$ (taking $1+c = \\sqrt{2}$). This confirms that vertex degrees in 3-chromatic hypergraphs grow exponentially with the uniformity $r$.\n\n**Legacy:** The Erdős–Lovász paper became one of the most influential in combinatorics. The LLL has since found applications in graph coloring, satisfiability (Moser–Tardos constructive version, 2010), coding theory, and computational complexity. Problem #833 exemplifies how a specific extremal question can catalyze the development of a major mathematical tool.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet $f(r)$ be the largest integer such that every $r$-uniform hypergraph with $\\chi(H) = 3$ has a vertex in at least $f(r)$ edges.\n\n**Question:** Does there exist $c > 0$ such that $f(r) \\geq (1+c)^r$ for all $r \\geq 2$?\n\n**Answer (Erdős–Lovász 1975): YES!**\n\nEvery $r$-uniform 3-chromatic hypergraph has a vertex in at least $\\frac{2^{r-1}}{4r}$ edges.\n\nSince $\\frac{2^{r-1}}{4r} \\sim \\frac{(\\sqrt{2})^r}{4r}$, this grows exponentially with base $\\sqrt{2} \\approx 1.414$, confirming the conjecture with $c = \\sqrt{2} - 1 \\approx 0.414$.",
+    "text": "Does there exist c > 0 such that every r-uniform 3-chromatic hypergraph has a vertex in at least (1+c)^r edges? SOLVED by Erdős-Lovász (1975): YES, with bound 2^{r-1}/(4r).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Hypergraph Structure:** Defines `UniformHypergraph V` as a Lean 4 structure with uniformity parameter $r$, edge set `Finset (Finset V)`, uniformity constraint, and $r \\geq 2$.\n\n2. **Vertex Degree:** Defines $\\deg_H(v) = |\\{e \\in E : v \\in e\\}|$ via `Finset.filter`, plus `maxDegree` and `minMaxDegree` via `Finset.univ.sup`.\n\n3. **Colorings:** Defines `IsProperColoring` (no monochromatic edge), `IsKColorable`, `chromaticNumber` via `Nat.find`, and `HasChromaticNumber3`.\n\n4. **f(r) Function:** Defines $f(r)$ as `sInf` over the set of achievable degree bounds.\n\n5. **Main Theorem:** Axiomatizes the Erdős–Lovász bound $2^{r-1}/(4r)$ in pointwise, function, and asymptotic forms.\n\n6. **Exponential Growth:** Derives `ExponentialGrowthConjecture` from the bound.\n\n7. **Proof Technique:** Axiomatizes the LLL contrapositive: low degree $\\implies$ 2-colorable.\n\n8. **Why Axioms:** The Lovász Local Lemma requires probability spaces and dependency graphs beyond current Mathlib capabilities.",
+    "keyInsights": [
+      "**Birth of the Lovász Local Lemma:** This problem's resolution in the 1975 Erdős–Lovász paper introduced the LLL, now one of the most important tools in probabilistic combinatorics. The LLL states: if bad events each have probability $\\leq p$ and each depends on at most $d$ others, with $ep(d+1) \\leq 1$, then all bad events can be simultaneously avoided.",
+      "**Contrapositive Structure:** The proof is beautifully indirect. Rather than directly constructing a high-degree vertex, it assumes all degrees are small, applies the LLL to show a random 2-coloring works, contradicting $\\chi(H) = 3$. This 'if structure is simple, then coloring is easy' paradigm pervades modern combinatorics.",
+      "**The $\\sqrt{2}$ Barrier:** The bound $2^{r-1}/(4r)$ grows like $(\\sqrt{2})^r$, giving base $\\sqrt{2} \\approx 1.414$. Improving the base beyond $\\sqrt{2}$ would require fundamentally new techniques beyond the LLL. Whether $f(r) \\geq 2^{r-1}/\\text{poly}(r)$ remains open — the gap between $2^{r/2}$ and $2^r$ is significant.",
+      "**Tight Examples for Small $r$:** The triangle ($r = 2$, $f = 2$) and Fano plane ($r = 3$, $f = 3$) achieve the exact minimum. The Fano plane $\\mathrm{PG}(2,2)$ is remarkable: it's the unique $(7,3,1)$-Steiner triple system, the simplest finite projective plane, and has automorphism group $\\mathrm{GL}(3, \\mathbb{F}_2)$ of order 168.",
+      "**Connection to Property B:** A 3-chromatic hypergraph is one that fails Property B (Bernstein 1908). Erdős's 1963 bound says $|E| < 2^{r-1}$ implies Property B. The Erdős–Lovász result strengthens this: not just few edges, but low *maximum degree* suffices for Property B. This degree-based refinement is much more powerful than the edge-count version.",
+      "**Higher Chromatic Numbers:** For $\\chi(H) = k \\geq 4$, analogous questions about minimum degree bounds become even harder. The LLL gives weaker bounds as $k$ grows, and the exact threshold for $k$-chromaticity forcing high degree is unknown for general $k$."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-imports",
+      "title": "Header and Imports",
+      "summary": "Problem documentation with references to Erdős–Lovász (1975); imports Mathlib's `SimpleGraph.Basic`, `Finset`, and `Real` modules; opens `Nat` and `Finset` namespaces",
+      "startLine": 1,
+      "endLine": 45,
+      "mathContext": "Mathematical content: Problem documentation with references to Erdős–Lovász (1975); imports Mathlib's `SimpleGraph.Basic`, `Finset`, and `Real` modules; opens `Nat` and `Finset` namespaces"
+    },
+    {
+      "id": "hypergraph-definitions",
+      "title": "Hypergraph Definitions",
+      "summary": "Defines `UniformHypergraph V` (structure with $r$, edges, uniformity constraint $|e| = r$, and $r \\geq 2$), `vertexDegree` ($\\deg_H(v) = |\\{e : v \\in e\\}|$), `maxDegree`, and `minMaxDegree` via `Finset.filter` and `Finset.univ.sup`",
+      "startLine": 46,
+      "endLine": 75,
+      "mathContext": "Defines `UniformHypergraph V` (structure with $r$, edges, uniformity constraint $|e| = r$, and $r \\geq 2$), `vertexDegree` ($\\deg_H(v) = |\\{e : v \\in e\\}|$), `maxDegree`, and `minMaxDegree` via `Finset.filter` and `Finset.univ.sup`"
+    },
+    {
+      "id": "colorings",
+      "title": "Hypergraph Colorings",
+      "summary": "Defines `IsProperColoring` (no monochromatic edge: $\\forall e,\\; \\exists v_1, v_2 \\in e,\\; c(v_1) \\neq c(v_2)$), `IsKColorable`, trivial upper bound $\\chi(H) \\leq |V|$, `chromaticNumber` via `Nat.find`, and `HasChromaticNumber3` ($\\neg 2\\text{-colorable} \\wedge 3\\text{-colorable}$)",
+      "startLine": 76,
+      "endLine": 104,
+      "mathContext": "Defines `IsProperColoring` (no monochromatic edge: $\\forall e,\\; \\exists v_1, v_2 \\in e,\\; c(v_1) \\neq c(v_2)$), `IsKColorable`, trivial upper bound $\\chi(H) \\leq |V|$, `chromaticNumber` via `Nat.find`, and `HasChromaticNumber3` ($\\neg 2\\text{-colorable} \\wedge 3\\text{-colorable}$)"
+    },
+    {
+      "id": "f-function",
+      "title": "The Function $f(r)$ and Known Values",
+      "summary": "Defines $f(r) = \\inf\\{d : \\forall H \\in \\mathcal{H}_{r,3},\\; \\Delta(H) \\geq d\\}$ via `sInf`; axiomatizes $f(2) = 2$ (triangle) and $f(3) = 3$ (Fano plane $\\mathrm{PG}(2,2)$)",
+      "startLine": 105,
+      "endLine": 126,
+      "mathContext": "Formal definition: Defines $f(r) = \\inf\\{d : \\forall H \\in \\mathcal{H}_{r,3},\\; \\Delta(H) \\geq d\\}$ via `sInf`; axiomatizes $f(2) = 2$ (triangle) and $f(3) = 3$ (Fano plane $\\mathrm{PG}(2,2)$)"
+    },
+    {
+      "id": "exponential-question",
+      "title": "The Exponential Question",
+      "summary": "Defines `ExponentialGrowthConjecture`: $\\exists c > 0,\\; \\forall r \\geq 2,\\; f(r) \\geq (1+c)^r$ — does the minimum max degree grow exponentially with uniformity?",
+      "startLine": 127,
+      "endLine": 136,
+      "mathContext": "Formal definition: Defines `ExponentialGrowthConjecture`: $\\exists c > 0,\\; \\forall r \\geq 2,\\; f(r) \\geq (1+c)^r$ — does the minimum max degree grow exponentially with uniformity?"
+    },
+    {
+      "id": "erdos-lovasz",
+      "title": "Erdős–Lovász Theorem (1975)",
+      "summary": "Axiomatizes the bound in three forms: pointwise ($\\exists v,\\; \\deg(v) \\geq 2^{r-1}/(4r)$), function ($f(r) \\geq \\lfloor 2^{r-1}/(4r) \\rfloor$), and asymptotic ($\\geq (\\sqrt{2} - \\varepsilon)^r$ for large $r$). Derives `erdos_833_solution` confirming exponential growth",
+      "startLine": 137,
+      "endLine": 170,
+      "mathContext": "Axiomatizes the bound in three forms: pointwise ($\\exists v,\\; \\deg(v) \\geq 2^{r-1}/(4r)$), function ($f(r) \\geq \\lfloor 2^{r-1}/(4r) \\rfloor$), and asymptotic ($\\geq (\\sqrt{2} - \\varepsilon)^r$ for large $r$)."
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results",
+      "summary": "**Proved** `exists_high_degree_vertex` from the Erdős–Lovász bound; documents in source comments `edge_lower_bound` (no Lean declaration exists) ($|E| \\geq 2^{r-1}/(4r)$ for 3-chromatic $H$)",
+      "startLine": 171,
+      "endLine": 191,
+      "mathContext": "**Proved** `exists_high_degree_vertex` from the Erdős–Lovász bound; documents in source comments `edge_lower_bound` (no Lean declaration exists) ($|E| \\geq $$2^{{r-1}$}$/(4r)$ for 3-chromatic $H$)"
+    },
+    {
+      "id": "specific-values",
+      "title": "Specific Values: Triangle and Fano Plane",
+      "summary": "Axiomatizes tight examples: `f_2_achieved` (triangle $K_3$ with $\\Delta = 2$, $\\chi = 3$) and `fano_plane_example` (Fano plane $\\mathrm{PG}(2,2)$: 7 vertices, 7 triples, $\\Delta = 3$, $\\chi = 3$)",
+      "startLine": 192,
+      "endLine": 207,
+      "mathContext": "Axiomatized: Axiomatizes tight examples: `f_2_achieved` (triangle $K_3$ with $\\Delta = 2$, $\\chi = 3$) and `fano_plane_example` (Fano plane $\\mathrm{PG}(2,2)$: 7 vertices, 7 triples, $\\Delta = 3$, $\\chi = 3$)"
+    },
+    {
+      "id": "proof-technique",
+      "title": "Proof Technique: Lovász Local Lemma",
+      "summary": "Describes the LLL argument: random 2-coloring with $\\Pr[\\text{monochromatic } e] = 2^{1-r}$, dependency $\\leq r\\Delta$; documents in source comments `contrapositive_form` (no Lean declaration exists): $\\forall v,\\; \\deg(v) < 2^{r-1}/(4r) \\implies \\chi(H) \\leq 2$",
+      "startLine": 208,
+      "endLine": 215,
+      "mathContext": "Describes the LLL argument: random 2-coloring with $\\Pr[\\text{monochromatic } e] = 2^{1-r}$, dependency $\\leq r\\Delta$; documents in source comments `contrapositive_form` (no Lean declaration exists): $\\forall v,\\; \\deg(v) < 2^{r-1}/(4r) \\implies \\chi(H) \\leq 2$"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #833 asked whether vertex degrees in 3-chromatic $r$-uniform hypergraphs must grow exponentially with $r$. Erdős and Lovász (1975) proved YES: every such hypergraph has a vertex in at least $2^{r-1}/(4r)$ edges, which grows like $(\\sqrt{2})^r$. The proof — using the Lovász Local Lemma in its inaugural appearance — shows that low maximum degree implies 2-colorability via random coloring, contradicting $\\chi(H) = 3$. The formalization captures the full structure: hypergraph definitions, the extremal function $f(r)$, known values $f(2) = 2$ (triangle) and $f(3) = 3$ (Fano plane), the exponential growth conjecture, and the Erdős–Lovász resolution.",
+    "implications": "**Theoretical Significance**: **Mathematical Significance**\n\n1. **Birth of the Lovász Local Lemma:** The 1975 Erdős–Lovász paper introducing this result also introduced the LLL, now one of the most widely-used tools in combinatorics, theoretical computer science, and probability theory.\n\n2. **Structural Consequences of Chromaticity:** The result establishes a fundamental principle: high chromatic number forces structural complexity (high-degree vertices). This paradigm extends far beyond hypergraphs.\n\n**3. Property B Refinement:** Strengthens Erdős's 1963 result ($|E| < 2^{r-1} \\implies$ Property B) from an edge-count condition to a maximum-degree condition, which is strictly more powerful.\n\n4. **Extremal Combinatorics:** The function $f(r)$ captures the precise tradeoff between uniformity and vertex degree under chromatic constraints, a central theme in extremal hypergraph theory.\n\n5. **Constructive Developments:** The Moser–Tardos algorithm (2010) made the LLL constructive, enabling efficient 2-coloring of low-degree hypergraphs. This algorithmic advance has implications for constraint satisfaction and coding theory.",
+    "openQuestions": [
+      "What are exact values of $f(r)$ for $r \\geq 4$? The Erdős–Lovász bound gives $f(4) \\geq \\lfloor 2^3/16 \\rfloor = 0$, which is trivial — can explicit 4-uniform 3-chromatic hypergraphs with small max degree be constructed?",
+      "Can the constant $4$ in the denominator of $2^{r-1}/(4r)$ be improved? The LLL gives $1/e$ naturally; the published bound of $1/4$ is slightly weaker. Is the true threshold closer to $2^{r-1}/r$?",
+      "For higher chromatic numbers $\\chi(H) = k \\geq 4$, what is the analogous function $f_k(r)$? Does it also grow exponentially, and what is the base as a function of $k$?",
+      "Can the Moser–Tardos constructive LLL (2010) be formalized in Lean to give an algorithmic proof of the contrapositive: explicitly construct a 2-coloring when all degrees are below the threshold?",
+      "Is there a tight upper bound matching the Erdős–Lovász lower bound? What is the growth rate of $\\min_{H \\in \\mathcal{H}_{r,3}} \\Delta(H)$ — is it $(\\sqrt{2})^r / \\text{poly}(r)$, or closer to $2^{r-1}$?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos833",
+    "lineCount": 215,
+    "axiomCount": 3,
+    "theoremCount": 2,
+    "definitionCount": 11,
+    "path": "Proofs/Erdos833Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "key": "ErLo75",
+      "citation": "Erdős, P. and Lovász, L., Problems and results on 3-chromatic hypergraphs and some related questions, in: Infinite and Finite Sets, Colloq. Math. Soc. J. Bolyai 10 (1975), 609-627.",
+      "type": "paper"
+    },
+    {
+      "key": "Lov75",
+      "citation": "Lovász, L., On the ratio of optimal integral and fractional covers, Discrete Math. 13 (1975), 383-390.",
+      "type": "paper"
+    },
+    {
+      "key": "AS16",
+      "citation": "Alon, N. and Spencer, J., The Probabilistic Method, 4th ed., Wiley (2016), Chapter 5: The Lovász Local Lemma.",
+      "type": "book"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-753",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, probabilistic-method, solved"
+    },
+    {
+      "targetId": "erdos-797",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, probabilistic-method, solved"
+    },
+    {
+      "targetId": "erdos-1076",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, hypergraphs, solved"
+    }
+  ],
+  "sorries": 0
+}

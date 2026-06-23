@@ -1,0 +1,172 @@
+[
+  {
+    "id": "ann-power-mean-def",
+    "proofId": "amgm-inequality-oq-03-oq-03-oq-01",
+    "range": {
+      "startLine": 26,
+      "endLine": 34
+    },
+    "type": "definition",
+    "title": "The Power Mean M_r and Finite-Type Setup",
+    "content": "The power mean is defined over an arbitrary finite inhabited index type `ι`:\n\n```lean\nnoncomputable def M (r : ℝ) : ℝ :=\n  ((∑ i : ι, x i ^ r) / Fintype.card ι) ^ (1 / r)\n```\n\nThis generalizes the classical $M_r(x_1,\\ldots,x_n) = \\left(\\frac{1}{n}\\sum x_i^r\\right)^{1/r}$ to arbitrary finite index types. Two supporting lemmas:\n- `hN_pos`: $n = |\\iota| > 0$ (from `Fintype.card_pos`)\n- `hN_ne`: $n \\ne 0$ (for division safety)\n\nThe type-class hypotheses `[Fintype ι] [Nonempty ι]` ensure the sum is finite and the supremum/infimum over `ι` are well-defined. Using `Real.rpow` (instead of `HPow`) allows `r` to be any real number, including non-integer and negative values.",
+    "mathContext": "$M_r = \\left(\\frac{\\sum_{i} x_i^r}{n}\\right)^{1/r}$. Special cases: $r=1$ (AM), $r=2$ (QM/RMS), $r \\to 0$ (GM), $r \\to \\pm\\infty$ (max/min). The exponent is encoded as `1/r` in `Real.rpow`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Real.rpow",
+      "Fintype.card",
+      "generalized mean",
+      "power mean",
+      "Finset.sum"
+    ],
+    "prerequisites": [
+      "Real.rpow definition",
+      "Fintype and Finset API"
+    ]
+  },
+  {
+    "id": "ann-rpow-inv-atTop",
+    "proofId": "amgm-inequality-oq-03-oq-03-oq-01",
+    "range": {
+      "startLine": 40,
+      "endLine": 49
+    },
+    "type": "concept",
+    "title": "Key Engine: c^{1/r} → 1 as r → +∞ (via exp continuity)",
+    "content": "This private lemma is the technical heart of the +∞ limit:\n\n```lean\nprivate theorem tendsto_rpow_inv_atTop {c : ℝ} (hc : 0 < c) :\n    Tendsto (fun r : ℝ => c ^ r⁻¹) atTop (nhds 1)\n```\n\nProof structure:\n1. Write `c^(r⁻¹) = exp(log(c) · r⁻¹)` using `rpow_def_of_pos hc`\n2. As `r → +∞`, `r⁻¹ → 0`, so `log(c) · r⁻¹ → 0` (via `tendsto_inv_atTop_zero.const_mul`)\n3. By continuity of `exp` at 0: `exp(log(c) · r⁻¹) → exp(0) = 1`\n4. Chain via `.comp` and `.congr` to get `c^(r⁻¹) → 1`\n\nThis lemma is applied twice:\n- Directly for `n^(1/r) → 1` (in the lower bound of the squeeze)\n- Via `.inv₀` to get `n^(-1/r) → 1` (since `n^(-1/r) = (n^(1/r))⁻¹`)\n\nThe `.congr` at the end rewrites using `rpow_def_of_pos` to equate `c ^ r⁻¹` with `exp(log c * r⁻¹)`.",
+    "mathContext": "For $c > 0$: $c^{1/r} = e^{(\\log c)/r} \\to e^0 = 1$ as $r \\to +\\infty$. Continuity of $\\exp$ at 0 is `continuous_exp.continuousAt`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tendsto_inv_atTop_zero",
+      "Real.rpow_def_of_pos",
+      "continuous_exp",
+      "Filter.Tendsto",
+      "tendsto_const_mul"
+    ],
+    "prerequisites": [
+      "Real.log and exp",
+      "Filter.Tendsto composition"
+    ]
+  },
+  {
+    "id": "ann-antitone-rpow",
+    "proofId": "amgm-inequality-oq-03-oq-03-oq-01",
+    "range": {
+      "startLine": 55,
+      "endLine": 74
+    },
+    "type": "concept",
+    "title": "Antitone rpow for Nonpositive Exponents",
+    "content": "Two auxiliary lemmas establish that `rpow` reverses order for nonpositive exponents:\n\n**`aux_inv_le_inv`**: For `0 < a ≤ b`: `b⁻¹ ≤ a⁻¹`. Proved by a 3-step `calc` multiplying both sides by `a·b`:\n```\nb⁻¹ = b⁻¹ · (a · a⁻¹) ≤ b⁻¹ · (b · a⁻¹) = a⁻¹\n```\nThis avoids `div_le_div` and works purely with `inv` and `mul_le_mul_of_nonneg_left`.\n\n**`rpow_le_rpow_of_nonpos`**: For `0 < a ≤ b` and `z ≤ 0`: `b^z ≤ a^z`. Proved by:\n- Case `z = 0`: `simp` (both sides are 1)\n- Case `z < 0`: Write `z = -(-z)`, use `rpow_neg` to convert to inverses, then apply `aux_inv_le_inv` with `rpow_le_rpow` (which is monotone for nonneg exponents).\n\nThis is used in the duality section to handle the min computation, and underlies the `minX_eq_inv_maxX_inv` identity.",
+    "mathContext": "For $0 < a \\leq b$ and $z \\leq 0$: $b^z \\leq a^z$ since $t \\mapsto t^z$ is decreasing on $(0,\\infty)$ for $z < 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "rpow_neg",
+      "rpow_le_rpow",
+      "inv_pos",
+      "mul_le_mul_of_nonneg_left"
+    ],
+    "prerequisites": [
+      "Real.rpow monotonicity"
+    ]
+  },
+  {
+    "id": "ann-max-bounds",
+    "proofId": "amgm-inequality-oq-03-oq-03-oq-01",
+    "range": {
+      "startLine": 99,
+      "endLine": 147
+    },
+    "type": "concept",
+    "title": "The Squeeze Bounds: M_r ≤ max and max·n^{-1/r} ≤ M_r",
+    "content": "Two theorems establish the bounds needed for the squeeze theorem:\n\n**Upper bound** (`M_le_maxX`, lines 99-123):\n$$M_r \\leq \\max x_i \\quad (r > 0)$$\nProof: Each $x_i^r \\leq (\\max x)^r$ (by `rpow_le_rpow`). Summing: $\\frac{\\sum x_i^r}{n} \\leq (\\max x)^r$. Taking $(\\cdot)^{1/r}$ (order-preserving for positive exponent): $M_r \\leq (\\max x)^{r \\cdot (1/r)} = \\max x$.\n\nKey step: `rpow_mul` collapses $(\\max x)^{r \\cdot (1/r)} = (\\max x)^1 = \\max x` via `mul_one_div_cancel`.\n\n**Lower bound** (`maxX_mul_rpow_le_M`, lines 125-146):\n$$\\max x \\cdot n^{-1/r} \\leq M_r \\quad (r > 0)$$\nProof: Let $i_0$ be the maximizer (`exists_maxX`). Then $(\\max x)^r = x_{i_0}^r \\leq \\sum x_i^r$ (single term ≤ sum). Divide by $n$, take $(\\cdot)^{1/r}$:\n$$M_r \\geq \\left(\\frac{(\\max x)^r}{n}\\right)^{1/r} = \\max x \\cdot n^{-1/r}$$\nThe last equality uses `div_rpow` + `rpow_mul` + `rpow_neg`.",
+    "mathContext": "The squeeze: $\\max x \\cdot n^{-1/r} \\leq M_r \\leq \\max x$. Both bounds are tight: the upper is achieved when all $x_i = \\max x$; the lower is asymptotically tight as $r \\to \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "rpow_le_rpow",
+      "rpow_mul",
+      "Finset.sum_le_sum",
+      "Finset.single_le_sum",
+      "div_rpow"
+    ],
+    "prerequisites": [
+      "maxX definition",
+      "exists_maxX (existence of maximizer)",
+      "rpow monotonicity"
+    ]
+  },
+  {
+    "id": "ann-atTop-squeeze",
+    "proofId": "amgm-inequality-oq-03-oq-03-oq-01",
+    "range": {
+      "startLine": 152,
+      "endLine": 174
+    },
+    "type": "concept",
+    "title": "Squeeze Theorem: M_r → max as r → +∞",
+    "content": "The main +∞ limit theorem applies Mathlib's squeeze:\n\n```lean\nexact tendsto_of_tendsto_of_tendsto_of_le_of_le' hlb tendsto_const_nhds\n  ((eventually_gt_atTop 0).mono (fun r hr => maxX_mul_rpow_le_M x hx hr))\n  ((eventually_gt_atTop 0).mono (fun r hr => M_le_maxX x hx hr))\n```\n\nThe three components:\n1. **Lower bound tendsto**: `hlb` proves `maxX · n^(-1/r) → maxX`\n   - `tendsto_rpow_inv_atTop hN_pos` gives `n^(1/r) → 1`\n   - `.inv₀` gives `n^(-1/r) → 1` (inverting a sequence converging to nonzero limit)\n   - `.const_mul (maxX x)` gives `maxX · n^(-1/r) → maxX · 1 = maxX`\n   - `.congr'` with `ring` handles the `one_div` vs `⁻¹` notation\n2. **Upper bound constant**: `tendsto_const_nhds` — the constant sequence `maxX` trivially converges to `maxX`\n3. **Eventual bounds**: Both `maxX_mul_rpow_le_M` and `M_le_maxX` hold eventually (for `r > 0`, which holds from `eventually_gt_atTop 0`)\n\n`tendsto_of_tendsto_of_tendsto_of_le_of_le'` is Mathlib's `'` variant accepting eventual (not pointwise) bounds.",
+    "mathContext": "Squeeze theorem: if $l_n \\leq a_n \\leq u_n$ eventually and $l_n, u_n \\to L$, then $a_n \\to L$. Here $L = \\max x$, $l_r = \\max x \\cdot n^{-1/r}$, $u_r = \\max x$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tendsto_of_tendsto_of_tendsto_of_le_of_le'",
+      "eventually_gt_atTop",
+      "Filter.Tendsto.inv₀",
+      "Filter.Tendsto.const_mul"
+    ],
+    "prerequisites": [
+      "tendsto_rpow_inv_atTop",
+      "M_le_maxX",
+      "maxX_mul_rpow_le_M"
+    ]
+  },
+  {
+    "id": "ann-duality-min",
+    "proofId": "amgm-inequality-oq-03-oq-03-oq-01",
+    "range": {
+      "startLine": 181,
+      "endLine": 229
+    },
+    "type": "insight",
+    "title": "Algebraic Duality: M_{-r}(x) = 1/M_r(1/x) and min = 1/max(1/x)",
+    "content": "Two key algebraic identities reduce the -∞ limit to the +∞ result:\n\n**Duality** (`M_neg_eq_inv_M_inv`, lines 181-189):\n$$M_{-r}(x) = \\left(M_r(1/x)\\right)^{-1}$$\nProof: Start from the definition with exponent $-r$:\n- `inv_rpow` converts $x_i^{-r} = (x_i^{-1})^r$\n- `rpow_neg` converts $(\\cdot)^{1/(-r)} = (\\cdot)^{-(1/r)}$ = inverse of $(\\cdot)^{1/r}$\n- `rpow_neg hsum_nn` then gives the outer inverse\n\n**Min-Max inversion** (`minX_eq_inv_maxX_inv`, lines 211-228):\n$$\\min(x) = \\left(\\max(1/x)\\right)^{-1}$$\nProved by `le_antisymm` with two directions:\n- (≤): `max(1/x)⁻¹ ≤ (min x)⁻¹` because each `(x i)⁻¹ ≤ (min x)⁻¹` (by `aux_inv_le_inv`), so `max(1/x) ≤ (min x)⁻¹`, then invert again\n- (≥): Let $i_0$ realize the minimum; `max(1/x)⁻¹ ≤ ((x i₀)⁻¹)⁻¹ = x i₀ = min x`\n\nThese two identities together mean: $M_r(x) \\to \\min x$ as $r \\to -\\infty$ follows from $M_r(1/x) \\to \\max(1/x) = (\\min x)^{-1}$ as $r \\to +\\infty$.",
+    "mathContext": "Duality: $\\left(\\frac{\\sum x_i^{-r}}{n}\\right)^{-1/r} = \\left[\\left(\\frac{\\sum (x_i^{-1})^r}{n}\\right)^{1/r}\\right]^{-1}$. Min-Max: $\\min_i x_i = (\\max_i x_i^{-1})^{-1}$ for positive $x_i$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "inv_rpow",
+      "rpow_neg",
+      "Finset.inf'",
+      "Finset.sup'",
+      "aux_inv_le_inv",
+      "le_antisymm"
+    ],
+    "prerequisites": [
+      "aux_inv_le_inv",
+      "minX and maxX definitions",
+      "rpow_neg"
+    ]
+  },
+  {
+    "id": "ann-atBot-via-duality",
+    "proofId": "amgm-inequality-oq-03-oq-03-oq-01",
+    "range": {
+      "startLine": 235,
+      "endLine": 270
+    },
+    "type": "concept",
+    "title": "Limit as r → -∞ via Filter Composition with Negation",
+    "content": "The -∞ limit is derived from the +∞ result by a three-step composition:\n\n```lean\nexact (hcomp.comp tendsto_neg_atBot_atTop).congr (fun r => congr_arg (M x) (neg_neg r))\n```\n\n**Step 1** (`hmax`): $M_y(r) \\to \\max(y) = \\max(1/x)$ as $r \\to +\\infty$ (from `tendsto_M_atTop` applied to $y_i = 1/x_i$)\n\n**Step 2** (`hinv`): $(M_y(r))^{-1} \\to (\\max(1/x))^{-1} = \\min(x)$ as $r \\to +\\infty$\n- `hmax.inv₀ hMaxNe` inverts the limit (valid since `maxX y ≠ 0`)\n- `← hminmax` uses the min-max inversion identity\n\n**Step 3** (`hcomp`): $M_x(-s) \\to \\min(x)$ as $s \\to +\\infty$\n- Uses `hdual s hs : M x (-s) = (M y s)⁻¹` (holding for `s ≠ 0`)\n- Applied via `.congr'` with `eventually_ne_atTop 0`\n\n**Step 4** (final): $M_x(r) \\to \\min(x)$ as $r \\to -\\infty$\n- Substitute `r = -s`, i.e., compose `hcomp` with `tendsto_neg_atBot_atTop` (which maps the filter `atBot` to `atTop` via `s ↦ -s`)\n- Final `.congr` rewrites `M x (- -r) = M x r` by `neg_neg`",
+    "mathContext": "Filter composition: `Tendsto f atTop L` composed with `Tendsto Neg.neg atBot atTop` gives `Tendsto (f ∘ Neg.neg) atBot L`, i.e., `Tendsto (fun r => f (-r)) atBot L`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tendsto_neg_atBot_atTop",
+      "Filter.Tendsto.comp",
+      "Filter.Tendsto.inv₀",
+      "Filter.Tendsto.congr'",
+      "eventually_ne_atTop"
+    ],
+    "prerequisites": [
+      "tendsto_M_atTop",
+      "M_neg_eq_inv_M_inv",
+      "minX_eq_inv_maxX_inv"
+    ]
+  }
+]

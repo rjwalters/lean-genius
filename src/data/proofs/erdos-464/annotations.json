@@ -1,0 +1,187 @@
+[
+  {
+    "id": "ann-464-header",
+    "proofId": "erdos-464",
+    "range": {
+      "startLine": 1,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Lacunary Sequences and Irrational Multiples",
+    "content": "Erdős Problem #464 (SOLVED): Given a lacunary sequence $A = \\{n_1 < n_2 < \\cdots\\}$ with $n_{k+1} \\geq (1+\\varepsilon)n_k$, must there exist an irrational $\\theta$ such that $\\{\\|\\theta n_k\\| : k \\geq 1\\}$ is not dense in $[0,1]$?\n\nAnswer: YES, proved independently by de Mathan (1980) and Pollington (1979), who showed $\\inf_k \\|\\theta n_k\\| > 0$ for some $\\theta$. Peres and Schlag improved the bound to $\\gg \\varepsilon/\\log(1/\\varepsilon)$. This connects **Diophantine approximation** (how well irrationals approximate rationals) to **lacunary analysis** (sequences with exponential gaps).",
+    "mathContext": "Lacunary: $n_{k+1}/n_k \\geq 1 + \\varepsilon$. Result: $\\exists \\theta \\in \\mathbb{R} \\setminus \\mathbb{Q}$ with $\\inf_k \\|\\theta n_k\\| > 0$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "lacunary sequences",
+      "distance to nearest integer",
+      "Diophantine approximation"
+    ],
+    "relatedConcepts": [
+      "lacunary series",
+      "Weyl's equidistribution",
+      "metrical number theory"
+    ]
+  },
+  {
+    "id": "ann-464-imports",
+    "proofId": "erdos-464",
+    "range": {
+      "startLine": 24,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Imports and Namespace",
+    "content": "Imports Mathlib.Data.Real.Basic (for ℝ, Int.floor, Int.ceil, Real.log) and Mathlib.Data.Nat.Basic (for ℕ arithmetic). Opens the Erdos464 namespace to scope all definitions.",
+    "significance": "supporting",
+    "mathContext": "The formalization uses only basic real and natural number arithmetic from Mathlib. The floor and ceiling functions are essential for defining the distance-to-nearest-integer function ‖x‖.",
+    "relatedConcepts": [
+      "real arithmetic",
+      "floor function",
+      "ceiling function"
+    ],
+    "prerequisites": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Nat.Basic"
+    ]
+  },
+  {
+    "id": "ann-464-lacunary",
+    "proofId": "erdos-464",
+    "range": {
+      "startLine": 33,
+      "endLine": 35
+    },
+    "type": "definition",
+    "title": "IsLacunary — Lacunary Sequence Predicate",
+    "content": "IsLacunary a ε holds when ε > 0, a is strictly monotone, and a(k+1) ≥ (1+ε)·a(k) for all k. The strict monotonicity ensures injectivity, while the ratio condition forces at least geometric growth: a(k) ≥ a(0)·(1+ε)^k.",
+    "significance": "key",
+    "mathContext": "Lacunary sequences arise throughout harmonic analysis and number theory. The term 'lacunary' (from Latin 'lacuna' = gap) was popularized by Hadamard (1892) in his study of lacunary trigonometric series, where gaps between frequencies grow geometrically. The condition n_{k+1}/n_k ≥ 1+ε is sometimes called the Hadamard gap condition.",
+    "relatedConcepts": [
+      "exponential growth",
+      "Hadamard gap condition",
+      "geometric sequences",
+      "lacunary trigonometric series"
+    ],
+    "prerequisites": [
+      "StrictMono",
+      "real arithmetic"
+    ]
+  },
+  {
+    "id": "ann-464-distToInt",
+    "proofId": "erdos-464",
+    "range": {
+      "startLine": 37,
+      "endLine": 39
+    },
+    "type": "definition",
+    "title": "distToInt — Distance to Nearest Integer",
+    "content": "distToInt(x) = min(x - ⌊x⌋, ⌈x⌉ - x) computes ‖x‖, the distance from x to the nearest integer. This always lies in [0, 1/2] and equals 0 iff x ∈ ℤ. It is the standard metric in Diophantine approximation.",
+    "significance": "key",
+    "mathContext": "The function ‖x‖ = min({x}, 1-{x}) where {x} = x - ⌊x⌋ is the fractional part, is fundamental in Diophantine approximation. It satisfies ‖x‖ = 0 iff x ∈ ℤ, ‖x+n‖ = ‖x‖ for n ∈ ℤ, and ‖x+y‖ ≤ ‖x‖ + ‖y‖ (making it a semi-metric on ℝ/ℤ). The Lean definition uses floor and ceiling directly rather than the fractional part formulation.",
+    "relatedConcepts": [
+      "fractional part",
+      "Diophantine approximation",
+      "equidistribution modulo 1",
+      "ℝ/ℤ metric"
+    ],
+    "prerequisites": [
+      "Int.floor",
+      "Int.ceil",
+      "min"
+    ]
+  },
+  {
+    "id": "ann-464-notDense",
+    "proofId": "erdos-464",
+    "range": {
+      "startLine": 41,
+      "endLine": 43
+    },
+    "type": "definition",
+    "title": "NotDense — Non-Density Predicate",
+    "content": "NotDense θ a asserts ∃ δ > 0, ∀ k, distToInt(θ·a(k)) ≥ δ. This means all fractional distances ‖θ·n_k‖ are bounded away from zero, so {‖θ·n_k‖} omits the interval [0, δ) and hence is not dense in [0, 1/2].",
+    "significance": "key",
+    "mathContext": "Non-density is the formal negation of Erdős's question. By Weyl's equidistribution theorem (1916), for Lebesgue-almost-every θ, the sequence {θ·n_k} is equidistributed mod 1 (hence ‖θ·n_k‖ is dense in [0,1/2]). The existence of even one θ breaking density is a statement about exceptional sets of measure zero, making this a 'metric vs. topological' phenomenon in Diophantine approximation.",
+    "relatedConcepts": [
+      "density in [0,1/2]",
+      "Weyl equidistribution theorem",
+      "exceptional sets",
+      "metric Diophantine approximation"
+    ],
+    "prerequisites": [
+      "distToInt",
+      "IsLacunary"
+    ]
+  },
+  {
+    "id": "ann-464-deMathan",
+    "proofId": "erdos-464",
+    "range": {
+      "startLine": 54,
+      "endLine": 55
+    },
+    "type": "concept",
+    "title": "de Mathan-Pollington Theorem",
+    "content": "For every lacunary sequence a with parameter ε, there exists an irrational θ with NotDense θ a. This resolves Erdős #464 affirmatively: lacunary sequences always admit an irrational whose fractional parts avoid a neighborhood of zero.",
+    "significance": "key",
+    "mathContext": "Proved independently by Pollington (1979, Illinois J. Math.) and de Mathan (1980, Acta Math. Hung.). The original quantitative bound was inf_k ‖θn_k‖ ≥ c·ε⁴/log(1/ε). The proof constructs θ via a careful continued fraction argument, choosing partial quotients to ensure all ‖θn_k‖ stay large. Axiomatized here since the full proof requires deep metric number theory.",
+    "relatedConcepts": [
+      "continued fractions",
+      "metric number theory",
+      "Dirichlet's approximation theorem",
+      "badly approximable numbers"
+    ],
+    "prerequisites": [
+      "IsLacunary",
+      "NotDense",
+      "Irrational"
+    ]
+  },
+  {
+    "id": "ann-464-peresSchlag",
+    "proofId": "erdos-464",
+    "range": {
+      "startLine": 65,
+      "endLine": 67
+    },
+    "type": "concept",
+    "title": "Peres-Schlag Quantitative Bound",
+    "content": "For lacunary a with parameter ε < 1, there exist irrational θ and constant c > 0 such that ‖θ·a(k)‖ ≥ c·ε/log(1/ε) for all k. This is the current best quantitative bound, nearly matching the conjectured optimal Θ(ε).",
+    "significance": "key",
+    "mathContext": "Peres and Schlag (2010, Bull. London Math. Soc.) improved the bound from ε⁴/log(1/ε) to ε/log(1/ε) using a probabilistic pigeonhole argument combined with the Lovász Local Lemma. The log factor arises from a union bound over scales; removing it to reach the conjectured Θ(ε) remains open. The condition ε < 1 is technical (for ε ≥ 1 the sequence grows so fast that stronger results hold trivially).",
+    "relatedConcepts": [
+      "Lovász Local Lemma",
+      "probabilistic method",
+      "chromatic number bounds",
+      "pigeonhole principle"
+    ],
+    "prerequisites": [
+      "IsLacunary",
+      "distToInt",
+      "Real.log"
+    ]
+  },
+  {
+    "id": "ann-464-mainThm",
+    "proofId": "erdos-464",
+    "range": {
+      "startLine": 79,
+      "endLine": 81
+    },
+    "type": "concept",
+    "title": "Erdős Problem #464 — Main Theorem",
+    "content": "For every lacunary sequence a with parameter ε, there exists irrational θ with NotDense θ a. The proof is a direct application of de_mathan_pollington. This formally resolves Erdős Problem #464: YES, lacunary sequences always admit θ with non-dense fractional parts.",
+    "significance": "key",
+    "mathContext": "The final theorem is a simple wrapper around the de Mathan-Pollington axiom. The proof term `de_mathan_pollington a ε h` directly produces the witness. While the main theorem adds no new mathematical content beyond the axiom, it serves as the canonical statement of the resolved Erdős problem in the formalization.",
+    "relatedConcepts": [
+      "Erdős problems",
+      "formal verification of solved problems",
+      "lacunary sequences"
+    ],
+    "prerequisites": [
+      "de_mathan_pollington",
+      "IsLacunary"
+    ]
+  }
+]

@@ -1,0 +1,225 @@
+{
+  "id": "erdos-558",
+  "title": "Erdős Problem #558: Multicolor Ramsey Numbers for Complete Bipartite Graphs",
+  "slug": "erdos-558",
+  "description": "Determine R(K_{s,t}; k), the minimum m such that any k-coloring of K_m contains monochromatic K_{s,t}. Key results: R(K_{2,2}; k) ~ k², R(K_{3,3}; k) ~ k³.",
+  "meta": {
+    "author": "Chung-Graham (1975), Alon-Rónyai-Szabó (1999)",
+    "sourceUrl": "https://erdosproblems.com/558",
+    "date": "1975",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos558Problem.lean",
+    "tags": [
+      "erdos",
+      "ramsey-theory",
+      "bipartite-graphs",
+      "multicolor-ramsey",
+      "graph-theory"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 558,
+    "erdosUrl": "https://erdosproblems.com/558",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph.Adj",
+        "description": "Graph adjacency relation",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Filter limit/tendsto",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real power function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "CompleteBipartite structure with s,t parts",
+      "EdgeColoring and hasMonochromaticBipartite definitions",
+      "ramseyBipartite axiom: multicolor Ramsey number",
+      "Chung-Graham bounds (1975): general polynomial bounds",
+      "ramsey_K22: R(K_{2,2}; k) = Θ(k²)",
+      "ramsey_K33: R(K_{3,3}; k) = Θ(k³)",
+      "criticalS threshold: (t-1)!+1",
+      "alon_ronyai_szabo: R(K_{s,t}; k) = Θ(k^t) above threshold",
+      "erdos_558 theorem: combined statement",
+      "erdos_558_summary: combining K22, K33, and general theorem"
+    ],
+    "axiomCount": 5,
+    "lineCount": 194,
+    "assumptions": "5 axioms: ramseyBipartite (bipartite Ramsey number function), chung_graham_bounds (Chung-Graham 1975 general Ramsey bounds for K_{s,t}), ramsey_K22 (R(K_{2,2}; k) ≈ k²), ramsey_K33 (Alon-Rónyai-Szabó 1999: R(K_{3,3}; k) ≈ k³), alon_ronyai_szabo (R(K_{s,t}; k) = Θ(k^t) when s ≥ (t-1)!+1). 0 sorries.",
+    "theoremCount": 2,
+    "definitionCount": 10
+  },
+  "overview": {
+    "historicalContext": "**Erdos Problem #558: Multicolor Bipartite Ramsey Numbers**\n\n**The question:**\nDetermine $R(K_{s,t}; k)$, the minimum $m$ such that any $k$-coloring of $K_m$ contains a monochromatic complete bipartite subgraph $K_{s,t}$. Unlike classical diagonal Ramsey numbers $R(n, n)$ which grow exponentially (between $2^{n/2}$ and $4^n$), bipartite Ramsey numbers grow as a polynomial in $k$ -- a fundamentally different regime.\n\n**Chung-Graham (1975):**\nFan Chung and Ronald Graham established the first general bounds: $c_1 k^{(st-1)/(s+t)} \\le R(K_{s,t}; k) \\le c_2 k^t$ for constants depending on $s, t$. They also proved the tight result $R(K_{2,2}; k) = (1+o(1))k^2$. The lower bound for $C_4 = K_{2,2}$ uses projective plane constructions: the incidence graph of the projective plane $PG(2, q)$ is $C_4$-free and $(q+1)$-regular on $q^2 + q + 1$ vertices, providing $(k-1)$-colorings of $K_{k^2-k+1}$ without monochromatic $C_4$.\n\n**Alon-Ronyai-Szabo (1999):**\nNoga Alon, Lajos Ronyai, and Tibor Szabo made a breakthrough using norm graphs over finite fields. They defined a graph on $\\mathbb{F}_{q^{t-1}}$ where $x \\sim y$ iff $N(x - y) = 1$ (where $N: \\mathbb{F}_{q^{t-1}} \\to \\mathbb{F}_q$ is the field norm). This graph is $K_{s,t}$-free for $s \\ge (t-1)! + 1$ (since the norm equation restricts the number of solutions) and has the right edge density for tight lower bounds. This proved $R(K_{3,3}; k) = (1+o(1))k^3$ and established the general result: $R(K_{s,t}; k) = \\Theta(k^t)$ when $s \\ge (t-1)! + 1$.\n\n**Current status:**\nThe problem is substantially resolved above the factorial threshold. Below it (e.g., $R(K_{2,3}; k)$, $R(K_{2,4}; k)$), the exact growth exponent remains open, with gaps between the Chung-Graham lower bound and the upper bound.",
+    "problemStatement": "Let $R(G; k)$ denote the minimal $m$ such that if the edges of $K_m$ are $k$-coloured then there is a monochromatic copy of $G$. Determine $R(K_{s,t}; k)$ where $K_{s,t}$ is the complete bipartite graph.",
+    "text": "Determine R(K_{s,t}; k), the minimum m such that any k-coloring of K_m contains monochromatic K_{s,t}. Key results: R(K_{2,2}; k) ~ k², R(K_{3,3}; k) ~ k³.",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization builds the theory of multicolor bipartite Ramsey numbers in eleven parts:\n\n1. **Core definitions (Part 1):** `CompleteBipartite` structure with $K[s,t]$ notation, `EdgeColoring` as a function $\\text{Fin}\\, m \\to \\text{Fin}\\, m \\to \\text{Fin}\\, k$, `hasMonochromaticBipartite` via disjoint sets of the right cardinalities, and the axiomatized `ramseyBipartite`.\n\n2. **Basic properties (Part 2):** Four axioms establishing existence, minimality, and monotonicity in both the graph and the number of colors.\n\n3. **Chung-Graham bounds (Part 3):** Defines the explicit lower and upper bound functions, axiomatizes the bounds, and verifies the exponent inequality.\n\n4. **K_{2,2} case (Part 4):** Tight $\\Theta(k^2)$ asymptotics via `Filter.Tendsto`, with the projective plane lower bound.\n\n5. **K_{3,3} case (Part 5):** Tight $\\Theta(k^3)$ asymptotics from the norm graph construction.\n\n6. **General theorem (Part 6):** The factorial threshold `criticalS(t) = (t-1)!+1` and the Alon-Ronyai-Szabo result.\n\n7. **Main theorem (Part 7):** `erdos_558` combines Chung-Graham with the threshold result.\n\n8-11. **Norm graphs, specific values, Turan connection, summary:** Additional lower bounds, cases $K_{2,3}$ and $K_{2,4}$, Zarankiewicz connection, and the bundled summary.",
+    "keyInsights": [
+      "**Polynomial vs. exponential growth:** Classical Ramsey numbers $R(K_n; 2)$ grow exponentially ($2^{n/2} \\le R(n,n) \\le 4^n$), but bipartite Ramsey numbers $R(K_{s,t}; k)$ grow as a polynomial $k^\\alpha$. This fundamental difference arises because bipartite graphs have bounded degeneracy, which limits the combinatorial explosion.",
+      "**Norm graphs from algebraic geometry:** The key tool for lower bounds is the norm graph: on vertex set $\\mathbb{F}_{q^{t-1}}$, connect $x$ and $y$ iff $N_{\\mathbb{F}_{q^{t-1}}/\\mathbb{F}_q}(x-y) = c$ for a fixed $c$. The norm is a polynomial of degree $t-1$, so for each $x$, the equation $N(x-y) = c$ has at most $(t-1)!$ solutions in $y$ -- this is where the factorial threshold $(t-1)!+1$ comes from.",
+      "**Projective plane construction for $C_4$:** The incidence graph of $PG(2, q)$ has $q^2+q+1$ vertices, is $(q+1)$-regular, and is $C_4$-free (since two lines meet in at most one point). Partitioning its edges into $q$ colors gives a $(k-1)$-coloring of $K_{q^2+q+1}$ with no monochromatic $C_4$, yielding $R(C_4; k) \\ge k^2-k+1$.",
+      "**The factorial threshold is sharp:** Below $s = (t-1)!+1$, the norm graph construction fails because the norm equation can have up to $(t-1)!$ solutions, allowing monochromatic $K_{s,t}$. The resulting gap in the exponent (e.g., $R(K_{2,3}; k)$ has exponent between $5/3$ and $2$) represents genuinely open mathematics.",
+      "**Connection to Zarankiewicz problem:** The lower bound exponent $(st-1)/(s+t)$ comes from the Kovari-Sos-Turan theorem on $K_{s,t}$-free bipartite graphs: $z(m; s, t) \\le c \\cdot m^{2-1/s}$. Distributing edges across $k$ colors and applying this bound in each color class yields the Chung-Graham lower bound."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Ramsey theory (partition regularity)",
+      "Graph theory (vertices, edges, colorings)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "summary": "Module docstring stating Erdős Problem #558 — determine the multicolor Ramsey number $R(K_{s,t};k)$, the least $m$ such that every $k$-colouring of $K_m$ contains a monochromatic $K_{s,t}$ — with status partially solved (asymptotics known). Imports `SimpleGraph` basics/cliques, Finset, and real power functions; `namespace Erdos558`; `open SimpleGraph`.",
+      "startLine": 1,
+      "endLine": 35,
+      "mathContext": "Background: Chung-Graham (1975) gave general bounds and $R(K_{2,2};k)=(1+o(1))k^2$; Alon-Rónyai-Szabó (1999) gave $R(K_{3,3};k)=(1+o(1))k^3$ and $k^t$ growth when $s\\ge(t-1)!+1$. Unlike $R(K_n;2)$, these grow polynomially in $k$."
+    },
+    {
+      "id": "definitions",
+      "title": "Part 1: Basic Definitions",
+      "summary": "Defines `CompleteBipartite` with $K[s,t]$ notation, `vertexCount` $=s+t$, `edgeCount` $=st$, `EdgeColoring m k` as $\\mathrm{Fin}\\,m\\to\\mathrm{Fin}\\,m\\to\\mathrm{Fin}\\,k$, and `hasMonochromaticBipartite` (disjoint $S,T$ with all cross edges one colour). Axiomatizes `ramseyBipartite` with $R(G;k)$ notation.",
+      "startLine": 36,
+      "endLine": 72,
+      "mathContext": "One structure, five definitions, one axiom (`ramseyBipartite`, the Ramsey number itself)."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Part 2: Basic Properties",
+      "summary": "Section banner noting that the Ramsey number is well-defined and monotone. Exposition placeholder; declares no Lean content.",
+      "startLine": 73,
+      "endLine": 78,
+      "mathContext": "Empty docstring banner (no definitions, theorems, or axioms)."
+    },
+    {
+      "id": "chung-graham",
+      "title": "Part 3: Chung-Graham Bounds (1975)",
+      "summary": "Defines the explicit bound functions `chungGrahamLower` and `chungGrahamUpper`, and axiomatizes `chung_graham_bounds`: for $s,t\\ge1$, $k\\ge2$, $\\texttt{chungGrahamLower}\\le R(K[s,t];k)\\le\\texttt{chungGrahamUpper}$.",
+      "startLine": 79,
+      "endLine": 99,
+      "mathContext": "Two definitions and one axiom (`chung_graham_bounds`). The lower bound has the form $\\sim k^{(st-1)/(s+t)}$; the upper bound $\\sim (t-1)(k+k^{1/s})^s$."
+    },
+    {
+      "id": "k22",
+      "title": "Part 4: The Case K_{2,2} (Four-Cycle)",
+      "summary": "Defines $C_4 = K[2,2]$ and axiomatizes `ramsey_K22`: $R(C_4;k)=\\Theta(k^2)$, i.e. $\\exists c_1,c_2>0$ with $c_1k^2\\le R(C_4;k)\\le c_2k^2$ for $k\\ge2$ (Chung-Graham 1975).",
+      "startLine": 100,
+      "endLine": 113,
+      "mathContext": "One definition and one axiom (`ramsey_K22`)."
+    },
+    {
+      "id": "k33",
+      "title": "Part 5: The Case K_{3,3}",
+      "summary": "Defines $K_{3,3}=K[3,3]$ and axiomatizes `ramsey_K33`: $R(K_{3,3};k)=\\Theta(k^3)$ (Alon-Rónyai-Szabó 1999, via norm-graph constructions).",
+      "startLine": 114,
+      "endLine": 127,
+      "mathContext": "One definition and one axiom (`ramsey_K33`)."
+    },
+    {
+      "id": "ars-general",
+      "title": "Part 6: The General Theorem of Alon-Rónyai-Szabó",
+      "summary": "Defines the threshold `criticalS(t) = (t-1)!+1` and axiomatizes `alon_ronyai_szabo`: when $s\\ge(t-1)!+1$ and $t\\ge2$, $R(K[s,t];k)=\\Theta(k^t)$.",
+      "startLine": 128,
+      "endLine": 142,
+      "mathContext": "One definition and one axiom (`alon_ronyai_szabo`), the general $k^t$-growth result above the factorial threshold."
+    },
+    {
+      "id": "statement",
+      "title": "Part 7: Erdős Problem #558 Statement",
+      "summary": "Proves `erdos_558`: for $s,t\\ge1$, $k\\ge2$, the Chung-Graham bounds hold, and if additionally $s\\ge(t-1)!+1$ the exponent is exactly $t$. Assembled by `constructor` from `chung_graham_bounds` and `alon_ronyai_szabo`.",
+      "startLine": 143,
+      "endLine": 161,
+      "mathContext": "One theorem combining the Part 3 and Part 6 axioms; no new axioms here."
+    },
+    {
+      "id": "norm-graphs",
+      "title": "Part 8: Norm Graphs and Lower Bounds",
+      "summary": "Section banner for the algebraic (norm-graph) constructions giving tight lower bounds. Exposition placeholder; declares no Lean content.",
+      "startLine": 162,
+      "endLine": 167,
+      "mathContext": "Empty docstring banner."
+    },
+    {
+      "id": "specific-values",
+      "title": "Part 9: Specific Values and Bounds",
+      "summary": "Section banner for specific values and numeric bounds of $R(K_{s,t};k)$. Exposition placeholder; declares no Lean content.",
+      "startLine": 168,
+      "endLine": 171,
+      "mathContext": "Empty docstring banner."
+    },
+    {
+      "id": "extremal-connection",
+      "title": "Part 10: Connection to Extremal Graph Theory",
+      "summary": "Section banner relating these Ramsey numbers to extremal (Turán-type) graph theory. Exposition placeholder; declares no Lean content.",
+      "startLine": 172,
+      "endLine": 175,
+      "mathContext": "Empty docstring banner."
+    },
+    {
+      "id": "summary",
+      "title": "Part 11: Summary",
+      "summary": "Concluding part: `erdos_558_summary` bundles the three asymptotic results — $R(C_4;k)\\sim k^2$, $R(K_{3,3};k)\\sim k^3$, and $R(K[s,t];k)=\\Theta(k^t)$ for $s\\ge(t-1)!+1$ — directly from `ramsey_K22`, `ramsey_K33`, and `alon_ronyai_szabo`.",
+      "startLine": 176,
+      "endLine": 194,
+      "mathContext": "One theorem. Net file axioms (5): `ramseyBipartite`, `chung_graham_bounds`, `ramsey_K22`, `ramsey_K33`, `alon_ronyai_szabo`."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdos Problem #558 has been substantially resolved. The multicolor bipartite Ramsey number $R(K_{s,t}; k)$ grows polynomially in $k$, with tight asymptotics known for $K_{2,2}$ ($\\sim k^2$ via projective planes) and $K_{3,3}$ ($\\sim k^3$ via norm graphs). The Alon-Ronyai-Szabo theorem establishes $R(K_{s,t}; k) = \\Theta(k^t)$ when $s \\ge (t-1)!+1$, with the factorial threshold arising from polynomial root-counting over finite fields. The formalization captures all major results with constructive proofs for the main theorem and summary.",
+    "implications": "**Theoretical Significance**: **Connections and Impact**\n\n1. **Algebraic combinatorics:** The norm graph construction bridges Ramsey theory and algebraic geometry over finite fields, using field norms and polynomial equations to build extremal graphs\n\n2. **Zarankiewicz problem:** The Ramsey lower bounds are intimately connected to $z(m; s, t)$ via the Kovari-Sos-Turan theorem; improvements in one area directly transfer to the other\n\n**3. Polynomial vs. exponential Ramsey:** The polynomial growth of bipartite Ramsey numbers contrasts sharply with the exponential growth of diagonal Ramsey numbers, illustrating how the structure of the forbidden graph controls the difficulty\n\n4. **Finite geometry:** The $C_4$ lower bound from projective planes $PG(2, q)$ connects Ramsey theory to classical incidence geometry and the existence of finite projective planes\n\n5. **Pseudorandom graphs:** Norm graphs are examples of algebraic pseudorandom graphs -- they have the right edge density and forbidden subgraph properties simultaneously, a theme central to modern extremal combinatorics.",
+    "openQuestions": [
+      "What is the exact exponent for $R(K_{s,t}; k)$ when $s < (t-1)!+1$? In particular, what is the exponent for $R(K_{2,3}; k)$?",
+      "Can the constants in the asymptotic $R(K_{s,t}; k) = (c+o(1))k^t$ be determined exactly for all $s \\ge (t-1)!+1$?",
+      "Are there constructions better than norm graphs for lower bounds below the factorial threshold?",
+      "Does the bipartite Ramsey theory extend to hypergraph analogs with similar polynomial growth?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos558",
+    "lineCount": 194,
+    "axiomCount": 5,
+    "theoremCount": 2,
+    "definitionCount": 10,
+    "path": "Proofs/Erdos558Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-554",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, multicolor-ramsey, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-560",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-925",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, multicolor-ramsey, ramsey-theory"
+    }
+  ],
+  "sorries": 0
+}

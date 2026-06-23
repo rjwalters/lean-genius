@@ -1,0 +1,262 @@
+{
+  "id": "erdos-956",
+  "title": "Erdős Problem #956: Unit Distances Between Convex Translates",
+  "slug": "erdos-956",
+  "description": "Let h(n) be the max unit distances among n disjoint convex translates. Is h(n) > n^(1+c) for some c > 0? OPEN: Known bounds are Ω(n log n / log log n) ≤ h(n) ≤ O(n^(4/3)).",
+  "meta": {
+    "author": "Erdős-Pach (problem and 1990 bounds)",
+    "sourceUrl": "https://erdosproblems.com/956",
+    "date": "ongoing",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos956Problem.lean",
+    "tags": [
+      "erdos",
+      "geometry",
+      "combinatorics",
+      "unit-distances",
+      "convex-sets",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 6,
+    "erdosNumber": 956,
+    "erdosUrl": "https://erdosproblems.com/956",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Euclidean space ℝ² representation",
+        "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
+      },
+      {
+        "theorem": "Convex",
+        "description": "Convexity of sets",
+        "module": "Mathlib.Analysis.Convex.Basic"
+      },
+      {
+        "theorem": "IsCompact",
+        "description": "Compactness for bounded closed sets",
+        "module": "Mathlib.Topology.Compactness.Compact"
+      },
+      {
+        "theorem": "Metric.dist",
+        "description": "Distance function in metric spaces",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of set distance δ(C, D)",
+      "Structure for compact convex sets in ℝ²",
+      "Definition of translate C + x",
+      "Structure for disjoint translates configuration",
+      "Definition of unit distance between translates",
+      "Definition of extremal function h(n)",
+      "Connection to classical unit distance function f(n)",
+      "Axiomatization of Erdős-Pach upper bound O(n^(4/3))",
+      "General convex sets case O(n^(7/5))",
+      "Statement of the Erdős-Pach conjecture h(n) > n^(1+c)",
+      "Connection to Szemerédi-Trotter incidence bounds"
+    ],
+    "relatedProblems": [
+      "erdos-90",
+      "szemeredi-theorem"
+    ],
+    "axiomCount": 2,
+    "assumptions": "2 axioms: erdos_pach_upper_bound, grid_construction. 6 sorries.",
+    "lineCount": 309,
+    "theoremCount": 14,
+    "definitionCount": 16,
+    "additionalFiles": [
+      "Proofs/Erdos956Aristotle.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "**Unit Distances Between Convex Translates**\n\nThe study of repeated distances in combinatorial geometry traces back to Erdős's landmark 1946 paper, where he asked for the maximum number $f(n)$ of unit distances determined by $n$ points in the plane. Erdős showed $f(n) \\geq n^{1+c/\\log\\log n}$ using a $\\sqrt{n} \\times \\sqrt{n}$ section of the integer lattice, and conjectured the upper bound $f(n) = O(n^{1+\\epsilon})$ for every $\\epsilon > 0$. In 1983, Spencer, Szemerédi, and Trotter proved $f(n) = O(n^{4/3})$ using their celebrated point-line incidence theorem, which remains the best known upper bound.\n\nProblem #956 generalizes this from points to compact convex sets. Erdős and Pach introduced the function $h(n)$—the maximum number of pairs at unit distance among $n$ disjoint translates of a fixed compact convex set $C \\subset \\mathbb{R}^2$—in their 1990 paper \"Variations on the theme of repeated distances\" in Combinatorica. They observed that since small disks around points are convex translates, one always has $h(n) \\geq f(n)$. Using a reduction to the Szemerédi-Trotter framework, they proved $h(n) = O(n^{4/3})$ for translates and $O(n^{7/5})$ for general (non-translate) disjoint convex sets.\n\nThe conjecture asks whether $h(n) > n^{1+c}$ for some absolute constant $c > 0$. This would imply that the convex sets structure does not help reduce unit distances compared to points. The best known lower bound is $\\Omega(n \\log n / \\log\\log n)$ from grid-based constructions, leaving a wide gap. The problem remains open and connects deeply to incidence geometry, the Szemerédi-Trotter theorem, and the broader theme of geometric extremal problems.\n\n**Status**: OPEN — The Erdős-Pach conjecture is unresolved.",
+    "problemStatement": "**Problem Statement**\n\nLet $C \\subset \\mathbb{R}^2$ be a compact convex set and let $h(n)$ be the maximal number of unit distances $\\delta(C + x_i, C + x_j) = 1$ among $n$ disjoint translates $C + x_1, \\ldots, C + x_n$.\n\nProve that there exists $c > 0$ such that $h(n) > n^{1+c}$ for all sufficiently large $n$.\n\n**Status**: OPEN\n\n**Known Bounds**:\n- Upper: $h(n) = O(n^{4/3})$ (Erdős-Pach 1990)\n- Lower: $h(n) = \\Omega(n \\log n / \\log\\log n)$ (grid constructions)\n- General convex sets: $O(n^{7/5})$ (Erdős-Pach 1990)",
+    "text": "Let h(n) be the max unit distances among n disjoint convex translates. Is h(n) > n^(1+c) for some c > 0? OPEN: Known bounds are Ω(n log n / log log n) ≤ h(n) ≤ O(n^(4/3)).",
+    "proofStrategy": "**Formalization Strategy**\n\nThe Lean file builds the framework incrementally:\n\n1. **Set distance** ($\\delta$): Defines the infimum of pairwise point distances between two sets in a pseudo-metric space, then proves symmetry and non-negativity\n2. **Geometric structures**: Introduces `CompactConvex` bundling a carrier set with proofs of convexity, compactness, and non-emptiness in $\\mathbb{R}^2$\n3. **Translation**: Defines $C +_s x = \\{c + x : c \\in C\\}$ and proves it preserves convexity and compactness\n4. **Configuration**: The `DisjointTranslates n` structure packages a base set with $n$ center points and a proof of pairwise disjointness\n5. **Counting**: Defines `unitDistanceCount` counting unordered pairs $(i,j)$ with $\\delta(C + x_i, C + x_j) = 1$\n6. **Extremal function**: $h(n) = \\sup\\{\\text{unitDistanceCount}(\\text{config}) : \\text{config is a DisjointTranslates } n\\}$\n7. **Comparison**: Connects $h(n)$ to the classical point unit distance function $f(n)$ via $h(n) \\geq f(n)$\n8. **Bounds**: Axiomatizes the Erdős-Pach upper bound $h(n) \\leq 2n^{4/3}$ and the general convex bound $h_{\\text{gen}}(n) \\leq 2n^{7/5}$\n9. **Conjecture**: Formally states $\\exists c > 0, \\forall n \\geq 10, h(n) > n^{1+c}$ and shows it follows from the analogous statement for $f(n)$\n10. **Special cases**: Examines disk and segment translates, and connects to Szemerédi-Trotter incidences",
+    "keyInsights": [
+      "The set distance $\\delta(C, D) = \\inf\\{\\|c - d\\| : c \\in C, d \\in D\\}$ naturally extends the point distance to compact convex bodies, and the infimum is attained for compact sets",
+      "The inequality $h(n) \\geq f(n)$ holds because one can take $C$ to be a disk of radius $\\epsilon \\to 0$ centered at each point, recovering the point configuration—this makes the conjecture at least as hard as the classical unit distance problem",
+      "The $n^{4/3}$ upper bound for translates uses a reduction to point-line incidences via the Szemerédi-Trotter theorem: each boundary pair contributing a unit distance corresponds to an incidence in a dual arrangement",
+      "Removing the translate constraint (allowing general disjoint convex sets) worsens the upper bound from $n^{4/3}$ to $n^{7/5}$, reflecting the loss of translational symmetry that constrains boundary geometry",
+      "The best lower bound $\\Omega(n \\log n / \\log\\log n)$ comes from placing translates at integer lattice points in $[1, \\sqrt{n}]^2$ and exploiting the classical lattice point result on sums of two squares",
+      "The formalization separates the problem into definitions (set distance, configurations) and axiomatized bounds, cleanly distinguishing what Lean can verify structurally from deep analytic results that require external justification"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Geometry (Euclidean, combinatorial)",
+      "Combinatorics (counting, extremal problems)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "set-distance",
+      "title": "Distance Between Sets",
+      "summary": "Defines the set distance $\\delta(C, D) = \\inf\\{\\mathrm{dist}(c,d) : c \\in C, d \\in D\\}$ as the infimum of pairwise point distances, then proves symmetry ($\\delta(C,D) = \\delta(D,C)$) and non-negativity ($\\delta(C,D) \\geq 0$), and characterizes when $\\delta(C,D) = 0$.",
+      "startLine": 31,
+      "endLine": 70,
+      "mathContext": "Defines the set distance $\\delta(C, D) = \\inf\\{\\mathrm{dist}(c,d) : c \\in C, d \\in D\\}$ as the infimum of pairwise point distances, then proves symmetry ($\\delta(C,D) = \\delta(D,C)$) and non-negativity ($\\delta(C,D) \\geq 0$), and characterizes when $\\delta(C,D) = 0$."
+    },
+    {
+      "id": "convex",
+      "title": "Convex Sets and Translates",
+      "summary": "Introduces the `CompactConvex` structure bundling a carrier set in $\\mathbb{R}^2$ with proofs of convexity, compactness, and non-emptiness. Defines the translate operation $C +_s x = \\{c + x : c \\in C\\}$ and proves that translations preserve both convexity and compactness.",
+      "startLine": 71,
+      "endLine": 107,
+      "mathContext": "Introduces the `CompactConvex` structure bundling a carrier set in $\\mathbb{R}^2$ with proofs of convexity, compactness, and non-emptiness. Defines the translate operation $C +_s x = \\{c + x : c \\in C\\}$ and proves that translations preserve both convexity and compactness."
+    },
+    {
+      "id": "configuration",
+      "title": "Disjoint Translates Configuration",
+      "summary": "Defines the `DisjointTranslates n` structure packaging a base compact convex set with $n$ center points and a proof that all translates $C + x_i$ are pairwise disjoint. Introduces `HasUnitDistance` for when $\\delta(C + x_i, C + x_j) = 1$ and `unitDistanceCount` counting such pairs.",
+      "startLine": 108,
+      "endLine": 131,
+      "mathContext": "Defines the `DisjointTranslates n` structure packaging a base compact convex set with $n$ center points and a proof that all translates $C + x_i$ are pairwise disjoint. Introduces `HasUnitDistance` for when $\\delta(C + x_i, C + x_j) = 1$ and `unitDistanceCount` counting such pairs."
+    },
+    {
+      "id": "h-function",
+      "title": "The Function h(n)",
+      "summary": "Defines the extremal function $h(n) = \\sup\\{\\text{unitDistanceCount}(\\text{config})\\}$ over all valid disjoint translate configurations. Proves monotonicity ($n \\leq m \\Rightarrow h(n) \\leq h(m)$) and the trivial bound $h(n) \\geq 0$.",
+      "startLine": 132,
+      "endLine": 148,
+      "mathContext": "Defines the extremal function $h(n) = \\sup\\{\\text{unitDistanceCount}(\\text{config})\\}$ over all valid disjoint translate configurations. Proves monotonicity ($n \\leq m \\Rightarrow h(n) \\leq h(m)$) and the trivial bound $h(n) \\geq 0$."
+    },
+    {
+      "id": "unit-distance",
+      "title": "Connection to Unit Distance Problem",
+      "summary": "Defines the classical point unit distance function $f(n)$ and proves the key comparison $h(n) \\geq f(n)$: any point configuration can be realized as translates of tiny disks. Axiomatizes the Spencer-Szemerédi-Trotter upper bound $f(n) \\leq n^{4/3}$ and a lower bound $f(n) \\geq n^{1+c/2}$.",
+      "startLine": 149,
+      "endLine": 169,
+      "mathContext": "Defines the classical point unit distance function $f(n)$ and proves the key comparison $h(n) \\geq f(n)$: any point configuration can be realized as translates of tiny disks. Axiomatizes the Spencer-Szemerédi-Trotter upper bound $f(n) \\leq n^{4/3}$ and a lower bound $f(n) \\geq n^{1+c/2}$."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Erdős-Pach Upper Bound",
+      "summary": "Axiomatizes the 1990 Erdős-Pach result: $h(n) \\leq 2n^{4/3}$ for disjoint translates of any compact convex set. This is derived via a reduction to the Szemerédi-Trotter incidence bound applied to the boundary curves of the translates.",
+      "startLine": 170,
+      "endLine": 182,
+      "mathContext": "Axiomatizes the 1990 Erdős-Pach result: $h(n) \\leq 2n^{4/3}$ for disjoint translates of any compact convex set."
+    },
+    {
+      "id": "general",
+      "title": "General Convex Sets",
+      "summary": "Extends to disjoint convex sets that are not necessarily translates. Defines `DisjointConvexSets n` and the corresponding extremal function $h_{\\text{gen}}(n)$. Axiomatizes the weaker bound $h_{\\text{gen}}(n) \\leq 2n^{7/5}$, proves $h(n) \\leq h_{\\text{gen}}(n)$, and verifies $7/5 > 4/3$ by `norm_num`.",
+      "startLine": 183,
+      "endLine": 211,
+      "mathContext": "Defines `DisjointConvexSets n` and the corresponding extremal function $h_{\\text{gen}}(n)$. Axiomatizes the weaker bound $h_{\\text{gen}}(n) \\leq 2n^{7/5}$, proves $h(n) \\leq h_{\\text{gen}}(n)$, and verifies $7/5 > 4/3$ by `norm_num`."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "summary": "Formally states the Erdős-Pach conjecture $\\exists c > 0, \\forall n \\geq 10, h(n) > n^{1+c}$ and its equivalent superlinear formulation. Shows the conjecture follows from the analogous statement for the point unit distance function $f(n)$, via $h(n) \\geq f(n)$.",
+      "startLine": 212,
+      "endLine": 231,
+      "mathContext": "Formally states the Erdős-Pach conjecture $\\exists c > 0, \\forall n \\geq 10, h(n) > n^{1+c}$ and its equivalent superlinear formulation. Shows the conjecture follows from the analogous statement for the point unit distance function $f(n)$, via $h(n) \\geq f(n)$."
+    },
+    {
+      "id": "constructions",
+      "title": "Known Constructions",
+      "summary": "Axiomatizes the two main lower bound constructions: lattice arrangements achieving at least $n-1$ unit distances, and grid constructions giving $\\Omega(n \\log n / \\log\\log n)$ unit distances by exploiting the number-theoretic structure of sums of two squares.",
+      "startLine": 232,
+      "endLine": 242,
+      "mathContext": "Axiomatizes the two main lower bound constructions: lattice arrangements achieving at least $n-1$ unit distances, and grid constructions giving $\\Omega(n \\log n / \\log\\log n)$ unit distances by exploiting the number-theoretic structure of sums of two squares."
+    },
+    {
+      "id": "incidence",
+      "title": "Connections to Incidence Geometry",
+      "summary": "Records the connection to the Szemerédi-Trotter point-line incidence theorem: at most $O(n^{2/3}m^{2/3} + n + m)$ incidences between $n$ points and $m$ lines. Notes that the $h(n)$ upper bound proof reduces unit distance pairs to point-curve incidences.",
+      "startLine": 243,
+      "endLine": 254,
+      "mathContext": "Records the connection to the Szemerédi-Trotter point-line incidence theorem: at most $O(n^{2/3}m^{2/3} + n + m)$ incidences between $n$ points and $m$ lines. Notes that the $h(n)$ upper bound proof reduces unit distance pairs to point-curve incidences."
+    },
+    {
+      "id": "special",
+      "title": "Special Cases",
+      "summary": "Examines specific convex shapes: for disk translates, unit distances are bounded by $f(n) + n$ since boundaries are circles; for line segment translates, one can achieve $2(n-1)$ unit distances by careful alignment.",
+      "startLine": 255,
+      "endLine": 267,
+      "mathContext": "Examines specific convex shapes: for disk translates, unit distances are bounded by $f(n) + n$ since boundaries are circles; for line segment translates, one can achieve $2(n-1)$ unit distances by careful alignment."
+    },
+    {
+      "id": "main-result",
+      "title": "Main Results",
+      "summary": "Combines all bounds into the main theorem: $n \\log n / \\log\\log n \\leq h(n) \\leq 2n^{4/3}$ for $n \\geq 10$, directly from the grid construction and Erdős-Pach upper bound axioms. Records the problem status as OPEN and verifies that the upper bound exceeds the lower bound.",
+      "startLine": 268,
+      "endLine": 309,
+      "mathContext": "Combines all bounds into the main theorem: $n \\log n / \\log\\log n \\leq h(n) \\leq 2n^{4/3}$ for $n \\geq 10$, directly from the grid construction and Erdős-Pach upper bound axioms."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures the full landscape of Erdős Problem #956: the definition of $h(n)$ as the maximum unit distances among $n$ disjoint convex translates, the Erdős-Pach bounds $\\Omega(n \\log n / \\log\\log n) \\leq h(n) \\leq O(n^{4/3})$, the relationship $h(n) \\geq f(n)$ to the classical unit distance problem, the generalization to non-translate convex sets with bound $O(n^{7/5})$, and the formal statement of the open conjecture $h(n) > n^{1+c}$.",
+    "implications": "1. **Convex Geometry meets Combinatorics**: This problem lies at the interface of convex geometry and extremal combinatorics, asking how the structure of convex bodies constrains distance patterns\n\n2. **Generalization of the Unit Distance Problem**: Since $h(n) \\geq f(n)$, resolving the Erdős-Pach conjecture would also advance our understanding of the classical unit distance problem posed by Erdős in 1946\n\n**3. Incidence Geometry**: The upper bounds rely on the Szemerédi-Trotter theorem and its extensions to algebraic curves, connecting this problem to the broader incidence geometry program\n\n4. **Shape Independence**: A resolution would clarify whether the asymptotic behavior of $h(n)$ depends on the specific convex set $C$ or is universal across all compact convex shapes\n\n5. **Formalization Value**: The Lean formalization cleanly separates structural definitions (verifiable) from deep analytic bounds (axiomatized), providing a template for formalizing open problems with known partial results.",
+    "openQuestions": [
+      "Is h(n) > n^(1+c) for some c > 0? (The main Erdős-Pach conjecture)",
+      "What is the exact order of magnitude of h(n)? The gap between n log n / log log n and n^(4/3) is substantial",
+      "Does the shape of C affect the asymptotic behavior of h(n), or is it shape-independent?",
+      "Can the Szemerédi-Trotter-based upper bound n^(4/3) be improved using the additional structure of convex translates?",
+      "What happens in higher dimensions? For disjoint convex translates in ℝ^d, how does h_d(n) behave?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Metric",
+      "Finset"
+    ],
+    "namespace": "Erdos956",
+    "lineCount": 309,
+    "axiomCount": 2,
+    "theoremCount": 14,
+    "definitionCount": 16,
+    "sorries": 6,
+    "path": "Proofs/Erdos956Problem.lean",
+    "additionalFiles": [
+      "Proofs/Erdos956Aristotle.lean"
+    ]
+  },
+  "references": [
+    {
+      "key": "ErPa90",
+      "citation": "Erdős, P. and Pach, J. (1990). Variations on the theme of repeated distances. Combinatorica, 10(3), 261-269.",
+      "type": "paper"
+    },
+    {
+      "key": "SST83",
+      "citation": "Spencer, J., Szemerédi, E., and Trotter, W. (1983). Unit distances in the Euclidean plane. Graph Theory and Combinatorics (ed. B. Bollobás), Academic Press, 293-303.",
+      "type": "paper"
+    },
+    {
+      "key": "Pa04",
+      "citation": "Pach, J. and Agarwal, P. K. (2004). Combinatorial Geometry. Wiley-Interscience.",
+      "type": "book"
+    },
+    {
+      "key": "Er46",
+      "citation": "Erdős, P. (1946). On sets of distances of n points. American Mathematical Monthly, 53, 248-250.",
+      "type": "paper"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1086",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, geometry"
+    },
+    {
+      "targetId": "erdos-1090",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, geometry"
+    },
+    {
+      "targetId": "erdos-1166",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, geometry"
+    }
+  ],
+  "sorries": 6
+}

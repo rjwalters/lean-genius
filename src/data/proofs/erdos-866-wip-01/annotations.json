@@ -1,0 +1,71 @@
+[
+  {
+    "id": "ann-erdos866wip01-header",
+    "proofId": "erdos-866-wip-01",
+    "type": "concept",
+    "range": {
+      "startLine": 3,
+      "endLine": 39
+    },
+    "title": "Erdős #866 and the trivial uniform lower bound",
+    "content": "Erdős #866 asks for the minimal threshold g_k(N) such that every A ⊆ {1,…,2N} with |A| ≥ N + g_k(N) contains all pairwise sums b_i + b_j of some k-element family. The known landscape is non-uniform: g_3 = 2, g_4 ≤ 2032, g_5 ≍ log N, g_6 ≍ √N, with gaps and most cases open. The simplest universal obstruction is parity: the N odd numbers in {1,…,2N} form a half-density set whose pairwise sums are systematically excluded (sum of equal-parity numbers is even). The docstring states up front that this file proves only the trivial lower bound g_k ≥ 1, generalizing the base file's single k=3 lemma to all k ≥ 3, and makes no claim on the deep, open content of #866.",
+    "mathContext": "$g_k(N)$: least $g$ with $|A| \\ge N+g \\Rightarrow A$ contains all pairwise sums of some $k$-family. Parity gives $g_k(N) \\ge 1$ uniformly.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős problems",
+      "pairwise sums",
+      "parity obstruction",
+      "threshold functions"
+    ],
+    "prerequisites": [
+      "additive combinatorics",
+      "Erdős #866 base entry"
+    ]
+  },
+  {
+    "id": "ann-erdos866wip01-no-config",
+    "proofId": "erdos-866-wip-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 59,
+      "endLine": 79
+    },
+    "title": "oddNumbers_no_config: the uniform parity obstruction",
+    "content": "For every k ≥ 3, ¬∃ b : Fin k → ℤ, HasAllPairwiseSums (oddNumbers N) b. This generalizes the base file's oddNumbers_no_triple (k=3) to all k ≥ 3. Proof: assume a family b. First, every pairwise sum landing in the odd numbers is an odd natural ((b i + b j).toNat % 2 = 1), read off from oddNumbers membership. Then restrict to the indices 0,1,2 : Fin k, which exist because k ≥ 3 (built as ⟨0,_⟩,⟨1,_⟩,⟨2,_⟩ with ordering via Fin.mk_lt_mk). The three sums b0+b1, b0+b2, b1+b2 must all be odd; but among b 0, b 1, b 2 two share parity, so one sum is even — and omega, which understands Int.toNat and mod 2, derives the contradiction in a single call. The key reduction is that a k-configuration constrains the pairwise sums of its first three members, so every k ≥ 3 collapses to the triangle case.",
+    "mathContext": "Among $b_0, b_1, b_2$ two share parity $\\Rightarrow$ one of $b_0{+}b_1, b_0{+}b_2, b_1{+}b_2$ is even $\\Rightarrow$ not odd $\\Rightarrow$ contradiction.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "parity pigeonhole",
+      "Fin index ordering",
+      "Int.toNat",
+      "omega tactic"
+    ],
+    "prerequisites": [
+      "pigeonhole on parities",
+      "Fin.mk_lt_mk",
+      "Finset membership unfolding"
+    ]
+  },
+  {
+    "id": "ann-erdos866wip01-threshold",
+    "proofId": "erdos-866-wip-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 85,
+      "endLine": 113
+    },
+    "title": "Threshold reformulation: g_k(N) ≥ 1",
+    "content": "exists_large_set_without_config bundles the odd numbers as a witness set of size ≥ N (via oddNumbers_card) inside the interval with no k-configuration, so |A| = N never forces one. Guarantees N k g is a Prop capturing the threshold semantics — every A ⊆ {1,…,2N} with |A| ≥ N+g forces a configuration — which lets the bound be stated without an infimum encoding. not_guarantees_zero refutes g = 0 (the odd witness has size N = N+0 and no configuration), and g_k_ge_one concludes that any g with Guarantees N k g satisfies 1 ≤ g: the threshold g_k(N) is positive for all k ≥ 3. This is the formal statement of the elementary lower bound g_k(N) ≥ 1.",
+    "mathContext": "$\\neg\\,\\mathrm{Guarantees}(N,k,0)$ and $\\mathrm{Guarantees}(N,k,g) \\Rightarrow g \\ge 1$, i.e. $g_k(N) \\ge 1$ for $k \\ge 3$.",
+    "significance": "important",
+    "relatedConcepts": [
+      "threshold function",
+      "lower bound packaging",
+      "extremal set construction"
+    ],
+    "prerequisites": [
+      "oddNumbers_no_config",
+      "cardinality of the odd numbers"
+    ]
+  }
+]

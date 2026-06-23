@@ -1,0 +1,465 @@
+[
+  {
+    "id": "ann-834-hypergraph",
+    "proofId": "erdos-834",
+    "range": {
+      "startLine": 42,
+      "endLine": 45
+    },
+    "type": "definition",
+    "title": "Hypergraph Structure",
+    "content": "Defines `Hypergraph V` as a structure with a single field `edges : Set (Finset V)`. Each hyperedge is a finite set of vertices, and the collection of all edges is a `Set`. This is the most general definition: no restriction on edge sizes, vertex coverage, or multiplicity. Unlike simple graphs where edges are pairs, hyperedges can contain arbitrarily many vertices.",
+    "mathContext": "A hypergraph $H = (V, E)$ where $E \\subseteq 2^V$ is a family of finite subsets of vertices. Formalized as `edges : \\text{Set}\\;(\\text{Finset}\\;V)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "set system",
+      "Finset",
+      "hypergraph theory",
+      "Sperner family"
+    ],
+    "prerequisites": [
+      "Set",
+      "Finset",
+      "Type*"
+    ]
+  },
+  {
+    "id": "ann-834-uniform",
+    "proofId": "erdos-834",
+    "range": {
+      "startLine": 47,
+      "endLine": 49
+    },
+    "type": "definition",
+    "title": "k-Uniform Hypergraph",
+    "content": "Defines `IsUniform H k`: every hyperedge has exactly $k$ vertices. For $k = 2$ this recovers ordinary graphs, and $k = 3$ gives 3-uniform hypergraphs (triple systems). Uniformity is a natural constraint in extremal hypergraph theory, analogous to studying $k$-regular graphs.",
+    "mathContext": "$H$ is $k$-uniform iff $\\forall e \\in E(H),\\; |e| = k$. For this problem, $k = 3$: every edge is a triple $\\{u, v, w\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Steiner triple system",
+      "triple system",
+      "k-graph",
+      "Turán problem"
+    ],
+    "prerequisites": [
+      "Hypergraph",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "ann-834-degree",
+    "proofId": "erdos-834",
+    "range": {
+      "startLine": 51,
+      "endLine": 53
+    },
+    "type": "definition",
+    "title": "Vertex Degree",
+    "content": "Defines `degree H v` as the number of hyperedges containing vertex $v$, using `Set.ncard` (cardinality of a possibly infinite set). Marked `noncomputable` because counting elements of a `Set` requires classical choice. The degree function generalizes graph degree to hypergraphs.",
+    "mathContext": "$\\deg_H(v) = |\\{e \\in E(H) : v \\in e\\}|$, the number of hyperedges incident to $v$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Set.ncard",
+      "incident edges",
+      "degree sequence"
+    ],
+    "prerequisites": [
+      "Hypergraph",
+      "Set.ncard",
+      "DecidableEq"
+    ]
+  },
+  {
+    "id": "ann-834-mindegree",
+    "proofId": "erdos-834",
+    "range": {
+      "startLine": 55,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Minimum Degree",
+    "content": "Defines `minDegree H` as the infimum of degrees over all vertices appearing in at least one edge. Uses `⨅` (infimum) over the vertex set $\\bigcup_{e \\in E} e$. The minimum degree is the central quantity in Problem #834: the question asks whether it can reach 7 in 3-critical 3-uniform hypergraphs.",
+    "mathContext": "$\\delta(H) = \\min_{v \\in V(H)} \\deg_H(v)$, where $V(H) = \\bigcup_{e \\in E(H)} e$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "minimum degree",
+      "infimum",
+      "vertex set",
+      "extremal bound"
+    ],
+    "prerequisites": [
+      "degree",
+      "iInf",
+      "Set.iUnion"
+    ]
+  },
+  {
+    "id": "ann-834-transversal",
+    "proofId": "erdos-834",
+    "range": {
+      "startLine": 65,
+      "endLine": 67
+    },
+    "type": "definition",
+    "title": "Transversal (Vertex Cover)",
+    "content": "Defines `IsTransversal H T`: the vertex set $T$ intersects every hyperedge. Also known as a vertex cover or hitting set. The condition $\\forall e \\in E(H),\\, (T \\cap e).\\text{Nonempty}$ ensures every edge has at least one endpoint in $T$. Finding minimum-size transversals is NP-hard in general, but structural results exist for critical hypergraphs.",
+    "mathContext": "$T \\subseteq V$ is a transversal iff $\\forall e \\in E(H),\\; T \\cap e \\ne \\emptyset$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "vertex cover",
+      "hitting set",
+      "matching duality",
+      "König's theorem"
+    ],
+    "prerequisites": [
+      "Hypergraph",
+      "Finset.Nonempty",
+      "Finset.inter"
+    ]
+  },
+  {
+    "id": "ann-834-tau",
+    "proofId": "erdos-834",
+    "range": {
+      "startLine": 69,
+      "endLine": 71
+    },
+    "type": "definition",
+    "title": "Transversal Number τ(H)",
+    "content": "Defines `transversalNumber H` as the infimum of $|T|$ over all transversals $T$. Uses a conditional infimum: for non-transversals, the contribution is $\\top$ (infinity), so the infimum picks the minimum size among actual transversals. The transversal number $\\tau(H)$ is dual to the matching number $\\nu(H)$ via König-type inequalities.",
+    "mathContext": "$\\tau(H) = \\min\\{|T| : T \\text{ is a transversal of } H\\}$. For 3-uniform hypergraphs, $\\tau(H) \\ge 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "transversal number",
+      "LP relaxation",
+      "fractional transversal",
+      "matching number"
+    ],
+    "prerequisites": [
+      "IsTransversal",
+      "iInf",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "ann-834-removeedge",
+    "proofId": "erdos-834",
+    "range": {
+      "startLine": 80,
+      "endLine": 82
+    },
+    "type": "definition",
+    "title": "Edge Removal",
+    "content": "Defines `removeEdge H e`: removes a single edge, giving edge set $E(H) \\setminus \\{e\\}$. Central to criticality definitions—a hypergraph is critical if removing any edge changes the relevant parameter.",
+    "mathContext": "$H - e = (V, E(H) \\setminus \\{e\\})$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "edge deletion",
+      "critical graph",
+      "graph minor"
+    ],
+    "prerequisites": [
+      "Hypergraph",
+      "Set.diff"
+    ]
+  },
+  {
+    "id": "ann-834-transversal-critical",
+    "proofId": "erdos-834",
+    "range": {
+      "startLine": 84,
+      "endLine": 87
+    },
+    "type": "definition",
+    "title": "k-Transversal-Criticality",
+    "content": "Defines `IsTransversalCritical H k`: $\\tau(H) = k$ and removing any edge strictly reduces the transversal number. Every edge is 'essential' for maintaining $\\tau(H) = k$. For $k = 3$, each edge's removal allows a size-2 cover, meaning each edge contains a pair that blocks all size-2 covers.",
+    "mathContext": "$H$ is $k$-$\\tau$-critical iff $\\tau(H) = k$ and $\\forall e \\in E(H),\\; \\tau(H - e) < k$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "critical hypergraph",
+      "edge-critical",
+      "τ-critical",
+      "vertex cover"
+    ],
+    "prerequisites": [
+      "transversalNumber",
+      "removeEdge"
+    ]
+  },
+  {
+    "id": "ann-834-proper-coloring",
+    "proofId": "erdos-834",
+    "range": {
+      "startLine": 95,
+      "endLine": 97
+    },
+    "type": "definition",
+    "title": "Proper Hypergraph Coloring",
+    "content": "Defines `IsProperColoring H k c`: $c : V \\to \\text{Fin}\\;k$ is proper if no edge of size $\\ge 2$ is monochromatic. For each edge, there must exist two vertices with different colors. For 2-uniform hypergraphs (graphs), this reduces to standard proper coloring. The $|e| \\ge 2$ guard handles degenerate singleton edges.",
+    "mathContext": "$c : V \\to [k]$ is proper iff $\\forall e \\in E(H),\\; |e| \\ge 2 \\Rightarrow \\exists v_1, v_2 \\in e,\\; c(v_1) \\ne c(v_2)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "graph coloring",
+      "hypergraph coloring",
+      "Property B",
+      "2-colorable"
+    ],
+    "prerequisites": [
+      "Hypergraph",
+      "Fin",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "ann-834-chromatic-number",
+    "proofId": "erdos-834",
+    "range": {
+      "startLine": 99,
+      "endLine": 101
+    },
+    "type": "definition",
+    "title": "Chromatic Number χ(H)",
+    "content": "Defines `chromaticNumber H` as the infimum of $k$ admitting a proper $k$-coloring. Uses conditional infimum like `transversalNumber`. 2-colorable hypergraphs ($\\chi = 2$) have 'Property B' in the Bernstein/Erdős–Hajnal sense. The chromatic number of hypergraphs generalizes the graph chromatic number.",
+    "mathContext": "$\\chi(H) = \\min\\{k : \\exists c : V \\to [k],\\; c \\text{ is proper}\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "chromatic number",
+      "Property B",
+      "Erdős–Hajnal",
+      "list coloring"
+    ],
+    "prerequisites": [
+      "IsProperColoring",
+      "iInf"
+    ]
+  },
+  {
+    "id": "ann-834-chromatic-critical",
+    "proofId": "erdos-834",
+    "range": {
+      "startLine": 103,
+      "endLine": 106
+    },
+    "type": "definition",
+    "title": "k-Chromatic-Criticality",
+    "content": "Defines `IsChromaticCritical H k`: $\\chi(H) = k$ and removing any edge strictly reduces the chromatic number. Unlike $\\tau$-criticality, $\\chi$-criticality allows high minimum degree because coloring constraints are more flexible—many independent vertex sets can share colors without violating the no-monochromatic-edge condition.",
+    "mathContext": "$H$ is $k$-$\\chi$-critical iff $\\chi(H) = k$ and $\\forall e \\in E(H),\\; \\chi(H - e) < k$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "critical graph",
+      "χ-critical",
+      "Dirac's theorem",
+      "Gallai's theorem"
+    ],
+    "prerequisites": [
+      "chromaticNumber",
+      "removeEdge"
+    ]
+  },
+  {
+    "id": "ann-834-transversal-question",
+    "proofId": "erdos-834",
+    "range": {
+      "startLine": 114,
+      "endLine": 117
+    },
+    "type": "insight",
+    "title": "The Transversal Question",
+    "content": "Formalizes the $\\tau$-critical interpretation of Problem #834: does there exist a 3-uniform, 3-$\\tau$-critical hypergraph with $\\delta(H) \\ge 7$? Quantifies over a vertex type $V$ with `Fintype` and `DecidableEq`. Proven FALSE by Li's bound.",
+    "mathContext": "$\\exists H:\\; |e| = 3$ for all $e$, $\\tau$-critical with $\\tau = 3$, $\\delta(H) \\ge 7$. Answer: NO.",
+    "significance": "key",
+    "relatedConcepts": [
+      "existential statement",
+      "Fintype",
+      "minimum degree threshold"
+    ],
+    "prerequisites": [
+      "IsUniform",
+      "IsTransversalCritical",
+      "minDegree"
+    ]
+  },
+  {
+    "id": "ann-834-chromatic-question",
+    "proofId": "erdos-834",
+    "range": {
+      "startLine": 119,
+      "endLine": 122
+    },
+    "type": "insight",
+    "title": "The Chromatic Question",
+    "content": "Formalizes the $\\chi$-critical interpretation: does there exist a 3-uniform, 3-$\\chi$-critical hypergraph with $\\delta(H) \\ge 7$? Same existential structure, but with `IsChromaticCritical`. Proven TRUE via Lovász's construction.",
+    "mathContext": "$\\exists H:\\; |e| = 3$ for all $e$, $\\chi$-critical with $\\chi = 3$, $\\delta(H) \\ge 7$. Answer: YES.",
+    "significance": "key",
+    "relatedConcepts": [
+      "existential statement",
+      "Lovász construction",
+      "chromatic threshold"
+    ],
+    "prerequisites": [
+      "IsUniform",
+      "IsChromaticCritical",
+      "minDegree"
+    ]
+  },
+  {
+    "id": "ann-834-li-bound",
+    "proofId": "erdos-834",
+    "range": {
+      "startLine": 129,
+      "endLine": 131
+    },
+    "type": "concept",
+    "title": "Li's Bound (2025)",
+    "content": "Axiomatizes Li's 2025 result: every 3-uniform, 3-$\\tau$-critical hypergraph satisfies $\\delta(H) \\le 6$. A universal bound with no exceptions. The bound is tight (explicit constructions achieve $\\delta = 6$). Li's proof analyzes the structure of critical edge sets and their intersection patterns.",
+    "mathContext": "$\\forall H$ 3-uniform and $\\tau$-critical with $\\tau = 3$: $\\delta(H) \\le 6$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Li 2025",
+      "degree bound",
+      "critical structure",
+      "tight bound"
+    ],
+    "prerequisites": [
+      "IsUniform",
+      "IsTransversalCritical",
+      "minDegree"
+    ]
+  },
+  {
+    "id": "ann-834-transversal-no",
+    "proofId": "erdos-834",
+    "range": {
+      "startLine": 133,
+      "endLine": 137
+    },
+    "type": "concept",
+    "title": "Transversal Answer: NO (Proved)",
+    "content": "Proves `¬transversal_question` by contradiction: assume such a hypergraph exists with $\\delta \\ge 7$, apply Li's bound to get $\\delta \\le 6$, derive $7 \\le 6$ via `omega`. Complete Lean proof with 0 sorries. Uses `intro` to destructure the existential and `@li_bound` with explicit type class instances.",
+    "mathContext": "$\\neg\\exists H:\\; \\delta(H) \\ge 7$ when 3-uniform and $\\tau$-critical. Proof: $7 \\le \\delta(H) \\le 6$ is absurd.",
+    "significance": "key",
+    "relatedConcepts": [
+      "proof by contradiction",
+      "omega tactic",
+      "instance resolution"
+    ],
+    "prerequisites": [
+      "li_bound",
+      "transversal_question",
+      "omega"
+    ]
+  },
+  {
+    "id": "ann-834-lovasz",
+    "proofId": "erdos-834",
+    "range": {
+      "startLine": 144,
+      "endLine": 147
+    },
+    "type": "concept",
+    "title": "Lovász's Construction",
+    "content": "Axiomatizes Lovász's result: for any $d$, there exist 3-uniform, 3-$\\chi$-critical hypergraphs with $\\delta(H) \\ge d$. An unbounded existence result—$\\chi$-critical hypergraphs can have arbitrarily high minimum degree. Lovász's constructions use iterated product operations on hypergraphs.",
+    "mathContext": "$\\forall d \\in \\mathbb{N},\\; \\exists H$ 3-uniform and $\\chi$-critical with $\\chi = 3$ and $\\delta(H) \\ge d$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lovász",
+      "hypergraph product",
+      "unbounded degree",
+      "constructive existence"
+    ],
+    "prerequisites": [
+      "IsUniform",
+      "IsChromaticCritical",
+      "minDegree"
+    ]
+  },
+  {
+    "id": "ann-834-chromatic-yes",
+    "proofId": "erdos-834",
+    "range": {
+      "startLine": 149,
+      "endLine": 152
+    },
+    "type": "concept",
+    "title": "Chromatic Answer: YES (Proved)",
+    "content": "Proves `chromatic_question` by instantiating `lovasz_construction 7`. Uses `obtain` to destructure the existential, then re-packages witnesses with `exact`. Complete Lean proof with 0 sorries.",
+    "mathContext": "$\\exists H:\\; \\delta(H) \\ge 7$ with $\\chi$-criticality. Proof: apply Lovász with $d = 7$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "existential instantiation",
+      "obtain tactic",
+      "constructive proof"
+    ],
+    "prerequisites": [
+      "lovasz_construction",
+      "chromatic_question"
+    ]
+  },
+  {
+    "id": "ann-834-resolution",
+    "proofId": "erdos-834",
+    "range": {
+      "startLine": 159,
+      "endLine": 162
+    },
+    "type": "insight",
+    "title": "Complete Resolution",
+    "content": "The main theorem `erdos_834_resolution`: $\\neg\\text{transversal\\_question} \\land \\text{chromatic\\_question}$. Pairs `transversal_answer_no` and `chromatic_answer_yes`. Completely resolves Problem #834 for both interpretations, demonstrating that the answer depends fundamentally on the definition of '3-critical'.",
+    "mathContext": "Problem #834: NO for $\\tau$-critical ($\\delta \\le 6$, Li), YES for $\\chi$-critical ($\\delta$ unbounded, Lovász).",
+    "significance": "key",
+    "relatedConcepts": [
+      "conjunction",
+      "problem resolution",
+      "definitional ambiguity"
+    ],
+    "prerequisites": [
+      "transversal_answer_no",
+      "chromatic_answer_yes"
+    ]
+  },
+  {
+    "id": "ann-834-tight",
+    "proofId": "erdos-834",
+    "range": {
+      "startLine": 170,
+      "endLine": 172
+    },
+    "type": "concept",
+    "title": "Tightness of Li's Bound",
+    "content": "Axiomatizes tightness: there exist 3-uniform, 3-$\\tau$-critical hypergraphs achieving $\\delta(H) = 6$ exactly. Li's bound $\\delta \\le 6$ cannot be improved. The tight examples are explicit finite constructions that demonstrate the sharpness of the bound.",
+    "mathContext": "$\\exists H$ with $\\delta(H) = 6$ that is 3-uniform and $\\tau$-critical. So $\\max_{H} \\delta(H) = 6$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tight bound",
+      "extremal example",
+      "sharpness"
+    ],
+    "prerequisites": [
+      "IsUniform",
+      "IsTransversalCritical",
+      "minDegree"
+    ]
+  },
+  {
+    "id": "ann-834-summary",
+    "proofId": "erdos-834",
+    "range": {
+      "startLine": 174,
+      "endLine": 180
+    },
+    "type": "insight",
+    "title": "Summary Theorem",
+    "content": "Combines Li's universal bound and Lovász's universal existence: (1) all 3-uniform $\\tau$-critical hypergraphs have $\\delta \\le 6$, and (2) for any $d$, there exist 3-uniform $\\chi$-critical hypergraphs with $\\delta \\ge d$. Proved directly by pairing the two axioms. Complete picture of minimum degree behavior for both criticality notions.",
+    "mathContext": "$(\\forall H\\; \\tau\\text{-critical}:\\; \\delta(H) \\le 6) \\;\\land\\; (\\forall d,\\; \\exists H\\; \\chi\\text{-critical}:\\; \\delta(H) \\ge d)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "universal bound",
+      "unbounded existence",
+      "duality of criticality"
+    ],
+    "prerequisites": [
+      "li_bound",
+      "lovasz_construction"
+    ]
+  }
+]

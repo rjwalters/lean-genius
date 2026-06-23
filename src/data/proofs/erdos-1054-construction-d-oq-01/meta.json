@@ -1,0 +1,103 @@
+{
+  "id": "erdos-1054-construction-d-oq-01",
+  "title": "Erdős #1054 OQ-01: The Sum-of-Divisors Function is Always Representable",
+  "slug": "erdos-1054-construction-d-oq-01",
+  "description": "Generalizes Construction D (Erdős #1054) from case-by-case native_decide checks to a single axiom-free theorem: for every m ≥ 1, the sum of divisors σ(m) = ∑_{d∣m} d is representable, because it is always the LAST partial sum of m's sorted divisor list. This subsumes the parent's prime-square witnesses (σ(p²)=1+p+p²) and the entire Mersenne family (σ(2^k)=2^{k+1}-1) without the Lean.ofReduceBool axiom, and adds a prime-power corollary that ∑_{i=0}^k p^i is representable for every prime p.",
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Data.Finset.Sort",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos1054ConstructionDOQ01",
+    "lineCount": 168,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos1054ConstructionDOQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1054ConstructionDOQ01.lean",
+    "tags": [
+      "number-theory",
+      "erdos-problems",
+      "divisors",
+      "sum-of-divisors",
+      "prime-powers",
+      "representability",
+      "mersenne-numbers"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 168,
+    "theoremCount": 7,
+    "definitionCount": 3,
+    "assumptions": "None. All seven theorems are fully machine-checked and depend only on the standard foundational axioms propext, Classical.choice, and Quot.sound. In particular, NO native_decide is used, so the results are free of Lean.ofReduceBool — a deliberate strengthening of the parent file, whose concrete witnesses (constr_d_*, mersenne_repr_*) rely on native_decide. axiomCount=0.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sort_perm_toList",
+        "description": "The sorted divisor list is a permutation of the divisor finset, so their sums agree (sortedDivisors_sum).",
+        "module": "Mathlib.Data.Finset.Sort"
+      },
+      {
+        "theorem": "List.getLast_scanl",
+        "description": "The last entry of scanl (·+·) 0 L equals foldl (·+·) 0 L, i.e. the running total — the crux that identifies the final partial sum with σ(m).",
+        "module": "Batteries.Data.List.Scan"
+      },
+      {
+        "theorem": "Nat.sum_divisors_prime_pow",
+        "description": "∑_{d∣p^k} d = ∑_{i=0}^k p^i, giving the prime-power geometric-sum corollary.",
+        "module": "Mathlib.NumberTheory.Divisors"
+      }
+    ],
+    "dateAdded": "2026-06-22",
+    "mathlib_version": "4.26.0"
+  },
+  "mainTheorems": [
+    {
+      "name": "sum_divisors_representable",
+      "type": "core",
+      "statement": "∀ m ≥ 1, IsRepresentable (∑ d ∈ m.divisors, d)",
+      "description": "The sum-of-divisors function σ(m) is representable for every m ≥ 1, witnessed by m itself.",
+      "significance": "Single axiom-free theorem subsuming every concrete representability check in the parent file — the structural reason all of them hold."
+    },
+    {
+      "name": "sum_divisors_mem_partialSums",
+      "type": "core",
+      "statement": "∀ m ≥ 1, (∑ d ∈ m.divisors, d) ∈ partialDivisorSums m",
+      "description": "σ(m) is the LAST partial sum of m's sorted divisor list — the running total of all divisors.",
+      "significance": "The key structural insight: representability of σ(m) is automatic, not a coincidence to be checked case by case."
+    },
+    {
+      "name": "geom_sum_representable",
+      "type": "corollary",
+      "statement": "∀ p prime, ∀ k, IsRepresentable (∑ i ∈ range (k+1), p^i)",
+      "description": "Every geometric sum 1 + p + ⋯ + p^k for a prime p is representable (witness p^k), since it equals σ(p^k).",
+      "significance": "Generalizes the parent's prime-square family (k=2) and Mersenne family (p=2) into one axiom-free statement."
+    },
+    {
+      "name": "prime_sq_sum_representable'",
+      "type": "corollary",
+      "statement": "∀ p prime, IsRepresentable (1 + p + p^2)",
+      "description": "Recovers the parent's Construction D headline as the k=2 instance, now without native_decide.",
+      "significance": "Re-derives a previously native_decide-flavoured result in fully verified form."
+    },
+    {
+      "name": "mersenne_representable",
+      "type": "corollary",
+      "statement": "∀ k, IsRepresentable (∑ i ∈ range (k+1), 2^i)",
+      "description": "Recovers the Mersenne family (∑ 2^i = 2^{k+1}-1 = σ(2^k)) without native_decide.",
+      "significance": "The infinite Mersenne family of representable numbers, axiom-free."
+    }
+  ]
+}

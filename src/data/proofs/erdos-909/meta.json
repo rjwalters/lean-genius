@@ -1,0 +1,165 @@
+{
+  "id": "erdos-909",
+  "title": "Erdős Problem #909: Dimension of Product Spaces",
+  "slug": "erdos-909",
+  "description": "Is there a space S of dimension n such that S² also has dimension n? YES (Anderson-Keisler 1967). For all n ≥ 1, such separable metric spaces exist, showing the product dimension inequality dim(X×Y) ≤ dim(X)+dim(Y) can fail maximally.",
+  "meta": {
+    "author": "Anderson-Keisler (1967 solution), Erdős (problem)",
+    "sourceUrl": "https://erdosproblems.com/909",
+    "date": "1967",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos909Problem.lean",
+    "tags": [
+      "erdos",
+      "topology",
+      "dimension-theory",
+      "product-spaces",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 909,
+    "erdosUrl": "https://erdosproblems.com/909",
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "TopologicalSpace",
+        "description": "Core topological space structure; the problem statement quantifies over types with TopologicalSpace instances",
+        "module": "Mathlib.Topology.Basic"
+      },
+      {
+        "theorem": "MetrizableSpace",
+        "description": "Metrizable space typeclass; Anderson-Keisler spaces are separable metric, providing MetrizableSpace witness",
+        "module": "Mathlib.Topology.Separation.Basic"
+      },
+      {
+        "theorem": "Prod",
+        "description": "Product type X × Y with product topology; dim(S × S) is the central object of study",
+        "module": "Mathlib.Topology.Constructions"
+      },
+      {
+        "theorem": "Fin",
+        "description": "Finite ordinal type; Euclidean space ℝ^n is formalized as Fin n → ℝ in dimension_euclidean",
+        "module": "Mathlib.Data.Fin.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Axiomatized covering dimension predicate (coveringDimension X n) since Mathlib lacks this notion",
+      "Formal definition of hasDimensionExactly with n > 0 guard for exact dimension",
+      "Formal statement erdos909Statement: ∀ n ≥ 1, ∃ S, dim(S) = n ∧ dim(S×S) = n",
+      "Axiomatized rational Hilbert space ℓ²(ℚ) as concrete n=1 example",
+      "Axiomatized Anderson-Keisler theorem with MetrizableSpace witness for all n ≥ 1",
+      "Proved erdos_909 by extracting TopologicalSpace from MetrizableSpace witness",
+      "Combined erdos_909_summary theorem packaging the general result with the explicit n=1 witness"
+    ],
+    "dateAdded": "2026-01-19",
+    "axiomCount": 3,
+    "lineCount": 125,
+    "assumptions": "3 axioms: coveringDimension, rational_hilbert_example, anderson_keisler_theorem. 0 sorries.",
+    "theoremCount": 2,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "Covering dimension (Lebesgue dimension) is a fundamental topological invariant: dim(X) ≤ n means every finite open cover of X admits a refinement of order at most n+1. For well-behaved spaces, the product inequality dim(X × Y) ≤ dim(X) + dim(Y) holds with equality — for example, dim([0,1]^n) = n and dim([0,1]^n × [0,1]^m) = n+m. Erdős asked whether this equality can fail, and Anderson and Keisler (1967) gave the definitive answer: for every n ≥ 1, there exist separable metric spaces S_n with dim(S_n) = n and dim(S_n × S_n) = n, the most extreme possible violation. For n = 1, the classical example is ℓ²(ℚ) — rational points in Hilbert space — a countable dense totally disconnected subset of ℓ² with covering dimension 1 whose square also has dimension 1. This was known earlier through work of Erdős and Sierpiński. The general construction uses techniques from descriptive set theory (absolute Borel sets, decomposition theorems) to select subsets of n-dimensional spaces whose open covers interact efficiently in the product.",
+    "problemStatement": "**Erdős Problem #909** (SOLVED, Anderson-Keisler 1967):\n\nFor every n ≥ 1, does there exist a topological space S with dim(S) = n such that dim(S × S) = n?\n\n**Answer**: YES. For all n ≥ 1, separable metric spaces with this property exist.\n\n**For n = 1**: ℓ²(ℚ) (rational Hilbert space) is an explicit example.\n**For general n**: Anderson-Keisler construction via descriptive set theory.",
+    "text": "Is there a space S of dimension n such that S² also has dimension n? YES (Anderson-Keisler 1967). For all n ≥ 1, such separable metric spaces exist, showing the product dimension inequality dim(X×Y) ≤ dim(X)+dim(Y) can fail maximally.",
+    "proofStrategy": "The formalization axiomatizes covering dimension (not in Mathlib) and proceeds in layers: (1) Define coveringDimension as an axiom predicate; (2) Define hasDimensionExactly as dim ≤ n AND not dim ≤ n-1; (3) State erdos909Statement as ∀ n ≥ 1, ∃ S with exact dimension n in both S and S×S; (4) Axiomatize the n=1 example (rational Hilbert space) and the Anderson-Keisler theorem for all n; (5) Prove erdos_909 by extracting TopologicalSpace from the MetrizableSpace witness of Anderson-Keisler; (6) Package the result with the n=1 witness in erdos_909_summary. Docstrings reference the product dimension inequality and Euclidean/subspace dimension as background, but these are not formalized in this file.",
+    "keyInsights": [
+      "The product dimension inequality dim(X×Y) ≤ dim(X)+dim(Y) is typically an equality for 'nice' spaces, making dim(S×S) = dim(S) = n (instead of 2n) deeply surprising",
+      "For n = 1, the explicit witness ℓ²(ℚ) is countable, dense, and totally disconnected — its 'gaps' allow efficient cover refinement even in the product",
+      "The Anderson-Keisler construction for general n uses absolute Borel sets from descriptive set theory to select subsets with controlled cover interactions",
+      "The MetrizableSpace witness in the axiomatization is stronger than needed — erdos_909 drops it, showing the problem only requires TopologicalSpace structure",
+      "Covering dimension, small inductive dimension, and large inductive dimension all agree for separable metrizable spaces (Katětov-Morita theorem)"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Point-set topology"
+    ]
+  },
+  "sections": [
+    {
+      "id": "covering-dimension",
+      "title": "Covering Dimension",
+      "startLine": 27,
+      "endLine": 48,
+      "summary": "Axiomatizes coveringDimension X n (dim ≤ n) and defines hasDimensionExactly with an n > 0 guard. The product dimension inequality dim(X×Y) ≤ dim(X)+dim(Y) is described in a docstring but not formalized."
+    },
+    {
+      "id": "problem-statement",
+      "title": "Formal Problem Statement",
+      "startLine": 49,
+      "endLine": 59,
+      "summary": "Defines erdos909Statement: ∀ n ≥ 1, ∃ S with TopologicalSpace, hasDimensionExactly S n ∧ hasDimensionExactly (S×S) n."
+    },
+    {
+      "id": "n-equals-1",
+      "title": "Known Results for n=1",
+      "startLine": 60,
+      "endLine": 71,
+      "summary": "Axiomatizes rational_hilbert_example: ℓ²(ℚ) has dim = 1 and dim of square = 1. Classical example predating the general result."
+    },
+    {
+      "id": "anderson-keisler",
+      "title": "Anderson-Keisler Theorem (1967)",
+      "startLine": 72,
+      "endLine": 97,
+      "summary": "Axiomatizes the main result: ∀ n ≥ 1, ∃ separable metric S with dim(S) = n ∧ dim(S×S) = n. Proves erdos_909 by dropping the MetrizableSpace witness and exposing the underlying TopologicalSpace."
+    },
+    {
+      "id": "supporting-results",
+      "title": "Supporting Results (Docstrings Only)",
+      "startLine": 98,
+      "endLine": 101,
+      "summary": "Header section containing only docstrings that reference dim(ℝ^n) = n and subspace monotonicity. No definitions or theorems are stated for these results in this file."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 102,
+      "endLine": 125,
+      "summary": "Combined theorem erdos_909_summary: erdos909Statement holds (all n ≥ 1) and an explicit n=1 example exists (rational Hilbert space)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #909 is SOLVED. For every n ≥ 1, separable metric spaces exist with dim(S) = n and dim(S×S) = n, showing the product dimension inequality can fail maximally. Anderson and Keisler (1967) proved this using descriptive set theory, while the n=1 case has the explicit witness ℓ²(ℚ). The formalization axiomatizes covering dimension (absent from Mathlib) and proves the main result from the Anderson-Keisler axiom.",
+    "implications": "**Theoretical Significance**: This result reveals that dimension theory contains deep surprises: while 'nice' spaces like cubes satisfy dim(X×Y) = dim(X)+dim(Y), carefully constructed spaces can violate this maximally.\n\nThe construction connects topology to descriptive set theory (absolute Borel sets) and raises questions about which topological properties are preserved under products. The gap between the concrete n=1 case (elementary) and the general case (deep set theory) illustrates how difficulty can increase non-uniformly with the dimension parameter.",
+    "openQuestions": [
+      "Characterize all topological spaces S with dim(S × S) = dim(S) — is there a structural criterion?",
+      "What is dim(S_n^k) for the Anderson-Keisler space S_n when k > 2? Does dim(S_n^k) = n for all k?",
+      "Can the Anderson-Keisler construction be made more explicit or computable for specific n?",
+      "Relationships between covering dimension anomalies and other dimension theories (Hausdorff, box-counting) for these spaces",
+      "Does the phenomenon extend to non-metrizable spaces or require metrizability essentially?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Topology.Basic",
+      "Mathlib.Topology.Separation.Basic",
+      "Mathlib.Data.Nat.Basic"
+    ],
+    "opens": [
+      "TopologicalSpace"
+    ],
+    "namespace": "Erdos909",
+    "lineCount": 125,
+    "axiomCount": 3,
+    "theoremCount": 2,
+    "definitionCount": 2,
+    "path": "Proofs/Erdos909Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-780",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: solved, topology"
+    },
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "related",
+      "description": "Both concern topological existence results — showing that sufficient topological complexity forces the existence of specific configurations"
+    }
+  ],
+  "sorries": 0
+}

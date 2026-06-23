@@ -1,0 +1,188 @@
+{
+  "id": "erdos-1179-oq-02",
+  "title": "Erdős #1179 OQ-02: Axiom-Free Trivial Lower Bound for Uniform Subset Sums",
+  "slug": "erdos-1179-oq-02",
+  "description": "For Erdős #1179 (the minimal number gₑ(N) of group elements for an ε-uniform subset-sum representation), OQ-02 asks whether the (1+o(1)) factor sharpens to gₑ(N) ≤ log₂N + Oₑ(1), matching the trivial lower bound gₑ(N) ≥ log₂N. This file proves the lower-bound direction concretely and axiom-free at the level of an individual subset: an ε-uniform A (ε < 1) of an abelian group of order N has N ≤ 2^|A|, hence ⌈log₂N⌉ ≤ |A|. It removes the parent's circular hypothesis. 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Erdős–Hall (1976); lower-bound formalization in Lean 4",
+    "sourceUrl": "https://www.erdosproblems.com/1179",
+    "date": "1976",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1179OQ02.lean",
+    "tags": [
+      "number-theory",
+      "combinatorics",
+      "additive-combinatorics",
+      "abelian-groups",
+      "subset-sums",
+      "erdos-problem",
+      "open-question"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. Machine-checked: green docker-build of Proofs.Erdos1179OQ02 (7744 jobs, 2026-06-19) confirms the typecheck. Depends only on Erdos1179.total_reprCount and Erdos1179.expectedReprCount_pos from the parent Proofs/Erdos1179Problem.lean. This file formalizes only the LOWER-BOUND direction together with structural API for the ε-uniformity predicate (monotonicity in ε, the two-sided count sandwich, and the contrapositive too-small bound); the headline OQ-02 (the additive Oₑ(1) UPPER bound) remains open. The structural bounds and the exact small-N gap are additionally certified by research/problems/erdos-1179-oq-02/verify_uniform_subset_sums.py (all pass; the script notes it cannot decide the asymptotic Oₑ(1) question).",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.le_pow_iff_clog_le",
+        "description": "N ≤ b^k ↔ Nat.clog b N ≤ k (b > 1), used to pass from N ≤ 2^|A| to ⌈log₂N⌉ ≤ |A|",
+        "module": "Mathlib.Algebra.Order.Log"
+      },
+      {
+        "theorem": "Finset.sum_le_sum",
+        "description": "Monotonicity of finite sums, used to bound N = Σ_g 1 ≤ Σ_g F_A(g)",
+        "module": "Mathlib.Algebra.BigOperators.Order"
+      }
+    ],
+    "originalContributions": [
+      "epsUniform_spanning: ε-uniformity with ε < 1 forces every group element to have at least one subset-sum representation (F_A(g) ≥ 1), with NO lower bound on |A| — unlike the parent uniform_implies_spanning which assumes |A| ≥ ⌈log₂N⌉ (the bound it would help prove)",
+      "Removes the parent's circular hypothesis: positivity of the expected count μ = 2^|A|/N (which holds for any N ≥ 1) plus ε < 1 already gives F_A(g) ≥ (1−ε)μ > 0, so the lower bound becomes a genuine consequence rather than an assumption",
+      "card_le_two_pow_of_epsUniform: any ε-uniform A (ε < 1) of a group of order N satisfies N ≤ 2^|A|, via spanning + the parent's total_reprCount (Σ_g F_A(g) = 2^|A|)",
+      "clog_le_card_of_epsUniform: the integer form of the headline lower bound, ⌈log₂N⌉ ≤ |A| (Nat.clog 2 N ≤ A.card)",
+      "expectedReprCount_nonneg: the expected representation count μ = 2^k/N is nonnegative (structural helper for the monotonicity lemma)",
+      "epsUniform_mono: the ε-uniformity classes are nested — if A is ε-uniform and ε ≤ ε', then A is ε'-uniform, from |F_A(g) − μ| ≤ ε·μ ≤ ε'·μ (using μ ≥ 0)",
+      "epsUniform_count_upper: the upper companion of epsUniform_spanning — ε-uniformity bounds each count from above, F_A(g) ≤ (1+ε)·μ (the upper side of |F_A(g) − μ| ≤ ε·μ), completing the two-sided sandwich",
+      "not_epsUniform_of_card_lt_clog: contrapositive of the lower bound — a set strictly smaller than ⌈log₂N⌉ cannot be ε-uniform for any ε < 1 (no slack below g_ε(N) ≥ log₂N)"
+    ],
+    "dateAdded": "2026-06-15",
+    "lineCount": 151,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "prerequisites": [
+      "ε-uniform subset-sum representation functions on finite abelian groups (parent Erdos1179Problem.lean)",
+      "Expected representation count μ = 2^|A|/N and total_reprCount Σ_g F_A(g) = 2^|A|",
+      "Nat.clog as the integer ceiling logarithm"
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Erdős problem #1179, resolved by Erdős and Hall (1976), concerns ε-uniform subset-sum representations in a finite abelian group of order N: how many random group elements A are needed so that the number of subsets of A summing to each group element g is within a factor (1±ε) of the average μ = 2^|A|/N? The answer is gₑ(N) = (1 + oₑ(1))·log₂N. Open question OQ-02 asks whether the (1 + o(1)) multiplicative factor can be sharpened to a bounded additive error, gₑ(N) ≤ log₂N + Oₑ(1), which would match the trivial lower bound gₑ(N) ≥ log₂N exactly. This entry formalizes the lower-bound side of that matching target, axiom-free and at the concrete per-subset level — replacing the parent file's abstract axiom basic_lower_bound.",
+    "problemStatement": "Can the minimal uniform-representation size be sharpened to gₑ(N) ≤ log₂N + Oₑ(1), matching the trivial lower bound gₑ(N) ≥ log₂N?",
+    "text": "A 151-line, axiom-free, machine-checked formalization of the trivial lower bound plus structural API for ε-uniformity. The key step epsUniform_spanning shows that ε-uniformity (ε < 1) alone forces every group element to be representable (F_A(g) ≥ 1), with no assumption on |A|. Summing over the N group elements and using the parent's identity Σ_g F_A(g) = 2^|A| gives N ≤ 2^|A|, hence ⌈log₂N⌉ ≤ |A|. The structural lemmas record that the ε-uniformity classes are nested (epsUniform_mono), that the count is bounded on both sides (epsUniform_count_upper companions epsUniform_spanning), and that no set below ⌈log₂N⌉ can be ε-uniform (not_epsUniform_of_card_lt_clog). The headline OQ-02 (the additive Oₑ(1) upper bound) remains open.",
+    "proofStrategy": "From the ε-uniformity bound |F_A(g) − μ| ≤ ε·μ, the lower side gives F_A(g) ≥ (1−ε)·μ. Since μ = 2^|A|/N > 0 for N ≥ 1 and ε < 1, the RHS is positive, so the natural number F_A(g) is ≥ 1 (epsUniform_spanning) — crucially with no lower bound on |A|. Then N = Σ_g 1 ≤ Σ_g F_A(g) = 2^|A| (card_le_two_pow_of_epsUniform via total_reprCount), and Nat.le_pow_iff_clog_le converts this to ⌈log₂N⌉ ≤ |A| (clog_le_card_of_epsUniform).",
+    "keyInsights": [
+      "The lower bound gₑ(N) ≥ log₂N is information-theoretic: 2^|A| subsets must cover all N group elements, so 2^|A| ≥ N regardless of uniformity quality — uniformity (ε < 1) is only needed to guarantee every element is actually hit",
+      "The parent's uniform_implies_spanning was circular — it assumed |A| ≥ ⌈log₂N⌉ to prove spanning — and this file breaks the circle by deriving spanning from μ > 0 alone, making the lower bound a genuine consequence",
+      "Only ε < 1 is needed (not small ε): the positivity (1−ε)μ > 0 is all that drives the spanning argument",
+      "This settles the lower-bound half of OQ-02's matching target; the open content is the additive Oₑ(1) UPPER bound, which is not decidable by finite computation (the certificate exhibits only the exact small-N gap)",
+      "There is an asymmetry of difficulty baked into the problem: the lower bound is a per-subset covering fact provable for one fixed A, whereas the upper bound is an existence-over-randomness statement (some A of the claimed size is ε-uniform) whose Oₑ(1) error is an asymptotic-in-N claim — no finite check can certify it, which is exactly why the formalized lower bound here is axiom-free while the upper bound resists a constructive Lean proof"
+    ]
+  },
+  "sections": [
+    {
+      "id": "overview-and-setup",
+      "title": "Problem Framing and Parent Dependency",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "The module docstring frames Erdős #1179 (Erdős–Hall 1976, gₑ(N) = (1+oₑ(1))·log₂N) and OQ-02's sharpening to an additive Oₑ(1) error, then states what is formalized here: the axiom-free per-subset lower bound N ≤ 2^|A| underlying the parent's abstract axiom basic_lower_bound. It explains the key non-circular insight (μ > 0 from N ≥ 1 alone drives spanning) and records the only dependencies — Erdos1179.total_reprCount and expectedReprCount_pos — followed by the imports (Proofs.Erdos1179Problem, Mathlib), the Erdos1179 namespace, and open Finset Real.",
+      "mathContext": "Sets up $\\mu = 2^{|A|}/N$, the ε-uniformity bound $|F_A(g)-\\mu| \\le \\varepsilon\\mu$, and the parent identity $\\sum_g F_A(g) = 2^{|A|}$ used downstream."
+    },
+    {
+      "id": "imports-namespace",
+      "title": "Imports and Namespace Setup",
+      "startLine": 44,
+      "endLine": 48,
+      "summary": "Imports the parent Erdős #1179 development (which supplies the definitions reprCount, expectedReprCount μ, the ε-uniformity predicate epsUniform, and the lemmas expectedReprCount_pos and total_reprCount) and opens the Erdos1179 namespace so the concrete lower-bound theorems can reuse the parent's machinery without redefining it.",
+      "mathContext": "Brings the parent identities $\\mu = 2^{|A|}/N > 0$ (for $N \\ge 1$) and $\\sum_g F_A(g) = 2^{|A|}$ into scope for the three theorems that follow."
+    },
+    {
+      "id": "spanning",
+      "title": "Hypothesis-Free Spanning from ε-Uniformity",
+      "startLine": 49,
+      "endLine": 75,
+      "summary": "epsUniform_spanning: if A is ε-uniform with ε < 1 then every group element has at least one subset-sum representation (1 ≤ reprCount A g). Uses expectedReprCount_pos (μ > 0 for N ≥ 1) and the lower side of the uniformity bound F_A(g) ≥ (1−ε)μ > 0, with no lower bound on |A| — removing the parent's circular hypothesis.",
+      "mathContext": "$F_A(g) \\ge (1-\\varepsilon)\\mu > 0 \\Rightarrow F_A(g) \\ge 1$ for all $g$, given $\\varepsilon < 1$."
+    },
+    {
+      "id": "lower-bound-card",
+      "title": "The Trivial Lower Bound N ≤ 2^|A|",
+      "startLine": 77,
+      "endLine": 91,
+      "summary": "card_le_two_pow_of_epsUniform sums the spanning bound over all N group elements: N = Σ_g 1 ≤ Σ_g F_A(g) (Finset.sum_le_sum with epsUniform_spanning), and total_reprCount gives Σ_g F_A(g) = 2^|A|. The calc chain yields N ≤ 2^|A| — the information-theoretic statement that the 2^|A| subsets of A must cover all N group elements.",
+      "mathContext": "$N=\\sum_g 1 \\le \\sum_g F_A(g) = 2^{|A|}$."
+    },
+    {
+      "id": "lower-bound-clog",
+      "title": "Logarithmic Form ⌈log₂N⌉ ≤ |A|",
+      "startLine": 93,
+      "endLine": 104,
+      "summary": "clog_le_card_of_epsUniform converts N ≤ 2^|A| into the integer headline bound Nat.clog 2 N ≤ |A| via Nat.le_pow_iff_clog_le (valid since base 2 > 1). Since Nat.clog 2 N = ⌈log₂N⌉, this is exactly the trivial lower bound gₑ(N) ≥ log₂N at the per-subset level.",
+      "mathContext": "$N \\le 2^{|A|} \\iff \\lceil\\log_2 N\\rceil = \\operatorname{clog}_2 N \\le |A|$."
+    },
+    {
+      "id": "structural-api",
+      "title": "Structural Properties of ε-Uniformity",
+      "startLine": 106,
+      "endLine": 151,
+      "summary": "Reusable structural API for the IsEpsUniform predicate and the lower bound: expectedReprCount_nonneg (μ ≥ 0); epsUniform_mono (the ε-uniformity classes are nested — ε ≤ ε' carries ε-uniform to ε'-uniform, via |F−μ| ≤ ε·μ ≤ ε'·μ); epsUniform_count_upper (the upper companion of epsUniform_spanning — F_A(g) ≤ (1+ε)μ, the upper side of the defining bound, completing the two-sided sandwich); and not_epsUniform_of_card_lt_clog (contrapositive of the lower bound — no set below ⌈log₂N⌉ can be ε-uniform for any ε < 1).",
+      "mathContext": "$(1-\\varepsilon)\\mu \\le F_A(g) \\le (1+\\varepsilon)\\mu$; nesting in $\\varepsilon$ from $\\mu \\ge 0$; and $|A| < \\lceil\\log_2 N\\rceil \\Rightarrow \\neg\\,\\text{IsEpsUniform } A\\,\\varepsilon$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1179",
+      "relationship": "extends",
+      "description": "Proves, axiom-free and concretely, the lower bound that the parent Erdős #1179 entry states abstractly as the axiom basic_lower_bound; replaces the parent's circular uniform_implies_spanning."
+    },
+    {
+      "targetId": "erdos-1179-oq-01",
+      "relationship": "related",
+      "description": "Companion open question on the second-order term of the uniform subset-sum representation size."
+    }
+  ],
+  "conclusion": {
+    "summary": "The trivial lower bound gₑ(N) ≥ log₂N for Erdős #1179 is formalized axiom-free at the per-subset level: any ε-uniform A (ε < 1) of an abelian group of order N satisfies N ≤ 2^|A|, hence ⌈log₂N⌉ ≤ |A|. The spanning step is proved from μ > 0 alone, removing the parent's circular hypothesis. 0 axioms, 0 sorries.",
+    "implications": "Establishes one half of OQ-02's matching target rigorously and turns the parent's abstract lower-bound axiom into a proved consequence; the additive Oₑ(1) upper bound remains the open frontier.",
+    "openQuestions": [
+      "Prove the additive upper bound gₑ(N) ≤ log₂N + Oₑ(1) — the actual content of OQ-02 — which a deterministic 𝔽₂^m construction is being explored for (in-flight companion work)",
+      "Determine the optimal additive constant Cₑ in gₑ(N) ≤ log₂N + Cₑ as a function of ε",
+      "Discharge the parent's basic_lower_bound axiom outright by lifting this per-subset bound through the gEps quantifier"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Hall, R. R.",
+      "title": "Probabilistic methods in group theory II",
+      "year": "1976",
+      "venue": "Houston Journal of Mathematics 2(2), 173–180"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Proofs.Erdos1179Problem",
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos1179",
+    "lineCount": 151,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "path": "Proofs/Erdos1179OQ02.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "clog_le_card_of_epsUniform",
+      "type": "core",
+      "description": "The trivial lower bound in integer form: ⌈log₂N⌉ ≤ |A| for any ε-uniform A (ε < 1)",
+      "leanType": "Nat.clog 2 (Fintype.card G) ≤ A.card"
+    },
+    {
+      "name": "card_le_two_pow_of_epsUniform",
+      "type": "core",
+      "description": "N ≤ 2^|A| for any ε-uniform A with ε < 1",
+      "leanType": "Fintype.card G ≤ 2 ^ A.card"
+    },
+    {
+      "name": "epsUniform_spanning",
+      "type": "supporting",
+      "description": "ε-uniformity (ε < 1) forces every group element to be representable, with no lower bound on |A|",
+      "leanType": "1 ≤ reprCount A g"
+    }
+  ],
+  "sorries": 0
+}

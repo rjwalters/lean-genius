@@ -1,0 +1,169 @@
+{
+  "id": "dini-theorem-oq-01",
+  "title": "Dini's Theorem and the Sharpness of Its Hypotheses",
+  "slug": "dini-theorem-oq-01",
+  "description": "Dini's theorem says that a monotone sequence of continuous functions on a compact space converging pointwise to a continuous limit converges uniformly — a pointwise hypothesis upgrades to a uniform conclusion. Mathlib proves the theorem in full generality (normed lattice codomains, monotone/antitone, compact space/subset). The gallery has no entry for it, and — more importantly — no record of why each of its three hypotheses is necessary. This entry re-exports the four real-valued faces of the theorem and then supplies the textbook sharpness witnesses, all formalized: the sequence xⁿ on [0,1] is continuous, monotone, and pointwise-convergent yet not uniform because its limit is discontinuous (continuity of the limit is necessary), and the same xⁿ on the non-compact [0,1) is monotone, continuous, and converges pointwise to a continuous limit yet still not uniformly (compactness of the domain is necessary).",
+  "meta": {
+    "author": "Ulisse Dini (1878); Lean formalization original",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DiniTheorem.lean",
+    "tags": [
+      "analysis",
+      "real-analysis",
+      "uniform-convergence",
+      "compactness",
+      "continuity",
+      "counterexample",
+      "classic"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-20",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Monotone.tendstoUniformly_of_forall_tendsto",
+        "description": "Dini's theorem: a monotone increasing sequence of continuous functions on a compact space converging pointwise to a continuous limit converges uniformly",
+        "module": "Mathlib.Topology.UniformSpace.Dini"
+      },
+      {
+        "theorem": "Antitone.tendstoUniformly_of_forall_tendsto",
+        "description": "The decreasing form of Dini's theorem",
+        "module": "Mathlib.Topology.UniformSpace.Dini"
+      },
+      {
+        "theorem": "Monotone.tendstoUniformlyOn_of_forall_tendsto",
+        "description": "Dini's theorem localized to a compact subset",
+        "module": "Mathlib.Topology.UniformSpace.Dini"
+      },
+      {
+        "theorem": "TendstoUniformlyOn.continuousOn",
+        "description": "A uniform limit of functions continuous on a set is continuous on that set — the engine that turns 'discontinuous limit' into 'not uniformly convergent'",
+        "module": "Mathlib.Topology.UniformSpace.UniformApproximation"
+      },
+      {
+        "theorem": "tendsto_pow_atTop_nhds_zero_of_lt_one",
+        "description": "xⁿ → 0 for 0 ≤ x < 1; used for the pointwise limits of the witnesses",
+        "module": "Mathlib.Analysis.SpecificLimits.Basic"
+      },
+      {
+        "theorem": "intermediate_value_Icc",
+        "description": "Intermediate value theorem on a closed interval; locates, for each n, a point of [0,1) where xⁿ = 1/2, defeating uniform convergence on [0,1)",
+        "module": "Mathlib.Topology.Order.IntermediateValue"
+      }
+    ],
+    "originalContributions": [
+      "dini_monotone / dini_antitone: the gallery headline statements of Dini's theorem (compact space, increasing and decreasing) re-exported for real-valued functions",
+      "dini_monotone_on / dini_antitone_on: the compact-subset versions, requiring continuity / monotonicity / pointwise convergence only on the set",
+      "limitPow: the pointwise limit of xⁿ on [0,1] (0 on [0,1), 1 at x=1), the discontinuous function that obstructs uniform convergence",
+      "pow_tendsto_limitPow: xⁿ converges pointwise on [0,1] to the discontinuous limitPow",
+      "limitPow_not_continuousOn: limitPow is discontinuous on [0,1] (it fails to be continuous at the endpoint x=1, proved via an explicit left-approaching sequence)",
+      "pow_not_tendstoUniformlyOn: SHARPNESS WITNESS #1 — xⁿ on the compact [0,1] is continuous, antitone, and pointwise-convergent yet NOT uniformly convergent, because a uniform limit of continuous functions would be continuous while limitPow is not. Shows continuity of the limit cannot be dropped. Not in Mathlib",
+      "pow_not_tendstoUniformlyOn_Ico: SHARPNESS WITNESS #2 — the same xⁿ on the non-compact [0,1), where the pointwise limit (0) IS continuous, is still NOT uniformly convergent because for every n the intermediate value theorem furnishes a point with xⁿ = 1/2, so the supremum error stays ≥ 1/2. Shows compactness of the domain cannot be dropped. Not in Mathlib"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries, no native_decide. Depends only on the foundational axioms propext, Classical.choice, Quot.sound via standard Mathlib lemmas.",
+    "lineCount": 180,
+    "theoremCount": 11,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Ulisse Dini stated his theorem in his 1878 lectures on the theory of functions of a real variable. It is one of the cleanest instances of the recurring analysis phenomenon by which a pointwise hypothesis, in the presence of monotonicity and compactness, is automatically promoted to a uniform conclusion. The result is a staple of every first course in real analysis precisely because each of its hypotheses is necessary — the standard pedagogy pairs the theorem with the counterexample xⁿ, which violates uniform convergence as soon as either the continuity of the limit or the compactness of the domain is removed.",
+    "problemStatement": "Mathlib proves Dini's theorem in considerable generality but the gallery records neither the theorem nor the counterexamples that explain its hypotheses. Can the theorem be stated cleanly for real-valued functions, and — the genuinely new content — can the two textbook sharpness witnesses be formalized with no axioms, demonstrating that continuity of the limit and compactness of the domain are each indispensable?\n\n**Answer:** Yes. The four faces of the theorem are direct re-exports. The first witness, xⁿ on [0,1], converges pointwise to a discontinuous limit, so it cannot converge uniformly (a uniform limit of continuous functions is continuous); this needs no ε–N bookkeeping. The second witness, xⁿ on [0,1), converges pointwise to the continuous function 0 but the intermediate value theorem produces, for every n, a point where xⁿ = 1/2, so the uniform error never shrinks below 1/2.",
+    "text": "Dini's theorem (monotone/antitone, compact space/subset) re-exported from Mathlib, together with two formalized sharpness counterexamples built from xⁿ: one on the compact [0,1] showing the limit must be continuous, one on the non-compact [0,1) showing the domain must be compact. All verified in Lean with no axioms.",
+    "proofStrategy": "1. dini_monotone / dini_antitone / dini_monotone_on / dini_antitone_on: apply Mathlib's Dini lemmas (Monotone/Antitone.tendstoUniformly[On]_of_forall_tendsto) specialized to ℝ.\n2. pow_tendsto_limitPow: split on x = 1 (constant sequence → 1) versus x < 1 (tendsto_pow_atTop_nhds_zero_of_lt_one → 0).\n3. limitPow_not_continuousOn: along the left-approaching sequence aₖ = 1 − 1/(k+1) → 1 (all aₖ ≠ 1), continuity at 1 would force limitPow(aₖ) → limitPow 1 = 1, but limitPow(aₖ) = 0 → 0; uniqueness of limits gives 1 = 0.\n4. pow_not_tendstoUniformlyOn (witness #1): if it converged uniformly, TendstoUniformlyOn.continuousOn would make limitPow continuous on [0,1], contradicting (3).\n5. pow_not_tendstoUniformlyOn_Ico (witness #2): unfold uniform convergence metrically and push the negation; for ε = 1/2 and every n, intermediate_value_Icc produces x ∈ [0,1) with xⁿ = 1/2, so the error 1/2 is attained for arbitrarily large n.",
+    "keyInsights": [
+      "**Pointwise + monotone + compact ⟹ uniform is the whole content**, and the gallery value here is not the (re-exported) theorem but the formal demonstration that each hypothesis is load-bearing.",
+      "**Discontinuity defeats uniformity for free**: witness #1 never touches an ε–N argument. The single Mathlib fact 'a uniform limit of continuous functions is continuous' converts the visible jump of xⁿ at x = 1 directly into non-uniform convergence.",
+      "**Compactness is independently necessary**: witness #2 keeps a continuous limit (the constant 0), so the continuity route is unavailable; instead the intermediate value theorem manufactures, for every n, a point of [0,1) at which the error equals 1/2. The two witnesses isolate two different failure modes of the same sequence.",
+      "**Monotonicity in n is automatic for xⁿ on [0,1]** (pow_right_anti₀), so the witnesses genuinely satisfy every hypothesis of Dini's theorem except the one each is designed to remove — they are honest counterexamples, not strawmen."
+    ],
+    "prerequisites": [
+      "Pointwise versus uniform convergence of sequences of functions",
+      "Continuity, compactness, and the fact that a uniform limit of continuous functions is continuous",
+      "The intermediate value theorem",
+      "Filters and Tendsto / TendstoUniformlyOn in Mathlib"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-docstring",
+      "title": "Imports and Statement",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "File-level docstring stating Dini's theorem, noting that Mathlib already proves it, and framing the new content as the sharpness witnesses showing continuity of the limit and compactness of the domain are each necessary.",
+      "mathContext": "Dini's theorem: pointwise + monotone + continuous limit + compact ⟹ uniform convergence."
+    },
+    {
+      "id": "dini-theorem",
+      "title": "Dini's Theorem (four faces)",
+      "startLine": 38,
+      "endLine": 68,
+      "summary": "dini_monotone and dini_antitone (compact space) and dini_monotone_on / dini_antitone_on (compact subset) re-export Mathlib's Dini lemmas for real-valued functions.",
+      "mathContext": "Monotone/antitone sequences of continuous functions converging pointwise on a compact set converge uniformly."
+    },
+    {
+      "id": "witness-discontinuous-limit",
+      "title": "Sharpness Witness #1: continuity of the limit is necessary",
+      "startLine": 70,
+      "endLine": 134,
+      "summary": "limitPow is the pointwise limit of xⁿ on [0,1] (jumping at x=1); pow_tendsto_limitPow proves the pointwise convergence; limitPow_not_continuousOn proves the limit is discontinuous via a left-approaching sequence; pow_not_tendstoUniformlyOn concludes non-uniform convergence because a uniform limit of continuous functions would be continuous.",
+      "mathContext": "xⁿ on the compact [0,1]: every Dini hypothesis holds except continuity of the limit, and convergence fails to be uniform."
+    },
+    {
+      "id": "witness-noncompact-domain",
+      "title": "Sharpness Witness #2: compactness of the domain is necessary",
+      "startLine": 136,
+      "endLine": 183,
+      "summary": "pow_tendsto_zero_on_Ico gives pointwise convergence of xⁿ to the continuous limit 0 on [0,1); pow_not_tendstoUniformlyOn_Ico shows convergence is not uniform: unfolding uniform convergence metrically, the intermediate value theorem supplies for every n a point of [0,1) where xⁿ = 1/2.",
+      "mathContext": "xⁿ on the non-compact [0,1): the limit is continuous, yet convergence is not uniform — compactness cannot be dropped."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Dini, Ulisse",
+      "title": "Fondamenti per la teorica delle funzioni di variabili reali",
+      "year": "1878",
+      "note": "The lectures where Dini's theorem on uniform convergence first appears"
+    },
+    {
+      "authors": "Rudin, Walter",
+      "title": "Principles of Mathematical Analysis",
+      "year": "1976",
+      "note": "Theorem 7.13 (Dini's theorem) and the standard xⁿ counterexamples in Chapter 7"
+    },
+    {
+      "authors": "Bartle, Robert; Sherbert, Donald",
+      "title": "Introduction to Real Analysis",
+      "year": "2011",
+      "note": "Dini's theorem and the pointwise-but-not-uniform behaviour of xⁿ on [0,1]"
+    }
+  ],
+  "crossReferences": [],
+  "conclusion": {
+    "summary": "Dini's theorem in its four real-valued faces (dini_monotone, dini_antitone, dini_monotone_on, dini_antitone_on) is re-exported from Mathlib, and the necessity of its hypotheses is established by two formalized counterexamples: xⁿ on the compact [0,1] (pow_not_tendstoUniformlyOn — continuity of the limit is necessary) and xⁿ on the non-compact [0,1) (pow_not_tendstoUniformlyOn_Ico — compactness of the domain is necessary). All results are verified with 0 axioms and 0 sorries.",
+    "implications": "Gives the gallery a dedicated statement of Dini's theorem together with the precise reasons it cannot be weakened, packaged so each counterexample isolates a single failing hypothesis of the same canonical sequence xⁿ.",
+    "openQuestions": [
+      "Can the third hypothesis be addressed with a formalized witness that monotonicity in n is necessary — e.g. a moving triangular bump on [0,1] that is continuous, converges pointwise to 0 on a compact domain, but is non-monotone and not uniformly convergent?",
+      "Does a quantitative refinement hold: on [0,1) the uniform distance sup_{x} |xⁿ| stays exactly 1, giving an explicit lower bound on the modulus of non-uniform convergence rather than the value 1/2 used here?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Topology",
+      "Set"
+    ],
+    "namespace": "DiniTheorem",
+    "lineCount": 180,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 1,
+    "path": "Proofs/DiniTheorem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

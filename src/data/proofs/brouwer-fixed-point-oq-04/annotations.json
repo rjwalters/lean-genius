@@ -1,0 +1,345 @@
+[
+  {
+    "id": "ann-correspondence-structure",
+    "proofId": "brouwer-fixed-point-oq-04",
+    "range": {
+      "startLine": 69,
+      "endLine": 74
+    },
+    "type": "definition",
+    "title": "Correspondence (Set-Valued Map)",
+    "content": "Defines a correspondence $F: S \\to 2^S$ as a structure bundling four properties: the underlying function `toFun`, nonemptiness of values, closedness of values, and the maps-to constraint $F(x) \\subseteq S$. This is the standard formulation from mathematical economics (Berge 1959), where correspondences model budget sets, best-response maps, and supply/demand relations.",
+    "mathContext": "A correspondence from $S$ to itself is a function $F: S \\to 2^S$ such that for all $x \\in S$: (1) $F(x) \\neq \\emptyset$, (2) $F(x)$ is closed, (3) $F(x) \\subseteq S$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "set-valued analysis",
+      "Berge maximum theorem",
+      "budget correspondence"
+    ],
+    "prerequisites": [
+      "topological spaces",
+      "closed sets",
+      "set theory"
+    ]
+  },
+  {
+    "id": "ann-fixed-point-def",
+    "proofId": "brouwer-fixed-point-oq-04",
+    "range": {
+      "startLine": 76,
+      "endLine": 84
+    },
+    "type": "definition",
+    "title": "Set-Valued Fixed Points",
+    "content": "Defines fixed points for correspondences: $x^*$ is a fixed point of $F$ if $x^* \\in F(x^*)$. This generalizes the classical fixed point equation $f(x^*) = x^*$ — instead of equality, we require membership. The `HasFixedPoint` predicate asserts existence of such a point.",
+    "mathContext": "For a correspondence $F: S \\to 2^S$, a fixed point is $x^* \\in S$ with $x^* \\in F(x^*)$. For singleton-valued $F(x) = \\{f(x)\\}$, this reduces to $f(x^*) = x^*$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fixed point theory",
+      "Brouwer fixed point",
+      "Nash equilibrium"
+    ],
+    "prerequisites": [
+      "set membership",
+      "existential quantification"
+    ]
+  },
+  {
+    "id": "ann-convex-valued",
+    "proofId": "brouwer-fixed-point-oq-04",
+    "range": {
+      "startLine": 86,
+      "endLine": 98
+    },
+    "type": "definition",
+    "title": "Convex-Valued Correspondences",
+    "content": "Defines the convexity condition on correspondence values: for every $x \\in S$, the image $F(x)$ must be convex over $\\mathbb{R}$. This is a critical hypothesis of Kakutani's theorem — without convexity, the theorem fails. The classic counterexample is the rotation map on $S^1$ viewed as a set-valued map with non-convex images.",
+    "mathContext": "$F$ is convex-valued if for all $x \\in S$, $F(x)$ is convex: $\\forall y,z \\in F(x),\\, \\forall \\lambda \\in [0,1],\\, \\lambda y + (1-\\lambda)z \\in F(x)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "convex sets",
+      "convex hulls",
+      "Shapley-Folkman lemma"
+    ],
+    "prerequisites": [
+      "convex analysis",
+      "real vector spaces"
+    ]
+  },
+  {
+    "id": "ann-uhc-definition",
+    "proofId": "brouwer-fixed-point-oq-04",
+    "range": {
+      "startLine": 100,
+      "endLine": 105
+    },
+    "type": "definition",
+    "title": "Upper Hemicontinuity (Berge 1959)",
+    "content": "Defines upper hemicontinuity using Berge's neighborhood formulation: $F$ is UHC at $x$ if for every open set $V \\supseteq F(x)$, there is a neighborhood $U$ of $x$ such that $F(y) \\subseteq V$ for all $y \\in U \\cap S$. This is strictly weaker than lower hemicontinuity and equivalent to the closed-graph property when $F$ has compact values.",
+    "mathContext": "$F: S \\to 2^S$ is upper hemicontinuous if $\\forall x \\in S,\\, \\forall V \\text{ open with } F(x) \\subseteq V,\\, \\exists U \\in \\mathcal{N}(x),\\, \\forall y \\in U \\cap S,\\, F(y) \\subseteq V$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lower hemicontinuity",
+      "Berge maximum theorem",
+      "closed graph theorem"
+    ],
+    "prerequisites": [
+      "topological spaces",
+      "neighborhood filters",
+      "continuity"
+    ]
+  },
+  {
+    "id": "ann-continuous-singleton-uhc",
+    "proofId": "brouwer-fixed-point-oq-04",
+    "range": {
+      "startLine": 107,
+      "endLine": 121
+    },
+    "type": "concept",
+    "title": "Continuous Functions Induce UHC Correspondences",
+    "content": "Proves that any continuous function $f: \\alpha \\to \\alpha$ induces an upper hemicontinuous singleton correspondence $x \\mapsto \\{f(x)\\}$. The proof reduces UHC to the preimage characterization of continuity: if $V$ is open and $f(x) \\in V$, then $f^{-1}(V)$ is an open neighborhood of $x$, and any $y$ in this preimage satisfies $\\{f(y)\\} \\subseteq V$.",
+    "mathContext": "If $f$ is continuous and $F(x) = \\{f(x)\\}$, then $F$ is UHC. Proof: given open $V \\supseteq \\{f(x)\\}$, take $U = f^{-1}(V)$, which is open by continuity.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "continuity",
+      "preimage characterization",
+      "singleton correspondence"
+    ],
+    "prerequisites": [
+      "continuous maps",
+      "preimage of open sets"
+    ]
+  },
+  {
+    "id": "ann-brouwer-axiom",
+    "proofId": "brouwer-fixed-point-oq-04",
+    "range": {
+      "startLine": 123,
+      "endLine": 168
+    },
+    "type": "concept",
+    "title": "Brouwer FPT for Compact Convex Sets (Proved)",
+    "content": "States and **proves** the Brouwer Fixed Point Theorem for the closed unit ball in $\\mathbb{R}^n$: every continuous self-map of $\\text{ClosedBall}(n)$ has a fixed point (`brouwer_compact_convex`). This was *previously axiomatized*; it is now derived from the parent Brouwer FPT in `BrouwerFixedPoint.lean` (proved there via the no-retraction theorem) by wrapping the map in a `Brouwer.SelfMap` and applying that result. The section first sets up `ClosedBall n` together with the supporting lemmas `closedBall_compact`, `closedBall_nonempty`, and `closedBall_convex`, which supply the compact-convex hypotheses the fixed-point theorem needs.",
+    "mathContext": "If $S \\subseteq \\mathbb{R}^n$ is nonempty, compact, and convex and $f: S \\to S$ is continuous, then $\\exists x^* \\in S,\\ f(x^*) = x^*$. Here $S = \\text{ClosedBall}(n)$ and the result is obtained from the parent no-retraction proof, not assumed.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Brouwer fixed point theorem",
+      "no-retraction theorem",
+      "closed ball",
+      "compact convex set"
+    ],
+    "prerequisites": [
+      "compact sets",
+      "convex sets in finite dimensions",
+      "continuity"
+    ]
+  },
+  {
+    "id": "ann-kakutani-axiom",
+    "proofId": "brouwer-fixed-point-oq-04",
+    "range": {
+      "startLine": 170,
+      "endLine": 189
+    },
+    "type": "insight",
+    "title": "Kakutani FPT — Axiom with Classical Proof Sketch",
+    "content": "Axiomatizes the Kakutani Fixed Point Theorem with a detailed proof sketch. The classical proof (Kakutani 1941) works by triangulating $S$ into simplices of mesh $1/k$, selecting points $y_i \\in F(v_i)$ at vertices, extending affinely to get $f_k: S \\to S$, applying Brouwer to get fixed points $x_k$, and taking a convergent subsequence. Upper hemicontinuity ensures the limit $x^*$ satisfies $x^* \\in F(x^*)$. This is axiomatized because the triangulation/approximation argument requires tools beyond current Mathlib.",
+    "mathContext": "**Kakutani (1941)**: Let $S \\subseteq \\mathbb{R}^n$ be nonempty, compact, convex. If $F: S \\to 2^S$ is UHC with nonempty convex closed values, then $\\exists x^* \\in S$ with $x^* \\in F(x^*)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "triangulation",
+      "simplicial approximation",
+      "compactness argument"
+    ],
+    "prerequisites": [
+      "Brouwer FPT",
+      "upper hemicontinuity",
+      "convex analysis",
+      "compactness"
+    ]
+  },
+  {
+    "id": "ann-singleton-correspondence",
+    "proofId": "brouwer-fixed-point-oq-04",
+    "range": {
+      "startLine": 191,
+      "endLine": 209
+    },
+    "type": "definition",
+    "title": "Singleton Correspondence Construction",
+    "content": "Constructs the singleton correspondence $F(x) = \\{f(x)\\}$ from a continuous self-map $f$, verifying all four correspondence properties: singletons are nonempty, singletons are closed, and if $f$ maps $S$ to $S$ then $\\{f(x)\\} \\subseteq S$. Also proves singleton convexity (singletons are trivially convex). This is the technical bridge that shows Kakutani strictly generalizes Brouwer.",
+    "mathContext": "Given continuous $f: S \\to S$, define $F(x) = \\{f(x)\\}$. Then $F$ is a correspondence with convex values, and $F$ is UHC (by the previous theorem).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "singleton sets",
+      "convexity of singletons",
+      "correspondence embedding"
+    ],
+    "prerequisites": [
+      "correspondence structure",
+      "singleton set properties"
+    ]
+  },
+  {
+    "id": "ann-kakutani-iff-brouwer",
+    "proofId": "brouwer-fixed-point-oq-04",
+    "range": {
+      "startLine": 211,
+      "endLine": 240
+    },
+    "type": "insight",
+    "title": "Kakutani Implies Brouwer (Constructive Proof)",
+    "content": "Two key results: (1) `kakutani_singleton_iff_brouwer` shows that a fixed point of $\\{f(x)\\}$ at $x^*$ is equivalent to $f(x^*) = x^*$ — proved by simplification and `tauto`. (2) `brouwer_from_kakutani` derives the full Brouwer theorem from Kakutani: construct the singleton correspondence, verify UHC and convexity, apply Kakutani, then extract the classical fixed point from set membership. This constructively demonstrates that Kakutani is a proper generalization.",
+    "mathContext": "$x^* \\in \\{f(x^*)\\} \\iff f(x^*) = x^*$. Therefore Brouwer's theorem is a corollary of Kakutani's: apply Kakutani to $F(x) = \\{f(x)\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "generalization hierarchy",
+      "theorem reduction",
+      "Brouwer FPT"
+    ],
+    "prerequisites": [
+      "Kakutani FPT",
+      "singleton correspondence",
+      "set membership"
+    ]
+  },
+  {
+    "id": "ann-interval-correspondence",
+    "proofId": "brouwer-fixed-point-oq-04",
+    "range": {
+      "startLine": 243,
+      "endLine": 262
+    },
+    "type": "definition",
+    "title": "Continuous Interval Correspondence",
+    "content": "Defines a 1D interval correspondence $F(x) = [l(x), u(x)]$ on $[0,1]$ where both bound functions are continuous. The structure bundles seven properties: $l(x) \\leq u(x)$, $0 \\leq l(x)$, $u(x) \\leq 1$, and continuity of both bounds on $[0,1]$. Fixed points satisfy $l(x) \\leq x \\leq u(x)$, meaning $x \\in F(x) = [l(x), u(x)]$.",
+    "mathContext": "An interval correspondence on $[0,1]$ is $F(x) = [l(x), u(x)]$ where $l, u: [0,1] \\to [0,1]$ are continuous with $l(x) \\leq u(x)$. A fixed point satisfies $l(x^*) \\leq x^* \\leq u(x^*)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "interval-valued maps",
+      "closed intervals",
+      "continuous selections"
+    ],
+    "prerequisites": [
+      "continuous functions on intervals",
+      "order properties"
+    ]
+  },
+  {
+    "id": "ann-kakutani-1d-ivt",
+    "proofId": "brouwer-fixed-point-oq-04",
+    "range": {
+      "startLine": 264,
+      "endLine": 297
+    },
+    "type": "concept",
+    "title": "1D Kakutani via Intermediate Value Theorem (Fully Proved)",
+    "content": "Proves the 1D Kakutani theorem without any axioms using the IVT. The key idea: define $g(x) = u(x) - x$. Since $g(0) = u(0) \\geq l(0) \\geq 0$ and $g(1) = u(1) - 1 \\leq 0$, the IVT gives $x_0 \\in [0,1]$ with $g(x_0) = 0$, i.e., $u(x_0) = x_0$. Then $l(x_0) \\leq u(x_0) = x_0 \\leq u(x_0)$, so $x_0$ is a fixed point. This is the only fully proved case of Kakutani in this formalization.",
+    "mathContext": "Define $g(x) = u(x) - x$. Then $g(0) \\geq 0$ and $g(1) \\leq 0$. By the IVT, $\\exists x_0 \\in [0,1]$ with $u(x_0) = x_0$. Since $l(x_0) \\leq u(x_0) = x_0$, we get $x_0 \\in F(x_0)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "intermediate value theorem",
+      "Bolzano's theorem",
+      "continuous functions on compact intervals"
+    ],
+    "prerequisites": [
+      "IVT on closed intervals",
+      "continuity on Icc",
+      "subtraction of continuous functions"
+    ]
+  },
+  {
+    "id": "ann-correspondence-algebra",
+    "proofId": "brouwer-fixed-point-oq-04",
+    "range": {
+      "startLine": 299,
+      "endLine": 330
+    },
+    "type": "concept",
+    "title": "Correspondence Algebra: Constant and Identity",
+    "content": "Builds basic correspondence algebra: (1) the constant correspondence $F(x) = S$ trivially has every point as a fixed point; (2) the identity correspondence $F(x) = \\{x\\}$ makes every point a fixed point. These are the simplest instances verifying the correspondence framework. The constant correspondence proof uses compactness of the closed ball to show closedness of values.",
+    "mathContext": "The constant correspondence $F(x) = S$ has $\\forall x \\in S,\\, x \\in S = F(x)$. The identity $F(x) = \\{x\\}$ has $x \\in \\{x\\} = F(x)$ for all $x \\in S$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "trivial fixed points",
+      "identity map",
+      "constant map"
+    ],
+    "prerequisites": [
+      "correspondence structure",
+      "closed ball properties"
+    ]
+  },
+  {
+    "id": "ann-mixed-strategy-space",
+    "proofId": "brouwer-fixed-point-oq-04",
+    "range": {
+      "startLine": 332,
+      "endLine": 397
+    },
+    "type": "insight",
+    "title": "Mixed Strategy Spaces: Compact, Convex, Closed",
+    "content": "Proves the three fundamental properties of mixed strategy simplices $\\Delta_k = \\{\\sigma \\in \\mathbb{R}^k \\mid \\sigma_i \\geq 0,\\, \\sum \\sigma_i = 1\\}$: (1) convexity — convex combinations of probability distributions are distributions; (2) closedness — intersection of halfspaces $\\{\\sigma_i \\geq 0\\}$ and the hyperplane $\\{\\sum \\sigma_i = 1\\}$; (3) compactness — as a closed subset of the bounded box $[0,1]^k$. These are the prerequisites for applying Kakutani to game theory.",
+    "mathContext": "The simplex $\\Delta_k = \\{\\sigma \\in \\mathbb{R}^k : \\sigma_i \\geq 0,\\, \\sum_i \\sigma_i = 1\\}$ is compact (closed and bounded in $\\mathbb{R}^k$) and convex.",
+    "significance": "key",
+    "relatedConcepts": [
+      "probability simplex",
+      "standard simplex",
+      "compact convex sets"
+    ],
+    "prerequisites": [
+      "convex analysis",
+      "compactness in finite dimensions",
+      "probability distributions"
+    ]
+  },
+  {
+    "id": "ann-nash-framework",
+    "proofId": "brouwer-fixed-point-oq-04",
+    "range": {
+      "startLine": 399,
+      "endLine": 435
+    },
+    "type": "insight",
+    "title": "Nash Equilibrium Framework",
+    "content": "Defines an $N$-player finite game and proves that the product of mixed strategy simplices is compact — the first step toward Nash's existence proof. Nash (1950) applied Kakutani to the best-response correspondence on this product space: each player's best response to others' strategies forms a nonempty convex compact set, and the combined correspondence is UHC. The fixed point is a Nash equilibrium where no player can unilaterally improve.",
+    "mathContext": "A finite $N$-player game has strategy counts $(k_1, \\ldots, k_N)$. The mixed strategy space $\\prod_{i=1}^N \\Delta_{k_i}$ is compact (product of compact sets). Nash's theorem: $\\exists \\sigma^* \\in \\prod \\Delta_{k_i}$ such that $\\sigma^*_i$ is a best response to $\\sigma^*_{-i}$ for all $i$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nash equilibrium",
+      "best response",
+      "game theory",
+      "Tychonoff theorem"
+    ],
+    "prerequisites": [
+      "finite games",
+      "mixed strategies",
+      "product topology",
+      "Kakutani FPT"
+    ]
+  },
+  {
+    "id": "ann-uhc-properties",
+    "proofId": "brouwer-fixed-point-oq-04",
+    "range": {
+      "startLine": 437,
+      "endLine": 460
+    },
+    "type": "concept",
+    "title": "UHC Closure Properties",
+    "content": "Proves two closure properties of upper hemicontinuity: (1) constant correspondences $F(x) = C$ are trivially UHC — the neighborhood is all of $\\alpha$; (2) continuous images preserve UHC — if $F$ is UHC and $g$ is continuous, then $x \\mapsto g(F(x))$ is UHC. The second result uses the fact that $g^{-1}(V)$ is open when $V$ is open and $g$ is continuous, then applies UHC of $F$ to the preimage.",
+    "mathContext": "If $F$ is UHC and $g$ is continuous, then $G(x) = g(F(x))$ is UHC. Proof: given open $V \\supseteq G(x)$, note $F(x) \\subseteq g^{-1}(V)$ which is open, so UHC of $F$ gives the required neighborhood.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "composition of correspondences",
+      "preservation of semicontinuity",
+      "continuous images"
+    ],
+    "prerequisites": [
+      "upper hemicontinuity",
+      "continuous maps",
+      "preimage characterization"
+    ]
+  }
+]

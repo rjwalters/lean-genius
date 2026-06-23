@@ -1,0 +1,255 @@
+{
+  "id": "shapley-folkman",
+  "title": "Shapley-Folkman Lemma",
+  "slug": "shapley-folkman",
+  "description": "Every point in the convex hull of a Minkowski sum of N sets in d-dimensional space can be decomposed so that at most d summands come from convex hulls rather than the original sets. A fundamental result connecting convex analysis and mathematical economics.",
+  "meta": {
+    "author": "Shapley & Folkman (formalized in Lean 4)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Shapley%E2%80%93Folkman_lemma",
+    "date": "1966",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ShapleyFolkman.lean",
+    "tags": [
+      "convex-analysis",
+      "economics",
+      "combinatorics",
+      "intermediate"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "convexHull_eq_union",
+        "description": "Caratheodory's theorem: convex hull equals union of hulls of affinely independent subsets",
+        "module": "Mathlib.Analysis.Convex.Caratheodory"
+      },
+      {
+        "theorem": "Finset.centerMass",
+        "description": "Center of mass (convex combination) for finsets",
+        "module": "Mathlib.Analysis.Convex.Combination"
+      },
+      {
+        "theorem": "convexHull",
+        "description": "Convex hull closure operator",
+        "module": "Mathlib.Analysis.Convex.Hull"
+      },
+      {
+        "theorem": "AffineIndependent",
+        "description": "Affine independence predicate",
+        "module": "Mathlib.LinearAlgebra.AffineSpace.Independent"
+      },
+      {
+        "theorem": "Module.finrank",
+        "description": "Dimension of a finite-dimensional module",
+        "module": "Mathlib.LinearAlgebra.Dimension.Finrank"
+      }
+    ],
+    "originalContributions": [
+      "Decomposition structure: records a summand decomposition x = sum xi with xi in conv(Si)",
+      "shapley_folkman: main theorem bounding excess indices by finrank",
+      "convexHull_not_mem_requires_two: points in conv(S) \\ S need >= 2 Caratheodory vertices",
+      "excess_vertices_affine_dependent: dimension bound forces affine dependence among excess vertices",
+      "sum_close_to_convexHull: qualitative Shapley-Folkman-Starr corollary",
+      "repeated_sum_nearly_convex: economic application form for n-fold sums"
+    ],
+    "dateAdded": "2026-03-27",
+    "axiomCount": 0,
+    "assumptions": "None. 0 sorries, 0 axioms. Fully machine-checked in Lean 4 via WF induction on total minCaraDepth. All proofs are complete with no sorry placeholders.",
+    "prerequisites": [
+      "Convex sets and convex hulls",
+      "Minkowski (pointwise) addition of sets",
+      "Caratheodory's theorem (points in convex hull need at most d+1 vertices)",
+      "Affine independence and dimension"
+    ],
+    "lineCount": 1238,
+    "mathlib_version": "4.26.0",
+    "relatedProblems": [],
+    "theoremCount": 12,
+    "definitionCount": 3,
+    "additionalFiles": [
+      "Proofs/ShapleyFolkmanAristotle.lean",
+      "Proofs/ShapleyFolkmanOQ01.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Shapley-Folkman lemma originated in 1966 from an exchange between Lloyd Shapley and Jon Folkman at the RAND Corporation. Shapley posed the question of bounding non-convexity in sums; Folkman provided the proof. The result was not published by either author but was communicated by Ross Starr, who applied it to prove that large economies have near-equilibria even when individual preferences are non-convex.\n\nStartr's 1969 paper 'Quasi-Equilibria in Markets with Non-Convex Preferences' in Econometrica brought the lemma to prominence in economics. The quantitative form (Shapley-Folkman-Starr theorem) bounds the Hausdorff distance between a Minkowski sum and its convex hull.\n\nThe lemma is standard in mathematical economics but remarkably little-known in pure mathematics, despite being elementary. Its proof uses the same Caratheodory reduction technique that underlies Caratheodory's and Radon's theorems. Starr called it 'one of the most useful results in convex analysis' for economics.\n\nAnderson (1978) used it to prove core convergence theorems. Mas-Colell (1978) applied it to existence of competitive equilibria. It remains a workhorse in general equilibrium theory, mechanism design, and optimization.",
+    "problemStatement": "**Shapley-Folkman Lemma**: Let $S_1, \\ldots, S_N$ be nonempty subsets of $\\mathbb{R}^d$. For any point $x \\in \\text{conv}(S_1 + S_2 + \\cdots + S_N)$, there exist $x_i \\in \\text{conv}(S_i)$ with $\\sum x_i = x$ such that $x_i \\in S_i$ for all but at most $d$ indices $i$.\n\nEquivalently: the Minkowski sum of convex hulls is 'almost' the convex hull of the Minkowski sum, with the error controlled by the ambient dimension rather than the number of summands.",
+    "text": "A formalization of the Shapley-Folkman lemma in 1,238 lines. The proof is structured around Caratheodory's reduction: among all decompositions $x = \\sum x_i$ with $x_i \\in \\text{conv}(S_i)$, choose one minimizing total Caratheodory vertices. If more than $d$ summands require convexification ($x_i \\notin S_i$), the excess vertices are affinely dependent (dimension argument), enabling a reduction that contradicts minimality. Includes a `Decomposition` structure recording the summand choices, the main theorem `shapley_folkman` bounding excess indices by `Module.finrank`, and corollaries for the Shapley-Folkman-Starr qualitative bound and the economic application to repeated sums.",
+    "proofStrategy": "The proof proceeds by a minimality argument mirroring Caratheodory's theorem:\n\n1. **Existence of decomposition**: Since $x \\in \\sum \\text{conv}(S_i)$, write $x = \\sum x_i$ with $x_i \\in \\text{conv}(S_i)$.\n\n2. **Caratheodory representation**: By Caratheodory's theorem, each $x_i$ is a convex combination of at most $d + 1$ points from $S_i$.\n\n3. **Choose minimal representation**: Among all such decompositions, choose one minimizing the total number of vertices across all Caratheodory representations.\n\n4. **Count excess vertices**: If $x_i \\notin S_i$, then $x_i$ needs at least 2 vertices. Call this index 'excess'. Each excess index contributes $\\geq 1$ extra vertex beyond the 1-vertex minimum.\n\n5. **Dimension bound**: If there are $> d$ excess indices, collect one extra vertex from each. These $> d$ vectors in $\\mathbb{R}^d$ must be affinely dependent.\n\n6. **Reduction via dependence**: The affine dependence lets us shift weights between the excess representations, strictly reducing the total vertex count while maintaining the constraint $\\sum x_i = x$. This contradicts minimality.\n\n7. **Conclusion**: At most $d$ indices can be excess.",
+    "keyInsights": [
+      "**Dimension controls non-convexity, not the number of sets**: The bound $d = \\dim(E)$ is independent of $N$. Adding more sets to the Minkowski sum does not increase the convexification error. This is why large economies (many agents) are nearly convex even if individual preferences are not.",
+      "**Same technique as Caratheodory**: The proof is a direct generalization of Caratheodory's 'reduce affine dependence' argument, applied across multiple sets simultaneously rather than within a single convex hull.",
+      "**Minimality + affine dependence = powerful combination**: Choosing the minimal-vertex decomposition and deriving a contradiction from excess is a clean proof pattern reusable in many convex geometry results.",
+      "**Economic interpretation**: In an economy with $N$ agents in $\\mathbb{R}^d$, each agent's preferred bundle may not be convex (indivisible goods). But the aggregate allocation (Minkowski sum) is nearly convex: at most $d$ agents need 'fractional' allocations. As $N \\to \\infty$, the fraction of agents requiring convexification goes to 0.",
+      "**Quantitative refinement (Starr)**: The Shapley-Folkman-Starr theorem adds a Hausdorff distance bound: $d_H(\\sum S_i, \\text{conv}(\\sum S_i)) \\leq \\sqrt{\\sum_{\\text{top } d} r(S_i)^2}$ where $r(S_i)$ is the inner radius. This makes the 'nearly convex' intuition precise.",
+      "minCaraDepth (sInf over representation sizes) is the well-founded descent measure — each application of reduce_excess_by_one strictly decreases either the excess count or the total depth budget",
+      "The sum ∑x_i is preserved under affine-dependence perturbations because ∑λ_i = 0 (the affine condition) makes the perturbation sum zero",
+      "The 770-line reduce_excess_by_one dominates the proof length — the main theorem is just clean induction once this reduction is established"
+    ],
+    "prerequisites": [
+      "Convex sets and convex hulls",
+      "Minkowski (pointwise) addition of sets",
+      "Caratheodory's theorem (points in convex hull need at most d+1 vertices)",
+      "Affine independence and dimension"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Setup and Imports",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Module docstring, imports from Mathlib's convex analysis library (Caratheodory, Combination, Hull, AffineIndependent, Finrank, Pointwise), and namespace/variable declarations for a real vector space E.",
+      "mathContext": "Working in a real vector space $E$ with $\\text{AddCommGroup}$ and $\\text{Module}\\;\\mathbb{R}$ structure. The Shapley-Folkman lemma additionally requires $\\text{FiniteDimensional}\\;\\mathbb{R}\\;E$ with dimension $d = \\text{finrank}(\\mathbb{R}, E)$."
+    },
+    {
+      "id": "decomposition",
+      "title": "Part 1: Decomposition Structure",
+      "startLine": 34,
+      "endLine": 64,
+      "summary": "Defines the `Decomposition` structure recording a choice of summands $x_i \\in \\text{conv}(S_i)$ that sum to $x$, and the `excessIndices` function identifying indices where $x_i \\notin S_i$.",
+      "mathContext": "A decomposition of $x \\in \\sum \\text{conv}(S_i)$ consists of points $x_i$ with: (1) $x_i \\in \\text{conv}(S_i)$ for $i \\in t$, (2) $x_i = 0$ for $i \\notin t$, (3) $\\sum_{i \\in t} x_i = x$. The excess indices are $\\{i \\in t : x_i \\notin S_i\\}$."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Part 2: The Shapley-Folkman Lemma",
+      "startLine": 65,
+      "endLine": 82,
+      "summary": "States the main theorem: given nonempty sets $S_i$ and a point $x$ in their Minkowski sum of convex hulls, there exists a decomposition where the number of excess indices is at most $\\text{finrank}(\\mathbb{R}, E)$.",
+      "mathContext": "For nonempty $S_i \\subseteq E$ and $x = \\sum x_i$ with $x_i \\in \\text{conv}(S_i)$: $\\exists$ decomposition with $|\\{i : x_i \\notin S_i\\}| \\leq d$."
+    },
+    {
+      "id": "key-lemmas",
+      "title": "Part 3: Key Lemmas",
+      "startLine": 83,
+      "endLine": 120,
+      "summary": "Two supporting lemmas: (1) a point in conv(S) but not in S needs at least 2 Caratheodory vertices; (2) more than d vectors in d-dimensional space are affinely dependent. Together these force the dimension bound on excess indices.",
+      "mathContext": "Lemma 1: $x \\in \\text{conv}(S) \\setminus S \\Rightarrow x = \\sum_{i=1}^n w_i s_i$ with $n \\geq 2$. Lemma 2: $n > d \\Rightarrow$ any $n$ points in $\\mathbb{R}^d$ are affinely dependent. Combined: $> d$ excess indices yield affine dependence among excess vertices, enabling reduction."
+    },
+    {
+      "id": "corollaries",
+      "title": "Part 4: Corollaries",
+      "startLine": 121,
+      "endLine": 158,
+      "summary": "Two corollaries: (1) the qualitative Shapley-Folkman-Starr form for points in conv(sum Si); (2) the economic application for n-fold sums of a single set, showing that large averages are nearly convex regardless of n.",
+      "mathContext": "Corollary 1: $x \\in \\text{conv}(\\sum S_i) \\Rightarrow x = \\sum f_i$ with at most $d$ non-original terms. Corollary 2: For $x \\in \\text{conv}(nS)$, at most $d$ of the $n$ terms need convexification. As $n \\to \\infty$, fraction $d/n \\to 0$."
+    },
+    {
+      "id": "cara-infrastructure",
+      "title": "Caratheodory Infrastructure and minCaraDepth",
+      "startLine": 159,
+      "endLine": 361,
+      "summary": "Establishes the well-founded induction measure `minCaraDepth` (sInf over representation sizes) and supporting lemmas: `linearDependent_coefficients` (explicit affine dependence coefficients via not_affineIndependent_iff), `exists_decomposition` (Caratheodory bound d+1), `binary_repr_of_mem_convexHull_not_mem` (≥2 nonzero weights for excess points), and `binary_repr_depth` (perturbation strictly reduces depth). These provide the termination guarantee for the main reduction."
+    },
+    {
+      "id": "reduce-excess",
+      "title": "Core Reduction: reduce_excess_by_one",
+      "startLine": 362,
+      "endLine": 1130,
+      "summary": "The 770-line proof that any decomposition with k > d excess indices can be reduced to one with k-1 excess indices. Phases: (1) binary representations for excess points, (2) affine dependence extraction from d+1 points in ℝ^d, (3) ε computation (min over boundary constraints), (4) sum-preserving perturbation (∑λ_i=0 ensures total preserved), (5) case analysis showing either an index joins its original set or its minCaraDepth strictly decreases. The induction measure M = max(0, |excess| - d) + Σ minCaraDepth is strictly decreasing."
+    },
+    {
+      "id": "main-assembly",
+      "title": "Main Theorem and Corollaries",
+      "startLine": 1131,
+      "endLine": 1238,
+      "summary": "Three final results assembled by induction on reduce_excess_by_one: `shapley_folkman` (the core lemma, induction on excess count), `sum_close_to_convexHull` (the standard statement: ∃ decomposition with |excess| ≤ finrank(ℝ,E)), and `repeated_sum_nearly_convex` (for n copies of S: at most d agents need fractional allocations, ratio d/n→0). The main theorem's proof is short because all complexity is in reduce_excess_by_one."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Starr, Ross M.",
+      "title": "Quasi-Equilibria in Markets with Non-Convex Preferences",
+      "year": "1969",
+      "venue": "Econometrica 37(1), 25-38",
+      "note": "First published application of the Shapley-Folkman lemma, proving existence of near-equilibria in economies with non-convex preferences"
+    },
+    {
+      "authors": "Arrow, Kenneth J.; Hahn, Frank H.",
+      "title": "General Competitive Analysis",
+      "year": "1971",
+      "venue": "Holden-Day, San Francisco",
+      "note": "Appendix B contains the first published proof of the Shapley-Folkman lemma, attributed to Shapley, Folkman, and Starr"
+    },
+    {
+      "authors": "Anderson, Robert M.",
+      "title": "An Elementary Core Equivalence Theorem",
+      "year": "1978",
+      "venue": "Econometrica 46(6), 1483-1487",
+      "note": "Used the Shapley-Folkman lemma to give an elementary proof of core convergence in large economies"
+    },
+    {
+      "authors": "Ekeland, Ivar; Temam, Roger",
+      "title": "Convex Analysis and Variational Problems",
+      "year": "1999",
+      "venue": "SIAM Classics in Applied Mathematics",
+      "note": "Chapter I treats the Shapley-Folkman lemma as a tool for relaxation in optimization and calculus of variations"
+    },
+    {
+      "authors": "Schneider, Rolf",
+      "title": "Convex Bodies: The Brunn-Minkowski Theory",
+      "year": "2014",
+      "venue": "Cambridge University Press (2nd ed.)",
+      "note": "Comprehensive treatment of Minkowski sums and convex geometry; the Shapley-Folkman bound appears in the context of mixed volumes and sumset structure"
+    }
+  ],
+  "conclusion": {
+    "summary": "The Shapley-Folkman lemma demonstrates that the Minkowski sum of many sets in finite-dimensional space is 'nearly convex': the non-convexity of the sum is controlled by the ambient dimension, not by the number of summands.",
+    "implications": "**Theoretical Significance**:\n\n1. **MATHEMATICAL ECONOMICS**: The lemma is the mathematical engine behind core convergence theorems and the existence of approximate competitive equilibria. In an economy with many agents, even if individual preferences are non-convex (indivisible goods, increasing returns), the aggregate economy behaves as if preferences were convex.\n\n2. **OPTIMIZATION**: In non-convex optimization, the Shapley-Folkman lemma justifies convex relaxation: the gap between a sum of non-convex problems and its convex relaxation is bounded by dimension, not problem size. This underpins decomposition methods in large-scale optimization.\n\n3. **CONVEX GEOMETRY**: The lemma completes a trio with Caratheodory's and Radon's theorems, all proved by the same affine-dependence reduction technique. Together they characterize how dimension controls convex structure.\n\n4. **MEASURE THEORY**: Lyapunov's theorem (the range of a vector measure is convex) can be seen as an infinite-dimensional limit of Shapley-Folkman, where infinitely many 'small' non-convex sets sum to an exactly convex set.",
+    "openQuestions": [
+      "Can the proof be extended to infinite-dimensional Hilbert spaces, where finrank is replaced by a suitable dimension notion?",
+      "Can the quantitative Shapley-Folkman-Starr bound (Hausdorff distance version) be formalized using Mathlib's metric space infrastructure?",
+      "Is there a clean formalization of the economic application: existence of epsilon-equilibria in exchange economies with non-convex preferences?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "related",
+      "description": "Both are existence theorems with deep applications in mathematical economics. Brouwer's theorem proves Nash equilibrium existence; Shapley-Folkman justifies convex relaxation in general equilibrium theory"
+    },
+    {
+      "targetId": "shapley-folkman-oq-03",
+      "relationship": "related",
+      "description": "The quantitative Shapley-Folkman-Starr refinement: it converts this combinatorial bound (at most d excess summands) into a metric bound on the Hausdorff distance between a Minkowski sum and its convex hull — directly answering this entry's open question about formalizing the Starr distance version"
+    },
+    {
+      "targetId": "brouwer-fixed-point-oq-04",
+      "relationship": "related",
+      "description": "Kakutani's fixed-point theorem is the existence engine behind Arrow-Debreu general equilibrium; the Shapley-Folkman lemma is its companion in non-convex economies, supplying the near-convexity of aggregate demand that makes the fixed-point argument applicable when individual preferences are non-convex"
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/ShapleyFolkman.lean",
+    "lineCount": 1238,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 12,
+    "definitionCount": 3,
+    "imports": [
+      "import Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Finset",
+      "Pointwise"
+    ],
+    "namespace": "ShapleyFolkman",
+    "additionalFiles": [
+      "Proofs/ShapleyFolkmanAristotle.lean",
+      "Proofs/ShapleyFolkmanOQ01.lean"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "shapley_folkman",
+      "type": "core",
+      "description": "At most dim(E) summands in a Minkowski sum decomposition need convexification",
+      "leanType": "Decomposition S t x -> d.excessIndices.card <= Module.finrank R E"
+    }
+  ],
+  "sorries": 0,
+  "additionalFiles": [
+    "Proofs/ShapleyFolkmanOQ01.lean"
+  ]
+}

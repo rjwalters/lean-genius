@@ -1,0 +1,83 @@
+[
+  {
+    "id": "def-hypergraph",
+    "proofId": "erdos-1075",
+    "range": { "startLine": 39, "endLine": 42 },
+    "type": "definition",
+    "title": "r-Uniform Hypergraph",
+    "content": "A hypergraph where every edge contains exactly r vertices. This generalizes graphs (r=2) to higher dimensions.",
+    "significance": "major"
+  },
+  {
+    "id": "def-threshold",
+    "proofId": "erdos-1075",
+    "range": { "startLine": 57, "endLine": 59 },
+    "type": "definition",
+    "title": "Threshold Constant r^{-r}",
+    "content": "The known threshold constant is r^{-r}. For r=3 this is 1/27, for r=4 it is 1/256. The question is whether this can be improved.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-erdos-1964",
+    "proofId": "erdos-1075",
+    "range": { "startLine": 65, "endLine": 76 },
+    "type": "theorem",
+    "title": "Erdős's 1964 Result",
+    "content": "Erdős proved that with edge threshold ε·n^r, any hypergraph contains a dense subgraph with density c_r = r^{-r}. This is the baseline result.",
+    "significance": "major"
+  },
+  {
+    "id": "def-conjecture",
+    "proofId": "erdos-1075",
+    "range": { "startLine": 93, "endLine": 105 },
+    "type": "conjecture",
+    "title": "The Main Conjecture",
+    "content": "With the weaker edge threshold (1+ε)(n/r)^r instead of ε·n^r, can we improve c_r to be strictly greater than r^{-r}?",
+    "significance": "major"
+  },
+  {
+    "id": "insight-random",
+    "proofId": "erdos-1075",
+    "range": { "startLine": 116, "endLine": 120 },
+    "type": "insight",
+    "title": "Random Hypergraph Density",
+    "content": "Random r-uniform hypergraphs have induced subgraph density approximately r^{-r}. Improving this constant requires exploiting structure beyond randomness.",
+    "significance": "major"
+  },
+  {
+    "id": "insight-threshold-difference",
+    "proofId": "erdos-1075",
+    "range": { "startLine": 129, "endLine": 133 },
+    "type": "insight",
+    "title": "Edge Threshold Significance",
+    "content": "The threshold (1+ε)(n/r)^r is much smaller than ε·n^r for small ε. This weaker assumption might enable stronger conclusions about subgraph density.",
+    "significance": "major"
+  },
+  {
+    "id": "approach-regularity",
+    "proofId": "erdos-1075",
+    "range": { "startLine": 159, "endLine": 163 },
+    "type": "approach",
+    "title": "Regularity Lemma Approach",
+    "content": "Hypergraph regularity lemmas could help find dense subgraphs, but controlling the density constant precisely remains challenging.",
+    "significance": "minor"
+  },
+  {
+    "id": "connection-turan",
+    "proofId": "erdos-1075",
+    "range": { "startLine": 139, "endLine": 143 },
+    "type": "discussion",
+    "title": "Connection to Turán Theory",
+    "content": "Related to extremal hypergraph theory: finding maximum edges without forbidden substructures.",
+    "significance": "minor"
+  },
+  {
+    "id": "thm-status",
+    "proofId": "erdos-1075",
+    "range": { "startLine": 237, "endLine": 252 },
+    "type": "theorem",
+    "title": "Problem Status",
+    "content": "The problem remains open. Known: c_r = r^{-r} works with ε·n^r threshold. Unknown: whether c_r > r^{-r} works with the weaker (1+ε)(n/r)^r threshold.",
+    "significance": "major"
+  }
+]

@@ -1,0 +1,159 @@
+{
+  "id": "erdos-346",
+  "title": "Erdős Problem #346: Complete Sequences and the Golden Ratio",
+  "slug": "erdos-346",
+  "description": "If a lacunary sequence is strongly complete but fragile (removing any infinite subset destroys completeness), must a_{n+1}/a_n → φ?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/346",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos346Problem.lean",
+    "tags": [
+      "erdos",
+      "number theory",
+      "complete sequences",
+      "golden ratio",
+      "Fibonacci numbers"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 346,
+    "erdosUrl": "https://erdosproblems.com/346",
+    "erdosProblemStatus": "open",
+    "axiomCount": 0,
+    "prerequisites": [
+      "additive number theory basics",
+      "Fibonacci numbers and the golden ratio",
+      "complete sequences and subset sums",
+      "lacunary sequences and exponential growth",
+      "Zeckendorf representation"
+    ],
+    "lineCount": 80,
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 0,
+    "definitionCount": 8
+  },
+  "overview": {
+    "historicalContext": "A sequence of positive integers is complete if every sufficiently large integer can be represented as a sum of distinct terms. Zeckendorf's theorem (1972) shows the Fibonacci sequence is complete: every positive integer has a unique Fibonacci representation. The question of how robust completeness is — what happens when terms are removed — connects to deep properties of the golden ratio.\n\nGraham (1964) showed that the sequence Fₙ − (−1)^n (= 1, 3, 4, 8, 12, 21, ...) is both strongly complete (removing finitely many terms preserves completeness) and fragile (removing infinitely many terms can destroy it). Erdős and Graham (1980) studied this phenomenon systematically.\n\nThe golden ratio φ = (1+√5)/2 ≈ 1.618 appears as a sharp threshold: if aₙ₊₁/aₙ > φ, fragility is automatic.",
+    "problemStatement": "If A is lacunary, strongly complete, and fragile, must lim a_{n+1}/a_n = φ?",
+    "text": "If a lacunary sequence is strongly complete but fragile (removing any infinite subset destroys completeness), must a_{n+1}/a_n → φ?",
+    "proofStrategy": "The formalization defines subset sums, completeness, strong completeness, and fragility. Graham's example is axiomatised. The golden ratio threshold and the main conjecture are stated, along with the existence of irregular (non-lacunary) counterexamples.",
+    "keyInsights": [
+      "Strong completeness: finitely many removals preserve completeness",
+      "Fragility: infinitely many removals destroy completeness",
+      "Graham's sequence F_n − (−1)^n satisfies both properties",
+      "If a_{n+1}/a_n > φ always, fragility is automatic",
+      "The conjecture applies only to lacunary sequences; irregular ones exist"
+    ],
+    "prerequisites": [
+      "additive number theory basics",
+      "Fibonacci numbers and the golden ratio",
+      "complete sequences and subset sums",
+      "lacunary sequences and exponential growth",
+      "Zeckendorf representation"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-imports",
+      "title": "Problem Context and Imports",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "Module docstring and imports for Erdős Problem #346 on complete sequences and the golden ratio threshold.",
+      "mathContext": "A sequence is complete if every sufficiently large integer is a sum of distinct terms. Strong completeness and fragility measure robustness under removal. The golden ratio $\\varphi = (1+\\sqrt{5})/2$ appears as a critical growth threshold."
+    },
+    {
+      "id": "complete-sequences",
+      "title": "Complete Sequences",
+      "startLine": 24,
+      "endLine": 34,
+      "summary": "Subset sums and completeness: all large integers are representable.",
+      "mathContext": "Mathematical content: Subset sums and completeness: all large integers are representable."
+    },
+    {
+      "id": "strong-fragile",
+      "title": "Strong Completeness and Fragility",
+      "startLine": 35,
+      "endLine": 44,
+      "summary": "A is strongly complete if finite removals preserve completeness; fragile if infinite removals destroy it.",
+      "mathContext": "Mathematical content: A is strongly complete if finite removals preserve completeness; fragile if infinite removals destroy it."
+    },
+    {
+      "id": "lacunary",
+      "title": "Lacunary Sequences",
+      "startLine": 45,
+      "endLine": 52,
+      "summary": "Lacunary: a_{n+1}/a_n ≥ 1 + ε. The golden ratio φ ≈ 1.618.",
+      "mathContext": "Lacunary: a_{n+1}/a_n $\\geq$ 1 + ε. The golden ratio φ ≈ 1.618."
+    },
+    {
+      "id": "graham-example",
+      "title": "Graham's Example",
+      "startLine": 53,
+      "endLine": 65,
+      "summary": "Graham (1964): F_n − (−1)^n is strongly complete and fragile.",
+      "mathContext": "Mathematical content: Graham (1964): F_n − (−1)^n is strongly complete and fragile."
+    },
+    {
+      "id": "golden-threshold",
+      "title": "Golden Ratio Threshold",
+      "startLine": 66,
+      "endLine": 72,
+      "summary": "If a_{n+1}/a_n > φ for all n, fragility is automatic.",
+      "mathContext": "Mathematical content: If a_{n+1}/a_n > φ for all n, fragility is automatic."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 73,
+      "endLine": 80,
+      "summary": "Erdős Problem 346: lacunary + strongly complete + fragile implies ratio → φ.",
+      "mathContext": "Erdős Problem 346: lacunary + strongly complete + fragile implies ratio $\\to$ φ."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures Erdős Problem 346, asking whether the golden ratio is the unique limit ratio for lacunary sequences that are both strongly complete and fragile.",
+    "implications": "A positive answer would show that Fibonacci-like growth is the unique regime balancing representational richness and fragility, connecting complete sequences to the golden ratio.",
+    "openQuestions": [
+      "Must the ratio tend to φ for lacunary sequences?",
+      "What characterises the irregular (non-lacunary) examples?",
+      "Can the lacunarity hypothesis be weakened?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Fib.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 80,
+    "axiomCount": 0,
+    "theoremCount": 0,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos346Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-38",
+      "relationship": "related",
+      "description": "Both concern additive representation properties of sequences: #38 on essential components, #346 on completeness and fragility under removal"
+    },
+    {
+      "targetId": "erdos-347",
+      "relationship": "related",
+      "description": "Problem #347 asks whether sequences with ratio tending to 2 can be robustly complete. Problem #346 asks whether the golden ratio $\\varphi \\approx 1.618$ characterizes a different completeness threshold — both explore the critical growth rates at which subsequence completeness transitions between robust and fragile"
+    },
+    {
+      "targetId": "erdos-124-complete-sequences",
+      "relationship": "related",
+      "description": "Problem #124 formalizes Folkman's classical completeness condition ($a_{n+1} \\leq 1 + \\sum_{i \\leq n} a_i$). Problem #346 specializes to Fibonacci-like sequences where the ratio $a_{n+1}/a_n \\to \\varphi$, asking whether the golden ratio is the unique critical ratio for complete lacunary sequences"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,185 @@
+[
+  {
+    "id": "ann-wpm4-docstring",
+    "proofId": "wolstenholme-theorem-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Wolstenholme Primes: Computational Number Theory at the Frontier",
+    "content": "A Wolstenholme prime is a prime p where C(2p-1, p-1) ≡ 1 (mod p⁴), strengthening Wolstenholme's classical theorem (mod p³ for all p ≥ 5). Only two are known: 16843 (McIntosh 1995) and 2124679 (McIntosh-Roettger 2007). This formalization tackles the open question: both known Wolstenholme primes are ≡ 3 (mod 4) — is this a coincidence or a structural constraint? The file combines computational verification (native_decide for small primes and primality), axiomatized large computations (binomial coefficients too large for the kernel), and logical reasoning about the residue structure.",
+    "mathContext": "Wolstenholme's theorem: $\\binom{2p-1}{p-1} \\equiv 1 \\pmod{p^3}$ for all primes $p \\geq 5$. Wolstenholme prime: a prime where the congruence holds $\\pmod{p^4}$. Only $p = 16843$ and $p = 2124679$ are known, both $\\equiv 3 \\pmod{4}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Wolstenholme's theorem",
+      "binomial coefficients",
+      "modular arithmetic",
+      "computational number theory"
+    ],
+    "prerequisites": [
+      "Nat.choose",
+      "Nat.Prime",
+      "native_decide"
+    ]
+  },
+  {
+    "id": "ann-wpm4-definitions",
+    "proofId": "wolstenholme-theorem-oq-02",
+    "range": {
+      "startLine": 32,
+      "endLine": 37
+    },
+    "type": "definition",
+    "title": "Core Definitions: cb and IsWP",
+    "content": "`cb p = Nat.choose (2*p-1) (p-1)` is the 'central-ish' binomial coefficient — not quite the central binomial coefficient C(2p,p) but related by C(2p,p) = 2·cb(p). `IsWP p` requires both primality and the mod p⁴ congruence cb(p) % p⁴ = 1. This definition separates the computational check (mod p⁴) from the primality requirement, allowing them to be verified independently.",
+    "mathContext": "$\\text{cb}(p) = \\binom{2p-1}{p-1}$. Note: $\\binom{2p}{p} = 2 \\cdot \\text{cb}(p)$. The `IsWP` predicate: $p$ prime $\\wedge$ $\\text{cb}(p) \\equiv 1 \\pmod{p^4}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "central binomial coefficient",
+      "Wolstenholme prime",
+      "Nat.choose"
+    ],
+    "prerequisites": [
+      "Nat.choose",
+      "Nat.Prime"
+    ]
+  },
+  {
+    "id": "ann-wpm4-structural",
+    "proofId": "wolstenholme-theorem-oq-02",
+    "range": {
+      "startLine": 43,
+      "endLine": 69
+    },
+    "type": "concept",
+    "title": "Structural Properties: WPs Are Odd and At Least 5",
+    "content": "Three structural facts. `wp_ge_five`: exhaustive case analysis on p ∈ {0,1,2,3,4} using `native_decide` (2,3 fail the mod p⁴ test) and `decide` (0,1,4 aren't prime). `wp_odd`: since the only even prime is 2 and WPs are ≥ 5, every WP is odd — proved by showing 2∣p contradicts primality for p ≥ 5. `wp_mod4_cases`: an odd number is either 1 or 3 mod 4, established by `omega` from wp_odd. This sets up the dichotomy: the open question asks which of these two residue classes actually contains Wolstenholme primes.",
+    "mathContext": "Every WP $p \\geq 5$ (computational exclusion of $p \\leq 4$). Since $p$ is odd, $p \\bmod 4 \\in \\{1, 3\\}$. The open question: is $\\{p : \\text{IsWP}(p)\\} \\subseteq \\{p : p \\equiv 3 \\pmod{4}\\}$?",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "case analysis",
+      "native_decide",
+      "odd prime",
+      "residue classes"
+    ],
+    "prerequisites": [
+      "Nat.Prime.eq_one_or_self_of_dvd",
+      "native_decide"
+    ]
+  },
+  {
+    "id": "ann-wpm4-exclusion",
+    "proofId": "wolstenholme-theorem-oq-02",
+    "range": {
+      "startLine": 78,
+      "endLine": 97
+    },
+    "type": "concept",
+    "title": "Computational Exclusion of Small Primes",
+    "content": "Seven theorems proving primes 5, 7, 11, 13, 17, 19, 23 are NOT Wolstenholme primes. Each proof is identical: assume IsWP p, extract the mod p⁴ condition, and refute it with `native_decide`. This establishes a computational gap: the first WP is 16843, over 700× larger than 23. The pattern demonstrates that checking WP status is computationally feasible for small primes but becomes infeasible as the binomial coefficient grows super-exponentially.",
+    "mathContext": "$\\binom{9}{4} = 126$, $126 \\bmod 625 = 126 \\neq 1$ (p=5 fails). $\\binom{13}{6} = 1716$, $1716 \\bmod 2401 = 1716 \\neq 1$ (p=7 fails). The kernel can evaluate these, but $\\binom{33685}{16842}$ for $p=16843$ is astronomically large.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "computational verification",
+      "binomial coefficient computation"
+    ],
+    "prerequisites": [
+      "native_decide",
+      "IsWP"
+    ]
+  },
+  {
+    "id": "ann-wpm4-known",
+    "proofId": "wolstenholme-theorem-oq-02",
+    "range": {
+      "startLine": 108,
+      "endLine": 131
+    },
+    "type": "concept",
+    "title": "The Two Known Wolstenholme Primes",
+    "content": "Primality of 16843 and 2124679 is verified computationally via `native_decide`. The mod p⁴ congruences are axiomatized because C(33685, 16842) and C(4249357, 2124678) are astronomical numbers exceeding the kernel's computation capacity. The axioms cite McIntosh-Roettger (2008). `isWP_16843` and `isWP_2124679` combine primality and the axioms into the IsWP witnesses. `exists_two_distinct_wp` provides the existential that at least two distinct WPs exist, with the distinctness witness `by omega`.",
+    "mathContext": "$16843$ and $2124679$ are both prime (by `native_decide`). $\\binom{33685}{16842} \\equiv 1 \\pmod{16843^4}$ and $\\binom{4249357}{2124678} \\equiv 1 \\pmod{2124679^4}$ (axiomatized from McIntosh-Roettger 2008).",
+    "significance": "key",
+    "relatedConcepts": [
+      "McIntosh-Roettger",
+      "axiomatized computation",
+      "primality testing",
+      "native_decide"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "cb",
+      "IsWP"
+    ]
+  },
+  {
+    "id": "ann-wpm4-residues",
+    "proofId": "wolstenholme-theorem-oq-02",
+    "range": {
+      "startLine": 140,
+      "endLine": 178
+    },
+    "type": "concept",
+    "title": "Residue Analysis: The Mod 4/8/12 Pattern",
+    "content": "Both known WPs are ≡ 3 (mod 4), but they differ mod 8: 16843 ≡ 3 (mod 8) while 2124679 ≡ 7 (mod 8), covering both odd residue classes that map to 3 (mod 4). Intriguingly, both share residue 7 (mod 12). Whether the mod 12 coincidence reflects a structural constraint or is accidental is unknown — with only two data points, statistical inference is impossible. The `known_wp_all_mod4_eq_3` theorem packages the mod 4 observation as a single lemma over both known WPs using case analysis.",
+    "mathContext": "Mod 4: $16843 \\equiv 2124679 \\equiv 3$. Mod 8: $16843 \\equiv 3$, $2124679 \\equiv 7$. Mod 12: $16843 \\equiv 2124679 \\equiv 7$. The mod 8 data rules out a mod-8 pattern, but the mod 4 and mod 12 patterns are unexplained.",
+    "significance": "key",
+    "relatedConcepts": [
+      "quadratic residues",
+      "residue class analysis",
+      "pattern recognition",
+      "native_decide"
+    ],
+    "prerequisites": [
+      "native_decide",
+      "Nat.mod"
+    ]
+  },
+  {
+    "id": "ann-wpm4-open-question",
+    "proofId": "wolstenholme-theorem-oq-02",
+    "range": {
+      "startLine": 188,
+      "endLine": 214
+    },
+    "type": "insight",
+    "title": "The Open Question and Logical Equivalence",
+    "content": "`WPMod1Exists` and `AllWPMod3` formalize the two sides of the dichotomy. The key theorem `allMod3_iff_no_mod1` proves AllWPMod3 ↔ ¬WPMod1Exists. The forward direction is trivial (if all WPs are 3 mod 4, none is 1 mod 4). The backward direction uses `wp_mod4_cases`: if ¬WPMod1Exists and p is a WP, then p % 4 ∈ {1,3}, and the 1 case is ruled out by hypothesis, so p % 4 = 3. This clean logical framework captures the open question precisely in Lean's type theory.",
+    "mathContext": "$\\text{AllWPMod3} \\iff \\neg \\text{WPMod1Exists}$. The open question has a clean dichotomy: either all WPs are $\\equiv 3 \\pmod{4}$ (a structural law), or some WP is $\\equiv 1 \\pmod{4}$ (a counterexample). No theoretical argument favors either side.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open problem formalization",
+      "logical equivalence",
+      "excluded middle",
+      "contrapositive"
+    ],
+    "prerequisites": [
+      "wp_mod4_cases",
+      "IsWP"
+    ]
+  },
+  {
+    "id": "ann-wpm4-wolstenholme",
+    "proofId": "wolstenholme-theorem-oq-02",
+    "range": {
+      "startLine": 246,
+      "endLine": 261
+    },
+    "type": "concept",
+    "title": "Connection to Wolstenholme's Theorem",
+    "content": "Every Wolstenholme prime automatically satisfies Wolstenholme's theorem (the mod p³ version), since p³ | p⁴. The proof is clean: `mod_pow4_imp_pow3` shows n ≡ 1 (mod p⁴) implies n ≡ 1 (mod p³) using `Nat.mod_mod_of_dvd` with the divisibility p³ | p⁴ = p³·p. This connects the research-level concept (WPs, mod p⁴) to the classical result (Wolstenholme's theorem, mod p³), grounding the formalization in established mathematics.",
+    "mathContext": "$p^3 \\mid p^4$ implies $n \\equiv 1 \\pmod{p^4} \\Rightarrow n \\equiv 1 \\pmod{p^3}$. So every Wolstenholme prime satisfies $\\binom{2p-1}{p-1} \\equiv 1 \\pmod{p^3}$, which is Wolstenholme's theorem for that prime.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Wolstenholme's theorem",
+      "divisibility chain",
+      "Nat.mod_mod_of_dvd"
+    ],
+    "prerequisites": [
+      "Nat.mod_mod_of_dvd",
+      "IsWP"
+    ]
+  }
+]

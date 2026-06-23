@@ -1,0 +1,74 @@
+[
+  {
+    "id": "def-turan-number",
+    "proofId": "erdos-1079",
+    "range": { "startLine": 40, "endLine": 43 },
+    "type": "definition",
+    "title": "Turán Number",
+    "content": "ex(n, K_r) is the maximum number of edges in a K_r-free graph on n vertices. Asymptotically (1 - 1/(r-1))n²/2.",
+    "significance": "major"
+  },
+  {
+    "id": "def-turan-graph",
+    "proofId": "erdos-1079",
+    "range": { "startLine": 45, "endLine": 48 },
+    "type": "definition",
+    "title": "Turán Graph",
+    "content": "T(n, r-1) is the complete (r-1)-partite graph with parts as equal as possible. The unique extremal K_r-free graph.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-bollobas-thomason",
+    "proofId": "erdos-1079",
+    "range": { "startLine": 69, "endLine": 80 },
+    "type": "theorem",
+    "title": "Bollobás-Thomason (1981)",
+    "content": "If G has ≥ ex(n; K_r) edges and is not Turán, then ∃ vertex with degree d ≫ n and neighborhood density ≥ ex(d; K_{r-1}).",
+    "significance": "major"
+  },
+  {
+    "id": "thm-bondy",
+    "proofId": "erdos-1079",
+    "range": { "startLine": 82, "endLine": 92 },
+    "type": "theorem",
+    "title": "Bondy's Strengthening (1983)",
+    "content": "The maximum-degree vertex always satisfies the property. A stronger and more constructive result.",
+    "significance": "major"
+  },
+  {
+    "id": "insight-generalization",
+    "proofId": "erdos-1079",
+    "range": { "startLine": 105, "endLine": 110 },
+    "type": "insight",
+    "title": "Generalization of Turán",
+    "content": "This shows dense graphs have dense local neighborhoods, extending Turán's theorem from global to local structure.",
+    "significance": "major"
+  },
+  {
+    "id": "insight-exception",
+    "proofId": "erdos-1079",
+    "range": { "startLine": 122, "endLine": 128 },
+    "type": "insight",
+    "title": "Turán Graph Exception",
+    "content": "The Turán graph is the only exception because all its neighborhoods are themselves Turán graphs, achieving the bound exactly.",
+    "significance": "minor"
+  },
+  {
+    "id": "insight-nested",
+    "proofId": "erdos-1079",
+    "range": { "startLine": 130, "endLine": 134 },
+    "type": "insight",
+    "title": "Nested Turán Structure",
+    "content": "In T(n, r-1), the neighborhood N(v) induces T(d, r-2), so neighborhoods achieve ex(d; K_{r-1}) exactly.",
+    "significance": "minor"
+  },
+  {
+    "id": "thm-characterization",
+    "proofId": "erdos-1079",
+    "range": { "startLine": 227, "endLine": 234 },
+    "type": "theorem",
+    "title": "Complete Characterization",
+    "content": "TRUE for all r ≥ 4, with Turán graph as only exception, and max-degree vertex always works.",
+    "significance": "major"
+  }
+]

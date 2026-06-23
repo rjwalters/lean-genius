@@ -1,0 +1,139 @@
+[
+  {
+    "id": "ann-h10oq01-header",
+    "proofId": "hilbert-10-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 40
+    },
+    "type": "concept",
+    "title": "H10 over the Rationals: Open Problem Survey",
+    "content": "Introduces one of the most important open problems at the intersection of number theory and mathematical logic: is there an algorithm deciding whether a polynomial equation with integer coefficients has rational solutions? While the MRDP theorem (1970) settled the integer case negatively, the rational case remains wide open. The key references are Mazur (1992) on topological obstructions, Poonen (2009) on subrings of $\\mathbb{Q}$, and Koenigsmann (2016) on definability of $\\mathbb{Z}$ in $\\mathbb{Q}$.",
+    "mathContext": "H10/$\\mathbb{Q}$: given $P \\in \\mathbb{Z}[x_1, \\ldots, x_n]$, is $\\{\\mathbf{x} \\in \\mathbb{Q}^n : P(\\mathbf{x}) = 0\\} \\ne \\emptyset$ decidable? Equivalently: is the existential theory of $(\\mathbb{Q}; 0, 1, +, \\times)$ decidable?",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "MRDP theorem",
+      "Hilbert's tenth problem",
+      "existential definability"
+    ],
+    "prerequisites": [
+      "computability theory",
+      "Diophantine equations",
+      "MRDP theorem"
+    ]
+  },
+  {
+    "id": "ann-h10oq01-definitions",
+    "proofId": "hilbert-10-oq-01",
+    "range": {
+      "startLine": 42,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "Rational Diophantine Equations and H10/Q",
+    "content": "Defines the formal framework: `RatDiophantinePoly` as a function from rational assignments to $\\mathbb{Q}$, `hasRationalSolution` as existence of a zero, and `H10_Rational_Decidable` as the existence of a Boolean decision procedure. The decidability statement is formalized as $\\exists \\text{decide} : P \\mapsto \\text{Bool}, \\forall P: (\\text{decide}(P) = \\text{true} \\leftrightarrow \\text{hasRationalSolution}(P))$.",
+    "mathContext": "H10/$\\mathbb{Q}$ asks for a computable function $\\delta: \\mathbb{Z}[x_1, \\ldots, x_n] \\to \\{\\text{yes}, \\text{no}\\}$ such that $\\delta(P) = \\text{yes}$ iff $\\exists \\mathbf{q} \\in \\mathbb{Q}^n: P(\\mathbf{q}) = 0$. The analogous function for $\\mathbb{Z}^n$ does not exist (MRDP).",
+    "significance": "key",
+    "relatedConcepts": [
+      "decidability",
+      "computable function",
+      "Diophantine set"
+    ],
+    "prerequisites": [
+      "Rat",
+      "Bool",
+      "computability"
+    ]
+  },
+  {
+    "id": "ann-h10oq01-reduction",
+    "proofId": "hilbert-10-oq-01",
+    "range": {
+      "startLine": 63,
+      "endLine": 91
+    },
+    "type": "concept",
+    "title": "Key Reduction: Z Diophantine over Q Implies Undecidability",
+    "content": "Defines `IntegersDiophantineOverQ` ($\\mathbb{Z}$ is existentially definable over $\\mathbb{Q}$: there exists a polynomial equation whose rational solutions detect integrality) and axiomatizes the reduction: if $\\mathbb{Z}$ is Diophantine over $\\mathbb{Q}$, then H10/$\\mathbb{Q}$ is undecidable. The proof idea is to translate integer Diophantine equations into rational ones by substituting each integer variable with a rational variable plus the integrality condition, reducing to the known-undecidable H10/$\\mathbb{Z}$.",
+    "mathContext": "If $\\exists P(x, \\mathbf{y}) \\in \\mathbb{Z}[x, y_1, \\ldots, y_m]$ such that $x \\in \\mathbb{Z} \\Leftrightarrow \\exists \\mathbf{y} \\in \\mathbb{Q}^m: P(x, \\mathbf{y}) = 0$, then any integer Diophantine problem $Q(x_1, \\ldots, x_n) = 0$ can be rewritten as a rational problem by adding integrality constraints. Since H10/$\\mathbb{Z}$ is undecidable, H10/$\\mathbb{Q}$ would be too.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Diophantine definability",
+      "MRDP reduction",
+      "many-one reduction"
+    ],
+    "prerequisites": [
+      "MRDP theorem",
+      "computability reductions"
+    ]
+  },
+  {
+    "id": "ann-h10oq01-mazur",
+    "proofId": "hilbert-10-oq-01",
+    "range": {
+      "startLine": 93,
+      "endLine": 117
+    },
+    "type": "concept",
+    "title": "Mazur's Conjecture: Topological Obstruction",
+    "content": "States Mazur's 1992 conjecture (as a placeholder `True`): the topological closure of rational points on any variety over $\\mathbb{Q}$ has finitely many connected components. If true, this blocks $\\mathbb{Z}$ from being Diophantine over $\\mathbb{Q}$, because the set $\\{(x, \\mathbf{y}) \\in \\mathbb{Q}^{1+m} : x \\in \\mathbb{Z}\\}$ has infinitely many connected components (one for each integer). Crucially, even if Mazur's conjecture holds and $\\mathbb{Z}$ is not Diophantine, H10/$\\mathbb{Q}$ could still be undecidable by a different mechanism.",
+    "mathContext": "Mazur's conjecture: for any variety $V/\\mathbb{Q}$, the real closure $\\overline{V(\\mathbb{Q})} \\subseteq V(\\mathbb{R})$ has finitely many connected components. The set $\\{x \\in \\mathbb{R} : x \\in \\mathbb{Z}\\} = \\mathbb{Z}$ has infinitely many connected components (it's discrete), so $\\mathbb{Z}$ cannot be the projection of $V(\\mathbb{Q})$ for any variety $V$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Mazur's conjecture",
+      "rational points",
+      "real topology",
+      "connected components"
+    ],
+    "prerequisites": [
+      "algebraic geometry",
+      "topology of real points"
+    ]
+  },
+  {
+    "id": "ann-h10oq01-partial",
+    "proofId": "hilbert-10-oq-01",
+    "range": {
+      "startLine": 119,
+      "endLine": 143
+    },
+    "type": "concept",
+    "title": "Poonen and Koenigsmann: Partial Results",
+    "content": "Documents two landmark partial results (formalized as `True` placeholders). Poonen (2009) showed H10 is undecidable over certain subrings of $\\mathbb{Q}$ (rings of $S$-integers), demonstrating that undecidability is 'close' to $\\mathbb{Q}$. Koenigsmann (2016) showed $\\mathbb{Z}$ is $\\forall\\exists$-definable in $\\mathbb{Q}$: there exists a formula with one universal and existential quantifier blocks defining integrality. This is tantalizingly close to Diophantine (purely existential) definability.",
+    "mathContext": "Koenigsmann's result: $x \\in \\mathbb{Z} \\Leftrightarrow \\mathbb{Q} \\models \\forall y_1 \\cdots \\forall y_k \\exists z_1 \\cdots \\exists z_m: \\phi(x, \\mathbf{y}, \\mathbf{z})$ for some quantifier-free $\\phi$. Diophantine definability would require only $\\exists z_1 \\cdots \\exists z_m: P(x, \\mathbf{z}) = 0$. The gap between $\\forall\\exists$ and pure $\\exists$ is the core obstruction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "S-integers",
+      "model theory",
+      "quantifier complexity",
+      "first-order definability"
+    ],
+    "prerequisites": [
+      "subrings of Q",
+      "first-order logic",
+      "quantifier elimination"
+    ]
+  },
+  {
+    "id": "ann-h10oq01-landscape",
+    "proofId": "hilbert-10-oq-01",
+    "range": {
+      "startLine": 145,
+      "endLine": 186
+    },
+    "type": "insight",
+    "title": "Landscape Summary and Logical Dependencies",
+    "content": "Summarizes the known results in a table format and traces the logical dependencies: Mazur $\\Rightarrow \\mathbb{Z}$ not Diophantine/$\\mathbb{Q}$ (blocks the standard route to undecidability), while $\\mathbb{Z}$ Diophantine/$\\mathbb{Q} \\Rightarrow$ H10/$\\mathbb{Q}$ undecidable (from MRDP). The 'why this is hard' section explains the core difficulty: $\\mathbb{Q}$, unlike $\\mathbb{Z}$, provides no obvious polynomial mechanism to detect integrality. No polynomial $P(x, y_1, \\ldots, y_n)$ is known whose rational solutions in $\\mathbf{y}$ exist precisely when $x \\in \\mathbb{Z}$.",
+    "mathContext": "The logical landscape: H10/$\\mathbb{Z}$ undecidable (PROVED, MRDP) $\\stackrel{?}{\\Rightarrow}$ H10/$\\mathbb{Q}$ undecidable (OPEN). The standard route requires $\\mathbb{Z}$ Diophantine/$\\mathbb{Q}$ (OPEN), but Mazur's conjecture (OPEN) would block it. Alternative routes to undecidability remain possible but no concrete proposals exist.",
+    "significance": "key",
+    "relatedConcepts": [
+      "logical dependency",
+      "open problems",
+      "decidability landscape"
+    ],
+    "prerequisites": [
+      "integers_diophantine_implies_undecidable",
+      "mazur_implies_not_diophantine"
+    ]
+  }
+]

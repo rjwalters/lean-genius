@@ -1,0 +1,239 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "erdos-348",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "Module Header and Problem Overview",
+    "content": "The module docstring introduces Erdős Problem #348 on the robustness of complete sequences. A sequence $A$ is complete if every sufficiently large integer is a sum of distinct elements. The problem asks: for which pairs $(m, n)$ with $m < n$ is there a complete sequence that is $m$-robust (survives any $m$ deletions) but not $n$-robust (some $n$ deletions break it)? Known: $(0,1)$ via powers of 2, $(1,2)$ via Fibonacci. The $(2,3)$ case is open.",
+    "mathContext": "Complete: $\\exists N, \\forall n \\geq N, n \\in \\text{finiteSums}(A)$. $m$-robust: $\\forall S \\subseteq \\mathbb{N}$ with $|S| = m$, removing $S$ preserves completeness. Valid pair $(m,n)$: $\\exists A$ complete, $m$-robust, not $n$-robust.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complete sequences",
+      "robustness",
+      "additive bases",
+      "Erdős-Graham problems"
+    ],
+    "prerequisites": [
+      "finite sums of distinct elements",
+      "sequence theory",
+      "combinatorics"
+    ]
+  },
+  {
+    "id": "ann-complete-defs",
+    "proofId": "erdos-348",
+    "range": {
+      "startLine": 23,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "Complete and Strongly Complete Sequences",
+    "content": "Three foundational definitions:\n\n1. **finiteSums(A)**: The set $\\{\\sum_{s \\in S} s : S \\subseteq A \\text{ finite}\\}$ — all numbers representable as sums of distinct elements. Includes 0 (empty sum) and each $a \\in A$.\n2. **IsComplete(A)**: $\\exists N, \\forall n \\geq N, n \\in \\text{finiteSums}(A)$. The threshold $N$ allows finitely many unrepresentable numbers.\n3. **IsStronglyComplete(A)**: $\\forall n, n \\in \\text{finiteSums}(A)$. No exceptions allowed — this is the version Van Doorn's theorem addresses.\n\nAlso defines `sequenceToSet` converting $a : \\mathbb{N} \\to \\mathbb{N}$ to $\\text{range}(a)$.",
+    "mathContext": "$\\text{finiteSums}(A) = \\{n : \\exists S \\subseteq A \\text{ finite}, n = \\sum_{s \\in S} s\\}$. Complete: $\\exists N$, $[N, \\infty) \\subseteq \\text{finiteSums}(A)$. Strongly complete: $\\mathbb{N} = \\text{finiteSums}(A)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sum",
+      "Set.range",
+      "additive bases",
+      "partition function"
+    ],
+    "prerequisites": [
+      "finite set sums",
+      "subset sums",
+      "set comprehension"
+    ]
+  },
+  {
+    "id": "ann-robustness",
+    "proofId": "erdos-348",
+    "range": {
+      "startLine": 49,
+      "endLine": 83
+    },
+    "type": "definition",
+    "title": "Robustness and Valid Pairs",
+    "content": "The core problem formalization:\n\n- **removeIndices(a, S)**: The set $\\{a(i) : i \\notin S\\}$ — sequence values at non-removed indices.\n- **removeValues(A, S)**: $A \\setminus S$ — set difference by value.\n- **IsRobust(a, m)**: $\\forall S$ with $|S| = m$, $\\text{removeIndices}(a, S)$ is complete. Universal quantifier: **every** $m$-deletion preserves completeness.\n- **NotRobust(a, n)**: $\\exists S$ with $|S| = n$ and $\\text{removeIndices}(a, S)$ not complete. Existential: **some** $n$-deletion breaks it.\n- **validPairs**: $\\{(m, n) : m < n \\land \\exists a$ monotone, complete, $m$-robust, not $n$-robust$\\}$.\n\nThe asymmetry between universal (robust) and existential (not robust) is key to the problem's structure.",
+    "mathContext": "$\\text{IsRobust}(a, m) \\iff \\forall |S| = m, \\text{IsComplete}(\\{a(i) : i \\notin S\\})$. $\\text{NotRobust}(a, n) \\iff \\exists |S| = n, \\neg\\text{IsComplete}(\\{a(i) : i \\notin S\\})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "universal vs existential quantifiers",
+      "set difference",
+      "Finset.card",
+      "Monotone"
+    ],
+    "prerequisites": [
+      "quantifier logic",
+      "finite set cardinality",
+      "sequence properties"
+    ]
+  },
+  {
+    "id": "ann-powers-of-2",
+    "proofId": "erdos-348",
+    "range": {
+      "startLine": 84,
+      "endLine": 136
+    },
+    "type": "concept",
+    "title": "Powers of 2 Witness (0, 1)",
+    "content": "The pair $(0, 1)$ is valid, witnessed by $a(n) = 2^n$. Three components:\n\n1. **powersOf2_complete** (sorry): Every positive integer has a binary representation — a sum of distinct powers of 2.\n2. **powersOf2_not_1_robust**: Removing index 0 (i.e., $2^0 = 1$) makes 1 unrepresentable (sorry for the final step).\n3. **pair_0_1_valid**: Assembles the witness. Monotonicity is proved via `Nat.pow_lt_pow_right`. 0-robustness is trivial (removing nothing changes nothing).\n\nThe key insight: binary representation is **unique**, so each $2^k$ has exactly one representation — removing it leaves a permanent gap.",
+    "mathContext": "Binary representation: $\\forall n \\geq 1$, $\\exists!$ $S \\subseteq \\{2^0, 2^1, \\ldots\\}$ with $n = \\sum_{s \\in S} s$. Uniqueness implies that removing $2^k$ makes $2^k$ itself unrepresentable: no other subset sums to $2^k$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "binary representation",
+      "uniqueness of representation",
+      "Nat.pow_lt_pow_right",
+      "Finset.card_eq_zero"
+    ],
+    "prerequisites": [
+      "binary numbers",
+      "power functions",
+      "representation uniqueness"
+    ]
+  },
+  {
+    "id": "ann-fibonacci",
+    "proofId": "erdos-348",
+    "range": {
+      "startLine": 137,
+      "endLine": 165
+    },
+    "type": "concept",
+    "title": "Fibonacci Sequence Witnesses (1, 2)",
+    "content": "The pair $(1, 2)$ is valid, witnessed by $F_0 = 1, F_1 = 2, F_2 = 3, F_3 = 5, \\ldots$ Three components (all with sorries):\n\n1. **fib_complete**: By Zeckendorf's theorem, every positive integer is a sum of non-consecutive Fibonacci numbers.\n2. **fib_1_robust**: Removing any single $F_k$ leaves enough flexibility — alternative representations exist using nearby Fibonacci numbers.\n3. **fib_not_2_robust**: Removing $F_0 = 1$ and $F_1 = 2$ makes 3 unrepresentable — the remaining terms start at $F_2 = 3$, and $3 = F_2$ is available but any sum involving $F_2 = 3$ and larger terms exceeds 3.\n\nThe Fibonacci sequence's redundancy (multiple representations for most numbers) provides exactly 1-robustness but not 2.",
+    "mathContext": "Zeckendorf: $\\forall n \\geq 1$, $\\exists$ unique $S \\subseteq \\{F_i\\}$ with $n = \\sum_{i \\in S} F_i$ and no two consecutive indices in $S$. Non-uniqueness of general (non-Zeckendorf) representations provides the resilience: e.g., $F_k = F_{k-2} + F_{k-3} + \\cdots$ gives alternatives.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Zeckendorf's theorem",
+      "Fibonacci numbers",
+      "non-consecutive representations",
+      "redundancy"
+    ],
+    "prerequisites": [
+      "Fibonacci sequence",
+      "Zeckendorf representations",
+      "subset sum representations"
+    ]
+  },
+  {
+    "id": "ann-characterization",
+    "proofId": "erdos-348",
+    "range": {
+      "startLine": 166,
+      "endLine": 183
+    },
+    "type": "concept",
+    "title": "Characterization Conjecture and (2,3) Case",
+    "content": "Two axioms capturing the open question:\n\n1. **erdos_348_characterization**: Either $\\text{validPairs} = \\{(m, m+1) : m \\in \\mathbb{N}\\}$ (every consecutive pair is valid), or $\\exists k$ such that valid pairs are exactly those with first component $< k$.\n2. **erdos_348_case_2_3**: The tautology $(2,3) \\in \\text{validPairs} \\lor (2,3) \\notin \\text{validPairs}$ — highlighting that this specific case is the critical unknown.\n\nThe first axiom encodes the two structural possibilities; the second draws attention to the frontier.",
+    "mathContext": "Two possibilities: (a) $\\forall m$, $(m, m+1) \\in \\text{validPairs}$ — an infinite hierarchy of robustness levels. (b) $\\exists k$, $\\forall m \\geq k$, $(m, m+1) \\notin \\text{validPairs}$ — a phase transition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "set characterization",
+      "phase transitions",
+      "excluded middle"
+    ],
+    "prerequisites": [
+      "set equality",
+      "quantifier structure"
+    ]
+  },
+  {
+    "id": "ann-van-doorn",
+    "proofId": "erdos-348",
+    "range": {
+      "startLine": 184,
+      "endLine": 199
+    },
+    "type": "concept",
+    "title": "Van Doorn's Theorem on Strong Completeness",
+    "content": "Defines `IsStronglyRobust` (strongly complete after removing any $m$ indices) and states **vanDoorn_theorem**: no monotone, strongly complete sequence is 2-robust. This is a clean negative result: the requirement of representing ALL integers (not just sufficiently large ones) is too rigid to absorb two deletions.\n\nImplication: under strong completeness, the only valid pairs are $(0, n)$ for $n \\geq 1$ and $(1, n)$ for $n \\geq 2$. The problem is only interesting under weak completeness for $m \\geq 2$.",
+    "mathContext": "$\\forall a : \\mathbb{N} \\to \\mathbb{N}$ monotone, $\\text{IsStronglyComplete}(\\text{range}(a)) \\implies \\neg\\text{IsStronglyRobust}(a, 2)$. The proof idea: strongly complete sequences must start with 1, 2, and these are indispensable for representing small numbers.",
+    "significance": "key",
+    "relatedConcepts": [
+      "strong completeness",
+      "negative results",
+      "indispensable elements",
+      "small number representation"
+    ],
+    "prerequisites": [
+      "strong completeness definition",
+      "robustness",
+      "sequence constraints"
+    ]
+  },
+  {
+    "id": "ann-representation",
+    "proofId": "erdos-348",
+    "range": {
+      "startLine": 200,
+      "endLine": 213
+    },
+    "type": "definition",
+    "title": "Representation Count and Completeness Equivalence",
+    "content": "Two components:\n\n1. **representationCount(A, n)**: $|\\{S \\subseteq A : S \\text{ finite}, \\sum S = n\\}|$ via `Nat.card`. Counts the number of ways to represent $n$ as a sum of distinct elements of $A$.\n2. **complete_iff_repr** (sorry): $A$ is complete iff $\\exists N, \\forall n \\geq N, r(A, n) > 0$. This reformulates completeness in terms of a counting function.\n\nThe representation count provides finer information than bare completeness — high representation counts suggest robustness (more ways to represent = more resilience to deletions).",
+    "mathContext": "$r(A, n) = |\\{S \\subseteq A : |S| < \\infty, \\sum_{s \\in S} s = n\\}|$. Completeness: $r(A, n) > 0$ eventually. Robustness heuristic: if $r(A, n)$ is large, removing a few elements reduces but doesn't eliminate representations.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.card",
+      "representation functions",
+      "additive number theory",
+      "partition function"
+    ],
+    "prerequisites": [
+      "cardinality of subsets",
+      "subset sum counting"
+    ]
+  },
+  {
+    "id": "ann-gap-property",
+    "proofId": "erdos-348",
+    "range": {
+      "startLine": 214,
+      "endLine": 228
+    },
+    "type": "concept",
+    "title": "Gap Property of Complete Sequences",
+    "content": "Defines `gap(a, n) = a(n+1) - a(n)` and states **complete_bounded_gaps**: for any monotone, complete sequence, $\\exists N, M$ such that $\\forall n \\geq N$, $\\text{gap}(a, n) \\leq M$. Unbounded gaps would create arbitrarily large intervals with no new elements, making large integers in those intervals unrepresentable.\n\nThis structural constraint means complete sequences must be 'dense enough' — they can't grow faster than linearly in the long run.",
+    "mathContext": "If $a_{n+1} - a_n > \\sum_{i \\leq n} a_i + 1$ for some $n$, then the integers in $(\\sum_{i \\leq n} a_i, a_{n+1})$ are unrepresentable. The gap bound is a necessary (but not sufficient) condition for completeness.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sequence gaps",
+      "density conditions",
+      "linear growth",
+      "necessary conditions for completeness"
+    ],
+    "prerequisites": [
+      "monotone sequences",
+      "gap sequences",
+      "sum bounds"
+    ]
+  },
+  {
+    "id": "ann-main-problem",
+    "proofId": "erdos-348",
+    "range": {
+      "startLine": 229,
+      "endLine": 256
+    },
+    "type": "concept",
+    "title": "Main Open Problem Statement",
+    "content": "The final axiom **erdos_348_main_problem** states the core question as a disjunction:\n\n1. $\\forall m \\in \\mathbb{N}$, $(m, m+1) \\in \\text{validPairs}$ — an infinite hierarchy where every robustness level has a tight example.\n2. $\\exists k$, $\\forall m \\geq k$, $(m, m+1) \\notin \\text{validPairs}$ — a cutoff beyond which $m$-robustness automatically implies $(m+1)$-robustness.\n\nThe docstring provides a self-contained summary: known results ($(0,1)$ and $(1,2)$ valid), Van Doorn's constraint on strong completeness, and the open $(2,3)$ case.",
+    "mathContext": "The disjunction: $\\left(\\forall m, (m, m+1) \\in \\text{validPairs}\\right) \\lor \\left(\\exists k, \\forall m \\geq k, (m, m+1) \\notin \\text{validPairs}\\right)$. The first option requires constructing ever-more-resilient sequences; the second requires proving a structural impossibility theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open problems",
+      "robustness hierarchy",
+      "phase transitions",
+      "structural impossibility"
+    ],
+    "prerequisites": [
+      "validPairs characterization",
+      "quantifier logic",
+      "Erdős-Graham framework"
+    ]
+  }
+]

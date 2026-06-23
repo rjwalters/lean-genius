@@ -1,0 +1,148 @@
+{
+  "id": "cayley-hamilton-reduction-oq-01-oq-02",
+  "title": "Efficient Minimal Polynomial Reduction for Sparse Matrices",
+  "slug": "cayley-hamilton-reduction-oq-01-oq-02",
+  "description": "Formalizes efficient minimal polynomial reduction for structured sparse matrices. For nilpotent M (M^k = 0), reduction can bypass minpoly computation entirely by using X^k as the modulus — degree truncation in O(deg p) work. For upper triangular M, minpoly divides the diagonal product ∏(X - M_i_i), giving an O(n)-computable degree bound. Extends OQ-01 (charpoly efficiency) to the minimal polynomial setting.",
+  "meta": {
+    "author": "researcher-5",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Minimal_polynomial_(linear_algebra)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CayleyHamiltonReductionOQ01OQ02.lean",
+    "tags": [
+      "linear-algebra",
+      "matrices",
+      "minimal-polynomial",
+      "sparse-matrices",
+      "computational-complexity",
+      "nilpotent",
+      "krylov-method",
+      "extension",
+      "open-question"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 210,
+    "assumptions": "No axioms, no sorries. All 9 theorems fully proved. Key techniques: modByMonic_add_div for reduction; minpoly.dvd + Polynomial.natDegree_le_of_dvd for divisibility; Matrix.charpoly_of_upperTriangular for the triangular case.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Krylov subspace methods (Lanczos, GMRES, Wiedemann) exploit that sparse matrices have small effective minimal polynomial degree. For a nilpotent matrix M of nilpotency index k, the minimal polynomial is X^k — computable in O(1) operations once k is known. This makes the polynomial reduction p %ₘ minpoly(M) equivalent to p %ₘ X^k, which is just degree truncation. For structured sparse matrices in practice (banded, block triangular, nearly nilpotent), this gives dramatic speedups over general O(n³) charpoly computation.",
+    "problemStatement": "Can the minimal polynomial reduction — evaluating p at M as aeval M (p %ₘ minpoly K M) — be made computationally efficient for sparse matrices? Specifically: (1) For nilpotent M with M^k = 0, can we avoid computing minpoly explicitly? (2) For upper triangular M, what is the degree of minpoly? (3) Does the efficiency of OQ-01 (charpoly reduction) extend to the minpoly setting?",
+    "proofStrategy": "Three mechanisms: (1) Nilpotent: show minpoly K M | X^k via minpoly.dvd applied to aeval M (X^k) = M^k = 0. Then prove aeval M p = aeval M (p %ₘ X^k) via modByMonic_add_div. This bypasses minpoly entirely. (2) Upper triangular: use charpoly_of_upperTriangular to get charpoly = ∏(X - d_i), then minpoly.dvd gives minpoly | ∏(X - d_i). (3) General: prove the standard reduction aeval M p = aeval M (p %ₘ minpoly K M) using aeval M (minpoly K M) = 0.",
+    "keyInsights": [
+      "For nilpotent M (M^k = 0), X^k can serve as the reduction modulus directly, since minpoly K M | X^k. This avoids computing minpoly altogether — the reduction is just polynomial degree truncation.",
+      "The nilpotency index k gives a tight degree bound: deg(minpoly) ≤ k ≤ n. For sparse structured matrices with small k, this is much better than the general bound n.",
+      "For upper triangular matrices, minpoly K M divides ∏ᵢ(X - M i i), which is computed in O(n) time by reading the diagonal — matching the efficiency of OQ-01's charpoly approach.",
+      "nilpotent_reduction_equiv establishes that the two moduli (X^k and minpoly K M) are interchangeable in practice: both give the same polynomial evaluation at M, so the cheaper X^k can always be substituted without loss of correctness.",
+      "nilpotent_power_eq_zero proves Krylov termination directly: M^j = 0 for all j ≥ k. This means the Krylov sequence {v, Mv, ..., M^{k-1}v} is a complete invariant of the linear map restricted to its range — no new information is generated after k steps."
+    ],
+    "prerequisites": [
+      "Minimal polynomial theory: minpoly.dvd, minpoly.monic, minpoly.aeval",
+      "Euclidean division of polynomials: modByMonic_add_div",
+      "CayleyHamiltonReductionOQ01.lean: efficient charpoly reduction for sparse matrices",
+      "Matrix.charpoly_of_upperTriangular: diagonal product formula"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Module docstring answers the efficiency question for sparse matrices: yes, with three mechanisms (nilpotent X^k bypass, upper triangular diagonal product, general reduction). Imports Mathlib for charpoly, minpoly, block matrices, polynomial division, and nilpotency. Namespace MinpolyReductionOQ02."
+    },
+    {
+      "id": "nilpotent-minpoly-theory",
+      "title": "Part I: Nilpotent Matrix Minimal Polynomial Theory",
+      "startLine": 41,
+      "endLine": 67,
+      "summary": "nilpotent_minpoly_dvd_pow: if M^k = 0 then minpoly K M | X^k (via minpoly.dvd + aeval_X + map_pow). nilpotent_minpoly_natDegree_le: degree bound deg(minpoly) ≤ k from natDegree_le_of_dvd + natDegree_X_pow. These establish that the nilpotency index k is a tight degree certificate requiring no minpoly computation."
+    },
+    {
+      "id": "nilpotent-reduction",
+      "title": "Part II: Efficient Polynomial Reduction via Nilpotency Index",
+      "startLine": 69,
+      "endLine": 111,
+      "summary": "nilpotent_poly_reduction: aeval M p = aeval M (p %ₘ X^k) — the key efficiency theorem. nilpotent_power_eq_zero: M^j = 0 for all j ≥ k (Krylov termination certificate). nilpotent_reduction_equiv: X^k and minpoly K M are interchangeable reduction moduli. Proves the nilpotent bypass is both correct and complete."
+    },
+    {
+      "id": "upper-triangular",
+      "title": "Part III: Upper Triangular Minpoly Bound",
+      "startLine": 113,
+      "endLine": 143,
+      "summary": "upper_tri_minpoly_dvd_prod: minpoly K M | ∏ᵢ(X - M i i) for block-triangular M (using charpoly_of_upperTriangular + minpoly.dvd). upper_tri_minpoly_natDegree_le: degree ≤ n. Reduces minpoly computation to reading the diagonal — O(n) vs O(n³) for general charpoly."
+    },
+    {
+      "id": "general-reduction",
+      "title": "Part IV: General Efficient Reduction",
+      "startLine": 145,
+      "endLine": 172,
+      "summary": "minpoly_poly_reduction: the foundational reduction theorem aeval M p = aeval M (p %ₘ minpoly K M), valid for any matrix M. nilpotent_reduction_degree_lt: confirms that p %ₘ X^k has natDegree < k (the reduction genuinely compresses the polynomial). These theorems complete the efficiency framework."
+    },
+    {
+      "id": "summary",
+      "title": "Proof Summary and Algorithmic Impact",
+      "startLine": 175,
+      "endLine": 210,
+      "summary": "Documentation block listing all 9 proved theorems under the three mechanisms. Emphasizes the nilpotent case as the most dramatic efficiency gain: polynomial evaluation in nilpotent matrices is pure coefficient truncation — no matrix multiplications for the modulus, O(deg p) total work. For strictly upper triangular n×n matrices, the nilpotency index k = n, recovering the general bound with an explicit formula for the modulus."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization proves that minimal polynomial reduction for sparse matrices admits three efficient special cases, all proved with 0 sorries and 0 axioms. The nilpotent case (M^k = 0) is the most significant: X^k serves as an explicit, trivially-computed reduction modulus, bypassing any computation of minpoly K M. The 9 theorems collectively justify using structure-specific reduction moduli in Krylov subspace algorithms.",
+    "implications": "The efficiency results formalized here underpin the theoretical foundations of several numerical algorithms:\n\n**Nilpotent matrices** arise in Schur decompositions, Jordan form computations, and graph theory (adjacency matrices of DAGs). When M^k = 0 for small k, Krylov methods terminate in ≤ k steps rather than ≤ n, giving O(k) matrix-vector products instead of O(n).\n\n**Block triangular matrices** arise from graph-structured problems (lower triangular systems from topological orderings, block LU factorizations). The upper triangular bound means minpoly can be determined from the diagonal without computing eigenvalues.\n\n**General reduction** (minpoly_poly_reduction) enables the Cayley-Hamilton framework for polynomial matrix expressions: any function of M that is a polynomial in M can be computed modulo minpoly K M without loss. This is fundamental to matrix function algorithms (matrix exponential, resolvent computation).",
+    "openQuestions": [
+      "Cayley-Hamilton via nilpotency: can the general Cayley-Hamilton theorem (charpoly(M)(M) = 0) be proved for any matrix by reducing to the nilpotent case via the Jordan decomposition, without appealing to the abstract algebraic proof? This would give an algorithmic proof with explicit complexity bounds.",
+      "Block nilpotent matrices: for block upper triangular M with nilpotent diagonal blocks, the minimal polynomial is X^k where k is the maximum nilpotency index of the blocks. Can this be formalized cleanly in Lean using Matrix.Block infrastructure?",
+      "Sparse polynomial evaluation: the formalization proves correctness of the X^k bypass but does not address the complexity of evaluating (p %ₘ X^k)(M). For a sparse M, computing Σᵢ<k pᵢ · Mⁱ v requires k matrix-vector products. Can Horner's method be formalized to show this is optimal?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly",
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic",
+      "Mathlib.LinearAlgebra.Matrix.Block",
+      "Mathlib.Algebra.Polynomial.Div",
+      "Mathlib.RingTheory.Nilpotent.Basic"
+    ],
+    "namespace": "MinpolyReductionOQ02",
+    "lineCount": 210,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "path": "Proofs/CayleyHamiltonReductionOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-reduction-oq-01",
+      "relationship": "extends",
+      "description": "OQ-01 proves charpoly efficiency for sparse matrices. OQ-01-OQ-02 extends to the minimal polynomial, showing it is often more efficient still (smaller degree bound, X^k bypass for nilpotent case)."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-03-oq-01",
+      "relationship": "uses",
+      "description": "Vector minimal polynomial theory (minpoly.dvd and related). The nilpotent_poly_reduction theorem enables the Krylov termination in OQ-03-OQ-01 for nilpotent matrices."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Golub, Gene H. and Van Loan, Charles F.",
+      "title": "Matrix Computations, 4th Edition",
+      "year": "2013",
+      "venue": "Johns Hopkins University Press",
+      "note": "Chapter 7.5 discusses Krylov subspace methods and the role of minimal polynomial degree in convergence"
+    },
+    {
+      "authors": "Wiedemann, Douglas H.",
+      "title": "Solving sparse linear equations over finite fields",
+      "year": "1986",
+      "venue": "IEEE Transactions on Information Theory, 32(1), 54–62",
+      "note": "Single-vector Krylov algorithm exploits minimal polynomial for sparse matrices"
+    }
+  ]
+}

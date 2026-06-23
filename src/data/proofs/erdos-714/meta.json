@@ -1,0 +1,186 @@
+{
+  "id": "erdos-714",
+  "title": "Erdős Problem #714: The Zarankiewicz Problem for K_{r,r}",
+  "slug": "erdos-714",
+  "description": "Is ex(n; K_{r,r}) >> n^{2-1/r}? Proved for r=2,3; open for r >= 4. The Zarankiewicz problem on complete bipartite subgraphs.",
+  "meta": {
+    "author": "Kövári-Sós-Turán (1954), Brown (1966), Erdős-Rényi-Sós (1966)",
+    "sourceUrl": "https://erdosproblems.com/714",
+    "date": "1966",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos714Problem.lean",
+    "tags": [
+      "erdos",
+      "extremal-graph-theory",
+      "zarankiewicz",
+      "bipartite-graphs",
+      "partially-solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 714,
+    "erdosUrl": "https://erdosproblems.com/714",
+    "erdosProblemStatus": "partially-solved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type and operations",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for vertex subsets",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "containsCompleteBipartite definition: K_{r,s} subgraph detection",
+      "isKrrFree definition: K_{r,r}-free property",
+      "exKrr definition: extremal function ex(n; K_{r,r})",
+      "kovari_sos_turan axiom: upper bound n^{2-1/r}",
+      "kstExponent definition: the exponent 2-1/r",
+      "erdosConjectureLowerBound: the conjecture statement",
+      "zarankiewicz_r2 axiom: complete solution for r=2",
+      "brown_theorem, erdos_renyi_sos_theorem: lower bound for r=3",
+      "erdos_714_r2, erdos_714_r3 theorems: partial solutions"
+    ],
+    "axiomCount": 3,
+    "lineCount": 259,
+    "assumptions": "3 axioms: kovari_sos_turan, zarankiewicz_r2, brown_theorem. 0 sorries.",
+    "theoremCount": 5,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "**The Zarankiewicz Problem**\n\nThis is one of the most famous open problems in extremal graph theory. It asks for the maximum number of edges in a graph on n vertices containing no complete bipartite subgraph K_{r,r}.\n\n**Historical Timeline:**\n- 1954: Kövári, Sós, and Turán proved the upper bound ex(n; K_{r,r}) << n^{2-1/r}\n- 1966: Brown proved the lower bound for r=3, matching the upper bound\n- 1966: Erdős, Rényi, and Sós independently proved the same result\n- r >= 4: Remains OPEN - no construction achieving the conjectured bound is known\n\n**Connection to K_{2,2} = C_4:**\nThe r=2 case is equivalent to the C_4-free graph problem (Problem #768), since K_{2,2} is exactly the 4-cycle. This case was fully resolved using projective plane constructions.",
+    "problemStatement": "**Problem Statement (Partially Solved)**\n\nIs it true that $\\mathrm{ex}(n; K_{r,r}) \\gg n^{2-1/r}$?\n\nwhere $\\mathrm{ex}(n; K_{r,r})$ is the maximum edges in an $n$-vertex graph with no $K_{r,r}$.\n\n**Known Results:**\n\n1. **Upper bound:** $\\mathrm{ex}(n; K_{r,r}) \\ll n^{2-1/r}$ for all $r \\geq 2$ (KST 1954)\n2. **r = 2:** $\\mathrm{ex}(n; K_{2,2}) = (1/2+o(1))n^{3/2}$ (exact asymptotics)\n3. **r = 3:** $\\mathrm{ex}(n; K_{3,3}) \\gg n^{5/3}$ (Brown 1966)\n4. **r >= 4:** OPEN",
+    "text": "Is ex(n; K_{r,r}) >> n^{2-1/r}? Proved for r=2,3; open for r >= 4. The Zarankiewicz problem on complete bipartite subgraphs.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** Define complete bipartite subgraph containment and K_{r,r}-free property.\n\n2. **Extremal Function:** Define exKrr as supremum over edge counts.\n\n3. **Upper Bound:** Axiomatize Kövári-Sós-Turán theorem.\n\n4. **Lower Bounds:** Axiomatize r=2 (exact) and r=3 (Brown) results.\n\n5. **Partial Solutions:** Prove conjecture for r=2,3 from the axioms.\n\n6. **Construction Methods:** Document projective planes and generalized polygons.\n\n**Why Axioms?** The constructions require algebraic geometry (projective planes, generalized polygons) not in Mathlib.",
+    "keyInsights": [
+      "**KST Upper Bound:** Uses double counting - count pairs (v, S) where S is an r-subset of neighbors of v.",
+      "**K_{2,2} = C_4:** The r=2 case is equivalent to forbidding 4-cycles, connecting to Problem #768.",
+      "**Projective Planes:** For r=2, incidence graphs of PG(2,q) give extremal K_{2,2}-free graphs.",
+      "**Generalized Polygons:** For r=3, generalized hexagons provide the optimal construction.",
+      "**r >= 4 Gap:** No algebraic construction is known to achieve n^{2-1/r} for r >= 4.",
+      "**Matrix Formulation:** Equivalent to the Zarankiewicz problem z(n,n;r,r) on 0-1 matrices."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Extremal graph theory (Turán-type problems)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "bipartite-graphs",
+      "title": "Complete Bipartite Graphs",
+      "summary": "containsCompleteBipartite, isKrrFree, edgeCount definitions",
+      "startLine": 36,
+      "endLine": 63,
+      "mathContext": "Formal definition: containsCompleteBipartite, isKrrFree, edgeCount definitions"
+    },
+    {
+      "id": "extremal-function",
+      "title": "The Extremal Function",
+      "summary": "exKrr definition: ex(n; K_{r,r})",
+      "startLine": 64,
+      "endLine": 76,
+      "mathContext": "Formal definition: exKrr definition: ex(n; K_{r,r})"
+    },
+    {
+      "id": "kst-upper-bound",
+      "title": "Kövári-Sós-Turán Upper Bound",
+      "summary": "kovari_sos_turan axiom, kstExponent definition",
+      "startLine": 77,
+      "endLine": 102,
+      "mathContext": "Formal definition: kovari_sos_turan axiom, kstExponent definition"
+    },
+    {
+      "id": "conjecture-results",
+      "title": "The Conjecture and Partial Results",
+      "summary": "erdosConjectureLowerBound, zarankiewicz_r2, brown_theorem, erdos_714_r2/r3",
+      "startLine": 103,
+      "endLine": 171,
+      "mathContext": "Verified: erdosConjectureLowerBound, zarankiewicz_r2, brown_theorem, erdos_714_r2/r3"
+    },
+    {
+      "id": "open-cases",
+      "title": "Open Cases (r >= 4)",
+      "summary": "Docstring discussion of r ≥ 4 open cases: no construction achieving ex(n; K_{r,r}) >> n^{2-1/r} is known; best known lower bounds are strictly weaker than the conjectured bound",
+      "startLine": 172,
+      "endLine": 180,
+      "mathContext": "Informal overview — no formal declarations in this section"
+    },
+    {
+      "id": "constructions",
+      "title": "Construction Methods",
+      "summary": "Docstring descriptions of projective plane constructions (r=2), generalized hexagon constructions (r=3), and norm graphs (Kollár-Rónyai-Szabó 1996, giving Ω(n^{2-2/(r+1)}) edges)",
+      "startLine": 181,
+      "endLine": 201,
+      "mathContext": "Informal constructions — no formal declarations in this section"
+    },
+    {
+      "id": "connections",
+      "title": "Connection to Other Problems",
+      "summary": "Docstring discussion of K_{2,2} = C_4 equivalence (linking to Problem #768) and the Zarankiewicz matrix formulation via bipartite double cover",
+      "startLine": 202,
+      "endLine": 218,
+      "mathContext": "Informal connections — no formal declarations in this section"
+    },
+    {
+      "id": "summary",
+      "title": "Main Results Summary",
+      "summary": "erdos_714_summary, zarankiewicz_status theorems",
+      "startLine": 219,
+      "endLine": 259,
+      "mathContext": "Verified: erdos_714_summary, zarankiewicz_status theorems"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #714 asks whether ex(n; K_{r,r}) >> n^{2-1/r}. This is proved for r=2 (via C_4 connection) and r=3 (Brown 1966), but remains one of the most famous open problems in extremal combinatorics for r >= 4.",
+    "implications": "**Theoretical Significance**: **Implications in Extremal Graph Theory**\n\n1. **Turán-type Problems:** Central question about graph density vs forbidden bipartite subgraphs.\n\n2. **Algebraic Constructions:** Solutions require projective planes and generalized polygons.\n\n**3. Finite Geometry:** Deep connections to incidence geometry over finite fields.\n\n4. **Matrix Theory:** Equivalent to the Zarankiewicz problem on 0-1 matrices.\n\n5. **Coding Theory:** Related to codes with restricted Hamming distance.",
+    "openQuestions": [
+      "Prove ex(n; K_{4,4}) >> n^{7/4}",
+      "Find explicit constructions for r >= 4",
+      "Connections to algebraic geometry for general r",
+      "Exact asymptotics for r >= 4",
+      "Probabilistic constructions vs algebraic ones"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos714",
+    "lineCount": 259,
+    "axiomCount": 3,
+    "theoremCount": 5,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos714Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1080",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, extremal-graph-theory"
+    },
+    {
+      "targetId": "erdos-113",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, extremal-graph-theory"
+    },
+    {
+      "targetId": "erdos-127",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, extremal-graph-theory"
+    }
+  ],
+  "sorries": 0
+}

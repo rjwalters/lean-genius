@@ -1,0 +1,240 @@
+[
+  {
+    "id": "ann-1214-primsupport",
+    "proofId": "erdos-1214",
+    "range": {
+      "startLine": 38,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "Prime Support (Radical): Encoding Arithmetic in Sets of Primes",
+    "content": "The definition primSupport(n) is simply n.primeFactors — the finite set of prime divisors of n, also called the radical of n and written rad(n). The two basic theorems establish the boundary cases: primSupport(1) = ∅ (since 1 has no prime divisors) and primSupport(p) = {p} for prime p. The central idea of Erdős #1214 is that the function n ↦ primSupport(x^n - 1) — a sequence of finite sets of primes indexed by n — should uniquely determine x. Rather than storing all prime factors with multiplicity (which would give x^n - 1 exactly), the support remembers only which primes appear, discarding multiplicity. The question is whether this lossy encoding still uniquely identifies the base x.",
+    "mathContext": "\\mathrm{primSupport}(n) = \\mathrm{rad}(n) = \\prod_{p \\mid n,\\, p \\text{ prime}} p = \\{p \\text{ prime} : p \\mid n\\}.",
+    "significance": "key",
+    "relatedConcepts": [
+      "radical of an integer",
+      "squarefree part",
+      "prime factorization",
+      "Nat.primeFactors"
+    ],
+    "prerequisites": [
+      "prime numbers",
+      "divisibility",
+      "finite sets in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-1214-geometric",
+    "proofId": "erdos-1214",
+    "range": {
+      "startLine": 55,
+      "endLine": 77
+    },
+    "type": "concept",
+    "title": "Geometric Series Divisibility: (x-1) | (x^n-1) in Any Commutative Ring",
+    "content": "The theorem sub_one_dvd_pow_sub_one proves the algebraic identity x^n - 1 = (x-1)(x^{n-1} + x^{n-2} + ⋯ + 1) in any commutative ring. In Lean, this is expressed via Mathlib's geom_sum_mul lemma: (∑_{i < n} x^i) * (x - 1) = x^n - 1. The integer instance int_sub_one_dvd_pow_sub_one then specializes to ℤ. The positivity lemmas pow_sub_one_pos and pow_sub_one_ne_zero establish that x^n - 1 ≥ 1 (hence ≠ 0) for x ≥ 2 and n ≥ 1, which is needed to safely use primeFactors (which is trivially ∅ for 0 or 1). These are foundational facts that underpin all subsequent divisibility arguments.",
+    "mathContext": "x^n - 1 = (x-1)\\sum_{i=0}^{n-1} x^i \\quad \\text{in any commutative ring.} \\quad \\text{For } x \\geq 2, n \\geq 1: \\quad x^n - 1 \\geq 2^1 - 1 = 1.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "geometric series",
+      "geom_sum_mul",
+      "commutative ring",
+      "algebraic identities"
+    ],
+    "prerequisites": [
+      "ring theory",
+      "geometric sum formula",
+      "Lean CommRing typeclass"
+    ]
+  },
+  {
+    "id": "ann-1214-concrete",
+    "proofId": "erdos-1214",
+    "range": {
+      "startLine": 83,
+      "endLine": 113
+    },
+    "type": "concept",
+    "title": "Concrete Support Computations: Mersenne Numbers and Separation of Bases",
+    "content": "These theorems compute prime supports of 2^k-1, 3^k-1, and 4^k-1 for small k, all via norm_num. The support sequence for base 2 begins: ∅, {3}, {7}, {3,5}, {31}, … — here 7 = 2^3-1 and 31 = 2^5-1 are Mersenne primes (primes of the form 2^p-1), and 15 = 2^4-1 = 3·5 gives support {3,5}. The key separation theorems then certify that 2 ≠ 3 (their supports differ at n=2: {3} ≠ {2}) and 2 ≠ 4 (differ at n=3: {7} ≠ {3,7}, since 2^3-1=7 is prime while 4^3-1=63=7·9=7·3^2). These computations ground the abstract theorem in concrete arithmetic.",
+    "mathContext": "\\mathrm{supp}(2^n-1): \\emptyset, \\{3\\}, \\{7\\}, \\{3,5\\}, \\{31\\}, \\ldots \\quad \\mathrm{supp}(3^n-1): \\{2\\}, \\{2,13\\}, \\ldots \\quad 2^3-1=7 \\text{ (Mersenne)},\\; 4^3-1=63=3^2 \\cdot 7.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mersenne primes",
+      "norm_num tactic",
+      "prime factorization",
+      "support separation"
+    ],
+    "prerequisites": [
+      "elementary arithmetic",
+      "Lean norm_num",
+      "Nat.primeFactors"
+    ]
+  },
+  {
+    "id": "ann-1214-zmod-char",
+    "proofId": "erdos-1214",
+    "range": {
+      "startLine": 122,
+      "endLine": 141
+    },
+    "type": "concept",
+    "title": "ZMod Order Characterization: Bridging Divisibility and Group Theory",
+    "content": "These two theorems are the algebraic heart of the proof. First, prime_dvd_pow_sub_one_iff_zmod: p | x^n - 1 (as integers) iff (x : ZMod p)^n = 1. The proof goes via ZMod.intCast_zmod_eq_zero_iff_dvd and push_cast to move between ℤ divisibility and ZMod arithmetic. Second, prime_dvd_pow_sub_one_iff_order: (x : ZMod p)^n = 1 iff orderOf(x : ZMod p) | n — which is the standard characterization of multiplicative order. Composing these, p | x^n-1 iff orderOf(x mod p) | n. This reframes the prime-support condition as a condition on multiplicative orders in the cyclic group (ZMod p)×.",
+    "mathContext": "p \\mid x^n - 1 \\iff (x \\bmod p)^n = 1 \\iff \\mathrm{ord}_p(x) \\mid n, \\quad \\text{where } \\mathrm{ord}_p(x) = \\mathrm{orderOf}(x : \\mathbb{Z}/p\\mathbb{Z}).",
+    "significance": "key",
+    "relatedConcepts": [
+      "multiplicative order",
+      "ZMod arithmetic",
+      "orderOf in Mathlib",
+      "cyclic group characterization"
+    ],
+    "prerequisites": [
+      "ZMod.intCast_zmod_eq_zero_iff_dvd",
+      "orderOf_dvd_iff_pow_eq_one",
+      "group order theory"
+    ]
+  },
+  {
+    "id": "ann-1214-equal-orders",
+    "proofId": "erdos-1214",
+    "range": {
+      "startLine": 150,
+      "endLine": 184
+    },
+    "type": "insight",
+    "title": "Key Structural Theorem: Equal Support for All n Implies Equal Orders Mod Every Prime",
+    "content": "The theorem equal_support_implies_equal_orders is the main unconditional result of the file. It proves: if supp(x^n-1) = supp(y^n-1) for all n ≥ 1 (restricted to a single prime p with p ∤ x and p ∤ y), then orderOf(x mod p) = orderOf(y mod p). The proof has two steps. Step 1 (Fermat): since p ∤ x, we have x^{p-1} ≡ 1 (mod p) by Fermat's little theorem (ZMod.pow_card_sub_one_eq_one), so orderOf(x mod p) | p-1 > 0, hence the order is positive. Step 2 (Antisymmetry): to show ord_p(x) | ord_p(y): since (y mod p)^{ord_p(y)} = 1, by the iff theorem p | y^{ord_p(y)} - 1. By the support hypothesis (taking n = ord_p(y)), p | x^{ord_p(y)} - 1, so ord_p(x) | ord_p(y). Symmetrically ord_p(y) | ord_p(x). Hence they are equal.",
+    "mathContext": "\\text{Proof:}\\; \\mathrm{ord}_p(x) \\mid p-1 \\Rightarrow \\mathrm{ord}_p(x) > 0. \\text{ Support hypothesis:} \\; p \\mid x^n-1 \\iff p \\mid y^n-1. \\text{ Take } n = \\mathrm{ord}_p(y): \\; \\mathrm{ord}_p(x) \\mid \\mathrm{ord}_p(y). \\text{ Symmetrically get equality.}",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fermat's little theorem",
+      "multiplicative order",
+      "divisibility antisymmetry",
+      "ZMod.pow_card_sub_one_eq_one"
+    ],
+    "prerequisites": [
+      "Fermat's little theorem",
+      "orderOf theory in Mathlib",
+      "divisibility in ℕ"
+    ]
+  },
+  {
+    "id": "ann-1214-axiom",
+    "proofId": "erdos-1214",
+    "range": {
+      "startLine": 190,
+      "endLine": 195
+    },
+    "type": "definition",
+    "title": "Axiomatized Corrales-Rodánez–Schoof Theorem: The Kummer Theory Gap",
+    "content": "The axiom corrales_schoof states: for x, y ≥ 2, if supp(x^n-1) = supp(y^n-1) for all n ≥ 1, then x = y. This is axiomatized because the Corrales-Rodánez–Schoof (1997) proof requires substantial algebraic number theory — specifically Kummer theory and Galois cohomology — to go from 'equal multiplicative orders at every prime' to 'x = y'. The gap between the accessible combinatorial content (equal orders, proved above) and the conclusion (x = y) reflects a genuine difficulty: equal orders mod all primes means that for every prime p, x and y look the same in (ℤ/pℤ)×, but showing this forces x = y in ℤ requires global arithmetic arguments over number fields.",
+    "mathContext": "The proved direction: equal support $\\Rightarrow$ equal orders $\\mathrm{ord}_p(x) = \\mathrm{ord}_p(y)$ for all $p \\nmid xy$. The axiomatized direction: equal orders $\\Rightarrow x = y$, proved via Kummer theory: the condition on orders implies $x/y$ is a perfect power in $\\mathbb{Q}^\\times/(\\mathbb{Q}^\\times)^n$ for all $n$, forcing $x = y$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Kummer theory",
+      "Galois cohomology",
+      "axiom in Lean 4",
+      "algebraic number theory"
+    ],
+    "prerequisites": [
+      "algebraic number theory",
+      "Galois theory",
+      "Kummer extensions"
+    ]
+  },
+  {
+    "id": "ann-1214-corollaries",
+    "proofId": "erdos-1214",
+    "range": {
+      "startLine": 201,
+      "endLine": 226
+    },
+    "type": "concept",
+    "title": "Symmetry, Transitivity, and Injectivity of the Support Map",
+    "content": "Three corollaries develop the structural consequences of the CS theorem. support_hypothesis_symm shows the equal-support condition is symmetric (follows from Finset equality symmetry). corrales_schoof_symm gives symmetry of the conclusion: y = x under the same hypothesis (by taking .symm). corrales_schoof_trans proves transitivity: if x and z have equal support, and y and z have equal support, then x = y (by composing the equalities of primeFactors). The injectivity theorem corrales_schoof_injective is the most structurally appealing: the function x ↦ (n ↦ supp(x^n-1)), viewed as a map from {x ≥ 2} to sequences of finsets, is injective. In Lean this is expressed using Function.Injective over a subtype.",
+    "mathContext": "Define $S_x : \\mathbb{N} \\to \\mathcal{P}(\\mathbb{P})$ by $S_x(n) = \\mathrm{supp}(x^n-1)$. Then $S_x = S_y \\Rightarrow x = y$: i.e., $S_{(-)}$ is injective on $\\{x \\in \\mathbb{N} : x \\geq 2\\}$. This says the prime-support sequence is a complete invariant of $x$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Function.Injective",
+      "Lean subtypes",
+      "complete invariants",
+      "injectivity in algebra"
+    ],
+    "prerequisites": [
+      "corrales_schoof axiom",
+      "Lean function types",
+      "subtype syntax"
+    ]
+  },
+  {
+    "id": "ann-1214-support-transfer",
+    "proofId": "erdos-1214",
+    "range": {
+      "startLine": 232,
+      "endLine": 242
+    },
+    "type": "concept",
+    "title": "Prime Transfer Under the CS Hypothesis",
+    "content": "The theorem support_subset_under_hypothesis makes the CS hypothesis concrete: if p | x^n-1 and supp(x^n-1) = supp(y^n-1), then p | y^n-1. The proof is direct: membership in Nat.primeFactors requires the triple (prime, divisor, nonzero), so one packages p into the primeFactors of x^n-1, transfers across the Finset equality, and extracts the divisibility from primeFactors membership on the y side. The non-zero conditions pow_sub_one_ne_zero are needed to make primeFactors well-behaved. This lemma is used in both the Zsygmondy transfer and the main equal-orders argument.",
+    "mathContext": "p \\in \\mathrm{supp}(x^n-1) \\iff p \\text{ prime} \\land p \\mid x^n-1 \\land x^n-1 \\neq 0. \\text{ Under CS hypothesis: } \\mathrm{supp}(x^n-1) = \\mathrm{supp}(y^n-1) \\Rightarrow p \\mid y^n-1.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.mem_primeFactors",
+      "Finset.mem transfer",
+      "prime divisor membership"
+    ],
+    "prerequisites": [
+      "Nat.primeFactors API",
+      "pow_sub_one_ne_zero",
+      "Finset membership"
+    ]
+  },
+  {
+    "id": "ann-1214-zsygmondy",
+    "proofId": "erdos-1214",
+    "range": {
+      "startLine": 251,
+      "endLine": 272
+    },
+    "type": "insight",
+    "title": "Zsygmondy's Theorem: Primitive Prime Divisors Make the CS Hypothesis Rigid",
+    "content": "Zsygmondy's 1892 theorem states that for x ≥ 2 and n ≥ 3 (with two exceptions: x=2, n=6; and x=2, n with 2^n-1 Mersenne prime), x^n-1 has a primitive prime divisor — a prime p that divides x^n-1 but divides no x^k-1 for 1 ≤ k < n. Such a prime 'first appears' at index n. In the axiomatized form here, the two exceptions are encoded as hypotheses hnotex1 and hnotex2. The theorem primitive_prime_transferred shows that under the CS hypothesis, primitive primes transfer: if p is primitive for x^n-1 (first appearing at n), then p also first appears at n for y. This severely constrains any pair (x,y) satisfying the CS hypothesis — their primitive prime divisors must align exactly at every index n.",
+    "mathContext": "A prime $p$ is \\textit{primitive} for $x^n-1$ if $p \\mid x^n-1$ but $p \\nmid x^k-1$ for $1 \\leq k < n$. Zsygmondy: $\\exists$ primitive prime for $x^n-1$ when $n \\geq 3$ (excepting $x=2, n=6$ and $x=2, 2^n-1$ prime). Under CS: this prime also appears first in $y^n-1$ at position $n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Zsygmondy's theorem",
+      "primitive prime divisors",
+      "Bang's theorem",
+      "Birkhoff-Vandiver theorem"
+    ],
+    "prerequisites": [
+      "prime divisors",
+      "Zsygmondy axiom",
+      "support_subset_under_hypothesis"
+    ]
+  },
+  {
+    "id": "ann-1214-n1-case",
+    "proofId": "erdos-1214",
+    "range": {
+      "startLine": 280,
+      "endLine": 284
+    },
+    "type": "concept",
+    "title": "The n=1 Case: supp(x-1) = supp(y-1) Implied by CS Hypothesis",
+    "content": "The theorem support_n1_from_hypothesis specializes the CS hypothesis at n=1: if supp(x^n-1) = supp(y^n-1) for all n ≥ 1, then in particular supp(x-1) = supp(y-1) (since x^1-1 = x-1). The proof is a one-liner via simpa. This is mathematically interesting: x-1 and y-1 must have the same prime support, which is already a non-trivial constraint. For example, if x=4 then x-1=3 with support {3}; any y satisfying the hypothesis must have y-1 also with support {3}, so y-1 is a power of 3, narrowing y to the sequence 4, 28, 244, … before higher n constraints pin y=4.",
+    "mathContext": "n=1: \\mathrm{supp}(x-1) = \\mathrm{supp}(y-1). \\text{ E.g., } x=4 \\Rightarrow \\mathrm{supp}(3)=\\{3\\} \\Rightarrow y-1 = 3^k \\text{ for some } k \\geq 1 \\Rightarrow y \\in \\{4, 28, 244, \\ldots\\}. \\text{ CS forces } y=4.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "n=1 special case",
+      "simpa tactic",
+      "prime support constraints"
+    ],
+    "prerequisites": [
+      "CS hypothesis",
+      "Nat.primeFactors",
+      "Lean simp lemmas"
+    ]
+  }
+]

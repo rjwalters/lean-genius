@@ -1,0 +1,273 @@
+{
+  "id": "euler-totient",
+  "title": "Euler's Generalization of Fermat's Little Theorem",
+  "slug": "euler-totient",
+  "description": "For coprime integers a and n, a^φ(n) ≡ 1 (mod n), where φ(n) is Euler's totient function. This generalizes Fermat's Little Theorem.",
+  "meta": {
+    "author": "Euler (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Euler%27s_theorem",
+    "date": "1763",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "modular-arithmetic",
+      "primes",
+      "classic",
+      "intermediate",
+      "wiedijk-100"
+    ],
+    "proofRepoPath": "Proofs/EulerTotient.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "ZMod.pow_totient",
+        "description": "Main Euler's theorem for units in ZMod",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Nat.totient_prime",
+        "description": "φ(p) = p - 1 for prime p",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.totient_prime_pow",
+        "description": "φ(p^k) = p^(k-1)(p-1)",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "ZMod.pow_card",
+        "description": "a^p = a in ZMod p for prime p",
+        "module": "Mathlib.Data.ZMod.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Derives Fermat's Little Theorem as a 3-line corollary of Euler's theorem via totient_prime substitution"
+    ],
+    "pedagogicalCuration": [
+      "Curates Mathlib's ZMod.pow_totient as a one-line proof of Euler's theorem",
+      "Applies ZMod.pow_card for the unconditional form a^p = a",
+      "Verifies totient values φ(1)–φ(6) by rfl computation",
+      "Confirms Euler's theorem for small cases via native_decide",
+      "Demonstrates necessity of coprimality with 2^φ(4) ≠ 1 (mod 4) counterexample",
+      "Provides totient formulas for primes and prime powers from Mathlib"
+    ],
+    "dateAdded": "2025-12-26",
+    "wiedijkNumber": 10,
+    "axiomCount": 0,
+    "lineCount": 135,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "**From Fermat to Euler to RSA**\n\n**Pierre de Fermat** stated his 'little theorem' $a^{p-1} \\equiv 1 \\pmod{p}$ for prime $p$ in a 1640 letter to Frénicle de Bessy, without proof. **Leonhard Euler** first proved it in 1736 and then generalized it in 1763 to arbitrary moduli: $a^{\\varphi(n)} \\equiv 1 \\pmod{n}$ for $\\gcd(a,n) = 1$, introducing the totient function $\\varphi(n)$.\n\n**The Group-Theoretic Proof**\n\nThe modern proof uses **Lagrange's theorem**: the multiplicative group $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ has order $\\varphi(n)$, so any element raised to the group order equals the identity. This elegant one-line proof, used in the formalization, replaced Euler's original inductive argument.\n\n**RSA Cryptography**\n\nEuler's theorem is the mathematical foundation of **RSA encryption** (Rivest-Shamir-Adleman, 1977). For primes $p, q$ with $n = pq$: $\\varphi(n) = (p-1)(q-1)$. Choosing $ed \\equiv 1 \\pmod{\\varphi(n)}$, the encryption $m \\mapsto m^e \\pmod{n}$ is inverted by $c \\mapsto c^d \\pmod{n}$ because $m^{ed} = m^{1+k\\varphi(n)} = m \\cdot (m^{\\varphi(n)})^k \\equiv m \\pmod{n}$.\n\nThis is #10 on **Freek Wiedijk**'s list of 100 theorems formalized in proof assistants.",
+    "problemStatement": "**Euler's Theorem**\n\nFor $n > 0$ and $\\gcd(a, n) = 1$:\n$$a^{\\varphi(n)} \\equiv 1 \\pmod{n}$$\n\nwhere $\\varphi(n) = |\\{k : 1 \\leq k \\leq n, \\gcd(k,n) = 1\\}|$ is Euler's totient function.\n\n**Fermat's Little Theorem** (special case): For prime $p$, $a^{p-1} \\equiv 1 \\pmod{p}$.",
+    "text": "For coprime integers a and n, a^φ(n) ≡ 1 (mod n), where φ(n) is Euler's totient function. This generalizes Fermat's Little Theorem.",
+    "proofStrategy": "**Formalization Strategy**\n\n1. **Main theorem:** Apply `ZMod.pow_totient` — the group $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ has order $\\varphi(n)$, so $a^{\\varphi(n)} = 1$ by Lagrange.\n2. **Fermat corollary:** Substitute $\\varphi(p) = p-1$ (via `Nat.totient_prime`) into Euler's theorem.\n3. **Full Fermat:** Apply `ZMod.pow_card` for the unconditional form $a^p = a$ (valid even when $p \\mid a$).\n4. **Totient properties:** Prove $\\varphi(p) = p-1$ and $\\varphi(p^k) = p^{k-1}(p-1)$ from Mathlib.\n5. **Verification:** Concrete examples by `native_decide` and counterexample showing coprimality is essential.",
+    "keyInsights": [
+      "**One-Line Proof:** Euler's theorem is a direct consequence of Lagrange's theorem applied to the unit group $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ of order $\\varphi(n)$.",
+      "**Fermat as Special Case:** Since $\\varphi(p) = p-1$ for prime $p$, Fermat's little theorem is literally Euler's theorem with $n = p$. The formalization derives it in 3 lines.",
+      "**Coprimality Is Essential:** The counterexample $2^{\\varphi(4)} \\equiv 0 \\not\\equiv 1 \\pmod{4}$ shows the `Units` hypothesis cannot be dropped — zero divisors in $\\mathbb{Z}/n\\mathbb{Z}$ are not in the group.",
+      "**Full Fermat Form:** The unconditional $a^p = a$ (not just $a^{p-1} = 1$) works for all $a$, including $a \\equiv 0$. This uses the Frobenius endomorphism of finite fields.",
+      "**RSA Foundation:** The encryption scheme $m \\mapsto m^e \\pmod{n}$, $c \\mapsto c^d \\pmod{n}$ with $ed \\equiv 1 \\pmod{\\varphi(n)}$ relies directly on Euler's theorem for correctness."
+    ],
+    "prerequisites": [
+      "Number theory (modular arithmetic, prime factorization)",
+      "Group theory (group order, cyclic groups)",
+      "Combinatorics (inclusion-exclusion, Mobius function)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Documentation",
+      "summary": "Imports `ZMod.Basic`, `Nat.Totient`, `RingTheory.Int.Basic`, and `Tactic`. Docstring with $a^{\\varphi(n)} \\equiv 1$, approach via Lagrange's theorem, and historical note (Euler 1763, Wiedijk #10).",
+      "startLine": 1,
+      "endLine": 43,
+      "mathContext": "Imports `ZMod.Basic`, `Nat.Totient`, and `Tactic`. Euler's totient $\\varphi(n) = |\\{k : 1 \\leq k \\leq n,\\, \\gcd(k,n) = 1\\}|$ counts units in $\\mathbb{Z}/n\\mathbb{Z}$."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Euler's Theorem",
+      "summary": "Proves $a^{\\varphi(n)} = 1$ for $a \\in (\\mathbb{Z}/n\\mathbb{Z})^\\times$ via `ZMod.pow_totient`. One-line proof from Lagrange's theorem.",
+      "startLine": 44,
+      "endLine": 59,
+      "mathContext": "Euler's theorem: $a^{\\varphi(n)} \\equiv 1 \\pmod{n}$ for $\\gcd(a,n) = 1$. In Lean: `ZMod.unitOfCoprime` and `ZMod.IsUnit.pow_totient`. This generalizes Fermat's little theorem from primes to arbitrary moduli."
+    },
+    {
+      "id": "fermat-corollary",
+      "title": "Fermat's Little Theorem",
+      "summary": "Derives $a^{p-1} = 1$ for prime $p$ by substituting $\\varphi(p) = p-1$ (`Nat.totient_prime`) into Euler's theorem. Also proves full form $a^p = a$ via `ZMod.pow_card`.",
+      "startLine": 60,
+      "endLine": 83,
+      "mathContext": "Fermat's little theorem as a corollary: $a^{p-1} \\equiv 1 \\pmod{p}$ for prime $p$ and $p \\nmid a$. Obtained by substituting $\\varphi(p) = p - 1$ (`Nat.totient_prime`)."
+    },
+    {
+      "id": "totient-values",
+      "title": "Totient Function Examples",
+      "summary": "Computes $\\varphi(n)$ for $n = 1, \\ldots, 6$ by `rfl`. Verifies $2^{\\varphi(5)} \\equiv 1 \\pmod{5}$ and $3^{\\varphi(7)} \\equiv 1 \\pmod{7}$ by `native_decide`.",
+      "startLine": 84,
+      "endLine": 114,
+      "mathContext": "Computed values: $\\varphi(1) = 1$, $\\varphi(2) = 1$, $\\varphi(3) = 2$, $\\varphi(4) = 2$, $\\varphi(5) = 4$, $\\varphi(6) = 2$. Verified computationally by `rfl` in Lean."
+    },
+    {
+      "id": "counterexample",
+      "title": "Non-Coprime Counterexample",
+      "summary": "Shows $2^{\\varphi(4)} \\not\\equiv 1 \\pmod{4}$ when $\\gcd(2,4) = 2 \\neq 1$, demonstrating the coprimality hypothesis is necessary.",
+      "startLine": 115,
+      "endLine": 118,
+      "mathContext": "Demonstrates the coprimality hypothesis is necessary: $2^{\\varphi(4)} = 2^2 = 4 \\not\\equiv 1 \\pmod{4}$ because $\\gcd(2,4) = 2 \\neq 1$. Without coprimality, Euler's theorem fails."
+    },
+    {
+      "id": "totient-properties",
+      "title": "Totient Function Properties",
+      "summary": "Proves $\\varphi(p) = p-1$ via `Nat.totient_prime` and $\\varphi(p^k) = p^{k-1}(p-1)$ via `Nat.totient_prime_pow`.",
+      "startLine": 119,
+      "endLine": 131,
+      "mathContext": "Key properties: $\\varphi(p) = p - 1$ for primes, $\\varphi(p^k) = p^{k-1}(p-1)$ for prime powers, and the product formula $\\varphi(n) = n \\prod_{p \\mid n}(1 - 1/p)$."
+    },
+    {
+      "id": "verification",
+      "title": "Verification Checks",
+      "summary": "Uses `#check` to confirm the API surface: `euler_totient`, `fermat_little_theorem`, `fermat_little_theorem_full`.",
+      "startLine": 132,
+      "endLine": 135,
+      "mathContext": "Type-checking the main results via `#check` to confirm the API surface."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "chinese-remainder-non-coprime",
+      "relationship": "related",
+      "description": "The Chinese Remainder Theorem gives the multiplicativity of Euler's totient: phi(mn) = phi(m)*phi(n) for coprime m,n, which is key to computing phi for arbitrary integers."
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "related",
+      "description": "Euler's product formula phi(n) = n * prod(1 - 1/p) connects the totient function to the prime factorization of n, relating to the infinitude of primes."
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "The unique prime factorization from FTA is essential for computing phi(n) = n * prod(1 - 1/p) over the prime divisors of n."
+    },
+    {
+      "targetId": "gcd-algorithm",
+      "relationship": "related",
+      "description": "The GCD algorithm determines coprimality gcd(a,n) = 1, which is the hypothesis of Euler's theorem: a^phi(n) = 1 mod n."
+    },
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ and Euler's theorem $a^{\\varphi(n)} \\equiv 1$ both describe the multiplicative group $(\\mathbb{Z}/n\\mathbb{Z})^*$. Wilson gives the product of all elements; Euler gives the exponent of any single element. For $n = p$ prime, $\\varphi(p) = p-1$, recovering Fermat's little theorem"
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "The Legendre symbol $(a/p)$ and quadratic residues are studied via $a^{(p-1)/2}$ (Euler's criterion), a direct consequence of Fermat's little theorem. Quadratic reciprocity relates Legendre symbols for different primes — built on the same modular arithmetic that Euler's theorem governs"
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "related",
+      "description": "A primitive root mod $n$ is a generator of $(\\mathbb{Z}/n\\mathbb{Z})^*$, which has order $\\varphi(n)$. The existence of primitive roots (for $n = 1, 2, 4, p^k, 2p^k$) is proved using Euler's theorem and the structure of cyclic groups"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The average order of $\\varphi(n)$ is $\\frac{6}{\\pi^2} n$ (a consequence of PNT and the Euler product $\\varphi(n)/n = \\prod(1-1/p)$). The connection $6/\\pi^2 = 1/\\zeta(2)$ links the totient function to the Basel problem and prime distribution"
+    },
+    {
+      "targetId": "euler-totient-oq-01",
+      "relationship": "extended-by",
+      "description": "Carmichael's function λ(n), the exponent of (ℤ/nℤ)*, sharpens Euler's theorem to a^λ(n) ≡ 1 (mod n) with λ(n) | φ(n); this verified child establishes the minimal universal exponent."
+    },
+    {
+      "targetId": "euler-totient-oq-03",
+      "relationship": "extended-by",
+      "description": "Verified compendium of structural properties of φ: parity (φ(n) even for n ≥ 3), the prime characterization φ(n) = n−1 ⇔ n prime, divisibility a | b ⇒ φ(a) | φ(b), and the Euler product formula."
+    },
+    {
+      "targetId": "euler-totient-oq-04",
+      "relationship": "extended-by",
+      "description": "Verified proof of the divisor-sum identity n = Σ_{d|n} φ(d) via an explicit partition of {0,…,n−1} into gcd-classes, each of size φ(n/d)."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization presents Euler's theorem $a^{\\varphi(n)} = 1$ as a one-line consequence of Lagrange's theorem applied to the unit group $(\\mathbb{Z}/n\\mathbb{Z})^\\times$. Fermat's little theorem is derived as a 3-line corollary via $\\varphi(p) = p-1$. The formalization includes totient function properties ($\\varphi(p) = p-1$, $\\varphi(p^k) = p^{k-1}(p-1)$), verified examples, and a counterexample demonstrating the coprimality requirement. All proofs are complete with zero sorries.",
+    "implications": "**Theoretical Significance**: **Implications and Applications**\n\n1. **RSA Cryptography:** Euler's theorem guarantees that RSA decryption inverts encryption: $m^{ed} \\equiv m \\pmod{n}$ when $ed \\equiv 1 \\pmod{\\varphi(n)}$.\n\n2. **Primality Testing:** Fermat's test checks if $a^{n-1} \\equiv 1 \\pmod{n}$.\n\nFailure implies $n$ is composite (but Carmichael numbers are false positives).\n\n3. **Discrete Logarithms:** The order of elements in $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ divides $\\varphi(n)$, fundamental to Diffie-Hellman key exchange.\n\n4. **Chinese Remainder Theorem:** The multiplicativity $\\varphi(mn) = \\varphi(m)\\varphi(n)$ for $\\gcd(m,n)=1$ connects Euler's theorem to CRT.\n\n5. **Mobius Inversion:** The identity $n = \\sum_{d \\mid n} \\varphi(d)$ connects the totient to Möbius inversion and the theory of arithmetic functions.",
+    "openQuestions": [
+      "Can the formalization include Carmichael's theorem ($a^{\\lambda(n)} \\equiv 1$ where $\\lambda$ is the Carmichael function)?",
+      "Can the multiplicative property $\\varphi(mn) = \\varphi(m)\\varphi(n)$ for $\\gcd(m,n) = 1$ be formalized?",
+      "Can the RSA correctness proof be formalized as a direct application of Euler's theorem?",
+      "Can the identity $n = \\sum_{d \\mid n} \\varphi(d)$ be proved from Mathlib's partition-of-unity results?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.RingTheory.Int.Basic",
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "EulerTotient",
+    "lineCount": 135,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/EulerTotient.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/EulerTotientOQ04OQ01.lean"
+    ]
+  },
+  "references": [
+    {
+      "authors": "L. Euler",
+      "title": "Theoremata circa residua ex divisione potestatum relicta",
+      "year": "1763",
+      "venue": "Novi Commentarii Academiae Scientiarum Petropolitanae",
+      "note": "Original proof of a^φ(n) ≡ 1 (mod n) for coprime a, n"
+    },
+    {
+      "authors": "P. de Fermat",
+      "title": "Letter to Frénicle de Bessy",
+      "year": "1640",
+      "note": "Statement (without proof) of a^(p-1) ≡ 1 (mod p) for prime p"
+    },
+    {
+      "authors": "R. Rivest, A. Shamir, L. Adleman",
+      "title": "A method for obtaining digital signatures and public-key cryptosystems",
+      "year": "1978",
+      "venue": "Communications of the ACM",
+      "note": "RSA cryptosystem relying on Euler's theorem for correctness"
+    },
+    {
+      "authors": "G. H. Hardy, E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "1938",
+      "venue": "Oxford University Press",
+      "note": "Standard reference for the totient function and its properties"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "euler_totient_formula",
+      "type": "core",
+      "description": "phi(n) = n * product (1 - 1/p) over prime divisors p of n",
+      "leanType": "Nat.totient n = n * Finset.prod (Nat.primeFactors n) (fun p => 1 - 1/p)"
+    },
+    {
+      "name": "euler_theorem",
+      "type": "key",
+      "description": "a^phi(n) = 1 (mod n) for gcd(a,n) = 1",
+      "leanType": "Nat.Coprime a n -> a ^ Nat.totient n % n = 1"
+    }
+  ],
+  "sorries": 0,
+  "additionalFiles": [
+    "Proofs/EulerTotientOQ04OQ01.lean"
+  ]
+}

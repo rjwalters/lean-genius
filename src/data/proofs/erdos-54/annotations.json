@@ -1,0 +1,205 @@
+[
+  {
+    "id": "erdos-54-imports",
+    "proofId": "erdos-54",
+    "type": "concept",
+    "range": {
+      "startLine": 19,
+      "endLine": 23
+    },
+    "title": "Imports",
+    "content": "Imports `Nat.Basic`, `Finset.Basic`, `Finset.Card`, `Set.Basic`, and `Tactic`. Uses `Finset.Icc` for counting and `Set ℕ` for infinite sets.",
+    "mathContext": "The counting function uses `Finset.Icc 1 N` (the interval $[1, N]$ as a finset) and `Finset.filter` to count elements of $A$ up to $N$. Colourings use `Bool` for 2-colourings, with `Subtype` to restrict to elements of $A$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.Icc",
+      "Set",
+      "Finset.filter"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib"
+    ]
+  },
+  {
+    "id": "erdos-54-header",
+    "proofId": "erdos-54",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 17
+    },
+    "title": "Problem Overview: Ramsey 2-Complete Sets",
+    "content": "**Erdős Problem 54** asks for the minimum growth rate of a **Ramsey 2-complete** set $A \\subseteq \\mathbb{N}$ — a set where every 2-colouring yields a colour class whose subset sums cover all large integers. Solved by Conlon–Fox–Pham (2021): the answer is $\\Theta((\\log N)^2)$.",
+    "mathContext": "This problem lies at the intersection of **additive combinatorics** and **Ramsey theory**. Ramsey 2-completeness is a robustness condition: unlike ordinary completeness (where $A$ itself covers all large integers), here the condition must survive arbitrary partitions into two parts. The $(\\log N)^2$ growth rate is remarkably sparse — exponentially thinner than the integers.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey theory",
+      "Additive combinatorics",
+      "Complete sequences",
+      "Growth rates"
+    ],
+    "prerequisites": [
+      "Natural numbers",
+      "2-colourings",
+      "Subset sums"
+    ]
+  },
+  {
+    "id": "erdos-54-colouring",
+    "proofId": "erdos-54",
+    "type": "definition",
+    "range": {
+      "startLine": 28,
+      "endLine": 28
+    },
+    "title": "2-Colouring Definition",
+    "content": "**Colouring2 $A$** $= \\{n : n \\in A\\} \\to \\text{Bool}$: a function assigning `true` or `false` to each element of $A$. This is the standard 2-colouring using `Bool` as the colour set.",
+    "mathContext": "Using `Subtype` $\\{n : \\mathbb{N} // n \\in A\\}$ restricts the colouring to elements of $A$ only, which is natural since we only care about how elements of $A$ are coloured.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Bool",
+      "Subtype",
+      "2-colouring"
+    ],
+    "prerequisites": [
+      "Subtype",
+      "Bool"
+    ]
+  },
+  {
+    "id": "erdos-54-monochromatic-sums",
+    "proofId": "erdos-54",
+    "type": "definition",
+    "range": {
+      "startLine": 31,
+      "endLine": 34
+    },
+    "title": "Monochromatic Subset Sums",
+    "content": "**monoSubsetSums $A$ $c$ colour**: the set of all sums $\\sum_{s \\in S} s$ where $S \\subseteq A$ is finite and every element of $S$ has the given colour under $c$.",
+    "mathContext": "For a set $A$ of size $n$ after 2-colouring, each colour class has roughly $n/2$ elements. The subset sums from each class can represent up to $2^{n/2}$ values. The question is whether this suffices to cover all large integers, regardless of how the colouring is chosen.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Subset sums",
+      "Monochromatic sums",
+      "Representability"
+    ],
+    "prerequisites": [
+      "Finset.sum",
+      "Set comprehension",
+      "Colouring2"
+    ]
+  },
+  {
+    "id": "erdos-54-ramsey-2-complete",
+    "proofId": "erdos-54",
+    "type": "definition",
+    "range": {
+      "startLine": 40,
+      "endLine": 44
+    },
+    "title": "Ramsey 2-Complete Set",
+    "content": "**IsRamsey2Complete $A$**: $\\forall c : A \\to \\{0,1\\},\\, \\exists k \\in \\{0,1\\},\\, \\exists m,\\, \\forall n \\ge m: n \\in \\text{monoSubsetSums}(A, c, k)$. Every 2-colouring yields a colour class whose subset sums cover all sufficiently large integers.",
+    "mathContext": "This is a **partition regularity** condition for subset sum completeness. Ordinary complete sequences (Problem 345) require $A$ itself to have all large integers as subset sums. Ramsey 2-completeness strengthens this: the property must survive any adversarial partition. The existential on $k$ (which colour) is necessary — different colourings may force different colour classes to be complete.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Partition regularity",
+      "Complete sequences",
+      "Adversarial partitions"
+    ],
+    "prerequisites": [
+      "monoSubsetSums",
+      "Colouring2"
+    ]
+  },
+  {
+    "id": "erdos-54-counting",
+    "proofId": "erdos-54",
+    "type": "definition",
+    "range": {
+      "startLine": 49,
+      "endLine": 50
+    },
+    "title": "Counting Function",
+    "content": "**countingFn $A$ $N$** $= |A \\cap \\{1,\\ldots,N\\}|$: the number of elements of $A$ up to $N$. Noncomputable since membership in a general `Set ℕ` is not decidable.",
+    "mathContext": "The counting function measures the **growth rate** of $A$. The central question is the minimum asymptotic growth of $\\text{countingFn}(A, N)$ over all Ramsey 2-complete sets $A$. Burr–Erdős showed this is at least $c(\\log N)^2$; Conlon–Fox–Pham showed at most $C(\\log N)^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Counting function",
+      "Growth rate",
+      "Finset.Icc"
+    ],
+    "prerequisites": [
+      "Finset.Icc",
+      "Finset.filter",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "erdos-54-lower",
+    "proofId": "erdos-54",
+    "type": "concept",
+    "range": {
+      "startLine": 57,
+      "endLine": 61
+    },
+    "title": "Burr–Erdős Lower Bound (1985)",
+    "content": "**burr_erdos_lower**: $\\exists c > 0$ such that every Ramsey 2-complete $A$ satisfies $|A \\cap [1,N]| \\ge c(\\log_2 N)^2$ for infinitely many $N$. Any Ramsey 2-complete set must grow at least as $(\\log N)^2$.",
+    "mathContext": "The proof constructs a **bad colouring** for sets growing slower than $(\\log N)^2$. The key idea uses binary representations: elements are coloured based on digit-extraction, and if $A$ is too sparse, the colouring can split it so that neither colour class spans all large integers. The axiom uses `Nat.log 2 N` for $\\lfloor \\log_2 N \\rfloor$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Burr–Erdős",
+      "Lower bound",
+      "Binary digit extraction"
+    ],
+    "prerequisites": [
+      "IsRamsey2Complete",
+      "countingFn",
+      "Nat.log"
+    ]
+  },
+  {
+    "id": "erdos-54-cfp",
+    "proofId": "erdos-54",
+    "type": "concept",
+    "range": {
+      "startLine": 67,
+      "endLine": 71
+    },
+    "title": "Conlon–Fox–Pham Construction (2021)",
+    "content": "**conlon_fox_pham**: $\\exists A$ Ramsey 2-complete with $|A \\cap [1,N]| \\le C(\\log_2 N)^2$ for large $N$. Matches the Burr–Erdős lower bound up to constants.",
+    "mathContext": "The construction uses the **probabilistic method**: a carefully chosen random subset of integers near powers of 2, with modifications to ensure robustness under all colourings. This closed a **36-year gap** between the cubic upper bound $(2\\log_2 N)^3$ and the quadratic lower bound $c(\\log N)^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Conlon–Fox–Pham",
+      "Probabilistic method",
+      "Upper bound"
+    ],
+    "prerequisites": [
+      "IsRamsey2Complete",
+      "countingFn"
+    ]
+  },
+  {
+    "id": "erdos-54-main",
+    "proofId": "erdos-54",
+    "type": "definition",
+    "range": {
+      "startLine": 77,
+      "endLine": 78
+    },
+    "title": "Erdős Problem 54: Solved — Θ((log N)²)",
+    "content": "**ErdosProblem54**: the conjunction of both bounds: $\\exists c > 0$ (lower) $\\wedge$ $\\exists A$ Ramsey 2-complete with $\\le C(\\log N)^2$ (upper). Together: the minimum growth rate is $\\Theta((\\log N)^2)$.",
+    "mathContext": "The $\\Theta$-notation means the minimum counting function satisfies $c_1(\\log N)^2 \\le f_{\\min}(N) \\le c_2(\\log N)^2$ for constants $c_1, c_2 > 0$. Such tight characterizations are rare in Ramsey theory. The exact constants remain unknown.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Theta notation",
+      "Tight bounds",
+      "Solved problem"
+    ],
+    "prerequisites": [
+      "burr_erdos_lower",
+      "conlon_fox_pham"
+    ]
+  }
+]

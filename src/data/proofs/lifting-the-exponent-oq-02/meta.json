@@ -1,0 +1,174 @@
+{
+  "id": "lifting-the-exponent-oq-02",
+  "title": "Lifting the Exponent Lemma for p = 2: the integer v₂ form",
+  "slug": "lifting-the-exponent-oq-02",
+  "description": "The odd-prime Lifting the Exponent Lemma (LTE) gives vₚ(xⁿ − yⁿ) = vₚ(x − y) + vₚ(n). For the even prime p = 2 the lemma is famously different: when the exponent n is even, an extra v₂(x + y) term appears and the count is shifted by one, v₂(xⁿ − yⁿ) + 1 = v₂(x + y) + v₂(x − y) + v₂(n). Mathlib proves the emultiplicity (ℕ∞-valued) version over ℤ (Int.two_pow_sub_pow) and a padicValNat version over ℕ (padicValNat.pow_two_sub_pow), but it provides no padicValInt (integer vₚ) form — the natural shape for applications over ℤ. This entry fills that gap: the emultiplicity re-export, the nonvanishing lemma xⁿ − yⁿ ≠ 0 (extracted from finiteness of the valuation rather than assumed), the ℕ-valued multiplicity form, the schoolbook integer v₂ identity in padicValInt/padicValNat, and the explicit divisibility consequence. All results are 0-axiom, 0-sorry. This is the even-prime companion to the odd-prime LTE entry.",
+  "meta": {
+    "author": "Classical (Lifting the Exponent Lemma, p = 2 case); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Lifting-the-exponent_lemma",
+    "date": "classical",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "p-adic-valuation",
+      "lifting-the-exponent",
+      "lte",
+      "even-prime",
+      "multiplicity",
+      "divisibility",
+      "olympiad",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/LiftingTheExponentOQ02.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.two_pow_sub_pow",
+        "description": "The p = 2 Lifting the Exponent Lemma in emultiplicity (ℕ∞) form over ℤ: emultiplicity 2 (xⁿ − yⁿ) + 1 = emultiplicity 2 (x + y) + emultiplicity 2 (x − y) + emultiplicity 2 n, for 2 ∣ x − y, 2 ∤ x and even n. The mathematical core of this entry.",
+        "module": "Mathlib.NumberTheory.Multiplicity"
+      },
+      {
+        "theorem": "Int.finiteMultiplicity_iff",
+        "description": "FiniteMultiplicity a b ↔ a.natAbs ≠ 1 ∧ b ≠ 0 over ℤ — used to manufacture finiteness of v₂(x + y), v₂(x − y), v₂(n) and, via the LTE equation, to deduce xⁿ − yⁿ ≠ 0.",
+        "module": "Mathlib.RingTheory.Multiplicity"
+      },
+      {
+        "theorem": "FiniteMultiplicity.emultiplicity_eq_multiplicity",
+        "description": "When the multiplicity is finite, emultiplicity a b = ↑(multiplicity a b); the bridge from the ℕ∞ statement down to the ℕ-valued one.",
+        "module": "Mathlib.RingTheory.Multiplicity"
+      },
+      {
+        "theorem": "padicValInt.of_ne_one_ne_zero",
+        "description": "For p ≠ 1 and z ≠ 0, padicValInt p z = multiplicity (p : ℤ) z — rewrites the multiplicity identity into the schoolbook padicValInt form.",
+        "module": "Mathlib.NumberTheory.Padics.PadicVal.Basic"
+      },
+      {
+        "theorem": "pow_multiplicity_dvd",
+        "description": "a ^ (multiplicity a b) ∣ b — yields the explicit divisibility 2^(v₂(x+y)+v₂(x−y)+v₂(n)−1) ∣ xⁿ − yⁿ.",
+        "module": "Mathlib.RingTheory.Multiplicity"
+      }
+    ],
+    "originalContributions": [
+      "two_lte_emultiplicity: emultiplicity 2 (xⁿ − yⁿ) + 1 = emultiplicity 2 (x + y) + emultiplicity 2 (x − y) + emultiplicity 2 n — the p = 2 LTE re-exported under a descriptive name",
+      "two_pow_sub_pow_ne_zero: xⁿ − yⁿ ≠ 0 under the hypotheses with x + y ≠ 0, x − y ≠ 0, n ≠ 0 — derived from finiteness of the valuation, not assumed",
+      "two_lte_multiplicity: the ℕ-valued form multiplicity 2 (xⁿ − yⁿ) + 1 = multiplicity 2 (x + y) + multiplicity 2 (x − y) + multiplicity 2 n",
+      "two_lte_padicValInt: the schoolbook integer form padicValInt 2 (xⁿ − yⁿ) + 1 = padicValInt 2 (x + y) + padicValInt 2 (x − y) + padicValNat 2 n — absent from Mathlib (only the padicValNat-over-ℕ form exists)",
+      "two_lte_pow_dvd: the explicit divisibility (2 : ℤ)^(v₂(x+y)+v₂(x−y)+v₂(n)−1) ∣ xⁿ − yⁿ"
+    ],
+    "dateAdded": "2026-06-20",
+    "lineCount": 128,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound, which are not counted). decide is used to discharge tiny numeric facts like (2 : ℤ).natAbs ≠ 1; no native_decide is used (#print axioms confirms no Lean.ofReduceBool).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Lifting the Exponent Lemma comes in two flavours. For an odd prime p, the valuation of a difference of n-th powers is vₚ(x − y) + vₚ(n). The even prime p = 2 is the textbook exception: with an even exponent the correction term v₂(x + y) appears and the identity is shifted by 1. This even-prime case is exactly the part of LTE that trips up problem-solvers and that requires the extra hypotheses; it is needed for 2-adic order computations, Catalan/Mihăilescu-style arguments, and many olympiad divisibility problems. Mathlib formalizes the 2-adic LTE in extended-valuation form and in a natural-number padicValNat form; the integer padicValInt form developed here matches the way the lemma is actually applied over ℤ.",
+    "problemStatement": "**Open Question (lifting-the-exponent-oq-02)**: Package the p = 2 Lifting the Exponent Lemma in the schoolbook integer valuation form v₂(xⁿ − yⁿ) + 1 = v₂(x + y) + v₂(x − y) + v₂(n) (even n), with the explicit divisibility consequence.\n\n**Result**: two_lte_padicValInt and two_lte_multiplicity give the v₂ identity; two_lte_pow_dvd is the divisibility consequence; two_pow_sub_pow_ne_zero supplies the nonvanishing fact for free.",
+    "text": "For 2 ∣ x − y, 2 ∤ x, even n, and x + y ≠ 0, x − y ≠ 0, n ≠ 0, the 2-adic valuation satisfies v₂(xⁿ − yⁿ) + 1 = v₂(x + y) + v₂(x − y) + v₂(n). Consequently 2 to the power v₂(x+y)+v₂(x−y)+v₂(n)−1 divides xⁿ − yⁿ.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. two_lte_emultiplicity is exactly Mathlib's Int.two_pow_sub_pow, renamed.\n2. two_pow_sub_pow_ne_zero argues by contradiction: if xⁿ − yⁿ = 0 then its emultiplicity is ⊤, so the left side of the LTE equation is ⊤ + 1 = ⊤, while the right side is a finite cast (each term finite from x + y ≠ 0, x − y ≠ 0, n ≠ 0), contradicting ENat.coe_ne_top.\n3. two_lte_multiplicity rewrites all four emultiplicity terms through FiniteMultiplicity.emultiplicity_eq_multiplicity and closes the ℕ identity with exact_mod_cast (which also normalizes the +1 and the ℕ∞ casts).\n4. two_lte_padicValInt rewrites the three integer terms with padicValInt.of_ne_one_ne_zero, converts the exponent term via padicValInt.of_nat to padicValNat 2 n, and applies step 3.\n5. two_lte_pow_dvd rewrites the predicted exponent (using omega for the −1 arithmetic) back into padicValInt 2 (xⁿ − yⁿ) = multiplicity 2 (xⁿ − yⁿ) and finishes with pow_multiplicity_dvd.",
+    "keyInsights": [
+      "**The even prime is genuinely different.** The v₂(x + y) correction term and the −1 shift are exactly what distinguishes the p = 2 LTE from the odd-prime case; this is the subtle half of the lemma.",
+      "**From ℕ∞ down to ℤ-valued vₚ.** Mathlib's 2-adic LTE lives in the extended valuation; the practically useful padicValInt form requires descending through finiteness, which Mathlib does not package over ℤ.",
+      "**Finiteness, hence nonvanishing, is free.** xⁿ − yⁿ ≠ 0 is not assumed: the LTE equation forces the left valuation to be finite (the right side is a finite sum), so the difference cannot vanish.",
+      "**Both degeneracies are excluded by x ± y ≠ 0.** For even n the difference vanishes precisely when x = ±y; requiring x + y ≠ 0 and x − y ≠ 0 rules out both and is exactly what makes every term of the identity finite."
+    ],
+    "prerequisites": [
+      "p-adic valuation of integers: padicValInt / padicValNat and their relation to multiplicity",
+      "The extended valuation emultiplicity and the FiniteMultiplicity predicate",
+      "The p = 2 Lifting the Exponent Lemma (Mathlib's Int.two_pow_sub_pow) and why the even prime needs the v₂(x + y) term"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Module docstring explaining the p = 2 LTE, the v₂(x + y) correction term, and the emultiplicity-to-padicValInt translation goal; targeted imports of Mathlib.NumberTheory.Multiplicity and the padic valuation basics.",
+      "mathContext": "$v_2(x^n - y^n) + 1 = v_2(x + y) + v_2(x - y) + v_2(n)$ for even $n$."
+    },
+    {
+      "id": "emultiplicity",
+      "title": "p = 2 LTE in emultiplicity form",
+      "startLine": 44,
+      "endLine": 51,
+      "summary": "two_lte_emultiplicity re-exports Int.two_pow_sub_pow under a descriptive name.",
+      "mathContext": "$\\operatorname{emult}_2(x^n - y^n) + 1 = \\operatorname{emult}_2(x + y) + \\operatorname{emult}_2(x - y) + \\operatorname{emult}_2(n)$."
+    },
+    {
+      "id": "nonzero",
+      "title": "Nonvanishing of xⁿ − yⁿ",
+      "startLine": 53,
+      "endLine": 72,
+      "summary": "two_pow_sub_pow_ne_zero deduces xⁿ − yⁿ ≠ 0 by contradiction from finiteness of the valuation (⊤ + 1 = ⊤ cannot equal a finite cast).",
+      "mathContext": "$x^n - y^n \\neq 0$ under the hypotheses with $x + y \\neq 0$, $x - y \\neq 0$, $n \\neq 0$."
+    },
+    {
+      "id": "multiplicity",
+      "title": "p = 2 LTE in ℕ-valued multiplicity form",
+      "startLine": 74,
+      "endLine": 96,
+      "summary": "two_lte_multiplicity rewrites all four emultiplicity terms to natural-number casts and closes the identity with exact_mod_cast.",
+      "mathContext": "$\\operatorname{mult}_2(x^n - y^n) + 1 = \\operatorname{mult}_2(x + y) + \\operatorname{mult}_2(x - y) + \\operatorname{mult}_2(n)$."
+    },
+    {
+      "id": "padicval",
+      "title": "Schoolbook integer v₂ form",
+      "startLine": 98,
+      "endLine": 114,
+      "summary": "two_lte_padicValInt states the identity with padicValInt for the integer terms and padicValNat for the exponent, converting the n-term via padicValInt.of_nat.",
+      "mathContext": "$v_2(x^n - y^n) + 1 = v_2(x + y) + v_2(x - y) + v_2(n)$."
+    },
+    {
+      "id": "divisibility",
+      "title": "Explicit divisibility consequence",
+      "startLine": 116,
+      "endLine": 128,
+      "summary": "two_lte_pow_dvd: 2 to the predicted power divides xⁿ − yⁿ, via pow_multiplicity_dvd after omega handles the −1 and the exponent is rewritten to the multiplicity.",
+      "mathContext": "$2^{\\,v_2(x+y) + v_2(x-y) + v_2(n) - 1} \\mid x^n - y^n$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "lifting-the-exponent-oq-01",
+      "relationship": "sibling",
+      "description": "OQ-01 packages the odd-prime LTE (vₚ(xⁿ − yⁿ) = vₚ(x − y) + vₚ(n)); this OQ-02 entry handles the structurally different even prime p = 2, where the v₂(x + y) correction term and the −1 shift appear for even exponents."
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) packaging of the p = 2 Lifting the Exponent Lemma in the schoolbook integer valuation form, with the nonvanishing lemma supplied for free and the explicit divisibility consequence.",
+    "implications": "Provides the padicValInt form of the 2-adic LTE, which Mathlib lacks (only the emultiplicity and padicValNat-over-ℕ forms exist), ready for 2-adic order and divisibility computations over ℤ.",
+    "openQuestions": [
+      "Derive the aⁿ + bⁿ companion for the even prime (v₂(aⁿ + bⁿ) and related identities) and reconcile the odd-n versus even-n behaviour in one statement.",
+      "Combine OQ-01 (odd p) and this entry (p = 2) into a single dispatching theorem covering all primes, branching on parity of p and of n."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Multiplicity",
+      "Mathlib.NumberTheory.Padics.PadicVal.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "LiftingTheExponentOQ02",
+    "lineCount": 128,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/LiftingTheExponentOQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Wikipedia",
+      "title": "Lifting-the-exponent lemma",
+      "year": "n.d.",
+      "venue": "Wikipedia",
+      "note": "The p = 2 case of LTE: the even-exponent identity with the v₂(x + y) correction term"
+    }
+  ],
+  "sorries": 0
+}

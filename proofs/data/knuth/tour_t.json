@@ -1,0 +1,22 @@
+{
+  "name": "Tour (t) - Minimum Obtuse Angles",
+  "description": "The unique knight's tour with exactly 4 obtuse angles (Knuth Fig. A-19(t))",
+  "source": "Knuth TAOCP Vol 4 Fascicle 8a, Exercise 158",
+  "obtuse_angle_count": 4,
+  "obtuse_angle_positions": [
+    {"index": 0, "square": [0, 0], "note": "corner"},
+    {"index": 6, "square": [7, 7], "note": "corner"},
+    {"index": 41, "square": [7, 0], "note": "corner"},
+    {"index": 47, "square": [0, 7], "note": "corner"}
+  ],
+  "tour": [
+    [0, 0], [2, 1], [4, 0], [6, 1], [7, 3], [6, 5], [7, 7], [5, 6],
+    [3, 7], [1, 6], [0, 4], [2, 3], [1, 1], [3, 0], [4, 2], [6, 3],
+    [7, 1], [5, 0], [3, 1], [1, 0], [0, 2], [1, 4], [0, 6], [2, 7],
+    [3, 5], [5, 4], [7, 5], [6, 7], [4, 6], [3, 4], [5, 3], [7, 2],
+    [6, 0], [4, 1], [2, 0], [0, 1], [1, 3], [2, 5], [4, 4], [3, 2],
+    [5, 1], [7, 0], [6, 2], [7, 4], [6, 6], [4, 7], [2, 6], [0, 7],
+    [1, 5], [0, 3], [2, 2], [4, 3], [5, 5], [3, 6], [1, 7], [0, 5],
+    [2, 4], [4, 5], [5, 7], [7, 6], [6, 4], [5, 2], [3, 3], [1, 2]
+  ]
+}

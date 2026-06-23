@@ -1,0 +1,270 @@
+[
+  {
+    "id": "imports",
+    "proofId": "erdos-568",
+    "range": {
+      "startLine": 20,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "Imports and Dependencies",
+    "content": "Imports Mathlib tactics, natural numbers, and real numbers. The real number library is essential here because the conjecture involves constants $C > 0$ in the bounds $R(G,T_n) \\le Cn$ and $R(G,K_n) \\le Cn^2$, which are naturally expressed as real-valued inequalities.",
+    "mathContext": "Uses $\\mathbb{N}$ for vertex counts and graph sizes, $\\mathbb{R}$ for the linear/quadratic bound constants $C$ in $R(G,T_n) \\le Cn$ and $R(G,K_n) \\le Cn^2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Real.Basic",
+      "Nat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library"
+    ]
+  },
+  {
+    "id": "sgraph-def",
+    "proofId": "erdos-568",
+    "range": {
+      "startLine": 27,
+      "endLine": 30
+    },
+    "type": "definition",
+    "title": "Simple Graph on Fin n",
+    "content": "Defines a simple graph on $n$ vertices as a symmetric, irreflexive adjacency relation on $\\text{Fin}\\;n$. This is the same graph representation used in Problems #566 and #567, providing consistency across the size Ramsey problem cluster.",
+    "mathContext": "A simple graph $G = (V, E)$ with $V = \\text{Fin}\\;n$, $\\text{adj}(u,v) \\Leftrightarrow \\text{adj}(v,u)$, $\\lnot\\text{adj}(v,v)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "simple graph",
+      "adjacency relation",
+      "Fin type"
+    ],
+    "prerequisites": [
+      "graph theory basics",
+      "Lean structures"
+    ]
+  },
+  {
+    "id": "edge-count",
+    "proofId": "erdos-568",
+    "range": {
+      "startLine": 33,
+      "endLine": 35
+    },
+    "type": "definition",
+    "title": "Edge Counting",
+    "content": "Counts edges by filtering ordered pairs $(u,v)$ with $u < v$ and adjacent. The ordering constraint avoids double-counting. This function is used both in the tree characterization ($|E(T)| = n-1$) and in the size linearity definition ($\\hat{r}(G,H) \\le C \\cdot |E(H)|$).",
+    "mathContext": "$|E(G)| = |\\{(u,v) \\in V \\times V : u < v \\land \\text{adj}(u,v)\\}|$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "edge counting",
+      "Finset.filter",
+      "noncomputable"
+    ],
+    "prerequisites": [
+      "finite combinatorics",
+      "ordered pairs"
+    ]
+  },
+  {
+    "id": "no-isolated",
+    "proofId": "erdos-568",
+    "range": {
+      "startLine": 38,
+      "endLine": 39
+    },
+    "type": "definition",
+    "title": "No Isolated Vertices",
+    "content": "Requires every vertex to have at least one neighbor. This condition appears in the conclusion of the conjecture: Ramsey size linearity is stated for opponents $H$ with no isolated vertices, ensuring the edge-based bound $\\hat{r}(G,H) \\le C \\cdot |E(H)|$ is nontrivial.",
+    "mathContext": "$\\forall v \\in V(G),\\;\\deg(v) \\ge 1$, which implies $|V(G)| \\le 2|E(G)|$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "minimum degree",
+      "nondegeneracy condition"
+    ],
+    "prerequisites": [
+      "degree sequence",
+      "graph basics"
+    ]
+  },
+  {
+    "id": "ramsey-number",
+    "proofId": "erdos-568",
+    "range": {
+      "startLine": 44,
+      "endLine": 44
+    },
+    "type": "concept",
+    "title": "Classical Ramsey Number (Axiomatized)",
+    "content": "The classical Ramsey number $R(G,H)$ is the smallest $N$ such that every 2-coloring of $K_N$ contains a red $G$ or blue $H$. Axiomatized since the full construction requires existence proofs from Ramsey's theorem. This is the **classical** notion — the conjecture asks whether growth rates of $R(G, \\cdot)$ control the **size** variant $\\hat{r}(G, \\cdot)$.",
+    "mathContext": "$R(G,H) = \\min\\{N : K_N \\to (G,H)\\}$, where $K_N \\to (G,H)$ means every 2-coloring of $E(K_N)$ yields a monochromatic $G$ or $H$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey number",
+      "Ramsey's theorem",
+      "graph Ramsey theory"
+    ],
+    "prerequisites": [
+      "Ramsey's theorem",
+      "complete graphs",
+      "graph coloring"
+    ]
+  },
+  {
+    "id": "size-ramsey-number",
+    "proofId": "erdos-568",
+    "range": {
+      "startLine": 50,
+      "endLine": 50
+    },
+    "type": "concept",
+    "title": "Size Ramsey Number (Axiomatized)",
+    "content": "The size Ramsey number $\\hat{r}(G,H)$ is the smallest $m$ such that some graph $F$ with $m$ edges has the property that every 2-coloring of $E(F)$ yields a monochromatic $G$ or $H$. The key distinction from $R(G,H)$: the classical number minimizes **vertices** (via $K_N$), while the size number minimizes **edges** (via arbitrary $F$). The crude bound $\\hat{r}(G,H) \\le \\binom{R(G,H)}{2}$ follows from taking $F = K_{R(G,H)}$.",
+    "mathContext": "$\\hat{r}(G,H) = \\min\\{|E(F)| : F \\to (G,H)\\}$. Trivially, $\\hat{r}(G,H) \\le \\binom{R(G,H)}{2}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "size Ramsey number",
+      "edge minimization",
+      "Ramsey embedding"
+    ],
+    "prerequisites": [
+      "Ramsey theory",
+      "graph coloring",
+      "edge counting"
+    ]
+  },
+  {
+    "id": "tree-predicate",
+    "proofId": "erdos-568",
+    "range": {
+      "startLine": 53,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "Tree Characterization",
+    "content": "A tree on $n \\ge 1$ vertices is characterized by having exactly $n - 1$ edges. This simplified characterization (omitting connectedness) suffices for the conjecture, which quantifies over all trees. Trees represent the **sparsest** connected graphs and serve as one extreme in the hypothesis.",
+    "mathContext": "$T$ is a tree $\\iff |E(T)| = |V(T)| - 1$ (for connected $T$). Trees satisfy $R(T_m, T_n) = m + n - 2$ by Chvátal-Harary.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tree",
+      "Chvátal-Harary theorem",
+      "acyclic graph",
+      "connected graph"
+    ],
+    "prerequisites": [
+      "tree properties",
+      "graph connectivity"
+    ]
+  },
+  {
+    "id": "complete-predicate",
+    "proofId": "erdos-568",
+    "range": {
+      "startLine": 57,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "Complete Graph Predicate",
+    "content": "A complete graph $K_n$ has all $\\binom{n}{2}$ edges. Complete graphs represent the **densest** graphs and serve as the other extreme in the hypothesis. The classical Ramsey number $R(K_m, K_n)$ grows exponentially ($2^{\\Theta(n)}$ for diagonal case), so a quadratic bound $R(G, K_n) \\le Cn^2$ is a strong structural constraint implying $G$ is far from a clique.",
+    "mathContext": "$K_n$ has $\\binom{n}{2}$ edges. For diagonal Ramsey: $2^{n/2} \\le R(K_n, K_n) \\le 4^n$. Quadratic $R(G, K_n)$ requires $G$ to be sparse.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complete graph",
+      "diagonal Ramsey number",
+      "Erdős-Szekeres bound"
+    ],
+    "prerequisites": [
+      "complete graphs",
+      "Ramsey number bounds"
+    ]
+  },
+  {
+    "id": "linear-tree-ramsey",
+    "proofId": "erdos-568",
+    "range": {
+      "startLine": 63,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "Linear Tree Ramsey Condition",
+    "content": "The condition $R(G, T_n) \\le Cn$ for all trees $T_n$ on $n$ vertices. This is a natural condition: by the Chvátal-Harary theorem, $R(T_m, T_n) = m + n - 2$, so trees themselves satisfy linear tree Ramsey trivially. More generally, graphs with bounded degeneracy or bounded bandwidth tend to have linear Ramsey numbers against trees. This condition captures that $G$ is 'tree-like' in Ramsey-theoretic terms.",
+    "mathContext": "$\\text{LinearTreeRamsey}(G) \\iff \\exists C > 0,\\;\\forall T_n \\text{ tree},\\;R(G, T_n) \\le Cn$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Chvátal-Harary theorem",
+      "tree Ramsey numbers",
+      "graph degeneracy",
+      "bandwidth"
+    ],
+    "prerequisites": [
+      "Ramsey numbers against trees",
+      "tree structure"
+    ]
+  },
+  {
+    "id": "quadratic-clique-ramsey",
+    "proofId": "erdos-568",
+    "range": {
+      "startLine": 68,
+      "endLine": 70
+    },
+    "type": "definition",
+    "title": "Quadratic Clique Ramsey Condition",
+    "content": "The condition $R(G, K_n) \\le Cn^2$ for all complete graphs $K_n$. Since $R(K_m, K_n)$ grows exponentially, a polynomial bound is highly restrictive. The quadratic rate $O(n^2)$ is achieved by bounded-degree graphs (by the Chvátal-Rödl-Szemerédi-Trotter theorem). Together with linear tree Ramsey, this condition captures graphs that are well-behaved against both extremes of graph density.",
+    "mathContext": "$\\text{QuadraticCliqueRamsey}(G) \\iff \\exists C > 0,\\;\\forall K_n,\\;R(G, K_n) \\le Cn^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "clique Ramsey numbers",
+      "bounded-degree graphs",
+      "Chvátal-Rödl-Szemerédi-Trotter"
+    ],
+    "prerequisites": [
+      "Ramsey numbers against cliques",
+      "exponential vs polynomial growth"
+    ]
+  },
+  {
+    "id": "size-linearity-def",
+    "proofId": "erdos-568",
+    "range": {
+      "startLine": 76,
+      "endLine": 78
+    },
+    "type": "definition",
+    "title": "Ramsey Size Linearity",
+    "content": "The conclusion of the conjecture: $G$ is Ramsey size linear if $\\hat{r}(G, H) \\le C \\cdot |E(H)|$ for all $H$ without isolated vertices. This is the same definition as in Problems #566 and #567. The conjecture asks whether the **classical** conditions (linear tree Ramsey + quadratic clique Ramsey) are sufficient to guarantee this **size** property.",
+    "mathContext": "$\\text{IsRamseySizeLinear}(G) \\iff \\exists C > 0,\\;\\forall H,\\;\\hat{r}(G,H) \\le C \\cdot |E(H)|$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey size linearity",
+      "size Ramsey asymptotics",
+      "linear growth"
+    ],
+    "prerequisites": [
+      "size Ramsey numbers",
+      "asymptotic notation"
+    ]
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-568",
+    "range": {
+      "startLine": 84,
+      "endLine": 87
+    },
+    "type": "concept",
+    "title": "EFRS Conjecture: Classical Bounds Imply Size Linearity",
+    "content": "The central conjecture of Problem #568: if $G$ satisfies both $R(G, T_n) = O(n)$ for all trees and $R(G, K_n) = O(n^2)$ for all cliques, then $G$ is Ramsey size linear. This would establish a **bridge between classical and size Ramsey theory**: the growth rates of $R(G, \\cdot)$ at two extremes (sparse trees and dense cliques) would control the edge-based quantity $\\hat{r}(G, \\cdot)$. The axiom form reflects the open status.",
+    "mathContext": "$\\text{LinearTreeRamsey}(G) \\land \\text{QuadraticCliqueRamsey}(G) \\implies \\text{IsRamseySizeLinear}(G)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "EFRS conjecture",
+      "classical-to-size bridge",
+      "Ramsey theory dichotomy"
+    ],
+    "prerequisites": [
+      "linear tree Ramsey",
+      "quadratic clique Ramsey",
+      "size Ramsey linearity"
+    ]
+  }
+]

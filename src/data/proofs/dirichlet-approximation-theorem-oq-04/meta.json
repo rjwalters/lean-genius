@@ -1,0 +1,120 @@
+{
+  "id": "dirichlet-approximation-theorem-oq-04",
+  "title": "Dirichlet Approximation OQ-04: Kronecker's Density Theorem",
+  "slug": "dirichlet-approximation-theorem-oq-04",
+  "description": "Kronecker's density theorem and its homogeneous Diophantine corollary. For a real number a, the integer multiples {n·a : n ∈ ℤ}, viewed on the circle ℝ/ℤ = AddCircle 1, are dense if and only if a is irrational: DenseRange (n ↦ n • a) ↔ Irrational a. Equivalently, an irrational rotation of the circle is minimal (every orbit dense), while a rational a = p/q gives a finite, evenly spaced orbit of q points. The topological statement is the qualitative precursor of equidistribution underlying the whole dirichlet-approximation family — oq-01 counts the ~1/q² good approximations, oq-03 re-derives Dirichlet's bound via Minkowski's geometry of numbers, oq-05 proves the dual sharpness statement for the golden ratio, and this entry supplies the orbit-density seed. From density at the point 0 the entry derives the homogeneous form of Dirichlet's approximation theorem: for irrational a and every ε > 0 there is a positive integer n with |n·a − round(n·a)| < ε, i.e. the fractional parts {n·a} accumulate at 0. The density iff is the period-1 specialisation of Mathlib's AddCircle.denseRange_zsmul_coe_iff (multiples of a dense on the circle of length p iff a/p irrational), using a/1 = a; the corollary feeds density a punctured ball B(0,ε) ∖ {0}, reads the circle-norm ‖(x : AddCircle 1)‖ back as distance-to-nearest-integer |x − round x| (AddCircle.norm_eq), and handles the sign so the witness multiplier is a positive natural.",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Metric"
+    ],
+    "namespace": "DirichletApproximationOQ04",
+    "lineCount": 107,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "path": "Proofs/DirichletApproximationOQ04.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "meta": {
+    "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Equidistribution_theorem",
+    "date": "1884",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DirichletApproximationOQ04.lean",
+    "tags": [
+      "number-theory",
+      "diophantine-approximation",
+      "kronecker-density",
+      "equidistribution",
+      "irrationality",
+      "circle-rotation",
+      "topological-dynamics"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-20",
+    "originalContributions": [
+      "denseRange_iff_irrational: Kronecker's density theorem on the unit circle — multiples {n•a} are dense in AddCircle 1 iff a is irrational — the period-1 specialisation of Mathlib's AddCircle.denseRange_zsmul_coe_iff (a/1 = a)",
+      "exists_pos_nat_mul_sub_round_lt: the homogeneous Dirichlet/Kronecker corollary (genuine derived content absent from Mathlib) — for irrational a and every ε > 0 there is a positive integer n with |n·a − round(n·a)| < ε, via a punctured-ball density extraction, a small nonzero circle point construction, and a sign normalisation reading the circle norm back as distance to the nearest integer"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "AddCircle.denseRange_zsmul_coe_iff",
+        "description": "Multiples of a are dense on the circle of length p iff a/p is irrational. Specialised at p = 1 (a/1 = a) to give denseRange_iff_irrational — the entry's named headline.",
+        "module": "Mathlib.Dynamics.Circle.RotationNumber.TranslationNumber"
+      },
+      {
+        "theorem": "AddCircle.norm_eq / AddCircle.norm_coe_eq_abs_iff / AddCircle.coe_neg",
+        "description": "The AddCircle normed-group API: ‖(x : AddCircle 1)‖ = |x − round x|, the norm-of-coe characterisation, and coe-negation; used to build a small nonzero circle point and read the norm back as distance to the nearest integer.",
+        "module": "Mathlib.Topology.Instances.AddCircle"
+      },
+      {
+        "theorem": "DenseRange.exists_mem_open",
+        "description": "A dense range meets every nonempty open set; applied to the punctured ball B(0,ε) ∖ {0} to extract the approximating multiple.",
+        "module": "Mathlib.Topology.DenseEmbedding"
+      }
+    ],
+    "relatedProblems": [
+      {
+        "id": "dirichlet-approximation-theorem",
+        "relationship": "Parent entry: proves the EXISTENCE of good approximations |qα − p| < 1/N (1 ≤ q ≤ N) by pigeonhole. This OQ-04 proves the underlying TOPOLOGICAL fact — that the orbit {n·a} is dense mod 1 exactly when a is irrational — from which the homogeneous approximation statement (arbitrarily good {n·a} near 0) follows directly."
+      },
+      {
+        "id": "dirichlet-approximation-theorem-oq-05",
+        "relationship": "Sibling entry: the dual SHARPNESS lower bound, showing the golden ratio is badly approximable. OQ-04 shows every irrational's multiples come arbitrarily close to integers (density); OQ-05 shows that for φ they cannot come too close too fast. Together they bound the orbit behaviour of an irrational rotation from both the qualitative and quantitative sides."
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 107,
+    "assumptions": "0 axioms, 0 sorries. Only the foundational propext / Classical.choice / Quot.sound are used (no Lean.ofReduceBool, no native_decide; verifiable with #print axioms denseRange_iff_irrational and #print axioms exists_pos_nat_mul_sub_round_lt). Both results are unconditional. Mathlib supplies AddCircle.denseRange_zsmul_coe_iff (density of multiples on a circle ⟺ irrationality of a/p), the AddCircle normed-group API (AddCircle.norm_eq giving ‖(x : AddCircle 1)‖ = |x − round x|, AddCircle.norm_coe_eq_abs_iff, AddCircle.coe_neg), and DenseRange.exists_mem_open; the original in-file content is the period-1 specialisation, the construction of a nonzero circle point of small norm, the punctured-ball density extraction, and the sign normalisation turning the integer witness into a positive natural with the circle-norm read back as distance to the nearest integer.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 2,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Kronecker's theorem (1884), in its one-dimensional form, states that the integer multiples of an irrational number are dense modulo 1. It is the qualitative heart of the theory of uniform distribution: Weyl's equidistribution theorem (1916) refines 'dense' to 'equidistributed', giving the exact asymptotic frequency with which {n·a} visits any subinterval. Dynamically, the map x ↦ x + a on the circle ℝ/ℤ is an irrational rotation; Kronecker's theorem says precisely that an irrational rotation is minimal — every orbit is dense — while a rational rotation a = p/q is periodic with finite orbit of q evenly spaced points. The same density is the homogeneous case of Dirichlet's approximation theorem: that {n·a} accumulates at 0 means n·a can be made arbitrarily close to an integer, the existence statement at the root of metric Diophantine approximation.",
+    "problemStatement": "Show that for a real number $a$, the integer multiples $\\{n a : n \\in \\mathbb{Z}\\}$ are dense in the circle $\\mathbb{R}/\\mathbb{Z}$ if and only if $a$ is irrational, and deduce the homogeneous approximation statement: if $a$ is irrational then for every $\\varepsilon > 0$ there is a positive integer $n$ with\n\n$$\\left| n a - \\operatorname{round}(n a) \\right| < \\varepsilon,$$\n\ni.e. the fractional parts $\\{n a\\}$ come within $\\varepsilon$ of $0$.",
+    "text": "Mathlib's AddCircle.DenseSubgroup file proves the general AddCircle.denseRange_zsmul_coe_iff — the multiples of a are dense on the circle of length p iff a/p is irrational — but never specialises it to the unit circle nor connects it to Diophantine approximation. This entry supplies the period-1 specialisation (a/1 = a) and turns orbit density into the concrete homogeneous bound, reading the circle norm ‖(x : AddCircle 1)‖ back as the distance |x − round x| from x to the nearest integer.",
+    "proofStrategy": "denseRange_iff_irrational is AddCircle.denseRange_zsmul_coe_iff at p = 1, rewritten with a/1 = a. For exists_pos_nat_mul_sub_round_lt: density gives DenseRange (n ↦ ↑(n • a)) on AddCircle 1. Build a genuinely nonzero circle point of small norm by taking δ = min(ε,1)/2 ∈ (0, 1/2]; since 0 ≤ δ ≤ 1/2, AddCircle.norm_coe_eq_abs_iff gives ‖(↑δ : AddCircle 1)‖ = δ, so ↑δ ≠ 0 and ↑δ lies in the open punctured ball B(0,ε) ∖ {0}. DenseRange.exists_mem_open meets this ball at some ↑(k • a) with ‖↑(k·a)‖ < ε and ↑(k·a) ≠ 0, forcing k ≠ 0. Take n = |k| > 0 (Int.natAbs_pos); rewrite the goal |n·a − round(n·a)| via AddCircle.norm_eq (period 1: ‖(x : AddCircle 1)‖ = |x − round x|) as ‖↑(n·a)‖, match it to ‖↑(k·a)‖ by a sign case-split (Nat.cast_natAbs, abs_choice, AddCircle.coe_neg, norm_neg), and conclude with the density bound.",
+    "keyInsights": [
+      "**Density ⟺ irrationality is the qualitative seed of equidistribution**: it says the irrational rotation x ↦ x + a is minimal, the dynamical statement that every other dirichlet-approximation entry quantifies — counting (oq-01), geometry of numbers (oq-03), or sharp lower bounds (oq-05)",
+      "**The circle norm IS distance to the nearest integer**: on AddCircle 1, AddCircle.norm_eq specialises to ‖(x : AddCircle 1)‖ = |x − round x|, so a metric statement about the circle is literally a Diophantine statement about how close n·a gets to ℤ",
+      "**Density is fed a PUNCTURED ball**: to extract a NONtrivial approximation one intersects the orbit with B(0,ε) ∖ {0}, not B(0,ε) — the removed point 0 is what forces the witness multiplier k to be nonzero, hence a genuine positive-integer approximation rather than the empty n = 0",
+      "**Rational vs irrational is a finite/dense dichotomy**: the same iff says a rational rotation has a finite orbit (q evenly spaced points), so density exactly detects irrationality — the topological mirror of the arithmetic fact that a/q ∈ ℤ has bounded denominators"
+    ],
+    "prerequisites": [
+      "Mathlib's AddCircle API: AddCircle.denseRange_zsmul_coe_iff (multiples dense on the length-p circle ⟺ a/p irrational), the normed-group structure on AddCircle, AddCircle.norm_eq (‖(x:AddCircle p)‖ = |x − round(p⁻¹x)·p|), AddCircle.norm_coe_eq_abs_iff, and AddCircle.coe_neg",
+      "DenseRange.exists_mem_open: a dense-range map meets every nonempty open set — the bridge from density to the concrete witness",
+      "Elementary facts: round x as the nearest integer, Int.natAbs and abs_choice for the sign normalisation, and that a nonzero element of a normed group has positive norm"
+    ]
+  },
+  "sections": [
+    {
+      "id": "kronecker-density",
+      "title": "Kronecker Density: Multiples of an Irrational are Dense mod 1",
+      "startLine": 46,
+      "endLine": 52,
+      "mathContext": "$\\operatorname{DenseRange}\\,(n \\mapsto n \\cdot a : \\mathbb{Z} \\to \\mathbb{R}/\\mathbb{Z}) \\iff a \\notin \\mathbb{Q}$.",
+      "summary": "denseRange_iff_irrational specialises Mathlib's AddCircle.denseRange_zsmul_coe_iff to the unit circle AddCircle 1. The general lemma says the multiples of a are dense on the circle of length p iff a/p is irrational; at p = 1 the side condition a/1 = a collapses to Irrational a, giving the clean Kronecker statement that the orbit {n·a} is dense mod 1 exactly when a is irrational."
+    },
+    {
+      "id": "homogeneous-approximation",
+      "title": "Homogeneous Dirichlet Approximation from Orbit Density",
+      "startLine": 54,
+      "endLine": 106,
+      "mathContext": "For irrational $a$ and $\\varepsilon > 0$: $\\exists\\, n > 0,\\ |n a - \\operatorname{round}(n a)| < \\varepsilon$.",
+      "summary": "exists_pos_nat_mul_sub_round_lt turns density into a concrete approximation. A nonzero circle point ↑δ with δ = min(ε,1)/2 ∈ (0,1/2] has norm exactly δ (AddCircle.norm_coe_eq_abs_iff), so it populates the open punctured ball B(0,ε) ∖ {0}. DenseRange.exists_mem_open meets this ball at some ↑(k·a) with ‖↑(k·a)‖ < ε and ↑(k·a) ≠ 0, forcing k ≠ 0. Setting n = |k| > 0 and reading the circle norm back as distance to the nearest integer (AddCircle.norm_eq at period 1, ‖(x:AddCircle 1)‖ = |x − round x|) — with a short sign case-split via Nat.cast_natAbs / abs_choice / AddCircle.coe_neg / norm_neg to align n·a with k·a — yields |n·a − round(n·a)| < ε."
+    }
+  ],
+  "conclusion": "Kronecker's density theorem is formalised sorry-free and axiom-free: the integer multiples of a are dense on ℝ/ℤ iff a is irrational, the period-1 case of Mathlib's general AddCircle density criterion. Density at 0 yields the homogeneous form of Dirichlet's approximation theorem — for irrational a and any ε > 0 a positive integer n makes n·a within ε of an integer — by reading the circle norm as distance to the nearest integer. This supplies the topological/equidistribution precursor that the rest of the dirichlet-approximation family quantifies; sharpening 'dense' to 'equidistributed' (Weyl's theorem) is the natural follow-up.",
+  "crossReferences": [
+    "dirichlet-approximation-theorem",
+    "dirichlet-approximation-theorem-oq-01",
+    "dirichlet-approximation-theorem-oq-03",
+    "dirichlet-approximation-theorem-oq-05"
+  ]
+}

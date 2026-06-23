@@ -1,0 +1,476 @@
+[
+  {
+    "id": "ann-e472-imports",
+    "proofId": "erdos-472",
+    "type": "concept",
+    "title": "Mathlib Prime and List Imports",
+    "content": "Imports Nat.Prime.Basic for primality testing and List.Basic for sequence operations from Mathlib.",
+    "mathContext": "The formalization models Ulam prime sequences as `ℕ → ℕ` functions with `List ℕ` seeds. Mathlib's `Nat.Prime` provides the primality predicate, while `List.Sorted` gives the monotonicity framework. The combination supports both the abstract specification and the `native_decide` computational verification.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "primality",
+      "list operations",
+      "Mathlib"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "List.Basic"
+    ],
+    "range": {
+      "startLine": 16,
+      "endLine": 18
+    }
+  },
+  {
+    "id": "ann-e472-isCandidateNext",
+    "proofId": "erdos-472",
+    "type": "definition",
+    "title": "Candidate Next Prime",
+    "content": "A candidate next element p must be prime and equal last + qᵢ − 1 for some qᵢ already in the sequence. This is the greedy extension rule.",
+    "mathContext": "The rule $q_{n+1} = \\min\\{p : p = q_n + q_i - 1 \\text{ for some } i \\leq n, p \\text{ prime}\\}$ is a **greedy** process: always choose the smallest valid candidate. The shift by $-1$ is key: $q_n + q_i - 1$ rather than $q_n + q_i$ ensures the self-candidate $2q_n - 1$ is odd (hence potentially prime) when $q_n$ is odd. This differs from standard Ulam numbers, which use sums rather than shifted sums.",
+    "significance": "key",
+    "relatedConcepts": [
+      "greedy algorithms",
+      "additive processes on primes",
+      "Ulam numbers"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "List membership"
+    ],
+    "range": {
+      "startLine": 24,
+      "endLine": 25
+    }
+  },
+  {
+    "id": "ann-e472-isUlamPrimeSeq",
+    "proofId": "erdos-472",
+    "type": "definition",
+    "title": "Ulam Prime Sequence Specification",
+    "content": "The full specification: an infinite function ℕ → ℕ matching the seed, all values prime, strictly increasing, and each f(n+1) is the smallest candidate prime.",
+    "mathContext": "The four conjuncts capture: (1) **seed matching** via `Fin seed.length`, (2) **primality** as `∀ n, (f n).Prime`, (3) **strict monotonicity** as `∀ n, f n < f (n+1)`, and (4) the **minimality rule** asserting $f(n+1)$ is the smallest prime of the form $f(n) + f(i) - 1$. The use of `List.ofFn` to reconstruct the history at each step is a clean formalization pattern for recursive sequence definitions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "recursive sequence specification",
+      "greedy minimality",
+      "infinite sequences"
+    ],
+    "prerequisites": [
+      "IsCandidateNext",
+      "List.ofFn",
+      "Fin"
+    ],
+    "range": {
+      "startLine": 31,
+      "endLine": 42
+    }
+  },
+  {
+    "id": "ann-e472-problem-statement",
+    "proofId": "erdos-472",
+    "type": "definition",
+    "title": "Erdős Problem 472 Statement",
+    "content": "The main conjecture: there exists a finite seed of at least 2 primes, sorted in increasing order, such that the Ulam prime extension produces an infinite sequence.",
+    "mathContext": "This is an **existence** problem: find *any* seed that works. The requirement `seed.length ≥ 2` excludes trivial single-prime seeds. The quantifier structure $\\exists \\text{seed}, \\exists f : \\mathbb{N} \\to \\mathbb{N}, \\text{IsUlamPrimeSeq seed } f$ reduces infiniteness to the existence of an infinite function satisfying the greedy rule. The problem is open even for the specific seed $[3, 5]$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open problems",
+      "Erdős problems",
+      "infinite sequence existence"
+    ],
+    "prerequisites": [
+      "IsUlamPrimeSeq",
+      "List.Sorted"
+    ],
+    "range": {
+      "startLine": 48,
+      "endLine": 53
+    }
+  },
+  {
+    "id": "ann-e472-seed35",
+    "proofId": "erdos-472",
+    "type": "definition",
+    "title": "Candidate Seed [3, 5]",
+    "content": "The concrete seed [3, 5] that generates the sequence 3, 5, 7, 11, 13, 17, 19, 23, ... which Ulam conjectured to be infinite.",
+    "mathContext": "The choice of seed $[3, 5]$ is not arbitrary. Starting with $[2, 3]$ would give candidates $3 + 2 - 1 = 4$ (not prime), $3 + 3 - 1 = 5$ (prime), then $5 + 2 - 1 = 6$ (not prime), etc.—the even seed element $2$ frequently produces non-prime candidates. The all-odd seed $[3, 5]$ avoids this: since $\\text{odd} + \\text{odd} - 1 = \\text{odd}$, all candidates are odd and hence have a chance of being prime.",
+    "significance": "key",
+    "relatedConcepts": [
+      "seed selection",
+      "odd primes",
+      "parity arguments"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "List"
+    ],
+    "range": {
+      "startLine": 59,
+      "endLine": 59
+    }
+  },
+  {
+    "id": "ann-e472-seed35-prime",
+    "proofId": "erdos-472",
+    "type": "concept",
+    "title": "Seed Primality Verification",
+    "content": "Both elements of [3, 5] are prime, verified by decide tactic.",
+    "mathContext": "The `decide` tactic works because `Nat.Prime` is decidable for concrete natural numbers. This is a prerequisite for the seed to be valid input to `ErdosProblem472`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "decidability",
+      "decide tactic"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "Decidable"
+    ],
+    "range": {
+      "startLine": 62,
+      "endLine": 62
+    }
+  },
+  {
+    "id": "ann-e472-seed35-sorted",
+    "proofId": "erdos-472",
+    "type": "concept",
+    "title": "Seed Sorted Verification",
+    "content": "[3, 5] is sorted in increasing order, verified by decide.",
+    "mathContext": "Required by `ErdosProblem472` which demands `List.Sorted (· < ·) seed`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "List.Sorted",
+      "decide tactic"
+    ],
+    "prerequisites": [
+      "List.Sorted"
+    ],
+    "range": {
+      "startLine": 65,
+      "endLine": 65
+    }
+  },
+  {
+    "id": "ann-e472-seed35-length",
+    "proofId": "erdos-472",
+    "type": "concept",
+    "title": "Seed Length Verification",
+    "content": "[3, 5] has at least 2 elements, verified by decide.",
+    "mathContext": "Confirms the seed satisfies `seed.length ≥ 2`, the minimum length requirement.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "List.length",
+      "decide tactic"
+    ],
+    "prerequisites": [
+      "List.length"
+    ],
+    "range": {
+      "startLine": 68,
+      "endLine": 68
+    }
+  },
+  {
+    "id": "ann-e472-candidate-self-odd",
+    "proofId": "erdos-472",
+    "type": "concept",
+    "title": "Self-Candidate Oddness",
+    "content": "For p ≥ 2, the self-candidate p + p − 1 = 2p − 1 is always odd, hence potentially prime.",
+    "mathContext": "The **self-candidate** $2p - 1$ (using $q_i = q_n = p$ itself) is a Mersenne-like number. For prime $p$, $2p - 1$ is odd and may be prime, providing a guaranteed candidate at each step. If $2p - 1$ is always prime for the sequence's values, the sequence would be infinite—but this is far stronger than needed and almost certainly false.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Mersenne-like numbers",
+      "parity",
+      "guaranteed candidates"
+    ],
+    "prerequisites": [
+      "Nat.Even",
+      "omega tactic"
+    ],
+    "range": {
+      "startLine": 75,
+      "endLine": 77
+    }
+  },
+  {
+    "id": "ann-e472-ulam-seq-ge-two",
+    "proofId": "erdos-472",
+    "type": "concept",
+    "title": "All Terms at Least 2",
+    "content": "Every term in a Ulam prime sequence is at least 2, since all terms are prime.",
+    "mathContext": "Follows immediately from `Nat.Prime.two_le`. This lower bound is used in the gap theorem to distinguish the case $f(n) = 2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.Prime.two_le",
+      "lower bounds"
+    ],
+    "prerequisites": [
+      "IsUlamPrimeSeq",
+      "Nat.Prime"
+    ],
+    "range": {
+      "startLine": 80,
+      "endLine": 82
+    }
+  },
+  {
+    "id": "ann-e472-gap-theorem",
+    "proofId": "erdos-472",
+    "type": "concept",
+    "title": "Consecutive Gap Bound",
+    "content": "In any Ulam prime sequence, f(n+1) ≥ f(n) + 2 unless f(n) = 2 and f(n+1) = 3. This follows from the fact that consecutive odd primes differ by at least 2.",
+    "mathContext": "The proof splits on whether $f(n) = 2$. If $f(n) \\geq 3$, both $f(n)$ and $f(n+1)$ are odd primes, so their difference is even and at least $2$. The case analysis uses `Nat.Prime.eq_one_or_self_of_dvd` to establish oddness. This gap bound constrains the growth rate: the sequence grows at least linearly.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime gaps",
+      "parity of primes",
+      "growth rate"
+    ],
+    "prerequisites": [
+      "IsUlamPrimeSeq",
+      "Nat.Prime",
+      "Nat.Even"
+    ],
+    "range": {
+      "startLine": 87,
+      "endLine": 113
+    }
+  },
+  {
+    "id": "ann-e472-listMin",
+    "proofId": "erdos-472",
+    "type": "definition",
+    "title": "List Minimum Helper",
+    "content": "Computable fold to find the minimum of a list of natural numbers, returning 0 for empty lists.",
+    "mathContext": "This utility function supports the computable Ulam step: we need to find the smallest candidate prime, which requires taking the minimum of a filtered list. The choice of $0$ as default for empty lists serves as a sentinel indicating \"no candidate found.\"",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "list fold",
+      "computable functions"
+    ],
+    "prerequisites": [
+      "List",
+      "Nat.min"
+    ],
+    "range": {
+      "startLine": 118,
+      "endLine": 121
+    }
+  },
+  {
+    "id": "ann-e472-ulamNextCandidate",
+    "proofId": "erdos-472",
+    "type": "definition",
+    "title": "Computable Next Candidate",
+    "content": "Given a sequence, computes the next Ulam candidate: for each qᵢ, compute last + qᵢ − 1, filter for primes greater than last, return the minimum.",
+    "mathContext": "This is the **computable** counterpart of `IsCandidateNext`. The `filterMap` computes all valid candidates, and `listMin` selects the smallest. The guard `c > last` ensures strict monotonicity. The `Nat.Prime` check uses Lean's decidable primality. Returning $0$ when no candidate exists signals sequence termination.",
+    "significance": "key",
+    "relatedConcepts": [
+      "computable primality",
+      "greedy selection",
+      "filterMap"
+    ],
+    "prerequisites": [
+      "listMin",
+      "Nat.Prime",
+      "List.filterMap"
+    ],
+    "range": {
+      "startLine": 125,
+      "endLine": 130
+    }
+  },
+  {
+    "id": "ann-e472-ulamStep",
+    "proofId": "erdos-472",
+    "type": "definition",
+    "title": "Single Extension Step",
+    "content": "Extends the sequence by one term if a valid candidate exists (next ≠ 0), otherwise leaves it unchanged.",
+    "mathContext": "The conditional `if next = 0 then seq else seq ++ [next]` models potential termination: the sequence stops if no $q_n + q_i - 1$ is prime for any $i$. This is the key question—whether termination ever occurs for some seeds.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sequence extension",
+      "termination detection"
+    ],
+    "prerequisites": [
+      "ulamNextCandidate",
+      "List.append"
+    ],
+    "range": {
+      "startLine": 133,
+      "endLine": 135
+    }
+  },
+  {
+    "id": "ann-e472-ulamExtend",
+    "proofId": "erdos-472",
+    "type": "definition",
+    "title": "Multi-Step Extension",
+    "content": "Iterates ulamStep n times, extending the sequence by up to n terms.",
+    "mathContext": "Recursive iteration of `ulamStep`. The function `ulamExtend n seq` applies the extension rule $n$ times. Combined with `native_decide`, this enables computational verification of the sequence's first several terms.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "recursive iteration",
+      "computational verification"
+    ],
+    "prerequisites": [
+      "ulamStep"
+    ],
+    "range": {
+      "startLine": 138,
+      "endLine": 140
+    }
+  },
+  {
+    "id": "ann-e472-term-verification",
+    "proofId": "erdos-472",
+    "type": "concept",
+    "title": "Individual Term Verification",
+    "content": "Verified by native_decide: ulamNextCandidate applied to growing prefixes yields 7, 11, 13, 17 respectively.",
+    "mathContext": "Each theorem proves one step of the extension: $[3,5] \\to 7$, $[3,5,7] \\to 11$, $[3,5,7,11] \\to 13$, $[3,5,7,11,13] \\to 17$. The `native_decide` tactic compiles the computation to native code, making these proofs fast despite the primality checks. This is a validated **computational trace** of the greedy algorithm.",
+    "significance": "key",
+    "relatedConcepts": [
+      "native_decide",
+      "computational proofs",
+      "sequence verification"
+    ],
+    "prerequisites": [
+      "ulamNextCandidate",
+      "Nat.Prime"
+    ],
+    "range": {
+      "startLine": 161,
+      "endLine": 164
+    }
+  },
+  {
+    "id": "ann-e472-first-terms",
+    "proofId": "erdos-472",
+    "type": "concept",
+    "title": "First 6 Terms Verified",
+    "content": "The sequence starting from [3, 5] matches [3, 5, 7, 11, 13, 17] after 4 extension steps.",
+    "mathContext": "This composite verification theorem confirms the entire prefix $3, 5, 7, 11, 13, 17$ in one `native_decide` call. Notably, these are the first 6 primes $\\geq 3$ except for the gap at $p = 9$ (not prime). The sequence appears to contain all odd primes, motivating the stronger conjecture axiomatized later.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prefix verification",
+      "native_decide",
+      "odd prime sequence"
+    ],
+    "prerequisites": [
+      "ulamExtend",
+      "native_decide"
+    ],
+    "range": {
+      "startLine": 168,
+      "endLine": 169
+    }
+  },
+  {
+    "id": "ann-e472-candidates-odd",
+    "proofId": "erdos-472",
+    "type": "concept",
+    "title": "Odd + Odd Candidates Are Odd",
+    "content": "If both last and q are odd (and q ≥ 1), then last + q − 1 is odd.",
+    "mathContext": "This parity lemma explains why odd seeds are preferred: $\\text{odd} + \\text{odd} - 1 = \\text{even} + \\text{odd} - 1 = \\text{odd}$. All candidates from an all-odd sequence are odd, so they're never excluded by being even (except $2$). This contrasts with seeds containing $2$, where $p + 2 - 1 = p + 1$ is even for odd $p$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "parity analysis",
+      "candidate viability",
+      "odd arithmetic"
+    ],
+    "prerequisites": [
+      "Nat.even_or_odd",
+      "omega tactic"
+    ],
+    "range": {
+      "startLine": 175,
+      "endLine": 183
+    }
+  },
+  {
+    "id": "ann-e472-seed-two-even",
+    "proofId": "erdos-472",
+    "type": "concept",
+    "title": "Seed Element 2 Produces Even Candidates",
+    "content": "For p ≥ 3, the candidate p + 2 − 1 = p + 1 is even, hence never prime. Seeds containing 2 produce dead-end candidates.",
+    "mathContext": "This theorem formalizes why $2$ is a poor seed element: for any $p \\geq 3$, the candidate $p + 2 - 1 = p + 1$ is always even and $> 2$, hence composite. In effect, $q_i = 2$ contributes nothing useful to the candidate pool once the sequence passes $3$. This motivates restricting to all-odd seeds.",
+    "significance": "key",
+    "relatedConcepts": [
+      "seed analysis",
+      "dead-end candidates",
+      "parity obstruction"
+    ],
+    "prerequisites": [
+      "Nat.Even",
+      "Nat.even_or_odd"
+    ],
+    "range": {
+      "startLine": 187,
+      "endLine": 190
+    }
+  },
+  {
+    "id": "ann-e472-odd-candidate",
+    "proofId": "erdos-472",
+    "type": "concept",
+    "title": "Odd Inputs Give Odd Candidates",
+    "content": "For odd p and odd q, the candidate p + q − 1 is odd, complementing the parity analysis.",
+    "mathContext": "Uses the `Odd` predicate to show $p + q - 1$ is odd when both inputs are odd. Combined with `seed_two_gives_even`, this completes the parity picture: the viability of candidates depends entirely on the parity of the seed elements and current last term.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.Odd",
+      "parity complement"
+    ],
+    "prerequisites": [
+      "Nat.Odd"
+    ],
+    "range": {
+      "startLine": 194,
+      "endLine": 199
+    }
+  },
+  {
+    "id": "ann-e472-extended-verification",
+    "proofId": "erdos-472",
+    "type": "concept",
+    "title": "Extended Sequence to 8 Terms",
+    "content": "The sequence extends further: terms 6 and 7 are 19 and 23, giving [3, 5, 7, 11, 13, 17, 19, 23] after 6 steps.",
+    "mathContext": "Extending the computational verification to 8 terms: $3, 5, 7, 11, 13, 17, 19, 23$. These are exactly the odd primes from $3$ to $23$, strongly supporting the conjecture that the $[3,5]$ sequence contains all odd primes. The gap at $9 = 3^2$ and $15 = 3 \\cdot 5$ (composites) is bridged because the greedy rule finds other candidates.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extended verification",
+      "odd prime enumeration"
+    ],
+    "prerequisites": [
+      "ulamExtend",
+      "native_decide"
+    ],
+    "range": {
+      "startLine": 208,
+      "endLine": 209
+    }
+  },
+  {
+    "id": "ann-e472-all-odd-primes",
+    "proofId": "erdos-472",
+    "type": "concept",
+    "title": "All Odd Primes Conjecture",
+    "content": "The strongest form of the conjecture: the [3, 5] Ulam prime sequence contains all primes p ≥ 3. This would immediately imply infiniteness.",
+    "mathContext": "If the $[3, 5]$ sequence contains every odd prime, then it is infinite by Euclid's theorem on the infinitude of primes. This is a **much stronger** conjecture than Problem 472 itself, which only asks for *some* seed producing an infinite sequence. The computational evidence through 8 terms (all odd primes $\\leq 23$) is consistent but far from conclusive—the sequence could diverge from the odd primes at any point.",
+    "significance": "key",
+    "relatedConcepts": [
+      "infinitude of primes",
+      "Euclid's theorem",
+      "strong conjectures"
+    ],
+    "prerequisites": [
+      "ulamExtend",
+      "Nat.Prime"
+    ],
+    "range": {
+      "startLine": 224,
+      "endLine": 226
+    }
+  }
+]

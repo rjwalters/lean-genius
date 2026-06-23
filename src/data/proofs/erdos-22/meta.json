@@ -1,0 +1,217 @@
+{
+  "id": "erdos-22",
+  "title": "Erdős Problem #22: Ramsey-Turán Numbers for K₄",
+  "slug": "erdos-22",
+  "description": "Is rt(n; 4, εn) ≥ n²/8? Can K₄-free graphs have n²/8 edges with sublinear independence number? YES, proved by Fox-Loh-Zhao (2015).",
+  "meta": {
+    "author": "Bollobás-Erdős (1976 conjecture), Fox-Loh-Zhao (2015 resolution)",
+    "sourceUrl": "https://erdosproblems.com/22",
+    "date": "2015",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos22Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "turan-theory",
+      "extremal-combinatorics"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 22,
+    "erdosUrl": "https://erdosproblems.com/22",
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset",
+        "description": "Finite sets and operations",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Fintype",
+        "description": "Finite types",
+        "module": "Mathlib.Data.Fintype.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm on reals",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Nat.ceil",
+        "description": "Ceiling function for reals to naturals",
+        "module": "Mathlib.Topology.Algebra.Order.Ceil"
+      }
+    ],
+    "originalContributions": [
+      "Graph structure with adj, symm, loopless fields",
+      "IsIndependent, ContainsClique, IsCliqueFree predicates",
+      "rt(n, k, ℓ) Ramsey-Turán number axiomatization with rt_lower_bound (existence-to-rt) axiom",
+      "BollobasErdosConjecture formal definition",
+      "fox_loh_zhao_2015 axiom with polylogarithmic independence bound",
+      "conjecture_resolved: fully proved theorem deriving BollobasErdosConjecture from axioms",
+      "density_interpretation: ρ₄ = 1/4 computed as the n²/8 edge bound relative to the maximum n²/2",
+      "edge_density_gap and density_interpretation computational verifications",
+      "erdos_22_summary combining all main results"
+    ],
+    "axiomCount": 6,
+    "lineCount": 182,
+    "prerequisites": [
+      "Ramsey theory and Ramsey numbers",
+      "Turán-type extremal graph theory",
+      "Graph density and independence number",
+      "Probabilistic combinatorics"
+    ],
+    "assumptions": "6 axioms: edgeCount, independenceNumber, rt, fox_loh_zhao_2015, rt_lower_bound, fox_loh_zhao_sublinear. See Lean source for complete statements.",
+    "theoremCount": 4,
+    "definitionCount": 5
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #22 is the Bollobás-Erdős conjecture from 1976, arising from their systematic study of Ramsey-Turán problems. Turán's theorem (1941) tells us the maximum number of edges in a K₄-free graph on n vertices is about n²/3, achieved by the complete tripartite graph T(n,3). However, T(n,3) has independence number n/3, which is linear in n. The natural question is: what happens if we also demand small independence number?\n\nBollobás and Erdős conjectured that for any ε > 0 and sufficiently large n, there exist K₄-free graphs on n vertices with at least n²/8 edges and independence number at most εn. They proved a weaker version with (1/8 + o(1))n² edges. The bound n²/8 corresponds to the Ramsey-Turán density ρ₄ = 1/4, which measures the asymptotic edge density achievable under both clique-free and small-independence constraints.\n\nFox, Loh, and Zhao resolved the conjecture fully in 2015 using pseudorandom Cayley graph constructions over finite fields. Their result is actually much stronger than the conjecture: the independence number achieved is only O((log log n)^{3/2} / (log n)^{1/2} · n), which is far smaller than any εn. This polylogarithmic bound demonstrates the power of algebraic and probabilistic methods in extremal combinatorics.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet $\\epsilon > 0$ and $n$ be sufficiently large. Is there a K₄-free graph on $n$ vertices with $\\geq n^2/8$ edges such that the largest independent set has size at most $\\epsilon n$?\n\nEquivalently: Is $\\mathrm{rt}(n; 4, \\epsilon n) \\geq n^2/8$?\n\n**Answer: YES** (Fox-Loh-Zhao, 2015)\n\nMoreover, the independence number can be made as small as $O((\\log\\log n)^{3/2} / (\\log n)^{1/2} \\cdot n)$.",
+    "text": "Is rt(n; 4, εn) ≥ n²/8? Can K₄-free graphs have n²/8 edges with sublinear independence number? YES, proved by Fox-Loh-Zhao (2015).",
+    "proofStrategy": "The formalization defines a custom Graph structure, independence number, cliques, and the Ramsey-Turán number rt(n; k, ℓ). The Fox-Loh-Zhao theorem is axiomatized with its precise polylogarithmic independence bound. The main theorem conjecture_resolved is FULLY PROVED: it derives BollobasErdosConjecture from the axioms by showing that the Fox-Loh-Zhao construction satisfies all required properties, using linarith for the final inequality chain.",
+    "keyInsights": [
+      "**Turán vs Ramsey-Turán tradeoff:** T(n,3) has n²/3 edges but linear independence; forcing sublinear independence costs ~62% of edges",
+      "**Edge density:** n²/8 out of max n²/2 = 1/4 density = ρ₄",
+      "**Fox-Loh-Zhao exceeds the conjecture:** Independence is polylogarithmic, far better than εn",
+      "**Ramsey-Turán densities:** ρ₃ = 0, ρ₄ = ρ₅ = 1/4; ρ_r > 0 iff r ≥ 4",
+      "**Pseudorandom construction:** Cayley graphs over finite fields give the extremal examples"
+    ],
+    "prerequisites": [
+      "Ramsey theory and Ramsey numbers",
+      "Turán-type extremal graph theory",
+      "Graph density and independence number",
+      "Probabilistic combinatorics"
+    ]
+  },
+  "sections": [
+    {
+      "id": "background",
+      "title": "Background",
+      "startLine": 31,
+      "endLine": 49,
+      "summary": "Ramsey-Turán theory background: Turán + Ramsey combined.",
+      "mathContext": "Mathematical content: Ramsey-Turán theory background: Turán + Ramsey combined."
+    },
+    {
+      "id": "graph-defs",
+      "title": "Graph Definitions",
+      "startLine": 50,
+      "endLine": 80,
+      "summary": "Graph structure, IsIndependent, ContainsClique, IsCliqueFree.",
+      "mathContext": "Formal definition: Graph structure, IsIndependent, ContainsClique, IsCliqueFree."
+    },
+    {
+      "id": "rt-numbers",
+      "title": "Ramsey-Turán Numbers",
+      "startLine": 81,
+      "endLine": 87,
+      "summary": "rt(n, k, ℓ) Ramsey-Turán number defined axiomatically.",
+      "mathContext": "Formal definition: rt(n, k, ℓ) Ramsey-Turán number defined axiomatically."
+    },
+    {
+      "id": "axioms-conjecture",
+      "title": "Axioms and the Conjecture",
+      "startLine": 89,
+      "endLine": 119,
+      "summary": "BollobasErdosConjecture definition with the fox_loh_zhao_2015 axiom, rt_lower_bound, and fox_loh_zhao_sublinear axioms.",
+      "mathContext": "Formal definition and axioms: BollobasErdosConjecture, fox_loh_zhao_2015, rt_lower_bound, fox_loh_zhao_sublinear."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture and Solution",
+      "startLine": 121,
+      "endLine": 182,
+      "summary": "conjecture_resolved proof deriving the conjecture from the axioms, plus density summary theorems.",
+      "mathContext": "Verified: conjecture_resolved derives BollobasErdosConjecture from the axioms; edge_density_gap, density_interpretation, erdos_22_summary."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #22 (the Bollobás-Erdős conjecture) is SOLVED. Fox, Loh, and Zhao (2015) proved that K₄-free graphs can have ≥ n²/8 edges with independence number only O((log log n)^{3/2}/(log n)^{1/2} · n), which is much smaller than any εn. The formalization includes a fully proved theorem deriving the conjecture from axiomatized results.",
+    "implications": "The result establishes ρ₄ = 1/4 as the Ramsey-Turán density for K₄, quantifying the precise tradeoff between edge density and independence number in K₄-free graphs. The pseudorandom Cayley graph technique has become a powerful tool in extremal combinatorics.",
+    "openQuestions": [
+      "Determine Ramsey-Turán densities ρ_r for larger cliques (r ≥ 6)",
+      "Find optimal constructions with explicit constants",
+      "Understand the structure of extremal graphs achieving the bound",
+      "Can the polylogarithmic independence bound be improved further?"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "conjecture_resolved",
+      "type": "core",
+      "description": "Fully proved theorem deriving the Bollobás-Erdős conjecture from the Fox-Loh-Zhao axiom: K₄-free graphs on n vertices can have ≥ n²/8 edges with independence number ≤ εn, for any ε > 0 and large n."
+    },
+    {
+      "name": "fox_loh_zhao_2015",
+      "type": "core",
+      "description": "Axiomatized Fox-Loh-Zhao 2015 result: there exist K₄-free graphs with ≥ n²/8 edges and independence number only O((log log n)^{3/2}/(log n)^{1/2}·n), far smaller than any linear εn."
+    },
+    {
+      "name": "erdos_22_summary",
+      "type": "supporting",
+      "description": "Summary theorem combining the Ramsey-Turán density ρ₄ = 1/4, the resolved conjecture, and the polylogarithmic independence bound into a single statement of the full result."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Set",
+      "Function",
+      "BigOperators"
+    ],
+    "namespace": "Erdos22",
+    "lineCount": 182,
+    "axiomCount": 6,
+    "theoremCount": 4,
+    "definitionCount": 5,
+    "path": "Proofs/Erdos22Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-24",
+      "relationship": "related",
+      "description": "Problem #24 on pentagons in triangle-free graphs is another Ramsey-Turán type question. Both study extremal graph problems where local constraints (triangle-free, K₄-free) interact with global density"
+    },
+    {
+      "targetId": "erdos-19",
+      "relationship": "related",
+      "description": "Problem #19 (EFL) and Problem #22 both concern graph coloring and structure. EFL asks about chromatic number of clique unions; Problem #22 asks about independence in dense K₄-free graphs"
+    },
+    {
+      "targetId": "erdos-533",
+      "relationship": "related",
+      "description": "Problem #533 on triangle-free subsets in K₅-free graphs is another extremal Ramsey-type question in the same family"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Szemerédi, Endre",
+      "title": "On graphs containing no complete subgraph with 4 vertices (in Hungarian)",
+      "year": "1972",
+      "venue": "Matematikai Lapok, vol. 23, pp. 113–116",
+      "note": "Early Ramsey-Turán results for K₄-free graphs"
+    },
+    {
+      "authors": "Erdős, Paul; Hajnal, András; Sós, Vera T.; Szemerédi, Endre",
+      "title": "More results on Ramsey-Turán type problems",
+      "year": "1983",
+      "venue": "Combinatorica, vol. 3, no. 1, pp. 69–81",
+      "note": "Systematic development of Ramsey-Turán theory including results for K₄"
+    },
+    {
+      "authors": "Sudakov, Benny",
+      "title": "Few remarks on the Ramsey-Turán-type problems",
+      "year": "2003",
+      "venue": "Journal of Combinatorial Theory, Series B, vol. 88, no. 1, pp. 99–106",
+      "note": "Modern advances in Ramsey-Turán problems using dependent random choice"
+    }
+  ],
+  "sorries": 0
+}

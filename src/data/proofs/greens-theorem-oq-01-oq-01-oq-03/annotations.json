@@ -1,0 +1,122 @@
+[
+  {
+    "id": "ann-volume-singleton-zero",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-03",
+    "range": {
+      "startLine": 46,
+      "endLine": 48
+    },
+    "type": "insight",
+    "title": "volume_singleton_zero: Atomlessness via Countability",
+    "content": "Private one-liner showing that any singleton {a} has Lebesgue measure zero. Rather than invoking the standard atomless-measure lemma directly, this proof routes through countability — singletons are countable, and Mathlib's `Set.Countable.measure_zero` gives the conclusion uniformly for any sigma-finite measure. This phrasing generalizes seamlessly to finite/countable subsets of the boundary.",
+    "mathContext": "For Lebesgue measure $\\text{vol}$ on $\\mathbb{R}$: $\\text{vol}(\\{a\\}) = 0$. Proved as $\\text{vol}(\\{a\\}) = \\text{vol}(\\text{(countable set)}) = 0$ via $\\text{Set.Countable.measure\\_zero}$ rather than the more direct $\\text{volume\\_singleton}$. The choice matters when boundaries can have $\\geq 2$ points — a uniform countable-union argument applies.",
+    "significance": "supporting",
+    "relatedConcepts": ["atomless measure", "countable null sets", "Lebesgue measure", "singletons"],
+    "prerequisites": ["Set.Countable.measure_zero", "Set.countable_singleton"]
+  },
+  {
+    "id": "ann-volume-Icc-sdiff-Ioo",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-03",
+    "range": {
+      "startLine": 52,
+      "endLine": 64
+    },
+    "type": "lemma",
+    "title": "volume_Icc_sdiff_Ioo: The Boundary Icc \\ Ioo Has Measure Zero",
+    "content": "The difference Icc a b \\ Ioo a b (the two endpoints {a, b}) has Lebesgue measure zero. Proved by containment in {a} ∪ {b} and countability of singletons.",
+    "mathContext": "$[a,b] \\setminus (a,b) = \\{a,b\\}$, which has measure zero since Lebesgue measure is atomless: $\\text{vol}(\\{x\\}) = 0$ for all $x \\in \\mathbb{R}$ (proved via countability: $\\{x\\}$ is countable, and countable sets have Lebesgue measure zero).",
+    "significance": "key",
+    "relatedConcepts": ["null sets", "singletons", "Lebesgue measure", "countable measure zero"],
+    "prerequisites": ["Set.Countable.measure_zero", "measure_mono_null", "measure_union_null"]
+  },
+  {
+    "id": "ann-volume-restrict-Icc-eq-Ioo",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-03",
+    "range": {
+      "startLine": 71,
+      "endLine": 93
+    },
+    "type": "theorem",
+    "title": "volume_restrict_Icc_eq_Ioo: Restriction Equality (Key Novel Lemma)",
+    "content": "The Lebesgue measure restricted to [a,b] equals the Lebesgue measure restricted to (a,b). The proof uses measure extensionality: for any measurable s, vol(s ∩ [a,b]) = vol(s ∩ (a,b)). The upper bound follows from s ∩ [a,b] ⊆ (s ∩ (a,b)) ∪ {a,b} and subadditivity. The lower bound is immediate from Ioo ⊆ Icc.",
+    "mathContext": "For any Borel measure $\\mu$ and any measurable $s$: $\\mu(s \\cap [a,b]) \\leq \\mu(s \\cap (a,b)) + \\mu([a,b] \\setminus (a,b)) = \\mu(s \\cap (a,b)) + 0$. Combined with $\\mu(s \\cap (a,b)) \\leq \\mu(s \\cap [a,b])$ (from $\\text{Ioo} \\subseteq \\text{Icc}$), we get equality.",
+    "significance": "key",
+    "relatedConcepts": ["measure restriction", "null boundary", "Lebesgue measure", "Icc vs Ioo"],
+    "prerequisites": ["volume_Icc_sdiff_Ioo", "measure_union_le", "measure_mono", "Measure.restrict_apply"]
+  },
+  {
+    "id": "ann-product-measure-equality",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-03",
+    "range": {
+      "startLine": 97,
+      "endLine": 102
+    },
+    "type": "theorem",
+    "title": "volume_prod_restrict_Icc_eq_Ioo: Product Measure Equality",
+    "content": "One-line corollary: the product of Icc-restricted measures equals the product of Ioo-restricted measures, for all pairs of endpoints a,b,c,d.",
+    "mathContext": "Immediate from applying the restriction equality twice: $(\\mu|_{[a,b]}) \\otimes (\\mu|_{[c,d]}) = (\\mu|_{(a,b)}) \\otimes (\\mu|_{(c,d)})$.",
+    "significance": "supporting",
+    "relatedConcepts": ["product measure", "restriction equality"],
+    "prerequisites": ["volume_restrict_Icc_eq_Ioo", "Measure.prod"]
+  },
+  {
+    "id": "ann-fubini-core",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-03",
+    "range": {
+      "startLine": 106,
+      "endLine": 125
+    },
+    "type": "insight",
+    "title": "fubini_core: Inlined Icc Fubini Step",
+    "content": "Private theorem proving Fubini for ordered intervals under the standard Icc-integrability hypothesis. The proof rewrites both interval integrals as set integrals over Ioc via `integral_of_le`, monotonically transfers integrability from `Icc` to `Ioc` (using `Measure.prod_mono` with `Ioc ⊆ Icc`), then invokes Mathlib's abstract `integral_integral_swap`. Inlined here for self-containedness rather than depending on the OQ-01-OQ-01 module.",
+    "mathContext": "Given $f$ measurable and integrable on $[a,b] \\times [c,d]$ (product of Icc-restricted Lebesgue measures), Fubini swap holds: $\\int_c^d \\int_a^b f\\,dx\\,dy = \\int_a^b \\int_c^d f\\,dy\\,dx$. The bridge from interval integrals to Mathlib's product-integral form is `intervalIntegral.integral_of_le`, which rewrites $\\int_a^b$ as $\\int_{(a,b]}$ for $a \\leq b$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Fubini's theorem", "interval integral", "Ioc vs Icc", "monotonic transfer"],
+    "prerequisites": ["intervalIntegral.integral_of_le", "MeasureTheory.integral_integral_swap", "Measure.prod_mono", "Set.Ioc_subset_Icc_self"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-03",
+    "range": {
+      "startLine": 139,
+      "endLine": 148
+    },
+    "type": "theorem",
+    "title": "intervalIntegral_swap_of_Ioo_integrable: Fubini with Open Rectangle Hypothesis",
+    "content": "The main theorem: for ordered intervals with a ≤ b and c ≤ d, Fubini holds under open rectangle (Ioo) integrability. The proof converts Ioo to Icc integrability using volume_restrict_Icc_eq_Ioo, then applies the standard Fubini proof.",
+    "mathContext": "The proof is: $f$ integrable on $(a,b) \\times (c,d)$ iff $f$ integrable on $[a,b] \\times [c,d]$ (since restrictions are equal), and the Fubini swap holds for Icc integrability (proved inline from integral_of_le + integral_integral_swap).",
+    "significance": "key",
+    "relatedConcepts": ["Fubini's theorem", "interval integral", "product measure", "integrability"],
+    "prerequisites": ["volume_restrict_Icc_eq_Ioo", "fubini_core", "integral_of_le", "integral_integral_swap"]
+  },
+  {
+    "id": "ann-equivalence",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-03",
+    "range": {
+      "startLine": 154,
+      "endLine": 159
+    },
+    "type": "theorem",
+    "title": "integrable_Icc_iff_Ioo: Explicit Equivalence of Integrability Conditions",
+    "content": "One-line proof of the explicit iff: Icc integrability ↔ Ioo integrability for Lebesgue measure. Since the product measures are equal, the Integrable predicate is definitionally the same.",
+    "mathContext": "Since $\\mu|_{\\text{Icc}} = \\mu|_{\\text{Ioo}}$ as measures, $\\text{Integrable}(f, \\mu|_{\\text{Icc}} \\otimes \\mu|_{\\text{Icc}}) \\iff \\text{Integrable}(f, \\mu|_{\\text{Ioo}} \\otimes \\mu|_{\\text{Ioo}})$ is immediate by substitution.",
+    "significance": "supporting",
+    "relatedConcepts": ["integrable predicate", "measure equality", "iff"],
+    "prerequisites": ["volume_prod_restrict_Icc_eq_Ioo"]
+  },
+  {
+    "id": "ann-greens-application",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-03",
+    "range": {
+      "startLine": 163,
+      "endLine": 175
+    },
+    "type": "concept",
+    "title": "greens_fubini_open_rectangle: Application to Green's Theorem Pipeline",
+    "content": "Specializes the main Fubini result to the uncurried form `dPdy : ℝ × ℝ → ℝ` that arises in Green's theorem (where `dPdy` is the partial derivative of `P` with respect to `y`). The proof is one line: `dPdy (x, y)` and `fun p => dPdy (p.1, p.2)` are definitionally equal, so `intervalIntegral_swap_of_Ioo_integrable` applies directly. This closes the open question by demonstrating drop-in usability in the Green's theorem proof.",
+    "mathContext": "For the standard Green's theorem $\\oint_{\\partial R} P\\,dx + Q\\,dy = \\iint_R (\\partial Q/\\partial x - \\partial P/\\partial y)\\,dA$ on a rectangle $R = [a,b] \\times [c,d]$, the iterated integral swap is needed for the $\\partial P/\\partial y$ term. The hypothesis $\\partial P/\\partial y$ integrable on $(a,b) \\times (c,d)$ suffices, matching how continuous partial derivatives are typically established only on open neighborhoods.",
+    "significance": "supporting",
+    "relatedConcepts": ["Green's theorem", "uncurried functions", "iterated integrals", "open neighborhood"],
+    "prerequisites": ["intervalIntegral_swap_of_Ioo_integrable", "function uncurrying"]
+  }
+]

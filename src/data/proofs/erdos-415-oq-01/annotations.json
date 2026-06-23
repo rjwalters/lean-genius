@@ -1,0 +1,35 @@
+[
+  {
+    "id": "ann-k2",
+    "proofId": "erdos-415-oq-01",
+    "range": {
+      "startLine": 35,
+      "endLine": 42
+    },
+    "type": "concept",
+    "title": "The Base Case: Both Adjacent Orderings",
+    "content": "pattern_lt and pattern_gt give the two 2! = 2 orderings of adjacent totients: an increasing pair φ(2)=1 < 2=φ(3) and a decreasing pair φ(5)=4 > 2=φ(6). Both occur within [1,6], so F(n) ≥ 2 for every n ≥ 6 — the smallest nontrivial instance of the ordering-pattern problem."
+  },
+  {
+    "id": "ann-monotone-runs",
+    "proofId": "erdos-415-oq-01",
+    "range": {
+      "startLine": 44,
+      "endLine": 77
+    },
+    "type": "insight",
+    "title": "The Rare Monotone Runs",
+    "content": "Of the six orderings of three consecutive totients, four are 'mixed' and appear almost immediately (m ≤ 16). The two strictly monotone runs are rare. The first strictly increasing run is φ(105)=48 < φ(106)=52 < φ(107)=106 (φ(107)=106 because 107 is prime); the first strictly decreasing run is φ(313)=312 > φ(314)=156 > φ(315)=144. The proofs use kernel decide with a raised maxRecDepth (the totient of 315 exceeds the default recursion limit) — still kernel decide, not native_decide, so no Lean.ofReduceBool is introduced."
+  },
+  {
+    "id": "ann-bound",
+    "proofId": "erdos-415-oq-01",
+    "range": {
+      "startLine": 79,
+      "endLine": 97
+    },
+    "type": "insight",
+    "title": "F(n) ≥ 3, Explicitly",
+    "content": "all_six_orderings_realized bundles the six witnesses: since all 3! = 6 orderings of three consecutive totients are realized by windows inside [1,315], F(n) ≥ 3 for every n ≥ 315. This is the explicit lower-bound counterpart to the parent's asymptotic F(n) ≍ log log log n. extreme_runs_are_late isolates the two monotone runs — their lateness (m = 105, 313 versus m ≤ 16 for the mixed patterns) is the elementary reason F(n) grows only triple-logarithmically: building longer monotone runs of totients requires looking exponentially further out."
+  }
+]

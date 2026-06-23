@@ -1,0 +1,324 @@
+[
+  {
+    "id": "ann-e605-header",
+    "proofId": "erdos-605",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #605** asks whether repeated distances on a sphere can grow superlinearly. Given n points on a 2-sphere, how many pairs can share the same distance? If u_D(n) is the maximum such count for a sphere of radius D, does u_D(n)/n → ∞? The answer is YES, established by Erdős-Hickerson-Pach (1989) and strengthened by Swanepoel-Valtr (2004).",
+    "mathContext": "The function u_D(n) is the spherical analogue of the classical unit distance function. The problem connects discrete geometry, incidence geometry, and algebraic constructions on surfaces.",
+    "significance": "key",
+    "relatedConcepts": [
+      "unit distance problem",
+      "incidence geometry",
+      "spherical geometry"
+    ],
+    "prerequisites": [
+      "combinatorial geometry",
+      "real analysis",
+      "asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-e605-sphere-config",
+    "proofId": "erdos-605",
+    "range": {
+      "startLine": 47,
+      "endLine": 64
+    },
+    "type": "definition",
+    "title": "Sphere and Point Configurations",
+    "content": "We define a **sphere** of radius r as the set of points in ℝ³ at distance r from the origin. A **SphereConfig** is a set of n distinct points, all lying on the sphere. The structure enforces both membership (all points on the sphere) and injectivity (all points distinct).",
+    "mathContext": "Working in EuclideanSpace ℝ (Fin 3) gives us access to Mathlib's inner product space and metric space machinery. The norm ‖p‖ = r condition defines the sphere.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euclidean space",
+      "metric space",
+      "injection"
+    ],
+    "prerequisites": [
+      "Euclidean geometry",
+      "set theory",
+      "Lean 4 structures"
+    ]
+  },
+  {
+    "id": "ann-e605-distance-pairs",
+    "proofId": "erdos-605",
+    "range": {
+      "startLine": 73,
+      "endLine": 86
+    },
+    "type": "definition",
+    "title": "Counting Distance Pairs",
+    "content": "For a configuration, we count **ordered pairs** (i, j) with i < j at distance exactly d. The function countPairsAtDist returns this count, while maxRepeatedDist finds the maximum over all distances. We want maxRepeatedDist to grow superlinearly in n.",
+    "mathContext": "The restriction i < j avoids double-counting. The maximum is taken over all distances that actually appear in the configuration, computed as a supremum over pairs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counting pairs",
+      "distance function",
+      "supremum"
+    ],
+    "prerequisites": [
+      "combinatorics",
+      "order relations",
+      "metric spaces"
+    ]
+  },
+  {
+    "id": "ann-e605-u-function",
+    "proofId": "erdos-605",
+    "range": {
+      "startLine": 95,
+      "endLine": 97
+    },
+    "type": "definition",
+    "title": "The Function u_D(n)",
+    "content": "**u_D(n)** is the central quantity: the maximum number of repeated-distance pairs achievable by any configuration of n points on a sphere of radius D. Defined as sSup (supremum) over all configurations. The question is whether u_D(n) grows faster than linearly in n.",
+    "mathContext": "Formally, u_D(n) = sup{maxRepeatedDist(config) | config is a SphereConfig(n, D)}. This is an extremal function in the style of Turán-type problems.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal function",
+      "supremum",
+      "Turán problem"
+    ],
+    "prerequisites": [
+      "extremal combinatorics",
+      "order theory",
+      "supremum and infimum"
+    ]
+  },
+  {
+    "id": "ann-e605-superlinear",
+    "proofId": "erdos-605",
+    "range": {
+      "startLine": 112,
+      "endLine": 114
+    },
+    "type": "concept",
+    "title": "Superlinear Growth Definition",
+    "content": "**superlinearGrowth(D)** formalizes Erdős's question: for every constant C, there exists N such that u_D(n) ≥ C·n for all n ≥ N. This is equivalent to u_D(n)/n → ∞, meaning the repeated-distance count grows strictly faster than any linear function.",
+    "mathContext": "This is the standard ε-N definition of a function tending to infinity, applied to the ratio u_D(n)/n. It captures 'superlinear' without specifying the exact growth rate.",
+    "significance": "key",
+    "relatedConcepts": [
+      "limit",
+      "growth rate",
+      "omega notation"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "limits of sequences",
+      "quantifier logic"
+    ]
+  },
+  {
+    "id": "ann-e605-iterlog",
+    "proofId": "erdos-605",
+    "range": {
+      "startLine": 124,
+      "endLine": 132
+    },
+    "type": "definition",
+    "title": "Iterated Logarithm",
+    "content": "**log*(n)** counts how many times you must apply the logarithm before reaching ≤ 1. It grows unimaginably slowly: log*(2) = 1, log*(16) = 3, log*(65536) = 4, and log*(2^65536) = 5. Despite this glacial growth, it does tend to infinity — which is all Erdős needed.",
+    "mathContext": "Defined recursively: iterLog(n) = 0 for n ≤ 1, and 1 + iterLog(⌊log n⌋) otherwise. The EHP 1989 bound uses this function, making it historically significant even though Swanepoel-Valtr later improved it.",
+    "significance": "key",
+    "relatedConcepts": [
+      "iterated logarithm",
+      "recursive function",
+      "tower function"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "recursion theory",
+      "Lean 4 recursive definitions"
+    ]
+  },
+  {
+    "id": "ann-e605-ehp",
+    "proofId": "erdos-605",
+    "range": {
+      "startLine": 140,
+      "endLine": 150
+    },
+    "type": "concept",
+    "title": "Erdős-Hickerson-Pach Bound (1989)",
+    "content": "The **first superlinear bound**: u_D(n) ≥ c·n·log*(n) for spheres of radius D > 1. This landmark result resolved Problem #605 affirmatively. The proof uses a recursive geometric construction related to the Borsuk-Ulam theorem.",
+    "mathContext": "Axiomatized because the proof requires sophisticated geometric arguments involving spherical configurations and topological methods not available in Mathlib.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Borsuk-Ulam theorem",
+      "recursive construction",
+      "superlinear bound"
+    ],
+    "prerequisites": [
+      "discrete geometry",
+      "algebraic topology",
+      "asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-e605-swanepoel-valtr",
+    "proofId": "erdos-605",
+    "range": {
+      "startLine": 152,
+      "endLine": 161
+    },
+    "type": "concept",
+    "title": "Swanepoel-Valtr Bound (2004)",
+    "content": "The **best known lower bound**: u_D(n) ≥ c·n·√(log n) for D > 1. This vastly improves EHP — for n = 10^100, √(log n) ≈ 15 while log*(n) ≈ 5. The proof uses algebraic geometry on the sphere to construct point sets with many repeated distances.",
+    "mathContext": "The improvement from log*(n) to √(log n) is enormous in practice, even though both are subpolynomial. The √(log n) factor is the current frontier of knowledge for general spheres.",
+    "significance": "key",
+    "relatedConcepts": [
+      "algebraic construction",
+      "lower bound",
+      "square root of logarithm"
+    ],
+    "prerequisites": [
+      "discrete geometry",
+      "algebraic geometry",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-e605-upper",
+    "proofId": "erdos-605",
+    "range": {
+      "startLine": 163,
+      "endLine": 172
+    },
+    "type": "concept",
+    "title": "Upper Bound: n^{4/3}",
+    "content": "For **all** radii D > 0, u_D(n) ≤ C·n^{4/3}. This universal upper bound comes from incidence geometry — specifically, the Szemerédi-Trotter theorem adapted to points and circles in three dimensions.",
+    "mathContext": "The exponent 4/3 matches the √2 sphere lower bound, showing it cannot be improved in general. For other radii, the true growth may be much lower than n^{4/3}.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Szemerédi-Trotter theorem",
+      "incidence bound",
+      "upper bound"
+    ],
+    "prerequisites": [
+      "incidence geometry",
+      "combinatorial geometry",
+      "asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-e605-sqrt2",
+    "proofId": "erdos-605",
+    "range": {
+      "startLine": 174,
+      "endLine": 186
+    },
+    "type": "concept",
+    "title": "√2 Sphere: Tight Bound n^{4/3}",
+    "content": "The sphere of radius **√2 is magical**: u(n) ≍ n^{4/3}, achieving the upper bound exactly. This happens because √2 is the circumradius of a unit cube — the 8 vertices of a cube inscribed in this sphere create 12 edges of equal length, and generalizations of this construction yield the n^{4/3} lower bound.",
+    "mathContext": "The tight bound means both c·n^{4/3} ≤ u(n) ≤ C·n^{4/3} for constants c, C > 0. This is the only known radius achieving n^{4/3}.",
+    "significance": "key",
+    "relatedConcepts": [
+      "inscribed cube",
+      "tight bound",
+      "algebraic construction"
+    ],
+    "prerequisites": [
+      "Euclidean geometry",
+      "incidence geometry",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-e605-main-theorem",
+    "proofId": "erdos-605",
+    "range": {
+      "startLine": 203,
+      "endLine": 210
+    },
+    "type": "concept",
+    "title": "Main Theorem: Erdős #605 Solved",
+    "content": "**The answer is YES.** For any sphere of radius D > 1, repeated distances grow superlinearly: u_D(n)/n → ∞. The proof combines the Swanepoel-Valtr bound u_D(n) ≥ c·n·√(log n) with the fact that √(log n) → ∞.",
+    "mathContext": "The theorem erdos_605 states superlinearGrowth(D) for all D > 1. It follows from erdos_605_superlinear, which is axiomatized since the full proof chain requires analysis beyond basic Lean tactics.",
+    "significance": "key",
+    "relatedConcepts": [
+      "superlinear growth",
+      "Swanepoel-Valtr",
+      "problem resolution"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "discrete geometry",
+      "Lean 4 tactic mode"
+    ]
+  },
+  {
+    "id": "ann-e605-witness",
+    "proofId": "erdos-605",
+    "range": {
+      "startLine": 212,
+      "endLine": 220
+    },
+    "type": "concept",
+    "title": "Witness Function",
+    "content": "An explicit witness for Problem #605: **f(n) = √(log n)** satisfies f(n) → ∞ and u_D(n) ≥ f(n)·n for large n. This is the strongest known witness function for general spheres.",
+    "mathContext": "Stated using Filter.Tendsto for the divergence condition, matching Mathlib's formalism for limits at infinity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "witness function",
+      "filter",
+      "tendsto"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "filters and limits",
+      "Mathlib library structure"
+    ]
+  },
+  {
+    "id": "ann-e605-planar",
+    "proofId": "erdos-605",
+    "range": {
+      "startLine": 230,
+      "endLine": 239
+    },
+    "type": "concept",
+    "title": "Unit Distance Connection",
+    "content": "The classical **planar unit distance problem** asks how many pairs at distance 1 can occur among n points in ℝ². Problem #605 extends this to spherical surfaces. The sphere allows more repeated distances than the plane for large radii.",
+    "mathContext": "The planar bound is Θ(n^{1+c/log log n}), barely superlinear. The spherical bound n·√(log n) is of a different character, reflecting the richer geometric structure of curved surfaces.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "unit distance problem",
+      "planar geometry",
+      "Erdős distance problems"
+    ],
+    "prerequisites": [
+      "combinatorial geometry",
+      "Euclidean geometry",
+      "asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-e605-constructions",
+    "proofId": "erdos-605",
+    "range": {
+      "startLine": 247,
+      "endLine": 250
+    },
+    "type": "concept",
+    "title": "Geometric Constructions",
+    "content": "**Great circles** give linear bounds: n points equally spaced on a great circle yield Ω(n) repeated-distance pairs. **Cube vertices** on the √2 sphere give 12 pairs among 8 points. The superlinear bounds require more sophisticated algebraic constructions.",
+    "mathContext": "The cube_vertices_bound axiom states u(√2, 8) ≥ 12, corresponding to the 12 edges of a cube. Each edge of a unit cube inscribed in a √2 sphere has length 2.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "great circle",
+      "regular polyhedra",
+      "cube"
+    ],
+    "prerequisites": [
+      "Euclidean geometry",
+      "polyhedral combinatorics",
+      "extremal combinatorics"
+    ]
+  }
+]

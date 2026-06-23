@@ -1,0 +1,173 @@
+[
+  {
+    "id": "ann-e1119-header",
+    "proofId": "erdos-1119",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1119** generalizes Wetzel's 1963 question to arbitrary intermediate cardinals. Given a family of entire functions with at most 𝔪 distinct values at each point (where ℵ₀ < 𝔪 < 𝔠), must the family have cardinality ≤ 𝔪? The answer depends on cardinal arithmetic: YES if 𝔪⁺ < 𝔠 (Hayman 1974), but INDEPENDENT of ZFC if 𝔪⁺ = 𝔠 (Kumar-Shelah 2017 and Schilhan-Weinert 2024). This completely resolves the problem.",
+    "mathContext": "The problem connects complex analysis (entire functions, identity theorem) with set theory (cardinal arithmetic, forcing models). The identity theorem — distinct entire functions agree on at most countably many points — is the key analytic input constraining family sizes.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Wetzel problem",
+      "entire functions",
+      "cardinal arithmetic",
+      "ZFC independence"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "set theory",
+      "cardinal arithmetic",
+      "mathematical logic"
+    ]
+  },
+  {
+    "id": "ann-e1119-definitions",
+    "proofId": "erdos-1119",
+    "range": {
+      "startLine": 36,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "Core Definitions",
+    "content": "**IsEntire** is axiomatized as a predicate on ℂ → ℂ (holomorphicity on all of ℂ is too complex to define constructively). **valuesAtPoint** gives the set {f_α(z₀) : α ∈ ι} for a family at a point z₀. **IsWetzelFamily** requires #(valuesAtPoint family z₀) ≤ 𝔪 for all z₀, meaning at most 𝔪 distinct function values appear at each point. This is the central constraint: local multiplicity bounds global family size.",
+    "mathContext": "The cardinality #(valuesAtPoint family z₀) counts distinct values, not distinct functions. Many functions may agree at z₀ while differing elsewhere. The identity theorem constrains how much agreement is possible.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsEntire",
+      "valuesAtPoint",
+      "IsWetzelFamily",
+      "Cardinal"
+    ],
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library structure",
+      "set theory",
+      "cardinal arithmetic"
+    ]
+  },
+  {
+    "id": "ann-e1119-wetzel",
+    "proofId": "erdos-1119",
+    "range": {
+      "startLine": 50,
+      "endLine": 69
+    },
+    "type": "concept",
+    "title": "The Original Wetzel Problem (Erdős 1964)",
+    "content": "**WetzelProblem** specializes IsWetzelFamily to 𝔪 = ℵ₀: countably many values at each point. **erdos_1964_wetzel** axiomatizes Erdős's 1964 theorem: under ¬CH (𝔠 > ℵ₁), every Wetzel family of entire functions is countable. **erdos_1964_wetzel_ch** captures the complementary result: under CH (𝔠 = ℵ₁), uncountable Wetzel families exist. Together these show the original Wetzel question is equivalent to ¬CH.",
+    "mathContext": "Erdős's proof under ¬CH uses a diagonal argument: if the family were uncountable (≥ ℵ₁), by the identity theorem each pair of functions agrees on a countable set, producing ℵ₁ many countable 'agreement sets' — but with only ℵ₀-many values at each point, a counting argument yields a contradiction when 𝔠 > ℵ₁.",
+    "significance": "key",
+    "relatedConcepts": [
+      "WetzelProblem",
+      "Continuum Hypothesis",
+      "diagonal argument"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "cardinal arithmetic",
+      "mathematical logic",
+      "combinatorics"
+    ]
+  },
+  {
+    "id": "ann-e1119-easycase",
+    "proofId": "erdos-1119",
+    "range": {
+      "startLine": 71,
+      "endLine": 84
+    },
+    "type": "concept",
+    "title": "The Easy Case: 𝔪⁺ < 𝔠",
+    "content": "**succCard** defines the cardinal successor via Order.succ. **easy_case** axiomatizes Hayman's 1974 observation: if 𝔪⁺ < 𝔠, then every family of entire functions with at most 𝔪 values at each point has cardinality ≤ 𝔪. This generalizes Erdős's Wetzel result from ℵ₀ to arbitrary 𝔪. The proof extends the diagonal/counting argument: the identity theorem still constrains pairwise agreement, and having room between 𝔪⁺ and 𝔠 provides the combinatorial slack needed.",
+    "mathContext": "The condition 𝔪⁺ < 𝔠 means there are 'enough' reals relative to the cardinal 𝔪. When 𝔪⁺ = 𝔠, this slack disappears and the argument breaks down — which is exactly where independence emerges.",
+    "significance": "key",
+    "relatedConcepts": [
+      "succCard",
+      "Order.succ",
+      "Hayman",
+      "diagonalization"
+    ],
+    "prerequisites": [
+      "cardinal arithmetic",
+      "order theory",
+      "complex analysis",
+      "combinatorics"
+    ]
+  },
+  {
+    "id": "ann-e1119-independence",
+    "proofId": "erdos-1119",
+    "range": {
+      "startLine": 86,
+      "endLine": 109
+    },
+    "type": "concept",
+    "title": "Independence Results (𝔪⁺ = 𝔠)",
+    "content": "**kumar_shelah_2017** asserts the existence of a cardinal 𝔪 = ℵ₁ with 𝔪⁺ = 𝔠 = ℵ₂ such that every Wetzel family of type 𝔪 has cardinality ≤ 𝔪 (YES answer). **schilhan_weinert_2024** asserts the existence of the same cardinal setup but with a family exceeding 𝔪 in size (NO answer). Together these establish that Problem #1119 is independent of ZFC when 𝔪⁺ = 𝔠. The axioms are structured to capture the mathematical content rather than the model-theoretic machinery.",
+    "mathContext": "Kumar-Shelah use iterated forcing to build a model where a combinatorial principle (club guessing) constrains function families. Schilhan-Weinert use a different forcing to build a model with a large family. The independence is a genuine ZFC phenomenon, not an artifact of formalization.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ZFC independence",
+      "forcing",
+      "Kumar-Shelah",
+      "Schilhan-Weinert"
+    ],
+    "prerequisites": [
+      "axiomatic set theory",
+      "forcing",
+      "mathematical logic",
+      "cardinal arithmetic"
+    ]
+  },
+  {
+    "id": "ann-e1119-identity",
+    "proofId": "erdos-1119",
+    "range": {
+      "startLine": 111,
+      "endLine": 119
+    },
+    "type": "concept",
+    "title": "The Identity Theorem for Entire Functions",
+    "content": "**identity_theorem_entire** axiomatizes the key analytic fact: if two entire functions agree on an uncountable set, they are equal. This is the engine driving all Wetzel-type results. It means distinct members of an entire function family can share at most countably many common values, creating a tension between the 'at most 𝔪 values' constraint and the size of the family.",
+    "mathContext": "The identity theorem for entire functions follows from the fact that zeros of a non-constant entire function are isolated (and hence countable). If f - g vanishes on an uncountable set, f - g ≡ 0.",
+    "significance": "key",
+    "relatedConcepts": [
+      "identity theorem",
+      "isolated zeros",
+      "entire functions"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "real analysis",
+      "point-set topology"
+    ]
+  },
+  {
+    "id": "ann-e1119-cardinals",
+    "proofId": "erdos-1119",
+    "range": {
+      "startLine": 121,
+      "endLine": 133
+    },
+    "type": "concept",
+    "title": "Cardinal Arithmetic and Wetzel's Question",
+    "content": "**continuum_eq_two_aleph_zero** proves 𝔠 = 2^{ℵ₀} by definitional unfolding. **gch_implies_no_intermediate** axiomatizes that under GCH (𝔠 = ℵ₁), no cardinal exists between ℵ₀ and 𝔠 — so Problem #1119 is vacuous. **not_ch_intermediate** gives the converse: under ¬CH, intermediate cardinals exist and the problem is meaningful. **WetzelQuestion** and **wetzel_equivalent_to_ch** capture that the original Wetzel question is equivalent to ¬CH.",
+    "mathContext": "The cardinal arithmetic here controls when the problem has content. GCH (at ℵ₀) makes the hypothesis ℵ₀ < 𝔪 < 𝔠 vacuous. The interesting cases require 𝔠 ≥ ℵ₂, with 𝔠 = ℵ₂ being the most studied.",
+    "significance": "key",
+    "relatedConcepts": [
+      "GCH",
+      "continuum",
+      "aleph",
+      "Wetzel equivalence"
+    ],
+    "prerequisites": [
+      "cardinal arithmetic",
+      "axiomatic set theory",
+      "mathematical logic"
+    ]
+  }
+]

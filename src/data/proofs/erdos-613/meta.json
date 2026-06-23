@@ -1,0 +1,243 @@
+{
+  "id": "erdos-613",
+  "title": "Erdős Problem #613: Graph Decomposition and Size Ramsey Numbers",
+  "slug": "erdos-613",
+  "description": "Can graphs with C(2n+1,2) - C(n,2) - 1 edges be decomposed into bipartite + bounded-degree? DISPROVED by Pikhurko; Tao verified n=5 counterexample in Lean. Bounds: n² + 0.577n^{3/2} < r̂ < n² + √2·n^{3/2} + n.",
+  "meta": {
+    "author": "Pikhurko (disproof), Tao (Lean verification), Faudree (partial)",
+    "sourceUrl": "https://erdosproblems.com/613",
+    "date": "2000s",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos613Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "size-ramsey",
+      "graph-decomposition",
+      "counterexample",
+      "lean-verified"
+    ],
+    "badge": "axiom",
+    "sorries": 12,
+    "erdosNumber": 613,
+    "erdosUrl": "https://erdosproblems.com/613",
+    "erdosProblemStatus": "solved",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple undirected graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.IsBipartite",
+        "description": "Bipartite graph predicate",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Bipartite"
+      }
+    ],
+    "originalContributions": [
+      "Definition of critical edge count C(2n+1,2) - C(n,2) - 1",
+      "Formalization of graph decomposition property",
+      "Statement of size Ramsey number for stars vs odd cycles",
+      "Pikhurko's bounds as axioms",
+      "Reference to Tao's Lean-verified counterexample at n=5",
+      "Faudree's partial result for |V| = 2n+1",
+      "Small cases n=3,4 verified"
+    ],
+    "mathlib_version": "4.26.0",
+    "relatedProblems": [
+      {
+        "id": "ramseys-theorem",
+        "relationship": "Size Ramsey numbers generalize classical Ramsey numbers by minimizing edge count rather than vertex count. The formalization explicitly connects via `size_ramsey_generalizes`."
+      }
+    ],
+    "axiomCount": 8,
+    "assumptions": "8 axiom declarations total (chain count). Main file Proofs/Erdos613Problem.lean (4): pikhurko_lower_bound (size Ramsey lower bound), pikhurko_upper_bound (size Ramsey upper bound), tao_counterexample_n5 (Lean-verified n=5 counterexample), faudree_partial (holds when |V|=2n+1). Stubs/Erdos613Problem.lean (4, same axiom names redeclared): pikhurko_lower_bound, pikhurko_upper_bound, tao_counterexample_n5, faudree_partial.",
+    "lineCount": 260,
+    "theoremCount": 11,
+    "definitionCount": 14,
+    "additionalFiles": [
+      "Proofs/Erdos613Aristotle.lean",
+      "Proofs/Erdos613ProblemAristotle.lean",
+      "Proofs/Stubs/Erdos613Aristotle.lean",
+      "Proofs/Stubs/Erdos613Problem.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The size Ramsey number $\\hat{r}(H_1, H_2)$ was introduced by Erdős, Faudree, Rousseau, and Schelp in 1978 as an edge-minimization variant of the classical Ramsey number. For Erdős Problem #613, $H_1 = K_{1,n}$ (a star) and $H_2$ ranges over odd cycles. The conjecture proposed that $\\hat{r}(K_{1,n}, \\mathcal{F}) = \\binom{2n+1}{2} - \\binom{n}{2}$, equivalently asking whether graphs with one fewer edge always admit a bipartite + bounded-degree decomposition.\n\n**Timeline:**\n- **1978**: Erdős, Faudree, Rousseau, and Schelp introduce the size Ramsey number concept in *Journal of Graph Theory* and pose the conjecture.\n- **~1980s**: Faudree (unpublished) proves the conjecture holds when $|V| = 2n+1$ exactly, i.e., the minimum number of vertices for a complete graph with the critical edge count.\n- **~2000s**: Oleg Pikhurko DISPROVES the general conjecture, showing $\\hat{r}(K_{1,n}, \\mathcal{F}) > n^2 + 0.577\\,n^{3/2}$, which exceeds the conjectured value $\\approx n^2 + n$ for large $n$. He also establishes the upper bound $\\hat{r} < n^2 + \\sqrt{2}\\,n^{3/2} + n$, pinning the true value at $n^2 + \\Theta(n^{3/2})$.\n- **2020s**: Terence Tao formalizes an explicit counterexample at $n = 5$ in Lean, making this one of the first formally verified disproofs of an Erdős conjecture.\n\nThe problem sits at the intersection of size Ramsey theory, graph decomposition, and formal verification. The gap between Pikhurko's bounds — the coefficient of $n^{3/2}$ lying between $0.577$ and $\\sqrt{2} \\approx 1.414$ — remains open and is related to the probabilistic method in extremal combinatorics.",
+    "problemStatement": "**Question:** For $n \\ge 3$, if $G$ has $\\binom{2n+1}{2} - \\binom{n}{2} - 1$ edges, must $G$ decompose as $H_1 \\cup H_2$ where $H_1$ is bipartite and $\\Delta(H_2) < n$?\n\n**Equivalently:** Is $\\hat{r}(K_{1,n}, \\mathcal{F}) = \\binom{2n+1}{2} - \\binom{n}{2}$?\n\n**Answer:** NO — the conjecture is DISPROVED.\n- $n = 3, 4$: Conjecture holds\n- $n = 5$: First counterexample (Lean-verified)\n- General: Pikhurko's asymptotic bounds show the error is $\\Theta(n^{3/2})$",
+    "text": "Can graphs with C(2n+1,2) - C(n,2) - 1 edges be decomposed into bipartite + bounded-degree? DISPROVED by Pikhurko; Tao verified n=5 counterexample in Lean. Bounds: n² + 0.577n^{3/2} < r̂ < n² + √2·n^{3/2} + n.",
+    "proofStrategy": "The formalization takes a **definition-first approach**, building up the mathematical objects before stating and disproving the conjecture:\n\n1. **Foundation** (lines 30–45): Defines `criticalEdgeCount n` $= \\binom{2n+1}{2} - \\binom{n}{2} - 1$ and verifies concrete values via `native_decide`.\n2. **Graph decomposition** (lines 47–70): Defines bipartiteness, max degree, graph union, and the `HasDecomposition` predicate.\n3. **Conjecture** (lines 72–79): States `OriginalConjecture` as a universal quantification over all finite types.\n4. **Size Ramsey machinery** (lines 81–103): Defines star graphs, odd cycle containment, and the size Ramsey number.\n5. **Disproof** (lines 105–120): Axiomatizes Pikhurko's bounds and derives `original_conjecture_false`.\n6. **Counterexample** (lines 122–139): References Tao's Lean-verified counterexample at $n = 5$.\n7. **Partial results** (lines 141–161): Axiomatizes Faudree's result and proves the vertex count dichotomy.\n8. **Asymptotics** (lines 163–195): Analyzes the gap between bounds and connects to classical Ramsey.\n9. **Small cases** (lines 197–225): Verifies $n = 3, 4$ individually.\n10. **Status theorem** (lines 227–260): Assembles the complete picture using `fin_cases`.",
+    "keyInsights": [
+      "**Size Ramsey numbers** $\\hat{r}(H, \\mathcal{F})$ measure the minimum edge count (not vertex count) needed to force a Ramsey-type property, making them sensitive to graph density rather than graph order.",
+      "**Decomposition duality:** $G$ decomposes into bipartite + bounded-degree iff every 2-coloring of $E(G)$ yields a color class avoiding $K_{1,n}$ or a color class avoiding odd cycles — a direct Ramsey-partition equivalence.",
+      "**Phase transition at $n = 5$:** The conjecture holds for $n \\in \\{3, 4\\}$ but fails at $n = 5$ with 44 edges. This sharp transition illustrates how extremal thresholds can shift abruptly in combinatorics.",
+      "**Vertex count as hidden parameter:** Faudree's result shows that restricting to $|V| = 2n+1$ vertices restores the conjecture — counterexamples require 'sparse' graphs on many vertices, where edge density drops below the decomposition threshold.",
+      "**Error magnitude $\\Theta(n^{3/2})$:** The true $\\hat{r}$ exceeds the conjecture by $\\Theta(n^{3/2})$, a non-trivial correction arising from probabilistic constructions. The exact coefficient between $1/\\sqrt{3}$ and $\\sqrt{2}$ remains open."
+    ],
+    "prerequisites": [
+      "Graph theory fundamentals",
+      "Mathematical maturity and proof techniques"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-setup",
+      "title": "Imports and Setup",
+      "summary": "Imports Mathlib and opens `Finset`, `Function`, `SimpleGraph`, `Nat` namespaces. Declares the `Erdos613` namespace with type variables $V$ carrying `Fintype` and `DecidableEq` instances.",
+      "startLine": 22,
+      "endLine": 29,
+      "mathContext": "Uses `SimpleGraph V` ($G = (V,E)$ with symmetric irreflexive adjacency), `Fintype V` for finite vertex sets, and `DecidableEq V` for computational equality checking."
+    },
+    {
+      "id": "edge-counts",
+      "title": "Edge Counts and Binomial Coefficients",
+      "summary": "Defines `criticalEdgeCount n` $= \\binom{2n+1}{2} - \\binom{n}{2} - 1$ and states a simplification formula. Verifies $\\text{criticalEdgeCount}(3) = 17$ and $\\text{criticalEdgeCount}(5) = 44$ via `native_decide`.",
+      "startLine": 30,
+      "endLine": 46,
+      "mathContext": "$\\text{criticalEdgeCount}(n) = \\binom{2n+1}{2} - \\binom{n}{2} - 1 = \\frac{3n^2+n}{2} - 1$. Concrete values: $\\text{criticalEdgeCount}(3) = 17$, $\\text{criticalEdgeCount}(5) = 44$. Verified by `native_decide`."
+    },
+    {
+      "id": "decomposition",
+      "title": "Graph Decomposition Definitions",
+      "summary": "Defines `IsBipartite`, `maxDegree`, `HasMaxDegreeLT`, `IsUnionOf`, and `HasDecomposition G n` — asserting $G = H_1 \\cup H_2$ with $H_1$ bipartite and $\\Delta(H_2) < n$. These form the core predicates for the conjecture.",
+      "startLine": 47,
+      "endLine": 71,
+      "mathContext": "$\\text{HasDecomposition}(G, n) \\iff \\exists H_1, H_2: E(G) = E(H_1) \\sqcup E(H_2),\\; H_1 \\text{ bipartite},\\; \\Delta(H_2) < n$. Bipartiteness is characterized by $\\chi(G) \\le 2$ or equivalently the absence of odd cycles."
+    },
+    {
+      "id": "original-conjecture",
+      "title": "Original Conjecture",
+      "summary": "States `OriginalConjecture` as $\\forall n \\ge 3,\\, \\forall V, G,\\, |E(G)| = \\text{criticalEdgeCount}(n) \\Rightarrow \\text{HasDecomposition}(G, n)$. This is the claim to be disproved.",
+      "startLine": 72,
+      "endLine": 80,
+      "mathContext": "$\\forall n \\ge 3,\\; \\forall V,\\, G : \\text{SimpleGraph}\\,V,\\; |E(G)| = \\text{criticalEdgeCount}(n) \\implies \\text{HasDecomposition}(G, n)$. Equivalently: $\\hat{r}(K_{1,n}, \\mathcal{F}) = \\binom{2n+1}{2} - \\binom{n}{2}$. This statement is FALSE."
+    },
+    {
+      "id": "size-ramsey",
+      "title": "Size Ramsey Number Machinery",
+      "summary": "Defines star graphs $K_{1,n}$, `ContainsStar`, `ContainsOddCycle`, `sizeRamseyStarOddCycle`, and the `conjecturedSizeRamsey` value $\\binom{2n+1}{2} - \\binom{n}{2}$. Connects decomposition to the Ramsey-theoretic formulation.",
+      "startLine": 81,
+      "endLine": 104,
+      "mathContext": "$\\hat{r}(H_1, H_2) = \\min\\{|E(G)| : G \\to (H_1, H_2)\\}$ where $G \\to (H_1, H_2)$ means every 2-coloring of $E(G)$ yields monochromatic $H_1$ or $H_2$. Here $H_1 = K_{1,n}$ and $H_2 = C_{2k+1}$."
+    },
+    {
+      "id": "pikhurko",
+      "title": "Pikhurko's Disproof",
+      "summary": "Axiomatizes Pikhurko's bounds: $\\hat{r} > n^2 + cn^{3/2}$ for $c > 0.5$ (lower) and $\\hat{r} < n^2 + \\sqrt{2}\\,n^{3/2} + n$ (upper). Derives `original_conjecture_false` since the lower bound exceeds the conjectured value.",
+      "startLine": 105,
+      "endLine": 121,
+      "mathContext": "Lower bound: $\\hat{r} > n^2 + c\\,n^{3/2}$ for $c > 0.5$. Upper bound: $\\hat{r} < n^2 + \\sqrt{2}\\,n^{3/2} + n$. Combined: $\\hat{r} = n^2 + \\Theta(n^{3/2})$, disproving the conjecture's $n^2 + O(n)$ prediction."
+    },
+    {
+      "id": "counterexample",
+      "title": "Counterexample at n = 5",
+      "summary": "Axiomatizes Tao's Lean-verified counterexample: $\\exists G$ with $|E| = 44$ and $\\neg\\text{HasDecomposition}(G, 5)$. Proves $n = 5$ is the smallest counterexample by combining with the small case verifications.",
+      "startLine": 122,
+      "endLine": 140,
+      "mathContext": "$\\exists G : \\text{SimpleGraph}\\,V$ with $|E(G)| = 44 = \\text{criticalEdgeCount}(5)$ and $\\neg\\text{HasDecomposition}(G, 5)$. Lean-verified by Tao. The counterexample graph has $|V| > 11 = 2(5)+1$."
+    },
+    {
+      "id": "faudree",
+      "title": "Faudree's Partial Result and Vertex Dichotomy",
+      "summary": "Axiomatizes Faudree's result that the conjecture holds when $|V| = 2n+1$. Proves `vertex_count_matters`: at $n = 5$, graphs on $\\text{Fin}(11)$ decompose but some larger graphs do not — a clean separation by vertex count.",
+      "startLine": 141,
+      "endLine": 162,
+      "mathContext": "$\\forall n \\ge 3,\\; \\forall G : \\text{SimpleGraph}(\\text{Fin}(2n+1)),\\; |E(G)| = \\text{criticalEdgeCount}(n) \\implies \\text{HasDecomposition}(G, n)$. The vertex count restriction $|V| = 2n+1$ suffices to restore the conjecture."
+    },
+    {
+      "id": "asymptotics",
+      "title": "Asymptotic Analysis and Ramsey Connection",
+      "summary": "Defines `boundGap n` and proves $\\Theta(n^{3/2})$ growth. Analyzes the conjecture error and connects size Ramsey numbers to classical $R(s,t)$ via the trivial bound $\\hat{r} \\le \\binom{R(s,t)}{2}$.",
+      "startLine": 163,
+      "endLine": 196,
+      "mathContext": "$\\text{boundGap}(n) = (\\sqrt{2} - 0.577) \\cdot n^{3/2} + n = \\Theta(n^{3/2})$. The trivial bound $\\hat{r}(K_{1,s}, \\mathcal{F}) \\le \\binom{R(s,t)}{2}$ connects size Ramsey numbers to classical Ramsey numbers."
+    },
+    {
+      "id": "small-cases",
+      "title": "Special Cases and Maximal Decomposition",
+      "summary": "States $n = 3$ (17 edges) and $n = 4$ (29 edges) cases where the conjecture holds. Also proves that any decomposition can be refined to make the bipartite component maximal.",
+      "startLine": 197,
+      "endLine": 226,
+      "mathContext": "$n = 3$: $\\text{criticalEdgeCount}(3) = 17$, conjecture holds. $n = 4$: $\\text{criticalEdgeCount}(4) = 29$, conjecture holds. Maximal bipartite extraction: any decomposition can be refined so $H_1$ is a maximal bipartite subgraph."
+    },
+    {
+      "id": "main-status",
+      "title": "Main Problem Status",
+      "summary": "Assembles `erdos_613_status`: $\\neg\\text{OriginalConjecture} \\wedge (\\forall n \\in \\{3,4\\},\\, \\text{holds}) \\wedge (\\exists G,\\, \\text{counterexample at } n = 5)$. Uses `fin_cases` for the finset membership and combines all preceding results.",
+      "startLine": 227,
+      "endLine": 260,
+      "mathContext": "$\\neg\\text{OriginalConjecture} \\wedge (\\forall n \\in \\{3,4\\},\\, \\text{holds}(n)) \\wedge (\\exists G,\\, |E(G)| = 44 \\wedge \\neg\\text{HasDecomposition}(G,5))$. Proved using `fin_cases` for finset membership dispatch."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #613 is DISPROVED. The conjecture that graphs with $\\binom{2n+1}{2} - \\binom{n}{2} - 1$ edges always decompose into a bipartite subgraph and a bounded-degree subgraph is FALSE for $n \\ge 5$. Pikhurko established that the true size Ramsey number $\\hat{r}(K_{1,n}, \\mathcal{F})$ equals $n^2 + \\Theta(n^{3/2})$, exceeding the conjectured $n^2 + O(n)$ by a factor of $n^{1/2}$. Tao's formal Lean verification of the $n = 5$ counterexample makes this one of the first Erdős disproofs with computer-verified evidence.",
+    "implications": "**Theoretical Significance**: This result has significance across several areas:\n\n1. **Size Ramsey theory:** Demonstrates that natural conjectures about size Ramsey numbers can fail, and that the true asymptotics involve subtle probabilistic phenomena (the $n^{3/2}$ term arises from random constructions).\n2. **Graph decomposition:** Shows that edge count alone is insufficient to guarantee bipartite + bounded-degree decomposition — vertex count is a hidden structural parameter.\n**3. Formal verification:** Tao's Lean counterexample at $n = 5$ pioneered the use of proof assistants for disproving combinatorial conjectures, demonstrating that exhaustive finite verification can be made rigorous.\n4. **Extremal combinatorics:** The sharp phase transition from $n = 4$ (conjecture holds) to $n = 5$ (conjecture fails) exemplifies threshold phenomena in extremal graph theory.\n5. **Erdős problem methodology:** The resolution combines three distinct approaches — Faudree's structural argument for restricted vertex count, Pikhurko's probabilistic disproof, and Tao's computational verification.",
+    "openQuestions": [
+      "What is the exact leading coefficient in $\\hat{r}(K_{1,n}, \\mathcal{F}) = n^2 + c \\cdot n^{3/2} + o(n^{3/2})$? The current bounds give $c \\in (1/\\sqrt{3}, \\sqrt{2})$.",
+      "For which values of $n > 5$ does the conjecture also fail? Is it false for all $n \\ge 5$, or are there sporadic exceptions?",
+      "What is the structure of the extremal graph achieving $\\hat{r}(K_{1,n}, \\mathcal{F})$ — is it a blow-up of a specific small graph, or does the structure change with $n$?",
+      "Can Pikhurko's probabilistic lower bound construction be derandomized to give an explicit family of counterexample graphs for each $n$?",
+      "Does a similar bipartite + bounded-degree decomposition threshold exist for the size Ramsey number $\\hat{r}(K_{1,n}, C_{2k+1})$ with a fixed odd cycle length?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Function",
+      "SimpleGraph",
+      "Nat"
+    ],
+    "namespace": "Erdos613",
+    "lineCount": 260,
+    "axiomCount": 4,
+    "theoremCount": 11,
+    "definitionCount": 14,
+    "path": "Proofs/Erdos613Problem.lean",
+    "sorries": 12,
+    "additionalFiles": [
+      "Proofs/Erdos613Aristotle.lean",
+      "Proofs/Erdos613ProblemAristotle.lean",
+      "Proofs/Stubs/Erdos613Aristotle.lean",
+      "Proofs/Stubs/Erdos613Problem.lean"
+    ]
+  },
+  "references": [
+    {
+      "key": "EFRS78",
+      "citation": "Erdős, P., Faudree, R., Rousseau, C., and Schelp, R. (1978). The size Ramsey number. Periodica Mathematica Hungarica, 9(1-2), 145-161.",
+      "type": "paper"
+    },
+    {
+      "key": "Pik",
+      "citation": "Pikhurko, O. Size Ramsey numbers of stars versus 3-chromatic graphs. Combinatorica.",
+      "type": "paper"
+    },
+    {
+      "key": "Tao",
+      "citation": "Tao, T. Lean verification of counterexample to Erdős Problem #613 at n = 5.",
+      "type": "software"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Size Ramsey numbers generalize classical Ramsey numbers by minimizing edge count rather than vertex count. The formalization explicitly connects via `size_ramsey_generalizes`."
+    },
+    {
+      "targetId": "erdos-36",
+      "relationship": "related",
+      "description": "Both concern graph decomposition and partition problems. Problem #36 studies minimum overlap in sequence partitions, while #613 studies graph decomposition into subgraphs satisfying size requirements — both probe the limits of balanced partitioning"
+    }
+  ],
+  "sorries": 12
+}

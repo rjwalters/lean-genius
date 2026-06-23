@@ -1,0 +1,414 @@
+[
+  {
+    "id": "ann-27-congruence",
+    "proofId": "erdos-27",
+    "range": {
+      "startLine": 39,
+      "endLine": 42
+    },
+    "type": "definition",
+    "title": "Congruence",
+    "content": "**Congruence** is a structure with a residue $a \\in \\mathbb{Z}$, a modulus $n \\in \\mathbb{N}$ with $n > 0$. It represents the residue class $\\{x \\in \\mathbb{Z} : x \\equiv a \\pmod{n}\\}$.",
+    "mathContext": "A congruence class $a \\pmod{n}$ contains exactly $1/n$ of all integers. The density of covered integers by a system of congruences with distinct moduli $n_1, \\ldots, n_k$ can be computed using inclusion-exclusion.",
+    "significance": "key",
+    "relatedConcepts": [
+      "modular arithmetic",
+      "residue class",
+      "Chinese Remainder Theorem"
+    ],
+    "prerequisites": [
+      "integers",
+      "modular equivalence"
+    ]
+  },
+  {
+    "id": "ann-27-satisfies",
+    "proofId": "erdos-27",
+    "range": {
+      "startLine": 45,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "Satisfies Congruence",
+    "content": "**Congruence.satisfies c x** holds when $x \\equiv c.\\mathrm{residue} \\pmod{c.\\mathrm{modulus}}$. Uses Mathlib's `Int.ModEq`.",
+    "mathContext": "$x \\equiv a \\pmod{n}$ means $n \\mid (x - a)$. This is the fundamental relation in covering system theory.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "modular equivalence",
+      "divisibility",
+      "ZMOD"
+    ],
+    "prerequisites": [
+      "Int.ModEq"
+    ]
+  },
+  {
+    "id": "ann-27-system",
+    "proofId": "erdos-27",
+    "range": {
+      "startLine": 49,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "Congruence System",
+    "content": "**CongruenceSystem** is a finite set of congruences with **distinct moduli**. The distinct-moduli condition is standard in covering system theory.",
+    "mathContext": "A covering system is a collection $\\{a_i \\pmod{n_i}\\}_{i=1}^k$ with $n_1 < \\ldots < n_k$ such that every integer belongs to at least one class. The distinct-moduli requirement is part of the classical definition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "covering system",
+      "distinct moduli",
+      "finite set"
+    ],
+    "prerequisites": [
+      "Finset",
+      "Congruence"
+    ]
+  },
+  {
+    "id": "ann-27-covers",
+    "proofId": "erdos-27",
+    "range": {
+      "startLine": 55,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "Covered Integer",
+    "content": "**CongruenceSystem.covers S x** holds if $x$ satisfies at least one congruence in $S$.",
+    "mathContext": "$S.\\mathrm{covers}(x) \\;\\Leftrightarrow\\; \\exists c \\in S,\\; x \\equiv c.a \\pmod{c.n}$. By inclusion-exclusion, the covering density involves LCMs of moduli subsets.",
+    "significance": "key",
+    "relatedConcepts": [
+      "existential quantification",
+      "inclusion-exclusion",
+      "covering density"
+    ],
+    "prerequisites": [
+      "Congruence.satisfies",
+      "Finset membership"
+    ]
+  },
+  {
+    "id": "ann-27-uncovered",
+    "proofId": "erdos-27",
+    "range": {
+      "startLine": 59,
+      "endLine": 60
+    },
+    "type": "definition",
+    "title": "Uncovered Integer",
+    "content": "**CongruenceSystem.uncovered S x** holds if $x$ satisfies no congruence in $S$. The density of uncovered integers is what Erdős asked about.",
+    "mathContext": "$S.\\mathrm{uncovered}(x) \\;\\Leftrightarrow\\; \\forall c \\in S,\\; x \\not\\equiv c.a \\pmod{c.n}$. For a perfect covering, there are no uncovered integers.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complement of covering",
+      "escapee integers",
+      "density measurement"
+    ],
+    "prerequisites": [
+      "Congruence.satisfies"
+    ]
+  },
+  {
+    "id": "ann-27-density",
+    "proofId": "erdos-27",
+    "range": {
+      "startLine": 69,
+      "endLine": 70
+    },
+    "type": "definition",
+    "title": "Uncovered Density",
+    "content": "**uncoveredDensity S M** is the fraction of integers in $[1, M]$ uncovered by $S$.",
+    "mathContext": "$\\delta_M(S) = |\\{m \\in [1,M] : S.\\mathrm{uncovered}(m)\\}|/M$. By the Chinese Remainder Theorem, this stabilizes for $M \\geq \\mathrm{lcm}(n_1, \\ldots, n_k)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "finite density",
+      "counting function",
+      "Chinese Remainder Theorem"
+    ],
+    "prerequisites": [
+      "uncoveredCount",
+      "Finset.filter"
+    ]
+  },
+  {
+    "id": "ann-27-asymptotic",
+    "proofId": "erdos-27",
+    "range": {
+      "startLine": 73,
+      "endLine": 74
+    },
+    "type": "definition",
+    "title": "Asymptotic Uncovered Density",
+    "content": "**asymptoticUncoveredDensity S** is $\\liminf_{M \\to \\infty} \\delta_M(S)$. Using liminf ensures well-definedness.",
+    "mathContext": "$\\delta(S) = \\liminf_{M \\to \\infty} \\delta_M(S)$. For finite systems, the limit exists and equals $|\\{m \\in [1,L] : S.\\mathrm{uncovered}(m)\\}|/L$ where $L = \\mathrm{lcm}$ of all moduli.",
+    "significance": "key",
+    "relatedConcepts": [
+      "liminf",
+      "asymptotic density",
+      "natural density"
+    ],
+    "prerequisites": [
+      "uncoveredDensity",
+      "Filter.liminf",
+      "atTop"
+    ]
+  },
+  {
+    "id": "ann-27-almost",
+    "proofId": "erdos-27",
+    "range": {
+      "startLine": 79,
+      "endLine": 80
+    },
+    "type": "definition",
+    "title": "ε-Almost Covering",
+    "content": "**IsAlmostCovering S ε** asserts $\\delta(S) \\leq \\varepsilon$. Can we achieve arbitrarily small $\\varepsilon$ with moduli in $[N, CN]$ for fixed $C$?",
+    "mathContext": "$\\mathrm{IsAlmostCovering}(S, \\varepsilon) \\;\\Leftrightarrow\\; \\liminf_{M \\to \\infty} \\delta_M(S) \\leq \\varepsilon$. For moduli in $[N, CN]$, the averaging argument gives $\\delta(S) \\geq \\prod_{n=N}^{CN}(1-1/n) \\approx 1/C$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "density threshold",
+      "approximation quality",
+      "covering deficiency"
+    ],
+    "prerequisites": [
+      "asymptoticUncoveredDensity"
+    ]
+  },
+  {
+    "id": "ann-27-perfect",
+    "proofId": "erdos-27",
+    "range": {
+      "startLine": 83,
+      "endLine": 84
+    },
+    "type": "definition",
+    "title": "Perfect Covering",
+    "content": "**IsPerfectCovering S** means every integer is covered ($\\varepsilon = 0$). Erdős (1950) showed these exist with all moduli $> 1$; the minimum modulus question was resolved by BBMST.",
+    "mathContext": "$\\mathrm{IsPerfectCovering}(S) \\;\\Leftrightarrow\\; \\forall x \\in \\mathbb{Z},\\; S.\\mathrm{covers}(x)$. The classic example: $\\{0 \\pmod{2}, 0 \\pmod{3}, 1 \\pmod{4}, 5 \\pmod{6}, 7 \\pmod{12}\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "covering system",
+      "Erdős covering conjecture",
+      "minimum modulus problem"
+    ],
+    "prerequisites": [
+      "CongruenceSystem.covers"
+    ]
+  },
+  {
+    "id": "ann-27-range",
+    "proofId": "erdos-27",
+    "range": {
+      "startLine": 94,
+      "endLine": 95
+    },
+    "type": "definition",
+    "title": "Moduli in Range",
+    "content": "**HasModuliInRange S N M** requires all moduli in $[N, M]$. The bounded-range constraint makes the problem nontrivial.",
+    "mathContext": "For moduli in $[N, CN]$, the total coverage is $\\sum_{n=N}^{CN} 1/n \\approx \\ln C$, bounded for fixed $C$. This is why constant $C$ fails: finite total coverage cannot make uncovered density arbitrarily small.",
+    "significance": "key",
+    "relatedConcepts": [
+      "bounded moduli",
+      "range constraint",
+      "harmonic sum"
+    ],
+    "prerequisites": [
+      "CongruenceSystem"
+    ]
+  },
+  {
+    "id": "ann-27-natural",
+    "proofId": "erdos-27",
+    "range": {
+      "startLine": 104,
+      "endLine": 106
+    },
+    "type": "theorem",
+    "title": "Natural Density Product",
+    "content": "**naturalDensity m₁ m₂** = $\\prod_{n=m_1}^{m_2}(1-1/n)$. This is the best achievable uncovered density by the averaging (random residue) argument.",
+    "mathContext": "$\\prod_{n=N}^{CN}(1-1/n) = \\frac{(N-1)!/(CN)!}{\\text{(scaling)}} \\approx \\frac{N-1}{CN} \\approx 1/C$. For fixed $C$, this is bounded below by $1/C > 0$, proving that the uncovered density cannot vanish.",
+    "significance": "key",
+    "relatedConcepts": [
+      "product formula",
+      "sieve estimate",
+      "independence heuristic"
+    ],
+    "prerequisites": [
+      "Finset.prod",
+      "real arithmetic"
+    ]
+  },
+  {
+    "id": "ann-27-conjecture",
+    "proofId": "erdos-27",
+    "range": {
+      "startLine": 124,
+      "endLine": 126
+    },
+    "type": "definition",
+    "title": "Erdős Conjecture ($100 Prize)",
+    "content": "**ErdosConjecture**: $\\exists C > 1$ such that $\\forall \\varepsilon > 0,\\; \\forall N \\geq 1$, an $\\varepsilon$-almost covering with moduli in $[N, CN]$ exists. Answer: NO.",
+    "mathContext": "The conjecture asks for a universal constant $C$. FFKPY showed no such $C$ exists: for any fixed $C > 1$, the uncovered density is bounded below by $\\approx 1/(2C)$ for large $N$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "universality",
+      "uniform bound",
+      "Erdős prize problem"
+    ],
+    "prerequisites": [
+      "IsAlmostCovering",
+      "HasModuliInCRange"
+    ]
+  },
+  {
+    "id": "ann-27-negation",
+    "proofId": "erdos-27",
+    "range": {
+      "startLine": 129,
+      "endLine": 131
+    },
+    "type": "definition",
+    "title": "Conjecture Negation",
+    "content": "**ErdosConjectureNegation**: $\\forall C > 1,\\; \\exists \\varepsilon > 0,\\; \\exists N$ such that no system with moduli in $[N, CN]$ achieves $\\varepsilon$-almost covering. This is what was PROVED.",
+    "mathContext": "The negation swaps quantifiers: $\\forall C > 1,\\; \\exists \\varepsilon > 0,\\; \\exists N$ such that every system $S$ with moduli in $[N, CN]$ has $\\delta(S) > \\varepsilon$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "quantifier negation",
+      "counterexample",
+      "lower bound"
+    ],
+    "prerequisites": [
+      "ErdosConjecture"
+    ]
+  },
+  {
+    "id": "ann-27-critical",
+    "proofId": "erdos-27",
+    "range": {
+      "startLine": 140,
+      "endLine": 142
+    },
+    "type": "lemma",
+    "title": "Critical Exponent",
+    "content": "**criticalExponent N** = $\\frac{\\log\\log\\log N}{4\\log\\log N}$. For $C \\leq N^{\\alpha(N)}$, almost-covering provably fails.",
+    "mathContext": "$\\alpha(N) = \\frac{\\log\\log\\log N}{4\\log\\log N} \\to 0$ as $N \\to \\infty$, but extremely slowly. For $N = 10^{100}$, $\\alpha(N) \\approx 0.045$, so $N^{\\alpha(N)} \\approx 10^{4.5}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "iterated logarithm",
+      "slowly growing function",
+      "threshold exponent"
+    ],
+    "prerequisites": [
+      "Real.log"
+    ]
+  },
+  {
+    "id": "ann-27-ffkpy",
+    "proofId": "erdos-27",
+    "range": {
+      "startLine": 145,
+      "endLine": 149
+    },
+    "type": "concept",
+    "title": "FFKPY Main Theorem",
+    "content": "**ffkpy_main_theorem**: For large $N$, if $1 < C \\leq N^{\\alpha(N)}$, every system with moduli in $[N, CN]$ has $\\delta(S) \\geq \\frac{1}{2}\\prod_c(1-1/c.n)$.",
+    "mathContext": "Since $\\prod_{n=N}^{CN}(1-1/n) \\geq 1/C$, this gives $\\delta(S) \\geq 1/(2C) > 0$ for fixed $C$, proving the conjecture false.",
+    "significance": "key",
+    "relatedConcepts": [
+      "density lower bound",
+      "product bound",
+      "Filter.Eventually"
+    ],
+    "prerequisites": [
+      "criticalExponent",
+      "HasModuliInCRange",
+      "asymptoticUncoveredDensity"
+    ]
+  },
+  {
+    "id": "ann-27-disproved",
+    "proofId": "erdos-27",
+    "range": {
+      "startLine": 158,
+      "endLine": 159
+    },
+    "type": "concept",
+    "title": "Conjecture Disproved",
+    "content": "**erdos_27_disproved**: `ErdosConjectureNegation` holds. No constant $C > 1$ works. This resolved Erdős's $\\$100$ prize.",
+    "mathContext": "For any $C > 1$, choose $N$ large enough that $C \\leq N^{\\alpha(N)}$, then $\\delta(S) \\geq 1/(2C)$ for all $S$. Setting $\\varepsilon = 1/(4C)$ refutes the conjecture.",
+    "significance": "key",
+    "relatedConcepts": [
+      "disproof",
+      "prize resolution",
+      "counterexample to universality"
+    ],
+    "prerequisites": [
+      "ffkpy_main_theorem",
+      "product_bounded_below"
+    ]
+  },
+  {
+    "id": "ann-27-growing",
+    "proofId": "erdos-27",
+    "range": {
+      "startLine": 171,
+      "endLine": 175
+    },
+    "type": "concept",
+    "title": "Growing C Works",
+    "content": "**growing_C_works**: If $C = C(N)$ grows with $N$, $\\varepsilon$-almost coverings exist for any fixed $\\varepsilon$.",
+    "mathContext": "For $C(N) \\to \\infty$, $\\prod_{n=N}^{C(N)N}(1-1/n) \\to 0$, so the averaging argument gives uncovered density $\\to 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "growing parameter",
+      "averaging argument",
+      "achievability"
+    ],
+    "prerequisites": [
+      "IsAlmostCovering",
+      "HasModuliInCRange"
+    ]
+  },
+  {
+    "id": "ann-27-sufficient",
+    "proofId": "erdos-27",
+    "range": {
+      "startLine": 178,
+      "endLine": 179
+    },
+    "type": "definition",
+    "title": "Sufficient C",
+    "content": "**sufficientC N** = $N^{1/\\log\\log N}$. This is sufficient for almost-covering and grows faster than the critical exponent threshold.",
+    "mathContext": "$C(N) = N^{1/\\log\\log N}$ satisfies $\\log C(N) = \\log N/\\log\\log N \\to \\infty$, so $C(N) \\to \\infty$. Since $1/\\log\\log N \\gg \\alpha(N)$, this exceeds the critical threshold.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "super-polynomial growth",
+      "sufficient rate"
+    ],
+    "prerequisites": [
+      "Real.log",
+      "Real.rpow"
+    ]
+  },
+  {
+    "id": "ann-27-bbmst",
+    "proofId": "erdos-27",
+    "range": {
+      "startLine": 198,
+      "endLine": 201
+    },
+    "type": "concept",
+    "title": "BBMST Bound",
+    "content": "**bbmst_bound**: Every perfect covering has some modulus $< 616{,}000$ (Bloom-Briggs-Maynard-Smith-Tao 2024). Resolves the Erdős minimum modulus conjecture.",
+    "mathContext": "Hough (2015) first proved the conjecture with bound $10^{18}$. Balister et al. improved to $10^6$. BBMST achieved $616{,}000$. This means no covering system can have all moduli $\\geq 616{,}000$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "minimum modulus",
+      "Erdős covering conjecture",
+      "Hough's theorem"
+    ],
+    "prerequisites": [
+      "IsPerfectCovering",
+      "perfectCoveringBound"
+    ]
+  }
+]

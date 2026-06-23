@@ -1,0 +1,265 @@
+{
+  "id": "erdos-610",
+  "title": "Erdős Problem #610: Clique Transversal Numbers",
+  "slug": "erdos-610",
+  "description": "For a graph G, let τ(G) be the minimum vertices hitting every maximal clique. Known: τ(G) ≤ n - √(2n) + O(1). Open: Can we improve to n - ω(n)√n or n - c√(n log n)?",
+  "meta": {
+    "author": "Erdős-Gallai-Tuza",
+    "sourceUrl": "https://erdosproblems.com/610",
+    "date": "",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos610Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "clique-transversal",
+      "maximal-cliques",
+      "independent-sets",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 17,
+    "erdosNumber": 610,
+    "erdosUrl": "https://erdosproblems.com/610",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple undirected graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for cliques and transversals",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "For ω(n) → ∞ condition",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definitions of IsClique, IsMaximalClique, maximalCliques via Finset.filter",
+      "IsCliqueTransversal and cliqueTransversalNumber τ(G) via Finset.min'",
+      "Proof that Finset.univ is always a transversal (univ_is_transversal)",
+      "Erdős-Gallai-Tuza bound τ ≤ n - √(2n) + O(1) axiomatized",
+      "Question1_OmegaImprovement and Question2_LogImprovement as formal Lean Props",
+      "triangleFreeIndependence f(n) and Kim's theorem axiomatized with Θ bounds",
+      "ErdosGallaiTuzaConjecture τ ≤ n - f(n) and conjecture_implies_question2",
+      "NearTightConstruction showing EGT bound is essentially tight",
+      "Special cases: bipartite, chordal, perfect graphs (sorry)",
+      "IsCliqueCover and tau_clique_cover_relation duality"
+    ],
+    "relatedProblems": [
+      {
+        "id": "erdos-611",
+        "relationship": "Direct refinement: constrains maximal clique sizes (all ≥ k), giving τ(G) ≤ n - √(kn) and asking whether the dependence on k can be improved"
+      },
+      {
+        "id": "erdos-151",
+        "relationship": "Related via triangle-free independence: conjectures τ(G) ≤ n - H(n) where H(n) is the triangle-free independence number, sharing the core connection to Kim's theorem"
+      },
+      {
+        "id": "erdos-129",
+        "relationship": "Ramsey numbers avoiding monochromatic cliques: foundational Ramsey theory underlying the clique/independent set duality in the EGT conjecture"
+      },
+      {
+        "id": "erdos-128",
+        "relationship": "Triangle-free graphs with dense subgraphs: structural results on triangle-free graphs, related to the f(n) function central to the EGT conjecture"
+      },
+      {
+        "id": "erdos-108",
+        "relationship": "High chromatic subgraphs with large girth: chromatic number and clique/color structure, related to the interplay between cliques and independent sets"
+      },
+      {
+        "id": "erdos-612",
+        "relationship": "Sister problem: diameter bounds for K_r-free graphs, extending clique-free constraints to diameter properties of graphs"
+      },
+      {
+        "id": "erdos-54",
+        "relationship": "Foundational Ramsey theory (2-complete sets): the Ramsey-theoretic framework underpinning Kim's theorem R(3,k) = Θ(k²/log k)"
+      }
+    ],
+    "axiomCount": 2,
+    "lineCount": 222,
+    "assumptions": "2 axiom(s) and 17 sorries. See the Lean source for details.",
+    "theoremCount": 13,
+    "definitionCount": 16,
+    "additionalFiles": [
+      "Proofs/Erdos610Aristotle.lean",
+      "Proofs/Erdos610ProblemAristotle.lean",
+      "Proofs/Stubs/Erdos610Aristotle.lean",
+      "Proofs/Stubs/Erdos610Problem.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "**Clique Transversals: Hitting Every Maximal Clique**\n\nA clique transversal is a set of vertices that intersects every maximal clique in a graph. The clique transversal number τ(G) — the minimum size of such a set — was introduced by Erdős, Gallai, and Tuza in the context of extremal graph theory.\n\n**The Erdős-Gallai-Tuza Bound**\n\nThe trio proved τ(G) ≤ n - √(2n) + O(1) for any n-vertex graph. The proof uses Turán's theorem on an auxiliary 'clique-intersection graph': vertices of G that share no maximal clique form an independent set of size ≥ √(2n), and removing this independent set leaves a transversal. The bound is constructive — the greedy algorithm finds such a transversal in polynomial time.\n\n**Near-Tightness**\n\nConstructions (Paley-type graphs, random graphs) achieve τ ≈ n - √(2n), showing the √(2n) coefficient is essentially correct. This means improving the bound requires new ideas, not just better analysis of existing arguments.\n\n**The Triangle-Free Connection**\n\nThe deep conjecture τ(G) ≤ n - f(n), where f(n) is the minimum independence number among triangle-free n-vertex graphs, would improve √(2n) to √(n log n). Kim's celebrated theorem (1995) establishes f(n) = Θ(√(n log n)) via the semi-random method (Rödl nibble), proving R(3,k) = Θ(k²/log k). The logarithmic improvement factor √(log n) represents a qualitative jump — the difference between constant and growing coefficients of √n.\n\n**Special Graph Classes**\n\nFor bipartite graphs, τ equals the vertex cover number (König's theorem). For chordal graphs, the clique tree structure enables polynomial computation. For perfect graphs, LP duality gives integrality. The general case remains the frontier.",
+    "problemStatement": "**Definition:** τ(G) = minimum size of a set hitting every maximal clique.\n\n**Known:** τ(G) ≤ n - √(2n) + O(1) (Erdős-Gallai-Tuza)\n\n**Open Questions:**\n1. Is τ(G) ≤ n - ω(n)√n for some ω(n) → ∞?\n2. Is τ(G) ≤ n - c√(n log n) for some constant c > 0?\n\n**Conjecture:** τ(G) ≤ n - f(n) where f(n) = Θ(√(n log n)) is the triangle-free independence function.",
+    "text": "For a graph G, let τ(G) be the minimum vertices hitting every maximal clique. Known: τ(G) ≤ n - √(2n) + O(1). Open: Can we improve to n - ω(n)√n or n - c√(n log n)?",
+    "proofStrategy": "**Formalization Structure**\n\nThe Lean file (223 lines, 11 sorries) has nine parts:\n\n1. **Cliques** (lines 32-44): IsClique, IsMaximalClique, maximalCliques via Finset.filter on univ\n\n2. **Transversal** (lines 46-67): IsCliqueTransversal, cliqueTransversalNumber via Finset.min' with existence proof using univ_is_transversal\n\n3. **Basic Properties** (lines 68-91): univ_is_transversal (PROVED), tau_le_card (sorry), tau_empty (sorry), tau_complete (sorry)\n\n4. **EGT Bound** (lines 92-102): ErdosGallaiTuzaBound definition, erdos_gallai_tuza axiom (∃ C, τ ≤ n - √(2n) + C)\n\n5. **Open Questions** (lines 103-117): Question1_OmegaImprovement with Filter.Tendsto, Question2_LogImprovement with c·√(n log n)\n\n6. **Independent Sets** (lines 118-138): IsIndependentSet, independenceNumber via Finset.max', IsTriangleFree, triangleFreeIndependence (def sorry)\n\n7. **Conjecture** (lines 139-156): ErdosGallaiTuzaConjecture, kim_triangle_free_independence axiom (Θ bounds), conjecture_implies_question2 (sorry)\n\n8. **Lower Bounds** (lines 157-169): NearTightConstruction via Filter.Frequently, egt_bound_tight (sorry)\n\n9. **Special Cases** (lines 170-223): Bipartite, chordal, perfect (all sorry), clique cover duality, main problem restatement\n\n**What is Proved vs Axiomatized**\n- **Proved**: univ_is_transversal, erdos_610_known (restatement)\n- **Axiomatized**: erdos_gallai_tuza, kim_triangle_free_independence\n- **Definition sorry**: triangleFreeIndependence, cliqueCoverNumber\n- **Sorry** (15 theorems): basic properties, implications, special cases, tightness",
+    "keyInsights": [
+      "A clique transversal must hit every maximal clique — the minimum size τ(G) ranges from 1 (complete graph, one maximal clique) to n (empty graph, n singleton maximal cliques)",
+      "The EGT bound τ ≤ n - √(2n) + O(1) uses Turán's theorem on an auxiliary graph: the independent set in the clique-intersection graph has size ≥ √(2n), and its complement is a transversal",
+      "The conjecture τ ≤ n - f(n) connects clique transversals to Kim's theorem on triangle-free Ramsey: f(n) = Θ(√(n log n)) from R(3,k) = Θ(k²/log k), so the improvement would be by a factor √(log n)",
+      "Near-tight constructions (Paley graphs, random graphs) show τ ≈ n - √(2n), so the √(2n) is not an artifact of weak analysis — genuine new ideas are needed to improve it",
+      "The hierarchy: Question 2 (√(n log n)) ⟹ Question 1 (ω(n)·√n), and the EGT conjecture ⟹ Question 2 via Kim's theorem"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "cliques",
+      "title": "Cliques and Maximal Cliques",
+      "summary": "Defines IsClique (pairwise adjacency in Finset V), IsMaximalClique (clique with no proper superset that is also a clique), and maximalCliques via Finset.univ.filter. Uses SimpleGraph from Mathlib.",
+      "startLine": 32,
+      "endLine": 45,
+      "mathContext": "Formal definition: Defines IsClique (pairwise adjacency in Finset V), IsMaximalClique (clique with no proper superset that is also a clique), and maximalCliques via Finset.univ.filter. Uses SimpleGraph from Mathlib."
+    },
+    {
+      "id": "transversal",
+      "title": "Clique Transversal and τ(G)",
+      "summary": "IsCliqueTransversal requires (T ∩ C).Nonempty for all maximal C. cliqueTransversalNumber via Finset.min' over filtered transversals, with nonemptiness discharged by univ_is_transversal. Notation τ defined.",
+      "startLine": 46,
+      "endLine": 67,
+      "mathContext": "IsCliqueTransversal requires (T ∩ C).Nonempty for all maximal C. cliqueTransversalNumber via Finset.min' over filtered transversals, with nonemptiness discharged by univ_is_transversal. Notation τ defined."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "summary": "univ_is_transversal PROVED (cliques are nonempty, so univ intersects them). tau_le_card, tau_empty = n, tau_complete = 1 all sorry. These establish the range τ ∈ {1, ..., n}.",
+      "startLine": 68,
+      "endLine": 91,
+      "mathContext": "Mathematical content: univ_is_transversal PROVED (cliques are nonempty, so univ intersects them). tau_le_card, tau_empty = n, tau_complete = 1 all sorry. These establish the range τ ∈ {1, ..., n}."
+    },
+    {
+      "id": "egt-bound",
+      "title": "Erdős-Gallai-Tuza Bound",
+      "summary": "ErdosGallaiTuzaBound(n) = n - √(2n). erdos_gallai_tuza axiomatized: ∃ C, ∀ G, τ(G) ≤ n - √(2n) + C. Uses Turán's theorem on auxiliary clique-intersection graph.",
+      "startLine": 92,
+      "endLine": 102,
+      "mathContext": "ErdosGallaiTuzaBound(n) = n - √(2n). erdos_gallai_tuza axiomatized: ∃ C, ∀ G, τ(G) $\\leq$ n - √(2n) + C. Uses Turán's theorem on auxiliary clique-intersection graph."
+    },
+    {
+      "id": "open-questions",
+      "title": "The Main Questions (OPEN)",
+      "summary": "Question1_OmegaImprovement: ∃ ω → ∞, τ ≤ n - ω(n)√n. Question2_LogImprovement: ∃ c > 0, τ ≤ n - c√(n log n). The hierarchy Q2 ⟹ Q1 with ω(n) = c√(log n).",
+      "startLine": 103,
+      "endLine": 117,
+      "mathContext": "Question1_OmegaImprovement: ∃ ω $\\to$ ∞, τ $\\leq$ n - ω(n)√n. Question2_LogImprovement: ∃ c > 0, τ $\\leq$ n - c√(n $\\log n$). The hierarchy Q2 $\\Rightarrow$ Q1 with ω(n) = c√($\\log n$)."
+    },
+    {
+      "id": "independent-sets",
+      "title": "Connection to Independent Sets",
+      "summary": "Defines IsIndependentSet, independenceNumber α(G) via Finset.max', IsTriangleFree (no 3-cliques), triangleFreeIndependence f(n) (def sorry: min α over triangle-free graphs on n vertices).",
+      "startLine": 118,
+      "endLine": 138,
+      "mathContext": "Formal definition: Defines IsIndependentSet, independenceNumber α(G) via Finset.max', IsTriangleFree (no 3-cliques), triangleFreeIndependence f(n) (def sorry: min α over triangle-free graphs on n vertices)."
+    },
+    {
+      "id": "conjecture",
+      "title": "Erdős-Gallai-Tuza Conjecture",
+      "summary": "ErdosGallaiTuzaConjecture: τ(G) ≤ n - f(n). Kim's theorem axiomatized: f(n) = Θ(√(n log n)) with constants c₁, c₂. conjecture_implies_question2 (sorry) chains τ ≤ n - f(n) ≤ n - c₁√(n log n).",
+      "startLine": 139,
+      "endLine": 156,
+      "mathContext": "ErdosGallaiTuzaConjecture: τ(G) $\\leq$ n - f(n). Kim's theorem axiomatized: f(n) = Θ(√(n $\\log n$)) with constants c₁, c₂. conjecture_implies_question2 (sorry) chains τ $\\leq$ n - f(n) $\\leq$ n - c₁√(n $\\log n$)."
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Lower Bounds and Tightness",
+      "summary": "NearTightConstruction: ∀ ε > 0, infinitely many n have graphs with τ ≥ n - (1+ε)√(2n). egt_bound_tight (sorry) confirms the EGT bound is essentially optimal.",
+      "startLine": 157,
+      "endLine": 169,
+      "mathContext": "NearTightConstruction: ∀ ε > 0, infinitely many n have graphs with τ $\\geq$ n - (1+ε)√(2n). egt_bound_tight (sorry) confirms the EGT bound is essentially optimal."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases and Clique Cover Duality",
+      "summary": "Three sorry theorems for bipartite (König), chordal (clique tree), perfect (LP duality) graphs. IsCliqueCover definition. tau_clique_cover_relation (sorry): τ ≥ clique cover number. erdos_610_known restates EGT bound.",
+      "startLine": 170,
+      "endLine": 222,
+      "mathContext": "Three sorry theorems for bipartite (König), chordal (clique tree), perfect (LP duality) graphs. IsCliqueCover definition. tau_clique_cover_relation (sorry): τ ≥ clique cover number. erdos_610_known restates EGT bound."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #610 remains OPEN. The best known bound τ(G) ≤ n - √(2n) + O(1) by Erdős, Gallai, and Tuza is nearly tight, but whether it can be improved to n - ω(n)√n or n - c√(n log n) is unknown. The conjecture τ ≤ n - f(n) connecting to triangle-free independence (f(n) = Θ(√(n log n)) by Kim) would resolve Question 2.",
+    "implications": "1. **Clique Structure Theory**: The problem reveals fundamental limits on how maximal cliques can be distributed in a graph. The EGT bound shows that no matter how complex the clique structure, a transversal of size n - Θ(√n) always exists.\n\n2. **Ramsey-Theoretic Connection**: The conjecture τ ≤ n - f(n) would create a direct bridge between clique transversals and triangle-free Ramsey theory. Kim's theorem R(3,k) = Θ(k²/log k) would then have implications for hitting sets in arbitrary graphs.\n\n**3. Algorithmic Implications**: Computing τ is NP-hard in general but polynomial for perfect and chordal graphs. Improving the EGT bound would give better approximation guarantees for the general case.\n\n4. **Turán-Type Reasoning**: The proof uses Turán's theorem on auxiliary graphs, connecting transversal problems to extremal graph theory. Improving the bound likely requires going beyond Turán-type arguments.\n\n5. **Random Graph Perspective**: Near-tight constructions from random graphs suggest that 'typical' graphs have τ ≈ n - √(2n), so improvements require exploiting structure beyond what random graphs exhibit.",
+    "openQuestions": [
+      "Can τ(G) ≤ n - ω(n)√n be achieved for any ω → ∞? Even ω(n) = log log n would be major progress.",
+      "Does τ(G) ≤ n - c√(n log n) hold for some c > 0? This would match the triangle-free independence threshold.",
+      "Is the Erdős-Gallai-Tuza conjecture τ ≤ n - f(n) true? This would resolve Question 2 via Kim's theorem.",
+      "What is the exact constant in the O(1) term of the EGT bound τ ≤ n - √(2n) + O(1)?",
+      "For which graph classes beyond chordal and perfect can τ be computed efficiently?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Function",
+      "SimpleGraph"
+    ],
+    "namespace": null,
+    "lineCount": 222,
+    "axiomCount": 1,
+    "theoremCount": 13,
+    "definitionCount": 16,
+    "path": "Proofs/Erdos610Problem.lean",
+    "sorries": 17,
+    "additionalFiles": [
+      "Proofs/Erdos610Aristotle.lean",
+      "Proofs/Erdos610ProblemAristotle.lean",
+      "Proofs/Stubs/Erdos610Aristotle.lean",
+      "Proofs/Stubs/Erdos610Problem.lean"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-611",
+      "relationship": "related",
+      "description": "Direct refinement: constrains maximal clique sizes (all ≥ k), giving τ(G) ≤ n - √(kn) and asking whether the dependence on k can be improved"
+    },
+    {
+      "targetId": "erdos-151",
+      "relationship": "related",
+      "description": "Related via triangle-free independence: conjectures τ(G) ≤ n - H(n) where H(n) is the triangle-free independence number, sharing the core connection to Kim's theorem"
+    },
+    {
+      "targetId": "erdos-129",
+      "relationship": "related",
+      "description": "Ramsey numbers avoiding monochromatic cliques: foundational Ramsey theory underlying the clique/independent set duality in the EGT conjecture"
+    },
+    {
+      "targetId": "erdos-128",
+      "relationship": "related",
+      "description": "Triangle-free graphs with dense subgraphs: structural results on triangle-free graphs, related to the f(n) function central to the EGT conjecture"
+    },
+    {
+      "targetId": "erdos-108",
+      "relationship": "related",
+      "description": "High chromatic subgraphs with large girth: chromatic number and clique/color structure, related to the interplay between cliques and independent sets"
+    },
+    {
+      "targetId": "erdos-612",
+      "relationship": "related",
+      "description": "Sister problem: diameter bounds for K_r-free graphs, extending clique-free constraints to diameter properties of graphs"
+    },
+    {
+      "targetId": "erdos-54",
+      "relationship": "related",
+      "description": "Foundational Ramsey theory (2-complete sets): the Ramsey-theoretic framework underpinning Kim's theorem R(3,k) = Θ(k²/log k)"
+    }
+  ],
+  "sorries": 17
+}

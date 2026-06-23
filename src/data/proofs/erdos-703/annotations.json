@@ -1,0 +1,401 @@
+[
+  {
+    "id": "ann-703-imports",
+    "proofId": "erdos-703",
+    "type": "concept",
+    "title": "Imports and Dependencies",
+    "content": "Imports the full Mathlib library (the proof draws on Finset cardinality, powerset, image, sdiff and bijection lemmas across several modules). The formalization represents set families as `Finset (Finset ℕ)` over a ground set `Finset.range n`.",
+    "range": {
+      "startLine": 40,
+      "endLine": 43
+    },
+    "significance": "supporting",
+    "mathContext": "Extremal set family theory requires operations on powerset lattices. The choice of `Finset (Finset ℕ)` over `Finset.range n` mirrors the standard combinatorial setup of $\\mathcal{F} \\subseteq 2^{[n]}$.",
+    "relatedConcepts": [
+      "powerset",
+      "set families",
+      "Finset operations"
+    ],
+    "prerequisites": [
+      "Mathlib"
+    ]
+  },
+  {
+    "id": "ann-703-1",
+    "proofId": "erdos-703",
+    "type": "definition",
+    "title": "r-Intersection Predicate",
+    "content": "Two sets A and B have r-intersection if |A ∩ B| = r, meaning they share exactly r common elements. This is the basic forbidden pattern in the problem.",
+    "range": {
+      "startLine": 55,
+      "endLine": 56
+    },
+    "significance": "key",
+    "mathContext": "The condition $|A \\cap B| = r$ is the forbidden intersection size. For $r = 0$, this recovers the classical intersecting family condition ($A \\cap B \\neq \\emptyset$). The problem generalizes from forbidding one intersection size to the Frankl-Wilson setting of forbidding a set $L$ of sizes.",
+    "relatedConcepts": [
+      "set intersection",
+      "Erdős-Ko-Rado theorem",
+      "forbidden intersection sizes"
+    ],
+    "prerequisites": [
+      "Finset.card",
+      "Finset.inter"
+    ]
+  },
+  {
+    "id": "ann-703-2",
+    "proofId": "erdos-703",
+    "type": "definition",
+    "title": "r-Avoiding Family",
+    "content": "A family F avoids r-intersection if no two sets in F have exactly r elements in common: ∀ A, B ∈ F, |A ∩ B| ≠ r. This is the central constraint defining the extremal problem.",
+    "range": {
+      "startLine": 63,
+      "endLine": 64
+    },
+    "significance": "key",
+    "mathContext": "An $r$-avoiding family $\\mathcal{F} \\subseteq 2^{[n]}$ satisfies $|A \\cap B| \\neq r$ for all $A, B \\in \\mathcal{F}$. The extremal quantity $T(n,r) = \\max |\\mathcal{F}|$ is the main object of study. Note the condition applies to all pairs, not just distinct pairs.",
+    "relatedConcepts": [
+      "extremal set theory",
+      "forbidden configurations",
+      "intersecting families"
+    ],
+    "prerequisites": [
+      "hasRIntersection"
+    ]
+  },
+  {
+    "id": "ann-703-3",
+    "proofId": "erdos-703",
+    "type": "definition",
+    "title": "T(n,r) — Maximum r-Avoiding Family Size",
+    "content": "T(n,r) is the maximum size of an r-avoiding family over subsets of {1,...,n}. Defined using Finset.sup over the powerset filtered by the r-avoiding condition. This is the main extremal quantity of the problem.",
+    "range": {
+      "startLine": 73,
+      "endLine": 75
+    },
+    "significance": "key",
+    "mathContext": "$T(n,r) = \\max\\{|\\mathcal{F}| : \\mathcal{F} \\subseteq 2^{[n]},\\ |A \\cap B| \\neq r\\ \\forall A,B \\in \\mathcal{F}\\}$. The trivial upper bound is $T(n,r) \\leq 2^n$, and the main question asks when $T(n,r) < (2-\\delta)^n$. For fixed $r$, $T(n,r)/2^n \\to 1$ as $n \\to \\infty$ (the constraint is weak). But for $r = \\Theta(n)$, the constraint is strong enough for an exponential gap.",
+    "relatedConcepts": [
+      "extremal function",
+      "Turán-type problems",
+      "set family optimization"
+    ],
+    "prerequisites": [
+      "avoidsRIntersection",
+      "Finset.powerset",
+      "Finset.sup"
+    ]
+  },
+  {
+    "id": "ann-703-4",
+    "proofId": "erdos-703",
+    "type": "concept",
+    "title": "T(n,0) = 2^{n-1} — Intersecting Family Maximum",
+    "content": "The trivial case, now fully machine-checked (previously a sorry). 0-avoiding families are exactly intersecting families (every pair must meet). The maximum is 2^{n-1}: the complement-pairing argument `card_le_of_avoids_zero` bounds any intersecting family by 2^{n-1} (pairing each A with [n]\\A injects F into a disjoint copy, so 2|F| ≤ 2^n), and the star family of all sets containing a fixed element `star_family_card` attains it. `T_n_0` combines these via le_antisymm.",
+    "range": {
+      "startLine": 204,
+      "endLine": 226
+    },
+    "significance": "key",
+    "mathContext": "$T(n,0) = 2^{n-1}$ is essentially the Erdős-Ko-Rado theorem for unrestricted set sizes. The maximum intersecting family is $\\{A \\subseteq [n] : 1 \\in A\\}$, which has $2^{n-1}$ sets. The dual construction $\\{A : 1 \\notin A\\}$ also works. The proof that these are optimal uses the well-known complement argument: $\\mathcal{F}$ and its complement $\\bar{\\mathcal{F}}$ cannot both intersect.",
+    "relatedConcepts": [
+      "Erdős-Ko-Rado theorem",
+      "intersecting family",
+      "sunflower lemma"
+    ],
+    "prerequisites": [
+      "T",
+      "avoidsRIntersection",
+      "card_le_of_avoids_zero",
+      "star_family_card"
+    ]
+  },
+  {
+    "id": "ann-703-5",
+    "proofId": "erdos-703",
+    "type": "concept",
+    "title": "0-Avoiding Equals Intersecting",
+    "content": "|A ∩ B| ≠ 0 is equivalent to A ∩ B ≠ ∅, i.e., A and B must intersect. This connects the r-avoiding framework to classical intersecting family theory. Proved by unfolding definitions and using card_eq_zero / nonempty_iff_ne_empty.",
+    "range": {
+      "startLine": 85,
+      "endLine": 88
+    },
+    "significance": "supporting",
+    "mathContext": "The equivalence $|A \\cap B| \\neq 0 \\iff A \\cap B \\neq \\emptyset$ shows that the $r = 0$ case of the forbidden intersection problem recovers the classical setting of Erdős-Ko-Rado. This is the base case that motivates the generalization to $r \\geq 1$.",
+    "relatedConcepts": [
+      "intersecting families",
+      "Finset.Nonempty",
+      "Erdős-Ko-Rado"
+    ],
+    "prerequisites": [
+      "avoidsRIntersection",
+      "Finset.card_eq_zero"
+    ]
+  },
+  {
+    "id": "ann-703-6",
+    "proofId": "erdos-703",
+    "type": "concept",
+    "title": "Frankl (1977) — T(n,1) Determination",
+    "content": "Frankl determined T(n,1) for all n. The optimal 1-avoiding family consists of large sets (size > (n+1)/2) plus the empty set. Axiomatized because the proof requires detailed casework on set sizes and intersection counting.",
+    "range": {
+      "startLine": 232,
+      "endLine": 236
+    },
+    "significance": "key",
+    "mathContext": "Frankl [Fr77] showed that for the $r=1$ case, $T(n,1) = |\\{A \\subseteq [n] : |A| > (n+1)/2\\}| + 1$ (the $+1$ accounts for $\\emptyset$). The key insight is that large sets with $|A| > (n+1)/2$ automatically satisfy $|A \\cap B| \\geq 2$ by pigeonhole, so they avoid 1-intersection. This was the first non-trivial determination of $T(n,r)$.",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "large set families",
+      "intersection bounds"
+    ],
+    "prerequisites": [
+      "T",
+      "avoidsRIntersection"
+    ]
+  },
+  {
+    "id": "ann-703-7",
+    "proofId": "erdos-703",
+    "type": "concept",
+    "title": "Large Sets Avoid 1-Intersection",
+    "content": "If |A|, |B| > (n+1)/2, then |A ∩ B| > 1 by pigeonhole. Large sets cannot have intersection exactly 1. Has a sorry — the proof requires the pigeonhole argument on set sizes within {1,...,n}.",
+    "range": {
+      "startLine": 237,
+      "endLine": 247
+    },
+    "significance": "supporting",
+    "mathContext": "If $|A|, |B| > (n+1)/2$ and both $A, B \\subseteq [n]$, then $|A \\cap B| \\geq |A| + |B| - n > (n+1)/2 + (n+1)/2 - n = 1$, so $|A \\cap B| \\geq 2$. This pigeonhole argument is the core of Frankl's construction: large sets automatically avoid 1-intersection.",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "inclusion-exclusion",
+      "set intersection bounds"
+    ],
+    "prerequisites": [
+      "hasRIntersection",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "ann-703-8",
+    "proofId": "erdos-703",
+    "type": "definition",
+    "title": "Frankl-Füredi Optimal Family (Odd Case)",
+    "content": "For n + r odd, the optimal r-avoiding family is {A ⊆ [n] : |A| > (n+r)/2 or |A| < r}. Large sets avoid r-intersection by pigeonhole (|A ∩ B| > r); small sets have |A| < r so |A ∩ B| < r trivially.",
+    "range": {
+      "startLine": 257,
+      "endLine": 258
+    },
+    "significance": "key",
+    "mathContext": "The Frankl-Füredi construction $\\mathcal{F}_{\\text{odd}} = \\{A \\subseteq [n] : |A| > (n+r)/2\\} \\cup \\{A : |A| < r\\}$ works because: (1) for two large sets, $|A \\cap B| \\geq |A| + |B| - n > r$; (2) for two small sets, $|A \\cap B| \\leq \\min(|A|, |B|) < r$; (3) for one large and one small, $|A \\cap B| \\leq |B| < r$. The parity condition matters because $(n+r)/2$ must be handled differently for even and odd $n+r$.",
+    "relatedConcepts": [
+      "optimal constructions",
+      "pigeonhole argument",
+      "parity conditions"
+    ],
+    "prerequisites": [
+      "avoidsRIntersection",
+      "Finset.powerset"
+    ]
+  },
+  {
+    "id": "ann-703-9",
+    "proofId": "erdos-703",
+    "type": "definition",
+    "title": "Frankl-Füredi Optimal Family (Even Case)",
+    "content": "For n + r even, the construction is slightly different, using |A \\ {0}| ≥ (n+r)/2 instead of |A| > (n+r)/2 to handle the boundary case. This resolves the ambiguity when (n+r)/2 is an integer.",
+    "range": {
+      "startLine": 264,
+      "endLine": 266
+    },
+    "significance": "key",
+    "mathContext": "When $n + r$ is even, the boundary sets with $|A| = (n+r)/2$ need special treatment. The even construction uses $|A \\setminus \\{1\\}| \\geq (n+r)/2$, which shifts the threshold by considering a distinguished element. This is a common technique in extremal combinatorics for handling parity issues in optimal constructions.",
+    "relatedConcepts": [
+      "parity in extremal problems",
+      "distinguished element technique",
+      "boundary cases"
+    ],
+    "prerequisites": [
+      "franklFurediOdd",
+      "Finset.filter"
+    ]
+  },
+  {
+    "id": "ann-703-10",
+    "proofId": "erdos-703",
+    "type": "definition",
+    "title": "Frankl-Füredi (1984) — Exact T(n,r) for Fixed r",
+    "content": "For fixed r ≥ 1 and n sufficiently large, T(n,r) equals the Frankl-Füredi optimal family size. The construction achieves the maximum, split by parity of n + r. Axiomatized because the optimality proof requires sophisticated double-counting arguments.",
+    "range": {
+      "startLine": 268,
+      "endLine": 272
+    },
+    "significance": "key",
+    "mathContext": "The Frankl-Füredi theorem [FrFu84] determines $T(n,r)$ exactly for all fixed $r$ and sufficiently large $n$. The proof that the construction is optimal uses shifting (compression) arguments and properties of the Kruskal-Katona theorem. This result resolves the extremal problem for $r = O(1)$, leaving the case $r = \\Theta(n)$ (the 'middle range') as the main open question.",
+    "relatedConcepts": [
+      "Kruskal-Katona theorem",
+      "shifting method",
+      "extremal set theory"
+    ],
+    "prerequisites": [
+      "T",
+      "franklFurediOdd",
+      "franklFurediEven"
+    ]
+  },
+  {
+    "id": "ann-703-11",
+    "proofId": "erdos-703",
+    "type": "definition",
+    "title": "Main Question — Exponential Bound for Middle Range",
+    "content": "For every ε > 0, is there δ > 0 such that T(n,r) < (2-δ)^n when εn < r < (1/2-ε)n? This asks whether the forbidden intersection constraint is strong enough in the 'middle range' to force an exponential gap from the trivial bound 2^n.",
+    "range": {
+      "startLine": 280,
+      "endLine": 284
+    },
+    "significance": "key",
+    "mathContext": "The 'middle range' $\\varepsilon n < r < (1/2 - \\varepsilon)n$ is where the problem is most interesting. For $r = O(1)$, $T(n,r)/2^n \\to 1$ (Frankl-Füredi). For $r$ near $n/2$, constraints are very strong. The question asks whether there is a sharp threshold: does $T(n,r)$ drop from $\\sim 2^n$ to $< (2-\\delta)^n$ when $r$ enters the middle range? This is formalized with rational $\\varepsilon, \\delta$ for constructive reasoning.",
+    "relatedConcepts": [
+      "exponential gap",
+      "phase transition",
+      "extremal thresholds"
+    ],
+    "prerequisites": [
+      "T"
+    ]
+  },
+  {
+    "id": "ann-703-12",
+    "proofId": "erdos-703",
+    "type": "definition",
+    "title": "Frankl-Rödl (1987) — Main Question Resolved YES",
+    "content": "The answer is YES: for r in the middle range, T(n,r) is exponentially bounded away from 2^n. This resolves Erdős Problem #703 and the $250 prize. Axiomatized because the proof uses the probabilistic method and regularity-type arguments.",
+    "range": {
+      "startLine": 286,
+      "endLine": 291
+    },
+    "significance": "key",
+    "mathContext": "The Frankl-Rödl theorem [FrRo87] proved that for every $\\varepsilon > 0$, there exists $\\delta > 0$ such that $T(n,r) < (2-\\delta)^n$ whenever $\\varepsilon n < r < (1/2 - \\varepsilon)n$. The proof uses a sophisticated random algebraic construction and the 'Frankl-Rödl nibble' method, which has since become a fundamental technique in probabilistic combinatorics. This earned the \\$250 Erdős prize.",
+    "relatedConcepts": [
+      "probabilistic method",
+      "Frankl-Rödl nibble",
+      "random algebraic constructions"
+    ],
+    "prerequisites": [
+      "mainQuestion",
+      "T"
+    ]
+  },
+  {
+    "id": "ann-703-13",
+    "proofId": "erdos-703",
+    "type": "concept",
+    "title": "Chromatic Number Implication",
+    "content": "The affirmative answer to the main question implies that the chromatic number χ(n) of the unit distance graph in ℝ^n grows exponentially. This connects the combinatorial intersection problem to geometric graph coloring.",
+    "range": {
+      "startLine": 293,
+      "endLine": 305
+    },
+    "significance": "key",
+    "mathContext": "The unit distance graph $G_n$ has $\\mathbb{R}^n$ as vertices with edges between points at Euclidean distance 1. If $\\chi(G_n) = k$, one can construct a $k$-coloring of $\\{0,1\\}^n \\cap G_n$, which gives an $r$-avoiding family for appropriate $r$. The contrapositive: if $T(n,r) < (2-\\delta)^n$, then $\\chi(G_n) \\geq (2-\\delta)^n / T(n,r)$, yielding exponential growth.",
+    "relatedConcepts": [
+      "unit distance graph",
+      "chromatic number",
+      "Borsuk conjecture",
+      "geometric combinatorics"
+    ],
+    "prerequisites": [
+      "mainQuestion",
+      "chromaticNumber"
+    ]
+  },
+  {
+    "id": "ann-703-14",
+    "proofId": "erdos-703",
+    "type": "concept",
+    "title": "Frankl-Wilson (1981) — Independent Chromatic Bound",
+    "content": "Frankl-Wilson proved the exponential growth of χ(n) independently using their mod p theorem on intersection sizes. Their approach via modular constraints on set families provides a different (and more quantitative) route to the exponential bound.",
+    "range": {
+      "startLine": 296,
+      "endLine": 299
+    },
+    "significance": "key",
+    "mathContext": "The Frankl-Wilson theorem [FrWi81] gives $\\chi(G_n) \\geq (1.207...)^n$ by constructing a family of $\\binom{4p}{2p}$ unit vectors in $\\mathbb{R}^{4p}$ with prescribed inner products, then using their intersection theorem modulo $p$. This was historically the first proof of exponential $\\chi(n)$, predating the Frankl-Rödl result by 6 years.",
+    "relatedConcepts": [
+      "Frankl-Wilson theorem",
+      "modular intersection constraints",
+      "algebraic methods in combinatorics"
+    ],
+    "prerequisites": [
+      "chromaticNumber"
+    ]
+  },
+  {
+    "id": "ann-703-15",
+    "proofId": "erdos-703",
+    "type": "definition",
+    "title": "L-Avoiding Family (Generalization)",
+    "content": "A family F avoids a set L of intersection sizes if no two sets in F have intersection size in L. This generalizes r-avoiding (where L = {r}) to forbidden sets of intersection sizes, the setting of the Frankl-Wilson theorem.",
+    "range": {
+      "startLine": 316,
+      "endLine": 317
+    },
+    "significance": "key",
+    "mathContext": "The generalization from forbidding a single intersection size $r$ to forbidding a set $L$ of sizes is central to the Frankl-Wilson approach. The $L$-avoiding condition is: $|A \\cap B| \\notin L$ for all $A, B \\in \\mathcal{F}$. When $|L| = s$, the Frankl-Wilson theorem gives $|\\mathcal{F}| \\leq \\binom{n}{s}$, a polynomial bound regardless of $n$.",
+    "relatedConcepts": [
+      "forbidden intersection patterns",
+      "Frankl-Wilson theorem",
+      "polynomial method"
+    ],
+    "prerequisites": [
+      "avoidsRIntersection"
+    ]
+  },
+  {
+    "id": "ann-703-16",
+    "proofId": "erdos-703",
+    "type": "concept",
+    "title": "Frankl-Wilson Theorem (Mod p Version)",
+    "content": "For prime p, if all sets in F have size ≡ k (mod p) and F avoids intersection sizes in L ⊆ {0,...,p-1} \\ {k} with |L| = s < p, then |F| ≤ C(n,s). This powerful algebraic bound is the key tool connecting intersection problems to chromatic numbers.",
+    "range": {
+      "startLine": 307,
+      "endLine": 317
+    },
+    "significance": "key",
+    "mathContext": "The Frankl-Wilson theorem states: if $\\mathcal{F}$ is a family of subsets of $[n]$ with $|A| \\equiv k \\pmod{p}$ for all $A \\in \\mathcal{F}$, and $|A \\cap B| \\pmod{p} \\notin L$ for all distinct $A, B$, where $|L| = s < p$, then $|\\mathcal{F}| \\leq \\binom{n}{s}$. The proof uses the linear algebra (dimension) method: associate each set with a multilinear polynomial, then show these polynomials are linearly independent modulo $p$.",
+    "relatedConcepts": [
+      "linear algebra method",
+      "polynomial method",
+      "modular arithmetic",
+      "Ray-Chaudhuri-Wilson theorem"
+    ],
+    "prerequisites": [
+      "avoidsLIntersections",
+      "Nat.Prime",
+      "Nat.choose"
+    ]
+  },
+  {
+    "id": "ann-703-summary",
+    "proofId": "erdos-703",
+    "type": "concept",
+    "title": "Erdős #703 Main Result — Problem Solved",
+    "content": "Combined statement: the main question is answered YES (via Frankl-Rödl) and T(n,0) = 2^{n-1}. The proof uses frankl_rodl_1987 for the main question and T_n_0 for the trivial case. This theorem ties together the entire formalization.",
+    "range": {
+      "startLine": 338,
+      "endLine": 350
+    },
+    "significance": "key",
+    "mathContext": "The combined result packages the solution to Erdős #703 with the base case. The structure `mainQuestion ∧ (∀ n, n ≥ 1 → T n 0 = 2^{n-1})` shows that the formalization captures both the main theorem (Frankl-Rödl) and its starting point (the classical intersecting family bound). The final `erdos_703 : mainQuestion := frankl_rodl_1987` gives the clean statement.",
+    "relatedConcepts": [
+      "problem resolution",
+      "Erdős prizes",
+      "extremal combinatorics milestones"
+    ],
+    "prerequisites": [
+      "frankl_rodl_1987",
+      "T_n_0",
+      "mainQuestion"
+    ]
+  }
+]

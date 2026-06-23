@@ -1,0 +1,116 @@
+[
+  {
+    "id": "ann-module-doc",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 18
+    },
+    "type": "concept",
+    "title": "Module Documentation: Cyclic Vectors Have Full Measure",
+    "content": "This module proves a measure-theoretic strengthening of the nonderogatory cyclic vector theorem. Over the reals, not only does a cyclic vector exist (OQ-05-OQ-01), but the set of non-cyclic vectors has Lebesgue measure zero. The proof combines the algebraic structure (cofactor kernels as proper subspaces) with Haar measure theory.",
+    "mathContext": "For $M \\in M_n(\\mathbb{R})$ nonderogatory: $\\lambda(\\{v \\in \\mathbb{R}^n : v \\text{ not cyclic for } M\\}) = 0$ where $\\lambda$ is the Lebesgue measure.",
+    "significance": "key",
+    "prerequisites": [
+      "nonderogatory matrices",
+      "cyclic vectors",
+      "Lebesgue measure"
+    ],
+    "relatedConcepts": [
+      "Haar measure",
+      "proper subspaces",
+      "measure zero",
+      "almost everywhere"
+    ]
+  },
+  {
+    "id": "ann-cofactor-kernel",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-02",
+    "range": {
+      "startLine": 45,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "Cofactor Kernel Definition",
+    "content": "`cofactorKernel M q` is the kernel of $(\\mu/q)(M)$ where $\\mu = \\text{minpoly}(\\mathbb{R}, M)$. For each irreducible factor $q$ of $\\mu$, this is a proper linear subspace of $\\mathbb{R}^n$. The non-cyclic vectors are contained in the finite union of these kernels.",
+    "mathContext": "$\\text{cofactorKernel}(M, q) = \\ker((\\mu/q)(M)) = \\{v \\in \\mathbb{R}^n : (\\mu/q)(M)v = 0\\}$",
+    "significance": "key",
+    "prerequisites": [
+      "minimal polynomial",
+      "polynomial evaluation at matrices"
+    ],
+    "relatedConcepts": [
+      "kernel",
+      "submodule",
+      "irreducible factor"
+    ]
+  },
+  {
+    "id": "ann-non-cyclic-containment",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-02",
+    "range": {
+      "startLine": 144,
+      "endLine": 211
+    },
+    "type": "concept",
+    "title": "Non-Cyclic Containment via GCD/Bezout",
+    "content": "The structural heart: if $v$ is not cyclic, find a witnessing polynomial $p$ with $p(M)v = 0$. The GCD $d = \\gcd(p, \\mu)$ inherits this annihilation via Bezout. Since $d$ properly divides $\\mu$, the quotient $\\mu/d$ has an irreducible factor $q$, and $v$ lies in $\\ker((\\mu/q)(M))$. This reuses the algebraic argument from the parent proof but extracts it as a standalone containment result.",
+    "mathContext": "$\\neg\\text{cyclic}(v) \\implies \\exists q \\in \\text{irr.factors}(\\mu),\\; v \\in \\ker((\\mu/q)(M))$",
+    "significance": "key",
+    "prerequisites": [
+      "Bezout identity",
+      "unique factorization",
+      "GCD in Euclidean domains"
+    ],
+    "relatedConcepts": [
+      "cofactor kernel",
+      "irreducible factorization",
+      "normalized factors"
+    ]
+  },
+  {
+    "id": "ann-haar-submodule",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-02",
+    "range": {
+      "startLine": 220,
+      "endLine": 223
+    },
+    "type": "concept",
+    "title": "Haar Measure Kills Proper Submodules",
+    "content": "The key measure-theoretic fact: `Measure.addHaar_submodule` from Mathlib states that any proper submodule of a finite-dimensional real vector space has zero Haar measure. Since the Lebesgue measure (`volume`) on $\\mathbb{R}^n$ is an additive Haar measure, this gives us that proper linear subspaces have Lebesgue measure zero — the bridge from algebra to analysis.",
+    "mathContext": "For $S \\subsetneq \\mathbb{R}^n$ a linear subspace: $\\lambda(S) = 0$. This follows from the fact that $S$ is contained in a hyperplane, which has zero $n$-dimensional Lebesgue measure.",
+    "significance": "key",
+    "prerequisites": [
+      "Haar measure",
+      "finite-dimensional normed spaces",
+      "Borel sigma-algebra"
+    ],
+    "relatedConcepts": [
+      "Lebesgue measure",
+      "measure zero",
+      "dimension theory"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-02",
+    "range": {
+      "startLine": 231,
+      "endLine": 258
+    },
+    "type": "concept",
+    "title": "Assembly: Containment + Null Subspaces + Finite Subadditivity",
+    "content": "The main theorem assembles three ingredients: (1) non-cyclic vectors $\\subseteq \\bigcup_q \\ker((\\mu/q)(M))$, (2) each kernel has measure zero, (3) finite union of null sets is null. The calc chain uses `measure_mono` for containment, `measure_biUnion_finset_le` for finite subadditivity, and `simp` to collapse the sum of zeros.",
+    "mathContext": "$\\lambda(\\text{non-cyclic}) \\leq \\lambda\\left(\\bigcup_{q} \\ker((\\mu/q)(M))\\right) \\leq \\sum_{q} \\lambda(\\ker((\\mu/q)(M))) = 0$",
+    "significance": "key",
+    "prerequisites": [
+      "measure monotonicity",
+      "countable subadditivity"
+    ],
+    "relatedConcepts": [
+      "null set",
+      "finite subadditivity",
+      "almost everywhere"
+    ]
+  }
+]

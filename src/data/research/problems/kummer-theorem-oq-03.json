@@ -1,0 +1,130 @@
+{
+  "slug": "kummer-theorem-oq-03",
+  "title": "Patterns in Pascal's Triangle mod p^k for k > 1",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Patterns in Pascal's Triangle mod p^k for k > 1.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-28T17:58:20.661Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: File fully proved (0A, 0S). Kummer criterion for p^m divisibility via carry count.",
+    "builtItems": [],
+    "insights": [
+      "KummerTheoremOQ03.lean is fully proved: 0A, 0S",
+      "Main result: choose_dvd_prime_pow_iff — C(n,k) divisible by p^m iff ≥ m carries in base-p addition",
+      "Built on parent KummerTheorem via carryCount definition",
+      "Also proves C(p^n, k) ≡ 0 (mod p) for interior entries"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "kummer-theorem",
+    "kummer-theorem-oq-01",
+    "kummer-theorem-oq-01-oq-01",
+    "kummer-theorem-oq-02",
+    "kummer-theorem-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T17:58:20.661Z",
+  "lastUpdate": "2026-03-28T17:58:20.661Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/KummerTheorem.lean",
+      "filename": "KummerTheorem.lean",
+      "lineCount": 192,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheorem.lean"
+    },
+    {
+      "path": "Proofs/KummerTheoremOQ01.lean",
+      "filename": "KummerTheoremOQ01.lean",
+      "lineCount": 109,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/KummerTheoremOQ01Aristotle.lean",
+      "filename": "KummerTheoremOQ01Aristotle.lean",
+      "lineCount": 182,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheoremOQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/KummerTheoremOQ01OQ01.lean",
+      "filename": "KummerTheoremOQ01OQ01.lean",
+      "lineCount": 202,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/KummerTheoremOQ02.lean",
+      "filename": "KummerTheoremOQ02.lean",
+      "lineCount": 413,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/KummerTheoremOQ03.lean",
+      "filename": "KummerTheoremOQ03.lean",
+      "lineCount": 117,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheoremOQ03.lean"
+    }
+  ]
+}

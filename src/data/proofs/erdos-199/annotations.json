@@ -1,0 +1,271 @@
+[
+  {
+    "id": "ann-199-header",
+    "proofId": "erdos-199",
+    "range": {
+      "startLine": 1,
+      "endLine": 25
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #199: Arithmetic Progressions in Set Complements**\n\n**Question:** If A ⊂ ℝ contains no 3-term arithmetic progression, must ℝ \\ A contain an infinite arithmetic progression?\n\n**Answer:** NO (Disproved)\n\n**Historical Timeline:**\n- 1970s: Erdős posed the question\n- 1975: Baumgartner provided counterexample using axiom of choice\n\n**Key Insight:** The construction uses a Hamel basis for ℝ over ℚ to partition the reals into two sets, neither containing an infinite AP.",
+    "mathContext": "This problem connects Ramsey theory (van der Waerden's theorem) with set-theoretic constructions requiring the axiom of choice.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Arithmetic progressions",
+      "Ramsey theory",
+      "Axiom of choice",
+      "Hamel basis"
+    ],
+    "prerequisites": [
+      "Arithmetic Progressions",
+      "Axiom Of Choice",
+      "Hamel Basis"
+    ]
+  },
+  {
+    "id": "ann-199-has3ap",
+    "proofId": "erdos-199",
+    "range": {
+      "startLine": 42,
+      "endLine": 44
+    },
+    "type": "definition",
+    "title": "3-Term Arithmetic Progression",
+    "content": "**has3AP:**\n\nA set A contains a 3-term arithmetic progression if there exist a, d ∈ ℝ with d ≠ 0 such that a, a+d, a+2d are all in A.\n\n**Examples:**\n- {1, 2, 3} has a 3-AP: 1, 2, 3 with d = 1\n- {1, 3, 9} has no 3-AP (it's a geometric progression)",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős problems",
+      "combinatorics",
+      "extremal problems"
+    ],
+    "mathContext": "See annotation content for formal details of 3-term arithmetic progression",
+    "prerequisites": [
+      "Arithmetic Progression",
+      "Real Numbers",
+      "Set Membership"
+    ]
+  },
+  {
+    "id": "ann-199-3apfree",
+    "proofId": "erdos-199",
+    "range": {
+      "startLine": 46,
+      "endLine": 47
+    },
+    "type": "definition",
+    "title": "3-AP-Free Sets",
+    "content": "**is3APFree:**\n\nA set is 3-AP-free if it contains no 3-term arithmetic progression.\n\n**Classical examples of 3-AP-free sets:**\n- Stanley sequence: 0, 1, 3, 5, 11, 22, 45, ...\n- Powers of 2: {1, 2, 4, 8, 16, ...}",
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of 3-ap-free sets",
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
+    "prerequisites": [
+      "3-Term Arithmetic Progression",
+      "Sparse Sets",
+      "Stanley Sequence"
+    ]
+  },
+  {
+    "id": "ann-199-infiniteap",
+    "proofId": "erdos-199",
+    "range": {
+      "startLine": 49,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "Infinite Arithmetic Progression",
+    "content": "**infiniteAP:**\n\nThe infinite arithmetic progression {a, a+d, a+2d, a+3d, ...} for d ≠ 0.\n\n**Examples:**\n- infiniteAP 0 1 = {0, 1, 2, 3, ...} = ℕ\n- infiniteAP 1 2 = {1, 3, 5, 7, ...} = odd naturals",
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of infinite arithmetic progression",
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
+    "prerequisites": [
+      "Arithmetic Progression",
+      "Common Difference",
+      "Countable Sets"
+    ]
+  },
+  {
+    "id": "ann-199-containsinf",
+    "proofId": "erdos-199",
+    "range": {
+      "startLine": 52,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "Contains Infinite AP",
+    "content": "**containsInfiniteAP:**\n\nA set contains an infinite AP if some infinite arithmetic progression is a subset.\n\n**Note:** This is a much stronger condition than containing arbitrarily long finite APs.",
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of contains infinite ap",
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
+    "prerequisites": [
+      "Infinite Arithmetic Progression",
+      "Subset Relation",
+      "Set Containment"
+    ]
+  },
+  {
+    "id": "ann-199-conjecture",
+    "proofId": "erdos-199",
+    "range": {
+      "startLine": 62,
+      "endLine": 64
+    },
+    "type": "definition",
+    "title": "Erdős's Conjecture",
+    "content": "**ErdosConjecture199:**\n\nThe original question formalized: if A is 3-AP-free, must ℝ \\ A contain an infinite AP?\n\n**Intuition:** If you remove a \"sparse\" set (3-AP-free), there should be \"lots of structure\" left (infinite AP). This turns out to be false!",
+    "mathContext": "The conjecture seems plausible given van der Waerden's theorem, but infinite APs behave very differently.",
+    "significance": "key",
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
+    "prerequisites": [
+      "3-AP-Free Sets",
+      "Set Complement",
+      "Van Der Waerden's Theorem"
+    ]
+  },
+  {
+    "id": "ann-199-baumgartner",
+    "proofId": "erdos-199",
+    "range": {
+      "startLine": 73,
+      "endLine": 83
+    },
+    "type": "concept",
+    "title": "Baumgartner's Partition (1975)",
+    "content": "**baumgartner_partition:**\n\nBaumgartner showed ℝ can be partitioned into two sets A and B, where NEITHER contains an infinite arithmetic progression.\n\n**Construction Idea:**\n1. Take a Hamel basis B for ℝ over ℚ\n2. Partition using the \"parity\" of coefficients in the basis expansion\n3. This prevents infinite APs in either part\n\n**baumgartner_3AP_free:** From the partition, derive a 3-AP-free set whose complement has no infinite AP.",
+    "mathContext": "Published in 'Partitioning vector spaces' (J. Combinatorial Theory Ser. A, 1975, pp. 231-233). The Hamel basis existence requires the axiom of choice.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Set partition",
+      "Hamel basis",
+      "Axiom of choice"
+    ],
+    "prerequisites": [
+      "Hamel Basis",
+      "Axiom Of Choice",
+      "Vector Space Partition"
+    ]
+  },
+  {
+    "id": "ann-199-disproved",
+    "proofId": "erdos-199",
+    "range": {
+      "startLine": 91,
+      "endLine": 99
+    },
+    "type": "concept",
+    "title": "Conjecture Disproved",
+    "content": "**erdos_199_disproved:**\n\nErdős's conjecture is false.\n\n**Logic:** Baumgartner gives a 3-AP-free set A whose complement has no infinite AP. This directly contradicts the conjecture.",
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of conjecture disproved",
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
+    "prerequisites": [
+      "Baumgartner's Partition",
+      "Counterexample",
+      "Set Complement"
+    ]
+  },
+  {
+    "id": "ann-199-main",
+    "proofId": "erdos-199",
+    "range": {
+      "startLine": 101,
+      "endLine": 103
+    },
+    "type": "concept",
+    "title": "Main Result",
+    "content": "**erdos_199:**\n\nThe answer to Erdős Problem #199 is NO.\n\nThere exists a set A that is 3-AP-free, yet its complement contains no infinite AP.",
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of main result",
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
+    "prerequisites": [
+      "3-AP-Free Sets",
+      "Infinite Arithmetic Progression",
+      "Existential Statement"
+    ]
+  },
+  {
+    "id": "ann-199-vdw",
+    "proofId": "erdos-199",
+    "range": {
+      "startLine": 114,
+      "endLine": 118
+    },
+    "type": "concept",
+    "title": "Van der Waerden's Theorem",
+    "content": "**van_der_waerden:**\n\nFor any finite coloring of ℕ, some color class contains arbitrarily long arithmetic progressions.\n\n**Contrast with Erdős 199:**\n- VdW: Finite colorings of ℕ → long APs exist\n- Baumgartner: 2-partition of ℝ → NO infinite APs\n\nThe difference: infinite APs are much harder to avoid than arbitrarily long finite ones.",
+    "mathContext": "Van der Waerden's theorem (1927) is a cornerstone of Ramsey theory.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey theory",
+      "Szemerédi's theorem",
+      "Combinatorics"
+    ],
+    "prerequisites": [
+      "Ramsey Theory",
+      "Finite Colorings",
+      "Arithmetic Progressions"
+    ]
+  },
+  {
+    "id": "ann-199-example-nat",
+    "proofId": "erdos-199",
+    "range": {
+      "startLine": 127,
+      "endLine": 138
+    },
+    "type": "concept",
+    "title": "Example: ℕ Has 3-APs",
+    "content": "**Example showing ℕ (embedded in ℝ) has many 3-APs:**\n\n**Verification:** 1, 2, 3 is a 3-term AP with a = 1, d = 1.\n\nThis shows that dense sets like ℕ definitely contain APs. The question is about sparse (3-AP-free) sets.",
+    "significance": "supporting",
+    "mathContext": "See annotation content for formal details of example: ℕ has 3-aps",
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
+    "prerequisites": [
+      "Natural Numbers",
+      "Arithmetic Progression",
+      "Real Embedding"
+    ]
+  },
+  {
+    "id": "ann-199-example-rat",
+    "proofId": "erdos-199",
+    "range": {
+      "startLine": 140,
+      "endLine": 150
+    },
+    "type": "concept",
+    "title": "Example: ℚ Contains Infinite APs",
+    "content": "**Example showing ℚ (embedded in ℝ) contains infinite APs:**\n\n**Verification:** The infinite AP {0, 1, 2, 3, ...} ⊆ ℚ.\n\nThis contrasts with Baumgartner's sets, which avoid all infinite APs.",
+    "significance": "supporting",
+    "mathContext": "See annotation content for formal details of example: ℚ contains infinite aps",
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
+    "prerequisites": [
+      "Rational Numbers",
+      "Infinite Arithmetic Progression",
+      "Subset Relation"
+    ]
+  }
+]

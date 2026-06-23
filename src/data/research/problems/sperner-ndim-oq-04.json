@@ -1,0 +1,148 @@
+{
+  "slug": "sperner-ndim-oq-04",
+  "title": "n-Dimensional Sperner: Kuhn Path-Following Algorithm Formalization",
+  "phase": "COMPLETED",
+  "status": "axiomatized",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in combinatorics: n-Dimensional Sperner: Kuhn Path-Following Algorithm Formalization.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "DONE",
+    "since": "2026-05-02T00:00:00.000Z",
+    "iteration": 12,
+    "focus": "S12 STATE-SYNC (2026-05-17, researcher-11, doc-only): canonical lineCount convention sync. Gallery meta.json `meta.lineCount` / `leanFile.lineCount` AND research-JSON `leanFiles[0].lineCount` all carried 948 (wc -l count) but the enricher canonical convention (`scripts/research/enrich-research.ts:145,174` — `content.split('\\n').length`) produces 949 for this file (948 newlines + trailing empty line because file ends with `\\n`). This S12 bumps all three sites 948→949 to align with canonical, refreshes lastUpdate, and increments iteration/attemptCounts.total 11→12. No Lean / problem.md / knowledge.md body / state.md head / sessions edits aside from S12 iteration-history entry. S11 STATE-SYNC (2026-05-16, researcher-12, doc-only) previously reconciled phase/status/leanFiles/nextAction to S10 axiomatized-final reality (PR #14937 merged 2026-05-02; converted last walkTrace_reversal sorry to 1 axiom bdry_all_even_of_no_fc_walks). Lean reality (split-newline=949, theorems=23, defs=5, axioms=1, sorries=0) matches gallery post-S12 (lineCount 949, theoremCount 23, axiomCount 1, sorries 0, badge axiom, status axiomatized).",
+    "blockers": [
+      "[RESOLVED in S10 by re-axiomatization 2026-05-02; JSON entry retained for historical record, reconciled by S11 STATE-SYNC 2026-05-16] kuhnPathStart forgets the walk path, only retains final simplex; closing the 1 sorry requires either a new kuhnWalkSeq function returning the full trace (List of (Simplex × entry × exit) triples) plus reversal lemmas, or formalizing the door graph as a Mathlib SimpleGraph and using SimpleGraph.Walk.reverse"
+    ],
+    "nextAction": "**None** — entry is axiomatized-final (badge `axiom`, status `axiomatized`). Optional follow-up: discharge the `bdry_all_even_of_no_fc_walks` axiom via Path A (kuhnWalkSeq, ~150 LOC) or Path B (Mathlib SimpleGraph reformulation, ~200+ LOC); both documented in knowledge.md §'Two Concrete Unblock Paths'.",
+    "attemptCounts": {
+      "total": 12,
+      "currentApproach": 8,
+      "approachesTried": 2
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S11 STATE-SYNC (2026-05-16, researcher-12, doc-only): reconciled canonical research-JSON to S10 axiomatized-final reality (phase BLOCKED→COMPLETED, status blocked→axiomatized, currentState.phase BLOCKED→DONE, leanFiles[0] lineCount 734→948 + theoremCount 13→23 + defCount 6→5, nextAction rewritten from 'Future session: implement kuhnWalkSeq' to None+optional-follow-up, bootstrapped sessions/ directory). 0 Lean / problem.md / knowledge.md body / gallery / lake-manifest edits. — Re-axiomatized: 0 sorries, 1 axiom (bdry_all_even_of_no_fc_walks). Proved hMem and hNe for the τ involution; hInv (walkTrace_reversal, ~150-line kuhnWalkSeq induction) remains BLOCKED after 9+ sessions. Re-axiomatized per Session 9 recommendation.",
+    "builtItems": [
+      "doorDegree def: SpernerNDimOQ04.lean:60",
+      "IsKuhnCompatible def: SpernerNDimOQ04.lean:65",
+      "door_degree_parity lemma: PROVED",
+      "fc_door_count_eq_one theorem: PROVED via omega",
+      "nonfc_door_count_zero_or_two theorem: PROVED via omega",
+      "nonfc_with_door_has_unique_exit theorem: PROVED via Finset.card_eq_two",
+      "KuhnState structure: defined",
+      "kuhnWalk function: fuel-based recursion defined",
+      "kuhnPathStart def: algorithm entry point defined",
+      "kuhn_path_terminates PROVED (not sorry): sperner_ndim c K hc hbdry_odd — SpernerNDimOQ04.lean:324",
+      "adj_unique_facet field in SpernerTriangulation — SpernerNDim.lean:111 (2026-04-24)",
+      "kuhnWalk_no_immediate_back (proved, 0 sorries) in SpernerNDimOQ04.lean:311: adj_unique_facet prevents immediate-revisit; K.adj s₁ k_out ≠ some(s₀, _) when k_out ≠ k₁",
+      "kuhnWalk_first_exit_interior (proved, 0 sorries) in SpernerNDimOQ04.lean:326: starting from boundary door, first exit always interior (boundary_door_is_last_face)",
+      "kuhnWalk_fc_if_started_fc (proved, 0 sorries) in SpernerNDimOQ04.lean:368: if state.current is FC, kuhnWalk returns FC for any fuel",
+      "kuhnPathStart_is_fc_of_fc_start (proved, 0 sorries) in SpernerNDimOQ04.lean:444: if s₀ is FC with boundary door, kuhnPathStart returns FC",
+      "kuhnPathStart_finds_fc_existential (correctly-stated sorry) in SpernerNDimOQ04.lean:465: ∃ boundary door s.t. walk reaches FC",
+      "kuhn_three_doors_contradiction (PROVED): 3 distinct doors → contradiction with Kuhn-compat — SpernerNDimOQ04.lean:357",
+      "DoorRecord abbrev: door history type for walk invariant — SpernerNDimOQ04.lean:392",
+      "WalkValid structure (5 properties): has_record, doors_valid, entry_from_chain, exit_to_chain, pred_spec — SpernerNDimOQ04.lean:394",
+      "walkValid_init (PROVED): initial boundary-door state satisfies WalkValid — SpernerNDimOQ04.lean:420",
+      "kuhn_step_nonrevisit (PROVED): KEY non-revisiting theorem — under WalkValid, walk never revisits any simplex — SpernerNDimOQ04.lean:447",
+      "walkValid_step (PROVED): WalkValid preserved by one Kuhn step — SpernerNDimOQ04.lean:529",
+      "all_visited_forces_bdry (PROVED, Session 10): when all simplices visited, non-FC exit must be boundary door",
+      "kuhnWalk_congr (PROVED, Session 10): kuhnWalk proof-irrelevant in KuhnState Prop fields via proof_irrel",
+      "kuhnWalk_fc_or_bdry (PROVED, Session 10): with fuel=|K.Simplex|, walk terminates at FC or boundary door",
+      "bdry_nfc_even (SORRY): non-FC boundary doors have even cardinality via walk-pairing involution",
+      "kuhn_path_existential (PROVED from bdry_nfc_even, Session 5): parity argument gives ∃ FC boundary door",
+      "kuhnPathStart_finds_fc_existential (PROVED = kuhn_path_existential): eliminates former axiom",
+      "REMOVED kuhn_walk_reaches_fc (Session 5): theorem was FALSE — universal walk correctness is false for some paths",
+      "REMOVED kuhnPathStart_is_fc (Session 5): theorem was FALSE — not all boundary doors reach FC",
+      "bdry_all_even_of_no_fc_walks (private, sorry): walk-reversal FPF involution on B under hfail gives Even |B|",
+      "kuhn_path_existential (theorem, Session 8): Case 1 proved; Case 2 uses bdry_all_even_of_no_fc_walks; axiom eliminated",
+      "kuhnWalk_not_in_initial_visited: private lemma in SpernerNDimOQ04.lean (by fuel induction)",
+      "hMem fully proved: kuhnWalk_fc_or_bdry + hfail + boundary_door_is_last_face",
+      "hNe fully proved: kuhnWalk_not_in_initial_visited + one-step kuhnWalk unfolding"
+    ],
+    "insights": [
+      "IsKuhnCompatible (door degree ≤ 2) combined with abstract_door_parity gives exact door counts: 1 for FC, 0 or 2 for non-FC",
+      "nonfc_with_door_has_unique_exit proved via Finset.card_eq_two extraction - formal determinism of Kuhn algorithm",
+      "Non-revisiting invariant is the hard open part: door graph component containing a boundary vertex is a path (not a cycle)",
+      "Fuel-based recursion for kuhnWalk avoids well-founded termination obligations",
+      "door_degree_parity proved via simp only [h2] + convert h using 2 pattern (same as per_simplex_door_parity in SpernerNDim)",
+      "kuhn_path_terminates proved: given IsSperner c and odd boundary door count, FC existence follows from sperner_ndim directly (1-line proof). No walk argument needed for existence.",
+      "adj_unique_facet axiom added to SpernerTriangulation: closes previous-simplex revisit case (j = n-2) in non-revisiting proof",
+      "kuhnPathStart_is_fc as stated may be FALSE: walk can terminate at boundary-exit non-FC simplex when k_out vertex color ≠ d",
+      "kuhn_walk_reaches_fc is FALSE for arbitrary KuhnState: needs IsKuhnWalkState invariant",
+      "3-cycles consistent with adj_unique_facet + Kuhn compatibility: full acyclicity is geometric property of Δd",
+      "Correct reformulation: existential ∃ starting boundary door → FC (provable by parity + pairing)",
+      "adj_unique_facet directly proves no-immediate-revisit: K.adj s₁ k₁ = some(s₀,_) and K.adj s₁ k_out = some(s₀,_) implies k₁ = k_out (contradiction with exit≠entry)",
+      "Boundary-exit on first step is impossible: both doors would equal Fin.last d by boundary_door_is_last_face, contradicting k_out ≠ k₀",
+      "General non-revisiting (j<n-1 case): a revisited sⱼ would have ≥3 doors (entry kⱼ, exit k_exit_j, back-entry via door_transfer from path), violating Kuhn compat ≤2. Needs per-simplex door history in KuhnState to formalize.",
+      "Existential approach: odd boundary doors → ∃ unpaired boundary door → ∃ FC simplex with boundary door → kuhnPathStart_is_fc_of_fc_start gives result. This is the correct top-level proof strategy.",
+      "Non-revisiting proof structure: for visited s, use (1) kuhnWalk_no_immediate_back for predecessor case; (2) 3-door contradiction (kuhn_three_doors_contradiction) for non-predecessor case; distinctness from adj_unique_facet + current ∉ visited",
+      "WalkValid invariant: tracks (k_in, k_out) per visited simplex + predecessor identification. exit_to_chain splits into predecessor-case and non-predecessor-case. This enables adj_unique_facet to fire correctly for both k_back ≠ k_out_s and k_back ≠ k_in_s",
+      "walk-pairing argument for kuhnPathStart_finds_fc_existential: define τ on non-FC-terminating boundary doors. τ is fixed-point-free involution (walk reversibility). even_card_fpf_invol gives |non-FC bdry doors| even. Odd - even = odd ≥ 1 FC bdry door. Uses non-revisiting (now proved) + walk reversibility (pending)",
+      "kuhnPathStart_is_fc (universal) is FALSE: walk can terminate at non-FC boundary exit. Correct statement is existential: kuhnPathStart_finds_fc_existential",
+      "kuhnWalk_congr needs proof_irrel: KuhnState Prop fields (entry_is_door, current_not_visited) are propositionally but not definitionally equal between kuhnWalk internal computation and explicit proofs",
+      "kuhnWalk_fc_or_bdry base case: fuel=0 with visited.card=|K.Simplex| is impossible because current not-in-visited contradicts full coverage",
+      "Walk reversal (τ∘τ=id): at each step of reverse walk, adj_symm forces the unique exit door to match the previous forward step, retracing the path in reverse",
+      "bdry_nfc_even as a private lemma is FALSE: the abstract SpernerTriangulation axioms do not prevent a single boundary non-FC simplex, giving |B_nfc|=1 (odd). The correct parity argument uses door graph handshaking: |B_nfc| ≡ |B| (mod 2), and then the τ involution argument proves |B_nfc| is even, which together force |B_fc| odd ≥ 1.",
+      "Session 8: τ involution on ALL of B (not just B_nfc) is correct under hfail hypothesis; bdry_all_even_of_no_fc_walks is the correct formulation with sorry, replacing the axiom",
+      "kuhnWalk_not_in_initial_visited: walk result never in initial visited set (proved by fuel induction)",
+      "kuhnWalk_congr bridges proof-term mismatches after simp [dif_pos]: Prop fields are proof-irrelevant",
+      "hMem (τ maps B→B) and hNe (τ FPF on B) are now fully proved in the Lean file",
+      "The hInv sorry is specifically walkTrace_reversal; the involution argument structure is now complete",
+      "BLOCKED diagnosis (2026-04-27): closing the 1 remaining sorry needs structural infrastructure that no past session has built. kuhnPathStart only returns the final simplex; proving walk-reversal requires retaining the full walk sequence. Two unblock paths: (A) define kuhnWalkSeq returning a List of (Simplex × entry × exit) triples plus reversal lemmas (~150 lines), or (B) reformulate the door graph as a Mathlib SimpleGraph and use Walk.reverse (~200 lines).",
+      "Pool/gallery metadata divergence found: candidate-pool entry was 'phase: COMPLETED, status: completed' even though gallery meta.json correctly showed 'status: formalized' with 1 sorry. Future researchers should always cross-check pool entries against gallery meta.json before claiming."
+    ],
+    "mathlibGaps": [
+      "No Mathlib theorem for path-following algorithm termination with non-revisiting invariant",
+      "Mathlib lacks abstract door graph connectivity lemmas for non-revisiting proof",
+      "SpernerTriangulation lacks an adjacent-simplices-share-unique-facet axiom needed for the non-revisiting proof"
+    ],
+    "nextSteps": [
+      "[Optional, not blocking — slug is terminal-state axiomatized-final] Path A — define kuhnWalkSeq returning List (Simplex × entry × exit) triples + reversal lemmas (~150 LOC); use to discharge bdry_all_even_of_no_fc_walks axiom (knowledge.md §Two Concrete Unblock Paths Path A)",
+      "[Optional, not blocking] Path B — reformulate door graph as Mathlib SimpleGraph and use SimpleGraph.Walk.reverse (~200+ LOC); apply even_card_fpf_invol via reversal involution (knowledge.md §Two Concrete Unblock Paths Path B)",
+      "[Permanently optional] Accept Session 7 axiom form (kuhn_path_existential as axiom) — defensible position for a fundamental algorithmic restatement of Sperner's lemma"
+    ]
+  },
+  "tags": [
+    "combinatorics",
+    "algorithms",
+    "sperner",
+    "kuhn",
+    "constructive"
+  ],
+  "relatedProofs": [
+    "sperner-ndim",
+    "sperner-ndim-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-22T13:03:46.382Z",
+  "lastUpdate": "2026-05-17T18:30:00.000Z",
+  "significance": 8,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/SpernerNDimOQ04.lean",
+      "filename": "SpernerNDimOQ04.lean",
+      "lineCount": 949,
+      "theoremCount": 23,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerNDimOQ04.lean"
+    }
+  ]
+}

@@ -1,0 +1,197 @@
+{
+  "id": "erdos-604",
+  "title": "Erdős Problem #604: The Pinned Distance Problem",
+  "slug": "erdos-604",
+  "description": "Given n distinct points in the plane, must some point have nearly n distinct distances to other points? The 'pinned' version of the distinct distances problem. OPEN with $500 prize.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/604",
+    "date": "1957-1997",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos604Problem.lean",
+    "tags": [
+      "erdos",
+      "discrete-geometry",
+      "distinct-distances",
+      "combinatorial-geometry",
+      "open-problem"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 604,
+    "erdosUrl": "https://erdosproblems.com/604",
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": "$500",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering finite sets by a predicate",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.image",
+        "description": "Image of a function over a finite set",
+        "module": "Mathlib.Data.Finset.Image"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root on real numbers",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Finset.card_image_le",
+        "description": "Cardinality bound for images",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of pinned distance count",
+      "Statement of the pinned distance conjecture",
+      "Formalization of the Katz-Tardos exponent",
+      "Connection to general distinct distances"
+    ],
+    "axiomCount": 0,
+    "prerequisites": [
+      "Euclidean distance and metric spaces",
+      "Finite set combinatorics (cardinality, image, filter)",
+      "Asymptotic notation and exponent bounds",
+      "Incidence geometry (Szemerédi-Trotter theorem)",
+      "Crossing number inequality",
+      "Number theory (sums of two squares, Landau's theorem)"
+    ],
+    "lineCount": 223,
+    "assumptions": "No axioms. 1 sorry remaining: integerLattice_pinnedDistances (deep constructive existence). maxPinnedDistances and pinnedDistance_le are now sorry-free.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6,
+    "definitionCount": 10
+  },
+  "overview": {
+    "historicalContext": "The pinned distance problem is a stronger variant of the famous Erdős distinct distances problem (#89). Rather than counting all distinct pairwise distances in a point set, it asks: must some point 'see' many different distances to other points?\n\nErdős posed this across multiple papers from 1957 to 1997, offering a $500 prize. The integer lattice {1,...,√n} × {1,...,√n} shows the answer cannot exceed O(n/√log n), suggesting this might be the truth. The 'unpinned' version of the problem was famously resolved by Guth and Katz in 2015 using the polynomial method and algebraic geometry, achieving the near-optimal Ω(n/log n) bound, but their techniques have not yet been adapted to give the optimal pinned result. Katz and Tardos obtained the best known pinned lower bound of n^{(48-14e)/(55-16e)} ≈ n^{0.864} in 2004 using entropy methods.",
+    "problemStatement": "Given n distinct points A ⊂ ℝ², must there exist a point x ∈ A such that:\n\n|{d(x,y) : y ∈ A, y ≠ x}| ≫ n^(1-o(1))?\n\nOr even |{d(x,y) : y ∈ A}| ≫ n/√(log n)?\n\nThe 'pinned point' x has this many distinct distances to other points in the set.",
+    "text": "Given n distinct points in the plane, must some point have nearly n distinct distances to other points? The 'pinned' version of the distinct distances problem. OPEN with $500 prize.",
+    "proofStrategy": "This formalization:\n\n1. Defines `pinnedDistances x A` as the set of distances from x to points in A\n2. States the weak conjecture (exponent 1-ε) and strong conjecture (n/√log n)\n3. Formalizes the Katz-Tardos bound with exponent c ≈ 0.864\n4. Proves basic structural results connecting pinned to total distances\n\nThe main conjectures remain OPEN with substantial sorries marking unproven claims.",
+    "keyInsights": [
+      "**Pinned vs Total:** Counting distances from one 'pinned' point is harder than counting all pairwise distances, yet gives useful lower bounds.",
+      "**Integer Lattice Barrier:** The √n × √n integer grid has O(n/√log n) representable distances, setting the conjectured upper bound.",
+      "**Katz-Tardos Bound:** Best known lower bound achieves exponent c = (48-14e)/(55-16e) ≈ 0.864, far from the conjectured 1.",
+      "**Harborth's Counterexample:** Erdős initially thought the sum of pinned distances equaled total distinct distances; Harborth showed these differ.",
+      "**Prize Ambiguity:** The $500 prize's exact condition (one point or many points with high pinned count) remains unclear."
+    ],
+    "prerequisites": [
+      "Euclidean distance and metric spaces",
+      "Finite set combinatorics (cardinality, image, filter)",
+      "Asymptotic notation and exponent bounds",
+      "Incidence geometry (Szemerédi-Trotter theorem)",
+      "Crossing number inequality",
+      "Number theory (sums of two squares, Landau's theorem)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Pinned Distance Definitions",
+      "summary": "Core definitions for Euclidean distance and pinned distance counts",
+      "startLine": 37,
+      "endLine": 54
+    },
+    {
+      "id": "conjecture",
+      "title": "The Pinned Distance Conjecture",
+      "summary": "Weak and strong forms of the conjecture",
+      "startLine": 55,
+      "endLine": 68
+    },
+    {
+      "id": "katz-tardos",
+      "title": "Katz-Tardos Bound",
+      "summary": "The best known lower bound with exponent ≈ 0.864",
+      "startLine": 69,
+      "endLine": 80
+    },
+    {
+      "id": "bounds",
+      "title": "Related Bounds",
+      "summary": "Trivial bounds and the integer lattice construction",
+      "startLine": 81,
+      "endLine": 103
+    },
+    {
+      "id": "sum-conjecture",
+      "title": "Sum of Pinned Distances",
+      "summary": "Erdős's conjecture on the total pinned distance sum",
+      "startLine": 104,
+      "endLine": 114
+    },
+    {
+      "id": "connection",
+      "title": "Connection to Distinct Distances",
+      "summary": "How pinned distances relate to all pairwise distances",
+      "startLine": 115,
+      "endLine": 223
+    }
+  ],
+  "conclusion": {
+    "summary": "We formalize the pinned distance problem, defining the conjecture that every n-point set has a point seeing nearly n^(1-o(1)) distinct distances. The Katz-Tardos bound (exponent 0.864) is stated, and basic structural properties are proved. The main conjecture remains one of the deepest open problems in discrete geometry.",
+    "implications": "**Theoretical Significance**: This problem connects to:\n\n1. **Distinct Distances (#89):** The 'unpinned' version solved by Guth-Katz\n**2. Sum-Product Phenomena:** Additive/multiplicative structure in distance sets\n3. **Incidence Geometry:** Connections to point-line incidences\n4. **Algebraic Methods:** Polynomial method techniques from Elekes, Guth-Katz.",
+    "openQuestions": [
+      "Prove the exponent approaches 1 (the $500 prize!)",
+      "Prove the strong form with n/√(log n) distances",
+      "Improve Katz-Tardos beyond exponent 0.864",
+      "Determine if the prize requires one point or many points with high count"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Guth, Larry; Katz, Nets Hawk",
+      "title": "On the Erdős distinct distances problem in the plane",
+      "year": "2015",
+      "venue": "Annals of Mathematics 181(1), pp. 155-190",
+      "note": "Solved the 'unpinned' distinct distances problem; techniques relevant to the pinned version"
+    },
+    {
+      "authors": "Katz, Nets Hawk; Tardos, Gábor",
+      "title": "A new entropy inequality for the Erdős distance problem",
+      "year": "2004",
+      "venue": "Contemporary Mathematics 342, pp. 119-126",
+      "note": "Best known bound for the pinned version: exponent 0.864"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-483",
+      "relationship": "related",
+      "description": "Both are Erdős problems with prize money: #483 concerns Schur numbers ($250), #604 concerns pinned distances ($500)"
+    },
+    {
+      "targetId": "erdos-224",
+      "relationship": "related",
+      "description": "Both are extremal problems in discrete geometry. Problem #224 concerns point sets avoiding obtuse angles, while #604 (pinned distance problem) concerns the minimum number of distinct distances from a fixed point — both ask how point configurations constrain metric properties"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Mathlib"
+    ],
+    "opens": [
+      "Lean",
+      "Meta",
+      "Elab",
+      "Tactic",
+      "in",
+      "Lean.Elab.Tactic",
+      "in",
+      "Finset",
+      "Real",
+      "Set"
+    ],
+    "namespace": null,
+    "lineCount": 223,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 10,
+    "path": "Proofs/Erdos604Problem.lean",
+    "sorries": 1
+  },
+  "sorries": 1
+}

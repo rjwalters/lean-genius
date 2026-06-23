@@ -1,0 +1,105 @@
+{
+  "slug": "euler-polyhedral-formula-oq-01-oq-02",
+  "title": "Four Color Theorem Lean feasibility and small coloring cases",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Record verified graph-coloring basics around the Four Color Theorem feasibility question: colorability monotonicity, empty and edgeless graph cases, finite-graph distinct-color colorability, <=4-vertex four-colorability, bipartite-to-four-colorability, and the planar low-degree-vertex placeholder predicate.",
+    "plain": "Backfill the Four Color Theorem survey metadata around the Lean file's actual contributions: small coloring lemmas and a clear assessment that a full Gonthier-style Lean formalization would require major planar graph and reducibility infrastructure.",
+    "whyMatters": [
+      "The Four Color Theorem is a landmark computer-assisted proof; a Lean port needs careful scoping before implementation.",
+      "The file proves useful starter coloring lemmas while explicitly marking the full theorem as far beyond this slice.",
+      "Metadata should prevent overclaiming by separating verified small cases from the multi-year full 4CT project."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`colorable_of_le`, `empty_colorable`, `edgeless_one_colorable`, and `colorable_of_fintype` establish basic Mathlib graph-coloring facts.",
+      "`four_colorable_small` proves graphs with at most four vertices are four-colorable by distinct colors.",
+      "`four_colorable_of_bipartite` lifts any two-coloring of a bipartite graph to a four-coloring.",
+      "`PlanarHasLowDegreeVertex` records the Euler-formula consequence needed for the Five Color Theorem pathway, but only as a placeholder proposition."
+    ],
+    "open": [
+      "`EulerPolyhedralFormulaOQ01OQ02.lean` has zero active axioms and zero sorries.",
+      "`PlanarHasLowDegreeVertex` is defined as `True`; the file does not prove planar graph low-degree structure, the Five Color Theorem, or the Four Color Theorem.",
+      "The parent Euler polyhedral development still uses `euler_formula_axiom`; this OQ-01-OQ-02 slice is a feasibility survey plus small verified coloring lemmas."
+    ],
+    "goal": "Keep the 4CT feasibility metadata honest: verified small coloring lemmas, explicit infrastructure gap, and no claim of full planar formalization."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-29T01:15:00Z",
+    "iteration": 1,
+    "focus": "Survey: 4CT needs ~43K lines. Proved small cases.",
+    "blockers": [],
+    "nextAction": "",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEYED: 6 theorems, 0 axioms. 4CT is ~43K lines. Starting points: planar graphs + 5CT.",
+    "builtItems": [
+      "colorable_of_le: monotonicity of colorability",
+      "four_colorable_small: 4CT for ≤4 vertices",
+      "four_colorable_of_bipartite: bipartite→4-colorable",
+      "colorable_of_fintype: n vertices→n-colorable"
+    ],
+    "insights": [
+      "Gonthier Coq proof ~60K lines, Lean estimate ~43K with native_decide",
+      "Planar graph formalization is main missing piece",
+      "Five Color Theorem (~2000 lines) is feasible intermediate",
+      "native_decide could replace computational kernel"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": ""
+  },
+  "tags": [
+    "graph-theory",
+    "four-color-theorem",
+    "graph-coloring",
+    "formalization-feasibility",
+    "fully-verified"
+  ],
+  "relatedProofs": [
+    "euler-polyhedral-formula",
+    "euler-polyhedral-formula-oq-01",
+    "euler-polyhedral-formula-oq-01-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T22:57:01.595Z",
+  "lastUpdate": "2026-06-14T01:14:16Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/EulerPolyhedralFormula.lean",
+      "filename": "EulerPolyhedralFormula.lean",
+      "lineCount": 1093,
+      "theoremCount": 65,
+      "axiomCount": 1,
+      "defCount": 27,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerPolyhedralFormula.lean"
+    },
+    {
+      "path": "Proofs/EulerPolyhedralFormulaOQ01OQ02.lean",
+      "filename": "EulerPolyhedralFormulaOQ01OQ02.lean",
+      "lineCount": 142,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerPolyhedralFormulaOQ01OQ02.lean"
+    }
+  ]
+}

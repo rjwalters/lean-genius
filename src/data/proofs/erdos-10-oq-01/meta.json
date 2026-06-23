@@ -1,0 +1,184 @@
+{
+  "id": "erdos-10-oq-01",
+  "title": "Finite k for Sufficiently Large Integers (Erdős #10 OQ-01)",
+  "slug": "erdos-10-oq-01",
+  "description": "Does there exist a finite k such that every sufficiently large integer is the sum of a prime and at most k powers of 2? Formalizes the logical hierarchy from Gallagher's density theorem through Crocker's impossibility to the Erdős-Graham conjecture. Shows that the Granville-Soundararajan conjecture would imply k=4 suffices for all n ≥ 3.",
+  "meta": {
+    "author": "Research formalization 2026",
+    "sourceUrl": "https://erdosproblems.com/10",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos10OQ01.lean",
+    "tags": [
+      "number-theory",
+      "erdos",
+      "primes",
+      "additive-combinatorics",
+      "powers-of-2",
+      "density"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 3,
+    "lineCount": 316,
+    "assumptions": "3 axioms: (1) crocker_theorem — infinitely many odd integers not in RepSet 2, a proven 1971 result axiomatized here; (2) gallagher_density_approach — Gallagher 1975, proven via large sieve, axiomatized; (3) erdos_graham_conjecture — the main open conjecture that no finite k covers all large integers.",
+    "dateAdded": "2026-04-03",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #10 asks whether there is a finite k such that every sufficiently large integer can be written as a prime plus at most k powers of 2. This 'sufficiently large' variant (OQ-01) is weaker than the full question (all n ≥ 2) but still believed false. Gallagher (1975) proved the density of representable integers approaches 1 as k grows — the best unconditional result. Crocker (1971) proved infinitely many odd integers cannot be expressed as a prime plus ≤2 powers of 2, ruling out k=2. Granville and Soundararajan (1998) conjectured k=3 for odd and k=4 for even integers, which would settle OQ-01 affirmatively.",
+    "problemStatement": "**OQ-01**: Does there exist a finite k and threshold N such that every n ≥ N can be written as n = p + 2^{a_1} + … + 2^{a_j} where p is prime and j ≤ k?",
+    "text": "Formalizes the logical hierarchy for the 'sufficiently large' variant of Erdős Problem #10, connecting Gallagher's density theorem, Crocker's impossibility result, the Granville-Soundararajan conjecture, and the Erdős-Graham conjecture.",
+    "proofStrategy": "The file defines `IsPrimePlusKPowers k n` and `OQ01 = ∃ k N, ∀ n ≥ N, IsPrimePlusKPowers k n`. It proves: (1) the parent problem implies OQ-01; (2) k=2 is insufficient (Crocker axiom); (3) G-S conjecture implies OQ-01 with k=4; (4) Gallagher's density result does not imply OQ-01 (gap shown by the non-squares example); (5) the Erdős-Graham conjecture implies ¬OQ-01.",
+    "keyInsights": [
+      "**Logical hierarchy**: Erdős10Main → OQ-01 ← G-S conjecture; Gallagher ≠→ OQ-01",
+      "**Crocker's theorem (1971)**: Infinitely many odd integers are not in RepSet 2, so k=2 fails unconditionally for large integers.",
+      "**G-S conditional**: If Granville-Soundararajan holds, then k=4 works for all n ≥ 3, resolving OQ-01 affirmatively.",
+      "**Density gap**: A set can have lower density 1 yet miss infinitely many values (e.g., non-squares). Gallagher's result alone cannot resolve OQ-01.",
+      "**Erdős-Graham conjecture**: The main belief is that OQ-01 is false — for every k, infinitely many large integers lie outside RepSet k."
+    ],
+    "prerequisites": [
+      "Prime numbers",
+      "Multiset representation of sums",
+      "Set density (lower density, liminf)",
+      "Gallagher's large sieve result (1975)",
+      "Covering congruences (Crocker's argument)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-overview",
+      "title": "Header and Overview",
+      "summary": "File header for Erdős #10 OQ-01: the original problem asks for a constant $k$ such that every integer is a prime plus at most $k$ powers of $2$; OQ-01 is the 'sufficiently large' variant $\\exists k,N,\\ \\forall n\\ge N,\\ n=p+\\sum 2^{a_i}$. Status OPEN (conjectured FALSE by Erdős–Graham); Gallagher's density-1 theorem is the best unconditional result. Imports Mathlib, opens `Filter`/`Set`/`Classical`, enters the namespace.",
+      "startLine": 1,
+      "endLine": 47,
+      "mathContext": "OQ-01: $\\exists k,N\\ \\forall n\\ge N$, $n$ is a prime plus $\\le k$ powers of 2. Conjectured FALSE (Erdős–Graham)."
+    },
+    {
+      "id": "part1-core-definitions",
+      "title": "Part I: Core Definitions",
+      "summary": "Defines `IsPrimePlusKPowers k n` ($n=p+\\sum_{i} 2^{a_i}$ for a prime $p$ and a multiset of $\\le k$ exponents) and `RepSet k` (the representable set).",
+      "startLine": 48,
+      "endLine": 58,
+      "mathContext": "$n\\in\\mathrm{RepSet}(k)\\iff n=p+\\sum_{i\\le k}2^{a_i}$, $p$ prime (repeated exponents allowed)."
+    },
+    {
+      "id": "part2-oq01-question",
+      "title": "Part II: The OQ-01 Question",
+      "summary": "States `OQ01` (some finite $k$ works for all large $n$) and the stronger parent `Erdos10Main` (some $k$ works for all $n\\ge2$), with `main_implies_oq01` showing the parent conjecture implies OQ-01.",
+      "startLine": 59,
+      "endLine": 78,
+      "mathContext": "$\\mathrm{Erdos10Main}\\Rightarrow\\mathrm{OQ01}$: OQ-01 is the strictly weaker 'sufficiently large' form."
+    },
+    {
+      "id": "part3-monotonicity",
+      "title": "Part III: Monotonicity Lemmas",
+      "summary": "Structural monotonicity: `repSet_mono`/`repSet_mono_le` ($\\mathrm{RepSet}$ grows with $k$), `repSet_zero_eq_primes` ($\\mathrm{RepSet}(0)=$ primes), and `oq01_mono` (OQ-01 is monotone in $k$).",
+      "startLine": 79,
+      "endLine": 108,
+      "mathContext": "$\\mathrm{RepSet}(k_1)\\subseteq\\mathrm{RepSet}(k_2)$ for $k_1\\le k_2$; $\\mathrm{RepSet}(0)=\\{\\text{primes}\\}$."
+    },
+    {
+      "id": "part4-k2-insufficient",
+      "title": "Part IV: k=2 is Insufficient for Large Integers",
+      "summary": "Crocker's lower bound: axiom `crocker_theorem` and `k_two_not_sufficient_large`/`k_two_fails_oq01` showing $k=2$ fails OQ-01 — infinitely many large integers are not a prime plus two powers of 2.",
+      "startLine": 109,
+      "endLine": 133,
+      "mathContext": "Crocker (1971): $k=2$ is insufficient — infinitely many integers are not $p+2^a+2^b$."
+    },
+    {
+      "id": "part5-granville-soundararajan",
+      "title": "Part V: Connection to Granville-Soundararajan Conjecture",
+      "summary": "Defines the parity-split `GranvilleSoundararajanOdd`/`GranvilleSoundararajanEven` and proves `granville_soundararajan_implies_oq01`: if the G–S conjecture holds, then $k=4$ works for all sufficiently large integers.",
+      "startLine": 134,
+      "endLine": 163,
+      "mathContext": "Granville–Soundararajan (1998) $\\Rightarrow$ OQ-01 with $k=4$."
+    },
+    {
+      "id": "part6-gallagher",
+      "title": "Part VI: Gallagher's Density Result (Does Not Imply OQ-01)",
+      "summary": "Axiom `gallagher_density_approach` (Gallagher 1975: the representable set has density $\\to1$) and `gallagher_does_not_imply_oq01_in_principle`, showing density 1 is consistent with OQ-01 failing — a sparse exceptional set can persist.",
+      "startLine": 164,
+      "endLine": 284,
+      "mathContext": "Gallagher (1975): density $\\to 1$, but density 1 does not give universal coverage for large $n$."
+    },
+    {
+      "id": "part7-erdos-graham",
+      "title": "Part VII: The Erdős-Graham Conjecture (Formalized)",
+      "summary": "Axiom `erdos_graham_conjecture` (Erdős–Graham predicted OQ-01 is FALSE) and `oq01_false_from_conjecture` deriving the negative answer from it.",
+      "startLine": 285,
+      "endLine": 301,
+      "mathContext": "Erdős–Graham (1980) conjectured OQ-01 is FALSE: no finite $k$ covers all large integers."
+    },
+    {
+      "id": "part8-logical-hierarchy",
+      "title": "Part VIII: The Logical Hierarchy Summary",
+      "summary": "Summarizes the logical hierarchy: parent conjecture $\\Rightarrow$ OQ-01; G–S $\\Rightarrow$ OQ-01 ($k=4$); Crocker rules out $k=2$; Gallagher's density-1 result does not settle it; Erdős–Graham conjecture OQ-01 false.",
+      "startLine": 302,
+      "endLine": 316,
+      "mathContext": "Hierarchy: Main $\\Rightarrow$ OQ-01 $\\Leftarrow$ G–S; Crocker ($k\\ne2$); Gallagher (density only); Erdős–Graham (conjectured false)."
+    }
+  ],
+  "conclusion": {
+    "summary": "OQ-01 is formalized with a complete logical hierarchy: the parent Erdős #10 problem implies OQ-01; the G-S conjecture would resolve it with k=4; Gallagher's density result is provably insufficient; Crocker's theorem rules out k=2; and the Erdős-Graham conjecture implies OQ-01 is false. The file has 3 axioms (2 for proven but deep results, 1 for the open conjecture) and 0 sorries.",
+    "implications": "If Granville-Soundararajan is proved, OQ-01 is resolved (k=4 works). If the Erdős-Graham conjecture is proved, OQ-01 is refuted. The density gap argument shows that the standard probabilistic heuristics (Gallagher) are genuinely insufficient for a definitive answer.",
+    "openQuestions": [
+      "Is OQ-01 true or false? (Expected: false, by Erdős-Graham conjecture)",
+      "What is the minimal k that works for all odd integers > 1? (Granville-Soundararajan: k=3)",
+      "Can Gallagher's result be strengthened to give universal coverage for some k?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-10",
+      "relationship": "extends",
+      "description": "Parent: Erdős #10 (all integers variant)"
+    },
+    {
+      "targetId": "erdos-9",
+      "relationship": "related",
+      "description": "Problem #9: odd integers not of the form p + 2^k + 2^l (closely related k=2 case)"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Crocker, R.",
+      "title": "On the sum of a prime and of two powers of two",
+      "year": "1971",
+      "venue": "Pacific Journal of Mathematics 36:103–107",
+      "note": "Infinitely many odd integers not expressible as p + 2^a + 2^b"
+    },
+    {
+      "authors": "Gallagher, P.X.",
+      "title": "Primes and powers of 2",
+      "year": "1975",
+      "venue": "Inventiones Mathematicae 29:125–142",
+      "note": "Density of S_k approaches 1 as k grows (large sieve + Bombieri-Vinogradov)"
+    },
+    {
+      "authors": "Granville, A., Soundararajan, K.",
+      "title": "A binary additive problem of Erdős and the order of 2 mod p²",
+      "year": "1998",
+      "venue": "Ramanujan Journal 2:283–298",
+      "note": "Conjectured k=3 for odd, k=4 for even"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Multiset.Basic",
+      "Mathlib.Order.Filter.AtTopBot.Basic"
+    ],
+    "namespace": "Erdos10OQ01",
+    "lineCount": 316,
+    "axiomCount": 3,
+    "theoremCount": 10,
+    "path": "Proofs/Erdos10OQ01.lean",
+    "sorries": 0,
+    "definitionCount": 6
+  },
+  "sorries": 0
+}

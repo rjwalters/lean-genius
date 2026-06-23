@@ -1,0 +1,390 @@
+[
+  {
+    "id": "imports",
+    "proofId": "erdos-1065",
+    "range": {
+      "startLine": 1,
+      "endLine": 5
+    },
+    "type": "concept",
+    "title": "Imports and Dependencies",
+    "content": "Imports Mathlib's prime number basics, finite set infrastructure, natural number foundations, and tactic framework. `Nat.Prime` provides the primality predicate and `Set.Infinite`/`Set.Finite` enable stating the infinitude conjectures.",
+    "mathContext": "Uses `Nat.Prime p` ($p$ is prime), `Set.Infinite S` ($|S| = \\infty$), and decision procedures (`decide`, `norm_num`) for computational verification.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib prime API",
+      "decidable primality",
+      "Set.Infinite"
+    ],
+    "prerequisites": [
+      "basic Lean 4 syntax",
+      "Mathlib library structure"
+    ]
+  },
+  {
+    "id": "docstring",
+    "proofId": "erdos-1065",
+    "range": {
+      "startLine": 6,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Problem Statement and Historical Context",
+    "content": "Module docstring describing Erdős Problem #1065 (Guy's B46): are there infinitely many primes $p$ with $p - 1 = 2^k q$ ($q$ prime)? Lists known examples, connections to safe primes and Artin's conjecture, and the more general $2^k 3^l q + 1$ variant. References OEIS A074781 (safe primes) and A339465.",
+    "mathContext": "The problem asks about the density of primes whose predecessor $p-1$ has restricted factorization. Connected to Hardy-Littlewood Conjecture F (1923) on the density of safe primes: $\\pi_{\\text{safe}}(x) \\sim 2C_2 x/(\\log x)^2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "guy-b46",
+      "safe-primes",
+      "OEIS-sequences"
+    ],
+    "prerequisites": [
+      "prime-factorization",
+      "smooth-numbers"
+    ]
+  },
+  {
+    "id": "two-time-prime",
+    "proofId": "erdos-1065",
+    "range": {
+      "startLine": 24,
+      "endLine": 29
+    },
+    "type": "definition",
+    "title": "Primes of the Form $2^k \\cdot q + 1$",
+    "content": "Defines the predicate `IsTwoTimePrimePlusOne p`: a prime $p$ such that $p - 1 = 2^k \\cdot q$ for some prime $q$ and non-negative integer $k$. This restricts $p - 1$ to have exactly one odd prime factor. The condition means $p - 1$ is '$2$-smooth times a prime', or equivalently that $p - 1$ has at most two distinct prime factors (2 and $q$).\n\nThe $k = 1$ case ($p = 2q + 1$) gives the safe primes (see `sophie-germain`), critical in Diffie-Hellman cryptography where $p - 1$ must resist Pohlig-Hellman factoring. The Euler totient $\\varphi(p) = p - 1 = 2^k q$ (see `euler-totient`) has a restricted number of divisors, making the discrete logarithm problem in $\\mathbb{Z}/p\\mathbb{Z}^*$ harder when $p$ is a Form A prime.",
+    "mathContext": "$\\text{IsTwoTimePrimePlusOne}(p) \\;:\\Leftrightarrow\\; p \\text{ prime} \\wedge \\exists q, k \\in \\mathbb{N}: q \\text{ prime} \\wedge p = 2^k q + 1$. When $k = 0$, $p = q + 1$, so $p = 3, q = 2$ is the only solution. When $k = 1$, $p = 2q + 1$: these are the safe primes. The constraint $\\omega(p-1) \\leq 2$ (at most 2 distinct prime factors) is equivalent to the definition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "safe prime",
+      "smooth number",
+      "2-rough number",
+      "Cunningham chain",
+      "Diffie-Hellman",
+      "discrete logarithm"
+    ],
+    "prerequisites": [
+      "prime numbers",
+      "factorization of p-1"
+    ]
+  },
+  {
+    "id": "two-three-time-prime",
+    "proofId": "erdos-1065",
+    "range": {
+      "startLine": 30,
+      "endLine": 33
+    },
+    "type": "definition",
+    "title": "Primes of the Form $2^k \\cdot 3^l \\cdot q + 1$",
+    "content": "Defines the relaxed predicate `IsTwoThreeTimePrimePlusOne p`: a prime $p$ such that $p - 1 = 2^k \\cdot 3^l \\cdot q$ for some prime $q$ and $k, l \\geq 0$. This allows $p - 1$ to have up to three distinct prime factors. Setting $l = 0$ recovers the stronger form, so every $2^k q + 1$ prime is automatically a $2^k 3^l q + 1$ prime.",
+    "mathContext": "$\\text{IsTwoThreeTimePrimePlusOne}(p) \\;:\\Leftrightarrow\\; p \\text{ prime} \\wedge \\exists q, k, l \\in \\mathbb{N}: q \\text{ prime} \\wedge p = 2^k \\cdot 3^l \\cdot q + 1$. The set of such primes contains the Form A primes as $\\{l = 0\\} \\subseteq \\{l \\geq 0\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "3-smooth number",
+      "friable number",
+      "factorization of p-1"
+    ],
+    "prerequisites": [
+      "IsTwoTimePrimePlusOne definition",
+      "smooth numbers"
+    ]
+  },
+  {
+    "id": "conjecture-a",
+    "proofId": "erdos-1065",
+    "range": {
+      "startLine": 34,
+      "endLine": 39
+    },
+    "type": "concept",
+    "title": "Conjecture A: Infinitely Many $2^k q + 1$ Primes",
+    "content": "The stronger variant of Erdős Problem #1065: the set $\\{p \\text{ prime} : p - 1 = 2^k q,\\; q \\text{ prime}\\}$ is infinite. This implies the safe primes conjecture as a special case ($k = 1$). The conjecture relates to the distribution of prime values of the polynomial $2^k q + 1$ as $q$ ranges over primes and $k$ over non-negative integers.",
+    "mathContext": "$|\\{p \\in \\mathbb{P} : \\exists q \\in \\mathbb{P},\\, k \\in \\mathbb{N}: p = 2^k q + 1\\}| = \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "safe primes conjecture",
+      "Bunyakovsky conjecture",
+      "prime-producing polynomials",
+      "Hardy-Littlewood Conjecture F"
+    ],
+    "prerequisites": [
+      "IsTwoTimePrimePlusOne definition",
+      "Set.Infinite"
+    ]
+  },
+  {
+    "id": "conjecture-b",
+    "proofId": "erdos-1065",
+    "range": {
+      "startLine": 40,
+      "endLine": 43
+    },
+    "type": "concept",
+    "title": "Conjecture B: Infinitely Many $2^k 3^l q + 1$ Primes",
+    "content": "The weaker variant of Problem #1065: the set of primes $p$ with $p - 1 = 2^k \\cdot 3^l \\cdot q$ ($q$ prime) is infinite. This is implied by Conjecture A (set $l = 0$). The extra factor of $3^l$ significantly enlarges the candidate set — for example, $p = 61$ satisfies Form B ($60 = 2^2 \\cdot 3 \\cdot 5$) but not Form A.\n\n**Why 3 is special:** The choice of 3 as the additional smooth factor is natural: the $\\{2,3\\}$-smooth numbers (regular numbers, studied since Babylonian mathematics) are the densest smooth number set after powers of 2. Requiring $p - 1$ to be $\\{2,3\\}$-smooth times a prime is the mildest relaxation of Form A's $2$-smooth condition.",
+    "mathContext": "$|\\{p \\in \\mathbb{P} : \\exists q \\in \\mathbb{P},\\, k, l \\in \\mathbb{N}: p = 2^k \\cdot 3^l \\cdot q + 1\\}| = \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "smooth-shifted primes",
+      "Dickman function",
+      "friable numbers"
+    ],
+    "prerequisites": [
+      "IsTwoThreeTimePrimePlusOne definition",
+      "Set.Infinite"
+    ]
+  },
+  {
+    "id": "verified-examples",
+    "proofId": "erdos-1065",
+    "range": {
+      "startLine": 44,
+      "endLine": 129
+    },
+    "type": "concept",
+    "title": "Computationally Verified Form A Examples",
+    "content": "Proves all 14 Form A primes up to 100: $3, 5, 7, 11, 13, 23, 29, 41, 47, 53, 59, 83, 89, 97$. Each proof constructs the witness $(q, k)$ and checks primality of both $p$ and $q$ using `decide` and `norm_num`.\n\nThe pattern is uniform: `constructor` splits the conjunction into a primality check (`decide`) and an existence witness. The witness is provided as `⟨q, k, by decide, by norm_num⟩`, where `by decide` verifies primality of $q$ and `by norm_num` checks the arithmetic equation $p = 2^k \\cdot q + 1$ computationally. This reflects Lean 4's strength in verified finite computation: despite the conjecture being open, the individual instances are decidable and machine-checkable in milliseconds.",
+    "mathContext": "Form A decompositions: $(p, k, q) \\in \\{(3,0,2), (5,1,2), (7,1,3), (11,1,5), (13,2,3), (23,1,11), (29,2,7), (41,3,5), (47,1,23), (53,2,13), (59,1,29), (83,1,41), (89,3,11), (97,5,3)\\}$. Among the 25 primes $\\leq 100$, 14 are Form A — a density of 56%.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "computational number theory",
+      "Lean decision procedures",
+      "norm_num tactic",
+      "witness-based proof"
+    ],
+    "prerequisites": [
+      "IsTwoTimePrimePlusOne",
+      "decide tactic",
+      "norm_num tactic"
+    ]
+  },
+  {
+    "id": "form-b-examples",
+    "proofId": "erdos-1065",
+    "range": {
+      "startLine": 130,
+      "endLine": 146
+    },
+    "type": "insight",
+    "title": "Form B Separating Examples ($p = 37$ and $p = 61$)",
+    "content": "This section proves that $37$ and $61$ are Form B primes, establishing them as separating examples for the strict inclusion Form A $\\subsetneq$ Form B.\n\n**$p = 37$**: $36 = 2 \\cdot 3^2 \\cdot 2$, so $(q, k, l) = (2, 1, 2)$ is a valid Form B witness. Note that $36 = 2^2 \\cdot 9$ and 9 is not prime, so 37 is not Form A.\n\n**$p = 61$**: $60 = 2^2 \\cdot 3 \\cdot 5$, so $(q, k, l) = (5, 2, 1)$ is a valid Form B witness. Since $60/1 = 60$, $60/2 = 30$, $60/4 = 15$ are all composite, 61 is not Form A.\n\nThe juxtaposition of these two examples demonstrates the three-level hierarchy: {safe primes} $\\subset$ {Form A} $\\subset$ {Form B} $\\subset$ {all primes}.",
+    "mathContext": "$37 - 1 = 36 = 2 \\cdot 3^2 \\cdot 2$: Form B witness $(q,k,l) = (2,1,2)$. $61 - 1 = 60 = 2^2 \\cdot 3 \\cdot 5$: Form B witness $(q,k,l) = (5,2,1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "separating example",
+      "smooth number",
+      "three-level prime hierarchy",
+      "Form A vs Form B distinction"
+    ],
+    "prerequisites": [
+      "IsTwoThreeTimePrimePlusOne",
+      "smooth number factorization"
+    ]
+  },
+  {
+    "id": "non-example-37",
+    "proofId": "erdos-1065",
+    "range": {
+      "startLine": 147,
+      "endLine": 166
+    },
+    "type": "concept",
+    "title": "Non-Form-A Proof: $p = 37$",
+    "content": "Proves $37$ is not Form A by exhaustive case analysis. Since $36 = 2^k \\cdot q$, bounding $k \\leq 4$ (as $2^5 = 32 > 36/2$) and using `interval_cases` to enumerate $k = 0, \\ldots, 4$: the quotients $36, 18, 9$ are all composite, and for $k \\geq 3$ the arithmetic fails via `omega`. The `not_form_a_37` section heading and docstring are included in this range.",
+    "mathContext": "$37 - 1 = 36 = 2^2 \\cdot 3^2$. For $k = 0$: $q = 36$ (not prime). For $k = 1$: $q = 18$ (not prime). For $k = 2$: $q = 9$ (not prime). For $k \\geq 3$: $2^k \\cdot q = 36$ has no solution with $q \\geq 2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "interval_cases",
+      "bounded exhaustion",
+      "primality refutation"
+    ],
+    "prerequisites": [
+      "IsTwoTimePrimePlusOne",
+      "interval_cases tactic"
+    ]
+  },
+  {
+    "id": "non-example-61-71",
+    "proofId": "erdos-1065",
+    "range": {
+      "startLine": 167,
+      "endLine": 220
+    },
+    "type": "concept",
+    "title": "Non-Form-A and Non-Form-B Proofs: $p = 61$ and $p = 71$",
+    "content": "Three non-membership proofs using bounded exhaustion:\n\n`not_form_a_61`: $60 = 2^k q$ for $k = 0,1,2$ gives $q \\in \\{60, 30, 15\\}$, all composite. For $k \\geq 3$, $2^k > 60$.\n\n`not_form_a_71`: $70 = 2^k q$ gives $q \\in \\{70, 35\\}$ (composite), then $2^k > 70$ for $k \\geq 2$.\n\n`not_form_b_71`: $70 = 2^k \\cdot 3^l \\cdot q$ is exhaustively checked over $k \\leq 5, l \\leq 3$ using `interval_cases k <;> interval_cases l <;> simp_all`. Since $3 \\nmid 70$, only $l = 0$ cases are non-vacuous, reducing to `not_form_a_71`.",
+    "mathContext": "The bounding strategy: $2^k \\leq p - 1$ forces $k \\leq \\lfloor \\log_2(p-1) \\rfloor$, and $3^l \\leq p - 1$ forces $l \\leq \\lfloor \\log_3(p-1) \\rfloor$. For $p = 71$: $70 = 2 \\cdot 5 \\cdot 7$ is $3$-free, so no factorization $2^k \\cdot 3^l \\cdot q$ with $q$ prime and $l > 0$ exists.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "interval_cases",
+      "bounded exhaustion",
+      "primality refutation",
+      "factorization analysis"
+    ],
+    "prerequisites": [
+      "Nat.pow_le_pow_right",
+      "interval_cases",
+      "decide"
+    ]
+  },
+  {
+    "id": "strict-inclusion",
+    "proofId": "erdos-1065",
+    "range": {
+      "startLine": 221,
+      "endLine": 232
+    },
+    "type": "insight",
+    "title": "Strict Inclusion: Form A $\\subsetneq$ Form B via Witnesses",
+    "content": "`strict_inclusion_37` and `strict_inclusion_61` combine positive Form B membership with negative Form A membership to witness $\\{\\text{Form A}\\} \\subsetneq \\{\\text{Form B}\\}$. These are the two smallest separating examples: $37 = 2 \\cdot 3^2 \\cdot 2 + 1$ and $61 = 2^2 \\cdot 3 \\cdot 5 + 1$.",
+    "mathContext": "$\\text{Form A} \\subsetneq \\text{Form B}$ is witnessed by: $37 \\in \\text{Form B} \\setminus \\text{Form A}$ (via `example_37_extended` and `not_form_a_37`) and $61 \\in \\text{Form B} \\setminus \\text{Form A}$ (via `example_61_extended` and `not_form_a_61`).",
+    "significance": "key",
+    "relatedConcepts": [
+      "strict set inclusion",
+      "separating examples",
+      "witness construction"
+    ],
+    "prerequisites": [
+      "example_37_extended",
+      "not_form_a_37",
+      "example_61_extended",
+      "not_form_a_61"
+    ]
+  },
+  {
+    "id": "form-a-implies-b",
+    "proofId": "erdos-1065",
+    "range": {
+      "startLine": 233,
+      "endLine": 240
+    },
+    "type": "concept",
+    "title": "Form A Implies Form B",
+    "content": "Proves that every prime of the $2^k q + 1$ form is also of the $2^k 3^l q + 1$ form, by taking $l = 0$ (so $3^0 = 1$). The proof destructures the Form A hypothesis and applies the trivial embedding. This establishes the set inclusion $\\{\\text{Form A primes}\\} \\subseteq \\{\\text{Form B primes}\\}$.",
+    "mathContext": "$p = 2^k q + 1 \\implies p = 2^k \\cdot 3^0 \\cdot q + 1$, so $\\text{IsTwoTimePrimePlusOne}(p) \\implies \\text{IsTwoThreeTimePrimePlusOne}(p)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "set inclusion",
+      "logical implication",
+      "weakening"
+    ],
+    "prerequisites": [
+      "both form definitions"
+    ]
+  },
+  {
+    "id": "sophie-germain",
+    "proofId": "erdos-1065",
+    "range": {
+      "startLine": 241,
+      "endLine": 254
+    },
+    "type": "concept",
+    "title": "Connection to Sophie Germain / Safe Primes",
+    "content": "Two theorems connecting safe primes to Form A. `sophie_germain_case` proves that the infinitude of safe primes ($p = 2q + 1$ with $q$ prime) would imply Conjecture A: a safe prime is a Form A prime with $k = 1$. `safe_prime_is_form_a` provides the direct embedding. The safe primes conjecture is itself wide open — heuristically, Hardy-Littlewood Conjecture F predicts $\\sim 2C_2 \\cdot x / (\\log x)^2$ safe primes up to $x$ where $C_2 \\approx 0.66$ is the twin primes constant.\n\nThe connection to Dirichlet's theorem (see `dirichlets-theorem`) is instructive: Dirichlet proved infinitely many primes in $a + nd$ (arithmetic progressions), while this conjecture asks about primes in $2^k q + 1$ where $q$ varies over primes — a much more restrictive structured set requiring two simultaneous primality conditions.",
+    "mathContext": "$\\{p \\in \\mathbb{P} : \\exists q \\in \\mathbb{P},\\, p = 2q+1\\} \\subseteq \\{p : \\text{IsTwoTimePrimePlusOne}(p)\\}$ via $k = 1$. Hardy–Littlewood predict $\\pi_{\\text{safe}}(x) \\sim 2C_2 x/(\\ln x)^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sophie Germain prime",
+      "safe prime",
+      "Hardy–Littlewood conjecture",
+      "twin primes constant"
+    ],
+    "prerequisites": [
+      "safe prime definition",
+      "Set.Infinite.mono"
+    ]
+  },
+  {
+    "id": "smooth-structure",
+    "proofId": "erdos-1065",
+    "range": {
+      "startLine": 255,
+      "endLine": 260
+    },
+    "type": "concept",
+    "title": "Smooth Structure of $p - 1$",
+    "content": "Extracts the factorization $p - 1 = 2^k \\cdot q$ from the Form A hypothesis. The significance is that $p - 1$ is '$2$-smooth times a prime': its largest prime factor is $q$ and all other factors are powers of 2. This connects to the classical study of the factorization of $p - 1$ initiated by Artin's conjecture on primitive roots.",
+    "mathContext": "$\\text{IsTwoTimePrimePlusOne}(p) \\implies p - 1 = 2^k q$ with $q$ prime. The number $p - 1$ is $q$-smooth with $\\omega(p-1) \\leq 2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Artin's primitive root conjecture",
+      "smooth number",
+      "number of distinct prime factors"
+    ],
+    "prerequisites": [
+      "IsTwoTimePrimePlusOne",
+      "omega function"
+    ]
+  },
+  {
+    "id": "conjecture-implication",
+    "proofId": "erdos-1065",
+    "range": {
+      "startLine": 261,
+      "endLine": 269
+    },
+    "type": "concept",
+    "title": "Conjecture A Implies Conjecture B",
+    "content": "Proves that if the set of Form A primes is infinite, then the set of Form B primes is infinite. Uses `Set.Infinite.mono` with `form_a_implies_b` to lift the set inclusion to an infinitude implication. This formalizes the complete logical hierarchy: safe primes $\\Rightarrow$ Conjecture A $\\Rightarrow$ Conjecture B.\n\nThe key Mathlib lemma is `Set.Infinite.mono`: if $S \\subseteq T$ and $S$ is infinite, then $T$ is infinite. The proof is essentially two lines: apply `h.mono` (where `h : Set.Infinite {Form A}`) and dispatch the subset obligation to `form_a_implies_b`.",
+    "mathContext": "$|\\{\\text{Form A}\\}| = \\infty \\implies |\\{\\text{Form B}\\}| = \\infty$ since $\\{\\text{Form A}\\} \\subseteq \\{\\text{Form B}\\}$ by `form_a_implies_b`. Formally: `h.mono (fun p hp => form_a_implies_b p hp)`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Set.Infinite.mono",
+      "conjecture hierarchy",
+      "monotonicity of infinite sets",
+      "logical weakening"
+    ],
+    "prerequisites": [
+      "form_a_implies_b",
+      "Set.Infinite",
+      "Set.Infinite.mono"
+    ]
+  },
+  {
+    "id": "decidable-check",
+    "proofId": "erdos-1065",
+    "range": {
+      "startLine": 270,
+      "endLine": 279
+    },
+    "type": "theorem",
+    "title": "Decidable Check Function",
+    "content": "Implements a bounded decidable check `checkTwoTimePrime p` that tests whether $p$ is of the $2^k q + 1$ form by iterating over all $k < p$ and checking if $(p-1)/2^k$ is prime. This is a brute-force algorithm but suffices for small examples. The function returns `Bool` rather than `Prop`, enabling `#eval` computation.",
+    "mathContext": "Algorithm: for each $k = 0, 1, \\ldots, p-1$, check if $2^k \\mid (p-1)$ and $(p-1)/2^k$ is prime. Complexity: $O(p \\cdot T_{\\text{prime}}(p))$ where $T_{\\text{prime}}$ is the cost of primality testing.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "decidable computation",
+      "Boolean reflection",
+      "trial division"
+    ],
+    "prerequisites": [
+      "Nat.Prime decidability",
+      "list comprehension in Lean 4"
+    ]
+  },
+  {
+    "id": "fourteen-examples",
+    "proofId": "erdos-1065",
+    "range": {
+      "startLine": 280,
+      "endLine": 301
+    },
+    "type": "concept",
+    "title": "Collective Verification: All 14 Form A Primes $\\leq 100$",
+    "content": "Proves that all 14 identified Form A primes $\\leq 100$ satisfy `IsTwoTimePrimePlusOne`, packaging the individual examples into a single universally quantified statement over a list. Uses `simp [List.mem_cons]` and case splitting (`rcases`) to dispatch each element to its previously proved instance.\n\nThis is the computational evidence supporting Conjecture A: among the 25 primes up to 100, a majority (56%) have the Form A property.",
+    "mathContext": "$\\forall p \\in \\{3, 5, 7, 11, 13, 23, 29, 41, 47, 53, 59, 83, 89, 97\\}: \\text{IsTwoTimePrimePlusOne}(p)$. Decompositions: $(3,0,2), (5,1,2), (7,1,3), (11,1,5), (13,2,3), (23,1,11), (29,2,7), (41,3,5), (47,1,23), (53,2,13), (59,1,29), (83,1,41), (89,3,11), (97,5,3)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "list membership proof",
+      "case analysis",
+      "exhaustive verification",
+      "prime density"
+    ],
+    "prerequisites": [
+      "individual example theorems",
+      "List.mem_cons"
+    ]
+  }
+]

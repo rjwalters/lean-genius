@@ -1,0 +1,172 @@
+{
+  "id": "sum-of-divisors-oq-07",
+  "title": "The Closed Geometric-Product Form of σₖ for Every Exponent k",
+  "slug": "sum-of-divisors-oq-07",
+  "description": "Mathlib evaluates σₖ only in open form — a geometric sum on prime powers (sigma_apply_prime_pow) and a product of those sums over a factorization (sigma_eq_prod_primeFactors_sum_range_factorization_pow_mul). OQ-04 collapses the inner geometric series to closed form, but only for k = 1. This entry proves the closed geometric-product form for an arbitrary exponent k: σₖ(pⁱ)·(pᵏ−1) = p^{k(i+1)}−1 on prime powers, the two-prime product law, and the general σₖ(n)·∏_{p∣n}(pᵏ−1) = ∏_{p∣n}(p^{k(vₚ(n)+1)}−1), collapsing Mathlib's product-of-sums into a product of closed geometric quotients. Routes through geom_sum_mul, sigma_apply_prime_pow, isMultiplicative_sigma, and sigma_eq_prod_primeFactors_sum_range_factorization_pow_mul.",
+  "meta": {
+    "author": "classical (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Divisor_function",
+    "date": "antiquity",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "divisor-function",
+      "sigma",
+      "multiplicative-function",
+      "prime-powers",
+      "geometric-series",
+      "arithmetic-functions",
+      "extension",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/SumOfDivisorsOQ07.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "ArithmeticFunction.sigma_apply_prime_pow",
+        "description": "σₖ(pⁱ) = ∑_{j<i+1} p^{jk} — the open geometric sum on a prime power, for every k",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Misc"
+      },
+      {
+        "theorem": "ArithmeticFunction.sigma_eq_prod_primeFactors_sum_range_factorization_pow_mul",
+        "description": "σₖ(n) = ∏_{p∣n} ∑_{j<vₚ(n)+1} p^{jk} — the product-of-sums evaluation over a factorization",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Misc"
+      },
+      {
+        "theorem": "geom_sum_mul",
+        "description": "(∑_{i<n} xⁱ)·(x−1) = xⁿ−1 — collapses the open geometric sum to closed form, applied with base x = pᵏ",
+        "module": "Mathlib.Algebra.Ring.GeomSum"
+      },
+      {
+        "theorem": "ArithmeticFunction.IsMultiplicative.map_mul_of_coprime",
+        "description": "multiplicative f, Coprime m n → f(mn) = f m · f n — splits σₖ across coprime prime powers",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Defs"
+      },
+      {
+        "theorem": "ArithmeticFunction.isMultiplicative_sigma",
+        "description": "σₖ is a multiplicative arithmetic function",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Misc"
+      },
+      {
+        "theorem": "Nat.coprime_primes",
+        "description": "Coprime p q ↔ p ≠ q for primes p, q — distinct primes are coprime",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Finset.prod_mul_distrib",
+        "description": "∏ (f·g) = (∏ f)·(∏ g) — distributes the product of (pᵏ−1) factors over the factorization",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      }
+    ],
+    "originalContributions": [
+      "geom_sigma_sum: (∑_{j<i+1} p^{jk})·(pᵏ−1) = p^{k(i+1)}−1, the geometric collapse over ℤ re-indexed to the σₖ summand shape",
+      "sigma_prime_pow_mul: σₖ(pⁱ)·(pᵏ−1) = p^{k(i+1)}−1 for EVERY exponent k (OQ-04 proves only the k = 1 case)",
+      "sigma_two_primes_pow_mul: σₖ(pᵃqᵇ)·(pᵏ−1)(qᵏ−1) = (p^{k(a+1)}−1)(q^{k(b+1)}−1) via multiplicativity",
+      "sigma_mul_prod_primeFactors: the general closed geometric-product form σₖ(n)·∏_{p∣n}(pᵏ−1) = ∏_{p∣n}(p^{k(vₚ(n)+1)}−1), collapsing Mathlib's product-of-sums into a product of closed quotients"
+    ],
+    "dateAdded": "2026-06-20",
+    "lineCount": 95,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The divisor-power sum σₖ(n) = Σ_{d∣n} dᵏ generalizes both the divisor count τ = σ₀ and the divisor sum σ = σ₁. Its structure is fixed by two facts: it is multiplicative, and on a prime power it is the geometric sum σₖ(pⁱ) = 1 + pᵏ + p²ᵏ + ⋯ + p^{ik} = (p^{k(i+1)}−1)/(pᵏ−1). Together these compute σₖ on any factorization as a product of closed geometric quotients. Mathlib carries this only in open (un-summed) form, and the gallery's OQ-04 collapses the inner series for the single exponent k = 1; this entry proves the closed form uniformly in k.",
+    "problemStatement": "**Open Question (sum-of-divisors-oq-07)**: Collapse Mathlib's open-form evaluation of σₖ into closed geometric form for an arbitrary exponent k — on prime powers, on two-prime products, and as a closed product over the full factorization.\n\n**Result**: geom_sigma_sum, sigma_prime_pow_mul, sigma_two_primes_pow_mul, sigma_mul_prod_primeFactors.",
+    "text": "σₖ(pⁱ)·(pᵏ−1) = p^{k(i+1)}−1 on prime powers, σₖ(pᵃqᵇ)·(pᵏ−1)(qᵏ−1) = (p^{k(a+1)}−1)(q^{k(b+1)}−1) on two-prime products, and σₖ(n)·∏_{p∣n}(pᵏ−1) = ∏_{p∣n}(p^{k(vₚ(n)+1)}−1) in general — all for every exponent k.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. `geom_sigma_sum`: apply `geom_sum_mul` with base x = pᵏ, then re-index the summand p^{jk} = (pᵏ)^j via `pow_mul` and `Nat.mul_comm` to match the shape `sigma_apply_prime_pow` produces.\n2. `sigma_prime_pow_mul`: rewrite σₖ(pⁱ) as the open sum ∑_{j<i+1} p^{jk} (`sigma_apply_prime_pow`), cast to ℤ, and apply `geom_sigma_sum`.\n3. `sigma_two_primes_pow_mul`: distinct primes give coprime prime powers (`coprime_primes`, `Coprime.pow`), so `isMultiplicative_sigma.map_mul_of_coprime` splits σₖ(pᵃqᵇ) = σₖ(pᵃ)·σₖ(qᵇ); `linear_combination` assembles the two prime-power identities into the product.\n4. `sigma_mul_prod_primeFactors`: start from Mathlib's product-of-sums `sigma_eq_prod_primeFactors_sum_range_factorization_pow_mul`, distribute the product of (pᵏ−1) factors with `Finset.prod_mul_distrib`, and collapse each factor with `geom_sigma_sum`.",
+    "keyInsights": [
+      "**One geometric collapse, used everywhere.** Every closed form here is `geom_sum_mul` applied to the base x = pᵏ. The re-indexing lemma `geom_sigma_sum` packages that single collapse so the prime-power, two-prime, and full-factorization results each reduce to it.",
+      "**Uniform in the exponent k.** OQ-04 proves the closed prime-power form only for k = 1 (sigma_one_prime_pow_mul); here pᵏ plays the role of the base, so the identical geometric identity holds for τ = σ₀, σ = σ₁, and every higher σₖ at once.",
+      "**Division-free over ℤ.** The textbook formula σₖ(n) = ∏ (p^{k(vₚ+1)}−1)/(pᵏ−1) is stated as the cross-multiplied identity σₖ(n)·∏(pᵏ−1) = ∏(p^{k(vₚ+1)}−1), avoiding division and the need for pᵏ ≠ 1 side conditions while carrying the same content.",
+      "**Collapsing a product of sums into a product of quotients.** Mathlib evaluates σₖ(n) as a product of geometric *sums*; the general result replaces each inner sum by its closed geometric *quotient*, distributing the (pᵏ−1) denominators across the factorization."
+    ],
+    "prerequisites": [
+      "Mathlib's ArithmeticFunction.sigma and its prime-power / factorization API",
+      "Multiplicative arithmetic functions and coprime factorization (IsMultiplicative)",
+      "The geometric sum identity geom_sum_mul and Finset product manipulation"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Module docstring framing the open-form gap (Mathlib's geometric sums, OQ-04's k = 1 collapse) and the closed geometric-product target, the Mathlib import, namespace, and ArithmeticFunction/Finset opens.",
+      "mathContext": "$\\sigma_k(p^i) = \\sum_{j\\le i} p^{jk} = \\tfrac{p^{k(i+1)}-1}{p^k-1}$."
+    },
+    {
+      "id": "prime-power",
+      "title": "Geometric Collapse and the Prime-Power Closed Form",
+      "startLine": 40,
+      "endLine": 59,
+      "summary": "geom_sigma_sum (the geometric collapse (∑ p^{jk})·(pᵏ−1) = p^{k(i+1)}−1 over ℤ) and sigma_prime_pow_mul (the closed form σₖ(pⁱ)·(pᵏ−1) = p^{k(i+1)}−1 for every k).",
+      "mathContext": "$(p^k-1)\\sigma_k(p^i) = p^{k(i+1)}-1$."
+    },
+    {
+      "id": "factorization",
+      "title": "Two-Prime and General Factorization Forms",
+      "startLine": 61,
+      "endLine": 95,
+      "summary": "sigma_two_primes_pow_mul (the two-prime product law via multiplicativity) and sigma_mul_prod_primeFactors (the general closed geometric-product form over the full factorization).",
+      "mathContext": "$\\sigma_k(n)\\prod_{p\\mid n}(p^k-1) = \\prod_{p\\mid n}(p^{k(v_p(n)+1)}-1)$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "sum-of-divisors-oq-04",
+      "relationship": "extends",
+      "description": "Generalizes OQ-04's closed prime-power form sigma_one_prime_pow_mul (k = 1) to an arbitrary exponent k, and answers its stated open question of expressing σ(n) as a closed product over prime factors — here for every σₖ"
+    },
+    {
+      "targetId": "sum-of-divisors",
+      "relationship": "extends",
+      "description": "Extends the base entry's divisor-sum properties to the full divisor-power family σₖ in closed geometric-product form"
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) proof of the closed geometric-product form of σₖ for every exponent k: σₖ(pⁱ)·(pᵏ−1) = p^{k(i+1)}−1 on prime powers, the two-prime product law, and the general σₖ(n)·∏_{p∣n}(pᵏ−1) = ∏_{p∣n}(p^{k(vₚ(n)+1)}−1) collapsing Mathlib's product-of-sums into a product of closed quotients.",
+    "implications": "Supplies the closed evaluation of every divisor-power sum from its factorization, generalizing OQ-04's k = 1 result and turning Mathlib's open geometric sums into the textbook closed product form.",
+    "openQuestions": [
+      "Derive the Dirichlet series identity ∑ σₖ(n)/nˢ = ζ(s)ζ(s−k) from the closed product form.",
+      "State the multiplicativity of σₖ(n)/n^k (the higher-order abundancy index) as in OQ-05's k = 1 case."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "ArithmeticFunction",
+      "Finset"
+    ],
+    "namespace": "SumOfDivisorsOQ07",
+    "lineCount": 95,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/SumOfDivisorsOQ07.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Hardy, G. H. and Wright, E. M.",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "2008",
+      "venue": "Oxford University Press, 6th ed.",
+      "note": "Chapter XVI: multiplicative functions and the geometric formula for σₖ on prime powers"
+    },
+    {
+      "authors": "Apostol, Tom M.",
+      "title": "Introduction to Analytic Number Theory",
+      "year": "1976",
+      "venue": "Springer Undergraduate Texts in Mathematics",
+      "note": "Theorem 2.13 and surrounding: σₖ is multiplicative with σₖ(pᵃ) = (p^{k(a+1)}−1)/(pᵏ−1)"
+    }
+  ],
+  "sorries": 0
+}

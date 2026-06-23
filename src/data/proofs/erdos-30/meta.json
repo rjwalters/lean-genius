@@ -1,0 +1,215 @@
+{
+  "id": "erdos-30",
+  "title": "Erdős Problem #30: Sidon Sets",
+  "slug": "erdos-30",
+  "description": "Is h(N) = N^{1/2} + O_ε(N^ε) where h(N) is the maximum Sidon set size in {1,...,N}? OPEN with $1,000 prize. Best upper bound has N^{1/4} error term.",
+  "meta": {
+    "author": "Erdős-Turán",
+    "sourceUrl": "https://erdosproblems.com/30",
+    "date": "1941",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos30Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "sidon-sets",
+      "b2-sequences"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 30,
+    "erdosUrl": "https://erdosproblems.com/30",
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": "$1000",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset",
+        "description": "Finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Finset.sup",
+        "description": "Supremum over finite sets",
+        "module": "Mathlib.Data.Finset.Lattice"
+      }
+    ],
+    "originalContributions": [
+      "Formalization of Sidon set definition",
+      "Equivalence of two Sidon characterizations",
+      "Definition of Sidon number h(N)",
+      "Documentation of historical bounds (Erdős-Turán to Carter-Hunter-O'Bryant) in source comments",
+      "Perfect difference set connection"
+    ],
+    "axiomCount": 0,
+    "lineCount": 194,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Open conjecture; supporting lemmas fully verified.",
+    "theoremCount": 4,
+    "definitionCount": 8
+  },
+  "overview": {
+    "historicalContext": "Simon Sidon originally studied sets with distinct pairwise sums in the context of lacunary Fourier series in the 1930s, seeking sets of integers whose exponential sums have good analytic properties. In 1938, James Singer constructed near-optimal Sidon sets using perfect difference sets from finite projective geometry PG(2,q), establishing the lower bound h(N) ≥ (1-o(1))√N. Erdős and Turán proved their foundational upper bound h(N) ≤ √N + N^{1/4} + 1 in 1941 using a simple but powerful counting argument: a Sidon set of size s contributes s(s-1)/2 distinct pairwise sums in {2,...,2N}, giving a quadratic inequality. This bound stood essentially unchanged for 80 years — Lindström (1969) shaved the constant to +1/2 but left the N^{1/4} exponent untouched. The breakthrough came in 2021 when Balogh, Füredi, and Roy reduced the coefficient of N^{1/4} from 1 to 0.998, and Carter, Hunter, and O'Bryant (2025) further improved it to 0.98183. Erdős offered $1,000 for proving or disproving the conjecture that h(N) = N^{1/2} + O_ε(N^ε).",
+    "problemStatement": "**Conjecture (Erdős-Turán, OPEN):** For every ε > 0,\n\nh(N) = N^{1/2} + O_ε(N^ε)\n\n**Current best:**\n- Upper: N^{1/2} + 0.98183·N^{1/4} + O(1) (Carter-Hunter-O'Bryant 2025)\n- Lower: (1-o(1))·N^{1/2} (Singer 1938)\n\n**The prize:** $1,000 for proving or disproving.",
+    "text": "Is h(N) = N^{1/2} + O_ε(N^ε) where h(N) is the maximum Sidon set size in {1,...,N}? OPEN with $1,000 prize. Best upper bound has N^{1/4} error term.",
+    "proofStrategy": "The formalization defines:\n\n1. `IsSidonSet A`: all pairwise sums are distinct\n2. `HasDistinctSums A`: equivalent characterization (proved equivalent)\n3. `sidonNumber N`: maximum size h(N)\n4. `Erdos30Conjecture`: h(N) = N^{1/2} + O_ε(N^ε)\n\nWe axiomatize the historical bounds progression:\n- Erdős-Turán (1941): N^{1/2} + N^{1/4} + 1\n- Lindström (1969): slight improvement\n- Balogh-Füredi-Roy (2021): 0.998 coefficient\n- Carter-Hunter-O'Bryant (2025): 0.98183 coefficient\n- Singer (1938): lower bound via perfect difference sets\n\nThe formalization also includes perfect difference sets, B_h generalization, and a reduction theorem showing any improvement to the 1/4 exponent would resolve the conjecture.",
+    "keyInsights": [
+      "The N^{1/4} barrier persists after 80+ years of work: all improvements since 1941 have only affected the constant multiplier, not the exponent. Breaking 1/4 requires fundamentally new ideas beyond counting arguments.",
+      "Singer's perfect difference sets from PG(2,q) achieve h(N) ~ √N, showing the leading term is tight. The construction uses the Singer cycle acting on lines of the projective plane over F_q.",
+      "The counting argument limit is structural: s(s-1)/2 ≤ 2N gives s ≤ √N + N^{1/4} + O(1). The N^{1/4} arises from the square root of the leading term, and any improvement must exploit the structure of sums beyond just their count.",
+      "The B_h generalization replaces pairwise sums with h-wise sums. For B_h sets in {1,...,N}, the maximum size is Θ(N^{1/h}), and analogous conjectures exist for the error term.",
+      "Erdős speculated h(N) = N^{1/2} + O(1) might hold — that the deviation from √N is bounded by a constant. This 'optimistic conjecture' remains consistent with all computational evidence for small N.",
+      "The reduction theorem shows one improvement suffices: proving RequiredUpperBound(ε) for any single ε < 1/4 implies the full conjecture, since N^{ε₀} is dominated by N^ε for ε > ε₀."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Additive combinatorics (sumsets, density)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "summary": "Defines IsSidonSet (ordered pairwise sum distinctness), HasDistinctSums (unordered variant), and proves their equivalence via case analysis on orderings.",
+      "startLine": 29,
+      "endLine": 72,
+      "mathContext": "$A$ is Sidon if all pairwise sums $a_i + a_j$ ($i < j$) are distinct. Equivalently: $a + b = c + d$ with $\\{a,b\\} \\neq \\{c,d\\}$ never happens."
+    },
+    {
+      "id": "sidon-number",
+      "title": "The Sidon Number h(N)",
+      "summary": "Defines sidonNumber as the supremum of cardinalities over all Sidon subsets of {0,...,N}, and proves existence (empty set is Sidon).",
+      "startLine": 73,
+      "endLine": 87,
+      "mathContext": "$h(N) = \\max\\{|A| : A \\subseteq [N],, A \\text{ Sidon}\\}$. Known: $h(N) = \\sqrt{N} + O(N^{1/4})$."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős-Turán Conjecture",
+      "summary": "OPEN ($1,000): States Erdos30Conjecture (h(N) = √N + O_ε(N^ε)) and StrongerConjecture (h(N) = √N + O(1)).",
+      "startLine": 88,
+      "endLine": 103,
+      "mathContext": "Conjecture (): $h(N) = \\sqrt{N} + O_\\varepsilon(N^\\varepsilon)$ for any $\\varepsilon > 0$. Stronger: $h(N) = \\sqrt{N} + O(1)$."
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Upper Bounds",
+      "summary": "Historical progression: Erdős-Turán (1941, +N^{1/4}+1), Lindström (1969, +N^{1/4}+1/2), Balogh-Füredi-Roy (2021, +0.998·N^{1/4}), Carter-Hunter-O'Bryant (2025, +0.98183·N^{1/4}+O(1)).",
+      "startLine": 104,
+      "endLine": 126,
+      "mathContext": "Upper bounds: Erdős-Turán (1941): $h(N) \\leq \\sqrt{N} + N^{1/4} + 1$. Lindström (1969): $\\leq \\sqrt{N} + N^{1/4} + 1/2$. Cilleruelo (2010): $\\leq \\sqrt{N} + 0.998 N^{1/4}$."
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Lower Bounds",
+      "summary": "Singer's asymptotic bound h(N) ≥ (1-o(1))√N and the explicit quantitative version h(N) ≥ √N - N^{0.525} for infinitely many N.",
+      "startLine": 127,
+      "endLine": 141,
+      "mathContext": "Lower bounds: Singer difference sets give $h(N) \\geq (1-o(1))\\sqrt{N}$ when $N$ is near a prime power."
+    },
+    {
+      "id": "gap",
+      "title": "The Gap Analysis",
+      "summary": "Formalizes RequiredUpperBound(ε) and the reduction theorem: any single improvement to ε < 1/4 implies the full conjecture.",
+      "startLine": 142,
+      "endLine": 167,
+      "mathContext": "Gap: the error term $h(N) - \\sqrt{N}$ is between $O(1)$ (conjectured) and $O(N^{1/4})$ (best known). Any improvement to $O(N^{1/4-\\delta})$ would be progress."
+    },
+    {
+      "id": "perfect-difference",
+      "title": "Perfect Difference Sets",
+      "summary": "Defines IsPerfectDifferenceSet, axiomatizes that they are Sidon, and states Singer's construction for prime power q giving sets of size q+1 mod q²+q+1.",
+      "startLine": 168,
+      "endLine": 184,
+      "mathContext": "Perfect difference set: $D \\subseteq \\mathbb{Z}/n\\mathbb{Z}$ with every nonzero element represented exactly once as $d_i - d_j$. These are optimal Sidon sets."
+    },
+    {
+      "id": "examples",
+      "title": "Examples and Computations",
+      "summary": "Proves {1,2,5,10} is Sidon by exhaustive case analysis, and records computed values h(10)=5, h(100)=13.",
+      "startLine": 185,
+      "endLine": 194,
+      "mathContext": "Example: $\\{1, 2, 5, 10\\} \\subseteq [10]$ is Sidon (6 distinct pairwise sums: 3,6,7,11,12,15). $h(10) = 5$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #30, an OPEN $1,000 problem asking whether the maximum Sidon set size h(N) equals N^{1/2} up to an error of N^ε for any ε > 0. The formalization includes a fully-proved equivalence of two Sidon characterizations, the complete historical progression of upper bounds from 1941 to 2025, Singer's construction via perfect difference sets, a reduction theorem, and the B_h generalization.",
+    "implications": "**Theoretical Significance**: Sidon sets connect multiple areas:\n\n1. **Fourier analysis:** Originally studied for lacunary series, determining which thin sets support good analytic behavior\n2. **Finite geometry:** Perfect difference sets from projective planes PG(2,q) provide the best known constructions\n**3. Coding theory:** Error-correcting codes with similar uniqueness constraints on codeword distances\n4. **Additive combinatorics:** B_h sequences, sumset structure, and the sum-product phenomenon\n5. **Number theory:** Connections to prime gaps (via Baker-Harman-Pintz) and additive bases of integers.",
+    "openQuestions": [
+      "Can the N^{1/4} exponent in the upper bound be reduced to any ε < 1/4, or is there a structural barrier?",
+      "Is h(N) = N^{1/2} + O(1) true — is the deviation from √N bounded by a constant?",
+      "What are the exact values of h(N) for small N, and do they exhibit a pattern suggesting the true error term?",
+      "What is the correct error term for B_h sets: is h_h(N) = N^{1/h} + O_ε(N^ε) for all h?",
+      "Can the collision graph approach of Balogh-Füredi-Roy be extended to break the 1/4 exponent, or is it inherently limited to constant improvements?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-432",
+      "relationship": "related",
+      "description": "Both study structural constraints on sumsets; #30 requires unique pairwise sums while #432 requires pairwise coprimality of sumsets"
+    },
+    {
+      "targetId": "erdos-340-greedy-sidon",
+      "relationship": "specialization",
+      "description": "The greedy Sidon construction (Mian–Chowla sequence) builds the lexicographically first Sidon set by always choosing the smallest integer whose pairwise sums don't collide. Problem #30 asks for the maximum size $h(N)$ of a Sidon set in $[N]$; the greedy construction gives a lower bound but is not optimal — the gap between greedy and optimal is itself an open question"
+    },
+    {
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "Problem #1 (distinct subset sums) and Problem #30 (Sidon/B₂ sets) are dual perspectives on the same theme: #1 requires ALL subset sums to be distinct, while #30 requires only PAIRWISE sums to be distinct. The maximum sizes differ dramatically: $O(\\log N)$ for #1 vs $\\Theta(\\sqrt{N})$ for #30, reflecting how the constraint strength controls set density"
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/Erdos30Problem.lean",
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set"
+    ],
+    "namespace": "Erdos30",
+    "lineCount": 194,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 8,
+    "theoremCount": 4
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Turán, Pál",
+      "title": "On a problem of Sidon in additive number theory, and on some related problems",
+      "year": "1941",
+      "venue": "Journal of the London Mathematical Society, vol. 16, pp. 212–215",
+      "note": "Foundational paper proving that Sidon sets in {1,...,N} have at most (1+o(1))√N elements. Introduced systematic study of B_2 sets"
+    },
+    {
+      "authors": "Lindström, Bernt",
+      "title": "An inequality for B_2-sequences",
+      "year": "1969",
+      "venue": "Journal of Combinatorial Theory, vol. 6, pp. 211–212",
+      "note": "Sharp upper bound for Sidon sets: |A| ≤ √N + √[4]{N} + 1 for A ⊆ {1,...,N}"
+    },
+    {
+      "authors": "Cilleruelo, Javier",
+      "title": "Infinite Sidon sets",
+      "year": "2010",
+      "venue": "Advances in Mathematics, vol. 225, pp. 2786–2803",
+      "note": "Constructed dense infinite Sidon sets using polynomial constructions, advancing the Erdős-Turán program on B_2 sets"
+    },
+    {
+      "authors": "O'Bryant, Kevin",
+      "title": "A complete annotated bibliography of work related to Sidon sets",
+      "year": "2004",
+      "venue": "Electronic Journal of Combinatorics, Dynamic Survey DS11",
+      "note": "Comprehensive survey of all known results on Sidon sets, B_h sets, and related combinatorial number theory"
+    }
+  ],
+  "sorries": 0
+}

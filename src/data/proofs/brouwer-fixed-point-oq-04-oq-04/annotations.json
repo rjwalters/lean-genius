@@ -1,0 +1,146 @@
+[
+  {
+    "id": "ann-approx-fp-def",
+    "proofId": "brouwer-fixed-point-oq-04-oq-04",
+    "range": {
+      "startLine": 77,
+      "endLine": 99
+    },
+    "type": "definition",
+    "title": "ε-Approximate Fixed Points: Definitions and Properties",
+    "content": "Defines IsApproxFixedPoint: x is an ε-approximate fixed point of F if there exists y ∈ F(x) with dist(x, y) < ε. Also defines HasApproxFixedPointProperty for maps with ε-fixed points for all ε > 0. Two immediate properties are proved: exact fixed points are trivially ε-approximate (by dist_self), and ε-approximate implies δ-approximate for δ ≥ ε (monotonicity). These definitions bridge constructive algorithms (which output finite-precision approximations) with classical fixed point theory (which asserts exact existence).",
+    "mathContext": "$\\text{IsApproxFixedPoint}(F, \\varepsilon, x) \\iff \\exists y \\in F(x),\\; d(x,y) < \\varepsilon$. Monotonicity: $\\varepsilon \\le \\delta \\implies \\varepsilon\\text{-approx} \\implies \\delta\\text{-approx}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "approximate solution",
+      "metric space",
+      "fixed point property"
+    ],
+    "prerequisites": [
+      "PseudoMetricSpace",
+      "dist_self"
+    ]
+  },
+  {
+    "id": "ann-discrete-ivt",
+    "proofId": "brouwer-fixed-point-oq-04-oq-04",
+    "range": {
+      "startLine": 105,
+      "endLine": 140
+    },
+    "type": "insight",
+    "title": "Discrete Intermediate Value Theorem (Key Constructive Engine)",
+    "content": "The central constructive lemma: if g : ℕ → ℝ satisfies g(0) ≥ 0 and g(N) ≤ 0 for N ≥ 1, then there exist consecutive indices i, i+1 with g(i) ≥ 0 and g(i+1) ≤ 0. Proved by strong induction on N. Base case N=1: take i=0. Inductive step: if g(m) ≤ 0, apply the induction hypothesis on [0,...,m]; if g(m) > 0, take i=m (the sign change occurs between m and m+1). This O(N) algorithm is the finite, computable analogue of the continuous IVT and is the constructive engine underlying ALL fixed point algorithms — from bisection to Scarf's simplicial pivoting.",
+    "mathContext": "If $g(0) \\ge 0$ and $g(N) \\le 0$, then $\\exists i < N: g(i) \\ge 0 \\land g(i+1) \\le 0$. The sign-change formulation: $\\exists i < N: g(i) \\cdot g(i+1) \\le 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "intermediate value theorem",
+      "bisection method",
+      "constructive analysis",
+      "sign change"
+    ],
+    "prerequisites": [
+      "Nat.rec",
+      "push_neg",
+      "mul_nonpos_of_nonneg_of_nonpos"
+    ]
+  },
+  {
+    "id": "ann-localization",
+    "proofId": "brouwer-fixed-point-oq-04-oq-04",
+    "range": {
+      "startLine": 146,
+      "endLine": 197
+    },
+    "type": "concept",
+    "title": "Constructive Localization via Grid Evaluation",
+    "content": "Applies the discrete IVT to the evaluation function g(k) = F.upper(k/n) - k/n at n+1 grid points on [0,1]. The boundary conditions are: g(0) = F.upper(0) ≥ 0 (since F maps [0,1] into [0,1]) and g(n) = F.upper(1) - 1 ≤ 0 (same reason). The discrete IVT produces a crossing cell [i/n, (i+1)/n] in O(n) evaluations. Three results follow: constructive_localization (the cell exists), exact_fp_from_localization (an exact fixed point exists via Kakutani/IVT on the cell), and approx_fp_property (the HasApproxFixedPointProperty). This demonstrates the two-phase pattern: constructive localization + classical completion.",
+    "mathContext": "Let $g(k) = u(k/n) - k/n$. Then $g(0) = u(0) \\ge 0$ and $g(n) = u(1) - 1 \\le 0$. Discrete IVT gives crossing cell $[i/n, (i{+}1)/n]$ in $O(n)$ steps.",
+    "significance": "key",
+    "relatedConcepts": [
+      "grid search",
+      "bisection method",
+      "interval arithmetic",
+      "constructive localization"
+    ],
+    "prerequisites": [
+      "discrete_ivt_real",
+      "ContinuousIntervalCorrespondence",
+      "kakutani_1d"
+    ]
+  },
+  {
+    "id": "ann-scarf-algorithm",
+    "proofId": "brouwer-fixed-point-oq-04-oq-04",
+    "range": {
+      "startLine": 203,
+      "endLine": 266
+    },
+    "type": "concept",
+    "title": "Scarf's Pivoting Algorithm (n-Dimensional Generalization)",
+    "content": "Axiomatizes Scarf's 1967 result: for any upper hemicontinuous correspondence F : K → 2^K on a compact convex K ⊆ ℝⁿ and any ε > 0, an ε-approximate fixed point exists and can be found algorithmically. The proof sketch proceeds: (1) subdivide K into simplices of mesh < ε, (2) apply Kakutani labeling L(v) = argmin_i(v_i - y_i) for y ∈ F(v), (3) Sperner's lemma gives a completely labeled simplex, (4) its centroid is an ε-fixed point. The Kakutani labeling satisfies the Sperner boundary condition because boundary vertices get boundary labels. Complexity is O(n²/εⁿ) — polynomial for fixed dimension. The axiom could potentially be proved from Sperner's lemma (already in the gallery).",
+    "mathContext": "Scarf's algorithm: subdivide $K$ with mesh $< \\varepsilon$, label vertex $v$ by $L(v) = \\arg\\min_i (v_i - (y_v)_i)$ for $y_v \\in F(v)$. Sperner's lemma $\\Rightarrow$ completely labeled simplex $\\Rightarrow$ centroid is $\\varepsilon$-fixed. Complexity: $O(n^2/\\varepsilon^n)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sperner's lemma",
+      "simplicial subdivision",
+      "upper hemicontinuity",
+      "pivoting algorithm"
+    ],
+    "prerequisites": [
+      "EuclideanSpace",
+      "IsCompact",
+      "Convex",
+      "BrouwerOQ04OQ03.SetValuedMap"
+    ]
+  },
+  {
+    "id": "ann-limit-theorem",
+    "proofId": "brouwer-fixed-point-oq-04-oq-04",
+    "range": {
+      "startLine": 272,
+      "endLine": 355
+    },
+    "type": "concept",
+    "title": "Limit Theorem and Bisection Complexity",
+    "content": "Three results connecting approximation to exactness and quantifying complexity.\n\n**seq_compact_Icc** (275-276): [0,1] is sequentially compact — immediate from isCompact_Icc.\n\n**approx_fp_limit_1d** (293-342): Fully proved. If ε_n → 0 and x_n is ε_n-approximate in [0,1], a subsequence x_{φ(n)} converges to an exact fixed point x*. The proof: (1) extract convergent subsequence via sequential compactness; (2) construct y_n ∈ [F.lower(x_{φ(n)}), F.upper(x_{φ(n)})] with |x_{φ(n)} - y_n| < ε_{φ(n)} → 0; (3) y_n → x* by triangle inequality; (4) use continuousWithinAt of F.lower and F.upper at x* to get F.lower(x*) ≤ x* ≤ F.upper(x*) via le_of_tendsto_of_tendsto.\n\n**bisection_complexity** (346-354): n = ⌈2/ε⌉ grid points achieve ε-precision. Proved by Nat.ceil + Archimedean property.",
+    "mathContext": "If $\\varepsilon_n \\to 0$ and $x_n$ is $\\varepsilon_n$-fixed in $[0,1]$, then $\\exists x^* \\in [0,1]$ with $l(x^*) \\le x^* \\le u(x^*)$. Complexity: $n = \\lceil 2/\\varepsilon \\rceil$ gives error $< \\varepsilon$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sequential compactness",
+      "semicontinuity",
+      "convergence",
+      "Archimedean property"
+    ],
+    "prerequisites": [
+      "isCompact_Icc",
+      "IsSeqCompact",
+      "Filter.Tendsto",
+      "Nat.ceil"
+    ]
+  },
+  {
+    "id": "ann-main-summary",
+    "proofId": "brouwer-fixed-point-oq-04-oq-04",
+    "range": {
+      "startLine": 360,
+      "endLine": 405
+    },
+    "type": "insight",
+    "title": "Main Theorem: Three-Part Constructive Content and Status Summary",
+    "content": "The capstone `constructive_content_summary` (lines 360-377) combines all three aspects of the constructive content in a single theorem: (a) for any n ≥ 1, a crossing cell can be found in O(n) evaluations (constructive_localization), (b) an exact fixed point exists (kakutani_1d), and (c) the grid error 2/n → 0 so any desired precision is achievable (bisection_complexity). The namespace ends at 379. Lines 381-405: A status table documenting all results — 9 theorems fully proved, 1 axiom (scarf_approx_fixed_point), 0 sorries. The status table's '2 sorries' for approx_fp_limit_1d is outdated — the LSC/USC limit steps were subsequently proved using continuousWithinAt.",
+    "mathContext": "The constructive content: (a) $\\forall n \\ge 1, \\exists$ crossing cell in $O(n)$ steps; (b) $\\exists x^* \\in F(x^*)$; (c) $\\forall \\varepsilon > 0, \\exists K: n \\ge K \\implies 2/n < \\varepsilon$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "constructive mathematics",
+      "computational complexity",
+      "Kakutani theorem",
+      "extractable content"
+    ],
+    "prerequisites": [
+      "constructive_localization",
+      "kakutani_1d",
+      "bisection_complexity"
+    ]
+  }
+]

@@ -1,0 +1,39 @@
+{
+  "id": "quadratic-gauss-sum-square-oq-01",
+  "name": "Sign of the quadratic Gauss sum (Gauss's hard theorem)",
+  "phase": "ORIENT",
+  "knowledge": {
+    "insights": [
+      "The gallery slug `quadratic-gauss-sum-square-oq-01` already proves (verified, 0 sorries) the elementary half: the real/imaginary DICHOTOMY (g.im=0 for p≡1, g.re=0 for p≡3) plus magnitude ‖g‖²=p. The pool candidate with the same id is the strictly harder follow-up: fixing the LEADING SIGN (g=+√p resp. g=+i√p), i.e. Gauss's hard theorem.",
+      "Dichotomy + magnitude pin g to exactly four points: ±√p (p≡1 mod 4) or ±i√p (p≡3 mod 4). Proved sorry-free in QuadraticGaussSumSignReduction.gaussSum_eq_pm_sqrt / gaussSum_eq_pm_I_sqrt by extracting g.re²=p (resp g.im²=p) from normSq and splitting |·|=√p via abs_eq.",
+      "KEY REDUCTION: Gauss's hard sign theorem is EQUIVALENT to a single real positivity. g=√p ↔ 0<g.re (p≡1 mod 4); g=i√p ↔ 0<g.im (p≡3 mod 4). Proved sorry-free (gaussSum_eq_sqrt_iff_re_pos / gaussSum_eq_I_sqrt_iff_im_pos). This isolates the entire open content into one inequality.",
+      "Mathlib (v4.26.x) has NO sign determination for the quadratic Gauss sum and no finite-Fourier-transform determinant infrastructure. NumberTheory/GaussSum.lean stops at gaussSum_sq (the square identity); there is nothing about Re(g)>0 or the DFT eigenvalue multiplicities.",
+      "DIAGONAL REPRESENTATION (verified, axiom-free): gaussSum (chiC p) ψ = ∑ k, ψ(k²) for any primitive additive character ψ. Proved by fibre counting: grouping ∑ψ(k²) by t=k² turns the multiplicity into #{k:k²=t}=χ(t)+1 (quadraticChar_card_sqrts), giving ∑ψ(k²)=∑(χ(t)+1)ψ(t)=g+∑ψ(t)=g+0. This is the universal starting point of every classical sign proof and was absent from Mathlib.",
+      "Witness p=7 (≡3 mod 4): chiC 7 = (0,1,1,-1,1,-1,-1) (residues 1,2,4), so g=ζ+ζ²-ζ³+ζ⁴-ζ⁵-ζ⁶. Folding sin(8π/7)=-sin(6π/7), sin(10π/7)=-sin(4π/7), sin(12π/7)=-sin(2π/7) gives Im g = 2sin(2π/7)+2sin(4π/7)-2sin(6π/7). Positivity from coarse signs: sin(2π/7)>0 and sin(4π/7)>sin(6π/7) (fold to sin(3π/7)>sin(π/7) via strictMonoOn_sin on [-π/2,π/2]) — NO exact radicals. Feeds gaussSum_eq_I_sqrt_iff_im_pos to force g=+i√7. NOTE: this uses the Legendre-WEIGHTED form, not the diagonal ∑ζ^{k²} form (which would need cos(2π/7))."
+    ],
+    "builtItems": [
+      "QuadraticGaussSumSignReduction.gaussSum_eq_pm_sqrt — g=±√p for p≡1 mod 4 (sorry-free)",
+      "QuadraticGaussSumSignReduction.gaussSum_eq_pm_I_sqrt — g=±i√p for p≡3 mod 4 (sorry-free)",
+      "QuadraticGaussSumSignReduction.gaussSum_eq_sqrt_iff_re_pos — sign theorem ⟺ 0<Re g (p≡1) (sorry-free)",
+      "QuadraticGaussSumSignReduction.gaussSum_eq_I_sqrt_iff_im_pos — sign theorem ⟺ 0<Im g (p≡3) (sorry-free)",
+      "QuadraticGaussSumDiagonal.gaussSum_chiC_eq_sum_sq — g = ∑ k, ψ(k²) (sorry-free, axiom-free)",
+      "QuadraticGaussSumDiagonal.card_sqrts_cast — (#{x:x²=t}.card : ℂ) = chiC p t + 1, ℂ-transport of quadraticChar_card_sqrts",
+      "QuadraticGaussSumSignSmallSeven.gaussSum_seven_eq_I_sqrt_seven — g=+i√7 for p=7 (≡3 mod 4), second witness on that branch (sorry-free, axiom-free)",
+      "QuadraticGaussSumNormParseval.gaussSum_normSq_eq_card — ‖g‖²=p for ALL odd p via character orthogonality (gaussSum_mul_gaussSum_eq_card), INDEPENDENT of the square identity; conj g = gaussSum(chiC p, ψ⁻¹) (conjugation fixes real χ, inverts ψ via AddChar.starComp) + chiC⁻¹=chiC (IsQuadratic.inv). Answers entry open-question #3 / nextStep #4 (sorry-free, axiom-free)",
+      "QuadraticGaussSumNormParseval.gaussSum_conj — conj(gaussSum (chiC p) ψ) = gaussSum (chiC p) ψ⁻¹ (sorry-free, axiom-free)"
+    ],
+    "mathlibGaps": [
+      "No formalization of the sign of the quadratic Gauss sum (g=√p for p≡1, g=i√p for p≡3).",
+      "No finite/discrete Fourier transform determinant or eigenvalue-multiplicity computation needed for Schur's argument.",
+      "No analytic Gauss sum evaluation (Poisson summation / theta transformation) needed for Dirichlet's route."
+    ],
+    "nextSteps": [
+      "Prove the single open crux 0 < Re(gaussSum (chiC p) ψ) for p≡1 mod 4 (and 0 < Im for p≡3). Both classical routes target exactly this.",
+      "Schur route: build the n×n finite Fourier matrix F (entries ζ^{jk}), show F has known eigenvalue multiplicities (1,−1,i,−i with counts depending on n mod 4), and identify Re(g) with trace/√n. Estimate >1000 lines given no Mathlib DFT-spectrum infra → likely BLOCKED short-term.",
+      "Dirichlet route: needs Poisson summation / theta functional equation; heavy real-analysis infra. Estimate >1000 lines.",
+      "DONE (QuadraticGaussSumNormParseval): cross-checked magnitude ‖g‖²=p via character orthogonality (gaussSum_mul_gaussSum_eq_card) independently of the square identity.",
+      "With the diagonal form, the standard-character Gauss sum is ∑ ζ_p^{k²}; reframe the open crux 0<Re g as positivity of ∑ cos(2π k²/p). p=7 (≡3 mod 4) is now ∑ζ^{k²}=1+2ζ+2ζ²+2ζ⁴ but still needs cubic-irrational trig (cos(2π/7)) — intractable by elementary radicals, unlike p=3,5."
+    ],
+    "progressSummary": "PROGRESS (ACT): added the diagonal representation g=∑ψ(k²) (verified, axiom-free), the classical starting form absent from Mathlib, and an independent Parseval/orthogonality derivation of the magnitude ‖g‖²=p (QuadraticGaussSumNormParseval, verified, axiom-free) — answering entry open-question #3. Base cases p=3,5,7 done; general positivity crux (the leading sign) remains open (DFT-spectrum / theta route, >1000 lines)."
+  }
+}

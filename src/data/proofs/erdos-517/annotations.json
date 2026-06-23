@@ -1,0 +1,190 @@
+[
+  {
+    "id": "ann-e517-header",
+    "proofId": "erdos-517",
+    "range": {
+      "startLine": 1,
+      "endLine": 39
+    },
+    "type": "concept",
+    "title": "Problem Statement and Historical Context",
+    "content": "**Erdős Problem #517** asks about value distribution of lacunary entire functions - power series with gaps in their exponents.\n\nThe main conjecture (Fabry gaps: nₖ/k → ∞) is **OPEN**. A related result by Biernacki (1928) proves the stronger Fejér gap case (∑1/nₖ < ∞). The file was partially proved by Aristotle (the HasFejerGaps.hasFabryGaps theorem).",
+    "mathContext": "Lacunary series $f(z) = \\sum a_k z^{n_k}$ with gaps in exponents have special value distribution properties. Picard's theorem guarantees entire functions miss at most one value; gap conditions can force every value to be assumed infinitely often.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "entire functions",
+      "lacunary power series",
+      "Picard's great theorem",
+      "value distribution theory"
+    ],
+    "prerequisites": [
+      "complex analysis fundamentals",
+      "power series convergence",
+      "Picard's theorem on value omission"
+    ]
+  },
+  {
+    "id": "ann-e517-fabry-gaps",
+    "proofId": "erdos-517",
+    "range": {
+      "startLine": 55,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "Fabry Gap Condition",
+    "content": "A sequence has **Fabry gaps** if it is strictly increasing AND nₖ/k → ∞. This is the weaker gap condition appearing in the main conjecture.\n\nExample: nₖ = k log k has Fabry gaps since (k log k)/k = log k → ∞.",
+    "mathContext": "HasFabryGaps$(n) :\\iff$ StrictMono$(n) \\wedge \\lim_{k \\to \\infty} n_k/k = \\infty$. Formalized using `Tendsto (fun k => (n k : ℝ) / k) atTop atTop`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fabry gap theorem",
+      "Hadamard gaps",
+      "natural boundary",
+      "Ostrowski-Hadamard gap theorem"
+    ],
+    "prerequisites": [
+      "limits of real sequences",
+      "strictly increasing sequences",
+      "Filter.Tendsto and Filter.atTop"
+    ]
+  },
+  {
+    "id": "ann-e517-fejer-gaps",
+    "proofId": "erdos-517",
+    "range": {
+      "startLine": 60,
+      "endLine": 63
+    },
+    "type": "definition",
+    "title": "Fejér Gap Condition",
+    "content": "A sequence has **Fejér gaps** if it is strictly increasing AND ∑1/nₖ < ∞. This is the stronger condition for which Biernacki's theorem applies.\n\nExample: nₖ = 2^k has Fejér gaps since ∑1/2^k = 1 < ∞.",
+    "mathContext": "HasFejerGaps$(n) :\\iff$ StrictMono$(n) \\wedge$ Summable$(k \\mapsto (n_k)^{-1})$. The summability condition ensures gaps grow fast enough that reciprocals form a convergent series.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fejér gap condition",
+      "convergent series of reciprocals",
+      "comparison test",
+      "Hadamard lacunarity"
+    ],
+    "prerequisites": [
+      "convergence of infinite series",
+      "Summable in Mathlib",
+      "strictly monotone sequences"
+    ]
+  },
+  {
+    "id": "ann-e517-implication",
+    "proofId": "erdos-517",
+    "range": {
+      "startLine": 65,
+      "endLine": 101
+    },
+    "type": "concept",
+    "title": "Fejér Gaps Imply Fabry Gaps (Proved by Aristotle)",
+    "content": "If ∑1/nₖ < ∞ then nₖ/k → ∞. The proof uses a squeeze argument: since ∑(nₖ)⁻¹ converges, the partial sums over intervals [k/2, k) bound (k/2)·(nₖ)⁻¹, and as these partial sums tend to 0, we get (nₖ)⁻¹·k → 0, hence nₖ/k → ∞.\n\nThis theorem was fully proved by Aristotle's automated proof search. The proof is intricate, using filter_upwards, squeeze lemmas, and careful norm manipulations.",
+    "mathContext": "Key step: $\\sum_{i=k/2}^{k-1} (n_i)^{-1} \\geq (k/2)(n_k)^{-1}$ (since $n$ is increasing). As $k \\to \\infty$, the left side $\\to 0$ (tail of convergent series), so $(n_k)^{-1} \\cdot k \\to 0$, hence $n_k/k \\to \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "squeeze theorem",
+      "Cauchy criterion for series",
+      "tail sums of convergent series",
+      "automated proof search"
+    ],
+    "prerequisites": [
+      "convergent series tail estimates",
+      "squeeze lemma for sequences",
+      "Filter.Tendsto manipulation"
+    ]
+  },
+  {
+    "id": "ann-e517-main-conjecture",
+    "proofId": "erdos-517",
+    "range": {
+      "startLine": 112,
+      "endLine": 123
+    },
+    "type": "insight",
+    "title": "The Fabry Gap Conjecture (OPEN)",
+    "content": "**The main open problem**: If f(z) = ∑ aₖz^{nₖ} is entire with Fabry gaps (nₖ/k → ∞), does f assume every value infinitely often?\n\nStated as a `def` returning `Prop` rather than an axiom, since we want to express that this is an open question whose truth value is unknown. The statement `{z : ℂ | f z = w}.Infinite` means the preimage of any value w is an infinite set.",
+    "mathContext": "`fabryGapConjecture : Prop` $:= \\forall f, n, a,\\;$ HasFabryGaps$(n) \\to (\\forall z,\\; \\text{HasSum}(k \\mapsto a_k z^{n_k}, f(z))) \\to \\forall w,\\; \\{z : f(z) = w\\}$ is infinite.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nevanlinna theory",
+      "deficiency of values",
+      "Picard's great theorem",
+      "infinite preimage sets"
+    ],
+    "prerequisites": [
+      "Fabry gap condition",
+      "entire function representation via power series",
+      "Set.Infinite in Mathlib"
+    ]
+  },
+  {
+    "id": "ann-e517-biernacki",
+    "proofId": "erdos-517",
+    "range": {
+      "startLine": 134,
+      "endLine": 149
+    },
+    "type": "concept",
+    "title": "Biernacki's Theorem (1928) — Axiomatized",
+    "content": "**Solved case**: Under the stronger Fejér gap condition (∑1/nₖ < ∞), entire functions DO assume every value infinitely often.\n\nStated as an **axiom** because the proof requires deep complex analysis not in Mathlib: (1) Picard's theorem on value omission, (2) boundary behavior of lacunary series near the unit circle, (3) growth estimates from the gap condition.",
+    "mathContext": "Axiom `biernacki_theorem`: HasFejerGaps$(n) \\to (\\forall z,\\; \\text{HasSum}(k \\mapsto a_k z^{n_k}, f(z))) \\to \\forall w \\in \\mathbb{C},\\; \\{z : f(z) = w\\}$ is infinite.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Biernacki's theorem",
+      "Picard's great theorem",
+      "lacunary boundary behavior",
+      "growth estimates for entire functions"
+    ],
+    "prerequisites": [
+      "Fejér gap condition",
+      "entire function power series representation",
+      "complex analysis beyond Mathlib"
+    ]
+  },
+  {
+    "id": "ann-e517-exponential-example",
+    "proofId": "erdos-517",
+    "range": {
+      "startLine": 155,
+      "endLine": 168
+    },
+    "type": "concept",
+    "title": "Example: Exponential Gaps Have Fejér Property",
+    "content": "Verifies that nₖ = 2^k satisfies Fejér gaps: (1) strict monotonicity via `Nat.pow_lt_pow_right`, and (2) summability via `summable_geometric_of_lt_one` since ∑(1/2)^k converges.\n\nThis constructive example demonstrates the gap conditions are satisfiable and provides a concrete application of Biernacki's theorem.",
+    "mathContext": "$n_k = 2^k$: StrictMono (powers of 2 are increasing), and $\\sum 2^{-k} \\leq \\sum (1/2)^k = 2 < \\infty$ (geometric series with ratio 1/2).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "geometric series",
+      "summability of exponential reciprocals",
+      "power-of-two sequences"
+    ],
+    "prerequisites": [
+      "geometric series convergence",
+      "strict monotonicity of exponentials"
+    ]
+  },
+  {
+    "id": "ann-e517-application",
+    "proofId": "erdos-517",
+    "range": {
+      "startLine": 169,
+      "endLine": 174
+    },
+    "type": "insight",
+    "title": "Application: Value Distribution for Exponential Lacunary Series",
+    "content": "Applies Biernacki's theorem to the exponential sequence: any entire function f(z) = ∑ aₖz^{2^k} assumes every complex value infinitely often. This is a direct corollary combining `exponential_has_fejer_gaps` with `biernacki_theorem`.",
+    "mathContext": "By Biernacki + exponential Fejér: $\\forall w \\in \\mathbb{C},\\; |\\{z : \\sum a_k z^{2^k} = w\\}| = \\infty$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "corollary application",
+      "Biernacki's theorem",
+      "infinite preimage sets for lacunary series"
+    ],
+    "prerequisites": [
+      "Biernacki's theorem",
+      "exponential Fejér gap verification"
+    ]
+  }
+]

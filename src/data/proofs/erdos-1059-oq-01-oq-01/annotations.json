@@ -1,0 +1,142 @@
+[
+  {
+    "id": "ann-erdos1059-oq01-oq01-counting",
+    "proofId": "erdos-1059-oq-01-oq-01",
+    "range": {
+      "startLine": 59,
+      "endLine": 75
+    },
+    "type": "definition",
+    "title": "Interval-Level Counting Functions",
+    "content": "primesInLevel(l) counts primes in the l-th primorial interval I(l) = (l!, (l+1)!], and qualifyingInLevel(l) counts those additionally satisfying AFSC (all factorial subtractions composite). These are defined via Finset.filter on PrimorialInterval from OQ-02. The key bound q(l) ≤ p(l) (every qualifying prime is a prime) is proved by Finset.card_le_card applied to the subset relationship between the two filtered sets.",
+    "mathContext": "$p(l) = |\\{n \\in (l!, (l+1)!] : n \\text{ prime}\\}|$, $q(l) = |\\{n \\in (l!, (l+1)!] : n \\text{ prime} \\wedge \\text{AFSC}(n)\\}|$. By definition, $q(l) \\leq p(l)$ since qualifying primes form a subset of primes.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.filter",
+      "Finset.card_le_card",
+      "PrimorialInterval",
+      "AFSC"
+    ],
+    "prerequisites": [
+      "Erdos1059OQ02.PrimorialInterval",
+      "Erdos1059OQ01.AllFactorialSubtractionsComposite"
+    ]
+  },
+  {
+    "id": "ann-erdos1059-oq01-oq01-strong-axiom",
+    "proofId": "erdos-1059-oq-01-oq-01",
+    "range": {
+      "startLine": 96,
+      "endLine": 115
+    },
+    "type": "concept",
+    "title": "The Strong Selberg Density Axiom",
+    "content": "The strong axiom states q(l)·(l+1) ≥ p(l)·l for l ≥ 3, meaning the qualifying fraction q(l)/p(l) is at least l/(l+1). This is motivated by the Selberg sieve: each of the l+1 'bad' conditions (p - k! composite for some k ≤ l) eliminates at most O(l!/log²(l!)) primes by Brun-Titchmarsh, while the total is ≈ l!/log(l!) by PNT, so the bad fraction is O((l+1)/log(l!)) → 0. The axiom captures the leading behavior with the clean threshold l/(l+1). The companion axiom primes_growth_in_levels (p(l) ≥ l for l ≥ 3) is an extremely weak consequence of PNT — the actual count is astronomically larger.",
+    "mathContext": "Axiom: $q(l) \\cdot (l+1) \\geq p(l) \\cdot l$ for $l \\geq 3$, equivalently $\\frac{q(l)}{p(l)} \\geq \\frac{l}{l+1}$. From Brun-Titchmarsh: non-qualifying primes in $I(l)$ are $\\leq (l+1) \\cdot \\frac{2 \\cdot l!}{\\log^2(l!)}$, while $p(l) \\approx \\frac{l!}{\\log(l!)}$, giving bad fraction $\\leq \\frac{2(l+1)}{\\log(l!)} \\to 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Selberg sieve",
+      "Brun-Titchmarsh inequality",
+      "PNT",
+      "density axiom"
+    ],
+    "prerequisites": [
+      "sieve theory (motivational)",
+      "Brun-Titchmarsh inequality",
+      "PNT"
+    ]
+  },
+  {
+    "id": "ann-erdos1059-oq01-oq01-strong-implies-weak",
+    "proofId": "erdos-1059-oq-01-oq-01",
+    "range": {
+      "startLine": 117,
+      "endLine": 160
+    },
+    "type": "concept",
+    "title": "Strong Axiom Recovers the Weak Selberg Axiom",
+    "content": "strong_implies_weak proves that the strong axiom gives q(l) ≥ 1 for l ≥ 3, recovering the weak selberg_density_axiom (at least one qualifying prime per interval). The chain: from the axioms, q(l)·(l+1) ≥ p(l)·l ≥ l² ≥ 9 > 0, so q(l) ≥ 1. From q(l) ≥ 1, extract a specific element via Finset.card_ne_zero → Finset.Nonempty → ∃ element. This confirms the strong axiom strictly generalizes the weak one.",
+    "mathContext": "$q(l)(l+1) \\geq p(l) \\cdot l \\geq l^2 \\geq 9 > 0 \\implies q(l) \\geq 1$. The extraction $q(l) \\geq 1 \\implies \\exists p \\in I(l), \\text{Prime}(p) \\wedge \\text{AFSC}(p)$ uses the correspondence between cardinality $\\geq 1$ and nonemptiness.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.card_ne_zero",
+      "Finset.Nonempty",
+      "selberg_density_axiom"
+    ],
+    "prerequisites": [
+      "strong_selberg_density",
+      "primes_growth_in_levels"
+    ]
+  },
+  {
+    "id": "ann-erdos1059-oq01-oq01-levelwise",
+    "proofId": "erdos-1059-oq-01-oq-01",
+    "range": {
+      "startLine": 162,
+      "endLine": 240
+    },
+    "type": "insight",
+    "title": "Level-Wise Density Bounds and Strict Surplus",
+    "content": "Two key results: levelwise_density_bound proves q(l)·(k+1) ≥ p(l)·k for l ≥ k (the qualifying fraction at level l exceeds any threshold k/(k+1) as long as l ≥ k). The proof splits q·(l+1) = q·(k+1) + q·(l-k), uses q ≤ p to show q·(l-k) ≤ p·(l-k), and combines with the axiom. levelwise_strict_surplus proves a ≥1 unit surplus for l ≥ max(3, k+2). It uses equality analysis: if q·(k+1) = p·k (no surplus), then q·(l+1) = p·l forces q·(l-k) = p·(l-k), but cross-multiplying gives p·(l-k) ≤ 0, contradicting p ≥ l ≥ k+2 > 0.",
+    "mathContext": "For $l \\geq k$: $q(l)(k+1) \\geq p(l) \\cdot k$, i.e., density $\\frac{q(l)}{p(l)} \\geq \\frac{k}{k+1}$. For $l \\geq k+2$: $q(l)(k+1) \\geq p(l) \\cdot k + 1$ (strict surplus). The surplus comes from the gap between $\\frac{l}{l+1}$ and $\\frac{k}{k+1}$ when $l > k$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "density monotonicity",
+      "surplus accumulation",
+      "equality analysis",
+      "omega tactic"
+    ],
+    "prerequisites": [
+      "strong_selberg_density",
+      "qualifyingInLevel_le_primesInLevel"
+    ]
+  },
+  {
+    "id": "ann-erdos1059-oq01-oq01-main",
+    "proofId": "erdos-1059-oq-01-oq-01",
+    "range": {
+      "startLine": 260,
+      "endLine": 330
+    },
+    "type": "insight",
+    "title": "Main Theorem: Density at Factorial Evaluation Points",
+    "content": "density_at_levels is the main result: for every threshold k, there exists N such that for all n ≥ N, the cumulative sum ∑_{l=3}^{n} q(l)·(k+1) ≥ ∑_{l=3}^{n} p(l)·k. The proof technique is surplus accumulation: split the sum at a cutoff L₀ = max(3, k+2). For l ≥ L₀, each level contributes ≥1 unit of surplus (from levelwise_strict_surplus). The early levels l < L₀ contribute a finite deficit D (bounded by a constant depending only on k). For n ≥ L₀ + D, the accumulated surplus n - L₀ + 1 > D exceeds the deficit.",
+    "mathContext": "For all $k$, $\\exists N$: for $n \\geq N$, $\\sum_{l=3}^{n} q(l)(k+1) \\geq \\sum_{l=3}^{n} p(l) \\cdot k$. At factorial evaluation points $x = (n+1)!$, this gives $\\frac{C(x)}{\\pi(x)} \\geq \\frac{k}{k+1}$ for all $k$, hence density $\\to 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sum splitting",
+      "Finset.sum_range_add_sum_Ico",
+      "surplus vs deficit",
+      "eventually quantifier"
+    ],
+    "prerequisites": [
+      "levelwise_strict_surplus",
+      "levelwise_density_bound",
+      "Finset.sum_le_sum"
+    ]
+  },
+  {
+    "id": "ann-erdos1059-oq01-oq01-gap",
+    "proofId": "erdos-1059-oq-01-oq-01",
+    "range": {
+      "startLine": 332,
+      "endLine": 434
+    },
+    "type": "concept",
+    "title": "Gap Analysis: Why General x Remains Open",
+    "content": "A detailed analysis explains why the density result cannot be extended from factorial points to general x without additional ingredients. Between x = n! and x = (n+1)!, the interval (n!, (n+1)!] has size n · n! — growing factorially. The partial-interval deficit (primes counted but not yet known to be qualifying) can be as large as p(l) · k, growing factorially. But the cumulative surplus from prior levels grows only linearly in the number of levels. Three possible approaches are identified: (a) within-interval sieve estimates, (b) monotonicity of C(x)/π(x), (c) a direct cumulative density argument.",
+    "mathContext": "At $x = n! + t$ for $0 < t < n \\cdot n!$: deficit from partial interval $\\leq p(n) \\cdot k \\approx \\frac{n!}{\\log(n!)} \\cdot k$, but cumulative surplus from levels $3, \\ldots, n-1$ is $\\leq n - L_0$. Since $\\frac{n!}{\\log(n!)} \\gg n$, the surplus cannot absorb the deficit.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "factorial growth",
+      "partial sums",
+      "density function continuity",
+      "sieve limitations"
+    ],
+    "prerequisites": [
+      "density_at_levels",
+      "PNT estimates",
+      "factorial asymptotics"
+    ]
+  }
+]

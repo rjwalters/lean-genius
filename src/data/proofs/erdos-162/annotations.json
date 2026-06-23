@@ -1,0 +1,254 @@
+[
+  {
+    "id": "ann-e162-header",
+    "proofId": "erdos-162",
+    "range": {
+      "startLine": 1,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #162** (OPEN):\n\nFor 0 < α ≤ 1/2, define F(n, α) as the largest k such that some 2-colouring of K_n has every ≥k-vertex induced subgraph α-balanced.\n\n**Conjecture:** F(n, α) ~ c_α · log n for a constant c_α > 0.\n\n**Known:** The probabilistic method gives c₁ log n < F(n, α) < c₂ log n, but the exact constant is unknown.\n\nThis is a Ramsey-type discrepancy problem connecting graph colouring to logarithmic growth.",
+    "mathContext": "Erdős posed this in 1990. The problem sits at the intersection of Ramsey theory and discrepancy theory, asking for the precise asymptotic of the largest balanced substructure in a 2-coloured complete graph.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey theory",
+      "discrepancy theory",
+      "probabilistic method"
+    ],
+    "prerequisites": [
+      "Ramsey Theory",
+      "Discrepancy Theory",
+      "Asymptotic Growth"
+    ]
+  },
+  {
+    "id": "ann-e162-imports",
+    "proofId": "erdos-162",
+    "range": {
+      "startLine": 29,
+      "endLine": 32
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "**Mathlib imports:**\n\n- `Mathlib.Data.Nat.Choose.Basic` — binomial coefficients C(n, k), used to count edges in complete graphs\n- `Mathlib.Tactic` — standard Lean 4 tactic library\n\nThe namespace `Erdos162` encapsulates all definitions to avoid name collisions.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "binomial coefficients"
+    ],
+    "mathContext": "See annotation content for formal details of imports and setup",
+    "prerequisites": [
+      "Binomial Coefficients",
+      "Lean 4 Tactics",
+      "Mathlib Namespaces"
+    ]
+  },
+  {
+    "id": "ann-e162-colouring",
+    "proofId": "erdos-162",
+    "range": {
+      "startLine": 34,
+      "endLine": 49
+    },
+    "type": "definition",
+    "title": "Edge 2-Colouring Structure",
+    "content": "**EdgeColouring n** models a symmetric 2-colouring of the complete graph K_n.\n\n**Fields:**\n- `colour : Fin n → Fin n → Bool` — assigns red (true) or blue (false) to each pair\n- `symm` — colour is symmetric: colour(i,j) = colour(j,i)\n- `irrefl` — no self-loops: colour(i,i) = false\n\n**colourEdgeCount** counts edges of a given colour in the induced subgraph on vertex set S, filtering ordered pairs (i,j) with i < j to avoid double-counting.",
+    "mathContext": "A 2-colouring of K_n partitions its C(n,2) edges into two colour classes. The structure enforces that this is a proper edge colouring (symmetric, no self-loops).",
+    "significance": "key",
+    "relatedConcepts": [
+      "complete graph",
+      "edge colouring",
+      "Finset"
+    ],
+    "prerequisites": [
+      "Complete Graph",
+      "Edge Colouring",
+      "Finset Filtering"
+    ]
+  },
+  {
+    "id": "ann-e162-edge-total",
+    "proofId": "erdos-162",
+    "range": {
+      "startLine": 51,
+      "endLine": 54
+    },
+    "type": "concept",
+    "title": "Edge Count Partition",
+    "content": "**colourEdgeCount_total:**\n\nThe red and blue edge counts sum to C(|S|, 2):\n```\nred edges + blue edges = C(|S|, 2)\n```\n\nThis is the fundamental partition identity: every edge is exactly one colour. Proved by showing the union of the two filter partitions covers all ordered pairs with i < j (via `Finset.card_union_of_disjoint`).",
+    "mathContext": "This identity is the basis for the balance condition: if both colours exceed α · C(|S|,2), then α must be at most 1/2.",
+    "significance": "key",
+    "relatedConcepts": [
+      "partition",
+      "binomial coefficient",
+      "double counting"
+    ],
+    "prerequisites": [
+      "Set Partition",
+      "Double Counting",
+      "Disjoint Union Cardinality"
+    ]
+  },
+  {
+    "id": "ann-e162-balanced",
+    "proofId": "erdos-162",
+    "range": {
+      "startLine": 56,
+      "endLine": 74
+    },
+    "type": "theorem",
+    "title": "α-Balanced Colourings",
+    "content": "**IsBalancedOn c S α** — a colouring c is α-balanced on vertex set S if each colour has more than α · C(|S|,2) edges.\n\n**IsKBalanced c k α** — c is (k, α)-balanced if every induced subgraph on ≥k vertices is α-balanced.\n\n**balanced_requires_le_half** — if α > 1/2, no colouring can be α-balanced on any set with ≥2 vertices. This is because both colours would need more than half the edges, which is impossible.\n\nThe parameter α ∈ (0, 1/2] controls how strict the balance requirement is:\n- α near 0: almost any colouring works\n- α = 1/2: each colour must have almost exactly half the edges",
+    "mathContext": "The balance condition captures discrepancy: a balanced colouring distributes edges evenly between colours. This is dual to Ramsey theory, where we seek monochromatic substructures.",
+    "significance": "key",
+    "relatedConcepts": [
+      "discrepancy",
+      "Ramsey theory",
+      "graph colouring"
+    ],
+    "prerequisites": [
+      "Graph Discrepancy",
+      "Induced Subgraph",
+      "Edge Density"
+    ]
+  },
+  {
+    "id": "ann-e162-function-f",
+    "proofId": "erdos-162",
+    "range": {
+      "startLine": 76,
+      "endLine": 102
+    },
+    "type": "theorem",
+    "title": "The Function F(n, α)",
+    "content": "**discrepancyF n α** — axiomatised as the largest k such that some 2-colouring of K_n is (k, α)-balanced.\n\n**Key properties (axiomatised):**\n- **Characterisation:** F(n, α) = k iff there exists a (k, α)-balanced colouring but no (k+1, α)-balanced one\n- **Monotonicity:** F(n, α) ≤ F(n, β) when α ≥ β (stricter balance → smaller F)\n- **Trivial case:** F(n, 0) = n (every colouring is 0-balanced)\n- **Upper bound:** F(n, α) ≤ n (can't exceed total vertices)\n\nAxiomatised because computing F exactly requires exhaustive search over all 2^C(n,2) colourings.",
+    "mathContext": "F(n, α) is well-defined by finiteness of the set of 2-colourings. It captures the extremal question: how well can we balance a colouring across all large induced subgraphs?",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal combinatorics",
+      "axiom",
+      "computability"
+    ],
+    "prerequisites": [
+      "Extremal Combinatorics",
+      "Axiomatization",
+      "Monotonicity"
+    ]
+  },
+  {
+    "id": "ann-e162-bounds",
+    "proofId": "erdos-162",
+    "range": {
+      "startLine": 104,
+      "endLine": 118
+    },
+    "type": "insight",
+    "title": "Logarithmic Bounds via Probabilistic Method",
+    "content": "**Lower bound (discrepancy_lower):**\nF(n, α) > c₁(α) · log n — a random 2-colouring is α-balanced on all sets of size ≤ c₁ log n with positive probability, by Chernoff bounds + union bound over C(n, c₁ log n) subsets.\n\n**Upper bound (discrepancy_upper):**\nF(n, α) < c₂(α) · log n — by a Ramsey-type counting argument, any colouring must have an imbalanced induced subgraph of size c₂ log n.\n\nTogether: F(n, α) = Θ(log n), but with potentially different constants c₁ ≠ c₂.",
+    "mathContext": "The lower bound uses the Lovász Local Lemma or Chernoff + union bound. The upper bound follows from Ramsey-type arguments. The gap between c₁ and c₂ is what Problem 162 asks to close.",
+    "significance": "key",
+    "relatedConcepts": [
+      "probabilistic method",
+      "Chernoff bound",
+      "Ramsey numbers"
+    ],
+    "prerequisites": [
+      "Probabilistic Method",
+      "Chernoff Bound",
+      "Union Bound"
+    ]
+  },
+  {
+    "id": "ann-e162-theta",
+    "proofId": "erdos-162",
+    "range": {
+      "startLine": 120,
+      "endLine": 134
+    },
+    "type": "concept",
+    "title": "Θ(log n) Growth and Extremal Case",
+    "content": "**discrepancy_theta_log** — combines the lower and upper bounds to establish F(n, α) = Θ(log n).\n\n**half_is_extremal** — F(n, 1/2) ≤ F(n, α) for all α ≤ 1/2, by monotonicity. The case α = 1/2 is the hardest: requiring each colour to have nearly half the edges is the tightest constraint.\n\nThis is the first proved theorem (not axiom): it follows directly from combining the axiomatised bounds.",
+    "mathContext": "The Θ(log n) result is well-established in the literature. The open question is whether the ratio F(n,α)/log n converges to a definite limit.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic growth",
+      "extremal values",
+      "monotonicity"
+    ],
+    "prerequisites": [
+      "Big-Theta Notation",
+      "Monotonicity",
+      "Asymptotic Bounds"
+    ]
+  },
+  {
+    "id": "ann-e162-conjecture",
+    "proofId": "erdos-162",
+    "range": {
+      "startLine": 136,
+      "endLine": 148
+    },
+    "type": "concept",
+    "title": "The Main Conjecture (OPEN)",
+    "content": "**ErdosProblem162** — For every 0 < α ≤ 1/2, there exists c_α > 0 such that F(n, α)/log n → c_α.\n\nFormally, for every ε > 0 there exists n₀ such that for all n ≥ n₀:\n|F(n, α) / log₂ n − c_α| < ε\n\nThis is strictly stronger than Θ(log n): it asserts that the *ratio* converges to a definite limit, not merely that it stays between two constants. The conjecture also implicitly asks whether c_α varies continuously with α.",
+    "mathContext": "Convergence of F(n,α)/log n would require understanding the fine structure of optimal colourings. Current methods (probabilistic, Ramsey-theoretic) give only order-of-magnitude bounds.",
+    "significance": "key",
+    "relatedConcepts": [
+      "limit",
+      "convergence",
+      "asymptotic analysis"
+    ],
+    "prerequisites": [
+      "Limit Convergence",
+      "Asymptotic Analysis",
+      "Logarithmic Growth"
+    ]
+  },
+  {
+    "id": "ann-e162-examples",
+    "proofId": "erdos-162",
+    "range": {
+      "startLine": 150,
+      "endLine": 162
+    },
+    "type": "concept",
+    "title": "Concrete Edge Count Examples",
+    "content": "**Verified examples** (via `native_decide`):\n\n- C(1, 2) = 0 — K₁ has no edges\n- C(2, 2) = 1 — K₂ has 1 edge\n- C(4, 2) = 6 — K₄ has 6 edges (balanced colouring: 3 red, 3 blue)\n- C(8, 2) = 28 — K₈ has 28 edges (probabilistic method ensures balanced colourings exist)\n\nThese ground the abstract theory in concrete computations that Lean can verify.",
+    "mathContext": "The examples illustrate the growth C(n,2) = n(n-1)/2. For K₄, a perfect balance (3 red, 3 blue) is achievable. As n grows, the question is how large a balanced subgraph persists.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "binomial coefficient",
+      "complete graph"
+    ],
+    "prerequisites": [
+      "Binomial Coefficients",
+      "Native Decide",
+      "Complete Graph Edges"
+    ]
+  },
+  {
+    "id": "ann-e162-summary",
+    "proofId": "erdos-162",
+    "range": {
+      "startLine": 164,
+      "endLine": 186
+    },
+    "type": "concept",
+    "title": "Summary and Open Directions",
+    "content": "**Summary of the formalization:**\n\n1. **Defined:** Edge 2-colourings, α-balanced subgraphs, and the function F(n, α)\n2. **Axiomatised:** F's characterisation, monotonicity, and logarithmic bounds\n3. **Proved:** F(n, α) = Θ(log n), α = 1/2 is extremal\n4. **Stated:** The open conjecture F(n, α) ~ c_α log n\n\n**Open directions:**\n- Does the limit c_α exist? (the conjecture)\n- What is c_α as a function of α?\n- Can the probabilistic bounds be tightened?\n- The problem interpolates between Ramsey (α ≈ 0) and discrepancy (α = 1/2)",
+    "mathContext": "Related problems: Erdős #617 (balanced colourings of K_{r²+1}), Erdős #161, #163. The problem connects Ramsey theory, discrepancy theory, and probabilistic combinatorics.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey theory",
+      "discrepancy theory",
+      "open problem"
+    ],
+    "prerequisites": [
+      "Ramsey Theory",
+      "Discrepancy Theory",
+      "Open Problems"
+    ]
+  }
+]

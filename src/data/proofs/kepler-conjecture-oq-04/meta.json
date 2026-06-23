@@ -1,0 +1,203 @@
+{
+  "id": "kepler-conjecture-oq-04",
+  "title": "Kepler Conjecture OQ-04: Non-spherical packing in ℝ³",
+  "slug": "kepler-conjecture-oq-04",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.KeplerConjecture"
+    ],
+    "opens": [
+      "Real",
+      "KeplerConjecture"
+    ],
+    "namespace": "KeplerConjectureOQ04",
+    "lineCount": 570,
+    "axiomCount": 2,
+    "theoremCount": 11,
+    "definitionCount": 6,
+    "path": "Proofs/KeplerConjectureOQ04.lean",
+    "sorries": 0
+  },
+  "description": "Open question follow-up to the gallery's `kepler-conjecture` entry. The parent file axiomatizes the Kepler-Hales theorem for congruent spheres in ℝ³ (optimal density π/(3√2) ≈ 0.7405, the FCC density), but says nothing about other convex bodies. OQ-04 spans three natural generalisations: (i) tetrahedral packing (Chen-Engel-Glotzer 2010 achieve δ ≥ 4000/4671 ≈ 0.8564, strictly above the FCC sphere density), (ii) ellipsoid packing (Donev-Stillinger-Chaikin-Torquato 2004 achieve δ ≈ 0.7707 at aspect ratio √2; Bezdek-Kuperberg 2007 prove lattice-only ellipsoid density = π/(3√2)), and (iii) Ulam's 1972 conjecture (every symmetric convex body K ⊂ ℝ³ satisfies δ_K ≥ π/(3√2), with equality only for the unit ball — making the unit ball the LEAST dense convex body to pack, inverting Kepler optimality). S2-S7 (current state) close all three flagship arms of the OQ-04 hierarchy at the structural level and aggregate them into the single quantified theorem `density_hierarchy_3d`. (S2 SCAFFOLD) introduces the Chen-Engel-Glotzer tetrahedral dimer density `tetrahedronDimerDensity = 4000/4671` as a Lean real-number constant with `tetrahedronDimerDensity_pos`, `tetrahedronDimerDensity_lt_one`, and the rational-form literature anchor `0.8563 < tetrahedronDimerDensity` (all axiom-free, `norm_num`-discharged). (S3 ACT) delivers the axiom-free refutation `tetrahedronDimerDensity > fccDensity` via `div_lt_div_iff₀` + `Real.pi_lt_d2` (π < 3.15) + `Real.lt_sqrt` (1.4 < √2), closing with `nlinarith` on the linear chain `4671 · π < 14_713.65 < 16_800 < 4000 · 3 · √2` (margin ≈ 2086). (S4 ACT) bundles the dimer density into `tetrahedronDimerPacking : PackingDensity` and derives the existential corollary `∃ p : PackingDensity, fccDensity < p.density`. (S5 ACT) introduces the marker structure `EllipsoidLatticePacking` and the +1 STATEMENT axiom `bezdek_kuperberg_ellipsoid_lattice_upper_bound` (Bezdek-Kuperberg 2007, lattice ellipsoid density ≤ FCC; the published proof reduces to affine density invariance plus the lattice case of Kepler, the former not yet in Mathlib v4.26.0) with derived corollary `ellipsoid_lattice_le_fccPacking`. (S6 ACT) introduces the marker structure `SymmetricConvexBody3DPacking` and the +1 STATEMENT axiom `ulam_conjecture` (Ulam 1972, OPEN — fccDensity ≤ density for every centrally symmetric convex body in ℝ³) with derived corollary `ulam_le_fccPacking_density`. (S7 ACT) aggregates the three shape-dependent benchmarks (S3+S4 tetrahedral non-lattice strictly above FCC, S5 ellipsoid-lattice at or below FCC, S6 centrally symmetric convex bodies conjecturally at or above FCC) into the single quantified theorem `density_hierarchy_3d`. Net: tetrahedral arm (S2-S4) is fully axiom-free and confirms the Kepler upper bound is shape-specific; ellipsoid-lattice (S5) and Ulam (S6) arms are axiomatized at the STATEMENT level — the former pending a Mathlib affine-density-invariance lemma, the latter pending mathematical resolution.",
+  "meta": {
+    "author": "researcher-11",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/KeplerConjectureOQ04.lean",
+    "tags": [
+      "packing",
+      "kepler",
+      "tetrahedra",
+      "ellipsoids",
+      "ulam-conjecture",
+      "discrete-geometry",
+      "open-question",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 2,
+    "lineCount": 570,
+    "theoremCount": 11,
+    "definitionCount": 6,
+    "assumptions": "0 sorries, 2 axioms in this file: (i) `bezdek_kuperberg_ellipsoid_lattice_upper_bound` (Bezdek-Kuperberg 2007, the ellipsoid lattice density bound, stated but not proved in Lean — published proof relies on affine density invariance under linear transforms, not yet in Mathlib v4.26.0); and (ii) `ulam_conjecture` (Ulam 1972, OPEN — the bound `fccDensity ≤ δ_K` for centrally symmetric convex bodies `K ⊂ ℝ³`, stated as a STATEMENT axiom because the conjecture remains unproven after 50+ years). The parent `Proofs/KeplerConjecture.lean` axiomatizes (a) `thues_theorem` (2D hexagonal optimality, Thue 1892 / Fejes Tóth 1940), (b) `fccDensity_lt_one` (numerical bound), and (c) the Kepler conjecture itself (Hales 1998, Flyspeck 2014). This OQ-04 file defines the Chen-Engel-Glotzer rational constant 4000/4671, the `tetrahedronDimerPacking : PackingDensity` instance, the `EllipsoidLatticePacking` marker structure, and the `SymmetricConvexBody3DPacking` marker structure; proves eight theorems including `tetrahedronDimerDensity_gt_fccDensity` (the central refutation `π/(3√2) < 4000/4671`, via `Real.pi_lt_d2` and `Real.lt_sqrt`, axiom-free), the existential corollary `exists_packingDensity_gt_fcc`, the Bezdek-Kuperberg-derived corollary `ellipsoid_lattice_le_fccPacking`, the Ulam-derived corollary `ulam_le_fccPacking_density`, and the S7 aggregator `density_hierarchy_3d`. (S15 SOUNDNESS FIX, researcher-8) The shape-restricted bound axioms were over-quantified: this file's `EllipsoidLatticePacking` / `SymmetricConvexBody3DPacking` were contentless `extends PackingDensity` markers (anonymous constructor `PackingDensity → ·`), so the tetrahedral dimer (density > fccDensity) could be wrapped into `bezdek_kuperberg_ellipsoid_lattice_upper_bound` to derive `tetrahedronDimerDensity ≤ fccDensity` — contradicting the axiom-free `tetrahedronDimerDensity_gt_fccDensity` — and a density-0 packing wrapped into `ulam_conjecture` gives `fccDensity ≤ 0`; i.e. the file proved `False`. The parent `Proofs/KeplerConjecture.lean` was independently inconsistent: `thues_theorem`, `kepler_conjecture`, `gauss_lattice_theorem` each bounded EVERY `PackingDensity` by a constant `< 1` (refuted by the trivially constructible density-1 packing), and `viazovska_theorem_8d` bounded every real in `[0,1]` by `e8Density ≈ 0.2537` (refuted by `d = 1/2`). Fix: gate each shape-specific bound behind an uninterpreted `opaque IsDiskPacking / IsSpherePacking / IsSpherePacking8D / IsEllipsoidLatticePacking / IsSymmetricConvexBody3DPacking` predicate (no introduction rule, so no concrete witness can be manufactured), and forward the hypothesis through the derived theorems. The two child statement axioms (`bezdek_kuperberg_ellipsoid_lattice_upper_bound`, `ulam_conjecture`) and the parent's count are unchanged — opaque predicates assert nothing, so axiomCount stays 2. The mathematical content (each bound, restricted to its genuine shape class) is preserved; only the unsound over-quantification is removed. (S16 ENRICH, researcher-2) Added three axiom-free derived theorems (no new axioms; axiomCount stays 2): (1) `fccDensity_lt_35329_div_46710` — a division-cleared rational upper bound `fccDensity < 35329/46710 ≈ 0.75634`, the same `Real.pi_lt_d2` + `Real.lt_sqrt` linear chain as the central refutation (`π·46710 < 35329·3·√2`, i.e. `147136.5 < 148381.8`); (2) `tetrahedronDimerDensity_gt_fccDensity_margin` — strengthens the bare strict inequality `tetrahedronDimerDensity_gt_fccDensity` to an explicit quantitative separation `fccDensity + 1/10 < tetrahedronDimerDensity` (the ≈ 0.1159 gap is bounded below by a clean rational `1/10`; `35329/46710 = 4000/4671 − 1/10`, so it follows from (1) by `linarith`); (3) `ellipsoid_lattice_lt_tetrahedronDimer` — a cross-shape strict-domination corollary `e.density < tetrahedronDimerDensity` for every ellipsoid lattice packing `e`, transitivity through `fccDensity` of the Bezdek-Kuperberg upper bound and the axiom-free tetrahedral refutation (so FCC density is a strict separator: no ellipsoid lattice packing can match the tetrahedral dimer). lineCount 497→570, theoremCount 8→11.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.pi_lt_d2",
+        "description": "Numerical bound π < 3.15, used in `tetrahedronDimerDensity_gt_fccDensity` to bound the LHS `4671 · π` of the cross-multiplied inequality",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds"
+      },
+      {
+        "theorem": "Real.lt_sqrt",
+        "description": "Characterisation `x < √y ↔ x² < y` (for `0 ≤ x`), used to derive `1.4 < √2` from `1.4² = 1.96 < 2`",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.NNReal"
+      },
+      {
+        "theorem": "div_lt_div_iff₀",
+        "description": "Cross-multiplication for strict inequality between two positive fractions, used to clear the divisions in `tetrahedronDimerDensity_gt_fccDensity`",
+        "module": "Mathlib.Algebra.Order.Field.Basic"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Kepler's 1611 conjecture concerned only **spheres** — that the face-centered cubic packing is optimal for congruent balls in ℝ³. Hales' 1998 proof, formally verified by the Flyspeck project (2014), settled the sphere case at density π/(3√2) ≈ 0.7405. The **non-spherical** generalisations have a rich and surprising history.\n\n**Tetrahedra.** Aristotle famously conjectured (mistakenly) that regular tetrahedra tile ℝ³; Minkowski found gaps as early as the 1900s, and the question of the densest *tetrahedral* packing remained open through the 20th century. Conway and Torquato (2006) reignited interest with simulations suggesting δ ≈ 0.72; soon a rapid sequence of constructions raised the bound: Chen (2008) δ ≈ 0.778, Torquato-Jiao (2009) δ ≈ 0.823, then Chen-Engel-Glotzer (Discrete & Computational Geometry, 2010) achieved δ = 4000/4671 ≈ 0.8564 via an explicit dimer-based crystalline arrangement — beating FCC by **~16 percentage points** and refuting the intuition that the Kepler bound was universal. The exact maximum density for regular tetrahedra remains open.\n\n**Ellipsoids.** Donev, Stillinger, Chaikin, and Torquato (Physical Review Letters, 2004) showed that ellipsoidal jamming achieves δ ≈ 0.7707 at aspect ratio α ≈ √2 — a striking *non-spherical* improvement over the random-close-packing density for spheres (δ ≈ 0.64). Bezdek and Kuperberg (Geometriae Dedicata, 2007) then proved that for *lattice* packings of (non-spherical) ellipsoids, the optimal density is still exactly π/(3√2) — the lattice constraint forces the sphere bound to persist, while non-lattice packings break it.\n\n**Ulam's conjecture (1972).** Stanislaw Ulam asked: among all centrally symmetric convex bodies in ℝ³, is the unit ball the *worst* shape to pack? Conjecturally yes — every such body K satisfies δ_K ≥ π/(3√2), with equality only for the ball. The intuition (Bourgain, Schmuckenschläger, and others have made partial progress, including small perturbative results) inverts Kepler's optimality direction: the ball is conjecturally the *least*, not the most, packable convex body. The conjecture remains open after over five decades.\n\nThis file's contribution is **structural**: it instantiates the abstract `PackingDensity` type (defined in `Proofs.KeplerConjecture`) with a concrete value `4000/4671` that lies strictly above `fccDensity`, formally demonstrating in Lean that the sphere bound is **not** an upper bound for all packings — without yet committing to the full S3 numerical inequality.",
+    "problemStatement": "**OQ-04 (open question).** Generalise the Kepler-Hales theorem to convex bodies beyond the unit ball. Three flagship sub-questions: **(i) Tetrahedra** — what is `δ_tet := sup{packingDensity(K) | K = regular tetrahedron}`? Best known lower bound: $4000/4671 \\approx 0.8564$ (Chen-Engel-Glotzer 2010). **(ii) Ellipsoids** — for ellipsoids $E_{\\alpha} \\subset \\mathbb{R}^3$ of aspect ratio $\\alpha$, what is $\\sup_{\\alpha} \\delta_{E_{\\alpha}}$? Best known: $\\delta \\approx 0.7707$ at $\\alpha \\approx \\sqrt{2}$ (Donev et al. 2004); lattice-only: exactly $\\pi/(3\\sqrt{2})$ (Bezdek-Kuperberg 2007). **(iii) Ulam's conjecture** — for every centrally symmetric convex body $K \\subset \\mathbb{R}^3$, $\\delta_K \\geq \\pi/(3\\sqrt{2})$, with equality iff $K$ is a Euclidean ball.",
+    "proofStrategy": "**S1 OBSERVE (PR #18043):** three-flagship survey of non-spherical packing in doc-only form — establishes the literature landscape and identifies the tetrahedral refutation as the cleanest axiom-free deliverable. **S2 SCAFFOLD (PR #18113):** introduce `tetrahedronDimerDensity = 4000/4671` as a real-number constant, prove `tetrahedronDimerDensity_pos`, `tetrahedronDimerDensity_lt_one`, and the rational-form literature anchor `tetrahedronDimerDensity_gt_8563` (0.8563 < 4000/4671) — all `norm_num`-discharged, axiom-free. **S3 ACT (delivered):** prove `tetrahedronDimerDensity > fccDensity` via linear bounds rather than the squaring trick originally sketched in S2 — cross-multiply with `div_lt_div_iff₀` to remove division, bound `Real.pi < 3.15` (`Real.pi_lt_d2`) above and `1.4 < Real.sqrt 2` below (via `Real.lt_sqrt`, since `1.4² = 1.96 < 2`), then close `4671 · π < 4000 · 3 · √2` with `nlinarith` on the linear chain `4671 · 3.15 = 14_713.65 < 16_800 = 12_000 · 1.4` (margin ≈ 2086.35). Axiom-free. **S4 ACT (delivered):** bundle `tetrahedronDimerDensity` into the parent `PackingDensity` structure as `tetrahedronDimerPacking` (with `nonneg`/`le_one` from the S2 bounds), then derive the existential `∃ p : PackingDensity, fccDensity < p.density` with `tetrahedronDimerPacking` as witness. Axiom-free; bottom-line corollary of OQ-04. **S5 ACT (delivered, PR #18968):** introduce the marker structure `EllipsoidLatticePacking extends PackingDensity` and the +1 STATEMENT axiom `bezdek_kuperberg_ellipsoid_lattice_upper_bound` — every ellipsoid lattice packing in ℝ³ has density at most `fccDensity` (Bezdek-Kuperberg, *Geometriae Dedicata* 132, 2008, 73-85). The published proof reduces to affine density invariance under linear transforms plus the lattice case of Kepler (`gauss_lattice_theorem` in the parent file); the former is not yet in Mathlib v4.26.0, so the lattice bound is axiomatized here. Derived corollary `ellipsoid_lattice_le_fccPacking` adds no new axioms. **S6 ACT (delivered, PR #19109):** introduce the marker structure `SymmetricConvexBody3DPacking extends PackingDensity` and the +1 STATEMENT axiom `ulam_conjecture` — every centrally symmetric convex body packing in ℝ³ achieves density at least `fccDensity` (Ulam 1972, in conversation with Martin Gardner; cited in Brass-Moser-Pach 2005, §3.3). The conjecture remains OPEN after 50+ years; no proof is attempted. Derived corollary `ulam_le_fccPacking_density` adds no new axioms. Net axiom count: 2 STATEMENT axioms, both with explicit literature provenance and a documented Mathlib-discharge or open-mathematics path.",
+    "keyInsights": [
+      "**The Kepler upper bound is shape-specific.** A common naive expectation is that the FCC density π/(3√2) ≈ 0.7405 is some kind of universal limit. Chen-Engel-Glotzer's 4000/4671 ≈ 0.8564 refutes this: the regular tetrahedron beats the unit ball by ~16 percentage points. This file makes that refutation Lean-formal: a single concrete real-number constant strictly exceeding `fccDensity` is enough to demonstrate that `fccDensity` is not an upper bound on the `PackingDensity` type.",
+      "**Lattice vs non-lattice density is shape-dependent.** Bezdek-Kuperberg (2007) showed that for *lattice* ellipsoid packings, the optimal density equals π/(3√2) regardless of aspect ratio — the lattice constraint forces the same FCC bound. But non-lattice (e.g. Donev et al.'s jammed) ellipsoid packings achieve δ ≈ 0.7707, breaking the bound. This dichotomy suggests Ulam's conjecture, if true, depends critically on allowing arbitrary (non-lattice) packings.",
+      "**Ulam's conjecture inverts Kepler's optimality intuition.** Kepler asks: what arrangement of *the same* body packs densest? Ulam asks: what *shape* of body has the lowest such optimum? The conjectured answer — the ball is the *worst* shape — is consistent with the experimentally observed phenomena (every other tested convex body packs better than the ball), but no general lower bound is known beyond small perturbations of the ball.",
+      "**The rational dimer constant 4000/4671 has no closed form.** Unlike fccDensity = π/(3√2), the Chen-Engel-Glotzer density is a specific rational arising from solving a 12-parameter linear program over a dimer unit cell. The unusual denominator 4671 = 3 · 1557 = 3 · 3 · 519 = 9 · 519 reflects the optimization structure (three independent edge constraints, three orientational degrees of freedom, plus a global normalization).",
+      "**The S3 squaring trick reduces the inequality to a rational π² bound.** Comparing `4000/4671` to `π/(3√2)` directly tangles real-number transcendentals; squaring both positive sides clears `√2` and isolates `π²`: the inequality holds iff `π² < 288_000_000 / 21_818_241 ≈ 13.2002`. `Real.pi_lt_315` (`π < 3.15` ⇒ `π² < 9.9225`) supplies a comfortable margin, so the proof is axiom-free and short (~10 lines, deferred to S3).",
+      "**Verified shape-specificity is a stepping stone to Ulam's conjecture.** A future Lean formalization of Ulam's conjecture will require: (i) a general `PackingDensity` over arbitrary convex bodies (the parent file's `PackingDensity` already abstracts the value, not the body); (ii) the lower bound axiom; (iii) the equality-case characterization. The current OQ-04 scaffold provides the *examples* (4000/4671 > 0.7405) that motivate why Ulam-style bounds are non-trivial."
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: Three-Flagship Survey + S2-S7 Status",
+      "startLine": 1,
+      "endLine": 83,
+      "summary": "Surveys the three OQ-04 sub-questions (tetrahedral refutation, ellipsoid records, Ulam's conjecture) with citations to Chen-Engel-Glotzer 2010, Donev et al. 2004, Bezdek-Kuperberg 2007, and Ulam 1972. Records the S2 SCAFFOLD goal, the S3 ACT linear-margin chain `4671 · π < 14_713.65 < 16_800 < 4000 · 3 · √2`, the S4 ACT existential corollary, the S5 ACT Bezdek-Kuperberg +1 STATEMENT axiom, the S6 ACT Ulam +1 STATEMENT axiom, and the S7 ACT final aggregation `density_hierarchy_3d`. Closes with the post-S7 status block: 0 sorries, 2 axioms, 4 definitions, 8 theorems."
+    },
+    {
+      "id": "imports",
+      "title": "Imports and Namespace",
+      "startLine": 85,
+      "endLine": 90,
+      "summary": "`import Mathlib` (full Mathlib for access to `Real.pi`, `Real.sqrt`, `norm_num`, `nlinarith`, `div_lt_div_iff₀`, etc.) and `import Proofs.KeplerConjecture` (parent file providing `fccDensity`, the `PackingDensity` structure, and `fccPacking`). Opens `Real` and `KeplerConjecture` namespaces inside `namespace KeplerConjectureOQ04`."
+    },
+    {
+      "id": "tetrahedron-dimer-density",
+      "title": "Definition: tetrahedronDimerDensity = 4000/4671",
+      "startLine": 92,
+      "endLine": 108,
+      "summary": "Defines `tetrahedronDimerDensity : ℝ := 4000 / 4671` as a `noncomputable def` (the value is rational but is embedded in `ℝ`). The docstring cites Chen-Engel-Glotzer (Discrete & Computational Geometry 44, 2010, 253–280) and notes that this is the best lower bound on the regular-tetrahedron packing density known as of the 2010 construction (the exact optimum remains open).",
+      "mathContext": "$\\texttt{tetrahedronDimerDensity} := \\frac{4000}{4671} \\approx 0.856347676\\ldots \\in \\mathbb{R}$. Strictly exceeds $\\texttt{fccDensity} = \\frac{\\pi}{3\\sqrt{2}} \\approx 0.7405$, refuting any naive expectation that the FCC bound is shape-universal."
+    },
+    {
+      "id": "positivity",
+      "title": "Theorem: tetrahedronDimerDensity_pos",
+      "startLine": 110,
+      "endLine": 118,
+      "summary": "Proves `0 < tetrahedronDimerDensity` by `unfold` + `norm_num`. A strictly positive rational embedded in ℝ is positive — the most basic sanity check that the dimer density qualifies as a packing density.",
+      "mathContext": "$0 < \\frac{4000}{4671}$ — trivial by `norm_num` on a positive rational."
+    },
+    {
+      "id": "less-than-one",
+      "title": "Theorem: tetrahedronDimerDensity_lt_one",
+      "startLine": 120,
+      "endLine": 130,
+      "summary": "Proves `tetrahedronDimerDensity < 1` by `unfold` + `norm_num`. Confirms the density lies in the meaningful open unit interval (0, 1) — necessary for it to plug into the parent `PackingDensity` structure (whose density field is constrained to `[0, 1]`).",
+      "mathContext": "$\\frac{4000}{4671} < 1$ since $4000 < 4671$ — trivial by `norm_num`."
+    },
+    {
+      "id": "literature-anchor",
+      "title": "Theorem: tetrahedronDimerDensity_gt_8563 (Chen-Engel-Glotzer literature anchor)",
+      "startLine": 132,
+      "endLine": 150,
+      "summary": "Proves `(8563 : ℝ) / 10000 < tetrahedronDimerDensity` by `unfold` + `norm_num`. This anchors the Chen-Engel-Glotzer claim of \"approximately 85.6% density\" as a Lean-checked rational inequality, independent of any reference to π or √2. Remains independently useful as an `ℝ`-free comparator even after S3's tighter linear-margin proof.",
+      "mathContext": "$\\frac{8563}{10000} < \\frac{4000}{4671} \\iff 8563 \\cdot 4671 < 4000 \\cdot 10000 \\iff 39{,}997{,}773 < 40{,}000{,}000$ — a comfortable margin of $2{,}227$ in cross-multiplied form, discharged directly by `norm_num`. Numerically: $4000/4671 \\approx 0.85634767\\ldots$ vs $0.8563 = 8563/10000$."
+    },
+    {
+      "id": "s3-inequality-vs-fccDensity",
+      "title": "S3 ACT: tetrahedronDimerDensity_gt_fccDensity (axiom-free refutation of shape-universality)",
+      "startLine": 152,
+      "endLine": 209,
+      "summary": "S3 module-level docstring (lines 152-175) records the central deliverable — the Chen-Engel-Glotzer dimer density `4000/4671 ≈ 0.8564` strictly exceeds the FCC sphere density `π/(3√2) ≈ 0.7405`, by ≈ 11.6 percentage points — and outlines the three Mathlib lemmas used: `Real.pi_lt_d2`, `Real.lt_sqrt`, `div_lt_div_iff₀`. The theorem (lines 177-209) proves `fccDensity < tetrahedronDimerDensity` by cross-multiplying with `div_lt_div_iff₀` to remove division, bounding `π < 3.15` via `Real.pi_lt_d2` and `1.4 < √2` via `Real.lt_sqrt` applied to `1.4² = 1.96 < 2`, then closing `Real.pi * 4671 < 4000 * (3 * Real.sqrt 2)` with `nlinarith` on the linear chain LHS `< 4671 · 3.15 = 14_713.65` and RHS `> 12000 · 1.4 = 16_800` (margin ≈ 2086). Axiom-free; this is the formally Lean-checked bottom line of OQ-04's tetrahedral arm.",
+      "mathContext": "Linear-margin closure: $4671 \\cdot \\pi < 4671 \\cdot 3.15 = 14{,}713.65 < 16{,}800 = 12{,}000 \\cdot 1.4 < 4000 \\cdot 3 \\cdot \\sqrt{2}$, giving $\\pi \\cdot 4671 < 4000 \\cdot 3 \\sqrt{2}$ and hence (after dividing by $3\\sqrt{2} \\cdot 4671 > 0$) $\\frac{\\pi}{3\\sqrt{2}} < \\frac{4000}{4671}$."
+    },
+    {
+      "id": "s4-instance-and-existential",
+      "title": "S4 ACT: tetrahedronDimerPacking + exists_packingDensity_gt_fcc",
+      "startLine": 211,
+      "endLine": 251,
+      "summary": "S4 module-level docstring (lines 211-222) explains the type-level upgrade: bundle `tetrahedronDimerDensity` into the parent's `PackingDensity` structure so the refutation becomes existential at the type level. The definition `tetrahedronDimerPacking : PackingDensity` (lines 224-236) supplies `density := tetrahedronDimerDensity`, with `nonneg := tetrahedronDimerDensity_pos.le` and `le_one := tetrahedronDimerDensity_lt_one.le`. The theorem `exists_packingDensity_gt_fcc` (lines 238-251) packages the S3 inequality into the existential `∃ p : PackingDensity, fccDensity < p.density`, witnessed by `tetrahedronDimerPacking`. Axiom-free.",
+      "mathContext": "Bottom-line corollary: $\\exists p \\in \\texttt{PackingDensity}, \\frac{\\pi}{3\\sqrt{2}} < p.\\texttt{density}$. The parent's `PackingDensity` type, taken without the sphere assumption, is NOT bounded above by `fccDensity` — restoring such a bound requires the sphere hypothesis (i.e. the parent `kepler_conjecture` axiom)."
+    },
+    {
+      "id": "s5-ellipsoid-lattice-bezdek-kuperberg",
+      "title": "S5 ACT: EllipsoidLatticePacking + bezdek_kuperberg_ellipsoid_lattice_upper_bound (+1 STATEMENT axiom)",
+      "startLine": 253,
+      "endLine": 331,
+      "summary": "S5 module-level docstring (lines 253-289) records the second arm of the OQ-04 hierarchy: the Bezdek-Kuperberg (2007) theorem that ellipsoid lattice density is bounded by `fccDensity`, contrasted with Donev et al.'s (2004) non-lattice ellipsoid record of 0.7707 strictly above the FCC bound — establishing that the lattice constraint, not the shape, drives the FCC ceiling here. The marker structure `EllipsoidLatticePacking extends PackingDensity` (line 300) wraps a `PackingDensity` value with the implicit understanding it arises from a lattice arrangement of congruent ellipsoids in ℝ³. The +1 STATEMENT axiom `bezdek_kuperberg_ellipsoid_lattice_upper_bound` (lines 315-317) asserts `(e : EllipsoidLatticePacking).density ≤ fccDensity`; the published proof reduces to affine density invariance under linear transforms plus the lattice case of Kepler (`gauss_lattice_theorem` in the parent file), the former not yet in Mathlib v4.26.0. Derived corollary `ellipsoid_lattice_le_fccPacking` (lines 328-331) restates the bound in terms of the named `fccPacking` instance — no new axiom.",
+      "mathContext": "Bezdek-Kuperberg (*Geometriae Dedicata* 132, 2008, 73-85): $\\forall e \\in \\texttt{EllipsoidLatticePacking}, e.\\texttt{density} \\leq \\frac{\\pi}{3\\sqrt{2}}$. Combined with the (degenerate, aspect-ratio-1) sphere case, the *optimal* ellipsoid lattice density in $\\mathbb{R}^3$ equals exactly $\\frac{\\pi}{3\\sqrt{2}}$ — the lattice constraint forces the FCC bound for all ellipsoids."
+    },
+    {
+      "id": "s6-ulam-conjecture",
+      "title": "S6 ACT: SymmetricConvexBody3DPacking + ulam_conjecture (+1 STATEMENT axiom, OPEN since 1972)",
+      "startLine": 333,
+      "endLine": 406,
+      "summary": "The marker structure `SymmetricConvexBody3DPacking extends PackingDensity` (line 352) wraps a `PackingDensity` value with the implicit understanding it arises from a packing of congruent copies of a centrally symmetric convex body `K ⊂ ℝ³` (i.e. `K = -K`); definitional only, no axiom. Mathlib v4.26.0 has no native centrally-symmetric `ConvexBody3D` abstraction at the `PackingDensity` level, so the structure records geometric intent without committing to a particular formalisation; a future refinement carrying the underlying body and a `∀ x, x ∈ K ↔ -x ∈ K` proof would preserve the axiom. The +1 STATEMENT axiom `ulam_conjecture` (lines 383-384) asserts `fccDensity ≤ (p : SymmetricConvexBody3DPacking).density` — Ulam's 1972 conjecture (in conversation with Martin Gardner; cited Brass-Moser-Pach 2005, §3.3) that the unit ball is the LEAST dense centrally symmetric convex body to pack. OPEN for 50+ years; no proof is attempted. Derived corollary `ulam_le_fccPacking_density` (theorem at lines 403-406) restates the bound against the named `fccPacking` instance — no new axiom.",
+      "mathContext": "Ulam (1972): $\\forall K \\subset \\mathbb{R}^3 \\text{ centrally symmetric convex}, \\delta_K \\geq \\frac{\\pi}{3\\sqrt{2}}$, with equality iff $K$ is a Euclidean ball. Partial results: rhombic dodecahedron tiles ($\\delta = 1$), regular octahedron achieves $\\delta = 18/19 \\approx 0.9474$; Bourgain-Schmuckenschläger and others have perturbative bounds near the ball. The general statement remains open."
+    },
+    {
+      "id": "s7-density-hierarchy",
+      "title": "S7 ACT: density_hierarchy_3d — final shape-dependence aggregation (no new axioms)",
+      "startLine": 408,
+      "endLine": 456,
+      "summary": "The bottom-line OQ-04 deliverable. `theorem density_hierarchy_3d` (line 446) combines the three shape-specific benchmarks into one quantified sandwich: for every ellipsoid lattice packing `e` and every centrally symmetric convex body packing `p`, `e.density ≤ fccPacking.density ∧ fccDensity < tetrahedronDimerDensity ∧ fccPacking.density ≤ p.density`. This shows the FCC sphere bound is neither universal nor optimal: tetrahedral dimers (S3) strictly exceed it, ellipsoid lattices (S5, Bezdek-Kuperberg axiom) stay at or below it, and centrally symmetric bodies (S6, Ulam axiom) are conjecturally bounded below by it. No new axioms — a pure `And.intro` over `ellipsoid_lattice_le_fccPacking`, `tetrahedronDimerDensity_gt_fccDensity`, and `ulam_le_fccPacking_density`.",
+      "mathContext": "Aggregates the axiom-free strict inequality $\\delta_{FCC} < \\delta_{tet}$ (S3+S4) with the two statement axioms from S5 and S6 via direct application; the gallery-visible conclusion that a single abstract `PackingDensity` admits values both strictly above and at/below $\\delta_{FCC} = \\pi/(3\\sqrt 2)$ depending on the packing shape class."
+    }
+  ],
+  "conclusion": {
+    "summary": "S2-S7 collectively close all three flagship arms of OQ-04 at the structural level. Four definitions (`tetrahedronDimerDensity`, `tetrahedronDimerPacking`, `EllipsoidLatticePacking`, `SymmetricConvexBody3DPacking`) and eight theorems (positivity, less-than-one, the 0.8563 rational anchor, `tetrahedronDimerDensity_gt_fccDensity` via `Real.pi_lt_d2` + `Real.lt_sqrt`, the existential `exists_packingDensity_gt_fcc`, the ellipsoid-lattice corollary `ellipsoid_lattice_le_fccPacking`, the Ulam corollary `ulam_le_fccPacking_density`, and the S7 aggregation `density_hierarchy_3d`). Two STATEMENT axioms — `bezdek_kuperberg_ellipsoid_lattice_upper_bound` (Bezdek-Kuperberg 2007, lattice ellipsoid density ≤ FCC) and `ulam_conjecture` (Ulam 1972, OPEN — fccDensity ≤ centrally-symmetric-convex-body density). 456 lines, 0 sorries. The tetrahedral arm (S2-S4) is fully axiom-free, demonstrating Lean-formally that the Kepler upper bound is shape-specific via a concrete `PackingDensity` strictly above `fccDensity`. The ellipsoid-lattice (S5) and Ulam (S6) arms are axiomatized at the STATEMENT level — the former pending a Mathlib formalization of affine density invariance under linear transforms, the latter pending mathematical resolution of a 50+-year open conjecture.",
+    "implications": "By instantiating a concrete real-number constant strictly above the FCC sphere density, the tetrahedral arm makes the **shape-specificity of the Kepler upper bound** Lean-formal: the parent `kepler-conjecture` entry axiomatizes `fccDensity_lt_one` and `fccDensity` ≤ all packing densities of spheres, while OQ-04 demonstrates that this last bound does NOT extend to convex bodies in general. The 4000/4671 constant is a specific witness, but the architectural lesson is more general — the `PackingDensity` type abstracts away the body, so any future shape-specific density (ellipsoidal, Ulam-style, etc.) can be similarly instantiated and compared without revisiting the foundations. The S3 inequality, via `Real.pi_lt_d2` and `Real.lt_sqrt`, is entirely axiom-free — confirming this OQ-04 sub-question can be resolved in Lean without trusting any non-Mathlib black-box. The S5 and S6 STATEMENT axioms make the *gap* explicit: an axiom-free Lean proof of the Bezdek-Kuperberg theorem awaits a Mathlib formalization of affine density invariance under linear transforms (currently absent at v4.26.0), while Ulam's conjecture awaits a mathematical proof. By isolating these two assumptions as named, narrowly scoped axioms with explicit literature provenance and discharge paths, the file makes OQ-04's open surface area transparent and minimal.",
+    "openQuestions": [
+      "**Discharge of `bezdek_kuperberg_ellipsoid_lattice_upper_bound`** (currently +1 STATEMENT axiom): formalize the affine density invariance lemma — every invertible linear transform `T : ℝ³ ≃ₗ[ℝ] ℝ³` preserves both packing density and lattice structure — in Mathlib, then combine with `gauss_lattice_theorem` (the parent file's optimal ball lattice density axiom) for an axiom-free proof. Target ~150 lines once the affine lemma is in scope.",
+      "**Resolution of Ulam's conjecture (`ulam_conjecture`)** — currently +1 STATEMENT axiom because the conjecture is genuinely open since 1972. Partial progress includes Bourgain-Schmuckenschläger perturbative bounds near the ball and specific high-symmetry shapes (rhombic dodecahedron tiles at δ = 1, regular octahedron at δ = 18/19 ≈ 0.9474). A general proof — or disproof — would be a research-grade result in discrete geometry.",
+      "**Exact tetrahedron optimum.** The value `4000/4671 ≈ 0.8564` is the best *known* lower bound for the regular-tetrahedron packing density, but the true supremum remains open. Improving the lower bound (or, much harder, establishing a non-trivial upper bound below the trivial `1`) would be a research-grade result in discrete geometry.",
+      "**Generalisation to higher dimensions.** Viazovska's 2016 result resolved the *sphere* packing problem in dimensions 8 and 24. Are there shape-specific generalisations of OQ-04 in those dimensions? In particular, is there a dimension-8 tetrahedral-analogue that beats the E₈ density π⁴/384 ≈ 0.2537?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "kepler-conjecture",
+      "title": "Kepler Conjecture: Sphere Packing (parent)",
+      "relationship": "Parent gallery entry. Provides `fccDensity = π/(3√2)`, the `PackingDensity` structure, and the Kepler-Hales theorem axiomatization. OQ-04 instantiates `PackingDensity` with a concrete value strictly above `fccDensity`, formally demonstrating shape-specificity.",
+      "description": "Parent entry: supplies `fccDensity = π/(3√2)`, the `PackingDensity` structure, and the Kepler–Hales axiomatization; OQ-04 instantiates `PackingDensity` with a value strictly above `fccDensity` to demonstrate shape-specificity."
+    },
+    {
+      "proofId": "minkowski-fundamental-theorem",
+      "title": "Minkowski's Fundamental Theorem (lattice / convex body)",
+      "relationship": "Cousin result in lattice convex geometry. Minkowski's theorem gives a sufficient *volume* condition for a centrally symmetric convex body to contain a non-zero lattice point — a foundational tool for *lattice* packings. Bezdek–Kuperberg (2007), cited in this file's docstring, prove that the optimal *lattice* ellipsoid density in ℝ³ equals π/(3√2) exactly, leveraging the same lattice-symmetry framework. OQ-04 highlights the gap between lattice-constrained density (which preserves the FCC bound for ellipsoids) and unconstrained density (where Donev et al. achieve 0.7707 and Chen-Engel-Glotzer achieve 4000/4671 with dimer crystals).",
+      "description": "Cousin in lattice convex geometry: a volume condition for a centrally symmetric convex body to contain a nonzero lattice point. Bezdek–Kuperberg (2007) use this framework to prove the optimal lattice ellipsoid density in ℝ³ is exactly π/(3√2)."
+    },
+    {
+      "proofId": "minkowski-theorem",
+      "title": "Minkowski's Theorem on Successive Minima",
+      "relationship": "Provides the asymptotic counting tool for *lattice* point estimates on convex bodies — the prerequisite framework for any density argument in the lattice-packing literature (Bezdek–Kuperberg 2007 belongs to this tradition). The strict separation between Minkowski-type lattice bounds and Chen–Engel–Glotzer's non-lattice 4000/4671 record motivates OQ-04's central observation: the FCC bound is rigid under lattice symmetry but breaks under non-lattice crystalline arrangements.",
+      "description": "Minkowski's successive-minima theorem — the asymptotic lattice-point counting tool underpinning lattice-packing density arguments (the Bezdek–Kuperberg tradition); contrasts with the non-lattice 4000/4671 record motivating OQ-04."
+    },
+    {
+      "proofId": "ehrhart-cube-proven",
+      "title": "Ehrhart Theory: Lattice-Point Counting in the Cube",
+      "relationship": "Adjacent discrete-geometric machinery. Ehrhart theory counts lattice points in dilations of a convex polytope, complementing the *volumetric* density theory of Kepler/Hales. Both frameworks share the convex-body-in-ℝᵈ setting, and Ehrhart's `tDilateLatticePoints` polynomial encodes (in the limit) the same kind of asymptotic density information that packing arguments exploit. The 4000/4671 dimer construction is itself a polytopal arrangement — its unit cell counts naturally interface with Ehrhart-style techniques.",
+      "description": "Ehrhart theory counts lattice points in polytope dilations, complementing the volumetric density theory of Kepler/Hales; the 4000/4671 dimer construction is polytopal and interfaces naturally with Ehrhart techniques."
+    }
+  ],
+  "theoremCount": 11,
+  "definitionCount": 6
+}

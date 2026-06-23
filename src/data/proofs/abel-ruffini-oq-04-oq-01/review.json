@@ -1,0 +1,218 @@
+{
+  "version": 1,
+  "proofId": "abel-ruffini-oq-04-oq-01",
+  "reviewDate": "2026-03-25T12:00:00Z",
+  "reviewer": "peer-reviewer",
+
+  "overallAssessment": {
+    "grade": "B+",
+    "oneLiner": "Genuinely impressive axiom-free formalization with substantial original proof work, but meta.json and annotations are stale — they still describe the old axiom-based approach that has been superseded.",
+    "tier": "A",
+    "tierJustification": "Tier A: Fully formalized theorem with 0 axioms, 0 sorries, and no structure-encoded assumptions. All formerly-axiomatized results (three_dvd_gal_card, gal_has_odd_perm, vandermondeProduct_sq_val) have been proved as theorems. The proof chain from Eisenstein irreducibility through Gal ≅ S₅ to unsolvability by radicals is complete.",
+    "stratification": {
+      "proved": [
+        "p_irreducible (Eisenstein at p=2 + Gauss's lemma)",
+        "vandermondeProduct_sq_val (Δ² = -212144 via derivative product identity)",
+        "gal_has_odd_perm (Vandermonde + FTGT: Δ ∉ ℚ forces odd permutation)",
+        "gal_has_transposition (complex conjugation via IsAlgClosed.lift + starRingEnd)",
+        "three_dvd_gal_card (Sylow elimination of non-3-divisible orders {5,10,20,40})",
+        "no_subgroup_order_15 (Sylow: unique P₅ and P₃ commute, contradicts native_decide)",
+        "no_subgroup_order_30 (A₅ simplicity: index-2 normal subgroup contradiction)",
+        "gal_card_eq_120 (full case elimination: 15, 30, 60 ruled out)",
+        "gal_iso_s5 (pigeonhole: injective + equal cardinality → bijective)",
+        "roots_not_solvable_by_rad (contrapositive of Galois bridge)",
+        "s5_realizable (inverse Galois witness)"
+      ],
+      "axiomatized": [],
+      "elementary": [
+        "p_natDegree, p_monic, p_separable (structural facts from Mathlib)",
+        "p_rootSet_card (separable polynomial degree = root count)",
+        "five_dvd_gal_card (Mathlib's prime_degree_dvd_card)",
+        "gal_card_dvd_120 (galActionHom injection + Lagrange)",
+        "s5_not_solvable (Mathlib's Equiv.Perm.not_solvable)",
+        "Polynomial evaluations (p_eval_neg2 through p_eval_2, ring arithmetic)"
+      ],
+      "assessment": "All components are fully proved — no axiomatized scaffolding remains. The heavy original work is in the Vandermonde discriminant computation, the complex conjugation argument, and the Sylow-based case elimination. Elementary components are routine Mathlib applications and arithmetic."
+    }
+  },
+
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "vandermondeProduct_sq_val, lines 827-844",
+      "finding": "The computation that Δ² = -212144 is a genuine tour de force. The proof derives this from first principles using the derivative product identity: it factors p_SF into linear factors, evaluates the derivative at each root, relates the product of derivative values to the Vandermonde square, and cleverly evaluates at x = 5/8 to extract the numerical value. This is ~100 lines of substantive algebraic reasoning, not a Mathlib wrapper.",
+      "recommendation": "Preserve this approach. Consider adding it to the annotations as a highlighted proof technique."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "conjGalAut through gal_has_transposition, lines 952-994",
+      "finding": "The complex conjugation argument is elegant and original: embed SF → ℂ via IsAlgClosed.lift, compose with starRingEnd to get conjugation, use restrictNormal to get a Galois automorphism, prove it has sign -1 by contradiction (if sign were +1, vandermondeProduct would be real, but Δ² = -212144 < 0). This eliminates the need for Dedekind's theorem entirely.",
+      "recommendation": "This is the proof's most original contribution. The meta.json proofStrategy should be updated to highlight this approach."
+    },
+    {
+      "severity": "major",
+      "category": "inconsistency",
+      "location": "meta.json overview.proofStrategy",
+      "finding": "The proofStrategy describes the OLD axiom-based approach: '(b) 3 | |Gal| by Dedekind's theorem at p = 13 (axiom A)', '(c) Gal ⊄ A₅ by discriminant sign analysis (axioms B1, B2)'. The current proof does NOT use Dedekind's theorem at all — it eliminates non-3-divisible orders {5,10,20,40} via Sylow theory + transposition normalization. The axioms (A, B1, B2) have been eliminated and replaced by theorems.",
+      "recommendation": "Rewrite proofStrategy to describe the actual proof: Stage 2 should explain the Sylow elimination approach (transposition from complex conjugation cannot normalize any 5-cycle, ruling out orders 5/10/20/40 via unique normal Sylow 5-subgroup; orders 15/30 ruled out by Sylow/A₅ simplicity; order 60 ruled out by odd permutation)."
+    },
+    {
+      "severity": "major",
+      "category": "inconsistency",
+      "location": "meta.json conclusion.summary",
+      "finding": "The conclusion states: 'The key result |Gal| = 120 is proved as a theorem from three narrow axioms: (A) Dedekind at p=13 gives 3 | |Gal|, (B1) disc(p) < 0, (B2) Δ² = disc(p).' This is false — there are no axioms. All three of these are now proved theorems. The conclusion describes a version of the proof that no longer exists.",
+      "recommendation": "Rewrite conclusion to accurately reflect the axiom-free status: 'The key result |Gal| = 120 is proved without axioms via three techniques: (1) Vandermonde product computation proves Δ² = -212144, (2) complex conjugation proves Gal has a transposition, (3) Sylow elimination rules out all non-120 orders.'"
+    },
+    {
+      "severity": "major",
+      "category": "inconsistency",
+      "location": "meta.json overview.keyInsights[6] and [7]",
+      "finding": "keyInsight[6] ('Axiom decomposition as formalization strategy') describes axioms that no longer exist. keyInsight[7] ('Dedekind's theorem bridges algebra and number theory') describes a technique (mod-13 reduction) that is NOT used in the current proof — the Dedekind approach was entirely superseded by the complex conjugation + Sylow approach. These insights describe a historical intermediate version, not the current proof.",
+      "recommendation": "Replace keyInsight[6] with an insight about the complex conjugation strategy (embed SF → ℂ, compose with conjugation, use restrictNormal to get a Galois automorphism — this is the key to eliminating the Dedekind axiom). Replace keyInsight[7] with an insight about the Sylow elimination approach (transposition + unique normal Sylow 5-subgroup → contradiction for orders 10/20/40)."
+    },
+    {
+      "severity": "moderate",
+      "category": "inconsistency",
+      "location": "meta.json conclusion.openQuestions[0] and [3]",
+      "finding": "openQuestions[0]: 'Remaining to eliminate the axiom: formalize real root count (IVT + Rolle) and show complex conjugation gives a transposition in the Galois group.' This axiom has ALREADY been eliminated — the proof now includes the complex conjugation argument. openQuestions[3]: 'The Mazur-Ulam gap: can Mathlib eliminate the need for the cardinality axiom?' The cardinality axiom has been eliminated.",
+      "recommendation": "Remove these obsolete open questions. Replace with questions relevant to the current state: e.g., 'Can the repetitive Sylow arguments for ne_10/ne_20/ne_40 be factored into a single generic lemma?' and 'Can the 7 vestigial computational lemmas (mod-13 facts, closure_cycle_swap_eq_top, etc.) be removed?'"
+    },
+    {
+      "severity": "moderate",
+      "category": "inconsistency",
+      "location": "annotations.json: ann-abeloq04oq01-axiom-strategy, ann-abeloq04oq01-axiom-decomposition",
+      "finding": "Two annotations describe 'Axiom Decomposition: Dedekind + Discriminant Strategy' and 'Three Narrow Axioms: Dedekind, Discriminant, Vandermonde'. These describe axioms that no longer exist. The axiom-decomposition annotation (lines 532-612) references 'Axiom A (three_dvd_gal_card, line 612): 3 | |Gal|, from Dedekind's theorem at p = 13. Axiomatized because Mathlib lacks Dedekind's theorem.' But three_dvd_gal_card is now a theorem proved via Sylow elimination, not Dedekind.",
+      "recommendation": "Rewrite these annotations to describe the current proof: the Vandermonde computation that proves Δ² = -212144 as a theorem, the complex conjugation argument that proves gal_has_transposition, and the Sylow elimination that proves three_dvd_gal_card. Remove references to axioms."
+    },
+    {
+      "severity": "moderate",
+      "category": "inconsistency",
+      "location": "annotations.json: ann-abeloq04oq01-group-theory (significance: 'key')",
+      "finding": "The annotation marks closure_cycle_swap_eq_top as 'key' significance, but this theorem is NEVER USED in the proof. It was the textbook approach (5-cycle + transposition generates S₅) but the actual proof instead uses Sylow elimination of all non-120 orders. The theorem is vestigial — 62 lines of dead code.",
+      "recommendation": "Downgrade to 'supporting' and note that the lemma is not currently used in the main proof. Alternatively, the researcher could remove the lemma if it serves no pedagogical purpose."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "annotations.json: line ranges throughout",
+      "finding": "Multiple annotation line ranges are shifted by 50-70 lines from the actual code. E.g., ann-abeloq04oq01-polynomial targets lines 67-70 but the polynomial definition is at lines 139-143; ann-abeloq04oq01-eisenstein targets 93-133 but the Eisenstein proof spans ~149-206; ann-abeloq04oq01-gal-card-theorem targets 700-753 but gal_card_eq_120 is at lines 1432-1459.",
+      "recommendation": "Update annotation line ranges to match the current file. The file has grown substantially during axiom elimination, and the annotations were not updated to reflect the new line numbers."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "Lean source: lines 67-127 (7 unused lemmas)",
+      "finding": "Seven computational lemmas are defined but never referenced in the proof: (1) perm_fin5_no_order_15 (line 73), (2) p_root_mod13_at_2 (line 79), (3) p_root_mod13_at_5 (line 83), (4) cubic_factor_no_roots_mod13 (line 87), (5) normalizer_5cycle_card_20 (line 112), (6) perm_fin5_order_dvd10_odd_is_false (line 122), (7) closure_cycle_swap_eq_top (line 331). These are artifacts from earlier proof strategies (Dedekind theorem, transposition+cycle generation) that were superseded.",
+      "recommendation": "Remove the 7 unused lemmas to reduce file size by ~120 lines and eliminate confusion. If they have pedagogical value, move them to a separate file."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json crossReferences (descartes-rule-of-signs)",
+      "finding": "The cross-reference to descartes-rule-of-signs mentions 'the axiom |Gal| = 120 (3 real roots from 3 sign changes)'. The axiom has been eliminated — the sign-change analysis is used differently now (complex conjugation gives transposition, not Dedekind's theorem).",
+      "recommendation": "Update the description to remove the 'axiom' reference and accurately describe how Descartes' rule relates to the current proof (sign changes locate 3 real roots, establishing that complex conjugation swaps the 2 non-real roots)."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json mathlibDependencies",
+      "finding": "Missing two important Mathlib dependencies: Matrix.det_vandermonde (line 671, critical for the Vandermonde product approach) and alternatingGroup.isSimpleGroup_five (line 575, used in no_subgroup_order_30 and gal_card_ne_60).",
+      "recommendation": "Add these two dependencies to the mathlibDependencies list."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "no_subgroup_order_15 and no_subgroup_order_30, lines 449-608",
+      "finding": "The Sylow theory arguments are substantial and correct. The order-15 elimination via commuting Sylow subgroups + native_decide is particularly clever. The order-30 elimination using A₅ simplicity (kernel of sign homomorphism has order 15, contradiction) shows genuine mathematical sophistication.",
+      "recommendation": "Preserve these. The approach is clean and reusable for other Galois group computations."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "Lean source: gal_card_ne_10, gal_card_ne_20, gal_card_ne_40 (lines 1004-1283)",
+      "finding": "The three Sylow elimination theorems (ne_10, ne_20, ne_40) are nearly identical — ~80 lines each with the same structure (unique normal Sylow 5-subgroup, transposition doesn't normalize 5-cycle). This is ~240 lines of code that could be factored into a single generic lemma parametrized by the group order.",
+      "recommendation": "Low priority, but a future refactor could extract a common lemma: 'if G ≤ S₅ has a transposition and a unique normal Sylow 5-subgroup, then G has order > |normalizer of 5-cycle| = 20.' This would replace all three proofs."
+    }
+  ],
+
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "high",
+      "target": "enricher",
+      "description": "Rewrite meta.json proofStrategy to describe the actual axiom-free proof: Vandermonde discriminant computation, complex conjugation for transposition, Sylow elimination for order determination. Remove all references to 'axiom A', 'axiom B1', 'axiom B2'.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-2",
+      "priority": "high",
+      "target": "enricher",
+      "description": "Rewrite meta.json conclusion.summary to remove references to 'three narrow axioms' and describe the axiom-free proof.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-3",
+      "priority": "high",
+      "target": "enricher",
+      "description": "Replace keyInsights[6] (axiom decomposition) and keyInsights[7] (Dedekind's theorem) with insights about the complex conjugation strategy and Sylow elimination approach actually used in the proof.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-4",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Update openQuestions to remove solved items (axiom elimination is complete) and add relevant current questions.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-5",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Rewrite annotations ann-abeloq04oq01-axiom-strategy and ann-abeloq04oq01-axiom-decomposition to describe the current axiom-free proof rather than the eliminated axioms.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-6",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Downgrade annotation for closure_cycle_swap_eq_top from 'key' to 'supporting' (or note it is unused). Update all annotation line ranges to match current file.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-7",
+      "priority": "low",
+      "target": "researcher",
+      "description": "Remove 7 vestigial lemmas: perm_fin5_no_order_15, p_root_mod13_at_2, p_root_mod13_at_5, cubic_factor_no_roots_mod13, normalizer_5cycle_card_20, perm_fin5_order_dvd10_odd_is_false, closure_cycle_swap_eq_top (~120 lines of dead code).",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-8",
+      "priority": "low",
+      "target": "researcher",
+      "description": "Factor the repetitive Sylow arguments (gal_card_ne_10, ne_20, ne_40) into a single generic lemma to reduce ~240 lines of near-duplicate code.",
+      "status": "open"
+    },
+    {
+      "id": "ai-9",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Add Matrix.det_vandermonde and alternatingGroup.isSimpleGroup_five to mathlibDependencies. Update descartes-rule cross-reference to remove 'axiom' language.",
+      "status": "resolved"
+    }
+  ],
+
+  "qualityScores": {
+    "mathematicalSubstance": 9,
+    "originalityAccuracy": 8,
+    "completeness": 9,
+    "framingPrecision": 6,
+    "pedagogicalQuality": 7,
+    "internalConsistency": 5,
+    "epistemicCoherence": 9,
+    "overall": 7.6
+  },
+
+  "suggestedBestFraming": "A fully axiom-free proof that x^5 - 4x + 2 has Galois group S_5 over Q, completing the Abel-Ruffini chain with a concrete unsolvable quintic. The proof computes the Vandermonde discriminant (Delta^2 = -212144) from the derivative product identity, derives an odd Galois permutation via FTGT, constructs a transposition via complex conjugation (IsAlgClosed.lift + starRingEnd), and eliminates all non-120 orders for |Gal| via Sylow theory."
+}

@@ -1,0 +1,209 @@
+{
+  "id": "happy-number-oq-01",
+  "title": "Happy Numbers — Dichotomy of the Digit-Square Map",
+  "slug": "happy-number-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "HappyNumberOQ01",
+    "lineCount": 175,
+    "axiomCount": 1,
+    "theoremCount": 10,
+    "definitionCount": 3,
+    "path": "Proofs/HappyNumberOQ01.lean",
+    "sorries": 0
+  },
+  "description": "Iterating the digit-square-sum map S(n) = sum of squares of the decimal digits of n from any starting value n >= 1 terminates in exactly one of two ways: it reaches the fixed point 1 (n is happy) or it lands on the 8-cycle 4 -> 16 -> 37 -> 58 -> 89 -> 145 -> 42 -> 20 -> 4 (n is unhappy). The proof turns an a-priori infinite dynamical claim into a finite check via the descent lemma S(n) < n for n >= 1000, with the finite window [1, 999] discharged by native_decide.",
+  "meta": {
+    "author": "Classical (Reg Allenby; folklore)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Happy_number",
+    "date": "1960s",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/HappyNumberOQ01.lean",
+    "tags": [
+      "number-theory",
+      "recreational",
+      "digit-maps",
+      "dynamics",
+      "decidability",
+      "eventual-confinement"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.digits",
+        "description": "Decimal digit decomposition; S n is the sum of squares of (Nat.digits 10 n)",
+        "module": "Mathlib.Data.Nat.Digits"
+      },
+      {
+        "theorem": "Nat.digits_lt_base",
+        "description": "Every entry of Nat.digits 10 n is < 10, bounding each squared digit by 81",
+        "module": "Mathlib.Data.Nat.Digits"
+      },
+      {
+        "theorem": "Nat.lt_base_pow_length_digits",
+        "description": "n < 10 ^ (Nat.digits 10 n).length, used to force at least 4 digits when n >= 1000",
+        "module": "Mathlib.Data.Nat.Digits"
+      },
+      {
+        "theorem": "Nat.base_pow_length_digits_le",
+        "description": "10 ^ (Nat.digits 10 n).length <= 10 * n, giving the lower bound 10^(L-1) <= n",
+        "module": "Mathlib.Data.Nat.Digits"
+      },
+      {
+        "theorem": "Nat.getLast_digit_ne_zero",
+        "description": "The leading decimal digit of a nonzero n is nonzero, so S n > 0 (orbits never reach 0)",
+        "module": "Mathlib.Data.Nat.Digits"
+      },
+      {
+        "theorem": "List.sum_le_card_nsmul",
+        "description": "Bounds a list sum by (length) * (uniform per-element bound), giving S n <= 81 * L",
+        "module": "Mathlib.Algebra.Order.BigOperators.Group.List"
+      },
+      {
+        "theorem": "Nat.strongRecOn",
+        "description": "Strong recursion on the naturals, driving the descent induction",
+        "module": "Mathlib.Order.Basic"
+      },
+      {
+        "theorem": "Function.iterate_succ_apply",
+        "description": "f^[k+1] x = f^[k] (f x), used to extend an orbit witness by one step",
+        "module": "Mathlib.Logic.Function.Iterate"
+      },
+      {
+        "theorem": "Function.iterate_add_apply",
+        "description": "f^[m+n] x = f^[m] (f^[n] x), used to splice the 8-cycle onto an orbit reaching 4",
+        "module": "Mathlib.Logic.Function.Iterate"
+      }
+    ],
+    "originalContributions": [
+      "A self-contained Lean 4 formalization of the happy/unhappy dichotomy built on Mathlib's Nat.digits, with no custom digit recursion",
+      "The digit-count bound S(n) <= 81 * (Nat.digits 10 n).length, each squared digit being at most 81",
+      "The exponential-beats-linear lemma aux_exp: 81 * L < 10^(L-1) for every L >= 4, proved by Nat.le_induction and nlinarith",
+      "The descent lemma S(n) < n for every n >= 1000, combining the digit bound, the lower bound 10^(L-1) <= n, and aux_exp",
+      "A sound bounded-reachability checker reachesT and the finite base case (native_decide) that every 1 <= n <= 999 reaches the absorbing set T within 15 steps",
+      "The main confinement theorem reaches_T and its human-readable form reaches_one_or_four: every positive integer is happy or unhappy"
+    ],
+    "dateAdded": "2026-06-16",
+    "axiomCount": 1,
+    "lineCount": 175,
+    "assumptions": "Build-pending: the file is not yet registered in Proofs.lean and has not been compiled this session. The finite checks (S_one, unhappy_cycle, T_absorbing, reachesT_below, and the 8-cycle splices) use native_decide, which introduces the Lean.ofReduceBool axiom — so the entry is axiomatized (axiomCount 1), not axiom-free. There are no sorries and no hand-asserted mathematical axioms; the single assumption is trust in the Lean compiler's reduction via native_decide.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "Happy numbers are a piece of recreational number theory popularised in the mid-20th century (Reg Allenby reportedly learned them from his daughter's schoolwork) and catalogued in OEIS A007770. The underlying dynamical question — whether iterating the digit-square-sum map always settles into one of two terminal behaviours — is folklore, settled by the elementary observation that the map strictly decreases above a finite threshold, trapping every orbit in a bounded set. The eight-element unhappy cycle 4 -> 16 -> 37 -> 58 -> 89 -> 145 -> 42 -> 20 -> 4 is the only cycle other than the fixed point 1.",
+    "problemStatement": "Let $S(n) = \\sum_i d_i^2$ where $d_i$ are the decimal digits of $n$. The claim is that for every $n \\ge 1$ the orbit $n, S(n), S^2(n), \\dots$ eventually reaches the fixed point $1$ (then $n$ is *happy*) or reaches $4$, which sits on the cycle $4 \\to 16 \\to 37 \\to 58 \\to 89 \\to 145 \\to 42 \\to 20 \\to 4$ (then $n$ is *unhappy*). These are the only two terminal behaviours.",
+    "text": "The formalization defines $S$ directly from Mathlib's `Nat.digits 10 n`, summing the squares of the digits. The mathematical heart is the descent lemma $S(n) < n$ for $n \\ge 1000$: if $L$ is the number of decimal digits then $S(n) \\le 81L$ (each squared digit is at most $81$), while $10^{L-1} \\le n$ and $81L < 10^{L-1}$ once $L \\ge 4$. Combined with positivity $S(n) \\ge 1$, descent forces every orbit strictly downward until it enters $[1, 999]$, after which a bounded reachability check (`reachesT`, evaluated by `native_decide`) confirms it reaches the absorbing set $T = \\{1,4,16,37,58,89,145,42,20\\}$ within $15$ steps. Strong induction packages these into the confinement theorem, and a final case split on the nine elements of $T$ — splicing the 8-cycle where needed — yields the happy/unhappy dichotomy.",
+    "proofStrategy": "**Step 1 - Definitions.** Set `S n = ((Nat.digits 10 n).map (· ^ 2)).sum` and let `T = {1, 4, 16, 37, 58, 89, 145, 42, 20}` be the absorbing set.\n\n**Step 2 - Terminal structure.** `S_one`, `unhappy_cycle`, and `T_absorbing` (all `native_decide`) certify that 1 is fixed, the eight cycle values map around as claimed, and `T` is closed under `S`.\n\n**Step 3 - Exponential bound.** `aux_exp` proves `81 * L < 10^(L-1)` for `L >= 4` by `Nat.le_induction`, with `nlinarith` closing the inductive step from `10^3 <= 10^(L-1)`.\n\n**Step 4 - Descent.** `descent` proves `S n < n` for `n >= 1000`: such `n` has at least 4 digits (`Nat.lt_base_pow_length_digits`), the lower bound `10^(L-1) <= n` comes from `Nat.base_pow_length_digits_le`, and the upper bound `S n <= 81 * L` from `List.sum_le_card_nsmul`; `aux_exp` bridges them.\n\n**Step 5 - Positivity.** `S_pos` shows `S n > 0` for `n != 0` because the nonzero leading digit contributes a positive square.\n\n**Step 6 - Confinement.** A bounded checker `reachesT n` tests whether the orbit hits `T` within 15 steps; `reachesT_below` (`native_decide`) verifies this for all `1 <= n < 1000`, and `base_reaches` unpacks it. Strong induction (`Nat.strongRecOn`) with the descent lemma reduces every `n >= 1000` to a strictly smaller value, giving `reaches_T`.\n\n**Step 7 - Dichotomy.** `reaches_one_or_four` case-splits on the nine members of `T`; the fixed point gives happiness directly, and each cycle value is pushed forward to 4 via `Function.iterate_add_apply` and `native_decide`.",
+    "keyInsights": [
+      "Descent S(n) < n for n >= 1000 converts an a-priori infinite orbit statement into a finite check on the window [1, 999] — the entire infinite content of the theorem lives in a single quantitative bound",
+      "The only analytic input is S(n) <= 81 * (number of decimal digits); everything downstream is confinement plus finite enumeration",
+      "aux_exp (81L < 10^(L-1) for L >= 4) is exactly the exponential-beats-linear fact that makes the digit-square map contractive in the high range, and it is proved cleanly by induction rather than case analysis",
+      "Choosing the threshold 1000 (four digits) rather than a tighter bound keeps aux_exp's base case at L = 4 trivial and lets the finite window [1, 999] be a single native_decide enumeration",
+      "Building S on Mathlib's Nat.digits trades kernel-reducibility for native_decide: the finite checks are fast but introduce the Lean.ofReduceBool axiom, which is why the entry is honestly classified axiomatized rather than verified"
+    ],
+    "prerequisites": [
+      "Decimal (base-10) digit decomposition via Nat.digits",
+      "Strong induction on the naturals",
+      "Exponential versus linear growth comparisons",
+      "Function iteration and orbits of a self-map"
+    ]
+  },
+  "sections": [
+    {
+      "id": "overview-imports",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "The module docstring states the happy/unhappy dichotomy, the absorbing set T, and the descent-plus-enumeration strategy, and flags the build-pending / native_decide status. Imports Mathlib and opens the HappyNumberOQ01 namespace.",
+      "mathContext": "$T = \\{1\\} \\cup \\{4, 16, 37, 58, 89, 145, 42, 20\\}$; every $n \\ge 1$ satisfies $\\exists k,\\ S^{[k]}(n) = 1$ or $\\exists k,\\ S^{[k]}(n) = 4$."
+    },
+    {
+      "id": "definitions",
+      "title": "The Digit-Square Map and Absorbing Set",
+      "startLine": 39,
+      "endLine": 44,
+      "summary": "Defines S n as the sum of squares of the decimal digits via Nat.digits 10 n, and T as the Finset {1, 4, 16, 37, 58, 89, 145, 42, 20}.",
+      "mathContext": "$S(n) = \\sum_{d \\in \\mathrm{digits}_{10}(n)} d^2$."
+    },
+    {
+      "id": "terminal-structure",
+      "title": "Fixed Point, Cycle, and Absorption",
+      "startLine": 46,
+      "endLine": 55,
+      "summary": "S_one (1 is fixed), unhappy_cycle (the eight cycle transitions), and T_absorbing (T is closed under S) — all discharged by native_decide.",
+      "mathContext": "$S(1) = 1$ and $4 \\to 16 \\to 37 \\to 58 \\to 89 \\to 145 \\to 42 \\to 20 \\to 4$; $m \\in T \\Rightarrow S(m) \\in T$."
+    },
+    {
+      "id": "exponential-bound",
+      "title": "Exponential Beats Linear",
+      "startLine": 57,
+      "endLine": 70,
+      "summary": "aux_exp: 81 * L < 10^(L-1) for every L >= 4, by Nat.le_induction with nlinarith closing the step from 10^3 <= 10^(L-1).",
+      "mathContext": "$81L < 10^{L-1}$ for $L \\ge 4$ — the contraction estimate behind the descent lemma."
+    },
+    {
+      "id": "descent",
+      "title": "The Descent Lemma",
+      "startLine": 72,
+      "endLine": 114,
+      "summary": "descent: S n < n for all n >= 1000. Forces L >= 4 digits, bounds n below by 10^(L-1), bounds S n above by 81 * L, and chains through aux_exp.",
+      "mathContext": "For $n \\ge 1000$ with $L$ digits: $S(n) \\le 81L < 10^{L-1} \\le n$."
+    },
+    {
+      "id": "positivity",
+      "title": "Positivity of the Map",
+      "startLine": 116,
+      "endLine": 127,
+      "summary": "S_pos: S n > 0 for n != 0, since the nonzero leading digit (Nat.getLast_digit_ne_zero) contributes a positive square to the sum.",
+      "mathContext": "$n \\ne 0 \\Rightarrow S(n) > 0$, so orbits never collapse to $0$."
+    },
+    {
+      "id": "confinement",
+      "title": "Bounded Reachability and Confinement",
+      "startLine": 129,
+      "endLine": 155,
+      "summary": "reachesT (a 15-step bounded checker), reachesT_below / base_reaches (native_decide finite base case for [1,999]), and reaches_T: strong induction with descent confines every orbit to T.",
+      "mathContext": "Descent traps every orbit in $[1, 999]$; a $15$-step check certifies each value reaches $T$, and strong induction lifts this to all $n \\ge 1$."
+    },
+    {
+      "id": "dichotomy",
+      "title": "The Happy / Unhappy Dichotomy",
+      "startLine": 157,
+      "endLine": 175,
+      "summary": "reaches_one_or_four: case-splitting on the nine members of T, the fixed point yields happiness and each cycle value is advanced to 4 via Function.iterate_add_apply and native_decide.",
+      "mathContext": "Reaching $1$ versus reaching $4$ is exactly the happy/unhappy split, since $4$ sits on the unique nontrivial cycle."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry defines the digit-square-sum map S via Mathlib's Nat.digits and proves, with no sorries, that iterating S from any n >= 1 reaches either the fixed point 1 (happy) or the value 4 on its 8-cycle (unhappy). The argument hinges on the descent lemma S(n) < n for n >= 1000, which reduces an infinite dynamical statement to a finite enumeration over [1, 999]. The finite checks use native_decide, so the development is axiomatized (Lean.ofReduceBool), not axiom-free.",
+    "implications": "**1. Eventual confinement as a proof template.** The pattern — a quantitative descent bound that traps every orbit in a finite set, followed by an exhaustive native_decide check — is reusable for many digit-map and iterated-function dynamics questions.\n\n**2. The cost of native_decide.** Defining S on Nat.digits makes the finite verifications fast but routes them through compiled reduction, introducing the Lean.ofReduceBool axiom. A kernel-reducible (decide-only) reformulation would remove that axiom at the cost of slower finite checks — a deliberate engineering trade-off, recorded honestly in the axiom count.\n\n**3. The happy/unhappy partition.** The dichotomy is the structural fact underlying the density studies of happy numbers; it certifies that the iterated map has exactly one fixed point (1) and one nontrivial cycle in base 10.",
+    "openQuestions": [
+      "Can the finite checks be reformulated with kernel decide (or an explicit certificate) to eliminate the Lean.ofReduceBool axiom and earn a verified status?",
+      "Does the same descent-plus-enumeration argument generalise to other bases b, where the number of fixed points and cycles of the digit-square-sum map changes with b?",
+      "What is the analogous classification for digit-cube or higher-power digit maps, where additional cycles appear?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "kaprekar-constant-oq-01",
+      "relationship": "sibling",
+      "description": "The companion digit-map dynamics entry, settled by the same proof architecture. Both take an elementary base-10 digit operation — here the digit-square-sum $S(n) = \\sum d_i^2$, there Kaprekar's descending-minus-ascending routine — and reduce an a-priori infinite orbit question to a finite check, then discharge that check by `native_decide` (so both are honestly `axiomatized` via `Lean.ofReduceBool`). The structural contrast is instructive: Kaprekar's state space is finite outright ($n < 10000$), whereas the happy-number map needs the quantitative descent lemma $S(n) < n$ for $n \\ge 1000$ to *create* a finite window. Their terminal structure also differs — Kaprekar has a single global attractor (6174), while $S$ has a fixed point (1) *and* a nontrivial 8-cycle, giving the happy/unhappy dichotomy."
+    },
+    {
+      "targetId": "divisibility-by-three-oq-01-oq-02",
+      "relationship": "complementary",
+      "description": "Digital-root iteration is a third iterated-digit map in the gallery, but its convergence is proved *structurally* (the digit sum strictly decreases for $n \\ge 10$ and $n \\bmod 9$ is invariant) rather than by enumeration. It is the kernel-`decide`/axiom-free analogue of the descent-plus-`native_decide` strategy used here, and a model for this entry's open question of removing `Lean.ofReduceBool`."
+    },
+    {
+      "targetId": "collatz-cycles",
+      "relationship": "related",
+      "description": "Another integer self-map studied as a discrete dynamical system, sharing the fixed-point-and-cycle structural vocabulary. Where the happy-number map is fully resolved into one fixed point (1) and one nontrivial cycle (the 4-cycle), Collatz convergence remains open and `collatz-cycles` can only exclude small cycles — illustrating how a contraction bound like $S(n) < n$ is exactly what the Collatz problem lacks."
+    }
+  ]
+}

@@ -1,0 +1,212 @@
+[
+  {
+    "id": "ann-736-1",
+    "proofId": "erdos-736",
+    "range": {
+      "startLine": 49,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "Chromatic Number",
+    "content": "The chromatic number χ(G) is the minimum number of colors needed to properly color the vertices of G (adjacent vertices get different colors). For infinite graphs, this is a cardinal number.",
+    "mathContext": "χ(G) = inf{κ : G has a κ-coloring}",
+    "significance": "key",
+    "relatedConcepts": [
+      "graph coloring",
+      "cardinal numbers",
+      "proper coloring"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "cardinal arithmetic",
+      "set theory"
+    ]
+  },
+  {
+    "id": "ann-736-2",
+    "proofId": "erdos-736",
+    "range": {
+      "startLine": 56,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "Finite Subgraph",
+    "content": "A finite subgraph of G is obtained by taking a finite set S of vertices and the edges between them. These are the 'building blocks' the conjecture asks about.",
+    "mathContext": "G[S] = induced subgraph on finite set S",
+    "significance": "key",
+    "relatedConcepts": [
+      "induced subgraph",
+      "finite sets",
+      "subgraph inheritance"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "finite combinatorics",
+      "set theory"
+    ]
+  },
+  {
+    "id": "ann-736-3",
+    "proofId": "erdos-736",
+    "range": {
+      "startLine": 63,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "Subgraph Embedding",
+    "content": "H is a subgraph of G (H ⊆ G) if there's an injective function mapping vertices of H to G that preserves edges. This allows comparing graphs with different vertex sets.",
+    "mathContext": "H ⊆ G iff ∃f: V(H) → V(G) injective with edges preserved",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "graph homomorphism",
+      "graph embedding",
+      "subgraph isomorphism"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "injective functions",
+      "structure-preserving maps"
+    ]
+  },
+  {
+    "id": "ann-736-4",
+    "proofId": "erdos-736",
+    "range": {
+      "startLine": 84,
+      "endLine": 96
+    },
+    "type": "insight",
+    "title": "Taylor's Conjecture",
+    "content": "If G has chromatic number ℵ₁, then for every cardinal m, there exists a graph G_m with χ(G_m) = m such that every finite subgraph of G_m appears as a subgraph of G. The finite structure of G should be 'universal'.",
+    "mathContext": "χ(G) = ℵ₁ ⟹ ∀m. ∃G_m. χ(G_m) = m ∧ (finite subgraphs of G_m ⊆ finite subgraphs of G)",
+    "significance": "key",
+    "relatedConcepts": [
+      "Walter Taylor",
+      "universality",
+      "chromatic hierarchy"
+    ],
+    "prerequisites": [
+      "infinite graph theory",
+      "transfinite cardinals",
+      "universal structures"
+    ]
+  },
+  {
+    "id": "ann-736-5",
+    "proofId": "erdos-736",
+    "range": {
+      "startLine": 98,
+      "endLine": 110
+    },
+    "type": "insight",
+    "title": "Generalized Taylor Conjecture",
+    "content": "The same question for any uncountable cardinal κ: if χ(G) = κ, can we build graphs of any chromatic number from G's finite subgraphs?",
+    "mathContext": "For κ regular uncountable: χ(G) = κ ⟹ ∀m. ∃G_m with χ(G_m) = m and inherited finite structure",
+    "significance": "key",
+    "relatedConcepts": [
+      "regular cardinals",
+      "cardinal hierarchy",
+      "generalization"
+    ],
+    "prerequisites": [
+      "set theory",
+      "transfinite cardinals",
+      "infinite graph theory"
+    ]
+  },
+  {
+    "id": "ann-736-6",
+    "proofId": "erdos-736",
+    "range": {
+      "startLine": 122,
+      "endLine": 130
+    },
+    "type": "definition",
+    "title": "Realizable Family",
+    "content": "A family F of finite graphs is 'realizable at ℵ_α' if there exists a graph G with χ(G) = ℵ_α whose finite subgraphs are exactly F. This is Erdős's generalization of the problem.",
+    "mathContext": "F is realizable at ℵ_α iff ∃G. χ(G) = ℵ_α ∧ {finite subgraphs of G} = F",
+    "significance": "key",
+    "relatedConcepts": [
+      "family of graphs",
+      "realization",
+      "characterization problem"
+    ],
+    "prerequisites": [
+      "infinite graph theory",
+      "cardinal hierarchy",
+      "set theory"
+    ]
+  },
+  {
+    "id": "ann-736-7",
+    "proofId": "erdos-736",
+    "range": {
+      "startLine": 150,
+      "endLine": 157
+    },
+    "type": "concept",
+    "title": "Komjáth-Shelah Consistency Result",
+    "content": "It is consistent with ZFC that Taylor's conjecture is FALSE: there exists G with χ(G) = ℵ₁ such that any H whose finite subgraphs are in G has χ(H) ≤ ℵ₂. The finite structure doesn't suffice for arbitrarily high chromatic numbers.",
+    "mathContext": "Con(ZFC + ∃G. χ(G) = ℵ₁ ∧ ∀H. (fin. sub. of H ⊆ fin. sub. of G) ⟹ χ(H) ≤ ℵ₂)",
+    "significance": "key",
+    "relatedConcepts": [
+      "independence",
+      "consistency",
+      "forcing",
+      "Shelah"
+    ],
+    "prerequisites": [
+      "axiomatic set theory (ZFC)",
+      "forcing and independence",
+      "infinite combinatorics"
+    ]
+  },
+  {
+    "id": "ann-736-8",
+    "proofId": "erdos-736",
+    "range": {
+      "startLine": 171,
+      "endLine": 178
+    },
+    "type": "insight",
+    "title": "De Bruijn-Erdős Theorem",
+    "content": "If every finite subgraph of G is k-colorable, then G itself is k-colorable. This compactness principle requires the axiom of choice and shows finite chromatic number is determined by finite subgraphs.",
+    "mathContext": "(∀ finite S ⊆ V. G[S] is k-colorable) ⟹ G is k-colorable",
+    "significance": "key",
+    "relatedConcepts": [
+      "compactness",
+      "De Bruijn",
+      "axiom of choice",
+      "finite to infinite"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "compactness arguments",
+      "axiom of choice"
+    ]
+  },
+  {
+    "id": "ann-736-9",
+    "proofId": "erdos-736",
+    "range": {
+      "startLine": 159,
+      "endLine": 165
+    },
+    "type": "insight",
+    "title": "Independence from ZFC",
+    "content": "The fact that Taylor's conjecture is independent of ZFC means it cannot be proved or disproved from the standard axioms of set theory. Its truth depends on which additional axioms we assume.",
+    "mathContext": "ZFC ⊬ Taylor ∧ ZFC ⊬ ¬Taylor",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gödel",
+      "Cohen",
+      "forcing",
+      "set-theoretic independence"
+    ],
+    "prerequisites": [
+      "mathematical logic",
+      "axiomatic set theory (ZFC)",
+      "model theory"
+    ]
+  }
+]

@@ -1,0 +1,181 @@
+{
+  "id": "erdos-788",
+  "title": "Erdős Problem #788: Sum-Free Subsets in Intervals",
+  "slug": "erdos-788",
+  "description": "Estimate f(n) where f(n) is maximal s.t. for all B ⊂ (2n,4n), ∃ C ⊂ (n,2n) sum-free w.r.t. B with |C|+|B| ≥ f(n). Conjectured f(n) ≤ n^{1/2+o(1)}. Known: n^{1/2} ≪ f(n) ≪ (n log n)^{2/3}. OPEN.",
+  "meta": {
+    "author": "Choi (1971), Baltz-Schoen-Srivastav (2000)",
+    "sourceUrl": "https://erdosproblems.com/788",
+    "date": "2000",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos788Problem.lean",
+    "tags": [
+      "erdos",
+      "additive-combinatorics",
+      "sum-free-sets",
+      "sidon-sets",
+      "intervals",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 788,
+    "erdosUrl": "https://erdosproblems.com/788",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.range",
+        "description": "Range of natural numbers as a finite set",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering a finite set by a predicate",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Real logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real-valued power function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "openInterval, lowerInterval, upperInterval definitions",
+      "pairwiseSums and isSumFreeWithResp definitions",
+      "isValidConfig definition",
+      "f axiom for the extremal function",
+      "choiConjecture definition (Choi's open conjecture as a Prop)",
+      "adenwalla_lower_bound axiom; isSidonSet definition",
+      "bss_bound axiom (best known upper bound, Baltz-Schoen-Srivastav 2000)",
+      "interval_sum_range and sums_in_upper_interval theorems (constructive)",
+      "erdos_788_summary theorem"
+    ],
+    "axiomCount": 3,
+    "lineCount": 155,
+    "assumptions": "3 axioms: f, adenwalla_lower_bound, bss_bound. 0 sorries.",
+    "theoremCount": 3,
+    "definitionCount": 8
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #788 asks about sum-free subsets in specific intervals. Given a 'forbidden' set B in the interval (2n, 4n), we seek a large set C in (n, 2n) whose pairwise sums avoid B. The function f(n) measures the maximum guaranteed combined size |C| + |B|. The natural interval pairing arises because elements c₁, c₂ ∈ (n, 2n) with c₁ ≠ c₂ always sum to values in (2n, 4n).\n\nChoi (1971) initiated the study, proving f(n) ≪ n^{3/4} and conjecturing f(n) ≤ n^{1/2+o(1)}. Adenwalla proved the lower bound f(n) ≫ n^{1/2} using Sidon sets — sets where all pairwise sums are distinct, existing with size ~√n in intervals of length n. Hunter improved the upper bound to n^{2/3+o(1)} via counting arguments.\n\nThe current best bound is due to Baltz, Schoen, and Srivastav (2000), who proved f(n) ≪ (n log n)^{2/3} using probabilistic construction of large Sidon sets. The gap between n^{1/2} and (n log n)^{2/3} has remained open for over 50 years, and Choi's conjecture f(n) ≤ n^{1/2+o(1)} is still unresolved.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet $f(n)$ be maximal such that for all $B \\subset (2n, 4n) \\cap \\mathbb{N}$, there exists $C \\subset (n, 2n) \\cap \\mathbb{N}$ with $c_1 + c_2 \\notin B$ for all $c_1 \\neq c_2 \\in C$ and $|C| + |B| \\geq f(n)$.\n\n**Known bounds:** $n^{1/2} \\ll f(n) \\ll (n \\log n)^{2/3}$\n\n**Conjecture (Choi):** $f(n) \\leq n^{1/2+o(1)}$",
+    "text": "Estimate f(n) where f(n) is maximal s.t. for all B ⊂ (2n,4n), ∃ C ⊂ (n,2n) sum-free w.r.t. B with |C|+|B| ≥ f(n). Conjectured f(n) ≤ n^{1/2+o(1)}. Known: n^{1/2} ≪ f(n) ≪ (n log n)^{2/3}. OPEN.",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization defines sum-free sets with respect to a prescribed set via isSumFreeWithResp. The function f(n) is axiomatized since computing it requires deep combinatorial arguments. Two bounds are axiomatized: Adenwalla's n^{1/2} lower bound (via Sidon sets) and BSS's (n log n)^{2/3} upper bound. Choi's n^{3/4} and Hunter's n^{2/3+o(1)} bounds appear only as docstring commentary, not as formal axioms. Two interval-arithmetic theorems (interval_sum_range and sums_in_upper_interval) are proved constructively via omega. The summary theorem combines the lower and upper bounds via exact ⟨...⟩.",
+    "keyInsights": [
+      "**Natural Interval Pairing:** Elements of (n, 2n) sum to values in (2n, 4n), making these the natural intervals",
+      "**Sidon Sets Give Lower Bound:** Sidon sets of size ~√n in (n, 2n) prove f(n) ≫ n^{1/2}",
+      "**50+ Year Gap:** The gap between exponents 1/2 and 2/3 has been open since 1971",
+      "**Choi's Conjecture:** f(n) ≤ n^{1/2+o(1)} remains the central open question",
+      "**Probabilistic Methods:** BSS 2000 achieved the best bounds via random Sidon sets"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Additive combinatorics (sumsets, density)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "openInterval, lowerInterval, upperInterval, pairwiseSums, isSumFreeWithResp",
+      "startLine": 44,
+      "endLine": 67
+    },
+    {
+      "id": "function-f",
+      "title": "The Function f(n)",
+      "summary": "isValidConfig, f axiom",
+      "startLine": 68,
+      "endLine": 77
+    },
+    {
+      "id": "choi-bound",
+      "title": "Choi's Bound and Conjecture (1971)",
+      "summary": "choiConjecture (Prop definition of Choi's open conjecture)",
+      "startLine": 78,
+      "endLine": 84
+    },
+    {
+      "id": "adenwalla",
+      "title": "Adenwalla's Lower Bound",
+      "summary": "adenwalla_lower_bound axiom, isSidonSet definition",
+      "startLine": 85,
+      "endLine": 98
+    },
+    {
+      "id": "improvements",
+      "title": "Hunter's and BSS Improvements",
+      "summary": "bss_bound axiom (Baltz-Schoen-Srivastav 2000 upper bound)",
+      "startLine": 99,
+      "endLine": 108
+    },
+    {
+      "id": "interval-arithmetic",
+      "title": "Interval Arithmetic",
+      "summary": "interval_sum_range and sums_in_upper_interval theorems",
+      "startLine": 109,
+      "endLine": 136
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_788_summary theorem",
+      "startLine": 137,
+      "endLine": 155
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #788 remains OPEN. The function f(n) satisfies n^{1/2} ≪ f(n) ≪ (n log n)^{2/3}. Choi's conjecture f(n) ≤ n^{1/2+o(1)} is unresolved after 50+ years.",
+    "implications": "**Theoretical Significance**: **Significance**\n\n1. **Additive Combinatorics:** Connects sum-free sets with interval constraints in a natural way\n\n**2. Sidon Sets:** The lower bound construction reveals the role of Sidon sets in sum-avoidance problems\n\n3. **Probabilistic Methods:** BSS's bound shows the power of random constructions in combinatorics\n\n4. **Open Gap:** The 1/2 vs 2/3 gap represents a fundamental barrier in understanding sum-free structures.",
+    "openQuestions": [
+      "Prove or disprove Choi's conjecture f(n) ≤ n^{1/2+o(1)}",
+      "Close the gap between n^{1/2} and (n log n)^{2/3}",
+      "Determine the exact order of magnitude of f(n)",
+      "Find explicit constructions matching the probabilistic bounds"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos788",
+    "lineCount": 155,
+    "axiomCount": 3,
+    "theoremCount": 3,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos788Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-155",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, open, sidon-sets"
+    },
+    {
+      "targetId": "erdos-340",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, open, sidon-sets"
+    },
+    {
+      "targetId": "erdos-510",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, open, sidon-sets"
+    }
+  ],
+  "sorries": 0
+}

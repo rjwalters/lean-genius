@@ -1,0 +1,266 @@
+[
+  {
+    "id": "counting-header",
+    "proofId": "szemeredi-counting",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 19
+    },
+    "title": "Module Overview and Setup",
+    "content": "The counting and removal lemmas are the key applications of the Szemerédi Regularity Lemma. This formalization covers three results of increasing generality: the counting lemma for triangles in regular triples, the triangle removal lemma, and the general graph removal lemma.\n\nThe formalization works over a finite vertex type `V` with `DecidableEq`, and uses Mathlib's `SimpleGraph` infrastructure throughout.",
+    "mathContext": "Setting: finite simple graph $G = (V, E)$ with $|V| = n$, $\\varepsilon$-regular pairs from Szemerédi's Regularity Lemma.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Szemerédi Regularity Lemma",
+      "SimpleGraph",
+      "epsilon-regular pairs"
+    ],
+    "prerequisites": [
+      "SimpleGraph",
+      "Fintype",
+      "DecidableEq",
+      "Szemerédi regularity"
+    ],
+    "crossReferences": [
+      "szemeredi-regularity"
+    ]
+  },
+  {
+    "id": "counting-triangle-count",
+    "proofId": "szemeredi-counting",
+    "type": "definition",
+    "range": {
+      "startLine": 25,
+      "endLine": 29
+    },
+    "title": "Triangle Count Definition",
+    "content": "`triangleCount G A B C` counts ordered triples $(a, b, c) \\in A \\times B \\times C$ forming a triangle in $G$. Implemented via filtering the product set $A \\times (B \\times C)$ for triples where all three pairs are adjacent.\n\nThis counts ordered triples, so each triangle contributes 1 to the count (since vertices are in distinct sets $A$, $B$, $C$). For the counting lemma, this is the natural quantity to estimate.",
+    "mathContext": "$T(A,B,C) = |\\{(a,b,c) \\in A \\times B \\times C : ab, ac, bc \\in E(G)\\}|$. For random bipartite graphs with densities $d_{12}, d_{13}, d_{23}$, $\\mathbb{E}[T] = d_{12} d_{13} d_{23} |A||B||C|$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "triangle counting",
+      "Finset.product",
+      "Finset.filter"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Adj",
+      "Finset.product",
+      "Finset.filter"
+    ]
+  },
+  {
+    "id": "counting-lemma-thm",
+    "proofId": "szemeredi-counting",
+    "type": "definition",
+    "range": {
+      "startLine": 31,
+      "endLine": 51
+    },
+    "title": "Counting Lemma (sorry)",
+    "content": "The counting lemma: if $(A, B)$, $(A, C)$, and $(B, C)$ are all $\\varepsilon$-regular pairs with edge densities $\\geq \\varepsilon$, then the triangle count is at least $(d_{AB} - \\varepsilon)(d_{AC} - \\varepsilon)(d_{BC} - \\varepsilon)|A||B||C|$.\n\nThe proof idea: for a vertex $a \\in A$, its neighborhood in $B$ has size $\\approx d_{AB}|B|$ by regularity (for all but $\\varepsilon|A|$ vertices). Similarly for $C$. The number of edges between $N(a) \\cap B$ and $N(a) \\cap C$ is $\\approx d_{BC}|N(a) \\cap B||N(a) \\cap C|$ by regularity of $(B, C)$. Summing over $a$ and handling error terms gives the bound.",
+    "mathContext": "$T(A,B,C) \\geq (d_{AB} - \\varepsilon)(d_{AC} - \\varepsilon)(d_{BC} - \\varepsilon)|A||B||C|$. The error bound is at most $3\\varepsilon|A||B||C|$ when densities are $\\Theta(1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "epsilon-regularity",
+      "edge density",
+      "neighborhood counting",
+      "error propagation"
+    ],
+    "prerequisites": [
+      "IsEpsilonRegular",
+      "edgeDensity",
+      "triangleCount"
+    ],
+    "crossReferences": [
+      "szemeredi-regularity"
+    ]
+  },
+  {
+    "id": "counting-edge-set",
+    "proofId": "szemeredi-counting",
+    "type": "definition",
+    "range": {
+      "startLine": 57,
+      "endLine": 59
+    },
+    "title": "Edge Set Representation",
+    "content": "`edgeSet G` represents the edges of $G$ as ordered pairs $(v, w)$ where $G.Adj(v, w)$. This representation is used for the removal operation — edges to remove are specified as a subset of these pairs.",
+    "mathContext": "$E(G) = \\{(v,w) \\in V \\times V : v \\sim_G w\\}$. Since $G$ is simple, $|E| = 2|E(G)|$ counting ordered pairs.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "edge representation",
+      "Finset.product",
+      "graph edges"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Adj",
+      "Finset.product"
+    ]
+  },
+  {
+    "id": "counting-remove-edges",
+    "proofId": "szemeredi-counting",
+    "type": "concept",
+    "range": {
+      "startLine": 61,
+      "endLine": 65
+    },
+    "title": "Edge Removal Operation",
+    "content": "`removeEdges G R` constructs a subgraph of $G$ by removing all edges in the set $R$. The symmetry proof handles the fact that if $(v, w) \\notin R$ we need $(w, v) \\notin R$ — this requires the removal set to be symmetric, which is ensured by the `rwa` tactic in the symmetry proof.\n\nThis is the key operation for the removal lemma: we need to find a small $R$ that eliminates all triangles.",
+    "mathContext": "$G' = G \\setminus R$ where $v \\sim_{G'} w \\iff v \\sim_G w \\wedge (v,w) \\notin R$. The goal: $|R| \\leq \\delta n^2$ and $G'$ is triangle-free.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "graph modification",
+      "subgraph",
+      "edge deletion"
+    ],
+    "prerequisites": [
+      "SimpleGraph",
+      "Set membership"
+    ]
+  },
+  {
+    "id": "counting-triangle-removal",
+    "proofId": "szemeredi-counting",
+    "type": "concept",
+    "range": {
+      "startLine": 67,
+      "endLine": 86
+    },
+    "title": "Triangle Removal Lemma (sorry)",
+    "content": "For every $\\delta > 0$, there exists $\\gamma > 0$ such that any graph with at most $\\gamma n^3$ triangles can be made triangle-free by removing at most $\\delta n^2$ edges.\n\nThe proof strategy: (1) Apply the Regularity Lemma with $\\varepsilon = \\delta/2$ to get a partition. (2) Remove all edges within parts, in irregular pairs, and in regular pairs with density $< \\delta/2$. This removes at most $\\delta n^2$ edges. (3) Any remaining triangle must have vertices in three mutually regular, dense parts. (4) By the counting lemma, this yields at least $c n^3$ triangles. (5) So if the graph has fewer than $c n^3$ triangles, no such triangle exists and the graph is triangle-free.\n\nThe statement uses `True` as a placeholder for the edge count bound, which should be `(Finset.filter ... R).card \\leq delta * n^2`.",
+    "mathContext": "$\\forall \\delta > 0, \\exists \\gamma > 0, \\forall G$ on $n$ vertices: $T(G) \\leq \\gamma n^3 \\Rightarrow \\exists R \\subseteq E(G), |R| \\leq \\delta n^2 \\wedge G \\setminus R$ is triangle-free.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Szemerédi Regularity Lemma",
+      "counting lemma",
+      "stability",
+      "Ruzsa-Szemerédi"
+    ],
+    "prerequisites": [
+      "counting_lemma",
+      "Szemerédi Regularity Lemma",
+      "triangleCount"
+    ],
+    "crossReferences": [
+      "szemeredi-regularity",
+      "roth-theorem-k3"
+    ]
+  },
+  {
+    "id": "counting-graph-removal",
+    "proofId": "szemeredi-counting",
+    "type": "concept",
+    "range": {
+      "startLine": 88,
+      "endLine": 103
+    },
+    "title": "General Graph Removal Lemma (stub)",
+    "content": "The general graph removal lemma extends the triangle case to arbitrary subgraphs $H$ on $h$ vertices. The statement: for every $H$ with $h \\geq 3$ vertices and every $\\delta > 0$, there exists $\\gamma > 0$ such that any $G$ with at most $\\gamma n^h$ copies of $H$ can be made $H$-free by removing at most $\\delta n^2$ edges.\n\nThe current formalization is a stub: it only asserts $\\exists \\gamma > 0$ (proved by $\\gamma = 1$) without the actual removal property. The full statement would quantify over all graphs $G$ and assert the removal property.",
+    "mathContext": "General removal: $\\forall H$ on $h$ vertices, $\\forall \\delta > 0, \\exists \\gamma > 0$: $\\text{copies}(H, G) \\leq \\gamma n^h \\Rightarrow G$ can be made $H$-free by removing $\\leq \\delta n^2$ edges. Special case $H = K_3$: the triangle removal lemma.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "graph homomorphism",
+      "subgraph counting",
+      "hypergraph removal"
+    ],
+    "prerequisites": [
+      "triangle_removal_lemma",
+      "subgraph embedding"
+    ]
+  },
+  {
+    "id": "counting-per-vertex",
+    "proofId": "szemeredi-counting",
+    "type": "concept",
+    "range": {
+      "startLine": 171,
+      "endLine": 228
+    },
+    "title": "Per-Vertex Triangle Contribution and Density Bound",
+    "content": "`perVertexTriangles G B C a` counts edges between the $B$-neighborhood and $C$-neighborhood of vertex $a$. The theorem `perVertex_density_bound` establishes: when neighborhoods are $\\varepsilon$-fractions of $B$ and $C$, and $(B,C)$ is $\\varepsilon$-regular, the per-vertex contribution is at least $(d(B,C) - \\varepsilon) \\cdot |N_B(a)| \\cdot |N_C(a)|$.\n\nThis is the inner loop of the counting lemma: for each 'good' vertex $a \\in A$ (one with large neighborhoods in both $B$ and $C$), regularity of $(B,C)$ gives a lower bound on the triangle contribution through $a$.",
+    "mathContext": "$\\text{perVertex}(a) = |\\{(b,c) \\in N_B(a) \\times N_C(a) : bc \\in E\\}| \\geq (d(B,C) - \\varepsilon) |N_B(a)| |N_C(a)|$ when $|N_B(a)| \\geq \\varepsilon|B|$, $|N_C(a)| \\geq \\varepsilon|C|$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "neighborhood density",
+      "regularity application",
+      "per-vertex counting"
+    ],
+    "prerequisites": [
+      "neighborhoodIn",
+      "IsEpsilonRegular",
+      "edgeDensity"
+    ]
+  },
+  {
+    "id": "counting-lemma-full",
+    "proofId": "szemeredi-counting",
+    "type": "concept",
+    "range": {
+      "startLine": 229,
+      "endLine": 454
+    },
+    "title": "Counting Lemma: Full Proof",
+    "content": "The complete counting lemma proof. Given $\\varepsilon$-regular pairs $(A,B)$, $(A,C)$, $(B,C)$ with densities $\\geq \\varepsilon$, the triangle count satisfies $T(A,B,C) \\geq (d_{AB} - \\varepsilon)(d_{AC} - \\varepsilon)(d_{BC} - \\varepsilon)|A||B||C|$.\n\nThe proof structure: (1) Partition $A$ into 'good' vertices (large neighborhoods in both $B$ and $C$) and 'bad' vertices. (2) Show $|\\text{bad}| < 2\\varepsilon|A|$ using `bad_vertices_small` for both the $(A,B)$ and $(A,C)$ pairs. (3) For each good vertex $a$, apply `perVertex_density_bound` to get $\\geq (d_{BC}-\\varepsilon)|N_B(a)||N_C(a)|$ triangles through $a$. (4) Use $|N_B(a)| \\geq (d_{AB}-\\varepsilon)|B|$ and $|N_C(a)| \\geq (d_{AC}-\\varepsilon)|C|$ from goodness. (5) Sum over good vertices: $T \\geq |A_\\text{good}| \\cdot (d_{AB}-\\varepsilon)(d_{AC}-\\varepsilon)(d_{BC}-\\varepsilon)|B||C|$. (6) Since $|A_\\text{good}| \\geq (1-2\\varepsilon)|A|$, the bound follows.\n\nAlso includes `counting_lemma_lower_bound`: a simplified corollary bounding $T \\geq c \\cdot |A||B||C|$ for positive constant $c$.",
+    "mathContext": "Full proof: $T(A,B,C) \\geq (d_{AB} - \\varepsilon)(d_{AC} - \\varepsilon)(d_{BC} - \\varepsilon)|A||B||C|$ via vertex-by-vertex counting over 'good' vertices with $|A_{\\text{good}}| \\geq (1-2\\varepsilon)|A|$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "good/bad vertex decomposition",
+      "neighborhood lower bound",
+      "error propagation",
+      "Finset.sum"
+    ],
+    "prerequisites": [
+      "perVertex_density_bound",
+      "bad_vertices_small",
+      "goodVertices"
+    ]
+  },
+  {
+    "id": "counting-monotonicity",
+    "proofId": "szemeredi-counting",
+    "type": "concept",
+    "range": {
+      "startLine": 511,
+      "endLine": 536
+    },
+    "title": "Triangle Count Monotonicity (Proved)",
+    "content": "`triangleCount_mono`: if $A_1 \\subseteq A_2$, $B_1 \\subseteq B_2$, $C_1 \\subseteq C_2$, then $T(A_1,B_1,C_1) \\leq T(A_2,B_2,C_2)$. Proved by `Finset.card_le_card`: every triangle in the smaller product is also in the larger product. Corollary `triangleCount_le_total`: $T(A,B,C) \\leq T(V,V,V)$ for any subsets.\n\nThese monotonicity results are used in the quantitative removal proof to relate per-part triangle counts to total triangle counts.",
+    "mathContext": "$A_1 \\subseteq A_2, B_1 \\subseteq B_2, C_1 \\subseteq C_2 \\Rightarrow T(A_1,B_1,C_1) \\leq T(A_2,B_2,C_2)$. Corollary: $T(A,B,C) \\leq T(V,V,V)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotonicity",
+      "Finset.card_le_card",
+      "subset inclusion"
+    ],
+    "prerequisites": [
+      "triangleCount definition"
+    ]
+  },
+  {
+    "id": "counting-quantitative-removal",
+    "proofId": "szemeredi-counting",
+    "type": "insight",
+    "range": {
+      "startLine": 537,
+      "endLine": 1001
+    },
+    "title": "Quantitative Triangle Removal via Regularity (Main Result)",
+    "content": "The centerpiece of the file: `triangle_removal_quantitative` constructs explicit $\\gamma(\\delta)$ using the Regularity Lemma. The proof: (1) Set $\\varepsilon = \\delta/6$ and apply `regularity_with_finpartition` to get a Finpartition with $m_0 \\leq k \\leq M$ parts. (2) Construct the removal set $R$: edges within parts, edges in irregular pairs, and edges in regular pairs with density $< \\delta/2$. (3) Show $|R| \\leq \\delta n^2$ by counting: within-part edges $\\leq n^2/k$, irregular edges $\\leq \\varepsilon n^2$, sparse edges contribute at most $(\\delta/2) n^2$. (4) Show any remaining triangle has vertices in three mutually regular, dense parts (since all other edges were removed). (5) Apply `counting_lemma` to get a positive lower bound on the triangle count from this triple, at least $c \\cdot (n/2M)^3$ triangles. (6) Set $\\gamma$ small enough that $\\gamma n^3 < c(n/2M)^3$, ensuring no such triple exists.\n\nThis is the most technically demanding section of the file, requiring careful management of the partition structure (via `Finpartition`), part size bounds (equitability gives $|P_i| \\geq n/2M$), and the interplay between the counting lemma and the removal set construction.",
+    "mathContext": "$\\forall \\delta > 0$, set $\\varepsilon = \\delta/6$, $M = M(\\varepsilon)$, $\\gamma = (\\delta/6)^3/(2M)^3$. Then $T(G) \\leq \\gamma n^3 \\Rightarrow \\exists R,\\, |R| \\leq \\delta n^2,\\, G \\setminus R$ triangle-free.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finpartition",
+      "equitable partition",
+      "edge removal construction",
+      "counting lemma application",
+      "part size bounds"
+    ],
+    "prerequisites": [
+      "counting_lemma",
+      "regularity_lemma_full",
+      "triangleCount_mono"
+    ]
+  }
+]

@@ -1,0 +1,196 @@
+{
+  "id": "erdos-778",
+  "title": "Erdős Problem #778: Clique-Building Games on Complete Graphs",
+  "slug": "erdos-778",
+  "description": "Alice and Bob alternate coloring edges of K_n (red/blue). Alice wins if her largest red clique exceeds any blue clique. Does Bob have a winning strategy for n >= 3? OPEN. Malekshahian-Spiro (2024) proved Bob wins with density >= 3/4.",
+  "meta": {
+    "author": "Malekshahian-Spiro (2024 partial results)",
+    "sourceUrl": "https://erdosproblems.com/778",
+    "date": "",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos778Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorial-game-theory",
+      "graph-coloring",
+      "ramsey-theory",
+      "cliques",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 778,
+    "erdosUrl": "https://erdosproblems.com/778",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure for K_n",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "IsClique",
+        "description": "Clique predicate for measuring largest cliques",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for vertices and counting",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "EdgeColor inductive type with DecidableEq: Red, Blue, Uncolored",
+      "GameState structure with symmetry and diagonal constraints",
+      "Kn definition: complete graph on n vertices",
+      "redSubgraph, blueSubgraph with symmetry proofs via state.symm",
+      "hasClique definition using Mathlib's IsClique predicate",
+      "aliceWinsCliqueGame, bobWinsModifiedGame, aliceWinsDegreeGame predicates",
+      "AliceStrategy, BobStrategy, playGame axiomatization",
+      "BobHasWinningStrategy_CliqueGame, AliceHasWinningStrategy_CliqueGame definitions",
+      "ErdosConjecture: Bob wins for all n >= 3",
+      "malekshahian_spiro_alice_n_bob_n123: Alice at n implies Bob at n+1,n+2,n+3",
+      "alice_no_four_consecutive: proved from Malekshahian-Spiro axiom",
+      "erdos_778_periodicity summary theorem"
+    ],
+    "axiomCount": 3,
+    "lineCount": 225,
+    "assumptions": "3 axioms: playGame, malekshahian_spiro_alice_n_bob_n123, malekshahian_spiro_alice_n_bob_n12_degree. 0 sorries.",
+    "theoremCount": 2,
+    "definitionCount": 18
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #778: Clique-Building Games on Complete Graphs**\n\nThis problem, posed by Erdős (referenced in Gu83), concerns competitive edge-coloring games on complete graphs — a topic at the intersection of combinatorial game theory and Ramsey theory.\n\n**Three Game Variants:**\nAlice and Bob alternate coloring edges of K_n red (Alice) and blue (Bob), with Alice going first. Variant 1 (Clique Game): Alice wins if her largest red clique exceeds Bob's largest blue clique. Variant 2 (Modified Game): Bob colors 2 edges per turn; he wins if his largest clique strictly exceeds Alice's. Variant 3 (Degree Game): Alice wins if the maximum degree in the red subgraph exceeds that of the blue.\n\n**Erdős's Belief:** Erdős conjectured that Bob should always have a winning strategy in the clique game for n ≥ 3, reflecting the general principle that the second player often has a structural advantage in such games.\n\n**Recent Progress:** Malekshahian and Spiro (arXiv:2410.18304, 2024) proved significant partial results. For the clique game, they showed Bob wins for a set of n with natural density at least 3/4, and that if Alice ever wins at some n, then Bob wins at the next three values n+1, n+2, n+3. For the degree game, Bob wins with density at least 2/3, with a similar recovery property over two consecutive values. These results strongly support Erdős's conjecture but the complete answer remains open.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nAlice and Bob play on $K_n$, alternating coloring edges red (Alice) and blue (Bob). Alice goes first.\n\n**Questions:**\n1. Does Bob have a winning strategy for $n \\geq 3$? (Main question)\n2. Modified: Bob colors 2 edges per turn. Does Bob win for $n > 3$?\n3. Degree variant: Who wins when comparing maximum degrees?\n\n**Known (Malekshahian-Spiro 2024):**\n- Clique game: Bob wins with density $\\geq 3/4$\n- If Alice wins at $n$, Bob wins at $n+1, n+2, n+3$\n- Degree game: Bob wins with density $\\geq 2/3$",
+    "text": "Alice and Bob alternate coloring edges of K_n (red/blue). Alice wins if her largest red clique exceeds any blue clique. Does Bob have a winning strategy for n >= 3? OPEN. Malekshahian-Spiro (2024) proved Bob wins with density >= 3/4.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Game State:** A structure with symmetric edge coloring and diagonal constraints, not just a bare function — this ensures the state is mathematically well-formed.\n\n2. **Colored Subgraphs:** Red and blue subgraphs defined as SimpleGraph instances with symmetry proofs that use the GameState's symmetry invariant.\n\n3. **Clique Predicate:** Uses Mathlib's IsClique to define when a graph contains a k-clique, avoiding custom definitions.\n\n4. **Strategy Framework:** Strategies as functions from state to edge choice, with playGame axiomatized (the game tree is finite by K_n having finitely many edges, so a final state always exists).\n\n5. **Key Theorem:** alice_no_four_consecutive is proved directly from the Malekshahian-Spiro axiom via a contradiction argument — if Alice wins at n and n+1, the Malekshahian-Spiro result gives Bob a winning strategy at n+1, contradicting Alice's strategy there.",
+    "keyInsights": [
+      "**Density Result:** Bob wins the clique game for at least 3/4 of all n (Malekshahian-Spiro 2024)",
+      "**Recovery Property:** If Alice wins at n, Bob recovers and wins the next 3 consecutive values — this is the key structural constraint",
+      "**No Four in a Row:** Alice cannot win 4 consecutive values, proved by contradiction using the recovery property",
+      "**Zermelo's Theorem:** The game is determined — either Alice or Bob has a winning strategy for each n (finite perfect-information game)",
+      "**Connection to Ramsey Theory:** Finding monochromatic cliques in edge-colored K_n parallels Ramsey number problems",
+      "**Open Gap:** Whether Bob wins for ALL n ≥ 3 remains the central open question, despite the high-density results"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Ramsey theory (partition regularity)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "EdgeColor, GameState, Kn, numEdges",
+      "startLine": 38,
+      "endLine": 64,
+      "mathContext": "Mathematical content: EdgeColor, GameState, Kn, numEdges"
+    },
+    {
+      "id": "colored-subgraphs",
+      "title": "Colored Subgraphs",
+      "summary": "redSubgraph, blueSubgraph, hasClique using Mathlib's IsClique",
+      "startLine": 65,
+      "endLine": 85,
+      "mathContext": "Mathematical content: redSubgraph, blueSubgraph, hasClique using Mathlib's IsClique"
+    },
+    {
+      "id": "game-mechanics",
+      "title": "Game Mechanics",
+      "summary": "isAliceTurn, gameOver predicates",
+      "startLine": 86,
+      "endLine": 98,
+      "mathContext": "Mathematical content: isAliceTurn, gameOver predicates"
+    },
+    {
+      "id": "winning-conditions",
+      "title": "Winning Conditions",
+      "summary": "aliceWinsCliqueGame, bobWinsModifiedGame, aliceWinsDegreeGame",
+      "startLine": 99,
+      "endLine": 124,
+      "mathContext": "Mathematical content: aliceWinsCliqueGame, bobWinsModifiedGame, aliceWinsDegreeGame"
+    },
+    {
+      "id": "strategies",
+      "title": "Strategies",
+      "summary": "AliceStrategy, BobStrategy, playGame, winning strategy definitions",
+      "startLine": 125,
+      "endLine": 160,
+      "mathContext": "Formal definition: AliceStrategy, BobStrategy, playGame, winning strategy definitions"
+    },
+    {
+      "id": "conjecture-and-results",
+      "title": "Erdős's Conjecture and Known Results",
+      "summary": "ErdosConjecture, Malekshahian-Spiro periodicity axioms",
+      "startLine": 161,
+      "endLine": 181,
+      "mathContext": "Axiomatized: ErdosConjecture, Malekshahian-Spiro periodicity axioms"
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences of Known Results",
+      "summary": "alice_no_four_consecutive proved theorem",
+      "startLine": 182,
+      "endLine": 200,
+      "mathContext": "Verified: alice_no_four_consecutive proved theorem"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_778_periodicity combining known results",
+      "startLine": 201,
+      "endLine": 225,
+      "mathContext": "Mathematical content: erdos_778_periodicity combining known results"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #778 asks about clique-building games on K_n. The main question — does Bob always win for n ≥ 3? — remains OPEN. Malekshahian-Spiro (2024) proved significant partial results: Bob wins with density ≥ 3/4, and if Alice ever wins at n, Bob wins at n+1, n+2, n+3. We prove that Alice cannot win 4 consecutive values.",
+    "implications": "**Theoretical Significance**: **Combinatorial Game Theory Connections**\n\n1. **Ramsey Theory:** The game is about building monochromatic structures in edge-colorings, paralleling Ramsey number problems\n\n**2. Zermelo's Theorem:** The game is finite and has perfect information, so it is determined — one player always has a winning strategy\n\n3. **Density Methods:** The Malekshahian-Spiro results use asymptotic density to measure how often Bob wins, a technique from analytic combinatorics\n\n4. **Second Player Advantage:** Bob's structural advantage from responding to Alice's moves is central to Erdős's conjecture.",
+    "openQuestions": [
+      "Does Bob have a winning strategy for ALL n >= 3? (Main open question)",
+      "Does Bob have a winning strategy for the modified game when n > 3?",
+      "Who wins the degree game in general?",
+      "What is the exact set of n where Alice wins the clique game?",
+      "Can the density 3/4 bound be improved toward 1?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Basic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos778",
+    "lineCount": 225,
+    "axiomCount": 3,
+    "theoremCount": 2,
+    "definitionCount": 18,
+    "path": "Proofs/Erdos778Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-136",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-coloring, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-191",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-coloring, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-553",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-coloring, ramsey-theory"
+    }
+  ],
+  "sorries": 0
+}

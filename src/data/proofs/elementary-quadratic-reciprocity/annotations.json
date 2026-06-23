@@ -1,0 +1,151 @@
+[
+  {
+    "id": "ann-eisenstein-intro",
+    "proofId": "elementary-quadratic-reciprocity",
+    "range": {
+      "startLine": 5,
+      "endLine": 61
+    },
+    "type": "concept",
+    "title": "Eisenstein's Elementary Approach",
+    "content": "Ferdinand Eisenstein discovered this proof in 1844, simplifying Gauss's third proof from 1808. The key innovation is using **floor function sums** instead of direct residue counting, which enables a clean geometric argument via lattice point counting.\n\nThe proof uses only:\n- Basic modular arithmetic\n- Floor function properties\n- Counting lattice points in rectangles\n\nNo Gauss sums, character theory, or algebraic number theory is needed.",
+    "mathContext": "Eisenstein's 1844 proof chain: (1) Gauss's Lemma: $(a/p) = (-1)^n$ via residue counting, (2) Eisenstein's Lemma: $(a/p) = (-1)^{\\sum \\lfloor ax/p \\rfloor}$ via floor function sums, (3) Lattice point identity: $\\sum \\lfloor qx/p \\rfloor + \\sum \\lfloor py/q \\rfloor = \\frac{p-1}{2} \\cdot \\frac{q-1}{2}$ via geometric counting.",
+    "significance": "key",
+    "prerequisites": [
+      "Legendre symbol",
+      "modular arithmetic",
+      "floor function"
+    ],
+    "relatedConcepts": [
+      "Eisenstein",
+      "elementary proof",
+      "lattice points"
+    ]
+  },
+  {
+    "id": "ann-gauss-lemma",
+    "proofId": "elementary-quadratic-reciprocity",
+    "range": {
+      "startLine": 77,
+      "endLine": 89
+    },
+    "type": "concept",
+    "title": "Gauss's Lemma (1808)",
+    "content": "**Gauss's Lemma**: The Legendre symbol $(a/p)$ equals $(-1)^n$ where $n$ counts the integers $x \\in \\{1, 2, \\ldots, (p-1)/2\\}$ for which the least positive residue of $ax \\pmod{p}$ exceeds $p/2$.\n\nThis is the foundation of the elementary approach. Instead of computing $a^{(p-1)/2} \\pmod{p}$ (Euler's criterion), we count specific residues.",
+    "mathContext": "$(a/p) = (-1)^{|\\{x \\in [1, (p-1)/2] : ax \\bmod p > p/2\\}|}$",
+    "significance": "key",
+    "prerequisites": [
+      "Legendre symbol",
+      "modular arithmetic"
+    ],
+    "relatedConcepts": [
+      "residue counting",
+      "Euler's criterion"
+    ]
+  },
+  {
+    "id": "ann-eisenstein-lemma",
+    "proofId": "elementary-quadratic-reciprocity",
+    "range": {
+      "startLine": 103,
+      "endLine": 114
+    },
+    "type": "concept",
+    "title": "Eisenstein's Lemma (1844)",
+    "content": "**Eisenstein's Lemma**: For odd $a$ coprime to $p$:\n\n$$(a/p) = (-1)^{\\sum_{x=1}^{(p-1)/2} \\lfloor ax/p \\rfloor}$$\n\nThis converts Gauss's residue-counting into a **sum of floor quotients**. The key insight: $\\lfloor ax/p \\rfloor$ counts how many complete copies of $p$ fit into $ax$, and the parity of this sum matches the residue count in Gauss's Lemma.\n\nThis reformulation is what makes the lattice point argument possible.",
+    "mathContext": "$(a/p) = (-1)^{\\sum_{x=1}^{(p-1)/2} \\lfloor ax/p \\rfloor}$",
+    "significance": "key",
+    "prerequisites": [
+      "Gauss's Lemma"
+    ],
+    "relatedConcepts": [
+      "floor function",
+      "parity argument"
+    ]
+  },
+  {
+    "id": "ann-lattice-identity",
+    "proofId": "elementary-quadratic-reciprocity",
+    "range": {
+      "startLine": 140,
+      "endLine": 155
+    },
+    "type": "concept",
+    "title": "Lattice Point Counting Identity",
+    "content": "**The Geometric Heart**: Consider the rectangle with corners at $(0,0)$ and $(p/2, q/2)$. The lattice points $(x,y)$ with $1 \\le x \\le (p-1)/2$ and $1 \\le y \\le (q-1)/2$ total $(p-1)/2 \\times (q-1)/2$.\n\nThe diagonal $y = qx/p$ divides the rectangle into two triangles. Since $\\gcd(p,q) = 1$, **no lattice point lies on the diagonal**.\n\nPoints below the diagonal: counted by $\\sum \\lfloor qx/p \\rfloor$\nPoints above the diagonal: counted by $\\sum \\lfloor py/q \\rfloor$\n\nTheir sum equals the total: $(p-1)/2 \\times (q-1)/2$.",
+    "mathContext": "$\\sum_{x=1}^{(p-1)/2} \\lfloor qx/p \\rfloor + \\sum_{y=1}^{(q-1)/2} \\lfloor py/q \\rfloor = \\frac{p-1}{2} \\cdot \\frac{q-1}{2}$",
+    "significance": "key",
+    "prerequisites": [
+      "coprimality",
+      "lattice points"
+    ],
+    "relatedConcepts": [
+      "geometric proof",
+      "rectangle partition"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "elementary-quadratic-reciprocity",
+    "range": {
+      "startLine": 174,
+      "endLine": 192
+    },
+    "type": "concept",
+    "title": "Quadratic Reciprocity (Elementary Proof)",
+    "content": "Combining Eisenstein's Lemma with the lattice point identity:\n\n$$(q/p) \\cdot (p/q) = (-1)^{\\sum \\lfloor xq/p \\rfloor} \\cdot (-1)^{\\sum \\lfloor xp/q \\rfloor} = (-1)^{\\frac{p-1}{2} \\cdot \\frac{q-1}{2}}$$\n\nThe exponents add because $(-1)^a \\cdot (-1)^b = (-1)^{a+b}$, and the lattice identity gives the total exponent.",
+    "mathContext": "$(q/p)(p/q) = (-1)^{(p-1)/2 \\cdot (q-1)/2}$",
+    "significance": "key",
+    "prerequisites": [
+      "Eisenstein's Lemma",
+      "lattice point identity"
+    ],
+    "relatedConcepts": [
+      "quadratic reciprocity",
+      "Legendre symbol"
+    ]
+  },
+  {
+    "id": "ann-proof-chain",
+    "proofId": "elementary-quadratic-reciprocity",
+    "range": {
+      "startLine": 218,
+      "endLine": 242
+    },
+    "type": "concept",
+    "title": "The Full Eisenstein Proof Chain",
+    "content": "This theorem makes all three steps explicit in a single statement:\n\n1. $(q/p) = (-1)^{\\sum \\lfloor xq/p \\rfloor}$ via Eisenstein\n2. $(p/q) = (-1)^{\\sum \\lfloor xp/q \\rfloor}$ via Eisenstein\n3. $\\sum \\lfloor xq/p \\rfloor + \\sum \\lfloor xp/q \\rfloor = (p-1)/2 \\cdot (q-1)/2$ via lattice points\n\nThis is the **pedagogical centerpiece** of the file: showing exactly how elementary tools combine to prove a deep theorem.",
+    "mathContext": "The three-step chain: $(q/p)(p/q) = (-1)^{\\sum \\lfloor xq/p \\rfloor + \\sum \\lfloor xp/q \\rfloor} = (-1)^{(p-1)/2 \\cdot (q-1)/2}$. The first equality uses Eisenstein's Lemma applied twice; the second uses the lattice identity.",
+    "significance": "key",
+    "prerequisites": [
+      "Eisenstein's Lemma",
+      "lattice point identity"
+    ],
+    "relatedConcepts": [
+      "proof chain",
+      "composition of lemmas"
+    ]
+  },
+  {
+    "id": "ann-supplementary",
+    "proofId": "elementary-quadratic-reciprocity",
+    "range": {
+      "startLine": 277,
+      "endLine": 293
+    },
+    "type": "concept",
+    "title": "Supplementary Laws",
+    "content": "The **First Supplementary Law**: $-1$ is a quadratic residue mod $p$ iff $p \\equiv 1 \\pmod{4}$.\n\nThe **Second Supplementary Law**: $2$ is a quadratic residue mod $p$ iff $p \\equiv \\pm 1 \\pmod{8}$.\n\nBoth can be proven elementarily using Gauss's Lemma, and both are included to complete the picture of elementary QR proofs.",
+    "mathContext": "First: $(-1/p) = (-1)^{(p-1)/2}$, so $-1$ is a QR iff $p \\equiv 1 \\pmod{4}$. Second: $(2/p) = (-1)^{(p^2-1)/8}$, so $2$ is a QR iff $p \\equiv \\pm 1 \\pmod{8}$. Both follow from Gauss's Lemma by direct residue counting.",
+    "significance": "key",
+    "prerequisites": [
+      "Gauss's Lemma",
+      "modular arithmetic"
+    ],
+    "relatedConcepts": [
+      "quadratic residues",
+      "modular arithmetic",
+      "supplementary laws"
+    ]
+  }
+]

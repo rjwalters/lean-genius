@@ -1,0 +1,277 @@
+[
+  {
+    "id": "ann-emp-dist",
+    "proofId": "shannon-source-coding-oq-04",
+    "range": {
+      "startLine": 57,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "Empirical Distribution (Type)",
+    "content": "The type $\\tau(x)$ of a sequence $x \\in \\{1,\\ldots,k\\}^n$ is its empirical distribution: $\\tau(x)(i) = |\\{j : x_j = i\\}|$, the number of times symbol $i$ appears. This is the core object in the method of types.",
+    "mathContext": "$\\tau(x)(i) = |\\{j \\in \\{1,\\ldots,n\\} : x_j = i\\}|$",
+    "significance": "key",
+    "relatedConcepts": [
+      "empirical distribution",
+      "histogram",
+      "type class"
+    ],
+    "prerequisites": [
+      "finite sets",
+      "cardinality"
+    ]
+  },
+  {
+    "id": "ann-type-class",
+    "proofId": "shannon-source-coding-oq-04",
+    "range": {
+      "startLine": 80,
+      "endLine": 83
+    },
+    "type": "definition",
+    "title": "Type Class",
+    "content": "The type class $T_f$ is the set of all sequences with a given empirical distribution $f$. It is the fiber of $\\tau$ over $f$.",
+    "mathContext": "$T_f = \\{x \\in \\mathcal{X}^n : \\tau(x) = f\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "fiber",
+      "partition",
+      "empirical distribution"
+    ],
+    "prerequisites": [
+      "type (empirical distribution)"
+    ]
+  },
+  {
+    "id": "ann-emp-entropy",
+    "proofId": "shannon-source-coding-oq-04",
+    "range": {
+      "startLine": 97,
+      "endLine": 103
+    },
+    "type": "theorem",
+    "title": "Empirical Entropy",
+    "content": "The Shannon entropy of the empirical distribution $Q = f/n$. This equals $H(Q) = -\\sum_i Q_i \\log Q_i$ where $Q_i = f_i/n$.",
+    "mathContext": "$H(f/n) = -\\sum_{i=1}^k \\frac{f_i}{n} \\log \\frac{f_i}{n}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Shannon entropy",
+      "empirical distribution"
+    ],
+    "prerequisites": [
+      "Shannon entropy",
+      "type"
+    ]
+  },
+  {
+    "id": "ann-type-prob",
+    "proofId": "shannon-source-coding-oq-04",
+    "range": {
+      "startLine": 114,
+      "endLine": 116
+    },
+    "type": "theorem",
+    "title": "Type Class Probability Weight",
+    "content": "The probability of any single sequence in $T_f$ under the i.i.d. distribution $Q = f/n$. All sequences in the same type class have identical probability under their own empirical distribution.",
+    "mathContext": "$Q^n(x) = \\prod_{i=1}^k Q_i^{f_i} = \\exp(-n H(Q))$ for $x \\in T_f$",
+    "significance": "key",
+    "relatedConcepts": [
+      "i.i.d. probability",
+      "type class",
+      "entropy"
+    ],
+    "prerequisites": [
+      "empirical distribution",
+      "entropy"
+    ]
+  },
+  {
+    "id": "ann-log-typeprob",
+    "proofId": "shannon-source-coding-oq-04",
+    "range": {
+      "startLine": 119,
+      "endLine": 148
+    },
+    "type": "insight",
+    "title": "Log-Probability Identity",
+    "content": "The identity $\\log Q^n(x) = -n H(Q)$ for $x \\in T_f$ with $Q = f/n$. Proved using Real.log_prod and Real.log_pow from Mathlib, plus the algebraic identity $n \\cdot (f_i/n) = f_i$.",
+    "mathContext": "$\\log \\prod_i (f_i/n)^{f_i} = \\sum_i f_i \\log(f_i/n) = -n H(f/n)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "probability weight",
+      "entropy",
+      "logarithm identity"
+    ],
+    "prerequisites": [
+      "typeProb",
+      "empEntropy",
+      "Real.log_prod"
+    ]
+  },
+  {
+    "id": "ann-count-types",
+    "proofId": "shannon-source-coding-oq-04",
+    "range": {
+      "startLine": 175,
+      "endLine": 183
+    },
+    "type": "insight",
+    "title": "Polynomial Bound on Types",
+    "content": "There are at most $(n+1)^k$ distinct empirical distributions for block length $n$ over an alphabet of size $k$. Each type is a function $f: \\{1,\\ldots,k\\} \\to \\{0,\\ldots,n\\}$, giving $(n+1)^k$ possibilities.",
+    "mathContext": "$|\\{\\text{types}\\}| \\le (n+1)^k$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "empirical distribution",
+      "polynomial complexity",
+      "pigeonhole"
+    ],
+    "prerequisites": [
+      "Fintype.card_pi"
+    ]
+  },
+  {
+    "id": "ann-ssc-oq04-overview",
+    "proofId": "shannon-source-coding-oq-04",
+    "range": {
+      "startLine": 1,
+      "endLine": 49
+    },
+    "type": "concept",
+    "title": "Method of Types: Overview and Shannon Entropy",
+    "content": "Frames the open question (OQ-04: give an alternative proof of the source coding theorem via Csiszar–Korner’s method of types) and defines the central quantity, `shannonEntropy` $H(p) = -\\sum_i p_i\\log p_i$. The method of types is a combinatorial technique: group length-$n$ sequences over a $k$-letter alphabet by their empirical distribution (type), bound each type class by $\\approx 2^{nH}$, and count types polynomially. This converts the asymptotic equipartition argument into exact finite combinatorics.",
+    "significance": "key",
+    "mathContext": "Shannon entropy $H(p) = -\\sum_{i} p_i \\log p_i$ measures the average information per symbol. Source coding: sequences from a source of entropy $H(p)$ compress to $\\approx nH(p)$ bits.",
+    "relatedConcepts": [
+      "Shannon entropy",
+      "method of types",
+      "source coding theorem",
+      "information theory",
+      "Csiszár–Körner"
+    ],
+    "prerequisites": [
+      "information theory: entropy",
+      "probability distributions",
+      "combinatorics"
+    ]
+  },
+  {
+    "id": "ann-ssc-oq04-typeprob",
+    "proofId": "shannon-source-coding-oq-04",
+    "range": {
+      "startLine": 184,
+      "endLine": 238
+    },
+    "type": "concept",
+    "title": "Empirical Entropy, Type Probability, and Their Logarithm",
+    "content": "Connects the empirical (per-type) quantities to entropy. `empEntropy_eq_shannonEntropy` shows the empirical entropy of a type $f$ equals $H(Q)$ for the normalized distribution $Q = f/n$. `typeProb` is the probability $\\prod_i (f_i/n)^{f_i}$ that the empirical distribution assigns to any single sequence of type $f$, and `log_typeProb_eq` proves $\\log(\\mathrm{typeProb}) = -n\\,H(Q)$ — i.e. every sequence in the type class has probability exactly $2^{-nH(Q)}$ under its own empirical law. This exact equidistribution is the engine of the method of types.",
+    "significance": "key",
+    "mathContext": "Equidistribution under the empirical law: each sequence of type $f$ has probability $\\prod_i (f_i/n)^{f_i} = e^{-nH(Q)}$, where $Q=f/n$ and $H(Q)$ is the empirical entropy. So $\\log(\\mathrm{typeProb}) = -nH(Q)$.",
+    "relatedConcepts": [
+      "empirical distribution",
+      "type probability",
+      "empirical entropy",
+      "equipartition"
+    ],
+    "prerequisites": [
+      "information theory: entropy",
+      "logarithms of products",
+      "probability"
+    ]
+  },
+  {
+    "id": "ann-ssc-oq04-size-bound",
+    "proofId": "shannon-source-coding-oq-04",
+    "range": {
+      "startLine": 239,
+      "endLine": 308
+    },
+    "type": "insight",
+    "title": "Type Class Size Upper Bound |T_f| ≤ exp(n·H(f/n))",
+    "content": "The key combinatorial bound of the method of types, proved cleanly without Stirling. Let $Q = f/n$ be the empirical distribution (which sums to 1). Each sequence $x\\in T_f$ has $\\prod_j Q(x_j) = \\mathrm{typeProb} = e^{-nH(Q)}$. Summing over ALL sequences gives $\\sum_x \\prod_j Q(x_j) = (\\sum_i Q_i)^n = 1$. Since the $|T_f|$ sequences in the type class each contribute $e^{-nH(Q)}$, we get $|T_f|\\cdot e^{-nH(Q)} \\le 1$, hence $|T_f| \\le e^{nH(Q)}$. This is the entropy-as-counting principle: a type class has at most $2^{nH}$ members.",
+    "significance": "key",
+    "mathContext": "Counting bound: $|T_f| \\le e^{\\,n\\,H(f/n)}$. Proof: $|T_f|\\,e^{-nH(Q)} = \\sum_{x\\in T_f}\\prod_j Q(x_j) \\le \\sum_{\\text{all }x}\\prod_j Q(x_j) = \\big(\\textstyle\\sum_i Q_i\\big)^n = 1$.",
+    "relatedConcepts": [
+      "type class size",
+      "entropy bound",
+      "probability normalization",
+      "asymptotic equipartition"
+    ],
+    "prerequisites": [
+      "information theory: typical sets",
+      "combinatorics",
+      "probability"
+    ]
+  },
+  {
+    "id": "ann-ssc-oq04-lower-bound",
+    "proofId": "shannon-source-coding-oq-04",
+    "range": {
+      "startLine": 309,
+      "endLine": 361
+    },
+    "type": "insight",
+    "title": "Dominant Type Lower Bound via Pigeonhole",
+    "content": "The complementary lower bound: some \"dominant\" type class has size $\\ge k^n/(n+1)^k$. The argument is pure pigeonhole — there are $k^n$ total sequences distributed among at most $(n+1)^k$ types (each type is a function $\\mathrm{Fin}\\,k\\to\\{0,\\dots,n\\}$), so the largest fiber of the empirical-distribution map has at least $k^n/(n+1)^k$ elements (`Finset.exists_le_card_fiber_of_mul_le_card_of_maps_to`). Since $(n+1)^k$ is polynomial in $n$ while $k^n$ is exponential, the dominant type captures nearly all the $\\approx 2^{n\\log k}$ sequences — the basis for achievability.",
+    "significance": "key",
+    "mathContext": "Pigeonhole lower bound: among $k^n$ sequences and $\\le (n+1)^k$ types, some type class has size $\\ge \\dfrac{k^n}{(n+1)^k}$. Polynomially many types, exponentially many sequences.",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "dominant type",
+      "number of types",
+      "fiber cardinality"
+    ],
+    "prerequisites": [
+      "combinatorics: pigeonhole",
+      "counting types",
+      "information theory"
+    ]
+  },
+  {
+    "id": "ann-ssc-oq04-achievability",
+    "proofId": "shannon-source-coding-oq-04",
+    "range": {
+      "startLine": 362,
+      "endLine": 420
+    },
+    "type": "concept",
+    "title": "Source Coding Achievability (Stated; Proved in Degenerate Form)",
+    "content": "States the achievability direction: for any $\\varepsilon>0$, large-$n$ sequences can be coded with length $\\le n(H(p)+\\varepsilon)$ while covering a target type class. Honesty note: as formalized, the theorem is proved in a DEGENERATE form — the source-file comment flags that the parameter $\\delta$ is unused and the witness is the trivial constant-zero sequence (code_length $=0$, covering a single sequence). This is logically true but strictly weaker than the genuine source coding theorem, which would require covering probability $\\ge 1-\\delta$. The substantive content of the entry is the type-counting machinery (size bounds above); the achievability statement is a placeholder skeleton, not a full proof.",
+    "significance": "supporting",
+    "mathContext": "Stated rate: $\\exists$ code with length $\\le n(H(p)+\\varepsilon)$. As proved, degenerate ($\\delta$ unused, covers one sequence) — weaker than the true theorem requiring coverage probability $\\ge 1-\\delta$.",
+    "relatedConcepts": [
+      "source coding theorem",
+      "achievability",
+      "code rate",
+      "honest formalization scope"
+    ],
+    "prerequisites": [
+      "information theory: source coding",
+      "rate-distortion basics",
+      "proof transparency"
+    ]
+  },
+  {
+    "id": "ann-ssc-oq04-auxiliary",
+    "proofId": "shannon-source-coding-oq-04",
+    "range": {
+      "startLine": 421,
+      "endLine": 462
+    },
+    "type": "concept",
+    "title": "Auxiliary Counting Facts and the Multinomial Bound",
+    "content": "Closing combinatorial facts: the number of distinct types is at most $(n+1)^k$ (`count_types_le`, polynomial in $n$), the total sequence count is $k^n$ (`total_sequences_eq`), and every sequence lies in exactly one type class via its empirical distribution (`type_class_partition`). Finally `multinomial_le_entropy_pow` transfers the type-class size bound to the multinomial coefficient: $\\binom{n}{f_1,\\dots,f_k} = |T_f| \\le e^{nH(f/n)}$, i.e. $n!/\\prod_i f_i! \\le 2^{nH}$. (The source docstring’s \"[OPEN: requires Stirling]\" remark is outdated — the bound is actually derived here, Stirling-free, from the type-class size bound.)",
+    "significance": "supporting",
+    "mathContext": "Type counting: $\\#\\text{types} \\le (n+1)^k$, total sequences $= k^n$, and $\\binom{n}{f_1,\\dots,f_k} \\le e^{\\,nH(f/n)}$ — a Stirling-free bound on the multinomial coefficient.",
+    "relatedConcepts": [
+      "multinomial coefficient",
+      "number of types",
+      "partition of sequences",
+      "Stirling-free bound"
+    ],
+    "prerequisites": [
+      "combinatorics: multinomial coefficients",
+      "counting",
+      "information theory"
+    ]
+  }
+]

@@ -1,0 +1,113 @@
+{
+  "slug": "infinitude-primes-4k1-oq-01",
+  "title": "Fermat's Theorem on Sums of Two Squares",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "p \\text{ is an odd prime} \\implies \\bigl(p \\equiv 1 \\pmod{4} \\iff \\exists\\, a\\, b \\in \\mathbb{N},\\; p = a^2 + b^2\\bigr)",
+    "plain": "Fermat's theorem on sums of two squares states that an odd prime $p$ can be written as a sum of two perfect squares if and only if $p \\equiv 1 \\pmod{4}$. This is one of the most elegant characterizations in elementary number theory.",
+    "whyMatters": [
+      "Connects quadratic residues, Gaussian integers, prime decomposition, and representation by sums of squares.",
+      "Strengthens the existing infinitude-primes-4k1 gallery proof, which already uses one direction through Mathlib's quadratic-residue infrastructure.",
+      "Likely provides a clean standalone wrapper around Mathlib.NumberTheory.SumTwoSquares if the expected prime API is present."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "The gallery proof InfinitudePrimes4k1.lean proves infinitely many primes congruent to 1 mod 4 and imports Mathlib.NumberTheory.SumTwoSquares.",
+      "The existing infinitude proof uses mod_four_ne_three_of_dvd_isSquare_neg_one, giving a quadratic-residue route to the mod 4 obstruction.",
+      "Mathlib.NumberTheory.SumTwoSquares is identified as containing prime representation infrastructure for sums of two squares.",
+      "ZMod.isSquare_neg_one_iff is identified as relevant infrastructure for the -1 quadratic-residue characterization."
+    ],
+    "open": [
+      "Formalize the full biconditional for odd primes: p congruent to 1 mod 4 iff p is a sum of two natural-number squares.",
+      "Find the most direct Mathlib API for the hard direction from p congruent to 1 mod 4 to a sum-of-two-squares representation.",
+      "Optionally connect the statement to Gaussian integer splitting or explicit witness extraction after the core theorem is located."
+    ],
+    "goal": "State and prove a clean Lean theorem for Fermat's two-squares characterization of odd primes, reusing Mathlib's SumTwoSquares infrastructure rather than rebuilding the classical proof."
+  },
+  "currentState": {
+    "phase": "SUPERSEDED by `fermat-two-squares` gallery slug (Wiedijk #20) — S2 wrapper kept as odd-prime-only pedagogical variant with header redirect",
+    "since": "2026-05-30T00:00:00Z",
+    "iteration": 4,
+    "focus": "S4 SUPERSEDED-BY-FERMAT-TWO-SQUARES (researcher-1, 2026-06-09): Doc-only. Surveying gallery before re-iterating revealed proofs/Proofs/FermatTwoSquares.lean (gallery slug fermat-two-squares, Wiedijk #20, 201 LOC, 6 theorems) already proves the OQ-01 biconditional in a strictly stronger form ((∃ a b, a²+b² = p) ↔ p % 4 ≠ 3 — covers p=2) using the same Mathlib bearer (Nat.Prime.sq_add_sq) and the same interval_cases (n%4) <;> case-analysis technique. The S1 author missed this when surveying. This iteration: (1) documents the supersession in state.md, this JSON, knowledge.md, and a new session file; (2) adds a 9-line header redirect to InfinitudePrimes4k1OQ01.lean (84 → 93 LOC; 0 axioms / 0 sorries unchanged); (3) recommends slug closure as completed. Canonical home is src/data/proofs/fermat-two-squares/; src/data/proofs/infinitude-primes-4k1-oq-01/ should remain absent. Bearer SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 drift = 0 across 10 days since S1.",
+    "blockers": [],
+    "nextAction": "Mark slug completed via scripts/research/claim-problem.sh update infinitude-primes-4k1-oq-01 completed, then release claim. No enricher gallery entry should be created at src/data/proofs/infinitude-primes-4k1-oq-01/ — that would duplicate the existing fermat-two-squares gallery proof. Optional enricher follow-up (enricher lane, not blocking): add crossReferences in src/data/proofs/fermat-two-squares/meta.json pointing to infinitude-primes-4k1, and/or rewrite infinitude-primes-4k1/meta.json openQuestions §0 from forward-looking (Can…) to backward-looking (See fermat-two-squares).",
+    "lastUpdate": "2026-06-09T17:20:00Z",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "OBSERVE: Problem selected as an EMPTY-knowledge, high-tractability gallery-gap task. Evidence identifies the target theorem, the existing infinitude-primes-4k1 proof that uses one related direction, and Mathlib.NumberTheory.SumTwoSquares as the likely source of the needed prime representation API. No Lean implementation attempts have been made yet.",
+    "builtItems": [
+      "Problem statement and research direction recorded from problem.md.",
+      "Selection rationale recorded: tier B, significance 7/10, tractability 8/10, knowledge score 0.",
+      "Initial source modules identified: Mathlib.NumberTheory.SumTwoSquares, ZMod quadratic-residue lemmas, and the existing InfinitudePrimes4k1 gallery proof."
+    ],
+    "insights": [
+      "The existing infinitude-primes-4k1 proof already depends on a related residue obstruction through mod_four_ne_three_of_dvd_isSquare_neg_one.",
+      "The only-if direction should be elementary because squares mod 4 are 0 or 1; the if direction is the substantive Fermat two-squares theorem.",
+      "The most promising first approach is to locate a direct Mathlib theorem such as Nat.Prime.sq_add_sq or an equivalent in Mathlib.NumberTheory.SumTwoSquares.",
+      "Gaussian integers and descent are fallback approaches, but both carry higher formalization risk than a direct Mathlib wrapper."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Survey Mathlib.NumberTheory.SumTwoSquares for the exact prime theorem name and statement shape.",
+      "Read proofs/Proofs/InfinitudePrimes4k1.lean to map how mod_four_ne_three_of_dvd_isSquare_neg_one is used.",
+      "If a direct prime biconditional exists, write a small standalone wrapper theorem matching the problem statement.",
+      "If no direct biconditional exists, decide between assembling the two directions from SumTwoSquares and ZMod lemmas or using the GaussianInt route."
+    ],
+    "markdown": "# Knowledge Base: infinitude-primes-4k1-oq-01\n\n---\n\n## Problem Understanding\n\nThe target is Fermat's theorem on sums of two squares for odd primes: an odd prime p is representable as p = a^2 + b^2 over natural numbers exactly when p is congruent to 1 modulo 4. This is intended as a standalone strengthening around the existing infinitude-primes-4k1 gallery proof.\n\nThe source proof already imports Mathlib.NumberTheory.SumTwoSquares and uses mod_four_ne_three_of_dvd_isSquare_neg_one, so the research should begin by locating the cleanest Mathlib API rather than rebuilding the theorem from scratch.\n\n---\n\n## Current Evidence\n\n- Selection report classifies the problem as tier B with significance 7/10, tractability 8/10, and EMPTY knowledge score.\n- state.md remains in OBSERVE with zero attempts and no active approach.\n- problem.md lists Mathlib.NumberTheory.SumTwoSquares, ZMod.isSquare_neg_one_iff, GaussianInt, and modular arithmetic as the relevant infrastructure.\n\n---\n\n## Insights\n\nThe only-if direction should be comparatively small: squares modulo 4 are 0 or 1, so an odd prime represented as a sum of two squares cannot be congruent to 3 modulo 4. The if direction is the hard classical theorem, but the evidence expects Mathlib to already contain a prime representation theorem or a near-direct equivalent.\n\nThe first credible implementation path is a direct wrapper around SumTwoSquares. Gaussian integers and descent remain fallback strategies if the API survey shows a gap.\n\n---\n\n## Dead Ends\n\nNo approaches have been tried yet.\n"
+  },
+  "tags": [
+    "number-theory",
+    "quadratic-residues",
+    "sums-of-squares",
+    "primes"
+  ],
+  "relatedProofs": [
+    "infinitude-primes",
+    "infinitude-primes-4k1",
+    "fundamental-arithmetic",
+    "pythagorean-theorem"
+  ],
+  "references": {
+    "papers": [
+      "Fermat's 1640 statement in correspondence with Mersenne",
+      "Euler's 1749 published proof",
+      "Zagier, A one-sentence proof, American Mathematical Monthly, 1990"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.NumberTheory.SumTwoSquares",
+      "Mathlib.NumberTheory.Zsqrtd.GaussianInt",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.NumberTheory.LegendreSymbol"
+    ]
+  },
+  "started": "2026-04-13T00:54:20.853Z",
+  "lastUpdate": "2026-06-01T20:00:00Z",
+  "significance": 7,
+  "tractability": 8,
+  "leanFiles": [
+    {
+      "path": "Proofs/InfinitudePrimes4k1.lean",
+      "filename": "InfinitudePrimes4k1.lean",
+      "lineCount": 178,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k1.lean"
+    }
+  ],
+  "attemptCounts": {
+    "total": 3
+  }
+}

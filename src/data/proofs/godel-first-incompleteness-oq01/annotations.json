@@ -1,0 +1,310 @@
+[
+  {
+    "id": "ann-formula-structure",
+    "proofId": "godel-first-incompleteness-oq01",
+    "range": {
+      "startLine": 58,
+      "endLine": 66
+    },
+    "type": "definition",
+    "title": "Formula Structure and Negation",
+    "content": "The formal language is modeled as a structure wrapping a natural number `code`. This code is the Gödel number of the formula — its unique arithmetic encoding. Negation is defined as a code transformation (`code + 1`), a simplified stand-in for the actual recursive encoding of logical negation in Gödel's 1931 construction.",
+    "mathContext": "In full Peano arithmetic, each formula $\\varphi$ is encoded as a natural number $\\lceil \\varphi \\rceil$ via prime factorization: if $\\varphi$ is $\\psi_1 \\to \\psi_2$, then $\\lceil \\varphi \\rceil = 2^{\\lceil \\psi_1 \\rceil} \\cdot 3^{\\lceil \\psi_2 \\rceil}$. Here the encoding is abstracted away, since the specific values of codes do not affect the logical argument.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gödel numbering",
+      "arithmetization of syntax",
+      "formal language"
+    ],
+    "prerequisites": [
+      "natural number encoding",
+      "recursive definitions in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-provable-axiom",
+    "proofId": "godel-first-incompleteness-oq01",
+    "range": {
+      "startLine": 72,
+      "endLine": 84
+    },
+    "type": "concept",
+    "title": "Opaque Provability Predicate",
+    "content": "The central design decision of this file: `Provable` is declared as an `axiom` (an opaque constant), not defined as `fun _ => False` or `fun _ => True`. This means Lean cannot reduce `Provable φ` to `False` by definitional equality, so any proof of `¬ Provable G` must use genuine mathematical reasoning rather than type-level triviality.\n\nThe companion file `GodelIncompleteness.lean` defines `Provable := fun _ => False`, which means `intro hG; exact hG` works trivially because `hG : Provable G` unfolds to `hG : False`. That proof is mathematically vacuous — it works for the wrong reason.",
+    "mathContext": "An opaque `axiom Provable : Formula → Prop` in Lean 4 introduces a constant that has no definitional reduction rule. It behaves like a primitive predicate in first-order logic: $\\vdash \\varphi$ is just an atomic proposition, with no computational content. The five subsequent axioms constrain its behavior exactly as Gödel's proof requires.",
+    "significance": "key",
+    "relatedConcepts": [
+      "provability logic",
+      "opaque constants",
+      "Hilbert-Bernays-Löb conditions",
+      "definitional equality"
+    ],
+    "prerequisites": [
+      "Lean 4 axioms vs definitions",
+      "provability predicates in mathematical logic"
+    ]
+  },
+  {
+    "id": "ann-godel-numbering",
+    "proofId": "godel-first-incompleteness-oq01",
+    "range": {
+      "startLine": 91,
+      "endLine": 96
+    },
+    "type": "definition",
+    "title": "Gödel Numbering and the Provability Formula",
+    "content": "The `godelNum` function extracts the code of a formula (essentially the identity function in this encoding). The `Prov` function takes a natural number `n` and returns a formula representing 'the formula with Gödel number n is provable in F'. In a complete formalization, `Prov` would be the Σ₁⁰ formula for proof-checking; here the encoding `n * 2` is a placeholder that preserves the logical structure of the argument.",
+    "mathContext": "In full Peano arithmetic, the provability formula $\\mathrm{Prov}(n)$ is a $\\Sigma^0_1$ sentence asserting $\\exists p,\\, \\mathrm{Proof}(p, n)$, where $\\mathrm{Proof}(p, n)$ is a primitive recursive predicate checking that $p$ encodes a valid proof sequence whose last line has Gödel number $n$. Gödel's key result is that this formula is representable in any sufficiently strong system.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Σ₁⁰ formulas",
+      "proof predicates",
+      "arithmetic hierarchy",
+      "primitive recursive functions"
+    ],
+    "prerequisites": [
+      "Gödel numbering",
+      "representability in arithmetic",
+      "Σ₁⁰ completeness"
+    ]
+  },
+  {
+    "id": "ann-godel-sentence",
+    "proofId": "godel-first-incompleteness-oq01",
+    "range": {
+      "startLine": 102,
+      "endLine": 108
+    },
+    "type": "definition",
+    "title": "The Gödel Sentence G",
+    "content": "G is defined as the formula with code 42 — an arbitrary placeholder. The key point is not its specific code but its fixed-point property, captured by the axiom `G_self_reference`: G says 'I am not provable'. The Diagonal Lemma guarantees that such a self-referential sentence exists in any consistent system capable of representing computable functions.",
+    "mathContext": "The Diagonal Lemma (also called Gödel's Fixed-Point Lemma): for any formula $\\psi(x)$ with one free variable, there exists a sentence $\\gamma$ such that $F \\vdash (\\gamma \\leftrightarrow \\psi(\\lceil \\gamma \\rceil))$. Applying this to $\\psi(x) = \\neg\\mathrm{Prov}(x)$ yields the Gödel sentence $G$ with $F \\vdash (G \\leftrightarrow \\neg\\mathrm{Prov}(\\lceil G \\rceil))$. The code `42` is the stand-in for the actual fixed-point construction output.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Diagonal Lemma",
+      "fixed-point theorem",
+      "self-reference",
+      "quining"
+    ],
+    "prerequisites": [
+      "Diagonal Lemma proof",
+      "Gödel numbering",
+      "recursive function theory"
+    ]
+  },
+  {
+    "id": "ann-d1-representability",
+    "proofId": "godel-first-incompleteness-oq01",
+    "range": {
+      "startLine": 114,
+      "endLine": 123
+    },
+    "type": "concept",
+    "title": "Axiom 1: D1 Representability (Provability Reflection)",
+    "content": "The D1 condition is the weakest of the Hilbert-Bernays-Löb (HBL) derivability conditions. It states: if the system actually proves φ, then it also proves 'Prov(⌜φ⌝)'. In other words, provability is 'self-aware' — proofs can be reflected into statements about proofs. This requires that the proof-checking predicate is computable and Σ₁⁰-complete.",
+    "mathContext": "The three HBL conditions for a provability predicate $\\Box$ are: (D1) $F \\vdash \\varphi \\Rightarrow F \\vdash \\Box\\varphi$; (D2) $F \\vdash \\Box(\\varphi \\to \\psi) \\to (\\Box\\varphi \\to \\Box\\psi)$; (D3) $F \\vdash \\Box\\varphi \\to \\Box\\Box\\varphi$. Only D1 is needed here. Gödel's original proof uses D1 as a lemma derived from $\\Sigma^0_1$-completeness of formal arithmetic.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hilbert-Bernays-Löb conditions",
+      "Σ₁⁰ completeness",
+      "provability logic GL",
+      "reflection principle"
+    ],
+    "prerequisites": [
+      "Σ₁⁰ formulas",
+      "formal provability",
+      "Robinson arithmetic Q"
+    ]
+  },
+  {
+    "id": "ann-g-self-reference",
+    "proofId": "godel-first-incompleteness-oq01",
+    "range": {
+      "startLine": 125,
+      "endLine": 136
+    },
+    "type": "concept",
+    "title": "Axiom 2: G's Self-Reference (Meta-Level Fixed Point)",
+    "content": "This axiom captures the key consequence of the Diagonal Lemma at the meta-level: G is provable in F if and only if the provability-of-G formula is not provable. This is the meta-theoretic reading of 'G says I am not provable'.\n\nNote: this is a meta-level biconditional in Lean (`↔`), not an object-level theorem of F. A complete formalization would derive this from the object-level Diagonal Lemma and the behavior of the Provable predicate.",
+    "mathContext": "The object-level diagonal is $F \\vdash (G \\leftrightarrow \\neg\\mathrm{Prov}(\\lceil G \\rceil))$. The meta-level consequence stated as the axiom is: $F \\vdash G \\iff \\neg(F \\vdash \\mathrm{Prov}(\\lceil G \\rceil))$. This follows because D1 gives $F\\vdash G \\Rightarrow F\\vdash\\mathrm{Prov}(\\lceil G \\rceil)$, and the object-level equivalence gives $F\\vdash G \\Rightarrow F\\vdash\\neg\\mathrm{Prov}(\\lceil G \\rceil)$, making both impossible simultaneously if the system is consistent.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Diagonal Lemma",
+      "meta-level vs object-level",
+      "self-reference",
+      "fixed-point lemma"
+    ],
+    "prerequisites": [
+      "Diagonal Lemma",
+      "D1 condition",
+      "distinction between object theory and metatheory"
+    ]
+  },
+  {
+    "id": "ann-omega-consistency",
+    "proofId": "godel-first-incompleteness-oq01",
+    "range": {
+      "startLine": 138,
+      "endLine": 150
+    },
+    "type": "concept",
+    "title": "Axiom 3: ω-Consistency (Restricted to G)",
+    "content": "ω-consistency is stronger than simple consistency: a system is ω-consistent if it cannot prove both '∃n P(n)' and '¬P(0)', '¬P(1)', '¬P(2)', ... for any predicate P. Restricted to G: if G is not provable (there is no proof of G), the system cannot falsely claim 'some proof of G exists'.\n\nThis is the hypothesis Gödel needed in 1931. J. Barkley Rosser (1936) improved the theorem by using a more complex sentence that works under mere consistency, avoiding the ω-consistency assumption.",
+    "mathContext": "A theory $F$ is $\\omega$-consistent if for no formula $\\varphi(x)$: $F\\vdash\\exists x\\,\\varphi(x)$ and simultaneously $F\\vdash\\neg\\varphi(\\bar{n})$ for all $n\\in\\mathbb{N}$. Applied to the Gödel sentence: if $F\\not\\vdash G$, then no standard natural number witnesses a proof of $G$, so by $\\omega$-consistency $F\\not\\vdash\\mathrm{Prov}(\\lceil G \\rceil)$. The Rosser trick uses $R \\equiv \\forall p,\\,(\\mathrm{Proof}(p,\\lceil R \\rceil) \\to \\exists q < p,\\,\\mathrm{Proof}(q, \\lceil\\neg R\\rceil))$ to eliminate this requirement.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ω-consistency",
+      "Rosser's trick",
+      "plain consistency",
+      "Barkley Rosser 1936"
+    ],
+    "prerequisites": [
+      "ω-consistency definition",
+      "arithmetic hierarchy",
+      "Rosser's improvement"
+    ]
+  },
+  {
+    "id": "ann-neg-g-prov",
+    "proofId": "godel-first-incompleteness-oq01",
+    "range": {
+      "startLine": 152,
+      "endLine": 164
+    },
+    "type": "concept",
+    "title": "Axiom 4: Object-Level Self-Reference (Second Diagonal Direction)",
+    "content": "This axiom handles the second direction: if the system proves ¬G, then it also proves Prov(⌜G⌝). The intuition: G ↔ ¬Prov(⌜G⌝) is a theorem in F (object-level diagonal). Combining ¬G with this equivalence (via modus ponens inside F) yields Prov(⌜G⌝). In classical logic, ¬G and G↔¬Prov(⌜G⌝) give ¬Prov(⌜G⌝) → False, hence Prov(⌜G⌝).",
+    "mathContext": "The object-level derivation: $F \\vdash (G \\leftrightarrow \\neg\\mathrm{Prov}(\\lceil G \\rceil))$ and $F \\vdash \\neg G$ together give $F \\vdash \\neg\\neg\\mathrm{Prov}(\\lceil G \\rceil)$, and hence $F \\vdash \\mathrm{Prov}(\\lceil G \\rceil)$ by double-negation elimination (valid in classical logic, which PA satisfies). This axiom thus bundles the object-level diagonal and classical reasoning.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "object-level reasoning",
+      "modus ponens",
+      "double-negation elimination",
+      "classical logic in PA"
+    ],
+    "prerequisites": [
+      "object-level vs meta-level proofs",
+      "classical logic",
+      "Diagonal Lemma"
+    ]
+  },
+  {
+    "id": "ann-consistent-complete",
+    "proofId": "godel-first-incompleteness-oq01",
+    "range": {
+      "startLine": 170,
+      "endLine": 176
+    },
+    "type": "definition",
+    "title": "Consistency and Completeness",
+    "content": "Consistency: no formula and its negation are both provable. This is the standard semantic-free syntactic notion — it says nothing about truth, only about what the system can derive. Completeness: every formula or its negation is provable. A complete system can decide every statement.\n\nGödel's theorem says no system that is sufficiently strong (can prove basic arithmetic) can be both consistent and complete. These two properties are in fundamental tension for powerful formal systems.",
+    "mathContext": "Formally: $F$ is consistent iff $\\nexists\\varphi,\\,(F\\vdash\\varphi) \\wedge (F\\vdash\\neg\\varphi)$. $F$ is (negation-)complete iff $\\forall\\varphi,\\,(F\\vdash\\varphi) \\vee (F\\vdash\\neg\\varphi)$. Gödel's theorem shows the conjunction Consistent($F$) $\\wedge$ Complete($F$) is false for any $F$ satisfying the five axioms. This implies the incompleteness is not a feature of the axiom system chosen, but a fundamental limitation of formal provability itself.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "consistency",
+      "completeness",
+      "decidability",
+      "Gödel's incompleteness"
+    ],
+    "prerequisites": [
+      "formal systems",
+      "provability",
+      "classical logic"
+    ]
+  },
+  {
+    "id": "ann-g-not-provable",
+    "proofId": "godel-first-incompleteness-oq01",
+    "range": {
+      "startLine": 182,
+      "endLine": 200
+    },
+    "type": "concept",
+    "title": "First Incompleteness Direction: G is Not Provable",
+    "content": "This is the core of Gödel's argument: if G were provable, then D1 gives Prov(⌜G⌝) is provable. But G's self-reference says 'G is provable iff Prov(⌜G⌝) is not provable'. So provability of G would make Prov(⌜G⌝) both provable and not provable — a contradiction with consistency. Therefore G is not provable.\n\nNotice the proof uses all three of: (1) the hypothesis `h : Consistent`, (2) `d1_representability`, and (3) `G_self_reference`. Each step is a genuine mathematical inference, not type-level computation.",
+    "mathContext": "Proof sketch: Assume $F \\vdash G$. By D1: $F \\vdash \\mathrm{Prov}(\\lceil G \\rceil)$. By the diagonal: $F \\vdash G \\Rightarrow \\neg(F \\vdash \\mathrm{Prov}(\\lceil G \\rceil))$. Contradiction. Therefore $F \\not\\vdash G$. This is a meta-theoretic argument about what $F$ can and cannot prove; the contradiction arises at the meta-level, not inside $F$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "proof by contradiction",
+      "D1 condition",
+      "diagonal argument",
+      "consistency"
+    ],
+    "prerequisites": [
+      "D1 representability",
+      "G self-reference",
+      "proof by contradiction"
+    ]
+  },
+  {
+    "id": "ann-neg-g-not-provable",
+    "proofId": "godel-first-incompleteness-oq01",
+    "range": {
+      "startLine": 202,
+      "endLine": 222
+    },
+    "type": "concept",
+    "title": "Second Incompleteness Direction: ¬G is Not Provable",
+    "content": "The second direction requires ω-consistency. If ¬G were provable, the object-level diagonal (Axiom 4) gives Prov(⌜G⌝) is provable. But we just proved G is not provable. By ω-consistency: if G is not provable, then Prov(⌜G⌝) is not provable. So Prov(⌜G⌝) is both provable and not provable — contradiction.\n\nThis is the direction Rosser (1936) improved: by using a cleverer sentence, mere consistency suffices.",
+    "mathContext": "The chain: $F \\vdash \\neg G \\Rightarrow F \\vdash \\mathrm{Prov}(\\lceil G \\rceil)$ (Axiom 4). But $F \\not\\vdash G$ (from previous lemma), and $\\omega$-consistency gives $F \\not\\vdash \\mathrm{Prov}(\\lceil G \\rceil)$. Contradiction. The Rosser improvement: define $R \\equiv \\forall p,\\,(\\mathrm{Proof}(p, \\lceil R \\rceil) \\to \\exists q < p,\\,\\mathrm{Proof}(q, \\lceil \\neg R \\rceil))$. Then both $F \\not\\vdash R$ and $F \\not\\vdash \\neg R$ follow from mere consistency.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ω-consistency",
+      "Rosser improvement",
+      "proof by contradiction",
+      "meta-level reasoning"
+    ],
+    "prerequisites": [
+      "ω-consistency",
+      "G_not_provable lemma",
+      "neg_G_prov_G axiom"
+    ]
+  },
+  {
+    "id": "ann-first-incompleteness",
+    "proofId": "godel-first-incompleteness-oq01",
+    "range": {
+      "startLine": 224,
+      "endLine": 252
+    },
+    "type": "insight",
+    "title": "First Incompleteness Theorem: Clean Case Split",
+    "content": "The main theorem is a clean proof by contradiction using `rcases`. If the system is complete, then for the sentence G either G is provable or ¬G is provable. The first case contradicts `G_not_provable h`; the second contradicts `not_neg_G_provable h`. Since both cases yield contradiction, completeness is impossible under consistency.\n\nThe elegance here is that once the two lemmas are in hand, the main theorem is four lines of Lean. The complexity is entirely absorbed into the axioms and the two supporting lemmas.",
+    "mathContext": "The logical form: $\\mathrm{Complete} \\vdash (\\vdash G) \\vee (\\vdash \\neg G)$. But $\\mathrm{Consistent} \\vdash \\neg(\\vdash G)$ (Lemma 1) and $\\mathrm{Consistent} \\vdash \\neg(\\vdash \\neg G)$ (Lemma 2). So $\\mathrm{Consistent} \\wedge \\mathrm{Complete} \\vdash \\bot$. This is $\\neg(\\mathrm{Consistent} \\wedge \\mathrm{Complete})$, i.e., no consistent system is complete — Gödel's theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "proof by contradiction",
+      "case split",
+      "undecidability",
+      "G_is_undecidable"
+    ],
+    "prerequisites": [
+      "G_not_provable",
+      "not_neg_G_provable",
+      "completeness definition"
+    ]
+  },
+  {
+    "id": "ann-corollaries",
+    "proofId": "godel-first-incompleteness-oq01",
+    "range": {
+      "startLine": 258,
+      "endLine": 265
+    },
+    "type": "concept",
+    "title": "Corollaries: G Witnesses Incompleteness",
+    "content": "`no_consistent_complete` is `first_incompleteness` eta-reduced: they are definitionally equal. `G_is_undecidable` packages both directions into a conjunction, making G an explicit witness to incompleteness. This clean corollary is important because it exhibits a specific sentence — not just shows abstractly that some undecidable sentence exists.",
+    "mathContext": "The corollary $\\mathrm{Consistent}(F) \\Rightarrow \\neg(F\\vdash G) \\wedge \\neg(F\\vdash\\neg G)$ is stronger than just saying $F$ is incomplete — it names the specific undecidable sentence $G$. In the full theory, computing the actual Gödel number of $G$ (via the fixed-point construction) gives an explicit arithmetic statement that cannot be decided by $F$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "corollary",
+      "witness to incompleteness",
+      "explicit undecidable sentence"
+    ],
+    "prerequisites": [
+      "first_incompleteness theorem",
+      "G_not_provable",
+      "not_neg_G_provable"
+    ]
+  }
+]

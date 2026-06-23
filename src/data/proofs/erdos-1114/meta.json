@@ -1,0 +1,252 @@
+{
+  "id": "erdos-1114",
+  "title": "Erdős Problem #1114: Monotonicity of Critical Point Gaps",
+  "slug": "erdos-1114",
+  "description": "For a polynomial with all real roots in arithmetic progression, the gaps between consecutive critical points of its derivative increase monotonically from the midpoint outward.",
+  "meta": {
+    "author": "Bálint (1960)",
+    "sourceUrl": "https://erdosproblems.com/1114",
+    "date": "1960",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1114Problem.lean",
+    "tags": [
+      "erdos",
+      "polynomials",
+      "analysis",
+      "critical-points",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1114,
+    "erdosUrl": "https://erdosproblems.com/1114",
+    "erdosProblemStatus": "proved",
+    "dateAdded": "2026-02-06",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.Basic",
+        "description": "Basic polynomial operations and properties",
+        "module": "Mathlib.Data.Polynomial.Basic"
+      },
+      {
+        "theorem": "Polynomial.Derivative",
+        "description": "Polynomial differentiation",
+        "module": "Mathlib.Data.Polynomial.Derivative"
+      },
+      {
+        "theorem": "Real.Basic",
+        "description": "Real number field properties",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "MeanValue",
+        "description": "Mean value theorem and Rolle's theorem",
+        "module": "Mathlib.Analysis.Calculus.MeanValue"
+      }
+    ],
+    "originalContributions": [
+      "IsAPRoots definition: roots forming arithmetic progression",
+      "HasAPRoots definition: polynomial with AP roots of given degree",
+      "Gap definition: distance between consecutive critical points",
+      "Midpoint and DistFromMidpoint definitions for measuring outward distance",
+      "balint_theorem axiom: gaps increase outward from midpoint",
+      "quartic_gap_property axiom: explicit n=4 case",
+      "erdos_1114_summary theorem: combines main results"
+    ],
+    "axiomCount": 2,
+    "lineCount": 171,
+    "assumptions": "2 axioms: balint_theorem, quartic_gap_property. 0 sorries.",
+    "theoremCount": 1,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #1114** concerns the behavior of critical points of polynomials whose roots form arithmetic progressions. Erdős conjectured that the gaps between consecutive critical points exhibit a monotonicity property, communicating the conjecture personally to Bálint.\n\n**Key History:**\n- Erdős posed this problem, likely in the late 1950s, motivated by questions about root-derivative relationships\n- Bálint (1960) proved the conjecture: the gaps between consecutive zeros of f' increase monotonically from the midpoint outward\n- Lorch (1976) generalized the result to higher derivatives f'', f''', etc.\n\n**Mathematical Context:** By Rolle's theorem, a degree-(n+1) polynomial with n+1 distinct real roots has exactly n critical points (roots of its derivative). When the roots are evenly spaced, the polynomial inherits a symmetry about the midpoint of its root interval. This symmetry forces the critical points to cluster toward the center, making the gaps between them smallest near the middle and largest near the endpoints.",
+    "problemStatement": "**Problem Statement (Proved)**\n\nLet $f(x) \\in \\mathbb{R}[x]$ be a polynomial of degree $n$ whose roots $\\{a_0 < a_1 < \\cdots < a_n\\}$ are all real and form an arithmetic progression. Then the differences between consecutive zeros of $f'(x)$, beginning from the midpoint of $(a_0, a_n)$ towards the endpoints, are monotonically increasing.\n\n**Answer: PROVED** by Bálint (1960).\n\nAll zeros of $f'(x)$ are distinct real numbers in $(a_0, a_n)$ by Rolle's theorem, and their gaps increase outward from the center.",
+    "text": "For a polynomial with all real roots in arithmetic progression, the gaps between consecutive critical points of its derivative increase monotonically from the midpoint outward.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Setup:** Define IsAPRoots and HasAPRoots to capture polynomials with arithmetic progression roots\n\n2. **Rolle Application:** Define `CriticalPoints` as a type alias (Fin n → ℝ). Strict ordering and bounds between consecutive roots appear as hypotheses of `balint_theorem`, not as separate axiom declarations.\n\n3. **Gap Definitions:** Define Gap, Midpoint, and DistFromMidpoint to measure the outward monotonicity\n\n4. **Main Theorem:** Axiomatize Bálint's result: gaps increase as distance from midpoint increases\n\n5. **Special Cases:** Formalize the quartic case and Lorch's generalization to higher derivatives\n\n6. **Summary:** Combine the main theorem and quartic case into a proved summary theorem",
+    "keyInsights": [
+      "**Rolle's Theorem:** Between any two consecutive roots of f, there exists exactly one root of f' — giving n critical points for a degree-(n+1) polynomial",
+      "**Symmetry of AP Roots:** Polynomials with evenly spaced roots have a natural symmetry about the midpoint of the root interval",
+      "**Center Clustering:** Critical points cluster toward the center of the root interval, making outer gaps larger than inner gaps",
+      "**Convexity Arguments:** The proof uses convexity properties of auxiliary functions to establish the monotonicity",
+      "**Higher Derivative Extension:** Lorch (1976) showed the same pattern holds for f'', f''', etc., with gaps of the k-th derivative zeros also increasing outward"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Mathematical analysis"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Setup",
+      "startLine": 40,
+      "endLine": 59,
+      "summary": "Definitions of IsAPRoots (roots in arithmetic progression) and HasAPRoots (polynomial with AP roots).",
+      "mathContext": "Definitions of IsAPRoots (roots in arithmetic progression) and HasAPRoots (polynomial with AP roots)."
+    },
+    {
+      "id": "critical-points",
+      "title": "Critical Points",
+      "startLine": 60,
+      "endLine": 73,
+      "summary": "Defines `CriticalPoints n` as a type alias `Fin n → ℝ`. Strict ordering (`hc`) and between-root bounds (`hc_bounds`) are hypotheses of `balint_theorem`, not separate axiom declarations.",
+      "mathContext": "`CriticalPoints` type alias. Strict ordering and bounds appear as `balint_theorem` hypotheses, not standalone axioms."
+    },
+    {
+      "id": "gaps",
+      "title": "The Gaps",
+      "startLine": 74,
+      "endLine": 98,
+      "summary": "Definitions of Gap (distance between consecutive critical points), Midpoint, and DistFromMidpoint.",
+      "mathContext": "Definitions of Gap (distance between consecutive critical points), Midpoint, and DistFromMidpoint."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "startLine": 99,
+      "endLine": 126,
+      "summary": "Bálint's theorem: gaps increase outward from midpoint. Also symmetric formulation: outer gaps dominate inner gaps.",
+      "mathContext": "Bálint's theorem: gaps increase outward from midpoint. Also symmetric formulation: outer gaps dominate inner gaps."
+    },
+    {
+      "id": "quartic-case",
+      "title": "Quartic Case",
+      "startLine": 127,
+      "endLine": 139,
+      "summary": "Explicit quartic case: 5 roots, 4 critical points, 3 gaps with outer > middle.",
+      "mathContext": "Explicit quartic case: 5 roots, 4 critical points, 3 gaps with outer > middle."
+    },
+    {
+      "id": "generalizations",
+      "title": "Lorch's Generalizations (1976)",
+      "startLine": 140,
+      "endLine": 146,
+      "summary": "Extension to higher derivatives: zeros of f^(k) also exhibit outward gap monotonicity.",
+      "mathContext": "Extension to higher derivatives: zeros of f^(k) also exhibit outward gap monotonicity."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 147,
+      "endLine": 170,
+      "summary": "erdos_1114_summary theorem combining Bálint's main result with the quartic special case.",
+      "mathContext": "erdos_1114_summary theorem combining Bálint's main result with the quartic special case."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #1114 is PROVED. Bálint (1960) showed that for polynomials with evenly spaced real roots, the gaps between consecutive critical points of the derivative increase monotonically as one moves from the midpoint of the root interval toward the endpoints. Lorch (1976) generalized this to higher derivatives.",
+    "implications": "**Theoretical Significance**: **Mathematical Connections**\n\n1. **Root-Derivative Relationships:** Reveals precise structure in how polynomial differentiation transforms root distributions\n\n**2. Symmetry Exploitation:** The arithmetic progression structure provides the symmetry needed for the monotonicity result\n\n3. **Higher Derivatives:** Lorch's generalization shows the pattern is preserved through repeated differentiation\n\n4. **Polynomial Geometry:** Connects algebraic properties (AP roots) to geometric properties (gap monotonicity) of polynomial curves.",
+    "openQuestions": [
+      "Can the result be extended to polynomials with geometric progression roots?",
+      "What is the exact rate of growth of the gaps as one moves outward?",
+      "Are there analogous results for polynomials with complex roots?",
+      "Does a similar monotonicity hold for trigonometric polynomials?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "related",
+      "targetId": "mean-value-theorem",
+      "description": "Mean Value Theorem"
+    },
+    {
+      "relationship": "related",
+      "targetId": "fundamental-theorem-algebra",
+      "description": "Fundamental Theorem of Algebra"
+    },
+    {
+      "relationship": "related",
+      "targetId": "erdos-1125",
+      "description": "Erdős Problem #1125: Kemperman's Inequality and Monotonicity"
+    },
+    {
+      "relationship": "related",
+      "targetId": "erdos-229",
+      "description": "Erdős Problem #229: Zeros of Derivatives of Entire Functions"
+    },
+    {
+      "relationship": "related",
+      "targetId": "erdos-906",
+      "description": "Erdős Problem #906: Dense Zeros of Derivative Subsequences"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Bálint, V."
+      ],
+      "title": "On a property of polynomials",
+      "year": "1960",
+      "volume": "11",
+      "pages": "221–226",
+      "notes": "Original proof that the gaps between consecutive zeros of f' increase monotonically outward from the midpoint when f has equally spaced real roots.",
+      "venue": "Acta Mathematica Academiae Scientiarum Hungaricae"
+    },
+    {
+      "authors": [
+        "Lorch, L."
+      ],
+      "title": "Derivatives of Polynomials with Only Real Zeros",
+      "year": "1976",
+      "volume": "58",
+      "pages": "297–302",
+      "doi": "10.2307/2041400",
+      "notes": "Generalizes Bálint's result to higher derivatives: zeros of f^(k) also exhibit outward gap monotonicity for polynomials with arithmetic progression roots.",
+      "venue": "Proceedings of the American Mathematical Society"
+    },
+    {
+      "authors": [
+        "Schur, I."
+      ],
+      "title": "Über algebraische Gleichungen, die nur reelle Wurzeln besitzen",
+      "year": "1933",
+      "volume": "13",
+      "pages": "361–362",
+      "notes": "Early study of polynomials constrained to have only real roots; provides background for the symmetry arguments used in Bálint's proof.",
+      "venue": "Zeitschrift für Angewandte Mathematik und Mechanik"
+    },
+    {
+      "authors": [
+        "Marden, M."
+      ],
+      "title": "Geometry of Polynomials",
+      "year": "1966",
+      "publisher": "American Mathematical Society",
+      "series": "Mathematical Surveys",
+      "volume": "3",
+      "edition": "2nd",
+      "notes": "Comprehensive reference for the geometry of polynomial zeros and their derivatives; the Gauss–Lucas theorem and related results provide the broader context for Bálint's monotonicity theorem."
+    },
+    {
+      "authors": [
+        "Pólya, G.",
+        "Szegő, G."
+      ],
+      "title": "Problems and Theorems in Analysis II",
+      "year": "1976",
+      "publisher": "Springer-Verlag",
+      "series": "Grundlehren der mathematischen Wissenschaften",
+      "volume": "216",
+      "notes": "Contains the classical convexity and interlacing results for zeros of real polynomials and their derivatives that underlie Bálint's argument."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Polynomial.Basic",
+      "Mathlib.Data.Polynomial.Derivative",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.Calculus.MeanValue"
+    ],
+    "opens": [],
+    "namespace": "Erdos1114",
+    "lineCount": 171,
+    "axiomCount": 2,
+    "theoremCount": 1,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos1114Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

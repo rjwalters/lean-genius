@@ -1,0 +1,124 @@
+[
+  {
+    "id": "ann-floor-base-lemma",
+    "proofId": "dirichlet-approximation-theorem",
+    "range": { "startLine": 22, "endLine": 28 },
+    "type": "lemma",
+    "title": "sub_lt_one_of_floor_eq — The One-Directional Floor Core",
+    "content": "The elementary fact underneath interval_bound: if ⌊x⌋ = ⌊y⌋ and x ≥ y, then x − y < 1. The proof rewrites the shared floor and combines x < ⌊x⌋ + 1 (Int.lt_floor_add_one) with ⌊y⌋ ≤ y (Int.floor_le) by `linarith`. interval_bound then only needs to add an absolute-value sign case split to drop the x ≥ y hypothesis, so this directed lemma carries the real content of 'same integer part ⇒ within distance one'.",
+    "mathContext": "$x < \\lfloor x\\rfloor + 1,\\ \\lfloor y\\rfloor \\le y,\\ \\lfloor x\\rfloor = \\lfloor y\\rfloor \\;\\Rightarrow\\; x - y < 1$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "floor function",
+      "real number bracketing",
+      "linarith"
+    ],
+    "prerequisites": [
+      "Int.lt_floor_add_one and Int.floor_le",
+      "ordered-field inequalities"
+    ]
+  },
+  {
+    "id": "ann-interval-bound",
+    "proofId": "dirichlet-approximation-theorem",
+    "range": { "startLine": 31, "endLine": 38 },
+    "type": "lemma",
+    "title": "interval_bound — Equal Floor Forces Proximity",
+    "content": "Two reals x, y lying in [0, Q) with the same floor satisfy |x − y| < 1. This is the arithmetic incarnation of 'two points in the same unit cell are close'. The proof splits on the sign of x − y and in each branch invokes `sub_lt_one_of_floor_eq`, which combines ⌊x⌋ ≤ x and x < ⌊x⌋ + 1 (with the floors equal) by `linarith`. In the main theorem this is applied to Q·frac(iα) and Q·frac(jα), whose floors agree precisely because intervalMap sent i and j to the same Fin Q index — so 'same sub-interval' becomes |Q·frac(iα) − Q·frac(jα)| < 1.",
+    "mathContext": "$\\lfloor x\\rfloor = \\lfloor y\\rfloor,\\ x,y\\in[0,Q) \\;\\Rightarrow\\; |x-y| < 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "floor function",
+      "pigeonhole interval",
+      "real number bracketing"
+    ],
+    "prerequisites": [
+      "Int.floor_le and Int.lt_floor_add_one",
+      "sign case split with abs",
+      "linarith"
+    ]
+  },
+  {
+    "id": "ann-frac-def",
+    "proofId": "dirichlet-approximation-theorem",
+    "range": { "startLine": 41, "endLine": 41 },
+    "type": "definition",
+    "title": "frac — The Fractional Part",
+    "content": "Defines frac(x) = x − ⌊x⌋, the fractional part of a real number, which always lies in [0,1) (proved immediately after by `frac_nonneg` and `frac_lt_one`). The Q+1 points whose collision drives the whole proof are the fractional parts frac(0·α), …, frac(Q·α). Working with frac rather than Mathlib's `Int.fract` keeps every step inside the explicit floor/linarith fragment.",
+    "mathContext": "$\\operatorname{frac}(x) = x - \\lfloor x\\rfloor,\\qquad \\operatorname{frac}(x)\\in[0,1)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "fractional part",
+      "floor function",
+      "unit interval"
+    ],
+    "prerequisites": [
+      "floor of a real number",
+      "real subtraction"
+    ]
+  },
+  {
+    "id": "ann-interval-map",
+    "proofId": "dirichlet-approximation-theorem",
+    "range": { "startLine": 53, "endLine": 65 },
+    "type": "definition",
+    "title": "intervalMap — Assigning Points to Sub-Intervals",
+    "content": "The pigeonhole assignment: intervalMap sends index j ∈ Fin (Q+1) to ⌊Q·frac(jα)⌋ ∈ Fin Q, i.e. the index of the sub-interval [k/Q, (k+1)/Q) containing the fractional part {jα}. The Fin Q membership obligation — that the value is < Q — is discharged inline from 0 ≤ Q·frac(jα) < Q (using frac ∈ [0,1) and Q > 0) via `Int.floor_lt` and the `toNat` round-trip. This map having domain strictly larger than codomain (Q+1 > Q) is exactly what makes the pigeonhole principle fire.",
+    "mathContext": "$\\operatorname{intervalMap}(j) = \\lfloor Q\\cdot\\operatorname{frac}(j\\alpha)\\rfloor,\\quad 0 \\le Q\\cdot\\operatorname{frac}(j\\alpha) < Q$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "pigeonhole map",
+      "partition of [0,1) into Q cells",
+      "Fin n indexing",
+      "floor to Fin coercion"
+    ],
+    "prerequisites": [
+      "frac and its [0,1) bounds",
+      "Int.floor_lt, Int.floor_nonneg, Int.toNat_of_nonneg",
+      "Fin Q membership proofs"
+    ]
+  },
+  {
+    "id": "ann-main",
+    "proofId": "dirichlet-approximation-theorem",
+    "range": { "startLine": 72, "endLine": 140 },
+    "type": "theorem",
+    "title": "dirichlet_approximation — The Main Theorem",
+    "content": "The headline result: for every real α and every Q ≥ 1 there exist integers p, q with 1 ≤ q ≤ Q and |qα − p| < 1/Q. The proof applies `Fintype.exists_ne_map_eq_of_card_lt` to intervalMap (legal since |Fin (Q+1)| > |Fin Q|), obtaining distinct i ≠ j with the same interval index. A `wlog` reduces to j < i; then q = i − j satisfies 1 ≤ q ≤ Q (since i, j ∈ {0,…,Q}) and p = ⌊iα⌋ − ⌊jα⌋ is the numerator. The algebraic identity qα − p = frac(iα) − frac(jα) rewrites the goal, and `interval_bound` applied to Q·frac(iα), Q·frac(jα) (whose floors coincide by the collision) gives |frac(iα) − frac(jα)| < 1/Q after factoring out Q. This is Dirichlet's 1842 argument transcribed faithfully.",
+    "mathContext": "$\\forall \\alpha\\in\\mathbb{R},\\ \\forall Q\\ge 1,\\ \\exists p\\in\\mathbb{Z},\\ q\\in\\mathbb{N}:\\ 1\\le q\\le Q \\,\\wedge\\, |q\\alpha - p| < 1/Q$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "Diophantine approximation",
+      "wlog reduction",
+      "denominator extraction q = i − j"
+    ],
+    "prerequisites": [
+      "Fintype.exists_ne_map_eq_of_card_lt",
+      "intervalMap and interval_bound",
+      "wlog tactic",
+      "Nat/Int/Real casting"
+    ]
+  },
+  {
+    "id": "ann-pigeonhole-collision",
+    "proofId": "dirichlet-approximation-theorem",
+    "range": { "startLine": 75, "endLine": 103 },
+    "type": "insight",
+    "title": "The Pigeonhole Collision and Extraction of p, q",
+    "content": "The conceptual heart of the proof. Because |Fin (Q+1)| = Q+1 > Q = |Fin Q|, the map intervalMap cannot be injective, so `Fintype.exists_ne_map_eq_of_card_lt` produces distinct indices i ≠ j with intervalMap i = intervalMap j — two of the Q+1 fractional parts {iα}, {jα} land in the same sub-interval. After a `wlog` normalises to j < i, the approximation is read off with no further search: the denominator is q = i − j (forced into 1 ≤ q ≤ Q because i, j ∈ {0,…,Q}) and the numerator is p = ⌊iα⌋ − ⌊jα⌋, linked by the exact identity qα − p = frac(iα) − frac(jα). The good approximation thus falls out of the collision itself, not from any explicit construction.",
+    "mathContext": "$|\\mathrm{Fin}(Q{+}1)| = Q+1 > Q = |\\mathrm{Fin}\\,Q| \\Rightarrow$ non-injective; the colliding pair gives $q = i-j$, $p = \\lfloor i\\alpha\\rfloor - \\lfloor j\\alpha\\rfloor$, and $q\\alpha - p = \\{i\\alpha\\} - \\{j\\alpha\\}$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "Fintype.card non-injectivity",
+      "wlog reduction",
+      "denominator extraction"
+    ],
+    "prerequisites": [
+      "Fintype.exists_ne_map_eq_of_card_lt",
+      "Fin n indexing and isLt",
+      "Nat subtraction casts"
+    ]
+  }
+]

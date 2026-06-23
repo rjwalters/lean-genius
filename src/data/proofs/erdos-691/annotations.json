@@ -1,0 +1,340 @@
+[
+  {
+    "id": "ann-e691-imports",
+    "proofId": "erdos-691",
+    "type": "concept",
+    "title": "Number Theory and Analysis Imports",
+    "content": "Imports Nat.Basic, Set.Basic, Finset, Real.Basic, Filter.AtTopBot, and tactics from Mathlib.",
+    "mathContext": "This formalization combines discrete combinatorics (`Finset`, `Nat`) with real analysis (`Real.Basic`, `Filter.AtTopBot`). The `limsup` and `liminf` from `Filter.AtTopBot` define upper and lower density, while `Filter.Tendsto` captures asymptotic density. The `open Finset Set Filter` declaration brings these namespaces into scope for cleaner notation.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Filter.atTop",
+      "limsup",
+      "liminf",
+      "Tendsto"
+    ],
+    "prerequisites": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Order.Filter.AtTopBot"
+    ],
+    "range": {
+      "startLine": 18,
+      "endLine": 26
+    }
+  },
+  {
+    "id": "ann-e691-countingFunction",
+    "proofId": "erdos-691",
+    "type": "definition",
+    "title": "Counting Function",
+    "content": "countingFunction S n = |{a ∈ S : a ≤ n}|, the number of elements of S in [0, n].",
+    "mathContext": "The **counting function** $A(x) = |A \\cap [0, x]|$ is the fundamental tool for measuring the 'size' of a set $A \\subseteq \\mathbb{N}$. The ratio $A(n)/n$ gives the proportion of $[1, n]$ covered by $A$, and its limit (if it exists) is the asymptotic density. The implementation uses `Finset.range(n+1).filter(· ∈ S).card`, which counts elements in $\\{0, 1, \\ldots, n\\}$ belonging to $S$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counting function",
+      "natural density",
+      "Finset.filter"
+    ],
+    "prerequisites": [
+      "Finset.range",
+      "Finset.filter",
+      "Finset.card"
+    ],
+    "range": {
+      "startLine": 33,
+      "endLine": 34
+    }
+  },
+  {
+    "id": "ann-e691-densities",
+    "proofId": "erdos-691",
+    "type": "definition",
+    "title": "Upper and Lower Density",
+    "content": "upperDensity = limsup of A(n)/n; lowerDensity = liminf of A(n)/n. When they agree, the set has asymptotic density.",
+    "mathContext": "The **upper density** $\\overline{d}(S) = \\limsup_{n \\to \\infty} |S \\cap [0,n]|/n$ and **lower density** $\\underline{d}(S) = \\liminf_{n \\to \\infty} |S \\cap [0,n]|/n$ always satisfy $0 \\leq \\underline{d} \\leq \\overline{d} \\leq 1$. When they agree, the common value is the **natural density** (or asymptotic density). The formalization uses Mathlib's `limsup` and `liminf` on `Filter.atTop`, providing a clean interface to the topological definition of these limits.",
+    "significance": "key",
+    "relatedConcepts": [
+      "upper density",
+      "lower density",
+      "limsup",
+      "liminf"
+    ],
+    "prerequisites": [
+      "countingFunction",
+      "Filter.atTop",
+      "limsup",
+      "liminf"
+    ],
+    "range": {
+      "startLine": 37,
+      "endLine": 42
+    }
+  },
+  {
+    "id": "ann-e691-hasDensity",
+    "proofId": "erdos-691",
+    "type": "definition",
+    "title": "Asymptotic Density and Density One",
+    "content": "HasDensity S d says S has natural density d; HasDensityOne says S has density 1 (covers almost all positive integers).",
+    "mathContext": "The predicate `HasDensity S d` is formalized as `Filter.Tendsto (fun n => A(n)/n) atTop (nhds d)`, the standard definition of natural density as a limit. A set with density 1 'covers almost all' positive integers in the sense that the proportion of $[1, n]$ *not* in $S$ goes to 0. For example, the squarefree integers have density $6/\\pi^2$, the primes have density 0, and the set of all positive integers has density 1. The Behrend property asks when $M_A$ has density 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "natural density",
+      "Filter.Tendsto",
+      "nhds"
+    ],
+    "prerequisites": [
+      "countingFunction",
+      "Filter.Tendsto"
+    ],
+    "range": {
+      "startLine": 45,
+      "endLine": 49
+    }
+  },
+  {
+    "id": "ann-e691-multiplesOf",
+    "proofId": "erdos-691",
+    "type": "definition",
+    "title": "Set of Multiples",
+    "content": "multiplesOf A = {n > 0 : ∃ a ∈ A, a | n}, the set of all positive integers divisible by some element of A.",
+    "mathContext": "The **set of multiples** $M_A = \\{n \\geq 1 : \\exists a \\in A, a \\mid n\\}$ is the central object. By inclusion-exclusion, $|M_A \\cap [1, x]| = \\sum_{a \\in A} \\lfloor x/a \\rfloor - \\sum_{a < b} \\lfloor x/(ab) \\rfloor + \\ldots$, but this alternating sum is unwieldy for infinite $A$. The Behrend property $d(M_A) = 1$ means the 'sieve' by $A$ catches almost all integers. The positivity condition $n > 0$ excludes 0 from the multiples.",
+    "significance": "key",
+    "relatedConcepts": [
+      "set of multiples",
+      "inclusion-exclusion",
+      "sieve theory"
+    ],
+    "prerequisites": [
+      "Set ℕ",
+      "divisibility"
+    ],
+    "range": {
+      "startLine": 54,
+      "endLine": 55
+    }
+  },
+  {
+    "id": "ann-e691-isBehrend",
+    "proofId": "erdos-691",
+    "type": "definition",
+    "title": "Behrend Sequence",
+    "content": "A is a Behrend sequence if multiplesOf A has density 1: almost all positive integers are divisible by some element of A.",
+    "mathContext": "A **Behrend sequence** (named after Felix Behrend) is a set $A \\subseteq \\mathbb{N}$ whose multiples cover almost all positive integers: $d(M_A) = 1$. This is a strong condition—the primes form a Behrend sequence (since $\\sum 1/p = \\infty$), but no finite set does. The concept was introduced by Erdős in the study of density of divisor sets and connects to probabilistic number theory: heuristically, $A$ is Behrend if the 'probability' of a random integer not being divisible by any $a \\in A$ is 0.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Behrend sequences",
+      "density of multiples",
+      "probabilistic number theory"
+    ],
+    "prerequisites": [
+      "multiplesOf",
+      "HasDensityOne"
+    ],
+    "range": {
+      "startLine": 58,
+      "endLine": 59
+    }
+  },
+  {
+    "id": "ann-e691-structuralLemmas",
+    "proofId": "erdos-691",
+    "type": "concept",
+    "title": "Structural Lemmas for Multiples (Fully Proved)",
+    "content": "Seven fully proved lemmas: membership characterization, monotonicity, empty set, self-membership, multiple membership, closure under multiplication, union decomposition.",
+    "mathContext": "These **fully proved** structural lemmas establish the basic algebraic properties of $M_A$: (1) `mem_multiplesOf`: membership is $n > 0 \\wedge \\exists a \\in A, a \\mid n$; (2) `multiplesOf_mono`: $A \\subseteq B \\implies M_A \\subseteq M_B$; (3) `multiplesOf_empty`: $M_\\emptyset = \\emptyset$; (4) `self_mem_multiplesOf`: $a \\in A \\implies a \\in M_A$; (5) `mul_mem_multiplesOf`: $a \\in A, k > 0 \\implies ka \\in M_A$; (6) `multiplesOf_mul_closed`: $M_A$ is closed under positive multiples; (7) `multiplesOf_union`: $M_{A \\cup B} = M_A \\cup M_B$. These form the foundation for density arguments about $M_A$. All proofs are complete with no sorry.",
+    "significance": "key",
+    "relatedConcepts": [
+      "set algebra",
+      "divisibility properties",
+      "monotonicity"
+    ],
+    "prerequisites": [
+      "multiplesOf",
+      "Finset",
+      "dvd_trans"
+    ],
+    "range": {
+      "startLine": 64,
+      "endLine": 109
+    }
+  },
+  {
+    "id": "ann-e691-countingBounds",
+    "proofId": "erdos-691",
+    "type": "concept",
+    "title": "Counting Function Bounds (Fully Proved)",
+    "content": "The counting function is monotone for subsets and bounded by n+1. Both proved without sorry.",
+    "mathContext": "Two fully proved bounds on the counting function: `countingFunction_mono` shows $A \\subseteq B \\implies A(n) \\leq B(n)$ (since more elements pass the filter), and `countingFunction_le` shows $A(n) \\leq n + 1$ (since at most $n+1$ elements lie in $\\{0, \\ldots, n\\}$). The monotonicity proof uses `Finset.card_le_card` with `Finset.filter_subset_filter`; the upper bound uses `Finset.card_filter_le`. These are foundational for density arguments.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.card_le_card",
+      "counting function bounds"
+    ],
+    "prerequisites": [
+      "countingFunction",
+      "Finset.card_le_card",
+      "Finset.card_filter_le"
+    ],
+    "range": {
+      "startLine": 112,
+      "endLine": 121
+    }
+  },
+  {
+    "id": "ann-e691-pairwiseCoprime",
+    "proofId": "erdos-691",
+    "type": "definition",
+    "title": "Pairwise Coprime Sets",
+    "content": "All elements > 1 and every pair is coprime: gcd(a, b) = 1 for distinct a, b ∈ A.",
+    "mathContext": "The **pairwise coprimality** condition ensures the Chinese Remainder Theorem applies: for pairwise coprime moduli $a_1, \\ldots, a_k$, the density of integers not divisible by any $a_i$ is $\\prod (1 - 1/a_i)$. By the characterization theorem, this product converges to 0 (equivalently, $\\sum 1/a_i$ diverges) iff $A$ is Behrend. The condition $a > 1$ for all $a \\in A$ excludes 1, which would trivially make every integer a multiple.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.Coprime",
+      "CRT",
+      "multiplicative density"
+    ],
+    "prerequisites": [
+      "Nat.Coprime"
+    ],
+    "range": {
+      "startLine": 126,
+      "endLine": 128
+    }
+  },
+  {
+    "id": "ann-e691-divergentReciprocalSum",
+    "proofId": "erdos-691",
+    "type": "definition",
+    "title": "Divergent Reciprocal Sum",
+    "content": "Σ 1/a = ∞: for every C > 0, a finite subset of A has reciprocal sum ≥ C.",
+    "mathContext": "The condition $\\sum_{a \\in A} 1/a = \\infty$ is formalized as: for every $C > 0$, there exists a finite subset $S \\subseteq A$ with $\\sum_{a \\in S} 1/a \\geq C$. This avoids infinite sums by using finite approximations. For primes, $\\sum_p 1/p = \\infty$ (Euler), so primes are Behrend. For the set $\\{n^2 : n \\geq 2\\}$, $\\sum 1/n^2 = \\pi^2/6 - 1 < \\infty$, so squares are not Behrend (consistent with the density of $M_{\\{n^2\\}}$ being $1 - \\prod(1-1/p^2) = 1 - 6/\\pi^2 \\approx 0.39$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "divergent series",
+      "Euler's theorem on primes",
+      "reciprocal sum"
+    ],
+    "prerequisites": [
+      "Finset",
+      "Real"
+    ],
+    "range": {
+      "startLine": 132,
+      "endLine": 134
+    }
+  },
+  {
+    "id": "ann-e691-coprimeBehrend",
+    "proofId": "erdos-691",
+    "type": "concept",
+    "title": "Coprime Behrend Criterion",
+    "content": "For pairwise coprime A with elements > 1: A is Behrend iff Σ 1/a diverges.",
+    "mathContext": "This is a classical result in multiplicative number theory. The forward direction uses inclusion-exclusion: for pairwise coprime $a_1, \\ldots, a_k$, the density of integers divisible by at least one $a_i$ is $1 - \\prod(1-1/a_i)$. If $\\sum 1/a_i = \\infty$, then $\\prod(1-1/a_i) \\to 0$, giving density 1. The reverse uses the fact that if $\\sum 1/a < \\infty$, then $\\prod(1-1/a) > 0$, so a positive proportion of integers avoids all elements of $A$. The pairwise coprimality is essential: without it, the inclusion-exclusion becomes much more complex.",
+    "significance": "key",
+    "relatedConcepts": [
+      "inclusion-exclusion",
+      "infinite products",
+      "Euler products"
+    ],
+    "prerequisites": [
+      "IsBehrend",
+      "IsPairwiseCoprime",
+      "HasDivergentReciprocalSum"
+    ],
+    "range": {
+      "startLine": 138,
+      "endLine": 139
+    }
+  },
+  {
+    "id": "ann-e691-primesBehrend",
+    "proofId": "erdos-691",
+    "type": "concept",
+    "title": "Primes Are Behrend",
+    "content": "The set of all primes is a Behrend sequence, since Σ 1/p = ∞ (Euler) and primes are pairwise coprime.",
+    "mathContext": "This is a direct corollary of `coprime_behrend_iff` applied to $A = \\{p : p \\text{ prime}\\}$. Primes are pairwise coprime by definition, and **Euler** proved $\\sum_p 1/p = \\infty$ in 1737, establishing that the harmonic sum over primes diverges. The density of $M_{\\text{primes}}$ being 1 means almost every positive integer has a prime divisor—which is trivially true since every $n \\geq 2$ has a prime factor. The non-trivial content is the density-theoretic framework that extends to more subtle sets.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler's theorem",
+      "prime harmonic series",
+      "fundamental theorem of arithmetic"
+    ],
+    "prerequisites": [
+      "coprime_behrend_iff",
+      "primes"
+    ],
+    "range": {
+      "startLine": 142,
+      "endLine": 142
+    }
+  },
+  {
+    "id": "ann-e691-blockSequence",
+    "proofId": "erdos-691",
+    "type": "definition",
+    "title": "Lacunary Block Sequences",
+    "content": "A sequence with bounded ratios C₁ ≤ n_{i+1}/n_i ≤ C₂ and block widths η_k, defining A as the union of blocks (n_k, (1+η_k)·n_k].",
+    "mathContext": "**Block sequences** are a testing ground for Behrend theory: $A = \\bigcup_k (n_k, (1+\\eta_k) n_k]$ where $(n_k)$ is lacunary (gaps grow geometrically). The width parameters $\\eta_k$ control the 'thickness' of each block. When $\\sum \\eta_k < \\infty$, the total block width is finite and $A$ cannot be Behrend (not enough multiples to cover density 1). Tenenbaum's theorem gives a sharp threshold when $\\eta_k = (k+1)^{-\\beta}$: the sequence is Behrend iff $\\beta < \\log 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lacunary sequences",
+      "block sequences",
+      "geometric growth"
+    ],
+    "prerequisites": [
+      "Set ℕ",
+      "Real"
+    ],
+    "range": {
+      "startLine": 148,
+      "endLine": 157
+    }
+  },
+  {
+    "id": "ann-e691-convergentEta",
+    "proofId": "erdos-691",
+    "type": "concept",
+    "title": "Convergent η Obstruction",
+    "content": "If Σ η_k converges, the block sequence is NOT Behrend: finite total block width prevents density 1.",
+    "mathContext": "When $\\sum_{k=1}^{\\infty} \\eta_k < \\infty$, the total Lebesgue measure (in a logarithmic scale) of all blocks is finite. This means the multiples of $A$ cannot cover density 1: there are large gaps between blocks where no multiples fall. The proof uses the Borel-Cantelli lemma: if $\\sum \\eta_k < \\infty$, then only finitely many blocks contain any given integer $n$ (for large $n$), preventing $M_A$ from having density 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Borel-Cantelli lemma",
+      "convergent series",
+      "density obstruction"
+    ],
+    "prerequisites": [
+      "IsBlockSequence",
+      "IsBehrend"
+    ],
+    "range": {
+      "startLine": 160,
+      "endLine": 163
+    }
+  },
+  {
+    "id": "ann-e691-tenenbaumThreshold",
+    "proofId": "erdos-691",
+    "type": "concept",
+    "title": "Tenenbaum's Threshold Theorem",
+    "content": "For lacunary block sequences with η_k = (k+1)^{-β}: Behrend iff β < log 2 ≈ 0.693.",
+    "mathContext": "**Tenenbaum's theorem** (1996) establishes the sharp threshold $\\beta_0 = \\log 2$ for lacunary block Behrend sequences. When $\\beta < \\log 2$, the blocks are thick enough that their multiples eventually cover almost all integers. When $\\beta > \\log 2$, the blocks thin out too fast. The threshold $\\log 2$ arises from the interplay between the geometric growth of block positions and the power-law decay of block widths: the critical exponent is determined by solving $\\sum_{k \\geq 1} (k+1)^{-\\beta} = \\infty$ with a geometric correction factor that shifts the threshold from 1 to $\\log 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Tenenbaum's theorem",
+      "sharp threshold",
+      "lacunary series"
+    ],
+    "prerequisites": [
+      "IsLacunaryBounded",
+      "IsBlockSequence",
+      "IsBehrend",
+      "Real.log"
+    ],
+    "range": {
+      "startLine": 173,
+      "endLine": 173
+    }
+  }
+]

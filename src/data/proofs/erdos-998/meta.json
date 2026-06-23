@@ -1,0 +1,191 @@
+{
+  "id": "erdos-998",
+  "title": "Erdős Problem #998: Kesten's Equidistribution Characterization",
+  "slug": "erdos-998",
+  "description": "For irrational α, intervals [u,v) with O(1) discrepancy in #{m ≤ n : {αm} ∈ [u,v)} are exactly those where u = {αk} and v = {αℓ}. Solved by Kesten (1966).",
+  "meta": {
+    "author": "Kesten (1966)",
+    "sourceUrl": "https://erdosproblems.com/998",
+    "date": "1966",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos998Problem.lean",
+    "tags": [
+      "erdos",
+      "analysis",
+      "diophantine-approximation",
+      "equidistribution",
+      "discrepancy"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 998,
+    "erdosUrl": "https://erdosproblems.com/998",
+    "erdosProblemStatus": "proved",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.floor",
+        "description": "Floor function on real numbers",
+        "module": "Mathlib.Algebra.Order.Floor"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filter elements of a finite set",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Real square root function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Integrals"
+      }
+    ],
+    "originalContributions": [
+      "frac definition: fractional part {x} = x - ⌊x⌋",
+      "frac_nonneg theorem: 0 ≤ {x} (proved)",
+      "frac_lt_one theorem: {x} < 1 (proved)",
+      "countingFunction definition: counts {αm} ∈ [u,v) for m = 1..n",
+      "hasBoundedDiscrepancy definition: O(1) discrepancy property",
+      "endpointsFromOrbit definition: u,v are fractional parts of α-multiples",
+      "hecke_ostrowski axiom: orbit endpoints imply bounded discrepancy",
+      "kesten_theorem axiom: bounded discrepancy implies orbit endpoints",
+      "erdos_szusz_characterization theorem: complete iff characterization (proved)",
+      "three_distance_theorem: at most 3 gap lengths (documented, not a Lean axiom)",
+      "weyl_equidistribution: equidistribution for irrational rotations (documented, not a Lean axiom)",
+      "erdos_998_summary theorem: restates full characterization (proved)"
+    ],
+    "axiomCount": 2,
+    "lineCount": 190,
+    "assumptions": "2 axioms: hecke_ostrowski, kesten_theorem. 0 sorries.",
+    "theoremCount": 4,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #998 was posed by **Paul Erdős** and **Péter Szüsz** in the 1960s, asking for a characterization of intervals with minimal discrepancy for irrational rotations. The study of equidistribution modulo 1 began with **Hermann Weyl**'s landmark 1916 paper 'Über die Gleichverteilung von Zahlen mod. Eins' in *Mathematische Annalen*, which proved that $\\{m\\alpha\\}$ is equidistributed in $[0,1)$ for irrational $\\alpha$—meaning the count of points in any interval is approximately proportional to its length, with $O(\\sqrt{n})$ error.\n\n**Erich Hecke** (1922) proved in 'Über analytische Funktionen und die Verteilung von Zahlen mod. eins' that intervals whose endpoints are $\\alpha$-orbit points (i.e., $u = \\{\\alpha k\\}$, $v = \\{\\alpha \\ell\\}$) enjoy the much stronger $O(1)$ discrepancy. **Alexander Ostrowski** (1927, 1930) extended this, establishing connections to continued fraction expansions and what is now called the Ostrowski numeration system. Erdős and Szüsz conjectured the converse: these are the *only* intervals with $O(1)$ discrepancy.\n\n**Harry Kesten** proved this in 'On a conjecture of Erdős and Szüsz related to uniform distribution mod 1' (*Acta Arithmetica* 12, 1966, pp. 193–212). Kesten's argument uses the three-distance theorem (Sós–Surányi–Świerczkowski, 1958) and properties of continued fraction convergents to show that non-orbit endpoints inevitably produce growing discrepancy. The result has connections to the theory of bounded remainder sets, Rauzy fractals, and substitution dynamical systems.",
+    "problemStatement": "Let $\\alpha$ be an irrational number. Is it true that if, for all large $n$,\n$$\\#\\{ 1 \\leq m \\leq n : \\{\\alpha m\\} \\in [u,v)\\} = n(v-u) + O(1)$$\nthen $u = \\{\\alpha k\\}$ and $v = \\{\\alpha \\ell\\}$ for some integers $k$ and $\\ell$?\n\n**Answer:** YES. Proved by Kesten (1966).",
+    "text": "For irrational α, intervals [u,v) with O(1) discrepancy in #{m ≤ n : {αm} ∈ [u,v)} are exactly those where u = {αk} and v = {αℓ}. Solved by Kesten (1966).",
+    "proofStrategy": "The Lean formalization defines $\\{x\\} = x - \\lfloor x \\rfloor$ and proves $0 \\leq \\{x\\} < 1$ using Mathlib's `Int.floor_le` and `Int.lt_floor_add_one`. The counting function $N(n, u, v, \\alpha)$ is computed via `Finset.filter`. The $O(1)$ discrepancy property `hasBoundedDiscrepancy` requires $|N(n,u,v,\\alpha) - n(v-u)| \\leq C$ for all $n$. The characterization is a biconditional: Hecke-Ostrowski provides the backward direction (orbit endpoints $\\Rightarrow$ bounded discrepancy), Kesten provides the forward direction (bounded discrepancy $\\Rightarrow$ orbit endpoints). Both deep theorems are axiomatized; the combination is proved by `constructor`.",
+    "keyInsights": [
+      "**Fractional parts as circle rotations:** The sequence $\\{m\\alpha\\}$ is the orbit of $0$ under the irrational rotation $x \\mapsto x + \\alpha \\pmod{1}$ on $\\mathbb{R}/\\mathbb{Z}$. This dynamical systems perspective is key to understanding the regularity.",
+      "**O(1) vs O($\\sqrt{n}$) discrepancy:** Weyl's theorem gives $O(\\sqrt{n})$ error for generic intervals. $O(1)$ discrepancy is exponentially stronger—it means the count stays within a fixed constant of the expected value forever. This is a 'bounded remainder set' condition.",
+      "**Three-distance theorem as structural backbone:** The gaps between consecutive orbit points $\\{k\\alpha\\}$ have at most 3 distinct lengths (Sós 1958), related to continued fraction convergents. Orbit-aligned intervals respect this gap structure, which is why their counts stay bounded.",
+      "**Kesten's converse via continued fractions:** Kesten showed that if an endpoint $u$ is NOT of the form $\\{k\\alpha\\}$, it falls in the interior of a gap, disrupting the count by an amount that grows with the continued fraction denominators.",
+      "**Connection to Ostrowski representation:** Every positive integer $n$ has a unique representation using continued fraction denominators of $\\alpha$ (Ostrowski numeration). This number-theoretic structure underlies the precise counting arguments in both Hecke-Ostrowski and Kesten's proofs."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Mathematical analysis"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 33,
+      "endLine": 42,
+      "summary": "Imports Mathlib modules for $\\lfloor x \\rfloor$ (`Mathlib.Algebra.Order.Floor`), `Finset` (`Mathlib.Data.Finset.Basic`), $\\sqrt{n}$ (`Mathlib.Analysis.SpecialFunctions.Integrals`), and opens the `Set` namespace.",
+      "mathContext": "Imports Mathlib modules for $\\lfloor x \\rfloor$ (`Mathlib.Algebra.Order.Floor`), `Finset` (`Mathlib.Data.Finset.Basic`), $\\sqrt{n}$ (`Mathlib.Analysis.SpecialFunctions.Integrals`), and opens the `Set` namespace."
+    },
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 43,
+      "endLine": 70,
+      "summary": "Defines the fractional part $\\{x\\} = x - \\lfloor x \\rfloor$ and proves $0 \\leq \\{x\\} < 1$ via `Int.floor_le` and `Int.lt_floor_add_one`. Defines irrationality as $\\neg \\exists p\\, q \\in \\mathbb{Z},\\, q \\neq 0 \\wedge \\alpha = p/q$.",
+      "mathContext": "Defines the fractional part $\\{x\\} = x - \\lfloor x \\rfloor$ and proves $0 \\leq \\{x\\} < 1$ via `Int.floor_le` and `Int.lt_floor_add_one`. Defines irrationality as $\\neg \\exists p\\, q \\in \\mathbb{Z},\\, q \\neq 0 \\wedge \\alpha = p/q$."
+    },
+    {
+      "id": "counting-function",
+      "title": "Counting Function",
+      "startLine": 71,
+      "endLine": 88,
+      "summary": "Defines $N(n, u, v, \\alpha) = \\#\\{1 \\leq m \\leq n : \\{\\alpha m\\} \\in [u, v)\\}$ via `Finset.filter` on `Finset.range(n+1) \\setminus \\{0\\}$. Also provides a set-theoretic version `countSet` for alternative reasoning.",
+      "mathContext": "Defines $N(n, u, v, \\alpha) = \\#\\{1 \\leq m \\leq n : \\{\\alpha m\\} \\in [u, v)\\}$ via `Finset.filter` on `Finset.range(n+1) \\setminus \\{0\\}$."
+    },
+    {
+      "id": "bounded-discrepancy",
+      "title": "Bounded Discrepancy",
+      "startLine": 89,
+      "endLine": 108,
+      "summary": "Defines $O(1)$ discrepancy: $\\exists C > 0,\\, \\forall n \\geq 1,\\, |N(n,u,v,\\alpha) - n(v-u)| \\leq C$. Axiomatizes the generic Weyl bound $|N(n,u,v,\\alpha) - n(v-u)| \\leq C\\sqrt{n}$ as `weyl_generic_bound`.",
+      "mathContext": "Defines $O(1)$ discrepancy: $\\exists C > 0,\\, \\forall n \\geq 1,\\, |N(n,u,v,\\alpha) - n(v-u)| \\leq C$. Axiomatizes the generic Weyl bound $|N(n,u,v,\\alpha) - n(v-u)| \\leq C\\sqrt{n}$ as `weyl_generic_bound`."
+    },
+    {
+      "id": "characterization",
+      "title": "The Characterization",
+      "startLine": 109,
+      "endLine": 147,
+      "summary": "Defines `endpointsFromOrbit`: $u = \\{\\alpha k\\}$ or $u = 0$, and $v = \\{\\alpha \\ell\\}$ or $v = 1$. States the Hecke-Ostrowski backward direction and Kesten's forward direction as axioms. Proves the biconditional `erdos_szusz_characterization` by `constructor`.",
+      "mathContext": "Defines `endpointsFromOrbit`: $u = \\{\\alpha k\\}$ or $u = 0$, and $v = \\{\\alpha \\ell\\}$ or $v = 1$. States the Hecke-Ostrowski backward direction and Kesten's forward direction as axioms. Proves the biconditional `erdos_szusz_characterization` by `constructor`."
+    },
+    {
+      "id": "three-distance",
+      "title": "Three-Distance Theorem",
+      "startLine": 148,
+      "endLine": 162,
+      "summary": "Documents the three-distance theorem (not a Lean axiom): $\\{\\alpha\\}, \\{2\\alpha\\}, \\ldots, \\{n\\alpha\\}$ partition $[0,1)$ into intervals of at most 3 distinct lengths $L_1, L_2, L_3$ with $L_3 = L_1 + L_2$.",
+      "mathContext": "Mathematical content: three-distance theorem (documented, not a Lean axiom): $\\{\\$\\alpha$\\}, \\{2\\$\\alpha$\\}, \\ldots, \\{n\\$\\alpha$\\}$ partition $[0,1)$ into intervals of at most 3 distinct lengths $L_1, L_2, L_3$ with $L_3 = L_1 + L_2$."
+    },
+    {
+      "id": "weyl",
+      "title": "Weyl's Equidistribution",
+      "startLine": 163,
+      "endLine": 173,
+      "summary": "Documents Weyl's theorem (not a Lean axiom): $N(n,u,v,\\alpha)/n \\to (v-u)$ as $n \\to \\infty$ for irrational $\\alpha$. Expressed as $\\forall \\varepsilon > 0,\\, \\exists N,\\, \\forall n \\geq N,\\, |N(n,u,v,\\alpha)/n - (v-u)| < \\varepsilon$.",
+      "mathContext": "Mathematical content: Weyl's theorem (documented, not a Lean axiom): $N(n,u,v,\\alpha)/n \\to (v-u)$ as $n \\to \\infty$ for irrational $\\alpha$. Expressed as $\\forall \\varepsilon > 0,\\, \\exists N,\\, \\forall n \\geq N,\\, |N(n,u,v,\\alpha)/n - (v-u)| < \\varepsilon$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 174,
+      "endLine": 190,
+      "summary": "Docstring summarizing the full result. `erdos_998_summary` restates the characterization in universally quantified form: $\\forall u, v \\in [0,1),\\, \\text{hasBoundedDiscrepancy}(\\alpha, u, v) \\leftrightarrow \\text{endpointsFromOrbit}(\\alpha, u, v)$.",
+      "mathContext": "`erdos_998_summary` restates the characterization in universally quantified form: $\\forall u, v \\in [0,1),\\, \\text{hasBoundedDiscrepancy}(\\alpha, u, v) \\leftrightarrow \\text{endpointsFromOrbit}(\\alpha, u, v)$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #998 was SOLVED by Kesten (1966). An interval $[u,v) \\subseteq [0,1)$ has $O(1)$ discrepancy for the irrational rotation $m \\mapsto \\{m\\alpha\\}$ if and only if both endpoints are fractional parts of integer multiples of $\\alpha$. The formalization captures this as a clean biconditional, with the deep theorems of Hecke-Ostrowski (1922-1930) and Kesten (1966) axiomatized.",
+    "implications": "**Theoretical Significance**: This characterization reveals the special structure of irrational rotations on the circle.\n\nOnly orbit-aligned intervals achieve minimal discrepancy, connecting number theory (continued fractions, Ostrowski representations) to dynamical systems (irrational rotations, bounded remainder sets). The result has modern extensions to higher-dimensional rotations, substitution systems, and Rauzy fractals.",
+    "openQuestions": [
+      "What is the optimal constant $C$ in $|N(n,u,v,\\alpha) - n(v-u)| \\leq C$ for specific classes of $\\alpha$ (e.g., golden ratio, algebraic irrationals)?",
+      "Can the Hecke-Ostrowski direction be fully proved in Lean using Mathlib's continued fraction library?",
+      "How does the Kesten characterization extend to simultaneous irrational rotations $(\\alpha_1, \\ldots, \\alpha_d)$ on the $d$-torus?",
+      "Is there a formalization path for the three-distance theorem using Mathlib's Finset and order theory?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "Both problems study extremal properties of subsets of natural numbers: #882 asks about subset sums avoiding divisibility, while #998 asks about discrepancy of fractional parts. Both connect to the structure of arithmetic sequences and use counting-based arguments.",
+      "targetId": "erdos-882"
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "related",
+      "description": "Both concern analytic properties of series and sums — the divergence of the harmonic series is foundational to the convergence analysis relevant here"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Integrals",
+      "Mathlib.Algebra.Order.Floor"
+    ],
+    "opens": [
+      "Set"
+    ],
+    "namespace": "Erdos998",
+    "lineCount": 190,
+    "axiomCount": 2,
+    "theoremCount": 4,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos998Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

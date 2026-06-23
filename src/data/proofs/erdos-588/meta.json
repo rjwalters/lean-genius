@@ -1,0 +1,198 @@
+{
+  "id": "erdos-588",
+  "title": "Erdős Problem #588: k-Point Lines in General Position",
+  "slug": "erdos-588",
+  "description": "Is f_k(n) = o(n²) for k ≥ 4? Here f_k(n) is the max number of k-rich lines for n points with no k+1 collinear. OPEN. Best lower bound: n^{2-o(1)} (Solymosi-Stojaković 2013).",
+  "meta": {
+    "author": "Paul Erdős",
+    "sourceUrl": "https://erdosproblems.com/588",
+    "date": "1970s",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos588Problem.lean",
+    "tags": [
+      "erdos",
+      "discrete-geometry",
+      "incidences",
+      "point-line",
+      "k-rich-lines",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 588,
+    "erdosUrl": "https://erdosproblems.com/588",
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": "$100",
+    "dateAdded": "2026-01-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset",
+        "description": "Finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit definition",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Point: geometric primitive (abbrev Point := ℝ × ℝ)",
+      "f: extremal function for k-rich lines (axiom f (k n : ℕ) : ℕ)",
+      "sylvester_k3: f₃(n) = n²/6 + O(n) (axiom)",
+      "erdos_588: theorem stating Sylvester's bound (proved from sylvester_k3)",
+      "Documentation of Kárteszi, Grünbaum, and Solymosi-Stojaković bounds in source comments (not formalized as axioms)"
+    ],
+    "dateUpdated": "2026-02-12",
+    "mathContext": {
+      "field": "Discrete Geometry",
+      "subfield": "Point-Line Incidences",
+      "difficulty": "research-level",
+      "keyTechniques": [
+        "Sylvester-Gallai theorem for k=3 baseline",
+        "Lattice point constructions with projective transformations (Solymosi-Stojaković)",
+        "Szemerédi-Trotter incidence bounds",
+        "Extremal function analysis over point configurations",
+        "Number-theoretic structure of grid collinearities"
+      ],
+      "prerequisites": [
+        "Point-line incidence geometry in the plane",
+        "Asymptotic notation (little-o, big-O, big-Theta)",
+        "Szemerédi-Trotter theorem (conceptual)",
+        "Extremal combinatorics and counting arguments"
+      ],
+      "consequences": [
+        "Would establish a phase transition in k-rich line counts at k=4",
+        "Would complement Szemerédi-Trotter with a qualitative structural result",
+        "Connections to the orchard problem and collinear point triples"
+      ]
+    },
+    "axiomCount": 2,
+    "lineCount": 87,
+    "assumptions": "2 axioms: f, sylvester_k3. 0 sorries.",
+    "theoremCount": 1,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #588: k-Point Lines in General Position**\n\nThis problem, posed by Paul Erdős in the 1970s with a $100 prize, generalizes Problem #101 (the $k=4$ case). It asks about the maximum number of '$k$-rich' lines (lines containing $\\ge k$ points) when no $k+1$ points are collinear.\n\n**The Function $f_k(n)$**: Given $n$ points in $\\mathbb{R}^2$ with no $k+1$ collinear, $f_k(n)$ is the maximum number of lines through $\\ge k$ points.\n\n**Key Developments:**\n- **Sylvester**: Established $f_3(n) = n^2/6 + O(n)$ — the $k=3$ case is quadratic, motivating the question for $k \\ge 4$\n- **Kárteszi (1963)**: Proved $f_k(n) \\ge \\Omega(n \\log n)$ using combinatorial constructions, showing the function grows superlinearly\n- **Grünbaum (1976)**: Improved to $f_k(n) \\ge \\Omega(n^{1+1/(k-2)})$ using algebraic configurations. For $k=4$ this gives $\\Omega(n^{3/2})$\n- **Solymosi-Stojaković (2013)**: Achieved $f_k(n) \\ge n^{2-O(1/\\sqrt{\\log n})}$ via lattice-point constructions with projective transformations. This is $n^{2-o(1)}$, tantalizingly close to $n^2$\n\n**The Conjecture**: Is $f_k(n) = o(n^2)$ for $k \\ge 4$? Despite the Solymosi-Stojaković lower bound being extremely close to $n^2$, the conjecture asserts $f_k(n)/n^2 \\to 0$. The $\\$100$ prize remains unclaimed.\n\n**Connection to Szemerédi-Trotter**: The incidence theorem gives $O(n^2/k^3)$ as an upper bound for $k$-rich lines, which is $O(n^2)$ — matching the trivial bound. Going below quadratic requires structural arguments beyond incidence counting.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet f_k(n) be the minimum such that if n points in R² have no k+1 points collinear, then there are at most f_k(n) lines containing at least k points.\n\n**Conjecture:** f_k(n) = o(n²) for k ≥ 4.\n\n**Known Bounds:**\n- Lower: f_k(n) ≥ n^{2 - O(1/√log n)} (Solymosi-Stojaković)\n- Upper: f_k(n) ≤ O(n²) (trivial)\n\n**Prize:** $100",
+    "text": "Is f_k(n) = o(n²) for k ≥ 4? Here f_k(n) is the max number of k-rich lines for n points with no k+1 collinear. OPEN. Best lower bound: n^{2-o(1)} (Solymosi-Stojaković 2013).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Geometry:** Define `Point := ℝ × ℝ`. (No Line, OnLine, or collinearity predicates are formalized — these are described in source comments.)\n2. **Extremal function:** Axiomatize `f (k n : ℕ) : ℕ` as the counting function for k-rich lines.\n3. **Known result (k=3):** Axiomatize `sylvester_k3` — the Sylvester bound f₃(n) = n²/6 + O(n).\n4. **Main theorem:** Prove `erdos_588` directly from `sylvester_k3`. Bounds from Kárteszi, Grünbaum, and Solymosi-Stojaković are documented in source comments only, not axiomatized.\n5. **Open case:** The k ≥ 4 conjecture and lower bounds are described in docstring remarks, not formalized.",
+    "keyInsights": [
+      "**k=3 fails:** f_3(n) = Θ(n²), so k≥4 restriction is essential",
+      "**Near-tight lower:** n^{2-o(1)} is extremely close to n²",
+      "**Gap persists:** Despite progress, the o(n²) conjecture is open",
+      "**Generalizes #101:** Problem #101 is the special case k=4",
+      "**Szemerédi-Trotter:** Connected to incidence counting theorems",
+      "**$100 prize:** One of Erdős's open prize problems"
+    ],
+    "prerequisites": [
+      "Combinatorics (counting, extremal problems)",
+      "Number theory (primes, divisibility, arithmetic functions)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-setup",
+      "title": "Module Header and Problem Context",
+      "startLine": 1,
+      "endLine": 17,
+      "summary": "Documents Erdős Problem #588 ($100 prize): is f_k(n) = o(n²) for k ≥ 4? Traces developments from Sylvester (k=3 quadratic) through Grünbaum (superpolynomial lower bounds) to Solymosi-Stojaković (n^{2-o(1)} lower bound). Imports Mathlib for geometry and combinatorics."
+    },
+    {
+      "id": "section-18",
+      "title": "Module Header and Problem Context (continued)",
+      "startLine": 18,
+      "endLine": 33,
+      "summary": "Continuation of Module Header and Problem Context."
+    },
+    {
+      "id": "definitions",
+      "title": "Part I: Definitions",
+      "summary": "Defines `Point := ℝ × ℝ` and axiomatizes the extremal function `f (k n : ℕ) : ℕ` representing the maximum number of $k$-rich lines for $n$ points with no $k+1$ collinear.",
+      "startLine": 34,
+      "endLine": 42
+    },
+    {
+      "id": "sylvester",
+      "title": "Part II: The $k=3$ Case (Resolved)",
+      "summary": "Axiomatizes `sylvester_k3`: $\\exists C > 0,\\, |f_3(n) - n^2/6| \\le Cn$ for $n \\ge 3$. This gives $f_3(n) = n^2/6 + O(n) = \\Theta(n^2)$, showing the $k=3$ case is quadratic.",
+      "startLine": 48,
+      "endLine": 56
+    },
+    {
+      "id": "k4-open",
+      "title": "Part III: The $k \\ge 4$ Case (Open)",
+      "summary": "Documents the open k ≥ 4 case via docstring remarks only. The Solymosi-Stojaković lower bound $n^{2-c/\\sqrt{\\log n}}$ and Erdős's $o(n^2)$ conjecture are described in comments; no axioms or theorems are declared in this range.",
+      "startLine": 62,
+      "endLine": 79
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #588 asks whether f_k(n) = o(n²) for k ≥ 4, where f_k(n) counts k-rich lines for n points with no k+1 collinear. The conjecture is OPEN. The best lower bound (Solymosi-Stojaković 2013) is n^{2-o(1)}, tantalizingly close to n² but not quite there. The $100 prize remains unclaimed.",
+    "implications": "**Theoretical Significance**: **Connections**\n\n1. **Incidence Geometry:** Related to Szemerédi-Trotter incidence bounds\n**2. Problem #101:** The k=4 special case was the original formulation\n3. **Extremal Combinatorics:** Part of the study of point-line configurations\n4. **Orchard Problem:** Related to problems about collinear point triples.",
+    "openQuestions": [
+      "Is f_k(n) = o(n²) for k ≥ 4? (The main conjecture, $100 prize)",
+      "Can the n^{2-o(1)} lower bound be improved?",
+      "What is the exact asymptotic of f_k(n)?",
+      "Are there constructive examples achieving the lower bound?",
+      "How does the problem change in higher dimensions?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos588",
+    "lineCount": 87,
+    "axiomCount": 2,
+    "theoremCount": 1,
+    "definitionCount": 1,
+    "path": "Proofs/Erdos588Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "key": "Ka63",
+      "citation": "Kárteszi, F., Sylvester egy tételéről és Erdős egy sejtéséről, Mat. Lapok (1963)",
+      "type": "paper"
+    },
+    {
+      "key": "Gr76",
+      "citation": "Grünbaum, B., New views on old questions of combinatorial geometry, Colloquio Internazionale (1976)",
+      "type": "paper"
+    },
+    {
+      "key": "SoSt13",
+      "citation": "Solymosi, J. and Stojaković, M., Many collinear k-tuples with no k+1 collinear points, DCG (2013)",
+      "type": "paper"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-669",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, incidences, point-line"
+    },
+    {
+      "targetId": "erdos-104",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, incidences"
+    },
+    {
+      "targetId": "erdos-1084",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, open"
+    }
+  ],
+  "sorries": 0
+}

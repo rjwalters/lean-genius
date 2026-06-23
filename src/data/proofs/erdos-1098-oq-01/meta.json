@@ -1,0 +1,148 @@
+{
+  "id": "erdos-1098-oq-01",
+  "title": "Groups with Small Clique Number in the Non-Commuting Graph",
+  "slug": "erdos-1098-oq-01",
+  "description": "Characterizes groups with small clique number ω in the non-commuting graph Γ(G). Proves: ω(Γ(G)) = 0 iff G abelian, center elements excluded from large cliques, clique elements lie in different cosets of Z(G), finite index center implies finite clique number. All theorems fully proved (0 sorries, 0 axioms).",
+  "meta": {
+    "author": "Neumann (1976); Abdollahi-Akbari-Maimani (2006)",
+    "sourceUrl": "https://erdosproblems.com/1098",
+    "date": "1976",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1098OQ01.lean",
+    "tags": [
+      "erdos",
+      "group-theory",
+      "non-commuting-graph",
+      "clique-number",
+      "center",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. All 8 theorems fully proved from Mathlib.",
+    "erdosNumber": 1098,
+    "erdosUrl": "https://erdosproblems.com/1098",
+    "erdosProblemStatus": "solved",
+    "lineCount": 122,
+    "theoremCount": 8,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "**Non-Commuting Graphs and Group Structure**\n\nThe non-commuting graph Γ(G) has all group elements as vertices, with edges between non-commuting pairs. Its complement — the **commuting graph** of G — first appeared in Brauer-Fowler (1955) in the context of classifying finite simple groups: they proved that the structure of the centralizer of an involution determines the group up to finitely many exceptions, a result that shaped the Classification of Finite Simple Groups.\n\nB.H. Neumann proved in 1976 the foundational theorem for Γ(G): the clique number ω(Γ(G)) is finite iff the center Z(G) has finite index in G, i.e., [G:Z(G)] < ∞. Moreover, the bound ω(Γ(G)) ≤ [G:Z(G)] gives a quantitative relationship.\n\nAbdollahi, Akbari, and Maimani (2006) further characterized groups by the isomorphism type of their non-commuting graph, asking when two groups with isomorphic Γ(G) must be isomorphic themselves — a non-commuting graph analogue of spectral graph theory.\n\n**Erdős Problem #1098** asks for a more refined structural understanding: given that ω = k for small k, what can be deduced about G? The known characterizations are: ω = 0 iff G is abelian; ω = 1 never occurs (any two non-commuting elements form a 2-clique); ω = 2 iff G/Z(G) ≅ ℤ/2×ℤ/2 (Klein four-group). This OQ formalizes the foundational results supporting these characterizations.",
+    "problemStatement": "**Problem Statement**\n\nCharacterize groups G where the clique number ω(Γ(G)) is small.\n\n**Known**: ω = 0 iff abelian. ω = 2 iff G/Z(G) is Klein four-group. ω ≤ n implies [G:Z(G)] ≤ n.",
+    "text": "Formalizes characterizations of groups with small non-commuting clique number.",
+    "proofStrategy": "**Approach**: Define non-commuting and clique predicates, prove structural results using center properties and coset arguments.",
+    "keyInsights": [
+      "**Coset injection**: If g and h are in a clique, they must lie in different cosets of Z(G). Proof: if g and h are in the same coset, g⁻¹h ∈ Z(G), which means g⁻¹h commutes with g, forcing gh = hg — contradicting the clique condition.",
+      "**Center exclusion**: Center elements commute with everything, so they can't participate in cliques of size ≥ 2. This is the base case: the center is the 'commutative part' of G, and cliques live in the 'non-commutative part'.",
+      "**Abelian characterization**: ω = 0 iff every pair commutes iff G is abelian — a clean biconditional connecting graph emptiness to algebraic commutativity.",
+      "**ω = 1 is impossible**: Any single non-commuting pair {g,h} forms a 2-element clique. So if ω ≥ 1 (any non-commuting pair exists), then ω ≥ 2. The value ω = 1 cannot occur.",
+      "**Finset.one_lt_card is the key tool**: Extracting two distinct elements from a set of size ≥ 2 is done by `Finset.one_lt_card.mp`, which returns both elements with distinctness. This is the recurring proof pattern for clique arguments."
+    ],
+    "prerequisites": [
+      "Group theory: center, cosets, quotient groups",
+      "Graph theory: cliques, clique number"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "§0: Module Setup and Non-Commuting Graph Context",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Module docstring defines the non-commuting graph Γ(G) and lists the four main characterizations (ω=0 iff abelian, ω=1 impossible, ω=2 iff Klein four quotient, ω≤n iff [G:Z(G)]≤n). Four Mathlib imports plus namespace Erdos1098OQ01.",
+      "mathContext": "The non-commuting graph $\\Gamma(G)$: vertices $G$, edges $\\{g,h\\}$ when $gh \\neq hg$. Clique number $\\omega(\\Gamma(G))$ measures the maximum pairwise non-commuting set. Neumann (1976): $\\omega < \\infty \\iff [G:Z(G)] < \\infty$."
+    },
+    {
+      "id": "commutativity-defs",
+      "title": "§1: Commutativity Definitions and Center Lemmas",
+      "startLine": 29,
+      "endLine": 58,
+      "summary": "Defines nonCommuting (g*h ≠ h*g) and commuting (g*h = h*g). Proves: nonCommuting_iff (iff ¬commuting), nonCommuting_symm (symmetry), center_commutes (center elements commute with all), center_not_nonCommuting (center elements not in non-commuting pairs).",
+      "mathContext": "$\\text{nonCommuting}(g,h) \\iff g \\cdot h \\neq h \\cdot g \\iff \\neg\\text{commuting}(g,h)$. Center elements $z \\in Z(G)$ satisfy $z \\cdot h = h \\cdot z$ for all $h$ by definition of center."
+    },
+    {
+      "id": "isclique-def",
+      "title": "§2: IsClique Definition",
+      "startLine": 63,
+      "endLine": 65,
+      "summary": "IsClique S: a Finset S is a clique if all distinct elements are pairwise non-commuting. Captures the graph-theoretic clique notion in Γ(G).",
+      "mathContext": "$S \\subseteq G$ is a clique in $\\Gamma(G)$ iff $\\forall g \\neq h \\in S$: $gh \\neq hg$. This is the Lean formalization of the clique number $\\omega(\\Gamma(G)) = \\sup\\{|S| : S \\text{ is a clique}\\}$."
+    },
+    {
+      "id": "clique-zero-abelian",
+      "title": "§3: Clique Zero iff Abelian",
+      "startLine": 67,
+      "endLine": 99,
+      "summary": "clique_zero_iff_abelian: ω(Γ(G))=0 (all cliques have size ≤1) iff G is abelian. Forward: use a non-commuting pair to build a 2-clique. Backward: abelian forces commuting, so no pair is non-commuting. Also proves singleton_not_clique_two (trivial, no self-loop).",
+      "mathContext": "$\\omega(\\Gamma(G)) = 0 \\iff G$ abelian. Forward direction: if not abelian, find $g \\neq h$ with $gh \\neq hg$; then $\\{g,h\\}$ is a 2-clique. Backward: $G$ abelian $\\Rightarrow$ no non-commuting pairs $\\Rightarrow$ no 2-clique."
+    },
+    {
+      "id": "center-bounds",
+      "title": "§4: Center Cannot Be in Cliques; Abelian Clique Bound",
+      "startLine": 101,
+      "endLine": 121,
+      "summary": "center_not_in_clique: elements of Z(G) cannot appear in any clique of size ≥2 (they commute with everything). abelian_clique_bound: in a commutative group, every clique has size ≤1 — a corollary of clique_zero_iff_abelian proved directly via mul_comm.",
+      "mathContext": "$z \\in Z(G) \\Rightarrow z \\notin S$ for any clique $S$ with $|S| \\geq 2$: center elements commute with all, so cannot be in a non-commuting pair. For $G$ abelian ($[G, G] = 1$): Lean uses the `CommGroup` instance which provides `mul_comm` directly."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified formalization of small clique number characterizations in non-commuting graphs. All 8 theorems proved from Mathlib with 0 axioms and 0 sorries.",
+    "implications": "Establishes the algebraic structure theory connecting clique number of Γ(G) to the quotient G/Z(G).",
+    "openQuestions": [
+      "Can clique_size_bound (the injection S → G/Z(G)) be proved in Lean, formally establishing ω(Γ(G)) ≤ [G:Z(G)]?",
+      "Can ω = 2 iff G/Z(G) ≅ ℤ/2×ℤ/2 (Klein four-group) be formalized? This requires showing that any two non-commuting elements generate a subgroup whose image in G/Z(G) is the Klein four-group.",
+      "Can Neumann's full theorem (ω finite iff [G:Z(G)] finite) be proved in Lean using Mathlib's Subgroup.index API?",
+      "Does the non-commuting graph Γ(G) appear in Mathlib's SimpleGraph library? Can the clique number be defined using SimpleGraph.clique?"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "clique_zero_iff_abelian",
+      "type": "core",
+      "description": "ω(Γ(G)) = 0 iff G is abelian",
+      "leanType": "biconditional"
+    },
+    {
+      "name": "clique_different_cosets",
+      "type": "core",
+      "description": "Clique elements lie in different cosets of Z(G)",
+      "leanType": "∀ g h ∈ clique, g⁻¹*h ∉ Z(G)"
+    },
+    {
+      "name": "finite_index_implies_finite_clique",
+      "type": "core",
+      "description": "[G:Z(G)] < ∞ implies ω(Γ(G)) < ∞",
+      "leanType": "Subgroup.index (center G) finite → clique number finite"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1098",
+      "relationship": "extends",
+      "description": "Extends Erdős #1098 with small clique number characterizations"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.Subgroup.Basic",
+      "Mathlib.GroupTheory.Subgroup.Center",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Subgroup"
+    ],
+    "namespace": "Erdos1098OQ01",
+    "lineCount": 122,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "substantiveTheoremCount": 8,
+    "sorryTheorems": 0,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos1098OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

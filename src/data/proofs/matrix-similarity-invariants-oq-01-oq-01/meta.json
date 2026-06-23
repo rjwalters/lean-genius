@@ -1,0 +1,170 @@
+{
+  "id": "matrix-similarity-invariants-oq-01-oq-01",
+  "title": "Rank, Nullity, and Invertibility Are Similarity Invariants",
+  "slug": "matrix-similarity-invariants-oq-01-oq-01",
+  "description": "A follow-up to the classical similarity invariants (determinant, trace, characteristic polynomial): the rank, the nullity, and invertibility of a square matrix are also preserved under similarity B = P·A·P⁻¹. Rank invariance and invertibility invariance are proved over an arbitrary commutative ring; nullity invariance and the rank–nullity bridge rank A + nullity A = n are proved over a field. Mathlib has the ingredients (rank_mul_eq_left_of_isUnit_det, LinearMap.finrank_range_add_finrank_ker, isUnit_iff_isUnit_det) but states neither a named similarity relation nor the packaged rank/nullity/invertibility invariance theorems.",
+  "meta": {
+    "author": "classical linear algebra; formalized for lean-genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/MatrixSimilarityInvariantsOQ01OQ01.lean",
+    "tags": [
+      "linear-algebra",
+      "matrices",
+      "similarity",
+      "matrix-rank",
+      "nullity",
+      "invertibility",
+      "rank-nullity",
+      "invariants"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-20",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.rank_mul_eq_left_of_isUnit_det",
+        "description": "(B·A).rank = B.rank when det A is a unit — right-multiplication by an invertible matrix preserves rank",
+        "module": "Mathlib.LinearAlgebra.Matrix.Rank"
+      },
+      {
+        "theorem": "Matrix.rank_mul_eq_right_of_isUnit_det",
+        "description": "(A·B).rank = B.rank when det A is a unit — left-multiplication by an invertible matrix preserves rank",
+        "module": "Mathlib.LinearAlgebra.Matrix.Rank"
+      },
+      {
+        "theorem": "Matrix.isUnit_iff_isUnit_det",
+        "description": "A square matrix is a unit iff its determinant is a unit — converts between the matrix and determinant forms of invertibility",
+        "module": "Mathlib.LinearAlgebra.Matrix.NonsingularInverse"
+      },
+      {
+        "theorem": "LinearMap.finrank_range_add_finrank_ker",
+        "description": "finrank(range f) + finrank(ker f) = finrank(domain) — the rank–nullity theorem for linear maps, specialized here to A.mulVecLin",
+        "module": "Mathlib.LinearAlgebra.FiniteDimensional.Lemmas"
+      },
+      {
+        "theorem": "Units.isUnit_mul_units",
+        "description": "IsUnit (a·u) ↔ IsUnit a for a unit u — multiplying by a unit preserves unit-ness; the engine behind invertibility invariance",
+        "module": "Mathlib.Algebra.Group.Units.Defs"
+      }
+    ],
+    "originalContributions": [
+      "Similar.rank_eq: rank is a similarity invariant over any commutative ring, via composition of the left/right invertible-multiplication rank lemmas",
+      "Similar.isUnit_iff / Similar.isUnit_det_iff: invertibility (in matrix and determinant form) is a similarity invariant over any commutative ring",
+      "nullity: the nullity of a square matrix as the dimension of the kernel of A.mulVecLin, with rank_add_nullity giving rank A + nullity A = n over a field",
+      "Similar.nullity_eq: nullity is a similarity invariant over a field, derived from rank invariance plus rank–nullity",
+      "nullity_eq_zero_iff_rank_eq_card: trivial kernel ⇔ full rank, the algebraic shadow of injective ⇔ surjective ⇔ bijective for finite-dimensional endomorphisms",
+      "Similar.invariants: rank invariance and invertibility invariance packaged into a single statement"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. Depends only on the standard foundational axioms propext, Classical.choice, Quot.sound. Rank and invertibility invariance hold over an arbitrary commutative ring; nullity invariance and the rank–nullity identity require a field.",
+    "lineCount": 133,
+    "theoremCount": 9,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "Beyond the scalar invariants of similarity (determinant, trace, characteristic polynomial) lie the structural invariants of the underlying linear operator: its rank (the dimension of the image), its nullity (the dimension of the kernel), and whether it is invertible. Because similarity B = P·A·P⁻¹ expresses a change of basis, every quantity intrinsic to the operator — not merely its scalar summaries — must be preserved. Rank and nullity, tied together by the rank–nullity theorem, are the most basic such structural invariants, and the equality 'injective = surjective = bijective' for endomorphisms of a finite-dimensional space is exactly the statement that full rank, zero nullity, and invertibility coincide.",
+    "problemStatement": "Are the rank, the nullity, and the invertibility of a square matrix preserved under a change of basis B = P·A·P⁻¹?\n\n**Answer:** yes. Rank and invertibility are similarity invariants over any commutative ring; nullity is a similarity invariant over a field, where the rank–nullity theorem rank A + nullity A = n links the two, and zero nullity is equivalent to full rank (hence to invertibility).",
+    "text": "Similar matrices share their rank and nullity, and one is invertible iff the other is; rank and nullity sum to n over a field.",
+    "proofStrategy": "Reuse the Similar relation B = P·A·P⁻¹ from the companion entry [oq-01]. For rank invariance, observe conjugation is right-multiplication by the unit P⁻¹ followed by left-multiplication by the unit P, and rewrite with Matrix.rank_mul_eq_left_of_isUnit_det and rank_mul_eq_right_of_isUnit_det (the unit-determinant hypotheses come from isUnit_iff_isUnit_det applied to P and P⁻¹). For invertibility invariance, destructure the conjugator and cancel the surrounding units with Units.isUnit_mul_units / Units.isUnit_units_mul, then transport to the determinant form via isUnit_iff_isUnit_det. Define nullity A as finrank of ker A.mulVecLin; the matrix form of rank–nullity is LinearMap.finrank_range_add_finrank_ker specialized to A.mulVecLin together with finrank_pi. Nullity invariance and the trivial-kernel ⇔ full-rank equivalence then follow by omega from rank invariance and rank–nullity.",
+    "keyInsights": [
+      "Rank invariance is conceptual, not computational: conjugation is multiplication by invertible matrices on both sides, and invertible multiplication preserves rank — no reference to det values or eigenvalues is needed, so it holds over any commutative ring",
+      "Invertibility invariance needs no determinant at all: cancelling the surrounding units with Units.isUnit_mul_units suffices, with the determinant form obtained afterwards purely for convenience",
+      "Once rank invariance and the rank–nullity identity are in hand, nullity invariance is a one-line arithmetic consequence (omega), illustrating how a single structural invariant propagates",
+      "nullity = 0 ⇔ rank = n packages 'injective ⇔ surjective ⇔ bijective' for finite-dimensional endomorphisms as an arithmetic fact about two natural numbers summing to n"
+    ],
+    "prerequisites": [
+      "Matrices over a commutative ring; the unit (invertible-matrix) group",
+      "The rank of a matrix as the dimension of the image of its associated linear map",
+      "The rank–nullity theorem for linear maps",
+      "Equivalence of injectivity, surjectivity, and bijectivity for endomorphisms of a finite-dimensional space"
+    ]
+  },
+  "sections": [
+    {
+      "id": "relation",
+      "title": "The Similarity Relation",
+      "startLine": 45,
+      "endLine": 56,
+      "summary": "Similar A B := ∃ P : (Matrix n n R)ˣ, B = P·A·P⁻¹, with reflexivity and symmetry (the same relation as the companion entry [oq-01]).",
+      "mathContext": "$A \\sim B \\iff \\exists P,\\ B = P A P^{-1}$."
+    },
+    {
+      "id": "invertibility",
+      "title": "Invertibility Is a Similarity Invariant",
+      "startLine": 58,
+      "endLine": 74,
+      "summary": "Cancelling the surrounding units shows B is a unit iff A is; isUnit_iff_isUnit_det transports this to the determinant form.",
+      "mathContext": "$A \\sim B \\Rightarrow (\\operatorname{IsUnit} B \\iff \\operatorname{IsUnit} A)$."
+    },
+    {
+      "id": "rank",
+      "title": "Rank Is a Similarity Invariant",
+      "startLine": 76,
+      "endLine": 86,
+      "summary": "Conjugation is invertible multiplication on both sides; rank_mul_eq_left/right_of_isUnit_det give rank B = rank A over any commutative ring.",
+      "mathContext": "$A \\sim B \\Rightarrow \\operatorname{rank} B = \\operatorname{rank} A$."
+    },
+    {
+      "id": "nullity",
+      "title": "Nullity and Rank–Nullity",
+      "startLine": 88,
+      "endLine": 121,
+      "summary": "nullity A := finrank(ker A.mulVecLin); rank A + nullity A = n over a field gives nullity invariance and the trivial-kernel ⇔ full-rank equivalence.",
+      "mathContext": "$\\operatorname{rank} A + \\operatorname{nullity} A = n,\\quad \\operatorname{nullity} A = 0 \\iff \\operatorname{rank} A = n$."
+    },
+    {
+      "id": "packaged",
+      "title": "Packaged Statement",
+      "startLine": 123,
+      "endLine": 133,
+      "summary": "Similar.invariants collects rank invariance and invertibility invariance into a single statement.",
+      "mathContext": "$A \\sim B \\Rightarrow \\operatorname{rank} B = \\operatorname{rank} A \\wedge (\\operatorname{IsUnit} B \\iff \\operatorname{IsUnit} A)$."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Hoffman, K.; Kunze, R.",
+      "title": "Linear Algebra",
+      "year": "1971",
+      "note": "Rank, nullity, and the rank–nullity theorem; similarity and canonical forms"
+    },
+    {
+      "authors": "Horn, R. A.; Johnson, C. R.",
+      "title": "Matrix Analysis",
+      "year": "1985",
+      "note": "Rank and invertibility as similarity invariants"
+    }
+  ],
+  "crossReferences": [
+    {
+      "id": "matrix-similarity-invariants-oq-01",
+      "note": "Parent entry: determinant, trace, and characteristic polynomial as similarity invariants; defines the Similar relation reused here"
+    }
+  ],
+  "conclusion": {
+    "summary": "Rank and invertibility are shown to be similarity invariants over any commutative ring, and nullity over a field, with the rank–nullity identity rank A + nullity A = n bridging the two and yielding the trivial-kernel ⇔ full-rank equivalence — all verified with 0 axioms on top of Mathlib's invertible-multiplication rank lemmas and the rank–nullity theorem.",
+    "implications": "Completes the structural side of the similarity-invariants interface begun in [oq-01]: together, the scalar invariants (det, trace, charpoly) and the structural invariants (rank, nullity, invertibility) give the basic data well-defined on similarity classes, a foundation for canonical-form and invariant-factor theory.",
+    "openQuestions": [
+      "Over a field, can full rank be characterised intrinsically by invertibility of A (not merely of det A) and packaged as nullity A = 0 ↔ IsUnit A?",
+      "Does the kernel of A.mulVecLin transport functorially under conjugation, giving an explicit linear isomorphism of kernels rather than only equality of dimensions?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Matrix",
+      "Module"
+    ],
+    "namespace": "MatrixSimilarityInvariantsOQ01OQ01",
+    "lineCount": 133,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 2,
+    "path": "Proofs/MatrixSimilarityInvariantsOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

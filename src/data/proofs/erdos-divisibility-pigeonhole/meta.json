@@ -1,0 +1,156 @@
+{
+  "id": "erdos-divisibility-pigeonhole",
+  "title": "Erdős Divisibility Pigeonhole: among n+1 integers from {1,…,2n}, one divides another",
+  "slug": "erdos-divisibility-pigeonhole",
+  "description": "A classical pigeonhole theorem (folklore, attributed to Erdős and a staple competition problem): if S ⊆ {1, 2, …, 2n} has at least n+1 elements, then there are two distinct a, b ∈ S with a ∣ b. The proof writes each m as 2^k·o(m) with o(m) = ordCompl[2] m its odd part; there are only n odd numbers in {1,…,2n}, so n+1 elements force a collision o(a) = o(b), after which the smaller power of two divides the larger. The threshold n+1 is sharp: the n-element block {n+1,…,2n} is divisibility-free. Formalized over Mathlib with zero sorries and zero axioms.",
+  "meta": {
+    "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Pigeonhole_principle",
+    "date": "folklore",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ErdosDivisibilityPigeonhole.lean",
+    "tags": [
+      "combinatorics",
+      "number-theory",
+      "pigeonhole-principle",
+      "divisibility",
+      "erdos",
+      "extremal"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.exists_ne_map_eq_of_card_lt_of_maps_to",
+        "description": "The Finset pigeonhole principle: a map from S into a strictly smaller target collapses two distinct elements. Applied to m ↦ (ordCompl[2] m − 1)/2 : S → Finset.range n, with |range n| = n < n+1 ≤ |S|, it produces the colliding pair.",
+        "module": "Mathlib.Combinatorics.Pigeonhole"
+      },
+      {
+        "theorem": "Nat.ordProj_mul_ordCompl_eq_self",
+        "description": "The 2-adic factorization m = 2^(v₂ m) · ordCompl[2] m. This unique decomposition into a power of two times an odd part is what turns 'equal odd parts' into 'one divides the other'.",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Nat.not_dvd_ordCompl / Nat.ordCompl_le / Nat.ordCompl_pos",
+        "description": "Properties of the odd part o = ordCompl[2] m: it is coprime to 2 (hence odd), satisfies o ≤ m, and is positive when m ≠ 0. These pin o into {1,…,2n} and make the half-index map o ↦ (o−1)/2 injective on odd parts.",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      }
+    ],
+    "originalContributions": [
+      "erdos_divisibility_pigeonhole: a from-scratch Lean proof that any S ⊆ Icc 1 (2n) with |S| ≥ n+1 contains distinct a, b with a ∣ b. Mathlib has the abstract pigeonhole and the 2-adic factorization but not this classical application",
+      "The reduction encoding: rather than counting odd numbers, the proof maps each element to the half-index (ordCompl[2] m − 1)/2 ∈ Finset.range n, sidestepping any Finset.filter cardinality computation; injectivity of this half-map on odd parts (odd_recover) recovers the equality of odd parts from a collision",
+      "dvd_or_dvd_of_ordCompl_eq: equal odd parts ⇒ one divides the other, proved cleanly via the 2-adic decomposition and pow_dvd_pow on the smaller exponent",
+      "erdos_divisibility_pigeonhole_sharp: optimality of the n+1 threshold, exhibiting the divisibility-free n-element block {n+1,…,2n} (a proper multiple of any a ≥ n+1 exceeds 2n)"
+    ],
+    "dateAdded": "2026-06-19",
+    "relatedProblems": [
+      {
+        "id": "dilworth-theorem-oq-01",
+        "relationship": "Both are pigeonhole/extremal results proved with Finset.exists_ne_map_eq_of_card_lt_of_maps_to; the divisibility poset on {1,…,2n} is the natural order-theoretic backdrop (an antichain of odd parts has size n)."
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 143,
+    "assumptions": "0 axioms, 0 sorries. The only hypotheses are the structural ones in the statement: S ⊆ {1,…,2n} and |S| ≥ n+1. The proof is self-contained over Mathlib — the abstract Finset pigeonhole principle and the 2-adic factorization m = 2^k·(odd part) are the only non-elementary inputs; everything else is divisibility and Nat arithmetic. Badge is 'original' because the theorem and its sharpness are formalized from first principles (Mathlib does not contain this application).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "This is one of the canonical illustrations of the pigeonhole principle, popularized by Paul Erdős (who reportedly posed it to the young Lajos Pósa over dinner) and a perennial olympiad and Putnam-style problem. Its charm is the choice of pigeonholes: not the numbers themselves but their odd parts. Every positive integer factors uniquely as 2^k times an odd number, and {1,…,2n} contains exactly n odd numbers (1, 3, …, 2n−1); so any n+1 of the integers must repeat an odd part, and two numbers with the same odd part are related by a power of two — one divides the other. The result is the prototype for 'choose the right invariant' pigeonhole arguments throughout combinatorial number theory.",
+    "problemStatement": "Let $n \\ge 0$ and let $S \\subseteq \\{1, 2, \\dots, 2n\\}$ with $|S| \\ge n+1$. Then there exist distinct $a, b \\in S$ with $a \\mid b$. Moreover the threshold is sharp: the $n$-element set $\\{n+1, \\dots, 2n\\}$ contains no such pair.",
+    "text": "Each integer $m \\ge 1$ has a unique odd part $o(m)$ with $m = 2^{k} o(m)$. There are only $n$ possible odd parts in $\\{1,\\dots,2n\\}$, so $n+1$ elements force $o(a) = o(b)$ for some distinct $a, b$; then the one with the smaller power of two divides the other. The block $\\{n+1,\\dots,2n\\}$ shows $n+1$ cannot be lowered.",
+    "proofStrategy": "Map each m ∈ S to the half-index f(m) = (ordCompl[2] m − 1)/2. Since the odd part o = ordCompl[2] m satisfies 1 ≤ o ≤ m ≤ 2n, we get f(m) < n, so f maps S into Finset.range n. As |range n| = n < n+1 ≤ |S|, Finset.exists_ne_map_eq_of_card_lt_of_maps_to yields distinct a, b ∈ S with f(a) = f(b). Both odd parts are odd (Nat.not_dvd_ordCompl), and o ↦ (o−1)/2 is injective on odd numbers (odd_recover: 2·((o−1)/2)+1 = o), so f(a) = f(b) forces ordCompl[2] a = ordCompl[2] b. Finally, writing a = 2^(v₂ a)·o and b = 2^(v₂ b)·o (Nat.ordProj_mul_ordCompl_eq_self) and comparing the exponents, pow_dvd_pow gives a ∣ b or b ∣ a; orient by a ≠ b. Sharpness: in {n+1,…,2n}, a ∣ b with a ≠ b forces b ≥ 2a ≥ 2n+2 > 2n, impossible.",
+    "keyInsights": [
+      "**The odd part is the right pigeonhole**: classifying integers by ⌊2-free core⌋ rather than by value turns a divisibility question into an equality-of-labels collision. {1,…,2n} has exactly n odd parts, one short of the n+1 elements",
+      "**Same odd part ⇒ comparable in the divisibility order**: two numbers sharing an odd part differ only by a power of two, so they form a chain — the smaller exponent divides the larger. This is where 'collision' becomes 'divides'",
+      "**Avoid counting odds with a half-index**: instead of computing the cardinality of the odd numbers in {1,…,2n}, the proof maps odd parts into Finset.range n via o ↦ (o−1)/2 and uses injectivity-on-odds to recover the collision; this keeps the Lean proof free of Finset.filter cardinality lemmas",
+      "**Sharpness is one line of arithmetic**: the top half {n+1,…,2n} is an antichain because doubling the smallest possible divisor already leaves the window — so n+1 is genuinely the optimal threshold, not an artifact of the proof",
+      "**It is a chain decomposition in disguise**: grouping {1,…,2n} by odd part partitions it into exactly n divisibility chains (each chain o, 2o, 4o, … capped at 2n). The pigeonhole 'n+1 elements meet a common chain' is the Dilworth/Mirsky reading — the same combinatorial skeleton behind primitive-set and antichain extremal bounds"
+    ],
+    "prerequisites": [
+      "The pigeonhole principle in Finset form (Finset.exists_ne_map_eq_of_card_lt_of_maps_to)",
+      "The 2-adic factorization of a natural number: m = 2^(v₂ m) · (odd part), with ordCompl[2] and ordProj[2]",
+      "Elementary divisibility and natural-number arithmetic"
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-overview",
+      "title": "Module Overview",
+      "startLine": 1,
+      "endLine": 39,
+      "mathContext": "$S \\subseteq \\{1,\\dots,2n\\},\\ |S| \\ge n+1 \\Rightarrow \\exists\\, a \\ne b,\\ a \\mid b$; sharp via the antichain $\\{n+1,\\dots,2n\\}$.",
+      "summary": "Docstring states the theorem, sketches the odd-part pigeonhole proof (m = 2^k·o with o = ordCompl[2] m; only n odd parts available in {1,…,2n}), the half-index encoding that avoids counting, and the sharpness witness {n+1,…,2n}. Imports Mathlib and opens Finset."
+    },
+    {
+      "id": "odd-part-helpers",
+      "title": "Odd-Part Helper Lemmas",
+      "startLine": 41,
+      "endLine": 52,
+      "mathContext": "$o \\mapsto (o-1)/2$ is injective on odds since $2\\cdot((o-1)/2)+1 = o$; and $\\mathrm{ordCompl}_2(m)$ is odd for $m \\neq 0$.",
+      "summary": "odd_recover: 2·((o−1)/2)+1 = o, so the half-map o ↦ (o−1)/2 loses no information on odd numbers. odd_ordCompl: ordCompl[2] m is odd for m ≠ 0, via Nat.not_dvd_ordCompl converted with omega. Together they let the proof read an odd part back off its half-index."
+    },
+    {
+      "id": "same-odd-part-divides",
+      "title": "Same Odd Part ⇒ One Divides the Other",
+      "startLine": 54,
+      "endLine": 74,
+      "mathContext": "$\\mathrm{ordCompl}_2(a) = \\mathrm{ordCompl}_2(b) = o,\\ a = 2^{i}o,\\ b = 2^{j}o,\\ i \\le j \\Rightarrow a \\mid b$.",
+      "summary": "dvd_or_dvd_of_ordCompl_eq: equal odd parts force comparability. Writing a = 2^(v₂ a)·o and b = 2^(v₂ b)·o (Nat.ordProj_mul_ordCompl_eq_self), le_total on the exponents plus pow_dvd_pow and mul_dvd_mul_right give a ∣ b or b ∣ a. This converts an equality of labels into a divisibility relation."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Erdős Divisibility Pigeonhole",
+      "startLine": 76,
+      "endLine": 115,
+      "mathContext": "$S \\subseteq \\{1,\\dots,2n\\}$, $|S| \\ge n+1 \\Rightarrow \\exists\\, a \\ne b \\in S,\\ a \\mid b$.",
+      "summary": "erdos_divisibility_pigeonhole: the half-index f(m) = (ordCompl[2] m − 1)/2 maps S into Finset.range n (because o ≤ m ≤ 2n), and |range n| = n < |S|, so the Finset pigeonhole gives distinct a, b with f(a) = f(b). Oddness of the odd parts plus odd_recover upgrade this to ordCompl[2] a = ordCompl[2] b, and dvd_or_dvd_of_ordCompl_eq closes the goal, oriented by a ≠ b."
+    },
+    {
+      "id": "sharpness",
+      "title": "Sharpness of the n+1 Threshold",
+      "startLine": 116,
+      "endLine": 141,
+      "mathContext": "$\\{n+1,\\dots,2n\\}$ has $n$ elements and no pair $a \\mid b$ with $a \\ne b$.",
+      "summary": "erdos_divisibility_pigeonhole_sharp: the block Icc (n+1) (2n) has cardinality n (Nat.card_Icc) and is divisibility-free — if a ∣ b with a ≠ b then b ≥ 2a ≥ 2(n+1) > 2n ≥ b, a contradiction. Hence no n-element bound can replace n+1."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Erdős divisibility pigeonhole theorem is formalized with zero sorries and zero axioms: any n+1 integers from {1,…,2n} contain a pair with one dividing the other, and the threshold n+1 is sharp. The crux is to pigeonhole by odd part — there are exactly n odd parts available — and to observe that two integers with the same odd part are related by a power of two.",
+    "implications": "The argument is the archetype of 'invariant-based' pigeonhole proofs: the useful classification is not the object itself but a well-chosen function of it (here the 2-free core). The same template — chain decomposition of a divisibility poset by odd part — underlies extremal results on primitive sets and Behrend-type bounds, and pairs naturally with Dilworth/Mirsky chain-antichain dualities.",
+    "openQuestions": [
+      "Quantitative refinement: among any n+1 elements of {1,…,2n}, must there exist a chain a₁ ∣ a₂ ∣ … of length growing with n, or can collisions always be confined to pairs?",
+      "Coprimality dual: any n+1 elements of {1,…,2n} contain two consecutive integers, hence a coprime pair — can this be unified with the divisibility statement in one Lean development?",
+      "Does the odd-part chain decomposition give a clean Lean proof that the maximum divisibility-free subset of {1,…,2n} has size exactly n (the antichain/primitive-set extremal bound)?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "dilworth-theorem-oq-01",
+      "relationship": "uses-similar-technique",
+      "description": "Both invoke Finset.exists_ne_map_eq_of_card_lt_of_maps_to. The divisibility poset on {1,…,2n} decomposes into n chains (one per odd part); a set larger than the number of chains must put two elements in a common chain — the pigeonhole/Dilworth picture behind this theorem."
+    },
+    {
+      "targetId": "erdos-divisibility-pigeonhole-oq-01",
+      "relationship": "extended-by",
+      "description": "Packages this entry's two halves — the pigeonhole upper bound (`erdos_divisibility_pigeonhole`: any $n+1$ elements of $\\{1,\\dots,2n\\}$ contain a divisible pair) and the sharpness witness (`erdos_divisibility_pigeonhole_sharp`: the block $\\{n+1,\\dots,2n\\}$ is divisibility-free) — into the single extremal optimum they jointly prove: the maximum size of a divisibility-antichain in $\\{1,\\dots,2n\\}$ is exactly $n$. The upper bound is the contrapositive of the pigeonhole theorem; the lower bound is the explicit $n$-element block. Stated as an `IsGreatest`, with the bespoke Finset predicate identified with Mathlib's order-theoretic `IsAntichain (· ∣ ·)`. Built entirely from this entry's verified theorems over Mathlib, with zero sorries and zero axioms (118 lines, 4 theorems)."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/ErdosDivisibilityPigeonhole.lean",
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "ErdosDivisibilityPigeonhole",
+    "lineCount": 143,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 5
+  },
+  "sorries": 0
+}

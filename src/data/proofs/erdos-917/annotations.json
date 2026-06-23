@@ -1,0 +1,156 @@
+[
+  {
+    "id": "ann-e917-header",
+    "proofId": "erdos-917",
+    "range": {
+      "startLine": 1,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #917 asks about the maximum number of edges in k-critical graphs on n vertices. A graph is k-critical if its chromatic number is k but removing any edge decreases the chromatic number. The problem poses three questions about the function f_k(n): (1) Is f_k(n) quadratic in n? (2) Is f_6(n) ~ n²/4? (3) Is f_k(n) ~ (1/2)(1 - 1/⌊k/3⌋)n² for k ≥ 6?",
+    "mathContext": "Erdős originally expected f_k(n) = o(n²), but was surprised by counterexamples from Dirac (1952).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Critical graphs",
+      "Chromatic number",
+      "Extremal graph theory"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e917-k-critical",
+    "proofId": "erdos-917",
+    "range": {
+      "startLine": 42,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "Chromatic Number and k-Critical Graphs",
+    "content": "chromaticNumber G: the minimum number of colors for a proper coloring, defined via Nat.find on Colorable. IsKChromatic G k: the chromatic number is exactly k. IsKCritical G k: the graph is k-chromatic AND removing any edge decreases the chromatic number. These are the 'minimal' k-chromatic graphs — every edge is essential for maintaining the chromatic number.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Colorable",
+      "Edge-critical",
+      "Minimality"
+    ],
+    "mathContext": "See annotation content for formal details of chromatic number and k-critical graphs",
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e917-f-function",
+    "proofId": "erdos-917",
+    "range": {
+      "startLine": 62,
+      "endLine": 75
+    },
+    "type": "definition",
+    "title": "Maximum Edge Function f_k(n)",
+    "content": "f k n (axiom): the maximum number of edges in a k-critical graph on n vertices. Axiomatized because computing this maximum requires dependent type manipulation over all graphs on n vertices. The axiom f_defined asserts that this maximum is achieved for k ≥ 4 and n ≥ k, producing a witness graph that is k-critical with exactly f(k,n) edges.",
+    "mathContext": "This function is the central object of study — it captures the extremal edge density question for critical graphs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Extremal function",
+      "Axiomatization",
+      "Witness graph"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e917-toft",
+    "proofId": "erdos-917",
+    "range": {
+      "startLine": 77,
+      "endLine": 96
+    },
+    "type": "concept",
+    "title": "Toft (1970): Quadratic Growth Answered",
+    "content": "Question1 k asks: does f_k(n) ≥ c_k · n² for some c_k > 0? Toft (1970) proved this is YES for all k ≥ 4: there exists c > 0 such that f_k(n) ≥ c · n² for all n ≥ k. The theorem question1_answered directly applies Toft's result. This was surprising — Erdős initially expected subquadratic growth.",
+    "mathContext": "Toft's proof uses explicit constructions of dense k-critical graphs for all k ≥ 4.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Quadratic growth",
+      "Toft 1970",
+      "Question 1"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e917-dirac",
+    "proofId": "erdos-917",
+    "range": {
+      "startLine": 98,
+      "endLine": 116
+    },
+    "type": "concept",
+    "title": "Question 2 and Dirac's Construction (1952)",
+    "content": "Question2 conjectures f_6(n) ~ n²/4, meaning 6-critical graphs achieve edge density 1/4. Dirac's construction takes two disjoint odd cycles C_{2n+1} and adds ALL edges between them, creating a 6-critical graph on 4n+2 vertices with 4n² + 8n + 3 edges. This establishes the lower bound f_6(n) ≥ (1/4 - ε)n². The conjecture remains OPEN.",
+    "mathContext": "The two-odd-cycles construction was the first to show 6-critical graphs can be dense, surprising Erdős.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Dirac 1952",
+      "Odd cycles",
+      "6-critical",
+      "Question 2"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e917-question3",
+    "proofId": "erdos-917",
+    "range": {
+      "startLine": 118,
+      "endLine": 147
+    },
+    "type": "concept",
+    "title": "Question 3: General Asymptotic and Its Partial Disproof",
+    "content": "Question3 k asks: for k ≥ 6, is f_k(n) ~ (1/2)(1 - 1/⌊k/3⌋)n²? This generalizes Question 2 (k=6 gives 1/4). Erdős (1969) proved lower bounds for k ≡ 0 (mod 3) via constructions generalizing Dirac's. Stiebitz (1987) showed the conjecture is FALSE for k ≢ 0 (mod 3), meaning the mod 3 structure of k fundamentally determines the extremal behavior.",
+    "mathContext": "The mod 3 phenomenon arises because Dirac-type constructions use groups of odd cycles, naturally partitioning vertices in triples.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Stiebitz 1987",
+      "Erdős 1969",
+      "Mod 3 structure",
+      "Question 3"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e917-upper-bounds",
+    "proofId": "erdos-917",
+    "range": {
+      "startLine": 149,
+      "endLine": 175
+    },
+    "type": "concept",
+    "title": "Upper Bounds: Turán, Stiebitz, Luo-Ma-Yang",
+    "content": "Three increasingly tight upper bounds on f_k(n): (1) turan_upper: f_k(n) ≤ (1/2)(1-1/(k-1))n² from Turán's theorem (avoiding K_k). (2) stiebitz_upper: f_k(n) < (1/2)(1-1/(k-2))n², improving Turán by replacing k-1 with k-2. (3) luo_ma_yang_2023: f_k(n) ≤ (1/2)(1-1/(k-2)-1/(36(k-1)²)+o(1))n², the current best bound from 2023.",
+    "mathContext": "The gap between upper and lower bounds remains significant, especially for determining exact asymptotics.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán's theorem",
+      "Extremal bounds",
+      "Luo-Ma-Yang 2023"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e917-summary",
+    "proofId": "erdos-917",
+    "range": {
+      "startLine": 177,
+      "endLine": 181
+    },
+    "type": "concept",
+    "title": "Main Summary Theorem",
+    "content": "erdos_917 combines all partial results: (1) Question 1 is answered YES for all k ≥ 4 (Toft), (2) Question 3 is FALSE for k ≢ 0 (mod 3) (Stiebitz), and (3) quadratic growth f_k(n) ≥ c·n² holds for all k ≥ 4. Proved by exact ⟨question1_answered, stiebitz_1987_disproof, toft_1970⟩. The problem remains PARTIALLY SOLVED: Question 2 and Question 3 for k ≡ 0 (mod 3) are still open.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Summary",
+      "Partial resolution",
+      "Open problems"
+    ],
+    "mathContext": "See annotation content for formal details of main summary theorem",
+    "prerequisites": []
+  }
+]

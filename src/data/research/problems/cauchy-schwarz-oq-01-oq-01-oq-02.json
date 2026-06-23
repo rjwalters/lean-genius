@@ -1,0 +1,89 @@
+{
+  "slug": "cauchy-schwarz-oq-01-oq-01-oq-02",
+  "title": "Derive the Heisenberg uncertainty principle from Cauchy-Schwarz",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For symmetric operators A, B : E →ₗ[ℂ] E on a complex inner product space E, and unit state ψ with ‖ψ‖=1, prove: ‖Aψ − ⟨ψ,Aψ⟩·ψ‖ · ‖Bψ − ⟨ψ,Bψ⟩·ψ‖ ≥ (1/2) · ‖⟨ψ, ABψ − BAψ⟩‖. This is Robertson's uncertainty inequality.",
+    "plain": "Can the Heisenberg uncertainty principle be derived from the complex Cauchy-Schwarz equality in Lean 4? Yes — via Robertson's 1929 inequality: applying CS to the centered vectors Aψ − ⟨A⟩ψ and Bψ − ⟨B⟩ψ gives ΔA·ΔB ≥ (1/2)|⟨ψ|[A,B]|ψ⟩|.",
+    "whyMatters": [
+      "Shows the Heisenberg uncertainty principle is a pure consequence of Cauchy-Schwarz in Lean 4",
+      "Formalizes Robertson's abstract operator formulation covering all physical observables simultaneously",
+      "Demonstrates the power of symmetric (self-adjoint) operators: real expectation values are key to cross-term cancellation",
+      "Bridges abstract functional analysis and quantum physics without physics axioms"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "cs_antisymmetric_bound: (1/2)|⟪u,v⟫ − ⟪v,u⟫| ≤ ‖u‖·‖v‖ from norm_inner_le_norm",
+      "expVal_im_zero: symmetric operators have real expectation values",
+      "expVal_self_conj: expVal A ψ = star(expVal A ψ) for symmetric A",
+      "centered_antisymmetric_eq_commutator: the antisymmetric part of ⟪u,v⟫ − ⟪v,u⟫ equals commutatorEV",
+      "robertson_inequality: ΔA·ΔB ≥ (1/2)‖commutatorEV A B ψ‖",
+      "heisenberg_constant_commutator: ΔA·ΔB ≥ |c|/2 when [A,B] = c·id"
+    ],
+    "open": [],
+    "goal": "Robertson's uncertainty inequality and Heisenberg special case (achieved)."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-04",
+    "iteration": 1,
+    "focus": "Complete — 0 sorries, 0 axioms, 10 theorems, 3 definitions."
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Robertson's uncertainty inequality proved. 10 theorems, 3 defs, 0 sorries, 0 axioms.",
+    "builtItems": [
+      "norm_sub_conj_le: ‖z − star z‖ ≤ 2‖z‖ (triangle ineq + RCLike.norm_conj)",
+      "cs_antisymmetric_bound: CS-based bound on antisymmetric inner product part",
+      "expVal: quantum expectation value ⟨ψ,Aψ⟩ for linear operators",
+      "expVal_im_zero: symmetric → real expectation value (im = 0)",
+      "expVal_self_conj: expVal = star(expVal) for symmetric operators",
+      "inner_symm_swap: ⟪Aψ,ψ⟫ = expVal A ψ by symmetry",
+      "stdDev, commutatorEV: standard deviation and commutator expectation value",
+      "centered_antisymmetric_eq_commutator: key identity linking antisymmetric IP to commutator",
+      "robertson_inequality: ΔA·ΔB ≥ (1/2)|⟨[A,B]⟩|",
+      "heisenberg_constant_commutator: ΔA·ΔB ≥ |c|/2 for constant commutator [A,B]=c·id"
+    ],
+    "insights": [
+      "Expectation values of symmetric operators are real: star⟨ψ,Aψ⟩ = ⟨Aψ,ψ⟩ = ⟨ψ,Aψ⟩",
+      "Cross terms in ⟪Aψ−⟨A⟩ψ, Bψ−⟨B⟩ψ⟫ − ⟪Bψ−⟨B⟩ψ, Aψ−⟨A⟩ψ⟫ cancel because expVals are real and ⟪ψ,ψ⟫=1",
+      "Symmetry of A: ⟪Aψ,Bψ⟫ = star⟪ψ,A(Bψ)⟫ — this reduces cross terms to commutator EV",
+      "The Robertson inequality works for any complex IPS, not just L²(ℝ)",
+      "Unit state normalization ‖ψ‖=1 is essential for ⟪ψ,ψ⟫=1 in the commutator identity"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "analysis",
+    "inner-product-spaces",
+    "functional-analysis",
+    "quantum-mechanics",
+    "cauchy-schwarz",
+    "operators",
+    "research"
+  ],
+  "relatedProofs": [
+    "cauchy-schwarz-oq-01-oq-01",
+    "cauchy-schwarz",
+    "cauchy-schwarz-oq-01-oq-01-oq-01"
+  ],
+  "references": [
+    {
+      "authors": "H. P. Robertson",
+      "title": "The Uncertainty Principle",
+      "year": "1929",
+      "venue": "Physical Review 34(1):163–164"
+    }
+  ],
+  "started": "2026-05-04",
+  "lastUpdate": "2026-05-04",
+  "significance": "high",
+  "tractability": "tractable",
+  "leanFiles": [
+    "proofs/Proofs/CauchySchwarzOQ01OQ01OQ02.lean"
+  ]
+}

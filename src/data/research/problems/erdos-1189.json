@@ -1,0 +1,58 @@
+{
+  "slug": "erdos-1189",
+  "title": "Erd\u0151s #1189",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "(LaTeX not available)",
+    "plain": "Call a set of distinct integers $1<n_1<\\cdots<n_k$ a covering set if there is a choice of $a_i\\pmod{n_i}$ for $1\\leq i\\leq k$ such that every integer satisfies at least one of these congruences. A set is an irreducible covering set if no proper subset is a covering set. \n\nHow many irreducible covering sets of size $k$ are there?\n\nWhat is the minimum and maximum that $n_k$ can be?\n\nDetermine or estimate $\\max \\sum\\frac{1}{n_i}$, where the maximum ranges over all irreducible covering sets of size $k$.\n\nAre there infinitely many $n$ such that the divisors of $n$ (which are $>1$) form an irreducible covering set?",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-01-16T08:44:15.248Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Problem statement retrieved. Ready for exploration.",
+    "builtItems": [],
+    "insights": [
+      "Statement unavailable"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erd\u0151s #1189 - Knowledge Base\n\n## Problem Statement\n\nCall a set of distinct integers $1<n_1<\\cdots<n_k$ a covering set if there is a choice of $a_i\\pmod{n_i}$ for $1\\leq i\\leq k$ such that every integer satisfies at least one of these congruences. A set is an irreducible covering set if no proper subset is a covering set. \n\nHow many irreducible covering sets of size $k$ are there?\n\nWhat is the minimum and maximum that $n_k$ can be?\n\nDetermine or estimate $\\max \\sum\\frac{1}{n_i}$, where the maximum ranges over all irreducible covering sets of size $k$.\n\nAre there infinitely many $n$ such that the divisors of $n$ (which are $>1$) form an irreducible covering set?\n\n## Status\n\n**Erd\u0151s Database Status**: SOLVED\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-16*\n"
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-118"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-16T08:44:15.248Z",
+  "lastUpdate": "2026-03-13T07:52:17.060Z",
+  "significance": 7,
+  "tractability": 6
+}

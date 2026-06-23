@@ -1,0 +1,245 @@
+[
+  {
+    "id": "ann-e1173-imports",
+    "proofId": "erdos-1173",
+    "range": {
+      "startLine": 27,
+      "endLine": 34
+    },
+    "type": "concept",
+    "title": "Mathlib Imports for Set Theory",
+    "content": "Imports Cardinal.Basic for aleph cardinals and cardinal arithmetic, Cardinal.Ordinal for the connection between cardinals and ordinals (including .ord for initial ordinals), and Mathlib.Tactic for proof automation. Disables unused variable/tactic linters for cleaner axiom-heavy formalization.",
+    "mathContext": "The formalization requires `Cardinal.aleph` for $\\aleph_\\alpha$, `Ordinal.omega0` for $\\omega$, and `Cardinal.mk` for cardinality of types. The `Cardinal.Ordinal` import provides `.ord` to convert cardinals to their initial ordinals.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Cardinal.aleph",
+      "Ordinal.omega0",
+      "Cardinal.mk"
+    ],
+    "prerequisites": [
+      "Lean 4 basics",
+      "Mathlib set theory"
+    ]
+  },
+  {
+    "id": "ann-e1173-cardinal-setup",
+    "proofId": "erdos-1173",
+    "range": {
+      "startLine": 42,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "Cardinal and Ordinal Constants",
+    "content": "Defines the key cardinal and ordinal constants: aleph_omega = aleph(ω₀) is the ω-th aleph (first singular aleph), aleph_omega_succ = aleph(ω₀ + 1) is its successor, omega_omega_succ is the initial ordinal of cardinality ℵ_{ω+1}, and GCH states 2^{ℵ_α} = ℵ_{α+1} for all ordinals α.",
+    "mathContext": "$\\aleph_\\omega = \\aleph_{\\omega_0}$ is the first singular aleph with $\\mathrm{cf}(\\aleph_\\omega) = \\omega$. The GCH is stated as $\\forall \\alpha,\\; 2^{\\aleph_\\alpha} = \\aleph_{\\alpha+1}$, which implies $\\aleph_\\omega$ is a strong limit cardinal.",
+    "significance": "key",
+    "relatedConcepts": [
+      "singular cardinal",
+      "cofinality",
+      "strong limit cardinal",
+      "GCH"
+    ],
+    "prerequisites": [
+      "cardinal arithmetic",
+      "aleph hierarchy",
+      "ordinal arithmetic"
+    ]
+  },
+  {
+    "id": "ann-e1173-SetMapping",
+    "proofId": "erdos-1173",
+    "range": {
+      "startLine": 63,
+      "endLine": 63
+    },
+    "type": "definition",
+    "title": "Set Mapping on Ordinals",
+    "content": "A set mapping on ordinal γ assigns to each α < γ a set of ordinals below γ. Modeled as a dependent function (α : Ordinal) → α < γ → Set { β : Ordinal // β < γ }, using subtypes to enforce the domain constraint.",
+    "mathContext": "A set mapping $f : \\gamma \\to \\mathcal{P}(\\gamma)$ satisfying $f(\\alpha) \\subseteq \\gamma$ for each $\\alpha < \\gamma$. In the context of Problem #1173, $\\gamma = \\omega_{\\omega+1}$ (the initial ordinal of cardinality $\\aleph_{\\omega+1}$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "dependent function type",
+      "ordinal subtype",
+      "set mapping"
+    ],
+    "prerequisites": [
+      "ordinal arithmetic",
+      "Lean dependent types"
+    ]
+  },
+  {
+    "id": "ann-e1173-conditions",
+    "proofId": "erdos-1173",
+    "range": {
+      "startLine": 67,
+      "endLine": 76
+    },
+    "type": "definition",
+    "title": "Bounded Image Size and Almost-Disjointness",
+    "content": "BoundedImageSize requires |f(α)| ≤ κ for all α. AlmostDisjoint requires |f(α) ∩ f(β)| < κ for distinct α, β. The intersection is modeled as a subtype { x // x ∈ f(α) ∧ x ∈ f(β) } with cardinality computed via Cardinal.mk. Almost-disjointness is strictly weaker than bounded image size.",
+    "mathContext": "$\\text{BoundedImageSize}(f, \\kappa) \\iff \\forall \\alpha,\\; |f(\\alpha)| \\leq \\kappa$. $\\text{AlmostDisjoint}(f, \\kappa) \\iff \\forall \\alpha \\neq \\beta,\\; |f(\\alpha) \\cap f(\\beta)| < \\kappa$. The intersection condition is weaker: it allows individual images to be large, requiring only that pairwise overlaps are small.",
+    "significance": "key",
+    "relatedConcepts": [
+      "almost disjoint family",
+      "Δ-system",
+      "Cardinal.mk"
+    ],
+    "prerequisites": [
+      "cardinal comparison",
+      "set intersection"
+    ]
+  },
+  {
+    "id": "ann-e1173-IsFreeSet",
+    "proofId": "erdos-1173",
+    "range": {
+      "startLine": 82,
+      "endLine": 88
+    },
+    "type": "definition",
+    "title": "Free Sets and Their Cardinality",
+    "content": "IsFreeSet requires that for all distinct a, b ∈ S, a ∉ f(b) — no element of the free set is 'mapped to' by another element. HasFreeSetOfCard asks for a free set S with Cardinal.mk S = κ. The free set condition is a Ramsey-type property: it finds a large independent set in the 'mapping graph'.",
+    "mathContext": "A set $S \\subseteq \\gamma$ is free for $f$ if $\\alpha \\notin f(\\beta)$ for all distinct $\\alpha, \\beta \\in S$. This is equivalent to $S$ being an independent set in the directed graph where $\\alpha \\to \\beta$ iff $\\alpha \\in f(\\beta)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "free set",
+      "independent set",
+      "Ramsey property"
+    ],
+    "prerequisites": [
+      "set membership",
+      "cardinal equality"
+    ]
+  },
+  {
+    "id": "ann-e1173-conjecture",
+    "proofId": "erdos-1173",
+    "range": {
+      "startLine": 102,
+      "endLine": 107
+    },
+    "type": "definition",
+    "title": "Erdős Problem #1173 Main Conjecture",
+    "content": "The main conjecture: GCH → for all set mappings f on ω_{ω+1} with bounded image size ≤ ℵ_ω and almost-disjoint images (pairwise intersection < ℵ_ω), there exists a free set of cardinality ℵ_{ω+1}. This combines three hypotheses: GCH, image size bound, and almost-disjointness.",
+    "mathContext": "$\\text{GCH} \\Rightarrow \\forall f : \\omega_{\\omega+1} \\to [\\omega_{\\omega+1}]^{\\leq \\aleph_\\omega},\\; (\\forall \\alpha \\neq \\beta,\\; |f(\\alpha) \\cap f(\\beta)| < \\aleph_\\omega) \\Rightarrow \\exists S,\\; |S| = \\aleph_{\\omega+1} \\wedge S \\text{ is free for } f$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős–Hajnal conjecture",
+      "singular cardinal combinatorics",
+      "GCH"
+    ],
+    "prerequisites": [
+      "all preceding definitions"
+    ]
+  },
+  {
+    "id": "ann-e1173-hajnal",
+    "proofId": "erdos-1173",
+    "range": {
+      "startLine": 120,
+      "endLine": 124
+    },
+    "type": "concept",
+    "title": "Hajnal Free Set Theorem (Regular Case)",
+    "content": "Axiomatized: for regular κ and f on κ⁺ with |f(α)| < κ, there exists a free set of size κ⁺. This is the classical result (Hajnal, 1961) that Problem #1173 seeks to generalize. Regularity of κ is essential — the proof uses transfinite induction along κ⁺ with diagonal intersection arguments that require cf(κ) = κ.",
+    "mathContext": "For regular $\\kappa$: $\\forall f : \\kappa^+ \\to [\\kappa^+]^{<\\kappa},\\; \\exists S \\subseteq \\kappa^+,\\; |S| = \\kappa^+ \\wedge S \\text{ is free}$. The proof constructs the free set by transfinite recursion, using regularity to ensure the 'forbidden' set at each stage has cardinality $< \\kappa$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hajnal's theorem",
+      "regular cardinal",
+      "transfinite recursion"
+    ],
+    "prerequisites": [
+      "regular cardinal",
+      "successor cardinal",
+      "SetMapping"
+    ]
+  },
+  {
+    "id": "ann-e1173-strong-limit",
+    "proofId": "erdos-1173",
+    "range": {
+      "startLine": 132,
+      "endLine": 133
+    },
+    "type": "concept",
+    "title": "GCH Implies ℵ_ω Is Strong Limit",
+    "content": "Axiomatized: GCH implies 2^{ℵ_n} < ℵ_ω for all n ∈ ℕ. Under GCH, 2^{ℵ_n} = ℵ_{n+1} < ℵ_ω since ℵ_{n+1} < ℵ_ω for all finite n. This makes ℵ_ω a strong limit cardinal, which constrains the power set sizes below ℵ_ω.",
+    "mathContext": "Under GCH: $2^{\\aleph_n} = \\aleph_{n+1}$ for all $n < \\omega$. Since $\\aleph_{n+1} < \\aleph_\\omega$ for all $n$, $\\aleph_\\omega$ is a strong limit: $\\forall \\kappa < \\aleph_\\omega,\\; 2^\\kappa < \\aleph_\\omega$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "strong limit cardinal",
+      "GCH",
+      "power set"
+    ],
+    "prerequisites": [
+      "GCH definition",
+      "aleph hierarchy"
+    ]
+  },
+  {
+    "id": "ann-e1173-overlap-bound",
+    "proofId": "erdos-1173",
+    "range": {
+      "startLine": 138,
+      "endLine": 143
+    },
+    "type": "concept",
+    "title": "Overlap Bounded by ℵ_n via Cofinality",
+    "content": "Axiomatized: if f has almost-disjoint images (overlap < ℵ_ω), then each pairwise overlap is bounded by some ℵ_n (n ∈ ℕ). This follows from cf(ℵ_ω) = ω: any cardinal < ℵ_ω is ≤ ℵ_n for some n. This structural observation is key to potential inductive approaches.",
+    "mathContext": "Since $\\mathrm{cf}(\\aleph_\\omega) = \\omega$, any $\\kappa < \\aleph_\\omega$ satisfies $\\kappa \\leq \\aleph_n$ for some $n < \\omega$. Applied to overlaps: $|f(\\alpha) \\cap f(\\beta)| < \\aleph_\\omega \\Rightarrow \\exists n,\\; |f(\\alpha) \\cap f(\\beta)| \\leq \\aleph_n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cofinality",
+      "cofinal sequence",
+      "singular cardinal"
+    ],
+    "prerequisites": [
+      "AlmostDisjoint definition",
+      "cofinality of aleph_omega"
+    ]
+  },
+  {
+    "id": "ann-e1173-aleph1-case",
+    "proofId": "erdos-1173",
+    "range": {
+      "startLine": 152,
+      "endLine": 155
+    },
+    "type": "concept",
+    "title": "Erdős–Hajnal Theorem for ℵ₁",
+    "content": "Axiomatized: any set mapping f : ω₁ → [ω₁]^{≤ℵ₀} has a free set of size ℵ₁. This is the countable case: κ = ℵ₀ is regular, so Hajnal's theorem applies directly. It serves as the motivating example for Problem #1173, showing that the result holds at the first level of the aleph hierarchy.",
+    "mathContext": "$\\forall f : \\omega_1 \\to [\\omega_1]^{\\leq \\aleph_0},\\; \\exists S \\subseteq \\omega_1,\\; |S| = \\aleph_1 \\wedge S \\text{ is free}$. Since $\\aleph_0$ is regular, this is a direct instance of Hajnal's theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős–Hajnal theorem",
+      "countable sets",
+      "omega_1"
+    ],
+    "prerequisites": [
+      "Hajnal free set theorem",
+      "regular cardinal ℵ₀"
+    ]
+  },
+  {
+    "id": "ann-e1173-weak-form",
+    "proofId": "erdos-1173",
+    "range": {
+      "startLine": 160,
+      "endLine": 165
+    },
+    "type": "theorem",
+    "title": "Weak Form of Problem #1173",
+    "content": "The weak conjecture asks for a free set of cardinality ℵ_ω (rather than ℵ_{ω+1}). This would be a partial result: the free set is large but not as large as the domain. The gap between ℵ_ω and ℵ_{ω+1} is the key difficulty, as constructing a free set of successor cardinal size at a singular limit requires overcoming cofinality barriers.",
+    "mathContext": "$\\text{GCH} \\Rightarrow \\forall f : \\omega_{\\omega+1} \\to [\\omega_{\\omega+1}]^{\\leq \\aleph_\\omega},\\; \\text{AlmostDisjoint}(f, \\aleph_\\omega) \\Rightarrow \\exists S,\\; |S| = \\aleph_\\omega \\wedge S \\text{ is free}$. The weak form requires $|S| = \\aleph_\\omega$ instead of $\\aleph_{\\omega+1}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "partial result",
+      "cofinality barrier",
+      "singular limit"
+    ],
+    "prerequisites": [
+      "erdos_1173 definition"
+    ]
+  }
+]

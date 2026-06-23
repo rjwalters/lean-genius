@@ -1,0 +1,187 @@
+{
+  "id": "erdos-224",
+  "title": "Erdős Problem #224: Obtuse Angles in Point Sets",
+  "slug": "erdos-224",
+  "description": "Any 2^d + 1 points in ℝ^d contain three points forming an obtuse angle. SOLVED by Danzer-Grünbaum (1962). Hypercube is extremal.",
+  "meta": {
+    "author": "Danzer-Grünbaum (1962), Kuiper-Boerdijk (d=3)",
+    "sourceUrl": "https://erdosproblems.com/224",
+    "date": "1962",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos224Problem.lean",
+    "tags": [
+      "erdos",
+      "geometry",
+      "discrete-geometry",
+      "angles",
+      "hypercube",
+      "extremal",
+      "pigeonhole-principle",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 224,
+    "erdosUrl": "https://erdosproblems.com/224",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "relatedProblems": [
+      {
+        "id": "erdos-225",
+        "relation": "Erdős Problem #225 asks about the maximum number of right angles among n points in ℝ^d"
+      }
+    ],
+    "axiomCount": 1,
+    "lineCount": 277,
+    "assumptions": "1 axiom: danzer_grunbaum (Danzer-Grünbaum theorem: any 2^d+1 points contain an obtuse triple). 0 sorries. hypercube_card and hypercube_obtuse_free are proved theorems, not axioms.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 8
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem in the context of discrete geometry, asking how many points in $\\mathbb{R}^d$ can avoid forming any obtuse angle. The question connects to the geometry of the hypercube: the $2^d$ vertices of $\\{0,1\\}^d$ form an obtuse-free set because all angles between triples of binary vectors are $\\leq 90°$ (specifically $60°$ or $90°$). For $d = 2$, any 5 points in the plane trivially contain an obtuse triple (via convex position arguments). For $d = 3$, Kuiper and Boerdijk proved the 9-point case independently. The general result was established by Ludwig Danzer and Branko Grünbaum in their 1962 paper in *Mathematische Zeitschrift*, resolving the problem for all dimensions. The proof uses induction on dimension with a projection argument, showing that $2^d + 1$ points must contain an obtuse triple. Erdős and Füredi (1983) later studied the related problem of the greatest angle among $n$ points, extending the analysis beyond the threshold case.",
+    "problemStatement": "If $A \\subseteq \\mathbb{R}^d$ is any set of $2^d + 1$ points, must some three points in $A$ determine an obtuse angle ($> 90°$)?",
+    "text": "Any 2^d + 1 points in ℝ^d contain three points forming an obtuse angle. SOLVED by Danzer-Grünbaum (1962). Hypercube is extremal.",
+    "proofStrategy": "The formalization defines $d$-dimensional Euclidean points as `Fin d → ℝ`, angles via $\\arccos$ of normalized inner products, and predicates for obtuse angles, obtuse triples, and obtuse-free sets. The main theorem (Danzer-Grünbaum) is axiomatized for all $d$. Special cases $d = 2$ and $d = 3$ are stated separately. The hypercube vertices $\\{0,1\\}^d$ are defined, and their obtuse-free property and extremality are axiomatized/proved. The pigeonhole argument over orthants is formalized as a key lemma.",
+    "keyInsights": [
+      "**Hypercube extremality**: The $2^d$ vertices of $\\{0,1\\}^d$ have only $60°$ and $90°$ angles — all inner products $\\langle A-B, C-B\\rangle \\geq 0$ for binary vectors",
+      "**Pigeonhole principle**: $\\mathbb{R}^d$ has $2^d$ coordinate orthants, so $2^d + 1$ points force two into the same orthant, creating geometric constraints",
+      "**Inductive proof**: Danzer-Grünbaum argued by induction on $d$, projecting points onto hyperplanes and analyzing how the extra coordinate forces obtuse angles",
+      "**Tight bound**: The threshold $2^d + 1$ is exact — $2^d$ obtuse-free points exist (hypercube) but $2^d + 1$ always force an obtuse triple",
+      "**Inner product characterization**: Obtuse $\\Leftrightarrow$ negative dot product: $\\angle ABC > \\pi/2 \\iff \\langle A-B, C-B\\rangle < 0$"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Geometry (Euclidean, combinatorial)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Namespace",
+      "summary": "Imports Mathlib's **InnerProductSpace**, **Finset**, **Real**, and **Finrank** for the `Erdos224` namespace.",
+      "startLine": 24,
+      "endLine": 30,
+      "mathContext": "Mathematical content: Imports Mathlib's **InnerProductSpace**, **Finset**, **Real**, and **Finrank** for the `Erdos224` namespace."
+    },
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Defines **EuclideanPoint** ($\\text{Fin}\\, d \\to \\mathbb{R}$), **angle** via $\\arccos(\\langle A-B, C-B\\rangle / (\\|A-B\\| \\cdot \\|C-B\\|))$, **IsObtuseAngle** ($\\theta > \\pi/2$), and **FormsObtuseAngle**.",
+      "startLine": 31,
+      "endLine": 60,
+      "mathContext": "Defines **EuclideanPoint** ($\\text{Fin}\\, d \\to \\mathbb{R}$), **angle** via $\\arccos(\\langle A-B, C-B\\rangle / (\\|A-B\\| \\cdot \\|C-B\\|))$, **IsObtuseAngle** ($\\theta > \\pi/2$), and **FormsObtuseAngle**."
+    },
+    {
+      "id": "set-predicates",
+      "title": "Set Predicates",
+      "summary": "Defines **ContainsObtuseTriple** ($\\exists$ distinct $A, B, C \\in P$ with obtuse angle at $B$) and **IsObtuseFree** ($\\neg$ContainsObtuseTriple).",
+      "startLine": 61,
+      "endLine": 76,
+      "mathContext": "Formal definition: Defines **ContainsObtuseTriple** ($\\exists$ distinct $A, B, C \\in P$ with obtuse angle at $B$) and **IsObtuseFree** ($\\neg$ContainsObtuseTriple)."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "summary": "States **ErdosObtuseConjecture**: $|P| = 2^d + 1 \\Rightarrow \\text{ContainsObtuseTriple}(P)$. Axiomatizes **danzer_grunbaum** (1962) resolving it for all $d$.",
+      "startLine": 77,
+      "endLine": 93,
+      "mathContext": "States **ErdosObtuseConjecture**: $|P| = $2^{d}$ + 1 \\Rightarrow \\text{ContainsObtuseTriple}(P)$. Axiomatizes **danzer_grunbaum** (1962) resolving it for all $d$."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases: d = 2 and d = 3",
+      "summary": "Axiomatizes **case_d2** (5 points in $\\mathbb{R}^2$, trivial) and **case_d3** (9 points in $\\mathbb{R}^3$, Kuiper-Boerdijk).",
+      "startLine": 94,
+      "endLine": 117,
+      "mathContext": "Axiomatized: Axiomatizes **case_d2** (5 points in $\\mathbb{R}^2$, trivial) and **case_d3** (9 points in $\\mathbb{R}^3$, Kuiper-Boerdijk)."
+    },
+    {
+      "id": "extremal-config",
+      "title": "The Extremal Configuration",
+      "summary": "Defines **hypercubeVertices** $= \\{0,1\\}^d$ (sorry), axiomatizes **hypercube_card** ($= 2^d$) and **hypercube_obtuse_free**, and proves **hypercube_extremal**.",
+      "startLine": 118,
+      "endLine": 152,
+      "mathContext": "Defines **hypercubeVertices** $= \\{0,1\\}^d$ (sorry), axiomatizes **hypercube_card** ($= $2^{d}$$) and **hypercube_obtuse_free**, and proves **hypercube_extremal**."
+    },
+    {
+      "id": "hypercube-angles",
+      "title": "Angles in the Hypercube",
+      "summary": "Axiomatizes **hypercube_angle_classification**: $\\angle ABC \\leq \\pi/2$ for all distinct vertices $A, B, C \\in \\{0,1\\}^d$. Only $60°$ and $90°$ angles occur.",
+      "startLine": 153,
+      "endLine": 177,
+      "mathContext": "Axiomatizes **hypercube_angle_classification**: $\\angle ABC \\leq \\$\\pi$/2$ for all distinct vertices $A, B, C \\in \\{0,1\\}^d$. Only $60°$ and $90°$ angles occur."
+    },
+    {
+      "id": "why-2d-plus-1",
+      "title": "Why 2^d + 1 Forces Obtuse",
+      "summary": "Axiomatizes **pigeonhole_orthants**: $2^d + 1$ points in $\\mathbb{R}^d$ force two into the same orthant. Sketches the Danzer-Grünbaum argument.",
+      "startLine": 178,
+      "endLine": 204,
+      "mathContext": "Axiomatizes **pigeonhole_orthants**: $$2^{d}$ + 1$ points in $\\mathbb{R}^d$ force two into the same orthant. Sketches the Danzer-Grünbaum argument."
+    },
+    {
+      "id": "related",
+      "title": "Related Results",
+      "summary": "Discusses connections to **acute sets** (all angles $< 90°$), **spherical codes**, and high-dimensional geometry phenomena.",
+      "startLine": 205,
+      "endLine": 229,
+      "mathContext": "Mathematical content: Discusses connections to **acute sets** (all angles $< 90°$), **spherical codes**, and high-dimensional geometry phenomena."
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "Proves **erdos_224** (direct application of danzer_grunbaum) and **erdos_224_summary** (conjunction of main theorem with hypercube extremality).",
+      "startLine": 230,
+      "endLine": 256,
+      "mathContext": "Verified: Proves **erdos_224** (direct application of danzer_grunbaum) and **erdos_224_summary** (conjunction of main theorem with hypercube extremality)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #224 was solved by Danzer and Grünbaum (1962): any $2^d + 1$ points in $\\mathbb{R}^d$ contain three forming an obtuse angle. The hypercube $\\{0,1\\}^d$ with $2^d$ vertices is the extremal obtuse-free configuration, making the bound tight. The formalization axiomatizes the main theorem and special cases, and proves extremality and the summary conjunction.",
+    "implications": "**Theoretical Significance**: The result reveals that the hypercube geometry is the unique obstruction to obtuse-freeness in high dimensions.\n\nThe exponential threshold $2^d$ connects discrete geometry to coding theory (spherical codes with angle constraints) and the combinatorics of the Boolean lattice. The Danzer-Grünbaum technique of induction via projection has become a standard tool in discrete geometry.",
+    "openQuestions": [
+      "What is the maximum size of an acute set (all angles strictly < 90°) in ℝ^d? (Known: between d+1 and 2d-1)",
+      "Are there other extremal obtuse-free configurations besides the hypercube (up to isometry)?",
+      "What is the maximum number of right angles (exactly 90°) among n points in ℝ^d?",
+      "How does the obtuse-free threshold change in non-Euclidean geometries (hyperbolic, spherical)?",
+      "Can the Danzer-Grünbaum proof be made constructive — given 2^d+1 points, efficiently find the obtuse triple?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.LinearAlgebra.Dimension.Finrank"
+    ],
+    "opens": [],
+    "namespace": "Erdos224",
+    "lineCount": 277,
+    "axiomCount": 1,
+    "theoremCount": 5,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos224Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    "Danzer, Grünbaum (1962): 'Über zwei Probleme bezüglich konvexer Körper von P. Erdős und von V. L. Klee', Mathematische Zeitschrift 79, 95–99",
+    "Erdős, Füredi (1983): 'The greatest angle among n points in the d-dimensional Euclidean space', Annals of Discrete Mathematics 17, 275–283",
+    "Kuiper, Boerdijk: Unpublished proof for d = 3 (9 points in ℝ³)",
+    "Barvinok, Lee, Novik (2013): Acute sets and related problems in discrete geometry",
+    "https://erdosproblems.com/224"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-225",
+      "relationship": "related",
+      "description": "Problem #225 is a companion problem studying related geometric extremal questions about point configurations. Both concern how the structure of point sets in $\\mathbb{R}^d$ constrains the angles they determine"
+    },
+    {
+      "targetId": "triangle-inequality",
+      "relationship": "foundational",
+      "description": "The triangle inequality underpins the angle analysis: obtuse angles in a triangle $ABC$ correspond to $|AC|^2 > |AB|^2 + |BC|^2$ (the cosine rule generalization). Problem #224's hypercube construction avoids obtuse angles precisely because $\\{0,1\\}^d$ vertices satisfy the opposite inequality for all triples"
+    }
+  ],
+  "sorries": 0
+}

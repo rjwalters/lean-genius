@@ -1,0 +1,94 @@
+{
+  "slug": "erdos-782",
+  "title": "Erdős #782",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Do the squares contain arbitrarily long quasi-progressions? That is, does there exist some constant $C>0$ such that, for any $k$, the squares contain a sequence $x_1,\\ldots,x_k$ where, for some $d$ and all $1\\leq i<k$,\\[x_i+d\\leq x_{i+1}\\leq x_i+d+C.\\]Do the squares contain arbitrarily large cubes\\[a+\\left\\{ \\sum_i \\epsilon_ib_i : \\epsilon_i\\in \\{0,1\\}\\right\\}?\\]\n\n\n\nA question of Brown, Erd\\H{o}s, and Freedman \\cite{BEF90}. It is a classical fact that the squares do not contain arithmetic progressions of length $4$.\n\nAn affirmative answer to the first question implies an affirmative answer to the second.\n\nSolymosi \\cite{So07} conjectured the answer to the second question is no. Cilleruelo and Granville \\cite{CiGr07} have observed that the answer to the second question is no conditional on the Bombieri-Lang conjecture.",
+    "plain": "Do the squares contain arbitrarily long quasi-progressions? That is, does there exist some constant $C>0$ such that, for any $k$, the squares contain a sequence $x_1,\\ldots,x_k$ where, for some $d$ and all $1\\leq i<k$,\\[x_i+d\\leq x_{i+1}\\leq x_i+d+C.\\]Do the squares contain arbitrarily large cubes\\[a+\\left\\{ \\sum_i \\epsilon_ib_i : \\epsilon_i\\in \\{0,1\\}\\right\\}?\\]",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "squares_contain_3AP: {1,25,49} is a 3-AP in squares (was axiom, now proved)",
+      "solymosi_equiv: equivalence of Solymosi conjecture formulations",
+      "conditional_q2_negative: Bombieri-Lang → ¬Q2",
+      "no_cubes_implies_no_quasiprog: ¬Q2 → ¬Q1"
+    ],
+    "open": [
+      "Both Q1 and Q2 remain open",
+      "no_4AP_in_squares requires Euler descent / Fermat for quartics"
+    ],
+    "goal": "Reduce axiom count; prove constructive results about squares"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-28T09:25:00Z",
+    "iteration": 2,
+    "focus": "Graduated: 0 sorries, 3 deep axioms (no_4AP_in_squares, question1_implies_question2, cilleruelo_granville)",
+    "blockers": [],
+    "nextAction": "None — formalization complete.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 3 axioms (all appropriate: no_4AP deep but provable via FLT42, other 2 are deep). 0 sorries. Well-formalized.",
+    "builtItems": [
+      "squares_contain_3AP: proved via explicit construction a=1, d=24, witnesses 1²=1, 5²=25, 7²=49",
+      "Removed trivial erdos_782_status string definition",
+      "Updated summary with correct proved/axiom counts",
+      "Graduated to completed (iteration 2)"
+    ],
+    "insights": [
+      "Actual axiom count is 3 (not 4): previous session eliminated 1",
+      "no_4AP_in_squares is provable via Mathlib not_fermat_42 (NumberTheory.FLT.Four)",
+      "Reduction: 4 squares p²<q²<r²<s² in AP → 2q²=p²+r², then Pythagorean parametrization → FLT42",
+      "question1_implies_question2 is a deep combinatorial result",
+      "cilleruelo_granville is a published conditional result (deep algebraic geometry)"
+    ],
+    "mathlibGaps": [
+      "No direct theorem about 4-AP non-existence in squares",
+      "CubeVertices proofs require enumeration of Finset subsets — fiddly but possible"
+    ],
+    "nextSteps": [
+      "AXIOM HUNT: prove no_4AP_in_squares from not_fermat_42 (~50-100 lines)",
+      "Proof sketch: p²+r²=2q² → parametrize via (a-b,a+b) → q²=a²+b² Pythagorean → descent → FLT42"
+    ],
+    "markdown": "# Erdős #782 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDo the squares contain arbitrarily long quasi-progressions? That is, does there exist some constant $C>0$ such that, for any $k$, the squares contain a sequence $x_1,\\ldots,x_k$ where, for some $d$ and all $1\\leq i<k$,\\[x_i+d\\leq x_{i+1}\\leq x_i+d+C.\\]Do the squares contain arbitrarily large cubes\\[a+\\left\\{ \\sum_i \\epsilon_ib_i : \\epsilon_i\\in \\{0,1\\}\\right\\}?\\]\n\n\n\nA question of Brown, Erd\\H{o}s, and Freedman \\cite{BEF90}. It is a classical fact that the squares do not contain arithmetic progressions of length $4$.\n\nAn affirmative answer to the first question implies an affirmative answer to the second.\n\nSolymosi \\cite{So07} conjectured the answer to the second question is no. Cilleruelo and Granville \\cite{CiGr07} have observed that the answer to the second question is no conditional on the Bombieri-Lang conjecture.\n\n\n\n\nReferences\n\n\n[BEF90] Brown, T. C. and Erd\\H{o}s, P. and Freedman, A. R., Quasi-progressions and descending waves. J. Combin. Theory Ser. A (1990), 81-95.\n\n[CiGr07] Cilleruelo, Javier and Granville, Andrew, Lattice points on circles, squares in arithmetic progressions\nand sumsets of squares. (2007), 241-262.\n\n[So07] Solymosi, J\\'{o}zsef, Elementary additive combinatorics. (2007), 29-38.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #781\n- Problem #783\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- BEF90\n- So07\n- CiGr07\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-7",
+    "erdos-78",
+    "erdos-782"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T08:39:26.859Z",
+  "lastUpdate": "2026-05-01T03:30:00Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos782Problem.lean",
+      "filename": "Erdos782Problem.lean",
+      "lineCount": 329,
+      "theoremCount": 10,
+      "axiomCount": 3,
+      "defCount": 17,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos782Problem.lean"
+    }
+  ]
+}

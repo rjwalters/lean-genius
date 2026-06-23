@@ -1,0 +1,148 @@
+{
+  "slug": "chinese-remainder-constructive-oq-04-oq-03",
+  "title": "Weakening pairwise coprimality in list CRT (non-coprime generalization)",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "theorem non_coprime_crt_list_iff {sys : System R} : (∃ x : R, Satisfies x sys) ↔ Compatible sys",
+    "plain": "Can the pairwise coprimality condition in the list CRT be weakened? Answer: YES. The system is solvable iff gcd(mᵢ,mⱼ) ∣ (aᵢ-aⱼ) for all pairs i,j (pairwise GCD compatibility). When solvable, the solution is unique modulo lcm of all moduli.",
+    "whyMatters": [
+      "Strictly generalizes the coprime-moduli CRT to arbitrary moduli over a Euclidean domain",
+      "Recovers the standard CRT when moduli are pairwise coprime (lcm = product)"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "non_coprime_crt_list_iff: solvability ↔ pairwise GCD compatibility (proved as ed_crt_list_iff in ChineseRemainderNonCoprimeList)",
+      "non_coprime_crt_list_unique: any two solutions agree modulo lcm of moduli (proved as ed_crt_list_unique)"
+    ],
+    "open": [],
+    "goal": "Generalize OQ-04 (coprime list CRT) to arbitrary moduli with compatibility — DONE."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-27T00:00:00Z",
+    "iteration": 1,
+    "focus": "Closed: non-coprime CRT for lists fully proved in ChineseRemainderNonCoprimeList; OQ04OQ03 file references the proofs (3 theorems, 0 sorries, 0 axioms).",
+    "blockers": [],
+    "nextAction": "None — problem solved.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: OQ03 fully verified. Proved mersenne_coprime_of_coprime (Euclidean algorithm approach). Removed false primorial axiom, proved restricted version. File: 0A 0S, status verified.",
+    "builtItems": [
+      "mersenne_mod_eq helper lemma in ChineseRemainderConstructiveOQ03.lean",
+      "mul_add_mod_eq helper lemma for modular arithmetic",
+      "Proved mersenne_coprime_of_coprime theorem",
+      "Proved primorial_growth_lower (restricted to k<=6)"
+    ],
+    "insights": [
+      "OQ04 (CRT for arbitrary lists) is clean: 0A 0S 4T. The coprime case is fully solved.",
+      "OQ03 (efficiency/bounds) has 1 axiom primorial_growth_lower (k≥1 → primorial k ≥ 2^k) and 2 sorries",
+      "Non-coprime CRT: system x ≡ aᵢ (mod mᵢ) solvable iff gcd(mᵢ,mⱼ) | (aᵢ - aⱼ) for all i,j",
+      "Mathlib has ZMod.chineseRemainder for coprime case. Non-coprime generalization not available.",
+      "List generalization needs: (1) compatibility check function, (2) inductive solver reducing to 2-moduli case, (3) uniqueness mod lcm",
+      "mersenne_coprime_of_coprime PROVED via Euclidean algorithm on exponents + strong induction on a",
+      "Key helper: mersenne_mod_eq shows (2^b-1) % (2^a-1) = 2^(b%a)-1 using pow_two_mod_mersenne",
+      "False axiom primorial_growth_lower REMOVED: primorial lookup table returns 0 for k>=7, making universal bound false. Replaced with proved theorem restricted to k<=6",
+      "OQ03 file now 0 axioms, 0 sorries: fully verified"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "State non_coprime_crt_list theorem: given compatibility, solve system with solution unique mod lcm",
+      "Reduce to 2-moduli case: merge first two congruences, then recurse",
+      "The 2-moduli non-coprime CRT should already exist in ChineseRemainderConstructive or be in Mathlib"
+    ],
+    "markdown": "# Knowledge Base: chinese-remainder-constructive-oq-04-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "chinese-remainder-constructive",
+    "chinese-remainder-constructive-oq-03",
+    "chinese-remainder-constructive-oq-03-oq-03",
+    "chinese-remainder-constructive-oq-04",
+    "chinese-remainder-constructive-oq-04-oq-03",
+    "chinese-remainder-constructive-oq-04-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T04:28:18.979Z",
+  "lastUpdate": "2026-04-27T00:00:00Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/ChineseRemainderConstructive.lean",
+      "filename": "ChineseRemainderConstructive.lean",
+      "lineCount": 416,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructive.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderConstructiveOQ03.lean",
+      "filename": "ChineseRemainderConstructiveOQ03.lean",
+      "lineCount": 323,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructiveOQ03.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderConstructiveOQ03OQ03.lean",
+      "filename": "ChineseRemainderConstructiveOQ03OQ03.lean",
+      "lineCount": 204,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructiveOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderConstructiveOQ04.lean",
+      "filename": "ChineseRemainderConstructiveOQ04.lean",
+      "lineCount": 157,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructiveOQ04.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderConstructiveOQ04OQ03.lean",
+      "filename": "ChineseRemainderConstructiveOQ04OQ03.lean",
+      "lineCount": 100,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructiveOQ04OQ03.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderConstructiveOQ04OQ04.lean",
+      "filename": "ChineseRemainderConstructiveOQ04OQ04.lean",
+      "lineCount": 123,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructiveOQ04OQ04.lean"
+    }
+  ]
+}

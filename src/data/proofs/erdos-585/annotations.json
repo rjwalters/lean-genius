@@ -1,0 +1,162 @@
+[
+  {
+    "id": "erdos-585-ann-header",
+    "proofId": "erdos-585",
+    "range": {
+      "startLine": 1,
+      "endLine": 20
+    },
+    "type": "concept",
+    "title": "Problem Statement and Imports",
+    "content": "The header states Erdős Problem #585: determine the maximum number of edges in an n-vertex graph with no two edge-disjoint cycles on the same vertex set. Known bounds are Ω(n log log n) from Pyber–Rödl–Szemerédi (1995) and O(n(log n)^C) from Chakraborti–Janzer–Methuku–Montgomery (2024). Imports include Mathlib's SimpleGraph, Finset, and Filter modules.",
+    "mathContext": "The extremal function $f(n) = \\max\\{|E(G)| : |V(G)| = n,\\; G \\text{ has no two edge-disjoint cycles on the same vertex set}\\}$ satisfies $\\Omega(n \\log \\log n) \\le f(n) \\le O(n (\\log n)^C)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "extremal graph theory",
+      "cycle decomposition",
+      "Hamiltonian cycles"
+    ],
+    "prerequisites": [
+      "simple graphs",
+      "asymptotic notation",
+      "filters"
+    ]
+  },
+  {
+    "id": "erdos-585-ann-cycle-def",
+    "proofId": "erdos-585",
+    "range": {
+      "startLine": 22,
+      "endLine": 29
+    },
+    "type": "definition",
+    "title": "Cycle in a Graph",
+    "content": "Defines a cycle on vertex set S as an injective sequence of at least 3 vertices in S with consecutive adjacencies, including wrap-around from the last vertex back to the first. The image of the vertex sequence must equal S exactly, so the cycle is Hamiltonian on S.",
+    "mathContext": "A cycle $C_k$ on vertex set $S \\subseteq V(G)$ with $|S| = k \\ge 3$ is a sequence $(v_0, v_1, \\ldots, v_{k-1})$ of distinct vertices from $S$ with edges $v_i v_{i+1 \\bmod k} \\in E(G)$ for all $i$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Hamiltonian cycle",
+      "cycle space",
+      "circuit"
+    ],
+    "prerequisites": [
+      "simple graphs",
+      "injective functions",
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "erdos-585-ann-edge-disjoint",
+    "proofId": "erdos-585",
+    "range": {
+      "startLine": 31,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "Edge-Disjoint Cycles on Same Vertex Set",
+    "content": "Two cycles on the same vertex set S are edge-disjoint if they traverse S using at least one different edge. This requires the subgraph induced on S to be sufficiently edge-rich to support two distinct Hamiltonian cycles — a strong structural property related to the theory of cycle decompositions and edge-disjoint Hamiltonian paths.",
+    "mathContext": "Given $S \\subseteq V(G)$ with $|S| = k$, two Hamiltonian cycles $C_1, C_2$ on $S$ are edge-disjoint if $E(C_1) \\ne E(C_2)$, i.e., there exists an edge in one cycle not present in the other. The forbidden configuration is the existence of any such $S$ supporting two edge-disjoint Hamiltonian cycles.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hamiltonian decomposition",
+      "edge coloring",
+      "cycle double cover"
+    ],
+    "prerequisites": [
+      "graph cycles",
+      "edge sets",
+      "Finset operations"
+    ]
+  },
+  {
+    "id": "erdos-585-ann-extremal",
+    "proofId": "erdos-585",
+    "range": {
+      "startLine": 48,
+      "endLine": 55
+    },
+    "type": "definition",
+    "title": "Extremal Function f(n)",
+    "content": "Defines f(n) as the supremum of edge counts over all n-vertex simple graphs that avoid the forbidden configuration. The definition uses Lean's sSup on the set of edge counts of graphs lacking two edge-disjoint cycles on any common vertex set.",
+    "mathContext": "$f(n) = \\max\\{|E(G)| : G \\text{ is a simple graph on } n \\text{ vertices with no two edge-disjoint cycles on any common vertex set}\\}$. Unlike classical Turán-type problems, the forbidden configuration here involves a global structural condition rather than a fixed subgraph.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán number",
+      "extremal function",
+      "forbidden configuration"
+    ],
+    "prerequisites": [
+      "supremum",
+      "decidable relations",
+      "edge counting"
+    ]
+  },
+  {
+    "id": "erdos-585-ann-prs",
+    "proofId": "erdos-585",
+    "range": {
+      "startLine": 57,
+      "endLine": 65
+    },
+    "type": "concept",
+    "title": "Pyber–Rödl–Szemerédi Lower Bound",
+    "content": "The lower bound f(n) ≥ c·n·log log n was proved by Pyber, Rödl, and Szemerédi in 1995. Their construction uses probabilistic methods combined with Ramsey-theoretic ideas to build dense graphs avoiding the forbidden configuration. The iterated logarithm growth rate suggests the extremal function is only barely superlinear.",
+    "mathContext": "$\\exists c > 0$ such that $f(n) \\ge c \\cdot n \\cdot \\log \\log n$ for all sufficiently large $n$. The statement uses Lean's `Filter.atTop` for the \"eventually\" quantifier, capturing the asymptotic nature of the bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "probabilistic method",
+      "Ramsey theory",
+      "iterated logarithm"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "asymptotic filters",
+      "logarithmic functions"
+    ]
+  },
+  {
+    "id": "erdos-585-ann-cjmm",
+    "proofId": "erdos-585",
+    "range": {
+      "startLine": 67,
+      "endLine": 76
+    },
+    "type": "concept",
+    "title": "CJMM Upper Bound (2024)",
+    "content": "Chakraborti, Janzer, Methuku, and Montgomery proved in 2024 that f(n) ≤ C·n·(log n)^α for constants C, α > 0. This was a major breakthrough, dramatically improving the previous best upper bound of O(n√(log n)) and nearly closing the gap with the lower bound. Their method uses structural decomposition and dependent random choice techniques.",
+    "mathContext": "$\\exists C_0 > 0,\\; \\alpha > 0$ such that $f(n) \\le C_0 \\cdot n \\cdot (\\log n)^\\alpha$ for all sufficiently large $n$. The gap between $\\log \\log n$ and $(\\log n)^\\alpha$ remains the central open question.",
+    "significance": "key",
+    "relatedConcepts": [
+      "dependent random choice",
+      "structural decomposition",
+      "polylogarithmic bounds"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "Filter.atTop",
+      "power functions"
+    ]
+  },
+  {
+    "id": "erdos-585-ann-combined",
+    "proofId": "erdos-585",
+    "range": {
+      "startLine": 78,
+      "endLine": 80
+    },
+    "type": "insight",
+    "title": "Combined Bounds — The Open Gap",
+    "content": "The formal statement of Erdős Problem #585 combines both bounds into a single axiom: Ω(n log log n) ≤ f(n) ≤ O(n(log n)^C). The gap between the iterated logarithm and a power of the logarithm is the fundamental open question. Closing this gap would require either improving the Pyber–Rödl–Szemerédi construction or strengthening the CJMM decomposition approach.",
+    "mathContext": "$\\exists c, C, \\alpha > 0$ such that eventually $c \\cdot n \\cdot \\log \\log n \\le f(n) \\le C \\cdot n \\cdot (\\log n)^\\alpha$. The ratio of the upper to lower bound is $(\\log n)^\\alpha / \\log \\log n$, which grows to infinity but very slowly.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal gap",
+      "asymptotic tightness",
+      "Erdős problems"
+    ],
+    "prerequisites": [
+      "asymptotic analysis",
+      "logarithmic growth rates"
+    ]
+  }
+]

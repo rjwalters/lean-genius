@@ -1,0 +1,185 @@
+[
+  {
+    "id": "ann-last-k-digits",
+    "proofId": "divisibility-by-3-oq-01",
+    "range": {
+      "startLine": 28,
+      "endLine": 48
+    },
+    "type": "concept",
+    "title": "General Last-k-Digits Theorem",
+    "content": "The master theorem for all last-digit rules:\n\n```lean\ntheorem dvd_iff_dvd_mod (d M n : ℕ) (hdM : d ∣ M) :\n    d ∣ n ↔ d ∣ (n % M)\n```\n\nIf $d | M$, then $d | n \\iff d | (n \\bmod M)$. This unifies:\n- div by 2 (M=10): 2|10\n- div by 4 (M=100): 4|100\n- div by 8 (M=1000): 8|1000\n- div by 5, 25, 125 similarly",
+    "mathContext": "$d | M \\implies (d | n \\iff d | (n \\bmod M))$",
+    "significance": "key",
+    "relatedConcepts": [
+      "modular arithmetic",
+      "divisibility",
+      "last digits"
+    ],
+    "prerequisites": [
+      "positional base-b representation of integers",
+      "modular arithmetic and congruences mod m",
+      "divisibility (a | b) and remainders"
+    ]
+  },
+  {
+    "id": "ann-power-2-5",
+    "proofId": "divisibility-by-3-oq-01",
+    "range": {
+      "startLine": 97,
+      "endLine": 118
+    },
+    "type": "concept",
+    "title": "Power Generalizations",
+    "content": "General theorems for all powers of 2 and 5:\n\n```lean\ntheorem pow2_dvd_last_k (k n : ℕ) :\n    2^k ∣ n ↔ 2^k ∣ (n % 10^k)\ntheorem pow5_dvd_last_k (k n : ℕ) :\n    5^k ∣ n ↔ 5^k ∣ (n % 10^k)\n```\n\nThese subsume all individual 2/4/8/16/32 and 5/25/125 rules.",
+    "mathContext": "$2^k | n \\iff 2^k | (n \\bmod 10^k)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "powers of 2",
+      "powers of 5",
+      "generalization"
+    ],
+    "prerequisites": [
+      "divisibility tests by the last k digits",
+      "powers of 2 and 5 as factors of 10^k",
+      "modular arithmetic mod 2^k and 5^k"
+    ]
+  },
+  {
+    "id": "ann-truncation-13",
+    "proofId": "divisibility-by-3-oq-01",
+    "range": {
+      "startLine": 120,
+      "endLine": 148
+    },
+    "type": "concept",
+    "title": "Divisibility by 13: Truncation Method",
+    "content": "The 'add 4 times the last digit' rule for 13:\n\n```lean\ntheorem thirteen_dvd_truncation (n : ℕ) :\n    13 ∣ n ↔ (13 : ℤ) ∣ (↑(n/10) + 4·↑(n%10))\n```\n\n**Proof idea**: $10(q + 4r) = n + 39r \\equiv n \\pmod{13}$, and $\\gcd(13, 10) = 1$.\n\nThis gives a practical mental test: remove last digit, add 4 times it to the rest.",
+    "mathContext": "$13 | n \\iff 13 | (\\lfloor n/10 \\rfloor + 4(n \\bmod 10))$",
+    "significance": "key",
+    "relatedConcepts": [
+      "truncation method",
+      "coprimality",
+      "integer arithmetic"
+    ],
+    "prerequisites": [
+      "modular arithmetic and congruences",
+      "coprimality (gcd = 1) and modular inverses",
+      "the truncation/seed step for divisibility by primes coprime to 10"
+    ]
+  },
+  {
+    "id": "ann-digit-sum-general",
+    "proofId": "divisibility-by-3-oq-01",
+    "range": {
+      "startLine": 155,
+      "endLine": 210
+    },
+    "type": "concept",
+    "title": "Digit-Sum Rules in Various Bases",
+    "content": "General digit-sum divisibility via Mathlib:\n\n```lean\ntheorem digitSum_dvd_iff (d b : ℕ) (hdb : b % d = 1) (n : ℕ) :\n    d ∣ n ↔ d ∣ (Nat.digits b n).sum\n```\n\nInstantiations include:\n- 37 via base 1000 (three-digit grouping)\n- 99 via base 100 (two-digit grouping)\n- 27, 999 via base 1000\n- Rules in hex (3, 5, 15), octal (7), and base 7 (3, 6)",
+    "mathContext": "$b \\equiv 1 \\pmod{d} \\implies (d | n \\iff d | \\text{digit sum in base } b)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "digit sum",
+      "multi-digit grouping",
+      "various bases"
+    ],
+    "prerequisites": [
+      "base-b positional notation",
+      "the congruence b ≡ 1 (mod m) underlying digit-sum rules",
+      "grouping digits into blocks"
+    ]
+  },
+  {
+    "id": "ann-casting-out",
+    "proofId": "divisibility-by-3-oq-01",
+    "range": {
+      "startLine": 220,
+      "endLine": 268
+    },
+    "type": "concept",
+    "title": "Casting Out Nines and Threes",
+    "content": "Digit sums preserve arithmetic modulo 9 and 3:\n\n```lean\ntheorem casting_out_nines_add (a b : ℕ) :\n    (a + b) ≡ (digitSum(a) + digitSum(b)) [MOD 9]\ntheorem casting_out_nines_mul (a b : ℕ) :\n    (a * b) ≡ (digitSum(a) * digitSum(b)) [MOD 9]\n```\n\nThis formalizes the ancient technique of checking arithmetic by casting out nines.",
+    "mathContext": "Digit sums are ring homomorphisms mod 9",
+    "significance": "key",
+    "relatedConcepts": [
+      "casting out nines",
+      "arithmetic verification",
+      "congruence"
+    ],
+    "prerequisites": [
+      "the digit-sum rule for 9 and 3",
+      "congruence arithmetic mod 9",
+      "using residues to check arithmetic"
+    ]
+  },
+  {
+    "id": "ann-digital-root",
+    "proofId": "divisibility-by-3-oq-01",
+    "range": {
+      "startLine": 270,
+      "endLine": 331
+    },
+    "type": "concept",
+    "title": "Digital Root Theory",
+    "content": "Complete formalization of digital roots:\n\n```lean\ndef digitalRoot (n : ℕ) : ℕ :=\n  if n = 0 then 0\n  else if n % 9 = 0 then 9 else n % 9\n```\n\nKey properties:\n- Always ≤ 9, positive for n > 0\n- dr(n) = 9 ↔ 9 | n (for n > 0)\n- 3 | n ↔ 3 | dr(n)\n- dr(n) % 3 = n % 3",
+    "mathContext": "$\\text{dr}(n) = 9 \\iff 9 | n$",
+    "significance": "key",
+    "relatedConcepts": [
+      "digital root",
+      "mod 9",
+      "single digit reduction"
+    ],
+    "prerequisites": [
+      "the digit-sum rule and iterated digit sums",
+      "arithmetic mod 9",
+      "reduction to a single digit (1–9)"
+    ]
+  },
+  {
+    "id": "ann-coprime",
+    "proofId": "divisibility-by-3-oq-01",
+    "range": {
+      "startLine": 333,
+      "endLine": 375
+    },
+    "type": "concept",
+    "title": "Coprime Factorization Rules",
+    "content": "General coprime divisibility and 8 specific rules:\n\n```lean\ntheorem coprime_mul_dvd_iff (d₁ d₂ n : ℕ) (h : Nat.Coprime d₁ d₂) :\n    d₁ * d₂ ∣ n ↔ d₁ ∣ n ∧ d₂ ∣ n\n```\n\nRules: 6=2×3, 12=4×3, 15=3×5, 18=2×9, 36=4×9, 45=9×5, 60=4×15, 90=9×10.",
+    "mathContext": "$\\gcd(d_1, d_2) = 1 \\implies (d_1 d_2 | n \\iff d_1 | n \\wedge d_2 | n)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "coprime",
+      "factorization",
+      "combined rules"
+    ],
+    "prerequisites": [
+      "coprime integers (gcd = 1)",
+      "prime factorization of the modulus",
+      "the CRT principle: m·n | x iff m|x and n|x for coprime m,n"
+    ]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "divisibility-by-3-oq-01",
+    "range": {
+      "startLine": 390,
+      "endLine": 420
+    },
+    "type": "concept",
+    "title": "Master Summary",
+    "content": "A single theorem collecting all major divisibility rules:\n\n- 3 digit-sum rules (3, 9, 37, 99 in various bases)\n- 5 last-digit rules (2, 4, 8, 5, 25)\n- 2 power generalizations (2^k, 5^k)\n\nAll verified in one theorem statement.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "summary",
+      "verification"
+    ],
+    "mathContext": "See annotation content for formal details of master summary",
+    "prerequisites": [
+      "modular arithmetic foundations",
+      "the individual divisibility rules (last-k-digits, digit-sum, truncation)",
+      "coprime factorization of moduli"
+    ]
+  }
+]

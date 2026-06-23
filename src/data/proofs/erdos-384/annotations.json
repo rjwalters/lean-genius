@@ -1,0 +1,259 @@
+[
+  {
+    "id": "erdos-384-header",
+    "proofId": "erdos-384",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 18
+    },
+    "title": "Problem Overview",
+    "content": "Erdős Problem #384: If 1 < k < n−1, is C(n,k) divisible by a prime p < n/2? SOLVED by Ecklund (1969). The only exception is C(7,3) = 35 = 5 × 7.",
+    "mathContext": "C(n,k) = n!/(k!(n−k)!). Question: ∃ p prime, p ∣ C(n,k) ∧ p < n/2. Exception: C(7,3) = 35 = 5 × 7.",
+    "significance": "key",
+    "relatedConcepts": [
+      "binomial coefficients",
+      "prime divisibility",
+      "Kummer's theorem",
+      "Pascal's triangle"
+    ],
+    "prerequisites": [
+      "binomial coefficients",
+      "prime factorization",
+      "divisibility"
+    ],
+    "tags": [
+      "binomial-coefficients",
+      "prime-divisors",
+      "number-theory",
+      "erdos-problems"
+    ]
+  },
+  {
+    "id": "erdos-384-predicates",
+    "proofId": "erdos-384",
+    "type": "definition",
+    "range": {
+      "startLine": 36,
+      "endLine": 57
+    },
+    "title": "Basic Predicates",
+    "content": "primeDiv(p, n): p is prime and divides n. minPrimeDivisor(n): smallest prime factor via Nat.minFac (proved prime and dividing). hasSmallPrimeDivisor(n, bound): ∃ p prime, p ∣ n ∧ p < bound.",
+    "mathContext": "minPrimeDivisor_prime: proved (minFac_prime). minPrimeDivisor_dvd: proved (minFac_dvd). hasSmallPrimeDivisor n bound ≡ ∃ p, p.Prime ∧ p ∣ n ∧ p < bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.minFac",
+      "prime divisor",
+      "existential quantifier"
+    ],
+    "prerequisites": [
+      "Nat.minFac",
+      "Nat.Prime",
+      "divisibility"
+    ],
+    "tags": [
+      "definitions",
+      "prime-factorization",
+      "lean4-tactics"
+    ]
+  },
+  {
+    "id": "erdos-384-exception",
+    "proofId": "erdos-384",
+    "type": "insight",
+    "range": {
+      "startLine": 65,
+      "endLine": 89
+    },
+    "title": "The Unique Exception: C(7,3) = 35",
+    "content": "C(7,3) = 35 (native_decide). 35 = 5 × 7 (norm_num). minPrimeDivisor(35) = 5 (native_decide). choose_7_3_no_small_prime: ¬hasSmallPrimeDivisor 35 4 (proved by interval_cases). isException predicate for (7,3) and (7,4).",
+    "mathContext": "choose_7_3: proved. thirty_five_factorization: proved. minPrimeDivisor_35: proved. choose_7_3_no_small_prime: proved (interval_cases + simp_all). isException n k ≡ (n=7 ∧ k=3) ∨ (n=7 ∧ k=4).",
+    "significance": "key",
+    "relatedConcepts": [
+      "native_decide",
+      "interval_cases",
+      "norm_num"
+    ],
+    "prerequisites": [
+      "Nat.choose",
+      "native_decide",
+      "interval_cases"
+    ],
+    "tags": [
+      "counterexample",
+      "binomial-coefficients",
+      "decidability",
+      "case-analysis"
+    ]
+  },
+  {
+    "id": "erdos-384-ecklund",
+    "proofId": "erdos-384",
+    "type": "insight",
+    "range": {
+      "startLine": 98,
+      "endLine": 109
+    },
+    "title": "Ecklund's Theorem (1969)",
+    "content": "ecklund_1969: For 1 < k < n−1, either C(n,k) has a prime divisor < n/2+1, or (n,k) is the exception. ecklund_no_exception: proved by case analysis from the axiom.",
+    "mathContext": "ecklund_1969: axiom. ecklund_no_exception: proved (cases h). erdos_384_main: proved (= ecklund_1969).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ecklund",
+      "binomial coefficients",
+      "small prime divisor"
+    ],
+    "prerequisites": [
+      "hasSmallPrimeDivisor",
+      "isException",
+      "Nat.choose"
+    ],
+    "tags": [
+      "main-theorem",
+      "prime-divisors",
+      "axiomatized",
+      "binomial-coefficients"
+    ]
+  },
+  {
+    "id": "erdos-384-stronger",
+    "proofId": "erdos-384",
+    "type": "concept",
+    "range": {
+      "startLine": 117,
+      "endLine": 133
+    },
+    "title": "Stronger Conjectures (Open)",
+    "content": "ecklundStrongConjecture: if n > k², then C(n,k) has prime < n/k. selfridgeConjecture: if n > 17.125k, then C(n,k) has prime ≤ n/k. partial_bound_known: ∃ c > 0, ∃ prime p ∣ C(n,k) with p ≤ n/k^c.",
+    "mathContext": "ecklundStrongConjecture: ∀ n k, 1<k → k<n−1 → n>k² → hasSmallPrimeDivisor(C(n,k), n/k+1). selfridgeConjecture: threshold 17.125k. partial_bound_known: axiom.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Ecklund",
+      "Selfridge",
+      "n/k bound"
+    ],
+    "prerequisites": [
+      "hasSmallPrimeDivisor",
+      "Nat.choose",
+      "ecklund_1969"
+    ],
+    "tags": [
+      "open-problems",
+      "conjectures",
+      "prime-divisors"
+    ]
+  },
+  {
+    "id": "erdos-384-kummer",
+    "proofId": "erdos-384",
+    "type": "concept",
+    "range": {
+      "startLine": 141,
+      "endLine": 151
+    },
+    "title": "Kummer's Theorem Connection",
+    "content": "Kummer's theorem: exponent of p in C(n,k) = carries when adding k and n−k in base p. Consequence: large_prime_not_divisor — if p > n then p ∤ C(n,k).",
+    "mathContext": "kummer_theorem: axiom (placeholder). large_prime_not_divisor: ∀ p > n, ¬(p ∣ C(n,k)) (axiom).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Kummer's theorem",
+      "base-p digits",
+      "carries"
+    ],
+    "prerequisites": [
+      "p-adic valuation",
+      "base-p representation",
+      "Nat.choose"
+    ],
+    "tags": [
+      "kummer-theorem",
+      "p-adic-valuation",
+      "number-theory"
+    ]
+  },
+  {
+    "id": "erdos-384-edge",
+    "proofId": "erdos-384",
+    "type": "concept",
+    "range": {
+      "startLine": 159,
+      "endLine": 175
+    },
+    "title": "Edge Cases (k=1, k=n−1)",
+    "content": "choose_n_1: C(n,1) = n (proved by simp). choose_n_1_prime_divisor: C(n,1) has a prime divisor (proved via minFac). choose_n_nminus1: C(n,n−1) = n (proved by choose_symm_diff + simp).",
+    "mathContext": "choose_n_1: proved (Nat.choose_one_right). choose_n_1_prime_divisor: proved (minFac_prime + minFac_dvd). choose_n_nminus1: proved (choose_symm_diff).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "boundary cases",
+      "Nat.choose_one_right",
+      "choose_symm_diff"
+    ],
+    "prerequisites": [
+      "Nat.choose_one_right",
+      "Nat.choose_symm_diff",
+      "Nat.minFac"
+    ],
+    "tags": [
+      "edge-cases",
+      "binomial-coefficients",
+      "simplification"
+    ]
+  },
+  {
+    "id": "erdos-384-small",
+    "proofId": "erdos-384",
+    "type": "concept",
+    "range": {
+      "startLine": 188,
+      "endLine": 213
+    },
+    "title": "Small Cases Verification",
+    "content": "Three concrete examples proved: C(5,2) = 10 has prime 2 < 3; C(6,2) = 15 has prime 3 < 4; C(6,3) = 20 has prime 2 < 4. All use native_decide + norm_num.",
+    "mathContext": "Three examples: hasSmallPrimeDivisor(C(5,2), 3), hasSmallPrimeDivisor(C(6,2), 4), hasSmallPrimeDivisor(C(6,3), 4). All proved.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "norm_num",
+      "concrete verification"
+    ],
+    "prerequisites": [
+      "Nat.choose",
+      "native_decide",
+      "norm_num",
+      "hasSmallPrimeDivisor"
+    ],
+    "tags": [
+      "verification",
+      "decidability",
+      "small-cases"
+    ]
+  },
+  {
+    "id": "erdos-384-primorial",
+    "proofId": "erdos-384",
+    "type": "definition",
+    "range": {
+      "startLine": 221,
+      "endLine": 226
+    },
+    "title": "Primorial and Central Binomials",
+    "content": "primorial'(n) = primorial n (product of primes ≤ n). central_binomial_primes: C(2n,n) has a prime in (n, 2n] — related to Bertrand's postulate.",
+    "mathContext": "primorial' n = primorial n. central_binomial_primes: ∃ p prime, p ∣ C(2n,n) ∧ n < p ∧ p ≤ 2n (axiom).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "primorial",
+      "central binomial",
+      "Bertrand's postulate"
+    ],
+    "prerequisites": [
+      "Nat.primorial",
+      "Bertrand's postulate",
+      "Nat.choose"
+    ],
+    "tags": [
+      "primorial",
+      "bertrand-postulate",
+      "central-binomial"
+    ]
+  }
+]

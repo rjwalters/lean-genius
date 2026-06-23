@@ -1,0 +1,82 @@
+{
+  "slug": "hilbert-19-oq-03",
+  "title": "Regularity extension to fully nonlinear equations",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formalizes the extension of Hilbert's 19th problem to fully nonlinear elliptic equations. Defines fully nonlinear elliptic operators with uniform ellipticity conditions, proves properties of Pucci extremal operators (M⁺ ≤ M⁻, superadditivity, sign cases, uniform ellipticity), establishes a viscosity solution framework with touching functions, and states the Evans-Krylov theorem (C^{2,α} regularity for convex uniformly elliptic equations). Proves the full regularity chain: Evans-Krylov + Schauder bootstrap = C^∞ for smooth convex F.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-11T21:20:33.094Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "pde",
+    "regularity-theory",
+    "analysis"
+  ],
+  "relatedProofs": [
+    "hilbert-19",
+    "hilbert-19-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-12T05:34:54.574Z",
+  "lastUpdate": "2026-03-13T03:56:04.587Z",
+  "completed": "2026-03-13T03:56:04.587Z",
+  "significance": 8,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Hilbert19OQ03.lean",
+      "filename": "Hilbert19OQ03.lean",
+      "lineCount": 455,
+      "theoremCount": 16,
+      "axiomCount": 4,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert19OQ03.lean"
+    },
+    {
+      "path": "Proofs/Hilbert19Regularity.lean",
+      "filename": "Hilbert19Regularity.lean",
+      "lineCount": 339,
+      "theoremCount": 8,
+      "axiomCount": 6,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert19Regularity.lean"
+    }
+  ]
+}

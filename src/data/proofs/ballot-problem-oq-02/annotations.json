@@ -1,0 +1,200 @@
+[
+  {
+    "id": "ann-ballot-oq02-01-preamble",
+    "proofId": "ballot-problem-oq-02",
+    "range": {
+      "startLine": 3,
+      "endLine": 55
+    },
+    "type": "concept",
+    "title": "Ballot Problem: From Bertrand's Discrete Result to Levy's Brownian Motion",
+    "content": "The module preamble frames the continuous-time ballot problem. The classical discrete ballot theorem (Bertrand 1887, Wiedijk #30) asks: if A gets p votes and B gets q votes with p>q, what is the probability A leads throughout? Answer: (p-q)/(p+q). The continuous generalization connects to Brownian motion via three key results: the Reflection Principle (P(max W >= a) = 2P(W_T >= a)), the First Passage Time Distribution (P(tau_a <= T) = 2(1-Phi(a/sqrt(T)))), and Levy's Arcsine Law (fraction of time BM spends positive has arcsine distribution). The file achieves 0 sorries with 2 axioms for deep results (reflection principle and first passage characterization), while proving all derived results including the discrete ballot formula. The arcsine law is discussed and its definition (`positiveTime`) is provided, but the arcsine distribution formula itself is not axiomatized in the Lean code.",
+    "mathContext": "Reflection Principle (Levy): $P(\\max_{0\\leq s\\leq T} W_s \\geq a) = 2P(W_T \\geq a)$ for $a,T>0$. First passage: $P(\\tau_a \\leq T) = 2(1-\\Phi(a/\\sqrt{T}))$. Arcsine Law: $P(L_T/T \\leq r) = (2/\\pi)\\arcsin(\\sqrt{r})$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "BrownianMotion",
+      "reflection_principle",
+      "levy_arcsine_law",
+      "discrete_ballot_probability",
+      "firstPassageTime"
+    ],
+    "prerequisites": [
+      "Brownian motion",
+      "measure theory",
+      "Gaussian distribution",
+      "MeasureTheory.gaussianReal"
+    ]
+  },
+  {
+    "id": "ann-ballot-oq02-02-bm-structure",
+    "proofId": "ballot-problem-oq-02",
+    "range": {
+      "startLine": 61,
+      "endLine": 93
+    },
+    "type": "definition",
+    "title": "BrownianMotion Structure: Axiomatic Framework with Key Properties",
+    "content": "BrownianMotion is a structure capturing the essential properties of standard Brownian motion on probability space. Fields: W (the process), measurable (W_t measurable for each t), zero_start (W_0 = 0 a.s.), wt_gaussian (W_t ~ N(0,t) for t>0), symmetric (W and -W have identical distribution), positive_prob (P(W_t > 0) > 0 for t > 0), and path_continuous (continuous sample paths). This axiomatic approach is used because Mathlib 4.26.0 does not yet contain a full Brownian motion formalization.",
+    "mathContext": "Key fields: `wt_gaussian : Measure.map (W t) mu = gaussianReal 0 t` ($W_t \\sim N(0,t)$). `symmetric : Measure.map (W t) mu = Measure.map (-W t) mu` (symmetry around 0). `path_continuous : Continuous (fun t => W t omega)` (continuous paths).",
+    "significance": "key",
+    "relatedConcepts": [
+      "gaussianReal",
+      "IsProbabilityMeasure",
+      "Measure.map",
+      "Continuous",
+      "zero_start"
+    ],
+    "prerequisites": [
+      "MeasureTheory.Measure",
+      "MeasureTheory.gaussianReal",
+      "IsProbabilityMeasure",
+      "Continuous"
+    ]
+  },
+  {
+    "id": "ann-ballot-oq02-03-symmetry",
+    "proofId": "ballot-problem-oq-02",
+    "range": {
+      "startLine": 95,
+      "endLine": 130
+    },
+    "type": "concept",
+    "title": "Symmetry: P(W_t > 0) = P(W_t < 0) from Gaussian Structure",
+    "content": "prob_pos_eq_prob_neg proves P(W_t > 0) = P(W_t < 0) for all t, using bm.symmetric to equate the two probabilities. positive_prob_positive proves P(W_t > 0) > 0 for t > 0 directly from bm.positive_prob. positive_and_negative_likely combines both: P(W_t > 0) = P(W_t < 0) > 0. These basic symmetry results are proved directly from the structure fields without needing to invoke the full Gaussian calculation.",
+    "mathContext": "prob_pos_eq_prob_neg: $\\mu \\{\\omega \\mid W_t(\\omega) > 0\\} = \\mu \\{\\omega \\mid W_t(\\omega) < 0\\}$. Uses `bm.symmetric` to convert `Measure.map (W t) mu = Measure.map (-W t) mu` into a set-measure equality via `Measure.map_apply`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "prob_pos_eq_prob_neg",
+      "positive_prob_positive",
+      "positive_and_negative_likely",
+      "Measure.map_apply"
+    ],
+    "prerequisites": [
+      "Measure.map",
+      "set negation",
+      "IsProbabilityMeasure"
+    ]
+  },
+  {
+    "id": "ann-ballot-oq02-03b-definitions",
+    "proofId": "ballot-problem-oq-02",
+    "range": {
+      "startLine": 145,
+      "endLine": 170
+    },
+    "type": "definition",
+    "title": "First Passage Time and Max Event Definitions",
+    "content": "Defines the two key objects connecting Brownian motion to the ballot problem. `firstPassageTime bm a` returns the first time W hits level a, defined as the infimum of {t >= 0 : W_t(omega) >= a} using `sInf`. `maxEvent bm a T` is the event that the running maximum over [0,T] reaches a: {omega | exists s in [0,T], W_s(omega) >= a}. The axiom `firstPassageTime_eq_maxEvent` bridges these: {tau_a <= T} = maxEvent(a,T), which requires path continuity to ensure the infimum is actually attained (closed preimage of [a,infty) under continuous t -> W_t(omega)).",
+    "mathContext": "$\\tau_a(\\omega) = \\inf\\{t \\geq 0 : W_t(\\omega) \\geq a\\}$ via `sInf`. $\\text{maxEvent}(a,T) = \\{\\omega \\mid \\exists s \\in [0,T],\\, W_s(\\omega) \\geq a\\}$. The equivalence $\\{\\tau_a \\leq T\\} = \\text{maxEvent}(a,T)$ uses: (supseteq) witness $s$ gives $\\tau_a \\leq s \\leq T$; (subseteq) continuity ensures $S = \\{t : W_t \\geq a\\}$ is closed, so $\\inf S \\in S$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "firstPassageTime",
+      "maxEvent",
+      "sInf",
+      "path continuity",
+      "hitting time"
+    ],
+    "prerequisites": [
+      "conditionally complete lattice",
+      "sInf",
+      "continuous preimage of closed set",
+      "BrownianMotion.path_continuous"
+    ]
+  },
+  {
+    "id": "ann-ballot-oq02-04-reflection",
+    "proofId": "ballot-problem-oq-02",
+    "range": {
+      "startLine": 172,
+      "endLine": 186
+    },
+    "type": "concept",
+    "title": "Reflection Principle Axiom: P(max W >= a) = 2*P(W_T >= a)",
+    "content": "reflection_principle is axiomatized: for a,T>0, mu(maxEvent bm a T) = 2 * mu{W_T >= a}. The reflection principle works by constructing a bijection between paths that hit level a and then end below a (the 'reflected' paths) and paths ending above a -- the 1:1 correspondence gives the factor of 2. Requiring the strong Markov property of BM makes this a deep result. Both axioms are mathematically classical; they appear in Karatzas-Shreve section 2.8.",
+    "mathContext": "Reflection Principle: $P(\\max_{0\\leq s\\leq T} W_s \\geq a) = 2P(W_T \\geq a)$. Key idea: paths touching $a$ before $T$ and ending below $a$ are in bijection (via reflection at $a$) with paths ending above $a$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "reflection_principle",
+      "maxEvent",
+      "strong Markov property"
+    ],
+    "prerequisites": [
+      "strong Markov property",
+      "Brownian motion path continuity"
+    ]
+  },
+  {
+    "id": "ann-ballot-oq02-05-first-passage",
+    "proofId": "ballot-problem-oq-02",
+    "range": {
+      "startLine": 190,
+      "endLine": 227
+    },
+    "type": "concept",
+    "title": "First Passage CDF: P(tau_a <= T) = 2*P(W_T >= a) and Derived Results",
+    "content": "first_passage_cdf proves P(tau_a <= T) = 2*P(W_T >= a) by combining reflection_principle and firstPassageTime_eq_maxEvent. first_passage_monotone proves monotonicity: for a>b>0, P(tau_a <= T) <= P(tau_b <= T). first_passage_pos proves P(tau_a <= T) > 0 for any a,T>0: there is always a positive probability of hitting level a by time T.",
+    "mathContext": "CDF: $\\mu \\{\\omega \\mid \\tau_a(\\omega) \\leq T\\} = \\mu(\\text{maxEvent}(a,T)) = 2 \\cdot \\mu\\{W_T \\geq a\\}$. Monotonicity: $a > b > 0 \\Rightarrow P(\\tau_a \\leq T) \\leq P(\\tau_b \\leq T)$. Positivity: $P(W_T \\geq a) > 0$ from Gaussian distribution.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "first_passage_cdf",
+      "first_passage_monotone",
+      "first_passage_pos",
+      "firstPassageTime_eq_maxEvent",
+      "reflection_principle"
+    ],
+    "prerequisites": [
+      "firstPassageTime_eq_maxEvent",
+      "reflection_principle",
+      "gaussianReal tail positivity"
+    ]
+  },
+  {
+    "id": "ann-ballot-oq02-06-arcsine-main",
+    "proofId": "ballot-problem-oq-02",
+    "range": {
+      "startLine": 228,
+      "endLine": 305
+    },
+    "type": "concept",
+    "title": "Arcsine Law, Donsker Connection, and Main Ballot Theorem",
+    "content": "positiveTime defines the time BM spends positive in [0,T] via Lebesgue measure. The arcsine law P(L_T/T <= r) = (2/pi)*arcsin(sqrt(r)) is described mathematically but NOT axiomatized as a Lean axiom -- only the `positiveTime` definition is formalized. The Donsker invariance principle (1951) is discussed informally: the scaled random walk S_{floor(nt)}/sqrt(n) converges to Brownian motion, connecting discrete and continuous ballot theorems. continuous_ballot_theorem packages the complete continuous ballot picture as a conjunction: reflection principle, first passage = max event, and positive passage probability.",
+    "mathContext": "Arcsine law: $P(L_T/T \\leq r) = (2/\\pi)\\arcsin(\\sqrt{r})$. Density $f(x) = 1/(\\pi\\sqrt{x(1-x)})$ is infinite at 0 and 1 -- most time is spent near 0 (all negative) or $T$ (all positive). Main theorem: conjunction of reflection principle, first passage characterization, and positivity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "levy_arcsine_law",
+      "continuous_ballot_theorem",
+      "positiveTime",
+      "Real.arcsin",
+      "Donsker invariance principle"
+    ],
+    "prerequisites": [
+      "Real.arcsin",
+      "arcsine distribution",
+      "Brownian local times (informal)"
+    ]
+  },
+  {
+    "id": "ann-ballot-oq02-07-discrete",
+    "proofId": "ballot-problem-oq-02",
+    "range": {
+      "startLine": 308,
+      "endLine": 339
+    },
+    "type": "insight",
+    "title": "Discrete Ballot Theorem: (p-q)/(p+q) via Bertrand-Cycle Lemma",
+    "content": "discrete_ballot_probability proves the classical Bertrand 1887 result: P(A leads throughout) = (p-q)/(p+q) for A getting p votes, B getting q votes with p>q. The proof establishes this as a valid probability in [0,1] using Nat arithmetic. The discrete and continuous theorems connect via the Donsker invariance principle: the scaled random walk converges to Brownian motion, so the discrete ballot probability (p-q)/(p+q) is the finite approximation of the continuous reflection principle.",
+    "mathContext": "Discrete ballot: $P(\\text{A leads throughout}) = (p-q)/(p+q)$ for $p > q$. Combinatorial proof: of $(p+q)$ cyclic rotations of the sequence, exactly $p-q$ have all partial sums positive.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "discrete_ballot_probability",
+      "Donsker invariance principle",
+      "cycle lemma",
+      "ballot problem"
+    ],
+    "prerequisites": [
+      "cycle lemma",
+      "combinatorial counting",
+      "CLT/Donsker (informal)"
+    ]
+  }
+]

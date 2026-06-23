@@ -1,0 +1,117 @@
+{
+  "slug": "erdos-201",
+  "title": "Erdős #201",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Let $G_k(N)$ be such that any set of $N$ integers contains a subset of size at least $G_k(N)$ which does not contain a $k$-term arithmetic progression. Determine the size of $G_k(N)$. How does it relate to $R_k(N)$, the size of the largest subset of $\\{1,\\ldots,N\\}$ without a $k$-term arithmetic progression? Is it true that\\[\\lim_{N\\to \\infty}\\frac{R_3(N)}{G_3(N)}=1?\\]\n\n\n\nFirst asked and investigated by Riddell \\cite{Ri69}. It is trivial that $G_k(N)\\leq R_k(N)$, and it is possible that $G_k(N) <R_k(N)$ (for example $G_3(5)=3$ and $R_3(5)=4$, and $G_3(14)\\leq 7$ and $R_3(14)=8$).\n\nKoml\\'{o}s, Sulyok, and Szemer\\'{e}di \\cite{KSS75} have shown that $R_k(N) \\ll_k G_k(N)$.",
+    "plain": "Compare the worst-case size G_k(N) of a progression-free subset inside any N integers with R_k(N), the largest progression-free subset of {1,...,N}.",
+    "whyMatters": [
+      "Measures how much arithmetic-progression-free structure survives in arbitrary integer sets.",
+      "The Lean file formalizes G_k and R_k and proves basic monotonicity and comparison lemmas.",
+      "The asymptotic question R_3(N)/G_3(N) -> 1 remains open."
+    ],
+    "plainEnglish": "Compare the worst-case size G_k(N) of a progression-free subset inside any N integers with R_k(N), the largest progression-free subset of {1,...,N}."
+  },
+  "knownResults": {
+    "proven": [
+      "`ContainsAPOfLength`, `IsAPFree`, `rk`, `gk_prop`, and `gk` formalize AP-free subsets and the extremal functions.",
+      "`gk_le_rk` proves the trivial comparison G_k(N) <= R_k(N) for k >= 3.",
+      "`r3_5_eq` proves R_3(5)=4, and `g3_lt_r3_at_5` combines it with the single axiom `g3_5_eq`.",
+      "Monotonicity and base lemmas are proved for AP-free subsets, R_k, G_k, singletons, pairs, and N=0."
+    ],
+    "open": [
+      "`ErdosProblem201` asks whether R_3(N)/G_3(N) tends to 1.",
+      "The value G_3(5)=3 is currently an axiom.",
+      "The Komlos-Sulyok-Szemeredi comparison theorem is described in comments but not formalized as an active theorem."
+    ],
+    "goal": "Capture the proved AP-free infrastructure while isolating the one remaining finite-value axiom and the open asymptotic problem."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-18T00:00:00Z",
+    "iteration": 3,
+    "focus": "The file has 21 theorem declarations, 7 definitions, 1 axiom, and 0 sorries; the main asymptotic ratio is only stated as a Prop.",
+    "blockers": [
+      "`g3_5_eq` remains axiomatized.",
+      "No active theorem states the Komlos-Sulyok-Szemeredi bound.",
+      "The asymptotic ratio-one conjecture remains open."
+    ],
+    "nextAction": "Eliminate the finite `g3_5_eq` axiom by enumerating five-element integer sets up to affine normalization, or add active statements for known comparison bounds.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "CURRENT: 21 theorem declarations, 7 definitions, 1 axiom (`g3_5_eq`), 0 sorries. The AP-free framework and many monotonicity/base lemmas are proved; the ratio-one conjecture remains open.",
+    "builtItems": [
+      "`ContainsAPOfLength` and `IsAPFree`",
+      "`rk`, `gk_prop`, and `gk`",
+      "`gk_le_rk`, `rk_mono`, `rk_anti_k`, `gk_anti_k`, and `gk_prop_anti_k`",
+      "`r3_5_eq` and `g3_lt_r3_at_5`",
+      "`ErdosProblem201` as the asymptotic ratio target"
+    ],
+    "insights": [
+      "The file is sorry-free but still uses one finite-value axiom.",
+      "The proved `r3_5_eq` side has an explicit witness and upper-bound argument.",
+      "`gk` is defined through `sSup`, so finite exact-value proofs need careful boundedness and universal-set arguments.",
+      "The KSS theorem is currently comments/context, not an imported result."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove `g3_5_eq` or weaken downstream claims to avoid the axiom.",
+      "Add a precise active statement of the KSS comparison bound.",
+      "Formalize more finite examples for G_3 and R_3."
+    ],
+    "markdown": "# Erdős #201 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G_k(N)$ be such that any set of $N$ integers contains a subset of size at least $G_k(N)$ which does not contain a $k$-term arithmetic progression. Determine the size of $G_k(N)$. How does it relate to $R_k(N)$, the size of the largest subset of $\\{1,\\ldots,N\\}$ without a $k$-term arithmetic progression? Is it true that\\[\\lim_{N\\to \\infty}\\frac{R_3(N)}{G_3(N)}=1?\\]\n\n\n\nFirst asked and investigated by Riddell \\cite{Ri69}. It is trivial that $G_k(N)\\leq R_k(N)$, and it is possible that $G_k(N) <R_k(N)$ (for example $G_3(5)=3$ and $R_3(5)=4$, and $G_3(14)\\leq 7$ and $R_3(14)=8$).\n\nKoml\\'{o}s, Sulyok, and Szemer\\'{e}di \\cite{KSS75} have shown that $R_k(N) \\ll_k G_k(N)$.\n\n\n\n\nReferences\n\n\n[KSS75] Koml\\'{o}s, J. and Sulyok, M. and Szemeredi, E., Linear problems in combinatorial number theory. Acta Math. Acad. Sci. Hungar. (1975), 113-121.\n\n[Ri69] Riddell, J., On sets of numbers containing no $l$ terms in arithmetic progression. Nieuw Arch. Wisk. (3) (1969), 204-209.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #200\n- Problem #202\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er73\n- Er75b\n- ErGr79\n- ErGr80\n- Ri69\n- KSS75\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "tags": [
+    "erdos",
+    "additive-combinatorics",
+    "arithmetic-progressions",
+    "extremal-combinatorics",
+    "open-problem"
+  ],
+  "relatedProofs": [
+    "erdos-2",
+    "erdos-20",
+    "erdos-201"
+  ],
+  "references": {
+    "papers": [
+      "Riddell 1969",
+      "Komlos, Sulyok, and Szemeredi 1975"
+    ],
+    "urls": [
+      "https://erdosproblems.com/201"
+    ],
+    "mathlib": [
+      "Finset.powerset",
+      "Finset.Icc",
+      "sSup",
+      "BddAbove",
+      "Int"
+    ]
+  },
+  "started": "2026-01-12T10:06:12.675Z",
+  "lastUpdate": "2026-05-18T00:00:00Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos201Problem.lean",
+      "filename": "Erdos201Problem.lean",
+      "lineCount": 351,
+      "theoremCount": 21,
+      "axiomCount": 1,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos201Problem.lean"
+    }
+  ]
+}

@@ -1,0 +1,330 @@
+[
+  {
+    "id": "ann-e675-imports",
+    "proofId": "erdos-675",
+    "type": "concept",
+    "title": "Number Theory and Set Imports",
+    "content": "Imports Nat.Basic, Set.Basic, Finset.Basic, and tactics from Mathlib.",
+    "mathContext": "The formalization uses Mathlib's `Set ℕ` for number-theoretic sets (sums of two squares, squarefree integers, B-free sets) and `Finset` for finite counting. The `Nat.Basic` import provides `Nat.Prime`, divisibility, and coprimality. Unlike more advanced formalizations, this file avoids `Real.log` and works purely in the natural number/rational number setting.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Set ℕ",
+      "Nat.Prime",
+      "Finset"
+    ],
+    "prerequisites": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Set.Basic"
+    ],
+    "range": {
+      "startLine": 20,
+      "endLine": 23
+    }
+  },
+  {
+    "id": "ann-e675-hasTranslationProperty",
+    "proofId": "erdos-675",
+    "type": "definition",
+    "title": "The Translation Property",
+    "content": "A set A ⊆ ℕ has the translation property if for every n, there exists t ≥ 1 such that for all 1 ≤ a ≤ n: a ∈ A ↔ a+t ∈ A.",
+    "mathContext": "The **translation property** says that the pattern of $A$ on any initial segment $\\{1, \\ldots, n\\}$ reappears at some translate $\\{t+1, \\ldots, t+n\\}$. This is weaker than periodicity (which requires a single $t$ for all $n$) but stronger than having positive density. For sets defined by divisibility conditions, the Chinese Remainder Theorem often provides the translations: if $A$ is determined by residues modulo $m_1, \\ldots, m_k$, then $t = \\text{lcm}(m_1, \\ldots, m_k)$ works for any $n$. The difficulty arises when $A$ is defined by infinitely many congruence conditions (like B-free sets) or by non-multiplicative conditions (like sums of two squares).",
+    "significance": "key",
+    "relatedConcepts": [
+      "periodicity",
+      "Chinese Remainder Theorem",
+      "pattern repetition"
+    ],
+    "prerequisites": [
+      "Set ℕ"
+    ],
+    "range": {
+      "startLine": 29,
+      "endLine": 31
+    }
+  },
+  {
+    "id": "ann-e675-minTranslation",
+    "proofId": "erdos-675",
+    "type": "definition",
+    "title": "Minimal Translation",
+    "content": "The smallest t ≥ 1 witnessing the translation property for a given n, computed via Nat.find.",
+    "mathContext": "The function `minTranslation A n` returns the smallest $t \\geq 1$ such that $A \\cap \\{1, \\ldots, n\\}$ agrees with $A \\cap \\{t+1, \\ldots, t+n\\}$ under the shift $a \\mapsto a+t$. The `Nat.find` construction requires a proof that such a $t$ exists; the proof provides $t = 1$ with the trivial reflexivity witness (since the actual nontrivial existence is the content of the translation property). Part 3 of Problem 675 asks about the growth rate of $t_n = \\text{minTranslation}(\\text{squarefreeSet}, n)$. The `noncomputable` annotation reflects that `Nat.find` is classically defined.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.find",
+      "growth rate",
+      "minimal witness"
+    ],
+    "prerequisites": [
+      "HasTranslationProperty",
+      "Nat.find"
+    ],
+    "range": {
+      "startLine": 34,
+      "endLine": 36
+    }
+  },
+  {
+    "id": "ann-e675-sumOfTwoSquares",
+    "proofId": "erdos-675",
+    "type": "definition",
+    "title": "Sums of Two Squares",
+    "content": "The set {n ∈ ℕ : ∃ a, b, a² + b² = n}. Part 1 of Problem 675 asks whether this set has the translation property.",
+    "mathContext": "By Fermat's theorem on sums of two squares, $n$ is a sum of two squares iff every prime $p \\equiv 3 \\pmod{4}$ divides $n$ to an even power. The density of this set among $\\{1, \\ldots, x\\}$ is asymptotically $C \\cdot x / \\sqrt{\\log x}$ where $C = \\frac{1}{\\sqrt{2}} \\prod_{p \\equiv 3 \\pmod{4}} (1 - p^{-2})^{-1/2}$ (the **Landau-Ramanujan constant**). This decaying density makes the translation property non-obvious: the pattern of sums of two squares on $\\{1, \\ldots, n\\}$ becomes increasingly sparse, yet Erdős conjectured it still repeats at some translate.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fermat's two-square theorem",
+      "Landau-Ramanujan constant",
+      "multiplicative number theory"
+    ],
+    "prerequisites": [
+      "Set ℕ"
+    ],
+    "range": {
+      "startLine": 41,
+      "endLine": 42
+    }
+  },
+  {
+    "id": "ann-e675-squarefreeSet",
+    "proofId": "erdos-675",
+    "type": "definition",
+    "title": "Squarefree Integers",
+    "content": "The set of positive integers not divisible by any perfect square p² for prime p.",
+    "mathContext": "A positive integer $n$ is **squarefree** if $p^2 \\nmid n$ for every prime $p$. Equivalently, $n$ is the B-free set for $B = \\{p^2 : p \\text{ prime}\\}$. The density of squarefree integers is $6/\\pi^2 \\approx 0.6079$, and since $\\sum_p 1/p^2 < \\infty$, the set $B = \\{p^2\\}$ satisfies the conditions of Brun's sieve, establishing the translation property. Part 3 of Problem 675 asks about the *growth rate* of the minimal translation: must $t_n > \\exp(n^c)$ for some $c > 0$?",
+    "significance": "key",
+    "relatedConcepts": [
+      "squarefree integers",
+      "Möbius function",
+      "density 6/π²"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "divisibility"
+    ],
+    "range": {
+      "startLine": 45,
+      "endLine": 46
+    }
+  },
+  {
+    "id": "ann-e675-bFreeSet",
+    "proofId": "erdos-675",
+    "type": "definition",
+    "title": "B-Free Set",
+    "content": "The set of positive integers not divisible by any element of B, generalizing squarefree, cubefree, and k-free integers.",
+    "mathContext": "A **B-free set** consists of positive integers divisible by no element of a given set $B \\subseteq \\mathbb{N}$. When $B = \\{p^2 : p \\text{ prime}\\}$, this gives squarefree integers; when $B = \\{p^k : p \\text{ prime}\\}$, this gives $k$-free integers. Brun's sieve establishes the translation property for B-free sets when $B$ is pairwise coprime and $\\sum_{b \\in B} 1/b = o(\\log \\log x)$. The pairwise coprimality ensures the sieve is non-degenerate, and the small reciprocal sum ensures the inclusion-exclusion converges.",
+    "significance": "key",
+    "relatedConcepts": [
+      "B-free numbers",
+      "sieve theory",
+      "k-free integers"
+    ],
+    "prerequisites": [
+      "Set ℕ",
+      "divisibility"
+    ],
+    "range": {
+      "startLine": 49,
+      "endLine": 50
+    }
+  },
+  {
+    "id": "ann-e675-pairwiseCoprime",
+    "proofId": "erdos-675",
+    "type": "definition",
+    "title": "Pairwise Coprime Condition",
+    "content": "Every pair of distinct elements of B is coprime: gcd(b₁, b₂) = 1 for b₁ ≠ b₂.",
+    "mathContext": "The pairwise coprimality condition $\\gcd(b_1, b_2) = 1$ for $b_1 \\neq b_2$ is essential for the Chinese Remainder Theorem to apply: given finitely many congruence conditions modulo $b_1, \\ldots, b_k$, CRT guarantees a simultaneous solution $t$ with $t \\leq \\prod b_i$. For the set $B = \\{p^2 : p \\text{ prime}\\}$, pairwise coprimality is immediate since prime squares have distinct prime factors. Without coprimality, the sieve theory becomes much more complicated.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.Coprime",
+      "Chinese Remainder Theorem",
+      "sieve conditions"
+    ],
+    "prerequisites": [
+      "Nat.Coprime"
+    ],
+    "range": {
+      "startLine": 53,
+      "endLine": 54
+    }
+  },
+  {
+    "id": "ann-e675-smallReciprocalSum",
+    "proofId": "erdos-675",
+    "type": "definition",
+    "title": "Small Reciprocal Sum Condition",
+    "content": "The condition Σ_{b ≤ x, b ∈ B} 1/b = o(log log x), ensuring the sieve is applicable.",
+    "mathContext": "The reciprocal sum condition $\\sum_{b \\leq x, b \\in B} 1/b = o(\\log \\log x)$ controls the 'sieve dimension'. For $B = \\{p^2 : p \\text{ prime}\\}$, we have $\\sum_{p \\leq \\sqrt{x}} 1/p^2 \\leq \\sum_p 1/p^2 < \\infty = o(\\log \\log x)$, satisfying the condition. The formalization uses an abstract placeholder (`True`) for the quantitative bound, since formalizing the real-valued asymptotic comparison would require substantial Mathlib infrastructure.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sieve dimension",
+      "convergent series",
+      "asymptotic notation"
+    ],
+    "prerequisites": [
+      "ℚ",
+      "asymptotic analysis"
+    ],
+    "range": {
+      "startLine": 57,
+      "endLine": 60
+    }
+  },
+  {
+    "id": "ann-e675-brunSieve",
+    "proofId": "erdos-675",
+    "type": "concept",
+    "title": "Brun's Sieve for B-Free Sets",
+    "content": "If B is pairwise coprime with small reciprocal sums, then the B-free set has the translation property.",
+    "mathContext": "**Brun's sieve** (1920) was the first practical sieve method, and its application to B-free sets is a classical result in multiplicative number theory. The proof constructs the translation $t_n$ via the Chinese Remainder Theorem applied to finitely many moduli from $B$: for $b_1, \\ldots, b_k \\in B$ with $\\prod b_i > n$, CRT gives $t$ with $a \\equiv a + t \\pmod{b_i}$ for all $i$, ensuring $a \\in \\text{bFreeSet}(B) \\iff a + t \\in \\text{bFreeSet}(B)$ for $a \\leq n$. The small reciprocal sum condition guarantees that enough moduli can be chosen with product exceeding $n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Brun's sieve",
+      "Chinese Remainder Theorem",
+      "multiplicative number theory"
+    ],
+    "prerequisites": [
+      "IsPairwiseCoprime",
+      "HasSmallReciprocalSum",
+      "bFreeSet"
+    ],
+    "range": {
+      "startLine": 66,
+      "endLine": 68
+    }
+  },
+  {
+    "id": "ann-e675-squarefreeTranslation",
+    "proofId": "erdos-675",
+    "type": "concept",
+    "title": "Squarefree Numbers Have the Translation Property",
+    "content": "The set of squarefree integers has the translation property, as a special case of Brun's sieve with B = {p² : p prime}.",
+    "mathContext": "This is the direct corollary of `brun_sieve_translation` applied to $B = \\{p^2 : p \\text{ prime}\\}$. The set $B$ is pairwise coprime (since $\\gcd(p^2, q^2) = 1$ for distinct primes $p, q$) and $\\sum_p 1/p^2 < \\pi^2/6 - 1 \\approx 0.6449$ converges, satisfying $o(\\log \\log x)$. The minimal translation $t_n$ for squarefree numbers is bounded by $\\text{lcm}(p_1^2, \\ldots, p_k^2) = (p_1 \\cdots p_k)^2$ where $p_1 \\cdots p_k > n$; by the prime number theorem, $k \\approx n/\\log n$ primes suffice, giving $t_n \\leq e^{O(n)}$. Part 3 asks whether the lower bound is also exponential.",
+    "significance": "key",
+    "relatedConcepts": [
+      "squarefree integers",
+      "Brun's sieve",
+      "prime products"
+    ],
+    "prerequisites": [
+      "squarefreeSet",
+      "brun_sieve_translation"
+    ],
+    "range": {
+      "startLine": 72,
+      "endLine": 73
+    }
+  },
+  {
+    "id": "ann-e675-twoSquaresConjecture",
+    "proofId": "erdos-675",
+    "type": "concept",
+    "title": "Erdős Problem 675, Part 1: Sums of Two Squares",
+    "content": "Erdős conjectured that the set of sums of two squares has the translation property.",
+    "mathContext": "The set of sums of two squares is determined by a multiplicative condition: $n = a^2 + b^2$ iff every prime $p \\equiv 3 \\pmod{4}$ divides $n$ to an even power (Fermat). Unlike B-free sets, this condition involves *even exponents* rather than *non-divisibility*, so Brun's sieve does not directly apply. The decaying density $\\sim C/\\sqrt{\\log x}$ (Landau-Ramanujan) means the pattern on $\\{1, \\ldots, n\\}$ is increasingly sparse, yet the multiplicative structure (captured by Dirichlet characters modulo 4) should still force pattern repetition. This is the most prominent of the three questions in Problem 675.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fermat's two-square theorem",
+      "Landau-Ramanujan constant",
+      "Dirichlet characters"
+    ],
+    "prerequisites": [
+      "sumOfTwoSquares",
+      "HasTranslationProperty"
+    ],
+    "range": {
+      "startLine": 79,
+      "endLine": 80
+    }
+  },
+  {
+    "id": "ann-e675-balancedPartition",
+    "proofId": "erdos-675",
+    "type": "definition",
+    "title": "Balanced Prime Partition",
+    "content": "A partition of primes into P ∪ Q where both parts contain ≫ x/log x primes up to x.",
+    "mathContext": "A **balanced partition** of the primes requires both parts $P$ and $Q$ to have positive relative density among primes: $|P \\cap [1, x]| \\geq c_1 \\cdot x/\\log x$ and similarly for $Q$. This prevents trivial partitions like $P = \\{2\\}$, $Q = \\text{odd primes}$. The formalization uses existential witnesses $c_1, c_2 > 0$ for the density bounds, abstracting the asymptotic condition. Part 2 asks whether the $P$-smooth numbers (integers with all prime factors in $P$) can have the translation property for some balanced partition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime distribution",
+      "smooth numbers",
+      "partition of primes"
+    ],
+    "prerequisites": [
+      "Nat.Prime"
+    ],
+    "range": {
+      "startLine": 83,
+      "endLine": 87
+    }
+  },
+  {
+    "id": "ann-e675-smoothOver",
+    "proofId": "erdos-675",
+    "type": "theorem",
+    "title": "P-Smooth Numbers",
+    "content": "Positive integers whose prime factors all lie in P. These are the 'smooth over P' integers.",
+    "mathContext": "The set `smoothOver P` consists of positive integers $n$ with $p \\mid n \\implies p \\in P$ for every prime $p$. When $P$ is a proper subset of primes, this is the set of integers whose prime factorization uses only primes from $P$—a multiplicatively defined set analogous to $y$-smooth numbers (primes $\\leq y$). If $P$ has density $\\alpha$ among primes, the $P$-smooth numbers have density roughly $x^{1-\\alpha+o(1)}/x$ by Dickman's function analogy, making the translation property question highly non-trivial.",
+    "significance": "key",
+    "relatedConcepts": [
+      "smooth numbers",
+      "Dickman's function",
+      "multiplicative sets"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "Set ℕ"
+    ],
+    "range": {
+      "startLine": 90,
+      "endLine": 91
+    }
+  },
+  {
+    "id": "ann-e675-balancedConjecture",
+    "proofId": "erdos-675",
+    "type": "concept",
+    "title": "Erdős Problem 675, Part 2: Balanced Partition",
+    "content": "There exists a balanced partition P ∪ Q of primes such that the P-smooth numbers have the translation property.",
+    "mathContext": "Part 2 is an *existential* question: does *some* balanced partition yield $P$-smooth numbers with the translation property? The existential nature makes it potentially easier than Part 1 (which asks about a *specific* set). The construction would need to choose $P$ so that the CRT-based argument works despite $P$-smooth numbers not being B-free. Note the formalization asks for existence of a balanced partition, not that all balanced partitions work—a single example would suffice.",
+    "significance": "key",
+    "relatedConcepts": [
+      "existential vs universal",
+      "CRT-based constructions",
+      "prime partitions"
+    ],
+    "prerequisites": [
+      "IsBalancedPrimePartition",
+      "smoothOver",
+      "HasTranslationProperty"
+    ],
+    "range": {
+      "startLine": 95,
+      "endLine": 97
+    }
+  },
+  {
+    "id": "ann-e675-growthRate",
+    "proofId": "erdos-675",
+    "type": "concept",
+    "title": "Erdős Problem 675, Part 3: Squarefree Growth Rate",
+    "content": "For squarefree numbers, the minimal translation t_n grows at least exponentially: t_n > exp(n^c) for some c > 0.",
+    "mathContext": "Part 3 asks about the *quantitative* behavior of the minimal translation. The CRT upper bound gives $t_n \\leq (p_1 \\cdots p_k)^2 \\leq e^{O(n)}$ where $k$ primes are needed with $p_1^2 \\cdots p_k^2 > n$. The conjecture asserts a *lower bound* $t_n > \\exp(n^c)$, meaning the translation cannot be found with polynomially many prime square moduli. The formalization uses a weaker proxy: $n^2 \\leq t_n$ for infinitely many $n$, capturing super-polynomial growth without formalizing exponentials. This growth rate question captures how 'non-periodic' the squarefree pattern is locally.",
+    "significance": "key",
+    "relatedConcepts": [
+      "growth rate bounds",
+      "CRT upper bound",
+      "super-polynomial growth"
+    ],
+    "prerequisites": [
+      "minTranslation",
+      "squarefreeSet"
+    ],
+    "range": {
+      "startLine": 101,
+      "endLine": 105
+    }
+  }
+]

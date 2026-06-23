@@ -1,0 +1,280 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "puiseux-theorem",
+    "range": {
+      "startLine": 7,
+      "endLine": 91
+    },
+    "type": "concept",
+    "title": "Puiseux's Theorem: Wiedijk #41",
+    "content": "**Puiseux's Theorem**:\n\nThe field of Puiseux series K{{x}} over an algebraically closed field K of characteristic 0 is **algebraically closed**.\n\n**Puiseux Series**: Fractional power series\n$$f(x) = \\sum_{n \\geq n_0} a_n \\cdot x^{n/m}$$\nwhere m is the ramification index.\n\n**Examples**:\n- √x = x^{1/2} (ramification 2)\n- 1 + x^{1/3} + x^{2/3} + ... (ramification 3)\n- x^{-1/2} + 1 + x^{1/2} + ... (negative exponents allowed)\n\n**Historical**: Newton (1676) discovered the algorithm; Puiseux (1850) gave the first rigorous proof. The theorem provides the most explicit algebraic closure in mathematics — roots are not merely shown to exist, but can be algorithmically computed via the Newton polygon.",
+    "mathContext": "K{{x}} = ⋃_{n≥1} K((x^{1/n})) is algebraically closed when K is algebraically closed and char(K) = 0. Equivalently: K{{x}} = algebraic closure of K((x)).",
+    "significance": "key",
+    "relatedConcepts": [
+      "algebraic closure",
+      "fractional power series",
+      "Newton-Puiseux algorithm",
+      "ramification"
+    ],
+    "crossReferences": [
+      {
+        "proofId": "fundamental-theorem-algebra",
+        "relationship": "FTA shows ℂ is algebraically closed; Puiseux shows ℂ{{x}} is also algebraically closed — extending the result from constants to power series"
+      },
+      {
+        "proofId": "abel-ruffini",
+        "relationship": "Abel-Ruffini shows degree ≥ 5 polynomials over ℚ have no radical formula; Puiseux series provide an alternative solution format over Laurent series"
+      }
+    ],
+    "prerequisites": [
+      "formal power series and Laurent series",
+      "algebraically closed fields",
+      "fractional (Puiseux) exponents"
+    ]
+  },
+  {
+    "id": "ann-puiseux-series",
+    "proofId": "puiseux-theorem",
+    "range": {
+      "startLine": 101,
+      "endLine": 143
+    },
+    "type": "definition",
+    "title": "Puiseux Series via Hahn Series",
+    "content": "**Puiseux Series Definition**:\n\nA Hahn series f ∈ HahnSeries ℚ K is a Puiseux series if its exponents have a **common denominator**:\n\n$$\\exists n \\in \\mathbb{N}^+: \\text{supp}(f) \\subseteq \\frac{1}{n}\\mathbb{Z}$$\n\nIn Lean: `IsPuiseuxSeries f := ∃ n : ℕ+, ∀ q ∈ f.support, ∃ k : ℤ, q = k / n`\n\nMathlib's `HahnSeries Γ R` provides generalized power series with well-ordered support over a linearly ordered group Γ. Puiseux series are the subring where Γ = ℚ and support lies in (1/n)ℤ.\n\n**Key property**: The union ⋃_{n≥1} K((x^{1/n})) over all ramification indices forms the full Puiseux series field. Each K((x^{1/n})) is a finite extension of K((x)) of degree n.",
+    "mathContext": "IsPuiseuxSeries(f) ⟺ ∃n ∈ ℕ⁺, supp(f) ⊆ (1/n)ℤ. The field K{{x}} = colim_n K((x^{1/n})) = ⋃_{n≥1} K((x^{1/n})). Each K((x^{1/n}))/K((x)) is a totally ramified extension of degree n.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hahn series",
+      "support",
+      "ramification index",
+      "totally ramified extension"
+    ],
+    "prerequisites": [
+      "Hahn series and their support",
+      "the ramification index n in x^{1/n}",
+      "totally ramified field extensions"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "puiseux-theorem",
+    "range": {
+      "startLine": 164,
+      "endLine": 203
+    },
+    "type": "concept",
+    "title": "Algebraic Closure Theorem",
+    "content": "**Main Theorem** (axiomatized):\n\nFor K algebraically closed of characteristic 0:\n$$K\\{\\{x\\}\\} = \\overline{K((x))}$$\n\nPuiseux series form the algebraic closure of Laurent series.\n\n**Two axiomatized statements**:\n1. `puiseux_theorem`: every polynomial over K of positive degree has Puiseux series coefficients forming a root\n2. `puiseux_is_algebraic_closure`: every polynomial specified by degree and coefficients has a root with explicit ramification index\n\n**Why axiomatized**: A complete proof requires rigorous treatment of Puiseux series arithmetic, Newton polygon construction, convergence of the Newton-Puiseux iteration, and the delicate characteristic 0 argument. This is ~2000+ lines of infrastructure.",
+    "mathContext": "axiom: ∀K alg. closed, char 0, ∀P ∈ K[Y] with deg(P) > 0, ∃ Puiseux series y s.t. P(y) = 0. Equivalently: K{{x}} is algebraically closed.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsAlgClosed",
+      "CharZero",
+      "Laurent series",
+      "algebraic closure"
+    ],
+    "crossReferences": [
+      {
+        "proofId": "fundamental-theorem-algebra",
+        "relationship": "FTA proves ℂ = algebraic closure of ℝ; Puiseux proves ℂ{{x}} = algebraic closure of ℂ((x)) — both are explicit algebraic closure results"
+      }
+    ],
+    "prerequisites": [
+      "the field of Laurent series over ℂ",
+      "algebraic closure (IsAlgClosed)",
+      "characteristic-zero fields"
+    ]
+  },
+  {
+    "id": "ann-newton-puiseux",
+    "proofId": "puiseux-theorem",
+    "range": {
+      "startLine": 205,
+      "endLine": 261
+    },
+    "type": "concept",
+    "title": "Newton-Puiseux Algorithm",
+    "content": "**Constructive Root Finding**:\n\n**Input**: Monic polynomial P(Y) ∈ K{{x}}[Y] of degree n\n**Output**: n Puiseux series roots\n\n**Algorithm**:\n1. **Newton Polygon**: Lower convex hull of {(i, ord(aᵢ)) : aᵢ ≠ 0} where P(Y) = Σᵢ aᵢ(x)Yⁱ\n2. **Edge Analysis**: Edge with slope −p/q (in lowest terms) → leading exponent p/q\n3. **Characteristic Polynomial**: Restrict to points on the edge; roots c of this polynomial give leading coefficients\n4. **Substitution**: Y = c·x^{p/q}(1 + Y'), get simpler polynomial P'(Y')\n5. **Recurse**: Apply algorithm to P' for higher-order terms\n6. **Termination**: Newton polygon strictly improves at each step (key argument uses char 0)\n\n**Example** (Y² = x): Newton polygon edge from (0,1) to (2,0), slope −1/2, characteristic poly c² = 1, solutions Y = ±x^{1/2}.\n\nThe constructive nature is what makes Puiseux's theorem so powerful: roots are not just shown to exist but can be computed to any desired precision.",
+    "mathContext": "Newton polygon Γ(P) = lower convex hull of {(i, v(aᵢ))}. Edge of slope −p/q contributes roots with leading term c·x^{p/q}. The multiplicity of the edge = number of roots contributed.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Newton polygon",
+      "lower convex hull",
+      "characteristic polynomial",
+      "iterative refinement"
+    ],
+    "crossReferences": [
+      {
+        "proofId": "solution-of-cubic",
+        "relationship": "Cardano's formula gives explicit roots of cubics over ℚ; Newton-Puiseux gives explicit series roots of all polynomials over K((x))"
+      }
+    ],
+    "prerequisites": [
+      "the Newton polygon and its lower convex hull",
+      "iterative root refinement",
+      "characteristic/indicial equations"
+    ]
+  },
+  {
+    "id": "ann-applications",
+    "proofId": "puiseux-theorem",
+    "range": {
+      "startLine": 269,
+      "endLine": 314
+    },
+    "type": "concept",
+    "title": "Applications: Curve Singularities and Tropical Geometry",
+    "content": "**Resolution of Curve Singularities**:\n\nNear a singular point of f(x,y) = 0, each **branch** of the curve is parameterized by a Puiseux series y = Σ aₙ x^{n/m}.\n\n**Examples**:\n- **Cusp** y² = x³: single branch y = ±x^{3/2}, ramification 2\n- **Node** y² = x²(x+1): two branches y = ±x·√(x+1) = ±x(1 + x/2 − x²/8 + ...)\n- **Tacnode** y² = x⁴: two tangent branches y = ±x²\n\n**Algebraic Functions**: Multi-valued functions y(x) from P(x,y) = 0 become single-valued as Puiseux series on sectors of the complex plane. Monodromy around the branch point permutes the series.\n\n**Tropical Connection**: Newton polygon slopes correspond to tropical roots — the valuations of the algebraic roots. This provides the foundational link between classical algebraic geometry and tropical geometry.",
+    "mathContext": "For f(x,y) = 0 with singularity at origin: branches ↔ irreducible factors of f in K{{x}}[y]. Puiseux expansion yᵢ(x) = Σ aₙ x^{n/mᵢ} parameterizes the ith branch. Intersection multiplicity = Σ v(yᵢ − yⱼ).",
+    "significance": "key",
+    "relatedConcepts": [
+      "singularity resolution",
+      "branches",
+      "tropical geometry",
+      "monodromy",
+      "intersection multiplicity"
+    ],
+    "prerequisites": [
+      "plane curve singularities and branches",
+      "Puiseux parametrization of a branch",
+      "tropical geometry and monodromy"
+    ]
+  },
+  {
+    "id": "ann-galois",
+    "proofId": "puiseux-theorem",
+    "range": {
+      "startLine": 322,
+      "endLine": 344
+    },
+    "type": "concept",
+    "title": "Galois Group: Profinite Integers",
+    "content": "**Galois Theory of the Puiseux Extension**:\n\n$$\\text{Gal}(K\\{\\{x\\}\\} / K((x))) \\cong \\hat{\\mathbb{Z}}$$\n\nwhere Ẑ = lim←_n ℤ/nℤ is the profinite completion of ℤ.\n\n**Galois Action**: An automorphism σ ∈ Gal is determined by a compatible system (σₙ)_{n≥1} where σₙ: x^{1/n} ↦ ζₙ^{kₙ} · x^{1/n} with ζₙ a primitive nth root of unity, and kₘ ≡ kₙ (mod n) whenever n | m.\n\n**Significance**:\n- The profinite integers Ẑ ≅ ∏_p ℤ_p (product over all primes) is an uncountable group\n- This is a key example in infinite Galois theory\n- The extension is the union of all finite cyclic extensions K((x^{1/n}))/K((x))\n- Relates to the fundamental group of the punctured disk π₁(𝔻 \\ {0}) ≅ Ẑ",
+    "mathContext": "Gal(K{{x}}/K((x))) ≅ Ẑ = lim←_n ℤ/nℤ ≅ ∏_p ℤ_p. Action: σ(x^{1/n}) = ζₙ^k · x^{1/n}. Subgroup of index n: Gal(K{{x}}/K((x^{1/n}))) ≅ nẐ.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Galois group",
+      "profinite integers",
+      "roots of unity",
+      "inverse limit",
+      "fundamental group"
+    ],
+    "crossReferences": [
+      {
+        "proofId": "de-moivre",
+        "relationship": "De Moivre's theorem gives nth roots of unity ζₙ = e^{2πi/n}; these roots of unity generate the Galois action on Puiseux series"
+      }
+    ],
+    "prerequisites": [
+      "Galois groups of field extensions",
+      "inverse limits and profinite groups",
+      "roots of unity μ_n"
+    ]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "puiseux-theorem",
+    "range": {
+      "startLine": 352,
+      "endLine": 397
+    },
+    "type": "concept",
+    "title": "Concrete Calculations",
+    "content": "**Worked Examples**:\n\n| Equation | Newton Polygon | Slope | Puiseux Root |\n|----------|---------------|-------|--------------|\n| Y² = x | (0,1)→(2,0) | −1/2 | ±x^{1/2} |\n| Y² = x³ (cusp) | (0,3)→(2,0) | −3/2 | ±x^{3/2} |\n| Y³ = x | (0,1)→(3,0) | −1/3 | ω^k x^{1/3}, k=0,1,2 |\n| Y² − Y = x^{−1} | Two edges | varies | Laurent + fractional parts |\n\nThe formalization verifies specific exponents: `square_root_puiseux` confirms exponent 1/2 for Y² = x, and `cusp_parameterization` confirms exponent 3/2 for the cusp Y² = x³.\n\nThese examples illustrate how the Newton polygon method systematically determines leading exponents, after which the characteristic polynomial determines leading coefficients and recursion computes higher-order terms.",
+    "mathContext": "Y² = x: Newton polygon slope = −(1−0)/(2−0) = −1/2, char poly c² − 1 = 0, roots c = ±1. Y² = x³: slope = −3/2, exponent = 3/2.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "square root",
+      "cusp curve",
+      "cube root",
+      "Newton polygon computation"
+    ],
+    "prerequisites": [
+      "Newton polygon computation",
+      "fractional power series like √x, ∛x",
+      "cusp curves y²=x³"
+    ]
+  },
+  {
+    "id": "ann-hensel",
+    "proofId": "puiseux-theorem",
+    "range": {
+      "startLine": 405,
+      "endLine": 426
+    },
+    "type": "concept",
+    "title": "Analogy with p-adic Numbers: Hensel's Lemma",
+    "content": "**p-adic Analogy**: Puiseux's theorem has a striking parallel with p-adic algebraic closure:\n\n| Puiseux (power series) | p-adic (number theory) |\n|------------------------|------------------------|\n| K((x)) (Laurent series) | ℚ_p (p-adic numbers) |\n| K{{x}} (Puiseux series) | Q̄_p (algebraic closure) |\n| x^{1/n} (fractional powers) | p^{1/n}, roots of unity |\n| Newton polygon | Newton polygon (p-adic) |\n| Ramification: x ↦ x^{1/n} | Ramification: totally ramified ext. |\n\n**Hensel's Lemma** is the p-adic analogue of Newton-Puiseux: it lifts approximate roots to exact roots in complete valued fields.\n\nBoth are instances of a general pattern: **algebraic closure of a complete discretely-valued field** requires adjoining roots of the uniformizer and roots of unity. In characteristic 0, these suffice (Puiseux); in characteristic p, Artin-Schreier extensions are also needed.",
+    "mathContext": "K((x)) is a complete discretely-valued field with uniformizer x and residue field K. Its maximal unramified extension: K((x)) (already alg. closed residue). Its algebraic closure: K{{x}} = ⋃_n K((x^{1/n})).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hensel's lemma",
+      "p-adic numbers",
+      "complete valued field",
+      "uniformizer",
+      "Levi-Civita field"
+    ],
+    "prerequisites": [
+      "complete valued fields and uniformizers",
+      "Hensel's lemma for lifting roots",
+      "the analogy with p-adic numbers"
+    ]
+  },
+  {
+    "id": "ann-char-zero",
+    "proofId": "puiseux-theorem",
+    "range": {
+      "startLine": 427,
+      "endLine": 444
+    },
+    "type": "concept",
+    "title": "Characteristic Zero Requirement",
+    "content": "**Puiseux Fails in Positive Characteristic!**\n\n**Counterexample**: Over 𝔽_p((x)), the Artin-Schreier polynomial:\n$$Y^p - Y - x^{-1} = 0$$\nhas no solution in any K((x^{1/n})), hence no Puiseux series root.\n\n**Why**: In characteristic p, there are two types of field extensions:\n- **Ramified**: Y^n = x (these work like char 0, give Puiseux-type roots)\n- **Artin-Schreier**: Y^p − Y = f(x) (these are inseparable at the wild level and cannot be expressed via fractional powers)\n\nThe algebraic closure of 𝔽_p((x)) requires infinitely many Artin-Schreier extensions stacked on top of each other — a fundamentally different structure from the Puiseux tower.\n\nThis is why `CharZero K` appears as a hypothesis in the formalization.",
+    "mathContext": "char(K) = p > 0 ⟹ K{{x}} ≠ algebraic closure of K((x)). Artin-Schreier: Yᵖ − Y = f generates degree-p extensions not contained in any K((x^{1/n})). Wild ramification index divisible by p causes failure.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Artin-Schreier extensions",
+      "characteristic p",
+      "wild ramification",
+      "inseparability"
+    ],
+    "prerequisites": [
+      "characteristic p fields",
+      "Artin–Schreier extensions and wild ramification",
+      "separability and inseparability"
+    ]
+  },
+  {
+    "id": "ann-significance",
+    "proofId": "puiseux-theorem",
+    "range": {
+      "startLine": 451,
+      "endLine": 467
+    },
+    "type": "concept",
+    "title": "Mathematical Significance",
+    "content": "**Bridges Three Areas of Mathematics**:\n\n1. **Algebra**: Provides a concrete, explicit algebraic closure K{{x}} with computable Galois group Ẑ. Unlike most algebraic closures (constructed via Zorn's lemma), this one comes with an algorithm.\n\n2. **Analysis**: Local expansions near singularities converge (for K = ℂ) in a neighborhood of the branch point. The convergent Puiseux series suffice for studying algebraic curves analytically.\n\n3. **Geometry**: Foundation for resolution of curve singularities — every branch of an algebraic curve at a singular point is parameterized by a convergent Puiseux series. This is the starting point of singularity theory.\n\n**Modern applications**:\n- **Computer algebra**: Symbolic root-finding algorithms (Maple, Mathematica)\n- **Tropical geometry**: Newton polygon = tropicalization of the polynomial\n- **Arithmetic geometry**: Local analysis of algebraic varieties over complete fields",
+    "mathContext": "K{{x}} is the unique (up to isomorphism) algebraic closure of K((x)) when char(K) = 0. It is the maximal totally ramified extension of K((x)) when K is already algebraically closed.",
+    "significance": "key",
+    "relatedConcepts": [
+      "curve theory",
+      "local analysis",
+      "constructive mathematics",
+      "computer algebra",
+      "tropical geometry"
+    ],
+    "crossReferences": [
+      {
+        "proofId": "vietas-formulas",
+        "relationship": "Vieta's formulas relate polynomial coefficients to symmetric functions of roots; for Puiseux roots, these become identities in the Puiseux series field"
+      }
+    ],
+    "prerequisites": [
+      "local analysis of algebraic curves",
+      "constructive/algorithmic root-finding",
+      "computer algebra and tropical geometry"
+    ]
+  }
+]

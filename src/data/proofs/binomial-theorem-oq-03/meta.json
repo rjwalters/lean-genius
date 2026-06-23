@@ -1,0 +1,269 @@
+{
+  "id": "binomial-theorem-oq-03",
+  "title": "Binomial Distribution from the Binomial Theorem",
+  "slug": "binomial-theorem-oq-03",
+  "description": "Can we derive the binomial distribution and its key properties directly from the binomial theorem? YES. The identity (p + (1-p))^n = 1 gives normalization, algebraic manipulation yields mean = np and variance = np(1-p), Vandermonde's identity gives convolution, and the Poisson limit theorem follows from the derivative of log at 1.",
+  "meta": {
+    "author": "Jacob Bernoulli (1713); algebraic derivation formalized here",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Binomial_distribution",
+    "date": "1713",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BinomialTheoremOQ03.lean",
+    "tags": [
+      "probability",
+      "binomial-distribution",
+      "combinatorics",
+      "normalization",
+      "moments",
+      "generating-functions",
+      "poisson-limit",
+      "convolution",
+      "vandermonde",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients C(n,k) and their identities (symmetry, boundary values).",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.add_one_mul_choose_eq",
+        "description": "The absorption identity: (n+1) * C(n,k) relates to (k+1) * C(n+1,k+1). The engine for computing moments.",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.add_choose_eq",
+        "description": "Vandermonde's convolution identity: C(n+m,k) = Σ C(n,j)*C(m,k-j). Gives the reproductive property.",
+        "module": "Mathlib.Data.Nat.Choose.Vandermonde"
+      },
+      {
+        "theorem": "Real.hasDerivAt_log",
+        "description": "HasDerivAt log (1/x) x for x > 0. Used to prove (1+x/n)^n → exp(x) via log'(1) = 1.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Deriv"
+      },
+      {
+        "theorem": "Real.continuous_exp",
+        "description": "Continuity of the exponential function. Composes with n·log(1+x/n) → x to give (1+x/n)^n → exp(x).",
+        "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+      },
+      {
+        "theorem": "tendsto_const_div_atTop_nhds_zero_nat",
+        "description": "c/n → 0 as n → ∞. The key asymptotic input for the Poisson limit ratio convergence.",
+        "module": "Mathlib.Topology.Algebra.Order.LiminfLimsup"
+      }
+    ],
+    "originalContributions": [
+      "binomPMF: P(X=k) = C(n,k) p^k (1-p)^(n-k) as a Lean definition",
+      "binomPMF_sum_eq_one: normalization from (p + (1-p))^n = 1",
+      "binomial_mean: E[X] = np via the absorption identity (k+1)C(n+1,k+1) = (n+1)C(n,k)",
+      "binomial_variance: Var(X) = np(1-p) via double absorption and second factorial moment",
+      "binomPMF_convolution: Bin(n,p)*Bin(m,p) = Bin(n+m,p) via Vandermonde's identity",
+      "tendsto_one_plus_div_pow_exp: classical limit (1+x/n)^n -> exp(x) proved from log derivative",
+      "poisson_limit: Bin(n,r/n) -> Poi(r) pointwise, full inductive proof",
+      "binomial_pgf: probability generating function E[t^X] = (pt + 1-p)^n",
+      "Special cases: fair coin C(n,k)/2^n, Bernoulli, certain/impossible events"
+    ],
+    "dateAdded": "2026-02-26",
+    "axioms": 0,
+    "axiomCount": 0,
+    "lineCount": 588,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 33,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "The binomial distribution — the probability of $k$ successes in $n$ independent Bernoulli trials — is one of the most fundamental objects in probability theory and combinatorics. **Jacob Bernoulli** established its core properties in *Ars Conjectandi* (published posthumously in 1713), where he proved the weak law of large numbers for Bernoulli trials. The algebraic connection to the binomial theorem $(x+y)^n = \\sum \\binom{n}{k} x^k y^{n-k}$ was already known to **Isaac Newton** (1665) and **Blaise Pascal** (1654), but Bernoulli was the first to interpret the expansion probabilistically. **Abraham de Moivre** (1733) proved the normal approximation $\\text{Bin}(n,p) \\approx \\mathcal{N}(np, np(1-p))$ for large $n$ (later generalized by **Pierre-Simon Laplace**). **Siméon Denis Poisson** (1837) proved the law of rare events: when $n \\to \\infty$ and $p = r/n$, $\\text{Bin}(n, r/n) \\to \\text{Poi}(r)$ pointwise. The absorption identity $k\\binom{n}{k} = n\\binom{n-1}{k-1}$ was known to **Leonhard Euler** and is the algebraic engine for computing moments. **Alexandre-Théophile Vandermonde** (1772) proved his convolution identity $\\binom{m+n}{k} = \\sum_j \\binom{m}{j}\\binom{n}{k-j}$, which translates directly to the reproductive property of the binomial family. This formalization proves all these results purely algebraically from the binomial theorem, including a first-principles proof of $(1+x/n)^n \\to e^x$ via the derivative of $\\log$ at 1 — a result not available in Mathlib v4.26.0.",
+    "problemStatement": "**Open Question (OQ-03):** Can we derive the binomial distribution's key properties (normalization, mean, variance, PGF, convolution, Poisson limit) directly from the algebraic binomial theorem?\n\n**Answer:** YES. Every property follows from algebraic manipulation of $(p + q)^n = \\sum \\binom{n}{k} p^k q^{n-k}$:\n- **Normalization:** Set $q = 1-p$ to get $1 = \\sum \\text{PMF}(k)$\n- **Mean:** Use the absorption identity to factor $np$ from $\\sum k \\cdot \\text{PMF}(k)$\n- **Variance:** Use double absorption for the second factorial moment\n- **Convolution:** Vandermonde's identity gives $\\text{Bin}(n,p) * \\text{Bin}(m,p) = \\text{Bin}(n+m,p)$\n- **Poisson limit:** $\\log$ derivative + continuity of $\\exp$ gives $(1+x/n)^n \\to e^x$",
+    "text": "Can we derive the binomial distribution and its key properties directly from the binomial theorem? YES. The identity (p + (1-p))^n = 1 gives normalization, algebraic manipulation yields mean = np and variance = np(1-p), Vandermonde's identity gives convolution, and the Poisson limit theorem follows from the derivative of log at 1.",
+    "proofStrategy": "The proof proceeds algebraically through 11 parts, each building on the binomial theorem $(p+q)^n = \\sum \\binom{n}{k} p^k q^{n-k}$:\n\n1. **PMF definition**: $P(X=k) = \\binom{n}{k} p^k (1-p)^{n-k}$ with boundary values $P(0) = (1-p)^n$, $P(n) = p^n$\n2. **Normalization**: Substitute $q = 1-p$; $(p + (1-p))^n = 1^n = 1$\n3. **Symmetry**: $P(k; n, p) = P(n-k; n, 1-p)$ via $\\binom{n}{k} = \\binom{n}{n-k}$\n4. **Mean via absorption**: The identity $(k+1)\\binom{n+1}{k+1} = (n+1)\\binom{n}{k}$ converts $\\sum k \\cdot \\text{PMF}(k)$ into $np \\cdot 1 = np$\n5. **Special cases**: Fair coin $P(k) = \\binom{n}{k}/2^n$, Bernoulli, certain/impossible events\n6. **Monotonicity**: $p \\leq q \\Rightarrow np \\leq nq$\n7. **PGF**: $E[t^X] = (pt + 1-p)^n$ by replacing $p$ with $pt$ in the binomial expansion\n8. **Double absorption**: $(k+2)(k+1)\\binom{n+2}{k+2} = (n+2)(n+1)\\binom{n}{k}$ gives $E[X(X-1)] = n(n-1)p^2$, hence $\\text{Var}(X) = np(1-p)$\n9. **Convolution**: Vandermonde $\\sum_j \\binom{n}{j}\\binom{m}{k-j} = \\binom{n+m}{k}$ gives $\\text{Bin}(n,p) * \\text{Bin}(m,p) = \\text{Bin}(n+m,p)$\n10. **Poisson limit**: $(1+x/n)^n \\to e^x$ from $\\log'(1) = 1$, then induction on $k$ using the PMF ratio\n11. **Summary**: All results packaged in a single conjunction theorem",
+    "keyInsights": [
+      "**Normalization = Binomial theorem**: Setting $q = 1-p$ in $(p+q)^n = \\sum \\binom{n}{k} p^k q^{n-k}$ gives $(p + (1-p))^n = 1 = \\sum \\text{PMF}(k)$. The binomial theorem and normalization are literally the same identity.",
+      "**Absorption identity as moment engine**: The identity $(k+1)\\binom{n+1}{k+1} = (n+1)\\binom{n}{k}$ converts the weighted sum $\\sum k \\cdot \\text{PMF}(k)$ into $np$ times an unweighted sum (which equals 1 by normalization). Double absorption $(k+2)(k+1)\\binom{n+2}{k+2} = (n+2)(n+1)\\binom{n}{k}$ gives the second factorial moment.",
+      "**Vandermonde = Reproductive property**: Vandermonde's convolution identity $\\binom{n+m}{k} = \\sum_j \\binom{n}{j}\\binom{m}{k-j}$ is exactly the statement that the sum of independent $\\text{Bin}(n,p)$ and $\\text{Bin}(m,p)$ is $\\text{Bin}(n+m,p)$ — the binomial family is closed under convolution.",
+      "**Compound interest limit from first principles**: The classical limit $(1+x/n)^n \\to e^x$ is proved via $\\text{HasDerivAt}(\\log(1+t), 1, 0)$, composing with $h = x/n \\to 0$ to get $n\\log(1+x/n) \\to x$, then applying continuity of $\\exp$. This result was not in Mathlib v4.26.0.",
+      "**Poisson limit by induction on $k$**: The base case $(1-r/n)^n \\to e^{-r}$ is the compound interest limit. The inductive step uses the PMF ratio $\\text{PMF}(k+1)/\\text{PMF}(k) = (n-k)p/((k+1)(1-p))$, which converges to $r/(k+1)$, matching the Poisson recurrence $\\text{Poi}(k+1) = \\text{Poi}(k) \\cdot r/(k+1)$."
+    ],
+    "prerequisites": [
+      "Binomial theorem: $(x+y)^n = \\sum \\binom{n}{k} x^k y^{n-k}$",
+      "Binomial coefficients and the absorption identity",
+      "Vandermonde's convolution identity",
+      "Derivative of $\\log$ and continuity of $\\exp$ (for Poisson limit)",
+      "Filter-based limits in Mathlib (`Filter.Tendsto`, `atTop`)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "pmf",
+      "title": "The Binomial Distribution PMF",
+      "startLine": 25,
+      "endLine": 45,
+      "summary": "Defines $\\text{binomPMF}(n, p, k) = \\binom{n}{k} p^k (1-p)^{n-k}$ as a real-valued function. Proves boundary values $P(0) = (1-p)^n$, $P(n) = p^n$, and non-negativity $P(k) \\geq 0$ for $p \\in [0,1]$.",
+      "mathContext": "Formal definition: Defines $\\text{binomPMF}(n, p, k) = \\binom{n}{k} p^k (1-p)^{n-k}$ as a real-valued function. Proves boundary values $P(0) = (1-p)^n$, $P(n) = p^n$, and non-negativity $P(k) \\geq 0$ for $p \\in [0,1]$."
+    },
+    {
+      "id": "normalization",
+      "title": "Normalization from the Binomial Theorem",
+      "startLine": 46,
+      "endLine": 65,
+      "summary": "Proves $\\sum_{k=0}^{n} \\text{PMF}(k) = 1$ by substituting $q = 1-p$ into the binomial expansion $(p+q)^n$, giving $(p + (1-p))^n = 1^n = 1$. Also shows the sum is independent of $p$.",
+      "mathContext": "Proves $\\sum_{k=0}^{n} \\text{PMF}(k) = 1$ by substituting $q = 1-p$ into the binomial expansion $(p+q)^n$, giving $(p + (1-p))^n = $1^{n}$ = 1$. Also shows the sum is independent of $p$."
+    },
+    {
+      "id": "symmetry",
+      "title": "Symmetry",
+      "startLine": 66,
+      "endLine": 74,
+      "summary": "Proves $P(k; n, p) = P(n-k; n, 1-p)$ for $k \\leq n$, using the symmetry $\\binom{n}{k} = \\binom{n}{n-k}$. Swapping success and failure probabilities reflects the distribution.",
+      "mathContext": "Verified: Proves $P(k; n, p) = P(n-k; n, 1-p)$ for $k \\leq n$, using the symmetry $\\binom{n}{k} = \\binom{n}{n-k}$. Swapping success and failure probabilities reflects the distribution."
+    },
+    {
+      "id": "mean",
+      "title": "Mean via Absorption Identity",
+      "startLine": 75,
+      "endLine": 128,
+      "summary": "Proves $E[X] = np$ using the **absorption identity** $(k+1)\\binom{n+1}{k+1} = (n+1)\\binom{n}{k}$. Each term $k \\cdot \\text{PMF}(k)$ is rewritten as $(n+1)p$ times a degree-$(n-1)$ binomial term, and the resulting sum equals 1 by normalization.",
+      "mathContext": "Proves $E[X] = np$ using the **absorption identity** $(k+1)\\binom{n+1}{k+1} = (n+1)\\binom{n}{k}$. Each term $k \\cdot \\text{PMF}(k)$ is rewritten as $(n+1)p$ times a degree-$(n-1)$ binomial term, and the resulting sum equals 1 by normalization."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 129,
+      "endLine": 162,
+      "summary": "Four concrete instances: **fair coin** $P(k) = \\binom{n}{k}/2^n$, **Bernoulli** $P(1; 1, p) = p$ and $P(0; 1, p) = 1-p$, **certain event** $P(n; n, 1) = 1$, and **impossible event** $P(0; n, 0) = 1$.",
+      "mathContext": "Four concrete instances: **fair coin** $P(k) = \\binom{n}{k}/$2^{n}$$, **Bernoulli** $P(1; 1, p) = p$ and $P(0; 1, p) = 1-p$, **certain event** $P(n; n, 1) = 1$, and **impossible event** $P(0; n, 0) = 1$."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity",
+      "startLine": 163,
+      "endLine": 172,
+      "summary": "The mean $np$ is monotone in $p$: if $p \\leq q$ then $np \\leq nq$. A simple consequence of $n \\geq 0$.",
+      "mathContext": "Mathematical content: The mean $np$ is monotone in $p$: if $p \\leq q$ then $np \\leq nq$. A simple consequence of $n \\geq 0$."
+    },
+    {
+      "id": "pgf",
+      "title": "Probability Generating Function",
+      "startLine": 173,
+      "endLine": 208,
+      "summary": "Proves $E[t^X] = (pt + 1-p)^n$ by replacing $p$ with $pt$ in the binomial expansion. Verifies: PGF at $t=1$ recovers normalization ($=1$), and the formal derivative at $t=1$ gives the mean $np$.",
+      "mathContext": "Verified: Proves $E[t^X] = (pt + 1-p)^n$ by replacing $p$ with $pt$ in the binomial expansion. Verifies: PGF at $t=1$ recovers normalization ($=1$), and the formal derivative at $t=1$ gives the mean $np$."
+    },
+    {
+      "id": "second-factorial-moment",
+      "title": "Double Absorption and Second Factorial Moment",
+      "startLine": 209,
+      "endLine": 269,
+      "summary": "Proves double absorption $(k+2)(k+1)\\binom{n+2}{k+2} = (n+2)(n+1)\\binom{n}{k}$, giving $E[X(X-1)] = n(n-1)p^2$. Then derives $\\text{Var}(X) = E[X^2] - (E[X])^2 = n(n-1)p^2 + np - n^2p^2 = np(1-p)$.",
+      "mathContext": "Proves double absorption $(k+2)(k+1)\\binom{n+2}{k+2} = (n+2)(n+1)\\binom{n}{k}$, giving $E[X(X-1)] = n(n-1)$p^{2}$$. Then derives $\\text{Var}(X) = E[X^2] - (E[X])^2 = n(n-1)$p^{2}$ + np - $n^{2}$$p^{2}$ = np(1-p)$."
+    },
+    {
+      "id": "convolution",
+      "title": "Convolution via Vandermonde's Identity",
+      "startLine": 270,
+      "endLine": 330,
+      "summary": "Proves Vandermonde's identity $\\binom{n+m}{k} = \\sum_{j=0}^{k} \\binom{n}{j}\\binom{m}{k-j}$ using `Nat.add_choose_eq`, then translates it to: $\\sum_j \\text{PMF}_n(j) \\cdot \\text{PMF}_m(k-j) = \\text{PMF}_{n+m}(k)$. This is the reproductive property: $\\text{Bin}(n,p) * \\text{Bin}(m,p) = \\text{Bin}(n+m,p)$.",
+      "mathContext": "Proves Vandermonde's identity $\\binom{n+m}{k} = \\sum_{j=0}^{k} \\binom{n}{j}\\binom{m}{k-j}$ using `Nat.add_choose_eq`, then translates it to: $\\sum_j \\text{PMF}_n(j) \\cdot \\text{PMF}_m(k-j) = \\text{PMF}_{n+m}(k)$. This is the reproductive property: $\\text{Bin}(n,p) * \\text{Bin}(m,p) = \\text{Bin}(n+m,p)$."
+    },
+    {
+      "id": "poisson-limit",
+      "title": "Poisson Limit Theorem",
+      "startLine": 331,
+      "endLine": 559,
+      "summary": "The centerpiece: proves $(1+x/n)^n \\to e^x$ from first principles (via $\\text{HasDerivAt}(\\log(1+t), 1, 0)$ and continuity of $\\exp$), defines the Poisson PMF $e^{-r} r^k / k!$, and proves the Poisson limit theorem $\\text{Bin}(n, r/n) \\to \\text{Poi}(r)$ pointwise by induction on $k$, using the PMF ratio $\\text{PMF}(k+1)/\\text{PMF}(k) \\to r/(k+1)$.",
+      "mathContext": "The centerpiece: proves $(1+x/n)^n \\to e^x$ from first principles (via $\\text{HasDerivAt}(\\log(1+t), 1, 0)$ and continuity of $\\exp$), defines the Poisson PMF $e^{-r} r^k / k!$, and proves the Poisson limit theorem $\\text{Bin}(n, r/n) \\to \\text{Poi}(r)$ pointwise by induction on $k$, using the PMF ratio $\\text{PMF}(k+1)/\\text{PMF}(k) \\to r/(k+1)$."
+    },
+    {
+      "id": "summary",
+      "title": "Extended Summary",
+      "startLine": 560,
+      "endLine": 588,
+      "summary": "A single conjunction theorem packaging all seven results: normalization, mean $np$, variance $np(1-p)$, PGF $(pt+1-p)^n$, fair coin formula, Vandermonde convolution, and the Poisson limit. Serves as a machine-checkable summary of the OQ-03 answer.",
+      "mathContext": "A single conjunction theorem packaging all seven results: normalization, mean $np$, variance $np(1-p)$, PGF $(pt+1-p)^n$, fair coin formula, Vandermonde convolution, and the Poisson limit."
+    }
+  ],
+  "conclusion": {
+    "summary": "All key properties of the binomial distribution — normalization, mean $np$, variance $np(1-p)$, symmetry, PGF $(pt+1-p)^n$, convolution, and the Poisson limit — are derived purely from the algebraic binomial theorem, with 0 sorries and 0 axioms. The classical limit $(1+x/n)^n \\to e^x$ is proved from first principles using $\\log'(1) = 1$ and continuity of $\\exp$.",
+    "implications": "**Theoretical Significance**: This formalization demonstrates that discrete probability can be studied entirely within algebra, without measure-theoretic foundations. Every result traces back to a single identity: $(p + (1-p))^n = 1$.\n\nThe Poisson limit theorem bridges discrete and continuous probability — the passage from $\\text{Bin}(n, r/n)$ to $\\text{Poi}(r)$ is a prototype for all 'law of rare events' arguments. The first-principles proof of $(1+x/n)^n \\to e^x$ fills a gap in Mathlib v4.26.0 and could be contributed upstream. The algebraic approach via absorption and Vandermonde generalizes: the same techniques apply to negative binomial, hypergeometric, and multinomial distributions.",
+    "openQuestions": [
+      "Can the de Moivre-Laplace central limit theorem $\\text{Bin}(n,p) \\approx \\mathcal{N}(np, np(1-p))$ be proved using the same algebraic approach, perhaps via the moment generating function?",
+      "Can the $(1+x/n)^n \\to e^x$ limit proved here be contributed to Mathlib as `tendsto_one_plus_div_pow_exp`?",
+      "Can the multinomial distribution be formalized analogously from the multinomial theorem $(x_1 + \\cdots + x_m)^n$?"
+    ],
+    "crossReferences": []
+  },
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "extends",
+      "description": "All distribution properties derive from the algebraic identity (p+(1-p))^n = 1 — the binomial theorem is the single source"
+    },
+    {
+      "targetId": "binomial-theorem-oq-01",
+      "relationship": "sibling",
+      "description": "Newton's generalized binomial series — both extend the binomial theorem in different directions: this file to probability, OQ-01 to infinite series"
+    },
+    {
+      "targetId": "birthday-problem",
+      "relationship": "related",
+      "description": "The birthday problem uses binomial/Poisson approximations: P(collision) ≈ 1 - e^(-n²/2·365) is a Poisson limit of the binomial type proved here"
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "foundational",
+      "description": "The binomial PMF C(n,k)p^k(1-p)^(n-k) uses binomial coefficients — the absorption identity kC(n,k) = nC(n-1,k-1) is the key tool for computing moments"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "BinomialTheoremOQ03",
+    "lineCount": 588,
+    "axiomCount": 0,
+    "theoremCount": 33,
+    "definitionCount": 2,
+    "path": "Proofs/BinomialTheoremOQ03.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Jacob Bernoulli",
+      "title": "Ars Conjectandi",
+      "year": "1713",
+      "venue": "Published posthumously, Basel",
+      "note": "Established the binomial distribution and the weak law of large numbers"
+    },
+    {
+      "authors": "Siméon Denis Poisson",
+      "title": "Recherches sur la probabilité des jugements",
+      "year": "1837",
+      "venue": "Bachelier, Paris",
+      "note": "Proved the Poisson limit theorem (law of rare events): Bin(n, r/n) → Poi(r)"
+    },
+    {
+      "authors": "Alexandre-Théophile Vandermonde",
+      "title": "Mémoire sur des irrationnelles de différens ordres avec une application au cercle",
+      "year": "1772",
+      "venue": "Mémoires de l'Académie Royale des Sciences",
+      "note": "Vandermonde's identity: C(m+n,k) = Σ C(m,j)C(n,k-j)"
+    },
+    {
+      "authors": "Abraham de Moivre",
+      "title": "Approximatio ad Summam Terminorum Binomii (a+b)^n in Seriem Expansi",
+      "year": "1733",
+      "venue": "Supplementum to Miscellanea Analytica",
+      "note": "First proof of the normal approximation to the binomial (de Moivre–Laplace theorem)"
+    }
+  ],
+  "sorries": 0
+}

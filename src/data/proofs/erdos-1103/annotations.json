@@ -1,0 +1,263 @@
+[
+  {
+    "id": "erdos-1103-ann-imports",
+    "proofId": "erdos-1103",
+    "type": "concept",
+    "range": {
+      "startLine": 21,
+      "endLine": 26
+    },
+    "title": "Imports and Namespace Setup",
+    "content": "Imports Mathlib.Data.Nat.Squarefree for the Squarefree predicate, Finset.Basic for finite-set operations in Konyagin's bound, Order.Filter.Basic for the ∀ᶠ (eventually) quantifier used in asymptotic statements, and Tactic for automation.",
+    "mathContext": "The `Squarefree` predicate from Mathlib defines $n$ is squarefree iff $\\forall d, d^2 \\mid n \\Rightarrow d = 1$, equivalently $\\mu(n) \\ne 0$ where $\\mu$ is the Möbius function. The `Filter.atTop` filter on $\\mathbb{N}$ provides $\\forall^\\infty j$ meaning 'for all sufficiently large $j$'.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Squarefree predicate",
+      "Filter.atTop",
+      "Finset",
+      "Möbius function"
+    ],
+    "prerequisites": [
+      "Mathlib imports",
+      "filter theory basics"
+    ]
+  },
+  {
+    "id": "erdos-1103-sqfree-sumset",
+    "proofId": "erdos-1103",
+    "type": "definition",
+    "range": {
+      "startLine": 33,
+      "endLine": 34
+    },
+    "title": "Squarefree Sumset",
+    "content": "SquarefreeSumset A requires that a + b is squarefree for ALL a, b ∈ A (including a = b, so 2a must also be squarefree). This links additive structure to multiplicative constraints: for each prime p, the elements of A must avoid collisions modulo p², and these constraints interact across all primes simultaneously.",
+    "mathContext": "Defines $\\text{SquarefreeSumset}(A) :\\equiv \\forall a, b \\in A,\\, \\text{Squarefree}(a + b)$. Since $a + b$ ranges over the sumset $A + A = \\{a + b : a, b \\in A\\}$, this requires every element of $A + A$ to be squarefree. For each prime $p$, the condition $p^2 \\nmid (a+b)$ means $a \\not\\equiv -b \\pmod{p^2}$, eliminating roughly $1/p^2$ of pairs. The Chinese Remainder Theorem makes the constraints across different primes nearly independent, but their cumulative effect is severe: the set $A$ must be sparse.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Squarefree",
+      "sumset",
+      "additive combinatorics",
+      "Chinese Remainder Theorem",
+      "sieve theory"
+    ],
+    "prerequisites": [
+      "squarefree numbers",
+      "divisibility",
+      "additive number theory",
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "erdos-1103-enumset",
+    "proofId": "erdos-1103",
+    "type": "definition",
+    "range": {
+      "startLine": 39,
+      "endLine": 49
+    },
+    "title": "Set Enumeration Axiom",
+    "content": "Axiomatizes enumSet A j as the j-th smallest element of an infinite set A. The specification enumSet_spec guarantees StrictMono (enumSet A) and Set.range (enumSet A) = A, providing a canonical increasing enumeration. This avoids constructive well-ordering issues in Lean while enabling growth rate analysis.",
+    "mathContext": "Axiomatizes a function $f : \\mathbb{N} \\to \\mathbb{N}$ satisfying: (1) $f$ is strictly monotone: $i < j \\Rightarrow f(i) < f(j)$; (2) $\\text{range}(f) = A$. For any infinite $A \\subseteq \\mathbb{N}$, such an $f$ exists uniquely — it is the order-preserving bijection $\\mathbb{N} \\xrightarrow{\\sim} A$. We write $a_j = f(j)$ and ask: how fast must $a_j \\to \\infty$?",
+    "significance": "key",
+    "relatedConcepts": [
+      "StrictMono",
+      "Set.range",
+      "well-ordering of ℕ",
+      "order-preserving bijection"
+    ],
+    "prerequisites": [
+      "strict monotonicity",
+      "set enumeration",
+      "well-ordering of ℕ",
+      "Set.Infinite"
+    ]
+  },
+  {
+    "id": "erdos-1103-conjecture",
+    "proofId": "erdos-1103",
+    "type": "definition",
+    "range": {
+      "startLine": 56,
+      "endLine": 59
+    },
+    "title": "Exponential Growth Conjecture",
+    "content": "ErdosProblem1103 states: for every infinite A with SquarefreeSumset, ∃ C > 1 such that C^j ≤ a_j for all sufficiently large j. Defined as a Prop (not axiom) since it is an open conjecture. Uses Filter.atTop for the 'eventually' quantifier and real-valued exponential comparison via C ^ (j : ℝ).",
+    "mathContext": "States $\\forall A \\subseteq \\mathbb{N},\\, A \\text{ infinite} \\wedge \\text{SquarefreeSumset}(A) \\Rightarrow \\exists C > 1,\\, \\forall^\\infty j,\\, C^j \\le a_j$. Equivalently: $\\liminf_{j \\to \\infty} (a_j)^{1/j} > 1$. The conjecture asserts exponential growth $a_j \\ge C^j$ is unavoidable. The status is OPEN: the best lower bound is polynomial ($j^{4/3}$) and the best upper construction is subexponential ($\\exp(5j/\\log j)$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "exponential growth",
+      "Filter.atTop",
+      "growth rate classification",
+      "open problem"
+    ],
+    "prerequisites": [
+      "Filter.atTop",
+      "real exponential comparison",
+      "Set.Infinite",
+      "SquarefreeSumset"
+    ]
+  },
+  {
+    "id": "erdos-1103-vdt-upper",
+    "proofId": "erdos-1103",
+    "type": "concept",
+    "range": {
+      "startLine": 57,
+      "endLine": 60
+    },
+    "title": "Van Doorn–Tao Upper Bound (2025)",
+    "content": "There EXISTS an infinite squarefree-sumset sequence with subexponential growth: a_j < exp(5j / log j) for large j. This is subexponential because 5j/log j = o(j), so exp(5j/log j) = o(C^j) for any C > 1. The construction uses careful selection of elements avoiding squarefree-sumset violations while maintaining controlled growth.",
+    "mathContext": "Axiomatizes $\\exists A \\subseteq \\mathbb{N},\\, A \\text{ infinite} \\wedge \\text{SquarefreeSumset}(A) \\wedge \\forall^\\infty j,\\, a_j < \\exp\\!\\left(\\frac{5j}{\\log j}\\right)$. The growth rate $\\exp(5j/\\log j)$ is superpolynomial (faster than any $j^k$) but subexponential (slower than any $C^j$ for $C > 1$). If the conjecture is true, this sequence must fail for large $j$; if false, slower-growing constructions may exist.",
+    "significance": "key",
+    "relatedConcepts": [
+      "subexponential growth",
+      "constructive bound",
+      "Real.exp",
+      "Real.log"
+    ],
+    "prerequisites": [
+      "real exponential and logarithm",
+      "subexponential vs exponential growth",
+      "Filter.atTop"
+    ]
+  },
+  {
+    "id": "erdos-1103-vdt-lower",
+    "proofId": "erdos-1103",
+    "type": "concept",
+    "range": {
+      "startLine": 64,
+      "endLine": 65
+    },
+    "title": "Van Doorn–Tao Lower Bound (2025)",
+    "content": "ANY infinite squarefree-sumset sequence satisfies a_j > 0.24 · j^{4/3} for all j. The exponent 4/3 means the sequence grows at least as fast as j^{4/3}, ruling out slow polynomial growth. The proof uses sieve methods to bound how densely a squarefree-sumset can pack into intervals.",
+    "mathContext": "Axiomatizes $\\forall A,\\, A \\text{ infinite} \\wedge \\text{SquarefreeSumset}(A) \\Rightarrow \\forall j,\\, 0.24 \\cdot j^{4/3} < a_j$. The exponent $4/3$ arises from counting squarefree residues: in $[1, N]$, a squarefree-sumset can contain at most $O(N^{3/4})$ elements (inverse of $4/3$). The gap between this polynomial lower bound and the conjectured exponential lower bound is the heart of the problem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "polynomial lower bound",
+      "sieve methods",
+      "large sieve inequality",
+      "growth rate gap"
+    ],
+    "prerequisites": [
+      "polynomial growth bounds",
+      "real power functions",
+      "sieve theory"
+    ]
+  },
+  {
+    "id": "erdos-1103-konyagin",
+    "proofId": "erdos-1103",
+    "type": "concept",
+    "range": {
+      "startLine": 72,
+      "endLine": 73
+    },
+    "title": "Konyagin Finite Bound",
+    "content": "For a FINITE set A ⊆ {1,…,N} with squarefree sumset, |A| ≤ C · N^{11/15}. The exponent 11/15 ≈ 0.733 means squarefree-sumsets are sparse but not extremely so — they can contain up to N^{0.733} out of N elements. Formalized with Finset, explicit constant C > 0, and the squarefree pairwise sum condition.",
+    "mathContext": "Axiomatizes $\\exists C > 0,\\, \\forall N,\\, \\forall A \\subseteq \\{1,\\ldots,N\\} \\text{ (Finset)},\\, \\text{SquarefreeSumset}(A) \\Rightarrow |A| \\le C \\cdot N^{11/15}$. The exponent $11/15$ comes from the large sieve for squarefree residues: the number of allowable residue classes modulo $p^2$ is $p^2 - \\binom{k}{2}$ where $k$ is the set size, optimized over primes. Complementary to the infinite-sequence bounds.",
+    "significance": "key",
+    "relatedConcepts": [
+      "finite density",
+      "large sieve",
+      "Finset",
+      "counting bounds",
+      "squarefree residues"
+    ],
+    "prerequisites": [
+      "Finset operations",
+      "density arguments",
+      "real power bounds",
+      "large sieve inequality"
+    ]
+  },
+  {
+    "id": "erdos-1103-singleton",
+    "proofId": "erdos-1103",
+    "type": "concept",
+    "range": {
+      "startLine": 78,
+      "endLine": 79
+    },
+    "title": "Singleton Characterization",
+    "content": "SquarefreeSumset {a} ↔ Squarefree (a + a): a singleton set satisfies the squarefree-sumset condition if and only if 2a is squarefree. Since the only pair is (a, a), the only sum to check is a + a = 2a. Axiomatized as the proof requires unfolding set membership.",
+    "mathContext": "States $\\text{SquarefreeSumset}(\\{a\\}) \\iff \\text{Squarefree}(2a)$. For $2a$ to be squarefree, we need $4 \\nmid 2a$, i.e., $a$ must be odd (since $2a$ already has factor $2$, squarefreeness requires $4 \\nmid 2a$). More generally, $p^2 \\nmid 2a$ for all primes $p$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "singleton set",
+      "squarefree characterization",
+      "parity constraint"
+    ],
+    "prerequisites": [
+      "SquarefreeSumset definition",
+      "set membership"
+    ]
+  },
+  {
+    "id": "erdos-1103-empty",
+    "proofId": "erdos-1103",
+    "type": "concept",
+    "range": {
+      "startLine": 82,
+      "endLine": 83
+    },
+    "title": "Empty Set is Squarefree-Sumset",
+    "content": "SquarefreeSumset ∅ holds vacuously: there are no elements a ∈ ∅ to produce a pair, so the universal quantifier is trivially satisfied. Proved by introduction and contradiction via Set.not_mem_empty.",
+    "mathContext": "Proves $\\text{SquarefreeSumset}(\\emptyset)$ by vacuous truth: $\\forall a \\in \\emptyset, \\ldots$ is true because $\\emptyset$ has no elements. This is the base case for inductive constructions of squarefree-sumsets.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "vacuous truth",
+      "empty set",
+      "base case"
+    ],
+    "prerequisites": [
+      "Set.not_mem_empty",
+      "vacuous quantification"
+    ]
+  },
+  {
+    "id": "erdos-1103-subset",
+    "proofId": "erdos-1103",
+    "type": "concept",
+    "range": {
+      "startLine": 86,
+      "endLine": 88
+    },
+    "title": "Subset Monotonicity",
+    "content": "If SquarefreeSumset A and B ⊆ A, then SquarefreeSumset B. The squarefree-sumset property is hereditary: fewer elements means fewer sums to check, so the property can only be maintained or gained when passing to subsets.",
+    "mathContext": "Proves $B \\subseteq A \\wedge \\text{SquarefreeSumset}(A) \\Rightarrow \\text{SquarefreeSumset}(B)$. The proof is direct: for $a, b \\in B$, we have $a, b \\in A$ by $B \\subseteq A$, so $\\text{Squarefree}(a+b)$ by the hypothesis on $A$. This monotonicity is crucial: it means the family of squarefree-sumsets forms a downward-closed family (ideal) in the lattice of subsets.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "hereditary property",
+      "subset monotonicity",
+      "downward-closed family"
+    ],
+    "prerequisites": [
+      "set inclusion",
+      "SquarefreeSumset definition"
+    ]
+  },
+  {
+    "id": "erdos-1103-one-sqfree",
+    "proofId": "erdos-1103",
+    "type": "concept",
+    "range": {
+      "startLine": 91,
+      "endLine": 91
+    },
+    "title": "1 is Squarefree",
+    "content": "The number 1 is squarefree, proved by invoking squarefree_one from Mathlib. This basic fact is used in constructions: any set containing 1 must have 1 + a squarefree for all other elements a.",
+    "mathContext": "Proves $\\text{Squarefree}(1)$: since $1$ has no prime factors, no $p^2$ can divide it. Equivalently, $\\mu(1) = 1 \\ne 0$. In the context of squarefree sumsets, including $1 \\in A$ requires $1 + a$ to be squarefree for all $a \\in A$, i.e., no $a \\equiv -1 \\pmod{p^2}$ for any prime $p$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "squarefree_one",
+      "Möbius function",
+      "basic number theory"
+    ],
+    "prerequisites": [
+      "Squarefree predicate",
+      "Mathlib.Data.Nat.Squarefree"
+    ]
+  }
+]

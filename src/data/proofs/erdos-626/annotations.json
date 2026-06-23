@@ -1,0 +1,312 @@
+[
+  {
+    "id": "ann-626-header",
+    "proofId": "erdos-626",
+    "range": {
+      "startLine": 1,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Problem Overview and References",
+    "content": "Erdős Problem #626 explores the chromatic number-girth trade-off: for $k$-chromatic graphs on $n$ vertices, how large can the girth be?\n\nDefine $g_k(n)$ as the largest $m$ such that an $n$-vertex graph with $\\chi = k$ and girth $> m$ exists. The question: does $\\lim_{n \\to \\infty} g_k(n)/\\log n$ exist?\n\nBoth bounds show $g_k(n) = \\Theta(\\log n)$:\n- Lower (Kostochka): $g_k(n) \\ge \\frac{1}{4 \\log k} \\cdot \\log n$\n- Upper (Erdős): $g_k(n) \\le \\frac{2}{\\log(k-2)} \\cdot \\log n + 1$\n\nThe file imports the full Mathlib library and uses SimpleGraph, real logarithms, and filter convergence.",
+    "mathContext": "$g_k(n) = \\max\\{m : \\exists G,\\; |V(G)| = n,\\; \\chi(G) = k,\\; \\text{girth}(G) > m\\}$. Question: $\\exists L_k \\in \\mathbb{R} : g_k(n)/\\log n \\to L_k$?",
+    "significance": "key",
+    "relatedConcepts": [
+      "chromatic number",
+      "girth",
+      "probabilistic method",
+      "asymptotic analysis"
+    ],
+    "prerequisites": [
+      "SimpleGraph",
+      "real logarithm",
+      "filter convergence",
+      "graph coloring"
+    ]
+  },
+  {
+    "id": "ann-626-chromatic",
+    "proofId": "erdos-626",
+    "range": {
+      "startLine": 32,
+      "endLine": 39
+    },
+    "type": "definition",
+    "title": "Chromatic Number and Colorability",
+    "content": "**chromaticNumber and IsKColorable:**\n\nThe chromatic number $\\chi(G)$ is the minimum $k$ such that $G$ is $k$-colorable. A proper $k$-coloring assigns each vertex a color from $\\{0, \\ldots, k-1\\}$ so that adjacent vertices receive different colors.\n\n```lean\ndef IsKColorable (G : SimpleGraph V) (k : ℕ) : Prop :=\n  ∃ f : V → Fin k, ∀ v w : V, G.Adj v w → f v ≠ f w\n```\n\nThe `chromaticNumber` is declared with `sorry` because defining the minimum over all valid colorings requires careful handling of the empty graph and Mathlib's graph coloring API.\n\n**Key fact:** High chromatic number suggests dense local structure — intuitively, high-$\\chi$ graphs should contain short cycles. Erdős's 1959 result showed this intuition is wrong.",
+    "mathContext": "$\\chi(G) = \\min\\{k : \\exists f: V \\to [k],\\; \\forall uv \\in E,\\; f(u) \\ne f(v)\\}$. A proper coloring partitions $V$ into independent sets.",
+    "significance": "key",
+    "relatedConcepts": [
+      "graph coloring",
+      "independent set",
+      "clique number",
+      "Brook's theorem"
+    ],
+    "prerequisites": [
+      "Fin k",
+      "SimpleGraph.Adj",
+      "proper coloring"
+    ]
+  },
+  {
+    "id": "ann-626-girth",
+    "proofId": "erdos-626",
+    "range": {
+      "startLine": 40,
+      "endLine": 47
+    },
+    "type": "definition",
+    "title": "Girth and HasGirthGT",
+    "content": "**girth and HasGirthGT:**\n\nThe girth of a graph is the length of its shortest cycle (0 if acyclic). `HasGirthGT G m` means girth $> m$: no cycle of length $\\le m$ exists.\n\nHigh girth forces the graph to be locally tree-like — within distance $\\lfloor m/2 \\rfloor$ of any vertex, the neighborhood is a tree. This local sparsity is the key structural constraint.\n\n**The tension:** High $\\chi$ requires dense global structure (many edges relative to independent set size), while high girth requires sparse local structure (no short cycles). Erdős's breakthrough showed these can coexist, and Problem #626 asks how precisely they trade off.",
+    "mathContext": "$\\text{girth}(G) = \\min\\{|C| : C \\text{ is a cycle in } G\\}$ (or $\\infty$ if $G$ is a forest). $\\text{HasGirthGT}(G, m) \\Leftrightarrow \\text{girth}(G) > m$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cycle",
+      "tree",
+      "cage graph",
+      "Moore bound"
+    ],
+    "prerequisites": [
+      "cycle detection",
+      "girth computation",
+      "tree-like neighborhoods"
+    ]
+  },
+  {
+    "id": "ann-626-g-function",
+    "proofId": "erdos-626",
+    "range": {
+      "startLine": 48,
+      "endLine": 67
+    },
+    "type": "concept",
+    "title": "The g_k(n) Function and Well-Definedness",
+    "content": "**g and g_well_defined:**\n\n$g_k(n)$ measures the maximum achievable girth among $n$-vertex $k$-chromatic graphs. It is defined noncomputably (via supremum) and axiomatized as well-defined for $k \\ge 4$ and $n$ large enough.\n\nWell-definedness means such graphs exist — a non-trivial claim that follows from Erdős's 1959 probabilistic construction. The constraint $k \\ge 4$ avoids degenerate cases ($k \\le 3$ have special behavior).\n\n**Growth:** Both bounds show $g_k(n) = \\Theta(\\log n)$, so the girth of optimal $k$-chromatic graphs grows logarithmically in the number of vertices. This logarithmic growth is characteristic of probabilistic constructions.",
+    "mathContext": "$g_k(n) = \\sup\\{m : \\exists G \\text{ on } n \\text{ vertices},\\; \\chi(G) = k,\\; \\text{girth}(G) > m\\}$. Well-defined for $k \\ge 4$, $n \\ge N_k$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal function",
+      "supremum",
+      "graph existence",
+      "cage problem"
+    ],
+    "prerequisites": [
+      "noncomputable definition",
+      "axiom",
+      "Fintype.card"
+    ]
+  },
+  {
+    "id": "ann-626-1959",
+    "proofId": "erdos-626",
+    "range": {
+      "startLine": 68,
+      "endLine": 78
+    },
+    "type": "concept",
+    "title": "Erdős 1959: High-χ, High-Girth Graphs Exist",
+    "content": "**erdos_high_girth_high_chromatic and g_unbounded:**\n\nErdős's landmark 1959 result: for any $k \\ge 2$ and $g \\ge 3$, there exist graphs with chromatic number $\\ge k$ and girth $> g$. This was a groundbreaking application of the probabilistic method.\n\n**The proof idea:** Consider the random graph $G(n, p)$ with $p = n^{\\alpha - 1}$ for appropriate $\\alpha$. With high probability:\n- Few short cycles exist (girth is large)\n- The independence number is small (chromatic number is high)\nDelete one vertex from each short cycle. The remaining graph has high girth and, since few vertices were removed, still has high chromatic number.\n\nThe consequence `g_unbounded` (sorry'd) states $g_k(n) \\to \\infty$ as $n \\to \\infty$.",
+    "mathContext": "$\\forall k \\ge 2,\\; g \\ge 3 : \\exists G$ with $\\chi(G) \\ge k$ and $\\text{girth}(G) > g$. Proof: random $G(n, n^{\\alpha-1})$ with $\\alpha < 1/(g-1)$ and $n$ large.",
+    "significance": "key",
+    "relatedConcepts": [
+      "probabilistic method",
+      "random graph",
+      "Erdős 1959",
+      "Lovász Local Lemma"
+    ],
+    "prerequisites": [
+      "random graph model",
+      "first moment method",
+      "alteration method"
+    ]
+  },
+  {
+    "id": "ann-626-upper",
+    "proofId": "erdos-626",
+    "range": {
+      "startLine": 79,
+      "endLine": 95
+    },
+    "type": "concept",
+    "title": "Erdős Upper Bound",
+    "content": "**erdos_upper_bound and upperCoeff:**\n\nUpper bound: $g_k(n) \\le \\frac{2}{\\log(k-2)} \\cdot \\log n + 1$.\n\nThis limits girth growth: even for $n$-vertex $k$-chromatic graphs, the girth cannot exceed $O(\\log n)$. The proof uses a counting argument: if girth $> m$, the neighborhood ball of radius $\\lfloor m/2 \\rfloor$ around any vertex is a tree. This forces the number of vertices to grow exponentially with $m$, giving $m = O(\\log n)$.\n\nThe coefficient $\\frac{2}{\\log(k-2)}$ decreases as $k$ grows:\n- $k = 4$: $2/\\log 2 \\approx 2.89$\n- $k = 10$: $2/\\log 8 \\approx 0.96$\n- $k = 100$: $2/\\log 98 \\approx 0.44$\n\nHigher chromatic number restricts girth more severely because more edges are needed.",
+    "mathContext": "$g_k(n) \\le \\frac{2}{\\log(k-2)} \\log n + 1$. Proof sketch: girth $> m$ implies $n \\ge (k-2)^{m/2}$ by the Moore bound argument, so $m \\le \\frac{2\\log n}{\\log(k-2)}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Moore bound",
+      "tree-like expansion",
+      "minimum degree",
+      "girth-chromatic bound"
+    ],
+    "prerequisites": [
+      "real logarithm",
+      "exponential growth",
+      "counting argument"
+    ]
+  },
+  {
+    "id": "ann-626-lower",
+    "proofId": "erdos-626",
+    "range": {
+      "startLine": 96,
+      "endLine": 110
+    },
+    "type": "concept",
+    "title": "Kostochka's Lower Bound",
+    "content": "**kostochka_lower_bound and lowerCoeff:**\n\nLower bound: $g_k(n) \\ge \\frac{1}{4\\log k} \\cdot \\log n$.\n\nThis guarantees that $k$-chromatic graphs with reasonably large girth exist on $n$ vertices. The proof uses probabilistic constructions refined from Erdős's 1959 method, achieving better constants.\n\nThe coefficient $\\frac{1}{4\\log k}$ also decreases with $k$:\n- $k = 4$: $1/(4\\log 4) \\approx 0.18$\n- $k = 10$: $1/(4\\log 10) \\approx 0.11$\n- $k = 100$: $1/(4\\log 100) \\approx 0.054$\n\nThe lower bound coefficient is always smaller than the upper bound coefficient, consistent with the gap.",
+    "mathContext": "$g_k(n) \\ge \\frac{1}{4\\log k} \\log n$ for $k \\ge 4$, $n \\ge 2$. The constant $1/4$ comes from optimizing the probabilistic method parameters.",
+    "significance": "key",
+    "relatedConcepts": [
+      "probabilistic construction",
+      "Kostochka's theorem",
+      "random graph optimization"
+    ],
+    "prerequisites": [
+      "real logarithm",
+      "probabilistic method",
+      "graph construction"
+    ]
+  },
+  {
+    "id": "ann-626-main-question",
+    "proofId": "erdos-626",
+    "range": {
+      "startLine": 111,
+      "endLine": 131
+    },
+    "type": "concept",
+    "title": "The Limit Question (OPEN)",
+    "content": "**gRatio, LimitExists, limit_if_exists_bounded:**\n\nThe central question: does $\\lim_{n \\to \\infty} g_k(n)/\\log n$ exist?\n\n```lean\ndef LimitExists (k : ℕ) : Prop :=\n  ∃ L : ℝ, Filter.Tendsto (gRatio k) Filter.atTop (nhds L)\n```\n\nThe ratio $g_k(n)/\\log n$ is bounded between $\\frac{1}{4\\log k}$ and $\\frac{2}{\\log(k-2)}$. If the limit exists, it must lie in this interval. The sorry'd `limit_if_exists_bounded` captures this squeeze.\n\n**Why this is hard:** The ratio could oscillate — for some subsequences of $n$, probabilistic constructions might give larger girth, while for others, structural constraints might limit it. Proving convergence requires understanding the extremal graphs, which are poorly understood.\n\nThe `limit_question_open` axiom formally encodes the open status (somewhat artificially, since excluded middle holds in Lean).",
+    "mathContext": "If $L_k = \\lim_{n \\to \\infty} g_k(n)/\\log n$ exists, then $\\frac{1}{4\\log k} \\le L_k \\le \\frac{2}{\\log(k-2)}$. The existence of $L_k$ is unknown for any $k \\ge 4$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "limit existence",
+      "Filter.Tendsto",
+      "bounded sequence",
+      "oscillation"
+    ],
+    "prerequisites": [
+      "Filter topology",
+      "nhds",
+      "real analysis",
+      "squeeze theorem"
+    ]
+  },
+  {
+    "id": "ann-626-gap",
+    "proofId": "erdos-626",
+    "range": {
+      "startLine": 132,
+      "endLine": 152
+    },
+    "type": "concept",
+    "title": "Gap Analysis: Bound Ratio Approaches 8",
+    "content": "**bound_gap, boundRatio, bound_ratio_formula, bound_ratio_limit:**\n\nThe ratio of upper to lower bound coefficients is $\\frac{2/\\log(k-2)}{1/(4\\log k)} = \\frac{8\\log k}{\\log(k-2)}$.\n\nAs $k \\to \\infty$: $\\log k / \\log(k-2) \\to 1$, so the ratio approaches 8. This means even for very large $k$, we don't know $g_k(n)$ within a factor of 8.\n\n**Specific values:**\n- $k = 4$: ratio $= 8\\log 4/\\log 2 = 16$ (large gap)\n- $k = 10$: ratio $= 8\\log 10/\\log 8 \\approx 8.86$\n- $k = 100$: ratio $= 8\\log 100/\\log 98 \\approx 8.04$ (close to 8)\n\nNarrowing this constant-factor gap is open and would require fundamentally new techniques.",
+    "mathContext": "$\\frac{\\text{upper coeff}}{\\text{lower coeff}} = \\frac{2/\\log(k-2)}{1/(4\\log k)} = \\frac{8\\log k}{\\log(k-2)} \\to 8$ as $k \\to \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic ratio",
+      "constant factor gap",
+      "L'Hôpital's rule"
+    ],
+    "prerequisites": [
+      "real division",
+      "limit at infinity",
+      "Filter.Tendsto"
+    ]
+  },
+  {
+    "id": "ann-626-dual",
+    "proofId": "erdos-626",
+    "range": {
+      "startLine": 153,
+      "endLine": 171
+    },
+    "type": "concept",
+    "title": "Dual Problem h^(m)(n) and Its Bounds",
+    "content": "**h, g_h_relationship, h_bounds:**\n\nThe dual function $h^{(m)}(n)$ is the largest chromatic number achievable by an $n$-vertex graph with girth $> m$. This 'inverts' $g_k(n)$: instead of maximizing girth for fixed $\\chi$, we maximize $\\chi$ for fixed girth.\n\nThe duality: $g_k(n) \\ge m \\Leftrightarrow h^{(m)}(n) \\ge k$.\n\nKnown bounds on $h$: $c_1 n^{1/(m-1)} \\le h^{(m)}(n) \\le c_2 n^{1/(m-1)} (\\log n)^{1 + 1/(m-1)}$. These polynomial bounds in $n$ (with girth-dependent exponent) contrast with the logarithmic bounds for $g_k(n)$.\n\nFor $m = 3$ (triangle-free): $h^{(3)}(n) = \\Theta(n^{1/2}/\\sqrt{\\log n})$ by Kim's theorem on $R(3,k)$.",
+    "mathContext": "$h^{(m)}(n) = \\max\\{\\chi(G) : |V(G)| = n,\\; \\text{girth}(G) > m\\}$. Bounds: $c_1 n^{1/(m-1)} \\le h^{(m)}(n) \\le c_2 n^{1/(m-1)} (\\log n)^{1+1/(m-1)}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "duality",
+      "extremal function",
+      "cage problem",
+      "Ramsey-type"
+    ],
+    "prerequisites": [
+      "real exponentiation",
+      "polynomial growth",
+      "girth constraint"
+    ]
+  },
+  {
+    "id": "ann-626-special",
+    "proofId": "erdos-626",
+    "range": {
+      "startLine": 172,
+      "endLine": 207
+    },
+    "type": "concept",
+    "title": "Special Cases: k=4 and Triangle-Free Graphs",
+    "content": "**k4_bounds, triangle_free_unbounded_chromatic, probabilistic_lower_bound:**\n\nFor $k = 4$: the bounds are $0.18 \\log n \\le g_4(n) \\le 2.89 \\log n + 1$, a ratio of about 16. This is the tightest case but still has a large gap.\n\n`triangle_free_unbounded_chromatic` (sorry'd): for any $k$, triangle-free graphs with $\\chi \\ge k$ exist. This is a special case of Erdős 1959 and perhaps the most counterintuitive consequence — graphs without any triangles can still require arbitrarily many colors. Mycielski's construction (1955) gives explicit examples.\n\n`probabilistic_lower_bound` (sorry'd): the probabilistic method gives graphs with $\\chi \\ge k$ and girth $\\ge c \\log n$ on $n$ vertices.",
+    "mathContext": "For $k = 4$: $\\frac{1}{4\\log 4} \\log n \\le g_4(n) \\le \\frac{2}{\\log 2} \\log n + 1$, i.e., $0.18 \\log n \\le g_4(n) \\le 2.89 \\log n + 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mycielski graph",
+      "triangle-free chromatic",
+      "explicit construction",
+      "Kneser graph"
+    ],
+    "prerequisites": [
+      "logarithm evaluation",
+      "floor function",
+      "probabilistic method"
+    ]
+  },
+  {
+    "id": "ann-626-ramsey",
+    "proofId": "erdos-626",
+    "range": {
+      "startLine": 208,
+      "endLine": 216
+    },
+    "type": "concept",
+    "title": "Ramsey Connection",
+    "content": "**ramseyNumber and g_ramsey_connection:**\n\nThe off-diagonal Ramsey number $R(s,t)$ connects to $g_k(n)$ through the relationship between chromatic number and independence number. In graphs with girth $> m$, the independence number is constrained, linking to Ramsey-theoretic bounds.\n\nThe sorry'd `g_ramsey_connection` states $g_k(n) \\le C \\log R(k, n)$, connecting girth bounds to Ramsey number growth rates.\n\nThis connection is natural: both problems ask about the structure forced by avoiding certain subgraphs.",
+    "mathContext": "$g_k(n) \\le C \\cdot \\log R(k, n)$. Since $R(k, n) = O(n^{k-1})$ (Erdős-Szekeres), this gives $g_k(n) = O(\\log n)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Ramsey number",
+      "independence number",
+      "Erdős-Szekeres bound"
+    ],
+    "prerequisites": [
+      "Ramsey theory",
+      "logarithmic bound",
+      "graph independence"
+    ]
+  },
+  {
+    "id": "ann-626-main",
+    "proofId": "erdos-626",
+    "range": {
+      "startLine": 217,
+      "endLine": 244
+    },
+    "type": "concept",
+    "title": "Main Status: Combined Bounds and Existence",
+    "content": "**erdos_626_status:**\n\nThe capstone theorem combines all results:\n1. **Bounds exist**: For all $k \\ge 4$, constants $c_1, c_2 > 0$ exist with $c_1 \\log n \\le g_k(n) \\le c_2 \\log n + 1$.\n2. **High-$\\chi$, high-girth graphs exist**: For all $k \\ge 2$, $g \\ge 3$.\n\nThe proof delegates to the axiomatized bounds and existence results. The status summary confirms that $g_k(n) = \\Theta(\\log n)$ with explicit constants, but the limit question remains open.\n\nThe `#check` statements at the end verify that all key declarations are accessible.",
+    "mathContext": "$\\forall k \\ge 4 : \\exists c_1, c_2 > 0 : \\forall n \\ge 2 : c_1 \\log n \\le g_k(n) \\le c_2 \\log n + 1$, and $\\forall k \\ge 2,\\; g \\ge 3 : \\exists G$ with $\\chi(G) \\ge k$, $\\text{girth}(G) > g$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Theta notation",
+      "asymptotic equivalence",
+      "existence theorem"
+    ],
+    "prerequisites": [
+      "conjunction introduction",
+      "axiom delegation",
+      "sorry placeholders"
+    ]
+  }
+]

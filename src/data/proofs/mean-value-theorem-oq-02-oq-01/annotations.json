@@ -1,0 +1,119 @@
+[
+  {
+    "id": "ann-mvt02oq01-header",
+    "proofId": "mean-value-theorem-oq-02-oq-01",
+    "type": "concept",
+    "range": {
+      "startLine": 6,
+      "endLine": 50
+    },
+    "title": "From exact remainder to estimate to series convergence",
+    "content": "The module docstring frames the OQ-01 follow-up of mean-value-theorem-oq-02: the parent proved Taylor's theorem with the EXACT Lagrange remainder f(b) − Tₙ(b) = f⁽ⁿ⁺¹⁾(c)/(n+1)!·(b−a)ⁿ⁺¹, but the exact form contains an unknown intermediate point c and so cannot be evaluated. Its real utility is as a source of ESTIMATES. This file builds the estimate layer in three steps: (I) absolute values turn a derivative bound |f⁽ⁿ⁺¹⁾| ≤ M into the error bound M/(n+1)!·(b−a)ⁿ⁺¹; (II) a uniform bound on ALL derivatives forces the Taylor polynomials to converge to f(b); (III) the exponential series ∑ xᵏ/k! → exp x falls out as the concrete payoff. The honesty note records that the Lagrange remainder is reused from the ancestor and that Mathlib already knows the exp series converges — the contribution is the MVT-rooted derivation of these facts, all 0-axiom / 0-sorry.",
+    "mathContext": "Exact: $f(b) - T_n(b) = \\frac{f^{(n+1)}(c)}{(n+1)!}(b-a)^{n+1}$. Estimate: $|f(b) - T_n(b)| \\le \\frac{M}{(n+1)!}(b-a)^{n+1}$ when $|f^{(n+1)}| \\le M$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Taylor's theorem",
+      "Lagrange remainder",
+      "error estimates",
+      "Taylor series convergence"
+    ],
+    "prerequisites": [
+      "Taylor's theorem with Lagrange remainder",
+      "iterated derivatives",
+      "limits of sequences"
+    ]
+  },
+  {
+    "id": "ann-mvt02oq01-remainder-bound",
+    "proofId": "mean-value-theorem-oq-02-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 73,
+      "endLine": 87
+    },
+    "title": "taylor_remainder_bound: the sharp Taylor remainder estimate",
+    "content": "If f is C^{n+1} and |iteratedDeriv (n+1) f x| ≤ M for all x ∈ (a,b), then |f b − taylorPolynomial f a n b| ≤ M/(n+1)!·(b−a)ⁿ⁺¹. The proof is a one-line abstraction of the ancestor's exact remainder: obtain the Lagrange witness c ∈ (a,b) with f b − Tₙ(b) = iteratedDeriv (n+1) f c/(n+1)!·(b−a)ⁿ⁺¹; rewrite, then since both (n+1)! and (b−a)ⁿ⁺¹ are positive, normalize the absolute value (abs_mul, abs_div, abs_of_pos twice) and close by gcongr, which reduces the goal to |iteratedDeriv (n+1) f c| ≤ M — exactly the hypothesis applied at c. The factorial denominator is the sharp (n+1)!, strictly better than Mathlib's general taylor_mean_remainder_bound (which delivers only 1/n!), because the exact scalar Lagrange remainder already carries the optimal factor.",
+    "mathContext": "$|f(b) - T_n(b)| \\le \\dfrac{M}{(n+1)!}(b-a)^{n+1}$. Sharpness: the $(n+1)!$ matches the exact Lagrange form, unlike the vector-valued $n!$ bound.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Lagrange remainder",
+      "gcongr",
+      "derivative bounds",
+      "sharp constants"
+    ],
+    "prerequisites": [
+      "absolute value of products and quotients",
+      "monotonicity of multiplication (gcongr)"
+    ]
+  },
+  {
+    "id": "ann-mvt02oq01-tendsto",
+    "proofId": "mean-value-theorem-oq-02-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 99,
+      "endLine": 127
+    },
+    "title": "taylorPolynomial_tendsto: convergence from a uniform derivative bound",
+    "content": "If f is C^∞ and a single constant M bounds |iteratedDeriv n f| on (a,b) for EVERY n, then taylorPolynomial f a n b → f b. The error |Tₙ(b) − f b| is bounded by g(n) = M·(b−a)ⁿ⁺¹/(n+1)! via the Part I estimate (applied at order n+1 with the n-independent bound). g → 0 because g is the M-scaled, index-shifted tail of the convergent exponential series ∑ (b−a)ᵏ/k!: Real.summable_pow_div_factorial gives summability, Summable.tendsto_atTop_zero gives terms → 0, and composing with tendsto_add_atTop_nat 1 performs the k = n+1 reindex. squeeze_zero_norm then drives the signed error Tₙ(b) − f b to 0, and adding the constant f b (Tendsto.add tendsto_const_nhds) yields Tₙ(b) → f b. Functions like sin, cos (M = 1 globally) and exp on a bounded interval satisfy the uniform-bound hypothesis.",
+    "mathContext": "$|f^{(n)}| \\le M$ on $(a,b)$ for all $n$ $\\Rightarrow$ $T_n(b) \\to f(b)$, the engine being $\\dfrac{(b-a)^{n+1}}{(n+1)!} \\to 0$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Taylor series convergence",
+      "squeeze theorem",
+      "summable sequences",
+      "uniform derivative bound"
+    ],
+    "prerequisites": [
+      "summability of the exponential series",
+      "sandwich theorem squeeze_zero_norm",
+      "reindexing limits"
+    ]
+  },
+  {
+    "id": "ann-mvt02oq01-iterderiv-exp",
+    "proofId": "mean-value-theorem-oq-02-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 135,
+      "endLine": 139
+    },
+    "title": "iteratedDeriv_exp and taylorPolynomial_exp",
+    "content": "iteratedDeriv n Real.exp = Real.exp: convert iteratedDeriv to the n-fold iterate of deriv (iteratedDeriv_eq_iterate) and apply Real.iter_deriv_exp (deriv^[n] exp = exp). As a consequence taylorPolynomial Real.exp 0 n x simplifies (simp with iteratedDeriv_exp, Real.exp_zero, sub_zero, then ring on each term) to the exponential partial sum ∑_{k≤n} xᵏ/k!, since every coefficient iteratedDeriv k exp 0 / k! = exp 0 / k! = 1/k! and (x − 0)ᵏ = xᵏ.",
+    "mathContext": "$\\frac{d^n}{dx^n}e^x = e^x$, so $T_n^{\\exp,0}(x) = \\sum_{k=0}^{n} \\frac{x^k}{k!}$.",
+    "significance": "important",
+    "relatedConcepts": [
+      "iterated derivatives of exp",
+      "Taylor polynomial of exp",
+      "exponential partial sum"
+    ],
+    "prerequisites": [
+      "iteratedDeriv_eq_iterate",
+      "deriv of exp"
+    ]
+  },
+  {
+    "id": "ann-mvt02oq01-exp-tendsto",
+    "proofId": "mean-value-theorem-oq-02-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 154,
+      "endLine": 163
+    },
+    "title": "exp_taylor_tendsto: the exponential series from the remainder estimate",
+    "content": "For x > 0, ∑_{k≤n} xᵏ/k! → exp x. The key bound: on (0,x) every iterated derivative of exp equals exp y, and exp y ≤ exp x (Real.exp_le_exp.mpr, y < x), so M = exp x bounds all derivatives. Apply taylorPolynomial_tendsto to exp on (0,x) with this M and Real.contDiff_exp for smoothness, obtaining taylorPolynomial exp 0 n x → exp x; finally rewrite the Taylor polynomial as the partial sum via key.congr with taylorPolynomial_exp. This recovers the convergence of the exponential series from differential data (all derivatives of exp are exp) fed through the Taylor remainder machinery — a complementary, MVT-rooted derivation of a fact Mathlib otherwise obtains from the power-series definition of exp.",
+    "mathContext": "$\\sum_{k\\le n} \\dfrac{x^k}{k!} \\to e^x$ for $x>0$. Uniform bound: $|\\frac{d^n}{dy^n}e^y| = e^y \\le e^x$ for $y \\in (0,x)$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "exponential series",
+      "Taylor remainder estimate",
+      "Tendsto.congr",
+      "exp monotonicity"
+    ],
+    "prerequisites": [
+      "taylorPolynomial_tendsto",
+      "monotonicity of exp",
+      "smoothness of exp"
+    ]
+  }
+]

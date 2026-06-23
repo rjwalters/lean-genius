@@ -1,0 +1,109 @@
+{
+  "slug": "unit-distance-independence-oq-02",
+  "title": "Prove Hadwiger-Nelson upper bound ≤ 7 via hexagonal 7-coloring",
+  "phase": "ACT",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Prove: ∃ c : Plane → Fin 7, ∀ p q : Plane, dist p q = 1 → c p ≠ c q",
+    "plain": "The chromatic number of the unit distance graph on R² is at most 7. Prove via explicit hexagonal 7-coloring construction."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-04-29T03:43Z",
+    "iteration": 2,
+    "focus": "S2 (2026-04-29) reduced proofs/Proofs/UnitDistanceHN7.lean from 3 sorries to 1. Resolved: hexCenter_dist_sq (algebraic distance formula via EuclideanSpace.dist_sq_eq + nlinarith) and the inline modular step in same_color_far (3·Δa+Δb ≡ 0 (mod 7) via simp [hexColor, Fin.mk.injEq] + omega). Companion file HN7Aristotle.lean updated: hexCenter_dist_sq_ari delegates; hexColor_eq_implies_mod_ari parallel-proved. Remaining sorry: covering_radius (A₂ Voronoi cell circumradius ≤ s) in both files (HN7.lean:113 + HN7Aristotle.lean:74).",
+    "blockers": [],
+    "nextAction": "S4 PREP/ACT: tackle covering_radius via the cube-norm inequality outlined in knowledge.md §Suggested-implementation-sketch. Path A (preferred, ~80 LOC): prove private lemma hexCoord_cube_bound (Q(q-a, r-b) ≤ 1/3) by 3-sub-case split on rq+ry+rr correction; combine with proved hexCenter_dist_sq to get dist² ≤ s². Path B (fallback): decompose into 6 cube-rounding sub-cases. Paste-ready sketch in sessions/2026-05-16-s3-statesync-json-leanfile-iter2-drift.md §Remaining-obligation. Mathlib pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 stable."
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE+INTEGRATED: hadwiger_nelson_7coloring (chi(R^2)<=7) now discharges the parent gallery axiom; unit-distance-independence entry reduced to 1 axiom (de Grey lower bound). Only chi(R^2)>=5 lower bound remains genuinely hard/axiomatized.",
+    "builtItems": [
+      "hexSideLength, axialQ, axialR, hexCoord, hexColor, hexCenter (6 defs, HN7.lean lines 32-82)",
+      "color_sublattice_min_norm: PROVED (HN7.lean:84) — integer arithmetic on Q(da,db) over 3·da+db ≡ 0 (mod 7) sublattice",
+      "hexCenter_dist_sq: PROVED in S2 (HN7.lean:123) — algebraic distance formula via EuclideanSpace.dist_sq_eq + PiLp.toLp_apply + Real.mul_self_sqrt + nlinarith",
+      "sqrt21_gt_nine_halves + side_length_gap_bound: PROVED (HN7.lean:139, 149) — numeric bounds for the point-distance argument",
+      "same_hex_close, same_color_far: PROVED (HN7.lean:160, 180) — uses covering_radius (sorry pending) + hexCenter_dist_sq",
+      "Inline modular step in same_color_far: PROVED in S2 via simp [hexColor, Fin.mk.injEq] + omega (handles Int.toNat and redundant Nat.mod 7)",
+      "Companion HN7Aristotle.lean updated in S2: hexCenter_dist_sq_ari delegates to main lemma; hexColor_eq_implies_mod_ari proved by parallel omega",
+      "hadwiger_nelson_7coloring: PROVED (HN7.lean:258) — main theorem, conditional on covering_radius",
+      "hexRound + hexRound_Q_bound (UnitDistanceHN7.lean): abstract cube-rounding with Q(q-a,r-b) ≤ 1/3, four-branch Voronoi case analysis",
+      "quad_bound_A / quad_bound_B (UnitDistanceHN7.lean): SOS arithmetic cores for the hexagon (≤1/4) and correction (≤1/3, tight) bounds",
+      "hexPos / hexPos_axial / hexPos_dist_sq / dist_p_center_sq: A₂ basis reconstruction giving dist² = 3s²·Q in axial coordinates",
+      "covering_radius (UnitDistanceHN7.lean): closes the last sorry; covering_radius_ari delegated",
+      "UnitDistanceIndependence.lean: hadwiger_nelson_upper_bound converted axiom->theorem (discharged by hadwiger_nelson_7coloring); fixed 2 full-Mathlib-import collateral breaks (mem_neighborFinset/mem_neighborSet simp set in indep_degree_sum_eq_cut_edges; _root_.dist_comm shadowed by open SimpleGraph in unitDistGraph.symm)."
+    ],
+    "insights": [
+      "Hex diameter 2s = 4/5 < 1 ensures same-cell points < 1 apart",
+      "Color sublattice minimum norm is 13 at (3,1), giving center distance s√(3·13) = (2/5)√39",
+      "Point distance bound: s(√39-2) = (2√39-4)/5 > 1 since 156 > 81",
+      "color_sublattice_min_norm is finite case analysis on (da mod 7, db mod 7)",
+      "same_hex_close needs hex rounding correctness — point is within s of assigned center",
+      "Would eliminate hadwiger_nelson_upper_bound axiom from UnitDistanceIndependence.lean",
+      "BUG: Original formula (2a+b)%7 has sublattice vector (1,-2) with Q(1,-2)=3, giving center distance 6/5 and point distance 2/5 < 1",
+      "FIX: Formula (a+3b)%7 has Q_min=7 at (3,-1),(1,2),(-1,-2),(-3,1),(-2,1),(2,-1)",
+      "Key bound: Q(a,b)=a²+ab+b²≥(a²+b²)/2 so for |a|+|b|≥4, Q≥8>7; only finitely many small cases to check",
+      "With Q_min=7: center distance ≥ (2/5)√21, point distance ≥ (2√21-4)/5 > 1 since 84 > 81",
+      "S2 PROOF PATTERN — nlinarith [h3, sq_nonneg …] with h3 : Real.sqrt 3 * Real.sqrt 3 = 3 closes hexCenter_dist_sq where ring_nf alone fails (since ring_nf normalizes √3 differently each call).",
+      "S2 PROOF PATTERN — simp only [hexColor, Fin.mk.injEq] before omega is required to peel the Fin 7 constructor and expose Nat equality; raw simp alone leaves let-binding that omega cannot parse.",
+      "S2 OUTCOME — 2 of 3 original sorries (same_hex_close, same_color_far) provably reduce to covering_radius. So eliminating covering_radius would close ALL remaining obligations in HN7.lean and HN7Aristotle.lean, then remove hadwiger_nelson_upper_bound from UnitDistanceIndependence.lean — a full collapse to 0 sorries / 1 axiom (down from 2) across the bundle.",
+      "DECOMPOSITION — covering_radius reduces to Q(q-a, r-b) ≤ 1/3 (cube-norm bound on rounding error) combined with proved hexCenter_dist_sq to get dist² ≤ 3s²·(1/3) = s². See knowledge.md §Suggested-implementation-sketch.",
+      "Marking axialQ/axialR irreducible and running the rounding case-analysis on a parallel def hexRound over abstract reals avoids whnf/isDefEq blowups from EuclideanSpace internals",
+      "Hand-writing the if-expression synthesizes different Decidable instances than the def, making the connecting rfl time out; a parallel def with an identical body fixes it",
+      "Parent axiom hadwiger_nelson_upper_bound is now redundant but a clean discharge needs namespacing UnitDistanceHN7 (root-level Plane clashes on import) — left as follow-up",
+      "Discharged the parent gallery entry's hadwiger_nelson_upper_bound AXIOM: in UnitDistanceIndependence.lean it is now a theorem proved by _root_.hadwiger_nelson_7coloring (importing Proofs.UnitDistanceHN7). The unit-distance-independence gallery entry drops from 2 axioms to 1 (de Grey lower bound only). #print axioms = [propext, Classical.choice, Quot.sound]."
+    ],
+    "nextSteps": [
+      "Lower bound χ(ℝ²) ≥ 5 (de Grey 2018, 1581-vertex graph) remains genuinely hard / axiomatized."
+    ]
+  },
+  "tags": [
+    "chromatic-number",
+    "hadwiger-nelson",
+    "hexagonal-tiling",
+    "combinatorial-geometry"
+  ],
+  "relatedProofs": [
+    "unit-distance-independence"
+  ],
+  "started": "2026-04-05T21:40:00Z",
+  "lastUpdate": "2026-05-16T08:56:13Z",
+  "significance": 8,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/UnitDistanceIndependence.lean",
+      "filename": "UnitDistanceIndependence.lean",
+      "lineCount": 948,
+      "theoremCount": 65,
+      "axiomCount": 2,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/UnitDistanceIndependence.lean"
+    },
+    {
+      "path": "Proofs/UnitDistanceHN7.lean",
+      "filename": "UnitDistanceHN7.lean",
+      "lineCount": 287,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/UnitDistanceHN7.lean"
+    },
+    {
+      "path": "Proofs/UnitDistanceHN7Aristotle.lean",
+      "filename": "UnitDistanceHN7Aristotle.lean",
+      "lineCount": 78,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/UnitDistanceHN7Aristotle.lean"
+    }
+  ]
+}

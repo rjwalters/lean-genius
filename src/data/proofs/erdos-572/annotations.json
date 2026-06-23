@@ -1,0 +1,440 @@
+[
+  {
+    "id": "ann-e572-header",
+    "proofId": "erdos-572",
+    "range": {
+      "startLine": 1,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #572: Extremal Function for Even Cycles**\n\nThis problem asks for a lower bound on ex(n; C_{2k}), the maximum edges in an n-vertex graph with no 2k-cycle.\n\n**Conjecture:** ex(n; C_{2k}) >> n^{1+1/k} for k >= 3\n\n**Status:** Proved for k=3,5 (Benson 1966); open for k=4 and k >= 6.",
+    "mathContext": "The extremal function ex(n; H) is central to Turan-type problems in combinatorics.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Extremal graph theory",
+      "Turan's theorem",
+      "Forbidden subgraphs"
+    ],
+    "prerequisites": [
+      "Turán-type extremal problems",
+      "SimpleGraph in Mathlib",
+      "Forbidden subgraph problems",
+      "Kővári–Sós–Turán theorem"
+    ]
+  },
+  {
+    "id": "ann-e572-cycle-def",
+    "proofId": "erdos-572",
+    "range": {
+      "startLine": 50,
+      "endLine": 60
+    },
+    "type": "definition",
+    "title": "Cycle Detection",
+    "content": "**hasCycleOfLength:**\n\nA graph G contains a cycle of length k if there exist k distinct vertices v_0, ..., v_{k-1} with edges v_i ~ v_{i+1 mod k}.\n\n```lean\ndef hasCycleOfLength (G : SimpleGraph V) (k : N) [Fintype V] : Prop :=\n  exists (vertices : Fin k -> V), Function.Injective vertices and\n    (forall i : Fin k, G.Adj (vertices i) (vertices ((i+1) % k)))\n```",
+    "significance": "key",
+    "mathContext": "Formal statement of cycle detection as described in the annotation content",
+    "relatedConcepts": [
+      "formal definition",
+      "graph theory"
+    ],
+    "prerequisites": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Function.Injective",
+      "Fin k indexing in Lean 4",
+      "SimpleGraph.Adj"
+    ]
+  },
+  {
+    "id": "ann-e572-cycle-free",
+    "proofId": "erdos-572",
+    "range": {
+      "startLine": 61,
+      "endLine": 67
+    },
+    "type": "definition",
+    "title": "Cycle-Free Graphs",
+    "content": "**isCycleFree:**\n\nA graph is C_{2k}-free if it contains no cycle of length 2k.\n\n```lean\ndef isCycleFree (G : SimpleGraph V) (length : N) [Fintype V] : Prop :=\n  not hasCycleOfLength G length\n```\n\nThis is the key constraint for the extremal problem.",
+    "significance": "key",
+    "mathContext": "Formal statement of cycle-free graphs as described in the annotation content",
+    "relatedConcepts": [
+      "formal definition",
+      "graph theory"
+    ],
+    "prerequisites": [
+      "hasCycleOfLength definition",
+      "Proposition negation in Lean 4",
+      "Girth of a graph",
+      "Bipartite graphs and even cycles"
+    ]
+  },
+  {
+    "id": "ann-e572-edge-count",
+    "proofId": "erdos-572",
+    "range": {
+      "startLine": 68,
+      "endLine": 74
+    },
+    "type": "definition",
+    "title": "Edge Count",
+    "content": "**edgeCount:**\n\nThe number of edges in a simple graph.\n\n```lean\nnoncomputable def edgeCount (G : SimpleGraph V) [Fintype V] [DecidableRel G.Adj] : N :=\n  G.edgeFinset.card\n```\n\nWe maximize this subject to the cycle-free constraint.",
+    "significance": "supporting",
+    "mathContext": "Formal statement of edge count as described in the annotation content",
+    "relatedConcepts": [
+      "formal definition",
+      "graph theory"
+    ],
+    "prerequisites": [
+      "Mathlib.Combinatorics.SimpleGraph.Finite",
+      "SimpleGraph.edgeFinset",
+      "Finset.card",
+      "DecidableRel"
+    ]
+  },
+  {
+    "id": "ann-e572-extremal-func",
+    "proofId": "erdos-572",
+    "range": {
+      "startLine": 81,
+      "endLine": 89
+    },
+    "type": "definition",
+    "title": "The Extremal Function",
+    "content": "**exCycle:**\n\nex(n; C_{2k}) = max{|E(G)| : G has n vertices, no C_{2k}}\n\n```lean\nnoncomputable def exCycle (n k : N) : N :=\n  sSup {m : N | exists V G, card V = n and isCycleFree G (2*k) and edgeCount G = m}\n```\n\nThis is the central object of study in the problem.",
+    "mathContext": "The extremal function measures the densest possible graph avoiding a specific substructure.",
+    "significance": "key",
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
+    "prerequisites": [
+      "Set.sSup in Lean 4",
+      "isCycleFree definition",
+      "edgeCount definition",
+      "Fintype.card for vertex set size"
+    ]
+  },
+  {
+    "id": "ann-e572-bondy-simonovits",
+    "proofId": "erdos-572",
+    "range": {
+      "startLine": 96,
+      "endLine": 108
+    },
+    "type": "concept",
+    "title": "Bondy-Simonovits Upper Bound",
+    "content": "**bondy_simonovits_upper:**\n\nFor k >= 2: ex(n; C_{2k}) <= c * k * n^{1+1/k}\n\n```lean\naxiom bondy_simonovits_upper :\n  forall k : N, k >= 2 ->\n  exists c : R, c > 0 and forall n : N, n >= 1 ->\n    (exCycle n k : R) <= c * k * n^(1 + 1/k)\n```\n\nThis is the best known upper bound (1974).",
+    "mathContext": "Proved using the dependent random choice method and careful cycle counting.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Random graph methods",
+      "Cycle counting"
+    ],
+    "prerequisites": [
+      "exCycle definition",
+      "Real.rpow for fractional exponents",
+      "Bondy–Simonovits theorem (1974)",
+      "Even cycle counting in graphs"
+    ]
+  },
+  {
+    "id": "ann-e572-benson-k3",
+    "proofId": "erdos-572",
+    "range": {
+      "startLine": 109,
+      "endLine": 121
+    },
+    "type": "concept",
+    "title": "Benson's Theorem for k=3",
+    "content": "**benson_k3:**\n\nex(n; C_6) >= c * n^{4/3}\n\nBenson (1966) constructed explicit C_6-free graphs with n^{4/3} edges using generalized hexagons.\n\n```lean\naxiom benson_k3 :\n  exists c : R, c > 0 and forall n >= 1,\n    (exCycle n 3 : R) >= c * n^(4/3)\n```\n\nThe exponent 4/3 = 1 + 1/3 matches the conjecture.",
+    "mathContext": "Uses generalized polygons from incidence geometry.",
+    "significance": "key",
+    "relatedConcepts": [
+      "graph theory",
+      "Lean 4 formalization"
+    ],
+    "prerequisites": [
+      "Generalized hexagons (incidence geometry)",
+      "exCycle n 3 for C_6-free graphs",
+      "Real.rpow with exponent 4/3",
+      "Benson (1966) construction"
+    ]
+  },
+  {
+    "id": "ann-e572-benson-k5",
+    "proofId": "erdos-572",
+    "range": {
+      "startLine": 122,
+      "endLine": 126
+    },
+    "type": "concept",
+    "title": "Benson's Theorem for k=5",
+    "content": "**benson_k5:**\n\nex(n; C_{10}) >= c * n^{6/5}\n\nSimilar construction using generalized decagons.\nThe exponent 6/5 = 1 + 1/5 matches the conjecture.",
+    "significance": "key",
+    "mathContext": "Formal statement of benson's theorem for k=5 as described in the annotation content",
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
+    "prerequisites": [
+      "Generalized decagons (incidence geometry)",
+      "exCycle n 5 for C_10-free graphs",
+      "Real.rpow with exponent 6/5",
+      "Benson (1966) construction"
+    ]
+  },
+  {
+    "id": "ann-e572-luw",
+    "proofId": "erdos-572",
+    "range": {
+      "startLine": 127,
+      "endLine": 143
+    },
+    "type": "concept",
+    "title": "Lazebnik-Ustimenko-Woldar Bound",
+    "content": "**lazebnik_ustimenko_woldar:**\n\nFor all k >= 3:\nex(n; C_{2k}) >= c * n^{1+2/(3k-3+v)}\n\nwhere v = 0 for odd k, v = 1 for even k.\n\n```lean\ndef luwExponent (k : N) : R :=\n  1 + 2 / (3 * k - 3 + if k % 2 = 0 then 1 else 0)\n```\n\nThis is weaker than n^{1+1/k} but works for all k >= 3.",
+    "mathContext": "Uses algebraic graph constructions over finite fields.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Algebraic graphs",
+      "Finite fields"
+    ],
+    "prerequisites": [
+      "luwExponent definition",
+      "Algebraic graph constructions over GF(q)",
+      "Parity condition ν = [2 | k]",
+      "Lazebnik–Ustimenko–Woldar (1995)"
+    ]
+  },
+  {
+    "id": "ann-e572-conjecture",
+    "proofId": "erdos-572",
+    "range": {
+      "startLine": 151,
+      "endLine": 161
+    },
+    "type": "definition",
+    "title": "The Erdos Conjecture",
+    "content": "**erdosConjectureLowerBound:**\n\nThe conjecture states ex(n; C_{2k}) >> n^{1+1/k}.\n\n```lean\ndef erdosConjectureLowerBound (k : N) : Prop :=\n  exists c : R, c > 0 and forall n >= 1,\n    (exCycle n k : R) >= c * n^(1 + 1/k)\n```\n\nThis would match the Bondy-Simonovits upper bound up to constants.",
+    "significance": "key",
+    "mathContext": "Formal statement of the erdos conjecture as described in the annotation content",
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
+    "prerequisites": [
+      "exCycle definition",
+      "Real.rpow for n^{1+1/k}",
+      "Asymptotic big-Omega notation",
+      "Bondy–Simonovits upper bound"
+    ]
+  },
+  {
+    "id": "ann-e572-k3-proof",
+    "proofId": "erdos-572",
+    "range": {
+      "startLine": 162,
+      "endLine": 179
+    },
+    "type": "concept",
+    "title": "Conjecture Proved for k=3",
+    "content": "**erdos_572_k3:**\n\nThe conjecture holds for k=3.\n\n```lean\ntheorem erdos_572_k3 : erdosConjectureLowerBound 3 := by\n  unfold erdosConjectureLowerBound\n  obtain (c, hc_pos, hc) := benson_k3\n  use c\n  ...\n```\n\nFollows from Benson's theorem since 4/3 = 1 + 1/3.",
+    "significance": "key",
+    "mathContext": "Formal statement of conjecture proved for k=3 as described in the annotation content",
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
+    "prerequisites": [
+      "erdosConjectureLowerBound definition",
+      "benson_k3 axiom",
+      "norm_num tactic for 4/3 = 1+1/3",
+      "Lean 4 obtain pattern matching"
+    ]
+  },
+  {
+    "id": "ann-e572-k5-proof",
+    "proofId": "erdos-572",
+    "range": {
+      "startLine": 180,
+      "endLine": 191
+    },
+    "type": "concept",
+    "title": "Conjecture Proved for k=5",
+    "content": "**erdos_572_k5:**\n\nThe conjecture holds for k=5.\n\nFollows from Benson's theorem since 6/5 = 1 + 1/5.",
+    "significance": "key",
+    "mathContext": "Formal statement of conjecture proved for k=5 as described in the annotation content",
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
+    "prerequisites": [
+      "erdosConjectureLowerBound definition",
+      "benson_k5 axiom",
+      "norm_num tactic for 6/5 = 1+1/5",
+      "Lean 4 convert tactic"
+    ]
+  },
+  {
+    "id": "ann-e572-exponents",
+    "proofId": "erdos-572",
+    "range": {
+      "startLine": 198,
+      "endLine": 202
+    },
+    "type": "definition",
+    "title": "Exponent Definitions",
+    "content": "**conjecturedExponent:**\n\nThe conjectured exponent is 1 + 1/k.\n\n```lean\ndef conjecturedExponent (k : N) : R := 1 + 1 / k\n```\n\nCompare with luwExponent which is weaker for most k.",
+    "significance": "key",
+    "mathContext": "Formal statement of exponent definitions as described in the annotation content",
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
+    "prerequisites": [
+      "luwExponent definition",
+      "Real division in Lean 4",
+      "Asymptotic growth rates of power functions",
+      "Relationship between LUW and Benson exponents"
+    ]
+  },
+  {
+    "id": "ann-e572-luw-matches-k3",
+    "proofId": "erdos-572",
+    "range": {
+      "startLine": 212,
+      "endLine": 218
+    },
+    "type": "concept",
+    "title": "LUW Matches Conjecture for k=3",
+    "content": "**luw_matches_k3:**\n\nFor k=3 (odd), the LUW exponent equals the conjectured exponent.\n\nluwExponent 3 = 1 + 2/6 = 4/3 = 1 + 1/3 = conjecturedExponent 3\n\nThis is why LUW gives the optimal bound for k=3.",
+    "significance": "key",
+    "mathContext": "Formal statement of luw matches conjecture for k=3 as described in the annotation content",
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
+    "prerequisites": [
+      "luwExponent definition",
+      "conjecturedExponent definition",
+      "norm_num tactic for numeric equality",
+      "k odd parity: ν = 0 for k=3"
+    ]
+  },
+  {
+    "id": "ann-e572-gap-k4",
+    "proofId": "erdos-572",
+    "range": {
+      "startLine": 219,
+      "endLine": 225
+    },
+    "type": "concept",
+    "title": "Gap for k=4",
+    "content": "**luw_gap_k4:**\n\nFor k=4, there is a gap:\n- LUW gives 1 + 2/10 = 1.2\n- Conjecture is 1 + 1/4 = 1.25\n\nThe k=4 case remains open.",
+    "significance": "key",
+    "mathContext": "Formal statement of gap for k=4 as described in the annotation content",
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
+    "prerequisites": [
+      "luwExponent definition",
+      "conjecturedExponent definition",
+      "norm_num tactic for numeric inequality",
+      "k even parity: ν = 1 for k=4"
+    ]
+  },
+  {
+    "id": "ann-e572-erdos-klein",
+    "proofId": "erdos-572",
+    "range": {
+      "startLine": 239,
+      "endLine": 250
+    },
+    "type": "concept",
+    "title": "Erdos-Klein Theorem for C_4",
+    "content": "**erdos_klein_c4:**\n\nex(n; C_4) ~ (1/2) * n^{3/2}\n\nThe extremal graphs are related to finite projective planes.\n\n```lean\naxiom erdos_klein_c4 :\n  exists c1 c2, 0 < c1 <= c2 and forall n >= 1,\n    c1 * n^{3/2} <= exCycle n 2 <= c2 * n^{3/2}\n```\n\nThis is the k=2 case, fully resolved.",
+    "mathContext": "Connected to the Zarankiewicz problem and projective planes.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Zarankiewicz problem",
+      "Projective planes"
+    ],
+    "prerequisites": [
+      "Zarankiewicz problem Z(n; 2,2)",
+      "Finite projective planes of order q",
+      "exCycle n 2 for C_4-free graphs",
+      "Kővári–Sós–Turán theorem"
+    ]
+  },
+  {
+    "id": "ann-e572-odd-cycles",
+    "proofId": "erdos-572",
+    "range": {
+      "startLine": 262,
+      "endLine": 272
+    },
+    "type": "concept",
+    "title": "Odd Cycle Extremal Function",
+    "content": "**odd_cycle_extremal:**\n\nFor odd cycles: ex(n; C_{2k+1}) = floor(n^2/4)\n\nThe extremal graphs are complete bipartite K_{n/2, n/2}.\n\nThis is because bipartite graphs contain no odd cycles.\n\nOdd cycles are much easier than even cycles!",
+    "mathContext": "Bipartite graphs are exactly those with no odd cycles.",
+    "significance": "key",
+    "relatedConcepts": [
+      "graph theory",
+      "Lean 4 formalization"
+    ],
+    "prerequisites": [
+      "Turán's theorem for bipartite extremal graphs",
+      "Complete bipartite graphs K_{n/2, n/2}",
+      "Bipartite graphs contain no odd cycles",
+      "Floor function n²/4 in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-e572-summary",
+    "proofId": "erdos-572",
+    "range": {
+      "startLine": 277,
+      "endLine": 291
+    },
+    "type": "concept",
+    "title": "Summary Theorem",
+    "content": "**erdos_572_summary:**\n\nCombines the partial results:\n\n```lean\ntheorem erdos_572_summary :\n    erdosConjectureLowerBound 3 and\n    erdosConjectureLowerBound 5 and\n    luwExponent 3 = conjecturedExponent 3\n```\n\n1. Conjecture proved for k=3\n2. Conjecture proved for k=5\n3. LUW bound optimal for k=3",
+    "significance": "key",
+    "mathContext": "Formal statement of summary theorem as described in the annotation content",
+    "relatedConcepts": [
+      "proof technique",
+      "combinatorics"
+    ],
+    "prerequisites": [
+      "erdos_572_k3 and erdos_572_k5 theorems",
+      "luw_matches_k3 theorem",
+      "And.intro in Lean 4",
+      "Partial solutions to open problems"
+    ]
+  },
+  {
+    "id": "ann-e572-best-bounds",
+    "proofId": "erdos-572",
+    "range": {
+      "startLine": 292,
+      "endLine": 304
+    },
+    "type": "concept",
+    "title": "Best Known Lower Bounds",
+    "content": "**best_known_lower_bounds:**\n\nSummarizes all known lower bounds:\n\n1. k=3: n^{4/3} (Benson, optimal)\n2. k=5: n^{6/5} (Benson, optimal)\n3. General k: n^{1+2/(3k-3+v)} (LUW, suboptimal)\n\nThe gap between LUW and the conjecture grows with k.",
+    "significance": "key",
+    "mathContext": "Formal statement of best known lower bounds as described in the annotation content",
+    "relatedConcepts": [
+      "proof technique",
+      "Lean 4 formalization"
+    ],
+    "prerequisites": [
+      "benson_k3 and benson_k5 axioms",
+      "lazebnik_ustimenko_woldar axiom",
+      "luwExponent vs conjecturedExponent gap",
+      "Asymptotics of extremal graph densities"
+    ]
+  }
+]

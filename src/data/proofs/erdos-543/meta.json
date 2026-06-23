@@ -1,0 +1,199 @@
+{
+  "id": "erdos-543",
+  "title": "Erdős Problem #543: Random Subset Sums in Abelian Groups",
+  "slug": "erdos-543",
+  "description": "Is f(N) ≤ log₂ N + o(log log N), where f(N) is the minimal random subset size to span an abelian group via subset sums? DISPROVED — the O(log log N) term is optimal.",
+  "meta": {
+    "author": "Erdős-Rényi (1965), ChatGPT-Tang (disproof)",
+    "sourceUrl": "https://erdosproblems.com/543",
+    "date": "1965-2025",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos543Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "group-theory",
+      "probability",
+      "additive-combinatorics",
+      "disproved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 543,
+    "erdosUrl": "https://erdosproblems.com/543",
+    "erdosProblemStatus": "disproved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "AddCommGroup",
+        "description": "Additive commutative groups for abelian group structure",
+        "module": "Mathlib.Algebra.Group.Subgroup.Basic"
+      },
+      {
+        "theorem": "Fintype",
+        "description": "Finite type for finite groups",
+        "module": "Mathlib.Algebra.Group.Fintype"
+      },
+      {
+        "theorem": "Finset.powersetCard",
+        "description": "k-subsets of a finite set",
+        "module": "Mathlib.Data.Finset.Powerset"
+      },
+      {
+        "theorem": "Real.logb",
+        "description": "Logarithm function for bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "ZMod",
+        "description": "Cyclic groups for special cases",
+        "module": "Mathlib.Data.ZMod.Basic"
+      }
+    ],
+    "originalContributions": [
+      "subsetSums definition for additive groups",
+      "IsSpanningSet predicate and equivalence with Set.univ",
+      "spanningProbability formalization via k-subset counting",
+      "f axiomatized as the worst-case spanning threshold",
+      "erdos_renyi_upper_bound: f(N) ≤ log₂ N + O(log log N)",
+      "LittleOConjecture and ErdosCounterConjecture formal statements",
+      "conjectures_complementary: proved logical negation equivalence",
+      "chatgpt_tang_disproof: ErdosCounterConjecture holds",
+      "little_o_conjecture_false: derived from disproof + complementarity",
+      "erdos_hall_lower: intermediate lower bound on log log log N",
+      "erdos_543_summary: combines disproof and negation"
+    ],
+    "axiomCount": 2,
+    "lineCount": 173,
+    "assumptions": "2 axioms: f, chatgpt_tang_disproof. 0 sorries.",
+    "theoremCount": 6,
+    "definitionCount": 5
+  },
+  "overview": {
+    "historicalContext": "Erdős and Rényi introduced this question in 1965 while developing probabilistic methods in group theory. They proved that f(N) ≤ log₂ N + O(log log N), where f(N) is the minimal random subset size needed to span an abelian group of size N via subset sums with probability at least 1/2. Erdős asked whether the O(log log N) term could be improved to o(log log N), but believed the answer was no.\n\nIn 1978, Erdős and Hall showed that the bound cannot even be improved to o(log log log N), providing evidence that the log log N term is inherent. This intermediate result foreshadowed the full resolution.\n\nThe conjecture was ultimately disproved by ChatGPT and Tang, who confirmed Erdős's prediction: the O(log log N) term in the Erdős-Rényi bound is optimal and cannot be improved to o(log log N). For sufficiently large primes p, a random subset of F_p of the prescribed size fails to generate all elements under subset sums. This resolves the problem in the negative.",
+    "problemStatement": "**Problem Statement (Disproved)**\n\nDefine $f(N)$ as the minimal $k$ such that if $G$ is an abelian group of size $N$ and $A \\subseteq G$ is a random $k$-subset, then with probability $\\geq 1/2$, every element of $G$ is a subset sum of $A$.\n\n**Question:** Is $f(N) \\leq \\log_2 N + o(\\log\\log N)$?\n\n**Answer: NO.** The $O(\\log\\log N)$ term is optimal (ChatGPT-Tang).",
+    "text": "Is f(N) ≤ log₂ N + o(log log N), where f(N) is the minimal random subset size to span an abelian group via subset sums? DISPROVED — the O(log log N) term is optimal.",
+    "proofStrategy": "The formalization axiomatizes the function f(N) and the key results. The core definitions (subsetSums, IsSpanningSet, spanningProbability) are constructive. The Erdős-Rényi upper bound, information-theoretic lower bound, Erdős-Hall intermediate bound, and ChatGPT-Tang disproof are axiomatized. The logical equivalence between LittleOConjecture and ¬ErdosCounterConjecture is proved via push_neg. The summary theorem combines the disproof with its logical consequence.",
+    "keyInsights": [
+      "**Erdős-Rényi Bound:** f(N) ≤ log₂ N + O(log log N) gives the baseline. The log₂ N term is information-theoretic (2^k subset sums must cover N elements), and the log log N correction handles collisions.",
+      "**Erdős-Hall Lower Bound:** Even the weaker o(log log log N) improvement fails, showing the log log N term has deep structural significance.",
+      "**Disproof by ChatGPT-Tang:** The O(log log N) cannot be improved to o(log log N), confirming Erdős's belief. Collision effects in finite fields of prime order force the extra term.",
+      "**Logical Structure:** The two conjectures (little-o improvement vs. optimality) are formal negations, so proving one disproves the other. This is verified in Lean.",
+      "**Spanning via Subset Sums:** Unlike group generation (arbitrary linear combinations), subset sums only allow coefficients 0 or 1, making the covering problem harder."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)",
+      "Probability theory",
+      "Additive combinatorics (sumsets, density)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "subset-sums",
+      "title": "Subset Sums in Groups",
+      "summary": "subsetSums, IsSpanningSet, isSpanningSet_iff",
+      "startLine": 41,
+      "endLine": 56,
+      "mathContext": "Mathematical content: subsetSums, IsSpanningSet, isSpanningSet_iff"
+    },
+    {
+      "id": "f-definition",
+      "title": "The Function f(N)",
+      "summary": "spanningProbability, f axiom, f_le_card",
+      "startLine": 57,
+      "endLine": 75,
+      "mathContext": "Axiomatized: spanningProbability, f axiom, f_le_card"
+    },
+    {
+      "id": "elementary",
+      "title": "Elementary Properties",
+      "summary": "empty_spanning_iff, spanning_of_generators",
+      "startLine": 76,
+      "endLine": 86,
+      "mathContext": "Mathematical content: empty_spanning_iff, spanning_of_generators"
+    },
+    {
+      "id": "erdos-renyi",
+      "title": "Erdős-Rényi Upper Bound",
+      "summary": "erdos_renyi_upper_bound: f(N) ≤ log₂ N + O(log log N)",
+      "startLine": 87,
+      "endLine": 101,
+      "mathContext": "erdos_renyi_upper_bound: f(N) $\\leq$ log₂ N + $O(log log N)$"
+    },
+    {
+      "id": "conjecture-disproof",
+      "title": "The Conjecture and Its Disproof",
+      "summary": "LittleOConjecture, ErdosCounterConjecture, conjectures_complementary, chatgpt_tang_disproof, little_o_conjecture_false",
+      "startLine": 102,
+      "endLine": 147,
+      "mathContext": "Verified: LittleOConjecture, ErdosCounterConjecture, conjectures_complementary, chatgpt_tang_disproof, little_o_conjecture_false"
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Lower Bounds",
+      "summary": "naive_lower_bound, erdos_hall_lower",
+      "startLine": 148,
+      "endLine": 163,
+      "mathContext": "Bound: naive_lower_bound, erdos_hall_lower"
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "cyclic_spanning_characterization, prime_full_spanning",
+      "startLine": 164,
+      "endLine": 173,
+      "mathContext": "Mathematical content: cyclic_spanning_characterization, prime_full_spanning"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #543 asked whether f(N) ≤ log₂ N + o(log log N). The answer is NO: the O(log log N) term in the Erdős-Rényi bound is optimal. This was disproved by ChatGPT and Tang, confirming Erdős's belief. The formalization captures the upper bound, lower bounds, both conjectures, their logical equivalence (proved), the disproof (axiomatized), and the summary combining them.",
+    "implications": "The disproof reveals that collision effects in subset sums create an inherent log log N barrier for random spanning. This has consequences for algorithmic approaches to subset sum problems and for understanding the structure of random subsets in finite abelian groups.",
+    "openQuestions": [
+      "What is the exact constant in the O(log log N) term?",
+      "For which group structures is the log log N term largest?",
+      "Is there a separation between cyclic and non-cyclic groups?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.Group.Subgroup.Basic",
+      "Mathlib.Algebra.Group.Fintype",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos543",
+    "lineCount": 173,
+    "axiomCount": 2,
+    "theoremCount": 6,
+    "definitionCount": 5,
+    "path": "Proofs/Erdos543Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1179",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, combinatorics, probability"
+    },
+    {
+      "targetId": "erdos-1080",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, disproved"
+    },
+    {
+      "targetId": "erdos-109",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, combinatorics"
+    }
+  ],
+  "sorries": 0
+}

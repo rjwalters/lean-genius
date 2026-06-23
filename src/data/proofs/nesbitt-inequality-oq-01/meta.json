@@ -1,0 +1,150 @@
+{
+  "id": "nesbitt-inequality-oq-01",
+  "title": "Nesbitt's Inequality and its Equality Case",
+  "slug": "nesbitt-inequality-oq-01",
+  "description": "For positive reals a, b, c, the cyclic sum a/(b+c) + b/(c+a) + c/(a+b) is at least 3/2, with equality iff a = b = c. The proof rests on a sum-of-squares identity: Σ a/(b+c) − 3/2 = (a−b)²/(2(b+c)(c+a)) + (b−c)²/(2(c+a)(a+b)) + (c−a)²/(2(a+b)(b+c)). Each summand is a nonnegative square over a positive denominator, giving the bound; the right-hand side vanishes exactly when all three squares vanish, giving the equality characterisation and the strict inequality otherwise.",
+  "meta": {
+    "author": "A. M. Nesbitt (1903); formalized for lean-genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/NesbittInequalityOQ01.lean",
+    "tags": [
+      "inequality",
+      "algebra",
+      "sum-of-squares",
+      "cyclic-sum",
+      "real-analysis",
+      "classic"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-20",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "field_simp",
+        "description": "Clears the three positive denominators b+c, c+a, a+b to reduce the SOS identity to a polynomial identity closed by ring",
+        "module": "Mathlib.Tactic.FieldSimp"
+      },
+      {
+        "theorem": "positivity",
+        "description": "Discharges nonnegativity of each square-over-positive-denominator term and nonzeroness of the denominators from 0 < a, b, c",
+        "module": "Mathlib.Tactic.Positivity"
+      },
+      {
+        "theorem": "div_eq_zero_iff",
+        "description": "x/y = 0 ↔ x = 0 ∨ y = 0 — extracts (a−b)² = 0 from a vanishing SOS term in the equality case",
+        "module": "Mathlib.Algebra.Order.Field.Basic"
+      },
+      {
+        "theorem": "pow_eq_zero_iff",
+        "description": "x^n = 0 ↔ x = 0 (for n ≠ 0) — turns (a−b)² = 0 into a − b = 0, hence a = b",
+        "module": "Mathlib.Algebra.GroupWithZero.Basic"
+      }
+    ],
+    "originalContributions": [
+      "nesbitt_sub_eq: the sum-of-squares identity Σ a/(b+c) − 3/2 = (a−b)²/(2(b+c)(c+a)) + (b−c)²/(2(c+a)(a+b)) + (c−a)²/(2(a+b)(b+c)), the algebraic heart of the result",
+      "nesbitt: Nesbitt's inequality a/(b+c) + b/(c+a) + c/(a+b) ≥ 3/2 for positive reals, derived from the SOS identity by nonnegativity of each term",
+      "nesbitt_eq_iff: equality holds iff a = b = c, by forcing each vanishing SOS term to have a zero numerator",
+      "nesbitt_lt: the strict inequality 3/2 < Σ a/(b+c) whenever a, b, c are not all equal"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. Depends only on the standard foundational axioms propext, Classical.choice, Quot.sound.",
+    "lineCount": 95,
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Nesbitt's inequality was posed by A. M. Nesbitt in 1903 as a problem in the Educational Times and has since become a staple of olympiad training and an archetype of cyclic three-variable inequalities. It is the simplest nontrivial case of the Shapiro cyclic-sum inequality and a frequent testbed for proof techniques: SOS (sum of squares), the rearrangement and Chebyshev sum inequalities, the Cauchy–Schwarz (Engel/Titu) form, and tangent-line tricks all furnish proofs. The minimum value 3/2 is attained on the diagonal a = b = c.",
+    "problemStatement": "For positive reals a, b, c, is a/(b+c) + b/(c+a) + c/(a+b) always at least 3/2, and when is it exactly 3/2?\n\n**Answer: Yes**, the sum is ≥ 3/2, with equality **iff a = b = c**. The defect from 3/2 equals a sum of three nonnegative squares over positive denominators, which is zero precisely when a = b = c.",
+    "text": "The cyclic sum a/(b+c) + b/(c+a) + c/(a+b) of a positive triple is bounded below by 3/2, attained only at a = b = c.",
+    "proofStrategy": "Pair each term with 1/2: a/(b+c) − 1/2 = ((a−b)+(a−c))/(2(b+c)). Summing and collecting equal differences yields the SOS identity Σ a/(b+c) − 3/2 = (a−b)²/(2(b+c)(c+a)) + (b−c)²/(2(c+a)(a+b)) + (c−a)²/(2(a+b)(b+c)). In Lean this identity is proved by field_simp (clearing the positive denominators) followed by ring. Nonnegativity of each summand (positivity) gives the inequality; in the equality case each summand must vanish, forcing (a−b)² = (b−c)² = 0 via div_eq_zero_iff and pow_eq_zero_iff, hence a = b = c. The strict inequality is the contrapositive packaged from the equality characterisation.",
+    "keyInsights": [
+      "The SOS identity converts a fractional cyclic inequality into manifestly nonnegative data: a sum of squares divided by positive denominators",
+      "The same identity that proves the bound also pins down the equality case — no separate optimisation argument is needed",
+      "field_simp + ring is a complete decision procedure for the rational-function identity once the denominators are known nonzero; the only analytic input is the positivity of a, b, c",
+      "Reading off (a−b)² = 0 and (b−c)² = 0 from the vanishing defect gives the full equality characterisation a = b = c with no loss"
+    ],
+    "prerequisites": [
+      "Ordered fields and the arithmetic of real fractions",
+      "Sum-of-squares (SOS) certificates for nonnegativity",
+      "Basic manipulation of divisions: div_eq_zero_iff, pow_eq_zero_iff"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sos-identity",
+      "title": "The Sum-of-Squares Identity",
+      "startLine": 28,
+      "endLine": 39,
+      "summary": "Σ a/(b+c) − 3/2 = (a−b)²/(2(b+c)(c+a)) + (b−c)²/(2(c+a)(a+b)) + (c−a)²/(2(a+b)(b+c)), proved by field_simp then ring.",
+      "mathContext": "$\\sum \\frac{a}{b+c} - \\frac32 = \\frac{(a-b)^2}{2(b+c)(c+a)} + \\frac{(b-c)^2}{2(c+a)(a+b)} + \\frac{(c-a)^2}{2(a+b)(b+c)}$."
+    },
+    {
+      "id": "inequality",
+      "title": "Nesbitt's Inequality",
+      "startLine": 41,
+      "endLine": 49,
+      "summary": "Each SOS term is ≥ 0 (positivity), so the defect is ≥ 0 and the sum is ≥ 3/2.",
+      "mathContext": "Each $\\frac{(\\cdot)^2}{2(\\cdot)(\\cdot)} \\ge 0 \\Rightarrow \\sum \\frac{a}{b+c} \\ge \\frac32$."
+    },
+    {
+      "id": "equality",
+      "title": "Equality iff a = b = c",
+      "startLine": 51,
+      "endLine": 85,
+      "summary": "If the sum equals 3/2 the defect is 0, so each nonnegative SOS term is 0, forcing (a−b)²=(b−c)²=0 and a=b=c; conversely a=b=c makes every square vanish.",
+      "mathContext": "$\\sum \\frac{a}{b+c} = \\frac32 \\iff a=b=c$."
+    },
+    {
+      "id": "strict",
+      "title": "Strict Inequality off the Diagonal",
+      "startLine": 87,
+      "endLine": 94,
+      "summary": "Unless a = b = c the bound is strict: 3/2 < Σ a/(b+c).",
+      "mathContext": "$\\lnot(a=b=c) \\Rightarrow \\frac32 < \\sum \\frac{a}{b+c}$."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Nesbitt, A. M.",
+      "title": "Problem 15114",
+      "year": "1903",
+      "note": "Educational Times — the original posing of the inequality"
+    },
+    {
+      "authors": "Hardy, G. H.; Littlewood, J. E.; Pólya, G.",
+      "title": "Inequalities",
+      "year": "1934",
+      "note": "Cyclic sum inequalities and SOS methods"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "related",
+      "description": "Both are classical real inequalities, but Nesbitt bounds a cyclic sum of fractions by a constant rather than comparing the arithmetic and geometric means; the SOS certificate here is the analogue of AM–GM's square-difference argument."
+    }
+  ],
+  "conclusion": {
+    "summary": "Nesbitt's inequality a/(b+c) + b/(c+a) + c/(a+b) ≥ 3/2 for positive reals is machine-checked with 0 axioms via a sum-of-squares identity, which also yields the equality characterisation a = b = c and the strict inequality off the diagonal.",
+    "implications": "The SOS identity gives a transparent, fully certified proof that simultaneously delivers the sharp bound, the minimiser, and the strictness — a clean template for other cyclic three-variable inequalities.",
+    "openQuestions": [
+      "Does the analogous Shapiro cyclic sum Σ aᵢ/(aᵢ₊₁ + aᵢ₊₂) admit an SOS certificate bounding it below by n/2 for all n where the inequality holds?",
+      "Can the weighted Nesbitt inequality (with positive weights on the fractions) be certified by a parametrised SOS family?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "NesbittInequality",
+    "lineCount": 95,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/NesbittInequalityOQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

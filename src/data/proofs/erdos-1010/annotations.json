@@ -1,0 +1,125 @@
+[
+  {
+    "id": "ann-1010-overview",
+    "proofId": "erdos-1010",
+    "range": {
+      "startLine": 1,
+      "endLine": 43
+    },
+    "type": "concept",
+    "title": "Problem Overview: Triangle Supersaturation",
+    "content": "**Erdős Problem #1010 (SOLVED)**\n\nWhen a graph exceeds the Turán threshold $\\lfloor n^2/4 \\rfloor$ (the maximum edges in a triangle-free graph), how many triangles must appear?\n\nThe answer is precise: $t$ edges over the threshold force at least $t \\cdot \\lfloor n/2 \\rfloor$ triangles for $t < \\lfloor n/2 \\rfloor$.\n\nProved independently by Lovász-Simonovits (1976) and Nikiforov-Khadzhiivanov (1981).",
+    "mathContext": "Supersaturation results quantify the 'explosion' of forbidden substructures beyond extremal thresholds. This is a cornerstone of modern extremal graph theory. The file imports `Mathlib` and works with `SimpleGraph V` for a finite type `V` with `[Fintype V] [DecidableEq V]`. The docstring references Erdős [Er62d], Lovász-Simonovits [LoSi76], and Nikiforov-Khadzhiivanov [NiKh81].",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turan-theorem",
+      "supersaturation",
+      "extremal-graph-theory",
+      "stability-method"
+    ],
+    "prerequisites": [
+      "SimpleGraph",
+      "Fintype",
+      "edgeFinset"
+    ]
+  },
+  {
+    "id": "ann-1010-turan",
+    "proofId": "erdos-1010",
+    "range": {
+      "startLine": 45,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Turán Threshold and Triangle Counting",
+    "content": "**turanThreshold(n)** $= \\lfloor n^2/4 \\rfloor$: The maximum number of edges in a triangle-free graph on $n$ vertices, achieved by the complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$.\n\n**triangleCount(G)**: Counts triangles by filtering `Finset.univ` for 3-element subsets $s$ where all pairs in $s$ are adjacent in $G$. Uses `s.card = 3 ∧ ∀ x ∈ s, ∀ y ∈ s, x ≠ y → G.Adj x y`.",
+    "mathContext": "The Turán threshold is computed as `n^2 / 4` using Lean's natural number division (which floors automatically). The triangle count definition filters over all subsets of `V`, selecting those of cardinality 3 with the complete adjacency property. This is a purely combinatorial definition — each triangle is counted once as an unordered set.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turan-number",
+      "triangle-free",
+      "3-clique",
+      "complete-bipartite"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "Finset.univ",
+      "SimpleGraph.Adj",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "ann-1010-rademacher",
+    "proofId": "erdos-1010",
+    "range": {
+      "startLine": 59,
+      "endLine": 68
+    },
+    "type": "concept",
+    "title": "Rademacher's Theorem (Base Case)",
+    "content": "**rademacher_triangle_count** (axiom):\n\nIf $|E(G)| = \\lfloor n^2/4 \\rfloor + 1$, then $\\text{triangleCount}(G) \\ge \\lfloor n/2 \\rfloor$.\n\nThe first supersaturation result, unpublished by Rademacher and attributed by Erdős. Adding ONE edge over the Turán threshold forces at least $\\lfloor n/2 \\rfloor$ triangles — they come in clusters, not one at a time.",
+    "mathContext": "Rademacher's proof (c. 1940s) proceeds by analyzing where the extra edge can go in the Turán graph. If the edge connects two vertices in the same part of the bipartition, each vertex in the other part completes a triangle, giving exactly $\\lfloor n/2 \\rfloor$ triangles. Axiomatized because the detailed structural analysis requires careful Lean bookkeeping with `edgeFinset` cardinalities.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Rademacher",
+      "base-case",
+      "triangle-cluster",
+      "bipartition"
+    ],
+    "prerequisites": [
+      "SimpleGraph",
+      "edgeFinset",
+      "turanThreshold",
+      "triangleCount"
+    ]
+  },
+  {
+    "id": "ann-1010-main",
+    "proofId": "erdos-1010",
+    "range": {
+      "startLine": 70,
+      "endLine": 82
+    },
+    "type": "concept",
+    "title": "Main Supersaturation Theorem (Lovász-Simonovits 1976)",
+    "content": "**erdos_1010_supersaturation** (axiom):\n\nFor $t < \\lfloor n/2 \\rfloor$: if $|E(G)| = \\lfloor n^2/4 \\rfloor + t$, then $\\text{triangleCount}(G) \\ge t \\cdot \\lfloor n/2 \\rfloor$.\n\nThis linear relationship captures how triangles 'explode' beyond the Turán threshold. The constraint $t < \\lfloor n/2 \\rfloor$ is necessary; beyond this range the bound breaks down and a more complex expression is needed.",
+    "mathContext": "The Lovász-Simonovits proof uses the **stability method**: any graph with close to $\\lfloor n^2/4 \\rfloor$ edges must be structurally close to the Turán graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$. The $t$ extra edges must go within parts of the near-bipartition, each creating $\\approx \\lfloor n/2 \\rfloor$ new triangles. This technique became foundational in extremal combinatorics.",
+    "significance": "key",
+    "relatedConcepts": [
+      "stability-method",
+      "Lovasz-Simonovits",
+      "linear-bound",
+      "extremal-combinatorics"
+    ],
+    "prerequisites": [
+      "turanThreshold",
+      "triangleCount",
+      "edgeFinset",
+      "Fintype.card"
+    ]
+  },
+  {
+    "id": "ann-1010-existence",
+    "proofId": "erdos-1010",
+    "range": {
+      "startLine": 84,
+      "endLine": 93
+    },
+    "type": "concept",
+    "title": "Triangle Existence (Turán's Theorem for K₃)",
+    "content": "**turán_triangle_existence** (axiom):\n\nIf $|E(G)| > \\lfloor n^2/4 \\rfloor$, then $\\text{triangleCount}(G) \\ge 1$.\n\nThe qualitative version of Turán's theorem: exceeding the threshold guarantees at least one triangle. Axiomatized separately because deriving it from the supersaturation axiom requires careful arithmetic bookkeeping.",
+    "mathContext": "While morally this follows from `erdos_1010_supersaturation` with $t=1$, the formal derivation requires showing that having more than `turanThreshold` edges implies having exactly `turanThreshold + t` for some $t \\ge 1$, which involves natural number arithmetic on `edgeFinset.card`. This is the classical Turán theorem (1941) restricted to the triangle case $r=3$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Turan-theorem",
+      "triangle-existence",
+      "qualitative-bound",
+      "K₃"
+    ],
+    "prerequisites": [
+      "turanThreshold",
+      "triangleCount",
+      "Nat arithmetic"
+    ]
+  }
+]

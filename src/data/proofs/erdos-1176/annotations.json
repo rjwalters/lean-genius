@@ -1,0 +1,339 @@
+[
+  {
+    "id": "ann-e1176-header",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 1,
+      "endLine": 30
+    },
+    "type": "concept",
+    "title": "Problem Overview and Background",
+    "content": "Header documentation for Erdős Problem #1176, providing the full problem statement and known results. This problem was posed by Erdős, Galvin, and Hajnal and concerns the interaction between edge colorings and vertex color classes on graphs with uncountable chromatic number. The key question asks whether, for any graph $G$ with $\\chi(G) = \\aleph_1$, one can color the edges with $\\aleph_1$ colors such that every proper countable vertex coloring has a color class meeting all edge color classes.",
+    "mathContext": "Given a graph $G$ with $\\chi(G) = \\aleph_1$, does there exist an edge coloring $c : E(G) \\to \\aleph_1$ such that for every proper coloring $f : V(G) \\to \\mathbb{N}$, there exists $i \\in \\mathbb{N}$ with $c[E(f^{-1}(i))] = \\aleph_1$? Here $c[E(S)]$ denotes the set of edge colors appearing on edges incident to the vertex set $S$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "chromatic number",
+      "edge coloring",
+      "partition calculus",
+      "Ramsey theory",
+      "forcing models"
+    ],
+    "prerequisites": [
+      "cardinal arithmetic",
+      "aleph numbers",
+      "graph coloring theory",
+      "set-theoretic forcing"
+    ]
+  },
+  {
+    "id": "ann-e1176-imports",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 32,
+      "endLine": 36
+    },
+    "type": "concept",
+    "title": "Imports and Namespace Setup",
+    "content": "Imports cardinal arithmetic from Mathlib (Ordinal and Cofinality modules for $\\aleph$ numbers) and SimpleGraph.Basic for the graph theory infrastructure. The namespace opens Cardinal, Set, and SimpleGraph for convenient access to key definitions.",
+    "mathContext": "The formalization builds on Mathlib's cardinal hierarchy, where $\\aleph_0 = |\\mathbb{N}|$ and $\\aleph_1$ is the next infinite cardinal, along with the SimpleGraph type for undirected graphs without self-loops.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib cardinal hierarchy",
+      "SimpleGraph"
+    ],
+    "prerequisites": [
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.Combinatorics.SimpleGraph.Basic"
+    ]
+  },
+  {
+    "id": "ann-e1176-coloring-defs",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 40,
+      "endLine": 63
+    },
+    "type": "concept",
+    "title": "Graph Coloring Definitions (Cardinal-Valued)",
+    "content": "Defines cardinal-valued graph coloring: a proper vertex coloring requires adjacent vertices to receive distinct colors, $\\kappa$-colorability asks for a proper coloring into a type of cardinality $\\kappa$, and the chromatic number $\\chi(G)$ is defined as the infimum over all cardinals admitting a proper coloring. This parallels the approach in Erdős #919 but uses a type parameter $C$ rather than Cardinal.toType to avoid Lean API issues.",
+    "mathContext": "A proper coloring $f : V \\to C$ satisfies $f(u) \\neq f(v)$ whenever $u \\sim v$. The chromatic number is $\\chi(G) = \\inf\\{\\kappa : G \\text{ is } \\kappa\\text{-colorable}\\}$. Using $\\text{IsCardColorable}(G, \\kappa) \\iff \\exists C,\\, |C| = \\kappa,\\, \\exists f : V \\to C$ proper.",
+    "significance": "key",
+    "relatedConcepts": [
+      "chromatic number",
+      "cardinal-valued coloring",
+      "proper coloring",
+      "infimum"
+    ],
+    "prerequisites": [
+      "cardinal arithmetic",
+      "graph coloring theory"
+    ]
+  },
+  {
+    "id": "ann-e1176-IsProperVertexColoring",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 50,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "Proper Vertex Coloring",
+    "content": "Defines a proper vertex coloring as a function $f : V \\to C$ such that adjacent vertices receive different colors. This is the standard graph theory definition lifted to arbitrary color types.",
+    "mathContext": "$\\text{IsProperVertexColoring}(G, f) \\iff \\forall u\\, v,\\, G.\\text{Adj}(u,v) \\implies f(u) \\neq f(v)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "graph coloring",
+      "chromatic number"
+    ],
+    "prerequisites": [
+      "graph adjacency"
+    ]
+  },
+  {
+    "id": "ann-e1176-IsCardColorable",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 56,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "Cardinal Colorability",
+    "content": "A graph is $\\kappa$-colorable if there exists a type $C$ of cardinality $\\kappa$ and a proper coloring $f : V \\to C$. This existentially quantifies over the color type rather than using a fixed type, allowing treatment at arbitrary cardinalities including uncountable ones.",
+    "mathContext": "$\\text{IsCardColorable}(G, \\kappa) \\iff \\exists C,\\, |C| = \\kappa,\\, \\exists f : V \\to C,\\, \\text{IsProperVertexColoring}(G, f)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "cardinal arithmetic",
+      "colorability",
+      "existential quantification over types"
+    ],
+    "prerequisites": [
+      "Cardinal.mk",
+      "proper vertex coloring"
+    ]
+  },
+  {
+    "id": "ann-e1176-chromaticNumber",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 60,
+      "endLine": 63
+    },
+    "type": "definition",
+    "title": "Chromatic Number as Cardinal Infimum",
+    "content": "Defines the chromatic number $\\chi(G)$ as the infimum of all cardinals $\\kappa$ for which the graph is $\\kappa$-colorable. Marked noncomputable since cardinal infima are not constructively computable. This definition handles uncountable chromatic numbers naturally.",
+    "mathContext": "$\\chi(G) = \\inf\\{\\kappa \\in \\text{Card} \\mid \\text{IsCardColorable}(G, \\kappa)\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "cardinal infimum",
+      "chromatic number",
+      "noncomputable definition"
+    ],
+    "prerequisites": [
+      "cardinal arithmetic",
+      "conditional infimum (ciInf)"
+    ]
+  },
+  {
+    "id": "ann-e1176-EdgeColoring",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 65,
+      "endLine": 74
+    },
+    "type": "definition",
+    "title": "Edge Coloring",
+    "content": "An edge coloring assigns a color from type $C$ to each element of $\\text{Sym2}\\,V$ (unordered pairs of vertices). The coloring assigns values to all pairs, but only values on actual edges of $G$ are meaningful. Using Sym2 V as the domain naturally captures the undirected nature of edges.",
+    "mathContext": "$\\text{EdgeColoring}(G, C) = \\text{Sym2}\\,V \\to C$. For $e = \\{u,v\\} \\in E(G)$, the color $c(e) \\in C$ is relevant; for non-edges, the value is ignored.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sym2 (unordered pairs)",
+      "edge coloring",
+      "total function on pairs"
+    ],
+    "prerequisites": [
+      "Sym2 type",
+      "SimpleGraph edge representation"
+    ]
+  },
+  {
+    "id": "ann-e1176-allEdgeColors",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 76,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "All Edge Colors Used",
+    "content": "Collects the set of all edge colors that actually appear on edges of $G$. This is the image of the edge coloring restricted to the edge set, which is crucial for stating the domination property: some vertex class must see this entire set.",
+    "mathContext": "$\\text{allEdgeColors}(G, c) = \\{c(e) \\mid e \\in E(G)\\} = c[E(G)]$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "image of a function",
+      "edge set"
+    ],
+    "prerequisites": [
+      "set comprehension",
+      "edge set"
+    ]
+  },
+  {
+    "id": "ann-e1176-domination-section",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 81,
+      "endLine": 100
+    },
+    "type": "concept",
+    "title": "The Domination Property",
+    "content": "Defines the central concept of the problem: the domination property. Given an edge coloring $c$ and a proper vertex coloring $f : V \\to \\mathbb{N}$, vertex color class $f^{-1}(i)$ 'sees' edge color $c_0$ if some edge of color $c_0$ has an endpoint in $f^{-1}(i)$. The domination property requires that for every proper countable vertex coloring, some vertex class sees ALL edge colors. This captures the idea that the edge coloring 'dominates' any vertex coloring.",
+    "mathContext": "$\\text{edgeColorsSeen}(G, c, f, i) = \\{c(e) \\mid e \\in E(G),\\, \\exists v \\in e,\\, f(v) = i\\}$. The domination property states: $\\forall f : V \\to \\mathbb{N}$ proper, $\\exists i \\in \\mathbb{N},\\, \\text{allEdgeColors}(G,c) \\subseteq \\text{edgeColorsSeen}(G,c,f,i)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "domination in partition calculus",
+      "vertex color classes",
+      "edge color coverage"
+    ],
+    "prerequisites": [
+      "set inclusion",
+      "proper vertex coloring",
+      "edge coloring"
+    ]
+  },
+  {
+    "id": "ann-e1176-ErdosProblem1176",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 102,
+      "endLine": 115
+    },
+    "type": "concept",
+    "title": "Formal Problem Statement",
+    "content": "The formal statement of Erdős Problem #1176: for every graph $G$ on any type $V$ with $\\chi(G) = \\aleph_1$, there exists a type $C$ of cardinality $\\aleph_1$ and an edge coloring $c : \\text{Sym2}\\,V \\to C$ satisfying the domination property. The universal quantification over $V$ and $G$ makes this a very strong statement.",
+    "mathContext": "$\\text{ErdosProblem1176} \\iff \\forall V, G,\\, \\chi(G) = \\aleph_1 \\implies \\exists C,\\, |C| = \\aleph_1,\\, \\exists c : E(G) \\to C,\\, \\text{HasDominationProperty}(G, c)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős problems",
+      "uncountable chromatic number",
+      "partition calculus"
+    ],
+    "prerequisites": [
+      "aleph numbers",
+      "domination property",
+      "chromatic number"
+    ]
+  },
+  {
+    "id": "ann-e1176-structural-results",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 117,
+      "endLine": 147
+    },
+    "type": "concept",
+    "title": "Structural Results: Uncountable Chromatic Number Consequences",
+    "content": "Three structural results establishing basic consequences of $\\chi(G) = \\aleph_1$. First, $\\aleph_0 < \\aleph_1$ (from Mathlib). Second, such a graph is not $\\aleph_0$-colorable: if it were, then $\\chi(G) \\leq \\aleph_0 < \\aleph_1$, contradicting $\\chi(G) = \\aleph_1$. Third, such a graph has no proper $\\mathbb{N}$-coloring, since $|\\mathbb{N}| = \\aleph_0$. The second theorem uses `ciInf₂_le` to show the infimum is at most $\\aleph_0$.",
+    "mathContext": "$\\aleph_0 < \\aleph_1$ implies $\\chi(G) = \\aleph_1 \\implies \\neg\\,\\text{IsCardColorable}(G, \\aleph_0)$, since colorability at $\\aleph_0$ would give $\\chi(G) \\leq \\aleph_0 < \\aleph_1$. Since $|\\mathbb{N}| = \\aleph_0$, no proper $\\mathbb{N}$-coloring can exist for such $G$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cardinal ordering",
+      "infimum bounds",
+      "countable vs uncountable"
+    ],
+    "prerequisites": [
+      "Cardinal.aleph0_lt_aleph_one",
+      "ciInf₂_le",
+      "Cardinal.mk_nat"
+    ]
+  },
+  {
+    "id": "ann-e1176-hajnal-komjath",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 148,
+      "endLine": 161
+    },
+    "type": "insight",
+    "title": "Hajnal-Komjáth Consistency Result",
+    "content": "Axiomatizes the Hajnal-Komjáth consistency result: it is consistent with ZFC that Erdős Problem #1176 has a positive answer. This is a metamathematical result proved using set-theoretic forcing — in certain forcing extensions of ZFC, the domination property holds for all graphs with $\\chi(G) = \\aleph_1$. Since this is a statement about models of set theory rather than a theorem of ZFC, it must be taken as an axiom in the Lean formalization.",
+    "mathContext": "Hajnal and Komjáth showed $\\text{Con}(\\text{ZFC}) \\implies \\text{Con}(\\text{ZFC} + \\text{ErdosProblem1176})$. In Lean, this metamathematical statement is encoded as `axiom hajnal_komjath_consistency_witness : ErdosProblem1176`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "set-theoretic forcing",
+      "consistency results",
+      "metamathematics",
+      "ZFC independence"
+    ],
+    "prerequisites": [
+      "forcing models",
+      "consistency strength",
+      "axiom in Lean"
+    ]
+  },
+  {
+    "id": "ann-e1176-strong-domination",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 163,
+      "endLine": 185
+    },
+    "type": "concept",
+    "title": "Strong Domination Property and Implication",
+    "content": "Introduces a stronger variant: the strong domination property requires EVERY nonempty vertex color class to see all edge colors, not just the existence of one such class. The theorem `strong_implies_domination` shows this implies the original domination property (given the graph has at least one edge). The proof has a sorry at the point where it needs to extract a vertex from the edge and connect it to the existential witness.",
+    "mathContext": "$\\text{StrongDomination}(G,c) \\iff \\forall f \\text{ proper},\\, \\forall i,\\, (\\exists v,\\, f(v)=i) \\implies \\text{allEdgeColors}(G,c) \\subseteq \\text{edgeColorsSeen}(G,c,f,i)$. Clearly $\\text{StrongDomination} \\implies \\text{HasDominationProperty}$ when $E(G) \\neq \\emptyset$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "strengthening of conjectures",
+      "universal vs existential quantification"
+    ],
+    "prerequisites": [
+      "domination property",
+      "Sym2.exists_mk_eq"
+    ]
+  },
+  {
+    "id": "ann-e1176-partition-calculus",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 187,
+      "endLine": 208
+    },
+    "type": "concept",
+    "title": "Connection to Partition Calculus",
+    "content": "Reformulates the domination property in terms of edge color classes and their intersection with vertex classes. An edge color class is the set of edges receiving a given color. The alternative formulation `DominationViaColorClasses` states: for every proper $\\mathbb{N}$-coloring, some vertex class intersects every nonempty edge color class. This connects the problem to infinite partition calculus, where one studies how partitions of infinite structures interact.",
+    "mathContext": "$\\text{edgeColorClass}(G,c,c_0) = \\{e \\in E(G) \\mid c(e) = c_0\\}$. The reformulated domination: $\\forall f$ proper, $\\exists i,\\, \\forall c_0,\\, \\text{edgeColorClass}(G,c,c_0) \\neq \\emptyset \\implies \\exists e \\in \\text{edgeColorClass}(G,c,c_0),\\, \\exists v \\in e,\\, f(v) = i$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "partition calculus",
+      "Ramsey theory",
+      "color classes",
+      "partition regularity"
+    ],
+    "prerequisites": [
+      "set partition",
+      "edge color classes",
+      "nonemptiness"
+    ]
+  },
+  {
+    "id": "ann-e1176-final-summary",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 210,
+      "endLine": 224
+    },
+    "type": "insight",
+    "title": "Formal Problem Summary and Open Status",
+    "content": "The final section provides two theorem statements. `erdos_1176_from_consistency` derives the problem statement from the Hajnal-Komjáth axiom, showing it holds in appropriate set-theoretic universes. `erdos_1176` states the problem with a sorry, reflecting that it remains open in ZFC alone — the proof cannot be completed without either resolving the conjecture or adding set-theoretic axioms beyond ZFC.",
+    "mathContext": "The distinction between `erdos_1176_from_consistency : ErdosProblem1176` (proved from the axiom) and `erdos_1176 : ErdosProblem1176` (sorry, open in ZFC) captures the metamathematical status: the statement is consistent with but possibly independent of ZFC.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ZFC independence",
+      "open problems",
+      "consistency vs provability"
+    ],
+    "prerequisites": [
+      "metamathematics",
+      "Hajnal-Komjáth axiom"
+    ]
+  }
+]

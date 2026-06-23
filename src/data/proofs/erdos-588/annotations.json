@@ -1,0 +1,149 @@
+[
+  {
+    "id": "ann-588-header",
+    "proofId": "erdos-588",
+    "range": {
+      "startLine": 1,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Collinear Points in Planar Configurations",
+    "content": "Erdős Problem #588 ($100 prize): Let $f_k(n)$ be the minimum value such that any configuration of $n$ points in the plane with no more than $k$ points collinear contains at most $f_k(n)$ lines each passing through at least $k$ points. Is $f_k(n) = o(n^2)$ for $k \\geq 4$?\n\nFor $k = 3$, Sylvester established $f_3(n) = n^2/6 + O(n)$. For $k \\geq 4$, the best known lower bound is $f_k(n) \\gg_k n^{2 - O_k(1/\\sqrt{\\log n})}$, which is tantalizingly close to $n^2$ but doesn't resolve whether $f_k(n) = o(n^2)$.\n\nThis is a problem in **incidence geometry**, connecting to the Szemerédi-Trotter theorem and the Elekes-Rónyai framework.",
+    "mathContext": "$f_k(n) = o(n^2)$ for $k \\geq 4$? Known: $f_k(n) \\gg n^{2 - c_k/\\sqrt{\\log n}}$. For $k = 3$: $f_3(n) = n^2/6 + O(n)$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "incidence geometry",
+      "point configurations",
+      "collinearity"
+    ],
+    "relatedConcepts": [
+      "Szemerédi-Trotter theorem",
+      "incidence bounds",
+      "discrete geometry"
+    ]
+  },
+  {
+    "id": "ann-588-imports",
+    "proofId": "erdos-588",
+    "range": {
+      "startLine": 24,
+      "endLine": 28
+    },
+    "type": "concept",
+    "title": "Imports and Namespace",
+    "content": "Imports `Real.Basic` for real number arithmetic (needed for asymptotic bounds like $n^{2 - c/\\sqrt{\\log n}}$), `Nat.Basic` for natural number operations, and `Finset.Basic` for finite set operations on point configurations. Opens the `Erdos588` namespace.",
+    "significance": "supporting",
+    "mathContext": "The formalization works with $\\mathbb{R}$ for the asymptotic statements (little-$o$ notation, real exponents) and $\\mathbb{N}$ for the discrete combinatorial quantities ($f_k(n)$, point counts). The `Real.sqrt` and `Real.log` functions from Mathlib are needed to express the Solymosi-Stojaković lower bound $n^{2 - c/\\sqrt{\\log n}}$, which involves real-valued exponents that depend on $n$.",
+    "relatedConcepts": [
+      "Real arithmetic",
+      "Finset",
+      "asymptotic notation",
+      "namespace"
+    ],
+    "prerequisites": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Nat.Basic"
+    ]
+  },
+  {
+    "id": "ann-588-defs",
+    "proofId": "erdos-588",
+    "range": {
+      "startLine": 34,
+      "endLine": 42
+    },
+    "type": "definition",
+    "title": "Point Type and Extremal Function $f_k(n)$",
+    "content": "`Point := ℝ × ℝ` models points in the Euclidean plane. `f (k n : ℕ) : ℕ` (axiom) is the extremal function: the maximum number of lines containing $\\ge k$ points, over all configurations of $n$ points with no $k+1$ collinear.",
+    "significance": "key",
+    "mathContext": "The extremal function $f_k(n)$ is defined as $\\max \\{ |\\mathcal{L}_k(P)| : P \\subseteq \\mathbb{R}^2, |P| = n, \\text{no } k+1 \\text{ collinear} \\}$ where $\\mathcal{L}_k(P) = \\{ \\ell : |\\ell \\cap P| \\ge k \\}$ is the set of $k$-rich lines. The axiomatization of $f$ as an opaque function (rather than a computed definition) is necessary because actually computing this extremal quantity requires an optimization over all possible point configurations — a fundamentally non-constructive operation. The `Point := ℝ × ℝ` abbreviation suffices for the formal statements though the actual arguments work in any configuration space.",
+    "relatedConcepts": [
+      "extremal function",
+      "k-rich lines",
+      "general position",
+      "point configuration",
+      "incidence geometry"
+    ],
+    "prerequisites": [
+      "Real arithmetic",
+      "Nat",
+      "point-line incidence"
+    ]
+  },
+  {
+    "id": "ann-588-sylvester",
+    "proofId": "erdos-588",
+    "range": {
+      "startLine": 48,
+      "endLine": 56
+    },
+    "type": "concept",
+    "title": "Sylvester's Theorem: The $k=3$ Case",
+    "content": "`sylvester_k3` (axiom): $\\exists C > 0$ such that $|f_3(n) - n^2/6| \\le Cn$ for all $n \\ge 3$. This determines $f_3(n) = n^2/6 + O(n)$, showing the $k=3$ case gives $\\Theta(n^2)$ lines.",
+    "significance": "key",
+    "mathContext": "The result $f_3(n) = n^2/6 + O(n)$ shows that for 3-rich lines (the weakest non-trivial case), the count is quadratic. The constant $1/6$ arises from the **Sylvester-Gallai** framework: $n$ points in general position determine $\\binom{n}{2} = n(n-1)/2$ lines, and each line contains exactly 2 points unless it is 3-rich. The 3-rich lines account for $\\sim n^2/6$ of these, as each such line 'absorbs' $\\binom{k}{2} \\ge 3$ pairs. This quadratic behavior for $k=3$ is exactly why the conjecture requires $k \\ge 4$ — the problem asks whether the transition from $k=3$ to $k=4$ causes a qualitative drop from $\\Theta(n^2)$ to $o(n^2)$.",
+    "relatedConcepts": [
+      "Sylvester-Gallai theorem",
+      "3-rich lines",
+      "quadratic count",
+      "general position",
+      "binomial pairs"
+    ],
+    "prerequisites": [
+      "f (extremal function)",
+      "Real.abs",
+      "asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-588-lower",
+    "proofId": "erdos-588",
+    "range": {
+      "startLine": 62,
+      "endLine": 68
+    },
+    "type": "concept",
+    "title": "Solymosi-Stojaković Lower Bound",
+    "content": "`lower_bound_k4` (axiom): $\\exists c > 0$ such that $f_4(n) \\ge n^{2 - c/\\sqrt{\\log n}}$ for all $n \\ge 3$. This gives $f_4(n) \\ge n^{2-o(1)}$, tantalizingly close to $n^2$ but still consistent with $o(n^2)$.",
+    "significance": "key",
+    "mathContext": "**József Solymosi** and **Miloš Stojaković** (2013) constructed point configurations achieving $n^{2-O(1/\\sqrt{\\log n})}$ 4-rich lines. Their construction uses a probabilistic argument on lattice points: take points on a $\\sqrt{n} \\times \\sqrt{n}$ integer grid, then apply a random projective transformation. The grid structure creates many collinear 4-tuples (lines of the form $ax + by = c$ with integer parameters), and the transformation preserves collinearity while destroying unwanted 5-point alignments. The exponent $2 - c/\\sqrt{\\log n}$ tends to $2$ but slower than any polynomial — it approaches $n^2$ at a rate determined by the number-theoretic structure of grid collinearities. This lower bound replaced earlier results: **Kárteszi** (1963) showed $f_k(n) \\ge \\Omega(n \\log n)$ and **Grünbaum** (1976) showed $f_k(n) \\ge \\Omega(n^{1+1/(k-2)})$.",
+    "relatedConcepts": [
+      "Solymosi-Stojaković construction",
+      "lattice points",
+      "projective transformation",
+      "subquadratic gap",
+      "Kárteszi bound",
+      "Grünbaum bound"
+    ],
+    "prerequisites": [
+      "f (extremal function)",
+      "Real.sqrt",
+      "Real.log"
+    ]
+  },
+  {
+    "id": "ann-588-conjecture",
+    "proofId": "erdos-588",
+    "range": {
+      "startLine": 70,
+      "endLine": 79
+    },
+    "type": "concept",
+    "title": "The Erdős Conjecture: $f_k(n) = o(n^2)$",
+    "content": "`erdos_conjecture_k4` (axiom): $\\forall k \\ge 4,\\, \\forall \\varepsilon > 0,\\, \\exists N_0$ such that $f_k(n) \\le \\varepsilon n^2$ for $n \\ge N_0$. This is the $\\varepsilon$-$N$ formulation of $f_k(n) = o(n^2)$.",
+    "significance": "key",
+    "mathContext": "The conjecture asks whether the quadratic barrier breaks at $k=4$. The $\\varepsilon$-$N$ formulation is the standard definition of little-$o$: $f_k(n) = o(n^2)$ means $f_k(n)/n^2 \\to 0$ as $n \\to \\infty$. This is a stronger statement than just $f_k(n) < n^2$ — it says the ratio tends to zero, meaning $k$-rich lines become negligible compared to the total number of point pairs. The conjecture is related to the **Szemerédi-Trotter theorem** (1983), which gives $I(P, \\mathcal{L}) \\le O(n^{2/3}m^{2/3} + n + m)$ for incidences between $n$ points and $m$ lines. If every line is $k$-rich, then the total incidence count is $\\ge km$, and Szemerédi-Trotter gives $km \\le O(n^{2/3}m^{2/3} + n + m)$, yielding $m \\le O(n^2/k^3)$ for $m \\gg n$ — but this only gives $O(n^2)$, not $o(n^2)$, so the conjecture requires going beyond Szemerédi-Trotter. Erdős offered a **\\$100 prize** for its resolution.",
+    "relatedConcepts": [
+      "little-o notation",
+      "Szemerédi-Trotter theorem",
+      "incidence bounds",
+      "k-rich line count",
+      "Erdős prize"
+    ],
+    "prerequisites": [
+      "f (extremal function)",
+      "Real arithmetic",
+      "limit definitions"
+    ]
+  }
+]

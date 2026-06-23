@@ -1,0 +1,170 @@
+[
+  {
+    "id": "ann-a5-order",
+    "proofId": "sylow-theorems-oq-04",
+    "range": {
+      "startLine": 40,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "Defining A₅ and Computing Its Order",
+    "content": "The alternating group A₅ = ker(sign : S₅ → ℤ/2) has |A₅| = 5!/2 = 60. This is verified by native_decide, which exhaustively enumerates the even permutations of Fin 5.",
+    "mathContext": "A₅ = alternatingGroup(Fin 5) is the kernel of the sign homomorphism sgn : S₅ → {±1}. Since S₅ has order 5! = 120 and sgn is surjective, |A₅| = 120/2 = 60 = 2²·3·5.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "alternatingGroup",
+      "sign homomorphism",
+      "Fintype.card",
+      "native_decide"
+    ],
+    "prerequisites": [
+      "S_n as a finite group",
+      "even and odd permutations",
+      "index-2 subgroups"
+    ]
+  },
+  {
+    "id": "ann-sylow-constraints",
+    "proofId": "sylow-theorems-oq-04",
+    "range": {
+      "startLine": 73,
+      "endLine": 97
+    },
+    "type": "insight",
+    "title": "Sylow III Constrains All Three Primes",
+    "content": "Sylow III gives two constraints for each prime p dividing 60: n_p ≡ 1 (mod p) and n_p divides the index [A₅ : P_p]. These are Mathlib's card_sylow_modEq_one and card_sylow_dvd_index applied to A₅.",
+    "mathContext": "For p=2: n₂ ≡ 1 (mod 2) and n₂ | 15, so n₂ ∈ {1, 3, 5, 15}. For p=3: n₃ ≡ 1 (mod 3) and n₃ | 20, so n₃ ∈ {1, 4, 10}. For p=5: n₅ ≡ 1 (mod 5) and n₅ | 12, so n₅ ∈ {1, 6}. The exact values (5, 10, 6) are determined by native_decide in the next section.",
+    "significance": "key",
+    "relatedConcepts": [
+      "card_sylow_modEq_one",
+      "card_sylow_dvd_index",
+      "Sylow III",
+      "p-group index"
+    ],
+    "prerequisites": [
+      "Sylow theorems",
+      "group index [G:H]",
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-exact-sylow-numbers",
+    "proofId": "sylow-theorems-oq-04",
+    "range": {
+      "startLine": 111,
+      "endLine": 117
+    },
+    "type": "insight",
+    "title": "Exact Sylow Numbers via native_decide",
+    "content": "The exact Sylow numbers n₂ = 5, n₃ = 10, n₅ = 6 are computed by native_decide, which exhaustively enumerates all Sylow p-subgroups of A₅. The 5 Sylow 2-subgroups are Klein 4-groups V₄ ≅ ℤ/2 × ℤ/2; the 10 Sylow 3-subgroups are cyclic ⟨(ijk)⟩; the 6 Sylow 5-subgroups are cyclic ⟨(ijklm)⟩.",
+    "mathContext": "native_decide evaluates Fintype.card (Sylow p A5) by computing the number of Sylow p-subgroups as a Fintype. This requires the Fintype instance for Sylow p G, which Mathlib provides via the orbit-stabilizer theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "native_decide",
+      "Fintype.card",
+      "Sylow p-subgroup enumeration",
+      "Klein 4-group"
+    ],
+    "prerequisites": [
+      "Sylow III constraints from previous section",
+      "computational decidability in Lean"
+    ]
+  },
+  {
+    "id": "ann-non-normality",
+    "proofId": "sylow-theorems-oq-04",
+    "range": {
+      "startLine": 134,
+      "endLine": 152
+    },
+    "type": "insight",
+    "title": "No Sylow Subgroup is Normal: Clean Contradiction",
+    "content": "The proof of non-normality uses a clean contradiction: if a Sylow p-subgroup P were normal, Sylow.unique_of_normal would give Unique (Sylow p A5), forcing Fintype.card = 1. But we computed n₂ = 5, n₃ = 10, n₅ = 6 — contradiction.",
+    "mathContext": "The key Mathlib lemma is Sylow.unique_of_normal: a normal Sylow p-subgroup is the unique Sylow p-subgroup (all conjugates of a normal subgroup equal itself). Uniqueness then forces Fintype.card (Sylow p G) = 1 via Fintype.card_unique.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sylow.unique_of_normal",
+      "Fintype.card_unique",
+      "normal subgroup",
+      "Sylow conjugacy"
+    ],
+    "prerequisites": [
+      "Sylow II (conjugacy of Sylow subgroups)",
+      "normal subgroup ↔ unique Sylow",
+      "exact counts n₂=5, n₃=10, n₅=6"
+    ]
+  },
+  {
+    "id": "ann-conjugacy-arithmetic",
+    "proofId": "sylow-theorems-oq-04",
+    "range": {
+      "startLine": 185,
+      "endLine": 190
+    },
+    "type": "insight",
+    "title": "Conjugacy Class Arithmetic via decide",
+    "content": "The conjugacy class size theorem is proved by decide (kernel computation over Bool⁴): for each subset selection (a,b,c,d) ∈ Bool⁴ choosing from {12, 12, 15, 20}, the sum 1 + selected either equals 1, 60, or doesn't divide 60.",
+    "mathContext": "The conjugacy classes of A₅ have sizes {1, 12, 12, 15, 20} with sum 60. A normal subgroup is a union of conjugacy classes containing the identity, so its order is 1 plus a subset-sum from {12, 12, 15, 20}. The `decide` tactic exhaustively checks all 16 = 2⁴ cases.",
+    "significance": "key",
+    "relatedConcepts": [
+      "conjugacy classes",
+      "normal subgroup as union of classes",
+      "subset-sum divisibility",
+      "decide tactic"
+    ],
+    "prerequisites": [
+      "conjugacy class sizes of A₅",
+      "normal subgroup criterion",
+      "divisibility of |N| by |G|"
+    ]
+  },
+  {
+    "id": "ann-simplicity",
+    "proofId": "sylow-theorems-oq-04",
+    "range": {
+      "startLine": 208,
+      "endLine": 209
+    },
+    "type": "insight",
+    "title": "A₅ is Simple: Mathlib's Definitive Result",
+    "content": "Mathlib's alternatingGroup.isSimpleGroup_five provides the definitive simplicity result. The Sylow counting and conjugacy class analysis above give the concrete arithmetic reason why A₅ is simple.",
+    "mathContext": "IsSimpleGroup G states that G has exactly two normal subgroups: ⊥ (trivial) and ⊤ (the whole group). Mathlib proves this for all alternating groups Aₙ with n ≥ 5 via alternatingGroup.isSimpleGroup_five, which encapsulates the full proof.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsSimpleGroup",
+      "alternatingGroup.isSimpleGroup_five",
+      "PSL(2,5)",
+      "composition series"
+    ],
+    "prerequisites": [
+      "normal subgroup analysis from previous sections",
+      "composition factors",
+      "Jordan-Hölder theorem context"
+    ]
+  },
+  {
+    "id": "ann-not-solvable",
+    "proofId": "sylow-theorems-oq-04",
+    "range": {
+      "startLine": 221,
+      "endLine": 235
+    },
+    "type": "insight",
+    "title": "A₅ Not Solvable: Key to Abel-Ruffini",
+    "content": "Non-solvability transfers from A₅ to S₅: if A₅ were solvable, then S₅ ≅ A₅ ⋊ ℤ/2 would be solvable (as an extension of solvable groups). This contradicts Mathlib's Equiv.Perm.not_solvable for n ≥ 5. This is the key ingredient for Abel-Ruffini.",
+    "mathContext": "The proof uses solvable_of_ker_le_range: the kernel of sgn : S₅ → ℤ/2 is contained in the image of A₅ ↪ S₅. If A₅ were solvable, S₅ would be solvable (extension of solvable groups) — contradicting Equiv.Perm.not_solvable for n ≥ 5. The solvability criterion: G is solvable iff its derived series G ⊇ [G,G] ⊇ [[G,G],[G,G]] ⊇ ... terminates at {e}. Simple non-abelian A₅ has [A₅,A₅] = A₅, so the series never terminates.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsSolvable",
+      "Equiv.Perm.not_solvable",
+      "solvable_of_ker_le_range",
+      "Abel-Ruffini theorem",
+      "Galois theory"
+    ],
+    "prerequisites": [
+      "simplicity of A₅",
+      "short exact sequence A₅ → S₅ → ℤ/2",
+      "solvable group extensions"
+    ]
+  }
+]

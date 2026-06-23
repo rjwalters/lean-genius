@@ -1,0 +1,140 @@
+[
+  {
+    "id": "ann-smm-imports",
+    "proofId": "prob-method-second-moment",
+    "range": {
+      "startLine": 1,
+      "endLine": 17
+    },
+    "type": "concept",
+    "title": "Module Setup and Namespace",
+    "content": "The file imports the full Mathlib library and works within the `ProbMethod.SecondMoment` namespace. The formalization uses finite probability spaces modeled over `Finset α` with rational-valued random variables (`α → ℚ`), giving exact arithmetic without floating-point concerns. This discrete framework suffices for combinatorial applications where the sample space is finite.",
+    "mathContext": "A finite probability space $(\\Omega, \\Pr)$ is modeled as a `Finset α` with uniform measure: $\\Pr[A] = |A|/|\\Omega|$. Expectations become finite sums: $E[X] = \\frac{1}{|\\Omega|} \\sum_{\\omega \\in \\Omega} X(\\omega)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "finite probability space",
+      "uniform measure",
+      "rational arithmetic"
+    ],
+    "prerequisites": [
+      "Finset",
+      "Lean 4 type theory"
+    ]
+  },
+  {
+    "id": "ann-smm-chebyshev",
+    "proofId": "prob-method-second-moment",
+    "range": {
+      "startLine": 19,
+      "endLine": 55
+    },
+    "type": "concept",
+    "title": "Chebyshev's Inequality (Finite Version)",
+    "content": "Formalizes Chebyshev's inequality for finite probability spaces. The mean $\\mu$ and variance $\\operatorname{Var}[X]$ are computed as finite sums over a `Finset`. The bound states that the fraction of elements deviating from the mean by at least $t$ is at most $\\operatorname{Var}[X]/t^2$. This is proved by applying Markov's inequality to the non-negative random variable $(X - \\mu)^2$, which is the standard textbook approach lifted to the Finset setting.",
+    "mathContext": "Chebyshev: $\\Pr[|X - \\mu| \\geq t] \\leq \\frac{\\operatorname{Var}[X]}{t^2}$ where $\\mu = E[X]$ and $\\operatorname{Var}[X] = E[(X - \\mu)^2]$. In the Finset model: $|\\{a \\in s : |f(a) - \\mu| \\geq t\\}| \\leq |s| \\cdot \\operatorname{Var}[f] / t^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Markov's inequality",
+      "concentration inequality",
+      "variance",
+      "tail bound"
+    ],
+    "prerequisites": [
+      "Markov's inequality",
+      "variance definition",
+      "finite expectation"
+    ]
+  },
+  {
+    "id": "ann-smm-paley-zygmund",
+    "proofId": "prob-method-second-moment",
+    "range": {
+      "startLine": 57,
+      "endLine": 75
+    },
+    "type": "concept",
+    "title": "Paley-Zygmund Inequality",
+    "content": "Formalizes the Paley-Zygmund inequality, which provides a lower bound on $\\Pr[X > 0]$ for non-negative random variables. While Chebyshev bounds deviation probabilities from above, Paley-Zygmund bounds positivity probability from below — making it the key tool for existence proofs. The proof uses the Cauchy-Schwarz inequality: $E[X]^2 = E[X \\cdot \\mathbf{1}_{X>0}]^2 \\leq E[X^2] \\cdot \\Pr[X > 0]$. This formalization states the qualitative version: if $E[X] > 0$ and $X \\geq 0$, then $X$ is positive on a non-empty subset.",
+    "mathContext": "Paley-Zygmund: For $X \\geq 0$ with $E[X] > 0$, $\\Pr[X > 0] \\geq \\frac{(E[X])^2}{E[X^2]}$. The quantitative form gives: $\\Pr[X > \\theta E[X]] \\geq (1 - \\theta)^2 \\frac{(E[X])^2}{E[X^2]}$ for $0 \\leq \\theta \\leq 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cauchy-Schwarz inequality",
+      "lower tail bound",
+      "existence proof",
+      "indicator random variable"
+    ],
+    "prerequisites": [
+      "Cauchy-Schwarz inequality",
+      "non-negative random variable",
+      "second moment"
+    ]
+  },
+  {
+    "id": "ann-smm-existence",
+    "proofId": "prob-method-second-moment",
+    "range": {
+      "startLine": 115,
+      "endLine": 159
+    },
+    "type": "concept",
+    "title": "Second Moment Existence Theorem",
+    "content": "The main application theorem: if the second moment $E[X^2]$ is at most $2(E[X])^2/|s|$, then at least half the sample space has $X > 0$. This is the workhorse of the second moment method in combinatorics — it converts a variance bound into a quantitative existence guarantee. The factor of 2 comes from the Paley-Zygmund bound: $\\Pr[X > 0] \\geq (E[X])^2/E[X^2] \\geq 1/2$. In random graph theory, this is exactly how one proves that $G(n,p)$ contains a given subgraph with high probability when $p$ is above the threshold.",
+    "mathContext": "If $E[X^2] \\cdot |s| \\leq 2(E[X])^2$, equivalently $\\frac{E[X^2]}{(E[X])^2} \\leq \\frac{2}{|s|}$, then by Paley-Zygmund: $|\\{a \\in s : X(a) > 0\\}| \\geq |s|/2$. In the random graph setting with $X = \\sum_i X_i$ counting copies of $H$, this requires $\\operatorname{Var}[X] = o((E[X])^2)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "threshold function",
+      "random graph G(n,p)",
+      "subgraph containment",
+      "high probability event"
+    ],
+    "prerequisites": [
+      "Paley-Zygmund inequality",
+      "indicator sum variance",
+      "random graph model"
+    ]
+  },
+  {
+    "id": "ann-smm-helpers",
+    "proofId": "prob-method-second-moment",
+    "range": {
+      "startLine": 77,
+      "endLine": 113
+    },
+    "type": "concept",
+    "title": "Helper Lemmas: Cauchy-Schwarz and Support",
+    "content": "Three private lemmas building toward the existence theorem:\n\n1. **Finite Cauchy-Schwarz**: $(\\sum f)^2 \\leq |s| \\cdot \\sum f^2$, proved by induction on `Finset` using the non-negativity of $\\sum (f(a) - f(b))^2$.\n\n2. **Support equality**: For $f \\geq 0$, the sum over all of $s$ equals the sum over the positive support $\\{a : f(a) > 0\\}$, since zero-valued elements contribute nothing.\n\n3. **Filter monotonicity**: $\\sum_{\\text{pos}} f^2 \\leq \\sum_s f^2$ since squares are non-negative and the filter is a subset.\n\nThese are the standard building blocks for Paley-Zygmund-type arguments in finite probability.",
+    "mathContext": "Cauchy-Schwarz: $(\\sum f)^2 \\leq |s| \\sum f^2$. Support: $f \\geq 0 \\implies \\sum_s f = \\sum_{\\{f>0\\}} f$. Monotonicity: $\\sum_{\\{f>0\\}} f^2 \\leq \\sum_s f^2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Cauchy-Schwarz inequality",
+      "Finset.induction_on",
+      "support of a function",
+      "filter monotonicity"
+    ],
+    "prerequisites": [
+      "Finset.induction_on",
+      "Finset.sum_le_sum_of_subset_of_nonneg",
+      "nlinarith"
+    ]
+  },
+  {
+    "id": "ann-smm-end",
+    "proofId": "prob-method-second-moment",
+    "range": {
+      "startLine": 160,
+      "endLine": 161
+    },
+    "type": "concept",
+    "title": "Namespace Closure",
+    "content": "Closes the `ProbMethod.SecondMoment` namespace. The six theorems — `chebyshev_ineq`, `paley_zygmund`, `finite_cauchy_schwarz`, `sum_pos_eq_sum_filter_pos`, `sum_sq_filter_le`, and `second_moment_existence` — are accessible as `ProbMethod.SecondMoment.*` when imported. Together with `ProbMethod.Expectation` and `ProbMethod.Alteration`, this forms a complete toolkit for probabilistic method arguments in combinatorics.",
+    "mathContext": "The probabilistic method toolkit hierarchy is now: first moment (expectation) → alteration (deletion) → second moment (concentration) → Lovász Local Lemma (dependency), ordered by increasing sophistication.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lean 4 namespaces",
+      "probabilistic method library"
+    ],
+    "prerequisites": [
+      "all preceding theorems"
+    ]
+  }
+]

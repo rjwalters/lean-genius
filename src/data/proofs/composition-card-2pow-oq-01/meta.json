@@ -1,0 +1,108 @@
+{
+  "id": "composition-card-2pow-oq-01",
+  "title": "Composition Card OQ-01: There Are 2^(n−1) Compositions of n",
+  "slug": "composition-card-2pow-oq-01",
+  "description": "A composition of a natural number n is an ordered tuple of positive integers summing to n (Mathlib's Composition n). The classical enumerative fact is that the number of compositions of n equals 2^(n−1): Fintype.card (Composition n) = 2^(n−1). The standard bijective proof places a 'bar or no bar' in each of the n−1 gaps between n unit boxes, so a composition is the same data as a subset of the n−1 internal gaps — giving 2^(n−1) of them. Mathlib supplies the headline count as composition_card (proved via Composition n ≃ CompositionAsSet n and compositionAsSet_card = 2^(n−1)); this entry re-exports it as card_composition_eq and then derives the structural consequences Mathlib does not record: the doubling recurrence card (Composition (n+2)) = 2 · card (Composition (n+1)) — each extra unit of n doubles the count, the recurrence at the heart of 2^(n−1) — together with its hypothesis form for n ≥ 1; positivity 0 < card (Composition n) (every n, including 0, has at least one composition); the count expressed as a genuine bijection card (Composition n) = card (CompositionAsSet n) exposing the subset-of-gaps model; and concrete cardinalities for n = 1,…,5 (1, 2, 4, 8, 16). The doubling recurrence genuinely requires n ≥ 1: the step from 0 to 1 does not double, since card (Composition 0) = 2^(0−1) = 2^0 = 1 because subtraction on ℕ is truncated; the n+2 phrasing sidesteps the edge case.",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.Enumerative.Composition",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "CompositionCard2PowOQ01",
+    "lineCount": 135,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/CompositionCard2PowOQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "meta": {
+    "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Composition_(combinatorics)",
+    "date": "classical",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CompositionCard2PowOQ01.lean",
+    "tags": [
+      "combinatorics",
+      "enumerative-combinatorics",
+      "compositions",
+      "counting",
+      "powers-of-two",
+      "bijective-proof",
+      "recurrence"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-20",
+    "relatedProblems": [
+      {
+        "id": "dyck-catalan-count-oq-01",
+        "relationship": "Sibling enumerative-combinatorics counting result: Dyck words of semilength n are counted by the n-th Catalan number. Both package a Mathlib cardinality bijection (DyckWord / Composition) into a named closed-form count."
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 135,
+    "assumptions": "0 axioms, 0 sorries, no native_decide. Only the foundational propext / Classical.choice / Quot.sound may appear (verifiable with #print axioms). The headline count card_composition_eq is a re-export of Mathlib's composition_card (whence the 'mathlib' badge); the in-file derived content absent from Mathlib is the doubling recurrence card_composition_two_mul and its hypothesis form card_composition_succ_of_pos, positivity card_composition_pos, the bijective restatement card_composition_eq_card_compositionAsSet (packaging compositionEquiv into a cardinality equality), and the worked cardinalities for n = 1..5. The result is unconditional.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Counting compositions is one of the first results in enumerative combinatorics. A composition of n is an ordered sequence of positive parts summing to n (unlike a partition, order matters): the compositions of 3 are 3, 1+2, 2+1, 1+1+1. The count 2^(n−1) has a clean bijective proof attributed to the 'stars and bars' viewpoint: write n as n unit boxes in a row, leaving n−1 internal gaps; choosing a subset of those gaps to 'cut' splits the row into the parts of a composition, and every composition arises exactly once, so the compositions of n are in bijection with the 2^(n−1) subsets of an (n−1)-element set. Equivalently, the number of compositions of n into exactly k parts is C(n−1, k−1), and summing over k via the binomial theorem gives ∑_k C(n−1,k−1) = 2^(n−1). The recurrence form — each additional unit either starts a new part or extends the last one, doubling the number of compositions — is the dynamic-programming view of the same fact.",
+    "problemStatement": "Show that the number of compositions of a natural number n (ordered tuples of positive integers summing to n, Mathlib's Composition n) is\n\n$$\\#\\{\\text{compositions of } n\\} = \\mathrm{card}\\,(\\mathrm{Composition}\\ n) = 2^{n-1},$$\n\nand expose its structural content: the bijection with subsets of the n−1 internal gaps, the doubling recurrence card(Composition (n+2)) = 2·card(Composition (n+1)), and positivity of the count.",
+    "text": "Mathlib already proves the headline count as composition_card, routed through the equivalence Composition n ≃ CompositionAsSet n (compositionEquiv) and the set-model count compositionAsSet_card : card (CompositionAsSet n) = 2^(n−1). This entry gives that count a named gallery home (card_composition_eq) and then derives the consequences Mathlib leaves unstated: the doubling recurrence and its n ≥ 1 hypothesis form, positivity, the bijective restatement card(Composition n) = card(CompositionAsSet n), and concrete cardinalities for small n.",
+    "proofStrategy": "card_composition_eq and card_compositionAsSet_eq re-export Mathlib's composition_card and compositionAsSet_card. card_composition_eq_card_compositionAsSet packages compositionEquiv into a cardinality equality via Fintype.card_congr, exposing the subset-of-gaps bijection. card_composition_pos rewrites to 0 < 2^(n−1) and closes by positivity. card_composition_two_mul rewrites both sides to powers of 2 and, after reducing the truncated subtractions (n+2−1 ≡ n+1, n+1−1 ≡ n by defeq), proves 2^(n+1) = 2·2^n by ring; card_composition_succ_of_pos writes n = 1+m and reduces the subtractions with Nat.add_sub_cancel / Nat.add_sub_cancel_left before ring. The numeric examples specialise card_composition_eq and discharge 2^(k−1) by norm_num, and a final example checks the recurrence at n=5 (16 = 2·8) by invoking card_composition_two_mul directly.",
+    "keyInsights": [
+      "**The count is bijective, not just numeric**: compositions of n correspond exactly to subsets of the n−1 internal gaps between unit boxes, which is why the answer is 2^(n−1); card_composition_eq_card_compositionAsSet makes this bijection (compositionEquiv) explicit at the level of cardinalities",
+      "**The doubling recurrence is the combinatorial heart of the formula**: card(Composition (n+2)) = 2·card(Composition (n+1)) says each extra unit of n either opens a new singleton part or extends the last part — the two choices that produce the factor of 2, and the recurrence one would use to prove 2^(n−1) from scratch",
+      "**The edge case is real, not cosmetic**: the doubling genuinely fails from 0 to 1 because ℕ-subtraction is truncated — card(Composition 0) = 2^(0−1) = 2^0 = 1, so 1 ≠ 2·1; the n+2 / 'n ≥ 1' phrasings are what make the recurrence true",
+      "**Mathlib stops at the closed form**: composition_card gives 2^(n−1) but Mathlib records neither the recurrence nor positivity nor the count-as-bijection statement, which is the value this entry adds beyond the re-export"
+    ],
+    "prerequisites": [
+      "Compositions of a natural number (Mathlib's Composition n) and the set model CompositionAsSet n",
+      "The equivalence compositionEquiv : Composition n ≃ CompositionAsSet n and compositionAsSet_card : card (CompositionAsSet n) = 2^(n−1)",
+      "Fintype.card_congr (cardinality is preserved by equivalences)",
+      "Truncated natural-number subtraction and the lemmas Nat.add_sub_cancel / Nat.add_sub_cancel_left, plus pow_add via ring"
+    ]
+  },
+  "sections": [
+    {
+      "id": "headline-count",
+      "title": "The Headline Count (re-exported from Mathlib)",
+      "startLine": 61,
+      "endLine": 71,
+      "mathContext": "$\\mathrm{card}\\,(\\mathrm{Composition}\\ n) = 2^{n-1}$ and $\\mathrm{card}\\,(\\mathrm{CompositionAsSet}\\ n) = 2^{n-1}$.",
+      "summary": "card_composition_eq re-exports Mathlib's composition_card, giving the count 2^(n−1) a named home; card_compositionAsSet_eq records the same count for the boundary-set model CompositionAsSet n, in which a composition is encoded by the subset of internal boundaries it cuts."
+    },
+    {
+      "id": "bijective-content",
+      "title": "The Bijective Content",
+      "startLine": 72,
+      "endLine": 81,
+      "mathContext": "$\\mathrm{card}\\,(\\mathrm{Composition}\\ n) = \\mathrm{card}\\,(\\mathrm{CompositionAsSet}\\ n)$ via compositionEquiv.",
+      "summary": "card_composition_eq_card_compositionAsSet packages Mathlib's compositionEquiv into a cardinality equality with Fintype.card_congr, exposing the 'subset of the n−1 gaps' model that explains why the count is a power of two."
+    },
+    {
+      "id": "derived-structural-facts",
+      "title": "Derived Structural Facts (absent from Mathlib)",
+      "startLine": 82,
+      "endLine": 111,
+      "mathContext": "$0 < \\mathrm{card}\\,(\\mathrm{Composition}\\ n)$ and $\\mathrm{card}\\,(\\mathrm{Composition}\\ (n+2)) = 2\\,\\mathrm{card}\\,(\\mathrm{Composition}\\ (n+1))$.",
+      "summary": "card_composition_pos proves the count is always positive (every n has the trivial composition). card_composition_two_mul is the doubling recurrence, proved by reducing to 2^(n+1) = 2·2^n via ring; card_composition_succ_of_pos restates it in hypothesis form for n ≥ 1. These are the structural consequences of the closed form that Mathlib does not record."
+    },
+    {
+      "id": "numeric-instances",
+      "title": "Worked Numeric Instances",
+      "startLine": 112,
+      "endLine": 132,
+      "mathContext": "$\\mathrm{card}\\,(\\mathrm{Composition}\\ n) = 1,2,4,8,16$ for $n=1,\\dots,5$.",
+      "summary": "The examples specialise card_composition_eq to n = 1,…,5, computing 2^(n−1) = 1, 2, 4, 8, 16 by norm_num, and a final example checks the doubling recurrence concretely at n = 5 (16 = 2·8) by invoking card_composition_two_mul."
+    }
+  ],
+  "conclusion": "The enumerative identity 'there are 2^(n−1) compositions of n' is formalised sorry-free and axiom-free. The headline count is Mathlib's composition_card (hence the mathlib badge), given a named gallery home; beyond the re-export the entry derives the structural content Mathlib omits — the doubling recurrence card(Composition (n+2)) = 2·card(Composition (n+1)) and its n ≥ 1 form, positivity of the count, the count as an explicit bijection with the boundary-set model, and the cardinalities 1,2,4,8,16 for n = 1..5. The doubling recurrence is the combinatorial engine of the closed form, and its genuine dependence on n ≥ 1 (the truncated-subtraction edge case at n = 0) is made explicit. A natural follow-up is the refinement by number of parts — that compositions of n into exactly k parts number C(n−1,k−1), summing to 2^(n−1) via the binomial theorem.",
+  "crossReferences": [
+    "dyck-catalan-count-oq-01"
+  ]
+}

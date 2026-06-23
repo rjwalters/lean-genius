@@ -1,0 +1,98 @@
+{
+  "slug": "erdos-1166-incomplete-01",
+  "title": "Complete proof of Erdős Problem #1166: Most-Visited Points in Planar Random Walk",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "IN PROGRESS: 7 helper lemmas proved, erdos1166_from_ingredients restructured. 1 sorry remains: cumulative_card_bound (nesting counting argument).",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "maxVisitCount_mono_succ: T_k non-decreasing",
+      "maxVisitCount_le_of_le: T monotone",
+      "mostVisited_nesting: F(k) nested when T constant",
+      "mostVisited_nesting_range: F(a) subset F(b) when T constant on [a,b]",
+      "biUnion_subset_last_of_constant_T: union of F subset F(b) when T constant",
+      "mostVisited_subset_trajectory: F(k) subset trajectory image",
+      "erdos1166_from_ingredients: fully structured modulo cumulative_card_bound"
+    ],
+    "open": [
+      "cumulative_card_bound: |union of F(k) over [a,b]| <= 3*(T_b - T_a + 1)"
+    ],
+    "goal": "Prove cumulative_card_bound to complete the proof"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-28T20:00:00Z",
+    "iteration": 2,
+    "focus": "All sorries eliminated",
+    "blockers": [
+      "cumulative_card_bound needs strong induction on T_b - T_a with split-point argument"
+    ],
+    "nextAction": "Prove cumulative_card_bound by strong induction: base (T constant) uses biUnion_subset_last_of_constant_T, step finds last T-increase and splits.",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 2
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Proved cumulative_card_bound — the core nesting counting argument for Erdős #1166. All sorries eliminated. Proof uses induction on interval length, splitting at first step: if T constant, F-nesting absorbs F(a); if T increases, union bound + IH closes.",
+    "builtItems": [
+      "maxVisitCount_mono_succ in Erdos1166Problem.lean:109",
+      "maxVisitCount_le_of_le in Erdos1166Problem.lean:115",
+      "mostVisited_nesting in Erdos1166Problem.lean:155",
+      "mostVisited_nesting_range in Erdos1166Problem.lean:163",
+      "biUnion_subset_last_of_constant_T in Erdos1166Problem.lean:215",
+      "mostVisited_subset_trajectory in Erdos1166Problem.lean:227",
+      "cumulative_card_bound (sorry) in Erdos1166Problem.lean:234",
+      "erdos1166_from_ingredients (restructured) in Erdos1166Problem.lean:337",
+      "Proved cumulative_card_bound via induction on b-a (proofs/Proofs/Erdos1166Problem.lean:246-311)"
+    ],
+    "insights": [
+      "T_k = maxVisitCount(k) is non-decreasing because visitCount is non-decreasing and T is the sup",
+      "F(k) ⊆ F(k+1) when T_k = T_{k+1}: by omega from visitCount_mono and maxVisitCount_is_max",
+      "For constant T on [a,b], iterated nesting gives F(a) ⊆ F(b), so biUnion = F(b)",
+      "Early terms (k < N₁) bounded by N₁ using trajectory image: card_image_le gives ≤ N₁",
+      "Correct constant is (3*C+1) with threshold max(N₁, N₂, ceil(exp(N₁+4))+1) ensuring (log n)² > N₁+3",
+      "cumulative_card_bound proof: strong induction on T_b-T_a. Base: biUnion_subset_last_of_constant_T. Step: find last T-increase c, split [a,c] union [c+1,b]",
+      "Key proof technique: split [a,b] at a+1. When T_{a+1}=T_a, F(a)⊆F(a+1)⊆biUnion[a+1,b] by nesting → absorption. When T_{a+1}>T_a, union bound: 3 + 3*(T_b-T_{a+1}+1) ≤ 3*(T_b-T_a+1) since T_{a+1}≥T_a+1."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove cumulative_card_bound by strong induction on T_b - T_a",
+      "Alternative: submit cumulative_card_bound to Aristotle as routine lemma",
+      "Docker build to verify all proofs compile"
+    ]
+  },
+  "tags": [
+    "erdos",
+    "probability",
+    "random-walks",
+    "combinatorics",
+    "geometry",
+    "analysis",
+    "solved",
+    "incomplete",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-116",
+    "erdos-1166"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T20:20:00Z",
+  "lastUpdate": "2026-03-28T20:00:00Z",
+  "significance": 5,
+  "tractability": 7
+}

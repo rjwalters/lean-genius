@@ -1,0 +1,183 @@
+{
+  "id": "divisibility-by-three-oq-02-oq-01",
+  "title": "Repunit Divisibility: Complete Order-of-10 Characterization",
+  "slug": "divisibility-by-three-oq-02-oq-01",
+  "description": "A complete biconditional for repunit divisibility: d ∣ R(k) if and only if the multiplicative order of 10 modulo d divides k, provided gcd(d,9)=1. Proves the open question from DivisibilityByThreeOQ02 via a clean ZMod ring identity.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Repunit",
+    "date": "2026-04-04",
+    "status": "axiomatized",
+    "tags": [
+      "number-theory",
+      "modular-arithmetic",
+      "divisibility",
+      "repunit",
+      "order-theory",
+      "intermediate"
+    ],
+    "proofRepoPath": "Proofs/DivisibilityByThreeOQ02OQ01.lean",
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "ZMod.natCast_eq_zero_iff",
+        "description": "(n : ZMod m) = 0 ↔ m ∣ n",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "orderOf_dvd_iff_pow_eq_one",
+        "description": "orderOf a ∣ n ↔ a^n = 1",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      },
+      {
+        "theorem": "Nat.Coprime.dvd_of_dvd_mul_left",
+        "description": "gcd(k,m)=1 and k∣m·n → k∣n",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Complete biconditional: d ∣ R(k) ↔ orderOf(10 : ZMod d) ∣ k",
+      "ZMod ring identity: 9·R(k) + 1 = 10^k holds in any ZMod d (proved by induction with linear_combination)",
+      "Identifies correct hypothesis: gcd(d,9)=1, NOT gcd(d,10)=1 (d=3 fails the latter condition)",
+      "Verified concrete examples: ord_7(10)=6, ord_11(10)=2, ord_13(10)=6, ord_37(10)=3 via native_decide"
+    ],
+    "dateAdded": "2026-04-04",
+    "axiomCount": 1,
+    "lineCount": 65,
+    "assumptions": "The headline biconditional repunit_dvd_iff_orderOf and the supporting ZMod identity repunit_ZMod_aux are fully symbolic and native_decide-free. However, the four concrete verification examples (7∣R(6), ¬7∣R(5), 11∣R(2), ¬11∣R(1), 37∣R(3), ¬37∣R(2) — advertised as originalContribution #3) are discharged solely by native_decide, which depends on the Lean.ofReduceBool axiom (trusts the compiler's kernel reduction). Per the project's axiom-integrity policy, this is counted as 1 axiom. No literal axiom declarations or sorries.",
+    "theoremCount": 2,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Repunits R(k) = 111...1 (k ones) have been studied since the 19th century. The name 'repunit' was coined by Samuel Yates in 1966 (short for 'repeated unit'). The classical question of which integers divide some repunit is settled by: d ∣ R(k) for some k if and only if gcd(d,10)=1, i.e., d shares no factor with 2 or 5. The more refined question — for a fixed d, which k satisfy d ∣ R(k) — is governed by the multiplicative order of 10 modulo d, a fact connected to the period of the decimal expansion of 1/d. DivisibilityByThreeOQ02.lean proved the simpler direction (d ∣ R(k) ↔ d ∣ 10^k-1 when gcd(d,9)=1) and listed concrete cases. This file proves the complete biconditional, answering the open question from that file.",
+    "problemStatement": "**Open Question from DivisibilityByThreeOQ02.lean**:\n\nGiven d with gcd(d,9)=1 and d>1, and a repunit R(k) = 1+10+...+10^(k-1), characterize exactly when d ∣ R(k).\n\nThe order-of-10 conjecture: d ∣ R(k) ↔ ord_d(10) ∣ k.",
+    "text": "d ∣ R(k) if and only if the multiplicative order of 10 modulo d divides k.",
+    "proofStrategy": "**Key ring identity**: In any ZMod d (not just when d > 1), one has the exact equation:\n$$9 \\cdot R(k) + 1 = 10^k \\in \\mathbb{Z}/d\\mathbb{Z}$$\nThis is proved by induction with `linear_combination 10 * ih`.\n\n**Forward direction** (d ∣ R(k) → 10^k ≡ 1): If R(k) ≡ 0, then 9·R(k) = 0, so 10^k = 0 + 1 = 1.\n\n**Backward direction** (10^k ≡ 1 → d ∣ R(k)): From the ring identity, 9·R(k) = 10^k - 1 = 0 in ZMod d. This means d ∣ 9·R(k) in ℕ. Since gcd(d,9)=1, `Nat.Coprime.dvd_of_dvd_mul_left` gives d ∣ R(k).",
+    "keyInsights": [
+      "The identity 9·R(k)+1=10^k holds in ZMod d as a pure ring identity — no need to handle natural number subtraction.",
+      "The inductive step uses `linear_combination 10 * ih`, a one-line proof once the ring identity is clear.",
+      "The correct coprimality hypothesis is gcd(d,9)=1, not gcd(d,10)=1: d=3 satisfies gcd(3,10)=1 but the theorem fails since ord_3(10)=1 yet 3∤R(1)=1.",
+      "The backward direction works over ℕ coprime divisibility, avoiding the need for ZMod units.",
+      "The repunit is redefined locally as a `private def` to avoid importing the parent module DivisibilityByThreeOQ02.lean — keeping this file self-contained and preventing duplicate definition conflicts while remaining mathematically identical."
+    ],
+    "prerequisites": [
+      "Basic modular arithmetic and ZMod",
+      "Multiplicative order (orderOf in GroupTheory.OrderOfElement)",
+      "Repunit definition from DivisibilityByThreeOQ02.lean",
+      "Nat.Coprime.dvd_of_dvd_mul_left"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "§0: Module Docstring and Imports",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "18-line module docstring explains the biconditional, key ring identity 9·R(k)+1=10^k, and the gcd(d,9)=1 hypothesis. Three imports: ZMod.Basic, GroupTheory.OrderOfElement, Mathlib.Tactic.",
+      "mathContext": "The docstring states the characterization d ∣ R(k) ↔ orderOf(10 mod d) ∣ k and notes why gcd(d,9)=1 (not gcd(d,10)=1) is required: d=3 fails the latter condition since ord_3(10)=1 but 3∤R(1)=1."
+    },
+    {
+      "id": "repunit-definition",
+      "title": "§1: Private Repunit Definition",
+      "startLine": 23,
+      "endLine": 26,
+      "summary": "Self-contained private recursive definition: repunit 0 = 0, repunit (n+1) = repunit n * 10 + 1. Avoids importing the parent module.",
+      "mathContext": "$R(0) = 0$, $R(n+1) = 10 \\cdot R(n) + 1$, so $R(k) = \\sum_{i=0}^{k-1} 10^i = \\underbrace{11\\ldots1}_{k}$."
+    },
+    {
+      "id": "ring-identity",
+      "title": "§2: The ZMod Ring Identity",
+      "startLine": 28,
+      "endLine": 38,
+      "summary": "repunit_ZMod_aux: proves 9·R(k)+1 = 10^k in ZMod d by induction. Key step: simp [repunit] unfolds the recursion, then linear_combination 10*ih closes the goal.",
+      "mathContext": "This replaces the ℕ-subtraction approach (d ∣ R(k) ↔ d ∣ 10^k-1) with a clean ring identity that works in any ZMod d without natural number overflow."
+    },
+    {
+      "id": "main-theorem",
+      "title": "§3: Main Theorem: d ∣ R(k) ↔ orderOf(10) ∣ k",
+      "startLine": 41,
+      "endLine": 57,
+      "summary": "repunit_dvd_iff_orderOf: combines ZMod.natCast_eq_zero_iff, orderOf_dvd_iff_pow_eq_one, the ring identity, and Nat.Coprime.dvd_of_dvd_mul_left for forward and backward directions.",
+      "mathContext": "The biconditional reduces to (R(k):ZMod d)=0 ↔ (10:ZMod d)^k=1, handled cleanly in both directions via the ring identity. The backward direction uses gcd(d,9)=1 and Nat.Coprime.dvd_of_dvd_mul_left to strip the factor of 9."
+    },
+    {
+      "id": "verifications",
+      "title": "§4: Concrete Verifications",
+      "startLine": 59,
+      "endLine": 65,
+      "summary": "native_decide confirms: 7|R(6), 7∤R(5), 11|R(2), 11∤R(1), 37|R(3), 37∤R(2).",
+      "mathContext": "These match the orders: ord_7(10)=6, ord_11(10)=2, ord_37(10)=3. Equivalently: $10^6 \\equiv 1 \\pmod{7}$, $10^2 \\equiv 1 \\pmod{11}$, $10^3 \\equiv 1 \\pmod{37}$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "divisibility-by-three-oq-02",
+      "relationship": "extends",
+      "description": "DivisibilityByThreeOQ02.lean proved repunit_dvd_iff_pow_mod (d∣R(k)↔d∣10^k-1) and listed concrete examples. This file completes the open question with the full orderOf characterization."
+    },
+    {
+      "targetId": "divisibility-by-three-oq-01",
+      "relationship": "sibling",
+      "description": "Companion in the same divisibility-by-three series, treating last-k-digit rules, powers of 2 and 5, and digital roots. Both study how base-10 structure governs divisibility via modular arithmetic on powers of 10."
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "foundational",
+      "description": "Euler's theorem (the generalization of Fermat's little theorem) gives orderOf(10 : ZMod d) ∣ φ(d) whenever gcd(d,10)=1, so the repunit period ord_d(10) is bounded by the totient — the structural reason the order-based characterization terminates."
+    },
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "thematic",
+      "description": "A companion elementary result about the multiplicative structure of ZMod d; both exploit the cyclic/group-order behavior of units modulo d that underlies this repunit-period characterization."
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete characterization: d ∣ R(k) ↔ orderOf(10 : ZMod d) ∣ k, for d with gcd(d,9)=1. The proof uses a clean ZMod ring identity 9·R(k)+1=10^k proved by induction with linear_combination.",
+    "implications": "**Theoretical Significance**: This classifies all repunit divisibility in terms of multiplicative orders. For any d with gcd(d,9)=1, the smallest k with d|R(k) is exactly ord_d(10), and more generally d|R(k) iff this order divides k.\n\n**Practical Connection**: The concrete examples verify the well-known orders: ord_7(10)=6 explains why 7|111111 but not 1, 11, 111, 1111, 11111; ord_11(10)=2 explains why 11|11; ord_37(10)=3 explains why 37|111.",
+    "openQuestions": [
+      "Can this be generalized to repunit-like sequences R_b(k) = (b^k-1)/(b-1) for other bases b?",
+      "The set of d dividing some repunit is exactly {d : gcd(d,10)=1}. Can this be formally derived from repunit_dvd_iff_orderOf?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.GroupTheory.OrderOfElement",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 65,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "substantiveTheoremCount": 1,
+    "duplicateTheorems": 0,
+    "definitionCount": 1,
+    "path": "Proofs/DivisibilityByThreeOQ02OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Various",
+      "title": "Repunit",
+      "year": "n.d.",
+      "note": "Wikipedia article on repunits and their divisibility properties"
+    },
+    {
+      "authors": "Hardy, G.H. and Wright, E.M.",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "1979",
+      "note": "6th ed., Oxford. Multiplicative order and repunit divisibility (Chapter VI)."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "repunit_dvd_iff_orderOf",
+      "type": "core",
+      "description": "d ∣ R(k) ↔ orderOf(10 : ZMod d) ∣ k, for d with gcd(d,9)=1 and 1<d",
+      "leanType": "(d k : ℕ) → 1 < d → Nat.Coprime d 9 → d ∣ repunit k ↔ orderOf (10 : ZMod d) ∣ k"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,377 @@
+[
+  {
+    "id": "erdos-716-header",
+    "proofId": "erdos-716",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 57
+    },
+    "title": "Module Documentation, Imports, and Hypergraph Structure",
+    "content": "Erdős Problem #716 (the Ruzsa-Szemerédi (6,3) problem): is $\\text{ex}_3(n, \\mathcal{F}) = o(n^2)$? Equivalently: max edges where every edge is in a unique triangle? SOLVED by Ruzsa-Szemerédi (1978) via Szemerédi regularity: $o(n^2)$ with bound $n^2 \\cdot e^{-\\Omega(\\sqrt{\\log n})}$. Posed by Brown-Erdős-Sós (1973). Defines `Hypergraph3` (3-uniform) and `spannedVertices`.",
+    "mathContext": "$f^{(3)}(n; 6, 3) = o(n^2)$. Via Triangle Removal: graphs with $\\epsilon n^2$ edges in unique triangles have $\\Omega(n^3)$ triangles, contradicting removal for sparse hypergraphs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ruzsa-Szemerédi theorem",
+      "Triangle Removal Lemma",
+      "Szemerédi regularity"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Basic",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "ann-716-1",
+    "proofId": "erdos-716",
+    "range": {
+      "startLine": 58,
+      "endLine": 60
+    },
+    "type": "definition",
+    "title": "3-Uniform Hypergraph",
+    "content": "**Hypergraph3** is a hypergraph where every edge contains exactly 3 vertices. This is the natural setting for the (6,3)-problem: how many 3-edges can avoid having 3 edges on 6 vertices?",
+    "mathContext": "A 3-uniform hypergraph $H = (V, E)$ with $E \\subseteq \\binom{V}{3}$; the (6,3)-problem asks for $\\max|E|$ subject to no 3 edges spanning $\\leq 6$ vertices.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Uniform hypergraphs",
+      "Turán-type problems",
+      "Extremal combinatorics"
+    ],
+    "prerequisites": [
+      "Finset type",
+      "3-uniform hypergraph definition"
+    ]
+  },
+  {
+    "id": "ann-716-2",
+    "proofId": "erdos-716",
+    "range": {
+      "startLine": 66,
+      "endLine": 67
+    },
+    "type": "definition",
+    "title": "Spanned Vertices",
+    "content": "**spannedVertices H S** computes the union of all vertices in a set of hyperedges. The (6,3)-problem forbids 3 edges that together span only 6 vertices.",
+    "significance": "supporting",
+    "mathContext": "Formal statement of spanned vertices as described in the annotation content",
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
+    "prerequisites": [
+      "3-uniform hyperedges",
+      "the union of vertices over a set of edges"
+    ]
+  },
+  {
+    "id": "ann-716-3",
+    "proofId": "erdos-716",
+    "range": {
+      "startLine": 73,
+      "endLine": 75
+    },
+    "type": "definition",
+    "title": "(v,e)-Configuration",
+    "content": "**hasConfiguration H v e** means H contains e edges spanning at most v vertices. This generalizes the (6,3) condition to arbitrary parameters, leading to the Brown-Erdős-Sós conjecture.",
+    "significance": "key",
+    "mathContext": "Formal statement of (v,e)-configuration as described in the annotation content",
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
+    "prerequisites": [
+      "hyperedges and their spanned vertices",
+      "e edges spanning at most v vertices"
+    ]
+  },
+  {
+    "id": "ann-716-4",
+    "proofId": "erdos-716",
+    "range": {
+      "startLine": 82,
+      "endLine": 83
+    },
+    "type": "definition",
+    "title": "(6,3)-Configuration",
+    "content": "**has63Configuration** is the specific forbidden structure: 3 hyperedges spanning at most 6 vertices. This is the central object in Erdős Problem #716.",
+    "significance": "key",
+    "mathContext": "Formal statement of (6,3)-configuration as described in the annotation content",
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
+    "prerequisites": [
+      "(v,e)-configurations",
+      "3 edges spanning at most 6 vertices"
+    ]
+  },
+  {
+    "id": "ann-716-5",
+    "proofId": "erdos-716",
+    "range": {
+      "startLine": 89,
+      "endLine": 90
+    },
+    "type": "definition",
+    "title": "(6,3)-Free",
+    "content": "**is63Free H** means H avoids the (6,3) configuration. The extremal question: what is the maximum edges in a (6,3)-free hypergraph?",
+    "significance": "key",
+    "mathContext": "Formal statement of (6,3)-free as described in the annotation content",
+    "relatedConcepts": [
+      "formal definition",
+      "graph theory"
+    ],
+    "prerequisites": [
+      "the (6,3)-configuration",
+      "avoiding a forbidden configuration"
+    ]
+  },
+  {
+    "id": "ann-716-6",
+    "proofId": "erdos-716",
+    "range": {
+      "startLine": 101,
+      "endLine": 101
+    },
+    "type": "concept",
+    "title": "Extremal Number",
+    "content": "**extremalHypergraph n v e** = f^(3)(n; v, e) is the maximum edges in an n-vertex 3-uniform hypergraph with no e edges spanning v vertices. Computing these is a major challenge in extremal combinatorics.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán numbers",
+      "Extremal graph theory",
+      "Hypergraph regularity"
+    ],
+    "mathContext": "Formal statement of extremal number as described in the annotation content",
+    "prerequisites": [
+      "(6,3)-free hypergraphs",
+      "the maximum edge count (extremal function)"
+    ]
+  },
+  {
+    "id": "ann-716-7",
+    "proofId": "erdos-716",
+    "range": {
+      "startLine": 107,
+      "endLine": 107
+    },
+    "type": "definition",
+    "title": "ex63 Function",
+    "content": "**ex63 n** = f^(3)(n; 6, 3) is the specific extremal function for the (6,3) problem. Ruzsa-Szemerédi proved this is o(n²), settling Erdős #716.",
+    "mathContext": "$\\text{ex}_{63}(n) = f^{(3)}(n; 6, 3) = \\max\\{|E| : H \\text{ is } n\\text{-vertex, (6,3)-free}\\}$; RS theorem: $\\text{ex}_{63}(n) = o(n^2)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
+    "prerequisites": [
+      "the extremal number f^(3)(n; v, e)",
+      "the (6,3) specialization",
+      "o(n²) growth"
+    ]
+  },
+  {
+    "id": "ann-716-8",
+    "proofId": "erdos-716",
+    "range": {
+      "startLine": 124,
+      "endLine": 125
+    },
+    "type": "axiom",
+    "title": "Unique Triangle Property",
+    "content": "**edgeInUniqueTriangle** means an edge uv has exactly one common neighbor w forming triangle uvw. This is the graph-theoretic reformulation of the (6,3) problem.",
+    "significance": "key",
+    "mathContext": "Formal statement of unique triangle property as described in the annotation content",
+    "relatedConcepts": [
+      "formal definition",
+      "graph theory"
+    ],
+    "prerequisites": [
+      "triangles in a graph",
+      "an edge with exactly one common neighbor"
+    ]
+  },
+  {
+    "id": "ann-716-9",
+    "proofId": "erdos-716",
+    "range": {
+      "startLine": 131,
+      "endLine": 132
+    },
+    "type": "axiom",
+    "title": "RS Graph",
+    "content": "**isRSGraph G** means every edge belongs to exactly one triangle. These 'Ruzsa-Szemerédi graphs' are central to the problem. Maximum edges in an RS graph is 3·ex63(n).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Triangle-free graphs",
+      "Extremal graph theory",
+      "Property testing"
+    ],
+    "mathContext": "Formal statement of rs graph as described in the annotation content",
+    "prerequisites": [
+      "the unique-triangle property",
+      "every edge lying in exactly one triangle",
+      "induced triangle matchings"
+    ]
+  },
+  {
+    "id": "ann-716-10",
+    "proofId": "erdos-716",
+    "range": {
+      "startLine": 152,
+      "endLine": 153
+    },
+    "type": "concept",
+    "title": "Little-o Notation",
+    "content": "**isLittleO f g** means f(n) = o(g(n)): the ratio f(n)/g(n) → 0 as n → ∞. The main theorem is ex63(n) = o(n²), meaning subquadratic growth.",
+    "significance": "supporting",
+    "mathContext": "Formal statement of little-o notation as described in the annotation content",
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
+    "prerequisites": [
+      "asymptotic ratios f(n)/g(n)",
+      "limits tending to 0"
+    ]
+  },
+  {
+    "id": "ann-716-11",
+    "proofId": "erdos-716",
+    "range": {
+      "startLine": 162,
+      "endLine": 163
+    },
+    "type": "concept",
+    "title": "Ruzsa-Szemerédi Theorem",
+    "content": "**ruzsa_szemeredi_theorem** (1978): ex₃(n; 6, 3) = o(n²). This is the main result solving Erdős Problem #716. The proof uses the Triangle Removal Lemma derived from Szemerédi's regularity lemma.",
+    "mathContext": "$f^{(3)}(n; 6, 3) = o(n^2)$; proved via: (1) Szemerédi regularity → (2) Triangle Removal Lemma → (3) RS theorem. The subquadratic bound is tight up to the exponent.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ruzsa_szemeredi_theorem",
+      "Szemerédi regularity lemma",
+      "extremal hypergraph theory"
+    ],
+    "prerequisites": [
+      "the extremal function ex63(n)",
+      "o(n²) growth",
+      "the triangle removal lemma",
+      "axioms as stated assumptions in the formalization"
+    ]
+  },
+  {
+    "id": "ann-716-12",
+    "proofId": "erdos-716",
+    "range": {
+      "startLine": 170,
+      "endLine": 172
+    },
+    "type": "concept",
+    "title": "Upper Bound",
+    "content": "**ex63_upper_bound** gives the quantitative bound: ex₃(n; 6, 3) ≤ n² · e^{-c√(log n)}. This sublogarithmic factor is essentially optimal.",
+    "mathContext": "$\\text{ex}_{63}(n) \\leq n^2 \\cdot e^{-c\\sqrt{\\log n}}$ for some $c > 0$; the sublogarithmic decay makes this much smaller than $n^2$ but larger than any fixed power $n^{2-\\epsilon}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
+    "prerequisites": [
+      "the extremal function ex63(n)",
+      "the bound n²·e^{−c√(log n)}",
+      "axioms as stated assumptions in the formalization"
+    ]
+  },
+  {
+    "id": "ann-716-13",
+    "proofId": "erdos-716",
+    "range": {
+      "startLine": 178,
+      "endLine": 180
+    },
+    "type": "concept",
+    "title": "Lower Bound",
+    "content": "**ex63_lower_bound** from Behrend's construction: ex₃(n; 6, 3) ≥ n² · e^{-c'√(log n)}. The bounds match up to the constant in the exponent!",
+    "mathContext": "$\\text{ex}_{63}(n) \\geq n^2 \\cdot e^{-c'\\sqrt{\\log n}}$; the matching upper/lower bounds show $\\text{ex}_{63}(n) = n^2 \\cdot e^{\\Theta(\\sqrt{\\log n})}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
+    "prerequisites": [
+      "Behrend's construction",
+      "3-AP-free sets",
+      "the bound n²·e^{−c'√(log n)}",
+      "axioms as stated assumptions in the formalization"
+    ]
+  },
+  {
+    "id": "ann-716-14",
+    "proofId": "erdos-716",
+    "range": {
+      "startLine": 193,
+      "endLine": 202
+    },
+    "type": "concept",
+    "title": "Triangle Removal Lemma",
+    "content": "**triangle_removal_lemma**: If a graph has ≤ δn³ triangles, removing ≤ εn² edges makes it triangle-free. This powerful tool follows from Szemerédi regularity and is key to the RS theorem.",
+    "mathContext": "$\\forall \\varepsilon > 0\\, \\exists \\delta > 0$: if $G$ has $\\leq \\delta n^3$ triangles, then removing $\\leq \\varepsilon n^2$ edges makes $G$ triangle-free; the optimal $\\delta(\\varepsilon) \\sim e^{-c/\\varepsilon^C}$ is very small.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Szemerédi regularity lemma",
+      "Graph removal lemmas",
+      "Property testing"
+    ],
+    "prerequisites": [
+      "triangle counts (≤ δn³)",
+      "removing ≤ εn² edges",
+      "the regularity / removal method"
+    ]
+  },
+  {
+    "id": "ann-716-15",
+    "proofId": "erdos-716",
+    "range": {
+      "startLine": 222,
+      "endLine": 223
+    },
+    "type": "definition",
+    "title": "3-AP Free Set",
+    "content": "**is3APFree S** means S contains no 3-term arithmetic progression (a, a+d, a+2d). This connects to the RS problem via Behrend's construction of large 3-AP-free sets.",
+    "significance": "key",
+    "mathContext": "Formal statement of 3-ap free set as described in the annotation content",
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
+    "prerequisites": [
+      "3-term arithmetic progressions",
+      "sets avoiding 3-APs",
+      "Behrend's construction"
+    ]
+  },
+  {
+    "id": "ann-716-16",
+    "proofId": "erdos-716",
+    "range": {
+      "startLine": 235,
+      "endLine": 236
+    },
+    "type": "concept",
+    "title": "Roth's Theorem",
+    "content": "**roth_theorem** (1953): r₃(n) = o(n), meaning large sets contain 3-APs. The RS theorem implies Roth's theorem, connecting graph theory to additive combinatorics!",
+    "mathContext": "$r_3(n) = o(n)$: any set $A \\subseteq [n]$ with $|A| \\geq \\varepsilon n$ contains a 3-AP. Roth's proof used Fourier analysis; RS gives a combinatorial route via the triangle removal lemma.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Arithmetic progressions",
+      "Szemerédi's theorem",
+      "Additive number theory"
+    ],
+    "prerequisites": [
+      "3-AP-free sets",
+      "the bound r₃(n) = o(n)",
+      "Roth's 1953 theorem",
+      "the RS ⇒ Roth implication"
+    ]
+  }
+]

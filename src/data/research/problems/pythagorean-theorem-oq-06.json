@@ -1,0 +1,114 @@
+{
+  "slug": "pythagorean-theorem-oq-06",
+  "title": "de Gua's theorem: the 3D Pythagorean theorem",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE: Formalize de Gua's theorem — for a trirectangular tetrahedron the squared area of the face opposite the right-angle vertex equals the sum of squared areas of the three perpendicular faces (A₀²=A₁²+A₂²+A₃²).",
+    "whyMatters": [
+      "Research value"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "de Gua: squared area of hypotenuse face = sum of squared areas of the three right-angle faces (general orthogonal + axis-aligned forms)"
+    ],
+    "open": [],
+    "goal": "Area(ABC)^2 = Area(OAB)^2 + Area(OBC)^2 + Area(OCA)^2 for a trirectangular tetrahedron"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-16T12:27:51.320Z",
+    "iteration": 1,
+    "focus": "de Gua proved in DeGuaTheorem.lean (0 sorry/0 axiom, Docker build GREEN); registered in Proofs.lean; merged to main via PR #24992",
+    "blockers": [],
+    "nextAction": "None for researcher track; gallery data delegated to enricher",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE + GALLERIED: de Gua proved (PR #24992), gallery entry src/data/proofs/pythagorean-theorem-oq-06 added (meta + annotations)",
+    "builtItems": [
+      "de_gua_core (edge-vector form) in Proofs/DeGuaTheorem.lean — crossSq identity under mutual orthogonality, via linear_combination",
+      "de_gua (vertex form) — full tetrahedron statement reduced to de_gua_core",
+      "de_gua_axis_aligned — canonical axis-aligned model, pure ring",
+      "Gallery entry created: src/data/proofs/pythagorean-theorem-oq-06/ (meta.json + 6 annotations), resolver-validated 0 misaligned"
+    ],
+    "insights": [
+      "de Gua reduces to one polynomial identity: (v-u)x(w-u) = uxv+vxw+wxu, then Binet-Cauchy cross terms vanish under orthogonality",
+      "linear_combination coefficients verified numerically over 1e5 random samples before formalizing",
+      "Local coordinate defs (dot/crossSq/areaSq on Fin 3 -> R) avoid Matrix/Fin indexing fragility"
+    ],
+    "mathlibGaps": [
+      "None blocking — only Mathlib.Tactic needed (linear_combination, ring)"
+    ],
+    "nextSteps": [
+      "Build-verify Proofs.DeGuaTheorem, register in Proofs.lean",
+      "Add gallery data under src/data/proofs/",
+      "Follow-up: n-simplex generalization; or quantify de Gua defect without orthogonality"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "euclidean-space",
+    "pythagorean",
+    "pythagorean-theorem",
+    "seeker-selected",
+    "gallery-extracted",
+    "research"
+  ],
+  "relatedProofs": [
+    "pythagorean-theorem",
+    "pythagorean-theorem-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-16T12:27:51.318Z",
+  "lastUpdate": "2026-06-16",
+  "significance": 5,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/PythagoreanTheorem.lean",
+      "filename": "PythagoreanTheorem.lean",
+      "lineCount": 215,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTheorem.lean"
+    },
+    {
+      "path": "Proofs/PythagoreanTheoremOQ03.lean",
+      "filename": "PythagoreanTheoremOQ03.lean",
+      "lineCount": 1432,
+      "theoremCount": 104,
+      "axiomCount": 0,
+      "defCount": 18,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/PythagoreanTheoremOQ05.lean",
+      "filename": "PythagoreanTheoremOQ05.lean",
+      "lineCount": 375,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTheoremOQ05.lean"
+    }
+  ]
+}

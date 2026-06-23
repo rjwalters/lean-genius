@@ -1,0 +1,175 @@
+[
+  {
+    "id": "ann-erdos-1104-oq01-mycielskian-def",
+    "proofId": "erdos-1104-oq-01",
+    "range": {
+      "startLine": 66,
+      "endLine": 75
+    },
+    "type": "definition",
+    "title": "The Mycielskian Construction M(G)",
+    "content": "mycielskian G is SimpleGraph.fromRel (mycRel G) on the vertex type MycVertex V = Option (V ⊕ V): some (Sum.inl u) is an original, some (Sum.inr u) a shadow u', and none the apex z. The raw relation mycRel joins originals as in G, joins a shadow u' to the originals adjacent to u, leaves shadows mutually non-adjacent, and joins the apex to every shadow. Routing through fromRel discharges symmetry and looplessness automatically, so only the bespoke (possibly non-symmetric) relation needs specifying. Mathlib contains no Mycielskian, so this is built from scratch.",
+    "mathContext": "$M(G)$ on $\\mathrm{Option}(V \\oplus V)$: originals join as in $G$, shadow $u'$ joins to $N_G(u)$ among originals, shadows are independent, and the apex joins to all shadows.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Mycielskian",
+      "SimpleGraph.fromRel",
+      "triangle-free chromatic number"
+    ],
+    "prerequisites": [
+      "SimpleGraph adjacency and fromRel"
+    ]
+  },
+  {
+    "id": "ann-erdos-1104-oq01-adjacency-lemmas",
+    "proofId": "erdos-1104-oq-01",
+    "range": {
+      "startLine": 79,
+      "endLine": 134
+    },
+    "type": "lemma",
+    "title": "Nine @[simp] Adjacency Characterisations",
+    "content": "Each vertex-type pair gets a @[simp] lemma fully resolving adjacency in M(G): originals adjacent iff G-adjacent (adj_orig_orig), original–shadow iff G-adjacent (adj_orig_shadow / adj_shadow_orig), shadows never adjacent (not_adj_shadow_shadow), apex–shadow always adjacent (adj_apex_shadow / adj_shadow_apex), and apex–original / apex–apex never (not_adj_apex_orig, not_adj_orig_apex, not_adj_apex_apex). Each unfolds fromRel_adj and discharges the symmetrised disjunction via mycRel and G.adj_comm. With these tagged @[simp], every downstream case analysis over the nine vertex-type combinations closes by simp_all — the engineering backbone of the whole file.",
+    "mathContext": "Adjacency in $M(G)$ is determined casewise by vertex types; making each case a simp lemma reduces all later proofs to mechanical case splits.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "simp normal form",
+      "fromRel_adj",
+      "case analysis"
+    ],
+    "prerequisites": [
+      "SimpleGraph.fromRel adjacency",
+      "adj_comm"
+    ]
+  },
+  {
+    "id": "ann-erdos-1104-oq01-trianglefree",
+    "proofId": "erdos-1104-oq-01",
+    "range": {
+      "startLine": 142,
+      "endLine": 154
+    },
+    "type": "insight",
+    "title": "Mycielski Preserves Triangle-Freeness",
+    "content": "mycielskian_cliqueFree_three: if G is triangle-free so is M(G). is3Clique_triple_iff turns a 3-clique of M(G) into three pairwise adjacencies; rcases over the three vertices across {apex, original, shadow} and simp_all with the nine adjacency lemmas eliminates every configuration except an all-originals triangle, which projects to a G-triangle and contradicts G.CliqueFree 3. Geometrically: the apex meets only the independent shadow class so lies in no triangle, and a triangle can use at most one shadow (shadows are independent), hence reduces to G.",
+    "mathContext": "A triangle in $M(G)$ uses $\\le 1$ shadow and avoids the apex, so projects to a triangle of $G$; triangle-freeness of $G$ forbids it.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "CliqueFree",
+      "is3Clique_triple_iff",
+      "independent set"
+    ],
+    "prerequisites": [
+      "triangle-free / 3-clique API"
+    ]
+  },
+  {
+    "id": "ann-erdos-1104-oq01-upper-bound",
+    "proofId": "erdos-1104-oq-01",
+    "range": {
+      "startLine": 160,
+      "endLine": 177
+    },
+    "type": "tactic",
+    "title": "Chromatic Upper Bound: an Explicit (n+1)-Colouring",
+    "content": "mycColor lifts a colouring C : G.Coloring (Fin n) to M(G): originals and their shadows keep C's colour via Fin.castSucc, and the apex takes the fresh top colour Fin.last n. mycielskian_colorable_succ proves this is proper by rcases over vertex types: same-colour-class edges reduce to C.valid (Fin.castSucc is injective), and any edge touching the apex differs because Fin.castSucc _ < Fin.last n. Hence G.Colorable n → (M G).Colorable (n+1): colourability rises by at most one, constructively.",
+    "mathContext": "$\\chi(M(G)) \\le \\chi(G) + 1$, witnessed explicitly: reuse $G$'s colours on originals and shadows, spend one new colour on the apex.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "graph colouring",
+      "Fin.castSucc",
+      "Coloring.mk"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Coloring",
+      "Fin (n+1) order"
+    ]
+  },
+  {
+    "id": "ann-erdos-1104-oq01-lower-bound",
+    "proofId": "erdos-1104-oq-01",
+    "range": {
+      "startLine": 201,
+      "endLine": 239
+    },
+    "type": "insight",
+    "title": "Chromatic Lower Bound: Mycielski's Recolouring Argument",
+    "content": "mycielskian_colorable_of_succ is the deep half: (M G).Colorable (n+1) → G.Colorable n, forcing χ(M(G)) = χ(G)+1 exactly. Given a proper (n+1)-colouring C with apex colour a := C none, define D u := if C(original u) = a then C(shadow u) else C(original u). D avoids a (shadows are apex-adjacent so never coloured a), and is proper: for an edge u~v the originals are adjacent in M(G) so C differs there, ruling out both equal to a; the three remaining branches use the shadow–original and original–shadow edges of M(G). D therefore lands in the n-element complement Fin (n+1) \\ {a}, transported to Fin n by Fintype.equivFinOfCardEq — an honest n-colouring of G.",
+    "mathContext": "Recolour each original by its shadow's colour exactly when it wears the apex colour $a$; the result is a proper colouring of $G$ avoiding $a$, hence using only $n$ colours.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "recolouring argument",
+      "Fintype.equivFinOfCardEq",
+      "chromatic increment"
+    ],
+    "prerequisites": [
+      "proper colourings",
+      "cardinality of Fin complements"
+    ]
+  },
+  {
+    "id": "ann-erdos-1104-oq01-iter-construction",
+    "proofId": "erdos-1104-oq-01",
+    "range": {
+      "startLine": 246,
+      "endLine": 282
+    },
+    "type": "definition",
+    "title": "The Iterated Witness Family: a Dependent Vertex Type",
+    "content": "Iterating M changes the underlying vertex type at every step, so the tower cannot be defined by a single fixed carrier — it must be indexed by a recursively-built type. mycVertexIter V k unfolds to V at k=0 and to MycVertex (mycVertexIter V k) at k+1, and mycielskianIter G k is defined by the matching recursion (G at 0, mycielskian applied to the previous iterate at k+1). The two single-step theorems then lift through the tower by structural induction on k: mycielskianIter_cliqueFree_three propagates triangle-freeness, and mycielskianIter_colorable propagates (n+k)-colourability (its successor case applies mycielskian_colorable_succ and realigns n+(k+1) with (n+1)+k via Nat.add_succ). mycielskian_witness_family bundles both halves: from any triangle-free n-colourable base, every iterate is triangle-free and (n+k)-colourable — the constructive (upper-bound) half of the witness tower, before the lower bound pins the chromatic number exactly.",
+    "mathContext": "The carrier of $M^k(G)$ depends on $k$ ($\\mathrm{mycVertexIter}\\,V\\,(k{+}1) = \\mathrm{MycVertex}(\\mathrm{mycVertexIter}\\,V\\,k)$); triangle-freeness and $(n{+}k)$-colourability both lift by induction on $k$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "dependent / recursive types",
+      "structural induction",
+      "iterated graph construction"
+    ],
+    "prerequisites": [
+      "recursion on ℕ-indexed types",
+      "the single-step Mycielski theorems"
+    ]
+  },
+  {
+    "id": "ann-erdos-1104-oq01-iter-iff",
+    "proofId": "erdos-1104-oq-01",
+    "range": {
+      "startLine": 294,
+      "endLine": 308
+    },
+    "type": "lemma",
+    "title": "Exact Colourability of the Iterated Tower",
+    "content": "mycielskianIter builds the k-fold Mycielskian over a recursively-defined vertex type mycVertexIter. mycielskianIter_colorable (upper) and mycielskianIter_colorable_of_add (lower, the iterated form of the recolouring argument) combine into mycielskianIter_colorable_iff: (mycielskianIter G k).Colorable (m+k) ↔ G.Colorable m. Equivalently χ(mycielskianIter G k) = χ(G) + k — the chromatic number rises by exactly one per Mycielski step, pinned both above and below.",
+    "mathContext": "$\\chi(M^k(G)) = \\chi(G) + k$: each iteration adds exactly one to the chromatic number while preserving triangle-freeness.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "iterated construction",
+      "induction on k",
+      "exact chromatic threshold"
+    ],
+    "prerequisites": [
+      "recursion on dependent vertex types"
+    ]
+  },
+  {
+    "id": "ann-erdos-1104-oq01-headline-witness",
+    "proofId": "erdos-1104-oq-01",
+    "range": {
+      "startLine": 314,
+      "endLine": 343
+    },
+    "type": "insight",
+    "title": "Headline: Triangle-Free Graphs of Every Chromatic Number",
+    "content": "Instantiating the tower at K₂ = (⊤ : SimpleGraph (Fin 2)) — triangle-free (top_fin_two_cliqueFree_three, only two vertices), 2-colourable (top_fin_two_colorable_two, identity), not 1-colourable (top_fin_two_not_colorable_one, its edge needs two colours) — gives exists_triangleFree_colorable_not_colorable: for every k there is a triangle-free graph that is (2+k)-colourable but not (1+k)-colourable, i.e. of chromatic number exactly k+2. As k → ∞ these realise triangle-free graphs of arbitrarily large chromatic number — the constructive lower-bound witnesses behind Erdős #1104, fully machine-checked.",
+    "mathContext": "For every $k$, $M^k(K_2)$ is triangle-free with $\\chi = k+2$; the family $\\{M^k(K_2)\\}_{k \\ge 0}$ has unbounded chromatic number.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "triangle-free unbounded chromatic number",
+      "Grötzsch graph",
+      "Erdős #1104 lower bound"
+    ],
+    "prerequisites": [
+      "the chromatic increment theorem",
+      "complete graph K₂ properties"
+    ]
+  }
+]

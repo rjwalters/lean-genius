@@ -1,0 +1,154 @@
+{
+  "slug": "erdos-1083-oq-02",
+  "title": "Distinct Distances Gap: Reducing the Solymosi-Vu Bound",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Can the exponent } \\frac{2(d+1)}{d(d+2)} \\text{ in the SV lower bound be improved toward } \\frac{2}{d}?",
+    "plain": "The Solymosi-Vu bound leaves a gap of 2/(d(d+2)) from the conjectured exponent 2/d. Can this gap be reduced?",
+    "whyMatters": [
+      "Closing this gap would resolve a 80-year-old Erdős problem on point configurations"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Erdős lower bound 1/d (1946)",
+      "Grid upper bound 2/d",
+      "Solymosi-Vu 2(d+1)/(d(d+2)) for d≥4"
+    ],
+    "open": [
+      "Gap elimination for any fixed d≥3"
+    ],
+    "goal": "Improve lower bound exponent toward 2/d"
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-04-13T16:00:00-07:00",
+    "iteration": 2,
+    "focus": "Progress fraction analysis and near-optimality in high dimensions",
+    "blockers": [
+      "Deep open problem — no known approach eliminates the gap"
+    ],
+    "nextAction": "Consider whether connection to Guth-Katz d=2 can yield structural insights for d≥3",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: 43 theorems (was 39). Added complete coverage characterization: general parametric threshold (d/(d+2)>=p/(p+1) iff d>=2p), sharpness, pair telescoping gap(d)+gap(d+2)=1/d-1/(d+4), and gap ratio d/(d+4). Gallery formalization COMPLETE for known theory.",
+    "builtItems": [
+      "Created Erdos1083OQ02.lean with SV bound formalization",
+      "Proved sv_improves_erdos and sv_below_conjecture (exact exponent comparison)",
+      "Derived gap_formula: exact gap = 2/(d(d+2))",
+      "Gallery entry at src/data/proofs/erdos-1083-oq-02/",
+      "sv_progress_fraction: d/(d+2) of gap covered (field_simp+ring)",
+      "relative_gap_formula: relative gap = 1/(d+2) (field_simp+ring)",
+      "sv_covers_majority: ≥1/2 coverage for d≥2 (div_le_div_iff)",
+      "sv_covers_five_sixths: ≥5/6 coverage for d≥10",
+      "relative_gap_decreasing: monotone in d (div_le_div_iff)",
+      "improvement_reduces_gap: any α>SV reduces gap below 2/(d(d+2))",
+      "concrete computations: progress_d4=2/3, progress_d10=5/6, gaps for d=4,10",
+      "sv_improvement_over_erdos: SV exponent - Erdős exponent = 1/(d+2) [Erdos1083OQ02.lean:186]",
+      "sv_covers_d_over_d_plus_2_of_total_gap: SV closes d/(d+2) of full Erdős→conjecture gap [Erdos1083OQ02.lean:204]",
+      "sv_remaining_gap_fraction: remaining open fraction = 2/(d+2) [Erdos1083OQ02.lean:222]",
+      "sv_progress_fraction_d4: d=4 progress = 2/3",
+      "sv_progress_fraction_d10: d=10 progress = 5/6",
+      "gap_exceeds_reciprocal_sq: 1/d² < 2/(d(d+2)) for d≥3 [Erdos1083OQ02.lean:196]",
+      "gap_below_twice_reciprocal_sq: 2/(d(d+2)) < 2/d² for d≥1 [Erdos1083OQ02.lean:207]",
+      "gap_strictly_decreasing: 2/((d+1)(d+3)) < 2/(d(d+2)) for d≥4 [Erdos1083OQ02.lean:216]",
+      "sv_fraction_of_conjecture: SV = (d+1)/(d+2) × (2/d) [Erdos1083OQ02.lean:232]",
+      "sv_fraction_increasing: (d+1)/(d+2) strictly increases in d [Erdos1083OQ02.lean:243]",
+      "sv_covers_three_quarters: d/(d+2)≥3/4 for d≥6 [Erdos1083OQ02.lean:258]",
+      "sv_covers_eleven_twelfths: d/(d+2)≥11/12 for d≥22 [Erdos1083OQ02.lean:268]",
+      "gap_partial_fractions: 2/(d(d+2)) = 1/d - 1/(d+2) — partial fractions decomposition [Erdos1083OQ02.lean:272]",
+      "sv_exponent_strictly_decreasing: SV exponent 2(d+1)/(d(d+2)) is itself strictly decreasing for d≥1 [Erdos1083OQ02.lean:284]",
+      "sv_covers_two_thirds_all_d: for ALL d≥4 (SV range), coverage ≥2/3; threshold exact at d=4 [Erdos1083OQ02.lean:296]",
+      "Dimensional evaluations at d=5: gap 2/35, SV exponent 12/35, SV fraction 6/7, progress 5/7 [Erdos1083OQ02.lean:304]",
+      "gap_adjacent_even_telescope in Erdos1083OQ02.lean:409 — gap(d)+gap(d+2)=1/d-1/(d+4)",
+      "gap_consecutive_ratio in Erdos1083OQ02.lean:423 — gap(d+2)/gap(d) = d/(d+4)",
+      "sv_coverage_fraction_threshold in Erdos1083OQ02.lean:440 — general threshold: d>=2p iff coverage>=p/(p+1)",
+      "sv_coverage_fraction_threshold_sharp in Erdos1083OQ02.lean:452 — sharpness of the threshold"
+    ],
+    "insights": [
+      "SV exponent 2(d+1)/(d(d+2)) is strictly between 1/d and 2/d for d≥4",
+      "Gap 2/(d(d+2)) shrinks as O(1/d²) but persists for each fixed d",
+      "For d=4 gap is 1/12, for d=10 gap is 1/60 — small but nonzero",
+      "No recent (2024-2025) breakthroughs on this specific gap reduction",
+      "SV covers d/(d+2) of the exponent gap from Erdos baseline to conjecture",
+      "Relative gap (fraction of conjectured exponent still missing) = 1/(d+2)",
+      "For d=4: SV covers 2/3 of gap; for d=10: 5/6; approaches 1 as d→∞",
+      "For all d≥2: SV covers at least half the gap (monotone in d)",
+      "Progress fraction theorem: SV closes exactly d/(d+2) of the full Erdős→conjecture gap. This is equivalent to sv_fraction_of_conjecture but viewed from a different angle (Erdős baseline vs conjecture)",
+      "The remaining open fraction is 2/(d+2): for d=4 this is 1/3, for d=10 it is 1/6, decreasing to 0",
+      "Gap tight bounds: 1/d² < 2/(d(d+2)) < 2/d² — gap is exactly order 1/d²",
+      "Absolute gap is strictly decreasing: each additional dimension shrinks the gap",
+      "General threshold pattern: d/(d+2)≥(k-1)/k ↔ d≥2(k-1); covers 3/4 for d≥6, 11/12 for d≥22",
+      "Formalization is complete: 25 theorems, 0 sorries, 5 axioms — gap reduction itself is genuinely open",
+      "Partial fractions: 2/(d(d+2)) = 1/d - 1/(d+2); explains telescoping and O(1/d²) behavior at once",
+      "SV exponent itself is strictly DECREASING (not the gap, the actual bound value) — both conjecture and SV exponent tend to 0 as d→∞; the gap decreases faster",
+      "Coverage threshold is exactly d=2p for fraction p/(p+1): proved as iff, unifying the 2/3, 3/4, 11/12 threshold cases",
+      "Adjacent even-indexed gaps telescope: gap(d)+gap(d+2) = 1/d-1/(d+4) — 1/(d+2) terms cancel via partial fractions",
+      "Gap ratio gap(d+2)/gap(d) = d/(d+4), approaching 1 from below — near-geometric decay"
+    ],
+    "mathlibGaps": [
+      "No formalization of incidence geometry in ℝ^d",
+      "No distinct distances infrastructure in Mathlib"
+    ],
+    "nextSteps": [
+      "Monitor for new results on higher-dimensional incidence bounds"
+    ],
+    "markdown": ""
+  },
+  "tags": [
+    "combinatorics",
+    "geometry-of-numbers",
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-108",
+    "erdos-1083",
+    "erdos-1083-oq-02"
+  ],
+  "references": {
+    "papers": [
+      "Solymosi-Vu 2008 Combinatorica"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1083"
+    ],
+    "mathlib": []
+  },
+  "started": "2026-04-13T16:00:00-07:00",
+  "significance": 7,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1083OQ02.lean",
+      "filename": "Erdos1083OQ02.lean",
+      "lineCount": 557,
+      "theoremCount": 47,
+      "axiomCount": 6,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1083OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos1083Problem.lean",
+      "filename": "Erdos1083Problem.lean",
+      "lineCount": 87,
+      "theoremCount": 1,
+      "axiomCount": 2,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1083Problem.lean"
+    }
+  ]
+}

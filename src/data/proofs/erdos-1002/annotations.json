@@ -1,0 +1,245 @@
+[
+  {
+    "id": "ann-1002-frac",
+    "proofId": "erdos-1002",
+    "range": {
+      "startLine": 38,
+      "endLine": 40
+    },
+    "type": "definition",
+    "title": "Fractional Part Function",
+    "content": "The fractional part $\\{x\\} = x - \\lfloor x \\rfloor$ maps $\\mathbb{R}$ to $[0, 1)$. For irrational $\\alpha$, the sequence $\\{\\alpha\\}, \\{2\\alpha\\}, \\{3\\alpha\\}, \\ldots$ is equidistributed in $[0,1)$ by Weyl's equidistribution theorem (1916). The deviation $1/2 - \\{x\\}$ has mean zero over $[0,1)$, so the sum $\\sum (1/2 - \\{\\alpha k\\})$ measures the cumulative deviation from uniformity.",
+    "mathContext": "$\\{x\\} = x - \\lfloor x \\rfloor \\in [0, 1)$ with $\\int_0^1 (1/2 - \\{x\\})\\,dx = 0$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "floor function",
+      "equidistribution",
+      "Weyl's theorem"
+    ],
+    "prerequisites": [
+      "Int.floor",
+      "Int.fract"
+    ]
+  },
+  {
+    "id": "ann-1002-innersum",
+    "proofId": "erdos-1002",
+    "range": {
+      "startLine": 49,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "Inner Sum and Weighted Function f(alpha, n)",
+    "content": "The inner sum $S(\\alpha, n) = \\sum_{k=1}^{n} (1/2 - \\{\\alpha k\\})$ accumulates the deviation of $\\{\\alpha k\\}$ from the midpoint $1/2$. The normalized function $f(\\alpha, n) = S(\\alpha, n)/\\log n$ rescales by the natural logarithm. The choice of $\\log n$ normalization is natural because for 'typical' $\\alpha$, the inner sum grows roughly as $\\log n$ — this follows from the theory of continued fractions and the Gauss-Kuzmin statistics of the partial quotients.",
+    "mathContext": "$f(\\alpha, n) = \\frac{1}{\\log n} \\sum_{k=1}^{n} \\left(\\frac{1}{2} - \\{\\alpha k\\}\\right)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Weyl sums",
+      "discrepancy",
+      "logarithmic normalization"
+    ],
+    "prerequisites": [
+      "Int.fract",
+      "Real.log",
+      "Finset.sum"
+    ]
+  },
+  {
+    "id": "ann-1002-distfunc",
+    "proofId": "erdos-1002",
+    "range": {
+      "startLine": 65,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "Distribution Function",
+    "content": "A distribution function $g : \\mathbb{R} \\to [0,1]$ is a non-decreasing function with $\\lim_{c \\to -\\infty} g(c) = 0$ and $\\lim_{c \\to +\\infty} g(c) = 1$. In the context of this problem, $g(c)$ represents the limiting proportion of $\\alpha \\in (0,1)$ for which $f(\\alpha, n) \\le c$. The existence of such a $g$ means the 'statistical behavior' of $f$ over all $\\alpha$ stabilizes as $n \\to \\infty$.",
+    "mathContext": "$g : \\mathbb{R} \\to [0,1]$ non-decreasing with $g(-\\infty) = 0$, $g(+\\infty) = 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "cumulative distribution function",
+      "weak convergence",
+      "measure theory"
+    ],
+    "prerequisites": [
+      "Monotone",
+      "Filter.Tendsto"
+    ]
+  },
+  {
+    "id": "ann-1002-levelset",
+    "proofId": "erdos-1002",
+    "range": {
+      "startLine": 78,
+      "endLine": 89
+    },
+    "type": "definition",
+    "title": "Level Set and Asymptotic Distribution",
+    "content": "The level set $L(n, c) = \\{\\alpha \\in (0,1) : f(\\alpha, n) \\le c\\}$ is a measurable subset of $(0,1)$ whose Lebesgue measure $\\mu(L(n,c))$ is the proportion of $\\alpha$ values with $f(\\alpha, n) \\le c$. The function $f$ has an **asymptotic distribution** if there exists a distribution function $g$ such that $\\mu(L(n, c)) \\to g(c)$ for every continuity point $c$ of $g$. This is precisely weak convergence of the induced measures.",
+    "mathContext": "$L(n, c) = \\{\\alpha \\in (0,1) : f(\\alpha, n) \\le c\\}$, $\\mu(L(n,c)) \\to g(c)$ as $n \\to \\infty$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lebesgue measure",
+      "weak convergence",
+      "Prokhorov's theorem"
+    ],
+    "prerequisites": [
+      "MeasureTheory.MeasureSpace",
+      "Filter.Tendsto"
+    ]
+  },
+  {
+    "id": "ann-1002-conjecture",
+    "proofId": "erdos-1002",
+    "range": {
+      "startLine": 98,
+      "endLine": 99
+    },
+    "type": "definition",
+    "title": "Main Conjecture (OPEN)",
+    "content": "The central question: does $f(\\alpha, n)$ possess an asymptotic distribution function? Erdős conjectured it does, but the answer remains unknown. If the distribution exists, a natural guess (motivated by Kesten's theorem) is the Cauchy distribution $g(c) = \\frac{1}{\\pi}\\arctan(\\rho c) + \\frac{1}{2}$ for some parameter $\\rho > 0$. However, fixing $\\beta = 0$ may change the distributional behavior entirely.",
+    "mathContext": "$\\exists\\, g,\\; \\forall\\, c,\\; \\lim_{n \\to \\infty} \\mu(\\{\\alpha : f(\\alpha, n) \\le c\\}) = g(c)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős problems",
+      "open problems",
+      "limit distributions"
+    ],
+    "prerequisites": [
+      "hasAsymptoticDistribution",
+      "f"
+    ]
+  },
+  {
+    "id": "ann-1002-twoparam",
+    "proofId": "erdos-1002",
+    "range": {
+      "startLine": 111,
+      "endLine": 126
+    },
+    "type": "definition",
+    "title": "Two-Parameter Variant and Cauchy Distribution",
+    "content": "The two-parameter variant introduces a shift: $f(\\alpha, \\beta, n) = \\frac{1}{\\log n} \\sum_{k=1}^{n} (1/2 - \\{\\beta + \\alpha k\\})$. The extra parameter $\\beta$ allows averaging over both $\\alpha$ and $\\beta$, which provides the ergodic independence needed for limit theorems. The Cauchy distribution function $g(c) = \\frac{1}{\\pi}\\arctan(\\rho c) + \\frac{1}{2}$ arises naturally from the connection to continued fractions and the Gauss map $T(x) = \\{1/x\\}$ on $(0,1)$.",
+    "mathContext": "$f(\\alpha, \\beta, n) = \\frac{1}{\\log n} \\sum_{k=1}^{n} \\left(\\frac{1}{2} - \\{\\beta + \\alpha k\\}\\right)$, $g(c) = \\frac{1}{\\pi}\\arctan(\\rho c) + \\frac{1}{2}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cauchy distribution",
+      "Gauss map",
+      "ergodic theory"
+    ],
+    "prerequisites": [
+      "Real.arctan",
+      "f"
+    ]
+  },
+  {
+    "id": "ann-1002-kesten",
+    "proofId": "erdos-1002",
+    "range": {
+      "startLine": 132,
+      "endLine": 140
+    },
+    "type": "concept",
+    "title": "Kesten's Theorem (1960)",
+    "content": "Harry Kesten (1960) proved that the two-parameter variant $f(\\alpha, \\beta, n)$ has an asymptotic Cauchy distribution when averaged over both $\\alpha$ and $\\beta$ uniformly on $(0,1)^2$. The proof uses the connection between continued fractions and the ergodic properties of the natural extension of the Gauss map. This landmark result in the metric theory of continued fractions remains one of the deepest applications of ergodic theory to number theory.",
+    "mathContext": "$\\mu(\\{(\\alpha, \\beta) : f(\\alpha, \\beta, n) \\le c\\}) \\to \\frac{1}{\\pi}\\arctan(\\rho c) + \\frac{1}{2}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "metric number theory",
+      "Gauss-Kuzmin theorem",
+      "natural extension"
+    ],
+    "prerequisites": [
+      "twoParamF",
+      "cauchyDistribution"
+    ]
+  },
+  {
+    "id": "ann-1002-special",
+    "proofId": "erdos-1002",
+    "range": {
+      "startLine": 149,
+      "endLine": 152
+    },
+    "type": "concept",
+    "title": "One-Parameter as Special Case",
+    "content": "The one-parameter function satisfies $f(\\alpha, n) = f(\\alpha, 0, n)$: it is the two-parameter variant with $\\beta = 0$. This relationship shows why Problem #1002 is a natural refinement of Kesten's theorem — but fixing $\\beta = 0$ eliminates the averaging that makes Kesten's proof work. The conditional distribution (given $\\beta = 0$) may differ from the unconditional Cauchy distribution.",
+    "mathContext": "$f(\\alpha, n) = f(\\alpha, 0, n)$, i.e., the one-parameter case is $\\beta = 0$",
+    "significance": "key",
+    "relatedConcepts": [
+      "conditional distribution",
+      "marginal distribution",
+      "specialization"
+    ],
+    "prerequisites": [
+      "f",
+      "twoParamF"
+    ]
+  },
+  {
+    "id": "ann-1002-weyl",
+    "proofId": "erdos-1002",
+    "range": {
+      "startLine": 176,
+      "endLine": 179
+    },
+    "type": "concept",
+    "title": "Weyl Equidistribution Theorem",
+    "content": "Hermann Weyl's theorem (1916): for irrational $\\alpha$, the sequence $(\\{n\\alpha\\})_{n \\ge 1}$ is equidistributed modulo 1, meaning $\\frac{1}{N}\\#\\{1 \\le n \\le N : \\{n\\alpha\\} \\in [a,b)\\} \\to b - a$ as $N \\to \\infty$. This implies $\\frac{1}{n}\\sum_{k=1}^{n}(1/2 - \\{\\alpha k\\}) \\to 0$, so the inner sum grows sublinearly. The $\\log n$ normalization captures the precise growth rate.",
+    "mathContext": "$\\frac{1}{N}\\#\\{n \\le N : \\{n\\alpha\\} \\in [a,b)\\} \\to b - a$ (Weyl 1916)",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Weyl's criterion",
+      "exponential sums",
+      "ergodic theorem"
+    ],
+    "prerequisites": [
+      "Irrational"
+    ]
+  },
+  {
+    "id": "ann-1002-oscillation",
+    "proofId": "erdos-1002",
+    "range": {
+      "startLine": 160,
+      "endLine": 167
+    },
+    "type": "concept",
+    "title": "Oscillation for Fixed alpha",
+    "content": "For fixed irrational $\\alpha$, the function $n \\mapsto f(\\alpha, n)$ oscillates: it does not converge to a limit. This oscillation reflects the arithmetic structure of $\\alpha$'s continued fraction expansion — the partial quotients cause the sum to swing as denominators of convergents are reached. The distribution question asks about the statistical behavior over *all* $\\alpha$, not a single fixed one.",
+    "mathContext": "For fixed irrational $\\alpha$, $f(\\alpha, n)$ does not converge as $n \\to \\infty$",
+    "significance": "key",
+    "relatedConcepts": [
+      "continued fractions",
+      "convergents",
+      "three-distance theorem"
+    ],
+    "prerequisites": [
+      "f",
+      "Irrational"
+    ]
+  },
+  {
+    "id": "ann-1002-bounded",
+    "proofId": "erdos-1002",
+    "range": {
+      "startLine": 160,
+      "endLine": 167
+    },
+    "type": "concept",
+    "title": "Boundedness and Continued Fraction Bound",
+    "content": "Two partial results: (1) $f(\\alpha, n)$ is bounded for each $\\alpha \\in (0,1)$, ensuring no extreme outliers, and (2) $|S(\\alpha, n)| \\le C \\log n$ for irrational $\\alpha$, where $C$ depends on $\\alpha$'s continued fraction expansion. This bound follows from the classical estimate $|\\sum_{k=1}^{n} e^{2\\pi i k\\alpha}| \\le \\cot(\\pi \\|\\alpha\\|/2)$ and the three-distance theorem. These bounds justify the $\\log n$ normalization.",
+    "mathContext": "$|f(\\alpha, n)| \\le C(\\alpha)$ and $|S(\\alpha, n)| \\le C(\\alpha) \\log n$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős-Turán inequality",
+      "exponential sums",
+      "three-distance theorem"
+    ],
+    "prerequisites": [
+      "f",
+      "innerSum",
+      "Real.log"
+    ]
+  }
+]

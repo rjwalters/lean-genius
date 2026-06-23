@@ -1,0 +1,189 @@
+[
+  {
+    "id": "ann-e816-header",
+    "proofId": "erdos-816",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #816: Equal-Degree Vertices and Paths of Length 3**\n\nA problem of Erdős and Hajnal asking:\n\nIf G has 2n+1 vertices and n² + n + 1 edges, must it contain two vertices of the same degree connected by a path of length 3?\n\n**Answer:** YES (Chen-Ma, 2025)\n\n**Key Insight:** K_{n,n+1} with n² + n edges is the unique obstruction.",
+    "mathContext": "This is a Turán-type extremal graph problem about forced substructures.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán problems",
+      "Bipartite graphs",
+      "Degree sequences"
+    ],
+    "prerequisites": [
+      "Extremal Graph Theory",
+      "Vertex Degree",
+      "Turán-Type Problems"
+    ]
+  },
+  {
+    "id": "ann-e816-path3",
+    "proofId": "erdos-816",
+    "range": {
+      "startLine": 63,
+      "endLine": 84
+    },
+    "type": "definition",
+    "title": "Path of Length 3 and Symmetry",
+    "content": "**hasPath3:** A path of length 3 from u to v consists of 4 distinct vertices u - a - b - v where consecutive pairs are adjacent.\n\n**hasPath3_symm:** Constructive proof that paths of length 3 are symmetric: if there's a path from u to v, reversing gives one from v to u.\n\nPath length 3 is crucial: in bipartite graphs, each step alternates parts, so length-3 paths between same-part vertices don't exist.",
+    "mathContext": "In bipartite graphs, paths alternate between parts, so length-3 paths between same-part vertices don't exist.",
+    "significance": "key",
+    "relatedConcepts": [
+      "path graphs",
+      "graph walks",
+      "P4 subgraph",
+      "vertex-disjoint paths"
+    ],
+    "prerequisites": [
+      "Graph Paths And Walks",
+      "Vertex Adjacency",
+      "Bipartite Graphs"
+    ]
+  },
+  {
+    "id": "ann-e816-main-prop",
+    "proofId": "erdos-816",
+    "range": {
+      "startLine": 90,
+      "endLine": 102
+    },
+    "type": "definition",
+    "title": "Equal-Degree Path-3 Pair",
+    "content": "**sameDegree:** Two vertices have the same degree in graph G.\n\n**hasEqualDegreePath3Pair:** The main property: existence of distinct vertices with same degree connected by path of length 3. This is what the problem asks whether dense graphs must have.",
+    "significance": "key",
+    "relatedConcepts": [
+      "degree sequences",
+      "equal-degree vertices",
+      "P3 path conditions",
+      "Erdős-Hajnal conjecture"
+    ],
+    "mathContext": "See annotation content for formal details of equal-degree path-3 pair",
+    "prerequisites": [
+      "Vertex Degree",
+      "Degree Sequence",
+      "Existential Quantification"
+    ]
+  },
+  {
+    "id": "ann-e816-conditions",
+    "proofId": "erdos-816",
+    "range": {
+      "startLine": 108,
+      "endLine": 122
+    },
+    "type": "definition",
+    "title": "Erdős-Hajnal and Chen-Ma Conditions",
+    "content": "**satisfiesEH816:** A graph has 2n+1 vertices and n² + n + 1 edges (original problem).\n\n**satisfiesWeakerEH816:** A graph has 2n+1 vertices and at least n² + n edges (Chen-Ma's stronger version). With this weaker condition, only K_{n,n+1} fails.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős-Hajnal conditions",
+      "graph edge density",
+      "Chen-Ma theorem",
+      "vertex-edge bounds"
+    ],
+    "mathContext": "See annotation content for formal details of erdős-hajnal and chen-ma conditions",
+    "prerequisites": [
+      "Edge Count Bounds",
+      "Complete Bipartite Graph",
+      "Extremal Threshold"
+    ]
+  },
+  {
+    "id": "ann-e816-bipartite",
+    "proofId": "erdos-816",
+    "range": {
+      "startLine": 128,
+      "endLine": 151
+    },
+    "type": "definition",
+    "title": "Complete Bipartite Graph and Counterexample",
+    "content": "**isCompleteBipartite:** K_{n,n+1} is the complete bipartite graph with parts of size n and n+1. All edges go between parts, giving n² + n total edges.\n\n**K_counterexample:** K_{n,n+1} does NOT contain an equal-degree path-3 pair. Part A has degree n+1, part B has degree n, so same-degree vertices are in the same part. But length-3 paths between same-part vertices don't exist in bipartite graphs.\n\nThis shows the threshold n² + n + 1 is tight.",
+    "mathContext": "K_{n,n+1} is the unique extremal graph for the problem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "formal definition",
+      "graph theory"
+    ],
+    "prerequisites": [
+      "Complete Bipartite Graph",
+      "Bipartite Degree Structure",
+      "Extremal Counterexample"
+    ]
+  },
+  {
+    "id": "ann-e816-chen-ma",
+    "proofId": "erdos-816",
+    "range": {
+      "startLine": 157,
+      "endLine": 188
+    },
+    "type": "concept",
+    "title": "Chen-Ma Theorem and Main Results",
+    "content": "**chen_ma_theorem:** For n ≥ 600, every graph on 2n+1 vertices with ≥ n² + n edges contains an equal-degree path-3 pair, EXCEPT K_{n,n+1}.\n\n**erdos_816_for_large_n:** Corollary for n ≥ 600 with n² + n + 1 edges (G cannot be K_{n,n+1} since it has fewer edges).\n\n**erdos_816_full:** The complete answer for all n: axiomatized as the full resolution of Problem #816.",
+    "mathContext": "Chen-Ma (2025, arXiv:2503.19569) resolved this decades-old Erdős-Hajnal problem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Chen-Ma theorem 2019",
+      "graph Ramsey theory",
+      "extremal graph theory",
+      "P4 existence"
+    ],
+    "prerequisites": [
+      "Extremal Graph Theory",
+      "Unique Extremal Graph",
+      "Asymptotic Conditions"
+    ]
+  },
+  {
+    "id": "ann-e816-pigeonhole",
+    "proofId": "erdos-816",
+    "range": {
+      "startLine": 194,
+      "endLine": 200
+    },
+    "type": "concept",
+    "title": "Pigeonhole for Degrees",
+    "content": "**pigeonhole_degrees:** In any graph with at least 2 vertices, some pair of vertices must share a degree. There are only n possible degrees (0 to n-1) among n vertices, so by pigeonhole, at least two coincide.",
+    "significance": "supporting",
+    "mathContext": "See annotation content for formal details of pigeonhole for degrees",
+    "relatedConcepts": [
+      "graph theory",
+      "Lean 4 formalization"
+    ],
+    "prerequisites": [
+      "Pigeonhole Principle",
+      "Degree Range Bound",
+      "Vertex Degree"
+    ]
+  },
+  {
+    "id": "ann-e816-summary",
+    "proofId": "erdos-816",
+    "range": {
+      "startLine": 206,
+      "endLine": 206
+    },
+    "type": "concept",
+    "title": "Summary",
+    "content": "**erdos_816_summary:** The complete resolution: for all n, graphs with 2n+1 vertices and n² + n + 1 edges contain equal-degree vertices joined by path of length 3.\n\n**Stronger Result:** For n ≥ 600, even n² + n edges suffice, except K_{n,n+1}.\n\n**Threshold:** K_{n,n+1} has exactly n² + n edges and fails. One more edge forces the property.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complete bipartite graphs",
+      "K_{n,n+1} counterexample",
+      "graph theory open problems",
+      "Erdős problems solved"
+    ],
+    "mathContext": "See annotation content for formal details of summary",
+    "prerequisites": [
+      "Edge Density Threshold",
+      "Complete Bipartite Graph",
+      "Extremal Graph Theory"
+    ]
+  }
+]

@@ -1,0 +1,298 @@
+{
+  "id": "dirichlets-theorem-oq-01",
+  "title": "Siegel Zeros: Can L(1, χ) Be Very Small? (Open Question)",
+  "slug": "dirichlets-theorem-oq-01",
+  "description": "Can L(1, χ) be extremely close to zero for real Dirichlet characters χ of large conductor? Dirichlet's theorem (in Mathlib) proves L(1, χ) ≠ 0, but how small can it get? A 'Siegel zero' would be a real zero β of L(s, χ) in (1 - c/log(q), 1) — their existence is a major open question in analytic number theory, intimately connected to the Generalized Riemann Hypothesis.",
+  "meta": {
+    "author": "Open (Siegel 1935 for bounds; Landau-Page theorem; Goldfeld 1976 conditional on GRH)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Siegel_zero",
+    "date": "1935",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/DirichletsTheoremOQ01.lean",
+    "tags": [
+      "number-theory",
+      "primes",
+      "classic",
+      "dirichlet",
+      "analytic-number-theory",
+      "l-functions",
+      "arithmetic-progressions",
+      "open-problem",
+      "research",
+      "grh"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "LFunction_apply_one_ne_zero",
+        "description": "For non-trivial Dirichlet character χ modulo N, L(1, χ) ≠ 0",
+        "module": "Mathlib.NumberTheory.LSeries.Nonvanishing"
+      },
+      {
+        "theorem": "DirichletCharacter",
+        "description": "Dirichlet characters modulo N over ℂ",
+        "module": "Mathlib.NumberTheory.DirichletCharacter.Basic"
+      },
+      {
+        "theorem": "LFunction",
+        "description": "The L-function associated to a Dirichlet character, with analytic continuation",
+        "module": "Mathlib.NumberTheory.LSeries.DirichletContinuation"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm of real numbers — used for the zero-free region bound c/log(q)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "differentiable_LFunction",
+        "description": "For non-trivial Dirichlet character χ, LFunction χ is ℂ-differentiable everywhere",
+        "module": "Mathlib.NumberTheory.LSeries.DirichletContinuation"
+      },
+      {
+        "theorem": "HasDerivAt.comp_ofReal",
+        "description": "Converts ℂ-derivative at real point to ℝ-derivative of real restriction",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Deriv"
+      },
+      {
+        "theorem": "norm_image_sub_le_of_norm_deriv_le_segment'",
+        "description": "MVT: if derivative norm ≤ C on [a,b], then ‖f b - f a‖ ≤ C * (b - a)",
+        "module": "Mathlib.Analysis.Calculus.MeanValue"
+      }
+    ],
+    "originalContributions": [
+      "Definition IsSiegelZero: β ∈ (1 - c/log(N), 1) ∧ L(β, χ) = 0",
+      "Definition HasSiegelZero: ∃ β, IsSiegelZero χ β c hc hN",
+      "Definition SiegelZeroConjecture: no Siegel zeros exist for any character",
+      "Theorem L_one_ne_zero: wraps Mathlib's LFunction_apply_one_ne_zero",
+      "Theorem siegel_zero_implies_small_L_one: if β is a Siegel zero, then |L(1,χ)| ≤ (1-β)·M (MVT step fully proved, taking a derivative bound on [β,1] as hypothesis)",
+      "Theorem no_siegel_zero_gives_lower_bound: no Siegel zero → L(1,χ) > 0 (from Mathlib nonvanishing)",
+      "Axiom siegel_theorem: L(1,χ) > C(ε)/q^ε for any ε > 0 (Siegel 1935, ineffective)",
+      "Axiom grh_implies_no_siegel_zeros: GRH → effective lower bound L(1,χ) ≫ 1/(log q)²",
+      "Axiom landau_page_theorem: at most one exceptional character per conductor range",
+      "Theorem siegel_zero_location_constraint: chains Siegel axiom to give concrete lower bound"
+    ],
+    "dateAdded": "2026-02-23",
+    "axiomCount": 5,
+    "lineCount": 705,
+    "assumptions": "5 axioms: siegel_theorem, grh_implies_no_siegel_zeros, landau_page_theorem, and 2 more. See Lean source for complete statements.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 31,
+    "definitionCount": 5
+  },
+  "overview": {
+    "historicalContext": "Dirichlet's 1837 theorem that L(1, χ) ≠ 0 for non-trivial characters was the key analytic step for proving infinitely many primes in arithmetic progressions. But knowing L(1, χ) is nonzero doesn't tell us HOW SMALL it can be. This quantitative question turned out to be extraordinarily deep.\n\nIn 1935, Siegel proved (ineffectively!) that L(1, χ) > C(ε)/q^ε for any fixed ε > 0, where C(ε) is a positive constant. The catch: the proof of C(ε) > 0 is non-constructive (it uses a 'Siegel zero repulsion' argument). No one has ever been able to make it effective.\n\nThe term 'Siegel zero' refers to a hypothetical real zero of L(s, χ) very close to s = 1. If such a zero β exists with β > 1 - c/log(q), then by the mean value theorem L(1, χ) ~ (1-β) is exponentially small, contradicting what's needed for primes in progressions.\n\nThe Landau-Page theorem (proved by Landau in 1918 and Page in 1935) shows at most ONE primitive real character per conductor range can have a Siegel zero. This 'exceptional character' phenomenon is the heart of the open question.",
+    "problemStatement": "**Open Question (dirichlets-theorem-oq-01)**: Do Siegel zeros exist? That is, does there exist a sequence of real primitive Dirichlet characters χ_q of conductor q → ∞ with a real zero β_q of L(s, χ_q) satisfying β_q > 1 - c/log(q)?\n\n**Equivalently**: Is Siegel's lower bound L(1, χ) > C(ε)/q^ε sharp (up to the ε), or can we prove an effective lower bound L(1, χ) ≫ 1/log(q)?\n\n**What IS known**:\n- L(1, χ) ≠ 0 for all non-trivial χ (Mathlib, proved)\n- L(1, χ) > C(ε)/q^ε for any ε > 0 (Siegel 1935, proved but ineffective)\n- At most one exceptional character per conductor range (Landau-Page, proved)\n- Conditional on GRH: L(1, χ) ≫ 1/(log q)² (effective, GRH → no Siegel zeros)\n- Siegel zeros: **OPEN** (expected impossible, but unproved).",
+    "text": "Can L(1, χ) be extremely close to zero for real Dirichlet characters χ of large conductor? Dirichlet's theorem (in Mathlib) proves L(1, χ) ≠ 0, but how small can it get? A 'Siegel zero' would be a real zero β of L(s, χ) in (1 - c/log(q), 1) — their existence is a major open question in analytic number theory, intimately connected to the Generalized Riemann Hypothesis.",
+    "proofStrategy": "We formalize the current state of knowledge:\n\n**1. Nonvanishing (proved)**: `L_one_ne_zero` wraps Mathlib's `LFunction_apply_one_ne_zero`, which is the key step in Dirichlet's theorem on primes in arithmetic progressions.\n\n**2. Definitions**: `IsSiegelZero`, `HasSiegelZero`, `SiegelZeroConjecture` formalize the geometric picture: a Siegel zero is a real zero in the 'forbidden region' (1 - c/log(q), 1).\n\n**3. Key implication (proved)**: `siegel_zero_implies_small_L_one` shows that a Siegel zero β implies |L(1,χ)| ≤ (1-β)·M for some derivative bound M. The proof is complete (no sorry): it takes a derivative bound on [β,1] as a hypothesis and discharges the Mean Value Theorem calculation via `differentiable_LFunction`, `HasDerivAt.comp_ofReal`, and `norm_image_sub_le_of_norm_deriv_le_segment'`.\n\n**4. Partial results (axiomized)**:\n- `siegel_theorem`: The ineffective lower bound L(1,χ) > C(ε)/q^ε (requires Landau-Page machinery not in Mathlib)\n- `grh_implies_no_siegel_zeros`: GRH implies the effective bound ≫ 1/(log q)² (requires GRH itself)\n- `landau_page_theorem`: At most one exceptional character per range (requires deep zero-free region theory)\n\n**5. Consequences**: `siegel_zero_location_constraint` chains the Siegel axiom to give concrete lower bounds on L(1,χ) regardless of zero locations.",
+    "keyInsights": [
+      "The key difficulty: Siegel's proof of C(ε) > 0 uses a 'self-referential' argument — it considers two hypothetical near-Siegel-zero characters and shows they repel each other, forcing at most one to exist. This non-constructive trick is why the constant C(ε) cannot be made effective",
+      "GRH (no zeros with Re(s) > 1/2) immediately implies no Siegel zeros, since Siegel zeros have β → 1 which is > 1/2. So GRH solves this problem as a special case",
+      "Siegel zeros would have dramatic consequences: they are intimately connected to Chebyshev's bias, the distribution of primes in progressions, and Linnik's theorem on the smallest prime in an arithmetic progression",
+      "The Landau-Page theorem gives a useful structure: among all real primitive characters of conductor ≤ Q, AT MOST ONE can have a Siegel zero. This 'exceptional character' monopolizes the potential zeros",
+      "Mathlib's `LFunction_apply_one_ne_zero` gives L(1,χ) ≠ 0 for free — the Siegel zero question is purely quantitative, asking how close to 0 is possible"
+    ],
+    "prerequisites": [
+      "Analytic number theory (Dirichlet L-functions, characters)",
+      "Complex analysis (analytic continuation, residues)",
+      "Number theory (arithmetic progressions, primes in residue classes)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement and Context",
+      "startLine": 1,
+      "endLine": 61,
+      "summary": "Module docstring: overview of the Siegel zero problem, what a Siegel zero is, the partial answer (L(1,χ) ≠ 0 is proved; whether an exact Siegel zero can occur stays open), and the connection to Dirichlet L-functions, plus imports and namespace.",
+      "mathContext": "Open question on Siegel zeros of Dirichlet L-functions; L(1,χ)≠0 is known, the exact-zero question is open."
+    },
+    {
+      "id": "part1-nonvanishing",
+      "title": "Part I: L(1, χ) ≠ 0 — The Known Nonvanishing Result",
+      "startLine": 62,
+      "endLine": 74,
+      "summary": "`L_one_ne_zero`: wraps Mathlib's `LFunction_apply_one_ne_zero` to give L(1,χ) ≠ 0 for non-trivial Dirichlet characters.",
+      "mathContext": "$L(1,\\chi) \\neq 0$ for non-principal $\\chi$ (from Mathlib)."
+    },
+    {
+      "id": "part2-definitions",
+      "title": "Part II: Formal Definition of Siegel Zeros",
+      "startLine": 75,
+      "endLine": 103,
+      "summary": "Formal definitions `IsSiegelZero`, `HasSiegelZero`, and the `SiegelZeroConjecture` predicate capturing a real zero of L(s,χ) very close to s=1.",
+      "mathContext": "A Siegel zero is a real zero $\\beta$ of $L(s,\\chi)$ with $\\beta$ near 1; defined via `IsSiegelZero`/`HasSiegelZero`."
+    },
+    {
+      "id": "part3-implications",
+      "title": "Part III: Key Implication — No Siegel Zero → L(1,χ) Bounded Below",
+      "startLine": 104,
+      "endLine": 170,
+      "summary": "`siegel_zero_implies_small_L_one` (a Siegel zero forces L(1,χ) small) and `no_siegel_zero_gives_lower_bound` (absence of a Siegel zero yields a lower bound on L(1,χ), from nonvanishing).",
+      "mathContext": "Siegel zero $\\Leftrightarrow$ small $L(1,\\chi)$; its absence gives a lower bound."
+    },
+    {
+      "id": "part4-partial-results",
+      "title": "Part IV: What IS Known — Siegel's Theorem (Ineffective Lower Bound)",
+      "startLine": 171,
+      "endLine": 207,
+      "summary": "Axiomatizes `siegel_theorem` (Siegel 1935: ineffective lower bound L(1,χ) ≫_ε q^{-ε}) and `grh_implies_no_siegel_zeros` (under GRH there are no Siegel zeros, giving an effective ≫ 1/(log q)² bound).",
+      "mathContext": "Siegel (1935): $L(1,\\chi) \\gg_\\varepsilon q^{-\\varepsilon}$ (ineffective); GRH eliminates Siegel zeros."
+    },
+    {
+      "id": "part5-landau-page",
+      "title": "Part V: The Landau-Page Theorem",
+      "startLine": 208,
+      "endLine": 229,
+      "summary": "Axiomatizes `landau_page_theorem`: at most one exceptional (Siegel-zero-bearing) character per conductor range.",
+      "mathContext": "Landau-Page: at most one exceptional character per range of conductors."
+    },
+    {
+      "id": "part6-summary-open",
+      "title": "Part VI: Summary and Open Problem Statement",
+      "startLine": 230,
+      "endLine": 285,
+      "summary": "States the open problem: `open_question_summary`, the `SiegelZeroOpenQuestion` predicate, `nonvanishing_implies_no_exact_siegel_zeros` (L(1,χ)≠0 rules out a zero exactly at 1), and `siegel_zero_location_constraint`.",
+      "mathContext": "Formalizes the open question of whether an exact Siegel zero can occur, given L(1,χ)≠0."
+    },
+    {
+      "id": "part7-structural",
+      "title": "Part VII: Structural Properties of Siegel Zeros",
+      "startLine": 286,
+      "endLine": 378,
+      "summary": "Structural lemmas on the location of a Siegel zero β: `siegel_zero_bounds`, `siegel_zero_positive`, `siegel_zero_in_upper_half`, plus `grh_eliminates_siegel_zeros`, `at_most_one_exceptional_conductor`, and `grh_implies_no_siegel_zeros_large_conductor`.",
+      "mathContext": "Constraints on a Siegel zero's location ($0<\\beta<1$, near 1) and GRH-based elimination results."
+    },
+    {
+      "id": "part8-additional-structural",
+      "title": "Part VIII: Additional Structural Results",
+      "startLine": 379,
+      "endLine": 472,
+      "summary": "Further properties: `siegel_zero_not_one`, `siegel_zero_is_LFunction_zero`, `siegel_zero_region_nonempty`, `siegel_zero_in_open_unit`, monotonicity (`has_siegel_zero_mono`, `not_has_siegel_zero_of_smaller`), `landau_page_uniqueness`, and the L(1,χ) positivity corollaries `siegel_implies_L_one_pos`/`grh_bound_implies_L_one_pos`.",
+      "mathContext": "Additional Siegel-zero structure, monotonicity in the conductor, and L(1,χ) positivity consequences."
+    },
+    {
+      "id": "part9-deuring-heilbronn",
+      "title": "Part IX: Deuring-Heilbronn Zero Repulsion",
+      "startLine": 473,
+      "endLine": 537,
+      "summary": "Axiomatizes `deuring_heilbronn_repulsion` (a Siegel zero repels all other zeros of L-functions) and derives `siegel_zero_repels_other_zeros` and `repulsion_grows_with_proximity`.",
+      "mathContext": "Deuring-Heilbronn phenomenon: a Siegel zero pushes other zeros away, more strongly the closer it is to 1."
+    },
+    {
+      "id": "part10-tatuzawa",
+      "title": "Part X: Tatuzawa's Refinement of Siegel's Theorem",
+      "startLine": 538,
+      "endLine": 592,
+      "summary": "Axiomatizes `tatuzawa_theorem` (Tatuzawa's effective-with-one-exception refinement of Siegel's bound) and derives `tatuzawa_implies_siegel` and `tatuzawa_finite_exceptions`.",
+      "mathContext": "Tatuzawa (1951): Siegel's bound is effective with at most one exceptional modulus."
+    },
+    {
+      "id": "part11-siegel-walfisz",
+      "title": "Part XI: Siegel-Walfisz Theorem and Prime Counting",
+      "startLine": 593,
+      "endLine": 617,
+      "summary": "Defines `primeCountAP` (primes in an arithmetic progression) and proves `no_siegel_zero_extends_range`, linking the absence of Siegel zeros to the Siegel-Walfisz prime-counting range.",
+      "mathContext": "Siegel-Walfisz: no Siegel zero extends the uniformity range for primes in arithmetic progressions."
+    },
+    {
+      "id": "part12-connections",
+      "title": "Part XII: Connections Between the Major Theorems",
+      "startLine": 618,
+      "endLine": 653,
+      "summary": "Connecting results `grh_implies_siegel_zero_conjecture_small_c` and `no_siegel_zero_positive_L`, tying GRH, the Siegel-zero conjecture, and L(1,χ) positivity together.",
+      "mathContext": "Logical connections between GRH, the Siegel-zero conjecture, and L(1,χ)>0."
+    },
+    {
+      "id": "part13-counting",
+      "title": "Part XIII: Counting Theorems and Combinatorial Consequences",
+      "startLine": 654,
+      "endLine": 671,
+      "summary": "Combinatorial bounds on the prime-counting function: `primeCountAP_le` (≤ x+1) and `primeCountAP_mono` (monotone in x).",
+      "mathContext": "Elementary bounds on `primeCountAP`: trivial upper bound and monotonicity."
+    },
+    {
+      "id": "part14-open-question",
+      "title": "Part XIV: The Open Question Formalized",
+      "startLine": 672,
+      "endLine": 705,
+      "summary": "`open_question_final_status`: the formalized final status of the open question — L(1,χ)≠0 is proved, the existence of an exact Siegel zero remains open.",
+      "mathContext": "Final status: nonvanishing proved, exact Siegel zero open."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures the current state of knowledge about Siegel zeros. While L(1,χ) ≠ 0 is fully proved in Mathlib, whether it can be exponentially small remains open. We formalize: (1) the nonvanishing result, (2) the definition of Siegel zeros, (3) the key MVT implication (fully proved, taking a derivative bound as hypothesis), (4) Siegel's ineffective bound (axiomized), and (5) the GRH conditional result (axiomized). The Lean insight: `LFunction_apply_one_ne_zero` directly handles nonvanishing; the hard work of effective lower bounds requires Mathlib extensions.",
+    "implications": "**If no Siegel zeros are proved (i.e., effective Siegel theorem)**:\n\n**For prime distribution**: Linnik's theorem on the smallest prime p ≡ a (mod q) would have an explicit bound p ≤ C·q^L with explicit L. Currently L is known but C is not.\n\n**For cryptography**: Many algorithms use primes in arithmetic progressions; effective lower bounds would give provable efficiency guarantees.\n\n**For Mathlib**: Would require formalizing Landau-Page zeros, zero-free regions of Dirichlet L-functions, and effective Siegel theorem — a major infrastructure investment.\n\n**Connection to GRH**: Siegel zeros are the last obstacle before the full zero-free region program: proving no zeros with Re(s) > 1 - c/log(|Im(s)|+2) would solve many prime distribution problems.",
+    "openQuestions": [
+      "Do Siegel zeros exist? (The central open question — almost certainly NO, but unproved)",
+      "Is there an effective version of Siegel's theorem? (Would imply no Siegel zeros with explicit constants)",
+      "Can the Landau-Page bound be sharpened? (The 'one exceptional character' — is it really one, or zero?)",
+      "What are the implications for Linnik's constant? (Currently known L ≤ 5 for the smallest prime in a progression, but the GRH value would be L = 2)"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.LSeries.PrimesInAP",
+      "Mathlib.NumberTheory.DirichletCharacter.Basic",
+      "Mathlib.NumberTheory.LSeries.DirichletContinuation",
+      "Mathlib.NumberTheory.LSeries.Nonvanishing",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "Filter",
+      "DirichletCharacter",
+      "Topology"
+    ],
+    "namespace": "DirichletsTheoremOQ01",
+    "lineCount": 705,
+    "axiomCount": 5,
+    "theoremCount": 31,
+    "definitionCount": 5,
+    "path": "Proofs/DirichletsTheoremOQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "extends",
+      "description": "Extends the base Dirichlet theorem (primes in arithmetic progressions) to the quantitative Siegel zero question: not just that L(1,χ) ≠ 0, but how small it can be"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "related",
+      "description": "Infinitude of primes is the qualitative predecessor; Dirichlet's theorem is the arithmetic progression extension; this entry addresses quantitative lower bounds on L(1,χ)"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "Both entries formalize deep open problems in analytic number theory where the current state of knowledge is axiomatized pending future Mathlib infrastructure"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Carl Ludwig Siegel",
+      "title": "Über die Classenzahl quadratischer Zahlkörper",
+      "year": "1935",
+      "venue": "Acta Arithmetica",
+      "note": "Proved the ineffective lower bound L(1,χ) > C(ε)/q^ε, introducing the Siegel zero concept"
+    },
+    {
+      "authors": "Edmund Landau",
+      "title": "Über die Wurzeln der Zetafunktion",
+      "year": "1918",
+      "venue": "Mathematische Zeitschrift",
+      "note": "Proved the Landau-Page theorem: at most one exceptional real character per conductor range"
+    },
+    {
+      "authors": "Dorian Goldfeld",
+      "title": "The class number of quadratic fields and the conjectures of Birch and Swinnerton-Dyer",
+      "year": "1976",
+      "venue": "Annali della Scuola Normale Superiore di Pisa",
+      "note": "Showed that GRH implies an effective lower bound L(1,χ) ≫ 1/(log q)², eliminating Siegel zeros conditionally"
+    }
+  ],
+  "sorries": 0
+}

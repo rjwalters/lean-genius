@@ -1,0 +1,174 @@
+{
+  "id": "cauchy-schwarz-oq-06",
+  "title": "Cauchy-Schwarz Equality: The Linear-Dependence Characterization",
+  "slug": "cauchy-schwarz-oq-06",
+  "description": "The equality case of Cauchy-Schwarz, stated unconditionally and symmetrically: for vectors x, y in any real or complex inner-product space, ‖⟪x,y⟫‖ = ‖x‖·‖y‖ holds iff {x,y} is linearly dependent (¬ LinearIndependent 𝕜 ![x,y]). Dually, strict inequality holds iff {x,y} is linearly independent. Subsumes the degenerate cases x=0, y=0 that Mathlib's nonzero-hypothesis form cannot state.",
+  "meta": {
+    "author": "Cauchy, Bunyakovsky, Schwarz (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality",
+    "date": "1821",
+    "status": "verified",
+    "tags": [
+      "analysis",
+      "inner-product-spaces",
+      "cauchy-schwarz",
+      "equality-case",
+      "linear-dependence",
+      "extension",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/CauchySchwarzOQ06.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "norm_inner_eq_norm_tfae",
+        "description": "TFAE giving ‖⟪x,y⟫‖ = ‖x‖·‖y‖ ↔ x = 0 ∨ ∃ r, y = r • x",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "norm_inner_le_norm",
+        "description": "The Cauchy-Schwarz inequality ‖⟪x,y⟫‖ ≤ ‖x‖·‖y‖",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "LinearIndependent.pair_iff",
+        "description": "LinearIndependent ![x,y] ↔ ∀ s t, s•x+t•y=0 → s=0 ∧ t=0",
+        "module": "Mathlib.LinearAlgebra.LinearIndependent.Lemmas"
+      },
+      {
+        "theorem": "inv_mul_cancel₀",
+        "description": "Cancellation t⁻¹ * t = 1 for nonzero scalar t",
+        "module": "Mathlib.Algebra.Group.Basic"
+      }
+    ],
+    "originalContributions": [
+      "not_linearIndependent_pair_iff: linear dependence of a pair as an explicit nontrivial vanishing combination ∃ s t, (s≠0 ∨ t≠0) ∧ s•x+t•y=0",
+      "norm_inner_eq_norm_mul_iff_not_linearIndependent: the equality case ‖⟪x,y⟫‖ = ‖x‖·‖y‖ ↔ ¬ LinearIndependent 𝕜 ![x,y] — unconditional and symmetric, unlike Mathlib's nonzero-hypothesis norm_inner_eq_norm_iff",
+      "norm_inner_eq_norm_mul_iff_exists: the same equality case as an explicit symmetric vanishing combination",
+      "norm_inner_lt_norm_mul_iff_linearIndependent: the sharp boundary — strict inequality ‖⟪x,y⟫‖ < ‖x‖·‖y‖ ↔ LinearIndependent 𝕜 ![x,y]",
+      "abs_real_inner_eq_norm_mul_iff_not_linearIndependent / abs_real_inner_lt_norm_mul_iff_linearIndependent: real specializations in absolute-value form",
+      "norm_inner_eq_norm_mul_left_zero, norm_inner_eq_norm_mul_of_smul: degenerate-case sanity corollaries the nonzero-hypothesis form cannot express"
+    ],
+    "dateAdded": "2026-06-19",
+    "lineCount": 166,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries; all main theorems depend only on [propext, Classical.choice, Quot.sound].",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Cauchy-Schwarz inequality $|\\langle x,y\\rangle| \\leq \\|x\\|\\|y\\|$ traces to Cauchy's 1821 *Cours d'Analyse* (discrete sums), Bunyakovsky's 1859 integral version, and Schwarz's 1888 proof for square-integrable functions. Its equality case is classically stated as 'equality holds iff $x$ and $y$ are linearly dependent' — a clean, symmetric statement that treats the zero vector and proportional vectors on the same footing. Mathlib, however, proves the equality case in the asymmetric form $\\|\\langle x,y\\rangle\\| = \\|x\\|\\|y\\| \\iff \\exists r,\\ y = r\\cdot x$ under the hypothesis that both vectors are nonzero (`norm_inner_eq_norm_iff`). This entry closes that gap by proving the textbook linear-dependence formulation directly, with no side conditions.",
+    "problemStatement": "**Open Question (cauchy-schwarz-oq-06)**: Characterize the equality case of Cauchy-Schwarz, $\\|\\langle x,y\\rangle\\| = \\|x\\|\\|y\\|$, in terms of linear dependence, for arbitrary vectors (including the degenerate cases $x=0$, $y=0$).\n\n**Result**: $\\|\\langle x,y\\rangle\\| = \\|x\\|\\|y\\| \\iff \\neg\\,\\mathrm{LinearIndependent}\\ \\mathbb{K}\\ [x,y]$, and dually $\\|\\langle x,y\\rangle\\| < \\|x\\|\\|y\\| \\iff \\mathrm{LinearIndependent}\\ \\mathbb{K}\\ [x,y]$, over any $\\mathbb{K} \\in \\{\\mathbb{R},\\mathbb{C}\\}$.",
+    "text": "The equality case of Cauchy-Schwarz, stated unconditionally and symmetrically as linear dependence of the pair {x,y}, with the dual sharp form characterizing strict inequality as linear independence.",
+    "proofStrategy": "**Proof Strategy: bridge the Mathlib TFAE to linear dependence**\n\n1. **Unfold dependence.** From `LinearIndependent.pair_iff`, negate to get the explicit form $\\neg\\,\\mathrm{LinearIndependent}\\ \\mathbb{K}\\ [x,y] \\iff \\exists s\\,t,\\ (s\\neq 0 \\lor t\\neq 0) \\land s\\cdot x + t\\cdot y = 0$.\n2. **Invoke Mathlib's TFAE.** `norm_inner_eq_norm_tfae` gives $\\|\\langle x,y\\rangle\\| = \\|x\\|\\|y\\| \\iff (x = 0 \\lor \\exists r,\\ y = r\\cdot x)$, valid unconditionally.\n3. **Equate the two right-hand sides.** Forward: $x=0$ gives the combination $1\\cdot x + 0\\cdot y = 0$; $y = r\\cdot x$ gives $r\\cdot x + (-1)\\cdot y = 0$. Reverse: split on whether the $y$-coefficient $t$ is zero — if $t=0$ then $s\\neq 0$ forces $x=0$; if $t\\neq 0$ then $y = (-(t^{-1}s))\\cdot x$.\n4. **Sharp form.** Combine the equality case with `norm_inner_le_norm` via `lt_iff_le_and_ne`: strict inequality is exactly the negation of equality, i.e. linear independence.",
+    "keyInsights": [
+      "**Linear dependence is the right invariant.** Phrasing the equality case as $\\neg\\,\\mathrm{LinearIndependent}\\ \\mathbb{K}\\ [x,y]$ is symmetric in $x,y$ and automatically absorbs the degenerate cases $x=0$ and $y=0$, which Mathlib's $\\exists r,\\ y=r\\cdot x$ form must exclude by hypothesis.",
+      "**One TFAE entry does the analytic work.** All inner-product analysis is delegated to Mathlib's `norm_inner_eq_norm_tfae`; the new content is the purely linear-algebraic equivalence between 'one vector is a multiple of the other (or is zero)' and 'a nontrivial combination vanishes'.",
+      "**Equality and strict inequality are complementary.** Because Cauchy-Schwarz always gives $\\leq$, the equality case and the strict-inequality case partition every pair: dependent pairs saturate the bound, independent pairs fall strictly below it.",
+      "**The reverse direction is a field computation.** Recovering $y = r\\cdot x$ from a vanishing combination $s\\cdot x + t\\cdot y = 0$ with $t\\neq 0$ is exactly $y = (-(t^{-1}s))\\cdot x$, using only invertibility of nonzero scalars in $\\mathbb{R}$ or $\\mathbb{C}$."
+    ],
+    "prerequisites": [
+      "Inner product spaces over ℝ or ℂ (RCLike 𝕜, InnerProductSpace 𝕜 E in Mathlib)",
+      "The Cauchy-Schwarz inequality and its equality case",
+      "Linear independence of a pair of vectors (LinearIndependent 𝕜 ![x, y])"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "extends",
+      "description": "Recasts the base Cauchy-Schwarz equality characterization in the unconditional, symmetric language of linear dependence of the pair {x,y}."
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-04",
+      "relationship": "related",
+      "description": "OQ-04 pins down the exact proportionality constant u = (⟪u,v⟫/‖v‖²)·v when equality holds (assuming v ≠ 0); this entry instead removes all nonzero hypotheses and characterizes equality as linear dependence over ℝ or ℂ."
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-01",
+      "relationship": "related",
+      "description": "A sibling extension in the same Cauchy-Schwarz open-question family."
+    }
+  ],
+  "conclusion": {
+    "summary": "A complete, unconditional, machine-checked characterization of the Cauchy-Schwarz equality case as linear dependence of the vector pair, over any real or complex inner-product space, together with the dual sharp form for strict inequality. Fully verified (0 sorries, 0 axioms).",
+    "implications": "The linear-dependence formulation is the form used throughout linear algebra and functional analysis: it is the criterion for when the Gram matrix of {x,y} is singular, when the parallelogram spanned by x and y degenerates, and when the angle between x and y is 0 or π. The sharp dual (strict inequality ↔ independence) is precisely the statement that the Gram determinant is positive for independent vectors.",
+    "openQuestions": [
+      "Extend the linear-dependence equality case to a finite family {x_1,…,x_n}: the Gram determinant vanishes iff the family is linearly dependent.",
+      "Connect the sharp form to Mathlib's Gram matrix / Gram determinant API, identifying strict Cauchy-Schwarz with positivity of the 2×2 Gram determinant."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "InnerProductSpace"
+    ],
+    "namespace": "CauchySchwarzOQ06",
+    "lineCount": 166,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/CauchySchwarzOQ06.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "norm_inner_eq_norm_mul_iff_not_linearIndependent",
+      "type": "core",
+      "description": "**The headline result.** For any vectors x, y in an inner-product space over 𝕜 = ℝ or ℂ, ‖⟪x,y⟫‖ = ‖x‖·‖y‖ holds if and only if ¬ LinearIndependent 𝕜 ![x,y]. Unlike Mathlib's norm_inner_eq_norm_iff, this requires no nonzero hypotheses and is symmetric in x and y, absorbing the degenerate cases x=0 and y=0 into the linear-dependence condition.",
+      "leanType": "∀ {𝕜 : Type*} [RCLike 𝕜] {E : Type*} [NormedAddCommGroup E] [InnerProductSpace 𝕜 E] (x y : E), ‖⟪x, y⟫_𝕜‖ = ‖x‖ * ‖y‖ ↔ ¬ LinearIndependent 𝕜 ![x, y]"
+    },
+    {
+      "name": "norm_inner_lt_norm_mul_iff_linearIndependent",
+      "type": "core",
+      "description": "**The sharp boundary form.** Strict inequality ‖⟪x,y⟫‖ < ‖x‖·‖y‖ holds exactly when x and y are linearly independent. Proved by combining the equality case with the Cauchy-Schwarz inequality norm_inner_le_norm via lt_iff_le_and_ne. Together with the equality case this gives a complete dichotomy governed by linear (in)dependence.",
+      "leanType": "∀ {𝕜 : Type*} [RCLike 𝕜] {E : Type*} [NormedAddCommGroup E] [InnerProductSpace 𝕜 E] (x y : E), ‖⟪x, y⟫_𝕜‖ < ‖x‖ * ‖y‖ ↔ LinearIndependent 𝕜 ![x, y]"
+    },
+    {
+      "name": "not_linearIndependent_pair_iff",
+      "type": "supporting",
+      "description": "Linear dependence of a pair, repackaged: ¬ LinearIndependent 𝕜 ![x,y] ↔ ∃ s t, (s ≠ 0 ∨ t ≠ 0) ∧ s•x + t•y = 0. This is LinearIndependent.pair_iff negated into a convenient 'some nonzero coefficient' form, used by the equality-case proof.",
+      "leanType": "∀ {𝕜 : Type*} [RCLike 𝕜] {E : Type*} [NormedAddCommGroup E] [InnerProductSpace 𝕜 E] (x y : E), ¬ LinearIndependent 𝕜 ![x, y] ↔ ∃ s t : 𝕜, (s ≠ 0 ∨ t ≠ 0) ∧ s • x + t • y = 0"
+    },
+    {
+      "name": "norm_inner_eq_norm_mul_iff_exists",
+      "type": "supporting",
+      "description": "The equality case stated as an explicit symmetric vanishing combination: ‖⟪x,y⟫‖ = ‖x‖·‖y‖ ↔ ∃ s t, (s ≠ 0 ∨ t ≠ 0) ∧ s•x + t•y = 0. A reformulation of the headline result that exposes the witnessing coefficients.",
+      "leanType": "∀ {𝕜 : Type*} [RCLike 𝕜] {E : Type*} [NormedAddCommGroup E] [InnerProductSpace 𝕜 E] (x y : E), ‖⟪x, y⟫_𝕜‖ = ‖x‖ * ‖y‖ ↔ ∃ s t : 𝕜, (s ≠ 0 ∨ t ≠ 0) ∧ s • x + t • y = 0"
+    },
+    {
+      "name": "abs_real_inner_eq_norm_mul_iff_not_linearIndependent",
+      "type": "core",
+      "description": "Real specialization in absolute-value form: over a real inner-product space, |⟪x,y⟫_ℝ| = ‖x‖·‖y‖ ↔ ¬ LinearIndependent ℝ ![x,y]. Obtained from the general result by rewriting the real norm as absolute value.",
+      "leanType": "∀ {F : Type*} [NormedAddCommGroup F] [InnerProductSpace ℝ F] (x y : F), |⟪x, y⟫_ℝ| = ‖x‖ * ‖y‖ ↔ ¬ LinearIndependent ℝ ![x, y]"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Cauchy, Augustin-Louis",
+      "title": "Cours d'Analyse de l'École Royale Polytechnique",
+      "year": "1821",
+      "venue": "Paris",
+      "note": "Original discrete inequality with the equality case recognized as proportionality (linear dependence) of the sequences."
+    },
+    {
+      "authors": "Schwarz, Hermann Amandus",
+      "title": "Über ein die Flächen kleinsten Flächeninhalts betreffendes Problem der Variationsrechnung",
+      "year": "1888",
+      "venue": "Acta Societatis Scientiarum Fennicae",
+      "note": "Rigorous proof of the integral version; the equality case is the proportionality (linear dependence) condition."
+    },
+    {
+      "authors": "Halmos, Paul R.",
+      "title": "Finite-Dimensional Vector Spaces",
+      "year": "1958",
+      "venue": "Springer, Undergraduate Texts in Mathematics (2nd edition)",
+      "note": "Section 67: equality in Cauchy-Schwarz holds iff the vectors are linearly dependent — the abstract statement formalized in this entry."
+    }
+  ],
+  "sorries": 0
+}

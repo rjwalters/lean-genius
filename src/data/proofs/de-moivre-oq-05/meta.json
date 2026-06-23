@@ -1,0 +1,215 @@
+{
+  "id": "de-moivre-oq-05",
+  "title": "De Moivre OQ-05: The n-th Roots of Unity Sum to Zero (n > 1)",
+  "slug": "de-moivre-oq-05",
+  "description": "For n > 1 the n complex n-th roots of unity sum to zero, in the coordinate-free nthRootsFinset form and the explicit de Moivre / discrete-Fourier form ∑ exp(2πik/n) = 0, via the geometric series with ratio a primitive root.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DeMoivreOQ05.lean",
+    "tags": [
+      "complex-analysis",
+      "algebra",
+      "roots-of-unity",
+      "geometric-sum",
+      "discrete-fourier",
+      "de-moivre"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "IsPrimitiveRoot.geom_sum_eq_zero",
+        "description": "For a primitive n-th root ζ with 1 < n, the geometric series ∑ i ∈ range n, ζ^i = 0",
+        "module": "Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots"
+      },
+      {
+        "theorem": "IsPrimitiveRoot.card_nthRootsFinset",
+        "description": "The set of n-th roots of unity has cardinality n when a primitive root exists",
+        "module": "Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots"
+      },
+      {
+        "theorem": "IsPrimitiveRoot.injOn_pow",
+        "description": "i ↦ ζ^i is injective on {0,…,n-1} for a primitive n-th root ζ",
+        "module": "Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots"
+      },
+      {
+        "theorem": "Complex.isPrimitiveRoot_exp",
+        "description": "exp(2πi/n) is a primitive n-th root of unity for n ≠ 0",
+        "module": "Mathlib.RingTheory.RootsOfUnity.Complex"
+      },
+      {
+        "theorem": "mem_nthRootsFinset",
+        "description": "Membership in the finset of n-th roots: x ∈ nthRootsFinset n 1 ↔ xⁿ = 1 (for n > 0)",
+        "module": "Mathlib.RingTheory.RootsOfUnity.Basic"
+      },
+      {
+        "theorem": "Finset.eq_of_subset_of_card_le",
+        "description": "A subset with cardinality ≥ that of the superset is equal to it",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "originalContributions": [
+      "Structural bridge nthRootsFinset_eq_image: the n-th roots of unity are exactly the image of {0,…,n-1} under i ↦ ζ^i, proved by a cardinality argument (image ⊆ root set, both of cardinality n) — this identity is absent from Mathlib",
+      "Coordinate-free vanishing sum sum_nthRootsFinset_eq_zero: ∑ over nthRootsFinset n 1 = 0 for n > 1 over any integral domain possessing a primitive root, reindexing the set form to the geometric form",
+      "Complex specialisation sum_complex_nthRootsFinset_eq_zero using the primitive root exp(2πi/n)",
+      "Explicit de Moivre / discrete-Fourier form sum_exp_eq_zero: ∑ k ∈ range n, exp(2πik/n) = 0, recognising exp(2πik/n) = (exp(2πi/n))^k"
+    ],
+    "dateAdded": "2026-06-20",
+    "mathlib_version": "4.26.0",
+    "axiomCount": 0,
+    "lineCount": 108,
+    "assumptions": "0 axioms, 0 sorries. The geometric-series vanishing ∑ ζ^i = 0 is Mathlib's IsPrimitiveRoot.geom_sum_eq_zero; the coordinate-free set form and the structural identity nthRootsFinset = (range n).image (ζ ^ ·) are supplied here.",
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "That the $n$ complex $n$-th roots of unity sum to zero is one of the oldest consequences of De Moivre's geometric picture of the roots as the vertices of a regular $n$-gon inscribed in the unit circle: a regular polygon's vertices have centroid at the centre, so their sum vanishes. Algebraically it is the $\\ -a_{n-1}/a_n = 0\\ $ Vieta relation for $z^n - 1$ (no $z^{n-1}$ term), and analytically it is the statement that a full period of the discrete sampling phases $e^{2\\pi i k/n}$ cancels — the identity at the heart of the discrete Fourier transform and of Gauss sums in number theory. The cleanest proof is a one-line geometric series: with $\\zeta$ a primitive root, $\\sum_{i=0}^{n-1}\\zeta^i = (\\zeta^n-1)/(\\zeta-1) = 0$ since $\\zeta^n = 1$ but $\\zeta \\neq 1$.",
+    "problemStatement": "**Open Question**: Show that for $n > 1$ the sum of the $n$ complex $n$-th roots of unity is zero.\n\n**Answer**: Let $\\zeta = e^{2\\pi i/n}$ be a primitive root. The $n$-th roots of unity are exactly $\\zeta^0,\\zeta^1,\\ldots,\\zeta^{n-1}$, so their sum is the geometric series $\\sum_{i=0}^{n-1}\\zeta^i = \\dfrac{\\zeta^n-1}{\\zeta-1} = 0$ because $\\zeta^n = 1$ and $\\zeta \\neq 1$. Equivalently $\\sum_{k=0}^{n-1} e^{2\\pi i k/n} = 0$.",
+    "text": "For n > 1 the n complex n-th roots of unity sum to zero, proved in the coordinate-free nthRootsFinset form and the explicit de Moivre / discrete-Fourier form ∑ exp(2πik/n) = 0.",
+    "proofStrategy": "The proof has three steps:\n1. **Structural bridge**: Prove `nthRootsFinset n 1 = (range n).image (ζ ^ ·)` for a primitive root $\\zeta$. The image is contained in the root set (each $\\zeta^i$ satisfies $x^n = 1$), and both sides have cardinality $n$ — the image because $i \\mapsto \\zeta^i$ is injective on $\\{0,\\ldots,n-1\\}$, the root set by `card_nthRootsFinset` — so containment forces equality.\n2. **Reindex to the geometric series**: Rewriting the coordinate-free sum along this bridge and using `Finset.sum_image` (injectivity again) turns $\\sum_{x \\in \\text{nthRootsFinset}} x$ into $\\sum_{i \\in \\text{range } n} \\zeta^i$, which is zero by `IsPrimitiveRoot.geom_sum_eq_zero`.\n3. **Specialise and re-express**: Apply with $\\zeta = e^{2\\pi i/n}$ over $\\mathbb{C}$; for the de Moivre form recognise $e^{2\\pi i k/n} = (e^{2\\pi i/n})^k$ and reuse the same geometric series.",
+    "keyInsights": [
+      "Mathlib records the **geometric-series** form $\\sum_{i \\in \\text{range } n}\\zeta^i = 0$ (`geom_sum_eq_zero`) but not the **coordinate-free set** form $\\sum_{x \\in \\text{nthRootsFinset}} x = 0$; the gap between them is exactly the structural identity that the roots *are* the powers of one primitive root",
+      "The bridge $\\text{nthRootsFinset}\\,n = (\\text{range } n).\\text{image}(\\zeta^{\\cdot})$ is proved by a **double-counting** argument: one containment plus equal cardinalities, no explicit bijection construction",
+      "Summing the *set* (no privileged generator) versus summing the *indexed powers* $\\zeta^0,\\ldots,\\zeta^{n-1}$ are genuinely different Finset expressions; `Finset.sum_image` with injectivity is what identifies them",
+      "The hypothesis $n > 1$ is essential: for $n = 1$ the lone root is $1$ and the sum is $1$, not $0$ — primitivity needs $\\zeta \\neq 1$ to make $\\zeta - 1$ invertible",
+      "The de Moivre form $\\sum_k e^{2\\pi i k/n} = 0$ is the **discrete Fourier** statement that a full period of equally-spaced phases cancels"
+    ],
+    "prerequisites": [
+      "Complex numbers and the unit circle",
+      "Roots of unity and primitive roots",
+      "Finite geometric series",
+      "Finset sums and cardinality arguments"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Preamble and Problem Statement",
+      "summary": "Module docstring: the n-th roots of unity sum to zero (n > 1); the geometric-series argument, what Mathlib does and does not record, and the four results proved",
+      "startLine": 1,
+      "endLine": 49,
+      "mathContext": "**Goal**: $\\sum_{x \\in \\mu_n} x = 0$ for $n > 1$, via $\\sum_{i=0}^{n-1}\\zeta^i = (\\zeta^n-1)/(\\zeta-1) = 0$."
+    },
+    {
+      "id": "bridge",
+      "title": "Part I: The n-th Roots Are the Powers of a Primitive Root",
+      "summary": "nthRootsFinset_eq_image: nthRootsFinset n 1 = (range n).image (ζ ^ ·), proved by image ⊆ root set together with equal cardinalities (n on both sides)",
+      "startLine": 53,
+      "endLine": 74,
+      "mathContext": "$\\mu_n = \\{\\zeta^0,\\ldots,\\zeta^{n-1}\\}$. Both sides have cardinality $n$: powers distinct by primitivity, root set by `card_nthRootsFinset`."
+    },
+    {
+      "id": "coordinate-free-sum",
+      "title": "Part II: Coordinate-Free Vanishing Sum",
+      "summary": "sum_nthRootsFinset_eq_zero: for n > 1 over an integral domain with a primitive root, ∑ over nthRootsFinset = 0, by reindexing to the geometric series ∑ ζ^i = 0",
+      "startLine": 76,
+      "endLine": 84,
+      "mathContext": "$\\sum_{x \\in \\mu_n} x = \\sum_{i \\in \\text{range } n}\\zeta^i = 0$ by `geom_sum_eq_zero`."
+    },
+    {
+      "id": "complex-specialisation",
+      "title": "Part III: The Complex Case",
+      "summary": "sum_complex_nthRootsFinset_eq_zero: the ℂ specialisation using the primitive root exp(2πi/n)",
+      "startLine": 86,
+      "endLine": 91,
+      "mathContext": "$\\sum_{x \\in \\mu_n \\subset \\mathbb{C}} x = 0$, instantiating with $\\zeta = e^{2\\pi i/n}$."
+    },
+    {
+      "id": "demoivre-form",
+      "title": "Part IV: Explicit de Moivre / Discrete-Fourier Form",
+      "summary": "sum_exp_eq_zero: ∑ k ∈ range n, exp(2πik/n) = 0, recognising exp(2πik/n) = (exp(2πi/n))^k and reusing the geometric series",
+      "startLine": 93,
+      "endLine": 107,
+      "mathContext": "$\\sum_{k=0}^{n-1} e^{2\\pi i k/n} = \\sum_{k=0}^{n-1}(e^{2\\pi i/n})^k = 0$ — a full period of DFT sampling phases cancels."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization proves that for n > 1 the n complex n-th roots of unity sum to zero, both in the coordinate-free nthRootsFinset form (over any integral domain possessing a primitive root) and in the explicit de Moivre / discrete-Fourier form ∑ exp(2πik/n) = 0. The bridge identity that the roots are exactly the powers of one primitive root — absent from Mathlib — converts the coordinate-free set sum into Mathlib's geometric-series vanishing. All theorems are fully proved with zero sorries and zero axioms.",
+    "implications": "Completes the De Moivre roots-of-unity picture: OQ-04 exhibits the roots as the powers of the trigonometric generator ω, and OQ-05 sums them to zero. The vanishing-sum identity is the foundation of the discrete Fourier transform, character-sum orthogonality, and Gauss sums in analytic number theory.",
+    "openQuestions": [
+      "Generalise to ∑ ζ^(jk) = 0 for n ∤ j (orthogonality of characters / DFT inversion)",
+      "Sum of a coset or of the primitive n-th roots only (the Möbius function μ(n) appears)",
+      "The power-sum identities ∑ ζ^(mk) and their role in Newton's identities for cyclotomic polynomials"
+    ]
+  },
+  "relatedProblems": [
+    {
+      "id": "de-moivre-oq-04",
+      "relationship": "OQ-04 exhibits the n-th roots as the powers of ω = cos(2π/n) + i·sin(2π/n); OQ-05 sums those roots to zero"
+    },
+    {
+      "id": "de-moivre",
+      "relationship": "Base theorem: integer-exponent De Moivre, the source of the roots-of-unity description"
+    },
+    {
+      "id": "de-moivre-oq-01",
+      "relationship": "Sibling open question: Chebyshev polynomial extraction from De Moivre"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Polynomial"
+    ],
+    "namespace": "DeMoivreOQ05",
+    "lineCount": 108,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/DeMoivreOQ05.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Abraham De Moivre",
+      "title": "Original theorem for integer exponents",
+      "year": "1707",
+      "venue": "Philosophical Transactions"
+    },
+    {
+      "authors": "Leonhard Euler",
+      "title": "Extension via exponential form e^(iθ) = cos θ + i sin θ",
+      "year": "1748",
+      "venue": "Introductio in analysin infinitorum"
+    },
+    {
+      "authors": "Carl Friedrich Gauss",
+      "title": "Disquisitiones Arithmeticae (cyclotomy, Gauss sums)",
+      "year": "1801",
+      "venue": "Leipzig"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "de-moivre-oq-04",
+      "relationship": "sibling",
+      "description": "OQ-04 exhibits the n-th roots of unity as the n distinct powers of the primitive root ω; OQ-05 takes that enumeration and proves the powers sum to zero."
+    },
+    {
+      "targetId": "de-moivre",
+      "relationship": "extends",
+      "description": "Parent formalization; the vanishing sum is a direct consequence of De Moivre's description of the roots of unity as equally-spaced points on the unit circle."
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "foundational",
+      "description": "Euler's formula identifies the primitive root e^(2πi/n) = cos(2π/n) + i sin(2π/n), the ratio of the geometric series whose vanishing gives the result."
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "related",
+      "description": "The proof reindexes the root set as the powers of a primitive root ζ; the bridge identity nthRootsFinset = (range n).image (ζ ^ ·) is the structural fact that ζ generates μₙ."
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "The vanishing sum is the Vieta relation for zⁿ − 1: the coefficient of zⁿ⁻¹ is zero, so the sum of the n roots (which FTA guarantees exist) is zero."
+    }
+  ],
+  "sorries": 0
+}

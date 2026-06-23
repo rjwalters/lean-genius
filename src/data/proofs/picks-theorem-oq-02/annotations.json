@@ -1,0 +1,150 @@
+[
+  {
+    "id": "picks-oq02-definitions",
+    "proofId": "picks-theorem-oq-02",
+    "range": {
+      "startLine": 42,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "onSegment Collinearity and segmentPoints Parameterization",
+    "content": "`onSegment a b x y` (line 44) captures three conditions for (x,y) on the segment from (0,0) to (a,b):\n1. **Collinearity**: x·b = y·a (the lattice equation for points on the line through (0,0) and (a,b))\n2. **x-bound**: x ≤ a\n3. **y-bound**: y ≤ b\n\nThe collinearity equation x·b = y·a is the natural cross-product condition: (x,y) lies on the ray from (0,0) through (a,b) iff the vectors (a,b) and (x,y) are proportional, i.e., ay = bx, rewritten over ℕ as x·b = y·a.\n\n`segmentPoints a b` (lines 49–50) is the Finset image of {0,...,g} under k ↦ (k·(a/g), k·(b/g)), where g = gcd(a,b). Key structural choice: the parameterization uses natural number division a/g (which is exact since g | a), so all operations stay in ℕ without needing ℤ or ℝ.",
+    "mathContext": "The line through $(0,0)$ and $(a,b)$ in $\\mathbb{R}^2$ has equation $bx = ay$. The lattice points $(x,y) \\in \\mathbb{N}^2$ on this line with $x \\leq a, y \\leq b$ are exactly $\\{(k \\cdot a/g, k \\cdot b/g) : k = 0, \\ldots, g\\}$ where $g = \\gcd(a,b)$. The natural number division $a/g$ is exact because $g \\mid a$ by definition of gcd.",
+    "significance": "key",
+    "relatedConcepts": [
+      "onSegment: collinearity + bounds in ℕ",
+      "segmentPoints: Finset.image of range(gcd+1)",
+      "Nat.gcd_dvd_left / Nat.gcd_dvd_right for exact division",
+      "Finset.range and Finset.image in Lean 4"
+    ],
+    "prerequisites": [
+      "Cross-product collinearity: (x,y) ∝ (a,b) iff x·b = y·a",
+      "Natural number GCD and exact divisibility",
+      "Lean 4 Finset.image for pointwise function application"
+    ]
+  },
+  {
+    "id": "picks-oq02-soundness",
+    "proofId": "picks-theorem-oq-02",
+    "range": {
+      "startLine": 58,
+      "endLine": 82
+    },
+    "type": "concept",
+    "title": "Soundness: The Parameterization Maps Into the Segment",
+    "content": "`segmentPoint_on_segment` (lines 58–75) proves three goals for (k·(a/g), k·(b/g)):\n1. **Collinearity**: The calc chain rewrites via `ha: g·(a/g) = a` and `hb: g·(b/g) = b`. The key is `k·(a/g)·b = k·(a/g)·(g·(b/g)) = k·(b/g)·(g·(a/g)) = k·(b/g)·a` — the `ring` lemma handles this algebraic identity after substituting ha/hb.\n2. **x-bound**: k·(a/g) ≤ g·(a/g) = a via `Nat.mul_le_mul_right _ hk` (using k ≤ g), then `= a` from ha.\n3. **y-bound**: symmetrically.\n\nThe key lemmas `ha` and `hb` — established via `Nat.mul_div_cancel' (Nat.gcd_dvd_left/right a b)` — are the backbone of the entire file, converting between the parameterized form and the original (a,b).",
+    "mathContext": "Collinearity verification: $k \\cdot (a/g) \\cdot b = k \\cdot (a/g) \\cdot (g \\cdot (b/g)) = k \\cdot (b/g) \\cdot (g \\cdot (a/g)) = k \\cdot (b/g) \\cdot a$. This holds by the commutativity and associativity of multiplication. Bound: $k \\leq g$ implies $k \\cdot (a/g) \\leq g \\cdot (a/g) = a$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.mul_div_cancel' for exact division",
+      "Nat.mul_le_mul_right for monotone multiplication",
+      "calc with ring for algebraic chain",
+      "Nat.gcd_dvd_left / Nat.gcd_dvd_right"
+    ],
+    "prerequisites": [
+      "Lean 4 calc block syntax",
+      "ring tactic for natural number arithmetic identities",
+      "Nat.mul_div_cancel': g · (a/g) = a when g | a"
+    ]
+  },
+  {
+    "id": "picks-oq02-injectivity",
+    "proofId": "picks-theorem-oq-02",
+    "range": {
+      "startLine": 91,
+      "endLine": 105
+    },
+    "type": "concept",
+    "title": "Injectivity by Case Split on a/g = 0",
+    "content": "`segmentMap_injective` (lines 91–105) proves k₁ = k₂ from k₁·(a/g, b/g) = k₂·(a/g, b/g). The proof is a case split:\n\n**Case a/g = 0** (lines 96–103): If a/g = 0, then from g·(a/g) = a we get a = 0. So gcd(0, b) = b, and b/b = 1. The second component gives k₁·1 = k₂·1, hence k₁ = k₂.\n\n**Case a/g > 0** (lines 104–105): The first component k₁·(a/g) = k₂·(a/g) with a/g > 0 immediately gives k₁ = k₂ by `Nat.eq_of_mul_eq_mul_right`.\n\nThe case split handles the boundary case where a = 0 (and g = b), which would make a/g = 0. This is the only case where the first component fails to distinguish k₁ and k₂ directly.",
+    "mathContext": "When $a/g = 0$: $a = 0 \\Rightarrow g = \\gcd(0,b) = b \\Rightarrow b/g = b/b = 1$. Use second component: $k_1 \\cdot 1 = k_2 \\cdot 1 \\Rightarrow k_1 = k_2$. When $a/g > 0$: $k_1 \\cdot (a/g) = k_2 \\cdot (a/g)$ implies $k_1 = k_2$ by right-cancellation.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.eq_of_mul_eq_mul_right for right-cancellation",
+      "Nat.eq_zero_or_pos for case split",
+      "Function.Injective in Lean 4",
+      "Finset.card_image_of_injective"
+    ],
+    "prerequisites": [
+      "Function.Injective definition: f a = f b → a = b",
+      "Nat.eq_of_mul_eq_mul_right: n·k = m·k, k > 0 ⟹ n = m",
+      "Case analysis on Nat.eq_zero_or_pos"
+    ]
+  },
+  {
+    "id": "picks-oq02-main-theorem",
+    "proofId": "picks-theorem-oq-02",
+    "range": {
+      "startLine": 114,
+      "endLine": 122
+    },
+    "type": "insight",
+    "title": "GCD Boundary Formula: card = gcd(a,b) + 1",
+    "content": "`card_segmentPoints` (lines 114–122) proves the main formula in two cases:\n\n**Case gcd = 0** (lines 117–120): This forces a = b = 0 (via `Nat.gcd_eq_zero_iff`). The segment is just {(0,0)}: range(0+1) = {0} maps to {(0,0)}, giving card = 1 = 0 + 1.\n\n**Case gcd > 0** (lines 121–122): The one-liner `card_image_of_injective` combined with `card_range` closes the proof. The injectivity hypothesis `segmentMap_injective a b hg` provides the required injection. The formula is: card(image of injection from range(g+1)) = card(range(g+1)) = g+1.\n\nThe two-case structure is necessary because `segmentMap_injective` requires g > 0 as a hypothesis — when g = 0, the parameterization maps all k to (0,0) and is NOT injective.",
+    "mathContext": "\\[ |\\text{segmentPoints}(a,b)| = |\\text{image}(f, \\text{range}(g+1))| \\underset{f \\text{ injective}}{=} |\\text{range}(g+1)| = g+1 \\] where $g = \\gcd(a,b)$. Boundary cases: $\\gcd(0,0)=0$ gives $1$ point; $\\gcd(1,0)=1$ gives $2$ points (the two endpoints); $\\gcd(4,6)=2$ gives $3$ points.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.card_image_of_injective: injective f ⟹ card(image f s) = card s",
+      "Finset.card_range: card(range n) = n",
+      "Nat.gcd_eq_zero_iff: gcd a b = 0 ↔ a = 0 ∧ b = 0",
+      "segmentMap_injective (Part III)"
+    ],
+    "prerequisites": [
+      "Finset.card_image_of_injective lemma in Mathlib",
+      "Why g = 0 is a special case: injectivity fails at g = 0",
+      "Nat.gcd_eq_zero_iff to unpack the degenerate case"
+    ]
+  },
+  {
+    "id": "picks-oq02-completeness",
+    "proofId": "picks-theorem-oq-02",
+    "range": {
+      "startLine": 134,
+      "endLine": 183
+    },
+    "type": "insight",
+    "title": "Completeness via Coprimality: Every Segment Point is Parameterized",
+    "content": "`onSegment_mem_segmentPoints` (lines 134–183) proves the converse: if (x,y) satisfies `onSegment a b x y`, then (x,y) ∈ segmentPoints a b. This is the mathematical heart of the proof.\n\n**The coprimality argument** (lines 151–183): For a > 0, write a = g·p, b = g·q where p = a/g, q = b/g, and gcd(p,q) = 1 (via `Nat.coprime_div_gcd_div_gcd`). From x·b = y·a, the proof derives x·q = y·p by multiplying out and canceling g via `Nat.eq_of_mul_eq_mul_left`. Now p | x·q with gcd(p,q) = 1 gives p | x by `Nat.Coprime.dvd_of_dvd_mul_right`. Write x = k·p; then y = k·q and k ≤ g follows from k·p = x ≤ a = g·p.\n\n**The g-cancellation trick**: Rather than dividing x·b = y·a by g directly (which is unsafe over ℕ), the proof multiplies: g·(x·q) = x·(g·q) = x·b = y·a = y·(g·p) = g·(y·p), then applies the left-cancellation lemma.",
+    "mathContext": "Given $x \\cdot b = y \\cdot a$ with $a = gp$, $b = gq$, $\\gcd(p,q)=1$:\n$$g(xq) = x(gq) = xb = ya = y(gp) = g(yp) \\implies xq = yp$$\n$$p \\mid xq, \\;\\gcd(p,q)=1 \\implies p \\mid x \\implies x = kp$$\n$$kqp = kpq = xq = yp \\implies y = kq \\;(\\text{by } p > 0)$$\n$$k \\leq g \\;\\text{from}\\; kp = x \\leq a = gp$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.coprime_div_gcd_div_gcd: gcd(a/g, b/g) = 1 when g = gcd(a,b)",
+      "Nat.Coprime.dvd_of_dvd_mul_right: gcd(p,q)=1, p|x·q ⟹ p|x",
+      "Nat.eq_of_mul_eq_mul_left: left cancellation of common factor",
+      "Euclidean algorithm: gcd decomposition for coprimality"
+    ],
+    "prerequisites": [
+      "Nat.Coprime definition: gcd = 1",
+      "Coprime divisibility lemma: gcd(p,q)=1, p|x·q ⟹ p|x (Euclid's lemma)",
+      "Nat.coprime_div_gcd_div_gcd in Mathlib",
+      "Safe g-cancellation via Nat.eq_of_mul_eq_mul_left"
+    ]
+  },
+  {
+    "id": "picks-oq02-applications",
+    "proofId": "picks-theorem-oq-02",
+    "range": {
+      "startLine": 205,
+      "endLine": 243
+    },
+    "type": "concept",
+    "title": "Special Cases and Pick's Edge Contribution Formula",
+    "content": "**`segment_coprime`** (line 205): When gcd(a,b) = 1, there are exactly 2 lattice points — the endpoints (0,0) and (a,b). This is the minimal case; any two distinct coprime integers define a segment with no interior lattice points.\n\n**`segment_diagonal`** (line 210): The diagonal (0,0)→(a,a) has gcd(a,a)+1 = a+1 lattice points: (0,0), (1,1), ..., (a,a). Each integer k ∈ {0,...,a} gives the lattice point (k,k).\n\n**Concrete examples**: segment_4_6 (gcd=2, count=3), segment_3_5 (gcd=1, count=2), segment_6_9 (gcd=3, count=4) — all proved by evaluating gcd via native_decide then applying card_segmentPoints.\n\n**`pick_edge_contribution`** (lines 236–238): card(segmentPoints(a,b)) - 1 = gcd(a,b). Each edge of a polygon contributes gcd(|Δx|, |Δy|) to Pick's boundary count B, because we subtract 1 to avoid double-counting the shared endpoint with the next edge. This gives B = Σ_edges gcd(|Δxᵢ|, |Δyᵢ|).\n\n**`interior_segment_count`** (lines 241–243): Subtracting both endpoints, the interior count is gcd(a,b) - 1 (when gcd > 0).",
+    "mathContext": "Pick's theorem: $A = I + B/2 - 1$ where $B = \\sum_{\\text{edges}} \\gcd(|\\Delta x_i|, |\\Delta y_i|)$. For a polygon with edges $P_i P_{i+1}$: each edge contributes $\\gcd(|x_{i+1}-x_i|, |y_{i+1}-y_i|)$ boundary points (one endpoint excluded to avoid double-counting). Summing over all edges gives $B = \\sum_i \\gcd(|\\Delta x_i|, |\\Delta y_i|)$.\n\nThe diagonal formula: $\\gcd(a,a) = a$, so $(\\text{segmentPoints}(a,a))\\text{.card} = a+1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pick's theorem: A = I + B/2 - 1",
+      "B = Σ gcd(|Δxᵢ|, |Δyᵢ|) boundary formula",
+      "segment_coprime: minimal (2-point) case",
+      "Nat.gcd_self: gcd(a,a) = a",
+      "picks-theorem (gallery: full Pick's theorem)",
+      "native_decide for concrete gcd values"
+    ],
+    "prerequisites": [
+      "Pick's theorem statement and boundary count B",
+      "Why gcd(a,a) = a: Nat.gcd_self",
+      "Edge contribution convention: subtract 1 for shared endpoint",
+      "native_decide for decidable arithmetic propositions"
+    ]
+  }
+]

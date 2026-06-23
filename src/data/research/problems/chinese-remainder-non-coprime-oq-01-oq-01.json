@@ -1,0 +1,183 @@
+{
+  "slug": "chinese-remainder-non-coprime-oq-01-oq-01",
+  "title": "CRT Non-Coprime Extension to k Moduli",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "The classical CRT requires pairwise coprime moduli. The parent proof handles 2 non-coprime moduli. Extend to $k$ arbitrary moduli with optimal lcm bounds and an efficient computation algorithm (Garner-style).",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-13T00:00:00.000Z",
+    "iteration": 2,
+    "focus": "All theorems proved — 0 sorries, 0 axioms",
+    "blockers": [],
+    "nextAction": "None — proof complete",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Created ChineseRemainderNonCoprimeOQ01OQ01.lean: 22 theorems, 1 def, 0 sorries, 0 axioms. Fully proves the k-moduli CRT extension with LCM periodicity, canonical form, efficiency gain, iterative construction, and necessary condition.",
+    "builtItems": [
+      "kLCM: noncomputable def via Finset.lcm over ℤ-valued function",
+      "dvd_kLCM, kLCM_dvd_iff: standard LCM divisibility in both directions",
+      "kLCM_empty, kLCM_singleton: base cases via simp + Finset.lcm_singleton",
+      "kLCM_dvd_prod: kLCM divides product via dvd_prod_of_mem",
+      "kModuli_periodic: main theorem — k congruences ↔ kLCM | (y₁-y₂) via kLCM_dvd_iff",
+      "solution_coset: corollary from kModuli_periodic",
+      "kLCM_nonneg, kLCM_pos: positivity results for canonical form",
+      "kModuli_canonical: y % kLCM is also a solution (uses emod_add_ediv identity)",
+      "kModuli_canonical_range: canonical rep in [0, kLCM)",
+      "kLCM_le_prod: efficiency bound via Int.le_of_dvd",
+      "kLCM_lt_prod_when_gcd_gt_one: strict efficiency via ChineseRemainderNonCoprimeOQ01.lcm_lt_mul_of_gcd_gt_one",
+      "kModuli_iterative: iterative reduction theorem — k+1 congruences reduce to k + one 2-modulus step",
+      "kModuli_necessary: gcd(mᵢ,mⱼ) | (aᵢ-aⱼ) necessary condition",
+      "example_kLCM: kLCM({4,6,10})=60 < 240=4*6*10 (via native_decide)",
+      "example_solution, example_compat_1/2/3: concrete solution x=21 to 3-moduli system"
+    ],
+    "insights": [
+      "Key insight: Finset.lcm_dvd / Finset.dvd_lcm in ℤ GCDMonoid directly encode k-moduli LCM universality",
+      "Canonical form proof: y % L ≡ y [ZMOD m] follows from m | L | (y - y%L) via emod_add_ediv",
+      "Iterative construction: forward direction uses kModuli_periodic; backward uses dvd_trans through kLCM",
+      "Efficiency: kLCM_lt_prod delegates to 2-moduli result from ChineseRemainderNonCoprimeOQ01"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "number-theory",
+    "modular-arithmetic",
+    "crt",
+    "computational"
+  ],
+  "relatedProofs": [
+    "chinese-remainder-constructive-oq-04-oq-03",
+    "chinese-remainder-non-coprime",
+    "chinese-remainder-non-coprime-oq-01",
+    "chinese-remainder-non-coprime-oq-01-oq-01",
+    "chinese-remainder-non-coprime-oq-02",
+    "chinese-remainder-non-coprime-oq-03",
+    "chinese-remainder-non-coprime-oq-03-oq-02",
+    "chinese-remainder-non-coprime-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-13T06:39:18.605Z",
+  "lastUpdate": "2026-04-28T13:00:00.000Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/ChineseRemainderNonCoprime.lean",
+      "filename": "ChineseRemainderNonCoprime.lean",
+      "lineCount": 306,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderNonCoprime.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderNonCoprimeList.lean",
+      "filename": "ChineseRemainderNonCoprimeList.lean",
+      "lineCount": 217,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderNonCoprimeList.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderNonCoprimeOQ01.lean",
+      "filename": "ChineseRemainderNonCoprimeOQ01.lean",
+      "lineCount": 309,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderNonCoprimeOQ01.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderNonCoprimeOQ01OQ01.lean",
+      "filename": "ChineseRemainderNonCoprimeOQ01OQ01.lean",
+      "lineCount": 250,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderNonCoprimeOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderNonCoprimeOQ02.lean",
+      "filename": "ChineseRemainderNonCoprimeOQ02.lean",
+      "lineCount": 706,
+      "theoremCount": 55,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderNonCoprimeOQ02.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderNonCoprimeOQ03.lean",
+      "filename": "ChineseRemainderNonCoprimeOQ03.lean",
+      "lineCount": 392,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderNonCoprimeOQ03.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderNonCoprimeOQ03Aristotle.lean",
+      "filename": "ChineseRemainderNonCoprimeOQ03Aristotle.lean",
+      "lineCount": 238,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderNonCoprimeOQ03Aristotle.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderNonCoprimeOQ03OQ02.lean",
+      "filename": "ChineseRemainderNonCoprimeOQ03OQ02.lean",
+      "lineCount": 379,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderNonCoprimeOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderNonCoprimeOQ04.lean",
+      "filename": "ChineseRemainderNonCoprimeOQ04.lean",
+      "lineCount": 240,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderNonCoprimeOQ04.lean"
+    }
+  ]
+}

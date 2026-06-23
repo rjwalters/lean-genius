@@ -1,0 +1,201 @@
+{
+  "id": "erdos-987",
+  "title": "Erdős Problem #987: Exponential Sums and Sequence Discrepancy",
+  "slug": "erdos-987",
+  "description": "For sequence x₁,x₂,... ∈ (0,1) and Aₖ = sup_N|∑e(kxⱼ)|, is Aₖ = o(k) possible? SOLVED (Alexeev-Putterman-Sawhney-Sellke-Valiant 2026): YES, there exists a sequence with Aₖ ≪ √(k log k), via randomized binary scrambling of the van der Corput sequence.",
+  "meta": {
+    "author": "Erdős, Clunie, Tao, Liu",
+    "sourceUrl": "https://erdosproblems.com/987",
+    "date": "1967",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos987Problem.lean",
+    "tags": [
+      "erdos",
+      "exponential-sums",
+      "harmonic-analysis",
+      "discrepancy",
+      "uniform-distribution",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 987,
+    "erdosUrl": "https://erdosproblems.com/987",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.exp",
+        "description": "Complex exponential function",
+        "module": "Mathlib.Data.Complex.Exponential"
+      },
+      {
+        "theorem": "Filter.limsup",
+        "description": "Limit superior in filters",
+        "module": "Mathlib.Topology.Instances.Real"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Real square root",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      }
+    ],
+    "originalContributions": [
+      "e definition: e(x) = e^{2πix}",
+      "partialSum definition: ∑ e(kxⱼ)",
+      "A definition: limsup of partial sum magnitudes",
+      "InUnitInterval predicate: sequence in (0,1)",
+      "clunie_sqrt_bound axiom: Aₖ ≫ √k infinitely often",
+      "clunie_upper_construction axiom: sequences with Aₖ ≤ k exist",
+      "SublinearGrowth definition: Aₖ = o(k)",
+      "openQuestion: is Aₖ = o(k) achievable?",
+      "erdos_987 theorem: main summary"
+    ],
+    "axiomCount": 4,
+    "lineCount": 245,
+    "assumptions": "4 axioms: clunie_sqrt_bound, clunie_upper_construction, erdos_987_unbounded, erdos_987_resolved (APSSV 2026 — Aₖ = o(k) is achievable). 0 sorries.",
+    "theoremCount": 2,
+    "definitionCount": 8
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #987 concerns the behavior of exponential sums over arbitrary sequences in (0,1). Given a sequence x₁, x₂, ... ∈ (0,1), define Aₖ = limsup_{n→∞} |∑_{j≤n} e(kxⱼ)| where e(x) = e^{2πix}. The problem asks two questions: is limsup Aₖ = ∞, and can Aₖ = o(k)? This appeared as Problem 7.21 in Hayman's 'Research problems in function theory' (1974).\n\nThe problem traces back to Erdős's work on exponential sums in the mid-1960s. In 1964, he observed that the supremum of partial sums must be unbounded — an 'easy' consequence of the fact that for any finite collection of reals, sufficiently large k makes all kxⱼ mod 1 cluster near 0 (by Dirichlet's principle), forcing alignment of the unit vectors e(kxⱼ). In 1965, he gave a 'very easy' quantitative proof that Aₖ ≫ log k infinitely often.\n\nThe major breakthrough came from J.G. Clunie in 1967, who proved two complementary results: (1) Aₖ ≫ √k for infinitely many k, using a second-moment argument based on the orthogonality of characters, and (2) there exist sequences with Aₖ ≤ k for all k, showing the trivial linear upper bound is essentially tight. Terence Tao independently found a proof of the √k lower bound. Liu (1969) showed that for sequences with finitely many distinct values, the bound improves dramatically to Aₖ ≫ k^{1-ε}.\n\nThe problem remains partially open. The first question (limsup Aₖ = ∞) is resolved affirmatively, but the second — whether Aₖ = o(k) is achievable — remains open after more than 60 years. The gap between the √k lower bound and the O(k) upper bound is a fundamental question connecting exponential sum theory to discrepancy, equidistribution, and additive combinatorics.",
+    "problemStatement": "**Problem Statement (Partially Open)**\n\nLet $x_1, x_2, \\ldots \\in (0,1)$ be an infinite sequence. Define:\n$$A_k = \\limsup_{n \\to \\infty}\\left|\\sum_{j \\leq n} e(kx_j)\\right|$$\nwhere $e(x) = e^{2\\pi ix}$.\n\n**Questions:**\n1. Is $\\limsup_{k \\to \\infty} A_k = \\infty$? **YES** (proved)\n2. Is it possible for $A_k = o(k)$? **OPEN**\n\n**Known:**\n- $A_k \\geq C\\sqrt{k}$ infinitely often (Clunie, Tao)\n- There exist sequences with $A_k \\leq k$ for all $k$ (Clunie)\n\n**Gap:** The question of whether $o(k)$ but $\\neq o(\\sqrt{k})$ is achievable remains open.",
+    "text": "For sequence x₁,x₂,... ∈ (0,1) and Aₖ = limsup|∑e(kxⱼ)|, is limsup Aₖ = ∞? Is Aₖ = o(k) possible? PARTIALLY OPEN: Proved Aₖ ≫ √k infinitely often; question of o(k) remains open.",
+    "proofStrategy": "**Formalization Approach**\n\nThe Lean formalization axiomatizes the major results in chronological order:\n\n1. **Definitions (lines 37-74):** Define `e(x) = exp(2πix)`, `partialSum` as the finite exponential sum, and `A(x,k) = limsup |Sₙ(k)|` using Lean's filter-based limit superior.\n\n2. **Early Results (lines 76-106):** Document Erdős's 1964 observation (unboundedness of sup over n) and 1965 quantitative bound (Aₖ ≫ log k infinitely often) — these are not Lean axioms.\n\n3. **Clunie's Theorems (lines 108-137):** The two actual Lean axioms clunie_sqrt_bound (Aₖ ≫ √k i.o.) and clunie_upper_construction (sequences with Aₖ ≤ k). Tao's independent proof is documented but not a Lean axiom.\n\n4. **Liu's Results (lines 139-168):** Document the stronger k^{1-ε} bounds for the finite distinct points case — not Lean axioms.\n\n5. **Open Question (lines 170-204):** Define `SublinearGrowth` (Aₖ = o(k)) as a `Filter.Tendsto` statement and formalize `openQuestion` as a Prop. The `known_bounds` theorem is *proved* (not axiomatized) from Clunie's results.\n\n6. **Connections (lines 206-244):** Include Weyl sum bounds for equidistributed sequences and the Erdős-Turán inequality connecting exponential sums to discrepancy.\n\n7. **Summary (lines 246-258):** The `erdos_987` theorem packages the three main results as a proved conjunction.",
+    "keyInsights": [
+      "**Random Walk Intuition:** The sum ∑e(kxⱼ) is a walk on the unit circle in ℂ. For 'random' angles, the CLT gives |Sₙ| ~ √n, but the question is about limsup behavior as n → ∞ for each fixed k — a subtler question about eventual alignment.",
+      "**Second Moment Method:** Clunie's √k proof uses orthogonality: ∑ₖ |Sₙ(k)|² ≈ nK, so by pigeonhole some k has |Sₙ(k)| ≥ c√K. This averaging argument cannot determine which specific k achieves the bound.",
+      "**O(k) is Tight:** Clunie's upper construction shows sequences exist with Aₖ ≤ k for all k, meaning the trivial bound |Sₙ(k)| ≤ n (triangle inequality) is nearly optimal after taking limsup.",
+      "**The Fundamental Gap:** Between √k (unavoidable lower bound) and k (achievable upper bound) lies a factor of √k. Whether o(k) is achievable would determine if this gap is real or if the upper bound can be improved.",
+      "**Finite vs Infinite Points:** With finitely many distinct values, Dirichlet's approximation theorem forces near-alignment at some k, giving Aₖ ≫ k^{1-ε} — the gap nearly closes to O(k^ε). The infinite case is fundamentally harder.",
+      "**Discrepancy Duality:** The Erdős-Turán inequality shows exponential sums control sequence regularity. If Aₖ = o(k), the sequence would have a specific balance between Fourier regularity and spatial distribution."
+    ],
+    "prerequisites": [
+      "Combinatorics (counting, extremal problems)",
+      "Number theory (primes, divisibility, arithmetic functions)"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Complex.Circle",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Topology.Instances.Real",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Complex.Exponential"
+    ],
+    "opens": [
+      "Complex",
+      "Real",
+      "Filter"
+    ],
+    "namespace": "Erdos987",
+    "lineCount": 245,
+    "axiomCount": 4,
+    "theoremCount": 2,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos987Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-990",
+      "relationship": "uses-same-technique",
+      "description": "Uses the Erdős-Turán exponential sum inequality to study angular distribution of polynomial roots — the same machinery that controls discrepancy in Problem #987."
+    },
+    {
+      "targetId": "erdos-992",
+      "relationship": "related-problem",
+      "description": "Studies discrepancy of sequences mod 1 using Weyl's criterion and exponential sums — the same Erdős-Turán framework underlying Problem #987's connection to equidistribution."
+    },
+    {
+      "targetId": "erdos-988",
+      "relationship": "related-problem",
+      "description": "Sphere discrepancy problem using Schmidt's theorem (1969). Applies discrepancy theory bounds in spherical geometry, complementing the one-dimensional analysis in #987."
+    },
+    {
+      "targetId": "erdos-989",
+      "relationship": "uses-same-technique",
+      "description": "Beck's circle discrepancy theorem uses Fourier analysis and Bessel functions — the same harmonic analysis framework that underlies exponential sum bounds."
+    },
+    {
+      "targetId": "erdos-995",
+      "relationship": "related-problem",
+      "description": "Lacunary sequences and fractional parts: the quasi-independence from exponential gaps prevents accumulation, relating to how #987's bounds depend on sequence structure."
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "foundation",
+      "description": "Fourier series convergence via Parseval's theorem provides the foundational harmonic analysis on which all exponential sum bounds in #987 rest."
+    }
+  ],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Defines the exponential function e(x) = exp(2πix) with unit circle and periodicity axioms, the partial sum Sₙ(k) = ∑e(kxⱼ) over Finset.range, and the Aₖ function as limsup of |Sₙ(k)| along Filter.atTop.",
+      "startLine": 37,
+      "endLine": 75,
+      "mathContext": "Defines the exponential function e(x) = exp(2πix) with unit circle and periodicity axioms, the partial sum Sₙ(k) = ∑e(kxⱼ) over Finset.range, and the Aₖ function as limsup of |Sₙ(k)| along Filter.atTop."
+    },
+    {
+      "id": "erdos-early",
+      "title": "Erdős's Basic Results (1964-1965)",
+      "summary": "Introduces InUnitInterval predicate and documents Erdős's two early observations (not Lean axioms): unboundedness of sup_n |Sₙ(k)| as k grows (1964), and the quantitative bound Aₖ ≫ log k infinitely often (1965).",
+      "startLine": 76,
+      "endLine": 107,
+      "mathContext": "Mathematical content: Introduces InUnitInterval predicate and documents Erdős's two early observations (not Lean axioms): unboundedness of sup_n |Sₙ(k)| as k grows (1964), and the quantitative bound Aₖ ≫ log k infinitely often (1965)."
+    },
+    {
+      "id": "clunie",
+      "title": "Clunie's Results (1967)",
+      "summary": "Axiomatizes Clunie's two complementary results — the √k lower bound (Aₖ ≫ √k i.o.) via second-moment method and the O(k) upper construction (∃ sequences with Aₖ ≤ k) — plus Tao's independent proof of the lower bound.",
+      "startLine": 108,
+      "endLine": 138,
+      "mathContext": "Axiomatizes Clunie's two complementary results — the √k lower bound (Aₖ ≫ √k i.o.) via second-moment method and the O(k) upper construction (∃ sequences with Aₖ ≤ k) — plus Tao's independent proof of the lower bound."
+    },
+    {
+      "id": "liu",
+      "title": "Liu's Results (1969)",
+      "summary": "Defines FinitelyManyDistinct predicate and documents Liu's theorem (Aₖ ≫ k^{1-ε} for finite point sets) and Clunie's observation that Aₖ is unbounded in the finite distinct case — not Lean axioms.",
+      "startLine": 139,
+      "endLine": 169,
+      "mathContext": "Mathematical content: Defines FinitelyManyDistinct predicate and documents Liu's theorem (Aₖ ≫ k^{1-ε} for finite point sets) and Clunie's observation — not Lean axioms."
+    },
+    {
+      "id": "open-question",
+      "title": "The Open Question",
+      "summary": "Defines SublinearGrowth (Aₖ = o(k)) via Filter.Tendsto and openQuestion as the existential statement. Proves known_bounds theorem combining Clunie's lower and upper results — one of two proved (non-axiom) results in the file.",
+      "startLine": 170,
+      "endLine": 205,
+      "mathContext": "Defines SublinearGrowth (Aₖ = o(k)) via Filter.Tendsto and openQuestion as the existential statement. Proves known_bounds theorem combining Clunie's lower and upper results — one of two proved (non-axiom) results in the file."
+    },
+    {
+      "id": "weyl-sums",
+      "title": "Weyl Sums and Equidistribution",
+      "summary": "Axiomatizes the Weyl sum bound |∑e(jθ)| ≤ csc(πθ/2) for non-integer θ, connecting exponential sums to equidistribution theory and showing arithmetic sequences xⱼ = jα achieve O(1) partial sums.",
+      "startLine": 206,
+      "endLine": 223,
+      "mathContext": "Axiomatizes the Weyl sum bound |∑e(jθ)| ≤ csc(πθ/2) for non-integer θ, connecting exponential sums to equidistribution theory and showing arithmetic sequences xⱼ = jα achieve O(1) partial sums."
+    },
+    {
+      "id": "discrepancy",
+      "title": "Connection to Discrepancy Theory",
+      "summary": "Defines sequence discrepancy as sup over intervals of |empirical - expected| proportion, then axiomatizes the Erdős-Turán inequality: D_n ≤ 1/K + Σ|Sₙ(k)|/(kn), the quantitative bridge between exponential sums and equidistribution.",
+      "startLine": 224,
+      "endLine": 234,
+      "mathContext": "Defines sequence discrepancy as sup over intervals of |empirical - expected| proportion, then axiomatizes the Erdős-Turán inequality: D_n ≤ 1/K + Σ|Sₙ(k)|/(kn), the quantitative bridge between exponential sums and equidistribution."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #987 is now FULLY SOLVED. Alexeev, Putterman, Sawhney, Sellke, and Valiant (2026, arXiv:2604.06609) proved that Aₖ = o(k) IS achievable by constructing a randomized sequence with Aₖ ≪ √(k log k). The construction is a prefix-randomized binary van der Corput sequence: on each dyadic block [P·2ʳ, (P+1)·2ʳ), the scrambled binary digits run through all r-bit words, turning each block sum into a sum of independent centered random variables. Combined with Clunie's 1967 lower bound Aₖ ≫ √k (infinitely often), this pinpoints the optimal growth rate up to a √(log k) factor. The proof was generated by an internal AI model at OpenAI.",
+    "implications": "**Theoretical Significance**: **Significance for Harmonic Analysis and Number Theory**\n\n1. **Exponential Sum Bounds:** Problem #987 reveals fundamental limits on cancellation in exponential sums. The √k lower bound shows that no sequence can achieve persistent cancellation at all frequencies simultaneously — a surprising constraint on Fourier coefficients.\n\n2. **Equidistribution Theory:** Through the Erdős-Turán inequality, exponential sum bounds directly control how well a sequence approximates uniform distribution.\n\nResolving the o(k) question would determine optimal equidistribution rates.\n\n3. **Discrepancy Theory:** The problem sits at the heart of discrepancy theory, connecting sequence irregularity to harmonic analysis. Progress on #987 would likely yield new discrepancy bounds.\n\n4. **Additive Combinatorics:** The interplay between Weyl sums, character sums, and sequence structure connects to modern additive combinatorics (Bourgain, Green-Tao, etc.).\n\n5. **Proof Technique:** The second-moment method used by Clunie exemplifies how averaging arguments can establish existence of extremal frequencies without identifying them explicitly.",
+    "openQuestions": [
+      "Can the √(log k) gap between the lower bound Aₖ ≫ √k and the upper bound Aₖ ≪ √(k log k) be closed?",
+      "Is there a deterministic (non-probabilistic) construction achieving Aₖ = o(k)?",
+      "For the specific sequence xⱼ = jα mod 1 (irrational α), what is the optimal Aₖ growth rate as a function of the Diophantine type of α?",
+      "Does the finite distinct case (Aₖ ≫ k^{1-ε}) extend to sequences with slowly growing ranges?"
+    ]
+  },
+  "sorries": 0
+}

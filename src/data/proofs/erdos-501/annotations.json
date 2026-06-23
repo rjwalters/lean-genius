@@ -1,0 +1,402 @@
+[
+  {
+    "id": "ann-501-imports",
+    "proofId": "erdos-501",
+    "range": {
+      "startLine": 26,
+      "endLine": 30
+    },
+    "type": "concept",
+    "title": "Imports",
+    "content": "Imports Lebesgue measure and outer measure from MeasureTheory, metric space basics for IsClosed, finite set utilities, and general tactics.",
+    "mathContext": "The formalization uses Lebesgue outer measure $\\mu^*(A)$ on $\\mathbb{R}$, the topological predicate `IsClosed` for closed subsets, and `Set.Finite`/`Set.Infinite` for cardinality conditions.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lebesgue measure",
+      "outer measure",
+      "closed sets",
+      "metric spaces"
+    ],
+    "prerequisites": [
+      "Lean 4 imports",
+      "Mathlib measure theory"
+    ]
+  },
+  {
+    "id": "ann-501-setfamily",
+    "proofId": "erdos-501",
+    "range": {
+      "startLine": 40,
+      "endLine": 40
+    },
+    "type": "definition",
+    "title": "Set Family",
+    "content": "A family of sets indexed by reals: for each x ∈ ℝ, we have a set A_x ⊆ ℝ. This is the basic object — a function from ℝ to the power set of ℝ.",
+    "mathContext": "A set family is a function $A : \\mathbb{R} \\to \\mathcal{P}(\\mathbb{R})$, assigning to each $x$ a subset $A_x \\subseteq \\mathbb{R}$. The independence condition involves the mutual non-membership relation $x \\notin A_y$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "indexed family of sets",
+      "hypergraph",
+      "neighborhood system"
+    ],
+    "prerequisites": [
+      "function types",
+      "power set"
+    ]
+  },
+  {
+    "id": "ann-501-bounded",
+    "proofId": "erdos-501",
+    "range": {
+      "startLine": 42,
+      "endLine": 43
+    },
+    "type": "definition",
+    "title": "Bounded Set",
+    "content": "A set is bounded if contained in some interval [-M, M]. Required for the problem setup to prevent trivial counterexamples.",
+    "mathContext": "$A$ is bounded $\\iff \\exists M > 0,\\; A \\subseteq [-M, M]$. Boundedness ensures $A_x$ doesn't spread over all of $\\mathbb{R}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "bounded subsets of ℝ",
+      "compact sets",
+      "Heine-Borel theorem"
+    ],
+    "prerequisites": [
+      "Set.Icc",
+      "real intervals"
+    ]
+  },
+  {
+    "id": "ann-501-outer",
+    "proofId": "erdos-501",
+    "range": {
+      "startLine": 46,
+      "endLine": 47
+    },
+    "type": "definition",
+    "title": "Outer Measure",
+    "content": "The Lebesgue outer measure of a set, defined via the infimum of covers by countable collections of open intervals. The key condition is that each A_x has outer measure < 1.",
+    "mathContext": "$\\mu^*(A) = \\inf\\{\\sum |I_n| : A \\subseteq \\bigcup I_n,\\; I_n \\text{ open intervals}\\}$. The condition $\\mu^*(A_x) < 1$ means $A_x$ can be covered by intervals of total length $< 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lebesgue outer measure",
+      "Carathéodory extension",
+      "measurable sets"
+    ],
+    "prerequisites": [
+      "MeasureTheory.Measure.lebesgue",
+      "ENNReal"
+    ]
+  },
+  {
+    "id": "ann-501-boundedfam",
+    "proofId": "erdos-501",
+    "range": {
+      "startLine": 50,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "Bounded Outer Measure Family",
+    "content": "The main hypothesis: every A_x is bounded and has outer measure < 1. This is the general setting where the answer depends on set-theoretic axioms.",
+    "mathContext": "$\\forall x \\in \\mathbb{R},\\; A_x \\text{ is bounded} \\land \\mu^*(A_x) < 1$. The measure condition means each $A_x$ is 'small' — it cannot contain a full unit interval.",
+    "significance": "key",
+    "relatedConcepts": [
+      "measure-theoretic smallness",
+      "null sets",
+      "Fubini-type arguments"
+    ],
+    "prerequisites": [
+      "IsBoundedSet",
+      "outerMeasure definition"
+    ]
+  },
+  {
+    "id": "ann-501-closed",
+    "proofId": "erdos-501",
+    "range": {
+      "startLine": 54,
+      "endLine": 55
+    },
+    "type": "definition",
+    "title": "Closed Measure Family",
+    "content": "Stronger hypothesis: each A_x is closed with measure < 1. This topological regularity is what enables the NPS infinite independence theorem.",
+    "mathContext": "$\\forall x,\\; A_x$ is closed $\\land \\mu^*(A_x) < 1$. Closed sets of measure $< 1$ have open dense complements, enabling Baire-category-type arguments.",
+    "significance": "key",
+    "relatedConcepts": [
+      "closed sets",
+      "Baire category theorem",
+      "nowhere dense sets"
+    ],
+    "prerequisites": [
+      "IsClosed from topology",
+      "outerMeasure"
+    ]
+  },
+  {
+    "id": "ann-501-isindep",
+    "proofId": "erdos-501",
+    "range": {
+      "startLine": 60,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "Independent Set",
+    "content": "X is independent if for all distinct x, y ∈ X, we have x ∉ A_y. This is analogous to an independent set in a directed graph where edges connect x to elements of A_x.",
+    "mathContext": "$\\text{IsIndependent}(A, X) :\\equiv \\forall x, y \\in X,\\; x \\neq y \\implies x \\notin A_y$. Viewing $x \\in A_y$ as a directed graph, $X$ is an independent set.",
+    "significance": "key",
+    "relatedConcepts": [
+      "graph independence number",
+      "Ramsey theory",
+      "hypergraph coloring"
+    ],
+    "prerequisites": [
+      "set family definition",
+      "set membership"
+    ]
+  },
+  {
+    "id": "ann-501-indepsize",
+    "proofId": "erdos-501",
+    "range": {
+      "startLine": 64,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "Independent Set of Size n",
+    "content": "There exists a finite independent set with exactly n elements. The Erdős-Hajnal theorem guarantees this for every n.",
+    "mathContext": "$\\text{IsIndependentOfSize}(A, n) :\\equiv \\exists X,\\; |X| = n \\land \\text{IsIndependent}(A, X)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset cardinality",
+      "finite Ramsey theory"
+    ],
+    "prerequisites": [
+      "IsIndependent definition",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "ann-501-infinite",
+    "proofId": "erdos-501",
+    "range": {
+      "startLine": 68,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "Infinite Independent Set",
+    "content": "There exists an infinite independent set — the main question. YES for closed families (NPS), can be NO under CH (Hechler).",
+    "mathContext": "$\\text{HasInfiniteIndependent}(A) :\\equiv \\exists X,\\; |X| = \\infty \\land \\text{IsIndependent}(A, X)$. The finite-to-infinite jump is where set-theoretic axioms intervene.",
+    "significance": "key",
+    "relatedConcepts": [
+      "infinite combinatorics",
+      "Ramsey's theorem",
+      "König's lemma"
+    ],
+    "prerequisites": [
+      "IsIndependent definition",
+      "Set.Infinite"
+    ]
+  },
+  {
+    "id": "ann-501-erdoshajnal",
+    "proofId": "erdos-501",
+    "range": {
+      "startLine": 75,
+      "endLine": 77
+    },
+    "type": "concept",
+    "title": "Erdős-Hajnal Theorem (1960)",
+    "content": "For any bounded outer measure family, arbitrarily large finite independent sets exist. The proof uses subadditivity: the union of k sets of measure < 1 has measure < k, so in a large enough interval, a new independent point exists.",
+    "mathContext": "Erdős-Hajnal: $\\forall n,\\; \\text{IsIndependentOfSize}(A, n)$. Proof: $\\mu^*(\\bigcup_{i=1}^k A_{x_i}) \\leq \\sum \\mu^*(A_{x_i}) < k$, so for large intervals, a new point exists outside all $A_{x_i}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "subadditivity of outer measure",
+      "greedy algorithm",
+      "pigeonhole principle"
+    ],
+    "prerequisites": [
+      "BoundedOuterMeasureFamily",
+      "IsIndependentOfSize"
+    ]
+  },
+  {
+    "id": "ann-501-ch",
+    "proofId": "erdos-501",
+    "range": {
+      "startLine": 133,
+      "endLine": 136
+    },
+    "type": "concept",
+    "title": "Continuum Hypothesis",
+    "content": "CH is stated as an axiom: |ℝ| = ℵ₁. Independent of ZFC (Gödel 1938, Cohen 1963). Here it serves as hypothesis for Hechler's negative result.",
+    "mathContext": "CH: $2^{\\aleph_0} = \\aleph_1$. Gödel: Con(ZFC) $\\implies$ Con(ZFC + CH). Cohen: Con(ZFC) $\\implies$ Con(ZFC + $\\neg$CH).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Continuum Hypothesis",
+      "Gödel's L",
+      "Cohen forcing",
+      "cardinal arithmetic"
+    ],
+    "prerequisites": [
+      "ZFC axioms",
+      "cardinal numbers"
+    ]
+  },
+  {
+    "id": "ann-501-hechler",
+    "proofId": "erdos-501",
+    "range": {
+      "startLine": 138,
+      "endLine": 140
+    },
+    "type": "concept",
+    "title": "Hechler's Theorem (1972)",
+    "content": "Under CH, there exists a bounded outer measure family with NO infinite independent set. The construction well-orders ℝ in type ω₁ and builds each A_x to block all potential infinite independent sequences via transfinite induction.",
+    "mathContext": "Hechler: CH $\\implies \\exists A$ with $\\mu^*(A_x) < 1$ bounded, but $\\nexists$ infinite independent set. Uses well-ordering of $\\mathbb{R}$ in type $\\omega_1$ enabled by CH.",
+    "significance": "key",
+    "relatedConcepts": [
+      "CH constructions",
+      "transfinite induction",
+      "well-ordering",
+      "diagonalization"
+    ],
+    "prerequisites": [
+      "continuum_hypothesis",
+      "BoundedOuterMeasureFamily"
+    ]
+  },
+  {
+    "id": "ann-501-nps",
+    "proofId": "erdos-501",
+    "range": {
+      "startLine": 144,
+      "endLine": 148
+    },
+    "type": "concept",
+    "title": "NPS Theorem (1987)",
+    "content": "For closed families, infinite independent sets DO exist, provable in ZFC. This is the positive counterpart to Hechler — closedness restores decidability from ZFC alone.",
+    "mathContext": "NPS (1987): $\\text{ClosedMeasureFamily}(A) \\implies \\text{HasInfiniteIndependent}(A)$, provable in ZFC. Uses topological properties of closed sets of small measure.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ZFC-provability",
+      "topological regularity",
+      "Baire category"
+    ],
+    "prerequisites": [
+      "ClosedMeasureFamily",
+      "HasInfiniteIndependent"
+    ]
+  },
+  {
+    "id": "ann-501-gladysz",
+    "proofId": "erdos-501",
+    "range": {
+      "startLine": 150,
+      "endLine": 168
+    },
+    "type": "concept",
+    "title": "Gladysz's Theorem (1962)",
+    "content": "For closed measure families, size-2 independent sets always exist. Closedness provides the topological structure the general case lacks.",
+    "mathContext": "Gladysz: If $A_x$ is closed, $\\mu(A_x) < 1$ $\\forall x$, then $\\exists x \\neq y$ with $x \\notin A_y \\land y \\notin A_x$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "closed sets in ℝ",
+      "topological regularity",
+      "Baire property"
+    ],
+    "prerequisites": [
+      "ClosedMeasureFamily",
+      "IsIndependentOfSize"
+    ]
+  },
+  {
+    "id": "ann-501-q1",
+    "proofId": "erdos-501",
+    "range": {
+      "startLine": 172,
+      "endLine": 181
+    },
+    "type": "definition",
+    "title": "Question 1: Infinite Independence",
+    "content": "Does every bounded outer measure family have an infinite independent set? Independent of ZFC: false under CH, true for closed families.",
+    "mathContext": "$\\text{Q1} :\\equiv \\forall A,\\; \\text{BOM}(A) \\implies \\text{HasInfiniteIndependent}(A)$. Independent of ZFC.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ZFC independence",
+      "set-theoretic independence",
+      "Whitehead problem"
+    ],
+    "prerequisites": [
+      "BoundedOuterMeasureFamily",
+      "HasInfiniteIndependent"
+    ]
+  },
+  {
+    "id": "ann-501-zfc",
+    "proofId": "erdos-501",
+    "range": {
+      "startLine": 190,
+      "endLine": 198
+    },
+    "type": "concept",
+    "title": "ZFC Independence of Question 1",
+    "content": "The formal proof of independence: (1) CH ⟹ ¬Q1 via Hechler, (2) closed families have infinite independence via NPS. Combined with Gödel-Cohen, Q1 is independent of ZFC.",
+    "mathContext": "$(\\text{CH} \\implies \\neg\\text{Q1}) \\land (\\text{ClosedMeasureFamily} \\implies \\text{HasInfiniteIndependent})$. With Gödel-Cohen independence of CH, Q1 is independent of ZFC.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gödel incompleteness",
+      "Cohen forcing",
+      "independence proofs"
+    ],
+    "prerequisites": [
+      "Hechler's theorem",
+      "NPS theorem",
+      "CH independence"
+    ]
+  },
+  {
+    "id": "ann-501-hereditary",
+    "proofId": "erdos-501",
+    "range": {
+      "startLine": 202,
+      "endLine": 206
+    },
+    "type": "concept",
+    "title": "Hereditary Property",
+    "content": "Subsets of independent sets are independent. Proved directly by subset membership.",
+    "mathContext": "$Y \\subseteq X \\land \\text{IsIndependent}(A, X) \\implies \\text{IsIndependent}(A, Y)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "hereditary property",
+      "downward-closed family",
+      "simplicial complex"
+    ],
+    "prerequisites": [
+      "IsIndependent definition",
+      "set inclusion"
+    ]
+  },
+  {
+    "id": "ann-501-insert",
+    "proofId": "erdos-501",
+    "range": {
+      "startLine": 208,
+      "endLine": 220
+    },
+    "type": "concept",
+    "title": "Insertion Lemma",
+    "content": "To extend an independent set X by z: need z ∉ A_y for all y ∈ X AND y ∉ A_z for all y ∈ X. The proof case-splits on membership in the enlarged set insert z X.",
+    "mathContext": "If $X$ independent, $z \\notin X$, $z \\notin A_y$ $\\forall y \\in X$, $y \\notin A_z$ $\\forall y \\in X$, then $X \\cup \\{z\\}$ is independent.",
+    "significance": "key",
+    "relatedConcepts": [
+      "greedy extension",
+      "Zorn's lemma",
+      "inductive construction"
+    ],
+    "prerequisites": [
+      "IsIndependent",
+      "Set.insert",
+      "Set.mem_insert_iff"
+    ]
+  }
+]

@@ -1,0 +1,161 @@
+{
+  "id": "picks-theorem-oq-01-oq-02",
+  "title": "2D Ehrhart Polynomial via Pick's Theorem",
+  "description": "Formalize the Ehrhart polynomial L(P,t) = A·t² + (B/2)·t + 1 for 2D convex lattice polygons. Proved via three independent routes: (1) Finset.card_product for rectangles, (2) Nat.antidiagonal biUnion + Gauss sum for right triangles, (3) algebraically from Pick's theorem and scaling axioms. Includes Ehrhart-Macdonald reciprocity and h*-vector non-negativity.",
+  "source": {
+    "proofId": "picks-theorem-oq-01",
+    "proofTitle": "Pick's Theorem via Triangulation",
+    "type": "open-question"
+  },
+  "category": "extension",
+  "tractability": "tractable",
+  "tags": [
+    "geometry",
+    "combinatorics",
+    "lattice-points",
+    "ehrhart-polynomial",
+    "picks-theorem",
+    "open-question"
+  ],
+  "relatedProofs": [
+    "picks-theorem",
+    "picks-theorem-oq-01",
+    "picks-theorem-oq-01-oq-02",
+    "picks-theorem-oq-02",
+    "picks-theorem-oq-03-cross-poly",
+    "picks-theorem-oq-03-ext",
+    "picks-theorem-oq-03-product"
+  ],
+  "status": "completed",
+  "selectedDate": "2026-05-03",
+  "selectedBy": "researcher",
+  "completedDate": "2026-05-03",
+  "leanFiles": [
+    {
+      "path": "Proofs/PicksTheorem.lean",
+      "filename": "PicksTheorem.lean",
+      "lineCount": 485,
+      "theoremCount": 12,
+      "axiomCount": 1,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheorem.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ01.lean",
+      "filename": "PicksTheoremOQ01.lean",
+      "lineCount": 207,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ01OQ01.lean",
+      "filename": "PicksTheoremOQ01OQ01.lean",
+      "lineCount": 216,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ01OQ02.lean",
+      "filename": "PicksTheoremOQ01OQ02.lean",
+      "lineCount": 310,
+      "theoremCount": 22,
+      "axiomCount": 3,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ02.lean",
+      "filename": "PicksTheoremOQ02.lean",
+      "lineCount": 246,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ03.lean",
+      "filename": "PicksTheoremOQ03.lean",
+      "lineCount": 438,
+      "theoremCount": 19,
+      "axiomCount": 1,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ03CrossPoly.lean",
+      "filename": "PicksTheoremOQ03CrossPoly.lean",
+      "lineCount": 696,
+      "theoremCount": 69,
+      "axiomCount": 0,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ03CrossPoly.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ03Ext.lean",
+      "filename": "PicksTheoremOQ03Ext.lean",
+      "lineCount": 289,
+      "theoremCount": 30,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ03Ext.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ03Product.lean",
+      "filename": "PicksTheoremOQ03Product.lean",
+      "lineCount": 605,
+      "theoremCount": 57,
+      "axiomCount": 0,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ03Product.lean"
+    }
+  ],
+  "knowledge": {
+    "progressSummary": "COMPLETE: Proved L(P,t) = A·t² + (B/2)·t + 1 via three routes. 0 sorries, 3 axioms (picks_theorem, scaled_area, scaled_boundary). Rectangle and triangle cases proved with 0 axioms.",
+    "insights": [
+      "The antidiagonal biUnion decomposition gives the cleanest triangle Ehrhart proof: row k of Δ_n has k+1 lattice points = antidiag(k).card",
+      "opaque scaledPolygon avoids circular definitions: if interior_count is defined via the Ehrhart formula, picks_theorem becomes tautological",
+      "Cross-framework consistency (rectangle_frameworks_agree) validates both Finset and axiomatic proofs agree",
+      "Ehrhart-Macdonald reciprocity (ehrhart_interior) follows directly from the same algebra: interior_count polynomial has opposite sign on linear term",
+      "h*-vector non-negativity (h*₁ ≥ 0) requires boundary_ge_three in addition to Pick's theorem"
+    ],
+    "builtItems": [
+      "rectangle_ehrhart: L(R_{a,b},t) = (ta+1)(tb+1) [Finset.card_product, 0 axioms]",
+      "triangle_ehrhart_double: 2·L(Δ_n,t) = (tn+1)(tn+2) [antidiagonal+Gauss, 0 axioms]",
+      "ehrhart_formula: L(P,t) = A·t² + (B/2)·t + 1 [from picks_theorem+scaling axioms]",
+      "ehrhart_interior: i(tP) = A·t² - (B/2)·t + 1 [Ehrhart-Macdonald reciprocity]",
+      "ehrhart_from_hstar: L expressed via binomial h*-decomposition",
+      "hstar_one_nonneg: h*₁ ≥ 0 from Pick + boundary_ge_three"
+    ],
+    "mathlibGaps": [
+      "No Mathlib formalization of general Ehrhart polynomial (currently requires axioms for scaling laws)",
+      "SimpleLatticePolygon structure is ad-hoc; a general LatticePolytope formalization is missing from Mathlib"
+    ],
+    "nextSteps": [
+      "Prove Ehrhart-Macdonald reciprocity in full generality: L(P°,-t) = (-1)^d · i(P,t)",
+      "Formalize 3D Ehrhart polynomial using analogous axioms",
+      "Prove Stanley's non-negativity theorem for h*-vectors using unimodular triangulation"
+    ]
+  }
+}

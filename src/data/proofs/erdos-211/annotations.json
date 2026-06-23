@@ -1,0 +1,431 @@
+[
+  {
+    "id": "point-def",
+    "proofId": "erdos-211",
+    "range": {
+      "startLine": 38,
+      "endLine": 42
+    },
+    "type": "definition",
+    "title": "Point in the Plane",
+    "content": "Points are pairs of real numbers (x, y) representing coordinates in ℝ². This is the standard model for Euclidean plane geometry, where incidence and collinearity are defined via algebraic relations on coordinates.",
+    "mathContext": "A point $p = (x, y) \\in \\mathbb{R}^2$. The plane $\\mathbb{R}^2$ serves as the ambient space for all incidence geometry results in this formalization.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Euclidean plane",
+      "coordinate geometry",
+      "affine space"
+    ],
+    "prerequisites": [
+      "real numbers",
+      "ordered pairs"
+    ]
+  },
+  {
+    "id": "line-def",
+    "proofId": "erdos-211",
+    "range": {
+      "startLine": 44,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "Line Structure",
+    "content": "A line is determined by a base point and a nonzero direction vector. This parametric representation avoids issues with vertical lines that arise in slope-intercept form, and naturally supports the projective duality used in incidence geometry.",
+    "mathContext": "A line $\\ell$ is given by $\\{p + t \\cdot d : t \\in \\mathbb{R}\\}$ where $d \\neq (0,0)$ is the direction vector. Two lines are the same if they have the same point set.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "parametric equations",
+      "direction vector",
+      "projective duality"
+    ],
+    "prerequisites": [
+      "linear algebra",
+      "vector spaces"
+    ]
+  },
+  {
+    "id": "collinear-def",
+    "proofId": "erdos-211",
+    "range": {
+      "startLine": 54,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "Collinearity of Three Points",
+    "content": "Three points are collinear if they lie on a common line, expressed here via affine combinations. Collinearity is the central geometric relation in incidence problems: the Erdős-Beck question fundamentally asks how non-collinearity forces many lines.",
+    "mathContext": "Points $p, q, r$ are collinear iff $\\exists t, s \\in \\mathbb{R}$ such that one is an affine combination of the others. Equivalently, $\\det\\begin{pmatrix} q_1 - p_1 & r_1 - p_1 \\\\ q_2 - p_2 & r_2 - p_2 \\end{pmatrix} = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "affine combination",
+      "determinant test",
+      "general position"
+    ],
+    "prerequisites": [
+      "affine geometry",
+      "linear dependence"
+    ]
+  },
+  {
+    "id": "num-lines",
+    "proofId": "erdos-211",
+    "range": {
+      "startLine": 62,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "Number of Lines Through Point Set",
+    "content": "Counts the number of distinct lines determined by pairs of points in P. Each unordered pair {p, q} with p ≠ q determines exactly one line. For n points in general position (no 3 collinear), this gives $\\binom{n}{2}$ lines, but collinearity reduces this count—which is exactly what Erdős Problem #211 quantifies.",
+    "mathContext": "For a point set $P$ with $|P| = n$, we define $\\text{numLines}(P) = |\\{\\ell_{p,q} : p, q \\in P, p \\neq q\\}|$. The trivial upper bound is $\\binom{n}{2}$; the problem asks for lower bounds given bounded collinearity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "combinatorial geometry",
+      "line arrangement",
+      "binomial coefficient"
+    ],
+    "prerequisites": [
+      "finite set cardinality",
+      "counting arguments"
+    ]
+  },
+  {
+    "id": "max-collinear",
+    "proofId": "erdos-211",
+    "range": {
+      "startLine": 71,
+      "endLine": 76
+    },
+    "type": "definition",
+    "title": "Maximum Collinear Points",
+    "content": "The maximum number of points from P lying on any single line. This is the key parameter controlling the structure of the point set: when maxCollinear(P) is small relative to n, the points are 'spread out' and must determine many lines. The interplay between this parameter and the number of lines is the essence of Beck's theorem.",
+    "mathContext": "Define $m(P) = \\max_{\\ell} |P \\cap \\ell|$. The Erdős condition requires $m(P) \\leq n - k$, so $k = n - m(P)$ measures how far the configuration is from being collinear.",
+    "significance": "key",
+    "relatedConcepts": [
+      "collinearity parameter",
+      "point-line duality",
+      "Beck's theorem"
+    ],
+    "prerequisites": [
+      "supremum",
+      "finite set filtering"
+    ]
+  },
+  {
+    "id": "bounded-collinearity",
+    "proofId": "erdos-211",
+    "range": {
+      "startLine": 82,
+      "endLine": 87
+    },
+    "type": "definition",
+    "title": "Bounded Collinearity Condition",
+    "content": "The Erdős-Beck condition: at most n−k points on any line, where 1 ≤ k < n. When k is close to n, the configuration is in 'general position' and many lines are forced. When k = 1, only one point is guaranteed off any given line, which is the weakest non-trivial condition.",
+    "mathContext": "The predicate $\\text{HasBoundedCollinearity}(P, k)$ asserts $m(P) \\leq |P| - k$. Equivalently, every line misses at least $k$ points of $P$. The main theorem gives $\\Omega(kn)$ determined lines.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős-Beck condition",
+      "general position",
+      "point configuration"
+    ],
+    "prerequisites": [
+      "finite combinatorics",
+      "collinearity"
+    ]
+  },
+  {
+    "id": "beck-st-main",
+    "proofId": "erdos-211",
+    "range": {
+      "startLine": 96,
+      "endLine": 104
+    },
+    "type": "concept",
+    "title": "Beck-Szemerédi-Trotter Main Theorem",
+    "content": "The central result of Erdős Problem #211: if n points have at most n−k on any line, then Ω(kn) lines are formed. Proved independently by Beck and Szemerédi-Trotter in 1983. Beck's proof uses a combinatorial dichotomy, while Szemerédi-Trotter's uses the crossing number inequality. Both approaches have been enormously influential in combinatorial geometry.",
+    "mathContext": "For $P \\subset \\mathbb{R}^2$ with $|P| = n$ and $m(P) \\leq n - k$ where $1 \\leq k < n$: $|\\mathcal{L}(P)| \\geq c \\cdot k \\cdot n$ for an absolute constant $c > 0$, where $\\mathcal{L}(P)$ is the set of lines determined by $P$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Beck's theorem",
+      "Szemerédi-Trotter theorem",
+      "incidence geometry",
+      "Erdős problems"
+    ],
+    "prerequisites": [
+      "incidence bounds",
+      "combinatorial geometry",
+      "crossing number inequality"
+    ]
+  },
+  {
+    "id": "special-case",
+    "proofId": "erdos-211",
+    "range": {
+      "startLine": 106,
+      "endLine": 112
+    },
+    "type": "concept",
+    "title": "Special Case: Quadratic Lines",
+    "content": "For 2n points with at most n collinear, there are Ω(n²) lines. This is the k = n case of the main theorem, giving quadratic growth in the number of determined lines. This special case was highlighted by Erdős as particularly natural: 'half the points off every line' forces quadratically many lines.",
+    "mathContext": "If $|P| = 2n$ and $m(P) \\leq n$, then $|\\mathcal{L}(P)| = \\Omega(n^2)$. This follows from the main theorem with $k = n$: $\\Omega(k \\cdot 2n) = \\Omega(n \\cdot 2n) = \\Omega(n^2)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "quadratic growth",
+      "balanced configurations",
+      "extremal combinatorics"
+    ],
+    "prerequisites": [
+      "asymptotic notation",
+      "finite point sets"
+    ]
+  },
+  {
+    "id": "beck-dichotomy",
+    "proofId": "erdos-211",
+    "range": {
+      "startLine": 118,
+      "endLine": 128
+    },
+    "type": "concept",
+    "title": "Beck's Dichotomy",
+    "content": "The fundamental structural insight of Beck's proof: for any n-point set, either (1) many points are collinear (≥ n/K on some line), or (2) many lines are formed (≥ n²/K). There is no middle ground. This dichotomy reduces the problem to case analysis and is a paradigm widely used in extremal combinatorics.",
+    "mathContext": "For $|P| = n > 0$, there exists an absolute constant $K > 0$ such that either $m(P) \\geq n/K$ or $|\\mathcal{L}(P)| \\geq n^2/K$. The proof uses double counting of incidences and the Cauchy-Schwarz inequality.",
+    "significance": "key",
+    "relatedConcepts": [
+      "dichotomy argument",
+      "double counting",
+      "Cauchy-Schwarz inequality",
+      "extremal combinatorics"
+    ],
+    "prerequisites": [
+      "Cauchy-Schwarz inequality",
+      "incidence counting",
+      "pigeonhole principle"
+    ]
+  },
+  {
+    "id": "beck-quantitative",
+    "proofId": "erdos-211",
+    "range": {
+      "startLine": 130,
+      "endLine": 137
+    },
+    "type": "concept",
+    "title": "Quantitative Beck's Theorem",
+    "content": "A quantitative refinement: if at most n/c points are collinear (for c > 1), then Ω(cn) lines exist. This captures how the 'spread' of the point set (measured by c) controls the number of determined lines, interpolating between the near-collinear case (c ≈ 1) and general position (c ≈ n).",
+    "mathContext": "If $m(P) \\leq n/c$ for $c > 1$, then $|\\mathcal{L}(P)| \\geq C \\cdot c \\cdot n$ for an absolute constant $C > 0$. This follows from Beck's dichotomy: the collinear case is ruled out by hypothesis.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "quantitative bounds",
+      "spread parameter",
+      "Beck's theorem"
+    ],
+    "prerequisites": [
+      "Beck's dichotomy",
+      "incidence bounds"
+    ]
+  },
+  {
+    "id": "incidences",
+    "proofId": "erdos-211",
+    "range": {
+      "startLine": 143,
+      "endLine": 148
+    },
+    "type": "definition",
+    "title": "Point-Line Incidences",
+    "content": "The incidence function counts pairs (p, ℓ) where point p lies on line ℓ. This is the fundamental quantity in incidence geometry, introduced systematically by Szemerédi and Trotter. Bounding incidences yields bounds on many geometric quantities including the number of determined lines, rich lines, and distance sets.",
+    "mathContext": "For point set $P$ and line set $L$, the incidence count is $I(P, L) = |\\{(p, \\ell) \\in P \\times L : p \\in \\ell\\}|$. Trivially $I(P,L) \\leq |P| \\cdot |L|$, but the Szemerédi-Trotter bound is much stronger.",
+    "significance": "key",
+    "relatedConcepts": [
+      "incidence geometry",
+      "bipartite graph",
+      "point-line duality"
+    ],
+    "prerequisites": [
+      "set cardinality",
+      "Cartesian product"
+    ]
+  },
+  {
+    "id": "szemeredi-trotter",
+    "proofId": "erdos-211",
+    "range": {
+      "startLine": 150,
+      "endLine": 156
+    },
+    "type": "concept",
+    "title": "Szemerédi-Trotter Theorem",
+    "content": "The Szemerédi-Trotter theorem (1983): for m points and n lines in ℝ², the number of incidences is O(m^{2/3}n^{2/3} + m + n). This is tight and is one of the most important results in discrete geometry. The original proof used a cell decomposition; Székely's 1997 proof via crossing numbers is simpler and more widely taught.",
+    "mathContext": "$$I(P, L) \\leq C(|P|^{2/3}|L|^{2/3} + |P| + |L|)$$ for an absolute constant $C$. The exponent $2/3$ is best possible, as shown by grid-like constructions. The theorem fails in $\\mathbb{F}_p^2$ (Bourgain-Katz-Tao 2004 give analogues).",
+    "significance": "key",
+    "relatedConcepts": [
+      "incidence bound",
+      "crossing number inequality",
+      "cell decomposition",
+      "Székely's proof"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "crossing number",
+      "algebraic geometry"
+    ]
+  },
+  {
+    "id": "rich-lines",
+    "proofId": "erdos-211",
+    "range": {
+      "startLine": 158,
+      "endLine": 165
+    },
+    "type": "concept",
+    "title": "Rich Lines Bound",
+    "content": "A corollary of Szemerédi-Trotter: the number of 'r-rich' lines (containing ≥ r points) is O(n²/r³ + n/r). This controls how many lines can have many points on them, and is a key tool in proving Beck's theorem and many other results in combinatorial geometry.",
+    "mathContext": "The number of lines containing $\\geq r$ points of an $n$-point set is $O(n^2/r^3 + n/r)$. For $r = 2$, this gives $O(n^2)$ lines (trivial). For $r = \\sqrt{n}$, only $O(\\sqrt{n})$ lines can be that rich.",
+    "significance": "key",
+    "relatedConcepts": [
+      "rich lines",
+      "Szemerédi-Trotter corollary",
+      "incidence bounds"
+    ],
+    "prerequisites": [
+      "Szemerédi-Trotter theorem",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "refined-conjecture",
+    "proofId": "erdos-211",
+    "range": {
+      "startLine": 171,
+      "endLine": 179
+    },
+    "type": "definition",
+    "title": "Erdős's Refined Conjecture",
+    "content": "Erdős speculated that the optimal bound is ≥ (1+o(1))kn/6 lines, with the constant 1/6 being best possible. This refined conjecture goes beyond the qualitative Ω(kn) bound to pin down the exact leading constant. The 1/6 arises from configurations where every determined line contains exactly 3 points.",
+    "mathContext": "The refined conjecture: $\\forall \\varepsilon > 0, \\exists N_0$ such that $\\forall n \\geq N_0$: if $m(P) \\leq n - k$, then $|\\mathcal{L}(P)| \\geq (1/6 - \\varepsilon) k n$. The constant $1/6 = \\frac{1}{\\binom{3}{2}}$ arises because 3-point lines use $\\binom{3}{2} = 3$ pairs each.",
+    "significance": "key",
+    "relatedConcepts": [
+      "optimal constants",
+      "extremal configurations",
+      "asymptotic analysis"
+    ],
+    "prerequisites": [
+      "asymptotic notation",
+      "extremal combinatorics"
+    ]
+  },
+  {
+    "id": "one-sixth-optimal",
+    "proofId": "erdos-211",
+    "range": {
+      "startLine": 181,
+      "endLine": 190
+    },
+    "type": "concept",
+    "title": "Optimality of 1/6: Configurations with 3-Point Lines",
+    "content": "There exist n-point configurations where every line contains exactly 3 points, giving ≈ n²/6 lines. These show the constant 1/6 is best possible. Such configurations arise from Steiner triple systems and finite projective planes, connecting this problem to design theory.",
+    "mathContext": "If every determined line has exactly 3 points, then $\\binom{n}{2}$ pairs are distributed in groups of $\\binom{3}{2} = 3$, yielding $\\binom{n}{2}/3 \\approx n^2/6$ lines. Steiner triple systems $S(2,3,n)$ exist for $n \\equiv 1, 3 \\pmod{6}$ (Kirkman 1847).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Steiner triple systems",
+      "design theory",
+      "Kirkman's theorem",
+      "projective planes"
+    ],
+    "prerequisites": [
+      "combinatorial designs",
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "bgs-config",
+    "proofId": "erdos-211",
+    "range": {
+      "startLine": 196,
+      "endLine": 203
+    },
+    "type": "concept",
+    "title": "Burr-Grünbaum-Sloane Configurations",
+    "content": "Extremal point sets achieving the bound ≈ n²/6, named after Burr, Grünbaum, and Sloane who studied them in the context of point-line incidences. These configurations have at most 3 points per line and demonstrate the tightness of the 1/6 constant in Erdős's refined conjecture.",
+    "mathContext": "For $n \\geq 9$, there exist $n$-point sets $P$ with $m(P) \\leq 3$ and $|\\mathcal{L}(P)| \\leq (1/6 + 1/n) n^2$. The $1/n$ error term vanishes asymptotically, confirming the 1/6 constant.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "extremal configurations",
+      "Burr-Grünbaum-Sloane",
+      "orchard problem"
+    ],
+    "prerequisites": [
+      "configuration geometry",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "furedi-palasti",
+    "proofId": "erdos-211",
+    "range": {
+      "startLine": 205,
+      "endLine": 211
+    },
+    "type": "concept",
+    "title": "Füredi-Palásti Optimal Configurations",
+    "content": "Füredi and Palásti proved that for every n ≥ 3, there exist n points in 'near-general position' (at most 3 collinear) forming at most n²/6 + O(n) lines. This establishes that the 1/6 constant is tight for all sufficiently large n, not just for special values.",
+    "mathContext": "For all $n \\geq 3$, $\\exists P$ with $|P| = n$, $m(P) \\leq 3$, and $|\\mathcal{L}(P)| \\leq n^2/6 + n$. Combined with the lower bound, this pins down the asymptotic: $|\\mathcal{L}(P)| = (1+o(1))n^2/6$ in the extremal case.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Füredi-Palásti theorem",
+      "tight bounds",
+      "extremal point configurations"
+    ],
+    "prerequisites": [
+      "extremal combinatorics",
+      "construction methods"
+    ]
+  },
+  {
+    "id": "crossing-number",
+    "proofId": "erdos-211",
+    "range": {
+      "startLine": 213,
+      "endLine": 217
+    },
+    "type": "concept",
+    "title": "Crossing Number Inequality",
+    "content": "For a graph with n vertices and m ≥ 4n edges, the crossing number cr(G) ≥ m³/(64n²). This inequality, proved by Ajtai-Chvátal-Newborn-Szemerédi (1982) and Leighton (1983), is the key tool in Székely's elegant proof of the Szemerédi-Trotter theorem. The idea is to embed the incidence graph in the plane using the given points and lines, then apply the crossing number bound.",
+    "mathContext": "For a simple graph $G$ with $n$ vertices and $m \\geq 4n$ edges: $\\text{cr}(G) \\geq \\frac{m^3}{64n^2}$. Proof: delete vertices randomly with probability $p$, apply Euler's formula to the resulting planar graph, optimize over $p$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "crossing number",
+      "graph drawing",
+      "probabilistic method",
+      "Euler's formula"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "probabilistic method",
+      "planar graphs"
+    ]
+  },
+  {
+    "id": "main-theorem",
+    "proofId": "erdos-211",
+    "range": {
+      "startLine": 223,
+      "endLine": 241
+    },
+    "type": "concept",
+    "title": "Erdős Problem #211: SOLVED",
+    "content": "The final statement of Erdős Problem #211: for n points with at most n−k collinear (1 ≤ k < n), there are Ω(kn) lines containing at least 2 points. Solved independently by Beck and Szemerédi-Trotter in 1983. The $100 Erdős prize was awarded. The proof delegates to the Beck-Szemerédi-Trotter axiom, encapsulating the deep results needed.",
+    "mathContext": "$$\\text{erdos\\_211}: \\forall n, k, P, \\; |P| = n \\wedge 1 \\leq k < n \\wedge m(P) \\leq n - k \\implies |\\mathcal{L}(P)| = \\Omega(kn)$$\nThis is the formalization of the original Erdős conjecture, now a theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős problems",
+      "Beck's theorem",
+      "Szemerédi-Trotter theorem",
+      "incidence geometry"
+    ],
+    "prerequisites": [
+      "Beck-Szemerédi-Trotter theorem",
+      "bounded collinearity",
+      "asymptotic notation"
+    ]
+  }
+]

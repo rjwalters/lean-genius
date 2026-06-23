@@ -1,0 +1,129 @@
+[
+  {
+    "id": "ann-1217-loglog-density",
+    "proofId": "erdos-1217",
+    "range": {
+      "startLine": 1,
+      "endLine": 14
+    },
+    "type": "concept",
+    "title": "Upper Log-Log Density: Sequences with Mertens-Scale Growth",
+    "content": "The 'upper log-log density' of a sequence A = {a₁ < a₂ < ...} is defined as limsup_{x→∞} (1/log log x) * ∑_{aₙ ≤ x} 1/aₙ. This measures whether the reciprocal partial sums of A grow at the same rate as the prime reciprocal sums. By Mertens' second theorem, ∑_{p ≤ x} 1/p = log log x + M + O(1/log x), where M ≈ 0.2615 is the Meissel-Mertens constant. Thus the primes have upper log-log density exactly 1. A sequence has positive upper log-log density iff it is 'as dense as a positive fraction of the primes' in a harmonic-measure sense—a much weaker condition than having positive natural density or even positive upper Banach density.",
+    "mathContext": "$\\overline{d}_{\\ell\\ell}(A) = \\limsup_{x\\to\\infty} \\frac{1}{\\log\\log x}\\sum_{a_n \\leq x} \\frac{1}{a_n}$. Mertens' 2nd theorem: $\\sum_{p \\leq x} \\frac{1}{p} = \\log\\log x + M + O(1/\\log x)$, where $M \\approx 0.2615$. Primes: $\\overline{d}_{\\ell\\ell}(\\mathbb{P}) = 1$. For $A = \\{n^2 : n \\in \\mathbb{N}\\}$: $\\sum_{n^2 \\leq x} 1/n^2 \\to \\pi^2/6$ (constant), so $\\overline{d}_{\\ell\\ell}(A) = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Mertens' second theorem",
+      "Meissel-Mertens constant",
+      "upper Banach density",
+      "natural density",
+      "logarithmic density"
+    ],
+    "prerequisites": [
+      "Mertens' theorem statement",
+      "limsup definition",
+      "prime counting function",
+      "harmonic series divergence"
+    ]
+  },
+  {
+    "id": "ann-1217-primitive-sets",
+    "proofId": "erdos-1217",
+    "range": {
+      "startLine": 1,
+      "endLine": 14
+    },
+    "type": "concept",
+    "title": "Primitive Sets and Erdős's 1935 Density Bound",
+    "content": "A set A ⊆ ℕ is primitive if no element divides another: a_m ∤ a_n for all distinct m,n. The primes form a primitive set (no prime divides another). Erdős proved (1935) that for any primitive set A, ∑_{a ∈ A} 1/(a log a) ≤ C for an absolute constant C. This upper bound shows that primitive sets cannot be 'too dense'—the harmonic sums weighted by 1/log are bounded. The connection to Problem #1217: if one wants to extract a primitive subsequence from A while preserving positive log-log density, one must navigate this Erdős bound. For sequences with ∑ 1/aₙ ~ C log log x, extracting a primitive subsequence typically loses at most a constant factor.",
+    "mathContext": "Erdős 1935: For any primitive set $A$, $\\sum_{a \\in A} \\frac{1}{a \\log a} \\leq C_0$ (absolute constant). Equivalently: $\\sum_{a \\in A, a \\leq x} \\frac{1}{a} = O(\\log x)$. Primes: $\\sum_{p \\leq x} \\frac{1}{p \\log p} \\approx \\int_2^x \\frac{dt}{t (\\log t)^2} = O(1)$ (converges).",
+    "significance": "key",
+    "relatedConcepts": [
+      "primitive set (antichain under divisibility)",
+      "Erdős 1935 primitive set theorem",
+      "Sidon set",
+      "antichain in poset",
+      "divisibility poset"
+    ],
+    "prerequisites": [
+      "divisibility relation on ℕ",
+      "antichain definition",
+      "prime set as canonical primitive set",
+      "harmonic series estimates"
+    ]
+  },
+  {
+    "id": "ann-1217-ess66-context",
+    "proofId": "erdos-1217",
+    "range": {
+      "startLine": 1,
+      "endLine": 14
+    },
+    "type": "concept",
+    "title": "Erdős-Sárközy-Sós 1966: Density and Structure Theorems",
+    "content": "The [ESS66] reference is Erdős, Sárközy, and Sós, 1966. This collaboration produced several fundamental results in additive combinatorics and analytic number theory. Their 1966 work spans topics including: (1) multiplicatively structured sets and their densities; (2) sum-free sets in arithmetic progressions; (3) Sidon sets (B₂ sets) and their maximal density; (4) sequences with the 'Property P' (no element is a sum of two others). In the context of Problem #1217, [ESS66] proved a density-preservation theorem: sequences with positive upper log-log density contain subsequences with the same density and some additional algebraic property. The exact form depends on which 1966 paper is referenced.",
+    "mathContext": "ESS66 result (reconstructed): If $A$ has $\\overline{d}_{\\ell\\ell}(A) > 0$, then $A$ contains a subsequence $B$ with $\\overline{d}_{\\ell\\ell}(B) > 0$ and $B$ satisfying a structural property (primitive / sum-free / Sidon). The exact statement requires consulting the original paper; the source for Problem #1217 is corrupted.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Erdős-Sárközy-Sós 1966",
+      "sum-free sets",
+      "B₂ sets / Sidon sets",
+      "additive bases",
+      "density-preservation theorems"
+    ],
+    "prerequisites": [
+      "B₂/Sidon set definition",
+      "sum-free set definition",
+      "additive basis definition",
+      "density theory of integer sets"
+    ]
+  },
+  {
+    "id": "ann-1217-garbled-statement",
+    "proofId": "erdos-1217",
+    "range": {
+      "startLine": 1,
+      "endLine": 14
+    },
+    "type": "insight",
+    "title": "Corrupted Problem Statement: Source Encoding Issues",
+    "content": "Both the Lean file and meta.json for Problem #1217 contain severely corrupted problem text. The Lean file header reads: 'Let $A={a_1[ESS66], who proved that if limsup ... sum_{a_n>0, then there exists such a sequence such that limsup ... sum_{a_{n_i} ...' The LaTeX has been garbled—likely by a scraping or encoding process that stripped parts of the mathematical content. The fragments reveal: (1) a sequence A = {a₁ < a₂ < ...}; (2) a reference to [ESS66] (Erdős-Sárközy-Sós 1966); (3) a limsup involving 1/(log log x) and a sum over elements ≤ x; (4) the conclusion is about a subsequence with a related limsup being positive. The problem is listed as 'solved' on erdosproblems.com.",
+    "mathContext": "Fragment from source: `\\limsup_{x\\to \\infty} \\frac{1}{\\log\\log x}\\sum_{a_n<x} \\ldots > 0 \\implies \\exists \\text{ subsequence } \\{a_{n_i}\\}: \\limsup_{x\\to\\infty} \\frac{1}{\\log\\log x} \\sum_{a_{n_i}<x} \\ldots [> 0 \\text{ + property}]$. The structural property for the subsequence is unrecoverable from the garbled source.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "corrupted mathematical source text",
+      "erdosproblems.com problem database",
+      "encoding issues in LaTeX",
+      "problem reconstruction"
+    ],
+    "prerequisites": [
+      "basic limsup notation",
+      "sum over sequence elements ≤ x"
+    ]
+  },
+  {
+    "id": "ann-1217-lean-stub",
+    "proofId": "erdos-1217",
+    "range": {
+      "startLine": 18,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Lean Formalization: Filter.limsup and Analytic Number Theory",
+    "content": "The placeholder `erdos_1217 : True := by sorry` requires formalization infrastructure only partially available in Mathlib. Key components: (1) `Filter.limsup` for the limsup of the reciprocal sum as a function of x; (2) `Finset.sum` over elements ≤ x for the partial sums; (3) Mertens' second theorem (∑_{p ≤ x} 1/p ~ log log x) for the density normalization—not yet in Mathlib; (4) extracting a structurally constrained subsequence while preserving density, which involves Ramsey-type or greedy arguments at the analytic number theory level.",
+    "mathContext": "Lean 4 sketch: `def loglogDensity (A : ℕ → ℕ) : ℝ := Filter.limsup (fun x => (Real.log (Real.log x))⁻¹ * ∑ n in Finset.filter (fun n => A n ≤ x) Finset.univ, (A n : ℝ)⁻¹) Filter.atTop`. The `Filter.limsup` in Mathlib 4 operates on `Filter`s and requires a `ConditionallyCompleteLattice` structure on the codomain.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Filter.limsup in Mathlib",
+      "Finset.sum over sequences",
+      "Real.log composition",
+      "Nat.Prime filter",
+      "Mertens' theorem in Mathlib"
+    ],
+    "prerequisites": [
+      "Lean 4 Filter.limsup API",
+      "Real.log definition",
+      "Finset.sum over ℕ",
+      "analytic number theory infrastructure in Mathlib"
+    ]
+  }
+]

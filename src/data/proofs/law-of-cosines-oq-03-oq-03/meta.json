@@ -1,0 +1,263 @@
+{
+  "id": "law-of-cosines-oq-03-oq-03",
+  "title": "Hyperbolic AAA Congruence",
+  "slug": "law-of-cosines-oq-03-oq-03",
+  "description": "Formalizes hyperbolic AAA congruence: in hyperbolic geometry the three angles determine the triangle, so there are no non-trivial similar triangles. Inverts the second law of cosines to express each side purely in terms of the angles, cosh(c) = (cos C + cos A cos B)/(sin A sin B), then uses injectivity of cosh on [0,∞) to conclude equal angles force equal sides. Also proves an internal-consistency theorem (the angular defect A+B+C<π is exactly what makes the angle formula exceed 1, so cosh c > 1) and a closed form for the equilateral triangle, cosh(side) = cos θ/(1-cos θ). 18 theorems, 1 structure, 7 structure-encoded axioms, 0 sorries.",
+  "leanFile": {
+    "path": "Proofs/LawOfCosinesOQ03OQ03.lean",
+    "namespace": "HyperbolicAAA",
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real",
+      "Set"
+    ],
+    "axiomCount": 7,
+    "sorries": 0,
+    "lineCount": 267,
+    "theoremCount": 18,
+    "definitionCount": 1
+  },
+  "openQuestion": {
+    "id": "law-of-cosines-oq-03-oq-03",
+    "parentId": "law-of-cosines-oq-03",
+    "question": "In hyperbolic geometry, do the three angles of a triangle determine its size, or are there similar (same-angle, different-size) triangles as in Euclidean geometry?",
+    "answer": "AAA congruence holds: the angles determine the triangle. The second hyperbolic law of cosines cos C = -cos A cos B + sin A sin B cosh c inverts to cosh c = (cos C + cos A cos B)/(sin A sin B), a function of the angles alone (and symmetrically for cosh a, cosh b). Since cosh is injective on [0,∞) and side lengths are positive, equal angles force equal sides. There are no non-trivial similar triangles in hyperbolic geometry. The angular defect A+B+C<π is precisely what makes the angle formula exceed 1 (cos(A+B) > cos(π-C) = -cos C), so a valid side cosh c>1 exists. 7 structure-encoded axioms, 0 sorries."
+  },
+  "highlights": [
+    "Hyperbolic AAA congruence: equal angles ⟹ equal sides (no similar triangles)",
+    "Inversion of the second law: cosh c = (cos C + cos A cos B)/(sin A sin B)",
+    "Internal consistency: the angular defect A+B+C<π makes the angle formula exceed 1",
+    "cosh c > 1 derived from the angles alone, via cos(A+B) > -cos C",
+    "Equilateral closed form: cosh(side) = cos θ/(1-cos θ)"
+  ],
+  "assumptions": [
+    "HyperbolicTriangle.ha: 0 < a (structure field — side length positive)",
+    "HyperbolicTriangle.hb: 0 < b (structure field — side length positive)",
+    "HyperbolicTriangle.hc: 0 < c (structure field — side length positive)",
+    "HyperbolicTriangle.defect: A+B+C < π (structure field — angular defect)",
+    "HyperbolicTriangle.lawA: cos A = -cos B cos C + sin B sin C cosh a (structure field — second law of cosines at A)",
+    "HyperbolicTriangle.lawB: cos B = -cos A cos C + sin A sin C cosh b (structure field — second law of cosines at B)",
+    "HyperbolicTriangle.lawC: cos C = -cos A cos B + sin A sin B cosh c (structure field — second law of cosines at C)",
+    "Angle-range fields (hA, hB, hC, hA_lt, hB_lt, hC_lt: 0 < A,B,C < π) are additional well-formedness constraints (not counted among the 7 mathematical axioms, consistent with the sibling law-of-sines entry)."
+  ],
+  "implications": [
+    {
+      "statement": "Two hyperbolic triangles with equal angles have equal sides (AAA congruence)",
+      "type": "theorem"
+    },
+    {
+      "statement": "cosh c > 1 follows from the angular defect alone",
+      "type": "corollary"
+    },
+    {
+      "statement": "Equilateral triangle with angle θ has cosh(side) = cos θ/(1-cos θ)",
+      "type": "corollary"
+    }
+  ],
+  "overview": {
+    "historicalContext": "In Euclidean geometry the angle-angle-angle (AAA) criterion gives only similarity, not congruence: scaling a triangle preserves its angles, so there are infinitely many similar triangles of every size. Hyperbolic geometry breaks this. The discovery (Lobachevsky, Bolyai, Gauss) that the angle sum of a triangle is strictly less than π — with the defect equal to the area — already shows that angle data carries metric information. The second law of cosines $\\cos C = -\\cos A\\cos B + \\sin A\\sin B\\cosh c$ (which has no Euclidean analogue) makes this precise: it can be solved for the side, so the three angles determine the three sides exactly. Hyperbolic triangles therefore satisfy AAA *congruence*, one of the most striking qualitative differences between hyperbolic and Euclidean geometry, and the reason that hyperbolic structures are rigid.",
+    "problemStatement": "Given a hyperbolic triangle with sides $a,b,c>0$, angles $A,B,C\\in(0,\\pi)$ opposite the respective sides, angular defect $A+B+C<\\pi$, and the three second laws of cosines, prove that the angles determine the sides: $\\cosh c=(\\cos C+\\cos A\\cos B)/(\\sin A\\sin B)$ and, consequently, two triangles with equal angles are congruent. Show further that the defect is exactly the condition making the angle formula yield a valid $\\cosh c>1$.",
+    "proofStrategy": "Each second law of cosines is linear in the corresponding $\\cosh$ of the side, so dividing by $\\sin\\cdot\\sin$ (positive on $(0,\\pi)$ via Real.sin_pos_of_pos_of_lt_pi) gives an explicit formula for $\\cosh a,\\cosh b,\\cosh c$ as functions of the angles (eq_div_iff + linear_combination). The internal-consistency theorem rewrites $\\cos A\\cos B-\\sin A\\sin B=\\cos(A+B)$ and uses strict antitonicity of cos on $[0,\\pi]$ (Real.cos_lt_cos_of_nonneg_of_le_pi) with $A+B<\\pi-C$ to get $\\cos(A+B)>\\cos(\\pi-C)=-\\cos C$, i.e. the formula exceeds 1. AAA congruence follows by injectivity of cosh on $[0,\\infty)$ (Real.cosh_strictMonoOn.injOn). The equilateral closed form substitutes $A=B=C$ and simplifies using $\\sin^2\\theta=(1-\\cos\\theta)(1+\\cos\\theta)$.",
+    "keyInsights": [
+      "The second law of cosines is *linear* in cosh of the opposite side, so it inverts to give cosh(side) as an explicit rational function of the three angles. This is the algebraic heart of AAA congruence — no Euclidean analogue exists because the Euclidean law of cosines relates a side to the other two sides, not purely to angles.",
+      "The angular defect A+B+C<π is not just a curiosity: it is exactly the inequality that makes (cos C + cos A cos B)/(sin A sin B) > 1. Writing the numerator-minus-denominator as cos C + cos(A+B), the defect gives A+B < π−C, and strict antitonicity of cos on [0,π] yields cos(A+B) > −cos C, i.e. cos C + cos(A+B) > 0. Thus existence of a valid hyperbolic side is equivalent to positive defect.",
+      "Injectivity of cosh on [0,∞) (Real.cosh_strictMonoOn.injOn) upgrades 'equal cosh of sides' to 'equal sides', completing the congruence. Side positivity (the ha, hb, hc structure fields) is what places the sides in the domain of injectivity.",
+      "The equilateral case collapses to a memorable closed form cosh(side) = cos θ/(1−cos θ): the (1+cos θ) factors cancel between sin²θ and the numerator cos θ(1+cos θ). The side grows without bound as θ→0 (thin ideal triangles) and shrinks to 0 as θ→π/3 (the Euclidean limit, where the defect vanishes).",
+      "linear_combination -t.lawC discharges the inverted formula in one line: after eq_div_iff the goal is exactly the structure field rearranged, so the certificate is a single signed copy of the law."
+    ],
+    "prerequisites": [
+      "Hyperbolic second law of cosines (parent file LawOfCosinesOQ03.lean)",
+      "Real.sin_pos_of_pos_of_lt_pi: sin x > 0 on (0, π)",
+      "Real.cos_lt_cos_of_nonneg_of_le_pi: cos strictly antitone on [0, π]",
+      "Real.cos_pi_sub and Real.cos_add",
+      "Real.cosh_strictMonoOn: cosh strictly monotone (hence injective) on [0, ∞)",
+      "Angular defect: A+B+C < π for hyperbolic triangles"
+    ]
+  },
+  "sections": [
+    {
+      "id": "structure",
+      "title": "HyperbolicTriangle Structure",
+      "startLine": 66,
+      "endLine": 94,
+      "summary": "Defines HyperbolicTriangle with side lengths a,b,c, angles A,B,C, side positivity (ha,hb,hc), angle range bounds (hA,hB,hC and hA_lt,hB_lt,hC_lt), the angular defect (defect: A+B+C<π), and the three second laws of cosines (lawA, lawB, lawC). The 7 mathematical axioms are ha,hb,hc,defect,lawA,lawB,lawC; angle-range fields are domain constraints.",
+      "mathContext": "The second law of cosines cos C = -cos A cos B + sin A sin B cosh c has no Euclidean analogue and is the source of AAA rigidity. Axiomatizing it as a structure field is consistent with the parent LawOfCosinesOQ03 and the sibling law of sines."
+    },
+    {
+      "id": "sin-positivity",
+      "title": "Sine Positivity on (0, π)",
+      "startLine": 96,
+      "endLine": 107,
+      "summary": "sin_A_pos, sin_B_pos, sin_C_pos: each angle lies in (0,π), so its sine is positive (Real.sin_pos_of_pos_of_lt_pi). These provide the nonzero denominators for inverting the law.",
+      "mathContext": "sin x > 0 for x ∈ (0, π); the product sin A · sin B is therefore positive and the formula is well-defined."
+    },
+    {
+      "id": "inversion",
+      "title": "Inverting the Second Law: Sides from Angles",
+      "startLine": 109,
+      "endLine": 142,
+      "summary": "cosh_c_eq, cosh_a_eq, cosh_b_eq express each cosh-side as the angle ratio (cos opp + cos·cos)/(sin·sin). Each is proved by eq_div_iff (nonzero product of sines) followed by linear_combination of the corresponding law field.",
+      "mathContext": "cosh c = (cos C + cos A cos B)/(sin A sin B). The right-hand side depends only on the angles — the algebraic statement of AAA determinacy."
+    },
+    {
+      "id": "consistency",
+      "title": "The Defect Makes the Formula Valid",
+      "startLine": 144,
+      "endLine": 176,
+      "summary": "angle_formula_gt_one: the angle ratio exceeds 1, using only the angle bounds and defect. After lt_div_iff₀ the goal is sin A sin B < cos C + cos A cos B; rewriting cos A cos B - sin A sin B = cos(A+B) and using cos strictly antitone on [0,π] (A+B < π-C) gives cos(A+B) > cos(π-C) = -cos C. cosh_c_gt_one then concludes cosh c > 1.",
+      "mathContext": "Existence of a valid hyperbolic side (cosh c > 1) is equivalent to positive angular defect. This ties the metric quantity to the area defect A+B+C<π."
+    },
+    {
+      "id": "congruence",
+      "title": "AAA Congruence",
+      "startLine": 178,
+      "endLine": 225,
+      "summary": "cosh_{a,b,c}_determined: equal angles give equal cosh-sides (rewrite by the formula). {a,b,c}_determined: upgrade to equal sides via cosh injectivity on [0,∞) (Real.cosh_strictMonoOn.injOn with side positivity). aaa_congruence packages all three side equalities.",
+      "mathContext": "cosh is injective on [0,∞); side lengths are positive, so cosh t₁.c = cosh t₂.c forces t₁.c = t₂.c. Two hyperbolic triangles with equal angles are congruent."
+    },
+    {
+      "id": "equilateral",
+      "title": "Equilateral Closed Form",
+      "startLine": 227,
+      "endLine": 252,
+      "summary": "equilateral_cosh: with A=B=C, cosh(side) = cos θ/(1-cos θ). Uses sin²θ = (1-cos θ)(1+cos θ) and div_eq_div_iff; the (1+cos θ) factors cancel.",
+      "mathContext": "cosh(side) = cos θ/(1-cos θ) → ∞ as θ→0 and → 1 (side→0) as θ→π/3 (Euclidean limit)."
+    },
+    {
+      "id": "defect-exports",
+      "title": "Angle Sum and Area",
+      "startLine": 254,
+      "endLine": 265,
+      "summary": "angle_sum_lt_pi and area_positive re-export the angular defect and its positivity (the hyperbolic area).",
+      "mathContext": "The defect π-(A+B+C) equals the hyperbolic area (Gauss-Bonnet, curvature -1)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Hyperbolic AAA congruence is formalized by inverting the second law of cosines: cosh c = (cos C + cos A cos B)/(sin A sin B) expresses each side as a function of the angles, and injectivity of cosh on [0,∞) turns equal angles into equal sides. An internal-consistency theorem shows the angular defect A+B+C<π is exactly the condition making the formula exceed 1 (cosh c > 1), and the equilateral case yields the closed form cosh(side) = cos θ/(1-cos θ). 7 structure-encoded axioms, 0 sorries.",
+    "implications": "AAA congruence is the precise sense in which hyperbolic geometry is rigid: there are no similar non-congruent triangles, in sharp contrast to Euclidean geometry. The same inversion underlies the fact that hyperbolic structures on surfaces are determined by their holonomy/angle data, a theme central to Thurston's geometrization. Together with the parent law of cosines and the sibling law of sines, this completes the basic congruence theory of hyperbolic triangles.",
+    "openQuestions": [
+      "Derive the three second laws of cosines from a single first law of cosines (and the metric), reducing the structure-encoded axiom count.",
+      "Formalize SAS and ASA congruence for hyperbolic triangles using the same inversion technique.",
+      "Quantify the size-from-angles map: prove monotonicity of cosh(side) in the opposite angle and recover the area defect as the integral of the side formulas."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "law-of-cosines-oq-03",
+      "relationship": "parent"
+    },
+    {
+      "targetId": "law-of-cosines-oq-03-oq-02",
+      "relationship": "sibling"
+    },
+    {
+      "targetId": "law-of-cosines",
+      "relationship": "related"
+    }
+  ],
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-06-22",
+    "status": "axiomatized",
+    "badge": "axiom",
+    "proofRepoPath": "Proofs/LawOfCosinesOQ03OQ03.lean",
+    "tags": [
+      "hyperbolic-geometry",
+      "law-of-cosines",
+      "trigonometry",
+      "real-analysis",
+      "aaa-congruence",
+      "rigidity",
+      "open-question"
+    ],
+    "sorries": 0,
+    "axiomCount": 7,
+    "lineCount": 267,
+    "theoremCount": 18,
+    "definitionCount": 1,
+    "originalContributions": [
+      "HyperbolicTriangle structure encoding the three second laws of cosines plus the angular defect",
+      "cosh_c_eq / cosh_a_eq / cosh_b_eq: inversion of the second law giving each side as a function of the angles",
+      "angle_formula_gt_one: the angular defect is exactly what makes the angle formula exceed 1",
+      "cosh_c_gt_one: cosh c > 1 derived from the angles alone",
+      "aaa_congruence: equal angles ⟹ equal sides via cosh injectivity on [0,∞)",
+      "equilateral_cosh: closed form cosh(side) = cos θ/(1-cos θ) for the equilateral triangle"
+    ],
+    "proofStrategy": "Invert each second law of cosines (linear in cosh of the opposite side) via eq_div_iff + linear_combination to get cosh(side) as a ratio of angle functions. Prove the angle ratio exceeds 1 from the defect using cos(A+B) > cos(π-C) = -cos C (strict antitonicity of cos on [0,π]). Conclude AAA congruence by cosh injectivity on [0,∞). Specialize to the equilateral case for a closed form.",
+    "openQuestions": [
+      "Derive the second laws of cosines from a first law to reduce structure-encoded axioms",
+      "Formalize SAS and ASA hyperbolic congruence by the same inversion technique",
+      "Recover the area defect as an integral of the side-from-angle formulas"
+    ],
+    "sections": [
+      {
+        "title": "HyperbolicTriangle Structure",
+        "content": "7 mathematical axioms: ha,hb,hc (side positivity), defect (A+B+C<π), lawA,lawB,lawC (second laws of cosines). Angle-range fields are domain constraints.",
+        "startLine": 66,
+        "endLine": 94,
+        "theorems": []
+      },
+      {
+        "title": "Sine Positivity and Inversion",
+        "content": "sin_A_pos/sin_B_pos/sin_C_pos give nonzero denominators; cosh_c_eq/cosh_a_eq/cosh_b_eq invert the law to express sides from angles.",
+        "startLine": 96,
+        "endLine": 142,
+        "theorems": [
+          "sin_A_pos",
+          "sin_B_pos",
+          "sin_C_pos",
+          "cosh_c_eq",
+          "cosh_a_eq",
+          "cosh_b_eq"
+        ]
+      },
+      {
+        "title": "Internal Consistency from the Defect",
+        "content": "angle_formula_gt_one and cosh_c_gt_one: the angular defect makes the angle formula exceed 1, so a valid hyperbolic side exists.",
+        "startLine": 144,
+        "endLine": 176,
+        "theorems": [
+          "angle_formula_gt_one",
+          "cosh_c_gt_one"
+        ]
+      },
+      {
+        "title": "AAA Congruence",
+        "content": "cosh_{a,b,c}_determined and {a,b,c}_determined combine into aaa_congruence: equal angles force equal sides.",
+        "startLine": 178,
+        "endLine": 225,
+        "theorems": [
+          "cosh_c_determined",
+          "cosh_a_determined",
+          "cosh_b_determined",
+          "c_determined",
+          "a_determined",
+          "b_determined",
+          "aaa_congruence"
+        ]
+      },
+      {
+        "title": "Equilateral Form and Area",
+        "content": "equilateral_cosh (closed form cos θ/(1-cos θ)); angle_sum_lt_pi and area_positive re-export the defect.",
+        "startLine": 227,
+        "endLine": 265,
+        "theorems": [
+          "equilateral_cosh",
+          "angle_sum_lt_pi",
+          "area_positive"
+        ]
+      }
+    ],
+    "mathContext": {
+      "field": "Hyperbolic Geometry / Trigonometry",
+      "keyTheorem": "Hyperbolic AAA congruence: angles determine the triangle, via cosh c = (cos C + cos A cos B)/(sin A sin B); the angular defect A+B+C<π is what makes the formula valid (cosh c > 1).",
+      "historicalBackground": "AAA gives only similarity in Euclidean geometry but congruence in hyperbolic geometry. This rigidity, discovered with hyperbolic geometry itself (Lobachevsky, Bolyai, Gauss), is central to the deformation theory of hyperbolic structures (Thurston).",
+      "significance": "Establishes that there are no non-trivial similar triangles in hyperbolic geometry and exhibits the explicit angle-to-side map, completing the basic congruence theory alongside the laws of cosines and sines."
+    }
+  },
+  "sorries": 0
+}

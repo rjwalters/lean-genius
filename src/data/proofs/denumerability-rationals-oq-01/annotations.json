@@ -1,0 +1,165 @@
+[
+  {
+    "id": "ann-denum-oq01-header",
+    "proofId": "denumerability-rationals-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 65
+    },
+    "type": "concept",
+    "title": "The Cardinality Gap: from ℚ to the Continuum Hypothesis",
+    "content": "Develops the full cardinality landscape from the denumerability of $\\mathbb{Q}$. Starting from $|\\mathbb{Q}| = \\aleph_0$ (parent file), this entry proves $|\\mathbb{R}| = \\mathfrak{c} = 2^{\\aleph_0}$, establishes $|\\mathcal{P}(\\mathbb{Q})| = \\mathfrak{c}$ (the Dedekind cut connection), proves $\\aleph_1 \\le \\mathfrak{c}$, and formalizes the Continuum Hypothesis and its independence from ZFC. Cantor posed CH in 1878; Hilbert listed it as Problem 1 in 1900; Gödel (1940) and Cohen (1963) established independence.",
+    "mathContext": "The chain: $\\aleph_0 = |\\mathbb{Q}| < |\\mathbb{R}| = \\mathfrak{c} = 2^{\\aleph_0}$. CH: $\\mathfrak{c} = \\aleph_1$, equivalently $\\nexists \\kappa: \\aleph_0 < \\kappa < \\mathfrak{c}$. Independence: CH is consistent with ZFC (Gödel, via $L$) and $\\neg$CH is also consistent (Cohen, via forcing).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Continuum Hypothesis",
+      "Cantor's theorem",
+      "Gödel's constructible universe",
+      "Cohen forcing"
+    ],
+    "prerequisites": [
+      "cardinal arithmetic",
+      "Denumerable",
+      "aleph hierarchy"
+    ]
+  },
+  {
+    "id": "ann-denum-oq01-cardinality",
+    "proofId": "denumerability-rationals-oq-01",
+    "range": {
+      "startLine": 71,
+      "endLine": 85
+    },
+    "type": "concept",
+    "title": "Cardinality of ℚ and ℝ from Mathlib",
+    "content": "Establishes the base facts: $|\\mathbb{Q}| = \\aleph_0$ (from Mathlib's `Denumerable ℚ` instance, which provides an explicit bijection $\\mathbb{N} \\simeq \\mathbb{Q}$ via Cantor pairing) and $|\\mathbb{R}| = \\mathfrak{c}$ (from Mathlib's `mk_real`). Proves $|\\mathbb{Q}| < |\\mathbb{R}|$ by rewriting to $\\aleph_0 < \\mathfrak{c}$ and applying Cantor's theorem. Notably, $\\mathbb{Q}$ is dense in $\\mathbb{R}$ yet strictly smaller—density is a topological property independent of cardinality.",
+    "mathContext": "$|\\mathbb{Q}| = \\aleph_0$ because $\\mathbb{Q} \\cong \\mathbb{Z} \\times \\mathbb{Z}_{>0} / \\sim$ (fractions $p/q$ in lowest terms), and $\\mathbb{Z}^2$ is countable. $|\\mathbb{R}| = 2^{\\aleph_0}$ because $\\mathbb{R} \\cong \\{0,1\\}^{\\mathbb{N}}$ via binary expansions (with care for dyadic rationals).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cantor pairing",
+      "Denumerable",
+      "mk_real",
+      "density vs cardinality"
+    ],
+    "prerequisites": [
+      "Cardinal.mk_denumerable",
+      "Cardinal.mk_real",
+      "Cardinal.aleph0_lt_continuum"
+    ]
+  },
+  {
+    "id": "ann-denum-oq01-dedekind",
+    "proofId": "denumerability-rationals-oq-01",
+    "range": {
+      "startLine": 91,
+      "endLine": 107
+    },
+    "type": "insight",
+    "title": "The Dedekind Cut Connection: |𝒫(ℚ)| = 𝔠",
+    "content": "Proves that the power set of $\\mathbb{Q}$ has continuum cardinality: $|\\mathcal{P}(\\mathbb{Q})| = 2^{|\\mathbb{Q}|} = 2^{\\aleph_0} = \\mathfrak{c}$. This connects the denumerability of $\\mathbb{Q}$ to the size of $\\mathbb{R}$: each Dedekind cut is a subset of $\\mathbb{Q}$, so $\\mathbb{R}$ embeds into $\\mathcal{P}(\\mathbb{Q})$, which has the same cardinality as $\\mathbb{R}$ itself. The paradox: $\\mathbb{Q}$ is 'small' (countable) but $\\mathcal{P}(\\mathbb{Q})$ is 'large' (continuum-sized).",
+    "mathContext": "Cantor's theorem: $|X| < |\\mathcal{P}(X)|$ for any set $X$. Applied to $\\mathbb{Q}$: $\\aleph_0 = |\\mathbb{Q}| < |\\mathcal{P}(\\mathbb{Q})| = 2^{\\aleph_0} = \\mathfrak{c}$. The Dedekind cut map $\\iota: \\mathbb{R} \\hookrightarrow \\mathcal{P}(\\mathbb{Q})$, $r \\mapsto \\{q \\in \\mathbb{Q} : q < r\\}$, gives $|\\mathbb{R}| \\le |\\mathcal{P}(\\mathbb{Q})|$, and the reverse holds since $\\mathcal{P}(\\mathbb{Q}) \\hookrightarrow \\{0,1\\}^{\\mathbb{Q}} \\cong \\{0,1\\}^{\\mathbb{N}} \\cong \\mathbb{R}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cantor's power set theorem",
+      "Dedekind cuts",
+      "set-theoretic construction of reals"
+    ],
+    "prerequisites": [
+      "Cardinal.mk_set",
+      "Cardinal.two_power_aleph0"
+    ]
+  },
+  {
+    "id": "ann-denum-oq01-aleph",
+    "proofId": "denumerability-rationals-oq-01",
+    "range": {
+      "startLine": 113,
+      "endLine": 131
+    },
+    "type": "concept",
+    "title": "The Aleph Hierarchy and ℵ₁ ≤ 𝔠",
+    "content": "Establishes the aleph hierarchy bounds provable in ZFC: $\\aleph_0 < \\mathfrak{c}$ (Cantor), $\\aleph_0 < \\aleph_1$ (successor cardinal definition), and $\\aleph_1 \\le \\mathfrak{c}$ (since $\\aleph_1$ is the smallest cardinal exceeding $\\aleph_0$, and $\\mathfrak{c}$ also exceeds $\\aleph_0$). The proof of $\\aleph_0 < \\aleph_1$ uses `Cardinal.aleph_lt_aleph` and simplification. The bound $\\aleph_1 \\le \\mathfrak{c}$ is the strongest statement ZFC can make about the relationship—CH asks whether equality holds.",
+    "mathContext": "$\\aleph_1 = \\min\\{\\kappa : \\kappa > \\aleph_0\\}$ is the successor cardinal. In ZFC: $\\aleph_0 < \\aleph_1 \\le \\mathfrak{c} = 2^{\\aleph_0}$. CH asserts $\\aleph_1 = \\mathfrak{c}$; under $\\neg$CH, $\\aleph_1 < \\mathfrak{c}$ and the actual value of $\\mathfrak{c}$ among the alephs is undetermined (it could be $\\aleph_2$, $\\aleph_{\\omega}$, or even larger, subject to König's theorem: $\\text{cf}(\\mathfrak{c}) > \\aleph_0$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "aleph numbers",
+      "successor cardinal",
+      "König's theorem",
+      "cofinality"
+    ],
+    "prerequisites": [
+      "Cardinal.aleph",
+      "Cardinal.aleph0_lt_continuum",
+      "Order.succ"
+    ]
+  },
+  {
+    "id": "ann-denum-oq01-ch",
+    "proofId": "denumerability-rationals-oq-01",
+    "range": {
+      "startLine": 137,
+      "endLine": 174
+    },
+    "type": "concept",
+    "title": "Continuum Hypothesis: Equivalence of Formulations",
+    "content": "Defines CH as $\\mathfrak{c} = \\aleph_1$ and the gap formulation as $\\nexists \\kappa: \\aleph_0 < \\kappa < \\mathfrak{c}$. Proves their equivalence `ch_equiv_no_intermediate` by showing: (forward) if $\\mathfrak{c} = \\aleph_1 = \\text{succ}(\\aleph_0)$, any $\\kappa$ with $\\kappa < \\text{succ}(\\aleph_0)$ satisfies $\\kappa \\le \\aleph_0$, contradicting $\\kappa > \\aleph_0$; (backward) if no intermediate exists, $\\aleph_1 \\le \\mathfrak{c}$ and $\\neg(\\aleph_1 < \\mathfrak{c})$ (else $\\aleph_1$ would be intermediate), giving $\\mathfrak{c} = \\aleph_1$.",
+    "mathContext": "CH: $\\mathfrak{c} = \\aleph_1$, equivalently $2^{\\aleph_0} = \\aleph_1$, equivalently $\\nexists S \\subseteq \\mathbb{R}: \\aleph_0 < |S| < \\mathfrak{c}$. The proof of equivalence uses the successor property: $\\aleph_1 = \\text{succ}(\\aleph_0)$, so $\\kappa < \\aleph_1 \\Leftrightarrow \\kappa \\le \\aleph_0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Continuum Hypothesis",
+      "successor ordinal",
+      "Order.lt_succ_iff"
+    ],
+    "prerequisites": [
+      "ContinuumHypothesis",
+      "CH_gap",
+      "Order.succ",
+      "le_antisymm"
+    ]
+  },
+  {
+    "id": "ann-denum-oq01-implications",
+    "proofId": "denumerability-rationals-oq-01",
+    "range": {
+      "startLine": 180,
+      "endLine": 209
+    },
+    "type": "insight",
+    "title": "CH Implications: The Cardinality Landscape Under CH and ¬CH",
+    "content": "Under CH, the infinite cardinal landscape below 𝔠 collapses: only ℵ₀ and 𝔠 exist (proved via ch_only_two_infinite_cardinals_le_continuum). Under ¬CH, at least one intermediate cardinal exists between ℵ₀ and 𝔠, specifically ℵ₁ < 𝔠 (proved via not_ch_implies_aleph1_lt_continuum). The ¬CH case is dramatically more complex: Easton's theorem shows 𝔠 could be ℵ₂, ℵ₃, ℵ_ω₁, or much larger, subject only to König's cofinality constraint cf(𝔠) > ℵ₀.",
+    "mathContext": "Under CH: $\\{\\kappa : \\aleph_0 \\le \\kappa \\le \\mathfrak{c}\\} = \\{\\aleph_0, \\mathfrak{c}\\}$. Under $\\neg$CH: $\\aleph_1 < \\mathfrak{c}$, so $\\aleph_1$ is an intermediate cardinal. Easton: for any function $F$ on regular cardinals with $\\text{cf}(F(\\kappa)) > \\kappa$, there is a model of ZFC where $2^\\kappa = F(\\kappa)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Easton's theorem",
+      "cofinality",
+      "Generalized Continuum Hypothesis"
+    ],
+    "prerequisites": [
+      "ch_equiv_no_intermediate",
+      "aleph hierarchy"
+    ]
+  },
+  {
+    "id": "ann-denum-oq01-independence",
+    "proofId": "denumerability-rationals-oq-01",
+    "range": {
+      "startLine": 215,
+      "endLine": 268
+    },
+    "type": "concept",
+    "title": "Independence of CH and Summary",
+    "content": "Axiomatizes the independence of CH: `godel_ch_consistent_with_ZFC` (Gödel 1940, via the constructible universe $L$) and `cohen_not_ch_consistent_with_ZFC` (Cohen 1963, via forcing). Combines them into `ch_independent_of_ZFC`. The summary theorem `denumerability_to_ch_summary` packages all ZFC-provable facts: $|\\mathbb{Q}| = \\aleph_0$, $|\\mathbb{R}| = \\mathfrak{c}$, $|\\mathbb{Q}| < |\\mathbb{R}|$, $|\\mathcal{P}(\\mathbb{Q})| = \\mathfrak{c}$, and $\\aleph_1 \\le \\mathfrak{c}$.",
+    "mathContext": "Gödel (1940) showed $\\text{Con}(\\text{ZFC}) \\Rightarrow \\text{Con}(\\text{ZFC} + \\text{CH})$ by constructing the minimal model $L$ (constructible sets). Cohen (1963) showed $\\text{Con}(\\text{ZFC}) \\Rightarrow \\text{Con}(\\text{ZFC} + \\neg\\text{CH})$ by adjoining generic reals via forcing. Together: CH is independent of ZFC. Cohen received the Fields Medal in 1966.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gödel constructible universe",
+      "Cohen forcing",
+      "independence",
+      "Fields Medal"
+    ],
+    "prerequisites": [
+      "ContinuumHypothesis",
+      "model theory"
+    ]
+  }
+]

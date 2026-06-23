@@ -1,0 +1,260 @@
+{
+  "id": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01-oq-01",
+  "slug": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01-oq-01",
+  "title": "The Abel–Ruffini Boundary Under ⊕ and ×: Products Reflect Solvability, Sums Do Not",
+  "description": "The ancestors pinned solvability of Perm α to a single threshold (solvable ↔ Fintype.card α ≤ 4) and split ℕ into a solvable down-set {≤4} and an unsolvable up-set {≥5}. This entry asks how that threshold interacts with the algebra of finite types — disjoint union α ⊕ β (cardinality card α + card β) and product α × β (cardinality card α · card β) — and finds a genuine asymmetry invisible at the level of a single carrier. perm_sum_solvable_iff and perm_prod_solvable_iff turn each construction into an arithmetic side-condition. From them: products REFLECT solvability to their factors (perm_solvable_of_prod_solvable — a factor of a solvable permutation-product is itself solvable, because card α ≤ card α · card β once β is nonempty), but disjoint unions do NOT preserve it (perm_sum_solvability_not_preserved — Perm (Fin 2) and Perm (Fin 3) are both solvable yet Perm (Fin 2 ⊕ Fin 3) is not, the union having 5 points). That failure is exactly the Abel–Ruffini phenomenon read combinatorially: the solvable cardinalities {0,1,2,3,4} are not closed under addition, and the least escaping sum is 2 + 3 = 5 — the minimal unsolvable degree (abel_ruffini_is_additive_escape). The two operations are placed side by side in product_reflects_sum_does_not.",
+  "overview": {
+    "historicalContext": "Abel–Ruffini rests on S₅ being non-solvable, the reason the general quintic is not solvable by radicals. The classical proofs show Sₙ and Aₙ are solvable exactly for n ≤ 4, and that the threshold is permanent under enlarging the carrier. Less often emphasised is what the boundary looks like under the natural ways of building larger permutation domains out of smaller ones: forming a disjoint union of two systems (which adds point counts) or a Cartesian product (which multiplies them). The disjoint union of a 2-point and a 3-point system already has 5 points — so two systems whose symmetric groups are individually solvable combine into one whose symmetric group is not. This is the Abel–Ruffini obstruction stated as a closure failure: {0,1,2,3,4} is not closed under addition, and the first failure is 2 + 3 = 5.",
+    "modernSignificance": "Viewed functorially, Perm sends sums and products of finite types to permutation groups whose solvability is governed by card α + card β and card α · card β. The threshold card ≤ 4 then exposes an asymmetry between the two monoidal structures: a Cartesian factor only grows the carrier (card α ≤ card α · card β for nonempty β), so solvability of a product is inherited by every factor — products reflect solvability downward. Disjoint union enjoys no such monotonicity in reverse: the pieces being solvable says nothing about the union, and the minimal counterexample 2 + 3 = 5 is precisely the Abel–Ruffini degree. The file isolates this contrast (product_reflects_sum_does_not) and identifies the additive-closure failure of the solvable cardinalities as a combinatorial form of the Abel–Ruffini boundary."
+  },
+  "meta": {
+    "author": "Classical (Sₙ/Aₙ solvable iff n ≤ 4); ⊕/× boundary-arithmetic formalization original",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Symmetric_group",
+    "date": "1870",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AbelRuffiniOQ04OQ02OQ02OQ08OQ01OQ01OQ01OQ01.lean",
+    "tags": [
+      "algebra",
+      "group-theory",
+      "solvability",
+      "alternating-group",
+      "symmetric-group",
+      "product",
+      "disjoint-union",
+      "closure",
+      "classification",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Fintype.card_sum",
+        "description": "Fintype.card (α ⊕ β) = Fintype.card α + Fintype.card β. Turns the intrinsic threshold into the additive side-condition card α + card β ≤ 4 for the disjoint union.",
+        "module": "Mathlib.Data.Fintype.Sum"
+      },
+      {
+        "theorem": "Fintype.card_prod",
+        "description": "Fintype.card (α × β) = Fintype.card α * Fintype.card β. Turns the intrinsic threshold into the multiplicative side-condition card α · card β ≤ 4 for the product.",
+        "module": "Mathlib.Data.Fintype.Prod"
+      },
+      {
+        "theorem": "Nat.le_mul_of_pos_right",
+        "description": "n ≤ n * m when 0 < m. With Fintype.card_pos (a nonempty finite type has positive cardinality) this gives card α ≤ card α · card β, the engine of products reflecting solvability to their factors.",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
+      },
+      {
+        "theorem": "Nat.mul_le_mul",
+        "description": "a ≤ b ∧ c ≤ d ⟹ a * c ≤ b * d. With 2 ≤ card α and 3 ≤ card β yields 6 ≤ card α · card β, forcing the product permutation group unsolvable.",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
+      },
+      {
+        "theorem": "Fintype.card_fin",
+        "description": "Fintype.card (Fin n) = n. Evaluates the concrete witness Perm (Fin 2 ⊕ Fin 3) at 5 points for the non-preservation counterexample.",
+        "module": "Mathlib.Data.Fintype.Card"
+      }
+    ],
+    "originalContributions": [
+      "perm_sum_solvable_iff: Perm (α ⊕ β) solvable ↔ card α + card β ≤ 4 — the Abel–Ruffini threshold under disjoint union, an additive side-condition on the combined point count",
+      "perm_prod_solvable_iff: Perm (α × β) solvable ↔ card α · card β ≤ 4 — the threshold under Cartesian product, a multiplicative side-condition",
+      "alternating_sum_solvable_iff: the same additive threshold for the alternating group Aₐ, via the intrinsic alternating classification",
+      "perm_solvable_of_prod_solvable / perm_solvable_of_prod_solvable': products REFLECT solvability to their factors — for nonempty complementary factor, solvability of Perm (α × β) forces solvability of each factor, because card α ≤ card α · card β",
+      "perm_prod_not_solvable_of_factors: multiplicative escape — 2 ≤ card α and 3 ≤ card β force Perm (α × β) unsolvable (card ≥ 6); the minimal unsolvable product of two factors is 2 · 3",
+      "perm_sum_solvability_not_preserved: solvability is NOT preserved by ⊕ — Perm (Fin 2) and Perm (Fin 3) are solvable yet Perm (Fin 2 ⊕ Fin 3) is not, the structural opposite of the product behaviour",
+      "abel_ruffini_is_additive_escape: 5 is the minimal additive escape of the solvable cardinalities — a sum of two solvable cardinalities (2 + 3), unsolvable, and the least such; {0,1,2,3,4} first breaks additive closure exactly at the Abel–Ruffini degree",
+      "product_reflects_sum_does_not: the closure dichotomy packaged — solvability is reflected by products but not preserved by sums, the two operations sitting on opposite sides of the boundary"
+    ],
+    "dateAdded": "2026-06-21",
+    "axiomCount": 0,
+    "lineCount": 188,
+    "assumptions": "0 `axiom` declarations, 0 sorries, 0 structure-encoded assumptions. No `native_decide` is used. All thresholds rewrite the parent chain's intrinsic classification (perm_solvable_iff_card / alternating_solvable_iff_card) through Fintype.card_sum / Fintype.card_prod; that classification descends from Mathlib's symmetric-group solvability result (Equiv.Perm.not_solvable / the A₅ non-solvability core), so this file supplies the ⊕/× boundary arithmetic and the reflection/escape derivations on top of a Mathlib-backed classification rather than an independent solvability proof — hence the `mathlib` badge (Tier B). The reflection and escape lemmas use only elementary Nat arithmetic (Nat.le_mul_of_pos_right, Nat.mul_le_mul, omega). `#print axioms` on all main results reports only the standard foundational axioms (propext, Classical.choice, Quot.sound) — no `Lean.ofReduceBool`, no `sorryAx`.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "additionalFiles": [],
+    "relatedProblems": [
+      {
+        "id": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01",
+        "relationship": "Parent — proved the unsolvable cardinalities form the up-set {≥5} and the solvable ones the down-set {≤4}, partitioning ℕ at the boundary 5. This entry takes the same threshold and studies how it behaves under the type operations ⊕ and ×, exhibiting the additive-closure failure {2 + 3 = 5} as the combinatorial seed of that boundary."
+      },
+      {
+        "id": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01",
+        "relationship": "Grandparent — the intrinsic threshold IsSolvable (Perm α) ↔ Fintype.card α ≤ 4 and its alternating analogue. perm_sum_solvable_iff / perm_prod_solvable_iff / alternating_sum_solvable_iff rewrite it through Fintype.card_sum and Fintype.card_prod."
+      },
+      {
+        "id": "abel-ruffini-oq-04-oq-02-oq-02-oq-08",
+        "relationship": "Ancestor — the Aα ↔ Sα solvability bridge, supplying the intrinsic alternating classification behind alternating_sum_solvable_iff."
+      },
+      {
+        "id": "abel-ruffini",
+        "relationship": "Ancestor — Abel–Ruffini rests on S₅ being non-solvable. abel_ruffini_is_additive_escape recovers 5 as the minimal additive escape of the solvable cardinalities, the combinatorial form of the boundary; perm_sum_solvability_not_preserved exhibits Fin 2 ⊕ Fin 3 as the smallest disjoint union manufacturing it."
+      }
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.Solvable",
+      "Mathlib.GroupTheory.SpecificGroups.Alternating",
+      "Mathlib.GroupTheory.Perm.ViaEmbedding",
+      "Mathlib.Tactic",
+      "Proofs.AbelRuffiniOQ04OQ02OQ02OQ08OQ01OQ01OQ01"
+    ],
+    "opens": [
+      "Equiv"
+    ],
+    "namespace": "AbelRuffiniOQ04OQ02OQ02OQ08OQ01OQ01OQ01OQ01",
+    "lineCount": 188,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "mainTheorems": [
+      {
+        "name": "perm_sum_solvable_iff",
+        "type": "core",
+        "description": "Sum threshold: Perm (α ⊕ β) is solvable iff the combined point count card α + card β is at most 4.",
+        "leanType": "[DecidableEq α] → [DecidableEq β] → [Fintype α] → [Fintype β] → (IsSolvable (Perm (α ⊕ β)) ↔ Fintype.card α + Fintype.card β ≤ 4)",
+        "line": 63
+      },
+      {
+        "name": "perm_prod_solvable_iff",
+        "type": "core",
+        "description": "Product threshold: Perm (α × β) is solvable iff the combined point count card α · card β is at most 4.",
+        "leanType": "[DecidableEq α] → [DecidableEq β] → [Fintype α] → [Fintype β] → (IsSolvable (Perm (α × β)) ↔ Fintype.card α * Fintype.card β ≤ 4)",
+        "line": 70
+      },
+      {
+        "name": "perm_solvable_of_prod_solvable",
+        "type": "key",
+        "description": "Products reflect solvability to their factors: if β is nonempty and Perm (α × β) is solvable, then Perm α is solvable, because card α ≤ card α · card β.",
+        "leanType": "[Nonempty β] → IsSolvable (Perm (α × β)) → IsSolvable (Perm α)",
+        "line": 93
+      },
+      {
+        "name": "perm_prod_not_solvable_of_factors",
+        "type": "key",
+        "description": "Multiplicative escape: 2 ≤ card α and 3 ≤ card β force Perm (α × β) unsolvable (card ≥ 6); the minimal unsolvable product of two factors is 2 · 3.",
+        "leanType": "(2 ≤ Fintype.card α) → (3 ≤ Fintype.card β) → ¬ IsSolvable (Perm (α × β))",
+        "line": 119
+      },
+      {
+        "name": "perm_sum_solvability_not_preserved",
+        "type": "core",
+        "description": "Solvability is not preserved by ⊕: Perm (Fin 2) and Perm (Fin 3) are solvable, yet Perm (Fin 2 ⊕ Fin 3) is not — the structural opposite of the product behaviour.",
+        "leanType": "IsSolvable (Perm (Fin 2)) ∧ IsSolvable (Perm (Fin 3)) ∧ ¬ IsSolvable (Perm (Fin 2 ⊕ Fin 3))",
+        "line": 145
+      },
+      {
+        "name": "abel_ruffini_is_additive_escape",
+        "type": "specialization",
+        "description": "5 is the minimal additive escape of the solvable cardinalities: a sum of two solvable cardinalities (2 + 3), unsolvable, and the least such — {0,1,2,3,4} first breaks additive closure exactly at the Abel–Ruffini degree.",
+        "leanType": "(∃ m n, m ≤ 4 ∧ n ≤ 4 ∧ m + n = 5 ∧ ¬ IsSolvable (Perm (Fin (m + n)))) ∧ (∀ m n, m ≤ 4 → n ≤ 4 → ¬ IsSolvable (Perm (Fin (m + n))) → 5 ≤ m + n)",
+        "line": 165
+      }
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "product_reflects_sum_does_not",
+      "statement": "Solvability of symmetric groups is reflected by Cartesian products (a factor of a solvable product is solvable) but is not preserved by disjoint unions (a sum of solvable pieces can be unsolvable).",
+      "significance": "Reads the Abel–Ruffini threshold through the two monoidal structures on finite types and isolates their asymmetry: products inherit solvability downward, sums do not, and the additive failure 2 + 3 = 5 is exactly the minimal unsolvable degree."
+    }
+  ],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Documentation and Imports",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Module docstring framing the goal (how the solvability threshold interacts with ⊕ and ×) and the headline asymmetry (products reflect, sums do not). Imports Mathlib.GroupTheory.Solvable, SpecificGroups.Alternating, Perm.ViaEmbedding, Mathlib.Tactic, and the parent chain Proofs.AbelRuffiniOQ04OQ02OQ02OQ08OQ01OQ01OQ01.",
+      "mathContext": "The parent chain supplies perm_solvable_iff_card, alternating_solvable_iff_card and the up-set predicate not_solvable_perm_card_eq_ge_five; Mathlib supplies Fintype.card_sum and Fintype.card_prod."
+    },
+    {
+      "id": "thresholds",
+      "title": "§1 The threshold under ⊕ and ×",
+      "startLine": 57,
+      "endLine": 82,
+      "summary": "perm_sum_solvable_iff and perm_prod_solvable_iff rewrite the intrinsic threshold through Fintype.card_sum / Fintype.card_prod into additive and multiplicative side-conditions; alternating_sum_solvable_iff gives the additive form for the alternating group.",
+      "mathContext": "Fintype.card_sum and Fintype.card_prod evaluate the cardinality of the two constructions, so perm_solvable_iff_card (card ≤ 4) becomes an arithmetic condition on the cardinalities of the pieces."
+    },
+    {
+      "id": "products-reflect",
+      "title": "§2 Products reflect solvability to their factors",
+      "startLine": 83,
+      "endLine": 130,
+      "summary": "perm_solvable_of_prod_solvable(') use card α ≤ card α · card β (Nat.le_mul_of_pos_right with Fintype.card_pos) to descend solvability of the product to each factor; perm_prod_not_solvable_of_factors gives the multiplicative escape 2 · 3 ≥ 6.",
+      "mathContext": "A nonempty second factor only grows the carrier, so the product threshold card α · card β ≤ 4 implies each factor's threshold; conversely two moderately sized factors overshoot the boundary."
+    },
+    {
+      "id": "sums-fail",
+      "title": "§3 Disjoint unions do not preserve solvability",
+      "startLine": 131,
+      "endLine": 162,
+      "summary": "perm_sum_fin_two_three_not_solvable evaluates the 5-point union as unsolvable; perm_sum_solvability_not_preserved packages the contrast — both pieces solvable, union not.",
+      "mathContext": "Solvability of the pieces says nothing about solvability of their union: two solvable permutation groups on 2 and 3 points combine to one on 5 points, the Abel–Ruffini obstruction in combinatorial form."
+    },
+    {
+      "id": "boundary",
+      "title": "§4 The boundary as the minimal additive escape",
+      "startLine": 163,
+      "endLine": 188,
+      "summary": "abel_ruffini_is_additive_escape shows 5 is a sum of two solvable cardinalities, unsolvable, and the least such; product_reflects_sum_does_not states the closure dichotomy as a single side-by-side theorem.",
+      "mathContext": "The solvable set {0,1,2,3,4} first breaks additive closure exactly at the Abel–Ruffini degree 5; products and sums sit on opposite sides of that boundary."
+    }
+  ],
+  "sorries": [],
+  "references": [
+    {
+      "authors": [
+        "C. Jordan"
+      ],
+      "title": "Traité des substitutions et des équations algébriques",
+      "year": "1870",
+      "venue": "Gauthier-Villars, Paris",
+      "note": "Sₙ and Aₙ solvable iff n ≤ 4; the inheritance of non-solvability with degree."
+    },
+    {
+      "authors": [
+        "É. Galois"
+      ],
+      "title": "Mémoire sur les conditions de résolubilité des équations par radicaux",
+      "year": "1846",
+      "venue": "Journal de Mathématiques Pures et Appliquées (published posthumously)",
+      "note": "Solvability by radicals iff solvable Galois group; S₅ as the minimal obstruction inherited by every higher degree."
+    },
+    {
+      "authors": [
+        "I. Stewart"
+      ],
+      "title": "Galois Theory",
+      "year": "2015",
+      "venue": "Chapman and Hall/CRC, 4th edition",
+      "note": "Sₙ and Aₙ solvable iff n ≤ 4; subgroup-closure of solvability."
+    },
+    {
+      "authors": [
+        "The mathlib Community"
+      ],
+      "title": "The Lean Mathematical Library — Data.Fintype.Sum, Data.Fintype.Prod and GroupTheory.Solvable",
+      "year": "2020",
+      "venue": "Lean 4 / Mathlib",
+      "note": "Source of Fintype.card_sum, Fintype.card_prod, Nat.le_mul_of_pos_right and Nat.mul_le_mul, the arithmetic engines of the ⊕/× thresholds."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent up-set / down-set partition of ℕ at the boundary 5. This entry studies the same threshold under the type operations ⊕ and ×, exhibiting the additive-closure failure 2 + 3 = 5 as the combinatorial seed of the boundary."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01",
+      "relationship": "extends",
+      "description": "Grandparent intrinsic threshold IsSolvable (Perm α) ↔ Fintype.card α ≤ 4, rewritten here through Fintype.card_sum and Fintype.card_prod into additive and multiplicative side-conditions."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Abel–Ruffini rests on S₅ non-solvable; abel_ruffini_is_additive_escape recovers 5 as the minimal additive escape of the solvable cardinalities, and perm_sum_solvability_not_preserved gives Fin 2 ⊕ Fin 3 as the smallest disjoint union manufacturing it."
+    }
+  ]
+}

@@ -1,0 +1,458 @@
+[
+  {
+    "id": "ann-1004-header",
+    "proofId": "erdos-1004",
+    "type": "concept",
+    "title": "Module Header and Imports",
+    "content": "File documentation for Erdős Problem 1004 on distinct consecutive totient values, citing EPS (1987). Imports Mathlib's `EulerPhi.Basic` (providing `Nat.totient`), `ArithmeticFunction`, logarithms and powers over $\\mathbb{R}$, and the real number topology needed for asymptotic statements via `Filter.atTop`.",
+    "mathContext": "The formalization uses `Nat.totient` from Mathlib, which computes $\\varphi(n) = |\\{k : 1 \\leq k \\leq n,\\ \\gcd(k,n) = 1\\}|$. Asymptotic bounds require coercion to $\\mathbb{R}$ and `Real.log`, `Real.exp`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.totient",
+      "Mathlib arithmetic functions",
+      "Filter.atTop"
+    ],
+    "prerequisites": [
+      "Lean 4 basics",
+      "Mathlib library"
+    ],
+    "range": {
+      "startLine": 34,
+      "endLine": 36
+    }
+  },
+  {
+    "id": "ann-1004-phi-def",
+    "proofId": "erdos-1004",
+    "type": "definition",
+    "title": "Euler's Totient Function",
+    "content": "Defines `phi(n)` as `Nat.totient n`, counting integers $1 \\leq k \\leq n$ with $\\gcd(k,n) = 1$. Euler's product formula gives $\\varphi(n) = n \\prod_{p | n} (1 - 1/p)$, and the function is multiplicative: $\\varphi(mn) = \\varphi(m)\\varphi(n)$ when $\\gcd(m,n) = 1$. The totient function appears throughout number theory, from Euler's theorem ($a^{\\varphi(n)} \\equiv 1 \\pmod{n}$) to the distribution of primitive roots.",
+    "mathContext": "$\\varphi(n) = |\\{k : 1 \\leq k \\leq n,\\ \\gcd(k,n) = 1\\}| = n \\prod_{p | n}(1 - 1/p)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "multiplicative functions",
+      "Euler's product formula",
+      "Euler's theorem",
+      "primitive roots"
+    ],
+    "prerequisites": [
+      "coprimality",
+      "prime factorization"
+    ],
+    "range": {
+      "startLine": 34,
+      "endLine": 36
+    }
+  },
+  {
+    "id": "ann-1004-phi-prime",
+    "proofId": "erdos-1004",
+    "type": "concept",
+    "title": "Totient of Primes",
+    "content": "For prime $p$, $\\varphi(p) = p - 1$ since every integer from $1$ to $p-1$ is coprime to $p$. Proved directly from `Nat.totient_prime`. This makes primes the easiest case for the totient function and means consecutive primes have distinct totient values (since primes are distinct).",
+    "mathContext": "$p$ prime $\\Rightarrow \\varphi(p) = p - 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime numbers",
+      "Fermat's little theorem"
+    ],
+    "prerequisites": [
+      "prime definition",
+      "coprimality with primes"
+    ],
+    "range": {
+      "startLine": 40,
+      "endLine": 43
+    }
+  },
+  {
+    "id": "ann-1004-phi-bounds",
+    "proofId": "erdos-1004",
+    "type": "concept",
+    "title": "Basic Bounds on Totient",
+    "content": "Three fundamental bounds: (1) $\\varphi(n) > 0$ for $n > 0$, (2) $\\varphi(n) \\leq n$, and (3) $\\varphi(n) < n$ for $n > 1$. These are all proved from Mathlib lemmas. The strict inequality for $n > 1$ follows because $n$ itself is not coprime to $n$. Together they show $\\varphi(n) \\in [1, n-1]$ for $n > 1$, giving at most $n-1$ possible values.",
+    "mathContext": "$\\varphi(n) > 0$ for $n > 0$; $\\varphi(n) \\leq n$; $\\varphi(n) < n$ for $n > 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "totient range",
+      "Carmichael's conjecture"
+    ],
+    "prerequisites": [
+      "totient definition",
+      "coprimality"
+    ],
+    "range": {
+      "startLine": 43,
+      "endLine": 53
+    }
+  },
+  {
+    "id": "ann-1004-distinct-run",
+    "proofId": "erdos-1004",
+    "type": "definition",
+    "title": "Distinct Totient Run",
+    "content": "A run of $K$ consecutive integers starting at $n+1$ has **distinct totient values** if $\\varphi(n+i) \\neq \\varphi(n+j)$ for all $1 \\leq i < j \\leq K$. An equivalent definition via `Set.InjOn` asserts $\\varphi$ is injective on $\\{n+1, \\ldots, n+K\\}$. The empty and single-element runs are proved trivially distinct via `omega`.",
+    "mathContext": "$\\text{IsDistinctTotientRun}(n, K) \\iff \\varphi|_{\\{n+1, \\ldots, n+K\\}}$ is injective",
+    "significance": "key",
+    "relatedConcepts": [
+      "injectivity",
+      "distinct values",
+      "collision-free sequences"
+    ],
+    "prerequisites": [
+      "function injectivity",
+      "universal quantification"
+    ],
+    "range": {
+      "startLine": 57,
+      "endLine": 83
+    }
+  },
+  {
+    "id": "ann-1004-max-length",
+    "proofId": "erdos-1004",
+    "type": "definition",
+    "title": "Maximum Distinct Run Length",
+    "content": "For each $n$, `maxDistinctRunLength(n)` is the supremum of $\\{K : \\text{IsDistinctTotientRun}(n, K)\\}$ — the longest collision-free run of totient values starting at $n+1$. The existence proof shows at least $K = 1$ works. The EPS87 bound shows this supremum is finite and grows sublinearly in $n$.",
+    "mathContext": "$f(n) := \\sup\\{K : \\varphi(n+1), \\ldots, \\varphi(n+K) \\text{ all distinct}\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "supremum",
+      "run length",
+      "maximal collision-free sequences"
+    ],
+    "prerequisites": [
+      "sSup in natural numbers",
+      "existential witnesses"
+    ],
+    "range": {
+      "startLine": 98,
+      "endLine": 101
+    }
+  },
+  {
+    "id": "ann-1004-eps87",
+    "proofId": "erdos-1004",
+    "type": "concept",
+    "title": "Erdős–Pomerance–Sárközy Upper Bound (1987)",
+    "content": "The central known result: if $\\varphi(n+k)$ are all distinct for $1 \\leq k \\leq K$, then $K \\leq n / \\exp(c (\\log n)^{1/3})$ for an absolute constant $c > 0$. Axiomatized via `eps87_constant` and `eps87_upper_bound`. The bound comes from sieve methods and the distribution of smooth numbers. The corollary `run_length_sublinear` shows $f(n)/n \\to 0$, ruling out linear-length runs. The exponent $1/3$ in $(\\log n)^{1/3}$ reflects deep results on smooth number estimates.",
+    "mathContext": "$K \\leq \\frac{n}{\\exp(c (\\log n)^{1/3})}$ for some $c > 0$. Corollary: $\\lim_{n \\to \\infty} f(n)/n = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "smooth numbers",
+      "sieve methods",
+      "sublinear growth",
+      "de Bruijn's estimate"
+    ],
+    "prerequisites": [
+      "analytic number theory",
+      "exponential estimates",
+      "Filter.Tendsto"
+    ],
+    "range": {
+      "startLine": 124,
+      "endLine": 126
+    }
+  },
+  {
+    "id": "ann-1004-conjecture",
+    "proofId": "erdos-1004",
+    "type": "definition",
+    "title": "Erdős Problem 1004: Main Conjecture and Variants",
+    "content": "The main conjecture: for any $c > 0$, if $x$ is large enough, there exists $n \\leq x$ such that $\\varphi(n+1), \\ldots, \\varphi(n + \\lfloor (\\log x)^c \\rfloor)$ are all distinct. Stated using `Filter.Eventually` (`∀ᶠ`). The negation says there exists some threshold $c_0 > 0$ beyond which no such $n$ exists. Also states `SmallCaseConjecture` (the conjecture for small $c$) and a heuristic that the EPS bound constrains $c \\leq 1/3$.",
+    "mathContext": "$\\forall c > 0,\\ \\forall^\\infty x,\\ \\exists n \\leq x : \\varphi(n+1), \\ldots, \\varphi(n + \\lfloor (\\log x)^c \\rfloor) \\text{ all distinct}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic existence",
+      "Filter.Eventually",
+      "logarithmic run lengths"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "floor function",
+      "Filter.atTop"
+    ],
+    "range": {
+      "startLine": 212,
+      "endLine": 223
+    }
+  },
+  {
+    "id": "ann-1004-examples",
+    "proofId": "erdos-1004",
+    "type": "concept",
+    "title": "Concrete Examples of Distinct Runs",
+    "content": "Two verified examples: (1) At $n=1$: $\\varphi(2) = 1, \\varphi(3) = 2, \\varphi(4) = 2$, so the run has length exactly 2. (2) At $n=2$: $\\varphi(3) = \\varphi(4) = 2$, so the run has length exactly 1. Both are proved by `interval_cases` and `simp`. A general statement asserts longer runs require larger starting points.",
+    "mathContext": "$n=1$: $\\varphi(2)=1, \\varphi(3)=2, \\varphi(4)=2$ gives run length 2. $n=2$: $\\varphi(3)=\\varphi(4)=2$ gives run length 1.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "concrete computations",
+      "interval_cases tactic"
+    ],
+    "prerequisites": [
+      "totient computation",
+      "decidable equality"
+    ],
+    "range": {
+      "startLine": 223,
+      "endLine": 239
+    }
+  },
+  {
+    "id": "ann-1004-collisions",
+    "proofId": "erdos-1004",
+    "type": "concept",
+    "title": "Totient Value Collisions",
+    "content": "Defines `TotientCollision(a, b)` as $\\varphi(a) = \\varphi(b)$ with $a \\neq b$. Proves $\\varphi(1) = \\varphi(2) = 1$ and $\\varphi(3) = \\varphi(4) = 2$. The theorem `collision_ends_run` shows that a collision within a run immediately bounds its length. Carmichael's conjecture (1907, still open) asserts every totient value has multiplicity $\\geq 2$, meaning collisions are inescapable.",
+    "mathContext": "$\\varphi(a) = \\varphi(b),\\ a \\neq b$ is a collision. Carmichael's conjecture: $|\\varphi^{-1}(m)| \\geq 2$ for all $m$ in the range of $\\varphi$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Carmichael's conjecture",
+      "totient valence",
+      "Ford's theorem"
+    ],
+    "prerequisites": [
+      "totient computation",
+      "proof by contradiction"
+    ],
+    "range": {
+      "startLine": 264,
+      "endLine": 272
+    }
+  },
+  {
+    "id": "ann-1004-divisor",
+    "proofId": "erdos-1004",
+    "type": "definition",
+    "title": "Connection to Problem 945 (Divisor Function)",
+    "content": "Defines $\\tau(n) = |\\{d : d | n\\}|$ and `IsDistinctDivisorRun` analogously to `IsDistinctTotientRun`. Problem 945 asks: for any $c > 0$ and large $x$, does there exist $n \\leq x$ with $\\tau(n+1), \\ldots, \\tau(n + \\lfloor (\\log x)^c \\rfloor)$ all distinct? Both problems are open and study the same phenomenon for different arithmetic functions.",
+    "mathContext": "$\\tau(n) = |\\{d : d | n\\}|$. Problem 945: same question for $\\tau$ instead of $\\varphi$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "divisor function",
+      "Erdős Problem 945",
+      "arithmetic function runs"
+    ],
+    "prerequisites": [
+      "divisor counting",
+      "Finset.divisors"
+    ],
+    "range": {
+      "startLine": 276,
+      "endLine": 280
+    }
+  },
+  {
+    "id": "ann-1004-birthday",
+    "proofId": "erdos-1004",
+    "type": "insight",
+    "title": "Birthday Problem Heuristic for Collisions",
+    "content": "The birthday paradox provides intuition: if there are $V \\sim n / \\log n$ distinct totient values near $n$, the probability that $K$ consecutive values are all distinct is $\\approx \\prod_{k=0}^{K-1}(1 - k/V)$, dropping below $1/2$ when $K \\approx \\sqrt{V} \\sim \\sqrt{n/\\log n}$. The asymptotic `distinct_totients_asymptotic` formalizes $|\\{\\varphi(k) : k \\leq x\\}| \\sim x / \\log x$ (proof sorry'd).",
+    "mathContext": "$V(x) := |\\{\\varphi(n) : n \\leq x\\}| \\sim x / \\log x$. Collisions likely after $K \\approx \\sqrt{V} \\sim \\sqrt{x / \\log x}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "birthday paradox",
+      "distinct value counting",
+      "Ford's theorem on totient valence"
+    ],
+    "prerequisites": [
+      "probability heuristics",
+      "asymptotic analysis"
+    ],
+    "range": {
+      "startLine": 296,
+      "endLine": 302
+    }
+  },
+  {
+    "id": "ann-1004-special",
+    "proofId": "erdos-1004",
+    "type": "concept",
+    "title": "Special Totient Values",
+    "content": "Characterizations of small totient values: $\\varphi(n) = 1 \\iff n \\in \\{1, 2\\}$, $\\varphi(n) = 2 \\iff n \\in \\{3, 4, 6\\}$, $\\varphi(n) = 4 \\iff n \\in \\{5, 8, 10, 12\\}$. The increasing preimage sizes (2, 3, 4) illustrate Carmichael's conjecture that every totient value is attained at least twice. These show why collisions are common for small totient values.",
+    "mathContext": "$\\varphi^{-1}(1) = \\{1,2\\}$, $\\varphi^{-1}(2) = \\{3,4,6\\}$, $\\varphi^{-1}(4) = \\{5,8,10,12\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "totient preimages",
+      "Carmichael's conjecture",
+      "inverse totient problem"
+    ],
+    "prerequisites": [
+      "totient computation",
+      "finite enumeration"
+    ],
+    "range": {
+      "startLine": 335,
+      "endLine": 351
+    }
+  },
+  {
+    "id": "ann-1004-trivial-runs",
+    "proofId": "erdos-1004",
+    "type": "lemma",
+    "title": "Trivial Runs and the Maximum Run Length (Parts II–III)",
+    "content": "The base cases: an empty run (`distinctRun_zero`) and a single-element run (`distinctRun_one`) are vacuously/trivially distinct. `maxDistinctRunLength n` is then defined as the supremum $\\sup\\{K : \\varphi(n{+}1),\\dots,\\varphi(n{+}K)\\text{ all distinct}\\}$, and `exists_distinct_run` confirms this set always contains a positive element, so the run-length function is well-posed.",
+    "mathContext": "`IsDistinctTotientRun n K` says $\\varphi$ is injective on $\\{n{+}1,\\dots,n{+}K\\}$. The supremum is taken over $\\mathbb{N}$ via `sSup`; because the index set is nonempty (contains $K=0,1$) and — by the EPS87 bound below — bounded above, the `sSup` is attained and finite for each $n$. This `maxDistinctRunLength` is the central object: Erdős #1004 asks how fast it can grow relative to $\\log n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "supremum (sSup)",
+      "injective restriction",
+      "well-posedness"
+    ],
+    "prerequisites": [
+      "IsDistinctTotientRun",
+      "sSup on ℕ",
+      "Set.Nonempty"
+    ],
+    "range": {
+      "startLine": 85,
+      "endLine": 105
+    }
+  },
+  {
+    "id": "ann-1004-eps87-sublinear",
+    "proofId": "erdos-1004",
+    "type": "theorem",
+    "title": "The EPS87 Upper Bound and Sublinearity (Part IV)",
+    "content": "The deep input, **Erdős–Pomerance–Sárközy (1987)**, is taken as the single axiom `eps87_theorem`: a distinct totient run from $n$ has length $K \\leq n/\\exp(c(\\log n)^{1/3})$ for some $c > 0$ and all large $n$. From it, `eps87_constant`/`eps87_threshold` are extracted via `Exists.choose`, and `eps87_upper_bound` restates the bound. The genuinely proved corollary is `run_length_sublinear`: $\\mathrm{maxDistinctRunLength}(n)/n \\to 0$.",
+    "mathContext": "`run_length_sublinear` is proved by a squeeze (`tendsto_of_tendsto_of_tendsto_of_le_of_le'`): $0 \\leq \\mathrm{maxRun}(n)/n \\leq 1/\\exp(c(\\log n)^{1/3})$, and the upper bound $\\to 0$ because $c(\\log n)^{1/3} \\to \\infty$ (composing `Real.tendsto_log_atTop`, `tendsto_rpow_atTop`, `Real.tendsto_exp_atTop`, `tendsto_inv_atTop_zero`). The middle inequality bounds $\\sup S$ by $\\lfloor n/e \\rfloor$ via `csSup_le` + `Nat.le_floor`. So although the EPS87 *bound* is axiomatized, its asymptotic *consequence* — run length is $o(n)$ — is a real Lean theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős-Pomerance-Sárközy 1987",
+      "squeeze theorem",
+      "Exists.choose extraction",
+      "asymptotic o(n)"
+    ],
+    "prerequisites": [
+      "eps87_theorem axiom",
+      "Filter.Tendsto",
+      "csSup_le and Nat.floor",
+      "tendsto_rpow_atTop"
+    ],
+    "range": {
+      "startLine": 106,
+      "endLine": 188
+    }
+  },
+  {
+    "id": "ann-1004-conjecture-statements",
+    "proofId": "erdos-1004",
+    "type": "definition",
+    "title": "The Main Conjecture and Its Negation (Parts V–VI)",
+    "content": "`Erdos1004Conjecture` formalizes the open question: for every $c > 0$, for all large $x$ there is some $n \\leq x$ with a distinct totient run of length $\\lfloor(\\log x)^c\\rfloor$. `Erdos1004Negation` is its logical negation, and `SmallCaseConjecture` isolates the believed-tractable regime of small exponents $c$. These are `Prop`-valued definitions, not theorems — the conjecture is open and stated, not proved.",
+    "mathContext": "The conjecture asks whether arbitrarily long (poly-log) distinct totient runs occur infinitely often: $\\forall c>0,\\ \\forall^{\\infty} x,\\ \\exists n\\leq x,\\ \\mathrm{IsDistinctTotientRun}\\,n\\,\\lfloor(\\log x)^c\\rfloor$. The EPS87 sublinear bound caps run length at $o(n)$, far above $(\\log x)^c$, so it does not contradict the conjecture — there is a wide gap between the proved upper bound and the conjectured lower bound. `SmallCaseConjecture` ($\\exists c_0, \\forall c < c_0$) reflects the heuristic that short runs are abundant.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open conjecture statement",
+      "eventually filter (∀ᶠ)",
+      "poly-logarithmic growth",
+      "Prop-valued formalization"
+    ],
+    "prerequisites": [
+      "Filter.Eventually atTop",
+      "Real.rpow and Nat.floor",
+      "IsDistinctTotientRun"
+    ],
+    "range": {
+      "startLine": 189,
+      "endLine": 211
+    }
+  },
+  {
+    "id": "ann-1004-examples-collisions",
+    "proofId": "erdos-1004",
+    "type": "theorem",
+    "title": "Concrete Run Examples and Totient Collisions (Parts VII–VIII)",
+    "content": "Worked examples ground the definitions: `example_n1` shows the run from $n=1$ has length exactly $2$ ($\\varphi(2),\\varphi(3)$ distinct but $\\varphi(4)=\\varphi(3)$ would extend), and `example_n2` gives length $1$ from $n=2$. `TotientCollision a b` ($\\varphi(a)=\\varphi(b)$, $a\\neq b$) names the obstruction: `collision_1_2`, `collision_3_4`, and `collision_ends_run` shows a collision within a window is exactly what caps a distinct run.",
+    "mathContext": "$\\varphi(3)=\\varphi(4)=2$ and $\\varphi(1)=\\varphi(2)=1$ are the smallest collisions; they force short runs near the start. `collision_ends_run` makes the link precise: if $\\varphi(n{+}i)=\\varphi(n{+}j)$ for $i<j$ in the window, the run cannot reach length $j$. The axiom `longer_runs_need_larger_n` records (without proof) the expectation that achieving a fixed run length $K$ requires moving to larger $n$, since small integers are dense with totient collisions.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "totient collisions",
+      "Carmichael's conjecture",
+      "concrete witnesses",
+      "run termination"
+    ],
+    "prerequisites": [
+      "Nat.totient evaluation",
+      "native_decide",
+      "IsDistinctTotientRun"
+    ],
+    "range": {
+      "startLine": 224,
+      "endLine": 263
+    }
+  },
+  {
+    "id": "ann-1004-run-length-bounds",
+    "proofId": "erdos-1004",
+    "type": "concept",
+    "title": "Heuristics and Run-Length Bounds (Parts X–XI)",
+    "content": "`birthdayProbabilityHeuristic` models distinct-run probability as a birthday-paradox product $\\prod_{k<K}(1 - k/V)$ with $V \\approx n/\\log n$ totient values available. The proved bounds: `run_length_trivial_bound` ($K \\leq n+K$) and the sharper `run_length_by_distinct_values` ($K \\leq \\mathrm{countDistinctTotients}(n{+}K{+}1)$), which says a length-$K$ distinct run forces at least $K$ distinct totient values below $n+K+1$.",
+    "mathContext": "The sharp bound is proved cleanly: $\\varphi$ injective on $[n{+}1, n{+}K]$ gives $|\\varphi(\\text{Icc})| = K$ (via `Finset.card_image_of_injOn` + `Nat.card_Icc`), and that image embeds in $\\varphi(\\mathrm{range}(n{+}K{+}1))$, so $K \\leq |\\varphi(\\mathrm{range}(n{+}K{+}1))| = \\mathrm{countDistinctTotients}(n{+}K{+}1)$. Combined with the asymptotic axiom $\\#\\{\\varphi(k) : k \\leq x\\} \\sim x/\\log x$ (Erdős 1935 / Ford 1998), this connects run length to the *count* of distinct totient values — the birthday-heuristic intuition made rigorous on the upper-bound side.",
+    "significance": "key",
+    "relatedConcepts": [
+      "birthday paradox",
+      "distinct totient counting",
+      "Finset.card_image_of_injOn",
+      "Ford 1998"
+    ],
+    "prerequisites": [
+      "Finset.image and injOn",
+      "Nat.card_Icc",
+      "countDistinctTotients"
+    ],
+    "range": {
+      "startLine": 303,
+      "endLine": 331
+    }
+  },
+  {
+    "id": "ann-1004-totient-classification",
+    "proofId": "erdos-1004",
+    "type": "theorem",
+    "title": "Classification of Small Totient Values (Part XII)",
+    "content": "The mathematical centerpiece — fully proved, no axioms: `totient_eq_one_iff` ($\\varphi(n)=1 \\iff n\\in\\{1,2\\}$), `totient_eq_two_iff` ($\\iff n\\in\\{3,4,6\\}$), and `totient_eq_four_iff` ($\\iff n\\in\\{5,8,10,12\\}$). Each is a complete inverse-totient computation, supported by seven private helper lemmas (`coprime_two_odd`, `totient_two_mul_odd`, `totient_prime_mul_not_dvd`, `odd_totient_ne_two`, `odd_totient_ne_four`, …) that bound the smallest prime factor and recurse on $n/p$.",
+    "mathContext": "The proofs combine a finite check on small $n$ (`native_decide` once $n$ is bounded) with a structural argument ruling out large $n$: if $\\varphi(n)=v$ then $(\\mathrm{minFac}(n)-1) \\mid v$ (from `Nat.totient_dvd_of_dvd` + `Nat.totient_prime`), forcing $\\mathrm{minFac}(n) \\in$ a small set; then `totient_mul` with coprimality peels off the prime-power factor and recurses (e.g. $\\varphi(2m)=\\varphi(m)$ for odd $m$, $\\varphi(p\\cdot m)=(p{-}1)\\varphi(m)$ for $p\\nmid m$), reducing to the already-solved smaller cases. The increasing preimage sizes $2,3,4$ are concrete data toward Carmichael's conjecture (every totient value has multiplicity $\\geq 2$). The `native_decide` calls here sit inside finite case-checks, not load-bearing headline claims.",
+    "significance": "key",
+    "relatedConcepts": [
+      "inverse totient problem",
+      "Carmichael's conjecture",
+      "smallest prime factor (minFac)",
+      "totient multiplicativity"
+    ],
+    "prerequisites": [
+      "Nat.totient_mul and totient_prime",
+      "Nat.totient_dvd_of_dvd",
+      "Nat.minFac_prime",
+      "strong induction on n/p"
+    ],
+    "range": {
+      "startLine": 333,
+      "endLine": 566
+    }
+  },
+  {
+    "id": "ann-1004-summary",
+    "proofId": "erdos-1004",
+    "type": "concept",
+    "title": "Summary: Proved vs. Axiomatized",
+    "content": "The closing docstring delineates the formalization's honesty boundary. **Open**: Erdős #1004 itself (poly-log distinct runs). **Three axioms** carry the deep analytic inputs: `eps87_theorem` (the EPS87 upper bound), `longer_runs_need_larger_n` (a probabilistic existence claim), and `distinct_totients_asymptotic` (the $x/\\log x$ count, Erdős 1935 / Ford 1998). **Genuinely derived** (not axioms): the extracted constants, `run_length_sublinear`, the run-length counting bound, and the complete $\\varphi^{-1}(\\{1,2,4\\})$ classification.",
+    "mathContext": "This is exactly the `axiomatized` status pattern: the headline conjecture is OPEN and the literature theorems too hard to reprove in Lean are stated as axioms, while everything reachable from them — asymptotics, counting bounds, and the self-contained small-value classification — is machine-checked. The summary's '3 total' axiom count matches the source, and it explicitly distinguishes `eps87_constant`/`eps87_upper_bound`/`run_length_sublinear` as derived results rather than assumptions, so the assumption surface is transparent.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "axiom transparency",
+      "open problem formalization",
+      "Problem 945 (divisor function)",
+      "derived vs. assumed"
+    ],
+    "prerequisites": [
+      "eps87_theorem",
+      "distinct_totients_asymptotic",
+      "axiomatized status conventions"
+    ],
+    "range": {
+      "startLine": 570,
+      "endLine": 609
+    }
+  }
+]

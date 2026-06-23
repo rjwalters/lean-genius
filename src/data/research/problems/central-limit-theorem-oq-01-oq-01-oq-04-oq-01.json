@@ -1,0 +1,108 @@
+{
+  "slug": "central-limit-theorem-oq-01-oq-01-oq-04-oq-01",
+  "title": "Partial Mathlib formalization of the Meerschaert-Scheffler DOA theorem",
+  "phase": "BLOCKED",
+  "status": "blocked",
+  "tier": "B",
+  "path": "partial",
+  "problemStatement": {
+    "formal": "(\\exists \\psi, \\text{InOperatorDOA}(d, \\phi, \\psi)) \\iff \\exists (E, \\nu), \\forall t > 0, \\xi, \\lim_n \\phi(n\\xi)^n / \\nu(t^E \\xi) = 1",
+    "plain": "Can the Meerschaert-Scheffler domain-of-attraction biconditional for multivariate operator-stable laws (axiomatized in the parent file as `meerschaert_scheffler`) be partially formalized in Lean 4 using Mathlib v4.26.0's existing weak-convergence and characteristic-function infrastructure?",
+    "whyMatters": [
+      "Axiom elimination on the parent CLT-OQ04 gallery entry (drops axiomCount 2 -> 1 in the best case)",
+      "First Mathlib bridge from univariate Gnedenko-Kolmogorov to multivariate operator DOA",
+      "Demonstrates non-vacuity of the M-S axiom via a Gaussian-specialised worked example",
+      "Maps the Mathlib gap (matrix regular variation absent) for a future infrastructure push"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Gaussian N(0,Sigma) is in its own DOA (parent's gaussian_in_own_doa)",
+      "Gaussian has scalar exponent E = (1/2) I (parent's gaussian_has_scalar_exponent)",
+      "Algebraic identity (exp(-x/n))^n = exp(-x) (parent's exp_neg_div_pow)",
+      "1D alpha-stable embeds as operator-stable with scalar exponent 1/alpha (parent's alpha_stable_is_operator_stable)"
+    ],
+    "open": [
+      "Meerschaert-Scheffler biconditional in full multivariate generality (axiomatized in parent; requires matrix regular variation, absent from Mathlib)",
+      "Forward direction (DOA -> matrix-RV tail) of M-S (blocked by matrix RV gap)",
+      "Multivariate Levy continuity theorem (scalar version exists in Mathlib; multivariate is a known gap)"
+    ],
+    "goal": "Produce a Gaussian-specialised version of the M-S characteristic-function convergence (R1 route, ~80-150 Lean lines)"
+  },
+  "currentState": {
+    "phase": "BLOCKED",
+    "since": "2026-05-16T18:02:00Z",
+    "iteration": 14,
+    "focus": "S10 (2026-05-16T18:02Z, researcher-10, STATE-SYNC — doc-only 3-file ship; ABSORBS 3-PR mechanic cascade in T+2-3h window after S9 ACT merge 15:20Z): (a) PR #19676 MERGED 16:20Z — parent gallery `meta.json` `leanFile.{lineCount,axiomCount,theoremCount}` 343→359, 7→6, 9→10 (verified at HEAD); (b) PR #19720 MERGED 17:20Z — sibling slug `central-limit-theorem-oq-02-oq-04` `leanFiles[CentralLimitTheoremOQ01OQ01OQ04]` post-S9-ACT drift; (c) PR #19742 MERGED 18:19:57Z — parent slug research JSON `leanFiles[]` array gained missing entry for `CentralLimitTheoremOQ01OQ01OQ04.lean` with `{lineCount:359, theoremCount:10, axiomCount:6, defCount:7, sorryCount:0}`. RAISES 3 RED INFRA blockers structurally barring S11 ACT: (1) Docker daemon hung (`docker info` empty Server: section); (2) disk 3.3 Gi avail / 100% — below same-day ACT floor 5.4 Gi (ballot S78 baseline 5.4 Gi, shannon S18a 5.8 Gi); (3) `proofs/.lake` circular self-symlink (cold rebuild won't recover). Bearer 2/8 spot-check at unchanged lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`: `Real.rpow_neg` @ `Pow/Real.lean:252` + `Real.sqrt_eq_rpow` @ `Pow/Real.lean:981` byte-stable; 6 remaining S5/S7 bearers carry forward via SHA transitivity. Parent file `proofs/Proofs/CentralLimitTheoremOQ01OQ01OQ04.lean` verified at HEAD: 359 lines; `theorem gaussian_has_scalar_exponent` at line 186 (S9 axiom→theorem swap landed); 6 axioms total (212/272/302/317/341/349); next axiom target `gaussian_is_operator_stable` at line 212 (S11 ACT). Per memory pattern `feedback_researcher_postship_pivot_to_act_ready_slug_whose_predecessor_statesync_mandated_pre_claim_docker_baseline_due_to_historic_build_pending_chain_but_3_red_infra_blockers_post_merge_with_mechanic_partial_discharge`, 3-RED + mechanic-discharge combo mandates doc-only STATE-SYNC w/ INFRA escalation (not ACT). Net JSON edits: 8. Net file edits: 3 (state.md + this JSON + new session memo).\n",
+    "blockers": [
+      {
+        "type": "infra",
+        "severity": "high",
+        "description": "Verification blackout 2026-06-13: Docker daemon hung + Aristotle backend 404 — no verification route. The S13 AUDIT (#22993) established the only remaining work is a build-dependent SOUNDNESS FIX of the meerschaert_scheffler axiom (parent CentralLimitTheoremOQ01OQ01OQ04.lean:409), which is mis-stated (RHS unsatisfiable for non-degenerate operator-stable laws; biconditional FALSE at d=1,Sg=!![1]). 3 fix options documented in sessions/2026-06-13-s13-audit-meerschaert-scheffler-soundness.md; all build-dependent. Flagged blocked to stop depth-first re-claim churn until Docker recovers."
+      }
+    ],
+    "nextAction": "BLOCKED on infra. When Docker recovers: apply one of the 3 documented soundness fixes to the meerschaert_scheffler axiom (parent line 409) per the S13 AUDIT memo, then build-verify. The old axiom-discharge roadmap (gaussian_in_own_doa etc.) is DONE/merged — do not re-pursue (parent file is axiomCount=1, 0 sorries, 529 LOC, 15 theorems). The S1-planned R1 Gaussian-restatement is SUPERSEDED (refuted premise).",
+    "attemptCounts": {
+      "total": 7,
+      "currentApproach": 6,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S13 AUDIT (researcher-1, 2026-06-13, build-free — Docker down + Aristotle 404): (A) STATE CORRECTION — parent CLT-OQ04 file is now axiomCount=1 (sole axiom `meerschaert_scheffler` @409), 0 sorries, 529 LOC, 15 theorems; the stale knowledge.md described 6 axioms + a discharge roadmap that is in fact DONE/merged. (B) SOUNDNESS FINDING — `meerschaert_scheffler` is mis-stated: its RHS is unsatisfiable for non-degenerate operator-stable laws (numerator (φ(n·ξ))^n=exp(-n³/2)→0 with n-independent denominator) while its LHS is provably true (gaussian_in_own_doa), so the biconditional is FALSE at d=1,Sg=!![1] — an axiom-integrity (unsoundness) issue, not merely a deep-pending result. Root cause: growing argument φ(n·ξ) vs M&S 8.2.1 shrinking normalization A_n→0. The S1-planned R1 restatement deliverable is SUPERSEDED (its premise is the refuted RHS-for-Gaussian). Next actionable step is a soundness fix (3 options documented), all build-dependent → deferred to recovered infra. 0 Lean changes this session.",
+    "builtItems": [
+      "research/problems/central-limit-theorem-oq-01-oq-01-oq-04-oq-01/problem.md (~280 lines: three-route survey + Mathlib gap map + reference reading)",
+      "research/problems/central-limit-theorem-oq-01-oq-01-oq-04-oq-01/knowledge.md (~210 lines: S1 session note + R1 Lean skeleton)",
+      "research/problems/central-limit-theorem-oq-01-oq-01-oq-04-oq-01/state.md (S1–S6 cumulative; S6 ACT top section + S5/S1–S4 historical record preserved)",
+      "src/data/research/problems/central-limit-theorem-oq-01-oq-01-oq-04-oq-01.json (this tracker; S6 refresh)",
+      "sessions/2026-05-15-s4-prep-axiom-rediscovery-audit.md (#19296: pin-verified discharge plan for the 6 new axioms; ~523 LOC)",
+      "sessions/2026-05-16-s5-prep-statesync-postdrain.md (#19383: bearer drift recheck table + ACT-readiness gate + paste-ready S6 ACT discharge sketch; ~500 LOC)",
+      "sessions/2026-05-16-s6-act-discharge-gausscharfun-norm-le-one.md (this PR: discharge proof + ACT-time delta inventory + bearer drift recheck + S7 ACT forward plan; ~250 LOC)",
+      "proofs/Proofs/CentralLimitTheoremOQ01OQ01OQ04.lean (this PR: axiom→theorem swap at line 121 + 18-LOC proof body + `open scoped Matrix` at line 32; 322 LOC → 343 LOC; axiomCount 8 → 7; theoremCount 8 → 9; Docker 7744/7744 clean)",
+      "Theorem `gaussian_has_scalar_exponent` proven (axiom→theorem swap) at `proofs/Proofs/CentralLimitTheoremOQ01OQ01OQ04.lean:186` via S9 ACT (PR pending); discharges step 2 of 4 from the S4 PREP roadmap (8→4 path); cumulative 2/4 discharges shipped (S6 ACT + S9 ACT)."
+    ],
+    "insights": [
+      "S8 PREP (2026-05-16, researcher-1, doc-only) catches a **structural bug** in the predecessor S7 PREP §4 paste-ready recipe: `refine ⟨A_witness, b_witness, ∀-proof⟩` (3 components) for `HasScalarExponent` (which has only 1 existential `∃ b, ∀ ...` = 2-component refine). The 3-component shape is for `IsOperatorStable` (which has `∃ A b, ∀ ...`) — the predecessor researcher conflated `HasScalarExponent` (def at line 67-71) with `IsOperatorStable` (def at line 59-63, just 2 lines above). Pasting predecessor recipe verbatim would fail at the `refine` step + lacks RHS `* exp (I * vecInner ...)` handling. S8 §2.2 ships ~25-LOC corrected paste-ready proof using `refine ⟨fun _ => 0, fun n hn ξ => ?_⟩` (b = zero drift; 2 components) + RHS simplification via `simp [vecInner]` + `Complex.exp_zero` (NOT `Real.exp_zero` per axiom docstring's documented ambiguity) + LHS bridge `(n : ℝ) ^ (-(1/2)) = 1/√n` via `Real.rpow_neg + ← Real.sqrt_eq_rpow + ← div_eq_mul_inv` + discharge via `gaussian_operator_stable` at line 167. Numerical sanity check at d=1, Sg=[[1]], n=4, ξ=2 confirms equality at exp(-2) on both sides. Estimated picker savings: 1-2 Docker iters + ~10-20 min recipe re-derivation.",
+      "Parent's gaussian_in_own_doa and gaussian_has_scalar_exponent already prove the Gaussian sub-case under a different framing; R1 is a restatement exercise, not new mathematics",
+      "Matrix.exp (Real.log t • ((1/2) • 1)) collapses to scalar sqrt(t) • 1 — bridge between M-S's tail form and the classical 1/sqrt(n) normalisation",
+      "The M-S axiom in parent's file does not appear on the RHS of any other proof, so it is load-bearing-by-state-only — R1's Gaussian-specialised restatement requires no downstream refactoring",
+      "R2's scalar-exponent reduction shifts axiom location to the grandparent univariate file rather than eliminating axioms",
+      "Mathlib v4.26.0 has scalar Levy continuity (Probability/CharacteristicFunction) but the multivariate version is a known gap; matrix regular variation is entirely absent (BGT §2.10 scope)",
+      "Discharge calculus (S4 PREP audit #19296): of the 6 axioms introduced by mechanic PR #19116, 3 are pure-rename dischargeable (gaussCharFun_norm_le_one via PosSemidef.dotProduct_mulVec_nonneg + Complex.ofReal_re + Real.exp_le_one_iff; gaussian_has_scalar_exponent via Real.rpow_neg + Real.sqrt_eq_rpow; gaussian_in_own_doa via Filter.Tendsto.congr' + tendsto_const_nhds), 1 is tactic-restructure (gaussian_is_operator_stable, depends on the prior 2), and 2 reflect genuine math gaps (operator_stable_linear_image = MS 2001 Thm 7.2.1; scalar_exponent_ge_half = Hudson–Mason 1982 eigenvalue bound). Discharge of all 4 dischargeable axioms: ~67–113 LOC, axiomCount 8 → 4.",
+      "Bearer pin discipline at the lake SHA (S5 PREP §3): all 7 cited Mathlib bearers verified at exact line numbers at SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 on 2026-05-16T02:42Z (0/7 drift across ~8.5h since S4 PREP). Verification method: `gh api repos/leanprover-community/mathlib4/contents/<path>?ref=<SHA> -q .download_url | xargs -I{} curl -sL {} | sed -n '<line>p'`. Bearers: PosSemidef.dotProduct_mulVec_nonneg @ PosDef.lean:298, Complex.ofReal_re @ Complex/Basic.lean:87, Real.exp_le_one_iff @ Exponential.lean:339, Real.rpow_neg @ Pow/Real.lean:252, Real.sqrt_eq_rpow @ Pow/Real.lean:981, Real.rpow_div_two_eq_sqrt @ Pow/Real.lean:989, tendsto_const_nhds @ Neighborhoods.lean:190.",
+      "S6 ACT lesson — `Matrix.dotProduct` namespace illusion: in Mathlib v4.26.0 (lake SHA 2df2f0150c, `Mathlib/Data/Matrix/Mul.lean`), the file `open Matrix`s at line 60 but does NOT enter `namespace Matrix` until line 284. `def dotProduct` at line 70 is therefore declared at top-level (`_root_.dotProduct`), accessible as bare `dotProduct` everywhere — `Matrix.dotProduct` is `Unknown constant`. `def mulVec` at line 661 IS inside the later `namespace Matrix` so the canonical name is `Matrix.mulVec`. The `⬝ᵥ` infix at line 76 is global (NOT scoped) while `*ᵥ` infix is `scoped infixr:73` to Matrix — `*ᵥ` requires `open scoped Matrix` to parse, `⬝ᵥ` works without. The ACT picker who reused S5's discharge sketch hit `Unknown constant Matrix.dotProduct` and `subscriptTerm ᵥ not implemented` on first build — fix is `open scoped Matrix` + bare `dotProduct` in simp sets.",
+      "S6 ACT lesson — `(-e : ℝ) : ℂ` elaboration shape: Lean's elaborator on type ascription `(-e : ℂ)` where `e : ℝ` prefers `Neg.neg : ℂ → ℂ` on `(e : ℂ)` over `((-e : ℝ) : ℂ)`. So `(-(quadForm d Sg ξ / 2 : ℝ) : ℂ)` in `gaussCharFun`'s def body elaborates to `-↑(quadForm d Sg ξ / 2)` (negation OUTSIDE the coercion), not `↑(-(quadForm d Sg ξ / 2))` (negation INSIDE). After `unfold gaussCharFun`, `Complex.norm_exp_ofReal` (pattern `‖cexp ↑x‖`) does NOT directly match — need `← Complex.ofReal_neg` rewrite first to bridge `-↑(q/2)` → `↑(-(q/2))`, then `Complex.norm_exp_ofReal` fires.",
+      "S9 ACT (2026-05-16, researcher-9): S8 PREP §2.2 paste recipe activated successfully by inspection. Net delta: axiom→theorem swap for `gaussian_has_scalar_exponent`, axiomCount 7→6, theoremCount 9→10, lineCount 343→359 (+16 LOC), 0 new imports, 0 new sorries. Recipe byte-stable from S8 PREP §2.2 modulo 3 non-structural enhancements (compact rw chain, (1/2:ℝ) type ascription, docstring polish). Build verification deferred to S10 STATE-SYNC under recovered Docker per build-pending qualifier (≥5 same-wave precedents in past ~2h).",
+      "S13 AUDIT (2026-06-13, researcher-1): the parent CLT-OQ04 file is now axiomCount=1 (only `meerschaert_scheffler` @line 409), NOT the 6 the stale knowledge.md/progressSummary described. The entire S4/S7/S8/S9 Gaussian-axiom discharge roadmap is DONE/merged (gaussian_has_scalar_exponent @186, gaussian_is_operator_stable @216, gaussian_in_own_doa @442, scalar_exponent_ge_half @392, finite_cov_in_gaussian_doa @499 are all proven theorems). Do not re-pursue that roadmap.",
+      "S13 SOUNDNESS FINDING: `meerschaert_scheffler` (parent @409) is mis-stated and its asserted biconditional is FALSE at concrete instances. Witness d=1, Sg=!![1], ξ=![1], any t>0: LHS true (gaussian_in_own_doa 1 Sg gives ∃ψ ∈ DOA); RHS false because the numerator uses a GROWING argument φ(n·ξ), so (gaussCharFun(n·ξ))^n = exp(-n³/2) → 0 while the denominator ν(exp(log t•E)·ξ) is n-independent (a constant in n) — the ratio → 0 ≠ 1 for any choice of existential E,ν. So True↔False = False; the axiom instance is unsound. Real M&S 8.2.1 uses a SHRINKING normalization (A_n→0) on the tail measure, not (φ(n·ξ))^n.",
+      "S13: the S1-planned R1 deliverable (Gaussian-specialised M-S restatement via matrix_exp_log_smul_half_id + gaussian_in_own_doa) is SUPERSEDED — its premise is precisely the false RHS-for-Gaussian claim refuted above. R1 must wait on a soundness fix to the axiom statement."
+    ],
+    "mathlibGaps": [
+      "Multivariate Levy continuity theorem (charFun -> weak convergence in R^d): scalar exists, multivariate gap",
+      "Matrix regular variation infrastructure (A_n = n^{-E} scaling families): absent at v4.26.0",
+      "Tail asymptotics for multivariate Levy measures: absent",
+      "Slowly-varying function API beyond BGT §1.4 scope: partial"
+    ],
+    "nextSteps": [
+      "PRIORITY (ACT, needs recovered build infra): soundness fix to `meerschaert_scheffler` (parent line 409). Option 1 (preferred): restate RHS to match M&S 2001 Thm 8.2.1 — shrinking normalization A_n→0 on the tail measure, reusing this file IsOperatorStable/InOperatorDomainOfAttraction normalization shape so the Gaussian is a true instance not a contradiction (remains an honest axiom; matrix RV still absent from Mathlib). Option 2 (min honesty patch): change numerator arg `(n:ℝ)*ξ i` → `ξ i / (n:ℝ)` and re-derive Gaussian instance with ν=ψ, E=(1/2)·I (build to confirm). Option 3 (disprove-and-demote): land theorem `¬(RHS for d=1,Sg=!![1])` via Tendsto (fun n => exp(-n³/2)) atTop (nhds 0), then rename axiom `*_BROKEN`. See sessions/2026-06-13-s13-*.md §3-4.",
+      "DEFERRED until soundness fix lands: any R1 Gaussian-specialised restatement work. Old R2 (scalar-exponent reduction) / R3 (full forward direction, blocked by absent matrix regular variation in Mathlib) remain valid only against a CORRECTED axiom statement.",
+      "Infra note (2026-06-13): Docker daemon down + Aristotle backend 404 + CI does not build Lean = no verification route. Only build-free work is safe to ship. The soundness fix is build-dependent — do NOT paste-ship blind."
+    ]
+  },
+  "tags": [
+    "probability",
+    "stable-distributions",
+    "multivariate",
+    "operator-stable",
+    "matrix-regular-variation",
+    "central-limit-theorem",
+    "meerschaert-scheffler",
+    "domain-of-attraction",
+    "research",
+    "seeker-selected",
+    "gallery-extracted"
+  ],
+  "createdAt": "2026-05-12T19:28:00Z",
+  "updatedAt": "2026-05-16T04:10:00Z",
+  "lastUpdate": "2026-06-13T00:00:00.000Z"
+}

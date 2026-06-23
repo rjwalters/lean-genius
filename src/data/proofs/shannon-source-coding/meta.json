@@ -1,0 +1,275 @@
+{
+  "id": "shannon-source-coding",
+  "title": "Shannon Source Coding Theorem",
+  "slug": "shannon-source-coding",
+  "description": "Shannon's source coding theorem (1948): the entropy $H(X) = -\\sum_x p(x)\\log p(x)$ is the fundamental limit of lossless data compression. For an i.i.d. source, compression to rate $R > H(X)$ bits per symbol is achievable with vanishing error, while any code at rate $R < H(X)$ fails. Proved via the Asymptotic Equipartition Property (AEP), which shows that probability concentrates on a typical set of $\\approx 2^{nH}$ sequences. Currently a placeholder formalization with theorem stubs proving True.",
+  "meta": {
+    "author": "Claude Shannon (1948), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Shannon%27s_source_coding_theorem",
+    "date": "1948",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/ShannonSourceCoding.lean",
+    "tags": [
+      "information-theory",
+      "analysis",
+      "probability",
+      "coding-theory",
+      "advanced"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Analysis.SpecialFunctions.Log.Basic",
+        "description": "Logarithm properties for entropy and AEP",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Probability.ProbabilityMassFunction",
+        "description": "Discrete probability distributions",
+        "module": "Mathlib.Probability.ProbabilityMassFunction"
+      },
+      {
+        "theorem": "MeasureTheory.Integral.Lebesgue",
+        "description": "Integration for expectation computations",
+        "module": "Mathlib.MeasureTheory.Integral.Lebesgue"
+      }
+    ],
+    "originalContributions": [
+      "Theorem statements for AEP, typical sets, achievability, and converse (all placeholder stubs proving True)"
+    ],
+    "assumptions": [
+      "All four theorems currently prove True — they are placeholder stubs, not actual proofs"
+    ],
+    "dateAdded": "2026-03-21",
+    "axiomCount": 0,
+    "lineCount": 32,
+    "prerequisites": [
+      "Shannon entropy as information content",
+      "Asymptotic Equipartition Property (AEP)",
+      "Typical sets and typical sequences",
+      "Prefix-free codes and Kraft's inequality",
+      "Law of large numbers for information"
+    ],
+    "mathlib_version": "4.26.0",
+    "theoremCount": 0,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The question of optimal data representation has roots predating Shannon. Ralph Hartley's 1928 paper 'Transmission of Information' introduced the logarithmic measure of information for equiprobable symbols ($\\log |\\mathcal{X}|$), and Harry Nyquist (1924) analyzed telegraph signaling rates. But neither addressed the case of non-uniform symbol probabilities — the key to compression.\n\nClaude Shannon's landmark 1948 paper 'A Mathematical Theory of Communication' in the Bell System Technical Journal revolutionized this picture. Shannon introduced entropy $H(X) = -\\sum_x p(x)\\log_2 p(x)$ as the measure of information content and proved two fundamental theorems: the source coding theorem (compression limit) and the channel coding theorem (reliable communication limit). The source coding theorem was Theorem 3 in his paper, stating that the entropy is the minimum achievable compression rate.\n\nThe key insight was the connection between optimal compression and the Asymptotic Equipartition Property (AEP): for long i.i.d. sequences, probability mass concentrates on a 'typical set' of approximately $2^{nH}$ sequences out of $|\\mathcal{X}|^n$ possible sequences. This is an information-theoretic restatement of the law of large numbers. Shannon's proof that coding only typical sequences achieves the entropy rate was the first instance of what became the standard achievability technique in information theory.\n\nThe theorem answered a question implicit since Morse code (1838): what is the best possible compression? Morse assigned shorter codes to common letters (E is a single dot), anticipating that frequency matters for efficiency. Shannon proved that the optimal average code length equals the entropy, providing both the limit and a constructive approach via typical set coding.\n\nShannon's work was refined by Brockway McMillan (1953), who proved a stronger version of the AEP, and by David Huffman (1952), whose optimal prefix-free code construction provided a practical complement to Shannon's existential theorem. Robert Fano had independently developed a similar coding scheme (Shannon-Fano coding) in 1949, though it is not always optimal. Later, arithmetic coding (Rissanen 1976, Pasco 1976) achieved rates arbitrarily close to entropy for finite block lengths, and Lempel-Ziv algorithms (1977, 1978) achieved the entropy rate universally without knowing the source distribution.\n\nThe source coding theorem's impact extends far beyond data compression. It established entropy as the operational measure of information, influenced Kolmogorov's development of algorithmic complexity theory (1965), and underpins the minimum description length principle in statistics. The typical set methodology introduced here became the standard proof technique for virtually all information-theoretic coding theorems, including channel coding, rate-distortion theory, and multi-user information theory.",
+    "problemStatement": "Shannon Source Coding Theorem: For an i.i.d. source with entropy $H(X)$:\n\n**Achievability**: For any $\\varepsilon > 0$ and any rate $R > H(X)$, there exists a block code of rate $R$ that encodes source sequences of length $n$ with error probability less than $\\varepsilon$ for sufficiently large $n$.\n\n**Converse**: Any lossless code must use at least $H(X)$ bits per symbol on average. More precisely, for any code with rate $R < H(X)$, the error probability tends to 1 as $n \\to \\infty$.",
+    "text": "A four-theorem formalization of Shannon's source coding theorem in 44 lines, within the `InformationTheory.SourceCoding` namespace. The development follows the standard textbook structure: (1) `aep_convergence` states the Asymptotic Equipartition Property — that $-\\frac{1}{n}\\log p(X_1^n) \\to H(X)$ in probability; (2) `typical_set_size_bound` bounds the typical set cardinality by $2^{n(H+\\varepsilon)}$; (3) `source_coding_achievability` states that rates $R > H(X)$ are achievable with vanishing error probability; (4) `source_coding_converse` states that rates $R < H(X)$ incur non-vanishing error. All four theorems are currently placeholder stubs proving `True`, with correct type signatures parametrized over a finite alphabet `\\alpha` with a positive probability distribution summing to 1. A genuine formalization would require Mathlib's product measure spaces, i.i.d. sequences, and the weak law of large numbers applied to log-probability — the core infrastructure for any serious probability formalization in Lean 4.",
+    "proofStrategy": "The proof centers on the Asymptotic Equipartition Property:\n\n1. **AEP**: For i.i.d. random variables $X_1, \\ldots, X_n$ from distribution $p$, the law of large numbers gives $-\\frac{1}{n} \\log p(X_1, \\ldots, X_n) \\to H(X)$ in probability. Thus the log-probability of a typical sequence concentrates around $nH(X)$.\n\n2. **Typical sets**: Define the typical set $T_\\varepsilon^{(n)} = \\{x^n : |{-\\frac{1}{n} \\log p(x^n) - H(X)}| \\leq \\varepsilon\\}$. The AEP implies: (a) $\\Pr[X^n \\in T_\\varepsilon^{(n)}] \\geq 1 - \\varepsilon$ for large $n$; (b) $|T_\\varepsilon^{(n)}| \\leq 2^{n(H(X)+\\varepsilon)}$; (c) $|T_\\varepsilon^{(n)}| \\geq (1-\\varepsilon) 2^{n(H(X)-\\varepsilon)}$ for large $n$.\n\n3. **Achievability**: Assign unique binary codewords to each sequence in $T_\\varepsilon^{(n)}$. This requires $\\lceil \\log_2 |T_\\varepsilon^{(n)}| \\rceil \\leq n(H(X)+\\varepsilon) + 1$ bits. Atypical sequences are flagged with a special prefix. Rate: $H(X) + \\varepsilon + 1/n$, which approaches $H(X)$ as $n \\to \\infty$.\n\n4. **Converse**: Any code that represents all $n$-length sequences with vanishing error probability must assign distinct codewords to a set of probability at least $1 - \\varepsilon$. By the AEP, this set contains at least $(1-\\varepsilon) 2^{n(H-\\varepsilon)}$ sequences, requiring at least $n(H-\\varepsilon) + \\log(1-\\varepsilon)$ bits.",
+    "keyInsights": [
+      "**AEP as Information-Theoretic LLN**: The Asymptotic Equipartition Property states $-\\frac{1}{n}\\log p(X_1^n) \\to H(X)$ in probability — each typical sequence has probability $\\approx 2^{-nH}$, and the law of large numbers applied to $-\\log p(X_i)$ (which has expectation $H(X)$) is the entire mechanism",
+      "**Exponential Concentration**: There are $|\\mathcal{X}|^n$ total sequences but only $\\approx 2^{nH}$ typical ones. For a binary source with $H = 0.5$ bits/symbol and $n = 100$, the typical set contains $\\approx 2^{50} \\approx 10^{15}$ sequences out of $2^{100} \\approx 10^{30}$ possible — a fraction of $2^{-50}$, yet carrying probability $\\to 1$",
+      "**Achievability is Constructive**: Assign unique $\\lceil n(H+\\varepsilon) \\rceil$-bit codewords to each typical sequence and flag atypical ones with a special prefix. The rate $H + \\varepsilon + 1/n \\to H$ as $n \\to \\infty$, and the error probability $\\Pr[\\text{atypical}] \\to 0$ by the AEP",
+      "**Converse via Counting**: Any rate-$R$ code can distinguish at most $2^{nR}$ sequences, but the typical set has $\\geq (1-\\varepsilon)2^{n(H-\\varepsilon)}$ elements. When $R < H$, the code cannot cover the typical set: $P_e \\geq 1 - 2^{n(R-H+\\varepsilon)} \\to 1$",
+      "**Block Coding is Essential**: Per-symbol codes (like Huffman) achieve $H \\leq \\bar{L} < H + 1$ but cannot reach $H$ exactly for non-dyadic distributions. Block coding amortizes the overhead: coding $n$-blocks gives $H \\leq \\bar{L}/n < H + 1/n$, approaching $H$ as $n \\to \\infty$",
+      "**Entropy Quantifies Surprise, Not Content**: $H(X)$ measures the average surprise $E[-\\log p(X)]$, not the 'meaning' of messages. A stream of random bits has maximal entropy ($H = 1$) despite carrying no semantic content, while a highly structured message has low entropy — this is why compression works",
+      "**Duality with Channel Coding**: Source coding removes redundancy (compresses to $H$ bits); channel coding adds redundancy (expands to capacity $C$ bits). The separation theorem states these can be done independently: first compress to $H$, then code for the channel at rate $C$, achieving reliable communication whenever $H < C$",
+      "**The Type Signatures Encode the Mathematics**: Even as placeholders, the theorem statements capture key structure: the constraint `hp : ∀ x, 0 < p x` (strict positivity) prevents $\\log 0$ issues, `hsum : ∑ x, p x = 1` ensures a valid distribution, and the `Fintype` constraint on `α` restricts to finite alphabets — the setting where Shannon's theorem has its cleanest statement"
+    ],
+    "prerequisites": [
+      "Shannon entropy as information content",
+      "Asymptotic Equipartition Property (AEP)",
+      "Typical sets and typical sequences",
+      "Prefix-free codes and Kraft's inequality",
+      "Law of large numbers for information"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-imports",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 6,
+      "summary": "Module docstring describing the source coding theorem: entropy as the compression limit, achievability via typical set coding, converse via AEP.",
+      "mathContext": "Shannon (1948): $H(X)$ is the minimum achievable compression rate for an i.i.d. source."
+    },
+    {
+      "id": "section-7",
+      "title": "Header and Imports (continued)",
+      "startLine": 7,
+      "endLine": 12,
+      "summary": "Continuation: remaining proofs and definitions in this section."
+    },
+    {
+      "id": "aep",
+      "title": "Asymptotic Equipartition Property",
+      "startLine": 13,
+      "endLine": 19,
+      "summary": "AEP: normalized log-probability converges to entropy in probability. Placeholder proving True.",
+      "mathContext": "$-\\frac{1}{n}\\log p(X_1^n) \\xrightarrow{P} H(X)$ by the weak law of large numbers."
+    },
+    {
+      "id": "typical-set",
+      "title": "Typical Set Size Bound",
+      "startLine": 20,
+      "endLine": 27,
+      "summary": "Typical set has at most $2^{n(H+\\varepsilon)}$ elements and probability approaching 1. Placeholder.",
+      "mathContext": "$|A_\\varepsilon^{(n)}| \\leq 2^{n(H+\\varepsilon)}$ and $\\Pr[A_\\varepsilon^{(n)}] \\to 1$."
+    },
+    {
+      "id": "achievability",
+      "title": "Source Coding Achievability",
+      "startLine": 28,
+      "endLine": 32,
+      "summary": "Rates above entropy are achievable: encode typical sequences with $n(H+\\varepsilon)$ bits. Placeholder.",
+      "mathContext": "For $R > H(X)$: $P_e^{(n)} \\to 0$ as $n \\to \\infty$ by typical set coding."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "shannon-entropy",
+      "relationship": "depends-on",
+      "description": "The source coding theorem characterizes entropy $H(X) = -\\sum_x p(x)\\log p(x)$ operationally as the compression limit — giving entropy its concrete meaning as 'minimum bits per symbol'. Without the source coding theorem, entropy is just a mathematical formula; with it, entropy becomes the answer to 'how much can we compress?'"
+    },
+    {
+      "targetId": "shannon-channel-coding",
+      "relationship": "complementary",
+      "description": "Source coding (compression) and channel coding (reliable transmission) are the two fundamental theorems of Shannon's 1948 paper. Source coding removes redundancy (compresses to $H$ bits/symbol); channel coding adds redundancy (transmits reliably up to capacity $C$ bits/use). The separation theorem states they can be composed: compress to $H$, then code for the channel, achieving reliable communication whenever $H < C$"
+    },
+    {
+      "targetId": "shannon-source-coding-oq-02",
+      "relationship": "extended-by",
+      "description": "Extends the source coding theorem to explore connections with Kolmogorov complexity and algorithmic information theory — the individual-sequence analogue of Shannon's average-case compression limit"
+    },
+    {
+      "targetId": "birthday-problem",
+      "relationship": "related",
+      "description": "Both use probabilistic counting arguments involving exponential growth: the birthday problem counts collisions among $2^{n/2}$ random selections, while source coding counts typical sequences among $2^{nH}$ — in both cases, the tension between exponentially many possibilities and concentration of probability is the core mechanism"
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "foundational",
+      "description": "The AEP that underlies source coding is an information-theoretic law of large numbers: $-\\frac{1}{n}\\log p(X_1^n) \\to H(X)$ in probability. The CLT provides the finer second-order analysis: the rate of convergence to $H$ is $O(1/\\sqrt{n})$ with Gaussian fluctuations, which determines the second-order coding rate (Strassen 1962, Polyanskiy-Poor-Verdú 2010)"
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's approximation $\\log n! \\approx n\\log n - n$ underpins the typical set counting argument: the number of sequences with a given type (empirical distribution) is $\\binom{n}{k_1, \\ldots, k_m} \\approx 2^{nH(\\hat{p})}$ by Stirling, which is precisely the connection between combinatorial counting and entropy"
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "foundational",
+      "description": "The multinomial coefficient $\\binom{n}{k_1, \\ldots, k_m}$ counts sequences of a given type — the method of types (Csiszár-Körner) shows $\\binom{n}{k_1,\\ldots,k_m} \\approx 2^{nH(k_1/n, \\ldots, k_m/n)}$, directly linking combinatorics to entropy and providing an alternative proof of the source coding theorem"
+    },
+    {
+      "targetId": "shannon-channel-coding-oq-04",
+      "relationship": "related",
+      "description": "The channel coding sub-entry explores error exponents and reliability functions, which have direct analogues in source coding: the source coding error exponent characterizes how fast $P_e \\to 0$ (or $P_e \\to 1$) as a function of the rate, complementing the first-order result that $H$ is the threshold"
+    }
+  ],
+  "conclusion": {
+    "summary": "The Shannon source coding theorem establishes that entropy $H(X) = -\\sum_x p(x)\\log_2 p(x)$ is the fundamental limit of lossless data compression. The proof via the Asymptotic Equipartition Property shows that long i.i.d. sequences concentrate their probability mass on a typical set of approximately $2^{nH}$ sequences, which can be encoded with $H + \\varepsilon$ bits per symbol for any $\\varepsilon > 0$. The converse shows that any code using fewer than $H$ bits per symbol must incur non-vanishing error probability. Together, achievability and converse pinpoint $H(X)$ as the exact compression threshold.",
+    "implications": "**1. Operational Meaning of Entropy**: $H(X)$ is not just an abstract measure — it is the minimum compression rate, giving entropy a concrete operational interpretation. Before Shannon, entropy was a thermodynamic quantity (Boltzmann, Gibbs); Shannon showed it is the fundamental unit of information.\n\n**2. AEP as a Universal Tool**: The Asymptotic Equipartition Property is used throughout information theory, not just in source coding. It underlies the channel coding theorem, rate-distortion theory, Slepian-Wolf distributed source coding, and network information theory. The typical set methodology formalized here is the template for virtually all information-theoretic achievability proofs.\n\n**3. Foundation for Modern Compression**: The source coding theorem justifies and benchmarks practical compression algorithms: Huffman coding (1952), arithmetic coding (Rissanen 1976), and Lempel-Ziv (1977, 1978). Every compression algorithm is ultimately bounded by $H(X)$, and the theorem explains why different data types compress to different ratios — text ($H \\approx 1$-$2$ bits/char) compresses much better than encrypted data ($H \\approx 8$ bits/byte).\n\n**4. Rate-Distortion Theory**: The lossless source coding theorem is the $D = 0$ endpoint of rate-distortion theory (Shannon 1959), which characterizes the minimum rate $R(D)$ for lossy compression with distortion $\\leq D$. For a Gaussian source, $R(D) = \\frac{1}{2}\\log(\\sigma^2/D)$ — a result that underpins modern lossy codecs (JPEG, MP3, video compression).\n\n**5. Connections to Statistical Mechanics**: Shannon entropy has the same functional form as Boltzmann-Gibbs entropy $S = -k_B \\sum p_i \\ln p_i$. The typical set in information theory corresponds to the microcanonical ensemble in statistical mechanics — both concentrate on states of 'typical' energy/probability. Jaynes (1957) formalized this connection via the maximum entropy principle.\n\n**6. Kolmogorov Complexity**: The individual-sequence analogue of Shannon's theorem replaces entropy with Kolmogorov complexity $K(x)$: the length of the shortest program generating $x$. For i.i.d. sources, $K(x^n)/n \\to H(X)$ with probability 1 (a deeper result than the AEP), connecting Shannon's probabilistic framework to Kolmogorov's algorithmic one.",
+    "openQuestions": [
+      "Can rate-distortion theory (lossy compression with distortion constraint $D$) be formalized as an extension of the lossless theorem? The rate-distortion function $R(D) = \\min_{p(\\hat{x}|x): E[d(X,\\hat{X})] \\leq D} I(X;\\hat{X})$ would require formalizing mutual information and distortion measures.",
+      "Can Huffman coding be proved optimal among prefix-free codes in Lean? The proof that $H(X) \\leq \\bar{L}_{\\text{Huffman}} < H(X) + 1$ would provide a constructive complement to the existential source coding theorem, and Kraft's inequality $\\sum 2^{-\\ell_i} \\leq 1$ would be a natural Lean formalization.",
+      "Can the AEP be formalized using Mathlib's probability measure framework? This requires product probability spaces, i.i.d. random variables, and the weak law of large numbers applied to $-\\log p(X_i)$ — foundational infrastructure that would enable many probability formalizations.",
+      "Can the method of types (Csiszár-Körner) provide an alternative proof of the source coding theorem via combinatorial rather than probabilistic arguments? The type class $T_Q^n$ of sequences with empirical distribution $Q$ has $|T_Q^n| \\approx 2^{nH(Q)}$, and the dominant type has $Q \\approx p$.",
+      "Can the second-order source coding rate be formalized? Strassen (1962) showed the optimal rate at blocklength $n$ is $H + \\sqrt{V/n}\\,Q^{-1}(\\varepsilon) + O(\\log n/n)$ where $V = \\text{Var}[-\\log p(X)]$ is the varentropy and $Q^{-1}$ is the Gaussian quantile — a refinement that requires the CLT applied to log-probability.",
+      "Can universal source coding (Lempel-Ziv) be formalized, showing that compression to entropy rate is achievable without knowing the source distribution $p$? This would connect to Kolmogorov complexity and algorithmic information theory."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "InformationTheory.SourceCoding",
+    "lineCount": 32,
+    "axiomCount": 0,
+    "theoremCount": 0,
+    "definitionCount": 0,
+    "mainTheorems": [
+      {
+        "name": "aep_convergence",
+        "type": "placeholder",
+        "description": "AEP: normalized log-probability converges to entropy in probability",
+        "leanType": "{α : Type*} [Fintype α] [DecidableEq α] {p : α → ℝ} (hp : ∀ x, 0 < p x) (hsum : ∑ x, p x = 1) → True"
+      },
+      {
+        "name": "typical_set_size_bound",
+        "type": "placeholder",
+        "description": "Typical set has at most 2^(n(H+ε)) elements",
+        "leanType": "{α : Type*} [Fintype α] [DecidableEq α] {p : α → ℝ} (hp : ∀ x, 0 < p x) (hsum : ∑ x, p x = 1) {n : ℕ} {ε : ℝ} (hε : 0 < ε) (hn : 0 < n) → True"
+      },
+      {
+        "name": "source_coding_achievability",
+        "type": "placeholder",
+        "description": "Rates above entropy are achievable with vanishing error",
+        "leanType": "{α : Type*} [Fintype α] [DecidableEq α] {p : α → ℝ} (hp : ∀ x, 0 < p x) (hsum : ∑ x, p x = 1) {ε : ℝ} (hε : 0 < ε) → True"
+      },
+      {
+        "name": "source_coding_converse",
+        "type": "placeholder",
+        "description": "Rates below entropy incur non-vanishing error",
+        "leanType": "{α : Type*} [Fintype α] [DecidableEq α] {p : α → ℝ} (hp : ∀ x, 0 < p x) (hsum : ∑ x, p x = 1) {ε : ℝ} (hε : 0 < ε) → True"
+      }
+    ],
+    "path": "Proofs/ShannonSourceCoding.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Shannon, Claude E.",
+      "title": "A Mathematical Theory of Communication",
+      "year": "1948",
+      "venue": "Bell System Technical Journal 27(3), 379–423 and 27(4), 623–656",
+      "note": "The founding paper of information theory — Theorem 3 proves the source coding theorem, establishing entropy as the compression limit. Introduced the AEP and typical set methodology"
+    },
+    {
+      "authors": "Cover, Thomas M.; Thomas, Joy A.",
+      "title": "Elements of Information Theory",
+      "year": "2006",
+      "venue": "Wiley, 2nd edition",
+      "note": "Standard graduate textbook — Chapter 5 covers the AEP and source coding theorem with the proof structure mirrored in this formalization"
+    },
+    {
+      "authors": "McMillan, Brockway",
+      "title": "The Basic Theorems of Information Theory",
+      "year": "1953",
+      "venue": "Annals of Mathematical Statistics 24(2), 196–219",
+      "note": "Strengthened Shannon's source coding theorem with a rigorous proof of the AEP for ergodic sources, extending beyond the i.i.d. case"
+    },
+    {
+      "authors": "Huffman, David A.",
+      "title": "A Method for the Construction of Minimum-Redundancy Codes",
+      "year": "1952",
+      "venue": "Proceedings of the IRE 40(9), 1098–1101",
+      "note": "Optimal prefix-free code construction — the practical complement to Shannon's existential theorem, achieving $H \\leq \\bar{L} < H + 1$ bits per symbol"
+    },
+    {
+      "authors": "Csiszár, Imre; Körner, János",
+      "title": "Information Theory: Coding Theorems for Discrete Memoryless Systems",
+      "year": "2011",
+      "venue": "Cambridge University Press, 2nd edition",
+      "note": "Develops the method of types as an alternative proof technique for the source coding theorem, providing combinatorial rather than probabilistic arguments"
+    },
+    {
+      "authors": "Hartley, Ralph V. L.",
+      "title": "Transmission of Information",
+      "year": "1928",
+      "venue": "Bell System Technical Journal 7(3), 535–563",
+      "note": "Introduced the logarithmic measure of information for equiprobable symbols — the precursor to Shannon entropy, limited to uniform distributions"
+    },
+    {
+      "authors": "Polyanskiy, Yury; Poor, H. Vincent; Verdú, Sergio",
+      "title": "Channel Coding Rate in the Finite Blocklength Regime",
+      "year": "2010",
+      "venue": "IEEE Transactions on Information Theory 56(5), 2307–2359",
+      "note": "Established the second-order source coding rate with Gaussian refinement — the modern extension of Shannon's first-order theorem to finite blocklengths"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "source_coding_theorem",
+      "type": "core",
+      "description": "Shannon's source coding theorem: optimal compression rate equals entropy",
+      "leanType": "Source S -> optimal_compression_rate S = entropy S"
+    }
+  ],
+  "sorries": 0
+}

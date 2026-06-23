@@ -1,0 +1,104 @@
+{
+  "slug": "e-transcendental-oq-03",
+  "title": "e-transcendental-oq-03",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T04:42:50-07:00",
+    "iteration": 1,
+    "focus": "Created survey formalization with axiomatized key results",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "OBSERVED: μ(e)=2 file (219 lines, 2 axioms, 0 sorries) is in good axiomatized state. Identified that one axiom (Dirichlet for irrationals) is now tractable via local DirichletFromMinkowski machinery — recommended for follow-up session (~50 lines, no Mathlib gap).",
+    "builtItems": [
+      "Created Proofs/ETranscendentalOQ03.lean: 206 lines, 4 theorems, 2 axioms",
+      "Created gallery data in src/data/proofs/e-transcendental-oq-03/meta.json",
+      "Proved e_not_liouville from upper bound axiom",
+      "Proved e_irrational_from_measure from lower bound axiom"
+    ],
+    "insights": [
+      "mu(e) = 2 follows from Euler CF expansion e = [2; 1, 2, 1, 1, 4, 1, 1, 6, ...]",
+      "Lower bound (Dirichlet): every irrational has mu >= 2. Not directly in Mathlib as LiouvilleWith 2.",
+      "Upper bound: partial quotients a_n = O(n) implies convergent quality is exactly quadratic",
+      "Mathlib has LiouvilleWith framework but NOT Dirichlet approximation theorem at exponent 2",
+      "Full proof would need CF infrastructure: GeneralizedContinuedFraction + Euler CF of e",
+      "Local Mathlib has dirichlet_approximation_corollary in MinkowskiTheoremOQ02.lean (axiom-free, Q-Minkowski derivation): ∀α Q>0, ∃ q,p with 1≤q≤Q ∧ |α - p/q| < 1/(Qq). The irrational_liouvilleWith_two axiom can be derived from this + standard infinite-q argument: assume only finitely many q give 1/(Qq) approximations, take Q so 1/Q < min nonzero |α - p/q|, derive contradiction via irrationality."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "TRACTABLE: Eliminate irrational_liouvilleWith_two by importing DirichletFromMinkowski.dirichlet_approximation_corollary and proving the standard infinite-q argument (~50 lines)",
+      "DEEP: e_not_liouvilleWith_gt_two requires CF expansion of e — Euler 1737 pattern [2;1,2,1,1,4,1,1,6,...] showing partial quotients are O(n). Mathlib has GeneralizedContinuedFraction but not the specific e expansion.",
+      "Generalize to e^k for integer k≥1: Davis (1978) gives μ(e^k)=2 with similar CF structure"
+    ],
+    "markdown": "# Knowledge Base: e-transcendental-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "e-transcendental",
+    "e-transcendental-oq-01",
+    "e-transcendental-oq-01-oq-01",
+    "e-transcendental-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T11:59:37.383Z",
+  "lastUpdate": "2026-03-30T11:59:37.396Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/ETranscendentalOQ01.lean",
+      "filename": "ETranscendentalOQ01.lean",
+      "lineCount": 539,
+      "theoremCount": 15,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ETranscendentalOQ01.lean"
+    },
+    {
+      "path": "Proofs/ETranscendentalOQ01OQ01.lean",
+      "filename": "ETranscendentalOQ01OQ01.lean",
+      "lineCount": 342,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ETranscendentalOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/ETranscendentalOQ03.lean",
+      "filename": "ETranscendentalOQ03.lean",
+      "lineCount": 220,
+      "theoremCount": 4,
+      "axiomCount": 2,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ETranscendentalOQ03.lean"
+    }
+  ]
+}

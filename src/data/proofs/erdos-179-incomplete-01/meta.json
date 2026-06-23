@@ -1,0 +1,147 @@
+{
+  "id": "erdos-179-incomplete-01",
+  "title": "Erdős #179: Elementary Arithmetic-Progression Combinatorics",
+  "slug": "erdos-179-incomplete-01",
+  "description": "Fully verifies the elementary combinatorial scaffolding around Erdős Problem #179 (AP supersaturation), discharging the parent file's elementary sorries: a k-AP with positive step has k elements, k-APs embed in ℓ-APs (supersaturation is monotone), a size-N set has at most C(N,k) k-APs, and EXACTLY C(N,2) two-term APs — showing the parent's 3-AP-free hypothesis is redundant.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://erdosproblems.com/179",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos179Incomplete01.lean",
+    "tags": [
+      "additive-combinatorics",
+      "arithmetic-progressions",
+      "supersaturation",
+      "counting",
+      "erdos",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card_image_of_injOn",
+        "description": "|image f s| = |s| when f is injective on s; gives the AP cardinality from injectivity of i ↦ a + i·d",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.card_powersetCard",
+        "description": "|powersetCard k s| = C(|s|, k); the count of k-element subsets",
+        "module": "Mathlib.Data.Finset.Powerset"
+      },
+      {
+        "theorem": "Finset.mem_powersetCard",
+        "description": "S ∈ powersetCard k A ↔ S ⊆ A ∧ |S| = k; identifies APs with k-element subsets",
+        "module": "Mathlib.Data.Finset.Powerset"
+      },
+      {
+        "theorem": "Finset.card_eq_two",
+        "description": "|s| = 2 ↔ ∃ a b, a ≠ b ∧ s = {a,b}; decomposes a 2-set into its 2-AP form",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Nat.eq_of_mul_eq_mul_right",
+        "description": "0 < c → a·c = b·c → a = b; the cancellation giving injectivity of the AP map",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
+      }
+    ],
+    "originalContributions": [
+      "Proved arithmeticProgression_card: a k-term AP with positive common difference has exactly k elements (injectivity of i ↦ a + i·d)",
+      "Proved countAPs_le_choose: a set of size N contains at most C(N,k) k-APs — the elementary bound behind the parent's F_k(N,ℓ) ≤ N²",
+      "Proved countAPs_two: a set of size N has EXACTLY C(N,2) two-term APs, discharging the parent's AP_free_has_2APs and F_2_well_defined sorries",
+      "Identified that the parent's 3-AP-free hypothesis in AP_free_has_2APs is logically redundant: the 2-AP count identity holds for every finite set",
+      "Proved ContainsAP_of_le (supersaturation is monotone: an ℓ-AP forces a k-AP for k ≤ ℓ) and ContainsAP_two_of_two_le_card"
+    ],
+    "axiomCount": 0,
+    "lineCount": 161,
+    "assumptions": "None for the results proved here — fully verified from Mathlib with 0 axioms (only the standard propext / Classical.choice / Quot.sound; open scoped Classical supplies decidability of the AP predicate) and 0 sorries. The DEEP supersaturation theorems of the parent (Fox–Pohoata F_k(N,ℓ) = N^{2-o(1)}, Leng–Sah–Sawhney, Szemerédi, Roth, Behrend) are NOT addressed here; this entry proves only the elementary combinatorial scaffolding.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #179 asks about the supersaturation function $F_k(N,\\ell)$ — the minimum number of $k$-term arithmetic progressions in an $N$-element set that forces an $\\ell$-term progression. Fox and Pohoata (2020) proved $F_k(N,\\ell) = N^{2-o(1)}$, with the bound $F_k(N,\\ell) \\le N^2/(\\log\\log N)^{C_\\ell}$; Leng, Sah and Sawhney (2024) sharpened the denominator to $\\exp((\\log\\log N)^{c_\\ell})$. These are deep results in additive combinatorics building on Szemerédi's theorem. The parent formalization Erdos179Problem.lean states them as axioms and leaves several elementary `sorry`s; this companion supplies the fully-verifiable combinatorial groundwork.",
+    "problemStatement": "Discharge the elementary, fully-formalizable combinatorial lemmas left as sorries in the Erdős #179 parent file: AP cardinality, AP nesting, the C(N,k) upper bound on the number of k-APs, and the exact count of 2-APs.",
+    "text": "Proves the elementary AP-counting scaffolding around Erdős #179 with 0 axioms and 0 sorries.",
+    "proofStrategy": "The AP map $i \\mapsto a + i\\cdot d$ is injective when $d > 0$ (Nat right-cancellation), so an AP has cardinality $k$ via `card_image_of_injOn`. A 2-AP is the pair $\\{a, a+d\\}$. The counted $k$-APs are all $k$-element subsets, so the filtered powerset embeds in (and for $k=2$ equals) `powersetCard k A`, whose cardinality is $C(N,k)$ by `card_powersetCard`. The $k=2$ equality uses `card_eq_two` to realize any 2-subset $\\{x,y\\}$ as the AP with start $\\min$ and step $|x-y|$.",
+    "keyInsights": [
+      "Injectivity of $i \\mapsto a + i\\cdot d$ for $d > 0$ is the single fact giving every AP its full cardinality $k$ — and hence the identification of $k$-APs with $k$-element subsets",
+      "The number of $k$-APs is at most $C(N,k)$ because each AP IS a $k$-subset; this is the elementary ceiling underneath the deep $F_k(N,\\ell) \\le N^2$ bound",
+      "For $k = 2$ the bound is an equality: every 2-subset $\\{x,y\\}$ is the AP $(x, x+(y-x))$, so the 2-APs are exactly the pairs and $\\mathrm{countAPs}\\,A\\,2 = C(N,2)$",
+      "The parent's `AP_free_has_2APs` carries a redundant 3-AP-free hypothesis: the 2-AP count identity holds for EVERY finite set, with no AP-freeness assumption",
+      "Supersaturation is trivially monotone — an $\\ell$-AP contains a $k$-AP for $k \\le \\ell$ — because `range k ⊆ range ℓ` pushes through the AP image"
+    ],
+    "prerequisites": [
+      "Finset combinatorics (image, powerset, powersetCard)",
+      "Arithmetic progressions",
+      "Binomial coefficients"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Arithmetic Progressions and the AP Count",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Module docstring framing the companion's scope. Defines arithmeticProgression a d k = image (i ↦ a+i·d) (range k), ContainsAP, and countAPs (the count of k-AP subsets), matching the parent's definitions for compatibility."
+    },
+    {
+      "id": "ap-structure",
+      "title": "Structure of a Single AP",
+      "startLine": 51,
+      "endLine": 88,
+      "summary": "Proves a 2-AP is the pair {a, a+d}, that a k-AP with positive step has exactly k elements (injectivity of i ↦ a+i·d), and that k-APs nest inside ℓ-APs for k ≤ ℓ.",
+      "mathContext": "$|\\{a + i d : 0 \\le i < k\\}| = k$ because $a + id = a + jd \\Rightarrow i = j$ when $d > 0$."
+    },
+    {
+      "id": "monotone",
+      "title": "Supersaturation is Monotone",
+      "startLine": 89,
+      "endLine": 112,
+      "summary": "Proves ContainsAP_of_le (an ℓ-AP forces a k-AP for k ≤ ℓ) and ContainsAP_two_of_two_le_card (any set of size ≥ 2 contains a 2-AP).",
+      "mathContext": "If $\\{a+id : i<\\ell\\} \\subseteq A$ then so is the sub-progression $\\{a+id : i<k\\}$."
+    },
+    {
+      "id": "counting",
+      "title": "Counting Arithmetic Progressions",
+      "startLine": 113,
+      "endLine": 161,
+      "summary": "**MAIN RESULTS.** countAPs_le_choose: at most C(N,k) k-APs in a size-N set. countAPs_two: exactly C(N,2) two-APs. AP_free_has_2APs: discharges the parent's lemma and exposes its redundant hypothesis.",
+      "mathContext": "Each $k$-AP (with $d>0$) is a $k$-element subset, so $\\mathrm{countAPs}\\,A\\,k \\le \\binom{N}{k}$; for $k=2$ the 2-APs are exactly the 2-subsets, giving equality."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified (0 axioms, 0 sorries) formalization of the elementary AP-counting facts underlying Erdős Problem #179: AP cardinality, AP nesting, the C(N,k) upper bound on k-APs, and the exact 2-AP count C(N,2). These discharge the parent file's elementary sorries (AP_free_has_2APs, F_2_well_defined) and correct a redundant hypothesis.",
+    "implications": "The 2-AP count identity holds for every finite set, with no AP-freeness assumption — the parent's hypothesis was unnecessary. The C(N,k) ceiling is the elementary fact behind the trivial F_k(N,ℓ) ≤ N² bound. The deep Fox–Pohoata / Leng–Sah–Sawhney supersaturation theorems remain axiomatized in the parent and are out of scope here.",
+    "openQuestions": [
+      "Can the trivial existence proof in the parent's F definition (Nat.find) be discharged to make F_k(N,ℓ) genuinely well-defined without sorry?",
+      "Can a quantitative lower bound on countAPs for structured sets (e.g. intervals) be formalized as a counterpoint to the upper bound?",
+      "The deep supersaturation bounds (Fox–Pohoata, Leng–Sah–Sawhney) remain far beyond elementary formalization."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-179",
+      "relationship": "parent",
+      "description": "Parent formalization stating the deep supersaturation theorems and leaving the elementary combinatorial sorries this companion discharges"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "scoped Classical"
+    ],
+    "namespace": "Erdos179Combinatorics",
+    "lineCount": 161,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos179Incomplete01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

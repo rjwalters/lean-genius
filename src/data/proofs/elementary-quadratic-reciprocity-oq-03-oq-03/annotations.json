@@ -1,0 +1,153 @@
+[
+  {
+    "id": "ann-eqr-oq03-oq03-header",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 35
+    },
+    "type": "insight",
+    "title": "Header: Jacobi-to-Hilbert Survey — Status, Architecture, and Import",
+    "content": "The module header (lines 1-27) frames this as a **survey/infrastructure** file, not a proof file. It identifies three goals: (1) interpreting the Legendre symbol as a Hilbert symbol at a prime, (2) understanding the product formula ∏_v (a,b)_v = 1 as a local-global manifestation of quadratic reciprocity, and (3) packaging local Legendre data via the Jacobi symbol. The STATUS note explicitly marks this as a survey: 'Full Hilbert symbol theory requires p-adic fields and local class field theory.'\n\nThe single `import Mathlib` followed by `namespace HilbertSymbolConnection` and `open ZMod` sets up the three-section structure: Section I (Legendre theorems from Mathlib), Section II (Hilbert symbol axiom), Section III (/-! commentary bridge to class field theory).\n\nThe `open ZMod` is necessary because `legendreSym.eq_one_iff_isSquare` returns a statement involving `IsSquare (a : ZMod p)`, and working in the ZMod namespace avoids namespace qualifications throughout.",
+    "mathContext": "The Jacobi symbol J(a,n) = ∏_{p|n} (a/p)^{v_p(n)} packages Legendre symbols at all primes dividing n. It satisfies: J(a,n)·J(b,n) = J(ab,n) and a reciprocity law J(m,n)·J(n,m) = (-1)^{(m-1)/2·(n-1)/2} for odd coprime m,n. However, J(a,n) = 1 does NOT imply a is a square mod n (unlike the Legendre case). This limitation is why the Hilbert symbol perspective is needed: the Hilbert symbol at all places gives complete information about quadratic residuosity.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "jacobiSym",
+      "legendreSym",
+      "ZMod",
+      "HilbertSymbolConnection namespace",
+      "local-global principle"
+    ],
+    "prerequisites": [
+      "Jacobi symbol as product of Legendre symbols",
+      "Mathlib.NumberTheory.LegendreSymbol",
+      "p-adic completion"
+    ]
+  },
+  {
+    "id": "ann-eqr-legendre-characterizes-qr",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-03",
+    "range": {
+      "startLine": 36,
+      "endLine": 39
+    },
+    "type": "concept",
+    "title": "legendre_characterizes_qr: Legendre Symbol Characterizes Quadratic Residuosity",
+    "content": "A direct application of `legendreSym.eq_one_iff_isSquare` from `Mathlib.NumberTheory.LegendreSymbol`. It states: for odd prime p and p∤a, legendreSym p a = 1 ↔ a is a square in ZMod p. This is the fundamental semantic meaning of the Legendre symbol: it IS the canonical map {quadratic residues mod p} → {1} and {non-residues} → {-1}, with 0 for p∣a.\n\nThe Hilbert symbol interpretation: (a/p) = (a,p)_p where (a,p)_p is the Hilbert symbol at p asking whether ax² + py² = z² has a nontrivial p-adic solution. For p∤a, this Hilbert symbol equals the Legendre symbol — a key connection between classical and modern formulations.",
+    "mathContext": "legendreSym p a ∈ {-1, 0, 1} (values in ℤ). The Legendre symbol is defined as: 0 if p∣a, 1 if a is a nonzero square mod p, -1 otherwise. IsSquare (a : ZMod p) means ∃ b, a = b * b. The hypothesis ¬((p : ℤ) ∣ a) ensures we're in the nonzero case. The lemma `eq_one_iff_isSquare` is proved via Euler's criterion: a^((p-1)/2) ≡ (a/p) (mod p), so (a/p) = 1 iff a^((p-1)/2) = 1 in ZMod p iff a is a square.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "legendreSym.eq_one_iff_isSquare",
+      "ZMod p",
+      "quadratic residue",
+      "Euler's criterion",
+      "Hilbert symbol"
+    ],
+    "prerequisites": [
+      "Mathlib.NumberTheory.LegendreSymbol",
+      "ZMod and its field structure for prime moduli",
+      "IsSquare predicate"
+    ]
+  },
+  {
+    "id": "ann-eqr-qr-legendre",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-03",
+    "range": {
+      "startLine": 48,
+      "endLine": 52
+    },
+    "type": "concept",
+    "title": "qr_legendre: Quadratic Reciprocity in One Line via Mathlib",
+    "content": "The classical quadratic reciprocity law in Legendre symbol form, proved by applying Mathlib's `legendreSym.quadratic_reciprocity`. For distinct odd primes p, q: (p/q)·(q/p) = (-1)^((p/2)·(q/2)) where p/2 = (p-1)/2 in integer division. This is equivalent to: (p/q)·(q/p) = -1 iff p ≡ q ≡ 3 (mod 4), and +1 otherwise.\n\nThe fact that this is a one-line Lean proof demonstrates that Mathlib's QR formalization is complete at the Legendre symbol level. Gauss's 'gem of arithmetic' (which he proved six times) is now a library call.",
+    "mathContext": "The exponent (p/2)·(q/2) in Lean natural number division equals ((p-1)/2)·((q-1)/2) for odd primes (since p = 2k+1 gives p/2 = k = (p-1)/2 in ℕ). The product (p/q)·(q/p) is -1 iff (p/2)·(q/2) is odd, i.e., both p ≡ 3 (mod 4) and q ≡ 3 (mod 4). The Mathlib lemma `legendreSym.quadratic_reciprocity` is proved via Gauss sums.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "legendreSym.quadratic_reciprocity",
+      "Gauss sums",
+      "quadratic reciprocity law",
+      "Hilbert product formula at primes"
+    ],
+    "prerequisites": [
+      "Mathlib.NumberTheory.LegendreSymbol.quadratic_reciprocity",
+      "Natural number division for odd primes",
+      "Modular arithmetic mod 4"
+    ]
+  },
+  {
+    "id": "ann-eqr-first-supplement",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-03",
+    "range": {
+      "startLine": 54,
+      "endLine": 57
+    },
+    "type": "concept",
+    "title": "first_supplement: (-1/p) = (-1)^((p-1)/2) — When is -1 a Square mod p?",
+    "content": "Proves (-1/p) = (-1)^((p-1)/2) using `legendreSym.at_neg_one`. This is the first supplement to QR and determines for which primes -1 has a square root mod p: -1 is a QR mod p iff p ≡ 1 (mod 4).\n\nPractical significance: together with qr_legendre and the second supplement (2/p) = (-1)^((p²-1)/8)), these three theorems give a complete algorithm for computing any Legendre symbol (a/p) via multiplicativity and reduction to (-1/p) and prime factorization. This is the algorithm implemented in computer algebra systems.",
+    "mathContext": "(-1)^(p/2) where p/2 is natural number division: for p = 4k+1, p/2 = 2k (even), so (-1)^{2k} = 1, meaning -1 is a QR mod p. For p = 4k+3, p/2 = 2k+1 (odd), so (-1)^{2k+1} = -1, meaning -1 is not a QR mod p. The Hilbert symbol interpretation: (−1, p)_p = 1 iff p ≡ 1 (mod 4) (i.e., the equation -x² + py² = z² has a nontrivial p-adic solution). This also determines which primes split in Z[i]: p splits iff p = 2 or p ≡ 1 (mod 4).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "legendreSym.at_neg_one",
+      "first supplement to QR",
+      "p ≡ 1 (mod 4)",
+      "Euler's criterion",
+      "sum of two squares theorem",
+      "splitting in Z[i]"
+    ],
+    "prerequisites": [
+      "legendreSym.at_neg_one from Mathlib",
+      "Natural number division and parity",
+      "Wilson's theorem (background)"
+    ]
+  },
+  {
+    "id": "ann-eqr-hilbert-symbol",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-03",
+    "range": {
+      "startLine": 63,
+      "endLine": 77
+    },
+    "type": "concept",
+    "title": "HilbertSymbol Axiom: Axiomatizing the p-adic Quadratic Solubility",
+    "content": "The `axiom HilbertSymbol (a b : ℤ) (p : ℕ) : ℤ` axiomatizes the Hilbert symbol as a placeholder for the p-adic Hilbert symbol. This is mathematically honest: the definition is well-known (equal to 1 if ax² + by² = z² has a nontrivial Q_p-solution, -1 otherwise), but the Lean formalization requires: (1) Q_p as a complete non-Archimedean valued field (Mathlib has `Padic`), (2) quadratic forms over Q_p and their discriminants, (3) Hensel's lemma for lifting solutions from Z/p to Z_p.\n\nThe fact that there is 1 `axiom` keyword (not 3) confirms the `axiomCount: 1` in meta.json is correct: only `HilbertSymbol` is axiomatized; the product formula mentioned in the docstring is not a separate axiom declaration.",
+    "mathContext": "The Hilbert symbol is symmetric: (a,b)_p = (b,a)_p. It is multiplicative in each argument: (aa',b)_p = (a,b)_p · (a',b)_p. For the Legendre symbol connection: when p is odd and p∤a, (a,p)_p = (a/p) (Legendre symbol). The product formula ∏_v (a,b)_v = 1 runs over all places: the finite primes p and the real place ∞ (where (a,b)_∞ = -1 iff a < 0 and b < 0). For a,b ∈ ℤ, almost all local factors are 1.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Padic in Mathlib",
+      "p-adic quadratic forms",
+      "Hasse-Minkowski theorem",
+      "Hensel's lemma",
+      "local-global principle"
+    ],
+    "prerequisites": [
+      "Mathlib.NumberTheory.Padics",
+      "Quadratic forms and discriminants",
+      "Completions of Q at prime places"
+    ]
+  },
+  {
+    "id": "ann-eqr-bridge-commentary",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-03",
+    "range": {
+      "startLine": 78,
+      "endLine": 102
+    },
+    "type": "concept",
+    "title": "5-Level Bridge: Legendre → Jacobi → Hilbert → Product Formula → Artin",
+    "content": "The /-! docstring block (a Lean module-level documentation comment) provides a 5-level roadmap connecting elementary to advanced reciprocity:\n\n1. **Legendre** (a/p): solved in Mathlib via `legendreSym p a`\n2. **Jacobi** J(a,n) = ∏(a/pᵢ): solved in Mathlib via `jacobiSym a n`\n3. **Hilbert** (a,b)_p: axiomatized here, requires `Padic` and local field theory\n4. **Product formula** ∏_v (a,b)_v = 1: this IS quadratic reciprocity in class field theory language — not yet formalized\n5. **Artin reciprocity**: the grand generalization requiring class field theory, not yet in Mathlib\n\nThe file sits at the boundary between levels 2 (available) and 3 (axiomatized). The honest status note — 'This file bridges levels 1-2 (Mathlib) with levels 3-4 (axiomatized)' — shows the design philosophy: document the mathematical landscape even when formalization is incomplete.",
+    "mathContext": "The Jacobi symbol satisfies the reciprocity J(m,n)·J(n,m) = (-1)^{(m-1)/2·(n-1)/2} for odd coprime m,n. But J(a,n) = 1 does NOT mean a is a square mod n — it only means the Legendre symbols at primes dividing n have even multiplicity. The product formula ∏_v (a,b)_v = 1 for all a,b ∈ Q* is equivalent to QR + its supplements. Artin reciprocity for an abelian extension L/K: the global Artin map Art_{L/K}: C_K → Gal(L/K) from the idèle class group is an isomorphism, and its local factors at primes v give the local Artin maps. Taking K=Q, L=Q(√a) recovers QR.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "jacobiSym in Mathlib",
+      "Artin reciprocity law",
+      "idèle class group",
+      "class field theory",
+      "abelian extensions",
+      "Hasse-Minkowski"
+    ],
+    "prerequisites": [
+      "Jacobi symbol as product of Legendre symbols",
+      "Idèles and adèles in algebraic number theory",
+      "Galois theory of abelian extensions"
+    ]
+  }
+]

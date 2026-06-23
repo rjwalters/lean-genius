@@ -1,0 +1,213 @@
+{
+  "slug": "buffons-needle-oq-01-oq-02",
+  "title": "Buffon's Needle Higher-Dimensional: Hyperplane Arrangements",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Buffon's Needle Higher-Dimensional: Hyperplane Arrangements.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-28T17:58:20.659Z",
+    "iteration": 1,
+    "focus": "Formalization complete: n-dimensional Buffon constant and properties",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "FIX COMPLETE: Corrected buffonConstant definition (added 1/(n-1) factor). c₃=1/2, c₄=4/(3π). Fixed recurrence n/(n+1). Converted buffon_higher_dim axiom→theorem. Now 3A (was 4A), 19T, 0S.",
+    "builtItems": [
+      "BuffonsNeedleOQ01OQ02.lean: buffonConstant definition via Gamma functions",
+      "Proved buffonConstant_two = 2/π, buffonConstant_three = 1, buffonConstant_four = 4/π",
+      "Proved buffonConstant_five = 2/3, buffonConstant_six = 3/π from recurrence",
+      "Proved positivity, linearity, scaling, nonnegativity of expectedCrossings",
+      "Proved two_dim_consistency: matches Buffon-Barbier in 2D",
+      "Proved three_beats_two: 3D crossings exceed 2D from π > 3",
+      "Gallery entry with full metadata, annotations, cross-references",
+      "FIXED buffonConstant definition: added ((n:ℝ)-1) factor in denominator",
+      "FIXED buffonConstant_three: 1 → 1/2",
+      "FIXED buffonConstant_four: 4/π → 4/(3π)",
+      "FIXED recurrence axiom: (n-1)/n → n/(n+1)",
+      "FIXED buffonConstant_five: 2/3 → 3/8",
+      "FIXED buffonConstant_six: 3/π → 16/(15π)",
+      "ELIMINATED axiom: buffon_higher_dim → theorem (proved by rfl)",
+      "REVERSED comparisons: two_beats_three, crossings_2d_ge_3d, two_beats_four",
+      "FIXED three_dim_formula: L/d → L/(2d)",
+      "FIXED four_dim_formula: 4L/(πd) → 4L/(3πd)",
+      "FIXED meanWidth_three: L → L/2"
+    ],
+    "insights": [
+      "c_n = 2Γ(n/2)/(√π·Γ((n-1)/2)) unifies all dimensions through the Gamma function",
+      "c₃ = 1 is the unique maximum — 3D gives the simplest formula E = L/d",
+      "Recurrence c_{n+2} = ((n-1)/n)·c_n shows c_n → 0 (concentration of measure)",
+      "Only one axiom (Γ(1/2)=√π) beyond Mathlib is needed to prove c₂, c₃, c₄",
+      "Mean width interpretation: E = meanWidth/d is the Cauchy-Crofton formula for line segments",
+      "BUG: The formula 2Γ(n/2)/(√π·Γ((n-1)/2)) = 2|S^{n-2}|/|S^{n-1}| is NOT the expected |cos θ|. The correct Buffon constant is E[|cos θ|] = 2|S^{n-2}|/((n-1)|S^{n-1}|). Factor 1/(n-1) missing.",
+      "BUG evidence: code gives c₃=1 but E[|cos θ|] in 3D = ∫|cosθ|sinθ dθ / ∫sinθ dθ = 1/2. And c₄=4/π≈1.27>1 contradicts buffonConstant_le_one.",
+      "BUG: recurrence axiom says c_{n+2}=(n-1)/n·c_n but correct recurrence is c_{n+2}=n/(n+1)·c_n (from Γ functional equation). Derived values c₅=2/3, c₆=3/π are wrong.",
+      "FIXED: buffonConstant must be 2Γ(n/2)/((n-1)√π·Γ((n-1)/2)), not 2Γ(n/2)/(√π·Γ((n-1)/2)). The (n-1) comes from ∫₀¹ t(1-t²)^{(n-3)/2} dt = 1/(n-1).",
+      "FIXED: Correct values c₃=1/2, c₄=4/(3π) — constants DECREASE with dimension (concentration of measure)",
+      "FIXED: Recurrence is c_{n+2}=n/(n+1)·c_n, derived from Γ(z+1)=zΓ(z) applied twice",
+      "buffon_higher_dim was tautological (definition = definition) — converted from axiom to theorem by rfl"
+    ],
+    "mathlibGaps": [
+      "No direct lemma Real.Gamma_half for Γ(1/2) = √π",
+      "No sphere surface area function in Mathlib"
+    ],
+    "nextSteps": [
+      "Gallery meta.json needs update: axiomCount 4→3, docstring/description corrections",
+      "buffonConstant_le_one could be proved from recurrence + base cases (strong induction) to reduce to 2 axioms",
+      "Prove Γ(1/2)=√π from Mathlib (check Real.Gamma_one_half_eq) to potentially eliminate last analytical axiom"
+    ]
+  },
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "buffons-needle",
+    "buffons-needle-oq-01",
+    "buffons-needle-oq-01-oq-01",
+    "buffons-needle-oq-01-oq-01-oq-01",
+    "buffons-needle-oq-01-oq-01-oq-04",
+    "buffons-needle-oq-01-oq-02",
+    "buffons-needle-oq-02",
+    "buffons-needle-oq-02-oq-01",
+    "buffons-needle-oq-02-oq-02",
+    "buffons-needle-oq-02-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T17:58:20.659Z",
+  "lastUpdate": "2026-03-28T19:50:00Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/BuffonsNeedle.lean",
+      "filename": "BuffonsNeedle.lean",
+      "lineCount": 267,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedle.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ01.lean",
+      "filename": "BuffonsNeedleOQ01.lean",
+      "lineCount": 251,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ01.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ01OQ01.lean",
+      "filename": "BuffonsNeedleOQ01OQ01.lean",
+      "lineCount": 391,
+      "theoremCount": 7,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 5,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ01OQ01OQ01.lean",
+      "filename": "BuffonsNeedleOQ01OQ01OQ01.lean",
+      "lineCount": 224,
+      "theoremCount": 7,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ01OQ01OQ04.lean",
+      "filename": "BuffonsNeedleOQ01OQ01OQ04.lean",
+      "lineCount": 568,
+      "theoremCount": 27,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ01OQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ01OQ02.lean",
+      "filename": "BuffonsNeedleOQ01OQ02.lean",
+      "lineCount": 326,
+      "theoremCount": 23,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ02.lean",
+      "filename": "BuffonsNeedleOQ02.lean",
+      "lineCount": 263,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ02.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ02OQ01.lean",
+      "filename": "BuffonsNeedleOQ02OQ01.lean",
+      "lineCount": 310,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ02OQ02.lean",
+      "filename": "BuffonsNeedleOQ02OQ02.lean",
+      "lineCount": 377,
+      "theoremCount": 15,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ02OQ03.lean",
+      "filename": "BuffonsNeedleOQ02OQ03.lean",
+      "lineCount": 285,
+      "theoremCount": 27,
+      "axiomCount": 3,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ02OQ03.lean"
+    }
+  ]
+}

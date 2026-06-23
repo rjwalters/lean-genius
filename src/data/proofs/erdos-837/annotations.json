@@ -1,0 +1,230 @@
+[
+  {
+    "id": "ann-837-header",
+    "proofId": "erdos-837",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "title": "Problem Overview and Imports",
+    "content": "Header documentation and Lean imports for the hypergraph density jumps problem. Imports Mathlib's Nat.Basic, Real.Basic, Set.Basic, and Tactic — providing natural number arithmetic, real-valued densities, set-builder notation for A_k, and general proof automation.",
+    "mathContext": "The imports are chosen for a lightweight formalization: `Real.Basic` provides the field $\\mathbb{R}$ for densities $e(G)/\\binom{|G|}{k} \\in [0,1]$, and `Set.Basic` allows defining $A_k = \\{\\alpha \\in [0,1] : \\alpha \\text{ is a density jump}\\}$. A full formalization would additionally need `Mathlib.Topology.Sequences` for the $\\liminf$ condition.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lean 4 imports",
+      "Real.Basic",
+      "Set.Basic"
+    ],
+    "prerequisites": [
+      "Lean 4 module system",
+      "Mathlib library structure"
+    ]
+  },
+  {
+    "id": "ann-837-hypergraph",
+    "proofId": "erdos-837",
+    "type": "definition",
+    "range": {
+      "startLine": 25,
+      "endLine": 29
+    },
+    "title": "KUniformHypergraph Structure",
+    "content": "Defines a k-uniform hypergraph as a structure with fields vertices (|V|), edges (|E|), and uniformity (k). This is a simplified representation using edge count rather than explicit edge sets, sufficient for density computations.",
+    "mathContext": "A $k$-uniform hypergraph $G = (V, E)$ has $E \\subseteq \\binom{V}{k}$. The structure stores only $|V|$, $|E|$, and $k$, not the actual edge set. This suffices for density calculations since $d(G) = |E|/\\binom{|V|}{k}$ depends only on these three numbers. A richer formalization might use `Finset (Finset V)` with a uniformity constraint.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lean structures",
+      "k-uniform hypergraph",
+      "edge count representation"
+    ],
+    "prerequisites": [
+      "structure keyword in Lean 4",
+      "Nat fields"
+    ]
+  },
+  {
+    "id": "ann-837-density",
+    "proofId": "erdos-837",
+    "type": "definition",
+    "range": {
+      "startLine": 34,
+      "endLine": 37
+    },
+    "title": "Edge Density",
+    "content": "Defines `edgeDensity G` as e(G)/C(|G|, k) ∈ ℝ, with a division-by-zero guard returning 0 when C(|G|, k) = 0. The `noncomputable` annotation is required because division on ℝ is noncomputable in Lean.",
+    "mathContext": "The edge density $d(G) = |E(G)|/\\binom{|V(G)|}{k}$ normalizes to $[0,1]$: $d = 0$ for the empty hypergraph, $d = 1$ for the complete $k$-uniform hypergraph. The guard `if binom n k = 0` handles degenerate cases where $|V| < k$ (no possible edges). The `noncomputable` keyword reflects that $\\mathbb{R}$ in Lean/Mathlib is constructed via Cauchy sequences, making division undecidable.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "edge density normalization",
+      "noncomputable in Lean",
+      "division by zero handling"
+    ],
+    "prerequisites": [
+      "Nat.choose",
+      "Real division",
+      "if-then-else in Lean"
+    ]
+  },
+  {
+    "id": "ann-837-jump-def",
+    "proofId": "erdos-837",
+    "type": "definition",
+    "range": {
+      "startLine": 39,
+      "endLine": 42
+    },
+    "title": "IsDensityJump Predicate",
+    "content": "Defines `IsDensityJump k α` as the existence of β > α with β ≤ 1 and True. The `True` is a placeholder for the full jump property: any sequence of k-uniform hypergraphs with lim inf density > α contains subhypergraphs with density > β.",
+    "mathContext": "The full definition requires: $\\exists \\beta > \\alpha$ such that for every sequence $\\{G_n\\}$ of $k$-uniform hypergraphs with $\\liminf_{n \\to \\infty} d(G_n) > \\alpha$, there exist subhypergraphs $H_n \\subseteq G_n$ with $|V(H_n)| \\to \\infty$ and $\\liminf d(H_n) > \\beta$. The axiomatization replaces this with `True` because formalizing $\\liminf$ over sequences of growing finite structures requires substantial topological infrastructure.",
+    "significance": "key",
+    "relatedConcepts": [
+      "density jump",
+      "liminf of sequences",
+      "forcing property",
+      "axiomatization"
+    ],
+    "prerequisites": [
+      "Real.Basic",
+      "existential quantification",
+      "sequence limits"
+    ]
+  },
+  {
+    "id": "ann-837-jump-set",
+    "proofId": "erdos-837",
+    "type": "definition",
+    "range": {
+      "startLine": 44,
+      "endLine": 46
+    },
+    "title": "Density Jump Set A_k",
+    "content": "Defines `densityJumpSet k` as {α : ℝ | 0 ≤ α ∧ α ≤ 1 ∧ IsDensityJump k α}, the set of all density jump values in [0,1]. This is the central object of the problem: characterize A_3.",
+    "mathContext": "$A_k = \\{\\alpha \\in [0,1] : \\alpha \\text{ is a density jump for } k\\text{-uniform hypergraphs}\\}$. The constraint $0 \\leq \\alpha \\leq 1$ restricts to valid densities. For graphs ($k = 2$), this set is countably infinite: $A_2 = \\{0, 1/2, 2/3, 3/4, \\ldots\\}$. Whether $A_3$ is countable, contains intervals, or has other topological properties is completely unknown.",
+    "significance": "key",
+    "relatedConcepts": [
+      "set-builder notation",
+      "Set ℝ",
+      "density parameter space"
+    ],
+    "prerequisites": [
+      "Set.Basic",
+      "IsDensityJump",
+      "interval [0,1]"
+    ]
+  },
+  {
+    "id": "ann-837-ess",
+    "proofId": "erdos-837",
+    "type": "concept",
+    "range": {
+      "startLine": 50,
+      "endLine": 54
+    },
+    "title": "Erdős–Stone–Simonovits: A_2 Characterization",
+    "content": "Axiomatizes `graph_density_jumps`: A_2 = {α : ∃ m ≥ 1, α = 1 − 1/m}. This is the complete solution for graphs: the density jumps are exactly the Turán densities 0, 1/2, 2/3, 3/4, 4/5, ...",
+    "mathContext": "The Erdős–Stone theorem (1946) shows that for any graph $F$ with $\\chi(F) = r+1$, the extremal number satisfies $\\text{ex}(n, F) = (1 - 1/r)\\binom{n}{2} + o(n^2)$. Erdős and Simonovits (1966) refined this to show that the density jumps are exactly at $1 - 1/m$: crossing the threshold $1 - 1/m$ forces not just $K_{m+1}$ but dense $K_{m+1}$-subgraphs. The axiom encodes this as $A_2 = \\{1 - 1/m : m \\geq 1\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős–Stone theorem",
+      "Turán density",
+      "chromatic threshold",
+      "extremal number ex(n,F)"
+    ],
+    "prerequisites": [
+      "densityJumpSet",
+      "Turán's theorem",
+      "chromatic number"
+    ]
+  },
+  {
+    "id": "ann-837-turan-connection",
+    "proofId": "erdos-837",
+    "type": "concept",
+    "range": {
+      "startLine": 56,
+      "endLine": 59
+    },
+    "title": "Turán Densities Are Jumps",
+    "content": "Axiomatizes `turan_densities`: for each m ≥ 1, the value 1 − 1/m is a density jump for 2-uniform hypergraphs (graphs). This is the pointwise statement underlying the set equality A_2 = {1−1/m}.",
+    "mathContext": "Each $\\pi(K_{m+1}) = 1 - 1/m$ is a jump because the Turán graph $T(n, m)$ achieves density $1 - 1/m$ with no $K_{m+1}$, but any slightly denser graph contains $K_{m+1}$ as a subgraph, and by supersaturation, contains many copies forming dense subgraphs. The axiom provides the $\\forall m$ direction of the characterization.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Turán graph T(n,m)",
+      "supersaturation",
+      "complete graph density"
+    ],
+    "prerequisites": [
+      "IsDensityJump",
+      "Turán's theorem",
+      "complete graphs"
+    ]
+  },
+  {
+    "id": "ann-837-a3-question",
+    "proofId": "erdos-837",
+    "type": "concept",
+    "range": {
+      "startLine": 63,
+      "endLine": 66
+    },
+    "title": "Central Open Question: Characterize A_3",
+    "content": "Axiomatizes `erdos_837_characterize_A3`: ∃ S, densityJumpSet 3 = S. This is a trivially true existence statement that serves as a placeholder for the real question: explicitly describe S. The formalization records the problem rather than solving it.",
+    "mathContext": "The axiom $\\exists S,\\, A_3 = S$ is logically trivial (take $S = A_3$) but serves as a formal marker for the open problem. The genuine difficulty is in computing $S$ or determining its structure: Is $A_3$ a countable discrete set like $A_2$? Does it contain intervals? Does it equal $[0,1)$? These structural questions about $A_3$ are among the deepest open problems in extremal combinatorics.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open problem marker",
+      "structural characterization",
+      "hypergraph extremal theory"
+    ],
+    "prerequisites": [
+      "densityJumpSet",
+      "3-uniform hypergraphs"
+    ]
+  },
+  {
+    "id": "ann-837-zero-jump",
+    "proofId": "erdos-837",
+    "type": "concept",
+    "range": {
+      "startLine": 68,
+      "endLine": 71
+    },
+    "title": "Zero Is a Jump for 3-Uniform Hypergraphs",
+    "content": "Axiomatizes `zero_is_jump_3uniform`: IsDensityJump 3 0. This states that 0 ∈ A_3—any 3-uniform hypergraph sequence with positive density contains denser subhypergraphs. This is the simplest element of A_3.",
+    "mathContext": "$0 \\in A_3$ means: there exists $\\beta > 0$ such that any sequence of 3-uniform hypergraphs with $\\liminf d(G_n) > 0$ has subhypergraphs with $\\liminf d(H_n) > \\beta$. This follows from the hypergraph regularity lemma (Frankl–Rödl, 1984) or the Kruskal–Katona theorem. The analogous statement $0 \\in A_2$ for graphs is elementary: positive density forces edges in subgraphs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "hypergraph regularity lemma",
+      "Kruskal–Katona theorem",
+      "positive density forcing"
+    ],
+    "prerequisites": [
+      "IsDensityJump",
+      "hypergraph density",
+      "regularity"
+    ]
+  },
+  {
+    "id": "ann-837-turan-tetra",
+    "proofId": "erdos-837",
+    "type": "concept",
+    "range": {
+      "startLine": 75,
+      "endLine": 77
+    },
+    "title": "Hypergraph Turán Problem and Tetrahedron Conjecture",
+    "content": "Connects A_3 to the hypergraph Turán problem: even π(K_4^{(3)}) is unknown. The tetrahedron conjecture states π(K_4^{(3)}) = 5/9. If true, 5/9 ∈ A_3. This illustrates why A_3 is so hard: even individual elements are open problems.",
+    "mathContext": "The Turán density $\\pi(K_4^{(3)}) = \\lim_{n \\to \\infty} \\text{ex}(n, K_4^{(3)})/\\binom{n}{3}$ asks for the maximum density of a 3-uniform hypergraph avoiding the complete 3-uniform hypergraph on 4 vertices. The conjecture $\\pi(K_4^{(3)}) = 5/9$ has been open since Turán posed it in the 1940s. The best known bounds are $0.5616\\ldots \\leq \\pi(K_4^{(3)}) \\leq 0.5616\\ldots$ from flag algebra computations.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán density π(F)",
+      "tetrahedron conjecture",
+      "extremal number ex(n,F)"
+    ],
+    "prerequisites": [
+      "extremal hypergraph theory",
+      "complete k-uniform hypergraph"
+    ]
+  }
+]

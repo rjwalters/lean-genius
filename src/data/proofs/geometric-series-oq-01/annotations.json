@@ -1,0 +1,188 @@
+[
+  {
+    "id": "ann-geom-sum-formula",
+    "proofId": "geometric-series-oq-01",
+    "range": {
+      "startLine": 67,
+      "endLine": 71
+    },
+    "type": "concept",
+    "title": "Geometric Sum Formula at r = -1",
+    "content": "The identity $2 \\cdot S_n = 1 - (-1)^n$ is the finite geometric sum formula $(1 - r)\\sum_{k=0}^{n-1} r^k = 1 - r^n$ specialized to $r = -1$, where $1 - (-1) = 2$. Mathlib's `mul_neg_geom_sum` provides this identity over any ring, and `linarith` resolves the resulting linear arithmetic.",
+    "mathContext": "$(1 - (-1)) \\cdot \\sum_{k=0}^{n-1} (-1)^k = 1 - (-1)^n$, i.e., $2 S_n = 1 - (-1)^n$",
+    "significance": "key",
+    "relatedConcepts": [
+      "geometric sum formula",
+      "cyclotomic factorization",
+      "algebraic identity"
+    ],
+    "prerequisites": [
+      "ring arithmetic",
+      "Mathlib.Algebra.GeomSum"
+    ]
+  },
+  {
+    "id": "ann-parity-splitting",
+    "proofId": "geometric-series-oq-01",
+    "range": {
+      "startLine": 74,
+      "endLine": 86
+    },
+    "type": "concept",
+    "title": "Parity Case Analysis for Grandi's Series",
+    "content": "The even and odd partial sums are computed by substituting $(-1)^{2m} = 1$ and $(-1)^{2m+1} = -1$ into the formula $2S_n = 1 - (-1)^n$. For even $n = 2m$: $2S_{2m} = 1 - 1 = 0$. For odd $n = 2m+1$: $2S_{2m+1} = 1 - (-1) = 2$. The proof rewrites $(-1)^{2m}$ using `pow_mul` and `neg_one_sq`.",
+    "mathContext": "$S_{2m} = 0$ and $S_{2m+1} = 1$ — the partial sums oscillate between exactly two values",
+    "significance": "key",
+    "relatedConcepts": [
+      "parity analysis",
+      "oscillating sequences",
+      "subsequence behavior"
+    ],
+    "prerequisites": [
+      "natural number parity",
+      "power of negative one"
+    ]
+  },
+  {
+    "id": "ann-nonsummability-argument",
+    "proofId": "geometric-series-oq-01",
+    "range": {
+      "startLine": 88,
+      "endLine": 101
+    },
+    "type": "insight",
+    "title": "Non-Summability via the Necessary Condition",
+    "content": "The proof of `not_summable_grandi` uses the contrapositive of `Summable.tendsto_atTop_zero`: if $\\sum a_n$ converges, then $a_n \\to 0$. Since $|(-1)^n| = 1$ for all $n$, we can find a contradiction for any $\\varepsilon < 1$ (here $\\varepsilon = 1/2$). The metric formulation `Metric.tendsto_atTop` extracts the concrete $N$ for the contradiction.",
+    "mathContext": "$|(-1)^n| = |{-1}|^n \\cdot |1|^0 = 1 \\geq 1 > 1/2 = \\varepsilon$, contradicting $a_n \\to 0$",
+    "significance": "key",
+    "relatedConcepts": [
+      "necessary condition for convergence",
+      "divergence test",
+      "epsilon-N arguments"
+    ],
+    "prerequisites": [
+      "Summable.tendsto_atTop_zero",
+      "metric space convergence",
+      "absolute value"
+    ]
+  },
+  {
+    "id": "ann-general-norm-bound",
+    "proofId": "geometric-series-oq-01",
+    "range": {
+      "startLine": 107,
+      "endLine": 119
+    },
+    "type": "concept",
+    "title": "General Non-Summability for |r| ≥ 1",
+    "content": "The theorem `not_summable_geom_of_one_le_norm` generalizes the Grandi argument to all $r$ with $|r| \\geq 1$. The key step is `one_le_pow₀`: if $1 \\leq |r|$ then $1 \\leq |r|^n = |r^n|$. This subsumes both $r = 1$ (Part 1) and $r = -1$ (Part 2) as special cases, providing a unified explanation for why the geometric series diverges on and outside the unit circle.",
+    "mathContext": "$|r| \\geq 1 \\implies |r^n| = |r|^n \\geq 1^n = 1$, so $r^n \\not\\to 0$, hence $\\sum r^n$ is not summable",
+    "significance": "key",
+    "relatedConcepts": [
+      "radius of convergence",
+      "unit circle",
+      "monotonicity of powers"
+    ],
+    "prerequisites": [
+      "one_le_pow₀",
+      "absolute value of powers",
+      "Summable.tendsto_atTop_zero"
+    ]
+  },
+  {
+    "id": "ann-cesaro-definition",
+    "proofId": "geometric-series-oq-01",
+    "range": {
+      "startLine": 130,
+      "endLine": 134
+    },
+    "type": "definition",
+    "title": "Cesàro Mean Definition",
+    "content": "The Cesàro mean $\\sigma_n$ is defined as the arithmetic average of the first $n$ partial sums $S_1, S_2, \\ldots, S_n$, where $S_k = \\sum_{j=0}^{k} (-1)^j$. The `if n = 0` guard avoids division by zero. This is the $(C,1)$-mean in the hierarchy of Cesàro summability methods; higher-order $(C,k)$-means iterate the averaging process.",
+    "mathContext": "$\\sigma_n = \\frac{1}{n} \\sum_{k=1}^{n} S_k = \\frac{1}{n} \\sum_{k=0}^{n-1} \\sum_{j=0}^{k} (-1)^j$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cesàro summation",
+      "arithmetic mean",
+      "summability methods",
+      "Abel summation"
+    ],
+    "prerequisites": [
+      "partial sums",
+      "arithmetic averages",
+      "division in real numbers"
+    ]
+  },
+  {
+    "id": "ann-induction-sum-partial",
+    "proofId": "geometric-series-oq-01",
+    "range": {
+      "startLine": 138,
+      "endLine": 163
+    },
+    "type": "concept",
+    "title": "Inductive Computation of Cumulative Partial Sums",
+    "content": "The theorem `sum_grandi_partial_sums` proves $\\sum_{k=0}^{n-1} S_{k+1} = \\lceil(n+1)/2\\rceil$ by induction on $n$ with parity case analysis. At each step, adding $S_{n+1}$ either adds 1 (if $n$ is even, so $S_{n+1} = 1$) or adds 0 (if $n$ is odd, so $S_{n+1} = 0$). The result is simply the count of odd indices, which equals $\\lceil(n+1)/2\\rceil$. The `omega` tactic handles the integer division arithmetic.",
+    "mathContext": "$\\sum_{k=1}^{n} S_k = \\#\\{k \\leq n : k \\text{ is odd}\\} = \\lceil n/2 \\rceil$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "mathematical induction",
+      "parity case analysis",
+      "ceiling function",
+      "counting arguments"
+    ],
+    "prerequisites": [
+      "induction on natural numbers",
+      "Nat.even_or_odd",
+      "grandi_even",
+      "grandi_odd"
+    ]
+  },
+  {
+    "id": "ann-cesaro-bound",
+    "proofId": "geometric-series-oq-01",
+    "range": {
+      "startLine": 170,
+      "endLine": 191
+    },
+    "type": "insight",
+    "title": "Quantitative Bound |σₙ - 1/2| ≤ 1/(2n)",
+    "content": "The explicit error bound is the technical heart of the Cesàro convergence proof. Writing $c = \\lceil(n+1)/2\\rceil$, the key integer arithmetic facts are $n \\leq 2c \\leq n+1$ (proved by `omega`). Then $\\sigma_n - 1/2 = (2c - n)/(2n)$, and $|2c - n| \\leq 1$ gives $|\\sigma_n - 1/2| \\leq 1/(2n)$. The proof uses `field_simp` for the algebraic manipulation and `positivity` for sign conditions.",
+    "mathContext": "$|\\sigma_n - 1/2| = \\left|\\frac{\\lceil(n+1)/2\\rceil}{n} - \\frac{1}{2}\\right| = \\frac{|2\\lceil(n+1)/2\\rceil - n|}{2n} \\leq \\frac{1}{2n}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "error bounds",
+      "integer approximation",
+      "field_simp tactic",
+      "ceiling arithmetic"
+    ],
+    "prerequisites": [
+      "integer division properties",
+      "absolute value inequalities",
+      "field arithmetic"
+    ]
+  },
+  {
+    "id": "ann-cesaro-convergence",
+    "proofId": "geometric-series-oq-01",
+    "range": {
+      "startLine": 193,
+      "endLine": 216
+    },
+    "type": "insight",
+    "title": "Cesàro Mean Converges to 1/2",
+    "content": "The final theorem `grandiCesaro_tendsto` is a standard $\\varepsilon$-$N$ argument: given $\\varepsilon > 0$, choose $N > 1/(2\\varepsilon)$ via the Archimedean property (`exists_nat_gt`). Then for $n \\geq \\max(N, 1)$, the bound $|\\sigma_n - 1/2| \\leq 1/(2n) \\leq 1/(2N) < \\varepsilon$ gives convergence. The proof chains `grandiCesaro_bound` with `div_lt_iff₀` and `nlinarith` for the final inequality.",
+    "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists N,\\; \\forall n \\geq N: |\\sigma_n - 1/2| \\leq \\frac{1}{2n} < \\varepsilon$",
+    "significance": "key",
+    "relatedConcepts": [
+      "epsilon-N definition of limits",
+      "Archimedean property",
+      "squeeze theorem"
+    ],
+    "prerequisites": [
+      "Metric.tendsto_atTop",
+      "exists_nat_gt",
+      "grandiCesaro_bound"
+    ]
+  }
+]

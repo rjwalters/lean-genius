@@ -1,0 +1,333 @@
+{
+  "id": "binary-gcd-oq-03-oq-02",
+  "title": "Schönhage's Recursive HGCD: GCD Preservation and Matrix Invariants",
+  "slug": "binary-gcd-oq-03-oq-02",
+  "description": "Formalizes Schönhage's recursive half-GCD (HGCD) in Lean 4, extending the Lehmer hybrid (BinaryGcdOQ03) with the full recursive structure. Proves GCD preservation, the determinant invariant, the matrix-vector row convention, entry bounds via Cramer's rule, and perturbation infrastructure toward size reduction. The previously-open row-output size bound (S17 PR #17024 found the unconditional version is FALSE for the unguarded algorithm) has been retired (PR #26158): hgcdMatrix_row_output_le is now stated and proved in its true non-recursive regime (max a b < hgcdThreshold), and the recursive-case failure at (5, 130, 89) is recorded as decide/native_decide refutation theorems. The original file is now 0-sorry. Companion file BinaryGcdOQ03OQ02PathA.lean (S18+S19) implements Path A — algorithm refinement with a runtime size-reduction safety guard, plus a verified GCD function hgcdSafeGcd with theorem hgcdSafeGcd_eq_gcd a b = Nat.gcd a b (0 sorries, 0 literal axioms).",
+  "sorries": 0,
+  "meta": {
+    "author": "Schönhage (1971), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Half-GCD_algorithm",
+    "date": "1971",
+    "status": "axiomatized",
+    "tags": [
+      "algorithms",
+      "number-theory",
+      "gcd",
+      "computational-algebra",
+      "complexity",
+      "matrices"
+    ],
+    "proofRepoPath": "Proofs/BinaryGcdOQ03OQ02.lean",
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 2277,
+    "dateAdded": "2026-05-03",
+    "theoremCount": 68,
+    "assumptions": "Depends on the `Lean.ofReduceBool` axiom: several credited theorems are discharged by `native_decide`, including hgcdShift_pos, the S17 counterexample family (hgcdMatrix_130_89_value, hgcdMatrix_130_89_row_alpha, hgcdMatrix_130_89_row_beta, hgcdMatrix_row_alpha_exceeds_max, hgcdMatrix_row_beta_negative, and the column-convention refutation hgcdMatrix_130_89_apply / hgcdMatrix_col_snd_exceeds_max) in BinaryGcdOQ03OQ02.lean and surveyRange_length (S24) in the companion BinaryGcdOQ03OQ02PathA.lean. `native_decide` relies on Lean compiler kernel reduction (`Lean.ofReduceBool`), so these results are not axiom-free. Hence axiomCount = 1; leanFile.axiomCount remains 0 since there are no literal `axiom` declarations. The original file is now 0-sorry (PR #26158 retired the false unconditional row-output bound by restricting `hgcdMatrix_row_output_le` to its true non-recursive regime); status is `axiomatized` solely on account of the `Lean.ofReduceBool` (native_decide) dependency.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.log_mono_right",
+        "description": "Monotonicity of Nat.log used in hgcdShift bounds",
+        "module": "Mathlib.Data.Nat.Log"
+      },
+      {
+        "theorem": "Int.natAbs_add_le",
+        "description": "Triangle inequality for Int.natAbs in perturbation bounds",
+        "module": "Mathlib.Data.Int.Order"
+      },
+      {
+        "theorem": "Nat.div_lt_self",
+        "description": "Top-half inputs strictly smaller than original",
+        "module": "Mathlib.Data.Nat.Basic"
+      }
+    ],
+    "originalContributions": [
+      "cofactor_mul_apply: cofactor multiplication composes the apply action — M.mul N applied to (a,b) equals M applied to (N.apply a b)",
+      "hgcdMatrix_det_unit: the recursive HGCD matrix always has determinant ±1, proved by induction on fuel using lehmerCofactors_det_unit at leaves and det_mul at recursive steps",
+      "hgcdMatrix_preserves_gcd: applying the HGCD matrix to (a,b) yields a pair with the same GCD — the operational correctness theorem of Schönhage's algorithm",
+      "lehmerCofactors_invariant: row-vector invariant (a₀,b₀)·M = (current pair) is preserved across all Lehmer cofactor steps, establishing the row convention needed for size-reduction",
+      "lehmerCofactors_id_apply_le: residue monotonicity — max of the Lehmer row output is ≤ max of the original inputs",
+      "row_vec_cramer: Cramer identity — from (a₀,b₀)·M = (ahat,bhat) and det = ±1, derives a₀·det = ahat·M.δ − bhat·M.γ",
+      "entry_bound_of_even/odd: all matrix entries of lehmerCofactors are bounded in absolute value by the initial inputs, proved via Cramer + alternating sign pattern",
+      "cofactor_apply_shift_decomp: apply(aHi·2^s + ea, bHi·2^s + eb) = 2^s·apply(aHi,bHi) + apply(ea,eb) — the key algebraic identity for the Lehmer perturbation argument",
+      "cofactor_apply_err_bound: given |entries| ≤ C and |errors| ≤ B, the perturbation component is ≤ 2·C·B",
+      "hgcdShift_top_lt: the top-half truncation a/2^s is strictly less than a — the induction-measure decrease for Step 4 strong induction",
+      "lehmerCofactors_pattern_det_correlated_from (S15): joint pattern-determinant invariant for lehmerCofactors — pattern (Even↔Odd) and det sign (±1↔∓1) flip simultaneously at each step, preserving the disjunction (EvenPattern ∧ det=1) ∨ (OddPattern ∧ det=-1) by induction on fuel",
+      "hgcdMatrix_small_pattern_det_correlated (S15): joint pattern-det invariant lifts to hgcdMatrix in the threshold case (max a b < hgcdThreshold) directly from the lehmerCofactors specialization",
+      "entry_bound_of_pattern_det_natAbs (S15): unifies entry_bound_of_even and entry_bound_of_odd into a single natAbs statement — under the joint pattern-det hypothesis, all four matrix entries are bounded in natAbs by the inputs (a₀, b₀), regardless of which pattern case applies",
+      "hgcdMatrix_small_entry_bound (S15): Session 15 main result — threshold-case entry bound for hgcdMatrix combining PART XI row-vector witnesses, PART XII joint pattern-det invariant, and the unified natAbs bound. All four entries of hgcdMatrix (fuel+1) a b are bounded in natAbs by the inputs (a, b) themselves, given positive residue witnesses",
+      "cofactor_mul_pattern_det_correlated (S16): the joint pattern-det disjunction (EvenPattern ∧ det = 1) ∨ (OddPattern ∧ det = -1) is preserved by CofactorMatrix.mul. Four-case algebraic split combining cofactor_mul_even_even/odd_odd/even_odd/odd_even (PART X) with CofactorMatrix.det_mul: the pattern carrier and the det carrier flip in lockstep across all four product cases (1·1 = (-1)·(-1) = 1, 1·(-1) = (-1)·1 = -1)",
+      "hgcdMatrix_pattern_det_correlated (S16): all-fuel joint invariant — every matrix produced by Schönhage's recursive HGCD satisfies (EvenPattern ∧ det = 1) ∨ (OddPattern ∧ det = -1). Direct induction on fuel (no joint induction needed): base = identity (Even, det 1); threshold case = hgcdMatrix_small_pattern_det_correlated (S15); recursive case = cofactor_mul_pattern_det_correlated + IH. Removes the threshold restriction from the S15 lifting",
+      "hgcdMatrix_entry_bound (S16): all-fuel conditional entry bound — generalises hgcdMatrix_small_entry_bound (S15) by removing the max a b < hgcdThreshold hypothesis. Same proof skeleton as S15 with hgcdMatrix_pattern_det_correlated (S16) substituted for hgcdMatrix_small_pattern_det_correlated. The pattern-det side of the Stehlé–Zimmermann circular dependency is now fully discharged for all fuel; the only remaining circularity is on the row-vector invariant in the recursive case (line 1078)",
+      "hgcdMatrix_130_89_value (S17): native_decide refutation — hgcdMatrix 5 130 89 = ⟨-3, 5, 20, -33⟩ (det = -1, OddPattern). Anchors the PART XIV counterexample to the proposed all-fuel row-vector invariant",
+      "hgcdMatrix_row_invariant_counterexample (S17): for input (a, b) = (130, 89) at fuel = 5, no natural-number witnesses (ahat', bhat') simultaneously satisfy (a, b) · M = (ahat', bhat'). The β-row product equals -2287 (negative) while a natural cast is non-negative, immediately refuting the existential. Independent of the magnitude failure (α-row = 1390 > 2 · 130) — either failure suffices",
+      "Refutation of hgcdMatrix_row_output_le (S17): a corollary of the counterexample — the recursive-case sorry on line 1078 is FALSE under the current algorithm; the Schönhage HGCD as currently formalized does not size-reduce on a substantial fraction (≥ 39.6%) of input pairs above hgcdThreshold = 64. Path forward requires either (A) algorithm refinement with a size-reduction safety check, (B) restating with a 'well-behaved input' precondition, or (C) replacing row-convention with column-convention proof strategy",
+      "hgcdMatrixSafe (S18, Path A): companion algorithm in BinaryGcdOQ03OQ02PathA.lean implementing Path A from PR #17024 — Schönhage's HGCD with a runtime size-reduction guard. After computing the inner matrix M_inner, checks max(natAbs(M_inner.apply (a, b))) < max a b; if yes, composes outer recursion as before; if no, returns M_inner alone (matches GMP's mpn_hgcd safety check). Compatible with the existing BinaryGcdOQ03OQ02.lean via shared CofactorMatrix infrastructure",
+      "hgcdMatrixSafe_det_unit / hgcdMatrixSafe_preserves_gcd (S18, Path A): unimodularity and GCD-preservation invariants for the safe variant. Det ±1 is preserved on every code path (threshold case via lehmerCofactors_det_unit, compose branch via det_mul + IH parity, abort branch via direct IH). GCD preservation follows by cofactor_apply_gcd + det invariant. Both hold unconditionally — including on the S17 counterexample (130, 89) where the unguarded hgcdMatrix produces 10^268-magnitude entries",
+      "hgcdSafeGcd (S19, Path A): verified HGCD-based GCD function — applies hgcdMatrixSafeOf once and takes Int.gcd of the column output. Theorem hgcdSafeGcd_eq_gcd: hgcdSafeGcd a b = Nat.gcd a b unconditionally. Proof reduces directly to hgcdMatrixSafeOf_preserves_gcd. Demonstrates that Path A produces a TOTAL CORRECT GCD function on all natural inputs (0 sorries, 0 axioms), even on the S17 counterexample family where the unguarded hgcdMatrix.apply has unbounded magnitude",
+      "Computational examples (S19): native_decide checks for hgcdSafeGcd on standard pairs (12,8)↦4, (89,55)↦1, (100,75)↦25, (1000,1000)↦1000 plus the S17 counterexample (130,89)↦1 and worst-case (107,85)↦1 from the survey range [64,130)×[64,a]. Verifies that the kernel can reduce hgcdSafeGcd to a definite numeric value on inputs where the unguarded algorithm has 10^268-scale matrix entries",
+      "outerGuardSurveyPairs / outerGuardFiringPairs / outerGuardSurveySize / outerGuardFiringCount (S25, Path A PART XVI): Finset-parameterised density framework — Finset (ℕ × ℕ) survey range parameterised by (lo, hi) supporting outerGuardSurveyPairs lo hi = {(a, b) : lo ≤ b ≤ a < hi} and the corresponding firing subset / cardinality accessors. Complements S24's List-based hard-coded surveyRange. Both frameworks share the same survey size on (64, 130): surveyRange.length = 2211 = (outerGuardSurveyPairs 64 130).card",
+      "outerGuardFiringCount_le_surveySize (S25): structural ≤ bound — the firing count is bounded above by the survey size, proved via Finset.card_filter_le. A trivial but load-bearing structural lemma for any density-fraction theorem (firing/total ≤ 1)",
+      "outerGuardFiringCount_below_threshold (S25): closed-form zero-firing theorem — for any survey region (lo, hi) with hi ≤ hgcdThresholdSafe = 64, outerGuardFiringCount lo hi = 0. Direct corollary of S23's schonhageOuterGuardFires_below_threshold lemma combined with the Finset structure of the survey. Discharges the entire sub-threshold case without native_decide enumeration",
+      "Density witnesses (S25): three combinatorial survey-size native_decide checks (outerGuardSurveySize 0 32 = 528, 0 64 = 2080, 64 130 = 2211) confirm the triangular-sum closed form. Three sub-threshold zero-firing native_decide checks (outerGuardFiringCount 0 32 = 0, 0 64 = 0, 60 64 = 0) corroborate outerGuardFiringCount_below_threshold on concrete inputs",
+      "hgcdMatrixSafe_inner_abort_imp_outer_fails (S30, Path A PART XX): one direction of the S28b spec equivalence — on above-threshold inputs (a, b), if M_inner.apply (a, b) does not strictly reduce max a b (the inner-guard abort hypothesis), then schonhageOuterGuardFires a b = false. Proof unfolds hgcdMatrixSafeOf via hgcdMatrixSafe_succ, commits to the abort branch via if_neg + Nat.not_lt.mpr, and bridges to the outer-guard predicate via the S28c packaging lemma schonhageOuterGuardFires_above_aborts_iff. Recovers the S28a witnesses (130, 89) and (107, 85) as structural corollaries — both example proofs use the new theorem with decide for the threshold and native_decide for the inner-abort inequality, replacing the prior black-box native_decide on schonhageOuterGuardFires"
+    ],
+    "definitionCount": 6,
+    "additionalFiles": [
+      "Proofs/BinaryGcdOQ03OQ02PathA.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Arnold Schönhage (1971) extended Lehmer's hybrid GCD to achieve optimal O(M(n)·log n) bit complexity, where M(n) is the cost of multiplying n-bit integers. The key innovation is recursion: instead of running Lehmer's single-level approximation once, HGCD recurses on the top half of the bits to compute a cofactor matrix M₁, applies M₁ to the full inputs to get a half-size pair, then recurses again. This two-level recursion gives O(log n) levels, each costing O(M(n)), for total O(M(n)·log n). The algorithm underlies GMP's mpn_hgcd implementation and is the standard GCD algorithm for cryptographic-size integers (thousands of bits).",
+    "problemStatement": "Can Schönhage's recursive HGCD (half-GCD) be formalized in Lean 4, establishing the GCD-preservation correctness proof and making progress toward the O(M(n)·log n) bit complexity bound?",
+    "proofStrategy": "The formalization is structured in nine parts. Parts I–IV establish the core correctness: the composition law for cofactor matrices, the fuel-indexed recursive definition of hgcdMatrix, the determinant invariant (proved by induction on fuel), and GCD preservation (a corollary via gcd_cofactor_eq from BinaryGcdOQ03). Parts V–VI build the size-reduction infrastructure: the row-convention matrix-vector invariant for Lehmer cofactors, residue monotonicity, the Cramer identity, and entry bounds via the alternating sign pattern (EvenPattern/OddPattern). Part VII adds the perturbation decomposition (apply distributes over shifts). Part VIII proves the induction prerequisites (shift ≥ 1, top-half strictly smaller). Part IX proves the row-output size-reduction bound in its true non-recursive regime (max a b < hgcdThreshold) and records the recursive-case counterexample; the unconditional recursive bound is FALSE for the unguarded algorithm, so the file is now 0-sorry. A genuinely recursive bound would require a quotient stability lemma (under a well-behaved-input precondition) connecting top-half quotients to full-precision Euclidean quotients.",
+    "keyInsights": [
+      "Fuel-indexed totality decouples correctness from termination: hgcdMatrix is total by construction and GCD preservation holds for all fuel values, independently of whether the fuel is sufficient for the algorithm to run to completion.",
+      "The convention dichotomy is a genuine obstruction: the apply action (column convention M·(a,b)ᵀ) tracks a different intermediate state from the row convention (a,b)·M. GCD preservation uses the column convention; size reduction requires the row convention. These agree on determinant-based theorems but diverge on state tracking.",
+      "The composition law cofactor_mul_apply is the algebraic key: it states that M.mul N applied columnwise is M applied to N's output. This chains the two HGCD recursive calls into a single correct reduction.",
+      "Entry bounds arise from Cramer inversion: if (a₀,b₀)·M = (ahat,bhat), then by unimodularity, each entry of M is a linear combination of ahat and bhat with coefficients ±1. With the alternating sign pattern from lehmerInnerStep, all entries are bounded by max(a₀,b₀).",
+      "The recursive size-reduction bound is FALSE as an unconditional statement (counterexample (5, 130, 89)); a conditional version requires quotient stability under a well-behaved-input precondition: showing that the Euclidean quotients computed from the top-half approximation (a/2^s, b/2^s) match those from the full-precision (a,b) for the relevant number of steps. This is proved in Stehlé–Zimmermann (2004) but requires ≈200 lines of new Lean infrastructure."
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header, Imports, and Namespace",
+      "startLine": 1,
+      "endLine": 69,
+      "summary": "Imports (Mathlib Nat/Int GCD, Log, Tactic) and the parent Proofs.BinaryGcdOQ03; opens Nat/Int/LehmerGcd and the HGcd namespace. The module docstring frames the Schönhage half-GCD (HGCD) cofactor-matrix size-reduction goal and the row-convention vs column-convention distinction that the entry/output bounds turn on.",
+      "mathContext": "The Schönhage half-GCD reduces gcd(a,b) by recursively transforming the high-order bits; a cofactor matrix M = ⟨α,β,γ,δ⟩ encodes the accumulated Euclidean transformation. The analysis tracks how the entries of M and the row outputs (a·α+b·γ, a·β+b·δ) grow relative to the inputs."
+    },
+    {
+      "id": "part-i-composition",
+      "title": "Part I: Composition of Cofactor Matrices under `apply`",
+      "startLine": 70,
+      "endLine": 82,
+      "summary": "cofactor_mul_apply: cofactor multiplication composes the apply action correctly, (M.mul N).apply a b = M.apply (N.apply a b). The algebraic basis for treating `mul` as composition of cofactor matrices.",
+      "mathContext": "For cofactor matrices acting on pairs, M.mul N is the matrix whose action is M ∘ N. Proved by unfolding mul/apply and `ring`."
+    },
+    {
+      "id": "part-ii-recursive-matrix",
+      "title": "Part II: Recursive HGCD Matrix (fuel-indexed, total)",
+      "startLine": 83,
+      "endLine": 168,
+      "summary": "Defines the fuel-indexed total recursive HGCD matrix hgcdMatrix together with the threshold and shift parameters (hgcdThreshold, hgcdShift). Below threshold it falls back to full Lehmer cofactor accumulation; above threshold it splits the high-order bits and recurses.",
+      "mathContext": "A total, fuel-indexed encoding sidesteps well-founded recursion: hgcdMatrix fuel a b returns the accumulated cofactor matrix. hgcdShift a b ≈ (Nat.log 2 (max a b) + 1)/2 sets the bit-split position."
+    },
+    {
+      "id": "part-iii-determinant",
+      "title": "Part III: Determinant Is ±1 (the operational invariant)",
+      "startLine": 169,
+      "endLine": 208,
+      "summary": "hgcdMatrix_det_unit: every matrix returned by hgcdMatrix has determinant ±1 — the operational unimodularity invariant that makes the transformation reversible.",
+      "mathContext": "det(M.mul N) = det M · det N and the Lehmer base case is unimodular, so det(hgcdMatrix …) ∈ {1,-1} by induction on fuel."
+    },
+    {
+      "id": "part-iv-gcd-preservation",
+      "title": "Part IV: GCD Preservation (the correctness statement)",
+      "startLine": 209,
+      "endLine": 234,
+      "summary": "hgcdMatrix_preserves_gcd: applying the HGCD matrix to (a,b) yields a pair with the same gcd. This is the correctness statement for the cofactor-matrix encoding.",
+      "mathContext": "Unimodular integer transformations preserve gcd: gcd(M.apply a b) = gcd(a,b). Follows from det = ±1 and Bézout."
+    },
+    {
+      "id": "part-v-computational-verification",
+      "title": "Part V: Computational Verification (small cases)",
+      "startLine": 235,
+      "endLine": 254,
+      "summary": "Computational sanity checks of hgcdMatrix on small concrete inputs via decide/native_decide.",
+      "mathContext": "Concrete evaluation confirms the recursion produces the expected cofactor matrices on small (a,b)."
+    },
+    {
+      "id": "part-v5-matrix-vector-invariant",
+      "title": "Part V.5: Matrix-Vector Row Invariant for Lehmer Cofactors",
+      "startLine": 255,
+      "endLine": 451,
+      "summary": "Establishes the row-vector invariant for Lehmer cofactors (Step 1): lehmerInnerStep_invariant, lehmerCofactors_invariant, lehmerCofactors_id_apply_eq give (a₀,b₀)·M = (current pair), preserved by each inner step. Adds residue monotonicity (lehmerInnerStep_residue_le / _max_le, lehmerCofactors_invariant_le, Step 2a): each step has bhat′ < bhat and max ahat′ bhat′ ≤ max ahat bhat.",
+      "mathContext": "The row-vector relation (a₀,b₀)·M = (ahat,bhat) tracks the current Euclidean residues as the left-action of the accumulated matrix; residues are non-increasing, which drives the size-reduction measure."
+    },
+    {
+      "id": "part-vi-cramer-sign",
+      "title": "Part VI: Cramer Identity, Sign Patterns, and Entry Bounds",
+      "startLine": 452,
+      "endLine": 635,
+      "summary": "Cramer identity row_vec_cramer (from (a₀,b₀)·M = (ahat,bhat) and det, derive a₀·det = ahat·δ − bhat·γ and b₀·det = bhat·α − ahat·β); sign patterns (EvenPattern/OddPattern, lehmerInnerStep sign flips, lehmerCofactors_has_pattern, Step 2b foundation); and entry bounds entry_bound_of_even/_odd (under the row-vector invariant with positive residues, all entries are bounded in absolute value by the initial inputs a₀,b₀).",
+      "mathContext": "Cramer inverts the row-vector relation to express the initial inputs via the matrix entries and current residues; combined with the sign pattern this bounds |α|,|β|,|γ|,|δ| by a₀,b₀."
+    },
+    {
+      "id": "part-vii-perturbation",
+      "title": "Part VII: Perturbation Infrastructure (Step 3 building blocks)",
+      "startLine": 636,
+      "endLine": 748,
+      "summary": "Perturbation infrastructure: cofactor_apply_add / _smul / _shift_decomp (apply distributes over addition, commutes with scalar multiplication, and the full-precision shift decomposition apply(aHi·2^s+ea, bHi·2^s+eb) = 2^s·apply(aHi,bHi)+apply(ea,eb)); cofactor_apply_natAbs_le (triangle bound); and the quantitative error bounds cofactor_apply_err_bound(_snd) (error component ≤ 2·C·B given entry bound C and input bound B).",
+      "mathContext": "Splitting inputs into high bits (×2^s) and low bits (error e) lets the HGCD work on the high part; the error term apply(ea,eb) is controlled by the entry bounds (Step 2b) and the low-bit size."
+    },
+    {
+      "id": "part-viib-row-decomposition",
+      "title": "Part VIIb: Row-Convention Decomposition Lemmas (Session 11)",
+      "startLine": 749,
+      "endLine": 788,
+      "summary": "row_product_decompose: for a = aHi·2^s+aLo, b = bHi·2^s+bLo, the row products a·α+b·γ and a·β+b·δ factor as 2^s·(aHi·α+bHi·γ)+(aLo·α+bLo·γ). row_product_with_invariant simplifies them under the high-part invariant. Proved by ring / linear_combination.",
+      "mathContext": "The row-convention dual of the shift decomposition: row outputs of M on full-precision inputs split into a high-order 2^s multiple of the high-input row output plus a low-order remainder."
+    },
+    {
+      "id": "part-viic-row-output-composition",
+      "title": "Part VIIc: Row-Output Composition for `mul` (Session 12)",
+      "startLine": 789,
+      "endLine": 925,
+      "summary": "Row-output composition under mul: cofactor_row_natAbs_le (row triangle bound (a·α+b·γ).natAbs ≤ |a||α|+|b||γ|), cofactor_mul_row_output (row output of M.mul N equals N’s row output evaluated at M’s row output — the row-convention dual of cofactor_mul_apply), and cofactor_mul_row_output_natAbs_le (decouples the inner-entry IH from the outer-row IH, avoiding the Session-11 wrong-inputs obstacle).",
+      "mathContext": "For the recursive case, the IH for the inner matrix supplies entry bounds while the IH for the outer matrix supplies a row-output bound; cofactor_mul_row_output composes them without needing both IHs at the same inputs."
+    },
+    {
+      "id": "part-viii-size-reduction-prereqs",
+      "title": "Part VIII: Size Reduction Prerequisites (Step 4 foundations)",
+      "startLine": 926,
+      "endLine": 975,
+      "summary": "Step 4 foundations: hgcdShift_pos (hgcdShift a b ≥ 1 when max a b ≥ 4, via Nat.log 2 (max a b) ≥ 2) and hgcdShift_top_lt (for threshold inputs, max(a/2^s, b/2^s) < max a b) — the induction-measure decrease needed for the Step 4 strong induction.",
+      "mathContext": "The top-half measure max(a/2^s,b/2^s) strictly decreases (2^s ≥ 2, Nat.div_lt_self), which is what justifies the recursion terminating / the strong induction on input size."
+    },
+    {
+      "id": "part-ix-row-output-bound",
+      "title": "Part IX: Row Output Bound (corrected Step 4) — row bound in the true non-recursive regime",
+      "startLine": 976,
+      "endLine": 1079,
+      "summary": "The column-convention bound hgcdMatrix_joint_bound is FALSE as previously stated (counterexample (a,b)=(37,5): column output natAbs 184 > 64, by native_decide). Proves the base case hgcdMatrix_small_row_output_le (for max a b < hgcdThreshold the row output is ≤ max a b) and the row-output bound hgcdMatrix_row_output_le restricted to the true non-recursive regime (max a b < hgcdThreshold). The unconditional recursive version is FALSE (see Part XIV counterexample); PR #26158 retired the former sorry by adding the threshold hypothesis, so this part is now sorry-free.",
+      "mathContext": "The column convention M.apply(a,b) does not bound Euclidean residues for a right-accumulated Lehmer matrix; the row convention is the correct target, but its all-fuel recursive case is false (Part XIV)."
+    },
+    {
+      "id": "part-x-sign-pattern",
+      "title": "Part X: Sign-Pattern Invariant for `hgcdMatrix` (Session 13)",
+      "startLine": 1080,
+      "endLine": 1240,
+      "summary": "Lifts the sign-pattern half of Step 2b from lehmerCofactors to all of HGCD: the four Z/2-graded multiplication cases cofactor_mul_even_even/_odd_odd/_even_odd/_odd_even (Even·Even=Odd·Odd=Even, Even·Odd=Odd·Even=Odd), cofactor_mul_pattern (M.mul N has a pattern when both factors do), and hgcdMatrix_has_pattern / hgcdMatrixOf_has_pattern (every recursive-HGCD matrix is EvenPattern or OddPattern, by induction on fuel).",
+      "mathContext": "The matrix entries are Z/2-graded by sign pattern; each Lehmer step flips Even↔Odd, and multiplication composes the grading. This is the sign-pattern ingredient of the Cramer-based entry bound."
+    },
+    {
+      "id": "part-xi-row-vector-invariant",
+      "title": "Part XI: Row-Vector Invariant for `hgcdMatrix` (Session 14)",
+      "startLine": 1241,
+      "endLine": 1344,
+      "summary": "cofactor_mul_row_invariant (abstract composition law: (a₀,b₀)·M=(ahat₁,bhat₁) and (ahat₁,bhat₁)·N=(ahat₂,bhat₂) ⟹ (a₀,b₀)·(M.mul N)=(ahat₂,bhat₂)); hgcdMatrix_zero_row_invariant (trivial at fuel 0); hgcdMatrix_small_row_invariant (below threshold, with natural-number residue witnesses for row_vec_cramer). The recursive case is left open — the IH-supplied invariant is at ghost column-output inputs, not the full-precision (a,b).",
+      "mathContext": "The row-vector invariant is the link between the matrix and the running residues; its recursive case is the circular-dependency obstacle (Stehlé–Zimmermann §4 joint induction) and is ultimately false here (Part XIV)."
+    },
+    {
+      "id": "part-xii-pattern-det-threshold",
+      "title": "Part XII: Pattern-Det Correlation + Threshold Entry Bound (Session 15)",
+      "startLine": 1345,
+      "endLine": 1594,
+      "summary": "Couples sign pattern and determinant sign: lehmerCofactors_pattern_det_correlated(_from / _id) preserves (EvenPattern ∧ det=1) ∨ (OddPattern ∧ det=-1) under each step; hgcdMatrix_small_pattern_det_correlated lifts it below threshold; entry_bound_of_pattern_det_natAbs unifies the even/odd entry bounds; hgcdMatrix_small_entry_bound assembles the threshold-case entry bound (all four entries bounded by (a,b)).",
+      "mathContext": "The Cramer-based entry bound needs the det sign to match the pattern; the simultaneous Even↔Odd and +1↔−1 flips keep the disjunction invariant, closing the Session-13 gap for the threshold case."
+    },
+    {
+      "id": "part-xiii-all-fuel-lifting",
+      "title": "Part XIII: All-Fuel Lifting — Pattern-Det + Entry Bound (Session 16)",
+      "startLine": 1595,
+      "endLine": 1765,
+      "summary": "Removes the threshold restriction: cofactor_mul_pattern_det_correlated (four correlated product cases via Part X patterns + det_mul), hgcdMatrix_pattern_det_correlated / hgcdMatrixOf_… (induction on fuel), and hgcdMatrix_entry_bound (all-fuel entry bound, conditional on external row-vector witnesses with positivity). The pattern-det side of the joint induction is now fully discharged for all fuel.",
+      "mathContext": "With the pattern-det invariant available unconditionally, the remaining obstacle reduces to the row-vector invariant alone; hgcdMatrix_entry_bound is correctly stated as conditional on witnesses that Part XIV shows need not exist."
+    },
+    {
+      "id": "part-xiv-counterexample",
+      "title": "Part XIV: Counterexample to the All-Fuel Row-Vector Invariant (Session 17)",
+      "startLine": 1766,
+      "endLine": 1957,
+      "summary": "Refutes the Session-17 target: hgcdMatrix 5 130 89 = ⟨-3,5,20,-33⟩ (native_decide), with row output at (130,89) equal to (1390,-2287) — the α-row magnitude 1390 exceeds even 2·max 130 89 = 260, and the β-row is negative, so no natural witness satisfies the row-vector equation (hgcdMatrix_row_invariant_counterexample). HGCD as formalized fails to size-reduce on ≥39.6% of above-threshold pairs; hgcdMatrix_row_invariant and _row_output_le are FALSE in the recursive case. Parts XI–XIII remain valid (their results are unconditional / correctly conditional).",
+      "mathContext": "A single explicit fuel-5 instance breaks the conjectured invariant, showing the row-convention size-reduction bound cannot hold for general recursive inputs; paths forward (size-reduction safety check / restricted precondition / column convention) are documented at the end of the part."
+    },
+    {
+      "id": "summary-status",
+      "title": "Summary: Proved Results and Status of the Row-Output Bound",
+      "startLine": 1958,
+      "endLine": 2225,
+      "summary": "Closing Summary docstring enumerating the proved result-groups (0 axioms): composition, determinant, gcd preservation, Lehmer row-vector invariant + monotonicity, Cramer + sign pattern + entry bounds, perturbation/row-decomposition/row-output infrastructure, shift bounds, sign-pattern and pattern-det invariants for all fuel, and the Part XIV counterexample. Documents that the unconditional recursive hgcdMatrix_row_output_le is FALSE (Part IX now proves only the true non-recursive regime; paths A/B/C forward) and the out-of-scope O(M(n)·log n) bit-complexity bound (needs Mathlib fast-multiplication infrastructure).",
+      "mathContext": "Status snapshot: the matrix-algebra layer (determinant, gcd preservation, patterns, entry bounds) is fully proved; the one unmet goal is the recursive row-output size-reduction bound, refuted as stated, requiring an algorithm or statement refinement."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "oq-01",
+      "question": "Can the recursive case of hgcdMatrix_joint_bound be closed by formalizing quotient stability (≈200 lines of Lean infrastructure from Stehlé–Zimmermann §3–4)?",
+      "difficulty": "hard",
+      "tags": [
+        "size-reduction",
+        "quotient-stability",
+        "lean4"
+      ]
+    },
+    {
+      "id": "oq-02",
+      "question": "Can the O(M(n)·log n) bit complexity bound be stated and proved once Mathlib gains a model for fast multiplication and bit-operation costs?",
+      "difficulty": "very-hard",
+      "tags": [
+        "complexity",
+        "bit-complexity",
+        "fast-multiplication",
+        "mathlib"
+      ]
+    }
+  ],
+  "leanFile": {
+    "namespace": "HGcd",
+    "lineCount": 2277,
+    "axiomCount": 0,
+    "theoremCount": 67,
+    "definitionCount": 6,
+    "path": "Proofs/BinaryGcdOQ03OQ02.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/BinaryGcdOQ03OQ02PathA.lean"
+    ]
+  },
+  "conclusion": {
+    "summary": "This formalization of Schönhage's recursive HGCD establishes the core correctness layer, now 0-sorry. The three main theorems — `cofactor_mul_apply` (compositional algebra), `hgcdMatrix_det_unit` (unimodularity by fuel induction), and `hgcdMatrix_preserves_gcd` (operational correctness) — formally verify that Schönhage's two-level recursion produces a GCD-preserving matrix. The size-reduction infrastructure (row-convention invariant, Cramer identity, entry bounds, perturbation decomposition) is fully discharged in its true regime: the row-output bound `hgcdMatrix_row_output_le` holds for the non-recursive case (`max a b < hgcdThreshold`), and the (5, 130, 89) counterexample family records — via decide/native_decide — that the unconditional recursive version is FALSE for the unguarded algorithm. Together with `BinaryGcdOQ03` (the Lehmer hybrid), this represents the first Lean formalization of the HGCD algorithm's correctness structure.",
+    "implications": "Schönhage's HGCD is the inner loop of every modern number theory computation involving large integers: RSA key generation, elliptic curve scalar multiplication, polynomial GCD in computer algebra systems, and lattice basis reduction (LLL algorithm). Formalizing its correctness in Lean 4 provides a verified foundation for future cryptographic algorithm verification. The unconditional recursive size-reduction bound was shown FALSE for the unguarded algorithm (S17 counterexample); the companion Path A file `BinaryGcdOQ03OQ02PathA.lean` instead adds a runtime size-reduction safety guard and verifies a total correct GCD function `hgcdSafeGcd` (theorem `hgcdSafeGcd_eq_gcd`). Stating the full $O(M(n)\\log n)$ bit-complexity claim still requires the Stehlé–Zimmermann quotient-stability analysis under a well-behaved-input precondition. The GMP library's `mpn_hgcd` implements exactly this algorithm for production GCD computation; a Lean verification would enable formal auditing of such production code.",
+    "openQuestions": [
+      "Can the quotient stability lemma (Stehlé–Zimmermann §3–4) be formalized in ≈200 lines to establish a recursive size-reduction bound under a well-behaved-input precondition (the unconditional bound is FALSE, see the (5, 130, 89) counterexample)? The key is Theorem 4 of Stehlé–Zimmermann 2004: 'if $2^s > 4\\max(a,b)/\\gcd(a,b)$, the first $k$ Euclidean quotients of $(a_H, b_H)$ and $(a,b)$ agree.' Lean infrastructure needed: remainder sequence properties, divisibility bounds for continued fraction convergents.",
+      "Once Mathlib includes a formal model of fast multiplication (FFT-based or Karatsuba), can the $O(M(n)\\log n)$ bit-complexity bound be formally stated and proved? This would require defining 'arithmetic circuit complexity' or a comparable cost model in Lean 4, connecting `hgcdMatrix_joint_bound` to a recursion tree analysis.",
+      "Can the verified GCD algorithm be connected to applications? E.g., a formally verified RSA key generation procedure that relies on `hgcdMatrixOf_preserves_gcd` for its correctness guarantee."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "binary-gcd-oq-03",
+      "relationship": "parent",
+      "description": "Parent entry — the Lehmer–Schönhage hybrid GCD that supplies the single-level cofactor infrastructure (`CofactorMatrix`, `lehmerCofactors`, `gcd_cofactor_eq`) reused throughout this file. Where the parent runs a *single* Lehmer approximation on the top bits and falls back to ordinary Euclidean reduction, this file lifts the approach to the full *recursive* Schönhage HGCD: the cofactor matrix is itself computed by recursion on the top half of the input. The composition law `cofactor_mul_apply` and the determinant invariant inherited from the parent are precisely the pieces that let the two-level recursion compose."
+    },
+    {
+      "targetId": "binary-gcd",
+      "relationship": "foundational",
+      "description": "Stein's binary GCD algorithm (1967) — the historical and conceptual predecessor of every subsequent fast GCD. Stein replaced Euclid's costly division with shift/subtract operations, achieving $O(n^2 / \\log n)$ bit complexity (faster than schoolbook Euclidean's $O(n^2)$ but still quadratic). Schönhage's HGCD formalized here pushes the chain further to $O(M(n)\\log n)$, exploiting fast multiplication to break the quadratic barrier. The shift-by-$s$ idea is shared: binary GCD shifts out factors of 2 to maintain odd operands, while HGCD shifts the input down by half its bitlength to extract a top-half approximation."
+    },
+    {
+      "targetId": "binary-gcd-oq-02-oq-02",
+      "relationship": "related",
+      "description": "Lehmer's GCD for integers — the 1938 algorithm Schönhage generalised. Lehmer (1938) observed that the *first* Euclidean quotient depends only on the top bits, so one can compute many Euclidean steps cheaply in single-word arithmetic, then re-validate with a multi-precision multiplication. Schönhage's insight (1971) was that this trick is itself recursive: replacing the single-word top-bit computation with a recursive HGCD on a half-size input gives the optimal $O(M(n)\\log n)$ recursion analysed here. The `lehmerCofactors` infrastructure used at the threshold-case leaves is exactly the single-level Lehmer step formalised in this OQ branch."
+    },
+    {
+      "targetId": "binary-gcd-oq-01",
+      "relationship": "related",
+      "description": "Step-count comparison between binary GCD and the Euclidean algorithm — quantifies *how many* reduction steps each variant requires. Where OQ-01 measures the operation count of single-step reductions, the recursive HGCD studied here aims at the *bit-complexity* improvement that comes from doing multiple steps in a single matrix multiplication. Both branches share the underlying observation that the dominant cost is multi-precision arithmetic, not the loop structure."
+    },
+    {
+      "targetId": "binary-gcd-oq-01-oq-04",
+      "relationship": "related",
+      "description": "Tight lower bound for binary GCD — proves that the input family $(1, 2^n - 1)$ requires exactly $n$ binary-GCD steps. The lower-bound technique (find an adversarial input family) is the same shape as the S17 counterexample in this file: the pair $(130, 89)$ at $\\mathrm{fuel} = 5$ refutes the proposed unguarded row-vector invariant. Both results illustrate that worst-case analysis of GCD algorithms is sensitive to concrete arithmetic, not just asymptotic bounds."
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "foundational",
+      "description": "Bézout's identity ($\\gcd(a, b) = a x + b y$ for integers $x, y$) — the algebraic content of every GCD algorithm's cofactor output. The cofactor matrix $M$ that this file's HGCD produces *is* the Bézout-coefficient certificate: writing $M \\cdot (a, b)^T = (g, 0)$ (after sufficient reduction) gives $g = M_\\alpha \\cdot a + M_\\beta \\cdot b$, exhibiting the Bézout pair $(x, y) = (M_\\alpha, M_\\beta)$. The unimodularity invariant $\\det M = \\pm 1$ proved here is precisely the integrality condition that makes the Bézout coefficients live in $\\mathbb{Z}$."
+    },
+    {
+      "targetId": "cramers-rule",
+      "relationship": "supporting",
+      "description": "Cramer's rule for $2 \\times 2$ matrix inversion — invoked directly in `row_vec_cramer` (PART VI) to derive the entry bounds on `lehmerCofactors`. The Cramer identity $a_0 \\cdot \\det M = \\hat{a} \\cdot M_\\delta - \\hat{b} \\cdot M_\\gamma$ for $(a_0, b_0) \\cdot M = (\\hat{a}, \\hat{b})$ is the key linear-algebraic step that converts the row-convention invariant into a bound on individual matrix entries. Without Cramer, the alternation argument $|M_{ij}| \\le \\max(a_0, b_0)$ would have no algebraic anchor."
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "context",
+      "description": "Constructive Chinese Remainder Theorem — the most direct downstream consumer of fast GCD algorithms. Given pairwise coprime moduli $m_1, \\ldots, m_k$, the CRT isomorphism $\\mathbb{Z}/m_1 \\cdots m_k \\cong \\prod_i \\mathbb{Z}/m_i$ is computed by repeatedly invoking extended-GCD to produce Bézout coefficients (cf. `bezout-identity-oq-03`). Schönhage's HGCD is the asymptotically optimal kernel for these extended-GCD calls: replacing schoolbook Euclid with HGCD lifts CRT from $O(n^2)$ to $O(M(n)\\log n)$ on $n$-bit moduli — the bound underlying production big-integer libraries' modular-reduction performance."
+    }
+  ]
+}

@@ -1,0 +1,183 @@
+[
+  {
+    "id": "ann-ch-oq01-01-header",
+    "proofId": "continuum-hypothesis-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 57
+    },
+    "type": "concept",
+    "title": "Should We Adopt Axioms That Decide CH? The Landscape of Axiom Selection",
+    "content": "The header frames the central question: CH is independent of ZFC (Gödel 1940, Cohen 1963), so should we extend ZFC with an axiom that settles it? The file organizes the mathematical landscape into 7 parts: (1) what 'deciding' CH means formally, (2) ZFC-provable bounds, (3) CH-direction axioms (V=L, Ultimate L), (4) ¬CH-direction axioms (PFA, MM), (5) incompatibility of V=L with large cardinals, (6) selection criteria (large-cardinal compatibility), (7) summary. Imports from ContinuumHypothesis module (CH, GCH, gch_implies_ch) are opened. The file demonstrates the power of Lean 4 to formalize the entire landscape of independence results as a structured debate.",
+    "mathContext": "The **Continuum Hypothesis** (Hilbert Problem 1): $2^{\\aleph_0} = \\aleph_1$? Gödel (1940): Con(ZFC) → Con(ZFC + CH) via the constructible universe $L$. Cohen (1963): Con(ZFC) → Con(ZFC + ¬CH) via forcing. So CH is **independent of ZFC**. The question becomes: which axiom system beyond ZFC should mathematicians adopt? The two main contenders: ZFC + V=L (→ CH) vs. ZFC + PFA (→ ¬CH with $2^{\\aleph_0} = \\aleph_2$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ZFC independence",
+      "constructible universe",
+      "Cohen forcing",
+      "large cardinals",
+      "axiom selection"
+    ],
+    "prerequisites": [
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "ContinuumHypothesis module",
+      "Cardinal.aleph",
+      "Order.succ"
+    ]
+  },
+  {
+    "id": "ann-ch-oq01-02-decides",
+    "proofId": "continuum-hypothesis-oq-01",
+    "range": {
+      "startLine": 63,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "Decides: Formalizing What It Means for an Axiom to Settle CH",
+    "content": "Decides Φ := (Φ → CH) ∨ (Φ → ¬CH) captures the notion that ZFC + Φ is sufficient to resolve CH. Four basic lemmas follow: CH_decides_CH (trivial, Or.inl id), notCH_decides_notCH (Or.inr id), decides_of_implies_CH (helper for CH direction), decides_of_implies_notCH (helper for ¬CH direction). These create a clean API for the rest of the file: rather than constructing Or witnesses repeatedly, the helper theorems reduce 'Φ decides CH' to the single directional implication. The Decides predicate is logically weak (it doesn't say Φ is true or consistent) — it only says that IF Φ held, THEN CH would be resolved.",
+    "mathContext": "Formally: $\\Phi$ **decides CH** $\\iff$ ($\\Phi \\to \\text{CH}$) $\\lor$ ($\\Phi \\to \\lnot\\text{CH}$). In model-theoretic terms: $\\text{ZFC} + \\Phi \\vdash \\text{CH}$ or $\\text{ZFC} + \\Phi \\vdash \\lnot\\text{CH}$. This is weaker than consistency: we don't require $\\Phi$ to be consistent with ZFC. The `Decides` predicate is a Prop → Prop function, making the axiom-selection question purely formal.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ContinuumHypothesis.CH",
+      "Or.inl",
+      "Or.inr",
+      "axiom independence",
+      "Prop → Prop"
+    ],
+    "prerequisites": [
+      "ContinuumHypothesis module",
+      "CH definition",
+      "GCH definition"
+    ]
+  },
+  {
+    "id": "ann-ch-oq01-03-zfc-bounds",
+    "proofId": "continuum-hypothesis-oq-01",
+    "range": {
+      "startLine": 84,
+      "endLine": 127
+    },
+    "type": "insight",
+    "title": "ZFC-Provable Bounds: ℵ₁ ≤ 2^ℵ₀ and the ¬CH Consequence ℵ₂ ≤ 2^ℵ₀",
+    "content": "Three theorems establish what ZFC can prove about CH without extra axioms. aleph_one_le_continuum: ℵ₁ ≤ 2^ℵ₀, proved by showing aleph_1 = Order.succ aleph_0 (via aleph_succ and the ordinal identity 1 = succ 0), then using Order.succ_le_of_lt applied to Cardinal.cantor ℵ₀. ch_means_equality: CH → continuum = aleph_one (trivially, since CH is defined as this equality). not_CH_implies_strict_inequality: ¬CH → ℵ₁ < continuum, proved by rcases on lt_or_eq_of_le applied to aleph_one_le_continuum. not_CH_implies_aleph_two_le_continuum: ¬CH → ℵ₂ ≤ continuum, proved by showing aleph_2 = Order.succ aleph_1 and applying succ_le_of_lt to the strict inequality.",
+    "mathContext": "ZFC-provable: $\\aleph_0 < 2^{\\aleph_0}$ (Cantor) $\\Rightarrow$ $\\aleph_1 \\leq 2^{\\aleph_0}$ (since $\\aleph_1 = \\text{succ}(\\aleph_0)$ is minimal above $\\aleph_0$). Under ¬CH: $\\aleph_1 < 2^{\\aleph_0}$, so $\\aleph_2 = \\text{succ}(\\aleph_1) \\leq 2^{\\aleph_0}$. ZFC does not decide whether $2^{\\aleph_0} = \\aleph_1$ (CH), $= \\aleph_2$ (PFA), $= \\aleph_{17}$, etc. — all are consistent (Easton's theorem).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cardinal.cantor",
+      "Order.succ_le_of_lt",
+      "Cardinal.aleph_succ",
+      "lt_or_eq_of_le",
+      "aleph_one_le_continuum"
+    ],
+    "prerequisites": [
+      "Cardinal.aleph_succ",
+      "Order.succ API",
+      "Cardinal.cantor",
+      "Ordinal successor"
+    ]
+  },
+  {
+    "id": "ann-ch-oq01-04-veql",
+    "proofId": "continuum-hypothesis-oq-01",
+    "range": {
+      "startLine": 133,
+      "endLine": 165
+    },
+    "type": "insight",
+    "title": "V=L and Ultimate L: The CH-Implying Direction",
+    "content": "The CH-direction uses two axioms. VeqL (axiom : Prop) represents the Axiom of Constructibility. VeqL_implies_GCH (axiom) states V=L → GCH (the Generalized Continuum Hypothesis: 2^(ℵ_α) = ℵ_{α+1} for all α). VeqL_implies_CH is a derived theorem: VeqL → CH, proved by fun h => gch_implies_ch (VeqL_implies_GCH h). UltimateL (axiom : Prop) is Woodin's conjectural inner model, and UltimateL_implies_GCH is axiomatized as a conjecture. Both require ~2000+ lines of formalization (constructible hierarchy, Gödel operations, L satisfies ZFC axioms). The axiom approach captures these deep results without their proof obligations.",
+    "mathContext": "**Gödel's theorem (1940)**: In $L$, for every infinite cardinal $\\kappa$: $2^\\kappa = \\kappa^+ = \\aleph_{\\alpha+1}$ where $\\kappa = \\aleph_\\alpha$. This establishes GCH in $L$, hence CH. **Scott's theorem (1961)**: If a measurable cardinal $\\kappa$ exists, then $V \\neq L$ (because $V_\\kappa \\prec V$ via the ultrapower, but $L$ has no such reflection). **Ultimate L** (Woodin, 1999–): a conjectured canonical inner model $L[E]$ for all large cardinal extenders $E$, satisfying GCH while containing all known large cardinals.",
+    "significance": "key",
+    "relatedConcepts": [
+      "VeqL",
+      "GCH",
+      "gch_implies_ch",
+      "UltimateL",
+      "constructible hierarchy",
+      "Gödel operations"
+    ],
+    "prerequisites": [
+      "ContinuumHypothesis.GCH",
+      "gch_implies_ch",
+      "axiom keyword in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-ch-oq01-05-pfa",
+    "proofId": "continuum-hypothesis-oq-01",
+    "range": {
+      "startLine": 170,
+      "endLine": 211
+    },
+    "type": "insight",
+    "title": "PFA and Martin's Maximum: The ¬CH Direction via Forcing Axioms",
+    "content": "The ¬CH direction uses two forcing axioms. PFA (axiom : Prop) is the Proper Forcing Axiom; PFA_implies_continuum_eq_aleph_two (axiom) states PFA → continuum = ℵ₂. PFA_implies_not_CH is derived: assuming PFA and CH, we get aleph_1 = continuum = aleph_2 from CH and PFA respectively, but aleph_one_lt_aleph_two (proved by Cardinal.aleph_lt_aleph.mpr) gives contradiction via ne_of_lt. MM (axiom) is Martin's Maximum, with MM_implies_PFA (axiom), from which MM_implies_not_CH follows by composition. The proof of PFA_implies_not_CH is 7 lines: a concise contradiction from heq1 (continuum = aleph_1 from CH) and h2 (continuum = aleph_2 from PFA).",
+    "mathContext": "**PFA** (Baumgartner 1984): For every proper forcing $\\mathbb{P}$ and collection $\\mathcal{D}$ of $\\leq \\aleph_1$ dense open subsets of $\\mathbb{P}$, there is a filter $G$ meeting all sets in $\\mathcal{D}$. PFA implies $2^{\\aleph_0} = \\aleph_2$. **Proper forcing**: $\\mathbb{P}$ is proper if it does not collapse $\\omega_1$ (Shelah). **Martin's Maximum** (Foreman-Magidor-Shelah 1988): strongest forcing axiom — PFA for all forcing that preserves stationary subsets of $\\omega_1$. Both require supercompact cardinals for consistency.",
+    "significance": "key",
+    "relatedConcepts": [
+      "PFA",
+      "MM",
+      "Cardinal.aleph_lt_aleph",
+      "ne_of_lt",
+      "forcing axioms",
+      "supercompact cardinals"
+    ],
+    "prerequisites": [
+      "PFA_implies_continuum_eq_aleph_two",
+      "aleph_one_lt_aleph_two",
+      "Cardinal.aleph_lt_aleph.mpr"
+    ]
+  },
+  {
+    "id": "ann-ch-oq01-06-large-cardinals",
+    "proofId": "continuum-hypothesis-oq-01",
+    "range": {
+      "startLine": 217,
+      "endLine": 258
+    },
+    "type": "insight",
+    "title": "Scott's Theorem and Large Cardinal Compatibility: The Structural Asymmetry",
+    "content": "MeasurableCardinal is a structure with κ : Cardinal.{0}, uncountable : ℵ₀ < κ, and has_ultrafilter : True (ultrafilter witness abstracted). VeqL_incompatible_with_measurable (axiom): VeqL → ¬(Nonempty MeasurableCardinal), formalizing Scott 1961. axiom_selection_tension derives False from VeqL and Nonempty MeasurableCardinal. LargeCardinalCompatible Φ := ¬(Φ → ¬(Nonempty MeasurableCardinal)) — Φ doesn't exclude measurable cardinals. VeqL_not_large_cardinal_compatible uses not_not.mpr to extract VeqL_incompatible_with_measurable. PFA_large_cardinal_compatible (axiom) asserts PFA is compatible. asymmetry_in_large_cardinal_compatibility packages both into a conjunction: the ¬CH side (PFA) is large-cardinal compatible; the CH side (V=L) is not.",
+    "mathContext": "**Scott's theorem**: if $j: V \\to M$ is the ultrapower embedding witnessing measurability of $\\kappa$, then $j(\\kappa) > \\kappa$ and $V_{j(\\kappa)} \\subset M$. But in $L$, all cardinals are $L$-cardinals and no such reflection is possible: $L \\models \\kappa$ is not measurable for any $\\kappa$. **Large-cardinal compatible**: an axiom $\\Phi$ is LC-compatible if ZFC + $\\Phi$ + (measurable cardinal exists) is consistent. PFA is LC-compatible (uses supercompact in consistency proof). V=L is not (Scott 1961).",
+    "significance": "key",
+    "relatedConcepts": [
+      "MeasurableCardinal",
+      "VeqL_incompatible_with_measurable",
+      "LargeCardinalCompatible",
+      "Scott 1961",
+      "not_not.mpr"
+    ],
+    "prerequisites": [
+      "structure syntax",
+      "Nonempty typeclass",
+      "not_not",
+      "VeqL_incompatible_with_measurable axiom"
+    ]
+  },
+  {
+    "id": "ann-ch-oq01-07-summary",
+    "proofId": "continuum-hypothesis-oq-01",
+    "range": {
+      "startLine": 264,
+      "endLine": 317
+    },
+    "type": "insight",
+    "title": "Summary: The Open Question Has Substantive Content on Both Sides",
+    "content": "TheOpenQuestion : Prop formalizes the non-triviality: there exist axioms deciding CH in each direction. open_question_is_substantive proves this by exhibiting VeqL (CH side) and PFA (¬CH side). ch_landscape_summary adds large-cardinal compatibility: the existence of a CH-deciding + GCH axiom (VeqL) alongside a ¬CH-deciding + LC-compatible axiom (PFA). Both theorems are proved by explicit witnesses using ⟨...⟩ syntax. The conclusion block summarizes the Woodin Ultimate L program as the current state of the art — attempting to simultaneously satisfy GCH and large cardinals. The formal answer: ZFC cannot decide the axiom-selection question either.",
+    "mathContext": "**Key asymmetry**: V=L decides CH (→ GCH) but excludes measurable cardinals; PFA decides ¬CH ($2^{\\aleph_0} = \\aleph_2$) but is consistent with supercompact cardinals. Most set theorists favor PFA/MM on philosophical grounds (maximality principle, rich structure). **Woodin's program**: Ultimate $L$ would give a canonical inner model satisfying GCH + all large cardinals — potentially settling the debate. As of 2024, the **HOD Conjecture** (a key step) remains open. The formal structure theorem `ch_landscape_summary` captures this tension in 2 lines of Lean.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "TheOpenQuestion",
+      "open_question_is_substantive",
+      "ch_landscape_summary",
+      "Woodin Ultimate L",
+      "HOD conjecture"
+    ],
+    "prerequisites": [
+      "VeqL_decides_CH",
+      "PFA_decides_CH",
+      "LargeCardinalCompatible",
+      "PFA_large_cardinal_compatible"
+    ]
+  }
+]

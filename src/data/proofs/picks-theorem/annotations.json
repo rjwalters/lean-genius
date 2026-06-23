@@ -1,0 +1,265 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "picks-theorem",
+    "range": {
+      "startLine": 1,
+      "endLine": 49
+    },
+    "type": "concept",
+    "title": "Pick's Theorem: Wiedijk #92",
+    "content": "**Pick's Theorem (1899)**: For a simple polygon with vertices at integer lattice points, the area equals $A = i + b/2 - 1$, where $i$ is the number of interior lattice points and $b$ is the number of boundary lattice points. Georg Alexander Pick (1859-1942) published this in 1899; it remained obscure until popularized by Hugo Steinhaus in the 1960s. Pick was murdered in Theresienstadt concentration camp in 1942.",
+    "mathContext": "The formula $A = i + b/2 - 1$ connects discrete counting ($i, b \\in \\mathbb{N}$) to continuous measurement ($A \\in \\frac{1}{2}\\mathbb{Z}$). The proof strategy is: (1) verify for the unit right triangle ($i=0, b=3, A=1/2$), (2) show additivity under polygon combination, (3) triangulate any simple lattice polygon. The formalization uses $\\mathbb{Q}$ for area to handle half-integer values cleanly.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lattice-points",
+      "polygon-area",
+      "discrete-geometry",
+      "Wiedijk-100-theorems"
+    ],
+    "prerequisites": [
+      "Nat",
+      "Rat",
+      "SimpleLatticePolygon"
+    ]
+  },
+  {
+    "id": "ann-lattice-points",
+    "proofId": "picks-theorem",
+    "range": {
+      "startLine": 66,
+      "endLine": 77
+    },
+    "type": "definition",
+    "title": "Lattice Points",
+    "content": "Defines `LatticePoint := ℤ × ℤ` with coordinate accessors `.x` and `.y`, and the `origin := (0, 0)`. These are points of the integer lattice $\\mathbb{Z}^2$. In Pick's theorem, both interior and boundary points of the polygon must lie on this lattice, and the polygon vertices must be lattice points.",
+    "mathContext": "The integer lattice $\\mathbb{Z}^2 \\subset \\mathbb{R}^2$ is a rank-2 free abelian group under addition. A **lattice polygon** has all vertices in $\\mathbb{Z}^2$. The lattice structure ensures that boundary points between consecutive vertices can be counted using the GCD formula: the segment from $(x_1, y_1)$ to $(x_2, y_2)$ contains $\\gcd(|x_2-x_1|, |y_2-y_1|) - 1$ interior lattice points.",
+    "significance": "key",
+    "relatedConcepts": [
+      "integer-lattice",
+      "Z-squared",
+      "GCD-formula",
+      "lattice-polygon"
+    ],
+    "prerequisites": [
+      "Int",
+      "Prod"
+    ]
+  },
+  {
+    "id": "ann-polygon-structure",
+    "proofId": "picks-theorem",
+    "range": {
+      "startLine": 102,
+      "endLine": 122
+    },
+    "type": "definition",
+    "title": "Simple Lattice Polygon Structure",
+    "content": "The `SimpleLatticePolygon` structure axiomatizes a simple lattice polygon by its three essential quantities: `interior_count` ($i$), `boundary_count` ($b$), and `area` ($A : \\mathbb{Q}$). Constraints require `area_pos : 0 < A` (non-degenerate) and `boundary_ge_three : 3 ≤ b` (at least a triangle). Custom notation `i(P)`, `b(P)`, `A(P)` provides concise access.",
+    "mathContext": "The axiomatized approach avoids building full polygon topology infrastructure (Jordan curve theorem, point-in-polygon tests). The constraint $b \\geq 3$ ensures the polygon is non-degenerate — a triangle is the minimal simple polygon with $b = 3$ (vertices only, no interior edge points). Area lives in $\\mathbb{Q}$ rather than $\\mathbb{R}$ because Pick's formula guarantees $A \\in \\frac{1}{2}\\mathbb{Z} \\subset \\mathbb{Q}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "axiomatized-structure",
+      "simple-polygon",
+      "Jordan-curve-theorem"
+    ],
+    "prerequisites": [
+      "Nat",
+      "Rat",
+      "structure"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "picks-theorem",
+    "range": {
+      "startLine": 138,
+      "endLine": 168
+    },
+    "type": "concept",
+    "title": "Pick's Theorem (Wiedijk #92)",
+    "content": "**Pick's Theorem**: `picks_formula interior boundary := interior + boundary/2 - 1`. The axiom `picks_theorem` asserts $A(P) = i(P) + b(P)/2 - 1$. Three derived theorems give: (1) `picks_theorem_explicit` — unfolds `picks_formula`; (2) `interior_from_area_boundary` — solves for $i = A - b/2 + 1$; (3) `boundary_from_area_interior` — solves for $b = 2(A - i + 1)$. All proved by `linarith` from the main axiom.",
+    "mathContext": "The formula $A = i + b/2 - 1$ can be rearranged to $2A = 2i + b - 2$, showing that $2A$ is always an integer for lattice polygons. This connects to the **Euler characteristic**: for a triangulated polygon, $V - E + F = 2$ (Euler's formula), and Pick's theorem can be derived from it by counting how vertices and edges contribute to interior/boundary/face counts.",
+    "significance": "key",
+    "relatedConcepts": [
+      "picks-formula",
+      "Euler-characteristic",
+      "linarith",
+      "algebraic-rearrangement"
+    ],
+    "prerequisites": [
+      "picks_formula",
+      "SimpleLatticePolygon",
+      "linarith"
+    ]
+  },
+  {
+    "id": "ann-unit-triangle",
+    "proofId": "picks-theorem",
+    "range": {
+      "startLine": 189,
+      "endLine": 207
+    },
+    "type": "definition",
+    "title": "Unit Right Triangle Verification",
+    "content": "The `unit_right_triangle` with vertices $(0,0)$, $(1,0)$, $(0,1)$ has $i=0$, $b=3$, $A=1/2$. The theorem `picks_unit_triangle` verifies $0 + 3/2 - 1 = 1/2$ by `norm_num`. This is the fundamental building block: every simple lattice polygon can be triangulated into lattice triangles, and every lattice triangle can be decomposed into unit right triangles.",
+    "mathContext": "The unit right triangle has minimal area $A = 1/2$ among non-degenerate lattice polygons (by Pick's formula, $A \\geq 0 + 3/2 - 1 = 1/2$ since $i \\geq 0$ and $b \\geq 3$). This connects to the fact that the fundamental domain of $\\text{SL}_2(\\mathbb{Z})$ acting on $\\mathbb{R}^2$ has area 1 (two unit right triangles). The `norm_num` tactic handles the rational arithmetic $0 + 3/2 - 1 = 1/2$ automatically.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fundamental-domain",
+      "triangulation",
+      "minimal-area",
+      "norm_num"
+    ],
+    "prerequisites": [
+      "SimpleLatticePolygon",
+      "picks_formula",
+      "norm_num"
+    ]
+  },
+  {
+    "id": "ann-rectangle",
+    "proofId": "picks-theorem",
+    "range": {
+      "startLine": 240,
+      "endLine": 265
+    },
+    "type": "concept",
+    "title": "Rectangle Verification",
+    "content": "Defines `rectangle m n` with $i = (m-1)(n-1)$, $b = 2m+2n$, $A = mn$. The theorem `picks_rectangle` verifies the formula algebraically: $(m-1)(n-1) + (2m+2n)/2 - 1 = mn - m - n + 1 + m + n - 1 = mn$. Proved by `ring` after casting natural numbers to rationals. Concrete examples: $3 \\times 4$ rectangle ($i=6, b=14, A=12$), $5 \\times 7$ rectangle ($i=24, b=24, A=35$), unit square ($i=0, b=4, A=1$).",
+    "mathContext": "For an $m \\times n$ rectangle, the boundary count $b = 2m + 2n$ counts the perimeter lattice points (excluding corners counted once each: $4$ corners $+ (m-1) + (m-1) + (n-1) + (n-1)$ edge points $= 2m + 2n$). The interior count $(m-1)(n-1)$ is the product of lattice rows and columns strictly inside. The `ring` tactic handles the algebraic identity after `Nat.cast_sub` lemmas convert $\\mathbb{N}$ subtraction to $\\mathbb{Q}$ subtraction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "rectangle",
+      "ring-tactic",
+      "Nat.cast_sub",
+      "worked-examples"
+    ],
+    "prerequisites": [
+      "SimpleLatticePolygon",
+      "picks_formula",
+      "ring",
+      "Nat.cast_pos"
+    ]
+  },
+  {
+    "id": "ann-large-triangle",
+    "proofId": "picks-theorem",
+    "range": {
+      "startLine": 283,
+      "endLine": 293
+    },
+    "type": "definition",
+    "title": "Large Right Triangle with Edge Points",
+    "content": "The triangle with vertices $(0,0)$, $(4,0)$, $(0,4)$ demonstrates edge lattice points: $b = 12$ (3 vertices + 3 edge points per side), $i = 3$, $A = 8$. Verification: $3 + 12/2 - 1 = 3 + 6 - 1 = 8$. The boundary count uses the GCD formula: the hypotenuse from $(4,0)$ to $(0,4)$ passes through $\\gcd(4,4) - 1 = 3$ interior lattice points.",
+    "mathContext": "For a right triangle with legs of length $n$, the boundary count is $b = 3n$ (since each edge of length $n$ contributes $n+1$ lattice points, but the 3 vertices are shared). The interior count follows from Pick: $i = n^2/2 - 3n/2 + 1 = (n-1)(n-2)/2$. For $n=4$: $i = 3 \\cdot 2/2 = 3$. The GCD formula for edge counting is: segment from $\\mathbf{p}$ to $\\mathbf{q}$ contains $\\gcd(|q_x - p_x|, |q_y - p_y|) + 1$ lattice points total.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "GCD-boundary-formula",
+      "edge-lattice-points",
+      "right-triangle"
+    ],
+    "prerequisites": [
+      "SimpleLatticePolygon",
+      "picks_formula",
+      "norm_num"
+    ]
+  },
+  {
+    "id": "ann-additivity",
+    "proofId": "picks-theorem",
+    "range": {
+      "startLine": 326,
+      "endLine": 334
+    },
+    "type": "concept",
+    "title": "Additivity Property",
+    "content": "When polygon $P = P_1 \\cup P_2$ shares an edge with $e$ lattice points: $i(P) = i_1 + i_2 + (e-2)$ (shared edge interior becomes polygon interior), $b(P) = b_1 + b_2 - 2e + 2$ (shared edge removed from boundary). The theorem `picks_additive` proves the formula is preserved: $\\text{picks}(i_1, b_1) + \\text{picks}(i_2, b_2) = \\text{picks}(i_1 + i_2 + e - 2, b_1 + b_2 - 2e + 2)$. Proved by `ring` after `Nat.cast_sub`.",
+    "mathContext": "The additivity identity is the key inductive step: if Pick's formula holds for sub-polygons $P_1$ and $P_2$, it holds for their union $P$. The shared edge contributes $e$ lattice points; the $e-2$ interior points of the edge become interior points of $P$, and the 2 endpoints remain boundary. Algebraically: $(i_1 + b_1/2 - 1) + (i_2 + b_2/2 - 1) = (i_1 + i_2 + e - 2) + (b_1 + b_2 - 2e + 2)/2 - 1$. This reduces Pick's theorem to triangulation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "polygon-combination",
+      "shared-edge",
+      "induction",
+      "triangulation"
+    ],
+    "prerequisites": [
+      "picks_formula",
+      "Nat.cast_sub",
+      "ring"
+    ]
+  },
+  {
+    "id": "ann-half-integer",
+    "proofId": "picks-theorem",
+    "range": {
+      "startLine": 357,
+      "endLine": 368
+    },
+    "type": "concept",
+    "title": "Half-Integer Area Corollary",
+    "content": "Two corollaries: `twice_area_is_integer` proves $\\exists n \\in \\mathbb{Z}, A(P) = n/2$ (area is always a half-integer), and `area_half_integer` proves $2A = 2i + b - 2$. The first is proved by exhibiting the witness $n = 2i + b - 2$; both use `linarith`. This connects to the **shoelace formula**: $2A = |\\sum_i (x_i y_{i+1} - x_{i+1} y_i)|$ always gives an integer for lattice polygons.",
+    "mathContext": "The identity $2A = 2i + b - 2$ shows that twice the area is always a non-negative integer. Combined with the shoelace formula $2A = |\\sum_{i=0}^{n-1}(x_i y_{i+1} - x_{i+1} y_i)|$ (where indices are mod $n$), we get $2i + b - 2 = |\\sum(x_i y_{i+1} - x_{i+1} y_i)|$, a purely combinatorial identity relating lattice point counts to a cross-product sum. The shoelace formula itself follows from Green's theorem: $A = \\frac{1}{2}\\oint(x\\,dy - y\\,dx)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "shoelace-formula",
+      "Green-theorem",
+      "half-integer",
+      "cross-product-sum"
+    ],
+    "prerequisites": [
+      "picks_theorem_explicit",
+      "linarith",
+      "Int.cast"
+    ]
+  },
+  {
+    "id": "ann-3d-failure",
+    "proofId": "picks-theorem",
+    "range": {
+      "startLine": 400,
+      "endLine": 421
+    },
+    "type": "definition",
+    "title": "Failure in 3D: Reeve Tetrahedra",
+    "content": "Pick's theorem does NOT generalize to 3D. The **Reeve tetrahedra** with vertices $(0,0,0)$, $(1,0,0)$, $(0,1,0)$, $(1,1,r)$ have $i = 0$ interior and $b = 4$ boundary lattice points for all $r$, but volume $= r/6$ varies. The theorem `picks_fails_3D` proves same counts but different volumes for $r=1$ and $r=2$. The proper 3D generalization is **Ehrhart theory**: $|nP \\cap \\mathbb{Z}^d|$ is a polynomial in $n$ (the Ehrhart polynomial).",
+    "mathContext": "The Reeve tetrahedra show that in $d \\geq 3$, volume is not determined by lattice point counts alone. For the Reeve tetrahedron $T_r$: $\\text{Vol}(T_r) = r/6$ but $|T_r \\cap \\mathbb{Z}^3| = 4$ for all $r$. Ehrhart's theorem (1962) provides the correct generalization: for a $d$-dimensional lattice polytope $P$, $L_P(n) = |nP \\cap \\mathbb{Z}^d|$ is a degree-$d$ polynomial with leading coefficient $\\text{Vol}(P)$ and constant term 1. Pick's formula is the $d=2$ case: $L_P(n) = An^2 + (b/2)n + 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Reeve-tetrahedra",
+      "Ehrhart-polynomial",
+      "higher-dimensions",
+      "counterexample"
+    ],
+    "prerequisites": [
+      "reeve_volume",
+      "reeve_interior",
+      "reeve_boundary",
+      "norm_num"
+    ]
+  },
+  {
+    "id": "ann-applications",
+    "proofId": "picks-theorem",
+    "range": {
+      "startLine": 440,
+      "endLine": 484
+    },
+    "type": "definition",
+    "title": "Applications and Lattice Width",
+    "content": "Practical applications include surveying, computer graphics, combinatorics, and algorithm verification. The `compute_area` function gives $O(1)$ area computation from point counts (vs $O(n)$ for the shoelace formula). The formalization also defines `lattice_width_x` and axiomatizes `area_bounded_by_box`: a polygon contained in a $w_x \\times w_y$ bounding box has area at most $w_x \\cdot w_y$. The final section exports main results via `#check`.",
+    "mathContext": "The lattice width in direction $\\mathbf{v}$ is the number of parallel lattice hyperplanes (perpendicular to $\\mathbf{v}$) that intersect the polygon. For axis-aligned width: $w_x = x_{\\max} - x_{\\min} + 1$. The bounding box bound $A \\leq w_x \\cdot w_y$ is tight for rectangles. Combined with Pick's formula, this gives $i \\leq w_x w_y - b/2 + 1$, bounding interior points from the bounding box. These bounds are useful in computational geometry and integer programming.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "computational-geometry",
+      "lattice-width",
+      "bounding-box",
+      "integer-programming"
+    ],
+    "prerequisites": [
+      "picks_formula",
+      "compute_area",
+      "area_bounded_by_box_axiom"
+    ]
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "ann-cs-lower-bound",
+    "proofId": "cauchy-schwarz-integral-oq-02-oq-03",
+    "range": { "startLine": 64, "endLine": 72 },
+    "type": "insight",
+    "title": "Reverse Minkowski = Forward Minkowski with the CS Lower Bound",
+    "content": "The forward Minkowski proof (parent) uses ⟪f,g⟫ ≤ ‖f‖·‖g‖ (the CS UPPER bound) in ‖f+g‖² = ‖f‖²+2⟪f,g⟫+‖g‖² to get ‖f+g‖² ≤ (‖f‖+‖g‖)². Here we use the CS LOWER bound: |⟪f,g⟫| ≤ ‖f‖·‖g‖ unpacks (abs_le.mp) to −‖f‖·‖g‖ ≤ ⟪f,g⟫, so ‖f+g‖² ≥ ‖f‖²−2‖f‖·‖g‖+‖g‖² = (‖f‖−‖g‖)². Taking square roots (Real.sqrt_sq_eq_abs on the left, Real.sqrt_sq on the right) gives |‖f‖−‖g‖| ≤ ‖f+g‖. The forward and reverse inequalities are thus the two halves of one Cauchy-Schwarz estimate.",
+    "mathContext": "$$-\\|f\\|\\|g\\| \\le \\langle f,g\\rangle \\implies \\|f+g\\|^2 \\ge (\\|f\\|-\\|g\\|)^2$$",
+    "significance": "key",
+    "relatedConcepts": ["Cauchy-Schwarz", "norm_add_sq_real", "abs_le", "Real.sqrt_sq_eq_abs"],
+    "prerequisites": ["inner product norm-squared identity", "square root monotonicity"]
+  },
+  {
+    "id": "ann-general-normed",
+    "proofId": "cauchy-schwarz-integral-oq-02-oq-03",
+    "range": { "startLine": 94, "endLine": 107 },
+    "type": "insight",
+    "title": "General Lᵖ Needs No Inner Product — Just the Forward Triangle",
+    "content": "For p ≠ 2 there is no inner product, but the reverse inequality requires no new analysis: it is a formal consequence of the forward triangle inequality, valid in any NormedAddCommGroup. abs_sub_le_iff splits |‖u‖−‖v‖| ≤ ‖u+v‖ into two symmetric one-sided bounds; each follows from writing u = (u+v)−v (add_sub_cancel_right) and applying norm_sub_le: ‖u‖ ≤ ‖u+v‖+‖v‖. reverse_minkowski_lp is then just the specialization to Lp ℝ p μ, whose NormedAddCommGroup instance encodes forward Minkowski (from CS/Hölder in the parent).",
+    "mathContext": "$$\\|u\\| = \\|(u+v)-v\\| \\le \\|u+v\\|+\\|v\\| \\implies \\|u\\|-\\|v\\| \\le \\|u+v\\|$$",
+    "significance": "key",
+    "relatedConcepts": ["norm_sub_le", "abs_sub_le_iff", "NormedAddCommGroup", "Lp spaces"],
+    "prerequisites": ["forward triangle inequality", "normed group structure of Lᵖ"]
+  },
+  {
+    "id": "ann-forms",
+    "proofId": "cauchy-schwarz-integral-oq-02-oq-03",
+    "range": { "startLine": 118, "endLine": 136 },
+    "type": "insight",
+    "title": "One-Sided and Difference Forms",
+    "content": "norm_sub_norm_le_norm_add gives the one-sided ‖u‖−‖v‖ ≤ ‖u+v‖ (drop the absolute value via le_abs_self). reverse_minkowski_sub gives the classical difference form |‖u‖−‖v‖| ≤ ‖u−v‖ by substituting −v (norm_neg turns ‖−v‖ into ‖v‖, sub_eq_add_neg turns u+(−v) into u−v). norm_add_ge_norm_sub_norm restates the result as the lower bound ‖f+g‖ ≥ ‖f‖−‖g‖ exactly as the open question poses it.",
+    "mathContext": "$$\\big|\\|u\\|-\\|v\\|\\big| \\le \\|u-v\\| \\quad(\\text{reflection } v\\mapsto -v)$$",
+    "significance": "supporting",
+    "relatedConcepts": ["le_abs_self", "norm_neg", "sub_eq_add_neg", "reverse triangle inequality"],
+    "prerequisites": ["absolute value bounds", "norm of negation"]
+  }
+]

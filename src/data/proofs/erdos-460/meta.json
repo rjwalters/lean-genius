@@ -1,0 +1,210 @@
+{
+  "id": "erdos-460",
+  "title": "Erdős Problem #460: Greedy Coprime Sieve Reciprocals",
+  "slug": "erdos-460",
+  "description": "Let $a_0 = 0$, $a_1 = 1$. Define $a_k$ as the least integer $> a_{k-1}$ with $\\gcd(n - a_k, n - a_i) = 1$ for all $i < k$. Does $\\sum_{0 < a_i < n} \\frac{1}{a_i} \\to \\infty$ as $n \\to \\infty$? OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/460",
+    "date": "1977",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos460Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "sieve-methods",
+      "reciprocal-sums",
+      "coprimality",
+      "greedy-algorithms",
+      "smooth-numbers"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "erdosNumber": 460,
+    "erdosUrl": "https://erdosproblems.com/460",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-15",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Coprime",
+        "description": "Coprimality predicate for natural numbers",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Nat.minFac",
+        "description": "Smallest prime factor of a natural number",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Finset.range",
+        "description": "Finite set {0, ..., n-1} for bounded summation",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Real logarithm for growth bound expressions",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Constructive well-founded recursive definition of the greedy coprime sieve sequence, with sieve_initial and sieve_greedy proved from the definition (sieve_greedy guarded by hactive to exclude the n+1 sentinel)",
+      "Formal statement of ErdosProblem460 as divergence of reciprocal sums",
+      "Formalization of the Eggleton-Erdős-Selfridge bound a_k < k^{2+o(1)} (the sole axiom) and the conjectured a_k ≪ k log k as an open-conjecture def",
+      "Definition of the least-prime-factor filtered sum f(n) and the proved-modulo-sorry reduction filtered_sum_implies_full",
+      "Splitting into smallPrimeDivisibleSum and largePrimeSum with proved sub-sum bounds and erdos_460_restricted_question (divergence of either restricted sum implies the conjecture)"
+    ],
+    "axiomCount": 1,
+    "lineCount": 327,
+    "assumptions": "1 axiom: eggleton_erdos_selfridge (deep result). 1 sorry: filtered_sum_implies_full (converted from axiom to theorem-with-sorry for axiom integrity). sieve_greedy proved from constructive definition (with hactive guard for sentinel case). sieve_conjectured_bound demoted to def.",
+    "theoremCount": 15,
+    "definitionCount": 9
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 327,
+    "axiomCount": 1,
+    "theoremCount": 15,
+    "definitionCount": 9,
+    "path": "Proofs/Erdos460Problem.lean",
+    "sorries": 1
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-203",
+      "relationship": "technique",
+      "description": "Both involve covering systems and coprimality constraints: Problem #203 uses covering congruences to avoid primes, Problem #460 uses greedy coprime selection"
+    },
+    {
+      "targetId": "erdos-246",
+      "relationship": "related",
+      "description": "Both study reciprocal sums with greedy selection: Problem #246 on greedy unit fractions, Problem #460 on greedy coprime sieve reciprocals"
+    },
+    {
+      "targetId": "erdos-248",
+      "relationship": "technique",
+      "description": "Both involve sieve methods in number theory: Problem #248 uses sieve bounds for prime distribution, Problem #460 applies a greedy coprime sieve"
+    },
+    {
+      "targetId": "erdos-233",
+      "relationship": "thematic",
+      "description": "Both concern asymptotic behavior of prime-related sums: Problem #233 on sum of squares of prime gaps, Problem #460 on reciprocal sums of coprime sieve terms"
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős posed this problem in 1977 (p.64) and it appears in Erdős-Graham (1980, p.91). Given n, one greedily selects a_0 = 0, a_1 = 1, and each a_k as the smallest integer exceeding a_{k-1} with n - a_k coprime to all previous n - a_i. The resulting shifted values {n - a_k} are pairwise coprime.\n\nEggleton, Erdős, and Selfridge proved a_k < k^{2+o(1)} and conjectured the stronger bound a_k ≪ k log k. The quadratic bound alone is insufficient for reciprocal sum divergence since Σ 1/k^{2+ε} converges, but the conjectured k log k bound would imply divergence since Σ 1/(k log k) diverges by the integral test.\n\nThe problem connects greedy algorithms in multiplicative number theory to reciprocal sum divergence, a theme appearing across many Erdős problems. The least-prime-factor sufficient condition links it to smooth number distribution.",
+    "problemStatement": "Let $a_0 = 0$, $a_1 = 1$, and $a_k$ the least integer $> a_{k-1}$ with $\\gcd(n - a_k, n - a_i) = 1$ for all $i < k$. Does $\\sum_{0 < a_i < n} \\frac{1}{a_i} \\to \\infty$ as $n \\to \\infty$?",
+    "text": "Let $a_0 = 0$, $a_1 = 1$. Define $a_k$ as the least integer $> a_{k-1}$ with $\\gcd(n - a_k, n - a_i) = 1$ for all $i < k$. Does $\\sum_{0 < a_i < n} \\frac{1}{a_i} \\to \\infty$ as $n \\to \\infty$? OPEN.",
+    "proofStrategy": "The formalization defines greedyCoprimeSieve constructively as a well-founded recursive function ℕ → ℕ → ℕ (a_0 = 0, a_1 = 1, and a_{k+2} = the min' of the candidate set, with an n+1 sentinel when no candidate exists), so sieve_initial and sieve_greedy are now proved theorems rather than axioms — sieve_greedy carries an `hactive` guard because the unguarded statement is false at the sentinel. The reciprocal sum sieveReciprocalSum is defined via Finset.range and conditional summation. ErdosProblem460 states that for every M > 0, there exists N₀ such that Σ 1/a_i > M for all n ≥ N₀. Only the Eggleton-Erdős-Selfridge upper bound a_k < k^{2+ε} remains an axiom; the stronger k log k bound is a def (SieveConjecturedBound) marking it as an open conjecture. A key structural insight is the least-prime-factor sufficient condition: if f(n) = Σ_{a < n, P⁻(n-a) > a} 1/a → ∞, then the full sum diverges (filtered_sum_implies_full, the file's single sorry). The formalization also splits the sum into small-prime and large-prime components and proves (erdos_460_restricted_question) that divergence of either implies the conjecture.",
+    "keyInsights": [
+      "The greedy sieve produces a sequence whose shifted values n - a_k are pairwise coprime, connecting coprimality structure to sequence growth",
+      "Eggleton-Erdős-Selfridge: a_k < k^{2+o(1)}, conjectured a_k ≪ k log k; the quadratic bound alone is insufficient to prove divergence via comparison",
+      "The least-prime-factor filtered sum f(n) = Σ_{a < n, P⁻(n-a) > a} 1/a provides a sufficient condition — its divergence implies Problem 460",
+      "Erdős asked whether the smallPrimeDivisibleSum and largePrimeSum each individually diverge, which would independently imply the conjecture",
+      "The problem sits at the intersection of sieve theory, smooth number distribution, and additive combinatorics of coprime sets"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sieve-sequence",
+      "title": "Section I: The Greedy Coprime Sieve Sequence",
+      "startLine": 31,
+      "endLine": 107,
+      "summary": "Defines greedyCoprimeSieve as a genuine well-founded recursive function (a_0 = 0, a_1 = 1, and a_{k+2} = min' of the filtered candidate set, returning the sentinel n+1 when no valid candidate exists). sieve_initial proves the base values, and sieve_greedy proves — when the sieve is active (result ≤ n) — the three defining properties: strict increase, pairwise coprimality of the shifted values, and minimality. Both were previously axioms; sieve_greedy needs an hactive guard because the original unguarded axiom was false for the n+1 sentinel case (n=2, k=2)."
+    },
+    {
+      "id": "sieve-count",
+      "title": "Section II: The Sequence Terminates Before n",
+      "startLine": 108,
+      "endLine": 116,
+      "summary": "sieveCount n counts how many sieve terms are < n, via Finset.card on Finset.range n filtered by existence of a sieve preimage. This finiteness makes the reciprocal sum well-defined."
+    },
+    {
+      "id": "reciprocal-sum",
+      "title": "Section III: The Reciprocal Sum",
+      "startLine": 117,
+      "endLine": 127,
+      "summary": "sieveReciprocalSum n sums 1/a_k over the first sieveCount n indices, with a conditional guard excluding a_0 = 0 and any term ≥ n. This is the quantity whose divergence the problem asks about."
+    },
+    {
+      "id": "conjecture",
+      "title": "Section IV: The Conjecture",
+      "startLine": 128,
+      "endLine": 141,
+      "summary": "ErdosProblem460 states divergence in ε-N form: for every M > 0 there is N_0 such that sieveReciprocalSum n > M for all n ≥ N_0. This is the central open question, encoded as a Prop."
+    },
+    {
+      "id": "known-bounds",
+      "title": "Section V: Known Bounds",
+      "startLine": 142,
+      "endLine": 168,
+      "summary": "The lone axiom eggleton_erdos_selfridge encodes the proved upper bound a_k < k^{2+ε}. SieveConjecturedBound is a def (an OPEN conjecture, demoted from axiom) stating a_k ≪ k log k. sieveReciprocalSum_nonneg proves the sum is non-negative. The quadratic bound gives Σ 1/k^{2+ε} (convergent, hence insufficient); the conjectured k log k bound would force divergence."
+    },
+    {
+      "id": "least-prime-factor",
+      "title": "Section VI: Least Prime Factor Connection",
+      "startLine": 169,
+      "endLine": 226,
+      "summary": "Defines leastPrimeFactor (Nat.minFac for n ≥ 2, else 0) with three proved support lemmas (prime, dvd, le). leastPrimeFilteredSum n = Σ_{0<a<n, P⁻(n-a)>a} 1/a is a smooth-number-filtered sub-sum. filtered_sum_implies_full reduces the conjecture to divergence of this filtered sum — it carries the file's single sorry (converted from an axiom for axiom integrity, left for Aristotle to attempt)."
+    },
+    {
+      "id": "restricted-sums",
+      "title": "Section VII: Restricted Sums",
+      "startLine": 227,
+      "endLine": 292,
+      "summary": "smallPrimeDivisibleSum and largePrimeSum partition the sieve reciprocal sum by whether n - a_k has a prime factor ≤ a_k. Two proved private lemmas bound each restricted sum above by sieveReciprocalSum, and erdos_460_restricted_question proves the disjunctive sufficient condition: divergence of either restricted sum implies ErdosProblem460."
+    },
+    {
+      "id": "structural-properties",
+      "title": "Section VIII: Additional Structural Properties",
+      "startLine": 293,
+      "endLine": 327,
+      "summary": "Auxiliary proved theorems: sieve_at_zero and sieve_at_one give the base values by rfl, smallPrimeDivisibleSum_nonneg and largePrimeSum_nonneg establish non-negativity of the restricted sums, and leastPrimeFactor_prime_eq shows P⁻(p) = p for prime p."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 460 asks whether the reciprocal sum of a greedy coprime sieve sequence diverges. The formalization captures the complete problem structure: a constructive recursive sieve definition with the greedy-selection properties proved (not axiomatized), the known k^{2+o(1)} growth bound as the single axiom (too weak to resolve divergence), the conjectured k log k bound as an open-conjecture def, a sufficient condition via least-prime-factor filtered sums (filtered_sum_implies_full, the lone sorry), and Erdős's further question about restricted sum divergence proved as a reduction.",
+    "implications": "Resolution would connect greedy coprime selection with reciprocal sum divergence, bridging sieve theory, smooth number distribution, and additive combinatorics. The sufficient condition via P⁻(n-a) > a links the problem to the distribution of smooth numbers in arithmetic progressions.",
+    "openQuestions": [
+      "Does Σ_{0 < a_i < n} 1/a_i → ∞ as n → ∞?",
+      "Is a_k ≪ k log k (stronger than the known k^{2+o(1)} bound)?",
+      "Do the restricted sums (smallPrimeDivisibleSum and largePrimeSum) individually diverge?",
+      "Does the least-prime-factor filtered sum f(n) diverge?"
+    ]
+  },
+  "references": [
+    {
+      "key": "erdos1977",
+      "title": "Problems and results in combinatorial number theory",
+      "author": "P. Erdős",
+      "year": "1977",
+      "pages": "p.64"
+    },
+    {
+      "key": "erdosgraham1980",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "author": "P. Erdős, R.L. Graham",
+      "year": "1980",
+      "pages": "p.91"
+    },
+    {
+      "key": "eggleton-erdos-selfridge",
+      "title": "Growth bound for greedy coprime sieve sequences",
+      "author": "R.B. Eggleton, P. Erdős, J.L. Selfridge"
+    }
+  ],
+  "sorries": 1
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "mantel-oq0402-ann-import",
+    "proofId": "mantel-theorem-oq-04-oq-02",
+    "range": { "startLine": 1, "endLine": 50 },
+    "type": "concept",
+    "title": "Imports and Statement: the Sharpness Half of Mantel's Theorem",
+    "content": "Besides import Mathlib (for the handshake formula, completeBipartiteGraph, SimpleGraph.Iso, and Colorable.cliqueFree), the file imports the sibling Proofs.MantelTheoremOQ04, reusing its isomorphism turanGraphTwoIsoCompleteBipartite. The docstring locates this entry as the existence/tightness direction: the companion entries give conditional equality characterizations ('if a graph attains the maximum it is the Turán/bipartite graph'), but do not establish that ⌊n²/4⌋ is attained at all. Computing the extremal graph's edge count supplies that missing half.",
+    "mathContext": "Builds on the handshake formula $\\sum_v \\deg v = 2\\,\\#E$ and the parity-bijection isomorphism of the parent entry.",
+    "significance": "central",
+    "relatedConcepts": ["Mantel's theorem", "sharpness", "turanGraph", "completeBipartiteGraph", "handshake lemma"],
+    "prerequisites": ["simple graphs", "Mantel's theorem", "graph isomorphism"]
+  },
+  {
+    "id": "mantel-oq0402-ann-neighbors-degrees",
+    "proofId": "mantel-theorem-oq-04-oq-02",
+    "range": { "startLine": 60, "endLine": 82 },
+    "type": "technique",
+    "title": "Neighbour Sets and Per-Side Degrees of K_{V,W}",
+    "content": "In a complete bipartite graph the neighbours of a left vertex are exactly the right side (and symmetrically), proved by ext + cases on the vertex + simp on the @[simps]-generated bipartite adjacency. Counting these neighbour sets via card_neighborFinset_eq_degree and card_image_of_injective (Sum.inl/inr are injective) gives the constant per-side degrees: every left vertex has degree |W|, every right vertex degree |V|.",
+    "mathContext": "$\\deg(\\mathrm{inl}\\,i) = |W|$, $\\deg(\\mathrm{inr}\\,j) = |V|$.",
+    "significance": "supporting",
+    "relatedConcepts": ["neighborFinset", "degree", "completeBipartiteGraph", "card_image_of_injective"],
+    "prerequisites": ["graph degree", "finite cardinality"]
+  },
+  {
+    "id": "mantel-oq0402-ann-edge-count",
+    "proofId": "mantel-theorem-oq-04-oq-02",
+    "range": { "startLine": 84, "endLine": 98 },
+    "type": "key-step",
+    "title": "Edge Count via the Handshake Formula: #E(K_{V,W}) = |V|·|W|",
+    "content": "card_edgeFinset_completeBipartiteGraph is the main new lemma — Mathlib lacks it (it has only the equipartite multipartite card_edgeFinset_completeEquipartiteGraph). The proof feeds the handshake formula ∑ v, deg v = 2·#E: splitting the sum over V ⊕ W with Fintype.sum_sum_type and the constant per-side degrees gives |V|·|W| + |W|·|V| = 2·#E. Since omega treats |V|·|W| and |W|·|V| as distinct atoms, a single mul_comm identifies them before omega reads off #E = |V|·|W|. Specialised to Fin a ⊕ Fin b it yields a·b.",
+    "mathContext": "$\\#E(K_{V,W}) = |V|\\cdot|W|$, from $\\sum_v \\deg v = 2\\#E$.",
+    "significance": "central",
+    "relatedConcepts": ["sum_degrees_eq_twice_card_edges", "Fintype.sum_sum_type", "handshake lemma", "omega"],
+    "prerequisites": ["degree-sum formula", "finite sums over sum types"]
+  },
+  {
+    "id": "mantel-oq0402-ann-arithmetic",
+    "proofId": "mantel-theorem-oq-04-oq-02",
+    "range": { "startLine": 100, "endLine": 115 },
+    "type": "key-step",
+    "title": "The Arithmetic Identity ⌈n/2⌉·⌊n/2⌋ = ⌊n²/4⌋",
+    "content": "half_succ_mul_half connects the part-product to the Mantel bound by a two-case parity split. For n = 2m, both ⌈n/2⌉·⌊n/2⌋ and ⌊n²/4⌋ equal m². For n = 2m+1, both equal m(m+1) = m²+m, the floor in ⌊n²/4⌋ absorbing the +1/4 (using (2m+1)² = 4·(m+1)·m + 1). Each case rewrites the halves and the square explicitly so omega can discharge the remaining Nat-division goal.",
+    "mathContext": "$\\lceil n/2\\rceil\\cdot\\lfloor n/2\\rfloor = \\lfloor n^2/4\\rfloor$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat division", "parity", "omega", "floor"],
+    "prerequisites": ["Euclidean division", "even/odd case analysis"]
+  },
+  {
+    "id": "mantel-oq0402-ann-sharpness",
+    "proofId": "mantel-theorem-oq-04-oq-02",
+    "range": { "startLine": 117, "endLine": 140 },
+    "type": "key-step",
+    "title": "Sharpness: the Extremal Graph Is Triangle-Free with ⌊n²/4⌋ Edges",
+    "content": "card_edgeFinset_turanGraphTwo transports the bipartite edge count along the parent's isomorphism turanGraphTwoIsoCompleteBipartite (edge counts are isomorphism invariants, Iso.card_edgeFinset_eq) and applies the arithmetic identity, giving #E(turanGraph n 2) = ⌊n²/4⌋. turanGraphTwo_cliqueFree_three proves triangle-freeness with no combinatorics: the parity map v ↦ v % 2 is a 2-colouring into Fin 2, and a 2-colourable graph is K₃-free (Colorable.cliqueFree, 2 < 3). mantel_bound_attained packages both halves — the existence direction that makes Mantel's bound provably sharp.",
+    "mathContext": "$\\mathrm{turanGraph}\\,n\\,2$ is $K_3$-free and $\\#E = \\lfloor n^2/4\\rfloor$.",
+    "significance": "central",
+    "relatedConcepts": ["Iso.card_edgeFinset_eq", "Colorable.cliqueFree", "graph coloring", "extremal graph theory"],
+    "prerequisites": ["graph isomorphism invariants", "graph coloring", "clique-freeness"]
+  }
+]

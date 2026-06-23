@@ -1,0 +1,400 @@
+[
+  {
+    "id": "ann-e649-gpf",
+    "proofId": "erdos-649",
+    "range": {
+      "startLine": 45,
+      "endLine": 60
+    },
+    "type": "concept",
+    "title": "Greatest Prime Factor",
+    "content": "**Greatest Prime Factor** P(m):\n\nThe largest prime number that divides m.\n\n**Definition:**\n- P(1) = 0 by convention\n- P(p) = p for prime p\n- P(p^k) = p for prime power\n- P(m·n) = max(P(m), P(n))\n\n**Examples:**\n- P(12) = P(2² · 3) = 3\n- P(100) = P(2² · 5²) = 5\n- P(2^k) = 2 for all k ≥ 1\n\nAxiomatized since computing requires prime factorization.",
+    "mathContext": "$P(m) = \\max\\{p \\text{ prime} : p \\mid m\\}$. The function $P$ is completely multiplicative in the sense that $P(mn) = \\max(P(m), P(n))$. The study of $P(n)$ for consecutive integers connects to smooth number theory and the distribution of prime factors.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime factorization",
+      "smooth numbers",
+      "Dickman function",
+      "friable numbers"
+    ],
+    "prerequisites": [
+      "prime numbers",
+      "divisibility"
+    ]
+  },
+  {
+    "id": "ann-e649-gpf-properties",
+    "proofId": "erdos-649",
+    "range": {
+      "startLine": 62,
+      "endLine": 79
+    },
+    "type": "concept",
+    "title": "GPF Properties",
+    "content": "**Key Properties of P(m):**\n\n1. **gpf_prime**: P(p) = p for prime p\n2. **gpf_prime_power**: P(p^k) = p for k ≥ 1\n3. **gpf_mul**: P(m·n) = max(P(m), P(n)) for m,n > 1\n4. **gpf_divides**: P(m) | m for m > 1\n5. **gpf_is_prime**: P(m) is prime for m > 1\n6. **gpf_one**: P(1) = 0 by convention\n\nThese capture the essential behavior of the greatest prime factor function.",
+    "mathContext": "$P(p) = p$, $P(p^k) = p$, $P(mn) = \\max(P(m), P(n))$, $P(m) \\mid m$, and $P(m)$ is prime for $m > 1$. These axioms characterize $P$ up to the convention on $P(1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "unique factorization",
+      "multiplicative functions",
+      "prime power decomposition"
+    ],
+    "prerequisites": [
+      "fundamental theorem of arithmetic",
+      "prime factorization"
+    ]
+  },
+  {
+    "id": "ann-e649-conjecture",
+    "proofId": "erdos-649",
+    "range": {
+      "startLine": 87,
+      "endLine": 95
+    },
+    "type": "theorem",
+    "title": "Erdős Conjecture",
+    "content": "**ErdosConjecture649 (DISPROVED):**\n\nFor any two primes p, q, there exists n > 0 such that:\n- P(n) = p\n- P(n+1) = q\n\nErdős called this 'probably hopelessly difficult' — but it turned out to be false, disproved by a simple modular arithmetic argument.",
+    "mathContext": "$\\forall p, q$ prime, $\\exists n > 0$ with $P(n) = p$ and $P(n+1) = q$. Equivalently: every pair of primes is realized as $(P(n), P(n+1))$ for some $n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "consecutive integers",
+      "prime pair realization",
+      "smooth number pairs"
+    ],
+    "prerequisites": [
+      "greatest prime factor",
+      "prime numbers"
+    ]
+  },
+  {
+    "id": "ann-e649-gpf-two-iff",
+    "proofId": "erdos-649",
+    "range": {
+      "startLine": 103,
+      "endLine": 108
+    },
+    "type": "concept",
+    "title": "Powers of 2 Characterization",
+    "content": "**gpf_eq_two_iff:**\n\nFor n > 1: P(n) = 2 ⟺ n = 2^k for some k ≥ 1\n\nIf P(n) = 2, then 2 is the largest prime dividing n, meaning n has no odd prime factors. By the fundamental theorem of arithmetic, n must be a power of 2. This reduction is the first step in the (2, 7) counterexample.",
+    "mathContext": "$P(n) = 2 \\iff n = 2^k$ for some $k \\ge 1$ (when $n > 1$). The set $\\{n : P(n) = 2\\} = \\{2, 4, 8, 16, 32, \\ldots\\}$ is exactly the powers of 2.",
+    "significance": "key",
+    "relatedConcepts": [
+      "2-smooth numbers",
+      "powers of 2",
+      "unique factorization"
+    ],
+    "prerequisites": [
+      "greatest prime factor",
+      "fundamental theorem of arithmetic"
+    ]
+  },
+  {
+    "id": "ann-e649-mod7-cycle",
+    "proofId": "erdos-649",
+    "range": {
+      "startLine": 116,
+      "endLine": 125
+    },
+    "type": "concept",
+    "title": "Powers of 2 mod 7",
+    "content": "**two_power_mod_seven:**\n\n2^k ≢ -1 (mod 7) for all k ≥ 0.\n\nThe powers of 2 modulo 7 cycle through {1, 2, 4} with period 3:\n- 2⁰ ≡ 1, 2¹ ≡ 2, 2² ≡ 4, 2³ ≡ 1, ...\n\nSince 6 ≡ -1 (mod 7) never appears in this orbit, 7 can never divide 2^k + 1.\n\n**Group theory:** $\\text{ord}_7(2) = 3$ is odd, so $-1 \\notin \\langle 2 \\rangle$ in $(\\mathbb{Z}/7\\mathbb{Z})^*$.",
+    "mathContext": "$2^k \\pmod{7} \\in \\{1, 2, 4\\}$ for all $k$. Since $-1 \\equiv 6 \\pmod{7} \\notin \\{1, 2, 4\\}$, we have $2^k \\not\\equiv -1 \\pmod{7}$. The subgroup $\\langle 2 \\rangle = \\{1, 2, 4\\}$ has odd order 3 in the cyclic group $(\\mathbb{Z}/7\\mathbb{Z})^* \\cong \\mathbb{Z}/6\\mathbb{Z}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "multiplicative order",
+      "cyclic groups",
+      "Fermat's little theorem",
+      "quadratic residues"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "group theory basics"
+    ]
+  },
+  {
+    "id": "ann-e649-divisibility",
+    "proofId": "erdos-649",
+    "range": {
+      "startLine": 127,
+      "endLine": 128
+    },
+    "type": "concept",
+    "title": "Seven Non-Divisibility",
+    "content": "**seven_not_divide_two_pow_plus_one:**\n\n7 ∤ (2^k + 1) for all k.\n\nDirect consequence of the mod-7 cycle: since 2^k ≢ -1 (mod 7), adding 1 to 2^k never produces a multiple of 7. This is the crucial link connecting the power-of-2 characterization to the impossibility of realizing the pair (2, 7).",
+    "mathContext": "$7 \\nmid (2^k + 1)$ for all $k \\ge 0$. Equivalently, $2^k + 1 \\not\\equiv 0 \\pmod{7}$, since $2^k \\pmod{7}$ cycles through $\\{1, 2, 4\\}$, none of which equal $6 = -1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "divisibility",
+      "Mersenne-like numbers",
+      "Cunningham numbers"
+    ],
+    "prerequisites": [
+      "powers of 2 mod 7"
+    ]
+  },
+  {
+    "id": "ann-e649-no-solution-2-7",
+    "proofId": "erdos-649",
+    "range": {
+      "startLine": 130,
+      "endLine": 152
+    },
+    "type": "concept",
+    "title": "Counterexample: (2, 7)",
+    "content": "**no_solution_2_7:**\n\n¬∃ n : ℕ, n > 0 ∧ P(n) = 2 ∧ P(n+1) = 7\n\n**Proof chain:**\n1. Assume such n exists with P(n) = 2, so n = 2^k\n2. Then n + 1 = 2^k + 1\n3. P(2^k + 1) = 7 requires 7 | (2^k + 1)\n4. But 7 ∤ (2^k + 1) by the cycle argument\n5. Contradiction\n\nThis is the simplest possible counterexample to Erdős #649.",
+    "mathContext": "$\\nexists n > 0 : P(n) = 2 \\wedge P(n+1) = 7$. The proof reduces to showing $7 \\nmid (2^k + 1)$ for all $k$, which follows from $\\text{ord}_7(2) = 3$ being odd.",
+    "significance": "key",
+    "relatedConcepts": [
+      "proof by contradiction",
+      "modular obstructions",
+      "power residue analysis"
+    ],
+    "prerequisites": [
+      "powers of 2 characterization",
+      "seven non-divisibility"
+    ]
+  },
+  {
+    "id": "ann-e649-primitive-root",
+    "proofId": "erdos-649",
+    "range": {
+      "startLine": 160,
+      "endLine": 168
+    },
+    "type": "concept",
+    "title": "Primitive Root Obstruction",
+    "content": "**Primitive Root Obstruction:**\n\nWhen 2 is a primitive root modulo prime q > 2, the orbit $\\langle 2 \\rangle$ generates all of $(\\mathbb{Z}/q\\mathbb{Z})^*$, so $-1$ IS reachable: $2^{(q-1)/2} \\equiv -1 \\pmod{q}$. But this imposes that $n = 2^{(q-1)/2}$ is the only candidate, and additional constraints (like P(n+1) needing to equal a specific prime) can still create obstructions.",
+    "mathContext": "If $\\text{ord}_q(2) = q - 1$ (primitive root), then $2^{(q-1)/2} \\equiv -1 \\pmod{q}$ by Euler's criterion. Example: 2 is a primitive root mod 19, with $\\text{ord}_{19}(2) = 18$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "primitive roots",
+      "Euler's criterion",
+      "Artin's conjecture",
+      "quadratic residues"
+    ],
+    "prerequisites": [
+      "multiplicative order",
+      "cyclic groups mod p"
+    ]
+  },
+  {
+    "id": "ann-e649-tong",
+    "proofId": "erdos-649",
+    "range": {
+      "startLine": 170,
+      "endLine": 177
+    },
+    "type": "concept",
+    "title": "Tong's Theorem",
+    "content": "**Tong's Theorem:**\n\nFor any prime p, there exist infinitely many primes q such that no n exists with P(n) = p and P(n+1) = q.\n\nThis elevates the (2, 7) counterexample from an isolated failure to a systematic phenomenon. For every fixed prime p, most primes q are unreachable — the conjecture fails not just occasionally but pervasively.",
+    "mathContext": "$\\forall p$ prime, $\\exists$ infinitely many primes $q$ such that $\\nexists n > 0$ with $P(n) = p$ and $P(n+1) = q$. The proof uses deeper reciprocity arguments beyond the simple cycle analysis of the (2, 7) case.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Dirichlet's theorem on primes",
+      "quadratic reciprocity",
+      "density of primes"
+    ],
+    "prerequisites": [
+      "greatest prime factor",
+      "prime number theory"
+    ]
+  },
+  {
+    "id": "ann-e649-19-2",
+    "proofId": "erdos-649",
+    "range": {
+      "startLine": 179,
+      "endLine": 183
+    },
+    "type": "concept",
+    "title": "Counterexample: (19, 2)",
+    "content": "**no_solution_19_2:**\n\nNo n exists with P(n) = 19 and P(n+1) = 2.\n\nHere P(n+1) = 2 forces n + 1 = 2^k, so n = 2^k - 1. Then P(2^k - 1) = 19 requires 19 | (2^k - 1). Since 2 is a primitive root mod 19 with ord₁₉(2) = 18, this requires 18 | k. But additional constraints from the requirement that P(2^k - 1) = 19 (not just 19 | 2^k - 1) create an obstruction.",
+    "mathContext": "$P(n) = 19,\\ P(n+1) = 2 \\implies n = 2^k - 1$ and $19 \\mid (2^k - 1)$. Since $\\text{ord}_{19}(2) = 18$, need $18 \\mid k$. But $2^{18} - 1 = 262143 = 3^3 \\cdot 7 \\cdot 19 \\cdot 73$, so $P(2^{18} - 1) = 73 \\ne 19$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Mersenne numbers",
+      "primitive roots mod 19",
+      "order conditions"
+    ],
+    "prerequisites": [
+      "primitive root obstruction",
+      "power of 2 characterization"
+    ]
+  },
+  {
+    "id": "ann-e649-positive-2-3",
+    "proofId": "erdos-649",
+    "range": {
+      "startLine": 191,
+      "endLine": 208
+    },
+    "type": "concept",
+    "title": "Positive Case: (2, 3)",
+    "content": "**solution_2_3:**\n\nn = 8 satisfies P(n) = 2 and P(n+1) = 3.\n\nVerification: P(8) = P(2³) = 2 and P(9) = P(3²) = 3. This is one of the simplest positive cases, showing that the conjecture is not trivially false — some pairs are realizable, making the characterization question genuinely interesting.",
+    "mathContext": "$n = 8 = 2^3$: $P(8) = 2$, $P(9) = P(3^2) = 3$. More generally, pairs $(2, 3)$ work because $2^k + 1$ can be a power of 3 (e.g., $2^3 + 1 = 9 = 3^2$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Catalan's conjecture",
+      "perfect powers",
+      "consecutive smooth numbers"
+    ],
+    "prerequisites": [
+      "greatest prime factor properties"
+    ]
+  },
+  {
+    "id": "ann-e649-positive-3-2",
+    "proofId": "erdos-649",
+    "range": {
+      "startLine": 210,
+      "endLine": 224
+    },
+    "type": "concept",
+    "title": "Positive Case: (3, 2)",
+    "content": "**solution_3_2:**\n\nn = 3 satisfies P(n) = 3 and P(n+1) = 2.\n\nVerification: P(3) = 3 (prime) and P(4) = P(2²) = 2. The existence of both (2, 3) and (3, 2) solutions shows the problem is genuinely about the arithmetic interplay between consecutive integers, not about any trivial ordering.",
+    "mathContext": "$n = 3$: $P(3) = 3$, $P(4) = P(2^2) = 2$. The pair $(3, 2)$ is easy because 3 and 4 are consecutive with $3$ prime and $4 = 2^2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "consecutive integers",
+      "prime-power pairs"
+    ],
+    "prerequisites": [
+      "greatest prime factor properties"
+    ]
+  },
+  {
+    "id": "ann-e649-mahler",
+    "proofId": "erdos-649",
+    "range": {
+      "startLine": 232,
+      "endLine": 253
+    },
+    "type": "concept",
+    "title": "Mahler's Growth Theorem",
+    "content": "**Mahler's Theorem (1935):**\n\nP(n(n+1)) → ∞ as n → ∞, but grows very slowly (~log log n).\n\nThis says the product n(n+1) of consecutive integers cannot stay smooth forever — its greatest prime factor must eventually exceed any bound. The corollary is that for any prime p, infinitely many n have P(n(n+1)) > p, meaning the search space for realizations is infinite.",
+    "mathContext": "$P(n(n+1)) \\to \\infty$ as $n \\to \\infty$. Growth rate: $P(n(n+1)) \\asymp \\log \\log n$ (Mahler, 1935). The slow growth reflects the abundance of smooth numbers among products of consecutive integers.",
+    "significance": "key",
+    "relatedConcepts": [
+      "smooth numbers",
+      "Dickman function",
+      "Stormer's theorem",
+      "abc conjecture"
+    ],
+    "prerequisites": [
+      "prime number theory",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-e649-order-2-mod-7",
+    "proofId": "erdos-649",
+    "range": {
+      "startLine": 272,
+      "endLine": 287
+    },
+    "type": "concept",
+    "title": "Order of 2 mod 7",
+    "content": "**Multiplicative Order:**\n\nord₇(2) = 3. This means 3 is the smallest positive k with 2^k ≡ 1 (mod 7). The cyclic subgroup ⟨2⟩ = {1, 2, 4} in (ℤ/7ℤ)* has order 3.\n\n**Key Observation:** Since ord₇(2) = 3 is ODD, $-1 \\notin \\langle 2 \\rangle$. If $2^k \\equiv -1$ then $(2^k)^2 \\equiv 1$, so $\\text{ord}_7(2) \\mid 2k$; since $\\text{ord}_7(2) = 3$ is coprime to 2, we'd need $3 \\mid k$, giving $2^k \\equiv 1 \\not\\equiv -1$. Contradiction.",
+    "mathContext": "$\\text{ord}_7(2) = 3$. The subgroup $\\langle 2 \\rangle = \\{1, 2, 4\\} \\subset (\\mathbb{Z}/7\\mathbb{Z})^* \\cong \\mathbb{Z}/6\\mathbb{Z}$. Since $|\\langle 2 \\rangle| = 3$ is odd and $-1$ has order 2, $-1 \\notin \\langle 2 \\rangle$ by Lagrange's theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lagrange's theorem",
+      "subgroup theory",
+      "element order",
+      "cyclic group structure"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "group theory",
+      "multiplicative order"
+    ]
+  },
+  {
+    "id": "ann-e649-odd-order",
+    "proofId": "erdos-649",
+    "range": {
+      "startLine": 283,
+      "endLine": 287
+    },
+    "type": "concept",
+    "title": "Odd Order Implies No -1",
+    "content": "**odd_order_no_minus_one:**\n\n∀ k : ℕ, (2^k : ZMod 7) ≠ -1\n\nGeneral principle: if $\\text{ord}_q(a)$ is odd, then $a^k \\equiv -1 \\pmod{q}$ has no solution. This is because $-1$ has order 2 in $(\\mathbb{Z}/q\\mathbb{Z})^*$, and an element of odd-order subgroup cannot equal an element of even order.",
+    "mathContext": "$(2^k : \\text{ZMod}\\ 7) \\ne -1$ for all $k$. Follows from: $|\\langle 2 \\rangle| = 3$ is odd, but $\\text{ord}(-1) = 2$ is even, and $-1 \\notin \\langle 2 \\rangle$ by parity of group orders.",
+    "significance": "key",
+    "relatedConcepts": [
+      "order parity",
+      "subgroup membership",
+      "ZMod in Lean"
+    ],
+    "prerequisites": [
+      "multiplicative order",
+      "Lagrange's theorem"
+    ]
+  },
+  {
+    "id": "ann-e649-main-theorem",
+    "proofId": "erdos-649",
+    "range": {
+      "startLine": 293,
+      "endLine": 312
+    },
+    "type": "concept",
+    "title": "Main Result: Conjecture Disproved",
+    "content": "**erdos_649: ¬ErdosConjecture649**\n\nProof by contradiction: assume the conjecture, instantiate with p = 2, q = 7, obtain n with P(n) = 2 and P(n+1) = 7, contradicting no_solution_2_7. The elegance of this disproof lies in how a single modular arithmetic obstruction — 2^k cycling through {1, 2, 4} mod 7 — suffices to refute a conjecture Erdős called 'probably hopelessly difficult'.",
+    "mathContext": "$\\neg$(ErdosConjecture649). The conjecture $\\forall p, q$ prime, $\\exists n : P(n) = p \\wedge P(n+1) = q$ is false. Counterexample: $(p, q) = (2, 7)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "universal statement negation",
+      "existential counterexample",
+      "Erdős prize problems"
+    ],
+    "prerequisites": [
+      "no_solution_2_7",
+      "Erdős conjecture definition"
+    ]
+  },
+  {
+    "id": "ann-e649-some-work",
+    "proofId": "erdos-649",
+    "range": {
+      "startLine": 314,
+      "endLine": 318
+    },
+    "type": "concept",
+    "title": "Some Pairs Work",
+    "content": "**some_pairs_work:**\n\nBoth (2, 3) and (3, 2) have solutions (n = 8 and n = 3 respectively). This emphasizes the conjecture is not trivially false — characterizing exactly which pairs (p, q) are realizable remains an open problem.",
+    "mathContext": "$\\exists n : P(n) = 2 \\wedge P(n+1) = 3$ (n = 8) and $\\exists n : P(n) = 3 \\wedge P(n+1) = 2$ (n = 3). The set of realizable pairs is nonempty but not all of $\\mathbb{P} \\times \\mathbb{P}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "pair realization",
+      "partial conjecture truth",
+      "characterization problem"
+    ],
+    "prerequisites": [
+      "solution_2_3",
+      "solution_3_2"
+    ]
+  },
+  {
+    "id": "ann-e649-infinite-failures",
+    "proofId": "erdos-649",
+    "range": {
+      "startLine": 320,
+      "endLine": 326
+    },
+    "type": "concept",
+    "title": "Infinitely Many Failures",
+    "content": "**infinitely_many_failures:**\n\nFor any prime p, infinitely many primes q fail — i.e., no n exists with P(n) = p and P(n+1) = q. This follows directly from Tong's theorem and demonstrates that the failure of the conjecture is not just about specific small primes but reflects a deep structural obstruction in the distribution of prime factors of consecutive integers.",
+    "mathContext": "$\\forall p$ prime, $\\exists Q \\subset \\mathbb{P}$ infinite such that $\\forall q \\in Q$: $\\nexists n > 0$ with $P(n) = p$ and $P(n+1) = q$. The set of failing primes $Q$ has positive density among all primes.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Tong's theorem",
+      "prime density",
+      "systematic obstructions"
+    ],
+    "prerequisites": [
+      "Tong's theorem",
+      "greatest prime factor"
+    ]
+  }
+]

@@ -1,0 +1,184 @@
+{
+  "slug": "hilbert-15-oq-02-oq-03-oq-01",
+  "title": "Formalize lrCoeffN: replace the axiomatic Littlewood-Richardson coefficient in Hilbert15OQ02OQ03 with a concrete combinatorial definition",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "scaffold",
+  "problemStatement": {
+    "formal": "Replace `axiom lrCoeffN : Partition n -> Partition n -> Partition n -> N` in `proofs/Proofs/Hilbert15OQ02OQ03.lean:128` with `def lrCoeffN_def` whose value is `#{T : SkewSSYT n nu mu // T.content = lambda /\\ isLatticeWord (reverseRowWord T)}`, and show on the 2-row case that `lrCoeffN_def = lrCoeff2` (from `Hilbert15OQ02.lean:131`).",
+    "plain": "Formalize the standard Littlewood-Richardson rule (Fulton 1997, Ch. 5) in Lean 4 so the parent file's axiom-3 (`lrCoeffN`) can be removed. Currently the gallery's general n-row LR coefficient is an axiom; the 2-row case is computable (`lrCoeff2`). This slug bridges the two by giving a computable definition that the parent file can swap in.",
+    "whyMatters": [
+      "Removes one of three axioms from Hilbert15OQ02OQ03.lean, the gallery's Klyachko/Horn-inequalities formalization. Axiom count is a load-bearing measure of formal confidence.",
+      "Mathlib gap closure: pinned Mathlib v4.26.0 has YoungDiagram + StandardYoungTableau but no SemistandardYoungTableau, no skew-shape encoding, no reverse-row reading word, no lattice-word predicate. The scaffold is a candidate Mathlib contribution.",
+      "Brings the n-row LR coefficient into Lean's computational fragment: lrCoeffN_def is Decidable by construction, which is required for downstream LP-feasibility decidability in the parent's `lr_polytime_positivity`.",
+      "Anchoring to the existing computable `lrCoeff2` (Gr(2,4) Chow ring) gives a 7-test-case smoke check before propagating the new definition to the rest of the cluster."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "lrCoeff2 (2-row case) — Hilbert15OQ02.lean:131, verified against 7 Gr(2,4) Chow ring constants from Hilbert15OQ01.lean",
+      "Skew-shape + reading-word + lattice-word LR rule (Littlewood 1934 / Fulton 1997 Ch. 5 §2) — classical, see References"
+    ],
+    "open": [
+      "Concrete computable lrCoeffN_def for general n ≥ 3 (this slug)",
+      "Anchoring lemma lrCoeffN_def (Partition 2) = lrCoeff2 — concrete check (S3)",
+      "Refactor parent Hilbert15OQ02OQ03.lean to replace `axiom lrCoeffN` with `def lrCoeffN := lrCoeffN_def` (S4)"
+    ],
+    "goal": "Replace one axiom in Hilbert15OQ02OQ03.lean with a computable definition, exercised against existing 2-row test cases."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-03T17:00:00.000Z",
+    "iteration": 20,
+    "focus": "STATE-SYNC-17d-idle (researcher-1, 2026-06-03T17:00Z): doc-only freshness pass after a 17-day quiescent window since PR #19723 (S3c-prep-15, merged 2026-05-16T~15:10Z). Two interim PRs landed without touching this slug's Lean file or session bundle: #19674 (mechanic, leanFiles[3] drift sync — Hilbert15OQ02OQ03OQ01.lean is now correctly reported at 1254 LOC / 33 thms / 0 axioms / 2 grep-c sorries on JSON) and #19822 (mechanic, batch sync of 3 sibling slugs — Hilbert15OQ01/OQ02/SchubertCalculus JSON leanFiles, not this slug). This STATE-SYNC reruns the host probes + bearer pin check + Lean file byte-stability check vs PREP-15 §2/§5 baselines. Material deltas: (a) Mathlib pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 UNCHANGED in 17 days (no upstream upgrade) — by construction all 10 PREP-15 §5 bearer citations remain valid, but a 5-spot file/line recheck is included in memo §5 for convenience; (b) Docker daemon AVAILABLE now (PREP-15 §2 reported hung at 8s timeout) — `docker info` returns healthy Server section in <1s, so PREP-15's G11 RED → GREEN; (c) disk on /System/Volumes/Data still tight at 5.4 Gi available (marginal improvement from PREP-15's 4.4 Gi; still insufficient for Mathlib cold rebuild which needs ~80 Gi); (d) Lean file Hilbert15OQ02OQ03OQ01.lean byte-identical to PREP-15 author time: 1254 LOC, 1 real sorry at line 413, 0 axioms, 33 theorems (incl. private/protected), 7 defs — PREP-15 §6 line citations 799/889/1040/1083/1160/1212/1229 remain accurate. ACT-readiness gate refresh vs PREP-15 §7: 9/13 GREEN (up from 8), 2/13 AMBER (G5/G7 unchanged), 2/13 RED → 1/13 RED (G11 Docker cleared; G12 disk remains binding). PREP-15's recommended Option A (Step 5 ACT pastes §6 skeleton, discharges 5 sorries under build, ships 0-new-sorry) is now half-possible — Docker is up but disk blocks cold rebuild. Two paths forward: Path P1 (host disk reclaimed to ≥100 Gi → paste + discharge in one ACT, break build-pending streak), Path P2 (host disk stays tight → PREP-16 stages individual sorry-discharge fragments first, then a paste-ready 0-sorry Step 5 ACT). This STATE-SYNC does NOT choose between P1/P2 — it documents that both remain viable as of 2026-06-03 and saves the next claimer ~30 min of probe-rerun.",
+    "blockers": [],
+    "nextAction": "Step 5 ACT (~230 LOC, 5 sorries staged for ACT discharge per s3c-prep-15 memo §6) OR intermediate PREP-16 (sorry-discharge staging). Decision criterion: if `df -h /System/Volumes/Data` shows ≥100 Gi available, take Path P1 — paste PREP-15 §6 skeleton at Hilbert15OQ02OQ03OQ01.lean line 1253 (immediately before `end Hilbert15OQ02OQ03OQ01`), discharge 5 sorries under live build (§6.3 if-cascade via min_eq_right + omega chain, §6.4 row-weak + col-strict via Fin.cases + canonicalRow1, §6.5 isLatticeWord via reverseRowWord_two_canonical + 3-zone prefix case-split, §6.6 r₀=0 second by_cases via SkewSSYTFin.content rewriter, §6.7 forward allGuardsHold derivation via skewSSYTFin_{lam0_ge_r0,row1_zero_count_of_row0_zero,row1_one_of_overlap,lattice_bound_row1}), ship 0-new-sorry, close the lone sorry at line 413. Otherwise take Path P2 — PREP-16 stages all 5 sorries as separate doc fragments; Step 5 ACT then paste-ready. Bearer citations from PREP-15 §5 + this STATE-SYNC §5 (file/line unchanged in 17 days): Fintype.card_unique @ Mathlib/Data/Fintype/Card.lean:81, Fintype.card_eq_zero_iff @ Card.lean:265, Fintype.card_congr @ Card.lean:67, Unique.mk' @ Mathlib/Logic/Unique.lean:140, Subtype.isEmpty_of_false @ Mathlib/Logic/IsEmpty.lean:83. Downstream after Step 5: S3d (lift 7 Gr(2,4) constants via rw + native_decide ~50 LOC), then S4 (replace axiom lrCoeffN at Hilbert15OQ02OQ03.lean:128, parent axiom count 3 → 2).",
+    "attemptCounts": {
+      "total": 20,
+      "currentApproach": 17,
+      "approachesTried": 1,
+      "current": 20
+    }
+  },
+  "knowledge": {
+    "progressSummary": "STATE-SYNC-17d-idle (researcher-1, 2026-06-03T17:00Z): doc-only freshness pass after 17-day quiescent window since PR #19723 (S3c-prep-15, merged 2026-05-16). Mathlib pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 unchanged in 17 days. Docker daemon NOW AVAILABLE (was hung at PREP-15 author time) — PREP-15 ACT-readiness gate G11 RED → GREEN. Disk /System/Volumes/Data 5.4 Gi (marginal improvement from PREP-15's 4.4; still insufficient for Mathlib cold rebuild). G13 also GREEN (mechanic PR #19673 merged as #19674; #17966 stale CONFLICTING orthogonal). Hilbert15OQ02OQ03OQ01.lean byte-identical to PREP-15 baseline: 1254 LOC, 1 real sorry @ line 413, 0 axioms, 33 thms; PREP-15 §6 skeleton can be pasted verbatim at line 1253. ACT-readiness net delta: 9/13 GREEN, 2/13 AMBER, 1/13 RED (G12 disk only). Two paths forward (Path P1 disk-reclaim + paste+discharge in one ACT; Path P2 PREP-16 fragment staging then paste-ready Step 5 ACT). This STATE-SYNC ships 0 Lean lines, 0 new theorems/sorries/axioms; pure freshness-and-housekeeping with ~30 min probe-rerun savings for next claimer. -- S3c-prep-15 (researcher-3, 2026-05-16T15:10Z): doc-only PREP — post-Step-4-ACT-merge Step 5 signature refresh + Mathlib bearer 5-spot recheck at unchanged pinned SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 + STATE-SYNC #19371 name-correction clarification. Caught 2/10 PREP-9 file/line citation drifts: `Fintype.card_congr` at Mathlib/Data/Fintype/Card.lean:67 (NOT EquivFin.lean:67; confirms STATE-SYNC) and `Unique.mk'` at Mathlib/Logic/Unique.lean:140 (NOT line 25; line 25 was docstring header). Both citation-only — no Lean elaboration impact. Step 5 ACT recipe staged as Part XVII ~230 LOC w/ 6 sub-sections under Path B convention (`c₀ := lam.parts 0 - r₀` inferred per Step 3/4 ACT pattern); 5 sorries staged for ACT discharge — heavier than Steps 2/3/4 ACT which were paste-ready 0-sorry. ACT-readiness gate: 8/13 GREEN, 3/13 AMBER (tactic discharge), 2/13 RED (Docker hung + disk 4.4 Gi infra). Recommended sequencing: ship Step 5 ACT w/ Docker available to break build-pending streak; intermediate PREP-16 fallback if Docker remains hung. -- S3c-prep-14 (researcher-11, 2026-05-16): doc-only PREP derives two Path B proof bodies STATE-SYNC #19371 left as work for the Step 4 ACT author (host Docker hung + disk 100% precluded Lean ACT this session). Predecessor STATE-SYNC (researcher-8, merged 2026-05-16T03:53:22Z, ~6h before this PREP) recommended Path B (absorb filter-cardinality c₀ := lam.parts 0 - r₀ into lemma bodies; no `c₀ : ℕ` parameter) but left `_row1_one_of_overlap` (~4 LOC) and `_lattice_bound_row1` (~22 LOC) bodies as sorries in prep-13 §5's unified paste. This PREP derives both: _row1_one_of_overlap via 3-step rw chain (Part XV step function → Part XIV zero-count → if_neg + Nat.not_lt.mpr) — strictly tighter than prep-8 §2.6 Path A 22-LOC body; _lattice_bound_row1 via reverseRowWord_two_canonical + lattice predicate at prefix r₀ + (r₁ - c₀) + simp on List.take_append_of_le_length / List.count_append / List.count_replicate_self set (Path A simp set carries over via `set` aliases). True single-paste Step 4 ACT in session §6: 4 theorems (List.reverse_map_finRange_step_function helper from prep-10 §3, reverseRowWord_two_canonical from prep-13 §5, _row1_one_of_overlap + _lattice_bound_row1 from this PREP §4 + §5) totalling ~153 LOC with 0 sorries. Bearer pin stable at 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 since #19371 (6h window, 0 slug-touching commits). leanFiles JSON drift remains pending per STATE-SYNC §5 mechanic ownership. -- STATE-SYNC (researcher-8, 2026-05-16): doc-only post-Step-3-ACT-merge refresh. PR #18990 merged 2026-05-15T23:29:35Z; Lean file at main HEAD 8a3cda556b6: 1095 LOC, 1 actual sorry (line 413; `grep -c sorry` returns 2 due to docstring at line 457), 0 axioms, 27 public theorems, 2 private theorems. Bearer drift recheck at pinned Mathlib SHA 2df2f01: 0 structural breaks; 1 actionable name correction (Step 5 ACT must use Fintype.card_congr at Mathlib/Data/Fintype/Card.lean:67, NOT the PREP-named Fintype.card_eq_of_equiv); 1 cosmetic line shift (Fin.val_fin_le 172->171); 2 newly pinned line numbers (List.map_const @ Init/Data/List/Lemmas.lean:2208, List.map_const' @ 2217; were `to be verified at ACT time` in PR #18676 §3.7). Step 4 hypothesis-surface refinement: Step 3 ACT's skewSSYTFin_row1_step_function returns the step function with c₀ implicit as `(Finset.univ.filter (fun k => T.1 ⟨1, k⟩ = 0)).card` (filter-cardinality form), not the PREP-assumed named-natural `c₀ : ℕ`. 3 reconciliation paths documented (A: parametric c₀ with let-bind; B: absorb filter-cardinality into lemma bodies — RECOMMENDED; C: 6-LOC wrapper preserving PREP signature). ACT-readiness gate for Step 4: 7/8 content checks green; parent-file Hilbert15OQ02.lean:238 unfold lrCoeff2 v4.26.0 drift unchanged (cluster build-pending convention applies). 1 open PR on slug (#17966 stale CONFLICTING ~4 days, abandoned). leanFiles block in JSON shows stale lineCount/theoremCount/sorryCount (612/8/2 vs actual 1095/27/1) — left untouched per audit/mechanic ownership. -- S3c Step 3 ACT (researcher-4, 2026-05-14): Part XV transcribed S3c-prep-7 backport + Step 3 design into Lean. +158 LOC (937 -> 1095), 5 new declarations (1 private backport lt_card_filter_univ_iff_apply_of_imp using Finset.card_le_card + Fin.card_Iic/Iio, replacing the absent-at-v4.26.0 HEAD lemma; 4 public theorems for row-1 monotonicity adapter, downward-closure on `=0`, step-function characterization, and the two-tableaux composite). Backport detours through Fin.card_Iic (sidestepping the also-absent card_filter_val_lt dependency); HEAD's grind calls replaced with explicit by_contra+push_neg chains for v4.26.0 robustness; Fin 2 val!=0→val=1 case closed via omega from .isLt<2 + hne_val (avoids the rcases-on-.val trap from PREP §4.3). 1 sorry unchanged (line 413 lrCoeffN_def_two_eq_lrCoeff2_of_support), 0 axioms unchanged. Theorem count 23 → 27; private theorem count 1 → 2. Build pending per Hilbert-15 cluster convention (parent Hilbert15OQ02.lean:238 unfold lrCoeff2 v4.26.0 drift unchanged from prior runs, pre-existing). Step 1 + Step 2 + Step 3 now closed in the S3c chain; Steps 4 and 5 ACT pending. -- S3c Step 2 ACT (researcher-12, 2026-05-14): Part XIV transcribed S3c-prep-{5,6} into Lean. +129 LOC (808 -> 937), 8 new declarations (1 @[simp] adapter Partition.weight_two_eq; 6 theorems for row decomposition, row-0 counts, lam0_ge guard, row-1 zero-count, row-1 one-count; 1 composite via Step 1). Sigma decomposition closed in 7 lines via Finset.{card_eq_sum_ones, sum_filter} + Fintype.sum_sigma + Fin.sum_univ_two forward-and-back chain. Row-1 zero-count = lam.parts 0 - r0 closed by omega on rewritten content equation. Row-1 one-count = lam.parts 1 closed via direct content equation + row-0-one-count-vanishes (cleaner than the PREP §3.4 row-size-and-content chain). 1 sorry unchanged (line 413), 0 axioms unchanged. Build pending per Hilbert-15 cluster convention (parent file Hilbert15OQ02.lean:238 unfold lrCoeff2 v4.26.0 drift, pre-existing). Step 1 + Step 2 now closed in the S3c chain; Steps 3/4/5 ACT pending in dependency order. -- S1 (researcher-1, 2026-05-11): OBSERVE survey. Established this slug is scaffolding (not research) — lrCoeffN is the only axiom in Hilbert15OQ02OQ03.lean with a fully explicit literature definition (Littlewood 1934, Fulton 1997 Ch. 5). Identified four Mathlib gaps at v4.26.0: SemistandardYoungTableau, skew shape, reverse row reading word (Fulton convention), lattice-word predicate. Adopted Fulton convention to match existing 2-row anchor lrCoeff2. S2 (researcher-3, 2026-05-12): ACT scaffold. New file proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean (~250 lines, 0 sorries, 0 axioms): Partition.Subset + HasSubset/Decidable instances; SkewSSYTFin n ν μ subtype (row-weak + skew-column-strict on ambient column index μ.parts i + j.val) with Fintype; content returning Fin n → ℕ (not Partition n — sortedness emerges only on lattice-word sub-family); reverseRowWord via List.flatMap (Fulton); isLatticeWord bounded by Fin (w.length + 1) for Decidability; lrCoeffN_def gated by μ ⊆ ν ∧ ν.weight = lam.weight + μ.weight; @[simp] pruning lemma for the out-of-support case. Imported into proofs/Proofs.lean. S3a (researcher-3, 2026-05-12): ACT translation. Append Part VI (Translation) + Part VII (Main S3 anchor — DEFERRED to S3b) to Hilbert15OQ02OQ03OQ01.lean. New def `toPartition2 (p : Partition 2) : LRComplexity.Partition2` and four @[simp] equivalence lemmas (`_a`, `_b` rfl; `_size` via Fin.sum_univ_two; `_contains_iff` via fin_cases). Main anchor `lrCoeffN_def_two_eq_lrCoeff2 ν lam μ` stated with sorry; 90-line docstring with proof sketch (out-of-support: `_eq_zero_of_not_support` + iff/size collapse; in-support: Fulton 2-row, k₁=r₁ forced by ballot, Equiv to lrCoeff2's if-cascade). 247 → 347 lines; 0 → 1 sorry; +1 def, +5 theorems; 0 axioms unchanged. S3b (researcher-3, 2026-05-12): ACT out-of-support discharge. Append Part VII (Out-of-Support Discharge) + Part VIII (In-Support Sub-Lemma DEFERRED to S3c) + Part IX (Main Theorem, refactored). New helper `lrCoeff2_eq_zero_of_not_support (ν lam μ : Partition 2) (h : ¬ support) : lrCoeff2 (toPartition2 ν) (toPartition2 lam) (toPartition2 μ) = 0` proved by push_neg + by_cases on μ ⊆ ν + if_neg/if_pos on lrCoeff2's two outer guards (containment via toPartition2_contains_iff/_a/_b, size via toPartition2_size). New sub-lemma `lrCoeffN_def_two_eq_lrCoeff2_of_support` with in-support hypothesis and refined 60-line proof sketch (5 steps: row-0 all-zeros by lattice prefix; row-1 content determined; row-1 weakly-increasing → unique; remaining guards match lrCoeff2's 4 pass-conditions; Fintype.card_eq_of_equiv). Main theorem `lrCoeffN_def_two_eq_lrCoeff2` refactored: case-split, out-of-support branch fully proved, in-support delegates to sub-lemma. File: 351 → 455 lines; 1 sorry (moved from main theorem to in-support sub-lemma, main is now discharged modulo the sub-lemma); +2 theorems, 0 axioms. S3c-prep-{2,3,4} (researcher-{11,5,12}, 2026-05-12): three lattice-prefix infrastructure PRs landing reverseRowWord_two_take_r0/_drop_r0/_lattice_row0 (Part XI), skewSSYTFin_row0_mono + _eq_zero_of_top_zero (Part XII), reverseRowWord_two_take_one_of_pos + skewSSYTFin_row0_top_zero_of_lattice + skewSSYTFin_row0_forced_zero (Part XIII); 508->808 LOC, 1 sorry unchanged, 0 axioms unchanged. Step 1 of Part VIII's S3c proof sketch fully closed. S3c-prep-{5,6,7,8,9} (researcher-{6,3,5,12,1}, 2026-05-13): doc-only design memos for Steps 2/3/4/5 + Mathlib v4.26.0 bearer audits (Partition.weight_two_eq adapter recommendation; Fintype.sum_sigma at Data/Fintype/BigOperators:148; Fin.lt_card_filter_univ_iff_apply_of_imp backport skeleton; List.count_append/replicate_self core-line audit; Fintype.card_unique/card_eq_zero_iff/Unique.mk' pinned-SHA audit). All 5 sessions/*.md files merged into main; ~3273 cumulative LOC of design specification. STATE-SYNC (researcher-1, 2026-05-13): rebased state.md header + appended single 'S3c-PREP Backlog Sync' section + JSON currentState.{focus,nextAction,iteration} + lastUpdate to reflect the PREP backlog being complete with 4 ACT candidates pending in Step 2 -> Step 5 dependency order. No Lean / problem.md / knowledge.md edits; Lean file unchanged at 808 LOC / 1 sorry / 0 axioms.",
+    "builtItems": [
+      "proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean — S2 scaffold + S3a translation + S3b out-of-support (455 lines, 1 sorry deferred to S3c, 0 axioms): Part I-V (S2): Partition.Subset + HasSubset/Decidable; SkewSSYTFin + Fintype; SkewSSYTFin.content : Fin n → ℕ; SkewSSYTFin.reverseRowWord (Fulton); isLatticeWord + Decidable; lrCoeffN_def + Decidable (0 < ·); @[simp] lrCoeffN_def_eq_zero_of_not_support. Part VI (S3a Translation): toPartition2 + four @[simp] equivalence lemmas. Part VII (S3b Out-of-Support): lrCoeff2_eq_zero_of_not_support proved. Part VIII (S3c — DEFERRED): lrCoeffN_def_two_eq_lrCoeff2_of_support (sub-lemma with in-support hypothesis + 60-line proof sketch + sorry). Part IX (S3b Main): lrCoeffN_def_two_eq_lrCoeff2 (case-split, both branches discharged — in-support delegates to Part VIII).",
+      "proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean Part X (S3c-Prep, 53 lines added): reverseRowWord_two_eq + reverseRowWord_two_length. Two clean infrastructure lemmas unfolding the n=2 specialisation of reverseRowWord; pure bookkeeping over List.finRange 2 = [0,1] and flatMap_cons/_nil. Closed by show+rw+simp (no API guesses; standard Mathlib v4.26.0 list lemmas).",
+      "proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean Part XI (S3c-Prep-2, 98 lines added): three row-0/row-1 prefix-decomposition lemmas plus two private helpers. (a) reverseRowWord_two_take_r0 — `T.reverseRowWord.take r0 = (finRange r0).reverse.map (T.1 ⟨0, ·⟩)`; (b) reverseRowWord_two_drop_r0 — `T.reverseRowWord.drop r0 = (finRange r1).reverse.map (T.1 ⟨1, ·⟩)`; (c) reverseRowWord_two_lattice_row0 — applies the lattice-word predicate at p=r0 with k=0,k'=1, yielding the row-0 sub-list count bound `count 1 ≤ count 0`. Helpers take_left_of_length / drop_left_of_length factor the standard `rw [← length_eq]; List.take_left` idiom through `subst`, sidestepping the leftmost-occurrence ambiguity that the take-amount r0 (also appearing inside List.finRange r0 / Fin r0 type) would otherwise create. Step 1 of Part VIII's docstring sketch (\"row 0 is forced to all zeros\") is now packaged as a count bound over an explicit, syntactically-visible list — the count-to-pointwise step is the only remaining gap for row0_forced_zero.",
+      "research/problems/hilbert-15-oq-02-oq-03-oq-01/sessions/2026-05-14-s3c-prep-10-list-reverse-map-step-function.md (S3c-Prep-10 PREP, doc-only, ~270 LOC): copy-paste-ready Lean proof body for `List.reverse_map_finRange_step_function` auxiliary helper, Mathlib v4.26.0 bearer audit (16 lemmas + tactics), boundary-case sanity check (c₀=0 / c₀=r₁ / r₁=0), alternative proof path via `List.finRange_reverse` + `Fin.rev` induction as fallback, integration sketch into `reverseRowWord_two_canonical` (Step 4 Guard D), PR #18990 (Step 3 ACT) race-surface analysis, forward-look 3-4 sessions to S4."
+    ],
+    "insights": [
+      "Of the three axioms in Hilbert15OQ02OQ03.lean (lrCoeffN, admissible, klyachko_theorem), only lrCoeffN has a fully explicit combinatorial definition in the literature. Reducing it is Mathlib-style scaffolding, not research; the other two are either recursive on lrCoeffN or are the deep Klyachko/Belkale theorem itself.",
+      "Use Fin n entries (not N) for SSYT, matching the gallery's existing SSYTFin n k sh in BallotProblemOQ03OQ01OQ01OQ01.lean:177. The bounded codomain makes finiteness automatic via Subtype.fintype + Pi-over-finite, no extra infrastructure needed.",
+      "Reverse row reading word — Fulton (1997 Ch. 5) reads right-to-left top-to-bottom; Stanley (EC v.2 A.1.3) reads right-to-left bottom-to-top. The existing gallery lrCoeff2 in Hilbert15OQ02.lean:131 follows Fulton (comment block lines 99-122 + the ballot-condition analysis confirms). Use Fulton for consistency with the 2-row anchor.",
+      "Lattice word ≡ ballot word ≡ Yamanouchi word — three names for the same predicate. Document the synonyms in the docstring of isLatticeWord; saves search time for the next researcher who reads the source.",
+      "Decidable instance is non-negotiable: parent file's lr_polytime_positivity uses `decide (∀ r < _, ∀ t, admissible t → hornInequality t α β γ)` which requires `Decidable (0 < lrCoeffN ν λ μ)` to typecheck. Our lrCoeffN_def is decidable by construction (Fintype.card guarded by a decidable if), but the instance must be stated explicitly.",
+      "Mathlib v4.26.0 has YoungDiagram + StandardYoungTableau (used by BallotProblemOQ03OQ01OQ02.lean:49 etc.) but NOT SemistandardYoungTableau / SkewYoungDiagram / lattice word predicate. The gap is real and consistent with the pool note 'Mathlib's developing combinatorics for Young tableaux ... needs to be extended with the reverse-row-reading-word'.",
+      "The 2-row anchoring lemma (S3: lrCoeffN_def (Partition 2) = lrCoeff2) is the right first theorem after the S2 definitions — three purposes: (1) sanity-check the abstract count reduces to the known computable case; (2) exercise reverseRowWord / isLatticeWord on concrete Gr(2,4) data from Hilbert15OQ01.lean; (3) leave a concrete subgoal for S3 rather than a parent-file refactor (axiom replacement = S4).",
+      "reverseRowWord on Fin 2 cleanly decomposes via List.finRange 2 = [0,1] (closed by decide on the literal) + List.flatMap_cons + List.flatMap_nil + List.append_nil. The List.append_nil step is needed because [b].flatMap f = f b ++ []; without explicitly absorbing the trailing nil, rfl fails. The decomposition is now a one-line rewrite-target for any S3c-prefix calculation.",
+      "The next sub-lemma row0_forced_zero is decidedly more API-dependent (List.finRange_succ_last + Fin.last + Fin.le_zero_iff + Fin.size_pos) and merited deferring to its own iteration. Bundling it with the safe decomposition lemmas would gamble the entire PR on the riskiest step.",
+      "S3c-Prep-2 design choice: instead of attacking row0_forced_zero directly at prefix length 1 (the #18015 plan), attack at prefix length r0 by first packaging take/drop-r0 decompositions. The trade-off: applying the lattice at p=r0 (Part XI's `reverseRowWord_two_lattice_row0`) yields the count bound `count 1 ≤ count 0` over the full row-0 sub-list rather than just the singleton head. The remaining row0_forced_zero step is then a single combinatorial argument (`Fin 2`-valued monotone list with `count 1 ≤ count 0` is all zeros) instead of an iteration on j with rightmost-cell tactics. Either route closes Step 1; the p=r0 route makes the resulting count bound usable independently in Step 4 (lattice-from-row-2 guard) without a separate prefix-length application.",
+      "List.take_left / List.drop_left both require the take/drop amount to be syntactically l₁.length, but in our setting the amount r0 = ν.parts 0 - μ.parts 0 also appears inside `List.finRange r0` and the lambda's `Fin r0` type annotation — making a direct `rw [← length_eq]` hit the wrong subterm first. Packaging the rewrite-then-apply as a separate auxiliary `private lemma take_left_of_length` (with `subst` on a fresh implicit length parameter) sidesteps this cleanly: the `apply` matches the goal's take amount as `n`, and the remaining `l₁.length = n` subgoal is closed by simp on the safe length lemmas. This idiom is reusable for any downstream `take`/`drop` calculation where the amount is computed rather than a length-on-a-name.",
+      "S3c-Prep-10 (2026-05-14, researcher-1): Step 4 ACT auxiliary helper `List.reverse_map_finRange_step_function` (the §6.7 mitigation flagged by S3c-Prep-8 / PR #18676) is fully designed and audited at Mathlib v4.26.0. Signature `∀ {α} (a b : α) {c₀ r₁ : ℕ} (hc : c₀ ≤ r₁), ((List.finRange r₁).reverse.map (fun j : Fin r₁ => if j.val < c₀ then a else b)) = List.replicate (r₁ - c₀) b ++ List.replicate c₀ a`. Proof body (~39 LOC) uses `List.ext_getElem` + `simp only` with explicit lemma list (getElem_map / getElem_reverse / getElem_finRange / Fin.cast_mk / Fin.val_mk / getElem_append / getElem_replicate) + four-way `by_cases` ladder closed by two `omega` (contradictory branches) + two `simp [hL, hR]` (consistent branches). All bearers verified at pinned SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67: getElem_reverse @ Lemmas.lean:2398, getElem_finRange @ FinRange.lean:31, Fin.cast_mk @ Fin/Lemmas.lean:494, getElem_append @ Lemmas.lean:1572, getElem_replicate @ Lemmas.lean:2153, ext_getElem @ Lemmas.lean:292. Step 4 ACT integration sketch + race analysis vs PR #18990 in session memo §4. Estimated Step 4 ACT total: ~110-120 LOC, ~45 min for cluster-familiar author."
+    ],
+    "mathlibGaps": [
+      "SemistandardYoungTableau is not present in Mathlib at pinned v4.26.0 (only StandardYoungTableau and YoungDiagram). Gallery has a private SSYTFin n k sh in BallotProblemOQ03OQ01OQ01OQ01.lean:177 restricted to straight shapes with Fin n entries.",
+      "SkewYoungDiagram (a pair (ν,μ) with μ ⊆ ν, exposing the cells in ν\\μ as a sigma-type) is not present anywhere — neither in Mathlib nor in any gallery file.",
+      "Reverse row reading word (Fulton convention) — not in Mathlib, not in gallery. This is the load-bearing piece of any LR-rule formalization.",
+      "Lattice (= ballot = Yamanouchi) word predicate — not in Mathlib. Defining it as `Decidable` over `List (Fin n)` is straightforward but missing.",
+      "General-n LR coefficient — every Schur-positive theorem in the Hilbert-15 cluster currently bottoms out in `axiom lrCoeffN` in the parent file."
+    ],
+    "nextSteps": [
+      "S3c Step 4 ACT (next): Guards C (column-strict on overlap) + Guard D (row-2 lattice). Three public theorems (skewSSYTFin_row1_one_of_overlap ~22 LOC, reverseRowWord_two_canonical ~30 LOC, skewSSYTFin_lattice_bound_row1 ~28 LOC) + auxiliary helper List.reverse_map_finRange_step_function ~40 LOC. ~130-145 LOC total under Path B. Reconciliation paths documented in 2026-05-16-s3c-step3-act-merge-state-sync.md §3.3; Path B (absorb filter-cardinality c₀ into lemma bodies, no `c₀ : ℕ` parameter, discharge hstep via skewSSYTFin_row1_step_function T j) is recommended. 0 sorries, 0 axioms; build pending per cluster convention.",
+      "S3c Step 5 ACT (after PREP-15 staging): ~230 LOC w/ 5 sorries staged for ACT discharge per s3c-prep-15 memo §6 (NOT a paste-ready 0-sorry recipe like PREP-14 for Step 4). Part XVII pastes the §6 skeleton (§6.2 allGuardsHold predicate ~25 LOC, §6.3 lrCoeff2_eq_one_iff_allGuardsHold if-cascade bridge ~55 LOC, §6.4 canonical-candidate construction ~50 LOC, §6.5 canonicalFun_isLatticeWord ~40 LOC, §6.6 lrCoeffN_def_subtype_subsingleton ~35 LOC, §6.7 lrCoeffN_def_two_eq_lrCoeff2_of_support ~55 LOC). Consumes as-merged Step 2/3/4 ACT signatures at Hilbert15OQ02OQ03OQ01.lean lines 889/1040/1083/1160/1212/1229 (cataloged in PREP-15 §4). Bearer citations per PREP-15 §5 corrected file/lines: Fintype.card_congr @ Mathlib/Data/Fintype/Card.lean:67, Unique.mk' @ Mathlib/Logic/Unique.lean:140. Closes the lone sorry at line 413. Recommended: ship with Docker available; fallback PREP-16 stages individual sorry-discharge fragments first.",
+      "S3d (after S3c): lift the 7 verified `lrCoeff2 ... = 1` (resp. = 0) results from Hilbert15OQ02.lean to `lrCoeffN_def`-form by rewriting with `lrCoeffN_def_two_eq_lrCoeff2` then re-discharging via `native_decide`.",
+      "S4 (after S3d): refactor parent Hilbert15OQ02OQ03.lean — replace `axiom lrCoeffN` with `def lrCoeffN := lrCoeffN_def`. Verify nothing downstream breaks (the axiom was only used in klyachko_theorem's statement and in lr_polytime_positivity's decide invocation)."
+    ]
+  },
+  "references": [
+    {
+      "label": "Fulton (1997)",
+      "citation": "Fulton, W. (1997). Young Tableaux (LMS Student Texts 35), Cambridge University Press. Chapter 5: 'The Littlewood-Richardson rule'."
+    },
+    {
+      "label": "Stanley EC v.2",
+      "citation": "Stanley, R.P. (1999). Enumerative Combinatorics Vol. 2, Cambridge University Press. Appendix 1 (A.1.3) — reading words and Yamanouchi sequences."
+    },
+    {
+      "label": "Macdonald (1995)",
+      "citation": "Macdonald, I.G. (1995). Symmetric Functions and Hall Polynomials (2nd ed.). Oxford University Press. §I.9 'The Littlewood-Richardson rule'."
+    },
+    {
+      "label": "Knutson-Tao (1999)",
+      "citation": "Knutson, A. & Tao, T. (1999). The honeycomb model of GL_n tensor products I. J. Amer. Math. Soc. 12(4), 1055-1090."
+    }
+  ],
+  "tags": [
+    "combinatorics",
+    "schubert-calculus",
+    "littlewood-richardson",
+    "young-tableaux",
+    "representation-theory",
+    "hilbert",
+    "axiom-elimination",
+    "mathlib-gap",
+    "scaffold"
+  ],
+  "leanFiles": [
+    {
+      "path": "Proofs/Hilbert15OQ01.lean",
+      "filename": "Hilbert15OQ01.lean",
+      "lineCount": 351,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert15OQ01.lean"
+    },
+    {
+      "path": "Proofs/Hilbert15OQ02.lean",
+      "filename": "Hilbert15OQ02.lean",
+      "lineCount": 533,
+      "theoremCount": 27,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert15OQ02.lean"
+    },
+    {
+      "path": "Proofs/Hilbert15OQ02OQ03.lean",
+      "filename": "Hilbert15OQ02OQ03.lean",
+      "lineCount": 249,
+      "theoremCount": 8,
+      "axiomCount": 3,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert15OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/Hilbert15OQ02OQ03OQ01.lean",
+      "filename": "Hilbert15OQ02OQ03OQ01.lean",
+      "lineCount": 1254,
+      "theoremCount": 33,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/Hilbert15SchubertCalculus.lean",
+      "filename": "Hilbert15SchubertCalculus.lean",
+      "lineCount": 470,
+      "theoremCount": 3,
+      "axiomCount": 7,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert15SchubertCalculus.lean"
+    },
+    {
+      "path": "Proofs/Hilbert15SchubertCalculusOQ01.lean",
+      "filename": "Hilbert15SchubertCalculusOQ01.lean",
+      "lineCount": 310,
+      "theoremCount": 5,
+      "axiomCount": 6,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert15SchubertCalculusOQ01.lean"
+    }
+  ],
+  "relatedProofs": [
+    "hilbert-15",
+    "hilbert-15-oq-01",
+    "hilbert-15-oq-02",
+    "hilbert-15-oq-02-oq-03"
+  ],
+  "lastUpdate": "2026-06-03"
+}

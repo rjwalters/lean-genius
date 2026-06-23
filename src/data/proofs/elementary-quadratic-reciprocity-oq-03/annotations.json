@@ -1,0 +1,182 @@
+[
+  {
+    "id": "ann-eqr03-header",
+    "proofId": "elementary-quadratic-reciprocity-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 28
+    },
+    "type": "concept",
+    "title": "Jacobi Symbol Extension of QR",
+    "content": "The file header introduces the central question: can quadratic reciprocity, classically stated for the Legendre symbol (prime moduli only), be extended to composite odd moduli via the Jacobi symbol? The Jacobi symbol J(a,n) is defined multiplicatively over the prime factorization of n, inheriting algebraic properties from the Legendre symbol while losing the direct connection to quadratic residuacity. This formalization imports Mathlib's JacobiSymbol and QuadraticReciprocity modules, which provide the foundational definitions and the prime-case QR law.",
+    "mathContext": "The Jacobi symbol is defined as $J(a, n) = \\prod_{i=1}^{k} \\left(\\frac{a}{p_i}\\right)^{e_i}$ where $n = \\prod_{i=1}^{k} p_i^{e_i}$ is the prime factorization of odd $n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Legendre symbol",
+      "Jacobi symbol",
+      "quadratic reciprocity",
+      "prime factorization"
+    ],
+    "prerequisites": [
+      "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol",
+      "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity"
+    ]
+  },
+  {
+    "id": "ann-eqr03-jacobi-legendre",
+    "proofId": "elementary-quadratic-reciprocity-oq-03",
+    "range": {
+      "startLine": 34,
+      "endLine": 37
+    },
+    "type": "concept",
+    "title": "Jacobi-Legendre Agreement for Primes",
+    "content": "The first theorem establishes that the Jacobi symbol specializes to the Legendre symbol when the modulus is prime: jacobiSym a p = legendreSym p a. This is the bridge between the two symbol systems, proved directly via Mathlib's `jacobiSym.prime_eq_legendreSym`. The agreement is not just definitional — it confirms that the multiplicative extension of the Jacobi symbol is consistent with the original quadratic residue characterization for primes.",
+    "mathContext": "For prime $p$ and integer $a$: $J(a, p) = \\left(\\frac{a}{p}\\right)$, where the right side is the Legendre symbol.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Legendre symbol",
+      "prime specialization",
+      "multiplicative extension"
+    ],
+    "prerequisites": [
+      "definition of Jacobi symbol",
+      "definition of Legendre symbol"
+    ]
+  },
+  {
+    "id": "ann-eqr03-multiplicativity",
+    "proofId": "elementary-quadratic-reciprocity-oq-03",
+    "range": {
+      "startLine": 39,
+      "endLine": 42
+    },
+    "type": "concept",
+    "title": "Multiplicativity in the Bottom Argument",
+    "content": "States that J(a, mn) = J(a,m) · J(a,n) for odd m and n. This multiplicativity property is the defining structural feature of the Jacobi symbol — it is literally how the symbol is built from Legendre symbols via the prime factorization. The sorry here likely corresponds to finding the right Mathlib API for `jacobiSym.mul_right` with the correct parity arguments. This property is what enables the reduction of composite-modulus QR to the prime case.",
+    "mathContext": "$J(a, mn) = J(a, m) \\cdot J(a, n)$ for odd $m, n$. This follows directly from the multiplicative definition: $\\prod_{p | mn} (a/p)^{v_p(mn)} = \\prod_{p | m} (a/p)^{v_p(m)} \\cdot \\prod_{p | n} (a/p)^{v_p(n)}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "multiplicative function",
+      "completely multiplicative",
+      "prime factorization"
+    ],
+    "prerequisites": [
+      "unique prime factorization",
+      "Legendre symbol"
+    ]
+  },
+  {
+    "id": "ann-eqr03-first-supplement",
+    "proofId": "elementary-quadratic-reciprocity-oq-03",
+    "range": {
+      "startLine": 44,
+      "endLine": 47
+    },
+    "type": "concept",
+    "title": "First Supplement: J(-1, n)",
+    "content": "The first supplement states J(-1, n) = (-1)^(n/2) for odd n > 1. For prime p, this reduces to the classical result that -1 is a quadratic residue mod p if and only if p ≡ 1 (mod 4). For composite n, the formula follows from multiplicativity and the Chinese Remainder Theorem. The exponent n/2 (integer division) captures the parity of (n-1)/2, which counts how many prime factors of n are congruent to 3 mod 4.",
+    "mathContext": "$J(-1, n) = (-1)^{\\lfloor n/2 \\rfloor}$ for odd $n > 1$. Equivalently, $J(-1, n) = (-1)^{(n-1)/2}$, which equals $1$ when $n \\equiv 1 \\pmod{4}$ and $-1$ when $n \\equiv 3 \\pmod{4}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "quadratic residue of -1",
+      "first supplementary law",
+      "parity of (n-1)/2"
+    ],
+    "prerequisites": [
+      "Legendre symbol first supplement",
+      "multiplicativity of Jacobi symbol"
+    ]
+  },
+  {
+    "id": "ann-eqr03-second-supplement",
+    "proofId": "elementary-quadratic-reciprocity-oq-03",
+    "range": {
+      "startLine": 49,
+      "endLine": 52
+    },
+    "type": "concept",
+    "title": "Second Supplement: J(2, n)",
+    "content": "The second supplement states J(2, n) = (-1)^((n²-1)/8) for odd n > 1. For prime p, this gives the classical result that 2 is a QR mod p if and only if p ≡ ±1 (mod 8). The exponent (n²-1)/8 is always an integer for odd n. This formula is computationally useful because it depends only on n mod 8, not on the factorization of n.",
+    "mathContext": "$J(2, n) = (-1)^{(n^2-1)/8}$ for odd $n > 1$. Since $n^2 \\equiv 1 \\pmod{8}$ for all odd $n$, the exponent is always an integer. The result equals $1$ when $n \\equiv \\pm 1 \\pmod{8}$ and $-1$ when $n \\equiv \\pm 3 \\pmod{8}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "quadratic residue of 2",
+      "second supplementary law",
+      "mod 8 classification"
+    ],
+    "prerequisites": [
+      "Legendre symbol second supplement",
+      "multiplicativity of Jacobi symbol"
+    ]
+  },
+  {
+    "id": "ann-eqr03-main-reciprocity",
+    "proofId": "elementary-quadratic-reciprocity-oq-03",
+    "range": {
+      "startLine": 58,
+      "endLine": 68
+    },
+    "type": "concept",
+    "title": "Generalized Quadratic Reciprocity for Jacobi Symbol",
+    "content": "The central theorem: for coprime odd integers m, n > 1, the product J(m,n)·J(n,m) = (-1)^((m-1)/2 · (n-1)/2). This generalizes the classical Legendre symbol QR law from primes to all coprime odd integers. The proof strategy is to factor m and n into primes, apply multiplicativity of the Jacobi symbol to distribute over all prime pairs, then invoke classical QR for each pair. The coprimality hypothesis ensures no prime divides both m and n, which is essential for the Legendre symbols to be well-defined.",
+    "mathContext": "For coprime odd $m, n > 1$: $J(m, n) \\cdot J(n, m) = (-1)^{\\frac{m-1}{2} \\cdot \\frac{n-1}{2}}$. Writing $m = \\prod p_i^{a_i}$ and $n = \\prod q_j^{b_j}$, by multiplicativity: $J(m,n) = \\prod_j \\left(\\frac{m}{q_j}\\right)^{b_j}$ and $J(n,m) = \\prod_i \\left(\\frac{n}{p_i}\\right)^{a_i}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "quadratic reciprocity",
+      "multiplicative reduction",
+      "coprimality",
+      "Eisenstein's proof"
+    ],
+    "prerequisites": [
+      "Legendre symbol QR",
+      "multiplicativity of Jacobi symbol",
+      "unique factorization"
+    ]
+  },
+  {
+    "id": "ann-eqr03-nonresidue-detection",
+    "proofId": "elementary-quadratic-reciprocity-oq-03",
+    "range": {
+      "startLine": 74,
+      "endLine": 81
+    },
+    "type": "insight",
+    "title": "Non-Residue Detection via Jacobi Symbol",
+    "content": "This theorem proves that J(a,n) = -1 implies a is a quadratic non-residue mod n. The proof is by contradiction: if a were a square (a = b² in ZMod n), then J(a,n) = J(b²,n) = 1 by `jacobiSym.sq_eq_one_of_isSquare`, contradicting J(a,n) = -1. This is the 'safe direction' of Jacobi symbol residuacity — it never gives false negatives. The converse fails for composite n: there exist non-residues with J(a,n) = 1 because cancellation can occur between Legendre symbols of different prime factors.",
+    "mathContext": "$J(a, n) = -1 \\implies a$ is a quadratic non-residue $\\pmod{n}$. Proof: if $a = b^2$ in $\\mathbb{Z}/n\\mathbb{Z}$, then $J(a,n) = J(b^2,n) = 1$, contradiction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "quadratic non-residue",
+      "Solovay-Strassen test",
+      "Euler pseudoprime"
+    ],
+    "prerequisites": [
+      "Jacobi symbol of squares",
+      "definition of IsSquare in ZMod"
+    ]
+  },
+  {
+    "id": "ann-eqr03-prime-residuacity",
+    "proofId": "elementary-quadratic-reciprocity-oq-03",
+    "range": {
+      "startLine": 83,
+      "endLine": 89
+    },
+    "type": "insight",
+    "title": "Full Residuacity for Prime Moduli",
+    "content": "For prime p, J(a,p) = 1 with a ≢ 0 (mod p) implies a IS a quadratic residue mod p. The proof reduces to the Legendre symbol via `jacobiSym_eq_legendreSym` and then applies `legendreSym.eq_one_iff`. This result does NOT extend to composite moduli — the classic counterexample is J(2, 15) = J(2,3)·J(2,5) = (-1)·(-1) = 1, yet 2 is not a square mod 15. This distinction between prime and composite moduli is the fundamental reason why the Jacobi symbol alone cannot decide quadratic residuacity.",
+    "mathContext": "For prime $p$, $a \\not\\equiv 0 \\pmod{p}$: $J(a, p) = 1 \\iff a \\in (\\mathbb{Z}/p\\mathbb{Z})^{\\times 2}$. For composite $n$: $J(2, 15) = 1$ but $2 \\notin (\\mathbb{Z}/15\\mathbb{Z})^{\\times 2}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler criterion",
+      "quadratic residue",
+      "composite vs prime distinction",
+      "Solovay-Strassen test"
+    ],
+    "prerequisites": [
+      "Legendre symbol characterization of QR",
+      "Jacobi-Legendre agreement"
+    ]
+  }
+]

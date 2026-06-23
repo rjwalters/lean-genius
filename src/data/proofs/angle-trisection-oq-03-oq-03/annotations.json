@@ -1,0 +1,46 @@
+[
+  {
+    "id": "ann-criterion",
+    "proofId": "angle-trisection-oq-03-oq-03",
+    "range": {
+      "startLine": 44,
+      "endLine": 55
+    },
+    "type": "concept",
+    "title": "From Power-of-2 to 3-Smooth",
+    "content": "Straightedge and compass build numbers in towers of quadratic extensions, so the constructible degrees are exactly the powers of 2. Origami's signature fold solves a general cubic, adding cube roots, so its admissible degrees gain a factor of 3: the 3-smooth numbers 2^a·3^b. `ThreeSmooth d` and `IsOrigamiConstructible α d` encode this criterion, parallel to the parent's CompassConstructibleDegree (power of 2)."
+  },
+  {
+    "id": "ann-characterization",
+    "proofId": "angle-trisection-oq-03-oq-03",
+    "range": {
+      "startLine": 92,
+      "endLine": 120
+    },
+    "type": "insight",
+    "title": "Prime-Factor Characterization by Peeling",
+    "content": "`threeSmooth_iff_primeFactors` proves d is 3-smooth ⟺ every prime factor is 2 or 3. The hard direction is strong induction: for d > 1, peel off a prime factor p (necessarily 2 or 3 by hypothesis); the quotient d/p is smaller and inherits the hypothesis (its prime factors still divide d), so by induction d/p = 2^a·3^b and d = p·(d/p) is 3-smooth. Because the condition is a finite check over the Finset d.primeFactors, this yields a Decidable instance for origami constructibility — the origami analogue of the parent's decidable power-of-2 criterion."
+  },
+  {
+    "id": "ann-separation",
+    "proofId": "angle-trisection-oq-03-oq-03",
+    "range": {
+      "startLine": 145,
+      "endLine": 165
+    },
+    "type": "insight",
+    "title": "Degree 3: Where Origami Beats Compass",
+    "content": "`origami_trisects_but_compass_cannot` is the headline: degree 3 is origami-constructible (3 = 2^0·3^1 is 3-smooth) but not compass-constructible (3 = 2^k would force 2 ∣ 3). This is exactly the classical content — ℚ(cos 20°)/ℚ has degree 3 (angle trisection) and ℚ(∛2)/ℚ has degree 3 (doubling the cube), both impossible by compass yet solvable by paper folding. The inclusion constructible_imp_origami (b = 0) confirms origami loses nothing compass had."
+  },
+  {
+    "id": "ann-limits",
+    "proofId": "angle-trisection-oq-03-oq-03",
+    "range": {
+      "startLine": 169,
+      "endLine": 185
+    },
+    "type": "concept",
+    "title": "Origami Still Has Limits",
+    "content": "`not_five_dvd_threeSmooth` shows 5 ∤ 2^a·3^b (a prime dividing the product would be 2 or 3), so any degree divisible by 5 is not 3-smooth. In particular the regular 11-gon, for which [ℚ(cos 2π/11):ℚ] = 5, is not origami-constructible (not_origami_eleven_gon). Origami extends compass by exactly the cubic directions — it does not make every algebraic number constructible."
+  }
+]

@@ -1,0 +1,92 @@
+[
+  {
+    "id": "def-roots-in-disk",
+    "proofId": "erdos-1044",
+    "range": { "startLine": 41, "endLine": 43 },
+    "type": "definition",
+    "title": "Roots in Unit Disk",
+    "content": "A polynomial f has this property if all its roots z satisfy |z| ≤ 1, i.e., they lie in the closed unit disk.",
+    "significance": "major"
+  },
+  {
+    "id": "def-sublevel-set",
+    "proofId": "erdos-1044",
+    "range": { "startLine": 45, "endLine": 47 },
+    "type": "definition",
+    "title": "Sublevel Set",
+    "content": "The sublevel set {z : |f(z)| < 1} is where the polynomial has absolute value less than 1. Its connected components and their boundary lengths are the focus.",
+    "significance": "major"
+  },
+  {
+    "id": "def-max-boundary",
+    "proofId": "erdos-1044",
+    "range": { "startLine": 58, "endLine": 60 },
+    "type": "definition",
+    "title": "Maximum Boundary Length Λ(f)",
+    "content": "Λ(f) is the supremum of boundary lengths over all connected components of the sublevel set. This is the quantity to be minimized.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-tang",
+    "proofId": "erdos-1044",
+    "range": { "startLine": 66, "endLine": 69 },
+    "type": "theorem",
+    "title": "Tang's Theorem",
+    "content": "The infimum of Λ(f) over all admissible polynomials equals 2. This is the main result solving the problem.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-infimum-not-achieved",
+    "proofId": "erdos-1044",
+    "range": { "startLine": 71, "endLine": 73 },
+    "type": "theorem",
+    "title": "Infimum Not Achieved",
+    "content": "No polynomial actually achieves Λ(f) = 2; the infimum is approached only in the limit as degree increases.",
+    "significance": "major"
+  },
+  {
+    "id": "def-roots-of-unity-poly",
+    "proofId": "erdos-1044",
+    "range": { "startLine": 85, "endLine": 87 },
+    "type": "definition",
+    "title": "Roots of Unity Polynomial",
+    "content": "f_n(z) = z^n - 1 has roots at the n-th roots of unity, uniformly distributed on the unit circle.",
+    "significance": "major"
+  },
+  {
+    "id": "conj-tang",
+    "proofId": "erdos-1044",
+    "range": { "startLine": 96, "endLine": 100 },
+    "type": "conjecture",
+    "title": "Tang's Conjecture",
+    "content": "For fixed degree n, the polynomial z^n - 1 minimizes Λ(f) among all degree-n polynomials with roots in the unit disk. Verified for n = 1, 2.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-roots-of-unity-limit",
+    "proofId": "erdos-1044",
+    "range": { "startLine": 133, "endLine": 136 },
+    "type": "theorem",
+    "title": "Limit Behavior",
+    "content": "As n → ∞, the boundary length of z^n - 1 approaches 2, explaining why 2 is the infimum.",
+    "significance": "major"
+  },
+  {
+    "id": "insight-geometry",
+    "proofId": "erdos-1044",
+    "range": { "startLine": 142, "endLine": 148 },
+    "type": "insight",
+    "title": "Geometric Intuition",
+    "content": "For z^n - 1, the sublevel set forms n small 'petals' around the roots. As n increases, these shrink and the boundary approaches straight segments of total length 2.",
+    "significance": "minor"
+  },
+  {
+    "id": "thm-characterization",
+    "proofId": "erdos-1044",
+    "range": { "startLine": 233, "endLine": 242 },
+    "type": "theorem",
+    "title": "Complete Characterization",
+    "content": "The solution: infimum is exactly 2, not achieved by any polynomial, and z^n - 1 is conjectured optimal for each degree n.",
+    "significance": "major"
+  }
+]

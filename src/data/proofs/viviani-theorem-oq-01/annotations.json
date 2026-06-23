@@ -1,0 +1,117 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "viviani-theorem-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 46
+    },
+    "type": "concept",
+    "title": "Statement and Coordinate Setup",
+    "content": "Viviani's theorem (Vincenzo Viviani, 1622-1703, the last assistant of Galileo) states that for any point P inside an equilateral triangle, the sum of the perpendicular distances from P to the three sides is constant and equal to the triangle's altitude — it does not depend on where P is.\n\nThe formalization works in coordinates. We fix the unit-side equilateral triangle with vertices A = (0,0), B = (1,0), C = (1/2, √3/2). Its three sides lie on the lines Y = 0 (base AB), √3·X − Y = 0 (side AC), and √3·X + Y − √3 = 0 (side BC). Writing each line in the normal form a·X + b·Y + c = 0 lets us apply the single perpendicular-distance formula |a·x + b·y + c| / √(a²+b²) uniformly to all three sides.",
+    "mathContext": "Vertices $A=(0,0)$, $B=(1,0)$, $C=(\\tfrac12,\\tfrac{\\sqrt3}{2})$. Sides: $AB: Y=0$, $AC: \\sqrt3 X - Y = 0$, $BC: \\sqrt3 X + Y - \\sqrt3 = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "equilateral triangle",
+      "perpendicular distance",
+      "altitude",
+      "barycentric coordinates"
+    ],
+    "prerequisites": [
+      "coordinate geometry of lines",
+      "point-to-line distance formula"
+    ],
+    "crossReferences": []
+  },
+  {
+    "id": "ann-disttoline",
+    "proofId": "viviani-theorem-oq-01",
+    "range": {
+      "startLine": 52,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "Perpendicular Distance and the One Irrational Fact",
+    "content": "`distToLine a b c x y` is the perpendicular distance from the point (x,y) to the line a·X + b·Y + c = 0, defined by the standard formula |a·x + b·y + c| / √(a²+b²). It is marked `noncomputable` because it uses `Real.sqrt`.\n\nThe private lemma `sqrt3_sq` records (√3)² = 3 via `Real.sq_sqrt`. This is the only fact about irrational numbers needed anywhere in the proof: every normalization constant that appears (√(0²+1²) = 1 and √((√3)²+1²) = √4 = 2) reduces to a rational once (√3)² = 3 is known.",
+    "mathContext": "$\\operatorname{distToLine}(a,b,c,x,y) = \\dfrac{|a x + b y + c|}{\\sqrt{a^2+b^2}}$, and $(\\sqrt3)^2 = 3$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Real.sqrt",
+      "Real.sq_sqrt",
+      "normal form of a line"
+    ],
+    "prerequisites": [
+      "real square root"
+    ],
+    "crossReferences": []
+  },
+  {
+    "id": "ann-side-distances",
+    "proofId": "viviani-theorem-oq-01",
+    "range": {
+      "startLine": 60,
+      "endLine": 89
+    },
+    "type": "lemma",
+    "title": "Resolving the Three Side Distances on the Interior",
+    "content": "The three lemmas `dist_AB`, `dist_AC`, `dist_BC` evaluate the perpendicular distance to each side under the interior sign hypotheses. The key step in each is that on the interior the linear form inside the absolute value has a fixed sign, so the absolute value resolves: `abs_of_nonneg` for the base and side AC, `abs_of_nonpos` for side BC.\n\nThe normalizers simplify cleanly: √(0²+1²) = 1 for the base, and √((√3)²+1²) = √4 = 2 for the two slanted sides (via `sqrt3_sq` then `Real.sqrt_sq`). The results are the linear expressions d_AB = y, d_AC = (√3·x − y)/2, d_BC = (√3 − √3·x − y)/2.",
+    "mathContext": "On $y\\ge0,\\ \\sqrt3 x - y\\ge0,\\ \\sqrt3 x + y - \\sqrt3\\le0$: $d_{AB}=y$, $d_{AC}=\\tfrac{\\sqrt3 x - y}{2}$, $d_{BC}=\\tfrac{\\sqrt3 - \\sqrt3 x - y}{2}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "absolute value resolution",
+      "half-plane",
+      "abs_of_nonneg",
+      "abs_of_nonpos"
+    ],
+    "prerequisites": [
+      "sign analysis on the triangle interior"
+    ],
+    "crossReferences": []
+  },
+  {
+    "id": "ann-viviani",
+    "proofId": "viviani-theorem-oq-01",
+    "range": {
+      "startLine": 91,
+      "endLine": 104
+    },
+    "type": "theorem",
+    "title": "Viviani's Theorem: Exact Cancellation",
+    "content": "The main theorem `viviani` substitutes the three resolved distances and observes that their sum is √3/2 by a single `ring` step. The cancellation is exact, not approximate: y + (√3·x − y)/2 + (√3 − √3·x − y)/2 = √3/2, with all dependence on x and y vanishing identically. This is the precise sense in which the distance sum is independent of the interior point.",
+    "mathContext": "$d_{AB}+d_{AC}+d_{BC} = y + \\tfrac{\\sqrt3 x - y}{2} + \\tfrac{\\sqrt3 - \\sqrt3 x - y}{2} = \\tfrac{\\sqrt3}{2}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "point-independence",
+      "ring identity",
+      "invariant"
+    ],
+    "prerequisites": [
+      "the three side-distance lemmas"
+    ],
+    "crossReferences": []
+  },
+  {
+    "id": "ann-altitude-nonvacuity",
+    "proofId": "viviani-theorem-oq-01",
+    "range": {
+      "startLine": 106,
+      "endLine": 123
+    },
+    "type": "theorem",
+    "title": "Altitude Identification and Non-Vacuity",
+    "content": "Two companion results close the loop. `altitude_eq` computes the perpendicular distance from the apex C = (1/2, √3/2) to the base Y = 0 and finds it equals √3/2 — so the constant in `viviani` is genuinely the altitude of the triangle, not an arbitrary number. `interior_nonempty` exhibits the centroid (1/2, √3/6) and verifies it satisfies all three interior constraints (by `positivity` and `nlinarith`), confirming the hypotheses of `viviani` are not vacuously satisfiable.",
+    "mathContext": "Altitude $= \\operatorname{distToLine}(0,1,0,\\tfrac12,\\tfrac{\\sqrt3}{2}) = \\tfrac{\\sqrt3}{2}$; centroid $(\\tfrac12,\\tfrac{\\sqrt3}{6})$ lies in the interior.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "altitude",
+      "centroid",
+      "non-vacuity",
+      "positivity",
+      "nlinarith"
+    ],
+    "prerequisites": [
+      "the distToLine definition"
+    ],
+    "crossReferences": []
+  }
+]

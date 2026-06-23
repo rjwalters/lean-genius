@@ -1,0 +1,220 @@
+{
+  "id": "arithmetic-series-oq-00-oq-02",
+  "title": "Weighted Generalization of Nicomachus — Counterexample and Correct Formula",
+  "slug": "arithmetic-series-oq-00-oq-02",
+  "description": "Answers the open question from ArithmeticSeriesOQ00: the conjectured identity ∑(2k-1)k² = (∑k)² is FALSE for n ≥ 2. Proves a counterexample at n=2 (LHS=13, RHS=9) and establishes the correct closed form 6∑(2k-1)k² + n(n+1) = n²(n+1)(3n+1).",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Nicomachus%27s_theorem",
+    "date": "2026-04-26",
+    "status": "verified",
+    "tags": [
+      "combinatorics",
+      "number-theory",
+      "closed-form",
+      "counterexample",
+      "arithmetic-series",
+      "nicomachus"
+    ],
+    "proofRepoPath": "Proofs/ArithmeticSeriesOQ00OQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "lineCount": 120,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_range_succ",
+        "description": "Split last element from range sum for induction",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      }
+    ],
+    "definitionCount": 0
+  },
+  "parent": "arithmetic-series-oq-00",
+  "openQuestion": "Can we prove the weighted generalization: ∑_{k=1}^n (2k-1)·k² = (∑_{k=1}^n k)²?",
+  "overview": {
+    "historicalContext": "Nicomachus's theorem (c. 100 CE) states that 1³ + 2³ + ⋯ + n³ = (1 + 2 + ⋯ + n)², giving a beautiful identity between sums of cubes and the square of the triangular number. The open question asks whether a weighted version holds: replacing k³ by (2k-1)·k² (the k-th odd number times k²).\n\nThe identity (2k-1)·k² reduces to k³ only when 2k-1 = k, i.e., k = 1. For k ≥ 2, the weight (2k-1)k² > k³, making the weighted sum grow faster. Thus the conjectured equality must fail eventually — and it already fails at n=2.",
+    "problemStatement": "Is ∑_{k=1}^n (2k-1)·k² = (∑_{k=1}^n k)² for all natural numbers n?",
+    "proofStrategy": "Counterexample at n=2: compute LHS = 1·1² + 3·2² = 1 + 12 = 13 and RHS = (1+2)² = 9. Both are natural number computations, closed by `decide`. For the correct formula, induction on n using `sum_range_succ` with the inductive step closed by `nlinarith` and a ring-proved polynomial identity.",
+    "keyInsights": [
+      "The identity holds at n=1 (both sides = 1), suggesting plausibility; n=2 is the minimal counterexample",
+      "The correct formula: 6·∑(2k-1)k² + n(n+1) = n²(n+1)(3n+1), equivalently ∑(2k-1)k² = n(n+1)(3n²+n-1)/6",
+      "Derived from: ∑(2k-1)k² = 2∑k³ - ∑k² = 2(n(n+1)/2)² - n(n+1)(2n+1)/6 = n(n+1)(3n²+n-1)/6",
+      "Nicomachus's theorem ∑k³ = (∑k)² remains true; the weighted version with (2k-1)k² instead of k³ is strictly larger for n≥2",
+      "The inductive step identity: n²(n+1)(3n+1) + 6(2n+1)(n+1)² + (n+1)(n+2) - n(n+1) = (n+1)²(n+2)(3n+4), proved by ring",
+      "**Why the conjecture looked plausible**: writing $k^3 = k \\cdot k^2$ and replacing $k$ by the $k$-th odd number $(2k-1)$ produces $(2k-1)k^2$, which agrees with $k^3$ at $k=1$ and superficially preserves the 'weight × $k^2$' shape. But $\\sum_{k=1}^n (2k-1) = n^2$ (sum of first $n$ odd numbers — a classical identity), so the average weight $\\frac{1}{n}\\sum(2k-1) = n$ exceeds the average factor $k$ for $\\sum k^3$, forcing the weighted sum to grow strictly faster.",
+      "**Subtraction-free ℤ formulation**: the conjecture is most naturally stated over ℕ, but $(2k-1)$ leads to ℕ-subtraction at $k=0$ that contaminates the inductive proof. The file states the corrected identity over ℤ using the index shift $\\sum_{k \\in \\mathrm{range}\\,n} (2(k+1)-1)(k+1)^2$, which avoids any subtraction inside the summand. This is a reusable pattern: any 'arithmetic identity at $k=1\\ldots n$' translates to an ℤ-valued `range n` sum with $(k+1)$ shifts.",
+      "**Connection to Faulhaber polynomials**: $\\sum_{k=1}^n (2k-1)k^2$ is a Faulhaber-style polynomial in $n$ of degree 4, expressible as $\\frac{n(n+1)(3n^2+n-1)}{6}$. The identity $\\sum k^3 = (\\sum k)^2$ is a degree-4 coincidence — the unique weight for which the cube-sum factors as a perfect square. No other linear weight on $k^2$ achieves this factorization, which is exactly what this entry refutes."
+    ],
+    "prerequisites": [
+      "**Finset sums and induction** — `Finset.range`, `Finset.Ico`, and `Finset.sum_range_succ` (split-off-last-term lemma). The inductive step in `weighted_sum_closed_form` is $S_{n+1} = S_n + (\\text{term at }n+1)$, recombined via `nlinarith` with a `ring`-proved polynomial witness.",
+      "**Nicomachus's theorem** $\\sum_{k=1}^n k^3 = \\left(\\sum_{k=1}^n k\\right)^2 = \\left(\\frac{n(n+1)}{2}\\right)^2$ — the identity whose weighted generalization this file refutes. Proved in this file as `nicomachus` for comparison.",
+      "**Faulhaber's formulas** for power sums $\\sum k^r$ as degree-$(r+1)$ polynomials in $n$; in particular $\\sum k = n(n+1)/2$, $\\sum k^2 = n(n+1)(2n+1)/6$, $\\sum k^3 = (n(n+1)/2)^2$. Used in the closed-form derivation.",
+      "**ℤ vs ℕ arithmetic in Lean** — natural-number subtraction is truncated (`Nat.sub`), so $(2k - 1)$ at $k = 0$ would yield 0, not $-1$. The file works over ℤ to avoid this, casting via `push_cast` to bridge `Finset.sum_range_succ`-style lemmas.",
+      "**`decide` vs `native_decide` for concrete finite computations** — `decide` is used for the counterexamples and spot-checks (`counterexample_n2`, `form_n1`–`form_n4`), kernel-evaluating each arithmetic expression with no compiled-bytecode trust.",
+      "**`ring` and `nlinarith` tactics** — `ring` closes polynomial identities over commutative (semi)rings, used to discharge the inductive step's degree-4 polynomial identity. `nlinarith` extends `linarith` with multiplication, handling the combined linear/nonlinear arithmetic in the induction.",
+      "**`Finset.sum_sub_distrib`** — distributes a sum over subtraction, used in `cubes_minus_weighted` to rewrite $\\sum k^3 - \\sum (2k-1)k^2$ as $\\sum (k^3 - (2k-1)k^2)$."
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header: Mathematical Derivation",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "File header with full algebraic derivation of the correct closed form: ∑(2k-1)k² = 2∑k³ - ∑k² = n(n+1)(3n²+n-1)/6. Motivates the subtraction-free ℤ formulation for the Lean proof.",
+      "mathContext": "The derivation uses $\\sum(2k-1)k^2 = 2\\sum k^3 - \\sum k^2$ and the known closed forms for both sums. The ℤ formulation avoids ℕ subtraction issues."
+    },
+    {
+      "id": "counterexample",
+      "title": "I. Counterexample at n=2",
+      "startLine": 33,
+      "endLine": 50,
+      "summary": "Proves LHS=13 ≠ RHS=9 at n=2 using `decide`. Also shows the identity holds at n=1 and fails again at n=3 (58 ≠ 36).",
+      "mathContext": "$n=2$: LHS $= 1 + 12 = 13 \\neq (1+2)^2 = 9$. The n=1 case holds (both sides = 1), explaining initial plausibility."
+    },
+    {
+      "id": "closed-form-induction",
+      "title": "II. Correct Closed Form (Inductive Proof)",
+      "startLine": 53,
+      "endLine": 71,
+      "summary": "Proves 6∑(2k-1)k² + n(n+1) = n²(n+1)(3n+1) by induction via sum_range_succ + nlinarith with ring-proved witness.",
+      "mathContext": "Inductive step: $n^2(n+1)(3n+1) + 6(2n+1)(n+1)^2 + (n+1)(n+2) - n(n+1) = (n+1)^2(n+2)(3n+4)$, proved by ring."
+    },
+    {
+      "id": "spot-checks",
+      "title": "III. Spot Checks n=1,2,3,4",
+      "startLine": 72,
+      "endLine": 93,
+      "summary": "Verifies closed form at n=1,2,3,4 by decide. Independent sanity check of the inductive proof using Ico 1 (n+1) formulation."
+    },
+    {
+      "id": "nicomachus-contrast",
+      "title": "IV. Contrast with Nicomachus",
+      "startLine": 96,
+      "endLine": 116,
+      "summary": "Proves Nicomachus 4∑k³ = (n(n+1))² and gap formula ∑k³ - ∑(2k-1)k² = ∑k²(1-k) < 0 for n≥2.",
+      "mathContext": "Gap: $\\sum k^3 - \\sum(2k-1)k^2 = \\sum k^2(1-k) \\leq 0$. The conjectured sum strictly exceeds $(\\sum k)^2$ for $n \\geq 2$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The conjectured identity is false for all n ≥ 2. The correct formula 6∑(2k-1)k² + n(n+1) = n²(n+1)(3n+1) is proved by induction with 0 sorries.",
+    "implications": "The open question is definitively answered: the weighted generalization with weight (2k-1) does not produce the triangular square. The correct Nicomachus identity uses k³ (not (2k-1)k²) as summands. The difference ∑k³ - ∑(2k-1)k² = ∑k²(1-k) is negative for n≥2.",
+    "openQuestions": [
+      "Is there a weight w(k) other than k² such that ∑w(k)·(2k-1) = (∑k)²? (This would require w(k) = k, giving the trivially true 2∑k² - ∑(2k-1) = ∑(1) = n, not (∑k)².)",
+      "Can the Nicomachus identity be generalized to power sums: ∑_{k=1}^n k^r = f(n,r) for some pattern?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "arithmetic-series-oq-00",
+      "relationship": "answers-open-question",
+      "description": "Directly answers the second open question of ArithmeticSeriesOQ00: the weighted generalization ∑(2k-1)k² = (∑k)² is FALSE."
+    },
+    {
+      "targetId": "arithmetic-series",
+      "relationship": "ancestor",
+      "description": "Root: the basic arithmetic series identity $\\sum_{k=1}^{n} k = n(n+1)/2$. The 'square of the triangular number' on the right of Nicomachus is $(n(n+1)/2)^2$, so the original Nicomachus identity $\\sum k^3 = (\\sum k)^2$ is a multiplicative refinement of the linear sum. The weighted variant explored here breaks that refinement, illustrating that the cube-square coincidence relies on specific algebraic luck rather than a general weighted-power pattern."
+    },
+    {
+      "targetId": "sum-of-kth-powers",
+      "relationship": "related",
+      "description": "Faulhaber's formulas give closed forms for $\\sum_{k=1}^{n} k^r$ as polynomials of degree $r+1$ in $n$. The corrected closed form $6\\sum(2k-1)k^2 + n(n+1) = n^2(n+1)(3n+1)$ proved here is a Faulhaber-style polynomial identity over a *weighted* power sum, and its derivation routes through the standard $\\sum k$, $\\sum k^2$, $\\sum k^3$ Faulhaber identities. The non-existence of a clean square-of-something form for the weighted sum quantifies the breakdown of the Nicomachus pattern."
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "Closed forms for power sums $\\sum k^r$ derive systematically from telescoping $(k+1)^{r+1} - k^{r+1}$ and applying the binomial theorem to the difference. This method gives the classical Bernoulli/Faulhaber identities and is the algebraic engine behind verifying that $6\\sum(2k-1)k^2 + n(n+1) = n^2(n+1)(3n+1)$ is the unique polynomial-degree-correct closed form."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "ArithmeticSeriesOQ00OQ02.counterexample_n2",
+      "statement": "∑ k ∈ Ico 1 3, (2 * k - 1) * k ^ 2 ≠ (∑ k ∈ Ico 1 3, k) ^ 2",
+      "description": "**Minimal counterexample.** At $n = 2$: LHS $= 1 \\cdot 1^2 + 3 \\cdot 2^2 = 1 + 12 = 13$; RHS $= (1 + 2)^2 = 9$. Refutes the conjectured weighted Nicomachus identity. Closed by `decide` (kernel-level concrete evaluation, no compiled trust)."
+    },
+    {
+      "name": "ArithmeticSeriesOQ00OQ02.holds_n1",
+      "statement": "∑ k ∈ Ico 1 2, (2 * k - 1) * k ^ 2 = (∑ k ∈ Ico 1 2, k) ^ 2",
+      "description": "**Base case that creates false plausibility.** At $n = 1$ both sides evaluate to $1$, which is why the conjecture looks reasonable on first inspection. The identity then fails at every $n \\geq 2$."
+    },
+    {
+      "name": "ArithmeticSeriesOQ00OQ02.counterexample_n3",
+      "statement": "∑ k ∈ Ico 1 4, (2 * k - 1) * k ^ 2 ≠ (∑ k ∈ Ico 1 4, k) ^ 2",
+      "description": "**Second numerical witness.** At $n = 3$: LHS $= 1 + 12 + 45 = 58$; RHS $= 6^2 = 36$. The gap widens (already $58 - 36 = 22$) and grows polynomially — consistent with the corrected closed form being a degree-4 polynomial in $n$ versus the degree-4 square of a triangular number."
+    },
+    {
+      "name": "ArithmeticSeriesOQ00OQ02.weighted_sum_closed_form",
+      "statement": "(n : ℕ) → 6 * (∑ k ∈ range n, ((2 * ((k : ℤ) + 1) - 1) * ((k : ℤ) + 1) ^ 2)) + (n : ℤ) * (n + 1) = (n : ℤ) ^ 2 * (n + 1) * (3 * n + 1)",
+      "description": "**Main result — correct closed form.** Stated subtraction-free over ℤ: $6 \\cdot \\sum_{k=1}^n (2k-1)k^2 + n(n+1) = n^2(n+1)(3n+1)$, equivalently $\\sum_{k=1}^n (2k-1)k^2 = n(n+1)(3n^2 + n - 1)/6$. Proved by induction on $n$ with `sum_range_succ` peeling off the last summand and `nlinarith` plus a `ring`-discharged degree-4 polynomial identity for the inductive step."
+    },
+    {
+      "name": "ArithmeticSeriesOQ00OQ02.form_n1 / form_n2 / form_n3 / form_n4",
+      "statement": "6 * ∑ k ∈ Ico 1 (n+1), (2 * (k : ℤ) - 1) * k ^ 2 + n * (n + 1) = n ^ 2 * (n + 1) * (3 * n + 1) for n ∈ {1, 2, 3, 4}",
+      "description": "**Spot-check theorems.** Independent `decide`-closed verifications of the closed form at $n = 1, 2, 3, 4$ using `Ico 1 (n+1)` summation (matching the classical 1-indexed statement). Numerical values: $(n, \\text{LHS-correction}) = (1, 8), (2, 84), (3, 360), (4, 1040)$ — all equal $n^2(n+1)(3n+1)$."
+    },
+    {
+      "name": "ArithmeticSeriesOQ00OQ02.weight_ne_cube",
+      "statement": "(2 * (2 : ℕ) - 1) * 2 ^ 2 ≠ 2 ^ 3",
+      "description": "**Pointwise distinction lemma.** At $k = 2$: $(2 \\cdot 2 - 1) \\cdot 4 = 12 \\neq 8 = 2^3$. Confirms the summands $(2k-1)k^2$ and $k^3$ are genuinely different functions of $k$ for $k \\geq 2$, isolating where the conjecture diverges from Nicomachus's identity at the per-term level."
+    },
+    {
+      "name": "ArithmeticSeriesOQ00OQ02.nicomachus",
+      "statement": "(n : ℕ) → 4 * ∑ k ∈ range n, ((k : ℤ) + 1) ^ 3 = ((n : ℤ) * (n + 1)) ^ 2",
+      "description": "**Genuine Nicomachus identity for contrast.** $4 \\sum_{k=1}^n k^3 = (n(n+1))^2$, equivalently $\\sum k^3 = (\\sum k)^2$. Proved here with the same induction-+-`ring` template as the corrected weighted formula. Included to make the contrast precise: the cube power is what makes the square factorization work, not the 'odd weight × $k^2$' alternative."
+    },
+    {
+      "name": "ArithmeticSeriesOQ00OQ02.cubes_minus_weighted",
+      "statement": "(n : ℕ) → (∑ k ∈ range n, ((k : ℤ) + 1) ^ 3) - (∑ k ∈ range n, ((2 * ((k : ℤ) + 1) - 1) * ((k : ℤ) + 1) ^ 2)) = ∑ k ∈ range n, (((k : ℤ) + 1) ^ 2 * (1 - (k : ℤ)))",
+      "description": "**Gap formula.** $\\sum k^3 - \\sum (2k-1)k^2 = \\sum k^2 (1 - k)$, which is $\\leq 0$ for $k \\geq 1$ and strictly $< 0$ for any $k \\geq 2$. Quantifies the failure direction: the weighted sum strictly exceeds the cube sum for $n \\geq 2$. Proved by `sum_sub_distrib` followed by termwise `ring`."
+    }
+  ],
+  "references": [
+    {
+      "type": "research-paper",
+      "citation": "Nicomachus of Gerasa (c. 100 CE). *Introductio Arithmeticae*, Book II, Chapter 20. (Greek manuscript; modern translation: D'Ooge, Robbins, Karpinski 1926, University of Michigan Press.)",
+      "relevance": "Original source of the identity $\\sum_{k=1}^n k^3 = (\\sum_{k=1}^n k)^2$ that motivates the weighted-generalization open question refuted here. Nicomachus stated the equality between sums of cubes and squares of triangular numbers without proof; the result became a touchstone for elementary number-theoretic identities."
+    },
+    {
+      "type": "research-paper",
+      "citation": "Faulhaber, J. (1631). *Academia Algebrae: Darinnen die miraculosische Inventiones zu den höchsten Cossen weiters continuirt und profitiert werden.* Augsburg.",
+      "relevance": "Faulhaber's formulas express $\\sum_{k=1}^n k^r$ as a polynomial of degree $r+1$ in $n$. The corrected closed form $\\sum (2k-1)k^2 = n(n+1)(3n^2+n-1)/6$ proved here is a Faulhaber-style polynomial identity over a *weighted* power sum, derived from the underlying $\\sum k^2$, $\\sum k^3$ Faulhaber formulas."
+    },
+    {
+      "type": "textbook",
+      "citation": "Graham, R.L., Knuth, D.E., Patashnik, O. (1994). *Concrete Mathematics* (2nd ed.). Addison-Wesley. Chapter 2 (Sums), Chapter 6 (Special Numbers).",
+      "relevance": "Standard graduate reference for finite sums and closed-form derivations. Chapter 2.6 presents Nicomachus's identity, the general $\\sum k^r$ recurrence, and the technique of multiplying through by a common denominator (here 6) to obtain subtraction-free identities — exactly the strategy used in this file's $6 \\sum (2k-1)k^2 + n(n+1) = n^2(n+1)(3n+1)$ formulation."
+    },
+    {
+      "type": "research-paper",
+      "citation": "Bernoulli, J. (1713). *Ars Conjectandi*, Part II, Chapter III. Basel. (Posthumous.)",
+      "relevance": "Source of the Bernoulli polynomials and the systematic formula $\\sum_{k=1}^n k^r = \\frac{1}{r+1} \\sum_{j=0}^r \\binom{r+1}{j} B_j n^{r+1-j}$ generalizing Faulhaber. The polynomial-degree-correctness argument that uniquely identifies $\\sum (2k-1)k^2$ as $n(n+1)(3n^2+n-1)/6$ relies on the Bernoulli framework."
+    },
+    {
+      "type": "website",
+      "citation": "Wikipedia. \"Squared triangular number\" and \"Nicomachus's theorem.\" Retrieved 2026.",
+      "relevance": "Cited in `meta.sourceUrl`. Modern expository account of $\\sum k^3 = (\\sum k)^2$ with multiple proofs (induction, combinatorial bijection, finite-differences). Useful pedagogical companion for understanding why the *unweighted* cube sum admits a square factorization while the *weighted* generalization explored here does not."
+    },
+    {
+      "type": "library",
+      "citation": "The Mathlib Community. \"Mathlib.Algebra.BigOperators.Group.Finset\" — `Finset.sum_range_succ`, `Finset.sum_Ico_consecutive`, `Finset.sum_sub_distrib`. (accessed 2026)",
+      "relevance": "Provides the `sum_range_succ` lemma used to peel off the $(n+1)$-th term in the inductive step of `weighted_sum_closed_form`, and the `sum_sub_distrib` lemma used in `cubes_minus_weighted`. Listed in `meta.mathlibDependencies`."
+    },
+    {
+      "type": "library",
+      "citation": "The Mathlib Community. \"Mathlib.Tactic.Linarith\" and \"Mathlib.Tactic.Ring\" — `nlinarith`, `ring`, `push_cast`. (accessed 2026)",
+      "relevance": "The inductive step combines `nlinarith` (nonlinear arithmetic) with a witness lemma discharged by `ring` (polynomial identity solver). `push_cast` handles the ℕ→ℤ coercions introduced by `sum_range_succ` on the integer-valued summand. Together these are the proof's algebraic engine."
+    }
+  ],
+  "leanFile": {
+    "namespace": "ArithmeticSeriesOQ00OQ02",
+    "lineCount": 120,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "path": "Proofs/ArithmeticSeriesOQ00OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

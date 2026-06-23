@@ -1,0 +1,348 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "erdos-413",
+    "range": {
+      "startLine": 1,
+      "endLine": 21
+    },
+    "type": "concept",
+    "title": "Module Header and Problem Overview",
+    "content": "The module docstring introduces Erdős Problem #413: are there infinitely many 'barriers' for $\\omega(n)$? A barrier $n$ blocks all trajectories $m \\mapsto m + \\omega(m)$ from below. The header summarizes key results: expProd barriers have positive density [Er79d], 99840 is the largest $\\Omega$-barrier below $10^5$ (Selfridge), and OEIS A005236 lists known $\\omega$-barriers.",
+    "mathContext": "A barrier for $f$ at $n$ means $\\forall m < n,\\; m + f(m) \\leq n$. For $\\omega$, the known barriers begin 1, 2, 4, 6, 12, 24, 30, 32, 48, 60, 64, 90, 120, 128, ...",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős problems",
+      "OEIS A005236",
+      "arithmetic function barriers"
+    ],
+    "prerequisites": [
+      "prime factorization",
+      "arithmetic functions"
+    ]
+  },
+  {
+    "id": "ann-arithmetic-functions",
+    "proofId": "erdos-413",
+    "range": {
+      "startLine": 31,
+      "endLine": 40
+    },
+    "type": "definition",
+    "title": "Three Arithmetic Functions: ω, Ω, expProd",
+    "content": "Defines three noncomputable arithmetic functions using Mathlib's `primeFactors` and `factorization`:\n\n- **omega**: $\\omega(n) = |\\{p : p \\mid n,\\; p \\text{ prime}\\}|$ (distinct prime divisor count)\n- **bigOmega**: $\\Omega(n) = \\sum_{p^k \\| n} k$ (prime factors with multiplicity)\n- **expProd**: $F(n) = \\prod_{p^{k_i} \\| n} k_i$ (product of exponents)\n\nThe hierarchy $F(n) \\leq \\Omega(n)$ and $\\omega(n) \\leq \\Omega(n)$ determines which functions can have barriers.",
+    "mathContext": "For $n = 2^3 \\cdot 3^2 \\cdot 5$: $\\omega(n) = 3$, $\\Omega(n) = 6$, $F(n) = 3 \\cdot 2 \\cdot 1 = 6$. For primes $p$: $\\omega(p) = \\Omega(p) = F(p) = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.primeFactors",
+      "Nat.factorization",
+      "Finsupp.sum",
+      "Finsupp.prod"
+    ],
+    "prerequisites": [
+      "prime factorization",
+      "Mathlib Finsupp"
+    ]
+  },
+  {
+    "id": "ann-barrier-def",
+    "proofId": "erdos-413",
+    "range": {
+      "startLine": 48,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "Barrier Definitions",
+    "content": "Defines `IsBarrier f n` as $\\forall m < n,\\; m + f(m) \\leq n$. Introduces `IsBarrierReal` for real-valued functions (needed for the $\\varepsilon$-variant where we test $m + \\varepsilon \\cdot \\omega(m) \\leq n$). The set `barriers f` collects all barriers into $\\{n \\mid \\text{IsBarrier}\\; f\\; n\\}$.\n\nThe definition is purely universal — a single witness $m$ with $m + f(m) > n$ suffices to show $n$ is not a barrier.",
+    "mathContext": "$\\text{IsBarrier}(f, n) \\iff \\forall m \\in \\{0, \\ldots, n-1\\},\\; m + f(m) \\leq n$. Equivalently, $n$ is a barrier iff the orbit $m \\mapsto m + f(m)$ cannot jump from any $m < n$ to a value exceeding $n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "universal quantification",
+      "discrete dynamics",
+      "orbit trapping"
+    ],
+    "prerequisites": [
+      "natural number arithmetic",
+      "set comprehension"
+    ]
+  },
+  {
+    "id": "ann-basic-barriers",
+    "proofId": "erdos-413",
+    "range": {
+      "startLine": 66,
+      "endLine": 100
+    },
+    "type": "concept",
+    "title": "Basic Barrier Properties",
+    "content": "Four foundational results:\n\n1. **zero_is_barrier**: 0 is vacuously a barrier (no $m < 0$ exists)\n2. **one_is_barrier**: 1 is vacuously a barrier (only $m = 0$, and $0 + f(0) \\leq 1$ by `omega`)\n3. **two_is_barrier_iff**: When $f(0) = 0$, $2$ is a barrier iff $f(1) \\leq 1$. Uses `interval_cases` to enumerate $m \\in \\{0, 1\\}$\n4. **barrier_monotone_le**: If $g \\leq f$ pointwise and $n$ is a barrier for $f$, it's a barrier for $g$",
+    "mathContext": "The vacuous truth at 0 and 1 gives trivial barriers. The characterization at 2 shows the first non-trivial check: $1 + f(1) \\leq 2 \\iff f(1) \\leq 1$. Monotonicity: $\\text{barriers}(f) \\subseteq \\text{barriers}(g)$ when $g \\leq f$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "vacuous truth",
+      "interval_cases tactic",
+      "omega tactic",
+      "monotonicity"
+    ],
+    "prerequisites": [
+      "Lean tactic mode",
+      "natural number inequalities"
+    ]
+  },
+  {
+    "id": "ann-omega-bound",
+    "proofId": "erdos-413",
+    "range": {
+      "startLine": 128,
+      "endLine": 159
+    },
+    "type": "concept",
+    "title": "The Key Bound: $2^{\\omega(n)} \\leq n$",
+    "content": "The crucial inequality enabling barriers. The proof establishes $2^{\\omega(n)} \\leq \\prod_{p \\mid n} p \\leq n$ in two steps:\n\n1. $2^{\\omega(n)} = 2^{|\\text{primeFactors}(n)|} \\leq \\prod_{p \\in \\text{primeFactors}(n)} p$ since each prime $p \\geq 2$\n2. $\\prod_{p \\in \\text{primeFactors}(n)} p \\mid n$ (each prime factor divides $n$), so the product $\\leq n$\n\nThe real-valued corollary `omega_upper_bound` derives $\\omega(n) \\leq \\log_2 n$ using `Real.log_pow` and `Real.log_le_log`. This logarithmic bound is what allows $m + \\omega(m)$ to stay below $n$.",
+    "mathContext": "$n \\geq \\prod_{p \\mid n} p \\geq 2^{\\omega(n)}$, hence $\\omega(n) \\leq \\log_2 n$. The product inequality uses `Nat.prod_primeFactors_dvd` and `Finset.prod_le_prod` with `Nat.Prime.two_le`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime factorization",
+      "logarithmic bounds",
+      "Real.log",
+      "Finset.prod_le_prod"
+    ],
+    "prerequisites": [
+      "Nat.primeFactors",
+      "real logarithms",
+      "divisibility"
+    ]
+  },
+  {
+    "id": "ann-phi-no-barriers",
+    "proofId": "erdos-413",
+    "range": {
+      "startLine": 177,
+      "endLine": 201
+    },
+    "type": "concept",
+    "title": "Euler's φ Has No Barriers Beyond 3",
+    "content": "Proves `euler_phi_no_barriers`: for $n \\geq 4$, $n$ is not a barrier for $\\varphi$. The proof shows $(n-1) + \\varphi(n-1) > n$ since $\\varphi(n-1) \\geq 2$ for $n-1 \\geq 3$. The supporting lemma `totient_ge_two` proves $\\varphi(n) \\geq 2$ for $n \\geq 3$ by contradiction: $\\varphi(n) = 0$ contradicts `Nat.totient_pos`, and $\\varphi(n) = 1$ only for $n \\in \\{1, 2\\}$ by `Nat.totient_eq_one_iff`.\n\nThis contrasts sharply with $\\omega$: the fast growth of $\\varphi$ (roughly $n/e^\\gamma$) prevents barriers, while $\\omega$'s logarithmic growth permits them.",
+    "mathContext": "For $n \\geq 3$: $\\varphi(n) \\geq 2$, so $(n-1) + \\varphi(n-1) \\geq (n-1) + 2 = n + 1 > n$. Hence no $n \\geq 4$ is a $\\varphi$-barrier. The only barriers are 0, 1, 2, 3.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler's totient",
+      "Nat.totient_eq_one_iff",
+      "growth rate comparison"
+    ],
+    "prerequisites": [
+      "Euler's totient function",
+      "Nat.totient_pos"
+    ]
+  },
+  {
+    "id": "ann-sigma-no-barriers",
+    "proofId": "erdos-413",
+    "range": {
+      "startLine": 481,
+      "endLine": 517
+    },
+    "type": "concept",
+    "title": "Sum-of-Divisors σ₁ Has No Barriers Beyond 2",
+    "content": "Proves `sigma1_no_barriers`: for $n \\geq 3$, $n$ is not a $\\sigma_1$-barrier. The key lemma `sigma1_ge_succ` shows $\\sigma_1(n) \\geq n + 1$ for $n \\geq 2$ by summing just the two divisors 1 and $n$: $\\sigma_1(n) \\geq 1 + n = n + 1$. Then $(n-1) + \\sigma_1(n-1) \\geq (n-1) + n = 2n - 1 > n$ for $n \\geq 2$.\n\nThe proof uses `Finset.sum_le_sum_of_subset_of_nonneg` to extract the two-element subset $\\{1, n\\} \\subseteq \\text{divisors}(n)$ and `Finset.sum_pair` to evaluate the restricted sum.",
+    "mathContext": "For $n \\geq 2$: $\\sigma_1(n) = \\sum_{d \\mid n} d \\geq 1 + n > n$. So $(n-1) + \\sigma_1(n-1) \\geq 2n - 1 > n$ for $n \\geq 2$. The only $\\sigma_1$-barriers are 0, 1, 2.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sum-of-divisors",
+      "Nat.divisors",
+      "Finset.sum_pair",
+      "Finset.sum_le_sum_of_subset_of_nonneg"
+    ],
+    "prerequisites": [
+      "divisor theory",
+      "Finset sums"
+    ]
+  },
+  {
+    "id": "ann-decidable-barriers",
+    "proofId": "erdos-413",
+    "range": {
+      "startLine": 252,
+      "endLine": 401
+    },
+    "type": "definition",
+    "title": "Decidable Barrier Framework and Machine Verification",
+    "content": "A computable framework for barrier checking. `isBarrierBool f n` tests all $m \\in \\{0, \\ldots, n-1\\}$ via `List.range n`. Two meta-theorems establish correctness:\n\n- **isBarrierBool_sound**: if the Boolean check returns true, `IsBarrier` holds\n- **isBarrierBool_complete**: if `IsBarrier` holds, the Boolean check returns true\n\nThe `omegaC` (computable ω) equals `omega` definitionally. Using `native_decide`, barriers are machine-verified: 0, 1, 2, 4, 6, 12, 24, 30, 32, 48, 60, 64, 90, 120, 128 are $\\omega$-barriers. Non-barriers 3, 5, 7-10, 15, 16, 20 are also verified. Barrier counts: 9 up to 32, 11 up to 61, 13 up to 91, 14 up to 121.",
+    "mathContext": "Machine verification via `native_decide`: for each claimed barrier $n$, the kernel evaluates $\\forall m < n,\\; m + \\omega(m) \\leq n$ by brute force, providing a proof certificate. Barriers beyond ~128 exceed Docker memory limits.",
+    "significance": "key",
+    "relatedConcepts": [
+      "native_decide",
+      "decidability",
+      "List.range",
+      "computational verification",
+      "OEIS A005236"
+    ],
+    "prerequisites": [
+      "Lean decidability",
+      "native_decide",
+      "Boolean reflection"
+    ]
+  },
+  {
+    "id": "ann-prime-power-pred",
+    "proofId": "erdos-413",
+    "range": {
+      "startLine": 416,
+      "endLine": 448
+    },
+    "type": "concept",
+    "title": "Barrier Predecessors Are Prime Powers",
+    "content": "The structural theorem `barrier_pred_is_prime_power_or_one`: at any $\\omega$-barrier $n \\geq 2$, $n-1$ is either 1 or a prime power $p^k$. The proof splits on $\\omega(n-1)$:\n\n- If $\\omega(n-1) = 0$: the prime factors set is empty, so $n-1 \\leq 1$ (proved by contradiction using `Nat.minFac`)\n- If $\\omega(n-1) = 1$: exactly one prime factor $p$ exists, so $n-1 = p^k$ (recovered via `Nat.factorization_prod_pow_eq_self`)\n\nThe stronger form `barrier_pred_is_prime_power` (line 1083) handles $n \\geq 3$ and eliminates the $n-1 = 1$ case. This means barriers can only occur at $n = p^k + 1$.",
+    "mathContext": "At a barrier $n \\geq 2$: $\\omega(n-1) \\leq 1$. If $\\omega(n-1) = 0$, then $n-1$ has no prime factors, so $n-1 \\in \\{0, 1\\}$. If $\\omega(n-1) = 1$, then $n-1 = p^k$ for the unique prime factor $p$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime powers",
+      "Nat.factorization_prod_pow_eq_self",
+      "Nat.minFac",
+      "structural constraints"
+    ],
+    "prerequisites": [
+      "prime factorization",
+      "Finset.card_eq_one",
+      "Nat.support_factorization"
+    ]
+  },
+  {
+    "id": "ann-barrier-spacing",
+    "proofId": "erdos-413",
+    "range": {
+      "startLine": 463,
+      "endLine": 480
+    },
+    "type": "concept",
+    "title": "Barrier Spacing and Gap Theorems",
+    "content": "Several theorems constrain how barriers can be spaced:\n\n- **barrier_gap_two**: If $n \\geq 2$, $n$ and $n+2$ are both barriers, then $\\omega(n) \\leq 1$ and $\\omega(n+1) \\leq 1$\n- **barrier_succ_iff**: $n+1$ is a barrier iff $\\omega(n) \\leq 1$ (given $n$ is a barrier)\n- **consecutive_barriers_prime_power**: Consecutive barriers at $n, n+1$ force $\\omega(n) \\leq 1$\n- **non_prime_power_barrier_gap**: If $\\omega(n) \\geq 2$ at a barrier $n$, the next barrier is $\\geq n+2$\n\nThese show that consecutive barriers require intervening prime powers.",
+    "mathContext": "If $n$ and $n+1$ are both $\\omega$-barriers, then $\\omega(n) \\leq 1$, i.e., $n$ is a prime power (or 0 or 1). If $n$ has $\\geq 2$ distinct prime factors, the next barrier must skip at least one integer.",
+    "significance": "key",
+    "relatedConcepts": [
+      "consecutive barriers",
+      "prime power distribution",
+      "barrier gaps"
+    ],
+    "prerequisites": [
+      "barrier definition",
+      "omega bounds"
+    ]
+  },
+  {
+    "id": "ann-general-theory",
+    "proofId": "erdos-413",
+    "range": {
+      "startLine": 519,
+      "endLine": 584
+    },
+    "type": "concept",
+    "title": "General Barrier Theory",
+    "content": "Abstract results about barriers for arbitrary functions:\n\n- **barriers_zero_eq_univ**: Every $n$ is a barrier for the zero function ($f \\equiv 0$)\n- **barrier_const_iff**: For $n \\geq 2$, $n$ is a barrier for the constant function $c$ iff $c \\leq 1$\n- **barrier_of_bounded_by_one**: If $f \\leq 1$ everywhere, every $n$ is a barrier\n- **barrier_sum_implies_components**: If $n$ is a barrier for $f + g$, it's a barrier for both $f$ and $g$ individually\n- **no_barriers_of_eventually_large**: If $f(m) \\geq 2$ for all $m \\geq N$, then no $n \\geq N + 2$ is a barrier",
+    "mathContext": "The theorem `no_barriers_of_eventually_large` gives the contrapositive of the barrier question: if $f$ eventually exceeds 1, barriers are finite. This is exactly why $\\varphi$ and $\\sigma_1$ fail — they eventually exceed 1 everywhere.",
+    "significance": "key",
+    "relatedConcepts": [
+      "abstract barrier theory",
+      "function bounds",
+      "barrier finiteness criteria"
+    ],
+    "prerequisites": [
+      "natural number arithmetic",
+      "omega tactic"
+    ]
+  },
+  {
+    "id": "ann-dynamics",
+    "proofId": "erdos-413",
+    "range": {
+      "startLine": 601,
+      "endLine": 709
+    },
+    "type": "concept",
+    "title": "Iterated Dynamics and Orbits",
+    "content": "Formalizes the dynamical systems perspective on barriers:\n\n- **iterOmega**: The step function $n \\mapsto n + \\omega(n)$\n- **iterOmegaPow**: $k$-fold iteration\n- **eventuallyMeet**: Two starting points $a, b$ eventually reach the same orbit value\n- **orbit**: The orbit sequence $n, n + \\omega(n), n + \\omega(n) + \\omega(n + \\omega(n)), \\ldots$\n\nKey results: orbits are strictly increasing for $n \\geq 2$ (since $\\omega(n) \\geq 1$), barriers trap all orbits starting below them (`barrier_traps_orbit`), and orbits respect barrier ordering. The strict monotonicity proof uses induction and the bound $\\omega(n) \\geq 1$ for $n \\geq 2$.",
+    "mathContext": "The orbit of $n$: $O(n) = (n, n + \\omega(n), n + 2\\omega(n) + \\omega(n + \\omega(n)), \\ldots)$. If $b$ is a barrier and $m < b$, then $O(m)_1 = m + \\omega(m) \\leq b$. Erdős #412 conjectures $\\forall a, b \\geq 1,\\; \\exists k, l,\\; O(a)_k = O(b)_l$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "discrete dynamics",
+      "orbit theory",
+      "trajectory merging",
+      "Erdős #412"
+    ],
+    "prerequisites": [
+      "induction",
+      "natural number recursion"
+    ]
+  },
+  {
+    "id": "ann-bigomega-expprod",
+    "proofId": "erdos-413",
+    "range": {
+      "startLine": 718,
+      "endLine": 855
+    },
+    "type": "definition",
+    "title": "Verified Ω-Barriers and expProd-Barriers",
+    "content": "Extends the computational framework to $\\Omega$ and expProd:\n\n**Ω-barriers**: Only 0, 1, 2, 4 verified below 5 (much rarer than $\\omega$). Non-barriers at 3, 5, 6 verified.\n\n**expProd-barriers**: 0 through 8 are all barriers (except 9), plus 10. Count: 14 below 20, 35 below 50. expProd barriers are abundant because $F(p) = 1$ for all primes.\n\n**Barrier hierarchy** (verified computationally): $|\\text{barriers}_{\\Omega}(N)| \\leq |\\text{barriers}_{\\omega}(N)| \\leq |\\text{barriers}_{F}(N)|$ for $N = 5, 20, 50$.",
+    "mathContext": "Barrier counts: $|\\text{barriers}_{\\Omega}(5)| = 4$, $|\\text{barriers}_{\\omega}(32)| = 9$, $|\\text{barriers}_{F}(50)| = 35$. The ratio $\\text{barriers}_F(N)/N \\approx 0.65$, consistent with Erdős's positive density result.",
+    "significance": "key",
+    "relatedConcepts": [
+      "native_decide",
+      "barrier density",
+      "computational number theory",
+      "OEIS"
+    ],
+    "prerequisites": [
+      "decidable barrier framework",
+      "Nat.factors"
+    ]
+  },
+  {
+    "id": "ann-omega-multiplicativity",
+    "proofId": "erdos-413",
+    "range": {
+      "startLine": 1025,
+      "endLine": 1048
+    },
+    "type": "concept",
+    "title": "ω Multiplicativity and Subadditivity",
+    "content": "Two key algebraic properties of $\\omega$:\n\n**Coprime multiplicativity** (`omega_mul_coprime`): $\\omega(mn) = \\omega(m) + \\omega(n)$ when $\\gcd(m, n) = 1$. The proof uses `Nat.Coprime.primeFactors_mul` (prime factors of coprime product = disjoint union) and `Finset.card_union_of_disjoint`. Applied to compute $\\omega(6) = 2$ and $\\omega(30) = 3$.\n\n**Subadditivity** (`omega_submultiplicative`): $\\omega(mn) \\leq \\omega(m) + \\omega(n)$ for any $mn \\neq 0$. The proof shows $\\text{primeFactors}(mn) \\subseteq \\text{primeFactors}(m) \\cup \\text{primeFactors}(n)$ and applies `Finset.card_union_le`.",
+    "mathContext": "For coprime $m, n$: $\\omega(mn) = \\omega(m) + \\omega(n)$ since $\\text{primeFactors}(mn) = \\text{primeFactors}(m) \\sqcup \\text{primeFactors}(n)$ (disjoint union). In general: $\\omega(mn) \\leq \\omega(m) + \\omega(n)$ by inclusion-exclusion.",
+    "significance": "key",
+    "relatedConcepts": [
+      "completely additive functions",
+      "Nat.Coprime.primeFactors_mul",
+      "Finset.card_union_le",
+      "coprimality"
+    ],
+    "prerequisites": [
+      "coprime numbers",
+      "Finset operations",
+      "prime factorization"
+    ]
+  },
+  {
+    "id": "ann-main-conjectures",
+    "proofId": "erdos-413",
+    "range": {
+      "startLine": 974,
+      "endLine": 1024
+    },
+    "type": "concept",
+    "title": "Main Conjectures and Open Problem",
+    "content": "Five axioms encode the open conjectures and known results:\n\n1. **erdos_413_conjecture**: $\\omega$-barriers form an infinite set\n2. **erdos_413_epsilon_variant**: $\\exists \\varepsilon > 0$ with infinitely many $\\varepsilon$-barriers for $\\omega$\n3. **all_trajectories_meet**: All orbits of $n \\mapsto n + \\omega(n)$ eventually merge (Erdős #412)\n4. **erdos_expProd_positive_density**: expProd barriers have positive density (proved by Erdős [Er79d])\n5. **selfridge_bigOmega_barrier**: 99840 is a $\\Omega$-barrier and no larger one exists below $10^5$\n\nThe combined axiom `erdos_413_main` states both parts: infinite barriers AND the $\\varepsilon$-variant.",
+    "mathContext": "The main conjecture: $(\\text{barriers}\\;\\omega).\\text{Infinite}$. The $\\varepsilon$-variant: $\\exists \\varepsilon > 0,\\; (\\text{barriersReal}\\;(\\lambda n.\\; \\varepsilon \\cdot \\omega(n))).\\text{Infinite}$. Erdős's result: $\\exists \\delta > 0,\\; \\lim_{N \\to \\infty} |\\text{barriers}_F(N)|/N = \\delta$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Set.Infinite",
+      "Filter.Tendsto",
+      "positive density",
+      "open problems"
+    ],
+    "prerequisites": [
+      "infinite sets",
+      "asymptotic density",
+      "filter limits"
+    ]
+  }
+]

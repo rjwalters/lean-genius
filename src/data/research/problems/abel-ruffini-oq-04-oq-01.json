@@ -1,0 +1,218 @@
+{
+  "slug": "abel-ruffini-oq-04-oq-01",
+  "title": "Formalize the Galois group computation for the generic quintic: Gal(x⁵ + a₁x⁴...",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formalize the Galois group computation for the generic quintic: Gal(x⁵ + a₁x⁴...",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-25T00:00:00Z",
+    "iteration": 3,
+    "focus": "Evaluation lemmas proved, IVT application next",
+    "blockers": [],
+    "nextAction": "Eliminate gal_card_eq_120 axiom",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "builtItems": [
+      "Proofs/AbelRuffiniOQ04OQ01.lean: Full proof (362 lines, 12 theorems, 1 axiom)",
+      "p_irreducible: Eisenstein at 2 for x^5-4x+2",
+      "gal_iso_s5: Gal(p/Q) ≅ S_5 via galActionHom bijectivity",
+      "roots_not_solvable_by_rad: contrapositive of Galois theorem",
+      "s5_realizable: S_5 realized as Galois group over Q",
+      "Polynomial evaluations p(-2)=-22, p(-1)=5, p(0)=2, p(1)=-1, p(2)=26 (AbelRuffiniOQ04OQ01.lean)",
+      "rootEnum, vandermondeProduct, gal_acts_on_vandermondeProduct, gal_permutes_roots, vandermondeProduct_not_rational, fixed_by_all_gal_is_rational, exists_odd_galSign (proves former Axiom B)",
+      "vandermondeProduct_sq_val THEOREM (was axiom) in AbelRuffiniOQ04OQ01.lean",
+      "p_SF_eq_prod_linear, eval_deriv_at_root, vp_sq_eq_ordered_diff infrastructure",
+      "gal_has_transposition (sorry), gal_card_ne_20 (sorry), three_dvd_gal_card theorem skeleton (AbelRuffiniOQ04OQ01.lean)",
+      "normalizer_5cycle_card_20, perm_fin5_order_dvd10_odd_is_false (native_decide, AbelRuffiniOQ04OQ01.lean)"
+    ],
+    "insights": [
+      "Concrete polynomial approach more tractable than generic polynomial: x^5-4x+2 via Eisenstein at 2",
+      "galActionHom bijectivity pattern (injective + card equality) well-established in codebase for S_3, F_20, A_5",
+      "solvable_of_surjective (not isSolvable_of_surjective) is the correct Mathlib4 name for solvability transfer",
+      "Generic polynomial approach (MvPolynomial + FractionRing + esymmAlgEquiv) requires 3-4 substantial gap lemmas",
+      "simp [eval_sub, eval_add, eval_mul, eval_pow, eval_C, eval_X] suffices for polynomial evaluation; ring only needed sometimes",
+      "To eliminate gal_card_eq_120: need IVT over ℝ for real roots + group theory lemma (transitive + transposition + p-cycle → S_p)",
+      "Vandermonde product approach: σ(Δ)=sign(σ)·Δ, with Δ²=disc(p)=-212144<0, gives Δ∉ℚ. By FTGT, fixed by all σ→in ℚ. Contrapositive: Δ∉ℚ→∃σ with sign=-1.",
+      "Vandermonde product squared equals -212144 PROVED via derivative product identity + Vieta + polynomial evaluation at 5/8",
+      "Axiom three_dvd_gal_card can be eliminated via complex conjugation: 3 real roots (IVT) → conj is transposition → F₂₀ excluded → |Gal|=120",
+      "Resolvent sextic R(y) = y⁶-32y⁵+640y⁴-10240y³+102400y²-574288y+1648576 is irreducible over ℚ (mod 7) and has no rational root — alternative proof path",
+      "normalizer_5cycle_card_20: normalizer of 5-cycle in S₅ has order 20 (native_decide verified)"
+    ],
+    "mathlibGaps": [
+      "No generic polynomial Galois group computation in Mathlib (FractionRing of MvPolynomial + Galois theory)",
+      "No direct MulEquiv.isSolvable_iff — must use solvable_of_surjective with explicit surjectivity proof"
+    ],
+    "nextSteps": []
+  },
+  "tags": [
+    "algebra",
+    "group-theory",
+    "galois-theory",
+    "solvability",
+    "alternating-group",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "abel-ruffini",
+    "abel-ruffini-galois-extensions",
+    "abel-ruffini-galois-extensions-oq-04",
+    "abel-ruffini-oq-04",
+    "abel-ruffini-oq-04-oq-01",
+    "abel-ruffini-oq-04-oq-02",
+    "abel-ruffini-oq-04-oq-02-oq-02",
+    "abel-ruffini-oq-04-oq-02-oq-03",
+    "abel-ruffini-oq-04-oq-03",
+    "abel-ruffini-oq-04-oq-07",
+    "abel-ruffini-oq-09"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-24T00:48:59.815Z",
+  "lastUpdate": "2026-03-25T00:00:00Z",
+  "significance": 8,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/AbelRuffini.lean",
+      "filename": "AbelRuffini.lean",
+      "lineCount": 187,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffini.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniGaloisExtensions.lean",
+      "filename": "AbelRuffiniGaloisExtensions.lean",
+      "lineCount": 534,
+      "theoremCount": 59,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniGaloisExtensions.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniGaloisExtensionsOQ04.lean",
+      "filename": "AbelRuffiniGaloisExtensionsOQ04.lean",
+      "lineCount": 235,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniGaloisExtensionsOQ04.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04.lean",
+      "filename": "AbelRuffiniOQ04.lean",
+      "lineCount": 164,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ01.lean",
+      "filename": "AbelRuffiniOQ04OQ01.lean",
+      "lineCount": 1498,
+      "theoremCount": 64,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ02.lean",
+      "filename": "AbelRuffiniOQ04OQ02.lean",
+      "lineCount": 155,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ02OQ02.lean",
+      "filename": "AbelRuffiniOQ04OQ02OQ02.lean",
+      "lineCount": 168,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ02OQ03.lean",
+      "filename": "AbelRuffiniOQ04OQ02OQ03.lean",
+      "lineCount": 105,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ03.lean",
+      "filename": "AbelRuffiniOQ04OQ03.lean",
+      "lineCount": 243,
+      "theoremCount": 8,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ03.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ07.lean",
+      "filename": "AbelRuffiniOQ04OQ07.lean",
+      "lineCount": 378,
+      "theoremCount": 12,
+      "axiomCount": 2,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ07.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ09.lean",
+      "filename": "AbelRuffiniOQ09.lean",
+      "lineCount": 541,
+      "theoremCount": 21,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ09.lean"
+    }
+  ]
+}

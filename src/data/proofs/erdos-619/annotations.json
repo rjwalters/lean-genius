@@ -1,0 +1,217 @@
+[
+  {
+    "id": "ann-e619-header",
+    "proofId": "erdos-619",
+    "range": {
+      "startLine": 1,
+      "endLine": 25
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #619: Decreasing Diameter of Triangle-Free Graphs**\n\n**Question (OPEN):** Does there exist c > 0 such that h₄(G) < (1-c)n for all connected triangle-free graphs G on n vertices?\n\n**Known bounds:**\n- h₃(G) ≤ n\n- h₄(G) ≤ ? (OPEN)\n- h₅(G) ≤ (n-1)/2\n\n**Key constraint:** Graph must remain triangle-free after adding edges.",
+    "mathContext": "h_r(G) = min edges to add to achieve diameter r while staying triangle-free. Introduced by Erdős-Gyárfás-Ruszinkó (1998).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Graph diameter",
+      "Triangle-free graphs",
+      "Edge augmentation"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "extremal combinatorics",
+      "asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-e619-triangle-free",
+    "proofId": "erdos-619",
+    "range": {
+      "startLine": 37,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "Triangle-Free, Diameter, and Core Definitions",
+    "content": "**TriangleFree(G):** A graph with no K₃ subgraphs — for all vertices a, b, c, it is impossible that a-b, b-c, and c-a are all edges.\n\n**diameter(G):** The supremum of pairwise distances in G.\n\n**HasDiameter / HasDiameterAtMost:** Predicates for exact and bounded diameter.\n\nExamples of triangle-free graphs: paths, even cycles, bipartite graphs, Petersen graph.",
+    "mathContext": "$G$ is triangle-free if $\\forall a, b, c \\in V(G)$: $\\neg(ab \\in E \\wedge bc \\in E \\wedge ca \\in E)$. The diameter $\\text{diam}(G) = \\max_{u,v} d(u,v)$ measures the worst-case distance.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Forbidden subgraphs",
+      "Bipartite graphs",
+      "Graph distance"
+    ],
+    "leanSymbol": "TriangleFree",
+    "prerequisites": [
+      "graph theory",
+      "metric/distance on graphs",
+      "Lean 4 predicate definitions"
+    ]
+  },
+  {
+    "id": "ann-e619-add-edges",
+    "proofId": "erdos-619",
+    "range": {
+      "startLine": 64,
+      "endLine": 97
+    },
+    "type": "definition",
+    "title": "Edge Addition and h_r(G)",
+    "content": "**addEdges(G, E):** Constructs a new graph by adding edges E to G. The definition proves symmetry and looplessness, making it a valid SimpleGraph.\n\n**h(G, r):** The central function — the minimum number of edges to add to G to achieve diameter ≤ r while preserving the triangle-free property. Defined via sInf over all valid edge sets.\n\n**h_exact(G, r):** Variant requiring diameter exactly r.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Graph augmentation",
+      "Minimum edge addition",
+      "Optimization"
+    ],
+    "leanSymbol": "h",
+    "mathContext": "See annotation content for formal details of edge addition and h_r(g)",
+    "prerequisites": [
+      "graph theory",
+      "Mathlib SimpleGraph API",
+      "infimum over sets",
+      "Lean 4 definitions"
+    ]
+  },
+  {
+    "id": "ann-e619-known-bounds",
+    "proofId": "erdos-619",
+    "range": {
+      "startLine": 99,
+      "endLine": 126
+    },
+    "type": "concept",
+    "title": "Known Results (Erdős-Gyárfás-Ruszinkó 1998)",
+    "content": "**h₃(G) ≤ n:** For any connected triangle-free graph G on n vertices, at most n edges suffice to reduce diameter to 3.\n\n**h₃(G) ≥ n - c:** This bound is tight — there exist graphs needing nearly n edges for diameter 3.\n\n**h₅(G) ≤ (n-1)/2:** Much fewer edges suffice for diameter 5.\n\nThe dramatic drop from h₃ ~ n to h₅ ~ n/2 is what makes the intermediate h₄ case so intriguing.",
+    "mathContext": "These results are from Erdős, Gyárfás, and Ruszinkó's 1998 paper that introduced the h_r function.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Upper bound",
+      "Lower bound",
+      "Tightness"
+    ],
+    "leanSymbol": "h3_upper_bound",
+    "prerequisites": [
+      "extremal graph theory",
+      "asymptotic notation",
+      "research literature"
+    ]
+  },
+  {
+    "id": "ann-e619-open-question",
+    "proofId": "erdos-619",
+    "range": {
+      "startLine": 128,
+      "endLine": 149
+    },
+    "type": "definition",
+    "title": "The Erdős Question (OPEN)",
+    "content": "**erdos_619_question:** Does there exist c > 0 such that h₄(G) < (1-c)n for all connected triangle-free G on n vertices?\n\nIn other words: can we always save a constant fraction of n edges when targeting diameter 4? Neither a proof nor counterexample is known.\n\n**erdos_619_upper_bound_form:** Equivalent formulation as h₄(G) < n - εn.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Open problem",
+      "Diameter 4",
+      "Linear saving"
+    ],
+    "leanSymbol": "erdos_619_question",
+    "mathContext": "See annotation content for formal details of the erdős question (open)",
+    "prerequisites": [
+      "extremal combinatorics",
+      "quantifier logic",
+      "Lean 4 proposition statements"
+    ]
+  },
+  {
+    "id": "ann-e619-no-triangle-free",
+    "proofId": "erdos-619",
+    "range": {
+      "startLine": 151,
+      "endLine": 161
+    },
+    "type": "concept",
+    "title": "Without Triangle-Free Constraint (AGR 2000)",
+    "content": "**without_triangle_free_constraint:** When triangles are allowed, n/2 edges always suffice for diameter 4 (Alon-Gyárfás-Ruszinkó 2000).\n\nThis shows the triangle-free constraint fundamentally changes the problem. The most natural shortcut edges often create triangles, so forbidding them makes diameter reduction much harder.",
+    "mathContext": "Comparison with the unconstrained case reveals the essential difficulty of the triangle-free requirement.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Comparison",
+      "General graphs",
+      "Constraint impact"
+    ],
+    "leanSymbol": "without_triangle_free_constraint",
+    "prerequisites": [
+      "extremal graph theory",
+      "research literature",
+      "proof comparison"
+    ]
+  },
+  {
+    "id": "ann-e619-path-example",
+    "proofId": "erdos-619",
+    "range": {
+      "startLine": 163,
+      "endLine": 179
+    },
+    "type": "definition",
+    "title": "Path Graph Example",
+    "content": "**pathGraph(n):** The path on n vertices (v₀-v₁-...-v_{n-1}), defined as a SimpleGraph on Fin n with adjacency i↔j iff |i-j|=1. The definition includes proofs of symmetry and looplessness.\n\n**path_is_triangle_free:** Paths contain no triangles (axiomatized).\n**path_diameter:** The path Pₙ has diameter n-1 (axiomatized).\n\nPaths are natural test cases for h_r: they have maximum possible diameter, requiring many edges to reduce it.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Path graph",
+      "Triangle-free examples",
+      "High diameter"
+    ],
+    "leanSymbol": "pathGraph",
+    "mathContext": "See annotation content for formal details of path graph example",
+    "prerequisites": [
+      "graph theory",
+      "Mathlib SimpleGraph on Fin n",
+      "Lean 4 axiom declarations"
+    ]
+  },
+  {
+    "id": "ann-e619-monotonicity",
+    "proofId": "erdos-619",
+    "range": {
+      "startLine": 181,
+      "endLine": 189
+    },
+    "type": "concept",
+    "title": "h_r Monotonicity",
+    "content": "**h_monotone:** h(G, r) ≥ h(G, r+1) — achieving smaller diameter requires at least as many edges as achieving larger diameter.\n\nThis gives the chain: h₃(G) ≥ h₄(G) ≥ h₅(G).\n\nCombined with the known bounds h₃ ≤ n and h₅ ≤ (n-1)/2, monotonicity constrains h₄ to lie between (n-1)/2 and n.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Monotonicity",
+      "Ordering of bounds"
+    ],
+    "leanSymbol": "h_monotone",
+    "mathContext": "See annotation content for formal details of h_r monotonicity",
+    "prerequisites": [
+      "graph theory",
+      "order theory",
+      "inequality reasoning"
+    ]
+  },
+  {
+    "id": "ann-e619-summary",
+    "proofId": "erdos-619",
+    "range": {
+      "startLine": 191,
+      "endLine": 209
+    },
+    "type": "concept",
+    "title": "Summary and Partial Results",
+    "content": "**erdos_619:** The main open question, defined as erdos_619_question.\n\n**erdos_619_partial_results:** For any connected triangle-free G on n vertices:\n- h(G, 3) ≤ n\n- h(G, 5) ≤ (n-1)/2\n\nProved by combining h3_upper_bound and h5_upper_bound axioms. These are the established bounds from Erdős-Gyárfás-Ruszinkó (1998), with the h₄ gap remaining open.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Summary",
+      "Known results",
+      "Combined theorem"
+    ],
+    "leanSymbol": "erdos_619_partial_results",
+    "mathContext": "See annotation content for formal details of summary and partial results",
+    "prerequisites": [
+      "extremal graph theory",
+      "Lean 4 theorem composition",
+      "asymptotic notation"
+    ]
+  }
+]

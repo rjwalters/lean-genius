@@ -1,0 +1,57 @@
+[
+  {
+    "id": "ann-subluminal",
+    "proofId": "pythagorean-theorem-oq-03-oq-02",
+    "range": {
+      "startLine": 44,
+      "endLine": 65
+    },
+    "type": "insight",
+    "title": "Why Rapidity-Velocities Are Always Sub-c",
+    "content": "tanh maps all of ℝ onto the open interval (−1, 1), so β = tanh φ is always strictly below the speed of light. The proof is one identity: cosh φ − sinh φ = exp(−φ) > 0 gives sinh φ < cosh φ, i.e. tanh φ < 1; and cosh φ + sinh φ = exp(φ) > 0 gives −1 < tanh φ. There is no finite rapidity for which the speed reaches c — that requires φ → ∞."
+  },
+  {
+    "id": "ann-velocity-addition",
+    "proofId": "pythagorean-theorem-oq-03-oq-02",
+    "range": {
+      "startLine": 85,
+      "endLine": 112
+    },
+    "type": "insight",
+    "title": "Einstein's Law Is tanh's Addition Formula",
+    "content": "The parent entry proves that boosts compose by ADDING rapidities (φ₁ + φ₂). Because tanh inherits an addition formula from sinh and cosh, that additivity becomes the relativistic velocity-addition law tanh(φ₁+φ₂) = (β₁+β₂)/(1+β₁β₂). The Lean proof goes through the cross-multiplied identity tanh_add_mul; the trick is to keep sinh(φ₁+φ₂)/cosh(φ₁+φ₂) atomic so field_simp only clears the simple denominators cosh φᵢ, after which sinh_add/cosh_add and ring finish. The denominator 1 + β₁β₂ > 0 is free from |tanh| < 1."
+  },
+  {
+    "id": "ann-closure",
+    "proofId": "pythagorean-theorem-oq-03-oq-02",
+    "range": {
+      "startLine": 114,
+      "endLine": 133
+    },
+    "type": "concept",
+    "title": "c Is an Unreachable Speed Limit",
+    "content": "Composing two sub-c velocities can never reach or exceed c. The proof is purely algebraic and needs no arctanh: 1 − velAdd β₁ β₂ = (1−β₁)(1−β₂)/(1+β₁β₂) and 1 + velAdd β₁ β₂ = (1+β₁)(1+β₂)/(1+β₁β₂). When |β₁|, |β₂| < 1 both numerators and the denominator are positive, so −1 < velAdd β₁ β₂ < 1. This is the kinematic statement that the speed of light is a closed, unattainable boundary."
+  },
+  {
+    "id": "ann-invariance-limit-gamma",
+    "proofId": "pythagorean-theorem-oq-03-oq-02",
+    "range": {
+      "startLine": 142,
+      "endLine": 181
+    },
+    "type": "insight",
+    "title": "Invariance, the Classical Limit, and γ",
+    "content": "Three textbook facts fall out. velAdd β 1 = (β+1)/(1+β) = 1: adding any velocity to c returns c — the second postulate as an algebraic fixed point. velAdd β₁ β₂ − (β₁+β₂) is second-order in the velocities, so Galilean addition β ≈ β₁+β₂ is the low-speed limit. And the Lorentz factor γ = cosh φ satisfies γ² = 1/(1−β²), since 1 − tanh²φ = 1/cosh²φ from cosh²−sinh²=1."
+  },
+  {
+    "id": "ann-concrete",
+    "proofId": "pythagorean-theorem-oq-03-oq-02",
+    "range": {
+      "startLine": 182,
+      "endLine": 189
+    },
+    "type": "concept",
+    "title": "Half-c Plus Half-c Is Four-Fifths c",
+    "content": "velAdd_half_half computes (½+½)/(1+¼) = ⅘: combining two half-light-speed velocities yields 0.8c, conspicuously not c — the hallmark of relativistic addition. velAdd_three_fifths_one confirms ⅗c ⊕ c = c. Both are proved by norm_num after unfolding velAdd, with no native_decide, so the file stays fully kernel-checked."
+  }
+]

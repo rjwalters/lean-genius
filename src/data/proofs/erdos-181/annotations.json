@@ -1,0 +1,237 @@
+[
+  {
+    "id": "ann-e181-hypercube-adj",
+    "proofId": "erdos-181",
+    "range": {
+      "startLine": 43,
+      "endLine": 44
+    },
+    "type": "definition",
+    "title": "Hypercube Adjacency",
+    "content": "**hypercubeAdj n x y**: Two vertices $x, y \\in \\text{Fin}(2^n)$ of the $n$-dimensional hypercube are adjacent if and only if they differ in exactly one bit position. Formalized via $\\exists! i : \\text{Fin } n$ such that the $i$-th bits of $x$ and $y$ differ, where the $i$-th bit is extracted as $(x / 2^i) \\bmod 2$. This captures the Hamming distance-1 condition using integer arithmetic rather than explicit binary strings.",
+    "mathContext": "$x \\sim y \\iff \\exists! i \\in \\{0,\\ldots,n-1\\} : \\lfloor x/2^i \\rfloor \\bmod 2 \\neq \\lfloor y/2^i \\rfloor \\bmod 2$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hamming distance",
+      "hypercube graph",
+      "ExistsUnique",
+      "Fin (2^n)",
+      "bit extraction"
+    ],
+    "prerequisites": [
+      "Fin",
+      "Nat.div",
+      "Nat.mod",
+      "ExistsUnique"
+    ]
+  },
+  {
+    "id": "ann-e181-symm-irrefl",
+    "proofId": "erdos-181",
+    "range": {
+      "startLine": 47,
+      "endLine": 56
+    },
+    "type": "concept",
+    "title": "Symmetry and Irreflexivity of Q_n",
+    "content": "**hypercubeAdj_symm**: If $x \\sim y$ in $Q_n$ then $y \\sim x$, proved by applying `Ne.symm` to the bit-difference witness. **hypercubeAdj_irrefl**: No vertex is adjacent to itself, proved by contradiction since $x = y$ implies all bits agree, contradicting the existence of a differing bit. These two properties establish that `hypercubeAdj` defines a valid simple graph (symmetric and irreflexive).",
+    "mathContext": "$x \\sim y \\Rightarrow y \\sim x$; $\\neg(x \\sim x)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "simple graph axioms",
+      "Ne.symm",
+      "irreflexivity",
+      "graph symmetry"
+    ],
+    "prerequisites": [
+      "hypercubeAdj",
+      "Ne.symm",
+      "ExistsUnique"
+    ]
+  },
+  {
+    "id": "ann-e181-vertex-edge-count",
+    "proofId": "erdos-181",
+    "range": {
+      "startLine": 59,
+      "endLine": 71
+    },
+    "type": "concept",
+    "title": "Vertex and Edge Counts",
+    "content": "**hypercube_vertex_count**: $|V(Q_n)| = 2^n$, proved directly via `Fintype.card_fin`. **hypercube_edge_count_formula**: The edge count satisfies $n \\cdot 2^n / 2 = n \\cdot 2^{n-1}$, proved by algebraic manipulation. Since each vertex has degree $n$ (one neighbor per bit flip), the handshaking lemma gives $|E(Q_n)| = n \\cdot 2^n / 2 = n \\cdot 2^{n-1}$.",
+    "mathContext": "$|V(Q_n)| = 2^n$, $|E(Q_n)| = n \\cdot 2^{n-1}$, $\\deg(v) = n$ for all $v$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Fintype.card_fin",
+      "handshaking lemma",
+      "regular graph",
+      "degree"
+    ],
+    "prerequisites": [
+      "Fintype.card_fin",
+      "Nat.mul_div_cancel_left"
+    ]
+  },
+  {
+    "id": "ann-e181-ramsey-def",
+    "proofId": "erdos-181",
+    "range": {
+      "startLine": 79,
+      "endLine": 83
+    },
+    "type": "definition",
+    "title": "Ramsey Number R(Q_n)",
+    "content": "**ramseyNumber n**: The 2-color Ramsey number $R(Q_n)$, defined as $\\inf\\{N : \\forall c : \\text{Fin } N \\to \\text{Fin } N \\to \\text{Fin } 2, \\exists f : \\text{Fin}(2^n) \\hookrightarrow \\text{Fin } N \\text{ injective}, \\exists \\text{color} \\in \\{0,1\\}, \\forall x \\sim y \\text{ in } Q_n, c(f(x), f(y)) = \\text{color}\\}$. This captures: for every edge-coloring of $K_N$, there is a monochromatic copy of $Q_n$ as an induced subgraph. Noncomputable due to `sInf`.",
+    "mathContext": "$R(Q_n) = \\min\\{N : \\forall \\chi : E(K_N) \\to \\{0,1\\}, \\exists Q_n \\hookrightarrow K_N \\text{ monochromatic}\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey number",
+      "sInf",
+      "Function.Injective",
+      "graph coloring",
+      "monochromatic subgraph"
+    ],
+    "prerequisites": [
+      "hypercubeAdj",
+      "sInf",
+      "Function.Injective",
+      "Fin 2"
+    ]
+  },
+  {
+    "id": "ann-e181-base-case",
+    "proofId": "erdos-181",
+    "range": {
+      "startLine": 88,
+      "endLine": 97
+    },
+    "type": "concept",
+    "title": "Base Case: R(Q_0) ≤ 1",
+    "content": "**ramseyNumber_zero_bound**: $R(Q_0) \\leq 1$, proved constructively. The 0-cube $Q_0$ has vertex set $\\text{Fin}(2^0) = \\text{Fin}(1)$, so it is a single vertex with no edges (by irreflexivity). Any 1-vertex graph trivially contains a monochromatic copy. The proof constructs the constant embedding $f(x) = 0$ and uses `hypercubeAdj_irrefl` to discharge the vacuous edge condition.",
+    "mathContext": "$R(Q_0) \\leq 1$ since $Q_0$ has one vertex and no edges",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "base case",
+      "Nat.sInf_le",
+      "vacuous truth",
+      "constructive proof"
+    ],
+    "prerequisites": [
+      "ramseyNumber",
+      "hypercubeAdj_irrefl",
+      "Nat.sInf_le"
+    ]
+  },
+  {
+    "id": "ann-e181-conjecture",
+    "proofId": "erdos-181",
+    "range": {
+      "startLine": 111,
+      "endLine": 112
+    },
+    "type": "concept",
+    "title": "Burr-Erdős Conjecture for Hypercubes",
+    "content": "**erdos_181_conjecture**: The main open problem. There exists $C > 0$ such that $R(Q_n) \\leq C \\cdot 2^n$ for all $n$, i.e., the Ramsey number of $Q_n$ is at most linear in its vertex count $2^n$. This would mean $R(Q_n) = O(2^n)$, making the trivial lower bound $R(Q_n) \\geq 2^n$ essentially tight up to a constant factor. Axiomatized as an open conjecture.",
+    "mathContext": "$\\exists C > 0 : \\forall n,\\; R(Q_n) \\leq C \\cdot 2^n$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Burr-Erdős conjecture",
+      "Ramsey-linear",
+      "open problem",
+      "hypercube"
+    ],
+    "prerequisites": [
+      "ramseyNumber",
+      "Nat.cast to ℝ"
+    ]
+  },
+  {
+    "id": "ann-e181-tikhomirov",
+    "proofId": "erdos-181",
+    "range": {
+      "startLine": 132,
+      "endLine": 134
+    },
+    "type": "concept",
+    "title": "Tikhomirov's Best Upper Bound (2022)",
+    "content": "**tikhomirov_2022**: The current best upper bound $R(Q_n) \\leq C \\cdot 2^{(2-c)n}$ for constants $C > 0$ and $c > 0$ (with $c \\approx 0.0366$ permissible). This is subquadratic in the vertex count $2^n$ (since the exponent $2-c < 2$) but still superlinear, leaving an exponent gap of $\\approx 0.964$ with the conjectured linear bound. The proof uses the regularity method and probabilistic embedding techniques.",
+    "mathContext": "$R(Q_n) \\leq C \\cdot 2^{(2-c)n}$ for $c \\approx 0.0366$, so $R(Q_n) = O((2^n)^{2-c})$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Tikhomirov",
+      "subquadratic bound",
+      "regularity lemma",
+      "arXiv:2208.14568"
+    ],
+    "prerequisites": [
+      "ramseyNumber",
+      "real exponentiation"
+    ]
+  },
+  {
+    "id": "ann-e181-lower-bound",
+    "proofId": "erdos-181",
+    "range": {
+      "startLine": 143,
+      "endLine": 144
+    },
+    "type": "concept",
+    "title": "Trivial Lower Bound",
+    "content": "**lower_bound**: $R(Q_n) \\geq 2^n$ for $n \\geq 1$. Since $Q_n$ has $2^n$ vertices, any monochromatic copy of $Q_n$ requires at least $2^n$ vertices in the host graph. Thus the complete graph $K_N$ with $N < 2^n$ cannot contain $Q_n$, regardless of the coloring. This is the simplest Ramsey lower bound: the vertex count.",
+    "mathContext": "$R(Q_n) \\geq |V(Q_n)| = 2^n$",
+    "significance": "key",
+    "relatedConcepts": [
+      "vertex count lower bound",
+      "Ramsey lower bound",
+      "pigeonhole"
+    ],
+    "prerequisites": [
+      "ramseyNumber",
+      "hypercube_vertex_count"
+    ]
+  },
+  {
+    "id": "ann-e181-lee-context",
+    "proofId": "erdos-181",
+    "range": {
+      "startLine": 158,
+      "endLine": 160
+    },
+    "type": "concept",
+    "title": "Lee's Bounded-Degree Result (2017)",
+    "content": "**lee_bounded_degree_ramsey**: Lee (2017) proved the Burr-Erdős conjecture for bounded-degree graphs: for every $\\Delta$, there exists $C_\\Delta > 0$ such that $R(G) \\leq C_\\Delta \\cdot |V(G)|$ for all graphs $G$ with maximum degree $\\leq \\Delta$. However, $Q_n$ has degree $n \\to \\infty$, so Lee's result does not apply. Axiomatized in simplified form (the full formalization would require graph minor theory).",
+    "mathContext": "$\\forall \\Delta, \\exists C_\\Delta : \\Delta(G) \\leq \\Delta \\Rightarrow R(G) \\leq C_\\Delta \\cdot |V(G)|$, but $\\Delta(Q_n) = n \\to \\infty$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lee's theorem",
+      "bounded-degree graphs",
+      "Ramsey-linear",
+      "regularity method"
+    ],
+    "prerequisites": [
+      "graph maximum degree",
+      "Ramsey number"
+    ]
+  },
+  {
+    "id": "ann-e181-bound-gap",
+    "proofId": "erdos-181",
+    "range": {
+      "startLine": 190,
+      "endLine": 194
+    },
+    "type": "concept",
+    "title": "Bound Gap Illustration",
+    "content": "**bound_gap_description**: Proves $2^n \\leq 2^{2n}$ for all $n$, illustrating the exponent gap between the lower bound (exponent 1) and the trivial quadratic upper bound (exponent 2). The actual gap is between exponent 1 (conjectured) and exponent $2-c \\approx 1.964$ (Tikhomirov). Proved via `Nat.pow_le_pow_right` and `omega`.",
+    "mathContext": "$2^n \\leq 2^{2n}$, illustrating gap between exponents 1 and 2",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "exponent gap",
+      "power monotonicity",
+      "Nat.pow_le_pow_right"
+    ],
+    "prerequisites": [
+      "Nat.pow_le_pow_right"
+    ]
+  }
+]

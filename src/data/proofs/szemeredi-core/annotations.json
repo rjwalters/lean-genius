@@ -1,0 +1,174 @@
+[
+  {
+    "id": "szemeredi-core-preamble",
+    "proofId": "szemeredi-core",
+    "range": {
+      "startLine": 1,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Module Setup and Pipeline Architecture",
+    "content": "The module opens with a docstring documenting its role as the shared definition layer for the Szemerédi regularity pipeline. It imports the full Mathlib library (a single `import Mathlib` rather than selective imports for convenience), opens `Classical` to make all propositions decidable (needed for definitions like `IsEpsilonRegular` which quantify over subsets), and declares the vertex type variable `V` with `Fintype` and `DecidableEq` instances. The `Szemeredi.Core` namespace isolates these definitions from the rest of the codebase while allowing downstream files (`SzemerediRegularity`, `SzemerediCounting`) to `open Szemeredi.Core` for direct access.",
+    "mathContext": "The setup declares $V$ as a finite type with decidable equality: these are the vertices of the simple graph $G : \\text{SimpleGraph}\\, V$ that appears in all definitions below.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lean 4 namespace system",
+      "Mathlib import",
+      "classical logic",
+      "module architecture"
+    ],
+    "prerequisites": [
+      "Lean 4 module system",
+      "classical vs constructive reasoning"
+    ]
+  },
+  {
+    "id": "szemeredi-core-edge-density",
+    "proofId": "szemeredi-core",
+    "range": {
+      "startLine": 29,
+      "endLine": 34
+    },
+    "type": "definition",
+    "title": "Edge Density Between Vertex Subsets",
+    "content": "The edge density $d(A,B)$ counts the fraction of potential edges between vertex subsets $A$ and $B$ that actually exist in $G$. Formally, it filters the Cartesian product $A \\times B$ for adjacent pairs and divides by $|A| \\cdot |B|$. The definition handles the degenerate case (either set empty) by returning 0 via the `if h : ... = 0 then 0` guard. Marked `noncomputable` because rational division in Lean 4 is noncomputable.\n\nThis definition is the quantitative foundation of the regularity method: all subsequent concepts (epsilon-regularity, partition energy) are stated in terms of edge density. The definition works over $\\mathbb{Q}$ rather than $\\mathbb{R}$ for cleaner arithmetic — all quantities in this file are rational since they involve only finite cardinalities and their ratios.",
+    "mathContext": "$d(A,B) = \\frac{|\\{(a,b) \\in A \\times B : G.\\text{Adj}\\, a\\, b\\}|}{|A| \\cdot |B|}$ with the convention $d(A,B) = 0$ when $|A| \\cdot |B| = 0$. Values lie in $[0,1]$ (proved in `edgeDensity_le_one`).",
+    "significance": "key",
+    "relatedConcepts": [
+      "bipartite graph density",
+      "Cartesian product of Finsets",
+      "noncomputable definition",
+      "rational arithmetic"
+    ],
+    "prerequisites": [
+      "simple graphs",
+      "Finset.product",
+      "Finset.filter",
+      "rational division"
+    ]
+  },
+  {
+    "id": "szemeredi-core-epsilon-regular",
+    "proofId": "szemeredi-core",
+    "range": {
+      "startLine": 36,
+      "endLine": 45
+    },
+    "type": "definition",
+    "title": "Epsilon-Regular Pair",
+    "content": "A pair $(A, B)$ is $\\varepsilon$-regular if every sufficiently large sub-pair has edge density close to $d(A,B)$. 'Sufficiently large' means $|A'| \\geq \\varepsilon|A|$ and $|B'| \\geq \\varepsilon|B|$ — subsets below this threshold are ignored because they carry too little statistical weight. This definition captures the idea that the pair behaves like a random bipartite graph: in a truly random graph $G(n,p)$, all large sub-pairs have density close to $p$ with high probability.\n\nThe quantifier structure (universally quantified over all large sub-pairs) makes this a strong uniformity condition. It is the key property that enables the counting lemma: in an epsilon-regular pair of density $d$, the number of copies of any fixed bipartite graph $H$ is approximately $d^{e(H)} \\cdot |A|^{|V_1(H)|} \\cdot |B|^{|V_2(H)|}$, just as in a random graph.",
+    "mathContext": "$(A,B)$ is $\\varepsilon$-regular iff $\\forall A' \\subseteq A,\\, B' \\subseteq B$ with $|A'| \\geq \\varepsilon|A|,\\, |B'| \\geq \\varepsilon|B|$: $|d(A',B') - d(A,B)| \\leq \\varepsilon$. This captures pseudorandomness: the pair 'looks random' to any large induced sub-pair.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pseudorandomness",
+      "uniformity",
+      "counting lemma",
+      "random bipartite graph",
+      "Chernoff bound"
+    ],
+    "prerequisites": [
+      "edge density",
+      "graph theory",
+      "epsilon-delta arguments"
+    ]
+  },
+  {
+    "id": "szemeredi-core-regular-partition",
+    "proofId": "szemeredi-core",
+    "range": {
+      "startLine": 47,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "Regular Partition",
+    "content": "An equitable partition is $\\varepsilon$-regular if at most $\\varepsilon k(k-1)$ of the $k(k-1)$ ordered pairs $(P_i, P_j)$ with $i \\neq j$ are not $\\varepsilon$-regular. The definition has two conjuncts: (1) equitability — all parts differ in cardinality by at most 1, formalized as $|P.\\text{card} - Q.\\text{card}| \\leq 1$ using integer subtraction; (2) bounded irregularity — the count of irregular pairs is at most $\\varepsilon k(k-1)$, where $k = |\\text{parts}|$.\n\nEquitability is crucial: without it, one could trivially create a 'regular' partition by putting all vertices in one part (which is vacuously regular). The equitability condition forces the partition to spread vertices evenly, ensuring the partition energy potential argument works correctly.",
+    "mathContext": "$\\mathcal{P}$ is an $\\varepsilon$-regular partition iff: (1) $\\forall P,Q \\in \\mathcal{P}: ||P| - |Q|| \\leq 1$ (equitable), and (2) $|\\{(i,j) : i \\neq j,\\, (P_i,P_j) \\text{ not } \\varepsilon\\text{-regular}\\}| \\leq \\varepsilon k(k-1)$ (bounded irregularity).",
+    "significance": "key",
+    "relatedConcepts": [
+      "equitable partition",
+      "regularity lemma",
+      "reduced graph",
+      "Szemerédi partition"
+    ],
+    "prerequisites": [
+      "epsilon-regular pair",
+      "graph partitions",
+      "integer arithmetic"
+    ]
+  },
+  {
+    "id": "szemeredi-core-partition-energy",
+    "proofId": "szemeredi-core",
+    "range": {
+      "startLine": 58,
+      "endLine": 68
+    },
+    "type": "definition",
+    "title": "Partition Energy (Potential Function)",
+    "content": "The partition energy $q(\\mathcal{P})$ is the size-weighted sum of squared edge densities across all pairs of parts. This is the central potential function in the regularity lemma proof: it is bounded above by 1 (since it is a weighted average of values in $[0,1]$) and increases by at least $\\varepsilon^5$ whenever an irregular pair is refined. Since $q \\in [0,1]$ and each refinement increases $q$ by at least $\\varepsilon^5$, at most $1/\\varepsilon^5$ refinement steps are possible — guaranteeing termination.\n\nThe size-weighting by $|P_i||P_j|/n^2$ ensures that the energy is a convex combination when the partition covers all vertices. The definition handles the empty graph case ($n = 0$) by returning 0. Following Komlós-Simonovits (1996), the energy uses the full ordered sum over $\\mathcal{P} \\times \\mathcal{P}$ (including diagonal and both orderings), which simplifies the Lean formalization at the cost of double-counting.",
+    "mathContext": "$q(\\mathcal{P}) = \\sum_{(P_i, P_j) \\in \\mathcal{P} \\times \\mathcal{P}} \\frac{|P_i| \\cdot |P_j|}{n^2} \\cdot d(P_i, P_j)^2 \\in [0,1]$. Key property: if $\\mathcal{P}'$ refines an irregular pair in $\\mathcal{P}$, then $q(\\mathcal{P}') \\geq q(\\mathcal{P}) + \\varepsilon^5$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "potential function",
+      "convexity",
+      "energy increment",
+      "termination argument",
+      "Cauchy-Schwarz inequality"
+    ],
+    "prerequisites": [
+      "edge density",
+      "equitable partition",
+      "summation over Finset.product"
+    ]
+  },
+  {
+    "id": "szemeredi-core-density-bounds",
+    "proofId": "szemeredi-core",
+    "range": {
+      "startLine": 70,
+      "endLine": 92
+    },
+    "type": "concept",
+    "title": "Edge Density Lies in [0,1]",
+    "content": "Two theorems establishing the basic sanity check for edge density:\n\n**edgeDensity_nonneg**: In the zero case, $d = 0 \\geq 0$ trivially. In the non-zero case, both numerator (a cardinality) and denominator (a product of cardinalities) are non-negative, so the quotient is non-negative. Lean's `positivity` tactic handles this automatically.\n\n**edgeDensity_le_one**: The key step is showing that $|\\text{filter}(A \\times B, \\text{Adj})| \\leq |A \\times B| = |A| \\cdot |B|$. The first inequality is `Finset.card_filter_le` (filtering can only remove elements), and the equality is `Finset.card_product`. Then `div_le_one` converts $|\\text{num}| / |\\text{den}| \\leq 1$ to $|\\text{num}| \\leq |\\text{den}|$, and `exact_mod_cast` handles the $\\mathbb{N} \\to \\mathbb{Q}$ coercion.",
+    "mathContext": "$0 \\leq d(A,B) \\leq 1$. The upper bound uses $|\\{(a,b) \\in A \\times B : a \\sim b\\}| \\leq |A \\times B| = |A| \\cdot |B|$ since filtering can only reduce cardinality.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "positivity tactic",
+      "Finset.card_filter_le",
+      "Finset.card_product",
+      "div_le_one",
+      "exact_mod_cast"
+    ],
+    "prerequisites": [
+      "rational arithmetic",
+      "Finset cardinality lemmas",
+      "Lean tactics"
+    ]
+  },
+  {
+    "id": "szemeredi-core-energy-nonneg",
+    "proofId": "szemeredi-core",
+    "range": {
+      "startLine": 94,
+      "endLine": 110
+    },
+    "type": "concept",
+    "title": "Partition Energy Non-negativity",
+    "content": "Proves $q(\\mathcal{P}) \\geq 0$ by showing each summand is non-negative. The proof structure mirrors the definition: after unfolding and splitting on the empty case, `Finset.sum_nonneg` reduces the goal to showing each term $(|P_i| \\cdot |P_j| / n^2) \\cdot d(P_i,P_j)^2 \\geq 0$. This is a product of two non-negative factors: the weight $|P_i| \\cdot |P_j| / n^2 \\geq 0$ (by `div_nonneg` and `mul_nonneg` on natural number casts) and $d(P_i,P_j)^2 \\geq 0$ (by `sq_nonneg`).\n\nThis is the first half of the boundedness argument for the regularity lemma. Combined with the upper bound $q(\\mathcal{P}) \\leq 1$ (proved in the regularity module), it establishes that energy lies in $[0,1]$.",
+    "mathContext": "$q(\\mathcal{P}) = \\sum_{i,j} \\underbrace{\\frac{|P_i||P_j|}{n^2}}_{\\geq 0} \\cdot \\underbrace{d(P_i,P_j)^2}_{\\geq 0} \\geq 0$. Each summand is a product of non-negative factors.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.sum_nonneg",
+      "mul_nonneg",
+      "sq_nonneg",
+      "div_nonneg",
+      "Nat.cast_nonneg"
+    ],
+    "prerequisites": [
+      "partition energy definition",
+      "non-negativity of squares",
+      "Lean positivity arguments"
+    ]
+  }
+]

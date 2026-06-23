@@ -1,0 +1,204 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "fair-games-theorem-oq-02-oq-04",
+    "range": {
+      "startLine": 1,
+      "endLine": 35
+    },
+    "type": "insight",
+    "title": "Module Overview: Structural Properties of Biased Gambler's Ruin",
+    "content": "This file answers five open questions about the biased gambler's ruin model introduced in FairGamesTheoremOQ01.lean: concrete win-probability computations for p = 2/3 and p = 1/3; that the win probability lies strictly in (0,1) for favorable games; strict monotonicity in starting wealth; that a favorable game (p > 1/2) beats the fair-game benchmark k/N; and an alternative formula for the losing probability using the reciprocal odds ratio s = p/q.\n\nThe file imports two modules: `Mathlib` (all of Mathlib) and `Proofs.FairGamesTheoremOQ01`, which provides the `BiasedGamblersRuin` structure (fields N, k, p with positivity/ordering hypotheses), the `biasedRuinProbWin` and `biasedRuinProbLose` definitions, the `favorable_game_r_lt_one` lemma (p > 1/2 → r < 1), and `mul_neg_geom_sum` (the geometric series factoring identity 1 - r^n = (1-r) · ∑_{i<n} r^i). All 345 lines are machine-verified with 0 sorries and 0 axioms.",
+    "mathContext": "The biased gambler's ruin formula: $P(\\text{win} \\mid k, N, p) = \\frac{1 - r^k}{1 - r^N}$ where $r = q/p$ is the odds ratio and $q = 1 - p$. For $p > 1/2$: $r < 1$; for $p < 1/2$: $r > 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "BiasedGamblersRuin structure",
+      "biasedRuinProbWin",
+      "biasedRuinProbLose",
+      "odds ratio",
+      "geometric series"
+    ],
+    "prerequisites": [
+      "biased gambler's ruin model (FairGamesTheoremOQ01)",
+      "Lean 4 structures",
+      "Mathlib probability library"
+    ]
+  },
+  {
+    "id": "ann-favorable-game",
+    "proofId": "fair-games-theorem-oq-02-oq-04",
+    "range": {
+      "startLine": 42,
+      "endLine": 68
+    },
+    "type": "concept",
+    "title": "Concrete Favorable Game (p = 2/3): P(win) = 4/5",
+    "content": "Defines the favorable game as a concrete instance of `BiasedGamblersRuin` with step-up probability p = 2/3, starting wealth k = 2, and absorbing barrier N = 4. The odds ratio r = q/p = (1/3)/(2/3) = 1/2 < 1 — meaning the gambler wins more often than the house, so the series r^i decays rapidly as i grows.\n\nThe win probability computation verifies: P(win) = (1 - r²)/(1 - r⁴) = (1 - 1/4)/(1 - 1/16) = (3/4)/(15/16) = (3/4) · (16/15) = 4/5. Both `favorableGame_r` (confirming r = 1/2) and `favorableGame_win_prob` are proved by `norm_num`, which reduces the computation to verified rational arithmetic. The concrete benchmark comparison `favorableGame_beats_fair_concrete` checks 1/2 < 4/5, confirming the general favorable_beats_fair theorem for this specific instance.\n\n**Why (k=2, N=4) is a natural example:** The choice satisfies N = 2k (symmetric with respect to the absorbing barriers), making the duality P(win|p) + P(win|1-p) = 1 visually transparent. The gambler starts exactly halfway between ruin (k=0) and target (k=N=4). At p = 1/2, win probability = k/N = 1/2 by symmetry; at p = 2/3, it jumps to 4/5 — a factor of 8/5 improvement from the edge.",
+    "mathContext": "Favorable game: $p = 2/3$, $q = 1/3$, $r = 1/2$, $k = 2$, $N = 4$. $P(\\text{win}) = \\frac{1 - (1/2)^2}{1 - (1/2)^4} = \\frac{3/4}{15/16} = \\frac{4}{5}$. Beats fair: $\\frac{4}{5} > \\frac{k}{N} = \\frac{1}{2}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "norm_num tactic",
+      "concrete instantiation",
+      "BiasedGamblersRuin",
+      "odds ratio",
+      "gambler's ruin formula"
+    ],
+    "prerequisites": [
+      "biased gambler's ruin model",
+      "rational arithmetic"
+    ]
+  },
+  {
+    "id": "ann-unfavorable-duality",
+    "proofId": "fair-games-theorem-oq-02-oq-04",
+    "range": {
+      "startLine": 75,
+      "endLine": 107
+    },
+    "type": "concept",
+    "title": "Concrete Unfavorable Game (p = 1/3) and Complementary Duality",
+    "content": "Defines the complementary unfavorable game: p = 1/3, k = 2, N = 4. The odds ratio r = q/p = (2/3)/(1/3) = 2 > 1 — meaning the house has the edge. The win probability formula still applies but yields a small value: P(win) = (1 - r²)/(1 - r⁴) = (1 - 4)/(1 - 16) = (-3)/(-15) = 1/5. The negative numerator and denominator cancel to give a well-defined positive probability — a satisfying algebraic consistency check.\n\n**The duality theorem** `dual_games_sum_to_one` proves the pairing: P(win | p=2/3, k=2, N=4) + P(win | p=1/3, k=2, N=4) = 4/5 + 1/5 = 1. This reflects a general symmetry: swapping p ↔ q and simultaneously replacing k with N-k gives the complementary game. The gambler's win in (p, k) equals the house's win in (1-p, N-k), and these two events partition the sample space.\n\n**Financial interpretation:** The two concrete games model a gambler vs. house with swapped positions. The favorable game (p=2/3) gives an 80% chance of reaching N=4 starting from k=2; the unfavorable game (p=1/3) gives a 20% chance — a fourfold ratio, reflecting the compounding effect of the edge over multiple steps.",
+    "mathContext": "Unfavorable game: $p = 1/3$, $r = 2 > 1$. $P(\\text{win}) = \\frac{1-4}{1-16} = \\frac{1}{5}$. Duality: $\\frac{4}{5} + \\frac{1}{5} = 1$. General form: $P_{p,k,N} + P_{1-p,N-k,N} = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "duality",
+      "complementary probability",
+      "symmetry",
+      "house edge"
+    ],
+    "prerequisites": [
+      "biased gambler's ruin model",
+      "probability complementarity"
+    ]
+  },
+  {
+    "id": "ann-probability-bounds",
+    "proofId": "fair-games-theorem-oq-02-oq-04",
+    "range": {
+      "startLine": 114,
+      "endLine": 141
+    },
+    "type": "concept",
+    "title": "Win Probability is Strictly in (0, 1) for Favorable Games",
+    "content": "Two theorems establish that the biased win probability is a well-defined probability in the open interval (0, 1) for favorable games (r < 1).\n\n**`biasedRuinProbWin_pos`** (positivity): applies `div_pos`, reducing to two positivity goals: `0 < 1 - r^k` and `0 < 1 - r^N`. Both follow from `sub_pos.mpr` combined with `pow_lt_one₀` (for r ∈ (0,1) and positive exponent, r^n < 1). The `Nat.pos_iff_ne_zero.mp` converts the `0 < k` hypothesis to the non-zero-exponent form required by `pow_lt_one₀`. A subtlety: `have := B.hN; omega` introduces the structure field B.hN into the local context before omega can use it — omega cannot directly see projections through the structure.\n\n**`biasedRuinProbWin_lt_one`** (less than 1): Uses `div_lt_one hd` to reduce to `1 - r^k < 1 - r^N`, i.e., `r^N < r^k`. Since k < N and r < 1, larger exponent means smaller value. The proof factors: r^N = r^k · r^{N-k} (via `pow_add` and `Nat.add_sub_cancel'`), then `r^{N-k} < 1` (by `pow_lt_one₀`) gives `r^N = r^k · r^{N-k} < r^k · 1 = r^k` by `mul_lt_mul_of_pos_left`.",
+    "mathContext": "For $r \\in (0,1)$ and $0 < k < N$: $0 < 1-r^k$ and $0 < 1-r^N$, so $P(\\text{win}) > 0$. Also $r^N < r^k$ (since $N > k$ and $r < 1$), so $1-r^k < 1-r^N$, giving $P(\\text{win}) < 1$. Combined: $P(\\text{win}) \\in (0,1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pow_lt_one₀",
+      "div_pos",
+      "div_lt_one",
+      "pow_add",
+      "mul_lt_mul_of_pos_left",
+      "geometric decay"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "geometric sequences",
+      "Lean 4 positivity tactics"
+    ]
+  },
+  {
+    "id": "ann-monotonicity",
+    "proofId": "fair-games-theorem-oq-02-oq-04",
+    "range": {
+      "startLine": 148,
+      "endLine": 166
+    },
+    "type": "concept",
+    "title": "Strict Monotonicity: More Starting Wealth Yields Higher Win Probability",
+    "content": "`biasedRuinProbWin_strictMono` proves that for r < 1 and k₁ < k₂ < N, the win probability (1-r^{k₁})/(1-r^N) < (1-r^{k₂})/(1-r^N). Since both fractions share the same denominator 1-r^N > 0, this reduces via `div_lt_div_iff₀` to the numerator comparison: (1-r^{k₁})·(1-r^N) < (1-r^{k₂})·(1-r^N), which simplifies to 1-r^{k₁} < 1-r^{k₂}, i.e., r^{k₂} < r^{k₁}.\n\nThe key step proves r^{k₂} < r^{k₁} using the same `pow_add` technique: r^{k₂} = r^{k₁} · r^{k₂-k₁}, and r^{k₂-k₁} < 1 (since k₂ > k₁ so the exponent is positive). Then `mul_lt_mul_of_pos_left` with the positivity of r^{k₁} gives the result.\n\n**Financial intuition:** Every additional dollar of starting capital strictly improves the gambler's survival odds in a favorable game. This makes intuitive sense: with more capital, the gambler can absorb more unlucky streaks before reaching ruin. The probability increases continuously from 0 (at k=0, instant ruin) to 1 (at k=N, already won). The strict monotonicity is a mathematical certificate that in favorable games, wealth never 'doesn't matter.'",
+    "mathContext": "For $r < 1$: $k_1 < k_2 \\Rightarrow r^{k_2} < r^{k_1}$ (geometric decay with $r \\in (0,1)$). Therefore $1 - r^{k_1} < 1 - r^{k_2}$, giving strict monotonicity of $P(\\text{win}) = (1-r^k)/(1-r^N)$ in $k$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "strict monotonicity",
+      "geometric decay",
+      "div_lt_div_iff₀",
+      "pow_add",
+      "starting capital effect"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "ordered fields",
+      "geometric sequences"
+    ]
+  },
+  {
+    "id": "ann-key-sum-ineq",
+    "proofId": "fair-games-theorem-oq-02-oq-04",
+    "range": {
+      "startLine": 183,
+      "endLine": 242
+    },
+    "type": "concept",
+    "title": "Key Sum Inequality: The Engine of Favorable-Beats-Fair",
+    "content": "The private lemma `key_sum_ineq` establishes the core analytic inequality: for r ∈ (0,1) and 0 < k < N, k · Σ_{i<N} r^i < N · Σ_{i<k} r^i. Equivalently, the geometric average of the first k powers of r strictly exceeds the geometric average of all N powers — reflecting that the first k terms are larger (since r < 1 makes r^i decrease in i).\n\n**Proof structure (a 3-step chain):**\n1. **Lower bound on prefix sum**: Σ_{i<k} r^i ≥ k·r^{k-1}. Each term r^i for i ≤ k-1 satisfies r^i ≥ r^{k-1} (geometric decay), so the sum is bounded below by summing k copies of the smallest term. Proved using `Finset.sum_le_sum` with `pow_le_pow_of_le_one`.\n2. **Upper bound on tail sum**: Σ_{j ∈ Ico k N} r^j ≤ (N-k)·r^k. Each tail term r^j for j ≥ k satisfies r^j ≤ r^k, giving the bound by `Finset.sum_const`. \n3. **Strict inequality via r^k < r^{k-1}**: For r < 1 and k ≥ 1, r^k = r^{k-1}·r < r^{k-1}. Combining: k·(N-k)·r^k < (N-k)·k·r^{k-1}, and using the prefix/tail bounds in a calc chain gives the result.\n\nThe decomposition `Σ_{i<N} = Σ_{i<k} + Σ_{j ∈ Ico k N}` is established by `Finset.sum_range_add_sum_Ico`.",
+    "mathContext": "$k \\cdot \\sum_{i=0}^{N-1} r^i < N \\cdot \\sum_{i=0}^{k-1} r^i$. Proof chain: $k \\cdot \\sum_{\\text{Ico}} r^j \\leq k(N-k)r^k < (N-k)kr^{k-1} \\leq (N-k) \\sum_{i<k} r^i$. Rearranging (with $N = k + (N-k)$) gives the result.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sum_le_sum",
+      "pow_le_pow_of_le_one",
+      "Finset.sum_range_add_sum_Ico",
+      "geometric series comparison",
+      "prefix sum",
+      "tail sum"
+    ],
+    "prerequisites": [
+      "Finset summation in Lean 4",
+      "geometric sequences",
+      "calc proof style"
+    ]
+  },
+  {
+    "id": "ann-favorable-beats-fair",
+    "proofId": "fair-games-theorem-oq-02-oq-04",
+    "range": {
+      "startLine": 244,
+      "endLine": 270
+    },
+    "type": "insight",
+    "title": "Favorable Game Always Beats the Fair Benchmark k/N",
+    "content": "`favorable_beats_fair` proves that for any BiasedGamblersRuin with p > 1/2, the biased win probability strictly exceeds the fair-game benchmark k/N. The fair benchmark k/N is what a gambler would achieve if p = 1/2 exactly (by the optional stopping theorem applied to the martingale Xₙ = starting wealth + cumulative gains, stopped at ruin or target). Beating this benchmark means the edge quantitatively helps.\n\n**Proof flow:** Cross-multiply (via `div_lt_div_iff₀`) to reduce to k·(1-r^N) < N·(1-r^k). Factor each expression using the geometric sum identity `mul_neg_geom_sum`: 1-r^m = (1-r)·Σ_{i<m} r^i. This gives k·(1-r)·Σ_{i<N} r^i < N·(1-r)·Σ_{i<k} r^i. Cancel the common positive factor (1-r) > 0 using `mul_lt_mul_of_pos_left`, reducing to the `key_sum_ineq` lemma.\n\n**The calc chain** cleanly separates the algebraic manipulations from the core analytic inequality, making the proof readable and reusable. The use of `favorable_game_r_lt_one B hp` to deduce r < 1 from p > 1/2 is the only point connecting to the biased gambler's ruin structure.",
+    "mathContext": "For $p > 1/2$ (so $r < 1$): $\\frac{k}{N} < \\frac{1-r^k}{1-r^N}$. Cross-multiply: $k(1-r^N) < N(1-r^k)$. Factor: $(1-r)(k \\sum_{i<N} r^i) < (1-r)(N \\sum_{i<k} r^i)$. Cancel $(1-r) > 0$: reduces to `key_sum_ineq`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "optional stopping theorem",
+      "fair game benchmark",
+      "mul_neg_geom_sum",
+      "geometric sum identity",
+      "key_sum_ineq",
+      "favorable_game_r_lt_one"
+    ],
+    "prerequisites": [
+      "gambler's ruin model",
+      "geometric series",
+      "fair game / martingale"
+    ]
+  },
+  {
+    "id": "ann-alt-formula",
+    "proofId": "fair-games-theorem-oq-02-oq-04",
+    "range": {
+      "startLine": 290,
+      "endLine": 341
+    },
+    "type": "insight",
+    "title": "Alternative Losing Probability Formula via Reciprocal Odds Ratio s = p/q",
+    "content": "`biasedRuinProbLose_alt_formula` proves the equivalence between the standard losing probability formula (in terms of r = q/p) and an alternative form using s = p/q = r^{-1}: P(lose | k, N, p) = (s^{N-k} - 1)/(s^N - 1).\n\n**Why this matters:** The standard formula P(lose) = (r^k - r^N)/(1 - r^N) uses r = q/p, the house's odds ratio (r > 1 when house has edge). The alternative uses s = p/q, the gambler's odds ratio (s > 1 when gambler has edge). For favorable games (p > 1/2), both s^{N-k} - 1 > 0 and s^N - 1 > 0, so the formula has a clean positive/positive form — contrasting with the standard formula where r ∈ (0,1) and the numerator/denominator structure requires separate sign tracking.\n\n**Proof structure:** The key algebraic step is `hpq_eq : B.p / B.q = (B.r)⁻¹`, established by `inv_div`. Then `inv_pow` converts (r⁻¹)^n to (r^n)⁻¹ everywhere. The identity r^N = r^k · r^{N-k} (from `pow_add`) and `field_simp` with the relevant non-zero hypotheses close the algebra. The non-zero prerequisites require careful handling: r ≠ 1 follows from p ≠ 1/2 via the p_add_q identity; r^N ≠ 1 is split by `lt_or_gt_of_ne` into the r < 1 and r > 1 cases.\n\n**Historical context:** The symmetric form P(lose) = (s^{N-k} - 1)/(s^N - 1) appears in modern financial mathematics (e.g., credit risk models) because it naturally generalizes to the case where the 'advantage' parameter s is the primary input, such as in barrier option pricing where p/q is the discounted drift ratio.",
+    "mathContext": "$s = p/q = r^{-1}$. $P(\\text{lose}) = \\frac{r^k - r^N}{1 - r^N} = \\frac{(r^{N-k})^{-1} - 1}{(r^N)^{-1} - 1} \\cdot \\frac{r^N}{r^N} = \\frac{s^{N-k} - 1}{s^N - 1}$. For $p > 1/2$: $s > 1$ and both numerator and denominator are positive.",
+    "significance": "key",
+    "relatedConcepts": [
+      "reciprocal odds ratio",
+      "inv_div",
+      "inv_pow",
+      "field_simp",
+      "algebraic equivalence",
+      "financial mathematics",
+      "barrier options"
+    ],
+    "prerequisites": [
+      "gambler's ruin model",
+      "field arithmetic in Lean 4",
+      "non-zero hypotheses"
+    ]
+  }
+]

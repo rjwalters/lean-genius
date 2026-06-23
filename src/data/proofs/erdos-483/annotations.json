@@ -1,0 +1,232 @@
+[
+  {
+    "id": "erdos-483-context",
+    "proofId": "erdos-483",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "title": "Problem Overview: Growth Rate of Schur Numbers",
+    "content": "Erdős Problem #483 asks whether the **Schur numbers** $f(k)$ are bounded by a simple exponential $c^k$ for some constant $c$. The Schur number $f(k)$ is the smallest $N$ such that every $k$-coloring of $\\{1, \\ldots, N\\}$ contains a **monochromatic solution** to $a + b = c$. Known bounds place $f(k)$ between exponential growth (from below) and factorial growth (from above).",
+    "mathContext": "Schur's theorem (1916) guarantees $f(k) < \\infty$ for all $k$. The gap between the exponential lower bound ($\\approx 3.28^k$ from known values) and the factorial upper bound ($\\approx e \\cdot k!$, Whitehead 1973) is one of the oldest open problems in Ramsey theory.",
+    "relatedConcepts": [
+      "Schur's theorem",
+      "Ramsey theory",
+      "sum-free sets",
+      "partition regularity",
+      "Rado's theorem"
+    ],
+    "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "colorings of integers",
+      "sum-free sets"
+    ]
+  },
+  {
+    "id": "erdos-483-schur-prop",
+    "proofId": "erdos-483",
+    "type": "definition",
+    "range": {
+      "startLine": 30,
+      "endLine": 38
+    },
+    "title": "The Schur Property",
+    "content": "**SchurProp N k** asserts that every $k$-coloring of $\\{1, \\ldots, N\\}$ contains a monochromatic Schur triple $(x, y, z)$ with $x + y = z$.\n\n**schurProp_exists:** For any $k \\geq 1$, there exists $N$ with the Schur property, proved by invoking Schur's theorem from the imported `SchursTheorem` module.",
+    "mathContext": "The Schur property is a Ramsey-type partition property. A $k$-coloring assigns each element one of $k$ colors. A monochromatic Schur triple has all three elements the same color with $x + y = z$. The existence proof follows from Ramsey's theorem: $f(k) \\leq R(3, \\ldots, 3)$ with $k$ arguments.",
+    "relatedConcepts": [
+      "Ramsey property",
+      "partition regularity",
+      "coloring",
+      "monochromatic solutions"
+    ],
+    "significance": "key",
+    "prerequisites": [
+      "IntegerColoring",
+      "HasMonochromaticSchurTriple",
+      "Schur's theorem"
+    ]
+  },
+  {
+    "id": "erdos-483-monotonicity",
+    "proofId": "erdos-483",
+    "type": "concept",
+    "range": {
+      "startLine": 40,
+      "endLine": 48
+    },
+    "title": "Monotonicity of the Schur Property",
+    "content": "**schurProp_mono (proved):** If SchurProp $N$ $k$ holds and $M \\geq N$, then SchurProp $M$ $k$ also holds.\n\nThe proof restricts any coloring of $\\{1, \\ldots, M\\}$ to the subset $\\{1, \\ldots, N\\}$ and transfers the monochromatic triple back. This key structural lemma enables the `Nat.find` approach.",
+    "mathContext": "Monotonicity in $N$: if $N$ elements force a monochromatic triple, so do $M \\geq N$ elements (restrict the coloring). This makes $\\{N : \\text{SchurProp}\\, N\\, k\\}$ an upward-closed set, so `Nat.find` yields the minimum.",
+    "relatedConcepts": [
+      "monotonicity",
+      "restriction of colorings",
+      "Ramsey monotonicity"
+    ],
+    "significance": "supporting",
+    "prerequisites": [
+      "Fin coercion",
+      "Nat.lt_of_lt_of_le"
+    ]
+  },
+  {
+    "id": "erdos-483-schur-number",
+    "proofId": "erdos-483",
+    "type": "definition",
+    "range": {
+      "startLine": 52,
+      "endLine": 76
+    },
+    "title": "Schur Number via Nat.find",
+    "content": "**schurNumber k** is defined as the minimum $N$ satisfying SchurProp via `Nat.find`, making it a proper definition rather than an axiom. For $k < 1$ it returns 0.\n\n**schurNumber_spec (proved):** $\\text{SchurProp}(\\text{schurNumber}\\, k)\\, k$.\n\n**schurNumber_min (proved):** $N < \\text{schurNumber}\\, k \\implies \\neg\\text{SchurProp}\\, N\\, k$.\n\nUsing `Nat.find` (which requires `Classical.choice`) gives all properties from the well-ordering principle.",
+    "mathContext": "$S(k) = \\min\\{N : \\text{SchurProp}\\, N\\, k\\}$ via `Nat.find`. This is noncomputable (requires classical logic) but mathematically clean: specification and minimality follow automatically.",
+    "relatedConcepts": [
+      "Nat.find",
+      "well-ordering principle",
+      "noncomputable definitions",
+      "Classical logic"
+    ],
+    "significance": "key",
+    "prerequisites": [
+      "Nat.find",
+      "Classical.choice",
+      "dif_pos/dif_neg"
+    ]
+  },
+  {
+    "id": "erdos-483-s1",
+    "proofId": "erdos-483",
+    "type": "concept",
+    "range": {
+      "startLine": 78,
+      "endLine": 105
+    },
+    "title": "S(1) = 2 (Fully Proved)",
+    "content": "**schurNumber_1 (proved):** $S(1) = 2$.\n\nUpper bound: any 1-coloring of $\\{1, 2\\}$ has $1 + 1 = 2$ (reuses `schur_1` from SchursTheorem).\n\nLower bound: **not_schurProp_1_1** shows $\\{1\\}$ alone has no Schur triple since all three elements would be 0 in `Fin 1`, contradicting $x + y = z$ by `omega`.",
+    "mathContext": "With a single color, every element has the same color. The set $\\{1, 2\\}$ works because $1 + 1 = 2$, but $\\{1\\}$ fails: the only candidate triple $(1, 1, 2)$ requires $2 \\in \\{1\\}$, which it doesn't.",
+    "relatedConcepts": [
+      "base case",
+      "exhaustive verification",
+      "omega tactic"
+    ],
+    "significance": "supporting",
+    "prerequisites": [
+      "schur_1 from SchursTheorem",
+      "Fin 1",
+      "omega tactic"
+    ]
+  },
+  {
+    "id": "erdos-483-s2",
+    "proofId": "erdos-483",
+    "type": "concept",
+    "range": {
+      "startLine": 107,
+      "endLine": 131
+    },
+    "title": "S(2) = 5 (Fully Proved)",
+    "content": "**schurNumber_2 (proved):** $S(2) = 5$.\n\nUpper bound: every 2-coloring of $\\{1, \\ldots, 5\\}$ has a monochromatic triple (from `schur_2_upper`).\n\nLower bound: **not_schurProp_4_2** shows a sum-free 2-coloring of $\\{1, \\ldots, 4\\}$ exists (from `schur_2_lower`). The witness is $\\{1, 4\\}, \\{2, 3\\}$ — both classes are sum-free.\n\nThis is the first non-trivial exact Schur number, requiring genuine case analysis.",
+    "mathContext": "The sum-free partition $\\{1,4\\}, \\{2,3\\}$ of $\\{1,2,3,4\\}$ shows $S(2) > 4$: neither $\\{1,4\\}$ (no $x+y=z$: $1+1=2\\notin\\{1,4\\}$, $1+4=5\\notin\\{1,4\\}$) nor $\\{2,3\\}$ ($2+2=4\\notin\\{2,3\\}$, $2+3=5\\notin\\{2,3\\}$) contains a Schur triple. But in $\\{1,\\ldots,5\\}$, pigeonhole forces 3 elements in one class, and case analysis yields a triple.",
+    "relatedConcepts": [
+      "sum-free sets",
+      "Ramsey case analysis",
+      "pigeonhole principle"
+    ],
+    "significance": "key",
+    "prerequisites": [
+      "schur_2_upper",
+      "schur_2_lower from SchursTheorem",
+      "omega tactic"
+    ]
+  },
+  {
+    "id": "erdos-483-structural",
+    "proofId": "erdos-483",
+    "type": "concept",
+    "range": {
+      "startLine": 133,
+      "endLine": 167
+    },
+    "title": "Positivity and Non-decreasing Sequence",
+    "content": "**schurNumber_pos (proved):** $S(k) \\geq 1$ for $k \\geq 1$. If $S(k) = 0$, then SchurProp 0 $k$ must hold, but $\\{1, \\ldots, 0\\} = \\emptyset$ has no elements to form a triple.\n\n**schurNumber_nondecreasing (proved):** $k_1 \\leq k_2 \\implies S(k_1) \\leq S(k_2)$. The proof uses a color embedding: any $k_1$-coloring lifts to a $k_2$-coloring by viewing `Fin k₁` inside `Fin k₂`. Any monochromatic triple for the $k_2$-coloring restricts to one for the original $k_1$-coloring.",
+    "mathContext": "Monotonicity in colors: more colors makes it easier to avoid monochromatic triples, so a larger number of colors requires a larger set to force one. Formally: $k_1 \\leq k_2 \\implies S(k_1) \\leq S(k_2)$.",
+    "relatedConcepts": [
+      "color embedding",
+      "monotonicity in colors",
+      "Fin type"
+    ],
+    "significance": "supporting",
+    "prerequisites": [
+      "Fin.val",
+      "Fin.elim0",
+      "Nat.lt_of_lt_of_le"
+    ]
+  },
+  {
+    "id": "erdos-483-known-values",
+    "proofId": "erdos-483",
+    "type": "concept",
+    "range": {
+      "startLine": 169,
+      "endLine": 178
+    },
+    "title": "Known Values S(3), S(4), S(5)",
+    "content": "**Axiomatized values:** $S(3) = 14$, $S(4) = 45$, $S(5) = 161$.\n\n$S(5) = 161$ was determined by Heule (2017) using SAT solvers, requiring billions of clauses. No further exact values are known — $S(6)$ remains an open problem.\n\nThese are axiomatized because exhaustive verification in Lean would be prohibitively expensive.",
+    "mathContext": "Known Schur numbers: $S(1)=2, S(2)=5, S(3)=14, S(4)=45, S(5)=161$. The ratios $S(k+1)/S(k) \\approx 2.5, 2.8, 3.2, 3.6$ suggest growth faster than $3^k$ but the exact rate is unknown. Computing $S(5)$ required a 2-petabyte proof certificate.",
+    "relatedConcepts": [
+      "SAT solving",
+      "computational Ramsey theory",
+      "Heule's proof"
+    ],
+    "significance": "supporting",
+    "prerequisites": [
+      "schurNumber definition"
+    ]
+  },
+  {
+    "id": "erdos-483-bounds",
+    "proofId": "erdos-483",
+    "type": "concept",
+    "range": {
+      "startLine": 182,
+      "endLine": 190
+    },
+    "title": "Exponential Lower and Factorial Upper Bounds",
+    "content": "**schur_lower_bound (axiom):** $\\exists C > 1 : S(k) \\geq C^k$ for all $k \\geq 1$. Proved via explicit sum-free set constructions (e.g., Schur-Fredricksen gives $C = 89^{1/5} \\approx 2.47$).\n\n**schur_upper_bound (axiom):** $\\exists C > 0 : S(k) \\leq C \\cdot k!$ for all $k \\geq 1$. Due to Whitehead (1973) via the recurrence $S(k) \\leq k \\cdot S(k-1) + 2$.\n\nThe gap between exponential and factorial is the heart of the open question.",
+    "mathContext": "Lower bound: $S(k) \\geq 89^{k/5} - O(1)$ from modular arithmetic constructions. Upper bound: the recurrence $S(k) \\leq k \\cdot S(k-1) + 2$ gives $S(k) \\leq \\lfloor(e - 1/24)k!\\rfloor - 1$. Narrowing this gap is Problem #483.",
+    "relatedConcepts": [
+      "exponential vs factorial growth",
+      "sum-free constructions",
+      "Whitehead's theorem"
+    ],
+    "significance": "key",
+    "prerequisites": [
+      "Real.rpow",
+      "Nat.factorial",
+      "schurNumber"
+    ]
+  },
+  {
+    "id": "erdos-483-conjecture",
+    "proofId": "erdos-483",
+    "type": "concept",
+    "range": {
+      "startLine": 194,
+      "endLine": 199
+    },
+    "title": "Erdős Problem #483: Simple Exponential Bound?",
+    "content": "**erdos_483_conjecture (axiom):** $\\exists c > 0 : S(k) < c^k$ for all $k \\geq 1$.\n\nIf true, Schur numbers grow at most simply exponentially, dramatically improving the factorial upper bound. If false, Schur numbers grow superexponentially, placing them in a fundamentally different complexity class.\n\nThe conjecture is stated as an axiom (asserting it holds) rather than just a `Prop` definition, reflecting its status as a widely-believed conjecture.",
+    "mathContext": "The conjecture asks whether the factorial upper bound $S(k) = O(k!)$ can be replaced by $S(k) = O(c^k)$. A positive answer would align Schur numbers with Hales-Jewett numbers and other Ramsey quantities that grow at most exponentially. The known values $2, 5, 14, 45, 161$ are consistent with $S(k) \\approx 3.2^k$.",
+    "relatedConcepts": [
+      "exponential growth conjecture",
+      "Ramsey number comparison",
+      "Hales-Jewett theorem"
+    ],
+    "significance": "key",
+    "prerequisites": [
+      "schurNumber",
+      "Real exponentials"
+    ]
+  }
+]

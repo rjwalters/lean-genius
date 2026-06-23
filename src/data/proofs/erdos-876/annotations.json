@@ -1,0 +1,259 @@
+[
+  {
+    "id": "ann-876-1",
+    "proofId": "erdos-876",
+    "range": {
+      "startLine": 34,
+      "endLine": 41
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "Imports `Nat.Basic`, `Set.Basic`, and `Finset.Basic` for core data structures, and `BigOperators.Group.Finset` for the `Finset.sum` operation used in the subset-sum condition. Opens `Finset` and `BigOperators` namespaces to enable summation notation and direct `Finset` operations.",
+    "mathContext": "The formalization uses `Finset.sum id` to compute $\\sum_{b \\in S} b$ for finite subsets $S$, and `Set.range` to represent infinite sets as ranges of enumerating functions. The `tsum` operator is used later for the convergent series $\\sum 1/a$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.sum",
+      "BigOperators",
+      "Set.range",
+      "tsum"
+    ],
+    "prerequisites": [
+      "Lean 4 type system",
+      "Mathlib algebraic structures"
+    ]
+  },
+  {
+    "id": "ann-876-2",
+    "proofId": "erdos-876",
+    "range": {
+      "startLine": 49,
+      "endLine": 59
+    },
+    "type": "definition",
+    "title": "Sum-Free Set (Erdős Definition)",
+    "content": "`IsSumFreeErdos A` requires: for all $a \\in A$ and all finite subsets $S \\subseteq A$ with $|S| \\geq 2$ and every element of $S$ strictly less than $a$, we have $\\sum_{b \\in S} b \\neq a$. This is Erdős's strong sum-free condition, which forbids ANY sum of distinct predecessors — not just pairs. The set $\\{1, 2, 4, 8, \\ldots\\}$ (powers of 2) satisfies this by uniqueness of binary representation.",
+    "mathContext": "$A$ is **Erdős sum-free** if $\\forall a \\in A,\\; \\forall S \\subseteq A$ with $|S| \\geq 2$ and $\\max S < a$: $\\sum_{b \\in S} b \\neq a$. Equivalently, no element is a sum of any subset of its predecessors in $A$. This is strictly stronger than classical sum-free ($a + b \\neq c$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "subset sum avoidance",
+      "complete sequences",
+      "binary representation",
+      "Schur-free sets"
+    ],
+    "prerequisites": [
+      "Finset.sum",
+      "Set membership",
+      "natural number ordering"
+    ]
+  },
+  {
+    "id": "ann-876-3",
+    "proofId": "erdos-876",
+    "range": {
+      "startLine": 61,
+      "endLine": 76
+    },
+    "type": "definition",
+    "title": "Classical Sum-Free and Implication",
+    "content": "`IsSumFreeClassical A` requires $\\forall a, b \\in A,\\; a + b \\notin A$. The theorem `erdos_implies_classical` (with sorry) states that Erdős sum-free implies classical sum-free, since the Erdős condition forbids all subset sums including 2-element ones. The sorry is technical: constructing the witnessing 2-element subset $\\{a, b\\}$ from the pair $(a, b)$.",
+    "mathContext": "**Classical sum-free:** $\\forall a, b \\in A,\\; a + b \\notin A$. **Implication:** If $a + b \\in A$ with $a, b < a+b$ and $a, b \\in A$, then $S = \\{a, b\\}$ witnesses a violation of `IsSumFreeErdos` at element $a + b$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Schur's theorem",
+      "sum-free subsets of groups",
+      "pairwise sum condition"
+    ],
+    "prerequisites": [
+      "IsSumFreeErdos definition",
+      "Finset.insert",
+      "set subtraction"
+    ]
+  },
+  {
+    "id": "ann-876-4",
+    "proofId": "erdos-876",
+    "range": {
+      "startLine": 84,
+      "endLine": 109
+    },
+    "type": "definition",
+    "title": "Gap Sequences and Bound Conditions",
+    "content": "Defines the gap machinery: `IsIncreasingEnumeration a` ($a_n < a_{n+1}$ for all $n$), `gap a n = a_{n+1} - a_n$ (natural number subtraction), `HasGapBound a f` ($\\text{gap}(a,n) < f(n)$ for all $n$), and the critical `HasLinearGapBound a` ($\\text{gap}(a,n) < n$ for $n \\geq 1$). The linear gap bound is the central question of Problem #876.",
+    "mathContext": "The **gap sequence** $g_n = a_{n+1} - a_n$ measures the spacing of $A$. **Linear gap:** $g_n < n$ means elements grow at most quadratically ($a_n = O(n^2)$). **Graham's bound:** $g_n < n^{1+\\varepsilon}$ means elements grow as $a_n = O(n^{2+\\varepsilon})$. Since sum-free sets have density $\\sim N^{-1/2}$, the natural growth rate is $a_n \\sim n^2$, and linear gaps would be consistent with this.",
+    "significance": "key",
+    "relatedConcepts": [
+      "gap sequence",
+      "growth rate of sequences",
+      "natural number subtraction",
+      "asymptotic density"
+    ],
+    "prerequisites": [
+      "IsIncreasingEnumeration",
+      "Nat subtraction semantics"
+    ]
+  },
+  {
+    "id": "ann-876-5",
+    "proofId": "erdos-876",
+    "range": {
+      "startLine": 117,
+      "endLine": 124
+    },
+    "type": "definition",
+    "title": "Erdős Question #876 Formalized",
+    "content": "`ErdosQuestion876` asserts the existence of an increasing enumeration $a : \\mathbb{N} \\to \\mathbb{N}$ such that $\\text{range}(a)$ is Erdős sum-free and $a$ has linear gap bound. This is the precise formalization of the open question. The use of `Set.range a` converts the function to a set, enabling the sum-free predicate.",
+    "mathContext": "$\\text{ErdosQuestion876} :\\equiv \\exists a : \\mathbb{N} \\to \\mathbb{N},\\; (\\forall n,\\, a_n < a_{n+1}) \\wedge \\text{IsSumFreeErdos}(\\text{range}(a)) \\wedge (\\forall n \\geq 1,\\, a_{n+1} - a_n < n)$. This existential statement is currently unresolved — neither proved nor disproved.",
+    "significance": "key",
+    "relatedConcepts": [
+      "existential quantification",
+      "Set.range",
+      "open problem formalization"
+    ],
+    "prerequisites": [
+      "IsIncreasingEnumeration",
+      "IsSumFreeErdos",
+      "HasLinearGapBound"
+    ]
+  },
+  {
+    "id": "ann-876-6",
+    "proofId": "erdos-876",
+    "range": {
+      "startLine": 132,
+      "endLine": 136
+    },
+    "type": "concept",
+    "title": "Graham's Near-Linear Gap Result",
+    "content": "Axiomatizes Graham's result: for any $\\varepsilon > 0$, there exists an infinite sum-free set with gaps eventually $< n^{1+\\varepsilon}$. This is the strongest known positive result toward the open question. The construction uses a recursive procedure: at each stage, select the smallest element that avoids all subset sums of previous elements. By careful analysis of the resulting sequence, Graham showed the gaps grow at most polynomially with exponent $1+\\varepsilon$.",
+    "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists a \\text{ sum-free},\\; \\exists N,\\; \\forall n \\geq N,\\; a_{n+1} - a_n < n^{1+\\varepsilon}$. The gap $n^{1+\\varepsilon}$ versus $n$ represents the frontier of the problem: for every $\\varepsilon > 0$ we can achieve $n^{1+\\varepsilon}$, but whether $\\varepsilon = 0$ (linear gaps) works is open.",
+    "significance": "key",
+    "relatedConcepts": [
+      "greedy algorithm",
+      "recursive construction",
+      "gap analysis",
+      "asymptotic improvement"
+    ],
+    "prerequisites": [
+      "IsSumFreeErdos",
+      "real exponentiation",
+      "asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-876-7",
+    "proofId": "erdos-876",
+    "range": {
+      "startLine": 146,
+      "endLine": 171
+    },
+    "type": "concept",
+    "title": "Density Results: Erdős and Łuczak-Schoen",
+    "content": "Three density axioms: (1) `erdos_density_zero` (1962): $|A \\cap [1,N]|/N \\to 0$ for any sum-free $A$. (2) `luczak_schoen_upper` (2000): $|A \\cap [1,N]| \\leq c\\sqrt{N \\log N}$ for an absolute constant $c$. (3) `luczak_schoen_lower` (2000): there exists $B$ sum-free with $|B \\cap [1,N]| \\geq \\sqrt{N}/(\\log N)^{1/2+o(1)}$. Together, these show the counting function is $\\Theta(\\sqrt{N \\log N})$ up to lower-order factors.",
+    "mathContext": "**Density zero:** $\\lim_{N \\to \\infty} |A \\cap [1,N]|/N = 0$. **Tight bounds:** $c_1 \\sqrt{N/\\log N} \\leq \\max_A |A \\cap [1,N]| \\leq c_2 \\sqrt{N \\log N}$. The formalization uses `Set.ncard` for the cardinality of possibly infinite intersections and `Real.sqrt`/`Real.log` for the bounds.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic density",
+      "Set.ncard",
+      "Real.sqrt",
+      "Real.log",
+      "counting function"
+    ],
+    "prerequisites": [
+      "erdos_density_zero",
+      "Set.Icc",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-876-8",
+    "proofId": "erdos-876",
+    "range": {
+      "startLine": 181,
+      "endLine": 193
+    },
+    "type": "concept",
+    "title": "Deshouillers-Erdős-Melfi Growth Rate",
+    "content": "Axiomatizes the DEM (1999) result: there exists a sum-free set with $n^{3-\\varepsilon} < a_n < n^{3+\\varepsilon}$ for all $\\varepsilon > 0$ and large $n$. The cubic exponent $3$ arises from the counting function: if $|A \\cap [1,N]| \\sim \\sqrt{N}$, then the $n$-th element satisfies $a_n \\sim n^2$. The $\\log N$ correction in Łuczak-Schoen's bound accounts for the extra factor, pushing the exponent from $2$ to $3$. The constant `cubicGrowthExponent := 3` highlights this key parameter.",
+    "mathContext": "$a_n = n^{3+o(1)}$: if $|A \\cap [1,N]| \\sim c\\sqrt{N\\log N}$, setting $n = c\\sqrt{N\\log N}$ gives $N \\sim n^2/\\log n$, so $a_n = N \\sim n^2/\\log n$. The extra log factor explains why the growth is closer to cubic than quadratic.",
+    "significance": "key",
+    "relatedConcepts": [
+      "growth rate of sequences",
+      "counting function inversion",
+      "logarithmic corrections"
+    ],
+    "prerequisites": [
+      "sum-free density bounds",
+      "real exponentiation",
+      "asymptotic inversion"
+    ]
+  },
+  {
+    "id": "ann-876-9",
+    "proofId": "erdos-876",
+    "range": {
+      "startLine": 203,
+      "endLine": 225
+    },
+    "type": "theorem",
+    "title": "Reciprocal Sum Bounds",
+    "content": "Defines `reciprocalSum A = ∑' n, (1/n if n ∈ A and n ≥ 1, else 0)` using Lean's `tsum` for conditionally convergent series. Three axioms: `erdos_reciprocal_bound` ($\\sum 1/a < 100$, Erdős's original), `sullivan_bound` ($\\sum 1/a < 4$, the current best), and `sullivan_conjecture` ($\\exists A$ with $\\sum 1/a > 2$). The gap between 2 and 4 remains unresolved.",
+    "mathContext": "$\\text{reciprocalSum}(A) = \\sum_{a \\in A,\\, a \\geq 1} \\frac{1}{a}$. **Erdős:** $< 100$. **Sullivan:** $< 4$. **Conjecture:** $\\sup_A \\text{reciprocalSum}(A) \\approx 2$. The convergence of this series is guaranteed by the density-zero property: $|A \\cap [1,N]| = o(N)$ implies $\\sum_{a \\leq N} 1/a = o(\\log N)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tsum",
+      "convergent series",
+      "Erdős reciprocal sum",
+      "Sullivan's conjecture"
+    ],
+    "prerequisites": [
+      "tsum conditional",
+      "reciprocal series convergence",
+      "density zero implies convergence"
+    ]
+  },
+  {
+    "id": "ann-876-10",
+    "proofId": "erdos-876",
+    "range": {
+      "startLine": 237,
+      "endLine": 241
+    },
+    "type": "concept",
+    "title": "Powers of Two: Sum-Free Example",
+    "content": "`powers_of_two_sumfree` states that $\\{2^n : n \\in \\mathbb{N}\\}$ is Erdős sum-free (with sorry). The proof relies on uniqueness of binary representation: $2^n$ has a single $1$-bit in position $n$, while any sum of distinct smaller powers of 2 has $1$-bits only in positions $< n$. Hence their sum is $< 2^n$, and equality is impossible. This is the simplest infinite sum-free set, but with exponential gaps $2^{n+1} - 2^n = 2^n$.",
+    "mathContext": "$\\{1, 2, 4, 8, 16, \\ldots\\}$ is sum-free: $2^n = \\sum_{i \\in S} 2^i$ with $S \\subseteq \\{0,\\ldots,n-1\\}$ implies $2^n \\leq \\sum_{i=0}^{n-1} 2^i = 2^n - 1 < 2^n$, a contradiction. Gaps: $2^{n+1} - 2^n = 2^n$, which is exponential — far from linear.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "binary representation",
+      "geometric sequences",
+      "uniqueness of representation"
+    ],
+    "prerequisites": [
+      "geometric series sum",
+      "binary number theory"
+    ]
+  },
+  {
+    "id": "ann-876-11",
+    "proofId": "erdos-876",
+    "range": {
+      "startLine": 249,
+      "endLine": 257
+    },
+    "type": "concept",
+    "title": "Connections to Sidon Sets and $B_h$ Sequences",
+    "content": "Notes structural connections between sum-free sets and related additive objects. Sidon sets require all pairwise sums to be distinct (a different avoidance condition). $B_h$ sequences generalize Sidon: no $h$-fold sum is repeated. Sum-free sets can be viewed as a limiting case — forbidding any subset sum from producing another element is analogous to $B_\\infty$ avoidance. See Problem #790 for related questions about specific sum-free constructions.",
+    "mathContext": "**Sidon:** $a+b=c+d \\implies \\{a,b\\}=\\{c,d\\}$. **Sum-free (Erdős):** $\\sum S \\neq a$ for $S \\subseteq A$, $S < a$. Both are avoidance conditions on additive structure, but Sidon controls the **representation function** while sum-free controls **subset sums**.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Sidon sets",
+      "B_h sequences",
+      "additive combinatorics",
+      "Erdős Problem #790"
+    ],
+    "prerequisites": [
+      "sum-free definition",
+      "Sidon set definition"
+    ]
+  }
+]

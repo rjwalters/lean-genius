@@ -1,0 +1,139 @@
+[
+  {
+    "id": "ann-div3oq04-general-add",
+    "proofId": "divisibility-by-3-oq-04",
+    "range": {
+      "startLine": 44,
+      "endLine": 53
+    },
+    "type": "concept",
+    "title": "Digit Sums Respect Addition (General)",
+    "content": "The core theorem: for any base $b$ and modulus $d$ with $b \\bmod d = 1$, the digit-sum function is an additive homomorphism modulo $d$. The proof unfolds `Nat.ModEq` to percentage equality, applies `Nat.add_mod` to decompose, then uses the digit-sum congruence (backward direction via $\\leftarrow$) to replace digit sums with original numbers, and closes with the forward congruence applied to the sum. This single theorem generates all casting-out methods for addition.",
+    "mathContext": "$\\mathrm{digitsum}_b(a) + \\mathrm{digitsum}_b(c) \\equiv \\mathrm{digitsum}_b(a+c) \\pmod{d}$ when $b \\bmod d = 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "modular arithmetic",
+      "digit sum",
+      "ring homomorphism",
+      "casting out nines"
+    ],
+    "prerequisites": [
+      "Nat.modEq_digits_sum",
+      "Nat.add_mod"
+    ]
+  },
+  {
+    "id": "ann-div3oq04-general-mul",
+    "proofId": "divisibility-by-3-oq-04",
+    "range": {
+      "startLine": 55,
+      "endLine": 64
+    },
+    "type": "concept",
+    "title": "Digit Sums Respect Multiplication (General)",
+    "content": "The multiplicative counterpart: digit sums form a multiplicative homomorphism modulo $d$. The proof is structurally identical to the additive case, replacing `Nat.add_mod` with `Nat.mul_mod`. Together with the additive theorem, this shows that digit-sum reduction is a ring homomorphism $\\mathbb{N} \\to \\mathbb{Z}/d\\mathbb{Z}$, which is the algebraic reason why casting out nines works for both addition and multiplication.",
+    "mathContext": "$\\mathrm{digitsum}_b(a) \\cdot \\mathrm{digitsum}_b(c) \\equiv \\mathrm{digitsum}_b(a \\cdot c) \\pmod{d}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "ring homomorphism",
+      "multiplicative congruence",
+      "Nat.mul_mod"
+    ],
+    "prerequisites": [
+      "Nat.modEq_digits_sum",
+      "Nat.mul_mod"
+    ]
+  },
+  {
+    "id": "ann-div3oq04-error-detection",
+    "proofId": "divisibility-by-3-oq-04",
+    "range": {
+      "startLine": 66,
+      "endLine": 83
+    },
+    "type": "concept",
+    "title": "Error Detection via Contrapositive",
+    "content": "The practical payoff: if the digit-sum check fails (i.e., $\\mathrm{digitsum}(a) \\circ \\mathrm{digitsum}(c) \\not\\equiv \\mathrm{digitsum}(r) \\pmod{d}$ for $\\circ \\in \\{+, \\times\\}$), then $a \\circ c \\neq r$. These are direct contrapositives of the additive/multiplicative theorems. The key property: **no false positives** — every detected error is a genuine error. However, there are false negatives: errors that happen to be multiples of $d$ go undetected.",
+    "mathContext": "$\\neg(\\mathrm{digitsum}(a) + \\mathrm{digitsum}(c) \\equiv \\mathrm{digitsum}(r) \\pmod{d}) \\implies a + c \\neq r$",
+    "significance": "key",
+    "relatedConcepts": [
+      "contrapositive",
+      "error detection",
+      "false positive",
+      "false negative"
+    ],
+    "prerequisites": [
+      "digit_sum_add_general",
+      "digit_sum_mul_general"
+    ]
+  },
+  {
+    "id": "ann-div3oq04-casting-nines",
+    "proofId": "divisibility-by-3-oq-04",
+    "range": {
+      "startLine": 85,
+      "endLine": 117
+    },
+    "type": "concept",
+    "title": "Casting Out Nines (Classical Specialization)",
+    "content": "The classical method: specializing to $b = 10$, $d = 9$ (since $10 \\bmod 9 = 1$). After computing $a + b = c$ by hand, one sums the digits of each number. If $\\mathrm{digitsum}(a) + \\mathrm{digitsum}(b) \\not\\equiv \\mathrm{digitsum}(c) \\pmod{9}$, the calculation contains an error. This was the standard check for all hand arithmetic from medieval Islam through the mid-20th century. Each theorem is a one-line application of the general theory.",
+    "mathContext": "$\\mathrm{digitsum}_{10}(a) + \\mathrm{digitsum}_{10}(b) \\equiv \\mathrm{digitsum}_{10}(a+b) \\pmod{9}$ (specialization with $b=10, d=9$)",
+    "significance": "key",
+    "relatedConcepts": [
+      "casting out nines",
+      "arithmetic verification",
+      "al-Khwarizmi",
+      "Fibonacci"
+    ],
+    "prerequisites": [
+      "digit_sum_add_general",
+      "digit_sum_mul_general"
+    ]
+  },
+  {
+    "id": "ann-div3oq04-specific-bases",
+    "proofId": "divisibility-by-3-oq-04",
+    "range": {
+      "startLine": 143,
+      "endLine": 180
+    },
+    "type": "concept",
+    "title": "Casting Out in Other Bases",
+    "content": "Five specializations demonstrating the generality: (1) casting out sevens in octal ($8 \\bmod 7 = 1$), useful for octal arithmetic in computing; (2) casting out fifteens in hexadecimal ($16 \\bmod 15 = 1$); (3-4) casting out threes in base 10 ($10 \\bmod 3 = 1$), which catches more errors than nines since the modulus is smaller (detecting $2/3$ of errors vs $8/9$). Each is a one-line `native_decide` discharge of the modular condition.",
+    "mathContext": "Octal: $8 \\bmod 7 = 1$; Hex: $16 \\bmod 15 = 1$; Threes: $10 \\bmod 3 = 1$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "octal arithmetic",
+      "hexadecimal",
+      "systems programming",
+      "error detection probability"
+    ],
+    "prerequisites": [
+      "digit_sum_add_general",
+      "digit_sum_mul_general"
+    ]
+  },
+  {
+    "id": "ann-div3oq04-limitation",
+    "proofId": "divisibility-by-3-oq-04",
+    "range": {
+      "startLine": 212,
+      "endLine": 217
+    },
+    "type": "concept",
+    "title": "Limitation: False Negatives",
+    "content": "An important caveat formalized: casting out nines **cannot detect** errors that are multiples of 9. The example shows that 579 and 588 have the same digit sum modulo 9 (both $\\equiv 3$). So if someone claims $123 + 456 = 588$ (off by 9 from the correct answer 579), the digit-sum check would not flag the error. This is the fundamental limitation of all casting-out methods: they detect $(d-1)/d$ of random single-perturbation errors, but miss the $1/d$ that happen to be multiples of $d$.",
+    "mathContext": "$\\mathrm{digitsum}(579) \\bmod 9 = \\mathrm{digitsum}(588) \\bmod 9 = 3$, so the method cannot distinguish them",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "false negatives",
+      "detection probability",
+      "error analysis"
+    ],
+    "prerequisites": [
+      "Casting Out Nines",
+      "Digit Sum Modulo 9",
+      "Error Detection Probability"
+    ]
+  }
+]

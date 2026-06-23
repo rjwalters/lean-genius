@@ -1,0 +1,226 @@
+[
+  {
+    "id": "ann-819-overview",
+    "proofId": "erdos-819",
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #819** asks: For a set A ⊆ [1,N] of size √N, what is the maximum size of the restricted sumset (A+A) ∩ [1,N]?\n\n**The Setup:**\n- A has exactly ⌊√N⌋ elements from [1,N]\n- We look at pairwise sums a+b that stay within [1,N]\n- f(N) = maximum such count over all valid A\n\n**Known Bounds (Erdős-Freud 1991):**\n(3/8 - o(1))N ≤ f(N) ≤ (1/2 + o(1))N\n\n**Status:** The gap between 0.375N and 0.5N is OPEN.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Additive combinatorics",
+      "Sumsets",
+      "Extremal problems"
+    ],
+    "mathContext": "See annotation content for formal details of problem overview",
+    "prerequisites": []
+  },
+  {
+    "id": "ann-819-sumset",
+    "proofId": "erdos-819",
+    "range": {
+      "startLine": 45,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Sumset and Restricted Sumset",
+    "content": "**Sumset A + A:**\n\nThe set of all pairwise sums {a + b : a, b ∈ A}.\n\n```lean\ndef sumset (A : Finset ℕ) : Finset ℕ :=\n  (A ×ˢ A).image (fun p => p.1 + p.2)\n```\n\nIf |A| = k, then |A+A| ranges from 2k-1 (arithmetic progression) to k(k+1)/2 (Sidon set).\n\nThe **restricted sumset** (A+A) ∩ [1,N] only counts sums landing in the original interval.",
+    "mathContext": "The sumset is computed via the Cartesian product A × A followed by the addition map. The restricted version filters to [1,N].",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.product",
+      "Finset.image",
+      "Sumsets"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-819-admissible",
+    "proofId": "erdos-819",
+    "range": {
+      "startLine": 63,
+      "endLine": 89
+    },
+    "type": "definition",
+    "title": "Admissible Sets and f(N)",
+    "content": "**Admissible Set:**\n\nA set A is admissible if:\n1. A ⊆ {1, ..., N}\n2. |A| = ⌊√N⌋\n\nThe √N threshold is crucial - it's the size where sumset behavior becomes interesting without trivially filling [1,N].\n\n**The function f(N):**\nf(N) = max { |(A+A) ∩ [1,N]| : A admissible }\n\nDefined using sSup over the set of achievable restricted sumset sizes.",
+    "mathContext": "The supremum exists because we're maximizing a natural number-valued function over a finite (though large) collection of sets.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.sqrt",
+      "Supremum",
+      "Extremal functions"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-819-trivial-bounds",
+    "proofId": "erdos-819",
+    "range": {
+      "startLine": 99,
+      "endLine": 115
+    },
+    "type": "concept",
+    "title": "Trivial Bounds",
+    "content": "**Trivial Upper Bound:** f(N) ≤ N because (A+A) ∩ [1,N] is a subset of [1,N].\n\n**Trivial Lower Bound:** f(N) ≥ √N since any admissible set generates at least √N distinct sums in [1,N].\n\nBoth bounds are axiomatized. The interesting bounds are the Erdős-Freud results (3/8)N and (1/2)N.",
+    "mathContext": "These bounds follow from basic cardinality arguments but are stated as axioms since the formal proofs require careful reasoning about the sSup definition.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Cardinality bounds",
+      "Subset bounds"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-819-ef-lower",
+    "proofId": "erdos-819",
+    "range": {
+      "startLine": 121,
+      "endLine": 130
+    },
+    "type": "concept",
+    "title": "Erdős-Freud Lower Bound",
+    "content": "**Lower Bound: f(N) ≥ (3/8 - o(1))N**\n\nErdős and Freud (1991) constructed sets achieving this bound.\n\nThe construction uses sets that:\n- Avoid too much additive structure\n- Still generate many distinct sums in [1,N]\n- Use arithmetic progressions with carefully chosen parameters",
+    "mathContext": "The lower bound comes from an explicit construction. The proof that these sets achieve 3N/8 sums requires counting arguments from additive combinatorics.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Constructive bounds",
+      "Additive structure",
+      "Erdős-Freud 1991"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-819-ef-upper",
+    "proofId": "erdos-819",
+    "range": {
+      "startLine": 132,
+      "endLine": 141
+    },
+    "type": "concept",
+    "title": "Erdős-Freud Upper Bound",
+    "content": "**Upper Bound: f(N) ≤ (1/2 + o(1))N**\n\nNo √N-sized set can have restricted sumset larger than N/2.\n\n**Key insight:** Sums a+b range from 2 to 2N, but only half land in [1,N]. This geometric constraint limits coverage.",
+    "mathContext": "The upper bound exploits the distribution of sums: for elements in [1,N], the sum a+b is roughly uniformly distributed over [2,2N], so about half exceed N.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Counting arguments",
+      "Geometric constraints",
+      "Sumset distribution"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-819-combined",
+    "proofId": "erdos-819",
+    "range": {
+      "startLine": 147,
+      "endLine": 168
+    },
+    "type": "concept",
+    "title": "Combined Bounds",
+    "content": "**Combined Bounds (proved from axioms):**\n\nFor any ε > 0, for sufficiently large N:\n(3/8 - ε)N ≤ f(N) ≤ (1/2 + ε)N\n\nThis theorem combines both Erdős-Freud axioms by taking the maximum of the two thresholds N₁ and N₂.\n\nAlso verified computationally: the gap between coefficients is exactly 1/8.",
+    "mathContext": "The proof uses the standard technique of taking max(N₁, N₂) to ensure both bounds hold simultaneously for N ≥ max(N₁, N₂).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Asymptotic bounds",
+      "Combined estimates"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-819-construction",
+    "proofId": "erdos-819",
+    "range": {
+      "startLine": 170,
+      "endLine": 198
+    },
+    "type": "concept",
+    "title": "Construction and Upper Bound Arguments",
+    "content": "**Lower Bound Construction:**\nTo achieve 3N/8, Erdős-Freud construct sets using arithmetic progressions with carefully chosen common difference. The construction avoids excessive additive structure while generating many distinct sums in [1,N].\n\n**Upper Bound Argument:**\nSums a+b with a,b ∈ [1,N] range from 2 to 2N. Roughly half exceed N, limiting (A+A) ∩ [1,N] to at most N/2 elements.\n\nBoth are axiomatized with their full mathematical content (not trivial placeholders).",
+    "mathContext": "These axioms formalize the construction and counting arguments with precise quantitative statements rather than trivial True placeholders.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Constructive lower bounds",
+      "Counting upper bounds"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-819-quasi-sidon",
+    "proofId": "erdos-819",
+    "range": {
+      "startLine": 200,
+      "endLine": 223
+    },
+    "type": "definition",
+    "title": "Quasi-Sidon Sets and Problem #840",
+    "content": "**Quasi-Sidon Sets:**\n\nA Sidon set has all pairwise sums distinct. A quasi-Sidon set allows bounded coincidences: for each target sum n, there are at most k representations a+b = n.\n\n**Definition:**\n```lean\ndef IsQuasiSidon (A : Finset ℕ) (k : ℕ) : Prop :=\n  ∀ n : ℕ, ((A ×ˢ A).filter (fun p => p.1 + p.2 = n ∧ p.1 ≤ p.2)).card ≤ k\n```\n\n**Connection to f(N):** If A is k-quasi-Sidon, then |A+A| ≥ |A|²/(2k), so better quasi-Sidon sets yield larger sumsets.",
+    "mathContext": "This connects to Problem #840. The axiom states |sumset A| · 2k ≥ |A|², a lower bound on sumset size from bounded representation count.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sidon sets",
+      "Problem #840",
+      "Representation functions"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-819-ap",
+    "proofId": "erdos-819",
+    "range": {
+      "startLine": 225,
+      "endLine": 236
+    },
+    "type": "concept",
+    "title": "Arithmetic Progression Sumset",
+    "content": "**Arithmetic Progressions are Suboptimal:**\n\nFor A = {0, 1, ..., k-1}: |A+A| = 2k-1 sums.\n\nWith k = √N: only ~2√N sums, far from optimal (0.375N).\n\nAPs have too much additive structure - their sums overlap heavily, producing many duplicate values.",
+    "mathContext": "The sumset of an AP of length k is an AP of length 2k-1. This is the minimum possible sumset size for a k-element set (Freiman-Ruzsa theory).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Arithmetic progressions",
+      "Minimal sumsets",
+      "Freiman-Ruzsa"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-819-gap",
+    "proofId": "erdos-819",
+    "range": {
+      "startLine": 238,
+      "endLine": 253
+    },
+    "type": "concept",
+    "title": "The Gap",
+    "content": "**The Gap Between Bounds:**\n\nboundGap = 1/2 - 3/8 = 1/8\n\nThe gap is 12.5% of N. Finding the true asymptotic constant somewhere in [0.375, 0.5] is the core **OPEN** question.\n\nVerified computationally: `gap_is_eighth : boundGap = 1 / 8`",
+    "mathContext": "The gap theorem is proved by unfolding definitions and using norm_num. This is one of the few fully verified results in this formalization.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Open problems",
+      "Asymptotic constants"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-819-summary",
+    "proofId": "erdos-819",
+    "range": {
+      "startLine": 255,
+      "endLine": 262
+    },
+    "type": "concept",
+    "title": "Summary Theorem",
+    "content": "**erdos_819_summary (proved):**\n\nCombines the lower and upper bounds into a single theorem:\n\n1. **Lower:** ∀ ε > 0, ∃ N₀, ∀ N ≥ N₀: f(N) ≥ (3/8 - ε)N\n2. **Upper:** ∀ ε > 0, ∃ N₀, ∀ N ≥ N₀: f(N) ≤ (1/2 + ε)N\n\nProved by exact application of the two Erdős-Freud axioms.\n\nErdős Problem #819 is **OPEN** - the gap remains.",
+    "mathContext": "The summary theorem packages both bounds as a conjunction, proved by pairing the two axioms.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Summary theorem",
+      "Open problem",
+      "Erdős-Freud bounds"
+    ],
+    "prerequisites": []
+  }
+]

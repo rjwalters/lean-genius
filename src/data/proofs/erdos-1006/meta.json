@@ -1,0 +1,204 @@
+{
+  "id": "erdos-1006",
+  "title": "Erdős Problem #1006: Robust Acyclic Orientations",
+  "slug": "erdos-1006",
+  "description": "Can every graph with girth > 4 be oriented so that there is no directed cycle, and reversing any single edge also creates no directed cycle? Disproved by Nešetřil-Rödl (1978) for all girths.",
+  "meta": {
+    "author": "Nešetřil-Rödl (disproof)",
+    "sourceUrl": "https://erdosproblems.com/1006",
+    "date": "1978",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1006Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "orientation",
+      "girth",
+      "counterexample",
+      "probabilistic-method"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1006,
+    "erdosUrl": "https://erdosproblems.com/1006",
+    "erdosProblemStatus": "solved",
+    "axiomCount": 3,
+    "lineCount": 141,
+    "assumptions": "3 axiom(s): Orientation.reverseEdge, grotzsch_counterexample, nesetril_rodl_1978. See Lean source for complete statements.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type with adjacency predicate, used for graph definitions",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Walk.IsCycle",
+        "description": "Cycle predicate for graph walks, used for girth definition",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Walk"
+      },
+      {
+        "theorem": "Fintype",
+        "description": "Finite type class for vertex sets of finite graphs",
+        "module": "Mathlib.Data.Fintype.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal framework for graph orientations (Orientation structure with covers, exclusive, respects properties)",
+      "Girth definitions (hasGirthAtLeast, hasGirth) via SimpleGraph.Walk.IsCycle",
+      "Robust acyclicity predicate (isRobustlyAcyclic) for orientation stability",
+      "Main theorem ores_conjecture_false: derives contradiction from Nešetřil-Rödl at g=5"
+    ],
+    "theoremCount": 1,
+    "definitionCount": 8
+  },
+  "overview": {
+    "historicalContext": "This problem, credited to Ore by Erdős (1971), explores whether high-girth graphs have particularly stable acyclic orientations. Every graph admits an acyclic orientation (just order the vertices and direct edges from lower to higher), but some orientations are 'fragile' — reversing a single edge creates a directed cycle. Ore asked whether avoiding short cycles (girth > 4) guarantees the existence of a 'robust' orientation that stays acyclic after any single edge reversal.\n\nEarly counterexamples at small girth were known: Ore found a girth-4 graph without this property, and Gallai observed the Grötzsch graph (11 vertices, girth 4, chromatic number 4) also fails. These examples relied on high chromatic number relative to girth, suggesting that chromatic structure, not just cycle length, governs robust orientability.\n\nNešetřil and Rödl (1978) settled the question completely by proving counterexamples exist for ALL girths g ≥ 3. Their proof uses the probabilistic method: by the Erdős theorem on graphs with high girth and high chromatic number, such graphs exist, and their high chromatic number forces every acyclic orientation to contain a 'fragile' edge whose reversal creates a directed cycle. The formalization axiomatizes the Nešetřil-Rödl theorem and derives the falsity of Ore's conjecture as a corollary.",
+    "problemStatement": "Let G be a graph with girth > 4 (no cycles of length 3 or 4). Can the edges of G always be directed such that (1) there is no directed cycle, and (2) reversing any single edge also creates no directed cycle?",
+    "text": "A 141-line formalization of Erdős Problem #1006 (Ore's conjecture) with 3 axioms and 0 sorries. The file defines graph girth (`hasGirthAtLeast`, `hasGirth`) via `SimpleGraph.Walk.IsCycle`, the `Orientation` structure (covers + exclusive + respects), acyclicity of orientations, and robust acyclicity (acyclic after any single edge reversal). Three axioms capture the key mathematical content: `Orientation.reverseEdge` (edge reversal operation), `grotzsch_counterexample` (the Grötzsch graph at girth 4 has no robust orientation), and `nesetril_rodl_1978` (for every $g \\geq 3$, there exists a graph with girth $\\geq g$ admitting no robust acyclic orientation). The main theorem `ores_conjecture_false` instantiates Nešetřil-Rödl at $g = 5$ and derives a contradiction with the conjecture by `intro h_conj` / `obtain` / `exact`. The disproof reveals that chromatic number, not girth, governs robust orientability — high chromatic number forces 'critical' edges in every acyclic orientation.",
+    "proofStrategy": "Nešetřil and Rödl (1978) used the probabilistic method to construct counterexamples. They showed that random graphs with high girth and high chromatic number have the property that EVERY acyclic orientation contains an edge whose reversal creates a directed cycle. This gives counterexamples for all girths g ≥ 3.",
+    "keyInsights": [
+      "Acyclic orientations correspond to linear orderings: direct u→v iff u comes before v",
+      "A 'robust' orientation must avoid creating 2-cycles under any edge reversal",
+      "High chromatic number forces certain structural constraints that prevent robustness",
+      "The Grötzsch graph (girth 4, χ=4, triangle-free) is an explicit counterexample at girth 4",
+      "The probabilistic method shows counterexamples exist for ALL girths"
+    ],
+    "prerequisites": [
+      "Graph theory (simple graphs, cycles, girth, chromatic number)",
+      "Graph orientations and directed graphs",
+      "Probabilistic method in combinatorics",
+      "Erdős's theorem on high-girth high-chromatic graphs (1959)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "girth",
+      "title": "Graph Girth",
+      "summary": "hasGirthAtLeast, hasGirth",
+      "startLine": 50,
+      "endLine": 63,
+      "mathContext": "The girth $g(G)$ of a graph $G$ is the length of its shortest cycle ($\\infty$ if acyclic). `hasGirthAtLeast G k` means all cycles in $G$ have length $\\geq k$. High girth forces local tree-like structure, which intuitively should make acyclic orientations more robust."
+    },
+    {
+      "id": "orientations",
+      "title": "Directed Graphs and Orientations",
+      "summary": "Orientation structure, hasDirectedPath, isAcyclic",
+      "startLine": 64,
+      "endLine": 85,
+      "mathContext": "An orientation of $G$ assigns a direction to each edge. An orientation is acyclic iff there is no directed cycle, equivalently iff the vertices admit a topological ordering. Every graph has acyclic orientations (orient by any linear ordering of vertices). The question is whether 'robust' acyclicity is achievable."
+    },
+    {
+      "id": "robust",
+      "title": "Robust Acyclicity",
+      "summary": "reverseEdge, isRobustlyAcyclic, admitsRobustlyAcyclicOrientation",
+      "startLine": 86,
+      "endLine": 103,
+      "mathContext": "An acyclic orientation is *robustly acyclic* if reversing any single edge preserves acyclicity. Equivalently, no directed edge $u \\to v$ lies on a directed path from $v$ back to $u$. This is a strong structural property: the orientation must avoid all 'barely acyclic' configurations."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture (Disproved)",
+      "summary": "oresConjecture",
+      "startLine": 104,
+      "endLine": 114,
+      "mathContext": "Ore's conjecture (attributed by Erdős): every graph with girth $> 4$ admits a robustly acyclic orientation. The girth $> 4$ threshold excludes triangles and 4-cycles — the known obstructions at the time. Ore showed a girth-4 counterexample; the conjecture asked whether girth 5 suffices."
+    },
+    {
+      "id": "counterexamples",
+      "title": "Counterexamples",
+      "summary": "grotzsch_counterexample, nesetril_rodl_1978, ores_conjecture_false",
+      "startLine": 115,
+      "endLine": 141,
+      "mathContext": "Nešetřil-Rödl (1978) disproved the conjecture for ALL girths: for every $g \\geq 3$, $\\exists$ graph $G$ with $g(G) = g$ and $\\chi(G) \\geq 4$ that admits no robustly acyclic orientation. Their probabilistic construction uses the Lovász Local Lemma to build high-girth, high-chromatic-number graphs. The Grötzsch graph ($g = 4$, $\\chi = 4$, 11 vertices) is the smallest triangle-free non-3-colorable graph and provides a concrete counterexample at girth 4."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #1006 is resolved NEGATIVELY. The conjecture that graphs with girth > 4 admit robustly acyclic orientations is false. Nešetřil and Rödl (1978) proved counterexamples exist for all girths g ≥ 3.",
+    "implications": "This result shows that sparsity (high girth) alone cannot guarantee robust orientability. The chromatic number plays a crucial role: graphs with high girth AND high chromatic number necessarily fail to have robust orientations.",
+    "openQuestions": [
+      "Characterize which graphs admit robustly acyclic orientations — is there a forbidden-subgraph or structural characterization?",
+      "What is the minimum chromatic number $\\chi(g)$ such that every graph with girth $g$ and $\\chi(G) \\geq \\chi(g)$ fails robust orientability? The Nešetřil-Rödl proof gives existence but not sharp bounds.",
+      "Can the Grötzsch graph counterexample (girth 4) be formalized constructively in Lean, replacing the grotzsch_counterexample axiom with an explicit verification?",
+      "Is robust acyclicity decidable in polynomial time? Given a graph $G$, can we efficiently determine whether $G$ admits a robustly acyclic orientation, or is this NP-hard?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "related",
+      "description": "Both concern structural properties of graph colorings. The four-color theorem constrains planar graph colorings; Erdős #1006 reveals that chromatic number — not girth — governs robust orientability."
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey theory and this problem share the theme of unavoidable structures: Ramsey shows large enough graphs must contain monochromatic substructures; the Nešetřil-Rödl disproof uses similar combinatorial constructions."
+    },
+    {
+      "targetId": "erdos-1006-oq-02",
+      "relationship": "extended-by",
+      "description": "Sub-entry investigating the minimum chromatic number $\\chi$ such that a graph with girth $g$ and $\\chi(G) \\geq \\chi$ necessarily fails robust orientability — the quantitative refinement of the Nešetřil-Rödl disproof."
+    },
+    {
+      "targetId": "erdos-1008",
+      "relationship": "related",
+      "description": "Both concern extremal graph theory with forbidden substructures: #1006 forbids short cycles (high girth) and asks about orientations; #1008 forbids $C_4$ and asks about maximum edges. The Erdős girth-chromatic-number theorem (1959) connects both via random constructions."
+    },
+    {
+      "targetId": "erdos-1011",
+      "relationship": "related",
+      "description": "Both connect chromatic number to structural graph properties: #1006 shows high chromatic number obstructs robust orientability; #1011 studies triangles forced by high chromatic number, exploring the same chromatic-extremal theme."
+    },
+    {
+      "targetId": "randomized-maxcut",
+      "relationship": "related",
+      "description": "Both use probabilistic arguments in graph theory: the Nešetřil-Rödl disproof relies on the probabilistic method (random graphs with high girth and high chromatic number), while randomized MaxCut uses randomized rounding — different probabilistic tools for graph optimization."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Nešetřil, Jaroslav; Rödl, Vojtěch",
+      "title": "A short proof of the existence of highly chromatic hypergraphs without short cycles",
+      "year": "1979",
+      "venue": "Journal of Combinatorial Theory, Series B, vol. 27, pp. 225–227",
+      "note": "Provides the probabilistic construction disproving Erdős #1006: graphs with arbitrarily high girth and chromatic number exist, and such graphs cannot admit robustly acyclic orientations"
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "Problems and results in graph theory and combinatorial analysis",
+      "year": "1976",
+      "venue": "Congressus Numerantium, vol. 15, pp. 169–192",
+      "note": "Collection of open problems including #1006 on robust acyclic orientations of high-girth graphs"
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "Graph theory and probability",
+      "year": "1959",
+      "venue": "Canadian Journal of Mathematics 11, 34–38",
+      "note": "Proved that for any k and g, there exist graphs with chromatic number ≥ k and girth ≥ g — the key ingredient in the Nešetřil-Rödl disproof, showing that high girth cannot prevent high chromatic number"
+    },
+    {
+      "authors": "Ore, Oystein",
+      "title": "Theory of Graphs",
+      "year": "1962",
+      "venue": "American Mathematical Society Colloquium Publications, vol. 38",
+      "note": "Contains the original conjecture (attributed to Ore by Erdős) that graphs with girth > 4 admit robustly acyclic orientations"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": null,
+    "lineCount": 141,
+    "axiomCount": 3,
+    "theoremCount": 1,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos1006Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

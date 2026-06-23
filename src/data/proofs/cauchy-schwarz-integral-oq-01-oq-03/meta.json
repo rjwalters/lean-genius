@@ -1,0 +1,199 @@
+{
+  "id": "cauchy-schwarz-integral-oq-01-oq-03",
+  "title": "Complex-Valued Hölder Inequality via Nnnorm",
+  "slug": "cauchy-schwarz-integral-oq-01-oq-03",
+  "description": "Answers OQ-01-OQ-03: the nnnorm approach to Hölder's inequality generalizes uniformly to any NormedField (ℝ, ℂ, or any valued field). The complex case is a trivial corollary via nnnorm multiplicativity.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/H%C3%B6lder%27s_inequality",
+    "date": "2026",
+    "status": "verified",
+    "tags": [
+      "analysis",
+      "measure-theory",
+      "lp-spaces",
+      "inequalities",
+      "holder",
+      "cauchy-schwarz",
+      "complex-analysis",
+      "normed-field"
+    ],
+    "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01OQ03.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "ENNReal.lintegral_mul_le_Lp_mul_Lq",
+        "description": "Hölder's inequality for the extended Lebesgue integral",
+        "module": "Mathlib.MeasureTheory.Integral.MeanInequalities"
+      },
+      {
+        "theorem": "nnnorm_mul",
+        "description": "Multiplicativity of nnnorm in a NormedField: ‖x·y‖₊ = ‖x‖₊·‖y‖₊",
+        "module": "Mathlib.Analysis.Normed.Field.Basic"
+      },
+      {
+        "theorem": "norm_inner_le_norm",
+        "description": "Cauchy-Schwarz for inner product spaces: ‖⟪f,g⟫‖ ≤ ‖f‖·‖g‖",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "L2.inner_def",
+        "description": "Complex L2 inner product equals integral of pointwise inner products",
+        "module": "Mathlib.MeasureTheory.Function.L2Space"
+      },
+      {
+        "theorem": "norm_add_le",
+        "description": "Triangle inequality (gives Minkowski's inequality for L2)",
+        "module": "Mathlib.Topology.Algebra.Order.LiminfLimsup"
+      }
+    ],
+    "originalContributions": [
+      "holder_normedField_lintegral: Hölder's inequality for any NormedField 𝕜 via nnnorm multiplicativity",
+      "holder_complex_lintegral: Complex-valued Hölder as corollary of the NormedField version",
+      "cauchy_schwarz_complex_from_holder: Complex CS as the p=q=2 case of complex Hölder",
+      "cauchy_schwarz_L2_complex: CS in complex L2 inner product form (norm_inner_le_norm)",
+      "cauchy_schwarz_L2_complex_integral: Bridge from L2 inner product to integral form",
+      "minkowski_L2_complex: Triangle inequality for complex L2",
+      "holder_real_from_normedField_lintegral: Real Hölder as a special case of the NormedField version"
+    ],
+    "dateAdded": "2026-04-14",
+    "lineCount": 209,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "**From Cauchy (1821) to NormedField Abstractions (2026)**\n\nThe Cauchy-Schwarz inequality has a layered history. Augustin-Louis Cauchy (1821) proved the discrete version for finite sums: $|\\sum a_i b_i|^2 \\leq (\\sum a_i^2)(\\sum b_i^2)$. Viktor Bunyakovsky (1859) extended it to integrals of real-valued functions. Hermann Amandus Schwarz (1888) gave the inner-product-space formulation. Otto Hölder (1889) then generalized the integral inequality to arbitrary conjugate exponents $p$ and $q$ with $1/p + 1/q = 1$, subsuming Cauchy-Schwarz as the special case $p = q = 2$.\n\nFriesz Riesz (1910) built the $L^p$ space framework, and by the mid-20th century the Hölder inequality was known to hold for complex-valued functions via the complex modulus $|\\cdot|$ satisfying $|fg| = |f|\\cdot|g|$. In fact, this multiplicativity — not the specific field structure of ℂ — is the only algebraic property the proof needs.\n\nThe abstract notion of a **valued field** (a field with a multiplicative norm) appears throughout algebraic number theory: ℝ and ℂ are archimedean valuations, while p-adic fields $\\mathbb{Q}_p$ are non-archimedean examples. All satisfy $\\|xy\\| = \\|x\\|\\cdot\\|y\\|$.\n\nThis Lean 4 formalization crystallizes that insight: `holder_normedField_lintegral` is parameterized over any `NormedField 𝕜` and its proof is structurally identical to the real case — just with `nnnorm_mul` playing the role of $|fg| = |f||g|$. The complex and real cases are trivial corollaries.",
+    "problemStatement": "**OQ-01-OQ-03: Complex-Valued Hölder via Nnnorm**\n\nThe open question from `CauchySchwarzIntegralOQ01.lean` asks:\n\"Can the complex-valued Hölder inequality be stated and proved using the nnnorm approach?\"\n\nFor complex-valued measurable functions $f, g: \\alpha \\to \\mathbb{C}$ and conjugate exponents $p, q$:\n$$\\int_{\\alpha}^- \\|f \\cdot g\\|_+ \\, d\\mu \\leq \\left(\\int_{\\alpha}^- \\|f\\|_+^p \\, d\\mu\\right)^{1/p} \\cdot \\left(\\int_{\\alpha}^- \\|g\\|_+^q \\, d\\mu\\right)^{1/q}$$\n\n**The answer**: Yes — and the result holds uniformly for any `NormedField 𝕜`.",
+    "text": "The nnnorm approach to Hölder's inequality works uniformly for any NormedField. The complex case is a trivial corollary of the abstract holder_normedField_lintegral theorem.",
+    "proofStrategy": "**Formalization Strategy**\n\n1. **Abstract NormedField theorem**: `holder_normedField_lintegral` uses `nnnorm_mul` (which holds in any `NormedField`) to rewrite `∫⁻ ‖f·g‖₊` as `∫⁻ ‖f‖₊ · ‖g‖₊`, then applies `ENNReal.lintegral_mul_le_Lp_mul_Lq` to the individual nnnorms.\n\n2. **Complex specialization**: `holder_complex_lintegral` is a one-line corollary (ℂ is a NormedField).\n\n3. **p=q=2 case**: `cauchy_schwarz_complex_from_holder` applies the complex Hölder theorem with the `holder_conj_2_2` witness.\n\n4. **L2 inner product form**: `cauchy_schwarz_L2_complex` uses `norm_inner_le_norm` directly, since `Lp ℂ 2 μ` is a complex inner product space via Mathlib's instance system.\n\n5. **Minkowski**: `minkowski_L2_complex` is `norm_add_le` for `Lp ℂ 2 μ`.",
+    "keyInsights": [
+      "**NormedField = Multiplicative Norm**: A `NormedField` satisfies `‖x·y‖ = ‖x‖·‖y‖` by definition. This makes `nnnorm_mul` available uniformly, not just for ℝ.",
+      "**Uniform Proof**: The proof of `holder_normedField_lintegral` is *identical* to `holder_real_lintegral` from OQ01 — just parameterized over 𝕜 instead of ℝ. No new ideas are needed.",
+      "**Real as a Special Case**: Since ℝ is a NormedField, `holder_real_lintegral` from OQ01 is a corollary. This shows OQ01's approach was already in full generality.",
+      "**L2 Inner Product**: The complex Cauchy-Schwarz in L2 inner product form uses a different path (norm_inner_le_norm) that doesn't go through Hölder at all — it exploits the Hilbert space structure directly.",
+      "**The nnnorm Pipeline**: The proof requires converting nnnorms through the chain ℝ≥0 → ℝ≥0∞ (NNReal → ENNReal). The coercions `ENNReal.coe_mul` and `AEMeasurable.nnnorm.coe_nnreal_ennreal` make this transparent in Lean 4. This pipeline is characteristic of Mathlib's approach to measure theory: all Lebesgue integrals are ENNReal-valued, and classical norms must be lifted to this extended arithmetic."
+    ],
+    "prerequisites": [
+      "Measure theory: measurable functions, extended Lebesgue integration (lintegral)",
+      "L^p spaces: Lp E p μ as Banach/Hilbert spaces",
+      "NormedField: a field with a multiplicative norm (ℝ, ℂ, p-adic fields)",
+      "Non-negative extended reals (ENNReal) and nnnorm",
+      "Hölder conjugate exponents: 1/p + 1/q = 1 with p, q > 1"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "summary": "Imports Mathlib. Opens MeasureTheory, ENNReal, NNReal, Real, InnerProductSpace. Establishes the ambient measurable space (α, μ).",
+      "startLine": 1,
+      "endLine": 45,
+      "mathContext": "Setup for proving Hölder's inequality in the NormedField generality."
+    },
+    {
+      "id": "normedfield-holder",
+      "title": "Hölder for Any NormedField",
+      "summary": "The main theorem: holder_normedField_lintegral. Proves Hölder's inequality for functions valued in any NormedField 𝕜 by combining nnnorm_mul with ENNReal.lintegral_mul_le_Lp_mul_Lq.",
+      "startLine": 46,
+      "endLine": 82,
+      "mathContext": "Hölder for $f, g: \\alpha \\to \\mathbb{k}$ where $\\mathbb{k}$ is any `NormedField`. Key step: `nnnorm_mul` rewrites $\\|f \\cdot g\\|_+$ as $\\|f\\|_+ \\cdot \\|g\\|_+$."
+    },
+    {
+      "id": "complex-specialization",
+      "title": "Complex Specialization",
+      "summary": "holder_complex_lintegral: one-line corollary of holder_normedField_lintegral with 𝕜 = ℂ.",
+      "startLine": 83,
+      "endLine": 100,
+      "mathContext": "Complex Hölder as a trivial corollary: $\\mathbb{C}$ is a `NormedField`."
+    },
+    {
+      "id": "cauchy-schwarz-complex",
+      "title": "Complex Cauchy-Schwarz (p=q=2)",
+      "summary": "cauchy_schwarz_complex_from_holder: applies complex Hölder with the (2,2) conjugate pair.",
+      "startLine": 101,
+      "endLine": 120,
+      "mathContext": "Cauchy-Schwarz as the $p = q = 2$ case of complex Hölder."
+    },
+    {
+      "id": "l2-inner-product",
+      "title": "Complex L2 Inner Product Form",
+      "summary": "cauchy_schwarz_L2_complex and cauchy_schwarz_L2_complex_integral: CS via norm_inner_le_norm and L2.inner_def bridge.",
+      "startLine": 121,
+      "endLine": 150,
+      "mathContext": "Cauchy-Schwarz in the $L^2(\\mu, \\mathbb{C})$ inner product form. Uses `norm_inner_le_norm` (Mathlib) and `L2.inner_def` to bridge to integral form."
+    },
+    {
+      "id": "minkowski-real-cases",
+      "title": "Minkowski and Real Special Case",
+      "summary": "minkowski_L2_complex (triangle inequality for complex L2) and holder_real_from_normedField_lintegral (real case as corollary).",
+      "startLine": 151,
+      "endLine": 185,
+      "mathContext": "Minkowski via `norm_add_le`; real Hölder as special case of the NormedField generalization."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file answers OQ-01-OQ-03: YES, the nnnorm approach generalizes the Hölder inequality uniformly to any NormedField. The abstract holder_normedField_lintegral subsumes both real (ℝ) and complex (ℂ) cases with the same 5-line proof. All 8 theorems are verified with 0 sorries and 0 axioms.",
+    "implications": "**Why This Matters**\n\n1. **Algebraic Clarity**: The nnnorm approach cleanly separates algebraic content (norm multiplicativity, valid in any NormedField) from analytic content (ENNReal Hölder). This is the right level of abstraction.\n\n2. **Maximal Generality**: The theorem applies to p-adic fields, finite extensions of ℚ, and any future valued field that Mathlib may add — with zero additional proof work.\n\n3. **Code Reuse**: The real-valued Hölder from OQ01 is now a strict corollary, showing the OQ01 proof was already pointing toward the right abstraction.",
+    "openQuestions": [
+      "Can the snorm-based Hölder (‖fg‖_{L1} ≤ ‖f‖_{Lp}·‖g‖_{Lq}) be formalized for NormedField in the same uniform way?",
+      "Does the same approach work for Hölder in Banach space-valued settings (Bochner integral)?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01",
+      "relationship": "extends",
+      "description": "Parent OQ-01 file: holder_real_lintegral is the real special case of holder_normedField_lintegral proved here"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-03",
+      "relationship": "related",
+      "description": "OQ-03 (complex L2 CS via inner product): cauchy_schwarz_L2_complex in this file duplicates that approach, providing a cross-check"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "foundational",
+      "description": "Root CS integral proof that spawned the Hölder generalization chain"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "ENNReal",
+      "NNReal",
+      "Real",
+      "InnerProductSpace"
+    ],
+    "namespace": "HolderNormedField",
+    "lineCount": 209,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/CauchySchwarzIntegralOQ01OQ03.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "O. Hölder",
+      "title": "Über einen Mittelwerthssatz",
+      "year": "1889",
+      "venue": "Nachrichten von der Königl. Gesellschaft der Wissenschaften",
+      "note": "Original Hölder inequality"
+    },
+    {
+      "authors": "Mathlib Community",
+      "title": "ENNReal.lintegral_mul_le_Lp_mul_Lq",
+      "year": "2025",
+      "venue": "Mathlib4",
+      "note": "Lean 4 formalization of Hölder for extended Lebesgue integral"
+    }
+  ],
+  "sorries": 0
+}

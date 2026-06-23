@@ -1,0 +1,181 @@
+[
+  {
+    "id": "ann-737-header",
+    "proofId": "erdos-737",
+    "range": {
+      "startLine": 1,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #737: Edge in All Large Cycles**\n\nLet G have chromatic number ℵ₁. Must there exist an edge e in cycles of all large lengths?\n\n**Answer:** YES (Thomassen 1983)\n\n**History:**\n- EHS (1974): G contains all large cycles\n- Thomassen (1983): Cycles can be routed through one edge",
+    "mathContext": "Connects uncountable chromatic number to cycle structure in infinite graphs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Chromatic number",
+      "Infinite graphs",
+      "Cycles"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "infinite combinatorics",
+      "set theory",
+      "history of mathematics"
+    ]
+  },
+  {
+    "id": "ann-737-chromatic",
+    "proofId": "erdos-737",
+    "range": {
+      "startLine": 47,
+      "endLine": 53
+    },
+    "type": "concept",
+    "title": "Chromatic Number and ℵ₁",
+    "content": "**chromaticNumber G:** Axiomatized as a cardinal-valued function.\n\n**hasChromaticNumberAleph1 G:** χ(G) = ℵ₁, the first uncountable cardinal.\n\nThis is the critical threshold for Thomassen's result. Finite or countable χ doesn't suffice.",
+    "mathContext": "De Bruijn-Erdős theorem: χ(G) = sup{χ(H) : H finite subgraph}.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Coloring",
+      "Cardinal",
+      "Aleph one"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "set theory",
+      "cardinal arithmetic"
+    ]
+  },
+  {
+    "id": "ann-737-cycles",
+    "proofId": "erdos-737",
+    "range": {
+      "startLine": 62,
+      "endLine": 74
+    },
+    "type": "concept",
+    "title": "Cycle and Edge Predicates",
+    "content": "**hasCycleOfLength G n:** G contains a cycle of length n (axiomatized).\n\n**edgeInCycleOfLength G u v h n:** Edge (u,v) belongs to a cycle of length n.\n\n**edgeInAllLargeCycles:** Edge is in cycles of all lengths ≥ N.\n\n**existsEdgeInAllLargeCycles:** The main property: ∃ edge in all large cycles.",
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of cycle and edge predicates",
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "Lean 4 syntax",
+      "predicate logic"
+    ]
+  },
+  {
+    "id": "ann-737-ehs",
+    "proofId": "erdos-737",
+    "range": {
+      "startLine": 82,
+      "endLine": 85
+    },
+    "type": "concept",
+    "title": "Erdős-Hajnal-Shelah (1974)",
+    "content": "**erdos_hajnal_shelah_1974:** If χ(G) = ℵ₁, then G contains all sufficiently large cycles.\n\n∃ N, ∀ n ≥ N: G has a cycle of length n.\n\nThis established cycle existence but not the edge routing property.",
+    "mathContext": "Published in Topics in Topology, 1974.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
+    "prerequisites": [
+      "infinite graph theory",
+      "set theory",
+      "combinatorics"
+    ]
+  },
+  {
+    "id": "ann-737-thomassen",
+    "proofId": "erdos-737",
+    "range": {
+      "startLine": 94,
+      "endLine": 104
+    },
+    "type": "concept",
+    "title": "Thomassen's Theorem (1983)",
+    "content": "**thomassen_1983:** If χ(G) = ℵ₁, there exists an edge e such that G contains a cycle of length n through e for all large n.\n\nThis is STRONGER than EHS — cycles can be routed through one edge.\n\n**erdos_737_resolved** directly applies Thomassen to resolve Problem #737.",
+    "mathContext": "Published in Combinatorica, 1983, pp. 133-134.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Thomassen 1983",
+      "Routing",
+      "Combinatorica"
+    ],
+    "prerequisites": [
+      "infinite graph theory",
+      "combinatorics",
+      "set theory"
+    ]
+  },
+  {
+    "id": "ann-737-pancyclic",
+    "proofId": "erdos-737",
+    "range": {
+      "startLine": 113,
+      "endLine": 118
+    },
+    "type": "concept",
+    "title": "Eventually Pancyclic",
+    "content": "**eventually_pancyclic:** Graphs with χ = ℵ₁ contain cycles of all sufficiently large lengths.\n\nFollows directly from EHS 1974. This is a weaker form of Thomassen's result.",
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of eventually pancyclic",
+    "relatedConcepts": [
+      "proof technique",
+      "graph theory"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "infinite combinatorics"
+    ]
+  },
+  {
+    "id": "ann-737-universal",
+    "proofId": "erdos-737",
+    "range": {
+      "startLine": 120,
+      "endLine": 129
+    },
+    "type": "concept",
+    "title": "Universal Cycle Edges",
+    "content": "**isUniversalCycleEdge:** An edge is \"universal\" if it lies in all large cycles.\n\n**universal_edges_exist:** Thomassen's theorem guarantees such edges exist when χ = ℵ₁.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Universal edge",
+      "Edge characterization"
+    ],
+    "mathContext": "See annotation content for formal details of universal cycle edges",
+    "prerequisites": [
+      "graph theory",
+      "predicate logic",
+      "Lean 4 syntax"
+    ]
+  },
+  {
+    "id": "ann-737-summary",
+    "proofId": "erdos-737",
+    "range": {
+      "startLine": 149,
+      "endLine": 152
+    },
+    "type": "concept",
+    "title": "Summary Theorem",
+    "content": "**erdos_737_summary:** For χ(G) = ℵ₁, there exists an edge in all large cycles.\n\nThomassen's theorem as the definitive resolution of Erdős Problem #737.",
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of summary theorem",
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "set theory",
+      "Lean 4 syntax"
+    ]
+  }
+]

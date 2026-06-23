@@ -1,0 +1,213 @@
+{
+  "id": "erdos-1016",
+  "title": "Pancyclic Excess Edges",
+  "slug": "erdos-1016",
+  "description": "Let h(n) be the minimum excess edges beyond n for an n-vertex pancyclic graph (containing all cycle lengths 3 to n). Estimate h(n): is h(n) >= log_2 n + log* n - O(1)? Known: log_2(n-1) - 1 <= h(n) <= log_2 n + log* n + O(1).",
+  "meta": {
+    "author": "Erdos, Bondy",
+    "sourceUrl": "https://erdosproblems.com/1016",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1016Problem.lean",
+    "tags": [
+      "erdos",
+      "graph theory",
+      "pancyclic graphs",
+      "cycles",
+      "extremal graph theory",
+      "Hamiltonian graphs"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 1016,
+    "erdosUrl": "https://erdosproblems.com/1016",
+    "erdosProblemStatus": "open",
+    "axiomCount": 0,
+    "lineCount": 209,
+    "assumptions": "0 axioms. All 5 former axioms were removed because the abstract IsPancyclic model is flawed (edgeCount disconnected from hasCycle makes axioms FALSE). The mathematical results (Bondy, Griffin, GKW) are correct but require a proper SimpleGraph-based model to formalize.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 12,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "The study of pancyclic graphs began with J.A. Bondy's 1971 paper 'Pancyclic graphs I', where he proved that any graph with $n$ vertices and at least $n^2/4$ edges is either pancyclic or bipartite. Bondy also conjectured the precise edge threshold for pancyclicity, including the bounds $\\lfloor\\log_2(n-1)\\rfloor - 1 \\leq h(n)$ (lower) and $h(n) \\leq \\lfloor\\log_2 n\\rfloor + \\log^* n + O(1)$ (upper), but did not publish proofs. The lower bound was first rigorously proved by Griffin in 2013 using a doubling argument: each extra edge beyond a Hamiltonian cycle can at most double the range of achievable cycle lengths. George, Khodkar, and Wallis (2016) proved the upper bound via hierarchical constructions, confirming Bondy's prediction. The gap between bounds is only $\\log^* n + O(1)$ — one of the tightest gaps in extremal graph theory. Erdos believed the upper bound gives the truth but could not prove even the weaker statement $h(n) - \\log_2 n \\to \\infty$, calling this 'embarrassing'. The iterated logarithm $\\log^* n$, which for all practical purposes is at most 5, appears naturally in the recursive construction.",
+    "problemStatement": "Estimate $h(n)$, the minimum number of excess edges (beyond $n$) for a pancyclic graph on $n$ vertices. Is $h(n) \\geq \\lfloor\\log_2 n\\rfloor + \\log^* n - O(1)$?",
+    "text": "A formalization of Erdős Problem #1016 in 158 lines with 0 axiom declarations and 7 proved theorems. The file defines pancyclic graphs (containing cycles of all lengths $3$ through $n$), the excess function $h(n) = \\min\\{|E(G)| - n\\}$, and the iterated logarithm $\\log^*$. The main conjecture $h(n) \\geq \\lfloor\\log_2 n\\rfloor + \\log^* n - O(1)$ and the weaker question $h(n) - \\lfloor\\log_2 n\\rfloor \\to \\infty$ are stated as open conjectures alongside the known bounds: Griffin's lower bound $h(n) \\geq \\lfloor\\log_2(n-1)\\rfloor - 1$ from a doubling argument and George-Khodkar-Wallis's upper bound $h(n) \\leq \\lfloor\\log_2 n\\rfloor + \\log^* n + O(1)$ from hierarchical constructions. The substantive mathematical content is encoded as Lean theorems and propositions; there are no formal `axiom` declarations in this file.",
+    "proofStrategy": "We formalize pancyclic graphs (containing cycles of all lengths $3$ through $n$), the excess function $h(n)$, and the iterated logarithm $\\log^*$ in Lean 4. The main conjecture, the weaker divergence question, known bounds (Bondy/Griffin lower, George-Khodkar-Wallis upper), structural properties (monotonicity, Bondy's quadratic threshold), and small cases are stated as open conjectures — there are no formal `axiom` declarations in the file.",
+    "keyInsights": [
+      "**The doubling argument gives the lower bound**: each edge beyond a Hamiltonian cycle at most doubles the range of achievable cycle lengths, so $2^{h(n)} \\geq n - 2$, giving $h(n) \\geq \\lfloor\\log_2(n-2)\\rfloor$",
+      "**The iterated logarithm $\\log^*$ appears naturally**: the hierarchical upper bound construction adds edges in $\\log_2 n$ stages for major cycle-length doubling, plus $\\log^* n$ correction stages for the boundary effects at each level of the tower",
+      "**The gap is $\\log^* n + O(1)$ — practically constant**: since $\\log^* n \\leq 5$ for any conceivable $n$, the bounds differ by at most about 6 for all practical graph sizes, yet closing even this tiny gap is open",
+      "**Even $h(n) - \\log_2 n \\to \\infty$ is open**: Erdos could not prove the correction term diverges, despite believing it should be $\\sim \\log^* n$. This makes the problem unusual — the answer is nearly determined yet the proof seems out of reach",
+      "**Bondy's quadratic threshold is far from tight**: the classic result that $n^2/4$ edges suffice for pancyclicity or bipartiteness gives a threshold of $\\Theta(n^2)$, vastly exceeding the true threshold of $n + O(\\log n)$"
+    ],
+    "prerequisites": [
+      "Combinatorics (cycle structure, permutations)",
+      "Combinatorics (degree conditions, Ore's theorem)",
+      "Combinatorics (extremal graph theory, Ramsey theory)",
+      "Graph theory (Hamiltonian cycles, Eulerian paths)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Header and Imports",
+      "summary": "File header for Erdős #1016: $h(n)$ is the minimum excess edges (beyond $n$) for an $n$-vertex graph to be pancyclic (contain cycles of every length $3,\\dots,n$); estimate $h(n)$ and decide whether $h(n)\\ge\\log_2 n+\\log^* n-O(1)$. Lists the known bounds (Bondy/Griffin 2013 lower, George–Khodkar–Wallis 2016 upper) and references; imports Mathlib graph/log libraries.",
+      "startLine": 1,
+      "endLine": 28,
+      "mathContext": "$h(n)=\\min\\{|E(G)|-n\\}$ over pancyclic $G$ on $n$ vertices. Open: does $h(n)-\\log_2 n\\to\\infty$?"
+    },
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "summary": "Defines `IsPancyclic` (contains a cycle of every length $3\\le k\\le n$), `pancyclicExcess n` ($h(n)$ as an `sSup` of edge-lower-bound witnesses), and the iterated logarithm `iteratedLog` ($\\log^* n$) with its termination proof.",
+      "startLine": 29,
+      "endLine": 62,
+      "mathContext": "$\\log^* n$ = number of $\\log_2$ iterations to reach $\\le 1$; $h(n)$ defined via the supremum of valid excess lower bounds."
+    },
+    {
+      "id": "iterated-log-properties",
+      "title": "Iterated Logarithm Properties",
+      "summary": "Basic lemmas about $\\log^*$: `iteratedLog_zero`/`iteratedLog_one` (`@[simp]`), `iteratedLog_add_two`, `iteratedLog_eq_zero_iff` ($\\log^* n=0\\iff n\\le 1$), and `iteratedLog_pos` ($\\log^* n\\ge 1$ for $n\\ge 2$).",
+      "startLine": 63,
+      "endLine": 100,
+      "mathContext": "$\\log^* n=0\\iff n\\le 1$; $\\log^* n\\ge 1$ for $n\\ge 2$."
+    },
+    {
+      "id": "model-flaw",
+      "title": "Model Flaw and Consequences",
+      "summary": "Honestly documents a modeling flaw: because `IsPancyclic` takes `hasCycleOfLength` as a parameter disconnected from `edgeCount`, the witness $(\\text{edgeCount}=0,\\text{hasCycle}=\\top)$ collapses the defining set, so `pancyclicExcess_eq_zero` ($h(n)=0$ for all $n\\ge1$) and `gkw_upper_bound` hold trivially. The genuine Bondy/Griffin/GKW lower bounds are FALSE under this abstract encoding (preserved as comments) and would need ~200 lines of `SimpleGraph`/`Walk.IsCycle` infrastructure to formalize properly.",
+      "startLine": 101,
+      "endLine": 156,
+      "mathContext": "Abstract model degenerate: $\\text{pancyclicExcess}(n)=0$; the real mathematics (Bondy 1971, Griffin 2013, GKW 2016) is correct but needs a graph-theoretic encoding."
+    },
+    {
+      "id": "structural-properties",
+      "title": "Structural Properties",
+      "summary": "Remaining results: `hamiltonian_edge_count` (non-negativity), `bondy_quadratic_threshold` (for $n\\ge7$, $n^2/4\\ge n+\\log_2 n$, via `interval_cases`/`nlinarith`), `pancyclic_monotone`, `triangle_pancyclic` ($h(3)=0$, proved from the empty defining set), and `bounds_gap`.",
+      "startLine": 157,
+      "endLine": 209,
+      "mathContext": "$n^2/4\\ge n+\\log_2 n$ for $n\\ge 7$ (Bondy's quadratic threshold is far from the $\\log$-scale truth); $h(3)=0$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdos Problem #1016 on the minimum excess edges for pancyclic graphs. The bounds $\\lfloor\\log_2(n-1)\\rfloor - 1 \\leq h(n) \\leq \\lfloor\\log_2 n\\rfloor + \\log^* n + O(1)$ leave a gap of only $\\log^* n + O(1)$, which is at most about 6 for any practical $n$. The Lean formalization encodes the definitions, both conjectures, the known bounds, structural properties, and small cases.",
+    "implications": "**Theoretical Significance**: Resolving whether $h(n) = \\lfloor\\log_2 n\\rfloor + \\log^* n + \\Theta(1)$ would determine the exact edge threshold for pancyclicity.\n\nThe problem is notable for the extreme tightness of known bounds combined with the apparent difficulty of closing the gap. A proof of even $h(n) - \\log_2 n \\to \\infty$ would require new techniques for lower-bounding the edge count of pancyclic graphs beyond simple doubling arguments.",
+    "openQuestions": [
+      "Is $h(n) \\geq \\lfloor\\log_2 n\\rfloor + \\log^* n - O(1)$? (Main conjecture)",
+      "Does $h(n) - \\lfloor\\log_2 n\\rfloor \\to \\infty$? (Weaker question Erdos could not prove)",
+      "What is the exact value of $h(n)$ for small $n$ up to, say, $n = 100$?",
+      "Is there a non-hierarchical construction achieving $h(n) \\leq \\lfloor\\log_2 n\\rfloor + O(1)$, eliminating the $\\log^* n$ term?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "companion problem",
+      "description": "Long Cycles in Dense Graphs studies the minimum edges forcing an (n-k)-cycle in n-vertex graphs. Both problems study the edge threshold for cycle structure, with #1012 addressing cycle length near n (nearly Hamiltonian) and #1016 addressing the excess beyond a Hamiltonian cycle needed for all shorter cycles.",
+      "targetId": "erdos-1012"
+    },
+    {
+      "relationship": "companion problem",
+      "description": "Cycle Lengths in Dense Graphs asks whether the sum of reciprocals of cycle lengths grows as log k when the graph has kn edges. Both problems concern the spectrum of cycle lengths achievable in sparse-to-moderate density graphs and connect cycle diversity to edge count.",
+      "targetId": "erdos-65"
+    },
+    {
+      "relationship": "related problem",
+      "description": "Power of Two Cycles in Min Degree 3 Graphs asks whether every graph with minimum degree ≥ 3 contains a cycle of length 2^k. The doubling argument underlying the lower bound in #1016 — each extra edge at most doubles the range of achievable cycle lengths — is directly related to the power-of-two cycle theme.",
+      "targetId": "erdos-64"
+    },
+    {
+      "relationship": "related problem",
+      "description": "Chromatic Number vs Odd Cycle Lengths connects the number of distinct odd cycle lengths to chromatic number. Both problems study how the set of realized cycle lengths is constrained by graph parameters (edge count vs. chromatic number).",
+      "targetId": "erdos-58"
+    },
+    {
+      "relationship": "related problem",
+      "description": "Clique Partition of Graphs studies f(n,k), the minimum cliques needed to partition any graph with n vertices and k edges. Both problems involve extremal graph theory where n²/4 is a threshold (Turán's theorem / Bondy's pancyclicity theorem), and the Erdős–Goodman–Pósa result cited in #1017 is analogous in spirit to Bondy's quadratic threshold in #1016.",
+      "targetId": "erdos-1017"
+    },
+    {
+      "relationship": "related problem",
+      "description": "Turán Density in Neighborhoods asks about Turán-dense neighborhoods in graphs at the Turán threshold. Bondy's result that n²/4 edges force pancyclicity or bipartiteness in #1016 is a close analogue of Turán-type thresholds, connecting both problems to the structural consequences of dense graph edge counts.",
+      "targetId": "erdos-1079"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "J.A. Bondy"
+      ],
+      "title": "Pancyclic graphs I",
+      "venue": "Journal of Combinatorial Theory, Series B",
+      "year": "1971",
+      "volume": "11",
+      "pages": "80–84",
+      "doi": "10.1016/0095-8956(71)90016-5",
+      "note": "Introduces pancyclic graphs, proves that n²/4 edges suffice for pancyclicity or bipartiteness, and poses the bounds on h(n) studied in Erdős Problem #1016."
+    },
+    {
+      "authors": [
+        "C. Griffin"
+      ],
+      "title": "A lower bound for the minimum number of edges in a pancyclic graph on n vertices",
+      "venue": "Australasian Journal of Combinatorics",
+      "year": "2013",
+      "volume": "57",
+      "pages": "295–304",
+      "note": "Establishes the lower bound h(n) ≥ ⌊log₂(n-1)⌋ - 1 via the doubling argument, rigorously proving the bound conjectured by Bondy."
+    },
+    {
+      "authors": [
+        "J. George",
+        "A. Khodkar",
+        "W.D. Wallis"
+      ],
+      "title": "Pancyclic and Bipancyclic Graphs",
+      "venue": "Springer Briefs in Mathematics, Springer",
+      "year": "2016",
+      "doi": "10.1007/978-3-319-31951-3",
+      "note": "Proves the upper bound h(n) ≤ ⌊log₂ n⌋ + log* n + O(1) via explicit hierarchical construction with ⌊log₂ n⌋ doubling stages and log* n correction stages."
+    },
+    {
+      "authors": [
+        "J.A. Bondy",
+        "U.S.R. Murty"
+      ],
+      "title": "Graph Theory",
+      "venue": "Graduate Texts in Mathematics, Springer",
+      "year": "2008",
+      "volume": "244",
+      "doi": "10.1007/978-1-84628-970-5",
+      "note": "Standard reference for Hamiltonian graph theory and pancyclicity; Chapter 10 covers cycle structure including the Bondy–Simonovits theorem and related extremal results."
+    },
+    {
+      "authors": [
+        "R.J. Faudree",
+        "R.H. Schelp",
+        "M. Simonovits"
+      ],
+      "title": "On some Turán type problems in graph theory",
+      "venue": "Combinatorics (Keszthely, 1976), Colloq. Math. Soc. János Bolyai",
+      "year": "1978",
+      "volume": "18",
+      "pages": "311–335",
+      "note": "Studies extremal problems for cycles including the Turán-type threshold for forcing all cycle lengths; provides context for the n²/4 threshold in Bondy's pancyclicity theorem."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Nat.Log",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 209,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos1016Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

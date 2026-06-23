@@ -1,0 +1,240 @@
+[
+  {
+    "id": "ann-lln-header",
+    "proofId": "laws-of-large-numbers",
+    "range": {
+      "startLine": 1,
+      "endLine": 62
+    },
+    "type": "concept",
+    "title": "Module Documentation and Historical Context",
+    "content": "The module docstring introduces both Laws of Large Numbers and frames their historical development. The **Weak Law** (WLLN) asserts convergence in probability of sample means to the population mean, while the **Strong Law** (SLLN) asserts the strictly stronger almost sure convergence.\n\nThe imports draw from five areas of Mathlib: `Probability.StrongLaw` for the SLLN itself, `Probability.Moments.Variance` for Chebyshev's inequality, `Probability.Independence.Basic` for the independence machinery, `MeasureTheory.Function.ConvergenceInMeasure` for the relationship between convergence modes, and `Probability.Notation` for probability notation. The file also imports general analysis and topology for the normed field and metric space structures needed to state convergence.\n\nThis is Wiedijk 100 theorem #59, formalizing one of the most practically important results in all of mathematics — the mathematical justification for why averaging works.",
+    "mathContext": "Two modes of convergence for $\\bar{X}_n = \\frac{1}{n}\\sum_{i=1}^n X_i$:\n\n**WLLN**: $\\bar{X}_n \\xrightarrow{P} \\mu$, i.e., $\\forall \\varepsilon > 0:\\; P(|\\bar{X}_n - \\mu| > \\varepsilon) \\to 0$\n\n**SLLN**: $\\bar{X}_n \\xrightarrow{\\text{a.s.}} \\mu$, i.e., $P(\\lim_{n\\to\\infty} \\bar{X}_n = \\mu) = 1$\n\nThe SLLN requires only finite first moment ($E[|X|] < \\infty$), while the Chebyshev-based WLLN proof requires finite second moment ($E[X^2] < \\infty$).",
+    "significance": "key",
+    "prerequisites": [
+      "probability spaces",
+      "random variables",
+      "expectation",
+      "Wiedijk 100 list"
+    ],
+    "relatedConcepts": [
+      "convergence in probability",
+      "almost sure convergence",
+      "Mathlib probability library",
+      "Wiedijk 100 theorems"
+    ]
+  },
+  {
+    "id": "ann-lln-setup",
+    "proofId": "laws-of-large-numbers",
+    "range": {
+      "startLine": 64,
+      "endLine": 89
+    },
+    "type": "definition",
+    "title": "Probability Space Setup and Sample Mean",
+    "content": "Defines the sample mean `sampleMean X n ω` as $(1/n) \\sum_{i=0}^{n-1} X_i(\\omega)$ in a probability space $(\\Omega, \\mathcal{F}, \\mu)$ where $\\mu$ is a probability measure (`IsProbabilityMeasure μ`).\n\nThe `sampleMean_pos` theorem shows the equivalence between the multiplicative form $(1/n) \\cdot \\sum X_i$ and the division form $(\\sum X_i)/n$, discharged by `ring`. The hypothesis `0 < n` ensures well-definedness (avoiding division by zero).\n\nNote: Lean's `Finset.range n` gives $\\{0, 1, \\ldots, n-1\\}$, matching the 0-indexed convention for sequences of random variables.",
+    "mathContext": "$\\bar{X}_n(\\omega) = \\frac{1}{n} \\sum_{i=0}^{n-1} X_i(\\omega)$\n\nIn Lean: `sampleMean X n ω = (1 / n : ℝ) * ∑ i ∈ Finset.range n, X i ω`",
+    "significance": "supporting",
+    "prerequisites": [
+      "probability measure",
+      "Finset.range",
+      "IsProbabilityMeasure"
+    ],
+    "relatedConcepts": [
+      "sample mean",
+      "empirical average",
+      "estimator"
+    ]
+  },
+  {
+    "id": "ann-lln-convergence-prob",
+    "proofId": "laws-of-large-numbers",
+    "range": {
+      "startLine": 91,
+      "endLine": 121
+    },
+    "type": "definition",
+    "title": "Convergence in Probability",
+    "content": "Defines `ConvergesInProbability X L` as $\\forall \\varepsilon > 0$, $\\mu\\{\\omega : |X_n(\\omega) - L| > \\varepsilon\\} \\to 0$ as $n \\to \\infty$, using Mathlib's `Filter.Tendsto` toward `nhds 0` along `Filter.atTop`.\n\nConvergence in probability is the weakest of the standard modes of stochastic convergence. It does not require that individual sample paths converge — only that the probability of being far from the limit shrinks. A classic counterexample shows that convergence in probability does not imply almost sure convergence: take $X_n = \\mathbf{1}_{[k/2^m, (k+1)/2^m]}$ where $n = 2^m + k$, which converges in probability to 0 but diverges for every $\\omega \\in [0,1]$.\n\nThe `convergesInProbability_def` theorem unfolds the definition, proved by `rfl` since it is definitionally equal.",
+    "mathContext": "$X_n \\xrightarrow{P} L$ means $\\forall \\varepsilon > 0:\\; \\lim_{n \\to \\infty} P(|X_n - L| > \\varepsilon) = 0$.\n\nHierarchy of convergence modes (each implies the next):\n$L^p \\Rightarrow$ a.s. $\\Rightarrow$ in probability $\\Rightarrow$ in distribution",
+    "significance": "key",
+    "prerequisites": [
+      "Filter.Tendsto",
+      "nhds",
+      "probability measure"
+    ],
+    "relatedConcepts": [
+      "modes of stochastic convergence",
+      "almost sure convergence",
+      "convergence in distribution",
+      "Filter.atTop"
+    ]
+  },
+  {
+    "id": "ann-lln-chebyshev",
+    "proofId": "laws-of-large-numbers",
+    "range": {
+      "startLine": 123,
+      "endLine": 160
+    },
+    "type": "concept",
+    "title": "Chebyshev's Inequality",
+    "content": "Formalizes Chebyshev's inequality: $P(|X - E[X]| \\geq \\varepsilon) \\leq \\text{Var}(X)/\\varepsilon^2$, wrapping Mathlib's `ProbabilityTheory.meas_ge_le_variance_div_sq`.\n\nThe proof is a direct Mathlib application. The hypothesis `Memℒp X 2` ensures finite second moment, which guarantees both the variance and the expectation exist.\n\nChebyshev's inequality follows from Markov's inequality applied to $(X - E[X])^2$: $P(|X - E[X]| \\geq \\varepsilon) = P((X - E[X])^2 \\geq \\varepsilon^2) \\leq E[(X - E[X])^2]/\\varepsilon^2 = \\text{Var}(X)/\\varepsilon^2$. The bound is tight: the two-point distribution $P(X = \\pm \\sigma) = 1/2$ achieves equality for $\\varepsilon = \\sigma$.\n\nAlso includes `variance_nonneg` wrapping Mathlib's non-negativity of variance.",
+    "mathContext": "$P(|X - \\mu| \\geq \\varepsilon) \\leq \\frac{\\text{Var}(X)}{\\varepsilon^2}$\n\nDerivation: Apply Markov's inequality to $(X - \\mu)^2$:\n$P((X - \\mu)^2 \\geq \\varepsilon^2) \\leq \\frac{E[(X-\\mu)^2]}{\\varepsilon^2} = \\frac{\\text{Var}(X)}{\\varepsilon^2}$",
+    "significance": "key",
+    "prerequisites": [
+      "Markov's inequality",
+      "variance",
+      "Memℒp",
+      "ProbabilityTheory.meas_ge_le_variance_div_sq"
+    ],
+    "relatedConcepts": [
+      "concentration inequalities",
+      "tail bounds",
+      "Hoeffding's inequality",
+      "sub-Gaussian random variables"
+    ]
+  },
+  {
+    "id": "ann-lln-variance-sum",
+    "proofId": "laws-of-large-numbers",
+    "range": {
+      "startLine": 179,
+      "endLine": 186
+    },
+    "type": "concept",
+    "title": "Variance of Sum of Independent Variables",
+    "content": "For independent random variables, the variance of the sum equals the sum of variances: $\\text{Var}(\\sum_{i \\in s} X_i) = \\sum_{i \\in s} \\text{Var}(X_i)$. This is Mathlib's `ProbabilityTheory.IndepFun.variance_sum`.\n\nIndependence is crucial: for general random variables, $\\text{Var}(X + Y) = \\text{Var}(X) + \\text{Var}(Y) + 2\\text{Cov}(X,Y)$, and the covariance term vanishes precisely when $X$ and $Y$ are uncorrelated (a weaker condition than independence). For i.i.d. variables with common variance $\\sigma^2$, this gives $\\text{Var}(\\bar{X}_n) = \\sigma^2/n$ — the variance reduction that powers the WLLN.\n\nThe pairwise independence hypothesis (`Set.Pairwise`) suffices; full mutual independence is not needed for the variance sum formula.",
+    "mathContext": "$\\text{Var}\\left(\\sum_{i \\in s} X_i\\right) = \\sum_{i \\in s} \\text{Var}(X_i)$ when $\\{X_i\\}$ are pairwise independent.\n\nFor the sample mean: $\\text{Var}(\\bar{X}_n) = \\frac{1}{n^2} \\sum_{i=1}^n \\text{Var}(X_i) = \\frac{\\sigma^2}{n}$",
+    "significance": "key",
+    "prerequisites": [
+      "ProbabilityTheory.IndepFun",
+      "variance",
+      "Finset sum"
+    ],
+    "relatedConcepts": [
+      "independence",
+      "covariance",
+      "uncorrelated random variables",
+      "variance reduction"
+    ]
+  },
+  {
+    "id": "ann-lln-wlln",
+    "proofId": "laws-of-large-numbers",
+    "range": {
+      "startLine": 188,
+      "endLine": 233
+    },
+    "type": "concept",
+    "title": "Weak Law of Large Numbers",
+    "content": "The WLLN is stated as: for i.i.d. random variables with common mean $\\mu$ and finite variance, $P(|\\bar{X}_n - \\mu| > \\varepsilon) \\to 0$ for all $\\varepsilon > 0$.\n\nThe proof strategy combines Chebyshev's inequality with the variance reduction property:\n1. $\\text{Var}(\\bar{X}_n) = \\sigma^2/n$ (from `variance_sum_indep` and i.i.d.)\n2. $P(|\\bar{X}_n - \\mu| \\geq \\varepsilon) \\leq \\sigma^2/(n\\varepsilon^2)$ (Chebyshev)\n3. $\\sigma^2/(n\\varepsilon^2) \\to 0$ as $n \\to \\infty$\n\nThe current formalization uses an axiom (`weak_law_of_large_numbers_axiom`) to wrap the proof steps, with the core mathematical content coming from Mathlib's Chebyshev inequality and variance properties. The `weak_law_of_large_numbers` theorem is a direct application of this axiom.\n\nThis is Wiedijk #59 (partial — the Weak Law component). The hypotheses require `Memℒp X_i 2` (finite second moment) and pairwise independence.",
+    "mathContext": "$P(|\\bar{X}_n - \\mu| \\geq \\varepsilon) \\leq \\frac{\\text{Var}(\\bar{X}_n)}{\\varepsilon^2} = \\frac{\\sigma^2}{n\\varepsilon^2} \\xrightarrow{n \\to \\infty} 0$\n\nThis is Bernoulli's original approach (1713), though Bernoulli used direct combinatorial estimates rather than Chebyshev's inequality (which came 150 years later).",
+    "significance": "key",
+    "prerequisites": [
+      "Chebyshev's inequality",
+      "variance of sample mean",
+      "convergence in probability"
+    ],
+    "relatedConcepts": [
+      "Bernoulli's theorem",
+      "Wiedijk 100 #59",
+      "consistent estimator",
+      "rate of convergence"
+    ]
+  },
+  {
+    "id": "ann-lln-slln",
+    "proofId": "laws-of-large-numbers",
+    "range": {
+      "startLine": 236,
+      "endLine": 277
+    },
+    "type": "concept",
+    "title": "Strong Law of Large Numbers",
+    "content": "The SLLN asserts almost sure convergence: $P(\\lim_{n \\to \\infty} \\bar{X}_n = \\mu) = 1$. This is strictly stronger than the Weak Law — almost sure convergence implies convergence in probability, but not conversely.\n\nThe proof is a direct application of Mathlib's `ProbabilityTheory.strong_law_ae`, which implements Etemadi's 1981 proof — a significant simplification of Kolmogorov's original 1930 argument. Etemadi's method:\n1. Truncate $X_i$ at level $c^n$ for a constant $c > 1$\n2. Prove convergence along the subsequence $c^n$\n3. Extend to all $n$ by monotonicity\n4. Control the truncation error using integrability\n\nRemarkably, the SLLN only requires finite first moment ($E[|X|] < \\infty$), not finite variance. The hypotheses are pairwise independence (`Pairwise ... IndepFun`) and identical distribution (`IdentDistrib`). The `#check` line documents the Mathlib API entry point.",
+    "mathContext": "$\\bar{X}_n \\xrightarrow{\\text{a.s.}} E[X_0]$, i.e., $P\\left(\\omega : \\lim_{n \\to \\infty} \\frac{1}{n}\\sum_{i=0}^{n-1} X_i(\\omega) = E[X_0]\\right) = 1$\n\nIn Lean: `∀ᵐ ω, Filter.Tendsto (fun n => (↑n)⁻¹ • ∑ i ∈ Finset.range n, X i ω) atTop (nhds (∫ ω', X 0 ω'))`",
+    "significance": "key",
+    "prerequisites": [
+      "almost sure convergence",
+      "integrability",
+      "ProbabilityTheory.strong_law_ae",
+      "ProbabilityTheory.IdentDistrib"
+    ],
+    "relatedConcepts": [
+      "Etemadi's proof",
+      "Kolmogorov's theorem",
+      "truncation method",
+      "Borel-Cantelli lemma"
+    ]
+  },
+  {
+    "id": "ann-lln-relationships",
+    "proofId": "laws-of-large-numbers",
+    "range": {
+      "startLine": 279,
+      "endLine": 316
+    },
+    "type": "insight",
+    "title": "Relationship Between Laws: Convergence Hierarchy",
+    "content": "`ae_convergence_implies_measure_convergence` wraps Mathlib's `tendstoInMeasure_of_tendsto_ae`: almost sure convergence implies convergence in measure (equivalently, convergence in probability for probability measures).\n\n`slln_implies_wlln` composes this with the SLLN to show: if sample means converge almost surely to $\\mu$, then they converge in probability to $\\mu$. This establishes the logical relationship: SLLN $\\Rightarrow$ WLLN.\n\nThe converse fails: the classic counterexample uses $X_n = \\mathbf{1}_{[(n \\bmod 2^k)/2^k, ((n \\bmod 2^k)+1)/2^k]}$ on $[0,1]$ with Lebesgue measure, where $k = \\lfloor \\log_2 n \\rfloor$. This converges to 0 in probability (the intervals shrink) but for every $\\omega \\in [0,1]$, the sequence $X_n(\\omega)$ equals 1 infinitely often.",
+    "mathContext": "Convergence hierarchy for random variables:\n$L^p \\xRightarrow{p \\geq 1} \\text{a.s.} \\xRightarrow{} \\text{in probability} \\xRightarrow{} \\text{in distribution}$\n\nNone of the reverse implications hold in general. However, convergence in probability implies a.s. convergence along a subsequence (Borel-Cantelli).",
+    "significance": "key",
+    "prerequisites": [
+      "MeasureTheory.tendstoInMeasure_of_tendsto_ae",
+      "AEStronglyMeasurable"
+    ],
+    "relatedConcepts": [
+      "modes of convergence",
+      "convergence in measure",
+      "Egorov's theorem",
+      "Borel-Cantelli lemma"
+    ]
+  },
+  {
+    "id": "ann-lln-applications",
+    "proofId": "laws-of-large-numbers",
+    "range": {
+      "startLine": 318,
+      "endLine": 360
+    },
+    "type": "concept",
+    "title": "Applications: Monte Carlo and Bernoulli's Theorem",
+    "content": "Two application theorems are stated as stubs (proved as `(1 : ℕ) + 1 = 2 := rfl` — placeholders awaiting full formalization):\n\n**Monte Carlo convergence**: For i.i.d. samples and integrable $f$, $(1/n)\\sum f(X_i) \\xrightarrow{\\text{a.s.}} E[f(X)]$. This justifies Monte Carlo integration — the foundation of computational statistics, Bayesian inference (MCMC), and stochastic simulation. The convergence rate is $O(1/\\sqrt{n})$ regardless of dimension, making Monte Carlo superior to deterministic quadrature in high dimensions.\n\n**Bernoulli's theorem** (1713): For i.i.d. Bernoulli($p$) variables, the relative frequency converges to $p$ almost surely. This was the first Law of Large Numbers, proving that empirical frequencies approach theoretical probabilities — the mathematical foundation of the frequentist interpretation of probability.",
+    "mathContext": "Monte Carlo: $\\frac{1}{n}\\sum_{i=1}^n f(X_i) \\xrightarrow{\\text{a.s.}} E[f(X)]$ by SLLN.\n\nBernoulli: $\\frac{1}{n}\\sum_{i=1}^n \\mathbf{1}_{A}(X_i) \\xrightarrow{\\text{a.s.}} P(A)$.\n\nConvergence rate (from CLT): $\\frac{1}{\\sqrt{n}}\\sum_{i=1}^n (X_i - \\mu) \\xrightarrow{d} N(0, \\sigma^2)$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "SLLN",
+      "Bernoulli random variables",
+      "integrability"
+    ],
+    "relatedConcepts": [
+      "Monte Carlo integration",
+      "MCMC",
+      "frequentist probability",
+      "empirical process theory"
+    ]
+  },
+  {
+    "id": "ann-lln-conclusion",
+    "proofId": "laws-of-large-numbers",
+    "range": {
+      "startLine": 362,
+      "endLine": 396
+    },
+    "type": "concept",
+    "title": "Conclusion and Axiom Inventory",
+    "content": "The concluding section summarizes both laws and their applications, and documents the axiom count. The file contains **1 axiom** (`weak_law_of_large_numbers_axiom`) wrapping the WLLN proof that uses Mathlib's Chebyshev inequality and variance properties. All other results are proved directly from Mathlib:\n\n- Chebyshev's inequality: `ProbabilityTheory.meas_ge_le_variance_div_sq`\n- Variance sum: `ProbabilityTheory.IndepFun.variance_sum`\n- Strong Law: `ProbabilityTheory.strong_law_ae`\n- Convergence implication: `MeasureTheory.tendstoInMeasure_of_tendsto_ae`\n\nThe 2 application stubs (`monte_carlo_convergence`, `bernoulli_law`) use placeholder proofs — they state the result informally in comments but prove `1 + 1 = 2` instead of the actual theorem.",
+    "mathContext": "Axiom inventory: 1 axiom (`weak_law_of_large_numbers_axiom`). The axiom wraps the chain: $\\text{Var}(\\bar{X}_n) = \\sigma^2/n$ (from `variance_sum_indep`) $\\Rightarrow$ $P(|\\bar{X}_n - \\mu| \\geq \\varepsilon) \\leq \\sigma^2/(n\\varepsilon^2)$ (Chebyshev) $\\Rightarrow$ convergence.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Mathlib probability API"
+    ],
+    "relatedConcepts": [
+      "axiom audit",
+      "Mathlib integration",
+      "proof architecture"
+    ]
+  }
+]

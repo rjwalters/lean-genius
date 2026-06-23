@@ -1,0 +1,169 @@
+[
+  {
+    "id": "ann-dtg-header",
+    "proofId": "divisibility-truncation-general",
+    "range": {
+      "startLine": 1,
+      "endLine": 36
+    },
+    "type": "concept",
+    "title": "Module Documentation, Imports, and Namespace",
+    "content": "The module docstring introduces the general truncation divisibility rule as an answer to the open question from `divisibility-by-3-oq-01`: can all truncation rules be unified into a single parametric theorem?\n\nThe answer is YES, via two general theorems (positive and negative osculators) that subsume ALL specific truncation rules for divisors coprime to 10. The key algebraic identity $10 \\cdot (n/10 + c \\cdot (n\\%10)) = n + (10c - 1) \\cdot (n\\%10)$ drives both theorems.\n\nImports only `Mathlib.Data.Nat.Digits.Defs` (for digit-related lemmas) and `Mathlib.Tactic` (for `linear_combination`, `push_cast`, `omega`, `norm_num`, `decide`). Opens `Nat` for natural number notation.",
+    "mathContext": "The osculator method: for $d$ coprime to 10, the multiplicative inverse $c = 10^{-1} \\bmod d$ gives $d \\mid n \\iff d \\mid (\\lfloor n/10 \\rfloor + c \\cdot (n \\bmod 10))$. The negative osculator uses $c = -(10^{-1}) \\bmod d$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "modular arithmetic",
+      "divisibility"
+    ],
+    "relatedConcepts": [
+      "osculator method",
+      "multiplicative inverse",
+      "coprimality",
+      "divisibility testing"
+    ]
+  },
+  {
+    "id": "ann-dtg-divmod",
+    "proofId": "divisibility-truncation-general",
+    "range": {
+      "startLine": 38,
+      "endLine": 42
+    },
+    "type": "concept",
+    "title": "Division-Modulus Identity in Z",
+    "content": "The foundation: $n = 10 \\cdot \\lfloor n/10 \\rfloor + (n \\bmod 10)$ cast to $\\mathbb{Z}$, proved by `push_cast; omega` using `Nat.div_add_mod`. This is used as `hdiv` in both main theorems via `linear_combination -hdiv`.\n\nThe `push_cast` tactic lifts the natural number identity to integers, and `omega` handles the resulting linear arithmetic. This two-tactic proof is remarkably clean — the identity is the algebraic engine for the entire development.",
+    "mathContext": "In $\\mathbb{Z}$: $n = 10 \\cdot \\lfloor n/10 \\rfloor + (n \\bmod 10)$, lifted from `Nat.div_add_mod` via `push_cast`.\n\nThis is the pivotal identity that `linear_combination -hdiv` exploits: negating it gives $0 = -n + 10q + r$ where $q = n/10$ and $r = n\\%10$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Nat.div_add_mod",
+      "push_cast tactic",
+      "omega tactic"
+    ],
+    "relatedConcepts": [
+      "Euclidean division",
+      "integer casting",
+      "linear_combination tactic"
+    ]
+  },
+  {
+    "id": "ann-dtg-positive",
+    "proofId": "divisibility-truncation-general",
+    "range": {
+      "startLine": 48,
+      "endLine": 80
+    },
+    "type": "concept",
+    "title": "General Positive Osculator Theorem",
+    "content": "The main theorem `truncation_pos`: for any $d$ coprime to 10 and $c$ satisfying $d \\mid (10c-1)$, we have $d \\mid n \\iff d \\mid (\\lfloor n/10 \\rfloor + c \\cdot (n\\%10))$.\n\nThe proof constructs the key intermediate expression $10 \\cdot (q + c \\cdot r)$ where $q = n/10$ and $r = n\\%10$. The algebraic identity $10(q + cr) = n + (10c-1)r$ is proved by `linear_combination -hdiv`. Since $d \\mid (10c-1)$, the correction term $(10c-1)r$ is divisible by $d$, so $d \\mid n \\iff d \\mid 10(q+cr)$. Finally, $\\gcd(d,10) = 1$ (from `IsCoprime`) allows canceling the factor 10 via `IsCoprime.dvd_of_dvd_mul_left`.\n\nExamples: $d = 13$, $c = 4$ (since $39 = 3 \\times 13$); $d = 19$, $c = 2$ (since $19 = 19$).",
+    "mathContext": "$10(\\lfloor n/10 \\rfloor + c(n \\bmod 10)) = n + (10c-1)(n \\bmod 10)$\n\nWhen $d \\mid (10c-1)$ and $\\gcd(d,10) = 1$:\n$d \\mid n \\iff d \\mid n + (10c-1)(n\\%10) = 10(q + cr) \\iff d \\mid (q + cr)$",
+    "significance": "key",
+    "prerequisites": [
+      "IsCoprime",
+      "IsCoprime.dvd_of_dvd_mul_left",
+      "linear_combination",
+      "div_mod_cast"
+    ],
+    "relatedConcepts": [
+      "multiplicative inverse modulo d",
+      "coprime cancellation",
+      "truncation method",
+      "positive osculator"
+    ]
+  },
+  {
+    "id": "ann-dtg-negative",
+    "proofId": "divisibility-truncation-general",
+    "range": {
+      "startLine": 82,
+      "endLine": 123
+    },
+    "type": "concept",
+    "title": "General Negative Osculator Theorem",
+    "content": "Symmetric theorem `truncation_neg` for the negative osculator: $d \\mid (10c+1)$ gives $d \\mid n \\iff d \\mid (\\lfloor n/10 \\rfloor - c \\cdot (n\\%10))$.\n\nThe identity is $10(q - cr) = n - (10c+1)r$. When $d \\mid (10c+1)$, we have $10c \\equiv -1 \\pmod{d}$, meaning $c$ is the 'negative inverse' of 10 mod $d$.\n\nCanonical examples: $d = 7$, $c = 2$ (since $21 = 3 \\times 7$); $d = 11$, $c = 1$ (since $11 = 11$); $d = 17$, $c = 5$ (since $51 = 3 \\times 17$). The $d = 11$ case with $c = 1$ reduces to the alternating digit-sum rule: subtracting the last digit from the truncated number is equivalent to the classical alternating sum test.",
+    "mathContext": "$10(\\lfloor n/10 \\rfloor - c(n \\bmod 10)) = n - (10c+1)(n \\bmod 10)$\n\nWhen $d \\mid (10c+1)$ and $\\gcd(d,10) = 1$:\n$d \\mid n \\iff d \\mid (q - cr)$\n\nThe negative osculator $c$ satisfies $10c \\equiv -1 \\pmod{d}$, i.e., $c \\equiv -10^{-1} \\pmod{d}$.",
+    "significance": "key",
+    "prerequisites": [
+      "positive osculator theorem (symmetric structure)",
+      "IsCoprime",
+      "linear_combination",
+      "div_mod_cast"
+    ],
+    "relatedConcepts": [
+      "negative osculator",
+      "alternating digit sum",
+      "eleven divisibility rule",
+      "seven divisibility rule"
+    ]
+  },
+  {
+    "id": "ann-dtg-corollaries",
+    "proofId": "divisibility-truncation-general",
+    "range": {
+      "startLine": 129,
+      "endLine": 182
+    },
+    "type": "concept",
+    "title": "11 Concrete Corollaries: Classical Rules Recovered",
+    "content": "Each classical divisibility rule is recovered as a one-line corollary of the general theorems. The proofs are: instantiate the general theorem with specific $d$ and $c$, verify coprimality by `decide`, and verify the osculator equation by `⟨k, by norm_num⟩`.\n\nThe osculator table:\n| $d$ | Type | $c$ | Equation | Factor |\n|-----|------|-----|----------|--------|\n| 3 | pos | 1 | $9 = 3 \\times 3$ | digit sum |\n| 7 | neg | 2 | $21 = 3 \\times 7$ | classical |\n| 9 | pos | 1 | $9 = 1 \\times 9$ | digit sum |\n| 11 | neg | 1 | $11 = 1 \\times 11$ | alternating sum |\n| 13 | pos | 4 | $39 = 3 \\times 13$ | classical |\n| 17 | neg | 5 | $51 = 3 \\times 17$ | classical |\n| 19 | pos | 2 | $19 = 1 \\times 19$ | classical |\n| 23 | pos | 7 | $69 = 3 \\times 23$ | classical |\n| 29 | pos | 3 | $29 = 1 \\times 29$ | classical |\n| 31 | neg | 3 | $31 = 1 \\times 31$ | classical |\n| 37 | neg | 11 | $111 = 3 \\times 37$ | classical |",
+    "mathContext": "Each corollary is proved by: `truncation_pos d c n (by decide) ⟨k, by norm_num⟩` or `truncation_neg d c n (by decide) ⟨k, by norm_num⟩`. The `decide` verifies $\\gcd(d,10) = 1$ and `norm_num` verifies $10c \\mp 1 = k \\cdot d$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "truncation_pos",
+      "truncation_neg",
+      "decide tactic",
+      "norm_num tactic"
+    ],
+    "relatedConcepts": [
+      "divisibility by 7",
+      "divisibility by 11",
+      "divisibility by 13",
+      "osculator table"
+    ]
+  },
+  {
+    "id": "ann-dtg-verification",
+    "proofId": "divisibility-truncation-general",
+    "range": {
+      "startLine": 184,
+      "endLine": 222
+    },
+    "type": "concept",
+    "title": "Osculator Table Verification and Sanity Checks",
+    "content": "Two sets of `example` declarations verify the framework:\n\n1. **Osculator table**: Each positive osculator satisfies $d \\mid (10c - 1)$ and each negative osculator satisfies $d \\mid (10c + 1)$, verified by explicit witnesses.\n\n2. **Sanity checks**: Specific numeric examples demonstrate the rules in action:\n- $7 \\mid 49$: $49 \\to 4 - 2 \\cdot 9 = -14$, and $7 \\mid -14$ \\checkmark\n- $13 \\mid 169$: $169 \\to 16 + 4 \\cdot 9 = 52$, and $13 \\mid 52$ \\checkmark\n- $19 \\mid 57$: $57 \\to 5 + 2 \\cdot 7 = 19$, and $19 \\mid 19$ \\checkmark\n- $17 \\mid 51$: $51 \\to 5 - 5 \\cdot 1 = 0$, and $17 \\mid 0$ \\checkmark\n\nThese use `native_decide` for the natural number divisibility and explicit witnesses for the truncated form.",
+    "mathContext": "The sanity checks verify the truncation steps manually: $n \\to \\lfloor n/10 \\rfloor \\pm c \\cdot (n \\bmod 10)$. Each step reduces a multi-digit number to a smaller one while preserving divisibility.",
+    "significance": "supporting",
+    "prerequisites": [
+      "native_decide tactic",
+      "norm_num tactic"
+    ],
+    "relatedConcepts": [
+      "truncation step",
+      "divisibility check",
+      "computational verification"
+    ]
+  },
+  {
+    "id": "ann-dtg-summary",
+    "proofId": "divisibility-truncation-general",
+    "range": {
+      "startLine": 228,
+      "endLine": 255
+    },
+    "type": "concept",
+    "title": "Summary Theorem: Five Classical Cases Unified",
+    "content": "The master theorem `truncation_method_summary` packages the positive and negative osculator results for $d \\in \\{3, 7, 9, 11, 13\\}$ into a single conjunction, demonstrating that all five classical divisibility rules are one-line consequences of the general framework.\n\nThis unifies: digit-sum rules ($d = 3, 9$ via positive osculator $c = 1$), alternating digit-sum ($d = 11$ via negative osculator $c = 1$), and classical truncation rules ($d = 7$ neg, $d = 13$ pos) under a single algebraic principle.\n\nThe proof is a conjunction of the five specific corollaries, each itself a one-liner from the general theorems. This demonstrates the power of the parametric approach: dozens of seemingly ad-hoc pencil-and-paper tricks reduce to instances of two theorems.",
+    "mathContext": "Unified theorem: $\\bigwedge_{d \\in \\{3,7,9,11,13\\}} (d \\mid n \\iff d \\mid f_d(\\lfloor n/10 \\rfloor, n \\bmod 10))$\n\nwhere $f_d$ is either $q + c_d r$ (positive) or $q - c_d r$ (negative) depending on $d$.",
+    "significance": "key",
+    "prerequisites": [
+      "truncation_pos",
+      "truncation_neg",
+      "specific corollaries"
+    ],
+    "relatedConcepts": [
+      "digit sum rule",
+      "alternating sum rule",
+      "unified divisibility testing",
+      "parametric theorem"
+    ]
+  }
+]

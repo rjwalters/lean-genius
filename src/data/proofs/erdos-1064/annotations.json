@@ -1,0 +1,168 @@
+[
+  {
+    "id": "ann-e1064-header",
+    "proofId": "erdos-1064",
+    "range": {
+      "startLine": 1,
+      "endLine": 48
+    },
+    "type": "concept",
+    "title": "Problem Overview, Imports, and Namespace",
+    "content": "**Erdős Problem #1064**: Is $\\phi(n) > \\phi(n - \\phi(n))$ for almost all $n$? And does the reverse $\\phi(n) < \\phi(n - \\phi(n))$ hold for infinitely many $n$? Both parts are solved: Luca–Pomerance (2002) proved the typical case has density 1, and Grytczuk–Luca–Wójtowicz (2001) proved the exceptional case is infinite.\n\nThe file imports full Mathlib for `Nat.totient` (Euler's totient function) and works in the `Erdos1064` namespace with `Nat` open. The problem concerns the iteration $n \\mapsto n - \\phi(n)$, which maps $n$ to the count of integers $\\leq n$ sharing a common factor with $n$. Understanding how $\\phi$ behaves under this iteration reveals the interplay between typical and exceptional behavior of arithmetic functions.",
+    "mathContext": "$\\phi(n) = |\\{1 \\leq k \\leq n : \\gcd(k, n) = 1\\}|$. Iteration: $n \\mapsto n - \\phi(n)$ counts non-coprime residues. The comparison $\\phi(n)$ vs $\\phi(n - \\phi(n))$ has density-1 typical behavior but infinitely many exceptions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler's totient function",
+      "natural density of arithmetic sets",
+      "typical vs exceptional behavior",
+      "iterated arithmetic functions",
+      "Erdős problems on arithmetic functions"
+    ],
+    "prerequisites": [
+      "Nat.totient in Mathlib",
+      "natural density (asymptotic counting)",
+      "multiplicativity of φ"
+    ]
+  },
+  {
+    "id": "ann-e1064-defs",
+    "proofId": "erdos-1064",
+    "range": {
+      "startLine": 49,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "The Three Sets: A₊, A₋, A₌ and the Comparison Function",
+    "content": "**`phiDiff n`**: The signed difference $\\phi(n) - \\phi(n - \\phi(n))$ as an integer, allowing negative values when $\\phi(n) < \\phi(n - \\phi(n))$.\n\n**`A_greater`**, **`A_less`**, **`A_equal`**: The natural partition of $\\mathbb{N}$ by the sign of `phiDiff`. The problem asks for the 'size' of each piece: $A_>$ has density 1 (almost all $n$), $A_<$ is infinite but has density 0, and $A_=$ contains special values like $n = 12$ where $\\phi(12) = 4 = \\phi(8)$.\n\nThe interpretation of $n - \\phi(n)$: this counts the integers in $\\{1, \\ldots, n\\}$ that share a common factor with $n$. For prime $p$, $p - \\phi(p) = 1$, so $\\phi(p - \\phi(p)) = \\phi(1) = 1 < p - 1 = \\phi(p)$: primes always belong to $A_>$. The interesting behavior occurs for composite $n$ with specific factorization patterns.",
+    "mathContext": "$A_> = \\{n : \\phi(n) > \\phi(n - \\phi(n))\\}$, $A_< = \\{n : \\phi(n) < \\phi(n - \\phi(n))\\}$, $A_= = \\{n : \\phi(n) = \\phi(n - \\phi(n))\\}$. For $n = 12$: $\\phi(12) = 4$, $12 - 4 = 8$, $\\phi(8) = 4$, so $12 \\in A_=$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "partition of ℕ by arithmetic function behavior",
+      "natural density",
+      "Set.Infinite",
+      "signed difference for comparison"
+    ],
+    "prerequisites": [
+      "Nat.totient",
+      "Set (set-builder notation in Lean)"
+    ]
+  },
+  {
+    "id": "ann-e1064-totient-values",
+    "proofId": "erdos-1064",
+    "range": {
+      "startLine": 63,
+      "endLine": 78
+    },
+    "type": "concept",
+    "title": "Totient Value Computations via native_decide",
+    "content": "Individual totient values verified by Lean's `native_decide` tactic, which compiles the computation to native code for efficient kernel-level evaluation. The values $\\phi(1) = 1$, $\\phi(2) = 1$, $\\phi(6) = 2$, $\\phi(15) = 8$, $\\phi(30) = 8$ establish the ground truth used in subsequent comparison examples. Note that $\\phi(15) = \\phi(30) = 8$ despite $30 = 2 \\cdot 15$: this is because $\\phi(30) = \\phi(2) \\cdot \\phi(15) = 1 \\cdot 8 = 8$ (multiplicativity, since $\\gcd(2, 15) = 1$). This coincidence is key to understanding why $n = 30$ belongs to $A_<$.",
+    "mathContext": "The formula $\\phi(n) = n \\prod_{p | n} (1 - 1/p)$ gives: $\\phi(6) = 6(1 - 1/2)(1 - 1/3) = 2$, $\\phi(15) = 15(1 - 1/3)(1 - 1/5) = 8$, $\\phi(30) = 30(1 - 1/2)(1 - 1/3)(1 - 1/5) = 8$. The `native_decide` tactic in Lean 4 compiles decidable propositions to native code, making these computations instantaneous even for moderately large inputs.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide tactic",
+      "Euler's product formula for φ",
+      "multiplicativity of φ",
+      "kernel-level computation"
+    ],
+    "prerequisites": [
+      "Nat.totient definition",
+      "decidable propositions in Lean"
+    ]
+  },
+  {
+    "id": "ann-e1064-examples",
+    "proofId": "erdos-1064",
+    "range": {
+      "startLine": 80,
+      "endLine": 97
+    },
+    "type": "concept",
+    "title": "Comparison Examples: Typical and Exceptional Cases",
+    "content": "The file verifies both typical ($A_>$) and exceptional ($A_<$) cases computationally:\n\n**Typical cases** ($\\phi(n) > \\phi(n - \\phi(n))$):\n- $n = 15$: $\\phi(15) = 8$, $15 - 8 = 7$, $\\phi(7) = 6$, so $8 > 6$\n- $n = 10$: $\\phi(10) = 4$, $10 - 4 = 6$, $\\phi(6) = 2$, so $4 > 2$\n\n**Exceptional cases** ($\\phi(n) < \\phi(n - \\phi(n))$):\n- $n = 30$: $\\phi(30) = 8$, $30 - 8 = 22$, $\\phi(22) = 10$, so $8 < 10$\n- $n = 60$: $\\phi(60) = 16$, $60 - 16 = 44$, $\\phi(44) = 20$, so $16 < 20$\n- $n = 66$: $\\phi(66) = 20$, $66 - 20 = 46$, $\\phi(46) = 22$, so $20 < 22$\n\nAll verified by `native_decide`. The exceptional cases share a pattern: they tend to be products of small primes where $n - \\phi(n)$ lands on a number with a relatively higher totient ratio $\\phi(m)/m$. The value $n = 30 = 2 \\cdot 3 \\cdot 5$ is the smallest member of $A_<$.",
+    "mathContext": "Totient values: $\\phi(15) = 8$, $\\phi(7) = 6$, $\\phi(30) = 8$, $\\phi(22) = 10$, $\\phi(60) = 16$, $\\phi(44) = 20$. The totient ratio $\\phi(n)/n$ governs whether $n \\in A_>$ or $A_<$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide (kernel-level computation)",
+      "totient ratio φ(n)/n",
+      "products of small primes",
+      "smallest exceptional values"
+    ],
+    "prerequisites": [
+      "native_decide tactic",
+      "Euler's totient for small values"
+    ]
+  },
+  {
+    "id": "ann-e1064-axioms",
+    "proofId": "erdos-1064",
+    "range": {
+      "startLine": 99,
+      "endLine": 123
+    },
+    "type": "concept",
+    "title": "Main Theorems: Density 1 and Infinitude of Exceptions",
+    "content": "**`lucaPomerance_density_one`** (axiom): The density-1 result, formalized as: for all $\\varepsilon > 0$, there exists $N$ such that for all $M \\geq N$, the count of $n \\leq M$ with $\\phi(n) > \\phi(n - \\phi(n))$ is at least $(1 - \\varepsilon)M$. This is the standard $\\varepsilon$-$N$ definition of natural density 1.\n\nLuca and Pomerance's proof (2002, *Colloquium Mathematicum*) uses the distribution of totient values and the typical size of $n - \\phi(n)$. The stronger result: for *any* $f(n) = o(n)$, we have $\\phi(n) > \\phi(n - \\phi(n)) + f(n)$ for almost all $n$.\n\n**`glw_infinitely_many`** (axiom): $A_<$ is infinite (`A_less.Infinite`). Grytczuk, Luca, and Wójtowicz (2001, *Publicationes Mathematicae Debrecen*) proved this with the explicit construction $n = 15 \\cdot 2^k$.\n\n**`erdos_1064_resolution`**: The main theorem, which simply unpacks `glw_infinitely_many`. The resolution is that both parts hold: typical behavior (density 1) and infinitely many exceptions.",
+    "mathContext": "Density 1: $\\lim_{M \\to \\infty} \\frac{|\\{n \\leq M : \\phi(n) > \\phi(n - \\phi(n))\\}|}{M} = 1$. Infinitude: $|A_<| = \\aleph_0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "natural density",
+      "Set.Infinite",
+      "ε-N definition of density",
+      "asymptotic density of arithmetic sets",
+      "explicit construction for infinitude"
+    ],
+    "prerequisites": [
+      "natural density definition",
+      "Set.Infinite in Lean",
+      "Finset.filter for counting"
+    ]
+  },
+  {
+    "id": "ann-e1064-pattern",
+    "proofId": "erdos-1064",
+    "range": {
+      "startLine": 125,
+      "endLine": 132
+    },
+    "type": "insight",
+    "title": "The Pattern: 15·2ᵏ ∈ A₋ via Multiplicativity",
+    "content": "For $n = 15 \\cdot 2^k$ with $k \\geq 1$:\n- $\\phi(15 \\cdot 2^k) = \\phi(15) \\cdot \\phi(2^k) = 8 \\cdot 2^{k-1} = 4 \\cdot 2^k$\n- $n - \\phi(n) = 15 \\cdot 2^k - 4 \\cdot 2^k = 11 \\cdot 2^k$\n- $\\phi(11 \\cdot 2^k) = \\phi(11) \\cdot \\phi(2^k) = 10 \\cdot 2^{k-1} = 5 \\cdot 2^k$\n- Since $5 \\cdot 2^k > 4 \\cdot 2^k$, we have $\\phi(n - \\phi(n)) > \\phi(n)$, so $n \\in A_<$.\n\nThe key insight is the *totient ratio comparison*: $\\phi(11)/11 = 10/11 \\approx 0.909$ vs $\\phi(15)/15 = 8/15 \\approx 0.533$. Since $n - \\phi(n) = 11 \\cdot 2^k$ 'inherits' the high totient ratio of 11 (a prime), while $n = 15 \\cdot 2^k$ has the lower ratio of 15 (a composite with small prime factors), the comparison reverses. This works because $\\phi$ is multiplicative and $\\gcd(15, 2^k) = 1$, so $\\phi(15 \\cdot 2^k) = \\phi(15) \\cdot \\phi(2^k)$.\n\nThe same pattern generalizes: any $n = m \\cdot 2^k$ where $m - \\phi(m)$ has a higher totient ratio than $m$ will give $n \\in A_<$ for large enough $k$.",
+    "mathContext": "$\\phi(15 \\cdot 2^k) = 4 \\cdot 2^k$ vs $\\phi(11 \\cdot 2^k) = 5 \\cdot 2^k$. The ratio $\\phi(p)/p = (p-1)/p$ is maximized for large primes. Since $11$ is prime: $\\phi(11)/11 = 10/11 > 8/15 = \\phi(15)/15$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "multiplicativity of Euler's totient",
+      "totient ratio φ(n)/n",
+      "prime vs composite totient ratios",
+      "explicit infinite families in number theory"
+    ],
+    "prerequisites": [
+      "multiplicativity: φ(mn) = φ(m)φ(n) when gcd(m,n) = 1",
+      "φ(p) = p-1 for primes",
+      "φ(2^k) = 2^{k-1}"
+    ]
+  },
+  {
+    "id": "ann-e1064-generalization",
+    "proofId": "erdos-1064",
+    "range": {
+      "startLine": 99,
+      "endLine": 100
+    },
+    "type": "concept",
+    "title": "Main Theorems Section Header",
+    "content": "The transition from concrete examples to the axiomatic statements of the main results. The file uses Lean `axiom` declarations for both parts because the proofs require deep analytic number theory (distribution of smooth numbers, sieve methods) that is beyond current Mathlib formalization. This is an honest modeling choice: the axioms encode published, peer-reviewed theorems (Luca-Pomerance 2002, Grytczuk-Luca-Wójtowicz 2001) as assumptions, allowing the problem structure to be formally stated without requiring a full proof reconstruction in Lean. The `axiomCount: 2` in meta.json correctly reflects these assumptions.",
+    "mathContext": "The use of `axiom` in Lean 4 declares a term of a given type without providing a proof. Mathematically, this corresponds to assuming a theorem as a hypothesis. The two axioms here encode: (1) $d(A_>) = 1$ (Luca-Pomerance) and (2) $|A_<| = \\aleph_0$ (Grytczuk-Luca-Wójtowicz). Both are results from analytic number theory requiring machinery not yet formalized in Mathlib.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "axiom declarations in Lean",
+      "axiomatized formalization",
+      "analytic number theory",
+      "sieve methods"
+    ],
+    "prerequisites": [
+      "Lean axiom keyword",
+      "distinction between axiom and theorem in formal verification"
+    ]
+  }
+]

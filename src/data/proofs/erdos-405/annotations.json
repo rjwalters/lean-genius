@@ -1,0 +1,588 @@
+[
+  {
+    "id": "erdos-405-intro",
+    "proofId": "erdos-405",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 23
+    },
+    "title": "Problem Introduction",
+    "content": "Erdős Problem #405 asks whether the Diophantine equation $(p-1)! + a^{p-1} = p^k$ has only finitely many solutions for odd primes $p$. The answer is YES: Yu and Liu (1996) proved there are exactly three solutions. The problem sits at the intersection of factorial arithmetic, modular constraints from Wilson's and Fermat's theorems, and Baker's theory of linear forms in logarithms.",
+    "mathContext": "$(p-1)! + a^{p-1} = p^k$ for odd prime $p$. Related: Brocard's problem ($n! + 1 = m^2$), Catalan's conjecture (Mihailescu 2002), ABC conjecture implications for factorial Diophantine equations.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Brocard's problem",
+      "Catalan's conjecture",
+      "Baker's theory",
+      "factorial Diophantine equations"
+    ],
+    "prerequisites": [
+      "Wilson's theorem",
+      "Fermat's little theorem",
+      "p-adic valuations",
+      "Baker's method"
+    ]
+  },
+  {
+    "id": "erdos-405-solution-structure",
+    "proofId": "erdos-405",
+    "type": "definition",
+    "range": {
+      "startLine": 41,
+      "endLine": 56
+    },
+    "title": "Solution Structure and Predicate",
+    "content": "The `Solution` structure packages a triple $(p, a, k)$ together with proof that $p$ is an odd prime and the equation $(p-1)! + a^{p-1} = p^k$ holds. The `IsSolution` predicate provides an equivalent unbundled version: $\\text{IsSolution}(p, a, k) \\iff p \\text{ prime} \\wedge p \\geq 3 \\wedge (p-1)! + a^{p-1} = p^k$.",
+    "mathContext": "$\\text{IsSolution}(p, a, k) \\iff \\text{Prime}(p) \\wedge p \\geq 3 \\wedge (p-1)! + a^{p-1} = p^k$. The bundled `Solution` structure is convenient for set-theoretic finiteness reasoning.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lean 4 structures",
+      "Diophantine predicates",
+      "bundled vs unbundled definitions"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "Nat.factorial",
+      "Lean 4 structure syntax"
+    ]
+  },
+  {
+    "id": "erdos-405-solution-1",
+    "proofId": "erdos-405",
+    "type": "concept",
+    "range": {
+      "startLine": 64,
+      "endLine": 71
+    },
+    "title": "First Solution: $(3, 1, 1)$",
+    "content": "Verified computationally: $2! + 1^2 = 2 + 1 = 3 = 3^1$. This is the smallest solution — the simplest instance where a factorial-plus-power equals a prime power. The proof is fully automatic via `norm_num` after establishing that 3 is prime.",
+    "mathContext": "$2! + 1^{2} = 3 = 3^1$. Lean's kernel performs the arithmetic reduction automatically with `norm_num`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "norm_num tactic",
+      "computational verification",
+      "prime powers"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "norm_num",
+      "factorial computation"
+    ]
+  },
+  {
+    "id": "erdos-405-solution-2",
+    "proofId": "erdos-405",
+    "type": "concept",
+    "range": {
+      "startLine": 73,
+      "endLine": 80
+    },
+    "title": "Second Solution: $(3, 5, 3)$",
+    "content": "Verified computationally: $2! + 5^2 = 2 + 25 = 27 = 3^3$. This shows $p = 3$ admits two different values of $a$, and that the exponent $k$ can exceed 1. The coincidence $2 + 25 = 27$ arises because $5^2 = 25 = 3^3 - 2$.",
+    "mathContext": "$2! + 5^{2} = 27 = 3^3$. Related to the near-miss $5^2 + 2 = 3^3$, a small example of the Catalan-type phenomenon where consecutive perfect powers are rare.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Catalan's conjecture",
+      "perfect cubes",
+      "Ramanujan-Nagell equation"
+    ],
+    "prerequisites": [
+      "norm_num",
+      "Nat.factorial",
+      "prime powers"
+    ]
+  },
+  {
+    "id": "erdos-405-solution-3",
+    "proofId": "erdos-405",
+    "type": "concept",
+    "range": {
+      "startLine": 82,
+      "endLine": 89
+    },
+    "title": "Third Solution: $(5, 1, 2)$",
+    "content": "Verified computationally: $4! + 1^4 = 24 + 1 = 25 = 5^2$. This is the only solution with $p = 5$ and the largest prime contributing a solution. The identity $24 + 1 = 25$ reflects the well-known near-coincidence of $4!$ and $5^2$.",
+    "mathContext": "$4! + 1^{4} = 25 = 5^2$. Related to Brocard's problem: asking when $n! + 1$ is a perfect square; this is one of the three known solutions ($n = 4, 5, 7$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Brocard's problem",
+      "perfect squares",
+      "factorial near-coincidences"
+    ],
+    "prerequisites": [
+      "norm_num",
+      "Nat.factorial",
+      "Nat.Prime"
+    ]
+  },
+  {
+    "id": "erdos-405-brindza-erdos",
+    "proofId": "erdos-405",
+    "type": "concept",
+    "range": {
+      "startLine": 99,
+      "endLine": 101
+    },
+    "title": "Brindza–Erdős Finiteness (1991)",
+    "content": "Brindza and Erdős (1991) proved that the set of solutions $\\{(p, a, k) : (p-1)! + a^{p-1} = p^k\\}$ is finite. Their proof uses Baker's theory of linear forms in logarithms, which gives effective (though large) upper bounds on solutions to exponential Diophantine equations. This was the first unconditional finiteness result for Problem #405.",
+    "mathContext": "$\\#\\{(p, a, k) \\in \\mathbb{N}^3 : \\text{IsSolution}(p, a, k)\\} < \\infty$. Baker's method: if $\\Lambda = b_1 \\log \\alpha_1 + \\cdots + b_n \\log \\alpha_n \\neq 0$, then $|\\Lambda| > B^{-C}$ for an explicit constant $C$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Baker's theory",
+      "linear forms in logarithms",
+      "effective Diophantine bounds",
+      "transcendence theory"
+    ],
+    "prerequisites": [
+      "Baker's theorem",
+      "p-adic analysis",
+      "exponential Diophantine equations"
+    ]
+  },
+  {
+    "id": "erdos-405-yu-liu",
+    "proofId": "erdos-405",
+    "type": "concept",
+    "range": {
+      "startLine": 103,
+      "endLine": 108
+    },
+    "title": "Yu–Liu Complete Characterization (1996)",
+    "content": "Yu and Liu (1996) achieved a complete resolution: the only solutions to $(p-1)! + a^{p-1} = p^k$ with $p$ an odd prime are exactly $(3,1,1)$, $(3,5,3)$, and $(5,1,2)$. Their proof refines the Brindza–Erdős bound and performs exhaustive case analysis for small primes.",
+    "mathContext": "$\\text{IsSolution}(p, a, k) \\iff (p,a,k) \\in \\{(3,1,1), (3,5,3), (5,1,2)\\}$. Strategy: (1) Baker bounds to show $p \\leq B$, (2) p-adic analysis for each prime $p \\leq B$, (3) explicit case analysis for $p = 3, 5$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Baker's method",
+      "p-adic analysis",
+      "Ramanujan-Nagell equation",
+      "complete Diophantine solutions"
+    ],
+    "prerequisites": [
+      "Brindza-Erdős finiteness",
+      "Legendre's formula",
+      "Baker's theorem"
+    ]
+  },
+  {
+    "id": "erdos-405-exactly-three",
+    "proofId": "erdos-405",
+    "type": "concept",
+    "range": {
+      "startLine": 111,
+      "endLine": 112
+    },
+    "title": "Exactly Three Solutions",
+    "content": "The solution set has cardinality exactly 3. This follows from the Yu–Liu characterization (which identifies the three solutions) combined with the computational verification that all three triples are distinct.",
+    "mathContext": "$\\#\\{(p, a, k) \\in \\mathbb{N}^3 : \\text{IsSolution}(p, a, k)\\} = 3$. The three solutions are distinct since the primes $p = 3$ and $p = 5$ differ, and within $p = 3$ the values $a = 1$ and $a = 5$ differ.",
+    "significance": "key",
+    "relatedConcepts": [
+      "set cardinality",
+      "finiteness in Lean",
+      "Finset.ncard"
+    ],
+    "prerequisites": [
+      "yu_liu_1996",
+      "solution distinctness",
+      "Finset reasoning"
+    ]
+  },
+  {
+    "id": "erdos-405-wilson",
+    "proofId": "erdos-405",
+    "type": "concept",
+    "range": {
+      "startLine": 121,
+      "endLine": 122
+    },
+    "title": "Wilson's Theorem",
+    "content": "Wilson's theorem: for any prime $p$, $(p-1)! \\equiv -1 \\pmod{p}$. Equivalently, $(p-1)! \\bmod p = p - 1$. This is one of the oldest results in number theory (first proved by Lagrange, 1771) and provides the key modular constraint on the factorial term in Problem #405.",
+    "mathContext": "$(p-1)! \\equiv -1 \\pmod{p}$. Classic proof: pair each element of $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ with its inverse; self-inverse elements are $\\pm 1$, so product of all is $(-1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Wilson's theorem",
+      "modular arithmetic",
+      "group theory",
+      "Fermat's little theorem"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "modular arithmetic",
+      "Lagrange's theorem on groups"
+    ]
+  },
+  {
+    "id": "erdos-405-fermat",
+    "proofId": "erdos-405",
+    "type": "concept",
+    "range": {
+      "startLine": 125,
+      "endLine": 126
+    },
+    "title": "Fermat's Little Theorem",
+    "content": "Fermat's little theorem: if $p$ is prime and $p \\nmid a$, then $a^{p-1} \\equiv 1 \\pmod{p}$. Combined with Wilson's theorem, this yields the crucial divisibility $(p-1)! + a^{p-1} \\equiv 0 \\pmod{p}$, which is necessary for the sum to equal $p^k$.",
+    "mathContext": "$a^{p-1} \\equiv 1 \\pmod{p}$ when $p \\nmid a$. Together with Wilson: $(-1) + 1 = 0 \\pmod{p}$, so $p \\mid (p-1)! + a^{p-1}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fermat's little theorem",
+      "Euler's theorem",
+      "Wilson's theorem",
+      "ZMod.pow_card_sub_one_eq_one"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "modular arithmetic",
+      "multiplicative group modulo p"
+    ]
+  },
+  {
+    "id": "erdos-405-sum-divisible",
+    "proofId": "erdos-405",
+    "type": "insight",
+    "range": {
+      "startLine": 129,
+      "endLine": 131
+    },
+    "title": "Sum Divisibility by $p$",
+    "content": "When $p \\nmid a$, Wilson gives $(p-1)! \\equiv -1 \\pmod{p}$ and Fermat gives $a^{p-1} \\equiv 1 \\pmod{p}$, so their sum satisfies $p \\mid (p-1)! + a^{p-1}$. This is a necessary condition for the sum to equal $p^k$ and explains why the equation can have solutions at all — the modular arithmetic is 'aligned.'",
+    "mathContext": "$p \\mid (p-1)! + a^{p-1}$ when $p \\nmid a$. This 'modular alignment' $(-1) + 1 \\equiv 0 \\pmod{p}$ is the starting point of the $p$-adic analysis.",
+    "significance": "key",
+    "relatedConcepts": [
+      "modular arithmetic",
+      "divisibility",
+      "Wilson-Fermat combination",
+      "p-adic valuations"
+    ],
+    "prerequisites": [
+      "Wilson's theorem",
+      "Fermat's little theorem",
+      "modular congruences"
+    ]
+  },
+  {
+    "id": "erdos-405-divisible-power",
+    "proofId": "erdos-405",
+    "type": "concept",
+    "range": {
+      "startLine": 139,
+      "endLine": 140
+    },
+    "title": "Exceptional Case: $p \\mid a$ Implies Large Power",
+    "content": "If $p \\mid a$, write $a = pm$. Then $a^{p-1} = p^{p-1} m^{p-1}$, so $p^{p-1} \\mid a^{p-1}$. This means the power term $a^{p-1}$ contributes a very large $p$-adic valuation, severely constraining the equation since $v_p((p-1)!) = 0$.",
+    "mathContext": "$p \\mid a \\implies p^{p-1} \\mid a^{p-1}$. If $a = pm$ then $a^{p-1} = (pm)^{p-1} = p^{p-1} \\cdot m^{p-1}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "p-adic valuation",
+      "divisibility powers",
+      "exceptional cases in Diophantine equations"
+    ],
+    "prerequisites": [
+      "padicValNat",
+      "divisibility",
+      "prime factorization"
+    ]
+  },
+  {
+    "id": "erdos-405-divisible-analysis",
+    "proofId": "erdos-405",
+    "type": "concept",
+    "range": {
+      "startLine": 144,
+      "endLine": 146
+    },
+    "title": "Divisible Case Bounds $k$",
+    "content": "When $p \\mid a$, the equation $(p-1)! + a^{p-1} = p^k$ forces $k \\leq p-1$. Since $v_p((p-1)!) = 0$, the $p$-adic valuation of the left side is determined by the power term, constraining $k$.",
+    "mathContext": "$p \\mid a \\implies k \\leq p - 1$. Comparing $p$-adic valuations: $v_p(\\text{LHS}) = \\min(0, v_p(a^{p-1})) = 0$ while $v_p(\\text{RHS}) = k$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "p-adic valuation",
+      "Legendre's formula",
+      "ultrametric inequality"
+    ],
+    "prerequisites": [
+      "padicValNat",
+      "factorial_padic_zero",
+      "divisible_implies_large_power"
+    ]
+  },
+  {
+    "id": "erdos-405-padic-val-def",
+    "proofId": "erdos-405",
+    "type": "theorem",
+    "range": {
+      "startLine": 155,
+      "endLine": 156
+    },
+    "title": "Factorial $p$-adic Valuation",
+    "content": "The $p$-adic valuation of $n!$ is defined via Legendre's formula: $v_p(n!) = \\sum_{i=1}^{\\infty} \\lfloor n/p^i \\rfloor$. In the formalization, this is computed as a finite sum over `Finset.range n` (which suffices since $\\lfloor n/p^i \\rfloor = 0$ for $p^i > n$).",
+    "mathContext": "$v_p(n!) = \\sum_{i=1}^{\\infty} \\left\\lfloor \\frac{n}{p^i} \\right\\rfloor$. Lean: `noncomputable def factorialPadicVal (p n : ℕ) : ℕ := (Finset.range n).sum fun i => n / p ^ (i + 1)`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Legendre's formula",
+      "p-adic valuation",
+      "Finset.sum",
+      "padicValNat"
+    ],
+    "prerequisites": [
+      "padicValNat",
+      "Finset.range",
+      "Nat.div floor division"
+    ]
+  },
+  {
+    "id": "erdos-405-legendre",
+    "proofId": "erdos-405",
+    "type": "concept",
+    "range": {
+      "startLine": 159,
+      "endLine": 160
+    },
+    "title": "Legendre's Formula",
+    "content": "Legendre's formula states that the exact power of a prime $p$ dividing $n!$ is $v_p(n!) = \\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor$. This identity connects the combinatorial definition of factorial to $p$-adic analysis and is essential for understanding the $p$-adic structure of the left side of the equation.",
+    "mathContext": "$v_p(n!) = \\sum_{i=1}^{\\infty} \\left\\lfloor \\frac{n}{p^i} \\right\\rfloor$. Also equals $\\frac{n - S_p(n)}{p - 1}$ where $S_p(n)$ is the digit sum of $n$ in base $p$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Legendre's formula",
+      "p-adic analysis",
+      "Kummer's theorem",
+      "digit sums"
+    ],
+    "prerequisites": [
+      "padicValNat",
+      "factorialPadicVal",
+      "Nat.Prime"
+    ]
+  },
+  {
+    "id": "erdos-405-factorial-padic-zero",
+    "proofId": "erdos-405",
+    "type": "insight",
+    "range": {
+      "startLine": 163,
+      "endLine": 165
+    },
+    "title": "$v_p((p-1)!) = 0$",
+    "content": "For an odd prime $p$, the $p$-adic valuation of $(p-1)!$ is zero. This is because $(p-1)! = 1 \\cdot 2 \\cdots (p-1)$ and none of $1, 2, \\ldots, p-1$ is divisible by $p$. By Legendre's formula, $v_p((p-1)!) = \\lfloor (p-1)/p \\rfloor + \\lfloor (p-1)/p^2 \\rfloor + \\cdots = 0 + 0 + \\cdots = 0$. This is the pivotal constraint: the factorial contributes no factors of $p$.",
+    "mathContext": "$v_p((p-1)!) = 0$ since $\\lfloor(p-1)/p^i\\rfloor = 0$ for all $i \\geq 1$ (as $p-1 < p \\leq p^i$). This is the key rigidity of the equation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Legendre's formula",
+      "p-adic valuation",
+      "pivotal constraints",
+      "coprimality"
+    ],
+    "prerequisites": [
+      "factorialPadicVal",
+      "legendre_formula",
+      "Nat.Prime"
+    ]
+  },
+  {
+    "id": "erdos-405-large-prime",
+    "proofId": "erdos-405",
+    "type": "concept",
+    "range": {
+      "startLine": 174,
+      "endLine": 176
+    },
+    "title": "No Solutions for $p \\geq 7$",
+    "content": "For primes $p \\geq 7$, the equation $(p-1)! + a^{p-1} = p^k$ has no solutions. The factorial $(p-1)!$ grows super-exponentially while $p^k$ grows at most exponentially in $k$, making the equation impossible for large $p$. The critical observation is that $(p-1)! \\geq 720$ for $p \\geq 7$ but $p^k - a^{p-1}$ cannot match this growth rate.",
+    "mathContext": "$p \\geq 7 \\implies \\neg\\exists\\, a\\, k,\\; (p-1)! + a^{p-1} = p^k$. Growth rate argument: $6! = 720$ while $7^k$ grows only as $7^k$; the mismatch eliminates all $p \\geq 7$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "factorial growth rate",
+      "super-exponential vs exponential",
+      "size arguments in Diophantine equations"
+    ],
+    "prerequisites": [
+      "Nat.factorial",
+      "growth rate comparison",
+      "Baker's method bounds"
+    ]
+  },
+  {
+    "id": "erdos-405-p3-analysis",
+    "proofId": "erdos-405",
+    "type": "concept",
+    "range": {
+      "startLine": 179,
+      "endLine": 190
+    },
+    "title": "Analysis for $p = 3$: Two Solutions",
+    "content": "When $p = 3$, the equation becomes $2 + a^2 = 3^k$. This is solved by extracting the Yu–Liu characterization and performing case analysis. The two solutions are $(a, k) = (1, 1)$ and $(a, k) = (5, 3)$. The proof uses `yu_liu_1996` and `simp`/`norm_num` to dispatch the cases.",
+    "mathContext": "$2 + a^2 = 3^k \\implies (a, k) \\in \\{(1, 1), (5, 3)\\}$. Related to the Ramanujan–Nagell equation $x^2 + 7 = 2^n$: both are exponential Diophantine equations with finitely many solutions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramanujan-Nagell equation",
+      "generalized Pell equations",
+      "exponential Diophantine equations"
+    ],
+    "prerequisites": [
+      "yu_liu_1996",
+      "rcases tactic",
+      "norm_num"
+    ]
+  },
+  {
+    "id": "erdos-405-p5-analysis",
+    "proofId": "erdos-405",
+    "type": "concept",
+    "range": {
+      "startLine": 192,
+      "endLine": 202
+    },
+    "title": "Analysis for $p = 5$: One Solution",
+    "content": "When $p = 5$, the equation becomes $24 + a^4 = 5^k$. The unique solution is $(a, k) = (1, 2)$. No other fourth power plus 24 yields a power of 5. The proof mirrors the $p = 3$ case, using the Yu–Liu characterization and eliminating the $p = 3$ branches.",
+    "mathContext": "$24 + a^4 = 5^k \\implies (a, k) = (1, 2)$. The equation $a^4 + 24 = 5^k$ is related to the study of perfect powers and exponential representations.",
+    "significance": "key",
+    "relatedConcepts": [
+      "quartic Diophantine equations",
+      "exponential Diophantine equations",
+      "rcases pattern matching"
+    ],
+    "prerequisites": [
+      "yu_liu_1996",
+      "p_equals_3_analysis",
+      "norm_num"
+    ]
+  },
+  {
+    "id": "erdos-405-perfect-power-def",
+    "proofId": "erdos-405",
+    "type": "definition",
+    "range": {
+      "startLine": 210,
+      "endLine": 211
+    },
+    "title": "Perfect Power Predicate",
+    "content": "A natural number $n$ is a perfect power if $n = b^k$ for some $b, k$ with $k \\geq 2$. The Erdős–Graham remark concerns the broader question of when $(p-1)! + a^{p-1}$ is a perfect power, not necessarily a power of $p$ specifically.",
+    "mathContext": "$\\text{IsPerfectPower}(n) \\iff \\exists\\, b, k \\geq 2,\\; n = b^k$. Related: Catalan's conjecture (proved by Mihailescu 2002): the only consecutive perfect powers are 8 and 9.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "perfect powers",
+      "Catalan's conjecture",
+      "Mihailescu's theorem",
+      "power towers"
+    ],
+    "prerequisites": [
+      "Nat.pow",
+      "existence quantifiers in Lean"
+    ]
+  },
+  {
+    "id": "erdos-405-example",
+    "proofId": "erdos-405",
+    "type": "concept",
+    "range": {
+      "startLine": 214,
+      "endLine": 216
+    },
+    "title": "Example: $6! + 2^6 = 28^2$",
+    "content": "Erdős and Graham noted that $6! + 2^6 = 720 + 64 = 784 = 28^2$ is a perfect square. This example shows that $(p-1)! + a^{p-1}$ can be a perfect power even outside the $p$-prime-power constraint of Problem #405 (here the base is 28, not a prime). The proof is by `norm_num`.",
+    "mathContext": "$6! + 2^6 = 720 + 64 = 784 = 28^2$. This is not of the form $p^k$ for a prime $p$, showing the perfect-power question is distinct from Problem #405.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "perfect squares",
+      "Erdős-Graham observations",
+      "norm_num computational proofs"
+    ],
+    "prerequisites": [
+      "IsPerfectPower",
+      "norm_num",
+      "Nat.factorial"
+    ]
+  },
+  {
+    "id": "erdos-405-erdos-graham-conjecture",
+    "proofId": "erdos-405",
+    "type": "concept",
+    "range": {
+      "startLine": 221,
+      "endLine": 223
+    },
+    "title": "Erdős–Graham Conjecture (Generalized)",
+    "content": "Erdős and Graham conjectured more broadly that for $p \\geq 7$, $(p-1)! + a^{p-1}$ is never a perfect power of $p$ with exponent $k \\geq 2$. This is a strengthening of Problem #405 that addresses the perfect-power aspect more directly.",
+    "mathContext": "$p \\geq 7,\\; p \\text{ prime},\\; k \\geq 2 \\implies (p-1)! + a^{p-1} \\neq p^k$. An open or very difficult problem beyond the scope of Problem #405.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "open conjectures",
+      "generalized CRT problems",
+      "factorial Diophantine equations"
+    ],
+    "prerequisites": [
+      "large_prime_no_solution",
+      "Nat.Prime",
+      "perfect power definition"
+    ]
+  },
+  {
+    "id": "erdos-405-main-statement",
+    "proofId": "erdos-405",
+    "type": "insight",
+    "range": {
+      "startLine": 229,
+      "endLine": 238
+    },
+    "title": "Main Theorem: Erdős Problem #405",
+    "content": "The complete formalization of Erdős Problem #405: (1) the solution set $\\{(p,a,k) : (p-1)! + a^{p-1} = p^k\\}$ is finite (Brindza–Erdős 1991), and (2) a solution exists if and only if $(p,a,k) \\in \\{(3,1,1), (3,5,3), (5,1,2)\\}$ (Yu–Liu 1996). The proof directly combines the two axiomatized external results.",
+    "mathContext": "$\\{(p,a,k) : (p-1)!+a^{p-1}=p^k\\}$ is finite and equals $\\{(3,1,1),(3,5,3),(5,1,2)\\}$. Direct conjunction: `⟨brindza_erdos_1991, yu_liu_1996⟩`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complete Diophantine solutions",
+      "finiteness theorems",
+      "Baker's method"
+    ],
+    "prerequisites": [
+      "brindza_erdos_1991",
+      "yu_liu_1996",
+      "solution structure"
+    ]
+  },
+  {
+    "id": "erdos-405-summary",
+    "proofId": "erdos-405",
+    "type": "insight",
+    "range": {
+      "startLine": 244,
+      "endLine": 258
+    },
+    "title": "Summary: Existence and Uniqueness",
+    "content": "The summary theorem combines both directions: (existence) all three triples satisfy the equation, verified computationally via `solution_1`, `solution_2`, `solution_3`; and (uniqueness) every solution is one of these three, via the Yu–Liu characterization. This provides a complete 'if and only if' in a user-friendly form.",
+    "mathContext": "$\\text{IsSolution}(3,1,1) \\wedge \\text{IsSolution}(3,5,3) \\wedge \\text{IsSolution}(5,1,2) \\wedge \\forall\\, p\\, a\\, k,\\; \\text{IsSolution}(p,a,k) \\implies (p,a,k) \\in \\{(3,1,1),(3,5,3),(5,1,2)\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "existence and uniqueness theorems",
+      "computational verification",
+      "complete characterization"
+    ],
+    "prerequisites": [
+      "solution_1",
+      "solution_2",
+      "solution_3",
+      "yu_liu_1996"
+    ]
+  },
+  {
+    "id": "erdos-405-final",
+    "proofId": "erdos-405",
+    "type": "concept",
+    "range": {
+      "startLine": 263,
+      "endLine": 267
+    },
+    "title": "Final Statement: `erdos_405`",
+    "content": "The canonical theorem `erdos_405` states that the solution set is finite and completely characterized. This is a term-mode proof: `⟨brindza_erdos_1991, yu_liu_1996⟩`, directly pairing the two axioms. This concise formulation serves as the definitive Lean statement of the result.",
+    "mathContext": "`erdos_405 : Finite(S) ∧ CharacterizedBy(S, {(3,1,1),(3,5,3),(5,1,2)})`. The term-mode anonymous constructor directly pairs the finiteness axiom with the characterization axiom.",
+    "significance": "key",
+    "relatedConcepts": [
+      "term-mode proofs in Lean",
+      "anonymous constructors",
+      "And.intro"
+    ],
+    "prerequisites": [
+      "brindza_erdos_1991",
+      "yu_liu_1996",
+      "erdos_405_statement"
+    ]
+  }
+]

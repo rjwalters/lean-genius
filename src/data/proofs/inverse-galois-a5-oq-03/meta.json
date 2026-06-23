@@ -1,0 +1,138 @@
+{
+  "id": "inverse-galois-a5-oq-03",
+  "title": "The Easy Half of the Inverse Galois Problem: Sₙ and Aₙ over ℚ via Hilbert Irreducibility",
+  "slug": "inverse-galois-a5-oq-03",
+  "description": "Stages the classical 'easy half' of the Inverse Galois Problem — every symmetric group Sₙ and alternating group Aₙ is a Galois group over ℚ (Hilbert 1892) — extending the gallery's single A₅ realization to two infinite families. The route is: realize Sₙ (resp. Aₙ) over the function field ℚ(t) via the generic polynomial, then specialize the parameter to rational values preserving the Galois group by Hilbert's Irreducibility Theorem. The session's genuine machine-checked content is the realizability calculus: a clean 'is a Galois group over ℚ' predicate, its invariance under group isomorphism, and — the centerpiece — that realizability is closed under quotients by normal subgroups, proved from Mathlib's fundamental theorem of Galois theory (IsGalois.normalAutEquivQuotient). This quotient theorem is also the rigorous reason the Aₙ case needs an assumption separate from Sₙ (Aₙ ◁ Sₙ is normal, with quotient ℤ/2). The deep analytic core absent from Mathlib — the generic-polynomial Galois computation over a function field and HIT itself — is captured in exactly two honest axioms.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Hilbert%27s_irreducibility_theorem",
+    "date": "Hilbert 1892 (irreducibility theorem); Sₙ/Aₙ realizability classical; formalized 2026",
+    "status": "axiomatized",
+    "tags": [
+      "galois-theory",
+      "inverse-galois-problem",
+      "hilbert-irreducibility",
+      "symmetric-group",
+      "alternating-group",
+      "fundamental-theorem-galois-theory",
+      "function-field",
+      "open-problem"
+    ],
+    "proofRepoPath": "Proofs/InverseGaloisA5OQ03.lean",
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 2,
+    "assumptions": "2 axioms encoding the deep analytic core of the Hilbert route, both currently absent from Mathlib 4.26.0: (1) `symmetricGroup_realizableOverRat` — for every n, the generic degree-n polynomial realizes Sₙ over the rational function field ℚ(t₁,…,tₙ) (algebraically independent roots) and Hilbert's Irreducibility Theorem yields infinitely many rational specializations preserving the Galois group, hence Sₙ is realizable over ℚ; (2) `alternatingGroup_realizableOverRat` — adjoining √(disc) gives a family realizing Aₙ over ℚ(t), and HIT again specializes to ℚ. The two are genuinely independent: Aₙ ◁ Sₙ is a normal subgroup with quotient ℤ/2, so by the Galois correspondence (the proved `RealizableOverRat.quotient`) an Sₙ-realization realizes Aₙ only over the quadratic subfield fixed by Aₙ, not over ℚ. Neither the generic-polynomial Galois computation over a function field nor HIT (nor any thin-set / RatFunc-specialization API) exists in Mathlib; these are the genuinely multi-week deferred ACT. The headline theorems `symmetricGroup_isGaloisGroup` / `alternatingGroup_isGaloisGroup` restate these assumptions and carry their full weight — the entry is therefore axiomatized, not verified.",
+    "originalContributions": [
+      "RealizableOverRat: a clean predicate 'the finite group G occurs as Gal(K/ℚ) for some finite Galois extension K/ℚ', mirroring the parent A₅ entry's conclusion shape (a5_realizable_iso); reusable across inverse-Galois entries",
+      "RealizableOverRat.quotient: realizability is closed under quotients by normal subgroups — if G is a Galois group over ℚ and N ◁ G, so is G ⧸ N. Proved from Mathlib's finite fundamental theorem of Galois theory (IsGalois.normalAutEquivQuotient + IsGalois.of_fixedField_normal_subgroup + QuotientGroup.congr + Subgroup.Normal.map). The session's substantive machine-checked theorem",
+      "RealizableOverRat.congr: realizability transports along group isomorphisms",
+      "le_alternatingGroup_iff_forall_sign: the abstract 'square-discriminant criterion' at the permutation level — a subgroup of Sₙ lies in Aₙ iff every element is an even permutation (the permutation-group shadow of disc being a square; the Polynomial.Gal-level version is itself a Mathlib gap)",
+      "card_symmetricGroup / card_alternatingGroup_fin: the orders |Sₙ| = n! and 2·|Aₙ| = n!",
+      "quotient_Sn_An_realizableOverRat: a derived consistency result — the order-2 group Sₙ ⧸ Aₙ is realizable over ℚ, obtained from the Sₙ assumption through the proved quotient theorem (not a fresh assumption), witnessing that the interface is non-vacuous and compatible with Mathlib's FTGT"
+    ],
+    "dateAdded": "2026-06-19",
+    "lineCount": 205,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "mathlib_version": "4.26.0"
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "InverseGaloisA5OQ03",
+    "lineCount": 205,
+    "axiomCount": 2,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "path": "Proofs/InverseGaloisA5OQ03.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "inverse-galois-a5",
+      "relationship": "extends",
+      "description": "The parent realizes a single non-solvable group, A₅, via an explicit quintic. This entry generalizes to the infinite families Sₙ and Aₙ via Hilbert's irreducibility route, with RealizableOverRat mirroring the parent's a5_realizable_iso conclusion shape."
+    },
+    {
+      "targetId": "inverse-galois-a5-oq-02",
+      "relationship": "related",
+      "description": "Sibling staged-axiomatized entry (PSL(2,7) via Trinks' polynomial). Both isolate genuine machine-checked group/Galois theory as the session's content while honestly axiomatizing the analytic certificate absent from Mathlib."
+    }
+  ],
+  "sorries": 0,
+  "overview": {
+    "historicalContext": "The inverse Galois problem asks which finite groups arise as Gal(K/ℚ); it remains open in general. Its 'easy half' — that every symmetric group Sₙ and alternating group Aₙ is realizable over ℚ — was established by Hilbert in 1892 as the flagship application of his irreducibility theorem. The method: the generic degree-n polynomial Xⁿ − t₁Xⁿ⁻¹ + ⋯ ± tₙ has Galois group the full symmetric group Sₙ over the rational function field ℚ(t₁,…,tₙ) (its roots are algebraically independent), and Hilbert's Irreducibility Theorem guarantees that infinitely many rational specializations of the parameters preserve the Galois group; the alternating groups Aₙ follow by adjoining the square root of the discriminant. Shafarevich (1954) later settled all solvable groups; the non-solvable frontier (A₅, PSL(2,7), …) is approached one finite simple group at a time in the sibling gallery entries.",
+    "problemStatement": "Formalize a usable form of the easy half of the Inverse Galois Problem: every symmetric group Sₙ and alternating group Aₙ occurs as the Galois group of a finite Galois extension of ℚ. Stage the result so that the analytic core (generic-family Galois computation + Hilbert Irreducibility, both absent from Mathlib) is isolated as explicit assumptions, while the surrounding realizability framework — including its closure under normal quotients — is machine-checked.",
+    "proofStrategy": "Define RealizableOverRat G := 'G is the Galois group of some finite Galois extension of ℚ' (mirroring the parent A₅ entry). Prove the genuine framework: realizability is invariant under group isomorphism (congr) and closed under quotients by normal subgroups (quotient) — the latter via Mathlib's finite fundamental theorem of Galois theory, IsGalois.normalAutEquivQuotient, which identifies Gal(K/ℚ) ⧸ H with the Galois group of the fixed field of H. State the two analytic assumptions: Sₙ and Aₙ are each realizable over ℚ (generic family + HIT). Conclude the easy-half theorems as restatements, and derive ℤ/2 ≅ Sₙ ⧸ Aₙ realizable through the proved quotient theorem as a consistency check.",
+    "keyInsights": [
+      "Realizability over ℚ is closed under quotients by normal subgroups — a direct corollary of the fundamental theorem of Galois theory (the fixed field of a normal subgroup is Galois over the base, with Galois group the quotient). This is the session's substantive machine-checked theorem and an instance of structural progress (one reduction over enumeration).",
+      "The Aₙ case is genuinely NOT derivable from the Sₙ case: Aₙ ◁ Sₙ is a normal subgroup with quotient Sₙ ⧸ Aₙ ≅ ℤ/2, so by the Galois correspondence an Sₙ-realization K/ℚ realizes the quotient ℤ/2 over ℚ and realizes Aₙ only over the quadratic subfield K^{Aₙ} — not over ℚ. Pulling Aₙ down to ℚ requires the specialized discriminant to be a square, the separate square-disc family. Hence two honest, independent axioms.",
+      "Honest staging: the headline 'every Sₙ, Aₙ is a Galois group over ℚ' theorems are restatements of the two axioms and carry their full mathematical weight; the proved content is the realizability calculus, not the easy-half theorem. The entry is axiomatized, not verified.",
+      "Mathlib gaps confirmed by survey: Hilbert's Irreducibility Theorem is entirely absent (no thin sets, no RatFunc Galois-specialization API), and the 'disc is a square ⟺ Gal ⊆ Aₙ' correspondence at the Polynomial.Gal level is missing — though Mathlib does provide the finite FTGT quotient isomorphism used here.",
+      "The Lean formalization turns on a typeclass-instance subtlety: existential witnesses recovered by `obtain` do not register as instances, so the quotient theorem is proved through a private auxiliary lemma carrying genuine `[Field K] [Algebra ℚ K] [FiniteDimensional ℚ K] [IsGalois ℚ K]` instance binders (invoked via `@`), and the intermediate field's `Algebra ℚ` is supplied as its own `.algebra'` to avoid the ℚ-algebra instance diamond against `DivisionRing.toRatAlgebra`. This is reusable scaffolding for any 'realizable over ℚ' development that needs the fundamental theorem of Galois theory."
+    ],
+    "prerequisites": [
+      "Galois theory",
+      "the fundamental theorem of Galois theory (fixed fields, normal subgroups, quotients)",
+      "symmetric and alternating groups, the sign homomorphism",
+      "rational function fields and specialization",
+      "Hilbert's irreducibility theorem (assumed)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "overview-docstring",
+      "title": "Open Question, Route, and Proved-vs-Axiomatized Split",
+      "startLine": 3,
+      "endLine": 67,
+      "summary": "The easy half of IGP, the generic-family + HIT route, the Mathlib gaps, and the honest split between the proved realizability framework and the two analytic axioms."
+    },
+    {
+      "id": "realizability-predicate",
+      "title": "The Realizability Predicate and Its Calculus",
+      "startLine": 69,
+      "endLine": 112,
+      "summary": "RealizableOverRat ('G is a Galois group over ℚ'), its invariance under isomorphism (congr), and closure under normal quotients (quotient) via the fundamental theorem of Galois theory."
+    },
+    {
+      "id": "sign-criterion",
+      "title": "The Abstract Square-Discriminant (Sign) Criterion",
+      "startLine": 113,
+      "endLine": 124,
+      "summary": "A subgroup of Sₙ lies in Aₙ iff every element is an even permutation — the permutation-level form of the square-discriminant criterion."
+    },
+    {
+      "id": "group-orders",
+      "title": "Orders of Sₙ and Aₙ",
+      "startLine": 125,
+      "endLine": 137,
+      "summary": "|Sₙ| = n! and 2·|Aₙ| = n!."
+    },
+    {
+      "id": "assumptions",
+      "title": "The Two Assumptions (Generic Family + Hilbert Irreducibility)",
+      "startLine": 138,
+      "endLine": 167,
+      "summary": "The deep analytic core as two honest axioms: Sₙ realizable over ℚ, and (separately) Aₙ realizable over ℚ, with the docstring explaining why the Aₙ case is not derivable from Sₙ."
+    },
+    {
+      "id": "easy-half",
+      "title": "The Easy Half of the Inverse Galois Problem",
+      "startLine": 168,
+      "endLine": 192,
+      "summary": "Every Sₙ and Aₙ is a Galois group over ℚ (restatements of the axioms), plus the derived consistency result that ℤ/2 ≅ Sₙ ⧸ Aₙ is realizable via the proved quotient theorem."
+    }
+  ],
+  "conclusion": {
+    "summary": "The entry stages the easy half of the Inverse Galois Problem — every Sₙ and Aₙ is a Galois group over ℚ — as a Lean development that machine-checks the realizability calculus (the RealizableOverRat predicate, its isomorphism-invariance, and its closure under normal quotients via the fundamental theorem of Galois theory) while honestly isolating the two analytic ingredients absent from Mathlib (generic-family Galois computation + Hilbert Irreducibility) as exactly two axioms.",
+    "implications": "RealizableOverRat and its quotient/congr calculus are reusable infrastructure for inverse-Galois entries. The quotient theorem exemplifies structural progress (one fundamental-theorem reduction) and pins down precisely why the Sₙ and Aₙ realizations require independent analytic input. The framework is ready to absorb a future formalization of either axiom.",
+    "openQuestions": [
+      "Discharge `symmetricGroup_realizableOverRat`: formalize that the roots of the generic degree-n polynomial are algebraically independent and that Sₙ is the full Galois group over ℚ(t₁,…,tₙ), using Mathlib's MvPolynomial / symmetric-function machinery.",
+      "Formalize the 'disc is a square ⟺ Gal ⊆ Aₙ' correspondence at the Polynomial.Gal level (currently a Mathlib gap), connecting Polynomial.discr to the image of galActionHom and the sign homomorphism; this is a self-contained reusable contribution usable by the parent A₅ entry and oq-02.",
+      "State and attempt a restricted single-variable Hilbert Irreducibility Theorem (f(t,X) ∈ ℚ(t)[X] irreducible ⟹ infinitely many t₀ ∈ ℚ keep it irreducible) as an interface, replacing the HIT half of the two axioms.",
+      "Construct the explicit Aₙ square-discriminant family and connect it to `alternatingGroup_realizableOverRat`, mirroring the discriminant machinery already present in the parent InverseGaloisA5.lean."
+    ]
+  }
+}

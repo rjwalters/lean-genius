@@ -1,0 +1,201 @@
+{
+  "id": "chebyshev-pnt-bridge-oq-02",
+  "title": "Chebyshev Lower Bound: Real-Valued π(2n) ≥ (n·log 4 − log(2n+1)) / log(2n)",
+  "slug": "chebyshev-pnt-bridge-oq-02",
+  "description": "Derives the explicit real-valued lower bound on π(2n) from the Chebyshev integer inequality 4ⁿ ≤ (2n+1)·C(2n,n) ≤ (2n+1)·(2n)^{π(2n)}, completing the analytical bridge to the Prime Number Theorem.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Chebyshev_function",
+    "date": "2026-04-13",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "prime-counting",
+      "chebyshev",
+      "analytic-number-theory",
+      "logarithms",
+      "intermediate"
+    ],
+    "proofRepoPath": "Proofs/ChebyshevPNTBridgeOQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.log_pow",
+        "description": "Real.log (x ^ n) = n * Real.log x for n : ℕ",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.log_le_log",
+        "description": "Monotonicity of Real.log",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.log_pos",
+        "description": "Real.log x > 0 when x > 1",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "chebyshev_lower_log: n·log(4) − log(2n+1) ≤ π(2n)·log(2n) for n ≥ 1",
+      "chebyshev_lower_real: (n·log4 − log(2n+1)) / log(2n) ≤ π(2n) for n ≥ 1",
+      "chebyshev_lower_pos: the lower bound is always strictly positive (4ⁿ > 2n+1 by induction)",
+      "chebyshev_pi_interval: π(2n) lies in [(n·log4−log(2n+1))/log(2n), 2·(2n)·log4/log(2n)+√(2n)+1]"
+    ],
+    "dateAdded": "2026-04-13",
+    "axiomCount": 0,
+    "lineCount": 173,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Pafnuty Chebyshev (1821–1894), working in St. Petersburg, was the first mathematician to prove **explicit** bounds on $\\pi(x)$, the count of primes up to $x$. In his 1852 paper *Mémoire sur les nombres premiers*, he established that the ratio $\\pi(x)\\log(x)/x$ is always between 0.921 and 1.106 — roughly, primes occur neither too densely nor too sparsely. His method was elementary yet powerful: he exploited properties of the central binomial coefficient $C(2n,n)$ and the Chebyshev $\\psi$-function (the log-weighted prime sum) to derive double-sided bounds without complex analysis.\n\nHalf a century later, Hadamard and de la Vallée Poussin (independently, 1896) proved the **Prime Number Theorem**: $\\pi(x) \\sim x/\\log x$, i.e., the ratio approaches 1. Their proofs required the Riemann zeta function and complex analysis. Chebyshev's elementary technique could not achieve ratio 1, but it established the correct order of magnitude — a feat that stood for 44 years.\n\nThis Lean proof file is the analytical capstone of a chain: ChebyshevBounds.lean (integer inequalities on $C(2n,n)$) → ChebyshevPNTBridge.lean (power bounds on $\\pi(2n)$) → here (real-valued lower bound). The weaker constants $\\log 2 \\approx 0.693$ and $2\\log 4 \\approx 2.773$ (vs. Chebyshev's original 0.921 and 1.106) reflect the use of the simpler $4^n \\leq (2n+1)C(2n,n)$ bound in place of Chebyshev's more refined multi-term product construction.",
+    "problemStatement": "**Open Question from ChebyshevPNTBridge.lean**:\n\nThe integer inequality $4^n \\leq (2n+1) \\cdot (2n)^{\\pi(2n)}$ was proved in the main bridge file. But what explicit real-valued lower bound on $\\pi(2n)$ does this give? The answer requires taking logarithms and dividing by $\\log(2n)$.",
+    "text": "For all n ≥ 1: $(n \\cdot \\log 4 - \\log(2n+1)) / \\log(2n) \\leq \\pi(2n)$. Combined with the known upper bound, this gives the full Chebyshev interval for π(2n).",
+    "proofStrategy": "**Three-step chain**:\n1. $n \\cdot \\log 4 - \\log(2n+1) \\leq \\log C(2n,n)$ [ChebyshevBounds.log_centralBinom_ge]\n2. $\\log C(2n,n) \\leq \\pi(2n) \\cdot \\log(2n)$ [ChebyshevPNTBridge.centralBinom_le_pow_primeCounting + Real.log_pow]\n3. Divide by $\\log(2n) > 0$ [Real.log_pos, since $2n \\geq 2 > 1$]\n\nThe positivity lemma ($4^n > 2n+1$) is proved by induction: base $n=1$ gives $4 > 3$; inductive step uses $2(k+1)+1 = 2k+3 < 4(2k+1) \\leq 4 \\cdot 4^k = 4^{k+1}$.",
+    "keyInsights": [
+      "The lower bound chains two sandwich inequalities via log: 4^n ≤ (2n+1)·C(2n,n) ≤ (2n+1)·(2n)^π(2n).",
+      "Taking log and rearranging gives n·log4 - log(2n+1) ≤ π(2n)·log(2n), then dividing by log(2n) > 0.",
+      "The bound is always non-vacuous: 4^n > 2n+1 for all n ≥ 1, proved by elementary induction.",
+      "For large n, the lower bound grows as n·log(4)/log(2n) ~ log(2)·(n/log n), confirming π(x) ≳ log(2)·(x/log x).",
+      "The upper bound (from Erdos31PrimesDensity) and this lower bound together give the complete Chebyshev interval log(2) ≤ π(2n)·log(2n)/n ≤ 2·log(4) + o(1)."
+    ],
+    "prerequisites": [
+      "ChebyshevBounds.lean: log_centralBinom_ge, four_pow_le proof",
+      "ChebyshevPNTBridge.lean: centralBinom_le_pow_primeCounting",
+      "Real.log monotonicity and the log_pow identity"
+    ]
+  },
+  "sections": [
+    {
+      "id": "lower-log",
+      "title": "Lower Bound (Log Form)",
+      "startLine": 59,
+      "endLine": 75,
+      "summary": "chebyshev_lower_log: n·log4 − log(2n+1) ≤ π(2n)·log(2n). Chains log_centralBinom_ge with centralBinom_le_pow_primeCounting via Real.log_le_log, then applies Real.log_pow.",
+      "mathContext": "The key identity: log((2n)^{π(2n)}) = π(2n)·log(2n) by Real.log_pow. Combined with log(C(2n,n)) ≤ log((2n)^{π(2n)}) from C(2n,n) ≤ (2n)^{π(2n)}."
+    },
+    {
+      "id": "lower-real",
+      "title": "Lower Bound (Divided Form)",
+      "startLine": 87,
+      "endLine": 94,
+      "summary": "chebyshev_lower_real: (n·log4 − log(2n+1)) / log(2n) ≤ π(2n). Divides the log form by log(2n) > 0 using div_le_iff₀.",
+      "mathContext": "log(2n) > 0 since 2n ≥ 2 > 1 for n ≥ 1. The division is valid and the bound is non-trivial."
+    },
+    {
+      "id": "positivity",
+      "title": "Positivity of the Lower Bound",
+      "startLine": 103,
+      "endLine": 124,
+      "summary": "chebyshev_lower_pos: 0 < n·log4 − log(2n+1). Proved via 4^n > 2n+1 by induction.",
+      "mathContext": "Induction: n=1: 4>3. Step: 2(k+1)+1 = 2k+3 < 4(2k+1) ≤ 4·4^k = 4^{k+1}."
+    },
+    {
+      "id": "upper-reexport",
+      "title": "Upper Bound (Re-export)",
+      "startLine": 132,
+      "endLine": 134,
+      "summary": "chebyshev_upper_real: π(N) ≤ 2·N·log4/logN + √N + 1. Direct re-export from Erdos31PrimesDensity.",
+      "mathContext": "The upper bound was proved independently in Erdos31PrimesDensity as part of showing primes have density zero."
+    },
+    {
+      "id": "interval",
+      "title": "Combined Chebyshev Interval",
+      "startLine": 141,
+      "endLine": 149,
+      "summary": "chebyshev_pi_interval: π(2n) is sandwiched between the lower and upper Chebyshev bounds for n ≥ 2.",
+      "mathContext": "Combines chebyshev_lower_real (new) and chebyshev_upper_real (re-export) into a single interval statement."
+    },
+    {
+      "id": "numerics",
+      "title": "Numerical Verifications",
+      "startLine": 155,
+      "endLine": 168,
+      "summary": "native_decide verifications: π(2)=1, π(10)=4, π(20)=8, π(100)=25, π(1000)=168.",
+      "mathContext": "Ground truth values confirming the prime counting function values used informally above."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "chebyshev-pnt-bridge",
+      "relationship": "extends",
+      "description": "ChebyshevPNTBridge.lean proved the integer power bounds. This file converts them to real-valued bounds via logarithms."
+    },
+    {
+      "targetId": "chebyshev-pnt-bridge-oq-01",
+      "relationship": "sibling",
+      "description": "OQ01 proved the Kummer-theorem-based version of the central binomial bound. Both approaches give the same final integer inequality."
+    }
+  ],
+  "conclusion": {
+    "summary": "The explicit real-valued Chebyshev lower bound π(2n) ≥ (n·log4 − log(2n+1))/log(2n) is proved, completing the analytical bridge from integer power inequalities to explicit bounds on the prime counting function. Four theorems, 0 sorries, 0 axioms.",
+    "implications": "**Theoretical significance**: This closes the main open question from ChebyshevPNTBridge.lean: what explicit real bound does the integer inequality give? The answer is the Chebyshev lower bound, which confirms π(x) ≳ log(2)·(x/log x) with an explicit constant.\n\n**Combined with the upper bound**: The full Chebyshev interval [log(2)−ε, 2·log(4)+ε] for the ratio π(2n)·log(2n)/n is now completely formalized. This represents Chebyshev's 1852 result with weaker constants (0.693 vs 0.921 lower, 2.773 vs 1.106 upper).",
+    "openQuestions": [
+      "Can the lower constant be tightened from log(2) ≈ 0.693 to Chebyshev's original 0.921 using a more refined analysis of C(2n,n)?",
+      "Can the upper constant be tightened from 2·log(4) ≈ 2.773 to 1.106 using a finer sieve?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.ChebyshevBounds",
+      "Proofs.ChebyshevPNTBridge",
+      "Proofs.Erdos31PrimesDensity"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "ChebyshevPNTBridgeOQ02",
+    "lineCount": 173,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "substantiveTheoremCount": 4,
+    "duplicateTheorems": 0,
+    "definitionCount": 0,
+    "path": "Proofs/ChebyshevPNTBridgeOQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "P.L. Chebyshev",
+      "title": "Mémoire sur les nombres premiers",
+      "year": "1852",
+      "note": "Original proof of Chebyshev's bounds on π(x): 0.921 ≤ liminf π(x)log(x)/x ≤ limsup ≤ 1.106"
+    },
+    {
+      "authors": "G.H. Hardy, E.M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "1979",
+      "note": "Section 22.3: Elementary proof of Chebyshev's theorem using central binomial coefficients"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "chebyshev_lower_log",
+      "type": "core",
+      "description": "n·log(4) − log(2n+1) ≤ π(2n)·log(2n) for n ≥ 1",
+      "leanType": "(n : ℕ) → 1 ≤ n → (n : ℝ) * log 4 - log (2*n+1) ≤ ↑(primeCounting (2*n)) * log (2*n)"
+    },
+    {
+      "name": "chebyshev_lower_real",
+      "type": "core",
+      "description": "(n·log4 − log(2n+1)) / log(2n) ≤ π(2n) for n ≥ 1",
+      "leanType": "(n : ℕ) → 1 ≤ n → (n*log4 - log(2n+1)) / log(2n) ≤ primeCounting(2n)"
+    },
+    {
+      "name": "chebyshev_lower_pos",
+      "type": "lemma",
+      "description": "The lower bound is positive: n·log(4) > log(2n+1) for n ≥ 1",
+      "leanType": "(n : ℕ) → 1 ≤ n → 0 < n * log 4 - log (2*n+1)"
+    },
+    {
+      "name": "chebyshev_pi_interval",
+      "type": "corollary",
+      "description": "π(2n) lies in the Chebyshev interval for n ≥ 2",
+      "leanType": "(n : ℕ) → 2 ≤ n → lower ≤ primeCounting(2n) ∧ primeCounting(2n) ≤ upper"
+    }
+  ],
+  "sorries": 0
+}

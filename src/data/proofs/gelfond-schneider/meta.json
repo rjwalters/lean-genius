@@ -1,0 +1,254 @@
+{
+  "id": "gelfond-schneider",
+  "title": "Gelfond-Schneider Theorem",
+  "slug": "gelfond-schneider",
+  "description": "If a and b are algebraic numbers with a not equal to 0, 1 and b irrational, then a^b is transcendental. Resolves Hilbert's 7th Problem.",
+  "leanFile": {
+    "path": "Proofs/GelfondSchneider.lean",
+    "imports": [
+      "Mathlib.RingTheory.Algebraic.Basic",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "Mathlib.Analysis.SpecialFunctions.Complex.Analytic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Complex",
+      "Mathlib.Data.Real.Pi.Bounds",
+      "Mathlib.Data.Complex.Exponential",
+      "Mathlib.Data.Real.Irrational",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Complex",
+      "scoped"
+    ],
+    "namespace": "GelfondSchneider",
+    "lineCount": 557,
+    "axiomCount": 6,
+    "sorries": 0,
+    "definitionCount": 2,
+    "theoremCount": 11
+  },
+  "meta": {
+    "author": "Gelfond & Schneider (1934)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Gelfond%E2%80%93Schneider_theorem",
+    "date": "1934",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/GelfondSchneider.lean",
+    "tags": [
+      "transcendence",
+      "number-theory",
+      "hilbert-problems",
+      "intermediate"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2025-12-29",
+    "hilbertNumber": 7,
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Transcendental",
+        "description": "Definition of transcendental numbers",
+        "module": "Mathlib.RingTheory.Algebraic.Basic"
+      },
+      {
+        "theorem": "IsAlgebraic",
+        "description": "Definition of algebraic numbers",
+        "module": "Mathlib.RingTheory.Algebraic.Basic"
+      },
+      {
+        "theorem": "Irrational",
+        "description": "Definition of irrational numbers",
+        "module": "Mathlib.Data.Real.Irrational"
+      },
+      {
+        "theorem": "Complex.cpow",
+        "description": "Complex exponentiation a^b = exp(b · log a)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Complex"
+      },
+      {
+        "theorem": "irrational_sqrt_two",
+        "description": "√2 is irrational",
+        "module": "Mathlib.Data.Real.Irrational"
+      },
+      {
+        "theorem": "Real.pi",
+        "description": "The constant π",
+        "module": "Mathlib.Data.Real.Pi.Bounds"
+      }
+    ],
+    "originalContributions": [
+      "gelfond_schneider: axiomatized complex Gelfond-Schneider theorem",
+      "gelfond_schneider_real: proved real version from complex via type coercions",
+      "sqrt_two_algebraic: proved √2 algebraic (root of X² - 2)",
+      "two_pow_sqrt_two_transcendental: proved 2^√2 transcendental",
+      "e_pow_pi_transcendental: proved e^π transcendental via (-1)^(-i)",
+      "sqrt_two_pow_sqrt_two_transcendental: proved (√2)^(√2) transcendental",
+      "two_pow_cbrt_two_transcendental: proved 2^(∛2) transcendental",
+      "log_of_algebraic_transcendental: log of algebraic ≠ 1 is transcendental"
+    ],
+    "axiomCount": 6,
+    "lineCount": 557,
+    "assumptions": "6 axioms: real_cpow_eq_rpow, neg_one_cpow_neg_I, cbrt_two_algebraic, cbrt_two_irrational, log_algebraic_transcendental, gelfond_schneider. See Lean source for complete statements.",
+    "theoremCount": 11,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "**Gelfond-Schneider Theorem — Hilbert's 7th Problem**\n\nIn 1900, David Hilbert posed his famous 23 problems at the International Congress of Mathematicians. Problem #7 asked: *Is $a^b$ always transcendental when $a$ is algebraic ($\\neq 0, 1$) and $b$ is irrational algebraic?*\n\n**Historical Development:**\n- **1900**: Hilbert posed the problem, citing $2^{\\sqrt{2}}$ as the motivating example\n- **1929**: Aleksandr Gelfond proved special cases (e.g., $e^\\pi$)\n- **1934**: Gelfond (*Sur le septième problème de Hilbert*) and Theodor Schneider (*Transzendenzuntersuchungen periodischer Funktionen*) independently proved the full theorem\n- **1966**: Alan Baker generalized to linear forms in logarithms, earning the Fields Medal (1970)\n\n**Famous corollaries**: $2^{\\sqrt{2}}$ (the Gelfond-Schneider constant) and $e^\\pi$ (Gelfond's constant) are both transcendental. The $e^\\pi$ result uses the clever observation $e^\\pi = (-1)^{-i}$ from Euler's identity.",
+    "problemStatement": "**Theorem (Gelfond-Schneider):** If $a, b \\in \\mathbb{C}$ are algebraic with $a \\neq 0, 1$ and $b \\notin \\mathbb{Q}$ (irrational), then $a^b$ is transcendental.\n\nHere $a^b = \\exp(b \\cdot \\log a)$ for a chosen branch of the logarithm.\n\n**Corollaries formalized:**\n1. $2^{\\sqrt{2}}$ is transcendental (Hilbert's original example)\n2. $e^\\pi = (-1)^{-i}$ is transcendental (Gelfond's constant)\n3. $(\\sqrt{2})^{\\sqrt{2}}$ is transcendental\n4. $2^{\\sqrt[3]{2}}$ is transcendental",
+    "text": "If a and b are algebraic numbers with a not equal to 0, 1 and b irrational, then a^b is transcendental. Resolves Hilbert's 7th Problem.",
+    "proofStrategy": "The complex version is axiomatized (the full proof requires Siegel's lemma, auxiliary function construction, and analytic function theory). The real version `gelfond_schneider_real` is **proved** from the complex version by:\n\n1. **Lifting**: Embed $\\mathbb{R} \\hookrightarrow \\mathbb{C}$, preserving algebraicity\n2. **Irrationality transfer**: Show $b \\notin \\mathbb{Q}$ in $\\mathbb{R}$ implies $b \\notin \\mathbb{Q}$ in $\\mathbb{C}$\n3. **Power compatibility**: Use `real_cpow_eq_rpow` to equate real and complex powers\n4. **Transcendence transfer**: Push transcendence back from $\\mathbb{C}$ to $\\mathbb{R}$\n\nCorollaries are proved by verifying the three hypotheses (algebraic base, algebraic irrational exponent).",
+    "keyInsights": [
+      "**Transcendence from algebraic operations**: $a^b$ can be transcendental even when both $a$ and $b$ are algebraic — the algebraic numbers are NOT closed under irrational exponentiation.",
+      "**Euler's identity trick for $e^\\pi$**: Since $e^{i\\pi} = -1$, we get $e^\\pi = (-1)^{-i}$. Now $a = -1$ is algebraic ($\\neq 0, 1$) and $b = -i$ is algebraic but irrational (it's not even real), so Gelfond-Schneider applies directly.",
+      "**Real-to-complex lifting**: The proof strategy lifts from $\\mathbb{R}$ to $\\mathbb{C}$ and back. This requires careful handling of coercions in Lean: `Complex.ofReal` preserves algebraicity, and `Real.rpow` equals `Complex.cpow` for positive real bases.",
+      "**Baker's generalization**: Baker (1966) proved that linear forms $\\beta_0 + \\beta_1 \\log \\alpha_1 + \\cdots + \\beta_n \\log \\alpha_n$ are transcendental (with effective bounds), subsuming both Hermite-Lindemann and Gelfond-Schneider.",
+      "**Why irrational algebraic is crucial**: Rational $b$ makes $a^b$ algebraic. Transcendental $b$ provides no algebraic structure to exploit. Algebraic irrational is the \"Goldilocks\" condition that makes the auxiliary function method work."
+    ],
+    "prerequisites": [
+      "Complex analysis (entire functions, order of growth)",
+      "Transcendence theory (algebraic independence, auxiliary functions)",
+      "Linear algebra over number fields (linear forms in logarithms)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-setup",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 113,
+      "summary": "Imports Mathlib's algebraic number theory (`IsAlgebraic`, `Transcendental`), complex exponentiation (`Complex.cpow`), irrationality (`Irrational`), and special functions. Sets `noncomputable section` and opens relevant namespaces.",
+      "mathContext": "Imports Mathlib's `IsAlgebraic`, `Transcendental`, and complex exponential definitions. The Gelfond-Schneider theorem (1934): if $a$ and $b$ are algebraic numbers with $a \\neq 0, 1$ and $b$ irrational, then $a^b$ is transcendental. Resolves Hilbert's seventh problem."
+    },
+    {
+      "id": "axiom-catalog",
+      "title": "Axiom Catalog",
+      "startLine": 126,
+      "endLine": 202,
+      "summary": "Seven technical axioms bridging real and complex analysis: `real_algebraic_to_complex_algebraic`, `real_cpow_eq_rpow`, `transcendental_of_complex_eq_real`, Euler's identity $(-1)^{-i} = e^\\pi$, cube root properties, and the Hermite-Lindemann corollary for $\\log$.",
+      "mathContext": "Seven technical axioms bridging real and complex analysis: `real_algebraic_to_complex_algebraic` (algebraic over $\\mathbb{R}$ implies algebraic over $\\mathbb{C}$), complex exponential and logarithm properties, and the definition of $a^b := e^{b \\log a}$ for complex numbers."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Gelfond-Schneider Theorem",
+      "startLine": 228,
+      "endLine": 276,
+      "summary": "States the complex Gelfond-Schneider theorem as an axiom: $a^b$ is transcendental for algebraic $a \\neq 0, 1$ and algebraic irrational $b$. **Proves** the real version `gelfond_schneider_real` by lifting to $\\mathbb{C}$ and transferring transcendence back.",
+      "mathContext": "The Gelfond-Schneider theorem stated as an axiom: for $a, b \\in \\mathbb{C}$ algebraic with $a \\neq 0, 1$ and $b \\notin \\mathbb{Q}$, the power $a^b$ is transcendental. This implies: $2^{\\sqrt{2}}$ (Gelfond-Schneider constant), $e^\\pi = (-1)^{-i}$ (Gelfond's constant), and $(\\sqrt{2})^{\\sqrt{2}}$ are all transcendental."
+    },
+    {
+      "id": "corollaries",
+      "title": "Famous Corollaries",
+      "startLine": 283,
+      "endLine": 396,
+      "summary": "Proves $2^{\\sqrt{2}}$, $e^\\pi = (-1)^{-i}$, $(\\sqrt{2})^{\\sqrt{2}}$, and $2^{\\sqrt[3]{2}}$ are transcendental. Each follows by verifying the hypotheses of `gelfond_schneider_real`. The $e^\\pi$ proof uses Euler's identity cleverly.",
+      "mathContext": "Concrete transcendence results: $2^{\\sqrt{2}}$ ($a = 2$, $b = \\sqrt{2}$), $e^\\pi = (-1)^{-i}$ ($a = -1 = e^{i\\pi}$, $b = -i$), $(\\sqrt{2})^{\\sqrt{2}}$ (Gelfond-Schneider constant), and $2^{\\sqrt[3]{2}}$. Each instantiates the main theorem with specific algebraic bases and irrational exponents."
+    },
+    {
+      "id": "connections",
+      "title": "Connections to Hermite-Lindemann",
+      "startLine": 397,
+      "endLine": 446,
+      "summary": "Discusses the relationship: $a^b = e^{b \\log a}$, so Hermite-Lindemann (if $\\alpha$ is algebraic nonzero, $e^\\alpha$ is transcendental) implies $\\log$ of algebraic $\\neq 1$ is transcendental. States Baker's 1966 generalization to linear forms in logarithms.",
+      "mathContext": "The identity $a^b = e^{b \\log a}$ connects Gelfond-Schneider to Hermite-Lindemann: if $\\alpha$ is algebraic and nonzero, $e^\\alpha$ is transcendental. Gelfond-Schneider handles the case where the exponent is algebraic irrational rather than algebraic nonzero, extending the transcendence landscape."
+    },
+    {
+      "id": "proof-techniques",
+      "title": "Proof Techniques (Pedagogical)",
+      "startLine": 447,
+      "endLine": 513,
+      "summary": "Describes the Gelfond-Schneider method: (1) assume $a^b$ algebraic, (2) construct auxiliary function $f(z) = \\sum p(m,n) a^{mz} a^{bnz}$, (3) apply Siegel's lemma for integer coefficients, (4) count zeros via analytic function theory, (5) derive contradiction.",
+      "mathContext": "The Gelfond-Schneider proof method: (1) assume $a^b$ is algebraic, (2) construct an auxiliary function $f(z) = \\sum P_{ij} a^{iz} z^j$ vanishing to high order at $0, 1, 2, \\ldots, T$, (3) use Schwarz's lemma to bound $|f|$, (4) derive a contradiction from the growth rate vs. vanishing. This auxiliary function technique became standard in transcendence theory."
+    },
+    {
+      "id": "open-problems",
+      "title": "Open Problems",
+      "startLine": 514,
+      "endLine": 557,
+      "summary": "Lists open questions: is $e^e$ transcendental? $\\pi^e$? $2^e$? States Schanuel's conjecture: if $z_1, \\ldots, z_n$ are $\\mathbb{Q}$-linearly independent, then $\\mathrm{trdeg}_{\\mathbb{Q}} \\mathbb{Q}(z_i, e^{z_i}) \\geq n$.",
+      "mathContext": "Open questions: is $e^e$ transcendental? Is $\\pi^e$? Is $2^e$? Schanuel's conjecture would resolve all of these: it asserts that if $\\alpha_1, \\ldots, \\alpha_n$ are $\\mathbb{Q}$-linearly independent complex numbers, then $\\text{trdeg}_{\\mathbb{Q}}(\\alpha_1, \\ldots, \\alpha_n, e^{\\alpha_1}, \\ldots, e^{\\alpha_n}) \\geq n$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "Hermite proved e is transcendental (1873); Gelfond-Schneider extends transcendence theory to exponential expressions"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "technique",
+      "description": "Both use analytic methods; Baker's generalization of Gelfond-Schneider has applications to prime distribution"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Abel-Ruffini (1824) sits below Gelfond-Schneider (1934) in the expressibility hierarchy: Abel-Ruffini shows certain polynomial roots are not expressible by radicals (a field-theoretic barrier), while Gelfond-Schneider shows $\\alpha^\\beta$ escapes the algebraic numbers entirely for algebraic $\\alpha \\neq 0,1$ and irrational algebraic $\\beta$ — a strictly stronger transcendence barrier"
+    },
+    {
+      "targetId": "hermite-lindemann",
+      "relationship": "foundational",
+      "description": "Hermite-Lindemann ($e^\\alpha$ transcendental for algebraic $\\alpha \\neq 0$) is the precursor. Gelfond-Schneider handles $\\alpha^\\beta = e^{\\beta\\ln\\alpha}$ for algebraic irrational $\\beta$ — a different slice of the transcendence landscape"
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "related",
+      "description": "Gelfond-Schneider proves $e^\\pi = (-1)^{-i}$ is transcendental ($\\alpha = -1$, $\\beta = -i$), an elegant alternative to direct methods. The transcendence of $\\pi$ itself follows from Hermite-Lindemann"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "related",
+      "description": "The irrationality of $\\sqrt{2}$ is the first level of the expressibility hierarchy. Gelfond-Schneider operates at the algebraic/transcendental boundary: $2^{\\sqrt{2}}$ is transcendental despite both base and exponent being algebraic"
+    },
+    {
+      "targetId": "liouville-theorem",
+      "relationship": "foundational",
+      "description": "Liouville's Diophantine approximation theorem (1844) gave the first transcendence results. Gelfond-Schneider uses a different technique (auxiliary functions) but both exploit algebraic vs transcendental approximation gaps"
+    },
+    {
+      "targetId": "algebraic-numbers-countable-oq-04",
+      "relationship": "extended-by",
+      "description": "Baker's theorem (1966, Fields Medal) is the vast generalization of Gelfond-Schneider: if log α₁, ..., log αₙ are linearly independent over ℚ, they remain linearly independent over Q̄. Gelfond-Schneider handles n=2: log(α^β)/log α = β (algebraic irrational) is the Q̄-linear dependence that Baker's theorem forbids. Baker's proof uses auxiliary function methods pioneered by Gelfond-Schneider but extended to multiple logarithms simultaneously, enabling effective Diophantine bounds with applications to Catalan's conjecture and class number problems."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Gelfond-Schneider theorem resolves Hilbert's 7th Problem: if $a$ is algebraic ($\\neq 0, 1$) and $b$ is algebraic irrational, then $a^b$ is transcendental. The formalization axiomatizes the complex version and proves the real version plus four corollaries ($2^{\\sqrt{2}}$, $e^\\pi$, $(\\sqrt{2})^{\\sqrt{2}}$, $2^{\\sqrt[3]{2}}$), demonstrating that the algebraic numbers are not closed under irrational exponentiation.",
+    "implications": "Baker's 1966 generalization to linear forms in logarithms (earning the Fields Medal) has had profound applications: effective solutions to Thue equations, Catalan's conjecture (proved by Mihailescu 2002), and effective bounds in Diophantine approximation. The connection $a^b = e^{b \\log a}$ unifies Gelfond-Schneider with Hermite-Lindemann.",
+    "openQuestions": [
+      "Is $e^e$ transcendental? Almost certainly yes, but beyond current methods.",
+      "Is $\\pi^e$ transcendental? Neither Gelfond-Schneider nor Hermite-Lindemann applies (both base and exponent are transcendental).",
+      "Does Schanuel's conjecture hold? It would subsume Hermite-Lindemann, Gelfond-Schneider, and imply $e + \\pi$ and $e \\cdot \\pi$ are transcendental.",
+      "Can the Gelfond-Schneider proof be fully formalized in Lean with Siegel's lemma and analytic zero-counting?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Gel'fond, Aleksandr O.",
+      "title": "Sur le septième problème de Hilbert",
+      "year": "1934",
+      "venue": "Izvestiya Akademii Nauk SSSR, Seriya Matematicheskaya 7(4), 623–634",
+      "note": "Independent proof that a^b is transcendental when a is algebraic (≠0,1) and b is algebraic irrational"
+    },
+    {
+      "authors": "Schneider, Theodor",
+      "title": "Transzendenzuntersuchungen periodischer Funktionen",
+      "year": "1934",
+      "venue": "Journal für die reine und angewandte Mathematik 172, 65–69",
+      "note": "Independent proof via different methods, published the same year as Gel'fond's — both solved Hilbert's 7th problem"
+    },
+    {
+      "authors": "Baker, Alan",
+      "title": "Transcendental Number Theory",
+      "year": "1975",
+      "venue": "Cambridge University Press",
+      "note": "Contains the proof and its vast generalization to linear forms in logarithms, for which Baker won the Fields Medal"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "gelfond_schneider",
+      "type": "core",
+      "description": "If a is algebraic != 0,1 and b is algebraic irrational, then a^b is transcendental",
+      "leanType": "IsAlgebraic Q a -> a != 0 -> a != 1 -> IsAlgebraic Q b -> Irrational b -> Transcendental Q (a^b)"
+    }
+  ],
+  "sorries": 0
+}

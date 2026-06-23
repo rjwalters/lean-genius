@@ -1,0 +1,117 @@
+{
+  "slug": "erdos-400",
+  "title": "Erdős #400",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For any $k\\geq 2$ let $g_k(n)$ denote the maximum value of\\[(a_1+\\cdots+a_k)-n\\]where $a_1,\\ldots,a_k$ are integers such that $a_1!\\cdots a_k! \\mid n!$. Can one show that\\[\\sum_{n\\leq x}g_k(n) \\sim c_k x\\log x\\]for some constant $c_k$? Is it true that there is a constant $c_k$ such that for almost all $n<x$ we have\\[g_k(n)=c_k\\log x+o(\\log x)?\\]\n\n\n\nErd\\H{o}s and Graham write that it is easy to show that $g_k(n) \\ll_k \\log n$ always, but the best possible constant is unknown.\n\nSee also [401].",
+    "plain": "For k >= 2, study the maximum excess sum(a_i)-n over tuples whose factorial product divides n!, and ask for average and almost-all asymptotics.",
+    "whyMatters": [
+      "Links factorial divisibility constraints with extremal excess functions and average-order questions.",
+      "The Lean file proves the boundedness needed for the sSup definition and basic nonnegativity/Fin-2 correspondence without axioms or sorries.",
+      "The asymptotic Erdos-Graham questions remain Prop definitions, not proved results."
+    ],
+    "plainEnglish": "For k >= 2, study the maximum excess sum(a_i)-n over tuples whose factorial product divides n!, and ask for average and almost-all asymptotics."
+  },
+  "knownResults": {
+    "proven": [
+      "`FactorialDivides`, `sumExcess`, and `gExcess` formalize the factorial-divisibility excess function.",
+      "`ErdosProblem400a`, `ErdosProblem400b`, and `ErdosProblem400` state the average and almost-all asymptotic targets as Prop definitions.",
+      "`factor_le_of_factorial_divides` proves each tuple entry is bounded by n when the factorial product divides n! and n >= 1.",
+      "`excess_set_bddAbove`, `zero_mem_excess_set`, `gExcess_nonneg`, and `g2_binomial_connection` are proved."
+    ],
+    "open": [
+      "The average and almost-all asymptotic statements are not proved.",
+      "The Erdos-Graham logarithmic upper bound is comment-only in this file.",
+      "The k=2 supremum-attainment and average-growth comments are not active theorems."
+    ],
+    "goal": "Reflect that the file is now zero-axiom and zero-sorry while keeping the asymptotic problem open."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-18T00:00:00Z",
+    "iteration": 2,
+    "focus": "The file has 5 theorem declarations, 6 definitions, 0 axioms, and 0 sorries; the old metadata still mentioned a sorry, but the current source is clean.",
+    "blockers": [
+      "No active theorem proves the average asymptotic.",
+      "No active theorem proves the almost-all concentration statement.",
+      "The Erdos-Graham upper-bound comment is not formalized."
+    ],
+    "nextAction": "Add a precise theorem statement for the logarithmic upper bound or prove a small-k/small-n characterization of `gExcess`.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "CURRENT: 5 theorem declarations, 6 definitions, 0 axioms, 0 sorries. The sSup support and g_2 correspondence are proved; the asymptotic Erdos-Graham questions remain open Prop definitions.",
+    "builtItems": [
+      "`FactorialDivides`, `sumExcess`, and `gExcess`",
+      "`ErdosProblem400a`, `ErdosProblem400b`, and `ErdosProblem400`",
+      "`factor_le_of_factorial_divides`",
+      "`excess_set_bddAbove` and `zero_mem_excess_set`",
+      "`gExcess_nonneg` and `g2_binomial_connection`"
+    ],
+    "insights": [
+      "The current source has no active axioms and no sorries; earlier knowledge text was stale.",
+      "`gExcess` is defined as an integer sSup, so boundedness and nonempty-support lemmas are essential.",
+      "The trivial tuple places 0 in the excess set and gives nonnegativity.",
+      "The asymptotic statements are present as definitions and have not been proved."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Formalize the Erdos-Graham logarithmic upper bound as an active theorem or axiom interface.",
+      "Prove concrete values of `gExcess` for small k,n.",
+      "Investigate whether the k=2 supremum-attainment comment can become a theorem."
+    ],
+    "markdown": "# Erdős #400 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any $k\\geq 2$ let $g_k(n)$ denote the maximum value of\\[(a_1+\\cdots+a_k)-n\\]where $a_1,\\ldots,a_k$ are integers such that $a_1!\\cdots a_k! \\mid n!$. Can one show that\\[\\sum_{n\\leq x}g_k(n) \\sim c_k x\\log x\\]for some constant $c_k$? Is it true that there is a constant $c_k$ such that for almost all $n<x$ we have\\[g_k(n)=c_k\\log x+o(\\log x)?\\]\n\n\n\nErd\\H{o}s and Graham write that it is easy to show that $g_k(n) \\ll_k \\log n$ always, but the best possible constant is unknown.\n\nSee also [401].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #401\n- Problem #399\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "factorials",
+    "divisibility",
+    "asymptotic-analysis",
+    "open-problem"
+  ],
+  "relatedProofs": [
+    "erdos-4",
+    "erdos-40",
+    "erdos-400"
+  ],
+  "references": {
+    "papers": [
+      "Erdos and Graham factorial-divisibility problem"
+    ],
+    "urls": [
+      "https://erdosproblems.com/400"
+    ],
+    "mathlib": [
+      "Nat.factorial",
+      "Fin.prod_univ_two",
+      "Finset.sum",
+      "sSup",
+      "Filter.Tendsto"
+    ]
+  },
+  "started": "2026-01-13T02:35:40.569Z",
+  "lastUpdate": "2026-05-18T00:00:00Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos400Problem.lean",
+      "filename": "Erdos400Problem.lean",
+      "lineCount": 171,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos400Problem.lean"
+    }
+  ]
+}

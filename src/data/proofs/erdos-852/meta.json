@@ -1,0 +1,165 @@
+{
+  "id": "erdos-852",
+  "title": "Erdős Problem #852: Maximal Runs of Distinct Consecutive Prime Gaps",
+  "slug": "erdos-852",
+  "description": "Let h(x) be the maximal length of a sequence of consecutive distinct prime gaps among primes below x. Is h(x) > (log x)^c? Is h(x) = o(log x)? Brun's sieve shows h(x) → ∞.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/852",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos852Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "prime-gaps",
+      "sieve-theory",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 852,
+    "erdosUrl": "https://erdosproblems.com/852",
+    "erdosProblemStatus": "open",
+    "axiomCount": 3,
+    "lineCount": 247,
+    "assumptions": "3 axioms: brun_sieve_divergence (Brun's sieve result), erdos852_lower_bound (OPEN conjecture), erdos852_upper_bound (OPEN conjecture). The function h(x) = maxDistinctRun and its properties (witness, optimality, bound) are now fully defined and proved.",
+    "mathlib_version": "4.26.0",
+    "dateUpdated": "2026-03-28",
+    "theoremCount": 25,
+    "definitionCount": 5
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this question about the fine structure of prime gaps around 1985, building on decades of work on the distribution of primes. The prime gaps $d_n = p_{n+1} - p_n$ encode the local behavior of the prime counting function $\\pi(x)$. Cramér (1936) conjectured $\\max_{p_n \\leq x} d_n \\sim (\\log x)^2$, while Maier (1985) showed that primes exhibit unexpected irregularities in short intervals — the 'Maier phenomenon.' The function $h(x)$ introduced here measures a different aspect: the variability of consecutive gaps. Hardy and Littlewood's prime $k$-tuples conjecture (1923) predicts which gap patterns occur, and Brun's sieve (1919) — originally developed to bound twin primes — provides the key tool showing $h(x) \\to \\infty$. The problem connects to Gallagher's 1976 result that gaps between consecutive primes follow a Poisson distribution on average, and to the Erdős–Rankin construction (1938/1962) of large gaps. The interplay between the lower bound $(\\log x)^c$ and upper bound $o(\\log x)$ would pin down $h(x)$ as growing faster than any power of $\\log\\log x$ but slower than $\\log x$ — a narrow window reflecting the subtle balance between regularity and irregularity in the prime sequence.",
+    "problemStatement": "Let $d_n = p_{n+1} - p_n$ be the $n$-th prime gap. Define $h(x)$ as the maximal $k$ such that for some $n$ with $p_n < x$, the consecutive gaps $d_n, d_{n+1}, \\ldots, d_{n+k-1}$ are all distinct. Is $h(x) > (\\log x)^c$ for some $c > 0$? Is $h(x) = o(\\log x)$?",
+    "text": "Let h(x) be the maximal length of a sequence of consecutive distinct prime gaps among primes below x. Is h(x) > (log x)^c? Is h(x) = o(log x)? Brun's sieve shows h(x) → ∞.",
+    "proofStrategy": "The formalization axiomatizes the prime sequence $p_n$ with primality and strict monotonicity, then defines prime gaps $d_n = p_{n+1} - p_n$ and proves their positivity. Distinct-gap runs are defined combinatorially and shown to be downward-closed (a prefix of a distinct run is distinct). The function $h(x)$ is axiomatized with witness and optimality axioms. Five theorems are proved in Lean: gap positivity, monotonicity of $p_n$, $p_n \\geq 2$, $d_0 = 1$, $h(x) \\geq 1$ for $x \\geq 3$, $h$ is non-decreasing, and Brun's divergence in filter form. The open conjectures use `Real.log`, real exponentiation, and `Asymptotics.IsLittleO` for rigorous formalization.",
+    "keyInsights": [
+      "**Consecutive gap variability**: Unlike problems about gap size ($\\max d_n$), this asks about gap *diversity* — how many consecutive gaps can all be different. This is a combinatorial constraint on the local prime distribution.",
+      "**Brun's sieve divergence**: Brun's 1919 sieve, originally developed for twin primes ($\\sum 1/p_{\\text{twin}} < \\infty$), implies $h(x) \\to \\infty$: arbitrarily long distinct-gap runs exist. The Lean proof converts this to `Filter.Tendsto atTop atTop`.",
+      "**Narrow growth window**: If both conjectures hold, $h(x)$ grows faster than $(\\log x)^c$ for some $c > 0$ but slower than $\\log x$. This places $h(x)$ in a narrow band — much faster than $\\log\\log x$ but sub-logarithmic.",
+      "**Pigeonhole ceiling**: Since gaps among primes $p \\leq x$ satisfy $d_n \\leq x$, at most $x$ distinct positive values exist, giving the trivial bound $h(x) \\leq x$. The conjectured $o(\\log x)$ is vastly stronger.",
+      "**Connection to Poisson model**: Gallagher (1976) showed normalized prime gaps follow a Poisson distribution on average. If gaps were truly independent Poisson, $h(x)$ would grow like $\\log x / \\log\\log x$ — between the two conjectured bounds."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "States Erdős Problem #852: with $d_n=p_{n+1}-p_n$, $h(x)$ is the maximal run length such that consecutive gaps $d_n,\\dots,d_{n+h-1}$ (for some $p_n<x$) are all distinct. Erdős asked: (1) is $h(x)>(\\log x)^c$? (2) is $h(x)=o(\\log x)$? Brun's sieve gives $h(x)\\to\\infty$. Status OPEN. Imports prime/asymptotics; opens `Filter`/`Asymptotics`/`Real`.",
+      "mathContext": "$h(x)=$ max run of distinct consecutive prime gaps below $x$. Open: $(\\log x)^c<h(x)=o(\\log x)$?"
+    },
+    {
+      "id": "prime-sequence",
+      "title": "Prime Sequence and Gaps (Proved from Mathlib)",
+      "startLine": 27,
+      "endLine": 65,
+      "summary": "Defines `nthPrime` (via `Nat.nth`) and `primeGap` and PROVES (no axioms — formerly axiomatized) their properties: `nthPrime_prime`, `nthPrime_strictMono`, `nthPrime_initial` ($p_0=2,p_1=3$), `primeGap_pos`, `nthPrime_mono`, `nthPrime_ge_two`, `primeGap_zero` ($d_0=1$).",
+      "mathContext": "$p_n=$ Nat.nth prime, $d_n=p_{n+1}-p_n>0$; $p_0=2,p_1=3,d_0=1$ (all proved)."
+    },
+    {
+      "id": "distinct-runs",
+      "title": "Distinct Gap Runs",
+      "startLine": 66,
+      "endLine": 90,
+      "summary": "Defines `IsDistinctRun n k` (gaps $d_n,\\dots,d_{n+k-1}$ pairwise distinct) and PROVES `isDistinctRun_zero`/`_one` and downward-closure `isDistinctRun_prefix`/`_le`.",
+      "mathContext": "`IsDistinctRun n k`: the $k$ gaps from index $n$ are pairwise distinct; downward-closed in $k$."
+    },
+    {
+      "id": "h-function",
+      "title": "h(x): Maximal Distinct Run Length (Defined)",
+      "startLine": 91,
+      "endLine": 147,
+      "summary": "Defines `maxDistinctRun x` $=h(x)=\\sup$ of achievable distinct run lengths $\\leq x$ (formerly 4 axioms, now defined). Private `validRunLengths` infrastructure (bddAbove, nonempty, monotone, the ℕ-sSup-membership lemma) feeds `maxDistinctRun_witness` (the sup is achieved) and `maxDistinctRun_optimal` (maximality).",
+      "mathContext": "$h(x)=\\sup\\{k\\leq x:\\exists n,p_n<x,\\ \\text{IsDistinctRun }n\\,k\\}$ (defined, with witness + optimality proved)."
+    },
+    {
+      "id": "properties",
+      "title": "Properties of h(x)",
+      "startLine": 148,
+      "endLine": 166,
+      "summary": "PROVES `maxDistinctRun_ge_one` ($h(x)\\geq1$ for $x\\geq3$) and `maxDistinctRun_mono` ($x\\leq y\\Rightarrow h(x)\\leq h(y)$).",
+      "mathContext": "$h(x)\\geq1$ ($x\\geq3$); $h$ non-decreasing."
+    },
+    {
+      "id": "brun",
+      "title": "Brun's Sieve Result",
+      "startLine": 167,
+      "endLine": 182,
+      "summary": "States the AXIOM `brun_sieve_divergence` ($h(x)\\to\\infty$: for any $C$, eventually $h(x)\\geq C$) and PROVES `maxDistinctRun_tendsto_atTop` (the filter form $h(x)\\to\\infty$).",
+      "mathContext": "Axiom (Brun): $h(x)\\to\\infty$ as $x\\to\\infty$."
+    },
+    {
+      "id": "conjectures",
+      "title": "Erdős Conjectures (OPEN)",
+      "startLine": 183,
+      "endLine": 210,
+      "summary": "States the two OPEN conjectures as AXIOMS: `erdos852_lower_bound` ($\\exists c>0,\\ (\\log x)^c<h(x)$ eventually) and `erdos852_upper_bound` ($h(x)=o(\\log x)$). PROVES `erdos852_upper_eventually` (the $\\varepsilon\\log x$ form) and `erdos852_growth_rate` (the combined statement).",
+      "mathContext": "Axioms (open): $(\\log x)^c<h(x)$ and $h(x)=o(\\log x)$ — growth strictly between."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Upper Bound",
+      "startLine": 211,
+      "endLine": 247,
+      "summary": "PROVES `maxDistinctRun_le_x` ($h(x)\\leq x$, from the definition) and `distinct_run_bounded_by_max_gap` (a distinct run of length $k$ with all gaps $\\leq M$ has $k\\leq M$, by pigeonhole via `Finset.card_image_of_injOn`).",
+      "mathContext": "$h(x)\\leq x$; a distinct run with gaps $\\leq M$ has length $\\leq M$ (pigeonhole)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #852 formalizes two open questions about the growth rate of maximal distinct-gap runs among consecutive primes. The function h(x) = maxDistinctRun is defined as sSup of valid run lengths with witness, optimality, and bound all proved (previously 4 axioms). Only 3 axioms remain: Brun's sieve divergence and the two open conjectures.",
+    "implications": "**Theoretical Significance**: Resolution would quantify the local variability of prime gaps — a fundamental question at the intersection of sieve theory and probabilistic number theory.\n\nThe conjectured $o(\\log x)$ upper bound would mean prime gaps become repetitive at the $\\log x$ scale, while the $(\\log x)^c$ lower bound would ensure substantial diversity persists. This connects to Maier's phenomenon (unexpected irregularities in prime distribution), the Hardy–Littlewood $k$-tuples conjecture (which gap patterns occur), and Gallagher's Poisson model for normalized gaps.",
+    "openQuestions": [
+      "Is $h(x) > (\\log x)^c$ for some constant $c > 0$? Even $c = 1/2$ would be significant.",
+      "Is $h(x) = o(\\log x)$? If so, what is the correct order — perhaps $\\log x / \\log\\log x$?",
+      "Does the Poisson model for prime gaps predict the correct growth rate of $h(x)$?",
+      "Can the Maynard–Tao method (bounded gaps) or GPY sieve provide lower bounds on $h(x)$?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Analysis.Asymptotics.Defs",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Filter",
+      "Asymptotics",
+      "Real"
+    ],
+    "namespace": null,
+    "lineCount": 247,
+    "axiomCount": 3,
+    "theoremCount": 25,
+    "definitionCount": 5,
+    "path": "Proofs/Erdos852Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1055",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-gaps"
+    },
+    {
+      "targetId": "erdos-1137",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-gaps"
+    },
+    {
+      "targetId": "erdos-375",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-gaps"
+    }
+  ],
+  "sorries": 0
+}

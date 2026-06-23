@@ -1,0 +1,16 @@
+{
+  "problem_number": 796,
+  "title": "Second-Order Terms for g_k(n)",
+  "status": "open",
+  "solvers": [],
+  "source_url": "https://erdosproblems.com/796",
+  "overview": "Let g_k(n) be the largest |A| for A ⊆ {1,...,n} such that every m has < k solutions to m = a₁a₂ with a₁ < a₂ ∈ A. Is g₃(n) = (log log n / log n)·n + (c + o(1))·n/(log n)² for some constant c?",
+  "sections": [],
+  "conclusion": "OPEN - First-order asymptotics known: g₃(n) ~ (log log n / log n)·n (Erdős 1964). Bounds on second-order term known: c₁·n/(log n)² ≤ E₃(n) ≤ c₂·n/(log n)². The exact constant c (if it exists) remains unknown.",
+  "references": [
+    "Erdős (1964) - 'On the multiplicative representation of integers'",
+    "Erdős (1969) - Discussion of second-order terms"
+  ],
+  "related_problems": [425],
+  "tags": ["number-theory", "multiplicative-representation", "asymptotics", "open"]
+}

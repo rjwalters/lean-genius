@@ -1,0 +1,165 @@
+[
+  {
+    "id": "ann-e1042-header",
+    "proofId": "erdos-1042",
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1042: Polynomial Lemniscates**\n\nFor a polynomial f(z) = ∏ᵢ(z - zᵢ) with roots in a closed set F ⊆ ℂ, the lemniscate {z : |f(z)| < 1} can have multiple connected components. The transfinite diameter (logarithmic capacity) of F and its geometry determine how many.\n\nPosed by Erdős-Herzog-Piranian (1958), completely solved by Ghosh-Ramachandran (2024) after 65+ years.\n\n**Key results:** d < 1 gives ≤ (1-c)n components; d ≤ 1/4 connected gives 1 component; d = 1 can give n components. The answer depends on geometry, not just diameter.",
+    "mathContext": "Lemniscates are level sets of polynomials, studied since Bernoulli. The transfinite diameter equals the logarithmic capacity, connecting this to potential theory.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Polynomial lemniscates",
+      "Transfinite diameter",
+      "Potential theory"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "polynomials over the complex numbers",
+      "point-set topology (connected components)"
+    ]
+  },
+  {
+    "id": "ann-e1042-transfinite",
+    "proofId": "erdos-1042",
+    "range": {
+      "startLine": 31,
+      "endLine": 49
+    },
+    "type": "definition",
+    "title": "Transfinite Diameter",
+    "content": "**transfiniteDiameter F** is axiomatized as a real-valued function on sets F ⊆ ℂ, equal to the logarithmic capacity.\n\nKey properties:\n- `transfiniteDiameter_nonneg`: always ≥ 0\n- `disc_transfinite_diameter`: disc of radius r has diameter r\n- `interval_transfinite_diameter`: [-1,1] has diameter 1/2\n\nThe formal definition is ρ(F) = lim_{n→∞} sup_{z₁,...,zₙ∈F} (∏_{i<j} |zᵢ-zⱼ|)^{1/C(n,2)}, but this requires Chebyshev constant machinery not available in Mathlib.",
+    "mathContext": "The transfinite diameter equals the Chebyshev constant and the logarithmic capacity — three equivalent formulations of the 'size' of a compact set in ℂ. This equivalence is a deep theorem of Fekete and Szegő.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Logarithmic capacity",
+      "Chebyshev constant",
+      "Fekete-Szegő theorem"
+    ],
+    "prerequisites": [
+      "real analysis (limits and suprema)",
+      "complex analysis",
+      "potential theory basics",
+      "Lean 4 axiom declarations"
+    ]
+  },
+  {
+    "id": "ann-e1042-lemniscates",
+    "proofId": "erdos-1042",
+    "range": {
+      "startLine": 51,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "Lemniscates and Component Counting",
+    "content": "**PolynomialWithRoots F** is a structure with degree, roots (a function Fin n → ℂ), and a proof that all roots lie in F.\n\n**lemniscate f** = {z : |f(z)| < 1}, the sublevel set of a polynomial.\n\n**numComponents S** and **maxComponents F n** are axiomatized: numComponents counts connected components of a set, maxComponents gives the maximum achievable by degree-n polynomials with roots in F.",
+    "mathContext": "The connected components of a lemniscate are bounded open regions around clusters of roots. When roots are well-separated, each root contributes roughly one component.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Connected components",
+      "Sublevel sets",
+      "Root separation"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "point-set topology (open sets, connectedness)",
+      "Lean 4 structures and dependent types"
+    ]
+  },
+  {
+    "id": "ann-e1042-questions",
+    "proofId": "erdos-1042",
+    "range": {
+      "startLine": 71,
+      "endLine": 86
+    },
+    "type": "definition",
+    "title": "The Original Questions",
+    "content": "**mainQuestion1**: For F with transfinite diameter 1 not contained in any disc of radius 1, can the lemniscate have n connected components?\n\n**mainQuestion2**: For F with transfinite diameter < 1, must the lemniscate have at most (1-c)n components for some c > 0 depending on F?\n\nBoth are defined as Prop values, not asserted — the answers come from the Ghosh-Ramachandran axioms.",
+    "mathContext": "Question 2 asks whether smaller capacity forces fewer components. The factor (1-c) means a constant fraction of the maximum n is lost.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Open problems",
+      "Component bounds",
+      "Capacity constraints"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "asymptotic notation",
+      "Lean 4 Prop and proposition-as-data"
+    ]
+  },
+  {
+    "id": "ann-e1042-ehp",
+    "proofId": "erdos-1042",
+    "range": {
+      "startLine": 88,
+      "endLine": 101
+    },
+    "type": "concept",
+    "title": "Erdős-Herzog-Piranian (1958)",
+    "content": "**ehp_disc_result**: The unit disc achieves n components for all n > 0. This is the classical positive result.\n\n**roots_of_unity_example**: The specific polynomial f(z) = zⁿ + 1 achieves this. Its roots are the nth roots of -1, evenly spaced on the unit circle. Each root generates one small component of the lemniscate.\n\nThis shows the maximum n components IS achievable when F is the unit disc (transfinite diameter 1).",
+    "mathContext": "The roots of zⁿ + 1 are e^{iπ(2k+1)/n} for k = 0,...,n-1. When |z - zₖ| is small, |f(z)| ≈ |z - zₖ| · ∏_{j≠k} |zₖ - zⱼ|, which is < 1 in a small disc around zₖ.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Roots of unity",
+      "Unit disc",
+      "Maximum components"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "roots of unity and the geometry of the complex plane",
+      "elementary estimates of polynomial moduli"
+    ]
+  },
+  {
+    "id": "ann-e1042-gr-solution",
+    "proofId": "erdos-1042",
+    "range": {
+      "startLine": 103,
+      "endLine": 124
+    },
+    "type": "concept",
+    "title": "Ghosh-Ramachandran Solution (2024)",
+    "content": "Three axioms capturing the complete 2024 solution:\n\n**ghosh_ramachandran_small_diameter**: If 0 < d < 1, at most (1-c)n components for some c > 0. This confirms Question 2.\n\n**ghosh_ramachandran_small_connected**: If d ≤ 1/4 and F is connected, only 1 component. A dramatic strengthening for connected sets.\n\n**ghosh_ramachandran_diameter_one_examples**: For d = 1, there exist F with n components for infinitely many n. This partially answers Question 1.\n\nThe 1/4 threshold in the connected case is sharp — related to the capacity of the Mandelbrot set.",
+    "mathContext": "The solution uses tools from potential theory (Green's function, equilibrium measure), the argument principle for component counting, and careful estimates of polynomial norms.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ghosh-Ramachandran 2024",
+      "Potential theory",
+      "Component counting"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "potential theory (Green's function, equilibrium measure)",
+      "the argument principle",
+      "Lean 4 axiom declarations"
+    ]
+  },
+  {
+    "id": "ann-e1042-counterexample",
+    "proofId": "erdos-1042",
+    "range": {
+      "startLine": 126,
+      "endLine": 132
+    },
+    "type": "concept",
+    "title": "Geometry vs Diameter Counterexample",
+    "content": "**diameter_not_sufficient**: The crucial insight that the answer cannot depend on transfinite diameter alone.\n\nF₁ = disc of radius 1/2: transfinite diameter = 1/2, always gives 1 component\nF₂ = interval [-1,1]: transfinite diameter = 1/2, can give ≥ 0.01n components\n\nSame diameter, completely different behavior! The disc is 'round' (all directions equal), while the interval is 'thin' (extends in one direction), allowing Chebyshev-like polynomials to create many components.",
+    "mathContext": "The interval [-1,1] supports Chebyshev polynomials Tₙ(x), whose lemniscates have n components corresponding to the n intervals where |Tₙ(x)| < 1. The disc has rotational symmetry that prevents this.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Chebyshev polynomials",
+      "Geometric shape",
+      "Counterexample"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "Chebyshev polynomials and approximation theory",
+      "potential theory (logarithmic capacity)"
+    ]
+  }
+]

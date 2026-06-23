@@ -1,0 +1,144 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "fair-games-theorem",
+    "range": {
+      "startLine": 1,
+      "endLine": 87
+    },
+    "type": "concept",
+    "title": "Fair Games Theorem: Wiedijk #62",
+    "content": "**The Fair Games Theorem (Optional Stopping)**:\n\nIn a fair game (martingale), **no betting strategy can change the expected value**.\n\n**Theorem**: If $X$ is a martingale and $\\tau$ is a bounded stopping time:\n$$E[X_\\tau] = E[X_0]$$\n\n**Intuition**: A gambler playing fair bets:\n- Each bet has expected value 0\n- Can choose when to stop based on observed outcomes\n- **Result**: No matter how clever the strategy, expected winnings = 0\n\n**Why \"quit while you're ahead\" fails**:\n- Waiting for a good outcome doesn't increase expected value\n- \"Hot streaks\" and \"due numbers\" are fallacies\n- Casinos win because games are supermartingales (unfair)",
+    "mathContext": "Optional Stopping Theorem: if $(X_n)$ is a martingale and $\\tau$ is a bounded stopping time, then $E[X_\\tau] = E[X_0]$. Formally: $E[f_\\tau] = E[f_\\pi]$ for $\\tau \\leq \\pi$ both bounded.",
+    "summary": "Optional Stopping Theorem: E[X_τ] = E[X_0] for bounded stopping times in a martingale (fair game).",
+    "significance": "key",
+    "relatedConcepts": [
+      "martingale theory",
+      "optional stopping theorem",
+      "gambling mathematics"
+    ],
+    "prerequisites": [
+      "probability spaces",
+      "conditional expectation",
+      "filtrations"
+    ]
+  },
+  {
+    "id": "ann-martingale",
+    "proofId": "fair-games-theorem",
+    "range": {
+      "startLine": 88,
+      "endLine": 117
+    },
+    "type": "definition",
+    "title": "Martingale Definition",
+    "content": "**Martingale = Fair Game**:\n\nA sequence $X_0, X_1, X_2, \\ldots$ is a martingale if:\n1. Each $X_n$ is integrable ($E[|X_n|] < \\infty$)\n2. $X_n$ is measurable w.r.t. information at time $n$\n3. $E[X_{n+1} | X_0, \\ldots, X_n] = X_n$ (fair game property)\n\n```lean\ndef isFairGame (f : ℕ → Ω → ℝ) (ℱ : Filtration ℕ m) (μ : Measure Ω) : Prop :=\n  MeasureTheory.Martingale f ℱ μ\n```\n\n**Example**: Cumulative sum of fair coin flips forms a martingale. $E[\\text{flip}] = 0$ implies $E[\\text{sum}] = 0$ regardless of when we stop.",
+    "mathContext": "$E[X_{n+1} \\mid \\mathcal{F}_n] = X_n$ a.s.; the filtration $(\\mathcal{F}_n)$ captures available information at each time step — a process adapted to $(\\mathcal{F}_n)$ cannot use future information.",
+    "summary": "Martingale definition: E[X_{n+1} | F_n] = X_n, with filtration capturing available information at each step.",
+    "significance": "key",
+    "relatedConcepts": [
+      "filtration (sigma-algebra sequence)",
+      "conditional expectation E[·|F_n]",
+      "adapted stochastic process"
+    ],
+    "prerequisites": [
+      "measure theory",
+      "sigma-algebras",
+      "conditional expectation"
+    ]
+  },
+  {
+    "id": "ann-stopping-time",
+    "proofId": "fair-games-theorem",
+    "range": {
+      "startLine": 118,
+      "endLine": 162
+    },
+    "type": "definition",
+    "title": "Stopping Times",
+    "content": "**Stopping Time = When to Stop**:\n\nA stopping time $\\tau$ is when the decision to stop at time $n$ depends only on information available at time $n$.\n\n**Valid Examples**:\n- First time wealth exceeds $100\n- First time cumulative winnings are positive\n\n**Invalid Examples**:\n- Time of maximum value (requires future knowledge)\n- Time just before a losing bet\n\n```lean\ndef isValidStoppingStrategy (τ : Ω → ℕ) (ℱ : Filtration ℕ m) : Prop :=\n  MeasureTheory.IsStoppingTime ℱ τ\n\ndef isBoundedStoppingTime (τ : Ω → ℕ) (N : ℕ) : Prop :=\n  ∀ ω, τ ω ≤ N\n```\n\n**Key Constraint**: Bounded stopping times prevent \"play until you win\" strategies.",
+    "mathContext": "$\\{\\tau \\leq n\\} \\in \\mathcal{F}_n$ for all $n$ (measurability condition); bounded: $\\exists N, \\forall \\omega: \\tau(\\omega) \\leq N$. Boundedness is essential — unbounded stopping times can violate $E[X_\\tau] = E[X_0]$.",
+    "summary": "Stopping times: decision to stop at time n depends only on F_n; boundedness prevents unbounded play.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsStoppingTime (Mathlib)",
+      "bounded stopping time",
+      "measurability of stopping decision"
+    ],
+    "prerequisites": [
+      "filtrations",
+      "measurability",
+      "martingale definition"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "fair-games-theorem",
+    "range": {
+      "startLine": 163,
+      "endLine": 268
+    },
+    "type": "concept",
+    "title": "The Fair Games Theorem",
+    "content": "**Fair Games Theorem** (Wiedijk #62):\n\n```lean\ntheorem fair_games_theorem\n    (hf : Martingale f ℱ μ)\n    (hτ : IsStoppingTime ℱ τ) (hπ : IsStoppingTime ℱ π)\n    (hτπ : ∀ ω, τ ω ≤ π ω) (hπN : ∀ ω, π ω ≤ N) :\n    ∫ ω, f (τ ω) ω ∂μ = ∫ ω, f (π ω) ω ∂μ\n```\n\n**Proof Idea**:\n- Martingale is both sub- and supermartingale\n- Submartingale: $E[f_\\tau] \\leq E[f_\\pi]$\n- Supermartingale: $E[f_\\tau] \\geq E[f_\\pi]$\n- Together: $E[f_\\tau] = E[f_\\pi]$\n\n**Corollary**: $E[X_\\tau] = E[X_0]$ for any bounded $\\tau$.",
+    "mathContext": "$E[f_\\tau] = E[f_\\pi]$ for $\\tau \\leq \\pi$ bounded; proved via submartingale inequality $E[f_\\tau] \\leq E[f_\\pi]$ and supermartingale inequality $E[f_\\tau] \\geq E[f_\\pi]$, then `le_antisymm`.",
+    "summary": "E[f_τ] = E[f_π] for bounded τ ≤ π, proved via sub/supermartingale sandwich and le_antisymm.",
+    "significance": "key",
+    "relatedConcepts": [
+      "submartingale inequality E[f_τ] ≤ E[f_π]",
+      "supermartingale inequality E[f_τ] ≥ E[f_π]",
+      "le_antisymm for equality"
+    ],
+    "prerequisites": [
+      "martingale definition",
+      "stopping times",
+      "Mathlib.Probability.Martingale.OptionalStopping"
+    ]
+  },
+  {
+    "id": "ann-characterization",
+    "proofId": "fair-games-theorem",
+    "range": {
+      "startLine": 269,
+      "endLine": 349
+    },
+    "type": "concept",
+    "title": "Submartingale Characterization via Stopped Values",
+    "content": "Part IV establishes a deep characterization: a process is a submartingale if and only if stopped expectations are monotone ($E[f_\\tau] \\leq E[f_\\pi]$ for all bounded $\\tau \\leq \\pi$). This connects the local conditional expectation property to a global stopping-time property.\n\n**Forward direction** (`submartingale_characterization`, $\\Rightarrow$): If $f$ is a submartingale, then $E[f_\\tau] \\leq E[f_\\pi]$ for all bounded $\\tau \\leq \\pi$. This comes directly from Mathlib's `expected_stoppedValue_mono`.\n\n**Converse direction** (`submartingale_of_stoppedValue_mono`, $\\Leftarrow$): This is the file's single axiom. It states that if stopped expectations are monotone for all bounded stopping times, then $f$ is a submartingale. The proof requires showing that global stopping-time monotonicity implies the local conditional expectation inequality $E[f_{n+1} | \\mathcal{F}_n] \\geq f_n$.\n\n**Martingale corollary** (`martingale_equality_characterization`): For martingales, both sub- and supermartingale inequalities hold, giving equality $E[f_\\tau] = E[f_\\pi]$ — this is just `fair_games_theorem` restated.",
+    "mathContext": "$\\text{Submartingale}(f) \\Leftrightarrow \\forall \\tau \\leq \\pi \\leq N,\\; E[f_\\tau] \\leq E[f_\\pi]$.\n\nThe $\\Rightarrow$ direction is Mathlib's `expected_stoppedValue_mono`. The $\\Leftarrow$ direction (axiomatized) requires constructing specific stopping times that isolate the conditional expectation at each step.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "submartingale characterization",
+      "stopped value monotonicity",
+      "conditional expectation"
+    ],
+    "prerequisites": [
+      "submartingale definition",
+      "stopping times",
+      "expected_stoppedValue_mono"
+    ]
+  },
+  {
+    "id": "ann-applications",
+    "proofId": "fair-games-theorem",
+    "range": {
+      "startLine": 350,
+      "endLine": 417
+    },
+    "type": "concept",
+    "title": "Applications Section (Placeholder Theorems)",
+    "content": "**Note**: This section contains 5 placeholder theorems that prove `(1:ℕ)+1=2` with substantive docstrings discussing applications. The docstrings sketch gambler's ruin probabilities, betting system analysis, option pricing, and Doob's maximal inequality, but **none of these results are formalized** — the theorem bodies are trivial.\n\nThe mathematical content described in the docstrings is accurate and represents natural extensions of the Optional Stopping Theorem:\n- **Gambler's ruin**: $P(\\text{success}) = W_0/(W_0+a)$ follows from $E[W_\\tau] = W_0$\n- **Betting systems fail**: bounded stopping times force $E[\\text{final}] = E[\\text{initial}]$\n- **Option pricing**: arbitrage-free prices are martingales under risk-neutral measure\n- **Doob's inequality**: $P(\\max_{n\\leq N} f_n \\geq \\lambda) \\leq E[f_N]/\\lambda$\n\nThese represent future formalization targets, not current achievements.",
+    "summary": "5 placeholder theorems (prove 1+1=2) with substantive docstrings about applications — not yet formalized.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "gambler's ruin",
+      "betting systems",
+      "Doob's maximal inequality",
+      "option pricing"
+    ],
+    "prerequisites": [
+      "Optional Stopping Theorem (fair_games_theorem)"
+    ],
+    "mathContext": "The docstrings describe genuine mathematical applications of the Optional Stopping Theorem, but the formal content is trivial (`(1:ℕ)+1=2 := rfl`). These are placeholders for future formalization."
+  }
+]

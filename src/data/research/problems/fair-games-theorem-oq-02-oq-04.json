@@ -1,0 +1,186 @@
+{
+  "slug": "fair-games-theorem-oq-02-oq-04",
+  "title": "Biased Gambler's Ruin: Ruin Probability for p ≠ 1/2",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "theorem biased_gamblers_ruin (k N : ℕ) (p : ℝ) (hp : 0 < p ∧ p < 1 ∧ p ≠ 1/2) (hk : 0 < k ∧ k < N) : ruinProbability k N p = ((p/(1-p))^(N-k) - 1) / ((p/(1-p))^N - 1)",
+    "plain": "For a biased random walk with step probability p ≠ 1/2, the probability of ruin (reaching 0 before N) starting from k is (1-(q/p)^k)/(1-(q/p)^N) where q = 1-p. This generalizes the fair-games-theorem-oq-02 result for p = 1/2.",
+    "whyMatters": [
+      "The practically important case: real casino games have p < 1/2",
+      "Formula shows exponential growth in disadvantage as p decreases below 1/2",
+      "Demonstrates geometric martingale technique as complement to linear martingale"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "fair-games-theorem-oq-02: Fair case p=1/2: ruin probability (N-k)/N (verified, 0 sorries)",
+      "fair-games-theorem-oq-02-oq-01: Optional Stopping Theorem",
+      "Standard: (q/p)^{Sₙ} is a martingale for biased walk"
+    ],
+    "open": [
+      "Biased ruin probability formula: (1-(q/p)^k)/(1-(q/p)^N)",
+      "Expected ruin time for biased walk"
+    ],
+    "goal": "Prove biased ruin probability using geometric martingale (q/p)^{Sₙ} and OST"
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-21",
+    "iteration": 1,
+    "focus": "Read FairGamesTheoremOQ02.lean to understand walk definition and martingale framework",
+    "blockers": [],
+    "nextAction": "Read proofs/Proofs/FairGamesTheoremOQ02.lean to find random walk definition parameterized by p",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: biasedRuinProbLose_alt_formula proved, 0 sorries, 0 axioms",
+    "builtItems": [
+      "biasedRuinProbWin_pos: 0 < P(win) for r<1 — proofs/Proofs/FairGamesTheoremOQ02OQ04.lean:115",
+      "biasedRuinProbWin_lt_one: P(win) < 1 for r<1 — line 126",
+      "biasedRuinProbWin_strictMono: monotone in k for r<1 — line 151",
+      "key_sum_ineq: k*Σ_{i<N}r^i < N*Σ_{i<k}r^i for r in (0,1) — line 181",
+      "favorable_beats_fair: P(win) > k/N when p>1/2 — line 246",
+      "biasedRuinProbLose_alt_formula: P(lose)=(s^{N-k}-1)/(s^N-1), s=p/q — line 296"
+    ],
+    "insights": [
+      "Geometric martingale: E[(q/p)^{Sₙ₊₁}|Sₙ=k] = p(q/p)^{k+1} + q(q/p)^{k-1} = (q/p)^k[q+p] = (q/p)^k ✓",
+      "OST at τ: E[(q/p)^{S_τ}] = (q/p)^k, with S_τ ∈ {0,N}",
+      "Solving: u·1 + (1-u)·(q/p)^N = (q/p)^k gives u = ((q/p)^k - (q/p)^N)/(1-(q/p)^N)",
+      "For p < 1/2: q/p > 1, so ruin probability u → 1 as N → ∞ (inevitable ruin)",
+      "Concrete examples (p=2/3, p=1/3) with norm_num verification need explicit rfl rewrites for struct fields k, N",
+      "omega cannot see structure field projections like B.hN; must use \"have := B.hN; omega\"",
+      "Alternative formula P(lose) = (s^{N-k}-1)/(s^N-1) where s=p/q=r^{-1}: proved via inv_pow + field_simp"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Submitted as PR on feature/researcher-8 branch"
+    ]
+  },
+  "tags": [
+    "probability",
+    "markov-chains",
+    "gambler-ruin",
+    "biased-random-walk"
+  ],
+  "relatedProofs": [
+    "fair-games-theorem",
+    "fair-games-theorem-oq-01",
+    "fair-games-theorem-oq-02",
+    "fair-games-theorem-oq-02-oq-01",
+    "fair-games-theorem-oq-02-oq-01-oq-01",
+    "fair-games-theorem-oq-02-oq-04",
+    "fair-games-theorem-oq-03"
+  ],
+  "references": {
+    "papers": [
+      "Feller, W. An Introduction to Probability Theory and Its Applications, Vol. 1, §XIV.1"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Real.rpow",
+      "MeasureTheory.Martingale",
+      "Mathlib.Probability.ProbabilityMassFunction"
+    ]
+  },
+  "started": "2026-04-21T20:38:00.000Z",
+  "lastUpdate": "2026-04-21T20:38:00.000Z",
+  "significance": 7,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/FairGamesTheorem.lean",
+      "filename": "FairGamesTheorem.lean",
+      "lineCount": 418,
+      "theoremCount": 5,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheorem.lean"
+    },
+    {
+      "path": "Proofs/FairGamesTheoremOQ01.lean",
+      "filename": "FairGamesTheoremOQ01.lean",
+      "lineCount": 633,
+      "theoremCount": 48,
+      "axiomCount": 0,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/FairGamesTheoremOQ02.lean",
+      "filename": "FairGamesTheoremOQ02.lean",
+      "lineCount": 160,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/FairGamesTheoremOQ02OQ01.lean",
+      "filename": "FairGamesTheoremOQ02OQ01.lean",
+      "lineCount": 292,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheoremOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/FairGamesTheoremOQ02OQ01OQ01.lean",
+      "filename": "FairGamesTheoremOQ02OQ01OQ01.lean",
+      "lineCount": 362,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheoremOQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/FairGamesTheoremOQ02OQ04.lean",
+      "filename": "FairGamesTheoremOQ02OQ04.lean",
+      "lineCount": 346,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheoremOQ02OQ04.lean"
+    },
+    {
+      "path": "Proofs/FairGamesTheoremOQ03.lean",
+      "filename": "FairGamesTheoremOQ03.lean",
+      "lineCount": 331,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/FairGamesTheoremOQ03Aristotle.lean",
+      "filename": "FairGamesTheoremOQ03Aristotle.lean",
+      "lineCount": 166,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheoremOQ03Aristotle.lean"
+    }
+  ]
+}

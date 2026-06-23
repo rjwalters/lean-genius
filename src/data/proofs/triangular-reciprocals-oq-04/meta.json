@@ -1,0 +1,175 @@
+{
+  "id": "triangular-reciprocals-oq-04",
+  "title": "Reciprocals of Tetrahedral Numbers Sum to 3/2",
+  "slug": "triangular-reciprocals-oq-04",
+  "description": "The reciprocals of the tetrahedral numbers sum to 3/2: ∑_{n=1}^∞ 1/Tet_n = 3/2, where Tet_n = n(n+1)(n+2)/6. Equivalently ∑_{n=0}^∞ 6/((n+1)(n+2)(n+3)) = 3/2, proved by depth-2 telescoping.",
+  "meta": {
+    "author": "Classical (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Tetrahedral_number",
+    "date": "Classical",
+    "status": "verified",
+    "tags": [
+      "analysis",
+      "series",
+      "figurate-numbers",
+      "telescoping",
+      "intermediate"
+    ],
+    "proofRepoPath": "Proofs/TriangularReciprocalsOQ04.lean",
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-checked: 0 sorries, 0 axiom declarations, 0 structure-encoded assumptions.",
+    "mathlibDependencies": [
+      {
+        "theorem": "hasSum_iff_tendsto_nat_of_nonneg",
+        "description": "A nonnegative series HasSum its limit iff the partial sums converge",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Order"
+      },
+      {
+        "theorem": "tendsto_one_div_add_atTop_nhds_zero_nat",
+        "description": "1/(n+1) → 0 as n → ∞",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      },
+      {
+        "theorem": "squeeze_zero",
+        "description": "Squeeze theorem for convergence to zero",
+        "module": "Mathlib.Topology.Order.Bornology"
+      }
+    ],
+    "originalContributions": [
+      "Tetrahedral reciprocals ∑ 6/((n+1)(n+2)(n+3)) = 3/2 via depth-2 telescoping",
+      "Depth-2 partial fraction 6/((n+1)(n+2)(n+3)) = g(n) - g(n+1) with g(n) = 3/((n+1)(n+2))",
+      "Closed-form partial sum 3/2 - 3/((N+1)(N+2)) by induction",
+      "tsum form of the tetrahedral reciprocal sum"
+    ],
+    "dateAdded": "2026-06-20",
+    "lineCount": 149,
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "The tetrahedral numbers Tet_n = n(n+1)(n+2)/6 = C(n+2,3) count points in a triangular pyramid and are the third column of Pascal's triangle (figurate numbers of dimension 3). They were studied by the Pythagoreans and appear in Nicomachus's *Introduction to Arithmetic* (c. 100 CE). The reciprocal sum ∑ 1/Tet_n = 3/2 is the depth-2 analogue of the classical triangular-reciprocal identity ∑ 2/(n(n+1)) = 2 (Leibniz, 1673, via telescoping). The general fact that ∑_{n≥1} 1/C(n+k-1,k) = k/(k-1) for k ≥ 2 was known to Leibniz and the Bernoullis; the case k = 3 gives 3/2. The telescoping technique was systematized by Johann Bernoulli around 1702.",
+    "problemStatement": "**Tetrahedral Reciprocals**:\n\n$$\\sum_{n=1}^{\\infty} \\frac{1}{\\mathrm{Tet}_n} = \\sum_{n=1}^{\\infty} \\frac{6}{n(n+1)(n+2)} = \\frac{3}{2}, \\qquad \\mathrm{Tet}_n = \\frac{n(n+1)(n+2)}{6}.$$",
+    "text": "The reciprocals of the tetrahedral numbers sum to 3/2: ∑_{n=1}^∞ 1/Tet_n = 3/2, where Tet_n = n(n+1)(n+2)/6.",
+    "proofStrategy": "Shift the index so the running summand is f(n) = 6/((n+1)(n+2)(n+3)) = 1/Tet_{n+1}. Use the depth-2 partial fraction f(n) = 3/((n+1)(n+2)) - 3/((n+2)(n+3)) = g(n) - g(n+1) with g(n) = 3/((n+1)(n+2)). The partial sum telescopes to g(0) - g(N) = 3/2 - 3/((N+1)(N+2)). Since 3/((N+1)(N+2)) → 0 (squeezed below 3/(N+1)), the series HasSum 3/2 via hasSum_iff_tendsto_nat_of_nonneg.",
+    "keyInsights": [
+      "1/Tet_n = 6/(n(n+1)(n+2)) because Tet_n = n(n+1)(n+2)/6 — the factor 6 is exactly what makes the partial fraction telescope cleanly.",
+      "The depth-2 telescoping g(n) - g(n+1) with g(n) = 3/((n+1)(n+2)) generalizes the depth-1 triangular case g(n) = 2/(n+1); the antiderivative is one figurate dimension lower than the summand.",
+      "The numerator 3 in g comes from 6/2: the partial-fraction coefficient for a product of three consecutive integers is half the leading numerator, mirroring the 1/2 in 1/(n(n+1)(n+2)) = (1/2)[1/(n(n+1)) - 1/((n+1)(n+2))].",
+      "The closed-form partial sum 3/2 - 3/((N+1)(N+2)) makes the limit transparent and gives exact finite truncation error, e.g. S_2 = 5/4, S_∞ = 3/2.",
+      "Unlike the alternating triangular reciprocals (oq-03, value 4·ln 2 - 2, transcendental and axiom-dependent), this sum is rational (3/2) and fully verified with zero axioms — telescoping needs no boundary/Abel analysis."
+    ],
+    "prerequisites": [
+      "Real analysis (series convergence, telescoping sums)",
+      "Partial fractions over a product of consecutive integers",
+      "Figurate numbers (triangular and tetrahedral numbers)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Summand and Telescoping Antiderivative",
+      "startLine": 38,
+      "endLine": 44,
+      "summary": "Defines tetReciprocal n = 6/((n+1)(n+2)(n+3)) = 1/Tet_{n+1} and the telescoping antiderivative gTele n = 3/((n+1)(n+2)).",
+      "mathContext": "The shifted summand $f(n) = 6/((n+1)(n+2)(n+3))$ and antiderivative $g(n) = 3/((n+1)(n+2))$, chosen so that $f(n) = g(n) - g(n+1)$."
+    },
+    {
+      "id": "partial-fraction",
+      "title": "Depth-2 Telescoping Partial Fraction",
+      "startLine": 51,
+      "endLine": 62,
+      "summary": "Proves 6/((n+1)(n+2)(n+3)) = g(n) - g(n+1) via field_simp and ring.",
+      "mathContext": "$\\frac{6}{(n+1)(n+2)(n+3)} = \\frac{3}{(n+1)(n+2)} - \\frac{3}{(n+2)(n+3)}$, the depth-2 analogue of $\\frac{2}{n(n+1)} = \\frac{2}{n} - \\frac{2}{n+1}$."
+    },
+    {
+      "id": "partial-sum",
+      "title": "Closed Form for the Partial Sum",
+      "startLine": 69,
+      "endLine": 83,
+      "summary": "Induction on N proving ∑_{i<N} f(i) = 3/2 - 3/((N+1)(N+2)).",
+      "mathContext": "$\\sum_{i<N} \\frac{6}{(i+1)(i+2)(i+3)} = \\frac{3}{2} - \\frac{3}{(N+1)(N+2)}$, the telescoped collapse $g(0) - g(N)$."
+    },
+    {
+      "id": "tail",
+      "title": "Tail Vanishes",
+      "startLine": 90,
+      "endLine": 106,
+      "summary": "Proves 3/((N+1)(N+2)) → 0 by squeezing below 3·(1/(N+1)).",
+      "mathContext": "$\\frac{3}{(N+1)(N+2)} \\to 0$ as $N \\to \\infty$, squeezed between $0$ and $\\frac{3}{N+1}$."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "startLine": 118,
+      "endLine": 137,
+      "summary": "Combines the closed form and vanishing tail into HasSum tetReciprocal (3/2), plus the tsum form.",
+      "mathContext": "$\\sum_{n=0}^{\\infty} \\frac{6}{(n+1)(n+2)(n+3)} = \\frac{3}{2}$ via `hasSum_iff_tendsto_nat_of_nonneg`, equivalently $\\sum_{m=1}^{\\infty} 1/\\mathrm{Tet}_m = 3/2$."
+    },
+    {
+      "id": "examples",
+      "title": "Sanity Checks",
+      "startLine": 143,
+      "endLine": 148,
+      "summary": "Verifies the first term tetReciprocal 0 = 1 = 1/Tet_1 and the two-term partial sum = 5/4.",
+      "mathContext": "$f(0) = 6/(1\\cdot2\\cdot3) = 1 = 1/\\mathrm{Tet}_1$ and $\\sum_{i<2} f(i) = 3/2 - 3/(3\\cdot4) = 5/4$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "triangular-reciprocals",
+      "relationship": "extends",
+      "description": "Extends the depth-1 triangular-reciprocal sum ∑2/(n(n+1)) = 2 to the depth-2 tetrahedral sum ∑6/(n(n+1)(n+2)) = 3/2 — one figurate dimension up, same telescoping technique."
+    },
+    {
+      "targetId": "triangular-reciprocals-oq-02",
+      "relationship": "related",
+      "description": "The shifted reciprocal product sum ∑1/(n(n+k)) = H_k/k uses depth-1 partial fractions with an arbitrary shift; this proof instead increases the depth (three consecutive factors) at shift 1."
+    },
+    {
+      "targetId": "triangular-reciprocals-oq-03",
+      "relationship": "related",
+      "description": "The alternating triangular reciprocals ∑(-1)^{n+1}·2/(n(n+1)) = 4·ln2 - 2 yield a transcendental, axiom-dependent value; the tetrahedral sum is rational (3/2) and fully verified with zero axioms."
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "related",
+      "description": "Tet_n = C(n+2,3) is a binomial coefficient (third column of Pascal's triangle); the reciprocal-binomial sum ∑1/C(n+2,3) = 3/2 is the k=3 case of ∑1/C(n+k-1,k) = k/(k-1)."
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "Both evaluate reciprocal series over structured integer sequences in closed form; Basel computes ∑1/n² = π²/6 while this computes ∑1/Tet_n = 3/2."
+    }
+  ],
+  "conclusion": {
+    "summary": "The tetrahedral reciprocal sum ∑1/Tet_n = 3/2 is fully machine-verified with zero axioms and zero sorries. The proof is the depth-2 analogue of the classical triangular-reciprocal telescoping, using the partial fraction 6/((n+1)(n+2)(n+3)) = 3/((n+1)(n+2)) - 3/((n+2)(n+3)).",
+    "implications": "The same depth-d telescoping proves ∑_{n≥1} 1/C(n+d-1,d) = d/(d-1) for every d ≥ 2: each summand is a difference of consecutive depth-(d-1) figurate reciprocals, so the partial sum collapses to the first term d/(d-1). Tetrahedral (d=3) gives 3/2; pentatope (d=4) gives 4/3; the limit as d→∞ is 1.",
+    "openQuestions": [
+      "Prove the general figurate-reciprocal identity ∑_{n≥1} 1/C(n+d-1,d) = d/(d-1) for arbitrary d ≥ 2 by induction on the telescoping depth.",
+      "Formalize the pentatope (4-simplex) reciprocal sum ∑ 24/(n(n+1)(n+2)(n+3)) = 4/3 as the next depth-3 telescoping case."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Filter",
+      "Topology",
+      "Real"
+    ],
+    "namespace": "TriangularReciprocalsOQ04",
+    "lineCount": 149,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 2,
+    "path": "Proofs/TriangularReciprocalsOQ04.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

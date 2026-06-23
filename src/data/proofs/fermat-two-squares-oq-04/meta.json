@@ -1,0 +1,199 @@
+{
+  "id": "fermat-two-squares-oq-04",
+  "title": "Jacobi's Two-Square Theorem: the Divisor-Character Sum Side",
+  "slug": "fermat-two-squares-oq-04",
+  "description": "Jacobi's theorem counts representations as r₂(n) = 4 ∑_{d∣n} χ₄(d). This entry formalizes the arithmetic engine of that formula — the divisor-character sum δ(n) = ∑_{d∣n} χ₄(d), built as the Dirichlet convolution ζ * χ₄ — proves it multiplicative and nonnegative, evaluates it on prime powers, and bridges it to representability: δ(n) > 0 ⇔ n is a sum of two squares. 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Jacobi (1834) (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Sum_of_two_squares_theorem",
+    "date": "1834",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "sum-of-two-squares",
+      "dirichlet-character",
+      "arithmetic-function",
+      "dirichlet-convolution",
+      "jacobi",
+      "multiplicative-function",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/FermatTwoSquaresOQ04.lean",
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "ZMod.χ₄",
+        "description": "The non-principal quadratic Dirichlet character mod 4, the character of ℚ(√-1)/ℚ",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.ZModChar"
+      },
+      {
+        "theorem": "DirichletCharacter.isMultiplicative_toArithmeticFunction",
+        "description": "A Dirichlet character, viewed as an arithmetic function, is multiplicative",
+        "module": "Mathlib.NumberTheory.LSeries.Dirichlet"
+      },
+      {
+        "theorem": "ArithmeticFunction.coe_zeta_mul_apply",
+        "description": "(ζ * f) n = ∑_{d∣n} f d — Dirichlet convolution with ζ is the divisor sum",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Zeta"
+      },
+      {
+        "theorem": "ArithmeticFunction.IsMultiplicative.multiplicative_factorization",
+        "description": "A multiplicative arithmetic function factors as a product over the prime-power decomposition",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction"
+      },
+      {
+        "theorem": "Nat.eq_sq_add_sq_iff",
+        "description": "n is a sum of two squares iff every prime q ≡ 3 (mod 4) divides n to an even power",
+        "module": "Mathlib.NumberTheory.SumTwoSquares"
+      },
+      {
+        "theorem": "neg_one_geom_sum",
+        "description": "∑_{i<n} (-1)^i = if Even n then 0 else 1, the alternating geometric series",
+        "module": "Mathlib.Algebra.Ring.GeomSum"
+      }
+    ],
+    "originalContributions": [
+      "jacobiSum: the divisor-character sum δ(n) = ∑_{d∣n} χ₄(d) realized as the Dirichlet convolution ζ * χ₄ over ℤ (an integer-valued port of Mathlib's ℂ-only DirichletCharacter.zetaMul)",
+      "isMultiplicative_jacobiSum: δ is multiplicative, as the Dirichlet product of two multiplicative functions",
+      "jacobiSum_prime_pow: on a prime power δ(p^k) = ∑_{i≤k} χ₄(p)^i, the geometric sum",
+      "jacobiSum_prime_pow_nonneg / jacobiSum_nonneg: δ(n) ≥ 0 for all n",
+      "jacobiSum_prime_pow_pos_iff: the key dichotomy 0 < δ(p^k) ⇔ (p ≡ 3 mod 4 → k even), encoding δ(2^k)=1, δ(p^k)=k+1 for p≡1, δ(p^k)=[k even] for p≡3",
+      "jacobiSum_pos_iff_sq_add_sq: the qualitative Jacobi theorem — δ(n) > 0 ⇔ n is a sum of two squares — recovering the Fermat/Gauss prime-factor criterion from the character sum",
+      "jacobiSum_eq_zero_iff: the complement — δ(n) = 0 ⇔ n is NOT a sum of two squares",
+      "jacobiSum_prime_one_mod_four: δ(p) = 2 for p ≡ 1 (mod 4), matching r₂(p) = 4·2 = 8",
+      "jacobiSum_prime_three_mod_four: δ(p) = 0 for p ≡ 3 (mod 4), matching r₂(p) = 0"
+    ],
+    "dateAdded": "2026-06-21",
+    "lineCount": 225,
+    "assumptions": "0 axioms, 0 sorries. The headline theorems (jacobiSum_pos_iff_sq_add_sq, jacobiSum_eq_zero_iff, isMultiplicative_jacobiSum, jacobiSum_prime_one_mod_four) depend only on the foundational axioms propext, Classical.choice, Quot.sound (verified via #print axioms). The full Jacobi counting identity r₂(n) = 4 δ(n) — connecting δ to the actual representation count — requires the arithmetic of the Gaussian integers ℤ[i] and is NOT formalized here; this entry formalizes the divisor-sum (right-hand) side and its qualitative bridge to representability.",
+    "theoremCount": 10,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Fermat's two-squares theorem (1640) decides WHETHER a prime is a sum of two squares. Jacobi's two-square theorem (1834) is the quantitative refinement: it counts HOW MANY ways, with the strikingly clean formula r₂(n) = 4 ∑_{d∣n} χ₄(d), where r₂(n) is the number of ordered pairs (x, y) ∈ ℤ² with x² + y² = n and χ₄ is the non-principal Dirichlet character mod 4 (χ₄(d) = +1, -1, 0 according as d ≡ 1, 3, 0,2 mod 4). The factor of 4 reflects the four units ±1, ±i of the Gaussian integers ℤ[i]; the divisor sum ∑_{d∣n} χ₄(d) is the number of ideals of given norm, equivalently the difference between the number of divisors ≡ 1 and ≡ 3 mod 4.\n\nThe deep half of Jacobi's theorem — that the geometric count r₂(n) equals 4 times the arithmetic sum — is a statement about unique factorization in ℤ[i] and is not available in Mathlib. The divisor sum δ(n) = ∑_{d∣n} χ₄(d) on its own, however, is a purely elementary arithmetic object, and its structure (multiplicativity, prime-power values, positivity, and its sign as a representability detector) is exactly the content that makes Jacobi's formula tick. This entry isolates and verifies that arithmetic engine.",
+    "problemStatement": "**Open question (fermat-two-squares-oq-04)**: The Jacobi two-square theorem counts representations: r₂(n) = 4 ∑_{d∣n} χ(d) where χ is the non-principal character mod 4. Can this quantitative refinement be formalized, connecting to L-functions and Dirichlet series?\n\n**Result of this entry**: The divisor-character sum δ(n) = ∑_{d∣n} χ₄(d) — the right-hand side of Jacobi's identity — is formalized as the Dirichlet convolution ζ * χ₄ and verified (0 sorries, 0 axioms) to be multiplicative and nonnegative, with explicit prime-power values. Its sign is shown to be a complete detector of representability:\n\n  0 < δ(n)  ⇔  ∃ x y, n = x² + y²,    δ(n) = 0  ⇔  n is not a sum of two squares.\n\nFor primes this yields δ(p) = 2 (p ≡ 1 mod 4, r₂ = 8) and δ(p) = 0 (p ≡ 3 mod 4). The full geometric identity r₂(n) = 4 δ(n) is left open, as it requires the Gaussian-integer counting machinery absent from Mathlib.",
+    "text": "Jacobi's two-square theorem counts representations via r₂(n) = 4 ∑_{d∣n} χ₄(d). This entry formalizes the divisor-character sum δ(n) = ∑_{d∣n} χ₄(d) as the convolution ζ * χ₄, proves it multiplicative and nonnegative, evaluates it on prime powers, and shows δ(n) > 0 iff n is a sum of two squares.",
+    "proofStrategy": "**Proof Strategy:**\n\n1. **Definition as a convolution**: δ = ζ * χ₄ as arithmetic functions over ℤ, mirroring Mathlib's ℂ-valued `DirichletCharacter.zetaMul`. The evaluation `coe_zeta_mul_apply` gives δ(n) = ∑_{d∣n} χ₄(d).\n\n2. **Multiplicativity**: δ is the Dirichlet product of the multiplicative ζ and the completely multiplicative χ₄, so `IsMultiplicative.mul` applies directly.\n\n3. **Prime powers**: `Nat.sum_divisors_prime_pow` collapses the divisor sum to the geometric series ∑_{i≤k} χ₄(p)^i. Splitting on the value of χ₄(p) ∈ {0, 1, -1} (via `χ₄_nat_eq_if_mod_four`) gives δ(2^k)=1, δ(p^k)=k+1 (p≡1), and the alternating sum `neg_one_geom_sum` = [k even] (p≡3). This yields the dichotomy 0 < δ(p^k) ⇔ (p ≡ 3 mod 4 → k even).\n\n4. **Bridge to representability**: `multiplicative_factorization` writes δ(n) = ∏_{p∣n} δ(p^{v_p(n)}). Since each factor is ≥ 0, the product is positive iff every factor is positive (using `Finset.prod_pos` and `Finset.prod_eq_zero`). By the prime-power dichotomy this is exactly the condition 'every prime q ≡ 3 (mod 4) has even exponent', which `Nat.eq_sq_add_sq_iff` identifies with being a sum of two squares.\n\n5. **Prime values and complement**: δ(p) = 1 + χ₄(p) gives the headline counts; `jacobiSum_eq_zero_iff` is the contrapositive of the bridge via nonnegativity.",
+    "keyInsights": [
+      "**The arithmetic side of Jacobi's formula is elementary and self-contained**: The right-hand side 4 ∑_{d∣n} χ₄(d) needs no Gaussian integers — it is a Dirichlet convolution of standard multiplicative functions. Isolating it from the geometric count r₂(n) makes the bulk of Jacobi's theorem formalizable today, with the genuinely hard ℤ[i]-counting deferred.",
+      "**Multiplicativity is the whole game**: Because δ = ζ * χ₄ is a product of multiplicative functions, it is determined by its values on prime powers, and every global statement (positivity, the representability bridge) reduces to a per-prime-power check. The prime-power dichotomy 0 < δ(p^k) ⇔ (p ≡ 3 → k even) is the atom from which the Fermat/Gauss criterion is reassembled.",
+      "**The SIGN of a divisor sum detects representability**: δ(n) > 0 ⇔ n = x² + y² is a clean qualitative shadow of Jacobi's quantitative theorem. It says the character sum is positive exactly when there is at least one representation — recovering Fermat's prime-factor condition purely from ∑_{d∣n} χ₄(d), with no counting argument.",
+      "**Mathlib's ℂ-only machinery ports cleanly to ℤ**: Mathlib defines `DirichletCharacter.zetaMul` and proves its nonnegativity only for ℂ-valued quadratic characters (for Dirichlet L non-vanishing). Re-running the same construction over ℤ for χ₄ is what makes the result connectable to the ℕ-valued representability criterion `Nat.eq_sq_add_sq_iff`.",
+      "**The alternating geometric series is the p ≡ 3 obstruction**: For p ≡ 3 (mod 4), χ₄(p) = -1 and δ(p^k) = ∑ (-1)^i = [k even]. A single odd-exponent prime ≡ 3 (mod 4) makes its factor vanish, killing the whole product — precisely the obstruction that prevents n from being a sum of two squares."
+    ],
+    "prerequisites": [
+      "Dirichlet characters (the character χ₄ mod 4) and multiplicative arithmetic functions",
+      "Dirichlet convolution and the function ζ (the constant 1)",
+      "Unique factorization and multiplicative functions over prime-power decompositions",
+      "Fermat's two-squares theorem and the prime-factor representability criterion"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Imports and the Divisor-Character Sum",
+      "startLine": 1,
+      "endLine": 80,
+      "summary": "Header motivating δ as the arithmetic side of Jacobi's r₂(n) = 4 ∑ χ₄(d). Defines jacobiSum = ζ * χ₄ as a ℤ-valued arithmetic function, proves it multiplicative, and unfolds δ(n) = ∑_{d∣n} χ₄(d).",
+      "mathContext": "δ is the Dirichlet convolution of ζ (constant 1) with the character χ₄ mod 4. As a product of multiplicative functions it is multiplicative, and coe_zeta_mul_apply identifies it with the divisor-character sum."
+    },
+    {
+      "id": "prime-powers",
+      "title": "Value on Prime Powers",
+      "startLine": 82,
+      "endLine": 140,
+      "summary": "On p^k, δ collapses to the geometric sum ∑_{i≤k} χ₄(p)^i. Proves nonnegativity and the central dichotomy 0 < δ(p^k) ⇔ (p ≡ 3 mod 4 → k even) by splitting on χ₄(p) ∈ {0, 1, -1}.",
+      "mathContext": "Nat.sum_divisors_prime_pow reduces the divisor sum to a geometric series. δ(2^k)=1, δ(p^k)=k+1 (p≡1), and δ(p^k) = [k even] (p≡3) via neg_one_geom_sum."
+    },
+    {
+      "id": "bridge",
+      "title": "Bridge to Representability",
+      "startLine": 142,
+      "endLine": 205,
+      "summary": "Globalizes via multiplicative_factorization: δ(n) = ∏ δ(p^{v_p}). Since factors are nonnegative, positivity of the product is equivalent to positivity of each factor, which by the prime-power dichotomy matches Nat.eq_sq_add_sq_iff. Yields δ(n) > 0 ⇔ n is a sum of two squares, and the complement δ(n) = 0 ⇔ not.",
+      "mathContext": "The qualitative Jacobi theorem: the character sum is positive exactly on representable n, recovering the Fermat/Gauss prime-factor criterion from ∑_{d∣n} χ₄(d)."
+    },
+    {
+      "id": "prime-values",
+      "title": "Headline Prime Values",
+      "startLine": 207,
+      "endLine": 225,
+      "summary": "δ(p) = 1 + χ₄(p): equals 2 for p ≡ 1 (mod 4) (so r₂(p) = 8) and 0 for p ≡ 3 (mod 4) (so r₂(p) = 0).",
+      "mathContext": "Jacobi's count for primes: the eight representations (±a, ±b), (±b, ±a) of the unique unordered pair when p ≡ 1 (mod 4), and none when p ≡ 3 (mod 4)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "extends",
+      "description": "Refines the parent's WHICH-primes characterization toward the HOW-MANY count of Jacobi: formalizes the divisor-character sum that is the right-hand side of r₂(n) = 4 ∑_{d∣n} χ₄(d)."
+    },
+    {
+      "targetId": "fermat-two-squares-oq-05",
+      "relationship": "related",
+      "description": "OQ-05 supplies the n ≡ 3 (mod 4) obstruction directly; here the same obstruction reappears as the vanishing of δ(p^k) for p ≡ 3 (mod 4) and odd k, recovered from the character sum."
+    },
+    {
+      "targetId": "fermat-two-squares-oq-01",
+      "relationship": "related",
+      "description": "The Lagrange four-squares extension removes all congruence obstructions; this entry shows how the mod-4 obstruction is encoded in the sign of the character sum δ."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms) formalization of the divisor-character sum δ(n) = ∑_{d∣n} χ₄(d) — the arithmetic side of Jacobi's two-square theorem r₂(n) = 4 δ(n). Realized as the Dirichlet convolution ζ * χ₄, δ is proved multiplicative and nonnegative, evaluated on prime powers as a geometric series, and its sign is shown to detect representability exactly: δ(n) > 0 ⇔ n is a sum of two squares, with δ(p) = 2 for primes p ≡ 1 (mod 4) (r₂ = 8) and δ(p) = 0 for p ≡ 3 (mod 4).",
+    "implications": "**Theoretical Significance**: This isolates the elementary, fully formalizable core of Jacobi's theorem from the Gaussian-integer counting that Mathlib lacks. The divisor sum ∑_{d∣n} χ₄(d) is exactly the local factor at the heart of the Dirichlet L-function L(s, χ₄) = ∑ χ₄(n) n^{-s} = β(s) (the Dirichlet beta function), whose value β(1) = π/4 underlies the analytic class-number / Leibniz formula. Proving δ multiplicative with the stated prime-power values is the arithmetic input to the Euler product for L(s, χ₄); the representability bridge is its qualitative shadow. Completing the geometric identity r₂(n) = 4 δ(n) is the natural next target once Mathlib's Gaussian-integer norm-counting matures.",
+    "openQuestions": [
+      "Can the full geometric identity r₂(n) = 4 ∑_{d∣n} χ₄(d) be formalized by counting Gaussian integers of norm n, using unique factorization in ℤ[i] and the splitting behaviour of primes?",
+      "Can δ be connected to the Dirichlet L-function L(s, χ₄) (the Dirichlet beta function) via its Euler product, formalizing ∑ r₂(n) n^{-s} = 4 ζ(s) L(s, χ₄) on the half-plane of convergence?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.LSeries.Dirichlet",
+      "Mathlib.NumberTheory.ArithmeticFunction.Zeta",
+      "Mathlib.NumberTheory.LegendreSymbol.ZModChar",
+      "Mathlib.NumberTheory.SumTwoSquares",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "ArithmeticFunction",
+      "ArithmeticFunction.zeta",
+      "DirichletCharacter",
+      "ZMod",
+      "Finset"
+    ],
+    "namespace": "FermatTwoSquaresOQ04",
+    "lineCount": 225,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 1,
+    "path": "Proofs/FermatTwoSquaresOQ04.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "C. G. J. Jacobi",
+      "title": "Fundamenta Nova Theoriae Functionum Ellipticarum",
+      "year": "1829",
+      "venue": "Königsberg",
+      "note": "Source of the two-square counting theorem r₂(n) = 4 ∑_{d∣n} χ₄(d) via theta-function identities"
+    },
+    {
+      "authors": "G. H. Hardy, E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "2008",
+      "venue": "Oxford University Press, 6th edition",
+      "note": "Chapter 16 (arithmetic functions) and Chapter 20 (sums of squares), including the divisor-character sum and r₂(n)"
+    },
+    {
+      "authors": "D. Zagier",
+      "title": "A One-Sentence Proof That Every Prime p ≡ 1 (mod 4) Is a Sum of Two Squares",
+      "year": "1990",
+      "venue": "The American Mathematical Monthly, 97(2), p. 144",
+      "note": "The parent entry's existence proof; this entry refines from existence toward Jacobi's count"
+    }
+  ],
+  "sorries": 0
+}

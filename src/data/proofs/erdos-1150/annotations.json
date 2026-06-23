@@ -1,0 +1,364 @@
+[
+  {
+    "id": "littlewood-def",
+    "targetLine": 41,
+    "range": {
+      "startLine": 40,
+      "endLine": 42
+    },
+    "type": "definition",
+    "title": "Littlewood Polynomial",
+    "content": "A polynomial with all coefficients in {-1, +1}. Named after J.E. Littlewood who studied their extremal properties on the unit circle in his 1966 monograph. More restrictive than unimodular (|aᵢ|=1) — the discreteness of the coefficient set {-1,+1} is the fundamental obstruction to ultraflat behavior.",
+    "mathContext": "A polynomial $P(z) = \\sum_{k=0}^{n} a_k z^k$ is Littlewood if $a_k \\in \\{-1, +1\\}$ for all $0 \\le k \\le n$. The set of such polynomials of degree $n$ has exactly $2^{n+1}$ elements.",
+    "significance": "key",
+    "relatedConcepts": [
+      "unimodular polynomials",
+      "Parseval's identity",
+      "unit circle",
+      "trigonometric polynomials"
+    ],
+    "prerequisites": [
+      "complex polynomials",
+      "polynomial evaluation"
+    ],
+    "tags": [
+      "definition",
+      "polynomials"
+    ],
+    "proofId": "erdos-1150"
+  },
+  {
+    "id": "supnorm-def",
+    "targetLine": 45,
+    "range": {
+      "startLine": 44,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "Supremum Norm on Unit Circle",
+    "content": "The supremum of |P(z)| over all z on the unit circle {z ∈ ℂ : |z| = 1}. This is the L^∞ norm of P restricted to the unit circle. For continuous functions on the compact unit circle, this supremum is attained (it is a maximum).",
+    "mathContext": "$$\\|P\\|_\\infty = \\sup_{|z|=1} |P(z)| = \\max_{\\theta \\in [0,2\\pi)} |P(e^{i\\theta})|$$\nBy the maximum modulus principle, this also equals $\\max_{|z| \\le 1} |P(z)|$ for polynomials.",
+    "significance": "key",
+    "relatedConcepts": [
+      "maximum modulus principle",
+      "L^∞ norm",
+      "unit circle",
+      "compact Hausdorff space"
+    ],
+    "prerequisites": [
+      "supremum",
+      "complex analysis",
+      "normed spaces"
+    ],
+    "tags": [
+      "definition",
+      "analysis"
+    ],
+    "proofId": "erdos-1150"
+  },
+  {
+    "id": "erdos-1150-conjecture",
+    "targetLine": 59,
+    "range": {
+      "startLine": 52,
+      "endLine": 62
+    },
+    "type": "concept",
+    "title": "Erdős #1150 Conjecture",
+    "content": "There exists a universal constant c > 0 such that every degree-n Littlewood polynomial has sup norm strictly greater than (1+c)√n for sufficiently large n. This says the trivial Parseval bound √(n+1) cannot be approximated to within a multiplicative factor of 1 — there is a gap. Equivalently, ultraflat Littlewood polynomials do not exist.",
+    "mathContext": "$$\\exists\\, c > 0 : \\forall^\\infty n,\\; \\forall P \\in \\mathcal{L}_n,\\quad \\|P\\|_\\infty > (1+c)\\sqrt{n}$$\nwhere $\\mathcal{L}_n$ is the set of degree-$n$ Littlewood polynomials.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ultraflat polynomials",
+      "Parseval's identity",
+      "extremal polynomial theory",
+      "Erdős problems"
+    ],
+    "prerequisites": [
+      "Littlewood polynomials",
+      "sup norm",
+      "asymptotic notation"
+    ],
+    "tags": [
+      "conjecture",
+      "main-result"
+    ],
+    "proofId": "erdos-1150"
+  },
+  {
+    "id": "parseval-bound",
+    "targetLine": 74,
+    "range": {
+      "startLine": 68,
+      "endLine": 76
+    },
+    "type": "concept",
+    "title": "Parseval Lower Bound",
+    "content": "From Parseval's identity: the L² norm of P on the unit circle equals the ℓ² norm of its coefficients. For a Littlewood polynomial all coefficients have modulus 1, so ‖P‖₂² = n+1. Since ‖P‖∞ ≥ ‖P‖₂ (sup ≥ average), we get ‖P‖∞ ≥ √(n+1). This is the baseline that makes the conjecture non-trivial.",
+    "mathContext": "$$\\frac{1}{2\\pi}\\int_0^{2\\pi}|P(e^{i\\theta})|^2\\,d\\theta = \\sum_{k=0}^{n}|a_k|^2 = n+1$$\nHence $\\|P\\|_\\infty^2 \\ge \\frac{1}{2\\pi}\\int_0^{2\\pi}|P(e^{i\\theta})|^2\\,d\\theta = n+1$, giving $\\|P\\|_\\infty \\ge \\sqrt{n+1}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Parseval's identity",
+      "Plancherel theorem",
+      "L² norm",
+      "Fourier coefficients"
+    ],
+    "prerequisites": [
+      "Parseval's identity",
+      "Lebesgue integration on the circle"
+    ],
+    "tags": [
+      "parseval",
+      "lower-bound"
+    ],
+    "proofId": "erdos-1150"
+  },
+  {
+    "id": "parseval-pos",
+    "targetLine": 79,
+    "range": {
+      "startLine": 78,
+      "endLine": 81
+    },
+    "type": "concept",
+    "title": "Positivity of Parseval Bound",
+    "content": "A routine lemma establishing √(n+1) > 0 for n ≥ 1. Proved using the positivity tactic. This is needed as a side condition in various inequalities involving the Parseval bound.",
+    "mathContext": "$\\sqrt{n+1} > 0$ for $n \\ge 1$, since $n+1 \\ge 2 > 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "square root positivity",
+      "natural number arithmetic"
+    ],
+    "prerequisites": [
+      "real square root"
+    ],
+    "tags": [
+      "lemma",
+      "positivity"
+    ],
+    "proofId": "erdos-1150"
+  },
+  {
+    "id": "ultraflat-def",
+    "targetLine": 89,
+    "range": {
+      "startLine": 87,
+      "endLine": 92
+    },
+    "type": "theorem",
+    "title": "Ultraflat Polynomial Sequence",
+    "content": "A sequence (Pₙ) of Littlewood polynomials is ultraflat if deg(Pₙ) = n and ‖Pₙ‖∞/√n → 1 as n → ∞. This means the polynomial becomes 'almost constant' in modulus on the unit circle as degree grows — its values are all approximately √n. Kahane showed this is achievable for unimodular coefficients but the ±1 case remains open.",
+    "mathContext": "A sequence $(P_n)_{n \\ge 1}$ is ultraflat if each $P_n$ is Littlewood of degree $n$ and\n$$\\lim_{n \\to \\infty} \\frac{\\|P_n\\|_\\infty}{\\sqrt{n}} = 1.$$\nEquivalently, $\\max_{|z|=1}|P_n(z)| = (1 + o(1))\\sqrt{n}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "flat polynomials",
+      "asymptotic analysis",
+      "uniform distribution on circle"
+    ],
+    "prerequisites": [
+      "filter limits in Lean",
+      "Littlewood polynomials",
+      "convergence"
+    ],
+    "tags": [
+      "definition",
+      "ultraflat"
+    ],
+    "proofId": "erdos-1150"
+  },
+  {
+    "id": "conjecture-equiv",
+    "targetLine": 99,
+    "range": {
+      "startLine": 94,
+      "endLine": 100
+    },
+    "type": "concept",
+    "title": "Equivalence with Non-existence of Ultraflat Sequences",
+    "content": "The conjecture is logically equivalent to: no ultraflat Littlewood sequence exists. Forward: if ‖P‖∞ > (1+c)√n then ‖P‖∞/√n > 1+c, so it can't tend to 1. Backward: if no ultraflat sequence exists, a compactness/subsequence argument gives a universal gap c > 0. This axiom encodes a standard result in asymptotic analysis.",
+    "mathContext": "$$\\text{Erdős 1150} \\iff \\nexists\\, (P_n)_{n \\ge 1} \\text{ ultraflat Littlewood sequence}$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "logical equivalence",
+      "compactness argument",
+      "negation of limit"
+    ],
+    "prerequisites": [
+      "ultraflat definition",
+      "filter-based limits"
+    ],
+    "tags": [
+      "equivalence",
+      "logical"
+    ],
+    "proofId": "erdos-1150"
+  },
+  {
+    "id": "bbmst-result",
+    "targetLine": 113,
+    "range": {
+      "startLine": 106,
+      "endLine": 118
+    },
+    "type": "concept",
+    "title": "BBMST Flat Polynomials (2019)",
+    "content": "Balister, Bollobás, Morris, Sahasrabudhe, and Tiba proved that flat Littlewood polynomials exist: there are universal constants c₁, c₂ > 0 such that for all large n, some degree-n Littlewood polynomial P satisfies c₁√n ≤ |P(z)| ≤ c₂√n uniformly on |z| = 1. This landmark result resolved Erdős Problem #228 but does NOT resolve #1150, since flat (bounded ratio c₁ ≤ ‖P‖/√n ≤ c₂) is strictly weaker than ultraflat (ratio → 1).",
+    "mathContext": "$$\\exists\\, 0 < c_1 < c_2 : \\forall^\\infty n,\\; \\exists P \\in \\mathcal{L}_n,\\; \\forall |z|=1: \\quad c_1\\sqrt{n} \\le |P(z)| \\le c_2\\sqrt{n}$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "flat polynomials",
+      "Erdős problem 228",
+      "uniform bounds on unit circle"
+    ],
+    "prerequisites": [
+      "Littlewood polynomials",
+      "sup norm",
+      "eventually filter"
+    ],
+    "tags": [
+      "bbmst",
+      "flat-polynomials",
+      "landmark"
+    ],
+    "proofId": "erdos-1150"
+  },
+  {
+    "id": "kahane-contrast",
+    "targetLine": 123,
+    "range": {
+      "startLine": 120,
+      "endLine": 129
+    },
+    "type": "concept",
+    "title": "Kahane's Unimodular Ultraflat (1980)",
+    "content": "For general unimodular coefficients (|aᵢ| = 1, complex phases allowed), Kahane proved in 1980 that ultraflat polynomials exist: for any ε > 0 and all large n, there exist coefficients with |aᵢ| = 1 such that (1-ε)√n ≤ |P(z)| ≤ (1+ε)√n on the entire unit circle. This shows the restriction to ±1 coefficients is what makes Problem #1150 hard. The continuous symmetry group U(1)^{n+1} is rich enough to allow ultraflat behavior, but the discrete group {±1}^{n+1} may not be.",
+    "mathContext": "$$\\forall \\varepsilon > 0,\\; \\forall^\\infty n,\\; \\exists (a_k)_{k=0}^n \\text{ with } |a_k|=1:\\quad (1-\\varepsilon)\\sqrt{n} \\le \\left|\\sum_{k=0}^n a_k z^k\\right| \\le (1+\\varepsilon)\\sqrt{n} \\quad \\forall |z|=1$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "unimodular polynomials",
+      "Erdős problem 230",
+      "random polynomial methods",
+      "probabilistic method"
+    ],
+    "prerequisites": [
+      "ultraflat definition",
+      "unimodular complex numbers"
+    ],
+    "tags": [
+      "kahane",
+      "unimodular",
+      "contrast"
+    ],
+    "proofId": "erdos-1150"
+  },
+  {
+    "id": "bbmst-upper",
+    "targetLine": 134,
+    "range": {
+      "startLine": 131,
+      "endLine": 142
+    },
+    "type": "concept",
+    "title": "BBMST Upper Bound Consequence",
+    "content": "Derives from the BBMST result that for some Littlewood polynomials, the sup norm is at most c₂√n. The pointwise bound |P(z)| ≤ c₂√n for all |z| = 1 implies the supremum is bounded: ‖P‖∞ ≤ c₂√n. Contains one sorry for the step converting pointwise bounds to a supremum bound, which requires showing the supremum over unit circle values is ≤ c₂√n when each individual value satisfies this bound.",
+    "mathContext": "From BBMST: $\\forall |z|=1,\\; \\|P(z)\\| \\le c_2\\sqrt{n}$ implies $\\sup_{|z|=1}\\|P(z)\\| \\le c_2\\sqrt{n}$. This is the definition of supremum: if every element of a set is $\\le M$, then $\\sup \\le M$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "supremum properties",
+      "pointwise vs uniform bounds",
+      "BBMST theorem"
+    ],
+    "prerequisites": [
+      "BBMST flat polynomials",
+      "supremum definition"
+    ],
+    "tags": [
+      "bbmst",
+      "upper-bound",
+      "sorry"
+    ],
+    "proofId": "erdos-1150"
+  },
+  {
+    "id": "flat-vs-ultraflat",
+    "targetLine": 152,
+    "range": {
+      "startLine": 148,
+      "endLine": 159
+    },
+    "type": "insight",
+    "title": "Flat Does Not Imply Ultraflat",
+    "content": "A formal observation that the existence of flat Littlewood polynomials (BBMST) does not logically imply ultraflat ones exist. Flat means c₁√n ≤ ‖P‖∞ ≤ c₂√n for fixed constants c₁, c₂; ultraflat requires the upper constant c₂ → 1. The gap between 'bounded ratio' and 'ratio converging to 1' is the core of Problem #1150. The proof is trivially True because it only asserts the logical non-implication.",
+    "mathContext": "Flat: $\\exists c_1, c_2 > 0$ such that $c_1\\sqrt{n} \\le \\|P\\|_\\infty \\le c_2\\sqrt{n}$.\nUltraflat: $\\|P\\|_\\infty / \\sqrt{n} \\to 1$.\nFlat $\\not\\Rightarrow$ ultraflat because the constants $c_1, c_2$ may be far from 1.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "asymptotic tightness",
+      "gap between flat and ultraflat"
+    ],
+    "prerequisites": [
+      "flat polynomials",
+      "ultraflat polynomials"
+    ],
+    "tags": [
+      "gap-analysis",
+      "flat-vs-ultraflat"
+    ],
+    "proofId": "erdos-1150"
+  },
+  {
+    "id": "rudin-shapiro",
+    "targetLine": 168,
+    "range": {
+      "startLine": 165,
+      "endLine": 172
+    },
+    "type": "concept",
+    "title": "Rudin-Shapiro Polynomials",
+    "content": "The Rudin-Shapiro polynomials provide a concrete, explicit family of Littlewood polynomials with near-optimal sup norm bounds. For each k ≥ 1, there exists a degree-(2^k - 1) Littlewood polynomial with ‖P‖∞ ≤ √(2·2^k) = √(2(n+1)). The construction uses a recursive doubling technique. These show the Parseval bound √(n+1) cannot be improved beyond a factor of √2.",
+    "mathContext": "For $n = 2^k - 1$: $\\|P_{\\text{RS}}\\|_\\infty \\le \\sqrt{2 \\cdot 2^k} = \\sqrt{2(n+1)}$.\nCombined with Parseval: $\\sqrt{n+1} \\le \\|P\\|_\\infty \\le \\sqrt{2(n+1)}$, so the ratio $\\|P\\|_\\infty / \\sqrt{n}$ lies in $[1, \\sqrt{2}]$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Rudin-Shapiro sequence",
+      "recursive polynomial construction",
+      "Walsh functions",
+      "Hadamard matrices"
+    ],
+    "prerequisites": [
+      "Littlewood polynomials",
+      "binary sequences"
+    ],
+    "tags": [
+      "rudin-shapiro",
+      "explicit-construction",
+      "upper-bound"
+    ],
+    "proofId": "erdos-1150"
+  },
+  {
+    "id": "summary-theorem",
+    "targetLine": 195,
+    "range": {
+      "startLine": 178,
+      "endLine": 206
+    },
+    "type": "insight",
+    "title": "Summary: State of Knowledge",
+    "content": "A summary theorem combining the Parseval lower bound with the BBMST flat polynomial result. This packages the two main known results about Littlewood polynomial norms into one statement, confirming both are available in the formalization. The summary highlights the gap: we know √(n+1) ≤ ‖P‖∞ is tight up to constants (BBMST), but whether it's tight up to (1+o(1)) factors (ultraflat) remains open.",
+    "mathContext": "Proved: $\\forall P \\in \\mathcal{L}_n,\\; \\|P\\|_\\infty \\ge \\sqrt{n+1}$ (Parseval) $\\wedge$ $\\exists$ flat Littlewood family (BBMST).\nOpen: Is $\\inf_{P \\in \\mathcal{L}_n} \\|P\\|_\\infty / \\sqrt{n} > 1$ for large $n$?",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Parseval bound",
+      "BBMST theorem",
+      "extremal polynomial problems"
+    ],
+    "prerequisites": [
+      "parseval_lower_bound axiom",
+      "bbmst_flat axiom"
+    ],
+    "tags": [
+      "summary",
+      "known-results"
+    ],
+    "proofId": "erdos-1150"
+  }
+]

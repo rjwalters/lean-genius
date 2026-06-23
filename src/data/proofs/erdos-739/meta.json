@@ -1,0 +1,245 @@
+{
+  "id": "erdos-739",
+  "title": "Erdős Problem #739: Chromatic Numbers of Subgraphs (Infinite)",
+  "slug": "erdos-739",
+  "description": "If G has infinite chromatic number 𝔪, must G have subgraphs of all smaller infinite chromatic numbers? INDEPENDENT OF ZFC: YES under V=L (Shelah 1990), NO in some models (Komjáth 1988). Open under GCH.",
+  "meta": {
+    "author": "Galvin (1973), Komjáth (1988), Shelah (1990)",
+    "sourceUrl": "https://erdosproblems.com/739",
+    "date": "1990",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos739Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "set-theory",
+      "cardinals",
+      "independence"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 739,
+    "erdosUrl": "https://erdosproblems.com/739",
+    "erdosProblemStatus": "independent",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Cardinal",
+        "description": "Cardinal arithmetic",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "aleph",
+        "description": "Aleph cardinals",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Ordinal",
+        "description": "Ordinal numbers",
+        "module": "Mathlib.SetTheory.Ordinal.Basic"
+      }
+    ],
+    "originalContributions": [
+      "chromaticNumber: cardinal-valued chromatic number for infinite graphs",
+      "HasSubgraphWithChromaticNumber: induced subgraph with given χ",
+      "GalvinProperty: subgraphs of all smaller infinite chromatic numbers",
+      "ErdosGalvinQuestion: universal Galvin property",
+      "galvin_countable_theorem axiom: property holds for 𝔪 = ℵ₀",
+      "finite_chromatic_subgraphs: proved corollary of Galvin",
+      "komjath_consistency axiom: counterexample with χ=ℵ₂, no ℵ₁ subgraph",
+      "Galvin's set-theory implication (2^κ < 2^ν) and Shelah's V=L result: discussed in narrative, not formalized as axioms",
+      "GCH definition, MainOpenProblem: GCH → Galvin property?",
+      "erdos_739_summary: proved, combining Galvin and Komjáth"
+    ],
+    "dateAdded": "2026-01-19",
+    "axiomCount": 2,
+    "lineCount": 129,
+    "assumptions": [
+      {
+        "name": "galvin_countable_theorem",
+        "description": "Galvin's 1973 result: if a graph G has chromatic number aleph-0, then for every positive natural number n, G contains a subgraph with chromatic number exactly n. This is the only case of the Galvin property that is provable in ZFC without additional set-theoretic axioms."
+      },
+      {
+        "name": "komjath_consistency",
+        "description": "Komjath's 1988 consistency result: it is consistent with ZFC that there exists a graph with chromatic number aleph-2 that has no subgraph with chromatic number aleph-1. The model is constructed by collapsing the continuum function so that 2^(aleph-0) = 2^(aleph-1) = 2^(aleph-2) = aleph-3, which defeats Galvin's set-theoretic implication."
+      }
+    ],
+    "theoremCount": 2,
+    "definitionCount": 7
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #739: Chromatic Numbers of Subgraphs**\n\nOriginating with Galvin (1973), this asks whether graphs with infinite chromatic number 𝔪 must have subgraphs of all smaller infinite chromatic numbers 𝔫 < 𝔪.\n\n**Galvin (1973):** Proved YES for 𝔪 = ℵ₀ — the only case provable in ZFC. Also observed that the induced subgraph version implies 2^κ < 2^ν for κ < ν.\n\n**Komjáth (1988):** Constructed models where the property fails: graphs with χ = ℵ₂ having no subgraph with χ = ℵ₁, in models where 2^ℵ₀ = 2^ℵ₁ = 2^ℵ₂ = ℵ₃.\n\n**Shelah (1990):** Under V=L, the property holds for 𝔪 = ℵ₂, 𝔫 = ℵ₁. This establishes set-theoretic independence.\n\n**Open:** Does GCH suffice?",
+    "problemStatement": "**Problem Statement (SET-THEORETIC INDEPENDENCE)**\n\nLet 𝔪 be an infinite cardinal and G a graph with χ(G) = 𝔪.\n\n**Question:** For every infinite 𝔫 < 𝔪, must G have a subgraph with χ = 𝔫?\n\n**Answer:** INDEPENDENT OF ZFC\n- YES under V=L (Shelah)\n- NO in some models (Komjáth)\n- OPEN under GCH",
+    "text": "Erdos Problem #739 asks whether the chromatic number spectrum of an infinite graph is downward closed among infinite cardinals. For finite graphs, any graph with chromatic number k trivially contains subgraphs of every smaller chromatic number (just delete vertices). For infinite graphs, the situation is profoundly different. Galvin showed the countable case works: if chi(G) = aleph-0, then G has n-chromatic subgraphs for every finite n. But the passage to uncountable chromatic numbers encounters a fundamental barrier. Galvin observed that the induced-subgraph version implies strict monotonicity of the continuum function (2^kappa < 2^nu for kappa < nu), connecting a combinatorial question to deep cardinal arithmetic. Komjath exploited this connection by building a model where the continuum function collapses (2^(aleph-0) = 2^(aleph-1) = 2^(aleph-2) = aleph-3), constructing within it a graph with chi = aleph-2 but no aleph-1-chromatic subgraph. Shelah then showed that V=L provides enough combinatorial structure to recover the property. The formalization captures this complete landscape: definitions, the ZFC-provable countable case, the set-theoretic connection, and both independence witnesses.",
+    "proofStrategy": "**Formalization Architecture**\n\nThe Lean file is organized into eight parts mirroring the logical structure of the independence proof.\n\n**Part I -- Definitions (lines 41-57):** Three core definitions build the vocabulary. `chromaticNumber G` computes the infimum over cardinals kappa admitting a proper coloring `c : V -> kappa.out` (using `sInf` on `Cardinal`). `HasChromaticNumber` and `HasSubgraphWithChromaticNumber` (via `SimpleGraph.induce S` for a vertex subset S) formalize the problem statement.\n\n**Part II -- The Question (lines 58-69):** `GalvinProperty G` quantifies over limit cardinals kappa below chi(G), requiring the existence of a kappa-chromatic induced subgraph. `ErdosGalvinQuestion` universally quantifies this over all infinite graphs.\n\n**Part III -- Galvin's ZFC Theorem (lines 70-83):** The axiom `galvin_countable_theorem` encodes Galvin's 1973 result for the countable case: chi(G) = aleph-0 implies n-chromatic subgraphs for all positive n. The corollary `finite_chromatic_subgraphs` is proved by direct application, demonstrating that axioms compose cleanly.\n\n**Part IV -- Cardinal Arithmetic Connection (lines 84-88):** Galvin's observation that the universal induced-subgraph version implies 2^kappa < 2^nu for kappa < nu is discussed in a docstring, not formalized as an axiom in this file. It is the conceptual bridge between the graph-theoretic question and cardinal arithmetic.\n\n**Part V -- Consistency of Failure (lines 89-97):** The axiom `komjath_consistency` axiomatizes the existential statement: there exists a graph with chi = aleph(2) and no aleph(1)-chromatic subgraph. This is a consistency result (true in certain forcing extensions).\n\n**Part VI -- Constructibility (lines 99-102):** Shelah's V=L result -- chi(G) = aleph(2) implies existence of an aleph(1)-chromatic subgraph -- is discussed in a docstring, not formalized as an axiom in this file.\n\n**Part VII -- Open Problem (lines 103-111):** `GCH` is defined as the statement that 2^kappa = kappa^+ for all limit kappa. `MainOpenProblem` captures GCH -> ErdosGalvinQuestion as a Prop.\n\n**Part VIII -- Summary (lines 113-129):** `erdos_739_summary` is a fully proved theorem combining Galvin's countable result with Komjath's consistency of failure, proved by `exact <galvin_countable_theorem, komjath_consistency>`.",
+    "keyInsights": [
+      "**Set-Theoretic Independence:** Answer depends on model — YES under V=L, NO in Komjáth's model",
+      "**Galvin's Countable Case:** The only case provable in ZFC without extra axioms",
+      "**Cardinal Arithmetic:** Induced version implies 2^κ < 2^ν for κ < ν",
+      "**Continuum Function:** Komjáth's model has 2^ℵ₀ = 2^ℵ₁ = 2^ℵ₂ = ℵ₃ (collapse)",
+      "**Combinatorics meets Foundations:** Purely graph-theoretic questions can depend on set theory"
+    ],
+    "prerequisites": [
+      "Graph theory: simple graphs, vertex colorings, chromatic number, induced subgraphs",
+      "Set theory: cardinal arithmetic, ordinals, aleph numbers, the continuum function 2^kappa",
+      "Axiomatics of set theory: ZFC, the axiom of constructibility V=L, GCH, forcing and consistency results",
+      "Transfinite induction and the well-ordering of cardinals"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "chromaticNumber, HasChromaticNumber, HasSubgraphWithChromaticNumber",
+      "startLine": 41,
+      "endLine": 57,
+      "mathContext": "The chromatic number of a graph is classically defined as the minimum number of colors needed for a proper vertex coloring. For infinite graphs, 'number of colors' becomes a cardinal. The formalization uses `sInf` over the set of cardinals kappa such that a proper coloring `c : V -> kappa.out` exists, where `kappa.out` is the canonical type of cardinality kappa. `HasSubgraphWithChromaticNumber` uses Mathlib's `SimpleGraph.induce S` to restrict the graph to a vertex subset S, capturing the induced subgraph construction central to the problem."
+    },
+    {
+      "id": "galvin-question",
+      "title": "Galvin's Question",
+      "summary": "GalvinProperty, ErdosGalvinQuestion",
+      "startLine": 58,
+      "endLine": 69,
+      "mathContext": "GalvinProperty restricts attention to limit cardinals (those satisfying `Cardinal.IsLimit`), which includes aleph-0, aleph-omega, and all infinite limit cardinals. This restriction is natural because successor cardinals kappa^+ are not directly reachable by the compactness-style arguments that work in the countable case. ErdosGalvinQuestion universally quantifies over all types V and all simple graphs on V with infinite vertex sets, asking whether every such graph satisfies GalvinProperty."
+    },
+    {
+      "id": "galvin-countable",
+      "title": "Galvin's Theorem (ℵ₀)",
+      "summary": "galvin_countable_theorem axiom, finite_chromatic_subgraphs proved",
+      "startLine": 70,
+      "endLine": 83,
+      "mathContext": "Galvin's original proof uses the fact that a graph with chi(G) = aleph-0 cannot be finitely colored, so for every n there must be vertices requiring new colors in any (n-1)-coloring. By carefully selecting vertex subsets that witness the need for at least n colors, one obtains n-chromatic induced subgraphs. The corollary `finite_chromatic_subgraphs` is proved by direct application of the axiom, demonstrating that the axiom interface is well-designed for downstream reasoning."
+    },
+    {
+      "id": "set-theory",
+      "title": "Set-Theoretic Observation",
+      "summary": "Galvin's observation: induced-subgraph version implies 2^κ < 2^ν. Discussed in narrative/docstrings; not formalized as an axiom in this file.",
+      "startLine": 84,
+      "endLine": 88,
+      "mathContext": "Galvin's set-theoretic implication connects graph coloring to the continuum function: if the induced-subgraph version of the Galvin property holds universally, then 2^kappa < 2^nu for all kappa < nu. The axiom formalizes this as an implication from the universal coloring property to strict monotonicity of cardinal exponentiation. This observation is the conceptual key to the entire independence result, because it shows that any model where the continuum function collapses (like Komjath's model with 2^(aleph-0) = 2^(aleph-1)) is a candidate for producing counterexamples."
+    },
+    {
+      "id": "komjath",
+      "title": "Komjáth's Consistency Result (1988)",
+      "summary": "komjath_consistency: χ=ℵ₂ graph with no ℵ₁-chromatic subgraph",
+      "startLine": 89,
+      "endLine": 98,
+      "mathContext": "Komjath's construction uses forcing to build a model of ZFC in which 2^(aleph-0) = 2^(aleph-1) = 2^(aleph-2) = aleph-3. In this model, Galvin's set-theoretic implication cannot apply (since the continuum function is not strictly monotone between aleph-0 and aleph-1). The graph itself is built using a variant of the Rado graph construction adapted to uncountable cardinals, producing a graph with chi = aleph-2 such that every subgraph either has finite chromatic number or has chromatic number at least aleph-2, skipping aleph-1 entirely."
+    },
+    {
+      "id": "shelah",
+      "title": "Shelah's Result under V=L (1990)",
+      "summary": "Shelah's V=L result (YES for ℵ₂/ℵ₁) discussed in narrative/docstrings; not formalized as an axiom in this file.",
+      "startLine": 99,
+      "endLine": 102,
+      "mathContext": "Shelah's proof uses the fine structure of the constructible universe L. Under V=L, the diamond principle (a combinatorial consequence of constructibility) provides the bookkeeping needed to build an aleph-1-chromatic subgraph by transfinite induction along the constructible hierarchy. The key insight is that V=L supplies enough 'prediction' power (via the diamond sequences) to choose vertices at each stage that collectively produce the desired chromatic number. This technique does not obviously carry over to weaker hypotheses like GCH."
+    },
+    {
+      "id": "gch",
+      "title": "The GCH Question (OPEN)",
+      "summary": "GCH, MainOpenProblem",
+      "startLine": 103,
+      "endLine": 112,
+      "mathContext": "GCH (the Generalized Continuum Hypothesis) states that 2^kappa = kappa^+ for every infinite cardinal kappa, where kappa^+ is the successor cardinal. GCH is strictly weaker than V=L but still constrains cardinal arithmetic significantly: under GCH, the continuum function is strictly monotone (2^kappa < 2^nu whenever kappa < nu), so Komjath's counterexample strategy (collapsing the continuum function) cannot work. However, GCH does not provide the diamond-principle machinery that Shelah's proof requires. The formalization defines GCH as a Prop and states MainOpenProblem as the implication GCH -> ErdosGalvinQuestion, leaving it as a definition rather than an axiom to reflect its open status."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_739_summary proved from Galvin and Komjáth",
+      "startLine": 113,
+      "endLine": 129,
+      "mathContext": "The summary theorem `erdos_739_summary` packages the two main results into a conjunction, proved by `exact <galvin_countable_theorem, komjath_consistency>`. The conjunction captures the essence of the independence phenomenon: the first conjunct (Galvin) shows that the property holds in ZFC for countable chromatic number, while the second conjunct (Komjath) shows that extending this to uncountable chromatic numbers is not provable in ZFC. The proof is a direct pairing of the two axioms, illustrating how axiomatic formalization enables clean compositional reasoning even for metamathematical results."
+    }
+  ],
+  "references": [
+    {
+      "authors": "F. Galvin",
+      "title": "Chromatic numbers of subgraphs",
+      "year": 1973,
+      "venue": "Periodica Mathematica Hungarica",
+      "note": "Proves the countable case and observes the connection to cardinal arithmetic"
+    },
+    {
+      "authors": "P. Komjath",
+      "title": "Consistency results on infinite graphs",
+      "year": 1988,
+      "venue": "Israel Journal of Mathematics",
+      "note": "Constructs a model of ZFC where a graph with chi = aleph-2 has no subgraph with chi = aleph-1"
+    },
+    {
+      "authors": "S. Shelah",
+      "title": "Incompactness for chromatic numbers of graphs",
+      "year": 1990,
+      "venue": "A Tribute to Paul Erdos, Cambridge University Press",
+      "note": "Proves the Galvin property holds under V=L for the aleph-2/aleph-1 case, establishing independence"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #739 exhibits SET-THEORETIC INDEPENDENCE. Whether graphs with χ(G) = 𝔪 have subgraphs of all smaller infinite chromatic numbers depends on the model of set theory. Galvin proved the countable case. The summary theorem packages Galvin's result with Komjáth's consistency of failure.",
+    "implications": "**Set Theory and Cardinal Arithmetic**\n\nErdos Problem #739 reveals a deep structural connection between graph coloring and the continuum function. Galvin's observation that the induced-subgraph version implies 2^kappa < 2^nu for kappa < nu places the problem squarely at the intersection of combinatorics and cardinal arithmetic. This means the problem cannot be resolved in ZFC alone whenever the consistency of the negation of the strict monotonicity of the continuum function is established -- which Easton's theorem guarantees.\n\n**Independence and Model Theory**\n\nThe Komjath-Shelah independence result is a striking example of how purely combinatorial questions about graph coloring can depend on the ambient model of set theory. Unlike the Continuum Hypothesis, whose independence follows from general forcing/constructibility arguments, the independence here arises from specific combinatorial constructions that exploit the structure (or lack thereof) of the cardinal hierarchy. The fact that V=L resolves the question positively while certain forcing extensions resolve it negatively shows that the problem is sensitive to the fine structure of the set-theoretic universe.\n\n**Compactness Phenomena**\n\nThe gap between the countable and uncountable cases illustrates a failure of compactness for infinite graphs. For chi(G) = aleph-0, the extraction of n-chromatic subgraphs follows a compactness-like argument. But at uncountable cardinals, no such compactness principle is available in ZFC alone -- V=L provides a substitute through diamond sequences, but weaker axioms may not suffice.\n\n**Formalization Significance**\n\nThe Lean formalization demonstrates that set-theoretic independence results can be cleanly axiomatized, with the summary theorem composing axioms representing different models. This approach -- formalizing each independence witness as a separate axiom -- provides a template for representing metamathematical results in type-theoretic proof assistants.",
+    "openQuestions": [
+      "Does GCH imply the property holds for all graphs?",
+      "What happens under other large cardinal axioms?",
+      "Can we characterize exactly which models satisfy the property?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Ordinal.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic"
+    ],
+    "opens": [
+      "Cardinal"
+    ],
+    "namespace": "Erdos739",
+    "lineCount": 129,
+    "axiomCount": 2,
+    "theoremCount": 2,
+    "definitionCount": 7,
+    "path": "Proofs/Erdos739Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-736",
+      "relationship": "related",
+      "description": "Erdos #736 (Taylor's conjecture) asks whether graphs with chi = aleph-1 generate all chromatic numbers from their finite subgraphs. Like #739, this involves inheritance of chromatic numbers and was shown independent of ZFC by Komjath-Shelah, using similar set-theoretic forcing techniques."
+    },
+    {
+      "targetId": "erdos-1067",
+      "relationship": "related",
+      "description": "Erdos #1067 asks whether graphs with chi = aleph-1 must contain an infinitely connected subgraph with chi = aleph-1 (disproved by Soukup 2015). Both problems probe what structural properties are forced by having uncountable chromatic number, and both reveal that uncountable chromatic number imposes fewer subgraph constraints than one might expect."
+    },
+    {
+      "targetId": "erdos-1068",
+      "relationship": "related",
+      "description": "Erdos #1068 asks whether graphs with chi = aleph-1 must contain a countable infinitely-connected subgraph. This is a weakened variant of #1067 and shares the theme of extracting well-structured subgraphs from graphs with large chromatic number, the same core question that motivates #739."
+    },
+    {
+      "targetId": "erdos-738",
+      "relationship": "related",
+      "description": "Erdos #738 (Gyarfas conjecture) asks whether triangle-free graphs with infinite chromatic number contain every finite tree as an induced subgraph. Both problems study what substructures are forced by infinite chromatic number, though #738 restricts to triangle-free graphs and focuses on tree containment rather than chromatic spectrum."
+    },
+    {
+      "targetId": "continuum-hypothesis",
+      "relationship": "foundational",
+      "description": "The Continuum Hypothesis is the special case GCH restricted to aleph-0. The independence of CH (Godel 1940, Cohen 1963) provides the foundational framework for the Komjath-Shelah independence result on Erdos #739. Moreover, Erdos #739 remains open under GCH, making the relationship between GCH and the Galvin property a central open question."
+    },
+    {
+      "targetId": "cantors-theorem",
+      "relationship": "foundational",
+      "description": "Cantor's theorem (|A| < |P(A)| = 2^|A|) establishes the hierarchy of infinite cardinals that underlies Erdos #739. Galvin's observation that the Galvin property implies strict monotonicity of the continuum function (2^kappa < 2^nu for kappa < nu) is a strengthening of the Cantorian cardinal hierarchy."
+    }
+  ],
+  "sorries": 0
+}

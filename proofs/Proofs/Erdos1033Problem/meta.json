@@ -1,0 +1,17 @@
+{
+  "problem_number": 1033,
+  "title": "Triangle Degree Sums in Dense Graphs",
+  "status": "open",
+  "solvers": [],
+  "source_url": "https://erdosproblems.com/1033",
+  "overview": "Let h(n) be such that every graph on n vertices with > n²/4 edges contains a triangle whose vertices have degrees summing to at least h(n). Estimate h(n). Is h(n) ≥ (2(√3−1)−o(1))n?",
+  "sections": [],
+  "conclusion": "OPEN - Upper bound h(n) ≤ 2(√3−1)n ≈ 1.464n (Erdős-Laskar 1985). Lower bound h(n) ≥ (21/16)n = 1.3125n (Fan 1988). Gap of ~0.15n between bounds remains unsolved.",
+  "references": [
+    "Erdős-Laskar [ErLa85] - Original bounds: 2(√3−1)n ≥ h(n) ≥ (1+c)n",
+    "Fan [Fa88] - Improved lower bound to 21/16n",
+    "Erdős [Er93, p.344] - Problem statement"
+  ],
+  "related_problems": [],
+  "tags": ["graph-theory", "turan-theory", "triangle-counting", "degree-sequences", "open"]
+}

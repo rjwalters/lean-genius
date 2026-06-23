@@ -1,0 +1,333 @@
+[
+  {
+    "id": "ann-brouwer-oq02-imports",
+    "proofId": "brouwer-fixed-point-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Imports and Namespace Setup",
+    "content": "Imports the full Mathlib library and opens the `Set` namespace within `BrouwerOQ02`. The Mathlib import provides access to key results: the intermediate value theorem (`exists_mem_Icc_isFixedPt_of_mapsTo`), metric space convergence (`Metric.tendsto_atTop`), and geometric series decay (`tendsto_pow_atTop_nhds_zero_of_lt_one`).",
+    "mathContext": "The formalization works within $\\mathbb{R}$ with the standard metric topology, using Mathlib's `Icc` (closed intervals $[a,b]$), `Filter.Tendsto` (net convergence), and `ContinuousOn` (restriction of continuity to subsets).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "metric spaces",
+      "filters",
+      "continuous functions"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "topology"
+    ]
+  },
+  {
+    "id": "ann-brouwer-oq02-discrete-ivt",
+    "proofId": "brouwer-fixed-point-oq-02",
+    "range": {
+      "startLine": 33,
+      "endLine": 44
+    },
+    "type": "concept",
+    "title": "1D Discrete IVT (Sperner-Type Lemma)",
+    "content": "Proves that any integer-valued sequence that starts non-negative and ends negative must have an adjacent sign change. The proof proceeds by contraposition: if no adjacent sign change exists, strong induction shows all values remain non-negative, contradicting the negative endpoint. This is the discrete analogue of the intermediate value theorem and a 1D instance of Sperner's lemma.",
+    "mathContext": "Given $f: \\mathbb{N} \\to \\mathbb{Z}$ with $f(0) \\geq 0$ and $f(N) < 0$, there exists $i < N$ with $f(i) \\geq 0$ and $f(i+1) < 0$. The proof uses strong induction: if $\\forall i < N,\\ f(i) \\geq 0 \\Rightarrow f(i+1) \\geq 0$, then $f(N) \\geq 0$, contradicting $f(N) < 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "intermediate value theorem",
+      "Sperner's lemma",
+      "bisection method",
+      "combinatorial topology"
+    ],
+    "prerequisites": [
+      "integer arithmetic",
+      "strong induction"
+    ]
+  },
+  {
+    "id": "ann-brouwer-oq02-approx-def",
+    "proofId": "brouwer-fixed-point-oq-02",
+    "range": {
+      "startLine": 50,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "Epsilon-Approximate Fixed Point",
+    "content": "Defines an epsilon-approximate fixed point as a point where the displacement $|f(x) - x|$ is at most $\\varepsilon$. This quantitative notion is central to computational complexity analysis: the complexity of finding fixed points is measured in terms of the approximation parameter $\\varepsilon$.",
+    "mathContext": "$x$ is an $\\varepsilon$-approximate fixed point of $f$ if $|f(x) - x| \\leq \\varepsilon$. As $\\varepsilon \\to 0$, approximate fixed points converge to exact ones (proved in `approx_to_exact`).",
+    "significance": "key",
+    "relatedConcepts": [
+      "fixed point",
+      "approximation theory",
+      "computational complexity",
+      "displacement function"
+    ],
+    "prerequisites": [
+      "metric spaces",
+      "absolute value"
+    ]
+  },
+  {
+    "id": "ann-brouwer-oq02-approx-exists",
+    "proofId": "brouwer-fixed-point-oq-02",
+    "range": {
+      "startLine": 54,
+      "endLine": 60
+    },
+    "type": "concept",
+    "title": "Approximate Fixed Points Exist",
+    "content": "Shows that for any continuous self-map of $[0,1]$ and any $\\varepsilon > 0$, an $\\varepsilon$-approximate fixed point exists. The proof is elegant: invoke the IVT to get an exact fixed point, which is trivially also an $\\varepsilon$-approximate one. This establishes existence without giving a constructive algorithm.",
+    "mathContext": "For $f: [0,1] \\to [0,1]$ continuous and $\\varepsilon > 0$, $\\exists x \\in [0,1]$ with $|f(x) - x| \\leq \\varepsilon$. Uses Mathlib's `exists_mem_Icc_isFixedPt_of_mapsTo`, which is the 1D Brouwer fixed point theorem via IVT.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Brouwer fixed point theorem",
+      "intermediate value theorem",
+      "existence theorems"
+    ],
+    "prerequisites": [
+      "continuity",
+      "IVT",
+      "closed intervals"
+    ]
+  },
+  {
+    "id": "ann-brouwer-oq02-convergence",
+    "proofId": "brouwer-fixed-point-oq-02",
+    "range": {
+      "startLine": 66,
+      "endLine": 124
+    },
+    "type": "concept",
+    "title": "Approximate Fixed Points Converge to Exact Ones",
+    "content": "The most technically involved theorem in the file. Proves that if $(x_n)$ converges to $x^*$ and each $x_n$ is a $1/n$-approximate fixed point, then $x^*$ is an exact fixed point. The proof uses a contradiction argument: assuming $|f(x^*) - x^*| > 0$, it combines the triangle inequality with two estimates—the convergence of $f(x_n) - x_n$ to $f(x^*) - x^*$ (from continuity) and the bound $|f(x_n) - x_n| \\leq 1/n$ (from the approximation hypothesis)—to derive a contradiction.",
+    "mathContext": "If $x_n \\to x^*$ and $|f(x_n) - x_n| \\leq 1/n$ for $n \\geq 1$, then $f(x^*) = x^*$. Key step: set $\\varepsilon = |f(x^*) - x^*|/2 > 0$, choose $N_1$ so $|f(x_m) - x_m - (f(x^*) - x^*)| < \\varepsilon/2$ for $m \\geq N_1$, and $N_2$ so $1/m < \\varepsilon/2$ for $m \\geq N_2$. Triangle inequality gives $|f(x^*) - x^*| \\leq \\varepsilon/2 + \\varepsilon/2 = \\varepsilon = |f(x^*) - x^*|/2$, a contradiction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sequential characterization of continuity",
+      "epsilon-delta arguments",
+      "limit theorems",
+      "squeeze theorem"
+    ],
+    "prerequisites": [
+      "metric space convergence",
+      "continuity",
+      "triangle inequality"
+    ]
+  },
+  {
+    "id": "ann-brouwer-oq02-contraction-approx",
+    "proofId": "brouwer-fixed-point-oq-02",
+    "range": {
+      "startLine": 130,
+      "endLine": 144
+    },
+    "type": "concept",
+    "title": "Contraction Iterates Converge Geometrically",
+    "content": "Proves the a priori error bound for contraction mapping iterates: the displacement at step $n$ decays geometrically as $L^n |f(x_0) - x_0|$. The induction step multiplies the Lipschitz bound $|f(f^n(x_0)) - f^n(x_0)| \\leq L \\cdot |f(f^{n-1}(x_0)) - f^{n-1}(x_0)|$ by the inductive hypothesis.",
+    "mathContext": "For an $L$-Lipschitz map with $0 \\leq L < 1$: $|f(f^n(x_0)) - f^n(x_0)| \\leq L^n |f(x_0) - x_0|$. Since $L < 1$, this gives $O(L^n)$ decay, meaning $O(\\log(1/\\varepsilon))$ iterations suffice for $\\varepsilon$-approximation (matching binary search complexity in 1D).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Banach fixed point theorem",
+      "geometric series",
+      "Lipschitz continuity",
+      "contraction principle"
+    ],
+    "prerequisites": [
+      "Lipschitz maps",
+      "geometric sequences",
+      "function iteration"
+    ]
+  },
+  {
+    "id": "ann-brouwer-oq02-contraction-cauchy",
+    "proofId": "brouwer-fixed-point-oq-02",
+    "range": {
+      "startLine": 146,
+      "endLine": 176
+    },
+    "type": "concept",
+    "title": "Contraction Iterates Form a Cauchy Sequence",
+    "content": "Establishes that the contraction iterate sequence is Cauchy by showing consecutive differences tend to zero. The proof splits into two cases: if $x_0$ is already a fixed point (trivial), or if not, uses the geometric decay $L^n |f(x_0) - x_0|$ combined with the fact that $L^n \\to 0$ (from `tendsto_pow_atTop_nhds_zero_of_lt_one`). This is a key step toward the Banach fixed point theorem's existence guarantee.",
+    "mathContext": "For $L$-contraction $f$ with $L < 1$: $\\forall \\varepsilon > 0,\\ \\exists N,\\ \\forall n \\geq N,\\ |f^{n+1}(x_0) - f^n(x_0)| < \\varepsilon$. The bound $|f^{n+1}(x_0) - f^n(x_0)| \\leq L^n |f(x_0) - x_0| < \\frac{\\varepsilon}{|f(x_0) - x_0|} \\cdot |f(x_0) - x_0| = \\varepsilon$ for large $n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cauchy sequences",
+      "completeness",
+      "Banach fixed point theorem",
+      "geometric convergence"
+    ],
+    "prerequisites": [
+      "metric space convergence",
+      "Cauchy criterion",
+      "geometric series"
+    ]
+  },
+  {
+    "id": "ann-brouwer-oq02-binary-search",
+    "proofId": "brouwer-fixed-point-oq-02",
+    "range": {
+      "startLine": 182,
+      "endLine": 208
+    },
+    "type": "concept",
+    "title": "Binary Search Interval Narrowing",
+    "content": "The core binary search theorem: for any self-map of $[0,1]$, after $n$ bisection steps there exist $a, b$ with $f(a) - a \\geq 0$, $f(b) - b \\leq 0$, and $b - a \\leq 1/2^n$. The base case uses the boundary conditions: $f(0) \\geq 0$ (since $f(0) \\in [0,1]$) and $f(1) \\leq 1$ (same). The induction step evaluates the midpoint $m = (a+b)/2$ and keeps the half containing the sign change of the displacement $g(x) = f(x) - x$.",
+    "mathContext": "Bisection on the displacement $g(x) = f(x) - x$: since $g(0) \\geq 0$ and $g(1) \\leq 0$, the interval $[0,1]$ brackets a zero. Each step halves the interval, giving width $\\leq 1/2^n$ after $n$ steps. This yields $O(\\log(1/\\varepsilon))$ query complexity, which is optimal for 1D continuous functions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "bisection method",
+      "sign change",
+      "root finding",
+      "query complexity"
+    ],
+    "prerequisites": [
+      "interval arithmetic",
+      "IVT",
+      "binary search"
+    ]
+  },
+  {
+    "id": "ann-brouwer-oq02-binary-convergence",
+    "proofId": "brouwer-fixed-point-oq-02",
+    "range": {
+      "startLine": 210,
+      "endLine": 215
+    },
+    "type": "concept",
+    "title": "Binary Search Convergence Rate",
+    "content": "Converts the binary search interval theorem into an approximate fixed point guarantee: after $n$ steps, there exists an $x$ with $|f(x) - x| \\leq 1/2^n$. Like `approx_fixed_point_exists`, this leverages the exact fixed point from IVT, but the theorem's significance is computational: it establishes the $O(\\log(1/\\varepsilon))$ complexity bound.",
+    "mathContext": "For $f: [0,1] \\to [0,1]$ continuous, $\\forall n \\in \\mathbb{N},\\ \\exists x \\in [0,1],\\ |f(x) - x| \\leq 1/2^n$. Setting $n = \\lceil \\log_2(1/\\varepsilon) \\rceil$ gives $\\varepsilon$-approximation in $O(\\log(1/\\varepsilon))$ evaluations.",
+    "significance": "key",
+    "relatedConcepts": [
+      "convergence rate",
+      "computational complexity",
+      "logarithmic complexity"
+    ],
+    "prerequisites": [
+      "binary search",
+      "approximate fixed points"
+    ]
+  },
+  {
+    "id": "ann-brouwer-oq02-ppad-def",
+    "proofId": "brouwer-fixed-point-oq-02",
+    "range": {
+      "startLine": 221,
+      "endLine": 236
+    },
+    "type": "definition",
+    "title": "PPAD Instance Structure",
+    "content": "Defines a PPAD (Polynomial Parity Argument on Directed graphs) instance as a directed graph with successor/predecessor functions, consistency axioms (succ/pred are inverses), and a distinguished source vertex with no predecessor but at least one successor. The IsSink and IsSolution predicates capture the computational target: vertices where the directed path terminates.",
+    "mathContext": "A PPAD instance on type $V$ consists of partial functions $\\text{succ}, \\text{pred}: V \\to V?$ satisfying $\\text{succ}(v) = w \\Rightarrow \\text{pred}(w) = v$ and vice versa, plus a source $s$ with $\\text{pred}(s) = \\text{none}$ and $\\text{succ}(s) \\neq \\text{none}$. Solutions are non-source vertices that are sinks ($\\text{succ} = \\text{none}$) or additional sources ($\\text{pred} = \\text{none}$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "PPAD complexity class",
+      "directed graphs",
+      "Papadimitriou",
+      "Nash equilibria",
+      "computational complexity"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "complexity theory",
+      "Option types"
+    ]
+  },
+  {
+    "id": "ann-brouwer-oq02-path-injective",
+    "proofId": "brouwer-fixed-point-oq-02",
+    "range": {
+      "startLine": 237,
+      "endLine": 294
+    },
+    "type": "concept",
+    "title": "Path Injectivity via Strong Induction",
+    "content": "Proves that the path from the source visits distinct vertices: if $\\text{followPath}(i) = \\text{followPath}(j) = v$, then $i = j$. Uses strong induction on $i + j$. The base cases handle when either index is 0 (the source has no predecessor, so no other path step can reach it). The inductive step uses predecessor consistency to show the prior path vertices must also agree, reducing to a smaller sum.",
+    "mathContext": "The path $p(n)$ defined by $p(0) = s$, $p(n+1) = \\text{succ}(p(n))$ is injective on its domain: $p(i) = p(j) = v \\Rightarrow i = j$. If $i = 0$ and $j > 0$, then $v = s$ but $\\text{pred}(s) = \\text{none}$ while $v = \\text{succ}(p(j-1))$ implies $\\text{pred}(v) \\neq \\text{none}$, a contradiction. If both $i, j > 0$, then $\\text{pred}(v) = p(i-1) = p(j-1)$, so by IH $i-1 = j-1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "injectivity",
+      "strong induction",
+      "directed paths",
+      "predecessor consistency"
+    ],
+    "prerequisites": [
+      "strong induction",
+      "Option type manipulation",
+      "path following"
+    ]
+  },
+  {
+    "id": "ann-brouwer-oq02-pigeonhole",
+    "proofId": "brouwer-fixed-point-oq-02",
+    "range": {
+      "startLine": 296,
+      "endLine": 328
+    },
+    "type": "concept",
+    "title": "Pigeonhole Termination",
+    "content": "Proves that in a finite type, the path must eventually reach `none`. The argument is a clean application of the pigeonhole principle: if the path were defined for all $n$, the function $n \\mapsto p(n)$ would be an injection from $\\text{Fin}(|V|+1)$ into $V$, which is impossible since $|V|+1 > |V|$. Then `exists_first_none` finds the minimal termination point.",
+    "mathContext": "For $|V| < \\infty$: if $p(n) \\neq \\text{none}$ for all $n$, then $\\{p(0), p(1), \\ldots, p(|V|)\\}$ are $|V|+1$ distinct elements of $V$ (by path injectivity), contradicting $|V| < \\infty$. Therefore $\\exists k$ with $p(k) \\neq \\text{none}$ and $p(k+1) = \\text{none}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "finite types",
+      "Fintype",
+      "path termination"
+    ],
+    "prerequisites": [
+      "pigeonhole principle",
+      "finite cardinality",
+      "well-ordering"
+    ]
+  },
+  {
+    "id": "ann-brouwer-oq02-ppad-solution",
+    "proofId": "brouwer-fixed-point-oq-02",
+    "range": {
+      "startLine": 335,
+      "endLine": 364
+    },
+    "type": "concept",
+    "title": "PPAD Solution Existence",
+    "content": "The main PPAD theorem: every finite PPAD instance has a solution. Combines the three preceding lemmas: path injectivity ensures distinct vertices are visited, pigeonhole forces termination at some vertex $v$, and since $\\text{succ}(v) = \\text{none}$ while $v$ was reached from the path (so $\\text{pred}(v) \\neq \\text{none}$), $v$ is a sink. Since the source has $\\text{succ} \\neq \\text{none}$, $v \\neq s$, making $v$ a solution. This formalizes the 'parity argument' at the heart of PPAD.",
+    "mathContext": "For finite $V$: $\\exists v \\in V,\\ v \\neq s \\wedge (\\text{succ}(v) = \\text{none} \\wedge \\text{pred}(v) \\neq \\text{none})$. The constructive content is: follow the unique directed path from $s$ until it terminates. The path must terminate (pigeonhole), and the endpoint is a sink distinct from $s$. This is the formal core of the PPAD complexity class introduced by Papadimitriou (1994).",
+    "significance": "key",
+    "relatedConcepts": [
+      "PPAD-completeness",
+      "parity argument",
+      "end-of-line problem",
+      "Chen-Deng theorem"
+    ],
+    "prerequisites": [
+      "path injectivity",
+      "pigeonhole principle",
+      "PPAD structure"
+    ]
+  },
+  {
+    "id": "ann-brouwer-oq02-summary",
+    "proofId": "brouwer-fixed-point-oq-02",
+    "range": {
+      "startLine": 370,
+      "endLine": 379
+    },
+    "type": "concept",
+    "title": "Complete 1D Complexity Picture",
+    "content": "Bundles the three main 1D results into a single summary theorem: (1) exact fixed points exist (Brouwer/IVT), (2) $\\varepsilon$-approximate fixed points exist for all $\\varepsilon > 0$, and (3) binary search achieves $1/2^n$-approximation in $n$ steps. Together these establish that 1D fixed point finding has $O(\\log(1/\\varepsilon))$ complexity, in contrast to the PPAD-completeness of higher dimensions.",
+    "mathContext": "For continuous $f: [0,1] \\to [0,1]$: $(\\exists x,\\ f(x) = x) \\wedge (\\forall \\varepsilon > 0,\\ \\exists x,\\ |f(x)-x| \\leq \\varepsilon) \\wedge (\\forall n,\\ \\exists x,\\ |f(x)-x| \\leq 2^{-n})$. The three conjuncts represent existence, approximability, and efficient computability respectively.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complexity dichotomy",
+      "1D vs higher dimensions",
+      "PPAD-completeness",
+      "efficient algorithms"
+    ],
+    "prerequisites": [
+      "IVT",
+      "binary search",
+      "contraction mappings"
+    ]
+  }
+]

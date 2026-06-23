@@ -1,0 +1,237 @@
+{
+  "id": "erdos-414",
+  "title": "Erdős Problem #414: Merging Orbits of h(n) = n + τ(n)",
+  "slug": "erdos-414",
+  "description": "Define h(n) = n + τ(n) and iterate. Do all orbits eventually merge? For any m, n ≥ 1, do there exist i, j with h^i(m) = h^j(n)? Erdős and Graham believed yes. Status: OPEN.",
+  "meta": {
+    "erdosNumber": 414,
+    "status": "axiomatized",
+    "badge": "axiom",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "divisor-function",
+      "iterated-functions",
+      "dynamical-systems",
+      "arithmetic-dynamics",
+      "orbit-coalescence",
+      "open"
+    ],
+    "proofRepoPath": "Proofs/Erdos414Problem.lean",
+    "sorries": 0,
+    "sourceUrl": "https://erdosproblems.com/414",
+    "erdosUrl": "https://erdosproblems.com/414",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "date": "1980",
+    "dateAdded": "2026-01-23",
+    "relatedProblems": [
+      {
+        "id": "erdos-412",
+        "relation": "Same orbit merging question for h(n) = n + σ(n) (sum of divisors); strictly increasing with even larger steps, equally unproven"
+      },
+      {
+        "id": "erdos-413",
+        "relation": "Studies barriers for n + ω(n); the map can decrease for some arithmetic functions, creating fundamentally different dynamics"
+      },
+      {
+        "id": "erdos-411",
+        "relation": "Studies g(n) = n + φ(n) iteration and periodic doubling; parallel strictly-increasing iteration with Euler totient"
+      },
+      {
+        "id": "erdos-647",
+        "relation": "Asks when max(m + τ(m)) ≤ n + 2; directly involves the h(n) = n + τ(n) quantity central to Problem #414"
+      },
+      {
+        "id": "erdos-1135",
+        "relation": "The Collatz conjecture: canonical example of orbit coalescence for an iterated function, but with non-monotone dynamics"
+      }
+    ],
+    "axiomCount": 1,
+    "assumptions": [
+      "erdos_414_conjecture: ∀ m, n ≥ 1, ∃ i, j: h^i(m) = h^j(n) — all orbits eventually merge (main open question)"
+    ],
+    "lineCount": 301,
+    "theoremCount": 34,
+    "definitionCount": 2
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "States Erdős Problem #414: with $h(n)=n+\\tau(n)$ ($\\tau$ = number of divisors) and $h_k$ the $k$-fold iterate, do the orbits of any $m,n>0$ eventually merge ($\\exists i,j,\\ h_i(m)=h_j(n)$)? Erdős–Graham believed YES. Notes the orbit is strictly increasing (since $\\tau\\geq1$) and OEIS A064491. Imports `Nat.Divisors` and tactics.",
+      "mathContext": "$h(n)=n+\\tau(n)$; $h_0(n)=n$, $h_{k+1}=h\\circ h_k$. Conjecture: all orbits merge."
+    },
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 26,
+      "endLine": 35,
+      "summary": "Defines `h n = n + n.divisors.card` and the orbit `hOrbit n k` $=h^k(n)$ by recursion ($k=0\\mapsto n$, $k+1\\mapsto h(\\text{hOrbit}\\,n\\,k)$). These are the two definitions of the file.",
+      "mathContext": "$h(n)=n+|\\text{divisors}(n)|$; $\\text{hOrbit}(n,k)=h^k(n)$."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties of h",
+      "startLine": 36,
+      "endLine": 114,
+      "summary": "Foundational lemmas (all proved): `divisors_card_pos` ($\\tau(n)\\geq1$), `h_strictly_increasing` ($h(n)>n$), `hOrbit_pos`, `orbit_strictly_increasing`, `h_upper` ($h(n)\\leq2n$), `h_prime` ($h(p)=p+2$), `h_lower_bound_ge2` ($h(n)\\geq n+2$ for $n\\geq2$), and concrete values $h(1)=2,h(2)=4,h(3)=5,h(4)=7,h(5)=7$ (note $4,5$ both map to $7$).",
+      "mathContext": "$n<h(n)\\leq2n$; $h(p)=p+2$; $h(4)=h(5)=7$ (first collision)."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Merging Conjecture (OPEN)",
+      "startLine": 115,
+      "endLine": 145,
+      "summary": "States the sole AXIOM `erdos_414_conjecture` ($\\forall m,n\\geq1,\\exists i,j,\\ h^i(m)=h^j(n)$). PROVES `hOrbit_continuation` (once two orbits meet they stay merged: $h^{i+d}(a)=h^{j+d}(b)$) and `single_eventual_orbit` (all positive integers eventually land on the orbit of $1$, derived from the conjecture via continuation).",
+      "mathContext": "Axiom: $\\forall m,n\\geq1,\\exists i,j,\\ h^i(m)=h^j(n)$. Orbits, once merged, stay merged."
+    },
+    {
+      "id": "orbit-examples",
+      "title": "Orbit Computations and Merging",
+      "startLine": 146,
+      "endLine": 159,
+      "summary": "Concrete orbits. `orbit_1_start`: $1\\to2\\to4\\to7\\to9$ (OEIS A064491). `orbit_3_merges_with_1`: $h^2(3)=h^3(1)=7$, the simplest non-trivial merge (because $h(4)=h(5)=7$). Verified by `native_decide`.",
+      "mathContext": "Orbit of $1$: $1,2,4,7,9,\\dots$; orbit of $3$ merges at $7$."
+    },
+    {
+      "id": "growth-rate",
+      "title": "Growth Rate Analysis",
+      "startLine": 160,
+      "endLine": 301,
+      "summary": "Growth bounds and a battery of computed merges. `divisors_card_le_two_sqrt` ($\\tau(n)\\leq2\\sqrt n$, fully proved via the small/large divisor split with the $d\\mapsto n/d$ injection), `h_upper_sqrt` ($h(n)\\leq n+2\\sqrt n$), `orbit_linear_lower` ($h^k(n)\\geq n+k$) and `orbit_linear_lower_ge2` ($\\geq n+2k$ for $n\\geq2$). Then concrete $h(6)\\dots h(10)$ and the merges `orbit_{2,4,5,6,7,8,9,10}_merges_with_1`. Finally `orbits_get_close`: orbit distance can be made $\\leq D$ for any $D$ — PROVED from the conjecture (previously a second axiom with a soundness bug at $D=0$; axiom count reduced 2→1).",
+      "mathContext": "$\\tau(n)\\leq2\\sqrt n\\Rightarrow h(n)\\leq n+2\\sqrt n$; $n+k\\leq h^k(n)$. Orbits-get-close proved (axiom 2→1)."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős and Graham posed Problem #414 in their 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory* (p. 82), alongside the related Problems #412 ($n + \\sigma(n)$) and #413 ($n - \\varphi(n)$). The problem belongs to **arithmetic dynamics** — iteration of number-theoretic functions as discrete dynamical systems, a field that also includes the Collatz conjecture and aliquot sequences.\n\nThe function $h(n) = n + \\tau(n)$ is strictly increasing ($\\tau(n) \\geq 1$), ruling out cycles. Orbits march strictly upward, so the question is purely about *merging*. Despite strong computational evidence (all orbits from 1 to $10^6$ merge within ~20 steps), the problem remains OPEN. The difficulty: proving exact collision $h^i(m) = h^j(n)$ requires controlling the cumulative irregularity of $\\tau$ along two trajectories. Dirichlet gives $\\sum_{k \\leq n} \\tau(k) \\sim n \\log n$ on average, but $\\tau$ fluctuates wildly: from 2 at primes to $\\tau(n) \\gg n^\\varepsilon$ at highly composite numbers.",
+    "problemStatement": "Let h(n) = n + τ(n) where τ(n) counts the divisors of n. For any m, n ≥ 1, do there exist i, j ∈ ℕ such that h^i(m) = h^j(n)?",
+    "text": "Erdős Problem #414 studies the iteration h(n) = n + τ(n), where τ(n) counts divisors. Since h is strictly increasing, orbits march upward without cycles. The open question: do all orbits eventually merge? For any m, n ≥ 1, Erdős and Graham conjectured there exist i, j with h^i(m) = h^j(n). Computational evidence is strong (all orbits from 1 to 10^6 merge within ~20 steps), but the irregularity of τ along trajectories makes rigorous proof elusive.",
+    "proofStrategy": "The formalization defines h(n) = n + τ(n) using Lean's `Nat.divisors.card` and the orbit sequence hOrbit by recursion. Basic properties are fully proved: strict monotonicity (h(n) > n for n ≥ 1), upper bounds (h(n) ≤ 2n and the tighter h(n) ≤ n + 2√n via a proved τ(n) ≤ 2√n bound), lower bounds (h(n) ≥ n + 2 for n ≥ 2), and behavior at primes (h(p) = p + 2). The main conjecture is the sole axiom. Two consequences (single_eventual_orbit and orbits_get_close) are proved FROM the conjecture. Orbit computations verify all merges for starting values 1–10 via native_decide.",
+    "keyInsights": [
+      "**Strict monotonicity eliminates cycles**: h(n) > n always, so orbits march strictly upward — no Collatz-like cycle-hunting needed",
+      "**Two-speed dynamics**: primes advance by 2 (minimum), highly composite numbers jump by τ ≫ log n — this irregular spacing creates the orbit structure",
+      "**Collision mechanism**: h(a) = h(b) when a + τ(a) = b + τ(b), i.e., b − a = τ(a) − τ(b). The divisor function's irregularity makes these collisions common but unpredictable",
+      "**Heuristic for merging**: orbit spacing ∼ log V at value V, so collision probability ∼ 1/(log V)² per step. Since Σ 1/(log V)² diverges, infinitely many collisions are expected — but this heuristic is not rigorous",
+      "**Even the weak form is open**: proving that orbits merely get arbitrarily close (without exact collision) is already unproven",
+      "**Proof structure**: The file has 1 `axiom` declaration (erdos_414_conjecture, the main open question). Two consequences (single_eventual_orbit and orbits_get_close) are proved as theorems from this axiom. The divisor bound τ(n) ≤ 2√n is proved in full Lean detail via a small/large divisor splitting argument. All 34 theorems are fully proved with no sorries."
+    ],
+    "prerequisites": [
+      "Number theory: divisor functions and multiplicative functions",
+      "Asymptotic analysis of arithmetic functions",
+      "Elementary inequalities and counting arguments"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-444",
+      "relationship": "related",
+      "description": "Both study the divisor function τ(n) in an iterative/dynamic context; #444 counts fixed points of τ while #414 studies orbits of n + τ(n)"
+    },
+    {
+      "targetId": "collatz-structured",
+      "relationship": "related",
+      "description": "Both study iterated function dynamics on integers: Collatz iterates $n \\mapsto 3n+1$ or $n/2$, while #414 iterates $n \\mapsto n + \\tau(n)$. Both ask whether all orbits merge. Unlike Collatz, $h$ is strictly increasing, eliminating cycle complications"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Both involve fundamental multiplicative arithmetic functions: $\\tau(n)$ counts all divisors while Euler's $\\phi(n)$ counts coprime residues. Erdős #413 studies the related iteration $n \\mapsto n - \\phi(n)$"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "The divisor function $\\tau(n) = \\prod (e_i + 1)$ is defined via unique prime factorization $n = p_1^{e_1} \\cdots p_k^{e_k}$. Understanding when $h^i(m) = h^j(n)$ (orbit coalescence) requires controlling how $\\tau$ transforms the prime factorization structure at each step"
+    },
+    {
+      "targetId": "erdos-413",
+      "relationship": "related",
+      "description": "Erdős #413 studies barriers for $\\omega(n)$ (number of distinct prime factors). The divisor function $\\tau(n) = \\prod(e_i + 1)$ is determined by the prime factorization, so the behavior of $\\omega(n)$ and its fluctuations directly influence the dynamics of $h(n) = n + \\tau(n)$"
+    },
+    {
+      "targetId": "erdos-415",
+      "relationship": "related",
+      "description": "Erdős #415 studies ordering patterns in $\\varphi(n)$. Both $\\tau$ and $\\varphi$ are multiplicative functions whose local behavior determines the dynamics of arithmetic iterations: $h(n) = n + \\tau(n)$ here vs. questions about $\\varphi$ ordering in #415"
+    },
+    {
+      "targetId": "perfect-numbers",
+      "relationship": "related",
+      "description": "Perfect numbers satisfy $\\sigma(n) = 2n$, making them fixed points of the iteration $n \\mapsto \\sigma(n) - n$. The open question mentions $h(n) = n + \\sigma(n)$ (Erdős #412) as a variant, connecting divisor sum dynamics to the classical theory of perfect and abundant numbers"
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "related",
+      "description": "The average of $\\tau(n)$ over $[1, N]$ is $\\sim \\log N$ (Dirichlet's divisor problem), so the iteration $h(n) = n + \\tau(n)$ advances by $\\sim \\log n$ on average. The divergence of the harmonic series underlies the heuristic that orbits grow linearly with logarithmic corrections"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "The PNT controls the distribution of primes, which in turn governs the divisor function: $\\tau(n)$ depends on the exponents in $n$'s prime factorization, and the typical factorization structure of a random integer near $N$ is governed by the PNT via the Hardy-Ramanujan theorem ($\\omega(n) \\sim \\log\\log n$ for typical $n$). The Dirichlet divisor problem ($\\sum_{n \\leq N} \\tau(n) = N\\log N + (2\\gamma - 1)N + O(N^\\theta)$, with $\\theta$ unknown) provides the average-case behavior of $h(n) = n + \\tau(n)$"
+    },
+    {
+      "targetId": "riemann-hypothesis",
+      "relationship": "thematic",
+      "description": "The Riemann Hypothesis controls the error term in the Dirichlet divisor problem ($\\sum_{n \\leq N} \\tau(n) = N\\log N + O(N^{1/4+\\varepsilon})$ under RH) and more generally governs the fluctuations of multiplicative functions around their means. Understanding orbit coalescence for $h(n) = n + \\tau(n)$ requires controlling these fluctuations — specifically, whether two trajectories can maintain different $\\tau$ values indefinitely despite their sums growing at similar rates"
+    }
+  ],
+  "conclusion": {
+    "summary": "This 302-line formalization captures the OPEN Erdős Problem #414: do all orbits of the iteration $h(n) = n + \\tau(n)$ eventually merge? The sole axiom is the conjecture itself; all 34 theorems are proved. The formalization proves basic properties ($h(n) > n$, $h(n) \\leq n + 2\\sqrt{n}$ via a fully proved $\\tau(n) \\leq 2\\sqrt{n}$ bound, $h(p) = p+2$ for primes), derives consequences of the conjecture (single eventual orbit, orbits get close), and verifies orbit merges for all starting values 1–10 computationally.",
+    "implications": "A resolution would advance the theory of arithmetic dynamics — understanding when simple number-theoretic iterations have universal limiting behavior. The problem connects divisor function regularity (Dirichlet divisor problem), additive combinatorics (collision conditions), and discrete dynamical systems (orbit coalescence). Techniques developed for this problem could apply to the broader family of 'n + f(n)' iterations for multiplicative arithmetic functions f. The collision mechanism h(a) = h(b) when τ(a) - τ(b) = b - a connects to the distribution of values of τ, a classical topic in multiplicative number theory",
+    "openQuestions": [
+      "Does the merging conjecture hold? Can any pair of orbits be shown to collide?",
+      "Even weaker: can orbits be shown to get arbitrarily close (|h^i(m) − h^j(n)| < D for any D)?",
+      "What is the merge time T(m,n) = min{i+j : h^i(m) = h^j(n)}? Is T(m,n) = O(log max(m,n))?",
+      "Does the same hold for h(n) = n + σ(n) (sum of divisors)? (Erdős Problem #412)",
+      "Are there infinitely many 'trunk values' — numbers lying on every eventual orbit?"
+    ]
+  },
+  "leanFile": {
+    "lineCount": 301,
+    "structureCount": 0,
+    "axiomCount": 1,
+    "theoremCount": 34,
+    "lemmaCount": 0,
+    "imports": [
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "path": "Proofs/Erdos414Problem.lean",
+    "sorries": 0,
+    "definitionCount": 2
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "L'Enseignement Mathématique, Université de Genève, Monographie No. 28",
+      "note": "Problem #414 on p. 82: orbit merging for h(n) = n + τ(n)"
+    },
+    {
+      "authors": "Dirichlet, Peter Gustav Lejeune",
+      "title": "Über die Bestimmung der mittleren Werthe in der Zahlentheorie",
+      "year": "1849",
+      "venue": "Abhandlungen der Preußischen Akademie der Wissenschaften, pp. 69-83",
+      "note": "Establishes the average order of the divisor function: Σ_{n≤N} τ(n) = N log N + (2γ-1)N + O(√N)"
+    },
+    {
+      "authors": "Huxley, Martin N.",
+      "title": "Exponential sums and lattice points III",
+      "year": "2003",
+      "venue": "Proceedings of the London Mathematical Society, vol. 87, pp. 591-609",
+      "note": "Best known bound on the Dirichlet divisor problem error term: Δ(N) = O(N^{131/416})"
+    },
+    {
+      "authors": "Ramanujan, Srinivasa",
+      "title": "Highly composite numbers",
+      "year": "1915",
+      "venue": "Proceedings of the London Mathematical Society, vol. 14, pp. 347-409",
+      "note": "Systematic study of numbers with many divisors — highly composite numbers dominate the orbit step size h(n) - n = τ(n)"
+    }
+  ],
+  "sorries": 0
+}

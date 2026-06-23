@@ -1,0 +1,166 @@
+[
+  {
+    "id": "ann-e813-header",
+    "proofId": "erdos-813",
+    "range": {
+      "startLine": 1,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #813** asks: if every set of 7 vertices in an n-vertex graph contains a triangle, how large a clique must the graph contain? Define h(n) as this minimum guaranteed clique size. The number 7 is significant because R(3,3) = 6, so requiring a triangle in every 7-set goes beyond the Ramsey threshold.\n\n**Status:** OPEN with progress from Erdős-Hajnal (original bounds) and Bucić-Sudakov (2023 improvement).",
+    "mathContext": "This is a Ramsey-type problem connecting local triangle density to global clique structure in extremal graph theory.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey theory",
+      "Cliques",
+      "Local density",
+      "Extremal graph theory"
+    ],
+    "prerequisites": [
+      "Ramsey Number R(3,3)",
+      "Clique Number",
+      "Extremal Graph Theory"
+    ]
+  },
+  {
+    "id": "ann-e813-defs",
+    "proofId": "erdos-813",
+    "range": {
+      "startLine": 33,
+      "endLine": 49
+    },
+    "type": "definition",
+    "title": "Graph and Triangle Definitions",
+    "content": "**GraphOnN n:** A simple graph on Fin n (n vertices labeled 0..n-1).\n\n**HasTriangle G v₁ v₂ v₃:** Vertices v₁, v₂, v₃ form a triangle (K₃) — all three are distinct and mutually adjacent.\n\n**SubsetHasTriangle G S:** The vertex subset S contains at least one triangle.\n\n**Every7SetHasTriangle G:** Every subset of exactly 7 vertices contains a triangle. This is the key local density condition that drives the problem.",
+    "mathContext": "The number 7 is one more than R(3,3) = 6. In any 6-vertex graph, there is either a triangle or an independent set of 3. Requiring a triangle in every 7-set forces significantly more structure.",
+    "significance": "key",
+    "relatedConcepts": [
+      "K₃",
+      "R(3,3) = 6",
+      "Local density",
+      "SimpleGraph"
+    ],
+    "prerequisites": [
+      "Simple Graphs",
+      "Triangle (K₃)",
+      "Vertex Adjacency"
+    ]
+  },
+  {
+    "id": "ann-e813-cliques",
+    "proofId": "erdos-813",
+    "range": {
+      "startLine": 51,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "Cliques and the Function h(n)",
+    "content": "**IsClique G S:** Every pair of distinct vertices in S is adjacent — S forms a complete subgraph.\n\n**HasCliqueOfSize G k:** The graph contains a clique on k vertices.\n\n**h(n):** Axiomatized as the minimum clique size guaranteed in any n-vertex graph satisfying Every7SetHasTriangle.\n\n**h_spec:** The specification axiom — for n ≥ 7, any graph with the local triangle property has a clique of size h(n).",
+    "mathContext": "The function h(n) is defined as an extremal quantity: the minimum over all qualifying graphs of the maximum clique size. Computing it requires exhaustive search, so it is axiomatized.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Clique number",
+      "Extremal function",
+      "Min-max"
+    ],
+    "prerequisites": [
+      "Complete Subgraph",
+      "Extremal Function",
+      "Min-Max Optimization"
+    ]
+  },
+  {
+    "id": "ann-e813-bounds",
+    "proofId": "erdos-813",
+    "range": {
+      "startLine": 71,
+      "endLine": 88
+    },
+    "type": "concept",
+    "title": "Erdős-Hajnal Bounds",
+    "content": "**erdos_hajnal_lower_bound:** ∃ c > 0 such that h(n) ≥ c · n^{1/3} for all n ≥ 1. The lower bound means there exist graphs with small cliques but the local triangle property.\n\n**erdos_hajnal_upper_bound:** ∃ c > 0 such that h(n) ≤ c · n^{1/2} for all n ≥ 1. The upper bound means every qualifying graph must have a clique of at least ~√n.\n\n**erdos_hajnal_bounds (proved):** Combines both bounds into a single theorem statement, proved from the two axioms.",
+    "mathContext": "The original exponent gap [1/3, 1/2] was the state of knowledge until 2023. The lower bound uses probabilistic constructions; the upper bound uses Turán-type density arguments.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Polynomial bounds",
+      "Exponent gap",
+      "Turán theory",
+      "Probabilistic method"
+    ],
+    "prerequisites": [
+      "Asymptotic Notation",
+      "Probabilistic Method",
+      "Turán-Type Bounds"
+    ]
+  },
+  {
+    "id": "ann-e813-bucic",
+    "proofId": "erdos-813",
+    "range": {
+      "startLine": 90,
+      "endLine": 101
+    },
+    "type": "concept",
+    "title": "Bucić-Sudakov Improvement (2023)",
+    "content": "**bucic_sudakov_lower_bound:** For every ε > 0, there exist c > 0 and N₀ such that h(n) ≥ c · n^{5/12-ε} for all n ≥ N₀. This captures the o(1) in the exponent.\n\n**five_twelfths_better (proved):** 5/12 > 1/3, confirmed by norm_num.\n\n**exponent_gap (proved):** 1/2 - 5/12 = 1/12, the remaining gap between upper and lower bounds.",
+    "mathContext": "Bucić and Sudakov used algebraic and polynomial graph construction techniques to improve the lower bound. The remaining exponent gap is just 1/12.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Algebraic constructions",
+      "Improved bounds",
+      "Recent progress"
+    ],
+    "prerequisites": [
+      "Polynomial Exponent Bounds",
+      "Algebraic Graph Constructions",
+      "Asymptotic Lower Bounds"
+    ]
+  },
+  {
+    "id": "ann-e813-conjecture",
+    "proofId": "erdos-813",
+    "range": {
+      "startLine": 103,
+      "endLine": 110
+    },
+    "type": "definition",
+    "title": "The Main Conjecture",
+    "content": "**ErdosConjecture813:** Do constants c₁, c₂ > 0 exist such that:\n- h(n) ≥ c₁ · n^{1/3+c₁} (strict improvement over 1/3)\n- h(n) ≤ c₂ · n^{1/2-c₂} (strict improvement over 1/2)\n\nThis asks whether the polynomial exponents can be made strictly better than 1/3 and 1/2. The 2023 improvement to 5/12 provides evidence for the lower bound side but the upper bound remains at 1/2.",
+    "mathContext": "Even small improvements in the exponents would be significant contributions to extremal combinatorics.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Open problem",
+      "Exponent improvement",
+      "Tight bounds"
+    ],
+    "prerequisites": [
+      "Polynomial Growth Rates",
+      "Upper And Lower Bounds",
+      "Open Problems"
+    ]
+  },
+  {
+    "id": "ann-e813-summary",
+    "proofId": "erdos-813",
+    "range": {
+      "startLine": 112,
+      "endLine": 118
+    },
+    "type": "concept",
+    "title": "Summary Theorem",
+    "content": "**erdos_813** packages the two main known results:\n1. ∃ c > 0, ∀ n ≥ 1, h(n) ≥ c · n^{1/3} (Erdős-Hajnal lower bound)\n2. ∃ c > 0, ∀ n ≥ 1, h(n) ≤ c · n^{1/2} (Erdős-Hajnal upper bound)\n\nProved by `⟨erdos_hajnal_lower_bound, erdos_hajnal_upper_bound⟩`.\n\n**Status:** OPEN — the exact growth rate of h(n) is unknown.",
+    "mathContext": "The summary theorem captures the essential state of knowledge. The Bucić-Sudakov improvement refines the lower bound but the original Erdős-Hajnal bounds remain the cleanest statement.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Summary",
+      "Current state",
+      "Open problem"
+    ],
+    "prerequisites": [
+      "Erdős-Hajnal Bounds",
+      "Asymptotic Growth Rate",
+      "Existential Quantifiers"
+    ]
+  }
+]

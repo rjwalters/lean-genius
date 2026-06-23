@@ -1,0 +1,168 @@
+{
+  "id": "fibonacci-identities-oq-04",
+  "title": "Vajda's and d'Ocagne's Identities for Fibonacci Numbers",
+  "slug": "fibonacci-identities-oq-04",
+  "description": "Vajda's identity is the two-parameter master identity of the Fibonacci product family: over the integer Fibonacci sequence Int.fib, Fₓ₊ᵢ·Fₓ₊ⱼ − Fₓ·Fₓ₊ᵢ₊ⱼ = (−1)^|x|·Fᵢ·Fⱼ for all integers x, i, j. Mathlib (Monica Omar, 2025) records Cassini's identity and Catalan's identity over Int.fib, but not their common two-parameter generalization Vajda, nor d'Ocagne's identity Fₘ·Fₙ₊₁ − Fₘ₊₁·Fₙ = (−1)^|n|·Fₘ₋ₙ. This entry supplies both. The proof of Vajda mirrors Mathlib's own Catalan proof: the three shifted Fibonacci numbers Fₓ₊ᵢ, Fₓ₊ⱼ, Fₓ₊ᵢ₊ⱼ are expanded with the integer addition formula Int.fib_add, the inner Fᵢ₊ⱼ and Fᵢ₊ⱼ₊₁ are expanded the same way, and the whole expression collapses — by ring-level algebra together with Cassini's identity for x — to (−1)^|x|·Fᵢ·Fⱼ. d'Ocagne (x = n, i = m−n, j = 1) and fresh derivations of Catalan (i = j) and Cassini (i = j = 1) are then immediate corollaries, recovering the full classical hierarchy from a single theorem.",
+  "meta": {
+    "author": "Steven Vajda / Maurice d'Ocagne (19th–20th c.); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cassini_and_Catalan_identities",
+    "date": "1960",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "fibonacci",
+      "vajda",
+      "d-ocagne",
+      "catalan-identity",
+      "cassini",
+      "integer-sequences",
+      "identity",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/FibonacciIdentitiesOQ04.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.fib_add",
+        "description": "fib (m + n) = fib (m − 1) · fib n + fib m · fib (n + 1) — the integer Fibonacci addition formula; applied five times to expand every shifted term in Vajda's identity",
+        "module": "Mathlib.Data.Int.Fib.Basic"
+      },
+      {
+        "theorem": "Int.fib_succ_mul_fib_pred_sub_fib_sq",
+        "description": "Cassini's identity fib (n + 1) · fib (n − 1) − fib n ^ 2 = (−1)^|n| — used to substitute the alternating sign (−1)^|x| and reduce Vajda to a pure ring identity",
+        "module": "Mathlib.Data.Int.Fib.Lemmas"
+      },
+      {
+        "theorem": "Int.fib_add_two",
+        "description": "fib (n + 2) = fib n + fib (n + 1) — the defining integer Fibonacci recurrence, used to normalize the shifted indices fib (x+1), fib (i+1), fib (j+1+1)",
+        "module": "Mathlib.Data.Int.Fib.Basic"
+      },
+      {
+        "theorem": "Int.fib_one",
+        "description": "fib 1 = 1 — collapses the Fⱼ = F₁ factor when specializing Vajda to d'Ocagne and Cassini",
+        "module": "Mathlib.Data.Int.Fib.Basic"
+      }
+    ],
+    "originalContributions": [
+      "fib_vajda: ∀ x i j : ℤ, fib (x+i)·fib (x+j) − fib x·fib (x+i+j) = (−1)^|x|·(fib i·fib j) — Vajda's two-parameter identity, absent from Mathlib",
+      "fib_dOcagne: ∀ m n : ℤ, fib m·fib (n+1) − fib (m+1)·fib n = (−1)^|n|·fib (m−n) — d'Ocagne's identity, absent from Mathlib, obtained as the (x=n, i=m−n, j=1) case of Vajda",
+      "fib_catalan: ∀ x a : ℤ, fib (x+a)² − fib x·fib (x+2a) = (−1)^|x|·fib a² — Catalan's identity recovered as the i=j case of Vajda (matching Mathlib's independent Int.fib_add_sq_sub_fib_mul_fib_add_two_mul)",
+      "fib_cassini: ∀ x : ℤ, fib (x+1)² − fib x·fib (x+2) = (−1)^|x| — Cassini's identity recovered as the i=j=1 case of Vajda"
+    ],
+    "dateAdded": "2026-06-20",
+    "lineCount": 102,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound). No decide/native_decide is used.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Fibonacci product identities form a hierarchy. At the bottom sits Cassini's identity (1680), Fₙ₋₁Fₙ₊₁ − Fₙ² = (−1)ⁿ. Catalan's identity Fₙ² − Fₙ₋ᵣFₙ₊ᵣ = (−1)ⁿ⁻ʳFᵣ² adds one parameter, and at the top sits Vajda's identity Fₙ₊ᵢFₙ₊ⱼ − FₙFₙ₊ᵢ₊ⱼ = (−1)ⁿFᵢFⱼ (named for Steven Vajda, whose 1989 monograph systematized these relations), which contains Catalan as the diagonal case i = j, Cassini as i = j = 1, and d'Ocagne's identity FₘFₙ₊₁ − Fₘ₊₁Fₙ = (−1)ⁿFₘ₋ₙ (Maurice d'Ocagne) as the case j = 1. Mathlib's Int.fib library records Cassini and Catalan but stops short of the master identity; this entry supplies Vajda and d'Ocagne and re-derives the rest, all over the two-sided integer Fibonacci sequence so the identities hold at negative indices as well.",
+    "problemStatement": "**Open Question (fibonacci-identities-oq-04)**: Prove the two-parameter master identity of the Fibonacci product family — Vajda's identity — and derive d'Ocagne's, Catalan's, and Cassini's identities from it.\n\n**Result**: fib_vajda (fib (x+i)·fib (x+j) − fib x·fib (x+i+j) = (−1)^|x|·(fib i·fib j)) together with fib_dOcagne, fib_catalan, and fib_cassini as one-line corollaries.",
+    "text": "For all integers x, i, j, working over the integer Fibonacci sequence Int.fib, Fₓ₊ᵢ·Fₓ₊ⱼ − Fₓ·Fₓ₊ᵢ₊ⱼ = (−1)^|x|·Fᵢ·Fⱼ. The two free offsets i, j make this the most general of the elementary Fibonacci product identities: every classical special case is recovered by fixing them.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. Expand the three shifted Fibonacci numbers with the integer addition formula Int.fib_add: Fₓ₊ᵢ = Fₓ₋₁Fᵢ + FₓFᵢ₊₁, similarly for Fₓ₊ⱼ, and Fₓ₊₍ᵢ₊ⱼ₎ = Fₓ₋₁Fᵢ₊ⱼ + FₓFᵢ₊ⱼ₊₁ after normalizing x+i+j to x+(i+j).\n2. Expand the inner products Fᵢ₊ⱼ = Fᵢ₋₁Fⱼ + FᵢFⱼ₊₁ and Fᵢ₊₍ⱼ₊₁₎ = Fᵢ₋₁Fⱼ₊₁ + FᵢFⱼ₊₂ with Int.fib_add again (normalizing i+j+1 to i+(j+1)).\n3. Replace the alternating sign (−1)^|x| by its Cassini value Fₓ₊₁Fₓ₋₁ − Fₓ² (rw ← Int.fib_succ_mul_fib_pred_sub_fib_sq), eliminating the only non-polynomial atom.\n4. Apply the recurrence in the forms Fₓ₊₁ = Fₓ₋₁ + Fₓ, Fᵢ₊₁ = Fᵢ₋₁ + Fᵢ, Fⱼ₊₁₊₁ = Fⱼ + Fⱼ₊₁ to put every index into a canonical base set {Fₓ₋₁, Fₓ, Fᵢ, Fᵢ₋₁, Fⱼ, Fⱼ₊₁}. What remains is a polynomial identity closed by `ring`: the cross terms collapse to (Fₓ₋₁² + Fₓ₋₁Fₓ − Fₓ²)·FᵢFⱼ, and the Cassini coefficient is exactly (−1)^|x|.\n5. Corollaries: d'Ocagne is fib_vajda n (m−n) 1 (then n+(m−n) = m, n+(m−n)+1 = m+1, F₁ = 1); Catalan is fib_vajda x a a (then x+a+a = x+2a); Cassini is fib_vajda x 1 1. Each closes by linear_combination against the specialized Vajda instance.",
+    "keyInsights": [
+      "**One identity, four classical theorems.** Vajda's two free offsets i, j specialize to Catalan (i = j), Cassini (i = j = 1), and d'Ocagne (j = 1, x = n, i = m−n), so a single proof yields the whole elementary hierarchy.",
+      "**Cassini is the only arithmetic input.** After the Int.fib_add expansions every Fibonacci-specific fact is gone except the alternating sign; substituting Cassini's identity for (−1)^|x| turns the goal into a pure ring identity — the same reduction Mathlib uses for Catalan, now carried through with two parameters.",
+      "**Index normalization is the subtlety.** Int.fib_add emits indices like i+(j+1) and j+1+1; matching the recurrence rewrites to exactly those syntactic forms (rather than the visually simpler j+2) is what makes the final `ring` fire.",
+      "**Genuinely beyond Mathlib.** Mathlib's Int.fib file has Cassini and Catalan but neither Vajda nor d'Ocagne; both are supplied here over the two-sided integer Fibonacci sequence, valid at negative indices."
+    ],
+    "prerequisites": [
+      "The integer Fibonacci addition formula Int.fib_add and recurrence Int.fib_add_two",
+      "Cassini's identity Int.fib_succ_mul_fib_pred_sub_fib_sq",
+      "The ring and linear_combination tactics for closing polynomial identities"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Module docstring locating Vajda's identity at the top of the Fibonacci product hierarchy, recording what Mathlib's Int.fib library does and does not contain, and the import/namespace setup (open Int).",
+      "mathContext": "$F_{x+i}F_{x+j} - F_x F_{x+i+j} = (-1)^{|x|} F_i F_j$ over $\\mathbb{Z}$, with $F$ the two-sided integer Fibonacci sequence."
+    },
+    {
+      "id": "vajda",
+      "title": "Vajda's Identity",
+      "startLine": 48,
+      "endLine": 72,
+      "summary": "fib_vajda: the master theorem. Five Int.fib_add expansions reduce the two-parameter product to base atoms; substituting Cassini's identity for (−1)^|x| and applying the recurrence leaves a `ring` identity.",
+      "mathContext": "$F_{x+i}F_{x+j} - F_x F_{x+i+j} = (-1)^{|x|} F_i F_j$."
+    },
+    {
+      "id": "docagne",
+      "title": "d'Ocagne's Identity",
+      "startLine": 74,
+      "endLine": 83,
+      "summary": "fib_dOcagne: the (x=n, i=m−n, j=1) specialization, with n+(m−n) collapsing to m and F₁ = 1, closed by linear_combination against the Vajda instance.",
+      "mathContext": "$F_m F_{n+1} - F_{m+1} F_n = (-1)^{|n|} F_{m-n}$."
+    },
+    {
+      "id": "catalan",
+      "title": "Catalan's Identity (recovered)",
+      "startLine": 85,
+      "endLine": 92,
+      "summary": "fib_catalan: the diagonal i = j = a case, recovering the statement of Mathlib's independent Int.fib_add_sq_sub_fib_mul_fib_add_two_mul from the master identity.",
+      "mathContext": "$F_{x+a}^2 - F_x F_{x+2a} = (-1)^{|x|} F_a^2$."
+    },
+    {
+      "id": "cassini",
+      "title": "Cassini's Identity (recovered)",
+      "startLine": 94,
+      "endLine": 101,
+      "summary": "fib_cassini: the i = j = 1 case, recovering Cassini's identity over Int.fib from the master identity.",
+      "mathContext": "$F_{x+1}^2 - F_x F_{x+2} = (-1)^{|x|}$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "fibonacci-identities-oq-01",
+      "relationship": "generalizes",
+      "description": "The oq-01 Cassini entry (over Nat.fib) lists Catalan's and d'Ocagne's identities as open questions; this entry resolves both as corollaries of the more general Vajda identity over Int.fib"
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) proof of Vajda's two-parameter Fibonacci identity over the integer Fibonacci sequence, together with d'Ocagne's identity and re-derivations of Catalan's and Cassini's identities as one-line corollaries.",
+    "implications": "Adds the master identity of the elementary Fibonacci product family — and d'Ocagne's identity — to the formalized record, both absent from Mathlib's Int.fib library, and demonstrates that Cassini and Catalan are uniform specializations of a single two-parameter theorem.",
+    "openQuestions": [
+      "Prove Vajda's identity for the Lucas numbers and the general Gibonacci (Horadam) sequences, where the sign constant is replaced by a discriminant.",
+      "Formalize the matrix form det([[1,1],[1,0]]ⁿ) = (−1)ⁿ and deduce Vajda from the Cauchy–Binet / multiplicativity of determinants.",
+      "Prove the Gelin–Cesàro identity Fₙ₋₂Fₙ₋₁Fₙ₊₁Fₙ₊₂ − Fₙ⁴ = −1, a fourth-degree relative obtainable by combining two Catalan instances."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Int"
+    ],
+    "namespace": "FibonacciIdentitiesOQ04",
+    "lineCount": 102,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/FibonacciIdentitiesOQ04.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Vajda, S.",
+      "title": "Fibonacci and Lucas Numbers, and the Golden Section: Theory and Applications",
+      "year": "1989",
+      "venue": "Ellis Horwood / Dover",
+      "note": "Vajda's identity and its specializations to Catalan, Cassini, and d'Ocagne"
+    },
+    {
+      "authors": "Koshy, Thomas",
+      "title": "Fibonacci and Lucas Numbers with Applications",
+      "year": "2001",
+      "venue": "Wiley-Interscience",
+      "note": "d'Ocagne's identity and the Fibonacci product-identity hierarchy"
+    }
+  ],
+  "sorries": 0
+}

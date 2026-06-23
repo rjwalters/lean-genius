@@ -1,0 +1,185 @@
+{
+  "id": "erdos-800",
+  "title": "Linear Ramsey Numbers for Graphs Without Adjacent High-Degree Vertices",
+  "slug": "erdos-800",
+  "description": "If G is a graph on n vertices which has no two adjacent vertices of degree ≥ 3, then R(G) ≪ n, where R(G) is the Ramsey number and the implied constant is absolute. Solved by Noga Alon (1994) who proved R(G) ≤ 12n.",
+  "meta": {
+    "author": "Noga Alon",
+    "sourceUrl": "https://erdosproblems.com/800",
+    "date": "1994",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos800Problem.lean",
+    "tags": [
+      "erdos",
+      "ramsey-theory",
+      "graph-theory",
+      "subdivisions",
+      "degeneracy",
+      "probabilistic-method"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 800,
+    "erdosUrl": "https://erdosproblems.com/800",
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.26.0",
+    "dateAdded": "2026-01-19",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type and adjacency",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.neighborFinset",
+        "description": "Finite neighborhood sets",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Fintype",
+        "description": "Finite types for vertex sets",
+        "module": "Mathlib.Data.Fintype.Basic"
+      },
+      {
+        "theorem": "Real",
+        "description": "Real numbers for Ramsey bounds",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "vertexDegree, isHighDegree, noAdjacentHighDegree predicates",
+      "isSubdivisionVertex, isOriginalVertex definitions",
+      "subdivision_implies_no_adjacent_high_degree (proved)",
+      "Ramsey number infrastructure: completeGraph, edgeColoring, isMonochromatic, containsMonochromaticCopy",
+      "ramseyNumber and ramseyNumber_spec axioms",
+      "alon_theorem axiom with explicit bound R(G) ≤ 12n",
+      "isDegenerateAt and connection to Burr-Erdős conjecture",
+      "erdos_800 theorem and erdos_800_summary"
+    ],
+    "axiomCount": 5,
+    "lineCount": 267,
+    "assumptions": "5 axioms: ramseyNumber, ramseyNumber_spec, alon_theorem, and 2 more. See Lean source for complete statements.",
+    "theoremCount": 5,
+    "definitionCount": 12
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #800: Linear Ramsey Numbers for Subdivided Graphs**\n\nThe Ramsey number $R(G)$ is the minimum $N$ such that any 2-coloring of the edges of the complete graph $K_N$ contains a monochromatic copy of $G$. Ramsey's theorem (1930) guarantees that $R(G)$ is finite for every finite graph $G$, but determining or even bounding $R(G)$ is notoriously difficult.\n\nIn 1975, Burr and Erdős conjectured that *sparse* graphs should have *linear* Ramsey numbers: if $G$ is $p$-degenerate (every subgraph has a vertex of degree $\\leq p$), then $R(G) \\leq c_p \\cdot n$ where $n = |V(G)|$ and $c_p$ depends only on $p$. Problem #800 is a specific case of this conjecture, asking about graphs where no two adjacent vertices both have degree $\\geq 3$.\n\n**Why This Class of Graphs?** Graphs with no adjacent high-degree vertices include all *subdivided graphs* — graphs obtained by replacing each edge with a path. In a subdivided graph, the original vertices may have high degree, but subdivision vertices have degree exactly 2, so no two high-degree vertices are adjacent. This is a natural and important class in topological graph theory.\n\n**Resolution:**\n- **1975**: Burr and Erdős pose the general conjecture for $p$-degenerate graphs.\n- **1983**: Chvátal, Rödl, Szemerédi, and Trotter prove the conjecture for bounded-degree graphs ($\\Delta(G) \\leq \\Delta$).\n- **1994**: Noga Alon proves Problem #800: $R(G) \\leq 12n$ for graphs with no adjacent high-degree vertices. His proof uses a clever probabilistic embedding argument.\n- **2016**: Choongbum Lee fully resolves the Burr-Erdős conjecture for all $p$-degenerate graphs, proving $R(G) \\leq 2^{2^{O(p)}} \\cdot n$.\n\nAlon's 1994 paper \"Subdivided graphs have linear Ramsey numbers\" (J. Graph Theory) is only 5 pages but demonstrates the power of the probabilistic method in Ramsey theory.",
+    "problemStatement": "If G is a graph on n vertices which has no two adjacent vertices of degree ≥ 3, then R(G) ≪ n, where R(G) is the Ramsey number (minimum N such that any 2-coloring of K_N contains a monochromatic copy of G) and the implied constant is absolute.",
+    "text": "If G is a graph on n vertices which has no two adjacent vertices of degree ≥ 3, then R(G) ≪ n, where R(G) is the Ramsey number and the implied constant is absolute. Solved by Noga Alon (1994) who proved R(G) ≤ 12n.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Structural Condition:** Three predicates define the key condition: `vertexDegree`, `isHighDegree` ($\\deg \\geq 3$), and `noAdjacentHighDegree` (high-degree vertices form an independent set). The link to subdivisions is proved: if all neighbors of high-degree vertices have degree $\\leq 2$, then no two high-degree vertices are adjacent.\n\n2. **Ramsey Infrastructure:** Complete graphs, edge 2-colorings, monochromatic copies, and the Ramsey number are defined from scratch. The Ramsey number and its specification are axiomatized since formalizing the finite Ramsey theorem is beyond scope.\n\n3. **Alon's Bound:** The key result $R(G) \\leq 12n$ is axiomatized. The probabilistic proof technique — random embedding of independent high-degree vertices followed by deterministic path extension — is beyond Mathlib's current probabilistic capabilities.\n\n4. **Burr-Erdős Connection:** The formalization shows that Problem #800 is a special case of the general Burr-Erdős conjecture (Problem #163) by proving that graphs with no adjacent high-degree vertices are 2-degenerate.",
+    "keyInsights": [
+      "**Independent Set Structure:** The condition 'no adjacent high-degree vertices' means the high-degree vertices form an independent set. This is the crucial structural property that enables the probabilistic embedding: independent vertices can be placed randomly without worrying about mutual adjacency constraints.",
+      "**Subdivisions as a Natural Class:** Every subdivided graph satisfies the structural condition, since subdivision vertices have degree exactly 2. The converse is not quite true (there are non-subdivision graphs satisfying the condition), but subdivisions are the motivating example.",
+      "**Probabilistic Embedding Strategy:** Alon's proof randomly embeds the independent set of high-degree vertices into $K_N$, then deterministically extends paths of degree-2 vertices. Since paths can be greedily extended as long as the target graph is large enough, the key calculation is bounding the number of vertices needed for the random embedding to succeed.",
+      "**The Constant 12:** The bound $R(G) \\leq 12n$ comes from $12 = 2 \\times 6$: factor 2 from considering both colors in the 2-coloring, and factor 6 from the probabilistic counting argument for successful embedding. This is remarkably tight for a probabilistic proof.",
+      "**Degeneracy Connection:** Graphs with no adjacent high-degree vertices are 2-degenerate (every subgraph has a vertex of degree $\\leq 2$). This places Problem #800 as the $p = 2$ case of the Burr-Erdős conjecture, showing how a specific structural condition maps to a general graph parameter.",
+      "**Lee's General Resolution (2016):** Choongbum Lee proved $R(G) \\leq 2^{2^{O(p)}} \\cdot n$ for $p$-degenerate graphs, fully resolving the Burr-Erdős conjecture. Alon's explicit constant of 12 for the $p = 2$ case remains much better than what Lee's general bound gives."
+    ],
+    "prerequisites": [
+      "Ramsey theory fundamentals: the finite Ramsey theorem guaranteeing R(G) is finite for every finite graph G, and basic two-color Ramsey number bounds",
+      "Graph degeneracy: the concept of p-degenerate graphs (every subgraph has a vertex of degree at most p) and the degeneracy ordering",
+      "Probabilistic method in combinatorics: random embedding arguments, the Lovasz Local Lemma, and expectation-based counting techniques used in Alon's proof",
+      "Topological graph theory basics: graph subdivisions, subdivision vertices vs. original vertices, and their degree properties"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-and-imports",
+      "title": "Header and Imports",
+      "summary": "Problem documentation with references to Alon (1994), Burr-Erdős (1975), and Lee (2016); imports Mathlib graph theory, clique, coloring, and real number modules",
+      "startLine": 1,
+      "endLine": 46
+    },
+    {
+      "id": "basic-definitions",
+      "title": "Structural Condition Definitions",
+      "summary": "Defines vertexDegree, isHighDegree (deg ≥ 3), and noAdjacentHighDegree — the key predicate that high-degree vertices form an independent set",
+      "startLine": 47,
+      "endLine": 74
+    },
+    {
+      "id": "subdivisions",
+      "title": "Subdivisions and Verified Theorem",
+      "summary": "Defines subdivision/original vertices and proves subdivision_implies_no_adjacent_high_degree using omega — one of the few fully verified results",
+      "startLine": 75,
+      "endLine": 104
+    },
+    {
+      "id": "ramsey-numbers",
+      "title": "Ramsey Number Infrastructure",
+      "summary": "Builds complete graphs, edge colorings, monochromatic copies, and axiomatizes the Ramsey number R(G) with its specification and hasLinearRamseyNumber",
+      "startLine": 105,
+      "endLine": 160
+    },
+    {
+      "id": "main-theorem",
+      "title": "Alon's Theorem and Subdivision Corollary",
+      "summary": "Axiomatizes R(G) ≤ 12n for graphs with no adjacent high-degree vertices; proves subdivided_graphs_linear_ramsey as corollary",
+      "startLine": 161,
+      "endLine": 184
+    },
+    {
+      "id": "degeneracy",
+      "title": "Degeneracy and Burr-Erdős Conjecture",
+      "summary": "Defines p-degeneracy, axiomatizes 2-degeneracy of the graph class, axiomatizes Lee's Burr-Erdős theorem, proves Problem #800 as p=2 special case",
+      "startLine": 185,
+      "endLine": 228
+    },
+    {
+      "id": "summary",
+      "title": "Problem Statement and Solution",
+      "summary": "Defines erdos800Problem, proves erdos_800 with constant 12, and erdos_800_summary combining explicit bound with existential statement",
+      "startLine": 229,
+      "endLine": 267
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #800 was solved by Noga Alon in 1994, who proved $R(G) \\leq 12n$ for graphs on $n$ vertices with no two adjacent vertices of degree $\\geq 3$. This elegant result shows that subdivided graphs have linear Ramsey numbers. The formalization also connects this to the broader Burr-Erdős conjecture (Problem #163): since these graphs are 2-degenerate, Problem #800 is the $p = 2$ special case, fully resolved by Lee (2016) in its general form.",
+    "implications": "**Theoretical Significance**: **Mathematical Significance**\n\n1. **Probabilistic Method in Ramsey Theory:** Alon's proof is a beautiful application of the probabilistic method — rather than constructing an explicit coloring, he shows that random embeddings succeed with positive probability. The 5-page paper is a model of concise mathematical writing.\n\n**2. Structural Ramsey Theory:** The result demonstrates that structural properties (no adjacent high-degree vertices) can yield strong quantitative bounds on Ramsey numbers, moving beyond the classical extremal approach.\n\n3. **Catalyst for the Burr-Erdős Conjecture:** Alon's 1994 result, along with earlier work by Chvátal-Rödl-Szemerédi-Trotter (1983) on bounded-degree graphs, built momentum toward Lee's 2016 full resolution of the Burr-Erdős conjecture.\n\n4. **Topological Graph Theory Connection:** The connection between subdivisions and Ramsey theory bridges two major areas of graph theory. Kuratowski's theorem characterizes planarity via subdivisions of $K_5$ and $K_{3,3}$; Alon's result shows these subdivisions have manageable Ramsey numbers.",
+    "openQuestions": [
+      "What is the optimal constant $C$ such that $R(G) \\leq Cn$ for all graphs with no adjacent high-degree vertices? Alon proved $C \\leq 12$; the true value may be smaller.",
+      "Can the bound be improved for specific families of subdivided graphs, such as $k$-subdivisions of complete graphs or trees?",
+      "How does $R(G)$ depend on the number of high-degree vertices when they form an independent set? Could a bound of the form $R(G) \\leq c \\cdot n + f(|H|)$ be sharper?",
+      "Can Alon's probabilistic embedding technique be extended to 3-uniform hypergraphs or to multicolor Ramsey settings?",
+      "Can the full proof of $R(G) \\leq 12n$ be formalized in Lean, given the probabilistic method and counting arguments involved?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos800",
+    "lineCount": 267,
+    "axiomCount": 5,
+    "theoremCount": 5,
+    "definitionCount": 12,
+    "path": "Proofs/Erdos800Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1029",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, probabilistic-method, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-163",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: degeneracy, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-165",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, probabilistic-method, ramsey-theory"
+    }
+  ],
+  "sorries": 0
+}

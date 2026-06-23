@@ -1,0 +1,239 @@
+{
+  "id": "erdos-475",
+  "title": "Erdős Problem #475: Graham's Rearrangement Conjecture",
+  "slug": "erdos-475",
+  "description": "Given A ⊆ 𝔽ₚ\\{0}, does there exist an ordering with all partial sums distinct? Proven for t ≤ 12, t ≥ p-3, t ≤ exp((log p)^{1/4}). General case OPEN.",
+  "meta": {
+    "author": "Graham",
+    "sourceUrl": "https://erdosproblems.com/475",
+    "date": "",
+    "dateUpdated": "2026-02-12",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos475Problem.lean",
+    "tags": [
+      "erdos",
+      "additive-combinatorics",
+      "finite-fields",
+      "sequencing",
+      "partial-sums",
+      "open-problem",
+      "prime-fields",
+      "ZMod"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 475,
+    "erdosUrl": "https://erdosproblems.com/475",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "ZMod",
+        "description": "Finite cyclic group ℤ/pℤ",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets with decidable membership",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "List.scanl",
+        "description": "Left scan for cumulative computations",
+        "module": "Mathlib.Data.List.Basic"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate for natural numbers",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Real.exp",
+        "description": "Exponential function on reals",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "partialSums definition via List.scanl for cumulative sums",
+      "IsValidOrdering predicate: ordering with distinct partial sums",
+      "GrahamConjecture formalization for prime fields",
+      "Axiomatization of Costa-Pellegrini, Hicks-Ollis-Schmitt, and Bedert-Kravitz results (Kravitz 2024 documented in source comments only)",
+      "AlspachConjecture generalization to abelian groups with equivalence proof",
+      "HasExplicitValidOrdering for constructive proofs",
+      "Summary theorem combining all verified ranges"
+    ],
+    "mathContext": "Additive Combinatorics — Sequencing in Finite Fields",
+    "axiomCount": 3,
+    "lineCount": 195,
+    "assumptions": "3 axioms: costa_pellegrini_2020, hicks_ollis_schmitt_2019, bedert_kravitz_2024. 0 sorries.",
+    "theoremCount": 3,
+    "definitionCount": 5
+  },
+  "overview": {
+    "historicalContext": "Graham's Rearrangement Conjecture (Erdős Problem #475) is a central open problem in additive combinatorics over finite fields. Ronald Graham (1935–2020), one of the most prolific discrete mathematicians of the 20th century and a close collaborator of Erdős, proved the base case: the full non-zero set $\\mathbb{F}_p \\setminus \\{0\\}$ always admits a valid ordering. Brian Alspach later generalized the conjecture to arbitrary finite abelian groups.\n\nThe first major extension came from Costa and Pellegrini (2020, Archiv der Mathematik) who verified the conjecture for all sets of size $t \\leq 12$ via exhaustive computation combined with theoretical reductions. Hicks, Ollis, and Schmitt (2019, J. Combin. Des.) handled the complementary regime $t \\geq p - 3$ using the polynomial method and structural properties of near-complete subsets.\n\nA breakthrough for intermediate sizes came from Michael Kravitz (2024), who proved the conjecture for $t \\leq \\log p / \\log \\log p$ using character sum techniques. Will Sawin independently observed the same bound on MathOverflow. However, all these methods hit the so-called 'rectification barrier'—a fundamental limitation of Freiman-type inverse theorems that caps progress at $\\log p / \\log \\log p$.\n\nThe most dramatic advance is due to Bedert and Kravitz (2024), who developed entirely new techniques circumventing the rectification barrier, pushing the verified range to $t \\leq \\exp((\\log p)^{1/4})$. Despite this remarkable progress, the general conjecture for arbitrary $t$ remains open, with the gap between $\\exp((\\log p)^{1/4})$ and $p - 3$ still unresolved.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet $p$ be a prime. Given any finite set $A \\subseteq \\mathbb{F}_p \\setminus \\{0\\}$, is there always a rearrangement $A = \\{a_1, \\ldots, a_t\\}$ such that all partial sums $\\sum_{k=1}^{m} a_k$ are distinct for all $1 \\leq m \\leq t$?\n\n**Known Results:**\n- $t \\leq 12$: YES (Costa-Pellegrini 2020)\n- $t \\geq p - 3$: YES (Hicks-Ollis-Schmitt 2019)\n- $t \\leq \\exp((\\log p)^{1/4})$: YES (Bedert-Kravitz 2024)\n\n**Open:** General $t$ (the gap in the middle).",
+    "text": "Given A ⊆ 𝔽ₚ\\{0}, does there exist an ordering with all partial sums distinct? Proven for t ≤ 12, t ≥ p-3, t ≤ exp((log p)^{1/4}). General case OPEN.",
+    "proofStrategy": "The Lean formalization proceeds in eight parts:\n\n1. **Valid Orderings** (Part I): Defines `partialSums` via `List.scanl`, `IsValidOrdering` requiring element-preservation and partial-sum distinctness, and `GrahamConjecture` as the universal statement over $\\mathbb{F}_p$.\n\n2. **Small Cases** (Part II): Axiomatizes Costa-Pellegrini (2020) for $|A| \\leq 12$, with a wrapper theorem `small_sets_have_valid_orderings`.\n\n3. **Large Cases** (Part III): Axiomatizes Hicks-Ollis-Schmitt (2019) for $p - 3 \\leq |A| \\leq p - 1$. (Graham's full-set result for $|A|=p-1$ is documented historically, not separately axiomatized — subsumed by Hicks-Ollis-Schmitt.)\n\n4. **Logarithmic Range** (Part IV): Documents Kravitz (2024) in source comments for $|A| \\leq \\log p / \\log \\log p$ (no axiom; superseded by Bedert-Kravitz).\n\n5. **Rectification Barrier** (Part V): Axiomatizes Bedert-Kravitz (2024) for $|A| \\leq \\exp((\\log p)^{1/4})$.\n\n6. **Alspach Generalization** (Part VI): Defines `AlspachConjecture` for abelian groups, proves equivalence with `GrahamConjecture` for $\\mathbb{F}_p$.\n\n7. **Constructive Proofs** (Part VII): Introduces `HasExplicitValidOrdering` and documents Graham's constructive proof in source comments (no Lean axiom).\n\n8. **Summary** (Part VIII): Combines all verified ranges into `erdos_475_summary`.",
+    "keyInsights": [
+      "**Partial sum distinctness**: The condition asks for $t$ distinct elements among the $t$ partial sums $s_1, s_2, \\ldots, s_t \\in \\mathbb{F}_p$, which is non-trivial since $\\mathbb{F}_p$ has only $p$ elements total",
+      "**Counting argument**: Among $t!$ possible orderings, we need just one with distinct partial sums—yet proving existence for all $A$ simultaneously is the challenge",
+      "**Rectification barrier**: Freiman-type inverse theorems can only handle sets up to size $\\log p / \\log \\log p$; beyond this, the structure of $A + A$ loses its 'arithmetic progression' approximation",
+      "**Bedert-Kravitz breakthrough**: By developing techniques that avoid rectification entirely, they reached $\\exp((\\log p)^{1/4})$, an exponential improvement over the logarithmic barrier",
+      "**Alspach generalization**: The conjecture extends naturally from $\\mathbb{F}_p$ to all finite abelian groups, and the Lean formalization proves this equivalence directly by unfolding definitions",
+      "**Constructive vs existential**: Graham's original proof for $t = p-1$ gives an explicit algorithm; most later results are existential, making computational verification difficult"
+    ],
+    "prerequisites": [
+      "Number theory fundamentals",
+      "Combinatorial analysis"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "File header documenting the problem statement, known results, and references, then imports `ZMod.Basic`, `Finset.Basic`, `List.Basic`, `Nat.Prime.Basic`, and `Real.Basic`. Opens the `Erdos475` namespace and `Finset` for notation.",
+      "mathContext": "Mathematical content: File header documenting the problem statement, known results, and references, then imports `ZMod.Basic`, `Finset.Basic`, `List.Basic`, `Nat.Prime.Basic`, and `Real.Basic`. Opens the `Erdos475` namespace and `Finset` for notation."
+    },
+    {
+      "id": "valid-orderings",
+      "title": "Valid Orderings",
+      "startLine": 44,
+      "endLine": 61,
+      "summary": "Defines `partialSums` via `List.scanl (· + ·) 0`, `IsValidOrdering A ordering` requiring $\\text{ordering.toFinset} = A$, no duplicates in the ordering, and no duplicates in partial sums. `GrahamConjecture p` universally quantifies over all non-zero $A \\subseteq \\mathbb{F}_p$.",
+      "mathContext": "Defines `partialSums` via `List.scanl (· + ·) 0`, `IsValidOrdering A ordering` requiring $\\text{ordering.toFinset} = A$, no duplicates in the ordering, and no duplicates in partial sums. `GrahamConjecture p` universally quantifies over all non-zero $A \\subseteq \\mathbb{F}_p$."
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases (Costa-Pellegrini 2020)",
+      "startLine": 62,
+      "endLine": 79,
+      "summary": "Axiomatizes `costa_pellegrini_2020` for $|A| \\leq 12$ with $p > 12$. The wrapper `small_sets_have_valid_orderings` directly applies the axiom. Costa and Pellegrini verified this via computation and theoretical reductions.",
+      "mathContext": "Axiomatizes `costa_pellegrini_2020` for $|A| \\leq 12$ with $p > 12$. The wrapper `small_sets_have_valid_orderings` directly applies the axiom."
+    },
+    {
+      "id": "large-cases",
+      "title": "Large Cases (Hicks-Ollis-Schmitt 2019)",
+      "startLine": 80,
+      "endLine": 96,
+      "summary": "Axiomatizes `hicks_ollis_schmitt_2019` for $p - 3 \\leq |A| \\leq p - 1$. (Graham's $|A|=p-1$ result mentioned in docstring only — no separate declaration.)",
+      "mathContext": "Axiomatized: `hicks_ollis_schmitt_2019` for $p - 3 \\leq |A| \\leq p - 1$. Graham's full-set result is docstring-only, subsumed by this axiom."
+    },
+    {
+      "id": "logarithmic",
+      "title": "Logarithmic Range (Kravitz 2024)",
+      "startLine": 97,
+      "endLine": 104,
+      "summary": "documents in source comments `kravitz_2024` (no Lean declaration exists) for $|A| \\leq \\log p / \\log \\log p$. This was the strongest small-side bound before the rectification barrier was broken, independently observed by Will Sawin.",
+      "mathContext": "Axiomatized: documents in source comments `kravitz_2024` (no Lean declaration exists) for $|A| \\leq \\log p / \\log \\log p$. This was the strongest small-side bound before the rectification barrier was broken, independently observed by Will Sawin."
+    },
+    {
+      "id": "rectification-barrier",
+      "title": "Beyond the Rectification Barrier (Bedert-Kravitz 2024)",
+      "startLine": 105,
+      "endLine": 123,
+      "summary": "Axiomatizes `bedert_kravitz_2024` for $|A| \\leq \\exp((\\log p)^{1/4})$. This breakthrough circumvents the rectification barrier that limited all previous methods to $\\log p / \\log \\log p$.",
+      "mathContext": "Axiomatizes `bedert_kravitz_2024` for $|A| \\leq \\exp((\\log p)^{1/4})$. This breakthrough circumvents the rectification barrier that limited all previous methods to $\\log p / \\log \\log p$."
+    },
+    {
+      "id": "alspach",
+      "title": "Alspach's Conjecture",
+      "startLine": 124,
+      "endLine": 140,
+      "summary": "Defines `AlspachConjecture G` for arbitrary finite abelian groups. Proves `graham_is_alspach_for_prime_field`: $\\text{GrahamConjecture}\\, p \\iff \\text{AlspachConjecture}\\, (\\mathbb{Z}/p\\mathbb{Z})$ by unfolding definitions.",
+      "mathContext": "Defines `AlspachConjecture G` for arbitrary finite abelian groups. Proves `graham_is_alspach_for_prime_field`: $\\text{GrahamConjecture}\\, p \\iff \\text{AlspachConjecture}\\, (\\mathbb{Z}/p\\mathbb{Z})$ by unfolding definitions."
+    },
+    {
+      "id": "constructive",
+      "title": "Constructive vs Existential",
+      "startLine": 141,
+      "endLine": 157,
+      "summary": "Defines `HasExplicitValidOrdering A` requiring a computable function producing a valid ordering. documents in source comments `graham_constructive` (no Lean declaration exists) for the full non-zero set, reflecting Graham's original constructive proof.",
+      "mathContext": "Defines `HasExplicitValidOrdering A` requiring a computable function producing a valid ordering. documents in source comments `graham_constructive` (no Lean declaration exists) for the full non-zero set, reflecting Graham's original constructive proof."
+    },
+    {
+      "id": "summary",
+      "title": "Summary Theorem",
+      "startLine": 158,
+      "endLine": 195,
+      "summary": "Proves `erdos_475_summary` combining small ($t \\leq 12$), large ($t \\geq p-3$), and medium ($t \\leq \\exp((\\log p)^{1/4})$) cases into a single conjunction. The general conjecture for arbitrary $t$ remains OPEN.",
+      "mathContext": "Proves `erdos_475_summary` combining small ($t \\leq 12$), large ($t \\geq p-3$), and medium ($t \\leq \\exp((\\log p)^{1/4})$) cases into a single conjunction. The general conjecture for arbitrary $t$ remains OPEN."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #475 (Graham's Conjecture) asks whether every non-zero subset of 𝔽ₚ has an ordering with distinct partial sums. The formalization axiomatizes the three main verified ranges and proves their combination, along with the Alspach equivalence for abelian groups. The general case remains one of the most compelling open problems in additive combinatorics.",
+    "implications": "**Theoretical Significance**: This problem lies at the heart of additive combinatorics over finite fields, connecting sequencing theory, the polynomial method, character sums, and Freiman-type inverse theorems.\n\nThe breakthrough beyond the rectification barrier by Bedert-Kravitz suggests that fundamentally new techniques—rather than incremental improvements—are needed to close the remaining gap.",
+    "openQuestions": [
+      "Does Graham's conjecture hold for all t (closing the gap between exp((log p)^{1/4}) and p-3)?",
+      "Can the rectification-free techniques of Bedert-Kravitz be further refined?",
+      "Does Alspach's conjecture hold for all finite abelian groups?",
+      "Is there an efficient polynomial-time algorithm to find valid orderings?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.List.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos475",
+    "lineCount": 195,
+    "axiomCount": 3,
+    "theoremCount": 3,
+    "definitionCount": 5,
+    "path": "Proofs/Erdos475Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "S. Costa, A. Pellegrini",
+      "title": "Some new results about a conjecture by Brian Alspach",
+      "year": "2020",
+      "venue": "Archiv der Mathematik"
+    },
+    {
+      "authors": "A. Hicks, M. A. Ollis, J. R. Schmitt",
+      "title": "Distinct partial sums in cyclic groups: polynomial method and constructive approaches",
+      "year": "2019",
+      "venue": "Journal of Combinatorial Designs"
+    },
+    {
+      "authors": "M. Kravitz",
+      "title": "Rearranging small sets for distinct partial sums in ℤ_p",
+      "year": "2024",
+      "venue": "Combinatorica"
+    },
+    {
+      "authors": "B. Bedert, M. Kravitz",
+      "title": "Graham's rearrangement conjecture beyond the rectification barrier",
+      "year": "2024",
+      "venue": "Preprint (arXiv)"
+    },
+    {
+      "authors": "R. L. Graham",
+      "title": "On a conjecture of Erdős and Heilbronn",
+      "year": "1970",
+      "venue": "Journal of the London Mathematical Society"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-476",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, finite-fields"
+    },
+    {
+      "targetId": "erdos-28",
+      "relationship": "related",
+      "description": "Both concern additive combinatorics in structured settings. Problem #28 (Erdős-Turán) studies additive bases over integers, while #475 studies sumset structure over finite fields — analogous questions in different algebraic contexts"
+    }
+  ],
+  "sorries": 0
+}

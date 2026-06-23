@@ -1,0 +1,35 @@
+[
+  {
+    "id": "ann-principal",
+    "proofId": "de-moivre-oq-03-oq-01-oq-01",
+    "range": {
+      "startLine": 41,
+      "endLine": 48
+    },
+    "type": "concept",
+    "title": "The 'Almost Definitional' Single Value",
+    "content": "principal_value proves (e^{iθ})^α = e^{iαθ} for θ in the principal strip (-π, π]. This is exactly the route the parent's open question proposes: cpow_def_of_ne_zero rewrites the power as exp(α · log(e^{iθ})), and Complex.log_exp — valid because the imaginary part θ lies in (-π, π] — collapses log(e^{iθ}) to iθ. The principal power is therefore a single, well-defined value; cpow is, after all, a function."
+  },
+  {
+    "id": "ann-aperiodic",
+    "proofId": "de-moivre-oq-03-oq-01-oq-01",
+    "range": {
+      "startLine": 52,
+      "endLine": 88
+    },
+    "type": "insight",
+    "title": "Why Irrational Exponents Have No Multi-Valuedness",
+    "content": "The real content of 'single-valued' is the absence of a finite cyclic ambiguity. exp_two_pi_ne_one_of_irrational shows e^{2πiαn} ≠ 1 for n ≠ 0: via Complex.exp_eq_one_iff this would force αn = m for integers, but Irrational.intCast_mul makes n·α irrational while m is an integer (Int.not_irrational) — contradiction. branch_injective then upgrades this to: k ↦ e^{2πiαk} is injective. The would-be branch shifts never coincide, so there is no integer q producing q distinct values — exactly the structural difference from the rational p/q case."
+  },
+  {
+    "id": "ann-bundle",
+    "proofId": "de-moivre-oq-03-oq-01-oq-01",
+    "range": {
+      "startLine": 90,
+      "endLine": 111
+    },
+    "type": "insight",
+    "title": "Replacing the True Stub",
+    "content": "irrational_exponent_single_valued bundles the principal-value formula with branch injectivity — the honest replacement for the parent's `theorem … : True := trivial`. A placeholder proving only True asserts nothing about the actual claim; here the claim has explicit content and a machine-checked proof, answering the parent's first open question. exp_two_pi_eq_one_iff records the clean corollary e^{2πiαn} = 1 ↔ n = 0: the multiplicative orbit {e^{2πiαn}} is a free, infinite family."
+  }
+]

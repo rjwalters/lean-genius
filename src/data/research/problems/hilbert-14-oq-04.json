@@ -1,0 +1,167 @@
+{
+  "slug": "hilbert-14-oq-04",
+  "title": "Effective algorithms for finite generation of non-reductive invariant rings",
+  "phase": "ACT",
+  "status": "blocked",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Does there exist a uniform effective algorithm } \\mathcal{A} \\text{ such that, given an algebraic group } G \\text{ acting linearly on } V = k^n, \\, \\mathcal{A} \\text{ decides whether } k[V]^G \\text{ is finitely generated as a } k\\text{-algebra and (when finite) outputs a generating set?}",
+    "plain": "Hilbert's 14th problem asks when the invariant ring k[V]^G is finitely generated. For reductive groups (finite, semisimple, tori, GL_n), the answer is yes and Derksen (1999) gave an explicit algorithm. For non-reductive groups, finite generation can fail (Nagata 1959: G_a^13 ⟶ k^32; Roberts 1990: 7-variable counterexample) but also holds in important cases (Weitzenboeck 1932: G_a in characteristic 0). The open question is whether there exists a uniform effective procedure that decides finite generation across non-reductive group actions and computes a generating set when one exists.",
+    "whyMatters": [
+      "Sharpens Hilbert's 14th from an existence question to a computability question.",
+      "Connects classical invariant theory to modern computer algebra (Derksen's algorithm, Gröbner bases, locally nilpotent derivation kernels).",
+      "Foundational locally nilpotent derivation (LND) theory has no current Mathlib coverage; this slug provides a pedagogical anchor for formalizing the framework.",
+      "Adjacent to the Jacobian Conjecture (which is equivalent to a statement about G_a actions on polynomial rings)."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Derksen 1999: effective algorithm for k[V]^G when G is reductive (computes generators via the Hilbert nullcone).",
+      "Noether 1916: for finite G with char k not dividing |G|, generators of k[V]^G have degree at most |G| (giving an explicit enumeration-Reynolds-averaging algorithm).",
+      "Weitzenboeck 1932 (reproved Seshadri 1962): for G_a acting linearly on a polynomial ring over a field of characteristic zero, k[V]^{G_a} is finitely generated.",
+      "Zariski 1954: if the quotient variety has dimension at most 2, k[V]^G is finitely generated regardless of group reductivity.",
+      "Hochster-Roberts 1974: for reductive G, k[V]^G is Cohen-Macaulay (refined structure beyond mere finite generation)."
+    ],
+    "open": [
+      "Existence of a uniform effective algorithm across all algebraic group actions (the OQ-04 conjecture).",
+      "Decidability of finite generation for G_a^k actions when k is between 4 and 12 (Nagata's threshold is 13; Roberts' counterexample uses k=6 in 7 variables).",
+      "Sharp degree bound for invariant generators in the modular case (char k divides |G|), beyond Symonds 2011 partial bound."
+    ],
+    "goal": "Formalize Noether's degree bound (1916) as the algorithmic refinement of Hilbert's positive finiteness theorem for finite-group invariants, plus an Mathlib-tractable framework for locally nilpotent derivations sufficient to state Weitzenboeck's theorem and (axiom-form) Nagata's counterexample."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-16T00:00:00.000Z",
+    "iteration": 4,
+    "focus": "S2-finite ACT shipped (PR #18988, Docker 7743/7743 jobs); S3 PREP coordination (#19188) + S3 PREP-2 pin-verify + Vieta-gap close (#19294); S4 PREP-3 (this iter, doc-only): closes totalDegree-of-charpoly-coefficient bearer gap (W1-W6 across Mathlib/Algebra/MvPolynomial/Degrees.lean + Symmetric/Defs.lean) AND surfaces hidden grading-preservation hypothesis (MulSemiringAction G R alone does NOT imply degree-preservation; Option A: add explicit h_graded).",
+    "blockers": [{"id": "B1", "status": "ACTIVE", "description": "Docker daemon hung — `docker info` times out (exit 124) at researcher-6 S5 STATE-SYNC re-verify (2026-06-13). The S3-bound ACT requires a Docker build to verify the ~150-200 LOC `noether_degree_bound` proof; no build route is available while the daemon is down. Not attributable to a specific Loom PR.", "since": "2026-05-16T00:00:00Z", "mitigation": "Cleared by host-side Docker daemon restart/resync. Not removable from a research worktree."}, {"id": "B2", "status": "CLEARED", "clearedAt": "2026-06-13T00:00:00.000Z", "description": "Host disk was 100% (6.9 Gi avail) at S4 PREP-3. Re-verified at S5 STATE-SYNC (2026-06-13): /System/Volumes/Data at 69 Gi free / 93% capacity — well above the 5 Gi soft-floor. Disk is no longer a blocker.", "since": "2026-05-16T00:00:00Z", "mitigation": "Cleared by natural recovery + host-side cleanup (docker prune / lake cache eviction)."}, {"id": "B3", "status": "ACTIVE", "description": "proofs/.lake circular self-symlink — `proofs/.lake -> /Users/rwalters/GitHub/lean-genius/proofs/.lake` (self-referential). Re-verified at S5 STATE-SYNC (2026-06-13): symlink still present. Would cause `lake build` to fail before reaching Mathlib even if Docker recovers.", "since": "2026-05-16T09:04:00Z", "mitigation": "`rm /Users/rwalters/GitHub/lean-genius/proofs/.lake` (symlink-only removal; safe — does NOT recurse because the target is the symlink itself). One-line host-side fix; not removable by a research PR from a worktree."}],
+    "nextAction": "S3-bound ACT (Docker-blocked): prove Noether degree bound using PREP-2 §3 (V1-V7) + PREP-3 §1 (W1-W6) bearer chain; per PREP-3 §2 must add `h_graded : ∀ g : G, ∀ b, (g • b).totalDegree ≤ b.totalDegree` as explicit hypothesis (Option A). Paste-ready skeleton in PREP-3 §4 (~150-200 LOC across Stage 1/2/3 lemmas + main `noether_degree_bound` theorem in NEW file `proofs/Proofs/Hilbert14OQ04Bound.lean`).",
+    "attemptCounts": {
+      "total": 12,
+      "currentApproach": 1,
+      "approachesTried": 2
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S2-finite ACT shipped (PR pending): hilbert_finiteness theorem verified by Docker build (7743/7743). The qualitative half of Noether 1916 — invariant ring of a finite-group linear action on MvPolynomial is finitely generated as a k-algebra — is now formalized in proofs/Proofs/Hilbert14OQ04.lean (102 LOC). Five-step proof chains through Algebra.IsInvariant → Algebra.IsInvariant.isIntegral → Algebra.FiniteType.of_restrictScalars_finiteType → Algebra.IsIntegral.finite → Artin-Tate fg_of_fg_of_fg, all pinned at Mathlib v4.26.0. Two supporting instances (Algebra.IsInvariant and Algebra.IsIntegral) discharged definitionally via FixedPoints.subalgebra membership. The quantitative half (Noether degree bound) is deferred to S3-bound ACT. Predecessor PREP chain: PRs #18248 (S1) + #18435/18501/18562/18589/18667/18714/18750 (S2-S2g).",
+    "builtItems": [
+      "research/problems/hilbert-14-oq-04/problem.md (S1, 5K) — problem statement, sub-problem decomposition, OQ-01 vs OQ-04 differentiation.",
+      "research/problems/hilbert-14-oq-04/knowledge.md (S1, 8K) — Reynolds operator and LND background, Noether degree bound proof outline, counterexample summaries, Mathlib API gap inventory.",
+      "research/problems/hilbert-14-oq-04/state.md (S1) — phase tracker, S2 next-action plan.",
+      "proofs/Proofs/Hilbert14OQ04.lean (S2-finite ACT, 102 LOC) — hilbert_finiteness theorem + Algebra.IsInvariant/IsIntegral instances. Verified by Docker build 7743/7743 jobs.",
+      "proofs/Proofs.lean — added import Proofs.Hilbert14OQ04."
+    ],
+    "insights": [
+      "OQ-04 is a meta-mathematical conjecture about algorithm existence; it cannot be formalized as a single Lean theorem. Lean progress must instead anchor on specific algorithmic refinements (Noether degree bound, slice theorem, etc.).",
+      "Noether's bound (deg ≤ |G|) is the highest-leverage S2 target: distinct from OQ-01's structural Reynolds infrastructure, provable from Mathlib primitives, foundational algorithmically.",
+      "OQ-01's `reynoldsSum` and `InvariantSubset` are directly reusable; the S2 OQ-04 file should cross-reference rather than redefine.",
+      "Mathlib has no locally nilpotent derivation framework. Weitzenboeck's theorem and the slice theorem are tier-2 axioms until `IsLocallyNilpotent` is defined.",
+      "Nagata's and Roberts' counterexamples are pedagogically essential but Lean-unprovable in any reasonable scope; they will live as axioms.",
+      "Algebra.FiniteType.of_restrictScalars_finiteType requires explicit R/S/A type-level args (the surrounding variable block declares them explicit, not implicit) — failed in build attempts 1 and 2 before discovery.",
+      "Subalgebra.fg_iff_finiteType takes (S : Subalgebra R A) as explicit arg; cannot project .mp / .mpr directly. Use either (Subalgebra.fg_iff_finiteType _).mpr or the FiniteType.out projection / ⟨_⟩ constructor.",
+      "Algebra.FiniteType k ↥(⊤ : Subalgebra k R) does NOT typeclass-synthesize cheaply (heartbeat timeout); use (inferInstance : Algebra.FiniteType k R).out for the direct FG projection.",
+      "⟨h_fg⟩ as Algebra.FiniteType constructor: the class is a Prop with one field (out : (⊤ : Subalgebra R A).FG), so anonymous-constructor pack-up suffices.",
+      "Subtype.val_injective serves as algebraMap (FixedPoints.subalgebra k R G) R injectivity in fg_of_fg_of_fg invocation — Subalgebra.toAlgebra (line 822) is definitionally Subtype.val on the underlying function."
+    ],
+    "mathlibGaps": [
+      "No Noether degree bound for finite-group invariants",
+      "No locally nilpotent derivation (LND) framework (`IsLocallyNilpotent`, kernel-as-subalgebra API)",
+      "No Reynolds operator construction `(1/|G|) ∑ g •` (OQ-01 has `reynoldsSum` unnormalized; the char-0 normalized version is absent)",
+      "No `MvPolynomial`-level group-action `MulAction` API (existing API is single-variable Polynomial)",
+      "No Derksen-algorithm-style invariant computation API"
+    ],
+    "nextSteps": [
+      "S3-bound ACT: prove Noether degree bound (generators ⊆ deg ≤ |G|) via orbit polynomial Vieta + Newton identities.",
+      "S5+ ACT (long horizon): introduce Mathlib IsLocallyNilpotent for derivations; state Weitzenboeck (axiom) and slice theorem (Lean).",
+      "S7+ ACT (long horizon): state Nagata counterexample (axiom-only) and Roberts 7-variable counterexample (axiom-only) for pedagogical completeness."
+    ]
+  },
+  "tags": [
+    "invariant-theory",
+    "algebra",
+    "group-actions",
+    "hilbert-problems",
+    "seeker-selected",
+    "computational-algebra",
+    "advanced"
+  ],
+  "relatedProofs": [
+    "hilbert-14",
+    "hilbert-14-oq-01"
+  ],
+  "references": {
+    "papers": [
+      {
+        "title": "Der Endlichkeitssatz der Invarianten endlicher Gruppen",
+        "authors": "Noether, Emmy",
+        "year": 1916,
+        "venue": "Math. Ann. 77, 89-92",
+        "note": "Noether's degree bound: generators of k[V]^G have deg ≤ |G| for char k not dividing |G|."
+      },
+      {
+        "title": "Über die Invarianten von linearen Gruppen",
+        "authors": "Weitzenboeck, Roland",
+        "year": 1932,
+        "venue": "Acta Math. 58, 230-250",
+        "note": "Finite generation of k[V]^{G_a} for char k = 0."
+      },
+      {
+        "title": "On the 14th problem of Hilbert",
+        "authors": "Nagata, Masayoshi",
+        "year": 1959,
+        "venue": "Amer. J. Math. 81(3), 766-772",
+        "note": "G_a^13 ⟶ k^32 counterexample to general finite generation."
+      },
+      {
+        "title": "An infinitely generated symbolic blow-up in a power series ring and a new counterexample to Hilbert's fourteenth problem",
+        "authors": "Roberts, Paul",
+        "year": 1990,
+        "venue": "J. Algebra 132, 461-473",
+        "note": "Simpler 7-variable counterexample with G_a^6 action."
+      },
+      {
+        "title": "Computation of invariants for reductive groups",
+        "authors": "Derksen, Harm",
+        "year": 1999,
+        "venue": "Adv. Math. 141, 366-384",
+        "note": "Effective algorithm for reductive-group invariants via Hilbert nullcone."
+      },
+      {
+        "title": "Polynomial Automorphisms and the Jacobian Conjecture",
+        "authors": "van den Essen, Arno",
+        "year": 2000,
+        "venue": "Birkhäuser",
+        "note": "Algorithms for kernels of locally nilpotent derivations (ch. 1-2)."
+      },
+      {
+        "title": "Algebraic Theory of Locally Nilpotent Derivations",
+        "authors": "Freudenburg, Gene",
+        "year": 2017,
+        "venue": "Springer (Encyclopaedia of Math. Sci. 136)",
+        "note": "Comprehensive reference on LNDs, slice theorem, Weitzenboeck/Roberts/Nagata."
+      },
+      {
+        "title": "Reductive groups are geometrically reductive",
+        "authors": "Haboush, William J.",
+        "year": 1975,
+        "venue": "Ann. of Math. 102, 67-83",
+        "note": "Extension of Mumford's finiteness to positive characteristic."
+      }
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.GroupTheory.GroupAction.Defs",
+      "Mathlib.Algebra.MvPolynomial.Basic",
+      "Mathlib.RingTheory.Polynomial.Basic",
+      "Mathlib.RingTheory.Noetherian.Basic",
+      "Mathlib.RingTheory.FiniteType",
+      "Mathlib.Algebra.Algebra.Subalgebra.Basic"
+    ]
+  },
+  "started": "2026-05-12T19:30:00.000Z",
+  "lastUpdate": "2026-06-13T00:00:00.000Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": ["proofs/Proofs/Hilbert14OQ04.lean"]
+}

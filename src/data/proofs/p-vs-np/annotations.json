@@ -1,0 +1,406 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "p-vs-np",
+    "range": {
+      "startLine": 1,
+      "endLine": 51
+    },
+    "type": "concept",
+    "title": "P vs NP: The Million Dollar Question",
+    "content": "**The P vs NP Problem** asks whether every problem whose solution can be **verified** quickly can also be **solved** quickly. Formally: Does $P = NP$? This is one of the 7 Clay Mathematics Institute Millennium Prize Problems, carrying a $1,000,000 reward. The widely held belief is $P \\neq NP$ — that there exist problems for which solutions are easy to check but inherently hard to find.",
+    "mathContext": "The problem was formalized by Stephen Cook (1971) and independently by Leonid Levin (1973). It sits at the intersection of mathematical logic, combinatorial optimization, and cryptography. If $P = NP$, then factoring integers, breaking cryptographic systems, and solving NP-hard optimization problems would all become polynomial-time tractable.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Millennium-Prize-Problems",
+      "complexity-theory",
+      "Cook-Levin-theorem",
+      "cryptography"
+    ],
+    "prerequisites": [
+      "computability-theory",
+      "polynomial-time",
+      "Turing-machines"
+    ]
+  },
+  {
+    "id": "ann-decision-problems",
+    "proofId": "p-vs-np",
+    "range": {
+      "startLine": 59,
+      "endLine": 88
+    },
+    "type": "definition",
+    "title": "Decision Problems, Programs, and Time Bounds",
+    "content": "A `DecisionProblem` is modeled as a function $L : \\mathbb{N} \\to \\text{Bool}$, encoding the characteristic function of a language. A `Program` abstracts a deterministic Turing machine with a `decide` function returning both a Boolean result and step count. The predicates `solves` (correctness) and `runsInTime` (efficiency) formalize what it means for a program to decide a problem within a time bound.",
+    "mathContext": "The abstraction $L : \\mathbb{N} \\to \\text{Bool}$ encodes decision problems via a standard bijection between $\\{0,1\\}^*$ and $\\mathbb{N}$. The `inputSize` function $n \\mapsto \\lfloor \\log_2 n \\rfloor + 1$ recovers the length of the encoded string. A full Turing machine formalization would require states, tape alphabet, and transition functions (~10,000+ lines); this abstract oracle model captures the essential complexity-theoretic structure.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turing-machines",
+      "decidability",
+      "time-complexity",
+      "Church-Turing-thesis"
+    ],
+    "prerequisites": [
+      "Nat",
+      "Bool",
+      "Function"
+    ]
+  },
+  {
+    "id": "ann-polynomial",
+    "proofId": "p-vs-np",
+    "range": {
+      "startLine": 96,
+      "endLine": 112
+    },
+    "type": "definition",
+    "title": "Polynomial Time Bounds",
+    "content": "A `Polynomial` is represented by degree and leading coefficient. The evaluation $p(n) = c \\cdot (n+1)^d$ uses $(n+1)$ to avoid degenerate cases at $n=0$. The predicate `isPolynomial` certifies that a time bound $T(n) \\leq c \\cdot (n+1)^d$ for some $c, d$. Helper theorems `Polynomial.eval_mono` and `poly_bound_degree` establish monotonicity and degree comparison bounds needed for composing polynomial reductions.",
+    "mathContext": "The choice to represent polynomials by degree and leading coefficient (rather than full coefficient lists) simplifies composition proofs while retaining the key closure property: if $f$ and $g$ are polynomial-time computable, so is $f \\circ g$. The bound $(n+1)^d$ ensures $p(0) \\geq 1$, which is essential for the `poly_pow_expand` lemma: $(c \\cdot (n+1)^{d_1})^{d_2} = c^{d_2} \\cdot (n+1)^{d_1 d_2}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "polynomial-closure",
+      "composition",
+      "time-constructibility"
+    ],
+    "prerequisites": [
+      "Nat.pow",
+      "Nat.mul_le_mul",
+      "Nat.pow_le_pow_right"
+    ]
+  },
+  {
+    "id": "ann-class-p",
+    "proofId": "p-vs-np",
+    "range": {
+      "startLine": 148,
+      "endLine": 153
+    },
+    "type": "definition",
+    "title": "Complexity Class P",
+    "content": "The class $P$ consists of all decision problems solvable by a deterministic program in polynomial time: $P = \\{L \\mid \\exists \\text{ program } M,\\, \\text{polynomial } p :\\, M \\text{ decides } L \\text{ in time } O(p(n))\\}$. Intuitively, $P$ captures 'efficiently solvable' problems.",
+    "mathContext": "$P$ is formalized as `inP problem := ∃ (prog : Program) (poly : Polynomial), solves prog problem ∧ runsInTime prog poly.toTimeBound`. Examples of problems in $P$ include sorting ($O(n \\log n)$), shortest path (Dijkstra, $O(n^2)$), primality testing (AKS, $O((\\log n)^6)$), and linear programming (Khachiyan 1979).",
+    "significance": "key",
+    "relatedConcepts": [
+      "deterministic-computation",
+      "polynomial-time",
+      "Cobham-thesis",
+      "tractability"
+    ],
+    "prerequisites": [
+      "Program",
+      "Polynomial",
+      "solves",
+      "runsInTime"
+    ]
+  },
+  {
+    "id": "ann-class-np",
+    "proofId": "p-vs-np",
+    "range": {
+      "startLine": 164,
+      "endLine": 191
+    },
+    "type": "definition",
+    "title": "Complexity Class NP",
+    "content": "The class $NP$ consists of problems with polynomial-time verifiers: $NP = \\{L \\mid \\exists \\text{ verifier } V,\\, \\text{poly } p :\\, x \\in L \\Leftrightarrow \\exists c,\\, V(x,c) \\text{ accepts in } O(p(|x|))\\}$. The certificate $c$ serves as a 'proof' of membership. A `Verifier` structure pairs code with a verification function, and `isCorrectVerifier` ensures soundness and completeness.",
+    "mathContext": "The formalization uses `isCorrectVerifier v problem` requiring: (1) completeness — if $x \\in L$ then some certificate is accepted, and (2) soundness — if $x \\notin L$ then no certificate is accepted. The `verifierPolyTime` constraint bounds verification time by $\\text{poly}(|x| + |c|)$. Examples: SAT (certificate: satisfying assignment), CLIQUE (certificate: the $k$ vertices), Hamiltonian Path (certificate: the path).",
+    "significance": "key",
+    "relatedConcepts": [
+      "nondeterminism",
+      "certificate",
+      "witness",
+      "verifier"
+    ],
+    "prerequisites": [
+      "Verifier",
+      "isCorrectVerifier",
+      "verifierPolyTime"
+    ]
+  },
+  {
+    "id": "ann-p-subset-np",
+    "proofId": "p-vs-np",
+    "range": {
+      "startLine": 205,
+      "endLine": 252
+    },
+    "type": "definition",
+    "title": "P ⊆ NP",
+    "content": "**Theorem**: $P \\subseteq NP$. If a problem can be **solved** in polynomial time, it can certainly be **verified** in polynomial time — the verifier simply runs the solver, ignoring the certificate. The proof constructs a verifier from the polynomial-time solver: given input $n$ and certificate $c$, it runs `prog.decide n` and discards $c$. The time bound requires careful polynomial arithmetic to show that `poly.eval (inputSize n)` is bounded by `poly'.eval (inputSize n + inputSize c)`.",
+    "mathContext": "This is the 'easy direction' of the $P$ vs $NP$ relationship. The proof is fully constructive with no axioms: it builds the verifier explicitly, proves correctness (both completeness and soundness follow from `h_solves`), and establishes the polynomial time bound via `Nat.pow_le_pow_right` and `Nat.mul_le_mul_right`. The hard open question is whether $NP \\subseteq P$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "subset-relation",
+      "solver-as-verifier",
+      "constructive-proof"
+    ],
+    "prerequisites": [
+      "inP",
+      "inNP",
+      "Polynomial.eval"
+    ]
+  },
+  {
+    "id": "ann-reductions",
+    "proofId": "p-vs-np",
+    "range": {
+      "startLine": 260,
+      "endLine": 280
+    },
+    "type": "definition",
+    "title": "Polynomial-Time Reductions",
+    "content": "A `Reduction` from $A$ to $B$ is a function $f$ with $x \\in A \\Leftrightarrow f(x) \\in B$. A `PolyReduction` additionally requires $f$ to be polynomial-time computable with polynomial output size. The notation $A \\leq_p B$ (Karp reduction) means $A$ reduces to $B$: solving $B$ efficiently implies solving $A$ efficiently.",
+    "mathContext": "The `PolyReduction` structure extends `Reduction` with `computeTime` (polynomial computation cost), `outputSize` (polynomial output size bound), `outputMono` (monotonicity), and `outputBounded` ($|f(x)| \\leq \\text{outputSize}(|x|)$). The output size bound is essential for composing reductions: without it, $f$ could produce exponentially large outputs, and the composed time would be super-polynomial even if each individual step is polynomial.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Karp-reduction",
+      "many-one-reduction",
+      "hardness-transfer",
+      "polynomial-closure"
+    ],
+    "prerequisites": [
+      "DecisionProblem",
+      "isPolynomial",
+      "Function.comp"
+    ]
+  },
+  {
+    "id": "ann-reduce-trans",
+    "proofId": "p-vs-np",
+    "range": {
+      "startLine": 303,
+      "endLine": 449
+    },
+    "type": "definition",
+    "title": "Transitivity of Polynomial Reductions",
+    "content": "**Theorem**: Polynomial reductions are transitive. Given $A \\leq_p B$ and $B \\leq_p C$, we construct $A \\leq_p C$ with $f_3 = f_2 \\circ f_1$. The proof is the most technically demanding in the file (~150 lines), requiring careful polynomial arithmetic to show that the composed time bound $T_1(n) + T_2(\\text{outputSize}_1(n))$ and composed output size $\\text{outputSize}_2(\\text{outputSize}_1(n))$ are both polynomial.",
+    "mathContext": "The bounding polynomial uses degree $\\max(d_1, d_2 \\cdot d_3)$ and coefficient $2(c_1+1)(c_2+1)(c_3+1)^{d_2}$, capturing both the direct computation cost and the blowup from composing output sizes. Key lemmas used: `poly_pow_expand` for $(c \\cdot (n+1)^{d_1})^{d_2} = c^{d_2} \\cdot (n+1)^{d_1 d_2}$ and `Nat.pow_le_pow_right` for monotonicity of powers.",
+    "significance": "key",
+    "relatedConcepts": [
+      "transitivity",
+      "polynomial-composition",
+      "reduction-chains"
+    ],
+    "prerequisites": [
+      "PolyReduction",
+      "poly_pow_expand",
+      "Nat.pow_le_pow_right"
+    ]
+  },
+  {
+    "id": "ann-reduce-in-p",
+    "proofId": "p-vs-np",
+    "range": {
+      "startLine": 460,
+      "endLine": 562
+    },
+    "type": "concept",
+    "title": "Reductions Preserve P-Membership",
+    "content": "**Theorem**: If $A \\leq_p B$ and $B \\in P$, then $A \\in P$. This is the fundamental property making polynomial reductions useful: they transfer tractability. The proof constructs a solver for $A$ that applies the reduction $f$ then runs $B$'s solver on $f(n)$, with the total time bounded by a polynomial combining the reduction's computation time and $B$'s running time on the (polynomially-bounded) output.",
+    "mathContext": "The constructed program `prog_A` computes $f(n)$ in time $T_f(|n|)$ then runs $\\text{prog}_B$ on $f(n)$ in time $T_B(|f(n)|) \\leq T_B(\\text{outputSize}(|n|))$. Since both $T_f$ and $T_B \\circ \\text{outputSize}$ are polynomial, their sum is polynomial. This theorem, combined with Cook-Levin, yields the key equivalence: $P = NP$ iff any NP-complete problem is in $P$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "hardness-transfer",
+      "polynomial-closure",
+      "Cook-Levin-corollary"
+    ],
+    "prerequisites": [
+      "PolyReduction",
+      "inP",
+      "poly_pow_expand"
+    ]
+  },
+  {
+    "id": "ann-np-complete",
+    "proofId": "p-vs-np",
+    "range": {
+      "startLine": 576,
+      "endLine": 582
+    },
+    "type": "concept",
+    "title": "NP-Hardness and NP-Completeness",
+    "content": "A problem is `NPHard` if every NP problem poly-reduces to it ($\\forall A \\in NP,\\, A \\leq_p B$). A problem is `NPComplete` if it is both in NP and NP-hard: $NPC = NP \\cap \\text{NP-hard}$. NP-complete problems are the 'hardest' in NP — solving any one efficiently would collapse $NP$ into $P$.",
+    "mathContext": "The formalization `NPComplete problem := inNP problem ∧ NPHard problem` directly captures Karp's (1972) definition. Cook (1971) and Levin (1973) independently established that NP-complete problems exist by proving SAT is NP-complete. Karp (1972) then showed 21 natural combinatorial problems are NP-complete via reduction chains from SAT.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cook-Levin-theorem",
+      "Karp-21-problems",
+      "reduction-completeness"
+    ],
+    "prerequisites": [
+      "inNP",
+      "NPHard",
+      "PolyReduction"
+    ]
+  },
+  {
+    "id": "ann-sat",
+    "proofId": "p-vs-np",
+    "range": {
+      "startLine": 588,
+      "endLine": 617
+    },
+    "type": "definition",
+    "title": "Boolean Satisfiability (SAT)",
+    "content": "The SAT problem is formalized with `Literal` (positive or negated variables), `Clause` (disjunction of literals), `CNFFormula` (conjunction of clauses), and `Assignment` (truth valuation). The evaluation functions `evalLiteral`, `satisfiesClause`, and `satisfiesFormula` compute whether an assignment satisfies a formula. The abstract `SAT : DecisionProblem` is a placeholder — the full encoding would map CNF formulas to natural numbers.",
+    "mathContext": "SAT asks: given a Boolean formula $\\varphi = \\bigwedge_{i} \\bigvee_{j} \\ell_{ij}$ in conjunctive normal form, does there exist an assignment $\\alpha : \\text{Var} \\to \\{T, F\\}$ such that $\\alpha \\models \\varphi$? The problem is NP-complete (Cook-Levin 1971). The certificate is a satisfying assignment, verifiable in $O(|\\varphi|)$ time by evaluating each clause.",
+    "significance": "key",
+    "relatedConcepts": [
+      "CNF",
+      "Boolean-logic",
+      "NP-completeness",
+      "propositional-satisfiability"
+    ],
+    "prerequisites": [
+      "Literal",
+      "List",
+      "Bool"
+    ]
+  },
+  {
+    "id": "ann-cook-levin",
+    "proofId": "p-vs-np",
+    "range": {
+      "startLine": 660,
+      "endLine": 666
+    },
+    "type": "concept",
+    "title": "Cook-Levin Theorem (1971)",
+    "content": "**Cook-Levin Theorem**: SAT is NP-complete. The axiom `cook_levin_axiom` asserts that every NP problem poly-reduces to SAT. The theorem `cook_levin` then combines this with `SAT_in_NP_axiom` to establish NP-completeness. A full proof would require encoding Turing machine configurations as Boolean variables and transitions as CNF constraints (~5000+ lines).",
+    "mathContext": "Cook's proof (1971) encodes the computation tableau of a nondeterministic TM as a Boolean formula: variables $x_{i,j,s}$ represent 'cell $(i,j)$ contains symbol $s$'. Transition constraints become CNF clauses. The formula has size $O(T(n)^2)$ where $T(n)$ is the NTM's time bound, so the reduction is polynomial. Levin independently proved the same result (1973) in the USSR.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cook-1971",
+      "Levin-1973",
+      "tableau-encoding",
+      "first-NP-complete-problem"
+    ],
+    "prerequisites": [
+      "inNP",
+      "NPComplete",
+      "SAT_in_NP_axiom"
+    ]
+  },
+  {
+    "id": "ann-npc-gallery",
+    "proofId": "p-vs-np",
+    "range": {
+      "startLine": 672,
+      "endLine": 755
+    },
+    "type": "concept",
+    "title": "NP-Complete Problems: 3-SAT, CLIQUE, SUBSET-SUM, HAMPATH",
+    "content": "Several classic NP-complete problems are defined and their NP-completeness proved via reduction chains from SAT. Since all are modeled as the same abstract placeholder (`fun _ => false`), the reductions are identity functions. In the real theory: SAT $\\leq_p$ 3-SAT (clause splitting), 3-SAT $\\leq_p$ CLIQUE (gadget construction), 3-SAT $\\leq_p$ SUBSET-SUM (binary encoding), 3-SAT $\\leq_p$ HAMPATH (vertex gadgets).",
+    "mathContext": "Karp (1972) established the first large catalog of NP-complete problems by showing reduction chains from SAT. The formalization uses helper theorems `always_false_inNP` and `eq_SAT_NPHard` to streamline the proofs, since all placeholder problems are the same constant function. The actual reductions (e.g., 3-SAT from SAT via clause-splitting into $O(k)$ 3-literal clauses) would each require hundreds of lines.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Karp-21-problems",
+      "3-SAT",
+      "CLIQUE",
+      "SUBSET-SUM",
+      "Hamiltonian-path"
+    ],
+    "prerequisites": [
+      "cook_levin",
+      "poly_reduce_trans",
+      "NPComplete"
+    ]
+  },
+  {
+    "id": "ann-conp",
+    "proofId": "p-vs-np",
+    "range": {
+      "startLine": 769,
+      "endLine": 806
+    },
+    "type": "concept",
+    "title": "coNP, Complement Closure, and P ⊆ coNP",
+    "content": "`coNP` is defined as $\\{L \\mid \\bar{L} \\in NP\\}$ — problems whose complements are in NP. The key theorem `P_closed_complement` proves that $P$ is closed under complementation: $L \\in P \\Leftrightarrow \\bar{L} \\in P$. As a corollary, $P \\subseteq NP \\cap \\text{coNP}$. Whether $NP = \\text{coNP}$ is another major open question.",
+    "mathContext": "The proof of $P$-complement closure constructs a new program that negates the output: given solver $M$ for $L$, define $M'(x) = \\neg M(x)$. Both directions use this construction. The theorem `P_subset_coNP` chains: $L \\in P \\Rightarrow \\bar{L} \\in P \\Rightarrow \\bar{L} \\in NP \\Rightarrow L \\in \\text{coNP}$. If $P \\neq NP$, it is widely believed that $NP \\neq \\text{coNP}$ as well.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complement-complexity",
+      "coNP-completeness",
+      "UNSAT",
+      "NP-cap-coNP"
+    ],
+    "prerequisites": [
+      "complement",
+      "P_subset_NP",
+      "Bool.not"
+    ]
+  },
+  {
+    "id": "ann-conjecture",
+    "proofId": "p-vs-np",
+    "range": {
+      "startLine": 822,
+      "endLine": 864
+    },
+    "type": "concept",
+    "title": "The P ≠ NP Conjecture and Key Equivalences",
+    "content": "The conjecture $P \\neq NP$ is formalized as `P_ne_NP_Conjecture := P ≠ NP`. The theorem `P_ne_NP_iff_exists` proves equivalence with $\\exists L \\in NP,\\, L \\notin P$. The central result `NPC_in_P_implies_P_eq_NP` shows: if **any** NP-complete problem is in $P$, then $P = NP$. This means the entire $P$ vs $NP$ question reduces to the tractability of a single NP-complete problem.",
+    "mathContext": "The proof of `NPC_in_P_implies_P_eq_NP` uses the reduction chain: for any $A \\in NP$, NP-hardness of $L$ gives $A \\leq_p L$, and since $L \\in P$, `poly_reduce_P_preserved` yields $A \\in P$. Thus $NP \\subseteq P$, and combined with `P_subset_NP`, we get $P = NP$. The contrapositive is equally important: if $P \\neq NP$, then **no** NP-complete problem is in $P$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Millennium-Prize",
+      "set-equality",
+      "reduction-to-NPC"
+    ],
+    "prerequisites": [
+      "NPComplete",
+      "poly_reduce_P_preserved",
+      "Set.eq_of_subset_of_subset"
+    ]
+  },
+  {
+    "id": "ann-barriers",
+    "proofId": "p-vs-np",
+    "range": {
+      "startLine": 874,
+      "endLine": 887
+    },
+    "type": "concept",
+    "title": "Time Hierarchy and P ≠ EXPTIME",
+    "content": "Two separation results are stated as axioms: the **Time Hierarchy Theorem** ($\\text{DTIME}(n) \\subsetneq \\text{DTIME}(n^2)$, proved by diagonalization) and $P \\neq \\text{EXPTIME}$. These demonstrate that time-bounded complexity classes form a strict hierarchy, but the gap between $P$ and $NP$ — which lies between $P$ and $\\text{EXPTIME}$ — remains unresolved.",
+    "mathContext": "The Time Hierarchy Theorem (Hartmanis-Stearns, 1965) uses a universal TM to diagonalize: construct a problem solvable in $O(n^2)$ steps but not in $O(n)$ steps. The separation $P \\neq \\text{EXPTIME}$ follows from $P \\subseteq \\text{DTIME}(n^k)$ for some $k$, and $\\text{DTIME}(n^k) \\subsetneq \\text{DTIME}(2^{n^k})$ by the hierarchy theorem. These are the strongest unconditional separations known for deterministic classes.",
+    "significance": "key",
+    "relatedConcepts": [
+      "time-hierarchy",
+      "diagonalization",
+      "EXPTIME",
+      "Hartmanis-Stearns"
+    ],
+    "prerequisites": [
+      "EXPTIME",
+      "Program",
+      "runsInTime"
+    ]
+  },
+  {
+    "id": "ann-ladner",
+    "proofId": "p-vs-np",
+    "range": {
+      "startLine": 898,
+      "endLine": 899
+    },
+    "type": "concept",
+    "title": "Ladner's Theorem (1975): NP-Intermediate Problems",
+    "content": "**Ladner's Theorem**: If $P \\neq NP$, then there exist **NP-intermediate** problems — problems in $NP$ that are neither in $P$ nor NP-complete. This shows the NP landscape is rich, not a simple two-tier hierarchy. Candidate NP-intermediate problems include Graph Isomorphism (now known to be in quasi-polynomial time by Babai 2015) and Integer Factorization (basis of RSA cryptography).",
+    "mathContext": "Ladner's proof constructs an artificial NP-intermediate problem by 'padding' SAT: define $L_H = \\{(\\varphi, 1^{H(|\\varphi|)}) \\mid \\varphi \\in \\text{SAT}\\}$ where $H$ grows slowly enough that $L_H \\notin P$ but fast enough that $L_H$ is not NP-hard. The construction uses a careful diagonalization against all polynomial-time algorithms and all polynomial-time reductions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "NP-intermediate",
+      "graph-isomorphism",
+      "integer-factoring",
+      "padding-argument"
+    ],
+    "prerequisites": [
+      "P_ne_NP_Conjecture",
+      "inNP",
+      "NPComplete"
+    ]
+  }
+]

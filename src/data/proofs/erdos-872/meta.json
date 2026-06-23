@@ -1,0 +1,221 @@
+{
+  "id": "erdos-872",
+  "title": "Erdős Problem #872: Antichain Saturation Game",
+  "slug": "erdos-872",
+  "description": "How long can a two-player game on divisibility antichains in {2,...,n} be guaranteed to last when one player maximizes and one minimizes game length?",
+  "meta": {
+    "author": "Erdős (1992)",
+    "sourceUrl": "https://erdosproblems.com/872",
+    "date": "1992",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos872Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorial-games",
+      "primitive-sets",
+      "antichains",
+      "divisibility",
+      "saturation-games",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 872,
+    "erdosUrl": "https://erdosproblems.com/872",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.Prime.eq_one_or_self_of_dvd",
+        "description": "Key lemma for primes_antichain proof",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality for general sets",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets with decidable membership",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "IsAntichain",
+        "description": "Antichain predicate for partial orders",
+        "module": "Mathlib.Order.Antichain"
+      }
+    ],
+    "originalContributions": [
+      "IsDivisibilityAntichain definition: sets with no divisibility relations",
+      "IsPrimitiveSet definition: equivalent negative formulation",
+      "antichain_iff_primitive theorem: constructive equivalence proof",
+      "gameBoard definition: the set {2,...,n}",
+      "gameBoard_card: game board size",
+      "IsLegalMove definition: valid game moves",
+      "legal_move_iff theorem: characterizes valid game moves",
+      "IsMaximalAntichain definition: terminal game states",
+      "game_terminates: game terminates in finite moves",
+      "maximal_antichain_upper_bound: antichain size bounded by n/2",
+      "prime_antichain_bound: prime set gives lower bound",
+      "gameLastsLinear: first Erdős question formalized with typed game length",
+      "gameLastsNearOptimal: second Erdős question formalized",
+      "primes_antichain theorem: constructive proof using Nat.Prime.eq_one_or_self_of_dvd",
+      "upper_half_antichain theorem: primes in upper half form antichain",
+      "firstPlayerAdvantage definition: existential statement that different game plays yield different terminal antichain sizes",
+      "gameValue axiom: minimax game length function (axiomatized, exponential to compute)",
+      "gameValue_upper axiom: gameValue(n) ≤ (n+1)/2 upper bound",
+      "erdos_872_conjecture: linear vs sublinear dichotomy",
+      "erdos_872_summary: combines primes_antichain and gameValue_upper"
+    ],
+    "axiomCount": 2,
+    "lineCount": 301,
+    "assumptions": "2 axioms: gameValue (minimax game value function — axiomatized, exponential to compute), gameValue_upper (gameValue(n) ≤ (n+1)/2 upper bound). 0 sorries.",
+    "theoremCount": 5,
+    "definitionCount": 8
+  },
+  "overview": {
+    "historicalContext": "**The Antichain Saturation Game**\n\nErdős posed this problem in his 1992 survey paper [Er92c, p.47] \"Some of my favourite problems in various branches of combinatorics,\" published in Le Matematiche. The problem combines two rich mathematical traditions: the study of primitive sets (antichains under divisibility) and combinatorial game theory.\n\n**The Game and Its Rules**\n\nTwo players alternately choose integers from {2, 3, ..., n} to build a set A where no element divides another. The game ends when A becomes a maximal antichain — no further element can be added without creating a divisibility pair. One player (the Maximizer) wants the game to last as long as possible, while the other (the Minimizer) wants it to end quickly. Erdős asks: how many moves can the Maximizer guarantee?\n\n**Related Saturation Games**\n\nThis is a number-theoretic variant of Hajnal's triangle-free game, where players alternately add edges to a complete graph while keeping it triangle-free. For the graph version, Füredi and Seress (1991) proved the game lasts at least Omega(n log n) moves, while Biró, Horn, and Wildstrom (2016) showed the upper bound (26/121 + o(1))n². The divisibility antichain game remains much less understood — both of Erdős's specific questions are open.",
+    "problemStatement": "**Problem Statement (Open)**\n\nConsider the two-player game on $\\{2, 3, \\ldots, n\\}$:\n- Players alternately choose integers for set $A$\n- Constraint: no $a \\mid b$ for distinct $a, b \\in A$ (antichain under divisibility)\n- Game ends when $A$ is maximal\n- One player maximizes, one minimizes duration\n\n**Questions:**\n1. Can the game last at least $\\varepsilon n$ moves for some $\\varepsilon > 0$?\n2. Can the game last at least $(1-\\varepsilon)\\frac{n}{2}$ moves?\n\n**Bounds:**\n- Upper: Any antichain in $\\{2,\\ldots,n\\}$ has size at most $\\lfloor n/2 \\rfloor$\n- Lower: Primes give antichains of size $\\sim n/(2 \\ln n)$",
+    "text": "How long can a two-player game on divisibility antichains in {2,...,n} be guaranteed to last when one player maximizes and one minimizes game length?",
+    "proofStrategy": "We formalize the complete game structure: IsDivisibilityAntichain and IsPrimitiveSet with a constructive equivalence proof, gameBoard, IsLegalMove, IsMaximalAntichain, and game termination. Bounds are axiomatized: the upper bound n/2 from the chain decomposition argument, and the prime antichain lower bound from the prime number theorem. Erdős's two open questions are formalized as gameLastsLinear and gameLastsNearOptimal with proper typed game-length functions (replacing True placeholders). The game-theoretic formulation introduces gameValue with positivity and upper bound axioms. The key proved result is primes_antichain, using Mathlib's Nat.Prime.eq_one_or_self_of_dvd.",
+    "keyInsights": [
+      "**Primitive sets are antichains**: A divisibility antichain (no a | b for distinct elements) is equivalent to a primitive set — fundamental objects in multiplicative number theory",
+      "**Upper bound n/2**: The set {n/2+1, ..., n} shows the maximum antichain has floor(n/2) elements, since if a | b with both > n/2, then b >= 2a > n",
+      "**Primes form antichains**: Any set of primes is automatically an antichain since p | q with p,q prime implies p = q — this is the most natural source of antichains",
+      "**Saturation game paradigm**: This belongs to the family of games where players build maximal structures, connecting to Hajnal's triangle-free game and Ramsey-type games",
+      "**First player matters**: Erdős notes the answer may depend on which player moves first — different maximal antichains can have different sizes",
+      "**Graph vs number theory**: The triangle-free graph game has Omega(n log n) lower bound, but whether a similar result holds for divisibility antichains is unknown"
+    ],
+    "prerequisites": [
+      "Combinatorics (counting, extremal problems)",
+      "Number theory (primes, divisibility, arithmetic functions)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "antichain-definition",
+      "title": "Antichain Definitions",
+      "summary": "IsDivisibilityAntichain, IsPrimitiveSet, antichain_iff_primitive",
+      "startLine": 46,
+      "endLine": 78,
+      "mathContext": "Mathematical content: IsDivisibilityAntichain, IsPrimitiveSet, antichain_iff_primitive"
+    },
+    {
+      "id": "game-board",
+      "title": "The Game Board",
+      "summary": "gameBoard, gameBoard_card, IsLegalMove, legal_move_iff",
+      "startLine": 79,
+      "endLine": 110,
+      "mathContext": "Mathematical content: gameBoard, gameBoard_card, IsLegalMove, legal_move_iff"
+    },
+    {
+      "id": "game-state",
+      "title": "Game State and Termination",
+      "summary": "IsMaximalAntichain, game_terminates",
+      "startLine": 111,
+      "endLine": 131,
+      "mathContext": "Mathematical content: IsMaximalAntichain, game_terminates"
+    },
+    {
+      "id": "bounds",
+      "title": "Bounds on Game Length",
+      "summary": "Antichain upper bound n/2, prime antichain lower bound",
+      "startLine": 132,
+      "endLine": 154,
+      "mathContext": "Bound: Antichain upper bound n/2, prime antichain lower bound"
+    },
+    {
+      "id": "erdos-questions",
+      "title": "Erdős's Questions",
+      "summary": "gameLastsLinear, gameLastsNearOptimal, open status",
+      "startLine": 155,
+      "endLine": 190,
+      "mathContext": "Mathematical content: gameLastsLinear, gameLastsNearOptimal, open status"
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results",
+      "summary": "Füredi-Seress triangle-free game, Biró-Horn-Wildstrom bound",
+      "startLine": 191,
+      "endLine": 210,
+      "mathContext": "Bound: Füredi-Seress triangle-free game, Biró-Horn-Wildstrom bound"
+    },
+    {
+      "id": "examples",
+      "title": "Special Cases and Examples",
+      "summary": "primes_antichain, upper_half_antichain, firstPlayerAdvantage",
+      "startLine": 211,
+      "endLine": 254,
+      "mathContext": "Mathematical content: primes_antichain, upper_half_antichain, firstPlayerAdvantage"
+    },
+    {
+      "id": "game-theory",
+      "title": "Game-Theoretic Formulation",
+      "summary": "gameValue axiom with properties, erdos_872_conjecture",
+      "startLine": 255,
+      "endLine": 277,
+      "mathContext": "Axiomatized: gameValue axiom with properties, erdos_872_conjecture"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_872_summary combining primes_antichain and gameValue_upper",
+      "startLine": 278,
+      "endLine": 292,
+      "mathContext": "Mathematical content: erdos_872_summary combining primes_antichain and gameValue_upper"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #872 asks about the guaranteed length of a two-player saturation game on divisibility antichains in {2,...,n}. The formalization defines the complete game structure, proves primes form antichains (the key constructive result), axiomatizes bounds (max antichain size n/2, prime lower bound), and formalizes both of Erdős's open questions with properly typed game-length functions. All True := trivial placeholders and sorry proofs have been replaced with meaningful axioms.",
+    "implications": "**Theoretical Significance**: Understanding the game value would connect primitive set theory with combinatorial game theory.\n\nThe problem sits at the intersection of number theory (divisibility structure), extremal combinatorics (maximal antichains), and game theory (minimax analysis). Resolution would likely require new techniques beyond those used for the triangle-free graph game.",
+    "openQuestions": [
+      "Does the game last Theta(n) moves under optimal play?",
+      "Can the maximizing player guarantee (1-epsilon)n/2 moves?",
+      "Does the first player have a systematic advantage?",
+      "What is the computational complexity of optimal play?",
+      "Is there a connection to the Erdős conjecture on primitive sets?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Order.Antichain",
+      "Mathlib.Data.Set.Card"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Set"
+    ],
+    "namespace": "Erdos872",
+    "lineCount": 301,
+    "axiomCount": 2,
+    "theoremCount": 5,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos872Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-793",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, primitive-sets"
+    },
+    {
+      "targetId": "erdos-892",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, primitive-sets"
+    }
+  ],
+  "sorries": 0
+}

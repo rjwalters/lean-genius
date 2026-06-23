@@ -1,0 +1,65 @@
+{
+  "slug": "lhopital-oq-02-wip-01",
+  "title": "L'Hôpital's Rule: ∞/∞ Form (WIP Completion)",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "",
+    "plain": "Complete 3 sorry-reductions in `LhopitalOQ02.lean`: the left-approach, atTop, and atBot variants of L'Hôpital's rule (∞/∞ form) by reducing each to the already-proved right-approach result via variable substitution.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-13T00:00:00.000Z",
+    "iteration": 2,
+    "focus": "All 3 target sorry-reductions already proven on main (PR #10140)",
+    "blockers": [],
+    "nextAction": "",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: all three ∞/∞ L'Hôpital variants (left, atTop, atBot) are fully proven in proofs/Proofs/LHopitalOQ02.lean — 0 sorries, 0 axioms. Resolved by PR #10140 prior to this WIP task's creation; tracker was stale.",
+    "builtItems": [
+      "lhopital_infty_left in proofs/Proofs/LHopitalOQ02.lean:290 (reduce to right via u = -x negation)",
+      "lhopital_infty_atTop in proofs/Proofs/LHopitalOQ02.lean:318 (reduce to right via u = 1/x inversion)",
+      "lhopital_infty_atBot in proofs/Proofs/LHopitalOQ02.lean:353 (reduce to atTop via u = -x negation)"
+    ],
+    "insights": [
+      "The 3 sorry-reductions targeted by this WIP task were already discharged in PR #10140 (\"prove all 4 ∞/∞ L'Hôpital variants, 0 sorries\"), which predates the 2026-04-05 task creation. The WIP slug was redundant from the start.",
+      "All three variants reduce to lhopital_infty_right via HasDerivAt.comp with the substitution map plus standard Mathlib filter-pushforward lemmas (tendsto_neg_nhdsGT_neg, tendsto_inv_nhdsGT_zero, tendsto_neg_atTop_atBot)."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge: lhopital-oq-02-wip-01\n\n## Summary\n\nNo research sessions yet. Problem initialized by Seeker on 2026-04-05.\n\n## Key Facts\n\n- Source file: `proofs/Proofs/LHopitalOQ02.lean` (note: capital H in filename)\n- 3 sorries at lines 291, 302, 313: `lhopital_infty_left`, `lhopital_infty_atTop`, `lhopital_infty_atBot`\n- All three reduce to the proved `lhopital_infty_right` via variable substitution\n- Each substitution: u = a+b-x (reflection), u = 1/x (inversion), u = -x (negation)\n- `lhopital_infty_right` is fully proved via `lhopital_infty_right_zero` helper (c=0 case)\n- Companion file `LHopitalOQ02Aristotle.lean` already exists — may have supporting lemmas\n- Key Mathlib tools: `HasDerivAt.comp`, `HasDerivAt.neg`, filter transformation lemmas\n\n## Open Questions\n\n1. Which exact Mathlib lemmas handle `nhdsWithin` under affine/invertible maps?\n2. Does `Mathlib.Analysis.Calculus.LHopital` provide shortcuts we can invoke?\n3. For `atTop → right`: does Mathlib have `Filter.tendsto_inv_atTop_nhds_nhdsWithin_zero`?\n4. For `atBot → atTop`: `Filter.tendsto_neg_atTop_atBot` (or `atBot_neg`) should handle the filter push.\n"
+  },
+  "tags": [
+    "analysis",
+    "calculus",
+    "sorry-completion",
+    "lhopital"
+  ],
+  "relatedProofs": [
+    "lhopital",
+    "lhopital-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-05T08:58:44.240Z",
+  "lastUpdate": "2026-06-13T00:00:00.000Z",
+  "significance": 7,
+  "tractability": 7
+}

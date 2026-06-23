@@ -1,0 +1,254 @@
+{
+  "id": "erdos-159",
+  "title": "Erdős Problem #159: Ramsey Numbers for C₄ and Complete Graphs",
+  "slug": "erdos-159",
+  "description": "Does there exist c > 0 such that R(C₄, Kₙ) ≪ n^{2-c}? Known bounds: n^{3/2}/(log n)^{3/2} ≪ R(C₄, Kₙ) ≪ n²/(log n)².",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/159",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos159Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "extremal-graph-theory",
+      "open-problem"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 159,
+    "erdosUrl": "https://erdosproblems.com/159",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2025-01-15",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type with adjacency, complement Gᶜ, and degree infrastructure",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Fin",
+        "description": "Finite types Fin N for vertex sets of graphs on N vertices",
+        "module": "Mathlib.Data.Fin.Basic"
+      },
+      {
+        "theorem": "Real.Basic",
+        "description": "Real number arithmetic for bounds with exponents and logarithmic factors",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Tactic",
+        "description": "Tactic infrastructure for proofs",
+        "module": "Mathlib.Tactic"
+      }
+    ],
+    "originalContributions": [
+      "HasC4: C₄ containment via four distinct vertices with cycle adjacency",
+      "HasClique: complete subgraph containment via pairwise adjacent Finset",
+      "HasClique_four_hasC4: K₄ ⊇ C₄ via Finset decomposition",
+      "ramsey_C4_Kn_exists: existence of R(C₄, Kₙ) from finite Ramsey theorem",
+      "ramseyC4Kn: defined via Nat.find (was axiom, now proved)",
+      "ramseyC4Kn_spec: threshold specification proved from Nat.find (was axiom)",
+      "ErdosProblem159: power saving conjecture ∃ c > 0, R ≤ C·n^{2-c}",
+      "HasClique_mono lemma: clique size monotonicity via Finset subset extraction",
+      "HasClique_card_le lemma: clique size bounded by vertex count",
+      "bot_not_HasC4 lemma: empty graph has no 4-cycle",
+      "ramseyC4Kn_mono theorem: monotonicity proved from specification (was axiom)",
+      "ramseyC4Kn_ge theorem: trivial lower bound R ≥ n proved from specification (was axiom)"
+    ],
+    "axiomCount": 0,
+    "lineCount": 282,
+    "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives.",
+    "theoremCount": 10,
+    "definitionCount": 4
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #159 (Power Saving in $R(C_4, K_n)$)**\n\n**The Off-Diagonal Ramsey Problem:**\nThe Ramsey number $R(C_4, K_n)$ is the smallest $N$ such that every graph on $N$ vertices either contains a 4-cycle $C_4$ or has an independent set of size $n$. Equivalently, it is the maximum number of vertices in a $C_4$-free graph with independence number $< n$, plus one. Erdős asked whether this number admits a genuine power saving over the trivial $n^2$ bound.\n\n**Known Bounds:**\n- **Szemerédi** (via the regularity lemma): $R(C_4, K_n) \\leq C \\cdot n^2/(\\log n)^2$. The regularity lemma shows that $C_4$-free graphs have sparse regular pairs, forcing large independent sets. This is the best known upper bound but only improves on $n^2$ by a $( \\log n)^2$ factor.\n- **Spencer** (probabilistic method): $R(C_4, K_n) \\geq c \\cdot n^{3/2}/(\\log n)^{3/2}$. This combines random $C_4$-free graph constructions with the Kővári-Sós-Turán theorem, which bounds the maximum edges in a $C_4$-free graph to $O(n^{3/2})$.\n\n**The Exponent Gap:**\nThe exponent lies between $3/2$ and $2$ (up to logarithmic factors). Erdős's question asks whether the true exponent is strictly less than 2 — whether there exists $c > 0$ with $R(C_4, K_n) \\leq C \\cdot n^{2-c}$. This would be a polynomial improvement, fundamentally stronger than any logarithmic savings.\n\n**Connection to Finite Geometry:**\nAlgebraic constructions from finite geometry — notably incidence graphs of generalized quadrangles and polarity graphs of projective planes — provide explicit $C_4$-free graphs on $q^2 + q + 1$ vertices with $\\Theta(q^{3/2})$ edges and independence number $\\Theta(q)$. These constructions suggest the lower bound $n^{3/2}$ may be closer to the truth, but they have not been improved to yield $n^{2-c}$ upper bounds.\n\n**Current Status:** OPEN. Neither a power saving nor a proof that no power saving exists is known.",
+    "problemStatement": "**Problem Statement (Open)**\n\nDoes there exist $c > 0$ such that $R(C_4, K_n) \\leq C \\cdot n^{2-c}$ for some constant $C$ and all sufficiently large $n$?\n\n**Known Bounds:**\n- Upper: $R(C_4, K_n) \\leq C \\cdot n^2/(\\log n)^2$ (Szemerédi, regularity lemma)\n- Lower: $R(C_4, K_n) \\geq c \\cdot n^{3/2}/(\\log n)^{3/2}$ (Spencer, probabilistic)\n\n**Exponent gap:** $3/2 \\leq \\text{exponent} \\leq 2$ (modulo logarithmic factors)",
+    "text": "Does there exist c > 0 such that R(C₄, Kₙ) ≪ n^{2-c}? Known bounds: n^{3/2}/(log n)^{3/2} ≪ R(C₄, Kₙ) ≪ n²/(log n)².",
+    "proofStrategy": "**Formalization Approach**\n\nThe 293-line formalization defines the Ramsey number from first principles:\n\n1. **Graph Predicates:** `HasC4 G` via four distinct vertices with cycle adjacency; `HasClique G n` via pairwise-adjacent Finset.\n\n2. **Ramsey Number:** `ramseyC4Kn : ℕ → ℕ` DEFINED via `Nat.find` using the finite Ramsey theorem (not axiomatized). Key bridge: `HasClique_four_hasC4` (K₄ ⊇ C₄). Full threshold specification `ramseyC4Kn_spec` proved from `Nat.find`.\n\n3. **Known Bounds:** Szemerédi upper $O(n^2/(\\log n)^2)$ and Spencer lower $\\Omega(n^{3/2}/(\\log n)^{3/2})$ axiomatized (deep results).\n\n4. **Main Conjecture:** `ErdosProblem159` as $\\exists c > 0, C > 0, n_0$: $R(C_4, K_n) \\leq C \\cdot n^{2-c}$.\n\n5. **Properties and Values:** Monotonicity, lower bound $R \\geq n$, computed $R(C_4, K_1) = 1$ and $R(C_4, K_2) = 4$.",
+    "keyInsights": [
+      "**Logarithmic vs. polynomial gap:** Szemerédi's bound $n^2/(\\log n)^2$ is a logarithmic improvement over $n^2$, while the conjecture asks for a polynomial one ($n^{2-c}$). The difference is fundamental: logarithmic savings follow from regularity-type arguments, but power savings require deeper structural understanding of $C_4$-free graphs.",
+      "**Kővári-Sós-Turán as obstruction:** The Kővári-Sós-Turán theorem shows $C_4$-free graphs have $O(n^{3/2})$ edges, giving $R(C_4, K_n) \\geq \\Omega(n^{3/2})$ via the probabilistic method. This theorem is the key lower-bound ingredient and connects to the Zarankiewicz problem $z(n; 2, 2)$.",
+      "**Algebraic constructions:** Explicit $C_4$-free graphs from finite geometry (incidence graphs of projective planes, polarity graphs) achieve $\\Theta(n^{3/2})$ edges on $n$ vertices, matching the Kővári-Sós-Turán bound. These suggest $R(C_4, K_n) \\approx n^{3/2}$, but turning this into a formal upper bound has not been achieved.",
+      "**Regularity lemma bottleneck:** Szemerédi's proof uses the regularity lemma, whose quantitative bounds are notoriously weak (tower-type). Any power saving would likely require avoiding the regularity lemma entirely, using more direct structural analysis of $C_4$-free graphs.",
+      "**Even cycle Ramsey numbers:** The problem generalizes to $R(C_{2k}, K_n)$ for longer even cycles. For $k = 2$ ($C_4$), the tight connection to the Zarankiewicz problem makes it the most natural starting point. For general $k$, bounds involve the extremal number $\\text{ex}(n, C_{2k})$.",
+      "**Threshold specification:** The formalization uses the complete min-max characterization: `ramseyC4Kn_spec` asserts BOTH directions (sufficiency and necessity), making $R(C_4, K_n)$ the exact threshold rather than just an upper bound. The complement `Gᶜ` turns clique-finding into independence-number questions."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Ramsey theory (partition regularity)",
+      "Extremal graph theory (Turán-type problems)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-and-imports",
+      "title": "Header, Imports, and Opens",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "Module documentation with problem statement and known bounds; imports SimpleGraph.Basic, Fin.Basic, Real.Basic, Tactic, and RamseysTheorem; opens SimpleGraph"
+    },
+    {
+      "id": "graph-predicates",
+      "title": "Graph Predicates",
+      "startLine": 26,
+      "endLine": 38,
+      "summary": "Defines HasC4 (4-cycle via four distinct vertices with cycle adjacency a-b-c-d-a) and HasClique (pairwise adjacent Finset of size n)"
+    },
+    {
+      "id": "clique-auxiliary",
+      "title": "Clique Auxiliary Lemmas",
+      "startLine": 41,
+      "endLine": 62,
+      "summary": "Three proved lemmas: HasClique_mono (clique size monotonicity via subset extraction), HasClique_card_le (clique size bounded by vertex count), bot_not_HasC4 (empty graph has no C₄)"
+    },
+    {
+      "id": "ramsey-number",
+      "title": "Ramsey Number R(C₄, Kₙ) — Defined from Ramsey's Theorem",
+      "startLine": 64,
+      "endLine": 165,
+      "summary": "DEFINED (not axiomatized) via Nat.find: HasClique_four_hasC4 (K₄ ⊇ C₄), ramsey_C4_Kn_exists (existence from Ramsey theorem via edge coloring), ramseyC4Kn (Nat.find definition), ramseyC4Kn_spec (threshold specification proved from Nat.find properties)"
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "startLine": 167,
+      "endLine": 181,
+      "summary": "Two axioms: szemeredi_upper (R ≤ C·n²/(log n)²) and spencer_lower (R ≥ c·n^{3/2}/(log n)^{3/2}). Deep literature results not in Mathlib."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture: Power Saving",
+      "startLine": 183,
+      "endLine": 194,
+      "summary": "ErdosProblem159: ∃ c > 0, C > 0, n₀ such that R(C₄, Kₙ) ≤ C·n^{2-c} for n ≥ n₀"
+    },
+    {
+      "id": "proved-properties",
+      "title": "Proved Properties",
+      "startLine": 196,
+      "endLine": 224,
+      "summary": "ramseyC4Kn_mono (monotonicity for 1 ≤ m ≤ n) and ramseyC4Kn_ge (trivial lower bound R ≥ n), both proved from the specification"
+    },
+    {
+      "id": "computed-values",
+      "title": "Computed Ramsey Values",
+      "startLine": 226,
+      "endLine": 282,
+      "summary": "Exact Ramsey values computed and proved: ramseyC4Kn_one (R(C₄,K₁) = 1) and ramseyC4Kn_two (R(C₄,K₂) = 4), using Nat.find_eq_iff with explicit constructions and counterexamples"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #159 asks whether the off-diagonal Ramsey number $R(C_4, K_n)$ admits a power saving: $R(C_4, K_n) \\leq C \\cdot n^{2-c}$ for some $c > 0$. The known bounds $\\Omega(n^{3/2}/(\\log n)^{3/2}) \\leq R(C_4, K_n) \\leq O(n^2/(\\log n)^2)$ leave an exponent gap from $3/2$ to $2$. The formalization defines the Ramsey number via Nat.find from the finite Ramsey theorem, computes R(C₄,K₁)=1 and R(C₄,K₂)=4, and axiomatizes only the deep asymptotic bounds.",
+    "implications": "**Theoretical Significance**: **Connections**\n\n1. **Zarankiewicz Problem:** $R(C_4, K_n)$ is closely tied to $z(n; 2, 2)$, the maximum edges in a $C_4$-free bipartite graph. The Kővári-Sós-Turán bound $z(n; 2, 2) = O(n^{3/2})$ is the key ingredient in Spencer's lower bound.\n\n**2. Finite Geometry:** Algebraic $C_4$-free constructions from projective planes and generalized quadrangles achieve extremal edge counts, suggesting deep connections between Ramsey theory and algebraic combinatorics.\n\n3. **Regularity Lemma Limitations:** Szemerédi's upper bound relies on the regularity lemma, whose quantitative inefficiency may be the primary obstacle to a power saving. Bypassing regularity for structured forbidden-subgraph problems is a major theme in modern combinatorics.\n\n4. **Off-Diagonal Ramsey Theory:** The problem is a prototype for understanding $R(H, K_n)$ for sparse graphs $H$, where the interaction between graph structure and independence number creates rich combinatorial phenomena.",
+    "openQuestions": [
+      "Does R(C₄, Kₙ) ≤ C·n^{2-c} for some c > 0? (The main conjecture)",
+      "What is the correct exponent α such that R(C₄, Kₙ) = Θ(n^α / (log n)^β)?",
+      "Can algebraic constructions from finite geometry improve the lower bound beyond 3/2?",
+      "Can the regularity lemma be replaced by dependent random choice or other efficient methods?",
+      "How does R(C₂ₖ, Kₙ) behave for general even cycle length 2k?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Fin.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic",
+      "Proofs.RamseysTheorem"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": null,
+    "lineCount": 282,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 4,
+    "path": "Proofs/Erdos159Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-569",
+      "relationship": "related",
+      "description": "Erdős #569 studies odd cycle Ramsey numbers R(C_{2k+1}, K_n), where the odd parity gives qualitatively different behavior from the even-cycle case R(C_4, K_n) studied here"
+    },
+    {
+      "targetId": "erdos-620",
+      "relationship": "related",
+      "description": "The Erdős-Rogers problem (#620) asks about independence numbers in K_r-free graphs — the dual question to R(C_4, K_n), where we seek large clique-free substructures rather than large independent sets in C_4-free graphs"
+    },
+    {
+      "targetId": "erdos-667",
+      "relationship": "related",
+      "description": "Erdős #667 studies the clique density exponent c(p,q), a quantity that governs Ramsey-type bounds. The exponent gap in R(C_4, K_n) between 3/2 and 2 is closely related to clique density phenomena"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "Ramsey's theorem guarantees R(C_4, K_n) is finite for all n. This problem asks for the precise growth rate, refining the existential guarantee to quantitative bounds"
+    },
+    {
+      "targetId": "erdos-147",
+      "relationship": "related",
+      "description": "Erdős #147 concerns Turán numbers ex(n; H) for bipartite H, which directly controls the lower bound for R(C_4, K_n) via the Turán-Ramsey connection: C_4-free graphs provide independent sets"
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "The Szemerédi regularity lemma is used in the upper bound R(C_4, K_n) ≤ O(n²/(log n)²). Bypassing its quantitative inefficiency is key to proving or disproving the power saving conjecture"
+    }
+  ],
+  "references": [
+    {
+      "key": "Sp77",
+      "authors": [
+        "J. Spencer"
+      ],
+      "title": "Asymptotic lower bounds for Ramsey functions",
+      "venue": "Discrete Mathematics",
+      "year": "1977",
+      "note": "Establishes the lower bound R(C₄, Kₙ) ≥ Ω(n^{3/2}/(log n)^{3/2}) using the probabilistic method and Turán-type bounds for C₄-free graphs"
+    },
+    {
+      "key": "Sz83",
+      "authors": [
+        "E. Szemerédi"
+      ],
+      "title": "Regular partitions of graphs",
+      "venue": "Colloques Internationaux CNRS, Problèmes Combinatoires et Théorie des Graphes",
+      "year": "1978",
+      "note": "The Szemerédi regularity lemma, used in the upper bound R(C₄, Kₙ) ≤ O(n²/(log n)²)"
+    },
+    {
+      "key": "KST54",
+      "authors": [
+        "T. Kővári",
+        "V.T. Sós",
+        "P. Turán"
+      ],
+      "title": "On a problem of K. Zarankiewicz",
+      "venue": "Colloq. Math. 3 (1954), 50-57",
+      "year": "1954",
+      "note": "The Kővári-Sós-Turán bound z(n; 2,2) = O(n^{3/2}), the key Turán-type ingredient in the Ramsey lower bound"
+    },
+    {
+      "key": "AKS80",
+      "authors": [
+        "M. Ajtai",
+        "J. Komlós",
+        "E. Szemerédi"
+      ],
+      "title": "A note on Ramsey numbers",
+      "venue": "Journal of Combinatorial Theory, Series A",
+      "year": "1980",
+      "note": "Establishes R(3,n) = Θ(n²/log n), the diagonal Ramsey bound whose techniques extend to the off-diagonal C₄ case"
+    }
+  ],
+  "sorries": 0
+}

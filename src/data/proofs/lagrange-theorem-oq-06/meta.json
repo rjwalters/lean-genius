@@ -1,0 +1,179 @@
+{
+  "id": "lagrange-theorem-oq-06",
+  "title": "The Tower Law for Subgroup Indices",
+  "slug": "lagrange-theorem-oq-06",
+  "description": "For a tower of subgroups K ≤ H ≤ G the index is multiplicative: [G:K] = [G:H]·[H:K]. This index-theoretic refinement of Lagrange's theorem holds in any (possibly infinite) group, specializes to |G| = [G:H]·|H| at K = ⊥, and yields the divisibility tower and a three-step chain rule.",
+  "meta": {
+    "author": "Lagrange (1771); index form classical",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LagrangeTheoremOQ06.lean",
+    "tags": [
+      "group-theory",
+      "algebra",
+      "subgroup-index",
+      "lagrange-theorem",
+      "tower-law",
+      "classic"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-19",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Subgroup.relIndex_mul_index",
+        "description": "H.relIndex K * K.index = H.index for H ≤ K — the single-step factorisation of the index",
+        "module": "Mathlib.GroupTheory.Index"
+      },
+      {
+        "theorem": "Subgroup.relIndex_mul_relIndex",
+        "description": "Multiplicativity of the relative index across a tower H ≤ K ≤ L",
+        "module": "Mathlib.GroupTheory.Index"
+      },
+      {
+        "theorem": "Subgroup.index_dvd_of_le",
+        "description": "K.index ∣ H.index for H ≤ K — divisibility of indices",
+        "module": "Mathlib.GroupTheory.Index"
+      },
+      {
+        "theorem": "Subgroup.index_mul_card",
+        "description": "H.index * Nat.card H = Nat.card G — Lagrange's index form",
+        "module": "Mathlib.GroupTheory.Index"
+      },
+      {
+        "theorem": "Subgroup.index_bot",
+        "description": "(⊥).index = Nat.card G — basis for the Lagrange specialization",
+        "module": "Mathlib.GroupTheory.Index"
+      },
+      {
+        "theorem": "Subgroup.relIndex_bot_left",
+        "description": "(⊥).relIndex H = Nat.card H — relative index of the trivial subgroup",
+        "module": "Mathlib.GroupTheory.Index"
+      }
+    ],
+    "originalContributions": [
+      "index_tower: the tower law [G:K] = [G:H]·[H:K] in standard index notation for K ≤ H",
+      "relIndex_tower: relative form [L:K] = [L:H]·[H:K] for K ≤ H ≤ L",
+      "index_dvd_tower / relIndex_dvd_tower: both tower factors divide the total index",
+      "index_tower_three: three-step chain rule [G:K₁] = [G:K₃]·[K₃:K₂]·[K₂:K₁]",
+      "lagrange_from_tower: classical Lagrange index form |G| = [G:H]·|H| recovered as the K = ⊥ case",
+      "lagrange_index_form: agreement with Mathlib's index_mul_card",
+      "relIndex_top_eq_index / tower_self: consistency at the degenerate endpoints H = G and K = H"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. #print axioms returns [propext, Classical.choice, Quot.sound] on all main results.",
+    "lineCount": 113,
+    "theoremCount": 9,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Lagrange's theorem — the order of any subgroup of a finite group divides the order of the group — originates in Lagrange's 1771 'Réflexions sur la résolution algébrique des équations', a work that predates the abstract notion of a group by decades. The sharper index form |G| = [G:H]·|H| reorganises the divisibility statement as an exact factorisation, and its iterate, the tower law [G:K] = [G:H]·[H:K] for K ≤ H ≤ G, became a workhorse of group theory: it is the engine behind the multiplicativity of degrees in Galois theory ([L:k] = [L:K][K:k] for a tower of field extensions, via the Galois correspondence), the index calculations in Sylow theory, and the counting arguments of subgroup growth. Crucially, the tower law survives the passage to infinite groups, where [G:K] is read as the cardinality of the coset space G/K: even when individual orders are infinite, the relative indices multiply correctly whenever they are finite.",
+    "problemStatement": "Can the multiplicativity of the subgroup index across a tower K ≤ H ≤ G — that [G:K] = [G:H]·[H:K] — be formalized as the index-theoretic refinement of Lagrange's theorem, holding in an arbitrary group and specializing to |G| = [G:H]·|H|?\n\n**Answer: Yes.** Mathlib's `relIndex_mul_index` supplies the single-step factorisation, and the tower law, its relative and three-step forms, the divisibility corollaries, and the Lagrange specialization are all formalized with 0 axioms.",
+    "text": "For subgroups K ≤ H ≤ G the index is multiplicative: [G:K] = [G:H]·[H:K]. This refines Lagrange's theorem and holds in any group.",
+    "proofStrategy": "The relative index K.relIndex H is the index of K inside H. Mathlib's relIndex_mul_index gives K.relIndex H · [G:H] = [G:K] for K ≤ H; commuting the product is the tower law. The relative tower law over K ≤ H ≤ L comes from relIndex_mul_relIndex; iterating yields the three-step chain. Specializing K = ⊥ (using index_bot and relIndex_bot_left) recovers |G| = [G:H]·|H|.",
+    "keyInsights": [
+      "The tower law is Lagrange's theorem 'with the quotients kept': instead of asserting only that [G:K] is a multiple of [G:H], it names the cofactor as the relative index [H:K], turning a divisibility into an exact factorisation",
+      "Working with the relative index K.relIndex H rather than cardinalities makes the law valid in arbitrary groups — no finiteness hypothesis is needed, since Nat.card interprets an infinite quotient as 0 and the identity still holds",
+      "Lagrange's classical form |G| = [G:H]·|H| is the single instance K = ⊥ of the tower law: [G:⊥] = |G| and [H:⊥] = |H|, so [G:⊥] = [G:H]·[H:⊥] reads |G| = [G:H]·|H|",
+      "Both factors of the factorisation are divisors of the whole: [G:H] ∣ [G:K] and [H:K] ∣ [G:K], the divisibility heart of Lagrange recovered as a corollary",
+      "Iterating gives the chain rule [G:K₁] = [G:K₃]·[K₃:K₂]·[K₂:K₁], the group-theoretic analogue of the multiplicativity of field-extension degrees in a tower"
+    ],
+    "prerequisites": [
+      "Group theory (subgroups, cosets)",
+      "Subgroup index and relative index",
+      "Lagrange's theorem"
+    ]
+  },
+  "sections": [
+    {
+      "id": "tower-law",
+      "title": "The Tower Law",
+      "startLine": 41,
+      "endLine": 56,
+      "summary": "The index tower law [G:K] = [G:H]·[H:K] and its relative form across K ≤ H ≤ L.",
+      "mathContext": "$[G:K] = [G:H]\\cdot[H:K]$ for $K \\leq H$, and $[L:K] = [L:H]\\cdot[H:K]$ for $K \\leq H \\leq L$."
+    },
+    {
+      "id": "divisibility",
+      "title": "Divisibility Corollaries",
+      "startLine": 58,
+      "endLine": 72,
+      "summary": "Each factor of the tower law divides the total index.",
+      "mathContext": "$[G:H] \\mid [G:K]$ and $[H:K] \\mid [G:K]$ for $K \\leq H$."
+    },
+    {
+      "id": "chain",
+      "title": "Three-Step Chain Rule",
+      "startLine": 74,
+      "endLine": 84,
+      "summary": "Iterating the tower law over K₁ ≤ K₂ ≤ K₃.",
+      "mathContext": "$[G:K_1] = [G:K_3]\\cdot[K_3:K_2]\\cdot[K_2:K_1]$."
+    },
+    {
+      "id": "lagrange",
+      "title": "Lagrange as the K = ⊥ Specialization",
+      "startLine": 86,
+      "endLine": 102,
+      "summary": "Recovering the classical index form |G| = [G:H]·|H|.",
+      "mathContext": "$[G:\\bot] = |G|$ and $[H:\\bot] = |H|$, so the tower law reads $|G| = [G:H]\\cdot|H|$."
+    },
+    {
+      "id": "endpoints",
+      "title": "Degenerate Endpoints",
+      "startLine": 104,
+      "endLine": 113,
+      "summary": "Consistency with [G:G] = 1 and [H:H] = 1.",
+      "mathContext": "$[H:H] = 1$, so $[G:H] = [G:H]\\cdot[H:H]$ degenerates correctly."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Lagrange, Joseph-Louis",
+      "title": "Réflexions sur la résolution algébrique des équations",
+      "year": "1771",
+      "note": "Origin of Lagrange's theorem on subgroup orders"
+    },
+    {
+      "authors": "Hall, Marshall",
+      "title": "The Theory of Groups",
+      "year": "1959",
+      "note": "Standard reference for the index tower law and its use in subgroup counting"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "extends",
+      "description": "Refines Lagrange's theorem: the divisibility |H| ∣ |G| becomes the exact factorisation [G:K] = [G:H]·[H:K], with Lagrange's index form recovered at K = ⊥."
+    },
+    {
+      "targetId": "lagrange-theorem-oq-05",
+      "relationship": "related",
+      "description": "Sibling refinement: oq-05 derives Burnside's counting lemma through orbit-stabilizer; this entry refines Lagrange's index in the orthogonal, purely index-theoretic direction (multiplicativity across a tower)."
+    }
+  ],
+  "conclusion": {
+    "summary": "The tower law [G:K] = [G:H]·[H:K] for K ≤ H ≤ G is formalized as the index-theoretic refinement of Lagrange's theorem, together with its relative form, the divisibility corollaries, the three-step chain rule, and the Lagrange specialization at K = ⊥.",
+    "implications": "Turns Lagrange's divisibility statement into an exact factorisation valid in arbitrary groups, providing the multiplicativity that underlies index computations in Sylow and Galois theory.",
+    "openQuestions": [
+      "Does the tower law lift to the Galois correspondence to give multiplicativity of field-extension degrees [L:k] = [L:K]·[K:k] for an intermediate field K, formalized through the order-reversing bijection between intermediate fields and subgroups of the Galois group?",
+      "Can the relative-index multiplicativity be packaged as a monotone valuation on the lattice of subgroups, recovering the divisibility lattice structure [K:1] ∣ [H:1] ∣ [G:1] for any chain?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Subgroup"
+    ],
+    "namespace": "IndexTowerLaw",
+    "lineCount": 113,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "path": "Proofs/LagrangeTheoremOQ06.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

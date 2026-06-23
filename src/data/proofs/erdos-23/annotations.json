@@ -1,0 +1,257 @@
+[
+  {
+    "id": "ann-e23-header",
+    "proofId": "erdos-23",
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #23 (1971): Can every triangle-free graph on $5n$ vertices be made bipartite by deleting at most $n^2$ edges? The blow-up of $C_5$ shows $n^2$ is necessary, and the conjecture claims it is also sufficient. Status: OPEN. Best known bound: $1.064n^2$ (Balogh-Clemen-Lidický 2021).",
+    "mathContext": "Let $\\text{bip}(G)$ denote the minimum number of edges whose removal makes $G$ bipartite. The conjecture: $\\forall G$ triangle-free with $|V(G)| = 5n$, $\\text{bip}(G) \\leq n^2$. The blow-up of $C_5$ achieves $\\text{bip} = n^2$ exactly.",
+    "significance": "key",
+    "relatedConcepts": [
+      "triangle-free graphs",
+      "bipartite edge deletion",
+      "extremal graph theory",
+      "blow-up construction"
+    ],
+    "prerequisites": [
+      "graph theory basics",
+      "bipartiteness",
+      "odd cycles"
+    ]
+  },
+  {
+    "id": "ann-e23-background",
+    "proofId": "erdos-23",
+    "range": {
+      "startLine": 38,
+      "endLine": 50
+    },
+    "type": "concept",
+    "title": "Local vs Global Graph Properties",
+    "content": "Triangle-freeness ($K_3$-free) is a local forbidden subgraph property — only 3 vertices need be checked. Bipartiteness (no odd cycles) is global — equivalent to 2-colorability. Triangle-free graphs may still contain $C_5, C_7, C_9, \\ldots$ The problem quantifies how many edges must be removed to bridge this gap.",
+    "mathContext": "A graph is bipartite $\\iff$ it has no odd cycles $\\iff \\chi(G) \\leq 2$. Triangle-freeness only forbids the shortest odd cycle. The 5-cycle $C_5$ is the simplest example: triangle-free but not bipartite.",
+    "significance": "key",
+    "relatedConcepts": [
+      "odd cycles",
+      "2-coloring",
+      "chromatic number",
+      "forbidden subgraphs"
+    ],
+    "prerequisites": [
+      "graph coloring",
+      "cycle characterization of bipartiteness"
+    ]
+  },
+  {
+    "id": "ann-e23-graphdef",
+    "proofId": "erdos-23",
+    "range": {
+      "startLine": 58,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "Graph Structure",
+    "content": "Custom `Graph V` structure with `adj : V → V → Prop`, `symm` (undirected), and `loopless` (no self-loops). This provides a simple undirected graph independent of Mathlib's `SimpleGraph`, giving full control over the formalization.",
+    "mathContext": "$G = (V, E)$ where $E \\subseteq \\binom{V}{2}$. The symmetry axiom encodes $\\{u, v\\} \\in E \\implies \\{v, u\\} \\in E$, and looplessness encodes $\\{v, v\\} \\notin E$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "simple graph",
+      "adjacency relation",
+      "symmetric relation"
+    ],
+    "prerequisites": [
+      "Prop-valued relations in Lean",
+      "symmetric and irreflexive relations"
+    ]
+  },
+  {
+    "id": "ann-e23-bipartite",
+    "proofId": "erdos-23",
+    "range": {
+      "startLine": 67,
+      "endLine": 77
+    },
+    "type": "definition",
+    "title": "Bipartiteness and Triangle-Freeness",
+    "content": "`IsBipartite G`: vertices can be 2-colored (via `Fin 2`) with no monochromatic edges. `ContainsTriangle G`: three mutually adjacent vertices exist. `IsTriangleFree G`: negation of `ContainsTriangle`. These are the core structural definitions for the problem.",
+    "mathContext": "$\\text{IsBipartite}(G) :\\equiv \\exists c : V \\to \\{0, 1\\},\\, \\forall u \\sim v,\\, c(u) \\neq c(v)$. $\\text{IsTriangleFree}(G) :\\equiv \\lnot\\exists u, v, w,\\, u \\sim v \\land v \\sim w \\land u \\sim w$. $C_5$ satisfies the latter but not the former.",
+    "significance": "key",
+    "relatedConcepts": [
+      "2-colorability",
+      "K₃-freeness",
+      "proper coloring"
+    ],
+    "prerequisites": [
+      "Fin 2 coloring",
+      "graph homomorphism"
+    ]
+  },
+  {
+    "id": "ann-e23-deletion",
+    "proofId": "erdos-23",
+    "range": {
+      "startLine": 91,
+      "endLine": 100
+    },
+    "type": "definition",
+    "title": "Bipartite Edge Deletion Number",
+    "content": "`bipartiteEdgeDeletion G` is axiomatized as the minimum number of edges whose removal makes $G$ bipartite. Also known as the odd cycle edge transversal number. Computing it is NP-hard in general. The key property `bipartite_iff_deletion_zero` connects bipartiteness to zero deletion cost.",
+    "mathContext": "$\\text{bip}(G) = \\min\\{|F| : F \\subseteq E(G),\\, G - F \\text{ is bipartite}\\}$. This is equivalent to the minimum weight odd cycle cover. For the $C_5$ blow-up, $\\text{bip} = n^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "edge transversal",
+      "odd cycle cover",
+      "NP-hardness",
+      "graph optimization"
+    ],
+    "prerequisites": [
+      "bipartiteness characterization",
+      "graph edge removal",
+      "optimization"
+    ]
+  },
+  {
+    "id": "ann-e23-c5",
+    "proofId": "erdos-23",
+    "range": {
+      "startLine": 108,
+      "endLine": 113
+    },
+    "type": "definition",
+    "title": "The 5-Cycle C₅",
+    "content": "`C5 : Graph (Fin 5)` with adjacency $(i+1) \\bmod 5 = j$ or $(j+1) \\bmod 5 = i$. This is the canonical smallest odd cycle that is triangle-free: $0 - 1 - 2 - 3 - 4 - 0$. It serves as the building block for the extremal construction.",
+    "mathContext": "$C_5$ has girth 5 (shortest cycle length) and odd girth 5. It is vertex-transitive and edge-transitive. The automorphism group is the dihedral group $D_5$ of order 10.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cycle graph",
+      "modular arithmetic",
+      "girth",
+      "Fin 5"
+    ],
+    "prerequisites": [
+      "modular arithmetic on Fin n",
+      "cycle graphs"
+    ]
+  },
+  {
+    "id": "ann-e23-blowup",
+    "proofId": "erdos-23",
+    "range": {
+      "startLine": 115,
+      "endLine": 129
+    },
+    "type": "definition",
+    "title": "Blow-Up of C₅",
+    "content": "`C5BlowUp n` replaces each vertex of $C_5$ with $n$ independent vertices. The graph `c5BlowUpGraph n` on $\\text{Fin}\\, 5 \\times \\text{Fin}\\, n$ has adjacency $(i, k) \\sim (j, \\ell) \\iff i \\sim j$ in $C_5$. This creates a complete bipartite graph $K_{n,n}$ between each pair of adjacent parts. The theorem `c5_blowup_vertices` proves $|V| = 5n$ via `Fintype.card_prod`.",
+    "mathContext": "The blow-up $C_5[n]$ has $5n$ vertices, $5 \\cdot n^2$ edges (5 copies of $K_{n,n}$), and is the Turán-type extremal example. $\\text{bip}(C_5[n]) = n^2$: in any 2-coloring of the 5 parts, at least one adjacent pair must have both parts colored the same way, contributing $n^2$ monochromatic edges.",
+    "significance": "key",
+    "relatedConcepts": [
+      "blow-up construction",
+      "complete bipartite graph",
+      "product graph",
+      "Fintype.card_prod"
+    ],
+    "prerequisites": [
+      "product types Fin 5 × Fin n",
+      "complete bipartite graphs",
+      "graph blow-up"
+    ]
+  },
+  {
+    "id": "ann-e23-triangle-free-proofs",
+    "proofId": "erdos-23",
+    "range": {
+      "startLine": 136,
+      "endLine": 150
+    },
+    "type": "concept",
+    "title": "Triangle-Freeness Proofs (Verified)",
+    "content": "Two proved theorems:\n\n`c5_triangle_free`: $C_5$ has no triangles, proved by exhaustive case analysis on $\\text{Fin}\\, 5$ using `fin_cases` (checks all $5^3 = 125$ triples).\n\n`c5_blowup_triangle_free`: the blow-up is triangle-free, proved by projection — a triangle in the blow-up projects to a triangle in $C_5$, contradicting `c5_triangle_free`.",
+    "mathContext": "For `c5_triangle_free`: if $i \\sim j \\sim k \\sim i$ in $C_5$, then $i, j, k$ are three mutually consecutive vertices, which is impossible in a 5-cycle (the gap between $i$ and $k$ must be $\\geq 2$). The blow-up proof is a standard hereditary property argument.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fin_cases tactic",
+      "exhaustive search",
+      "hereditary property",
+      "projection argument"
+    ],
+    "prerequisites": [
+      "Fin 5 decidability",
+      "graph homomorphism preservation"
+    ]
+  },
+  {
+    "id": "ann-e23-conjecture",
+    "proofId": "erdos-23",
+    "range": {
+      "startLine": 161,
+      "endLine": 169
+    },
+    "type": "definition",
+    "title": "The Main Conjecture",
+    "content": "`ErdosConjecture23`: for all triangle-free graphs $G$ on $5n$ vertices, $\\text{bip}(G) \\leq n^2$. Combined with `c5_blowup_deletion` ($\\text{bip}(C_5[n]) = n^2$), the conjecture implies the blow-up of $C_5$ is the unique extremal family.",
+    "mathContext": "$\\text{ErdosConj23} :\\equiv \\forall G,\\, |V(G)| = 5n \\land \\text{IsTriangleFree}(G) \\implies \\text{bip}(G) \\leq n^2$. If true, this completely characterizes the maximum bipartite edge deletion number among triangle-free graphs with a fixed vertex count.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal bound",
+      "tight conjecture",
+      "Turán-type problem"
+    ],
+    "prerequisites": [
+      "bipartiteEdgeDeletion",
+      "IsTriangleFree",
+      "blow-up construction"
+    ]
+  },
+  {
+    "id": "ann-e23-bcl",
+    "proofId": "erdos-23",
+    "range": {
+      "startLine": 175,
+      "endLine": 186
+    },
+    "type": "concept",
+    "title": "Best Known Bound: 1.064n² (2021)",
+    "content": "Balogh-Clemen-Lidický (2021) proved $\\text{bip}(G) \\leq 1.064n^2$ for triangle-free $G$ on $5n$ vertices, using Razborov's flag algebra method. This is axiomatized. The trivial upper bound from Mantel's theorem gives $\\leq (5n)^2/4 = 6.25n^2$, so the flag algebra result is a dramatic improvement.",
+    "mathContext": "The flag algebra approach formulates the problem as a semidefinite program (SDP) over graph homomorphism densities. The coefficient $1.064$ comes from an optimized SDP solution, not from a structural argument. Earlier bounds included $1.5n^2$ and $1.25n^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "flag algebras",
+      "semidefinite programming",
+      "Razborov's method",
+      "upper bound"
+    ],
+    "prerequisites": [
+      "graph density",
+      "optimization",
+      "extremal graph theory"
+    ]
+  },
+  {
+    "id": "ann-e23-generalized",
+    "proofId": "erdos-23",
+    "range": {
+      "startLine": 194,
+      "endLine": 216
+    },
+    "type": "concept",
+    "title": "Generalized Conjecture (1992)",
+    "content": "`GeneralizedConjecture k`: for graphs on $(2k+1)n$ vertices with odd girth $\\geq 2k+1$, $\\text{bip}(G) \\leq n^2$. The original is $k = 2$ (odd girth $\\geq 5$ means triangle-free, and $5 = 2(2)+1$). The blow-up of $C_{2k+1}$ is the conjectured extremal example for each $k$.",
+    "mathContext": "The odd girth $\\text{og}(G) = \\min\\{|C| : C \\text{ is an odd cycle in } G\\}$. For $k = 2$: $\\text{og}(G) \\geq 5 \\iff$ triangle-free. For $k = 3$: $\\text{og}(G) \\geq 7$ means no $C_3$ or $C_5$. The blow-up $C_{2k+1}[n]$ always has $\\text{bip} = n^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "odd girth",
+      "cycle blow-up",
+      "parameter generalization"
+    ],
+    "prerequisites": [
+      "odd girth definition",
+      "HasOddGirth from formalization",
+      "blow-up of C_{2k+1}"
+    ]
+  }
+]

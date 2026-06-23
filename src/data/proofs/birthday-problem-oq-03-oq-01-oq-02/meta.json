@@ -1,0 +1,211 @@
+{
+  "id": "birthday-problem-oq-03-oq-01-oq-02",
+  "title": "k=3 Birthday Threshold Asymptotics: n*(d) ~ (6d² ln 2)^{1/3}",
+  "slug": "birthday-problem-oq-03-oq-01-oq-02",
+  "description": "Proves that the k=3 birthday threshold satisfies asympThreshold(d) = (6d² ln 2)^{1/3}, with exact scaling ratio asympThreshold(d)/d^{2/3} = (6 ln 2)^{1/3}. Establishes order bounds d^{2/3} ≤ n*(d) ≤ 3d^{2/3}, numerical bounds 82 < asympThreshold(365) < 83, and that the k=3 threshold exceeds the classical k=2 threshold √(2d ln 2) for all d ≥ 1. Also proves the general scaling exponent (k-1)/k for k-way coincidences.",
+  "meta": {
+    "author": "researcher-7",
+    "date": "2026-04-04",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/BirthdayProblemOQ03OQ01OQ02.lean",
+    "tags": [
+      "probability",
+      "combinatorics",
+      "birthday-problem",
+      "asymptotics",
+      "real-analysis",
+      "rpow",
+      "poisson-approximation",
+      "open-question",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 2,
+    "assumptions": "2 axioms: (1) p_no_triple_tendsto (Lemma C: P(no triple) → exp(-c³/6), the deep Chen-Stein / factorial-moments Poisson limit not in Mathlib 4.26), and (2) Lean.ofReduceBool. The credited lemmas choose_83_3 (C(83,3)=91881) and choose_84_3 (C(84,3)=95284) — which feed the credited threshold-crossover theorems expectedTriples_83_lt_log2, expectedTriples_84_ge_log2, and threshold_d365_crossover — are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy these credited theorems are counted in meta.axiomCount. Lemmas A (lambda_tendsto: C(n,3)/d² → c³/6) and B (exp_lambda_tendsto) are proved theorems, and poisson_approx_birthday3 is now a derived theorem (was previously the axiom name). The rpow/log analytic results asympThreshold_d365_bounds, asympThreshold_const_bounds, and asympThreshold_sharp_bounds use no native_decide and remain free of Lean.ofReduceBool: asympThreshold_const_bounds localizes the exact scaling constant (6 ln 2)^{1/3} to the three-decimal interval (1.608, 1.609) via rpow-monotonicity and the Mathlib log-2 bounds; asympThreshold_sharp_bounds multiplies it through d^{2/3} to sharpen asympThreshold_order from the crude [d^{2/3}, 3·d^{2/3}] bracket to (1.608·d^{2/3}, 1.609·d^{2/3}). The ordinary foundational axioms propext / Classical.choice / Quot.sound are not counted.",
+    "dateAdded": "2026-04-04",
+    "lineCount": 2311,
+    "theoremCount": 61,
+    "definitionCount": 8,
+    "originalContributions": [
+      "asympThreshold: exact definition (6d² ln 2)^{1/3} using Real.rpow",
+      "asympThreshold_cubed: (asympThreshold d)³ = 6d² ln 2 (PROVED)",
+      "asympThreshold_ratio: asympThreshold(d)/d^{2/3} = (6 ln 2)^{1/3} (PROVED)",
+      "asympThreshold_order: d^{2/3} ≤ asympThreshold(d) ≤ 3d^{2/3} (PROVED)",
+      "asympThreshold_d365_bounds: 82 < asympThreshold(365) < 83 (PROVED)",
+      "k3_threshold_gt_k2: asympThreshold(d) > k2Threshold(d) for all d ≥ 1 (PROVED)",
+      "general_threshold_exponent: scaling exponent is (k-1)/k for k-way coincidences",
+      "nc_div_pow_tendsto: n_c(d)/d^{2/3} → c (foundation for Lemma A, squeeze proof strategy)",
+      "lambda_tendsto (Lemma A): C(n_c(d),3)/d² → c³/6 via squeeze between (n-2)³/6d² and n³/6d² (PROVED)",
+      "exp_lambda_tendsto (Lemma B): exp(-λ_c(d)) → exp(-c³/6) via Real.continuous_exp continuity (PROVED)",
+      "asympThreshold_const_bounds: 1.608 < (6 ln 2)^{1/3} < 1.609 — sharp decimal bounds on the leading-order threshold constant, refining the symbolic value from asympThreshold_ratio (PROVED, axiom-free)",
+      "asympThreshold_sharp_bounds: 1.608·d^{2/3} < asympThreshold(d) < 1.609·d^{2/3} for all d ≥ 1 — three-decimal constant-factor sandwich sharpening asympThreshold_order's crude [1,3] bracket (PROVED, axiom-free)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The birthday problem asks: how many people must share a room before the probability of a k-way birthday coincidence exceeds 50%? For k=2 (any shared birthday), the classical answer is n*(d) ≈ √(2d ln 2) ≈ 23 for d=365. For k=3 (three people sharing a birthday), the threshold is higher: n*(d) ≈ (6d² ln 2)^{1/3} ≈ 82–84 for d=365 (the exact value is 88, a ~7% discrepancy due to higher-order Poisson correction terms).\n\nThe asymptotic (6d² ln 2)^{1/3} follows from the Poisson approximation: the expected number of 3-way coincidences is E = C(n,3)/d², and the threshold where E ≈ ln 2 gives P(≥1 triple) ≈ 1 - e^{-ln2} = 1/2. Setting C(n,3)/d² ≈ n³/6d² = ln 2 gives n ≈ (6d² ln 2)^{1/3}.\n\nDiaconis and Mosteller (1989) analyzed these higher-order coincidences statistically. The exponent (k-1)/k is a general pattern: for k-way coincidences, n*(d) ~ (k! d^{k-1} ln 2)^{1/k}, giving exponent (k-1)/k → 1 as k → ∞.",
+    "problemStatement": "**OQ-02 of birthday-problem-oq-03-oq-01**\n\nProve that the threshold n*(d) for k=3 birthday coincidences satisfies:\n\n1. The defining equation: n*(d) = (6d² ln 2)^{1/3}\n2. Exact scaling ratio: n*(d) / d^{2/3} = (6 ln 2)^{1/3}\n3. Order bounds: d^{2/3} ≤ n*(d) ≤ 3d^{2/3}\n4. Numerical value for d=365: 82 < n*(365) < 83\n5. Comparison with k=2: n*(d) > √(2d ln 2) for all d ≥ 1\n6. General exponent: k-way threshold scales as d^{(k-1)/k}",
+    "proofStrategy": "The proof proceeds by defining asympThreshold d = (6d² ln 2)^{1/3} using Mathlib's Real.rpow (real exponentiation), then proving each property:\n\n1. **Cubed identity**: (asympThreshold d)³ = 6d² ln 2 via Real.rpow_natCast and power arithmetic.\n\n2. **Exact ratio**: asympThreshold(d)/d^{2/3} = (6 ln 2)^{1/3} via Real.mul_rpow (splitting the product under the cube root) and Real.rpow_mul (combining d² with d^{2/3} = d^{2·(1/3)}).\n\n3. **Order bounds**: Lower bound 1 ≤ (6 ln 2)^{1/3} via ln 2 > 0.69 > 1/6; upper bound (6 ln 2)^{1/3} ≤ 3 via 6 ln 2 ≤ 27 = 3³. Both use Real.rpow_le_rpow with Taylor bounds for ln 2.\n\n4. **Numerical bounds for d=365**: 82 < asympThreshold(365) < 83 via norm_num + rpow bounds. Uses 4-term Taylor series for exp(0.7152) > 2 to bound log 2 < 0.7152.\n\n5. **k=2 comparison**: asympThreshold(d) > k2Threshold(d) reduces to comparing 6th powers: (6d² ln 2)² vs (2d ln 2)³. This is 36d⁴(ln2)² vs 8d³(ln2)³, and 36d > 8 ln 2 for d ≥ 1 gives the result.\n\n6. **Poisson connection**: Axiomatized via Chen-Stein method (Arratia-Goldstein-Gordon 1989).",
+    "keyInsights": [
+      "The threshold condition E(n,d) = C(n,3)/d² ≈ ln 2 leads to n³/6d² ≈ ln 2 by the upper bound C(n,3) ≤ n³/6, giving n ≈ (6d² ln 2)^{1/3} — the exact scaling",
+      "Real.rpow_le_rpow requires the exponent argument to be passed separately (as `by norm_num`) rather than inline in a single `exact`, to avoid Lean metavariable issues",
+      "The comparison asympThreshold > k2Threshold amounts to showing (6d² ln 2)^{1/3} > (2d ln 2)^{1/2}, which is easier to verify by raising both sides to the 6th power and using d ≥ 1",
+      "Taylor bounds for log 2: 4-term Taylor series at x=0.7152 gives exp(0.7152) > 2.032 > 2, so log 2 < 0.7152; combined with 0.7152 < 95284/133225 = C(84,3)/365², this proves the 84-person threshold crossover",
+      "The general k-way exponent (k-1)/k follows directly from the formula n*(d) ~ (k! d^{k-1} ln 2)^{1/k}, where the d-exponent is (k-1)/k"
+    ],
+    "prerequisites": [
+      "Real.rpow and Real.rpow_mul (Mathlib: Mathlib.Analysis.SpecialFunctions.Pow.Real)",
+      "Real.log and Real.exp bounds (Mathlib: Mathlib.Analysis.SpecialFunctions.Log.Basic)",
+      "Real.sum_le_exp_of_nonneg (Taylor lower bound for exp)",
+      "Nat.choose and choose bounds (Mathlib: Mathlib.Data.Nat.Choose.Basic)",
+      "Parent proof: birthday-problem-oq-03-oq-01 (extension-counting framework)"
+    ]
+  },
+  "conclusion": {
+    "summary": "This file formalizes the k=3 birthday threshold asymptotics in Lean 4. The key result is asympThreshold(d) = (6d² ln 2)^{1/3}, proved from the expected-triples formula E(n,d) = C(n,3)/d². The exact scaling ratio, order bounds, numerical bounds for d=365, and comparison with the k=2 threshold are all fully proved. The Poisson approximation (connecting the asymptotic to the actual probability) is axiomatized.",
+    "implications": "**Connection to parent proofs**: The parent (birthday-problem-oq-03-oq-01) provides the extension-counting framework and exact threshold n*(365) = 88. This file shows the asymptotic ≈ 82–84 differs by ~7% from the exact value, illustrating the error in the leading-term Poisson approximation.\\n\\n**General k-way scaling**: The method generalizes: for k-way coincidences, E(n,d) = C(n,k)/d^{k-1} ≈ n^k/(k! d^{k-1}), giving threshold n*(d) ~ (k! d^{k-1} ln 2)^{1/k} with exponent (k-1)/k. This is proved in general_threshold_exponent.\\n\\n**Resolving the Poisson sorry**: The Chen-Stein method (Arratia-Goldstein-Gordon 1989) gives total variation bounds between the triple-coincidence count and a Poisson(C(n,3)/d²) variable. The main missing ingredient in Lean is a formalization of the Chen-Stein lemma for positively associated indicator random variables.",
+    "openQuestions": [
+      "Formalize the Chen-Stein method to prove poisson_approx_birthday3 from first principles, removing the axiom",
+      "Compute the second-order correction: the exact threshold n*(d) = (6d² ln 2)^{1/3} · (1 + O(ln(d)/d^{1/3})), quantifying the 7% error for d=365",
+      "Generalize asympThreshold to general k: define kThreshold k d = (k! · d^{k-1} · ln 2)^{1/k} and prove the same scaling properties"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "birthday-problem-oq-03-oq-01",
+      "relationship": "child-of",
+      "description": "Parent provides the extension-counting framework and exact threshold; this file gives the asymptotic approximation"
+    },
+    {
+      "targetId": "birthday-problem-oq-03-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling: efficient slot-based recurrence for exact counting; this file gives the asymptotic approximation"
+    },
+    {
+      "targetId": "birthday-problem-oq-03-oq-03",
+      "relationship": "related",
+      "description": "General k-way scaling (k-1)/k exponent; this file proves the k=3 case concretely"
+    },
+    {
+      "targetId": "birthday-problem",
+      "relationship": "related",
+      "description": "Root birthday problem (k=2); the k=3 threshold proved here is larger by factor ~ d^{1/6}"
+    }
+  ],
+  "sections": [
+    {
+      "id": "choose3-bounds",
+      "title": "§1. C(n,3) Formula and Bounds",
+      "summary": "Binomial coefficient C(n,3) formula and asymptotic bounds used throughout.",
+      "startLine": 49,
+      "endLine": 133
+    },
+    {
+      "id": "expected-triples",
+      "title": "§2. Expected Triple Count",
+      "summary": "Expected number of birthday triples in n people with d possible birthdays.",
+      "startLine": 134,
+      "endLine": 155
+    },
+    {
+      "id": "asymp-threshold",
+      "title": "§3. The Asymptotic Threshold",
+      "summary": "The asymptotic threshold asympThreshold d = (6d² ln 2)^{1/3} with proved order bounds.",
+      "startLine": 156,
+      "endLine": 226
+    },
+    {
+      "id": "numerical",
+      "title": "§4. Numerical Verification for d = 365",
+      "summary": "Exact numerical verification of the threshold crossover at n=83/84 for d=365.",
+      "startLine": 227,
+      "endLine": 303
+    },
+    {
+      "id": "poisson",
+      "title": "§5. Poisson Approximation (Sorry/Axiom)",
+      "summary": "Chen-Stein Poisson approximation axiom connecting expected triples to actual probability.",
+      "startLine": 304,
+      "endLine": 474
+    },
+    {
+      "id": "k2-comparison",
+      "title": "§6. k=2 vs k=3 Threshold Comparison",
+      "summary": "The k=3 threshold grows as d^{2/3} while the k=2 threshold grows as d^{1/2}; k=3 threshold exceeds k=2.",
+      "startLine": 475,
+      "endLine": 528
+    },
+    {
+      "id": "elementary-counting-bound",
+      "title": "§7. Elementary Counting Bound (Union Bound)",
+      "summary": "An elementary union-bound estimate on the probability of a birthday triple.",
+      "startLine": 529,
+      "endLine": 622
+    },
+    {
+      "id": "indicator-algebra",
+      "title": "§3 (Lemma C). Indicator Algebra",
+      "summary": "Layer 1 of the Lemma C roadmap: indicator-function algebra for triple-coincidence events.",
+      "startLine": 623,
+      "endLine": 706
+    },
+    {
+      "id": "per-triple-count",
+      "title": "§4 (Lemma C). Per-Triple Count, General n",
+      "summary": "Layer 2 of the Lemma C roadmap: per-triple coincidence count for general n.",
+      "startLine": 707,
+      "endLine": 1026
+    },
+    {
+      "id": "first-moment-identity",
+      "title": "§5 (Lemma C). First-Moment Identity",
+      "summary": "Layer 2 part 2 of the Lemma C roadmap: the first-moment identity for the triple count.",
+      "startLine": 1027,
+      "endLine": 1263
+    },
+    {
+      "id": "second-factorial-moment",
+      "title": "§6 (Lemma C). Second Factorial Moment, r = 2",
+      "summary": "Layer 3 sub-pieces 3a/3b: the second factorial moment of the triple count.",
+      "startLine": 1264,
+      "endLine": 1373
+    },
+    {
+      "id": "overlap-pattern-partition",
+      "title": "§7 (Lemma C). Overlap-Pattern Partition",
+      "summary": "Layer 3c+3d: partition of triple pairs by their overlap pattern.",
+      "startLine": 1374,
+      "endLine": 1611
+    },
+    {
+      "id": "disjoint-joint-coincidence",
+      "title": "§8 (Lemma C). Disjoint Joint-Coincidence Count",
+      "summary": "Layer 3e: joint-coincidence count over disjoint triple pairs.",
+      "startLine": 1612,
+      "endLine": 1930
+    },
+    {
+      "id": "overlap-union-cardinality",
+      "title": "§9 (Lemma C). Overlap-Pattern Union-Cardinality",
+      "summary": "Layer 3f preliminaries: union-cardinality estimates over overlap-pattern families.",
+      "startLine": 1931,
+      "endLine": 2263
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "BirthdayThreshold3",
+    "lineCount": 2311,
+    "axiomCount": 1,
+    "sorries": 0,
+    "path": "Proofs/BirthdayProblemOQ03OQ01OQ02.lean",
+    "theoremCount": 61,
+    "definitionCount": 8
+  },
+  "sorries": 0
+}

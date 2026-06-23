@@ -1,0 +1,160 @@
+{
+  "id": "sperner-simplicial-instance-oq-05",
+  "title": "Computable Panchromatic-Cell Finder (Sperner OQ-05, C1 brute-force)",
+  "slug": "sperner-simplicial-instance-oq-05",
+  "description": "Open-question OQ-05 from sperner-simplicial-instance asks: implement Scarf's algorithm as a *computable* function in Lean 4 — input a Sperner-coloured triangulation, output a panchromatic cell. This entry ships the simplest of three candidates (C1, brute-force) extracted from the OQ-05 dossier: a `Decidable`-driven witness extractor that enumerates `T.Cell`'s `Fintype` and filters on `CellComplex.IsPanchromatic`. It is *not* Scarf's algorithm (no door-following pivot), but it *does* deliver a `def : Triangulation V n → (V → Fin (n+1)) → Option T.Cell` that names a panchromatic witness, plus a totality theorem grounded in `Triangulation.sperner`. Three theorems: membership characterisation (`findPanchromaticBrute_isSome_iff`), witness extraction (`findPanchromaticBrute_eq_some_imp_panchromatic`), and totality under boundary-door parity (`findPanchromaticBrute_isSome_of_boundary_odd`). A `decide` smoke-test on `intervalTriangulation 3` provides a kernel-level proof on a concrete instance. The C2-1d candidate (literal Scarf door-walk on `intervalTriangulation`) has since been discharged and Docker-verified in the sibling file `SpernerSimplicialInstanceOQ05Scarf1d.lean` (0 sorries / 0 axioms, PR #22900); the C2-gen (general `Triangulation`) and C3 (`findOppositeIdx` decomputification) candidates remain ACT-pending — see the slug's research tracker.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib v4.26.0)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Sperner%27s_lemma",
+    "date": "Classical result (1928); OQ-05 brute-force candidate formalized 2026-05-13",
+    "status": "verified",
+    "badge": "original",
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 3,
+    "definitionCount": 1,
+    "lineCount": 185,
+    "imports": [
+      "Proofs.SpernerSimplicialInstance"
+    ],
+    "tags": [
+      "combinatorics",
+      "sperner-lemma",
+      "simplicial-complex",
+      "triangulation",
+      "decidable",
+      "computable",
+      "open-question",
+      "research"
+    ],
+    "assumptions": "None. All 3 theorems and 1 def + 1 example proven with 0 sorries and 0 axioms. Imports `Proofs.SpernerSimplicialInstance` (also 0 axioms, 0 sorries; transitively imports SpernerMathlib4.lean).",
+    "proofRepoPath": "Proofs/SpernerSimplicialInstanceOQ05.lean",
+    "additionalFiles": [
+      "Proofs/SpernerSimplicialInstance.lean",
+      "Proofs/SpernerMathlib4.lean",
+      "Proofs/SpernerSimplicialInstanceOQ05Scarf1d.lean"
+    ],
+    "originalContributions": [
+      "findPanchromaticBrute: Decidable-driven brute-force panchromatic-cell finder via Finset.filter |>.toList.head?",
+      "findPanchromaticBrute_isSome_iff: membership characterisation (returns some _ iff a panchromatic cell exists)",
+      "findPanchromaticBrute_eq_some_imp_panchromatic: witness-extraction lemma (the returned cell is in fact panchromatic)",
+      "findPanchromaticBrute_isSome_of_boundary_odd: totality under boundary-door parity via Triangulation.sperner",
+      "decide smoke-test on intervalTriangulation 3 with the colouring c(n) = if n ≤ 1 then 0 else 1, witnessing a panchromatic cell at index 1 (vertices {1, 2}, colours {0, 1})"
+    ],
+    "dateAdded": "2026-05-14",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Sperner's lemma (Sperner 1928) is non-constructive *as classically stated* — the parity argument shows a panchromatic cell *exists* but does not locate one. Herbert Scarf (1967, *SIAM J. Appl. Math.* **15**, 1328–1343) turned the proof into a constructive door-following pivot algorithm: starting at a boundary door, walk through adjacent cells (each door has at most one continuation in the next cell), and terminate at either a panchromatic cell or another boundary door. The parity argument then forces an odd number of panchromatic cells, witnessed by the walk's endpoint. Scarf's algorithm underpins computational fixed-point methods (Lemke–Howson, Eaves, van der Laan–Talman) and is the constructive backbone of modern computational economics. The OQ-05 question in `sperner-simplicial-instance` asks for this algorithm as a *computable* Lean 4 function — a non-trivial requirement because the abstract `findOppositeIdx` operation in `SpernerMathlib4.AbstractSimplicialData` uses `Classical.choose` and is `noncomputable`. The slug dossier identifies three candidate paths: (C1) brute-force enumeration via `Finset.filter`, side-stepping `findOppositeIdx`; (C2) the literal Scarf door-chain walk, requiring (C3) for the general case but tractable in 1-d on `intervalTriangulation`; (C3) refactor `findOppositeIdx` from `Classical.choose` to `Finset.filter ... .min'`. This entry ships (C1), the simplest candidate. (C2-1d) has since been discharged and Docker-verified (sibling file `SpernerSimplicialInstanceOQ05Scarf1d.lean`, 0 sorries / 0 axioms, PR #22900); (C3) remains ACT-pending and (C2-gen) is deferred behind (C3).",
+    "problemStatement": "**OQ-05 (C1, brute-force)**: Given a `Triangulation V n` with decidable vertex equality and a colouring `c : V → Fin (n+1)`, return *some* panchromatic cell if one exists, in a fully computable (no `Classical.choose`) form. Formalized as:\n\n`def findPanchromaticBrute (T : Triangulation V n) (c : V → Fin (n + 1)) : Option T.Cell`\n\nwith totality under the boundary-door parity hypothesis:\n\n`theorem findPanchromaticBrute_isSome_of_boundary_odd : Odd (...boundary doors...).card → (findPanchromaticBrute T c).isSome`",
+    "proofStrategy": "**Step 1 (Definition)**: Enumerate `Finset.univ : Finset T.Cell` (a `Fintype` since `T.Cell` has a `Triangulation.cellFintype` instance), filter on the `CellComplex.decidableIsPanchromatic` predicate, sort to a `List`, and take the head. This is `Option`-valued: `none` iff no panchromatic cell exists.\n\n**Step 2 (Characterisation, `findPanchromaticBrute_isSome_iff`)**: Show `(findPanchromaticBrute T c).isSome ↔ ∃ s, IsPanchromatic c s`. Forward: `head? = some _` ⇒ list non-empty ⇒ Finset non-empty ⇒ ∃ element ⇒ ∃ panchromatic (by `Finset.mem_filter`). Backward: witness `s` gives `s ∈ filter`, so the list is non-empty (`Finset.Nonempty.toList_ne_nil`), and `List.head?` of a non-empty list is `some _`. Uses Mathlib names `Finset.toList_eq_nil`, `Finset.Nonempty.toList_ne_nil`, `Finset.nonempty_iff_ne_empty` (verified at the lockfile-pinned Mathlib v4.26.0 SHA `2df2f015...`).\n\n**Step 3 (Witness extraction, `findPanchromaticBrute_eq_some_imp_panchromatic`)**: From `findPanchromaticBrute T c = some s`, derive `IsPanchromatic c s`. The returned `s` is the head of the filtered list, hence a list-member, hence (by `Finset.mem_toList`) a filter-member, hence (by `Finset.mem_filter.2`) panchromatic. Uses `List.mem_of_head?`.\n\n**Step 4 (Totality, `findPanchromaticBrute_isSome_of_boundary_odd`)**: Combine the characterisation with `Triangulation.sperner` — if boundary doors are odd, then a panchromatic cell exists (by Sperner's lemma), hence `isSome` (by the characterisation). One-line proof.\n\n**Step 5 (Demo)**: A `decide`-closed example shows that on `intervalTriangulation 3 (by norm_num)` with the colouring `c(n) = if n ≤ 1 then 0 else 1`, a panchromatic cell exists — witnessed by cell index 1 (vertices {1, 2}, colours {0, 1}). Kernel-level computation, no `findPanchromaticBrute` invocation needed.",
+    "keyInsights": [
+      "**Decidable instances make brute force trivial**: The C1 candidate is short because Mathlib's `Triangulation.cellFintype` (from `SpernerSimplicialInstance.lean`) and `CellComplex.decidableIsPanchromatic` (from `SpernerMathlib4.lean`) already exist. The new content is a one-line `def` + three short characterisation lemmas — every step is forced by the existing infrastructure.",
+      "**No new axioms, no new `Classical.choose`**: The OQ-05 question explicitly asks for a *computable* function. C1 satisfies this: `Finset.filter` is fully computable, and `List.head?` is term-mode. The output cell is named, not chosen — downstream `eval` and `decide` both work.",
+      "**Witness extraction without enumeration order**: `findPanchromaticBrute_eq_some_imp_panchromatic` consumers do not need to know which order `Fintype` enumerates `T.Cell` in. The lemma uses only the membership properties of `Finset.filter`, so any concrete implementation of `Fintype` gives the same witness guarantee.",
+      "**`decide` smoke-test as kernel-level proof**: The demo at the bottom of the file uses `decide` rather than `#eval` because `decide` produces a kernel-level proof object (a term of the proposition's type). `#eval` only prints output and produces no proof obligation. The choice of `decide` is what turns the demo into a verification, not just a runtime check.",
+      "**Not Scarf's algorithm**: The runtime complexity of `findPanchromaticBrute` is `O(|T.Cell|)` — it visits every cell. Scarf's pivot algorithm achieves `O(door-path-length)`, which can be exponentially smaller (in fact, finding panchromatic cells is PPAD-complete, so Scarf's worst case is also exponential — but in practice door-following is much faster than enumeration). The C2 candidate (literal Scarf door-walk) is the eventual answer to OQ-05's algorithmic-content question.",
+      "**Not a Scarf reference replacement**: `BrouwerFixedPointOQ04OQ04.lean:244` still has `axiom scarf_approx_fixed_point`. C1 cannot discharge this axiom because the brute-force enumeration does not produce a continuous-fixed-point approximation — that requires the door-walk's geometric structure. C2 is the eventual replacement target.",
+      "**`AbstractSimplicialData` blocker is independent**: C1 works at the `Triangulation` level, where adjacency is given (no `findOppositeIdx`). Generalising to `AbstractSimplicialData` (where adjacency is computed from unordered Finset simplices) requires C3, which refactors `findOppositeIdx` from `Classical.choose` to `Finset.filter ... .min'`. C1 + C3 (separate ACTs) would together give a fully computable end-to-end pipeline from unordered simplicial data to a named panchromatic witness."
+    ],
+    "prerequisites": [
+      "Sperner's lemma at the abstract CellComplex level (SpernerMathlib4.lean)",
+      "Triangulation structure and the Triangulation.toCellComplex bridge (SpernerSimplicialInstance.lean)",
+      "Mathlib's Decidable typeclass and Finset.filter",
+      "Lean 4 Option type and List.head?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "sperner-simplicial-instance",
+      "relationship": "extends",
+      "description": "This entry answers OQ-05 from the parent `sperner-simplicial-instance` (\"Implement Scarf's algorithm as a computable function in Lean 4\"), shipping the brute-force C1 candidate from the three-candidate decomposition (C1/C2/C3) in the slug's research dossier."
+    },
+    {
+      "targetId": "sperner-mathlib4",
+      "relationship": "depends-on",
+      "description": "Transitively uses `SpernerMathlib4.CellComplex` (the abstract Sperner framework), `CellComplex.IsPanchromatic`, and `CellComplex.decidableIsPanchromatic` (the Decidable instance that makes Finset.filter computable on the panchromatic predicate)."
+    },
+    {
+      "targetId": "sperner-mathlib",
+      "relationship": "sibling",
+      "description": "Sister entry in the Sperner family: `sperner-mathlib` proves the abstract Sperner parity theorem via door-counting; this entry adds a computable witness-extraction layer on top."
+    },
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "applies-to",
+      "description": "Sperner's lemma is the combinatorial route to Brouwer's fixed-point theorem; the C1 finder is a step toward computable Brouwer (currently axiomatized in `BrouwerFixedPointOQ04OQ04.lean:244` as `scarf_approx_fixed_point`). The eventual answer (literal Scarf door-walk, slug C2 candidate) would discharge that axiom."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Proofs.SpernerSimplicialInstance"
+    ],
+    "namespace": "SpernerSimplicialInstanceOQ05",
+    "lineCount": 185,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 1,
+    "path": "Proofs/SpernerSimplicialInstanceOQ05.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/SpernerSimplicialInstance.lean",
+      "Proofs/SpernerMathlib4.lean",
+      "Proofs/SpernerSimplicialInstanceOQ05Scarf1d.lean"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-def-finder",
+      "title": "Definition: findPanchromaticBrute (L86–90)",
+      "startLine": 86,
+      "endLine": 90,
+      "summary": "`def findPanchromaticBrute (T : Triangulation V n) (c : V → Fin (n+1)) : Option T.Cell` — enumerate `Finset.univ : Finset T.Cell`, filter on the `CellComplex.IsPanchromatic c T.toCellComplex` predicate, convert to `List`, take `head?`. Fully computable; uses no `Classical.choose`.",
+      "mathContext": "The Option-valued brute-force finder: return `some s` if any panchromatic cell `s` exists in the enumerated order; return `none` otherwise. The order depends on the concrete `Fintype T.Cell` instance, which is implementation-specific but downstream consumers should use the membership characterisation rather than rely on order."
+    },
+    {
+      "id": "sec-iff-characterisation",
+      "title": "Characterisation: findPanchromaticBrute_isSome_iff (L97–131)",
+      "startLine": 97,
+      "endLine": 131,
+      "summary": "Equivalence `(findPanchromaticBrute T c).isSome ↔ ∃ s, IsPanchromatic c s`. Forward direction goes `head? = some _` → list non-empty → Finset non-empty → ∃ element → ∃ panchromatic via `Finset.mem_filter`. Backward direction goes ∃ witness → `s ∈ filter` → list non-empty (`Finset.Nonempty.toList_ne_nil`) → `head? = some _`. Uses Mathlib names verified at the lockfile-pinned Mathlib v4.26.0 SHA `2df2f015...`.",
+      "mathContext": "The characterisation lemma is the API entry point: downstream consumers can pass `findPanchromaticBrute T c` through `Option.isSome` to test existence, and through `Option.bind`/`Option.elim` to extract or default. The iff form ensures both directions are equally usable."
+    },
+    {
+      "id": "sec-witness-extraction",
+      "title": "Witness Extraction: findPanchromaticBrute_eq_some_imp_panchromatic (L139–148)",
+      "startLine": 139,
+      "endLine": 148,
+      "summary": "From `findPanchromaticBrute T c = some s`, conclude `IsPanchromatic c s`. The returned `s` is `List.head?` of the filtered Finset's `toList`, so by `List.mem_of_head?` it is a list-member, hence (by `Finset.mem_toList`) a filter-member, hence (by `Finset.mem_filter.2`) panchromatic.",
+      "mathContext": "The witness-extraction lemma gives the strong form: `some s` carries a *proof* that `s` is panchromatic, not just an existence claim. Downstream consumers can `Option.get`-then-prove without re-running the filter."
+    },
+    {
+      "id": "sec-totality",
+      "title": "Totality under Boundary-Door Parity: findPanchromaticBrute_isSome_of_boundary_odd (L155–163)",
+      "startLine": 155,
+      "endLine": 163,
+      "summary": "If the boundary doors of `T` under colouring `c` are odd, then `findPanchromaticBrute T c` is total (returns `some`). Combines the characterisation iff with `Triangulation.sperner`: odd boundary doors ⇒ ∃ panchromatic ⇒ `isSome`. One-line proof.",
+      "mathContext": "Totality under the standard Sperner hypothesis: this is the use-case for `findPanchromaticBrute` — given a Sperner-coloured triangulation (boundary doors odd by `boundary_doors_odd` from the parent file), the finder is guaranteed to return a cell. The full pipeline is: SpernerColoring → boundary_doors_odd → findPanchromaticBrute_isSome_of_boundary_odd → `some s`."
+    },
+    {
+      "id": "sec-demo",
+      "title": "1-D Demo: panchromatic cell on intervalTriangulation 3 (L181–185)",
+      "startLine": 181,
+      "endLine": 185,
+      "summary": "Concrete instance: on `intervalTriangulation 3 (by norm_num)` with colouring `c(n) = if n ≤ 1 then 0 else 1`, cell index 1 (vertices {1, 2}, colours {0, 1}) is panchromatic. Proven by `refine ⟨1, ?_⟩; decide`. Kernel-level proof; `decide` evaluates the panchromatic predicate to `True` via the `Decidable` instance.",
+      "mathContext": "The demo verifies the machinery end-to-end on a concrete computable instance. The interval triangulation subdivides [0, 3] into 3 unit segments; the colouring puts vertices {0, 1} at colour 0 and {2, 3} at colour 1. The middle segment {1, 2} crosses the colour boundary and is therefore panchromatic — exactly what Sperner's lemma predicts for the 1-d standard simplex with a boundary-condition colouring."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified 186-line computable witness extractor for Sperner's lemma, answering the simplest of three candidates (C1, brute-force) in the OQ-05 dossier. 3 theorems + 1 def + 1 example, 0 sorries, 0 axioms, 0 new dependencies. Uses only the existing `Triangulation.cellFintype` and `CellComplex.decidableIsPanchromatic` instances from the parent files.",
+    "implications": "C1 demonstrates that the OQ-05 question has a tractable answer at the brute-force level: a fully computable, totality-guaranteed witness extractor in <200 LOC. The literal Scarf door-walk (C2-1d candidate) is the algorithmically-better successor and has since been discharged & Docker-verified (`SpernerSimplicialInstanceOQ05Scarf1d.lean`, 0 sorries / 0 axioms, PR #22900); its generalisation (C2-gen) and C3 (`findOppositeIdx` decomputification, ACT-pending per `sessions/2026-05-12-s2-prep-c3-...`) remain open, with C3 unblocking (C2-gen). Together C1, C2, and C3 form a complete decomposition of the OQ-05 question.",
+    "openQuestions": [
+      "C2-1d (literal Scarf door-walk on `intervalTriangulation`) is now landed — discharged & Docker-verified in `SpernerSimplicialInstanceOQ05Scarf1d.lean` (PR #22900) with the corrected start-relative directional hypothesis `c start.val ≠ c m`. Remaining C2-1d frontier: add the leftward-symmetric dual (`k = ⟨0⟩`, hypothesis `c 0 ≠ c (start.val+1)`) and a hypothesis-free combined form.",
+      "Land C3: refactor `AbstractSimplicialData.findOppositeIdx` from `Classical.choose` to `Finset.filter ... .min'`. Per the slug's PREP memo (PR #18392, ~80 LOC, MEDIUM risk on verified-parent re-build).",
+      "Land C2-gen (after C3): generalise the Scarf door-walk from `intervalTriangulation` to arbitrary `Triangulation` (or `AbstractSimplicialData`). ~250 LOC, HIGH risk — the termination measure on the general door-graph requires the C3 computable adjacency.",
+      "Use `findPanchromaticBrute` to discharge the `axiom scarf_approx_fixed_point` in `BrouwerFixedPointOQ04OQ04.lean:244` — bonus: combine with a barycentric-mesh refinement and a continuous-coloring → Sperner-coloring reduction to derive computable Brouwer for the standard simplex.",
+      "Connect to David Gale's 1979 Hex no-draw theorem: prove that `findPanchromaticBrute` on the standard 2-d Hex triangulation yields a Hex winner-finder, and derive Gale's 2-d Brouwer as a corollary."
+    ]
+  },
+  "sorries": 0
+}

@@ -1,0 +1,170 @@
+[
+  {
+    "id": "ann-1025-overview",
+    "proofId": "erdos-1025",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #1025 asks for the minimum guaranteed independent set size g(n) in pair functions on {1,...,n}. A pair function maps each unordered pair to an element outside the pair. A set X is independent if no pair image from X lands in X. After 58 years of progress, g(n) = Θ(n^{1/2}) was determined by combining Spencer's lower bound (1972) with the Conlon-Fox-Sudakov upper bound (2016).",
+    "mathContext": "This problem sits at the intersection of extremal combinatorics and the probabilistic method. It is closely related to Erdős-Hajnal set mapping theory and to hypergraph coloring problems.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pair-functions",
+      "independent-sets",
+      "extremal-combinatorics",
+      "set-mappings"
+    ],
+    "prerequisites": [
+      "asymptotic Theta notation for matching upper and lower bounds",
+      "the probabilistic method in extremal combinatorics",
+      "worst-case (minimax) guarantees over a family of functions"
+    ]
+  },
+  {
+    "id": "ann-1025-pair-function",
+    "proofId": "erdos-1025",
+    "range": {
+      "startLine": 24,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "Pair Functions and Independence",
+    "content": "A PairFunction maps Sym2 (Fin n) → Fin n. It is valid if f(x,y) ≠ x and f(x,y) ≠ y for all pairs. A set X is independent under f if f(x,y) ∉ X for all x,y ∈ X. The empty set and singletons are always independent (proved constructively). An alternative formulation isIndependent' works with explicit pairs f(x,y) instead of Sym2.",
+    "mathContext": "Using Sym2 for unordered pairs avoids issues with f(x,y) vs f(y,x). The validity condition f(x,y) ∉ {x,y} ensures the function maps pairs 'away' from themselves, which is the essential constraint making the problem non-trivial.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sym2",
+      "validity-constraint",
+      "independent-set",
+      "empty-independent"
+    ],
+    "prerequisites": [
+      "Sym2 as the type of unordered pairs",
+      "functions on finite types Fin n",
+      "membership/avoidance constraints defining valid configurations"
+    ]
+  },
+  {
+    "id": "ann-1025-extremal",
+    "proofId": "erdos-1025",
+    "range": {
+      "startLine": 70,
+      "endLine": 91
+    },
+    "type": "definition",
+    "title": "The Extremal Function g(n)",
+    "content": "g(n) is the infimum over all valid pair functions f of the maximum independent set size under f. This captures the worst-case guarantee: no matter what pair function is chosen, there is always an independent set of size at least g(n). The axiom g_spec formalizes this guarantee.",
+    "mathContext": "The infimum is well-defined since there are finitely many pair functions on Fin n and the independence number is always at least 1 (singletons are independent). The g_spec axiom is the 'specification' of g as a uniform lower bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal-function",
+      "sInf",
+      "worst-case-guarantee",
+      "specification"
+    ],
+    "prerequisites": [
+      "infimum (sInf) over a finite family of values",
+      "independence number as a maximum over subsets",
+      "axiomatic specification of an extremal function"
+    ]
+  },
+  {
+    "id": "ann-1025-bounds",
+    "proofId": "erdos-1025",
+    "range": {
+      "startLine": 92,
+      "endLine": 145
+    },
+    "type": "concept",
+    "title": "Historical Bounds: From Erdős-Hajnal to CFS",
+    "content": "Three eras of bounds: Erdős-Hajnal (1958) proved n^{1/3} ≪ g(n) ≪ (n log n)^{1/2}. Spencer (1972) improved the lower bound to n^{1/2}. Conlon-Fox-Sudakov (2016) proved the matching upper bound n^{1/2}. The axioms spencer_improves_eh and cfs_improves_eh formalize that n^{1/3} ≤ n^{1/2} ≤ (n log n)^{1/2}, confirming the improvements.",
+    "mathContext": "The monotonicity n^{1/3} ≤ n^{1/2} for n ≥ 2 follows from 1/3 ≤ 1/2 and the monotonicity of x ↦ n^x for n ≥ 1. Similarly n^{1/2} ≤ (n log n)^{1/2} since log n ≥ 1 for n ≥ 3.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdos-Hajnal",
+      "Spencer",
+      "Conlon-Fox-Sudakov",
+      "bound-improvement"
+    ],
+    "prerequisites": [
+      "monotonicity of real power functions x ↦ n^x",
+      "comparing polynomial vs polylogarithmic growth rates",
+      "logarithm lower bounds (log n ≥ 1 for n ≥ 3)"
+    ]
+  },
+  {
+    "id": "ann-1025-main-result",
+    "proofId": "erdos-1025",
+    "range": {
+      "startLine": 146,
+      "endLine": 179
+    },
+    "type": "concept",
+    "title": "Main Result: g(n) = Θ(n^{1/2})",
+    "content": "The theorem g_asymptotic combines Spencer's lower bound and CFS's upper bound to establish g(n) = Θ(n^{1/2}). The proof packages the two axiomatized bounds with a common threshold N = max(N₁, N₂). The main question erdos_1025_solved derives the answer by instantiating the general form with h(n) = n^{1/2}.",
+    "mathContext": "The Θ notation means there exist positive constants c, C such that c·n^{1/2} ≤ g(n) ≤ C·n^{1/2} for all sufficiently large n. This is a clean 'polynomial' answer, unlike the (n log n)^{1/2} intermediate bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Theta-notation",
+      "matching-bounds",
+      "polynomial-growth",
+      "asymptotic-answer"
+    ],
+    "prerequisites": [
+      "Theta notation as simultaneous Omega and O bounds with constants",
+      "combining two one-sided bounds via a common threshold N",
+      "instantiating a quantified statement with a specific witness h(n)=n^{1/2}"
+    ]
+  },
+  {
+    "id": "ann-1025-set-mappings",
+    "proofId": "erdos-1025",
+    "range": {
+      "startLine": 180,
+      "endLine": 196
+    },
+    "type": "definition",
+    "title": "Connection to Set Mappings",
+    "content": "A set mapping φ assigns to each element a ∈ Fin n a subset φ(a) not containing a. A free set F satisfies a ∉ φ(b) for all a,b ∈ F. Pair functions induce set mappings via pairToSetMapping: φ(a) = {f(a,b) : b ≠ a}. Independent sets for the pair function correspond to free sets for the induced mapping.",
+    "mathContext": "The Erdős-Hajnal theory of set mappings is a generalization: pair functions are set mappings where each φ(a) is determined by a specific pair structure. The free set problem for general set mappings is harder, connecting to property B of hypergraphs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "set-mapping",
+      "free-set",
+      "Erdos-Hajnal",
+      "induced-mapping"
+    ],
+    "prerequisites": [
+      "Erdős-Hajnal set mappings and free sets",
+      "encoding a pair function as an element-indexed set system",
+      "property B and hypergraph 2-colorability"
+    ]
+  },
+  {
+    "id": "ann-1025-probabilistic",
+    "proofId": "erdos-1025",
+    "range": {
+      "startLine": 197,
+      "endLine": 246
+    },
+    "type": "concept",
+    "title": "Probabilistic Method, Constructions, and Historical Summary",
+    "content": "The probabilistic lower bound includes each vertex independently with probability p. The expected number of selected vertices is pn; the expected violations are at most C(n,2)·p³. Optimizing gives the n^{1/2} bound. The axiom construction_upper shows matching constructions exist. The theorem historical_bounds packages all three eras of results into a single statement.",
+    "mathContext": "The first-moment method gives E[|X| - violations] = pn - C(n,2)p³. Setting p = (1/(2n))^{1/2} gives expected value Ω(n^{1/2}). The alteration method then removes violating elements, preserving the independent set size.",
+    "significance": "key",
+    "relatedConcepts": [
+      "first-moment-method",
+      "alteration",
+      "optimization",
+      "algebraic-construction"
+    ],
+    "prerequisites": [
+      "first-moment method and expectation linearity",
+      "the alteration/deletion technique for removing bad elements",
+      "optimizing the inclusion probability p over a polynomial objective"
+    ]
+  }
+]

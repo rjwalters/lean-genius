@@ -1,0 +1,249 @@
+[
+  {
+    "id": "erdos-346-context",
+    "proofId": "erdos-346",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 18
+    },
+    "title": "Problem Overview: Complete Sequences and the Golden Ratio",
+    "content": "Erdos Problem 346 investigates the interplay between **strong completeness**, **fragility**, and the **golden ratio**. A sequence is strongly complete if removing any finite subset preserves completeness, yet fragile if removing any infinite subset destroys it. Erdos conjectured that for lacunary sequences satisfying both properties, the consecutive ratio a_{n+1}/a_n must converge to the golden ratio phi = (1 + sqrt(5))/2.",
+    "mathContext": "This problem sits at the intersection of additive number theory and Fibonacci-related mathematics. Graham (1964) showed that a Fibonacci-perturbed sequence F_n - (-1)^n satisfies both strong completeness and fragility, and its consecutive ratios converge to phi. The golden ratio appears because Fibonacci numbers are the slowest-growing complete sequence: any sequence growing faster than Fibonacci eventually fails to be complete. The lacunarity condition (a_{n+1}/a_n >= 1 + epsilon) excludes degenerate cases and forces the sequence to have exponential growth.",
+    "relatedConcepts": [
+      "golden ratio",
+      "Fibonacci numbers",
+      "complete sequences",
+      "additive number theory",
+      "lacunary sequences",
+      "Zeckendorf representation"
+    ],
+    "significance": "key",
+    "tags": [
+      "problem-overview",
+      "golden-ratio",
+      "complete-sequences",
+      "additive-number-theory"
+    ],
+    "prerequisites": [
+      "number theory"
+    ]
+  },
+  {
+    "id": "erdos-346-subset-sums",
+    "proofId": "erdos-346",
+    "type": "definition",
+    "range": {
+      "startLine": 28,
+      "endLine": 30
+    },
+    "title": "Subset Sums",
+    "content": "**subsetSums A** collects all values obtainable as sums of distinct elements from A. A number n is representable by A when n belongs to this set. This is the same definition used across the completeness family of Erdos problems.",
+    "mathContext": "The requirement that elements be distinct is essential. For Fibonacci-like sequences, this connects to **Zeckendorf's theorem**: every positive integer has a unique representation as a sum of non-consecutive Fibonacci numbers. The interplay between unique representations and completeness is a key theme in this area.",
+    "relatedConcepts": [
+      "subset sums",
+      "Zeckendorf representation",
+      "distinct element sums"
+    ],
+    "significance": "supporting",
+    "tags": [
+      "definition",
+      "subset-sums",
+      "zeckendorf-representation"
+    ],
+    "prerequisites": [
+      "number theory"
+    ]
+  },
+  {
+    "id": "erdos-346-complete",
+    "proofId": "erdos-346",
+    "type": "definition",
+    "range": {
+      "startLine": 32,
+      "endLine": 34
+    },
+    "title": "Complete Set",
+    "content": "**IsComplete A** means all sufficiently large integers are subset sums of A. Formally, there exists m such that every n >= m belongs to subsetSums A. This is the foundational property that the problem seeks to preserve under finite deletions and destroy under infinite deletions.",
+    "mathContext": "Completeness is a robust property for dense enough sequences but becomes delicate near the boundary of growth rates. The Fibonacci sequence {1, 2, 3, 5, 8, 13, ...} is complete, and this is the critical growth rate: sequences growing faster than the Fibonacci rate (ratio > phi) are generally not complete.",
+    "relatedConcepts": [
+      "complete sequences",
+      "growth rate thresholds",
+      "Fibonacci completeness"
+    ],
+    "significance": "key",
+    "tags": [
+      "definition",
+      "complete-sequences",
+      "growth-rate",
+      "fibonacci"
+    ],
+    "prerequisites": [
+      "number theory"
+    ]
+  },
+  {
+    "id": "erdos-346-strongly-complete",
+    "proofId": "erdos-346",
+    "type": "definition",
+    "range": {
+      "startLine": 38,
+      "endLine": 40
+    },
+    "title": "Strong Completeness",
+    "content": "**IsStronglyComplete A** means that A remains complete after removing **any** finite subset B. This is a robust form of completeness: no matter which finitely many elements are deleted, the remaining sequence still represents all large enough integers.",
+    "mathContext": "Strong completeness requires significant redundancy in the sequence. If A is barely complete (just enough elements to cover all large integers), removing even one element could break completeness. A strongly complete sequence must have enough 'overlap' in its representations that finite deletions cannot eliminate all representations of any sufficiently large number.",
+    "relatedConcepts": [
+      "strong completeness",
+      "redundancy",
+      "robustness of representations"
+    ],
+    "significance": "key",
+    "tags": [
+      "definition",
+      "strong-completeness",
+      "redundancy",
+      "robustness"
+    ],
+    "prerequisites": [
+      "number theory"
+    ]
+  },
+  {
+    "id": "erdos-346-fragile",
+    "proofId": "erdos-346",
+    "type": "definition",
+    "range": {
+      "startLine": 42,
+      "endLine": 44
+    },
+    "title": "Fragile Set",
+    "content": "**IsFragile A** means removing **any** infinite subset destroys completeness. This is the opposite extreme from strong completeness: while A tolerates finite damage, it cannot survive infinite damage. Together, strong completeness and fragility create a **delicate balance** -- the sequence is maximally robust against finite perturbations but maximally sensitive to infinite ones.",
+    "mathContext": "Fragility constrains the growth rate from below. If a sequence grows slowly enough that it has massive redundancy (like the natural numbers), it would not be fragile -- one could remove an infinite arithmetic progression and retain completeness. Fragile sequences must grow fast enough that every infinite subsequence carries irreplaceable representational weight.",
+    "relatedConcepts": [
+      "fragility",
+      "growth rate constraints",
+      "infinite subset removal"
+    ],
+    "significance": "key",
+    "tags": [
+      "definition",
+      "fragility",
+      "infinite-subsets",
+      "growth-rate"
+    ],
+    "prerequisites": [
+      "number theory"
+    ]
+  },
+  {
+    "id": "erdos-346-lacunary",
+    "proofId": "erdos-346",
+    "type": "definition",
+    "range": {
+      "startLine": 48,
+      "endLine": 50
+    },
+    "title": "Lacunary Sequence",
+    "content": "**IsLacunary a epsilon** means the sequence has a uniform minimum growth rate: a_{n+1}/a_n >= 1 + epsilon for some fixed epsilon > 0. This forces **exponential growth** and excludes slowly-growing sequences. The lacunarity hypothesis in the conjecture restricts attention to well-behaved exponentially growing sequences.",
+    "mathContext": "The lacunarity condition is essential to the conjecture. Without it, there exist very irregular sequences satisfying both strong completeness and fragility whose ratios do not converge at all (formalized as the irregular_examples axiom). Lacunarity imposes regularity that Erdos conjectured would force convergence to the golden ratio.",
+    "relatedConcepts": [
+      "lacunary sequences",
+      "exponential growth",
+      "Hadamard gap condition"
+    ],
+    "significance": "key",
+    "tags": [
+      "definition",
+      "lacunary-sequences",
+      "exponential-growth",
+      "hadamard-gap"
+    ],
+    "prerequisites": [
+      "number theory"
+    ]
+  },
+  {
+    "id": "erdos-346-graham",
+    "proofId": "erdos-346",
+    "type": "insight",
+    "range": {
+      "startLine": 57,
+      "endLine": 67
+    },
+    "title": "Graham's Fibonacci-Perturbed Example",
+    "content": "Graham (1964) constructed the sequence **a_n = F_n - (-1)^n** (where F_n is the n-th Fibonacci number) and proved it is both strongly complete and fragile. This sequence alternately subtracts and adds 1 to Fibonacci numbers: ..., 1, 3, 4, 8, 12, 21, 33, ... Its consecutive ratios converge to the **golden ratio phi**, providing the motivating example for the conjecture.",
+    "mathContext": "Graham's construction is elegant: the Fibonacci perturbation preserves just enough additive structure for strong completeness while growing fast enough for fragility. The Lean definition handles the alternation via modular arithmetic: if n is even, a_n = F_n - 1; if odd, a_n = F_n + 1. The consecutive ratio F_{n+1}/F_n converges to phi, and the perturbation by +/-1 does not affect this limit.",
+    "relatedConcepts": [
+      "Graham's theorem",
+      "Fibonacci perturbation",
+      "golden ratio convergence"
+    ],
+    "significance": "key",
+    "tags": [
+      "graham-construction",
+      "fibonacci",
+      "golden-ratio",
+      "motivating-example"
+    ],
+    "prerequisites": [
+      "number theory"
+    ]
+  },
+  {
+    "id": "erdos-346-golden-threshold",
+    "proofId": "erdos-346",
+    "type": "insight",
+    "range": {
+      "startLine": 71,
+      "endLine": 74
+    },
+    "title": "Golden Ratio as Fragility Threshold",
+    "content": "The axiom **golden_ratio_fragile** states: if a_{n+1}/a_n > phi for all n, then A is **automatically fragile**. The golden ratio is the critical growth rate -- sequences growing faster than phi are always fragile, while sequences growing slower may or may not be. This makes phi a natural **phase transition** point.",
+    "mathContext": "This result is closely related to Zeckendorf's theorem and the theory of numeration systems based on Fibonacci numbers. The golden ratio phi satisfies phi^2 = phi + 1, which is the recurrence relation of Fibonacci numbers. Sequences growing at rate exactly phi have the minimum growth compatible with a complete numeration system (every integer has a representation). Growth faster than phi leaves 'gaps' that make the sequence fragile.",
+    "relatedConcepts": [
+      "golden ratio threshold",
+      "phase transition",
+      "Zeckendorf's theorem",
+      "numeration systems"
+    ],
+    "significance": "key",
+    "tags": [
+      "phase-transition",
+      "golden-ratio",
+      "zeckendorf-theorem",
+      "fragility-threshold"
+    ],
+    "prerequisites": [
+      "number theory"
+    ]
+  },
+  {
+    "id": "erdos-346-conjecture",
+    "proofId": "erdos-346",
+    "type": "concept",
+    "range": {
+      "startLine": 78,
+      "endLine": 80
+    },
+    "title": "Erdos Problem 346: Convergence to the Golden Ratio",
+    "content": "The conjecture states: if a sequence is **lacunary**, **strongly complete**, and **fragile**, then a_{n+1}/a_n converges to **phi = (1 + sqrt(5))/2**. Formally, for every delta > 0, there exists n_0 such that |a_{n+1}/a_n - phi| < delta for all n >= n_0. This would mean that the golden ratio is the unique growth rate compatible with all three properties simultaneously.",
+    "mathContext": "The conjecture asserts a remarkable rigidity result: among all lacunary sequences, the three properties of strong completeness, fragility, and exponential growth uniquely determine the asymptotic growth rate. This would give the golden ratio a new characterization in additive number theory, complementing its classical appearances in continued fractions, Fibonacci numbers, and phyllotaxis.",
+    "relatedConcepts": [
+      "golden ratio characterization",
+      "rigidity",
+      "additive number theory",
+      "growth rate uniqueness"
+    ],
+    "significance": "key",
+    "tags": [
+      "conjecture",
+      "golden-ratio",
+      "rigidity",
+      "open-problem"
+    ],
+    "prerequisites": [
+      "number theory"
+    ]
+  }
+]

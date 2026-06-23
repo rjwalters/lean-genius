@@ -1,0 +1,213 @@
+[
+  {
+    "id": "ann-683-imports",
+    "proofId": "erdos-683",
+    "range": {
+      "startLine": 31,
+      "endLine": 39
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "Imports Mathlib modules for natural number basics, binomial coefficients (`Nat.Choose.Basic`), primes (`Nat.Prime.Basic`), logarithms (`SpecialFunctions.Log.Basic`), and real exponentiation (`SpecialFunctions.Pow.Real`). Opens `Nat` and `Real` namespaces within the `Erdos683` namespace.",
+    "mathContext": "The formalization requires `Nat.choose` for $\\binom{n}{k}$, `Real.log` for the Erdős 1955 bound $P(\\binom{n}{k}) \\ge c \\cdot k \\log k$, and `Real.rpow` for the conjectured bound $k^{1+c}$ and heuristic $e^{c\\sqrt{k}}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.choose",
+      "Real.log",
+      "Real.rpow",
+      "Filter.atTop"
+    ],
+    "prerequisites": [
+      "Lean 4 imports",
+      "Mathlib library"
+    ]
+  },
+  {
+    "id": "ann-683-largest-prime",
+    "proofId": "erdos-683",
+    "range": {
+      "startLine": 47,
+      "endLine": 76
+    },
+    "type": "definition",
+    "title": "Largest Prime Divisor $P(n)$",
+    "content": "**largestPrimeDivisor n**: Returns the largest prime factor of $n$ (or 1 if $n \\le 1$). Defined using `Nat.find` on the existence of a prime divisor, but key properties are axiomatized:\n\n1. **P_is_prime**: $P(n)$ is prime when $n > 1$\n2. **P_divides**: $P(n) \\mid n$ when $n > 1$\n3. **P_largest**: For any prime $p \\mid n$, $p \\le P(n)$\n\n**P n k** = $P(\\binom{n}{k})$: the largest prime divisor of the binomial coefficient.",
+    "mathContext": "$P(n) = \\max\\{p \\in \\mathbb{P} : p \\mid n\\}$ for $n > 1$, and $P(1) = 1$ by convention. The three axioms uniquely characterize $P(n)$ as the maximum of the prime support. For binomial coefficients, $P(\\binom{n}{k})$ captures the largest prime appearing in the factorization of $\\binom{n}{k} = \\frac{n!}{k!(n-k)!}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "greatest prime factor",
+      "Nat.find",
+      "prime support",
+      "fundamental theorem of arithmetic"
+    ],
+    "prerequisites": [
+      "prime numbers",
+      "Nat.exists_prime_and_dvd",
+      "Nat.choose"
+    ]
+  },
+  {
+    "id": "ann-683-sylvester-schur",
+    "proofId": "erdos-683",
+    "range": {
+      "startLine": 89,
+      "endLine": 109
+    },
+    "type": "concept",
+    "title": "Sylvester-Schur Theorem: $P(\\binom{n}{k}) > k$",
+    "content": "**sylvester_schur** (axiom): $P(\\binom{n}{k}) > k$ for $1 \\le k \\le n/2$.\n\nThe product $(n-k+1)(n-k+2) \\cdots n$ of $k$ consecutive integers, each exceeding $k$, must contain a prime factor $> k$. Sylvester (1892) proved this for consecutive products; Schur (1929) extended it to binomial coefficients.\n\n**choose_gt_one** (axiom): $\\binom{n}{k} > 1$ for valid parameters.\n\n**binom_has_large_prime** (proved): Derives the existential form $\\exists p$ prime with $p \\mid \\binom{n}{k}$ and $p > k$, combining the three axiomatized properties of $P$.",
+    "mathContext": "Sylvester-Schur: among any $k$ consecutive integers $> k$, at least one has a prime factor $> k$. Equivalently, $\\binom{n}{k} = \\frac{n!}{k!(n-k)!}$ always has a prime factor exceeding $k$ when $k \\le n/2$. The proof uses the pigeonhole principle on the prime factorization of the consecutive product.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sylvester's theorem",
+      "consecutive integers",
+      "pigeonhole on prime factors",
+      "Bertrand's postulate generalization"
+    ],
+    "prerequisites": [
+      "P definition",
+      "Nat.choose",
+      "prime factorization"
+    ]
+  },
+  {
+    "id": "ann-683-erdos-1955",
+    "proofId": "erdos-683",
+    "range": {
+      "startLine": 120,
+      "endLine": 131
+    },
+    "type": "concept",
+    "title": "Erdős 1955: $P(\\binom{n}{k}) \\gg k \\log k$",
+    "content": "**erdos_1955_bound** (axiom): There exists $c > 0$ such that $P(\\binom{n}{k}) \\ge c \\cdot k \\cdot \\log k$ for all $k \\le n/2$.\n\nA significant quantitative improvement over Sylvester-Schur: the prime factor exceeds not just $k$ but $k \\log k$. Erdős's proof uses the prime number theorem and a careful counting argument on prime factors in consecutive products.\n\n**erdos_1955_asymptotic** (proved): Instantiates the bound for specific $n, k$ from the existential axiom using `obtain`.",
+    "mathContext": "Erdős (1955) proved $P(\\binom{n}{k}) \\ge c \\cdot k \\cdot \\log k$ by analyzing the prime factorization of $\\binom{n}{k}$. The key is that among $k$ consecutive integers, the prime number theorem ensures $\\sim k/\\log k$ of them are prime, and these primes contribute large factors. The logarithmic improvement $k \\to k \\log k$ was a breakthrough over the linear bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime number theorem",
+      "asymptotic notation",
+      "quantitative improvement over Sylvester-Schur"
+    ],
+    "prerequisites": [
+      "sylvester_schur",
+      "Real.log",
+      "prime counting function"
+    ]
+  },
+  {
+    "id": "ann-683-conjecture",
+    "proofId": "erdos-683",
+    "range": {
+      "startLine": 140,
+      "endLine": 153
+    },
+    "type": "definition",
+    "title": "The Main Conjecture (OPEN)",
+    "content": "**erdosConjecture683**: $\\exists c > 0$ such that $P(\\binom{n}{k}) \\ge \\min(n - k + 1, k^{1+c})$ for all $1 \\le k \\le n$.\n\nThe $\\min$ captures two regimes:\n- When $k$ is small relative to $n$: expect $P(\\binom{n}{k}) > k^{1+c}$ (power-law growth)\n- When $k \\approx n$: bound by $n - k + 1$ since the product has only $k$ terms starting at $n - k + 1$\n\n**erdos_1979_belief** (axiom): For ANY $c > 0$, $P(\\binom{n}{k}) > k^{1+c}$ with only finitely many exceptions. This is strictly stronger than the conjecture (which only claims some $c > 0$ works).",
+    "mathContext": "The conjecture predicts $P(\\binom{n}{k}) \\ge \\min(n-k+1, k^{1+c})$. Current best: $P(\\binom{n}{k}) \\ge c \\cdot k \\log k$ (Erdős 1955). The gap from $k \\log k$ to $k^{1+c}$ is enormous for large $k$. Erdős's belief that $P > k^{1+c}$ for ALL $c > 0$ (with finite exceptions) would place this problem in the same regime as Cramér's conjecture — the polynomial growth rate $k^{1+c}$ for any $c$ is equivalent to saying $\\log P(\\binom{n}{k})/\\log k \\to \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "polynomial vs logarithmic bounds",
+      "finite exceptions",
+      "Cramér's conjecture analogy"
+    ],
+    "prerequisites": [
+      "sylvester_schur",
+      "erdos_1955_bound",
+      "Real.rpow"
+    ]
+  },
+  {
+    "id": "ann-683-heuristic",
+    "proofId": "erdos-683",
+    "range": {
+      "startLine": 165,
+      "endLine": 178
+    },
+    "type": "concept",
+    "title": "Prime Gap Heuristic: $P > e^{c\\sqrt{k}}$",
+    "content": "**prime_gap_heuristic** (axiom): $P(\\binom{n}{k}) > e^{c\\sqrt{k}}$ for some $c > 0$, eventually.\n\nThis stretched exponential bound far exceeds the polynomial conjecture $k^{1+c}$. It arises from Cramér-type heuristics: in a random model of the primes, among $k$ 'random' integers near $n$, the largest prime gap is $\\sim (\\log n)^2$, so the largest prime factor should be $\\sim n/(\\log n)^2 \\gg e^{c\\sqrt{k}}$.\n\n**heuristic_stronger_than_conjecture** (axiom): $e^{c\\sqrt{k}} > k^{1+c}$ eventually, since exponential growth dominates polynomial growth.",
+    "mathContext": "The heuristic $P(\\binom{n}{k}) > e^{c\\sqrt{k}}$ comes from Cramér's model: the product $(n-k+1) \\cdots n$ contains $\\sim k/\\log n$ primes, and the largest prime gap in the interval is $\\sim (\\log n)^2$. The largest prime in the product is thus $\\sim n - O((\\log n)^2) \\approx n$. Since $k \\le n/2$, this gives $P \\approx n \\ge 2k$, far exceeding any polynomial in $k$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cramér's random model",
+      "stretched exponential",
+      "prime gaps in intervals",
+      "Filter.atTop"
+    ],
+    "prerequisites": [
+      "erdosConjecture683",
+      "Real.exp",
+      "Real.sqrt"
+    ]
+  },
+  {
+    "id": "ann-683-consecutive",
+    "proofId": "erdos-683",
+    "range": {
+      "startLine": 196,
+      "endLine": 213
+    },
+    "type": "definition",
+    "title": "Consecutive Products and Bertrand's Connection",
+    "content": "**consecutiveProduct m k**: The product $m(m+1) \\cdots (m+k-1)$ defined via `Finset.range` and `∏`.\n\nSince $\\binom{n}{k} = \\frac{(n-k+1)(n-k+2) \\cdots n}{k!}$, the numerator is `consecutiveProduct (n-k+1) k`.\n\n**bertrand_for_central** (axiom): $P(\\binom{2n}{n}) > n$ for $n \\ge 1$. Follows from Bertrand's postulate: there exists a prime $p$ with $n < p \\le 2n$, and this $p$ divides $\\binom{2n}{n}$ but not $n!^2$.\n\n**consecutive_has_large_prime** (axiom): Among $k$ consecutive integers starting at $m > k$, at least one has a prime divisor $> k$. This is Sylvester's original result for products.",
+    "mathContext": "The connection $\\binom{n}{k} = \\frac{\\prod_{i=0}^{k-1}(n-k+1+i)}{k!}$ means that large prime factors of the numerator survive division by $k!$ (since $k! = \\prod_{i=1}^{k} i$ contains only primes $\\le k$). Any prime $p > k$ dividing the numerator also divides $\\binom{n}{k}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.prod",
+      "Bertrand's postulate",
+      "Chebyshev's theorem",
+      "prime factorization of factorials"
+    ],
+    "prerequisites": [
+      "Nat.choose",
+      "consecutiveProduct",
+      "Bertrand's postulate"
+    ]
+  },
+  {
+    "id": "ann-683-specific-cases",
+    "proofId": "erdos-683",
+    "range": {
+      "startLine": 222,
+      "endLine": 233
+    },
+    "type": "concept",
+    "title": "Central Binomial and Small $k$ Cases",
+    "content": "**central_binom_bound** (axiom): $P(\\binom{2k}{k}) > \\frac{4}{3}k$ for large $k$. The central binomial coefficient has particularly large prime divisors because it encodes the middle row of Pascal's triangle, with maximal combinatorial complexity.\n\n**small_k_case_2** (axiom): $P(\\binom{n}{2}) \\ge (n-1)/2$ for $n \\ge 4$. Since $\\binom{n}{2} = n(n-1)/2$, and at least one of $n, n-1$ has a prime factor $\\ge (n-1)/2$ (by Bertrand's postulate applied to $(n-1)/2$).",
+    "mathContext": "For the central coefficient: $\\binom{2k}{k} \\sim \\frac{4^k}{\\sqrt{\\pi k}}$ by Stirling. The Korselt criterion and Erdős's analysis show that primes in $(k, 2k]$ divide $\\binom{2k}{k}$, and Bertrand guarantees at least one such prime. The $4/3$ constant improves on this by analyzing the distribution of primes in $(k, 4k/3]$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "central binomial coefficient",
+      "Stirling's approximation",
+      "Korselt criterion",
+      "Bertrand's postulate"
+    ],
+    "prerequisites": [
+      "P definition",
+      "Nat.choose",
+      "Bertrand's postulate"
+    ]
+  },
+  {
+    "id": "ann-683-summary",
+    "proofId": "erdos-683",
+    "range": {
+      "startLine": 253,
+      "endLine": 253
+    },
+    "type": "concept",
+    "title": "Summary Theorem",
+    "content": "**erdos_683_summary** (proved): Combines the two established bounds into a conjunction:\n1. Sylvester-Schur: $\\forall n, k,\\, 1 \\le k \\le n/2 \\Rightarrow P(\\binom{n}{k}) > k$\n2. Erdős 1955: $\\exists c > 0,\\, \\forall n, k,\\, 1 \\le k \\le n/2 \\Rightarrow P(\\binom{n}{k}) \\ge c \\cdot k \\log k$\n\nProved by the term-mode pair `⟨fun n k hk hn => sylvester_schur hk hn, erdos_1955_bound⟩`.",
+    "mathContext": "The summary captures the state of the art: $P(\\binom{n}{k}) > k$ (proved 1892) and $P(\\binom{n}{k}) \\ge c \\cdot k \\log k$ (proved 1955). The gap to the conjectured $k^{1+c}$ remains open after 70+ years.",
+    "significance": "key",
+    "relatedConcepts": [
+      "state of the art",
+      "conjunction of bounds",
+      "term-mode proof"
+    ],
+    "prerequisites": [
+      "sylvester_schur",
+      "erdos_1955_bound"
+    ]
+  }
+]

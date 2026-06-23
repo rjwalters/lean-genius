@@ -1,0 +1,17 @@
+{
+  "problem_number": 22,
+  "title": "Ramsey-Turán Numbers for K₄",
+  "status": "solved",
+  "solvers": ["Fox-Loh-Zhao (2015)"],
+  "source_url": "https://erdosproblems.com/22",
+  "overview": "Let ε > 0 and n be sufficiently large. Is there a graph on n vertices with ≥ n²/8 edges which contains no K₄ such that the largest independent set has size at most εn? Equivalently: Is rt(n; 4, εn) ≥ n²/8?",
+  "sections": [],
+  "conclusion": "YES - Fox-Loh-Zhao (2015) proved rt(n; 4, εn) ≥ n²/8 with independence number ≪ (log log n)^(3/2) / (log n)^(1/2) · n. The bound n²/8 corresponds to edge density 1/4, which equals the Ramsey-Turán density ρ₄.",
+  "references": [
+    "Bollobás-Erdős (1976) - Original conjecture and weaker bounds",
+    "Fox-Loh-Zhao (2015) - Resolution using pseudorandom methods",
+    "Szemerédi (1972) - Related regularity lemma techniques"
+  ],
+  "related_problems": [],
+  "tags": ["graph-theory", "ramsey-turan", "extremal-combinatorics", "independence-number", "solved"]
+}

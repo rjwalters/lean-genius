@@ -1,0 +1,238 @@
+[
+  {
+    "id": "erdos-1092-header",
+    "proofId": "erdos-1092",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 19
+    },
+    "title": "Problem Statement and Imports",
+    "content": "The docstring introduces Erdős Problem #1092, posed by Erdős, Hajnal, and Szemerédi: define $f_r(n)$ as the maximum $k$ such that if every $m$-vertex subgraph of an $n$-vertex graph $G$ can have its chromatic number reduced to $\\leq r$ by removing $\\leq k$ edges, then $\\chi(G) \\leq r+1$. The two questions ask whether $f_2(n) \\gg n$ and more generally $f_r(n) \\gg_r rn$. Tang noted that Rödl's 1982 construction provides evidence against the first question. Imports include Mathlib's `SimpleGraph.Basic`, `Finset.Basic`, `Nat.Basic`, and `Tactic`.",
+    "mathContext": "The problem sits in the intersection of extremal graph theory and chromatic graph theory. The function $f_r(n)$ quantifies the 'local-to-global' phenomenon for graph coloring: if every subgraph is 'close' to being $r$-colorable (within $k$ edge deletions), how large can $k$ be while still guaranteeing global $(r+1)$-colorability? This is a Ramsey-type question about the gap between local and global chromatic structure.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "extremal graph theory",
+      "chromatic number",
+      "Rödl's construction",
+      "local-to-global principles"
+    ],
+    "prerequisites": [
+      "graph coloring",
+      "extremal combinatorics",
+      "subgraph structure"
+    ],
+    "crossReferences": [
+      "erdos-744"
+    ]
+  },
+  {
+    "id": "erdos-1092-graph-def",
+    "proofId": "erdos-1092",
+    "type": "definition",
+    "range": {
+      "startLine": 22,
+      "endLine": 42
+    },
+    "title": "Graph Definitions and Chromatic Number",
+    "content": "Defines `SGraph n` (a simple graph on $n$ vertices with adjacency, symmetry, and irreflexivity), `edgeCount` (number of edges via filtering ordered pairs), `hasColoring` (existence of a proper $r$-coloring as a function $c : V \\to [r]$ with $c(u) \\neq c(v)$ for all edges), and `chromaticNum` (minimum $r$ with an $r$-coloring, via `Nat.find`). The formalization uses `Fin n` for the vertex set, giving a concrete finite type.",
+    "mathContext": "The chromatic number $\\chi(G) = \\min\\{r : G \\text{ has a proper } r\\text{-coloring}\\}$. A proper $r$-coloring is a function $c : V \\to [r]$ with $c(u) \\neq c(v)$ whenever $uv \\in E(G)$. The definition via `Nat.find` is well-defined since the complete graph $K_n$ is always $n$-colorable. Edge count $|E(G)| = |\\{(u,v) : u < v, uv \\in E\\}|$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "proper coloring",
+      "chromatic number",
+      "Nat.find",
+      "Fin type in Lean"
+    ],
+    "prerequisites": [
+      "graph theory fundamentals",
+      "Lean Fin type"
+    ]
+  },
+  {
+    "id": "erdos-1092-reduce",
+    "proofId": "erdos-1092",
+    "type": "definition",
+    "range": {
+      "startLine": 44,
+      "endLine": 52
+    },
+    "title": "Chromatic Reduction by Edge Deletion",
+    "content": "Defines `CanReduceChromatic G k r`: there exists a set of at most $k$ edges whose removal yields a graph with chromatic number $\\leq r$. The removed edges are represented as a finset of ordered pairs; both orientations are excluded to maintain symmetry. This captures the notion that $G$ is '$k$ edges away' from being $r$-colorable, a natural measure of distance in the space of graphs ordered by chromatic number.",
+    "mathContext": "$\\text{CanReduceChromatic}(G, k, r) \\iff \\exists R \\subseteq E(G),\\, |R| \\leq k,\\, \\chi(G - R) \\leq r$. This is equivalent to asking whether $G$ has an $r$-coloring that violates at most $k$ edges. The minimum such $k$ is the 'chromatic deficiency' of $G$ with respect to $r$. The Lovász theta function and semidefinite relaxations provide bounds on this quantity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "edge deletion distance",
+      "chromatic deficiency",
+      "graph edit distance",
+      "Lovász theta function"
+    ],
+    "prerequisites": [
+      "graph coloring",
+      "combinatorial optimization"
+    ]
+  },
+  {
+    "id": "erdos-1092-threshold",
+    "proofId": "erdos-1092",
+    "type": "definition",
+    "range": {
+      "startLine": 56,
+      "endLine": 62
+    },
+    "title": "The Threshold Function $f_r(n)$",
+    "content": "Defines `fThreshold r n` as the supremum of all $k$ such that the condition 'every induced subgraph of $G$ can have its chromatic number reduced to $\\leq r$ by removing $\\leq k$ edges' implies $\\chi(G) \\leq r+1$. This is a minimax quantity: the largest edge-deletion budget $k$ that still forces global $(r+1)$-colorability. The definition uses `sSup` on the set of valid $k$ values, quantifying over all $n$-vertex graphs.",
+    "mathContext": "$f_r(n) = \\sup\\{k : \\forall G \\text{ on } n \\text{ vertices},\\, (\\forall S \\subseteq V,\\, \\text{CanReduce}(G[S], k, r)) \\implies \\chi(G) \\leq r+1\\}$. The function measures the critical threshold: below $f_r(n)$, local reducibility guarantees global colorability; above it, counterexamples exist. This is analogous to the Turán number $\\text{ex}(n, H)$ but for chromatic properties rather than subgraph avoidance.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán-type thresholds",
+      "minimax duality",
+      "sSup in Lean",
+      "extremal functions"
+    ],
+    "prerequisites": [
+      "extremal graph theory",
+      "chromatic number theory",
+      "Lean sSup"
+    ]
+  },
+  {
+    "id": "erdos-1092-q1",
+    "proofId": "erdos-1092",
+    "type": "concept",
+    "range": {
+      "startLine": 66,
+      "endLine": 69
+    },
+    "title": "Question 1: Does $f_2(n) \\gg n$?",
+    "content": "The first main question asks whether $f_2(n)/n \\to \\infty$, i.e., whether the edge-deletion budget needed to force 3-colorability grows super-linearly. Formalized as: for every constant $C$, eventually $f_2(n) \\geq Cn$. Tang observed that Rödl's 1982 construction gives graphs where local 2-reducibility with budget $O(n \\cdot (\\log n)^2)$ does not force 3-colorability, suggesting the answer is negative.",
+    "mathContext": "The question $f_2(n) \\gg n$ asks: $\\forall C > 0,\\, \\exists N,\\, \\forall n \\geq N,\\, f_2(n) \\geq Cn$. If true, the edge-deletion budget grows faster than linearly. If false (as Rödl's construction suggests), there exists $C > 0$ such that $f_2(n) \\leq Cn \\cdot (\\log n)^2$ for all $n$, and the threshold is at most quasi-linear.",
+    "significance": "key",
+    "relatedConcepts": [
+      "super-linear growth",
+      "quasi-linear bounds",
+      "Rödl's construction",
+      "3-colorability threshold"
+    ],
+    "prerequisites": [
+      "asymptotic notation",
+      "graph coloring"
+    ]
+  },
+  {
+    "id": "erdos-1092-q2",
+    "proofId": "erdos-1092",
+    "type": "concept",
+    "range": {
+      "startLine": 71,
+      "endLine": 74
+    },
+    "title": "Question 2: Does $f_r(n) \\gg_r rn$?",
+    "content": "The general question: for fixed $r \\geq 2$, does $f_r(n)/(rn) \\to \\infty$? This asks whether the threshold scales super-linearly in $n$ even when the color budget $r$ is large. The subscript $r$ in $\\gg_r$ indicates the implicit constant may depend on $r$. If true for all $r$, it would establish a universal local-to-global coloring principle.",
+    "mathContext": "For fixed $r \\geq 2$: $f_r(n) \\gg_r rn \\iff \\forall C > 0,\\, \\exists N(r, C),\\, \\forall n \\geq N,\\, f_r(n) \\geq C \\cdot rn$. The factor $rn$ normalizes by the trivial lower bound (roughly $n$ per color class). A negative answer for $r = 2$ (via Rödl) does not immediately settle the case $r \\geq 3$, since the constructions may not generalize.",
+    "significance": "key",
+    "relatedConcepts": [
+      "parameterized thresholds",
+      "Ramsey multiplicity",
+      "color-dependent bounds"
+    ],
+    "prerequisites": [
+      "extremal graph theory",
+      "parameterized complexity"
+    ]
+  },
+  {
+    "id": "erdos-1092-rodl",
+    "proofId": "erdos-1092",
+    "type": "concept",
+    "range": {
+      "startLine": 78,
+      "endLine": 82
+    },
+    "title": "Rödl's Upper Bound (1982)",
+    "content": "Rödl (1982) constructed graphs demonstrating $f_2(n) = O(n \\cdot (\\log n)^2)$. These are $n$-vertex graphs where every subgraph can have its chromatic number reduced to $\\leq 2$ (bipartite) by removing $O(n \\cdot (\\log n)^2)$ edges, yet the graph has chromatic number $> 3$. The construction uses probabilistic methods combined with algebraic techniques. This is the strongest known upper bound and provides the primary evidence against Question 1.",
+    "mathContext": "$\\exists C > 0,\\, \\forall n \\geq 2: f_2(n) \\leq C \\cdot n \\cdot (\\log n)^2$. Combined with the trivial lower bound $f_2(n) \\geq n - 1$, this places $f_2(n)$ in the range $\\Theta(n) \\leq f_2(n) \\leq O(n \\log^2 n)$. The gap between $n$ and $n \\log^2 n$ is the current state of knowledge—closing this gap would resolve Question 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "probabilistic method",
+      "algebraic graph constructions",
+      "polylogarithmic factors",
+      "Rödl nibble method"
+    ],
+    "prerequisites": [
+      "probabilistic combinatorics",
+      "graph constructions"
+    ]
+  },
+  {
+    "id": "erdos-1092-lower",
+    "proofId": "erdos-1092",
+    "type": "concept",
+    "range": {
+      "startLine": 86,
+      "endLine": 88
+    },
+    "title": "Trivial Lower Bound $f_r(n) \\geq n - 1$",
+    "content": "For $r \\geq 1$ and $n \\geq 2$, we have $f_r(n) \\geq n - 1$. The proof: any tree on $m$ vertices has $m - 1$ edges and chromatic number $\\leq 2 \\leq r$ (for $r \\geq 2$), so every tree subgraph can be made $r$-colorable by removing all its edges. Since trees have $n - 1$ edges, the budget $k = n - 1$ is always sufficient for tree subgraphs. But trees have $\\chi = 2$, which doesn't force high global chromatic number.",
+    "mathContext": "$f_r(n) \\geq n - 1$ because for any graph $G$ on $n$ vertices, every tree subgraph $T$ has $|E(T)| = |V(T)| - 1 \\leq n - 1$ edges. Removing all edges of $T$ yields $\\chi = 1 \\leq r$. So with budget $n - 1$, tree subgraphs always reduce. The interesting question is whether $f_r(n)$ exceeds $n - 1$ by more than a polylogarithmic factor.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "tree subgraphs",
+      "trivial bounds",
+      "chromatic number of forests"
+    ],
+    "prerequisites": [
+      "tree properties",
+      "basic graph theory"
+    ]
+  },
+  {
+    "id": "erdos-1092-monotone",
+    "proofId": "erdos-1092",
+    "type": "insight",
+    "range": {
+      "startLine": 90,
+      "endLine": 96
+    },
+    "title": "Monotonicity in $r$ and Connection to Problem #744",
+    "content": "The threshold $f_r(n)$ is monotone nondecreasing in $r$: $f_r(n) \\leq f_{r+1}(n)$. This holds because reducing chromatic number to $\\leq r$ is harder than reducing to $\\leq r + 1$ (more colors are available), so the same edge-deletion budget is more effective with a higher target. The problem is related to Erdős Problem #744, which concerns similar chromatic decomposition questions with different parameters.",
+    "mathContext": "$f_r(n) \\leq f_{r+1}(n)$ for all $r, n$. Proof: if $\\text{CanReduce}(G[S], k, r)$ holds for all $S$, then a fortiori $\\text{CanReduce}(G[S], k, r+1)$ holds (since $r$-colorable implies $(r+1)$-colorable). So the implication 'local reducibility $\\implies \\chi(G) \\leq r+2$' holds whenever the corresponding implication for $r$ holds, giving $f_{r+1}(n) \\geq f_r(n)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotone functions",
+      "chromatic number hierarchy",
+      "Erdős Problem #744"
+    ],
+    "prerequisites": [
+      "order theory",
+      "graph coloring monotonicity"
+    ],
+    "crossReferences": [
+      "erdos-744"
+    ]
+  },
+  {
+    "id": "erdos-1092-structure",
+    "proofId": "erdos-1092",
+    "type": "insight",
+    "range": {
+      "startLine": 56,
+      "endLine": 96
+    },
+    "title": "Local-to-Global Coloring: The Broader Picture",
+    "content": "Problem #1092 belongs to a family of questions about when local chromatic properties force global ones. The Lovász theta function, Szemerédi's regularity lemma, and the Rödl nibble method all provide tools for studying this local-to-global transition. The specific challenge here is that local reducibility (each subgraph is close to $r$-colorable) is a much weaker condition than local colorability (each subgraph IS $r$-colorable), and the gap between them is precisely what $f_r(n)$ measures.",
+    "mathContext": "The hierarchy of local-to-global results in chromatic theory: (1) $\\chi(G) \\leq \\Delta(G) + 1$ (Brooks' theorem, from local degree bound); (2) Triangle-free graphs have $\\chi = O(\\Delta / \\log \\Delta)$ (Johansson, from local girth); (3) $f_r(n)$ threshold (from local edge-deletion distance to $r$-colorability). Each level uses weaker local information and correspondingly weaker global conclusions.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Brooks' theorem",
+      "Szemerédi regularity lemma",
+      "Rödl nibble",
+      "Johansson's theorem",
+      "local-to-global principles"
+    ],
+    "prerequisites": [
+      "structural graph theory",
+      "regularity methods"
+    ]
+  }
+]

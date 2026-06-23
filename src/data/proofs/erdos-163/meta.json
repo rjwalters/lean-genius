@@ -1,0 +1,208 @@
+{
+  "id": "erdos-163",
+  "title": "Erdős Problem #163: The Burr-Erdős Conjecture",
+  "slug": "erdos-163",
+  "description": "For d-degenerate graph H on n vertices, is R(H) = O(n)? SOLVED: YES, R(H) ≤ 2^{2^{O(d)}} · n (Lee, 2017).",
+  "meta": {
+    "author": "Burr-Erdős (1975 conjecture), Choongbum Lee (2017 proof)",
+    "sourceUrl": "https://erdosproblems.com/163",
+    "date": "2017",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos163Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "degeneracy",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 163,
+    "erdosUrl": "https://erdosproblems.com/163",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Fintype",
+        "description": "Finite types for graph vertices",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Finite"
+      }
+    ],
+    "originalContributions": [
+      "IsDDegenerate definition: every subgraph has vertex of degree ≤ d",
+      "HasDegeneracyOrdering definition: alternative characterization",
+      "ramseyNumber definition: idealized Ramsey number",
+      "BurrErdosConjecture definition: formal conjecture statement",
+      "BurrErdosForests definition: forest union formulation",
+      "BurrErdosAverageDegree definition: average degree formulation",
+      "lee_theorem axiom: R(H) ≤ C_d · n for d-degenerate H",
+      "burr_erdos_solved theorem: main resolution",
+      "OptimalBurrErdos definition: conjectured 2^{O(d)} bound",
+      "Special cases: trees, paths, cycles, planar graphs"
+    ],
+    "axiomCount": 1,
+    "lineCount": 198,
+    "assumptions": "1 axiom: lee_theorem (Lee 2017 — for d-degenerate H on n vertices, ∃C>0 s.t. ramseyNumber H ≤ C·|V(H)|). Burr-Erdős conjecture proved via lee_theorem. 0 sorries.",
+    "theoremCount": 3,
+    "definitionCount": 8
+  },
+  "overview": {
+    "historicalContext": "The Burr-Erdős Conjecture was posed by Stefan Burr and Paul Erdős in 1975, asking whether $d$-degenerate graphs have linear Ramsey numbers. It became one of the most influential open problems in Ramsey theory, remaining unsolved for 42 years. The conjecture was motivated by the observation that cliques $K_n$ have exponentially large Ramsey numbers ($2^{n/2} \\le R(K_n) \\le 4^n$, Erdős–Szekeres 1935), while sparse graphs like paths satisfy $R(P_n) = n$ exactly.\n\nPartial results accumulated over decades. Chvátal, Rödl, Szemerédi, and Trotter (1983) proved the conjecture for bounded-degree graphs using the regularity lemma. Kostochka and Sudakov (2003) established it for graphs of bounded pathwidth. The general case was finally resolved by Choongbum Lee in 2017, who proved $R(H) \\le 2^{2^{O(d)}} \\cdot n$ for $d$-degenerate $H$ on $n$ vertices. Lee's proof combined the Szemerédi regularity lemma with the dependent random choice technique, a powerful probabilistic method popularized by Fox and Sudakov.\n\nThe constant $C_d = 2^{2^{O(d)}}$ in Lee's bound is doubly exponential in $d$. It is conjectured that the optimal bound is singly exponential: $R(H) \\le 2^{O(d)} \\cdot n$. Closing this gap remains a major open problem in extremal graph theory.",
+    "problemStatement": "For any $d \\ge 1$, does there exist a constant $C_d$ (depending only on $d$) such that every $d$-degenerate graph $H$ on $n$ vertices satisfies $R(H) \\le C_d \\cdot n$?",
+    "text": "For d-degenerate graph H on n vertices, is R(H) = O(n)? SOLVED: YES, R(H) ≤ 2^{2^{O(d)}} · n (Lee, 2017).",
+    "proofStrategy": "The formalization defines $d$-degeneracy via two equivalent characterizations: the subgraph minimum-degree condition and the degeneracy ordering. The Ramsey number is defined abstractly, and the Burr-Erdős Conjecture is stated along with equivalent formulations (forest unions, bounded average degree). Lee's theorem is axiomatized with both the main bound and a refined chromatic-number-dependent version. The conjecture is then proved by applying Lee's theorem directly. Special cases (trees, paths, cycles, planar graphs) and the conjectured optimal bound $2^{O(d)} \\cdot n$ are recorded as context.",
+    "keyInsights": [
+      "**Degeneracy captures the right notion of sparseness for Ramsey theory**: Unlike chromatic number, maximum degree, or treewidth, degeneracy (minimum degree in worst subgraph) is the precise parameter that controls whether Ramsey numbers grow linearly. Every subgraph having a low-degree vertex allows iterative embedding strategies.",
+      "**The double-to-single exponential gap**: Lee proved $C_d = 2^{2^{O(d)}}$ (doubly exponential), but the conjectured optimal is $C_d = 2^{O(d)}$ (singly exponential). This is not a technicality — the gap between $2^{2^d}$ and $2^d$ is an entire exponential tower, and closing it requires fundamentally new ideas.",
+      "**Regularity lemma + dependent random choice**: Lee's proof combines two of the most powerful tools in extremal combinatorics. The regularity lemma (Szemerédi, 1975) decomposes large graphs into pseudo-random parts, while dependent random choice (Fox–Sudakov) finds large subsets with many common neighbors. The doubly exponential constant arises from the tower-type bounds in the regularity lemma.",
+      "**The degeneracy ordering enables greedy embedding**: A $d$-degenerate graph has an ordering $v_1, \\ldots, v_n$ where each $v_i$ has at most $d$ neighbors among $v_{i+1}, \\ldots, v_n$. This ordering allows embedding vertices one by one, each time extending into at most $d$ neighborhoods — a greedy strategy that only works when the host graph is sufficiently pseudo-random.",
+      "**Chromatic number refinement**: Lee also proved $R(H) \\le 2^{d \\cdot 2^{O(\\chi(H))}} \\cdot n$, showing that bounded chromatic number further reduces the Ramsey number. For bipartite $d$-degenerate graphs ($\\chi = 2$), this gives $R(H) \\le 2^{O(d)} \\cdot n$, matching the conjectured optimal."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Ramsey theory (partition regularity)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "degeneracy",
+      "title": "Graph Degeneracy",
+      "startLine": 49,
+      "endLine": 83,
+      "summary": "Defines $d$-degeneracy via two equivalent characterizations: (1) every non-empty subgraph has a vertex of degree $\\le d$ (`IsDDegenerate`), and (2) vertices admit an ordering where each has $\\le d$ later neighbors (`HasDegeneracyOrdering`). Includes examples: trees are 1-degenerate, planar graphs are 5-degenerate.",
+      "mathContext": "Defines $d$-degeneracy via two equivalent characterizations: (1) every non-empty subgraph has a vertex of degree $\\le d$ (`IsDDegenerate`), and (2) vertices admit an ordering where each has $\\le d$ later neighbors (`HasDegeneracyOrdering`)."
+    },
+    {
+      "id": "ramsey-numbers",
+      "title": "Ramsey Numbers",
+      "startLine": 84,
+      "endLine": 106,
+      "summary": "Defines the Ramsey number $R(H)$ as the minimum $n$ such that any 2-coloring of $K_n$ contains a monochromatic copy of $H$. States the exponential bounds $2^{n/2} \\le R(K_n) \\le 4^n$ for clique Ramsey numbers (Erdős–Szekeres, 1935).",
+      "mathContext": "Defines the Ramsey number $R(H)$ as the minimum $n$ such that any 2-coloring of $K_n$ contains a monochromatic copy of $H$. States the exponential bounds $2^{n/2} \\le R(K_n) \\le 4^n$ for clique Ramsey numbers (Erdős–Szekeres, 1935)."
+    },
+    {
+      "id": "burr-erdos-conjecture",
+      "title": "The Burr-Erdős Conjecture",
+      "startLine": 107,
+      "endLine": 138,
+      "summary": "States the Burr-Erdős Conjecture ($R(H) \\le C_d \\cdot n$ for $d$-degenerate $H$ on $n$ vertices) and two equivalent formulations: (1) union of $c$ forests has linear Ramsey number, and (2) bounded average degree implies linear Ramsey number.",
+      "mathContext": "States the Burr-Erdős Conjecture ($R(H) \\le C_d \\cdot n$ for $d$-degenerate $H$ on $n$ vertices) and two equivalent formulations: (1) union of $c$ forests has linear Ramsey number, and (2) bounded average degree implies linear Ramsey number."
+    },
+    {
+      "id": "lee-theorem",
+      "title": "Lee's Theorem (2017)",
+      "startLine": 139,
+      "endLine": 166,
+      "summary": "Axiomatizes Lee's main result: $R(H) \\le 2^{2^{O(d)}} \\cdot n$ for $d$-degenerate $H$, along with the explicit constant bound $C = 2^{2^{cd}}$ and the refined chromatic number version $R(H) \\le 2^{d \\cdot 2^{c\\chi}} \\cdot n$.",
+      "mathContext": "Axiomatizes Lee's main result: $R(H) \\le 2^{2^{O(d)}} \\cdot n$ for $d$-degenerate $H$, along with the explicit constant bound $C = 2^{2^{cd}}$ and the refined chromatic number version $R(H) \\le 2^{d \\cdot 2^{c\\chi}} \\cdot n$."
+    },
+    {
+      "id": "solved",
+      "title": "Conjecture is SOLVED",
+      "startLine": 167,
+      "endLine": 179,
+      "summary": "Proves the Burr-Erdős Conjecture by directly applying Lee's theorem. The proof is a one-liner: `lee_theorem d hd` provides the constant $C_d$ and the bound.",
+      "mathContext": "Verified: Proves the Burr-Erdős Conjecture by directly applying Lee's theorem. The proof is a one-liner: `lee_theorem d hd` provides the constant $C_d$ and the bound."
+    },
+    {
+      "id": "optimal-bound",
+      "title": "Conjectured Optimal Bound",
+      "startLine": 180,
+      "endLine": 198,
+      "summary": "Defines the conjectured optimal bound $R(H) \\le 2^{O(d)} \\cdot n$ (`OptimalBurrErdos`) and notes the significant gap between Lee's doubly exponential $2^{2^{O(d)}}$ and the conjectured singly exponential $2^{O(d)}$.",
+      "mathContext": "Defines the conjectured optimal bound $R(H) \\le 2^{O(d)} \\cdot n$ (`OptimalBurrErdos`) and notes the significant gap between Lee's doubly exponential $2^{2^{O(d)}}$ and the conjectured singly exponential $2^{O(d)}$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures the full story of Erdős Problem #163: from Burr and Erdős's 1975 conjecture through Lee's 2017 resolution. The Lean 4 proof verifies that Lee's theorem implies the conjecture, with the main theorem `burr_erdos_solved` being a direct consequence of `lee_theorem`. The formalization also records the gap between the proven bound ($2^{2^{O(d)}} \\cdot n$) and the conjectured optimal ($2^{O(d)} \\cdot n$).",
+    "implications": "**Theoretical Significance**: The Burr-Erdős Conjecture confirms that degeneracy — a local sparseness condition — is the fundamental graph parameter controlling linear Ramsey growth.\n\nThis separates degenerate graphs (linear $R$) from cliques (exponential $R$) and establishes a clear structural dichotomy in Ramsey theory. The result has practical implications for algorithms that find monochromatic subgraphs, as the linear bound implies polynomial-time embedding in pseudo-random graphs.",
+    "openQuestions": [
+      "Can the doubly exponential constant $C_d = 2^{2^{O(d)}}$ be improved to the conjectured singly exponential $2^{O(d)}$? This is the main remaining open problem.",
+      "Is there a proof avoiding the regularity lemma? Regularity-free proofs might yield better quantitative bounds, as the regularity lemma inherently introduces tower-type dependencies.",
+      "What is the exact Ramsey number $R(H)$ for specific families of $d$-degenerate graphs beyond trees, paths, and cycles?",
+      "Does the chromatic-number-dependent bound $R(H) \\le 2^{d \\cdot 2^{O(\\chi)}} \\cdot n$ suggest that bounding $\\chi$ independently can reduce the constant from doubly to singly exponential?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "extends",
+      "description": "Ramsey's theorem guarantees $R(H)$ exists for all $H$; the Burr-Erdős conjecture gives tight linear bounds for the degenerate case"
+    },
+    {
+      "targetId": "szemeredi-theorem",
+      "relationship": "technique",
+      "description": "Lee's proof uses the Szemerédi regularity lemma, the same foundational tool underlying Szemerédi's theorem on arithmetic progressions"
+    },
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "related",
+      "description": "Planar graphs are 5-degenerate and have chromatic number $\\le 4$; the Burr-Erdős conjecture gives $R(H) = O(n)$ for planar $H$"
+    },
+    {
+      "targetId": "erdos-569",
+      "relationship": "related",
+      "description": "Problem #569 asks about Ramsey numbers of odd cycles vs general graphs, a complementary Ramsey-theoretic question about specific sparse graph families"
+    },
+    {
+      "targetId": "erdos-61",
+      "relationship": "related",
+      "description": "The Erdős-Hajnal Conjecture also connects graph structure (being $H$-free) to Ramsey-type coloring properties, complementing the degeneracy-based approach"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Finite",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos163",
+    "lineCount": 198,
+    "axiomCount": 1,
+    "theoremCount": 3,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos163Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "key": "BE83",
+      "authors": [
+        "S.A. Burr",
+        "P. Erdős"
+      ],
+      "title": "On the magnitude of generalized Ramsey numbers for graphs",
+      "venue": "Infinite and Finite Sets, Colloquia Mathematica Soc. J. Bolyai",
+      "year": "1975",
+      "volume": "10",
+      "pages": "214-240",
+      "note": "Original Burr-Erdős conjecture: R(H,H) = O(n) for bounded-degree H"
+    },
+    {
+      "key": "Le17",
+      "authors": [
+        "C. Lee"
+      ],
+      "title": "Ramsey numbers of degenerate graphs",
+      "venue": "Annals of Mathematics",
+      "year": "2017",
+      "volume": "185",
+      "pages": "791-829",
+      "note": "Proof of the Burr-Erdős conjecture for all bounded-degeneracy graphs"
+    }
+  ],
+  "sorries": 0
+}

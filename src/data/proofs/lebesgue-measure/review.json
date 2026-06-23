@@ -1,0 +1,155 @@
+{
+  "version": 1,
+  "proofId": "lebesgue-measure",
+  "reviewDate": "2026-03-23T00:00:00Z",
+  "reviewer": "peer-reviewer",
+  "overallAssessment": {
+    "grade": "B-",
+    "oneLiner": "A well-organized pedagogical tour of Mathlib's measure theory library with honest attribution but several overclaims about originality, two filler theorems, and one stale annotation.",
+    "tier": "B",
+    "tierJustification": "The file wraps Mathlib's extensive measure theory infrastructure with pedagogical organization and commentary. It does not construct Lebesgue measure itself -- Mathlib's Haar measure machinery does all the heavy lifting. The strongest original contributions are the Fubini proof (12 lines of genuine reasoning), the Dirichlet function integral proof, and the bounded-measurable-integrable bridge. These are real but modest contributions. This is solidly Tier B: Mathlib-based formalization with useful pedagogical bridge work."
+  },
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "fubini, lines 274-289",
+      "finding": "The Fubini theorem proof is the most substantive in the file: 12 lines that decompose the symmetry argument into two directions, each showing its iterated integral equals the product integral. The swap-of-variables step (lines 284-288) genuinely composes Mathlib lemmas in a non-trivial way, applying Integrable.comp_measurable with measurable_swap and using Measure.prod_swap. This is real mathematical glue, not a one-line wrapper.",
+      "recommendation": "Preserve this proof and consider highlighting it more prominently in the annotations as the file's strongest original contribution."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "dirichlet_function_integral, lines 372-381",
+      "finding": "The Dirichlet function integral proof composes ae-reasoning (ae_iff, rationals_measure_zero, ae_restrict_of_ae) into a coherent 5-line argument that demonstrates the power of Lebesgue integration over Riemann. The meta.json openQuestions correctly notes this was previously an axiom and is now fully proved. This is a pedagogically valuable result.",
+      "recommendation": "No change needed. This is a good example of the kind of proof that belongs in a pedagogical gallery entry."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "overview.historicalContext, meta.json lines 61",
+      "finding": "The historical context is detailed, accurate, and well-sourced. It correctly traces the lineage from Riemann (1854) through Lebesgue (1902), Caratheodory (1914), Vitali (1905), Beppo Levi (1906), and Kolmogorov (1933). The citations are precise (e.g., Lebesgue's 1902 thesis title) and the narrative connects to the formal content without overreaching.",
+      "recommendation": "Preserve. This is one of the better historical contexts in the gallery."
+    },
+    {
+      "severity": "major",
+      "category": "filler",
+      "location": "cantor_set_measure_zero, line 321-325",
+      "finding": "This theorem states True and is proved by trivial. Its docstring says 'The Cantor set has Lebesgue measure zero' but the theorem body asserts nothing about the Cantor set. The Cantor set is never defined in this file. This is a filler theorem: it occupies space, creates the impression that something about the Cantor set was formalized, and contributes zero mathematical content.",
+      "recommendation": "Either (a) remove the theorem entirely and replace with a comment explaining that formalizing the Cantor set is future work, or (b) define the Cantor set and prove its measure is zero. Option (a) is more honest; option (b) is more ambitious but would add genuine substance."
+    },
+    {
+      "severity": "major",
+      "category": "filler",
+      "location": "holder_inequality_statement, lines 407-411",
+      "finding": "This theorem states True despite its name and docstring claiming to be Holder's inequality. The hypotheses (conjugate exponents, p >= 1, q >= 1) are accepted but never used. The proof is trivial. This is misleading: a reader seeing 'holder_inequality_statement' in the theorem inventory would reasonably expect the inequality to be stated, not True. The meta.json openQuestions field honestly notes this is a placeholder, but the theorem itself is deceptive.",
+      "recommendation": "Either (a) remove and replace with a comment + #check of the actual Mathlib Holder inequality, or (b) state the actual inequality (even without proof) as an axiom, which would be more honest than True. The current approach inflates the theorem count."
+    },
+    {
+      "severity": "major",
+      "category": "overclaim",
+      "location": "meta.json originalContributions, line 51-54",
+      "finding": "The originalContributions field claims: 'Framework for Lebesgue measure construction', 'Properties: translation invariance, countable additivity', 'Comparison with Jordan measure, non-measurable sets'. All three overclaim. (1) The framework is entirely Mathlib's Haar measure construction; this file wraps it. (2) Translation invariance is proved via inferInstance (line 118); countable additivity is not explicitly proved at all. (3) There is no Jordan measure comparison anywhere in the Lean file, and no non-measurable set is constructed. The Vitali construction mentioned in keyInsights is not formalized.",
+      "recommendation": "Rewrite originalContributions to honestly reflect what the file does: 'Pedagogical organization of Mathlib measure theory results', 'Multi-step Fubini proof composing product measure lemmas', 'Dirichlet function integral via ae-reasoning', 'Bridge theorem for bounded measurable functions on intervals'."
+    },
+    {
+      "severity": "moderate",
+      "category": "inconsistency",
+      "location": "annotations.json ann-riemann-comparison (lines 217-238)",
+      "finding": "The annotation for the Riemann comparison section states: 'The integral is axiomatized here rather than fully proved. A complete proof would use integral_eq_zero_of_ae together with rationals_measure_zero.' However, the Lean source at lines 372-381 contains exactly this proof -- it IS fully proved using integral_eq_zero_of_ae and rationals_measure_zero. The meta.json openQuestions correctly marks this as RESOLVED. The annotation is stale and contradicts both the source code and the meta.json.",
+      "recommendation": "Update the annotation to reflect the current state: the Dirichlet function integral is now fully proved, not axiomatized. This is a straightforward enricher fix."
+    },
+    {
+      "severity": "moderate",
+      "category": "precision",
+      "location": "meta.json sections line ranges",
+      "finding": "Several section line ranges in meta.json are slightly off from the actual Lean source. For example: the 'applications' section claims startLine 372, endLine 413, but the actual Applications section in the Lean file begins at line 397 (section Applications). Lines 372-383 are the Riemann comparison section. The 'riemann-comparison' section claims endLine 370 but the section actually ends at line 383. These small discrepancies could mislead readers or annotation tooling that depends on line ranges.",
+      "recommendation": "Update section line ranges to match the actual Lean source: riemann-comparison should end around line 383, applications should start around line 397."
+    },
+    {
+      "severity": "moderate",
+      "category": "overclaim",
+      "location": "meta.json assumptions field, line 58",
+      "finding": "The assumptions field says 'None. Fully verified with 0 axioms and 0 sorries.' While technically true (no axiom declarations, no sorry keywords), this phrasing is misleading because two theorems (cantor_set_measure_zero, holder_inequality_statement) state True rather than their advertised mathematical content. A reader who sees 'fully verified' and '22 theorems' would not expect 2 of those theorems to be vacuous placeholders.",
+      "recommendation": "Amend to something like: 'No axioms or sorries. Two theorems (Cantor set measure, Holder inequality) are stated as placeholders (True) rather than their full mathematical content.'"
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "Lean source docstring, lines 40-44",
+      "finding": "The Lean file's own status checklist marks '[ ] Complete proof' (unchecked) and '[x] Incomplete (has sorries)' (checked), but the file has 0 sorries. This is an internal self-description inconsistency within the Lean file itself.",
+      "recommendation": "Update the status checklist: uncheck 'Incomplete (has sorries)' and check 'Proves extensions/corollaries' and 'Pedagogical example' instead."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json theoremCount, line 218",
+      "finding": "The theoremCount of 22 includes the 2 filler theorems that prove True. While technically correct (they are theorem declarations), the count gives an inflated impression of mathematical content. 20 of the 22 theorems have genuine mathematical statements; the remaining 2 are vacuous.",
+      "recommendation": "Consider adding a 'fillerCount' or 'placeholderCount' field, or note in the description that 2 theorems are placeholders."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "dominated_convergence, line 232-239",
+      "finding": "The dominated convergence theorem is presented as one of the file's key results, but the proof body is a single-line delegation: tendsto_integral_of_dominated_convergence bound hf_meas hbound_int hf_bound hf_lim. The theorem essentially renames Mathlib's lemma with slightly different argument packaging. This is not wrong -- the renaming serves pedagogical purposes -- but the meta.json and annotations describe it as if original work were involved.",
+      "recommendation": "Acknowledge in annotations that this is a direct wrapper of the Mathlib result, provided for pedagogical clarity and uniform namespace conventions."
+    }
+  ],
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "high",
+      "target": "enricher",
+      "description": "Rewrite meta.json originalContributions to accurately reflect the file's contributions: pedagogical organization, Fubini multi-step proof, Dirichlet function ae-proof, bounded-measurable bridge theorem. Remove claims about 'Jordan measure comparison' and 'non-measurable sets' which do not appear in the Lean source.",
+      "status": "resolved",
+      "resolution": "Rewrote originalContributions: removed phantom claims (Jordan measure, non-measurable sets), replaced with 4 accurate items."
+    },
+    {
+      "id": "ai-2",
+      "priority": "high",
+      "target": "researcher",
+      "description": "Replace the two filler theorems (cantor_set_measure_zero and holder_inequality_statement) that state True. Either remove them with honest comments, or replace with actual mathematical content. For Holder's, stating the actual inequality (even as an axiom) would be more honest than True.",
+      "status": "resolved",
+      "resolution": "cantor_set_measure_zero and holder_inequality_statement were already converted to comment blocks in a prior commit. Updated meta.json theoremCount from 22 to 20 to reflect the current 20 theorems in the file."
+    },
+    {
+      "id": "ai-3",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Update annotation ann-riemann-comparison to reflect that the Dirichlet function integral is now fully proved (not axiomatized). The annotation text says 'The integral is axiomatized here rather than fully proved' which contradicts the current Lean source and meta.json openQuestions.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-4",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Fix meta.json section line ranges to match the actual Lean source. Key corrections: riemann-comparison endLine should be ~383, applications startLine should be ~397.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-5",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Update meta.json assumptions field to acknowledge the 2 placeholder (True) theorems instead of claiming 'fully verified' without qualification.",
+      "status": "resolved",
+      "resolution": "Updated assumptions to note 2 True placeholder stubs."
+    },
+    {
+      "id": "ai-6",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Fix the status checklist in the Lean source docstring (lines 40-44): uncheck 'Incomplete (has sorries)' and consider checking 'Pedagogical example'.",
+      "status": "resolved"
+    }
+  ],
+  "qualityScores": {
+    "mathematicalSubstance": 5,
+    "originalityAccuracy": 4,
+    "completeness": 6,
+    "framingPrecision": 5,
+    "pedagogicalQuality": 8,
+    "internalConsistency": 5,
+    "overall": 5.5
+  },
+  "suggestedBestFraming": "A pedagogical tour of Mathlib's Lebesgue measure theory library, demonstrating key properties (interval measure, translation invariance, null sets) and the three great convergence theorems (monotone, dominated, Fubini) through thin wrappers and commentary, with original multi-step proofs for Fubini's theorem and the Dirichlet function integral."
+}

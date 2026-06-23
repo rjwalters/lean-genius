@@ -1,0 +1,247 @@
+[
+  {
+    "id": "erdos-47-header",
+    "proofId": "erdos-47",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "title": "Module Documentation: Unit Fractions from Dense Sets",
+    "content": "Erdős Problem #47 (SOLVED): if $A \\subseteq \\{1, \\ldots, N\\}$ has $\\sum_{a \\in A} 1/a > \\delta \\log N$, must there exist $S \\subseteq A$ with $\\sum_{n \\in S} 1/n = 1$? Bloom [2021] proved YES with threshold $\\sum 1/a \\gg (\\log\\log\\log N / \\log\\log N) \\cdot \\log N$. Liu-Sawhney [2024] improved to $(\\log N)^{4/5+o(1)}$. Erdős conjectured $(\\log\\log N)^2$ suffices; Pomerance showed this is optimal. The formalization axiomatizes Bloom's theorem and the Liu-Sawhney improvement.",
+    "mathContext": "Given $A \\subseteq [N]$ with $\\sum_{a \\in A} 1/a \\geq f(N)$, does $\\exists S \\subseteq A: \\sum_{s \\in S} 1/s = 1$? The threshold $f(N)$ is between $(\\log\\log N)^2$ (conjectured optimal) and $(\\log N)^{4/5}$ (best known).",
+    "significance": "key",
+    "relatedConcepts": [
+      "unit fractions",
+      "Egyptian fractions",
+      "Bloom's theorem",
+      "dense subset sums"
+    ],
+    "prerequisites": [
+      "reciprocal sums",
+      "logarithmic density"
+    ]
+  },
+  {
+    "id": "erdos-47-ann-imports",
+    "proofId": "erdos-47",
+    "type": "concept",
+    "range": {
+      "startLine": 25,
+      "endLine": 32
+    },
+    "title": "Imports and Setup",
+    "content": "Imports Mathlib's $\\texttt{Finset}$, $\\texttt{Rat}$, and $\\texttt{Real.log}$ for working with finite subsets of $\\mathbb{N}$, rational arithmetic, and the natural logarithm. The $\\texttt{open Finset Filter}$ gives access to $\\texttt{Finset.sum}$ and filter-based asymptotic reasoning. The namespace $\\texttt{Erdos47}$ scopes all definitions.",
+    "mathContext": "Working in $\\mathbb{Q}$ avoids real-number complications for exact reciprocal sums $\\sum_{a \\in A} \\frac{1}{a}$. The threshold $\\delta \\log N$ uses $\\texttt{Real.log}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.sum",
+      "rational arithmetic",
+      "Real.log"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib number theory"
+    ]
+  },
+  {
+    "id": "erdos-47-ann-reciprocal-sum",
+    "proofId": "erdos-47",
+    "type": "definition",
+    "range": {
+      "startLine": 42,
+      "endLine": 43
+    },
+    "title": "Reciprocal Sum",
+    "content": "The function $\\texttt{reciprocalSum}(A) = \\sum_{a \\in A} \\frac{1}{a}$ computes the sum of reciprocals over $\\mathbb{Q}$ for exactness. The guard $a = 0 \\mapsto 0$ handles the edge case. This is the central measure of density in Erdős's conjecture: sets with $\\sum 1/a > \\delta \\log N$ are 'dense' in a harmonic sense.",
+    "mathContext": "$\\texttt{reciprocalSum}(A) = \\sum_{a \\in A} \\frac{1}{a} \\in \\mathbb{Q}$. For $A = \\{1, \\ldots, N\\}$: $\\sum_{a=1}^N \\frac{1}{a} = H_N \\sim \\log N + \\gamma$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "harmonic series",
+      "harmonic numbers",
+      "Egyptian fractions"
+    ],
+    "prerequisites": [
+      "Finset.sum",
+      "rational arithmetic"
+    ]
+  },
+  {
+    "id": "erdos-47-ann-unit-fraction",
+    "proofId": "erdos-47",
+    "type": "definition",
+    "range": {
+      "startLine": 48,
+      "endLine": 49
+    },
+    "title": "Unit Fraction Sum Property",
+    "content": "A set $S$ has the unit fraction sum property if all elements are $\\geq 1$ and $\\sum_{n \\in S} \\frac{1}{n} = 1$. Such decompositions are called Egyptian fraction representations of 1. Classical examples include $\\frac{1}{2} + \\frac{1}{3} + \\frac{1}{6} = 1$ and $\\frac{1}{2} + \\frac{1}{4} + \\frac{1}{6} + \\frac{1}{12} = 1$.",
+    "mathContext": "$\\texttt{HasUnitFractionSum}(S) \\iff (\\forall n \\in S,\\; n \\geq 1) \\wedge \\sum_{n \\in S} \\frac{1}{n} = 1$. Related to Egyptian fractions: $1 = \\frac{1}{n_1} + \\cdots + \\frac{1}{n_k}$ with $n_i$ distinct.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Egyptian fractions",
+      "Sylvester-Fibonacci algorithm",
+      "Erdős-Straus conjecture"
+    ],
+    "prerequisites": [
+      "reciprocalSum definition",
+      "unit fractions"
+    ]
+  },
+  {
+    "id": "erdos-47-ann-contains-unit",
+    "proofId": "erdos-47",
+    "type": "definition",
+    "range": {
+      "startLine": 55,
+      "endLine": 56
+    },
+    "title": "Contains Unit Fraction Subset",
+    "content": "The existential property: $A$ contains a nonempty subset $S \\subseteq A$ with $\\sum_{n \\in S} \\frac{1}{n} = 1$. The nonemptiness condition excludes the trivial empty-sum case. This is the conclusion that Erdős's conjecture (and Bloom's theorem) establishes.",
+    "mathContext": "$\\texttt{ContainsUnitFraction}(A) \\iff \\exists S \\subseteq A,\\; S \\neq \\emptyset \\wedge \\texttt{HasUnitFractionSum}(S)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "subset sum problem",
+      "Egyptian fractions",
+      "zero-sum theory"
+    ],
+    "prerequisites": [
+      "HasUnitFractionSum",
+      "Finset subset"
+    ]
+  },
+  {
+    "id": "erdos-47-ann-interval",
+    "proofId": "erdos-47",
+    "type": "definition",
+    "range": {
+      "startLine": 63,
+      "endLine": 63
+    },
+    "title": "Interval $\\{1, \\ldots, N\\}$",
+    "content": "The set $\\{1, \\ldots, N\\}$ encoded as $\\texttt{Icc1}(N) = \\{k+1 : k \\in \\{0, \\ldots, N-1\\}\\}$ via $\\texttt{Finset.range}$ and image. This avoids 0 and gives the natural domain for reciprocal sums.",
+    "mathContext": "$\\texttt{Icc1}(N) = \\{1, 2, \\ldots, N\\}$. The full reciprocal sum is $H_N = \\sum_{a=1}^N \\frac{1}{a} \\sim \\log N + \\gamma$ (Euler–Mascheroni constant $\\gamma \\approx 0.5772$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.range",
+      "harmonic numbers",
+      "Euler-Mascheroni constant"
+    ],
+    "prerequisites": [
+      "Finset.image",
+      "natural number arithmetic"
+    ]
+  },
+  {
+    "id": "erdos-47-ann-dense",
+    "proofId": "erdos-47",
+    "type": "definition",
+    "range": {
+      "startLine": 68,
+      "endLine": 72
+    },
+    "title": "Dense Subset Definition",
+    "content": "A subset $A \\subseteq \\{1, \\ldots, N\\}$ is $\\delta$-dense if $\\sum_{a \\in A} \\frac{1}{a} > \\delta \\log N$. Since $H_N \\sim \\log N$, this means $A$ captures a positive fraction $\\delta$ of the total harmonic mass. The full set satisfies $\\sum 1/a \\sim \\log N$, so $\\delta$-density requires keeping a constant proportion of harmonic weight.",
+    "mathContext": "$\\texttt{IsDenseSubset}(A, N, \\delta) \\iff A \\subseteq \\{1,\\ldots,N\\} \\wedge \\delta > 0 \\wedge \\sum_{a \\in A} \\frac{1}{a} > \\delta \\log N$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "harmonic density",
+      "Szemerédi regularity",
+      "large sieve"
+    ],
+    "prerequisites": [
+      "reciprocalSum",
+      "Icc1",
+      "Real.log"
+    ]
+  },
+  {
+    "id": "erdos-47-ann-conjecture",
+    "proofId": "erdos-47",
+    "type": "definition",
+    "range": {
+      "startLine": 82,
+      "endLine": 88
+    },
+    "title": "Erdős's Conjecture (Formal Statement)",
+    "content": "The formal statement of Problem #47: for every $\\delta > 0$, there exists $N_0$ such that for all $N \\geq N_0$ and all $\\delta$-dense subsets $A \\subseteq \\{1, \\ldots, N\\}$, there exists $S \\subseteq A$ with $\\sum_{n \\in S} \\frac{1}{n} = 1$. This captures both the density condition and the finiteness threshold.",
+    "mathContext": "$\\texttt{ErdosConjecture47} : \\forall \\delta > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0,\\; \\forall A \\subseteq \\{1,\\ldots,N\\},\\; \\texttt{IsDenseSubset}(A,N,\\delta) \\Rightarrow \\texttt{ContainsUnitFraction}(A)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős conjecture",
+      "density Ramsey theory",
+      "Egyptian fraction completeness"
+    ],
+    "prerequisites": [
+      "IsDenseSubset",
+      "ContainsUnitFraction"
+    ]
+  },
+  {
+    "id": "erdos-47-ann-bloom",
+    "proofId": "erdos-47",
+    "type": "concept",
+    "range": {
+      "startLine": 100,
+      "endLine": 100
+    },
+    "title": "Bloom's Theorem (2021)",
+    "content": "Thomas Bloom proved Erdős's conjecture in 2021: $\\texttt{ErdosConjecture47}$ holds. His proof uses a sophisticated combination of the Hardy–Littlewood circle method, exponential sums, and structural results about the additive energy of sets with large reciprocal sums. This resolved a problem open since at least the 1960s.",
+    "mathContext": "$\\texttt{bloom\\_theorem} : \\texttt{ErdosConjecture47}$. Bloom's proof shows that for any $\\delta > 0$, if $\\sum_{a \\in A} \\frac{1}{a} > \\delta \\log N$, then some $S \\subseteq A$ satisfies $\\sum \\frac{1}{n} = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "circle method",
+      "exponential sums",
+      "additive energy",
+      "Erdős-Graham conjecture"
+    ],
+    "prerequisites": [
+      "ErdosConjecture47",
+      "Hardy-Littlewood method"
+    ]
+  },
+  {
+    "id": "erdos-47-ann-bloom-quant",
+    "proofId": "erdos-47",
+    "type": "concept",
+    "range": {
+      "startLine": 108,
+      "endLine": 114
+    },
+    "title": "Bloom's Quantitative Bound",
+    "content": "Bloom's proof gives an explicit threshold: there exists $C > 0$ such that $\\sum_{a \\in A} \\frac{1}{a} \\geq C \\cdot \\frac{\\log \\log \\log N}{\\log \\log N} \\cdot \\log N$ suffices. The triple-logarithmic factor comes from Bloom's iterative density increment argument. This is much weaker than $\\delta \\log N$ but gives an explicit quantitative result.",
+    "mathContext": "$\\exists C > 0 : \\sum \\frac{1}{a} \\geq C \\cdot \\frac{\\log \\log \\log N}{\\log \\log N} \\cdot \\log N \\Rightarrow \\exists S \\subseteq A,\\; \\sum_{n \\in S} \\frac{1}{n} = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "density increment",
+      "iterated logarithm",
+      "explicit constants"
+    ],
+    "prerequisites": [
+      "bloom_theorem",
+      "Real.log composition"
+    ]
+  },
+  {
+    "id": "erdos-47-ann-liu-sawhney",
+    "proofId": "erdos-47",
+    "type": "concept",
+    "range": {
+      "startLine": 122,
+      "endLine": 128
+    },
+    "title": "Liu–Sawhney Improvement (2024)",
+    "content": "Mehtaab Liu and Ashwin Sawhney dramatically improved Bloom's quantitative bound: for any $\\varepsilon > 0$, $\\sum \\frac{1}{a} \\geq (\\log N)^{4/5 + \\varepsilon}$ suffices for large $N$. This is a polynomial improvement over Bloom's triple-log bound, using refined structural decompositions and Fourier-analytic methods.",
+    "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists N_0 : \\sum \\frac{1}{a} \\geq (\\log N)^{4/5+\\varepsilon} \\Rightarrow \\texttt{ContainsUnitFraction}(A)$. Compare: Bloom needs $(\\log N)^{1-o(1)}$; Liu–Sawhney needs $(\\log N)^{4/5+o(1)}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fourier analysis",
+      "structural decomposition",
+      "power-saving improvement"
+    ],
+    "prerequisites": [
+      "bloom_theorem",
+      "analytic number theory"
+    ]
+  }
+]

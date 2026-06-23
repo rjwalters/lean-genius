@@ -1,0 +1,317 @@
+[
+  {
+    "id": "ann-e12-header",
+    "proofId": "erdos-12",
+    "range": {
+      "startLine": 1,
+      "endLine": 21
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #12 (OPEN, 1970) studies sets A ⊆ ℕ where no element divides the sum of two larger elements. Erdős and Sárközy proved such sets have density 0, but the precise growth rate is unknown. Three open questions ask whether √N density is achievable, whether sparseness infinitely often is forced, and whether the reciprocal sum must converge.",
+    "mathContext": "Define $A$ to be \\emph{divisibility-free} if $\\forall a, b, c \\in A$ distinct with $a < b, a < c$: $a \\nmid (b+c)$. This is a multiplicative constraint ($a \\mid \\cdot$) on an additive structure ($b + c$), creating a rich interaction between the two fundamental operations on $\\mathbb{N}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "divisibility",
+      "additive combinatorics",
+      "density",
+      "sum-free sets"
+    ],
+    "prerequisites": [
+      "divisibility",
+      "asymptotic density",
+      "reciprocal sums"
+    ]
+  },
+  {
+    "id": "ann-e12-div-free-def",
+    "proofId": "erdos-12",
+    "range": {
+      "startLine": 25,
+      "endLine": 29
+    },
+    "type": "definition",
+    "title": "IsDivisibilityFree",
+    "content": "A set A is divisibility-free if for all distinct a, b, c ∈ A with a < b and a < c, we have a ∤ (b+c). The definition requires distinctness and strict ordering to avoid trivial cases.",
+    "mathContext": "Formally: $\\texttt{IsDivisibilityFree}(A) \\iff \\forall a, b, c \\in A,\\; a \\neq b \\to a \\neq c \\to b \\neq c \\to a < b \\to a < c \\to \\neg(a \\mid b + c)$. The condition constrains the residues of elements: for each $a \\in A$, the set $\\{b \\bmod a : b \\in A, b > a\\}$ cannot contain any pair summing to $0 \\pmod{a}$. This is a \\emph{sum-free} condition on residues modulo each small element.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sum-free sets mod a",
+      "residue class constraints",
+      "pairwise condition"
+    ],
+    "prerequisites": [
+      "divisibility",
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-e12-counting",
+    "proofId": "erdos-12",
+    "range": {
+      "startLine": 31,
+      "endLine": 33
+    },
+    "type": "definition",
+    "title": "countingFunction",
+    "content": "The counting function |A ∩ {1,...,N}| = Set.ncard(A ∩ Set.Icc 1 N) measures the growth of A. The central question is: how fast can this function grow while maintaining the divisibility-free property?",
+    "mathContext": "The counting function $A(N) = |A \\cap [1, N]|$ satisfies $A(N)/N \\to 0$ (Erdős-Sárközy), but the decay rate is unknown. Best construction: $A(N) \\geq \\sqrt{N}/(\\sqrt{\\log N} \\cdot (\\log\\log N)^2)$ (Elsholtz-Planitzer). Gap: is $A(N) = \\Theta(\\sqrt{N})$ possible?",
+    "significance": "key",
+    "relatedConcepts": [
+      "Set.ncard",
+      "Set.Icc",
+      "asymptotic growth"
+    ],
+    "prerequisites": [
+      "cardinality",
+      "intervals"
+    ]
+  },
+  {
+    "id": "ann-e12-powers2-counterexample",
+    "proofId": "erdos-12",
+    "range": {
+      "startLine": 37,
+      "endLine": 58
+    },
+    "type": "concept",
+    "title": "powersOfTwo_not_divisibility_free (Fully Proved)",
+    "content": "Powers of 2 do NOT form a divisibility-free set. Counterexample: a=2, b=4, c=8 gives 2 | (4+8) = 2 | 12. The proof provides this explicit counterexample and derives the contradiction.",
+    "mathContext": "The counterexample $a = 2, b = 4, c = 8$: all distinct, $2 < 4$ and $2 < 8$, and $2 \\mid 12$ since $12 = 6 \\times 2$. More generally, for $i < j$ and $i < k$: $2^i \\mid (2^j + 2^k)$ since $2^j + 2^k = 2^{\\min(j,k)}(1 + 2^{|j-k|})$ and $i \\leq \\min(j,k)$. This corrects the annotation from the earlier version which incorrectly claimed powers of 2 are divisibility-free.",
+    "significance": "key",
+    "relatedConcepts": [
+      "explicit counterexample",
+      "proof by contradiction",
+      "powers of 2"
+    ],
+    "prerequisites": [
+      "divisibility",
+      "omega tactic"
+    ]
+  },
+  {
+    "id": "ann-e12-primes3mod4-def",
+    "proofId": "erdos-12",
+    "range": {
+      "startLine": 60,
+      "endLine": 71
+    },
+    "type": "definition",
+    "title": "primeSquares3mod4 — The Key Construction",
+    "content": "The set {p² : p prime, p ≡ 3 (mod 4)} is a large divisibility-free set. The construction works because if p² | (q² + r²) for distinct primes p < q, r ≡ 3 (mod 4), then -1 would be a quadratic residue mod p — contradicting p ≡ 3 (mod 4).",
+    "mathContext": "The set $\\{p^2 : p \\equiv 3 \\pmod{4},\\; p \\text{ prime}\\}$ has counting function $\\sim \\sqrt{N}/\\log N$ by the prime number theorem for arithmetic progressions ($\\pi(x; 4, 3) \\sim x/(2\\log x)$, so the number of $p^2 \\leq N$ is $\\sim \\sqrt{N}/(2\\log\\sqrt{N}) = \\sqrt{N}/\\log N$). This is close to $\\sqrt{N}$ but misses by a $\\log N$ factor.",
+    "significance": "key",
+    "relatedConcepts": [
+      "quadratic residues",
+      "first supplementary law",
+      "prime squares"
+    ],
+    "prerequisites": [
+      "quadratic reciprocity",
+      "prime number theorem"
+    ]
+  },
+  {
+    "id": "ann-e12-neg-one-not-square",
+    "proofId": "erdos-12",
+    "range": {
+      "startLine": 73,
+      "endLine": 77
+    },
+    "type": "concept",
+    "title": "neg_one_not_square_mod_three_mod_four (Fully Proved)",
+    "content": "The first supplementary law of quadratic reciprocity: -1 is a quadratic non-residue mod p when p ≡ 3 (mod 4). Proved using ZMod.exists_sq_eq_neg_one_iff and omega.",
+    "mathContext": "The first supplementary law: $\\left(\\frac{-1}{p}\\right) = (-1)^{(p-1)/2}$, so $-1$ is a QR mod $p$ iff $p \\equiv 1 \\pmod{4}$. In Lean: $\\texttt{ZMod.exists\\_sq\\_eq\\_neg\\_one\\_iff}$ gives the equivalence $\\texttt{IsSquare}(-1 : \\texttt{ZMod } p) \\iff p \\% 4 \\neq 3$, and $\\texttt{omega}$ closes the goal from $p \\% 4 = 3$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Legendre symbol",
+      "ZMod",
+      "quadratic reciprocity"
+    ],
+    "prerequisites": [
+      "ZMod.exists_sq_eq_neg_one_iff",
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-e12-prime-not-div-sum-sq",
+    "proofId": "erdos-12",
+    "range": {
+      "startLine": 85,
+      "endLine": 141
+    },
+    "type": "concept",
+    "title": "prime_3mod4_not_div_sum_squares (Fully Proved)",
+    "content": "If p, q, r are distinct primes ≡ 3 (mod 4) with p < q and p < r, then p ∤ (q² + r²). The proof works in ZMod p: if p | (q²+r²), then q²+r² ≡ 0 mod p, so (r/q)² ≡ -1 mod p, contradicting the first supplementary law.",
+    "mathContext": "The proof strategy: assume $p \\mid (q^2 + r^2)$. In $\\mathbb{Z}/p\\mathbb{Z}$: $q^2 + r^2 \\equiv 0$, so $r^2 = -q^2$. Since $p \\nmid q$ (distinct primes with $p < q$), $q$ is a unit in $\\mathbb{Z}/p\\mathbb{Z}$, and $(r \\cdot q^{-1})^2 = r^2 \\cdot (q^2)^{-1} = -q^2 \\cdot (q^2)^{-1} = -1$. So $-1$ is a square mod $p$, contradicting $p \\equiv 3 \\pmod{4}$. The $\\texttt{calc}$ block shows $(r \\cdot q^{-1})^2 = r^2 \\cdot (q^2)^{-1} = -q^2 \\cdot (q^2)^{-1} = -1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ZMod arithmetic",
+      "unit group",
+      "quadratic non-residue",
+      "calc block"
+    ],
+    "prerequisites": [
+      "ZMod.natCast_eq_zero_iff",
+      "inv_pow",
+      "mul_inv_cancel₀"
+    ]
+  },
+  {
+    "id": "ann-e12-main-construction",
+    "proofId": "erdos-12",
+    "range": {
+      "startLine": 143,
+      "endLine": 188
+    },
+    "type": "concept",
+    "title": "primeSquares3mod4_divisibility_free (Fully Proved)",
+    "content": "The main construction theorem: squares of primes ≡ 3 (mod 4) form a divisibility-free set. If p² < q², r² are squares of distinct primes ≡ 3 (mod 4), then p² ∤ (q² + r²). The proof unpacks the set membership, derives p < q and p < r from p² < q² and p² < r², applies prime_3mod4_not_div_sum_squares to get p ∤ (q²+r²), then lifts to p² ∤ (q²+r²).",
+    "mathContext": "The key chain: $p^2 < q^2 \\implies p < q$ (since squaring is monotone on $\\mathbb{N}$), then $p \\nmid (q^2 + r^2)$ by the quadratic residue argument, then $p^2 \\nmid (q^2 + r^2)$ since $p \\mid p^2$ and divisibility is transitive. The final step uses $\\texttt{sq\\_not\\_dvd\\_of\\_not\\_dvd}$: if $p \\nmid n$ then $p^2 \\nmid n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "obtains pattern matching",
+      "by_contra",
+      "push_neg",
+      "pow_le_pow_left"
+    ],
+    "prerequisites": [
+      "prime_3mod4_not_div_sum_squares",
+      "sq_not_dvd_of_not_dvd"
+    ]
+  },
+  {
+    "id": "ann-e12-density-zero",
+    "proofId": "erdos-12",
+    "range": {
+      "startLine": 192,
+      "endLine": 198
+    },
+    "type": "concept",
+    "title": "Erdős-Sárközy: Density Zero",
+    "content": "Every infinite divisibility-free set has asymptotic density 0: |A ∩ {1,...,N}| / N → 0 as N → ∞. This rules out sets with positive density but leaves the decay rate completely open.",
+    "mathContext": "The density zero result $A(N)/N \\to 0$ follows from a counting argument: if $A$ had positive density $\\delta > 0$, then for large $N$, $A$ contains $\\sim \\delta N$ elements in $[1, N]$. For a typical $a \\in A \\cap [1, \\sqrt{N}]$, the residues $\\{b \\bmod a : b \\in A, b > a\\}$ would fill $\\Omega(\\delta N / a)$ of the $a$ residue classes. The sum-free constraint mod $a$ limits this to $< a/2$ classes, giving $\\delta N / a < a/2$, or $a > \\sqrt{2\\delta N}$. But $a \\leq \\sqrt{N}$ by assumption — contradiction for $\\delta > 1/2$. Iterating this argument drives $\\delta \\to 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic density",
+      "Tendsto",
+      "nhds 0",
+      "sum-free constraint"
+    ],
+    "prerequisites": [
+      "counting arguments",
+      "pigeonhole principle"
+    ]
+  },
+  {
+    "id": "ann-e12-q1",
+    "proofId": "erdos-12",
+    "range": {
+      "startLine": 200,
+      "endLine": 215
+    },
+    "type": "theorem",
+    "title": "Question 1: √N Density (OPEN)",
+    "content": "Can a divisibility-free set achieve positive √N-density? Formally: ∃ A infinite and divisibility-free with ∃ c > 0, ∀ᶠ N, A(N)/√N ≥ c. The Elsholtz-Planitzer construction gets within logarithmic factors: A(N) ≥ √N/(√(log N)·(log log N)²).",
+    "mathContext": "Question 1 asks: $\\exists A$ div-free with $\\liminf_{N \\to \\infty} A(N)/\\sqrt{N} > 0$? The best construction (Elsholtz-Planitzer 2017) achieves $A(N) \\geq \\sqrt{N} \\cdot (\\sqrt{\\log N} \\cdot (\\log\\log N)^2)^{-1}$, tantalizingly close. The prime squares construction gives $A(N) \\sim \\sqrt{N}/\\log N$, weaker by a full $\\log N$ factor. Closing the gap requires either a better construction or a proof that $\\sqrt{N}$ density is impossible.",
+    "significance": "key",
+    "relatedConcepts": [
+      "liminf",
+      "construction bounds",
+      "logarithmic gaps"
+    ],
+    "prerequisites": [
+      "Filter.atTop",
+      "Real.sqrt"
+    ]
+  },
+  {
+    "id": "ann-e12-q2",
+    "proofId": "erdos-12",
+    "range": {
+      "startLine": 217,
+      "endLine": 223
+    },
+    "type": "definition",
+    "title": "Question 2: Sparse Infinitely Often (OPEN)",
+    "content": "Must every divisibility-free set satisfy A(N) < N^{1-c} for infinitely many N? This asks whether the set must dip below polynomial growth infinitely often, even if it occasionally grows fast.",
+    "mathContext": "Question 2: $\\forall A$ div-free, $\\exists c > 0,\\; \\forall M,\\; \\exists N > M: A(N) < N^{1-c}$. This is weaker than Question 3 but stronger than Question 1. It allows the set to have $A(N) \\sim \\sqrt{N}$ for most $N$, but forces $A(N) < N^{1-c}$ infinitely often. Note: $N^{1-c} \\ll \\sqrt{N}$ for $c > 1/2$, so this would rule out sustained $\\sqrt{N}$ density.",
+    "significance": "key",
+    "relatedConcepts": [
+      "infinitely often",
+      "polynomial growth",
+      "fluctuation"
+    ],
+    "prerequisites": [
+      "limsup vs liminf",
+      "power functions"
+    ]
+  },
+  {
+    "id": "ann-e12-q3",
+    "proofId": "erdos-12",
+    "range": {
+      "startLine": 225,
+      "endLine": 234
+    },
+    "type": "definition",
+    "title": "Question 3: Convergent Reciprocal Sum (OPEN)",
+    "content": "Must Σ_{n ∈ A} 1/n converge for every divisibility-free set A? This is the strongest sparseness condition. For comparison: primes have divergent reciprocal sum, while squares have convergent sum (π²/6). The Summable predicate is used for the Lean formalization.",
+    "mathContext": "Question 3: $\\forall A$ div-free, $\\sum_{n \\in A} 1/n < \\infty$? If $A(N) \\leq C\\sqrt{N}$, partial summation gives $\\sum_{n \\leq N, n \\in A} 1/n \\leq C \\int_1^N x^{-1/2} dx / x \\sim C\\sqrt{\\log N}$, which diverges. So $\\sqrt{N}$ density does NOT imply convergent reciprocal sum. Question 3 would require $A(N) = o(\\sqrt{N}/\\log N)$ on average, much sparser than $\\sqrt{N}$. The hierarchy: Q3 true $\\implies$ Q2 true $\\implies$ Q1 false.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Summable",
+      "reciprocal sum",
+      "partial summation",
+      "Basel problem"
+    ],
+    "prerequisites": [
+      "infinite series",
+      "convergence tests"
+    ]
+  },
+  {
+    "id": "ann-e12-coprime",
+    "proofId": "erdos-12",
+    "range": {
+      "startLine": 236,
+      "endLine": 246
+    },
+    "type": "concept",
+    "title": "Coprime Case: Schoen-Baier Bound",
+    "content": "When A is both divisibility-free and pairwise coprime, the bound improves dramatically: A(N) = O(N^{2/3}/log N). Proved by Schoen (2001) and Baier (2004) using sieve methods. The coprime constraint eliminates shared factors that could create large divisibility-free subsets.",
+    "mathContext": "For pairwise coprime $A$: $A(N) \\leq C N^{2/3} / \\log N$. The exponent $2/3$ is far below $1/2$ from $\\sqrt{N}$, showing coprimality forces much stronger sparseness. The proof uses the large sieve inequality: coprime elements in $[1, N]$ have limited residue class overlaps, and the sum-free condition mod $a$ further restricts growth.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pairwise coprime",
+      "large sieve",
+      "N^{2/3} bound"
+    ],
+    "prerequisites": [
+      "Nat.Coprime",
+      "sieve methods"
+    ]
+  },
+  {
+    "id": "ann-e12-infinite-construction",
+    "proofId": "erdos-12",
+    "range": {
+      "startLine": 250,
+      "endLine": 273
+    },
+    "type": "concept",
+    "title": "primeSquares3mod4_is_good (Fully Proved)",
+    "content": "Combines two proved results: primeSquares3mod4_infinite (the set is infinite, using Dirichlet's theorem as axiom + injectivity of squaring) and primeSquares3mod4_divisibility_free (the set satisfies the property, via quadratic residue argument). This provides a concrete infinite divisibility-free set with growth ~√N/log N.",
+    "mathContext": "Infiniteness: the map $p \\mapsto p^2$ is injective on $\\{p : p \\equiv 3 \\pmod{4},\\; p \\text{ prime}\\}$, and this set is infinite by Dirichlet's theorem (axiomatized as $\\texttt{infinitely\\_many\\_primes\\_3mod4}$). So the image $\\{p^2\\}$ is infinite. Combined with $\\texttt{primeSquares3mod4\\_divisibility\\_free}$: the conjunction gives a fully-verified example.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Set.Infinite",
+      "Set.InjOn",
+      "conjunction"
+    ],
+    "prerequisites": [
+      "Dirichlet's theorem",
+      "primeSquares3mod4_divisibility_free"
+    ]
+  }
+]

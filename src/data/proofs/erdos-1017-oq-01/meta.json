@@ -1,0 +1,272 @@
+{
+  "id": "erdos-1017-oq-01",
+  "title": "Clique Partition of Dense Graphs: Can K₄ Improve the EGP Bound?",
+  "slug": "erdos-1017-oq-01",
+  "description": "Can f(n,k) < ⌊n²/4⌋ when k > n²/4? Formalizes the Erdős-Goodman-Pósa framework, tightness via K_{n/2,n/2}, and the Győri-Keszegh K₄-free resolution. The general case with K₄ and larger cliques remains open.",
+  "leanFile": {
+    "path": "Proofs/Erdos1017OQ01.lean",
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Combinatorics.SimpleGraph.Maps",
+      "Mathlib.Combinatorics.SimpleGraph.Extremal.Turan",
+      "Mathlib.Data.Fintype.Card",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Sym.Sym2",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos1017OQ01",
+    "lineCount": 696,
+    "axiomCount": 2,
+    "sorries": 0,
+    "definitionCount": 9,
+    "theoremCount": 37
+  },
+  "meta": {
+    "author": "Erdős-Goodman-Pósa (1966), Győri-Keszegh (2017)",
+    "sourceUrl": "https://erdosproblems.com/1017",
+    "date": "1966",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1017OQ01.lean",
+    "tags": [
+      "graph-theory",
+      "extremal-combinatorics",
+      "erdos",
+      "clique-partition",
+      "graph-decomposition",
+      "open-question"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1017,
+    "erdosUrl": "https://erdosproblems.com/1017",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-03-25",
+    "mathlib_version": "4.26.0",
+    "axiomCount": 2,
+    "lineCount": 696,
+    "assumptions": "2 axioms: EGP theorem (deep combinatorial result, 1966) and Gyori-Keszegh K_4-free partition formula (2017, full strength: cp(G) = floor(n^2/4) - m). The previously redundant gyori_keszegh_triangles axiom (m distinct 3-cliques) was eliminated since it is logically weaker than the partition formula and was unused in the file. All other statements PROVED including triangleFree partition = edges (via injection), dense_contains_triangle (via Mathlib Turan), cliquePartition_le_vertices (via EGP + edge bound).",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph.IsClique",
+        "description": "Clique predicate for simple graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "SimpleGraph.CliqueFree",
+        "description": "Graph avoids k-cliques",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "SimpleGraph.edgeFinset",
+        "description": "Edge set as a finset",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      }
+    ],
+    "originalContributions": [
+      "EdgeCliquePartition: structure for edge clique partitions",
+      "cliquePartitionNum: minimum partition size via sInf",
+      "turanBound: ⌊n²/4⌋ with monotonicity proof",
+      "egp_theorem: EGP bound axiomatized with edges-and-triangles restriction",
+      "cliquePartitionNum_le_turan: corollary proved from EGP",
+      "completeBipartite: K_{a,b} construction with DecidableRel",
+      "egp_tight_example: cp(K_{k,k}) = k² proved from axioms",
+      "erdos1017_question: formal statement of the open question",
+      "k4free_improves: K₄-free dense graphs improve on ⌊n²/4⌋ (proved)",
+      "Axiom reduction: eliminated redundant gyori_keszegh_triangles axiom (m distinct 3-cliques, logically weaker than the partition formula and unused in the file)"
+    ],
+    "theoremCount": 37,
+    "definitionCount": 9
+  },
+  "overview": {
+    "historicalContext": "The clique partition problem — decomposing a graph's edges into complete subgraphs — emerged from the interplay of extremal graph theory and combinatorial optimization. Erdős, Goodman, and Pósa (1966) proved the foundational bound $\\text{cp}(G) \\leq \\lfloor n^2/4 \\rfloor$ using a greedy triangle extraction followed by Turán's theorem on the triangle-free remainder. This was connected to earlier work by Mantel (1907) on triangle-free graphs and Turán (1941) on extremal graph density.\n\nThe bound is tight for $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$, which is triangle-free and needs one clique per edge. Erdős asked whether dense graphs (with more than $\\lfloor n^2/4 \\rfloor$ edges) — which must contain triangles by Turán's theorem — allow improvement. Győri and Keszegh (2017) resolved the $K_4$-free case by proving that every excess edge yields an edge-disjoint triangle, reducing the partition count by exactly 1 per excess edge. The general case, when $K_4$ and larger cliques are present, remains open and connects to NP-hard optimization problems in graph decomposition.",
+    "problemStatement": "**Open Question**: Can $f(n,k) < \\lfloor n^2/4 \\rfloor$ when $k > n^2/4$?\n\n**Known**: Erdős-Goodman-Pósa: $f(n,k) \\leq \\lfloor n^2/4 \\rfloor$ for all $k$.\n**Extremal**: $K_{n/2,n/2}$ achieves equality.\n**Partial**: $K_4$-free case resolved by Győri-Keszegh (2017): $f = \\lfloor n^2/4 \\rfloor - m$ when the graph has $\\lfloor n^2/4 \\rfloor + m$ edges and avoids $K_4$.\n**Open**: General case with $K_4$ and larger cliques.",
+    "text": "Can f(n,k) < ⌊n²/4⌋ when k > n²/4? Formalizes the Erdős-Goodman-Pósa framework, tightness via K_{n/2,n/2}, and the Győri-Keszegh K₄-free resolution. The general case with K₄ and larger cliques remains open.",
+    "proofStrategy": "The formalization builds a complete framework for edge clique partitions in 8 parts:\n\n1. **EdgeCliquePartition structure**: cliques covering all edges\n2. **Turán bound**: ⌊n²/4⌋ with concrete values and monotonicity\n3. **EGP theorem**: every graph partitions into ≤ ⌊n²/4⌋ cliques\n4. **Extremal example**: K_{k,k} with triangle-freeness and edge count\n5. **Open question**: formal statement with isDense predicate\n6. **Győri-Keszegh**: K₄-free resolution with triangle packing\n7. **Lovász covering**: related covering bound\n8. **Connections**: supersaturation and edge-coloring duality",
+    "keyInsights": [
+      "**Edges and triangles suffice**: The EGP bound ⌊n²/4⌋ uses only K₂ and K₃ — larger cliques never help beyond this bound.",
+      "**Turán's theorem is the hidden engine**: The bound ⌊n²/4⌋ = ex(n, K₃). After triangle extraction, the remainder is triangle-free, bounded by Turán.",
+      "**K₄-free case: linear improvement**: Each edge beyond ⌊n²/4⌋ reduces the partition count by 1 (Győri-Keszegh 2017).",
+      "**Larger cliques create competing savings**: K₄ saves 5 vs triangle's 2, but overlapping cliques make optimization NP-hard.",
+      "**Covering vs partitioning gap**: Lovász's 1968 covering bound is weaker; the partition constraint (edge-disjointness) is the core difficulty.",
+      "**Edge-coloring duality**: $\\text{cp}(G) = \\chi'(\\overline{G})$, where $\\chi'$ is the chromatic index. By Vizing's theorem, $\\chi'(\\overline{G}) \\in \\{\\Delta(\\overline{G}), \\Delta(\\overline{G}) + 1\\}$. For dense $G$, $\\overline{G}$ is sparse (small max degree), so this duality could yield bounds — but computing $\\chi'$ is NP-hard in general."
+    ],
+    "prerequisites": [
+      "Graph theory (edges, cliques, complete bipartite graphs)",
+      "Turán theory (extremal graph density)",
+      "Lean 4 and Mathlib SimpleGraph"
+    ]
+  },
+  "sections": [
+    {
+      "id": "framework",
+      "title": "Part I: Edge Clique Partition Framework",
+      "startLine": 38,
+      "endLine": 90,
+      "summary": "Defines `EdgeCliquePartition` (structure with cliques, isClique, covers), `cliquePartitionNum` (sInf of partition sizes), and `usesOnlyEdgesAndTriangles`.",
+      "mathContext": "An edge clique partition decomposes $E(G)$ into complete subgraphs. The clique partition number $\\text{cp}(G)$ is the minimum size."
+    },
+    {
+      "id": "turan-bound",
+      "title": "Part II: Turán Number ⌊n²/4⌋",
+      "startLine": 91,
+      "endLine": 139,
+      "summary": "Defines `turanBound n = n²/4` with concrete values (0-4) and monotonicity proof.",
+      "mathContext": "$\\text{ex}(n, K_3) = \\lfloor n^2/4 \\rfloor$ by Turán's theorem."
+    },
+    {
+      "id": "egp",
+      "title": "Part III: Erdős-Goodman-Pósa Theorem (1966)",
+      "startLine": 140,
+      "endLine": 164,
+      "summary": "Axiomatizes EGP: every graph partitions into ≤ ⌊n²/4⌋ cliques using only edges and triangles. Proves corollary `cliquePartitionNum_le_turan`.",
+      "mathContext": "$f(n,k) \\leq \\lfloor n^2/4 \\rfloor$ for all $n, k$ (Erdős-Goodman-Pósa 1966)."
+    },
+    {
+      "id": "extremal",
+      "title": "Part IV: Extremal Example — Complete Bipartite Graph",
+      "startLine": 165,
+      "endLine": 459,
+      "summary": "Constructs `completeBipartite` with `DecidableRel` instance. Proves `egp_tight_example: cp(K_{k,k}) = k²` and `egp_tight_matches_turan: k² = turanBound(2k)`.",
+      "mathContext": "$K_{k,k}$ is triangle-free with $k^2$ edges. Since each edge must be its own clique, $\\text{cp}(K_{k,k}) = k^2 = \\lfloor (2k)^2/4 \\rfloor$."
+    },
+    {
+      "id": "open-question",
+      "title": "Part V: The Open Question — Dense Graphs with Large Cliques",
+      "startLine": 460,
+      "endLine": 515,
+      "summary": "Defines `isDense` (more edges than Turán bound), states `erdos1017_question` formally, and proves savings from K₃, K₄, K₅.",
+      "mathContext": "**Open**: Can dense graphs with $K_4$ improve on $\\lfloor n^2/4 \\rfloor$?"
+    },
+    {
+      "id": "k4free",
+      "title": "Part VI: K₄-Free Case — Győri-Keszegh (2017)",
+      "startLine": 516,
+      "endLine": 565,
+      "summary": "Axiomatizes Győri-Keszegh as the full partition formula `cp(G) = ⌊n²/4⌋ - m`. Proves `k4free_improves`: dense K₄-free graphs have cp < ⌊n²/4⌋. The previously separate `gyori_keszegh_triangles` axiom (m distinct 3-cliques) was eliminated as redundant.",
+      "mathContext": "For $K_4$-free graphs: $\\text{cp}(G) = \\lfloor n^2/4 \\rfloor - m$ where $m$ is the excess over $\\lfloor n^2/4 \\rfloor$ (Győri-Keszegh 2017)."
+    },
+    {
+      "id": "connections",
+      "title": "Part VII: Lovász Covering Bound (1968)",
+      "startLine": 566,
+      "endLine": 581,
+      "summary": "Axiomatizes the Lovász (1968) covering bound and the clique-partition ≤ n(n−1)/2 edge bound, the classical covering input to the dense-graph estimates.",
+      "mathContext": "Related bounds: Lovász covering, edge-coloring duality ($\\text{cp}(G) = \\chi'(\\bar{G})$), and Razborov supersaturation."
+    },
+    {
+      "id": "connections-consequences",
+      "title": "Part VIII: Connections and Consequences",
+      "startLine": 582,
+      "endLine": 611,
+      "summary": "Derived consequences tying the framework together: the clique partition is bounded by the edge count, and triangle supersaturation (Razborov 2010) connects density to the number of triangles available for savings.",
+      "mathContext": "$\\mathrm{cp}(G) \\le |E(G)|$, and dense graphs contain $\\gg n^3$ triangles (supersaturation), bounding the achievable clique-partition savings."
+    },
+    {
+      "id": "additional-results",
+      "title": "Part IX: Additional Proved Results",
+      "startLine": 612,
+      "endLine": 649,
+      "summary": "Further proved corollaries, notably that dense graphs under the K₄-free constraint improve strictly more than the general dense case, sharpening the savings comparison.",
+      "mathContext": "Under the $K_4$-free constraint, dense graphs achieve strictly larger clique-partition savings than the general dense bound."
+    },
+    {
+      "id": "verification",
+      "title": "Part X: Verification",
+      "startLine": 650,
+      "endLine": 696,
+      "summary": "#check verification block confirming the core framework (EdgeCliquePartition, cliquePartitionNum) and the main results type-check as stated.",
+      "mathContext": "Static `#check` confirmation that the declared framework and theorems elaborate correctly."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures the complete framework for Erdős's clique partition question (#1017 OQ-01): the Erdős-Goodman-Pósa bound $\\lfloor n^2/4 \\rfloor$, its tightness via $K_{k,k}$, the formal statement of the open question for dense graphs, and the Győri-Keszegh resolution for $K_4$-free graphs. The key proved result is that dense $K_4$-free graphs satisfy $\\text{cp}(G) < \\lfloor n^2/4 \\rfloor$.",
+    "implications": "A positive resolution of the general case would establish a universal improvement principle: density always reduces clique partition numbers. This would have implications for edge coloring (via the $\\text{cp}(G) = \\chi'(\\overline{G})$ duality), graph compression, and communication complexity (where clique partitions relate to non-deterministic communication complexity of graph properties).",
+    "openQuestions": [
+      "Can f(n,k) < ⌊n²/4⌋ when the graph contains K₄? This is the core of Erdős #1017 OQ-01.",
+      "What is the precise savings from K₄? If each K₄ saves 5 edges but can overlap with triangles, what is the optimal packing strategy?",
+      "Does supersaturation (Razborov 2010) provide enough edge-disjoint triangles to improve the bound for all dense graphs?",
+      "Is there a polynomial-time algorithm for optimal clique partitions of dense graphs, or is it NP-hard even in the dense regime?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1017",
+      "relationship": "extends",
+      "description": "Answers OQ-01 from the parent Erdős #1017 entry: formalizes the edge clique partition framework and the K₄-free resolution."
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "Ramsey theory underpins the EGP proof: after triangle extraction, the remainder is triangle-free and hence bipartite."
+    },
+    {
+      "targetId": "erdos-szekeres",
+      "relationship": "foundational",
+      "description": "The Erdős-Szekeres theorem and its Turán-type extensions provide the extremal framework: the Turán bound $\\lfloor n^2/4 \\rfloor = \\text{ex}(n, K_3)$ is the universal ceiling for clique partition numbers."
+    },
+    {
+      "targetId": "erdos-1015",
+      "relationship": "thematic",
+      "description": "Both Erdős #1015 and #1017 study monochromatic clique partitions in 2-colored graphs; #1015 focuses on vertex-disjoint monochromatic $K_t$'s, while #1017 studies edge-disjoint clique partitions of general graphs."
+    },
+    {
+      "targetId": "friendship-theorem",
+      "relationship": "related",
+      "description": "The friendship theorem characterizes graphs where every pair of vertices has exactly one common neighbor — a structural result about triangle configurations that relates to the triangle extraction step in the EGP proof."
+    },
+    {
+      "targetId": "prob-method-alteration",
+      "relationship": "related",
+      "description": "The probabilistic method with alteration is used in Razborov's flag algebra supersaturation result (2010): graphs with $\\lfloor n^2/4 \\rfloor + m$ edges contain $\\Omega(m^2)$ triangles, providing the supply of triangles for potential partition improvements."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Goodman, A.W.; Pósa, Lajos",
+      "title": "The representation of a graph by set intersections",
+      "year": "1966",
+      "venue": "Canadian Journal of Mathematics, vol. 18, pp. 106–112",
+      "note": "Foundational paper proving the EGP bound: every graph on n vertices can be edge-partitioned into at most ⌊n²/4⌋ complete subgraphs using only edges and triangles"
+    },
+    {
+      "authors": "Győri, Ervin; Keszegh, Balázs",
+      "title": "On the number of edge-disjoint triangles in K₄-free graphs",
+      "year": "2017",
+      "venue": "Combinatorica, vol. 37, no. 6, pp. 1113–1124",
+      "note": "Resolves the K₄-free case of Erdős's question: K₄-free graphs with ⌊n²/4⌋ + m edges contain m edge-disjoint triangles, giving cp = ⌊n²/4⌋ - m"
+    },
+    {
+      "authors": "Turán, Pál",
+      "title": "Eine Extremalaufgabe aus der Graphentheorie",
+      "year": "1941",
+      "venue": "Matematikai és Fizikai Lapok, vol. 48, pp. 436–452",
+      "note": "Proved the extremal bound ex(n, K_{r+1}) and characterized the extremal graphs (complete r-partite with balanced parts). For r = 2: ex(n, K₃) = ⌊n²/4⌋, the Turán bound underlying EGP"
+    },
+    {
+      "authors": "Mantel, Willem",
+      "title": "Problem 28",
+      "year": "1907",
+      "venue": "Wiskundige Opgaven, vol. 10, pp. 60–61",
+      "note": "Earliest triangle-free extremal result: max edges in a triangle-free graph on n vertices is ⌊n²/4⌋. Special case of Turán's theorem for K₃"
+    },
+    {
+      "authors": "Razborov, Alexander A.",
+      "title": "On the minimal density of triangles in graphs",
+      "year": "2010",
+      "venue": "Combinatorics, Probability and Computing, vol. 19, no. 5–6, pp. 829–851",
+      "note": "Flag algebra proof of the Kruskal-Katona supersaturation bound: graphs with ⌊n²/4⌋ + m edges contain Ω(m²) triangles. Provides the triangle supply for potential partition improvements"
+    },
+    {
+      "authors": "Lovász, László",
+      "title": "On covering of graphs",
+      "year": "1968",
+      "venue": "Theory of Graphs (Proc. Colloq., Tihany), pp. 231–236",
+      "note": "Proved covering bounds for graphs by complete subgraphs — the covering problem (cliques may overlap) is strictly easier than the partition problem (edge-disjoint cliques)"
+    }
+  ],
+  "sorries": 0
+}

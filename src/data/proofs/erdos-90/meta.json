@@ -1,0 +1,256 @@
+{
+  "id": "erdos-90",
+  "title": "Erdős Problem #90: The Unit Distance Problem",
+  "slug": "erdos-90",
+  "description": "What is the maximum number u(n) of unit-distance pairs among n points in ℝ²? Erdős (1946) conjectured u(n) = n^{1+O(1/log log n)}. The best published upper bound is O(n^{4/3}) by Spencer–Szemerédi–Trotter. On 2026-05-20, OpenAI announced a construction (via number fields with infinite class field towers / Golod–Shafarevich) reportedly giving a polynomial improvement over the lattice lower bound, disproving the conjectured exponent — peer review pending. $500 prize.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/90",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos90Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorial-geometry",
+      "unit-distance",
+      "incidence-geometry",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 90,
+    "erdosUrl": "https://erdosproblems.com/90",
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "ℝ²-valued inner product space, the ambient space for point configurations",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "dist",
+        "description": "Euclidean distance function on metric spaces, used to define unit distance pairs",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      },
+      {
+        "theorem": "Finset.offDiag",
+        "description": "Ordered pairs of distinct elements from a finite set, used to enumerate point pairs",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter for 'eventually for all large n', used in asymptotic statements",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm, used in the exponent n^{1+c/log log n}",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "sSup",
+        "description": "Supremum of a set of natural numbers, used to define u(n) = max over configurations",
+        "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Defined unitDistancePairsCount via Finset.offDiag filtering and division by 2 for unordered pairs",
+      "Defined unitDistanceCounts as the set of achievable counts for n-point configurations",
+      "Defined maxUnitDistances u(n) via sSup of achievable unit distance counts",
+      "Documented the well-definedness requirement: unitDistanceCounts(n) is bounded above by C(n,2), ensuring sSup is finite (stated informally in comments)",
+      "Stated the Spencer–Szemerédi–Trotter O(n^{4/3}) upper bound with explicit constant",
+      "Stated the lattice lower bound n^{1+c/log log n} using Filter.atTop",
+      "Formalized both the main conjecture and the weak form u(n) = n^{1+o(1)}",
+      "Documented Valtr's obstruction informally: a non-Euclidean semimetric achieving Θ(n^{4/3}) unit distances exists, showing SST alone cannot beat n^{4/3} (stated in comments, not as a Lean axiom)",
+      "Added axiomatized class field tower infrastructure (Proofs/Erdos90/ClassFieldTower.lean, issue #22607): HilbertClassFieldAxioms / LHilbertClassFieldAxioms Prop-valued structures, ClassFieldTowerWitness / LClassFieldTowerWitness for Nat-indexed level families, classFieldTowerLevels explicit Nat.rec iteration, and HasInfiniteClassFieldTower / HasInfiniteLClassFieldTower predicates. Strategy B of research/MATHLIB-PREREQS-UNIT-DISTANCE.md.",
+      "Added verified ℓ-rank adapter for ClassGroup torsion (Proofs/Erdos90/ClassGroupLRank.lean, issue #22604, sub-issue (a) of #20576): classGroupLTorsion K ℓ exposes the ℓ-torsion Subgroup of ClassGroup (𝓞 K); classGroupLRank K ℓ defined as Nat.log ℓ of the ℓ-torsion cardinality (the (ZMod ℓ)-vector-space dimension of the elementary abelian ℓ-group); API lemmas (containment in CommGroup.torsion; ⊤ when classNumber ∣ ℓ; bound by log classNumber); worked example classGroupLRank ℚ ℓ = 0. Zero new axioms — pure adapter over Mathlib's ClassGroup + RingOfIntegers.instFintypeClassGroup + Subgroup machinery."
+    ],
+    "axiomCount": 16,
+    "lineCount": 81,
+    "companionFiles": [
+      {
+        "path": "Proofs/Erdos90/ClassFieldTower.lean",
+        "purpose": "Axiomatized class field tower infrastructure (issue #22607, sub-issue of #20576). Prop-valued HilbertClassFieldAxioms / LHilbertClassFieldAxioms structures with class-field-theory assumptions (Galois, Artin reciprocity isomorphism with ClassGroup, unramifiedness, maximal-unramified-abelian universal property), and ClassFieldTowerWitness / LClassFieldTowerWitness structures for Nat-indexed level families, plus HasInfiniteClassFieldTower / HasInfiniteLClassFieldTower predicates.",
+        "axiomCount": 13,
+        "axioms": [
+          "4 structure fields in HilbertClassFieldAxioms (Galois + Artin reciprocity + unramified + maximal-unramified-abelian)",
+          "3 structure fields in LHilbertClassFieldAxioms (ℓ-prime variants)",
+          "3 structure fields in ClassFieldTowerWitness (tower-level family)",
+          "3 structure fields in LClassFieldTowerWitness (ℓ-tower-level family)"
+        ],
+        "lineCount": 0,
+        "status": "axiomatized",
+        "issue": 22607
+      },
+      {
+        "path": "Proofs/Erdos90/GolodShafarevich.lean",
+        "purpose": "Axiomatized Golod–Shafarevich inequality (sub-issue (b) of #20576). Declares the abstract pro-ℓ inequality r(G) ≥ d(G)²/4, the number-theoretic specialization producing infinite ℓ-class field towers under the d_ℓ > 2 + 2·√(r₁+r₂+1) bound, and the Brumer / Koch–Venkov example of an imaginary quadratic field with an infinite 2-class field tower.",
+        "axiomCount": 3,
+        "axioms": [
+          "golodShafarevich_pro_ell — r(G) ≥ d(G)²/4 for finitely-presented pro-ℓ groups",
+          "golodShafarevich_number_field — d_ℓ(Cl_K) > 2 + 2·√(r₁+r₂+1) ⇒ infinite ℓ-class field tower",
+          "brumer_example — ℚ(√(−4849845)) admits an infinite 2-class field tower (illustrative)"
+        ],
+        "opaqueMarkers": 4,
+        "lineCount": 195,
+        "status": "axiomatized",
+        "issue": 22606
+      },
+      {
+        "path": "Proofs/Erdos90/ClassGroupLRank.lean",
+        "purpose": "Verified ℓ-rank adapter for ClassGroup torsion (sub-issue (a) of #20576). Exposes the ℓ-torsion subgroup of ClassGroup (𝓞 K) as a Subgroup, supplies Fintype/Finite instances, defines classGroupLRank as Nat.log ℓ of the ℓ-torsion cardinality (the dimension of the elementary abelian ℓ-group over ZMod ℓ), and proves basic API (contained in CommGroup.torsion; equals ⊤ when class number divides ℓ; bounded by log of classNumber) plus the worked example classGroupLRank ℚ ℓ = 0. Pure adapter over existing Mathlib content (ClassGroup + RingOfIntegers.instFintypeClassGroup + standard Subgroup machinery): 0 axiom declarations, 0 sorries, 0 structure-encoded assumptions.",
+        "axiomCount": 0,
+        "axioms": [],
+        "lineCount": 254,
+        "status": "verified",
+        "issue": 22604
+      }
+    ],
+    "assumptions": "Primary file Erdos90Problem.lean: 0 axioms, 0 sorries. Companion file Proofs/Erdos90/ClassFieldTower.lean (issue #22607, sub-issue of #20576): 0 axiom declarations but 13 assumption-carrying structure fields (4 in HilbertClassFieldAxioms + 3 in LHilbertClassFieldAxioms + 3 in ClassFieldTowerWitness + 3 in LClassFieldTowerWitness) — Hilbert-class-field properties (Galois, Artin reciprocity isomorphism with ClassGroup, unramifiedness, maximal-unramified-abelian universal property) and ℓ-prime variants awaiting class field theory infrastructure in Mathlib (currently missing per research/MATHLIB-PREREQS-UNIT-DISTANCE.md items 3 and 4). Companion file Proofs/Erdos90/GolodShafarevich.lean (sub-issue (b) of #20576, issue #22606): 3 axiom declarations encoding Golod–Shafarevich (abstract pro-ℓ inequality + number-theoretic specialization + Brumer/Koch–Venkov witness) and 4 opaque markers (IsFinitelyPresentedProL, HasClassGroupLRank, HasSignature, HasInfiniteLClassFieldTower) used to state hypotheses without coupling to unmerged sibling sub-issues #22604 (ℓ-rank adapter) and #22607 (class field tower definition). Companion file Proofs/Erdos90/ClassGroupLRank.lean (sub-issue (a) of #20576, issue #22604): 0 axiom declarations, 0 sorries, 0 structure-encoded assumptions — a verified adapter exposing classGroupLTorsion K ℓ (the ℓ-torsion Subgroup of ClassGroup (𝓞 K)) and classGroupLRank K ℓ (Nat.log ℓ of its cardinality) over existing Mathlib infrastructure (ClassGroup, RingOfIntegers.instFintypeClassGroup, GroupTheory.Torsion); contributes 0 to axiomCount but bridges the opaque marker HasClassGroupLRank from the GolodShafarevich companion to concrete Mathlib content. Per CLAUDE.md axiom integrity policy structure fields count as axioms: total axiomCount = 13 (ClassFieldTower structure fields) + 3 (GolodShafarevich axiom declarations) + 0 (ClassGroupLRank verified adapter) = 16. Status note: on 2026-05-20 OpenAI announced a reported disproof of the conjectured exponent (peer review pending); status remains 'axiomatized' and erdosProblemStatus remains 'open' until the disproof is peer-reviewed and erdosproblems.com#90 is reclassified.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 1,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "Erdős posed Problem 90 in 1946, making it one of the oldest open problems in combinatorial geometry. The unit distance problem asks: given $n$ points in $\\mathbb{R}^2$, what is the maximum number $u(n)$ of pairs at Euclidean distance exactly 1? Erdős himself showed the trivial bound $u(n) \\leq \\binom{n}{2}$ and constructed lattice examples achieving $u(n) \\geq n^{1+c/\\log\\log n}$ for a constant $c > 0$, exploiting the number-theoretic fact that $\\lfloor\\sqrt{n}\\rfloor \\times \\lfloor\\sqrt{n}\\rfloor$ integer lattice points have many representations as sums of two squares. In 1984, Spencer, Szemerédi, and Trotter proved $u(n) = O(n^{4/3})$ using the celebrated Szemerédi–Trotter incidence theorem, which bounds the number of incidences between $n$ points and $m$ lines (or circles). This $n^{4/3}$ bound has stood for over 40 years. In 2005, Valtr constructed a non-Euclidean metric on $\\mathbb{R}^2$ achieving $\\Theta(n^{4/3})$ unit distances, proving that any improvement must exploit specific properties of the Euclidean metric. Erdős offered $\\$500$ for the full resolution and $\\$250$–$300$ for even the weaker form $u(n) = n^{1+o(1)}$.\n\nOn **2026-05-20**, OpenAI announced that an internal reasoning model produced a construction reportedly disproving the conjectured exponent. The construction replaces the Gaussian-integer lattice with rings of integers in number fields admitting **infinite class field towers** (via the Golod–Shafarevich theorem); the corresponding unit groups generate many more unit-length differences than the integer lattice, yielding an infinite family of point sets with a polynomial improvement over Erdős's lower bound (see OpenAI's announcement and accompanying technical note). This is a disproof of the conjectured upper bound on the exponent in $u(n)$, not of the Spencer–Szemerédi–Trotter $O(n^{4/3})$ upper bound, which is unaffected. As of this writing the OpenAI write-up has not been peer-reviewed; the true asymptotic order of $u(n)$ also remains unknown. The problem connects to the Erdős distinct distances problem (solved by Guth–Katz in 2015 using algebraic methods).",
+    "problemStatement": "Let $u(n)$ denote the maximum number of unordered pairs at Euclidean distance 1 among $n$ points in $\\mathbb{R}^2$. Erdős (1946) conjectured $u(n) = n^{1+O(1/\\log\\log n)}$; on 2026-05-20 OpenAI announced a reported disproof of this exponent bound (peer review pending), so the true asymptotic order of $u(n)$ remains an open problem.",
+    "text": "What is the maximum number u(n) of unit-distance pairs among n points in ℝ²? Erdős (1946) conjectured u(n) = n^{1+O(1/log log n)}. The best published upper bound is O(n^{4/3}) by Spencer–Szemerédi–Trotter. On 2026-05-20, OpenAI announced a construction reportedly disproving the conjectured exponent (peer review pending). $500 prize.",
+    "proofStrategy": "The formalization defines $u(n)$ constructively: `unitDistancePairsCount` filters `Finset.offDiag` for pairs at `dist = 1` and divides by 2 for unordered pairs; `maxUnitDistances` takes the `sSup` over all $n$-point configurations. The key results (SST upper bound, lattice lower bound, Valtr's obstruction, Erdős's 1946 conjecture, weak form, and a note on the OpenAI 2026 reported disproof of the conjectured exponent) are documented as informal Lean comments — no `axiom` declarations remain in the source. The file has 0 axioms and 0 sorries; `status: axiomatized` reflects that no asymptotic statement is yet formally proved in Lean.",
+    "keyInsights": [
+      "The **Szemerédi–Trotter incidence theorem** gives $u(n) = O(n^{4/3})$ by viewing unit distances as incidences between points and unit circles: each point $p$ contributes a unit circle $\\{q : |p - q| = 1\\}$, and the SST theorem bounds point-curve incidences",
+      "**Lattice constructions** achieve $n^{1+c/\\log\\log n}$: in a $\\sqrt{n} \\times \\sqrt{n}$ integer lattice, the number of representations of an integer as a sum of two squares is controlled by its prime factorization, and integers with many small prime factors yield many unit distance pairs",
+      "**Valtr's obstruction** (2005) is a fundamental barrier: he constructed a non-Euclidean semimetric $d$ on $\\mathbb{R}^2$ where $n$ points achieve $\\Theta(n^{4/3})$ $d$-unit distances, proving that the SST incidence approach — which works for any convex curve, not just circles — cannot break the $n^{4/3}$ barrier alone",
+      "The **weak conjecture** $u(n) = n^{1+o(1)}$ would already be a major breakthrough, requiring the exponent of the upper bound to approach 1. Even this weaker form has resisted all known techniques for 80 years",
+      "The problem is closely related to the **Erdős distinct distances problem** (how few distinct distances can $n$ points determine?), solved by Guth–Katz (2015) using polynomial partitioning — but those algebraic methods have not yet yielded progress on unit distances"
+    ],
+    "prerequisites": [
+      "Algebraic geometry (algebraic curves, polynomial method)",
+      "Combinatorial geometry (incidence bounds, configurations)",
+      "Combinatorial geometry (incidence theorems, Szemerédi-Trotter)",
+      "Discrete geometry (point-line incidences, arrangements)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "Imports Mathlib modules for inner product spaces (`EuclideanSpace`), metric spaces (`dist`), finite sets (`Finset.offDiag`, `Finset.card`), filters (`Filter.atTop`), and general tactics. These provide the $\\mathbb{R}^2$ ambient space, Euclidean distance, and the asymptotic filter framework."
+    },
+    {
+      "id": "counting",
+      "title": "Unit Distance Counting Definitions",
+      "startLine": 33,
+      "endLine": 46,
+      "summary": "Defines three core objects: `unitDistancePairsCount` counts unordered pairs at distance 1 via `offDiag` filtering and division by 2; `unitDistanceCounts(n)` is the set of achievable counts for $n$-point configurations; `maxUnitDistances(n) = \\mathrm{sSup}(\\text{unitDistanceCounts}(n))$ is the extremal function $u(n)$."
+    },
+    {
+      "id": "trivial-bound",
+      "title": "Trivial Upper Bound",
+      "startLine": 48,
+      "endLine": 51,
+      "summary": "Comments on the trivial bound: the set of achievable unit distance counts is bounded above by $\\binom{n}{2}$, ensuring the `sSup` defining $u(n)$ is finite. Stated informally in Lean comments; no `axiom` declaration in source."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Spencer–Szemerédi–Trotter Upper Bound",
+      "startLine": 52,
+      "endLine": 56,
+      "summary": "States $u(n) \\leq C \\cdot n^{4/3}$ for a constant $C > 0$ and all $n \\geq 1$. This 1984 result applies the Szemerédi–Trotter incidence theorem to unit circles: each point generates a unit circle, and bounding point-circle incidences gives the $n^{4/3}$ bound."
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lattice Lower Bound",
+      "startLine": 57,
+      "endLine": 60,
+      "summary": "States that for some $c > 0$, eventually $u(n) \\geq n^{1+c/\\log\\log n}$. This is achieved by integer lattice configurations exploiting the arithmetic of sums of two squares. The double-logarithmic factor arises from the Ramanujan–Hardy estimate for highly composite numbers."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős Conjecture and Weak Form",
+      "startLine": 61,
+      "endLine": 75,
+      "summary": "States the main conjecture (`ErdosProblem90`): $u(n) \\leq n^{1+C/\\log\\log n}$ eventually, matching the lattice lower bound up to the constant $C$. Also states the weak form (`erdos_90_weak`): $u(n) \\leq n^{1+\\varepsilon}$ for every $\\varepsilon > 0$ and large $n$. On 2026-05-20 OpenAI announced a reported disproof of the conjectured exponent via class field tower constructions (peer review pending); the file's comments are updated to reflect this status."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #90 defines the extremal function u(n) via offDiag filtering and sSup, then documents the key results informally as Lean comments: the Spencer–Szemerédi–Trotter O(n^{4/3}) upper bound (1984), the lattice lower bound n^{1+c/log log n}, Erdős's 1946 conjecture ($500 prize), the weak form ($250–300 prize), Valtr's fundamental obstruction, and a note on the OpenAI 2026-05-20 reported disproof of the conjectured exponent (peer review pending). The file has 0 sorries and 0 axioms; results are informal pending full formalization.",
+    "implications": "**Theoretical Significance**: The asymptotic order of $u(n)$ remains an open problem, but the landscape changed substantially on 2026-05-20 when OpenAI announced an AI-assisted construction reportedly disproving Erdős's conjectured exponent. The construction replaces the Gaussian integer lattice with rings of integers in number fields admitting infinite class field towers (via Golod–Shafarevich), yielding a polynomial improvement over the lattice lower bound. The Spencer–Szemerédi–Trotter $O(n^{4/3})$ upper bound is unaffected; closing the gap between the new lower bound and SST remains open.\n\nThe unit distance problem is intimately connected to the Erdős distinct distances problem (solved by Guth–Katz 2015), Kakeya-type problems, and the algebraic structure of Euclidean distance. Valtr's obstruction shows that purely topological or incidence-theoretic methods are insufficient on the upper-bound side; progress requires exploiting the algebraic nature of circles in the Euclidean plane.",
+    "openQuestions": [
+      "Can the O(n^{4/3}) upper bound be improved at all, even to O(n^{4/3 - ε}) for some ε > 0?",
+      "What is the true asymptotic order of u(n), given the OpenAI 2026-05-20 lower bound exceeds n^{1+c/log log n}?",
+      "Will the OpenAI construction survive peer review, and what is the precise exponent it achieves?",
+      "What specific property of Euclidean distance (beyond convexity of unit circles) would enable matching upper-bound progress?",
+      "Can polynomial partitioning methods (successful for distinct distances) be adapted for unit distances?",
+      "Does the problem have fundamentally different behavior in dimensions d ≥ 3?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-891",
+      "relationship": "thematic",
+      "description": "Both are Erdős open problems connecting combinatorial structure to number-theoretic phenomena; #891 studies prime factors in intervals, while #90 connects unit distances to sums of two squares"
+    },
+    {
+      "targetId": "erdos-224",
+      "relationship": "related",
+      "description": "Both are combinatorial geometry problems studying how finite geometric configurations must satisfy metric or structural constraints"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 81,
+    "axiomCount": 0,
+    "theoremCount": 0,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos90Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "key": "Er46c",
+      "authors": [
+        "P. Erdős"
+      ],
+      "title": "On sets of distances of n points",
+      "venue": "American Mathematical Monthly",
+      "year": "1946",
+      "volume": "53",
+      "pages": "248-250",
+      "note": "Posed the unit distance problem: at most how many pairs at distance 1 among n points?"
+    },
+    {
+      "key": "SST84",
+      "authors": [
+        "J. Spencer",
+        "E. Szemerédi",
+        "W.T. Trotter"
+      ],
+      "title": "Unit distances in the Euclidean plane",
+      "venue": "Graph Theory and Combinatorics (Bollobás Festschrift), Academic Press",
+      "year": "1984",
+      "pages": "293-303",
+      "note": "Best known upper bound O(n^{4/3}) for unit distances in the plane"
+    },
+    {
+      "key": "OpenAI26",
+      "authors": [
+        "OpenAI"
+      ],
+      "title": "Remarks on the Disproof of the Unit Distance Conjecture",
+      "venue": "OpenAI technical note (announcement: https://openai.com/index/model-disproves-discrete-geometry-conjecture/ ; PDF: https://cdn.openai.com/pdf/74c24085-19b0-4534-9c90-465b8e29ad73/unit-distance-remarks.pdf)",
+      "year": "2026",
+      "note": "Announced 2026-05-20: AI-assisted construction reportedly disproving the conjectured exponent in u(n) via number fields with infinite class field towers (Golod–Shafarevich); peer review pending."
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,214 @@
+{
+  "id": "erdos-92",
+  "title": "Erdős Problem #92: Equidistant Points in the Plane",
+  "slug": "erdos-92",
+  "description": "Is f(n) ≤ n^{o(1)}, where f(n) is the maximum k such that some n-point set has k equidistant points from every point?",
+  "meta": {
+    "author": "Erdős; bounds by Pach-Sharir (1992), JJMT (2024)",
+    "sourceUrl": "https://erdosproblems.com/92",
+    "date": "1970s",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos92Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorial-geometry",
+      "equidistant",
+      "incidence-geometry",
+      "conjecture"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 92,
+    "erdosUrl": "https://erdosproblems.com/92",
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": "$500",
+    "dateAdded": "2026-01-13",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Euclidean space ℝ^n with norm",
+        "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
+      },
+      {
+        "theorem": "Finset.erase",
+        "description": "Remove an element from a Finset",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Filter.Eventually",
+        "description": "Eventually true along a filter",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm of real numbers",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of maxEquidistantPoints for a point in a set",
+      "Definition of hasEquidistantProperty for k-equidistant sets",
+      "Definition of f(n) as supremum over achievable values",
+      "WeakConjecture: f(n) ≤ n^{o(1)}",
+      "StrongConjecture: f(n) < n^{c/log log n}",
+      "Lemma hasEquidistantProperty_le and theorem f_le_n_minus_one (trivial bound f(n) ≤ n - 1)",
+      "Theorem strong_implies_weak: StrongConjecture → WeakConjecture",
+      "Helper lemma rpow_le_rpow_of_exponent_le' for monotonicity in the exponent",
+      "Pach-Sharir, JJMT, lattice lower bound, and Fishburn small-value results are referenced in docstrings only — not formalized as axioms or theorems"
+    ],
+    "axiomCount": 3,
+    "lineCount": 230,
+    "assumptions": "3 axioms: maxEquidistantPoints_le_card_sub_one, achievableValues_nonempty, eventually_exponent_small. 0 sorries.",
+    "theoremCount": 4,
+    "definitionCount": 7
+  },
+  "overview": {
+    "historicalContext": "This problem concerns the equidistance structure of point sets in the plane. For each point x in a set A, we count how many other points lie on a single circle centered at x (i.e., are equidistant from x).\n\nThe function f(n) is the maximum k such that some n-point set has at least k equidistant points from EVERY point in the set. This is a 'stronger form' of the unit distance problem (#90).\n\nThe √n × √n integer lattice achieves f(n) > n^{c/log log n}, while the best upper bound is f(n) ≪ n^{4/11} from recent work by Janzer, Janzer, Methuku, and Tardos (2024).",
+    "problemStatement": "**Erdős Problem #92 (OPEN)**\n\nLet $f(n)$ be maximal such that there exists a set $A$ of $n$ points in $\\mathbb{R}^2$ where every $x \\in A$ has at least $f(n)$ points in $A$ equidistant from $x$.\n\n**Questions**:\n1. Is $f(n) \\leq n^{o(1)}$? (weak form)\n2. Is $f(n) < n^{c/\\log\\log n}$? (strong form)\n\n**Known Bounds**:\n- Lower: $f(n) > n^{c/\\log\\log n}$ (lattice)\n- Upper: $f(n) \\ll n^{4/11}$ (JJMT 2024)\n\n**Prize**: $500",
+    "text": "Is f(n) ≤ n^{o(1)}, where f(n) is the maximum k such that some n-point set has k equidistant points from every point?",
+    "proofStrategy": "We formalize the key concepts and the trivial bound, with three supporting axioms:\n\n1. **maxEquidistantPoints**: Maximum points at same distance from x\n\n2. **hasEquidistantProperty**: k-equidistant property for a set\n\n3. **f**: The extremal function as supremum\n\n4. **WeakConjecture**: f(n) ≤ n^ε for all ε > 0\n\n5. **StrongConjecture**: f(n) < n^{c/log log n}\n\n6. **Trivial upper bound** f(n) ≤ n - 1, proved as theorem f_le_n_minus_one from axiom maxEquidistantPoints_le_card_sub_one and axiom achievableValues_nonempty\n\n7. **strong_implies_weak**: theorem deriving the weak conjecture from the strong one, using axiom eventually_exponent_small\n\nThe Pach-Sharir n^{2/5} bound, JJMT n^{4/11} bound, lattice lower bound, and Fishburn's exact small-n values are described in docstrings as historical context but are not formalized — no axioms or theorems are stated for them.",
+    "keyInsights": [
+      "**Circle counting**: For each point, we count how many others lie on the same circle centered at that point.",
+      "**Universal property**: f(n) requires the k-equidistant property for ALL points in the set, not just one.",
+      "**Lattice construction**: The √n × √n integer grid gives the best known lower bound.",
+      "**Incidence geometry**: Upper bounds use sophisticated circle-point incidence theorems.",
+      "**Related to unit distances**: This is a 'stronger form' of Problem #90 (unit distance conjecture)."
+    ],
+    "prerequisites": [
+      "Algebraic geometry (algebraic curves, polynomial method)",
+      "Combinatorial geometry (incidence bounds, configurations)",
+      "Combinatorial geometry (incidence theorems, Szemerédi-Trotter)",
+      "Discrete geometry (point-line incidences, arrangements)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Module documentation and namespace setup."
+    },
+    {
+      "id": "background",
+      "title": "Background",
+      "startLine": 27,
+      "endLine": 38,
+      "summary": "Context on equidistance in point sets."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 39,
+      "endLine": 75,
+      "summary": "Definitions of equidistance properties and f(n)."
+    },
+    {
+      "id": "conjectures",
+      "title": "The Main Conjectures",
+      "startLine": 76,
+      "endLine": 102,
+      "summary": "Weak and strong forms of the conjecture."
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "startLine": 103,
+      "endLine": 148,
+      "summary": "Axiom maxEquidistantPoints_le_card_sub_one and axiom achievableValues_nonempty, lemma hasEquidistantProperty_le, and theorem f_le_n_minus_one (the trivial upper bound f(n) ≤ n - 1)."
+    },
+    {
+      "id": "narrative-bounds",
+      "title": "Narrative Bound References",
+      "startLine": 149,
+      "endLine": 170,
+      "summary": "Docstring-only descriptions of the Square Root Bound, Pach-Sharir n^{2/5}, JJMT n^{4/11}, and lattice n^{c/log log n} bounds — none formalized."
+    },
+    {
+      "id": "small-values",
+      "title": "Small Values",
+      "startLine": 171,
+      "endLine": 182,
+      "summary": "Docstring-only mentions of Fishburn's computations f(6) = 3 and f(8) = 4 — not formalized."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences",
+      "startLine": 183,
+      "endLine": 230,
+      "summary": "Axiom eventually_exponent_small, helper lemma rpow_le_rpow_of_exponent_le', theorem strong_implies_weak, and historical notes."
+    }
+  ],
+  "conclusion": {
+    "summary": "We formalize Erdős Problem #92, which asks about the growth rate of f(n), the maximum equidistance guarantee for point sets. The gap between the lattice lower bound n^{c/log log n} and the JJMT upper bound n^{4/11} remains wide.",
+    "implications": "This problem connects to incidence geometry and the unit distance problem. Progress on either would likely yield insights for the other.",
+    "openQuestions": [
+      "Is f(n) ≤ n^{o(1)}?",
+      "Is f(n) < n^{c/log log n}?",
+      "Can the JJMT bound n^{4/11} be improved?",
+      "Are lattice points optimal for the lower bound?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Finset",
+      "Topology"
+    ],
+    "namespace": "Erdos92",
+    "lineCount": 230,
+    "axiomCount": 3,
+    "theoremCount": 4,
+    "definitionCount": 7,
+    "path": "Proofs/Erdos92Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-101",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, incidence-geometry"
+    },
+    {
+      "targetId": "erdos-102",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, incidence-geometry"
+    },
+    {
+      "targetId": "erdos-1069",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, incidence-geometry"
+    }
+  ],
+  "references": [
+    {
+      "key": "Er46e",
+      "authors": [
+        "P. Erdős"
+      ],
+      "title": "On sets of distances of n points",
+      "venue": "American Mathematical Monthly",
+      "year": "1946",
+      "volume": "53",
+      "pages": "248-250",
+      "note": "Original paper on distance problems; equidistant points as a special case"
+    },
+    {
+      "key": "VDW78",
+      "authors": [
+        "B.L. van der Waerden"
+      ],
+      "title": "Ein Satz über Klasseneinteilungen von endlichen Mengen",
+      "venue": "Abhandlungen aus dem Mathematischen Seminar der Universität Hamburg",
+      "year": "1927",
+      "volume": "5",
+      "pages": "185-188",
+      "note": "Context for equidistribution and extremal point configuration problems"
+    }
+  ],
+  "sorries": 0
+}

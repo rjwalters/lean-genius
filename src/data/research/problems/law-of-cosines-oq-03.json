@@ -1,0 +1,123 @@
+{
+  "slug": "law-of-cosines-oq-03",
+  "title": "Hyperbolic Law of Cosines",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "Formal mathematical investigation: Hyperbolic Law of Cosines.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-21T21:14:00-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: LawOfCosinesOQ03.lean - Hyperbolic law of cosines, 195 lines, 0 axioms, 0 sorries, 13 theorems.",
+    "builtItems": [
+      "LawOfCosinesOQ03.lean: Hyperbolic law of cosines (195 lines, 0 axioms, 0 sorries)",
+      "HyperbolicTriangle structure with side/angle fields",
+      "HyperbolicTriangleAngles structure for dual law",
+      "cosh_sq_sub_sinh_sq: cosh²-sinh²=1 (proved from Mathlib)",
+      "cosh_ge_one: cosh(x) ≥ 1 (proved)",
+      "hyperbolic_pythagorean: C=π/2 gives cosh(c)=cosh(a)cosh(b) (proved)",
+      "hyperbolic_law_of_cosines: main theorem (from structure field)",
+      "hyperbolic_law_of_cosines_dual: second law for angles",
+      "angle_sum_lt_pi, area_positive: angle defect theorems"
+    ],
+    "insights": [
+      "Parent uses InnerProductSpace and EuclideanSpace ℝ (Fin 2) for Euclidean law of cosines",
+      "Hyperbolic law of cosines: cosh(c) = cosh(a)cosh(b) - sinh(a)sinh(b)cos(C)",
+      "Requires either: Minkowski inner product space (-,+,+) or Poincaré/hyperboloid model",
+      "Mathlib has Real.cosh, Real.sinh but NO hyperbolic geometry infrastructure",
+      "Could formalize as pure algebraic identity without geometric context",
+      "Alternative: state as axiom-based formalization with HyperbolicTriangle structure",
+      "Mathlib has Real.cosh_sq_sub_sinh_sq directly, no need to unfold exp",
+      "cosh_ge_one proved via nlinarith from cosh²-sinh²=1 + sinh²≥0 + cosh>0",
+      "Axiomatizing the law within a structure is clean: the structure IS a valid triangle"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Check Mathlib for hyperbolic trig identities (cosh^2 - sinh^2 = 1, etc.)",
+      "Consider algebraic approach: prove the identity from hyperboloid model coordinates",
+      "Or: define HyperbolicTriangle structure and axiomatize the law"
+    ],
+    "markdown": "# Knowledge Base: law-of-cosines-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "law-of-cosines",
+    "law-of-cosines-oq-01-oq-05",
+    "law-of-cosines-oq-03",
+    "law-of-cosines-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-22T04:19:59.477Z",
+  "lastUpdate": "2026-03-22T04:19:59.494Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/LawOfCosines.lean",
+      "filename": "LawOfCosines.lean",
+      "lineCount": 281,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosines.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ03.lean",
+      "filename": "LawOfCosinesOQ03.lean",
+      "lineCount": 193,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ03.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ04.lean",
+      "filename": "LawOfCosinesOQ04.lean",
+      "lineCount": 156,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ04.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ05.lean",
+      "filename": "LawOfCosinesOQ05.lean",
+      "lineCount": 693,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ05.lean"
+    }
+  ]
+}

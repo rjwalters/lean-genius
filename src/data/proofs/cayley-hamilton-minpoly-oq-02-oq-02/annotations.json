@@ -1,0 +1,163 @@
+[
+  {
+    "id": "ann-counterexample-matrices",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-02",
+    "range": {
+      "startLine": 62,
+      "endLine": 81
+    },
+    "type": "definition",
+    "title": "Counterexample Matrices A and B",
+    "content": "Defines two $4 \\times 4$ nilpotent matrices over an arbitrary field $K$. Matrix $A$ has Jordan type $[2,2]$ (two $2 \\times 2$ nilpotent Jordan blocks), with nonzero entries $A_{01} = A_{23} = 1$. Matrix $B$ has Jordan type $[2,1,1]$ (one $2 \\times 2$ block and two $1 \\times 1$ zero blocks), with only $B_{01} = 1$ nonzero. Both are defined via `Matrix.of` with `@[simp]` entry evaluation lemmas for automated computation.",
+    "mathContext": "$A = J_2(0) \\oplus J_2(0) = \\begin{pmatrix} 0&1&0&0\\\\0&0&0&0\\\\0&0&0&1\\\\0&0&0&0 \\end{pmatrix}$, $B = J_2(0) \\oplus J_1(0) \\oplus J_1(0) = \\begin{pmatrix} 0&1&0&0\\\\0&0&0&0\\\\0&0&0&0\\\\0&0&0&0 \\end{pmatrix}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Jordan normal form",
+      "nilpotent matrix",
+      "Jordan blocks",
+      "direct sum of matrices"
+    ],
+    "prerequisites": [
+      "matrix definition",
+      "Jordan canonical form"
+    ]
+  },
+  {
+    "id": "ann-nilpotency",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-02",
+    "range": {
+      "startLine": 88,
+      "endLine": 109
+    },
+    "type": "concept",
+    "title": "Nilpotency and Nonzero Verification",
+    "content": "Proves $A^2 = B^2 = 0$ (nilpotent of order $\\leq 2$) and $A \\neq 0, B \\neq 0$ (nilpotent of order exactly $2$). The nilpotency proofs use `fin_cases` to enumerate all $16$ entries of the product and verify each is zero. The nonzero proofs extract the $(0,1)$ entry, which is $1 \\neq 0$. These are the prerequisites for establishing the minimal polynomial.",
+    "mathContext": "$A^2 = B^2 = 0$ (entry-by-entry). $A \\neq 0$ since $A_{01} = 1$. Together: $\\text{ord}(A) = \\text{ord}(B) = 2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "nilpotent order",
+      "matrix multiplication",
+      "fin_cases tactic"
+    ],
+    "prerequisites": [
+      "matrix multiplication",
+      "zero matrix"
+    ]
+  },
+  {
+    "id": "ann-same-minpoly",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-02",
+    "range": {
+      "startLine": 116,
+      "endLine": 192
+    },
+    "type": "concept",
+    "title": "Establishing Minimal Polynomial X²",
+    "content": "A multi-step argument establishes $\\text{minpoly}_K(A) = \\text{minpoly}_K(B) = X^2$. First, $X^2$ annihilates both matrices ($A^2 = B^2 = 0$), so $\\text{minpoly} \\mid X^2$. Second, $X$ does not annihilate either ($A \\neq 0, B \\neq 0$), ruling out $\\text{minpoly} \\in \\{1, X\\}$. The monic divisors of $X^2$ are $\\{1, X, X^2\\}$; eliminating the first two forces $\\text{minpoly} = X^2$. The minimality step (degree classification) contains sorries — the remaining gap is showing that a monic polynomial of degree $1$ dividing $X^2$ must be $X$.",
+    "mathContext": "$\\text{minpoly}_K(A) \\mid X^2$ and $\\text{minpoly}_K(A) \\nmid X$. Since $\\text{minpoly}$ is monic and $\\deg(\\text{minpoly}) \\in \\{1, 2\\}$ with the degree-$1$ case eliminated, $\\text{minpoly}_K(A) = X^2$. Same for $B$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "minimal polynomial",
+      "annihilating polynomial",
+      "monic divisor classification",
+      "minpoly.dvd"
+    ],
+    "prerequisites": [
+      "minimal polynomial theory",
+      "polynomial divisibility",
+      "Matrix.isIntegral"
+    ]
+  },
+  {
+    "id": "ann-intertwining-zeros",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-02",
+    "range": {
+      "startLine": 217,
+      "endLine": 239
+    },
+    "type": "concept",
+    "title": "Intertwining Constraint Extraction",
+    "content": "The key structural lemma: if $AP = PB$, then six entries of $P$ must be zero — specifically $P_{10} = P_{12} = P_{13} = P_{30} = P_{32} = P_{33} = 0$. This follows from comparing individual entries of the matrix equation. Row $0$: $(AP)_{0j} = P_{1j}$ while $(PB)_{0j} = P_{00} \\delta_{j1}$, forcing $P_{1j} = 0$ for $j \\neq 1$. Row $2$: similarly forces $P_{3j} = 0$ for $j \\neq 1$. The proof extracts entries via `congr_fun` and simplifies with `fin_cases`.",
+    "mathContext": "$AP = PB \\implies P_{1,0} = P_{1,2} = P_{1,3} = P_{3,0} = P_{3,2} = P_{3,3} = 0$. Rows $1$ and $3$ of $P$ are nonzero only in column $1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "intertwining operator",
+      "matrix entry extraction",
+      "structural constraint"
+    ],
+    "prerequisites": [
+      "matrix equation entry comparison",
+      "Fin 4 arithmetic"
+    ]
+  },
+  {
+    "id": "ann-det-zero-pigeonhole",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-02",
+    "range": {
+      "startLine": 248,
+      "endLine": 295
+    },
+    "type": "concept",
+    "title": "Determinant Zero via Pigeonhole",
+    "content": "The central argument: $\\det(P) = 0$ for any intertwiner. By the Leibniz formula $\\det(P) = \\sum_\\sigma \\text{sgn}(\\sigma) \\prod_i P_{\\sigma(i),i}$, each term needs all factors nonzero. But rows $1$ and $3$ are nonzero only in column $1$, so $P_{\\sigma(i), i} \\neq 0$ requires $\\sigma(i) \\in \\{0, 2\\}$ for $i \\in \\{0, 2, 3\\}$. This asks for three distinct values from a $2$-element set — impossible by pigeonhole (injectivity of $\\sigma$). The proof does exhaustive case analysis on $\\sigma(0), \\sigma(2), \\sigma(3)$ and derives contradictions from injectivity.",
+    "mathContext": "In $\\det(P) = \\sum_{\\sigma \\in S_4} \\text{sgn}(\\sigma) \\prod_{i=0}^3 P_{\\sigma(i), i}$: need $\\sigma(\\{0,2,3\\}) \\subseteq \\{0,2\\}$ for nonzero product, but $|\\{0,2,3\\}| = 3 > 2 = |\\{0,2\\}|$ with $\\sigma$ injective — contradiction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Leibniz formula",
+      "pigeonhole principle",
+      "permutation injectivity",
+      "Matrix.det_apply'"
+    ],
+    "prerequisites": [
+      "determinant expansion",
+      "pigeonhole principle",
+      "permutation group S_4"
+    ]
+  },
+  {
+    "id": "ann-not-similar",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-02",
+    "range": {
+      "startLine": 303,
+      "endLine": 316
+    },
+    "type": "insight",
+    "title": "Main Theorem: Not Similar",
+    "content": "The final theorem assembles the pieces: assume $P^{-1}AP = B$ for some unit $P$. Then $AP = PB$ (multiply by $P$), so $\\det(P) = 0$ (by `det_intertwiner_zero`). But $P$ is a unit, so $\\det(P)$ is a unit, hence nonzero — contradiction. This self-contained proof avoids Jordan form theory entirely, using only the intertwining equation and the Leibniz formula. It answers the open question: same minimal and characteristic polynomial does NOT imply similarity.",
+    "mathContext": "$\\nexists P \\in \\text{GL}_4(K): P^{-1}AP = B$. Proof: $AP = PB \\implies \\det(P) = 0$, contradicting $P \\in \\text{GL}_4(K)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "matrix similarity",
+      "invertible matrix",
+      "determinant non-vanishing",
+      "counterexample"
+    ],
+    "prerequisites": [
+      "det_intertwiner_zero",
+      "unit determinant nonzero"
+    ]
+  },
+  {
+    "id": "ann-invariant-factors",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-02",
+    "range": {
+      "startLine": 322,
+      "endLine": 354
+    },
+    "type": "concept",
+    "title": "Why Minpoly + Charpoly Fail: Invariant Factors",
+    "content": "The summary explains the deeper reason for the counterexample: the minimal polynomial captures only the largest invariant factor, and the characteristic polynomial captures only their product. The full similarity class is determined by the complete list of invariant factors. For $A$: invariant factors $(X^2, X^2)$. For $B$: invariant factors $(X^2, X, X)$. Same largest factor ($X^2$), same product ($X^4$), but different distributions. This is the smallest counterexample — for $3 \\times 3$ nilpotent matrices, minpoly + charpoly do determine similarity.",
+    "mathContext": "$A$: invariant factors $(X^2, X^2)$. $B$: invariant factors $(X^2, X, X)$. Same $\\max = X^2$ (minpoly), same $\\prod = X^4$ (charpoly), but $(X^2, X^2) \\neq (X^2, X, X)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "invariant factors",
+      "rational canonical form",
+      "elementary divisors",
+      "Smith normal form"
+    ],
+    "prerequisites": [
+      "matrix similarity theory",
+      "polynomial factorization"
+    ]
+  }
+]

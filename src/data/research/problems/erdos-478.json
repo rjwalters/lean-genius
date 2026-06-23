@@ -1,0 +1,76 @@
+{
+  "slug": "erdos-478",
+  "title": "Erdős #478",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Let $p$ be a prime and\\[A_p = \\{ k! \\pmod{p} : 1\\leq k<p\\}.\\]Is it true that\\[\\lvert A_p\\rvert \\sim (1-\\tfrac{1}{e})p?\\]\n\n\n\nSince $A_p/A_p=\\{1,\\ldots,p-1\\}$ it follows that $\\lvert A_p\\rvert \\gg p^{1/2}$. The best known lower bound is due to Grebennikov, Sagdeev, Semchankau, and Vasilevskii \\cite{GSSV24},\\[\\lvert A_p\\rvert \\geq (\\sqrt{2}-o(1))p^{1/2},\\]which follows from proving that $\\lvert A_pA_p\\rvert=(1+o(1))p$.\n\nWilson's theorem implies $(p-2)!\\equiv 1\\pmod{p}$, and hence $\\lvert A_p\\rvert\\leq p-2$. It is open whether even $\\lvert A_p\\rvert<p-2$. This has been verified for all primes $p<10^9$ (see \\cite{GSSV24}). Results on $\\lvert A_p\\rvert$ on average were obtained by Klurman and Munsch \\cite{KlMu17}.\n\nIn Hardy and Subbarao \\cite{HaSu02} they raise the question, discussed in conversation with Erd\\H{o}s, of whether $\\lvert A_p\\rvert=p-2$ for many values of $p$. (This is also mentioned in problem A2 of Guy's collection.) Such a prime must be $\\equiv 1\\pmod{4}$. The answer is surely only finitely many (and probably only $p=5$, given the data mentioned above).",
+    "plain": "Let $p$ be a prime and\\[A_p = \\{ k! \\pmod{p} : 1\\leq k<p\\}.\\]Is it true that\\[\\lvert A_p\\rvert \\sim (1-\\tfrac{1}{e})p?\\]",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-13T03:37:39.478Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Eliminated 2 axioms by proving ratio_set_full (A_p/A_p covers all nonzero residues) and factorial_residue_sqrt_lower (|A_p|² ≥ p-1). Axioms reduced from 6 to 4.",
+    "builtItems": [
+      "Proved ratio_set_full: consecutive factorial ratios k!/(k-1)! = k cover all nonzero residues mod p",
+      "Proved factorial_residue_sqrt_lower: ratio-map surjectivity gives |A_p|² ≥ p-1 via Finset.image cardinality chain"
+    ],
+    "insights": [
+      "The ratio-set identity follows from choosing witnesses k! and (k-1)! for each nonzero r, using Nat.factorial_succ and ZMod.natCast_val",
+      "The sqrt lower bound uses: 0 ∉ A_p (all factorial residues nonzero), ratio map (a,b) ↦ a·b⁻¹ surjects onto nonzero elements, then |image| ≤ |A×A| = m²",
+      "ZMod.natCast_eq_zero_iff + Nat.Prime.dvd_factorial gives 0 ∉ A_p for ALL primes (the existing theorem unnecessarily requires p > 2)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #478 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $p$ be a prime and\\[A_p = \\{ k! \\pmod{p} : 1\\leq k<p\\}.\\]Is it true that\\[\\lvert A_p\\rvert \\sim (1-\\tfrac{1}{e})p?\\]\n\n\n\nSince $A_p/A_p=\\{1,\\ldots,p-1\\}$ it follows that $\\lvert A_p\\rvert \\gg p^{1/2}$. The best known lower bound is due to Grebennikov, Sagdeev, Semchankau, and Vasilevskii \\cite{GSSV24},\\[\\lvert A_p\\rvert \\geq (\\sqrt{2}-o(1))p^{1/2},\\]which follows from proving that $\\lvert A_pA_p\\rvert=(1+o(1))p$.\n\nWilson's theorem implies $(p-2)!\\equiv 1\\pmod{p}$, and hence $\\lvert A_p\\rvert\\leq p-2$. It is open whether even $\\lvert A_p\\rvert<p-2$. This has been verified for all primes $p<10^9$ (see \\cite{GSSV24}). Results on $\\lvert A_p\\rvert$ on average were obtained by Klurman and Munsch \\cite{KlMu17}.\n\nIn Hardy and Subbarao \\cite{HaSu02} they raise the question, discussed in conversation with Erd\\H{o}s, of whether $\\lvert A_p\\rvert=p-2$ for many values of $p$. (This is also mentioned in problem A2 of Guy's collection.) Such a prime must be $\\equiv 1\\pmod{4}$. The answer is surely only finitely many (and probably only $p=5$, given the data mentioned above).\n\n\n\n\nReferences\n\n\n[GSSV24] Grebennikov, Alexandr and Sagdeev, Arsenii and Semchankau,\nAliaksei and Vasilevskii, Aliaksei, On the sequence {$n! \\bmod p$}. Rev. Mat. Iberoam. (2024), 637--648.\n\n[HaSu02] Hardy, G. E. and Subbarao, M. V., A modified problem of Pillai and some related questions. Amer. Math. Monthly (2002), 554--559.\n\n[KlMu17] Klurman, Oleksiy and Munsch, Marc, Distribution of factorials modulo {$p$}. J. Th\\'{e}or. Nombres Bordeaux (2017), 169--177.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #477\n- Problem #479\n- Problem #39\n- Problem #1\n\n## References\n\n- GSSV24\n- KlMu17\n- HaSu02\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-4",
+    "erdos-47",
+    "erdos-478"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T03:37:39.479Z",
+  "lastUpdate": "2026-03-13T07:52:17.048Z",
+  "significance": 5,
+  "tractability": 3,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos478Problem.lean",
+      "filename": "Erdos478Problem.lean",
+      "lineCount": 158,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos478Problem.lean"
+    }
+  ]
+}

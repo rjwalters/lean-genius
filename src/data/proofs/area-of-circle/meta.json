@@ -1,0 +1,340 @@
+{
+  "id": "area-of-circle",
+  "title": "Area of a Circle",
+  "slug": "area-of-circle",
+  "description": "The area of a circle with radius r is πr², formalized as Lebesgue measure of a disk in ℂ ≅ ℝ². Wiedijk 100 theorem #9 — one of the most fundamental formulas in geometry, rigorously proved by Archimedes around 250 BCE using the method of exhaustion.",
+  "meta": {
+    "author": "Archimedes (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Area_of_a_circle",
+    "date": "~250 BCE",
+    "status": "verified",
+    "tags": [
+      "geometry",
+      "measure-theory",
+      "classic",
+      "beginner",
+      "wiedijk-100"
+    ],
+    "proofRepoPath": "Proofs/AreaOfCircle.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.volume_ball",
+        "description": "Lebesgue measure of open ball in ℂ equals πr²",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls"
+      },
+      {
+        "theorem": "Complex.volume_closedBall",
+        "description": "Lebesgue measure of closed ball in ℂ equals πr²",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls"
+      },
+      {
+        "theorem": "MeasureTheory.volume",
+        "description": "Lebesgue measure on measurable spaces",
+        "module": "Mathlib.MeasureTheory.Measure.MeasureSpace"
+      },
+      {
+        "theorem": "NNReal.pi",
+        "description": "π as a non-negative real number",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Pedagogical wrapper around Mathlib's Complex.volume_ball/volume_closedBall for A = πr²",
+      "Five edge-case corollaries (unit disk, zero radius open/closed, negative radius) exercising the formula",
+      "Pedagogical documentation connecting the measure-theoretic proof to Archimedes' method of exhaustion and the annular ring integration"
+    ],
+    "dateAdded": "2025-12-26",
+    "wiedijkNumber": 9,
+    "axiomCount": 0,
+    "lineCount": 155,
+    "relatedProblems": [
+      {
+        "id": "area-of-circle-oq-01",
+        "relationship": "Derives circumference C = 2πr via differentiation of area"
+      },
+      {
+        "id": "area-of-circle-oq-03",
+        "relationship": "Formalizes Archimedes' method of exhaustion directly"
+      }
+    ],
+    "prerequisites": [
+      "Real analysis (integration, limits)",
+      "Measure theory (Lebesgue measure for area)",
+      "Trigonometric functions and pi",
+      "Topology of R^2 (discs, circles)"
+    ],
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. All seven theorems are pedagogical wrappers around Mathlib's Complex.volume_ball/volume_closedBall and standard metric ball lemmas (ball_zero, closedBall_zero, ball_eq_empty). No custom axioms or structure-encoded assumptions.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 7,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The formula $A = \\pi r^2$ was known empirically to ancient civilizations. The Rhind Papyrus (c. 1650 BCE, Egypt) approximates the area of a circle of diameter $d$ as $(d - d/9)^2 = (8d/9)^2$, giving $\\pi \\approx 256/81 \\approx 3.1605$. Babylonian tablets (c. 1900–1600 BCE) used $\\pi \\approx 3$ or $\\pi \\approx 25/8 = 3.125$. In China, Liu Hui (c. 263 CE) used a 3072-sided polygon to compute $\\pi \\approx 3.14159$, and Zu Chongzhi (c. 480 CE) obtained the remarkable approximation $\\pi \\approx 355/113$, accurate to 6 decimal places. In India, Madhava of Sangamagrama (c. 1340–1425) discovered the infinite series $\\pi/4 = 1 - 1/3 + 1/5 - 1/7 + \\cdots$ (rediscovered by Leibniz in 1674), the first exact expression for $\\pi$ as an infinite sum — a conceptual leap from finite polygon approximations to analysis that predated European calculus by 250 years.\n\nArchimedes of Syracuse (c. 287–212 BCE) gave the first rigorous proof using the **method of exhaustion**: he inscribed and circumscribed regular polygons with increasing numbers of sides, proving in *Measurement of a Circle* (Proposition 1) that the area equals that of a right triangle with legs equal to the circumference and radius, i.e., $A = \\frac{1}{2} C r = \\frac{1}{2}(2\\pi r)r = \\pi r^2$. In Proposition 3, he bounded $\\pi$ between $3\\frac{10}{71}$ and $3\\frac{1}{7}$ using 96-gons. This argument anticipated integral calculus by nearly two millennia.\n\nThe formula connects to analysis through the **Gaussian integral**: $\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}$, proved by Euler (1729) and Laplace (1774) by converting the double integral $\\iint e^{-(x^2+y^2)} dx\\,dy$ to polar coordinates using $dA = r\\,dr\\,d\\theta$ — the area element derived from $A = \\pi r^2$. In modern mathematics, the area is formalized as the Lebesgue measure of the 2-dimensional disk. The formula is #9 on Freek Wiedijk's list of 100 famous theorems formalized in proof assistants.",
+    "problemStatement": "**Area of a Circle (Wiedijk #9)**:\n\nFor a disk $D = \\{p \\in \\mathbb{R}^2 : |p - \\text{center}| \\leq r\\}$ with radius $r \\geq 0$:\n$$\\text{Area}(D) = \\pi r^2$$",
+    "text": "This formalization proves $A = \\pi r^2$ as the Lebesgue measure of a disk in $\\mathbb{C} \\cong \\mathbb{R}^2$, using Mathlib's `Complex.volume_ball` which derives from the $n$-dimensional ball volume formula $V_n(r) = \\pi^{n/2} r^n / \\Gamma(n/2+1)$ specialized to $n=2$. The proof is a one-liner for each variant (open and closed disk), with both yielding $\\pi r^2$ because the boundary circle has 2D Lebesgue measure zero. Five corollaries verify edge cases: unit disk (area $\\pi$), zero radius (area 0 for both open and closed balls), and negative radius (empty ball, area 0). The `ENNReal` (extended non-negative reals) representation naturally handles degenerate cases by mapping $r \\leq 0$ to 0. Commentary sections connect the measure-theoretic proof to Archimedes' method of exhaustion and the annular ring integration $A = \\int_0^r 2\\pi\\rho\\,d\\rho$ that reveals $A'(r) = C(r)$.",
+    "proofStrategy": "The proof uses measure theory, identifying area with Lebesgue measure in 2 dimensions. By modeling $\\mathbb{R}^2$ as the complex plane $\\mathbb{C}$ (which Mathlib equips with a Lebesgue measure via its real inner product space structure), the main theorem reduces to a direct application of `Complex.volume_ball`. The key insight is that $\\mathbb{C}$ and $\\mathbb{R}^2$ are isomorphic as real inner product spaces, so the Lebesgue measure on $\\mathbb{C}$ agrees with the 2D Lebesgue measure. Special cases (unit disk, zero radius, negative radius, closed vs open) are derived as corollaries.",
+    "keyInsights": [
+      "Area is formalized as Lebesgue measure in $\\mathbb{R}^2$, connecting the ancient geometric concept to modern measure theory — the 'area' of a set is its $\\lambda^2$-measure",
+      "Using $\\mathbb{C} \\cong \\mathbb{R}^2$ as the ambient space gives the cleanest formulation: `Complex.volume_ball` directly yields $\\pi r^2$ without coordinate transformations",
+      "Open and closed disks have the same area because the boundary circle has Lebesgue measure zero — a fundamental property of lower-dimensional manifolds in measure theory",
+      "The general $n$-dimensional ball volume formula $V_n(r) = \\pi^{n/2} r^n / \\Gamma(n/2 + 1)$ specializes to $\\pi r^2$ for $n = 2$ via $\\Gamma(2) = 1$",
+      "Archimedes' method of exhaustion — approximating the disk by inscribed/circumscribed polygons — is the historical precursor to the Riemann integral, which in turn is subsumed by the Lebesgue integral used in this formalization",
+      "The area formula explains why $\\pi$ appears in the Gaussian integral $\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}$: squaring and converting to polar coordinates gives $\\iint e^{-(x^2+y^2)} dx\\,dy = \\int_0^{2\\pi}\\int_0^{\\infty} e^{-r^2} r\\,dr\\,d\\theta = \\pi$, where the Jacobian factor $r$ is exactly $dA/dr\\,d\\theta = r$ from the polar form of $A = \\pi r^2$",
+      "**Scaling and dimensional analysis**: $A = \\pi r^2$ encodes the fact that area scales quadratically with length. Under a dilation $z \\mapsto cz$, the Lebesgue measure transforms as $\\lambda^2(cS) = c^2 \\lambda^2(S)$ (since $\\lambda^2$ is the product measure $\\lambda \\otimes \\lambda$ and each factor scales linearly). The formula $A = \\pi r^2 = \\pi \\cdot (\\text{radius})^2$ thus separates into a shape factor ($\\pi$, encoding the specific geometry of a circle vs a square) and a scale factor ($r^2$, universal for any 2D shape). In Lean, this separation is implicit: `ENNReal.ofReal r ^ 2` captures the scale and `NNReal.pi` captures the shape",
+      "**Quadrature of the circle — the 2300-year-old impossibility resolved by Lindemann 1882**: The formula $A = \\pi r^2$ proved here is the analytic content of one of the oldest unsolved problems in classical mathematics — *squaring the circle*, posed by Greek geometers in the 5th century BCE (Anaxagoras, possibly while imprisoned in Athens, per Plutarch *De Exilio* 17). The problem asks: given a circle of radius $r$, construct (compass + straightedge) a square of side $s$ with $s^2 = \\pi r^2$ — equivalently, construct the length $s = r\\sqrt{\\pi}$. By the standard theorem on constructibility (Wantzel 1837, formalized in the gallery via the cross-referenced `angle-trisection` entry, with the classical doubling-the-cube problem as its sibling impossibility), a real number is constructible if and only if it lies in a tower of quadratic extensions of $\\mathbb{Q}$ — equivalently, its minimal polynomial over $\\mathbb{Q}$ has degree a power of 2. So $\\sqrt{\\pi}$ is constructible iff $\\pi$ is, and $\\pi$ is constructible iff it is algebraic of degree $2^k$ for some $k$. **Lindemann's 1882 theorem** ($\\pi$ is transcendental, cross-referenced via `hermite-lindemann`) closes the question negatively: $\\pi$ is not even algebraic, let alone constructible. Thus *the very formula proved here* — together with constructibility theory and Lindemann's transcendence theorem — establishes that no compass-and-straightedge quadrature of the circle exists. The historical arc is striking: Archimedes' method of exhaustion (cross-referenced in keyInsight #5) approximates $\\pi r^2$ to arbitrary accuracy *without* solving the quadrature problem, because the limit operation involved is not constructible in finitely many compass-and-straightedge steps; Greek geometers (Hippocrates of Chios, Hippias) gave partial quadratures using *non-constructible* curves (the lunes of Hippocrates square specific circular regions; Hippias's quadratrix solves the general quadrature using a transcendentally-defined curve); and the modern formalization in this file uses Lebesgue measure — yet another non-constructive limit operation — closing the loop: $A = \\pi r^2$ is *known* exactly, but not *constructible* exactly. **In Lean**: this entry's `volume_ball` derivation is *non-constructive* in the type-theoretic sense (it invokes the classical-axioms-marked `Real.pi`, defined via the sine series and unconditional convergence), mirroring the geometric non-constructibility. The connection to `hermite-lindemann` and `angle-trisection` makes this keyInsight the natural hub linking the analytic content of $A = \\pi r^2$ to the two pillars of classical impossibility theory: transcendence (Lindemann) and constructibility (Wantzel)"
+    ],
+    "prerequisites": [
+      "Real analysis (integration, limits)",
+      "Measure theory (Lebesgue measure for area)",
+      "Trigonometric functions and pi",
+      "Topology of R^2 (discs, circles)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-docs",
+      "title": "Introduction and Historical Context",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Imports `VolumeOfBalls` and `Tactic`, extensive doc comment covering what is proved ($A = \\pi r^2$), the Wiedijk #9 reference, the mathematical statement, the measure-theoretic approach via $\\mathbb{C} \\cong \\mathbb{R}^2$, proof status, Mathlib dependencies, and historical note on Archimedes.",
+      "mathContext": "Area of a circle: $A = \\pi r^2$. The disc $D(c, r) = \\{z \\in \\mathbb{C} : |z - c| \\leq r\\}$ has Lebesgue measure $\\lambda^2(D) = \\pi r^2$. The proof uses the general $n$-dimensional ball volume formula $V_n(r) = \\pi^{n/2} r^n / \\Gamma(n/2 + 1)$ specialized to $n = 2$: $V_2(r) = \\pi r^2 / \\Gamma(2) = \\pi r^2$ since $\\Gamma(2) = 1! = 1$. Mathlib provides this as `Complex.volume_ball` via the identification $\\mathbb{C} \\cong \\mathbb{R}^2$."
+    },
+    {
+      "id": "main-theorems",
+      "title": "Main Theorems: Open and Closed Disk Area",
+      "startLine": 52,
+      "endLine": 85,
+      "summary": "Opens namespace and `MeasureTheory Metric`. Proves `area_of_circle`: volume of open ball in $\\mathbb{C}$ equals $r^2 \\cdot \\pi$ via `Complex.volume_ball`. Proves `area_of_closed_disk`: closed ball has the same measure via `Complex.volume_closedBall`.",
+      "mathContext": "Main results: `volume (ball c r) = ENNReal.ofReal r ^ 2 * NNReal.pi` and `volume (closedBall c r) = ENNReal.ofReal r ^ 2 * NNReal.pi`. The equality of open and closed ball measures reflects $\\lambda^2(\\partial D) = 0$ — the boundary circle $\\{z : |z - c| = r\\}$ is a 1-dimensional manifold with 2-dimensional Lebesgue measure zero. Both proofs are one-liners delegating to `Complex.volume_ball` and `Complex.volume_closedBall` respectively."
+    },
+    {
+      "id": "special-cases",
+      "title": "Properties and Corollaries",
+      "startLine": 86,
+      "endLine": 116,
+      "summary": "Derives special cases: unit disk area is $\\pi$ (both open and closed), zero radius gives area 0 (point has measure zero), negative radius gives area 0 (empty ball). Uses `simp` with `ENNReal.ofReal_one`, `ball_zero`, `closedBall_zero`, and `ball_eq_empty`.",
+      "mathContext": "Five edge cases: (1) $r = 1$: $A = \\pi \\cdot 1^2 = \\pi$, the definition of $\\pi$ as the area of the unit disc. (2-3) $r = 0$: open ball is $\\emptyset$, closed ball is $\\{c\\}$ — both have $\\lambda^2$-measure 0 since singletons are 0-dimensional. (4) $r < 0$: $\\text{ball}(c, r) = \\emptyset$ since $|z - c| < r < 0$ is impossible. All follow from $\\text{ENNReal.ofReal}(r)^2 \\cdot \\pi$ mapping $r \\leq 0$ to 0."
+    },
+    {
+      "id": "significance",
+      "title": "Why This Matters: Applications and Connections",
+      "startLine": 117,
+      "endLine": 137,
+      "summary": "Doc section explaining the significance of $A = \\pi r^2$ across mathematics and science: foundational for geometry, the first polar coordinate integral in calculus, essential in physics (optics, mechanics), probability (Gaussian integral), and engineering.",
+      "mathContext": "The formula connects to analysis through the polar coordinate integral $\\int_0^{2\\pi} \\int_0^r \\rho\\, d\\rho\\, d\\theta = \\pi r^2$ and to probability through the Gaussian integral $\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}$, proved by squaring and converting to polar coordinates: $\\left(\\int e^{-x^2} dx\\right)^2 = \\iint e^{-(x^2+y^2)} dA = \\int_0^{2\\pi} \\int_0^{\\infty} e^{-r^2} r\\, dr\\, d\\theta = \\pi$."
+    },
+    {
+      "id": "circumference-connection",
+      "title": "Connection to Circumference and Archimedes",
+      "startLine": 138,
+      "endLine": 155,
+      "summary": "Doc section explaining how $A = \\pi r^2$ relates to circumference $C = 2\\pi r$ via integration of annular rings: $dA = 2\\pi\\rho\\, d\\rho$, giving $A = \\int_0^r 2\\pi\\rho\\, d\\rho = \\pi r^2$. References Archimedes' conceptualization of the disk as concentric circular strips. Ends with `#check` commands and namespace closing.",
+      "mathContext": "The annular ring argument yields $A(r) = \\int_0^r C(\\rho)\\, d\\rho = \\int_0^r 2\\pi\\rho\\, d\\rho = \\pi r^2$, giving $A'(r) = C(r) = 2\\pi r$. This derivative relationship generalizes to all dimensions: the surface area of an $n$-ball is $S_n(r) = \\frac{d}{dr} V_n(r)$. For $n = 3$: $V_3(r) = \\frac{4}{3}\\pi r^3$ and $S_3(r) = 4\\pi r^2$. Archimedes discovered both the 2D and 3D cases, proving that the surface area and volume of a sphere relate to its circumscribing cylinder as $2:3$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The area of a circle is verified using modern measure theory in Lean 4, connecting Archimedes' 2300-year-old result to contemporary Lebesgue integration. The proof is a one-liner — `Complex.volume_ball` — demonstrating the power of building on Mathlib's library of formalized mathematics. Both open and closed disk variants are proved, along with special cases for unit disk, zero radius, and negative radius.",
+    "implications": "**Theoretical Significance**: This formalization demonstrates how measure theory subsumes classical geometry. The same framework that proves $A = \\pi r^2$ extends to higher-dimensional ball volumes ($V_n(r) = \\pi^{n/2} r^n / \\Gamma(n/2+1)$), surface areas, and general Riemannian volume computations.\n\nThe Wiedijk #9 formalization contributes to the broader project of formalizing the 100 most famous theorems.\n\nThe circle area formula connects to deeper results across mathematics: (1) The **isoperimetric inequality** states that the circle maximizes area for a given perimeter, so $A = \\pi r^2$ is the supremum of $A(\\gamma)$ over all curves $\\gamma$ with length $2\\pi r$. (2) The **Gauss-Bonnet theorem** relates total curvature $\\int_M K\\, dA$ to Euler characteristic — for a disk, this reduces to the boundary curvature integral and the area term. (3) The **Cauchy integral formula** $f(z_0) = \\frac{1}{2\\pi i} \\oint_{|z-z_0|=r} \\frac{f(z)}{z - z_0}\\, dz$ uses circles as contours, with the area formula governing the mean value property $f(z_0) = \\frac{1}{\\pi r^2} \\iint_{|z-z_0| \\leq r} f(z)\\, dA$.",
+    "openQuestions": [
+      "**Addressed** by `area-of-circle-oq-01`: Derives $C = 2\\pi r$ via differentiation of the area $A = \\pi r^2$ with respect to $r$, confirming $A'(r) = C(r)$. Further extended by `area-of-circle-oq-01-oq-02` which derives the area by integrating circumference: $A = \\int_0^r 2\\pi\\rho\\, d\\rho = \\pi r^2$.",
+      "The $n$-dimensional ball volume formula $V_n(r) = \\pi^{n/2} r^n / \\Gamma(n/2+1)$ in Mathlib generalizes this result. Can explicit Lean theorems be proved for $V_3(r) = \\frac{4}{3}\\pi r^3$ (sphere), $V_4(r) = \\frac{\\pi^2}{2}r^4$ (4-ball), and the asymptotic result $V_n(1) \\to 0$ as $n \\to \\infty$ (the 'curse of dimensionality' in high-dimensional geometry)?",
+      "**Addressed** by `area-of-circle-oq-03`: Formalizes Archimedes' method of exhaustion directly, approximating the circle's area by inscribed and circumscribed regular polygons without measure theory. Further extended by `area-of-circle-oq-03-oq-02` which proves Archimedes' bounds $223/71 < \\pi < 22/7$ via 96-gons.",
+      "**Addressed** by `isoperimetric-theorem` and `area-of-circle-oq-01-oq-03`: The isoperimetric inequality $C^2 \\geq 4\\pi A$ with equality iff the curve is a circle — showing that $A = \\pi r^2$ is the maximum area for perimeter $C = 2\\pi r$. Remaining gap: can the Hurwitz proof via Fourier series be formalized?",
+      "Prove the Gaussian integral $\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}$ by squaring and converting to polar coordinates, making explicit the use of $A = \\pi r^2$ in the change of variables $dA = r\\,dr\\,d\\theta$. This would connect the circle area formula to probability theory (the normalizing constant of the Gaussian distribution) and to the Gamma function ($\\Gamma(1/2) = \\sqrt{\\pi}$)"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-01",
+      "relationship": "extended-by",
+      "description": "Derives circumference $C = 2\\pi r$ via differentiation of area — the infinitesimal shell argument $dA/dr = C$"
+    },
+    {
+      "targetId": "area-of-circle-oq-03",
+      "relationship": "extended-by",
+      "description": "Formalizes Archimedes' method of exhaustion: approximating circle area by inscribed/circumscribed regular polygons"
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-02",
+      "relationship": "extended-by",
+      "description": "Derives area by integrating circumference: $A = \\int_0^r 2\\pi\\rho\\, d\\rho = \\pi r^2$ — the radial integration approach"
+    },
+    {
+      "targetId": "area-of-circle-oq-03-oq-02",
+      "relationship": "extended-by",
+      "description": "Archimedes' bounds $223/71 < \\pi < 22/7$ via 96-gons — first rigorous numerical approximation of $\\pi$"
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "foundational",
+      "description": "The circle $x^2+y^2=r^2$ is defined by the Pythagorean relation — underpinning the disk's Lebesgue measure computation"
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "related",
+      "description": "$\\pi$ is transcendental (Lindemann 1882) — the same constant whose geometric meaning as the area-to-radius-squared ratio this file formalizes"
+    },
+    {
+      "targetId": "hermite-lindemann",
+      "relationship": "related",
+      "description": "The Hermite–Lindemann theorem, whose 1882 corollary that $\\pi$ is transcendental is exactly what proves *squaring the circle* impossible: constructing a square of area $\\pi r^2$ requires the length $r\\sqrt{\\pi}$, which is non-constructible because $\\pi$ is not algebraic. This entry's $A = \\pi r^2$ supplies the analytic content of the quadrature problem; Hermite–Lindemann supplies the transcendence obstruction (generalizing the specific `pi-transcendental` entry to the full framework). See keyInsight #8."
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "related",
+      "description": "Wantzel's 1837 constructibility criterion — a length is compass-and-straightedge constructible iff it lies in a tower of quadratic extensions of $\\mathbb{Q}$ (minimal polynomial of $2$-power degree) — underlies both the impossibility of trisecting a general angle and the impossibility of *squaring the circle* ($r\\sqrt{\\pi}$ is non-constructible since $\\pi$ is transcendental). Angle trisection, squaring the circle (this entry's $A = \\pi r^2$), and doubling the cube are the three classical Greek construction problems, all resolved negatively by the same Wantzel/Galois constructibility theory."
+    },
+    {
+      "targetId": "isoperimetric-theorem",
+      "relationship": "complementary",
+      "description": "The circle maximizes area for a given perimeter: $A = \\pi r^2$ is the supremum of $A(\\gamma)$ over curves with length $2\\pi r$"
+    },
+    {
+      "targetId": "lebesgue-measure",
+      "relationship": "foundational",
+      "description": "Area formalized as Lebesgue measure $\\lambda^2$, using the $n$-ball volume $V_n(r) = \\pi^{n/2} r^n / \\Gamma(n/2+1)$ specialized to $n=2$"
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "Euler's $\\sum 1/n^2 = \\pi^2/6$ reveals $\\pi$'s dual role in geometry (area ratio) and analysis (infinite series)"
+    },
+    {
+      "targetId": "greens-theorem",
+      "relationship": "related",
+      "description": "Green's theorem gives area as a line integral: $A = \\frac{1}{2}\\oint (x\\,dy - y\\,dx) = \\pi r^2$ for a circle — a vector calculus proof"
+    },
+    {
+      "targetId": "buffons-needle",
+      "relationship": "related",
+      "description": "Buffon's needle (1733) gives a probabilistic method for computing $\\pi$: $P(\\text{crossing}) = 2\\ell/(\\pi d)$, linking circle geometry to integral geometry"
+    },
+    {
+      "targetId": "leibniz-pi",
+      "relationship": "related",
+      "description": "Leibniz's series $\\pi/4 = 1 - 1/3 + 1/5 - 1/7 + \\cdots$ provides a convergent representation of $\\pi$, complementing this entry's use of $\\pi$ in the area formula $\\pi r^2$. Together they illustrate the two faces of $\\pi$: the geometric ratio (area to radius squared, formalized here via Lebesgue measure) and the analytic constant (limit of alternating series, formalized in Leibniz)."
+    },
+    {
+      "targetId": "picks-theorem",
+      "relationship": "complementary",
+      "description": "Pick's theorem ($A = I + B/2 - 1$ for lattice polygons) gives a combinatorial formula for area, in contrast to this entry's measure-theoretic formula $A = \\pi r^2$ for circles. The two area computations represent fundamentally different techniques: discrete counting (Pick) vs. Lebesgue integration (circle area). Notable distinction: Pick's theorem does not apply to circles (not lattice polygons), while the Lebesgue approach handles arbitrary measurable sets."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Metric"
+    ],
+    "namespace": "AreaOfCircle",
+    "lineCount": 155,
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "lemmaCount": 0,
+    "definitionCount": 0,
+    "substantiveTheoremCount": 2,
+    "trivialSpecializations": 5,
+    "mainTheorems": [
+      {
+        "name": "area_of_circle",
+        "type": "wrapper",
+        "description": "Lebesgue measure of an open ball in C equals r^2 * pi",
+        "leanType": "(center : ℂ) → (r : ℝ) → volume (ball center r) = ENNReal.ofReal r ^ 2 * ↑NNReal.pi"
+      },
+      {
+        "name": "area_of_closed_disk",
+        "type": "wrapper",
+        "description": "Lebesgue measure of a closed ball in C equals r^2 * pi",
+        "leanType": "(center : ℂ) → (r : ℝ) → volume (closedBall center r) = ENNReal.ofReal r ^ 2 * ↑NNReal.pi"
+      }
+    ],
+    "path": "Proofs/AreaOfCircle.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Archimedes",
+      "title": "Measurement of a Circle",
+      "year": "~250 BCE",
+      "venue": "Syracuse",
+      "note": "First rigorous calculation of the area of a circle using the method of exhaustion — bounded π between 3 10/71 and 3 1/7"
+    },
+    {
+      "authors": "Stillwell, John",
+      "title": "Mathematics and Its History",
+      "year": "2010",
+      "venue": "Springer, 3rd edition",
+      "note": "Historical account of Archimedes's method and its connection to integral calculus"
+    },
+    {
+      "authors": "Heath, Thomas L. (translator)",
+      "title": "The Works of Archimedes",
+      "year": "1897",
+      "venue": "Cambridge University Press",
+      "note": "Definitive English translation of Archimedes' works including 'Measurement of a Circle' — the primary source for his proof that the area of a circle equals that of a right triangle with legs equal to the circumference and radius"
+    },
+    {
+      "authors": "Beckmann, Petr",
+      "title": "A History of Pi",
+      "year": "1971",
+      "venue": "Golem Press",
+      "note": "Comprehensive history of π from ancient civilizations through modern computations — covers the Rhind Papyrus, Babylonian approximations, Liu Hui's 3072-gon, and the analytical era from Euler through Ramanujan"
+    },
+    {
+      "authors": "Euclid",
+      "title": "Elements, Book XII, Proposition 2",
+      "year": "~300 BCE",
+      "venue": "Alexandria",
+      "note": "Euclid proves that circles are to one another as the squares on their diameters (A ∝ d²) using the method of exhaustion — establishing the proportionality that, combined with the definition of π, gives A = πr²"
+    },
+    {
+      "authors": "Netz, R.; Noel, W.",
+      "title": "The Archimedes Codex: How a Medieval Prayer Book Is Revealing the True Genius of Antiquity's Greatest Scientist",
+      "year": "2007",
+      "venue": "Da Capo Press",
+      "note": "Account of the Archimedes Palimpsest recovery, including previously unknown works on combinatorics and the method of mechanical theorems — reveals that Archimedes anticipated infinitesimal methods more fully than previously known"
+    },
+    {
+      "authors": "Stein, E.M.; Shakarchi, R.",
+      "title": "Real Analysis: Measure Theory, Integration, and Hilbert Spaces",
+      "year": "2005",
+      "venue": "Princeton Lectures in Analysis, vol. 3, Princeton University Press",
+      "note": "Modern treatment of Lebesgue measure and volume computation for balls in ℝⁿ — the framework underlying this formalization's approach via MeasureTheory.volume"
+    },
+    {
+      "authors": "Plofker, Kim",
+      "title": "Mathematics in India",
+      "year": "2009",
+      "venue": "Princeton University Press",
+      "note": "Covers Madhava of Sangamagrama's (c. 1340–1425) discovery of the infinite series π/4 = 1 − 1/3 + 1/5 − ⋯ and the Kerala school's contributions to analysis, predating European calculus by 250 years — directly relevant to the historicalContext's discussion of pre-European π computations"
+    },
+    {
+      "authors": "Wiedijk, Freek",
+      "title": "Formalizing 100 Theorems",
+      "year": "2008",
+      "venue": "https://www.cs.ru.nl/~freek/100/",
+      "note": "The definitive list of 100 well-known mathematical theorems and their formalization status across proof assistants. The area of a circle is #9. This formalization contributes to the Lean 4 / Mathlib column"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "area_of_circle",
+      "type": "core",
+      "description": "Lebesgue measure of an open disk in C equals πr²",
+      "leanType": "(center : ℂ) → (r : ℝ) → volume (ball center r) = ENNReal.ofReal r ^ 2 * ↑NNReal.pi"
+    },
+    {
+      "name": "area_of_closed_disk",
+      "type": "core",
+      "description": "Lebesgue measure of a closed disk in C equals πr²",
+      "leanType": "(center : ℂ) → (r : ℝ) → volume (closedBall center r) = ENNReal.ofReal r ^ 2 * ↑NNReal.pi"
+    }
+  ],
+  "sorries": 0
+}

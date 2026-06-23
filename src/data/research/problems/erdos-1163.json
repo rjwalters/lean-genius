@@ -1,0 +1,58 @@
+{
+  "slug": "erdos-1163",
+  "title": "Erd\u0151s #1163",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "(LaTeX not available)",
+    "plain": "Describe (by statistical means) the arithmetic structure of the orders of subgroups of $S_n$.\n\n \n \n This is given in [Va99] as a problem of Erd\u0151s and Tur\u00e1n. I have reproduced the problem verbatim; I am not entirely sure what it is asking for.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-01-15T16:53:51.157Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Problem statement retrieved. Ready for exploration.",
+    "builtItems": [],
+    "insights": [
+      "Statement unavailable"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erd\u0151s #1163 - Knowledge Base\n\n## Problem Statement\n\nDescribe (by statistical means) the arithmetic structure of the orders of subgroups of $S_n$.\n\n \n \n This is given in [Va99] as a problem of Erd\u0151s and Tur\u00e1n. I have reproduced the problem verbatim; I am not entirely sure what it is asking for.\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-116"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T16:53:51.157Z",
+  "lastUpdate": "2026-03-13T07:52:17.059Z",
+  "significance": 7,
+  "tractability": 6
+}

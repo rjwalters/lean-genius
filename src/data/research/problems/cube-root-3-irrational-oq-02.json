@@ -1,0 +1,106 @@
+{
+  "slug": "cube-root-3-irrational-oq-02",
+  "title": "Cube Root 3 Irrationality: Eisenstein Criterion Proof",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "significance": 6,
+  "tractability": 6,
+  "problemStatement": {
+    "formal": "Prove Irrational ((3 : R) ^ (1 / 3 : R)) by showing X^3 - 3 is irreducible over Q via Eisenstein, hence has no rational root.",
+    "plain": "Give an algebraic proof that the cube root of 3 is irrational: Eisenstein at p=3 proves X^3 - 3 irreducible over Q, irreducibility rules out rational roots, and a rational cube root would be such a root.",
+    "whyMatters": [
+      "Demonstrates the stronger polynomial route from irreducibility to irrationality instead of only checking integer cube bounds.",
+      "Reuses the general Eisenstein infrastructure from CubeRoot2IrrationalOQ03."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "X3_sub_3_irred proves X^3 - 3 is irreducible over Q by Eisenstein at p=3.",
+      "X3_sub_3_no_rat_root proves X^3 - 3 has no rational roots by an irreducibility and degree argument.",
+      "cbrt3_irrational_via_eisenstein proves the cube root of 3 is irrational."
+    ],
+    "open": [],
+    "goal": "Keep the research record aligned with the verified Eisenstein proof."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-13T22:00:00Z",
+    "iteration": 1,
+    "focus": "Source-backed metadata sync for Proofs/CubeRoot3IrrationalOQ02.lean: 123 lines, 3 theorem declarations, 0 definitions, 0 axioms, and 0 sorries.",
+    "blockers": [],
+    "nextAction": "No Lean work is needed for the catalog entry.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Proofs/CubeRoot3IrrationalOQ02.lean proves X3_sub_3_irred, X3_sub_3_no_rat_root, and cbrt3_irrational_via_eisenstein. Source audit: 123 lines, 3 theorems, 0 definitions, 0 axioms, 0 sorries.",
+    "insights": [
+      "Eisenstein at p=3 proves irreducibility in a reusable algebraic form.",
+      "Irreducibility of a degree-three polynomial rules out rational roots through the standard unit-factor split.",
+      "The polynomial proof is stronger than a direct non-perfect-cube argument because it rules out every rational root of X^3 - 3."
+    ],
+    "builtItems": [
+      "Proofs/CubeRoot3IrrationalOQ02.lean: 123 lines, 3 theorems, 0 axioms, 0 sorries",
+      "X3_sub_3_irred: irreducibility of X^3 - 3 over Q via Eisenstein",
+      "X3_sub_3_no_rat_root: no rational roots by irreducibility and degree case analysis",
+      "cbrt3_irrational_via_eisenstein: irrationality of the real cube root of 3"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Optional future work: derive the degree-three field-extension corollary from the existing nth-root infrastructure."
+    ],
+    "phase": "COMPLETED"
+  },
+  "tags": [
+    "irrationality",
+    "number-theory",
+    "polynomial-theory",
+    "eisenstein",
+    "cube-roots",
+    "irreducibility"
+  ],
+  "relatedProofs": [
+    "cube-root-2-irrational",
+    "cube-root-3-irrational",
+    "cube-root-3-irrational-oq-02"
+  ],
+  "references": [
+    {
+      "authors": "G. Eisenstein",
+      "title": "Über die Irreductibilität und einige andere Eigenschaften der Gleichung",
+      "year": "1850",
+      "note": "Original Eisenstein irreducibility criterion"
+    }
+  ],
+  "started": "2026-04-13T22:00:00Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/CubeRoot3IrrationalOQ02.lean",
+      "filename": "CubeRoot3IrrationalOQ02.lean",
+      "lineCount": 123,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3IrrationalOQ02.lean"
+    },
+    {
+      "path": "Proofs/CubeRoot3Irrational.lean",
+      "filename": "CubeRoot3Irrational.lean",
+      "lineCount": 83,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3Irrational.lean"
+    }
+  ],
+  "lastUpdate": "2026-05-18T00:00:00.000Z"
+}

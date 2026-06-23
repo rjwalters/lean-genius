@@ -1,0 +1,217 @@
+{
+  "id": "erdos-639",
+  "title": "Erdős Problem #639: Edges Not in Monochromatic Triangles",
+  "slug": "erdos-639",
+  "description": "In a 2-coloring of K_n, are there at most n²/4 edges not appearing in any monochromatic triangle? SOLVED: Keevash-Sudakov (2004) determined the exact threshold for all n.",
+  "meta": {
+    "author": "Erdős (problem), Keevash-Sudakov (2004 solution)",
+    "sourceUrl": "https://erdosproblems.com/639",
+    "date": "2004",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos639Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "monochromatic-triangles",
+      "extremal-combinatorics",
+      "complete-graphs"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 639,
+    "erdosUrl": "https://erdosproblems.com/639",
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Complete graphs and adjacency",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for counting edges",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients for edge counts",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of edge colorings and monochromatic triangles with symmetric coloring property",
+      "Statement of the exact bound for all n including the three-regime structure (n ≤ 5, n = 6, n ≥ 7)",
+      "Axiomatization of the Keevash-Sudakov theorem for n ≥ 7 and its tightness",
+      "Connection to Ramsey number R(3,3) = 6 as the phase transition point",
+      "The extremal balanced bipartite coloring construction as a concrete Lean definition",
+      "Proof of mono_iff_red_or_blue and edge_partition without sorry (verified by Aristotle)"
+    ],
+    "relatedProblems": [
+      "ramseys-theorem"
+    ],
+    "axiomCount": 3,
+    "lineCount": 202,
+    "assumptions": "3 axioms: ramsey_3_3, keevash_sudakov_main, keevash_sudakov_complete. 0 sorries.",
+    "theoremCount": 3,
+    "definitionCount": 16
+  },
+  "overview": {
+    "historicalContext": "**Monochromatic Triangle Coverage: From Ramsey Theory to Exact Thresholds**\n\nThis problem sits at the intersection of Ramsey theory and extremal graph theory, asking a natural quantitative question: in a 2-coloring of $K_n$, how many edges can escape all monochromatic triangles?\n\n**The Ramsey Foundation**: Ramsey's theorem (1930) guarantees that any 2-coloring of a sufficiently large complete graph contains a monochromatic clique of prescribed size. For triangles specifically, Greenwood and Gleason (1955) established $R(3,3) = 6$: every 2-coloring of $K_6$ contains a monochromatic triangle. The unique (up to isomorphism) triangle-free 2-coloring of $K_5$ is the cycle $C_5$ in one color with its complement in the other — this is the Ramsey $(3,3)$ graph.\n\n**The Phase Transition**: The value $R(3,3) = 6$ creates a sharp phase transition:\n- For $n \\le 5$: there exist 2-colorings with NO monochromatic triangle at all, so every edge avoids one.\n- For $n = 6$: monochromatic triangles are forced, but at most 10 edges can still avoid them.\n- For $n \\ge 7$: the monochromatic structure becomes dominant, with at most $\\lfloor n^2/4 \\rfloor$ edges escaping.\n\n**Erdős's Conjecture**: Erdős asked whether the balanced bipartite coloring — coloring cross-edges between two equal halves red and within-half edges blue — is extremal. This coloring creates $\\lfloor n^2/4 \\rfloor$ edges (the cross-edges between halves) that form a complete bipartite graph with no triangles in either color among the cross-edges.\n\n**The Solution Path**:\n- **Erdős-Rousseau-Schelp** (unpublished): Proved the conjecture asymptotically for large $n$.\n- **Pyber (1986)**: Showed that $\\lfloor n^2/4 \\rfloor + 2$ monochromatic cliques suffice to cover all edges of any 2-colored $K_n$. As Alon observed, this implies the bound on uncovered edges.\n- **Keevash-Sudakov (2004)**: Completely resolved the problem by determining the exact threshold for ALL $n$, not just asymptotically. Their proof uses a careful structural analysis of the non-monochromatic edge set, showing it must be 'almost bipartite'.",
+    "problemStatement": "**Problem Statement**\n\nIf the edges of $K_n$ are 2-colored (red/blue), at most how many edges can avoid appearing in any monochromatic triangle?\n\n**Answer**: YES, at most $\\lfloor n^2/4 \\rfloor$ (Keevash-Sudakov 2004), with the complete picture:\n- For $n \\le 5$: all $\\binom{n}{2}$ edges can avoid monochromatic triangles (triangle-free 2-colorings exist)\n- For $n = 6$: exactly 10 edges (since $R(3,3) = 6$ forces monochromatic triangles)\n- For $n \\ge 7$: at most $\\lfloor n^2/4 \\rfloor$ edges\n\n**The bound is tight**: achieved by the balanced complete bipartite coloring, where cross-edges between two equal halves receive one color and within-half edges receive the other.",
+    "text": "In a 2-coloring of K_n, are there at most n²/4 edges not appearing in any monochromatic triangle? SOLVED: Keevash-Sudakov (2004) determined the exact threshold for all n.",
+    "proofStrategy": "**The Formalization Strategy**\n\nThe Lean formalization follows a structured approach organized around the three-regime solution:\n\n1. **Basic Setup** (Parts I–II): Defines `completeGraph`, `Edge`, `edgeCount`, `EdgeColoring` as `Fin n → Fin n → Bool`, `IsSymmetricColoring` for undirected edges, `Triangle` as a structure with three distinct vertices, and `IsMonochromatic` / `IsRedTriangle` / `IsBlueTriangle`\n2. **Key Predicate** (Part III): Defines `EdgeInMonoTriangle` (edge has a witness vertex completing a monochromatic triple) and `EdgeNotInMonoTriangle` (universal negation), with `countEdgesNotInMono` using `Nat.card` over ordered pairs\n3. **Bounds** (Part IV): Defines `boundQuarter n = n²/4` and `exactBound n` as a piecewise function over the three regimes\n4. **Small Cases** (Part V): Axiomatizes only `ramsey_3_3` (every 2-coloring of $K_6$ has a monochromatic triangle); the $n \\le 5$ and $n = 6$ cases are described in source docstrings without separate axioms\n5. **Main Theorem** (Part VI): Axiomatizes `keevash_sudakov_main` for $n \\ge 7$ and defines `balancedBipartiteColoring` explicitly; tightness and `bipartite_achieves_bound` are described in source docstrings only\n6. **Ramsey Connection** (Part VII): Proves `edge_partition` (every edge is in a mono triangle or not — a complete dichotomy); the bipartite-like structure of non-mono edges is documented in a source comment only\n7. **Pyber's Result** (Part VIII): Axiomatizes `keevash_sudakov_complete` unifying all cases; Pyber's clique covering result and the Erdős-Rousseau-Schelp asymptotic result are described in source docstrings only\n8. **Final Theorem** (Main): `erdos_639` invokes `keevash_sudakov_complete` which unifies all cases",
+    "keyInsights": [
+      "$R(3,3) = 6$ creates a sharp phase transition: for $n \\le 5$, triangle-free 2-colorings exist (the $C_5$ coloring is the unique example for $n = 5$), while for $n \\ge 6$, monochromatic triangles are unavoidable",
+      "The balanced bipartite coloring is extremal: splitting vertices into two halves of size $\\lfloor n/2 \\rfloor$ and $\\lceil n/2 \\rceil$, coloring cross-edges red and within-edges blue, creates exactly $\\lfloor n^2/4 \\rfloor$ edges in no monochromatic triangle — the bipartite cross-edges have no triangle in either color",
+      "Pyber's clique covering implies the bound: if $\\lfloor n^2/4 \\rfloor + 2$ monochromatic cliques cover all edges, and each clique contributes at least one edge to the monochromatic triangle count, then at most $\\lfloor n^2/4 \\rfloor$ edges can remain uncovered",
+      "The three-regime structure ($n \\le 5$, $n = 6$, $n \\ge 7$) is essential: the formalization uses piecewise `exactBound` to capture that the answer is qualitatively different in each range, not a single formula",
+      "Keevash-Sudakov's structural insight: the non-monochromatic edges form an 'almost bipartite' graph, which constrains their count to at most $\\lfloor n^2/4 \\rfloor$ — this is why Turán's theorem lurks behind the $n^2/4$ bound",
+      "Two theorems proved without sorry: `mono_iff_red_or_blue` (monochromaticity is red-or-blue for Bool coloring) and `edge_partition` (every edge is classified as in or not in a mono triangle) — both verified by Aristotle"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Ramsey theory (partition regularity)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "edge-colorings",
+      "title": "Complete Graphs and Edge Colorings",
+      "summary": "Defines completeGraph n as the top graph on Fin n, Edge as ordered pairs with i < j, edgeCount n = C(n,2), EdgeColoring as Fin n → Fin n → Bool (using Bool for decidable two-coloring), and IsSymmetricColoring requiring c i j = c j i for undirected edges. The Bool-based coloring is elegant: it makes red/blue a computational rather than logical distinction.",
+      "startLine": 30,
+      "endLine": 51,
+      "mathContext": "Defines completeGraph n as the top graph on Fin n, Edge as ordered pairs with i < j, edgeCount n = C(n,2), EdgeColoring as Fin n → Fin n → Bool (using Bool for decidable two-coloring), and IsSymmetricColoring requiring c i j = c j i for undirected edges."
+    },
+    {
+      "id": "triangles",
+      "title": "Triangles and Monochromatic Structure",
+      "summary": "Defines Triangle n as a structure with three Fin n vertices and distinctness proofs (v1 ≠ v2, v1 ≠ v3, v2 ≠ v3). IsMonochromatic requires c v1 v2 = c v1 v3 = c v2 v3 (transitivity chain). IsRedTriangle and IsBlueTriangle specialize to all-true and all-false. The proved theorem mono_iff_red_or_blue establishes the equivalence via aesop on the Bool structure.",
+      "startLine": 52,
+      "endLine": 83,
+      "mathContext": "Defines Triangle n as a structure with three Fin n vertices and distinctness proofs (v1 ≠ v2, v1 ≠ v3, v2 ≠ v3). IsMonochromatic requires c v1 v2 = c v1 v3 = c v2 v3 (transitivity chain). IsRedTriangle and IsBlueTriangle specialize to all-true and all-false."
+    },
+    {
+      "id": "edges-in-mono",
+      "title": "Edges in Monochromatic Triangles",
+      "summary": "The central predicate: EdgeInMonoTriangle c i j holds when i ≠ j and there exists a witness vertex k forming a monochromatic triple. EdgeNotInMonoTriangle is the universal negation — for ALL k, no monochromatic triple exists. countEdgesNotInMono uses Nat.card over ordered pairs (i < j) satisfying EdgeNotInMonoTriangle, providing the quantity the problem bounds.",
+      "startLine": 84,
+      "endLine": 104,
+      "mathContext": "The central predicate: EdgeInMonoTriangle c i j holds when i ≠ j and there exists a witness vertex k forming a monochromatic triple. EdgeNotInMonoTriangle is the universal negation — for ALL k, no monochromatic triple exists."
+    },
+    {
+      "id": "bound",
+      "title": "The Bound n²/4",
+      "summary": "Defines boundQuarter n = n²/4 (floor division) and exactBound n as a piecewise function: C(n,2) for n ≤ 5 (all edges can escape), 10 for n = 6, and n²/4 for n ≥ 7. The piecewise structure captures the three-regime solution discovered by Keevash-Sudakov, with the phase transition at R(3,3) = 6.",
+      "startLine": 105,
+      "endLine": 119,
+      "mathContext": "Defines boundQuarter n = n²/4 (floor division) and exactBound n as a piecewise function: C(n,2) for n ≤ 5 (all edges can escape), 10 for n = 6, and n²/4 for n ≥ 7. The piecewise structure captures the three-regime solution discovered by Keevash-Sudakov, with the phase transition at R(3,3) = 6."
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases",
+      "summary": "Axiomatizes only ramsey_3_3 (every 2-coloring of K₆ has a monochromatic triangle). The n ≤ 5 (triangle-free 2-coloring exists) and n = 6 (exactly 10 edges escape) cases are documented in source docstrings without separate axioms. The n = 6 case is the phase transition point where R(3,3) first forces monochromatic triangles.",
+      "startLine": 118,
+      "endLine": 130,
+      "mathContext": "Axiom: ramsey_3_3 (every 2-coloring of K₆ has a monochromatic triangle). The small_case_5 and case_6 facts appear only as orphan docstrings; no axiom or definition declared for them."
+    },
+    {
+      "id": "keevash-sudakov",
+      "title": "The Keevash-Sudakov Theorem",
+      "summary": "Axiomatizes keevash_sudakov_main (for n ≥ 7, countEdgesNotInMono ≤ n²/4) and defines balancedBipartiteColoring explicitly as a Lean function splitting vertices at n/2. Tightness (existence of achieving colorings) and bipartite_achieves_bound are described in source docstrings only — no axiom or definition declared for them.",
+      "startLine": 131,
+      "endLine": 148,
+      "mathContext": "Axiom: keevash_sudakov_main (for n ≥ 7, countEdgesNotInMono ≤ n²/4). Definition: balancedBipartiteColoring. keevash_sudakov_tight and bipartite_achieves_bound appear only as orphan docstrings."
+    },
+    {
+      "id": "ramsey-connection",
+      "title": "Connection to Ramsey Theory",
+      "summary": "Proves edge_partition: every edge in K_n is either in a monochromatic triangle or not — a complete dichotomy established by case analysis on the existential witness. This clean by-cases proof was verified by Aristotle. The bipartite-like structure of non-mono edges is noted in a source docstring only; no axiom or declaration exists for it.",
+      "startLine": 149,
+      "endLine": 168,
+      "mathContext": "Proves edge_partition: every edge in K_n is either in a monochromatic triangle or not — a complete dichotomy established by case analysis on the existential witness. This clean by-cases proof was verified by Aristotle."
+    },
+    {
+      "id": "pyber",
+      "title": "Pyber's Covering Result",
+      "summary": "Axiomatizes keevash_sudakov_complete unifying all cases (the single axiom in this section). Pyber's 1986 clique covering result and the Erdős-Rousseau-Schelp asymptotic result are described in source docstrings only — no formal axiom or declaration exists for them.",
+      "startLine": 169,
+      "endLine": 202,
+      "mathContext": "Axiom: keevash_sudakov_complete (complete solution for all n). Pyber's ⌊n²/4⌋ + 2 clique covering and ERS asymptotic bound appear only as orphan docstrings."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #639 asks whether at most $\\lfloor n^2/4 \\rfloor$ edges in a 2-colored $K_n$ can avoid appearing in any monochromatic triangle. SOLVED by Keevash and Sudakov (2004) who determined the exact threshold for all $n$: all $\\binom{n}{2}$ edges for $n \\le 5$ (triangle-free 2-colorings exist), exactly 10 for $n = 6$ (where $R(3,3) = 6$ first forces monochromatic triangles), and $\\lfloor n^2/4 \\rfloor$ for $n \\ge 7$. The bound is achieved by the balanced bipartite coloring.",
+    "implications": "1. **Ramsey-Extremal Interface**: The problem beautifully connects Ramsey theory (R(3,3) = 6 as the forcing threshold) with extremal graph theory (Turán-type $n^2/4$ bound). The appearance of $n^2/4$ — the Turán number $\\text{ex}(n, K_3) = \\lfloor n^2/4 \\rfloor$ — is not coincidental: the non-mono edges form a triangle-free-like structure in each color\n\n2. **Phase Transition at R(3,3)**: The three-regime solution illustrates a sharp Ramsey phase transition. Below $R(3,3) = 6$, the problem is trivial (no monochromatic triangles needed). At $n = 6$, the transition occurs.\n\nFor $n \\ge 7$, the asymptotic regime takes over with $n^2/4$ as the exact bound\n\n3. **Extremal Uniqueness**: The balanced bipartite coloring is the unique extremal construction (up to symmetry). This mirrors the uniqueness of the Turán graph $T(n,2)$ in Turán's theorem — both are balanced bipartite structures\n\n4. **Pyber's Connection**: The link to monochromatic clique coverings reveals deeper structure: if $\\lfloor n^2/4 \\rfloor + 2$ monochromatic cliques cover all edges, the uncovered edges are bounded. This connects edge-avoidance to covering numbers\n\n5. **Clean Formalization**: The proof has 0 theorem sorries — `mono_iff_red_or_blue` and `edge_partition` are fully proved, with `aesop` and `by_cases` handling the Boolean case analysis cleanly.",
+    "openQuestions": [
+      "What is the maximum number of edges avoiding monochromatic K_4 (instead of triangles) in a 2-colored K_n? The Keevash-Sudakov paper addresses general cliques but exact small-case thresholds remain open",
+      "For r ≥ 3 colors, how many edges can avoid all monochromatic triangles? The problem becomes substantially harder as the Ramsey number R(3,3,...,3) grows rapidly",
+      "Is there an efficient algorithm to find a coloring maximizing the number of edges not in monochromatic triangles, or is this computationally hard?",
+      "What is the analogous threshold for hypergraphs: in a 2-coloring of the complete 3-uniform hypergraph, how many hyperedges can avoid monochromatic tetrahedra?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Function",
+      "Classical"
+    ],
+    "namespace": "Erdos639",
+    "lineCount": 202,
+    "axiomCount": 3,
+    "theoremCount": 3,
+    "definitionCount": 16,
+    "path": "Proofs/Erdos639Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "key": "KeevashSudakov2004",
+      "citation": "Keevash, P. and Sudakov, B. (2004). On the number of edges not covered by monochromatic copies of a clique. Journal of Combinatorial Theory, Series B 90, 41–52.",
+      "type": "paper"
+    },
+    {
+      "key": "Pyber1986",
+      "citation": "Pyber, L. (1986). Clique covering of graphs. Combinatorica 6, 393–398.",
+      "type": "paper"
+    },
+    {
+      "key": "ErdosRousseau",
+      "citation": "Erdős, P., Rousseau, C.C., and Schelp, R.H. Unpublished result on monochromatic triangle covering.",
+      "type": "paper"
+    },
+    {
+      "key": "Ramsey1930",
+      "citation": "Ramsey, F. P. (1930). On a Problem of Formal Logic. Proceedings of the London Mathematical Society, s2-30(1), 264–286.",
+      "type": "paper"
+    },
+    {
+      "key": "Greenwood1955",
+      "citation": "Greenwood, R. E. and Gleason, A. M. (1955). Combinatorial relations and chromatic graphs. Canadian Journal of Mathematics, 7, 1–7.",
+      "type": "paper"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-183",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-22",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-547",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, ramsey-theory"
+    }
+  ],
+  "sorries": 0
+}

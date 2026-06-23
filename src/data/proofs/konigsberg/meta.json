@@ -1,0 +1,215 @@
+{
+  "id": "konigsberg",
+  "title": "Königsberg Bridges Problem",
+  "slug": "konigsberg",
+  "description": "Euler's 1736 proof that it's impossible to walk through Königsberg crossing each of its seven bridges exactly once. This problem founded graph theory.",
+  "meta": {
+    "author": "Leonhard Euler (formalized in Lean 4 by Kyle Miller)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Seven_Bridges_of_K%C3%B6nigsberg",
+    "date": "1736",
+    "status": "verified",
+    "tags": [
+      "graph-theory",
+      "combinatorics",
+      "classic",
+      "beginner",
+      "wiedijk-100"
+    ],
+    "proofRepoPath": "Proofs/Konigsberg.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Undirected graphs without self-loops",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Walk.IsEulerian",
+        "description": "Predicate for Eulerian trails",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Trails"
+      },
+      {
+        "theorem": "Walk.IsEulerian.card_odd_degree",
+        "description": "Eulerian paths require 0 or 2 odd-degree vertices",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Trails"
+      }
+    ],
+    "originalContributions": [
+      "Pedagogical presentation of the graph model",
+      "Detailed vertex and edge labeling matching historical geography",
+      "Complete proof with historical context"
+    ],
+    "dateAdded": "2025-12-26",
+    "wiedijkNumber": 54,
+    "axiomCount": 0,
+    "lineCount": 220,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 5
+  },
+  "overview": {
+    "historicalContext": "In 1736, Leonhard Euler solved the Königsberg bridge problem, asking whether one could walk through the city crossing each of its seven bridges exactly once. Königsberg (now Kaliningrad, Russia) was built on both sides of the Pregel River with two islands in the middle, connected by seven bridges.\n\nEuler's key insight was to abstract away the geographical details and focus only on the connection structure. He represented each landmass as a point and each bridge as a line connecting two points. This abstraction created what we now call a graph.\n\nEuler observed that in any successful walk, each intermediate landmass must be entered and exited the same number of times, requiring an even number of bridges. Only the start and end points can have odd numbers of bridges. Since all four Königsberg landmasses had odd numbers of bridges, no such walk exists.\n\nThis paper, 'Solutio problematis ad geometriam situs pertinentis' (Solution of a problem relating to the geometry of position), is considered the first paper in graph theory and an early work in topology.",
+    "problemStatement": "**The Königsberg Bridge Problem:**\n\nGiven a graph $G = (V, E)$ representing the city of Königsberg:\n- 4 vertices representing landmasses (north bank, south bank, and two islands)\n- 7 edges representing bridges\n\nProve that there is no **Eulerian path** - a path that traverses each edge exactly once.\n\n**Euler's Theorem:** A connected graph has an Eulerian path if and only if it has exactly 0 or 2 vertices of odd degree.",
+    "text": "Euler's 1736 proof that it's impossible to walk through Königsberg crossing each of its seven bridges exactly once. This problem founded graph theory.",
+    "proofStrategy": "Our proof proceeds in three steps:\n\n1. **Model the graph**: Define the Königsberg graph with 11 vertices (4 landmasses + 7 bridges) to create a simple graph without multi-edges.\n\n2. **Calculate degrees**: Show that the four landmass vertices have degrees 5, 3, 3, and 3 - all odd. Bridge vertices have degree 2 (even).\n\n3. **Apply Euler's theorem**: Use Mathlib's `IsEulerian.card_odd_degree` which states that an Eulerian path implies 0 or 2 odd-degree vertices. Since we have 4, no Eulerian path exists.",
+    "keyInsights": [
+      "The problem's solution depends only on the graph structure, not the physical layout - this is the birth of graph theory",
+      "Vertices of odd degree must be endpoints of an Eulerian path (if one exists)",
+      "A connected graph with 0 odd-degree vertices has an Eulerian circuit (returns to start)",
+      "A connected graph with 2 odd-degree vertices has an Eulerian path (between those vertices)",
+      "Any other number of odd-degree vertices means no Eulerian path exists"
+    ],
+    "prerequisites": [
+      "Graph theory (vertices, edges, colorings)",
+      "Combinatorics (counting, extremal problems)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Overview of the problem and its significance as the founding of graph theory.",
+      "mathContext": "Introduces the Konigsberg bridge problem: given $G = (V, E)$ with $|V| = 4$ landmasses and $|E| = 7$ bridges, determine whether an Eulerian path (traversing each $e \\in E$ exactly once) exists."
+    },
+    {
+      "id": "vertices",
+      "title": "Graph Vertices",
+      "startLine": 47,
+      "endLine": 83,
+      "summary": "Defining the 11 vertices: 4 landmasses and 7 bridges.",
+      "mathContext": "Defines the vertex set $V = \\{N, S, I_1, I_2, b_1, \\ldots, b_7\\}$ with $|V| = 11$ (4 landmasses + 7 bridge-vertices) to model the multigraph as a simple graph without parallel edges."
+    },
+    {
+      "id": "edges",
+      "title": "Edge Definition",
+      "startLine": 84,
+      "endLine": 102,
+      "summary": "The edge list connecting bridges to their landmasses.",
+      "mathContext": "Defines the edge set $E \\subseteq V \\times V$ encoding the adjacency relation: each bridge vertex $b_i$ connects to exactly two landmass vertices, giving $|E| = 14$ directed pairs (7 bridges $\\times$ 2 endpoints)."
+    },
+    {
+      "id": "simple-graph",
+      "title": "SimpleGraph Construction",
+      "startLine": 103,
+      "endLine": 118,
+      "summary": "Constructing the graph with symmetry and no self-loops.",
+      "mathContext": "Constructs $G$ as a $\\texttt{SimpleGraph}$ over the vertex type, verifying the symmetric property $\\{u, v\\} \\in E \\implies \\{v, u\\} \\in E$ and the irreflexive property $\\{v, v\\} \\notin E$ (no self-loops)."
+    },
+    {
+      "id": "degrees",
+      "title": "Degree Calculation",
+      "startLine": 119,
+      "endLine": 141,
+      "summary": "Computing the degree of each vertex: landmasses are odd, bridges are even.",
+      "mathContext": "Computes $\\deg(v)$ for each $v \\in V$: $\\deg(I_1) = 5$, $\\deg(I_2) = 3$, $\\deg(N) = 3$, $\\deg(S) = 3$ (all odd), and $\\deg(b_i) = 2$ for each bridge vertex (all even)."
+    },
+    {
+      "id": "odd-vertices",
+      "title": "Odd-Degree Vertices",
+      "startLine": 142,
+      "endLine": 160,
+      "summary": "Proving exactly the four landmasses have odd degree.",
+      "mathContext": "Proves $|\\{v \\in V \\mid 2 \\nmid \\deg(v)\\}| = 4$, with the odd-degree vertices being exactly the four landmasses $\\{N, S, I_1, I_2\\}$."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "startLine": 161,
+      "endLine": 189,
+      "summary": "The impossibility proof using Euler's theorem on odd-degree vertices.",
+      "mathContext": "Proves $\\nexists$ Eulerian path in $G$. By Euler's theorem ($\\texttt{IsEulerian.card\\_odd\\_degree}$), an Eulerian path requires $|\\{v : 2 \\nmid \\deg(v)\\}| \\in \\{0, 2\\}$. Since the Konigsberg graph has 4 odd-degree vertices, this is a contradiction."
+    },
+    {
+      "id": "history",
+      "title": "Historical Notes",
+      "startLine": 190,
+      "endLine": 220,
+      "summary": "Euler's original reasoning and the broader impact on mathematics.",
+      "mathContext": "Discusses Euler's 1736 abstraction: replacing geographic layout with the graph $G = (V, E)$ and reducing traversability to the parity condition $|\\{v : 2 \\nmid \\deg(v)\\}| \\leq 2$. This founded the field of graph theory and combinatorial topology."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization demonstrates how graph theory reduces a seemingly geographical puzzle to a simple counting argument. The Königsberg graph has 4 vertices of odd degree, but an Eulerian path requires exactly 0 or 2. This contradiction proves no solution exists.",
+    "implications": "Euler's insight - abstracting away physical details to focus on structural relationships - became the foundation of graph theory and topology. Today, Eulerian path algorithms are used in DNA sequencing, circuit design, network routing, and many other applications.",
+    "openQuestions": [
+      "How can we efficiently find Eulerian paths when they exist? (Hierholzer's algorithm solves this in linear time)",
+      "What's the analog of Eulerian paths for directed graphs? (In-degree must equal out-degree for all vertices except possibly two)",
+      "How does the problem generalize to hypergraphs or infinite graphs?",
+      "What computational complexity does it take to count all Eulerian paths in a graph?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Trails",
+      "Mathlib.Algebra.Ring.Parity",
+      "Mathlib.Tactic.DeriveFintype",
+      "Mathlib.Tactic.NormNum"
+    ],
+    "opens": [
+      "Verts"
+    ],
+    "namespace": "Konigsberg",
+    "lineCount": 220,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 5,
+    "path": "Proofs/Konigsberg.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Euler, Leonhard",
+      "title": "Solutio problematis ad geometriam situs pertinentis",
+      "year": "1736",
+      "venue": "Commentarii Academiae Scientiarum Petropolitanae 8, 128–140",
+      "note": "The founding paper of graph theory — proved the impossibility of traversing all seven bridges of Königsberg exactly once"
+    },
+    {
+      "authors": "Biggs, Norman L.; Lloyd, E. Keith; Wilson, Robin J.",
+      "title": "Graph Theory 1736–1936",
+      "year": "1976",
+      "venue": "Oxford University Press",
+      "note": "Historical account of graph theory from Euler's bridge problem to modern developments"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "related",
+      "description": "Both are foundational results in graph theory: the Konigsberg bridges problem (1736) established graph theory as a discipline, while the four-color theorem (1976) is its most famous result — both concern structural properties of graphs embedded in surfaces"
+    },
+    {
+      "targetId": "euler-polyhedral-formula",
+      "relationship": "related",
+      "description": "Both are due to Euler and concern topological invariants: the polyhedral formula V-E+F=2 and the Konigsberg bridges criterion (all vertices must have even degree for an Eulerian circuit) — both revealed the importance of combinatorial topology"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "thematic",
+      "description": "Both are named after Euler: the totient function concerns number-theoretic structure, while the Konigsberg problem concerns graph structure — together they illustrate the breadth of Euler's contributions across mathematics"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "thematic",
+      "description": "Both are accessibility results that introduced powerful mathematical paradigms: Euclid's infinitude of primes established proof by contradiction, while Euler's Konigsberg bridges established graph theory as an abstraction tool"
+    },
+    {
+      "targetId": "pascals-hexagon",
+      "relationship": "thematic",
+      "description": "Both concern geometric configurations analyzed via combinatorial structure: Pascal's hexagon theorem uses projective geometry, while the Konigsberg problem abstracts geography into graph theory — both pioneered the use of structural abstraction in geometry"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "euler_circuit",
+      "type": "core",
+      "description": "A connected graph has an Euler circuit iff every vertex has even degree",
+      "leanType": "Connected G -> (has_euler_circuit G <-> forall v, Even (degree v))"
+    }
+  ],
+  "sorries": 0
+}

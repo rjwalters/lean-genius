@@ -1,0 +1,211 @@
+[
+  {
+    "id": "ann-173-1",
+    "proofId": "erdos-173",
+    "range": {
+      "startLine": 1,
+      "endLine": 32
+    },
+    "type": "concept",
+    "title": "Problem Overview and Background",
+    "content": "Erdős Problem #173 asks whether, in any 2-coloring of $\\mathbb{R}^2$, all but at most one triangle shape (up to congruence) must have a monochromatic congruent copy. The formalization defines plane colorings, triangle congruence via side-length permutations, and the Ramsey property. Shader (1976) proved all right triangles are Ramsey; a strip coloring construction shows equilateral triangles are the natural candidate exception.",
+    "mathContext": "A triangle $T$ is Ramsey in $\\mathbb{R}^2$ if for every $\\chi: \\mathbb{R}^2 \\to \\{0,1\\}$, there exists $T' \\cong T$ with $\\chi$ constant on the vertices of $T'$. The problem asks: is $|\\{[T] : T \\text{ not Ramsey}\\}| \\leq 1$?",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euclidean Ramsey theory",
+      "plane colorings",
+      "congruent triangles",
+      "chromatic geometry"
+    ],
+    "prerequisites": [
+      "Ramsey theory basics",
+      "Euclidean geometry",
+      "graph coloring"
+    ]
+  },
+  {
+    "id": "ann-173-2",
+    "proofId": "erdos-173",
+    "range": {
+      "startLine": 34,
+      "endLine": 75
+    },
+    "type": "definition",
+    "title": "Core Geometric Definitions",
+    "content": "Defines the fundamental objects: **PlaneColoring** assigns a Boolean color to each point of $\\mathbb{R}^2$. **Triangle** consists of three vertices in $\\mathbb{R}^2$ with a nondegeneracy proof (pairwise distinct). **sideLengths** extracts three side lengths using Mathlib's `dist`. **Congruent** formalizes SSS congruence: two triangles are congruent if their side lengths agree up to a permutation $\\sigma \\in S_3$. **IsMonochromatic** requires all three vertices to share the same color.",
+    "mathContext": "$\\text{Congruent}(T_1, T_2) \\;:\\Leftrightarrow\\; \\exists \\sigma \\in S_3: \\forall i,\\, s_i(T_1) = s_{\\sigma(i)}(T_2)$ where $s_i$ are the side lengths. This is equivalent to the classical SSS congruence criterion.",
+    "significance": "key",
+    "relatedConcepts": [
+      "SSS congruence",
+      "Equiv.Perm",
+      "metric space distance",
+      "EuclideanSpace"
+    ],
+    "prerequisites": [
+      "Euclidean distance",
+      "permutation groups",
+      "Mathlib EuclideanSpace API"
+    ]
+  },
+  {
+    "id": "ann-173-3",
+    "proofId": "erdos-173",
+    "range": {
+      "startLine": 77,
+      "endLine": 103
+    },
+    "type": "definition",
+    "title": "Triangle Classification Predicates",
+    "content": "Defines three triangle types: **IsEquilateral** (all three sides equal), **IsRightTriangle** (Pythagorean relation $a^2 + b^2 = c^2$ holds for some ordering of sides), and **IsIsosceles** (at least two sides equal). The right triangle predicate is critical for Shader's theorem; the equilateral predicate identifies the candidate exception to Erdős's conjecture.",
+    "mathContext": "$\\text{IsRightTriangle}(T) \\;:\\Leftrightarrow\\; a^2 + b^2 = c^2 \\vee b^2 + c^2 = a^2 \\vee a^2 + c^2 = b^2$ where $a, b, c$ are the side lengths. The disjunction covers all three possible hypotenuse positions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pythagorean theorem",
+      "triangle inequality",
+      "angle classification"
+    ],
+    "prerequisites": [
+      "sideLengths definition",
+      "real arithmetic"
+    ]
+  },
+  {
+    "id": "ann-173-4",
+    "proofId": "erdos-173",
+    "range": {
+      "startLine": 105,
+      "endLine": 122
+    },
+    "type": "definition",
+    "title": "Ramsey Property and Almost-All Statement",
+    "content": "**IsRamseyTriangle T**: for every 2-coloring $\\chi$, there exists $T' \\cong T$ with all vertices monochromatic under $\\chi$. This is the central notion — a shape is 'Ramsey' if no 2-coloring can avoid it. **AlmostAllTrianglesRamsey**: there exists at most one exceptional congruence class (formalized via `Option Triangle`) such that all non-exceptional shapes are Ramsey. The problem asks whether this holds.",
+    "mathContext": "$\\text{IsRamseyTriangle}(T) \\;:\\Leftrightarrow\\; \\forall \\chi: \\mathbb{R}^2 \\to \\{0,1\\},\\; \\exists T' \\cong T: \\chi(v_1') = \\chi(v_2') = \\chi(v_3')$. The 'almost all' formulation: $\\exists E \\in \\{\\text{none}\\} \\cup \\{\\text{some } T\\}: \\forall T \\not\\cong E,\\; \\text{IsRamseyTriangle}(T)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey property",
+      "unavoidable configuration",
+      "partition regularity",
+      "Option type"
+    ],
+    "prerequisites": [
+      "PlaneColoring",
+      "Congruent",
+      "IsMonochromatic"
+    ]
+  },
+  {
+    "id": "ann-173-5",
+    "proofId": "erdos-173",
+    "range": {
+      "startLine": 124,
+      "endLine": 149
+    },
+    "type": "concept",
+    "title": "Shader's Theorem (1976)",
+    "content": "Axiomatizes Shader's 1976 result: all right triangles are Ramsey in $\\mathbb{R}^2$. For any right triangle $T$ and any 2-coloring, there exists a monochromatic congruent copy of $T$. Shader's proof uses geometric constructions exploiting the right angle to find monochromatic copies via a sequence of reflections and rotations. The corollary **right_345_ramsey** applies this to the 3-4-5 right triangle, verifying $3^2 + 4^2 = 5^2$ via `norm_num`.",
+    "mathContext": "$\\forall T: \\text{IsRightTriangle}(T) \\implies \\text{IsRamseyTriangle}(T)$. Applied to $(3,4,5)$: $9 + 16 = 25$ confirms it is right-angled, so it is Ramsey by Shader's theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Shader's proof technique",
+      "right angle reflections",
+      "geometric Ramsey constructions"
+    ],
+    "prerequisites": [
+      "IsRightTriangle",
+      "IsRamseyTriangle",
+      "norm_num tactic"
+    ]
+  },
+  {
+    "id": "ann-173-6",
+    "proofId": "erdos-173",
+    "range": {
+      "startLine": 151,
+      "endLine": 182
+    },
+    "type": "concept",
+    "title": "Strip Coloring Counterexample",
+    "content": "Constructs **stripColoring h**: colors $\\mathbb{R}^2$ with alternating horizontal strips of width $h$, using $\\lfloor y/h \\rfloor \\bmod 2$. Axiomatizes **equilateral_not_monochromatic_strip**: for any strip width $h > 0$, the equilateral triangle with side length $2h/\\sqrt{3}$ (height exactly $h$) cannot be placed monochromatically. The theorem **at_most_one_is_tight** instantiates with $h = 1$ to show some equilateral triangle is NOT Ramsey, proving the 'at most one exception' bound is achieved.",
+    "mathContext": "Strip coloring: $\\chi(x,y) = \\lfloor y/h \\rfloor \\bmod 2$. An equilateral triangle with side $s = 2h/\\sqrt{3}$ has height $h$, so one vertex must lie in a different strip from the other two. Thus $\\exists T$ equilateral: $\\neg \\text{IsRamseyTriangle}(T)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "constructive counterexample",
+      "floor function coloring",
+      "equilateral triangle height formula"
+    ],
+    "prerequisites": [
+      "stripColoring definition",
+      "IsEquilateral",
+      "Real.sqrt"
+    ]
+  },
+  {
+    "id": "ann-173-7",
+    "proofId": "erdos-173",
+    "range": {
+      "startLine": 184,
+      "endLine": 191
+    },
+    "type": "concept",
+    "title": "The Open Conjecture",
+    "content": "Axiomatizes the main conjecture: **AlmostAllTrianglesRamsey**, i.e., all but at most one triangle congruence class is Ramsey under any 2-coloring of $\\mathbb{R}^2$. The equilateral triangle is the natural candidate for the exception. Combined with the strip coloring tightness result, this would mean the equilateral triangle is the *unique* non-Ramsey shape.",
+    "mathContext": "$\\text{AlmostAllTrianglesRamsey} \\;:\\Leftrightarrow\\; \\exists E: \\forall T \\not\\cong E,\\; \\forall \\chi,\\; \\exists T' \\cong T: T' \\text{ monochromatic under } \\chi$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős conjecture",
+      "uniqueness of exception",
+      "open problem"
+    ],
+    "prerequisites": [
+      "AlmostAllTrianglesRamsey definition",
+      "at_most_one_is_tight"
+    ]
+  },
+  {
+    "id": "ann-173-8",
+    "proofId": "erdos-173",
+    "range": {
+      "startLine": 193,
+      "endLine": 209
+    },
+    "type": "insight",
+    "title": "Similarity Invariance of the Ramsey Property",
+    "content": "Defines **Similar** (proportional side lengths with positive ratio $k$) and axiomatizes **similarity_preserves_ramsey**: the Ramsey property is invariant under similarity. This holds because $\\mathbb{R}^2$ admits arbitrary scaling — if $T_1$ has a monochromatic copy at scale $k$, scaling back gives a copy of $T_2$. Thus the Ramsey property depends only on triangle *shape* (angles), not size.",
+    "mathContext": "$\\text{Similar}(T_1, T_2) \\;:\\Leftrightarrow\\; \\exists k > 0: s_i(T_1) = k \\cdot s_i(T_2)\\;\\forall i$. Then $\\text{IsRamseyTriangle}(T_1) \\iff \\text{IsRamseyTriangle}(T_2)$, since $\\mathbb{R}^2$ is scale-invariant.",
+    "significance": "key",
+    "relatedConcepts": [
+      "scale invariance",
+      "similarity class",
+      "homothety",
+      "dilations of the plane"
+    ],
+    "prerequisites": [
+      "Similar definition",
+      "IsRamseyTriangle",
+      "scaling in Euclidean space"
+    ]
+  },
+  {
+    "id": "ann-173-9",
+    "proofId": "erdos-173",
+    "range": {
+      "startLine": 211,
+      "endLine": 234
+    },
+    "type": "concept",
+    "title": "Summary Theorem",
+    "content": "Packages the three main results into a single conjunction: (1) all right triangles are Ramsey (Shader's theorem), (2) the 'at most one exception' bound is tight (some equilateral triangle is not Ramsey), and (3) the open conjecture (AlmostAllTrianglesRamsey). The proof is a direct triple constructor from the three previously established results.",
+    "mathContext": "$(\\forall T: \\text{IsRight}(T) \\implies \\text{IsRamsey}(T)) \\;\\wedge\\; (\\exists T: \\text{IsEquilateral}(T) \\wedge \\neg\\text{IsRamsey}(T)) \\;\\wedge\\; \\text{AlmostAllTrianglesRamsey}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "conjunction packaging",
+      "summary theorem pattern",
+      "proof architecture"
+    ],
+    "prerequisites": [
+      "shader_theorem",
+      "at_most_one_is_tight",
+      "erdos_173_conjecture"
+    ]
+  }
+]

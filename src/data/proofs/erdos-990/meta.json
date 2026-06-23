@@ -1,0 +1,287 @@
+{
+  "id": "erdos-990",
+  "title": "Erdős Problem #990: Polynomial Root Distribution and the Erdős-Turán Inequality",
+  "slug": "erdos-990",
+  "description": "For a complex polynomial f with d roots, is the angular discrepancy bounded by O(√(ν(f) log M)) where ν(f) is the number of nonzero coefficients? DISPROVED (Alexeev-Putterman-Sawhney-Sellke-Valiant 2026): explicit lacunary polynomials with ν(f) = N+2, M(f) < 3, and a positive real root of multiplicity N+1 show no such bound holds.",
+  "meta": {
+    "author": "Erdős-Turán (1950), Ganelius (1954), Soundararajan (2019)",
+    "sourceUrl": "https://erdosproblems.com/990",
+    "date": "1950-2021",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos990Problem.lean",
+    "tags": [
+      "erdos",
+      "analysis",
+      "polynomials",
+      "equidistribution",
+      "discrepancy",
+      "complex-analysis"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 990,
+    "erdosUrl": "https://erdosproblems.com/990",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "prerequisites": [
+      "Polynomial roots and their distribution",
+      "Equidistribution on the unit circle",
+      "Complex analysis fundamentals",
+      "Discrepancy theory"
+    ],
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.arg",
+        "description": "Argument of a complex number",
+        "module": "Mathlib.Analysis.Complex.Basic"
+      },
+      {
+        "theorem": "Polynomial.Basic",
+        "description": "Polynomial definitions",
+        "module": "Mathlib.Algebra.Polynomial.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for bounds",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "ComplexPoly definition: coefficient sequence representation",
+      "nonzeroCoeffCount definition: sparsity of polynomial",
+      "mahlerM definition: the normalization factor in Erdős-Turán",
+      "rootsInInterval definition: counting roots by argument",
+      "discrepancy definition: deviation from uniform distribution",
+      "maxDiscrepancy definition: supremum over all intervals",
+      "erdos_turan_classical axiom: the 1950 result",
+      "sparseConjecture definition: the open problem",
+      "sparse_improves_dense theorem: n ≤ d+1",
+      "sharp constant analysis: optimal Erdős-Turán constant (documented in docstring, not a Lean axiom)",
+      "Erdélyi one-sided improvement: referenced in docstring (not a Lean axiom)"
+    ],
+    "axiomCount": 4,
+    "lineCount": 207,
+    "assumptions": "4 axioms: rootSet (polynomial root set — axiomatized construction), erdos_turan_classical (Erdős-Turán 1950 — discrepancy ≤ C·√(d·log M(p))), erdos_turan_explicit_constant (explicit constant C holds uniformly), erdos_990_sparse_disproof (APSSV 2026 — sparse conjecture is false). 0 sorries.",
+    "theoremCount": 3,
+    "definitionCount": 12
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #990 concerns the angular distribution of polynomial roots, a fundamental topic connecting complex analysis, number theory, and probability.\n\nThe Erdős-Turán inequality (1950) was the first quantitative result on polynomial root equidistribution. It bounds the *star discrepancy* — the worst-case deviation of root counts from uniform distribution in any angular sector — by O(√(d log M)), where d is the degree and M is a coefficient-based normalization factor.\n\nGanelius (1954) improved the explicit constant to C ≤ 8. Mignotte (1992) made further improvements. After 70 years, the *sharp* constant was determined by Soundararajan (2019), who connected the problem to Hilbert transforms, and Steinerberger et al. (2021).\n\nThe open question asks whether the degree d can be replaced by the sparsity n (number of nonzero coefficients). The motivating example is x^d - 1: degree d but only n = 2 nonzero terms, with perfectly equidistributed roots. This connects to the broader theory of lacunary polynomials and sparse representations in analysis.",
+    "problemStatement": "**Problem Statement**\n\nLet $f = a_0 + a_1 x + \\cdots + a_d x^d \\in \\mathbb{C}[x]$ be a polynomial with roots $z_1, \\ldots, z_d$ having arguments $\\theta_1, \\ldots, \\theta_d \\in [0, 2\\pi]$.\n\n**Question:** Is it true that for all intervals $I \\subseteq [0, 2\\pi]$:\n$$\\left| \\#\\{\\theta_i \\in I\\} - \\frac{|I|}{2\\pi} d \\right| \\ll \\sqrt{n \\log M}$$\n\nwhere $n$ is the number of nonzero coefficients and\n$$M = \\frac{|a_0| + \\cdots + |a_d|}{\\sqrt{|a_0||a_d|}}$$\n\n**Known Result (Erdős-Turán 1950):** This holds with $n$ replaced by $d$ (the degree).\n\n**Status:** OPEN for the sparse case. The classical result with degree $d$ is PROVED.",
+    "text": "For a complex polynomial f with d roots having arguments θ₁,...,θ_d, is the discrepancy |#{θᵢ ∈ I} - |I|d/(2π)| bounded by O(√(n log M)) where n is the sparsity? Classical Erdős-Turán (1950) proved this with d, the sparse case remains OPEN.",
+    "proofStrategy": "The formalization represents polynomials as coefficient vectors `Fin (d+1) → C` and defines: (1) sparsity via `nonzeroCoeffCount` (filter and count nonzero entries), (2) the normalization M via `mahlerM`, (3) root counting via `rootsInInterval` (filter roots by argument), (4) discrepancy as |actual - expected|, and (5) star discrepancy as supremum over all intervals. The classical Erdős-Turán is axiomatized (`erdos_turan_classical`), the sparse conjecture is formalized as a `Prop` (`sparseConjecture`), and `sparse_improves_dense` proves n ≤ d+1. The summary theorem `erdos_990_summary` captures the proved classical result.",
+    "keyInsights": [
+      "**Discrepancy bounds via exponential sums**: The proof uses power sums s_k = Σ z_j^k and Newton's identities to connect polynomial coefficients to root distribution. The Erdős-Turán inequality for sequences then bounds the star discrepancy.",
+      "**Sparsity vs degree**: x^d - 1 has n = 2 but degree d, with perfectly equidistributed roots. The sparse conjecture asserts this is general: low sparsity forces good equidistribution regardless of degree.",
+      "**Mahler measure connection**: The normalization M = (Σ|a_i|)/√(|a₀||a_d|) controls coefficient concentration. Log M appears under the square root, so its contribution is mild.",
+      "**Sharp constant via Hilbert transforms**: After 70 years, the optimal constant was found by connecting the problem to the operator norm of a modified Hilbert transform — an unexpected link between polynomial root theory and harmonic analysis.",
+      "**One-sided improvement (Erdélyi)**: Roots cannot *exceed* the expected count by more than C√(d log M) in any sector, even though the two-sided bound is the standard formulation.",
+      "**Lower bound tightness**: There exist polynomials with discrepancy ≥ (1/10)√d, showing the √d dependence is necessary."
+    ],
+    "prerequisites": [
+      "Polynomial roots and their distribution",
+      "Equidistribution on the unit circle",
+      "Complex analysis fundamentals",
+      "Discrepancy theory"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "summary": "Module docstring stating Erdős Problem #990 (polynomial root angular discrepancy bounded by $\\sqrt{n\\log M}$?) and its 2026 status: DISPROVED by Alexeev-Putterman-Sawhney-Sellke-Valiant (arXiv:2604.06609). Imports complex/real analysis and polynomial basics; `namespace Erdos990`; `open Complex Real Polynomial`.",
+      "startLine": 1,
+      "endLine": 40,
+      "mathContext": "Background notes: Erdős-Turán (1950) proved the bound with degree $d$ in place of $n$; APSSV (2026) disproved the sparse $\\nu(f)$ strengthening; Hayman (1972) gave discrepancy $\\le \\nu(f)-1$ as best possible for the sparse case."
+    },
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "Defines `ComplexPoly d` as $\\text{Fin}(d+1)\\to\\mathbb{C}$ (coefficient vector), `polyDegree` (simplified to $d$), `nonzeroCoeffCount` (sparsity $n=|\\{i:a_i\\neq0\\}|$), and `argument`, the angle map $\\mathbb{C}\\to[0,2\\pi)$.",
+      "startLine": 41,
+      "endLine": 61,
+      "mathContext": "The coefficient-vector representation stores $p(i)=a_i$ for $f(x)=\\sum a_i x^i$. Sparsity $n$ is the key parameter of Problem #990. Four definitions, no theorems or axioms here."
+    },
+    {
+      "id": "mahler",
+      "title": "The Mahler Measure",
+      "summary": "Defines `coeffSum` $=\\sum_i|a_i|$ and the normalization factor `mahlerM` $M=(\\sum|a_i|)/\\sqrt{|a_0||a_d|}$ (returning $1$ when $|a_0||a_d|=0$).",
+      "startLine": 62,
+      "endLine": 77,
+      "mathContext": "$M$ normalizes the coefficient sum by the geometric mean of the leading and constant term; $\\log M$ appears under the square root in the Erdős-Turán bound. Two definitions, no axioms."
+    },
+    {
+      "id": "discrepancy",
+      "title": "Root Counting and Discrepancy",
+      "summary": "Axiomatizes the root multiset `rootSet` (a `Finset ℂ`), then defines `rootsInInterval`, `expectedCount` $=(\\beta-\\alpha)d/(2\\pi)$, `discrepancy` $|N(I)-|I|d/(2\\pi)|$, and `maxDiscrepancy` $D^*=\\sup_I$.",
+      "startLine": 78,
+      "endLine": 102,
+      "mathContext": "The star discrepancy $D^*=\\sup_{0\\le\\alpha\\le\\beta\\le 2\\pi}|N([\\alpha,\\beta])-(\\beta-\\alpha)d/(2\\pi)|$ measures worst-case deviation from uniformity. One axiom (`rootSet`) plus four definitions."
+    },
+    {
+      "id": "classical",
+      "title": "The Classical Erdős-Turán Inequality (1950)",
+      "summary": "Axiomatizes the 1950 result `erdos_turan_classical`: $D^*\\le C\\sqrt{d\\log M}$ for some $C>0$, and `erdos_turan_explicit_constant`: a single universal $C$ works for all admissible $p$.",
+      "startLine": 103,
+      "endLine": 119,
+      "mathContext": "The classical bound is in terms of the degree $d$. Both statements are `axiom` declarations (the analytic proof via exponential sums and Newton's identities is not formalized here)."
+    },
+    {
+      "id": "sparse",
+      "title": "The Sparse Conjecture (Erdős Problem #990)",
+      "summary": "Defines `sparseConjecture` — the strengthening replacing degree $d$ with sparsity $n$: $D^*\\le C\\sqrt{n\\log M}$ — and proves `sparse_improves_dense`: $n\\le d+1$ (via `Finset.card_filter_le`), so the sparse bound, if true, would improve the classical one.",
+      "startLine": 120,
+      "endLine": 137,
+      "mathContext": "One definition and one fully proved theorem. The conjecture itself is no longer open: it is refuted by `erdos_990_sparse_disproof` in Part 12."
+    },
+    {
+      "id": "sharp",
+      "title": "Sharp Constant",
+      "summary": "Section banner for work on the optimal constant in the classical Erdős-Turán inequality. Exposition placeholder; declares no Lean content.",
+      "startLine": 138,
+      "endLine": 143,
+      "mathContext": "Empty docstring banner (no definitions, theorems, or axioms)."
+    },
+    {
+      "id": "special",
+      "title": "Special Cases",
+      "summary": "Defines `isLittlewood` — polynomials whose coefficients all satisfy $|a_i|=1$ or $a_i=0$ (the $\\pm1$ / Littlewood family), a structured class where root distribution is well understood.",
+      "startLine": 144,
+      "endLine": 153,
+      "mathContext": "A single definition; no theorems or axioms are declared in this part."
+    },
+    {
+      "id": "generalizations",
+      "title": "Generalizations",
+      "summary": "Section banner for extensions beyond the unit circle (Jordan curves, logarithmic potentials, trigonometric polynomials). Exposition placeholder; declares no Lean content.",
+      "startLine": 154,
+      "endLine": 159,
+      "mathContext": "Empty docstring banner. The Erdős-Turán framework extends to Jordan curves via arclength-proportional distribution and logarithmic capacity."
+    },
+    {
+      "id": "applications",
+      "title": "Applications",
+      "summary": "Section banner for applications of the Erdős-Turán inequality. Exposition placeholder; declares no Lean content.",
+      "startLine": 160,
+      "endLine": 165,
+      "mathContext": "Empty docstring banner."
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Lower Bounds",
+      "summary": "Section banner noting the classical Erdős-Turán bound is essentially tight. Exposition placeholder; declares no Lean content.",
+      "startLine": 166,
+      "endLine": 171,
+      "mathContext": "Empty docstring banner."
+    },
+    {
+      "id": "one-sided",
+      "title": "One-Sided Improvements",
+      "summary": "Section banner for Erdélyi's one-sided refinement of the inequality. Exposition placeholder; declares no Lean content.",
+      "startLine": 172,
+      "endLine": 177,
+      "mathContext": "Empty docstring banner."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Concluding part: `erdos_turan_known` re-derives the classical degree-$d$ bound from the Part 4 axiom; `erdos_990_sparse_disproof` axiomatizes the APSSV (2026) refutation $\\neg\\,\\texttt{sparseConjecture}$ (lacunary polynomials with $\\nu(f)=N+2$, $M(f)<3$, a root of multiplicity $N+1$ force discrepancy $\\ge (N+1)/2 \\gg \\sqrt{\\nu(f)\\log M(f)}$); and `erdos_990_summary` records the classical result.",
+      "startLine": 178,
+      "endLine": 207,
+      "mathContext": "Two theorems and one axiom (`erdos_990_sparse_disproof`). Net file axioms: `rootSet`, `erdos_turan_classical`, `erdos_turan_explicit_constant`, `erdos_990_sparse_disproof`."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #990 has been DISPROVED. Alexeev, Putterman, Sawhney, Sellke, and Valiant (2026, arXiv:2604.06609) showed that no bound of order √(ν(f) log M(f)) can hold uniformly for the angular discrepancy of polynomial roots. The counterexample is an explicit family of lacunary polynomials fₙ,ₖ with ν(f) = N+2 nonzero coefficients, M(f) < 3 (bounded!), and a positive real root of multiplicity N+1. The construction uses a Vandermonde-Lagrange identity to place N+1 zeros at a single angular position, creating discrepancy N+1/2 while √(ν(f) log M(f)) = O(√N). Hayman's bound discrepancy ≤ ν(f)-1 remains the best possible sparse bound. The proof was generated by an internal AI model at OpenAI.",
+    "implications": "The disproof settles a 60-year-old question about whether the Erdős-Turán inequality can be strengthened for sparse polynomials. The classical degree-based bound O(√(d log M)) cannot be improved to a sparsity-based bound. Hayman's 1972 result (discrepancy ≤ ν(f)-1) is now understood to be essentially optimal for sparse polynomials — a linear rather than square-root dependence on sparsity. This has implications for signal processing and sparse polynomial computation where sparsity-based root estimates were hoped for.",
+    "openQuestions": [
+      "Is Hayman's bound discrepancy ≤ ν(f)-1 tight, or can it be improved to some sublinear function of ν(f)?",
+      "For restricted classes of sparse polynomials (e.g., with real coefficients, or with coefficients ±1), can better bounds be achieved?",
+      "What is the exact relationship between sparsity and root clustering for random sparse polynomials?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.Polynomial.Basic",
+      "Mathlib.Topology.MetricSpace.Basic"
+    ],
+    "opens": [
+      "Complex",
+      "Real",
+      "Polynomial"
+    ],
+    "namespace": "Erdos990",
+    "lineCount": 207,
+    "axiomCount": 4,
+    "theoremCount": 3,
+    "definitionCount": 12,
+    "path": "Proofs/Erdos990Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "title": "On the distribution of roots of polynomials",
+      "authors": "P. Erdős, P. Turán",
+      "year": "1950",
+      "venue": "Annals of Mathematics",
+      "url": "https://doi.org/10.2307/1969500",
+      "description": "The original paper proving the classical Erdős-Turán inequality bounding star discrepancy by O(√(d log M))"
+    },
+    {
+      "title": "Sequences of roots of a class of algebraic equations",
+      "authors": "T. Ganelius",
+      "year": "1954",
+      "venue": "Annals of Mathematics",
+      "description": "Improved the explicit constant in the Erdős-Turán inequality to C ≤ 8"
+    },
+    {
+      "title": "The Erdős-Turán inequality for rotations",
+      "authors": "K. Soundararajan",
+      "year": "2019",
+      "venue": "Inventiones Mathematicae",
+      "description": "Determined the sharp (optimal) constant in the Erdős-Turán inequality via connection to Hilbert transforms"
+    },
+    {
+      "title": "On the discrepancy of the roots of a polynomial",
+      "authors": "T. Erdélyi",
+      "year": "2002",
+      "venue": "Bulletin of the London Mathematical Society",
+      "description": "One-sided improvement of the classical Erdős-Turán bound"
+    },
+    {
+      "title": "The roots of random polynomials cluster near the unit circle",
+      "authors": "I. Ibragimov, O. Zeitouni",
+      "year": "1997",
+      "venue": "Annals of Probability",
+      "description": "Root distribution of random polynomials, providing context for the lower bound construction"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1048",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, complex-analysis, polynomials"
+    },
+    {
+      "targetId": "erdos-994",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, discrepancy, equidistribution"
+    },
+    {
+      "targetId": "erdos-997",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, discrepancy, equidistribution"
+    }
+  ],
+  "sorries": 0
+}

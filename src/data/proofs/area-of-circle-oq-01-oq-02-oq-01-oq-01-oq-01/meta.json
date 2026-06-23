@@ -1,0 +1,176 @@
+{
+  "id": "area-of-circle-oq-01-oq-02-oq-01-oq-01-oq-01",
+  "title": "Unit n-Ball Volumes Tend to Zero: ω_n → 0 as n → ∞",
+  "slug": "area-of-circle-oq-01-oq-02-oq-01-oq-01-oq-01",
+  "description": "Proves that the volume ω_n of the unit n-ball tends to 0 as n → ∞. The key is the even-subsequence formula ω_{2k} = π^k/k! (terms of the convergent series e^π, hence → 0) and the odd bound ω_{2k+1} ≤ 2·ω_{2k} → 0. Together, the full sequence ω_n → 0. 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Classical result; formalized here",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Volume_of_an_n-ball",
+    "date": "Classical",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AreaOfCircleOQ01OQ02OQ01OQ01OQ01.lean",
+    "tags": [
+      "analysis",
+      "geometry",
+      "limits",
+      "gamma-function",
+      "research",
+      "open-problem"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "summable_pow_div_factorial",
+        "description": "‖x‖^n/n! is summable (from exp series convergence)",
+        "module": "Mathlib.Analysis.SpecificLimits.Basic"
+      },
+      {
+        "theorem": "Summable.tendsto_atTop_zero",
+        "description": "Terms of a summable series tend to 0",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      },
+      {
+        "theorem": "tendsto_atTop_atTop_of_monotone",
+        "description": "Monotone unbounded sequence tends to +∞",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto.comp",
+        "description": "Composition of limits",
+        "module": "Mathlib.Topology.Basic"
+      },
+      {
+        "theorem": "tendsto_of_tendsto_of_tendsto_of_le_of_le",
+        "description": "Squeeze theorem for limits",
+        "module": "Mathlib.Topology.Order.Basic"
+      }
+    ],
+    "originalContributions": [
+      "omega_even_formula: ω(2k) = π^k/k! proved by induction using the recurrence from parent",
+      "omega_odd_le_two_even: ω(2k+1) ≤ 2·ω(2k) proved by induction with arithmetic squeeze",
+      "omega_le_two_even_half: universal bound ω(n) ≤ 2·ω(2·(n/2)) via even/odd case split",
+      "omega_tendsto_zero: main theorem via composition n/2 → ∞ and squeeze theorem",
+      "Key insight for odd bound: 4π/(2k+3) ≤ 4π/(2k+2) (larger denominator → smaller fraction)"
+    ],
+    "dateAdded": "2026-04-21",
+    "lineCount": 163,
+    "prerequisites": [
+      "Recurrence for ball volumes (parent proof)",
+      "Convergence of exp series (Mathlib)",
+      "Squeeze theorem for limits",
+      "Composition of limits"
+    ],
+    "theoremCount": 7,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The volume ω_n = π^(n/2)/Γ(n/2+1) of the unit n-ball is a classical object in geometry. The fact that ω_n → 0 is surprising to many: as dimension increases, the unit ball concentrates all its volume near the equator and the total volume shrinks to 0. This is a key insight in the 'curse of dimensionality' in high-dimensional geometry.\n\nThe proof is most natural via the recurrence ω_{n+2} = (2π/(n+2))·ω_n, which shows that for large n, each step multiplies by a factor < 1, causing exponential decay. The cleanest formalization splits even and odd subsequences.",
+    "problemStatement": "**Question**: Does ω_n → 0 as n → ∞?\n\n**Answer**: YES. For even indices, ω_{2k} = π^k/k! → 0 since π^k/k! are terms of the convergent series $e^\\pi$. For odd indices, ω_{2k+1} ≤ 2·ω_{2k} → 0. Since every n is either even or odd, ω_n → 0.",
+    "text": "The unit n-ball volume ω_n tends to 0 as n → ∞. Proved via the even formula ω_{2k} = π^k/k! → 0 and the odd bound ω_{2k+1} ≤ 2·ω_{2k}.",
+    "proofStrategy": "The proof uses three key lemmas:\n\n1. **omega_even_formula** (ω_{2k} = π^k/k!): By induction. ω_{2(k+1)} = ω_{2k+2} = 2π/(2k+2)·ω_{2k} = π/(k+1)·π^k/k! = π^(k+1)/(k+1)!.\n\n2. **omega_odd_le_two_even** (ω_{2k+1} ≤ 2·ω_{2k}): By induction. ω_{2k+3} = 2π/(2k+3)·ω_{2k+1} ≤ 2π/(2k+3)·2·ω_{2k} ≤ 2π/(2k+2)·2·ω_{2k} = 2·ω_{2k+2}.\n\n3. **omega_tendsto_zero**: Combine via squeeze theorem.\n   - Upper bound: ω_n ≤ 2·ω_{2⌊n/2⌋} = 2·π^⌊n/2⌋/⌊n/2⌋!\n   - π^k/k! → 0 from `summable_pow_div_factorial` (Mathlib)\n   - ⌊n/2⌋ → ∞ via monotone unbounded function\n   - Composition: π^⌊n/2⌋/⌊n/2⌋! → 0\n   - Squeeze: 0 ≤ ω_n ≤ upper_bound → 0",
+    "keyInsights": [
+      "**Even formula**: ω_{2k} = π^k/k! is exact, making these the terms of e^π. The convergence follows immediately from summability.",
+      "**Odd bound**: The key inequality 4π/(2k+3) ≤ 4π/(2k+2) (from 2k+3 ≥ 2k+2) gives the induction step. No numerical computation needed.",
+      "**Squeeze via n/2**: Bounding ω_n by 2·π^(n/2)/(n/2)! works for all n simultaneously, avoiding the need to combine two subsequence limits separately.",
+      "**Curse of dimensionality**: ω_n → 0 reflects the concentration of measure phenomenon. In high dimensions, almost all volume concentrates in a thin shell near the sphere boundary, and the ball becomes 'empty'.",
+      "**Lean filter composition pattern**: The main theorem uses a three-level composition of limits: first `summable_pow_div_factorial` gives π^k/k! → 0; then `tendsto_atTop_atTop_of_monotone` gives n/2 → ∞; then `Tendsto.comp` chains them to π^(n/2)/(n/2)! → 0. This is the standard Lean/Mathlib pattern for proving limits of composite sequences — more robust than direct ε-N arguments."
+    ],
+    "prerequisites": [
+      "Ball volume recurrence (AreaOfCircleOQ01OQ02OQ01OQ01.lean)",
+      "exp series convergence and summability",
+      "Squeeze theorem for real sequences"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement and Strategy",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "Question (ω_n → 0?), answer (YES), and proof strategy overview",
+      "mathContext": "ω_n = π^(n/2)/Γ(n/2+1), recurrence ω_{n+2} = 2π/(n+2)·ω_n"
+    },
+    {
+      "id": "even-formula",
+      "title": "Part I: Even Formula ω(2k) = π^k/k!",
+      "startLine": 32,
+      "endLine": 47,
+      "summary": "omega_even_formula proved by induction using the recurrence",
+      "mathContext": "ω(2(k+1)) = 2π/(2k+2)·ω(2k) = π/(k+1)·π^k/k! = π^(k+1)/(k+1)!"
+    },
+    {
+      "id": "odd-bound",
+      "title": "Part II: Odd Bound ω(2k+1) ≤ 2·ω(2k)",
+      "startLine": 50,
+      "endLine": 82,
+      "summary": "omega_odd_le_two_even proved by induction with arithmetic inequality",
+      "mathContext": "ω(2k+3) = 2π/(2k+3)·ω(2k+1) ≤ 4π/(2k+3)·ω(2k) ≤ 4π/(2k+2)·ω(2k) = 2·ω(2k+2)"
+    },
+    {
+      "id": "universal-bound",
+      "title": "Part III: Universal Upper Bound",
+      "startLine": 85,
+      "endLine": 95,
+      "summary": "omega_le_two_even_half: ω(n) ≤ 2·ω(2·(n/2)) for all n",
+      "mathContext": "Even/odd case split; uses omega (Nat tactic) for ⌊n/2⌋ arithmetic"
+    },
+    {
+      "id": "main-theorem",
+      "title": "Part IV: Main Theorem ω_n → 0",
+      "startLine": 99,
+      "endLine": 131,
+      "summary": "omega_tendsto_zero via composition and squeeze theorem",
+      "mathContext": "n/2 → ∞ (tendsto_atTop_atTop_of_monotone), π^k/k! → 0 (summable_pow_div_factorial), squeeze"
+    },
+    {
+      "id": "corollaries",
+      "title": "Part V: Corollaries",
+      "startLine": 134,
+      "endLine": 159,
+      "summary": "Even and odd subsequences tend to 0; eventually all volumes < 1",
+      "mathContext": "Follow by composition from omega_tendsto_zero"
+    }
+  ],
+  "conclusion": {
+    "summary": "We prove ω_n → 0 as n → ∞ using: (1) the exact formula ω_{2k} = π^k/k! from the recurrence, (2) the inductive bound ω_{2k+1} ≤ 2·ω_{2k}, and (3) a squeeze argument via the exp series.",
+    "implications": "**Geometric significance**: The unit ball in high dimensions has negligible volume. This is the mathematical basis of the 'curse of dimensionality' — in machine learning and statistics, high-dimensional balls are essentially hollow, which explains why distance-based algorithms fail in high dimensions.\n\n**Optimal dimension**: The maximum ω_n occurs at n=5 (proved in a sibling proof). After n=5, the volumes are strictly decreasing and tend to 0.",
+    "openQuestions": [
+      "What is the rate of decay? Is ω_n ~ C · n^{-1/2} · (2πe/n)^{n/2} (Stirling approximation)?",
+      "Prove the exact asymptotics ω_n ~ √(2π/n) · (2πe/n)^{n/2} from Stirling's formula in Mathlib"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-01-oq-01",
+      "relationship": "parent",
+      "description": "Defines ω_n, proves the recurrence ω_{n+2} = 2π/(n+2)·ω_n, and computes small values"
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "ancestor",
+      "description": "Root of the ball volume chain: π·r² for the 2-ball"
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Proofs.AreaOfCircleOQ01OQ02OQ01OQ01",
+      "Mathlib.Analysis.SpecificLimits.Basic"
+    ],
+    "opens": [
+      "Real",
+      "Filter",
+      "Nat",
+      "UnitBallRecurrence"
+    ],
+    "namespace": "BallVolumeTendsto",
+    "lineCount": 163,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/AreaOfCircleOQ01OQ02OQ01OQ01OQ01.lean"
+  }
+}

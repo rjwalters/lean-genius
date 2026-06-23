@@ -1,0 +1,339 @@
+[
+  {
+    "id": "ann-e565-context",
+    "proofId": "erdos-565",
+    "range": {
+      "startLine": 1,
+      "endLine": 49
+    },
+    "type": "concept",
+    "title": "Problem Statement, History, and Imports",
+    "content": "Erdos Problem #565 asks whether induced Ramsey numbers grow at most exponentially: is $R^*(G) \\le 2^{O(n)}$ for every $n$-vertex graph $G$? The induced Ramsey number $R^*(G)$ is the minimum $m$ such that some graph $H$ on $m$ vertices has the property that every 2-coloring of $H$'s edges yields a monochromatic induced copy of $G$. The 'induced' requirement -- that both edges AND non-edges of $G$ must be preserved -- makes this fundamentally harder than ordinary Ramsey theory. The formalization imports Mathlib's `SimpleGraph`, `Subgraph`, `Real.log`, and `Real.rpow` for expressing the exponential bounds.",
+    "mathContext": "$R^*(G) = \\min\\{m : \\exists H \\text{ on } m \\text{ vertices s.t. } \\forall \\chi: E(H) \\to \\{R,B\\},\\, H \\supseteq_{\\text{ind}} G \\text{ monochromatically}\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "induced Ramsey theory",
+      "graph coloring",
+      "Ramsey existence"
+    ],
+    "prerequisites": [
+      "SimpleGraph in Mathlib",
+      "Sym2 for edge representation",
+      "Real.rpow for exponential bounds"
+    ]
+  },
+  {
+    "id": "ann-e565-graph-basics",
+    "proofId": "erdos-565",
+    "range": {
+      "startLine": 51,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "Graph Basics: Simple Graphs and Vertex Count",
+    "content": "Defines `Graph V` as an abbreviation for `SimpleGraph V` (undirected, loopless, no multi-edges) and `numVertices` via `Fintype.card V`. Working with `Fintype` and `DecidableEq` instances enables computable cardinality and decidable adjacency, which are needed for the constructive aspects of the formalization.",
+    "mathContext": "$G = (V, E)$ where $E \\subseteq \\binom{V}{2}$; $|V(G)| = \\text{Fintype.card}\\, V$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "simple graphs",
+      "finite types",
+      "decidable equality"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Basic",
+      "Fintype.card"
+    ]
+  },
+  {
+    "id": "ann-e565-induced-subgraph",
+    "proofId": "erdos-565",
+    "range": {
+      "startLine": 67,
+      "endLine": 78
+    },
+    "type": "definition",
+    "title": "Induced Subgraph Definition",
+    "content": "Defines `IsInducedSubgraph G S G'` requiring that for all $u, v \\in S$, adjacency in $G'$ is equivalent (biconditional) to adjacency in $G$. The biconditional $G'.\\text{Adj}\\, u\\, v \\leftrightarrow G.\\text{Adj}\\, u\\, v$ is the crucial distinction from ordinary subgraphs, where only the forward direction ($G'.\\text{Adj} \\to G.\\text{Adj}$) is needed. This means both edges AND non-edges must match -- the source of the difficulty in induced Ramsey theory.",
+    "mathContext": "$G'$ is induced on $S \\subseteq V(G)$ iff $\\forall u, v \\in S:\\; G'.\\text{Adj}(u,v) \\iff G.\\text{Adj}(u,v)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "induced subgraphs",
+      "graph isomorphism",
+      "subgraph vs induced subgraph"
+    ],
+    "prerequisites": [
+      "Set coercion",
+      "SimpleGraph.Adj"
+    ]
+  },
+  {
+    "id": "ann-e565-induced-copy",
+    "proofId": "erdos-565",
+    "range": {
+      "startLine": 80,
+      "endLine": 88
+    },
+    "type": "definition",
+    "title": "Induced Copy via Injective Embedding",
+    "content": "Defines `ContainsInducedCopy H G` via an injective function $f: V(G) \\hookrightarrow V(H)$ such that $G.\\text{Adj}\\, u\\, v \\iff H.\\text{Adj}\\, (f\\, u)\\, (f\\, v)$. The use of `Function.Embedding` ($V \\hookrightarrow W$) enforces injectivity, and the biconditional on adjacency enforces the induced property. This is a graph homomorphism that preserves AND reflects edges -- sometimes called a 'strong embedding' or 'full embedding'.",
+    "mathContext": "$H \\supseteq_{\\text{ind}} G \\iff \\exists f: V(G) \\hookrightarrow V(H),\\; \\forall u,v:\\, G.\\text{Adj}(u,v) \\iff H.\\text{Adj}(f(u), f(v))$",
+    "significance": "key",
+    "relatedConcepts": [
+      "graph embedding",
+      "graph homomorphism",
+      "injective functions"
+    ],
+    "prerequisites": [
+      "Function.Embedding",
+      "SimpleGraph.Adj"
+    ]
+  },
+  {
+    "id": "ann-e565-coloring",
+    "proofId": "erdos-565",
+    "range": {
+      "startLine": 89,
+      "endLine": 119
+    },
+    "type": "definition",
+    "title": "Edge Colorings and Monochromatic Induced Copies",
+    "content": "Defines `EdgeColor` as an inductive type with constructors `Red` and `Blue`, `EdgeColoring G` as a function from edge witnesses (pairs in `Sym2 V` with adjacency proof) to colors, and `HasMonochromaticInducedCopy H c G` requiring a color, an embedding $f$, the biconditional adjacency property, AND that all embedded edges receive the same color. The formalization carefully threads adjacency witnesses through the coloring function using subtypes.",
+    "mathContext": "$\\chi: E(H) \\to \\{\\text{Red}, \\text{Blue}\\}$; monochromatic induced copy: $\\exists c, f:\\; G \\cong_{\\text{ind}} f(G) \\subseteq H$ with $\\chi(e) = c\\; \\forall e \\in E(f(G))$",
+    "significance": "key",
+    "relatedConcepts": [
+      "edge coloring",
+      "Ramsey coloring",
+      "Sym2 edge representation"
+    ],
+    "prerequisites": [
+      "Sym2 V",
+      "subtype witnesses",
+      "inductive types"
+    ]
+  },
+  {
+    "id": "ann-e565-ramsey-property",
+    "proofId": "erdos-565",
+    "range": {
+      "startLine": 120,
+      "endLine": 131
+    },
+    "type": "definition",
+    "title": "Induced Ramsey Property",
+    "content": "Defines `HasInducedRamseyProperty H G` as the universal statement that EVERY 2-coloring of $H$'s edges contains a monochromatic induced copy of $G$. This is a $\\forall\\exists$ statement: for all colorings, there exists a monochromatic induced copy. The host graph $H$ need NOT be complete -- this is a fundamental difference from ordinary Ramsey numbers, where the host is always $K_m$.",
+    "mathContext": "$H \\xrightarrow{\\text{ind}} (G)_2$ means $\\forall \\chi: E(H) \\to \\{R,B\\},\\; \\exists$ monochromatic induced copy of $G$ in $(H, \\chi)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey property",
+      "universal quantifier over colorings",
+      "partition regularity"
+    ],
+    "prerequisites": [
+      "HasMonochromaticInducedCopy",
+      "EdgeColoring"
+    ]
+  },
+  {
+    "id": "ann-e565-ramsey-number",
+    "proofId": "erdos-565",
+    "range": {
+      "startLine": 133,
+      "endLine": 140
+    },
+    "type": "definition",
+    "title": "Induced Ramsey Number R*(G)",
+    "content": "Defines `inducedRamseyNumber n G` as $\\inf\\{m : \\exists H \\text{ on } \\text{Fin}\\, m \\text{ with induced Ramsey property for } G\\}$ using `sInf`. The optimization is over BOTH the size $m$ AND the host graph $H$ -- we seek the smallest $m$ for which ANY suitable host exists. This two-level quantification ($\\inf_m \\exists H$) makes the induced Ramsey number harder to analyze than the ordinary one, where $H = K_m$ is fixed.",
+    "mathContext": "$R^*(G) = \\inf\\{m \\in \\mathbb{N} : \\exists H \\in \\mathcal{G}_m,\\; H \\xrightarrow{\\text{ind}} (G)_2\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "infimum of natural numbers",
+      "Ramsey number",
+      "host graph optimization"
+    ],
+    "prerequisites": [
+      "sInf",
+      "HasInducedRamseyProperty",
+      "Fin m"
+    ]
+  },
+  {
+    "id": "ann-e565-existence",
+    "proofId": "erdos-565",
+    "range": {
+      "startLine": 141,
+      "endLine": 160
+    },
+    "type": "concept",
+    "title": "Existence of R*(G) (Deuber, EHP, Rodl)",
+    "content": "Axiomatizes `induced_ramsey_exists`: for any graph $G$ on $n$ vertices, there exist $m$ and $H$ such that $H$ has the induced Ramsey property for $G$. This non-trivial result was proved independently by Deuber (1975), Erdos-Hajnal-Posa (1975), and Rodl (1973, for bipartite graphs). The theorem `induced_ramsey_number_finite` derives that the defining set for $R^*(G)$ is nonempty. The original proofs used partition calculus and the Hales-Jewett theorem; Nesetril-Rodl later gave a cleaner proof using their partite construction.",
+    "mathContext": "$\\forall G:\\; R^*(G) < \\infty$; equivalently, $\\{m : \\exists H \\text{ on } m \\text{ vertices with } H \\xrightarrow{\\text{ind}} (G)_2\\} \\neq \\emptyset$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey existence",
+      "Nesetril-Rodl theorem",
+      "Hales-Jewett theorem",
+      "partition calculus"
+    ],
+    "prerequisites": [
+      "induced_ramsey_exists axiom",
+      "Set.Nonempty"
+    ]
+  },
+  {
+    "id": "ann-e565-rodl-bipartite",
+    "proofId": "erdos-565",
+    "range": {
+      "startLine": 161,
+      "endLine": 174
+    },
+    "type": "concept",
+    "title": "Rodl's Bipartite Bound (1973)",
+    "content": "Axiomatizes Rodl's early result: for bipartite graphs $G$ on $n$ vertices, $R^*(G) \\le 2^{O(n)}$. This was the first evidence that exponential bounds might hold in general. The bipartite case is easier because bipartite graphs have a natural 2-partition structure that constrains how the host graph must be built. The axiom includes a `True` hypothesis as a placeholder for the bipartiteness condition.",
+    "mathContext": "$G$ bipartite, $|V(G)| = n \\implies R^*(G) \\le 2^{Cn}$ for some absolute $C > 0$",
+    "significance": "key",
+    "relatedConcepts": [
+      "bipartite Ramsey",
+      "early induced Ramsey bounds",
+      "bipartite graph structure"
+    ],
+    "prerequisites": [
+      "inducedRamseyNumber",
+      "Real.rpow"
+    ]
+  },
+  {
+    "id": "ann-e565-kpr",
+    "proofId": "erdos-565",
+    "range": {
+      "startLine": 175,
+      "endLine": 183
+    },
+    "type": "concept",
+    "title": "Kohayakawa-Promel-Rodl Bound (1998)",
+    "content": "Axiomatizes the KPR bound: $R^*(G) < 2^{O(n(\\log n)^2)}$ for all $n$-vertex graphs. This was the first general upper bound showing quasi-polynomial growth (exponential with a polylogarithmic correction). The proof uses the sparse regularity lemma of Kohayakawa and Rodl: decompose a random-like host graph into pseudorandom bipartite pairs, then embed $G$ using the regularity structure. The $(\\log n)^2$ factor comes from applying regularity at two levels.",
+    "mathContext": "$R^*(G) \\le 2^{C n (\\ln n)^2}$ for $n \\ge 2$, where $C > 0$ is absolute",
+    "significance": "key",
+    "relatedConcepts": [
+      "sparse regularity lemma",
+      "quasi-polynomial bounds",
+      "pseudorandom graphs"
+    ],
+    "prerequisites": [
+      "Real.log",
+      "Real.rpow",
+      "sparse regularity"
+    ]
+  },
+  {
+    "id": "ann-e565-cfs",
+    "proofId": "erdos-565",
+    "range": {
+      "startLine": 184,
+      "endLine": 192
+    },
+    "type": "concept",
+    "title": "Conlon-Fox-Sudakov Bound (2012)",
+    "content": "Axiomatizes the CFS improvement: $R^*(G) < 2^{O(n \\log n)}$, eliminating one logarithmic factor from the KPR bound. The key innovation was a more efficient use of the dependent random choice technique combined with the Lovasz Local Lemma. Instead of two levels of regularity, they showed that one level suffices by choosing the host graph more carefully. This brought the bound within a single logarithmic factor of the conjectured exponential.",
+    "mathContext": "$R^*(G) \\le 2^{C n \\ln n}$ for $n \\ge 2$, improving KPR by a $\\log n$ factor",
+    "significance": "key",
+    "relatedConcepts": [
+      "dependent random choice",
+      "Lovasz Local Lemma",
+      "probabilistic combinatorics"
+    ],
+    "prerequisites": [
+      "Real.log",
+      "Real.rpow",
+      "probabilistic methods"
+    ]
+  },
+  {
+    "id": "ann-e565-main",
+    "proofId": "erdos-565",
+    "range": {
+      "startLine": 193,
+      "endLine": 218
+    },
+    "type": "concept",
+    "title": "Aragao et al. Theorem: R*(G) <= 2^{O(n)} (2025)",
+    "content": "The breakthrough axiomatized as `aragao_et_al_theorem`: there exists a constant $C > 0$ such that $R^*(G) \\le 2^{Cn}$ for ALL graphs $G$ on $n \\ge 1$ vertices. This resolves Erdos Problem #565 after 50+ years of incremental progress. The theorem `erdos_565_solution` follows immediately. The proof introduces a new 'graph-of-graphs' construction that avoids the logarithmic overhead of regularity methods: instead of embedding $G$ into a regular host, they build a host that directly encodes the structure of $G$ at multiple scales.",
+    "mathContext": "$\\exists C > 0:\\; \\forall n \\ge 1,\\; \\forall G \\in \\mathcal{G}_n:\\; R^*(G) \\le 2^{Cn}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "exponential Ramsey bound",
+      "graph-of-graphs construction",
+      "resolution of Erdos problem"
+    ],
+    "prerequisites": [
+      "aragao_et_al_theorem axiom",
+      "inducedRamseyNumber"
+    ]
+  },
+  {
+    "id": "ann-e565-comparison",
+    "proofId": "erdos-565",
+    "range": {
+      "startLine": 219,
+      "endLine": 251
+    },
+    "type": "concept",
+    "title": "Comparison with Ordinary Ramsey Numbers",
+    "content": "Defines `ordinaryRamseyNumber` (minimum $m$ such that every 2-coloring of $K_m$ yields a monochromatic -- not necessarily induced -- copy of $G$) and states `induced_ramsey_ge_ordinary`: $R^*(G) \\ge R(G)$. This holds because any monochromatic induced copy is automatically a monochromatic copy (the induced condition is strictly stronger). The axiom `gap_can_be_large` asserts the gap can be arbitrarily large: $\\exists G$ with $R^*(G) \\ge k \\cdot R(G)$. Complete bipartite graphs and random graphs witness the largest known gaps.",
+    "mathContext": "$R^*(G) \\ge R(G)$ always; $\\forall k,\\; \\exists G:\\; R^*(G) \\ge k \\cdot R(G)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "ordinary Ramsey numbers",
+      "complete graph host",
+      "Ramsey comparison"
+    ],
+    "prerequisites": [
+      "ordinaryRamseyNumber",
+      "completeGraph",
+      "sInf"
+    ]
+  },
+  {
+    "id": "ann-e565-lower",
+    "proofId": "erdos-565",
+    "range": {
+      "startLine": 252,
+      "endLine": 274
+    },
+    "type": "concept",
+    "title": "Exponential Lower Bounds and Tightness",
+    "content": "Axiomatizes `exponential_lower_bound`: there exist graphs $G$ on $n$ vertices with $R^*(G) \\ge 2^{cn}$ for a positive constant $c$. The proved theorem `bound_essentially_tight` combines the upper bound (Aragao et al.) with this lower bound to show the exponential growth rate is optimal. Random graphs witness the lower bound: a typical $G(n, 1/2)$ satisfies $R^*(G) \\ge 2^{\\Omega(n)}$ because any host for a random graph must contain many different induced subgraph patterns, forcing exponential size.",
+    "mathContext": "$\\exists c > 0:\\; \\forall n \\ge 1,\\; \\exists G_n:\\; R^*(G_n) \\ge 2^{cn}$; combined: $R^* = 2^{\\Theta(n)}$ in worst case",
+    "significance": "key",
+    "relatedConcepts": [
+      "probabilistic lower bounds",
+      "random graphs",
+      "tightness of bounds"
+    ],
+    "prerequisites": [
+      "exponential_lower_bound axiom",
+      "aragao_et_al_theorem"
+    ]
+  },
+  {
+    "id": "ann-e565-summary",
+    "proofId": "erdos-565",
+    "range": {
+      "startLine": 275,
+      "endLine": 286
+    },
+    "type": "concept",
+    "title": "Summary: Complete Resolution of Erdos Problem #565",
+    "content": "The `erdos_565_summary` theorem bundles both directions: (1) $R^*(G) \\le 2^{Cn}$ for all $G$ (Aragao et al.), and (2) $\\exists G$ with $R^*(G) \\ge 2^{cn}$ (random graph lower bound). Together these establish $R^*(G) = 2^{\\Theta(n)}$ in the worst case, completely resolving the problem. The proof is a pair construction `\\langle aragao\\_et\\_al\\_theorem, exponential\\_lower\\_bound \\rangle`, combining the two axiomatized results.",
+    "mathContext": "$\\max_G R^*(G) = 2^{\\Theta(n)}$: upper bound from Aragao et al. (2025), lower bound from random graphs",
+    "significance": "key",
+    "relatedConcepts": [
+      "combined theorem",
+      "tight bounds",
+      "problem resolution"
+    ],
+    "prerequisites": [
+      "aragao_et_al_theorem",
+      "exponential_lower_bound"
+    ]
+  }
+]

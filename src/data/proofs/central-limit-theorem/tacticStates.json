@@ -1,0 +1,207 @@
+[
+  {
+    "line": 46,
+    "tactic": "simp only [characteristicFunction, mul_zero, Complex.ofReal_zero, Complex.exp_zero]",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": ["μ"],
+            "type": "MeasureTheory.Measure ℝ"
+          },
+          {
+            "names": ["inst"],
+            "type": "MeasureTheory.IsProbabilityMeasure μ"
+          }
+        ],
+        "conclusion": "characteristicFunction μ 0 = 1"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": ["μ"],
+            "type": "MeasureTheory.Measure ℝ"
+          },
+          {
+            "names": ["inst"],
+            "type": "MeasureTheory.IsProbabilityMeasure μ"
+          }
+        ],
+        "conclusion": "∫ x, 1 ∂μ = 1"
+      }
+    ]
+  },
+  {
+    "line": 48,
+    "tactic": "exact MeasureTheory.integral_const_one μ",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": ["μ"],
+            "type": "MeasureTheory.Measure ℝ"
+          },
+          {
+            "names": ["inst"],
+            "type": "MeasureTheory.IsProbabilityMeasure μ"
+          }
+        ],
+        "conclusion": "∫ x, 1 ∂μ = 1"
+      }
+    ],
+    "goalsAfter": []
+  },
+  {
+    "line": 103,
+    "tactic": "exact Real.tendsto_pow_one_div_add_atTop_nhds_exp x",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": ["x"],
+            "type": "ℝ"
+          }
+        ],
+        "conclusion": "Filter.Tendsto (fun n => (1 + x / n)^n) Filter.atTop (nhds (Real.exp x))"
+      }
+    ],
+    "goalsAfter": []
+  },
+  {
+    "line": 354,
+    "tactic": "use 1",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": ["μ"],
+            "type": "MeasureTheory.Measure ℝ"
+          },
+          {
+            "names": ["h_mean"],
+            "type": "∫ x, x ∂μ = 0"
+          },
+          {
+            "names": ["h_var"],
+            "type": "∫ x, x^2 ∂μ = 1"
+          },
+          {
+            "names": ["ρ"],
+            "type": "ℝ"
+          },
+          {
+            "names": ["h_third"],
+            "type": "∫ x, |x|^3 ∂μ = ρ"
+          },
+          {
+            "names": ["n"],
+            "type": "ℕ"
+          },
+          {
+            "names": ["hn"],
+            "type": "n > 0"
+          }
+        ],
+        "conclusion": "∃ C : ℝ, C > 0 ∧ ∀ x : ℝ, True"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": ["μ"],
+            "type": "MeasureTheory.Measure ℝ"
+          },
+          {
+            "names": ["h_mean"],
+            "type": "∫ x, x ∂μ = 0"
+          },
+          {
+            "names": ["h_var"],
+            "type": "∫ x, x^2 ∂μ = 1"
+          },
+          {
+            "names": ["ρ"],
+            "type": "ℝ"
+          },
+          {
+            "names": ["h_third"],
+            "type": "∫ x, |x|^3 ∂μ = ρ"
+          },
+          {
+            "names": ["n"],
+            "type": "ℕ"
+          },
+          {
+            "names": ["hn"],
+            "type": "n > 0"
+          }
+        ],
+        "conclusion": "1 > 0 ∧ ∀ x : ℝ, True"
+      }
+    ]
+  },
+  {
+    "line": 355,
+    "tactic": "exact ⟨one_pos, fun _ => trivial⟩",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": ["μ"],
+            "type": "MeasureTheory.Measure ℝ"
+          }
+        ],
+        "conclusion": "1 > 0 ∧ ∀ x : ℝ, True"
+      }
+    ],
+    "goalsAfter": []
+  },
+  {
+    "line": 362,
+    "tactic": "use MeasureTheory.Measure.stdGaussian",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": ["α"],
+            "type": "ℝ"
+          },
+          {
+            "names": ["h"],
+            "type": "0 < α ∧ α ≤ 2"
+          }
+        ],
+        "conclusion": "∃ (μ : MeasureTheory.Measure ℝ), True"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": ["α"],
+            "type": "ℝ"
+          },
+          {
+            "names": ["h"],
+            "type": "0 < α ∧ α ≤ 2"
+          }
+        ],
+        "conclusion": "True"
+      }
+    ]
+  },
+  {
+    "line": 363,
+    "tactic": "trivial",
+    "goalsBefore": [
+      {
+        "hypotheses": [],
+        "conclusion": "True"
+      }
+    ],
+    "goalsAfter": []
+  }
+]

@@ -1,0 +1,301 @@
+[
+  {
+    "id": "ann-e722-header",
+    "proofId": "erdos-722",
+    "range": {
+      "startLine": 1,
+      "endLine": 47
+    },
+    "type": "concept",
+    "title": "Problem Overview and Imports",
+    "content": "**Erdős Problem #722: Existence of Steiner Systems**\n\nA Steiner system $S(r,k,n)$ is a collection of $k$-subsets (blocks) of an $n$-element set such that every $r$-subset appears in exactly one block.\n\n**Question:** Do these exist for large $n$ when divisibility conditions are met?\n\n**Answer:** YES (Keevash 2014)\n\nHistorical progress: Kirkman (1847) → Hanani (1961) → Wilson (1972) → Keevash (2014).\n\nImports `Mathlib.Combinatorics.SetFamily.Intersecting` for set family operations, `Mathlib.Data.Nat.Choose.Basic` for binomial coefficients.",
+    "mathContext": "$S(r,k,n)$: a collection $\\mathcal{B}$ of $k$-element subsets of $[n]$ such that every $r$-element subset of $[n]$ is contained in exactly one $B \\in \\mathcal{B}$. Equivalently, a $1$-design or $r$-$(n,k,1)$ design.",
+    "significance": "key",
+    "relatedConcepts": [
+      "block designs",
+      "combinatorial designs",
+      "Fano plane",
+      "Kirkman's schoolgirl problem",
+      "t-designs"
+    ],
+    "prerequisites": [
+      "Finset",
+      "Nat.choose",
+      "Finset.Powerset"
+    ]
+  },
+  {
+    "id": "ann-e722-steiner-def",
+    "proofId": "erdos-722",
+    "range": {
+      "startLine": 55,
+      "endLine": 76
+    },
+    "type": "definition",
+    "title": "Steiner System Structure",
+    "content": "**SteinerSystem $r$ $k$ $n$:** A Lean structure with:\n- `blocks`: a `Finset (Finset (Fin n))` of $k$-subsets\n- `block_size`: $\\forall B \\in \\text{blocks},\\; |B| = k$\n- `covers_once`: $\\forall S$ with $|S| = r$, $\\exists! B \\in \\text{blocks},\\; S \\subseteq B$\n\nAlso defines `IsBlock`, `Covers`, and block count formulas $\\binom{n}{r}/\\binom{k}{r}$.",
+    "mathContext": "The number of blocks in $S(r,k,n)$ is $b = \\binom{n}{r}/\\binom{k}{r}$, and each point appears in $\\binom{n-1}{r-1}/\\binom{k-1}{r-1}$ blocks. These must be integers, giving the divisibility conditions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "balanced incomplete block design",
+      "t-design",
+      "unique coverage",
+      "Finset structure"
+    ],
+    "prerequisites": [
+      "Finset",
+      "Fin",
+      "ExistsUnique"
+    ]
+  },
+  {
+    "id": "ann-e722-divisibility",
+    "proofId": "erdos-722",
+    "range": {
+      "startLine": 103,
+      "endLine": 127
+    },
+    "type": "definition",
+    "title": "Divisibility Conditions",
+    "content": "**DivisibilityConditions $r$ $k$ $n$:** $\\forall 0 \\leq i < r,\\; \\binom{k-i}{r-i} \\mid \\binom{n-i}{r-i}$.\n\nThese are NECESSARY for $S(r,k,n)$ to exist (block counts must be integers). Keevash proved they are SUFFICIENT for large $n$.\n\nSpecial cases:\n- $i = 0$: $\\binom{k}{r} \\mid \\binom{n}{r}$ (MainDivisibility)\n- $i = r-1$: $(k-r+1) \\mid (n-r+1)$ (LastDivisibility)",
+    "mathContext": "For $S(2,3,n)$: conditions reduce to $3 \\mid \\binom{n}{2}$ and $2 \\mid (n-1)$, i.e., $n \\equiv 1$ or $3 \\pmod{6}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "necessary conditions",
+      "divisibility",
+      "binomial coefficients",
+      "Fisher's inequality"
+    ],
+    "prerequisites": [
+      "Nat.choose",
+      "Dvd"
+    ]
+  },
+  {
+    "id": "ann-e722-kirkman",
+    "proofId": "erdos-722",
+    "range": {
+      "startLine": 138,
+      "endLine": 140
+    },
+    "type": "concept",
+    "title": "Kirkman's Triple Systems (1847)",
+    "content": "**kirkman_triple_systems:** $S(2,3,n)$ exists iff $n \\equiv 1$ or $3 \\pmod{6}$ and $n \\geq 7$.\n\nThis was the first complete characterization of Steiner system existence for specific parameters. Kirkman's famous 'schoolgirl problem' (1850) asks for a *resolvable* $S(2,3,15)$: 15 girls walk in groups of 3 for 7 days, with no two girls in the same group twice.",
+    "mathContext": "The conditions $n \\equiv 1,3 \\pmod{6}$ are equivalent to the divisibility conditions for $(r,k) = (2,3)$: $3 \\mid \\binom{n}{2} = n(n-1)/2$ and $2 \\mid (n-1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Kirkman",
+      "Steiner triple systems",
+      "resolvable designs",
+      "schoolgirl problem"
+    ],
+    "prerequisites": [
+      "SteinerSystem",
+      "DivisibilityConditions",
+      "Nat.mod"
+    ]
+  },
+  {
+    "id": "ann-e722-fano",
+    "proofId": "erdos-722",
+    "range": {
+      "startLine": 147,
+      "endLine": 147
+    },
+    "type": "concept",
+    "title": "Fano Plane $S(2,3,7)$",
+    "content": "**fano_plane_exists:** The Fano plane $S(2,3,7)$ exists.\n\n7 points, 7 blocks: $\\{1,2,3\\}, \\{1,4,5\\}, \\{1,6,7\\}, \\{2,4,6\\}, \\{2,5,7\\}, \\{3,4,7\\}, \\{3,5,6\\}$. This is the smallest nontrivial Steiner triple system and the projective plane $\\mathrm{PG}(2,\\mathbb{F}_2)$ over the field with 2 elements.",
+    "mathContext": "$S(2,3,7) \\cong \\mathrm{PG}(2,2)$: the 7 points are the nonzero vectors of $\\mathbb{F}_2^3$, and the 7 lines are the 2-dimensional subspaces. The automorphism group is $\\mathrm{GL}(3,2)$ of order 168.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fano plane",
+      "projective plane",
+      "finite geometry",
+      "PG(2,2)",
+      "GL(3,2)"
+    ],
+    "prerequisites": [
+      "SteinerSystem"
+    ]
+  },
+  {
+    "id": "ann-e722-hanani",
+    "proofId": "erdos-722",
+    "range": {
+      "startLine": 153,
+      "endLine": 162
+    },
+    "type": "concept",
+    "title": "Hanani's Results (1961)",
+    "content": "**hanani_1961:** Characterized existence for:\n- $S(3,4,n)$: exists for $n \\equiv 2,4 \\pmod{6}$, $n \\geq 4$\n- $S(2,4,n)$: exists under mod 12 conditions\n- $S(2,5,n)$: exists under appropriate conditions\n\nPublished in *Ann. Math. Statist.* (1961). These results extended Kirkman's work to larger block sizes, establishing key techniques for design construction.",
+    "mathContext": "Hanani used direct and recursive constructions (PBD-closure, Wilson's fundamental construction precursors) to establish existence for these specific parameter triples.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hanani",
+      "balanced designs",
+      "direct constructions",
+      "recursive constructions"
+    ],
+    "prerequisites": [
+      "SteinerSystem",
+      "DivisibilityConditions"
+    ]
+  },
+  {
+    "id": "ann-e722-wilson",
+    "proofId": "erdos-722",
+    "range": {
+      "startLine": 175,
+      "endLine": 185
+    },
+    "type": "concept",
+    "title": "Wilson's Theorem (1972)",
+    "content": "**wilson_theorem_r2:** For $r = 2$ and any $k \\geq 2$, $S(2,k,n)$ exists for all sufficiently large $n$ satisfying divisibility conditions.\n\n**wilson_quantitative:** The threshold $N_0 \\leq C \\cdot k^2$ for a constant $C$.\n\nWilson's proof introduced the 'fundamental construction' for pairwise balanced designs, which became a standard tool in design theory.",
+    "mathContext": "Wilson's existence theory shows $\\forall k \\geq 2,\\; \\exists N_0(k),\\; \\forall n \\geq N_0$ with $\\binom{k}{2} \\mid \\binom{n}{2}$ and $(k-1) \\mid (n-1)$, $S(2,k,n)$ exists.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Wilson",
+      "pairwise balanced designs",
+      "fundamental construction",
+      "asymptotic existence"
+    ],
+    "prerequisites": [
+      "SteinerSystem",
+      "DivisibilityConditions"
+    ]
+  },
+  {
+    "id": "ann-e722-keevash",
+    "proofId": "erdos-722",
+    "range": {
+      "startLine": 198,
+      "endLine": 200
+    },
+    "type": "concept",
+    "title": "Keevash's Theorem (2014)",
+    "content": "**keevash_theorem:** For ALL $r \\geq 1$ and $k > r$, $S(r,k,n)$ exists for sufficiently large $n$ when divisibility conditions are satisfied.\n\nThis is the COMPLETE SOLUTION to the existence problem for Steiner systems, published as 'The existence of designs' (arXiv:1401.3665). The proof uses a randomized algebraic construction combining probabilistic, algebraic, and absorbing methods.",
+    "mathContext": "$\\forall r \\geq 1,\\; k > r,\\; \\exists N_0(r,k),\\; \\forall n \\geq N_0,\\; \\text{DivisibilityConditions}(r,k,n) \\Rightarrow \\exists S(r,k,n)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Keevash",
+      "randomized algebraic construction",
+      "absorbing method",
+      "nibble method",
+      "design existence"
+    ],
+    "prerequisites": [
+      "SteinerSystem",
+      "DivisibilityConditions"
+    ]
+  },
+  {
+    "id": "ann-e722-solved",
+    "proofId": "erdos-722",
+    "range": {
+      "startLine": 208,
+      "endLine": 211
+    },
+    "type": "concept",
+    "title": "Problem #722 — SOLVED",
+    "content": "**erdos_722_solved:** Proved directly from `keevash_theorem`. The answer is YES: for $n$ sufficiently large, Steiner systems exist whenever divisibility conditions are met.",
+    "mathContext": "The Lean proof is a direct application: `keevash_theorem r k hr hk`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "solved problem",
+      "direct application"
+    ],
+    "prerequisites": [
+      "keevash_theorem"
+    ]
+  },
+  {
+    "id": "ann-e722-method",
+    "proofId": "erdos-722",
+    "range": {
+      "startLine": 217,
+      "endLine": 234
+    },
+    "type": "concept",
+    "title": "Keevash's Method: Randomized Algebraic Construction",
+    "content": "**Keevash's proof combines three techniques:**\n\n1. **Random greedy algorithms:** Build a partial design covering most $r$-subsets\n2. **Algebraic nibble methods:** Use algebraic structures to iteratively refine coverage\n3. **Absorbing methods:** Complete the partial design to exact coverage by absorbing remaining $r$-subsets into pre-prepared 'absorbers'\n\nThe key innovation is using algebraic structures (Latin squares, group-based constructions) to guide the random process, achieving exact rather than approximate coverage.",
+    "mathContext": "The absorbing method ensures that the 'leftover' uncovered $r$-subsets can be incorporated: a small set of pre-planted blocks can absorb any small deficiency, converting a near-design to an exact design.",
+    "significance": "key",
+    "relatedConcepts": [
+      "probabilistic method",
+      "nibble method",
+      "absorbing method",
+      "algebraic combinatorics"
+    ],
+    "prerequisites": [
+      "keevash_theorem"
+    ]
+  },
+  {
+    "id": "ann-e722-fano-div",
+    "proofId": "erdos-722",
+    "range": {
+      "startLine": 243,
+      "endLine": 261
+    },
+    "type": "concept",
+    "title": "Divisibility Verification for Small Examples",
+    "content": "**fano_plane_divisibility:** Verifies $S(2,3,7)$ satisfies divisibility:\n- $i = 0$: $\\binom{3}{2} = 3 \\mid \\binom{7}{2} = 21$ ✓\n- $i = 1$: $\\binom{2}{1} = 2 \\mid \\binom{6}{1} = 6$ ✓\n\n**s239_divisibility:** Verifies $S(2,3,9)$ similarly.\n\nProved computationally via `interval_cases` and `decide`, demonstrating Lean's ability to verify concrete divisibility.",
+    "mathContext": "For $S(2,3,7)$: $b = 21/3 = 7$ blocks, each point in $6/2 = 3$ blocks. For $S(2,3,9)$: $b = 36/3 = 12$ blocks, each point in $8/2 = 4$ blocks.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "computational verification",
+      "decide tactic",
+      "concrete examples"
+    ],
+    "prerequisites": [
+      "DivisibilityConditions",
+      "Nat.choose"
+    ]
+  },
+  {
+    "id": "ann-e722-packing",
+    "proofId": "erdos-722",
+    "range": {
+      "startLine": 272,
+      "endLine": 290
+    },
+    "type": "definition",
+    "title": "Resolvable Designs, Packing, and Covering",
+    "content": "**IsResolvable:** Blocks can be partitioned into parallel classes (each class partitions the ground set).\n\n**IsPacking:** Every $r$-set in at most one block (no overlaps).\n\n**IsCovering:** Every $r$-set in at least one block (no gaps).\n\nA Steiner system is simultaneously an optimal packing AND a perfect covering—the unique sweet spot where both properties hold exactly.",
+    "mathContext": "For $S(2,3,15)$ (Kirkman's schoolgirl problem), a resolution partitions the 35 blocks into 7 parallel classes of 5 blocks each, with each class forming a perfect matching of the 15 points into 5 triples.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "resolvable designs",
+      "packing number",
+      "covering number",
+      "sphere packing analogy"
+    ],
+    "prerequisites": [
+      "SteinerSystem",
+      "Finset.filter"
+    ]
+  },
+  {
+    "id": "ann-e722-summary",
+    "proofId": "erdos-722",
+    "range": {
+      "startLine": 297,
+      "endLine": 302
+    },
+    "type": "concept",
+    "title": "Summary and Historical Note",
+    "content": "**erdos_722_summary:** Combines:\n1. Keevash's general theorem (all $r < k$)\n2. Wilson's theorem ($r = 2$)\n3. Fano plane existence ($S(2,3,7)$)\n\n**Historical note:** Steiner systems are named after Jakob Steiner, though Thomas Kirkman studied them first — a common misattribution in mathematics. The existence problem was open for over a century until Keevash's 2014 breakthrough.",
+    "mathContext": "The summary theorem has type $(\\forall r\\, k,\\; \\text{Keevash}) \\wedge (\\forall k,\\; \\text{Wilson}) \\wedge (\\text{Fano})$, proved by combining `keevash_theorem`, `wilson_theorem_r2`, and `fano_plane_exists`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "theorem assembly",
+      "historical misattribution",
+      "complete resolution"
+    ],
+    "prerequisites": [
+      "keevash_theorem",
+      "wilson_theorem_r2",
+      "fano_plane_exists"
+    ]
+  }
+]

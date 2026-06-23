@@ -1,0 +1,174 @@
+{
+  "id": "erdos-280",
+  "title": "Erdős Problem #280: Covering Congruences and Sieve Methods",
+  "slug": "erdos-280",
+  "description": "For sequences n₁ < n₂ < ⋯ with nₖ > (1+ε)k log k, Erdős conjectured the count of integers avoiding specified congruence classes is Ω(k). Disproved by Cambie's trivial counterexample: nₖ = 2^k gives count = 1.",
+  "meta": {
+    "author": "Erdős-Graham (1980), Cambie (counterexample)",
+    "sourceUrl": "https://erdosproblems.com/280",
+    "date": "1980",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos280Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "covering-systems",
+      "sieve-methods",
+      "congruences",
+      "disproved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 280,
+    "erdosUrl": "https://erdosproblems.com/280",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.pow_lt_pow_right",
+        "description": "Monotonicity of power for bases > 1",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Nat.nth",
+        "description": "The n-th element satisfying a predicate",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Real logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Finset.range",
+        "description": "Range of natural numbers as a finite set",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "AvoidsAll and CountAvoiders definitions",
+      "SatisfiesGrowthBound definition",
+      "OriginalConjecture definition",
+      "cambie_n and cambie_a constructions",
+      "cambie_increasing theorem (constructive)",
+      "original_conjecture_false axiom",
+      "erdos_280_summary theorem"
+    ],
+    "axiomCount": 1,
+    "lineCount": 113,
+    "assumptions": "1 axiom: original_conjecture_false. 0 sorries.",
+    "theoremCount": 3,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #280 appears in Erdős and Graham's 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory.' Given a sequence n₁ < n₂ < ⋯ with nₖ > (1+ε)k log k and associated residues aₖ mod nₖ, Erdős conjectured that the count of integers m < nₖ avoiding all specified congruence classes should be Ω(k). They wrote that this 'may have to await improvements in current sieve methods.'\n\nThe bound nₖ > (1+ε)k log k is optimal because the k-th prime pₖ ~ k log k by the Prime Number Theorem. Using primes as moduli would create a much more constrained problem where covering is harder. The factor (1+ε) ensures the moduli grow slightly faster than the primes, allowing the problem to be meaningful.\n\nStijn Cambie found a trivial counterexample that made sieve theory unnecessary. Taking nₖ = 2^k (which grows exponentially, far exceeding the required bound) and aₖ = 2^(k-1) + 1, every integer m > 1 in [0, 2^k) is covered by some congruence class. Only m = 1 survives, giving count = 1 instead of Ω(k). The key insight is that powers of 2 as moduli create efficient coverings via binary representation.",
+    "problemStatement": "**Problem Statement (DISPROVED)**\n\nLet $n_1 < n_2 < \\cdots$ be an infinite sequence with $n_k > (1+\\varepsilon)k\\log k$ for some $\\varepsilon > 0$, and let $a_k$ be residues with $0 \\leq a_k < n_k$.\n\n**Original Conjecture:** $\\#\\{m < n_k : m \\not\\equiv a_i \\pmod{n_i} \\text{ for } 1 \\leq i \\leq k\\} \\neq o(k)$\n\n**Cambie's Counterexample:** $n_k = 2^k$, $a_k = 2^{k-1}+1$. Count = 1 for all $k$.",
+    "text": "For sequences n₁ < n₂ < ⋯ with nₖ > (1+ε)k log k, Erdős conjectured the count of integers avoiding specified congruence classes is Ω(k). Disproved by Cambie's trivial counterexample: nₖ = 2^k gives count = 1.",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization defines avoidance and counting using direct modular arithmetic (avoiding the need to construct CongruenceClass structures inline). Cambie's sequences are defined explicitly, with `cambie_increasing` proved constructively using `Nat.pow_lt_pow_right`. Only the conjecture refutation (`original_conjecture_false`) is axiomatized; the growth-bound, covering property, and exact-count claims appear as informal docstrings rather than Lean declarations. The summary theorem `erdos_280_summary` combines the disproof with the monotonicity proof.",
+    "keyInsights": [
+      "**Trivial Counterexample:** Powers of 2 as moduli cover almost all integers via binary representation",
+      "**Only m = 1 Survives:** Cambie's construction leaves exactly one uncovered integer",
+      "**Sieve Methods Unnecessary:** The problem allowed too much freedom in choosing (nₖ, aₖ)",
+      "**Optimal Bound:** The (1+ε)k log k threshold matches prime growth (PNT)",
+      "**Open Variants:** Coprime or prime moduli may restore interesting behavior"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "AvoidsAll, CountAvoiders, SatisfiesGrowthBound",
+      "startLine": 36,
+      "endLine": 49
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture (DISPROVED)",
+      "summary": "OriginalConjecture definition",
+      "startLine": 50,
+      "endLine": 63
+    },
+    {
+      "id": "counterexample",
+      "title": "Cambie's Counterexample",
+      "summary": "cambie_n, cambie_a definitions and cambie_increasing theorem (proved). Docstrings note growth bound, covering insight, and count = 1 result.",
+      "startLine": 64,
+      "endLine": 83
+    },
+    {
+      "id": "refutation",
+      "title": "Refutation of the Conjecture",
+      "summary": "original_conjecture_false, erdos_280_disproved",
+      "startLine": 84,
+      "endLine": 92
+    },
+    {
+      "id": "bound-optimality",
+      "title": "Why the Bound is Best Possible",
+      "summary": "Block comment explaining why the (1+ε)k log k bound is tight (PNT argument: pₖ ~ k log k). No Lean declarations in this section.",
+      "startLine": 93,
+      "endLine": 97
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_280_summary theorem",
+      "startLine": 98,
+      "endLine": 113
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #280 is disproved by Cambie's trivial counterexample. Taking nₖ = 2^k and aₖ = 2^(k-1)+1, only m = 1 avoids all congruence classes, giving count = 1 instead of the conjectured Ω(k).",
+    "implications": "**Theoretical Significance**: **Significance**\n\n1. **Elementary Resolution:** Erdős expected sieve methods would be needed, but a trivial counterexample sufficed\n\n**2. Problem Design Lesson:** The conjecture allowed too much freedom in choosing moduli and residues\n\n3. **Binary Covering:** Powers of 2 create efficient covering systems via binary representation\n\n4. **Open Variants:** Adding constraints (coprime moduli, prime moduli) may yield difficult open problems.",
+    "openQuestions": [
+      "Does the conjecture hold if the moduli nₖ must be pairwise coprime?",
+      "What if the moduli must be prime numbers?",
+      "Are there natural conditions on (nₖ, aₖ) that restore the Ω(k) lower bound?",
+      "What is the exact answer when moduli are restricted to primes?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Int.ModEq",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "Finset"
+    ],
+    "namespace": "Erdos280",
+    "lineCount": 113,
+    "axiomCount": 1,
+    "theoremCount": 3,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos280Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-205",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: covering-systems, disproved, number-theory"
+    },
+    {
+      "targetId": "erdos-27",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: covering-systems, disproved, number-theory"
+    },
+    {
+      "targetId": "erdos-275",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: congruences, covering-systems, number-theory"
+    }
+  ],
+  "sorries": 0
+}

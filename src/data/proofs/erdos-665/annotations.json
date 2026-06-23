@@ -1,0 +1,184 @@
+[
+  {
+    "id": "ann-e665-overview",
+    "proofId": "erdos-665",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #665** asks: can pairwise balanced designs always have blocks close to √n in size?\n\nA PBD on {1,...,n} is a collection of blocks where every pair appears in exactly one block, with block sizes between 2 and n-1.\n\n**The question**: Does h(n) = O(1), where h(n) measures how far below √n the smallest block must be?\n\n**Status**: OPEN. The answer depends on projective plane existence and prime gap bounds.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pairwise balanced designs",
+      "block designs",
+      "projective planes"
+    ],
+    "mathContext": "See annotation content for formal details of problem overview",
+    "prerequisites": [
+      "Pairwise balanced designs",
+      "Projective planes",
+      "Asymptotic notation O(1)"
+    ]
+  },
+  {
+    "id": "ann-e665-pbd",
+    "proofId": "erdos-665",
+    "range": {
+      "startLine": 34,
+      "endLine": 53
+    },
+    "type": "definition",
+    "title": "Pairwise Balanced Design",
+    "content": "**PairwiseBalancedDesign n** is a structure with:\n- `blocks`: a finite set of finite subsets of {1,...,n}\n- `blocks_subset`: each block ⊆ {1,...,n}\n- `blocks_size`: each block has 2 ≤ |A| < n\n- `covers_pairs`: every pair {x,y} appears in exactly one block\n\n**HasLargeBlocks D k**: all blocks have size ≥ k.",
+    "mathContext": "PBDs generalize projective planes and affine planes. When all blocks have the same size k, it's called a (n, k, 1)-design.",
+    "significance": "key",
+    "relatedConcepts": [
+      "block designs",
+      "BIBD",
+      "covering designs"
+    ],
+    "prerequisites": [
+      "Finset",
+      "Block designs (BIBD)",
+      "Pair-covering condition"
+    ]
+  },
+  {
+    "id": "ann-e665-question",
+    "proofId": "erdos-665",
+    "range": {
+      "startLine": 55,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "The Erdős Question and h(n)",
+    "content": "**ErdosQuestion**: ∃ C, ∀ n ≥ 10, ∃ PBD with all blocks > √n - C.\n\n**h(n)** (axiomatized): the minimum deficiency — the smallest value k such that a PBD exists with all blocks > √n - k.\n\n**h_spec**: h(n) is the infimum of deficiencies over all PBDs on n points.\n\nThe question reduces to: is h(n) bounded?",
+    "significance": "key",
+    "relatedConcepts": [
+      "deficiency function",
+      "optimization over designs"
+    ],
+    "mathContext": "See annotation content for formal details of the erdős question and h(n)",
+    "prerequisites": [
+      "Square-root growth √n",
+      "Infimum over a set",
+      "Deficiency function h(n)"
+    ]
+  },
+  {
+    "id": "ann-e665-erdos-larson",
+    "proofId": "erdos-665",
+    "range": {
+      "startLine": 81,
+      "endLine": 92
+    },
+    "type": "concept",
+    "title": "Erdős-Larson Bound (1982)",
+    "content": "**erdos_larson_bound (axiom):** h(n) ≤ C · n^{1/2-c} for some c > 0.\n\nThis is the best unconditional upper bound. It shows h(n) grows slower than √n, but doesn't resolve whether h(n) is bounded.\n\nThe gap between O(1) (if true) and n^{1/2-c} is enormous.",
+    "mathContext": "The exponent 1/2-c means h(n) = o(√n), so blocks can be made close to √n, but we don't know if the gap can be made constant.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős-Larson 1982",
+      "unconditional bounds"
+    ],
+    "prerequisites": [
+      "Asymptotic upper bounds",
+      "Little-o notation o(√n)",
+      "Erdős–Larson 1982"
+    ]
+  },
+  {
+    "id": "ann-e665-projective",
+    "proofId": "erdos-665",
+    "range": {
+      "startLine": 94,
+      "endLine": 121
+    },
+    "type": "concept",
+    "title": "Projective Plane Connection",
+    "content": "**shrikhande_singhi (axiom):** PBDs with blocks ≥ √n - c embed in projective planes.\n\n**prime_power_planes_implies_unbounded (axiom):** If all projective plane orders are prime powers, then h(n) is unbounded — giving a NEGATIVE answer.\n\nThis is the key obstacle: projective planes of non-prime-power order (if they exist) would enable more flexible constructions.",
+    "mathContext": "A projective plane of order q has q²+q+1 points and lines of size q+1. The only known orders are prime powers. Whether non-prime-power orders exist is one of the most famous open problems in combinatorics.",
+    "significance": "key",
+    "relatedConcepts": [
+      "projective planes",
+      "Shrikhande-Singhi 1985",
+      "prime power conjecture"
+    ],
+    "prerequisites": [
+      "Projective plane of order q",
+      "Prime power conjecture",
+      "Shrikhande–Singhi embedding"
+    ]
+  },
+  {
+    "id": "ann-e665-prime-gaps",
+    "proofId": "erdos-665",
+    "range": {
+      "startLine": 123,
+      "endLine": 146
+    },
+    "type": "concept",
+    "title": "Prime Gap Connection",
+    "content": "**largestPrimeGap n (axiom):** H(n) = max gap between consecutive primes ≤ n.\n\n**h_correlates_with_prime_gap (axiom):** h(n) ≤ C · H(n). Design deficiency is bounded by the largest prime gap.\n\n**cramers_conjecture (axiom):** H(n) ≤ C(log n)². If true, gives h(n) = O((log n)²), much better than n^{1/2-c} but still not O(1).",
+    "mathContext": "The connection arises because near-optimal PBDs use affine planes AG(2,q) for primes q ≈ √n. The largest gap between such primes determines h(n).",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime gaps",
+      "Cramér's conjecture",
+      "affine planes"
+    ],
+    "prerequisites": [
+      "Prime gaps",
+      "Cramér's conjecture",
+      "Affine plane AG(2,q)"
+    ]
+  },
+  {
+    "id": "ann-e665-special",
+    "proofId": "erdos-665",
+    "range": {
+      "startLine": 148,
+      "endLine": 166
+    },
+    "type": "concept",
+    "title": "Special Case Constructions",
+    "content": "**perfect_square_case (axiom):** For n = q² with q prime, the affine plane AG(2,q) gives a PBD with all blocks of size exactly q = √n. Perfect result — h(q²) = 0.\n\n**near_square_case (axiom):** For n = q² + k (k ≤ q), blocks of size ≥ q-1 are achievable. The deficiency is at most 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "affine planes",
+      "AG(2,q)",
+      "optimal constructions"
+    ],
+    "mathContext": "See annotation content for formal details of special case constructions",
+    "prerequisites": [
+      "Affine plane AG(2,q)",
+      "Perfect square n = q²",
+      "Design deficiency"
+    ]
+  },
+  {
+    "id": "ann-e665-summary",
+    "proofId": "erdos-665",
+    "range": {
+      "startLine": 168,
+      "endLine": 170
+    },
+    "type": "concept",
+    "title": "Summary Theorem",
+    "content": "**erdos_665_summary (proved from axioms):**\n\nCombines three key results:\n1. Erdős-Larson: h(n) ≤ n^{1/2-c} unconditionally\n2. Prime power planes ⟹ h(n) unbounded (negative answer)\n3. h(n) correlates with largest prime gap H(n)\n\nProved by: `⟨erdos_larson_bound, prime_power_planes_implies_unbounded, h_correlates_with_prime_gap⟩`",
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of summary theorem",
+    "relatedConcepts": [
+      "proof technique",
+      "prime numbers",
+      "combinatorics"
+    ],
+    "prerequisites": [
+      "Axiomatized theorem assembly",
+      "Prime power planes obstruction",
+      "Prime gap correlation bound"
+    ]
+  }
+]

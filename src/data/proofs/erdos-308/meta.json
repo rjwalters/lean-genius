@@ -1,0 +1,212 @@
+{
+  "id": "erdos-308",
+  "title": "Erdős Problem #308: Representable Integers via Unit Fractions",
+  "slug": "erdos-308",
+  "description": "What integers can be written as sums of distinct unit fractions 1/1 + 1/2 + ... with denominators ≤ N? Croot (1999) proved the representable set is contiguous and f(N) ≈ ⌊H_N⌋.",
+  "meta": {
+    "author": "Croot (1999)",
+    "sourceUrl": "https://erdosproblems.com/308",
+    "date": "1999",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos308Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "egyptian-fractions",
+      "harmonic"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 308,
+    "erdosUrl": "https://erdosproblems.com/308",
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Rat",
+        "description": "Rational number type",
+        "module": "Mathlib.Data.Rat.Basic"
+      },
+      {
+        "theorem": "Finset.range",
+        "description": "Finite range {0,...,n-1}",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "sumUnitFracs: Sum of unit fractions over a finite set",
+      "H: Harmonic number as rational",
+      "Representable: Definition of representability",
+      "RepresentableSet: Set of representable integers",
+      "f: Smallest non-representable integer",
+      "IsContiguous: Contiguity property",
+      "Croot's lower and upper bounds on f(N)",
+      "question2_yes: Contiguity holds for large N"
+    ],
+    "dateAdded": "2026-01-22",
+    "axiomCount": 3,
+    "lineCount": 277,
+    "assumptions": "3 axiom(s) and 0 sorry(s). See the Lean source for details.",
+    "theoremCount": 3,
+    "definitionCount": 9
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #308** belongs to the rich tradition of *Egyptian fraction theory*, which dates back to the Rhind Mathematical Papyrus (~1650 BCE), where ancient Egyptian scribes represented fractions as sums of distinct unit fractions $\\frac{1}{n}$.\n\n**Historical Development:**\n- **Fibonacci (1202):** Proved in *Liber Abaci* that every positive rational has an Egyptian fraction representation via the greedy algorithm (later called the Fibonacci-Sylvester algorithm).\n- **Erdős and Graham (1980):** Systematically posed problems about Egyptian fractions in *Old and New Problems and Results in Combinatorial Number Theory*. Problem #308 asks: which integers can be represented as sums of distinct unit fractions $\\frac{1}{k}$ with $k \\leq N$?\n- **Croot (1999):** In his paper *On some questions of Erdős and Graham about Egyptian fractions*, proved definitive bounds on $f(N)$, the smallest non-representable integer, showing $f(N) = \\lfloor H_N \\rfloor - \\Theta\\big(\\frac{(\\log\\log N)^2}{\\log N}\\big)$ where the constant lies in $[\\frac{1}{2}, \\frac{9}{2}]$.\n- **Croot also proved** the contiguity conjecture: for sufficiently large $N$, the set of representable integers is $\\{0, 1, \\ldots, m\\}$ for some $m$ — there are no gaps.\n\n**Key Connection:** The harmonic number $H_N = \\sum_{k=1}^N \\frac{1}{k} \\sim \\ln N + \\gamma$ (where $\\gamma \\approx 0.5772$ is the Euler–Mascheroni constant) provides the natural upper bound, since $\\lfloor H_N \\rfloor$ is the largest integer that could possibly be represented.",
+    "problemStatement": "**Problem Statement**\n\nLet $N \\geq 1$. Consider sums of distinct unit fractions with denominators from $\\{1,\\ldots,N\\}$:\n$$S = \\sum_{k \\in T} \\frac{1}{k} \\quad \\text{for some } T \\subseteq \\{1,\\ldots,N\\}$$\n\n**Questions:**\n1. What is $f(N)$, the smallest non-negative integer not representable as such a sum?\n2. Is the set of representable integers always contiguous: $\\{0, 1, \\ldots, m\\}$ for some $m$?\n\n**Answers (Croot 1999):**\n1. $\\lfloor H_N - \\frac{9}{2}\\frac{(\\log\\log N)^2}{\\log N}\\rfloor \\leq f(N) \\leq \\lfloor H_N - \\frac{1}{2}\\frac{(\\log\\log N)^2}{\\log N}\\rfloor$\n2. YES for sufficiently large $N$: representable set is $\\{0,\\ldots,\\lfloor H_N\\rfloor-1\\}$ or $\\{0,\\ldots,\\lfloor H_N\\rfloor\\}$",
+    "text": "What integers can be written as sums of distinct unit fractions 1/1 + 1/2 + ... with denominators ≤ N? Croot (1999) proved the representable set is contiguous and f(N) ≈ ⌊H_N⌋.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** `unitFrac`, `sumUnitFracs` (sum of $1/k$ over a finite set), `H` (harmonic number as a rational).\n\n2. **Representability:** `Representable N k` — existence of $S \\subseteq \\{1,\\ldots,N\\}$ with $\\sum_{n \\in S} 1/n = k$. The function `f(N)` gives the smallest non-representable integer via `Nat.find`.\n\n3. **Basic Properties:** Zero and one are always representable; representability is monotone in $N$; the maximum is at most $\\lfloor H_N \\rfloor$.\n\n4. **Croot's Theorem:** Axiomatized lower bound ($f(N) \\geq \\lfloor H_N \\rfloor - 6$), upper bound ($f(N) \\leq \\lfloor H_N \\rfloor$), main theorem ($f(N) \\in \\{\\lfloor H_N \\rfloor - 1, \\lfloor H_N \\rfloor\\}$), and contiguity.\n\n5. **Summary:** Proved by combining the three axiomatized results via `⟨croot_lower_bound, croot_upper_bound, question2_yes⟩`.",
+    "keyInsights": [
+      "**Harmonic ceiling as natural bound:** The maximum possible sum $H_N = 1 + \\frac{1}{2} + \\cdots + \\frac{1}{N}$ grows as $\\ln N + \\gamma$, so $f(N) \\leq \\lfloor H_N \\rfloor + 1$. The surprising fact is that $f(N)$ is very close to $\\lfloor H_N \\rfloor$, differing only by a second-order correction.",
+      "**Second-order correction term:** The gap $\\lfloor H_N \\rfloor - f(N)$ is $\\Theta\\big(\\frac{(\\log\\log N)^2}{\\log N}\\big)$ — a doubly-logarithmic correction that goes to zero, meaning $f(N)/\\lfloor H_N \\rfloor \\to 1$. The coefficient lies in $[\\frac{1}{2}, \\frac{9}{2}]$.",
+      "**Contiguity via greedy-like arguments:** The representable set forms an interval $\\{0, 1, \\ldots, m\\}$ with no gaps. This is nontrivial because subset sums of rationals can in principle skip integers. Croot's proof uses a careful exchange argument: if $k$ is representable and $k-1$ is large enough, one can modify the representing subset to produce $k-1$.",
+      "**Connection to the Erdős–Graham conjecture:** Erdős and Graham conjectured (and Croot proved more generally) that for large $N$, any integer in $\\{1, \\ldots, \\lfloor H_N \\rfloor\\}$ can be represented. This extends the classical Erdős–Graham result that $\\sum_{n \\in A} \\frac{1}{n}$ covers all unit fractions $\\frac{1}{m}$ for any sufficiently dense set $A$.",
+      "**Egyptian fraction constraint:** Unlike unrestricted Egyptian fractions (where every positive rational has a representation by the Fibonacci–Sylvester greedy algorithm), bounding the denominators by $N$ creates a finite combinatorial problem. The interplay between the continuous quantity $H_N$ and the discrete set of representable integers is the core difficulty."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-header",
+      "title": "Imports and Problem Statement",
+      "summary": "Problem description and Lean header; imports `Mathlib.Data.Rat.Basic` for $\\mathbb{Q}$, `Mathlib.Algebra.BigOperators` for $\\sum_{n \\in S}$, and `Mathlib.Data.Finset` for finite subsets",
+      "startLine": 1,
+      "endLine": 38,
+      "mathContext": "Mathematical content: Problem description and Lean header; imports `Mathlib.Data.Rat.Basic` for $\\mathbb{Q}$, `Mathlib.Algebra.BigOperators` for $\\sum_{n \\in S}$, and `Mathlib.Data.Finset` for finite subsets"
+    },
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "Defines `unitFrac(n) = 1/n$, `sumUnitFracs(S) = \\sum_{n \\in S} 1/n$, and harmonic number $H_N = \\sum_{k=1}^N 1/k$ as rational; proves $H_1 = 1$",
+      "startLine": 39,
+      "endLine": 68,
+      "mathContext": "Formal definition: Defines `unitFrac(n) = 1/n$, `sumUnitFracs(S) = \\sum_{n \\in S} 1/n$, and harmonic number $H_N = \\sum_{k=1}^N 1/k$ as rational; proves $H_1 = 1$"
+    },
+    {
+      "id": "representability",
+      "title": "Representability",
+      "summary": "Defines `Representable(N, k)` as $\\exists S \\subseteq \\{1,\\ldots,N\\},\\; \\sum_{n \\in S} 1/n = k$; `RepresentableSet(N)$; and $f(N) = \\min\\{k : \\neg\\text{Representable}(N,k)\\}$ via `Nat.find`",
+      "startLine": 69,
+      "endLine": 103,
+      "mathContext": "Formal definition: Defines `Representable(N, k)` as $\\exists S \\subseteq \\{1,\\ldots,N\\},\\; \\sum_{n \\in S} 1/n = k$; `RepresentableSet(N)$; and $f(N) = \\min\\{k : \\neg\\text{Representable}(N,k)\\}$ via `Nat.find`"
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "summary": "Axiomatizes: $1$ is representable ($S = \\{1\\}$), $0$ is representable ($S = \\emptyset$), max representable $\\leq \\lfloor H_N \\rfloor$, and monotonicity in $N$",
+      "startLine": 104,
+      "endLine": 121,
+      "mathContext": "Axiomatized: Axiomatizes: $1$ is representable ($S = \\{1\\}$), $0$ is representable ($S = \\emptyset$), max representable $\\leq \\lfloor H_N \\rfloor$, and monotonicity in $N$"
+    },
+    {
+      "id": "contiguity",
+      "title": "The Contiguity Question",
+      "summary": "Defines `IsContiguous(S)` as $S = \\{0, 1, \\ldots, m\\}$; poses `question2(N)`: is `RepresentableSet(N)` always contiguous?",
+      "startLine": 122,
+      "endLine": 140,
+      "mathContext": "Formal definition: Defines `IsContiguous(S)` as $S = \\{0, 1, \\ldots, m\\}$; poses `question2(N)`: is `RepresentableSet(N)` always contiguous?"
+    },
+    {
+      "id": "croot-theorem",
+      "title": "Croot's Theorem (1999)",
+      "summary": "Axiomatizes Croot's lower bound ($f(N) \\geq \\lfloor H_N \\rfloor - 6$), upper bound ($f(N) \\leq \\lfloor H_N \\rfloor$), main theorem ($f(N) \\in \\{\\lfloor H_N \\rfloor - 1, \\lfloor H_N \\rfloor\\}$), and contiguity answer",
+      "startLine": 141,
+      "endLine": 186,
+      "mathContext": "Axiomatizes Croot's lower bound ($f(N) \\geq \\lfloor H_N \\rfloor - 6$), upper bound ($f(N) \\leq \\lfloor H_N \\rfloor$), main theorem ($f(N) \\in \\{\\lfloor H_N \\rfloor - 1, \\lfloor H_N \\rfloor\\}$), and contiguity answer"
+    },
+    {
+      "id": "small-examples",
+      "title": "Small Examples",
+      "summary": "Computes $H_2 = 3/2$, $H_3 = 11/6$, $H_4 = 25/12$; shows $f(1) = f(2) = f(3) = 2$ and $f(6) = 3$ with $H_6 = 49/20 \\approx 2.45$",
+      "startLine": 187,
+      "endLine": 213,
+      "mathContext": "Mathematical content: Computes $H_2 = 3/2$, $H_3 = 11/6$, $H_4 = 25/12$; shows $f(1) = f(2) = f(3) = 2$ and $f(6) = 3$ with $H_6 = 49/20 \\approx 2.45$"
+    },
+    {
+      "id": "egyptian-fractions",
+      "title": "Connection to Egyptian Fractions",
+      "summary": "Defines `IsEgyptianFraction` (all denominators $\\geq 1$); notes the greedy (Fibonacci–Sylvester) algorithm is not always optimal with bounded denominators",
+      "startLine": 214,
+      "endLine": 240,
+      "mathContext": "Formal definition: Defines `IsEgyptianFraction` (all denominators $\\geq 1$); notes the greedy (Fibonacci–Sylvester) algorithm is not always optimal with bounded denominators"
+    },
+    {
+      "id": "asymptotics",
+      "title": "Asymptotic Behavior",
+      "summary": "Axiomatizes $H_N \\sim \\ln N + \\gamma$, the second-order correction $f(N) = \\lfloor H_N \\rfloor - \\Theta((\\log\\log N)^2/\\log N)$, and $f(N)/\\ln N \\to 1$",
+      "startLine": 241,
+      "endLine": 274,
+      "mathContext": "Axiomatizes $H_N \\sim \\ln N + \\$\\gamma$$, the second-order correction $f(N) = \\lfloor H_N \\rfloor - \\Theta((\\log\\log N)^2/\\log N)$, and $f(N)/\\ln N \\to 1$"
+    },
+    {
+      "id": "summary",
+      "title": "Summary Theorem",
+      "summary": "Proves `erdos_308_summary` as conjunction of Croot's bounds and contiguity; proves `erdos_308` directly from `question2_yes`",
+      "startLine": 275,
+      "endLine": 277,
+      "mathContext": "Verified: Proves `erdos_308_summary` as conjunction of Croot's bounds and contiguity; proves `erdos_308` directly from `question2_yes`"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #308 is **SOLVED** (Croot, 1999). The smallest integer not representable as a sum of distinct unit fractions $1/k$ with $k \\leq N$ satisfies $f(N) = \\lfloor H_N \\rfloor - \\Theta\\big(\\frac{(\\log\\log N)^2}{\\log N}\\big)$, and the representable set is contiguous $\\{0, 1, \\ldots, m\\}$ for sufficiently large $N$. The formalization axiomatizes Croot's bounds and contiguity result, with the summary theorem proved by combining them.",
+    "implications": "**Theoretical Significance**: **Implications for Number Theory**\n\n1. **Egyptian fraction theory:** Establishes that bounded-denominator Egyptian fractions have a clean structure — the representable set is an interval, and the boundary is tightly controlled by the harmonic number $H_N$.\n\n**2. Harmonic number applications:** Demonstrates how the asymptotic expansion $H_N \\sim \\ln N + \\gamma + O(1/N)$ governs combinatorial properties of finite sums of reciprocals.\n\n3. **Subset sum structure:** The contiguity result is a strong structural theorem for rational subset sums, contrasting with integer subset sum problems where gaps are common.\n\n4. **Connection to Erdős–Graham:** Extends the Erdős–Graham program on Egyptian fractions, complementing results like the Erdős–Graham conjecture (proved by Croot 2003) that $\\sum_{n \\in A} 1/n$ includes all unit fractions for sufficiently dense $A$.",
+    "openQuestions": [
+      "What is the exact constant $c$ in $f(N) = \\lfloor H_N \\rfloor - c \\cdot \\frac{(\\log\\log N)^2}{\\log N} + o\\big(\\frac{(\\log\\log N)^2}{\\log N}\\big)$? Croot's bounds give $c \\in [1/2, 9/2]$.",
+      "Is the representable set contiguous for ALL $N \\geq 1$, or only for $N$ sufficiently large? What is the smallest $N_0$ for which contiguity is guaranteed?",
+      "Can the `sorry` in the existence proof of `f` (the finiteness argument that some integer is not representable) be replaced by a constructive proof in Lean?",
+      "What is the computational complexity of determining $f(N)$ exactly for a given $N$?",
+      "How does the representable set behave when denominators are restricted to primes, or to a lacunary sequence?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "The harmonic series $H_N = \\sum_{k=1}^N 1/k$ is the key quantity bounding representability; harmonic-divergence proves $H_N \\to \\infty$, which implies $f(N) \\to \\infty$",
+      "targetId": "harmonic-divergence"
+    },
+    {
+      "relationship": "Both study sums of reciprocals: prime-reciprocal-divergence shows $\\sum 1/p$ diverges, while #308 studies which integers arise as subset sums of $\\{1/k : k \\leq N\\}$",
+      "targetId": "prime-reciprocal-divergence"
+    },
+    {
+      "relationship": "The Basel problem computes $\\sum_{k=1}^\\infty 1/k^2 = \\pi^2/6$; both results concern sums of reciprocals, and the harmonic number $H_N$ is the degree-1 analogue of the Basel sum",
+      "targetId": "basel-problem"
+    },
+    {
+      "relationship": "Adjacent Erdős–Graham Egyptian fraction problem: #306 concerns decompositions of rationals into distinct unit fractions, complementing #308's bounded-denominator representability question",
+      "targetId": "erdos-306"
+    },
+    {
+      "relationship": "Both study completeness of integer sequences: #124 asks when a sequence is complete (every large integer is a subset sum), while #308 asks which integers are subset sums of $\\{1/k\\}$ mapped to $\\mathbb{Z}$",
+      "targetId": "erdos-124-complete-sequences"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos308",
+    "lineCount": 277,
+    "axiomCount": 3,
+    "theoremCount": 3,
+    "definitionCount": 9,
+    "path": "Proofs/Erdos308Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

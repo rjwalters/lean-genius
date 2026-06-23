@@ -1,0 +1,181 @@
+{
+  "id": "erdos-313",
+  "title": "Erdős Problem #313: Primary Pseudoperfect Numbers",
+  "slug": "erdos-313",
+  "description": "Are there infinitely many m such that ∑ 1/p = 1 − 1/m for some set of distinct primes P? These m are called primary pseudoperfect numbers. Only 8 are known (OEIS A054377). Each m equals the product of its primes.",
+  "meta": {
+    "author": "Erdős, Graham (1980)",
+    "sourceUrl": "https://erdosproblems.com/313",
+    "erdosUrl": "https://erdosproblems.com/313",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos313Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "egyptian-fractions",
+      "primes",
+      "pseudoperfect-numbers",
+      "open"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 313,
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate for natural numbers",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Finite set summation for unit fraction sums",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Rat.Defs",
+        "description": "Rational number type for the equation ∑1/p = 1 - 1/m",
+        "module": "Mathlib.Data.Rat.Defs"
+      },
+      {
+        "theorem": "Set.encard",
+        "description": "Extended cardinality for counting known solutions",
+        "module": "Mathlib.Data.Set.Card"
+      }
+    ],
+    "originalContributions": [
+      "erdos313Solutions: set of (m, P) pairs satisfying the equation",
+      "IsPrimaryPseudoperfect: predicate for primary pseudoperfect numbers",
+      "erdos_313_conjecture and primary_pseudoperfect_infinite: infinitude axioms",
+      "Five verified examples: m = 2, 6, 42, 1806, 47058",
+      "product_constraint: m = ∏P in any solution",
+      "uniqueness: at most one prime set per m",
+      "at_least_eight: lower bound on known solutions",
+      "egyptian_fraction_form: connection to Egyptian fractions of 1"
+    ],
+    "axiomCount": 0,
+    "lineCount": 122,
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "theoremCount": 6,
+    "definitionCount": 2
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 30,
+      "endLine": 35,
+      "summary": "Imports Mathlib's **Tactic**, **Nat.Prime.Basic**, and **Rat.Defs**. Opens **Finset** and **BigOperators** for finite set operations and $\\sum$ notation."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 36,
+      "endLine": 50,
+      "summary": "Defines **erdos313Solutions** (pairs $(m, P)$ with $\\sum_{p \\in P} 1/p = 1 - 1/m$) and **IsPrimaryPseudoperfect** ($\\exists P$ such that $(n, P)$ is a solution). The solution set requires $m \\geq 2$, nonempty $P$, all primes in $P$, and the exact rational equation."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "startLine": 51,
+      "endLine": 61,
+      "summary": "States the two equivalent forms of the main OPEN question: **erdos_313_conjecture** (infinitely many solution pairs) and **primary_pseudoperfect_infinite** (infinitely many primary pseudoperfect numbers)."
+    },
+    {
+      "id": "examples",
+      "title": "Verified Examples",
+      "startLine": 62,
+      "endLine": 79,
+      "summary": "Records the first 5 known solutions as axioms: $m = 2$ ($P = \\{2\\}$), $m = 6$ ($P = \\{2,3\\}$), $m = 42$ ($P = \\{2,3,7\\}$), $m = 1806$ ($P = \\{2,3,7,43\\}$), $m = 47058$ ($P = \\{2,3,11,23,31\\}$). The Sylvester-like pattern breaks at $m = 47058$."
+    },
+    {
+      "id": "structure",
+      "title": "Structural Properties",
+      "startLine": 80,
+      "endLine": 96,
+      "summary": "States **product_constraint** ($m = \\prod P$), **uniqueness** (at most one $P$ per $m$), and **at_least_eight** ($\\geq 8$ primary pseudoperfect numbers known). These structural results show the solution map $(m, P) \\mapsto m$ is injective."
+    },
+    {
+      "id": "egyptian",
+      "title": "Egyptian Fraction Connection",
+      "startLine": 97,
+      "endLine": 104,
+      "summary": "States **egyptian_fraction_form**: $\\sum 1/p + 1/m = 1$, rewriting the primary pseudoperfect equation as an Egyptian fraction decomposition of $1$ with distinct denominators, connecting to Problems #282–285."
+    }
+  ],
+  "overview": {
+    "historicalContext": "**Erdős Problem #313: Primary Pseudoperfect Numbers**\n\nErdős and Graham posed this problem in their 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory*. It asks whether there are infinitely many integers $m \\geq 2$ such that the reciprocals of $m$'s prime divisors sum to $1 - 1/m$.\n\n**The Equation:**\nFor a squarefree integer $m = p_1 p_2 \\cdots p_k$ with distinct prime factors, the condition is $\\sum_{i=1}^k 1/p_i = 1 - 1/m$, equivalently $\\sum_{i=1}^k 1/p_i + 1/m = 1$. This is an Egyptian fraction representation of $1$ where all but one denominator is prime.\n\n**Known Solutions (OEIS A054377):**\nExactly 8 primary pseudoperfect numbers are known:\n- $m = 2$: $1/2 = 1 - 1/2$\n- $m = 6 = 2 \\cdot 3$: $1/2 + 1/3 = 1 - 1/6$\n- $m = 42 = 2 \\cdot 3 \\cdot 7$: $1/2 + 1/3 + 1/7 = 1 - 1/42$\n- $m = 1806 = 2 \\cdot 3 \\cdot 7 \\cdot 43$: $1/2 + 1/3 + 1/7 + 1/43 = 1 - 1/1806$\n- $m = 47058 = 2 \\cdot 3 \\cdot 11 \\cdot 23 \\cdot 31$\n- $m = 2214502422$, $m = 52495396602$, and a 31-digit number\n\n**The Sylvester-Like Pattern:**\nThe first four terms $(2, 6, 42, 1806)$ follow a Sylvester-like recursion: $m_{k+1} \\approx m_k^2$. However, this pattern breaks at $m = 47058$, which uses the entirely different prime set $\\{2, 3, 11, 23, 31\\}$ instead of extending $\\{2, 3, 7, 43\\}$.\n\n**Connection to Pseudoperfect Numbers:**\nThe name comes from the analogy with *pseudoperfect* (or *semiperfect*) numbers, where some subset of divisors sums to $n$. Here, the sum of reciprocal *prime* factors plays a role analogous to the abundancy index $\\sigma(n)/n$.\n\n**Butske-Jaje-Mayernik (2000):**\nThe most systematic study was by Butske, Jaje, and Mayernik, who verified computationally that no 9th primary pseudoperfect number exists below large bounds and studied the equation's structure via graph theory.\n\n**Current Status:**\nThe problem remains OPEN. No proof of infinitude or finiteness exists. The super-exponential growth of known solutions makes computational search increasingly difficult.",
+    "problemStatement": "Are there infinitely many integers $m \\geq 2$ such that $\\sum_{p \\mid m,\\, p \\text{ prime}} 1/p = 1 - 1/m$?\n\nEquivalently: are there infinitely many squarefree $m$ whose prime factorization $m = p_1 \\cdots p_k$ satisfies $1/p_1 + \\cdots + 1/p_k + 1/m = 1$?",
+    "text": "Are there infinitely many m such that ∑ 1/p = 1 − 1/m for some set of distinct primes P? These m are called primary pseudoperfect numbers. Only 8 are known (OEIS A054377). Each m equals the product of its primes.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Solution Set:** Define `erdos313Solutions` as pairs $(m, P)$ satisfying the equation with $m \\geq 2$, $P$ nonempty, all primes, and the rational sum condition.\n\n2. **Primary Pseudoperfect:** Define `IsPrimaryPseudoperfect n` as the existential projection.\n\n3. **Main Conjecture:** State infinitude of both solutions and primary pseudoperfect numbers.\n\n4. **Verified Examples:** Record the first 5 known solutions ($m = 2, 6, 42, 1806, 47058$) as axioms.\n\n5. **Structural Properties:** State the product constraint ($m = \\prod P$), uniqueness of $P$, and the count of at least 8 known solutions.\n\n6. **Egyptian Fraction Connection:** State the reformulation as $\\sum 1/p + 1/m = 1$.",
+    "keyInsights": [
+      "**Product Constraint:** In any solution, $m$ must equal the product of all primes in $P$. This follows from clearing denominators and applying unique factorization. It means primary pseudoperfect numbers are exactly the squarefree numbers satisfying the equation.",
+      "**Uniqueness:** At most one prime set $P$ works for each $m$, since $P$ is determined by $m$'s prime factorization. This makes the counting problem well-defined: asking for infinitely many solutions is the same as asking for infinitely many $m$.",
+      "**Sylvester Pattern Breakdown:** The first four solutions follow a Sylvester-like pattern ($m_{k+1} \\approx m_k^2$), but this breaks at $m = 47058$. The irregular appearance of the 5th term shows the sequence cannot be generated by a simple recursion.",
+      "**Egyptian Fraction of 1:** The equation $\\sum 1/p_i + 1/m = 1$ is an Egyptian fraction representation of $1$ with the special property that all but one denominator is prime. This places the problem in the context of Erdős's broader Egyptian fraction program (#282–285).",
+      "**Super-Exponential Growth:** Known solutions grow extremely rapidly (from 1 digit to 31 digits in 8 terms). This makes computational search for a 9th term difficult and suggests either finiteness or extreme sparsity."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #313 asks whether there are infinitely many primary pseudoperfect numbers — integers $m$ whose prime reciprocals sum to $1 - 1/m$. The formalization captures the solution set, the primary pseudoperfect predicate, five verified examples, structural constraints (product and uniqueness), the count of 8 known solutions, and the Egyptian fraction connection. The 105-line Lean file has 0 sorries, with all results axiomatized.",
+    "implications": "**Theoretical Significance**: **Connections and Implications**\n\n1. **Egyptian Fraction Cluster:** Primary pseudoperfect numbers are special Egyptian fractions of $1$ with mostly-prime denominators. This connects to the broader Erdős Egyptian fraction program: #282 (greedy termination), #283 (polynomial denominators), #284 (maximum denominators), #285 (asymptotics).\n\n2. **Number-Theoretic Depth:** The product constraint $m = \\prod P$ means primary pseudoperfect numbers are squarefree, and the equation becomes a constraint on which subsets of primes have reciprocal sums close to $1$.\n\nThis connects to the theory of the prime harmonic series and Mertens' theorem ($\\sum_{p \\leq x} 1/p \\approx \\log \\log x$).\n\n3. **Pseudoperfect Number Theory:** The problem bridges unit fraction theory and the classical theory of perfect and pseudoperfect numbers. The abundancy index $\\sigma(n)/n$ for primary pseudoperfect $m$ satisfies a special identity.\n\n4. **Computational Challenges:** The super-exponential growth of known solutions ($m_8$ has 31 digits) makes exhaustive search for a 9th term computationally challenging. Graph-theoretic methods (Butske-Jaje-Mayernik) offer structured search strategies.",
+    "openQuestions": [
+      "**The Main Question:** Are there infinitely many primary pseudoperfect numbers, or only finitely many?",
+      "**Existence of a 9th:** Is there a 9th primary pseudoperfect number? What are the bounds on its size?",
+      "**Growth Rate:** If the sequence is infinite, what is its growth rate? Is $\\log m_k$ doubly exponential in $k$?",
+      "**Prime Set Structure:** What constraints must the prime set $P$ satisfy beyond $\\sum 1/p < 1$? Are there forbidden primes?",
+      "**Density of Near-Misses:** How many squarefree $m$ satisfy $|\\sum_{p|m} 1/p - (1 - 1/m)| < \\varepsilon$ for small $\\varepsilon$?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Rat.Defs"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": null,
+    "lineCount": 122,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 2,
+    "path": "Proofs/Erdos313Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    "Erdős, Graham (1980): 'Old and New Problems and Results in Combinatorial Number Theory', Monographies de l'Enseignement Mathématique 28, p.30",
+    "Butske, Jaje, Mayernik (2000): 'On the equation ∑_{p|N} 1/p + 1/N = 1, pseudoperfect numbers, and perfectly weighted graphs', Mathematics of Computation 69(229), 407–420",
+    "OEIS A054377: Primary pseudoperfect numbers (Sloane)",
+    "Fibonacci (1202): 'Liber Abaci', greedy algorithm for Egyptian fractions",
+    "Graham (1964): 'On finite sums of unit fractions', Proceedings of the London Mathematical Society (3) 14, 193–207",
+    "https://erdosproblems.com/313"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-148",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, open, unit-fractions"
+    },
+    {
+      "targetId": "erdos-320",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, open, unit-fractions"
+    },
+    {
+      "targetId": "erdos-321",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, open, unit-fractions"
+    }
+  ],
+  "sorries": 0
+}

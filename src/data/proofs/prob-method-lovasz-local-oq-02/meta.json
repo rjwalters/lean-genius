@@ -1,0 +1,134 @@
+{
+  "id": "prob-method-lovasz-local-oq-02",
+  "title": "Sharp Symmetric LLL Criterion: e·p·(d+1) ≤ 1",
+  "slug": "prob-method-lovasz-local-oq-02",
+  "description": "The textbook-sharp Lovász Local Lemma criterion ep(d+1) ≤ 1, connected to Euler's number e without formalizing any limit — just (1+1/d)^d ≤ e.",
+  "meta": {
+    "author": "Lean Genius Researcher (2026)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Lov%C3%A1sz_local_lemma",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ProbMethodLovaszLocalOQ02.lean",
+    "tags": [
+      "probabilistic-method",
+      "combinatorics",
+      "real-analysis",
+      "lovasz-local-lemma",
+      "advanced"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.add_one_le_exp",
+        "description": "The linear lower bound 1 + x ≤ exp x, the sole analytic input that yields (1+1/d)^d ≤ e",
+        "module": "Mathlib.Analysis.Complex.Exponential"
+      },
+      {
+        "theorem": "Real.exp_nat_mul",
+        "description": "exp(n·x) = (exp x)^n, used to collapse (exp(1/d))^d to e",
+        "module": "Mathlib.Analysis.Complex.Exponential"
+      },
+      {
+        "theorem": "Real.exp_one_lt_d9",
+        "description": "The numeric bound exp 1 < 2.7182818286, giving e < 3 and hence the strict improvement over the 1/3 criterion",
+        "module": "Mathlib.Analysis.Complex.ExponentialBounds"
+      }
+    ],
+    "originalContributions": [
+      "Closes the parent entry's open question (replace p(d+1) ≤ 1/3 with the sharp ep(d+1) ≤ 1) WITHOUT formalizing the limit e = lim (1+1/n)^n",
+      "Key lemma (1+1/d)^d ≤ e proved in three lines from Real.add_one_le_exp",
+      "Bridge theorem: the sharp criterion ep(d+1) ≤ 1 implies the algebraic LLL threshold p ≤ T(d) = d^d/(d+1)^(d+1)",
+      "Strictness: e < 3 shows the 1/3 criterion implies the sharp one, and an explicit witness p = 1/(e(d+1)) is admitted by the sharp criterion but rejected by 1/3"
+    ],
+    "dateAdded": "2026-06-23",
+    "axiomCount": 0,
+    "lineCount": 164,
+    "prerequisites": [
+      "Symmetric Lovász Local Lemma and its avoidance threshold T(d)",
+      "The exponential function and the inequality 1 + x ≤ exp x",
+      "Monotonicity of x ↦ x^n and reciprocals on the reals"
+    ],
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only propext / Classical.choice / Quot.sound, the standard foundational axioms). No native_decide.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "The symmetric Lovász Local Lemma is universally stated with the criterion ep(d+1) ≤ 1, where e ≈ 2.718 is Euler's number: if each of the bad events has probability at most p, depends on at most d others, and ep(d+1) ≤ 1, then all bad events can be simultaneously avoided. The constant e is what makes the criterion sharp — it is the exact reciprocal of the maximum of x(1-x)^d.\n\nThe gallery's parent formalization (prob-method-lovasz-local) deliberately used the looser, rational criterion p(d+1) ≤ 1/3, since 1/3 < 1/e and 1/3 sidesteps any irrational constant. Its sibling (lovasz-local-lemma-oq-02) proved that the rational avoidance threshold T(d) = d^d/(d+1)^(d+1) = (1/(d+1))(d/(d+1))^d is algebraically optimal. Neither connected the formalization to the textbook constant e — the parent explicitly flagged this as an open question, expecting it to 'require formalizing e = lim (1+1/n)^n'.",
+    "problemStatement": "Replace the simplified symmetric LLL criterion p(d+1) ≤ 1/3 with the sharp criterion e·p·(d+1) ≤ 1, formally connecting the Lovász Local Lemma to Euler's number e, and show the sharp criterion is a genuine improvement.",
+    "text": "The sharp LLL criterion ep(d+1) ≤ 1 follows from one Mathlib inequality, 1 + x ≤ exp x — no limit required.",
+    "proofStrategy": "The entire connection to e rests on a single inequality, avoiding the limit definition entirely:\n\n1. **Key lemma (1+1/d)^d ≤ e.** Apply Real.add_one_le_exp at x = 1/d to get 1 + 1/d ≤ exp(1/d), raise both sides to the d-th power (monotone since the base is nonneg), and use (exp(1/d))^d = exp(d·(1/d)) = exp 1.\n\n2. **Reciprocal.** Taking reciprocals gives 1/e ≤ (d/(d+1))^d, since d/(d+1) = 1/(1+1/d).\n\n3. **Threshold bridge.** Multiplying by 1/(d+1) shows the sharp threshold 1/(e(d+1)) lies below the algebraic threshold T(d) = (1/(d+1))(d/(d+1))^d. Therefore any p with e·p·(d+1) ≤ 1 satisfies p ≤ 1/(e(d+1)) ≤ T(d) — the avoidance condition the gallery already discharges.\n\n4. **Strict improvement.** Since e < 3 (from Real.exp_one_lt_d9), the criterion p(d+1) ≤ 1/3 implies e·p·(d+1) ≤ 1, so passing from 1/3 to 1/e only enlarges the admissible set. The witness p = 1/(e(d+1)) saturates the sharp criterion yet has p(d+1) = 1/e > 1/3, so it is admitted by the sharp criterion but rejected by 1/3.",
+    "keyInsights": [
+      "The textbook constant e in the LLL never requires the limit e = lim (1+1/n)^n; the single inequality 1 + x ≤ exp x suffices, because (1+1/d)^d ≤ (exp(1/d))^d = e",
+      "The sharp threshold 1/(e(d+1)) sits exactly below the algebraic threshold T(d) proved optimal in the sibling entry — so the sharp criterion is sufficient by reduction, not a new induction",
+      "e < 3 makes 'ep(d+1) ≤ 1' strictly weaker than 'p(d+1) ≤ 1/3'; the improvement window is 1/(3(d+1)) < p ≤ 1/(e(d+1))",
+      "Working over ℝ is forced, since e is irrational — the rational gallery threshold cannot express the sharp constant directly"
+    ],
+    "prerequisites": [
+      "Symmetric Lovász Local Lemma and its avoidance threshold T(d)",
+      "The exponential function and the inequality 1 + x ≤ exp x",
+      "Monotonicity of x ↦ x^n and reciprocals on the reals"
+    ]
+  },
+  "conclusion": {
+    "summary": "The sharp symmetric Lovász Local Lemma criterion e·p·(d+1) ≤ 1 is formally connected to Euler's number e and shown to imply the avoidance threshold T(d) the gallery already proves optimal. The crux is a single Mathlib inequality, 1 + x ≤ exp x, which gives (1+1/d)^d ≤ e without any limit. Since e < 3, the sharp criterion strictly improves the gallery's 1/3 criterion.",
+    "implications": "This resolves the parent entry's open question with a method simpler than anticipated: no formalization of e = lim (1+1/n)^n is needed. The bridge to the already-formalized algebraic threshold means the full symmetric LLL machinery (avoidance positivity) transfers immediately to the sharp constant.",
+    "openQuestions": [
+      "Is the symmetric witness x_i = 1/(d+1) the unique maximizer realizing the sharp constant e, and can the lopsided LLL be given an analogous sharp-constant bridge?",
+      "Can the e < 3 strictness be sharpened to an explicit family of probabilities where the sharp criterion certifies avoidability but every rational simplification fails?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "prob-method-lovasz-local",
+      "relationship": "extends",
+      "description": "Closes the parent's open question by replacing the 1/3 criterion with the sharp ep(d+1) ≤ 1"
+    },
+    {
+      "targetId": "lovasz-local-lemma-oq-02",
+      "relationship": "related",
+      "description": "That entry proves the rational threshold T(d) is algebraically optimal; this one connects T(d) to the canonical constant e"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "ProbMethodLovaszLocalOQ02",
+    "lineCount": 164,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "path": "Proofs/ProbMethodLovaszLocalOQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Lovász, László",
+      "title": "Problems and results on 3-chromatic hypergraphs and some related questions",
+      "year": "1975",
+      "venue": "Infinite and Finite Sets (Colloq., Keszthely), Vol. II, 609–627",
+      "note": "Original statement of the Lovász Local Lemma, with the symmetric criterion involving e"
+    },
+    {
+      "authors": "Alon, Noga; Spencer, Joel H.",
+      "title": "The Probabilistic Method",
+      "year": "2016",
+      "venue": "Wiley, 4th edition",
+      "note": "Standard reference; states the symmetric LLL as ep(d+1) ≤ 1"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "sharp_criterion_implies_threshold",
+      "type": "core",
+      "description": "The sharp symmetric LLL criterion e·p·(d+1) ≤ 1 implies the avoidance threshold p ≤ T(d)",
+      "leanType": "1 ≤ d → 0 ≤ p → Real.exp 1 * p * (d+1) ≤ 1 → p ≤ lllThresholdReal d"
+    }
+  ],
+  "sorries": 0
+}

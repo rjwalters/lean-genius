@@ -1,0 +1,182 @@
+{
+  "slug": "basel-problem-oq-01",
+  "title": "Is ζ(5) irrational",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "Is the value ζ(5) = 1 + 1/2^5 + 1/3^5 + 1/4^5 + ... = ∑_{n=1}^∞ 1/n^5 irrational?",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-02-21T19:21:07.130Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "extension",
+    "challenging",
+    "analysis",
+    "series",
+    "convergence",
+    "wiedijk-100",
+    "zeta-function",
+    "classic"
+  ],
+  "relatedProofs": [
+    "basel-problem",
+    "basel-problem-oq-01",
+    "basel-problem-oq-01-oq-01",
+    "basel-problem-oq-01-oq-01-oq-02",
+    "basel-problem-oq-01-oq-03",
+    "basel-problem-oq-02",
+    "basel-problem-oq-04",
+    "basel-problem-oq-04-oq-03",
+    "basel-problem-oq-05"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-21T19:21:07.130Z",
+  "lastUpdate": "2026-02-24T08:35:25.046Z",
+  "completed": "2026-02-24T08:35:25.046Z",
+  "significance": 6,
+  "tractability": 0,
+  "leanFiles": [
+    {
+      "path": "Proofs/BaselProblem.lean",
+      "filename": "BaselProblem.lean",
+      "lineCount": 165,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblem.lean"
+    },
+    {
+      "path": "Proofs/BaselProblemOQ01OQ01.lean",
+      "filename": "BaselProblemOQ01OQ01.lean",
+      "lineCount": 145,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BaselProblemOQ01OQ01OQ02.lean",
+      "filename": "BaselProblemOQ01OQ01OQ02.lean",
+      "lineCount": 953,
+      "theoremCount": 46,
+      "axiomCount": 5,
+      "defCount": 9,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BaselProblemOQ01OQ01OQ02Aristotle.lean",
+      "filename": "BaselProblemOQ01OQ01OQ02Aristotle.lean",
+      "lineCount": 206,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ01OQ01OQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BaselProblemOQ01OQ03.lean",
+      "filename": "BaselProblemOQ01OQ03.lean",
+      "lineCount": 214,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/BaselProblemOQ02.lean",
+      "filename": "BaselProblemOQ02.lean",
+      "lineCount": 349,
+      "theoremCount": 19,
+      "axiomCount": 5,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ02.lean"
+    },
+    {
+      "path": "Proofs/BaselProblemOQ02Aristotle.lean",
+      "filename": "BaselProblemOQ02Aristotle.lean",
+      "lineCount": 95,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BaselProblemOQ04.lean",
+      "filename": "BaselProblemOQ04.lean",
+      "lineCount": 108,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ04.lean"
+    },
+    {
+      "path": "Proofs/BaselProblemOQ04OQ03.lean",
+      "filename": "BaselProblemOQ04OQ03.lean",
+      "lineCount": 559,
+      "theoremCount": 23,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ04OQ03.lean"
+    },
+    {
+      "path": "Proofs/BaselProblemOQ05.lean",
+      "filename": "BaselProblemOQ05.lean",
+      "lineCount": 190,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ05.lean"
+    }
+  ]
+}

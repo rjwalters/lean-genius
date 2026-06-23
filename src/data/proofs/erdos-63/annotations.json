@@ -1,0 +1,361 @@
+[
+  {
+    "id": "ann-e63-succmod",
+    "proofId": "erdos-63",
+    "range": {
+      "startLine": 36,
+      "endLine": 38
+    },
+    "type": "definition",
+    "title": "Cyclic Successor",
+    "content": "Fin.succMod maps $i$ to $(i+1) \\bmod k$ in $\\text{Fin}\\, k$. This defines cycle adjacency: in a cycle $C_k$, vertex $i$ is adjacent to vertex $(i+1) \\bmod k$. The modular arithmetic wraps the last vertex back to the first, closing the cycle.",
+    "mathContext": "$\\text{succMod}(i) = (i+1) \\bmod k$ for $i \\in \\{0, \\ldots, k-1\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "modular arithmetic",
+      "cycle graph",
+      "Fin type"
+    ],
+    "prerequisites": [
+      "Fin k",
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-e63-cycle",
+    "proofId": "erdos-63",
+    "range": {
+      "startLine": 40,
+      "endLine": 44
+    },
+    "type": "definition",
+    "title": "Cycle Containment",
+    "content": "ContainsCycleLength $G$ $k$ asserts that $G$ contains a cycle of length $k \\geq 3$: an injective function $vs: \\text{Fin}\\, k \\to V$ where consecutive vertices are adjacent. Injectivity ensures the vertices are distinct, preventing degenerate cases. This is the subgraph-containment notion (not induced).",
+    "mathContext": "$G \\supseteq C_k$ iff $\\exists$ injective $vs: [k] \\to V$ with $vs(i) \\sim vs(i+1 \\bmod k)$ for all $i$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cycle graph",
+      "subgraph containment",
+      "graph minor"
+    ],
+    "prerequisites": [
+      "simple graph",
+      "injective function",
+      "Fin.succMod"
+    ]
+  },
+  {
+    "id": "ann-e63-inf-chi",
+    "proofId": "erdos-63",
+    "range": {
+      "startLine": 49,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "Infinite Chromatic Number",
+    "content": "A graph has infinite chromatic number if it cannot be properly colored with any finite number of colors. For each $k$, there is no proper $k$-coloring. This is a strong condition that forces rich combinatorial structure, including the cycle lengths studied in this problem.",
+    "mathContext": "$\\chi(G) = \\infty$ iff $\\forall k \\in \\mathbb{N}, \\nexists f: V \\to [k]$ proper.",
+    "significance": "key",
+    "relatedConcepts": [
+      "chromatic number",
+      "graph coloring",
+      "compactness"
+    ],
+    "prerequisites": [
+      "proper coloring",
+      "Fin k"
+    ]
+  },
+  {
+    "id": "ann-e63-min-deg",
+    "proofId": "erdos-63",
+    "range": {
+      "startLine": 55,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "Minimum Degree",
+    "content": "The minimum degree $\\delta(G)$ is the smallest vertex degree in $G$. High minimum degree is a key structural property that forces the existence of cycles: a graph with $\\delta(G) \\geq d$ must contain cycles of many even lengths. This connects chromatic number (via Liu-Montgomery) to cycle structure (via Bondy-Simonovits).",
+    "mathContext": "$\\delta(G) = \\min_{v \\in V} \\deg(v)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "vertex degree",
+      "degree sequence",
+      "minimum degree condition"
+    ],
+    "prerequisites": [
+      "simple graph",
+      "neighbor set",
+      "Finset"
+    ]
+  },
+  {
+    "id": "ann-e63-contains-mindeg",
+    "proofId": "erdos-63",
+    "range": {
+      "startLine": 60,
+      "endLine": 63
+    },
+    "type": "definition",
+    "title": "Contains High Min-Degree Subgraph",
+    "content": "ContainsMinDegreeSubgraph $G$ $d$ asserts that $G$ has a subgraph (on a vertex subset $S$) where every vertex in $S$ has at least $d$ neighbors within $S$. This is the output of the Liu-Montgomery theorem, providing the bridge between high chromatic number and high minimum degree.",
+    "mathContext": "$\\exists S \\subseteq V$ with $S \\neq \\emptyset$ and $\\deg_S(v) \\geq d$ for all $v \\in S$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "induced subgraph",
+      "degeneracy",
+      "dense subgraph"
+    ],
+    "prerequisites": [
+      "Finset filter",
+      "neighbor set"
+    ]
+  },
+  {
+    "id": "ann-e63-high-deg",
+    "proofId": "erdos-63",
+    "range": {
+      "startLine": 67,
+      "endLine": 73
+    },
+    "type": "concept",
+    "title": "High Degree Implies Even Cycles",
+    "content": "If $G$ has minimum degree $d \\geq 2$, then $G$ contains an even cycle of length at most $2d$. This is a weaker form of Bondy-Simonovits that suffices for many applications. The proof uses a longest path argument: starting from a longest path, the neighborhood of an endpoint within the path forces an even-length cycle.",
+    "mathContext": "$\\delta(G) \\geq d \\geq 2 \\implies \\exists$ even $k$ with $4 \\leq k \\leq 2d$ and $C_k \\subseteq G$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Bondy-Simonovits",
+      "longest path",
+      "even cycle"
+    ],
+    "prerequisites": [
+      "minimum degree",
+      "cycle containment"
+    ]
+  },
+  {
+    "id": "ann-e63-bondy",
+    "proofId": "erdos-63",
+    "range": {
+      "startLine": 75,
+      "endLine": 82
+    },
+    "type": "concept",
+    "title": "Bondy-Simonovits Theorem",
+    "content": "The Bondy-Simonovits theorem guarantees that graphs with high minimum degree contain cycles of ALL even lengths in a range. Specifically, if $\\delta(G) \\geq d \\geq 2$, then $G$ contains $C_k$ for every even $k$ with $4 \\leq k \\leq 2d$. This is much stronger than just finding one even cycle, and is essential for ensuring that specific powers of 2 appear as cycle lengths.",
+    "mathContext": "$\\delta(G) \\geq d \\geq 2 \\implies C_k \\subseteq G$ for every even $k$ with $4 \\leq k \\leq 2d$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pancyclic graph",
+      "extremal graph theory",
+      "Turán-type problem"
+    ],
+    "prerequisites": [
+      "minimum degree",
+      "even cycle",
+      "cycle containment"
+    ]
+  },
+  {
+    "id": "ann-e63-infgraph",
+    "proofId": "erdos-63",
+    "range": {
+      "startLine": 87,
+      "endLine": 91
+    },
+    "type": "definition",
+    "title": "Infinite Graph Structure",
+    "content": "InfGraph represents a possibly infinite simple graph as a structure with symmetric, irreflexive adjacency. This is needed because Lean's SimpleGraph requires a Fintype instance, but the problem concerns graphs with infinite chromatic number, which may themselves be infinite. The structure mirrors SimpleGraph's axioms but without finiteness.",
+    "mathContext": "$G = (V, E)$ where $E$ is symmetric and irreflexive, with $V$ possibly infinite.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "simple graph",
+      "infinite graph",
+      "graph structure"
+    ],
+    "prerequisites": [
+      "symmetry",
+      "irreflexivity"
+    ]
+  },
+  {
+    "id": "ann-e63-debruijn",
+    "proofId": "erdos-63",
+    "range": {
+      "startLine": 106,
+      "endLine": 115
+    },
+    "type": "concept",
+    "title": "de Bruijn-Erdős Compactness Theorem",
+    "content": "The de Bruijn-Erdős theorem (1951) is the key compactness principle: if an infinite graph has infinite chromatic number, then it contains finite subgraphs with arbitrarily high chromatic number. This reduces the infinite problem to finite combinatorics. The proof uses the compactness theorem for propositional logic (or equivalently, ultrafilter arguments). This is the first step in the Liu-Montgomery proof strategy.",
+    "mathContext": "$\\chi(G) = \\infty \\implies \\forall k, \\exists$ finite $S \\subseteq V$ with $\\chi(G[S]) > k$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "compactness theorem",
+      "finite subgraph",
+      "chromatic number"
+    ],
+    "prerequisites": [
+      "infinite chromatic number",
+      "induced subgraph",
+      "compactness"
+    ]
+  },
+  {
+    "id": "ann-e63-liu-mont",
+    "proofId": "erdos-63",
+    "range": {
+      "startLine": 119,
+      "endLine": 127
+    },
+    "type": "concept",
+    "title": "Liu-Montgomery Theorem (2020)",
+    "content": "The breakthrough of Liu and Montgomery (2020): every graph with $\\chi(G) > k$ contains a subgraph with minimum degree $> k/2$. This was the missing ingredient that completed the proof of Erdős Problem #63. Combined with de Bruijn-Erdős, it gives: infinite $\\chi$ implies finite subgraphs with arbitrarily high minimum degree, which by Bondy-Simonovits contain cycles of all even lengths up to twice the minimum degree.",
+    "mathContext": "$\\chi(G) > k \\implies \\exists H \\subseteq G$ with $\\delta(H) > k/2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "chromatic number",
+      "minimum degree",
+      "degeneracy",
+      "Mader's conjecture"
+    ],
+    "prerequisites": [
+      "chromatic number",
+      "subgraph",
+      "minimum degree"
+    ]
+  },
+  {
+    "id": "ann-e63-erdos-hajnal",
+    "proofId": "erdos-63",
+    "range": {
+      "startLine": 130,
+      "endLine": 139
+    },
+    "type": "concept",
+    "title": "Erdős-Hajnal for Uncountable χ",
+    "content": "The Erdős-Hajnal theorem states that every graph with uncountable chromatic number contains arbitrarily large complete bipartite subgraphs $K_{m,m}$. Since $K_{m,m}$ contains cycles of all even lengths from 4 to $2m$, this immediately gives the result for uncountable chromatic number. This was Penman's observation, which preceded the full solution by Liu-Montgomery.",
+    "mathContext": "$\\chi(G) > \\aleph_0 \\implies \\forall m, K_{m,m} \\subseteq G$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős-Hajnal conjecture",
+      "complete bipartite graph",
+      "uncountable chromatic number"
+    ],
+    "prerequisites": [
+      "uncountable chromatic number",
+      "complete bipartite graph"
+    ]
+  },
+  {
+    "id": "ann-e63-power-even",
+    "proofId": "erdos-63",
+    "range": {
+      "startLine": 152,
+      "endLine": 161
+    },
+    "type": "concept",
+    "title": "Powers of 2 are Even (and ≥ 4)",
+    "content": "Two small lemmas proved in Lean: $2^n$ is even for $n \\geq 1$, and $2^n \\geq 4$ for $n \\geq 2$. These ensure that powers of 2 fall within the range guaranteed by Bondy-Simonovits (even numbers $\\geq 4$). Together they show that if minimum degree $d \\geq 2^{n-1}$, then $2^n \\leq 2d$ is an even number $\\geq 4$, so $C_{2^n} \\subseteq G$.",
+    "mathContext": "$2^n$ is even for $n \\geq 1$, and $2^n \\geq 4$ for $n \\geq 2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "parity",
+      "exponential growth",
+      "power of 2"
+    ],
+    "prerequisites": [
+      "Nat.pow",
+      "Even",
+      "basic arithmetic"
+    ]
+  },
+  {
+    "id": "ann-e63-main",
+    "proofId": "erdos-63",
+    "range": {
+      "startLine": 163,
+      "endLine": 186
+    },
+    "type": "concept",
+    "title": "Erdős Problem 63 (SOLVED by Liu-Montgomery)",
+    "content": "The main theorem: every graph with infinite chromatic number contains a cycle of length $2^n$ for infinitely many $n$. The proof chains three results: (1) de Bruijn-Erdős gives finite subgraphs with $\\chi > 2^{N+1}$, (2) Liu-Montgomery gives a subgraph with $\\delta > 2^N$, (3) Bondy-Simonovits gives $C_{2^n}$ for all $n \\leq N$. Since $N$ is arbitrary, infinitely many powers of 2 appear as cycle lengths.",
+    "mathContext": "$\\chi(G) = \\infty \\implies \\forall N, \\exists n \\geq N$ with $C_{2^n} \\subseteq G$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős problem",
+      "cycle spectrum",
+      "infinite chromatic number"
+    ],
+    "prerequisites": [
+      "de Bruijn-Erdős",
+      "Liu-Montgomery",
+      "Bondy-Simonovits"
+    ]
+  },
+  {
+    "id": "ann-e63-corollary",
+    "proofId": "erdos-63",
+    "range": {
+      "startLine": 194,
+      "endLine": 198
+    },
+    "type": "concept",
+    "title": "Infinitely Many Power Cycles",
+    "content": "A direct corollary restating the main theorem: for any $N$, there exists $n \\geq N$ such that the graph contains $C_{2^n}$. This is definitionally equal to the main theorem applied to the infinite chromatic number hypothesis. The formalization proves this by unfolding the definition.",
+    "mathContext": "$\\forall N, \\exists n \\geq N, C_{2^n} \\subseteq G$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "corollary",
+      "infinite subsequence",
+      "cycle spectrum"
+    ],
+    "prerequisites": [
+      "erdos_63_theorem"
+    ]
+  },
+  {
+    "id": "ann-e63-penman",
+    "proofId": "erdos-63",
+    "range": {
+      "startLine": 200,
+      "endLine": 207
+    },
+    "type": "concept",
+    "title": "Penman's Observation (Uncountable Case)",
+    "content": "Penman observed that for graphs with uncountable chromatic number, the result follows immediately from the Erdős-Hajnal theorem: such graphs contain $K_{m,m}$ for all $m$, and $K_{m,m}$ contains all even cycles up to length $2m$. This handles the 'easy' case; the hard case of countably infinite chromatic number required Liu-Montgomery's breakthrough.",
+    "mathContext": "$\\chi(G) > \\aleph_0 \\implies \\forall N, \\exists n \\geq N, C_{2^n} \\subseteq G$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Penman",
+      "uncountable chromatic number",
+      "Erdős-Hajnal"
+    ],
+    "prerequisites": [
+      "Erdős-Hajnal theorem",
+      "complete bipartite graph cycles"
+    ]
+  },
+  {
+    "id": "ann-e63-generalized",
+    "proofId": "erdos-63",
+    "range": {
+      "startLine": 211,
+      "endLine": 224
+    },
+    "type": "definition",
+    "title": "Generalized Conjecture and Squares Case",
+    "content": "The generalized conjecture asks: for what sequences $f(n)$ does infinite chromatic number force $C_{f(n)} \\subseteq G$ for infinitely many $n$? The answer for $f(n) = 2^n$ is yes (Liu-Montgomery). The case $f(n) = (n+2)^2$ remains open. The formalization defines the general statement and the specific squares case, with a proved lemma that squares form a strictly increasing sequence.",
+    "mathContext": "For which $f: \\mathbb{N} \\to \\mathbb{N}$ does $\\chi(G) = \\infty \\implies \\{n : C_{f(n)} \\subseteq G\\}$ is infinite?",
+    "significance": "key",
+    "relatedConcepts": [
+      "cycle spectrum",
+      "graph Ramsey theory",
+      "open problem"
+    ],
+    "prerequisites": [
+      "erdos_63_statement",
+      "strictly increasing sequence"
+    ]
+  }
+]

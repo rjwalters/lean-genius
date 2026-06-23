@@ -1,0 +1,276 @@
+{
+  "id": "erdos-1149",
+  "title": "Erdős Problem #1149: Coprimality of n and ⌊n^α⌋",
+  "slug": "erdos-1149",
+  "description": "The density of integers n where gcd(n, ⌊n^α⌋) = 1 is 6/π² for non-integer α > 0. This shows n and ⌊n^α⌋ behave as 'independent random integers' for coprimality.",
+  "meta": {
+    "author": "researcher-5",
+    "sourceUrl": "https://erdosproblems.com/1149",
+    "date": "2026-03-11",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1149Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "coprimality",
+      "asymptotic-density",
+      "floor-function",
+      "ergodic-theory",
+      "zeta-function"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axioms": 1,
+    "erdosNumber": 1149,
+    "erdosUrl": "https://erdosproblems.com/1149",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-03-11",
+    "dateUpdated": "2026-03-24",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "Definition IsFloorPowerCoprime, coprimeFloorPowerSet, countCoprime, HasNaturalDensity, countCoprimePairs",
+      "Proved density_equals_inv_zeta2 (algebraic identity)",
+      "Proved density_pos (6/π² > 0)",
+      "Proved density_lt_one (6/π² < 1, using π > 3)",
+      "Proved integer_alpha_trivial (integer exponents give density 0)",
+      "Proved one_isFloorPowerCoprime, one_mem_coprimeFloorPowerSet, coprimeFloorPowerSet_nonempty",
+      "Proved coprime_of_floor_eq_one (floor = 1 implies coprime)",
+      "Proved density_mem_Ioo (6/π² ∈ (0, 1))",
+      "Proved bergelson_richter_density (HasNaturalDensity reformulation)",
+      "Proved coprime_pair_symm, countCoprimePairs_one (coprime pair infrastructure)",
+      "Axiom bergelson_richter (main theorem — deep ergodic theory, not Mathlib-provable)",
+      "Proved random_coprime_density (classical 6/π² coprime density) via Set.ncard ↔ Finset.card bridge + BaselProblemOQ04OQ03.coprime_pair_density_limit (Möbius inversion + Tannery)",
+      "Proved moebius_sum_divisors_eq (Möbius inversion identity via Dirichlet convolution)",
+      "Proved card_multiples (bijection counting multiples of d in [1,N])",
+      "Proved pairs_with_common_factor (factoring coprime pair filter into product set)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Coprime",
+        "description": "Coprimality predicate: gcd(a,b) = 1",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Nat.floor",
+        "description": "Floor function ⌊x⌋ for real numbers",
+        "module": "Mathlib.Algebra.Order.Floor"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Generalized limit via filter convergence, used for natural density definition",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Real.pi_pos",
+        "description": "Positivity of π, used for density_pos",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.pi_gt_three",
+        "description": "π > 3, used to prove 6/π² < 1",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds"
+      },
+      {
+        "theorem": "dvd_pow_self",
+        "description": "n | n^k for positive k, used in integer exponent exclusion",
+        "module": "Mathlib.Algebra.GroupPower.Basic"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of sets as natural numbers, used for counting function",
+        "module": "Mathlib.Data.Set.Card"
+      }
+    ],
+    "axiomCount": 1,
+    "prerequisites": [
+      "Natural number coprimality (Nat.Coprime, gcd)",
+      "Floor function and real exponentiation (Nat.floor, rpow)",
+      "Natural density via Filter.Tendsto",
+      "Bounds on pi (Real.pi_pos, Real.pi_gt_three)",
+      "Divisibility and powers (dvd_pow_self)"
+    ],
+    "lineCount": 335,
+    "assumptions": "1 axiom (bergelson_richter). The Bergelson-Richter theorem is axiomatized (deep ergodic theory); random_coprime_density proved via BaselProblemOQ04OQ03 Möbius+Tannery.",
+    "theoremCount": 18,
+    "definitionCount": 5,
+    "additionalFiles": [
+      "Proofs/Erdos1149Aristotle.lean"
+    ]
+  },
+  "overview": {
+    "summary": "Formalizes Erdős Problem #1149, solved by Bergelson and Richter (2017): for non-integer α > 0, the natural density of integers n with gcd(n, ⌊n^α⌋) = 1 is exactly 6/π². The main theorem is axiomatized (deep ergodic theory), with 18 proved theorems including density bounds, coprime set properties, Möbius inversion identity, coprime pair counting, and random_coprime_density (classical 6/π² density). 0 sorries, 1 axiom.",
+    "keyIdea": "The value 6/π² = 1/ζ(2) is the probability that two 'random' integers are coprime. The Bergelson-Richter theorem shows that n and ⌊n^α⌋ achieve exactly this coprime density despite being deterministically related — the floor-power function acts as a 'pseudorandom' generator for coprimality. The integer case is degenerate (gcd(n, n^k) = n), making the non-integer hypothesis essential.",
+    "historicalContext": "Erdős asked whether $n$ and $\\lfloor n^\\alpha \\rfloor$ (for irrational $\\alpha > 1$) are coprime with natural density $6/\\pi^2 = 1/\\zeta(2) \\approx 0.6079$. This value is the classical probability that two uniformly random integers are coprime, first computed by Cesàro (1881) and Sylvester using Euler's product formula $\\prod_p (1 - 1/p^2) = 6/\\pi^2$.\n\nThe difficulty lies in the deterministic structure of the sequence $\\lfloor n^\\alpha \\rfloor$: unlike random integers, it has specific arithmetic properties that could bias coprimality. Vitaly Bergelson and Florian K. Richter (2017) proved Erdős's conjecture affirmatively, showing that the coprimality density is indeed $6/\\pi^2$ for any irrational $\\alpha > 1$. Their proof uses the theory of multiplicative functions along polynomial sequences and results from ergodic theory, establishing that the 'randomness' expectation holds for this structured sequence.",
+    "problemStatement": "**Erdős Problem #1149** (SOLVED): Let $\\alpha > 0$ be a non-integer. Then\n$$\\lim_{N \\to \\infty} \\frac{|\\{n \\leq N : \\gcd(n, \\lfloor n^\\alpha \\rfloor) = 1\\}|}{N} = \\frac{6}{\\pi^2}.$$",
+    "text": "The density of integers n where gcd(n, ⌊n^α⌋) = 1 is 6/π² for non-integer α > 0. This shows n and ⌊n^α⌋ behave as 'independent random integers' for coprimality.",
+    "proofStrategy": "The formalization has seven layers:\n\n1. **Definitions**: IsFloorPowerCoprime α n via Nat.Coprime, coprimeFloorPowerSet, countCoprime (Set.ncard), HasNaturalDensity (Filter.Tendsto), countCoprimePairs (Finset, computable)\n2. **Coprime Set Properties**: one_isFloorPowerCoprime (n=1 always coprime), one_mem_coprimeFloorPowerSet, coprimeFloorPowerSet_nonempty, coprime_of_floor_eq_one\n3. **Main Theorem (axiom)**: bergelson_richter axiomatizes the Bergelson-Richter result; erdos_1149_solved and bergelson_richter_density (HasNaturalDensity form) wrap it\n4. **Algebraic Identity**: density_equals_inv_zeta2 proves 6/π² = 1/(π²/6) by ring\n5. **Density Bounds**: density_pos, density_lt_one, density_mem_Ioo (6/π² ∈ (0,1))\n6. **Integer Exclusion**: integer_alpha_trivial shows gcd(n, n^k) ≠ 1 for n > 1\n7. **Coprime Pair Infrastructure**: countCoprimePairs (decidable counting), coprime_pair_symm, countCoprimePairs_one — infrastructure toward proving random_coprime_density",
+    "keyInsights": [
+      "The independence phenomenon: n and ⌊n^α⌋ achieve exactly the coprime density 6/π² of random integers, despite being deterministically related — the non-integer exponent destroys arithmetic correlations",
+      "6/π² = 1/ζ(2) = ∏_p(1-1/p²): the Euler product connects coprimality to the Riemann zeta function at s=2",
+      "Integer α is degenerate: ⌊n^k⌋ = n^k, so gcd(n, n^k) = n, and only n=1 is coprime — the non-integer hypothesis is necessary, not just convenient",
+      "The proof uses π > 3 (available in Mathlib) to show 6/π² < 1, though the weaker π > √6 ≈ 2.449 would suffice",
+      "The axiomatization is well-motivated: Bergelson-Richter's proof requires ergodic theory and multiplicative function theory far beyond current Mathlib"
+    ],
+    "prerequisites": [
+      "Natural number coprimality (Nat.Coprime, gcd)",
+      "Floor function and real exponentiation (Nat.floor, rpow)",
+      "Natural density via Filter.Tendsto",
+      "Bounds on pi (Real.pi_pos, Real.pi_gt_three)",
+      "Divisibility and powers (dvd_pow_self)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 28,
+      "endLine": 49,
+      "summary": "Defines IsFloorPowerCoprime α n (coprimality predicate), coprimeFloorPowerSet α (the set of coprime positive n), countCoprime α N (counting function via Set.ncard), and HasNaturalDensity S d (asymptotic density via Filter.Tendsto)."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Bergelson-Richter Theorem",
+      "startLine": 50,
+      "endLine": 82,
+      "summary": "Axiomatizes the main result: for non-integer α > 0, the density of coprime floor-powers is 6/π². Proves density_equals_inv_zeta2 (6/π² = 1/(π²/6)) and wraps as erdos_1149_solved."
+    },
+    {
+      "id": "density-bounds",
+      "title": "Density Bounds: 0 < 6/π² < 1",
+      "startLine": 83,
+      "endLine": 98,
+      "summary": "Proves density_pos (from π² > 0) and density_lt_one (from π > 3 ⟹ π² > 9 > 6 via nlinarith)."
+    },
+    {
+      "id": "integer-case",
+      "title": "Integer Exponent Exclusion",
+      "startLine": 99,
+      "endLine": 111,
+      "summary": "Proves integer_alpha_trivial: for positive integer k and n > 1, gcd(n, n^k) ≠ 1, since n | n^k by dvd_pow_self. Justifies the non-integer hypothesis."
+    },
+    {
+      "id": "coprime-probability",
+      "title": "Classical Coprime Probability",
+      "startLine": 112,
+      "endLine": 132,
+      "summary": "Proves random_coprime_density: the density of coprime pairs in {1,...,N}² is 6/π² = 1/ζ(2), via Set.ncard/Finset.card bridge and BaselProblemOQ04OQ03.coprime_pair_density_limit (Möbius+Tannery)."
+    },
+    {
+      "id": "verification",
+      "title": "Computational Verification and Summary",
+      "startLine": 133,
+      "endLine": 168,
+      "summary": "Computational check for α = 1/2: 6/10 integers in {1,...,10} satisfy gcd(n, ⌊√n⌋) = 1 (ratio 0.6, close to 6/π² ≈ 0.608). Extended summary combining all results."
+    },
+    {
+      "id": "coprime-pair-infra",
+      "title": "Coprime Pair Infrastructure",
+      "startLine": 168,
+      "endLine": 182,
+      "summary": "Defines `countCoprimePairs N` as a decidable/computable count of coprime pairs in $\\{1,\\ldots,N\\}^2$ via `Finset.filter`. Proves `coprime_pair_symm` ($\\gcd(a,b) = 1 \\Leftrightarrow \\gcd(b,a) = 1$) and `countCoprimePairs_one = 1$ by `native_decide`.",
+      "mathContext": "The computable counting function $C(N) = |\\{(a,b) \\in [1,N]^2 : \\gcd(a,b) = 1\\}|$ serves as the numerator for the coprime pair density $C(N)/N^2 \\to 6/\\pi^2$. The `Finset` formulation enables `native_decide` evaluation at small values."
+    },
+    {
+      "id": "moebius-infrastructure",
+      "title": "Möbius Inversion Infrastructure",
+      "startLine": 218,
+      "endLine": 266,
+      "summary": "Proves `moebius_sum_divisors_eq`: $\\sum_{d \\mid n} \\mu(d) = [n = 1]$ (Möbius inversion principle), via the Dirichlet identity $\\mu * \\zeta = \\varepsilon$ in `ArithmeticFunction \\mathbb{Z}$. Uses `Finset.sum_nbij` for the divisor-antidiagonal bijection.",
+      "mathContext": "The identity $\\sum_{d \\mid n} \\mu(d) = \\begin{cases} 1 & n = 1 \\\\ 0 & n > 1 \\end{cases}$ is the key tool for detecting coprimality: $\\sum_{d \\mid \\gcd(a,b)} \\mu(d) = [\\gcd(a,b) = 1]$. In Lean, this is proved via the Dirichlet convolution algebra: $\\mu * \\zeta = \\varepsilon$ (the identity function), where $\\varepsilon(n) = [n=1]$."
+    },
+    {
+      "id": "counting-lemmas",
+      "title": "Counting Lemmas: Multiples and Common Factors",
+      "startLine": 268,
+      "endLine": 312,
+      "summary": "Proves `card_multiples`: $|\\{a \\in [1,N] : d \\mid a\\}| = \\lfloor N/d \\rfloor$ via an explicit bijection $a \\mapsto a/d - 1$. Proves `pairs_with_common_factor`: $|\\{(a,b) \\in [1,N]^2 : p \\mid \\gcd(a,b)\\}| = \\lfloor N/p \\rfloor^2$ by factoring the product Finset.",
+      "mathContext": "These are the combinatorial building blocks for the coprime counting formula $C(N) = \\sum_{d=1}^{N} \\mu(d) \\lfloor N/d \\rfloor^2$, obtained by Möbius inversion. The asymptotic analysis $C(N)/N^2 \\to \\sum_{d=1}^{\\infty} \\mu(d)/d^2 = 1/\\zeta(2) = 6/\\pi^2$ then proves `random_coprime_density`."
+    },
+    {
+      "id": "zeta-identity",
+      "title": "Zeta Function Identity",
+      "startLine": 314,
+      "endLine": 320,
+      "summary": "Proves `six_div_pi_sq_eq_inv_zeta_two`: $6/\\pi^2 = (\\pi^2/6)^{-1}$ by `inv_div`, connecting the coprime density to the inverse of the Basel sum $\\zeta(2) = \\pi^2/6$. Closes the `Erdos1149` namespace.",
+      "mathContext": "The identity $6/\\pi^2 = 1/\\zeta(2)$ is the link between coprime density and the Riemann zeta function: $\\prod_p (1 - 1/p^2) = 1/\\zeta(2) = 6/\\pi^2$, where the Euler product encodes the independence of divisibility by distinct primes."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős #1149, proved by Bergelson-Richter (2017). The density of integers n coprime to ⌊n^α⌋ is 6/π² for non-integer α > 0. All 18 theorems compile with 0 sorries and 1 axiom. The bergelson_richter axiom captures deep ergodic theory; random_coprime_density (classical coprime probability) proved via Möbius inversion + Tannery.",
+    "implications": "The result reveals that the deterministic function n ↦ ⌊n^α⌋ exhibits 'pseudorandom' behavior in the coprimality sense, connecting deterministic number theory to probabilistic heuristics\nThe proof technique (multiplicative functions along polynomial sequences) has applications beyond coprimality — it extends to other arithmetic functions evaluated at ⌊n^α⌋\nThe connection to ζ(2) = π²/6 places this result in the broader context of the Riemann zeta function and its role in counting problems\nThe integer exclusion argument shows that the non-integer hypothesis is not just technical but reflects a genuine phase transition in arithmetic behavior",
+    "openQuestions": [
+      "What is the density for more general functions f(n) replacing ⌊n^α⌋?",
+      "Can the convergence rate be quantified (error term)?",
+      "Does the result extend to gcd(n, ⌊n^α⌋) = d for d > 1?"
+    ],
+    "crossReferences": [
+      {
+        "proofId": "erdos-37",
+        "relationship": "Both involve density concepts (Schnirelmann vs natural density) and number-theoretic structure."
+      }
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "euler-totient",
+      "relationship": "foundational",
+      "description": "Euler's totient function $\\phi(n)$ counts integers coprime to $n$ — the same coprimality condition central to Erdős #1149, which asks whether $n$ and $\\lfloor n^\\alpha \\rfloor$ are coprime for infinitely many $n$"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "related",
+      "description": "The infinitude of primes is a prerequisite for understanding coprimality density. Erdős #1149 asks about coprimality along the sequence $(n, \\lfloor n^\\alpha \\rfloor)$, where prime factors of $\\lfloor n^\\alpha \\rfloor$ determine the coprimality"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "technique",
+      "description": "The prime number theorem gives the density of primes needed to analyze when $\\gcd(n, \\lfloor n^\\alpha \\rfloor) = 1$. Sieve methods and prime counting estimates are the natural tools for this coprimality problem"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.BaselProblemOQ04OQ03"
+    ],
+    "opens": [
+      "Finset",
+      "Filter",
+      "BigOperators",
+      "Set"
+    ],
+    "namespace": "Erdos1149",
+    "lineCount": 335,
+    "axiomCount": 1,
+    "theoremCount": 18,
+    "definitionCount": 5,
+    "sorries": 0,
+    "path": "Proofs/Erdos1149Problem.lean",
+    "additionalFiles": [
+      "Proofs/Erdos1149Aristotle.lean"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Vitaly Bergelson, Florian K. Richter",
+      "title": "Multiplicative richness of additively large sets in Zd",
+      "year": "2017",
+      "venue": "Journal d'Analyse Mathématique",
+      "note": "Proved the main result using multiplicative functions along polynomial sequences"
+    },
+    {
+      "authors": "Paul Erdős",
+      "title": "Some problems on number theory",
+      "year": "1969",
+      "venue": "Analytic and elementary number theory (Marseille, 1983), Publ. Math. Orsay",
+      "note": "Original statement of Problem #1149: density of coprime floor-powers"
+    },
+    {
+      "authors": "Leonhard Euler",
+      "title": "Introductio in analysin infinitorum",
+      "year": "1748",
+      "venue": "Lausanne",
+      "note": "Euler product formula ζ(2) = π²/6 and the coprime probability 6/π² = ∏_p(1-1/p²)"
+    }
+  ],
+  "sorries": 0
+}

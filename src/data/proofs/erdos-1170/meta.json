@@ -1,0 +1,225 @@
+{
+  "id": "erdos-1170",
+  "title": "Erdős Problem #1170: Partition Properties of ω₂",
+  "slug": "erdos-1170",
+  "description": "Is it consistent that ω₂ → (α)²₂ for every α < ω₂? That is, can every 2-coloring of pairs from ω₂ always yield a homogeneous subset of any prescribed order type below ω₂?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1170",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1170Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "set-theory",
+      "ramsey-theory",
+      "ordinal-partition-calculus",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1170,
+    "erdosUrl": "https://erdosproblems.com/1170",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Ordinal.Arithmetic",
+        "description": "Ordinal addition, multiplication, and cardinality of products",
+        "module": "Mathlib.SetTheory.Ordinal.Arithmetic"
+      },
+      {
+        "theorem": "Cardinal.Basic",
+        "description": "Cardinal arithmetic, aleph numbers, and infinite cardinal idempotence",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Cardinal.Ordinal",
+        "description": "Connection between cardinals and ordinals, initial ordinal characterization",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      },
+      {
+        "theorem": "Tactic",
+        "description": "Core tactic library including norm_num, fin_cases, and simp",
+        "module": "Mathlib.Tactic"
+      }
+    ],
+    "originalContributions": [
+      "omega1",
+      "omega2",
+      "omega1Sq",
+      "ordinalPartitionBalanced",
+      "ordinalPartitionPolarized",
+      "balanced_implies_polarized",
+      "balanced_mono_target",
+      "balanced_mono_source",
+      "erdos1170_property",
+      "omega1_lt_omega2",
+      "omega1Sq_lt_omega2",
+      "laver_gives_omega1Sq_partition",
+      "erdos1170_implies_laver_special"
+    ],
+    "axiomCount": 1,
+    "lineCount": 186,
+    "assumptions": "1 axiom: laver_consistency (Laver's 1982 forcing result — consistency of ω₂ → (ω₁² + 1, α)² for all α < ω₂). This is a deep independence result requiring large cardinals and iterated forcing.",
+    "theoremCount": 7,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1170 belongs to the ordinal partition calculus, a field initiated by Erdős and Rado in their landmark 1956 paper 'A partition calculus in set theory' (Bulletin of the AMS). While Ramsey's theorem (1930) addresses finite colorings, the Erdős-Rado program asked which infinite ordinals satisfy partition relations of the form $\\alpha \\to (\\beta)^n_k$. The simplest infinite case, $\\omega \\to (\\omega)^2_2$, was proved by Ramsey himself, but the situation for uncountable ordinals is far more subtle and deeply connected to the axioms of set theory. Problem #1170 asks whether $\\omega_2$ can have the strongest possible 2-color partition property for pairs: for every $\\alpha < \\omega_2$, any 2-coloring of $[\\omega_2]^2$ yields a homogeneous set of order type $\\alpha$. Richard Laver (1982) proved a partial result using iterated Sacks forcing: it is consistent (relative to large cardinals) that the weaker *polarized* relation $\\omega_2 \\to (\\omega_1^2 + 1, \\alpha)^2$ holds for all $\\alpha < \\omega_2$. Foreman and Hajnal (2003) later extended and refined Laver's method. However, the full *balanced* question — requiring the same order type for both colors — remains open and is considered one of the fundamental problems in infinitary combinatorics.",
+    "problemStatement": "**Erdős Problem #1170**:\n\nIs it consistent with ZFC that\n$$\\omega_2 \\to (\\alpha)^2_2$$\nfor every ordinal $\\alpha < \\omega_2$?\n\nThat is, for every $\\alpha < \\omega_2$ and every 2-coloring of pairs from $\\omega_2$, does there exist a homogeneous subset of order type $\\alpha$?\n\n**Status**: Open. Laver (1982) proved the weaker polarized version is consistent.",
+    "text": "Is it consistent that ω₂ → (α)²₂ for every α < ω₂? That is, is it consistent with ZFC that for every ordinal α < ω₂ and every 2-coloring of pairs from ω₂, there exists a homogeneous subset of order type α?",
+    "proofStrategy": "The formalization uses constructive definitions of partition relations via order-preserving embeddings, avoiding opaque axioms. The balanced relation ordinalPartitionBalanced(α, β) asserts: for any coloring, there exists a strictly increasing function from ordinals below β into ordinals below α with all pairs monochromatic. Three structural properties (balanced-implies-polarized, target monotonicity, source monotonicity) are proved directly. The key inequality ω₁² < ω₂ is proved via cardinal arithmetic: card(ω₁²) = ℵ₁·ℵ₁ = ℵ₁ < ℵ₂. Only Laver's deep forcing result remains as an axiom.",
+    "keyInsights": [
+      "**Constructive partition relations**: The balanced and polarized relations are defined using strictly increasing ordinal embeddings rather than opaque axioms. This makes the mathematical content transparent and enables Lean to verify structural properties.",
+      "**Cardinal arithmetic proves ω₁² < ω₂**: The ordinal product ω₁·ω₁ has cardinality ℵ₁·ℵ₁ = ℵ₁ (by infinite cardinal idempotence), which is strictly less than ℵ₂ = card(ω₂). This uses Ordinal.card_mul, Cardinal.mul_eq_self, and the initial ordinal characterization.",
+      "**Balanced implies polarized**: A direct proof by case analysis on the color — if the homogeneous set has color 0, take the left disjunct; if color 1, take the right.",
+      "**Independence vs provability**: The problem asks about consistency (metamathematical), not provability. Laver's axiom captures a forcing result that ZFC alone cannot prove, making it the only irreducible assumption.",
+      "**Axiom elimination**: The formalization reduced axiom count from 7 to 1 by replacing opaque predicate axioms with constructive definitions and proving structural properties from first principles.",
+      "**Gap between ω₁ and ω₂**: The Dushnik-Miller theorem (1941) shows $\\omega_1 \\to (\\omega_1, \\omega + 1)^2$ in ZFC, but the balanced relation $\\omega_1 \\to (\\alpha)^2_2$ for all $\\alpha < \\omega_1$ is independent. Problem #1170 lifts this question to $\\omega_2$, where even the polarized form requires iterated forcing — the combinatorial complexity increases dramatically at each cardinal level."
+    ],
+    "prerequisites": [
+      "Set theory and cardinality",
+      "Ordinal arithmetic (multiplication, cardinal of products)",
+      "Ramsey theory (partition relations)",
+      "Combinatorics (counting, extremal problems)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-imports",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Documentation header describing the partition property of ω₂, known results by Laver and Foreman-Hajnal, formalization notes on axiom elimination, and Mathlib imports."
+    },
+    {
+      "id": "ordinal-setup",
+      "title": "Ordinal Setup",
+      "startLine": 38,
+      "endLine": 49,
+      "summary": "Defines ω₁ = (ℵ₁).ord, ω₂ = (ℵ₂).ord, and ω₁² = ω₁·ω₁ as noncomputable ordinals."
+    },
+    {
+      "id": "partition-defs",
+      "title": "Constructive Partition Relation Definitions",
+      "startLine": 50,
+      "endLine": 85,
+      "summary": "Defines ordinalPartitionBalanced and ordinalPartitionPolarized constructively using strictly increasing ordinal embeddings. No axioms — these are transparent definitions."
+    },
+    {
+      "id": "partition-props",
+      "title": "Basic Properties of Partition Relations",
+      "startLine": 86,
+      "endLine": 115,
+      "summary": "Three proved theorems: balanced implies polarized (by fin_cases on color), target monotonicity (by restricting the embedding domain), and source monotonicity (by transitivity of <)."
+    },
+    {
+      "id": "problem-statement",
+      "title": "Main Problem Statement",
+      "startLine": 116,
+      "endLine": 126,
+      "summary": "Defines erdos1170_property: ∀ α < ω₂, ordinalPartitionBalanced ω₂ α. This is the property whose consistency is asked."
+    },
+    {
+      "id": "laver-result",
+      "title": "Laver's Consistency Result",
+      "startLine": 127,
+      "endLine": 139,
+      "summary": "The sole axiom: Laver's 1982 result that the polarized relation ω₂ → (ω₁² + 1, α)² is consistent for all α < ω₂. A deep forcing result requiring large cardinals."
+    },
+    {
+      "id": "structural-obs",
+      "title": "Structural Observations",
+      "startLine": 140,
+      "endLine": 186,
+      "summary": "Four proved theorems: ω₁ < ω₂ (by aleph comparison), ω₁² < ω₂ (by cardinal arithmetic using infinite cardinal idempotence), Laver's partition instantiated at ω₁, and that the full balanced property implies Laver's polarized result as a special case."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #1170 — the balanced partition property of ω₂ — in 186 lines of Lean 4 code with only 1 axiom (Laver's deep forcing result) and 7 proved theorems. The key achievement is replacing 6 opaque axioms with constructive definitions and machine-checked proofs, including a cardinal arithmetic proof that ω₁² < ω₂ using Hessenberg's infinite cardinal idempotence theorem.",
+    "implications": "**Theoretical Significance**: The formalization demonstrates that most structural properties of ordinal partition relations can be derived from first principles once the definitions are made transparent. The sole remaining axiom (Laver's consistency result) captures genuine mathematical depth — a forcing construction that ZFC cannot prove.\n\n**Methodological Contribution**: The constructive embedding-based definition of partition relations (using strictly increasing ordinal functions) provides a clean, universe-safe formalization pattern applicable to other partition calculus problems.",
+    "openQuestions": [
+      "Is the full balanced partition property ω₂ → (α)²₂ consistent for all α < ω₂?",
+      "Can Laver's polarized result be strengthened to balanced?",
+      "What large cardinal strength is needed for consistency of the full property?",
+      "Does ω₂ → (ω₁ + 1)²₂ hold in ZFC (without consistency assumptions)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Ordinal.Arithmetic",
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Cardinal",
+      "Ordinal"
+    ],
+    "namespace": "Erdos1170",
+    "lineCount": 186,
+    "axiomCount": 1,
+    "theoremCount": 7,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos1170Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    "Erdős: original problem formulation",
+    "Laver (1982): Consistency of ω₂ → (ω₁² + 1, α)² for all α < ω₂",
+    "Foreman and Hajnal (2003): Extended Laver's consistency result",
+    "Erdős-Rado (1956): Foundational partition calculus — 'A partition calculus in set theory', Bull. AMS",
+    "Dushnik-Miller (1941): Linear orderings and partition relations — proved ω₁ → (ω₁, ω+1)²",
+    "Todorcevic (1987): Partitioning pairs of countable ordinals — advanced partition calculus techniques",
+    "https://erdosproblems.com/1170"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1169",
+      "relationship": "related",
+      "description": "Related ordinal partition calculus problem involving ω₁²"
+    },
+    {
+      "targetId": "erdos-1171",
+      "relationship": "related",
+      "description": "Multicolor partition relation for ω₁², closely related problem"
+    },
+    {
+      "targetId": "erdos-1167",
+      "relationship": "related",
+      "description": "Stepping-down partition relations for cardinals, closely related Erdős-Hajnal-Rado program"
+    },
+    {
+      "targetId": "continuum-hypothesis",
+      "relationship": "conceptual",
+      "description": "Both problems involve set-theoretic independence: CH via forcing and partition properties via iterated forcing with large cardinals"
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-02-oq-01",
+      "relationship": "prerequisite",
+      "description": "Properties of ω₁ (aleph hierarchy, regularity, cofinality) used in the ordinal setup and cardinal arithmetic"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "thematic",
+      "description": "Ramsey number ratio convergence — finite counterpart to the infinite partition calculus studied here"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "prerequisite",
+      "description": "Ramsey's theorem is the finite foundation of partition calculus; Problem #1170 asks about its transfinite generalization to ω₂"
+    },
+    {
+      "targetId": "erdos-szekeres",
+      "relationship": "thematic",
+      "description": "The Erdős-Szekeres theorem on monotone subsequences is a classical application of Ramsey theory — the same combinatorial paradigm underlying partition relations"
+    },
+    {
+      "targetId": "partition-theorem",
+      "relationship": "prerequisite",
+      "description": "General partition theorem formalization — the finite partition calculus that Problem #1170 generalizes to uncountable ordinals"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,319 @@
+{
+  "slug": "amgm-inequality-oq-04",
+  "title": "Gauss AGM iteration connection to elliptic integrals",
+  "phase": "PREP",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Gauss AGM iteration connection to elliptic integrals.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "PREP",
+    "since": "2026-06-09T03:20:00Z",
+    "iteration": 3,
+    "focus": "S3 BUILD-VERIFY shipped (2026-06-09): Docker build of post-S2 Lever-A parent file AmgmInequalityOQ04.lean completed exit 0 (7743 jobs replayed from lean-mathlib-cache; no fresh elaboration required). One lint warning at line 229 (unused `one_div` simp arg in `gap_tendsto_zero`) — non-blocking. Blocker B1 (host disk 100%) cleared. Slug at 22 thms / 0 parent axioms / 0 sorries / status verified.",
+    "blockers": [],
+    "nextAction": "S4 ACT picker: (a) drop unused `one_div` from gap_tendsto_zero simp call at line 229 (Mathlib v4.26.0 lint quick-win); (b) Lever-A scan on sibling AmgmInequalityOQ04OQ05.lean (7 axioms, candidate vacuous-placeholders); (c) Borwein-pi formula sketch combining child slug's agm_ellipticK_connection with Legendre's relation (currently axiomatized in AmgmInequalityOQ04OQ02).",
+    "attemptCounts": {
+      "total": 3,
+      "currentApproach": 0,
+      "approachesTried": 2
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS (S3 BUILD-VERIFY, 2026-06-09): Docker build of post-S2 parent AmgmInequalityOQ04.lean completed exit 0 with 7743 jobs replayed from the persistent lean-mathlib-cache volume — the .olean is consistent with the post-S2 source, no fresh elaboration occurred. One Mathlib v4.26.0 lint warning at line 229 (unused `one_div` simp arg) — banked as S4a quick-win. Blocker B1 (host disk 100% during S2) cleared: df reports 73Gi free at S3 entry. Slug remains at 306 LOC / 22 thms / 0 parent axioms / 0 sorries / status verified.\n\nPROGRESS (S2 ACT, 2026-05-16): Parent file AmgmInequalityOQ04.lean refactored to delete 3 vacuous elliptic-integral placeholder axioms (ellipticK uninterpreted function, ellipticK_zero, agm_ellipticK). Lean metrics 316 LOC / 22 thms / 3 axioms / 0 sorries → 306 LOC / 22 thms / 0 axioms / 0 sorries. Slug status axiomatized → verified. The rigorous ellipticK definition (intervalIntegral) + ellipticK_zero theorem live in child file AmgmInequalityOQ04OQ01.lean (different slug oq-04-oq-01) with only the deep AGM-K identity axiom remaining there. Build deferred: host disk at 100% capacity corrupted Docker containerd meta.db; pure-deletion edit is safe to ship per established slug precedent.",
+    "builtItems": [
+      "proofs/Proofs/AmgmInequalityOQ04.lean (307 lines, 22T, 3A, 0S)",
+      "src/data/proofs/amgm-inequality-oq-04/ (gallery entry)",
+      "am_ge_gm: proved from (a-b)^2 >= 0",
+      "agmA_antitone + agmB_monotone: sandwich property",
+      "gap_contracts + gap_bound: exponential gap decay",
+      "agmA_tendsto + agmB_tendsto: convergence via tendsto_atTop_ciInf/ciSup",
+      "agm_common_limit: both limits equal",
+      "agm_bounds: b <= M(a,b) <= a",
+      "S2 ACT 2026-05-16: deleted axiom ellipticK : ℝ → ℝ from AmgmInequalityOQ04.lean:305",
+      "S2 ACT 2026-05-16: deleted axiom ellipticK_zero : ellipticK 0 = π / 2 from AmgmInequalityOQ04.lean:308",
+      "S2 ACT 2026-05-16: deleted axiom agm_ellipticK from AmgmInequalityOQ04.lean:313 (5-line statement + docstring)",
+      "S2 ACT 2026-05-16: rewrote §7 Part 7 docstring as 14-LOC forward pointer to AmgmInequalityOQ04OQ01.lean (child slug)",
+      "S2 ACT 2026-05-16: meta.json axiomCount 3→0, status axiomatized→verified, badge axiom→verified, lineCount 316→306, assumptions narrative rewritten",
+      "S2 ACT 2026-05-16: conclusion.summary + overview.keyInsights[3] updated to reflect axiom-free parent status"
+    ],
+    "insights": [
+      "AM >= GM for two reals proved via (x-y)^2 >= 0 and sqrt monotonicity",
+      "Sandwich bₙ ≤ bₙ₊₁ ≤ aₙ₊₁ ≤ aₙ follows from AM >= GM at each step",
+      "Gap contracts: aₙ₊₁ - bₙ₊₁ ≤ (aₙ - bₙ)/2 because bₙ₊₁ >= bₙ",
+      "Convergence needs Mathlib monotone_tendsto_of_tendsto_of_antitone or similar",
+      "Elliptic integral K(k) not in Mathlib — must axiomatize the AGM connection",
+      "Slug oq-04 axiom-free post-S2: parent AmgmInequalityOQ04.lean has 0 axioms; deep Gauss AGM-K identity isolated to child slug oq-04-oq-01 (axiom agm_ellipticK_connection in AmgmInequalityOQ04OQ01.lean line 169)",
+      "Lever A pattern (delete vacuous parent axioms superseded by rigorous child) replicates the Cantor-diagonalization-oq-01-oq-01-oq-02-oq-01 S8 ACT precedent (PR #19462): identify (a) parent file has placeholder axioms with True or uninterpreted codomains, (b) child file has rigorous Mathlib-grounded counterparts, (c) zero external callers of parent axioms (grep verified)",
+      "Caller audit (S2 pre-flight): grep across proofs/Proofs/ for AmgmInequalityOQ04.ellipticK and AmgmInequalityOQ04.agm_ellipticK → 0 hits outside the parent file itself. Child file AmgmInequalityOQ04OQ01.lean uses its OWN AmgmInequalityOQ04OQ01.ellipticK (different namespace, different signature: defined function vs axiom)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "S3 BUILD-VERIFY: rerun ./proofs/scripts/docker-build.sh Proofs.AmgmInequalityOQ04 once host disk recovers (currently 100% capacity, Docker meta.db I/O error)",
+      "Survey sibling AmgmInequalityOQ04OQ05.lean (7 axioms per leanFiles[18]) for similar Lever A opportunities",
+      "Consider Lever B for child slug oq-04-oq-01: the residual axiom agm_ellipticK_connection might be reducible via Landen transformation lemmas if Mathlib gains the theta-function infrastructure"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "connection"
+  ],
+  "relatedProofs": [
+    "amgm-inequality",
+    "amgm-inequality-oq-02",
+    "amgm-inequality-oq-02-oq-01-oq-02",
+    "amgm-inequality-oq-02-oq-01-oq-02-oq-01",
+    "amgm-inequality-oq-02-oq-01-oq-02-oq-01-oq-01",
+    "amgm-inequality-oq-02-oq-03",
+    "amgm-inequality-oq-02-oq-03-oq-03",
+    "amgm-inequality-oq-03",
+    "amgm-inequality-oq-03-oq-01",
+    "amgm-inequality-oq-03-oq-02-oq-01-oq-01",
+    "amgm-inequality-oq-03-oq-02-oq-04",
+    "amgm-inequality-oq-03-oq-03",
+    "amgm-inequality-oq-03-oq-03-oq-01",
+    "amgm-inequality-oq-03-oq-04",
+    "amgm-inequality-oq-04",
+    "amgm-inequality-oq-04-oq-05"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T16:34:54.910Z",
+  "lastUpdate": "2026-06-09T03:20:00Z",
+  "significance": 8,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/AmgmInequalityOQ02.lean",
+      "filename": "AmgmInequalityOQ02.lean",
+      "lineCount": 543,
+      "theoremCount": 25,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02Aristotle.lean",
+      "filename": "AmgmInequalityOQ02Aristotle.lean",
+      "lineCount": 353,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02Defs.lean",
+      "filename": "AmgmInequalityOQ02Defs.lean",
+      "lineCount": 394,
+      "theoremCount": 21,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02Defs.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02OQ01OQ02.lean",
+      "filename": "AmgmInequalityOQ02OQ01OQ02.lean",
+      "lineCount": 139,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02OQ01OQ02OQ01.lean",
+      "filename": "AmgmInequalityOQ02OQ01OQ02OQ01.lean",
+      "lineCount": 92,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02OQ01OQ02OQ01Aristotle.lean",
+      "filename": "AmgmInequalityOQ02OQ01OQ02OQ01Aristotle.lean",
+      "lineCount": 117,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ01OQ02OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02OQ01OQ02OQ01OQ01.lean",
+      "filename": "AmgmInequalityOQ02OQ01OQ02OQ01OQ01.lean",
+      "lineCount": 134,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ01OQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02OQ02.lean",
+      "filename": "AmgmInequalityOQ02OQ02.lean",
+      "lineCount": 959,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02OQ03.lean",
+      "filename": "AmgmInequalityOQ02OQ03.lean",
+      "lineCount": 226,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02OQ03OQ03.lean",
+      "filename": "AmgmInequalityOQ02OQ03OQ03.lean",
+      "lineCount": 66,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ03.lean",
+      "filename": "AmgmInequalityOQ03.lean",
+      "lineCount": 373,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ03.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ03OQ02OQ01.lean",
+      "filename": "AmgmInequalityOQ03OQ02OQ01.lean",
+      "lineCount": 186,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ03OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ03OQ02OQ01OQ01.lean",
+      "filename": "AmgmInequalityOQ03OQ02OQ01OQ01.lean",
+      "lineCount": 139,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ03OQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ03OQ02OQ04.lean",
+      "filename": "AmgmInequalityOQ03OQ02OQ04.lean",
+      "lineCount": 220,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ03OQ02OQ04.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ03OQ03.lean",
+      "filename": "AmgmInequalityOQ03OQ03.lean",
+      "lineCount": 66,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ03OQ04.lean",
+      "filename": "AmgmInequalityOQ03OQ04.lean",
+      "lineCount": 232,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ03OQ04.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ04.lean",
+      "filename": "AmgmInequalityOQ04.lean",
+      "lineCount": 306,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ04.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ04OQ01.lean",
+      "filename": "AmgmInequalityOQ04OQ01.lean",
+      "lineCount": 187,
+      "theoremCount": 10,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ04OQ05.lean",
+      "filename": "AmgmInequalityOQ04OQ05.lean",
+      "lineCount": 243,
+      "theoremCount": 6,
+      "axiomCount": 7,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ04OQ05.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityPowerMeanLimits.lean",
+      "filename": "AmgmInequalityPowerMeanLimits.lean",
+      "lineCount": 273,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityPowerMeanLimits.lean"
+    }
+  ]
+}

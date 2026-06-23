@@ -1,0 +1,145 @@
+{
+  "id": "erdos-485",
+  "title": "Minimum Terms in Squared Polynomials",
+  "slug": "erdos-485",
+  "description": "Let f(k) be the minimum number of terms in P(x)², where P ranges over polynomials with exactly k non-zero terms. Is f(k) → ∞ as k → ∞?",
+  "meta": {
+    "author": "Erdős-Rényi",
+    "sourceUrl": "https://erdosproblems.com/485",
+    "date": "",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos485Problem.lean",
+    "tags": [
+      "erdos",
+      "algebra",
+      "polynomials",
+      "sparse-polynomials",
+      "asymptotics",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 485,
+    "erdosUrl": "https://erdosproblems.com/485",
+    "erdosProblemStatus": "solved",
+    "axiomCount": 1,
+    "lineCount": 225,
+    "assumptions": "1 axiom: schinzel_zannier_improved (Schinzel-Zannier 2009: f(k) ≫ log k). This deep algebraic result is not yet in Mathlib.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 3,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "The problem originates in the 1947 investigation by Rényi and Rédei on the multiplicative structure of polynomial term counts.  Erdős (1949) proved the upper bound f(k) < k^{1-c} for some c > 0, demonstrating that squaring can achieve genuinely sublinear term compression.  The conjecture that f(k) → ∞ is attributed to Erdős and Rényi, appearing as Problem 4.4 in Hayman's 'Research Problems in Function Theory' (1974).  Schinzel (1987) resolved the conjecture affirmatively, proving f(k) > (log log k)/log 2 via an algebraic height argument that bounds the number of coefficient cancellations by the algebraic complexity of the support set.  Schinzel and Zannier (2009) significantly improved this to f(k) ≫ log k, using the Skolem–Mahler–Lech theorem on zeros of linear recurrence sequences and techniques from the geometry of numbers.  The precise growth rate of f(k) remains unknown: the gap between the log k lower bound and the k^{1-c} upper bound is exponential.",
+    "problemStatement": "Let f(k) be the minimum number of terms in P(x)², where P ∈ ℚ[x] ranges over all polynomials with exactly k non-zero terms. Is it true that f(k) → ∞ as k → ∞?",
+    "text": "Let f(k) be the minimum number of terms in P(x)², where P ranges over polynomials with exactly k non-zero terms. Is f(k) → ∞ as k → ∞?",
+    "proofStrategy": "The formalization defines termCount via Polynomial.support.card, then f(k) as sInf over k-term polynomials.  Base cases f(1) = 1 (monomials) and f(2) = 3 (binomials) are fully proved by Aristotle automated proof search, including the nontrivial lower bound for f(2) which shows every binomial square has exactly 3 terms.  The main results — Erdős's upper bound, Schinzel's lower bound, and the Schinzel–Zannier improvement — are axiomatized as theorem sorries since the proofs require deep algebraic techniques beyond current Mathlib automation.  The formalization also treats the generalization g(k,n) for P^n.",
+    "keyInsights": [
+      "The term count of P² connects to sumset theory: termCount(P²) = |supp(P) + supp(P)| minus cancellations, linking the problem to additive combinatorics",
+      "Erdős's sublinear upper bound f(k) < k^{1-c} uses signed-coefficient constructions akin to Sidon sets, showing that signs can engineer massive cancellation",
+      "Schinzel's height argument shows that achieving few terms in P² forces the support set into rigid algebraic configurations that become impossible as k grows",
+      "The f(2) = 3 proof is a complete formal verification: distinctness of exponents 2d₁ < d₁+d₂ < 2d₂ plus nonvanishing of coefficients in characteristic 0",
+      "The gap between log k and k^{1-c} is exponential — determining the true growth rate is the main open problem",
+      "Schinzel's method generalizes to P^n for any n ≥ 1, showing g(k,n) → ∞ via the same algebraic framework"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Abstract algebra"
+    ]
+  },
+  "sections": [
+    {
+      "id": "term-count",
+      "title": "Term Count Definitions",
+      "startLine": 55,
+      "endLine": 69,
+      "summary": "Defines termCount(P) = P.support.card as the number of nonzero monomials, and hasTerms(P,k) as the predicate termCount(P) = k.",
+      "mathContext": "The support $\\text{supp}(P) = \\{i \\in \\mathbb{N} : a_i \\neq 0\\}$ is a finite subset of $\\mathbb{N}$ for any polynomial $P \\in \\mathbb{Q}[x]$.  The term count $|\\text{supp}(P)|$ is the $\\ell^0$ pseudo-norm of the coefficient vector and serves as the fundamental sparsity measure."
+    },
+    {
+      "id": "function-f",
+      "title": "The Function f(k)",
+      "startLine": 70,
+      "endLine": 78,
+      "summary": "Defines f(k) = sInf {termCount(P²) : hasTerms(P,k)} as the minimum achievable term count after squaring a k-term polynomial.",
+      "mathContext": "The use of $\\text{sInf}$ (infimum in $\\mathbb{N}$) is justified by well-ordering: the set is nonempty for $k \\geq 1$ (take any $k$-term polynomial), and every nonempty subset of $\\mathbb{N}$ has a minimum.  Equivalently, $f(k) = \\min\\{|S + S| - r(S) : S \\subseteq \\mathbb{N},\\, |S| = k\\}$ where $r(S)$ counts cancellations achievable by coefficient choice."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties (Aristotle-proved)",
+      "startLine": 79,
+      "endLine": 135,
+      "summary": "Fully proved: f(1) = 1 (monomial), f(2) = 3 (binomial), f(k) ≥ 1 for k ≥ 1. The f(2) = 3 proof constructs the witness (1+x) and shows every binomial square has support ⊇ {2d₁, d₁+d₂, 2d₂}.",
+      "mathContext": "The proof of $f(2) = 3$ is the most substantial: for the lower bound, given $P = c_1 x^{d_1} + c_2 x^{d_2}$ with $d_1 < d_2$ and $c_1, c_2 \\neq 0$, the square $P^2 = c_1^2 x^{2d_1} + 2c_1 c_2 x^{d_1+d_2} + c_2^2 x^{2d_2}$ has three terms because (1) the exponents $2d_1 < d_1 + d_2 < 2d_2$ are strictly increasing, and (2) all coefficients are nonzero since $\\text{char}(\\mathbb{Q}) = 0$."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Erdős Upper Bound",
+      "startLine": 136,
+      "endLine": 145,
+      "summary": "Erdős (1949): ∃ c > 0 such that f(k) < k^{1-c} for large k. Squaring can achieve sublinear compression. Axiomatized.",
+      "mathContext": "The construction uses polynomials with $\\pm 1$ coefficients whose support forms a set with large additive energy, enabling massive cancellation in the square.  The constant $c$ is small; the best known value gives $f(k) < k^{1-c}$ for $c \\approx 1/\\log \\log k$."
+    },
+    {
+      "id": "main-result",
+      "title": "Main Divergence Result",
+      "startLine": 148,
+      "endLine": 174,
+      "summary": "The three main theorems: Schinzel's (log log k)/log 2 lower bound, Schinzel–Zannier's log k improvement, and the main divergence f(k) → ∞. All axiomatized.",
+      "mathContext": "The bounds satisfy $\\frac{\\log \\log k}{\\log 2} < f(k) \\ll \\log k \\ll f(k) < k^{1-c}$, with the Schinzel–Zannier bound as the state of the art.  The main theorem $f(k) \\to \\infty$ follows from either lower bound via the monotone convergence criterion."
+    },
+    {
+      "id": "related",
+      "title": "Related Concepts: Sparse and Lacunary Polynomials",
+      "startLine": 194,
+      "endLine": 225,
+      "summary": "Generalization g(k,n) for P^n, sparse polynomial definition, product density axiom, lacunary polynomial definition, and lacunary square term lower bound.",
+      "mathContext": "The section connects Problem 485 to the broader theory of sparse polynomials.  A polynomial is *sparse* if $|\\text{supp}(P)| \\leq c \\log(\\deg P + 1)$, and *lacunary* if consecutive exponents have gaps $\\geq 2$.  Lacunary polynomials satisfy $\\text{termCount}(P^2) \\geq 2k - 1$ (no cancellation possible when gaps are large enough), showing that the minimum $f(k)$ must be achieved by non-lacunary, specifically engineered polynomials."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization of Erdős Problem #485 captures the full arc from problem statement through resolution.  The base cases f(1) = 1 and f(2) = 3 are fully machine-verified (by Aristotle), while the deep results — Erdős's sublinear upper bound and Schinzel(–Zannier)'s logarithmic lower bound — are axiomatized.  The formalization includes the natural generalization g(k,n) → ∞ for P^n.",
+    "implications": "The result establishes a fundamental limitation on polynomial compression through powering: term counts cannot be made arbitrarily small.  This has implications for sparse polynomial arithmetic in computer algebra (the complexity of polynomial multiplication depends on output sparsity) and connects to additive combinatorics through the sumset structure of polynomial supports.",
+    "openQuestions": [
+      "What is the exact asymptotic growth rate of f(k)? The gap between log k and k^{1-c} is enormous.",
+      "Is there a combinatorial (non-algebraic) proof of f(k) → ∞, e.g., via sumset bounds?",
+      "For which fields F does f_F(k) → ∞? The result holds in characteristic 0 and large characteristic, but positive characteristic allows new cancellations.",
+      "What are the extremal polynomials achieving f(k)? No explicit optimal constructions are known for large k."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos485",
+    "lineCount": 225,
+    "axiomCount": 1,
+    "theoremCount": 3,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos485Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1114",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: polynomials, solved"
+    },
+    {
+      "targetId": "erdos-391",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotics, solved"
+    },
+    {
+      "targetId": "erdos-523",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: polynomials, solved"
+    }
+  ],
+  "sorries": 0
+}

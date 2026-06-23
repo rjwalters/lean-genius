@@ -1,0 +1,159 @@
+[
+  {
+    "id": "ann-e570-header",
+    "proofId": "erdos-570",
+    "range": {
+      "startLine": 1,
+      "endLine": 25
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #570: Cycle-Graph Ramsey Numbers**\n\nFor k ≥ 3 and H with m edges (no isolated vertices):\nR(C_k, H) ≤ 2m + ⌈(k-1)/2⌉\n\n**Status:** SOLVED (1993-2024)\n\nThe resolution required fundamentally different techniques for even and odd cycles, and spanned over 30 years from the original even-k proof to the final odd-k completion.",
+    "mathContext": "R(G, H) is the minimum n such that any 2-coloring of K_n contains either G or H as a monochromatic subgraph.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey theory",
+      "Cycles",
+      "Graph coloring"
+    ],
+    "prerequisites": [
+      "ramsey numbers for graph pairs",
+      "cycle graphs",
+      "two-coloring of complete graphs"
+    ]
+  },
+  {
+    "id": "ann-e570-cycle",
+    "proofId": "erdos-570",
+    "range": {
+      "startLine": 37,
+      "endLine": 63
+    },
+    "type": "definition",
+    "title": "Cycle Graph (Constructive)",
+    "content": "**CycleGraph k:** The cycle C_k on k vertices (k ≥ 3).\n\nAdjacency: vertices i and j are adjacent iff j ≡ i+1 (mod k) or i ≡ j+1 (mod k).\n\nThis is one of the few constructive definitions in the file. The symmetry proof uses the disjunction structure of adjacency. The loopless proof shows (i+1) mod k ≠ i when k ≥ 3, using the fact that k ∤ 1.\n\nThis is the graph the 'red' player tries to find in the Ramsey game.",
+    "mathContext": "$C_k$ has vertex set $\\mathbb{Z}/k\\mathbb{Z}$ and edges $\\{i, i+1\\}$ for $i = 0, \\ldots, k-1$. It is the unique 2-regular graph on $k$ vertices.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cycles",
+      "SimpleGraph",
+      "Constructive proofs"
+    ],
+    "prerequisites": [
+      "cycle graph C_k",
+      "modular arithmetic on Z/kZ",
+      "simple graph adjacency and irreflexivity"
+    ]
+  },
+  {
+    "id": "ann-e570-graph-defs",
+    "proofId": "erdos-570",
+    "range": {
+      "startLine": 65,
+      "endLine": 72
+    },
+    "type": "definition",
+    "title": "Edge Count and Isolated Vertices",
+    "content": "**edgeCount G:** Number of edges in graph G, computed as the cardinality of the edge set.\n\n**NoIsolatedVertices G:** Every vertex has at least one neighbor. This condition ensures m ≥ |V(H)|/2, which is needed for the bound to be meaningful.\n\nThese predicates characterize the graph H in the conjecture statement.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Graph properties",
+      "Degree conditions"
+    ],
+    "mathContext": "See annotation content for formal details of edge count and isolated vertices",
+    "prerequisites": [
+      "edge set cardinality",
+      "vertex degree and isolated vertices",
+      "graph predicates"
+    ]
+  },
+  {
+    "id": "ann-e570-ramsey",
+    "proofId": "erdos-570",
+    "range": {
+      "startLine": 76,
+      "endLine": 88
+    },
+    "type": "definition",
+    "title": "Ramsey Number Definition",
+    "content": "**RamseyNumber G H:** The minimum n such that any 2-coloring of K_n contains either a red G or blue H.\n\nFormalized as sInf of the set of valid n values. The CycleRamseyNumber specializes this to R(C_k, H).\n\n**Ramsey's theorem** guarantees this infimum is over a non-empty set: R(G, H) always exists and is finite.",
+    "mathContext": "Frank Ramsey proved the existence of these numbers in 1930. Computing exact values is notoriously difficult.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey theory",
+      "Complete graphs",
+      "Graph colorings"
+    ],
+    "prerequisites": [
+      "ramsey number R(G,H)",
+      "infimum (sInf) over a set of naturals",
+      "ramsey's theorem and finiteness"
+    ]
+  },
+  {
+    "id": "ann-e570-conjecture",
+    "proofId": "erdos-570",
+    "range": {
+      "startLine": 90,
+      "endLine": 104
+    },
+    "type": "definition",
+    "title": "The Conjecture Statement",
+    "content": "**Erdos570Conjecture:**\n\n∀ k ≥ 3, ∀ H with m edges and no isolated vertices:\nR(C_k, H) ≤ 2m + ⌈(k-1)/2⌉\n\nThe **UpperBound function** computes 2m + ⌈(k-1)/2⌉ using natural number arithmetic. The bound is linear in m with a small additive correction depending on the cycle length k.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Conjecture statements",
+      "Ramsey bounds"
+    ],
+    "mathContext": "See annotation content for formal details of the conjecture statement",
+    "prerequisites": [
+      "cycle-versus-graph ramsey bound",
+      "ceiling function on naturals",
+      "edge count m of H"
+    ]
+  },
+  {
+    "id": "ann-e570-cases",
+    "proofId": "erdos-570",
+    "range": {
+      "startLine": 106,
+      "endLine": 141
+    },
+    "type": "concept",
+    "title": "Historical Case-by-Case Proofs",
+    "content": "**Four axioms covering all cases:**\n\n1. **efrs_1993_even:** Even k ≥ 4 (Erdős-Faudree-Rousseau-Schelp, 1993)\n2. **sidorenko_1993_triangle:** k = 3 (Sidorenko, 1993)\n3. **jayawardene_1999_pentagon:** k = 5 (Jayawardene, 1999)\n4. **cfmpp_2024_odd:** Odd k ≥ 7 (Cambie-Freschi-Morawski-Petrova-Pokrovskiy, 2024)\n\nTogether these cover all k ≥ 3. Even cycles use one technique; odd cycles required three separate proofs over 30 years.",
+    "mathContext": "The even/odd distinction reflects structural differences in cycle embeddings and extremal graph theory.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Case analysis",
+      "Even vs odd cycles"
+    ],
+    "prerequisites": [
+      "even versus odd cycle dichotomy",
+      "extremal graph theory techniques",
+      "case analysis over cycle length"
+    ]
+  },
+  {
+    "id": "ann-e570-resolved",
+    "proofId": "erdos-570",
+    "range": {
+      "startLine": 143,
+      "endLine": 148
+    },
+    "type": "concept",
+    "title": "Complete Resolution",
+    "content": "**erdos_570_resolved:** Erdos570Conjecture\n\nThe full conjecture is axiomatized as resolved. While the individual cases cover all k ≥ 3, combining them in Lean requires handling unbounded case analysis (all odd k ≥ 7), which is axiomatized rather than proved by tactic.\n\nThe key insight: even k handled by EFRS; odd k = 3 by Sidorenko; odd k = 5 by Jayawardene; odd k ≥ 7 by CFMPP.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Complete proof",
+      "Axiomatization"
+    ],
+    "mathContext": "See annotation content for formal details of complete resolution",
+    "prerequisites": [
+      "axiomatization of unbounded case analysis",
+      "ramsey size-linear graphs",
+      "combining proof cases to cover all k"
+    ]
+  }
+]

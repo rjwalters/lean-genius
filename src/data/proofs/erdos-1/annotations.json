@@ -1,0 +1,166 @@
+[
+  {
+    "id": "ann-e1-aristotle-header",
+    "proofId": "erdos-1",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "type": "concept",
+    "title": "Aristotle Proof Search Results",
+    "content": "This file was automatically proved by Aristotle, an automated proof search tool for Lean 4. All three theorems (`erdos_1_lower_bound`, `max_element_bound`, `subset_sums_spacing`) were found without human intervention. The header documents the Lean/Mathlib versions used and lists the proved theorems with their full type signatures. This is a notable Aristotle success: the proofs involve non-trivial case analysis (`rcases` with three cases), tactic composition (`simp_all`, `linarith`, `grind`), and proof reduction (`convert` to apply a general theorem to a specific corollary).",
+    "mathContext": "Aristotle found proofs of three results about distinct subset sums: (1) $2^{|A|-1} \\leq N$, (2) $2^{|A|-1} \\leq \\max(A)$, (3) $S \\neq T \\Rightarrow \\sum S \\neq \\sum T$ for $S, T \\subseteq A$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Aristotle proof search",
+      "automated theorem proving",
+      "Lean 4 tactics"
+    ],
+    "prerequisites": [
+      "Lean 4",
+      "Mathlib"
+    ]
+  },
+  {
+    "id": "ann-e1-problem-statement",
+    "proofId": "erdos-1",
+    "range": {
+      "startLine": 26,
+      "endLine": 41
+    },
+    "type": "concept",
+    "title": "Erdos Problem #1: Distinct Subset Sums",
+    "content": "Erdos's 'first serious problem' (1931): if $A \\subseteq \\{1, \\ldots, N\\}$ with $|A| = n$ has all $2^n$ subset sums distinct, must $N \\geq c \\cdot 2^n$ for some absolute constant $c > 0$? This formalization proves the basic lower bound $N \\geq 2^{n-1}$ via a counting/pigeonhole argument. The full conjecture with a \\$500 prize remains open. The powers of 2, $\\{1, 2, 4, \\ldots, 2^{n-1}\\}$, achieve $N = 2^{n-1}$ with distinct sums $\\{0, 1, \\ldots, 2^n - 1\\}$ (binary representations), suggesting the conjecture is tight up to a constant factor. Conway and Guy (1968) showed $c \\leq 0.22$; Dubroff, Fox, and Xu (2021) proved $N \\geq \\sqrt{2/\\pi} \\cdot 2^n / \\sqrt{n}$.",
+    "mathContext": "The distinct subset sums condition: the map $S \\mapsto \\sum_{a \\in S} a$ is injective on $\\mathcal{P}(A)$. Since $|\\mathcal{P}(A)| = 2^n$, there are $2^n$ distinct sums in $\\{0, 1, \\ldots, nN\\}$, giving the trivial bound $N \\geq 2^n/n$. The refined bound $N \\geq 2^{n-1}$ avoids the $1/n$ factor.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdos problems",
+      "additive combinatorics",
+      "subset sums",
+      "pigeonhole principle",
+      "Conway-Guy conjecture"
+    ],
+    "prerequisites": [
+      "finite set theory",
+      "basic combinatorics"
+    ]
+  },
+  {
+    "id": "ann-e1-header",
+    "proofId": "erdos-1",
+    "range": {
+      "startLine": 43,
+      "endLine": 46
+    },
+    "type": "concept",
+    "title": "Import and Namespace Setup",
+    "content": "Imports the full Mathlib library (giving access to Finset, Function.Injective, powerset, BigOperators, and all tactics) and opens the Finset namespace for concise notation. The file was edited by Aristotle (automated proof search), which proved all three theorems.",
+    "mathContext": "Uses `Function.Injective` for the subset sum injectivity, `Finset.powerset` for $\\mathcal{P}(A)$, `Finset.sum id` for $\\sum_{a \\in S} a$, and `Finset.filter` for $S \\cap A$. The full Mathlib import provides `grind`, `aesop`, `linarith`, and `simp_all` tactics.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "Finset",
+      "Function.Injective",
+      "Aristotle proof search"
+    ],
+    "prerequisites": [
+      "Mathlib import"
+    ]
+  },
+  {
+    "id": "ann-e1-distinct-sums-def",
+    "proofId": "erdos-1",
+    "range": {
+      "startLine": 48,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "Distinct Subset Sums Property",
+    "content": "Defines `hasDistinctSubsetSums A : Prop` as `Function.Injective (fun S => (S.filter (. in A)).sum id)`. For any two finite sets S, T of naturals, if their intersections with A have the same sum, then S = T. This captures the property that all $2^{|A|}$ subset sums of A are distinct.\n\n**Design choice**: The definition uses `filter` rather than restricting to subsets of A directly. This means the injectivity holds over *all* finite sets of naturals, not just subsets of A — a stronger but equivalent condition when restricted to subsets, and more flexible for proof manipulation.",
+    "mathContext": "A set $A$ has distinct subset sums if $\\sum_{a \\in S \\cap A} a = \\sum_{a \\in T \\cap A} a \\Rightarrow S = T$. For $A = \\{1, 2, 4\\}$: the 8 sums are $\\{0, 1, 2, 3, 4, 5, 6, 7\\}$, all distinct. The definition uses `filter` rather than `powerset` membership for flexibility.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Function.Injective",
+      "Finset.filter",
+      "Finset.sum",
+      "Sidon sets",
+      "B_h sequences"
+    ],
+    "prerequisites": [
+      "Function.Injective",
+      "Finset operations"
+    ]
+  },
+  {
+    "id": "ann-e1-lower-bound",
+    "proofId": "erdos-1",
+    "range": {
+      "startLine": 52,
+      "endLine": 65
+    },
+    "type": "concept",
+    "title": "Main Lower Bound: N >= 2^(n-1)",
+    "content": "Proves `erdos_1_lower_bound`: for $A \\subseteq \\{1, \\ldots, N\\}$ with positive elements and distinct subset sums, $2^{|A|-1} \\leq N$. The Aristotle proof first establishes $|\\mathcal{P}(A)| \\leq 2N$ via the injectivity of the sum function (line 58), then case-splits on $|A|$ using `rcases` with 0, 1, and $k+2$ cases (line 63). The base cases use `simp_all` and `linarith`; the inductive case uses `grind`. The intermediate `absurd` step (line 62) derives a contradiction to establish the powerset bound.\n\n**Mathematical argument**: The $2^n$ distinct subset sums are non-negative integers at most $\\sum_{a \\in A} a \\leq |A| \\cdot N$. A refined counting argument shows $2^n \\leq 2N + 1$ (since the empty set contributes sum 0 and each pair of complementary subsets has sums summing to $\\sum A$), yielding $N \\geq (2^n - 1)/2 \\geq 2^{n-1}$.",
+    "mathContext": "$A \\subseteq \\{1, \\ldots, N\\}$, $|A| = n$, all subset sums distinct $\\Rightarrow 2^{n-1} \\leq N$. The argument: $2^n$ distinct sums lie in $\\{0, 1, \\ldots, \\sum A\\} \\subseteq \\{0, \\ldots, nN\\}$, but the refined bound uses the powerset injection into $\\{0, \\ldots, 2N\\}$, giving $2^n \\leq 2N + 1$, hence $N \\geq 2^{n-1}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "powerset cardinality",
+      "grind tactic",
+      "linarith",
+      "Aristotle proof"
+    ],
+    "prerequisites": [
+      "hasDistinctSubsetSums",
+      "Finset.powerset",
+      "pow_succ"
+    ]
+  },
+  {
+    "id": "ann-e1-max-element",
+    "proofId": "erdos-1",
+    "range": {
+      "startLine": 67,
+      "endLine": 75
+    },
+    "type": "concept",
+    "title": "Maximum Element Bound",
+    "content": "Proves `max_element_bound`: for nonempty $A$ with positive elements and distinct subset sums, $2^{|A|-1} \\leq \\max(A)$. The Aristotle proof uses `convert` to reduce to `erdos_1_lower_bound` with $N = \\max(A)$. The hypothesis that all elements of $A$ are $\\leq \\max(A)$ is proved by `Finset.le_max'`. The `assumption` tactic handles the remaining goals.\n\nThis corollary is often more directly useful than the main theorem because it doesn't require knowing $N$ explicitly — the bound follows from the set's internal structure alone.",
+    "mathContext": "$2^{|A|-1} \\leq \\max(A)$. Proof: set $N = \\max(A)$, then $A \\subseteq \\{1, \\ldots, N\\}$ (since $a \\leq \\max(A)$ for all $a \\in A$), so `erdos_1_lower_bound` gives $2^{|A|-1} \\leq N = \\max(A)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.max'",
+      "Finset.le_max'",
+      "convert tactic",
+      "corollary reduction"
+    ],
+    "prerequisites": [
+      "erdos_1_lower_bound",
+      "Finset.max'"
+    ]
+  },
+  {
+    "id": "ann-e1-spacing",
+    "proofId": "erdos-1",
+    "range": {
+      "startLine": 77,
+      "endLine": 83
+    },
+    "type": "concept",
+    "title": "Subset Sum Spacing",
+    "content": "Proves `subset_sums_spacing`: for $A$ with positive elements and distinct subset sums, if $S, T \\subseteq A$ with $S \\neq T$, then $\\sum S \\neq \\sum T$. The Aristotle proof unfolds `hasDistinctSubsetSums` to extract the injectivity, then uses `simp_all` with `Finset.subset_iff` to convert the filter-based definition to the subset-based statement. The `Finset.sum_filter_of_ne` lemma simplifies the filtered sums, and `aesop_cat` closes the remaining goals.\n\nThis theorem restates the injectivity in a more user-friendly form: rather than working with the filter-based definition, it directly asserts that distinct subsets of $A$ have distinct sums — the Sidon-like property for full subsets rather than just pairs.",
+    "mathContext": "For $S, T \\subseteq A$ with $S \\neq T$: $\\sum_{a \\in S} a \\neq \\sum_{a \\in T} a$. This is a stronger condition than Sidon ($B_2$): Sidon sets require only $a + b \\neq c + d$ for distinct pairs $\\{a,b\\} \\neq \\{c,d\\}$, while distinct subset sums requires the full $2^n$ sums to be distinct.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Sidon sets",
+      "B_2 sequences",
+      "Finset.sum_filter_of_ne",
+      "simp_all tactic",
+      "aesop_cat"
+    ],
+    "prerequisites": [
+      "hasDistinctSubsetSums",
+      "Finset.subset_iff"
+    ]
+  }
+]

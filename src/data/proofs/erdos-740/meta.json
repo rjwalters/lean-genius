@@ -1,0 +1,210 @@
+{
+  "id": "erdos-740",
+  "title": "Erdős Problem #740: Chromatic Number and Odd Cycle Avoidance",
+  "slug": "erdos-740",
+  "description": "Must every graph with infinite chromatic number 𝔪 contain a subgraph with χ = 𝔪 that avoids all odd cycles of length ≤ r?",
+  "meta": {
+    "author": "Erdős-Hajnal (conjecture), Rödl (partial result)",
+    "sourceUrl": "https://erdosproblems.com/740",
+    "date": "1981",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos740Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "cycles",
+      "infinite-cardinals",
+      "set-theory"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "erdosNumber": 740,
+    "erdosUrl": "https://erdosproblems.com/740",
+    "erdosProblemStatus": "open",
+    "axiomCount": 2,
+    "lineCount": 341,
+    "assumptions": "2 axiom(s) and 1 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph.Coloring",
+        "description": "Proper graph coloring for the chromatic number definition",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Coloring"
+      },
+      {
+        "theorem": "Cardinal",
+        "description": "Cardinal arithmetic for infinite chromatic numbers (ℵ₀, 𝔪) and the threshold function",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Walk",
+        "description": "Graph walks for the cycle and odd-cycle predicate definitions",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Walk"
+      }
+    ],
+    "originalContributions": [
+      "chromaticNumber: Cardinal-valued chromatic number for infinite graphs (noncomputable via iInf)",
+      "isColorable: predicate checking if a graph is k-colorable via a proper coloring function",
+      "hasCycle / hasOddCycle: predicates for the presence of cycles and odd cycles of length ≤ r",
+      "avoidsOddCyclesOf: predicate for a subgraph avoiding all odd cycles of length ≤ r",
+      "erdosHajnal_conjecture: formal statement of the Erdős-Hajnal conjecture for all infinite cardinals",
+      "girth_implies_odd_avoidance: girth > 2r implies avoidance of all odd cycles of length ≤ r"
+    ],
+    "theoremCount": 5,
+    "definitionCount": 22
+  },
+  "overview": {
+    "historicalContext": "Erdős and Hajnal posed this problem about preserving chromatic number while avoiding short odd cycles. It first appeared in Erdős's 1981 paper 'On the combinatorial problems which I would most like to see solved' ([Er81]), where he listed it among approximately 50 problems he considered most important in combinatorics. Rödl proved the case 𝔪 = ℵ₀ and r = 3 (triangle-free) in 1977, using a sophisticated probabilistic argument involving random vertex selection. The problem also appears in Erdős's 1995 survey [Er95d] on combinatorial set theory. The general case and the threshold function f_r(𝔪) remain open, connecting infinite combinatorics, set theory, and structural graph theory. The problem sits at the intersection of Ramsey theory and chromatic graph theory, building on Erdős's seminal 1959 result that graphs with arbitrarily high girth and chromatic number exist.",
+    "problemStatement": "Let 𝔪 be an infinite cardinal and G be a graph with chromatic number 𝔪. Let r ≥ 1. Must G contain a subgraph of chromatic number 𝔪 which does not contain any odd cycle of length ≤ r?",
+    "text": "Must every graph with infinite chromatic number 𝔪 contain a subgraph with χ = 𝔪 that avoids all odd cycles of length ≤ r?",
+    "proofStrategy": "We formalize chromatic numbers for infinite graphs using Mathlib's Cardinal type, define cycles and odd cycle avoidance as Lean structures, and state the Erdős-Hajnal conjecture in full generality. Rödl's theorem for the countable triangle-free case is declared as an axiom. We prove that the girth variant (avoiding ALL short cycles) implies the odd cycle variant, and show the bipartite limitation: no bipartite subgraph can have χ > 2, so the parameter r must be finite. The formalization also addresses the threshold function question and finite analogs.",
+    "keyInsights": [
+      "Rödl proved (1977): every ℵ₀-chromatic graph has a triangle-free subgraph with χ = ℵ₀, using probabilistic methods in infinite combinatorics",
+      "The general case for arbitrary infinite cardinals (ℵ₁, ℵ₂, ...) remains open, and may depend on set-theoretic axioms beyond ZFC",
+      "The threshold function f_r(𝔪) question asks for quantitative bounds: how much chromatic surplus is needed to guarantee the desired subgraph?",
+      "The girth variant (avoiding ALL cycles ≤ r) is strictly stronger than the odd cycle version, since it also forbids even short cycles",
+      "Bipartite graphs have χ ≤ 2, so eliminating ALL odd cycles (r = ∞) fails for 𝔪 > 2 — the parameter r must be finite",
+      "Erdős's 1959 probabilistic existence proof shows graphs with arbitrarily high girth and chromatic number exist, providing the backdrop for this conjecture"
+    ],
+    "prerequisites": [
+      "Graph theory fundamentals: chromatic number, proper colorings, and graph homomorphisms",
+      "Cycle structure in graphs: odd cycles, girth, and bipartiteness characterization",
+      "Infinite cardinal arithmetic and the cardinals aleph_0, aleph_1, etc.",
+      "Probabilistic method in combinatorics and Ramsey-theoretic arguments"
+    ]
+  },
+  "sections": [
+    {
+      "id": "chromatic-number",
+      "title": "Part I: Graph Coloring and Chromatic Number",
+      "summary": "Defines cardinal-valued chromatic number and k-colorability for infinite graphs, extending the classical finite notion to arbitrary cardinals using Mathlib's Cardinal type.",
+      "startLine": 37,
+      "endLine": 57,
+      "mathContext": "Formal definition: Defines cardinal-valued chromatic number and k-colorability for infinite graphs, extending the classical finite notion to arbitrary cardinals using Mathlib's Cardinal type."
+    },
+    {
+      "id": "cycles",
+      "title": "Part II: Cycles in Graphs",
+      "summary": "Formalizes the Cycle structure with closure, adjacency, and distinctness conditions. Defines odd cycles, triangles, and the key predicates containsOddCycleLeq and noOddCyclesLeq that express the cycle-avoidance property central to Problem #740.",
+      "startLine": 58,
+      "endLine": 106,
+      "mathContext": "Formalizes the Cycle structure with closure, adjacency, and distinctness conditions. Defines odd cycles, triangles, and the key predicates containsOddCycleLeq and noOddCyclesLeq that express the cycle-avoidance property central to Problem #740."
+    },
+    {
+      "id": "subgraphs",
+      "title": "Part III: Subgraphs",
+      "summary": "Defines induced subgraphs via Mathlib's SimpleGraph.induce and the existential predicate hasSubgraphWith, packaging the twin requirements of chromatic number preservation and cycle avoidance.",
+      "startLine": 107,
+      "endLine": 126,
+      "mathContext": "Formal definition: Defines induced subgraphs via Mathlib's SimpleGraph.induce and the existential predicate hasSubgraphWith, packaging the twin requirements of chromatic number preservation and cycle avoidance."
+    },
+    {
+      "id": "conjecture",
+      "title": "Part IV: The Erdős-Hajnal Conjecture",
+      "summary": "States the main conjecture erdosHajnalConjecture for general infinite cardinals and r, plus the triangle-free specialization (r = 3) and the countable case (𝔪 = ℵ₀). This is the formal statement of Erdős Problem #740.",
+      "startLine": 127,
+      "endLine": 159,
+      "mathContext": "States the main conjecture erdosHajnalConjecture for general infinite cardinals and r, plus the triangle-free specialization (r = 3) and the countable case (𝔪 = ℵ₀). This is the formal statement of Erdős Problem #740."
+    },
+    {
+      "id": "rodl",
+      "title": "Part V: Rödl's Theorem",
+      "summary": "Declares Rödl's theorem as an axiom: countableCase 3 holds. Derives the trivial corollary countable_triangle_free. This represents the strongest known positive result for Problem #740.",
+      "startLine": 160,
+      "endLine": 176,
+      "mathContext": "Verified: Declares Rödl's theorem as an axiom: countableCase 3 holds. Derives the trivial corollary countable_triangle_free. This represents the strongest known positive result for Problem #740."
+    },
+    {
+      "id": "threshold",
+      "title": "Part VI: The General Function f_r(𝔪)",
+      "summary": "Formalizes the threshold function question: does there exist a cardinal f such that χ(G) ≥ f guarantees the desired subgraph? Records that this quantitative refinement remains open for most parameters.",
+      "startLine": 177,
+      "endLine": 201,
+      "mathContext": "Formalizes the threshold function question: does there exist a cardinal f such that χ(G) ≥ f guarantees the desired subgraph? Records that this quantitative refinement remains open for most parameters."
+    },
+    {
+      "id": "girth",
+      "title": "Part VII: Girth Variant",
+      "summary": "Defines girth, the stronger girthConjecture (avoiding ALL short cycles), and proves girth_implies_odd: the girth conjecture implies the odd cycle conjecture. This is one of the few fully verified results in the file.",
+      "startLine": 202,
+      "endLine": 247,
+      "mathContext": "Defines girth, the stronger girthConjecture (avoiding ALL short cycles), and proves girth_implies_odd: the girth conjecture implies the odd cycle conjecture. This is one of the few fully verified results in the file."
+    },
+    {
+      "id": "finite",
+      "title": "Part VIII: Finite Analogs",
+      "summary": "Defines the finite version of the problem and axiomatizes partial progress for the r = 3 case, connecting to results of Thomassen on finite graphs with high chromatic number.",
+      "startLine": 248,
+      "endLine": 269,
+      "mathContext": "Formal definition: Defines the finite version of the problem and axiomatizes partial progress for the r = 3 case, connecting to results of Thomassen on finite graphs with high chromatic number."
+    },
+    {
+      "id": "bipartite",
+      "title": "Part IX: Bipartite Subgraphs",
+      "summary": "Defines bipartite graphs (no odd cycles of any length) and proves no_infinite_bipartite: for 𝔪 > 2, no bipartite subgraph can have χ = 𝔪. This shows the parameter r in the conjecture must be finite.",
+      "startLine": 270,
+      "endLine": 297,
+      "mathContext": "Formal definition: Defines bipartite graphs (no odd cycles of any length) and proves no_infinite_bipartite: for 𝔪 > 2, no bipartite subgraph can have χ = 𝔪. This shows the parameter r in the conjecture must be finite."
+    },
+    {
+      "id": "summary",
+      "title": "Part X: Summary",
+      "summary": "Combines all results into erdos_740_summary (a conjunction of Rödl's theorem, girth-implies-odd, and bipartite limitation). States erdos_740 as the main theorem and records the open question and erdosMostWanted conjecture.",
+      "startLine": 298,
+      "endLine": 341,
+      "mathContext": "Combines all results into erdos_740_summary (a conjunction of Rödl's theorem, girth-implies-odd, and bipartite limitation). States erdos_740 as the main theorem and records the open question and erdosMostWanted conjecture."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #740 asks whether graphs with infinite chromatic number 𝔪 must contain subgraphs preserving that chromatic number while avoiding short odd cycles. The formalization captures the full landscape: Rödl's 1977 theorem resolving the countable triangle-free case (𝔪 = ℵ₀, r = 3), the stronger girth variant and its implication of the odd cycle version, the bipartite impossibility for 𝔪 > 2, and the open threshold function question.",
+    "implications": "**Theoretical Significance**: The problem lies at the intersection of infinite combinatorics, cardinal arithmetic, and structural graph theory. A positive resolution for all infinite cardinals would establish a deep connection between chromatic number and cycle structure in infinite graphs.\n\nThe threshold function question connects to quantitative Ramsey theory. The problem may also interact with set-theoretic independence phenomena, as results about uncountable cardinals sometimes depend on axioms beyond ZFC.",
+    "openQuestions": [
+      "Does the conjecture hold for all infinite cardinals 𝔪 (particularly uncountable cardinals like ℵ₁)?",
+      "Can Rödl's result be extended to r > 3 for countable chromatic number?",
+      "Does the threshold function f_r(𝔪) exist, and if so, what are its growth rates?",
+      "Is the answer for uncountable cardinals independent of ZFC (does it depend on set-theoretic axioms like GCH or large cardinal axioms)?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-58",
+      "relationship": "related",
+      "description": "Erdős Problem #58 concerns chromatic number vs odd cycle lengths, a closely related question about how chromatic number interacts with cycle structure."
+    },
+    {
+      "targetId": "erdos-744",
+      "relationship": "related",
+      "description": "Erdős Problem #744 on critical graphs and bipartition explores related themes about graph structure and chromatic number."
+    },
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "broader-context",
+      "description": "The Four Color Theorem is the most famous result in graph coloring. Problem #740 extends chromatic number questions to the infinite setting."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.Data.Set.Basic"
+    ],
+    "opens": [
+      "Cardinal",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos740",
+    "lineCount": 341,
+    "axiomCount": 2,
+    "theoremCount": 5,
+    "definitionCount": 22,
+    "path": "Proofs/Erdos740Problem.lean",
+    "sorries": 1,
+    "additionalFiles": [
+      "Proofs/Erdos740ProblemProvable.lean"
+    ]
+  },
+  "sorries": 1
+}

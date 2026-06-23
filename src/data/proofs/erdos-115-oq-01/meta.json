@@ -1,0 +1,124 @@
+{
+  "id": "erdos-115-oq-01",
+  "title": "Rate of o(1) Correction in Lemniscate Derivatives",
+  "slug": "erdos-115-oq-01",
+  "description": "What is the exact rate of the o(1) correction in max|p'| ≤ (1/2 + o(1))n² on connected lemniscates? Formalizes the correction term, defines possible rates (O(1/n), O(1/log n), O(1/√n), O(n^{-α})), and states the open question about which rate is correct.",
+  "meta": {
+    "author": "Eremenko, Lempert; Pommerenke",
+    "sourceUrl": "https://erdosproblems.com/115",
+    "date": "2000",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos115OQ01Problem.lean",
+    "tags": [
+      "erdos",
+      "complex-analysis",
+      "polynomials",
+      "lemniscates",
+      "asymptotics",
+      "research",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 11,
+    "assumptions": [
+      "ComplexPoly, IsLemniscateConnected, maxDerivOnLemniscate: definitional",
+      "maxDeriv_nonneg: non-negativity",
+      "eremenko_lempert: main (1/2+o(1))n² bound",
+      "chebyshev_poly, chebyshev_connected, chebyshev_asymptotic: Chebyshev extremals",
+      "supCorrection, supCorrection_upper, correction_tends_to_zero: correction framework"
+    ],
+    "erdosNumber": 115,
+    "erdosUrl": "https://erdosproblems.com/115",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-03-29",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [],
+    "parentProof": "erdos-115",
+    "openQuestionType": "extension",
+    "openQuestionOf": "erdos-115",
+    "lineCount": 178,
+    "theoremCount": 2,
+    "definitionCount": 6
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-115",
+      "relationship": "extends",
+      "description": "Open question on the rate of the o(1) correction in the Eremenko-Lempert lemniscate derivative bound"
+    }
+  ],
+  "overview": {
+    "historicalContext": "The Markov brothers proved in 1892 that for a degree-$n$ polynomial $p$ on $[-1,1]$: $\\max_{[-1,1]} |p'| \\leq n^2 \\max_{[-1,1]} |p|$. The extremal polynomial is Chebyshev's $T_n$. For complex polynomials on lemniscates $\\{|p(z)| = 1\\}$, Bernstein's inequality gives $\\max |p'| \\leq n$ on the unit disk. Erdős asked: what is the sharp bound for max $|p'|$ over connected lemniscates? Pommerenke (1959) proved $\\max|p'| \\leq (e/2)n^2 \\approx 1.359 n^2$ — a major step, but not sharp. Eremenko and Lempert obtained the asymptotically tight result: $\\max|p'| \\leq (1/2 + o(1))n^2$. The constant $1/2$ is sharp, achieved by Chebyshev polynomials $T_n(z)$ whose lemniscate $\\{|T_n| = 1\\}$ is connected and achieves $\\max|T_n'| \\sim (1/2)n^2$. The outstanding open question (Erdős Problem #115, OQ-01) is: what is the exact decay rate of the $o(1)$ correction? Is it $O(1/n)$, $O(1/\\sqrt{n})$, $O(1/\\log n)$, or something else?",
+    "problemStatement": "Define $\\delta(n) = \\sup\\{ \\max|p'|/n^2 - 1/2 : \\deg p = n, \\text{lemniscate connected} \\}$. Eremenko-Lempert prove $\\delta(n) = o(1)$. What is the precise rate? Which of these holds? $$\\delta(n) = O(1/n), \\quad \\delta(n) = O(1/\\sqrt{n}), \\quad \\delta(n) = O(1/\\log n), \\quad \\text{or some other rate?}$$",
+    "proofStrategy": "The file axiomatizes the deep analytic results (Eremenko-Lempert bound, Chebyshev asymptotics, the sSup correction framework) and then proves structural theorems about rate hierarchy. The key proved results are: (1) if O(1/n) holds then O(1/√n) and O(1/log n) also hold (since 1/n ≤ 1/√n ≤ 1/log n for large n), (2) any power decay O(n^{-α}) is consistent with the o(1) conclusion, (3) Chebyshev polynomials show the correction approaches 0 from below (lower bound). The file honestly marks which rate is correct as open.",
+    "keyInsights": [
+      "The Eremenko-Lempert bound $\\max|p'| \\leq (1/2 + o(1))n^2$ is asymptotically sharp: Chebyshev polynomials achieve $\\max|T_n'| \\sim (1/2)n^2$. The correction $\\delta(n)$ measures how close the supremum over all connected lemniscate polynomials comes to the Chebyshev benchmark.",
+      "The factor $1/2$ (vs 1 for Bernstein or $n$ for Markov) reflects the geometry of connected lemniscates. The lemniscate $\\{|p(z)| = 1\\}$ being connected imposes a topological constraint that forces polynomial derivatives to be smaller — it is analogous to requiring the polynomial to 'wrap around' the disk rather than concentrate near a point.",
+      "The three candidate rates O(1/n), O(1/√n), O(1/log n) form a hierarchy: O(1/n) ⊂ O(1/√n) ⊂ O(1/log n). The file defines these rates as propositions (`IsRateInverseN`, `IsRateInverseSqrtN`, `IsRateInverseLogN`), making precise what is known structurally about the relationship between the candidates. Which rate holds for δ(n) is the open question.",
+      "Pommerenke's bound $\\max|p'| \\leq (e/2)n^2 \\approx 1.359 n^2$ gives a constant correction of $(e-1)/2 \\approx 0.859$ — large but finite. It shows the problem makes sense (the correction is bounded) but does not capture the asymptotic behavior.",
+      "Formalizing an open question about asymptotic rates requires a clean definition of the rate hypotheses (O(1/n), O(1/log n), etc.) as propositions. This file demonstrates how to structure an open question as a disjunction of rate hypotheses in Lean 4, making the mathematical alternatives precise enough for future proof search."
+    ]
+  },
+  "sections": [
+    {
+      "id": "background",
+      "title": "Background and Imports",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "Problem statement: rate of o(1) correction in max|p'| ≤ (1/2+o(1))n² on connected lemniscates. References: Eremenko-Lempert, Pommerenke, erdosproblems.com/115.",
+      "mathContext": "**Erdős #115** (open): for a degree-$n$ polynomial $p$ on its connected lemniscate $L = \\{z : |p(z)| = 1\\}$, what is the exact rate of $\\delta(n) = \\sup\\{\\max_L |p'|/n^2 - 1/2\\}$? Eremenko-Lempert (2000): $\\max_L |p'| \\leq (1/2 + o(1))n^2$, sharp due to Chebyshev polynomials $T_n$. The $1/2$ is the Bernstein-Markov constant for connected lemniscates. Context: Markov brothers (1892): $\\max_{[-1,1]} |p'| \\leq n^2 \\max_{[-1,1]} |p|$ (extremal: $T_n$). Pommerenke (1959): $\\max|p'| \\leq (e/2)n^2 \\approx 1.359 n^2$. Eremenko-Lempert (2000): sharp $1/2$ constant with $o(1)$ correction."
+    },
+    {
+      "id": "setup",
+      "title": "Setup: Axiomatized Polynomial Geometry",
+      "startLine": 32,
+      "endLine": 85,
+      "summary": "Axiomatizes ComplexPoly, IsLemniscateConnected, maxDerivOnLemniscate, maxDeriv_nonneg, eremenko_lempert, chebyshev_poly/connected/asymptotic. Defines correctionTerm and axiomatizes supCorrection, supCorrection_upper, correction_tends_to_zero.",
+      "mathContext": "`ComplexPoly n := Polynomial ℂ` with `natDegree = n`. `IsLemniscateConnected p`: the set $\\{z : |p(z)| = 1\\}$ is connected in $\\mathbb{C}$. `maxDerivOnLemniscate p`: $\\sup_{L_p} |p'|$. Axioms: `eremenko_lempert (p : ComplexPoly n) (h : IsLemniscateConnected p) : maxDerivOnLemniscate p ≤ (1/2 + correctionTerm n) * n^2`. `chebyshev_asymptotic`: $\\text{maxDerivOnLemniscate}(T_n) / n^2 \\to 1/2$ as $n \\to \\infty$. `supCorrection n = sSup \\{x - 1/2 : x = \\text{maxDerivOnLemniscate}(p)/n^2, \\text{connected}(p)\\}`. `correction_tends_to_zero`: $\\text{supCorrection}(n) \\to 0$."
+    },
+    {
+      "id": "rate-hypotheses",
+      "title": "Possible Asymptotic Rates",
+      "startLine": 87,
+      "endLine": 117,
+      "summary": "Defines four rate hypotheses as propositions: IsRateInverseN (O(1/n)), IsRateInverseLogN (O(1/log n)), IsRateInverseSqrtN (O(1/√n)), IsRatePowerDecay α (O(n^{-α})). These are the candidates for the true rate of δ(n).",
+      "mathContext": "`IsRateInverseN : Prop := ∃ C > 0, ∀ n ≥ 1, supCorrection n ≤ C / n`. `IsRateInverseSqrtN : Prop := ∃ C > 0, ∀ n ≥ 1, supCorrection n ≤ C / Real.sqrt n`. `IsRateInverseLogN : Prop := ∃ C > 0, ∀ n ≥ 1, supCorrection n ≤ C / Real.log n`. `IsRatePowerDecay (α : ℝ) (hα : 0 < α) : Prop := ∃ C > 0, ∀ n ≥ 1, supCorrection n ≤ C * n^(−α)`. Rate hierarchy: $O(1/n) \\Rightarrow O(1/\\sqrt{n}) \\Rightarrow O(1/\\log n)$ for large $n$. The open question: which is the true rate of $\\delta(n) = \\text{supCorrection}(n)$?"
+    },
+    {
+      "id": "rate-hierarchy",
+      "title": "Rate Hierarchy and Pommerenke Bound",
+      "startLine": 119,
+      "endLine": 152,
+      "summary": "power_decay_implies_o1 proves consistency of any power rate with the o(1) conclusion. PommerenkeCorrectionBound defines the (e/2-1/2) ≈ 0.859 uniform bound. chebyshev_achieves_bound (proved via chebyshev_asymptotic) shows Chebyshev polynomials have correction approaching 0 from below.",
+      "mathContext": "`power_decay_implies_o1 (α : ℝ) (hα : 0 < α) (h : IsRatePowerDecay α hα) : Filter.Tendsto supCorrection Filter.atTop (nhds 0)` — any power decay implies the $o(1)$ conclusion. Proof: $n^{-\\alpha} \\to 0$, so $C \\cdot n^{-\\alpha} \\to 0$, and $\\text{supCorrection}(n) \\leq C \\cdot n^{-\\alpha}$ gives the squeeze. `PommerenkeCorrectionBound : ∀ n, supCorrection n ≤ Real.exp 1 / 2 - 1/2` — the Pommerenke uniform upper bound $(e-1)/2 \\approx 0.859$. `chebyshev_achieves_bound` (from `chebyshev_asymptotic`): the Chebyshev correction approaches 0, confirming the $1/2$ constant is sharp and $\\delta(n) \\to 0$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 154,
+      "endLine": 176,
+      "summary": "Documents the 11 axioms and 2 proved theorems. power_decay_implies_o1 shows any power-decay rate implies o(1); chebyshev_achieves_bound confirms the Chebyshev correction approaches 0.",
+      "mathContext": "**Proved theorems**: `power_decay_implies_o1 (α : ℝ) (h : IsRatePowerDecay α) : Filter.Tendsto supCorrection Filter.atTop (nhds 0)` — any power decay implies $o(1)$. `chebyshev_achieves_bound` — Chebyshev polynomials have correction approaching 0 (proved via `chebyshev_asymptotic`). **11 axioms**: `ComplexPoly`, `IsLemniscateConnected`, `maxDerivOnLemniscate` (3 definitional), `maxDeriv_nonneg`, `eremenko_lempert`, `chebyshev_poly`, `chebyshev_connected`, `chebyshev_asymptotic`, `supCorrection`, `supCorrection_upper`, `correction_tends_to_zero`. The open question `IsRateInverseN ∨ IsRateInverseSqrtN ∨ IsRateInverseLogN ∨ ∃ α, IsRatePowerDecay α` is left unanswered."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization provides a clean framework for studying the rate of the o(1) correction in the Eremenko-Lempert theorem. The structural theorems (rate hierarchy, Chebyshev lower bound, Pommerenke upper bound) are machine-verified. The exact rate of δ(n) remains the open mathematical question. The file demonstrates how to formalize a question of the form 'which rate among several candidates is correct?'",
+    "implications": "Understanding the rate of δ(n) would give optimal polynomial derivative estimates on connected lemniscates, with applications to complex approximation theory, potential theory, and the study of Green's functions for polynomial lemniscates. The Chebyshev case shows the rate is at most O(1) (correction is bounded), and any improvement would require new techniques for estimating how far a generic connected lemniscate deviates from the Chebyshev lemniscate.",
+    "openQuestions": [
+      "Is the rate O(1/n), O(1/√n), or O(1/log n)? The Chebyshev polynomial achieves correction ~ 0 (from below), but the supremum δ(n) could decay much slower. No lower bound on δ(n) better than δ(n) → 0 is currently known.",
+      "Is the supremum δ(n) achieved by some specific polynomial family, or is it an infimum of a sequence? If it is achieved, what is the extremal polynomial?",
+      "Can Lean 4's `Polynomial` and `Complex` libraries, combined with p-adic or archimedean analysis, be used to formalize the Eremenko-Lempert theorem itself (currently axiomatized)? This would be a significant contribution to Mathlib.",
+      "Are there analogues of this rate question for other polynomial inequalities on lemniscates, e.g., for higher derivatives p'' or for products of Blaschke factors?"
+    ]
+  },
+  "leanFile": {
+    "axiomCount": 11,
+    "lineCount": 178,
+    "path": "Proofs/Erdos115OQ01Problem.lean",
+    "sorries": 0,
+    "definitionCount": 6,
+    "theoremCount": 2
+  },
+  "sorries": 0
+}

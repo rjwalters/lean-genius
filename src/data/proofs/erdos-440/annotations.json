@@ -1,0 +1,401 @@
+[
+  {
+    "id": "ann-440-header",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #440: LCM of Consecutive Sequence Elements**\n\nFor an infinite increasing sequence A = {a₁ < a₂ < ...}, count indices i where lcm(aᵢ, aᵢ₊₁) ≤ x.\n\n**Two Questions:**\n1. Is A(x) = O(√x)? YES (Tao's elementary proof)\n2. Max liminf A(x)/√x? Exactly 1, achieved by A = ℕ (Erdős-Szemerédi 1980)\n\nThe sharp bound is A(x) ≤ (c + o(1))√x where c ≈ 1.86.",
+    "mathContext": "For an increasing sequence $A = \\{a_1 < a_2 < \\cdots\\}$, define $A(x) = |\\{i : \\mathrm{lcm}(a_i, a_{i+1}) \\leq x\\}|$. The main result: $A(x) = O(\\sqrt{x})$ for all such sequences, with the natural numbers achieving $\\liminf A(x)/\\sqrt{x} = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "LCM",
+      "multiplicative number theory",
+      "counting functions",
+      "Erdős-Szemerédi 1980",
+      "Tao's proof",
+      "liminf"
+    ],
+    "prerequisites": [
+      "IncreasingSeq",
+      "countingFunction",
+      "Nat.lcm",
+      "Filter.atTop"
+    ]
+  },
+  {
+    "id": "ann-440-seq",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 40,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "Increasing Sequence",
+    "content": "**IncreasingSeq:**\n\nA structure representing an infinite strictly increasing sequence of natural numbers. The field `seq : ℕ → ℕ` gives the sequence values, and `strictly_increasing` ensures aᵢ < aᵢ₊₁ for all i.\n\nThe canonical example is A = ℕ = {1, 2, 3, ...}, which turns out to be the extremal sequence.",
+    "mathContext": "`IncreasingSeq` is a Lean structure with `seq : ℕ → ℕ` and `strictly_increasing : ∀ i, seq i < seq (i + 1)`. The naturals sequence has `seq i = i + 1`. Strict increase ensures all elements are distinct and well-ordered.",
+    "significance": "key",
+    "relatedConcepts": [
+      "strictly increasing sequences",
+      "IncreasingSeq structure",
+      "naturalsSeq",
+      "extremal sequences",
+      "omega tactic"
+    ],
+    "prerequisites": [
+      "Nat",
+      "StrictMono",
+      "omega"
+    ]
+  },
+  {
+    "id": "ann-440-counting",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 48,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "Counting Function A(x)",
+    "content": "**countingFunction:**\n\nA(x) counts indices i where lcm(aᵢ, aᵢ₊₁) ≤ x. This measures how many consecutive pairs in the sequence have \"small\" LCM relative to the threshold x.\n\nImplemented by filtering Finset.range x for indices satisfying the LCM bound and taking the cardinality.",
+    "mathContext": "$A(x) = |\\{i < x : \\mathrm{lcm}(a_i, a_{i+1}) \\leq x\\}|$. The growth rate of $A(x)/\\sqrt{x}$ is the central quantity. Implemented via `Finset.filter` and `Finset.card` in Lean.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.filter",
+      "Finset.card",
+      "Nat.lcm",
+      "countingFunction",
+      "growth rate",
+      "O(√x)"
+    ],
+    "prerequisites": [
+      "IncreasingSeq",
+      "Finset.range",
+      "Finset.filter",
+      "Nat.lcm",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "ann-440-ratio",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 56,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "Normalized Ratio",
+    "content": "**normalizedRatio:**\n\nA(x)/√x is the key ratio whose liminf behavior the problem asks about. For A = ℕ, this ratio oscillates around 1. The problem asks: can any sequence consistently beat 1?",
+    "mathContext": "$R(x) = A(x)/\\sqrt{x}$. The Erdős-Szemerédi theorem proves $\\liminf_{x\\to\\infty} R(x) \\leq 1$ for all sequences, and $\\liminf R(x) = 1$ is achieved by $A = \\mathbb{N}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "normalizedRatio",
+      "lim inf",
+      "Real.sqrt",
+      "Filter.liminf",
+      "A(x)/√x",
+      "extremal sequences"
+    ],
+    "prerequisites": [
+      "countingFunction",
+      "Real.sqrt",
+      "Nat.cast",
+      "Filter.liminf"
+    ]
+  },
+  {
+    "id": "ann-440-naturals",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 67,
+      "endLine": 72
+    },
+    "type": "definition",
+    "title": "The Natural Numbers Sequence",
+    "content": "**naturalsSeq:**\n\nThe sequence A = ℕ = {1, 2, 3, ...}, defined as seq(i) = i + 1 (1-indexed). The strictly_increasing property is immediate from omega.\n\nThis is the extremal sequence — it achieves the maximum liminf of A(x)/√x = 1.",
+    "mathContext": "`naturalsSeq : IncreasingSeq` with `seq i = i + 1`. For this sequence, $\\mathrm{lcm}(n, n+1) = n(n+1)$ (consecutive integers are coprime), so $A(x) \\sim \\sqrt{x}$ and $\\liminf A(x)/\\sqrt{x} = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "naturalsSeq",
+      "extremal sequence",
+      "lcm_consecutive",
+      "omega",
+      "coprimality"
+    ],
+    "prerequisites": [
+      "IncreasingSeq",
+      "omega",
+      "Nat.coprime_self_add_one"
+    ]
+  },
+  {
+    "id": "ann-440-lcm-consec",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 74,
+      "endLine": 81
+    },
+    "type": "concept",
+    "title": "LCM of Consecutive Naturals",
+    "content": "**lcm_consecutive:**\n\nlcm(n, n+1) = n(n+1) because gcd(n, n+1) = 1.\n\n**Proof:** Uses Mathlib's `Nat.coprime_self_add_one` which proves that consecutive integers are coprime. Since lcm(a,b) = a*b/gcd(a,b), coprimality gives lcm = product.\n\nThis is the fundamental fact making A = ℕ the extremal sequence: every consecutive pair contributes, but lcm grows as n².",
+    "mathContext": "$\\gcd(n, n+1) = 1$ (consecutive integers are coprime) implies $\\mathrm{lcm}(n, n+1) = n(n+1)$. Since $n(n+1) \\leq x \\iff n \\lesssim \\sqrt{x}$, the naturals have $A(x) \\approx \\sqrt{x}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.coprime_self_add_one",
+      "Nat.lcm",
+      "Nat.gcd",
+      "consecutive integers",
+      "coprimality",
+      "Chinese Remainder Theorem"
+    ],
+    "prerequisites": [
+      "Nat.Coprime",
+      "Nat.coprime_self_add_one",
+      "Nat.lcm_eq_div_gcd",
+      "omega"
+    ]
+  },
+  {
+    "id": "ann-440-naturals-count",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 83,
+      "endLine": 99
+    },
+    "type": "concept",
+    "title": "Counting and Liminf for Naturals",
+    "content": "**naturals_counting** and **naturals_liminf_eq_one:**\n\nFor A = ℕ, A(x) = ⌊√x⌋ since the pairs (n, n+1) with n(n+1) ≤ x are exactly those with n ≤ √x.\n\nThe liminf formulation uses ε-δ style: for any ε > 0, eventually |A(x)/√x - 1| < ε. This replaces the previous trivial True placeholder with a meaningful mathematical statement.\n\nAxiomatized because the precise floor/sqrt relationship requires detailed arithmetic.",
+    "mathContext": "$A(x) = \\lfloor\\sqrt{x}\\rfloor$ for the naturals, since $n(n+1) \\leq x \\iff n \\leq \\lfloor \\sqrt{x} \\rfloor$. The liminf $= 1$ follows from $\\lfloor\\sqrt{x}\\rfloor/\\sqrt{x} \\to 1$ as $x \\to \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "naturals_counting",
+      "naturals_liminf_eq_one",
+      "Nat.sqrt",
+      "Filter.Tendsto",
+      "floor function",
+      "liminf"
+    ],
+    "prerequisites": [
+      "naturalsSeq",
+      "countingFunction",
+      "Real.sqrt",
+      "Filter.atTop",
+      "Filter.Tendsto"
+    ]
+  },
+  {
+    "id": "ann-440-bounded",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 105,
+      "endLine": 110
+    },
+    "type": "definition",
+    "title": "Bounded by √x",
+    "content": "**bounded_by_sqrt:**\n\nA sequence satisfies bounded_by_sqrt if A(x) ≤ C√x for some constant C > 0 and all x. This is the O(√x) growth condition.\n\nThe first question of Problem #440 asks whether ALL sequences satisfy this. The answer is yes.",
+    "mathContext": "`bounded_by_sqrt A ↔ ∃ C > 0, ∀ x, countingFunction A x ≤ C * √x`. This formalizes the $O(\\sqrt{x})$ growth condition. Tao's proof shows every `IncreasingSeq` satisfies this.",
+    "significance": "key",
+    "relatedConcepts": [
+      "bounded_by_sqrt",
+      "O(√x)",
+      "tao_elementary_proof",
+      "asymptotic bound",
+      "countingFunction"
+    ],
+    "prerequisites": [
+      "countingFunction",
+      "Real.sqrt",
+      "IncreasingSeq"
+    ]
+  },
+  {
+    "id": "ann-440-tao",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 112,
+      "endLine": 122
+    },
+    "type": "concept",
+    "title": "Tao's Elementary Proof",
+    "content": "**tao_elementary_proof:**\n\nTerence Tao gave a simple proof that A(x) = O(√x) for any sequence.\n\n**Proof sketch:** Write a = dm, b = dn where d = gcd(a,b) and gcd(m,n) = 1. Then lcm(a,b) = dmn ≤ x. For each d, the number of coprime pairs (m,n) with mn ≤ x/d is O(x/d). Summing over d ≤ √x gives Σ O(x/d²) = O(√x).\n\nThis elegant argument reduces the problem to standard estimates on sums of reciprocal squares.",
+    "mathContext": "GCD decomposition: $a = dm, b = dn$ with $\\gcd(m,n) = 1$. Then $\\mathrm{lcm}(a,b) = dmn \\leq x$. For fixed $d$, coprime pairs $(m,n)$ with $mn \\leq x/d$ number $O(x/d)$. Summing: $\\sum_{d \\leq \\sqrt{x}} O(x/d^2) = O(\\sqrt{x})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "GCD decomposition",
+      "Tao's proof",
+      "coprime pairs",
+      "sum of reciprocal squares",
+      "multiplicative number theory"
+    ],
+    "prerequisites": [
+      "Nat.gcd",
+      "Nat.Coprime",
+      "bounded_by_sqrt",
+      "tao_elementary_proof"
+    ]
+  },
+  {
+    "id": "ann-440-constant",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 124,
+      "endLine": 129
+    },
+    "type": "definition",
+    "title": "Optimal Constant",
+    "content": "**optimal_constant:**\n\nc = Σ_{n≥1} 1/(√n(n+1)) ≈ 1.86\n\nThis is the sharp coefficient in the bound A(x) ≤ (c + o(1))√x. The series converges because 1/(√n(n+1)) ~ 1/n^{3/2} for large n.\n\nDefined using Mathlib's tsum (infinite sum) with a conditional to handle n = 0.",
+    "mathContext": "$c = \\sum_{n=1}^{\\infty} \\frac{1}{\\sqrt{n(n+1)}} \\approx 1.86$. Convergence: $\\frac{1}{\\sqrt{n(n+1)}} \\sim n^{-1} \\cdot (n+1)^{-1/2} \\sim n^{-3/2}$, so the series converges absolutely. Used in `tsum` with a `if n = 0 then 0 else ...` guard.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tsum",
+      "optimal constant",
+      "van Doorn's bound",
+      "series convergence",
+      "Real.sqrt",
+      "sharp coefficient"
+    ],
+    "prerequisites": [
+      "Real.tsum",
+      "Real.sqrt",
+      "Nat.cast",
+      "summable"
+    ]
+  },
+  {
+    "id": "ann-440-vandoorn",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 131,
+      "endLine": 139
+    },
+    "type": "concept",
+    "title": "van Doorn's Sharp Bound",
+    "content": "**van_doorn_sharp_bound:**\n\nA(x) ≤ (c + o(1))√x where c ≈ 1.86 is the optimal constant.\n\nThis means for any ε > 0, eventually A(x) ≤ (c + ε)√x. The constant c was originally implicit in Erdős-Szemerédi (1980); van Doorn gave a rigorous modern treatment establishing it as the exact optimal coefficient.",
+    "mathContext": "$A(x) \\leq (c + o(1))\\sqrt{x}$ where $c = \\sum_{n\\geq 1} 1/\\sqrt{n(n+1)} \\approx 1.86$. Formalized as: $\\forall \\varepsilon > 0, \\forall^\\infty x, A(x) \\leq (c + \\varepsilon)\\sqrt{x}$. The optimality of $c$ means no smaller constant works for ALL sequences.",
+    "significance": "key",
+    "relatedConcepts": [
+      "van_doorn_sharp_bound",
+      "optimal constant",
+      "sharp coefficient",
+      "Erdős-Szemerédi 1980",
+      "Filter.Eventually"
+    ],
+    "prerequisites": [
+      "optimal_constant",
+      "countingFunction",
+      "Filter.Eventually",
+      "Filter.atTop",
+      "Real.sqrt"
+    ]
+  },
+  {
+    "id": "ann-440-liminf",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 145,
+      "endLine": 153
+    },
+    "type": "concept",
+    "title": "Erdős-Szemerédi Liminf Bound",
+    "content": "**erdos_szemeredi_liminf_bound:**\n\nFor any infinite sequence A and any ε > 0, the normalized ratio A(x)/√x is eventually below 1 + ε frequently (i.e., for cofinitely many x).\n\nFormalized using Lean 4's `Filter.Frequently` (∃ᶠ) on `Filter.atTop`, which captures the \"infinitely often\" quantifier. This replaces the previous trivial True placeholder with the actual mathematical content.\n\nThis is the heart of the Erdős-Szemerédi theorem: no sequence can consistently have liminf > 1.",
+    "mathContext": "$\\forall \\varepsilon > 0,\\ \\exists^\\infty x,\\ A(x)/\\sqrt{x} < 1 + \\varepsilon$, formalized as `Filter.Frequently` on `Filter.atTop`. This is equivalent to $\\liminf_{x\\to\\infty} A(x)/\\sqrt{x} \\leq 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Filter.Frequently",
+      "liminf",
+      "Erdős-Szemerédi theorem",
+      "Filter.atTop",
+      "normalizedRatio",
+      "∃ᶠ quantifier"
+    ],
+    "prerequisites": [
+      "normalizedRatio",
+      "Filter.Frequently",
+      "Filter.atTop",
+      "Real.sqrt",
+      "countingFunction"
+    ]
+  },
+  {
+    "id": "ann-440-summary-thm",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 155,
+      "endLine": 169
+    },
+    "type": "concept",
+    "title": "Erdős-Szemerédi Summary",
+    "content": "**erdos_szemeredi_summary:**\n\nCombines the two main results:\n1. A(x) = O(√x) for every sequence (from tao_elementary_proof)\n2. The sharp constant is c ≈ 1.86 (from van_doorn_sharp_bound)\n\nProved by pairing both axioms into a conjunction.",
+    "mathContext": "The theorem states: $\\forall A, A(x) = O(\\sqrt{x})$ AND $\\exists$ sharp constant $c \\approx 1.86$. This is a conjunction of `bounded_by_sqrt` (for all sequences) and the van Doorn sharp bound, proved with `And.intro`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "erdos_szemeredi_summary",
+      "tao_elementary_proof",
+      "van_doorn_sharp_bound",
+      "And.intro",
+      "conjunction"
+    ],
+    "prerequisites": [
+      "tao_elementary_proof",
+      "van_doorn_sharp_bound",
+      "bounded_by_sqrt",
+      "optimal_constant"
+    ]
+  },
+  {
+    "id": "ann-440-generalization",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 175,
+      "endLine": 183
+    },
+    "type": "definition",
+    "title": "k-Consecutive LCM Generalization",
+    "content": "**countingFunctionK:**\n\nGeneralizes the counting function to k-consecutive elements: count indices i where lcm(aᵢ, ..., aᵢ₊ₖ) ≤ x.\n\nApproximated here using the product of k+1 consecutive terms bounded by x^k. The Erdős-Szemerédi paper (1980) established analogous bounds for these generalizations with different growth exponents.",
+    "mathContext": "$A_k(x) = |\\{i : \\mathrm{lcm}(a_i, \\ldots, a_{i+k}) \\leq x\\}|$. For $k=1$ this reduces to $A(x)$. For general $k$, Erdős-Szemerédi (1980) shows $A_k(x) = O(x^{1/(k+1)})$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "countingFunctionK",
+      "k-consecutive LCM",
+      "Erdős-Szemerédi 1980",
+      "List.foldr",
+      "generalization"
+    ],
+    "prerequisites": [
+      "IncreasingSeq",
+      "Nat.lcm",
+      "List.foldr",
+      "Finset.filter",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "ann-440-main",
+    "proofId": "erdos-440",
+    "range": {
+      "startLine": 189,
+      "endLine": 200
+    },
+    "type": "concept",
+    "title": "Main Result: Problem #440 Solved",
+    "content": "**erdos_440_solved:**\n\nThe capstone theorem: for every infinite increasing sequence A, A(x) = O(√x).\n\nProved directly from tao_elementary_proof. This answers the first question of Problem #440 affirmatively.\n\nCombined with the liminf bound (erdos_szemeredi_liminf_bound) and the naturals achieving equality (naturals_liminf_eq_one), this completely resolves the problem.",
+    "mathContext": "`erdos_440_solved` proves $\\forall A : \\text{IncreasingSeq}, \\text{bounded\\_by\\_sqrt}(A)$, directly from `tao_elementary_proof`. Together with $\\liminf = 1$ for naturals and $\\liminf \\leq 1$ for all sequences, the problem is fully resolved.",
+    "significance": "key",
+    "relatedConcepts": [
+      "erdos_440_solved",
+      "tao_elementary_proof",
+      "bounded_by_sqrt",
+      "Problem #440 resolution",
+      "Erdős-Szemerédi theorem"
+    ],
+    "prerequisites": [
+      "tao_elementary_proof",
+      "erdos_szemeredi_liminf_bound",
+      "naturals_liminf_eq_one",
+      "bounded_by_sqrt"
+    ]
+  }
+]

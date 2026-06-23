@@ -1,0 +1,80 @@
+{
+  "slug": "dissection-of-cubes-oq-03-oq-02",
+  "title": "Prove global_min_not_reaching_top: for bottom-floor minimums, the filling argument",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "theorem bottom_floor_min_not_reaching_top (d : CubeDissection) (h_two : 1 < d.cubes.card) (c_min : Cube) (hc_min_mem : c_min ∈ d.cubes) (hc_min_z : c_min.z = 0) : c_min.z + c_min.side < 1",
+    "plain": "In a cube dissection with at least 2 cubes, the smallest cube on the bottom floor (z=0) does not reach the top of the unit cube.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-05T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "Proved the filling argument for bottom-floor minimums.",
+    "blockers": [],
+    "nextAction": "None — proof complete.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE 2026-05-05: 5 theorems, 0 sorries, 0 axioms. Bottom-floor filling argument proved. Key insight: global_min_not_reaching_top (OQ03 sorry) is FALSE as stated. Correct version: add z=0 + card≥2 hypotheses.",
+    "builtItems": [
+      "cube_side_lt_one_of_two_cubes: if d.cubes.card≥2, every cube has side<1 (unit cube incompatible with any other cube via pairwise_disjoint)",
+      "all_cubes_side_lt_one: corollary that all cubes in multi-cube dissection have side<1",
+      "bottom_floor_min_not_reaching_top: z=0 + side<1 → z+side<1, proved from cube_side_lt_one_of_two_cubes",
+      "global_min_not_reaching_top_bottom_floor: corrected OQ03 sorry with explicit z=0 and card≥2 hypotheses",
+      "descent_entry: combines bottom_floor_nonempty + filling argument → descent starting point",
+      "File: proofs/Proofs/DissectionOfCubesOQ03OQ02.lean, 164 lines, 5 theorems/lemmas, 0 sorries"
+    ],
+    "insights": [
+      "global_min_not_reaching_top (OQ03 sorry) is FALSE without z=0 and card≥2: 1-cube unit-cube dissection satisfies all hypotheses but has z+side=1",
+      "The filling lemma requires only pairwise_disjoint + inUnitCube — no coverage, no allDifferentSizes",
+      "For z=0 cubes, side<1 from card≥2 immediately gives z+side=side<1",
+      "The remaining sorry in OQ03 is smallest_above_is_smaller (the confinement argument); the descent_entry provides the correct starting point"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove smallest_above_is_smaller (OQ03 sorry): cubes above a bottom-floor minimum are strictly smaller"
+    ]
+  },
+  "tags": ["seeker-selected", "gallery-extracted"],
+  "relatedProofs": [
+    "dissection-of-cubes",
+    "dissection-of-cubes-oq-03",
+    "dissection-of-cubes-oq-03-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-05T00:00:00.000Z",
+  "lastUpdate": "2026-05-05T00:00:00.000Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/DissectionOfCubesOQ03OQ02.lean",
+      "filename": "DissectionOfCubesOQ03OQ02.lean",
+      "lineCount": 164,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ03OQ02.lean"
+    }
+  ]
+}

@@ -1,0 +1,240 @@
+{
+  "id": "friendship-theorem",
+  "title": "Friendship Theorem",
+  "slug": "friendship-theorem",
+  "description": "The Friendship Theorem (Erdős–Rényi–Sós, 1966): In any finite graph where every pair of distinct vertices has exactly one common neighbor, there exists a 'politician' vertex adjacent to all others.",
+  "meta": {
+    "author": "Erdős, Rényi, and Sós (formalized in Lean 4)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Friendship_theorem",
+    "date": "1966",
+    "status": "axiomatized",
+    "tags": [
+      "graph-theory",
+      "combinatorics",
+      "spectral-methods",
+      "intermediate",
+      "wiedijk-100"
+    ],
+    "proofRepoPath": "Proofs/FriendshipTheorem.lean",
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Undirected graphs without self-loops",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.commonNeighbors",
+        "description": "Set of vertices adjacent to two given vertices",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of a set as a natural number",
+        "module": "Mathlib.Data.Set.Card"
+      }
+    ],
+    "originalContributions": [
+      "Definition of the friendship property for simple graphs",
+      "Definition of windmill graphs",
+      "Statement of the main theorem with proof structure",
+      "Example windmill graph W₂ with five vertices"
+    ],
+    "dateAdded": "2025-12-27",
+    "wiedijkNumber": 83,
+    "axiomCount": 1,
+    "assumptions": "1 axiom in the FriendshipTheoremOQ02.lean chain companion (a directed-graph extension to the classical undirected theorem): `directed_friendship_mod4` (in a directed friendship tournament, the vertex count satisfies n ≡ 3 (mod 4) — the Longyear–Parsons regularity + tournament out-degree counting argument is out of scope and axiomatized). The main FriendshipTheorem.lean (Wiedijk #83) is itself axiom-free and sorry-free: it imports FriendshipTheoremOQ01.lean which provides both key results — (1) regularity of friendship graphs without universal vertex (via A³ commutativity + complement-connectivity), and (2) k-regular friendship implies k=2 (via characteristic polynomial analysis). No sorries anywhere in the chain.",
+    "lineCount": 373,
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10,
+    "definitionCount": 6,
+    "additionalFiles": [
+      "Proofs/FriendshipTheoremOQ02.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "In 1966, Paul Erdős, Alfréd Rényi, and Vera T. Sós proved the Friendship Theorem in their paper 'On a problem of K. Zarankiewicz' (Acta Math. Hungar.). The theorem has a beautiful sociological interpretation: if in any group of people, every pair has exactly one mutual friend, then there must be a 'politician' who is friends with everyone.\n\nThe original 1966 proof uses spectral graph theory — analyzing eigenvalues of the adjacency matrix $A$ satisfying $A^2 = J - I + (k-1)A$ (for $k$-regular friendship graphs) to derive contradictions for non-windmill structures. This spectral approach, requiring linear algebra over the reals, was noted as surprisingly deep for such a clean combinatorial statement.\n\nSubsequent proofs avoided spectral methods: Herbert Wilf (1971) gave a purely combinatorial argument, and Craig Huneke (2002, American Mathematical Monthly) presented a slick algebraic proof accessible to undergraduates. The theorem is Wiedijk's #83 in the '100 theorems' list and appears in Proofs from THE BOOK.",
+    "problemStatement": "**The Friendship Theorem:**\n\nLet $G = (V, E)$ be a finite simple graph satisfying the **friendship property**:\n$$\\forall u, v \\in V, \\, u \\neq v \\implies |\\{w : w \\sim u \\land w \\sim v\\}| = 1$$\n\n(Every pair of distinct vertices has exactly one common neighbor.)\n\n**Theorem:** There exists a vertex $c \\in V$ adjacent to all other vertices:\n$$\\exists c \\in V : \\forall v \\in V, \\, v \\neq c \\implies c \\sim v$$",
+    "text": "The Friendship Theorem (Erdős–Rényi–Sós, 1966): In any finite graph where every pair of distinct vertices has exactly one common neighbor, there exists a 'politician' vertex adjacent to all others.",
+    "proofStrategy": "The proof follows the classical spectral approach:\n\n1. **Assume no universal vertex**: If all vertices have degree less than $n-1$, analyze the structure.\n\n2. **Show regularity**: Use the friendship property to establish that either a universal vertex exists or all vertices have the same degree.\n\n3. **Spectral analysis**: For regular friendship graphs, the adjacency matrix $A$ satisfies $A^2 = J - I + (k-1)A$. The eigenvalues must satisfy specific constraints.\n\n4. **Derive contradiction**: For $n > 3$ with no universal vertex, these constraints lead to a contradiction, proving that a universal vertex must exist.\n\n5. **Windmill structure**: Once a universal vertex exists, the friendship property forces the remaining graph to be a disjoint union of edges.",
+    "keyInsights": [
+      "The friendship property is extremely restrictive — only windmill graphs satisfy it",
+      "The spectral method reveals hidden algebraic structure in combinatorial conditions",
+      "The 'politician' name captures the sociological intuition: someone friends with everyone",
+      "Windmill graphs are the unique family satisfying the property",
+      "The theorem connects graph theory, linear algebra, and combinatorics"
+    ],
+    "prerequisites": [
+      "Graph theory (vertices, edges, colorings)",
+      "Combinatorics (counting, extremal problems)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 61,
+      "summary": "Overview of the Friendship Theorem and its significance in graph theory.",
+      "mathContext": "The friendship theorem: if every pair of vertices in a finite graph $G$ has exactly one common neighbor, then $G$ has a universal vertex (adjacent to all others). Equivalently, $G$ is a windmill graph $\\text{Wd}(n)$."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 62,
+      "endLine": 100,
+      "summary": "Defining the friendship property, universal vertex, and windmill graphs.",
+      "mathContext": "Core definitions: `IsFriendshipGraph G` (every pair of distinct vertices has exactly one common neighbor), `IsUniversalVertex G v` (vertex $v$ is adjacent to all others), and `IsWindmill G n` (graph is isomorphic to the windmill $\\text{Wd}(n)$)."
+    },
+    {
+      "id": "lemmas",
+      "title": "Key Lemmas",
+      "startLine": 101,
+      "endLine": 151,
+      "summary": "Supporting lemmas about the structure of friendship graphs.",
+      "mathContext": "Key lemma: in a friendship graph, either there exists a universal vertex, or the graph is regular. Proof: the adjacency matrix $A$ satisfies $A^2 + A = J + (k-1)I$ for some $k$; eigenvalue analysis forces regularity when no universal vertex exists."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "startLine": 152,
+      "endLine": 202,
+      "summary": "Statement and proof of the Friendship Theorem.",
+      "mathContext": "The spectral argument: if $G$ has no universal vertex, then all eigenvalues besides the largest are equal, forcing the graph to be regular. But a regular friendship graph must be a cycle $C_5$, and $C_5$ does not satisfy the common-neighbor property — contradiction."
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 203,
+      "endLine": 261,
+      "summary": "The windmill graph W₂ as a concrete example satisfying the friendship property.",
+      "mathContext": "Examples: $\\text{Wd}(1) = K_3$ (triangle), $\\text{Wd}(2) = $ butterfly graph (two triangles sharing a vertex), $\\text{Wd}(3) = $ three triangles sharing a vertex (7 vertices, 9 edges)."
+    },
+    {
+      "id": "history",
+      "title": "Historical Notes",
+      "startLine": 262,
+      "endLine": 373,
+      "summary": "The 1966 paper and alternative proof approaches.",
+      "mathContext": "The friendship theorem was proved by Paul Erdős, Alfréd Rényi, and Vera T. Sós in 1966. Their original proof used the spectral method (eigenvalues of the adjacency matrix). Elementary combinatorial proofs exist but are longer. The theorem is sometimes called the 'handshake lemma' of friendship graphs."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization fully verifies the Friendship Theorem: every friendship graph has a universal ('politician') vertex. The proof combines two results from FriendshipTheoremOQ01.lean: (1) regularity of friendship graphs without universal vertex (via A³ matrix commutativity and complement-connectivity), and (2) spectral analysis showing k-regular friendship graphs have k=2 (via characteristic polynomial factorization). 0 axioms, 0 sorries.",
+    "implications": "**1. Spectral graph theory paradigm**: The friendship theorem is a showcase of algebraic methods in combinatorics. The spectral approach — analyzing eigenvalues of the adjacency matrix to prove structural results — has become a cornerstone technique, founding spectral graph theory. The key step is showing that the friendship property forces the adjacency matrix to have a specific eigenvalue structure, which constrains the graph to be a windmill.\n\n**2. Strongly regular graph theory**: Friendship graphs are a boundary case for strongly regular graphs. A strongly regular graph $\\text{srg}(v, k, \\lambda, \\mu)$ has parameters where every edge is in $\\lambda$ triangles and every non-edge has $\\mu$ common neighbors. The friendship condition corresponds to $\\mu = 1$, and the theorem shows the only such graphs are windmills — a complete classification for this parameter family.\n\n**3. Social network theory**: The 'politician' vertex (adjacent to all others) models a social network phenomenon: if every pair of people shares exactly one mutual friend, then there must exist someone who is friends with everyone. This impossibility-of-democracy result in network topology has been applied to community detection algorithms.\n\n**4. Proof technique legacy**: The Erdős-Rényi-Sós proof combines counting arguments (summing common neighbors), parity constraints, and spectral analysis in a pattern that was subsequently used for many extremal graph theory results. The friendship theorem is often taught as the first application of eigenvalue methods in discrete mathematics courses.",
+    "openQuestions": [
+      "Can the friendship theorem be generalized to directed graphs (digraphs)? In a tournament where every pair of players has exactly one common opponent, must there exist a 'universal' player? The directed version may fail, and characterizing when it holds connects to tournament theory",
+      "Can the spectral proof be fully automated in Lean? The eigenvalue analysis requires showing that the adjacency matrix of a friendship graph has eigenvalue $1 + 2k$ with multiplicity 1 and $-1$ with multiplicity $n-1$ — can Mathlib's linear algebra handle this?",
+      "Does a hypergraph analog hold? In a 3-uniform friendship hypergraph (every pair of vertices is in exactly one common hyperedge), must there be a vertex in all hyperedges? The answer is no (Sós, Wild, 1994), but the classification of friendship hypergraphs is incomplete",
+      "Can the friendship theorem be extended to infinite graphs? The finite case uses counting and spectral methods that fail for infinite graphs, but the result may hold with additional structural assumptions"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Rényi, Alfréd; Sós, Vera T.",
+      "title": "On a problem of graph theory",
+      "year": "1966",
+      "venue": "Studia Scientiarum Mathematicarum Hungarica, 1, pp. 215-235",
+      "note": "Original proof of the Friendship Theorem using spectral methods — every friendship graph is a windmill"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-szekeres",
+      "relationship": "related",
+      "description": "Both are celebrated results in combinatorics by Erdős and collaborators — Erdős-Szekeres uses pigeonhole while friendship uses spectral graph theory"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both are structural results in extremal graph theory guaranteeing specific substructures must exist. Ramsey's theorem guarantees monochromatic cliques in edge-colored complete graphs; the friendship theorem guarantees a universal vertex in friendship graphs. Both use counting and pigeonhole-type arguments"
+    },
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "thematic",
+      "description": "Both are landmark results in graph theory proved using algebraic methods. The four-color theorem uses algebraic topology (reducibility and discharging), while the friendship theorem uses spectral graph theory (eigenvalue analysis). Both demonstrate how algebra solves inherently combinatorial problems"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "The counting argument in the friendship theorem uses divisibility: the sum $\\sum \\deg(v)^2$ must satisfy divisibility constraints that force regularity or the existence of a universal vertex. Lagrange's theorem on subgroup orders provides the group-theoretic machinery underlying these divisibility arguments"
+    },
+    {
+      "targetId": "konigsberg",
+      "relationship": "related",
+      "description": "Both are foundational results in graph theory: the Konigsberg bridge problem launched the field by characterizing Eulerian paths via vertex degrees, while the friendship theorem characterizes graphs with the unique-common-neighbor property — both show how local degree conditions determine global graph structure"
+    },
+    {
+      "targetId": "inclusion-exclusion",
+      "relationship": "foundational",
+      "description": "The counting arguments in the friendship theorem rely on inclusion-exclusion style reasoning: computing the number of common neighbors by counting paths of length 2 and applying overcounting corrections is an instance of the inclusion-exclusion principle on edge sets"
+    },
+    {
+      "targetId": "euler-polyhedral-formula",
+      "relationship": "related",
+      "description": "Both are structural results constraining graph topology: Euler's formula V - E + F = 2 constrains planar graphs, while the friendship theorem constrains graphs with the unique-common-neighbor property — both show that simple local conditions force rigid global structure (planarity vs. windmill)"
+    },
+    {
+      "targetId": "prob-method-expectation",
+      "relationship": "related",
+      "description": "The friendship theorem was proved by Erdos, who pioneered the probabilistic method: while the friendship theorem itself uses spectral rather than probabilistic methods, the expectation method provides alternative approaches to extremal graph theory problems of the same flavor"
+    },
+    {
+      "targetId": "friendship-theorem-oq-01",
+      "relationship": "extended-by",
+      "description": "An alternative spectral proof of the Friendship Theorem via the characteristic polynomial and eigenvalue structure of the adjacency matrix."
+    },
+    {
+      "targetId": "friendship-theorem-oq-03",
+      "relationship": "extended-by",
+      "description": "A hypergraph analog showing the friendship condition can fail in higher dimensions, with the Fano plane as the canonical counterexample."
+    },
+    {
+      "targetId": "friendship-theorem-oq-04",
+      "relationship": "extended-by",
+      "description": "An extension of the friendship condition to infinite graphs, analyzing whether a universal friend must still exist."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Combinatorics.SimpleGraph.DegreeSum",
+      "Mathlib.Combinatorics.SimpleGraph.Finite",
+      "Mathlib.Data.Fintype.Card",
+      "Mathlib.Algebra.BigOperators.Ring.Finset",
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Tactic.FinCases",
+      "Mathlib.Tactic.NormNum",
+      "Proofs.FriendshipTheoremOQ01"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "FriendshipTheorem",
+    "lineCount": 373,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 6,
+    "path": "Proofs/FriendshipTheorem.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/FriendshipTheoremOQ02.lean"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "friendship_theorem",
+      "type": "core",
+      "description": "If any two people at a party have exactly one mutual friend, then there is a person who is everyone's friend",
+      "leanType": "(forall u v, u != v -> exists! w, adj u w and adj v w) -> exists v, forall u, u != v -> adj u v"
+    }
+  ],
+  "sorries": 0,
+  "additionalFiles": [
+    "Proofs/FriendshipTheoremOQ02.lean"
+  ]
+}

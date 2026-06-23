@@ -1,0 +1,206 @@
+{
+  "id": "angle-trisection-oq-03-oq-03",
+  "title": "Origami Constructibility and 3-Smooth Degrees",
+  "slug": "angle-trisection-oq-03-oq-03",
+  "description": "Generalizes the parent's compass-and-straightedge degree criterion (constructible ⟺ degree is a power of 2) to origami (Huzita–Hatori) constructions, which solve cubics. The admissible degrees become the 3-smooth numbers 2^a·3^b. Proves the prime-factor characterization (3-smooth ⟺ all prime factors are 2 or 3) with a decidability instance, that compass ⊆ origami, and the headline separation: degree 3 — angle trisection and cube doubling — is origami-constructible but not compass-constructible. Also shows origami's limit: a degree divisible by 5 (e.g. the regular 11-gon) is not origami-constructible.",
+  "meta": {
+    "author": "Humiaki Huzita, Koshiro Hatori (origami axioms, 1989–1991); formalized in Lean 4",
+    "date": "1991",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AngleTrisectionOQ03OQ03.lean",
+    "tags": [
+      "geometry",
+      "constructibility",
+      "origami",
+      "angle-trisection",
+      "number-theory",
+      "decidability"
+    ],
+    "badge": "verified",
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 194,
+    "theoremCount": 14,
+    "definitionCount": 3,
+    "originalContributions": [
+      "ThreeSmooth d (= 2^a·3^b) and IsOrigamiConstructible α d — the origami degree criterion.",
+      "threeSmooth_iff_primeFactors: d is 3-smooth ⟺ every prime factor of d is 2 or 3 (proved by strong induction peeling off prime factors), the origami analogue of the parent's power-of-2 prime-factor criterion.",
+      "decidable_isOrigamiConstructible: a Decidable instance via the finite prime-factor check.",
+      "constructible_imp_origami: compass ⊆ origami (a power of 2 is 3-smooth).",
+      "origami_trisects_but_compass_cannot: degree 3 is origami-constructible but not compass-constructible — angle trisection and cube doubling.",
+      "not_origami_of_five_dvd / not_origami_eleven_gon: a degree divisible by 5 (the regular 11-gon) is not origami-constructible."
+    ],
+    "prerequisites": [
+      "Constructibility as a degree criterion (compass: power of 2)",
+      "Origami (Huzita–Hatori) constructions and their cubic capability",
+      "Prime factorization and Nat.primeFactors in Lean 4/Mathlib"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.mem_primeFactors",
+        "description": "p ∈ n.primeFactors ↔ p.Prime ∧ p ∣ n ∧ n ≠ 0 — drives the prime-factor characterization and its decidability",
+        "module": "Mathlib.Data.Nat.PrimeFin"
+      },
+      {
+        "theorem": "Nat.exists_prime_and_dvd",
+        "description": "every n ≠ 1 has a prime divisor — the peel-off step of the induction",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.Prime.dvd_of_dvd_pow",
+        "description": "a prime dividing a power divides the base, used to force prime factors into {2,3}",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Straightedge-and-compass constructions can only reach numbers lying in a tower of quadratic extensions, so a number is constructible exactly when its minimal-polynomial degree is a power of 2 — which is why angle trisection (degree 3) and doubling the cube (degree 3) are impossible. Paper folding is more powerful. The Huzita–Hatori axioms (1989–1991) include a fold that simultaneously places two points onto two lines, which solves a general cubic. Consequently origami can trisect any angle and double the cube, and the origami-constructible numbers form a field closed under both square and cube roots. The corresponding degree criterion is that the minimal-polynomial degree is **3-smooth**: of the form 2^a·3^b.\n\nThis entry mirrors, for origami, the parent thread's treatment of compass constructibility as a decidable degree criterion, and pins down exactly the gap between the two methods: the cubic (degree-3) constructions origami unlocks, and the degree-5 constructions (like the regular 11-gon) that remain beyond even origami.",
+    "problemStatement": "**Open Question (parent constructibility-complexity thread, OQ-03)**: generalize the power-of-2 constructibility criterion to higher-dimensional / origami constructions, which use cubic extensions and need a different divisibility criterion.\n\n**Result**: origami-constructible ⟺ the degree is 3-smooth (2^a·3^b); this is decidable, contains the compass criterion, unlocks degree 3 (trisection, cube doubling), but not degree 5 (regular 11-gon).",
+    "text": "A 194-line, fully verified (0 sorries, 0 axioms, no native_decide) file. It defines ThreeSmooth and IsOrigamiConstructible, the basic structure (1,2,3 are 3-smooth; closed under multiplication; contains powers of 2), the prime-factor characterization threeSmooth_iff_primeFactors with a Decidable instance, the inclusion constructible_imp_origami, the separation origami_trisects_but_compass_cannot, and the limitation not_origami_of_five_dvd / not_origami_eleven_gon.",
+    "proofStrategy": "The forward direction of the prime-factor characterization uses that a prime dividing 2^a·3^b divides 2^a or 3^b (Nat.Prime.dvd_mul) and hence equals 2 or 3 (Nat.Prime.dvd_of_dvd_pow + eq_one_or_self_of_dvd). The backward direction is strong induction: for d > 1, peel off a prime factor p ∈ {2,3} (Nat.exists_prime_and_dvd); the quotient d/p < d inherits the hypothesis (its prime factors divide d), so by induction d/p = 2^a·3^b and d = p·(d/p) is 3-smooth. Decidability follows because the prime-factor condition is a finite check over the Finset d.primeFactors. The compass inclusion is immediate (take b = 0). not_compass_three shows 3 = 2^k forces 2 ∣ 3; not_five_dvd_threeSmooth shows 5 ∤ 2^a·3^b, ruling out the regular 11-gon (degree 5).",
+    "keyInsights": [
+      "Origami solves cubics, so its degree criterion is 3-smoothness 2^a·3^b, replacing the compass power-of-2 criterion 2^k.",
+      "3-smoothness has the clean prime-factor form: every prime factor is 2 or 3 — exactly the origami analogue of 'every prime factor is 2'.",
+      "The strong-induction peel-off (divide by a prime factor in {2,3}) reconstructs the 2^a·3^b form and makes the criterion decidable via the finite primeFactors check.",
+      "Compass ⊆ origami is the trivial b = 0 case; the strict gain is exactly degree 3 — angle trisection and cube doubling.",
+      "Origami is not omnipotent: degree-5 numbers (e.g. the regular 11-gon, [ℚ(cos 2π/11):ℚ] = 5) are not 3-smooth, since 5 ∤ 2^a·3^b."
+    ]
+  },
+  "sections": [
+    {
+      "id": "defs",
+      "title": "3-Smooth Degrees and Origami Constructibility",
+      "startLine": 40,
+      "endLine": 75,
+      "summary": "CompassConstructibleDegree (power of 2), ThreeSmooth (2^a·3^b), IsOrigamiConstructible; 1,2,3 are 3-smooth, closure under multiplication, powers of 2 are 3-smooth.",
+      "mathContext": "The origami degree criterion and its basic algebra."
+    },
+    {
+      "id": "characterization",
+      "title": "Prime-Factor Characterization and Decidability",
+      "startLine": 77,
+      "endLine": 135,
+      "summary": "threeSmooth_iff_primeFactors (3-smooth ⟺ prime factors ∈ {2,3}) via strong induction; decidable_isOrigamiConstructible.",
+      "mathContext": "The origami analogue of the power-of-2 prime-factor criterion, giving decidability."
+    },
+    {
+      "id": "separation",
+      "title": "Compass ⊆ Origami, and the Degree-3 Separation",
+      "startLine": 137,
+      "endLine": 165,
+      "summary": "constructible_imp_origami; not_compass_three; origami_trisects_but_compass_cannot (degree 3 origami-yes, compass-no).",
+      "mathContext": "Origami trisects the angle and doubles the cube where compass cannot."
+    },
+    {
+      "id": "limits",
+      "title": "Origami's Limits",
+      "startLine": 167,
+      "endLine": 185,
+      "summary": "not_five_dvd_threeSmooth; not_origami_of_five_dvd; not_origami_eleven_gon (degree 5 not origami-constructible).",
+      "mathContext": "Degree-5 constructions remain beyond origami."
+    }
+  ],
+  "conclusion": {
+    "summary": "Origami constructibility is governed by 3-smoothness of the minimal-polynomial degree (2^a·3^b), the natural generalization of the compass power-of-2 criterion to a method that solves cubics. The criterion is decidable (prime factors ⊆ {2,3}), strictly contains compass constructibility, unlocks degree 3 (angle trisection, cube doubling), and excludes degree 5 (the regular 11-gon).",
+    "implications": "This pins down precisely what paper folding buys over straightedge and compass: the cubic extensions (degree-3 constructions) and, more generally, all 2^a·3^b-degree numbers — while leaving degree-5 and other non-3-smooth constructions impossible. It situates the classical trisection and cube-doubling impossibilities (compass) against their origami solvability, and provides the decidable criterion for origami n-gon constructibility analogous to Gauss–Wantzel.",
+    "openQuestions": [
+      "Characterize origami-constructible regular n-gons (the Pierpont primes: p with p − 1 of the form 2^a·3^b).",
+      "Formalize the field-theoretic content: the origami-constructible numbers are closed under square and cube roots, and degree equals 2^a·3^b.",
+      "Generalize to constructions with conic sections (degree 2^a·3^b·… with higher allowed primes)."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "angle-trisection-oq-03",
+      "relationship": "extends",
+      "description": "Parent: constructibility as a decidable degree criterion (compass: power of 2). This entry generalizes it to origami (3-smooth)."
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "related",
+      "description": "Root: the impossibility of angle trisection by straightedge and compass — which origami overcomes."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "AngleTrisectionOQ03OQ03",
+    "lineCount": 194,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 3,
+    "mainTheorems": [
+      {
+        "name": "origami_trisects_but_compass_cannot",
+        "type": "core",
+        "description": "Degree 3 is origami-constructible but not compass-constructible (angle trisection, cube doubling)",
+        "leanType": "(α : ℝ) → IsOrigamiConstructible α 3 ∧ ¬ CompassConstructibleDegree 3"
+      },
+      {
+        "name": "threeSmooth_iff_primeFactors",
+        "type": "key",
+        "description": "d is 3-smooth ⟺ every prime factor of d is 2 or 3",
+        "leanType": "{d : ℕ} → 0 < d → (ThreeSmooth d ↔ ∀ p ∈ d.primeFactors, p = 2 ∨ p = 3)"
+      },
+      {
+        "name": "not_origami_eleven_gon",
+        "type": "key",
+        "description": "The regular 11-gon (degree 5) is not origami-constructible",
+        "leanType": "(α : ℝ) → ¬ IsOrigamiConstructible α 5"
+      }
+    ],
+    "path": "Proofs/AngleTrisectionOQ03OQ03.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "origami_trisects_but_compass_cannot",
+      "type": "core",
+      "description": "Degree 3 (trisection, cube doubling) is origami- but not compass-constructible",
+      "leanType": "(α : ℝ) → IsOrigamiConstructible α 3 ∧ ¬ CompassConstructibleDegree 3"
+    },
+    {
+      "name": "threeSmooth_iff_primeFactors",
+      "type": "key",
+      "description": "Prime-factor characterization of 3-smooth degrees (origami criterion)",
+      "leanType": "{d : ℕ} → 0 < d → (ThreeSmooth d ↔ ∀ p ∈ d.primeFactors, p = 2 ∨ p = 3)"
+    },
+    {
+      "name": "constructible_imp_origami",
+      "type": "key",
+      "description": "Compass ⊆ origami: a power-of-2 degree is 3-smooth",
+      "leanType": "{α : ℝ} → {d : ℕ} → CompassConstructibleDegree d → IsOrigamiConstructible α d"
+    }
+  ],
+  "openQuestions": [
+    "Characterize origami-constructible regular n-gons via Pierpont primes (p − 1 = 2^a·3^b).",
+    "Formalize that the origami-constructible numbers are a field closed under square and cube roots.",
+    "Extend to conic-section constructions allowing further primes in the degree."
+  ],
+  "references": [
+    {
+      "authors": "Huzita, Humiaki",
+      "title": "Axiomatic Development of Origami Geometry",
+      "year": "1989",
+      "venue": "Proc. First International Meeting of Origami Science and Technology",
+      "note": "The fold axioms, including the cubic-solving fold"
+    },
+    {
+      "authors": "Alperin, Roger C.",
+      "title": "A Mathematical Theory of Origami Constructions and Numbers",
+      "year": "2000",
+      "venue": "New York Journal of Mathematics 6, 119–133",
+      "note": "Origami-constructible numbers form a field closed under cube roots; degree 2^a·3^b criterion"
+    },
+    {
+      "authors": "Cox, David A.",
+      "title": "Galois Theory",
+      "year": "2012",
+      "venue": "Wiley, 2nd edition",
+      "note": "Constructibility degree criteria and the Pierpont-prime characterization of origami n-gons"
+    }
+  ],
+  "sorries": 0
+}
