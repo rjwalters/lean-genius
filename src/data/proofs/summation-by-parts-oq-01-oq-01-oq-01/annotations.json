@@ -1,0 +1,50 @@
+[
+  {
+    "id": "sbp010101-ann-header",
+    "proofId": "summation-by-parts-oq-01-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 69 },
+    "type": "context",
+    "title": "The Uniform Degree-Lowering Mechanism Behind the Ladder",
+    "content": "The header frames the entry as the *general mechanism* the parent and grandparent computed only instance-by-instance. Where `SummationByPartsOQ01` did $\\sum k r^k$ and `SummationByPartsOQ01OQ01` did $\\sum k^2 r^k$ by hand, this file proves the single recursion (★) that drops $\\sum f(k) r^k$ to a sum weighted by the forward difference $\\Delta f(k) = f(k+1) - f(k)$, plus a boundary term — for *any* sequence $f$ over *any* commutative ring, with no hypotheses (not even $r \\neq 1$, since both sides are polynomial in $r$). Iterating it lowers a degree-$d$ polynomial weight to the geometric base case in $d+1$ steps. Imports are `Mathlib.Algebra.BigOperators.Module` and `Mathlib.Tactic`; the file opens `Finset`.",
+    "mathContext": "$(r-1)\\sum_{k<n} f(k) r^k = f(n) r^n - f(0) - \\sum_{k<n} (f(k+1)-f(k)) r^{k+1}.$ This is Abel summation by parts specialised to a geometric weight $g(k) = r^k$.",
+    "significance": "context",
+    "relatedConcepts": ["Abel summation by parts", "forward difference operator", "arithmetico-geometric ladder", "finite differences"],
+    "prerequisites": ["finite sums", "commutative rings", "geometric series"]
+  },
+  {
+    "id": "sbp010101-ann-recursion",
+    "proofId": "summation-by-parts-oq-01-oq-01-oq-01",
+    "range": { "startLine": 71, "endLine": 98 },
+    "type": "theorem",
+    "title": "The General Recursion (★) and Its Factored Form (★★)",
+    "content": "`geom_weighted_recursion` is the headline identity (★), proved by a short induction on $n$: the step uses `Finset.sum_range_succ` to peel the top term off both the weighted sum and the difference sum, substitutes the induction hypothesis for $(r-1)\\sum_{k<m}$, and closes the polynomial identity in the atoms $f(m), f(m+1), f(0), r^m, r$ by `ring`. Notably it invokes no summation-by-parts black box — it exhibits the elementary content *behind* `Finset.sum_range_by_parts` directly. `geom_weighted_recursion_factored` rewrites (★) as (★★) by pulling $r$ out of $r^{k+1} = r \\cdot r^k$, making the 'weight $f$ ↦ weight $\\Delta f$' structure explicit.",
+    "mathContext": "Factored form (★★): $(r-1)\\sum f(k) r^k = f(n) r^n - f(0) - r\\sum (f(k+1)-f(k)) r^k$. The map $\\sum f(k) r^k \\mapsto \\sum \\Delta f(k) r^k$ is the degree-lowering operator.",
+    "significance": "key",
+    "relatedConcepts": ["induction on ℕ", "Finset.sum_range_succ", "ring", "telescoping"],
+    "prerequisites": ["mathematical induction", "polynomial identities"]
+  },
+  {
+    "id": "sbp010101-ann-div",
+    "proofId": "summation-by-parts-oq-01-oq-01-oq-01",
+    "range": { "startLine": 100, "endLine": 110 },
+    "type": "technique",
+    "title": "Division Form over a Field",
+    "content": "`geom_weighted_recursion_div` is the immediate corollary over a field once $r \\neq 1$: the weighted sum equals the boundary term divided by $r - 1$. The proof records $r - 1 \\neq 0$, clears the denominator with `eq_div_iff`, and reduces to the hypothesis-free ring identity (★). This is the shape in which the classical closed forms (parent and grandparent) are usually stated — the field hypothesis enters only here, at the very end, not in the underlying recursion.",
+    "mathContext": "$\\sum_{k<n} f(k) r^k = \\dfrac{f(n) r^n - f(0) - \\sum_{k<n} (f(k+1)-f(k)) r^{k+1}}{r - 1}$ for $r \\neq 1$ in a field.",
+    "significance": "supporting",
+    "relatedConcepts": ["field division", "eq_div_iff", "specialization"],
+    "prerequisites": ["fields", "division by a nonzero element"]
+  },
+  {
+    "id": "sbp010101-ann-ladder",
+    "proofId": "summation-by-parts-oq-01-oq-01-oq-01",
+    "range": { "startLine": 112, "endLine": 152 },
+    "type": "insight",
+    "title": "Reading the Ladder off the Engine: f≡1, f=k, f=k²",
+    "content": "Three corollaries instantiate (★) and recover each rung of the ladder. `geom_sum_via_recursion` ($f \\equiv 1$): the forward differences vanish, so (★) collapses to $(r-1)\\sum r^k = r^n - 1$ — the geometric series, the bottom of the ladder. `sum_range_id_mul_geom_recursion` ($f(k) = k$): $\\Delta f \\equiv 1$ is constant, so the first-order sum reduces to a pure geometric sum. `sum_range_sq_mul_geom_recursion` ($f(k) = k^2$): $\\Delta f(k) = 2k+1$ is linear, so the second-order sum reduces to a first-order weighted sum — exactly the degree-lowering step the parent entry performed by hand. Each is a one-line specialization (`geom_weighted_recursion`, then `simp`/`push_cast`/`ring` to normalize the difference term).",
+    "mathContext": "$f \\equiv 1: \\Delta f = 0$; $f(k)=k: \\Delta f = 1$; $f(k)=k^2: \\Delta f(k) = (k+1)^2 - k^2 = 2k+1$. The degree of $\\Delta f$ is always one less than that of $f$ — the engine of the recursion.",
+    "significance": "key",
+    "relatedConcepts": ["geometric series", "first-order arithmetico-geometric sum", "second-order sum", "degree lowering"],
+    "prerequisites": ["forward differences of polynomials", "specialization of identities"]
+  }
+]
