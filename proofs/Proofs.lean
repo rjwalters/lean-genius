@@ -2886,6 +2886,7 @@ import Proofs.InfinitudePrimesOQ05
 import Proofs.IntegralRootTheoremOQ01
 import Proofs.IntermediateValueTheorem
 import Proofs.IntermediateValueTheoremOQ01
+import Proofs.IntermediateValueTheoremOQ01OQ01
 import Proofs.IntermediateValueTheoremOQ02
 import Proofs.IntermediateValueTheoremOQ02OQ01
 import Proofs.IntermediateValueTheoremOQ02OQ03
