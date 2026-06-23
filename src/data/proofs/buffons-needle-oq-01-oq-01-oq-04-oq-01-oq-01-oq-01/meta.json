@@ -1,0 +1,130 @@
+{
+  "id": "buffons-needle-oq-01-oq-01-oq-04-oq-01-oq-01-oq-01",
+  "title": "Companion Beta Integral and the Reflection Symmetry of the Angular Average",
+  "slug": "buffons-needle-oq-01-oq-01-oq-04-oq-01-oq-01-oq-01",
+  "description": "Proves the companion angular Beta integral ∫_0^{π/2} sin θ · cos^{n-2} θ dθ = 1/(n-1) for n ≥ 2 (general form ∫_0^{π/2} sin θ · cosᵐ θ dθ = 1/(m+1)), axiom-free, by the fundamental theorem of calculus with the mirror antiderivative F(θ) = -cos^{m+1}(θ)/(m+1). It then gives an independent second derivation via the reflection θ ↦ π/2 − θ, which swaps sin ↔ cos and exhibits the companion as the parent integral with its two factors exchanged. This answers both open questions flagged by the parent Beta-integral entry.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cauchy%E2%80%93Crofton_formula",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BuffonsNeedleOQ01OQ01OQ04OQ01OQ01OQ01.lean",
+    "tags": [
+      "integral-geometry",
+      "beta-integral",
+      "buffon",
+      "cauchy-crofton",
+      "angular-averaging",
+      "trigonometric-integrals",
+      "fundamental-theorem-of-calculus",
+      "reflection-symmetry",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 112,
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "openQuestion": {
+    "id": "buffons-needle-oq-01-oq-01-oq-04-oq-01-oq-01-oq-01",
+    "parentId": "buffons-needle-oq-01-oq-01-oq-04-oq-01-oq-01",
+    "question": "Can the companion integral ∫_0^{π/2} sin θ · cos^{n-2} θ dθ = 1/(n-1) (and more generally the full Beta function B(a,b) = ∫_0^{π/2} sin^{2a-1}θ cos^{2b-1}θ dθ) be formalized by the same FTC template? And does an independent proof exist?",
+    "answer": "Yes for the companion integral. The general lemma ∫_0^{π/2} sin θ · cosᵐ θ dθ = 1/(m+1) is proved for every m : ℕ by the fundamental theorem of calculus with the mirror antiderivative F(θ) = -cos^{m+1}(θ)/(m+1), whose derivative is sin θ · cosᵐ θ (the closed form of the substitution u = cos θ). Specializing m := n-2 gives the dimensional form 1/(n-1) for n ≥ 2. An independent derivation is also provided: the reflection θ ↦ π/2 − θ (intervalIntegral.integral_comp_sub_left with cos(π/2−θ)=sin θ, sin(π/2−θ)=cos θ) maps the companion integral exactly onto the parent integral ∫_0^{π/2} cos θ · sinᵐ θ dθ, so the value 1/(m+1) follows a second way without re-running the FTC. The full two-parameter Beta function B(a,b) for general real a,b is NOT reachable by this single-step FTC template — an elementary antiderivative closes the integral only when one factor is a first power; the general case requires the Gamma-function recurrence.",
+    "status": "answered"
+  },
+  "overview": {
+    "historicalContext": "The Cauchy–Crofton formula generalizes the 2D Buffon needle identity to higher dimensions, reducing the angular average on S^{n-1} to a one-dimensional Beta integral. The parent entry (BuffonsNeedleOQ01OQ01OQ04OQ01Beta) proved ∫_0^{π/2} cos θ · sin^{n-2} θ dθ = 1/(n-1) by FTC and flagged two open questions: (1) whether the companion integral ∫_0^{π/2} sin θ · cos^{n-2} θ dθ = 1/(n-1) — and the full Beta function — can be handled by the same FTC template, and (2) whether an independent proof exists. This file resolves both.",
+    "problemStatement": "For $n \\geq 2$, prove the companion Beta integral $\\int_0^{\\pi/2} \\sin\\theta \\cdot \\cos^{n-2}\\theta \\, d\\theta = \\frac{1}{n-1}$ (equivalently, for every $m : \\mathbb{N}$, $\\int_0^{\\pi/2} \\sin\\theta \\cdot \\cos^{m}\\theta \\, d\\theta = \\frac{1}{m+1}$), and give an independent derivation via the reflection $\\theta \\mapsto \\pi/2 - \\theta$.",
+    "proofStrategy": "The general identity is proved by the fundamental theorem of calculus with the mirror antiderivative F(θ) = -cos^{m+1}(θ)/(m+1); its derivative is computed via (Real.hasDerivAt_cos θ).pow (m+1), HasDerivAt.neg, and HasDerivAt.div_const, giving F'(θ) = sin θ · cosᵐ θ after a push_cast/field_simp/ring reconciliation of the (m+1) factor and the two sign flips. The integrand is continuous, hence interval-integrable, so intervalIntegral.integral_eq_sub_of_hasDerivAt applies; endpoint evaluation uses cos(π/2) = 0 (killed by zero_pow) and cos(0) = 1. The dimensional form specializes m := n - 2 with the cast (n - 2 : ℕ) + 1 = (n : ℝ) - 1. The independent derivation uses intervalIntegral.integral_comp_sub_left: under θ ↦ π/2 − θ the interval [0, π/2] is fixed and cos(π/2−θ)=sin θ, sin(π/2−θ)=cos θ, turning the companion integrand into the parent integrand, so the companion equals the parent integral term-by-term.",
+    "keyInsights": [
+      "The companion integral is the exact mirror of the parent's: where the parent uses the antiderivative sin^{m+1}(θ)/(m+1) for cos θ · sinᵐ θ, the companion uses -cos^{m+1}(θ)/(m+1) for sin θ · cosᵐ θ. The single sign on the antiderivative (and the resulting endpoint swap cos(π/2)=0, cos(0)=1) is the only difference, confirming the FTC template transfers verbatim.",
+      "The reflection θ ↦ π/2 − θ gives a structural, computation-free reason the two integrals share the value 1/(m+1): it is an involution of [0, π/2] that interchanges sin and cos, so the companion is literally the parent with its factors swapped. This answers the parent's second open question (an independent proof) and is captured by a single application of intervalIntegral.integral_comp_sub_left.",
+      "The boundary of the method is sharp: the FTC template closes ∫ sin θ · cosᵐ θ (and ∫ cos θ · sinᵐ θ) precisely because one factor is a first power, making the integrand the exact derivative of a power of the other factor. The full two-parameter Beta function B(a,b) = ∫_0^{π/2} sin^{2a-1}θ cos^{2b-1}θ dθ has no elementary antiderivative for general a,b and needs the Gamma recurrence — so 'the same FTC template' answers the companion clause but not the full-Beta clause of the open question.",
+      "Both companion and parent supply the same σ_{n-2}/(n-1) proportionality factor in the n-dimensional angular average; which of sin/cos appears depends only on the choice of polar axis, and the reflection symmetry makes that choice provably immaterial."
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-docstring",
+      "title": "Module Docstring & Main Results",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "States the open question (companion integral + full Beta + independent proof) and frames the companion ∫_0^{π/2} sin θ · cos^{n-2} θ dθ = 1/(n-1) as the mirror of the parent's integral. Records the mirror-antiderivative FTC strategy, the reflection derivation, and explicitly scopes the full two-parameter Beta function out of the single-step FTC template.",
+      "mathContext": "The mirror antiderivative $F(\\theta) = -\\cos^{m+1}\\theta/(m+1)$ has $F'(\\theta) = \\sin\\theta\\,\\cos^{m}\\theta$; the reflection $\\theta\\mapsto\\pi/2-\\theta$ swaps $\\sin\\leftrightarrow\\cos$."
+    },
+    {
+      "id": "sec-companion-ftc",
+      "title": "Companion Beta Integral via FTC",
+      "startLine": 51,
+      "endLine": 76,
+      "summary": "Proves integral_sin_mul_cos_pow: ∫_0^{π/2} sin θ · cosᵐ θ dθ = 1/(m+1) for all m : ℕ. Builds the HasDerivAt witness for -cos^{m+1}(θ)/(m+1) via (hasDerivAt_cos).pow (m+1), neg, and div_const, reconciles the constant with push_cast/field_simp/ring, proves continuity for interval-integrability, applies the FTC bridge, and evaluates at cos(π/2)=0 (zero_pow) and cos(0)=1.",
+      "mathContext": "$F(\\theta) = -\\dfrac{\\cos^{m+1}\\theta}{m+1}$, $F(\\pi/2)-F(0) = 0 - \\left(-\\tfrac{1}{m+1}\\right) = \\tfrac{1}{m+1}$ — the closed-form image of $u=\\cos\\theta$, $\\int_0^1 u^m\\,du$."
+    },
+    {
+      "id": "sec-dimensional",
+      "title": "Dimensional Specialization",
+      "startLine": 78,
+      "endLine": 90,
+      "summary": "Proves integral_sin_mul_cos_pow_dim: ∫_0^{π/2} sin θ · cos^{n-2} θ dθ = 1/(n-1) for n ≥ 2. Specializes the general lemma with m := n - 2 and rewrites the cast (n - 2 : ℕ) + 1 = (n : ℝ) - 1 via Nat.cast_sub.",
+      "mathContext": "With $m = n-2$ the value $\\tfrac{1}{m+1}$ becomes $\\tfrac{1}{n-1}$; $n \\ge 2$ is needed for the ℕ-subtraction cast."
+    },
+    {
+      "id": "sec-reflection",
+      "title": "Independent Derivation via Reflection",
+      "startLine": 92,
+      "endLine": 112,
+      "summary": "Proves integral_sin_mul_cos_pow_eq_reflect: the companion integral equals the parent integral ∫_0^{π/2} cos θ · sinᵐ θ dθ via intervalIntegral.integral_comp_sub_left applied with d = π/2, using cos(π/2−θ)=sin θ and sin(π/2−θ)=cos θ and the interval fixed by sub_zero/sub_self. A closing example reproves the parent value 1/(m+1) through this reflection, cross-checking the direct FTC computation.",
+      "mathContext": "The reflection $\\theta\\mapsto\\pi/2-\\theta$ is an involution of $[0,\\pi/2]$ interchanging $\\sin$ and $\\cos$, so $\\int_0^{\\pi/2}\\sin\\theta\\cos^m\\theta = \\int_0^{\\pi/2}\\cos\\theta\\sin^m\\theta$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file gives a complete axiom-free Lean formalization of the companion Beta integral ∫_0^{π/2} sin θ · cos^{n-2} θ dθ = 1/(n-1) for n ≥ 2 (general form 1/(m+1)) by the fundamental theorem of calculus with the mirror antiderivative -cos^{m+1}(θ)/(m+1), and an independent derivation of the same value via the reflection θ ↦ π/2 − θ. All three theorems are machine-checked with 0 sorries and 0 axioms.",
+    "implications": "Together with the parent file, this closes the angular-averaging analytic core symmetrically in sin and cos, making the choice of polar axis provably immaterial. The reflection lemma is a reusable bridge between the two trigonometric power-integral templates, and the explicit scoping of the full Beta function marks the boundary of the single-step FTC method.",
+    "openQuestions": [
+      "Can the full two-parameter Beta function B(a,b) = ∫_0^{π/2} sin^{2a-1}θ cos^{2b-1}θ dθ for general real a,b be connected to Mathlib's Real.Gamma / betaIntegral API and the Wallis-type recurrence integral_sin_pow / integral_cos_pow?",
+      "Does the reflection-symmetry argument generalize to a clean Lean lemma 'symmetry of the half-period trig integral under exponent swap' usable across the gallery's trigonometric-integral entries?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "buffons-needle-oq-01-oq-01-oq-04-oq-01-oq-01",
+      "relationship": "Parent proof of the angular Beta integral ∫ cos θ · sinᵐ θ = 1/(m+1); this file proves the companion ∫ sin θ · cosᵐ θ = 1/(m+1) and connects the two by reflection, answering both of the parent's open questions"
+    },
+    {
+      "targetId": "buffons-needle-oq-01-oq-01-oq-04-oq-01",
+      "relationship": "Grandparent: defines AngularAverageData and the Cauchy–Crofton constant whose σ_{n-2}/(n-1) factor both Beta integrals justify"
+    },
+    {
+      "targetId": "buffons-needle",
+      "relationship": "Classical root: the Buffon needle crossing problem this integral-geometry chain formalizes"
+    }
+  ],
+  "highlights": [
+    "Companion Beta integral ∫_0^{π/2} sin θ · cos^{n-2} θ dθ = 1/(n-1) proved axiom-free for n ≥ 2",
+    "Mirror FTC antiderivative F(θ) = -cos^{m+1}(θ)/(m+1) transfers the parent's template verbatim",
+    "Independent reflection derivation θ ↦ π/2 − θ shows the companion is the parent with sin ↔ cos swapped",
+    "Sharply scopes the full two-parameter Beta function out of the single-step FTC method",
+    "Self-contained: depends only on Mathlib, 0 sorries, 0 axioms"
+  ],
+  "assumptions": [],
+  "leanFile": {
+    "path": "Proofs/BuffonsNeedleOQ01OQ01OQ04OQ01OQ01OQ01.lean",
+    "lineCount": 112,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "imports": [
+      "import Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "intervalIntegral",
+      "MeasureTheory"
+    ],
+    "namespace": "BuffonsNeedleOQ01OQ01OQ04OQ01OQ01OQ01"
+  },
+  "sorries": 0
+}
