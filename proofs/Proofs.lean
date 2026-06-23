@@ -2653,6 +2653,7 @@ import Proofs.FourColorTheoremOQ01
 import Proofs.FourColorTheoremOQ02
 import Proofs.FourSquareDistribution
 import Proofs.FourSquareDistributionOQ01
+import Proofs.FourSquareDistributionOQ06
 import Proofs.FourSquareDistributionOQ05
 import Proofs.FourSquareDistributionOQ04
 import Proofs.FourSquareDistributionOQ04Arrange
