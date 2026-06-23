@@ -3228,6 +3228,7 @@ import Proofs.NavierStokes
 import Proofs.NesbittInequalityOQ01
 import Proofs.NormEuclideanZsqrtdFamilyOQ03
 import Proofs.NormEuclideanZsqrtdFamilyOQ03OQ02
+import Proofs.NormEuclideanZsqrtdFamilyOQ03OQ02OQ01
 import Proofs.NormalAutFinSepDegreeEquality
 import Proofs.NewtonIndStep2
 import Proofs.NewtonInductiveStep
