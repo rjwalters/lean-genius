@@ -20,6 +20,45 @@
     "sorries": 0
   },
   "title": "The Natural Density of the Non-Three-Square Integers Is 1/6",
+  "description": "The quantitative capstone of the three-square exceptional family E = {4^a(8b+7)}: the integers that are NOT sums of three squares have natural density exactly 1/6. The proof builds a 4-descent counting recursion excludedCount N = ⌊N/8⌋ + excludedCount ⌈N/4⌉ from the self-similar structure of E, derives an explicit logarithmic error bound by strong induction, and concludes via the standard log N / N → 0. Asymptotically, one integer in six requires all four squares of Lagrange's theorem.",
+  "overview": {
+    "historicalContext": "By Legendre's three-square theorem (1798), the integers not representable as x²+y²+z² are exactly the excluded family E = {4^a(8b+7)} — precisely the numbers that require the full four squares in Lagrange's four-square theorem (1770), i.e. the extremal numbers for Waring's problem g(2) = 4. While which integers lie in E is classical, how RARE they are is a natural quantitative question not previously formalized in the gallery. The heuristic answer is a geometric series: the disjoint 2-adic layers 4^a·(8b+7) contribute densities 1/(8·4^a) summing to (1/8)(4/3) = 1/6. Turning this heuristic into a theorem — a rigorous natural-density statement with a controlled error term — is the content of this entry, the quantitative sequel to oq-03-oq-04's structural 2-adic normal form.",
+    "problemStatement": "Prove that the excluded family E = {4^a(8b+7)} has natural density exactly 1/6: with excludedCount N = #{n < N : n ∈ E}, show excludedCount N / N → 1/6 as N → ∞. Equivalently, the asymptotic proportion of integers that are not sums of three squares (that need all four squares) is one in six.",
+    "proofStrategy": "Exploit the self-similarity of E. The descent facts (n ≡ 7 mod 8 ⟹ excluded; 4k excluded ⟺ k excluded) split E ∩ [0,N) into the residue class {n ≡ 7 mod 8} (exactly ⌊N/8⌋ elements) and a bijective 1/4-scaled copy of E (via n ↦ n/4), giving the recursion excludedCount N = ⌊N/8⌋ + excludedCount ⌈N/4⌉. Strong induction on this recursion yields the explicit bound |6·excludedCount N − N| ≤ 6(log₂ N + 1): each step perturbs the error by ≤ 6 over a log-depth descent. Dividing by 6N and squeezing with (log₂ N + 1)/N → 0 (from Real.log N / N → 0) gives the density 1/6.",
+    "keyInsights": [
+      "The excluded family is 2-adically self-similar — a residue class plus a 1/4-scaled copy of itself — and that single structural fact reduces the whole density computation to one recursion.",
+      "The constant 1/6 = Σ 1/(8·4^a) is the value of a geometric series, but the proof never forms an infinite sum: it is captured as a single inductive invariant (the logarithmic error bound), which is both cleaner and constructively sharper.",
+      "The deviation from perfect density is only logarithmic, |6·excludedCount N − N| ≤ 6(log₂ N + 1), so the convergence is fast and the error is explicit — more than the bare density limit requires.",
+      "The result quantifies Waring's g(2) = 4: a positive proportion, exactly 1/6, of all integers genuinely need the fourth square; the four-square theorem is not 'almost always' overkill but necessary one-sixth of the time.",
+      "The descent-plus-residue method is general: it computes the density of any 2-adically self-similar set as a geometric series plus a logarithmic remainder, and should transfer to the exceptional sets of other ternary quadratic genera."
+    ]
+  },
+  "sections": [
+    {
+      "id": "structure",
+      "title": "2-Adic Structure and the Counting Function",
+      "startLine": 51,
+      "endLine": 152,
+      "summary": "Records the descent facts (n ≡ 7 mod 8 ⟹ excluded; 4k excluded ⟺ k excluded), defines excludedCount, counts the residue class (card_mod8_seven = ⌊N/8⌋), and exhibits the divisible-by-4 part as a bijective scaled copy of E (excludedCount_dvd_part via Finset.card_bij').",
+      "mathContext": "E ∩ [0,N) splits as {n ≡ 7 mod 8} ⊔ 4·(E ∩ [0,⌈N/4⌉))."
+    },
+    {
+      "id": "recursion-bound",
+      "title": "The Recursion and Logarithmic Error Bound",
+      "startLine": 154,
+      "endLine": 206,
+      "summary": "Assembles the 4-descent recursion excludedCount N = ⌊N/8⌋ + excludedCount ⌈N/4⌉ (excludedCount_rec), then proves the explicit bound |6·excludedCount N − N| ≤ 6(log₂ N + 1) by strong induction (excludedCount_error_bound), pinning the constant 1/6.",
+      "mathContext": "excludedCount N = ⌊N/8⌋ + excludedCount ⌈N/4⌉; |6·excludedCount N − N| ≤ 6(log₂ N + 1)."
+    },
+    {
+      "id": "density-section",
+      "title": "The Density Theorem and Sanity Checks",
+      "startLine": 208,
+      "endLine": 303,
+      "summary": "Squeezes the deviation |excludedCount N / N − 1/6| ≤ (log₂ N + 1)/N to 0 via the standard log N / N → 0, proving excludedCount N / N → 1/6 (excludedCount_density). Sanity checks confirm excludedCount 8 = 1, 16 = 2, 32 = 5.",
+      "mathContext": "excludedCount N / N → 1/6 — the non-three-square integers have natural density exactly one in six."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
@@ -96,11 +135,6 @@
       "targetId": "lagrange-four-squares-waring-g2-oq-03-oq-04",
       "relationship": "extends",
       "description": "Direct sequel: oq-03-oq-04 supplies the 2-adic normal form, uniqueness of the 4^a(8b+7) parametrisation, and the computable Decidable instance for E; this entry uses that decidability to define the counting function excludedCount and answers oq-03-oq-04's own follow-up question (density 1/6), realizing the geometric-series heuristic stated there as a fully verified limit."
-    },
-    {
-      "targetId": "lagrange-four-squares-waring-g2-oq-03",
-      "relationship": "depends-on",
-      "description": "Companion to the parent three-square sufficiency study. By Legendre's theorem the non-three-square integers are exactly E; this entry quantifies how rare they are (density 1/6), giving the asymptotic frequency of the numbers that require all four squares in Waring's g(2) = 4."
     },
     {
       "targetId": "lagrange-four-squares-waring-g2-oq-03-oq-03",
