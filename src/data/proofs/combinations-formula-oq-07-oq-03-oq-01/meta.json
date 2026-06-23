@@ -1,0 +1,131 @@
+{
+  "id": "combinations-formula-oq-07-oq-03-oq-01",
+  "title": "The Second Moment of Squared Binomial Coefficients",
+  "slug": "combinations-formula-oq-07-oq-03-oq-01",
+  "description": "Answers the parent's first open question: the second moment of the squared Pascal row. Where the parent weights the central sum of squares C(2n,n) = ∑ C(n,k)² by k to get the first moment, this entry weights by k² and proves the closed form ∑_{k=0}^{n} k²·C(n,k)² = n²·C(2n−2,n−1) for n ≥ 1. The proof is a single application of the absorption identity (k+1)·C(n+1,k+1) = (n+1)·C(n,k): writing the moment with n = m+1, its k=0 term vanishes, so after shifting k = j+1 each summand becomes ((j+1)·C(m+1,j+1))² = ((m+1)·C(m,j))² = (m+1)²·C(m,j)². Factoring out (m+1)² leaves the parent's unweighted sum of squares, which equals C(2m,m). No reflection, no induction, no generating functions. Reading C(n,k)²/C(2n,n) as a hypergeometric law, this is its raw second moment E[X²].",
+  "meta": {
+    "author": "Lean Genius researcher-8",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CombinationsFormulaOQ07OQ03OQ01.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 123,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "assumptions": "None. The subtraction-free form ∑_{k=0}^{m+1} k²·C(m+1,k)² = (m+1)²·C(2m,m) holds for all m and is fully machine-checked; the classical form ∑ k²·C(n,k)² = n²·C(2n−2,n−1) is stated for n ≥ 1. Depends only on the foundational axioms propext, Classical.choice, Quot.sound; the numeric checks use kernel `decide` (no Lean.ofReduceBool, no native_decide, no sorryAx).",
+    "tags": [
+      "combinatorics",
+      "binomial-coefficients",
+      "sum-of-squares",
+      "weighted-sum",
+      "second-moment",
+      "absorption-identity",
+      "central-binomial",
+      "hypergeometric"
+    ],
+    "dateAdded": "2026-06-23",
+    "originalContributions": [
+      "sum_sq_weighted_sq: the second-moment closed form ∑_{k=0}^{n} k²·C(n,k)² = n²·C(2n−2,n−1) for n ≥ 1, the squared-index companion to the parent's first moment ∑ k·C(n,k)² = n·C(2n−1,n−1), absent from Mathlib",
+      "sum_sq_weighted_sq_succ: the subtraction-free form ∑_{k=0}^{m+1} k²·C(m+1,k)² = (m+1)²·C(2m,m), valid for all m including m=0",
+      "term_absorb: the single-absorption term identity (j+1)²·C(m+1,j+1)² = (m+1)²·C(m,j)², obtained by squaring (j+1)·C(m+1,j+1) = (m+1)·C(m,j); this is the whole proof, replacing the parent's reflection argument",
+      "Worked check ∑_{k=0}^{3} k²·C(3,k)² = 0 + 9 + 36 + 9 = 54 = 3²·C(4,2)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.add_one_mul_choose_eq",
+        "description": "The absorption identity (n+1)·C(n,k) = C(n+1,k+1)·(k+1). Squared and rearranged, it turns the j-weighted binomial square (j+1)²·C(m+1,j+1)² into the j-free multiple (m+1)²·C(m,j)² — the single structural step that drives the entire closed form.",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "CombinationsFormulaOQ07.central_binom_eq_sum_sq",
+        "description": "The grandparent identity C(2m,m) = ∑_{j=0}^{m} C(m,j)². Once the index weight has been absorbed and (m+1)² factored out, what remains is exactly this unweighted sum of squares; the entire second-moment result rests on it.",
+        "module": "Proofs.CombinationsFormulaOQ07"
+      },
+      {
+        "theorem": "Finset.sum_range_succ'",
+        "description": "∑_{i ∈ range (n+1)} f i = (∑_{i ∈ range n} f (i+1)) + f 0. Peels the k=0 term (which vanishes, k²=0) and reindexes the rest by k = j+1, exposing each summand in the C(m+1,j+1) form the absorption identity expects.",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.mul_sum",
+        "description": "b·∑ f = ∑ b·f. Factors the constant (m+1)² out of the reindexed sum so that the remaining sum is the bare ∑ C(m,j)², ready for the grandparent identity.",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      }
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/CombinationsFormulaOQ07OQ03OQ01.lean",
+    "namespace": "CombinationsFormulaOQ07OQ03OQ01",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 123,
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The sum of squares of a Pascal row, ∑_k C(n,k)² = C(2n,n), is the diagonal of Vandermonde's convolution; weighting it by k gives the first moment (the parent entry, mean n/2), and weighting by k² gives the second moment computed here. In probabilistic language, p_k = C(n,k)²/C(2n,n) is the hypergeometric distribution for the number of items drawn from the first half when n of 2n items are chosen; ∑ k·p_k is its mean and ∑ k²·p_k its raw second moment. Combining the two yields the variance n²/(4(2n−1)). Such weighted binomial-square sums are catalogued in Gould's Combinatorial Identities (1972); Mathlib carries the unweighted and alternating row sums and the absorption identity (n+1)C(n,k) = C(n+1,k+1)(k+1), but none of the squared-coefficient moments.",
+    "problemStatement": "Open Question OQ-07-OQ-03-OQ-01 (the parent's first listed open question): the parent entry computes the first moment 2·∑ k·C(n,k)² = n·C(2n,n). What is the second moment ∑_{k=0}^{n} k²·C(n,k)²? Identify and formalize its closed form, and the structural reason behind it.",
+    "proofStrategy": "Unlike the first moment, the second moment does not yield to reflection alone (averaging the k² and (n−k)² weights leaves a residual first-moment term). Instead use a single absorption. Write the moment with n = m+1 to avoid natural-number subtraction. The k=0 term vanishes (k²=0), so Finset.sum_range_succ' peels it and reindexes the rest by k = j+1 over j ∈ {0,…,m}. The key term identity (term_absorb) squares the absorption law: ((j+1)·C(m+1,j+1))² = ((m+1)·C(m,j))², i.e. (j+1)²·C(m+1,j+1)² = (m+1)²·C(m,j)², where (j+1)·C(m+1,j+1) = (m+1)·C(m,j) is Nat.add_one_mul_choose_eq rearranged. Applying it termwise (Finset.sum_congr) makes every summand a constant multiple of C(m,j)²; Finset.mul_sum factors out (m+1)², and the grandparent identity central_binom_eq_sum_sq evaluates ∑_{j=0}^{m} C(m,j)² = C(2m,m). Hence the moment is (m+1)²·C(2m,m) = n²·C(2n−2,n−1). The classical n≥1 form follows by substituting n = m+1 and simplifying 2(m+1)−2 = 2m, (m+1)−1 = m.",
+    "keyInsights": [
+      "Weighting the parent's sum of squares by k² is the raw second moment of the hypergeometric law C(n,k)²/C(2n,n); together with the parent's mean n/2 it pins down the variance n²/(4(2n−1)).",
+      "The reflection trick that solved the first moment fails here: averaging k² with (n−k)² gives n² − 2nk + 2k², leaving an irreducible ∑ k·C(n,k)² term rather than constantising the weight. A different idea is needed.",
+      "That idea is a SINGLE absorption: k²·C(n,k)² = (k·C(n,k))², and k·C(n,k) = n·C(n−1,k−1) collapses the squared index to a clean n²·C(n−1,k−1)². The square of the absorption identity does all the work.",
+      "After absorption the sum is literally n² times the (n−1)-th row's sum of squares, so the second moment bootstraps off the GRANDPARENT identity ∑ C(m,j)² = C(2m,m) — one level deeper than the first moment, which used the parent.",
+      "Writing the headline with n = m+1 sidesteps every truncated subtraction: the k=0 term drops by k²=0, the shift k = j+1 is exact, and C(2m,m) needs no n−1 bookkeeping. The classical C(2n−2,n−1) form is recovered only at the very end."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Open Question and Mathematical Context",
+      "startLine": 1,
+      "endLine": 63,
+      "summary": "Header stating OQ-07-OQ-03-OQ-01 (the parent's first open question): the second moment ∑ k²·C(n,k)² = n²·C(2n−2,n−1), why reflection fails and single absorption succeeds, and the hypergeometric second-moment reading."
+    },
+    {
+      "id": "term-absorb",
+      "title": "The Single-Absorption Term Identity",
+      "startLine": 69,
+      "endLine": 83,
+      "summary": "term_absorb: (j+1)²·C(m+1,j+1)² = (m+1)²·C(m,j)². Squares the absorption law (j+1)·C(m+1,j+1) = (m+1)·C(m,j) (Nat.add_one_mul_choose_eq rearranged) via mul_pow. This is the conceptual core replacing the parent's reflection."
+    },
+    {
+      "id": "subtraction-free",
+      "title": "The Second Moment (Subtraction-Free Form)",
+      "startLine": 85,
+      "endLine": 101,
+      "summary": "sum_sq_weighted_sq_succ: ∑_{k=0}^{m+1} k²·C(m+1,k)² = (m+1)²·C(2m,m). Peels the vanishing k=0 term and reindexes by j+1 (Finset.sum_range_succ'), applies term_absorb termwise, factors out (m+1)² (Finset.mul_sum), and finishes with the grandparent central_binom_eq_sum_sq."
+    },
+    {
+      "id": "classical-form",
+      "title": "The Classical Form and Checks",
+      "startLine": 103,
+      "endLine": 123,
+      "summary": "sum_sq_weighted_sq: ∑_{k=0}^{n} k²·C(n,k)² = n²·C(2n−2,n−1) for n ≥ 1, obtained from the subtraction-free form by substituting n = m+1 and simplifying the subtractions (omega). Includes the numeric check ∑_{k=0}^{3} k²·C(3,k)² = 54 = 3²·C(4,2)."
+    }
+  ],
+  "conclusion": {
+    "summary": "3 theorems, 0 sorries, 0 axioms. The second-moment identity ∑_{k=0}^{n} k²·C(n,k)² = n²·C(2n−2,n−1) (n ≥ 1), with subtraction-free form ∑_{k=0}^{m+1} k²·C(m+1,k)² = (m+1)²·C(2m,m). The entire proof is one application of the absorption identity, squared, against the grandparent's sum of squares — no reflection, induction, or generating functions.",
+    "implications": "Completes the moment ladder of the squared Pascal row: parent first moment ∑ k·C(n,k)² = n·C(2n−1,n−1), this second moment ∑ k²·C(n,k)² = n²·C(2n−2,n−1). Together they give the mean n/2 and variance n²/(4(2n−1)) of the hypergeometric distribution C(n,k)²/C(2n,n). Methodologically it shows that where reflection constantises a LINEAR weight, SQUARING the absorption identity dispatches a QUADRATIC one and drops the computation one Pascal level deeper — a template extending to higher moments via repeated absorption.",
+    "openQuestions": [
+      "Does repeated absorption give the r-th moment ∑_{k=0}^{n} k^r·C(n,k)² in closed form? The pattern n·C(2n−1,n−1), n²·C(2n−2,n−1) suggests falling-factorial weights k^{(r)} should yield n^{(r)}·C(2n−r,n−1)·(something); identify the exact closed form for the third moment and whether the central binomial argument always lands at C(2n−r, n−1).",
+      "What is the factorial-moment / variance identity made explicit: can ∑ k(k−1)·C(n,k)² be given a one-line absorption proof, and does it equal n(n−1)·C(2n−2,n−2), tightening the variance computation n²/(4(2n−1)) into a fully formalized hypergeometric variance?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "combinations-formula-oq-07-oq-03",
+      "relationship": "parent — computes the first moment ∑ k·C(n,k)² = n·C(2n−1,n−1) by reflection; this entry answers its first open question with the second moment ∑ k²·C(n,k)² = n²·C(2n−2,n−1) by single absorption"
+    },
+    {
+      "targetId": "combinations-formula-oq-07",
+      "relationship": "grandparent — proves the unweighted C(2n,n) = ∑ C(n,k)²; the second moment reduces directly to this identity one Pascal level down (∑ C(m,j)² = C(2m,m))"
+    },
+    {
+      "targetId": "combinations-formula-oq-07-oq-01",
+      "relationship": "sibling — the subset-of-a-subset companion whose absorption identity k·C(n,k) = n·C(n−1,k−1) is exactly the law squared here to dispatch the quadratic weight"
+    }
+  ],
+  "sorries": 0
+}
