@@ -1,0 +1,195 @@
+{
+  "id": "cauchy-group-theorem-oq-01-oq-01-oq-01",
+  "title": "The power map x ↦ xⁿ is a bijection on a finite group iff gcd(n, |G|) = 1",
+  "slug": "cauchy-group-theorem-oq-01-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.OrderOfElement",
+      "Mathlib.GroupTheory.Perm.Cycle.Type",
+      "Mathlib.FieldTheory.Finite.Basic",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "CauchyGroupTheoremOQ01OQ01OQ01",
+    "lineCount": 180,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "path": "Proofs/CauchyGroupTheoremOQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "description": "The sibling entry shows that in a finite group of odd order the squaring map x ↦ x² is a bijection — the n = 2 case of the boundary drawn by Cauchy's theorem. This entry proves the full characterization for an arbitrary exponent: for a finite group G and any n, the n-th power map x ↦ xⁿ is a bijection of G iff gcd(n, |G|) = 1. It holds for every finite group, abelian or not, even though x ↦ xⁿ is not a homomorphism in the non-abelian case — bijectivity is governed purely by the arithmetic of n against |G|. The coprime direction is Euler's theorem (the inverse map is x ↦ x^(n^(φ(|G|)−1)), packaged as an explicit Equiv); the converse is Cauchy's theorem (a prime dividing gcd(n, |G|) yields an order-p element collapsed by the power map). Specializing to n = 2 recovers and upgrades the sibling's odd-order squaring result to an iff. Verified 0-axiom, with a concrete ZMod 5 instance by kernel decide.",
+  "meta": {
+    "author": "Euler + Cauchy + Lagrange; Lean formalization original",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CauchyGroupTheoremOQ01OQ01OQ01.lean",
+    "tags": [
+      "algebra",
+      "group-theory",
+      "finite-groups",
+      "cauchy-theorem",
+      "euler-theorem",
+      "coprime-exponent",
+      "power-map",
+      "order-of-element",
+      "classic"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.ModEq.pow_totient",
+        "description": "Euler's theorem: Coprime a n ⟹ a ^ φ(n) ≡ 1 [MOD n]. With a = n and modulus |G| it certifies that the exponent n^φ(|G|) acts as the identity, the engine of the coprime direction.",
+        "module": "Mathlib.FieldTheory.Finite.Basic"
+      },
+      {
+        "theorem": "pow_eq_pow_iff_modEq",
+        "description": "x ^ a = x ^ b ↔ a ≡ b [MOD orderOf x]. Combined with orderOf x ∣ |G| it lets a congruence mod |G| be cashed in as equality of powers of any element.",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      },
+      {
+        "theorem": "orderOf_dvd_card",
+        "description": "orderOf x ∣ |G| (Lagrange). Bridges a congruence modulo |G| down to a congruence modulo orderOf x via Nat.ModEq.of_dvd.",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      },
+      {
+        "theorem": "exists_prime_orderOf_dvd_card",
+        "description": "Cauchy's theorem: a prime p ∣ |G| yields an element of order p. The obstruction on the non-coprime side — this element of prime order is collapsed to 1 by the power map.",
+        "module": "Mathlib.GroupTheory.Perm.Cycle.Type"
+      },
+      {
+        "theorem": "orderOf_dvd_iff_pow_eq_one",
+        "description": "orderOf x ∣ n ↔ x ^ n = 1. With orderOf g = p ∣ n it gives gⁿ = 1 for the Cauchy element, equal to 1ⁿ, breaking injectivity.",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      },
+      {
+        "theorem": "Finite.injective_iff_surjective",
+        "description": "On a finite type an endomorphism is injective iff surjective; upgrades the explicit surjectivity of the power map to bijectivity.",
+        "module": "Mathlib.Data.Finite.Card"
+      },
+      {
+        "theorem": "Nat.minFac_prime",
+        "description": "n ≠ 1 ⟹ (n.minFac).Prime; extracts a prime factor of gcd(n, |G|) when it is not 1, supplying the prime fed to Cauchy.",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.coprime_two_left",
+        "description": "Coprime 2 n ↔ Odd n; specializes the headline characterization at n = 2 to the odd-order squaring boundary.",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "originalContributions": [
+      "pow_bijective_iff_coprime: the headline — for a finite group G and any n, the n-th power map x ↦ xⁿ is a bijection iff Nat.Coprime n |G|. Mathlib has neither this biconditional nor either direction packaged for general n; the special case n coprime is folded into number-theoretic developments only for (ZMod n)ˣ, not for an arbitrary finite group.",
+      "pow_bijective_of_coprime / pow_surjective_of_coprime: the coprime direction with explicit inverse exponent — x ↦ x^(n^(φ(|G|)−1)) is a two-sided inverse, because chaining the two exponents multiplies to n^φ(|G|), which acts as the identity by Euler's theorem (pow_pow_totient_eq_self).",
+      "powEquivOfCoprime: the power map packaged as a genuine permutation G ≃ G whenever n is coprime to |G|.",
+      "not_pow_injective_of_not_coprime: the Cauchy obstruction — if gcd(n, |G|) ≠ 1, a prime factor p produces (by Cauchy) an element g of order p with gⁿ = 1 = 1ⁿ and g ≠ 1, so the power map is not injective. This is the precise sense in which Cauchy's theorem is the obstruction to bijectivity.",
+      "pow_eq_of_modEq_card: a reusable reduction lemma — congruent exponents mod |G| give equal powers of any element (orderOf x ∣ |G| plus pow_eq_pow_iff_modEq).",
+      "sq_bijective_iff_odd_card: the n = 2 specialization, recovering and upgrading the sibling file's one-directional odd-order squaring result to an iff: squaring is a bijection iff |G| is odd.",
+      "zmod5_triple_bijective: a concrete witness — tripling on ZMod 5 (gcd(3,5)=1) is a bijection, by kernel decide only (no native_decide), keeping the file free of Lean.ofReduceBool."
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified: 0 axioms, 0 sorries. The ZMod 5 witness uses kernel `decide` (not `native_decide`), so the file does not depend on Lean.ofReduceBool. Depends only on the foundational axioms propext, Classical.choice, Quot.sound via standard Mathlib lemmas.",
+    "lineCount": 180,
+    "theoremCount": 8,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Two classical theorems frame this entry. Euler's totient theorem (1763) — a^φ(n) ≡ 1 mod n for a coprime to n — is the arithmetic that makes coprime exponents invertible; in group-theoretic terms it says raising to a power coprime to the group order is undone by raising to the inverse power mod |G|. Cauchy's theorem (1845) — a prime dividing |G| is realised as an element order — is the exact obstruction on the other side: a shared prime factor of n and |G| produces an element the power map cannot distinguish from the identity. The dividing line between the two is the coprimality of n with |G|. The n = 2 case is the boundary between odd-order groups (squaring bijective, no involutions) and even-order groups (Cauchy yields an involution).",
+    "problemStatement": "The sibling entry shows squaring is a bijection in an odd-order group — the n = 2 instance of a boundary set by Cauchy. For a general exponent n, when is the n-th power map x ↦ xⁿ a bijection of a finite group G? The map is not a homomorphism when G is non-abelian, so the answer is not obvious. Mathlib packages neither the criterion nor either direction for an arbitrary finite group.\n\n**Answer:** x ↦ xⁿ is a bijection iff gcd(n, |G|) = 1. If the gcd is 1, Euler's theorem makes x ↦ x^(n^(φ(|G|)−1)) a two-sided inverse, so the map is a permutation of G. If the gcd exceeds 1, a prime factor p yields (by Cauchy) an element of order p that the power map sends to 1 = 1ⁿ, destroying injectivity. At n = 2 this reads: squaring is a bijection iff |G| is odd.",
+    "text": "The full characterization of when the n-th power map permutes a finite group is proved by pairing Euler's theorem (coprime ⟹ invertible exponent, with an explicit inverse) against Cauchy's theorem (a shared prime factor ⟹ a collapsed element). Bijectivity of x ↦ xⁿ is shown to be equivalent to gcd(n, |G|) = 1 for every finite group, abelian or not, and the n = 2 case recovers the odd-order squaring boundary as an iff.",
+    "proofStrategy": "1. pow_eq_of_modEq_card: from a ≡ b [MOD |G|] and orderOf x ∣ |G| (Nat.ModEq.of_dvd) conclude x^a = x^b via pow_eq_pow_iff_modEq.\n2. pow_pow_totient_eq_self: Euler's theorem gives n^φ(|G|) ≡ 1 [MOD |G|], so x^(n^φ(|G|)) = x^1 = x.\n3. pow_surjective_of_coprime: the preimage of y is y^(n^(φ(|G|)−1)); its n-th power has exponent n^(φ(|G|)−1)·n = n^φ(|G|) (φ ≥ 1), which equals y by step 2.\n4. pow_bijective_of_coprime / powEquivOfCoprime: surjective + finite ⟹ bijective (Finite.injective_iff_surjective), packaged as an Equiv.\n5. not_pow_injective_of_not_coprime: gcd(n, |G|) ≠ 1 has a prime factor p (Nat.minFac_prime); Cauchy gives g of order p; p ∣ n ⟹ gⁿ = 1 = 1ⁿ with g ≠ 1, contradicting injectivity.\n6. pow_bijective_iff_coprime: assemble the two directions (contrapositive on the forward side).\n7. sq_bijective_iff_odd_card: rewrite at n = 2 with Nat.coprime_two_left (Coprime 2 |G| ↔ Odd |G|).\n8. zmod5_triple_bijective: tripling on ZMod 5 is bijective by kernel decide.",
+    "keyInsights": [
+      "**Coprimality is the whole story — even for non-abelian groups**: although x ↦ xⁿ is not a homomorphism when G is non-abelian, whether it is a permutation depends only on gcd(n, |G|). The argument never uses commutativity; it works elementwise through orderOf x ∣ |G|.",
+      "**Euler supplies an explicit inverse exponent**: when gcd(n, |G|) = 1, raising to n^(φ(|G|)−1) inverts raising to n, because the two exponents compose to n^φ(|G|) ≡ 1 mod |G|. Bijectivity is thus witnessed constructively, not just by counting.",
+      "**Cauchy is exactly the obstruction**: a failure of coprimality is a shared prime p, and Cauchy's theorem turns that prime into a concrete element of order p that the power map cannot separate from the identity. The non-coprime direction is precisely Cauchy's theorem in contrapositive form.",
+      "**The n = 2 boundary, sharpened**: the sibling's odd-order ⟹ squaring-bijective becomes the iff squaring-bijective ⟺ odd order, since Coprime 2 |G| ↔ Odd |G| — placing the squaring result inside a single arithmetic criterion."
+    ],
+    "prerequisites": [
+      "Euler's totient theorem and the totient function φ",
+      "Cauchy's theorem and Lagrange's theorem for finite groups",
+      "The order of an element (orderOf) and orderOf x ∣ |G|",
+      "Modular arithmetic of exponents: x^a = x^b ↔ a ≡ b mod orderOf x"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-docstring",
+      "title": "Imports and Statement",
+      "startLine": 1,
+      "endLine": 59,
+      "summary": "File-level docstring: the n-th power map on a finite group is a bijection iff gcd(n, |G|) = 1, holding for every finite group via Euler (coprime direction, explicit inverse) and Cauchy (the obstruction). Imports the order-of-element file, the Cauchy/permutation file, the finite-field/Euler file, the ZMod files, and Tactic.",
+      "mathContext": "Coprimality of n with |G| as the criterion for x ↦ xⁿ to permute G."
+    },
+    {
+      "id": "modeq-reduction",
+      "title": "Modular Reduction of Exponents",
+      "startLine": 61,
+      "endLine": 70,
+      "summary": "pow_eq_of_modEq_card: congruent exponents mod |G| give equal powers of any element, since orderOf x ∣ |G|. The reusable engine for replacing an exponent by anything congruent to it mod |G|.",
+      "mathContext": "a ≡ b [MOD |G|] ⟹ x^a = x^b."
+    },
+    {
+      "id": "coprime-direction",
+      "title": "Coprime Exponent ⟹ Bijection (Euler)",
+      "startLine": 72,
+      "endLine": 117,
+      "summary": "pow_pow_totient_eq_self (Euler: x^(n^φ(|G|)) = x), pow_surjective_of_coprime (explicit preimage y^(n^(φ(|G|)−1))), pow_bijective_of_coprime (surjective + finite), and powEquivOfCoprime (the power map as an Equiv G ≃ G).",
+      "mathContext": "gcd(n, |G|) = 1 ⟹ x ↦ xⁿ is a permutation, with explicit inverse exponent."
+    },
+    {
+      "id": "cauchy-obstruction",
+      "title": "Non-Coprime Exponent ⟹ Not Injective (Cauchy)",
+      "startLine": 119,
+      "endLine": 145,
+      "summary": "not_pow_injective_of_not_coprime: a prime factor p of gcd(n, |G|) gives, by Cauchy, an element g of order p with gⁿ = 1 = 1ⁿ and g ≠ 1, so the power map collapses two distinct elements.",
+      "mathContext": "gcd(n, |G|) ≠ 1 ⟹ x ↦ xⁿ is not injective."
+    },
+    {
+      "id": "characterization",
+      "title": "The Characterization",
+      "startLine": 147,
+      "endLine": 159,
+      "summary": "pow_bijective_iff_coprime: the headline biconditional — x ↦ xⁿ is bijective iff Nat.Coprime n |G| — assembling the Euler and Cauchy directions.",
+      "mathContext": "Bijective (· ^ n) ↔ Coprime n |G|."
+    },
+    {
+      "id": "squaring-specialization",
+      "title": "The Squaring Boundary, Sharpened to an Iff",
+      "startLine": 161,
+      "endLine": 168,
+      "summary": "sq_bijective_iff_odd_card: the n = 2 case via Nat.coprime_two_left — squaring is a bijection iff |G| is odd, upgrading the sibling's one-directional odd-order result to an equivalence.",
+      "mathContext": "Bijective (· ^ 2) ↔ Odd |G|."
+    },
+    {
+      "id": "concrete-instances",
+      "title": "Concrete Instance in ZMod 5",
+      "startLine": 170,
+      "endLine": 180,
+      "summary": "zmod5_triple_bijective: tripling on ZMod 5 (gcd(3,5)=1) is a bijection, by kernel decide only — 0 axioms, no native_decide.",
+      "mathContext": "A coprime power map witnessed concretely."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Euler, Leonhard",
+      "title": "Theoremata arithmetica nova methodo demonstrata",
+      "year": "1763",
+      "note": "Novi Commentarii academiae scientiarum Petropolitanae 8, 74–104 — a^φ(n) ≡ 1 (mod n) for a coprime to n, the arithmetic behind the invertible exponent"
+    },
+    {
+      "authors": "Cauchy, Augustin-Louis",
+      "title": "Mémoire sur les arrangements que l'on peut former avec des lettres données",
+      "year": "1845",
+      "note": "Exercices d'analyse et de physique mathématique 3, 151–252 — a prime dividing the order of a group yields an element of that order, the obstruction to bijectivity"
+    },
+    {
+      "authors": "Isaacs, I. Martin",
+      "title": "Finite Group Theory",
+      "year": "2008",
+      "note": "Graduate Studies in Mathematics 92, AMS — Cauchy's theorem and the order structure of finite groups"
+    }
+  ]
+}
