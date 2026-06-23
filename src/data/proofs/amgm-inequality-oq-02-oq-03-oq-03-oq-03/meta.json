@@ -2,7 +2,7 @@
   "id": "amgm-inequality-oq-02-oq-03-oq-03-oq-03",
   "slug": "amgm-inequality-oq-02-oq-03-oq-03-oq-03",
   "title": "Power-Mean Inequality: Mₚ ≤ M_q for 0 < p ≤ q",
-  "description": "Proves the unweighted power-mean (generalized mean) inequality Mₚ ≤ M_q for positive exponents 0 < p ≤ q — the case Mathlib's MeanInequalities lists as a TODO. Answers the parent open question on generalizing the Maclaurin chain to Lᵖ means, and corrects its stated direction (power means increase, not decrease, in the exponent). Fully verified (0 axioms, 0 sorries).",
+  "description": "Derives the unweighted power-mean (generalized mean) inequality Mₚ ≤ M_q for positive exponents 0 < p ≤ q — the case Mathlib's MeanInequalities lists as a TODO — by specialising Mathlib's weighted Jensen inequality (NNReal.rpow_arith_mean_le_arith_mean_rpow) to uniform weights 1/|s|. Defines the unweighted power mean and provides the bridge from weighted Jensen to its unweighted monotonicity; the inequality's analytic content (convexity of t↦t^r for r≥1) is Mathlib's. Answers the parent open question on generalizing the Maclaurin chain to Lᵖ means, and corrects its stated direction (power means increase, not decrease, in the exponent). 0 axioms, 0 sorries (core inequality via Mathlib's Jensen).",
   "leanFile": {
     "namespace": "AmgmInequalityOQ02OQ03OQ03OQ03",
     "lineCount": 128,
@@ -109,7 +109,7 @@
       "jensen",
       "convexity"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "dateAdded": "2026-06-22",
     "axiomCount": 0,
