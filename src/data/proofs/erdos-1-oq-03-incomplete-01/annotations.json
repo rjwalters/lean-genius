@@ -1,0 +1,98 @@
+[
+  {
+    "id": "erdos1-oq03inc01-ann-header",
+    "proofId": "erdos-1-oq-03-incomplete-01",
+    "range": { "startLine": 1, "endLine": 51 },
+    "type": "context",
+    "title": "Erdős #1 and the Function f(n)",
+    "content": "Erdős Problem #1 ($500) concerns sets of positive integers with distinct subset sums (all 2ⁿ subset sums different). The extremal function f(n) is the least N for which some n-element subset of {0,…,N} has distinct subset sums. The whole problem is whether f(n) ≥ c·2ⁿ for an absolute constant c. This file establishes the classical baseline sandwich (2ⁿ−1)/n ≤ f(n) ≤ 2^(n−1) for every n, reusing erdos_1_counting_bound from Erdos1Problem for the lower side and re-deriving the powers-of-two construction for the upper side, after the prior WIP lineage stopped compiling against Mathlib v4.26.0.",
+    "mathContext": "$f(n) = \\min\\{N : \\exists A\\subseteq\\{0,\\dots,N\\},\\ |A|=n,\\ A\\text{ has distinct subset sums}\\}$",
+    "significance": "key",
+    "relatedConcepts": ["distinct subset sums", "Sidon-type sets", "Conway–Guy sequence", "extremal set theory"],
+    "prerequisites": ["subset sums", "Finset basics"]
+  },
+  {
+    "id": "erdos1-oq03inc01-ann-super",
+    "proofId": "erdos-1-oq-03-incomplete-01",
+    "range": { "startLine": 53, "endLine": 112 },
+    "type": "technique",
+    "title": "Superincreasing Extension Lemma",
+    "content": "dss_insert_of_sum_lt is the combinatorial engine of the upper bound: if A has distinct subset sums and b is larger than the entire sum of A (and b ∉ A), then insert b A still has distinct subset sums. The proof case-splits on whether each of two candidate subsets S, T contains b. If exactly one contains b, that subset's sum is ≥ b > sum A ≥ the other's, so they cannot coincide (the `key` helper). If both contain b, erase it and reduce to distinctness in A (peeling the shared term via Finset.add_sum_erase and omega); if neither contains b, both are subsets of A directly. This is the defining property of a superincreasing sequence.",
+    "mathContext": "$b > \\sum_{a\\in A} a \\implies$ any subset of $\\{b\\}\\cup A$ containing $b$ outweighs any subset omitting it",
+    "significance": "key",
+    "relatedConcepts": ["superincreasing sequence", "Finset.add_sum_erase", "case analysis", "knapsack"],
+    "prerequisites": ["Finset.sum", "subset induction"]
+  },
+  {
+    "id": "erdos1-oq03inc01-ann-geomsum",
+    "proofId": "erdos-1-oq-03-incomplete-01",
+    "range": { "startLine": 114, "endLine": 121 },
+    "type": "technique",
+    "title": "Geometric Sum Identity",
+    "content": "sum_two_pow_succ records (∑_{i<n} 2ⁱ) + 1 = 2ⁿ, proved by a one-line induction (Finset.sum_range_succ then omega). This is exactly the fact that the sum of all powers below 2ⁿ is 2ⁿ − 1, i.e. one less than the next power — the inequality that makes 2ⁿ a valid superincreasing extension of {2⁰,…,2^(n−1)}.",
+    "mathContext": "$\\sum_{i=0}^{n-1} 2^i = 2^n - 1$",
+    "significance": "technical",
+    "relatedConcepts": ["geometric series", "binary representation", "Finset.sum_range_succ"],
+    "prerequisites": ["induction on ℕ"]
+  },
+  {
+    "id": "erdos1-oq03inc01-ann-powers",
+    "proofId": "erdos-1-oq-03-incomplete-01",
+    "range": { "startLine": 123, "endLine": 148 },
+    "type": "concept",
+    "title": "Powers of Two Have Distinct Subset Sums",
+    "content": "powersTwo_dss shows {2⁰, 2¹, …, 2^(n−1)} has distinct subset sums, by induction: each new element 2ⁿ exceeds the sum 2ⁿ−1 of all smaller powers (sum_two_pow_succ), so dss_insert_of_sum_lt applies, and 2ⁿ ∉ the previous set by injectivity of i ↦ 2ⁱ. Conceptually this is just the uniqueness of binary representation: subset sums of {2⁰,…,2^(n−1)} are precisely the integers 0,…,2ⁿ−1, each written once. This furnishes the n-element witness with maximum 2^(n−1) that bounds f(n) above.",
+    "mathContext": "subset sums of $\\{2^0,\\dots,2^{n-1}\\}$ enumerate $\\{0,1,\\dots,2^n-1\\}$ bijectively (binary digits)",
+    "significance": "key",
+    "relatedConcepts": ["binary representation", "Nat.pow_right_injective", "superincreasing sequence", "constructive witness"],
+    "prerequisites": ["Finset.image", "induction"]
+  },
+  {
+    "id": "erdos1-oq03inc01-ann-fdef",
+    "proofId": "erdos-1-oq-03-incomplete-01",
+    "range": { "startLine": 149, "endLine": 174 },
+    "type": "definition",
+    "title": "Defining f(n) via sInf (No Decidability Needed)",
+    "content": "dssBounds n is the set of valid bounds N (those admitting an n-element distinct-subset-sums set in {0,…,N}); f n := sInf (dssBounds n). Using Nat.sInf — the greatest lower bound on a set of naturals — sidesteps the Decidable instance that a Nat.find definition would require for an existential ranging over all finite sets. Nonemptiness (dssBounds_nonempty, witnessed by 2ⁿ via the powers-of-two set) guarantees the infimum is attained, which both upper- and lower-bound proofs exploit.",
+    "mathContext": "$f(n) = \\inf\\{N : N \\in \\text{dssBounds}(n)\\}$, attained since the set is nonempty",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.sInf", "well-ordering of ℕ", "decidability avoidance", "extremal definition"],
+    "prerequisites": ["Nat.sInf API", "infima of sets of naturals"]
+  },
+  {
+    "id": "erdos1-oq03inc01-ann-upper",
+    "proofId": "erdos-1-oq-03-incomplete-01",
+    "range": { "startLine": 176, "endLine": 188 },
+    "type": "theorem",
+    "title": "Powers-of-Two Upper Bound f(n) ≤ 2^(n−1)",
+    "content": "f_le_two_pow_pred sharpens the trivial f n ≤ 2ⁿ to f n ≤ 2^(n−1) for n ≥ 1: the powers-of-two set {2⁰,…,2^(n−1)} is a valid bound with maximum element 2^(n−1), so Nat.sInf_le gives f n ≤ 2^(n−1). The maximum is 2^(n−1), not 2ⁿ, because the largest of n consecutive powers starting at 2⁰ is 2^(n−1) — a one-power improvement that matters for the constant.",
+    "mathContext": "$f(n) \\le 2^{n-1}$ for $n \\ge 1$ via $\\max\\{2^0,\\dots,2^{n-1}\\} = 2^{n-1}$",
+    "significance": "key",
+    "relatedConcepts": ["Nat.sInf_le", "powers-of-two construction", "upper bound"],
+    "prerequisites": ["Nat.sInf_le"]
+  },
+  {
+    "id": "erdos1-oq03inc01-ann-lower",
+    "proofId": "erdos-1-oq-03-incomplete-01",
+    "range": { "startLine": 190, "endLine": 213 },
+    "type": "theorem",
+    "title": "Pigeonhole Lower Bound (2ⁿ−1)/n ≤ f(n)",
+    "content": "The minimiser is attained (f_spec via Nat.sInf_mem), giving an n-element distinct-subset-sums set A with all elements ≤ f n. Its 2ⁿ distinct subset sums all lie in {0,…,n·f n}, so by pigeonhole (erdos_1_counting_bound) 2ⁿ ≤ n·f n + 1 (two_pow_le). Rearranging and dividing by n yields (2ⁿ−1)/n ≤ f n (f_ge), and combining with the upper bound gives the sandwich f_sandwich. The gap between (2ⁿ−1)/n and 2^(n−1) is precisely the open territory of the conjecture.",
+    "mathContext": "$2^n \\le n\\cdot f(n) + 1 \\implies \\frac{2^n-1}{n} \\le f(n)$",
+    "significance": "key",
+    "relatedConcepts": ["pigeonhole principle", "counting bound", "Nat.sInf_mem", "two-sided bound"],
+    "prerequisites": ["pigeonhole counting", "Nat division lemmas"]
+  },
+  {
+    "id": "erdos1-oq03inc01-ann-fone",
+    "proofId": "erdos-1-oq-03-incomplete-01",
+    "range": { "startLine": 215, "endLine": 222 },
+    "type": "insight",
+    "title": "The Bounds Pin f(1) = 1 Exactly",
+    "content": "At n = 1 the sandwich collapses: the lower bound is (2¹−1)/1 = 1 and the upper bound is 2⁰ = 1, so f(1) = 1 exactly — the single-element set {1} is optimal. This is the unique value where the two classical bounds coincide; for n ≥ 2 they separate, and closing the resulting exponential gap is the substance of the Erdős conjecture.",
+    "mathContext": "$\\frac{2^1-1}{1} = 1 = 2^0 \\implies f(1) = 1$",
+    "significance": "context",
+    "relatedConcepts": ["base case", "tight bound", "extremal value"],
+    "prerequisites": ["the sandwich theorem"]
+  }
+]
