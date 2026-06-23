@@ -21,6 +21,45 @@
     "sorries": 0
   },
   "title": "The Geometric Series as an Abstract Cauchy Sequence",
+  "description": "Promoting the sibling's hand-rolled ε–N slice estimate into Mathlib's abstract convergence vocabulary, so the geometric series drops straight into the library's machinery. For 0 ≤ r < 1: the Ico-slice bound is read metrically as dist(∑_{k<m} rᵏ)(∑_{k<n} rᵏ) ≤ r^{min m n}/(1−r), fed to Metric.cauchySeq_iff to show the partial sums form a CauchySeq; the m = 0 bound ∑_{k<n} rᵏ ≤ (1−r)⁻¹ feeds summable_of_sum_range_le to give Summable; and summable_iff_cauchySeq_finset yields the finset-net CauchySeq. The whole derivation deliberately routes around hasSum_geometric — the closed form (1−r)⁻¹ is the consequence of convergence here, not its premise.",
+  "overview": {
+    "historicalContext": "The Cauchy criterion and the completeness of ℝ are the bedrock of real analysis: a sequence converges iff it is Cauchy, and a series converges iff its partial sums are (Rudin, Principles of Mathematical Analysis). The sibling entry geometric-series-oq-08-oq-03 produced the geometric series' Cauchy property as a bespoke ε–N inequality on its tail blocks. Mathlib, however, speaks in abstract predicates — CauchySeq, Summable, cauchySeq over finsets — and only results phrased that way plug into its general convergence theorems. This entry is the translation layer, and it makes a point of conceptual honesty: it exhibits the geometric series as Cauchy and summable from first principles (bounded blocks, bounded monotone partial sums) rather than by quoting the already-evaluated infinite sum hasSum_geometric. The closed form (1−r)⁻¹ appears only as the partial-sum bound, never as an input to the convergence argument.",
+    "problemStatement": "For 0 ≤ r < 1, establish the geometric series' convergence in Mathlib's abstract vocabulary, derived from the slice estimate rather than from the closed form. Prove the metric distance bound dist(∑_{k<m} rᵏ)(∑_{k<n} rᵏ) ≤ r^{min m n}/(1−r), that the partial sums form a CauchySeq, that the series is Summable (from bounded partial sums), and that the finset net s ↦ ∑_{k ∈ s} rᵏ is a CauchySeq — all without invoking hasSum_geometric.",
+    "proofStrategy": "Read the slice bound metrically, then invoke the abstract predicates. geometric_partialSum_dist uses Finset.sum_Ico_eq_sub to write the distance between two partial sums as the middle block ∑_{k ∈ Ico m n} rᵏ (with Real.dist_eq + abs_sub_comm), bounded by the slice envelope rᵐ/(1−r). geometric_partialSum_dist_le symmetrises to r^{min m n}/(1−r) via le_total and dist_comm — the exact shape Metric.cauchySeq_iff wants. geometric_partialSum_cauchySeq then extracts the threshold from exists_pow_lt_of_lt_one and chains pow_le_pow_of_le_one (monotone in min m n). Separately, geometric_partialSum_le is the m = 0 slice bound ∑_{k<n} rᵏ ≤ (1−r)⁻¹, which with nonnegativity feeds summable_of_sum_range_le for geometric_summable; summable_iff_cauchySeq_finset converts that to the finset-net CauchySeq.",
+    "keyInsights": [
+      "The distance between two partial sums IS a slice: dist(Sₘ)(Sₙ) = |∑_{k ∈ Ico m n} rᵏ| via Finset.sum_Ico_eq_sub, so the metric Cauchy condition is literally the sibling's block bound rewritten — no new analysis, just a change of vocabulary.",
+      "The min m n in the symmetric bound r^{min m n}/(1−r) is what makes Metric.cauchySeq_iff applicable: it bounds the distance by a quantity controlled by the SMALLER index, which is exactly what a two-sided ε–N Cauchy statement needs.",
+      "Summability is recovered from order, not from the closed form: nonnegativity + bounded monotone partial sums (∑_{k<n} rᵏ ≤ (1−r)⁻¹) feed summable_of_sum_range_le directly — the value (1−r)⁻¹ is used only as a ceiling, never evaluated as a limit.",
+      "The derivation deliberately routes around hasSum_geometric: the geometric series is shown convergent/summable from first principles, so the closed form emerges as a CONSEQUENCE of convergence rather than being assumed — a cleaner logical order than the usual quote-the-sum approach.",
+      "Three faces of the same convergence: CauchySeq of the ordered partial sums, Summable of the series, and CauchySeq of the finset net are all exhibited, giving the geometric series in every form Mathlib's general theorems consume."
+    ]
+  },
+  "sections": [
+    {
+      "id": "metric-slice",
+      "title": "The Metric Reading of the Slice",
+      "startLine": 65,
+      "endLine": 94,
+      "summary": "geometric_slice_abs_le restates the endpoint-free block bound. geometric_partialSum_dist reads it metrically: for m ≤ n, dist(∑_{k<m} rᵏ)(∑_{k<n} rᵏ) equals the block ∑_{k ∈ Ico m n} rᵏ (Finset.sum_Ico_eq_sub, Real.dist_eq, abs_sub_comm), hence ≤ rᵐ/(1−r). geometric_partialSum_dist_le symmetrises to r^{min m n}/(1−r) via le_total + dist_comm — the shape Metric.cauchySeq_iff consumes.",
+      "mathContext": "$\\mathrm{dist}(S_m,S_n)=\\bigl|\\sum_{k\\in[m,n)}r^k\\bigr|\\le \\frac{r^{\\min(m,n)}}{1-r}$."
+    },
+    {
+      "id": "cauchy-sequence",
+      "title": "The Cauchy Sequence",
+      "startLine": 96,
+      "endLine": 113,
+      "summary": "geometric_partialSum_cauchySeq: the partial sums n ↦ ∑_{k<n} rᵏ form a CauchySeq, proved straight from the symmetric distance bound via Metric.cauchySeq_iff. The threshold N comes from exists_pow_lt_of_lt_one (on ε·(1−r)); for m,n ≥ N, pow_le_pow_of_le_one gives r^{min m n} ≤ rᴺ and div_lt_iff₀ closes it. No appeal to hasSum_geometric.",
+      "mathContext": "$\\mathrm{CauchySeq}(n\\mapsto\\sum_{k<n}r^k)$ via $\\forall\\varepsilon\\,\\exists N\\,\\forall m,n\\ge N:\\ \\mathrm{dist}(S_m,S_n)<\\varepsilon$."
+    },
+    {
+      "id": "summable-finset",
+      "title": "Summability and the Finset Net",
+      "startLine": 115,
+      "endLine": 150,
+      "summary": "geometric_partialSum_le: every partial sum ≤ (1−r)⁻¹ (the m = 0 slice bound after range_eq_Ico). geometric_summable: summability from nonnegativity + bounded partial sums via summable_of_sum_range_le, with no closed-form input. geometric_cauchySeq_finset: the finset net s ↦ ∑_{k ∈ s} rᵏ is a CauchySeq via summable_iff_cauchySeq_finset. A concrete r = 1/2 instance confirms Cauchy, summable, and bound 2.",
+      "mathContext": "$\\sum_{k<n}r^k\\le(1-r)^{-1}\\Rightarrow$ Summable; $\\mathrm{CauchySeq}(s\\mapsto\\sum_{k\\in s}r^k)$ via $\\mathrm{summable\\_iff\\_cauchySeq\\_finset}$."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
