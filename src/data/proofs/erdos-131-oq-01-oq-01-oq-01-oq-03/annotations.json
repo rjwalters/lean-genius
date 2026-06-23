@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-erdos131-davconst-overview",
+    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-03",
+    "range": { "startLine": 1, "endLine": 41 },
+    "type": "concept",
+    "title": "The Davenport Constant and Why Mathlib Lacks It",
+    "content": "The docstring sets the goal: formalize the cyclic Davenport constant exactly, D(ℤ/nℤ) = n. The Davenport constant D(G) of a finite abelian group is the least d such that every length-d sequence over G has a nonempty zero-sum subsequence — a fundamental zero-sum invariant from algebraic number theory (it bounds factorization lengths in class groups). Mathlib has the Erdős–Ginzburg–Ziv theorem (the constant s(ℤ/nℤ) = 2n − 1, demanding a zero-sum of length exactly n) but NOT the Davenport constant (any nonempty length). For cyclic groups the two satisfy D = n < 2n − 1 = s. The companion entry proved only D(ℤ/aℤ) ≤ a for distinct naturals; this file proves the exact value in the genuine sequence setting.",
+    "mathContext": "$D(G) = \\min\\{d : \\text{every length-}d\\text{ sequence has a nonempty zero-sum subsequence}\\}$; for cyclic $G$, $D(\\mathbb{Z}/n\\mathbb{Z}) = n$.",
+    "significance": "key",
+    "relatedConcepts": ["Davenport constant", "Erdős–Ginzburg–Ziv constant", "zero-sum sequences", "class group factorization", "Erdős #131"],
+    "prerequisites": ["finite abelian groups", "ZMod n", "additive combinatorics"]
+  },
+  {
+    "id": "ann-erdos131-davconst-def",
+    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-03",
+    "range": { "startLine": 49, "endLine": 53 },
+    "type": "definition",
+    "title": "HasZeroSumSubseq: Nonempty Zero-Sum Subsequence",
+    "content": "HasZeroSumSubseq f (for f : Fin m → ZMod n) holds when some nonempty index set s : Finset (Fin m) has ∑_{i∈s} f i = 0. Modelling a 'sequence' as a function Fin m → ZMod n (rather than a multiset) lets indices repeat values freely, which is exactly the Davenport setting (sequences, not sets). The Davenport constant is the least m such that EVERY such f has this property — captured below as an IsLeast statement.",
+    "mathContext": "$\\mathrm{HasZeroSumSubseq}(f) \\iff \\exists s\\subseteq \\mathrm{Fin}\\,m,\\ s\\ne\\varnothing,\\ \\sum_{i\\in s} f(i) = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["zero-sum subsequence", "Finset", "sequences over ZMod n"],
+    "prerequisites": ["Finset sums", "ZMod n arithmetic"]
+  },
+  {
+    "id": "ann-erdos131-davconst-upper",
+    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-03",
+    "range": { "startLine": 55, "endLine": 106 },
+    "type": "theorem",
+    "title": "davenport_upper: The Prefix-Sum Pigeonhole",
+    "content": "The upper bound D(ℤ/nℤ) ≤ n: any length-≥n sequence has a nonempty zero-sum subsequence. The proof forms the m + 1 prefix sums P k = ∑_{i.val < k} f i, all in the n-element type ZMod n. The core sublemma converts a collision P p = P q (p < q) into the zero-sum interval [p, q): it is nonempty (contains p), and splitting the prefix [0, q) = [0, p) ⊔ [p, q) as disjoint filters with Finset.sum_union gives P q = P p + (block sum), so the block sum = P q − P p = 0 (linear_combination). Pigeonhole Fintype.exists_ne_map_eq_of_card_lt forces the collision since |ZMod n| = n < m + 1.",
+    "mathContext": "$P_k = \\sum_{i<k} f(i)$; $n$ values, $m+1$ indices $\\Rightarrow$ collision $P_p = P_q$ ($p<q$); $\\sum_{p\\le i<q} f(i) = 0$.",
+    "significance": "critical",
+    "relatedConcepts": ["pigeonhole principle", "prefix sums", "Finset.sum_union", "Fintype.exists_ne_map_eq_of_card_lt", "telescoping"],
+    "prerequisites": ["prefix-sum collisions", "disjoint filter splitting", "ZMod.card"]
+  },
+  {
+    "id": "ann-erdos131-davconst-lower",
+    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-03",
+    "range": { "startLine": 108, "endLine": 123 },
+    "type": "theorem",
+    "title": "davenport_no_zerosum_const_one: The Sharpness Witness",
+    "content": "The lower bound D(ℤ/nℤ) ≥ n: the constant-1 sequence of any length m < n is zero-sum-free. A nonempty subset s sums (Finset.sum_const, nsmul_eq_mul, mul_one) to (|s| : ZMod n); if that were 0 then n ∣ |s| (ZMod.natCast_eq_zero_iff), but 1 ≤ |s| ≤ m < n makes that impossible (Nat.not_dvd_of_pos_of_lt). So no length below n is a Davenport length — the 'n − 1 repeated ones' configuration is the extremal zero-sum-free sequence, which is precisely the witness for the general lower bound D(G) ≥ 1 + ∑(nᵢ − 1) specialized to cyclic groups.",
+    "mathContext": "$\\sum_{i\\in s} 1 = (|s| \\bmod n)$, $1\\le|s|\\le m<n \\Rightarrow$ sum $\\ne 0$; the sequence $1^{n-1}$ is zero-sum-free.",
+    "significance": "key",
+    "relatedConcepts": ["sharpness", "zero-sum-free sequence", "extremal witness", "ZMod.natCast_eq_zero_iff"],
+    "prerequisites": ["Finset.sum_const", "divisibility bounds in ℕ"]
+  },
+  {
+    "id": "ann-erdos131-davconst-isleast",
+    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-03",
+    "range": { "startLine": 125, "endLine": 153 },
+    "type": "theorem",
+    "title": "davenport_constant_cyclic: D(ℤ/nℤ) = n as IsLeast",
+    "content": "The headline result packages both halves into IsLeast {m | ∀ f : Fin m → ZMod n, HasZeroSumSubseq f} n: (1) n is a member of the set — every length-n sequence has a zero-sum subsequence (davenport_upper at m = n); (2) n is a lower bound — any length m in the set must be ≥ n, since otherwise the constant-1 witness contradicts membership. Stating it as IsLeast is the correct notion of 'the constant', and davenport_isLeast_eq then gives uniqueness for free via IsLeast.unique: any d with this least-property equals n.",
+    "mathContext": "$\\mathrm{IsLeast}\\,\\{m : \\forall f,\\ \\mathrm{HasZeroSumSubseq}\\,f\\}\\ n$ — both 'n works' and 'n minimal', hence $D(\\mathbb{Z}/n\\mathbb{Z}) = n$ uniquely.",
+    "significance": "key",
+    "relatedConcepts": ["IsLeast", "IsLeast.unique", "least element", "exact invariant"],
+    "prerequisites": ["the upper and lower bounds", "order theory (IsLeast)"]
+  },
+  {
+    "id": "ann-erdos131-davconst-strengthen",
+    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-03",
+    "range": { "startLine": 155, "endLine": 170 },
+    "type": "insight",
+    "title": "exists_index_subset_sum_dvd: Strengthening the Companion Bound",
+    "content": "Specializing davenport_upper to the sequence i ↦ (g i : ZMod n) recovers, for ANY function g : Fin m → ℕ with n ≤ m, a nonempty index set whose g-sum is divisible by n — the Davenport bound in integer-divisibility form, now WITHOUT the distinctness restriction of the companion Erdos131DavenportBound (which required a Finset ℕ of distinct values). This shows the companion's bound is the special case, and that the sequence formulation here is strictly more general: repeated values are allowed.",
+    "mathContext": "For $g : \\mathrm{Fin}\\,m \\to \\mathbb{N}$ with $n\\le m$: $\\exists s\\ne\\varnothing,\\ n \\mid \\sum_{i\\in s} g(i)$, via $i\\mapsto (g(i):\\mathbb{Z}/n\\mathbb{Z})$ and ZMod.natCast_eq_zero_iff.",
+    "significance": "supporting",
+    "relatedConcepts": ["integer-divisibility form", "generalization", "non-distinct sequences", "ZMod.natCast_eq_zero_iff"],
+    "prerequisites": ["davenport_upper", "casting ℕ → ZMod n"]
+  }
+]
