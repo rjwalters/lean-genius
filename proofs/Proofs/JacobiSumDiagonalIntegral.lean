@@ -35,6 +35,12 @@ records that membership as a standalone, directly citable statement, together wi
   unity, then `jacobiSum χ χ ∈ Algebra.adjoin ℤ {μ}`.
 * `jacobiSum_self_mem_algebraAdjoin_of_orderOf` — the same conclusion phrased from the order
   hypothesis `orderOf χ = n`, via `pow_orderOf_eq_one`.
+* `jacobiSum_isIntegral` / `jacobiSum_self_isIntegral` — the **algebraic-integer** consequence:
+  `J(χ,φ)` (and the diagonal `J(χ,χ)`) is integral over `ℤ`. Membership in the subring `ℤ[μ]`
+  is not literally `IsIntegral ℤ`; the upgrade uses that `ℤ[μ]` is a module-finite (hence
+  integral) extension of `ℤ`, since the root of unity `μ` is integral over `ℤ`
+  (`IsPrimitiveRoot.isIntegral`). This realizes the classical fact that Jacobi sums are
+  algebraic integers — the precise sense in which `J(χ,χ) ∈ ℤ[ζ_n]` is a cyclotomic *integer*.
 
 There are no new axioms or sorries: the proofs compose existing Mathlib lemmas.
 
@@ -69,3 +75,37 @@ theorem jacobiSum_self_mem_algebraAdjoin_of_orderOf {n : ℕ} [NeZero n] {χ : M
     (hχ : orderOf χ = n) {μ : R} (hμ : IsPrimitiveRoot μ n) :
     jacobiSum χ χ ∈ Algebra.adjoin ℤ {μ} :=
   jacobiSum_self_mem_algebraAdjoin (hχ ▸ pow_orderOf_eq_one χ) hμ
+
+/-- **Jacobi sums are algebraic integers (general two-character form).** If `χ ^ n = φ ^ n = 1`
+and `μ` is a primitive `n`-th root of unity in `R`, then `jacobiSum χ φ` is integral over `ℤ`.
+
+Mathlib's membership lemma only places `J(χ,φ)` in the subring `ℤ[μ]`; this upgrades that to
+genuine integrality over `ℤ`, using that `ℤ[μ] = Algebra.adjoin ℤ {μ}` is module-finite over `ℤ`
+because the root of unity `μ` is integral over `ℤ` (`IsPrimitiveRoot.isIntegral`), so every
+element of the adjoin is integral (`IsIntegral.of_mem_of_fg`). -/
+theorem jacobiSum_isIntegral {n : ℕ} [NeZero n] {χ φ : MulChar F R}
+    (hχ : χ ^ n = 1) (hφ : φ ^ n = 1) {μ : R} (hμ : IsPrimitiveRoot μ n) :
+    IsIntegral ℤ (jacobiSum χ φ) :=
+  IsIntegral.of_mem_of_fg _
+    (hμ.isIntegral (Nat.pos_of_ne_zero (NeZero.ne n))).fg_adjoin_singleton _
+    (jacobiSum_mem_algebraAdjoin_of_pow_eq_one hχ hφ hμ)
+
+/-- **The diagonal Jacobi sum is an algebraic integer.** `jacobiSum χ χ` is integral over `ℤ`
+whenever `χ ^ n = 1` and `μ` is a primitive `n`-th root of unity. The `φ = χ` specialization of
+`jacobiSum_isIntegral`; this is the precise sense in which `J(χ,χ) ∈ ℤ[ζ_n]` is a cyclotomic
+*integer*, the object whose reduction modulo a prime of `ℤ[ζ_n]` defines the reciprocity symbol. -/
+theorem jacobiSum_self_isIntegral {n : ℕ} [NeZero n] {χ : MulChar F R}
+    (hχ : χ ^ n = 1) {μ : R} (hμ : IsPrimitiveRoot μ n) :
+    IsIntegral ℤ (jacobiSum χ χ) :=
+  jacobiSum_isIntegral hχ hχ hμ
+
+/-- The algebraic-integer conclusion phrased from the order hypothesis `orderOf χ = n`. -/
+theorem jacobiSum_self_isIntegral_of_orderOf {n : ℕ} [NeZero n] {χ : MulChar F R}
+    (hχ : orderOf χ = n) {μ : R} (hμ : IsPrimitiveRoot μ n) :
+    IsIntegral ℤ (jacobiSum χ χ) :=
+  jacobiSum_self_isIntegral (hχ ▸ pow_orderOf_eq_one χ) hμ
+
+#check @jacobiSum_self_mem_algebraAdjoin
+#check @jacobiSum_self_mem_algebraAdjoin_of_orderOf
+#check @jacobiSum_isIntegral
+#check @jacobiSum_self_isIntegral
