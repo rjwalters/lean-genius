@@ -1,0 +1,177 @@
+{
+  "id": "chevalley-warning-theorem-oq-01-oq-01",
+  "title": "Chevalley–Warning: the characteristic lower bound and the no-unique-solution law",
+  "slug": "chevalley-warning-theorem-oq-01-oq-01",
+  "description": "A follow-up to the Chevalley–Warning divisibility entry that extracts the structural consequences of p ∣ #solutions that Mathlib does not package. The number of common zeros of a low-degree polynomial system over a finite field of characteristic p is either 0 or at least p (no intermediate count); in particular such a system can never have exactly one common zero, and any single known zero forces a second distinct one. The parent's origin-based nontrivial-solution corollary is recovered as the special case at x₀ = 0. All results are proved by reducing the Chevalley–Warning divisibility through Nat.le_of_dvd / Nat.dvd_one; 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Claude Chevalley, Ewald Warning (1935); Lean formalization original",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ChevalleyWarningTheoremOQ01OQ01.lean",
+    "tags": [
+      "number-theory",
+      "finite-fields",
+      "chevalley-warning",
+      "polynomials",
+      "combinatorial-nullstellensatz",
+      "classic"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "char_dvd_card_solutions_of_sum_lt",
+        "description": "Chevalley–Warning (Finset form): if Σ_{i∈s} (f i).totalDegree < Fintype.card σ then p ∣ #{x // ∀ i∈s, eval x (f i) = 0}",
+        "module": "Mathlib.FieldTheory.ChevalleyWarning"
+      },
+      {
+        "theorem": "char_dvd_card_solutions",
+        "description": "Chevalley–Warning (single polynomial): if f.totalDegree < Fintype.card σ then p ∣ #{x // eval x f = 0}",
+        "module": "Mathlib.FieldTheory.ChevalleyWarning"
+      },
+      {
+        "theorem": "Nat.le_of_dvd",
+        "description": "0 < n → m ∣ n → m ≤ n; with p ∣ #solutions and #solutions ≥ 1 gives p ≤ #solutions, the characteristic lower bound",
+        "module": "Mathlib.Data.Nat.Defs"
+      },
+      {
+        "theorem": "Nat.dvd_one",
+        "description": "m ∣ 1 ↔ m = 1; #solutions = 1 would force p ∣ 1 hence p = 1, contradicting primality — the no-unique-solution law",
+        "module": "Mathlib.Data.Nat.Defs"
+      },
+      {
+        "theorem": "Nat.eq_zero_or_pos",
+        "description": "n = 0 ∨ 0 < n; the dichotomy splitting the solution count into the empty case and the ≥ p case",
+        "module": "Mathlib.Data.Nat.Defs"
+      },
+      {
+        "theorem": "Fintype.exists_ne_of_one_lt_card",
+        "description": "If 1 < Fintype.card α then for every a there is b ≠ a; extracts a second solution distinct from a given one",
+        "module": "Mathlib.Data.Fintype.Card"
+      },
+      {
+        "theorem": "Fintype.card_pos_iff",
+        "description": "0 < Fintype.card α ↔ Nonempty α; a known zero x₀ witnesses #solutions ≥ 1",
+        "module": "Mathlib.Data.Fintype.Card"
+      }
+    ],
+    "originalContributions": [
+      "card_zero_or_ge / card_zero_or_ge_single: the characteristic lower bound — the number of common zeros of a low-degree system (resp. single polynomial) is either 0 or at least the characteristic p, with no count strictly between. Immediate from p ∣ #solutions: a nonzero multiple of p is ≥ p. Weaker than Warning's second theorem (0 or ≥ qⁿ⁻ᵈ), which is explicitly NOT claimed.",
+      "card_ne_one / card_ne_one_single: the no-unique-solution law — a low-degree system can never have exactly one common zero, since #solutions = 1 would give p ∣ 1, impossible for a prime characteristic.",
+      "char_le_card_of_exists: the existence lower bound — if a low-degree system has even one common zero it has at least p of them.",
+      "exists_second_common_zero / exists_second_common_zero_single: the second-solution theorem — from ANY known common zero x₀ (not only the origin) a second distinct common zero exists. Generalizes the parent's chevalley_warning_nontrivial, which is recovered as the x₀ = 0 case via nontrivial_of_origin."
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries, no native_decide (no Lean.ofReduceBool). Depends only on the foundational axioms propext, Classical.choice, Quot.sound via standard Mathlib lemmas.",
+    "lineCount": 182,
+    "theoremCount": 8,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Chevalley (1935) proved a form of degree less than its number of variables over a finite field has a nontrivial zero; Warning strengthened this to the divisibility statement that the number of common zeros of any low-degree system is divisible by the characteristic. Beyond divisibility, the standard textbook treatment (Serre, A Course in Arithmetic) immediately draws the elementary structural consequences used in practice: the solution count is 0 or ≥ p, and a known solution forces a second. Warning's deeper 'second theorem' sharpens the lower bound to qⁿ⁻ᵈ, but the elementary 0-or-≥-p dichotomy already suffices for the existence arguments.",
+    "problemStatement": "The parent entry proves the Chevalley–Warning divisibility p ∣ #solutions and the origin-based nontrivial-solution corollary. Two structural consequences of the bare divisibility remain unpackaged in Mathlib: (1) what are the possible values of the solution count, and (2) does a low-degree system with one known zero necessarily have another? \n\n**Answer:** The count is 0 or ≥ p, so a singleton solution set is impossible, and any known zero x₀ forces a second distinct zero — the origin corollary being the case x₀ = 0.",
+    "text": "Four new results refine the Chevalley–Warning divisibility: the characteristic lower bound (count is 0 or ≥ p) in family and single-polynomial forms, the no-unique-solution law (count ≠ 1), the existence lower bound (one zero ⟹ at least p), and the second-solution theorem (one known zero ⟹ a distinct second zero). The parent's nontrivial corollary is recovered as the origin instance.",
+    "proofStrategy": "Let S be the subtype of common zeros, so Chevalley–Warning gives p ∣ #S.\n1. card_zero_or_ge: case on Nat.eq_zero_or_pos #S. If #S = 0 done; else Nat.le_of_dvd lifts p ∣ #S with #S ≥ 1 to p ≤ #S.\n2. card_ne_one: if #S = 1 then p ∣ 1, so Nat.dvd_one gives p = 1, contradicting (Fact p.Prime).ne_one.\n3. char_le_card_of_exists: a known zero x₀ witnesses #S ≥ 1 (Fintype.card_pos_iff), then Nat.le_of_dvd.\n4. exists_second_common_zero: x₀ gives #S ≥ 1; with p prime, p.one_lt and Nat.le_of_dvd give 1 < #S; Fintype.exists_ne_of_one_lt_card yields y ≠ ⟨x₀⟩ in S; y.val is the second zero (distinctness by Subtype.ext).\n5. nontrivial_of_origin: exists_second_common_zero at x₀ = 0 — literally the parent's chevalley_warning_nontrivial.",
+    "keyInsights": [
+      "**Divisibility has a shape, not just a residue**: p ∣ #solutions is usually quoted as a congruence, but as a constraint on a nonnegative count it says the count lives in {0, p, 2p, …} — so the first nonzero value is already p. Naming this 0-or-≥-p dichotomy turns 'a solution exists' directly into 'at least p solutions exist'.",
+      "**A singleton solution set is impossible**: because 1 is not a multiple of any prime p, no low-degree system over a finite field has a unique common zero — a clean obstruction that needs only Nat.dvd_one.",
+      "**The origin is not special**: the parent corollary used the origin only to witness one solution; the same counting works from ANY known zero, so the second-solution theorem is the honest general statement and the origin corollary its corollary.",
+      "**The bound here is the elementary one**: 0-or-≥-p is far weaker than Warning's second theorem (0-or-≥-qⁿ⁻ᵈ); this entry deliberately proves only the elementary dichotomy that the divisibility yields for free, and does not attempt the sharp bound."
+    ],
+    "prerequisites": [
+      "Finite fields and their (prime) characteristic (CharP, Fact p.Prime)",
+      "Multivariate polynomials and evaluation (MvPolynomial, eval, totalDegree)",
+      "Cardinality of subtypes (Fintype.card, Fintype.card_pos_iff, Fintype.exists_ne_of_one_lt_card)",
+      "Elementary divisibility (Nat.le_of_dvd, Nat.dvd_one) and the Chevalley–Warning theorem"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-docstring",
+      "title": "Imports and Statement",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "File-level docstring framing the follow-up: the parent records the divisibility and the origin corollary; this file extracts the characteristic lower bound, the no-unique-solution law, and the second-solution theorem. Imports the parent file (and through it Mathlib's ChevalleyWarning).",
+      "mathContext": "Structural consequences of the Chevalley–Warning divisibility p ∣ #solutions over a finite field."
+    },
+    {
+      "id": "lower-bound",
+      "title": "The Characteristic Lower Bound: 0 or ≥ p",
+      "startLine": 50,
+      "endLine": 91,
+      "summary": "card_zero_or_ge and card_zero_or_ge_single: the number of common zeros of a low-degree system (resp. single polynomial) is 0 or at least p, by casing on whether the count is zero and applying Nat.le_of_dvd to the Chevalley–Warning divisibility.",
+      "mathContext": "p ∣ #solutions forces the count into {0} ∪ [p, ∞): there is no count strictly between 0 and the characteristic."
+    },
+    {
+      "id": "no-unique",
+      "title": "The No-Unique-Solution Law",
+      "startLine": 92,
+      "endLine": 127,
+      "summary": "card_ne_one and card_ne_one_single: a low-degree system never has exactly one common zero, since #solutions = 1 would give p ∣ 1, contradicting primality of p (Nat.dvd_one + Fact.out.ne_one).",
+      "mathContext": "A singleton solution set is impossible: no prime divides 1."
+    },
+    {
+      "id": "second-solution",
+      "title": "Existence Lower Bound and the Second-Solution Theorem",
+      "startLine": 128,
+      "endLine": 182,
+      "summary": "char_le_card_of_exists (one zero ⟹ at least p), exists_second_common_zero and exists_second_common_zero_single (any known zero x₀ ⟹ a distinct second zero), and nontrivial_of_origin recovering the parent's chevalley_warning_nontrivial as the x₀ = 0 instance.",
+      "mathContext": "From any single known common zero a second distinct one is forced; the origin corollary is the special case."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Chevalley, Claude",
+      "title": "Démonstration d'une hypothèse de M. Artin",
+      "year": "1935",
+      "note": "Abh. Math. Sem. Univ. Hamburg 11, 73–75 — a form of degree < number of variables over a finite field has a nontrivial zero"
+    },
+    {
+      "authors": "Warning, Ewald",
+      "title": "Bemerkung zur vorstehenden Arbeit von Herrn Chevalley",
+      "year": "1935",
+      "note": "Abh. Math. Sem. Univ. Hamburg 11, 76–83 — the divisibility strengthening, and the second theorem bounding the count by qⁿ⁻ᵈ"
+    },
+    {
+      "authors": "Serre, Jean-Pierre",
+      "title": "A Course in Arithmetic",
+      "year": "1973",
+      "note": "Chapter I §2 — Chevalley–Warning and the elementary structural consequences of the count-mod-p divisibility"
+    }
+  ],
+  "crossReferences": [
+    {
+      "id": "chevalley-warning-theorem-oq-01",
+      "reason": "Direct parent: proves the divisibility forms and the origin-based nontrivial-solution corollary that this entry generalizes (nontrivial_of_origin = exists_second_common_zero at x₀ = 0)"
+    },
+    {
+      "id": "erdos-ginzburg-ziv-oq-01",
+      "reason": "The 0-or-≥-p dichotomy is the form of Chevalley–Warning invoked in the EGZ argument, where a solution is exhibited and a second one extracted"
+    }
+  ],
+  "conclusion": {
+    "summary": "Four structural refinements of the Chevalley–Warning divisibility are proved with 0 axioms: the characteristic lower bound (count is 0 or ≥ p; card_zero_or_ge, card_zero_or_ge_single), the no-unique-solution law (card_ne_one, card_ne_one_single), the existence lower bound (char_le_card_of_exists), and the second-solution theorem (exists_second_common_zero, exists_second_common_zero_single), with nontrivial_of_origin recovering the parent corollary as the origin case.",
+    "implications": "Packages the elementary consequences of p ∣ #solutions actually used in applications: that a low-degree system has either no solution or a full coset's worth of at least p, hence never a unique solution, and that any exhibited solution immediately yields another. This is the 'find a second zero' step of the Erdős–Ginzburg–Ziv and combinatorial-nullstellensatz arguments, isolated as a one-line lemma.",
+    "openQuestions": [
+      "Can Warning's second theorem — the sharp bound that the count is 0 or at least qⁿ⁻ᵈ with q = |K| — be formalized, strengthening the elementary 0-or-≥-p dichotomy proved here?",
+      "Does the second-solution theorem extend to an effective count: for a system through the origin, can one exhibit p − 1 explicit additional zeros, or characterize when the count equals exactly p?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.ChevalleyWarningTheoremOQ01"
+    ],
+    "opens": [
+      "MvPolynomial"
+    ],
+    "namespace": "ChevalleyWarningTheoremOQ01OQ01",
+    "lineCount": 182,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/ChevalleyWarningTheoremOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
