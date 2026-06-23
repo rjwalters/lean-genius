@@ -3259,6 +3259,7 @@ import Proofs.ProductOfSegmentsOfChordsOQ01
 import Proofs.ProductOfSegmentsOfChordsOQ03
 import Proofs.IncidenceCauchySchwarz
 import Proofs.PropertyBFirstMoment
+import Proofs.PropertyBFirstMomentRamsey
 import Proofs.PropertyBUpperBound
 import Proofs.PtolemysComplexProof
 import Proofs.PtolemysComplexProofOQ01
