@@ -75,7 +75,7 @@ has Lebesgue (area) measure exactly `π R²`. -/
 theorem volume_lemOf_scaledPure (R : ℝ) (hR : 0 < R) (c : ℂ) {n : ℕ} (hn : 0 < n) :
     volume (lemOf (scaledPure R c n)) = ENNReal.ofReal (Real.pi * R ^ 2) := by
   rw [lemOf_scaledPure_eq_ball R hR c hn, Complex.volume_ball]
-  have hpi : ((NNReal.pi : ℝ≥0∞)) = ENNReal.ofReal Real.pi := by
+  have hpi : ((NNReal.pi : ENNReal)) = ENNReal.ofReal Real.pi := by
     rw [← NNReal.coe_real_pi]; exact (ENNReal.ofReal_coe_nnreal).symm
   rw [hpi, ← ENNReal.ofReal_pow hR.le,
     ← ENNReal.ofReal_mul (show (0 : ℝ) ≤ R ^ 2 by positivity)]
