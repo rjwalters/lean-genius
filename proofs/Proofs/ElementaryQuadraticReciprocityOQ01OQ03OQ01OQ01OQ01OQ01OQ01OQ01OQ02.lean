@@ -84,14 +84,63 @@
     `sign (gridTranspose m n) = (-1)^(((m-1)/2)·((n-1)/2))` for odd `m, n`,
     obtained by feeding the parity bridge into `sign_gridTranspose`; now fully
     proved (0 sorry).
-  * The full QR assembly (`α = β ∘ γ`, identifying `α, β` with `ringMulPerm`
-    through the CRT isomorphism) is documented above but not yet formalized.
+  * **QR assembly skeleton (NEW, this file, §"Assembly" below).**  Following the
+    "proof from the book" reworking of Zolotarev's argument (J. Shurman, after
+    Baker 2013), QR is the single relation `sign τ_cd · sign τ_rd = sign τ_rc`
+    among the three *order-transition* permutations of the `p × q` array
+    (row-major `R`, column-major `C`, diagonal/CRT `D`):
+
+        τ_rd = D⁻¹∘R,   τ_cd = D⁻¹∘C,   τ_rc = C⁻¹∘R,     with τ_cd⁻¹∘τ_rd = τ_rc.
+
+    Shurman's signs are `sign τ_cd = (p/q)`, `sign τ_rd = (q/p)` (Zolotarev's
+    lemma applied per residue line) and `sign τ_rc = (-1)^((p-1)/2·(q-1)/2)`
+    (the inversion count — which is exactly `sign_gridTranspose` above, since
+    `τ_rc` IS `gridTranspose p q` transported across `R`).  Substituting yields
+    `(p/q)·(q/p) = (-1)^((p-1)/2·(q-1)/2)`.
+
+    `quadratic_reciprocity_of_transition_signs` below formalizes this skeleton
+    with **0 sorries**: the tautological composition `τ_cd⁻¹∘τ_rd = τ_rc`, the
+    sign-product reduction, and the identification `sign τ_rc = sign gridTranspose`
+    (`sign_transRC`) — reducing QR to the two per-line Zolotarev sign facts,
+    supplied here as hypotheses.  (The PREVIOUS plan above mis-stated the assembly
+    as "α = β∘γ identifying α,β with `ringMulPerm` via the CRT isomorphism"; the
+    correct objects are the three transition permutations, and α,β are NOT
+    `ringMulPerm` on `ℤ/pq` but per-line multiplication maps on `ℤ/q` resp `ℤ/p`.)
+
+  ## What remains
+
+  Discharging the two hypotheses `sign τ_cd = (p/q)`, `sign τ_rd = (q/p)` for the
+  concrete CRT order `D` (Shurman §3): `D⁻¹∘C` fixes each row and acts on it by
+  `y ↦ p·y + x mod q`, a multiplication-by-`p` permutation of `ℤ/q` up to an
+  even (odd-length-cycle) translation, whose sign is `(p/q)`.
+
+  The *per-line number-theoretic step* is now PROVED in this file as
+  `sign_affineLine_eq_legendreSym` (§"Per-line Zolotarev sign" below): for an odd
+  prime `m` the sign of the affine permutation `x ↦ a·x + b` of `ℤ/m` is the
+  Legendre symbol `(a / m)`.  The translation summand `x ↦ x + b` is an *even*
+  permutation — it has odd order on the odd-order group `ℤ/m`, so its sign is `+1`
+  (`sign_addLeft_odd`, absent from Mathlib) — and the multiplication factor is
+  Zolotarev's lemma in Frobenius form
+  (`ZolotarevFullOdd.sign_ringMulPerm_eq_jacobiSym_odd = legendreSym` at a prime).
+
+  What is left is therefore PURELY COMBINATORIAL: identify each transition
+  `D⁻¹∘rowOrder` / `D⁻¹∘colOrder` with `prodCongrLeft` of the per-line affine maps
+  (transported across `Fin m ≃ ℤ/m`), apply `Equiv.Perm.sign_prodCongrLeft` to get
+  the `q`-fold (resp. `p`-fold) product of per-line signs, and collapse it via
+  `(q/p)^q = (q/p)` (an odd power of a `±1` Legendre symbol).  No further
+  Zolotarev/Jacobi input is needed.
 
   References:
   - Zolotarev (1872); Frobenius (1914); Lerch (1896).
   - Cartier; Baker, "Quadratic reciprocity and Zolotarev's Lemma" (2013).
+  - J. Shurman, "Zolotarev's proof of quadratic reciprocity",
+    https://people.reed.edu/~jerry/361/lectures/qrz.pdf (the three-transition
+    "card trick" formulation used here).
 -/
 import Mathlib
+-- Zolotarev's lemma in Frobenius form (`sign(x ↦ a·x on ℤ/n) = J(A|n)`, n odd),
+-- used below to discharge the per-residue-line transition signs.
+import Proofs.ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01
 
 set_option maxHeartbeats 800000
 
@@ -373,6 +422,195 @@ theorem sign_gridTranspose_odd {m n : ℕ} (hm : Odd m) (hn : Odd n) :
       = (-1 : ℤˣ) ^ (((m - 1) / 2) * ((n - 1) / 2)) := by
   rw [sign_gridTranspose, neg_one_pow_choose_two_mul_odd hm hn]
 
+/-! ## Assembly: quadratic reciprocity from the three transition signs
+
+The Zolotarev/Shurman "card-trick" skeleton.  The three linear orders on the
+`p × q` array are realized as bijections `Fin p × Fin q ≃ Fin (p*q)`: row-major
+`rowOrder`, column-major `colOrder`, and the diagonal/CRT order (an abstract
+parameter `D` below).  The transition permutations of the array are then
+`τ_rd = D⁻¹∘rowOrder`, `τ_cd = D⁻¹∘colOrder`, `τ_rc = colOrder⁻¹∘rowOrder`, and
+the tautology `τ_cd⁻¹∘τ_rd = τ_rc` is quadratic reciprocity once the three signs
+are known. -/
+
+/-- Row-major order on the `p × q` array: `(i, j) ↦ q·i + j`.  This is the same
+    `finProdFinEquiv` underlying `gridTranspose`. -/
+def rowOrder (p q : ℕ) : Fin p × Fin q ≃ Fin (p * q) := finProdFinEquiv
+
+/-- Column-major order on the `p × q` array: `(i, j) ↦ i + p·j`.  This is exactly
+    the codomain factor of `gridTranspose`, so `gridTranspose = rowOrder⁻¹ ∘ colOrder`
+    holds definitionally (`gridTranspose_eq`). -/
+def colOrder (p q : ℕ) : Fin p × Fin q ≃ Fin (p * q) :=
+  (Equiv.prodComm (Fin p) (Fin q)).trans
+    (finProdFinEquiv.trans (finCongr (Nat.mul_comm q p)))
+
+/-- `gridTranspose p q` is the row→column transition read on linear indices. -/
+theorem gridTranspose_eq (p q : ℕ) :
+    gridTranspose p q = (rowOrder p q).symm.trans (colOrder p q) := rfl
+
+/-- The **row→column transition** permutation of the array, `colOrder⁻¹ ∘ rowOrder`. -/
+def transRC (p q : ℕ) : Equiv.Perm (Fin p × Fin q) :=
+  (rowOrder p q).trans (colOrder p q).symm
+
+/-- The array transition `transRC` and the linear-index shuffle `gridTranspose`
+    are conjugate via `rowOrder`, hence share their sign. -/
+theorem sign_transRC (p q : ℕ) :
+    Equiv.Perm.sign (transRC p q) = Equiv.Perm.sign (gridTranspose p q) := by
+  have h : ∀ x, (rowOrder p q) (transRC p q x)
+      = (gridTranspose p q)⁻¹ ((rowOrder p q) x) := by
+    intro x
+    rw [gridTranspose_eq]
+    simp only [transRC, Equiv.Perm.inv_def, Equiv.trans_apply, Equiv.symm_trans_apply,
+      Equiv.symm_symm]
+  rw [Equiv.Perm.sign_eq_sign_of_equiv (transRC p q) (gridTranspose p q)⁻¹ (rowOrder p q) h,
+    map_inv]
+  rcases Int.units_eq_one_or (Equiv.Perm.sign (gridTranspose p q)) with h2 | h2 <;> simp [h2]
+
+/-- **Quadratic reciprocity via the Zolotarev/Shurman transition skeleton.**
+
+    Let `p, q` be odd primes and `D : Fin p × Fin q ≃ Fin (p*q)` the diagonal
+    (CRT) ordering of the array.  If the row→diagonal and column→diagonal
+    transitions carry the Zolotarev signs `(q/p)` and `(p/q)` (Shurman §3 — each
+    restricts to multiplication permutations on a single residue line, whose sign
+    is a Legendre symbol by Zolotarev's lemma), then the quadratic reciprocity law
+
+        `(p/q)·(q/p) = (-1)^((p-1)/2·(q-1)/2)`
+
+    follows.  The proof is the tautological composition `τ_cd⁻¹∘τ_rd = τ_rc`, the
+    sign-product reduction, the identification `sign τ_rc = sign (gridTranspose)`
+    (`sign_transRC`), and the proven `sign_gridTranspose_odd`.  This reduces QR to
+    the two per-line Zolotarev sign facts, supplied here as hypotheses. -/
+theorem quadratic_reciprocity_of_transition_signs
+    {p q : ℕ} [Fact p.Prime] [Fact q.Prime] (hp : Odd p) (hq : Odd q)
+    (D : Fin p × Fin q ≃ Fin (p * q))
+    (hrd : (Equiv.Perm.sign ((rowOrder p q).trans D.symm) : ℤ) = legendreSym p (q : ℤ))
+    (hcd : (Equiv.Perm.sign ((colOrder p q).trans D.symm) : ℤ) = legendreSym q (p : ℤ)) :
+    legendreSym q (p : ℤ) * legendreSym p (q : ℤ)
+      = (-1 : ℤ) ^ (((p - 1) / 2) * ((q - 1) / 2)) := by
+  set τrd : Equiv.Perm (Fin p × Fin q) := (rowOrder p q).trans D.symm with hτrd
+  set τcd : Equiv.Perm (Fin p × Fin q) := (colOrder p q).trans D.symm with hτcd
+  -- Tautological composition: τ_cd⁻¹ ∘ τ_rd = τ_rc (the `D⁻¹`s cancel).
+  have hcomp : τcd⁻¹ * τrd = transRC p q := by
+    refine Equiv.ext fun z => ?_
+    simp only [hτcd, hτrd, transRC, Equiv.Perm.coe_mul, Function.comp_apply,
+      Equiv.Perm.inv_def, Equiv.symm_trans_apply, Equiv.symm_symm, Equiv.trans_apply,
+      Equiv.apply_symm_apply]
+  -- Sign is multiplicative and `ℤˣ` has exponent 2, so signs multiply.
+  have hsign : Equiv.Perm.sign τcd * Equiv.Perm.sign τrd
+      = Equiv.Perm.sign (transRC p q) := by
+    rw [← hcomp, map_mul, map_inv]
+    have hself : (Equiv.Perm.sign τcd)⁻¹ = Equiv.Perm.sign τcd := by
+      rcases Int.units_eq_one_or (Equiv.Perm.sign τcd) with h | h <;> simp [h]
+    rw [hself]
+  -- Evaluate `sign τ_rc` through `gridTranspose`.
+  rw [sign_transRC, sign_gridTranspose_odd hp hq] at hsign
+  -- Cast the `ℤˣ` identity to `ℤ` and substitute the two Zolotarev signs.
+  have hZ : (Equiv.Perm.sign τcd : ℤ) * (Equiv.Perm.sign τrd : ℤ)
+      = (-1 : ℤ) ^ (((p - 1) / 2) * ((q - 1) / 2)) := by
+    have hcast := congrArg (fun u : ℤˣ => (u : ℤ)) hsign
+    push_cast at hcast
+    simpa using hcast
+  rwa [hcd, hrd] at hZ
+
+/-! ### Per-line Zolotarev sign: discharging the transition-sign hypotheses
+
+The two hypotheses of `quadratic_reciprocity_of_transition_signs` are *per residue
+line* facts.  For the CRT order `D` (Shurman §3), the transition `D⁻¹∘rowOrder`
+fixes each column `j` and acts on the row index by the **affine** map
+`i ↦ q·i + j (mod p)`; dually `D⁻¹∘colOrder` acts per row by `j ↦ p·j + i (mod q)`.
+The sign of one such affine permutation of `ZMod p` is the Legendre symbol `(q/p)`:
+the translation summand is an *even* permutation — it has odd order on the
+odd-order group `ZMod p`, hence sign `+1` — and the multiplication factor is
+Zolotarev's lemma in Frobenius form
+(`ZolotarevFullOdd.sign_ringMulPerm_eq_jacobiSym_odd`).  These lemmas supply the
+remaining number-theoretic ingredient flagged in the file header; the only step
+left to make `quadratic_reciprocity_of_transition_signs` unconditional is the
+purely combinatorial identification of each transition with `prodCongrLeft` of
+these affine maps (`sign_prodCongrLeft` then collapses the `q`-fold product since
+`(q/p)^q = (q/p)`). -/
+
+open ZolotarevCRT (ringMulPerm)
+
+/-- `n • b = 0` in `ZMod n`: the additive group has exponent dividing `n`. -/
+private theorem nsmul_self_zmod {n : ℕ} (b : ZMod n) : n • b = 0 := by
+  rw [nsmul_eq_mul, ZMod.natCast_self, zero_mul]
+
+/-- **Translation is an even permutation on an odd-order group.**  For odd `n`,
+    the translation `x ↦ b + x` of `ZMod n` has sign `+1`: its order divides `n`
+    (because `n • b = 0`), so the order is odd, while `sign` lands in the
+    order-`2` group `ℤˣ`; thus an odd power of the sign equals the sign, and that
+    power is `sign 1 = 1`.  (Absent from Mathlib.) -/
+theorem sign_addLeft_odd {n : ℕ} [NeZero n] (hodd : Odd n) (b : ZMod n) :
+    Equiv.Perm.sign (Equiv.addLeft b) = 1 := by
+  set u : ℤˣ := Equiv.Perm.sign (Equiv.addLeft b) with hu
+  have hpow : (Equiv.addLeft b) ^ n = 1 := by
+    rw [pow_addLeft, nsmul_self_zmod, addLeft_zero]
+  have hun : u ^ n = 1 := by rw [hu, ← map_pow, hpow, map_one]
+  rw [← ZolotarevCRT.units_pow_odd u hodd]; exact hun
+
+/-- **Affine sign = multiplication sign on an odd-order group.**  Composing any
+    permutation `P` of `ZMod n` (odd `n`) with a translation leaves the sign
+    unchanged. -/
+theorem sign_addLeft_mul {n : ℕ} [NeZero n] (hodd : Odd n)
+    (b : ZMod n) (P : Equiv.Perm (ZMod n)) :
+    Equiv.Perm.sign (Equiv.addLeft b * P) = Equiv.Perm.sign P := by
+  rw [map_mul, sign_addLeft_odd hodd, one_mul]
+
+/-- **Per-line Zolotarev sign (prime modulus).**  For an odd prime `p`, a unit
+    `a : (ℤ/p)ˣ`, any translation `b`, and any integer representative `A ≡ a
+    (mod p)`, the sign of the affine permutation `x ↦ a·x + b` of `ℤ/p` is the
+    Legendre symbol `(A / p)`.  This combines the translation-parity lemma above
+    with Zolotarev's lemma in Frobenius form
+    (`ZolotarevFullOdd.sign_ringMulPerm_eq_jacobiSym_odd`), and is exactly the
+    sign of a single residue line of the CRT transition permutations `τ_rd`,
+    `τ_cd`.  It discharges the *per-line* content of the two hypotheses of
+    `quadratic_reciprocity_of_transition_signs`. -/
+theorem sign_affineLine_eq_legendreSym {p : ℕ} [hp : Fact p.Prime] (hp2 : p ≠ 2)
+    (a : (ZMod p)ˣ) (b : ZMod p) (A : ℤ) (hA : (A : ZMod p) = (a : ZMod p)) :
+    (Equiv.Perm.sign (Equiv.addLeft b * ringMulPerm a) : ℤ) = legendreSym p A := by
+  haveI : NeZero p := ⟨hp.out.pos.ne'⟩
+  have hodd : Odd p := hp.out.odd_of_ne_two hp2
+  rw [sign_addLeft_mul hodd b (ringMulPerm a),
+      ZolotarevFullOdd.sign_ringMulPerm_eq_jacobiSym_odd hodd a A hA,
+      jacobiSym.legendreSym.to_jacobiSym]
+
+/-- **Collapse of the per-line signs over a residue array.**
+
+    Let `p` be an odd prime and `q` an odd number.  Consider a permutation of the
+    array `ZMod p × ZMod q` that acts *fiberwise over the `ZMod q` factor* as the
+    affine line map `x ↦ a·x + β k` on the `ZMod p` factor, i.e.
+
+        `prodCongrLeft (fun k : ZMod q => addLeft (β k) * ringMulPerm a)`.
+
+    Its total sign is the *single* per-line Legendre symbol `(A / p)`:
+    `sign_prodCongrLeft` turns the sign into the product of the `q` fiber signs;
+    each fiber sign is `(A/p)` (translation is even, `sign_affineLine_eq_legendreSym`);
+    and the `q`-fold product `(A/p)^q` collapses to `(A/p)` because `q` is odd and
+    the sign is a unit (`units_pow_odd`).
+
+    This is exactly the "`sign_prodCongrLeft` collapses the `q`-fold product" step
+    flagged at the end of the file header.  Together with the CRT identification of
+    each transition `τ_rd`, `τ_cd` as such a fiberwise-affine permutation, it
+    discharges the two hypotheses of `quadratic_reciprocity_of_transition_signs`;
+    the *only* remaining gap is that purely combinatorial identification. -/
+theorem sign_prodCongrLeft_affineLine {p q : ℕ} [hp : Fact p.Prime] [NeZero q]
+    (hp2 : p ≠ 2) (hq : Odd q) (a : (ZMod p)ˣ) (β : ZMod q → ZMod p)
+    (A : ℤ) (hA : (A : ZMod p) = (a : ZMod p)) :
+    (Equiv.Perm.sign (Equiv.prodCongrLeft
+        (fun k : ZMod q => Equiv.addLeft (β k) * ringMulPerm a)) : ℤ)
+      = legendreSym p A := by
+  haveI : NeZero p := ⟨hp.out.pos.ne'⟩
+  have hodd : Odd p := hp.out.odd_of_ne_two hp2
+  rw [Equiv.Perm.sign_prodCongrLeft]
+  -- every fiber sign collapses (translation is even) to `sign (ringMulPerm a)`.
+  have hfib : (fun k : ZMod q => Equiv.Perm.sign (Equiv.addLeft (β k) * ringMulPerm a))
+      = fun _ : ZMod q => Equiv.Perm.sign (ringMulPerm a) :=
+    funext fun k => sign_addLeft_mul hodd (β k) (ringMulPerm a)
+  rw [hfib, Finset.prod_const, Finset.card_univ, ZMod.card q,
+      ZolotarevCRT.units_pow_odd _ hq]
+  -- the surviving single line is the `b = 0` instance of the affine-line sign.
+  have h0 := sign_affineLine_eq_legendreSym hp2 a 0 A hA
+  rwa [sign_addLeft_mul hodd 0 (ringMulPerm a)] at h0
+
 end ZolotarevQR
 
 #check @ZolotarevQR.gridTranspose
@@ -380,3 +618,10 @@ end ZolotarevQR
 #check @ZolotarevQR.sign_gridTranspose
 #check @ZolotarevQR.neg_one_pow_choose_two_mul_odd
 #check @ZolotarevQR.sign_gridTranspose_odd
+#check @ZolotarevQR.gridTranspose_eq
+#check @ZolotarevQR.sign_transRC
+#check @ZolotarevQR.quadratic_reciprocity_of_transition_signs
+#check @ZolotarevQR.sign_addLeft_odd
+#check @ZolotarevQR.sign_addLeft_mul
+#check @ZolotarevQR.sign_affineLine_eq_legendreSym
+#check @ZolotarevQR.sign_prodCongrLeft_affineLine
