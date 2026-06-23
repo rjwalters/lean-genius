@@ -250,3 +250,43 @@ theorem memLp_exists_sigmaFinite_support
 
 Full scaffold (with the maximality `sorry` and the reduction blueprint docstring) is in
 `proofs/Proofs/CauchySchwarzIntegralLpDualitySynthesis.lean`.
+
+### 2026-06-23 (Session 5, researcher-7) — VERIFIER-BLOCKED (5th consecutive); docstring precision fix
+
+**Mode:** REVISIT. **Outcome:** minor integrity/precision improvement; no new verified math.
+
+- **Verifier blackout persists** — `docker info` exit 124 (daemon hung); Aristotle
+  `mcp__aristotle__prove` returns `Resource not found`. This is the 5th consecutive
+  session (S1–S5) blocked on the same wall. No Lean proof anywhere can be kernel-checked
+  right now, so switching problems would not help.
+- **Re-verified the chain's sorry status the right way.** A naive `grep -c '\bsorry\b'`
+  reports 11/10/1 sorries in the σ-finite/finite/Incomplete01 files — but **all** of those
+  tokens are in docstrings/comments (historical "[HARD sorry ~150 lines]" notes). There
+  are **zero `sorry` tactics** and zero `axiom`s in the chain: it is source-complete. The
+  S1 proof-tree map ("0 sorry / 0 axiom") was correct. GOTCHA recorded: never count chain
+  sorries with `grep -c` — these files document their own proof history in prose.
+- **Confirmed the bridge lemma is API-sound** against the on-disk Mathlib
+  (`proofs/.lake/packages/mathlib`): `MemLp.aefinStronglyMeasurable` (StronglyMeasurable/Lp.lean:59),
+  `AEFinStronglyMeasurable.sigmaFiniteSet` (AEStronglyMeasurable.lean:904), `.measurableSet`
+  (:907, protected — fine via dot-notation), `.ae_eq_zero_compl` (:911), and
+  `instance sigmaFinite_restrict` (:915) all exist with exactly the used signatures. High
+  confidence `memLp_exists_sigmaFinite_support` compiles.
+- **Docstring precision fix** to `CauchySchwarzIntegralLpDualitySynthesis.lean`: replaced
+  the bare "What is already verified (0 axioms, 0 sorries)" header — which overstated by
+  implying a fresh kernel check — with an accurate "source-complete; not re-build-verified
+  this session" accounting that distinguishes static-source 0-sorry from a green build.
+- **Why no new Lean code:** the only remaining content is the maximality construction
+  (Folland 6.16, ~100–150 lines of finicky measure theory: a supremum over σ-finite sets,
+  hull via countable union, Lq-additivity + uniqueness to pin the representer). Formalizing
+  this *requires* a verifier to get the signatures right; writing it blind would ship
+  unverifiable, near-certainly-broken code — worse than the current one clean `sorry` +
+  prose blueprint. Declined to churn.
+
+**Next session (verifier back) — concrete coding targets (in dependency order):**
+1. `sigmaFinite_restrict_iUnion : (∀ n, SigmaFinite (μ.restrict (S n))) → SigmaFinite (μ.restrict (⋃ n, S n))`
+   — step-2 hull lemma; not a Mathlib one-liner (checked); good Aristotle target.
+2. Re-expose `extByZeroCLM` (drop `private` in `…Incomplete01.lean`).
+3. The representer-with-norm-bound `g_S` from σ-finite Riesz via `extByZeroCLM`-pullback.
+4. The supremum `c = ⨆_S ‖g_S‖_q ≤ ‖φ‖` realized on the hull `T`; uniqueness ⇒ `g_U = g_T`.
+5. Assemble `riesz_lp_surjective_general`, build green, then swap the parent axiom and flip
+   meta `axiomatized → verified`.
