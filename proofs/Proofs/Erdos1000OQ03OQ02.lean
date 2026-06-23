@@ -1,21 +1,23 @@
 import Mathlib
 
 /-
-# Erdős #1000 OQ-03 → OQ-01: The combinatorial Jordan totient
+# Erdős #1000 OQ-03 → OQ-02: Explicit values of the combinatorial Jordan totient
 
 ## Open question
 
-The parent entry `erdos-1000-oq-03` proves the elementary theory of **Jordan's
-totient** `J_k` via the Dirichlet convolution `J_k = μ * pow k`, and its docstring
-*asserts* that `J_k(n)` "counts the `k`-tuples in `(ℤ/n)^k` whose coordinates
-together with `n` are setwise coprime" — but the convolution development never
-proves that combinatorial characterisation.  This entry closes that gap.
+The sibling entry `erdos-1000-oq-03-oq-01` establishes the **combinatorial
+characterisation** of Jordan's totient `J_k` (the count of setwise-coprime
+`k`-tuples) and Möbius-inverts it to the convolution form developed in the parent
+`erdos-1000-oq-03` (`J_k = μ * pow k`).  This companion entry focuses on the
+**explicit arithmetic values** of that count — its prime-power closed form, the
+recovery of Euler's `φ`, and Gauss's classical totient identity — all derived
+self-containedly from the same geometric divisor-sum identity.
 
 ## What this file proves (0 axioms, 0 sorries)
 
 We take the **honest combinatorial definition**
 `jordanCount k n = #{ a : Fin k → {0,…,n-1} : gcd(a₀,…,a_{k-1}, n) = 1 }`
-and prove, entirely from first principles, the structural facts that make it the
+and prove, entirely from first principles, the explicit values that make it the
 genuine `k`-dimensional generalisation of Euler's `φ`:
 
 * `jordan_count_divisor_sum` : `∑_{d ∣ n} jordanCount k d = n^k`  — **headline**,
@@ -55,7 +57,7 @@ divisor-sum, combinatorics, bijection, multiplicative-function
 -/
 
 
-namespace Erdos1000OQ03OQ01
+namespace Erdos1000OQ03OQ02
 
 open Finset
 
@@ -243,4 +245,4 @@ theorem jordan_count_prime_pow_sub (k : ℕ) {p : ℕ} (hp : p.Prime) (m : ℕ) 
     jordanCount k (p ^ (m + 1)) = p ^ ((m + 1) * k) - p ^ (m * k) := by
   have := jordan_count_prime_pow k hp m; omega
 
-end Erdos1000OQ03OQ01
+end Erdos1000OQ03OQ02
