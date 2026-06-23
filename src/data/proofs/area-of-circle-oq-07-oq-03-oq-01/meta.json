@@ -37,7 +37,8 @@
     "lineCount": 119,
     "theoremCount": 6,
     "definitionCount": 0,
-    "badge": "verified",
+    "badge": "mathlib",
+    "assumptions": "0 sorries, 0 axiom declarations, no native_decide; #print axioms reports only propext / Classical.choice / Quot.sound. Tier B (core result via Mathlib bridge): the half-integer Gamma ladder closed form Γ(n+1/2) = (2n-1)‼·√π/2ⁿ (gammaLadder) is a direct re-export of Mathlib's Real.Gamma_nat_add_half, and the half-line moment evaluation is Mathlib's integral_rpow_mul_exp_neg_rpow. The file's independent contribution is the bridge — identifying the full-line even moment with Γ(n+1/2) by even-folding (integral_comp_abs) and the vanishing of odd moments (Measure.measurePreserving_neg) — not the analytic backbone, which is Mathlib's.",
     "originalContributions": [
       "evenGaussianMoment_eq_gamma: ∫_ℝ x^{2n} e^{-x²} dx = Γ(n+1/2) — every even Gaussian moment is exactly a half-integer Gamma value, proved by folding the line onto the half-line via evenness (integral_comp_abs) and evaluating the half-line integral with integral_rpow_mul_exp_neg_rpow at p=2, q=2n",
       "halfLine_evenMoment: ∫_{x>0} x^{2n} e^{-x²} = ½·Γ(n+1/2), the half-line evaluation converting natural powers to real powers (Real.rpow_natCast) so Mathlib's Gamma-integral lemma applies",
