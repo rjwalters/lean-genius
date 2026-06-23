@@ -23,6 +23,43 @@
     "path": "Proofs/DiamondImpliesCH.lean",
     "sorries": 0
   },
+  "sections": [
+    {
+      "id": "diamond-hypothesis",
+      "title": "The Diamond principle as a hypothesis",
+      "startLine": 51,
+      "endLine": 59,
+      "summary": "IsDiamondSeq defines a ◇-sequence: seq α ⊆ Iio α with the guessing set {α < ω₁ | X ∩ Iio α = seq α} stationary below ω₁ for every X ⊆ ω₁. ◇ is taken as a hypothesis, never asserted to exist, so all theorems are honest ZFC implications."
+    },
+    {
+      "id": "tail-club",
+      "title": "The tail club {β | ω < β < ω₁}",
+      "startLine": 61,
+      "endLine": 81,
+      "summary": "isClubBelow_Ioo_omega: the ordinals strictly between ω and ω₁ form a club below ω₁ (closed: an accumulation point lies above some tail member hence above ω; unbounded: max α ω + 1 works). The single club whose intersection with the stationary guessing set forces a guess above ω."
+    },
+    {
+      "id": "guessing-lemma",
+      "title": "The guessing lemma",
+      "startLine": 83,
+      "endLine": 96,
+      "summary": "IsDiamondSeq.guesses: every X ⊆ Iio ω is guessed at some α with ω < α < ω₁ and seq α = X, because the guessing set meets the tail club above ω where X ∩ Iio α collapses to X. The heart of the argument."
+    },
+    {
+      "id": "injection",
+      "title": "The injection 𝒫(Iio ω) ↪ Iio ω₁",
+      "startLine": 98,
+      "endLine": 122,
+      "summary": "guessIndex sends each X ⊆ Iio ω to a chosen guessing ordinal < ω₁; guessIndex_injective shows distinct subsets get distinct ordinals (seq recovers X from α); mk_powerset_le reads off #𝒫(Iio ω) ≤ #(Iio ω₁)."
+    },
+    {
+      "id": "cardinal-bookkeeping",
+      "title": "Cardinal bookkeeping: ◇ ⟹ CH",
+      "startLine": 124,
+      "endLine": 155,
+      "summary": "mk_Iio_omega / mk_Iio_omega1 evaluate the two sides as lift ℵ₀ and lift ℵ₁; diamond_continuum_le turns the injection into 𝔠 ≤ ℵ₁ (descending the universe with Cardinal.lift_le); diamond_CH adds the ZFC bound ℵ₁ ≤ 𝔠 for 𝔠 = ℵ₁, and diamond_two_pow_aleph0 restates it as 2^ℵ₀ = ℵ₁."
+    }
+  ],
   "description": "Jensen's combinatorial principle ◇ (diamond), introduced in 1972 to build a Suslin tree in L, is the prototypical guessing principle of modern set theory. A ◇-sequence on ω₁ is a family ⟨A_α : α < ω₁⟩ with A_α ⊆ α such that for every X ⊆ ω₁ the guessing set {α < ω₁ | X ∩ α = A_α} is stationary. This entry formalises the classical implication ◇ ⟹ CH: the existence of a single ◇-sequence already forces 2^ℵ₀ = ℵ₁. ◇ enters only as a hypothesis (IsDiamondSeq seq) — constructing such a sequence requires V = L, a consistency statement rather than a ZFC theorem — so diamond_CH : 𝔠 = ℵ₁ is a genuine, assumption-free theorem of ZFC. The proof reuses the gallery's own club/stationary infrastructure (Proofs.Club.Basic, lifted from the Fodor pressing-down parent): it shows the tail {β | ω < β < ω₁} is a club below ω₁ (isClubBelow_Ioo_omega), so by stationarity every countable X ⊆ Iio ω is guessed above ω, where X ∩ Iio α = X recovers seq α = X (IsDiamondSeq.guesses). Since seq recovers X from its guessing ordinal, X ↦ (chosen α) injects 𝒫(Iio ω) into Iio ω₁ (guessIndex_injective); cardinal bookkeeping (mk_powerset, mk_Iio_ordinal, card_omega0/card_omega, lift_two_power), carried out one universe up because sets of ordinals live in Type 1 and descended via Cardinal.lift_le, turns the injection into 𝔠 = 2^ℵ₀ ≤ ℵ₁ (diamond_continuum_le). Combined with the ZFC bound ℵ₁ ≤ 𝔠 (aleph_one_le_continuum) this gives 𝔠 = ℵ₁. Fully machine-verified, no axioms and no sorries.",
   "meta": {
     "author": "Lean Genius",
