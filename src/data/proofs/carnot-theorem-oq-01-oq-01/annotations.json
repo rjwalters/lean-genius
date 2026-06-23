@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-carnot-range-overview",
+    "proofId": "carnot-theorem-oq-01-oq-01",
+    "range": { "startLine": 4, "endLine": 50 },
+    "type": "concept",
+    "title": "The Sharp Range of a Triangle's Cosine Sum",
+    "content": "The docstring poses the sharp-boundary question raised by Carnot's angle form (the parent): as the triangle varies, what is the exact range of cos A + cos B + cos C? The answer is 1 < cos A + cos B + cos C ≤ 3/2, the upper bound attained iff the triangle is equilateral, while 1 is the never-attained degenerate infimum. Through the parent identity cos A + cos B + cos C = 1 + r/R, the upper bound is exactly Euler's inequality r ≤ R/2.",
+    "mathContext": "$1 < \\cos A + \\cos B + \\cos C \\le \\tfrac{3}{2}, \\quad \\text{equality} \\iff A=B=C=\\tfrac{\\pi}{3}.$",
+    "significance": "key",
+    "relatedConcepts": ["Euler's inequality", "Carnot's theorem", "sharp bound", "equilateral triangle"],
+    "prerequisites": ["triangle geometry", "trigonometry"]
+  },
+  {
+    "id": "ann-carnot-upper-bound",
+    "proofId": "carnot-theorem-oq-01-oq-01",
+    "range": { "startLine": 56, "endLine": 79 },
+    "type": "theorem",
+    "title": "Sharp Upper Bound by Completing the Square",
+    "content": "cos_sum_le proves cos A + cos B + cos C ≤ 3/2. Sum-to-product (Real.cos_add_cos) gives cos A + cos B = 2 cos((A+B)/2) cos((A-B)/2), and the constraint makes (A+B)/2 = π/2 - C/2, so cos((A+B)/2) = sin(C/2). With cos C = 1 - 2 sin²(C/2) (double angle), the cosine sum is 2 sin(C/2) cos((A-B)/2) + 1 - 2 sin²(C/2). Bounding cos((A-B)/2) ≤ 1 against the nonnegative factor 2 sin(C/2), the sum is at most 2t + 1 - 2t² = 3/2 - 2(t - 1/2)² ≤ 3/2 with t = sin(C/2); nlinarith assembles this from sq_nonneg(sin(C/2) - 1/2).",
+    "mathContext": "$\\cos A + \\cos B + \\cos C = 2\\sin\\tfrac{C}{2}\\cos\\tfrac{A-B}{2} + 1 - 2\\sin^2\\tfrac{C}{2} \\le \\tfrac{3}{2} - 2\\big(\\sin\\tfrac{C}{2} - \\tfrac12\\big)^2.$",
+    "significance": "key",
+    "relatedConcepts": ["sum-to-product", "double-angle formula", "completing the square", "nlinarith"],
+    "prerequisites": ["trigonometric identities", "quadratic optimization"]
+  },
+  {
+    "id": "ann-carnot-lower-bound",
+    "proofId": "carnot-theorem-oq-01-oq-01",
+    "range": { "startLine": 81, "endLine": 94 },
+    "type": "theorem",
+    "title": "Strict Lower Bound from Positive Half-Angle Sines",
+    "content": "one_lt_cos_sum proves 1 < cos A + cos B + cos C. Rewriting by the parent identity carnot_cos_sum, the excess over 1 is 4 sin(A/2) sin(B/2) sin(C/2). For a genuine triangle each half-angle lies in (0, π/2), so each sine is strictly positive (Real.sin_pos_of_pos_of_lt_pi); their product is positive and nlinarith concludes the sum exceeds 1. The value 1 is therefore the infimum, approached but never reached as the triangle degenerates.",
+    "mathContext": "$\\cos A + \\cos B + \\cos C = 1 + 4\\sin\\tfrac{A}{2}\\sin\\tfrac{B}{2}\\sin\\tfrac{C}{2} > 1.$",
+    "significance": "supporting",
+    "relatedConcepts": ["Carnot's identity", "positivity", "half-angle sine"],
+    "prerequisites": ["trigonometry"]
+  },
+  {
+    "id": "ann-carnot-equality-case",
+    "proofId": "carnot-theorem-oq-01-oq-01",
+    "range": { "startLine": 96, "endLine": 157 },
+    "type": "theorem",
+    "title": "Equality Holds Exactly at the Equilateral Triangle",
+    "content": "cos_sum_eq_three_halves_iff characterizes when the bound is tight: cos A + cos B + cos C = 3/2 iff A = B = C = π/3. The forward direction records the proof's slack exactly — 3/2 - (cos A + cos B + cos C) = 2 sin(C/2)(1 - cos((A-B)/2)) + 2(sin(C/2) - 1/2)², closed by linear_combination. Both summands are nonnegative, so equality forces each to vanish: sin(C/2) = 1/2 (from the square term) gives C/2 = π/6 by injectivity of sin on [-π/2, π/2], so C = π/3; and cos((A-B)/2) = 1 (from the other term, since sin(C/2) = 1/2 ≠ 0) gives A = B via Real.cos_eq_one_iff_of_lt_of_lt. With A + B + C = π this forces A = B = C = π/3. The reverse direction substitutes and uses cos(π/3) = 1/2.",
+    "mathContext": "$\\tfrac{3}{2} - (\\cos A + \\cos B + \\cos C) = 2\\sin\\tfrac{C}{2}\\big(1 - \\cos\\tfrac{A-B}{2}\\big) + 2\\big(\\sin\\tfrac{C}{2} - \\tfrac12\\big)^2.$",
+    "significance": "key",
+    "relatedConcepts": ["equality case", "slack decomposition", "injectivity of sine", "linear_combination"],
+    "prerequisites": ["trigonometric identities", "real analysis"]
+  },
+  {
+    "id": "ann-carnot-euler-inequality",
+    "proofId": "carnot-theorem-oq-01-oq-01",
+    "range": { "startLine": 159, "endLine": 168 },
+    "type": "theorem",
+    "title": "Euler's Inequality r ≤ R/2",
+    "content": "euler_inequality proves 4 sin(A/2) sin(B/2) sin(C/2) ≤ 1/2. Rewriting the upper bound cos_sum_le through the parent identity carnot_cos_sum gives 1 + 4 sin(A/2) sin(B/2) sin(C/2) ≤ 3/2, hence the half-angle product is at most 1/8 (the term with coefficient 4 at most 1/2). Since r/R = 4 sin(A/2) sin(B/2) sin(C/2), this is precisely Euler's classical inequality R ≥ 2r, with equality at the equilateral triangle.",
+    "mathContext": "$4\\sin\\tfrac{A}{2}\\sin\\tfrac{B}{2}\\sin\\tfrac{C}{2} = \\tfrac{r}{R} \\le \\tfrac12.$",
+    "significance": "key",
+    "relatedConcepts": ["Euler's inequality", "inradius", "circumradius", "Carnot's identity"],
+    "prerequisites": ["trigonometry", "triangle geometry"]
+  },
+  {
+    "id": "ann-carnot-sharpness-example",
+    "proofId": "carnot-theorem-oq-01-oq-01",
+    "range": { "startLine": 170, "endLine": 172 },
+    "type": "tactic",
+    "title": "Equilateral Attainment Check",
+    "content": "A concrete example confirming cos(π/3) + cos(π/3) + cos(π/3) = 3/2, so the upper bound is attained at the equilateral triangle. Together with the equality characterization this shows 3/2 is the true maximum, not merely an upper estimate.",
+    "mathContext": "$\\cos\\tfrac{\\pi}{3} + \\cos\\tfrac{\\pi}{3} + \\cos\\tfrac{\\pi}{3} = \\tfrac12 + \\tfrac12 + \\tfrac12 = \\tfrac{3}{2}.$",
+    "significance": "supporting",
+    "relatedConcepts": ["sharpness", "equilateral triangle"],
+    "prerequisites": ["trigonometric values"]
+  }
+]

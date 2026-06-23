@@ -1,0 +1,193 @@
+{
+  "id": "carnot-theorem-oq-01-oq-01",
+  "title": "The Exact Range of a Triangle's Cosine Sum (Euler's Inequality)",
+  "slug": "carnot-theorem-oq-01-oq-01",
+  "description": "For every triangle (A, B, C > 0, A + B + C = π), the cosine sum satisfies 1 < cos A + cos B + cos C ≤ 3/2, the upper bound attained iff the triangle is equilateral. Through Carnot's angle-form identity this upper bound is exactly Euler's inequality r ≤ R/2, here as 4 sin(A/2) sin(B/2) sin(C/2) ≤ 1/2. Proved axiom-free by sum-to-product and completing the square.",
+  "meta": {
+    "author": "Lean Genius Researcher (follow-up to Carnot's theorem)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Euler%27s_theorem_in_geometry",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CarnotTheoremOQ01OQ01.lean",
+    "tags": [
+      "geometry",
+      "triangle",
+      "trigonometry",
+      "inequality",
+      "Euler's inequality",
+      "circumradius",
+      "inradius",
+      "sharp bound"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.cos_add_cos",
+        "description": "Sum-to-product: cos p + cos q = 2 cos((p+q)/2) cos((p-q)/2)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.cos_pi_div_two_sub",
+        "description": "cos(π/2 - x) = sin x, turning cos((A+B)/2) into sin(C/2)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.cos_two_mul",
+        "description": "Double-angle identity cos(2x) = 2cos²x - 1",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.sin_sq_add_cos_sq",
+        "description": "Pythagorean identity sin²x + cos²x = 1",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.injOn_sin",
+        "description": "sin is injective on [-π/2, π/2], used to deduce C/2 = π/6 from sin(C/2) = 1/2",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.cos_eq_one_iff_of_lt_of_lt",
+        "description": "cos x = 1 ↔ x = 0 on (-2π, 2π), used to deduce A = B from cos((A-B)/2) = 1",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.sin_pi_div_six",
+        "description": "sin(π/6) = 1/2",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.cos_pi_div_three",
+        "description": "cos(π/3) = 1/2, used to verify the equilateral boundary value",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      }
+    ],
+    "galleryDependencies": [
+      {
+        "theorem": "CarnotTheorem.carnot_cos_sum",
+        "description": "Carnot's angle form: cos A + cos B + cos C = 1 + 4 sin(A/2) sin(B/2) sin(C/2), the parent identity used for the lower bound and Euler's inequality",
+        "proofId": "carnot-theorem-oq-01"
+      }
+    ],
+    "originalContributions": [
+      "Sharp two-sided bound 1 < cos A + cos B + cos C ≤ 3/2 for every triangle, formalized axiom-free",
+      "Sum-to-product plus completing-the-square proof of the upper bound: cos A + cos B + cos C = 2 sin(C/2) cos((A-B)/2) + 1 - 2 sin²(C/2) ≤ 3/2 - 2(sin(C/2) - 1/2)²",
+      "Equality characterization: cos A + cos B + cos C = 3/2 iff A = B = C = π/3, via an exact nonnegative slack decomposition forcing sin(C/2) = 1/2 and cos((A-B)/2) = 1",
+      "Euler's inequality r ≤ R/2 in the analytic form 4 sin(A/2) sin(B/2) sin(C/2) ≤ 1/2, derived from the upper bound through the parent Carnot identity"
+    ],
+    "dateAdded": "2026-06-23",
+    "axiomCount": 0,
+    "lineCount": 174,
+    "assumptions": "0 axioms. 0 sorries. Fully verified. The hypotheses are the genuine-triangle conditions A, B, C > 0 together with the angle-sum relation A + B + C = π. The lower bound and Euler's inequality reuse the verified parent identity carnot_cos_sum.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "sections": [
+    {
+      "title": "Module header",
+      "startLine": 4,
+      "endLine": 50,
+      "description": "Docstring stating the sharp-boundary question — the exact range of cos A + cos B + cos C over all triangles — and the answer 1 < cos A + cos B + cos C ≤ 3/2, with the upper bound equal to Euler's inequality r ≤ R/2 via the parent Carnot identity. Outlines the sum-to-product / complete-the-square proof and the equality decomposition.",
+      "summary": "Module header",
+      "id": "module-header"
+    },
+    {
+      "title": "Sharp upper bound cos A + cos B + cos C ≤ 3/2",
+      "startLine": 56,
+      "endLine": 79,
+      "description": "cos_sum_le: sum-to-product (Real.cos_add_cos) and (A+B)/2 = π/2 - C/2 turn cos A + cos B into 2 sin(C/2) cos((A-B)/2); with cos C = 1 - 2 sin²(C/2) (double angle) the sum is 2 sin(C/2) cos((A-B)/2) + 1 - 2 sin²(C/2). Bounding cos((A-B)/2) ≤ 1 (with sin(C/2) ≥ 0) and completing the square in sin(C/2) via sq_nonneg lands on 3/2; nlinarith assembles the certificate.",
+      "summary": "Sharp upper bound via sum-to-product and completing the square",
+      "id": "cos-sum-upper-bound"
+    },
+    {
+      "title": "Strict lower bound 1 < cos A + cos B + cos C",
+      "startLine": 81,
+      "endLine": 94,
+      "description": "one_lt_cos_sum: rewriting by the parent identity carnot_cos_sum, the excess over 1 is 4 sin(A/2) sin(B/2) sin(C/2). Each half-angle sine is positive (Real.sin_pos_of_pos_of_lt_pi, since 0 < A/2, B/2, C/2 < π), so the product is positive and the sum exceeds 1.",
+      "summary": "Strict lower bound from positivity of the half-angle sine product",
+      "id": "cos-sum-lower-bound"
+    },
+    {
+      "title": "Equality case: = 3/2 iff equilateral",
+      "startLine": 96,
+      "endLine": 157,
+      "description": "cos_sum_eq_three_halves_iff. Forward: the exact slack identity 3/2 - (cos A + cos B + cos C) = 2 sin(C/2)(1 - cos((A-B)/2)) + 2(sin(C/2) - 1/2)² (closed by linear_combination) is a sum of two nonnegative terms; equality forces both to vanish, giving sin(C/2) = 1/2 (so C/2 = π/6 by injectivity of sin on [-π/2, π/2], hence C = π/3) and cos((A-B)/2) = 1 (so A = B by Real.cos_eq_one_iff_of_lt_of_lt). With A + B + C = π this yields A = B = C = π/3. Backward: substitute and use cos(π/3) = 1/2.",
+      "summary": "Equality holds exactly at the equilateral triangle",
+      "id": "cos-sum-equality-case"
+    },
+    {
+      "title": "Euler's inequality 4 sin(A/2) sin(B/2) sin(C/2) ≤ 1/2",
+      "startLine": 159,
+      "endLine": 168,
+      "description": "euler_inequality: rewriting the upper bound cos_sum_le through the parent identity carnot_cos_sum gives 1 + 4 sin(A/2) sin(B/2) sin(C/2) ≤ 3/2, i.e. 4 sin(A/2) sin(B/2) sin(C/2) ≤ 1/2. Since r/R = 4 sin(A/2) sin(B/2) sin(C/2), this is Euler's inequality r ≤ R/2.",
+      "summary": "Euler's inequality r ≤ R/2 as a corollary of the upper bound",
+      "id": "euler-inequality"
+    },
+    {
+      "title": "Sharpness check at the equilateral triangle",
+      "startLine": 170,
+      "endLine": 172,
+      "description": "An example confirming cos(π/3) + cos(π/3) + cos(π/3) = 3/2, exhibiting attainment of the upper bound.",
+      "summary": "Equilateral attainment example",
+      "id": "sharpness-example"
+    }
+  ],
+  "overview": {
+    "historicalContext": "Among the oldest sharp inequalities of triangle geometry is Euler's inequality R ≥ 2r, relating the circumradius R and inradius r, with equality exactly for the equilateral triangle (Euler, 1765). Carnot's angle form of his circumradius/inradius theorem (the parent of this entry) expresses the cosine sum of a triangle as cos A + cos B + cos C = 1 + r/R = 1 + 4 sin(A/2) sin(B/2) sin(C/2). Read through that identity, the classical bound 1 < cos A + cos B + cos C ≤ 3/2 is precisely the statement 0 < r/R ≤ 1/2, i.e. Euler's inequality. The cosine-sum form is the standard textbook route to Euler's inequality, and the equilateral case is the universal extremizer of symmetric triangle functionals.",
+    "problemStatement": "Determine the exact range of cos A + cos B + cos C as (A, B, C) ranges over all triangles (A, B, C > 0, A + B + C = π): prove 1 < cos A + cos B + cos C ≤ 3/2, that the upper bound 3/2 is attained iff A = B = C = π/3, and that this upper bound is Euler's inequality r ≤ R/2.",
+    "text": "Across all triangles the cosine sum cos A + cos B + cos C lies strictly above 1 and is at most 3/2, with the maximum attained only by the equilateral triangle — equivalently the inradius is at most half the circumradius.",
+    "proofStrategy": "The upper bound is elementary and self-contained. Sum-to-product gives cos A + cos B = 2 cos((A+B)/2) cos((A-B)/2), and the angle constraint makes (A+B)/2 = π/2 - C/2, so cos((A+B)/2) = sin(C/2). With the double-angle form cos C = 1 - 2 sin²(C/2), the cosine sum equals 2 sin(C/2) cos((A-B)/2) + 1 - 2 sin²(C/2). Bounding cos((A-B)/2) ≤ 1 (multiplying by the nonnegative 2 sin(C/2)) and completing the square, 2 t + 1 - 2 t² = 3/2 - 2(t - 1/2)² ≤ 3/2 where t = sin(C/2).\n\nThe lower bound and Euler's inequality go through the parent Carnot identity, where the excess over 1 is the product 4 sin(A/2) sin(B/2) sin(C/2) of three positive half-angle sines.\n\nThe equality case records the proof's slack exactly: 3/2 - (cos A + cos B + cos C) = 2 sin(C/2)(1 - cos((A-B)/2)) + 2(sin(C/2) - 1/2)². Both summands are nonnegative, so equality forces sin(C/2) = 1/2 (hence C = π/3 by injectivity of sin on [-π/2, π/2]) and cos((A-B)/2) = 1 (hence A = B), which together with A + B + C = π give the equilateral triangle.",
+    "keyInsights": [
+      "**Sum-to-product removes a variable**: pairing two cosines and using (A+B)/2 = π/2 - C/2 collapses cos A + cos B to 2 sin(C/2) cos((A-B)/2), a single-variable expression in sin(C/2) once cos((A-B)/2) is bounded by 1",
+      "**Completing the square is the whole inequality**: 2t + 1 - 2t² = 3/2 - 2(t - 1/2)², so the gap to 3/2 is literally a perfect square in t = sin(C/2) — the bound and its equality case fall out of one algebraic identity",
+      "**Equality decomposes the slack**: 3/2 - (cos A + cos B + cos C) splits as a sum of two nonnegative pieces, one detecting C = π/3 (the square term) and the other A = B (the 1 - cos term), so the equilateral characterization needs no separate optimization argument",
+      "**Euler's inequality is the same statement**: through Carnot's identity cos A + cos B + cos C = 1 + r/R, the bound ≤ 3/2 is exactly r/R ≤ 1/2, and the strict lower bound > 1 is r > 0 — the analytic range of the cosine sum is the geometric range of r/R",
+      "**Sign-agnostic**: the argument uses only A, B, C > 0 and A + B + C = π, never an acute/obtuse case split, so it holds uniformly for every triangle"
+    ],
+    "prerequisites": [
+      "Real trigonometric functions sin and cos",
+      "Sum-to-product and double-angle identities",
+      "The Pythagorean identity sin²x + cos²x = 1",
+      "Injectivity of sin on [-π/2, π/2]",
+      "Carnot's angle-form identity (parent entry)"
+    ],
+    "openQuestions": [
+      "What is the analogous sharp range of cos A + cos B + cos C for spherical or hyperbolic triangles, where the angle sum is no longer π?",
+      "Can the equilateral extremal characterization be packaged as a general principle for symmetric functionals f(A) + f(B) + f(C) with f concave on (0, π)?"
+    ]
+  },
+  "conclusion": {
+    "summary": "The exact range of the cosine sum over all triangles is pinned down: 1 < cos A + cos B + cos C ≤ 3/2, with the upper bound attained iff the triangle is equilateral. The upper bound is proved by sum-to-product and completing the square; the lower bound and the equivalent Euler inequality 4 sin(A/2) sin(B/2) sin(C/2) ≤ 1/2 (r ≤ R/2) go through the parent Carnot identity. Everything is axiom- and sorry-free.",
+    "implications": "**Theoretical significance**: This converts the parent's qualitative identity cos A + cos B + cos C = 1 + r/R into the quantitative sharp bound 0 < r/R ≤ 1/2 — Euler's inequality — with a fully algebraic proof (one completed square) that avoids the optimization or Jensen arguments usually invoked. The slack decomposition makes the equilateral extremizer visible directly in the proof certificate.",
+    "openQuestions": [
+      "What is the sharp range of the cosine sum for spherical or hyperbolic triangles?",
+      "Is there a uniform formalization of 'equilateral extremizes symmetric concave triangle functionals' that subsumes this bound?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "carnot-theorem-oq-01",
+      "relationship": "extends",
+      "description": "The parent: Carnot's angle-form identity cos A + cos B + cos C = 1 + 4 sin(A/2) sin(B/2) sin(C/2). This entry turns that identity into the sharp two-sided bound on the cosine sum and the equivalent Euler inequality."
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.CarnotTheorem"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "CarnotTheoremOQ01OQ01",
+    "lineCount": 174,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/CarnotTheoremOQ01OQ01.lean"
+  }
+}

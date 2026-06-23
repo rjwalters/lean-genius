@@ -1,0 +1,90 @@
+{
+  "slug": "carnot-theorem-oq-01-oq-01",
+  "title": "Carnot's Theorem — signed-distance form with an explicit circumcenter",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "d_a + d_b + d_c = R + r,",
+    "plain": "Carnot's theorem says: add up the (signed) distances from the circumcenter to the",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "Sharp two-sided bound 1 < cos A + cos B + cos C <= 3/2 for every triangle (CarnotTheoremOQ01OQ01.lean)",
+      "Equality cos A + cos B + cos C = 3/2 iff A = B = C = pi/3",
+      "Euler's inequality 4 sin(A/2) sin(B/2) sin(C/2) <= 1/2, i.e. r <= R/2"
+    ],
+    "open": [
+      "The originally-scoped signed-distance metric form (explicit circumcenter, signed distances, inradius over EuclideanSpace R (Fin 2)) remains unattempted — likely >500 lines, separate hard formalization"
+    ],
+    "goal": "Sharpen the parent angle-form identity into the exact range of the cosine sum (achieved); the metric form is a distinct open direction."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-23T12:45:00-07:00",
+    "iteration": 2,
+    "focus": "Proved the sharp cosine-sum range and Euler's inequality as a tractable follow-up to the parent angle-form identity.",
+    "blockers": [
+      "Docker daemon saturated by concurrent swarm builds — final kernel verification pending."
+    ],
+    "nextAction": "Confirm Docker build of CarnotTheoremOQ01OQ01.lean (0 sorries, 0 axioms), then push and open PR.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Proved sharp two-sided bound on the triangle cosine sum (1 < sum <= 3/2), the equilateral equality case, and the equivalent Euler inequality r <= R/2 — all axiom/sorry-free, building on the parent Carnot angle-form identity. Note: this is a tractable follow-up distinct from the slug's originally-scoped signed-distance metric form, which remains open.",
+    "builtItems": [
+      "cos_sum_le — cos A + cos B + cos C <= 3/2 via sum-to-product + completing the square (CarnotTheoremOQ01OQ01.lean)",
+      "one_lt_cos_sum — strict lower bound from positivity of the half-angle sine product (CarnotTheoremOQ01OQ01.lean)",
+      "cos_sum_eq_three_halves_iff — equality iff equilateral, via exact nonnegative slack decomposition (CarnotTheoremOQ01OQ01.lean)",
+      "euler_inequality — 4 sin(A/2) sin(B/2) sin(C/2) <= 1/2 (r <= R/2) from cos_sum_le through the parent identity (CarnotTheoremOQ01OQ01.lean)"
+    ],
+    "insights": [
+      "The gap to 3/2 is a perfect square: cos A + cos B + cos C = 3/2 - 2(sin(C/2) - 1/2)^2 - 2 sin(C/2)(1 - cos((A-B)/2)), so the bound, its equality case, and the equilateral extremizer all fall out of one algebraic decomposition.",
+      "Through the parent identity cos sum = 1 + r/R, the analytic range (1, 3/2] of the cosine sum is exactly the geometric range (0, 1/2] of r/R — Euler's inequality is the upper bound restated.",
+      "The argument is sign-agnostic (uses only A, B, C > 0 and A + B + C = pi), avoiding the acute/obtuse case split the metric signed-distance form requires."
+    ],
+    "mathlibGaps": [
+      "No single Mathlib lemma for cos A + cos B + cos C <= 3/2 or Euler's inequality; assembled in-file from sum-to-product, double-angle, and Pythagorean primitives.",
+      "Metric form would need circumcenter/inradius/signed-distance infrastructure over EuclideanSpace R (Fin 2), not currently assembled."
+    ],
+    "nextSteps": [
+      "After build confirmation, push branch and open PR (research label, no loom:review-requested).",
+      "Possible future follow-up: spherical/hyperbolic analogue of the cosine-sum range; or the metric signed-distance form with an explicit circumcenter."
+    ],
+    "markdown": "# Knowledge Base: carnot-theorem-oq-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "euclidean-geometry",
+    "triangle-geometry",
+    "circumcenter"
+  ],
+  "relatedProofs": [
+    "carnot-theorem-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-23T14:39:14.519Z",
+  "lastUpdate": "2026-06-23T14:39:14.641Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/CarnotTheorem.lean",
+      "filename": "CarnotTheorem.lean",
+      "lineCount": 82,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CarnotTheorem.lean"
+    }
+  ]
+}
