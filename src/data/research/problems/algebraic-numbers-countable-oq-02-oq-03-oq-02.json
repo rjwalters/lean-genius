@@ -1,22 +1,26 @@
 {
   "id": "algebraic-numbers-countable-oq-02-oq-03-oq-02",
-  "title": "Algebraic Reals Are Meager (Baire Category Transcendence)",
+  "title": "The Transcendental Reals are a Dense Gδ — and the Algebraic Reals are not Gδ",
   "status": "completed",
   "knowledge": {
     "insights": [
-      "The named target (algebraic reals are meagre in ℝ) was ALREADY solved before this session: gallery entry `algebraic-reals-meager` / Proofs/AlgebraicRealsMeager.lean proves meagreness, residual/comeagre transcendentals, density, and existence of transcendentals (0 sorries, 0 axioms, verified, badge=original). The candidate-pool entry was a stale Seeker re-selection of a completed problem.",
-      "The entry's own conclusion.openQuestions flagged the natural follow-up: the ABSTRACT Baire Category Theorem (a nonempty perfect T1 Baire space is uncountable), which countable_isMeagre nearly proves and which subsumes the companion nested-interval entry algebraic-numbers-countable-oq-02-oq-02.",
-      "That follow-up is a ~10-line direct abstraction of the already-verified algebraicReals_ne_univ proof in the same file: assume univ countable -> countable_isMeagre gives IsMeagre univ -> contradiction with not_isMeagre_of_isOpen isOpen_univ Set.univ_nonempty (a nonempty Baire space is not meagre in itself)."
+      "The abstract Baire-category material this problem originally targeted (a nonempty perfect T1 Baire space is uncountable; ℝ uncountable abstractly; the perfect-Polish packaging) is ALREADY merged in Proofs/AlgebraicRealsMeager.lean (gallery entry algebraic-reals-meager, 0 sorries / 0 axioms, verified). The candidate-pool re-selection was stale.",
+      "Genuine new contribution this session: the Borel-hierarchy refinement. Because the algebraic reals are countable they are Fσ, so the transcendental reals are a genuine Gδ — and, being residual in the Baire space ℝ, a dense Gδ. This upgrades the mem_residual witness (residual ⇒ merely CONTAINS a dense Gδ) to the set itself.",
+      "Dually the algebraic reals are NOT Gδ: they are dense (contain ℚ) and the transcendentals are a dense Gδ disjoint from them; if the algebraics were also Gδ, Dense.inter_of_Gδ would force the (empty) intersection to be dense, contradicting nonemptiness of ℝ. Same proof as the classical 'ℚ is not Gδ'.",
+      "This directly resolves the parent algebraic-reals-meager open question: 'quantify the comeagre transcendental complement as an explicit dense Gδ set.'"
     ],
     "builtItems": [
-      "not_countable_of_perfect_t1_baire (Proofs/AlgebraicRealsMeager.lean:145): a nonempty T1 PerfectSpace BaireSpace is uncountable -- the abstract Baire Category Theorem flagged by the companion nested-interval entry, isolated to purely topological hypotheses (no metric/completeness beyond BaireSpace).",
-      "not_countable_real (Proofs/AlgebraicRealsMeager.lean:157): ¬ (Set.univ : Set ℝ).Countable, recovering Cantor uncountability of ℝ abstractly (no diagonal / nested-interval argument), subsuming algebraic-numbers-countable-oq-02-oq-02."
+      "Proofs/AlgebraicNumbersCountableOQ02OQ03OQ02.lean: compl_countable_isDenseGδ — in a nonempty perfect T1 Baire space the complement of a countable set is a dense Gδ.",
+      "Proofs/AlgebraicNumbersCountableOQ02OQ03OQ02.lean: not_isGδ_of_dense_of_disjoint_denseGδ — a dense set disjoint from a dense Gδ cannot be Gδ (abstract obstruction).",
+      "Proofs/AlgebraicNumbersCountableOQ02OQ03OQ02.lean: transcendentalReals_isGδ / transcendentalReals_isDenseGδ — the transcendentals are a (dense) Gδ in ℝ.",
+      "Proofs/AlgebraicNumbersCountableOQ02OQ03OQ02.lean: algebraicReals_dense, algebraicReals_not_isGδ — the algebraic reals are dense and NOT Gδ (Fσ but not Gδ).",
+      "Gallery entry src/data/proofs/algebraic-numbers-countable-oq-02-oq-03-oq-02/meta.json (verified, badge original, 6 theorems, 136 lines, 0 axioms)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "BUILD-VERIFY: when the Docker gate opens (it was saturated at 5 lean-build containers on an 8GB host this session), run ./proofs/scripts/docker-build.sh Proofs.AlgebraicRealsMeager and confirm #print axioms shows only propext/Classical.choice/Quot.sound for not_countable_of_perfect_t1_baire and not_countable_real. Then mark the draft PR ready.",
-      "Optional next OQ: package the full Baire Category Theorem for an arbitrary perfect Polish space by pairing not_countable_of_perfect_t1_baire with completeness; or exhibit the comeagre transcendental complement as an explicit dense Gδ; or formalize independence of the three smallness notions (a meagre full-measure set / a null comeagre set) per the entry's remaining open questions."
+      "Abstract algebraicReals_not_isGδ to a generic 'dense countable set is Fσ but not Gδ in a perfect Polish space' theorem covering ℚ, the algebraic reals, and any countable dense set uniformly.",
+      "Pair the Gδ/Fσ classification with the measure side (algebraic reals Lebesgue-null) and construct an explicit dense Gδ of full measure to witness the independence of category- and measure-smallness on ℝ."
     ],
-    "progressSummary": "COMPLETE: named target (algebraic reals meagre) verified in gallery; extended with abstract Baire-category uncountability theorem (draft PR, build-verification pending due to saturated Docker gate)."
+    "progressSummary": "COMPLETE: parent abstract Baire-category material already merged; this session added the Borel-hierarchy refinement (transcendentals = dense Gδ; algebraic reals not Gδ) as a new verified gallery entry. Build-verified by single-file lean elaboration against prebuilt Mathlib oleans: 0 sorries, axioms = {propext, Classical.choice, Quot.sound} only."
   }
 }
