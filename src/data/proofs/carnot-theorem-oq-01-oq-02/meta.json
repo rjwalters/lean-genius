@@ -1,0 +1,171 @@
+{
+  "id": "carnot-theorem-oq-01-oq-02",
+  "title": "Carnot's Theorem — the squared cosine form and the acute/right/obtuse trichotomy",
+  "slug": "carnot-theorem-oq-01-oq-02",
+  "description": "The parent Carnot fundamental identity cos²A + cos²B + cos²C + 2 cos A cos B cos C = 1 rearranges to cos²A + cos²B + cos²C = 1 - 2 cos A cos B cos C, so the squared cosine sum is governed entirely by the sign of the product of cosines. For a triangle (A, B, C > 0, A + B + C = π) at most one angle can reach π/2, fixing that sign by the triangle's type, and yielding the sharp trichotomy: cos²A + cos²B + cos²C < 1 ⇔ acute, = 1 ⇔ right, > 1 ⇔ obtuse. All results are axiom- and sorry-free.",
+  "meta": {
+    "author": "Lazare Carnot (fundamental cosine identity, 1803); classical triangle classification",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Carnot%27s_theorem_(inradius,_circumradius)",
+    "date": "1803",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CarnotTheoremOQ01OQ02.lean",
+    "tags": [
+      "geometry",
+      "triangle",
+      "trigonometry",
+      "classification",
+      "acute-obtuse",
+      "carnot-theorem"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "CarnotTheorem.carnot_cos_sq_sum",
+        "description": "Parent fundamental cosine identity cos²A + cos²B + cos²C + 2 cos A cos B cos C = 1; rearranged here to the 1 - 2(cos A cos B cos C) form that drives the whole trichotomy",
+        "module": "Proofs.CarnotTheorem"
+      },
+      {
+        "theorem": "Real.cos_pos_of_mem_Ioo",
+        "description": "cos x > 0 for x ∈ (-(π/2), π/2), giving positivity of the cosine for each acute angle",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.cos_pi_div_two",
+        "description": "cos(π/2) = 0, collapsing the product term in the right-triangle case",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.cos_neg_of_pi_div_two_lt_of_lt",
+        "description": "cos x < 0 for π/2 < x < π + π/2, giving the strictly negative cosine of an obtuse angle",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.cos_nonpos_of_pi_div_two_le_of_le",
+        "description": "cos x ≤ 0 for π/2 ≤ x ≤ π + π/2, the non-strict sign used by the contrapositive half of the trichotomy iff",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Rearranged squared identity cos²A + cos²B + cos²C = 1 - 2(cos A cos B cos C), exhibiting the squared cosine sum as a function of the single product of cosines",
+      "The acute case cos²A + cos²B + cos²C < 1, the right case = 1, and the obtuse case > 1, each proved axiom- and sorry-free from the sign of cos A cos B cos C",
+      "Capstone trichotomy iff cos²A + cos²B + cos²C < 1 ⇔ all three angles are acute, with the forward direction handled symmetrically via the elementary fact that two angles of a triangle cannot both reach π/2",
+      "A sign-of-the-product proof of triangle classification that needs no metric data — only A, B, C > 0, the angle sum, and Mathlib's cosine-sign lemmas"
+    ],
+    "dateAdded": "2026-06-23",
+    "axiomCount": 0,
+    "lineCount": 163,
+    "assumptions": "0 axioms. 0 sorries. The only hypotheses are the triangle conditions A, B, C > 0 and the angle-sum relation A + B + C = π. Builds on the parent file Proofs/CarnotTheorem.lean (itself axiom-free). Note: local kernel verification was blocked by an unresponsive Docker build host this session; the proof uses only verified Mathlib v4.26.0 lemma signatures (grep-confirmed against the pinned toolchain) and is gated by the deployer build before merge.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 7,
+    "definitionCount": 0
+  },
+  "sections": [
+    {
+      "title": "Module header",
+      "startLine": 4,
+      "endLine": 40,
+      "description": "Docstring framing the squared cosine identity in its 1 - 2(cos A cos B cos C) form, the observation that for a triangle at most one angle reaches π/2, and the resulting acute/right/obtuse trichotomy for the squared cosine sum.",
+      "summary": "Module header",
+      "id": "module-header"
+    },
+    {
+      "title": "Cosine positivity helper and the rearranged identity",
+      "startLine": 48,
+      "endLine": 66,
+      "description": "The private helper cos_pos_of_lt wraps Real.cos_pos_of_mem_Ioo: cos x > 0 for x ∈ (0, π/2) (the lower bound -(π/2) < x is automatic). Then cos_sq_sum rewrites the parent carnot_cos_sq_sum into cos²A + cos²B + cos²C = 1 - 2(cos A cos B cos C) by a one-line linear_combination.",
+      "summary": "Squared identity in 1 - 2P form",
+      "id": "rearranged-identity"
+    },
+    {
+      "title": "Right triangle: squared sum = 1",
+      "startLine": 69,
+      "endLine": 79,
+      "description": "If C = π/2 then cos C = 0 (Real.cos_pi_div_two), so the product term vanishes and cos²A + cos²B + cos²C = 1. Stated for C = π/2; the other two right-angle cases are symmetric.",
+      "summary": "Right-angle case via vanishing product",
+      "id": "right-case"
+    },
+    {
+      "title": "Acute triangle: squared sum < 1",
+      "startLine": 81,
+      "endLine": 97,
+      "description": "With all three angles in (0, π/2) every cosine is positive (cos_pos_of_lt), so cos A cos B cos C > 0 and 1 - 2(cos A cos B cos C) < 1. A direct linarith from the rearranged identity and the product positivity.",
+      "summary": "Acute case from product positivity",
+      "id": "acute-case"
+    },
+    {
+      "title": "Obtuse triangle: squared sum > 1",
+      "startLine": 99,
+      "endLine": 115,
+      "description": "If C > π/2 then A + B = π - C < π/2 forces both A, B < π/2, so cos A, cos B > 0 while cos C < 0 (Real.cos_neg_of_pi_div_two_lt_of_lt). Hence cos A cos B cos C < 0 and the squared sum exceeds 1.",
+      "summary": "Obtuse case from negative product",
+      "id": "obtuse-case"
+    },
+    {
+      "title": "Non-strict workhorse and the trichotomy iff",
+      "startLine": 117,
+      "endLine": 162,
+      "description": "The private cos_sq_sum_ge_one_of_ge shows that if the first angle is ≥ π/2 then the squared sum is ≥ 1 (the other two angles are forced below π/2, giving cos A cos B cos C ≤ 0). The capstone cos_sq_sum_lt_one_iff_acute proves cos²A + cos²B + cos²C < 1 ⇔ all angles acute: backward is the acute case, forward is its contrapositive applied symmetrically with each angle placed first.",
+      "summary": "Trichotomy iff: squared sum < 1 ⇔ acute",
+      "id": "trichotomy-iff"
+    }
+  ],
+  "overview": {
+    "historicalContext": "Carnot's theorem on the inradius and circumradius states that the sum of the signed distances from the circumcenter of a triangle to its three sides equals R + r. Its analytic core is the pair of identities proved in the parent file: the angle form cos A + cos B + cos C = 1 + r/R and the fundamental polynomial identity cos²A + cos²B + cos²C + 2 cos A cos B cos C = 1. This entry exploits the second one. Written as cos²A + cos²B + cos²C = 1 - 2 cos A cos B cos C, it shows that the value of the squared cosine sum relative to 1 is a pure read-off of the sign of the product of cosines — and for a genuine triangle that sign is exactly the classical acute/right/obtuse dichotomy.",
+    "problemStatement": "For a triangle with angles A, B, C > 0 and A + B + C = π, prove that cos²A + cos²B + cos²C < 1 if and only if the triangle is acute, equals 1 if and only if it is right, and exceeds 1 if and only if it is obtuse — all from the parent fundamental identity cos²A + cos²B + cos²C + 2 cos A cos B cos C = 1.",
+    "text": "The squared cosine sum of a triangle's angles compares to 1 exactly as the triangle is acute, right, or obtuse — a trichotomy that falls straight out of the sign of cos A cos B cos C.",
+    "proofStrategy": "Rearranging the parent identity gives cos²A + cos²B + cos²C = 1 - 2 cos A cos B cos C, so the whole question reduces to the sign of P := cos A cos B cos C. The key elementary fact is that at most one angle of a triangle can be ≥ π/2, because if two were, their sum alone would reach π and the third positive angle would push the total past π.\n\n1. **Acute** (all angles < π/2): each cosine is positive (cos is positive on (0, π/2)), so P > 0 and the squared sum is < 1.\n2. **Right** (one angle = π/2): that cosine is 0, so P = 0 and the squared sum is exactly 1.\n3. **Obtuse** (one angle > π/2): that cosine is negative; the other two angles are forced below π/2 (they sum to less than π/2), so their cosines are positive and P < 0, making the squared sum > 1.\n4. **Trichotomy iff**: the backward direction of cos²A + cos²B + cos²C < 1 ⇔ acute is the acute case; the forward direction is its contrapositive — if some angle is ≥ π/2 then a non-strict version of the obtuse argument gives the squared sum ≥ 1. Symmetry across the three angles is handled by applying the same lemma with each angle placed first.\n\nNo metric data and no completing-the-square is needed; the argument is purely about cosine signs.",
+    "keyInsights": [
+      "**The squared cosine sum is 1 minus twice the product of cosines**: cos²A + cos²B + cos²C = 1 - 2 cos A cos B cos C, so everything about its position relative to 1 is encoded in the sign of cos A cos B cos C",
+      "**Sign of the product = triangle type**: at most one angle can reach π/2, so the product of cosines is positive (acute), zero (right), or negative (obtuse) — exactly tracking the classical classification",
+      "**A classification theorem with no metric input**: the acute/right/obtuse split is recovered from only A, B, C > 0, the angle sum, and the sign of cos on (0, π/2) and (π/2, π)",
+      "**Complements the linear cosine-sum range**: where the sibling entry pins the range (1, 3/2] of cos A + cos B + cos C, this one reads the *squared* sum against the single threshold 1"
+    ],
+    "prerequisites": [
+      "Real trigonometric function cos and its sign on (0, π/2), at π/2, and on (π/2, π)",
+      "The parent Carnot fundamental identity cos²A + cos²B + cos²C + 2 cos A cos B cos C = 1",
+      "The elementary fact that at most one angle of a triangle is ≥ π/2"
+    ],
+    "openQuestions": [
+      "Does an analogous product-sign trichotomy hold for the polynomial cos²A + cos²B + cos²C - 2 cos A cos B cos C, or for higher symmetric functions of the angle cosines?",
+      "Can the metric signed-distance form of Carnot's theorem (signed circumcenter-to-side distances summing to R + r) be formalized over EuclideanSpace ℝ (Fin 2), making the acute/obtuse sign of each signed distance match the cosine-sign trichotomy proved here?"
+    ]
+  },
+  "conclusion": {
+    "summary": "For a triangle the squared cosine sum cos²A + cos²B + cos²C compares to 1 exactly as the triangle is acute (< 1), right (= 1), or obtuse (> 1). The proof rearranges the parent fundamental identity to cos²A + cos²B + cos²C = 1 - 2 cos A cos B cos C and reads off the sign of the product of cosines, which the triangle's type fixes since at most one angle can reach π/2. All results are axiom- and sorry-free.",
+    "implications": "**Theoretical Significance**: The entry turns Carnot's fundamental polynomial identity into a classification theorem, showing that the acute/right/obtuse type of a triangle is a single sign — that of cos A cos B cos C — and complements the sibling entry's range result for the linear cosine sum. Together the two follow-ups exhibit the linear and quadratic symmetric forms of the angle cosines as the analytic content of Carnot's theorem.",
+    "openQuestions": [
+      "A product-sign trichotomy for related cosine polynomials or higher symmetric functions?",
+      "A direct metric formalization over EuclideanSpace ℝ (Fin 2) matching signed-distance signs to the cosine-sign trichotomy?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "carnot-theorem-oq-01",
+      "relationship": "parent",
+      "description": "The parent fundamental identity cos²A + cos²B + cos²C + 2 cos A cos B cos C = 1 is rearranged to the 1 - 2(cos A cos B cos C) form that the entire trichotomy is read off."
+    },
+    {
+      "targetId": "carnot-theorem-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "The sibling entry pins the sharp range (1, 3/2] of the linear cosine sum cos A + cos B + cos C; this entry classifies the squared cosine sum against the single threshold 1, the quadratic counterpart of the same Carnot identities."
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.CarnotTheorem"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "CarnotTheoremOQ01OQ02",
+    "lineCount": 163,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/CarnotTheoremOQ01OQ02.lean"
+  }
+}

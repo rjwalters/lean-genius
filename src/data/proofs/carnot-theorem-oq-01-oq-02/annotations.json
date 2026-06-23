@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-carnot-oq0102-overview",
+    "proofId": "carnot-theorem-oq-01-oq-02",
+    "range": { "startLine": 4, "endLine": 40 },
+    "type": "concept",
+    "title": "The Squared Cosine Form and the Acute/Right/Obtuse Trichotomy",
+    "content": "The docstring frames the goal: the parent fundamental identity cos²A + cos²B + cos²C + 2 cos A cos B cos C = 1 rearranges to cos²A + cos²B + cos²C = 1 − 2 cos A cos B cos C, so the squared cosine sum's position relative to 1 is decided entirely by the sign of the product P = cos A cos B cos C. For a triangle at most one angle can reach π/2, fixing that sign by the triangle's type and yielding the sharp trichotomy: squared sum < 1 ⇔ acute, = 1 ⇔ right, > 1 ⇔ obtuse.",
+    "mathContext": "$\\cos^2 A + \\cos^2 B + \\cos^2 C = 1 - 2\\cos A\\cos B\\cos C, \\qquad \\operatorname{sgn}(1 - \\textstyle\\sum\\cos^2) = \\operatorname{sgn}(\\cos A\\cos B\\cos C).$",
+    "significance": "supporting",
+    "relatedConcepts": ["Carnot's theorem", "triangle classification", "acute triangle", "obtuse triangle", "product of cosines"],
+    "prerequisites": ["triangle geometry", "trigonometry"]
+  },
+  {
+    "id": "ann-carnot-oq0102-identity",
+    "proofId": "carnot-theorem-oq-01-oq-02",
+    "range": { "startLine": 48, "endLine": 66 },
+    "type": "theorem",
+    "title": "Cosine Positivity Helper and the Rearranged Identity",
+    "content": "The private helper cos_pos_of_lt wraps Real.cos_pos_of_mem_Ioo: for x ∈ (0, π/2) the cosine is positive, the lower bound −(π/2) < x being automatic from x > 0. Then cos_sq_sum recasts the parent carnot_cos_sq_sum into cos²A + cos²B + cos²C = 1 − 2(cos A cos B cos C) by a single linear_combination — this is the algebraic pivot that turns the whole problem into a sign question about the product of cosines.",
+    "mathContext": "$\\cos^2 A + \\cos^2 B + \\cos^2 C = 1 - 2\\,(\\cos A\\cos B\\cos C).$",
+    "significance": "key",
+    "relatedConcepts": ["Carnot fundamental identity", "linear_combination", "cosine sign", "sum of squares"],
+    "prerequisites": ["trigonometric identities"]
+  },
+  {
+    "id": "ann-carnot-oq0102-right",
+    "proofId": "carnot-theorem-oq-01-oq-02",
+    "range": { "startLine": 69, "endLine": 79 },
+    "type": "theorem",
+    "title": "Right Triangle: Squared Sum Equals 1",
+    "content": "cos_sq_sum_eq_one_of_right handles C = π/2. Then cos C = 0 (Real.cos_pi_div_two), so the product term 2(cos A cos B cos C) vanishes and the rearranged identity collapses to cos²A + cos²B + cos²C = 1. The statement is given for C = π/2; the cases A = π/2 and B = π/2 are symmetric. (This is the value at which Pythagoras' cos²A + sin²A = 1 reappears, since B = π/2 − A makes cos B = sin A.)",
+    "mathContext": "$C = \\tfrac{\\pi}{2} \\implies \\cos C = 0 \\implies \\cos^2 A + \\cos^2 B + \\cos^2 C = 1.$",
+    "significance": "supporting",
+    "relatedConcepts": ["right triangle", "Pythagorean identity", "vanishing product"],
+    "prerequisites": ["trigonometry"]
+  },
+  {
+    "id": "ann-carnot-oq0102-acute",
+    "proofId": "carnot-theorem-oq-01-oq-02",
+    "range": { "startLine": 81, "endLine": 97 },
+    "type": "theorem",
+    "title": "Acute Triangle: Squared Sum Below 1",
+    "content": "cos_sq_sum_lt_one_of_acute treats all three angles in (0, π/2). Each cosine is then strictly positive (cos_pos_of_lt), so the product cos A cos B cos C > 0, and the rearranged identity gives cos²A + cos²B + cos²C = 1 − 2(positive) < 1. A direct linarith from the identity and the product positivity finishes it.",
+    "mathContext": "$A, B, C < \\tfrac{\\pi}{2} \\implies \\cos A\\cos B\\cos C > 0 \\implies \\cos^2 A + \\cos^2 B + \\cos^2 C < 1.$",
+    "significance": "key",
+    "relatedConcepts": ["acute triangle", "positivity", "linarith"],
+    "prerequisites": ["inequalities", "trigonometry"]
+  },
+  {
+    "id": "ann-carnot-oq0102-obtuse",
+    "proofId": "carnot-theorem-oq-01-oq-02",
+    "range": { "startLine": 99, "endLine": 115 },
+    "type": "theorem",
+    "title": "Obtuse Triangle: Squared Sum Above 1",
+    "content": "cos_sq_sum_gt_one_of_obtuse treats C > π/2. Then A + B = π − C < π/2 forces both A and B below π/2, so cos A, cos B > 0, while cos C < 0 (Real.cos_neg_of_pi_div_two_lt_of_lt). Hence cos A cos B cos C < 0 and the squared sum equals 1 − 2(negative) > 1. The obtuse angle is the unique negative cosine — exactly why at most one angle can be obtuse.",
+    "mathContext": "$C > \\tfrac{\\pi}{2} \\implies \\cos C < 0,\\ \\cos A,\\cos B > 0 \\implies \\cos^2 A + \\cos^2 B + \\cos^2 C > 1.$",
+    "significance": "key",
+    "relatedConcepts": ["obtuse triangle", "cosine sign", "negative product"],
+    "prerequisites": ["inequalities", "trigonometry"]
+  },
+  {
+    "id": "ann-carnot-oq0102-trichotomy",
+    "proofId": "carnot-theorem-oq-01-oq-02",
+    "range": { "startLine": 117, "endLine": 162 },
+    "type": "theorem",
+    "title": "The Trichotomy Iff: Squared Sum < 1 ⟺ Acute",
+    "content": "The private cos_sq_sum_ge_one_of_ge is the non-strict workhorse: if the first angle is ≥ π/2 then the other two are forced below π/2, giving cos A cos B cos C ≤ 0 and squared sum ≥ 1. The capstone cos_sq_sum_lt_one_iff_acute then proves cos²A + cos²B + cos²C < 1 ⇔ all three angles are acute. Backward is the acute theorem; forward is its contrapositive — if any angle is ≥ π/2, applying the workhorse with that angle placed first contradicts squared sum < 1. The three cases are dispatched symmetrically, completing the full < 1 / = 1 / > 1 classification.",
+    "mathContext": "$\\cos^2 A + \\cos^2 B + \\cos^2 C < 1 \\iff A < \\tfrac{\\pi}{2} \\wedge B < \\tfrac{\\pi}{2} \\wedge C < \\tfrac{\\pi}{2}.$",
+    "significance": "key",
+    "relatedConcepts": ["trichotomy", "contrapositive", "triangle classification", "at most one obtuse angle"],
+    "prerequisites": ["trigonometry", "logic"]
+  }
+]
