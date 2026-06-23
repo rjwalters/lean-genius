@@ -1,0 +1,146 @@
+{
+  "id": "wilsons-theorem-oq-05-oq-01",
+  "title": "The Complete ℕ Remainder Trichotomy of Wilson's Theorem",
+  "slug": "wilsons-theorem-oq-05-oq-01",
+  "description": "Answers the first follow-up question of wilsons-theorem-oq-05: assemble the complete trichotomy of (n-1)! mod n as a single classification theorem, stated — in keeping with oq-05's philosophy — as an honest remainder between natural numbers, with no ZMod and no native_decide. The sibling oq-05 pins only the prime value ((n-1)! % n = n-1 iff n prime); the sibling oq-01 classifies the full residue but in ZMod n and with the n=4 anomaly discharged by native_decide (so its classification is not axiom-free). This entry gives the headline closed form factorial_pred_mod: for n >= 2, (n-1)! % n = if n.Prime then n-1 else if n = 4 then 2 else 0 — a single, computable closed form for the Wilson residue. From it follow, all in pure ℕ: factorial_pred_mod_trichotomy (the disjunctive 'exactly one of three cases' form), dvd_factorial_pred_iff (n ∣ (n-1)! iff n is composite and not 4 — the divisibility characterisation, with 4 as the unique anomaly since 3! = 6 is not a multiple of 4), factorial_pred_mod_eq_zero_iff (its remainder form (n-1)! % n = 0 iff composite and not 4), and prime_iff_factorial_pred_mod (oq-05's primality criterion, recovered as a slice). The prime value uses the oq-05 bridge (Mathlib's Nat.prime_iff_fac_equiv_neg_one plus natCast_pred_eq_neg_one and ZMod.natCast_eq_natCast_iff); the composite value is genuine divisibility — for composite n != 4, writing n = p*q with p = minFac n <= q, either p != q (two distinct factors <= n-1) or n = p^2 with p >= 3 (the distinct factors p and 2p <= n-1), so n ∣ (n-1)! via distinct_factors_dvd_factorial; the lone exception n=4 is settled by kernel decide, not native_decide. Fully machine-checked: 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Ibn al-Haytham (c. 1000); Wilson/Lagrange (1771); composite case classical; trichotomy assembled in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Wilson%27s_theorem",
+    "date": "1771",
+    "status": "verified",
+    "proofRepoPath": "Proofs/WilsonsTheoremOQ05OQ01.lean",
+    "tags": [
+      "number-theory",
+      "wilsons-theorem",
+      "primality",
+      "factorial",
+      "modular-arithmetic",
+      "divisibility",
+      "classification",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 244,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The n=4 anomaly is discharged by kernel `decide` (NOT `native_decide`), so the development depends only on the foundational `propext`, `Classical.choice`, `Quot.sound` — there is no `Lean.ofReduceBool`. Rests on Mathlib's `Nat.prime_iff_fac_equiv_neg_one` (ZMod-valued Wilson) and elementary `minFac`/`Finset` divisibility infrastructure.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.prime_iff_fac_equiv_neg_one",
+        "description": "`n ≠ 1 → (Nat.Prime n ↔ ((n-1)! : ZMod n) = -1)`, Mathlib's ZMod-valued Wilson biconditional. Source of the prime value (n-1)! % n = n-1.",
+        "module": "Mathlib.NumberTheory.Wilson"
+      },
+      {
+        "theorem": "ZMod.natCast_eq_natCast_iff",
+        "description": "`(a : ZMod c) = (b : ZMod c) ↔ a ≡ b [MOD c]`, the transport turning the ZMod Wilson equality into a natural-number congruence.",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Nat.minFac_sq_le_self",
+        "description": "`0 < n → ¬n.Prime → n.minFac ^ 2 ≤ n`, which forces minFac n ≤ n / minFac n and underlies the case split (p ≠ q vs n = p²) in the composite divisibility proof.",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Finset.prod_dvd_prod_of_subset",
+        "description": "If s ⊆ t then ∏_{s} f ∣ ∏_{t} f, used to show a·b = ∏_{a,b} divides n! = ∏_{Icc 1 n} when a, b are distinct elements of {1,…,n}.",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Nat.modEq_zero_iff_dvd",
+        "description": "`a ≡ 0 [MOD n] ↔ n ∣ a`, bridging the divisibility n ∣ (n-1)! to the remainder (n-1)! % n = 0 in the composite case.",
+        "module": "Mathlib.Data.Nat.ModCast"
+      }
+    ],
+    "originalContributions": [
+      "`factorial_pred_mod`: the headline closed form — for n ≥ 2, (n-1)! % n = if n.Prime then n-1 else if n = 4 then 2 else 0. A single computable ℕ expression for the Wilson residue across all n, with no ZMod and (crucially) no native_decide, so it is genuinely axiom-free. This is the ZMod-free counterpart of sibling oq-01's ZMod-valued classification.",
+      "`factorial_pred_mod_trichotomy`: the disjunctive form making the three mutually exclusive cases explicit — (n prime, % = n-1), (n = 4, % = 2), (n composite ≠ 4, % = 0).",
+      "`dvd_factorial_pred_iff`: the divisibility characterisation n ∣ (n-1)! ↔ ¬n.Prime ∧ n ≠ 4, identifying the primes (Wilson) and the single anomaly 4 as exactly the n for which (n-1)! is not a multiple of n.",
+      "`factorial_pred_mod_eq_zero_iff`: the remainder form (n-1)! % n = 0 ↔ ¬n.Prime ∧ n ≠ 4.",
+      "`composite_dvd_factorial_pred`: the composite divisibility n ∣ (n-1)! for composite n ≠ 4, proved self-containedly in ℕ via the minFac case split and `distinct_factors_dvd_factorial` (with the n = 4 exclusion made structural rather than a hypothesis n > 4).",
+      "`prime_iff_factorial_pred_mod`: oq-05's primality criterion n.Prime ↔ (n-1)! % n = n-1, recovered here as a slice of the full classification (the converse direction using the trichotomy's distinct residue values)."
+    ],
+    "prerequisites": [
+      "Wilson's theorem and its ZMod formulation",
+      "Smallest prime factor `Nat.minFac` and the bound minFac² ≤ n for composites",
+      "Factorials as products over `Finset.Icc 1 n` and divisibility of products",
+      "Natural-number congruence `Nat.ModEq` and remainder `%`"
+    ],
+    "dateAdded": "2026-06-23",
+    "relatedProblems": [
+      {
+        "id": "wilsons-theorem-oq-05",
+        "relationship": "Parent: oq-05 states Wilson in classical ℕ form and pins the prime value (n-1)! % n = n-1; this entry completes it to the full remainder trichotomy across primes, composites, and the n=4 anomaly."
+      },
+      {
+        "id": "wilsons-theorem-oq-01",
+        "relationship": "Sibling: oq-01 gives the same classification but in ZMod n and discharges n=4 with native_decide. This entry is the ZMod-free, axiom-free (no native_decide) counterpart, phrased as an explicit ℕ remainder closed form."
+      },
+      {
+        "id": "wilsons-theorem-oq-03",
+        "relationship": "Sibling: oq-03 computes ν_p((p-1)!) = 0 (p ∤ (p-1)!); the trichotomy's prime branch sharpens this to the exact remainder p-1, and its composite branch gives the complementary p ∣ (n-1)!."
+      }
+    ]
+  },
+  "leanFile": {
+    "lineCount": 244,
+    "path": "Proofs/WilsonsTheoremOQ05OQ01.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 10,
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "WilsonsTheoremOQ05OQ01"
+  },
+  "sorries": 0,
+  "overview": {
+    "historicalContext": "Wilson's theorem — n > 1 is prime iff (n-1)! ≡ -1 (mod n) — was known to Ibn al-Haytham (c. 1000) and first proved by Lagrange (1771). The converse rests on a complementary fact: for composite n, a proper factorisation of n appears among the factors 1,…,n-1, so n divides (n-1)! and (n-1)! ≡ 0 (mod n). The single composite number escaping this is 4: 3! = 6 ≡ 2 (mod 4), because the only factorisation 4 = 2·2 reuses the factor 2, which appears just once below 4. Collecting these gives the complete residue of (n-1)! mod n: n-1 for primes, 0 for composites n > 4, and 2 for n = 4. Mathlib carries Wilson in ZMod form; the sibling oq-01 classifies the residue in ZMod (with n=4 by native_decide), and oq-05 gives the prime case as a ℕ remainder. This entry assembles the full classification as a single ℕ closed form, axiom-free.",
+    "problemStatement": "**Open Question (wilsons-theorem-oq-05, follow-up 1):** assemble the complete trichotomy of (n-1)! mod n — ≡ n-1 for n prime, ≡ 0 for composite n > 4, and the exceptional ≡ 2 for n = 4 — as a single classification theorem, stated as a natural-number remainder (no ZMod, no native_decide).",
+    "text": "For every n ≥ 2, the remainder (n-1)! % n is given by the closed form: n-1 if n is prime, 2 if n = 4, and 0 otherwise (composite n ≠ 4).",
+    "proofStrategy": "The headline `factorial_pred_mod` splits on primality and on n = 4. The prime value reuses the oq-05 bridge: Mathlib's `Nat.prime_iff_fac_equiv_neg_one` gives ((n-1)! : ZMod n) = -1, `natCast_pred_eq_neg_one` identifies the natural number n-1 with -1, and `ZMod.natCast_eq_natCast_iff` plus `Nat.mod_eq_of_lt` deliver (n-1)! % n = n-1. The composite value is honest divisibility: `composite_dvd_factorial_pred` shows n ∣ (n-1)! for composite n ≠ 4 by writing n = p·q with p = minFac n ≤ q and `Nat.minFac_sq_le_self`; if p ≠ q then p, q are two distinct factors in {1,…,n-1}, and if n = p² then p ≥ 3 forces 2p ≤ n-1, giving the distinct factors p and 2p — in both cases `distinct_factors_dvd_factorial` (built on `Finset.prod_dvd_prod_of_subset`) yields n ∣ (n-1)!, whence the remainder is 0 via `Nat.modEq_zero_iff_dvd`. The single anomaly n = 4 (3! = 6 ≡ 2) is closed by kernel `decide`. The corollaries — disjunctive trichotomy, divisibility iff, remainder-zero iff, and the recovered primality criterion — read the closed form back out.",
+    "keyInsights": [
+      "**One closed form, fully computable, axiom-free.** `factorial_pred_mod` packages the entire classical behaviour of (n-1)! mod n into a single if-expression in ℕ. Discharging the n=4 case by kernel `decide` rather than `native_decide` keeps it free of `Lean.ofReduceBool` — the ZMod-valued sibling oq-01 is not.",
+      "**4 is the unique anomaly, and the reason is structural.** A composite n fails n ∣ (n-1)! only when its sole factorisation reuses a factor that appears just once below n — i.e. n = p² with 2p > n-1, which for the prime p forces p = 2, n = 4. The proof makes this precise via the p = q (square) branch needing p ≥ 3 for 2p ≤ n-1.",
+      "**The residue characterises primality and compositeness simultaneously.** Because the three values n-1, 2, 0 are distinct for n ≥ 5, the remainder detects the case: (n-1)! % n = n-1 ⟺ prime (Wilson), and (n-1)! % n = 0 ⟺ composite ≠ 4 (`factorial_pred_mod_eq_zero_iff`). The factorial residue is a complete primality+anomaly indicator.",
+      "**ZMod-free divisibility is sharper than the ZMod statement.** `dvd_factorial_pred_iff` records exactly when n divides (n-1)!, an integer-divisibility fact usable in elementary developments that avoid quotient types, complementing oq-01's ZMod classification."
+    ],
+    "prerequisites": [
+      "Wilson's theorem (ZMod form) and `Nat.prime_iff_fac_equiv_neg_one`",
+      "`Nat.minFac`, `Nat.minFac_prime`, and `Nat.minFac_sq_le_self`",
+      "Factorials as `Finset.Icc 1 n` products; `Finset.prod_dvd_prod_of_subset`",
+      "`Nat.ModEq`, `Nat.modEq_zero_iff_dvd`, and the remainder `%`"
+    ]
+  },
+  "conclusion": {
+    "summary": "The complete remainder trichotomy of Wilson's theorem is assembled as a single ℕ closed form: for n ≥ 2, (n-1)! % n = if n.Prime then n-1 else if n = 4 then 2 else 0. Corollaries give the disjunctive trichotomy, the divisibility characterisation n ∣ (n-1)! ↔ ¬n.Prime ∧ n ≠ 4 and its remainder form, and recover oq-05's primality criterion. 10 theorems, 244 lines, 0 sorries, 0 axioms — and, unlike the ZMod-valued sibling oq-01, no native_decide (the n=4 anomaly is closed by kernel decide).",
+    "implications": "This completes the wilsons-theorem ℕ-remainder programme: oq-05 fixed the prime value, and this entry extends it to a computable closed form valid for every n ≥ 2, proved axiom-free. The divisibility characterisation `dvd_factorial_pred_iff` is the integer statement of when n divides (n-1)!, directly usable in ZMod-free number theory. Together with sibling oq-01 it gives both the ZMod and the ℕ classifications of the factorial residue.",
+    "openQuestions": [
+      "Promote `factorial_pred_mod` to an actual `Decidable`-instance-flavored primality certificate: package (n-1)! % n = n-1 as a decision procedure and compare its (exponential) cost with the Lucas/Pratt certificate route.",
+      "State the Gauss–Wilson product form ∏_{units of ℤ/nℤ} as a ℕ congruence trichotomy paralleling this one, covering the n ∈ {1, 2, 4, p^k, 2p^k} cyclic-units classification handled in ZMod by siblings oq-02/oq-04."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "wilsons-theorem-oq-05",
+      "relationship": "parent",
+      "description": "oq-05 gives Wilson's theorem in classical ℕ form and pins the prime value (n-1)! % n = n-1. This entry answers its first follow-up question by completing the residue to the full trichotomy across primes, composites, and the n=4 anomaly."
+    },
+    {
+      "targetId": "wilsons-theorem-oq-01",
+      "relationship": "sibling",
+      "description": "oq-01 classifies the residue of (n-1)! but in ZMod n, discharging the n=4 case with native_decide. This entry is the ZMod-free, axiom-free counterpart: a single ℕ remainder closed form with the anomaly closed by kernel decide."
+    },
+    {
+      "targetId": "wilsons-theorem-oq-03",
+      "relationship": "sibling",
+      "description": "oq-03 computes the p-adic valuation ν_p((p-1)!) = 0 (p ∤ (p-1)!). The trichotomy's prime branch sharpens this to the exact remainder p-1, and its composite branch gives the complementary divisibility n ∣ (n-1)!."
+    }
+  ]
+}
