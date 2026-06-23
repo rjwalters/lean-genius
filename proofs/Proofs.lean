@@ -819,6 +819,7 @@ import Proofs.DescartesRuleOfSignsOQ02Parity
 import Proofs.DescartesRuleOfSignsOQ03
 import Proofs.DescartesRuleOfSignsOQ04
 import Proofs.DetConjugateTransposeOQ01
+import Proofs.DiamondImpliesCH
 import Proofs.DilworthMirskyHardOQ01
 import Proofs.DilworthTheoremOQ01
 import Proofs.DiniTheorem
@@ -1004,6 +1005,7 @@ import Proofs.Erdos1023OQ01OQ01
 import Proofs.Erdos1023OQ01Problem
 import Proofs.Erdos1023Problem
 import Proofs.Erdos1024Problem
+import Proofs.Erdos1025OQ04
 import Proofs.Erdos1025Problem
 import Proofs.Erdos1026Problem
 import Proofs.Erdos1027Aristotle
