@@ -1,0 +1,208 @@
+{
+  "id": "four-square-distribution-oq-06-oq-01",
+  "title": "σ*(n) = σ(n) − 4·σ(n/4): Jacobi's modified divisor sum through the classical σ",
+  "slug": "four-square-distribution-oq-06-oq-01",
+  "description": "The parent OQ-06 computed Jacobi's modified divisor sum σ*(n) = Σ_{d|n, 4∤d} d only on prime powers. This entry gives a single closed form valid for every n, reducing σ* to the ordinary — and fully multiplicative — sum-of-divisors function σ(n) = Σ_{d|n} d. Headline identity: σ*(n) = σ(n) − 4·σ(n/4) whenever 4∣n, and σ*(n) = σ(n) when 4∤n. The mechanism is a bijection e ↦ 4e showing the dropped multiples-of-4 divisors sum to exactly 4·σ(n/4). From this follows the general odd-part capstone: writing n = 2ᵃ·m with m odd and a ≥ 1, σ*(2ᵃ·m) = 3·σ(m) depends only on the odd part — Jacobi's complete arithmetic prescription. Restated for jacobiR4 = 8·σ*: r₄(n) = 8·σ(n) for 4∤n and r₄(2ᵃ·m) = 24·σ(m) for even arguments, the textbook form of the four-square count. All theorems are 0-axiom and native_decide-free.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-22",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FourSquareDistributionOQ06OQ01.lean",
+    "tags": [
+      "number-theory",
+      "sum-of-squares",
+      "jacobi",
+      "divisor-function",
+      "multiplicative-function",
+      "closed-form",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "No assumptions. Fully machine-checked with only Lean/Mathlib's foundational axioms (propext, Classical.choice, Quot.sound); no native_decide, so no Lean.ofReduceBool. The definitions sigmaStar and jacobiR4 mirror those of the sibling FourSquareDistributionOQ01.lean exactly (restated so this file verifies standalone against Mathlib only).",
+    "dateAdded": "2026-06-22",
+    "lineCount": 249,
+    "theoremCount": 10,
+    "definitionCount": 2,
+    "originalContributions": [
+      "sigmaStar_eq_sigma_of_not_four_dvd (PROVED): if 4∤n then σ*(n) = σ(n) — no divisor of such an n is divisible by 4, so the modified divisor sum drops nothing. This is the sharp generalization of the parent's 'odd ⇒ σ* = σ' (4∤n is weaker than oddness).",
+      "sum_filter_four_dvd (PROVED): for 4∣n, Σ_{d|n, 4∣d} d = 4·σ(n/4). The divisors of n divisible by 4 are exactly {4e : e | n/4}; the proof builds the explicit Finset bijection e ↦ 4e (image equality + Finset.sum_image with injectivity).",
+      "sigmaStar_add_eq / sigmaStar_eq_sigma_sub (PROVED): the headline identity σ*(n) = σ(n) − 4·σ(n/4) whenever 4∣n (stated additively to avoid ℕ truncation, then as subtraction). This expresses Jacobi's σ* entirely through the classical multiplicative σ.",
+      "sigma_two_pow (PROVED): σ(2ᵃ) = 2^{a+1} − 1, the geometric divisor sum of a power of two.",
+      "sigmaStar_two_pow_mul_odd (PROVED): the general odd-part capstone — for n = 2ᵃ·m with m odd and a ≥ 1, σ*(2ᵃ·m) = 3·σ(m). Proof splits a = 1 (where 4∤2m so σ* = σ and σ(2m) = σ(2)σ(m) = 3σ(m)) from a ≥ 2 (where the headline subtraction identity and the coprime multiplicativity σ(2ᵃm) = σ(2ᵃ)σ(m) collapse to 3σ(m)).",
+      "jacobiR4_of_not_four_dvd / jacobiR4_two_pow_mul_odd (PROVED): Jacobi's four-square count in textbook closed form — r₄(n) = 8·σ(n) when 4∤n and r₄(2ᵃ·m) = 24·σ(m) for even arguments n = 2ᵃ·m.",
+      "sigmaStar_twelve / jacobiR4_twelve (PROVED): σ*(12) = 12 and r₄(12) = 96, recovered symbolically as the a = 2, m = 3 instance of the capstone — no native_decide."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Coprime.sum_divisors_mul",
+        "description": "σ(m·n) = σ(m)·σ(n) for coprime m, n — multiplicativity of the classical divisor sum, applied to the coprime factorization 2ᵃ·m with m odd.",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Misc"
+      },
+      {
+        "theorem": "Finset.sum_image",
+        "description": "reindexes a sum along an injective image — turns Σ_{d ∈ (n/4).divisors.image (4·)} d into 4·σ(n/4), the heart of sum_filter_four_dvd.",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Nat.divisors_prime_pow",
+        "description": "divisors(2ᵃ) = (range (a+1)).map (2 ^ ·) — reduces σ(2ᵃ) to a geometric sum of powers of two.",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "Nat.mul_dvd_mul_iff_left",
+        "description": "cancels the common factor 4 in 4e ∣ 4(n/4), establishing the divisor correspondence e | (n/4) ↔ 4e | n.",
+        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Jacobi's four-square theorem (1829) gives r₄(n) = 8·σ*(n), where σ*(n) = Σ_{d|n, 4∤d} d is the sum of divisors of n not divisible by 4. The classical textbook statement is usually split by parity: r₄(n) = 8·σ(n) for odd n, and r₄(n) = 24·σ(m) for even n with odd part m. The parent gallery family FourSquareDistribution* verifies the prediction r₄(n) = 8·σ*(n) at n = 1..10 by native_decide, and the immediate parent OQ-06 computes σ* symbolically on prime powers. What was missing was a single uniform reduction of the modified σ* to the classical, fully multiplicative σ valid for all n at once.",
+    "problemStatement": "**Follow-up to OQ-06 of four-square-distribution**\n\nIs there a closed form for Jacobi's modified divisor sum σ*(n) = Σ_{d|n, 4∤d} d valid for every n — expressed through the ordinary sum-of-divisors function σ(n) = Σ_{d|n} d — rather than only on prime powers? In particular, recover the textbook parity split r₄(n) = 8σ(n) (n odd) / 24σ(odd part) (n even).",
+    "text": "For every n: if 4∤n then σ*(n) = σ(n); if 4∣n then σ*(n) = σ(n) − 4·σ(n/4). Consequently, for n = 2ᵃ·m with m odd and a ≥ 1, σ*(n) = 3·σ(m). Restated for the four-square count jacobiR4 = 8·σ*: r₄(n) = 8·σ(n) for 4∤n, and r₄(2ᵃ·m) = 24·σ(m).",
+    "proofStrategy": "The whole reduction rests on splitting the divisor sum by the predicate 4∣d. When 4∤n no divisor d|n can satisfy 4|d (else 4|n), so every if-branch keeps its term and σ*(n) = σ(n). When 4∣n, the dropped part Σ_{d|n, 4∣d} d is itself a divisor sum: the map e ↦ 4e is a bijection from divisors(n/4) onto {d | n : 4∣d} (using 4·(n/4) = n and cancellation of the factor 4), so Finset.sum_image gives Σ_{d|n, 4∣d} d = 4·σ(n/4). Pairing the two complementary if-branches (if 4∣d then 0 else d) + (if 4∣d then d else 0) = d yields the additive identity σ*(n) + 4·σ(n/4) = σ(n), hence the subtraction form. The odd-part capstone then specializes n = 2ᵃ·m: for a = 1, 4∤2m (m odd) so σ*(2m) = σ(2m) = σ(2)σ(m) = 3σ(m) by coprime multiplicativity; for a ≥ 2, n/4 = 2^{a−2}·m and the subtraction identity together with σ(2ᵃ) = 2^{a+1}−1 and σ(2ᵃm) = σ(2ᵃ)σ(m) collapses — after writing 2^{a−1} = Q+1 to clear truncated subtraction — to exactly 3σ(m).",
+    "keyInsights": [
+      "Jacobi's modified σ* is not a new arithmetic function to be studied from scratch: it is the classical multiplicative σ minus a single correction term 4·σ(n/4) that fires only when 4∣n. This pins σ* entirely to the well-developed divisor-sum theory.",
+      "The correction term is exact and structural — the multiples-of-4 divisors of n are in perfect bijection with all divisors of n/4 via e ↦ 4e — so no estimate or congruence bookkeeping is needed, just a Finset reindexing.",
+      "The odd-part dependence σ*(2ᵃ·m) = 3·σ(m) for a ≥ 1 makes the even case of Jacobi's count manifestly independent of the power of two: r₄(2ᵃ·m) = 24·σ(m) is constant in a. This is the precise reason the parent's native_decide table repeats 24 at n = 2, 4, 8 (m = 1).",
+      "Because σ* is reduced to σ, which Mathlib already knows is multiplicative (Nat.Coprime.sum_divisors_mul), the entire computation is native_decide-free and depends only on Lean's foundational axioms."
+    ],
+    "prerequisites": [
+      "Jacobi's modified divisor sum σ*(n) = Σ_{d|n, 4∤d} d and the prediction jacobiR4 = 8·σ* (restated from the sibling OQ-01)",
+      "Multiplicativity of the classical divisor sum (Nat.Coprime.sum_divisors_mul), divisor reindexing (Finset.sum_image), and divisors of prime powers (Nat.divisors_prime_pow)"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "sigmaStar_eq_sigma_sub",
+      "type": "theorem",
+      "description": "Headline identity: σ*(n) = σ(n) − 4·σ(n/4) whenever 4∣n — Jacobi's modified divisor sum expressed through the classical σ.",
+      "leanType": "{n : ℕ} → 4 ∣ n → sigmaStar n = (∑ d ∈ n.divisors, d) - 4 * ∑ e ∈ (n / 4).divisors, e"
+    },
+    {
+      "name": "sigmaStar_two_pow_mul_odd",
+      "type": "theorem",
+      "description": "Odd-part capstone: for m odd and a ≥ 1, σ*(2ᵃ·m) = 3·σ(m) — the modified divisor sum depends only on the odd part.",
+      "leanType": "{m : ℕ} → Odd m → {a : ℕ} → 1 ≤ a → sigmaStar (2 ^ a * m) = 3 * ∑ d ∈ m.divisors, d"
+    },
+    {
+      "name": "jacobiR4_two_pow_mul_odd",
+      "type": "theorem",
+      "description": "Textbook even-argument form of Jacobi's four-square count: r₄(2ᵃ·m) = 24·σ(m) for m odd and a ≥ 1.",
+      "leanType": "{m : ℕ} → Odd m → {a : ℕ} → 1 ≤ a → jacobiR4 (2 ^ a * m) = 24 * ∑ d ∈ m.divisors, d"
+    },
+    {
+      "name": "sum_filter_four_dvd",
+      "type": "theorem",
+      "description": "The dropped multiples-of-4 divisors form a scaled divisor sum: Σ_{d|n, 4∣d} d = 4·σ(n/4), via the bijection e ↦ 4e.",
+      "leanType": "{n : ℕ} → 4 ∣ n → (∑ d ∈ n.divisors.filter (fun d => 4 ∣ d), d) = 4 * ∑ e ∈ (n / 4).divisors, e"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header, Imports, and Definitions",
+      "startLine": 1,
+      "endLine": 66,
+      "summary": "Docstring stating the follow-up question, the closed-form-vs-prime-power framing, and the honest scope (this computes the prediction jacobiR4 = 8·σ*, not the geometric count). Imports Mathlib; restates sigmaStar and jacobiR4 (identical to OQ-01) so the file verifies standalone.",
+      "mathContext": "σ*(n) = Σ_{d|n} (if 4∣d then 0 else d); jacobiR4(n) = 8·σ*(n)."
+    },
+    {
+      "id": "sec-not-four-dvd",
+      "title": "Part 1 — When 4 ∤ n, σ* = σ",
+      "startLine": 68,
+      "endLine": 83,
+      "summary": "sigmaStar_eq_sigma_of_not_four_dvd: if 4∤n then no divisor of n is divisible by 4 (else 4∣n by transitivity), so every if-branch keeps its term and σ*(n) = σ(n). The sharp generalization of the parent's odd-input lemma.",
+      "mathContext": "4∤n ⟹ ∀ d|n, 4∤d ⟹ σ*(n) = Σ_{d|n} d."
+    },
+    {
+      "id": "sec-bijection",
+      "title": "Part 2 — The dropped part is 4·σ(n/4)",
+      "startLine": 84,
+      "endLine": 116,
+      "summary": "sum_filter_four_dvd: for 4∣n, the divisors of n divisible by 4 are exactly the image of divisors(n/4) under e ↦ 4e. The Finset equality is proved by ext + the cancellation 4e ∣ 4(n/4) ↔ e ∣ (n/4); Finset.sum_image (with injectivity of 4·) then evaluates the sum as 4·σ(n/4).",
+      "mathContext": "{d | n : 4∣d} = (n/4).divisors.image (4·); Σ over it = 4·σ(n/4)."
+    },
+    {
+      "id": "sec-headline",
+      "title": "Part 3 — Headline identity σ*(n) = σ(n) − 4·σ(n/4)",
+      "startLine": 117,
+      "endLine": 142,
+      "summary": "Pairing the complementary if-branches (if 4∣d then 0 else d) + (if 4∣d then d else 0) = d, and rewriting Σ (if 4∣d then d else 0) = Σ_{filter} d = 4·σ(n/4) (Finset.sum_filter + Part 2), gives the additive identity σ*(n) + 4·σ(n/4) = σ(n); omega yields the subtraction form.",
+      "mathContext": "σ*(n) + 4·σ(n/4) = σ(n); σ*(n) = σ(n) − 4·σ(n/4) for 4∣n."
+    },
+    {
+      "id": "sec-capstone",
+      "title": "Part 4 — Odd-part capstone σ*(2ᵃ·m) = 3·σ(m)",
+      "startLine": 143,
+      "endLine": 214,
+      "summary": "sigma_two_pow computes σ(2ᵃ) = 2^{a+1}−1 (geometric sum via divisors_prime_pow). sigmaStar_two_pow_mul_odd then splits a = 1 (4∤2m, so σ* = σ and σ(2m) = σ(2)σ(m) = 3σ(m) by coprime multiplicativity) from a ≥ 2 (n/4 = 2^{a−2}m; the Part 3 identity plus σ(2ᵃm) = σ(2ᵃ)σ(m) collapse to 3σ(m) after writing 2^{a−1} = Q+1 to clear truncated subtraction).",
+      "mathContext": "m odd, a ≥ 1 ⟹ σ*(2ᵃ·m) = 3·σ(m)."
+    },
+    {
+      "id": "sec-jacobi",
+      "title": "Parts 5–6 — r₄ in textbook form, with sanity instances",
+      "startLine": 215,
+      "endLine": 249,
+      "summary": "jacobiR4_of_not_four_dvd (r₄(n) = 8σ(n) for 4∤n) and jacobiR4_two_pow_mul_odd (r₄(2ᵃ·m) = 24σ(m)) restate the closed forms for the count. sigmaStar_twelve and jacobiR4_twelve recover σ*(12) = 12 and r₄(12) = 96 symbolically as the a = 2, m = 3 instance — no native_decide.",
+      "mathContext": "r₄(n) = 8σ(n) (4∤n); r₄(2ᵃm) = 24σ(m); σ*(12) = 12, r₄(12) = 96."
+    }
+  ],
+  "conclusion": {
+    "summary": "A complete, native_decide-free reduction of Jacobi's modified divisor sum to the classical multiplicative σ: σ*(n) = σ(n) for 4∤n and σ*(n) = σ(n) − 4·σ(n/4) for 4∣n, with the odd-part capstone σ*(2ᵃ·m) = 3·σ(m). Restated for the count, r₄(n) = 8·σ(n) (n with 4∤n) and r₄(2ᵃ·m) = 24·σ(m), the standard textbook parity split. Zero sorries, zero axioms beyond the foundational ones, no Lean.ofReduceBool.",
+    "implications": "Generalizes the parent OQ-06 from prime powers to all n by anchoring σ* to the divisor-sum function σ, whose multiplicativity Mathlib already provides. The full geometric identity r₄(n) = 8·σ*(n) (needing the q-expansion of jacobiTheta⁴) remains the open target of OQ-01 and is not claimed here — this entry settles the arithmetic side in closed form."
+  },
+  "crossReferences": [
+    {
+      "targetId": "four-square-distribution-oq-06",
+      "relationship": "parent",
+      "description": "Computed σ* symbolically on prime powers (σ*(pᵏ) = 1 + p + ⋯ + pᵏ for odd p, σ*(2ᵏ) = 3). This entry generalizes to all n: σ*(n) = σ(n) − 4·σ(n/4), recovering and subsuming the prime-power values via the odd-part formula σ*(2ᵃ·m) = 3·σ(m)."
+    },
+    {
+      "targetId": "four-square-distribution-oq-01",
+      "relationship": "ancestor",
+      "description": "Defines σ* and jacobiR4 = 8·σ* and verifies jacobiR4(n) = r₄(n) at n = 1..10 by native_decide, leaving the general formula as axiom jacobi_r4_formula. This entry supplies the closed-form arithmetic of σ* for every n."
+    },
+    {
+      "targetId": "four-square-distribution",
+      "relationship": "sibling",
+      "description": "Root entry: the type decomposition explaining Jacobi's factor of 8 group-theoretically. This entry handles the divisor-sum side σ* in closed form."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Carl Gustav Jacob Jacobi",
+      "title": "Fundamenta nova theoriae functionum ellipticarum",
+      "year": "1829",
+      "venue": "Königsberg",
+      "note": "Source of the four-square formula r₄(n) = 8·σ*(n) and its parity split."
+    },
+    {
+      "authors": "G. H. Hardy, E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "2008",
+      "venue": "Oxford University Press, 6th ed., §16.9–16.10, §20.12",
+      "note": "Multiplicativity of σ, divisor sums on prime powers, and the four-square count r₄(n) = 8σ(n) (n odd) / 24σ(odd part) (n even)."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "FourSquareDistributionOQ06OQ01",
+    "lineCount": 249,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "substantiveTheoremCount": 10,
+    "duplicateTheorems": 0,
+    "definitionCount": 2,
+    "path": "Proofs/FourSquareDistributionOQ06OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
