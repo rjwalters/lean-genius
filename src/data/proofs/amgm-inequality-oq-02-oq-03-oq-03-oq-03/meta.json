@@ -15,7 +15,23 @@
       "Mathlib"
     ]
   },
-  "overview": "The power means Mₚ(x) = ((1/n)·Σᵢ xᵢᵖ)^{1/p} are monotone increasing in the exponent: for 0 < p ≤ q one has Mₚ ≤ M_q. The classical instance M₁ ≤ M₂ is the arithmetic-mean ≤ root-mean-square inequality. This file establishes the general positive-exponent case by specializing Mathlib's weighted Jensen inequality NNReal.rpow_arith_mean_le_arith_mean_rpow (convexity of t ↦ t^{q/p} for q/p ≥ 1) to the uniform weights 1/n. With r = q/p and zᵢ = xᵢᵖ, Jensen gives (Σ wᵢ xᵢᵖ)^{q/p} ≤ Σ wᵢ xᵢ^q; raising both sides to 1/q (monotone since q > 0) yields Mₚ ≤ M_q. The result is exactly the entry 'generalized mean inequality with any p ≤ q' that Mathlib.Analysis.MeanInequalities records in its TODO section, so it is not currently available upstream as a theorem. The negative-exponent case (p < 0, requiring xᵢ > 0) remains future work, mirroring Mathlib's own TODO.",
+  "overview": {
+    "historicalContext": "The power means $M_p(x) = \\left(\\tfrac1n\\sum_i x_i^p\\right)^{1/p}$ — also called Hölder means, generalized means, or $L^p$ averages — form a one-parameter family that interpolates the entire ladder of classical means. As $p \\to -\\infty$ one recovers the minimum, $p=-1$ gives the harmonic mean, $p\\to 0$ the geometric mean, $p=1$ the arithmetic mean, $p=2$ the quadratic mean (root-mean-square), and $p\\to+\\infty$ the maximum. Their monotonicity in $p$ is one of the oldest and most useful inequalities in analysis, codified in the 1934 treatise *Inequalities* by Hardy, Littlewood, and Pólya, where it appears as a master inequality from which AM–GM and the RMS–AM bound descend as special cases. The result is a direct consequence of the convexity of $t \\mapsto t^r$ for $r \\ge 1$, which is exactly the Jensen mechanism formalized in Mathlib as `NNReal.rpow_arith_mean_le_arith_mean_rpow`. Despite Mathlib's substantial `MeanInequalities` infrastructure, the unweighted statement '$M_p \\le M_q$ for $p \\le q$' is not yet available upstream: the module's own `TODO` section lists 'generalized mean inequality with any p ≤ q, including negative numbers' as unformalized. This entry supplies the positive-exponent half of that TODO.",
+    "problemStatement": "Let $s$ be a nonempty finite index set and $x : \\iota \\to \\mathbb{R}_{\\ge 0}$. For $0 < p \\le q$, the (uniformly weighted) power means satisfy $$M_p(x) := \\left(\\frac{1}{|s|}\\sum_{i\\in s} x_i^{\\,p}\\right)^{1/p} \\;\\le\\; \\left(\\frac{1}{|s|}\\sum_{i\\in s} x_i^{\\,q}\\right)^{1/q} =: M_q(x).$$ The parent entry's open question literally asked for $M_p \\ge M_q$; the corrected and provable statement is the reverse — power means are monotone *increasing* in the exponent.",
+    "proofStrategy": "Set $r = q/p \\ge 1$ and take uniform weights $w_i = |s|^{-1}$, which sum to $1$ over the nonempty set $s$. Apply Mathlib's weighted Jensen inequality `NNReal.rpow_arith_mean_le_arith_mean_rpow` to the convex map $t \\mapsto t^{q/p}$ and the data $z_i = x_i^{\\,p}$: $$\\Big(\\sum_i w_i\\, x_i^{\\,p}\\Big)^{q/p} \\;\\le\\; \\sum_i w_i\\,(x_i^{\\,p})^{q/p} \\;=\\; \\sum_i w_i\\, x_i^{\\,q},$$ where the final equality uses $(x_i^{\\,p})^{q/p} = x_i^{\\,q}$ via `NNReal.rpow_mul`. Then raise both sides to the power $1/q \\ge 0$, monotone by `NNReal.rpow_le_rpow`. On the left the iterated exponent collapses, $\\tfrac{q}{p}\\cdot\\tfrac1q = \\tfrac1p$, turning $\\big((\\sum w_i x_i^p)^{q/p}\\big)^{1/q}$ into $M_p$; the right side is $M_q$ by definition. The two corollaries specialize $p=1, q=2$ (RMS dominates AM) and re-bundle the hypotheses for a monotonicity-style API.",
+    "keyInsights": [
+      "Monotonicity of power means is *entirely* a convexity statement: the single inequality $\\big(\\sum w_i z_i\\big)^r \\le \\sum w_i z_i^r$ for $r\\ge1$ (Jensen for $t\\mapsto t^r$) drives everything, with the substitution $z_i = x_i^p$, $r = q/p$ doing all the work.",
+      "The direction matters and is a common source of confusion: power means *increase* in the exponent ($M_p \\le M_q$ for $p \\le q$), whereas the degree-indexed Maclaurin means of the parent entry *decrease*. They are genuinely different families even though both interpolate AM–GM — this entry corrects the parent's stated direction.",
+      "Working in $\\mathbb{R}_{\\ge 0}$ (NNReal) rather than $\\mathbb{R}$ removes all sign-management overhead: `rpow` of a nonnegative base is total and the monotonicity lemmas have no positivity side-conditions, so the proof needs only that the weights sum to one.",
+      "The exponent bookkeeping is where the proof actually lives: $(x_i^p)^{q/p} = x_i^q$ and $(q/p)\\cdot(1/q) = 1/p$ are both discharged by `field_simp`, and getting these two `rpow_mul` rewrites right is the entire technical content once Jensen is invoked.",
+      "The restriction to $p > 0$ is essential, not cosmetic: for negative exponents the map $t \\mapsto t^{q/p}$ behaves differently and one must also assume $x_i > 0$ (so $0^p$ is avoided). That case is left open here, exactly as in Mathlib's own TODO."
+    ],
+    "prerequisites": [
+      "Real powers of nonnegative reals (NNReal.rpow) and the identity $(a^p)^{q/p} = a^q$",
+      "Jensen's inequality for the convex map $t \\mapsto t^r$ ($r \\ge 1$) with weights summing to one",
+      "Monotonicity of $x \\mapsto x^z$ for nonnegative exponent $z$ (NNReal.rpow_le_rpow)"
+    ]
+  },
   "mainTheorems": [
     {
       "name": "powerMean_le_powerMean",
@@ -36,7 +52,56 @@
       "leanType": "(s : Finset ι) (x : ι → ℝ≥0) (hs : s.Nonempty) {p q : ℝ} (hp : 0 < p) (hq : 0 < q) (hpq : p ≤ q) → powerMean s x p ≤ powerMean s x q"
     }
   ],
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header: The Open Question and a Correction of Direction",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Documents the parent open question (generalize the Maclaurin chain to power means) and answers it, while correcting the stated direction: power means are monotone increasing in the exponent, Mₚ ≤ M_q for p ≤ q, not Mₚ ≥ M_q. Distinguishes the power-mean family (indexed by the Lᵖ exponent, increasing) from the Maclaurin means (indexed by symmetric-function degree, decreasing). Notes that Mathlib lists this exact statement as a TODO.",
+      "mathContext": "Power means $M_p = \\big(\\tfrac1n\\sum x_i^p\\big)^{1/p}$ increase in $p$ ($M_1$ = arithmetic mean, $M_2$ = RMS); Maclaurin means $M_k = (e_k/\\binom nk)^{1/k}$ decrease in $k$. Both interpolate AM–GM but are distinct families."
+    },
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 57,
+      "endLine": 66,
+      "summary": "Imports Mathlib and opens Finset, NNReal, and the BigOperators scope for Σ-notation. Enters a noncomputable section (rpow is noncomputable) and declares the implicit index type {ι : Type*}.",
+      "mathContext": "All work happens in $\\mathbb{R}_{\\ge 0}$ (NNReal), where `rpow` of a nonnegative base is total and the monotonicity lemmas carry no positivity side-conditions."
+    },
+    {
+      "id": "power-mean-def",
+      "title": "Definition: The Unweighted Power Mean Mₚ",
+      "startLine": 68,
+      "endLine": 72,
+      "summary": "Defines `powerMean s x p = (∑ i ∈ s, (|s|)⁻¹ · (x i)^p)^(1/p)`, the order-p power mean of x over s, with the uniform weight (|s|)⁻¹ distributed inside the sum rather than factored out. This in-sum placement is exactly the shape Mathlib's weighted Jensen lemma consumes.",
+      "mathContext": "$M_p(x) = \\left(\\sum_{i\\in s} \\frac{1}{|s|}\\, x_i^{\\,p}\\right)^{1/p}$. Distributing the weight inside the sum matches `NNReal.rpow_arith_mean_le_arith_mean_rpow`, whose hypothesis is $\\sum_i w_i = 1$."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: powerMean_le_powerMean via Jensen",
+      "startLine": 74,
+      "endLine": 113,
+      "summary": "The power-mean inequality Mₚ ≤ M_q for 0 < p ≤ q. After unfolding, sets n = |s| (nonzero since s is nonempty), proves the uniform weights sum to one, and applies Jensen for t ↦ t^{q/p} (r = q/p ≥ 1). The right-hand exponent is simplified by ((x i)^p)^{q/p} = (x i)^q, then both sides are raised to 1/q and the iterated left exponent collapses via (q/p)·(1/q) = 1/p.",
+      "mathContext": "Jensen gives $\\big(\\sum w_i x_i^p\\big)^{q/p} \\le \\sum w_i x_i^q$; raising to $1/q$ yields $M_p \\le M_q$. Key rewrites: `NNReal.rpow_mul` for $(x_i^p)^{q/p}=x_i^q$ and `field_simp` for $\\tfrac qp\\cdot\\tfrac1q = \\tfrac1p$."
+    },
+    {
+      "id": "corollary-rms",
+      "title": "Corollary: arithMean_le_quadraticMean (AM ≤ RMS)",
+      "startLine": 111,
+      "endLine": 118,
+      "summary": "The classical RMS–AM inequality M₁ ≤ M₂ as the p = 1, q = 2 instance, with the two numeric side-conditions discharged by norm_num. This is the most familiar concrete consequence of power-mean monotonicity.",
+      "mathContext": "$\\frac1n\\sum x_i \\le \\sqrt{\\frac1n\\sum x_i^2}$: the arithmetic mean never exceeds the quadratic mean (root-mean-square), with equality iff all $x_i$ are equal."
+    },
+    {
+      "id": "corollary-mono",
+      "title": "Corollary: powerMean_mono (bundled API)",
+      "startLine": 119,
+      "endLine": 128,
+      "summary": "Re-states powerMean_le_powerMean with both 0 < p and 0 < q hypotheses present (the second is redundant, implied by 0 < p ≤ q), giving a symmetric monotonicity-style signature convenient for downstream callers.",
+      "mathContext": "A presentation choice: exposing $M_{(\\cdot)}$ as a monotone function of the exponent on $(0,\\infty)$, with the $0<q$ hypothesis included for interface symmetry though it follows from $0<p\\le q$."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "date": "2026-06-22",
@@ -124,6 +189,14 @@
       "description": "Base AM-GM inequality; the power means interpolate between AM-GM endpoints, and M₁ ≤ M₂ recovers the AM ≤ RMS instance."
     }
   ],
-  "conclusion": "The unweighted power-mean inequality Mₚ ≤ M_q holds for all 0 < p ≤ q, fully verified with no axioms. This fills the positive-exponent case of an inequality Mathlib currently lists only as a TODO, and clarifies that the correct power-mean ordering is increasing in the exponent — distinct from the degree-decreasing Maclaurin means of the parent entry.",
+  "conclusion": {
+    "summary": "The unweighted power-mean inequality $M_p \\le M_q$ holds for all $0 < p \\le q$, fully verified with no axioms and no sorries. The proof is a clean specialization of Mathlib's weighted Jensen inequality to uniform weights $1/|s|$: convexity of $t \\mapsto t^{q/p}$ for $q/p \\ge 1$ does all the work, and the only technical content is the exponent bookkeeping $(x_i^p)^{q/p} = x_i^q$ and $(q/p)(1/q) = 1/p$. The corollary $M_1 \\le M_2$ recovers the classical arithmetic-mean ≤ root-mean-square bound.",
+    "implications": "This fills the positive-exponent case of an inequality Mathlib currently lists only as a TODO in its MeanInequalities module, demonstrating that the existing weighted-Jensen infrastructure already suffices for the unweighted monotonicity statement. It also clarifies a genuine point of confusion in the parent entry: the correct power-mean ordering is *increasing* in the exponent, distinct from the degree-decreasing Maclaurin means. As a single master inequality, power-mean monotonicity subsumes AM–GM and the RMS–AM bound as special exponent choices.",
+    "openQuestions": [
+      "The negative-exponent case ($p < 0$, requiring $x_i > 0$ so that $x_i^p$ is well-behaved) remains open here, mirroring Mathlib's own TODO; it would complete the full real-exponent monotonicity $M_p \\le M_q$ for all $p \\le q$.",
+      "Can the weighted version $M_p^{(w)} \\le M_q^{(w)}$ for arbitrary probability weights $w_i$ be packaged with the same Jensen call, generalizing beyond the uniform weights used here?",
+      "What is the equality case? Power-mean equality $M_p = M_q$ (for $p < q$) holds iff all $x_i$ are equal; formalizing this rigidity statement would strengthen the inequality to a strict version off the diagonal."
+    ]
+  },
   "sorries": 0
 }

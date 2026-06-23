@@ -1,0 +1,123 @@
+[
+  {
+    "id": "ann-amgm-oq02-oq03-oq03-oq03-header",
+    "proofId": "amgm-inequality-oq-02-oq-03-oq-03-oq-03",
+    "range": { "startLine": 1, "endLine": 56 },
+    "type": "context",
+    "title": "Answering the Open Question — and Fixing Its Direction",
+    "content": "This module docstring resolves the parent entry's open question, which asked whether the Maclaurin chain generalizes to power means with the inequality M_p ≥ M_q for p ≤ q. The honest answer has two parts: yes, there is a clean power-mean generalization, but the question states the inequality backwards. Power means are monotone INCREASING in the exponent — M_p ≤ M_q for 0 < p ≤ q — because M₁ is the arithmetic mean, M₂ the quadratic mean (RMS), and AM ≤ RMS. The decreasing ordering the question recalls belongs to the Maclaurin means M_k = (e_k/C(n,k))^{1/k}, indexed by symmetric-function degree, which are a genuinely different family. The docstring also pinpoints why this is worth formalizing: Mathlib's MeanInequalities module lists 'generalized mean inequality with any p ≤ q' verbatim in its TODO.",
+    "mathContext": "Power means: $M_p(x) = \\big(\\tfrac1n\\sum_i x_i^p\\big)^{1/p}$, increasing in $p$. Maclaurin means: $M_k = (e_k/\\binom nk)^{1/k}$, decreasing in $k$. Both interpolate AM–GM but along orthogonal indexing schemes — the $L^p$ exponent versus the elementary-symmetric degree.",
+    "significance": "context",
+    "relatedConcepts": [
+      "power means",
+      "Maclaurin means",
+      "AM-GM inequality",
+      "Hölder means",
+      "Mathlib TODO"
+    ],
+    "prerequisites": [
+      "arithmetic and quadratic means",
+      "elementary symmetric polynomials"
+    ]
+  },
+  {
+    "id": "ann-amgm-oq02-oq03-oq03-oq03-def",
+    "proofId": "amgm-inequality-oq-02-oq-03-oq-03-oq-03",
+    "range": { "startLine": 68, "endLine": 72 },
+    "type": "definition",
+    "title": "The Unweighted Power Mean, Shaped for Jensen",
+    "content": "`powerMean s x p` is defined as `(∑ i ∈ s, (s.card : ℝ≥0)⁻¹ * (x i) ^ p) ^ (1 / p)`. Two design choices make the later proof frictionless. First, the uniform weight `(s.card)⁻¹` is distributed INSIDE the sum, so the summand is literally `wᵢ · xᵢ^p` with `∑ wᵢ = 1` — exactly the form Mathlib's weighted Jensen lemma consumes, with no factoring step needed. Second, working over ℝ≥0 (NNReal) means `rpow` of a nonnegative base is total: there are no positivity hypotheses to thread through, and `0^p` is harmless. The outer `^ (1/p)` is the order-p root.",
+    "mathContext": "$M_p(x) = \\left(\\sum_{i\\in s} \\frac{1}{|s|}\\, x_i^{\\,p}\\right)^{1/p}$. Placing the weight inside the sum matches the hypothesis shape of `NNReal.rpow_arith_mean_le_arith_mean_rpow` (weights summing to one), so the main proof can apply it directly.",
+    "significance": "key",
+    "relatedConcepts": [
+      "NNReal.rpow",
+      "uniform weights",
+      "generalized mean",
+      "Finset.sum"
+    ],
+    "prerequisites": [
+      "real powers of nonnegative reals",
+      "Finset summation"
+    ]
+  },
+  {
+    "id": "ann-amgm-oq02-oq03-oq03-oq03-weights",
+    "proofId": "amgm-inequality-oq-02-oq-03-oq-03-oq-03",
+    "range": { "startLine": 85, "endLine": 96 },
+    "type": "technique",
+    "title": "Weights Sum to One, and r = q/p ≥ 1",
+    "content": "The opening of the main proof establishes the two facts Jensen needs. Setting `n = (s.card : ℝ≥0)`, nonemptiness gives `n ≠ 0` (via `Finset.card_pos`), so the uniform weights satisfy `∑ _i ∈ s, n⁻¹ = 1` — proved by `Finset.sum_const`, `nsmul_eq_mul`, and `mul_inv_cancel₀` (n copies of n⁻¹, i.e. n · n⁻¹ = 1). Separately, `0 < q` follows from `0 < p ≤ q` by transitivity, and the crucial `1 ≤ q/p` comes from `(one_le_div hp).mpr hpq`. This `q/p ≥ 1` is exactly the convexity threshold: `t ↦ t^{q/p}` is convex precisely when the exponent is at least one.",
+    "mathContext": "$\\sum_{i\\in s} |s|^{-1} = |s|\\cdot|s|^{-1} = 1$, and $0 < p \\le q \\Rightarrow q/p \\ge 1$. The latter is what makes $t\\mapsto t^{q/p}$ convex, licensing the Jensen step.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "uniform probability weights",
+      "Finset.card_pos",
+      "mul_inv_cancel₀",
+      "one_le_div"
+    ],
+    "prerequisites": [
+      "Finset cardinality",
+      "ordered field arithmetic"
+    ]
+  },
+  {
+    "id": "ann-amgm-oq02-oq03-oq03-oq03-jensen",
+    "proofId": "amgm-inequality-oq-02-oq-03-oq-03-oq-03",
+    "range": { "startLine": 97, "endLine": 107 },
+    "type": "insight",
+    "title": "The Jensen Step and the Exponent Rewrite (x_i^p)^{q/p} = x_i^q",
+    "content": "The heart of the proof: `NNReal.rpow_arith_mean_le_arith_mean_rpow` applied to weights `fun _ => n⁻¹`, data `fun i => (x i)^p`, with `∑ w = 1` and `q/p ≥ 1`, yields `(∑ wᵢ (xᵢ^p))^{q/p} ≤ ∑ wᵢ (xᵢ^p)^{q/p}`. The right-hand side is then simplified term-by-term with `Finset.sum_congr`: `(xᵢ^p)^{q/p} = xᵢ^q` via `← NNReal.rpow_mul` followed by `field_simp` to verify `p · (q/p) = q`. This is the convexity inequality in its raw form, before the final root is taken.",
+    "mathContext": "Jensen: $\\big(\\sum_i w_i x_i^p\\big)^{q/p} \\le \\sum_i w_i (x_i^p)^{q/p} = \\sum_i w_i x_i^q$. The equality is $(x_i^p)^{q/p} = x_i^{p\\cdot(q/p)} = x_i^q$ via `NNReal.rpow_mul`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Jensen's inequality",
+      "convexity of t ↦ t^r",
+      "NNReal.rpow_mul",
+      "Finset.sum_congr"
+    ],
+    "prerequisites": [
+      "weighted Jensen inequality",
+      "rpow multiplication identity"
+    ]
+  },
+  {
+    "id": "ann-amgm-oq02-oq03-oq03-oq03-root",
+    "proofId": "amgm-inequality-oq-02-oq-03-oq-03-oq-03",
+    "range": { "startLine": 108, "endLine": 113 },
+    "type": "technique",
+    "title": "Raising to 1/q: the Iterated Exponent Collapses to 1/p",
+    "content": "The final move applies `NNReal.rpow_le_rpow` with exponent `1/q ≥ 0` to monotonically raise both sides of the Jensen inequality to the 1/q power. On the right this produces `M_q` directly. On the left, `(∑ wᵢ xᵢ^p)^{q/p}` raised to `1/q` is rewritten via `← NNReal.rpow_mul` into `(∑ wᵢ xᵢ^p)^{(q/p)·(1/q)}`, and the algebraic identity `(q/p)·(1/q) = 1/p` (proved by `field_simp`) collapses this to exactly `M_p`. The result `rwa [hexp] at hmono` closes the goal `M_p ≤ M_q`.",
+    "mathContext": "$\\big((\\textstyle\\sum w_i x_i^p)^{q/p}\\big)^{1/q} = (\\sum w_i x_i^p)^{(q/p)(1/q)} = (\\sum w_i x_i^p)^{1/p} = M_p$, while the right side becomes $M_q$. Monotonicity of $t\\mapsto t^{1/q}$ ($1/q \\ge 0$) preserves the inequality.",
+    "significance": "key",
+    "relatedConcepts": [
+      "NNReal.rpow_le_rpow",
+      "monotonicity of roots",
+      "exponent arithmetic",
+      "field_simp"
+    ],
+    "prerequisites": [
+      "monotonicity of x ↦ x^z",
+      "rpow exponent laws"
+    ]
+  },
+  {
+    "id": "ann-amgm-oq02-oq03-oq03-oq03-corollaries",
+    "proofId": "amgm-inequality-oq-02-oq-03-oq-03-oq-03",
+    "range": { "startLine": 114, "endLine": 128 },
+    "type": "concept",
+    "title": "Corollaries: AM ≤ RMS and a Monotonicity-Style API",
+    "content": "Two one-line corollaries package the main theorem. `arithMean_le_quadraticMean` instantiates p = 1, q = 2 to recover M₁ ≤ M₂ — the classical arithmetic-mean ≤ root-mean-square inequality — with the numeric hypotheses `0 < 1` and `1 ≤ 2` discharged by `norm_num`. `powerMean_mono` re-states the inequality with both `0 < p` and `0 < q` present; the second hypothesis is logically redundant (it follows from `0 < p ≤ q`) but included so the signature reads as a clean monotonicity statement for downstream callers who think of M as a function of the exponent.",
+    "mathContext": "AM–RMS: $\\frac1n\\sum x_i \\le \\sqrt{\\frac1n\\sum x_i^2}$, equality iff all $x_i$ equal. The bundled `powerMean_mono` exposes $p \\mapsto M_p$ as monotone on $(0,\\infty)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "root-mean-square",
+      "arithmetic mean",
+      "API design",
+      "norm_num"
+    ],
+    "prerequisites": [
+      "powerMean_le_powerMean",
+      "special-case instantiation"
+    ]
+  }
+]
