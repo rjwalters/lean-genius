@@ -80,6 +80,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring and Setup",
+      "summary": "States the open question from the parent forward-Minkowski entry, explains why 0 < p < 1 reverses the triangle inequality (the p-functional is a concave quasi-norm, hence superadditive), and records that Mathlib has no 0 < p < 1 Holder/Minkowski lemma (all gated on HolderConjugate forcing p, q > 1). Lists the three results and the durable Python numerical certificate. Imports Mathlib and opens Finset, NNReal under namespace ReverseMinkowski.",
+      "startLine": 1,
+      "endLine": 64,
+      "mathContext": "Engine is reverse Holder with negative conjugate $q = p/(p-1) < 0$; $1/p + 1/q = 1$."
+    },
+    {
       "id": "reverse-holder",
       "title": "Reverse Holder Inequality (0 < p < 1)",
       "summary": "reverse_holder: for nonnegative u and strictly positive v, (sum u^p)^(1/p) * (sum v^(p/(p-1)))^(1/(p/(p-1))) <= sum u*v. Derived from forward Holder applied to the conjugate pair P = 1/p, P' = 1/(1-p) on f = (uv)^p, g = v^(-p).",
