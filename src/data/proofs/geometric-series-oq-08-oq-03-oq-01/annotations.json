@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-partialsum-dist",
+    "proofId": "geometric-series-oq-08-oq-03-oq-01",
+    "range": { "startLine": 76, "endLine": 94 },
+    "type": "technique",
+    "title": "The Distance Between Partial Sums Is a Slice",
+    "content": "`geometric_partialSum_dist` is the bridge that makes everything else metric: the distance between the partial sums Sₘ and Sₙ is exactly the middle block ∑_{k ∈ Ico m n} rᵏ. The proof rewrites the slice as Sₙ − Sₘ via `Finset.sum_Ico_eq_sub`, then `Real.dist_eq` and `abs_sub_comm` turn the difference into dist Sₘ Sₙ, which the slice bound caps at rᵐ/(1 − r). `geometric_partialSum_dist_le` symmetrises to dist Sₘ Sₙ ≤ r^{min m n}/(1 − r) for all m, n (by `le_total` and `dist_comm`), the order-free shape `Metric.cauchySeq_iff` quantifies over. Recognising dist(Sₘ,Sₙ) = |block| is the single insight converting the sibling's combinatorial estimate into metric-space language.",
+    "mathContext": "$\\mathrm{dist}(S_m, S_n) = \\left|\\sum_{k \\in [m,n)} r^k\\right| \\le \\dfrac{r^{\\min(m,n)}}{1-r}$.",
+    "significance": "key",
+    "relatedConcepts": ["metric space", "Finset.sum_Ico_eq_sub", "distance of partial sums", "Real.dist_eq"],
+    "prerequisites": ["metric spaces", "finite sums over intervals"]
+  },
+  {
+    "id": "ann-partialsum-cauchyseq",
+    "proofId": "geometric-series-oq-08-oq-03-oq-01",
+    "range": { "startLine": 96, "endLine": 113 },
+    "type": "concept",
+    "title": "The Partial Sums Form a CauchySeq",
+    "content": "`geometric_partialSum_cauchySeq` is the headline: the sequence n ↦ ∑_{k<n} rᵏ is a CauchySeq for 0 ≤ r < 1, proved directly from the slice/distance bound via `Metric.cauchySeq_iff` (∀ ε > 0 ∃ N ∀ m,n ≥ N, dist < ε). The threshold N is extracted from `exists_pow_lt_of_lt_one` applied to ε·(1 − r); for m, n ≥ N the proof chains the symmetric distance bound, the monotonicity r^{min m n} ≤ rᴺ (`pow_le_pow_of_le_one` with `le_min`), and `div_lt_iff₀` to clear the positive denominator. Crucially it never invokes hasSum_geometric — convergence is established from small tail blocks alone, exactly the Cauchy criterion in its abstract metric form.",
+    "mathContext": "$\\mathrm{CauchySeq}\\,(n \\mapsto \\sum_{k<n} r^k)$ from $\\mathrm{Metric.cauchySeq\\_iff}$.",
+    "significance": "key",
+    "relatedConcepts": ["CauchySeq", "Metric.cauchySeq_iff", "Cauchy criterion", "completeness", "exists_pow_lt_of_lt_one"],
+    "prerequisites": ["Cauchy sequences", "metric spaces", "epsilon-N convergence"]
+  },
+  {
+    "id": "ann-summable",
+    "proofId": "geometric-series-oq-08-oq-03-oq-01",
+    "range": { "startLine": 115, "endLine": 128 },
+    "type": "technique",
+    "title": "Summability from Bounded Partial Sums, Not the Closed Form",
+    "content": "`geometric_summable` recovers Summable (k ↦ rᵏ) elementarily, deliberately routing around hasSum_geometric. The ingredients are exactly the two hypotheses of `summable_of_sum_range_le`: nonnegativity of each term (pow_nonneg) and a uniform bound on the partial sums. The bound comes from `geometric_partialSum_le`, the m = 0 instance of the slice estimate (after range_eq_Ico): ∑_{k<n} rᵏ ≤ (1 − r)⁻¹ for all n. The philosophical point is that here (1 − r)⁻¹ functions only as a ceiling for the increasing partial sums; the fact that it is also the exact sum is a consequence of convergence, not an input to it.",
+    "mathContext": "$\\sum_{k<n} r^k \\le (1-r)^{-1}$ for all $n$, with terms $\\ge 0$, gives $\\mathrm{Summable}\\,(k \\mapsto r^k)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Summable", "summable_of_sum_range_le", "monotone bounded sequence", "comparison test"],
+    "prerequisites": ["summability", "bounded monotone convergence"]
+  },
+  {
+    "id": "ann-cauchyseq-finset",
+    "proofId": "geometric-series-oq-08-oq-03-oq-01",
+    "range": { "startLine": 130, "endLine": 135 },
+    "type": "concept",
+    "title": "The Finset-Net Cauchy Face of Summability",
+    "content": "`geometric_cauchySeq_finset` produces the other abstract face of convergence: the net s ↦ ∑_{k ∈ s} rᵏ indexed by the directed set of finite subsets of ℕ is a CauchySeq. Unlike the ℕ-indexed sequential partial sums, this is the unordered notion — it is the predicate that DEFINES Summable in a complete topological group, and the proof is simply `summable_iff_cauchySeq_finset.mp` applied to geometric_summable. Having both the sequential CauchySeq and the finset-net CauchySeq makes the geometric series usable with whichever of Mathlib's convergence theorems a downstream proof needs.",
+    "mathContext": "$\\mathrm{Summable}\\,f \\iff \\mathrm{CauchySeq}\\,(s \\mapsto \\sum_{k \\in s} f\\,k)$ over finsets.",
+    "significance": "supporting",
+    "relatedConcepts": ["unconditional convergence", "summable_iff_cauchySeq_finset", "directed set", "nets", "topological group"],
+    "prerequisites": ["summability", "directed sets", "topological groups"]
+  },
+  {
+    "id": "ann-route-around-hasSum",
+    "proofId": "geometric-series-oq-08-oq-03-oq-01",
+    "range": { "startLine": 38, "endLine": 57 },
+    "type": "insight",
+    "title": "Why Route Around hasSum_geometric",
+    "content": "The file is a deliberate translation layer with a conceptual agenda, worth understanding before the lemmas. The sibling entry answered 'is the tail block small?' with a bespoke inequality; Mathlib's convergence theorems instead speak CauchySeq / Summable / cauchySeq_finset. By rebuilding convergence in that vocabulary from bounded blocks and bounded monotone partial sums — never quoting the already-evaluated infinite sum — the entry demonstrates the more general convergence technique that applies to series with NO closed form (the comparison and ratio tests' actual setting). The closed form (1 − r)⁻¹ enters only as a partial-sum ceiling; completeness of ℝ then upgrades the Cauchy property to genuine convergence, with the value identified separately (the remaining open question).",
+    "mathContext": "Convergence from $\\mathrm{dist}(S_m,S_n)\\to 0$ and bounded $S_n$, with completeness supplying the limit — not from $\\sum r^k = (1-r)^{-1}$.",
+    "significance": "context",
+    "relatedConcepts": ["Cauchy criterion", "completeness", "comparison test", "proof provenance", "abstraction layer"],
+    "prerequisites": ["mathematical exposition", "convergence theory"]
+  }
+]
