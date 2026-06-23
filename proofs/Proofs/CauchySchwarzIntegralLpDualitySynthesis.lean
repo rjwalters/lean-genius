@@ -41,11 +41,22 @@ hung), so "0 sorry / 0 axiom" is a static-source fact, not a fresh kernel check:
   gap" recorded there for this map is closed. `norm_extByZeroCLM` records that it is an
   isometry.
 
-So the remaining gap to eliminating the parent axiom is the maximality construction
-below (one `sorry`): step 1's `extByZeroCLM` pullback is now in-file, so what is left is
-choosing a maximizing sequence, invoking the σ-finite Riesz theorem per piece, and
-stringing together the now-factored analytic lemmas. Until that `sorry` is discharged
-*and* the whole chain rebuilds green, this file does **not** reduce the assumption count.
+So the remaining gap to eliminating the parent axiom is **two** `sorry`s: (a) the
+*normed* σ-finite Riesz ingredient `riesz_lp_surjective_sigma_finite_normed`
+(the σ-finite theorem strengthened to export the operator-norm bound `‖g‖_q ≤ ‖φ‖` —
+a mechanical surfacing of an internal `have`, see its docstring), and (b) the maximality
+construction `riesz_lp_surjective_general` itself: step 1's `extByZeroCLM` pullback is now
+in-file, so what is left is choosing a maximizing sequence, invoking the *normed* σ-finite
+Riesz ingredient per piece, and stringing together the now-factored analytic lemmas. Until
+both `sorry`s are discharged *and* the whole chain rebuilds green, this file does **not**
+reduce the assumption count.
+
+DEPENDENCY SHARPENED (this session): the maximality argument does **not** close over the
+plain `RieszSigmaFinite.riesz_lp_surjective_sigma_finite` — that theorem returns only
+`MemLp g q μ ∧ (representation)` and *discards* the operator-norm bound `‖g_S‖_q ≤ ‖φ‖`
+that step 2 below needs to keep the supremum finite. The bound is already proved inside the
+σ-finite chain (`…Incomplete01.lean:791`, `have hg_norm`) but is not in the conclusion;
+`riesz_lp_surjective_sigma_finite_normed` is the precise normed restatement that exposes it.
 
 ## The remaining mathematical content: a maximality argument
 
@@ -55,8 +66,10 @@ see `memLp_exists_sigmaFinite_support` below). The reduction goes:
 
 1. For each measurable `S` with `μ.restrict S` σ-finite, pull `φ` back along
    `extByZeroCLM` (provided below) to a functional on `Lp ℝ p (μ.restrict S)`, and apply
-   the σ-finite Riesz theorem to obtain `g_S ∈ Lq(μ.restrict S)` with `‖g_S‖_q ≤ ‖φ‖`
-   (the bound uses `norm_extByZeroCLM`: extension by zero is an isometry).
+   the *normed* σ-finite Riesz theorem (`riesz_lp_surjective_sigma_finite_normed`) to
+   obtain `g_S ∈ Lq(μ.restrict S)` with `‖g_S‖_q ≤ ‖φ.comp (extByZeroCLM …)‖ ≤ ‖φ‖`
+   (the second bound uses `norm_extByZeroCLM`: extension by zero is an isometry, so the
+   pullback does not increase the operator norm).
 2. Let `c = ⨆_S ‖g_S‖_q` (bounded above by `‖φ‖`, so finite). Pick σ-finite sets
    `S_n` with `‖g_{S_n}‖_q → c`; set `T = ⋃ₙ S_n`. Then `μ.restrict T` is σ-finite
    (countable union of σ-finite pieces — discharged below by
@@ -69,9 +82,11 @@ see `memLp_exists_sigmaFinite_support` below). The reduction goes:
    extended by `0` off `T`.
 
 The only non-mechanical step is this maximality construction
-(`riesz_representing_function_maximal` below). The remaining ingredients are *either*
-already in Mathlib (the bridge lemma's σ-finite-support fact) *or* source-complete in the
-dependency chain (the σ-finite Riesz theorem and `extByZeroCLM`); see the accounting above.
+(`riesz_lp_surjective_general` below). The remaining ingredients are *either* already in
+Mathlib (the bridge lemma's σ-finite-support fact) *or* source-complete in the dependency
+chain (`extByZeroCLM` and the *plain* σ-finite Riesz theorem) *or* a mechanical export of
+an already-proved internal bound (the *normed* σ-finite Riesz ingredient
+`riesz_lp_surjective_sigma_finite_normed`); see the accounting above.
 
 ## Status
 
@@ -91,16 +106,19 @@ functional agree a.e., obtained by testing against finite-measure-set indicators
 applying Mathlib's `setIntegral`-uniqueness engine. This is what realizes the supremum on
 the maximizing hull `T` and identifies `g_U` with `g_T` on overlaps. Step 1 is in-file too:
 `extByZeroCLM` (the extension-by-zero pullback CLM) and its isometry `norm_extByZeroCLM` are
-re-exposed here, rebuilt from general Mathlib API. The headline reduction
-`riesz_lp_surjective_general` still carries a single `sorry` for the remaining maximality
-*plumbing* (choosing a maximizing sequence, invoking the σ-finite Riesz theorem per piece
-via this pullback, instantiating uniqueness at indicators, and stitching together the
-now-factored facts) — it does **not** yet eliminate the axiom.
+re-exposed here, rebuilt from general Mathlib API. Two `sorry`s remain: (a)
+`riesz_lp_surjective_sigma_finite_normed` — the normed σ-finite Riesz ingredient,
+mechanically surfacing the operator-norm bound already proved inside the σ-finite chain
+(`…Incomplete01.lean:791`); and (b) the headline reduction `riesz_lp_surjective_general`,
+the remaining maximality *plumbing* (choosing a maximizing sequence, invoking the *normed*
+σ-finite Riesz ingredient per piece via this pullback, instantiating uniqueness at
+indicators, and stitching together the now-factored facts) — neither yet eliminates the
+axiom.
 
 NOT BUILD-VERIFIED: the local Docker build wrapper has been hanging and Aristotle is
 unavailable, so `sigmaFinite_restrict_iUnion` is source-complete but its proof has not
 been kernel-checked locally; the deployer build-gate is the verifier. Do not present
-this file as verified until the `sorry` is discharged and the file builds.
+this file as verified until both `sorry`s are discharged and the file builds.
 
 ## References
 
@@ -401,14 +419,50 @@ theorem norm_extByZeroCLM {S : Set α} (hS : MeasurableSet S)
   rw [eLpNorm_congr_ae (extByZeroCLM_coeFn_ae hS f),
     eLpNorm_indicator_eq_eLpNorm_restrict hS]
 
+/-- **Normed σ-finite Riesz representation** (step 0 ingredient — *the* dependency of
+    the maximality argument). For a σ-finite measure `μ` and `1 < p < ∞`, every bounded
+    functional `φ` on `Lp ℝ p μ` is represented by some `g ∈ Lᵠ(μ)` whose `Lᵠ`-seminorm
+    is controlled by the operator norm: `eLpNorm g q μ ≤ ENNReal.ofReal ‖φ‖`.
+
+    This is the precise strengthening of `RieszSigmaFinite.riesz_lp_surjective_sigma_finite`
+    that the headline reduction below actually consumes. The plain σ-finite theorem returns
+    only `MemLp g q μ ∧ (representation)`; it *discards* the operator-norm bound. But that
+    bound is **exactly** what makes the maximality supremum `c = ⨆_S ‖g_S‖_q` finite
+    (`c ≤ ‖φ‖`), so without it the maximality construction cannot even get off the ground.
+
+    The bound is **not new mathematics** — it is already established inside the σ-finite
+    proof: see `RieszSigmaFiniteComplete.localization_existence`
+    (`CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean:791`, the named
+    `have hg_norm : eLpNorm g q μ ≤ ENNReal.ofReal ‖φ‖`), where it is proved via the
+    Hölder-extremizer estimate `‖g_k‖_q ≤ ‖φ ∘ extByZeroCLM‖ ≤ ‖φ‖` on truncations,
+    promoted through the monotone-convergence limit. The `MemLp g q μ` conclusion is then
+    derived *from* this very bound (`hg_lq := ⟨hg_asm, (hg_norm.trans_lt ofReal_lt_top).ne⟩`).
+    So discharging this `sorry` is the **mechanical export** of an existing internal `have`
+    to the conclusion — HARD-but-known (classical, Folland 6.16 norm half), not OPEN. It is
+    the cleanest Aristotle / next-session target on the critical path. -/
+theorem riesz_lp_surjective_sigma_finite_normed
+    (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ ⊤)
+    (hpq : p.toReal.HolderConjugate q.toReal)
+    [SigmaFinite μ] [Fact (1 ≤ p)] (φ : Lp ℝ p μ →L[ℝ] ℝ) :
+    ∃ g : α → ℝ, MemLp g q μ ∧ eLpNorm g q μ ≤ ENNReal.ofReal ‖φ‖ ∧
+      ∀ f : Lp ℝ p μ, φ f = ∫ a, (f : α → ℝ) a * g a ∂μ := by
+  sorry
+
 /-- **Riesz representation for Lᵖ — arbitrary measure** (`1 < p < ∞`).
 
     Every bounded linear functional on `Lp ℝ p μ`, for *any* measure `μ`, is
     represented by integration against some `g ∈ Lq(μ)`.
 
     This is the statement of the parent file's `riesz_lp_surjective` axiom, here
-    presented as a theorem to be discharged from `riesz_lp_surjective_sigma_finite`
+    presented as a theorem to be discharged from `riesz_lp_surjective_sigma_finite_normed`
     via the maximality argument documented at the top of this file.
+
+    KEY DEPENDENCY (sharpened this session): the maximality argument consumes the
+    *normed* σ-finite Riesz theorem `riesz_lp_surjective_sigma_finite_normed` above, not
+    the plain one — it needs the operator-norm bound `‖g_S‖_q ≤ ‖φ‖` to keep the supremum
+    `c = ⨆_S ‖g_S‖_q` finite. The plain `RieszSigmaFinite.riesz_lp_surjective_sigma_finite`
+    discards that bound, so it is insufficient as stated; see the normed wrapper's docstring
+    for why the bound is already proved internally and only needs surfacing.
 
     REMAINING WORK: the `sorry` below is the maximality construction
     (`riesz_representing_function_maximal`). It is HARD (classical, Folland 6.16),
