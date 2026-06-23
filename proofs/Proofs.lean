@@ -520,6 +520,7 @@ import Proofs.CantorsTheoremOQ02
 import Proofs.CantorsTheoremOQ03
 import Proofs.CantorsTheoremOQ05
 import Proofs.CarnotTheorem
+import Proofs.CarnotTheoremOQ01OQ01
 import Proofs.CatalanNumbersOQ01
 import Proofs.CauchyGroupTheoremOQ01
 import Proofs.CauchyGroupTheoremOQ01OQ01
