@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-setup-definitions",
+    "proofId": "maschke-theorem-oq-01-oq-01",
+    "range": { "startLine": 63, "endLine": 79 },
+    "type": "definition",
+    "title": "The Modular Group Algebra and Its Generator",
+    "content": "The cyclic group ℤ/p is written multiplicatively as `G = Multiplicative (ZMod p)` so that its group algebra is a `MonoidAlgebra`, and `A = MonoidAlgebra (ZMod p) (G p)` is the modular group algebra 𝔽_p[ℤ/p] — the regular representation of ℤ/p over the field with p elements. The `CharP (A p) p` instance is supplied by `charP_of_injective_algebraMap'`, which transfers the characteristic from the scalar field 𝔽_p up to the faithful algebra A; this is what licenses the freshman's dream later. The generator `g = single (ofAdd 1) 1` is the basis element indexed by the additive generator 1 ∈ ℤ/p — the group element whose powers exhaust the group.",
+    "mathContext": "$A = \\mathbb{F}_p[\\mathbb{Z}/p]$, $\\operatorname{char} A = p$, and $g = [1]$ the basis generator indexed by $1 \\in \\mathbb{Z}/p$.",
+    "significance": "context",
+    "relatedConcepts": ["group algebra", "MonoidAlgebra", "regular representation", "characteristic p", "cyclic group"],
+    "prerequisites": ["group algebras", "field characteristic", "finite cyclic groups"]
+  },
+  {
+    "id": "ann-g-pow-card",
+    "proofId": "maschke-theorem-oq-01-oq-01",
+    "range": { "startLine": 81, "endLine": 87 },
+    "type": "technique",
+    "title": "The Generator Has Order p",
+    "content": "`g_pow_card` proves g^p = 1. Powers of a single-supported group-algebra element multiply their indices and coefficients: `MonoidAlgebra.single_pow` turns g^p into `single ((ofAdd 1)^p) (1^p)`. The coefficient is 1^p = 1, and the index `(ofAdd 1)^p = ofAdd (p • 1)` by `ofAdd_nsmul`. The decisive arithmetic is `p • (1 : ZMod p) = 0` (because p is exactly the order of 1 in ℤ/p — `ZMod.natCast_self`), so the index collapses to `ofAdd 0 = 1`, leaving `single 1 1 = 1`, the algebra identity. The order-p fact is purely a statement about the underlying group element.",
+    "mathContext": "$g^p = 1$ because the underlying group element satisfies $p \\cdot 1 = 0$ in $\\mathbb{Z}/p$.",
+    "significance": "key",
+    "relatedConcepts": ["element order", "MonoidAlgebra.single_pow", "ZMod arithmetic", "ofAdd_nsmul"],
+    "prerequisites": ["group element order", "MonoidAlgebra basis arithmetic"]
+  },
+  {
+    "id": "ann-freshmans-dream",
+    "proofId": "maschke-theorem-oq-01-oq-01",
+    "range": { "startLine": 89, "endLine": 92 },
+    "type": "insight",
+    "title": "Freshman's Dream: (g − 1)^p = 0",
+    "content": "In a commutative ring of prime characteristic p the map x ↦ x^p (the Frobenius) is additive, so `sub_pow_char` gives (g − 1)^p = g^p − 1^p. With g^p = 1 (from `g_pow_card`) and 1^p = 1 this is 1 − 1 = 0. The element g − 1 is therefore nilpotent. This is the crux of why characteristic p breaks Maschke's theorem: the same prime that makes the group element have order p (so g^p = 1) also powers the Frobenius (so the difference is nilpotent). In characteristic 0 both equalities fail and no such nilpotent exists.",
+    "mathContext": "$(g-1)^p = g^p - 1^p = 1 - 1 = 0$ in characteristic $p$.",
+    "significance": "key",
+    "relatedConcepts": ["freshman's dream", "Frobenius endomorphism", "sub_pow_char", "nilpotent element", "prime characteristic"],
+    "prerequisites": ["prime characteristic", "Frobenius map", "nilpotency"]
+  },
+  {
+    "id": "ann-witness-nonzero",
+    "proofId": "maschke-theorem-oq-01-oq-01",
+    "range": { "startLine": 94, "endLine": 110 },
+    "type": "technique",
+    "title": "The Witness g − 1 Is Genuinely Nonzero",
+    "content": "A nilpotent is only an obstruction if it is nonzero. `g_ne_one` shows g ≠ 1 by `Finsupp.single_eq_single_iff`: two single-supported functions agree only if either their indices and coefficients match or both coefficients vanish. Here that forces either ofAdd 1 = ofAdd 0 (i.e. 1 = 0 in ℤ/p, refuted via `ofAdd_eq_one`) or the coefficient 1 = 0 in 𝔽_p (refuted by `one_ne_zero`). Hence g ≠ 1, so `g_sub_one_ne_zero` gives g − 1 ≠ 0 via `sub_ne_zero`, and `isNilpotent_g_sub_one` bundles ⟨p, (g − 1)^p = 0⟩ into a witnessed nonzero nilpotent.",
+    "mathContext": "$g - 1 \\neq 0$ since $g \\neq 1$ (as $1 \\neq 0$ in $\\mathbb{F}_p$), so $g-1$ is a *nonzero* nilpotent.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finsupp.single_eq_single_iff", "nonzero nilpotent", "sub_ne_zero", "IsNilpotent"],
+    "prerequisites": ["Finsupp basics", "nilpotency"]
+  },
+  {
+    "id": "ann-not-reduced-semisimple",
+    "proofId": "maschke-theorem-oq-01-oq-01",
+    "range": { "startLine": 112, "endLine": 128 },
+    "type": "concept",
+    "title": "Not Reduced ⟹ Not Semisimple",
+    "content": "A reduced ring has no nonzero nilpotents (`isNilpotent_iff_eq_zero`), so the witness g − 1 shows `not_isReduced`: 𝔽_p[ℤ/p] is not reduced. The bridge to the headline result is a Mathlib instance — for a *commutative* ring, IsSemisimpleRing ⟹ IsReduced (semisimplicity forces Ring.jacobson = ⊥, leaving no nilpotents). Contrapositively, not reduced ⟹ not semisimple, giving `not_isSemisimpleRing`. `not_isSemisimpleModule` restates this for A as a module over itself: the regular representation of ℤ/p over 𝔽_p is not completely reducible. This commutative semisimple ⟹ reduced step is the genuine non-triviality (hence the entry's mathlib badge); the contribution is assembling the explicit counterexample around it.",
+    "mathContext": "A commutative semisimple ring is reduced; $\\mathbb{F}_p[\\mathbb{Z}/p]$ has a nonzero nilpotent, so it is not semisimple.",
+    "significance": "key",
+    "relatedConcepts": ["IsReduced", "IsSemisimpleRing", "Jacobson radical", "isNilpotent_iff_eq_zero", "semisimplicity"],
+    "prerequisites": ["semisimple rings", "Jacobson radical", "reduced rings"]
+  },
+  {
+    "id": "ann-no-complement",
+    "proofId": "maschke-theorem-oq-01-oq-01",
+    "range": { "startLine": 130, "endLine": 139 },
+    "type": "insight",
+    "title": "Complete Reducibility Fails Concretely",
+    "content": "`exists_submodule_no_complement` translates the abstract non-semisimplicity into its representation-theoretic content. By contradiction: if *every* submodule of A had a complement, the lattice of submodules would be a `ComplementedLattice`, which is exactly the definition of `IsSemisimpleModule` — contradicting `not_isSemisimpleModule`. Therefore some submodule has no complement. Concretely that submodule is the augmentation ideal ker(ε), ε : ∑ a_g g ↦ ∑ a_g, generated by g − 1: the short exact sequence 0 → ker ε → 𝔽_p[ℤ/p] → 𝔽_p → 0 admits no 𝔽_p[ℤ/p]-linear splitting. This is precisely the failure of the averaging projector that Maschke's theorem provides when char k ∤ |G|.",
+    "mathContext": "Some submodule (the augmentation ideal $\\ker\\varepsilon$, generated by $g-1$) has no complement; $0 \\to \\ker\\varepsilon \\to \\mathbb{F}_p[\\mathbb{Z}/p] \\to \\mathbb{F}_p \\to 0$ does not split.",
+    "significance": "key",
+    "relatedConcepts": ["complete reducibility", "ComplementedLattice", "augmentation ideal", "split exact sequence", "direct sum decomposition"],
+    "prerequisites": ["submodule lattices", "short exact sequences", "complete reducibility"]
+  }
+]
