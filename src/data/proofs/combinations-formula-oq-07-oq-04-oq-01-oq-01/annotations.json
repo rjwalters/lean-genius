@@ -1,0 +1,85 @@
+[
+  {
+    "id": "mixed-moment-context",
+    "proofId": "combinations-formula-oq-07-oq-04-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 60 },
+    "type": "concept",
+    "title": "Off the Diagonal: A Two-Row Falling-Factorial Moment",
+    "content": "The parent computes the falling-factorial moment of a squared Pascal row, ∑_{k} (k)_r·C(n,k)² = (n)_r·C(2n−r, n−r). Its proof absorbs the falling weight (k)_r into one factor C(n,k) using the iterated identity (k)_r·C(n,k) = (n)_r·C(n−r,k−r), then closes the resulting Vandermonde convolution. Because absorption only ever touches one factor, the symmetry C(n,k)² is not essential: replacing it by a product of two different rows C(m,k)·C(n,k) gives the mixed moment ∑_{k=0}^{m} (k)_r·C(m,k)·C(n,k) = (m)_r·C(m+n−r, n−r) for r ≤ m. The answer is a single asymmetric off-centre Vandermonde entry, and the family's earlier identities are specialisations: m = n is the parent (★), r = 0 is the asymmetric Vandermonde ∑ C(m,k)·C(n,k) = C(m+n,n), and r = 1 is the mixed first moment m·C(m+n−1,n−1).",
+    "mathContext": "$\\sum_{k=0}^{m} (k)_r\\binom{m}{k}\\binom{n}{k} = (m)_r\\binom{m+n-r}{n-r}$, where $(k)_r = k(k-1)\\cdots(k-r+1)$ is the falling factorial. At $m=n$ this is $(n)_r\\binom{2n-r}{n-r}$; at $r=0$ it is $\\binom{m+n}{n}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Vandermonde's convolution",
+      "falling-factorial moment",
+      "absorption / committee-chair identity",
+      "products of binomial coefficients from two rows"
+    ],
+    "prerequisites": [
+      "Nat.choose binomial coefficients and Nat.descFactorial",
+      "the iterated absorption (k)_r·C(m,k) = (m)_r·C(m−r,k−r)",
+      "Vandermonde's convolution C(m+n,k) = ∑ C(m,i)·C(n,k−i)"
+    ]
+  },
+  {
+    "id": "vandermonde-mixed-diag-thm",
+    "proofId": "combinations-formula-oq-07-oq-04-oq-01-oq-01",
+    "range": { "startLine": 66, "endLine": 96 },
+    "type": "theorem",
+    "title": "The Mixed Vandermonde Diagonal",
+    "content": "vandermonde_mixed_diag establishes ∑_{i=0}^{m−r} C(m−r,i)·C(n,i+r) = C(m+n−r, n−r) for r ≤ m. In the parent's square case the two factors reflect into one another directly (C(n,(n−r)−j) = C(n,j+r)); with two distinct rows that shortcut fails. Instead Finset.sum_range_reflect reflects the summation index i ↦ (m−r)−i, which turns the shifted factor C(n,i+r) into C(n,m−i). The sum is then Vandermonde's standard antidiagonal convolution ∑_i C(m−r,i)·C(n,m−i) = C(m+n−r, m) — after Finset.sum_subset extends the range to m+1, the extra terms vanishing because C(m−r,i) = 0 for i > m−r — and Nat.choose_symm rewrites C(m+n−r, m) = C(m+n−r, n−r).",
+    "mathContext": "Reflecting $i\\mapsto (m-r)-i$ sends $\\binom{n}{i+r}$ to $\\binom{n}{m-i}$, so $\\sum_i \\binom{m-r}{i}\\binom{n}{i+r} = \\sum_i \\binom{m-r}{i}\\binom{n}{m-i} = \\binom{m+n-r}{m} = \\binom{m+n-r}{n-r}$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Vandermonde's convolution",
+      "index reflection (sum_range_reflect)",
+      "binomial symmetry choose_symm",
+      "off-centre diagonal"
+    ],
+    "prerequisites": [
+      "Vandermonde's convolution in range form",
+      "Finset.sum_range_reflect and Finset.sum_subset",
+      "Nat.choose_symm and Nat.choose_eq_zero_of_lt"
+    ]
+  },
+  {
+    "id": "sum-descfactorial-mixed-thm",
+    "proofId": "combinations-formula-oq-07-oq-04-oq-01-oq-01",
+    "range": { "startLine": 98, "endLine": 132 },
+    "type": "theorem",
+    "title": "The Mixed Falling-Factorial Moment",
+    "content": "sum_descFactorial_mixed is the headline: ∑_{k=0}^{m} (k)_r·C(m,k)·C(n,k) = (m)_r·C(m+n−r, n−r) for r ≤ m. Orders k < r contribute nothing since (k)_r = 0 there (Nat.descFactorial_eq_zero_iff_lt), so the sum restricts to Ico r (m+1); reindexing k ↦ k−r, the parent's iterated absorption descFactorial_mul_choose rewrites each (r+i).descFactorial r · C(m,r+i) as (m)_r · C(m−r,i), leaving the plain factor C(n,r+i) = C(n,i+r) in place; pulling out (m)_r and applying vandermonde_mixed_diag closes the sum. The structure mirrors the parent's square-moment proof exactly, with the second row carried along untouched.",
+    "mathContext": "$\\sum_{k=0}^{m} (k)_r\\binom{m}{k}\\binom{n}{k} = (m)_r\\sum_{i=0}^{m-r}\\binom{m-r}{i}\\binom{n}{i+r} = (m)_r\\binom{m+n-r}{n-r}$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "falling-factorial moment",
+      "iterated absorption",
+      "reindexing and vanishing low-order terms",
+      "mixed Vandermonde diagonal"
+    ],
+    "prerequisites": [
+      "the iterated absorption descFactorial_mul_choose",
+      "vandermonde_mixed_diag",
+      "Finset.sum_Ico_eq_sum_range and Nat.descFactorial_eq_zero_iff_lt"
+    ]
+  },
+  {
+    "id": "specialisations-thms",
+    "proofId": "combinations-formula-oq-07-oq-04-oq-01-oq-01",
+    "range": { "startLine": 134, "endLine": 158 },
+    "type": "theorem",
+    "title": "Recovered Parent and Specialisations",
+    "content": "Three specialisations close the loop. sum_descFactorial_sq_recovered sets m = n (and rewrites C(n,k)·C(n,k) = C(n,k)²) to recover the parent square moment ∑ (k)_r·C(n,k)² = (n)_r·C(2n−r,n−r), confirming the mixed form genuinely subsumes its predecessor. sum_mixed_vandermonde sets r = 0 to recover the asymmetric Vandermonde sum ∑_{k=0}^{m} C(m,k)·C(n,k) = C(m+n, n). sum_first_mixed sets r = 1 to give the mixed first moment ∑_{k=0}^{m} k·C(m,k)·C(n,k) = m·C(m+n−1, n−1).",
+    "mathContext": "$m=n:\\ (n)_r\\binom{2n-r}{n-r}$;\\quad $r=0:\\ \\binom{m+n}{n}$;\\quad $r=1:\\ m\\binom{m+n-1}{n-1}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "parent square moment",
+      "asymmetric Vandermonde",
+      "mixed first moment",
+      "specialisation"
+    ],
+    "prerequisites": [
+      "sum_descFactorial_mixed",
+      "Nat.descFactorial_zero and Nat.descFactorial_one"
+    ]
+  }
+]

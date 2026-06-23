@@ -1,0 +1,144 @@
+{
+  "id": "combinations-formula-oq-07-oq-04-oq-01-oq-01",
+  "title": "The Mixed (Two-Row) Falling-Factorial Moment",
+  "slug": "combinations-formula-oq-07-oq-04-oq-01-oq-01",
+  "description": "Generalises the parent's single-row falling-factorial moment ∑ (k)_r·C(n,k)² = (n)_r·C(2n−r, n−r) to the product of two different Pascal rows: ∑_{k=0}^{m} (k)_r·C(m,k)·C(n,k) = (m)_r·C(m+n−r, n−r) for r ≤ m, where (k)_r = Nat.descFactorial k r is the falling factorial. The square C(n,k)² is symmetric, but the iterated absorption (k)_r·C(m,k) = (m)_r·C(m−r,k−r) only ever touches one of the two factors — so replacing C(n,k)² by C(m,k)·C(n,k) with m ≠ n leaves the second row untouched and lands the answer on a single asymmetric off-centre Vandermonde entry C(m+n−r, n−r). The identity unifies the family: m = n recovers the parent (★) ∑ (k)_r·C(n,k)² = (n)_r·C(2n−r,n−r), r = 0 recovers the asymmetric Vandermonde ∑ C(m,k)·C(n,k) = C(m+n,n), and r = 1 gives the mixed first moment ∑ k·C(m,k)·C(n,k) = m·C(m+n−1,n−1). Absent from Mathlib.",
+  "meta": {
+    "author": "Lean Genius researcher-12",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CombinationsFormulaOQ07OQ04OQ01OQ01.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 169,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "assumptions": "None. The closed form ∑_{k=0}^{m} (k)_r·C(m,k)·C(n,k) = (m)_r·C(m+n−r, n−r) holds for all r ≤ m and is fully machine-checked. Depends only on the foundational axioms propext, Classical.choice, Quot.sound; the two numeric sanity checks use kernel `decide` on small binomials (no Lean.ofReduceBool, no native_decide, no sorryAx).",
+    "tags": [
+      "combinatorics",
+      "binomial-coefficients",
+      "falling-factorial",
+      "weighted-sum",
+      "vandermonde-convolution",
+      "absorption",
+      "mixed-moment",
+      "two-row"
+    ],
+    "dateAdded": "2026-06-23",
+    "originalContributions": [
+      "sum_descFactorial_mixed: the mixed (two-row) falling-factorial moment ∑_{k=0}^{m} (k)_r·C(m,k)·C(n,k) = (m)_r·C(m+n−r, n−r) for r ≤ m, the asymmetric m ≠ n companion to the parent's square moment ∑ (k)_r·C(n,k)² = (n)_r·C(2n−r,n−r); absent from Mathlib",
+      "vandermonde_mixed_diag: the two-row off-centre Vandermonde diagonal ∑_{i=0}^{m−r} C(m−r,i)·C(n,i+r) = C(m+n−r, n−r), obtained by reflecting the first factor i ↦ (m−r)−i (turning C(n,i+r) into C(n,m−i)), harmlessly extending the range, applying Vandermonde's convolution, and closing with binomial symmetry",
+      "sum_descFactorial_sq_recovered: the parent square moment ∑_{k=0}^{n} (k)_r·C(n,k)² = (n)_r·C(2n−r,n−r) recovered as the m = n specialisation of the mixed form, confirming the generalisation subsumes its predecessor",
+      "sum_mixed_vandermonde: the asymmetric Vandermonde identity ∑_{k=0}^{m} C(m,k)·C(n,k) = C(m+n, n) as the r = 0 specialisation",
+      "sum_first_mixed: the mixed first moment ∑_{k=0}^{m} k·C(m,k)·C(n,k) = m·C(m+n−1, n−1) as the r = 1 specialisation",
+      "Worked checks ∑_k (k)_2·C(3,k)·C(4,k) = 60 = (3)_2·C(5,2) and ∑_k C(3,k)·C(4,k) = 35 = C(7,4)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "CombinationsFormulaOQ07OQ04OQ01.descFactorial_mul_choose",
+        "description": "The iterated (falling) absorption (k)_r·C(m,k) = (m)_r·C(m−r,k−r) for r ≤ k ≤ m, proved by induction in the parent file. Applied to the single row m (the untouched row n is what makes the mixed moment work), it is the conceptual core that converts the falling weight into the constant (m)_r.",
+        "module": "Proofs.CombinationsFormulaOQ07OQ04OQ01"
+      },
+      {
+        "theorem": "CombinationsFormulaOQ07.add_choose_eq_sum_range",
+        "description": "Vandermonde's convolution C(m+n, k) = ∑_{i=0}^{k} C(m,i)·C(n,k−i) (range form, the OQ-07 wrapper of Mathlib's Nat.add_choose_eq). After reflecting the first factor it closes the two-row diagonal ∑_i C(m−r,i)·C(n,m−i) = C(m+n−r, m).",
+        "module": "Proofs.CombinationsFormulaOQ07"
+      },
+      {
+        "theorem": "Finset.sum_range_reflect",
+        "description": "∑_{j ∈ range n} f(n−1−j) = ∑_{j ∈ range n} f(j). Reflects the summation index i ↦ (m−r)−i so that the shifted factor C(n, i+r) becomes C(n, m−i), aligning the sum with Vandermonde's standard antidiagonal form.",
+        "module": "Mathlib.Algebra.BigOperators.Intervals"
+      },
+      {
+        "theorem": "Nat.choose_symm",
+        "description": "C(n, n−k) = C(n, k) for k ≤ n. Used twice: inside the reflection to identify C(m−r, (m−r)−i) = C(m−r, i), and at the end to rewrite the answer C(m+n−r, m) = C(m+n−r, n−r).",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Finset.sum_subset",
+        "description": "Extends the inner sum from range((m−r)+1) to range(m+1); the added terms vanish because C(m−r, i) = 0 for i > m−r (Nat.choose_eq_zero_of_lt), so the range matches Vandermonde's convolution without changing the value.",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      }
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/CombinationsFormulaOQ07OQ04OQ01OQ01.lean",
+    "namespace": "CombinationsFormulaOQ07OQ04OQ01OQ01",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 169,
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The diagonal of Vandermonde's convolution, ∑_k C(n,k)² = C(2n,n), and its falling-factorial moments ∑_k (k)_r·C(n,k)² = (n)_r·C(2n−r,n−r) (the parent OQ-07-OQ-04-OQ-01) are symmetric in the two copies of the Pascal row. Weighting the product of two distinct rows C(m,k)·C(n,k) — a quantity that already appears in the asymmetric Vandermonde sum ∑_k C(m,k)·C(n,k) = C(m+n,n) — extends the moment computation off the diagonal. Mathlib carries Vandermonde's convolution (Nat.add_choose_eq) and the basic absorption k·C(n,k) = n·C(n−1,k−1), but none of the falling-factorial moments, symmetric or mixed.",
+    "problemStatement": "Open Question OQ-07-OQ-04-OQ-01-OQ-01 (a follow-up to OQ-07-OQ-04-OQ-01): the parent computes the general falling-factorial moment of the squared Pascal row, ∑ (k)_r·C(n,k)² = (n)_r·C(2n−r,n−r). The absorption underlying it touches only one factor of the square. Does the same closed form persist when the two factors come from two different rows C(m,k)·C(n,k)? Formalise the mixed moment and exhibit the asymmetric Vandermonde entry it lands on.",
+    "proofStrategy": "Apply the parent's iterated absorption to the single row m: (k)_r·C(m,k) = (m)_r·C(m−r,k−r). Summing over k, orders k < r vanish (the falling factorial of length r kills any base < r) and reindexing k ↦ k − r pulls out the constant (m)_r, leaving the two-row convolution ∑_{i=0}^{m−r} C(m−r,i)·C(n,i+r). This is vandermonde_mixed_diag. Unlike the square case the two factors no longer reflect into one another; instead reflect the first factor via Finset.sum_range_reflect (i ↦ (m−r)−i), which turns C(n,i+r) into C(n,m−i). The sum is then Vandermonde's convolution ∑_i C(m−r,i)·C(n,m−i) = C(m+n−r, m) (after Finset.sum_subset extends the range to m+1, the new terms carrying C(m−r,i)=0), and Nat.choose_symm rewrites C(m+n−r, m) = C(m+n−r, n−r). The three specialisations m = n, r = 0, r = 1 are immediate.",
+    "keyInsights": [
+      "Absorption is one-sided: (k)_r·C(m,k) = (m)_r·C(m−r,k−r) consumes the falling weight using only row m, so the second row C(n,k) rides along untouched. This is exactly why the mixed moment exists with the same shape as the square moment.",
+      "The mixed diagonal needs a reflection, not a self-symmetry. In the square case C(n,(n−r)−j) = C(n,j+r) closes the sum directly; with two rows m ≠ n that reflection fails, and the clean route is to reflect the first factor i ↦ (m−r)−i so C(n,i+r) becomes C(n,m−i), recovering Vandermonde's standard antidiagonal ∑_i C(m−r,i)·C(n,m−i) = C(m+n−r,m).",
+      "The off-centre Vandermonde entry is asymmetric in m and n: the answer (m)_r·C(m+n−r, n−r) carries the falling factorial of the absorbed row m and a binomial on the complementary index n−r. Recovering the symmetric parent at m = n collapses both into 2n−r.",
+      "The whole moment ladder of the family is one identity: r = 0 is the asymmetric Vandermonde C(m+n,n), r = 1 the mixed first moment m·C(m+n−1,n−1), and m = n with general r is the parent square moment — no separate proofs, just specialisations of sum_descFactorial_mixed."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Open Question and Mathematical Context",
+      "startLine": 1,
+      "endLine": 60,
+      "summary": "Header stating OQ-07-OQ-04-OQ-01-OQ-01: the mixed (two-row) falling-factorial moment ∑ (k)_r·C(m,k)·C(n,k) = (m)_r·C(m+n−r,n−r), why one-sided absorption makes it work, and the m=n / r=0 / r=1 specialisations."
+    },
+    {
+      "id": "vandermonde-diag",
+      "title": "The Mixed Vandermonde Diagonal",
+      "startLine": 66,
+      "endLine": 96,
+      "summary": "vandermonde_mixed_diag: ∑_{i=0}^{m−r} C(m−r,i)·C(n,i+r) = C(m+n−r, n−r). Finset.sum_range_reflect reflects i ↦ (m−r)−i to turn C(n,i+r) into C(n,m−i); Finset.sum_subset extends the range to m+1 (new terms vanish); the OQ-07 Vandermonde convolution closes the sum to C(m+n−r,m); Nat.choose_symm rewrites it as C(m+n−r,n−r)."
+    },
+    {
+      "id": "mixed-moment",
+      "title": "The Mixed Falling-Factorial Moment",
+      "startLine": 98,
+      "endLine": 132,
+      "summary": "sum_descFactorial_mixed: ∑_{k=0}^{m} (k)_r·C(m,k)·C(n,k) = (m)_r·C(m+n−r, n−r) for r ≤ m. Orders k < r vanish (Nat.descFactorial_eq_zero_iff_lt); reindex k ↦ k−r; the parent descFactorial_mul_choose absorbs the falling weight on row m; the mixed Vandermonde diagonal closes the inner sum."
+    },
+    {
+      "id": "specialisations",
+      "title": "Recovered Parent and Specialisations",
+      "startLine": 134,
+      "endLine": 160,
+      "summary": "sum_descFactorial_sq_recovered recovers the parent square moment ∑ (k)_r·C(n,k)² = (n)_r·C(2n−r,n−r) at m=n; sum_mixed_vandermonde is the r=0 asymmetric Vandermonde ∑ C(m,k)·C(n,k) = C(m+n,n); sum_first_mixed is the r=1 mixed first moment m·C(m+n−1,n−1)."
+    },
+    {
+      "id": "checks",
+      "title": "Numeric Sanity Checks",
+      "startLine": 161,
+      "endLine": 169,
+      "summary": "Kernel `decide` checks: ∑_k (k)_2·C(3,k)·C(4,k) = 60 = (3)_2·C(5,2) and ∑_k C(3,k)·C(4,k) = 35 = C(7,4)."
+    }
+  ],
+  "conclusion": {
+    "summary": "5 theorems, 0 sorries, 0 axioms. The mixed falling-factorial moment ∑_{k=0}^{m} (k)_r·C(m,k)·C(n,k) = (m)_r·C(m+n−r, n−r) extends the parent's square moment off the diagonal to two distinct Pascal rows, landing on a single asymmetric Vandermonde entry. The proof is the parent's one-sided iterated absorption on row m against a reflected Vandermonde convolution — no induction beyond the inherited absorption, no generating functions.",
+    "implications": "Supplies a two-parameter falling-factorial moment identity Mathlib lacks, with the symmetric parent moment, the asymmetric Vandermonde sum, and the mixed first moment all recovered as specialisations. The mechanism — absorb the falling weight into one row, reflect, and read off the off-centre Vandermonde entry — is a reusable template for weighted sums of products of binomial coefficients drawn from different rows.",
+    "openQuestions": [
+      "Does a doubly-weighted form ∑_k (k)_r·(k)_s·C(m,k)·C(n,k) close, absorbing falling factorials into both rows simultaneously (giving (m)_r·(n)_s times a twice-shifted Vandermonde entry), or does the overlap of the two shifts obstruct a single closed form?",
+      "Is there a q-analogue: does the Gaussian-binomial mixed moment ∑_k (k)_r·[m,k]_q·[n,k]_q admit a closed form on a shifted q-Vandermonde diagonal?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "combinations-formula-oq-07-oq-04",
+      "relationship": "grandparent — proves the second moment ∑ k²·C(n,k)² and motivates the falling-factorial moment ladder this entry generalises to two rows"
+    },
+    {
+      "targetId": "combinations-formula-oq-07",
+      "relationship": "ancestor — supplies Vandermonde's convolution C(m+n,k) = ∑ C(m,i)·C(n,k−i), the anchor that closes the mixed diagonal after reflection"
+    },
+    {
+      "targetId": "combinations-formula-oq-07-oq-01",
+      "relationship": "ancestor — the committee-chair absorption k·C(n,k) = n·C(n−1,k−1) whose iterate (in the parent OQ-07-OQ-04-OQ-01) is applied here to a single row"
+    }
+  ],
+  "sorries": 0
+}
