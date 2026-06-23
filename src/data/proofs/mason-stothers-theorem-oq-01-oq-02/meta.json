@@ -88,6 +88,40 @@
       }
     ]
   },
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header: Davenport from Mason–Stothers",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Docstring stating Davenport's inequality deg f + 2 ≤ 2·deg(f³ − g²) and its proof sketch: apply mason_stothers_charZero to the coprime additive triple f³ + (−g²) = f³ − g², combine the two lower bounds on deg rad with the hypothesis-free radical-degree upper bound via omega. Imports Mathlib and the parent MasonStothersOQ01.",
+      "mathContext": "$\\deg f + 2 \\le 2\\deg(f^3 - g^2)$, the polynomial shadow of Hall's conjecture."
+    },
+    {
+      "id": "sec-radical-bound",
+      "title": "§1 Hypothesis-Free Radical Bound",
+      "startLine": 54,
+      "endLine": 74,
+      "summary": "radical_cube_sq_mul_dvd: rad(f³·g²·c) ∣ f·g·c with no coprimality hypothesis, via radical_mul_dvd, radical_pow (rad(pⁿ) = rad p) and radical_dvd_self. Bounds the distinct-root count of f³·g²·c by deg f + deg g + deg c.",
+      "mathContext": "$\\mathrm{rad}(f^3 g^2 c) \\mid fgc$ because the radical ignores exponents."
+    },
+    {
+      "id": "sec-davenport",
+      "title": "§2 Davenport's Inequality",
+      "startLine": 76,
+      "endLine": 121,
+      "summary": "davenport: applies mason_stothers_charZero to a = f³, b = −g², c = f³ − g²; uses IsCoprime.pow / neg_right for coprimality and f³ non-constant for non-triviality, radical_neg to align rad(f³·(−g²)·c) with rad(f³·g²·c), and the §1 bound, then omega to extract deg f + 2 ≤ 2·deg(f³ − g²).",
+      "mathContext": "$3\\deg f + 1 \\le R,\\ 2\\deg g + 1 \\le R,\\ R \\le \\deg f + \\deg g + \\deg c \\Rightarrow \\deg f + 2 \\le 2\\deg c$."
+    },
+    {
+      "id": "sec-height-form",
+      "title": "§3 Height Form",
+      "startLine": 123,
+      "endLine": 132,
+      "summary": "natDegree_cube_sub_sq_ge: the equivalent height-form lower bound f.natDegree / 2 + 1 ≤ (f³ − g²).natDegree, obtained from davenport by a single omega — the form most often quoted in the literature.",
+      "mathContext": "$\\lfloor \\deg f / 2 \\rfloor + 1 \\le \\deg(f^3 - g^2)$."
+    }
+  ],
   "references": [
     {
       "authors": "Davenport, H.",
@@ -116,8 +150,9 @@
   ],
   "crossReferences": [
     {
-      "slug": "mason-stothers-theorem-oq-01",
-      "relation": "Parent entry. Supplies mason_stothers_charZero, the characteristic-zero Mason–Stothers degree bound that this Davenport derivation rests on; this entry answers its second open question."
+      "targetId": "mason-stothers-theorem-oq-01",
+      "relationship": "parent",
+      "description": "Parent entry. Supplies mason_stothers_charZero, the characteristic-zero Mason–Stothers degree bound that this Davenport derivation rests on; this entry answers its second open question."
     }
   ],
   "conclusion": {
