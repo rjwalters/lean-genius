@@ -1,0 +1,72 @@
+{
+  "id": "erdos-1005-oq-03",
+  "slug": "erdos-1005-oq-03",
+  "sorries": 0,
+  "title": "The Farey Adjacency Criterion: Two Fractions Are Neighbours in F_n iff Their Denominators Sum Past n",
+  "description": "A self-contained, axiom-free formalization of the classical denominator-sum criterion that governs when two Farey fractions are adjacent. The parent entry (Erdős #1005, runs of consecutive Farey fractions) supplies the unimodular package — the gap formula c/d − a/b = 1/(bd), mediant coprimality, and mediant betweenness — but leaves the adjacency question itself open. The key result here is purely arithmetic: any fraction p/q lying strictly between two unimodular neighbours a/b < c/d (bc − ad = 1) has denominator q ≥ b + d, via the identity q·(bc − ad) = d·(pb − aq) + b·(cq − pd). Consequently a unimodular pair is adjacent in the Farey sequence F_n (nothing of order n strictly between) if and only if b + d > n — and when b + d ≤ n the mediant (a+c)/(b+d) is itself the intermediate order-n fraction, so the mediant first appears at order exactly b + d (Stern–Brocot insertion order). This adjacency criterion is the structural foundation any analysis of Farey runs must rest on.",
+  "leanFile": {
+    "lineCount": 212,
+    "axiomCount": 0,
+    "path": "Proofs/Erdos1005ProblemOQ03.lean",
+    "sorries": 0,
+    "definitionCount": 2,
+    "theoremCount": 7
+  },
+  "meta": {
+    "author": "Formalization original to Lean Genius (classical Farey/Stern–Brocot theory)",
+    "date": "1816",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1005ProblemOQ03.lean",
+    "tags": [
+      "number-theory",
+      "farey-fractions",
+      "stern-brocot",
+      "mediant",
+      "continued-fractions",
+      "diophantine-approximation"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "dateAdded": "2026-06-22",
+    "lineCount": 212,
+    "originalContributions": [
+      "intermediate_denom_ge: the engine — if a/b < p/q < c/d and the outer pair is unimodular (bc − ad = 1), then q ≥ b + d. Proved by deriving the integer inequalities pb − aq ≥ 1 and cq − pd ≥ 1 from the strict orders and collapsing the identity q·(bc − ad) = d·(pb − aq) + b·(cq − pd) via bc − ad = 1; no Farey-sequence enumeration is used",
+      "farey_adjacent_of_denom_sum_gt: sufficiency — a unimodular pair a/b < c/d with b + d > n is adjacent in F_n (no order-n fraction lies strictly between), since any intermediate fraction would have denominator ≥ b + d > n",
+      "mediant_lt_n_not_adjacent: sharpness — if b + d ≤ n the mediant (a+c)/(b+d) is a genuine FareyFraction of order n strictly between a/b and c/d (using mediant coprimality and betweenness), so the pair is NOT adjacent; equivalently the mediant first enters the Farey sequence at order exactly b + d",
+      "farey_adjacency_iff: the headline equivalence — a unimodular pair a/b < c/d is adjacent in F_n if and only if b + d > n, packaging sufficiency and sharpness into a single iff",
+      "toRat_lt_iff: the order of two Farey fractions is the cross-multiplication of their numerator/denominator pairs (f.p·g.q < g.p·f.q), the bridge between the rational ordering and the integer arithmetic that drives every proof",
+      "mediant_coprime / mediant_between: self-contained re-proofs of the mediant lemmas (the parent's own copies are unreachable under Mathlib v4.26.0, whose removal of Mathlib.Data.Rat.Basic breaks the parent's imports), supplying the coprimality gcd(a+c,b+d)=1 and strict betweenness needed for sharpness"
+    ],
+    "assumptions": "None. The file is fully machine-checked with 0 sorries and 0 axiom declarations; #print axioms reports only the foundational propext / Classical.choice / Quot.sound for all seven theorems. No native_decide is used (so no Lean.ofReduceBool).",
+    "theoremCount": 7,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "The Farey sequence F_n — all reduced fractions in [0,1] with denominator ≤ n, in increasing order — was popularized by John Farey (1816) and given its foundational proof by Cauchy. Its two pillars are the unimodular relation bc − ad = 1 for adjacent fractions a/b < c/d and the mediant (a+c)/(b+d), which is the fraction of smallest denominator strictly between them and the organizing operation of the Stern–Brocot tree. Erdős Problem #1005 asks for the longest run of consecutive 'similarly ordered' Farey fractions; any such run analysis presupposes an exact criterion for when two fractions are neighbours, which is precisely what this entry formalizes.",
+    "problemStatement": "Determine, for a unimodular pair of Farey fractions a/b < c/d (bc − ad = 1), exactly when they are adjacent in the Farey sequence of order n — i.e. when no fraction of denominator ≤ n lies strictly between them — and quantify the obstruction when they are not.",
+    "proofStrategy": "Everything reduces to one integer inequality. Cross-multiplying the strict orders a/b < p/q and p/q < c/d (denominators positive) gives pb − aq ≥ 1 and cq − pd ≥ 1 over ℤ. The algebraic identity q·(bc − ad) = d·(pb − aq) + b·(cq − pd) — verified by linear_combination against the unimodular relation — then collapses, since bc − ad = 1, to q = d·(pb − aq) + b·(cq − pd) ≥ d·1 + b·1 = b + d. This single lemma (intermediate_denom_ge) yields sufficiency immediately (an intermediate order-n fraction would force b + d ≤ q ≤ n). For sharpness, when b + d ≤ n the mediant (a+c)/(b+d) is exhibited as a bona fide order-n Farey fraction lying strictly between the pair, using the parent's mediant coprimality (gcd(a+c,b+d)=1 from bc = ad+1) and the mediant betweenness inequality. The two directions assemble into the iff.",
+    "keyInsights": [
+      "Adjacency in F_n is not a sequence-ordering fact but an arithmetic one: it is decided entirely by the single inequality b + d > n on the two denominators, with no need to construct or enumerate the Farey sequence.",
+      "The bound q ≥ b + d for any in-between fraction is sharp and constructive: equality is achieved exactly by the mediant, which therefore is the unique fraction of minimal denominator between two unimodular neighbours and first appears at order b + d — the Stern–Brocot insertion order.",
+      "The proof is a one-line consequence of the identity q·(bc − ad) = d·(pb − aq) + b·(cq − pd); the unimodular hypothesis bc − ad = 1 turns the left side into q and the positivity of the two bracketed integers into the b + d lower bound.",
+      "Sufficiency and sharpness are genuine converses: 'b + d > n' is not merely sufficient but necessary for adjacency, because below the threshold the mediant is an explicit witness that adjacency fails. This pins the adjacency threshold exactly at b + d.",
+      "These facts are the missing structural prerequisite for Erdős #1005: a run of consecutive Farey fractions is a chain of adjacencies, so controlling runs requires first controlling when adjacency holds, which the denominator-sum criterion does exactly."
+    ]
+  },
+  "conclusion": {
+    "summary": "A self-contained, 0-axiom, 0-sorry formalization (212 lines, 7 theorems, 2 definitions) of the Farey adjacency criterion. The core lemma shows any fraction strictly between two unimodular neighbours a/b < c/d has denominator at least b + d; this yields the equivalence 'adjacent in F_n ⇔ b + d > n', with the mediant (a+c)/(b+d) as the explicit witness when adjacency fails, entering the Farey sequence at order exactly b + d.",
+    "implications": "The criterion supplies the structural foundation Erdős #1005 (longest run of consecutive similarly ordered Farey fractions) implicitly relies on: every run is a chain of adjacent fractions, and adjacency is now reduced to a denominator-sum inequality. The intermediate_denom_ge bound is reusable infrastructure for Farey/Stern–Brocot formalizations and for continued-fraction best-approximation arguments, where the same q ≥ b + d inequality controls convergent denominators.",
+    "openQuestions": [
+      "Run lengths from the criterion: can the denominator-sum criterion be combined with a counting argument over consecutive mediants to recover the known bounds (1/12 − o(1))n ≤ f(n) ≤ n/4 + O(1) on the longest similarly ordered run?",
+      "Best-approximation transfer: formalize the corollary that for two consecutive convergents of a continued fraction the denominator-sum criterion forces the standard 'no better approximation with smaller denominator' property, linking this entry to Diophantine approximation."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1005",
+      "relationship": "extends",
+      "description": "Supplies the adjacency criterion the parent's run problem presupposes. The parent proves the unimodular gap formula, mediant coprimality, and mediant betweenness; this entry uses those facts to determine exactly when two Farey fractions are neighbours (b + d > n) and to locate the order at which the mediant first appears."
+    }
+  ]
+}
