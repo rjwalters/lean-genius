@@ -67,16 +67,19 @@ dependency chain (the σ-finite Riesz theorem and `extByZeroCLM`); see the accou
 
 ## Status
 
-WORK IN PROGRESS. Three ingredient lemmas are now source-complete and self-contained:
+WORK IN PROGRESS. Four ingredient lemmas are now source-complete and self-contained:
 the bridge lemma `memLp_exists_sigmaFinite_support` (σ-finite support of an Lᵖ
 function), `sigmaFinite_restrict_iUnion` (step 2: countable-union σ-finiteness, a
-genuine Mathlib gap, proved here from `Measure.sigmaFinite_of_countable`), and
+genuine Mathlib gap, proved here from `Measure.sigmaFinite_of_countable`),
 `eLpNorm_rpow_restrict_union` (step 3: `q`-power Lᵠ-seminorm additivity over a
 disjoint union, the analytic identity driving the maximality gluing, also absent from
-Mathlib for a general finite exponent). The headline reduction
-`riesz_lp_surjective_general` still carries a single `sorry` for the remaining
-maximality *plumbing* (step 1's `extByZeroCLM` pullback and step 3's sequence/gluing
-bookkeeping) — it does **not** yet eliminate the axiom.
+Mathlib for a general finite exponent), and `eLpNorm_restrict_eq_zero_of_le_restrict_left`
+(step 3's a.e.-identification *mechanism*: from the maximality bound and that additivity
+identity, the representing function is forced to vanish a.e. off the maximal set). The
+headline reduction `riesz_lp_surjective_general` still carries a single `sorry` for the
+remaining maximality *plumbing* (step 1's `extByZeroCLM` pullback, choosing a maximizing
+sequence, and invoking these now-factored analytic facts) — it does **not** yet
+eliminate the axiom.
 
 NOT BUILD-VERIFIED: the local Docker build wrapper has been hanging and Aristotle is
 unavailable, so `sigmaFinite_restrict_iUnion` is source-complete but its proof has not
@@ -196,6 +199,49 @@ theorem eLpNorm_rpow_restrict_union {g : α → ℝ} {A B : Set α}
     one_div_mul_cancel hqr, ENNReal.rpow_one]
   rw [Measure.restrict_union hAB hB, lintegral_add_measure]
 
+/-- **Maximality forces vanishing off the maximal set** (step 3 mechanism).
+    For `0 < q < ∞` and disjoint measurable sets `A`, `B`, if the Lᵠ-seminorm of `g`
+    over `A ∪ B` does not exceed its Lᵠ-seminorm over `A` alone — and the latter is
+    finite (`g ∈ Lᵠ` there) — then `g` vanishes a.e. on the disjoint piece `B`.
+
+    This is precisely the a.e.-identification step in the maximality argument: with
+    `A = T` the maximizing σ-finite set and `B = U \ T`, the maximality bound
+    `‖g_U‖_{q,U} ≤ c = ‖g_T‖_{q,T} = ‖g_U‖_{q,T}` (uniqueness on `T`) feeds this lemma
+    to force `g_U = 0` a.e. on `U \ T`, so the representing function on `U` agrees with
+    the one on `T` extended by zero.
+
+    Proof: monotonicity of `· ^ q.toReal` turns the seminorm bound into a bound on the
+    `q`-powers; `eLpNorm_rpow_restrict_union` splits the `A ∪ B` power as
+    `‖g‖_{q,A}^q + ‖g‖_{q,B}^q`, and cancelling the finite `A`-term
+    (`ENNReal.add_le_add_iff_left`) forces `‖g‖_{q,B}^q ≤ 0`, hence `‖g‖_{q,B} = 0`
+    (`ENNReal.rpow_eq_zero_iff_of_pos`), hence `g =ᵐ 0` on `B` (`eLpNorm_eq_zero_iff`).
+    Mathlib has the pieces but not this packaged maximality-to-vanishing step. -/
+theorem eLpNorm_restrict_eq_zero_of_le_restrict_left
+    {g : α → ℝ} {A B : Set α}
+    (hB : MeasurableSet B) (hAB : Disjoint A B)
+    {q : ℝ≥0∞} (hq0 : q ≠ 0) (hqtop : q ≠ ∞)
+    (hgmeas : AEStronglyMeasurable g (μ.restrict B))
+    (hA_fin : eLpNorm g q (μ.restrict A) ≠ ∞)
+    (hle : eLpNorm g q (μ.restrict (A ∪ B)) ≤ eLpNorm g q (μ.restrict A)) :
+    g =ᵐ[μ.restrict B] 0 := by
+  have hqr : 0 < q.toReal := ENNReal.toReal_pos hq0 hqtop
+  have hadd := eLpNorm_rpow_restrict_union (μ := μ) (g := g) hB hAB hq0 hqtop
+  have hmono : eLpNorm g q (μ.restrict (A ∪ B)) ^ q.toReal
+      ≤ eLpNorm g q (μ.restrict A) ^ q.toReal :=
+    ENNReal.rpow_le_rpow hle hqr.le
+  rw [hadd] at hmono
+  have hAfin' : eLpNorm g q (μ.restrict A) ^ q.toReal ≠ ∞ :=
+    (ENNReal.rpow_lt_top_of_nonneg hqr.le hA_fin).ne
+  have hble : eLpNorm g q (μ.restrict B) ^ q.toReal ≤ 0 := by
+    have h : eLpNorm g q (μ.restrict A) ^ q.toReal
+          + eLpNorm g q (μ.restrict B) ^ q.toReal
+        ≤ eLpNorm g q (μ.restrict A) ^ q.toReal + 0 := by rwa [add_zero]
+    exact (ENNReal.add_le_add_iff_left hAfin').mp h
+  have hbz : eLpNorm g q (μ.restrict B) ^ q.toReal = 0 := le_antisymm hble (zero_le _)
+  have hb0 : eLpNorm g q (μ.restrict B) = 0 :=
+    (ENNReal.rpow_eq_zero_iff_of_pos hqr).mp hbz
+  exact (eLpNorm_eq_zero_iff hgmeas hq0).mp hb0
+
 /-- **Riesz representation for Lᵖ — arbitrary measure** (`1 < p < ∞`).
 
     Every bounded linear functional on `Lp ℝ p μ`, for *any* measure `μ`, is
@@ -207,14 +253,15 @@ theorem eLpNorm_rpow_restrict_union {g : α → ℝ} {A B : Set α}
 
     REMAINING WORK: the `sorry` below is the maximality construction
     (`riesz_representing_function_maximal`). It is HARD (classical, Folland 6.16),
-    not OPEN. Of its three steps, two analytic ingredients are now factored out and
-    source-complete above: step 2's σ-finiteness of the maximizing union `T = ⋃ₙ Sₙ`
-    (`sigmaFinite_restrict_iUnion`), and step 3's `q`-power norm additivity over the
-    disjoint gluing pieces `T` and `U \ T` (`eLpNorm_rpow_restrict_union`). What
-    remains is the *plumbing* that strings them together: (1) pulling `φ` back along
-    `extByZeroCLM` per σ-finite set to invoke the σ-finite Riesz theorem, and the
-    bookkeeping of (3) — choosing a maximizing sequence, extracting `g_T`, and the
-    a.e. identification `g_U = g_T` from the now-available additivity identity. -/
+    not OPEN. Its analytic core is now factored out and source-complete above:
+    step 2's σ-finiteness of the maximizing union `T = ⋃ₙ Sₙ`
+    (`sigmaFinite_restrict_iUnion`), step 3's `q`-power norm additivity over the
+    disjoint gluing pieces `T` and `U \ T` (`eLpNorm_rpow_restrict_union`), and the
+    a.e.-identification mechanism that turns the maximality bound into vanishing off
+    `T` (`eLpNorm_restrict_eq_zero_of_le_restrict_left`). What remains is the *plumbing*
+    that strings them together: pulling `φ` back along `extByZeroCLM` per σ-finite set
+    to invoke the σ-finite Riesz theorem, choosing a maximizing sequence, and extracting
+    `g_T` — after which `g_U = g_T` a.e. follows from the now-available factored lemmas. -/
 theorem riesz_lp_surjective_general
     (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ ⊤)
     (hpq : p.toReal.HolderConjugate q.toReal) [Fact (1 ≤ p)] :
