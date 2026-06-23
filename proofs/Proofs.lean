@@ -212,6 +212,7 @@ import Proofs.ArithmeticSeriesOQ04
 import Proofs.ArithmeticSeriesOQ04OQ01
 import Proofs.ArithmeticSeriesOQ04OQ03
 import Proofs.ArsinhLogFormulaOQ01
+import Proofs.ArsinhLogFormulaOQ01OQ01
 import Proofs.AutomorphicNumberOQ01
 import Proofs.AutomorphicNumberOQ01OQ01
 import Proofs.AutomorphicNumberOQ01OQ02
