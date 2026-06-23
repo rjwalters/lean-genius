@@ -15,6 +15,45 @@
     "sorries": 0
   },
   "title": "The 2-Adic Normal Form of the Non-Three-Square Integers",
+  "description": "The effective/structural layer of the excluded family E = {4^a(8b+7)} of Legendre's three-square theorem — the integers that are NOT sums of three squares. The headline 2-adic normal form characterizes membership by two arithmetic conditions read directly off n (even 2-adic valuation, odd part ≡ 7 mod 8), replacing the unbounded existential search over (a,b). Uniqueness of the parametrisation and a computable Classical-free decision procedure complete the picture.",
+  "overview": {
+    "historicalContext": "Legendre's three-square theorem (1798) characterizes the natural numbers representable as x²+y²+z² as exactly those NOT of the form 4^a(8b+7). The excluded set E = {4^a(8b+7)} is the carrier of the obstruction. While the representability question is classical, the *structure* of E — its 2-adic shape and the well-definedness of its (a,b) parametrisation — is the kind of effective detail formal libraries need but textbooks leave implicit. The gallery's parent ThreeSquares.lean defines E by an existential and decides membership only noncomputably (via Classical.choice). The natural density of E is exactly 1/6 (the disjoint 2-adic layers 4^a·(8b+7) contribute densities summing to (1/8)(4/3) = 1/6), a fact that rests on the uniqueness proved here. This entry supplies the canonical solved form of E and an effective decision procedure.",
+    "problemStatement": "Give an effective characterization of the excluded family E = {4^a(8b+7)}: (i) a 2-adic normal form deciding membership of a positive integer n directly from its 2-adic valuation and odd part; (ii) uniqueness of the (a,b) parametrisation; and (iii) a genuinely computable, Classical-free Decidable instance for membership.",
+    "proofStrategy": "Everything rests on one valuation computation: v₂(4^a(8b+7)) = 2a (the odd factor contributes 0, and 4^a = 2^(2a)). From it, uniqueness reads a = v₂/2 off both sides then cancels 4^a to fix b. The normal form's forward direction is immediate; the reverse reconstructs n = 2^(v₂ n)·(odd part) via Nat.ordProj_mul_ordCompl_eq_self, writes the odd part as 8b+7 (its residue mod 8 is 7), and matches 2^(v₂ n) = 4^a using evenness of v₂. The Bool test isExcludedB transcribes the normal form, and decidable_of_iff turns the equivalence into a Classical-free Decidable instance.",
+    "keyInsights": [
+      "The whole excluded family collapses to a single valuation identity v₂(4^a(8b+7)) = 2a: every structural fact (normal form, uniqueness, decidability) is a corollary of reading off the 2-adic valuation.",
+      "The 2-adic normal form replaces an unbounded existential search over (a,b) with two arithmetic conditions on n itself — the canonical move from a 'defined' set to a 'solved' one.",
+      "Uniqueness of the parametrisation is the well-definedness that any counting or density statement (the 1/6 density of non-three-square integers) silently depends on.",
+      "Choosing kernel-level factorization arithmetic over Classical yields a genuinely computable Decidable instance, an effective upgrade over the parent file's noncomputable one that subsumes all future membership checks.",
+      "Studying the EXCLUDED complement complements the sibling oq-03-oq-03's study of which non-excluded numbers are reachable — together they give the full structural picture of the three-square dichotomy."
+    ]
+  },
+  "sections": [
+    {
+      "id": "valuation",
+      "title": "The 2-Adic Valuation Engine and Uniqueness",
+      "startLine": 44,
+      "endLine": 75,
+      "summary": "Defines IsExcludedForm and computes v₂(4^a(8b+7)) = 2a (factorization_two_of_excluded), then derives uniqueness of the (a,b) parametrisation (excludedForm_unique) by reading off the valuation and cancelling.",
+      "mathContext": "v₂(4^a(8b+7)) = 2a; the parametrisation (a,b) ↦ 4^a(8b+7) is injective."
+    },
+    {
+      "id": "normal-form-section",
+      "title": "The 2-Adic Normal Form",
+      "startLine": 77,
+      "endLine": 113,
+      "summary": "isExcludedForm_iff: n ∈ E iff v₂(n) is even and the odd part is ≡ 7 (mod 8) — the existential search replaced by two read-off conditions. excludedForm_ge_seven gives the elementary lower bound n ≥ 7.",
+      "mathContext": "n ∈ E ⟺ Even(v₂ n) ∧ (n / 2^{v₂ n}) % 8 = 7; every excluded n ≥ 7."
+    },
+    {
+      "id": "decision",
+      "title": "Computable Decision Procedure and Witnesses",
+      "startLine": 115,
+      "endLine": 154,
+      "summary": "isExcludedB packages the normal form as a Bool test (isExcludedForm_iff_isExcludedB), giving a Classical-free DecidablePred instance. Concrete witnesses (7, 15, 28, 112 ∈ E; 6 ∉ E; uniqueness of 28) validate it.",
+      "mathContext": "An effective, Classical-free Decidable membership test for the excluded family."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
@@ -86,11 +125,6 @@
     }
   ],
   "crossReferences": [
-    {
-      "targetId": "lagrange-four-squares-waring-g2-oq-03",
-      "relationship": "depends-on",
-      "description": "Companion to the parent three-square sufficiency study. The parent's ThreeSquares.lean defines IsExcludedForm by the existential 4^a(8b+7) and supplies only a noncomputable decidability instance; this entry supplies the effective layer — the 2-adic normal form, the uniqueness of the parametrisation, and a computable (Classical-free) decision procedure."
-    },
     {
       "targetId": "lagrange-four-squares-waring-g2-oq-03-oq-03",
       "relationship": "extends",
