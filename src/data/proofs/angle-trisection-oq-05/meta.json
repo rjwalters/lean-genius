@@ -17,7 +17,7 @@
       "algebraic-characterization"
     ],
     "proofRepoPath": "Proofs/AngleTrisectionOQ05.lean",
-    "badge": "mathlib",
+    "badge": "infrastructure",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -37,13 +37,13 @@
       }
     ],
     "originalContributions": [
-      "Lean 4 formalization of the Huzita-Hatori axiom system as a formal structure",
-      "Algebraic characterization of origami-constructible numbers (2^a * 3^b degrees)",
-      "Proof that angle trisection IS possible with origami",
-      "Proof that cube doubling IS possible with origami",
-      "Algebraic equivalence of origami and neusis constructibility (Alperin-Lang 2006)",
-      "Classification of origami-constructible degrees 1-12",
-      "Formalization of multi-fold origami and its strictly greater power"
+      "Lean 4 statement of the Huzita-Hatori axiom system as a formal structure (HHAxioms is declared but illustrative — no theorem takes it as a hypothesis)",
+      "Definition (not theorem) of the origami-degree predicate IsOrigamiConstructible: d > 0 ∧ ∃ a b, d ∣ 2^a * 3^b (the real-number argument is ignored)",
+      "Number-theoretic statement that degree-3 numbers satisfy the origami-degree predicate (degree value supplied as a literal, not derived from a minimal polynomial), the algebraic shadow of 'angle trisection is possible with origami'",
+      "Number-theoretic statement that degree-3 numbers satisfy the origami-degree predicate, the algebraic shadow of 'cube doubling is possible with origami'",
+      "Origami ↔ neusis constructibility holds by definitional equality (IsNeusisConstructible is defined identically to IsOrigamiConstructible), the formal echo of Alperin-Lang (2006)",
+      "Classification of which degrees 1-12 satisfy the 2^a * 3^b divisibility predicate (stated with the discarded real argument 0)",
+      "Distinction between single-fold and multi-fold origami degree predicates"
     ],
     "dateAdded": "2026-03-27",
     "axiomCount": 0,
@@ -68,7 +68,7 @@
         "relationship": "OQ-02-OQ-03 proves the Gauss-Wantzel theorem for regular polygons; origami extends this to n-gons with Pierpont prime factors"
       }
     ],
-    "assumptions": "0 axioms, 0 sorries. All theorems are proved directly from definitions and Mathlib. The Huzita-Hatori axioms are stated as a structure (existence assertions about fold lines), not assumed. The algebraic characterization (degree divides 2^a * 3^b) is encoded as the definition of IsOrigamiConstructible. The equivalence with neusis holds by definitional equality.",
+    "assumptions": "0 axioms, 0 sorries — all 27 theorems are literally true and machine-checked. However, the geometric content is encoded definitionally, not formalized: (1) IsOrigamiConstructible (_α : ℝ) (d : ℕ) ignores its real-number argument _α — there is no minpoly / aeval / IsIntegral / polynomial-degree computation anywhere in the file; (2) the degrees attached to named numbers (e.g. cos(π/9), 2^(1/3) with d = 3) are hand-supplied literals, NOT derived as minimal-polynomial degrees, so theorems like cos_20_origami_constructible assert only '3 > 0 ∧ ∃ a b, 3 ∣ 2^a·3^b' with the real as a discarded label; (3) the degree-1-12 classification uses (0 : ℝ) as the discarded argument; (4) the HHAxioms structure is declared but unused — no theorem takes it as a hypothesis, so the Huzita-Hatori axioms do not drive any result; (5) the algebraic characterization (degree divides 2^a · 3^b) is the definition of IsOrigamiConstructible, and origami ↔ neusis (Alperin-Lang 2006) holds by definitional equality since IsNeusisConstructible is defined identically. The genuinely proved content is elementary number theory about the predicate d ∣ 2^a·3^b (e.g. three_not_dvd_power_of_two, degrees 5/7/11 excluded).",
     "mathlib_version": "4.26.0",
     "theoremCount": 27,
     "definitionCount": 12
