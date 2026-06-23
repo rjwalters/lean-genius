@@ -15,7 +15,18 @@
       "Mathlib"
     ]
   },
-  "overview": "The power means Mₚ(x) = ((1/n)·Σᵢ xᵢᵖ)^{1/p} are monotone increasing in the exponent: for 0 < p ≤ q one has Mₚ ≤ M_q. The classical instance M₁ ≤ M₂ is the arithmetic-mean ≤ root-mean-square inequality. This file establishes the general positive-exponent case by specializing Mathlib's weighted Jensen inequality NNReal.rpow_arith_mean_le_arith_mean_rpow (convexity of t ↦ t^{q/p} for q/p ≥ 1) to the uniform weights 1/n. With r = q/p and zᵢ = xᵢᵖ, Jensen gives (Σ wᵢ xᵢᵖ)^{q/p} ≤ Σ wᵢ xᵢ^q; raising both sides to 1/q (monotone since q > 0) yields Mₚ ≤ M_q. The result is exactly the entry 'generalized mean inequality with any p ≤ q' that Mathlib.Analysis.MeanInequalities records in its TODO section, so it is not currently available upstream as a theorem. The negative-exponent case (p < 0, requiring xᵢ > 0) remains future work, mirroring Mathlib's own TODO.",
+  "overview": {
+    "historicalContext": "The power means (also called Hölder or generalized means) $M_p(x) = \\left(\\tfrac{1}{n}\\sum_i x_i^p\\right)^{1/p}$ form a one-parameter family interpolating the classical means: $M_{-1}$ is the harmonic mean, $M_0$ (the limit) is the geometric mean, $M_1$ is the arithmetic mean, and $M_2$ is the quadratic mean / root-mean-square. Their monotonicity in the exponent — $M_p \\le M_q$ whenever $p \\le q$ — was systematized by Hardy, Littlewood, and Pólya in *Inequalities* (1934, §2.9), building on the 19th-century work of Otto Hölder and the convexity theory of Jensen (1906). The single inequality $M_1 \\le M_2$, equivalent to the Cauchy–Schwarz inequality, predates the general statement and underlies the variance identity $\\mathrm{Var}(X) = \\mathbb{E}[X^2] - \\mathbb{E}[X]^2 \\ge 0$ in probability. The family unifies the AM–GM and RMS–AM inequalities under a single convexity principle.",
+    "problemStatement": "For a nonempty finite index set $s$, nonnegative reals $x : \\iota \\to \\mathbb{R}_{\\ge 0}$, and exponents $0 < p \\le q$, the unweighted power means satisfy $$M_p(x) = \\left(\\tfrac{1}{|s|}\\sum_{i \\in s} x_i^p\\right)^{1/p} \\;\\le\\; \\left(\\tfrac{1}{|s|}\\sum_{i \\in s} x_i^q\\right)^{1/q} = M_q(x).$$ This is exactly the entry 'generalized mean inequality with any $p \\le q$' that `Mathlib.Analysis.MeanInequalities` records, verbatim, in its `TODO` section — so it is not currently available upstream as a theorem.",
+    "proofStrategy": "The proof specializes Mathlib's weighted Jensen inequality `NNReal.rpow_arith_mean_le_arith_mean_rpow` — convexity of $t \\mapsto t^r$ for $r \\ge 1$ — to uniform weights $w_i = 1/|s|$. Setting $r = q/p \\ge 1$ and $z_i = x_i^p$, Jensen gives $\\left(\\sum_i w_i x_i^p\\right)^{q/p} \\le \\sum_i w_i (x_i^p)^{q/p} = \\sum_i w_i x_i^q$, using the power identity $(x_i^p)^{q/p} = x_i^q$. Raising both sides to the power $1/q$ (monotone since $q > 0$) and collapsing the iterated exponent $(q/p)\\cdot(1/q) = 1/p$ yields $M_p \\le M_q$. Working over $\\mathbb{R}_{\\ge 0}$ (NNReal) sidesteps positivity side-conditions on the bases.",
+    "keyInsights": [
+      "Power-mean monotonicity is a *convexity* statement in disguise: $M_p \\le M_q$ for $0 < p \\le q$ is precisely Jensen's inequality applied to the convex map $t \\mapsto t^{q/p}$ with $q/p \\ge 1$, evaluated at the data raised to the $p$-th power.",
+      "The choice of NNReal ($\\mathbb{R}_{\\ge 0}$) as the value type is a deliberate engineering decision: it lets `rpow` and the Jensen lemma apply without carrying explicit $x_i > 0$ hypotheses, since nonnegativity is built into the type.",
+      "The exponent bookkeeping is the crux of the formalization — the identities $(x^p)^{q/p} = x^q$ and $(q/p)\\cdot(1/q) = 1/p$ (both discharged by `field_simp` after `rpow_mul`) are what turn the raw Jensen output into the two power means.",
+      "The open question this entry answers states the inequality in the *wrong direction* ($M_p \\ge M_q$): power means increase in the exponent. The decreasing family the parent had in mind is the degree-indexed *Maclaurin means*, a genuinely different object that merely shares the AM–GM endpoints.",
+      "Only the positive-exponent regime is covered; the negative-exponent case ($p < 0$, which forces $x_i > 0$ and inverts several monotonicity steps) remains, as in Mathlib itself, future work."
+    ]
+  },
   "mainTheorems": [
     {
       "name": "powerMean_le_powerMean",
@@ -36,7 +47,56 @@
       "leanType": "(s : Finset ι) (x : ι → ℝ≥0) (hs : s.Nonempty) {p q : ℝ} (hp : 0 < p) (hq : 0 < q) (hpq : p ≤ q) → powerMean s x p ≤ powerMean s x q"
     }
   ],
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Docstring: Question, Answer, and Mechanism",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Restates the parent open question (generalize Maclaurin to power means), answers it, and corrects the stated direction: power means increase in the exponent, so the correct form is Mₚ ≤ M_q for 0 < p ≤ q, not Mₚ ≥ M_q. Distinguishes power means from the degree-indexed Maclaurin means, notes that Mathlib lists this as a TODO, and sketches the Jensen-with-uniform-weights mechanism.",
+      "mathContext": "The two families coincide only at the AM–GM endpoints. Power means $M_p$ are indexed by a real exponent and increase in $p$; Maclaurin means $M_k = (e_k/\\binom{n}{k})^{1/k}$ are indexed by symmetric-function degree $k$ and decrease in $k$."
+    },
+    {
+      "id": "imports",
+      "title": "Imports and Namespace Setup",
+      "startLine": 57,
+      "endLine": 66,
+      "summary": "Imports all of Mathlib, opens the Finset and NNReal namespaces and the BigOperators scope, declares the namespace, enters a noncomputable section (rpow is noncomputable), and introduces the implicit index type ι.",
+      "mathContext": "Working in $\\mathbb{R}_{\\ge 0}$ (`NNReal`) means real powers via `NNReal.rpow` are noncomputable, hence the `noncomputable section`."
+    },
+    {
+      "id": "definition",
+      "title": "powerMean: The Unweighted Power Mean",
+      "startLine": 68,
+      "endLine": 72,
+      "summary": "Defines Mₚ = (Σᵢ (|s|)⁻¹·(x i)^p)^{1/p} over a finite set s, distributing the uniform weight (|s|)⁻¹ across the sum rather than factoring it out — so the body is already in the weighted form that Jensen's inequality consumes.",
+      "mathContext": "$M_p(x) = \\left(\\sum_{i \\in s} |s|^{-1} (x_i)^p\\right)^{1/p}$. Distributing $|s|^{-1}$ inside the sum makes the weights $w_i = |s|^{-1}$ explicit, matching `rpow_arith_mean_le_arith_mean_rpow`'s signature."
+    },
+    {
+      "id": "main-theorem",
+      "title": "powerMean_le_powerMean: The Power-Mean Inequality",
+      "startLine": 74,
+      "endLine": 110,
+      "summary": "The main result: Mₚ ≤ M_q for 0 < p ≤ q. After unfolding, it establishes |s|⁻¹ ≠ 0, the derived bounds q > 0 and q/p ≥ 1, and that the uniform weights sum to one. It then invokes Jensen (`NNReal.rpow_arith_mean_le_arith_mean_rpow`), rewrites the right side via (xᵢ^p)^{q/p} = xᵢ^q, raises both sides to 1/q via `NNReal.rpow_le_rpow`, and collapses (q/p)·(1/q) = 1/p.",
+      "mathContext": "Jensen: $\\left(\\sum_i w_i x_i^p\\right)^{q/p} \\le \\sum_i w_i x_i^q$. Raising to $1/q$: $\\left(\\sum_i w_i x_i^p\\right)^{1/p} \\le \\left(\\sum_i w_i x_i^q\\right)^{1/q}$, i.e. $M_p \\le M_q$. Key identities $(x^p)^{q/p}=x^q$ and $\\tfrac{q}{p}\\cdot\\tfrac1q=\\tfrac1p$ are closed by `field_simp`."
+    },
+    {
+      "id": "corollary-rms",
+      "title": "arithMean_le_quadraticMean: AM ≤ RMS",
+      "startLine": 112,
+      "endLine": 117,
+      "summary": "The p=1, q=2 special case: the arithmetic mean is at most the quadratic mean (root-mean-square). A one-line specialization of the main theorem with the exponent hypotheses discharged by norm_num.",
+      "mathContext": "$M_1 = \\tfrac1n\\sum x_i \\le \\left(\\tfrac1n\\sum x_i^2\\right)^{1/2} = M_2$. Equivalent to Cauchy–Schwarz and to $\\mathrm{Var}(X) \\ge 0$."
+    },
+    {
+      "id": "corollary-mono",
+      "title": "powerMean_mono: Monotonicity-Style Restatement",
+      "startLine": 119,
+      "endLine": 124,
+      "summary": "Restates the main inequality with both 0 < p and 0 < q hypotheses bundled (the second is redundant given p ≤ q) to provide a monotonicity-style API surface; delegates directly to powerMean_le_powerMean.",
+      "mathContext": "Provides a signature matching how a `Monotone`-style consumer would phrase the hypotheses; the extra $0 < q$ is implied by $0 < p \\le q$."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "date": "2026-06-22",
@@ -124,6 +184,15 @@
       "description": "Base AM-GM inequality; the power means interpolate between AM-GM endpoints, and M₁ ≤ M₂ recovers the AM ≤ RMS instance."
     }
   ],
-  "conclusion": "The unweighted power-mean inequality Mₚ ≤ M_q holds for all 0 < p ≤ q, fully verified with no axioms. This fills the positive-exponent case of an inequality Mathlib currently lists only as a TODO, and clarifies that the correct power-mean ordering is increasing in the exponent — distinct from the degree-decreasing Maclaurin means of the parent entry.",
+  "conclusion": {
+    "summary": "The unweighted power-mean inequality Mₚ ≤ M_q holds for all 0 < p ≤ q, fully verified with 0 axioms and 0 sorries. The proof reduces the statement to a single application of Mathlib's weighted Jensen inequality at uniform weights, plus careful exponent bookkeeping. The p=1, q=2 corollary recovers the classical AM ≤ RMS (root-mean-square) inequality.",
+    "implications": "This fills the positive-exponent case of the 'generalized mean inequality with any p ≤ q' that Mathlib's MeanInequalities module lists only as a TODO, making the result available as a reusable theorem rather than a documented gap. It also corrects a directional error in the parent open question: power means increase in the exponent (Mₚ ≤ M_q), which is the opposite ordering from the degree-decreasing Maclaurin means — clarifying that these are two distinct families that merely share the AM–GM endpoints. The NNReal-valued formulation gives a clean, hypothesis-light API for downstream use.",
+    "openQuestions": [
+      "The negative-exponent case (p ≤ q with p < 0, which requires xᵢ > 0 and includes the harmonic mean at p = -1) remains open here, exactly as in Mathlib's own TODO. Can the same Jensen specialization be adapted, or does the sign change demand a separate argument?",
+      "Can this unweighted result be generalized to arbitrary (non-uniform) weights summing to one, recovering the full weighted power-mean inequality, and could that generalization be the form ultimately upstreamed to Mathlib?",
+      "What is the equality case? The inequality is strict unless all xᵢ are equal (or p = q); formalizing the equality characterization would complete the analytic picture.",
+      "Does the limiting behavior connect cleanly to the geometric mean as p → 0⁺ (so that AM–GM appears as the p → 0 boundary of this monotone family) within the gallery's existing AM–GM formalizations?"
+    ]
+  },
   "sorries": 0
 }
