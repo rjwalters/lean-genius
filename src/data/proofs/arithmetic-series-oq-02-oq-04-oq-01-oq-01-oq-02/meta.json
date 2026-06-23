@@ -23,10 +23,10 @@
     "sorries": 0,
     "dateAdded": "2026-06-23",
     "axiomCount": 0,
-    "lineCount": 222,
+    "lineCount": 220,
     "theoremCount": 8,
     "definitionCount": 0,
-    "assumptions": "0 literal `axiom` declarations, 0 sorries, and no `native_decide` (the three concrete checks use `decide`, so `#print axioms` lists only the ordinary foundational axioms propext / Classical.choice / Quot.sound, which are not counted). NOTE: local kernel verification via the Docker build wrapper was unavailable this session (the Docker daemon was unresponsive), so the proof is verified at the statement/lemma-signature level against Mathlib v4.26.0 and relies on the deployer build-gate for the final kernel check before merge.",
+    "assumptions": "0 literal `axiom` declarations, 0 sorries, and no `native_decide` (the three concrete checks use `decide`, so `#print axioms` lists only the ordinary foundational axioms propext / Classical.choice / Quot.sound, which are not counted). Kernel-verified against Mathlib v4.26.0 via `lake env lean`: all eight theorems compile with `#print axioms` reporting exactly [propext, Classical.choice, Quot.sound] (no sorryAx, no Lean.ofReduceBool).",
     "originalContributions": [
       "ascPochhammer_eval_add: (x+y)^{(k)} = Σ_{m∈range(k+1)} x^{(m)}·y^{(k-m)}·C(k,m) over any CommSemiring, via (ascPochhammer S _).eval — the rising-factorial Vandermonde convolution (sequence of binomial type). Mathlib has only the multiplicative composition law ascPochhammer_mul; this additive convolution is not in Mathlib.",
       "ascFactorial_add_vandermonde: the ℕ specialization with Nat.ascFactorial — (a+b).ascFactorial k = Σ a.ascFactorial m · b.ascFactorial (k-m) · C(k,m)",
@@ -61,28 +61,28 @@
       "title": "Part I: The Rising-Factorial Vandermonde Convolution (CommSemiring)",
       "summary": "ascPochhammer_eval_add: (x+y)^{(k)} = Σ C(k,m)·x^{(m)}·y^{(k-m)} over any commutative semiring, proved by induction mirroring Commute.add_pow with ascPochhammer_succ_eval as the analogue of pow_succ and a Pascal-rule middle lemma.",
       "startLine": 46,
-      "endLine": 137
+      "endLine": 135
     },
     {
       "id": "nat-specialization",
       "title": "Part II: ℕ Specialization — Chu–Vandermonde for Nat.ascFactorial",
       "summary": "ascFactorial_add_vandermonde and ascFactorial_add_vandermonde_prod: the headline evaluated at naturals, giving the multiset Vandermonde identity for Nat.ascFactorial and its explicit rising-product form.",
-      "startLine": 138,
-      "endLine": 164
+      "startLine": 136,
+      "endLine": 162
     },
     {
       "id": "corollaries",
       "title": "Part III: Structural Corollaries",
       "summary": "ascFactorial_add_vandermonde_zero_right (boundary collapse at b=0) and ascFactorial_add_vandermonde_symm (a↔b symmetry from commutativity of +).",
-      "startLine": 165,
-      "endLine": 183
+      "startLine": 163,
+      "endLine": 181
     },
     {
       "id": "concrete-checks",
       "title": "Part IV: Concrete Verification",
       "summary": "Three decide checks (no native_decide): a=b=1,k=2 (=6); a=2,b=1,k=2 (=12); a=1,b=2,k=3 (=60).",
-      "startLine": 184,
-      "endLine": 222
+      "startLine": 182,
+      "endLine": 220
     }
   ],
   "conclusion": {
@@ -140,7 +140,7 @@
   ],
   "leanFile": {
     "namespace": "ArithmeticSeriesOQ02OQ04OQ01OQ01OQ02",
-    "lineCount": 222,
+    "lineCount": 220,
     "axiomCount": 0,
     "theoremCount": 8,
     "definitionCount": 0,

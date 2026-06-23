@@ -118,7 +118,6 @@ theorem ascPochhammer_eval_add {S : Type*} [CommSemiring S] (x y : S) (k : ℕ) 
     rw [Finset.sum_congr rfl hsplit, Finset.sum_add_distrib]
     -- RHS: expand the top sum via the Pascal step
     rw [Finset.sum_range_succ' (fun m => t (n + 1) m) (n + 1)]
-    dsimp only
     rw [h_first (n + 1),
         Finset.sum_congr rfl
           (fun i hi => h_middle n i (Finset.mem_range_succ_iff.mp hi)),
@@ -130,7 +129,6 @@ theorem ascPochhammer_eval_add {S : Type*} [CommSemiring S] (x y : S) (k : ℕ) 
             + (ascPochhammer S (n + 1)).eval y := by
       rw [Finset.sum_range_succ' (fun m => (y + ((n - m : ℕ) : S)) * t n m) n,
           Finset.sum_range_succ (fun i => (y + ((n - (i + 1) : ℕ) : S)) * t n (i + 1)) n]
-      dsimp only
       rw [h_last n, h_first n, hBy n, Nat.sub_zero]
       ring
     rw [hQ]; ring
