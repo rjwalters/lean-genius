@@ -76,6 +76,12 @@
   ],
   "sections": [
     {
+      "title": "Overview and imports",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Docstring stating the two structural facts the parent left as prose — the K_{n,n+1} counterexample mechanism (Part V) and the degree pigeonhole (Part VII) — and the parity intuition (a length-3 odd path joins opposite parts). Imports Mathlib, opens SimpleGraph, and fixes the vertex type V."
+    },
+    {
       "title": "Inlined definitions",
       "startLine": 36,
       "endLine": 62,
