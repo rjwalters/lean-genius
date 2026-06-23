@@ -75,6 +75,43 @@
       "Linear independence of a pair of vectors (LinearIndependent 𝕜 ![x, y])"
     ]
   },
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Statement and Setup",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Docstring contrasting Mathlib's nonzero-hypothesis equality case (norm_inner_eq_norm_iff, ∃ r, y = r • x) with the unconditional, symmetric goal ‖⟪x,y⟫‖ = ‖x‖·‖y‖ ↔ ¬ LinearIndependent 𝕜 ![x,y]. Imports Mathlib, opens InnerProductSpace notation, and fixes the variables 𝕜 (RCLike) and E (inner-product space)."
+    },
+    {
+      "id": "sec-dependence",
+      "title": "Part I — Linear Dependence in Explicit Form",
+      "startLine": 40,
+      "endLine": 65,
+      "summary": "not_linearIndependent_pair_iff: negates LinearIndependent.pair_iff into the convenient shape ∃ s t, (s ≠ 0 ∨ t ≠ 0) ∧ s•x + t•y = 0, pushing the negation through the universal quantifiers and the implication by hand."
+    },
+    {
+      "id": "sec-equality",
+      "title": "Part II — The Equality Case",
+      "startLine": 67,
+      "endLine": 108,
+      "summary": "The headline norm_inner_eq_norm_mul_iff_not_linearIndependent (bridging Mathlib's TFAE x = 0 ∨ ∃ r, y = r•x to linear dependence) and its explicit-witness reformulation norm_inner_eq_norm_mul_iff_exists. The reverse direction is the field computation y = (-(t⁻¹s)) • x when t ≠ 0."
+    },
+    {
+      "id": "sec-sharp",
+      "title": "Part III — The Sharp Boundary",
+      "startLine": 110,
+      "endLine": 122,
+      "summary": "norm_inner_lt_norm_mul_iff_linearIndependent: strict inequality ↔ linear independence, via lt_iff_le_and_ne with the Cauchy-Schwarz bound norm_inner_le_norm and the negated equality case."
+    },
+    {
+      "id": "sec-real-and-corollaries",
+      "title": "Parts IV–V — Real Form and Sanity Corollaries",
+      "startLine": 124,
+      "endLine": 166,
+      "summary": "Real absolute-value specializations (abs_real_inner_eq/lt via Real.norm_eq_abs) and degenerate-case corollaries (norm_inner_eq_norm_mul_left_zero, norm_inner_eq_norm_mul_of_smul) that the nonzero-hypothesis form cannot express."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "cauchy-schwarz",
