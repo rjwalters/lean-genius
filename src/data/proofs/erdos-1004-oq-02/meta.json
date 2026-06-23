@@ -215,5 +215,55 @@
       "leanType": "∀ (n : ℕ), Real.sqrt ((n : ℝ) / 2) ≤ (Nat.totient n : ℝ)"
     }
   ],
+  "sections": [
+    {
+      "id": "background",
+      "title": "Background: why finite totient fibers matter",
+      "startLine": 3,
+      "endLine": 41,
+      "summary": "Docstring framing: Erdős #1004 asks how long runs of distinct consecutive totient values can be; this is only meaningful because φ is finite-to-one. The file proves φ(n) ≥ √(n/2) and its sharp odd refinement, organized as a multiplicative invariant tight only at the prime power 2¹.",
+      "mathContext": "$\\varphi(n)\\ge\\sqrt{n/2}$ makes each totient value finitely attained — the structural premise of Erdős #1004."
+    },
+    {
+      "id": "prime-power-cores",
+      "title": "Per-prime-power core inequalities",
+      "startLine": 47,
+      "endLine": 82,
+      "summary": "primePow_odd_bound (p^k ≤ φ(p^k)² for odd p ≥ 3) and primePow_two_bound (p^k ≤ 2φ(p^k)² for any prime), each reduced via φ(p^(k+1)) = p^k(p−1) to a one-variable base inequality (p ≤ (p−1)² resp. p ≤ 2(p−1)²) dispatched by nlinarith and scaled by gcongr.",
+      "mathContext": "The factor of 2 is needed only at $p=2$; for odd primes $p\\le(p-1)^2$ already holds."
+    },
+    {
+      "id": "invariant",
+      "title": "The multiplicative invariant",
+      "startLine": 84,
+      "endLine": 132,
+      "summary": "totient_invariant proves the conjunction (Odd n → n ≤ φ(n)²) ∧ (n ≤ 2φ(n)²) for all n by Nat.recOnPosPrimePosCoprime. The coprime step uses that at most one factor of a coprime product is even, so the lone factor-of-2 deficit is never spent twice — making the strengthened statement closed under coprime multiplication.",
+      "mathContext": "Strengthening to the conjunction is what makes the bound a multiplicative invariant; $\\varphi(ab)=\\varphi(a)\\varphi(b)$ for coprime $a,b$."
+    },
+    {
+      "id": "headline",
+      "title": "Headline bounds and sharpness",
+      "startLine": 134,
+      "endLine": 147,
+      "summary": "totient_sq_two_ge (n ≤ 2φ(n)²) and totient_sq_ge_of_odd (odd refinement n ≤ φ(n)²) are read off the invariant; the example 2 = 2·φ(2)² (kernel decide) certifies the constant 2 is sharp.",
+      "mathContext": "Equality $2=2\\varphi(2)^2$ at $n=2$ shows the constant cannot be improved."
+    },
+    {
+      "id": "fibers",
+      "title": "Explicit fiber bound and finiteness",
+      "startLine": 149,
+      "endLine": 162,
+      "summary": "totient_fiber_bound (φ(n)=v ⟹ n ≤ 2v²) and totient_fiber_finite ({n : φ(n)=v} is finite, as a subset of Iic (2v²)) — the structural reason distinct-totient runs are well-posed.",
+      "mathContext": "$\\{n:\\varphi(n)=v\\}\\subseteq\\{0,\\dots,2v^2\\}$, finite for every $v$."
+    },
+    {
+      "id": "real-form",
+      "title": "Real-analytic restatement",
+      "startLine": 164,
+      "endLine": 172,
+      "summary": "totient_ge_sqrt_half recasts the integer bound over ℝ as √(n/2) ≤ φ(n) via Real.sqrt_le_sqrt and Real.sqrt_sq — the only analytic step in an otherwise elementary file.",
+      "mathContext": "$\\sqrt{n/2}\\le\\varphi(n)$, the classical analytic form of the totient lower bound."
+    }
+  ],
   "sorries": 0
 }
