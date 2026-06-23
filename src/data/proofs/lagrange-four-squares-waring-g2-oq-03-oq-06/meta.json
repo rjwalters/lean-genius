@@ -21,6 +21,45 @@
     "sorries": 0
   },
   "title": "Rational Three Squares: the Unconditional Half via Davenport-Cassels",
+  "description": "The unconditional half of the rational three-square characterization, obtained by combining the gallery's two axiom-free pillars — integral necessity and the Davenport–Cassels descent. For the form x²+y²+z², rational and integral representability of an integer coincide (an honest Iff); the excluded family 4^a(8b+7) fails to be a sum of three rational squares (rational necessity); and representability is invariant under multiplication by squares. The lone remaining open input is Hasse–Minkowski solvability over ℚ for squarefree non-excluded numbers.",
+  "overview": {
+    "historicalContext": "Legendre's three-square theorem (1798) characterizes which integers are sums of three integer squares. A separate, subtler question is which are sums of three RATIONAL squares — a priori easier, since denominators might help. The Davenport–Cassels lemma (rooted in work of Aubry and Cassels, popularized by Davenport and Mordell, 1955) shows they cannot: for the form x²+y²+z² (and any positive-definite integral form whose covering radius is < 1), rational representability implies integral representability via a nearest-integer descent. Over ℚ the three-square problem is the model case of the Hasse–Minkowski local–global principle: x²+y²+z² = n is solvable over ℚ iff it is solvable over every completion ℝ and ℚ_p, with the only nontrivial local obstruction at the prime 2. The gallery proves integral necessity and the Davenport–Cassels descent axiom-free but leaves the global solvability step (which needs Dirichlet's theorem on primes in arithmetic progressions) as an open input. This entry extracts everything that follows unconditionally.",
+    "problemStatement": "Determine the unconditional content of the rational three-square characterization. Show: (i) an integer is a sum of three rational squares iff a sum of three integer squares (Davenport–Cassels Iff); (ii) the excluded family 4^a(8b+7) is not a sum of three rational squares (rational necessity); (iii) rational representability is invariant under multiplication by a nonzero square; and (iv) the full characterization holds conditional only on the single Hasse–Minkowski solvability hypothesis.",
+    "proofStrategy": "Combine two proved axiom-free gallery results: integral necessity (4^a(8b+7) is never a sum of three integer squares) and the Davenport–Cassels descent (rational ⟹ integral). Packaging the descent with the trivial ℤ ⊆ ℚ inclusion gives the Iff. Rational necessity follows by contradiction: a rational representation of an excluded number would descend to an integral one. Square-class invariance is direct coordinatewise scaling by m or 1/m (field_simp + linear_combination). The conditional full characterization pairs the unconditional necessity half with the open solvability hypothesis (passed as an argument, keeping the file 0-axiom).",
+    "keyInsights": [
+      "Davenport–Cassels makes the rational and integral three-square problems literally the same problem: denominators provably cannot help, because the form x²+y²+z² has covering radius √(3/4) < 1 (four squares, with radius 1, is the boundary case where this fails).",
+      "The 2-adic obstruction is rational, not merely integral: an excluded number 4^a(8b+7) is not even a sum of three rational squares, so lifting Legendre's necessity from ℤ to ℚ costs nothing.",
+      "Rational three-square representability is a square-class invariant — it depends only on the squarefree part of n — so the still-open Hasse–Minkowski input is only ever needed for squarefree arguments.",
+      "The entry sharply delimits the open frontier: necessity, the rational=integral equivalence, and square-class reduction are all unconditional and machine-checked; the single remaining input is the global solvability of x²+y²+z²=n over ℚ for squarefree non-excluded n.",
+      "Keeping the open Hasse–Minkowski statement as a hypothesis argument (rather than an axiom) lets the conditional characterization be stated honestly while the file remains genuinely 0-axiom."
+    ]
+  },
+  "sections": [
+    {
+      "id": "iff",
+      "title": "The Davenport–Cassels Iff and Rational Necessity",
+      "startLine": 44,
+      "endLine": 72,
+      "summary": "three_rat_sq_iff_three_int_sq packages the Davenport–Cassels descent as an honest Iff (rational = integral for three squares); excluded_form_not_sum_three_rat_sq lifts Legendre's necessity to ℚ — the excluded family is not even a sum of three rational squares.",
+      "mathContext": "Rational ⟺ integral three-square representability; 4^a(8b+7) is non-representable even over ℚ."
+    },
+    {
+      "id": "scaling",
+      "title": "Square-Class Invariance",
+      "startLine": 74,
+      "endLine": 100,
+      "summary": "three_rat_sq_iff_sq_mul and three_rat_sq_iff_natSq_mul prove rational three-square representability is invariant under multiplication by a nonzero square, so it depends only on the squarefree part of n.",
+      "mathContext": "n representable ⟺ m²n representable (m ≠ 0); representability is a square-class invariant."
+    },
+    {
+      "id": "conditional",
+      "title": "The Full Characterization (Conditional)",
+      "startLine": 102,
+      "endLine": 115,
+      "summary": "three_rat_sq_iff_not_excluded gives the full rational characterization conditional only on the open Hasse–Minkowski solvability hypothesis; its necessity half is the unconditional theorem above, isolating the residual open content.",
+      "mathContext": "Conditional on local–global solvability: n is a sum of three rational squares ⟺ n ∉ {4^a(8b+7)}."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
@@ -82,11 +121,6 @@
     }
   ],
   "crossReferences": [
-    {
-      "targetId": "lagrange-four-squares-waring-g2-oq-03",
-      "relationship": "depends-on",
-      "description": "Companion to the parent three-square sufficiency study. The parent's ThreeSquares.lean proves integral necessity axiom-free and isolates sufficiency as a single axiom; this entry records the unconditional consequences of combining that integral necessity with the proved Davenport-Cassels descent — the rational↔integral Iff, rational necessity, and square-class invariance — and pins the residual open content to a single Hasse-Minkowski hypothesis."
-    },
     {
       "targetId": "lagrange-four-squares-waring-g2-oq-03-oq-04",
       "relationship": "extends",
