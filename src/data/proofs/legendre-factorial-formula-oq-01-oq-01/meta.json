@@ -1,0 +1,136 @@
+{
+  "id": "legendre-factorial-formula-oq-01-oq-01",
+  "title": "Kummer's Carry-Count Theorem for Binomial Valuations",
+  "slug": "legendre-factorial-formula-oq-01-oq-01",
+  "description": "Kummer's theorem describes the exact power of a prime p dividing a binomial coefficient combinatorially: vₚ(C(n,k)) equals the number of carries when k and n−k are added in base p. The entry isolates a named carryCount definition — the count of digit positions i ≥ 1 where the truncated sum (k mod pⁱ) + ((n−k) mod pⁱ) reaches pⁱ, exactly Kummer's carry indicator — restates Kummer's theorem in the parent entry's padicValNat style on top of Mathlib's Nat.factorization_choose, and derives the classical corollaries: a divisibility criterion p ∣ C(n,k) ⟺ the addition carries (equivalently C(n,k) is coprime to p ⟺ the addition is carry-free), the central-binomial specialization vₚ(C(2n,n)) = #carries in n+n, and its divisibility form. This is open question oq-01 of the Legendre's-formula entry.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Kummer%27s_theorem",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LegendreFactorialFormulaOQ01OQ01.lean",
+    "tags": [
+      "number-theory",
+      "p-adic-valuation",
+      "binomial-coefficient",
+      "kummer-theorem",
+      "legendre-formula",
+      "carry-count",
+      "central-binomial",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 115,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "assumptions": "None. Fully machine-checked from Mathlib with 0 sorries and 0 axioms beyond Lean's foundational propext / Classical.choice / Quot.sound (no sorryAx, no Lean.ofReduceBool). The headline equality is obtained by bridging padicValNat to Nat.factorization via Nat.factorization_def (valid for prime p) and applying Mathlib's Nat.factorization_choose, whose right-hand side #{i ∈ Ico 1 b | pⁱ ≤ k mod pⁱ + (n−k) mod pⁱ} is definitionally the named carryCount. The divisibility corollaries combine Nat.Prime.dvd_iff_one_le_factorization with the headline and close the residual 1 ≤ c ↔ 0 < c by omega; non-vanishing of the binomial / central-binomial coefficients comes from Nat.choose_pos / Nat.centralBinom_pos. The numeric instance v₂(C(4,2)) = 1 is closed by decide on a concrete Finset filter card over Ico 1 4 (kernel reduction, not native_decide).",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Ernst Kummer proved in 1852 that the exact power of a prime p dividing the binomial coefficient C(m+n, m) equals the number of carries that occur when m and n are added in base p. It is the binomial-coefficient counterpart of Legendre's 1808 factorial formula vₚ(n!) = (n − Sₚ(n))/(p − 1): indeed Kummer's theorem follows from Legendre's by writing vₚ(C(n,k)) = vₚ(n!) − vₚ(k!) − vₚ((n−k)!) and recognising the digit-sum difference as a carry count. Kummer's theorem is the source of many divisibility facts — Lucas' theorem on C(n,k) mod p, the divisibility of the central binomial coefficient C(2n,n) by primes in (n, 2n], and the p-adic content of Mahler's expansion. Mathlib packages the underlying identity as Nat.factorization_choose, expressing the valuation as the cardinality of the set of digit positions where a carry occurs; this entry, the oq-01 follow-up to the gallery's Legendre's-formula entry, names that carry count and restates Kummer's theorem and its standard corollaries in the parent's padicValNat style.",
+    "problemStatement": "For a prime p and k ≤ n, show vₚ(C(n,k)) equals the number of carries when adding k and n−k in base p, where a carry into position i ≥ 1 means pⁱ ≤ (k mod pⁱ) + ((n−k) mod pⁱ). Derive: (1) p ∣ C(n,k) iff at least one carry occurs; (2) C(n,k) is coprime to p iff the addition is carry-free; (3) the central-binomial form vₚ(C(2n,n)) = #carries in the base-p self-addition n + n; (4) p ∣ C(2n,n) iff n + n carries. Verify the instance v₂(C(4,2)) = 1.",
+    "text": "The p-adic valuation of C(n,k) equals the number of base-p carries in the addition k + (n−k); in particular p divides C(n,k) exactly when that addition carries, and C(2n,n) is governed by the self-addition n + n.",
+    "proofStrategy": "The headline padicValNat_choose_eq_carryCount rewrites padicValNat p (C(n,k)) to (C(n,k)).factorization p via Nat.factorization_def (legal because p is prime) and applies Mathlib's Nat.factorization_choose hp hkn hnb, whose value is #{i ∈ Ico 1 b | pⁱ ≤ k mod pⁱ + (n−k) mod pⁱ}; this is definitionally the named carryCount p k (n−k) b, so the goal closes by rfl. The divisibility criterion prime_dvd_choose_iff_carryCount_pos rewrites p ∣ C(n,k) through Nat.Prime.dvd_iff_one_le_factorization (using C(n,k) ≠ 0 from Nat.choose_pos), then factorization_def and the headline, reducing the goal to 1 ≤ carryCount ↔ 0 < carryCount, closed by omega; the carry-free corollary not_dvd_choose_iff_carryCount_eq_zero is its contrapositive, again by omega. The central-binomial theorem padicValNat_centralBinom_eq_carryCount unfolds centralBinom n to (2n).choose n, runs the same factorization_choose bridge with k = n, and rewrites 2n − n = n so both summands become n mod pⁱ; its divisibility form prime_dvd_centralBinom_iff_carryCount_pos uses Nat.centralBinom_pos. The instance v₂(C(4,2)) = 1 specialises the headline and evaluates the resulting Finset card by decide.",
+    "keyInsights": [
+      "**Carries, not digit sums, count the prime power.** While Legendre's formula reads vₚ(n!) off the base-p digit sum, the binomial valuation is most cleanly described by carries: a carry into digit position i during the addition k + (n−k) contributes exactly one to vₚ(C(n,k)). The carry indicator pⁱ ≤ (k mod pⁱ) + ((n−k) mod pⁱ) is precisely 'the low-i digits of k and n−k overflow past pⁱ'.",
+      "**Mathlib already proves Kummer — the value is a carry count by definition.** Nat.factorization_choose states the valuation equals the cardinality of {i ∈ Ico 1 b : pⁱ ≤ k mod pⁱ + (n−k) mod pⁱ}. Naming this set's size carryCount makes the carry-count reading explicit rather than incidental, so the headline theorem is the bridge padicValNat → factorization composed with this identity.",
+      "**Divisibility is a one-carry question.** Because the valuation is a count, p ∣ C(n,k) iff the count is positive iff at least one carry occurs. The contrapositive — C(n,k) coprime to p iff the base-p addition is carry-free — is the divisibility heart of Lucas' theorem (no carries means every digit C(n,k) ≡ ∏ C(kᵢ, (n−k)ᵢ) is a unit mod p).",
+      "**The central binomial coefficient is a self-addition.** Specialising to C(2n,n) makes both summands equal: vₚ(C(2n,n)) counts the carries in n + n base p. A prime p with n < p ≤ 2n forces the units 'digit' n mod p = n to satisfy p ≤ 2n = n + n, a carry — recovering the classical fact that every prime in (n, 2n] divides C(2n,n) (the engine behind Erdős's elementary Bertrand-postulate proof).",
+      "**The bound b is a harmless parameter, mirroring Mathlib and the parent.** As in Nat.factorization_choose and the parent's floor-sum form, any b > log p n captures all carries (for larger i both residues are taken mod pⁱ > n, so no carry occurs); exposing b keeps the statement faithful to the underlying API rather than fixing an arbitrary cutoff."
+    ],
+    "prerequisites": [
+      "Legendre's formula (parent entry): the p-adic valuation of a factorial and its floor-sum / digit-sum forms",
+      "Mathlib Kummer identity: Nat.factorization_choose and its sibling Nat.factorization_choose'",
+      "Factorization ↔ p-adic valuation bridge: Nat.factorization_def for prime p",
+      "Divisibility via factorization: Nat.Prime.dvd_iff_one_le_factorization",
+      "Positivity facts: Nat.choose_pos, Nat.centralBinom_pos, and the Fact p.Prime convention"
+    ]
+  },
+  "conclusion": {
+    "summary": "Kummer's theorem is packaged as padicValNat_choose_eq_carryCount: vₚ(C(n,k)) equals the named carryCount of the base-p addition k + (n−k). Three corollaries follow — the divisibility criterion p ∣ C(n,k) ⟺ 0 < carryCount, its carry-free contrapositive, and the central-binomial specialization vₚ(C(2n,n)) = carryCount of n + n together with its divisibility form. All 5 theorems are fully verified with 0 axioms and 0 sorries; the instance v₂(C(4,2)) = 1 (adding 2 + 2 carries once) is checked by kernel reduction.",
+    "implications": "The carry-count description turns the parent's digit-sum machinery into a reusable engine for binomial divisibility. The divisibility criterion is the quantitative core of Lucas' theorem, and the central-binomial corollary is the lemma that drives the elementary proof of Bertrand's postulate (every prime in (n, 2n] divides C(2n,n)). The named carryCount and the prime_dvd_*_iff_carryCount_pos criteria are directly reusable for those downstream entries.",
+    "openQuestions": [
+      "Derive Lucas' theorem C(n,k) ≡ ∏ᵢ C(nᵢ, kᵢ) (mod p) from the carry-free criterion, using that a carry-free addition forces digit-wise binomial factorisation.",
+      "Formalise the central-binomial consequence that every prime p with n < p ≤ 2n divides C(2n,n), and assemble it toward an elementary proof of Bertrand's postulate."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "legendre-factorial-formula-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry. Supplies Legendre's factorial valuation; this entry answers its open question oq-01 by giving the binomial analogue — Kummer's carry-count description of vₚ(C(n,k))."
+    },
+    {
+      "targetId": "legendre-factorial-formula-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Sibling oq-02 (trailing zeros of n!) is the factorial-side application of Legendre's formula; this entry is the binomial-side companion via Kummer's theorem."
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Overview and Setup",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "Docstring explaining Kummer's theorem (vₚ(C(n,k)) = number of base-p carries in k + (n−k)), its relation to Legendre's formula, and the corollaries derived. Imports Nat.Choose.Factorization, Nat.Choose.Central, and the p-adic valuation basics; opens Nat / Finset."
+    },
+    {
+      "id": "sec-carrycount",
+      "title": "The Carry Count and Kummer's Theorem",
+      "startLine": 49,
+      "endLine": 64,
+      "summary": "The carryCount definition (cardinality of the carry positions in Ico 1 bound) and the headline padicValNat_choose_eq_carryCount: bridging padicValNat to Nat.factorization (factorization_def) and applying Mathlib's Nat.factorization_choose, whose value is definitionally carryCount."
+    },
+    {
+      "id": "sec-divisibility",
+      "title": "Divisibility Criterion and Carry-Free Corollary",
+      "startLine": 65,
+      "endLine": 81,
+      "summary": "prime_dvd_choose_iff_carryCount_pos (p ∣ C(n,k) ⟺ at least one carry) via Nat.Prime.dvd_iff_one_le_factorization and omega, and its contrapositive not_dvd_choose_iff_carryCount_eq_zero (coprimality ⟺ carry-free addition, the Lucas condition)."
+    },
+    {
+      "id": "sec-central",
+      "title": "Central Binomial Coefficient and Instance",
+      "startLine": 82,
+      "endLine": 115,
+      "summary": "padicValNat_centralBinom_eq_carryCount (vₚ(C(2n,n)) = carries in n + n) and prime_dvd_centralBinom_iff_carryCount_pos, recovering that primes in (n, 2n] divide C(2n,n). Closes with the worked instance v₂(C(4,2)) = 1 by kernel reduction."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Choose.Factorization",
+      "Mathlib.Data.Nat.Choose.Central",
+      "Mathlib.NumberTheory.Padics.PadicVal.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "LegendreFactorialFormulaOQ01OQ01",
+    "lineCount": 115,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "path": "Proofs/LegendreFactorialFormulaOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Kummer, Ernst Eduard",
+      "title": "Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen",
+      "year": "1852",
+      "venue": "Journal für die reine und angewandte Mathematik 44, 93–146",
+      "note": "Original source of the carry-count theorem for the prime factorisation of binomial coefficients."
+    },
+    {
+      "authors": "Hardy, G. H.; Wright, E. M.",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "2008",
+      "venue": "Oxford University Press, 6th edition",
+      "note": "Standard reference for Legendre's and Kummer's formulas and base-p digit/carry identities."
+    }
+  ],
+  "sorries": 0
+}
