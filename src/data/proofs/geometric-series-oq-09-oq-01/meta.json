@@ -1,0 +1,114 @@
+{
+  "id": "geometric-series-oq-09-oq-01",
+  "slug": "geometric-series-oq-09-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecificLimits.Normed",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "GeometricSeriesOQ09OQ01",
+    "lineCount": 154,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "path": "Proofs/GeometricSeriesOQ09OQ01.lean",
+    "sorries": 0
+  },
+  "title": "q-Fold Splitting of the Geometric Series: ∑ r^(qn+a) = r^a/(1−r^q)",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GeometricSeriesOQ09OQ01.lean",
+    "tags": [
+      "analysis",
+      "geometric-series",
+      "infinite-series",
+      "power-series",
+      "summability",
+      "normed-field",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 154,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "badge": "original",
+    "originalContributions": [
+      "hasSum_geometric_residue / tsum_geometric_residue: the closed form ∑_{n≥0} r^(qn+a) = r^a/(1−r^q) for any modulus q ≠ 0, residue a, and ratio r with ‖r‖ < 1 in an arbitrary complete normed field. This is the q-fold generalisation of the parent's even/odd (q=2) splitting: the subseries indexed by the arithmetic progression a, a+q, a+2q, … is itself geometric of ratio r^q, scaled by the offset factor r^a. Mathlib records only the plain geometric series ∑ rⁿ = 1/(1−r), not its arithmetic-progression subsums",
+      "tsum_residues_eq_geometric: the recombination ∑_{a<q} (∑_{n≥0} r^(qn+a)) = ∑ rⁿ = 1/(1−r), expressing that the q residue classes a = 0,…,q−1 partition ℕ and reassemble the full geometric series. The proof rests on the factorisation 1 − r^q = (1−r)·∑_{a<q} r^a (one_sub_pow_eq), so the q closed forms r^a/(1−r^q) sum to (∑_{a<q} r^a)/(1−r^q) = 1/(1−r)",
+      "one_sub_pow_eq: the algebraic identity 1 − r^q = (1−r)·∑_{a<q} r^a over any commutative normed field, the finite-geometric-sum factorisation underlying the recombination, proved by induction on q",
+      "norm_pow_lt_one and one_sub_pow_ne_zero: the bound ‖r^q‖ = ‖r‖^q < 1 (q ≠ 0) that makes Mathlib's geometric-series lemma applicable at the new ratio r^q, together with the nonvanishing denominators 1−r ≠ 0 and 1−r^q ≠ 0",
+      "Generality beyond the parent: where geometric-series-oq-09 works over ℝ, this entry holds over any NormedField with CompleteSpace (ℝ, ℂ, ℚ_p, …); the parent even/odd forms tsum_geometric_even and tsum_geometric_odd are recovered as the q=2, a∈{0,1} specialisations, plus concrete checks ∑ (1/2)^(3n) = 8/7 and ∑ (1/2)^(3n+2) = 2/7"
+    ],
+    "prerequisites": [
+      "Mathlib's geometric series hasSum_geometric_of_norm_lt_one (∑ ξⁿ = (1−ξ)⁻¹ for ‖ξ‖ < 1 over a complete normed field), applied at the new ratio ξ = r^q",
+      "pow_add and pow_mul: r^(qn+a) = r^a·(r^q)ⁿ, the reindexing that exhibits the arithmetic-progression subseries as a geometric series of ratio r^q",
+      "norm_pow and pow_lt_one₀: ‖r^q‖ = ‖r‖^q < 1 from ‖r‖ < 1 and q ≠ 0",
+      "HasSum arithmetic (HasSum.mul_left, HasSum.tsum_eq, HasSum.summable)",
+      "Finset.sum_mul, Finset.sum_range_succ, field_simp, linear_combination for the recombination over a complete residue system",
+      "Parent: geometric-series-oq-09 (even/odd q=2 splitting), geometric-series (∑ rⁿ = 1/(1−r))"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "hasSum_geometric_of_norm_lt_one",
+        "description": "∑_n ξⁿ = (1−ξ)⁻¹ for ‖ξ‖ < 1 over a complete normed field. Applied at ξ = r^q to sum each arithmetic-progression subseries, then scaled by r^a via HasSum.mul_left.",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      },
+      {
+        "theorem": "pow_lt_one₀",
+        "description": "0 ≤ a → a < 1 → a^n < 1 (n ≠ 0). Combined with norm_pow to give ‖r^q‖ = ‖r‖^q < 1, the hypothesis Mathlib's geometric lemma needs at the new ratio r^q.",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
+      },
+      {
+        "theorem": "geom_sum_eq",
+        "description": "Closed form for finite geometric sums; the factorisation 1 − r^q = (1−r)·∑_{a<q} r^a (re-derived here as one_sub_pow_eq) is the discrete identity underneath the recombination of the q residue-class subseries.",
+        "module": "Mathlib.Algebra.GeomSum"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "geometric-series-oq-09-oq-01-oq-01",
+      "question": "Promote the offset a to range over a complete residue system modulo q via Finset, and prove a weighted q-fold splitting ∑_{n≥0} c_{n mod q} r^n = (∑_{a<q} c_a r^a)/(1−r^q) for any q-periodic coefficient sequence c, recovering this entry at c ≡ 1 and exhibiting the rational generating function of an eventually-periodic sequence.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "geometric-series-oq-09",
+      "relationship": "extends",
+      "description": "Parent. The parent splits the geometric series over its even/odd index subsequences (q=2). This entry generalises to an arbitrary modulus q: each residue class {qn+a : n ∈ ℕ} carries a geometric series of ratio r^q, giving ∑ r^(qn+a) = r^a/(1−r^q), and the q classes recombine to ∑ rⁿ = 1/(1−r). The parent's even (q=2,a=0) and odd (q=2,a=1) forms are recovered as specialisations, and the result is lifted from ℝ to any complete normed field."
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "extends",
+      "description": "The base entry proves ∑ rⁿ = 1/(1−r). The recombination theorem here shows the q arithmetic-progression subseries partition that sum."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Analysis.SpecificLimits.Normed",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of hasSum_geometric_of_norm_lt_one, the geometric series lemma applied at the new ratio r^q."
+    },
+    {
+      "title": "Concrete Mathematics (geometric series; bisection and m-section of power series)",
+      "author": "Graham, Knuth, Patashnik",
+      "year": "1994",
+      "venue": "Addison-Wesley",
+      "description": "Standard reference for the m-section of a power series into arithmetic-progression index classes, of which the q-fold geometric subsums are the simplest instance."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "For ‖r‖ < 1 over any complete normed field and any modulus q ≠ 0, the geometric series splits over residue classes modulo q into q geometric series of ratio r^q: ∑_{n≥0} r^(qn+a) = r^a/(1−r^q) for each residue a (hasSum_geometric_residue / tsum_geometric_residue / summable_geometric_residue). The proof is the reindexing r^(qn+a) = r^a·(r^q)ⁿ together with the bound ‖r^q‖ = ‖r‖^q < 1 that lets Mathlib's hasSum_geometric_of_norm_lt_one apply at ratio r^q, scaled by r^a via HasSum.mul_left. The q subseries recombine into the full series: ∑_{a<q} (∑ r^(qn+a)) = ∑ rⁿ = 1/(1−r) (tsum_residues_eq_geometric), via the factorisation 1 − r^q = (1−r)·∑_{a<q} r^a (one_sub_pow_eq, by induction) closed with field_simp; linear_combination. The parent even (q=2,a=0) and odd (q=2,a=1) forms are recovered as specialisations, with concrete checks ∑ (1/2)^(3n) = 8/7 and ∑ (1/2)^(3n+2) = 2/7. 154 lines, 11 theorems/lemmas, 0 definitions, 0 axioms, 0 sorries; each result depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "This answers the parent's open question geometric-series-oq-09-oq-01 in full and beyond its ℝ framing: the q-fold splitting holds over any complete normed field. It records a reusable template — a subseries along an arithmetic progression of indices is again geometric, of ratio r^q, so summing it reduces to Mathlib's lemma at a new ratio plus the bound ‖r^q‖ < 1 — and exhibits the recombination as the analytic shadow of the finite identity 1 − r^q = (1−r)(1 + r + ⋯ + r^{q−1}). The natural next step is weighted/periodic coefficients, giving rational generating functions of eventually-periodic sequences.",
+    "openQuestions": [
+      "Prove a weighted q-fold splitting ∑ c_{n mod q} rⁿ = (∑_{a<q} c_a r^a)/(1−r^q) for a q-periodic coefficient sequence c."
+    ]
+  }
+}
