@@ -2715,8 +2715,8 @@ import Proofs.Erdos892Aristotle
 import Proofs.Erdos892Problem
 import Proofs.Erdos893Problem
 import Proofs.Erdos894Problem
-import Proofs.Erdos895CounterexampleFin18
 import Proofs.Erdos895Aristotle
+import Proofs.Erdos895CounterexampleFin18
 import Proofs.Erdos895OQ01Problem
 import Proofs.Erdos895Problem
 import Proofs.Erdos895ProblemAristotle
@@ -3286,13 +3286,13 @@ import Proofs.Hilbert20OQ01OQ03Aristotle
 import Proofs.Hilbert21RiemannHilbert
 import Proofs.Hilbert22OQ01
 import Proofs.Hilbert22OQ01OQ03
-import Proofs.Hilbert22OQ01OQ03Universal
 import Proofs.Hilbert22OQ01OQ03Pseudohyperbolic
+import Proofs.Hilbert22OQ01OQ03Universal
 import Proofs.Hilbert22Uniformization
 import Proofs.Hilbert23CalculusVariations
 import Proofs.Hilbert23CalculusVariationsOQ01
-import Proofs.Hilbert3ScissorsCongruence
 import Proofs.Hilbert3OQ02
+import Proofs.Hilbert3ScissorsCongruence
 import Proofs.Hilbert4Geodesics
 import Proofs.Hilbert5LieGroups
 import Proofs.Hilbert5OQ02
@@ -3792,6 +3792,7 @@ import Proofs.QuadraticGaussSumSignSmallThirteen
 import Proofs.QuadraticGaussSumSquare
 import Proofs.QuadraticGaussSumSquareOQ01
 import Proofs.QuadraticGaussSumSquareOQ02
+import Proofs.QuadraticGaussSumSquareOQ03
 import Proofs.QuadraticGaussSumSquareOQ04
 import Proofs.QuadraticGaussSumSquareOQ04OQ01
 import Proofs.QuadraticReciprocity
