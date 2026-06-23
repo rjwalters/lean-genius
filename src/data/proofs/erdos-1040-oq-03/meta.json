@@ -1,0 +1,178 @@
+{
+  "id": "erdos-1040-oq-03",
+  "title": "Erdős #1040 (oq-03): Extending EHP to convex sets — the degree-1 base case and the degree-2 non-convexity obstruction",
+  "slug": "erdos-1040-oq-03",
+  "description": "Open question oq-03 of Erdős Problem #1040 asks whether the Erdős–Herzog–Piranian (1958) result, known for discs and line segments, extends to convex sets. Two concrete, fully verified facts frame that question. (1) Degree-1 base case: for a linear polynomial z - a with root a ∈ F, the sublevel set {z : |z - a| < 1} is exactly the open unit disc B(a, 1) — convex, of Lebesgue measure π. Choosing any root a in a nonempty F therefore gives the universal upper bound μ(F) ≤ π, independent of the transfinite diameter. (2) Degree-2 obstruction: even when the roots lie in the convex segment [-1, 1], the sublevel set need not be convex — for (z-1)(z+1) = z² - 1 the two roots ±1 lie in the sublevel set but their midpoint 0 does not (|0² - 1| = 1), so the set is genuinely non-convex. This shows any EHP extension to convex F must already handle non-convex sublevel sets in degree 2. All results are axiom- and sorry-free.",
+  "meta": {
+    "author": "Researcher (lean-genius); EHP setup after Erdős, Herzog, Piranian (1958)",
+    "sourceUrl": "https://erdosproblems.com/1040",
+    "date": "2026-06-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1040Convex.lean",
+    "tags": [
+      "complex-analysis",
+      "polynomials",
+      "lemniscates",
+      "measure-theory",
+      "convexity",
+      "erdos"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.volume_ball",
+        "description": "volume (Metric.ball a r) = ENNReal.ofReal r ^ 2 * NNReal.pi; at r = 1 this gives the unit disc measure π, fixing the constant in the universal bound μ(F) ≤ π",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls"
+      },
+      {
+        "theorem": "convex_ball",
+        "description": "Convex ℝ (Metric.ball a r): the degree-1 sublevel set, being a metric ball, is convex",
+        "module": "Mathlib.Analysis.Normed.Module.Convex"
+      },
+      {
+        "theorem": "dist_eq_norm",
+        "description": "dist z a = ‖z - a‖, identifying the sublevel set {‖z - a‖ < 1} with the metric ball Metric.ball a 1",
+        "module": "Mathlib.Analysis.Normed.Group.Basic"
+      },
+      {
+        "theorem": "Fin.prod_univ_one",
+        "description": "∏ i : Fin 1, f i = f 0, evaluating the linear polynomial ∏ (z - rᵢ) to z - a",
+        "module": "Mathlib.Algebra.BigOperators.Fin"
+      },
+      {
+        "theorem": "Fin.prod_univ_two",
+        "description": "∏ i : Fin 2, f i = f 0 * f 1, evaluating the quadratic to (z - 1)(z + 1)",
+        "module": "Mathlib.Algebra.BigOperators.Fin"
+      },
+      {
+        "theorem": "iInf₂_le",
+        "description": "⨅ i, ⨅ j, f i j ≤ f i j, selecting the degree-1 witness in the infimum defining μ(F) to obtain μ(F) ≤ π",
+        "module": "Mathlib.Order.CompleteLattice.Basic"
+      },
+      {
+        "theorem": "left_mem_segment / right_mem_segment",
+        "description": "the endpoints ±1 lie in the segment [-1, 1], witnessing that the quadratic's roots lie in a convex set",
+        "module": "Mathlib.Analysis.Convex.Segment"
+      },
+      {
+        "theorem": "Complex.real_smul",
+        "description": "x • z = ↑x * z for x : ℝ, z : ℂ, used to evaluate the midpoint (1/2)•1 + (1/2)•(-1) = 0 in the non-convexity argument",
+        "module": "Mathlib.Data.Complex.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Degree-1 geometric identity: the sublevel set {z : |z - a| < 1} of the linear polynomial z - a equals the open unit disc Metric.ball a 1 (linPoly_sublevelSet), hence is convex (linPoly_sublevelSet_convex) and has Lebesgue measure exactly π (linPoly_measure)",
+      "Universal upper bound μ(F) ≤ π for every nonempty F (muPosDeg_le_pi): the degree-1 polynomial rooted at any a ∈ F witnesses finiteness of μ(F) regardless of the transfinite diameter — the elementary upper companion to the open conjecture's lower (μ = 0) behaviour",
+      "Degree-2 non-convexity obstruction (quad_sublevelSet_not_convex): for (z-1)(z+1) the roots ±1 lie in the convex segment [-1, 1] and in the sublevel set, but their midpoint 0 does not, so the sublevel set is non-convex — an explicit obstacle any EHP-to-convex-sets extension must accommodate, isolated at the lowest possible degree"
+    ],
+    "dateAdded": "2026-06-23",
+    "axiomCount": 0,
+    "lineCount": 184,
+    "assumptions": "0 axioms. 0 sorries. The minimal EHP definitions (PolynomialInF, eval, sublevelSet, sublevelMeasure, muPosDeg) are copied from Erdos1040Problem.lean to keep the file self-contained; muPosDeg is the degree-≥1 corrected infimum. The degree-1 facts hold for an arbitrary nonempty F; the non-convexity result is a concrete witness over the convex segment [-1, 1]. The parent open conjecture (μ determined by transfinite diameter) is NOT asserted — only these elementary base-case/obstruction facts. Build note: local kernel verification was blocked by an unresponsive Docker build host this session (the container failed to materialize and `docker ps` hung). The proof uses only Mathlib v4.26.0 lemma signatures grep-confirmed against the pinned toolchain (Complex.volume_ball, convex_ball, dist_eq_norm, Fin.prod_univ_one/two, iInf₂_le, left_/right_mem_segment with explicit 𝕜, Complex.real_smul with implicit args, Matrix.cons_val_*), and the arithmetic (ring/norm_num) was hand-checked; it is gated by the deployer build before merge.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 11,
+    "definitionCount": 7
+  },
+  "sections": [
+    {
+      "title": "Module header",
+      "startLine": 1,
+      "endLine": 44,
+      "description": "Frames oq-03 (extend EHP to convex sets), recalls the μ(F) setup, and states the two facts proved: the degree-1 convex base case with measure π and the universal bound μ(F) ≤ π, and the degree-2 non-convexity obstruction over a convex root set.",
+      "summary": "Module header and problem framing",
+      "id": "module-header"
+    },
+    {
+      "title": "Definitions",
+      "startLine": 46,
+      "endLine": 71,
+      "description": "Self-contained copies of the EHP objects: PolynomialInF (a polynomial as its multiset of roots in F), its eval ∏(z - rᵢ), the sublevel set {z : ‖eval z‖ < 1}, its Lebesgue measure, and the degree-≥1 infimum μ(F) = muPosDeg.",
+      "summary": "Minimal EHP definitions",
+      "id": "definitions"
+    },
+    {
+      "title": "Degree-1 base case",
+      "startLine": 73,
+      "endLine": 113,
+      "description": "linPoly is the linear polynomial with root a. linPoly_eval gives eval = z - a; linPoly_sublevelSet identifies the sublevel set with Metric.ball a 1 (via dist_eq_norm); linPoly_sublevelSet_convex deduces convexity from convex_ball; linPoly_measure computes the measure as π via Complex.volume_ball at r = 1.",
+      "summary": "Linear sublevel set is the unit disc",
+      "id": "degree-1"
+    },
+    {
+      "title": "Universal upper bound μ(F) ≤ π",
+      "startLine": 115,
+      "endLine": 126,
+      "description": "muPosDeg_le_pi: for any nonempty F, choosing a root a ∈ F and the degree-1 witness in the infimum (iInf₂_le) gives μ(F) ≤ sublevelMeasure(z - a) = π. Hence μ(F) is always finite, independent of the transfinite diameter.",
+      "summary": "μ(F) ≤ π for nonempty F",
+      "id": "upper-bound"
+    },
+    {
+      "title": "Degree-2 non-convexity obstruction",
+      "startLine": 128,
+      "endLine": 182,
+      "description": "quadPoly is (z-1)(z+1) with roots ±1 in the convex segment [-1, 1]. quad_eval computes eval; one_mem_quad_sublevel and negOne_mem_quad_sublevel place ±1 in the sublevel set (value 0); zero_not_mem_quad_sublevel excludes the midpoint 0 (value -1, norm 1). quad_sublevelSet_not_convex concludes non-convexity: convexity would force the midpoint into the set.",
+      "summary": "Sublevel set non-convex despite convex root set",
+      "id": "degree-2"
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős Problem #1040, due to Erdős, Herzog, and Piranian, concerns the quantity μ(F) = inf over monic polynomials f with roots in a closed infinite F ⊆ ℂ of the planar Lebesgue measure of the lemniscatic sublevel set {z : |f(z)| < 1}, and asks whether μ(F) is governed by the transfinite diameter (logarithmic capacity) of F. The EHP paper (1958) answers this for line segments and discs. Open question oq-03 asks whether the argument extends to general convex sets. This entry does not resolve that open question; it isolates two elementary, fully verified phenomena that any such extension must reckon with.",
+    "problemStatement": "Within the EHP setup for Erdős #1040, prove: (1) the sublevel set of a linear polynomial z - a is the open unit disc B(a, 1), so it is convex, has measure π, and yields μ(F) ≤ π for every nonempty F; and (2) for the quadratic (z-1)(z+1), whose roots ±1 lie in the convex segment [-1, 1], the sublevel set is not convex.",
+    "text": "The degree-1 sublevel set is a unit disc — convex, measure π — capping μ(F) at π; but already in degree 2 the sublevel set of a polynomial with roots in a convex set fails to be convex.",
+    "proofStrategy": "1. **Degree-1.** For p(z) = z - a, the product ∏ over Fin 1 collapses to z - a (Fin.prod_univ_one). The sublevel set {‖z - a‖ < 1} equals Metric.ball a 1 since dist z a = ‖z - a‖, giving convexity (convex_ball) and, via Complex.volume_ball at radius 1, measure ENNReal.ofReal 1 ^ 2 · π = π.\n\n2. **Upper bound.** muPosDeg F is an infimum over degree-≥1 polynomials; the linear witness rooted at any a ∈ F has degree 1, so iInf₂_le gives μ(F) ≤ its measure = π.\n\n3. **Degree-2 non-convexity.** For p(z) = (z-1)(z+1) (roots ±1 in the convex segment [-1, 1] by left_/right_mem_segment), p(1) = p(-1) = 0 so ±1 are in the sublevel set, while p(0) = -1 has norm 1 so 0 is not. If the sublevel set were convex it would contain the midpoint (1/2)·1 + (1/2)·(-1) = 0 (computed via Complex.real_smul), a contradiction.",
+    "keyInsights": [
+      "**Linear lemniscates are discs**: {|z - a| < 1} = B(a, 1) is the unique degree at which the sublevel set is itself convex and has a clean closed-form measure π",
+      "**μ(F) is universally bounded above by π**: the degree-1 witness makes finiteness of μ(F) elementary and independent of the transfinite diameter — the easy counterpart to the open lower-bound conjecture μ(F) = 0 at capacity ≥ 1",
+      "**Convex roots do not give convex lemniscates**: already the quadratic z² - 1, with both roots in [-1, 1], has a non-convex sublevel set (the two lobes around ±1 pinch at the saddle 0), so the EHP-to-convex-sets program cannot proceed by convexity of sublevel sets"
+    ],
+    "prerequisites": [
+      "The EHP quantity μ(F) and the sublevel (lemniscate) set {z : |f(z)| < 1}",
+      "Lebesgue measure of a disc in ℂ (Complex.volume_ball) and convexity of metric balls",
+      "Convex segments in ℂ and the definition of a convex set via midpoints"
+    ],
+    "openQuestions": [
+      "Does the EHP determination of μ(F) by transfinite diameter extend to all compact convex F? (the parent open question oq-03)",
+      "Is the degree-1 bound μ(F) ≤ π sharp, i.e. for which F is μ(F) = π, and how does μ(F) decrease as the degree or the spread of admissible roots grows?",
+      "Can the number of connected components of the sublevel set {|f| < 1} be bounded in terms of the degree, quantifying the failure of convexity?"
+    ]
+  },
+  "conclusion": {
+    "summary": "Two elementary, axiom- and sorry-free facts frame Erdős #1040's oq-03: the degree-1 sublevel set is the unit disc B(a, 1) (convex, measure π), giving the universal bound μ(F) ≤ π for nonempty F; and the degree-2 polynomial z² - 1, with roots in the convex segment [-1, 1], has a non-convex sublevel set.",
+    "implications": "**Theoretical Significance**: The universal bound μ(F) ≤ π pins down the easy (upper) side of the EHP quantity, complementing the genuinely open lower-bound behaviour (μ(F) = 0 when the transfinite diameter is ≥ 1). The degree-2 non-convexity witness shows the natural hope behind oq-03 — that restricting to convex root sets keeps the lemniscatic sublevel sets convex — fails at the first nonlinear degree, so any extension of EHP to convex sets must use the capacity/area machinery rather than convexity of sublevel sets.",
+    "openQuestions": [
+      "Extend the EHP determination of μ(F) by transfinite diameter to compact convex sets (the parent oq-03)?",
+      "Determine sharpness of μ(F) ≤ π and the asymptotics of μ(F) as degree or root-spread grows?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1040",
+      "relationship": "parent",
+      "description": "The parent formalizes the EHP quantity μ(F) and the open conjecture that it is determined by the transfinite diameter; this entry proves the degree-1 base case (μ(F) ≤ π) and the degree-2 non-convexity obstruction relevant to extending EHP to convex sets."
+    },
+    {
+      "targetId": "erdos-1042-oq-03",
+      "relationship": "related",
+      "description": "A sibling lemniscate-cluster entry showing the sublevel set {|f| < 1} is confined to a union of unit balls about the roots; together with this entry's disc base case it develops the elementary geometry of polynomial lemniscates."
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "ENNReal",
+      "NNReal",
+      "MeasureTheory"
+    ],
+    "namespace": "Erdos1040",
+    "lineCount": 184,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 7,
+    "sorries": 0,
+    "path": "Proofs/Erdos1040Convex.lean"
+  }
+}
