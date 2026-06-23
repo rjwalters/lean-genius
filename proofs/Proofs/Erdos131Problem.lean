@@ -124,7 +124,7 @@ theorem F_monotonic : ∀ N M : ℕ, N ≤ M → F N ≤ F M := by
 
 /- ## Upper Bounds -/
 
-/-- ELRSS (1999): F(N) < 3√N + 1 -/
+/- ELRSS (1999): F(N) < 3√N + 1 -/
 /-- Pham-Zakharov (2024): F(N) ≤ N^{1/4 + o(1)}
     This resolves the original question negatively. -/
 axiom pham_zakharov_upper_bound :
@@ -170,7 +170,7 @@ theorem original_question_answered_no :
 axiom csaba_lower_bound :
     ∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, N ≥ 1 → (F N : ℝ) ≥ c * (N : ℝ)^((1 : ℝ)/5)
 
-/-- Straus's lower bound: F(N) > exp((√(2/log 2) + o(1))√(log N)) -/
+/- Straus's lower bound: F(N) > exp((√(2/log 2) + o(1))√(log N)) -/
 /-- exp(3/4) > 2, via Taylor sum of order 3:
     1 + 3/4 + 9/32 = 65/32 > 2 -/
 private theorem exp_three_fourths_gt_two : (2 : ℝ) < Real.exp (3/4) := by
@@ -476,14 +476,14 @@ private lemma nondividing_three_subset {a : ℕ} {T : Finset ℕ} (hT : T.card =
   rcases Nat.eq_or_lt_of_le hCard with h2 | h3
   · -- |S| = 2: T \ S has exactly 1 element
     have hTdiff_card : (T \ S).card = 1 := by
-      rw [Finset.card_sdiff hS, hT]; omega
+      rw [Finset.card_sdiff_of_subset hS, hT]; omega
     obtain ⟨x, hx_eq⟩ := Finset.card_eq_one.mp hTdiff_card
     have hxT : x ∈ T := by
       have : x ∈ T \ S := hx_eq ▸ Finset.mem_singleton_self x
       exact Finset.sdiff_subset this
     -- T.sum = S.sum + x (via Finset.sum_sdiff)
     have hsum : (T \ S).sum id + S.sum id = T.sum id := Finset.sum_sdiff hS
-    rw [hx_eq, Finset.sum_singleton] at hsum
+    rw [hx_eq, Finset.sum_singleton, id_eq] at hsum
     -- So T.sum - x = S.sum
     have hsub : T.sum id - x = S.sum id := by omega
     exact h_pairs x hxT (hsub ▸ hdvd)
