@@ -1,0 +1,62 @@
+[
+  {
+    "id": "gamma-ladder",
+    "proofId": "area-of-circle-oq-07-oq-03-oq-01",
+    "range": { "startLine": 54, "endLine": 57 },
+    "type": "concept",
+    "title": "The Half-Integer Gamma Ladder (Mathlib Re-Export)",
+    "content": "`gamma_nat_add_half` restates Mathlib's `Real.Gamma_nat_add_half`: for every natural n, Γ(n + 1/2) = (2n−1)‼ · √π / 2ⁿ. This is the closed form for the entire tower of half-integer Gamma values, anchored at Γ(1/2) = √π (the n = 0 rung). The double factorial (2n−1)‼ = 1·3·5···(2n−1) is the product of the odd numbers up to 2n−1. This theorem is a faithful re-export — the entry's new content is identifying these values with Gaussian moments — but it is recorded here to feed the closed-form moment formula.",
+    "mathContext": "$\\Gamma(n + \\tfrac12) = \\dfrac{(2n-1)!!\\,\\sqrt{\\pi}}{2^{n}}$.",
+    "significance": "key",
+    "relatedConcepts": ["Euler Gamma function", "double factorial", "half-integer values"],
+    "prerequisites": ["Gamma function", "double factorial"]
+  },
+  {
+    "id": "half-line-moment",
+    "proofId": "area-of-circle-oq-07-oq-03-oq-01",
+    "range": { "startLine": 60, "endLine": 93 },
+    "type": "technique",
+    "title": "The Half-Line Moment via the Substitution u = x²",
+    "content": "`gaussian_moment_Ioi` proves ∫_{x>0} x^{2n} e^{−x²} dx = Γ(n + 1/2)/2 — content Mathlib does not package. The proof starts from Euler's integral Γ(n + 1/2) = ∫_{u>0} e^{−u} u^{n−1/2} du (`Real.Gamma_eq_integral`) and applies the radial change of variables `integral_comp_rpow_Ioi_of_pos` at p = 2, i.e. the substitution u = x². The resulting integrand is rpow algebra on the positive half-line: x^{(2−1)} · (x²)^{n−1/2} collapses to x^{2n} (via `Real.rpow_mul`, `Real.rpow_add`, `Real.rpow_natCast`, valid because x > 0), and the Jacobian contributes the factor 2. This is the exact generalization of Mathlib's own proof of Γ(1/2) = √π — the same substitution, parameterized by n instead of fixed at the exponent 1/2.",
+    "mathContext": "$\\Gamma(n+\\tfrac12)=\\int_0^\\infty u^{n-1/2}e^{-u}\\,du \\xrightarrow{u=x^2} 2\\int_0^\\infty x^{2n}e^{-x^2}\\,dx$.",
+    "significance": "key",
+    "relatedConcepts": ["change of variables", "Euler integral", "Gamma function", "rpow"],
+    "prerequisites": ["substitution rule", "improper integrals", "real power function"]
+  },
+  {
+    "id": "full-line-moment",
+    "proofId": "area-of-circle-oq-07-oq-03-oq-01",
+    "range": { "startLine": 95, "endLine": 113 },
+    "type": "insight",
+    "title": "The Even Moments ARE the Half-Integer Gamma Values",
+    "content": "`gaussian_even_moment` proves ∫_ℝ x^{2n} e^{−x²} dx = Γ(n + 1/2): the even Gaussian moments are exactly the half-integer Gamma values. The integrand x ↦ x^{2n} e^{−x²} is even — |x|^{2n} = x^{2n} because 2n is even (`Even.pow_abs`), and |x|² = x² (`sq_abs`) — so `integral_comp_abs` folds the full line onto twice the half line, cancelling the 1/2 from the previous step. This is the substantive identity of the entry: a Gaussian moment computed by reading off a Gamma value.",
+    "mathContext": "$\\int_{\\mathbb{R}} x^{2n} e^{-x^2}\\,dx = 2\\int_0^\\infty x^{2n} e^{-x^2}\\,dx = \\Gamma(n+\\tfrac12)$.",
+    "significance": "key",
+    "relatedConcepts": ["Gaussian moments", "even functions", "moment-Gamma correspondence"],
+    "prerequisites": ["even/odd symmetry of integrals", "Lebesgue integration"]
+  },
+  {
+    "id": "closed-form",
+    "proofId": "area-of-circle-oq-07-oq-03-oq-01",
+    "range": { "startLine": 115, "endLine": 122 },
+    "type": "concept",
+    "title": "The Double-Factorial Closed Form",
+    "content": "`gaussian_even_moment_doubleFactorial` composes the moment identity with the Gamma ladder to give the explicit value ∫_ℝ x^{2n} e^{−x²} dx = (2n−1)‼ · √π / 2ⁿ. The double factorial (2n−1)‼ counts the perfect matchings of 2n points — the combinatorial content of Wick's theorem for Gaussian moments — so the closed form simultaneously names an analytic integral and a pairing count.",
+    "mathContext": "$\\int_{\\mathbb{R}} x^{2n} e^{-x^2}\\,dx = \\dfrac{(2n-1)!!\\,\\sqrt{\\pi}}{2^{n}}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["double factorial", "Wick's theorem", "Gaussian moments"],
+    "prerequisites": ["double factorial", "combinatorial pairings"]
+  },
+  {
+    "id": "special-cases",
+    "proofId": "area-of-circle-oq-07-oq-03-oq-01",
+    "range": { "startLine": 124, "endLine": 140 },
+    "type": "example",
+    "title": "The n = 0 and n = 1 Rungs",
+    "content": "`gaussian_even_moment_zero` is the n = 0 case ∫_ℝ e^{−x²} = √π — exactly the parent grandparent entry area-of-circle-oq-07's Gaussian integral, recovered as the base of the moment tower (closed via `Real.Gamma_one_half_eq`). `gaussian_even_moment_two` is the n = 1 case ∫_ℝ x² e^{−x²} = √π/2, equivalently Γ(3/2) = √π/2, the first nontrivial rung where the (2n−1)‼ = 1 factor and the 2ⁿ = 2 denominator first appear.",
+    "mathContext": "$\\int_{\\mathbb{R}} e^{-x^2} = \\sqrt{\\pi}$ (n=0);\\quad $\\int_{\\mathbb{R}} x^2 e^{-x^2} = \\tfrac{\\sqrt{\\pi}}{2}$ (n=1, $\\Gamma(3/2)=\\sqrt\\pi/2$).",
+    "significance": "supporting",
+    "relatedConcepts": ["Gaussian integral", "special values", "base case"],
+    "prerequisites": ["Gaussian integral"]
+  }
+]

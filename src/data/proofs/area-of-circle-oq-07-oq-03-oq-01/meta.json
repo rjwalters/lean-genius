@@ -1,0 +1,192 @@
+{
+  "id": "area-of-circle-oq-07-oq-03-oq-01",
+  "slug": "area-of-circle-oq-07-oq-03-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real",
+      "MeasureTheory",
+      "Set"
+    ],
+    "namespace": "AreaOfCircleOQ07OQ03OQ01",
+    "lineCount": 141,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/AreaOfCircleOQ07OQ03OQ01.lean",
+    "sorries": 0
+  },
+  "title": "The Half-Integer Gamma Ladder as Even Gaussian Moments",
+  "description": "Climbs the half-integer ladder Γ(n + 1/2) = (2n−1)‼ · √π / 2ⁿ and identifies each value with the even Gaussian moment ∫_ℝ x^{2n} e^{-x²} dx. The bare ladder is Mathlib's Real.Gamma_nat_add_half (a re-export); the genuinely new content is the moment identity ∫_ℝ x^{2n} e^{-x²} = Γ(n + 1/2), which Mathlib does not package. It is proved by the u = x² substitution applied to Euler's integral — the exact generalization of Mathlib's own proof of Γ(1/2) = √π, lifted from the single exponent 1/2 to the whole tower. The n = 0 case recovers the parent's Gaussian integral ∫_ℝ e^{-x²} = √π. Honest Tier-B (mathlib badge): heavy Mathlib reliance, but the half-line and full-line moment formulas are derived here, not looked up.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AreaOfCircleOQ07OQ03OQ01.lean",
+    "tags": [
+      "analysis",
+      "gamma-function",
+      "gaussian-integral",
+      "gaussian-moments",
+      "double-factorial",
+      "special-functions",
+      "measure-theory",
+      "change-of-variables",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 141,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "badge": "mathlib",
+    "originalContributions": [
+      "gaussian_moment_Ioi: ∫_{x>0} x^{2n} e^{-x²} dx = Γ(n + 1/2)/2 — the half-line even Gaussian moment, NEW content (not in Mathlib), proved by the u = x² substitution applied to Euler's integral for Γ(n + 1/2) via integral_comp_rpow_Ioi_of_pos, the exact generalization of Mathlib's proof of Γ(1/2) = √π to the whole half-integer ladder",
+      "gaussian_even_moment: ∫_ℝ x^{2n} e^{-x²} dx = Γ(n + 1/2) — the even Gaussian moments are precisely the half-integer Gamma values; the full line is twice the half line by evenness of x ↦ x^{2n} e^{-x²} (integral_comp_abs)",
+      "gaussian_even_moment_doubleFactorial: ∫_ℝ x^{2n} e^{-x²} dx = (2n−1)‼ · √π / 2ⁿ — the closed double-factorial form of the moment, combining the moment identity with the half-integer ladder",
+      "gamma_nat_add_half: Γ(n + 1/2) = (2n−1)‼ · √π / 2ⁿ — the half-integer Gamma ladder, a re-export of Mathlib's Real.Gamma_nat_add_half recorded to anchor the moment bridge",
+      "gaussian_even_moment_zero: ∫_ℝ e^{-x²} = √π — the n = 0 case recovers the parent entry area-of-circle-oq-07's Gaussian integral",
+      "gaussian_even_moment_two: ∫_ℝ x² e^{-x²} = √π / 2 — the n = 1 case, i.e. Γ(3/2) = √π/2, the first nontrivial rung"
+    ],
+    "prerequisites": [
+      "Euler Gamma function Real.Gamma and its integral representation Real.Gamma_eq_integral",
+      "Mathlib's half-integer ladder Real.Gamma_nat_add_half and double factorial Nat.doubleFactorial",
+      "Mathlib's radial change-of-variables integral_comp_rpow_Ioi_of_pos and even-function fold integral_comp_abs",
+      "Parent: area-of-circle-oq-07-oq-03 (Γ(1/2) = √π) and grandparent area-of-circle-oq-07 (∫ e^{-x²} = √π)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.Gamma_nat_add_half",
+        "description": "Real.Gamma (k + 1 / 2) = (2 * k - 1)‼ * √π / 2 ^ k — the half-integer Gamma ladder in double-factorial form. Re-exported as gamma_nat_add_half and fed into the moment closed form.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral"
+      },
+      {
+        "theorem": "Real.Gamma_eq_integral",
+        "description": "Real.Gamma s = ∫ x in Ioi 0, exp (-x) * x ^ (s - 1) for 0 < s — Euler's integral, the starting point for the u = x² substitution that produces the half-line moment.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Basic"
+      },
+      {
+        "theorem": "integral_comp_rpow_Ioi_of_pos",
+        "description": "∫ x in Ioi 0, (p * x ^ (p-1)) • g (x ^ p) = ∫ y in Ioi 0, g y — the radial change of variables. With p = 2 this is the substitution u = x² carrying Euler's integral for Γ(n+1/2) onto 2∫_{x>0} x^{2n} e^{-x²}.",
+        "module": "Mathlib.MeasureTheory.Integral.IntegralEqImproper"
+      },
+      {
+        "theorem": "integral_comp_abs",
+        "description": "∫ x, f |x| = 2 * ∫ x in Ioi 0, f x — folds an even integrand from the half line to the full line. Applied to f t = t^{2n} e^{-t²} (using |x|^{2n} = x^{2n} for even 2n and |x|² = x²) to pass from the half-line moment to the full-line one.",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Integral"
+      },
+      {
+        "theorem": "Real.Gamma_one_half_eq",
+        "description": "Real.Gamma (1 / 2) = √π. Used to close the n = 0 case ∫_ℝ e^{-x²} = √π; its Mathlib proof is exactly the u = x² substitution this entry generalizes.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Euler's Gamma function Γ(s) = ∫₀^∞ u^{s−1} e^{−u} du interpolates the factorial, Γ(n+1) = n!. On the half-integer lattice s = n + 1/2 it produces the celebrated ladder Γ(n + 1/2) = (2n−1)‼ · √π / 2ⁿ, anchored at Γ(1/2) = √π. The same numbers arise in probability and physics as the even moments of the Gaussian weight e^{−x²}: ∫_ℝ x^{2n} e^{−x²} dx = (2n−1)‼ · √π / 2ⁿ. These two appearances are not a coincidence — the substitution u = x² maps Euler's integral for Γ(n + 1/2) directly onto the half-line moment, exactly as it maps Γ(1/2) onto the Gaussian ∫_ℝ e^{−x²}. The double factorial (2n−1)‼ = 1·3·5···(2n−1) counts the perfect matchings of 2n points, the combinatorial shadow of Wick's theorem for Gaussian moments. This entry sits in the area-of-circle family because the Gaussian normalization √π is, via polar coordinates, a cousin of the circle constant π.",
+    "problemStatement": "**Open Question (oq-01)**: formalize the half-integer ladder Γ(n + 1/2) = (2n−1)‼ · √π / 2ⁿ and identify each value with the even Gaussian moment ∫_ℝ x^{2n} e^{−x²} dx, extending the single √π of the parent entry (Γ(1/2) = √π) to the whole tower of half-integer Gamma values. Answer: both hold for every n, and the moment identity ∫_ℝ x^{2n} e^{−x²} = Γ(n + 1/2) is the substantive new content (the ladder itself is already in Mathlib).",
+    "proofStrategy": "The ladder gamma_nat_add_half is a re-export of Mathlib's Real.Gamma_nat_add_half. The moment identity is proved from scratch. (1) gaussian_moment_Ioi: start from Euler's integral Γ(n + 1/2) = ∫_{u>0} e^{−u} u^{n−1/2} du (Real.Gamma_eq_integral), apply integral_comp_rpow_Ioi_of_pos with p = 2 to perform the substitution u = x², and simplify the resulting rpow algebra (x^{(2−1)} · (x²)^{n−1/2} = x^{2n} for x > 0, via rpow_mul/rpow_add/rpow_natCast) to obtain Γ(n + 1/2) = 2 ∫_{x>0} x^{2n} e^{−x²}, hence the half-line moment Γ(n + 1/2)/2. (2) gaussian_even_moment: since x ↦ x^{2n} e^{−x²} is even (|x|^{2n} = x^{2n} as 2n is even, |x|² = x²), integral_comp_abs doubles the half line to the full line, giving Γ(n + 1/2). (3) gaussian_even_moment_doubleFactorial composes with the ladder for the closed form. (4)–(5) the n = 0 and n = 1 cases specialize to √π and √π/2.",
+    "keyInsights": [
+      "The even Gaussian moments ARE the half-integer Gamma values: ∫_ℝ x^{2n} e^{−x²} dx = Γ(n + 1/2). This identity is not packaged in Mathlib and is the entry's genuine content; the closed form (2n−1)‼ √π / 2ⁿ then follows from Mathlib's ladder.",
+      "The proof is the u = x² substitution lifted from the single exponent 1/2 (Mathlib's proof of Γ(1/2) = √π) to the entire ladder n + 1/2 — the same change of variables, parameterized by n, via integral_comp_rpow_Ioi_of_pos at p = 2.",
+      "Evenness of x ↦ x^{2n} e^{−x²} reduces the full-line moment to twice the half-line one (integral_comp_abs); the half line is where the substitution lands, the full line is the physically meaningful Gaussian moment.",
+      "The double factorial (2n−1)‼ encodes the Wick pairing count for Gaussian moments — the combinatorial meaning behind the analytic closed form — and is supplied by Mathlib's Real.Gamma_nat_add_half.",
+      "Honest provenance: badge 'mathlib' (Tier B) because the headline ladder is a Mathlib re-export, even though the moment bridge is derived here. The n = 0 rung reproduces the parent's Gaussian integral, tying the tower back to its root."
+    ]
+  },
+  "sections": [
+    {
+      "id": "gamma-ladder",
+      "title": "The Half-Integer Gamma Ladder (Mathlib Re-Export)",
+      "startLine": 54,
+      "endLine": 57,
+      "summary": "gamma_nat_add_half restates Mathlib's Real.Gamma_nat_add_half: Γ(n + 1/2) = (2n−1)‼ · √π / 2ⁿ. The closed form for the whole tower of half-integer Gamma values, recorded to anchor the moment bridge that follows."
+    },
+    {
+      "id": "half-line-moment",
+      "title": "The Half-Line Moment via u = x² (New Content)",
+      "startLine": 60,
+      "endLine": 93,
+      "summary": "gaussian_moment_Ioi proves ∫_{x>0} x^{2n} e^{−x²} dx = Γ(n + 1/2)/2. Euler's integral for Γ(n + 1/2) is carried by the substitution u = x² (integral_comp_rpow_Ioi_of_pos at p = 2) onto 2∫_{x>0} x^{2n} e^{−x²}; the integrand simplification x^{(2−1)} · (x²)^{n−1/2} = x^{2n} is rpow algebra on the positive half-line. This is the exact generalization of Mathlib's Γ(1/2) = √π proof to all n."
+    },
+    {
+      "id": "full-line-moment",
+      "title": "Even Moments Are Half-Integer Gamma Values",
+      "startLine": 95,
+      "endLine": 113,
+      "summary": "gaussian_even_moment proves ∫_ℝ x^{2n} e^{−x²} dx = Γ(n + 1/2). Because x ↦ x^{2n} e^{−x²} is even (|x|^{2n} = x^{2n} for even 2n via Even.pow_abs, |x|² = x² via sq_abs), integral_comp_abs doubles the half-line moment to the full line, cancelling the factor 1/2."
+    },
+    {
+      "id": "closed-form",
+      "title": "The Double-Factorial Closed Form",
+      "startLine": 115,
+      "endLine": 122,
+      "summary": "gaussian_even_moment_doubleFactorial composes the moment identity with the ladder: ∫_ℝ x^{2n} e^{−x²} dx = (2n−1)‼ · √π / 2ⁿ. The explicit evaluation of every even Gaussian moment in terms of the double factorial."
+    },
+    {
+      "id": "special-cases",
+      "title": "The n = 0 and n = 1 Rungs",
+      "startLine": 124,
+      "endLine": 140,
+      "summary": "gaussian_even_moment_zero recovers the parent's Gaussian integral ∫_ℝ e^{−x²} = √π (n = 0, via Real.Gamma_one_half_eq). gaussian_even_moment_two gives the first nontrivial rung ∫_ℝ x² e^{−x²} = √π/2, i.e. Γ(3/2) = √π/2."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "area-of-circle-oq-07-oq-03-oq-01-oq-01",
+      "question": "Generalize the even Gaussian moments to arbitrary variance: ∫_ℝ x^{2n} e^{-x²/(2σ²)} dx = (2n-1)‼ · σ^{2n} · √(2π) · σ, recovering the standard-normal moment E[X^{2n}] = (2n-1)‼ for the N(0,1) density, and connect to Mathlib's gaussianReal distribution.",
+      "significance": "medium"
+    },
+    {
+      "id": "area-of-circle-oq-07-oq-03-oq-01-oq-02",
+      "question": "Prove the odd moments vanish, ∫_ℝ x^{2n+1} e^{-x²} dx = 0, by oddness of the integrand, completing the moment description of the Gaussian weight.",
+      "significance": "low"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-07-oq-03",
+      "relationship": "extends",
+      "description": "Parent. The parent proves Γ(1/2) = √π and exhibits it as the Gaussian integral ∫_ℝ e^{-x²}; this entry climbs the whole half-integer ladder Γ(n + 1/2) = (2n−1)‼ √π / 2ⁿ and identifies each value with the even Gaussian moment ∫_ℝ x^{2n} e^{-x²}, with the n = 0 rung reproducing the parent's identity. The substitution u = x² that Mathlib uses to prove the parent's Γ(1/2) = √π is generalized here to all n."
+    },
+    {
+      "targetId": "area-of-circle-oq-07",
+      "relationship": "extends",
+      "description": "Grandparent. Establishes ∫_ℝ e^{-x²} = √π. Recovered here as gaussian_even_moment_zero, the n = 0 member of the moment tower."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of Real.Gamma_nat_add_half (the half-integer ladder), Real.Gamma_one_half_eq, and the parametrized Gaussian integrals."
+    },
+    {
+      "title": "Mathlib4: MeasureTheory.Integral.IntegralEqImproper",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of integral_comp_rpow_Ioi_of_pos, the radial change of variables realizing the u = x² substitution at p = 2."
+    },
+    {
+      "title": "Wick's theorem and Gaussian moments",
+      "author": "Gian-Carlo Wick",
+      "year": "1950",
+      "venue": "Physical Review",
+      "description": "The double factorial (2n-1)‼ counts the pairings of 2n points, the combinatorial content of the even Gaussian moment ∫ x^{2n} e^{-x²} ∝ (2n-1)‼."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "For every natural n, the even Gaussian moment equals the half-integer Gamma value: ∫_ℝ x^{2n} e^{-x²} dx = Γ(n + 1/2) = (2n-1)‼ · √π / 2ⁿ. The half-line moment ∫_{x>0} x^{2n} e^{-x²} = Γ(n + 1/2)/2 is proved by the substitution u = x² applied to Euler's integral (integral_comp_rpow_Ioi_of_pos at p = 2), generalizing Mathlib's proof of Γ(1/2) = √π from the single exponent 1/2 to the whole ladder; evenness (integral_comp_abs) then doubles it to the full line. Combining with Mathlib's Real.Gamma_nat_add_half gives the double-factorial closed form. The n = 0 rung reproduces the parent's ∫_ℝ e^{-x²} = √π and n = 1 gives ∫_ℝ x² e^{-x²} = √π/2. 141 lines, 6 theorems, 0 definitions, 0 axioms, 0 sorries; each theorem depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "Mathlib already packages the half-integer Gamma ladder (Real.Gamma_nat_add_half), so that result is re-exported honestly under a mathlib badge. The genuine contribution is the moment identity ∫_ℝ x^{2n} e^{-x²} = Γ(n + 1/2), which Mathlib does not state: it is derived here by lifting the u = x² substitution that underlies Γ(1/2) = √π to every n. The entry ties the factorial-interpolation viewpoint (Γ on the half-integer lattice) to the probabilistic/physical viewpoint (even moments of the Gaussian weight, counted by the double factorial), with the parent's single √π as the n = 0 anchor.",
+    "openQuestions": [
+      "Generalize to arbitrary variance and connect to Mathlib's gaussianReal distribution, recovering the standard-normal moments E[X^{2n}] = (2n-1)‼.",
+      "Prove the odd moments ∫_ℝ x^{2n+1} e^{-x²} = 0 by oddness, completing the moment description."
+    ]
+  }
+}
