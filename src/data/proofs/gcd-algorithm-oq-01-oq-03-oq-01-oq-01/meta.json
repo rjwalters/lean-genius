@@ -1,0 +1,87 @@
+{
+  "id": "gcd-algorithm-oq-01-oq-03-oq-01-oq-01",
+  "slug": "gcd-algorithm-oq-01-oq-03-oq-01-oq-01",
+  "title": "Lamé's Theorem in Closed Form: the Euclidean Step Count Is ≤ log_φ(b) + 1",
+  "description": "Answers open question #1 of the parent (Lamé sharpness) entry: it turns the exact worst-case step count into the closed-form logarithmic bound euclidSteps(a,b) = n → n ≤ log_φ(b) + 1, the quantitative content of Lamé's 1844 analysis. The key lemma is the geometric lower bound φⁿ ≤ fib(n+2) (two-step induction from φ² = φ + 1); combined with the parent's minimality bound fib(n+1) ≤ b this gives φ^(n-1) ≤ b, and taking log base φ (using the grandparent's golden ratio φ) yields the bound. The Lamé constant is made explicit: log₂(φ) > 2/3, so the step count is at most (3/2)·log₂(b) + 1, the textbook ≈ 1.44 log₂(b) bound (optimal constant 1/log₂φ ≈ 1.4404).",
+  "leanFile": {
+    "namespace": "GCDAlgorithmOQ01OQ03OQ01OQ01",
+    "lineCount": 199,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "path": "Proofs/GCDAlgorithmOQ01OQ03OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GCDAlgorithmOQ01OQ03OQ01OQ01.lean",
+    "tags": [
+      "number-theory",
+      "euclidean-algorithm",
+      "fibonacci",
+      "golden-ratio",
+      "algorithm-complexity",
+      "lame-theorem",
+      "logarithmic-bound"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified from the foundational axioms (propext, Classical.choice, Quot.sound). No native_decide anywhere in the file — the sanity-check example uses the parent's proven worst-case identity euclidSteps (fib (n+2)) (fib (n+1)) = n. Depends on GCDAlgorithmOQ01OQ03 (golden ratio φ, φ² = φ+1, φ³ = 2φ+1) and GCDAlgorithmOQ01OQ03OQ01 (the minimality bound fib(n+1) ≤ b and the worst-case identity), which in turn depend on BinaryGcdOQ01 (definition of euclidSteps).",
+    "lineCount": 199,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "originalContributions": [
+      "euclidSteps_le_logb: euclidSteps a b = n → (n : ℝ) ≤ log_φ(b) + 1 — the closed-form logarithmic Lamé bound, answering the parent's open question #1",
+      "phi_pow_le_fib: φⁿ ≤ fib(n+2) for all n — the geometric lower bound on Fibonacci numbers, proved by two-step induction from φ² = φ + 1",
+      "phi_pow_le_smaller: euclidSteps a b = n (n ≥ 1) → φ^(n-1) ≤ b — combines the geometric bound with the parent's minimality bound",
+      "euclidSteps_le_log2: euclidSteps a b = n → (n : ℝ) ≤ (3/2)·log₂(b) + 1 — Lamé's bound in bits with an explicit constant",
+      "logb_two_phi_gt: log₂(φ) > 2/3 — makes the Lamé constant 1/log₂(φ) ≈ 1.4404 explicit and bounded above by 3/2 (since φ³ = 2φ+1 > 4)"
+    ]
+  },
+  "conclusion": {
+    "summary": "Converts the parent's exact worst-case count into Lamé's closed-form bound: the number of Euclidean steps on a pair with smaller entry b is at most log_φ(b) + 1. The geometric lower bound φⁿ ≤ fib(n+2) (two-step induction via φ² = φ + 1) combines with the parent's minimality bound fib(n+1) ≤ b to give φ^(n-1) ≤ b; monotonicity of log base φ then yields n - 1 ≤ log_φ(b). The Lamé constant is made explicit via log₂(φ) > 2/3 (equivalently φ³ > 4), giving the bits form n ≤ (3/2)·log₂(b) + 1. 9 theorems, 0 definitions, 0 axioms, 199 lines.",
+    "implications": "This is the third entry in the Lamé chain. The grandparent (gcd-algorithm-oq-01-oq-03) supplies the golden ratio φ and Binet's formula; the parent (gcd-algorithm-oq-01-oq-03-oq-01) pins the worst case to the Fibonacci pairs with the exact count and the minimality bound fib(n+1) ≤ b. This entry delivers the headline asymptotic statement of Lamé's theorem that the chain was built toward: the step count is O(log b), explicitly ≤ log_φ(b) + 1, recovering the classical ≈ 1.44 log₂(b) bound. The argument needs only the elementary identity φ² = φ + 1 (for the geometric bound) and the monotonicity of the logarithm.",
+    "openQuestions": [
+      "Sharpen the explicit constant from 3/2 to the optimal 1/log₂(φ) ≈ 1.4404 by proving log₂(φ) > 0.6942 (a tighter rational lower bound on φ via √5 > 2.236).",
+      "Combine with the parent's exact count to prove the two-sided estimate log_φ(b) − c ≤ euclidSteps(fib pair) ≤ log_φ(b) + 1, certifying the bound is tight up to an additive constant."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "gcd-algorithm-oq-01-oq-03-oq-01",
+      "relationship": "parent",
+      "description": "Parent entry proving Lamé sharpness (exact worst-case count and the minimality bound fib(n+1) ≤ b); its open question #1 asks exactly for the closed-form log_φ bound proved here."
+    },
+    {
+      "targetId": "gcd-algorithm-oq-01-oq-03",
+      "relationship": "related",
+      "description": "Grandparent entry developing the golden ratio φ, Binet's formula, and φ² = φ + 1 — the analytic machinery this entry uses to pass from the Fibonacci bound to the logarithm."
+    },
+    {
+      "targetId": "gcd-algorithm-oq-01",
+      "relationship": "related",
+      "description": "Average-case complexity of the Euclidean algorithm; the explicit worst-case logarithmic bound proved here complements the average-case picture."
+    }
+  ],
+  "sections": [
+    "Module Overview and References",
+    "Elementary Golden-Ratio Bounds",
+    "Geometric Lower Bound φⁿ ≤ fib(n+2)",
+    "The φ-Power Lower Bound on the Smaller Entry",
+    "The Closed-Form Logarithmic Bound (Lamé)",
+    "Making the Lamé Constant Explicit",
+    "Sanity Checks"
+  ],
+  "sorries": [],
+  "overview": [
+    "Lamé's theorem (1844) is usually quoted in its asymptotic form: the Euclidean algorithm on a pair with smaller entry b terminates in O(log b) steps, with the worst case realized by consecutive Fibonacci numbers. This entry formalizes that asymptotic statement as an explicit, fully verified inequality.",
+    "The parent entry proved the combinatorial heart of the matter — the exact worst-case count and, crucially, the minimality bound fib(n+1) ≤ b for any pair taking n steps. What remained was to convert that Fibonacci bound into a logarithm, the step Lamé took using the geometric growth of the Fibonacci sequence.",
+    "The bridge is a clean geometric lower bound: φⁿ ≤ fib(n+2) for every n, where φ = (1+√5)/2 is the golden ratio from the grandparent entry. It is proved by two-step induction, the inductive step being φ^(n+2) = φ^(n+1) + φⁿ (a restatement of φ² = φ + 1) matched against the Fibonacci recurrence fib(n+4) = fib(n+3) + fib(n+2).",
+    "Chaining φ^(n-1) ≤ fib(n+1) ≤ b and applying log base φ (monotone since φ > 1, with log_φ(φ^(n-1)) = n-1) yields the headline bound n ≤ log_φ(b) + 1. A final section makes the Lamé constant explicit: because φ³ = 2φ + 1 > 4, one has log₂(φ) > 2/3, so the step count is at most (3/2)·log₂(b) + 1 — the textbook ≈ 1.44 log₂(b) bound, with a transparent (slightly loose) rational constant in place of the optimal 1/log₂(φ) ≈ 1.4404.",
+    "Everything is verified from the foundational axioms only, with no native_decide anywhere: the sanity-check example discharges euclidSteps (fib 7) (fib 6) = 5 via the parent's proven worst-case identity euclidSteps (fib (n+2)) (fib (n+1)) = n at n = 5."
+  ]
+}
