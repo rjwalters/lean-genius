@@ -96,8 +96,8 @@
       "endLine": 129
     },
     "type": "concept",
-    "title": "Kelly's Distance Lemma (Axiomatized)",
-    "content": "The heart of Kelly's proof, axiomatized here: if $(p, \\overline{ab})$ is the closest point-line pair and the line contains a third point $c$, then $\\text{False}$. The proof sketch places the perpendicular foot at the origin with $\\ell$ along the $x$-axis and $p = (0, h)$. With $a = (\\alpha, 0)$ and $c = (\\gamma, 0)$ on the same side of the foot, $d(a, \\overline{pc}) = h(\\gamma - \\alpha)/\\sqrt{h^2 + \\gamma^2} < h$ because $\\alpha(\\alpha - 2\\gamma) \\le 0 < h^2$.",
+    "title": "Kelly's Distance Lemma (Proved)",
+    "content": "The heart of Kelly's proof, proved here via coordinate case analysis on the perpendicular-foot parameter: if $(p, \\overline{ab})$ is the closest point-line pair and the line contains a third point $c$, then $\\text{False}$. The proof sketch places the perpendicular foot at the origin with $\\ell$ along the $x$-axis and $p = (0, h)$. With $a = (\\alpha, 0)$ and $c = (\\gamma, 0)$ on the same side of the foot, $d(a, \\overline{pc}) = h(\\gamma - \\alpha)/\\sqrt{h^2 + \\gamma^2} < h$ because $\\alpha(\\alpha - 2\\gamma) \\le 0 < h^2$.",
     "mathContext": "The coordinate calculation: after normalization, $d(a, \\overline{pc}) = \\frac{h|\\gamma - \\alpha|}{\\sqrt{h^2 + \\gamma^2}}$. We need $\\frac{(\\gamma-\\alpha)^2}{h^2+\\gamma^2} < 1$, equivalently $\\gamma^2 - 2\\alpha\\gamma + \\alpha^2 < h^2 + \\gamma^2$, i.e., $\\alpha^2 - 2\\alpha\\gamma < h^2$. Since $0 \\le \\alpha \\le \\gamma$, we have $\\alpha(\\alpha - 2\\gamma) \\le 0 < h^2$. This gives a closer pair $(a, \\overline{pc})$, contradicting minimality.",
     "significance": "key",
     "relatedConcepts": [
@@ -119,8 +119,8 @@
       "endLine": 154
     },
     "type": "insight",
-    "title": "Sylvester-Gallai Main Theorem (Sorry)",
-    "content": "States the main theorem: for $|S| \\ge 3$ with $\\neg\\text{AllCollinear}(S)$, an ordinary line exists. The proof structure follows Kelly: (1) by contradiction, assume no ordinary line; (2) every line through 2 points of $S$ has $\\ge 3$ points; (3) combined with non-collinearity, choose a minimum-distance pair; (4) apply `kelly_distance_lemma` for contradiction. The sorry covers the extremal setup (finite set $\\Rightarrow$ minimum exists) and the connection to the key lemma.",
+    "title": "Sylvester-Gallai Main Theorem (Proved)",
+    "content": "States the main theorem: for $|S| \\ge 3$ with $\\neg\\text{AllCollinear}(S)$, an ordinary line exists. The proof structure follows Kelly: (1) by contradiction, assume no ordinary line; (2) every line through 2 points of $S$ has $\\ge 3$ points; (3) combined with non-collinearity, choose a minimum-distance pair; (4) apply `kelly_distance_lemma` for contradiction. The extremal setup (finite set $\\Rightarrow$ minimum exists) and the connection to the key lemma are fully proved — the theorem is closed with no sorry.",
     "mathContext": "The proof by contradiction assumes $\\forall a, b \\in S,\\, a \\ne b \\Rightarrow \\exists c \\in S,\\, c \\ne a \\wedge c \\ne b \\wedge \\text{Collinear}(a, b, c)$. Since $S$ is finite and not all collinear, the set of triples $(p, a, b)$ with $p \\notin \\overline{ab}$ is nonempty and finite, so a minimum-distance pair exists. Kelly's lemma then yields $\\text{False}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -142,9 +142,9 @@
       "endLine": 184
     },
     "type": "concept",
-    "title": "Proof Roadmap and Axiom Inventory",
-    "content": "Summarizes the formalization status: 1 axiom (`kelly_distance_lemma`), 1 sorry (the extremal argument setup in `sylvester_gallai`), and 2 proved collinearity lemmas. The key lemma is identified as a candidate for Aristotle (automated proof search) since it reduces to a routine coordinate inequality after the geometric setup is formalized.",
-    "mathContext": "The path to a complete proof requires: (1) proving the coordinate inequality $\\alpha(\\alpha - 2\\gamma) \\le 0$ when $0 \\le \\alpha \\le \\gamma$ (straightforward); (2) proving that a minimum over a finite nonempty set exists (standard Finset lemma); (3) connecting the extremal pair to Kelly's lemma hypotheses.",
+    "title": "Proof Roadmap and Status",
+    "content": "Summarizes the formalization status: fully proved — 0 axioms, 0 sorries. `kelly_distance_lemma` is proved via a 6-case analysis on the perpendicular-foot parameter, `sylvester_gallai` is proved via the minimal-distance extremal argument, plus 2 proved collinearity lemmas. The key lemma reduces to a routine coordinate inequality once the geometric setup is formalized.",
+    "mathContext": "The complete proof comprises: (1) the coordinate inequality $\\alpha(\\alpha - 2\\gamma) \\le 0$ when $0 \\le \\alpha \\le \\gamma$; (2) existence of a minimum over a finite nonempty set (standard Finset lemma); (3) connecting the extremal pair to Kelly's lemma hypotheses. All three are discharged in the file.",
     "significance": "supporting",
     "relatedConcepts": [
       "Aristotle proof search",
