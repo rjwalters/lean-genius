@@ -20,7 +20,75 @@ transpose / perfect-shuffle permutation, as in Zolotarev 1872 / Frobenius 1914.
 | `neg_one_pow_choose_two_mul_odd` (parity bridge `(-1)^(C(m,2)C(n,2))=(-1)^((m-1)/2·(n-1)/2)`) | **proved, 0 sorry** |
 | `sign_gridTranspose = (-1)^(C(m,2)·C(n,2))` | **PROVED, 0 sorry, kernel-verified** (axioms `[propext, Classical.choice, Quot.sound]`) |
 | `sign_gridTranspose_odd` (classical-form corollary) | **proved, 0 sorry** |
-| Full QR assembly (`α = β∘γ`, identify `α,β` with `ringMulPerm` via CRT) | not formalized (next step) |
+| `rowOrder`/`colOrder`/`gridTranspose_eq`/`transRC`/`sign_transRC` | **proved, 0 sorry, kernel-verified** (S5) |
+| `quadratic_reciprocity_of_transition_signs` (Shurman 3-transition skeleton → QR, conditional on the two per-line Zolotarev signs) | **proved, 0 sorry, kernel-verified** (S5; axioms `[propext, Classical.choice, Quot.sound]`) |
+| Discharge per-line signs `sign τ_cd=(p/q)`, `sign τ_rd=(q/p)` for the concrete CRT `D` | not formalized (next step) |
+
+## Session 2026-06-23 (S5, researcher-9) — QR ASSEMBLY SKELETON FORMALIZED & VERIFIED
+
+**Mode**: REVISIT (continuation of own S4). **Outcome**: progress — the QR
+assembly is now a kernel-verified 0-sorry *conditional* theorem, and the
+previously *incorrect* assembly plan was replaced with the literature-verified one.
+
+### Key correction (mathematical)
+The S1–S4 file-header plan ("α = β∘γ, identify α,β with `ringMulPerm` on ℤ/pq via
+the CRT isomorphism") was **wrong**: a direct coordinate computation shows the
+transpose mixes the two CRT coordinates and does **not** decompose as a CRT
+product. The correct argument is J. Shurman's "proof from the book" (after
+Zolotarev 1872 / Baker 2013, https://people.reed.edu/~jerry/361/lectures/qrz.pdf):
+**three order-transition permutations** of the `p×q` array,
+`τ_rd = D⁻¹∘R`, `τ_cd = D⁻¹∘C`, `τ_rc = C⁻¹∘R` (R/C/D = row/col/diagonal-CRT
+orders `Fin p × Fin q ≃ Fin(pq)`), with the **tautology** `τ_cd⁻¹∘τ_rd = τ_rc`.
+Signs: `sign τ_cd=(p/q)`, `sign τ_rd=(q/p)` (Zolotarev's lemma on the per-line
+multiplication maps `y↦py+x mod q`); `sign τ_rc=(-1)^((p-1)/2·(q-1)/2)` — which
+is exactly the proven `sign_gridTranspose`, since `τ_rc` IS `gridTranspose p q`
+transported across `R`. QR `=` the relation `sign τ_cd·sign τ_rd = sign τ_rc`.
+
+### What I Did
+- Web-researched + fetched Shurman's PDF; extracted the exact three-transition
+  identity and per-line signs (§3).
+- Added (0 sorry, **kernel-verified**): `rowOrder`, `colOrder`, `gridTranspose_eq`
+  (`gridTranspose = R⁻¹∘C`, by `rfl`), `transRC`, `sign_transRC` (`sign τ_rc =
+  sign gridTranspose` via `Equiv.Perm.sign_eq_sign_of_equiv` conjugation by `R` +
+  `Int.units_eq_one_or`), and the headline
+  `quadratic_reciprocity_of_transition_signs`: for odd primes `p,q` and any
+  diagonal order `D`, IF `sign(R.trans D⁻¹)=(q/p)` and `sign(C.trans D⁻¹)=(p/q)`
+  THEN `legendreSym q p · legendreSym p q = (-1)^((p-1)/2·(q-1)/2)`.
+- Proof skeleton = `τ_cd⁻¹*τ_rd = τ_rc` (tautology; `D⁻¹`s cancel via
+  `Equiv.symm_trans_self`) + sign-product (ℤˣ exponent 2) + `sign_transRC` +
+  `sign_gridTranspose_odd` + cast to ℤ.
+- Rewrote the header plan docstring with the correct Shurman blueprint; added the
+  Shurman reference.
+
+### Verification (kernel-checked)
+- Docker wedged + concurrent docker builds (researchers 1/5/10/12) churning the
+  shared Mathlib build cache → first `lake env lean` raced a mid-write `.ir`.
+- **GOTCHA (cost ~1 cycle): my first edits went to the MAIN-repo path
+  `/…/lean-genius/proofs/…` instead of the worktree → a concurrent process on
+  `main` reverted them, and the "passing" build only tested the OLD file.** The
+  worktree's `proofs/.lake` is a **symlink** to the main `.lake`, so edit+build
+  must both happen in the worktree (`.loom/worktrees/researcher-9/proofs`).
+- Re-applied in the worktree; `./bin/lake env lean <file>` exit 0, zero
+  errors/warnings/sorries; `#print axioms` =
+  `[propext, Classical.choice, Quot.sound]` for both
+  `quadratic_reciprocity_of_transition_signs` and `sign_transRC` (no `sorryAx`,
+  no `Lean.ofReduceBool`).
+
+### Files Modified
+- `proofs/Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01OQ02.lean`
+  (header plan rewritten; new `Assembly` section, +5 decls, kernel-verified).
+- this knowledge.md; problem JSON.
+
+### Next Steps
+1. Build the concrete CRT order `D : Fin p × Fin q ≃ Fin(pq)` (`ZMod.chineseRemainder`
+   + `ZMod n ≃ Fin n`).
+2. Prove `sign(C.trans D⁻¹)=(p/q)`: `D⁻¹∘C` fixes each row and acts on row `x` by
+   `y↦py+x mod q` = (mult-by-`p` on ℤ/q)∘(translation by `x`); use
+   `Equiv.Perm.sign_prodCongrRight`, translation = odd-length cycle (sign +1 for
+   odd q), `ZolotarevFullOdd.sign_ringMulPerm_eq_jacobiSym_odd` (= legendre at a
+   prime). Symmetric for `sign(R.trans D⁻¹)=(q/p)`.
+3. Discharge both hypotheses → unconditional QR without Mathlib's black-box
+   `legendreSym.quadratic_reciprocity`.
 
 ## Session 2026-06-23 (S4, researcher-9) — BLOCKER PROVED & VERIFIED
 
