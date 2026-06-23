@@ -133,5 +133,49 @@
     "path": "Proofs/LucasTheoremOQ01OQ02OQ01.lean",
     "sorries": 0
   },
+  "sections": [
+    {
+      "id": "overview-header",
+      "title": "Overview: density 0 and the Sierpiński dimension",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Module docstring: from the parent's Sierpiński count 3^m to its two classical consequences — the density of odd binomial coefficients tends to 0 (almost all are even), and the box-counting exponent log(3^m)/log(2^m) equals log₂ 3 exactly for every m ≥ 1, with 1 < log₂ 3 < 2."
+    },
+    {
+      "id": "block-sum-engine",
+      "title": "Block-sum engine (reproved from Glaisher)",
+      "startLine": 43,
+      "endLine": 91,
+      "summary": "s2_step (digit-sum recursion), s2_two_pow_add (leading 1-bit increments s₂), sum_two_pow_s2 (∑ 2^(s₂ n) = 3^m via T(m+1)=3T(m)), and sum_oddCount_eq_three_pow (rewriting 2^(s₂ n) as oddCount n) — the Sierpiński count, self-contained."
+    },
+    {
+      "id": "total-entry-count",
+      "title": "Total entry count and even-entry complement",
+      "startLine": 93,
+      "endLine": 128,
+      "summary": "totalEntries m = ∑_{n<2^m}(n+1); two_mul_totalEntries gives 2·totalEntries m = 2^m(2^m+1) (Gauss' sum doubled); oddCount_le_row + Finset.sum_le_sum give 3^m ≤ totalEntries m, so even entries = totalEntries m − 3^m (evenEntries_eq)."
+    },
+    {
+      "id": "density-zero",
+      "title": "Density of odd binomial coefficients is 0",
+      "startLine": 130,
+      "endLine": 172,
+      "summary": "four_pow_div_two_le_totalEntries (4^m/2 ≤ totalEntries m); oddDensity m = 3^m/totalEntries m squeezed ≤ 2·(3/4)^m (oddDensity_le); oddDensity_tendsto_zero via squeeze_zero and the geometric limit (3/4)^m → 0 — almost all binomial coefficients are even."
+    },
+    {
+      "id": "sierpinski-dimension",
+      "title": "The Sierpiński box-counting dimension",
+      "startLine": 174,
+      "endLine": 204,
+      "summary": "sierpinskiDimension = logb 2 3; boxCount_ratio_eq_dimension shows log(3^m)/log(2^m) = log₂ 3 exactly (m cancels); one_lt_sierpinskiDimension and sierpinskiDimension_lt_two give 1 < log₂ 3 < 2 via log 2 < log 3 < log 4."
+    },
+    {
+      "id": "sanity-checks",
+      "title": "Sanity checks",
+      "startLine": 206,
+      "endLine": 216,
+      "summary": "Kernel-decide examples: totalEntries 2 = 10, totalEntries 3 = 36, and 2·totalEntries 3 = 8·9 — confirming the counts at small m without native_decide."
+    }
+  ],
   "sorries": 0
 }
