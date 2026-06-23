@@ -1,0 +1,141 @@
+{
+  "id": "area-of-circle-oq-07-oq-04-oq-01",
+  "slug": "area-of-circle-oq-07-oq-04-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
+      "Mathlib.Analysis.SpecialFunctions.PolarCoord",
+      "Mathlib.MeasureTheory.Integral.Prod",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real",
+      "MeasureTheory",
+      "Set"
+    ],
+    "namespace": "AreaOfCircleOQ07OQ04OQ01",
+    "lineCount": 122,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/AreaOfCircleOQ07OQ04OQ01.lean",
+    "sorries": 0
+  },
+  "title": "The Gaussian Area Integral via Fubini + Polar Coordinates: (∫_ℝ e^{-b x²})² = ∫_{ℝ²} e^{-b(x²+y²)} = π/b",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AreaOfCircleOQ07OQ04OQ01.lean",
+    "tags": [
+      "analysis",
+      "gaussian-integral",
+      "fubini",
+      "polar-coordinates",
+      "measure-theory",
+      "change-of-variables",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 122,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "badge": "mathlib",
+    "originalContributions": [
+      "gaussian_sq_eq_integral_plane: the Fubini step (∫_ℝ e^{-b x²})² = ∫_{ℝ²} e^{-b(x²+y²)} for real b > 0 — squares the line integral into a genuine planar integral of the product Gaussian e^{-b x²}·e^{-b y²} = e^{-b(x²+y²)} via MeasureTheory.integral_prod_mul and Real.exp_add, exhibiting the square as a literal 2-D area integral rather than an algebraic product",
+      "integral_plane_radial_eq: the polar area form ∫_{ℝ²} e^{-b(x²+y²)} = π/b — applies the polar change of variables integral_comp_polarCoord_symm (Jacobian r) to collapse the radially symmetric integrand to r·e^{-b r²} on Ioi 0 ×ˢ Ioo (-π) π, factors the θ-integral as the length 2π of (-π, π), and multiplies by the radial primitive (2b)⁻¹",
+      "integral_Ioi_mul_exp_neg_mul_sq: the real radial primitive ∫_{0}^{∞} r·e^{-b r²} dr = (2b)⁻¹, pushed through the embedding ℝ ↪ ℂ from Mathlib's complex radial integral integral_mul_cexp_neg_mul_sq",
+      "gaussian_sq_eq_pi_div_b: chains Fubini and polar to obtain (∫_ℝ e^{-b x²})² = π/b routed through the 2-D area integral rather than through the one-dimensional closed form (π/b)^{1/2}",
+      "gaussian_sq_eq_pi: the b = 1 area statement (∫_ℝ e^{-x²})² = π, the constant attached to the area of a disc, realized as the area integral of the unit radial Gaussian over the plane"
+    ],
+    "prerequisites": [
+      "Lebesgue integration over ℝ and ℝ² (MeasureTheory) including the product measure and Fubini",
+      "Mathlib's polar-coordinate change of variables integral_comp_polarCoord_symm (Jacobian r)",
+      "Mathlib's complex radial integral integral_mul_cexp_neg_mul_sq for the primitive ∫ r e^{-b r²} = 1/(2b)",
+      "Parent: area-of-circle-oq-07-oq-04 (the square (∫_ℝ e^{-b x²})² = π/b via squaring the closed form)",
+      "Grandparent: area-of-circle-oq-07 (the real Gaussian ∫_ℝ e^{-x²} = √π)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "integral_prod_mul",
+        "description": "∫ z, f z.1 * g z.2 ∂(μ.prod ν) = (∫ x, f x ∂μ) * (∫ y, g y ∂ν) — Fubini for a product integrand. Used to turn (∫_ℝ e^{-b x²})² into the planar integral ∫_{ℝ²} e^{-b x²}·e^{-b y²}.",
+        "module": "Mathlib.MeasureTheory.Integral.Prod"
+      },
+      {
+        "theorem": "integral_comp_polarCoord_symm",
+        "description": "∫ p in polarCoord.target, p.1 • f (polarCoord.symm p) = ∫ p, f p — the polar change of variables with Jacobian r over the plane. Used to reduce the radially symmetric Gaussian to the radial integrand r·e^{-b r²}.",
+        "module": "Mathlib.Analysis.SpecialFunctions.PolarCoord"
+      },
+      {
+        "theorem": "integral_mul_cexp_neg_mul_sq",
+        "description": "For b : ℂ with 0 < re b, ∫ r in Ioi 0, (r : ℂ)·exp(-b r²) = (2b)⁻¹ — the complex radial primitive. Pushed through ℝ ↪ ℂ to obtain the real ∫_{0}^{∞} r e^{-b r²} = 1/(2b).",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral"
+      },
+      {
+        "theorem": "setIntegral_prod_mul",
+        "description": "∫ z in s ×ˢ t, f z.1 * g z.2 = (∫ x in s, f x) * (∫ y in t, g y) — the set-restricted product-integral split. Used to separate the radial factor r·e^{-b r²} on Ioi 0 from the constant θ-factor on Ioo (-π) π.",
+        "module": "Mathlib.MeasureTheory.Integral.Prod"
+      },
+      {
+        "theorem": "volume_real_Ioo_of_le",
+        "description": "a ≤ b → volume.real (Ioo a b) = b - a. Supplies the angular length (π) - (-π) = 2π contributed by the θ-integral over (-π, π).",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "area-of-circle-oq-07-oq-04-oq-01-oq-01",
+      "question": "Lift the planar identity to the full Gaussian normalization on ℝ^n: prove ∫_{ℝ^n} e^{-b‖x‖²} = (π/b)^{n/2} by iterating the Fubini step and reducing to the radial integral via the n-dimensional polar (spherical) coordinates, so that the surface area of the unit (n-1)-sphere appears explicitly.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-07-oq-04",
+      "relationship": "extends",
+      "description": "Parent. This entry re-derives the parent's value (∫_ℝ e^{-b x²})² = π/b through the literal two-dimensional area integral ∫_{ℝ²} e^{-b(x²+y²)} — Fubini then polar coordinates — instead of squaring the one-dimensional closed form (π/b)^{1/2}."
+    },
+    {
+      "targetId": "area-of-circle-oq-07",
+      "relationship": "extends",
+      "description": "Grandparent. Recovers the squared real Gaussian value (∫_ℝ e^{-x²})² = π as the b = 1 specialization gaussian_sq_eq_pi, the area constant of the unit disc realized as a planar Gaussian integral."
+    },
+    {
+      "targetId": "gaussian-integral",
+      "relationship": "related",
+      "description": "The classical polar-coordinate ('Gaussian polar trick') derivation of the Gaussian normalization constant, here reconstructed for the real radial Gaussian from Mathlib's polar change-of-variables theorem."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Analysis.SpecialFunctions.PolarCoord",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of integral_comp_polarCoord_symm: the polar change of variables ∫ p in polarCoord.target, p.1 • f (polarCoord.symm p) = ∫ p, f p with Jacobian r, the engine of the area derivation."
+    },
+    {
+      "title": "Mathlib4: Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of integral_mul_cexp_neg_mul_sq (radial primitive 1/(2b)); Mathlib's own ∫ e^{-b x²} = (π/b)^{1/2} is proved by exactly this polar trick, which this entry reconstructs as an explicit two-dimensional area integral."
+    },
+    {
+      "title": "Fourier Analysis",
+      "author": "Elias M. Stein and Rami Shakarchi",
+      "year": "2003",
+      "venue": "Princeton University Press",
+      "description": "Classical treatment of the two-dimensional squaring trick (∫ e^{-x²})² = ∫∫ e^{-(x²+y²)} = π via polar coordinates, the argument this entry formalizes."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "For real b > 0 the square of the one-dimensional Gaussian integral is realized as a literal two-dimensional area integral: (∫_ℝ e^{-b x²})² = ∫_{ℝ²} e^{-b(x²+y²)} = π/b. The Fubini step (gaussian_sq_eq_integral_plane) squares the line integral into the planar integral of the product Gaussian via integral_prod_mul and Real.exp_add; the polar step (integral_plane_radial_eq) applies the change of variables integral_comp_polarCoord_symm (Jacobian r) to collapse the radially symmetric integrand to r·e^{-b r²}, factors the θ-integral as the length 2π of (-π, π), and multiplies by the radial primitive ∫_{0}^{∞} r e^{-b r²} = 1/(2b) (integral_Ioi_mul_exp_neg_mul_sq, from Mathlib's complex integral_mul_cexp_neg_mul_sq). The b = 1 case gaussian_sq_eq_pi gives (∫_ℝ e^{-x²})² = π. 122 lines, 5 theorems, 0 definitions, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "This exhibits π/b as the genuine area integral of the radially symmetric Gaussian over the plane — the geometric content behind the Gaussian normalization constant — rather than as the algebraic square of the one-dimensional value (π/b)^{1/2} (the route taken by the parent area-of-circle-oq-07-oq-04). The same Fubini-then-polar template is the classical proof that underlies the area of a circle, and it generalizes to the n-dimensional normalization (π/b)^{n/2} via spherical coordinates.",
+    "openQuestions": [
+      "Lift to ℝ^n: prove ∫_{ℝ^n} e^{-b‖x‖²} = (π/b)^{n/2} by iterating Fubini and reducing to the radial integral through n-dimensional spherical coordinates."
+    ]
+  }
+}
