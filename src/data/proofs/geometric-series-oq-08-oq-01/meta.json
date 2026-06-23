@@ -18,6 +18,7 @@
     "sorries": 0
   },
   "title": "Finite Arithmetico-Geometric Sum: a Closed Form for ∑ k·xᵏ",
+  "description": "The finite arithmetico-geometric sum ∑_{k<n} k·xᵏ — each geometric term xᵏ weighted by its index k — has the division-free closed form (1 − x)²·∑_{k<n} k·xᵏ = x·(1 − xⁿ) − n·xⁿ·(1 − x) over any commutative ring, with the field form over (1 − x)², the specialisation ∑_{k<n} k·2ᵏ = (n − 2)·2ⁿ + 2, and consistency with Mathlib's infinite weighted series x/(1 − x)² recovered as n → ∞.",
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
@@ -65,6 +66,55 @@
       }
     ]
   },
+  "overview": {
+    "historicalContext": "Arithmetico-geometric sequences — terms that are products of an arithmetic progression (here the index k) and a geometric one (here xᵏ) — were studied systematically in the 18th and 19th centuries; the closed form for ∑ k·xᵏ is the prototypical example and appears in the work of Euler on power series. The standard hand derivation is the perturbation (or 'shift and subtract') method popularised in Graham, Knuth & Patashnik's Concrete Mathematics: multiply the sum by x, subtract from the original, and the arithmetic weights collapse to a plain geometric series. The same identity is the engine behind the classical actuarial formulas for the present value of an increasing annuity (Fibonacci-era commercial arithmetic onward) and behind the mean of a geometric distribution. Mathlib formalises the analytic infinite version ∑' k, k·rᵏ = r/(1 − r)² but, until this entry, not the purely algebraic finite truncation that every application of a truncated weighted series actually needs.",
+    "problemStatement": "For a length $n$ and a ratio $x$ in any commutative ring, evaluate the finite arithmetico-geometric sum $\\sum_{k=0}^{n-1} k\\,x^k$ in closed form. The target is the division-free identity $(1-x)^2 \\sum_{k=0}^{n-1} k\\,x^k = x(1-x^n) - n\\,x^n(1-x)$, valid over every commutative ring, together with its field specialisation $\\sum_{k=0}^{n-1} k\\,x^k = \\dfrac{x(1-x^n) - n\\,x^n(1-x)}{(1-x)^2}$ for $x \\ne 1$, and the consistency check that as $n \\to \\infty$ with $\\lVert x \\rVert < 1$ the value tends to $\\dfrac{x}{(1-x)^2}$.",
+    "proofStrategy": "The heart of the proof is the ring identity arith_geom_mul, established by induction on n rather than by the perturbation trick (which divides). The inductive step peels the top term with Finset.sum_range_succ, applies the induction hypothesis, and then discharges the resulting polynomial identity f(n) + (1 − x)²·n·xⁿ = f(n+1) — where f(n) = x·(1 − xⁿ) − n·xⁿ·(1 − x) — by push_cast; ring. Keeping the identity in the multiplied-through form (1 − x)²·∑ = … is what makes it hold over an arbitrary commutative ring with no invertibility hypothesis. The field form arith_geom_div is then a one-line consequence: clear the nonzero denominator (1 − x)² with eq_div_iff. Specialisations substitute concrete x (x = 2 makes (1 − x)² = 1, eliminating the denominator) and the infinite limit quotes Mathlib's tsum_coe_mul_geometric_of_norm_lt_one.",
+    "keyInsights": [
+      "Inserting the linear weight k into the geometric sum ∑ xᵏ raises the order of the denominator from (1 − x) to (1 − x)²; each extra polynomial factor of k in the weight adds one more factor of (1 − x), so ∑ kᵐ·xᵏ lives over (1 − x)^{m+1}. This is the m = 1 member of that hierarchy.",
+      "Stating the result in the multiplied-through form (1 − x)²·∑ = x(1 − xⁿ) − n·xⁿ(1 − x) removes all division, so the identity becomes a polynomial fact valid over every commutative ring — not just fields — and the analytic, field, and integer cases all fall out as specialisations of one algebraic lemma.",
+      "Induction sidesteps the classical perturbation ('shift and subtract') derivation: the textbook method implicitly divides by (1 − x), whereas push_cast; ring on the peeled-off Finset.sum_range_succ term verifies the identity with no invertibility assumption at all.",
+      "The finite closed form contains the infinite one: as n → ∞ with ‖x‖ < 1 the tail terms xⁿ and n·xⁿ both vanish, leaving exactly the numerator x and recovering Mathlib's ∑' k, k·xᵏ = x/(1 − x)². The finite identity is therefore strictly more informative than the analytic limit, retaining the explicit O(n·xⁿ) truncation error.",
+      "The x = 2 case ∑_{k<n} k·2ᵏ = (n − 2)·2ⁿ + 2 shows the formula survives where the geometric series diverges: the denominator (1 − 2)² = 1 disappears and the identity becomes a clean statement over ℤ, illustrating that the algebraic content is independent of any convergence."
+    ]
+  },
+  "sections": [
+    {
+      "id": "geom-sum-building-block",
+      "title": "The Plain Finite Geometric Sum (Building Block)",
+      "startLine": 65,
+      "endLine": 77,
+      "summary": "geom_sum_closed records the unweighted finite geometric sum ∑_{k<n} xᵏ = (1 − xⁿ)/(1 − x) for x ≠ 1, a thin wrapper of Mathlib's geom_sum_eq rewritten from the (xⁿ − 1)/(x − 1) convention via field_simp; ring. This is the k⁰-weighted case that the arithmetico-geometric sum refines by inserting the weight k."
+    },
+    {
+      "id": "ring-identity",
+      "title": "The Division-Free Ring Identity",
+      "startLine": 79,
+      "endLine": 94,
+      "summary": "arith_geom_mul is the core result: (1 − x)²·∑_{k<n} k·xᵏ = x·(1 − xⁿ) − n·xⁿ·(1 − x) over any commutative ring. Proved by induction on n; the successor step peels the top term with Finset.sum_range_succ, rewrites by the induction hypothesis, and closes the polynomial identity with push_cast; ring."
+    },
+    {
+      "id": "field-form",
+      "title": "The Field Closed Form",
+      "startLine": 96,
+      "endLine": 110,
+      "summary": "arith_geom_div divides the ring identity by the nonzero (1 − x)² (from x ≠ 1, via eq_div_iff and pow_ne_zero) to give ∑_{k<n} k·xᵏ = (x·(1 − xⁿ) − n·xⁿ·(1 − x))/(1 − x)². arith_geom_mul_one is a guard checking both sides vanish at n = 1, protecting against off-by-one sign errors."
+    },
+    {
+      "id": "specialisations",
+      "title": "Specialisations and Numerical Witnesses",
+      "startLine": 112,
+      "endLine": 134,
+      "summary": "arith_geom_two derives the integer formula ∑_{k<n} k·2ᵏ = (n − 2)·2ⁿ + 2 (where (1 − 2)² = 1 erases the denominator), with arith_geom_two_four (= 34 at n = 4) and arith_geom_three_three (x = 3, n = 3, = 21) as concrete numerical checks of the closed form."
+    },
+    {
+      "id": "infinite-limit",
+      "title": "The Infinite Limit (Consistency with Mathlib)",
+      "startLine": 136,
+      "endLine": 147,
+      "summary": "tsum_arith_geom records the infinite arithmetico-geometric sum ∑' k, k·xᵏ = x/(1 − x)² for |x| < 1 over ℝ, quoting Mathlib's tsum_coe_mul_geometric_of_norm_lt_one. The finite closed form recovers this as n → ∞ because xⁿ → 0 and n·xⁿ → 0, so the numerator tends to x."
+    }
+  ],
   "openQuestions": [
     {
       "id": "geometric-series-oq-08-oq-01-oq-01",
