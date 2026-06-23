@@ -3249,6 +3249,7 @@ import Proofs.ProductOfSegmentsOfChordsConverse
 import Proofs.ProductOfSegmentsOfChordsOQ01
 import Proofs.ProductOfSegmentsOfChordsOQ03
 import Proofs.PropertyBFirstMoment
+import Proofs.PropertyBUpperBound
 import Proofs.PtolemysComplexProof
 import Proofs.PtolemysComplexProofOQ01
 import Proofs.PtolemysComplexProofOQ02
