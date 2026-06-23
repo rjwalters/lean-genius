@@ -1,0 +1,113 @@
+{
+  "id": "combinations-formula-oq-01-oq-01-oq-01",
+  "title": "The Lucas Shallow-Diagonal Sum of Pascal's Triangle",
+  "slug": "combinations-formula-oq-01-oq-01-oq-01",
+  "description": "Answers the parent's second open question: the companion Lucas-number diagonal identity and the mixed Fibonacci–Lucas diagonal sum. Defining the Lucas numbers L (L 0 = 2, L 1 = 1, L(n+2) = L(n+1) + L n) and proving the Fibonacci bridge L(n+1) = F(n+2) + F n, it follows that the Lucas number L(n+1) equals the sum of two adjacent shallow diagonals of Pascal's triangle: L(n+1) = (∑_{j} C(n+1−j, j)) + (∑_{j} C(n−1−j, j)). Axiom-free; reuses the parent's Fibonacci diagonal identity.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CombinationsFormulaOQ01OQ01OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "binomial-coefficients",
+      "fibonacci",
+      "lucas-numbers",
+      "pascal-triangle",
+      "finite-sums"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "axiomCount": 0,
+    "assumptions": "None. #print axioms reports only propext, Classical.choice, Quot.sound. The two base cases of the Fibonacci bridge use decide (kernel reduction of the small Fibonacci values fib 2, fib 3, all rfl-reducible); no native_decide is used, so Lean.ofReduceBool is not introduced.",
+    "lineCount": 93,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "originalContributions": [
+      "lucas: the Lucas numbers as the second canonical solution of the Fibonacci recurrence",
+      "lucas_succ_eq_fib: the Fibonacci bridge L(n+1) = F(n+2) + F n, by two-step induction",
+      "fib_shallow_diagonal': the index-shifted shallow diagonal ∑_{j<n} C(n−1−j, j) = F n (parent's identity re-indexed to Fibonacci index n)",
+      "lucas_shallow_diagonal: the mixed Fibonacci–Lucas diagonal sum L(n+1) = (∑_{j<n+2} C(n+1−j, j)) + (∑_{j<n} C(n−1−j, j))"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The shallow ('rising') diagonals of Pascal's triangle sum to the Fibonacci numbers — a classical observation usually attributed to Lucas, who also introduced the companion sequence L_n = 2, 1, 3, 4, 7, 11, ... bearing his name. The Lucas numbers are the second canonical solution of the Fibonacci recurrence and satisfy L_n = F_{n−1} + F_{n+1}. Mathlib has Nat.fib but no Lucas-number sequence (its 'Lucas' files concern Lucas–Lehmer primality, the Gauss–Lucas theorem, and Lucas's theorem on binomial coefficients mod p, none of which is the sequence L_n). The parent entry proved the pure-Fibonacci diagonal sum and posed the companion Lucas identity as its second open question.",
+    "problemStatement": "Define the Lucas numbers and prove the companion diagonal identity expressing L(n+1) through shallow diagonals of Pascal's triangle, axiom-free.",
+    "text": "We define lucas by the recurrence L 0 = 2, L 1 = 1, L(n+2) = L(n+1) + L n, and prove the Fibonacci bridge lucas_succ_eq_fib: L(n+1) = F(n+2) + F n. Both L(n+1) and F(n+2) + F n are solutions of the Fibonacci recurrence with matching initial data, so a two-step induction (Nat.twoStepInduction) closes the bridge, the step reducing to the Fibonacci recurrence Nat.fib_add_two and linear arithmetic (omega). The parent's identity ∑_{j<n+1} C(n−j, j) = F(n+1) is re-indexed to fib_shallow_diagonal': ∑_{j<n} C(n−1−j, j) = F n (the empty n = 0 sum recovers F 0 = 0). Combining the bridge with the parent's diagonal identity for F(n+2) and the re-indexed one for F n yields the headline lucas_shallow_diagonal: L(n+1) = (∑_{j<n+2} C(n+1−j, j)) + (∑_{j<n} C(n−1−j, j)).",
+    "proofStrategy": "Define the Lucas numbers; bridge them to Fibonacci by two-step induction; re-index the parent's shallow-diagonal identity; then read off the Lucas diagonal sum as the sum of two adjacent Fibonacci shallow diagonals.",
+    "keyInsights": [
+      "L(n+1) = F(n+2) + F n: each Lucas number is the sum of two Fibonacci numbers two apart — the bridge that turns a Fibonacci diagonal identity into a Lucas one.",
+      "Because F(n+2) and F n are themselves shallow-diagonal sums of Pascal's triangle, the Lucas number L(n+1) is literally the sum of two adjacent shallow diagonals.",
+      "The whole Lucas identity rides on the parent's Fibonacci diagonal lemma; no new combinatorial reflection is needed beyond a single index shift n ↦ n − 1."
+    ],
+    "prerequisites": [
+      "Binomial coefficients Nat.choose and the Fibonacci sequence Nat.fib",
+      "The parent's fib_shallow_diagonal: ∑_{j<n+1} C(n−j, j) = F(n+1)",
+      "Nat.fib_add_two and the two-step induction principle Nat.twoStepInduction"
+    ]
+  },
+  "conclusion": {
+    "summary": "The companion Lucas diagonal identity is proved axiom-free: defining the Lucas numbers and the Fibonacci bridge L(n+1) = F(n+2) + F n, the Lucas number L(n+1) is exhibited as the sum of two adjacent shallow diagonals of Pascal's triangle, L(n+1) = (∑_{j<n+2} C(n+1−j, j)) + (∑_{j<n} C(n−1−j, j)). 1 definition, 7 theorems, 93 lines.",
+    "implications": "Resolves the parent's second open question and adds the Lucas numbers (absent from Mathlib as a named sequence) together with their Pascal-triangle diagonal characterization to the combinations-formula family.",
+    "openQuestions": [
+      "Prove the closed weighted single-sum form L_n = ∑_{k} (n / (n−k)) · C(n−k, k) directly (the divisor form of the Lucas diagonal).",
+      "Generalize to the p-step shallow diagonals giving the generalized Lucas / companion p-bonacci sequences.",
+      "Prove the mixed Fibonacci–Lucas convolution identities (e.g. 2F(m+n) = F m · L n + L m · F n) connecting the two diagonal families."
+    ]
+  },
+  "leanFile": {
+    "namespace": "CombinationsFormulaOQ01OQ01OQ01",
+    "lineCount": 93,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "path": "Proofs/CombinationsFormulaOQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "combinations-formula-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent: the Fibonacci shallow-diagonal sum ∑_j C(n−j, j) = F(n+1). This entry answers its second open question with the companion Lucas diagonal identity, reusing the parent's fib_shallow_diagonal lemma."
+    },
+    {
+      "targetId": "fibonacci-identities",
+      "relationship": "related",
+      "description": "Fibonacci summation identities; this entry introduces the Lucas companion sequence and its binomial-coefficient diagonal characterization."
+    }
+  ],
+  "sections": [
+    {
+      "title": "Module header and context",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "States the companion Lucas diagonal problem (the parent's second open question), records the bridge L(n+1) = F(n+2) + F n and the resulting mixed Fibonacci–Lucas diagonal sum, and imports Mathlib together with the parent file CombinationsFormulaOQ01OQ01."
+    },
+    {
+      "title": "The Lucas numbers",
+      "startLine": 35,
+      "endLine": 44,
+      "summary": "lucas: the Lucas sequence L 0 = 2, L 1 = 1, L(n+2) = L(n+1) + L n, with the base simp lemmas lucas_zero, lucas_one and the recurrence lucas_add_two."
+    },
+    {
+      "title": "The Fibonacci bridge",
+      "startLine": 46,
+      "endLine": 64,
+      "summary": "lucas_succ_eq_fib: L(n+1) = F(n+2) + F n by two-step induction (base cases by decide; step by Nat.fib_add_two and omega), with the symmetric restatement lucas_eq_fib_add_fib."
+    },
+    {
+      "title": "Index-shifted shallow diagonal",
+      "startLine": 66,
+      "endLine": 75,
+      "summary": "fib_shallow_diagonal': ∑_{j<n} C(n−1−j, j) = F n, the parent's identity re-indexed so the Fibonacci index is n; the empty n = 0 sum recovers F 0 = 0."
+    },
+    {
+      "title": "The mixed Fibonacci–Lucas diagonal sum",
+      "startLine": 77,
+      "endLine": 93,
+      "summary": "lucas_shallow_diagonal: L(n+1) = (∑_{j<n+2} C(n+1−j, j)) + (∑_{j<n} C(n−1−j, j)), obtained by combining the bridge with the parent's Fibonacci diagonal identity (for F(n+2)) and its re-indexed form (for F n)."
+    }
+  ],
+  "sorries": []
+}
