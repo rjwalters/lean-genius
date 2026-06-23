@@ -1,0 +1,99 @@
+{
+  "id": "prob-method-expectation-oq-02-oq-02",
+  "slug": "prob-method-expectation-oq-02-oq-02",
+  "title": "The Off-Diagonal First-Moment Ramsey Bound",
+  "sorries": 0,
+  "description": "The off-diagonal Erdős union-bound criterion for Ramsey numbers, formalized over genuine edge 2-colorings of the complete graph: if C(n,s)·2^(C(t,2)) + C(n,t)·2^(C(s,2)) < 2^(C(s,2)+C(t,2)) then there is a 2-coloring of K_n with no red K_s and no blue K_t, hence R(s,t) > n. This is the s ≠ t generalization of the diagonal bound, answering open question #2 of the parent entry prob-method-expectation-oq-02.",
+  "overview": "The diagonal first-moment bound (parent entry prob-method-expectation-oq-02) counts cliques that are monochromatic in *either* color. For the off-diagonal Ramsey number R(s,t) the two colors play asymmetric roles: we must avoid a *red* clique of size s and a *blue* clique of size t. This entry runs the union bound over two families simultaneously.\n\nThe sample space is the set of all 2-colorings `c : Edges n → Bool` of the C(n,2) edges of the complete graph on `Fin n` (`true` = red, `false` = blue); there are exactly 2^(C(n,2)) of them. The crux lemma `card_monoColor_le` bounds the number of colorings constant of a *fixed* color on a fixed k-clique by 2^(C(n,2)−C(k,2)) — note there is no factor of 2 here (unlike the diagonal count), because the color is fixed in advance. Summing 2^(C(n,2)−C(s,2)) over the C(n,s) potential red s-cliques and 2^(C(n,2)−C(t,2)) over the C(n,t) potential blue t-cliques gives the total number of 'bad' colorings, which is strictly below 2^(C(n,2)) exactly when C(n,s)·2^(C(t,2)) + C(n,t)·2^(C(s,2)) < 2^(C(s,2)+C(t,2)) — the integer (cleared-denominator) form of the textbook criterion C(n,s)·2^(−C(s,2)) + C(n,t)·2^(−C(t,2)) < 1. A coloring outside the bad set witnesses R(s,t) > n.\n\nThe arithmetic crux is handled without case-splitting on whether C(n,2) ≥ C(s,2)+C(t,2): the inequality is established by multiplying through by 2^(C(s,2)+C(t,2)) and using only C(s,2), C(t,2) ≤ C(n,2) (from s, t ≤ n), which keeps every exponent subtraction well-defined.",
+  "conclusion": {
+    "summary": "Formalizes the off-diagonal union-bound (first moment) Ramsey lower bound over real colorings: whenever C(n,s)·2^(C(t,2)) + C(n,t)·2^(C(s,2)) < 2^(C(s,2)+C(t,2)), the complete graph K_n admits a 2-coloring with no red K_s and no blue K_t, so the off-diagonal Ramsey number satisfies R(s,t) > n. This directly answers open question #2 of the parent entry.",
+    "implications": "**1. Asymmetric union bound.** Where the diagonal proof counted either-color monochromatic cliques with a factor of 2, the off-diagonal proof counts a fixed color on each of two clique families separately; the per-clique term loses the factor of 2 precisely because the target color is fixed.\n\n**2. Recovers the diagonal bound.** Setting s = t = k the criterion becomes 2·C(n,k)·2^(C(k,2)) < 2^(2·C(k,2)), i.e. 2·C(n,k) < 2^(C(k,2)) — exactly the parent's diagonal threshold. The witness ramsey_four_four_gt_six re-derives R(4,4) > 6 through the off-diagonal formula.\n\n**3. Subtraction-free arithmetic.** The strict inequality #bad < 2^(C(n,2)) is proved by clearing denominators (multiplying by 2^(C(s,2)+C(t,2))), so the bound holds for all s, t ≤ n with no auxiliary hypothesis on the relative sizes of the binomial coefficients.\n\n**4. No probability measure.** As with the diagonal case the entire argument is a finite ℕ counting / union bound, making the 'expected number of monochromatic cliques < 1' heuristic fully rigorous and machine-checkable.",
+    "openQuestions": [
+      "Derive the explicit off-diagonal asymptotic R(s,t) ≳ (t/log t)^((s+1)/2) for fixed s by estimating both binomial terms and optimizing n, the off-diagonal analogue of the diagonal 2^(k/2) growth.",
+      "Combine with the alteration / deletion method to obtain the stronger off-diagonal lower bounds that beat the pure union bound for unbalanced s, t."
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Finset"],
+    "namespace": "ProbMethod.RamseyOffDiagonal",
+    "lineCount": 287,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 4,
+    "path": "Proofs/RamseyFirstMomentOffDiagonal.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "first_moment_offdiagonal",
+      "type": "main",
+      "description": "If C(n,s)·2^(C(t,2)) + C(n,t)·2^(C(s,2)) < 2^(C(s,2)+C(t,2)) and s, t ≤ n, there exists a 2-coloring of K_n with no red K_s and no blue K_t — i.e. R(s,t) > n.",
+      "leanType": "(hsn : s ≤ n) (htn : t ≤ n) (hbound : n.choose s * 2 ^ (t.choose 2) + n.choose t * 2 ^ (s.choose 2) < 2 ^ (s.choose 2 + t.choose 2)) : ∃ c : Coloring n, (∀ K, K.card = s → ¬ MonoColor c K true) ∧ (∀ K, K.card = t → ¬ MonoColor c K false)"
+    },
+    {
+      "name": "card_monoColor_le",
+      "type": "core",
+      "description": "Crux count: the number of colorings constant of a fixed color `col` on a fixed clique K is at most 2^(C(n,2) − |EdgesIn K|), via an injection into (off-clique edges → Bool). No factor of 2, because the color is fixed.",
+      "leanType": "(K : Finset (Fin n)) (col : Bool) : (univ.filter (fun c => MonoColor c K col)).card ≤ 2 ^ ((Edges n).card - (EdgesIn n K).card)"
+    },
+    {
+      "name": "ramsey_offdiagonal_gt",
+      "type": "corollary",
+      "description": "Witness form of R(s,t) > n: a coloring in which every s-clique has a blue edge and every t-clique has a red edge.",
+      "leanType": "∃ c : Coloring n, (∀ K, K.card = s → ∃ e ∈ EdgesIn n K, c e = false) ∧ (∀ K, K.card = t → ∃ e ∈ EdgesIn n K, c e = true)"
+    },
+    {
+      "name": "ramsey_four_four_gt_six",
+      "type": "example",
+      "description": "Diagonal recovery via the off-diagonal formula: s = t = 4, n = 6 gives C(6,4)·2^6 + C(6,4)·2^6 = 1920 < 4096 = 2^(6+6), so R(4,4) > 6.",
+      "leanType": "∃ c : Coloring 6, (∀ K : Finset (Fin 6), K.card = 4 → ¬ MonoColor c K true) ∧ (∀ K : Finset (Fin 6), K.card = 4 → ¬ MonoColor c K false)"
+    },
+    {
+      "name": "ramsey_three_four_gt_four",
+      "type": "example",
+      "description": "A genuinely off-diagonal instance: s = 3, t = 4, n = 4 gives C(4,3)·2^6 + C(4,4)·2^3 = 264 < 512 = 2^(3+6), so R(3,4) > 4.",
+      "leanType": "∃ c : Coloring 4, (∀ K : Finset (Fin 4), K.card = 3 → ¬ MonoColor c K true) ∧ (∀ K : Finset (Fin 4), K.card = 4 → ¬ MonoColor c K false)"
+    }
+  ],
+  "sections": [
+    { "title": "Edges and Colorings", "description": "Edges of K_n as 2-element subsets of Fin n (card C(n,2)); a coloring assigns a Bool to each edge (true = red, false = blue)." },
+    { "title": "Induced Clique Edges", "description": "The C(k,2) edges contained in a vertex set K, in bijection with the 2-subsets of K." },
+    { "title": "Color-Fixed Monochromatic Cliques", "description": "MonoColor c K col holds when every induced edge of K has the fixed color col; this separates red cliques (true) from blue cliques (false)." },
+    { "title": "Crux Count (Union-Bound Term)", "description": "Colorings constant of a fixed color on a fixed clique number at most 2^(C(n,2)−C(k,2)) — no factor of 2 — by an explicit injection into (off-clique edges → Bool)." },
+    { "title": "Off-Diagonal First-Moment Bound", "description": "Union bound over the C(n,s) red s-cliques and C(n,t) blue t-cliques yields a good coloring whenever C(n,s)·2^(C(t,2)) + C(n,t)·2^(C(s,2)) < 2^(C(s,2)+C(t,2))." },
+    { "title": "Ramsey Number Lower Bound and Concrete Witnesses", "description": "Witness form R(s,t) > n; the diagonal recovery R(4,4) > 6 and the off-diagonal instance R(3,4) > 4." }
+  ],
+  "crossReferences": [
+    { "slug": "prob-method-expectation-oq-02", "relation": "parent", "description": "Answers open question #2 ('formalize the off-diagonal version giving lower bounds on R(s,t) for s ≠ t via the same union bound'); generalizes its diagonal first_moment_ramsey." },
+    { "slug": "prob-method-expectation", "relation": "ancestor", "description": "Grandparent entry on the first-moment / expectation method whose Ramsey placeholder the parent and this entry replace with genuine content." },
+    { "slug": "prob-method-alteration", "relation": "related", "description": "The alteration / deletion method improves on the pure off-diagonal union bound proved here, especially for unbalanced s, t." }
+  ],
+  "references": [
+    { "label": "Erdős 1947", "citation": "P. Erdős, Some remarks on the theory of graphs, Bull. Amer. Math. Soc. 53 (1947), 292–294." },
+    { "label": "Alon–Spencer", "citation": "N. Alon, J. H. Spencer, The Probabilistic Method, Ch. 1 (the first moment / union bound and the off-diagonal Ramsey lower bounds)." }
+  ],
+  "meta": {
+    "status": "verified",
+    "badge": "original",
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 4,
+    "lineCount": 287,
+    "proofRepoPath": "Proofs/RamseyFirstMomentOffDiagonal.lean",
+    "author": "Paul Erdős (1947), formalized in Lean 4",
+    "date": "1947",
+    "dateAdded": "2026-06-23",
+    "mathlib_version": "4.26.0",
+    "sorries": 0,
+    "tags": ["probabilistic-method", "combinatorics", "ramsey-theory", "union-bound", "graph-coloring", "off-diagonal", "intermediate"],
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (depends only on the foundational axioms propext, Classical.choice, Quot.sound; no sorryAx, no native_decide / Lean.ofReduceBool).",
+    "originalContributions": [
+      "card_monoColor_le: the off-diagonal union-bound term — colorings constant of a fixed color on a fixed clique number at most 2^(C(n,2)−C(k,2)) (no factor of 2, since the target color is fixed) — proved by an explicit injection into (off-clique edges → Bool).",
+      "first_moment_offdiagonal: the off-diagonal first-moment criterion C(n,s)·2^(C(t,2)) + C(n,t)·2^(C(s,2)) < 2^(C(s,2)+C(t,2)) ⟹ ∃ a 2-coloring of K_n with no red K_s and no blue K_t ⟹ R(s,t) > n, entirely over ℕ with no probability measure and no s,t ≥ 2 hypothesis.",
+      "Subtraction-free arithmetic: the strict bound #bad < 2^(C(n,2)) is established by clearing denominators (×2^(C(s,2)+C(t,2))) using only C(s,2), C(t,2) ≤ C(n,2), avoiding any case split on the relative sizes of the binomials.",
+      "ramsey_offdiagonal_gt: witness reformulation as 'every s-clique has a blue edge and every t-clique has a red edge'.",
+      "ramsey_four_four_gt_six: the diagonal R(4,4) > 6 re-derived through the off-diagonal formula, and ramsey_three_four_gt_four: a genuinely off-diagonal instance R(3,4) > 4."
+    ]
+  }
+}
