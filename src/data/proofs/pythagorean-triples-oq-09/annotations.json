@@ -1,0 +1,62 @@
+[
+  {
+    "id": "pythag-oq09-header",
+    "proofId": "pythagorean-triples-oq-09",
+    "range": { "startLine": 1, "endLine": 33 },
+    "type": "context",
+    "title": "The inscribed circle of an integer right triangle has integer radius",
+    "content": "The header states the geometric integrality phenomenon: a right triangle whose legs x, y and hypotenuse z form a Pythagorean triple (x²+y²=z²) has inradius r = (x+y−z)/2, a non-negative integer (e.g. (3,4,5)→1, (5,12,13)→2, (8,15,17)→3). Three ingredients: **parity** 2∣(x+y−z) for ANY triple (a ZMod 2 computation using a²=a — cleaner than oq-07's mod-4 split, no coprimality); **positivity** z ≤ x+y for non-negative legs; and the **area identity** (x+y−z)(x+y+z) = 2xy, which with x+y−z = 2r gives r·s = Area, the classical Heron relation. It is a structural invariant of integer right triangles alongside the parity dichotomy of oq-07.",
+    "mathContext": "$r = \\frac{x+y-z}{2} \\in \\mathbb{Z}_{\\ge 0},\\quad r \\cdot s = \\text{Area}$",
+    "significance": "context",
+    "relatedConcepts": ["Pythagorean triples", "inradius", "Area = r·s", "Heron"],
+    "prerequisites": ["Pythagorean triples", "inradius and semiperimeter", "modular arithmetic"]
+  },
+  {
+    "id": "pythag-oq09-parity",
+    "proofId": "pythagorean-triples-oq-09",
+    "range": { "startLine": 43, "endLine": 68 },
+    "type": "theorem",
+    "title": "Parity: 2 ∣ (x+y−z) via ZMod 2",
+    "content": "`dvd_two_add_sub`: for ANY Pythagorean triple, x+y−z is even — no coprimality, no mod-4 case split. The trick: in ZMod 2 every element satisfies a²=a (by `decide`), so pushing x²+y²=z² into ZMod 2 (`push_cast`) and rewriting collapses it to x+y = z, hence (x+y−z) ≡ 0 (mod 2), recovered over ℤ via `ZMod.intCast_zmod_eq_zero_iff_dvd`. `dvd_two_add_add` then gives 2∣(x+y+z) (it differs from x+y−z by 2z), so the semiperimeter is also an integer. This ZMod 2 route is a cleaner alternative to oq-07's mod-4 obstruction.",
+    "mathContext": "$\\text{in } \\mathbb{Z}/2,\\ a^2 = a \\implies x^2+y^2=z^2 \\rightsquigarrow x+y=z \\implies 2 \\mid x+y-z$",
+    "significance": "key",
+    "relatedConcepts": ["ZMod 2", "a²=a in characteristic 2", "ZMod.intCast_zmod_eq_zero_iff_dvd", "parity"],
+    "prerequisites": ["modular arithmetic", "the cast bridge ZMod ↔ ℤ"]
+  },
+  {
+    "id": "pythag-oq09-area",
+    "proofId": "pythagorean-triples-oq-09",
+    "range": { "startLine": 69, "endLine": 78 },
+    "type": "theorem",
+    "title": "inradius_identity: the area identity",
+    "content": "`inradius_identity`: (x+y−z)(x+y+z) = 2xy for any Pythagorean triple, proved in one line by `linear_combination` against x²+y²=z² (the LHS is (x+y)²−z² = 2xy). This single ring identity packages the entire Area = r·s relation: with x+y−z = 2r and x+y+z = 2s it becomes 2·r·s = 2·Area.",
+    "mathContext": "$(x+y-z)(x+y+z) = (x+y)^2 - z^2 = 2xy$",
+    "significance": "key",
+    "relatedConcepts": ["area identity", "linear_combination", "Area = r·s"],
+    "prerequisites": ["the Pythagorean relation", "ring identities"]
+  },
+  {
+    "id": "pythag-oq09-positivity",
+    "proofId": "pythagorean-triples-oq-09",
+    "range": { "startLine": 79, "endLine": 91 },
+    "type": "theorem",
+    "title": "hyp_le_add: z ≤ x+y (positivity)",
+    "content": "`hyp_le_add`: for a triple with non-negative entries, z ≤ x+y — the triangle inequality, here forced algebraically by x²+y²=z². Since (x+y)² = z² + 2xy ≥ z² when the sides are non-negative, `nlinarith` (fed the relevant nonnegative products and sq_nonneg) concludes. This is exactly what makes the inradius r = (x+y−z)/2 non-negative: integrality is arithmetic, but non-negativity is the geometric triangle inequality.",
+    "mathContext": "$(x+y)^2 = z^2 + 2xy \\ge z^2 \\implies z \\le x+y \\implies r \\ge 0$",
+    "significance": "supporting",
+    "relatedConcepts": ["triangle inequality", "nlinarith", "non-negativity of the inradius"],
+    "prerequisites": ["the Pythagorean relation", "nonnegativity reasoning"]
+  },
+  {
+    "id": "pythag-oq09-inradius",
+    "proofId": "pythagorean-triples-oq-09",
+    "range": { "startLine": 92, "endLine": 132 },
+    "type": "theorem",
+    "title": "inradius: a non-negative integer with r·s = Area",
+    "content": "`inradius_area` halves the area identity: with x+y−z = 2r, (2r)(x+y+z) = 2xy halves (via `mul_left_cancel₀` over ℤ, 2 ≠ 0) to r·(x+y+z) = xy — the classical Area = r·s. `inradius` then packages everything: from `dvd_two_add_sub` take r with x+y−z = 2r, from `hyp_le_add` get r ≥ 0 (by `omega`), and `inradius_area` gives the area relation — a non-negative integer inradius. `inradius_param` records that for the standard parametrisation (m²−n², 2mn, m²+n²) the inradius is exactly n(m−n), by `ring`.",
+    "mathContext": "$\\exists r \\ge 0,\\ x+y-z = 2r \\wedge r(x+y+z) = xy;\\quad r_{\\text{param}} = n(m-n)$",
+    "significance": "key",
+    "relatedConcepts": ["mul_left_cancel₀", "Area = r·s", "Euclidean parametrisation", "omega"],
+    "prerequisites": ["the parity, area, and positivity lemmas", "the (m²−n², 2mn, m²+n²) parametrisation"]
+  }
+]
